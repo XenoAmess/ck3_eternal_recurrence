@@ -20,4 +20,6 @@
 C22?169 eligible/8 saved??????????????????????canonical??????????????[??????](../maintenance/2026-11-05-existing-event-after-recovery-sources.json)?
 
 
-??[??READ?????](2026-11-05-global-event-read-verifier-wiring.md)???????global??????????canonical?????????????
+### Global verification and canonical event settlement
+
+Recovery35 stopped at the global fresh READ verifier installation. Both global views now use the existing real wrapper; necessary2TU/35class typing and independent review passed. Recovery36 actually committed original527 SETTLED/APPLIED with the full original command/Attempt/dispatch/deadline unchanged. Its later history publication failure is a separate consumer; LOOP/new days/SAVE remain unqualified. See [global wiring](2026-11-05-global-event-read-verifier-wiring.md) and [the one-expression history follow-up](2026-11-05-history-event-read-verifier-wiring.md). The current history repair has necessary1TU/10class typing and source review; actual37 publication remains pending. Model60 length output was discarded whole, with zero adoption or retry. This paragraph replaces only this owner's previous unreadable appended block; earlier text is retained.

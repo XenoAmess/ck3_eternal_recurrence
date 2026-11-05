@@ -71,5 +71,20 @@
   "FrameLoader_default_throw_preserved": true,
   "actual_canonical_commit": false,
   "new_Test_or_old58_RUN": false,
-  "new_Game_control_or_saved_days": 0
+  "new_Game_control_or_saved_days": 0,
+  "later_actual_recovery36": {
+    "original527_settled": true,
+    "receipt": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\global-fresh-read-verifier-recovery36\\527-applied-receipt.json",
+      "bytes": 19519,
+      "sha256": "63c95323d2b046e4e428cfde094c6ce1623fe78458643bda726218361a4bbbf7"
+    },
+    "complete_original_command_attempt_dispatch_deadline_equal": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\history-event-read-verifier-wiring01\\ORIGINAL527-DATA-REVIEW02.json",
+      "bytes": 1714,
+      "sha256": "fb892d3e31c099f198a4221ae7d9db5b52dc10c5b7a9bea02c182a24c31333cc"
+    },
+    "history_publication": "Separate downstream FrameLoader default rejection; actual37 not yet qualified",
+    "new_controls_or_saved_days": 0
+  }
 }

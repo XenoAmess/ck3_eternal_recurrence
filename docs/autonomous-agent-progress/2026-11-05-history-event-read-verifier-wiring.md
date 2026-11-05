@@ -1,0 +1,15 @@
+# History publication uses the real fresh READ verifier (2026-11-05)
+
+Recovery36 committed original event527 as SETTLED/APPLIED. Its complete command, body SHA, original Attempt and nonempty dispatch_ref equal the original521 values; the original deadline remains 2026-11-05T01:55:03.894579600Z. This was a read-only recovery of the existing action, with no repeated control. Global verification, domain validation and canonical commit passed. Ordinary LOOP, new game days and SAVE have separate acceptance criteria.
+
+The delegate then failed during completed-action history publication. The final stack in the frozen recovery36 log reaches RootActionHistoryMaterialSourceFactory.Installed.captureActual, where NativeEffectEvidence.loadIfPresent still received the bare FrameLoader. Its mandatory fresh-query verifier correctly rejected the missing installation. This downstream failure does not undo event527's committed settlement.
+
+The change wraps only that existing loader argument with RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()). Both capture and requireOriginal use captureActual, so capture and archived replay share the same real READ/ACK/custody verifier. All owner, canonical receipt, Game/source/session, archived domain, compatible result, evidence and legacy recording checks remain byte-for-byte unchanged outside the single expression. No new method, field, type or permissive default was introduced.
+
+The necessary changed production TU compiled successfully in 9.1595614 seconds. Its ten SourceFile family classes retained their complete class structure. Independent source review confirmed the exact inverse of the owned expression. No new test, old58 rerun or unrelated production compilation was needed: those would not exercise this private installed history consumer. Actual history publication and continuation are reserved for recovery37's real receipts.
+
+Model task60 returned HTTP200/DONE with finish_reason=length at the fixed 1200-token limit: 11.1132801 seconds total, 4.2243837 seconds to first content, reported 32097 input and 1200 output tokens. Its entire content and raw SSE remain unopened and unhashed; zero code was adopted and no retry was issued. The owner completed the one expression independently.
+
+The previous global-wiring report and its newly appended paragraphs had been written with literal question marks by the owner's shell encoding path. This publication replaces only those owned text blocks with readable UTF-8 text. Source and machine JSON pins were unaffected. The official CI run41961042009 remains failed: bootstrap passed 1199 tests, while the qualified pipeline lacked tools-postqualification/actual.json. That separate failure neither qualifies the whole pipeline nor gates recovery37.
+
+The exact source, typed result, independent review, original527 comparison and publication limits are indexed in [the source index](../maintenance/2026-11-05-history-event-read-verifier-wiring-sources.json). Raw receipt payloads and hosted tests remain outside the public repository.

@@ -512,7 +512,7 @@ public final class RootActionHistoryMaterialSourceFactory {
                 return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,independent(actual,originals),producers);
             }
             // Generic ordinary effects carry an explicit durable NativeEffectEvidence compatible original.
-            Optional<NativeEffectEvidence.Original> nativeOriginal=NativeEffectEvidence.loadIfPresent(actual,originals,context.frameLoader());
+            Optional<NativeEffectEvidence.Original> nativeOriginal=NativeEffectEvidence.loadIfPresent(actual,originals,RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()));
             if(nativeOriginal.isPresent()) {
                 var original=nativeOriginal.orElseThrow();var evidence=independent(actual,originals);
                 frame(evidence,original.frames().before().originalEvidence(),NativeEffectEvidence.basis(original.frames().before()).driverFacts());

@@ -1,0 +1,68 @@
+{
+  "schema": "xar.java-owner.history-read-wiring-source-index/v1",
+  "at_utc": "2026-11-05T06:32:42.386635+00:00",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\history-event-read-verifier-wiring01\\SOURCE-READY-OWNER01.json",
+    "bytes": 2245,
+    "sha256": "19980f2a432b1c168036666255d0b7aaed4962afd1dbc909e1d85ba43ad24526"
+  },
+  "formal_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\history-event-read-verifier-wiring01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 1427,
+    "sha256": "8b915b09e7ec0769d6f8c3f5dc0731fdd89b5ea1f67163abd50a0e380e301c06"
+  },
+  "native_type_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\history-event-read-verifier-wiring01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 229729,
+    "sha256": "c165b53ed909082ff4024a8575e579f070c3420239ce22b9e0425ca07187a485"
+  },
+  "native_actual_family_classes": 10,
+  "native_summary_top_count_108": "Known indexing inconsistency reported to Native; use SourceFile family and actual output pins, no new JVM required. Additive correction pending.",
+  "independent_source": {
+    "path": "D:\\ck3-state\\resume91-root\\history-material-fresh-read-independent-review37\\SOURCE-REVIEW01.json",
+    "bytes": 7723,
+    "sha256": "072e3e10e7b6424a62c74eb04a5992ee71882452b08d771038d2e5a31cc84521"
+  },
+  "original527_data_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\history-event-read-verifier-wiring01\\ORIGINAL527-DATA-REVIEW02.json",
+    "bytes": 1714,
+    "sha256": "fb892d3e31c099f198a4221ae7d9db5b52dc10c5b7a9bea02c182a24c31333cc"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\history-event-read-verifier-wiring01\\MODEL-REVIEW01.json",
+    "bytes": 789,
+    "sha256": "e26705a763a59416408472dac49a2d47d344ddfae0df5de6f2b8d77bcf76356a"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootActionHistoryMaterialSourceFactory.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootActionHistoryMaterialSourceFactory.java",
+        "bytes": 68537,
+        "sha256": "7478b2c4f800a1e28998d9b391d31dc07bb22a9fc33b29bc51c3b18e80531201"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\history-event-read-verifier-wiring01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootActionHistoryMaterialSourceFactory.java",
+        "bytes": 68588,
+        "sha256": "7f04be8a981f054a4324db5cc3099a754a25b4648389f9ec367a4325e5b14f45"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\history-event-read-verifier-wiring01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootActionHistoryMaterialSourceFactory.java",
+        "bytes": 68876,
+        "sha256": "e45f2b8b720e94632e49f8da2d93f46935956897f4e33e005b396987fa01fce2"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "actual527": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\global-fresh-read-verifier-recovery36\\527-applied-receipt.json",
+    "bytes": 19519,
+    "sha256": "63c95323d2b046e4e428cfde094c6ce1623fe78458643bda726218361a4bbbf7"
+  },
+  "current_status": "Original527 committed SETTLED/APPLIED; history publication still pending at this cut",
+  "history_publication_qualified": false,
+  "new_Test_or_old58_RUN": false,
+  "new_Game_control_or_saved_days": 0,
+  "whole_formal_reactor_qualification": false
+}
