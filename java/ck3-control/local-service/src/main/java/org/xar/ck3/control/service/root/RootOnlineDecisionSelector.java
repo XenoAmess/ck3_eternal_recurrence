@@ -92,6 +92,17 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             + "When proposal_projection_schema is xar.model-family-legality-alias/v1, reconstruct proposal.arguments.planning_proof.family_marriage_legality.native_legal_candidates as the complete exact same JSON array as proposal.arguments.planning_proof.family_marriage_legality.candidates; all original array entries/unknown fields/precision/order are represented. proposal_id and body_sha256 still identify the original unprojected command; no hash recalculation of projected bytes. "
             + "When history_declarable_wars_projection_schema is xar.model-history-declarable-wars-alias/v1, restore history[i].result.declarable_wars from history[history[i].result.declarable_wars_history_ref].result.declarable_wars IN FULL and remove only the new technical declarable_wars_history_ref; use the original row's source frame, query sequence and stamps. Equal values are not new observations or authority. proposal_id and body_sha256 still identify the original unprojected command; no recalculation.";
 
+    private static final String WAR_ITEM_SCHEMA = "xar.model-history-declarable-war-items/v1";
+    private static final String WAR_ITEM_POLICY = " When history_declarable_wars_projection_schema is "
+            + "xar.model-history-declarable-war-items/v1, restore each history row's result.declarable_wars "
+            + "as the ordered full objects declarable_war_facts[index] for every index in result.declarable_war_fact_refs; "
+            + "preserve all indices, repeated occurrences, complete unknown fields and exact numeric values. "
+            + "Replace that refs field in its original object-member position with declarable_wars when expanding, "
+            + "then remove only the new root dictionary and projection marker. "
+            + "Keep each original row's source, frame, arguments, status, query sequence and other metadata; "
+            + "equal item encodings are not a new observation or authority. Original proposal_id/body_sha256 identify "
+            + "the unprojected command and must not be recalculated.";
+
     private final RootOrdinaryRuntimeConfiguration.DecisionProvider config;
     private final Clock clock;
     private final MaterialSink materials;
@@ -226,7 +237,16 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             if (data.has(field)) orderedData.set(field, data.get(field));
         }
         orderedData.setAll(data);
-        return encodeModelInput(orderedData, POLICY);
+        byte[] ordinaryPayload = encodeModelInput(orderedData, POLICY);
+        // Optional DATA-only encoding cannot suppress an original payload/authority failure.
+        try {
+            ObjectNode projected = projectDeclarableWarItems(orderedData);
+            if (projected == null) return ordinaryPayload;
+            byte[] candidate = encodeModelInput(projected, POLICY + WAR_ITEM_POLICY);
+            return candidate.length < ordinaryPayload.length ? candidate : ordinaryPayload;
+        } catch (RuntimeException projectionUnavailable) {
+            return ordinaryPayload;
+        }
     }
 
 
@@ -870,6 +890,61 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             }
         }
         return changed;
+    }
+
+    /** A model DATA view only: byte-identical complete items, never shared observation identity. */
+    static ObjectNode projectDeclarableWarItems(ObjectNode data) {
+        JsonNode originalHistory = data.get("history");
+        if (data.has("declarable_war_facts") || data.has("history_declarable_wars_projection_schema")
+                || !"xar.model-root-history-dictionary/v1".equals(data.path("history_projection_schema").asText())
+                || originalHistory == null || !originalHistory.isArray()) return null;
+        ArrayNode history = (ArrayNode) originalHistory;
+        ArrayNode projectedHistory = JsonNodeFactory.instance.arrayNode();
+        ArrayNode facts = JsonNodeFactory.instance.arrayNode();
+        java.util.Map<String, Integer> indices = new java.util.LinkedHashMap<>();
+        int arrays = 0;
+        long occurrences = 0;
+        for (JsonNode row : history) {
+            if (!row.isObject()) return null;
+            JsonNode result = row.path("result");
+            if (result.has("declarable_wars_history_ref") || result.has("declarable_war_fact_refs")) return null;
+            if (!"query-declarable-wars".equals(row.path("command").asText())) {
+                projectedHistory.add(row);
+                continue;
+            }
+            if (!isQualifyingDeclarableWarsRead(row)) return null;
+            arrays++;
+            ArrayNode references = JsonNodeFactory.instance.arrayNode();
+            for (JsonNode item : result.get("declarable_wars")) {
+                if (!item.isObject()) return null;
+                // JsonNode.equals can ignore object order or numeric token representation.
+                String encoded = new String(FullJsonTree.encode(item, MAX_MATERIAL_BYTES), StandardCharsets.UTF_8);
+                Integer index = indices.get(encoded);
+                if (index == null) {
+                    index = facts.size();
+                    indices.put(encoded, index);
+                    facts.add(item); // Read-only original value; no node in either input tree is modified.
+                }
+                references.add(index);
+                occurrences++;
+            }
+            ObjectNode projectedResult = object();
+            for (var field : ((ObjectNode) result).properties()) {
+                projectedResult.set(field.getKey().equals("declarable_wars") ? "declarable_war_fact_refs" : field.getKey(),
+                        field.getKey().equals("declarable_wars") ? references : field.getValue());
+            }
+            ObjectNode projectedRow = object();
+            projectedRow.setAll((ObjectNode) row);
+            projectedRow.set("result", projectedResult);
+            projectedHistory.add(projectedRow);
+        }
+        if (arrays < 2 || occurrences == facts.size()) return null;
+        ObjectNode projected = object();
+        projected.setAll(data);
+        projected.set("history", projectedHistory);
+        projected.set("declarable_war_facts", facts);
+        projected.put("history_declarable_wars_projection_schema", WAR_ITEM_SCHEMA);
+        return projected;
     }
 
     /** Structural JSON equality preserves integer precision and all unknown ROOT fields. */

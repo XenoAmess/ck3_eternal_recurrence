@@ -1,0 +1,167 @@
+{
+  "schema": "xar.java-owner.declarable-war-item-dictionary-source-index/v1",
+  "at_utc": "2026-11-05T15:17:24.736146+00:00",
+  "refs": {
+    "source_ready": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\SOURCE-READY-OWNER03.json",
+      "bytes": 3911,
+      "sha256": "ba355b7d0ca3128f349ed30ea12607536caa852d3f342e212e6dc4871145b73c"
+    },
+    "formal_projection": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\FORMAL-SOURCE-READY01.json",
+      "bytes": 7952,
+      "sha256": "fe8c6f125a3d0450ff7d76568a8bd18c40fbc9a85816be7c88f7dfbbba780c83"
+    },
+    "owned_spans": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\SOURCE-PART03.json",
+      "bytes": 7147,
+      "sha256": "383180a780fae0664a4be7204e7e117a116b6614b6c8568e292a8bb56e2275f2"
+    },
+    "source_review": {
+      "path": "D:\\ck3-state\\resume91-root\\old44-request-dictionary-independent-review51\\SOURCE-REVIEW02.json",
+      "bytes": 9904,
+      "sha256": "71b0efac42b78ca8318f986a9265b4fb5e3cc04ea5167718deb90bc87bc8d623"
+    },
+    "original_roundtrip_review": {
+      "path": "D:\\ck3-state\\resume91-root\\old44-request-dictionary-independent-review51\\DATA-ROUNDTRIP-REVIEW01.json",
+      "bytes": 12458,
+      "sha256": "e64cc38e748aa655d4b23df61d4c206cf23140e8fda3bc0bbe2b299a6250252d"
+    },
+    "original_request": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\old44-model-request-exact51\\request.json",
+      "bytes": 1724435,
+      "sha256": "b29ed6121b11a3d11eec209ef1c3c51b54570acc4ac6f61bf9c6b84ac59e81df"
+    },
+    "original_breakdown": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\old44-model-request-exact51\\REQUEST-BYTE-BREAKDOWN51.json",
+      "bytes": 26809,
+      "sha256": "19d7a143e9a7373c16bae62b164db555972dcee3fcb92c9af2f2a98208fb9711"
+    },
+    "source_protocol_net_bytes": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\SOURCE03-NET-BYTES04.json",
+      "bytes": 2105,
+      "sha256": "dd5e4dbd53cb679f7525645694e41efb809a4487634f07d83e0a675c0e712e3d"
+    },
+    "cadence_source_analysis": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\ordinary-pre-model-cadence-analysis51\\READONLY-RESULT02.json",
+      "bytes": 12595,
+      "sha256": "f175e872365f3ffde410fe689e2cc53544b9ec55a2497795eef382722fd9f0b1"
+    },
+    "actual_jackson_api": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\ACTUAL-JACKSON-PROPERTIES-API01.json",
+      "bytes": 6167,
+      "sha256": "f721163344cc0de5c96429dd9df11c31f54ebbcdde1ed6a35fc76e42e07d9fcc"
+    },
+    "production_actual": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\native-first02\\actual\\prod\\ACTUAL.json",
+      "bytes": 1735,
+      "sha256": "4cdf59015d97ec81daa22be6d09dd6b21088a29d2a6c4b5e5f67ab3557de45cf"
+    },
+    "production_shape": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\native-first02\\QUALIFIED-FIRST-SHAPE01.json",
+      "bytes": 86122,
+      "sha256": "d0155c46ac64795af15282f866a02bdcb1216ada64e9bf335dfd81a761a18c94"
+    },
+    "first_red_stderr": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\native-first01\\actual\\prod\\stderr.bin",
+      "bytes": 379,
+      "sha256": "564424d446e7eed91182b2d8c414d796e31cf1d3ee3e7cdbb53d7628bda0db75"
+    },
+    "test_ready": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-test51\\SOURCE-READY-OWNER01.json",
+      "bytes": 3229,
+      "sha256": "6e492cc023cd571e3056ee0bc335acb8705aeec354e172d35caffc3f94fe545c"
+    },
+    "test_xml": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-test51\\native-first01\\reports-junit\\TEST-junit-jupiter.xml",
+      "bytes": 41638,
+      "sha256": "a924e8a84085a746952d8ecb4c604c1c81c998fc4c5f1f910c1f8960286e2df4"
+    },
+    "test_stdout": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-test51\\native-first01\\actual\\junit\\stdout.bin",
+      "bytes": 2039,
+      "sha256": "53da08559480500db92eff0bfc4a63075de082ae7d0c061100089b9babb22b02"
+    },
+    "model83_review": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\MODEL-REVIEW83-01.json",
+      "bytes": 2682,
+      "sha256": "99f0249f821328c64fce9c77d91a7b3bff25fd6b5861647025ce0e8b9649c7c5"
+    },
+    "model84_review": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-test51\\MODEL-REVIEW84-01.json",
+      "bytes": 2074,
+      "sha256": "78b6032468c75d1072561d801ad5d56a15169c263814e2edd7c9be45d5ddae6a"
+    },
+    "actual_normal15_phase_summary": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\sway-open-batch-recovery50\\NORMAL15-PHASE-HTTP-SUMMARY.json",
+      "bytes": 12189,
+      "sha256": "c31d9d4c3a5517e9cf20507bc360aeb00041d3691579cbdcf016a660986a5e14"
+    },
+    "qualified_production": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\QUALIFIED-PRODUCTION03.json",
+      "bytes": 10373,
+      "sha256": "e030ed5a391fe4b774672ae9384f98c10a812bc4239a791ce2d7a7453c13cb9b"
+    },
+    "qualified_new_data_test": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-test51\\QUALIFIED-COHORT01.json",
+      "bytes": 11506,
+      "sha256": "b975e26713ff4d6bf918e253c6e01a487bbb6b79acf8e05a14c435ad4988398a"
+    }
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootOnlineDecisionSelector.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\formal-before01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootOnlineDecisionSelector.java",
+        "bytes": 81330,
+        "sha256": "3fd525aec80df7742f4d52c55f7bd2fbd529cc020f7453e736bcaa53e318e800"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootOnlineDecisionSelector.java",
+        "bytes": 86005,
+        "sha256": "7cc8741b53c4176cbee97033aaa52185806be3a0d3b1fa47b9192d5405334737"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\candidate03\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootOnlineDecisionSelector.java",
+        "bytes": 86068,
+        "sha256": "4fc4c3698e7806b420142c2a3ee048aa5aa9bdc4df7e00ffb0b11025431ad5f7"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false,
+      "owned_spans": [
+        {
+          "old": "    private final RootOrdinaryRuntimeConfiguration.DecisionProvider config;",
+          "new": "    private static final String WAR_ITEM_SCHEMA = \"xar.model-history-declarable-war-items/v1\";\n    private static final String WAR_ITEM_POLICY = \" When history_declarable_wars_projection_schema is \"\n            + \"xar.model-history-declarable-war-items/v1, restore each history row's result.declarable_wars \"\n            + \"as the ordered full objects declarable_war_facts[index] for every index in result.declarable_war_fact_refs; \"\n            + \"preserve all indices, repeated occurrences, complete unknown fields and exact numeric values. \"\n            + \"Replace that refs field in its original object-member position with declarable_wars when expanding, \"\n            + \"then remove only the new root dictionary and projection marker. \"\n            + \"Keep each original row's source, frame, arguments, status, query sequence and other metadata; \"\n            + \"equal item encodings are not a new observation or authority. Original proposal_id/body_sha256 identify \"\n            + \"the unprojected command and must not be recalculated.\";\n\n    private final RootOrdinaryRuntimeConfiguration.DecisionProvider config;"
+        },
+        {
+          "old": "        return encodeModelInput(orderedData, POLICY);",
+          "new": "        byte[] ordinaryPayload = encodeModelInput(orderedData, POLICY);\n        // Optional DATA-only encoding cannot suppress an original payload/authority failure.\n        try {\n            ObjectNode projected = projectDeclarableWarItems(orderedData);\n            if (projected == null) return ordinaryPayload;\n            byte[] candidate = encodeModelInput(projected, POLICY + WAR_ITEM_POLICY);\n            return candidate.length < ordinaryPayload.length ? candidate : ordinaryPayload;\n        } catch (RuntimeException projectionUnavailable) {\n            return ordinaryPayload;\n        }"
+        },
+        {
+          "old": "    /** Structural JSON equality preserves integer precision and all unknown ROOT fields. */",
+          "new": "    /** A model DATA view only: byte-identical complete items, never shared observation identity. */\n    static ObjectNode projectDeclarableWarItems(ObjectNode data) {\n        JsonNode originalHistory = data.get(\"history\");\n        if (data.has(\"declarable_war_facts\") || data.has(\"history_declarable_wars_projection_schema\")\n                || !\"xar.model-root-history-dictionary/v1\".equals(data.path(\"history_projection_schema\").asText())\n                || originalHistory == null || !originalHistory.isArray()) return null;\n        ArrayNode history = (ArrayNode) originalHistory;\n        ArrayNode projectedHistory = JsonNodeFactory.instance.arrayNode();\n        ArrayNode facts = JsonNodeFactory.instance.arrayNode();\n        java.util.Map<String, Integer> indices = new java.util.LinkedHashMap<>();\n        int arrays = 0;\n        long occurrences = 0;\n        for (JsonNode row : history) {\n            if (!row.isObject()) return null;\n            JsonNode result = row.path(\"result\");\n            if (result.has(\"declarable_wars_history_ref\") || result.has(\"declarable_war_fact_refs\")) return null;\n            if (!\"query-declarable-wars\".equals(row.path(\"command\").asText())) {\n                projectedHistory.add(row);\n                continue;\n            }\n            if (!isQualifyingDeclarableWarsRead(row)) return null;\n            arrays++;\n            ArrayNode references = JsonNodeFactory.instance.arrayNode();\n            for (JsonNode item : result.get(\"declarable_wars\")) {\n                if (!item.isObject()) return null;\n                // JsonNode.equals can ignore object order or numeric token representation.\n                String encoded = new String(FullJsonTree.encode(item, MAX_MATERIAL_BYTES), StandardCharsets.UTF_8);\n                Integer index = indices.get(encoded);\n                if (index == null) {\n                    index = facts.size();\n                    indices.put(encoded, index);\n                    facts.add(item); // Read-only original value; no node in either input tree is modified.\n                }\n                references.add(index);\n                occurrences++;\n            }\n            ObjectNode projectedResult = object();\n            for (var field : ((ObjectNode) result).properties()) {\n                projectedResult.set(field.getKey().equals(\"declarable_wars\") ? \"declarable_war_fact_refs\" : field.getKey(),\n                        field.getKey().equals(\"declarable_wars\") ? references : field.getValue());\n            }\n            ObjectNode projectedRow = object();\n            projectedRow.setAll((ObjectNode) row);\n            projectedRow.set(\"result\", projectedResult);\n            projectedHistory.add(projectedRow);\n        }\n        if (arrays < 2 || occurrences == facts.size()) return null;\n        ObjectNode projected = object();\n        projected.setAll(data);\n        projected.set(\"history\", projectedHistory);\n        projected.set(\"declarable_war_facts\", facts);\n        projected.put(\"history_declarable_wars_projection_schema\", WAR_ITEM_SCHEMA);\n        return projected;\n    }\n\n    /** Structural JSON equality preserves integer precision and all unknown ROOT fields. */"
+        }
+      ]
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/DeclarableWarItemDictionaryHostedTest.java",
+      "new_file": true,
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\formal-candidate01\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\DeclarableWarItemDictionaryHostedTest.java",
+        "bytes": 8954,
+        "sha256": "ec10325e9667d6898c7712222bec6a9f1f034154c22a45e0c639c405fb3a2b96"
+      },
+      "whole_actual_source_equal": true
+    }
+  ],
+  "qualification": {
+    "production": "OnlySelector1TU0/7.6806828s/4CF, normalLoader, firstdeprecated-fieldsWerror1/0CF preserved.",
+    "test": "OnlynewTest1TU0/5.1247643s/1CF and exactnew1P/5.7328474s, child64m unchanged; original1.72MB/user1562013B inverse,73rows/780facts/3token-order variants/10directnull.",
+    "net_size": "Source03 protocol calculation includes exact760B addedpolicy:1724435->1012857,711578saved; no transformedrequest sent.",
+    "limits": [
+      "Purehelper DATA is not privatepolicy/netgate execution, modelchoice equivalence or actualperformance.",
+      "Formaloutsideinverseexact; wholeformal source differs from actualcompiledcandidate and wholeformal tree was not compiled.",
+      "No actualC/Game/GET/reload or new day/save credit from this source/test."
+    ]
+  }
+}
