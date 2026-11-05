@@ -38,6 +38,155 @@ final class RegisteredEventCoreIntegrationTest {
         }
     };
 
+    @Test void registeredPlaceholderMaterializesOnlyThroughActualContinuation() throws Exception {
+        ObjectNode context=publicContext("unregistered_fixture.7711");
+        ((ObjectNode)context.get("options").get(0)).put("native_option_index",1);
+        ((ObjectNode)context.get("options").get(1)).put("native_option_index",0);
+        EventWindowCodec.decode(raw(context),nativeBinding(context));PlanningRequest request=request(context,2);
+        var registry=core((input,operation,args,plan,purpose,domain)->{throw new AssertionError("unregistered registry may classify, not select");});
+        var classified=assertInstanceOf(OrdinaryPolicy.Replace.class,registry.evaluate(request,OrdinaryPolicy.Draft.empty()));
+        assertEquals(OrdinaryPolicy.Kind.FOREGROUND,classified.draft().kind());assertEquals(OrdinaryPolicy.Purpose.READ_ONLY,classified.draft().purpose());
+        assertTrue(classified.draft().command().isEmpty());assertTrue(classified.reason().contains("later continuation"));
+        assertEquals(object(context),classified.draft().detail().get("event_window_context"));
+        assertEquals(new OpportunityJson.Text("not_registered"),OpportunityJson.object(classified.draft().detail().get("event_decision"),"registry decision").get("status"));
+        var captures=new ArrayList<OpportunityJson.Obj>();var policies=registryEventPolicies((actual,plan)->captures.add(plan));
+        var calls=new AtomicInteger();var lower=new AtomicInteger();
+        OrdinaryPolicy continuation=registryStage(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,(actual,previous)->{
+            calls.incrementAndGet();assertSame(request,actual);assertEquals(classified.draft(),previous);return policies.get(1).evaluate(actual,previous);
+        });
+        var result=assertInstanceOf(PlanningResult.ActionSelected.class,registryPlanner(registry,continuation,policies.get(2),lower).plan(request));
+        var selected=result.command();assertEquals("select-event-option-2",selected.operation().value());
+        assertEquals(request.before(),selected.before());assertEquals(request.source(),selected.source());assertEquals(request.sessionId(),selected.sessionId());
+        assertEquals(request.deadline(),selected.deadline());assertEquals(1,calls.get());assertEquals(0,lower.get());assertTrue(captures.isEmpty());
+        assertEquals(BigInteger.ONE,OpportunityJson.integer(selected.arguments().get("native_option_index"),"native index"));
+        assertEquals(BigInteger.ZERO,OpportunityJson.integer(selected.arguments().get("rendered_index"),"rendered index"));
+        assertEquals(BigInteger.TWO,OpportunityJson.integer(selected.arguments().get("option_number"),"option number"));
+        var capture=OpportunityJson.object(selected.arguments().get("unhandled_event_fallback"),"complete retained capture");
+        assertEquals(object(context),capture.get("window_context"));
+        var original=OpportunityJson.object(capture.get("original_registry_decision"),"original registered plan");
+        assertEquals(classified.draft().detail().get("event_decision"),original.get("event_decision"));
+        assertEquals(classified.draft().detail().get("event_window_context"),original.get("event_window_context"));
+        var stages=result.trace().visits().stream().map(PlanTrace.StageVisit::stage).toList();
+        int coreIndex=stages.indexOf(PlanningStage.ORDINARY_CORE);assertEquals(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,stages.get(coreIndex+1));
+        assertEquals(PlanTrace.Outcome.REPLACED,result.trace().visits().get(coreIndex).outcome());
+        assertEquals(PlanTrace.Outcome.REPLACED,result.trace().visits().get(coreIndex+1).outcome());
+        var finish=List.of(PlanningStage.M5_WARTIME_OBSERVATION,PlanningStage.DEFERRED_SUCCESSION_ROOT,PlanningStage.HOLY_WAR_DEFENDER_OBSERVATION,
+                PlanningStage.PREWAR_FORCE_COALITION,PlanningStage.ORDINARY_SWAY,PlanningStage.EVENT_MATERIAL_POSTCONDITION,
+                PlanningStage.CAMPAIGN_ADVANCE_CAP,PlanningStage.REALM_MEMBERSHIP_PUBLICATION);
+        assertEquals(finish,stages.subList(stages.size()-finish.size(),stages.size()));assertFalse(stages.contains(PlanningStage.WAR_RENDEZVOUS));
+        System.out.println("SOFTWARE_REGISTRY_MATERIALIZED real_registry_classification=true real_continuation=true native1_rendered0_option2=true full_context_retained=true lower_calls=0 finish_order=true");
+    }
+
+    @Test void disabledOrUnchangedRegistryPlaceholderNeverLeaksToLowerPolicies() throws Exception {
+        ObjectNode context=publicContext("unregistered_fixture.7711");
+        ((ObjectNode)context.get("options").get(0)).put("native_option_index",1).put("enabled",false);
+        ((ObjectNode)context.get("options").get(1)).put("native_option_index",0).put("enabled",true);
+        EventWindowCodec.decode(raw(context),nativeBinding(context));PlanningRequest request=request(context,2);
+        var registry=core((input,operation,args,plan,purpose,domain)->{throw new AssertionError("unregistered registry may not prepare");});
+        var classified=assertInstanceOf(OrdinaryPolicy.Replace.class,registry.evaluate(request,OrdinaryPolicy.Draft.empty()));assertTrue(classified.draft().command().isEmpty());
+        var captures=new ArrayList<OpportunityJson.Obj>();var policies=registryEventPolicies((actual,plan)->captures.add(plan));var lower=new AtomicInteger();var calls=new AtomicInteger();
+        var actual=registryStage(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,(input,previous)->{calls.incrementAndGet();return policies.get(1).evaluate(input,previous);});
+        var waiting=assertInstanceOf(PlanningResult.ReadOnlyWait.class,registryPlanner(registry,actual,policies.get(2),lower).plan(request));
+        assertEquals(1,calls.get());assertEquals(0,lower.get());assertTrue(waiting.trace().finalPlan().orElseThrow().command().isEmpty());
+        assertEquals(1,captures.size());assertSame(OpportunityJson.Nil.INSTANCE,captures.getFirst().get("selected_step"));
+        var retained=OpportunityJson.object(captures.getFirst().get("unhandled_event_fallback"),"disabled original capture");
+        assertEquals(object(context),retained.get("window_context"));var selection=OpportunityJson.object(retained.get("selection"),"disabled first display");
+        assertEquals(BigInteger.ZERO,OpportunityJson.integer(selection.get("rendered_index"),"rendered"));
+        assertEquals(BigInteger.ONE,OpportunityJson.integer(selection.get("native_option_index"),"native"));assertEquals(new OpportunityJson.Bool(false),selection.get("enabled"));
+        for(boolean keep:List.of(true,false)) {
+            var keptCalls=new AtomicInteger();var untouchedLower=new AtomicInteger();
+            var unchanged=registryStage(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,(input,previous)->{
+                keptCalls.incrementAndGet();assertEquals(classified.draft(),previous);
+                return keep?new OrdinaryPolicy.Keep("controlled unchanged continuation"):new OrdinaryPolicy.NotApplicable("controlled absent continuation");
+            });
+            var unchangedResult=assertInstanceOf(PlanningResult.ReadOnlyWait.class,registryPlanner(registry,unchanged,policies.get(2),untouchedLower).plan(request));
+            assertEquals(1,keptCalls.get());assertEquals(0,untouchedLower.get());assertEquals(classified.draft(),unchangedResult.trace().finalPlan().orElseThrow());
+            var stages=unchangedResult.trace().visits().stream().map(PlanTrace.StageVisit::stage).toList();
+            assertFalse(stages.contains(PlanningStage.WAR_RENDEZVOUS));assertTrue(stages.contains(PlanningStage.M5_WARTIME_OBSERVATION));
+            assertEquals(PlanningStage.REALM_MEMBERSHIP_PUBLICATION,stages.getLast());
+        }
+        System.out.println("SOFTWARE_REGISTRY_EMPTY disabled_first_not_skipped=true original_capture=true keep_and_notapplicable_finish=true lower_calls=0");
+    }
+
+    @Test void placeholderMaterializationDoesNotRelaxSourceDomainOrExistingSelectionGuards() throws Exception {
+        ObjectNode context=publicContext("unregistered_fixture.7711");
+        ((ObjectNode)context.get("options").get(0)).put("native_option_index",1);
+        ((ObjectNode)context.get("options").get(1)).put("native_option_index",0);
+        EventWindowCodec.decode(raw(context),nativeBinding(context));PlanningRequest request=request(context,2);
+        var bindings=new AtomicInteger();var registry=core((input,operation,args,plan,purpose,domain)->{
+            bindings.incrementAndGet();return new OrdinaryCorePolicy.Prepared(command(input,operation,args));
+        });
+        var classified=assertInstanceOf(OrdinaryPolicy.Replace.class,registry.evaluate(request,OrdinaryPolicy.Draft.empty()));assertTrue(classified.draft().command().isEmpty());
+        var policies=registryEventPolicies((actual,plan)->{throw new AssertionError("successful continuation has retained capture, not blocked incident");});
+        for(String corruption:List.of("session","domain","kind")) {
+            var delegated=new AtomicInteger();var lower=new AtomicInteger();
+            var tampered=registryStage(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,(input,previous)->{
+                delegated.incrementAndGet();var proposal=assertInstanceOf(OrdinaryPolicy.Replace.class,policies.get(1).evaluate(input,previous));
+                var original=proposal.draft();ActionCommand selected=original.command().orElseThrow();
+                if(corruption.equals("session"))selected=new ActionCommand(selected.actionId(),selected.origin(),selected.source(),selected.sessionId()+"-wrong",
+                        selected.operation(),selected.arguments(),selected.expectation(),selected.claims(),selected.deadline(),selected.protocolIdentity());
+                return new OrdinaryPolicy.Replace(new OrdinaryPolicy.Draft(original.policy(),original.phase(),original.reason(),
+                        corruption.equals("kind")?OrdinaryPolicy.Kind.ORDINARY:original.kind(),Optional.of(selected),original.purpose(),
+                        corruption.equals("domain")?Optional.of(org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain.war):original.domain(),original.detail()),"controlled materialization corruption");
+            });
+            var planner=registryPlanner(registry,tampered,policies.get(2),lower);
+            var rejected=assertThrows(IllegalArgumentException.class,()->planner.plan(request));assertEquals(1,delegated.get());assertEquals(0,lower.get());
+            assertTrue(rejected.getMessage().contains(corruption.equals("session")?"domain producer crossed the complete Game/session/frame/source/deadline binding":"lower-priority policy replaced exclusive ordinary work"));
+        }
+        var genuine=assertInstanceOf(OrdinaryPolicy.Replace.class,policies.get(1).evaluate(request,classified.draft()));
+        var kept=registryStage(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,(input,previous)->new OrdinaryPolicy.Keep("only designated continuation stays empty"));
+        var wrongStage=registryStage(PlanningStage.EVENT_MATERIAL_POSTCONDITION,(input,previous)->genuine);
+        var wrongPlanner=registryPlanner(registry,kept,wrongStage,new AtomicInteger());
+        var wrongRejected=assertThrows(IllegalArgumentException.class,()->wrongPlanner.plan(request));
+        assertTrue(wrongRejected.getMessage().contains("lower-priority policy replaced exclusive ordinary work"));assertEquals(0,bindings.get());
+        ObjectNode known=publicContext("trait_specific.8001");EventWindowCodec.decode(raw(known),nativeBinding(known));PlanningRequest knownRequest=request(known,2);
+        var complete=assertInstanceOf(OrdinaryPolicy.Replace.class,registry.evaluate(knownRequest,OrdinaryPolicy.Draft.empty()));assertTrue(complete.draft().command().isPresent());
+        var continuationCalls=new AtomicInteger();var knownPolicies=registryEventPolicies((input,plan)->{throw new AssertionError("no blocked known event");});
+        var never=registryStage(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,(input,previous)->{continuationCalls.incrementAndGet();return knownPolicies.get(1).evaluate(input,previous);});
+        var selected=assertInstanceOf(PlanningResult.ActionSelected.class,registryPlanner(registry,never,knownPolicies.get(2),new AtomicInteger()).plan(knownRequest));
+        assertEquals(complete.draft().command(),Optional.of(selected.command()));assertEquals(0,continuationCalls.get());
+        System.out.println("SOFTWARE_REGISTRY_GUARDS source_binding_rejected=true wrong_domain_kind_stage_rejected=true real_complete_registry_selection_retained=true");
+    }
+
+    private static List<OrdinaryPolicy> registryEventPolicies(EventIncidentCapturePort captures) {
+        return EventPolicies.policies(SOURCE,Optional.empty(),(input,operation,plan,material)->Optional.of(new ExpectedPostcondition(1,input.before(),input.source(),
+                        "synthetic-continuation-observer/v1",List.of(new ExpectedBoolean(new FieldKey("native.window_closed"),true)))),
+                NO_READS,List.of(),EventWindowService.validator(ignored->Build.CROZIER4),captures,
+                (input,operation,args,plan,purpose,domain)->{throw new AssertionError("registered continuation uses original dedicated propose");});
+    }
+    private static OrdinaryPolicy registryStage(PlanningStage stage,java.util.function.BiFunction<PlanningRequest,OrdinaryPolicy.Draft,OrdinaryPolicy.Decision> work) {
+        return new OrdinaryPolicy() {
+            @Override public PlanningStage stage() {return stage;}
+            @Override public ExactRef implementationSource() {return SOURCE;}
+            @Override public Decision evaluate(PlanningRequest request,Draft previous) {return work.apply(request,previous);}
+        };
+    }
+    private static OrdinaryPlanner registryPlanner(OrdinaryCorePolicy.CoreProducer registry,OrdinaryPolicy continuation,OrdinaryPolicy material,AtomicInteger lowerCalls) {
+        var core=OrdinaryCorePolicy.assemble(SOURCE,link->{
+            var leaves=new ArrayList<org.xar.ck3.control.application.planning.military.WarCorePlanner.Leaf>();
+            for(var boundary:org.xar.ck3.control.application.planning.military.WarCorePlanner.Boundary.values())
+                leaves.add(new org.xar.ck3.control.application.planning.military.WarCorePlanner.Leaf(boundary,SOURCE,
+                        (input,previous)->new org.xar.ck3.control.application.planning.military.MilitaryPlanningDecision.Keep(new OpportunityJson.Obj(Map.of()))));
+            return new org.xar.ck3.control.application.planning.military.WarCorePlanner(leaves,
+                    input->new org.xar.ck3.control.application.planning.military.WarCorePlanner.KnownTactics(input.before(),
+                        new org.xar.ck3.control.application.planning.military.WarCorePlanner.RouteTactics(Set.of(),Set.of())),
+                    (input,selection)->{throw new AssertionError("no military world action");},NO_READS,
+                    (input,selection)->{throw new AssertionError("no military query");},link);
+        },registry,(input,previous)->new OrdinaryPolicy.Keep("unused council"),(input,previous)->new OrdinaryPolicy.Keep("unused marriage"),
+                (input,previous)->new OrdinaryPolicy.Keep("unused war entry"),
+                (input,operation,args,plan,purpose,domain)->{throw new AssertionError("registered event never enters core fallback binding");},step->false);
+        var policies=new java.util.EnumMap<PlanningStage,OrdinaryPolicy>(PlanningStage.class);
+        for(var stage:PlanningStage.values())policies.put(stage,registryStage(stage,(input,previous)->new OrdinaryPolicy.Keep("unrelated software stage")));
+        policies.put(PlanningStage.ORDINARY_CORE,core.core());policies.put(PlanningStage.EVENT_AND_INTERACTION_CONTINUATION,continuation);
+        policies.put(PlanningStage.EVENT_MATERIAL_POSTCONDITION,material);
+        policies.put(PlanningStage.WAR_RENDEZVOUS,registryStage(PlanningStage.WAR_RENDEZVOUS,(input,previous)->{
+            lowerCalls.incrementAndGet();throw new AssertionError("registered placeholder/completion must not enter lower ordinary stage");
+        }));
+        var realm=new org.xar.ck3.control.application.planning.campaign.M7CampaignPolicies.RealmLifecycle(SOURCE);
+        policies.put(PlanningStage.REALM_MEMBERSHIP_PUBLICATION,realm);
+        return new OrdinaryPlanner(new ArrayList<>(policies.values()),java.time.Clock.fixed(NOW,java.time.ZoneOffset.UTC),realm);
+    }
+
     @Test void actualKnownRegistryProducerRetainsExactOptionAndScalarPlanThroughTheSoleCommandAdapter() throws Exception {
         ObjectNode context=EventWindowOriginalProducerTest.fixture("available",Build.CROZIER4);
         context.put("event_definition_key","trait_specific.8001");context.putArray("saved_scopes");

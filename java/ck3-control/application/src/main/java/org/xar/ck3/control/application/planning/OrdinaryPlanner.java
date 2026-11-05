@@ -209,8 +209,12 @@ public final class OrdinaryPlanner {
                 PlanningStage.CROWN_AUTHORITY,
                 PlanningStage.FEAST)) {
             state.run(stage);
-            if (state.result != null || state.draft.kind() == Kind.FOREGROUND
-                    || state.draft.kind() == Kind.OPENING_FOCUS || state.draft.kind() == Kind.MATERIAL_RECEIPT)
+            if (state.result != null) return finish(state);
+            if (stage == PlanningStage.ORDINARY_CORE && state.draft.kind() == Kind.FOREGROUND
+                    && state.draft.command().isEmpty() && state.draft.purpose() == Purpose.READ_ONLY)
+                continue; // Only the immediately following original continuation may fill this registered placeholder.
+            if (state.draft.kind() == Kind.FOREGROUND || state.draft.kind() == Kind.OPENING_FOCUS
+                    || state.draft.kind() == Kind.MATERIAL_RECEIPT)
                 return finish(state);
         }
         return finish(state);
@@ -304,8 +308,11 @@ public final class OrdinaryPlanner {
                 case Replace replacement -> {
                     Draft proposed = replacement.draft();
                     if (proposed.command().isPresent()) validateCommand(proposed.command().orElseThrow());
+                    boolean legalMaterialization = stage == PlanningStage.EVENT_AND_INTERACTION_CONTINUATION
+                            && draft.kind() == Kind.FOREGROUND && draft.command().isEmpty() && draft.purpose() == Purpose.READ_ONLY
+                            && proposed.kind() == Kind.FOREGROUND && proposed.command().isPresent() && proposed.domain().equals(draft.domain());
                     if ((draft.kind() == Kind.FOREGROUND || draft.kind() == Kind.OPENING_FOCUS || draft.kind() == Kind.MATERIAL_RECEIPT)
-                            && !proposed.command().equals(draft.command()))
+                            && !proposed.command().equals(draft.command()) && !legalMaterialization)
                         throw new IllegalArgumentException("a lower-priority policy replaced exclusive ordinary work");
                     draft = proposed; outcome = Outcome.REPLACED;
                 }

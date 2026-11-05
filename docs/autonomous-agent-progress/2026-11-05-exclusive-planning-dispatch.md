@@ -16,3 +16,6 @@ actual单生产TU2类首编0／4.0341194秒，两类完整字段／方法／synt
 
 
 后到实际Runtime26采用（source软件cut之后）：仅Planner3311758f＋Schedule13ff两功能源，原host97584／birth保留，唯一GET00:25:34.549981→40.783833／HTTP200／6.2338479秒；正常Quarkus restart5@23b6f3f2的新委托2e75于00:25:40.767521700Z START，当前具名切点仍BOOT，未授LOOP／新日／SAVE或Sway实际stage。D回执ACTUAL-LOADER26（9874B／721847d3）及六份冻结refs已核byte／SHA；16个Maven输出仅据Runtime metadata，不读C class、不授逐方法命中，非body instrumentation复活已END4的b00c。正常恢复继续，不为正式Git再查Game／GET。
+
+
+后到覆盖缺口已按真实结果修正：Core的空FOREGROUND／READ_ONLY是注册producer留给原continuation的占位，4115提前finish截断；本页原三例真实绿保留，但不授该输入。后继[保原绑定的占位物化](2026-11-05-registry-placeholder-continuation.md)已增加真正Registry／EventPolicy链用例，实际又在独立material消费者的historyempty投影处停出，继续P0，不把LOOP或软件绿当任务完成。

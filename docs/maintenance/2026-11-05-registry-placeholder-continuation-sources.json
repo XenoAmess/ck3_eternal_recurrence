@@ -1,0 +1,98 @@
+{
+  "schema": "xar.java-owner.registry-placeholder-published-source-index/v1",
+  "at_utc": "2026-11-05T01:14:44.231854+00:00",
+  "base_commit": "4115fb8f653c1ba1c84f653fdadd8ba6d07afdc7",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\registry-placeholder-continuation01\\SOURCE-READY-OWNER01.json",
+    "bytes": 4577,
+    "sha256": "91cd64f2a8a311035a6559f12aaac6dd49b1857ca63195da2114b5e15c135257"
+  },
+  "raw_production": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\registry-placeholder-continuation01\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanner.java",
+    "bytes": 22346,
+    "sha256": "f07fb0fe2622fa1f00b9dd9fbc3f9e9a920ec86f7dc9ad7e45a21b1bfe19d063"
+  },
+  "formal_production": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\registry-placeholder-continuation01\\formal-projection01\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanner.java",
+    "bytes": 22317,
+    "sha256": "deadebea10c82e9d9ccea1aa508c5c75d6eb8bca055f736e7a2b6b8b34d208a7"
+  },
+  "formal_before": {
+    "relative": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/OrdinaryPlanner.java",
+    "bytes": 21554,
+    "sha256": "6cc119c5763882d29c642cb7dfa6ceae7eb2b0cc79c213f49dfc094eb9d04f70"
+  },
+  "raw_model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\registry-placeholder-continuation01\\MODEL-SOURCE-REVIEW01.json",
+    "bytes": 1496,
+    "sha256": "7d718bf40d7c4479cbcb7511b7fdbee854da16cbf7bb7dbdbf07a06b7e52d54d"
+  },
+  "formal_two_hunks_outside_inverse_exact": true,
+  "new_Test_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\registry-placeholder-independent-test01\\SOURCE-READY-TEST01.json",
+    "bytes": 5588,
+    "sha256": "f7b32d3a9844ad880b690814dcfdb26f902c92d4e22bc60d24060244280c5d75"
+  },
+  "Test_source": {
+    "path": "D:\\ck3-state\\resume91-root\\registry-placeholder-independent-test01\\candidate01\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\events\\RegisteredEventCoreIntegrationTest.java",
+    "bytes": 36578,
+    "sha256": "02122408eab33219f4ec49e64878d6c7edeae48e0bdf076298288c3e86d63467"
+  },
+  "Test_before": {
+    "path": "D:\\ck3-state\\resume91-root\\registry-placeholder-independent-test01\\input\\RegisteredEventCoreIntegrationTest.java",
+    "bytes": 20092,
+    "sha256": "9903738f55c072864031b0f827edcd54ea3b0ea6268a89a875aa139a278d644c"
+  },
+  "old20k_outside_inverse_exact": true,
+  "native_qualified": {
+    "path": "D:\\ck3-state\\resume91-root\\registry-placeholder-independent-test01\\QUALIFIED-COHORT01.json",
+    "bytes": 16533,
+    "sha256": "c92efe576975db45932bd5f93a61f6b44dae8f7484c625cf3e042c74a531cefd"
+  },
+  "new_Test_XML": {
+    "path": "D:\\ck3-state\\resume91-root\\registry-placeholder-independent-test01\\native-first01\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 43271,
+    "sha256": "11d50a10a21ab8dbd72980e40e17cb4ec3aa1cb69dabe571f63adcfa1a052089"
+  },
+  "new_selectors": [
+    "registeredPlaceholderMaterializesOnlyThroughActualContinuation",
+    "disabledOrUnchangedRegistryPlaceholderNeverLeaksToLowerPolicies",
+    "placeholderMaterializationDoesNotRelaxSourceDomainOrExistingSelectionGuards"
+  ],
+  "new_Test_families": {
+    "EventWindowOriginalProducerTest.java": 1,
+    "RegisteredEventCoreIntegrationTest.java": 3
+  },
+  "affected_old3_qualified": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\registry-placeholder-continuation01\\affected-exclusive3-run01\\QUALIFIED-AFFECTED-ONLY01.json",
+    "bytes": 4998,
+    "sha256": "8a1f19557bdc728ad39dbd6de2f413fbc0a8cfbedd2d8ef221ab135f7c046a4d"
+  },
+  "new_Test_history_coverage": "outercontextprepopulated; no claim for private Core.collect issuer or historyempty/nested material projection",
+  "negative_fields_actually_RUN": [
+    "session",
+    "domain",
+    "kind",
+    "stage"
+  ],
+  "source_field_tamper_Test02": "SOURCE_ONLY_PARKED; no extra JVM or green claimed",
+  "local_refs_rehashed": 44,
+  "C_refs_metadata_only_not_read": [],
+  "actual_repeat_wait": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\empty-foreground-continuation27\\ACTUAL-EMPTY-FOREGROUND27.json",
+    "bytes": 38219,
+    "sha256": "65708bf2a24b38186adb6affb826f5bed2217b26651f89179b8996c0190d5103"
+  },
+  "later_actual_material_failure": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\event-material-failure27\\FAILURE27.json",
+    "bytes": 34904,
+    "sha256": "96c8d4eb39e4206cbf30fb887aa1861ce217e10af7100652e4541497d54fc491"
+  },
+  "actual_root_complete_recovery": false,
+  "Game": 0,
+  "C_reads": 0,
+  "GET": 0,
+  "JDK_by_source_owner": 0,
+  "task": "RUNNING",
+  "G2": "6/8"
+}
