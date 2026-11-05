@@ -862,7 +862,7 @@ public final class RootApplicationAssembly {
             RootFrontendReadGuard menuReads = new RootFrontendReadGuard(frontend, borrowed, archive, source, clock, authorityId, originals, bindings.readCatalog());
             PlanningReadCoordinator queries = new PlanningReadCoordinator(bindings.readCatalog(), journal,
                     submissions, game.nativeTransport(), archive, clock, knownReads);
-            NativeRecordedEvidenceVerifier evidence = new NativeRecordedEvidenceVerifier(archive, borrowed, originals, frames, bindings,
+            NativeRecordedEvidenceVerifier evidence = new NativeRecordedEvidenceVerifier(archive, borrowed, originals, RootAdvanceInfrastructureFactory.freshFrameLoader(frames), bindings,
                     RootLifecycleGuardEvidence::verify, derivedReplay, initialReconciliation,
                     (command,originalGuard,originalArchive,same,originalsPort)->RootOperatorGuardEvidence.requireHistorical(same,command,originalGuard,originalArchive));
             submissions.installInitial(new RootSessionSwitchboard.View(new SessionIdentity(game.machineId(), game.generation(), game.sessionId()), guard,

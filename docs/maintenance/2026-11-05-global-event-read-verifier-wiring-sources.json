@@ -1,0 +1,75 @@
+{
+  "schema": "xar.java-owner.global-read-wiring-source-index/v1",
+  "at_utc": "2026-11-05T06:17:43.361658+00:00",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\global-event-read-verifier-wiring01\\SOURCE-READY-OWNER01.json",
+    "bytes": 2876,
+    "sha256": "9a3b00cbed94a94f7f0ac25af755d718df3d48a9c24d74ecb215f951f52ab193"
+  },
+  "formal_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\global-event-read-verifier-wiring01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 2767,
+    "sha256": "f3ecf698ab5958007531c5346f50a78a4538ac34340995421fc7b980920ba1e7"
+  },
+  "native_type_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\global-event-read-verifier-wiring01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 906815,
+    "sha256": "306a16351b57ea754ce1cf53343bd9a7f6ba7074d3f0552d8db02b127121afa1"
+  },
+  "independent_source": {
+    "path": "D:\\ck3-state\\resume91-root\\global-fresh-read-verifier-independent-review36\\SOURCE-REVIEW02.json",
+    "bytes": 6414,
+    "sha256": "8c0ab353e7b2fcc53ad456271243f5be5ff367c92eca3b78472d18651d0b2c00"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\global-event-read-verifier-wiring01\\MODEL-REVIEW01.json",
+    "bytes": 611,
+    "sha256": "66824957d0bb344b07c61245677dedd2eb2510518521ba0aa7e04fe2836ed593"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootRuntimeDispatcherFactory.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeDispatcherFactory.java",
+        "bytes": 17562,
+        "sha256": "897efafc93e6f4c655aa0e5037fd10d02588131cd68fc3b1285d6de3bfb9e6ea"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\global-event-read-verifier-wiring01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeDispatcherFactory.java",
+        "bytes": 17613,
+        "sha256": "1fa2e8dcc216197b27748e146ae70ab4372c1cfe5c8c85b3f7264aca93697ff0"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\global-event-read-verifier-wiring01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeDispatcherFactory.java",
+        "bytes": 17613,
+        "sha256": "1fa2e8dcc216197b27748e146ae70ab4372c1cfe5c8c85b3f7264aca93697ff0"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": true
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootApplicationAssembly.java",
+        "bytes": 255360,
+        "sha256": "00424e4077382462658254b5c5e478259006df279cc015f16f0da976458cc704"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\global-event-read-verifier-wiring01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootApplicationAssembly.java",
+        "bytes": 255411,
+        "sha256": "30cb79b11b961d2febb4f733798f7e8a7b215123ed3615567858fac4863d8595"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\global-event-read-verifier-wiring01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootApplicationAssembly.java",
+        "bytes": 248324,
+        "sha256": "dd56e858d7e6a627a732c645192dff3ec3ce4814da5273899aa5edc6374715dd"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "FrameLoader_default_throw_preserved": true,
+  "actual_canonical_commit": false,
+  "new_Test_or_old58_RUN": false,
+  "new_Game_control_or_saved_days": 0
+}

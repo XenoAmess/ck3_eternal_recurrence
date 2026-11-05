@@ -103,7 +103,7 @@ public final class RootRuntimeDispatcherFactory {
                 ? new PlanningReadCoordinator(bindings.readCatalog(), core.journal(), core.submissionSwitchboard(),
                         transport, core.archive(), core.clock(), actual.actualKnownReadObserver())
                 : menu.queries;
-        var evidence = new NativeRecordedEvidenceVerifier(core.archive(), borrowed, core.originals(), core.frameLoader(),
+        var evidence = new NativeRecordedEvidenceVerifier(core.archive(), borrowed, core.originals(), RootAdvanceInfrastructureFactory.freshFrameLoader(core.frameLoader()),
                 bindings, RootLifecycleGuardEvidence::verify, actual.derivedReplay(), actual.reconciliation()::verifyArchived,
                 (command, guard, archive, same, originals) -> RootOperatorGuardEvidence.requireHistorical(same, command, guard, archive));
         var intents = new RootDomainIntentPreparation(core.writer(), actual.pending(), actual.requiredPending());
