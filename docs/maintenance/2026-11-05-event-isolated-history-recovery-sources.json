@@ -1,0 +1,67 @@
+{
+  "schema": "xar.java-owner.event-isolated-history-published-index/v1",
+  "at_utc": "2026-11-05T03:30:51.729090+00:00",
+  "base_commit": "4ba3aca6e2fd9796b9bcf0b34e5ad11114e920db",
+  "actual_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-isolated-unresolved-history01\\SOURCE-READY-OWNER01.json",
+    "bytes": 2342,
+    "sha256": "84cd27c126697ba0e21939e3df4ef247f96255df81a15debcfa251ea46ef3961"
+  },
+  "formal_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-isolated-unresolved-history01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 7608,
+    "sha256": "07a6915424167367f5a2e5e7877b9c8b498ee5afc5b7a132313eab9e99b1d572"
+  },
+  "formal_source": {
+    "path": "D:\\r64d\\java\\ck3-control\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\ContinuityBatchJournal.java",
+    "bytes": 338670,
+    "sha256": "6d54fe9d8e39b616ad614211c4afd0dc21b7c191c95abcf1d7ab40a869b4507a"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-isolated-unresolved-history01\\MODEL-REVIEW01.json",
+    "bytes": 847,
+    "sha256": "a5cc5987f626a009862d41016cb6658645e6609bc89129585759da20d6d02411"
+  },
+  "type_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-isolated-unresolved-history01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 550564,
+    "sha256": "6c3a42a832042e6599fb4ee0605e760c19fcfe109e0b7eea1c923d2ff3571906"
+  },
+  "test_source_ready": {
+    "path": "D:\\ck3-state\\resume91-root\\batch-event-isolated-selector-independent-test01\\SOURCE-READY-TEST02.json",
+    "bytes": 6281,
+    "sha256": "a220369bae757d0ec8f234a6bab86320104001145e5867b2be637ae4984f1753"
+  },
+  "owner_raw_verification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-isolated-unresolved-history01\\OWNER-RAW-RESULT01.json",
+    "bytes": 3421,
+    "sha256": "d416408f5ed91eb9ea237100eb4e866ad026ecc9750c6b075d95724591669bb2"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\batch-event-isolation-independent-review30\\SOURCE-CANDIDATE-REVIEW02.json",
+    "bytes": 4484,
+    "sha256": "699457aa5927fd23a3f237a7f752e66f2d91267a91bb57ca10bec77ca6d7a984"
+  },
+  "actual_XML": {
+    "path": "D:\\ck3-state\\resume91-root\\batch-event-isolated-selector-independent-test01\\native-first01\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 42735,
+    "sha256": "7d91513228fb8aed14c42faf8ed981006135a44efc9f3101344274df122a7564"
+  },
+  "new_DATA_methods_passed": 2,
+  "negative_cases": 8,
+  "FOCUS_fallback_unchanged": true,
+  "complete_history_or_private_Root_positive": false,
+  "original521_settled": false,
+  "formal_whole_software": false,
+  "actual_payload_or_Hosted_source_in_repo": false,
+  "independent_result": {
+    "path": "D:\\ck3-state\\resume91-root\\batch-event-isolated-selector-independent-test01\\INDEPENDENT-RESULT01.json",
+    "bytes": 17909,
+    "sha256": "e2c557618209977aee2932b433ba18a8ccebc413568dd9b366259fb96373bf61"
+  },
+  "qualified_cohort": {
+    "path": "D:\\ck3-state\\resume91-root\\batch-event-isolated-selector-independent-test01\\QUALIFIED-COHORT02.json",
+    "bytes": 211462,
+    "sha256": "d2f1ce0bff91c7501c42216d723dba71090ca7c253e5de61ae47712206950b78"
+  }
+}

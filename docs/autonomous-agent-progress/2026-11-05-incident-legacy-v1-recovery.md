@@ -19,3 +19,5 @@ after-index/v3和unsettled-observation/v2持久化同一proof，后者没有效�
 实际29已唯一GET200，03:02:24.131773→30.344233／6.21246秒，同host97584以正常loader restart7启动cedd3d20。03:02:50.1741755在进入legacy回调前失败：historical cycle requires the actual interrupted batch。原EVENT521未被isolated picker识别，误落FOCUS-only旧专路；capture147后B4 START148中的正常RETAIN170因phase2被该专路phase3门拒。它不证明v1私Root通过或失败，也不表示B4／B10坏账。当前正补严格EVENT隔离路由，保原1858 guard和全部历史重放；head522、521UNKNOWN、原deadline及ACK不动，0重发控制、0新SAVE。
 
 任务继续RUNNING。源码、编译／公开DATA、实际loader、原521的Root回调、结算与SAVE分别验收；169eligible和已确认8saved不混计。
+
+后到错误路由已形成[严格EVENT隔离单元](2026-11-05-event-isolated-history-recovery.md)：typed20类0／真实DTO选路2P，保FOCUS guard；完整历史与本v1私Root仍待实际只读，不改本页原cut或补授通过。
