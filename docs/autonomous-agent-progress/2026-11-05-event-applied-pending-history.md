@@ -20,3 +20,6 @@ Test62's initial contract incorrectly named ActionCodec.decodeReceipt. That was 
 The source index also retains additive corrections for two previous summary counts: existing-after actual OUTPUTS/family count is28 (not the summary's288), and global wiring is35 (not358). Original summaries are preserved; their actual output/class pins and software results are unchanged. The official CI41961042009 remains a distinct failed pipeline despite its1199 passing bootstrap tests. No broader CI/test workload or runtime action was started for these records.
 
 Hosted Test code and raw actual payloads remain private D-only inputs; they are not added to the general Maven suite or public repository. See [the exact source and evidence index](../maintenance/2026-11-05-event-applied-pending-history-sources.json). No new control, game day, SAVE or ordinary LOOP is credited by source/software publication.
+
+
+Actual recovery38 passed the completed-EVENT admission and reached Controller/history publication with original527 stillAPPLIED. It stopped at a separate lazy-family archived-verifier lookup order, before the effect load. The [history-family follow-up](2026-11-05-event-history-family-materialization.md) preserves this role and the original settled action; actual ordinary continuation and new SAVE remain unqualified.

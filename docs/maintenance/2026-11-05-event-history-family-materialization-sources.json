@@ -1,0 +1,62 @@
+{
+  "schema": "xar.java-owner.event-history-materialization-source-index/v1",
+  "at_utc": "2026-11-05T07:51:26.851992+00:00",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-history-family-materialization-order01\\SOURCE-READY-OWNER01.json",
+    "bytes": 2270,
+    "sha256": "156f6bcbc01aaa3bb683526a514c0ec117586054928bb2944057770f1d6d5da1"
+  },
+  "owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-history-family-materialization-order01\\OWNER-SPANS01.json",
+    "bytes": 1861,
+    "sha256": "a3c5d84a042b9649af75b4daaefe828c454deb06c63f945811c0f62d169c09d7"
+  },
+  "formal_projection": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-history-family-materialization-order01\\FORMAL-SOURCE-READY01.json",
+    "bytes": 1443,
+    "sha256": "d389b443738ce02abb02242765d2fae3bc761e4d173f5b500122065326c7fc1d"
+  },
+  "formal_sources": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootActionHistoryMaterialSourceFactory.java",
+      "before": {
+        "path": "D:\\r64d\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootActionHistoryMaterialSourceFactory.java",
+        "bytes": 68588,
+        "sha256": "7f04be8a981f054a4324db5cc3099a754a25b4648389f9ec367a4325e5b14f45"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-history-family-materialization-order01\\formal-candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootActionHistoryMaterialSourceFactory.java",
+        "bytes": 69000,
+        "sha256": "c851f70a4be830f4596ac26405f58a5bf149c3228f1903e39295b8919c4f59df"
+      },
+      "actual_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-history-family-materialization-order01\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootActionHistoryMaterialSourceFactory.java",
+        "bytes": 69288,
+        "sha256": "340de5f21bcd02af2950436bb7f11eb828bf402bee524987fc950fb30ef9c94a"
+      },
+      "whole_outside_inverse_exact": true,
+      "whole_actual_source_equal": false
+    }
+  ],
+  "Native_type_shape": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-history-family-materialization-order01\\native-first01\\QUALIFIED-FIRST-SHAPE01.json",
+    "bytes": 229992,
+    "sha256": "4dac66242322eb398e37de9bdb9005517ce5fd511cc7869f4a3e2f7db14237d2"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\history-event-replay-binding-independent-review39\\SOURCE-REVIEW02.json",
+    "bytes": 4183,
+    "sha256": "c30496a5acd9ee4bf0dfa9cde43f409095cc39e0c44f3bf06a7561246b09a075"
+  },
+  "model_proposal_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\event-history-family-materialization-order01\\MODEL-REVIEW01.json",
+    "bytes": 1637,
+    "sha256": "5bb4df46f16dae3add461849394db359f7877805ccda4b1136b8143d1f88777c"
+  },
+  "qualification": "Necessary1TU10family0/fullshapeexact; no newTest/old62RUN. Actual39 remainsRuntime only.",
+  "actual38": "Head527 alreadyAPPLIED/history508; passedsettledcycleDATAadmission, failedhistoryFactory289peek beforeeffectload. No repeatedcontrol.",
+  "actual39_history_cycle_LOOP_SAVE": false,
+  "whole_formal_software_qualified": false,
+  "new_types_fields_methods": false,
+  "new_Game_control": 0
+}

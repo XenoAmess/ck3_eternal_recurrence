@@ -290,6 +290,10 @@ public final class RootActionHistoryMaterialSourceFactory {
                     &&actual.command().sessionId().equals(context.game().sessionId()),"material capture needs its actual settled same-Game/source/session Gameplay action");
             var op=actual.command().operation();
             if(actual.state() instanceof PhysicalActionState physical)return physical(same,actual,physical,originals,preserve);
+            // Materialize only the installed EVENT family before looking up its paired archived verifier.
+            if (actual.command().expected().observerSchema().equals(org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.EVENT_SCHEMA)
+                    && op.value().matches("select-event-option-[1-9][0-9]{0,8}"))
+                catalog.bindings().actualActionBinding(op);
             var replay=catalog.bindings().actualArchivedVerifier(op).orElseThrow(()->new Missing(MissingReason.UNINSTALLED_OPERATION,op));
             var action=catalog.bindings().actualActionBinding(op);
             var composite=catalog.bindings().compositeBindings().stream().filter(binding->binding.handler().supports(op)).toList();
