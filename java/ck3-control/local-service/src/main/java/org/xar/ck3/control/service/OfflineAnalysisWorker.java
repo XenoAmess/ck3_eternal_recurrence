@@ -52,6 +52,9 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
     private static final String REANALYSIS_SECOND_COMPLETE="source-reanalysis-v2-complete";
     private static final String REANALYSIS_SECOND_FAILURE="source-reanalysis-v2-failure";
     private static final String REANALYSIS_SECOND_REASON="Immutable scan/batch output differs";
+    private static final String DIRECT_REVIEW="xar.offline-analysis-base-review-reanalysis/v1";
+    private static final String DIRECT_REVIEW_COMPLETE="base-review-reanalysis-v1-complete";
+    private static final String DIRECT_REVIEW_FAILURE="base-review-reanalysis-v1-failure";
     public record Settings(Path workRoot, int queueCapacity, int retainedWorkMaximum) {
         public Settings {
             workRoot = fixed(workRoot);
@@ -89,6 +92,7 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
         final Work work; final ExactRef durable; final CompletableFuture<SessionPorts.AnalysisCompletion> done=new CompletableFuture<>();
         ExactRef reanalysisOriginalFailure;
         ExactRef reanalysisPreviousFailure;
+        boolean directReview;
         Job(Work work,ExactRef durable){this.work=work;this.durable=durable;}
         SessionPorts.AnalysisTicket ticket(){return new SessionPorts.AnalysisTicket(work.request().batchId(),done.minimalCompletionStage());}
     }
@@ -209,7 +213,8 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
                 &&(Files.exists(path(job.work,REANALYSIS_COMPLETE),LinkOption.NOFOLLOW_LINKS)
                     ||Files.exists(path(job.work,REANALYSIS_FAILURE),LinkOption.NOFOLLOW_LINKS)
                     ||Files.exists(path(job.work,REANALYSIS_SECOND_COMPLETE),LinkOption.NOFOLLOW_LINKS)
-                    ||Files.exists(path(job.work,REANALYSIS_SECOND_FAILURE),LinkOption.NOFOLLOW_LINKS)))
+                    ||Files.exists(path(job.work,REANALYSIS_SECOND_FAILURE),LinkOption.NOFOLLOW_LINKS)
+                    ||directReviewTerminalPresent(job)))
             throw new IOException("source reanalysis has no original failed terminal");
         if(Files.exists(done,LinkOption.NOFOLLOW_LINKS)) {
             try { job.done.complete(readCompletion(job,readPath(done,MAX))); }
@@ -237,6 +242,10 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
             catch(java.util.concurrent.RejectedExecutionException unavailable){jobs.remove(key(job.work));throw new IOException("durable offline original retained; executor admission rejected",unavailable);}
     }
     private boolean restoreSourceReanalysis(Engine engine,Job job,ObjectNode failure,ExactRef originalFailure)throws IOException {
+        if(REANALYSIS_SECOND_REASON.equals(StrictJson.text(failure.get("reason")))&&failure.get("result_ref").isNull()) {
+            restoreDirectReview(engine,job,originalFailure);return true;
+        }
+        if(directReviewTerminalPresent(job))throw new IOException("direct review reanalysis selected an ineligible original failed profile");
         Path complete=path(job.work,REANALYSIS_COMPLETE),failed=path(job.work,REANALYSIS_FAILURE);
         boolean completed=Files.exists(complete,LinkOption.NOFOLLOW_LINKS),rejected=Files.exists(failed,LinkOption.NOFOLLOW_LINKS);
         if(completed&&rejected)throw new IOException("source reanalysis has conflicting terminal originals");
@@ -281,6 +290,7 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
         return failure;
     }
     private byte[] encodeReanalysis(Job job,ObjectNode nested,String outcome)throws IOException {
+        if(job.directReview)return encodeDirectReview(job,nested,outcome);
         if(job.reanalysisPreviousFailure!=null)return encodeSecondReanalysis(job,nested,outcome);
         requireReanalysisOriginal(job);
         ObjectNode row=terminal(REANALYSIS,job);row.put("outcome",outcome);
@@ -360,8 +370,64 @@ public final class OfflineAnalysisWorker implements AutoCloseable {
         }
         return nested;
     }
-    private static String reanalysisCompletionRole(Job job){return job.reanalysisPreviousFailure==null?REANALYSIS_COMPLETE:REANALYSIS_SECOND_COMPLETE;}
-    private static String reanalysisFailureRole(Job job){return job.reanalysisPreviousFailure==null?REANALYSIS_FAILURE:REANALYSIS_SECOND_FAILURE;}
+    private static String reanalysisCompletionRole(Job job){return job.directReview?DIRECT_REVIEW_COMPLETE:job.reanalysisPreviousFailure==null?REANALYSIS_COMPLETE:REANALYSIS_SECOND_COMPLETE;}
+    private static String reanalysisFailureRole(Job job){return job.directReview?DIRECT_REVIEW_FAILURE:job.reanalysisPreviousFailure==null?REANALYSIS_FAILURE:REANALYSIS_SECOND_FAILURE;}
+    private boolean directReviewTerminalPresent(Job job) {
+        return Files.exists(path(job.work,DIRECT_REVIEW_COMPLETE),LinkOption.NOFOLLOW_LINKS)
+                ||Files.exists(path(job.work,DIRECT_REVIEW_FAILURE),LinkOption.NOFOLLOW_LINKS);
+    }
+    private void restoreDirectReview(Engine engine,Job job,ExactRef originalFailure)throws IOException {
+        for(String role:List.of(REANALYSIS_COMPLETE,REANALYSIS_FAILURE,REANALYSIS_SECOND_COMPLETE,REANALYSIS_SECOND_FAILURE))
+            if(Files.exists(path(job.work,role),LinkOption.NOFOLLOW_LINKS))throw new IOException("direct base review cannot reinterpret a staged source reanalysis chain");
+        job.directReview=true;job.reanalysisOriginalFailure=originalFailure;requireDirectReviewOriginal(job);
+        Path complete=path(job.work,DIRECT_REVIEW_COMPLETE),failed=path(job.work,DIRECT_REVIEW_FAILURE);
+        boolean completed=Files.exists(complete,LinkOption.NOFOLLOW_LINKS),rejected=Files.exists(failed,LinkOption.NOFOLLOW_LINKS);
+        if(completed&&rejected)throw new IOException("direct base review has conflicting terminal originals");
+        if(completed) {
+            ExactRef actual=ref(complete);ObjectNode nested=readDirectReview(job,readExact(actual,MAX),"completed");
+            var verified=readCompletion(job,encode(nested));requireDirectReviewOriginal(job);job.done.complete(verified);
+        } else if(rejected) {
+            ExactRef actual=ref(failed);ObjectNode nested=readDirectReview(job,readExact(actual,MAX),"failed");
+            job.done.completeExceptionally(new AnalysisIncomplete(StrictJson.text(nested.get("reason")),Optional.of(actual)));
+        } else submitOriginalAnalysis(engine,job);
+    }
+    private ObjectNode requireDirectReviewOriginal(Job job)throws IOException {
+        readExact(job.durable,MAX);ExactRef original=Objects.requireNonNull(job.reanalysisOriginalFailure);
+        if(!job.directReview||job.reanalysisPreviousFailure!=null||!Path.of(original.path()).equals(path(job.work,"failure")))
+            throw new IOException("direct base review crossed its exact original failed role");
+        ObjectNode failure=StrictJson.object(OfflineEventAnalysisWire.parseMetadataObject(readExact(original,MAX)),
+                Set.of("schema","machine_id","batch_id","request_ref","observed_at_utc","reason","result_ref"));
+        requireTerminal(failure,FAILED,job);
+        if(!REANALYSIS_SECOND_REASON.equals(StrictJson.text(failure.get("reason")))||!failure.get("result_ref").isNull())
+            throw new IOException("direct base review changed its original immutable-index failed profile");
+        return failure;
+    }
+    private byte[] encodeDirectReview(Job job,ObjectNode nested,String outcome)throws IOException {
+        requireDirectReviewOriginal(job);ObjectNode row=terminal(DIRECT_REVIEW,job);row.put("outcome",outcome);
+        row.set("original_failure_ref",job.reanalysisOriginalFailure.toJson());row.set("terminal",nested);
+        byte[] actual=encode(row);if("completed".equals(outcome))readCompletion(job,encode(nested));
+        readDirectReview(job,actual,outcome);return actual;
+    }
+    private ObjectNode readDirectReview(Job job,byte[] raw,String outcome)throws IOException {
+        ObjectNode original=requireDirectReviewOriginal(job);
+        ObjectNode row=StrictJson.object(OfflineEventAnalysisWire.parseMetadataObject(raw),
+                Set.of("schema","machine_id","batch_id","request_ref","observed_at_utc","outcome","original_failure_ref","terminal"));
+        requireTerminal(row,DIRECT_REVIEW,job);
+        if(!outcome.equals(StrictJson.text(row.get("outcome")))
+                ||!job.reanalysisOriginalFailure.equals(ExactRef.fromJson(row.get("original_failure_ref"))))
+            throw new IOException("direct base review crossed its outcome or original failed reference");
+        ObjectNode nested=OfflineEventAnalysisWire.parseMetadataObject(encode(row.get("terminal")));
+        requireTerminal(nested,"completed".equals(outcome)?DONE:FAILED,job);
+        Instant originalAt=Instant.parse(StrictJson.text(original.get("observed_at_utc")));
+        Instant nestedAt=Instant.parse(StrictJson.text(nested.get("observed_at_utc")));
+        if(nestedAt.isBefore(originalAt)||Instant.parse(StrictJson.text(row.get("observed_at_utc"))).isBefore(nestedAt))
+            throw new IOException("direct base review predates its original failure or actual new result");
+        if("failed".equals(outcome)) {
+            StrictJson.object(nested,Set.of("schema","machine_id","batch_id","request_ref","observed_at_utc","reason","result_ref"));
+            StrictJson.text(nested.get("reason"));ExactRef.optionalFromJson(nested.get("result_ref"));
+        }
+        return nested;
+    }
     private void analyze(Engine engine,Job job) {
         ExactRef result=null;
         try {

@@ -1,0 +1,9 @@
+# Recover the identified direct base review failure
+
+The P059 source produced three valid v2 completion envelopes. The next exception came from restoring an original base failure, not from those v2 readers or a new analysis. The previously known c40f request was checked and had a completion, so it was excluded. A source-bounded inventory of 57 requests within the existing 128 maximum validated every same-binding key/filename and found one direct base failure: batch67477530/key23878029, exact immutable-index error with a null result. It was outside the originally named eight.
+
+The Worker adds a distinct fixed direct-base-review schema and two terminal roles. Only that typed failure profile, tied to its complete original request and failure bytes, can submit one real reanalysis on a new unissued Job. Actual host, reviews, knowledge and full completion verification remain required, with original-reference checks after publication/replay validation. A new failure is terminal, mixed/orphaned/conflicting records reject, and neither original files nor cached futures are reset. The existing after-index v1/v2 readers and three successful v2 jobs remain unchanged.
+
+The seven owned spans passed independent source review and one necessary strict Worker compile: eight classes, 10.8343102 seconds, all resources released. Other production/test cohorts and P052 were not rerun. Model99 ended at its output length limit; the entire content/SSE remained unopened, unhashed and unadopted, with no retry.
+
+Runtime adopted only the Worker. The client GET timed out after90.047578 seconds; the same server then completed its reload naturally and started restart36 at20:27:43.095282. No duplicate GET or source fix was inferred from the timeout. Fullqueue drain, clean capture, P052 timing adoption and performance remain separate actual results. The source index records actual qualification and the owned-span formal projection; the whole formal checkout was not compiled.

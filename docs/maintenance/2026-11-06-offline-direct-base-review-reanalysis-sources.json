@@ -1,0 +1,82 @@
+{
+  "schema": "xar.java-formal.direct-base-review-reanalysis-index/v1",
+  "at_utc": "2026-11-05T20:29:30.115017+00:00",
+  "source": {
+    "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/OfflineAnalysisWorker.java",
+    "formal_before": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-direct-base-review-reanalysis60\\formal01\\before\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.java",
+      "bytes": 42701,
+      "sha256": "840dc0d0e8087e89e1c7e8e40864bfc39cb2bda7c2b3c3cd5bb781bddecef4ce"
+    },
+    "formal_candidate": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-direct-base-review-reanalysis60\\formal01\\candidate\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.java",
+      "bytes": 48316,
+      "sha256": "2b61d0f8bc998717be4f53d40206a3b38248be42e35b03b81aff56d0089e352f"
+    },
+    "actual_qualified_candidate": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-direct-base-review-reanalysis60\\candidate01\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\OfflineAnalysisWorker.java",
+      "bytes": 48760,
+      "sha256": "7b2a6dee5d49b735a9cfd9549c8dd0531585402ff7212803420ebf7951da9770"
+    },
+    "formal_owned_spans": [
+      {
+        "old": "    private static final String REANALYSIS_SECOND_REASON=\"Immutable scan/batch output differs\";",
+        "new": "    private static final String REANALYSIS_SECOND_REASON=\"Immutable scan/batch output differs\";\n    private static final String DIRECT_REVIEW=\"xar.offline-analysis-base-review-reanalysis/v1\";\n    private static final String DIRECT_REVIEW_COMPLETE=\"base-review-reanalysis-v1-complete\";\n    private static final String DIRECT_REVIEW_FAILURE=\"base-review-reanalysis-v1-failure\";",
+        "owned_eol_adapted": false
+      },
+      {
+        "old": "        ExactRef reanalysisPreviousFailure;",
+        "new": "        ExactRef reanalysisPreviousFailure;\n        boolean directReview;",
+        "owned_eol_adapted": false
+      },
+      {
+        "old": "                    ||Files.exists(path(job.work,REANALYSIS_SECOND_FAILURE),LinkOption.NOFOLLOW_LINKS)))",
+        "new": "                    ||Files.exists(path(job.work,REANALYSIS_SECOND_FAILURE),LinkOption.NOFOLLOW_LINKS)\n                    ||directReviewTerminalPresent(job)))",
+        "owned_eol_adapted": false
+      },
+      {
+        "old": "    private boolean restoreSourceReanalysis(Engine engine,Job job,ObjectNode failure,ExactRef originalFailure)throws IOException {\n        Path complete",
+        "new": "    private boolean restoreSourceReanalysis(Engine engine,Job job,ObjectNode failure,ExactRef originalFailure)throws IOException {\n        if(REANALYSIS_SECOND_REASON.equals(StrictJson.text(failure.get(\"reason\")))&&failure.get(\"result_ref\").isNull()) {\n            restoreDirectReview(engine,job,originalFailure);return true;\n        }\n        if(directReviewTerminalPresent(job))throw new IOException(\"direct review reanalysis selected an ineligible original failed profile\");\n        Path complete",
+        "owned_eol_adapted": true
+      },
+      {
+        "old": "    private byte[] encodeReanalysis(Job job,ObjectNode nested,String outcome)throws IOException {\n        if(job.reanalysisPreviousFailure!=null)",
+        "new": "    private byte[] encodeReanalysis(Job job,ObjectNode nested,String outcome)throws IOException {\n        if(job.directReview)return encodeDirectReview(job,nested,outcome);\n        if(job.reanalysisPreviousFailure!=null)",
+        "owned_eol_adapted": true
+      },
+      {
+        "old": "    private static String reanalysisCompletionRole(Job job){return job.reanalysisPreviousFailure==null?REANALYSIS_COMPLETE:REANALYSIS_SECOND_COMPLETE;}\n    private static String reanalysisFailureRole(Job job){return job.reanalysisPreviousFailure==null?REANALYSIS_FAILURE:REANALYSIS_SECOND_FAILURE;}",
+        "new": "    private static String reanalysisCompletionRole(Job job){return job.directReview?DIRECT_REVIEW_COMPLETE:job.reanalysisPreviousFailure==null?REANALYSIS_COMPLETE:REANALYSIS_SECOND_COMPLETE;}\n    private static String reanalysisFailureRole(Job job){return job.directReview?DIRECT_REVIEW_FAILURE:job.reanalysisPreviousFailure==null?REANALYSIS_FAILURE:REANALYSIS_SECOND_FAILURE;}",
+        "owned_eol_adapted": false
+      },
+      {
+        "old": "    private void analyze(Engine engine,Job job) {",
+        "new": "    private boolean directReviewTerminalPresent(Job job) {\n        return Files.exists(path(job.work,DIRECT_REVIEW_COMPLETE),LinkOption.NOFOLLOW_LINKS)\n                ||Files.exists(path(job.work,DIRECT_REVIEW_FAILURE),LinkOption.NOFOLLOW_LINKS);\n    }\n    private void restoreDirectReview(Engine engine,Job job,ExactRef originalFailure)throws IOException {\n        for(String role:List.of(REANALYSIS_COMPLETE,REANALYSIS_FAILURE,REANALYSIS_SECOND_COMPLETE,REANALYSIS_SECOND_FAILURE))\n            if(Files.exists(path(job.work,role),LinkOption.NOFOLLOW_LINKS))throw new IOException(\"direct base review cannot reinterpret a staged source reanalysis chain\");\n        job.directReview=true;job.reanalysisOriginalFailure=originalFailure;requireDirectReviewOriginal(job);\n        Path complete=path(job.work,DIRECT_REVIEW_COMPLETE),failed=path(job.work,DIRECT_REVIEW_FAILURE);\n        boolean completed=Files.exists(complete,LinkOption.NOFOLLOW_LINKS),rejected=Files.exists(failed,LinkOption.NOFOLLOW_LINKS);\n        if(completed&&rejected)throw new IOException(\"direct base review has conflicting terminal originals\");\n        if(completed) {\n            ExactRef actual=ref(complete);ObjectNode nested=readDirectReview(job,readExact(actual,MAX),\"completed\");\n            var verified=readCompletion(job,encode(nested));requireDirectReviewOriginal(job);job.done.complete(verified);\n        } else if(rejected) {\n            ExactRef actual=ref(failed);ObjectNode nested=readDirectReview(job,readExact(actual,MAX),\"failed\");\n            job.done.completeExceptionally(new AnalysisIncomplete(StrictJson.text(nested.get(\"reason\")),Optional.of(actual)));\n        } else submitOriginalAnalysis(engine,job);\n    }\n    private ObjectNode requireDirectReviewOriginal(Job job)throws IOException {\n        readExact(job.durable,MAX);ExactRef original=Objects.requireNonNull(job.reanalysisOriginalFailure);\n        if(!job.directReview||job.reanalysisPreviousFailure!=null||!Path.of(original.path()).equals(path(job.work,\"failure\")))\n            throw new IOException(\"direct base review crossed its exact original failed role\");\n        ObjectNode failure=StrictJson.object(OfflineEventAnalysisWire.parseMetadataObject(readExact(original,MAX)),\n                Set.of(\"schema\",\"machine_id\",\"batch_id\",\"request_ref\",\"observed_at_utc\",\"reason\",\"result_ref\"));\n        requireTerminal(failure,FAILED,job);\n        if(!REANALYSIS_SECOND_REASON.equals(StrictJson.text(failure.get(\"reason\")))||!failure.get(\"result_ref\").isNull())\n            throw new IOException(\"direct base review changed its original immutable-index failed profile\");\n        return failure;\n    }\n    private byte[] encodeDirectReview(Job job,ObjectNode nested,String outcome)throws IOException {\n        requireDirectReviewOriginal(job);ObjectNode row=terminal(DIRECT_REVIEW,job);row.put(\"outcome\",outcome);\n        row.set(\"original_failure_ref\",job.reanalysisOriginalFailure.toJson());row.set(\"terminal\",nested);\n        byte[] actual=encode(row);if(\"completed\".equals(outcome))readCompletion(job,encode(nested));\n        readDirectReview(job,actual,outcome);return actual;\n    }\n    private ObjectNode readDirectReview(Job job,byte[] raw,String outcome)throws IOException {\n        ObjectNode original=requireDirectReviewOriginal(job);\n        ObjectNode row=StrictJson.object(OfflineEventAnalysisWire.parseMetadataObject(raw),\n                Set.of(\"schema\",\"machine_id\",\"batch_id\",\"request_ref\",\"observed_at_utc\",\"outcome\",\"original_failure_ref\",\"terminal\"));\n        requireTerminal(row,DIRECT_REVIEW,job);\n        if(!outcome.equals(StrictJson.text(row.get(\"outcome\")))\n                ||!job.reanalysisOriginalFailure.equals(ExactRef.fromJson(row.get(\"original_failure_ref\"))))\n            throw new IOException(\"direct base review crossed its outcome or original failed reference\");\n        ObjectNode nested=OfflineEventAnalysisWire.parseMetadataObject(encode(row.get(\"terminal\")));\n        requireTerminal(nested,\"completed\".equals(outcome)?DONE:FAILED,job);\n        Instant originalAt=Instant.parse(StrictJson.text(original.get(\"observed_at_utc\")));\n        Instant nestedAt=Instant.parse(StrictJson.text(nested.get(\"observed_at_utc\")));\n        if(nestedAt.isBefore(originalAt)||Instant.parse(StrictJson.text(row.get(\"observed_at_utc\"))).isBefore(nestedAt))\n            throw new IOException(\"direct base review predates its original failure or actual new result\");\n        if(\"failed\".equals(outcome)) {\n            StrictJson.object(nested,Set.of(\"schema\",\"machine_id\",\"batch_id\",\"request_ref\",\"observed_at_utc\",\"reason\",\"result_ref\"));\n            StrictJson.text(nested.get(\"reason\"));ExactRef.optionalFromJson(nested.get(\"result_ref\"));\n        }\n        return nested;\n    }\n    private void analyze(Engine engine,Job job) {",
+        "owned_eol_adapted": false
+      }
+    ],
+    "whole_outside_inverse_exact": true,
+    "same_lf_normalized_source_as_actual": true
+  },
+  "actual_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-direct-base-review-reanalysis60\\SOURCE-READY-OWNER01.json",
+    "bytes": 1876,
+    "sha256": "458ab020a262fbd35660b35caafd0ae465f437881ac196dfebcb47c154cad526"
+  },
+  "qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-direct-base-review-reanalysis60\\native-first01\\QUALIFIED-PRODUCTION01.json",
+    "bytes": 113179,
+    "sha256": "578c2730a833bd4926745b1ed4e36928bbd61a00caf375ab48e7d515d041bfa0"
+  },
+  "source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\offline-restored-base-failure-independent-review60\\DIRECT-BASE01-SOURCE-REVIEW03.json",
+    "bytes": 6731,
+    "sha256": "3019dd7ed48e1dab7d067f7bd85cceeed986205fbf4b038fa9b4d3dcdfe1ed8a"
+  },
+  "model_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-direct-base-review-reanalysis60\\MODEL-REVIEW99-01.json",
+    "bytes": 1191,
+    "sha256": "8e47d3e463d6f9733d0f7f637e39a158cadab7b81d19b595c33b2da9a2df3df0"
+  },
+  "runtime": "ClientGET90.0476sTimeout followed by natural samehost newloader20:27:43/restart36,not a retry or source failure. Actualdirectjob/57queueclean/P052 results pending. Existing3v2completions neverreset."
+}
