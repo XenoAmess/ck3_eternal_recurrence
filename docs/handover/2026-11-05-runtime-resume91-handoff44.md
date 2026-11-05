@@ -2,13 +2,13 @@
 
 切点：2026-11-05 10:20–10:23 UTC；机器 `xenoamess-full-tower-eb9d2c1186`。运行 owner `/root/runtime_continue`。配套[机器证据索引](2026-11-05-runtime-resume91-handoff44-source-index.json)，历史入口为[11 月 4 日总交接](2026-11-04-java-g2-resume91-vacation-handoff.md)及其[来源索引](2026-11-04-java-g2-resume91-vacation-handoff-source-index.json)。旧局、旧 PID 和旧 STOP 状态不覆盖下述新局切点。
 
-## 权限与实际停止分开记录
+## 持续续行授权与实际委托终态分开记录
 
-本次收到的 AGENTS 顶部明确要求休假收尾、停止新增实现、编测、模型派发、业务 worker 和游戏动作，仅收束已 BEGIN 事项及 docs 正常发表。Runtime 在该指令切点没有新 GET 在途，也没有活跃业务委托；没有启动第 44 次采用或 GET。Game、keeper、宿主保留，没有为文档强杀、重启或补保存。
+本会话用户在 11 月 4 日休假指令之后已明确“你恢复对 CK3 的操作，我玩完了。继续执行任务吧”，并选择“继续原自动游玩那一局（独立 profile 的 autosave_exit.ck3）”。该续行授权持续有效。AGENTS 顶部是 11 月 4 日历史段的重贴，不是新 STOP。本次 Runtime 一度误判并把旧权限段写入本文，现明确撤回；首次文档提交保留历史，由正常后继更正，不能据此新增停止文件、清除 hold、强杀或停工。这个失误没有产生 STOP marker、Game/keeper 操作或取消在途 GET。
 
 10:20:02 的既有 OWNER/HEAD 薄读确认：唯一委托 `2ad92b89-a7e6-4756-82f3-eabe09abae74` 已 `DELEGATE_COMPLETED`，OWNER 为 `FAILED_DELEGATE`。实际 END 是 **10:04:24.696448 UTC**，异常 `java.io.IOException`，`exit_code=null`；不能把 null 写成正常退出 0。没有新 LOOP。因委托在交接前已经结束，本次没有新写 STOP marker；“没有发出新停止请求”与“已有真实委托终态”分别记账。
 
-旧 incident521 的自身 marker 已在第 42 次恢复前合法移入 D 归档，当前不复建、不借其作为用户暂停。后继恢复必须以交接之后用户明确续行授权为准；不能执行已消费的 once 脚本。
+旧 incident521 的自身 marker 已在第 42 次恢复前合法移入 D 归档，当前不复建、不借其作为用户暂停。依持续授权继续第 44 次最小受控恢复，不需要再次向用户或 Root 确认；不能执行已消费的 once 脚本。下述 10:20 切点仅证明当时尚无 GET44，不是停止授权，也不外推后继运行阶段。
 
 ## 当前同局与账本
 
@@ -45,7 +45,7 @@
 
 final02 Ready 为 `a952c173…`，Native qualification 为 `8ae11c1a…`，独立源码审阅 final02 为 `f75166db…`，完整路径在索引。没有新增 Test 门，也没有重跑旧 Test69/其它旧绿。上述只授源码与类型资格，**未授 C 采用、GET44、实际 Sway 历史消费或普通 LOOP**。
 
-后到明确续行后，运行 owner 先核同 Game/keeper/宿主、head539 及 current Factory 前像；用新的单叶 once adopter，加已审非语义资源 comment 触发同宿主正常 Quarkus loader。旧 delegate 已 END，纯 instrumentation 不会使它复活。唯一 GET 后以 30 秒小 OWNER/log 观察首次 receipt/END，立即裸报并解除 Native 的本次 churn HOLD；不等完整包装或正式 Git。真实验证目标是消费已结算 539 的历史、完整 bootstrap、Controller 和普通 LOOP；然后继续自然新日与保存，绝不重放原动作。
+依现有持续续行授权，运行 owner 先核同 Game/keeper/宿主、head539 及 current Factory 前像；用新的单叶 once adopter，加已审非语义资源 comment 触发同宿主正常 Quarkus loader。旧 delegate 已 END，纯 instrumentation 不会使它复活。唯一 GET 后以 30 秒小 OWNER/log 观察首次 receipt/END，立即裸报并解除 Native 的本次 churn HOLD；不等完整包装或正式 Git。真实验证目标是消费已结算 539 的历史、完整 bootstrap、Controller 和普通 LOOP；然后继续自然新日与保存，绝不重放原动作。
 
 ## 性能与保存仍未达标
 

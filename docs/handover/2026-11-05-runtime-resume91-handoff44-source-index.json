@@ -4,13 +4,17 @@
   "machine_id": "xenoamess-full-tower-eb9d2c1186",
   "runtime_owner": "/root/runtime_continue",
   "permission_cut": {
-    "received_AGENTS_top": "Vacation close; no new implementation, tests, model dispatch, business worker or Game actions. Existing begun operations and docs only.",
+    "received_AGENTS_top": "Historical November4 vacation paragraph, not a newSTOP. Later explicit user authorization to resume the original independent-profile autosave_exit campaign remains valid.",
+    "Runtime_initial_permission_misread_retracted": true,
+    "prior_misread_document_commit": "b4c7ee15a1; preserved, corrected only by normal subsequent commit",
+    "active_resume_authorization": "你恢复对 CK3 的操作，我玩完了。继续执行任务吧 / 继续原自动游玩那一局（独立 profile 的 autosave_exit.ck3）",
     "new_GET44": false,
     "source44_adopted": false,
     "business_delegate_already_ended": true,
     "new_STOP_marker_written": false,
     "Game_keeper_preserved": true,
-    "explicit_later_user_resume_required": true
+    "explicit_later_user_resume_required": false,
+    "continue_qualified44_without_new_confirmation": true
   },
   "state": {
     "delegate": "2ad92b89-a7e6-4756-82f3-eabe09abae74",
@@ -73,9 +77,9 @@
     "private_Root_material_positive": "NOT_YET_VERIFIED"
   },
   "resume_constraints": [
-    "No automatic resume from source qualification or this document.",
+    "Existing explicit user resume authorization continues. Source qualification and this document do not replace the actual Guard/owner/ledger checks.",
     "Never replay original521/527 or Sway537/539, rewrite their full command/ACK/deadline, manufacture pending, or clear the ledger.",
-    "Use a new single-source once adopter after explicit later user resume; never rerun consumed43 or prior once scripts.",
+    "Use a new single-source once adopter under existing continuous authorization; never rerun consumed43 or prior once scripts.",
     "Same Game/keeper/dev host must be checked before controlled loader; Native offline class outputs are not deployed directly.",
     "After the unique GET, observe only small named OWNER/log at30seconds; report first receipt/END and release the corresponding Native churn hold immediately.",
     "History consumption, bootstrap, LOOP, new days and SAVE each require actual evidence. No fake private-Root test or repeated old green is a prerequisite."
