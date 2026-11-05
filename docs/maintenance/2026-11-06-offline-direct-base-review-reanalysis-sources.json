@@ -78,5 +78,16 @@
     "bytes": 1191,
     "sha256": "8e47d3e463d6f9733d0f7f637e39a158cadab7b81d19b595c33b2da9a2df3df0"
   },
-  "runtime": "ClientGET90.0476sTimeout followed by natural samehost newloader20:27:43/restart36,not a retry or source failure. Actualdirectjob/57queueclean/P052 results pending. Existing3v2completions neverreset."
+  "runtime": "ClientGET90.0476sTimeout followed by natural samehost newloader20:27:43/restart36,not a retry or source failure. Actualdirectjob/57queueclean/P052 results pending. Existing3v2completions neverreset.",
+  "actual_clean63_addendum": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\offline-direct-base-review-reanalysis60\\ACTUAL-CLEAN63-ADDENDUM01.json",
+    "bytes": 3003,
+    "sha256": "33eb9f620fe7678006277ea096f3736d110c2fd16be307b02af2bc2f6e8cf25d"
+  },
+  "actual_runtime_clean63": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\offline-completed-cold-recovery62\\ACTUAL-57-CONSUMED-CLEAN63.json",
+    "bytes": 2987,
+    "sha256": "2be2b358a5d38e31b27d5aeb5e9a1f2889bf2690e6524b749833d0a027690ac3"
+  },
+  "actual_closed_scope": "57 exact captured completed IDs plus real clean ticket/manifest/head735 and actual exit0, not empty Controller/filecount inference. No P052 metrics, new gameplay or SAVE credit."
 }
