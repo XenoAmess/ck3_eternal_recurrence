@@ -1,0 +1,47 @@
+{
+  "schema": "xar.formal.capability-same-frozen-driver-equality-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\capability-same-frozen-driver-equality80\\SOURCE-READY01.json",
+    "bytes": 3700,
+    "sha256": "9f14285089741fd342d37af542f14c86f6716cd237ccffa558f87bb52896d6ca"
+  },
+  "formal_part": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\capability-same-frozen-driver-equality80\\formal01\\FORMAL-PART01.json",
+    "bytes": 1509,
+    "sha256": "26506eefc8b1b4478bb33b50906dc217e834455ee8dd6fa66334fadd34dda953"
+  },
+  "qualified_software": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\capability-same-frozen-driver-equality80\\native-first01\\QUALIFIED-SOFTWARE01.json",
+    "bytes": 60276,
+    "sha256": "0d86477dbc7c99e161c7ad63f91f66a58a533fe1ecadecc18de16de00890635a"
+  },
+  "actual_getter": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\driver-snapshot-facts-current80\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverSnapshotFacts.java",
+    "bytes": 14955,
+    "sha256": "f557be8eb7c2e7a43a4c7eb30e4bae25a53f046cda38a33c71edbbbc1208d446"
+  },
+  "actual_immutable_Complete": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\driver-state-snapshot-current78\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\checkpoint\\DriverStateSnapshot.java",
+    "bytes": 9991,
+    "sha256": "6ee9ba914fad5654c6b03c23762ca56f5738e79714716ef61c0b4cde83571779"
+  },
+  "independent_source_review": "p0 bare PASS actual Known pure generated field getter, Complete cloned immutable data, identity+exact BigInteger only; original fallback encode order and all surrounding guards preserved. Final reviewer metadata may arrive additively; not a runtime gate.",
+  "software": {
+    "TU": 1,
+    "CF": 2,
+    "seconds": 3.9330326,
+    "compiler_exit": 0,
+    "fields_methods_ABI_all_equal": true,
+    "new_types": false,
+    "released": true,
+    "top_external_InnerClasses_metadata_change_only": true
+  },
+  "not_claimed": [
+    "actual loader acceptance",
+    "actual identity branch hit",
+    "whole OBS84s root cause",
+    "speed improvement",
+    "new saved days"
+  ],
+  "new_test_or_old_test_run": 0
+}

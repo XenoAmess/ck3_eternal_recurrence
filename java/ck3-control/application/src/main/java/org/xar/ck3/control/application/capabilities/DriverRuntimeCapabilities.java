@@ -117,7 +117,8 @@ public final class DriverRuntimeCapabilities implements DynamicCapabilities.Actu
     }
     private static void requireSame(Known current,Known supplied) {
         require(current.stamp().equals(supplied.stamp()) && current.auxiliary().equals(supplied.auxiliary())
-                && Arrays.equals(current.driver().encode(),supplied.driver().encode()) && current.observation().equals(supplied.observation()),
+                && (current.driver()==supplied.driver()&&current.driver().session().actorId().getClass()==BigInteger.class
+                    || Arrays.equals(current.driver().encode(),supplied.driver().encode())) && current.observation().equals(supplied.observation()),
                 "capability caller left the actual frozen Driver owner version");
     }
     private static Value nullable(Optional<Obj> value) { return value.<Value>map(v -> v).orElse(Nil.INSTANCE); }
