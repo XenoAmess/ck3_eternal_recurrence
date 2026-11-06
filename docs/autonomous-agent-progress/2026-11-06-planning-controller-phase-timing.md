@@ -1,0 +1,13 @@
+# Planning controller phase timing
+
+Existing policy measurements cover each `policy.evaluate` call, while the publication work also includes observation, selection (including the model request), and outcome publication. For example, the frozen 06:48:07 record has 249.829818 seconds of scope time and 80.482223 seconds across policy rows. These are nested wall measurements, so the difference does not by itself identify an exclusive bottleneck.
+
+The controller now forwards its already-recorded `PhaseSpan` duration and terminal to a default numeric completion callback. The Root completion aggregates OBSERVATION, PLANNING, OUTCOME_CONSUMPTION, and IDLE_WAIT in the same bounded summary, emitted after the existing owned scope has closed. Policy measurements and the original phase clock/span/operation counts remain unchanged. Each sample describes a completed RETURNED, FAILED, or INTERRUPTED span; it does not report an in-flight entry. Model HTTP remains inside PLANNING. The values are inclusive wall time, not CPU time, and must not be added as disjoint totals.
+
+The diagnostic callback cannot replace the original phase result or exception. There is no additional I/O inside the writer, no new application type, and no change to gameplay, ownership, permission, or validation. Four phase rows and 34 policy rows fit the unchanged 8192-byte summary limit; the independent conservative bound is 7181 bytes.
+
+Validation: the three changed translation units compiled successfully on their first actual attempt, producing 37 classes in 8.9743365 seconds. All class names were retained, 34 shapes were unchanged, and existing method ABI was preserved. Six raw source spans invert exactly to the current production sources, including their mixed line endings. The earlier draft's line-ending mismatch was rejected before any JVM/compiler launch and is preserved separately. No mirrored behavior test or old green suite was rerun for this numeric instrumentation.
+
+This is a software candidate. Loading, actual phase distributions, model behavior, speed, and new saves require separate runtime evidence. The Runtime owner will combine the timing change with the functional collector repair at a real clean handoff rather than reload for each diagnostic.
+
+Evidence: `D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/planning-scope-phase-timing76/SOURCE-READY02.json` and `native-first02/QUALIFIED-SOFTWARE01.json` (SHA-256 `7f0184ebf5fd1378e47df14eabefc8b16f26050789701c4eb13e363c4c9b82e8`). The formal patch preserves its existing whitespace-only differences; the executable logic is identical to the qualified candidate.

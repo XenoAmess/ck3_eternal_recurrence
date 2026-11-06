@@ -1556,9 +1556,15 @@ public final class SessionController {
         }
         <T> T measured(Phase phase, Checked<T> operation) throws IOException, InterruptedException {
             SessionClock.Tick start = clock.now();
-            try { T value = operation.run(); spans.add(new PhaseSpan(phase, start, clock.now(), PhaseTerminal.RETURNED)); return value; }
-            catch (IOException | RuntimeException failure) { spans.add(new PhaseSpan(phase, start, clock.now(), PhaseTerminal.FAILED)); throw failure; }
-            catch (InterruptedException failure) { spans.add(new PhaseSpan(phase, start, clock.now(), PhaseTerminal.INTERRUPTED)); throw failure; }
+            try { T value = operation.run(); recordPhase(phase,start,PhaseTerminal.RETURNED); return value; }
+            catch (IOException | RuntimeException failure) { recordPhase(phase,start,PhaseTerminal.FAILED); throw failure; }
+            catch (InterruptedException failure) { recordPhase(phase,start,PhaseTerminal.INTERRUPTED); throw failure; }
+        }
+        private void recordPhase(Phase phase,SessionClock.Tick start,PhaseTerminal terminal) {
+            SessionClock.Tick ended=clock.now();
+            spans.add(new PhaseSpan(phase,start,ended,terminal));
+            try { completion.phaseSpanTiming(phase.ordinal(),terminal.ordinal(),ended.elapsedNanos()-start.elapsedNanos()); }
+            catch(Throwable ignored) { /* Numeric diagnostics cannot replace the phase's original result/throw. */ }
         }
     }
     @FunctionalInterface private interface Checked<T> { T run() throws IOException, InterruptedException; }

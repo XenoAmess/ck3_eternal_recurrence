@@ -16,6 +16,9 @@ import org.xar.ck3.control.contracts.StrictJson;
 
 /** Actual Root planning completion. Read publication is outside Driver freeze and inside the original writer scope. */
 public final class RootReadPublicationCompletion implements OrdinaryPlanCompletion.PlanningScope {
+    private static final int POLICY_COUNT=org.xar.ck3.control.application.planning.PlanningStage.values().length;
+    private static final int PHASE_OFFSET=14+3*POLICY_COUNT;
+    private static final int PHASE_COUNT=4;
     private final RootApplicationAssembly.Core core;
     private final DriverReadHistoryPublisher reads;
     private final OrdinaryPlanCompletion downstream;
@@ -55,7 +58,7 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         Objects.requireNonNull(work);StrictJson.require(round.get()==null,"one actual original-writer planning round per thread");
         // A scope-presence bit only suppresses diagnostics; it never authorizes borrowing or proves unlock.
         long[] timing=core.writer().hasCurrentThreadWriterScope()?null:
-                new long[14+3*org.xar.ck3.control.application.planning.PlanningStage.values().length];
+                new long[PHASE_OFFSET+5*PHASE_COUNT];
         long started=timing==null?0L:System.nanoTime();boolean coreReturned=false;
         try {
             ScopeExit<T> actual=core.withBorrowed(()->{
@@ -190,10 +193,28 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
 
     @Override public void policyEvaluationTiming(int stageOrdinal,long elapsedNanos,boolean returned) {
         PlanningRound current=round.get();long[] timing=current==null?null:current.timing;
-        if(timing==null||stageOrdinal<0||stageOrdinal>=(timing.length-14)/3||elapsedNanos<0)return;
+        if(timing==null||stageOrdinal<0||stageOrdinal>=POLICY_COUNT||elapsedNanos<0)return;
         int offset=14+stageOrdinal*3;timing[offset]++;
         if(returned)timing[offset+1]++;
         timing[offset+2]+=elapsedNanos;
+    }
+    @Override public void phaseSpanTiming(int phaseOrdinal,int terminalOrdinal,long elapsedNanos) {
+        PlanningRound current=round.get();long[] timing=current==null?null:current.timing;
+        if(timing==null||elapsedNanos<0)return;
+        var returned=org.xar.ck3.control.application.session.BatchReport.PhaseTerminal.RETURNED.ordinal();
+        var failed=org.xar.ck3.control.application.session.BatchReport.PhaseTerminal.FAILED.ordinal();
+        var interrupted=org.xar.ck3.control.application.session.BatchReport.PhaseTerminal.INTERRUPTED.ordinal();
+        if(terminalOrdinal!=returned&&terminalOrdinal!=failed&&terminalOrdinal!=interrupted)return;
+        int slot=phaseOrdinal==org.xar.ck3.control.application.session.BatchReport.Phase.OBSERVATION.ordinal()?0:
+                phaseOrdinal==org.xar.ck3.control.application.session.BatchReport.Phase.PLANNING.ordinal()?1:
+                phaseOrdinal==org.xar.ck3.control.application.session.BatchReport.Phase.OUTCOME_CONSUMPTION.ordinal()?2:
+                phaseOrdinal==org.xar.ck3.control.application.session.BatchReport.Phase.IDLE_WAIT.ordinal()?3:-1;
+        if(slot<0)return;
+        int offset=PHASE_OFFSET+slot*5;timing[offset]++;
+        if(terminalOrdinal==returned)timing[offset+1]++;
+        else if(terminalOrdinal==failed)timing[offset+2]++;
+        else timing[offset+3]++;
+        timing[offset+4]+=elapsedNanos;
     }
 
     private static <T> T timedPlanningWork(ScopeWork<T> work,long[] timing) throws IOException,InterruptedException {
@@ -219,11 +240,23 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
                     .put("before_model_enter_count",timing[8]).put("before_model_return_count",timing[9]).put("before_model_elapsed_ns",timing[10])
                     .put("replan_enter_count",timing[11]).put("replan_return_count",timing[12]).put("replan_elapsed_ns",timing[13]);
             var policies=row.putArray("policy_evaluations");
-            for(int offset=14;offset<timing.length;offset+=3) {
+            for(int offset=14;offset<PHASE_OFFSET;offset+=3) {
                 if(timing[offset]==0)continue;
                 policies.addObject().put("stage_ordinal",(offset-14)/3)
                         .put("enter_count",timing[offset]).put("return_count",timing[offset+1])
                         .put("failed_count",timing[offset]-timing[offset+1]).put("elapsed_ns",timing[offset+2]);
+            }
+            var phases=row.putArray("controller_phase_spans");
+            String[] names={"OBSERVATION","PLANNING","OUTCOME_CONSUMPTION","IDLE_WAIT"};
+            int[] ordinals={org.xar.ck3.control.application.session.BatchReport.Phase.OBSERVATION.ordinal(),
+                    org.xar.ck3.control.application.session.BatchReport.Phase.PLANNING.ordinal(),
+                    org.xar.ck3.control.application.session.BatchReport.Phase.OUTCOME_CONSUMPTION.ordinal(),
+                    org.xar.ck3.control.application.session.BatchReport.Phase.IDLE_WAIT.ordinal()};
+            for(int slot=0;slot<PHASE_COUNT;slot++) {
+                int offset=PHASE_OFFSET+slot*5;if(timing[offset]==0)continue;
+                phases.addObject().put("phase_ordinal",ordinals[slot]).put("phase",names[slot])
+                        .put("sample_count",timing[offset]).put("return_count",timing[offset+1])
+                        .put("failed_count",timing[offset+2]).put("interrupted_count",timing[offset+3]).put("elapsed_ns",timing[offset+4]);
             }
             byte[] canonical=StrictJson.canonical(row,8192);
             System.out.write(canonical);System.out.write(10);System.out.flush();

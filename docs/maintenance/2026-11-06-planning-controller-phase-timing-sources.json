@@ -1,0 +1,103 @@
+{
+  "schema": "xar.formal.planning-controller-phase-timing-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\SOURCE-READY02.json",
+    "bytes": 5186,
+    "sha256": "5af51f63b49392e77a7369282d02a8aa2edc6b62a73971519b0d724f866983e4"
+  },
+  "formal_part": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\formal01\\FORMAL-PART01.json",
+    "bytes": 16123,
+    "sha256": "4a9f948ad44afc3edcbb138a5c187e3bc72f76261aaeaf9131002262d9657aa9"
+  },
+  "software_qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\native-first02\\QUALIFIED-SOFTWARE01.json",
+    "bytes": 515725,
+    "sha256": "7f0184ebf5fd1378e47df14eabefc8b16f26050789701c4eb13e363c4c9b82e8"
+  },
+  "source_rows": [
+    {
+      "relative": "application/src/main/java/org/xar/ck3/control/application/planning/OrdinaryPlanCompletion.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\formal01\\before\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanCompletion.java",
+        "bytes": 5087,
+        "sha256": "e1a655feb7b51baaa555e4544356c598566d4d5aa8a0440af0e2a97e52448395"
+      },
+      "formal_after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\formal01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanCompletion.java",
+        "bytes": 5395,
+        "sha256": "47f0de163b5066b7ecde7412f22919944a7c40a180cda2a3f58ec44ec1a07510"
+      },
+      "actual_after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanCompletion.java",
+        "bytes": 5484,
+        "sha256": "7db25d542008083bda653ff2944a4b613d187ff30fcd3ee217fce5e523c9406c"
+      },
+      "raw_inverse_exact": true,
+      "normalized_logic_matches_actual": true
+    },
+    {
+      "relative": "application/src/main/java/org/xar/ck3/control/application/session/SessionController.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\formal01\\before\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionController.java",
+        "bytes": 134334,
+        "sha256": "b10d81b7c323b524947a781ce98fc38078de43d20c23373a4021b43baad58103"
+      },
+      "formal_after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\formal01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionController.java",
+        "bytes": 134713,
+        "sha256": "da4d6d691fb2504a492bbc52d7af2810887992e2111f00355934cb4032a1ebd8"
+      },
+      "actual_after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\candidate02\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\session\\SessionController.java",
+        "bytes": 134713,
+        "sha256": "da4d6d691fb2504a492bbc52d7af2810887992e2111f00355934cb4032a1ebd8"
+      },
+      "raw_inverse_exact": true,
+      "normalized_logic_matches_actual": true
+    },
+    {
+      "relative": "local-service/src/main/java/org/xar/ck3/control/service/root/RootReadPublicationCompletion.java",
+      "formal_before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\formal01\\before\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootReadPublicationCompletion.java",
+        "bytes": 20767,
+        "sha256": "46713c9314508406e59ebf2846088e7da0e50670d5f8110517e5265f1c04c43f"
+      },
+      "formal_after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\formal01\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootReadPublicationCompletion.java",
+        "bytes": 23375,
+        "sha256": "27f557359a32c0caf2c151610433d7110803f3b8c454377e03b51852750e2617"
+      },
+      "actual_after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-scope-phase-timing76\\candidate02\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootReadPublicationCompletion.java",
+        "bytes": 23512,
+        "sha256": "27e133dce05e4d4b5958d72993d05b359743f744c17e73d1ec9b9f083fe13eab"
+      },
+      "raw_inverse_exact": true,
+      "normalized_logic_matches_actual": true
+    }
+  ],
+  "software": {
+    "translation_units": 3,
+    "classes": 37,
+    "compile_exit": 0,
+    "elapsed_seconds": 8.9743365,
+    "unchanged_shapes": 34,
+    "new_application_type": false,
+    "released": true
+  },
+  "metrics": {
+    "row_limit_bytes": 8192,
+    "independent_conservative_bound_bytes": 7181,
+    "completed_samples_only": true,
+    "nested_inclusive_wall": true
+  },
+  "scope_not_claimed": [
+    "runtime loading",
+    "actual phase distribution",
+    "exclusive CPU cost",
+    "model equivalence",
+    "speed improvement",
+    "new SAVE_CONFIRMED"
+  ]
+}

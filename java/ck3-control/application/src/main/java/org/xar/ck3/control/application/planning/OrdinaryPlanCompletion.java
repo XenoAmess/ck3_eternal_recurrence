@@ -20,6 +20,9 @@ public interface OrdinaryPlanCompletion {
     /** Numeric method diagnostics only; no publication, Session, or gameplay authority.
      * The ordinal is the current PlanningStage ordinal; returned means the raw evaluate call returned, even null. */
     default void policyEvaluationTiming(int stageOrdinal,long elapsedNanos,boolean returned) { }
+    /** Numeric diagnostics for an already recorded Controller PhaseSpan; no scope or publication authority.
+     * Ordinals are existing BatchReport.Phase/PhaseTerminal values. Root may retain a bounded subset. */
+    default void phaseSpanTiming(int phaseOrdinal,int terminalOrdinal,long elapsedNanos) { }
     /** Real READ publication barrier before online selection; an unchanged adapter has no work here. */
     default Optional<Published> beforeSelection(PlanningRequest original, PlanningResult.ActionSelected proposed) {
         return Optional.empty();
