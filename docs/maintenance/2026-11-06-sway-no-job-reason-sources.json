@@ -1,0 +1,47 @@
+{
+  "schema": "xar.maintenance.sway-no-job-reason-evidence/v1",
+  "at_utc": "2026-11-06T12:15:02.678114+00:00",
+  "formal_parent": "c4449f279e88beca3470f0709855b46f2474f0ca",
+  "refs": {
+    "actual_owner_ready": {
+      "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line82\\sway-no-job-decision-reason01\\owner-candidate01\\SOURCE-READY01.json",
+      "bytes": 3720,
+      "sha256": "2643db67a2c366c8d93899f6e0e60719e9f608440adb9057939e9f57b69daebd"
+    },
+    "actual_owned_inverse": {
+      "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line82\\sway-no-job-decision-reason01\\owner-candidate01\\INVERSE01.json",
+      "bytes": 2295,
+      "sha256": "e8e8f70a9e38a78f66ec0afd3908b43b5d4457e6c2e26c5413b0d050d6149dfe"
+    },
+    "actual_software": {
+      "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line82\\sway-no-job-decision-reason01\\native-first01\\QUALIFIED-SOFTWARE01.json",
+      "bytes": 59855,
+      "sha256": "265740441ce723da2eb9997c037ed0e6d03ce167f2f9e503a6056d9289084c21"
+    },
+    "formal_source": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-job-reason-formal82\\SOURCE-READY-FORMAL01.json",
+      "bytes": 3320,
+      "sha256": "1cd2235d38e0a592e35d073d3bfdfed24103521b21cc33ebe07e5f60fe56b03b"
+    },
+    "formal_software": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-no-job-reason-formal82\\native-first01\\QUALIFIED-FORMAL-SOFTWARE01.json",
+      "bytes": 62537,
+      "sha256": "9abbd97f4c4278af79c60e57397d120c468f6cf7345559de30b79ac701c9090e"
+    }
+  },
+  "owned_spans": 1,
+  "behavior": "Only empty staged result with actualStageReason.NO_JOB and present typedDecision adds bounded scheduler enum reason/optional existing nextCheckDateRaw to Keep reason. Old prefix/error untouched; append detail<=1024Java chars. No State/ref/material dump or control/strategy change.",
+  "formal_outside": "Existing actor/target NativeCharacterId decoding retained; formalbcd298 is separate from actuale94b. No wholecopy of current C.",
+  "qualification": {
+    "actual": "Necessary singlePolicy1TU0/4CF/3.9554161s, no Test/support/old prod RUN.",
+    "formal": "Only composedPolicy1TU0/4CF/3.9878199s; existing Service/Schedule/NativeCharacterId.fromJson ABI reused, no support/Test compilation.",
+    "independent_source": "Finite PASS reported by p0/Root before publication; sealed reference additive if later."
+  },
+  "model_code_adoption": "0; owner source was already sealed. No extra model HTTP for this publication.",
+  "not_claimed": [
+    "actual new reason/nextdue in a fresh Runtime trace",
+    "natural useful scheme or G2 completion",
+    "runtime adoption inferred from software/formal",
+    "improvement in speed or a policy/guard change"
+  ]
+}

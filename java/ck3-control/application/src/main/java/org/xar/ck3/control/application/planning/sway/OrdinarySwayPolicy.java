@@ -84,6 +84,14 @@ public final class OrdinarySwayPolicy implements OrdinaryPolicy {
             if (result.error().isPresent()) {
                 reason += ": " + result.error().orElseThrow();
             }
+            if (result.reason() == OrdinarySwayService.StageReason.NO_JOB && result.decision().isPresent()) {
+                var decision = result.decision().orElseThrow();
+                String detail = "; scheduler_reason=" + decision.reason().name().toLowerCase(Locale.ROOT);
+                if (decision.state().isPresent() && decision.state().orElseThrow().nextCheckDateRaw().isPresent()) {
+                    detail += "; next_check_date_raw=" + decision.state().orElseThrow().nextCheckDateRaw().orElseThrow();
+                }
+                reason += detail.substring(0, Math.min(detail.length(), 1024));
+            }
             return new Keep(reason);
         }
         if (!request.observations().actionSteps().contains(OPERATION)) {

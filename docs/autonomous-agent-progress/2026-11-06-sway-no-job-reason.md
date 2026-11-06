@@ -1,0 +1,5 @@
+# Preserve the actual scheduler reason in an empty Sway result
+
+An empty staged Sway result previously exposed only its broad `NO_JOB` label. When the existing typed scheduler decision is present, the Keep message now appends its reason and optional actual next-check date. The original prefix and error text stay intact; only the appended detail is bounded to 1,024 Java characters. Other outcomes, reads, commands, policy and guards retain their original behavior.
+
+The actual owner candidate and the formal composition each passed their necessary single-Policy compilation. The formal source preserves its existing character-decoding code; it is not a whole copy of the actual candidate. No mirror test, support compilation, old green or additional model call was requested. A fresh runtime trace must establish the real reason and next due date; this diagnostic does not establish a useful scheme or G2 completion. [Source and software evidence](../maintenance/2026-11-06-sway-no-job-reason-sources.json).
