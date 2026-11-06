@@ -57,6 +57,8 @@ public final class RootOrdinaryWorkerLoop {
         }
     }
 
+    private static final Duration LIFE_READ_SCHEDULING_WINDOW = Duration.ofMinutes(5);
+    private static final int LIFE_READ_ATTEMPTS = 4;
     private final Configuration configuration;
     private final Control control;
     private final Clock clock;
@@ -186,6 +188,30 @@ public final class RootOrdinaryWorkerLoop {
                 previousReport = Optional.of(report); continue;
             }
 
+            if (report.terminal() == BatchReport.Terminal.ACTION_UNKNOWN
+                    && currentSession.controller().isQuarantined() && postAckLifeReadFailure(report).isPresent()) {
+                try {
+                    if (control.stopRequested()) { stopReason = StopReason.OPERATOR_STOP; break; }
+                    boolean recovered = currentSession.execution().recoverPostAckLifeRead(report, sequence,
+                            clock.instant().plus(LIFE_READ_SCHEDULING_WINDOW));
+                    if (recovered && !currentSession.controller().isQuarantined() && !currentSession.controller().isRetired()) {
+                        // The failed report remains in Controller/history/onBatchCompleted. Only this Loop's
+                        // current-failure view is reset after the actual canonical original/cycle recovered.
+                        lastReport = Optional.empty(); previousReport = Optional.empty();
+                        unissuedWarmUsed = false; unissuedWarmBoundary = Optional.empty();
+                        if (control.stopRequested()) { stopReason = StopReason.OPERATOR_STOP; break; }
+                        continue;
+                    }
+                    if (control.stopRequested()) { stopReason = StopReason.OPERATOR_STOP; break; }
+                } catch (InterruptedException failure) {
+                    Thread.currentThread().interrupt(); stopReason = StopReason.INTERRUPTED;
+                    failureDetail = Optional.of(failure.toString()); break;
+                } catch (IOException | RuntimeException failure) {
+                    stopReason = StopReason.TERMINAL_FAILURE;
+                    failureDetail = Optional.of(failure.toString()); break;
+                }
+                // Any unqualified, changed or still-unresolved original retains the old terminal path.
+            }
             if (report.terminal() == BatchReport.Terminal.CHECKPOINT_UNKNOWN && currentSession.controller().isQuarantined()) {
                 try {
                     if (control.stopRequested()) { stopReason = StopReason.OPERATOR_STOP; break; }
@@ -339,6 +365,8 @@ public final class RootOrdinaryWorkerLoop {
                 throws IOException, InterruptedException { return false; }
         default boolean recoverWallBoundary(BatchReport report, long nextBatchSequence, Instant deadline)
                 throws IOException, InterruptedException { return false; }
+        default boolean recoverPostAckLifeRead(BatchReport report, long nextBatchSequence, Instant schedulingDeadline)
+                throws IOException, InterruptedException { return false; }
     }
 
     private final class BatchAccessAdapter implements BatchAccess {
@@ -358,8 +386,155 @@ public final class RootOrdinaryWorkerLoop {
                         throws IOException, InterruptedException {
                     return recoverRetainedWallCycle(root, report, nextBatchSequence, deadline);
                 }
+                @Override public boolean recoverPostAckLifeRead(BatchReport report, long nextBatchSequence, Instant schedulingDeadline)
+                        throws IOException, InterruptedException {
+                    return recoverRetainedPostAckLifeRead(root, report, nextBatchSequence, schedulingDeadline);
+                }
             });
         }
+    }
+
+    /** Eligibility DATA only; no second execution, continuation, cancellation or synthetic Controller state. */
+    static Optional<ActionReceipt> postAckLifeReadFailure(BatchReport report) {
+        if (report.terminal() != BatchReport.Terminal.ACTION_UNKNOWN
+                || !report.detail().equals("original action remains UNRESOLVED") || report.turns().isEmpty()
+                || report.phases().stream().anyMatch(span -> span.terminal() != BatchReport.PhaseTerminal.RETURNED))
+            return Optional.empty();
+        ActionReceipt original = report.turns().getLast().receipt();
+        if (!ContinuityBatchJournal.isReadOnlyLifeRecovery(original)
+                || !original.command().sessionId().equals(report.session().sessionId())
+                || !original.command().origin().machineId().equals(report.session().machineId())
+                || !original.command().origin().game().equals(report.session().game())) return Optional.empty();
+        var receipts = new java.util.ArrayList<ActionReceipt>();
+        report.turns().forEach(turn -> receipts.add(turn.receipt()));
+        report.reconciliations().forEach(turn -> receipts.add(turn.originalReceipt()));
+        report.lifecycleTurns().forEach(turn -> receipts.add(turn.receipt()));
+        report.readPublicationReconciliations().forEach(turn -> receipts.add(turn.originalReceipt()));
+        return receipts.stream().anyMatch(receipt -> !receipt.equals(original) && !receipt.settled())
+                ? Optional.empty() : Optional.of(original);
+    }
+
+    private boolean recoverRetainedPostAckLifeRead(RootApplicationSession root, BatchReport report,
+            long nextBatchSequence, Instant schedulingDeadline) throws IOException, InterruptedException {
+        long began = System.nanoTime();
+        var expected = postAckLifeReadFailure(report);
+        var controller = root.controllerForPublication();
+        if (expected.isEmpty() || !report.session().equals(root.identity())
+                || controller.lastReport().filter(known -> known == report).isEmpty()
+                || !controller.isQuarantined() || controller.isRunning() || controller.isRetired()
+                || !lifeReadAdmissionOpen(schedulingDeadline, began)) return false;
+        ActionReceipt original = expected.orElseThrow();
+        var retained = root.withPublicStandaloneRead(schedulingDeadline, same -> {
+            var data = root.batchJournal().readUnresolvedSameGame(same, root.identity());
+            var head = same.head();
+            StrictJson.require(data.canonicalSequence() == head.state().sequence()
+                    && data.canonicalHeadDigest().equals(head.digest()), "warm Life DATA changed its actual head");
+            StrictJson.require(data.capturedController().owner().equals(report.session())
+                    && data.nextBatchSequence() == nextBatchSequence && nextBatchSequence > 0
+                    && data.usedBatches().contains(report.batchId())
+                    && report.batchId().equals(data.capturedController().batchPrefix() + "-" + (nextBatchSequence - 1)),
+                    "warm Life DATA changed its actual owner or interrupted batch");
+            StrictJson.require(data.unresolvedActions().size() == 1 && data.unresolvedActions().getFirst().equals(original),
+                    "warm Life DATA changed the exact reported original");
+            var canonical = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(
+                    head.state(), root.archive().withSession(same));
+            return knownPostAckLifeRead(original, canonical) ? Optional.of(data)
+                    : Optional.<ContinuityBatchJournal.UnresolvedSameGameData>empty();
+        });
+        if (retained.isEmpty() || !lifeReadAdmissionOpen(schedulingDeadline, began)) return false;
+        var data = retained.orElseThrow();
+        logLifeReadRecovery("BEGIN", report, original, 0, schedulingDeadline);
+        for (int attempt = 1; attempt <= LIFE_READ_ATTEMPTS; attempt++) {
+            long delayMillis = 10_000L << (attempt - 1); // Before calls: 10, 20, 40, 80 seconds.
+            logLifeReadRecovery("WAIT", report, original, attempt, schedulingDeadline);
+            if (!waitForLifeRead(delayMillis, schedulingDeadline, began)) {
+                logLifeReadRecovery("STOP_OR_ADMISSION_WINDOW", report, original, attempt, schedulingDeadline); return false;
+            }
+            if (root.controllerForPublication() != controller || controller.isRunning() || controller.isRetired()
+                    || !controller.isQuarantined() || controller.lastReport().filter(known -> known == report).isEmpty()) return false;
+            // No public clamp exists: each admitted call keeps the original two-minute observation window.
+            // This in-flight call and its original writer/cycle cleanup may cross the admission deadline.
+            Instant observationDeadline = clock.instant().plus(ActionObservationWindow.MAXIMUM_WINDOW);
+            logLifeReadRecovery("OBSERVE", report, original, attempt, schedulingDeadline);
+            ActionReceipt actual = root.reconcileUnresolvedOriginal(data, observationDeadline);
+            StrictJson.require(actual.bodySha256().equals(original.bodySha256())
+                    && java.util.Arrays.equals(ActionCodec.encodeCommand(actual.command()), ActionCodec.encodeCommand(original.command())),
+                    "warm Life reconciliation changed the complete original command");
+            if (isAppliedLife(actual) && root.controllerForPublication() == controller
+                    && !controller.isQuarantined() && !controller.isRetired() && !controller.isRunning()) {
+                logLifeReadRecovery("RECOVERED", report, actual, attempt, schedulingDeadline); return true;
+            }
+            if (!lifeReadAdmissionOpen(schedulingDeadline, began)) {
+                logLifeReadRecovery("STOP_OR_ADMISSION_WINDOW", report, actual, attempt, schedulingDeadline); return false;
+            }
+            boolean sameUnavailable = root.withPublicStandaloneRead(schedulingDeadline, same -> {
+                var canonical = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(
+                        same.head().state(), root.archive().withSession(same));
+                var matching = canonical.stream().filter(receipt -> receipt.command().actionId().equals(original.command().actionId())).toList();
+                StrictJson.require(matching.size() == 1 && matching.getFirst().equals(actual),
+                        "warm Life retry lost its actual canonical same-ID receipt");
+                return knownPostAckLifeRead(actual, canonical);
+            });
+            if (!sameUnavailable) {
+                logLifeReadRecovery("CHANGED_OR_UNQUALIFIED", report, actual, attempt, schedulingDeadline); return false;
+            }
+            logLifeReadRecovery("KNOWN_READ_UNAVAILABLE", report, actual, attempt, schedulingDeadline);
+        }
+        logLifeReadRecovery("ATTEMPTS_EXHAUSTED", report, original, LIFE_READ_ATTEMPTS, schedulingDeadline);
+        return false;
+    }
+
+    /** A known negative READ reason only qualifies scheduling; original canonical/ACK/physical guards still own every read. */
+    static boolean knownPostAckLifeRead(ActionReceipt original, java.util.List<ActionReceipt> canonical) {
+        if (!(original.state() instanceof ActionState.CompositeUnknown unknown)
+                || ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical).filter(original::equals).isEmpty()
+                || unknown.execution().children().isEmpty()) return false;
+        var binding = unknown.execution().children().getLast();
+        var matches = canonical.stream().filter(receipt -> receipt.command().actionId().equals(binding.actionId())).toList();
+        if (matches.size() != 1) return false;
+        var child = matches.getFirst();
+        if (!child.command().operation().value().equals("resume-map") || !child.bodySha256().equals(binding.bodySha256())
+                || child.ack().isEmpty() || !child.ack().orElseThrow().nativeOk()
+                || child.ack().orElseThrow().outbound().isEmpty()) return false;
+        return child.state() instanceof ActionState.Unknown pending && knownNegativeFreshRead(pending.reason())
+                || child.state() instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.Applied
+                    && child.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && knownNegativeFreshRead(unknown.reason());
+    }
+
+    static boolean knownNegativeFreshRead(String reason) {
+        return (reason.startsWith("postcondition unavailable:") || reason.startsWith("life advance postcondition unavailable; no replay:"))
+                && reason.contains("actual fresh read unavailable: kind=ACK/native_ok=false;")
+                && reason.contains("reason=original fresh READ received negative Native ACK;")
+                && reason.endsWith("error=\"fresh_full_state_native_read_unavailable\"");
+    }
+
+    private boolean lifeReadAdmissionOpen(Instant deadline, long began) {
+        return !control.stopRequested() && clock.instant().isBefore(deadline)
+                && System.nanoTime() - began < LIFE_READ_SCHEDULING_WINDOW.toNanos();
+    }
+
+    private boolean waitForLifeRead(long millis, Instant deadline, long began) throws InterruptedException {
+        long waiting = System.nanoTime(), duration = Duration.ofMillis(millis).toNanos();
+        while (System.nanoTime() - waiting < duration) {
+            if (!lifeReadAdmissionOpen(deadline, began)) return false;
+            long remaining = duration - (System.nanoTime() - waiting);
+            Thread.sleep(Math.max(1L, Math.min(1_000L, remaining / 1_000_000L)));
+        }
+        return lifeReadAdmissionOpen(deadline, began);
+    }
+
+    /** One outside-lock best-effort record; scheduling counts are not a hard bound on in-flight original cleanup. */
+    private static void logLifeReadRecovery(String phase, BatchReport report, ActionReceipt original, int attempt, Instant until) {
+        try {
+            var row = StrictJson.object().put("schema", "xar.java-original-life-warm-observation/v1")
+                    .put("phase", phase).put("batch_id", report.batchId()).put("action_id", original.command().actionId())
+                    .put("attempt", attempt).put("attempt_limit", LIFE_READ_ATTEMPTS)
+                    .put("scheduling_deadline", until.toString()).put("scheduling_window_ms", LIFE_READ_SCHEDULING_WINDOW.toMillis())
+                    .put("per_attempt_observation_window_ms", ActionObservationWindow.MAXIMUM_WINDOW.toMillis())
+                    .put("original_command_deadline", original.command().deadline().toString());
+            byte[] bytes = StrictJson.canonical(row, 8192);
+            System.out.write(bytes); System.out.write(10); System.out.flush();
+        } catch (Throwable ignored) { /* Diagnostics never replace the original failure or alter interrupt/suppression. */ }
     }
 
     /** One bounded collection of this live Root's original ACK SAVE; no batch or command deadline is extended. */
