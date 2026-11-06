@@ -1,0 +1,182 @@
+{
+  "schema": "xar.maintenance.persistent-replay-scope-software-evidence/v1",
+  "at_utc": "2026-11-06T11:03:17.652949+00:00",
+  "owner": "/root/java_continue",
+  "refs": {
+    "actual_runtime_source": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\SOURCE-READY03.json",
+      "bytes": 6755,
+      "sha256": "b7417f648831a2d9be4ec946208bb24c33b21451989abe527c4848bb26345a87"
+    },
+    "test_source": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\TEST-SOURCE-READY03.json",
+      "bytes": 3088,
+      "sha256": "299ad5db0f5568dab1630924ff86d16a7b0ea9aa5d697fab34f851bf4455b198"
+    },
+    "actual_production": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\native-first03\\QUALIFIED-SOFTWARE03.json",
+      "bytes": 63633,
+      "sha256": "0bd6356bd4086890257d7f4bbb5321e348197b31c704d7b48c9bc6efff311e43"
+    },
+    "new_public_data": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\native-test-first03-cp02\\QUALIFIED-PUBLIC-DATA03.json",
+      "bytes": 28523,
+      "sha256": "732f6ad4edd7039c953da5d2b6053d1b62250328c03430098cc7cef4ad15e524"
+    },
+    "actual_phase_originals": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\ACTUAL-SOFTWARE-REFS03.json",
+      "bytes": 14765,
+      "sha256": "6f3035ad6ad588765e32001e7e32723e8a93b37f6d4ac6c9500061fc90f266a1"
+    },
+    "formal_source": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\SOURCE-READY-FORMAL01.json",
+      "bytes": 4267,
+      "sha256": "730cc8e5add9c48dd338061ac659091cfcbe2552f18bf36dbfb1c8fc68ba774a"
+    },
+    "source_review": {
+      "path": "D:\\ck3-state\\resume91-root\\persistent-replay-scope-independent-review81\\FINAL03-FOUR-SPAN-IMMUTABILITY-AND-TEST-SOURCE01.json",
+      "bytes": 19176,
+      "sha256": "ec1455565d4c5c3598373debea6cbad23965a967df28fc8da7f7299a61e9192c"
+    },
+    "jfr": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\encode-sway-peacetime-cohort7880\\normal-business-jfr81\\normal-business81.jfr",
+      "bytes": 10400049,
+      "sha256": "0bb07bc589a6336aed6337762b2b092a9625834a4d2d12b61da3d98b48a8f37d"
+    },
+    "offline_compact_result": {
+      "path": "D:\\ck3-state\\resume91-native-integration\\normal-business81-offline01\\OFFLINE-RESULT01.json",
+      "bytes": 279844,
+      "sha256": "6cee71ab86a864d54b35da29dfd8358ddb8f49062be75ae7e7ff9ada8c9de136"
+    },
+    "formal_combined_qualification": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\QUALIFIED-FORMAL-COMPOSITION01.json",
+      "bytes": 68572,
+      "sha256": "bd7ce93093e45b60834373ec256b81e299cb0d69fb6a4e4a7d71c1d2653cbe8e"
+    }
+  },
+  "formal_source_owned_spans": 4,
+  "runtime_source_owned_spans": 4,
+  "profile": {
+    "duration_seconds": 45.1227326,
+    "mixed_business_not_exact_OBS": true,
+    "ordinary_worker_execution_samples": 467,
+    "DriverPersistentPlanningState_capture_inclusive": 241,
+    "replay_inclusive": 223,
+    "rebuild_inclusive": 161,
+    "DriverObservationEvidenceReader_replayCapturedOriginals_inclusive": 158,
+    "nonadditive_samples": true,
+    "business_native_samples": 244,
+    "identity_metadata_native_samples": 209,
+    "file_force_seconds": 2.1219522,
+    "GC_phase_pause_seconds": 1.9697081,
+    "no_wallclock_fraction_claim": true
+  },
+  "implementation": {
+    "result": "Only internally strict original-wire-derived Complete",
+    "scope": "Existing nominal owner-bound same-thread Session scope; exact real Head object+persistedHead before/after, mismatch/owner failure permanently disables only new replay-result reuse. Existing decoder remains unchanged.",
+    "key": "Exact manifest/native refs and all private native/manifest/fullDriver byte arrays; projection role/version/source fields included through complete manifest.",
+    "original_checks": "All per-replay archive loads/getter order preserved. Hit repeats SHA/length checks and owner/point eligibility. No live/capability/permission/lease caching.",
+    "limits": "At most16entries and64MiB retained complete original-byte keys; not a total heap/RSS bound. Outer finally clears maps, keys and point.",
+    "normal_loader_required": true,
+    "new_named_app_types": 0
+  },
+  "qualification": {
+    "final_actual": "OnlychangedLoader1TU1CF0/3.998502s; Reader02 source/class exact reuse. Earlier02 two-source type0 remains partial-source original.",
+    "new_test": "One new TestTU2CF0/5.302805s; onlynew1P/4.3251774s, XML39047/831f2f5c235d3386273ce5daefb37f66df8433152d5438eb1ac90be355b9eb95.",
+    "first_test_RED": "True0CF failed compile used an old D OutcomeArchive interface missing existing current scopedDriverDecoder. One bound current interface CF frozen to D prefix; no support compilation, source/assertions/budget unchanged. Failure original preserved.",
+    "test_scope": "Real public Driver importer, framed Native/manifest parser and assembler; synthetic unissued Session/owner/archive. Version1 execution, profile4 source immutability proof only.",
+    "formal_variant": "Only formal Reader1TU3CF0/4.1622291s; qualified existing packetInput Assembler6, final03Loader1 and newTest2CF exact reused. Only affected same new binary1case RUN0/1P/3.8773523s; formal variant remains distinct from actual Runtime source tuple.",
+    "formal_family": "10 effective classfiles: new formalReader3 + qualified existingAssembler6 + final03Loader1. Same newTest2CF RUN-only1P. No new named type relative to either baseline; actual Runtime remains separate2CF tuple."
+  },
+  "not_claimed": [
+    "Runtime adoption or actual cached hit",
+    "Actual private Root/scope/lease/file pin/Native custody",
+    "Stable Head object behavior of real writer implementation",
+    "OBS or whole-window wallclock benefit",
+    "End-to-end10seconds/newSAVE_CONFIRMEDday target",
+    "Profile4 live test or useful M6/M7 completion"
+  ],
+  "formal_variant_actual_refs": {
+    "native-first01/ACTUAL.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-first01\\actual\\prod\\ACTUAL.json",
+      "bytes": 1745,
+      "sha256": "b5b64d2456b642f6c99640869b5c1581f00c7dca566e4a0fadf04362a9b70b49"
+    },
+    "native-first01/POST.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-first01\\actual\\prod\\POST.json",
+      "bytes": 408,
+      "sha256": "f62cce15b2a8b41be6c6b4344a3188db3a1e4aa18a45c55f7abe9a5feff0ac56"
+    },
+    "native-first01/RELEASE-FENCE.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-first01\\actual\\prod\\RELEASE-FENCE.json",
+      "bytes": 1132,
+      "sha256": "d68b614cf2f8b0f14149118f100cab30ea8a58a880a03efd27cfed250b8f545a"
+    },
+    "native-first01/MANAGED-CLOSE.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-first01\\actual\\prod\\MANAGED-CLOSE.json",
+      "bytes": 237,
+      "sha256": "b31f1b52be8427a61eae478509e06e79d4071b2c668e76ca8900cfca396a64de"
+    },
+    "native-first01/CHILD-TERMINAL.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-first01\\actual\\prod\\CHILD-TERMINAL.json",
+      "bytes": 731,
+      "sha256": "77ba4dfbfd998485433b492095f7f3266c435a7a61a63f366be78ecf42cfeddd"
+    },
+    "native-first01/stdout.bin": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-first01\\actual\\prod\\stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-first01/stderr.bin": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-first01\\actual\\prod\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-first01/OUTPUTS.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-first01\\actual\\prod\\OUTPUTS.json",
+      "bytes": 16104,
+      "sha256": "0404a629164813ed2145ce1f1b1abdb69474e7966c812c8738e7e00d6ae42605"
+    },
+    "native-affected02/ACTUAL.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-affected02\\actual\\junit\\ACTUAL.json",
+      "bytes": 1540,
+      "sha256": "fe8dc476b2fceb0bd8825b5899280a2e942d68855cdbdc9fcf8c369b5f1b335d"
+    },
+    "native-affected02/POST.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-affected02\\actual\\junit\\POST.json",
+      "bytes": 1251,
+      "sha256": "7c089ecf3ed0b35d8a8750eadd38d9050044dec0f2522d25df27606dea14a77b"
+    },
+    "native-affected02/RELEASE-FENCE.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-affected02\\actual\\junit\\RELEASE-FENCE.json",
+      "bytes": 1154,
+      "sha256": "97788a16501dcf9a650293d2ffdd9a9257e81b2412aa57816af557e7769a5a39"
+    },
+    "native-affected02/MANAGED-CLOSE.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-affected02\\actual\\junit\\MANAGED-CLOSE.json",
+      "bytes": 238,
+      "sha256": "e400b449106dc20b1ef53aedffa7ba416393c63272570369ff989de766817920"
+    },
+    "native-affected02/CHILD-TERMINAL.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-affected02\\actual\\junit\\CHILD-TERMINAL.json",
+      "bytes": 741,
+      "sha256": "bd6db69c0e9b4295a1857cfb344504f4e2f64ca92d0d5e1233f9067fa1bd4c5c"
+    },
+    "native-affected02/stdout.bin": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-affected02\\actual\\junit\\stdout.bin",
+      "bytes": 2015,
+      "sha256": "2ae35a0901db33a5f617142919ccd438acd1f1959ff179bc94e71ba526347585"
+    },
+    "native-affected02/stderr.bin": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-affected02\\actual\\junit\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "formal_affected_xml": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\persistent-replay-scope81\\formal01\\native-affected02\\reports-junit\\TEST-junit-jupiter.xml",
+      "bytes": 39306,
+      "sha256": "c2e9f90baa81ffe99d2f49eff5a66ca9677180af7028aa72637788eda58aa808"
+    }
+  },
+  "formal_zero_BEGIN_preparation_refusals": "Two RUN-only metadata preparations refused before JVM (origin index and missing source path); preserved, not JUnit failures; no repeated actual JUnit or compilation."
+}

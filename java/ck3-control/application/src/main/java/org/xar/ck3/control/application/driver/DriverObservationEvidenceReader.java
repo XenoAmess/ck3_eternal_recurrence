@@ -133,6 +133,8 @@ public final class DriverObservationEvidenceReader {
         Objects.requireNonNull(fullDriver);
         StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
                 "bounded archived original native frame required");
+        if(actualDecoder!=null)
+            return actualDecoder.replayCompleteOriginals(manifestReference,manifest,fullDriver,framedNative,nativeReference);
         // Keep the original private copy after the callbacks and native bounds check.
         var captured=capturedNativeFrame(row,framedNative.clone());
         var actual=captured.actual();
