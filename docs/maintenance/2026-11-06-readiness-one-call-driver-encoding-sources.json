@@ -1,0 +1,49 @@
+{
+  "schema": "xar.formal.one-call-driver-encoding-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\readiness-one-call-driver-bytes78\\SOURCE-READY02.json",
+    "bytes": 3329,
+    "sha256": "8be99ed8da8d1e3f71ef355e97c9cb2ffe55dc01d89f8c3020257610066cbe0e"
+  },
+  "formal_part": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\readiness-one-call-driver-bytes78\\formal01\\FORMAL-PART01.json",
+    "bytes": 2849,
+    "sha256": "b6fdf1b944f193d3be62ac4f42179d2efcd941fdf902fd70d520f217b1602388"
+  },
+  "actual_driver_contract": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\driver-state-snapshot-current78\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\checkpoint\\DriverStateSnapshot.java",
+    "bytes": 9991,
+    "sha256": "6ee9ba914fad5654c6b03c23762ca56f5738e79714716ef61c0b4cde83571779"
+  },
+  "qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\readiness-one-call-driver-bytes78\\native-first02\\QUALIFIED-SOFTWARE02.json",
+    "bytes": 534744,
+    "sha256": "9d481031b86caf6c40b2af483b9fd949c972bfed9281439da18dcfe3efba55f2"
+  },
+  "independent_source": {
+    "path": "D:\\ck3-state\\resume91-root\\readiness-one-call-driver-bytes-independent-review78\\FINAL02-FOUR-SPAN-SOURCE-REVIEW02.json",
+    "bytes": 8884,
+    "sha256": "663c0752291cbba3674ab25d033b6b126775f12d54964aacf1aa2b53e8b4c9b2"
+  },
+  "previous_partial_type": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\readiness-one-call-driver-bytes78\\native-first01\\TYPE-CUT01-PARTIAL.json",
+    "bytes": 4463,
+    "sha256": "0cfb11da598d354f6191e4d314633855eaba4f0c89fd79f648a363961944e1ce"
+  },
+  "software": {
+    "TU": 1,
+    "CF": 38,
+    "seconds": 6.3632524,
+    "exit": 0,
+    "all_shapes_unchanged": true,
+    "all_released": true,
+    "new_types_fields_methods": false
+  },
+  "not_claimed": [
+    "whole observation root cause",
+    "actual runtime adoption",
+    "exclusive CPU time",
+    "speed improvement",
+    "new saved days"
+  ]
+}

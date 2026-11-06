@@ -1379,11 +1379,12 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     private <T> T qualifyPhysical(ContinuityStorePort.Session borrowed, Instant ioDeadline, Instant scopeDeadline, String lockedHead,
             org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame actual, Known known,
             DriverObservationFacts facts, ExactRef original, PhysicalWork<T> work) throws IOException {
+        byte[] driverBytes;
         {
             require(known.stamp().driverVersion() == facts.driverVersion() && known.stamp().episodeEpoch() == facts.episodeEpoch(), "physical originals crossed the actual frozen full Driver version");
-            byte[] knownDriverBytes = known.driver().encode();
+            driverBytes = known.driver().encode();
             if (known.driver() != facts.driver() || known.driver().session().actorId().getClass() != BigInteger.class) {
-                require(Arrays.equals(knownDriverBytes, facts.driver().encode()), "physical originals crossed the actual frozen full Driver version");
+                require(Arrays.equals(driverBytes, facts.driver().encode()), "physical originals crossed the actual frozen full Driver version");
             }
         }
         DriverObservationAssembler.Result assembled = assembler.assemble(actual, facts, original);
@@ -1401,9 +1402,9 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         qualified.assertCurrent(borrowed);
         Optional<Pin> sourceProof = sourcePin(borrowed,qualified);
         Instant sourceCheckedAt = clock.instant();
-        byte[] semanticBytes = DriverJson.encode(frame.semantic()); byte[] driverBytes = known.driver().encode();
+        byte[] semanticBytes = DriverJson.encode(frame.semantic()); byte[] archivedDriverBytes=known.driver().session().actorId().getClass()==BigInteger.class?driverBytes:known.driver().encode();
         ExactRef semantic = preserve(borrowed, ReadinessArchive.Role.SEMANTIC, semanticBytes);
-        ExactRef fullDriver = preserve(borrowed, ReadinessArchive.Role.DRIVER, driverBytes);
+        ExactRef fullDriver = preserve(borrowed, ReadinessArchive.Role.DRIVER, archivedDriverBytes);
         ExactRef stamp = preserve(borrowed, ReadinessArchive.Role.DRIVER_STAMP, NativeDriverStamp.encode(frame, known));
         Instant originalsPreservedAt = clock.instant();
         SemanticEvidence evidence = new SemanticEvidence(frame.identity(), semantic, original, stamp, fullDriver, frame.observedAt());
