@@ -68,11 +68,33 @@ public final class FeastObservationCollector implements FeastObservationSupplier
             require((pending == Nil.INSTANCE || pending instanceof Obj) && (resolved == Nil.INSTANCE || resolved instanceof Obj), "Feast ledger pending/resolved kinds differ");
             if (original.get("history") != null) array(original.get("history"), "Feast receipt history").forEach(value -> object(value, "retained Feast receipt"));
             Optional<Terminal> terminal = retainedTerminal(resolved);
-            var refs = new ArrayList<>(durable.originals()); refs.add(retained.head().canonicalHead()); refs.add(ledger.document().original());
+            var refs = new ArrayList<>(durable.originals()); refs.add(preserveStateHead(request,retained.head().canonicalHead())); refs.add(ledger.document().original());
             State state = new State(request.before(), request.sessionId(), cadence, pending instanceof Obj found ? Optional.of(found) : Optional.empty(),
                     terminal, retained.head().actualActionReceipts(), original);
             state.bind(request); return new Known<>(state, refs);
         } catch (IllegalArgumentException malformed) { return new Unavailable<>("actual Feast state rejected: " + malformed.getMessage()); }
+    }
+    private ExactRef preserveStateHead(PlanningRequest request,ExactRef original) {
+        if(borrowed.isEmpty())return original; // The unchanged unbound DATA adapter issues no Root writer authority.
+        try {
+            return borrowed.orElseThrow().use(request,session->{
+                var head=session.head();
+                require(session.persistedHead().equals(original),"Feast state head is no longer the original held writer point");
+                int limit=Math.toIntExact(original.bytes());
+                var pin=session.capturePin(original,limit);
+                byte[] bytes=session.readPinned(pin,limit);session.verifyPin(pin);
+                var material=org.xar.ck3.control.application.action.RawJson.fullMaterial(bytes);
+                ExactRef copy=archive.inSession(session,bound->bound.preserveMaterial(material));
+                session.verifyPin(pin);
+                require(session.head().equals(head)&&session.persistedHead().equals(original),"Feast head preservation crossed its original writer point");
+                require(copy.bytes()==original.bytes()&&copy.sha256().equals(original.sha256())
+                        &&copy.sha256().equals(org.xar.ck3.control.application.action.ActionCodec.sha256(bytes))
+                        &&!java.nio.file.Path.of(copy.path()).toAbsolutePath().normalize().equals(
+                                java.nio.file.Path.of(original.path()).toAbsolutePath().normalize()),
+                        "Feast state head must be preserved as the same complete bytes in a distinct immutable artifact");
+                return copy;
+            });
+        } catch(java.io.IOException failure) {throw new IllegalArgumentException("same-writer Feast state head archive unavailable",failure);}
     }
     @Override public Read<Planner> planner(PlanningRequest request) {
         Read<ActivityPacket> read = activity(ActivityQuery.DIAGNOSTIC, request, new Obj(Map.of()));

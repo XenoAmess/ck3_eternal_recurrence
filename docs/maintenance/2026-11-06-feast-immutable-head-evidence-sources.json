@@ -1,0 +1,71 @@
+{
+  "schema": "xar.formal.feast-state-immutable-head-source-index/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\feast-state-immutable-head77\\SOURCE-READY01.json",
+    "bytes": 3049,
+    "sha256": "bc1b08e1ecb283c4a535b9c8267dce8a939d5ec7ee9af59ed2fa3fed90d683ff"
+  },
+  "formal_part": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\feast-state-immutable-head77\\formal01\\FORMAL-PART01.json",
+    "bytes": 3448,
+    "sha256": "7c99bf52de37aac07e9b0162d1b749ecb38716bb4a985ad944e17d2944fa9e97"
+  },
+  "production_qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\feast-state-immutable-head77\\native-first01\\QUALIFIED-SOFTWARE01.json",
+    "bytes": 98328,
+    "sha256": "278a033dbb7e7a67e096a2a9de039cb3bacaf3ddac7e8feaa27b3be05390a4c7"
+  },
+  "independent_source": {
+    "path": "D:\\ck3-state\\resume91-root\\feast-state-immutable-head-independent-review77\\TWO-SPAN-SOURCE-API-REVIEW01.json",
+    "bytes": 8919,
+    "sha256": "98fb6d3a0a3c601c6d7a1708ac671ced7194297b5ca2acf45448315770ca173e"
+  },
+  "actual_durable_closure": {
+    "path": "D:\\ck3-state\\resume91-root\\feast-state-immutable-head-independent-review77\\ACTUAL-DURABLE-ORIGINALS-ADDENDUM02.json",
+    "bytes": 2003,
+    "sha256": "8eddfeab71943b34fbeaee98dc4a0531837ea482b546b308f5c1e86e163766f7"
+  },
+  "new_test_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\feast-state-immutable-head77\\TEST-SOURCE-READY01.json",
+    "bytes": 3033,
+    "sha256": "48ede2ab4cad1d2c6a4a5aded11b67327f56ea5270b5e3058b1bcd1c6cd61889"
+  },
+  "new_test_source": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\feast-state-immutable-head77\\test01\\application\\src\\test\\java\\org\\xar\\ck3\\control\\application\\planning\\governance\\FeastStateImmutableHead77Test.java",
+    "bytes": 9349,
+    "sha256": "790eac5fb327ddf592c39d4b4aa36e93668bdbf55ab3c264461688733e395bbe"
+  },
+  "new_test_qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\feast-state-immutable-head77\\native-test-first01\\QUALIFIED-PUBLIC-DATA01.json",
+    "bytes": 25507,
+    "sha256": "9c47038346b01c491b242d3f2716c24901f6cd16cd385040bbc9643fac8762e6"
+  },
+  "independent_test_source": {
+    "path": "D:\\ck3-state\\resume91-root\\feast-state-immutable-head-independent-review77\\PUBLIC-TEMPDIR-TEST01-SOURCE-REVIEW03.json",
+    "bytes": 7132,
+    "sha256": "384c76e8ba0824fda223c7f222f41941ba6c531a731facfe6332cf8afcd36f6d"
+  },
+  "software": {
+    "production_TU": 1,
+    "production_CF": 4,
+    "production_seconds": 4.1470759,
+    "test_TU": 1,
+    "test_CF": 4,
+    "test_seconds": 4.6738596,
+    "single_new_method_pass": 1,
+    "run_seconds": 4.6709506,
+    "all_released": true,
+    "support_or_old_tests_recompiled_or_run": false
+  },
+  "actual_published_phase": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\feast-immutable-head-recovery77\\bootstrap-cut-20261106T084445Z\\FIRST-AFTER77-PHASE-TIMING.json",
+    "bytes": 3894,
+    "sha256": "c8e6f228b70406f61f0edba8976e5cc1fb3d82dca65a74f5128a5d7b9304aaab"
+  },
+  "not_claimed": [
+    "physical qualification from DATA ports",
+    "complete activity acceptance",
+    "speed improvement",
+    "new saved days"
+  ]
+}

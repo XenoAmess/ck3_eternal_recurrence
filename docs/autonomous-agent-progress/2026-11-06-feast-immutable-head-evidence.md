@@ -1,0 +1,13 @@
+# Preserve Feast head evidence before publication
+
+B39 stopped before model/action dispatch because a no-action cadence publication tried to verify an older `continuity.json` reference after that mutable file had changed. Its size was still 89473 bytes, but its SHA differed. The Feast state producer had emitted its finance snapshot's current head reference as historical evidence.
+
+The actual borrowed-writer path now captures and reads that original head while it is still current, then preserves the complete bytes through the existing same-Session material archive. It rechecks the original pin and writer head, and requires the copy to have the same length and SHA at a different artifact path. Subsequent cadence publication receives that immutable copy. A changed or bad original refuses; the code does not reconstruct earlier bytes from the newer head. The original writer, finance, frame, Native, replay and LedgerFiles hash checks remain.
+
+The separate durable-state closure was checked against the actual producer: an available cadence body contributes its immutable payload reference, while head fallback occurs only when no body is available. Feast requires cadence, so that path does not emit another mutable head reference. The unbound DATA adapter retains its previous behavior; the actual Root installer uses the borrowed-writer constructor.
+
+Validation: the single changed production translation unit compiled successfully, 4 classes in 4.1470759 seconds. Existing non-private ABI is unchanged, with no new application type. A new single public-producer DATA regression compiled once (4 test classes, 4.6738596 seconds) and passed once in 4.6709506 seconds. It verifies exact copied bytes after the original file changes, rejection before preservation for a conflicting persisted head, and refusal/cleanup after a combined mid-archive pin/head conflict. Production and the existing three fixture classes were reused; no old methods or support sources were rerun or rebuilt.
+
+The test uses real temporary byte files but explicitly unissued Session, archive and Pin identities. Its byte/SHA rejection is not an actual LedgerFiles, Win32, Root or Native qualification. The actual r50 run separately progressed from the old Blocked cadence disposition to Published at 08:43:14.8383696Z. Exact immutable-artifact custody, full activity acceptance, new saves and speed remain separate evidence.
+
+Formal source retains its pre-existing whitespace projection; its executable logic matches the qualified actual source. Evidence and qualification references are in the companion source index.
