@@ -71,32 +71,44 @@ public final class OrdinaryFinanceCollector {
     }
     private final FinanceReadContracts definitions; private final PlanningReadPort reads; private final FinanceStatePort state;
     private final Optional<java.util.function.Supplier<Session>> borrowed;
-    private final PlanningStateReuse planningState;
+    private final java.util.concurrent.atomic.AtomicReferenceArray<Object> planningState;
+    private static final int REUSE_REQUEST=0,REUSE_THREAD=1,REUSE_SESSION=2,REUSE_POINT=3,
+            REUSE_DIGEST=4,REUSE_SEQUENCE=5,REUSE_KNOWN=6,REUSE_PRIMED=7,REUSE_ACTIVE=8;
 
-    /** One evaluate call's immutable DATA, never a writer, physical lease or native-query cache. */
-    private static final class PlanningStateReuse {
-        private PlanningRequest request;
-        private Thread thread;
-        private Session session;
-        private org.xar.ck3.control.contracts.ExactRef persisted;
-        private String digest;
-        private long sequence;
-        private FinanceStatePort.Known known;
-        private boolean primed;
-        private volatile boolean active=true;
-        private PlanningStateReuse(PlanningRequest request) { this.request=request;thread=Thread.currentThread(); }
-        private void disable() { active=false;known=null;session=null;persisted=null;digest=null;request=null;thread=null; }
-        private boolean eligible(PlanningRequest expected,Session current) throws java.io.IOException {
-            if(!active || request!=expected || thread!=Thread.currentThread() || session!=current || known==null) return false;
-            var head=current.head();
-            return head.state().sequence()==sequence && head.digest().equals(digest) && current.persistedHead().equals(persisted)
-                    && known.snapshot().head().canonicalHead().equals(persisted) && known.snapshot().head().current().equals(expected.before());
-        }
-        private void prime(PlanningRequest expected,Session current,FinanceStatePort.Known actual) throws java.io.IOException {
-            var head=current.head();var point=current.persistedHead();
-            if(!actual.snapshot().head().current().equals(expected.before()) || !actual.snapshot().head().canonicalHead().equals(point)) { disable();return; }
-            session=current;persisted=point;digest=head.digest();sequence=head.state().sequence();known=actual;
-        }
+    /** Private one-call DATA in a JDK container; no application holder class must be born during reload. */
+    private static java.util.concurrent.atomic.AtomicReferenceArray<Object> newPlanningState(PlanningRequest request) {
+        var scope=new java.util.concurrent.atomic.AtomicReferenceArray<Object>(9);
+        scope.set(REUSE_REQUEST,request);scope.set(REUSE_THREAD,Thread.currentThread());
+        scope.set(REUSE_PRIMED,Boolean.FALSE);scope.set(REUSE_ACTIVE,Boolean.TRUE);return scope;
+    }
+    private static void disablePlanningState(java.util.concurrent.atomic.AtomicReferenceArray<Object> scope) {
+        scope.set(REUSE_ACTIVE,Boolean.FALSE); // Permanent, including calls from another thread.
+        for(int index=0;index<REUSE_ACTIVE;index++)scope.set(index,null);
+    }
+    private static void primePlanningState(java.util.concurrent.atomic.AtomicReferenceArray<Object> scope,
+            PlanningRequest expected,Session current,FinanceStatePort.Known actual) throws java.io.IOException {
+        var head=current.head();var point=current.persistedHead();
+        if(!Boolean.TRUE.equals(scope.get(REUSE_ACTIVE)) || scope.get(REUSE_REQUEST)!=expected
+                || scope.get(REUSE_THREAD)!=Thread.currentThread()
+                || !actual.snapshot().head().current().equals(expected.before())
+                || !actual.snapshot().head().canonicalHead().equals(point)) { disablePlanningState(scope);return; }
+        scope.set(REUSE_SESSION,current);scope.set(REUSE_POINT,point);scope.set(REUSE_DIGEST,head.digest());
+        scope.set(REUSE_SEQUENCE,head.state().sequence());scope.set(REUSE_KNOWN,actual);
+    }
+    private static FinanceStatePort.Known takePlanningState(java.util.concurrent.atomic.AtomicReferenceArray<Object> scope,
+            PlanningRequest expected,Session current) throws java.io.IOException {
+        if(!Boolean.TRUE.equals(scope.get(REUSE_ACTIVE)) || scope.get(REUSE_REQUEST)!=expected
+                || scope.get(REUSE_THREAD)!=Thread.currentThread() || scope.get(REUSE_SESSION)!=current) return null;
+        if(!(scope.get(REUSE_KNOWN) instanceof FinanceStatePort.Known actual)
+                || !(scope.get(REUSE_POINT) instanceof org.xar.ck3.control.contracts.ExactRef point)
+                || !(scope.get(REUSE_DIGEST) instanceof String digest) || !(scope.get(REUSE_SEQUENCE) instanceof Long sequence)) return null;
+        var head=current.head();
+        if(head.state().sequence()!=sequence || !head.digest().equals(digest) || !current.persistedHead().equals(point)
+                || !actual.snapshot().head().canonicalHead().equals(point)
+                || !actual.snapshot().head().current().equals(expected.before())) return null;
+        if(!scope.compareAndSet(REUSE_ACTIVE,Boolean.TRUE,Boolean.FALSE)) return null;
+        disablePlanningState(scope); // Exactly one successful claim; clear references before returning immutable DATA.
+        return actual;
     }
     public OrdinaryFinanceCollector(FinanceReadContracts definitions, PlanningReadPort reads, FinanceStatePort state) {
         this(definitions, reads, state, Optional.empty());
@@ -111,7 +123,7 @@ public final class OrdinaryFinanceCollector {
         this(definitions,reads,state,borrowed,null);
     }
     private OrdinaryFinanceCollector(FinanceReadContracts definitions,PlanningReadPort reads,FinanceStatePort state,
-            Optional<java.util.function.Supplier<Session>> borrowed,PlanningStateReuse planningState) {
+            Optional<java.util.function.Supplier<Session>> borrowed,java.util.concurrent.atomic.AtomicReferenceArray<Object> planningState) {
         this.definitions=Objects.requireNonNull(definitions);this.reads=Objects.requireNonNull(reads);this.state=Objects.requireNonNull(state);
         this.borrowed=Objects.requireNonNull(borrowed);this.planningState=planningState;
     }
@@ -119,11 +131,11 @@ public final class OrdinaryFinanceCollector {
     <T>T withPlanningState(PlanningRequest request,java.util.function.Function<OrdinaryFinanceCollector,T> work) {
         Objects.requireNonNull(request);Objects.requireNonNull(work);invalidatePlanningState();
         if(borrowed.isEmpty()) return work.apply(this);
-        var reuse=new PlanningStateReuse(request);
+        var reuse=newPlanningState(request);
         var scoped=new OrdinaryFinanceCollector(definitions,reads,state,borrowed,reuse);
-        try { return work.apply(scoped); } finally { reuse.disable(); }
+        try { return work.apply(scoped); } finally { disablePlanningState(reuse); }
     }
-    private void invalidatePlanningState() { if(planningState!=null) planningState.disable(); }
+    private void invalidatePlanningState() { if(planningState!=null) disablePlanningState(planningState); }
     /** Explicit planning-observation view for private Stage.evaluate paths only. */
     public OrdinaryFinanceCollector planningView() {
         invalidatePlanningState();
@@ -149,25 +161,23 @@ public final class OrdinaryFinanceCollector {
     }
     public FinanceStatePort.Result state(PlanningRequest request) {
         var session=borrowedSession();var reuse=planningState;
-        if(reuse!=null && reuse.active) {
-            if(reuse.request!=request || reuse.thread!=Thread.currentThread() || session.isEmpty()) reuse.disable();
-            else if(reuse.primed) {
+        if(reuse!=null && Boolean.TRUE.equals(reuse.get(REUSE_ACTIVE))) {
+            if(reuse.get(REUSE_REQUEST)!=request || reuse.get(REUSE_THREAD)!=Thread.currentThread() || session.isEmpty()) disablePlanningState(reuse);
+            else if(Boolean.TRUE.equals(reuse.get(REUSE_PRIMED))) {
                 try {
-                    if(reuse.eligible(request,session.orElseThrow())) {
-                        var actual=reuse.known;reuse.disable(); // Exactly one second-state hit; never prime again.
-                        return actual;
-                    }
+                    var actual=takePlanningState(reuse,request,session.orElseThrow());
+                    if(actual!=null)return actual;
                 } catch(java.io.IOException | IllegalArgumentException | IllegalStateException ineligible) {
                     // Eligibility failed. Run the original full producer below; never treat this as a successful read.
                 }
-                reuse.disable();
+                disablePlanningState(reuse);
             } else {
-                reuse.primed=true;
+                reuse.set(REUSE_PRIMED,Boolean.TRUE);
                 FinanceStatePort.Result actual=state.read(session.orElseThrow(),request);
                 if(actual instanceof FinanceStatePort.Known known) {
-                    try { reuse.prime(request,session.orElseThrow(),known); }
-                    catch(java.io.IOException | IllegalArgumentException | IllegalStateException ineligible) { reuse.disable(); }
-                } else reuse.disable();
+                    try { primePlanningState(reuse,request,session.orElseThrow(),known); }
+                    catch(java.io.IOException | IllegalArgumentException | IllegalStateException ineligible) { disablePlanningState(reuse); }
+                } else disablePlanningState(reuse);
                 return actual;
             }
         }

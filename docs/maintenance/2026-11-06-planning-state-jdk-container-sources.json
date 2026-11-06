@@ -1,0 +1,67 @@
+{
+  "schema": "xar.owner.planning-state-jdk-container-source-index/v1",
+  "at_utc": "2026-11-06T06:34:35.545745+00:00",
+  "runtime_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-state-jdk-holder-recovery74\\SOURCE-READY01.json",
+    "bytes": 2651,
+    "sha256": "b505f4115c9eeaa2d2a7c9078e944e63e9c39c852171d1548f48133c0de80fca"
+  },
+  "rows": [
+    {
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryFinanceCollector.java",
+        "bytes": 37682,
+        "sha256": "1842eb3e28338c01a4b894aad9c5c51cfbda453752a4f4a0ba9313735cf3ed4d"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-state-jdk-holder-recovery74\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryFinanceCollector.java",
+        "bytes": 39173,
+        "sha256": "db72bc89632b60dce14596f43c6ea2faaaa3bf8986fd1e6e398bcb1cc826b4a0"
+      },
+      "part": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-state-jdk-holder-recovery74\\SOURCE-PART01.json",
+        "bytes": 10121,
+        "sha256": "5378d4a583ee69db89ed6406b923a8e87f0d0db66196481f0531a2f7c0a766b4"
+      },
+      "spans": 5
+    }
+  ],
+  "formal_source_differs_only_by_existing_Git_LF_projection": true,
+  "whole_formal_raw_inverse_HEAD": true,
+  "software_and_affected_regression": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-state-jdk-holder-recovery74\\native-first01\\QUALIFIED-SOFTWARE-AND-AFFECTED01.json",
+    "bytes": 225009,
+    "sha256": "788373a7db53dbcf5569a573dd40e41fd38f2d2af5881ffe02f43060af87ce15"
+  },
+  "independent_source": {
+    "path": "D:\\ck3-state\\resume91-root\\planning-state-jdk-holder-independent-review74\\CANDIDATE01-FIVE-SPAN-SOURCE-REVIEW01.json",
+    "bytes": 8581,
+    "sha256": "a546dcc329c95dc391b55c1da02fb05945f200826398ebc6d34646caeee716ae"
+  },
+  "source_failure": "Actual r47 first planning NoClassDefFoundError OrdinaryFinanceCollector$PlanningStateReuse; its generated class and Top exist in actual application/classes. This does not establish absent javac output or a universal new-type loader repair.",
+  "source_scope": "Only adopted Finance1842 replaced; current runtime Collector0c31/Policyfc92/Selector4fc4/Gov4908 and P068/warm06 unchanged by this patch. Formal existing planningView route preserved unchanged too.",
+  "first_software": {
+    "translation_units": 1,
+    "classes": 12,
+    "exit": 0,
+    "seconds": 4.7039368,
+    "new_application_named_types": 0,
+    "removed_application_holder": true,
+    "affected_test_CF_reused": 5,
+    "old_test_compilation": 0,
+    "affected_methods_run": 1,
+    "passes": 1,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0,
+    "RUN_seconds": 3.3971976,
+    "other_old_tests_run": 0
+  },
+  "concurrency_limit": "ACTIVE can only be set true by a new factory. Successful take CAS is single-use. A prime already beyond its active check can transiently repopulate inactive slots during a foreign disable; inactive can never be reused, and owner finally clears references. No claim that every inactive slot is empty at every concurrent instant.",
+  "no_Guard_or_authority_or_native_or_source_reader_change": true,
+  "no_CNFE_or_Error_catch": true,
+  "no_JVM_or_GET_or_Game_by_Java_owner": true,
+  "actual_loader_and_recovery": "Await separate Runtime receipt; software only",
+  "new_application_type_hot_reload_capability_repaired": false,
+  "speed_or_new_Save_proven": false
+}
