@@ -83,6 +83,10 @@ public final class DriverCheckpointStore {
     }
     /** Consumer borrows the source's verified complete Driver session, including an earlier physical Game's pipe. */
     public DriverStateSnapshot.Complete readVerifiedOriginal(CheckpointPair pair,DriverStateSnapshot.Session expected)throws IOException {
+        return readVerifiedOriginal(pair,expected,null,null);
+    }
+    private DriverStateSnapshot.Complete readVerifiedOriginal(CheckpointPair pair,DriverStateSnapshot.Session expected,
+            java.util.function.Consumer<byte[]> retained,Runnable afterStrictDecode)throws IOException {
         Objects.requireNonNull(expected);files.verify(pair);
         var ack=files.observe(Path.of(pair.nativeAckRef().path())).orElseThrow(()->new IOException("original SAVE ACK source unavailable"));
         StrictJson.require(ack.reference().equals(pair.nativeAckRef()),"original SAVE ACK differs");
@@ -91,9 +95,49 @@ public final class DriverCheckpointStore {
             StrictJson.require(decoded.session().equals(expected),"physical saved Driver differs from its actual verified source session");
             validateAnchor(row,pair.save(),pair.frame(),pair.lineageId(),pair.saveActionId(),pair.historyIndex(),expected.pipeName());
         });
-        files.verify(pair);return complete;
+        if(afterStrictDecode!=null)afterStrictDecode.run();
+        files.verify(pair);
+        if(retained!=null)retained.accept(raw);
+        return complete;
     }
     public void verifyOriginal(CheckpointPair pair,DriverStateSnapshot.Session expected)throws IOException {readVerifiedOriginal(pair,expected);}
+    /** Package-local same-call continuation. Its Closeable performs the second physical check, not resource disposal. */
+    java.util.Map.Entry<DriverStateSnapshot.Complete,java.io.Closeable> readVerifiedOriginalForRecheck(
+            CheckpointPair pair,DriverStateSnapshot.Session expected)throws IOException {
+        return readVerifiedOriginalForRecheck(pair,expected,null);
+    }
+    /** Optional package-only completion observer: no decoder replacement, raw access, timing or production state. */
+    java.util.Map.Entry<DriverStateSnapshot.Complete,java.io.Closeable> readVerifiedOriginalForRecheck(
+            CheckpointPair pair,DriverStateSnapshot.Session expected,Runnable afterStrictDecode)throws IOException {
+        final byte[][] original={null};
+        var complete=readVerifiedOriginal(pair,expected,raw->{
+            if(raw.length<=8*1024*1024&&plainAnchor(pair,expected))original[0]=raw.clone();
+        },afterStrictDecode);
+        java.io.Closeable recheck=()->{
+            byte[] prior=original[0];original[0]=null;
+            if(prior==null){readVerifiedOriginal(pair,expected,null,afterStrictDecode);return;}
+            Objects.requireNonNull(expected);files.verify(pair);
+            var ack=files.observe(Path.of(pair.nativeAckRef().path())).orElseThrow(()->new IOException("original SAVE ACK source unavailable"));
+            StrictJson.require(ack.reference().equals(pair.nativeAckRef()),"original SAVE ACK differs");
+            byte[] raw=files.read(pair.driver(),MAX_DRIVER_BYTES);
+            if(!java.util.Arrays.equals(prior,raw)) {
+                DriverStateSnapshot.Complete.decodeAndVerify(raw,(decoded,row)->{
+                    StrictJson.require(decoded.session().equals(expected),"physical saved Driver differs from its actual verified source session");
+                    validateAnchor(row,pair.save(),pair.frame(),pair.lineageId(),pair.saveActionId(),pair.historyIndex(),expected.pipeName());
+                });
+                if(afterStrictDecode!=null)afterStrictDecode.run();
+            }
+            files.verify(pair);
+        };
+        return java.util.Map.entry(complete,recheck);
+    }
+    private static boolean plainAnchor(CheckpointPair pair,DriverStateSnapshot.Session expected) {
+        var frame=pair.frame().frame();var identity=frame.identity();
+        return plain(expected.actorId())&&plain(identity.dateRaw())&&plain(identity.player())
+                &&plain(identity.nativeRevision())&&plain(frame.revision())
+                &&plain(pair.frame().game().creationFiletime().value());
+    }
+    private static boolean plain(java.math.BigInteger value){return value!=null&&value.getClass()==java.math.BigInteger.class;}
     /** Original archived bytes and typed anchor only; this grants no present physical SAVE/reload qualification. */
     public DriverStateSnapshot.Complete readArchivedSnapshot(CheckpointPair pair,byte[] raw) throws IOException {
         Objects.requireNonNull(pair);Objects.requireNonNull(raw);

@@ -222,9 +222,10 @@ public final class CheckpointCommitVerifier {
         java.util.Optional<SaveWithDriver> combined=retained
                 ?Objects.requireNonNull(saves.verifyWithDriver(borrowed,session,pair,proof,true)):java.util.Optional.empty();
         DriverStateSnapshot.Complete saved;
+        java.util.Map.Entry<DriverStateSnapshot.Complete,java.io.Closeable> physicalRecheck=null;
         if(retained)saved=combined.isPresent()?combined.orElseThrow().savedDriver():saves.retainedDriver(borrowed,pair);
-        else saved=drivers.readVerifiedOriginal(pair,before.session());
-        requireSaveProjection(before,saved,pair); if(!retained)drivers.verifyOriginal(pair,before.session());
+        else {physicalRecheck=drivers.readVerifiedOriginalForRecheck(pair,before.session());saved=physicalRecheck.getKey();}
+        requireSaveProjection(before,saved,pair); if(!retained)physicalRecheck.getValue().close();
         if(!retained)combined=Objects.requireNonNull(saves.verifyWithDriver(borrowed,session,pair,proof,false));
         String saveDigest=combined.isPresent()?combined.orElseThrow().digest()
                 :retained?saves.verifyRetained(borrowed,session,pair,proof):saves.verify(borrowed,session,pair,proof);
