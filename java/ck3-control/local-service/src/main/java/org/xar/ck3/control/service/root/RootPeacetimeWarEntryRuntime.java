@@ -148,9 +148,10 @@ public final class RootPeacetimeWarEntryRuntime implements OrdinaryCorePolicy.Co
                 "peacetime war-entry belongs to another physical Game/source/session");
         return context.collector().currentPlanning(same, request, request.deadline(), (original, lease) -> {
             var actual = lease.frame();
+            // The actual collector has already verified held planning equivalence, including Native-owned diagnostics.
+            // Requiring raw semantic equality here would reject its permitted Java-wrapper/manifest-reference differences.
             StrictJson.require(original == request && actual.identity().equals(request.before())
-                    && actual.source().equals(request.source()) && actual.sessionId().equals(request.sessionId())
-                    && actual.semantic().equals(request.observations().snapshot()),
+                    && actual.source().equals(request.source()) && actual.sessionId().equals(request.sessionId()),
                     "peacetime planning differs from its actual complete current producer");
             var current = new ArmyRetreatFrames.Current(actual, request.deadline());
             Optional<ArmyDeclarationCollection.Result> collection = Optional.empty();

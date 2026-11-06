@@ -1,0 +1,44 @@
+{
+  "schema": "xar.formal.peacetime-held-planning-consumer-source-index/v1",
+  "owner_ready": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line79\\peacetime-held-equivalence01\\owner-candidate01\\SOURCE-READY01.json",
+    "bytes": 6004,
+    "sha256": "e09bf1bb91044356e6fc1a056a07480bba693495b11ac0286054aa1ecd2bb2a7"
+  },
+  "formal_part": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\peacetime-held-equivalence-formal79\\FORMAL-PART01.json",
+    "bytes": 2046,
+    "sha256": "c9f3d0151f6981b0a1d46d928143c7c5f8160035eeabbfc1c985ded132117175"
+  },
+  "source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\peacetime-held-equivalence-independent-review79\\ACTUAL-OWNERSHIP-CONTRACT-AND-DRAFT01.json",
+    "bytes": 11358,
+    "sha256": "128798260a78aa227008d07a2da46c6e087af4fb2aa31520dc3393df37843794"
+  },
+  "qualified_software": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line79\\peacetime-held-equivalence01\\native-first01\\QUALIFIED-SOFTWARE01.json",
+    "bytes": 112938,
+    "sha256": "48c91a9be8d2bcfe99350ae57bd32fde8c196f023245673f081bf1781ce2e252"
+  },
+  "source_owner": "/root/m6_continue",
+  "formal_owner": "/root/java_continue",
+  "software": {
+    "changed_TU": 1,
+    "CF": 5,
+    "seconds": 7.4723831,
+    "compiler_exit": 0,
+    "all_shapes_equal": true,
+    "new_type_field_method_API": false,
+    "released": true,
+    "new_test_old_green_or_other_production_recompiled": false
+  },
+  "formal_closure_comparison": "Exact current consumer beforeimage and aftercandidate. DriverPlanningEvidence whitespace-only variance; installed held-verifier binding same, unrelated formal historical-archive wiring retained.",
+  "not_claimed": [
+    "fresh actual scheme proof",
+    "runtime loading",
+    "useful completed scheme",
+    "M6/M7 or G2 completion",
+    "declaration execution",
+    "speed or saved days"
+  ]
+}
