@@ -1,0 +1,102 @@
+{
+  "schema": "xar.maintenance.bounded-replay-counts/v1",
+  "at_utc": "2026-11-06T12:08:39.487332+00:00",
+  "base_commit": "38f228dc0c41b04ce596633ccbc1efa9e11ddaa8",
+  "refs": {
+    "actual_source": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-cache-scope-diagnostics82\\SOURCE-READY01.json",
+      "bytes": 6309,
+      "sha256": "ea307834ed7b490d07404fffcefaecd32183ba609470a16aedd920df62e7f326"
+    },
+    "boundary_notes": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-cache-scope-diagnostics82\\SOURCE-BOUNDARY-NOTES01.json",
+      "bytes": 2465,
+      "sha256": "d504a97a8ec61569da77445bcbdc0783a73588d7e0e0f41c27411eef1f8281cd"
+    },
+    "software": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-cache-scope-diagnostics82\\native-first01\\QUALIFIED-SOFTWARE01.json",
+      "bytes": 117600,
+      "sha256": "cff1a35ed5fdf40e3ed03adae8d94896ba8f3986e8d8daf5d01880f2652d6488"
+    },
+    "source_review": {
+      "path": "D:\\ck3-state\\resume91-root\\replay-cache-scope-diagnostics-independent82\\TWO-SOURCE-32-COUNTS-CONTROL-FLOW-BUDGET01.json",
+      "bytes": 14468,
+      "sha256": "bd86c9337eb8978ad7df6aebfbd362f9bad0ad28810b9c1f07e0e65604f04dfa"
+    },
+    "formal_body_projection": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\replay-cache-scope-diagnostics82\\formal01\\SOURCE-FORMAL-PROJECTION01.json",
+      "bytes": 3381,
+      "sha256": "fb8c2275107619cfd2ef8bc222be645801f86cae7f13309c59e4ded5be14cafa"
+    },
+    "current_scope_binding": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\scope-and-public-catalog-current81\\SOURCE-READY81.json",
+      "bytes": 3976,
+      "sha256": "6c7a13429140aa3b6b0f408f347a909ff6efd4655419d369fae39c0ac97084fa"
+    },
+    "post81_actual_loader": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\persistent-replay-cache-handoff81\\ACTUAL-LOADER81.json",
+      "bytes": 6755,
+      "sha256": "9b204b860a6da63ac849dd12259fa53eb44e5797844ab5d7998b2fbf45b6f707"
+    },
+    "post81_first_metric": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\persistent-replay-cache-handoff81\\first-actual-timing-cache81\\FIRST-ACTUAL-PHASE81.json",
+      "bytes": 17328,
+      "sha256": "d32b4358ad57bc4c0802853402effa46105bd52a29ce22e243be116eb3cc5d09"
+    }
+  },
+  "actual_source_spans": 20,
+  "formal_owned_spans": 20,
+  "formal_difference": "Only CRLF/LF and whitespace-only empty lines; no Java text blocks. Actual/formal full token/string/line count/body projection identical. No repeated compilation for formatting; physical source hashes are distinct.",
+  "counter_ordinals": {
+    "0": "mode_enabled",
+    "1": "outer_scope_enter",
+    "2": "outer_scope_exit",
+    "3": "nested_scope_enter",
+    "4": "replay_calls",
+    "5": "no_cache_scope_calls",
+    "6": "active_scope_calls",
+    "7": "empty_map_calls",
+    "8": "reference_miss_calls",
+    "9": "native_bytes_miss_calls",
+    "10": "manifest_bytes_miss_calls",
+    "11": "driver_bytes_miss_calls",
+    "12": "complete_key_match_calls",
+    "13": "returned_hits",
+    "14": "strict_rebuild_calls",
+    "15": "non_complete_results",
+    "16": "insertions",
+    "17": "over_retained_byte_limit",
+    "18": "entry_evictions",
+    "19": "byte_evictions",
+    "20": "already_disabled_calls",
+    "21": "head_object_changes",
+    "22": "persisted_ref_changes",
+    "23": "post_point_failures",
+    "24": "point_probe_IO",
+    "25": "owner_gate_calls",
+    "26": "owner_gate_failures",
+    "27": "replay_runtime_failures",
+    "28": "new_point_disables",
+    "29": "changed_head_same_sequence_digest",
+    "30": "changed_head_different_sequence_digest",
+    "31": "archive_decoder_same_instance"
+  },
+  "counter_semantics": "Slots0/31 are flags; other counts are overlapping events, never elapsed/CPU times. Scope entry/exit includes failed operations; owner calls include decode checks. Quota evictions alone do not prove later reuse misses.",
+  "four_output_limit": "Per Loader class generation, at most4 count arrays after Core.withBorrowed normally returns and closes its own writer scope. actual.released may subsequently rethrow a completed read failure. All ordinary timing summaries continue after this limit.",
+  "preserved": "Owner/hash/archive load/getter checks, original guards, exact cache predicates, post-head identity short-circuit to persistedHead, original error/cause/interruption behavior. No writer/cache/point eligibility changed by diagnostics.",
+  "output_budget": {
+    "canonical_bytes": 7881,
+    "including_LF": 7882,
+    "canonical_cap": 8192,
+    "remaining_body_bytes": 311
+  },
+  "software": "Only2changedTU7CF0/5.5785144s, Loader1+Root6, no new named app type; full resource close. No Test/old green/extra sampling/HTTP.",
+  "actual_post81": "r52 same-source loader established; OBS95.4752032/2returns and planning146.8917335 inclusive of47.271s HTTP. Not an A/B improvement. Actual cache hit/miss count still absent at this cut.",
+  "not_claimed": [
+    "P082 actual installation/output/hit rate or speed",
+    "a new Root/lease/authority",
+    "four wholly successful business works",
+    "a global log limit across reloads",
+    "physical formal source byte identity or separate compiled formal image"
+  ]
+}

@@ -60,6 +60,7 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         long[] timing=core.writer().hasCurrentThreadWriterScope()?null:
                 new long[PHASE_OFFSET+5*PHASE_COUNT];
         long started=timing==null?0L:System.nanoTime();boolean coreReturned=false;
+        boolean replayDiagnostics=timing!=null&&beginReplayDiagnostics();
         try {
             ScopeExit<T> actual=core.withBorrowed(()->{
                 if(timing!=null)timing[1]=System.nanoTime()-started;
@@ -81,7 +82,8 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         } finally {
             // Normal return of this own-scope Core call proves its Windows lock close succeeded.
             // Core throws (including close failure), and inherited scopes, deliberately emit nothing.
-            if(timing!=null&&coreReturned){timing[0]=System.nanoTime()-started;logMethodTiming(timing);}
+            if(timing!=null&&coreReturned){timing[0]=System.nanoTime()-started;logMethodTiming(timing,finishReplayDiagnostics(replayDiagnostics,true));}
+            else finishReplayDiagnostics(replayDiagnostics,false);
         }
     }
     @FunctionalInterface interface PublicationFlush { Optional<Published> flush()throws IOException; }
@@ -230,7 +232,22 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         finally {timing[13]+=System.nanoTime()-started;}
     }
     /** Inclusive method wall times only; called once after a normally released own writer scope. */
-    private static void logMethodTiming(long[] timing) {
+    private boolean beginReplayDiagnostics() {
+        try { return core.frameLoader().beginReplayDiagnostics(); }
+        catch(Throwable diagnosticFailure) { return false; }
+    }
+    private long[] finishReplayDiagnostics(boolean active,boolean completed) {
+        if(!active)return null;
+        try {
+            var loader=core.frameLoader();long[] counts=loader.finishReplayDiagnostics(completed);
+            if(counts!=null) {
+                try { counts[31]=core.archive().scopedDriverDecoder()==loader?1:0; }
+                catch(Throwable diagnosticFailure) { }
+            }
+            return counts;
+        } catch(Throwable diagnosticFailure) { return null; }
+    }
+    private static void logMethodTiming(long[] timing,long[] replayDiagnostics) {
         try {
             ObjectNode row=StrictJson.object().put("schema","xar.java-planning-method-timing/v1")
                     .put("emitted_at_epoch_ms",System.currentTimeMillis())
@@ -258,6 +275,7 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
                         .put("sample_count",timing[offset]).put("return_count",timing[offset+1])
                         .put("failed_count",timing[offset+2]).put("interrupted_count",timing[offset+3]).put("elapsed_ns",timing[offset+4]);
             }
+            if(replayDiagnostics!=null){var counts=row.putArray("driver_replay_counts_v1");for(long count:replayDiagnostics)counts.add(count);}
             byte[] canonical=StrictJson.canonical(row,8192);
             System.out.write(canonical);System.out.write(10);System.out.flush();
         } catch(Throwable ignored) {
