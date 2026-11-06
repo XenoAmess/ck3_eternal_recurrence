@@ -211,6 +211,7 @@ public final class GovernancePolicies {
                     && new IntegerValue(request.before().frame().identity().dateRaw()).equals(applied.get("next_turn_date_raw")))
                 detail = detail.with("council_receipt_consumed", applied);
             List<CouncilSelection.Position> presentRoles = null;
+            CouncilSelection.Decision consumedNoChange = null;
             if (state.council().orElseThrow().latest().isPresent() && state.council().orElseThrow().latest().orElseThrow().outcome() == org.xar.ck3.control.application.action.ActionReceipt.Outcome.APPLIED_CONFIRMED) {
                 var receipt = state.council().orElseThrow().latest().orElseThrow();
                 var consumption = GovernanceReceipts.consume(receipt, request, Optional.empty(), false);
@@ -229,6 +230,9 @@ public final class GovernancePolicies {
                         .with("current_root", root.original()).with("current_query", query.original()));
                 presentRoles = root.seats().stream().map(Seat::position).toList();
                 detail = projectJobProgress(request, detail, root);
+                // Same evaluate/frame/role, already joined to the independent root. No command can use this reuse.
+                var consumedDecision = CouncilSelection.choose(query);
+                if (consumedDecision.outcome() == CouncilSelection.Outcome.NO_CHANGE) consumedNoChange = consumedDecision;
             }
             for (CouncilSelection.Position role : CouncilSelection.Position.values()) {
                 if (role != CouncilSelection.Position.STEWARD) {
@@ -241,9 +245,14 @@ public final class GovernancePolicies {
                     }
                     if (!presentRoles.contains(role)) continue;
                 }
-                Read<CouncilSelection.Query> read = supplier.council(request, role);
-                if (read instanceof Unavailable<CouncilSelection.Query> unavailable) return technicalRead(request, previous, state, detail, unavailable, role);
-                var query = ((Known<CouncilSelection.Query>) read).value(); var decision = CouncilSelection.choose(query);
+                CouncilSelection.Query query; CouncilSelection.Decision decision;
+                if (consumedNoChange != null && consumedNoChange.original().position() == role) {
+                    decision = consumedNoChange; query = decision.original();
+                } else {
+                    Read<CouncilSelection.Query> read = supplier.council(request, role);
+                    if (read instanceof Unavailable<CouncilSelection.Query> unavailable) return technicalRead(request, previous, state, detail, unavailable, role);
+                    query = ((Known<CouncilSelection.Query>) read).value(); decision = CouncilSelection.choose(query);
+                }
                 complete &= query.available(); detail = detail.with("council_" + role.name().toLowerCase(java.util.Locale.ROOT) + "_query", query.original());
                 if (decision.outcome() == CouncilSelection.Outcome.ASSIGN_REQUIRED || decision.outcome() == CouncilSelection.Outcome.REPLACE_REQUIRED)
                     return selectedCouncil(request, new Draft(previous.policy(), previous.phase(), previous.reason(), previous.kind(), previous.command(), previous.purpose(), previous.domain(), detail), decision, false);

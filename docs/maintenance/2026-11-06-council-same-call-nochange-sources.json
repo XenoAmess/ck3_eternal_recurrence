@@ -1,0 +1,129 @@
+{
+  "schema": "xar.owner.council-nochange-same-evaluate-source-index/v1",
+  "at_utc": "2026-11-06T04:49:37.867459+00:00",
+  "runtime_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\SOURCE-READY01.json",
+    "bytes": 1848,
+    "sha256": "3cb311adca6f59e7bd48567ba292706bca86fa643eae83e6e0c317bbfd6354b2"
+  },
+  "rows": [
+    {
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\council-construction-current68\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\governance\\GovernancePolicies.java",
+        "bytes": 40712,
+        "sha256": "2a0e31b2ee295119f20a78890e96938fff1f4c741b9ef81d496381c26ce31c36"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\governance\\GovernancePolicies.java",
+        "bytes": 41399,
+        "sha256": "490861fe78608f14b91f34df0bc0c0c63e297f07d70591d9ba05649685754f8b"
+      },
+      "part": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\GovernancePolicies-PART01.json",
+        "bytes": 2780,
+        "sha256": "6c8d667549678eeaf72fba9636ba77d665fee6e1c05df8385f01c983f3760b4b"
+      },
+      "spans": 3
+    }
+  ],
+  "raw_whole_inverse_current": true,
+  "formal_whole_inverse_head": true,
+  "formal_before_head": "d8a47bd3948a9e533fba6271aee36c3389c1783e",
+  "no_formal_only_source_merge_difference": true,
+  "qualified_production": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-first01\\QUALIFIED-SOFTWARE01.json",
+    "bytes": 168360,
+    "sha256": "67e7d1ecb0c41ccf5d61cb5b8215734c80dc2a807ababb4df71e01f23deff945"
+  },
+  "new_test_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\TEST-SOURCE-READY01.json",
+    "bytes": 2248,
+    "sha256": "bd2f513698ef5098aae89a1cbcca3777185ea2455906ed623491d69a1c9e5b87"
+  },
+  "helper_current_formal_byte_exact": true,
+  "helper_qualification_scope": "Only required existing synthetic DATA helper dependency compiled, not an old test run.",
+  "new_test_actual_phases": {
+    "test": {
+      "actual": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-test-first01\\actual\\test\\ACTUAL.json",
+        "bytes": 1788,
+        "sha256": "c51cff3a0dfa17c7dacba7781254c183fa5523774c5163908e850813aad57f47"
+      },
+      "post": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-test-first01\\actual\\test\\POST.json",
+        "bytes": 413,
+        "sha256": "9a36976431cc2dec428626b4674867d6b04e4f8a01f40e8aef45c35a96772706"
+      },
+      "fence": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-test-first01\\actual\\test\\RELEASE-FENCE.json",
+        "bytes": 1143,
+        "sha256": "0b212f9959e95114d78a5ee1efbf1b8f2701441be0ff2c5ac4915b9d778f9b8a"
+      },
+      "close": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-test-first01\\actual\\test\\MANAGED-CLOSE.json",
+        "bytes": 237,
+        "sha256": "2f17dba43566b0805522f3889bceb60e69daf4d97e04e17ed24b92152aec7464"
+      }
+    },
+    "junit": {
+      "actual": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-test-first01\\actual\\junit\\ACTUAL.json",
+        "bytes": 1525,
+        "sha256": "e0ec56741fc9eb5dfe53094ff8c130235f62c160f81c2628759d3edef0536c65"
+      },
+      "post": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-test-first01\\actual\\junit\\POST.json",
+        "bytes": 1270,
+        "sha256": "8adfbe42f33ee87234ac5b2992f150f5a28990f47d3bb4d87e30c6ff569aa6d7"
+      },
+      "fence": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-test-first01\\actual\\junit\\RELEASE-FENCE.json",
+        "bytes": 1149,
+        "sha256": "e39abde0c33999a69ae2ebd9efe1ff63974a6153fa96cf99234ac7294bb3098e"
+      },
+      "close": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-test-first01\\actual\\junit\\MANAGED-CLOSE.json",
+        "bytes": 238,
+        "sha256": "bb1ffca35247f42e4913f601f7ab761d3ed821066cbbb0330b6e94074aa5aff3"
+      }
+    }
+  },
+  "new_test_xml": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\native-test-first01\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 38874,
+    "sha256": "5149738634d3895fdcbed1c498d718eb4bbe8ae8745c25629a5b47849c6a2bf4"
+  },
+  "first_results": {
+    "production_translation_units": 1,
+    "production_classes": 7,
+    "production_exit": 0,
+    "production_seconds": 4.8911289,
+    "new_test_and_required_helper_translation_units": 2,
+    "test_classes": 5,
+    "test_compile_exit": 0,
+    "test_compile_seconds": 7.0566313,
+    "test_methods_run": 1,
+    "passes": 1,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "test_run_seconds": 5.2969942,
+    "old_tests_run": 0,
+    "production_test_recompile": 0
+  },
+  "model106_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\council-same-call-nochange-reuse72\\MODEL-REVIEW106-01.json",
+    "bytes": 1910,
+    "sha256": "0d635af56137be6f6d75004706232a691e226f4138f1906c7025e19ada420953"
+  },
+  "independent_source": {
+    "path": "D:\\ck3-state\\resume91-root\\council-same-call-nochange-independent-review72\\CANDIDATE01-THREE-SPANS-SOURCE-REVIEW01.json",
+    "bytes": 5930,
+    "sha256": "44e5ac587e4e76314b24ac59236a5127463800b198b350b9531ba129d485f1ec"
+  },
+  "actual_Runtime_adoption": false,
+  "actual_reuse_branch_observed": false,
+  "speed_improvement_proven": false,
+  "new_Save_credit": false,
+  "no_Game_GET_Csource_or_ledger_changes": true
+}
