@@ -19,6 +19,7 @@ import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader;
+import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts.Head;
@@ -49,7 +50,7 @@ final class DriverCapturedReplayScope81Test {
          "active_wars":[],"player_armies":[],"diagnostics":{"original":"retained"}}
         """;
 
-    @Test void exactOriginalRebuildsStayInsideTheirOwnerPointAndScope() throws Exception {
+    @Test void strictResultsStayFreshWhileDriverDecodeReuseStaysScoped() throws Exception {
         Fixture f = new Fixture();
         var strict = f.read();
         assertEquals(2, OpportunityJson.array(strict.semantic().get("native_command_history"), "history").size());
@@ -59,9 +60,10 @@ final class DriverCapturedReplayScope81Test {
         assertNotSame(strict, f.read());
         f.events.clear();
         var first = new AtomicReference<DriverObservationAssembler.Complete>();
+        var parsedInside = new AtomicReference<DriverStateSnapshot.Complete>();
         f.loader.inCompleteDriverDecodeScope(f.owner, f.session, f.archive, same -> {
             var one = f.read(); first.set(one);
-            assertEquals(strict, one); assertSame(one, f.read());
+            assertEquals(strict, one); assertNotSame(one, f.read());
             assertEquals(List.of("manifest", "native", "driver", "getter", "manifest", "native", "driver", "getter"), f.events);
             assertArrayEquals(DriverJson.encode(strict.semantic()), DriverJson.encode(one.semantic()));
             assertEquals(strict.identity(), one.identity()); assertEquals(strict.originalEvidence(), one.originalEvidence());
@@ -69,60 +71,56 @@ final class DriverCapturedReplayScope81Test {
             var oldRef = f.nativeRef;
             f.nativeRef = new ExactRef("memory/other-native-role.bin", oldRef.bytes(), oldRef.sha256());
             var changedRole = f.read(); assertNotSame(one, changedRole); assertEquals(f.nativeRef, changedRole.originalEvidence());
-            f.nativeRef = oldRef; assertSame(one, f.read());
+            f.nativeRef = oldRef; assertNotSame(one, f.read());
             var oldManifest = f.manifest; var oldManifestRef = f.manifestRef;
             f.useManifest(RawJson.fullMaterial(DriverJson.encode(DriverJson.object(oldManifest.bytes(), 65536)
                     .with("original_semantic_fields", new OpportunityJson.Obj(Map.of("retained_marker", new OpportunityJson.Text("changed")))))));
             var changedProjection = f.read(); assertNotSame(one, changedProjection);
             assertEquals(new OpportunityJson.Text("changed"), changedProjection.semantic().get("retained_marker"));
             assertFalse(changedProjection.semantic().equals(one.semantic()));
-            f.manifest = oldManifest; f.manifestRef = oldManifestRef; assertSame(one, f.read());
-            // Exercise bounded retention with valid differently projected originals, not a forged result.
-            for (int i = 0; i < 17; i++) {
-                f.useManifest(RawJson.fullMaterial(DriverJson.encode(DriverJson.object(oldManifest.bytes(), 65536)
-                        .with("original_semantic_fields", new OpportunityJson.Obj(Map.of("retained_marker", new OpportunityJson.Text("entry-" + i)))))));
-                assertEquals(new OpportunityJson.Text("entry-" + i), f.read().semantic().get("retained_marker"));
-            }
-            f.manifest = oldManifest; f.manifestRef = oldManifestRef;
-            var afterEviction = f.read(); assertNotSame(one, afterEviction); assertEquals(strict, afterEviction);
-            assertSame(afterEviction, f.read());
-            f.head.set(head()); // Same public sequence/digest/ref, different actual object: permanently conservative miss.
-            var afterPoint = f.read(); assertNotSame(afterEviction, afterPoint); assertNotSame(afterPoint, f.read());
+            f.manifest = oldManifest; f.manifestRef = oldManifestRef; assertNotSame(one, f.read());
+            // Existing strict Driver parsing remains its own bounded same-scope DATA optimization.
+            var parsed = f.loader.decodeCompleteDriverBytes(f.driver.bytes()); parsedInside.set(parsed);
+            assertSame(parsed, f.loader.decodeCompleteDriverBytes(f.driver.bytes()));
+            assertArrayEquals(f.driver.bytes(), parsed.encode());
+            f.head.set(head()); // No extra Head-point probe is needed when no Complete result is retained.
+            var afterPoint = f.read(); assertNotSame(one, afterPoint); assertNotSame(afterPoint, f.read());
             return null;
         });
         assertNotSame(first.get(), f.read());
+        assertNotSame(parsedInside.get(), f.loader.decodeCompleteDriverBytes(f.driver.bytes()));
         f.loader.inCompleteDriverDecodeScope(f.owner, f.session, f.archive, same -> {
-            var fresh = f.read(); assertSame(fresh, f.read());
+            var fresh = f.read(); assertNotSame(fresh, f.read());
             f.persisted.set(new ExactRef("memory/new-head.json", 1, "b".repeat(64)));
             var changed = f.read(); assertNotSame(fresh, changed); assertNotSame(changed, f.read()); return null;
         });
         f.loader.inCompleteDriverDecodeScope(f.owner, f.session, f.archive, same -> {
-            // Head changes inside the first strict decode callback: it cannot prime at its new point.
+            // A changed Head does not turn original strict DATA into a retained result or authority.
             f.ownerAction.set(() -> f.head.set(head()));
             var crossed = f.read(); assertEquals(strict, crossed); assertNotSame(crossed, f.read());
             var again = f.read(); assertNotSame(again, f.read()); return null;
         });
         f.loader.inCompleteDriverDecodeScope(f.owner, f.session, f.archive, same -> {
-            var one = f.read(); assertSame(one, f.read());
+            var one = f.read(); assertNotSame(one, f.read());
             var sentinel = new IllegalStateException("DATA owner no longer eligible"); f.ownerFailure.set(sentinel);
             assertSame(sentinel, assertThrows(IllegalStateException.class, f::read)); f.ownerFailure.set(null);
             var after = f.read(); assertEquals(strict, after); assertNotSame(one, after); assertNotSame(after, f.read()); return null;
         });
         f.loader.inCompleteDriverDecodeScope(f.owner, f.session, f.archive, same -> {
-            var one = f.read(); assertSame(one, f.read());
+            var one = f.read(); assertNotSame(one, f.read());
             f.headFailure.set(new IOException("DATA optimization freshness unavailable"));
             var after = f.read(); assertEquals(strict, after); f.headFailure.set(null);
             assertNotSame(one, after); assertNotSame(after, f.read()); return null;
         });
         f.loader.inCompleteDriverDecodeScope(f.owner, f.session, f.archive, same -> {
-            var one = f.read(); assertSame(one, f.read());
+            var one = f.read(); assertNotSame(one, f.read());
             byte[] original = f.nativeBytes.clone(); f.nativeBytes[0] ^= 1;
             assertEquals("archived native framing/manifest differs", assertThrows(ContractViolationException.class, f::read).getMessage());
             f.nativeBytes = original;
             var after = f.read(); assertEquals(strict, after); assertNotSame(one, after); assertNotSame(after, f.read()); return null;
         });
         f.loader.inCompleteDriverDecodeScope(f.owner, f.session, f.archive, same -> {
-            var one = f.read(); assertSame(one, f.read());
+            var one = f.read(); assertNotSame(one, f.read());
             RawJson original = f.driver;
             f.driver = RawJson.fullMaterial(new String(original.bytes(), StandardCharsets.UTF_8).replace("campaign-original", "corrupt-original").getBytes(StandardCharsets.UTF_8));
             assertEquals("archived complete Driver exact bytes/SHA differ", assertThrows(ContractViolationException.class, f::read).getMessage());
@@ -135,19 +133,24 @@ final class DriverCapturedReplayScope81Test {
         assertEquals(List.of("manifest", "native"), f.events.subList(readsBefore, f.events.size())); f.manifestRef = originalRef;
         var abort = new IOException("DATA operation aborted");
         var abortedValue = new AtomicReference<DriverObservationAssembler.Complete>();
+        var abortedDriver = new AtomicReference<DriverStateSnapshot.Complete>();
         assertSame(abort, assertThrows(IOException.class, () -> f.loader.inCompleteDriverDecodeScope(f.owner, f.session, f.archive, same -> {
-            var one = f.read(); abortedValue.set(one); assertSame(one, f.read()); throw abort;
+            var one = f.read(); abortedValue.set(one); assertNotSame(one, f.read());
+            var parsed = f.loader.decodeCompleteDriverBytes(f.driver.bytes()); abortedDriver.set(parsed);
+            assertSame(parsed, f.loader.decodeCompleteDriverBytes(f.driver.bytes())); throw abort;
         })));
         assertNotSame(abortedValue.get(), f.read());
+        assertNotSame(abortedDriver.get(), f.loader.decodeCompleteDriverBytes(f.driver.bytes()));
         f.loader.inCompleteDriverDecodeScope(f.owner, f.session, f.archive, same -> {
-            var one = f.read(); assertNotSame(abortedValue.get(), one); assertSame(one, f.read());
+            var one = f.read(); assertNotSame(abortedValue.get(), one); assertNotSame(one, f.read());
             var foreign = f.newSession();
             assertEquals("unissued foreign DATA Session", assertThrows(IllegalStateException.class,
                     () -> f.loader.inCompleteDriverDecodeScope(f.owner, foreign, f.archive, ignored -> { throw new AssertionError("foreign Session operation"); })).getMessage());
-            assertSame(one, f.read()); return null;
+            assertNotSame(one, f.read()); return null;
         });
         assertTrue(f.ownerChecks.get() > 10); assertEquals(0, f.authorityCalls.get());
-        System.out.println("CAPTURED_REPLAY_DATA_PASS fullResult/readsAndGetterEachCall/changedProjection/nativeRole/corruption/owner/preAndPostPoint/permanentMiss/boundedEviction/abortCleanup/foreignSession; actualRoot=false actualStorage=false actualRuntimeHit=false");
+        assertEquals(0, f.headReads.get()); assertEquals(0, f.persistedReads.get());
+        System.out.println("STRICT_REPLAY_DATA_PASS freshCompleteEveryCall/fullOriginalResult/readsAndGetterEachCall/changedInputs/corruption/ownerIdentity/originalDriverReuseAndCleanup/noAddedHeadProbes; actualRoot=false actualStorage=false actualRuntimeBenefit=false");
     }
 
     private static final class Fixture {
@@ -158,6 +161,7 @@ final class DriverCapturedReplayScope81Test {
         final AtomicReference<IOException> headFailure = new AtomicReference<>();
         final AtomicReference<Runnable> ownerAction = new AtomicReference<>();
         final AtomicInteger ownerChecks = new AtomicInteger(), authorityCalls = new AtomicInteger();
+        final AtomicInteger headReads = new AtomicInteger(), persistedReads = new AtomicInteger();
         final List<String> events = new ArrayList<>();
         final DriverFrameEvidenceLoader loader = new DriverFrameEvidenceLoader(new DriverObservationAssembler(), true);
         final ContinuityStorePort.Session session = newSession();
@@ -195,8 +199,8 @@ final class DriverCapturedReplayScope81Test {
         }
         ContinuityStorePort.Session newSession() {
             return (ContinuityStorePort.Session) Proxy.newProxyInstance(ContinuityStorePort.Session.class.getClassLoader(), new Class<?>[]{ContinuityStorePort.Session.class}, (proxy, method, arguments) -> {
-                if (method.getName().equals("head")) { IOException failure = headFailure.get(); if (failure != null) throw failure; return head.get(); }
-                if (method.getName().equals("persistedHead")) return persisted.get();
+                if (method.getName().equals("head")) { headReads.incrementAndGet(); IOException failure = headFailure.get(); if (failure != null) throw failure; return head.get(); }
+                if (method.getName().equals("persistedHead")) { persistedReads.incrementAndGet(); return persisted.get(); }
                 authorityCalls.incrementAndGet(); throw new AssertionError("unissued DATA Session cannot call " + method.getName());
             });
         }

@@ -1,0 +1,100 @@
+{
+  "schema": "xar.maintenance.strict-replay-withdrawal-evidence/v1",
+  "at_utc": "2026-11-06T13:24:00.586456+00:00",
+  "base_commit": "718e6c8791208e188db0ec2ad4487476becab7b8",
+  "refs": {
+    "source_ready": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\strict-replay-retention-withdrawal84\\SOURCE-READY01.json",
+      "bytes": 3204,
+      "sha256": "d5f0718c905d349e2d88fd9688c95f91294a7e5fd207582dfdc15b801e98fc80"
+    },
+    "test_source": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\strict-replay-retention-withdrawal84\\TEST-SOURCE-READY01.json",
+      "bytes": 8411,
+      "sha256": "819aafaaf06117909d5623be4f35ca851650669dfe83b24da2814e9059518940"
+    },
+    "software": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\strict-replay-retention-withdrawal84\\native-first01\\QUALIFIED-SOFTWARE-AND-AFFECTED01.json",
+      "bytes": 59153,
+      "sha256": "e2ab5b655fd8dda23d9b60668c0c10ea1e1e373ce8e9d63cd877669571355d4b"
+    },
+    "source_review": {
+      "path": "D:\\ck3-state\\resume91-root\\strict-replay-withdrawal-independent84\\SIX-SPAN-STRICT-WITHDRAWAL-AND-AFFECTED-TEST-SOURCE01.json",
+      "bytes": 10663,
+      "sha256": "ec98dbef648e4526233d28961890ed7a2a6c6f16b475f764bed0b8917677f588"
+    },
+    "formal_projection": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\strict-replay-retention-withdrawal84\\SOURCE-FORMAL-PROJECTION01.json",
+      "bytes": 1482,
+      "sha256": "1cad3d29565eb16df6d2a8d9ef895736e536772ea138b1ea3010cbb589631018"
+    },
+    "actual_counts_1": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\replay-sway-diagnostics-cohort82\\first-actual-counts82\\FIRST-ACTUAL-COUNTS82.json",
+      "bytes": 17297,
+      "sha256": "45e14190f9399846f6a75e6ff4b6823ebac63e3f2d27cb27b208251fd0ebb09c"
+    },
+    "actual_counts_2": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\replay-sway-diagnostics-cohort82\\actual-counts-02\\COUNTS.json",
+      "bytes": 9012,
+      "sha256": "d2b8f9e516b861c3e91c06b4a799570b17e72b54d26937e6f5c47f81fb564d26"
+    },
+    "actual_counts_3": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\replay-sway-diagnostics-cohort82\\actual-counts-03\\COUNTS.json",
+      "bytes": 9011,
+      "sha256": "adc47e446fd1cb96f752c870e766b6f4688090dacd6623a088af7a196cdf4809"
+    },
+    "actual_counts_4": {
+      "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\replay-sway-diagnostics-cohort82\\actual-counts-04\\COUNTS.json",
+      "bytes": 9010,
+      "sha256": "399c96c18181cd0b14eab2fe754e29238bd72ddbe2afd5a3407e4afcb1dd005a"
+    }
+  },
+  "owned_spans": 6,
+  "actual_reason": "Four true r53 windows show282strict original replays, zeroComplete hits,141insertions,140reference misses, one real head/persisted change then140disabled calls. Scope and decoder instance are active. Eviction counters111/24 overlap; no final entry count or global input uniqueness inferred.",
+  "withdrawal": "Always return the existing strict original-wire replay result. Remove only P081 wholeComplete retention/private3bytekey copies/lookup/extra optimization-only head probes. Existing Driver decoder4entries/64MiB, all original archive/source/hash/owner/current checks, exception identity and scope finally remain.",
+  "meaningful_case": "The existing single case now requires freshComplete results, whole bytes/identity/ref/callback preservation, original owner/SHA/framing failures, same-scope parsedDriver identity reuse and normal/IOException cleanup. No added head/persist probes in the unissued DATA fixture. Old17-entry retired-cache loop removed; no new matrix.",
+  "diagnostic_active_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    14,
+    25,
+    26,
+    27,
+    31
+  ],
+  "diagnostic_retired_zero_indices": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    28,
+    29,
+    30
+  ],
+  "diagnostic_flags": "0 remains scopedDriverDecode enabled,31 sameArchiveDecoder; neither asserts Complete-result caching. Retired15=0 no longer proves absence of Incomplete. Original4Core-return log cap unchanged.",
+  "software": "OnlyLoader1TU1CF0/3.4222248s; changedTest1TU2CF0/5.0025994s and onlyrenamed1P/3.9652338s, oldReader/Root/Policy/interface/support exact reused; all resources released. Formal source is wholeexact, no duplicate formal green.",
+  "not_claimed": [
+    "Actual postwithdrawal latency improvement",
+    "a finer pure-projection cache or new TTL/quota",
+    "all141 keys globally distinct",
+    "real Root/physical/Native/v4 live qualification from public DATA fixture"
+  ]
+}

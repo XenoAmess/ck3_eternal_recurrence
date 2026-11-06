@@ -22,12 +22,6 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     private final ThreadLocal<ContinuityStorePort.Session> driverSession = new ThreadLocal<>();
     private final ThreadLocal<LinkedHashMap<byte[], DriverStateSnapshot.Complete>> completeDrivers = new ThreadLocal<>();
     private final ThreadLocal<long[]> completeOriginalBytes = new ThreadLocal<>();
-    // Pure historical replay DATA only; original archive reads remain in the caller.
-    private static final int MAX_REPLAY_ENTRIES = 16;
-    private static final long MAX_REPLAY_ORIGINAL_BYTES = 64L * 1024 * 1024;
-    private final ThreadLocal<LinkedHashMap<Object[], DriverObservationAssembler.Complete>> completeReplays = new ThreadLocal<>();
-    private final ThreadLocal<long[]> replayOriginalBytes = new ThreadLocal<>();
-    private final ThreadLocal<Object[]> replayPoint = new ThreadLocal<>();
     // Diagnostics only. They never enable reuse, clear a cache, change a point, or supply authority.
     private static final java.util.concurrent.atomic.AtomicInteger REPLAY_DIAGNOSTIC_COMPLETIONS = new java.util.concurrent.atomic.AtomicInteger();
     private final ThreadLocal<long[]> replayDiagnostics = new ThreadLocal<>();
@@ -62,14 +56,11 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
         replayDiagnostic(1);
         var freshEntries = new LinkedHashMap<byte[], DriverStateSnapshot.Complete>(4, 0.75f, true);
         long[] freshBytes = new long[1];
-        var freshReplays = new LinkedHashMap<Object[], DriverObservationAssembler.Complete>(16, 0.75f, true);
         try {
             driverSession.set(session); completeDrivers.set(freshEntries); completeOriginalBytes.set(freshBytes);
-            completeReplays.set(freshReplays); replayOriginalBytes.set(new long[1]);
             return operation.read(archive);
         } finally {
             replayDiagnostic(2);
-            freshReplays.clear(); completeReplays.remove(); replayOriginalBytes.remove(); replayPoint.remove();
             freshEntries.clear(); completeDrivers.remove(); completeOriginalBytes.remove(); driverSession.remove();
         }
     }
@@ -100,111 +91,20 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
             entries.clear(); completeOriginalBytes.get()[0] = 0; throw failure;
         }
     }
-    /** Internally rebuilt DATA only: callers cannot provide a cached result or an already checked projection. */
+    /** Strict historical replay only. No complete result or additional input-key buffers are retained. */
     public DriverObservationAssembler.Result replayCompleteOriginals(org.xar.ck3.control.contracts.ExactRef manifestReference,
             org.xar.ck3.control.application.action.RawJson manifest, org.xar.ck3.control.application.action.RawJson fullDriver,
             byte[] framedNative, org.xar.ck3.control.contracts.ExactRef nativeReference) {
         replayDiagnostic(4);
-        var entries = completeReplays.get();
-        if (!scopedDriverDecode || entries == null || framedNative == null) {
-            replayDiagnostic(5);
-            return DriverObservationEvidenceReader.replayOriginalsWithScopedDriverDecode(manifestReference, manifest,
-                    fullDriver, framedNative, nativeReference, this);
-        }
-        replayDiagnostic(6);
+        if (scopedDriverDecode && driverSession.get() != null && completeDrivers.get() != null) replayDiagnostic(6);
+        else replayDiagnostic(5);
+        replayDiagnostic(14);
         try {
-            // The captured Reader reaches this at the original native-copy point, after its callbacks and bounds check.
-            byte[] nativeBytes = framedNative.clone();
-            Object[] before = beginReplayPoint();
-            byte[] manifestBytes = null, driverBytes = null;
-            Object[] matching = null;
-            boolean referenceSeen = false, nativeSeen = false, manifestSeen = false;
-            for (Object[] key : entries.keySet()) {
-                if (!Objects.equals(key[0], manifestReference) || !Objects.equals(key[1], nativeReference)) continue;
-                referenceSeen = true;
-                if (!Arrays.equals((byte[])key[4], nativeBytes)) continue;
-                nativeSeen = true;
-                // Only a previously accepted native/manifest can reach the Driver-byte comparison early.
-                if (manifestBytes == null) manifestBytes = manifest.bytes();
-                if (!Arrays.equals((byte[])key[2], manifestBytes)) continue;
-                manifestSeen = true;
-                if (driverBytes == null) driverBytes = fullDriver.bytes();
-                if (Arrays.equals((byte[])key[3], driverBytes)) { matching = key; break; }
-            }
-            if (matching == null) replayDiagnostic(entries.isEmpty() ? 7 : !referenceSeen ? 8 : !nativeSeen ? 9 : !manifestSeen ? 10 : 11);
-            else replayDiagnostic(12);
-            if (matching != null) {
-                RootGuardChecks.exact(manifestReference, manifestBytes);
-                RootGuardChecks.exact(nativeReference, nativeBytes);
-                RootGuardChecks.exact(DriverObservationEvidenceReader.currentDriverReference(manifestReference, manifest), driverBytes);
-                checkedDriverOwner(driverSession.get());
-                if (sameReplayPoint(before)) { replayDiagnostic(13); return entries.get(matching); }
-            }
-            // Preserve strict miss inputs and validation order; never recanonicalize or supply a caller's result.
-            replayDiagnostic(14);
-            var result = DriverObservationEvidenceReader.replayOriginalsWithScopedDriverDecode(manifestReference,
-                    manifest, fullDriver, nativeBytes, nativeReference, this);
-            if (!(result instanceof DriverObservationAssembler.Complete)) replayDiagnostic(15);
-            if (result instanceof DriverObservationAssembler.Complete complete && sameReplayPoint(before)) {
-                if (manifestBytes == null) manifestBytes = manifest.bytes();
-                if (driverBytes == null) driverBytes = fullDriver.bytes();
-                long bytes = (long)manifestBytes.length + driverBytes.length + nativeBytes.length;
-                if (bytes > MAX_REPLAY_ORIGINAL_BYTES) { replayDiagnostic(17); return result; }
-                long[] retained = replayOriginalBytes.get();
-                while (!entries.isEmpty() && (entries.size() >= MAX_REPLAY_ENTRIES
-                        || retained[0] + bytes > MAX_REPLAY_ORIGINAL_BYTES)) {
-                    if (entries.size() >= MAX_REPLAY_ENTRIES) replayDiagnostic(18);
-                    if (retained[0] + bytes > MAX_REPLAY_ORIGINAL_BYTES) replayDiagnostic(19);
-                    var oldest = entries.entrySet().iterator(); var removed = oldest.next();
-                    Object[] key = removed.getKey();
-                    retained[0] -= (long)((byte[])key[2]).length + ((byte[])key[3]).length + ((byte[])key[4]).length;
-                    oldest.remove();
-                }
-                entries.put(new Object[]{manifestReference, nativeReference, manifestBytes, driverBytes, nativeBytes}, complete);
-                retained[0] += bytes; replayDiagnostic(16);
-            }
-            return result;
+            return DriverObservationEvidenceReader.replayOriginalsWithScopedDriverDecode(manifestReference,
+                    manifest, fullDriver, framedNative, nativeReference, this);
         } catch (RuntimeException | Error failure) {
-            replayDiagnostic(27); disableReplayPoint(); throw failure;
+            replayDiagnostic(27); throw failure;
         }
-    }
-    /** Capture the actual point before replay; public matching metadata alone never grants DATA reuse. */
-    private Object[] beginReplayPoint() {
-        Object[] point = replayPoint.get();
-        if (point != null && point.length == 0) { replayDiagnostic(20); return null; }
-        try {
-            var same = driverSession.get(); var head = same.head(); var persisted = same.persistedHead();
-            if (point == null) {
-                point = new Object[]{head, persisted}; replayPoint.set(point); return point;
-            }
-            if (point[0] == head && point[1].equals(persisted)) return point;
-            if (point[0] != head) replayHeadDifference(point, head);
-            if (!point[1].equals(persisted)) replayDiagnostic(22);
-        } catch (IOException unavailable) {
-            replayDiagnostic(24);
-            // Only reuse eligibility failed; retain the original strict replay and its own error semantics.
-        }
-        disableReplayPoint(); return null;
-    }
-    private boolean sameReplayPoint(Object[] before) {
-        if (before == null || replayPoint.get() != before) return false;
-        try {
-            var same = driverSession.get();
-            var head = same.head();
-            if (before[0] == head) {
-                if (before[1].equals(same.persistedHead())) return true;
-                replayDiagnostic(22);
-            } else replayHeadDifference(before, head);
-        } catch (IOException unavailable) {
-            replayDiagnostic(24);
-            // A failed freshness probe cannot mint a new point or replace strict DATA validation.
-        }
-        replayDiagnostic(23); disableReplayPoint(); return false;
-    }
-    private void disableReplayPoint() {
-        Object[] point = replayPoint.get();
-        if (point == null || point.length != 0) replayDiagnostic(28);
-        completeReplays.get().clear(); replayOriginalBytes.get()[0] = 0; replayPoint.set(new Object[0]);
     }
     /** Begin only at an outer planning caller; at most four normally completed rounds per Loader generation. */
     public boolean beginReplayDiagnostics() {
@@ -232,16 +132,6 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
         try { driverOwnerGate.accept(session); }
         catch (RuntimeException | Error failure) { replayDiagnostic(26); throw failure; }
     }
-    /** Pure metadata comparison only, after the original object-identity refusal. No file or permission read. */
-    private void replayHeadDifference(Object[] point, org.xar.ck3.control.continuity.writer.WriterContracts.Head head) {
-        replayDiagnostic(21);
-        try {
-            if (replayDiagnostics.get() == null) return;
-            var previous = (org.xar.ck3.control.continuity.writer.WriterContracts.Head)point[0];
-            replayDiagnostic(previous.state().sequence() == head.state().sequence() && previous.digest().equals(head.digest()) ? 29 : 30);
-        } catch (Throwable diagnosticFailure) { }
-    }
-
     @Override public DriverObservationAssembler.Complete load(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
         var full = loadFull(basis, archive);
         var result = assembler.assemble(full.actual(), full.facts(), full.originalEvidence());
