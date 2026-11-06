@@ -1,0 +1,65 @@
+{
+  "schema": "xar.formal.retained-planning-borrow-source-index/v1",
+  "production_ready": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line75\\retained-borrow01\\owner-candidate01\\SOURCE-READY01.json",
+    "bytes": 4067,
+    "sha256": "8d1d2ce28a7ef83920fecc6dffca4269ef6838997a6375f66edf0edfaf534080"
+  },
+  "production_qualification": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line75\\retained-borrow01\\native-first01\\QUALIFIED-SOFTWARE01.json",
+    "bytes": 533136,
+    "sha256": "0463402b07c5b89bbdf9001592b0cfe0f6fd624e837456935f49f4cd34e88179"
+  },
+  "new_test_ready": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line75\\retained-borrow01\\owner-test01\\SOURCE-READY01.json",
+    "bytes": 3726,
+    "sha256": "b69bf8765704e65606c7093c7259005115498d2a0ae498179a8e66f2235359fa"
+  },
+  "new_test_qualification": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line75\\retained-borrow01\\native-test-first01\\QUALIFIED-TWO-NEW-DATA01.json",
+    "bytes": 75475,
+    "sha256": "bb3c39a19335a976415473a1f5af330c289bbfb4ff393b8bb2f7e5eb3c163347"
+  },
+  "formal_source_part": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\retained-planning-borrow-formal75\\FORMAL-SOURCE-PART01.json",
+    "bytes": 3948,
+    "sha256": "ffe72669bb9280df31c0245833b8c00111e5195c7f85151cc911bb5722b335ed"
+  },
+  "formal_test_part": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\retained-planning-borrow-formal75\\FORMAL-TEST-PART01.json",
+    "bytes": 1856,
+    "sha256": "c9b94206491a0e5d040528d957ea9ddbb95b43026188e05dafa92272a82ce834"
+  },
+  "independent_source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\retained-borrow-independent-review75\\SINGLE-METHOD-PERMISSION-AND-REGRESSION-DESIGN01.json",
+    "bytes": 16528,
+    "sha256": "a1d7c2de9e6ed0f7c9498ddcf4897b719f24cb5e3fbf81aad00bbba053e2a067"
+  },
+  "memory_fixture_addendum": {
+    "path": "D:\\ck3-state\\resume91-root\\retained-borrow-independent-review75\\EXISTING-REAL-PRODUCER-MEMORY-FIXTURE-ADDENDUM02.json",
+    "bytes": 5636,
+    "sha256": "f652c6085928debab668b23916f56f5b68e295f93f3eab3d9b0e602bf6664363"
+  },
+  "software": {
+    "production_TU": 1,
+    "production_classes": 38,
+    "production_seconds": 6.973255,
+    "support_TU": 1,
+    "support_classes": 1,
+    "support_seconds": 3.0087812,
+    "test_TU": 1,
+    "test_classes": 8,
+    "test_seconds": 6.8318132,
+    "only_new_methods_passed": 2,
+    "run_seconds": 5.430772,
+    "old_seven_methods_run": false,
+    "all_released": true
+  },
+  "not_claimed": [
+    "physical Root/Native qualification from memory fixture",
+    "completed activity",
+    "full M6/M7 acceptance",
+    "speed improvement",
+    "new SAVE_CONFIRMED"
+  ]
+}

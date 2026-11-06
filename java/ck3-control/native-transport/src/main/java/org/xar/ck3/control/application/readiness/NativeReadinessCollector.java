@@ -797,8 +797,12 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         require(actualWriter != null, "actual original writer observation authority is not installed");
         actualWriter.require(borrowed);
         PlanningReadScope active = planningReadScope.get();
-        require(active != null, "pure Driver/history consumer requires an already active actual collector lease");
-        return borrowedPlanningRead(active, borrowed, expected, deadline, work);
+        if (active != null) return borrowedPlanningRead(active, borrowed, expected, deadline, work);
+        PlanningRoundScope round = planningRoundScope.get();
+        require(round != null && round.borrowed == borrowed && round.captured != null
+                && heldReadScope.get() == null && publicPlanningScope.get() == null && firstCheckpointScope.get() == null,
+                "pure Driver/history consumer requires an already active actual collector lease");
+        return retainedPlanningRead(round, borrowed, expected, deadline, work);
     }
 
     /**

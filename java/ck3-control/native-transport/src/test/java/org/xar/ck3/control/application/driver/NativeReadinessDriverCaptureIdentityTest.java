@@ -168,6 +168,76 @@ final class NativeReadinessDriverCaptureIdentityTest {
         }
     }
 
+    @Test void retainedReadyRoundAdmitsTypedPreparationWithoutRecapture() throws Exception {
+        try(var f=new Fixture()) { f.round(()->{
+            var ready=f.ready();var captured=f.published;
+            var frame=f.collector.current(f.store.session,ready.request().before(),f.deadline,lease->lease.frame());
+            assertThrows(IllegalArgumentException.class,()->f.collector.requireHeldFrame(f.store.session,frame));
+            var request=new PlanningReadRequest(ready.request().before(),ready.request().source(),ready.request().sessionId(),
+                    new OperationKey("test-retained-prepare"),new Obj(Map.of()),f.deadline);
+            int reads=f.packets.reads;int writes=f.packets.writes;String head=f.store.session.head().digest();
+            var calls=new AtomicInteger();
+            var token=f.collector.currentHeldRead(f.store.session,request,lease->{
+                calls.incrementAndGet();
+                assertSame(frame,lease.frame());assertSame(captured,lease.driver());
+                f.collector.requireHeldFrame(f.store.session,lease.frame());
+                return "retained-prepare";
+            });
+            assertEquals("retained-prepare",token);assertEquals(1,calls.get());
+            assertThrows(IllegalArgumentException.class,()->f.collector.requireHeldFrame(f.store.session,frame));
+            assertEquals(reads,f.packets.reads,"retained borrow must not receive another packet");
+            assertEquals(writes,f.packets.writes,"retained borrow must not dispatch");
+            assertEquals(head,f.store.session.head().digest());return null;
+        }); }
+    }
+
+    @Test void retainedBorrowRequiresActualRoundAndPreservesFailureCleanup() throws Exception {
+        try(var f=new Fixture()) {
+            var ready=f.store.locked(same->{try{return f.ready();}catch(InterruptedException failure){
+                Thread.currentThread().interrupt();throw new IOException(failure);}});
+            int reads=f.packets.reads;var rejected=new AtomicInteger();
+            f.store.locked(same->{
+                var failure=assertThrows(IllegalArgumentException.class,()->f.collector.borrowCurrent(same,
+                        ready.request().before(),f.deadline,lease->{rejected.incrementAndGet();return null;}));
+                assertTrue(failure.getMessage().contains("already active actual collector lease"));return null;
+            });
+            f.round(()->{
+                var failure=assertThrows(IllegalArgumentException.class,()->f.collector.borrowCurrent(f.store.session,
+                        ready.request().before(),f.deadline,lease->{rejected.incrementAndGet();return null;}));
+                assertTrue(failure.getMessage().contains("already active actual collector lease"));return null;
+            });
+            assertEquals(0,rejected.get());assertEquals(reads,f.packets.reads);assertEquals(0,f.packets.writes);
+        }
+        try(var f=new Fixture()) { f.round(()->{
+            var ready=f.ready();var frame=f.collector.current(f.store.session,ready.request().before(),f.deadline,lease->lease.frame());
+            int reads=f.packets.reads;var rejected=new AtomicInteger();var foreign=new MemoryStore();
+            assertThrows(IllegalArgumentException.class,()->f.collector.borrowCurrent(foreign.session,ready.request().before(),
+                    f.deadline,lease->{rejected.incrementAndGet();return null;}));
+            var sentinel=new IOException("retained-borrow-sentinel");var callbacks=new AtomicInteger();
+            assertSame(sentinel,assertThrows(IOException.class,()->f.collector.borrowCurrent(f.store.session,
+                    ready.request().before(),f.deadline,lease->{callbacks.incrementAndGet();throw sentinel;})));
+            assertEquals(1,callbacks.get());
+            assertThrows(IllegalArgumentException.class,()->f.collector.requireHeldFrame(f.store.session,frame));
+            assertEquals("same-round",f.collector.borrowCurrent(f.store.session,ready.request().before(),f.deadline,lease->{
+                assertSame(frame,lease.frame());f.collector.requireHeldFrame(f.store.session,frame);return "same-round";
+            }));
+            assertThrows(IllegalArgumentException.class,()->f.collector.requireHeldFrame(f.store.session,frame));
+            f.store.head=MemoryStore.head(2);
+            assertThrows(IllegalArgumentException.class,()->f.collector.borrowCurrent(f.store.session,ready.request().before(),
+                    f.deadline,lease->{rejected.incrementAndGet();return null;}));
+            assertEquals(0,rejected.get());assertEquals(reads,f.packets.reads);assertEquals(0,f.packets.writes);return null;
+        }); }
+        try(var f=new Fixture()) { f.round(()->{
+            var ready=f.ready();var frame=f.collector.current(f.store.session,ready.request().before(),f.deadline,lease->lease.frame());
+            int reads=f.packets.reads;var calls=new AtomicInteger();
+            assertThrows(IllegalArgumentException.class,()->f.collector.borrowCurrent(f.store.session,
+                    ready.request().before(),f.deadline,lease->{calls.incrementAndGet();f.store.head=MemoryStore.head(2);return "must-not-escape";}));
+            assertEquals(1,calls.get());
+            assertThrows(IllegalArgumentException.class,()->f.collector.requireHeldFrame(f.store.session,frame));
+            assertEquals(reads,f.packets.reads);assertEquals(0,f.packets.writes);return null;
+        }); }
+    }
+
     private static byte[] bytes(String value){return value.getBytes(StandardCharsets.UTF_8);}
     private static final class Fixture implements AutoCloseable {
         final Instant deadline=Instant.now().plusSeconds(20);
