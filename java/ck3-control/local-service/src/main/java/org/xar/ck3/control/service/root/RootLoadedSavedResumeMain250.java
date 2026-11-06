@@ -39,8 +39,10 @@ public final class RootLoadedSavedResumeMain250 {
         Clock clock = Clock.systemUTC();
         ExactRef ownerDescriptorRef = argument(args, 0), requestRef = argument(args, 3);
         byte[] ownerDescriptorRaw = read(ownerDescriptorRef), requestRaw = read(requestRef);
-        ObjectNode request = StrictJson.object(StrictJson.parse(requestRaw, MAX), Set.of("schema", "machineId", "sourceRuntimeConfiguration", "newRuntimeConfiguration", "sourceConfirmation", "checkpointPair", "ownerDirectory"));
-        StrictJson.require("xar.java-loaded-saved-resume-request/v1".equals(StrictJson.text(request.get("schema"))), "resume request schema required");
+        var requestData=StrictJson.parse(requestRaw,MAX);
+        int mode=requestMode(requestData);
+        boolean passive=mode==2,preentry=mode!=0;
+        ObjectNode request=(ObjectNode)requestData;
         String machine = StrictJson.text(request.get("machineId"));
         ExactRef oldConfigRef = ExactRef.fromJson(request.get("sourceRuntimeConfiguration"));
         ExactRef newConfigRef = ExactRef.fromJson(request.get("newRuntimeConfiguration"));
@@ -83,15 +85,25 @@ public final class RootLoadedSavedResumeMain250 {
             });
             var source = RootJavaSavedBootstrap.qualify(oldCore, new NativeCheckpointFiles(), oldConfig.stateDirectory().resolve("checkpoints/attachments"), oldSourcePrepared.plan().pipeName(), pair, confirmation);
             emit(event(clock, "SOURCE_QUALIFIED").put("source_head_sequence", source.sourceHead().sequence()).put("confirmation_sequence", source.confirmation().sequence()).put("saved_date_raw", source.savedState().settledDateRaw()).put("saved_cycles", source.savedState().settledCycles()).put("new_saved_day_credit", 0));
-            newPrepared = RootOrdinaryRuntimeAssembly.prepareRetainedLoadedSaved(newConfig, clock, source);
+            newPrepared = preentry?RootOrdinaryRuntimeAssembly.prepareLoadedSaved(newConfig,clock,source)
+                    :RootOrdinaryRuntimeAssembly.prepareRetainedLoadedSaved(newConfig, clock, source);
             StrictJson.require(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(newPrepared.plan())).equals(NativeLaunchPlanCodec.toJson(ownerDescriptor.configuration())), "actual Prepared plan differs from exact owner descriptor");
             read(ownerDescriptorRef); read(requestRef); read(oldConfigRef); read(newConfigRef); read(pairRef); read(confirmationRef);
-            attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(newPrepared.plan(), ownerDescriptor.generation(), newPrepared.privatePermissions(), newConfig.maximumFramesPerOperation(), newConfig.maximumSubmissions()), clock.instant().plus(newConfig.operationTimeout()), newConfig.operationTimeout());
+            attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(newPrepared.plan(), ownerDescriptor.generation(),
+                    passive?java.util.List.of():newPrepared.privatePermissions(),
+                    passive?1:newConfig.maximumFramesPerOperation(),passive?1:newConfig.maximumSubmissions()),
+                    clock.instant().plus(passive?Duration.ofSeconds(30):newConfig.operationTimeout()),
+                    passive?Duration.ofSeconds(10):newConfig.operationTimeout());
             emit(event(clock, "ACTUAL_ATTACHMENT").put("attached_pid", attached.identity().pid()).put("attached_session", attached.sessionId()));
             Path evidenceRoot = newPrepared.plan().evidenceRoot().resolve("loaded-saved-" + java.util.UUID.randomUUID());
-            custody = RootProcessAttach.retainLoadedSaved(attached, ownerDescriptorRef, pair, evidenceRoot, clock.instant().plus(Duration.ofMinutes(10)));
+            custody = RootProcessAttach.retainLoadedSaved(attached, ownerDescriptorRef, pair, evidenceRoot,
+                    clock.instant().plus(passive?Duration.ofSeconds(30):Duration.ofMinutes(10)));
             emit(event(clock, "LOADED_CUSTODY_QUALIFIED").put("custody_evidence", custody.evidence().path()));
-            running = newPrepared.openRetainedLoadedSaved(attached, source, custody, clock.instant().plus(Duration.ofMinutes(10)));
+            if(passive) {
+                result=capturePassive(attached,custody,evidenceRoot,clock);
+            }else {
+            running = preentry?newPrepared.openLoadedSaved(attached,source,custody,clock.instant().plus(Duration.ofMinutes(10)))
+                    :newPrepared.openRetainedLoadedSaved(attached, source, custody, clock.instant().plus(Duration.ofMinutes(10)));
             var adoptedHead = running.core().writer().locked(same -> same.head());
             ObjectNode adopted = event(clock, "SAVED_ENTRY_ADOPTED");
             adopted.set("game", attached.generation().toJson());
@@ -113,6 +125,7 @@ public final class RootLoadedSavedResumeMain250 {
             ended.put("loop_terminal", terminal.stopReason().name()); ended.put("next_sequence", Long.toString(terminal.nextBatchSequence()));
             ended.put("business_exit_code", result); ended.put("game_stop_requested", false);
             terminal.failureDetail().ifPresent(value -> ended.put("loop_detail", value)); emit(ended);
+            }
         } catch (Exception actual) {
             failure = actual;
             ObjectNode failed = event(clock, "SAVED_DAEMON_BUSINESS_FAILED");
@@ -138,6 +151,60 @@ public final class RootLoadedSavedResumeMain250 {
         }
         if (failure != null) throw failure;
         return result;
+    }
+
+    /** These schemas select a route; existing source/Core/custody APIs independently enforce its eligibility. */
+    static int requestMode(com.fasterxml.jackson.databind.JsonNode value) {
+        var request=StrictJson.object(value,Set.of("schema","machineId","sourceRuntimeConfiguration","newRuntimeConfiguration","sourceConfirmation","checkpointPair","ownerDirectory"));
+        String schema=StrictJson.text(request.get("schema"));
+        if("xar.java-loaded-saved-resume-request/v1".equals(schema))return 0;
+        if("xar.java-loaded-saved-preentry-request/v1".equals(schema))return 1;
+        StrictJson.require("xar.java-loaded-saved-passive-observer-request/v1".equals(schema),"resume request schema required");
+        return 2;
+    }
+    static boolean preentryRequest(com.fasterxml.jackson.databind.JsonNode value) {
+        int mode=requestMode(value);
+        StrictJson.require(mode!=2,"passive observer request grants no Saved entry route");
+        return mode==1;
+    }
+    /** One bounded passive receive, never the two-argument observe overload that can issue a fresh query. */
+    private static int capturePassive(ManagedGameSession attached,RootProcessAttach.LoadedCustody custody,
+            Path evidenceRoot,Clock clock)throws IOException,InterruptedException {
+        custody.requireCurrent();attached.verify();
+        String reception="AUTOMATIC_SNAPSHOT_RECEIVED",detail="";
+        try {attached.nativeTransport().observe(clock.instant().plusSeconds(10));}
+        catch(java.io.UncheckedIOException ended){reception="BOUNDED_PASSIVE_RECEIVE_ENDED";detail=bounded(ended.toString(),1024);}
+        var diagnostic=attached.nativeTransport().diagnostics();
+        Path trace=evidenceRoot.resolve("passive-packets");Files.createDirectory(trace);
+        ObjectNode row=event(clock,"PASSIVE_OBSERVER_COMPLETE").put("reception",reception).put("receive_detail",detail)
+                .put("received_state",diagnostic.receivedState().name()).put("maximum_receive_seconds",10)
+                .put("maximum_receive_frames",1).put("maximum_recorded_packet_bytes",3*65536)
+                .put("query_submitted",false).put("Saved_entry_adopted",false).put("game_stop_requested",false);
+        retainPassiveNotice(row,trace,"heartbeat",diagnostic.latestHeartbeat());
+        retainPassiveNotice(row,trace,"error",diagnostic.latestError());
+        retainPassiveNotice(row,trace,"snapshot_diagnostic",diagnostic.latestSnapshotDiagnostic());
+        custody.requireCurrent();attached.verify();
+        row.put("actual_heartbeat_received",diagnostic.latestHeartbeat().isPresent());
+        emit(row);
+        return diagnostic.latestHeartbeat().isPresent()?0:2;
+    }
+    private static void retainPassiveNotice(ObjectNode row,Path trace,String role,
+            java.util.Optional<org.xar.ck3.control.nativebridge.NativeGameTransport.ReceivedNotice> actual)throws IOException {
+        if(actual.isEmpty()){row.putNull(role);return;}
+        byte[] packet=actual.orElseThrow().original().packet().value();
+        ExactRef ref=writePassivePacket(trace,role,packet);
+        row.set(role,StrictJson.object().put("path",ref.path()).put("bytes",ref.bytes()).put("sha256",ref.sha256())
+                .put("observed_at_utc",actual.orElseThrow().observedAt().toString()));
+    }
+    /** File-only DATA preservation; this mints no Ready, permission, Driver frame or application admission. */
+    static ExactRef writePassivePacket(Path trace,String role,byte[] packet)throws IOException {
+        if(!Set.of("heartbeat","error","snapshot_diagnostic").contains(role))throw new IOException("bounded passive notice role required");
+        if(packet.length<5||packet.length>65536)throw new IOException("passive original packet cap required");
+        int length=java.nio.ByteBuffer.wrap(packet,0,4).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt();
+        if(length!=packet.length-4)throw new IOException("exact original passive packet framing required");
+        Path output=trace.resolve(role+".packet");
+        Files.write(output,packet,StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE);
+        return new ExactRef(output.toString(),packet.length,DriverJson.sha256(packet));
     }
 
     private static ExactRef argument(String[] args, int offset) throws IOException {
