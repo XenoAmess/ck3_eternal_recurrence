@@ -1,0 +1,98 @@
+{
+  "schema": "xar.owner.e79b-real-encoder-test-source-index/v1",
+  "at_utc": "2026-11-06T05:48:28.700886+00:00",
+  "ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-e79b-test73\\TEST-SOURCE-READY01.json",
+    "bytes": 3239,
+    "sha256": "7e71246aae86a2060dbc667adbf99ac1cae658eb0838446eceb86e9e03dfcf28"
+  },
+  "new_test_source": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-e79b-test73\\candidate01\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\DeclarableWarItemDictionaryHostedTest.java",
+    "bytes": 18113,
+    "sha256": "98683a5d3e23d84b6b65bb79953b82137923c64e1fccb0d5887ac93da109637f"
+  },
+  "test_two_owned_spans": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-e79b-test73\\TEST-SOURCE-PART01.json",
+    "bytes": 10664,
+    "sha256": "17d642fc9cacbd0883c63f069aa9fd292418f9375c3e7182e137ca62fe3d8537"
+  },
+  "old_test_whole_raw_inverse_exact": true,
+  "old_test_formal_HEAD_exact": true,
+  "unchanged_production_qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary51\\QUALIFIED-PRODUCTION03.json",
+    "bytes": 10373,
+    "sha256": "e030ed5a391fe4b774672ae9384f98c10a812bc4239a791ce2d7a7453c13cb9b"
+  },
+  "old_data_qualification_no_RUN": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-test51\\QUALIFIED-COHORT01.json",
+    "bytes": 11506,
+    "sha256": "b975e26713ff4d6bf918e253c6e01a487bbb6b79acf8e05a14c435ad4988398a"
+  },
+  "actual_new_data_qualification": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-e79b-test73\\native-first01\\QUALIFIED-REAL-WIRE-DATA01.json",
+    "bytes": 20973,
+    "sha256": "7f638f137ee313a97d2ff34d69aaf737ee9aae29756e50a8510b2e7ad5222c03"
+  },
+  "source_request": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\pointed-large-life30-model-audit\\REQUEST.json",
+    "bytes": 2784926,
+    "sha256": "d5ba35a419234e9393ad94436c1ec8559bed7d2c941cc06cf277e80c968ea994"
+  },
+  "source_audit": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\pointed-large-life30-model-audit\\EXACT-REQUEST-RESULT-AUDIT01.json",
+    "bytes": 7431,
+    "sha256": "ae541890b4652fd461169ac3279497559ead3e955d7c6cefea0f52a380ceadd0"
+  },
+  "output_artifacts": {
+    "ENCODED-BEFORE-WIRE.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-e79b-test73\\native-first01\\data-output\\ENCODED-BEFORE-WIRE.json",
+      "bytes": 2784926,
+      "sha256": "d5ba35a419234e9393ad94436c1ec8559bed7d2c941cc06cf277e80c968ea994"
+    },
+    "ENCODED-AFTER-WIRE.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-e79b-test73\\native-first01\\data-output\\ENCODED-AFTER-WIRE.json",
+      "bytes": 1538835,
+      "sha256": "53893cd9dbb52d44d7169b6f8d626f78fb73b698765209238265e68c458d5208"
+    },
+    "EXPANDED-USER.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-e79b-test73\\native-first01\\data-output\\EXPANDED-USER.json",
+      "bytes": 2523304,
+      "sha256": "e52e4b769492c3fdb823e5e5aee947bac4355d5cc9170c4bcc37d5a8d9ff88d5"
+    },
+    "RESULT.json": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\declarable-war-item-dictionary-e79b-test73\\native-first01\\data-output\\RESULT.json",
+      "bytes": 1677,
+      "sha256": "f946205f7c1ea8d089e6cd6b1505e41e6c2ecf000e0e99697ee080bbadd5c8db"
+    }
+  },
+  "actual_results": {
+    "new_test_translation_units": 1,
+    "new_test_classes": 1,
+    "compile_exit": 0,
+    "compile_seconds": 5.4966335,
+    "new_methods_RUN": 1,
+    "passes": 1,
+    "errors": 0,
+    "failures": 0,
+    "skips": 0,
+    "RUN_seconds": 6.4322989,
+    "RUN_heap_mib_first_budget": 128,
+    "old_methods_RUN": 0,
+    "production_recompiled": 0,
+    "before_wire_bytes": 2784926,
+    "after_wire_bytes_including_added_policy": 1538835,
+    "saved_wire_bytes": 1246091,
+    "ordered_item_occurrences": 6175,
+    "dictionary_facts": 792,
+    "arrays": 8
+  },
+  "artifact_bound_scope": "The new hosted method deliberately validates exact qualified Selector03 class45e994, source4fc4; it is not a qualification for formal7cc8 or an arbitrary rebuild/JDK. Native standalone CP uses that existing artifact.",
+  "production_source_changed": false,
+  "HTTP_sent": false,
+  "select_or_requestPayload_invoked": false,
+  "Root_Role_Guard_private_reflection": false,
+  "Runtime_adoption": false,
+  "production_branch_hit": false,
+  "model_understanding_or_choice_equivalence": false,
+  "runtime_speed_improvement_or_new_Save": false
+}
