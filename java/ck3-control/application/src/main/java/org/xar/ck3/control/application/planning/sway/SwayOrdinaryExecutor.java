@@ -251,7 +251,14 @@ public final class SwayOrdinaryExecutor {
         }
         private PlanningReadResult.Known<SwayNativeWire.TargetRead> target(PlanningRequest request, long target) {
             ObjectNode arguments = StrictJson.object(); arguments.put("target_character_id", target); var read = read(session, definitions.target(target), request, arguments(arguments));
-            if (!(read instanceof PlanningReadResult.Known<SwayNativeWire.TargetRead> known)) throw new Unavailable("current selected Sway target read unavailable"); resultReads.clear(); resultReads.add(originals.readReferenceOf(known.receipt())); return known;
+            if (!(read instanceof PlanningReadResult.Known<SwayNativeWire.TargetRead> known)) {
+                String detail = "";
+                if (read instanceof PlanningReadResult.Unavailable<?> unavailable) {
+                    String reason = unavailable.reason();
+                    detail = "; reason=" + reason.substring(0, Math.min(reason.length(), 1024));
+                }
+                throw new Unavailable("current selected Sway target read unavailable" + detail);
+            } resultReads.clear(); resultReads.add(originals.readReferenceOf(known.receipt())); return known;
         }
         private Ledger attach(PlanningReadResult.Known<SwayNativeWire.TargetRead> known) throws IOException {
             RestoreCheckpointService.RestoreBinding actual = restored.orElseThrow(() -> new Unavailable(restoreFailure.orElse("actual source-bound restoration was not issued before this stage")));

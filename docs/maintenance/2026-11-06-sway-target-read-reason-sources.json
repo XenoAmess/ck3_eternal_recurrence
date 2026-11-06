@@ -1,0 +1,42 @@
+{
+  "schema": "xar.formal.sway-target-read-reason-source-index/v1",
+  "owner_ready": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line79\\sway-target-read-reason01\\owner-candidate01\\SOURCE-READY01.json",
+    "bytes": 4130,
+    "sha256": "fda04e8bbe774d0071f3abcf5ac267df0ec84af8b87719d9488b7c842f4336b4"
+  },
+  "formal_part": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\sway-target-read-reason-formal79\\FORMAL-PART01.json",
+    "bytes": 1464,
+    "sha256": "6bb01d433eed4d9aaae33598614e3f0041d086c5167a57518f2a3612f4efeddf"
+  },
+  "software": {
+    "path": "D:\\ck3-state\\resume91-m6-native\\ordinary-p0-20261106\\function-line79\\sway-target-read-reason01\\native-first01\\QUALIFIED-SOFTWARE01.json",
+    "bytes": 180486,
+    "sha256": "3e63ef76266cc5e515a5c3cdb45777639edff337346a6126cbcae2acf3068d2b"
+  },
+  "independent_source": {
+    "path": "D:\\ck3-state\\resume91-root\\sway-target-read-reason-independent-review79\\SINGLE-SPAN-SOURCE-AND-ORIGINAL-ERROR-CHAIN01.json",
+    "bytes": 9436,
+    "sha256": "415de00243f0ce2ed2ec7df91f4d8f2428c314cebb7dc00e14b896317f051a70"
+  },
+  "source_owner": "/root/m6_continue",
+  "formal_owner": "/root/java_continue",
+  "scope": {
+    "TU": 1,
+    "CF": 9,
+    "seconds": 5.0649194,
+    "exit": 0,
+    "shapes_all_equal": true,
+    "new_Test_or_RUN": 0,
+    "reason_max_characters": 1024,
+    "all_released": true
+  },
+  "not_claimed": [
+    "current actual scheme failure diagnosis",
+    "actual runtime adoption",
+    "useful scheme completion",
+    "G2 acceptance",
+    "speed improvement"
+  ]
+}
