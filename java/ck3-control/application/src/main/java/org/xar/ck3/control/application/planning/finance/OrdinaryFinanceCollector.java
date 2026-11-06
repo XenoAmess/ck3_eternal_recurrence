@@ -71,6 +71,33 @@ public final class OrdinaryFinanceCollector {
     }
     private final FinanceReadContracts definitions; private final PlanningReadPort reads; private final FinanceStatePort state;
     private final Optional<java.util.function.Supplier<Session>> borrowed;
+    private final PlanningStateReuse planningState;
+
+    /** One evaluate call's immutable DATA, never a writer, physical lease or native-query cache. */
+    private static final class PlanningStateReuse {
+        private PlanningRequest request;
+        private Thread thread;
+        private Session session;
+        private org.xar.ck3.control.contracts.ExactRef persisted;
+        private String digest;
+        private long sequence;
+        private FinanceStatePort.Known known;
+        private boolean primed;
+        private volatile boolean active=true;
+        private PlanningStateReuse(PlanningRequest request) { this.request=request;thread=Thread.currentThread(); }
+        private void disable() { active=false;known=null;session=null;persisted=null;digest=null;request=null;thread=null; }
+        private boolean eligible(PlanningRequest expected,Session current) throws java.io.IOException {
+            if(!active || request!=expected || thread!=Thread.currentThread() || session!=current || known==null) return false;
+            var head=current.head();
+            return head.state().sequence()==sequence && head.digest().equals(digest) && current.persistedHead().equals(persisted)
+                    && known.snapshot().head().canonicalHead().equals(persisted) && known.snapshot().head().current().equals(expected.before());
+        }
+        private void prime(PlanningRequest expected,Session current,FinanceStatePort.Known actual) throws java.io.IOException {
+            var head=current.head();var point=current.persistedHead();
+            if(!actual.snapshot().head().current().equals(expected.before()) || !actual.snapshot().head().canonicalHead().equals(point)) { disable();return; }
+            session=current;persisted=point;digest=head.digest();sequence=head.state().sequence();known=actual;
+        }
+    }
     public OrdinaryFinanceCollector(FinanceReadContracts definitions, PlanningReadPort reads, FinanceStatePort state) {
         this(definitions, reads, state, Optional.empty());
     }
@@ -81,23 +108,39 @@ public final class OrdinaryFinanceCollector {
     }
     private OrdinaryFinanceCollector(FinanceReadContracts definitions, PlanningReadPort reads, FinanceStatePort state,
             Optional<java.util.function.Supplier<Session>> borrowed) {
-        this.definitions = Objects.requireNonNull(definitions); this.reads = Objects.requireNonNull(reads); this.state = Objects.requireNonNull(state);
-        this.borrowed = Objects.requireNonNull(borrowed);
+        this(definitions,reads,state,borrowed,null);
     }
+    private OrdinaryFinanceCollector(FinanceReadContracts definitions,PlanningReadPort reads,FinanceStatePort state,
+            Optional<java.util.function.Supplier<Session>> borrowed,PlanningStateReuse planningState) {
+        this.definitions=Objects.requireNonNull(definitions);this.reads=Objects.requireNonNull(reads);this.state=Objects.requireNonNull(state);
+        this.borrowed=Objects.requireNonNull(borrowed);this.planningState=planningState;
+    }
+    /** Package-only, lazy first real read; closes even if the private copy escapes or work fails. */
+    <T>T withPlanningState(PlanningRequest request,java.util.function.Function<OrdinaryFinanceCollector,T> work) {
+        Objects.requireNonNull(request);Objects.requireNonNull(work);invalidatePlanningState();
+        if(borrowed.isEmpty()) return work.apply(this);
+        var reuse=new PlanningStateReuse(request);
+        var scoped=new OrdinaryFinanceCollector(definitions,reads,state,borrowed,reuse);
+        try { return work.apply(scoped); } finally { reuse.disable(); }
+    }
+    private void invalidatePlanningState() { if(planningState!=null) planningState.disable(); }
     /** Explicit planning-observation view for private Stage.evaluate paths only. */
     public OrdinaryFinanceCollector planningView() {
+        invalidatePlanningState();
         return new OrdinaryFinanceCollector(definitions, reads.planningReads(), state, borrowed);
     }
     private Optional<Session> borrowedSession() {
         return borrowed.map(source -> Objects.requireNonNull(source.get(),"actual finance writer Session is not held"));
     }
     private OrdinaryFinanceCollector borrowing(Session session) {
+        invalidatePlanningState(); // Explicit Session/INTENT calls always use the unchanged fresh producer.
         Objects.requireNonNull(session);
         var current=borrowedSession();
         require(current.isEmpty() || current.orElseThrow() == session, "finance collector cannot replace its borrowed writer");
         return new OrdinaryFinanceCollector(definitions, reads, state, Optional.of(() -> session));
     }
     public Read<FinanceReadContracts.Packet> query(FinanceReadContracts.Query query, PlanningRequest request) {
+        invalidatePlanningState(); // Even a queued read with unchanged ledger head ends this eligibility.
         var session=borrowedSession();
         PlanningReadResult<FinanceReadContracts.Packet> value = session.isPresent()
                 ? definitions.read(session.orElseThrow(), query, reads, request) : definitions.read(query, reads, request);
@@ -105,7 +148,29 @@ public final class OrdinaryFinanceCollector {
         return missing("registered current Native read unavailable: " + query.name() + "; reason: " + ((PlanningReadResult.Unavailable<?>) value).reason());
     }
     public FinanceStatePort.Result state(PlanningRequest request) {
-        var session=borrowedSession();
+        var session=borrowedSession();var reuse=planningState;
+        if(reuse!=null && reuse.active) {
+            if(reuse.request!=request || reuse.thread!=Thread.currentThread() || session.isEmpty()) reuse.disable();
+            else if(reuse.primed) {
+                try {
+                    if(reuse.eligible(request,session.orElseThrow())) {
+                        var actual=reuse.known;reuse.disable(); // Exactly one second-state hit; never prime again.
+                        return actual;
+                    }
+                } catch(java.io.IOException | IllegalArgumentException | IllegalStateException ineligible) {
+                    // Eligibility failed. Run the original full producer below; never treat this as a successful read.
+                }
+                reuse.disable();
+            } else {
+                reuse.primed=true;
+                FinanceStatePort.Result actual=state.read(session.orElseThrow(),request);
+                if(actual instanceof FinanceStatePort.Known known) {
+                    try { reuse.prime(request,session.orElseThrow(),known); }
+                    catch(java.io.IOException | IllegalArgumentException | IllegalStateException ineligible) { reuse.disable(); }
+                } else reuse.disable();
+                return actual;
+            }
+        }
         return session.isPresent() ? state.read(session.orElseThrow(), request) : state.read(request);
     }
     public FinanceStatePort.Result state(Session session, PlanningRequest request) { return borrowing(session).state(request); }

@@ -54,7 +54,10 @@ public final class OrdinaryConstructionPolicy implements OrdinaryPolicy {
         Objects.requireNonNull(request); Objects.requireNonNull(previous);
         if (!request.observations().paused() || !request.observations().mapReady() || request.observations().foregroundPresent())
             return new NotApplicable("construction preserves actual foreground or non-paused work");
-        try {
+        try { return collector.withPlanningState(request,scoped->evaluatePaused(request,previous,scoped)); }
+        catch (IllegalArgumentException rejected) { return deferred("optional construction source rejected: " + rejected.getMessage()); }
+    }
+    private Decision evaluatePaused(PlanningRequest request,Draft previous,OrdinaryConstructionCollector collector) {
             FinanceStatePort.Result state = collector.state(request);
             if (!(state instanceof FinanceStatePort.Known known)) return deferred(((FinanceStatePort.Missing) state).reason());
             var domain = known.snapshot().ledger(FinanceStatePort.Domain.CONSTRUCTION);
@@ -157,7 +160,6 @@ public final class OrdinaryConstructionPolicy implements OrdinaryPolicy {
                     Kind.ORDINARY, Optional.of(command), Purpose.OPTIONAL_CONSTRUCTION, Optional.of(Domain.building),
                     previous.detail().with("selected_step", new Text(OPERATION.value())).with("arguments", args)
                             .with("construction_private_query", finalized)), "one native legal budgeted construction selected");
-        } catch (IllegalArgumentException rejected) { return deferred("optional construction source rejected: " + rejected.getMessage()); }
     }
     /** Registered preparation calls this under the coordinator's existing writer lock; no second lock is acquired. */
     public void revalidateConstruction(Session originalWriterSession, ActionCommand command, PlanningRequest fresh) {

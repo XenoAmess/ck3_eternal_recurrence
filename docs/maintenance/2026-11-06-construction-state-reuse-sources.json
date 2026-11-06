@@ -1,0 +1,244 @@
+{
+  "schema": "xar.owner.construction-state-reuse-software-source-index/v1",
+  "at_utc": "2026-11-06T04:38:55.271542+00:00",
+  "runtime_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\SOURCE-READY01.json",
+    "bytes": 4807,
+    "sha256": "5eba02770911f3db3a6f96da2a97f24b28ff687ae9fb2db95ef96cd9bb8ccb12"
+  },
+  "runtime_rows": [
+    {
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\finance-collector-current68\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryFinanceCollector.java",
+        "bytes": 33248,
+        "sha256": "e940c12fc45290caf7d17f99eacd1db0fe3768a95663ccea9e7de3a163d0f11b"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryFinanceCollector.java",
+        "bytes": 37682,
+        "sha256": "1842eb3e28338c01a4b894aad9c5c51cfbda453752a4f4a0ba9313735cf3ed4d"
+      },
+      "part": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\OrdinaryFinanceCollector-PART01.json",
+        "bytes": 7744,
+        "sha256": "2d939b239c378bb1aef0fb7640e71bd5f5c3dd5fde2c76b6e11e40ce7ba9716d"
+      },
+      "spans": 6
+    },
+    {
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\council-construction-collectors-current68\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionCollector.java",
+        "bytes": 27834,
+        "sha256": "f09870c8cbe9fcc6978774badb6b8b088c1e474b9a5eb711ea2d17558ba3b8c8"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionCollector.java",
+        "bytes": 28239,
+        "sha256": "0c31312c467efa83085f7e91c5a43a6bf8896ec483b3c5296f5243532c3fa323"
+      },
+      "part": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\OrdinaryConstructionCollector-PART01.json",
+        "bytes": 1455,
+        "sha256": "3a4a739b9279ddedb36a482b12b347e135e927758566d7e2ed81b975e3408374"
+      },
+      "spans": 1
+    },
+    {
+      "before": {
+        "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\council-construction-current68\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionPolicy.java",
+        "bytes": 23183,
+        "sha256": "3fb9ab04285b3f5574f704c6c889d24297d220d92593e562a8457265545d0855"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionPolicy.java",
+        "bytes": 23400,
+        "sha256": "fc922cbb2f6229e29aac3b156cd3340409a11e1892ba665c98b1b1de0390f5dd"
+      },
+      "part": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\OrdinaryConstructionPolicy-PART01.json",
+        "bytes": 1806,
+        "sha256": "4b73a900913d0d4550fad71012d1a4c0a9f83fafa9712304b65c94e7c63a39ed"
+      },
+      "spans": 2
+    }
+  ],
+  "formal_merge_preview": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\FORMAL-MERGE-PREVIEW01.json",
+    "bytes": 6090,
+    "sha256": "ed1e9383864e531d53cee391a43d4e8b451a5925f6b74394887d5f64bd79030a"
+  },
+  "formal_rows": [
+    {
+      "formal_path": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/finance/OrdinaryFinanceCollector.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryFinanceCollector.java",
+        "bytes": 32898,
+        "sha256": "010f7c0cdd899633fbf41fdf62cc2adb4799883765dcb1d3fc8722eb7cf3c00f"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\formal01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryFinanceCollector.java",
+        "bytes": 37267,
+        "sha256": "410ee51cc14c06c97fadc3038777946efb9b571474891432065dade214af23c3"
+      },
+      "diff": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\formal01\\OrdinaryFinanceCollector.java.diff",
+        "bytes": 7514,
+        "sha256": "90042c5fd1ed983e93c104f8809f75acc9e1f24e81c84dce2c1b1a16800461e6"
+      },
+      "logical_diff_hunks": 7,
+      "whole_raw_inverse_true": true,
+      "runtime_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryFinanceCollector.java",
+        "bytes": 37682,
+        "sha256": "1842eb3e28338c01a4b894aad9c5c51cfbda453752a4f4a0ba9313735cf3ed4d"
+      },
+      "same_as_runtime_candidate_normalized": true
+    },
+    {
+      "formal_path": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/finance/OrdinaryConstructionCollector.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionCollector.java",
+        "bytes": 27799,
+        "sha256": "b6583e65d7c5e79582fd2bbc302fd6ff428374338b1a968b9e4eb4e5c8cbc0cd"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\formal01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionCollector.java",
+        "bytes": 28199,
+        "sha256": "b8fcdc914deb42072c03a0c248a9778ac9ca3972a1c6f486265cc05272e990e5"
+      },
+      "diff": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\formal01\\OrdinaryConstructionCollector.java.diff",
+        "bytes": 1270,
+        "sha256": "7f4b4c6b5645d50d96c33d088e5ed4a4048acf27c29494ff35ff5e936bc9e7d8"
+      },
+      "logical_diff_hunks": 1,
+      "whole_raw_inverse_true": true,
+      "runtime_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionCollector.java",
+        "bytes": 28239,
+        "sha256": "0c31312c467efa83085f7e91c5a43a6bf8896ec483b3c5296f5243532c3fa323"
+      },
+      "same_as_runtime_candidate_normalized": false
+    },
+    {
+      "formal_path": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/finance/OrdinaryConstructionPolicy.java",
+      "before": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\formal-before01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionPolicy.java",
+        "bytes": 23222,
+        "sha256": "1545fc7d969dfb592140e46105a2a68f8eabd4a30cd36ed3213e095e601915f2"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\formal01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionPolicy.java",
+        "bytes": 23439,
+        "sha256": "68ba7902aead9e8989f6938ef3ba34aa7b33633feab297330fd069520fc60552"
+      },
+      "diff": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\formal01\\OrdinaryConstructionPolicy.java.diff",
+        "bytes": 2033,
+        "sha256": "bec499f7bb982904b54dcc624d38e8a71cfbd6debec4d14ec174c196e4be0095"
+      },
+      "logical_diff_hunks": 2,
+      "whole_raw_inverse_true": true,
+      "runtime_candidate": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\candidate01\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\OrdinaryConstructionPolicy.java",
+        "bytes": 23400,
+        "sha256": "fc922cbb2f6229e29aac3b156cd3340409a11e1892ba665c98b1b1de0390f5dd"
+      },
+      "same_as_runtime_candidate_normalized": false
+    }
+  ],
+  "source_current_pins": "Finance e940/ConstructionCollector f098/Policy3fb9; no C changes by this unit. Exact runtime candidate tuple differs from formal merge by preserved1607f1 planningView route.",
+  "qualified_runtime_candidate": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\native-first01\\QUALIFIED-SOFTWARE01.json",
+    "bytes": 520465,
+    "sha256": "37bdff1594554bf4b7101c18e362f2aa5feddb7e6cc4de57c706e6d16eb36ba2"
+  },
+  "formal_two_changed_type": {
+    "actual": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\native-formal-two-first02\\actual\\prod\\ACTUAL.json",
+      "bytes": 1813,
+      "sha256": "c6b5a03d74b442af44108cfeed5dc2d5111859811730546d44294b32d8bf7424"
+    },
+    "outputs": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\native-formal-two-first02\\actual\\prod\\OUTPUTS.json",
+      "bytes": 70454,
+      "sha256": "ae9066ea3e09b189a155b98bccc191c4e694b7fdcd3a6bef4f4bd9cd77f8fefb"
+    },
+    "post": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\native-formal-two-first02\\actual\\prod\\POST.json",
+      "bytes": 417,
+      "sha256": "f17894faa8d8f6eb98eeec111c91c62e6728f3e76992c41032ab36ba70fd68ba"
+    },
+    "fence": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\native-formal-two-first02\\actual\\prod\\RELEASE-FENCE.json",
+      "bytes": 1160,
+      "sha256": "82ee68373152cece23b09c4a00c69abb339fc2777c3901182d97d8c694ce6aa5"
+    },
+    "close": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\native-formal-two-first02\\actual\\prod\\MANAGED-CLOSE.json",
+      "bytes": 237,
+      "sha256": "dbd5b58758d3845c05fe851b9ca08ea6ab39cad942c159585dd722ff37ba6e3d"
+    }
+  },
+  "formal_qualification_boundary": "Two changed leaves26CF/strict0/6.8671466s, Finance13 normalized source reused; actual Runtime39CF qualification and standalone DATA1P are not a test of the formal policy view path.",
+  "data_test_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\TEST-SOURCE-READY01.json",
+    "bytes": 1573,
+    "sha256": "5e08aae4b70e9917f29ddd968f799932a496b4d0bdff3e1f8e7baa5634451e83"
+  },
+  "data_test_qualified": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\native-test-first01\\QUALIFIED-DATA-TEST01.json",
+    "bytes": 34385,
+    "sha256": "7887391fe682d9005384d418414948047f49f418467f85e7cef70f3637216067"
+  },
+  "model105_review": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\planning-same-call-state-reuse71\\MODEL-REVIEW105-01.json",
+    "bytes": 2082,
+    "sha256": "eed231b72c8c1c111d476b9f2f3f7daeba6e9ffb66d0deace277217d55237ad0"
+  },
+  "independent_source": {
+    "path": "D:\\ck3-state\\resume91-root\\finance-planning-state-independent-review71\\CANDIDATE01-NINE-SPANS-SOURCE-REVIEW02.json",
+    "bytes": 9147,
+    "sha256": "252167129c01d4239249b8e4ded2e50f682e1175463ec7b94ba2315241a34ccb"
+  },
+  "independent_test": {
+    "path": "D:\\ck3-state\\resume91-root\\finance-planning-state-independent-review71\\NEW-DATA-TEST01-SOURCE-ABI-ACTUAL03.json",
+    "bytes": 20866,
+    "sha256": "4c47ace59ab0e5af4ae893a059a7d6ae895761c8cdee8b64535c91e1367cb1b3"
+  },
+  "preserved_first_metadata_error": "native-formal-two-first01 missing named_origins before BEGIN/0JVM, retained; not a javac/source RED.",
+  "first_software_results": {
+    "runtime_production": {
+      "translation_units": 3,
+      "classes": 39,
+      "exit": 0,
+      "seconds": 7.8721867
+    },
+    "formal_changed": {
+      "translation_units": 2,
+      "classes": 26,
+      "exit": 0,
+      "seconds": 6.8671466,
+      "finance_reused": 13
+    },
+    "test": {
+      "new_translation_units": 1,
+      "classes": 5,
+      "exit": 0,
+      "compile_seconds": 6.9220659,
+      "methods_run": 1,
+      "passes": 1,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "run_seconds": 5.684393,
+      "old_tests_run": 0
+    }
+  },
+  "actual_adoption": false,
+  "actual_loader": false,
+  "actual_production_cache_hit": false,
+  "speed_improvement_proven": false,
+  "new_SAVE_credit": false,
+  "no_Game_GET_control_or_ledger_changes": true
+}

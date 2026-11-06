@@ -81,6 +81,11 @@ public final class OrdinaryConstructionCollector {
     public OrdinaryConstructionCollector(OrdinaryFinanceCollector finance, EndingSnapshot ending, FinancingPending funding) {
         this.finance = Objects.requireNonNull(finance); this.ending = Objects.requireNonNull(ending); this.funding = Objects.requireNonNull(funding);
     }
+    /** Only the actual evaluate call borrows this copy; no persistent or cross-call cache is installed. */
+    <T>T withPlanningState(PlanningRequest request,java.util.function.Function<OrdinaryConstructionCollector,T> work) {
+        Objects.requireNonNull(work);
+        return finance.withPlanningState(request,scoped->work.apply(new OrdinaryConstructionCollector(scoped,ending,funding)));
+    }
     public FinanceStatePort.Result state(PlanningRequest request) { return finance.state(request); }
     public FinanceStatePort.Result state(Session session, PlanningRequest request) { return finance.state(Objects.requireNonNull(session), request); }
     /** Explicit narrow planning-observation view for the same collector's before/quote reads only. */
