@@ -480,6 +480,21 @@ public final class RootReconciliationAuthority {
             LeaseWork<ActionPorts.PostconditionResult> observer)throws IOException{
         try{return withObserved(same,original,deadline,observer);}
         catch(RawUnavailable raw){return new ActionPorts.Pending(raw.getMessage(),raw.originals);}
+        catch(RootLifecycleAuthority.NegativeFreshRead negative){
+            // Preserve this actual failed READ through the existing raw-only Pending branch. The coordinator
+            // requires Pending when no physical observer was entered; no semantic lease/effect is invented.
+            if(negative.getSuppressed().length!=0 || negative.getCause()!=null) throw negative;
+            store.requireSession(same);
+            require(active.get()==null && publicWindowSnapshot.get()==null
+                    && original.command().operation().value().equals("resume-map")
+                    && original.state() instanceof ActionState.Unknown
+                    && original.ack().isPresent() && original.ack().orElseThrow().nativeOk()
+                    && original.ack().orElseThrow().outbound().isPresent() && negative.matches(original.command()),
+                    "negative fresh READ does not bind this original acknowledged resume reconciliation");
+            pending.requirePending(same,original);
+            return new ActionPorts.Pending("postcondition unavailable:"+negative.getMessage(),
+                    List.of(negative.acknowledgement(),negative.outbound()));
+        }
     }
 
     /** A copied identity can never acquire a new scope. Only the active original observer may issue its listed reads. */

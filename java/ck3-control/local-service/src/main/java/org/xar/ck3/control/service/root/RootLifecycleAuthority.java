@@ -47,6 +47,72 @@ public final class RootLifecycleAuthority {
         DriverStateAssembler resolve(ContinuityStorePort.Session borrowed) throws IOException;
     }
 
+    /** Verified negative READ DATA only: never a snapshot, physical lease or reconciliation issuer. */
+    public static final class NegativeFreshRead extends IOException {
+        @java.io.Serial private static final long serialVersionUID = 1L;
+        private final byte[] sourceBytes;
+        private final String machine, game, session, requestId, acknowledgementPath, acknowledgementSha, outboundPath, outboundSha;
+        private final long acknowledgementBytes, outboundBytes;
+        private NegativeFreshRead(G2Source source, NativeObservationPort.TransportSession owner, String requestId,
+                ExactRef acknowledgement, ExactRef outbound) {
+            super("actual fresh read unavailable: kind=ACK/native_ok=false; request_id=" + requestId
+                    + "; dispatch_ref=" + acknowledgement + "; frame_ref=absent; reason=original fresh READ received negative Native ACK; request_id="
+                    + requestId + "; error=\"fresh_full_state_native_read_unavailable\"");
+            sourceBytes=org.xar.ck3.control.contracts.StrictJson.canonical(
+                    org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(source));
+            machine=owner.machineId();game=owner.game().toString();session=owner.sessionId();this.requestId=requestId;
+            acknowledgementPath=acknowledgement.path();acknowledgementBytes=acknowledgement.bytes();acknowledgementSha=acknowledgement.sha256();
+            outboundPath=outbound.path();outboundBytes=outbound.bytes();outboundSha=outbound.sha256();
+        }
+        public boolean matches(ActionCommand original) {
+            return machine.equals(original.origin().machineId()) && game.equals(original.origin().game().toString())
+                    && session.equals(original.sessionId()) && Arrays.equals(sourceBytes,
+                    org.xar.ck3.control.contracts.StrictJson.canonical(org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(original.source())));
+        }
+        public String requestId() { return requestId; }
+        public ExactRef acknowledgement() { return new ExactRef(acknowledgementPath,acknowledgementBytes,acknowledgementSha); }
+        public ExactRef outbound() { return new ExactRef(outboundPath,outboundBytes,outboundSha); }
+    }
+
+    /** Pure packet/custody validation; an Unavailable/ACK DTO by itself grants no live observation authority. */
+    static Optional<NativeActionPort.AckReceived> verifiedNegativeFreshRead(NativeFreshSnapshotPort.Result result,
+            NativeObservationPort.TransportSession actualOwner) throws IOException {
+        if (!(result instanceof NativeFreshSnapshotPort.Unavailable unavailable)
+                || !(unavailable.dispatch() instanceof NativeActionPort.AckReceived ack) || ack.nativeOk()
+                || unavailable.originalFrame().isPresent() || unavailable.snapshotReceived().isPresent()) return Optional.empty();
+        var custody=ack.custody().orElseThrow(()->new IOException("negative fresh READ lacks actual chronology"));
+        custody.verify(ack);
+        require(custody.session().equals(actualOwner),"negative fresh READ crossed the actual held Native owner");
+        var outbound=ack.outbound().orElseThrow(()->new IOException("negative fresh READ lacks its original outbound"));
+        byte[] outboundBytes=outbound.originalPacket();
+        require(outboundBytes.length>=5 && java.nio.ByteBuffer.wrap(outboundBytes,0,4).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt()==outboundBytes.length-4,
+                "negative fresh READ outbound framing changed");
+        var request=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(outboundBytes,4,outboundBytes.length)));
+        require(request.properties().stream().map(java.util.Map.Entry::getKey).collect(java.util.stream.Collectors.toSet())
+                .equals(Set.of("type","protocol_version","request_id","step","expected_revision")),"negative fresh READ outbound fields changed");
+        require("execute_step".equals(NativeWire.text(request.get("type")))
+                && java.math.BigInteger.ONE.equals(NativeWire.integer(request.get("protocol_version"),java.math.BigInteger.ONE,java.math.BigInteger.ONE))
+                && NativeFreshSnapshotPort.STEP.equals(NativeWire.text(request.get("step")))
+                && ack.requestId().equals(NativeWire.text(request.get("request_id")))
+                && java.math.BigInteger.ZERO.equals(NativeWire.integer(request.get("expected_revision"),java.math.BigInteger.ZERO,java.math.BigInteger.ZERO)),
+                "negative fresh READ differs from its fixed original query");
+        var decoded=NativeWire.decode(ack.originalPacket());
+        require(decoded instanceof NativeWire.CommandResult,"negative fresh READ is not an original command result");
+        var response=(NativeWire.CommandResult)decoded;
+        require(!response.nativeOk() && ack.requestId().equals(response.requestId())
+                && Arrays.equals(response.payload().value(),ack.originalFrame().bytes())
+                && response.result().token().isPresent()==ack.originalResultToken().isPresent()
+                && (response.result().token().isEmpty() || Arrays.equals(response.result().token().orElseThrow().value(),ack.originalResultToken().orElseThrow().bytes())),
+                "negative fresh READ ACK fields differ from the actual framed packet");
+        var wire=NativeWire.object(NativeWire.parse(response.payload().value()));
+        var fields=wire.properties().stream().map(java.util.Map.Entry::getKey).collect(java.util.stream.Collectors.toSet());
+        require(fields.equals(Set.of("type","protocol_version","request_id","ok","error"))
+                || fields.equals(Set.of("type","protocol_version","request_id","ok","error","result")),"negative fresh READ response fields changed");
+        if (!"fresh_full_state_native_read_unavailable".equals(NativeWire.text(wire.get("error")))) return Optional.empty();
+        require(!wire.has("result") || wire.get("result").isNull(),"negative fresh READ unexpectedly returned successful material");
+        return Optional.of(ack);
+    }
+
     /** Its private constructor and active writer scope distinguish source qualification from copied snapshot data. */
     public static final class SnapshotLease {
         private final RootLifecycleAuthority owner;
@@ -202,7 +268,22 @@ public final class RootLifecycleAuthority {
                         catch(InterruptedException failure){Thread.currentThread().interrupt();var interrupted=new InterruptedIOException("actual fresh reconciliation collection interrupted");interrupted.initCause(failure);throw interrupted;}
                     }
                 }
-                if(!(readResult instanceof NativeFreshSnapshotPort.Received)) throw new IOException("actual fresh reconciliation read unavailable or failed closed");
+                if(!(readResult instanceof NativeFreshSnapshotPort.Received)) {
+                    var diagnostics=transport.diagnostics();
+                    require(diagnostics.receivedState()==NativeGameTransport.ReceivedState.HELLO_VERIFIED
+                            && diagnostics.terminalFailure().isEmpty(),"negative fresh READ lost its actual held transport");
+                    var actualOwner=diagnostics.session().orElseThrow(()->new IOException("negative fresh READ has no actual held owner"));
+                    require(actualOwner.machineId().equals(source.machineId()),"negative fresh READ crossed the installed source machine");
+                    var negative=verifiedNegativeFreshRead(readResult,actualOwner);
+                    if(negative.isPresent()) {
+                        requireSession(borrowed);require(borrowed.head().digest().equals(head),"negative fresh READ changed its original writer head");
+                        var acknowledgement=negative.orElseThrow();
+                        var ackRef=archive.withSession(borrowed).preserve(acknowledgement);
+                        var outboundRef=preserve(borrowed,acknowledgement.outbound().orElseThrow().originalPacket(),MAX_ORIGINAL);
+                        throw new NegativeFreshRead(source,actualOwner,acknowledgement.requestId(),ackRef,outboundRef);
+                    }
+                    throw new IOException("actual fresh reconciliation read unavailable or failed closed");
+                }
                 var receivedResult=(NativeFreshSnapshotPort.Received)readResult;
                 actual=receivedResult.originalFrame();
                 requireSameReceived(actual,transport.currentSnapshot(deadline));

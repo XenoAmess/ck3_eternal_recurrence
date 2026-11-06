@@ -424,23 +424,7 @@ public final class RootOrdinaryWorkerLoop {
                 || !controller.isQuarantined() || controller.isRunning() || controller.isRetired()
                 || !lifeReadAdmissionOpen(schedulingDeadline, began)) return false;
         ActionReceipt original = expected.orElseThrow();
-        var retained = root.withPublicStandaloneRead(schedulingDeadline, same -> {
-            var data = root.batchJournal().readUnresolvedSameGame(same, root.identity());
-            var head = same.head();
-            StrictJson.require(data.canonicalSequence() == head.state().sequence()
-                    && data.canonicalHeadDigest().equals(head.digest()), "warm Life DATA changed its actual head");
-            StrictJson.require(data.capturedController().owner().equals(report.session())
-                    && data.nextBatchSequence() == nextBatchSequence && nextBatchSequence > 0
-                    && data.usedBatches().contains(report.batchId())
-                    && report.batchId().equals(data.capturedController().batchPrefix() + "-" + (nextBatchSequence - 1)),
-                    "warm Life DATA changed its actual owner or interrupted batch");
-            StrictJson.require(data.unresolvedActions().size() == 1 && data.unresolvedActions().getFirst().equals(original),
-                    "warm Life DATA changed the exact reported original");
-            var canonical = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(
-                    head.state(), root.archive().withSession(same));
-            return knownPostAckLifeRead(original, canonical) ? Optional.of(data)
-                    : Optional.<ContinuityBatchJournal.UnresolvedSameGameData>empty();
-        });
+        var retained = readWarmLifeData(root, report, nextBatchSequence, original, schedulingDeadline, false);
         if (retained.isEmpty() || !lifeReadAdmissionOpen(schedulingDeadline, began)) return false;
         var data = retained.orElseThrow();
         logLifeReadRecovery("BEGIN", report, original, 0, schedulingDeadline);
@@ -456,7 +440,20 @@ public final class RootOrdinaryWorkerLoop {
             // This in-flight call and its original writer/cycle cleanup may cross the admission deadline.
             Instant observationDeadline = clock.instant().plus(ActionObservationWindow.MAXIMUM_WINDOW);
             logLifeReadRecovery("OBSERVE", report, original, attempt, schedulingDeadline);
-            ActionReceipt actual = root.reconcileUnresolvedOriginal(data, observationDeadline);
+            ActionReceipt actual;
+            try { actual = root.reconcileUnresolvedOriginal(data, observationDeadline); }
+            catch (IOException failure) {
+                var verified=negativeFreshReadFailure(failure);
+                if(verified.isEmpty() || !verified.orElseThrow().matches(original.command())) throw failure;
+                if(!lifeReadAdmissionOpen(schedulingDeadline,began)) return false;
+                final Optional<ContinuityBatchJournal.UnresolvedSameGameData> refreshed;
+                try { refreshed=readWarmLifeData(root,report,nextBatchSequence,original,schedulingDeadline,true); }
+                catch(IOException | RuntimeException changed) { changed.addSuppressed(failure);throw changed; }
+                if(refreshed.isEmpty()) throw failure;
+                data=refreshed.orElseThrow();
+                logNegativeLifeRead(report,verified.orElseThrow(),attempt);
+                continue;
+            }
             StrictJson.require(actual.bodySha256().equals(original.bodySha256())
                     && java.util.Arrays.equals(ActionCodec.encodeCommand(actual.command()), ActionCodec.encodeCommand(original.command())),
                     "warm Life reconciliation changed the complete original command");
@@ -467,21 +464,77 @@ public final class RootOrdinaryWorkerLoop {
             if (!lifeReadAdmissionOpen(schedulingDeadline, began)) {
                 logLifeReadRecovery("STOP_OR_ADMISSION_WINDOW", report, actual, attempt, schedulingDeadline); return false;
             }
-            boolean sameUnavailable = root.withPublicStandaloneRead(schedulingDeadline, same -> {
-                var canonical = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(
-                        same.head().state(), root.archive().withSession(same));
-                var matching = canonical.stream().filter(receipt -> receipt.command().actionId().equals(original.command().actionId())).toList();
-                StrictJson.require(matching.size() == 1 && matching.getFirst().equals(actual),
-                        "warm Life retry lost its actual canonical same-ID receipt");
-                return knownPostAckLifeRead(actual, canonical);
-            });
-            if (!sameUnavailable) {
+            var refreshed=readWarmLifeData(root,report,nextBatchSequence,original,schedulingDeadline,false);
+            if(refreshed.isEmpty() || !refreshed.orElseThrow().unresolvedActions().getFirst().equals(actual)) {
                 logLifeReadRecovery("CHANGED_OR_UNQUALIFIED", report, actual, attempt, schedulingDeadline); return false;
             }
+            data=refreshed.orElseThrow();
             logLifeReadRecovery("KNOWN_READ_UNAVAILABLE", report, actual, attempt, schedulingDeadline);
         }
         logLifeReadRecovery("ATTEMPTS_EXHAUSTED", report, original, LIFE_READ_ATTEMPTS, schedulingDeadline);
         return false;
+    }
+
+    /** Reopen current canonical DATA after each attempt; neither an old head nor a copied report authenticates it. */
+    private Optional<ContinuityBatchJournal.UnresolvedSameGameData> readWarmLifeData(RootApplicationSession root,
+            BatchReport report,long nextBatchSequence,ActionReceipt original,Instant deadline,boolean verifiedCurrentNegative) throws IOException, InterruptedException {
+        var controller=root.controllerForPublication();
+        if(!report.session().equals(root.identity()) || controller.isRunning() || controller.isRetired()
+                || !controller.isQuarantined() || controller.lastReport().filter(known->known==report).isEmpty()) return Optional.empty();
+        return root.withPublicStandaloneRead(deadline,same->{
+            var current=root.batchJournal().readUnresolvedSameGame(same,root.identity());var head=same.head();
+            StrictJson.require(current.canonicalSequence()==head.state().sequence() && current.canonicalHeadDigest().equals(head.digest()),
+                    "warm Life DATA changed its actual head");
+            StrictJson.require(current.capturedController().owner().equals(report.session()) && current.nextBatchSequence()==nextBatchSequence
+                    && nextBatchSequence>0 && current.usedBatches().contains(report.batchId())
+                    && report.batchId().equals(current.capturedController().batchPrefix()+"-"+(nextBatchSequence-1)),
+                    "warm Life DATA changed its actual owner or interrupted batch");
+            StrictJson.require(current.unresolvedActions().size()==1,"warm Life DATA requires one canonical original");
+            var actual=current.unresolvedActions().getFirst();
+            StrictJson.require(actual.bodySha256().equals(original.bodySha256())
+                    && java.util.Arrays.equals(ActionCodec.encodeCommand(actual.command()),ActionCodec.encodeCommand(original.command())),
+                    "warm Life DATA changed the complete original command");
+            var canonical=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(head.state(),root.archive().withSession(same));
+            if(verifiedCurrentNegative ? postAckLifeResume(actual,canonical).isEmpty() : !knownPostAckLifeRead(actual,canonical)) return Optional.empty();
+            return Optional.of(current);
+        });
+    }
+
+    /** Only the exact live Lifecycle subtype through existing IO wrappers; suppression and Guard wrappers never qualify. */
+    static Optional<RootLifecycleAuthority.NegativeFreshRead> negativeFreshReadFailure(IOException failure) {
+        Throwable next=failure;
+        var seen=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<Throwable,Boolean>());
+        while(next!=null && seen.size()<8 && seen.add(next)) {
+            if(next.getSuppressed().length!=0) return Optional.empty();
+            if(next instanceof RootLifecycleAuthority.NegativeFreshRead negative)
+                return next.getCause()==null ? Optional.of(negative) : Optional.empty();
+            if(next.getClass()!=IOException.class && next.getClass()!=java.io.UncheckedIOException.class) return Optional.empty();
+            next=next.getCause();
+        }
+        return Optional.empty();
+    }
+
+    private static Optional<ActionReceipt> postAckLifeResume(ActionReceipt original,java.util.List<ActionReceipt> canonical) {
+        if(!(original.state() instanceof ActionState.CompositeUnknown unknown)
+                || ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical).filter(original::equals).isEmpty()
+                || unknown.execution().children().isEmpty()) return Optional.empty();
+        var binding=unknown.execution().children().getLast();
+        var matches=canonical.stream().filter(receipt->receipt.command().actionId().equals(binding.actionId())).toList();
+        if(matches.size()!=1) return Optional.empty();var child=matches.getFirst();
+        if(!child.command().operation().value().equals("resume-map") || !child.bodySha256().equals(binding.bodySha256())
+                || child.ack().isEmpty() || !child.ack().orElseThrow().nativeOk() || child.ack().orElseThrow().outbound().isEmpty()) return Optional.empty();
+        return child.state() instanceof ActionState.Unknown
+                || child.state() instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.Applied
+                    && child.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED ? Optional.of(child) : Optional.empty();
+    }
+
+    private static void logNegativeLifeRead(BatchReport report,RootLifecycleAuthority.NegativeFreshRead failure,int attempt) {
+        try {
+            var row=StrictJson.object().put("schema","xar.java-original-life-negative-read/v1").put("batch_id",report.batchId())
+                    .put("attempt",attempt).put("request_id",failure.requestId());
+            row.set("negative_acknowledgement",failure.acknowledgement().toJson());row.set("outbound",failure.outbound().toJson());
+            byte[] bytes=StrictJson.canonical(row,8192);System.out.write(bytes);System.out.write(10);System.out.flush();
+        } catch(Throwable ignored) { /* Preserve business cause and interruption; no diagnostics under writer. */ }
     }
 
     /** A known negative READ reason only qualifies scheduling; original canonical/ACK/physical guards still own every read. */

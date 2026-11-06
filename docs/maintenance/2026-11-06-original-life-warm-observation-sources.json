@@ -1,129 +1,245 @@
 {
-  "schema": "xar.original-life-warm-software-source-index/v1",
-  "at_utc": "2026-11-06T02:24:46.739962+00:00",
-  "source_ready": {
-    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\SOURCE-READY01.json",
-    "bytes": 4811,
-    "sha256": "fe63231c57a1ffadad0eda2c81cd62b1a3ff12ef736adb78d94ad599b0fba047"
-  },
-  "source_part": {
-    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\SOURCE-PART01.json",
-    "bytes": 16610,
-    "sha256": "c77158d845a88ab94b9928ef8fca30e2438fb4cf60850f3456dc4fa1fdae86a3"
+  "schema": "xar.original-life-verified-negative-warm-software-index/v2",
+  "at_utc": "2026-11-06T03:28:35.551518+00:00",
+  "runtime_source_ready": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\SOURCE-READY-COHERENT06.json",
+    "bytes": 9004,
+    "sha256": "410d0e559339430d0771b5a6b26eebb6577ca92e4dc841e9dcd06f97e8736c9b"
   },
   "formal_projection": {
-    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\FORMAL-PROJECTION01.json",
-    "bytes": 1837,
-    "sha256": "4deb198123c4c4a79369ccffdccd9396ff7e88a0b0f4bd07bf40046bb26e49e7"
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\FORMAL-PROJECTION06.json",
+    "bytes": 4878,
+    "sha256": "3cc9935c2d8624460ea4e78b9fb7a304273552530aeb668ed5a2963be36d2703"
   },
-  "production_qualification": {
-    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-first01\\QUALIFIED-SOFTWARE01.json",
-    "bytes": 147544,
-    "sha256": "229f628b1c25e62729f97c9933cca020fa112976faab08344943c06f517214b6"
+  "current_consumer": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\action-coordinator-current70\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\action\\ActionCoordinator.java",
+    "bytes": 60231,
+    "sha256": "51431ed27e5c8be398025d3235f2aa13fabb836a2261236ad4f1aece25689d13"
   },
-  "independent_source_review": {
-    "path": "D:\\ck3-state\\resume91-root\\post-ack-life-warm-independent-review70\\SINGLE-LOOP-PART01-SOURCE-REVIEW01.json",
-    "bytes": 7799,
-    "sha256": "00a0aee969357b3a06d80176f91c6ac7fc6671921903012f93055b9c6165cf74"
+  "current_registered_caller": {
+    "path": "D:\\ck3-state\\resume91-runtime\\resume-after-user-play-20261105\\root-runtime-dispatcher-current70\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeDispatcherFactory.java",
+    "bytes": 17613,
+    "sha256": "1fa2e8dcc216197b27748e146ae70ab4372c1cfe5c8c85b3f7264aca93697ff0"
   },
+  "source_review": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-life-warm-independent-review70\\THREE-SOURCE06-PENDING-CONSUMER-BRIDGE-REVIEW06.json",
+    "bytes": 7016,
+    "sha256": "e41994198c0fea912646e1706aa4905d423b4ebf6c219bf22316dcebd5a7e00a"
+  },
+  "production_actual": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-coherent-first06\\actual\\prod\\ACTUAL.json",
+    "bytes": 1851,
+    "sha256": "46661ccd4917d169f0ea15116ef775576f4a17ffabfe8a52a02b05da01dcde61"
+  },
+  "classes": 31,
+  "new_named_type": "org.xar.ck3.control.service.root.RootLifecycleAuthority$NegativeFreshRead",
+  "production_seconds": 10.3238604,
   "test_ready": {
-    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\TEST-SOURCE-READY01.json",
-    "bytes": 3065,
-    "sha256": "8d7e50a71aaa85b078fc5d249b77939d5fb30df2560ac3ffa1f8960c1c63aef9"
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\TEST-SOURCE-READY04.json",
+    "bytes": 5512,
+    "sha256": "854b19b72e499449381845eb7cffba75e85a30281492a1c85036a72c79df70bf"
   },
-  "test_actual": {
-    "status": "ONLY_NEW_TEST_TU_COMPILE0_AND_UNIQUE_CASE_1PASS",
-    "compile_actual": {
-      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\ACTUAL.json",
-      "bytes": 1794,
-      "sha256": "e8639e836fca911b98334b3e7ff80cd956879a1c6fe1abd9e9508251a00d89e0"
-    },
-    "compile_seconds": 6.0883154,
-    "classes": 2,
-    "run_began_utc": "2026-11-06T02:27:56.171904Z",
-    "run_ended_utc": "2026-11-06T02:28:01.969839Z",
-    "run_seconds": 5.7979614,
-    "junit_xml_bytes": 39074,
-    "junit_xml_sha256": "5ac31b02fbbce96ff26bb9378d9f53f0ea5cb9dd4c512aad8cac7a560114990a",
-    "passed": 1,
-    "failed": 0,
-    "errors": 0,
-    "skipped": 0,
-    "new_production_compiles": 0,
-    "old_tests_run": 0,
-    "resource_release": "Actual test and junit POST/fence/close files pinned; both phases completed and resource leases released. No new production compile.",
-    "private_root_recovery_exercised": false,
-    "junit_actual": {
-      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\ACTUAL.json",
-      "bytes": 1536,
-      "sha256": "e15a30b6b31d8e838fc0c705bbf735986e7453f6020d46ab9690e499c7c177b4"
-    },
-    "junit_xml": {
-      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\reports-junit\\TEST-junit-jupiter.xml",
-      "bytes": 39074,
-      "sha256": "5ac31b02fbbce96ff26bb9378d9f53f0ea5cb9dd4c512aad8cac7a560114990a"
-    },
-    "stdout": {
-      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\stdout.bin",
-      "bytes": 1924,
-      "sha256": "b8c2f166dc1f59f3762d7f6860cef27c1a7c579b5329862fc4b94b6c297aac86"
-    },
-    "phase_evidence": {
-      "test": [
-        {
-          "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\ACTUAL.json",
-          "bytes": 1794,
-          "sha256": "e8639e836fca911b98334b3e7ff80cd956879a1c6fe1abd9e9508251a00d89e0"
-        },
-        {
-          "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\POST.json",
-          "bytes": 413,
-          "sha256": "1ae497055d985a167aa3d110f06cf88e93e0749473ac14b651ea5fde6ed62776"
-        },
-        {
-          "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\RELEASE-FENCE.json",
-          "bytes": 1148,
-          "sha256": "c1acf22478f28a020a8661f634bc58187c6236d46f5112f699f64bd93fd5d6ac"
-        },
-        {
-          "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\MANAGED-CLOSE.json",
-          "bytes": 237,
-          "sha256": "ebabf4640c7e271fa96c75cdef55707376e09bff9619b2cbf52be45b8c8f04fc"
-        }
-      ],
-      "junit": [
-        {
-          "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\ACTUAL.json",
-          "bytes": 1536,
-          "sha256": "e15a30b6b31d8e838fc0c705bbf735986e7453f6020d46ab9690e499c7c177b4"
-        },
-        {
-          "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\POST.json",
-          "bytes": 1250,
-          "sha256": "af91d163743fa6bc07dd9cf529c85b6506190ffb212d116c29daa94e5cde6af6"
-        },
-        {
-          "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\RELEASE-FENCE.json",
-          "bytes": 1153,
-          "sha256": "e9089db0ea98d1c8cc2af586ef47c18dc1dbf69ecac7af72337b6b0969cdd22b"
-        },
-        {
-          "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\MANAGED-CLOSE.json",
-          "bytes": 238,
-          "sha256": "32bc1a2fb23227377b237bb43ed44dba0dddc0c6dd23f5d8a99d54e740d2e70b"
-        }
-      ]
-    }
+  "new_test_compile": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-negative-test-first04\\actual\\test\\ACTUAL.json",
+    "bytes": 1843,
+    "sha256": "a488b6620ee7048f1c838ab5a31bab0be9f65963b985efb5249e1361ece3c115"
   },
-  "model_review": {
-    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\MODEL-REVIEW103-01.json",
-    "bytes": 2936,
-    "sha256": "ac386bd7b03acfb1d18d2772db7f468dc1c2ff633a1234b9683a824431c7c17b"
+  "new_test_seconds": 5.9226807,
+  "new_test_classes": 2,
+  "new_method_actual": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-negative-test-first04\\actual\\junit\\ACTUAL.json",
+    "bytes": 1576,
+    "sha256": "a291108a6f5ae644b1d8057645f70da5e865238a5171db18e167c046d2458289"
   },
-  "runtime_adopted": false,
-  "actual_warm_recovery": false,
-  "new_saved_days": 0,
-  "budget": "max4 calls; five-minute admission/backoff scheduling window; independent existing2min in-flight observation scopes; no whole-wall hard bound",
-  "scope": "one Loop production leaf; no Root/Controller/Window/Writer/Guard change; no new named production type",
-  "test_limits": "public DATA/STOP/default denial only; no private Root/canonical ACK-custody/full scheduling or actual Controller recovery proof"
+  "new_method_xml": {
+    "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-negative-test-first04\\reports-junit\\TEST-junit-jupiter.xml",
+    "bytes": 39152,
+    "sha256": "2faab1fa87ab717b805ce258ae647dd86fe1152d43f9ec8c86779a0918e7ceae"
+  },
+  "new_method_seconds": 4.4316742,
+  "new_method_1pass_0failure_error_skip": true,
+  "old_green_method_rerun": 0,
+  "old_production_recompile": 0,
+  "new_method_scope": "Pure DATA classification from actual archived ACK/outbound/frame/chronology; 7 rejection mutations and 3 genericIO/Guard/suppression refusals. No private exception construction, live physical lease, RA canonical bridge execution, waits, actual Controller or warm recovery.",
+  "source_line_endings": "Original Loop LF preserved; Lifecycle original CRLF preserved; actual RA LF. All cumulative12 spans raw-invert to Runtime737a/ac27/aaf8. Formal RA retains six pre-existing blank-line whitespace differences.",
+  "budget": "max4 calls; fixed5min UTC/monotonic admission-backoff schedule, independent existing2min read scopes. In-flight work/writer/cycle/close may cross admission deadline. No whole-wall hard bound.",
+  "actual_runtime_adopted": false,
+  "actual_new_class_normal_loader_birth": false,
+  "actual_warm_recovery_or_speedup": false,
+  "saved_days_credit": 0,
+  "history": {
+    "v1_commit": "68737f57e55ee615b61202c6ab1209dfaf2ed18a",
+    "v1_qualification": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-first01\\QUALIFIED-SOFTWARE01.json",
+      "bytes": 147544,
+      "sha256": "229f628b1c25e62729f97c9933cca020fa112976faab08344943c06f517214b6"
+    },
+    "v1_DATA_STOP_case": {
+      "status": "ONLY_NEW_TEST_TU_COMPILE0_AND_UNIQUE_CASE_1PASS",
+      "compile_actual": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\ACTUAL.json",
+        "bytes": 1794,
+        "sha256": "e8639e836fca911b98334b3e7ff80cd956879a1c6fe1abd9e9508251a00d89e0"
+      },
+      "compile_seconds": 6.0883154,
+      "classes": 2,
+      "run_began_utc": "2026-11-06T02:27:56.171904Z",
+      "run_ended_utc": "2026-11-06T02:28:01.969839Z",
+      "run_seconds": 5.7979614,
+      "junit_xml_bytes": 39074,
+      "junit_xml_sha256": "5ac31b02fbbce96ff26bb9378d9f53f0ea5cb9dd4c512aad8cac7a560114990a",
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "new_production_compiles": 0,
+      "old_tests_run": 0,
+      "resource_release": "Actual test and junit POST/fence/close files pinned; both phases completed and resource leases released. No new production compile.",
+      "private_root_recovery_exercised": false,
+      "junit_actual": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\ACTUAL.json",
+        "bytes": 1536,
+        "sha256": "e15a30b6b31d8e838fc0c705bbf735986e7453f6020d46ab9690e499c7c177b4"
+      },
+      "junit_xml": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\reports-junit\\TEST-junit-jupiter.xml",
+        "bytes": 39074,
+        "sha256": "5ac31b02fbbce96ff26bb9378d9f53f0ea5cb9dd4c512aad8cac7a560114990a"
+      },
+      "stdout": {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\stdout.bin",
+        "bytes": 1924,
+        "sha256": "b8c2f166dc1f59f3762d7f6860cef27c1a7c579b5329862fc4b94b6c297aac86"
+      },
+      "phase_evidence": {
+        "test": [
+          {
+            "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\ACTUAL.json",
+            "bytes": 1794,
+            "sha256": "e8639e836fca911b98334b3e7ff80cd956879a1c6fe1abd9e9508251a00d89e0"
+          },
+          {
+            "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\POST.json",
+            "bytes": 413,
+            "sha256": "1ae497055d985a167aa3d110f06cf88e93e0749473ac14b651ea5fde6ed62776"
+          },
+          {
+            "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\RELEASE-FENCE.json",
+            "bytes": 1148,
+            "sha256": "c1acf22478f28a020a8661f634bc58187c6236d46f5112f699f64bd93fd5d6ac"
+          },
+          {
+            "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\test\\MANAGED-CLOSE.json",
+            "bytes": 237,
+            "sha256": "ebabf4640c7e271fa96c75cdef55707376e09bff9619b2cbf52be45b8c8f04fc"
+          }
+        ],
+        "junit": [
+          {
+            "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\ACTUAL.json",
+            "bytes": 1536,
+            "sha256": "e15a30b6b31d8e838fc0c705bbf735986e7453f6020d46ab9690e499c7c177b4"
+          },
+          {
+            "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\POST.json",
+            "bytes": 1250,
+            "sha256": "af91d163743fa6bc07dd9cf529c85b6506190ffb212d116c29daa94e5cde6af6"
+          },
+          {
+            "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\RELEASE-FENCE.json",
+            "bytes": 1153,
+            "sha256": "e9089db0ea98d1c8cc2af586ef47c18dc1dbf69ecac7af72337b6b0969cdd22b"
+          },
+          {
+            "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-test-first01\\actual\\junit\\MANAGED-CLOSE.json",
+            "bytes": 238,
+            "sha256": "32bc1a2fb23227377b237bb43ed44dba0dddc0c6dd23f5d8a99d54e740d2e70b"
+          }
+        ]
+      }
+    },
+    "v1_limit": "Prelease fresh-read IOException could stop after the first wait; actual Coordinator also reduces IOException to a class-only Unknown. Existing DATA/STOP1P did not cover this.",
+    "first04_compiler_RED": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-coherent-first04\\FIRST-RED01.json",
+      "bytes": 6167,
+      "sha256": "3a56f069e337f91052e80fb64c35faa0b623f3d7e654b93f2391327e5def2977"
+    },
+    "first04_exit": 1,
+    "first04_classes": 0,
+    "first04_seconds": 6.7929836,
+    "source02_EOL_and03_evidence_role_metadata_0JVM": true,
+    "source05_never_BEGIN_before_third_consumer_bridge": true
+  },
+  "models": {
+    "103_rejected": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\MODEL-REVIEW103-01.json",
+      "bytes": 2936,
+      "sha256": "ac386bd7b03acfb1d18d2772db7f468dc1c2ff633a1234b9683a824431c7c17b"
+    },
+    "104_rejected": {
+      "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\MODEL-REVIEW104-01.json",
+      "bytes": 2582,
+      "sha256": "72d6a08f19cd2cd917fd8c942ec9154c783fbc70c9b9e740a8fdb7d9b72e9cea"
+    },
+    "all_model_code_and_raw_JVM_adoption": 0
+  },
+  "resource_release": {
+    "production": [
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-coherent-first06\\actual\\prod\\POST.json",
+        "bytes": 419,
+        "sha256": "69ad03f0e22e01f81a8e6d6043a06acdd733123d918ab0c8637c62c67f7331f2"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-coherent-first06\\actual\\prod\\RELEASE-FENCE.json",
+        "bytes": 1163,
+        "sha256": "ce3f34d8ba276ddcadfdc07543c2f97ebb54595414e3b0bfdd47150bf2b2e404"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-coherent-first06\\actual\\prod\\MANAGED-CLOSE.json",
+        "bytes": 237,
+        "sha256": "a80eee137587789e41882b6e41dffb78f27f756ef40a053232c5cdd565f6318c"
+      }
+    ],
+    "new_test": [
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-negative-test-first04\\actual\\test\\POST.json",
+        "bytes": 422,
+        "sha256": "b618878b35b529a979c2f8431aadc428a64f27742b72234c8aaa6df7c1df34ab"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-negative-test-first04\\actual\\test\\RELEASE-FENCE.json",
+        "bytes": 1180,
+        "sha256": "840bbccca53f17f578f86d6b86cb84b10932f2845c8cde6d9175c6b83e2891ce"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-negative-test-first04\\actual\\test\\MANAGED-CLOSE.json",
+        "bytes": 237,
+        "sha256": "5ba60726dad4eafdeb8bde3d792d9764519a0e86da472db3369c15e641ba3aab"
+      }
+    ],
+    "new_method": [
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-negative-test-first04\\actual\\junit\\POST.json",
+        "bytes": 1286,
+        "sha256": "97ad68159b74a398423f7195162149f22121a758df5348e17e403f38643116f4"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-negative-test-first04\\actual\\junit\\RELEASE-FENCE.json",
+        "bytes": 1184,
+        "sha256": "ef515f94fb36f0e406dbc8aac188abc99d1f268eefc02065716fda429619c152"
+      },
+      {
+        "path": "D:\\ck3-state\\resume91-java-delivery\\ordinary-p0-20261105\\post-ack-life-warm-reconciliation70\\native-negative-test-first04\\actual\\junit\\MANAGED-CLOSE.json",
+        "bytes": 238,
+        "sha256": "e5c3e0c0f45be47c74efd34aad794cb96fbd77b27afc0a6492d2c17da6bbe266"
+      }
+    ]
+  },
+  "formal_git_eol": "Existing Git Java text attributes normalize Lifecycle CRLF to LF in the committed blob, matching its pre-existing HEAD LF style. Staged owned-span inverse is checked against HEAD bytes; runtime SourceReady preserves actual CRLF. No code token change or new compile is inferred.",
+  "registered_caller_and_new_method_independent_actual_review": {
+    "path": "D:\\ck3-state\\resume91-root\\post-ack-life-warm-independent-review70\\REGISTERED-PORT-AND-NEGATIVE-TEST04-ACTUAL07.json",
+    "bytes": 23137,
+    "sha256": "38de11416f260e95967a8d0d561ab104f1588c918530035d7a194c9a8f9a61b1"
+  }
 }
