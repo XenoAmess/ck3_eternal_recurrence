@@ -616,7 +616,30 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             for (var boundary : AdvanceProgress.Boundary.values()) boundaries.add(boundary.name());
             stop.put("verification_scope", "Java retains full readiness, original history, live revalidation, once dispatch and pause/clock verification; selection proves no completed or saved day");
             byte[] payload = encodeModelInput(data, COMPACT_LIFE_POLICY);
-            return payload.length <= MAX_COMPACT_LIFE_BYTES ? payload : null;
+            if (payload.length <= MAX_COMPACT_LIFE_BYTES) return payload;
+            // Only the duplicate technical registry is projected after the complete task exceeds the wire limit.
+            JsonNode diagnostics = snapshot.get("diagnostics");
+            if (diagnostics == null || !diagnostics.isObject()) return null;
+            JsonNode hello = diagnostics.get("hello");
+            if (hello == null || !hello.isObject()) return null;
+            JsonNode advertised = hello.get("capabilities");
+            if (advertised == null || !advertised.isArray()) return null;
+            Set<String> observedCapabilities = new java.util.HashSet<>();
+            for (JsonNode capability : advertised) {
+                if (!capability.isTextual()) return null;
+                observedCapabilities.add(capability.textValue());
+            }
+            List<String> requiredCapabilities = requiredLifeCapabilities(plan);
+            if (!observedCapabilities.equals(request.observations().bridgeCapabilities())
+                    || !observedCapabilities.containsAll(requiredCapabilities)) return null;
+            ArrayNode projectedCapabilities = JsonNodeFactory.instance.arrayNode();
+            requiredCapabilities.stream().sorted().forEach(projectedCapabilities::add);
+            ((ObjectNode) hello).set("capabilities", projectedCapabilities);
+            data.put("hello_capabilities_projection", "required_life_action_subset/v1");
+            String projectedPolicy = COMPACT_LIFE_POLICY
+                    + " Only snapshot.diagnostics.hello.capabilities is projected to this Life intent's required subset of the actual advertised registry. The complete registry remains in Java; all other current facts and unknown diagnostics remain supplied.";
+            byte[] projectedPayload = encodeModelInput(data, projectedPolicy);
+            return projectedPayload.length <= MAX_COMPACT_LIFE_BYTES ? projectedPayload : null;
         } catch (RuntimeException unsupportedOrTooLarge) {
             return null;
         }
