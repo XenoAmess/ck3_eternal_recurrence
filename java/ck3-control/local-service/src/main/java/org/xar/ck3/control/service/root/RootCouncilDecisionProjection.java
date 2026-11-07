@@ -105,7 +105,8 @@ final class RootCouncilDecisionProjection {
 
             if (snapshotNode.has("native_command_history")) {
                 var nativeHistory = snapshotNode.get("native_command_history");
-                if (nativeHistory.equals(historyNode)) {
+                if (java.util.Arrays.equals(FullJsonTree.encode(nativeHistory, FullJsonTree.MAXIMUM_BYTES),
+                        FullJsonTree.encode(historyNode, FullJsonTree.MAXIMUM_BYTES))) {
                     ((ObjectNode) snapshotNode).remove("native_command_history");
                     data.put("duplicate_snapshot_history_omitted", true);
                 }

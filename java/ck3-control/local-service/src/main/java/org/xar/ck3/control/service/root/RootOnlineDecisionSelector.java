@@ -207,7 +207,9 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         ArrayNode history = data.putArray("history");
         request.observations().history().forEach(frame -> history.add(OpportunityJson.toNode(frame)));
         var nativeHistory = snapshotNode.get("native_command_history");
-        if (nativeHistory != null && nativeHistory.isArray() && nativeHistory.equals(history)) {
+        if (nativeHistory != null && nativeHistory.isArray()
+                && java.util.Arrays.equals(FullJsonTree.encode(nativeHistory, MAX_MATERIAL_BYTES),
+                        FullJsonTree.encode(history, MAX_MATERIAL_BYTES))) {
             ((ObjectNode) snapshotNode).remove("native_command_history");
         }
         // Compare the unprojected history above before changing only this model input tree.
@@ -561,7 +563,10 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             var original = request.observations().snapshot();
             OpportunityJson.Obj modelSnapshot = original;
             var duplicate = original.get("native_command_history");
-            if (duplicate instanceof OpportunityJson.Arr rows && rows.items().equals(request.observations().history())) {
+            if (duplicate instanceof OpportunityJson.Arr rows
+                    && java.util.Arrays.equals(FullJsonTree.encode(OpportunityJson.toNode(rows), MAX_MATERIAL_BYTES),
+                            FullJsonTree.encode(OpportunityJson.toNode(new OpportunityJson.Arr(
+                                    new ArrayList<OpportunityJson.Value>(request.observations().history()))), MAX_MATERIAL_BYTES))) {
                 var members = new java.util.LinkedHashMap<>(original.members());
                 members.remove("native_command_history");
                 modelSnapshot = new OpportunityJson.Obj(members);
