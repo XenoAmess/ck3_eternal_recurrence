@@ -232,7 +232,7 @@ public final class OrdinaryFinanceCollector {
         if (!(read instanceof Known<FinanceReadContracts.Packet> known)) return missing("current native cash query unavailable");
         try {
             Obj original = object(known.value().result().get("war_cash_current_resources"), "native current cash");
-            return new Known<>(new Cash(RawCashCodec.normalize(org.xar.ck3.control.application.driver.DriverJson.encode(original),org.xar.ck3.control.application.driver.DriverJson.encode(request.observations().snapshot())), known.value()));
+            return new Known<>(new Cash(RawCashCodec.normalize(org.xar.ck3.control.application.driver.DriverJson.encode(original),org.xar.ck3.control.application.driver.DriverJson.encode(financingSnapshot(request.observations().snapshot()))), known.value()));
         } catch (IllegalArgumentException invalid) { return missing("native cash observation rejected: " + invalid.getMessage()); }
     }
     public Read<LoanObservation> loan(PlanningRequest request) { return loanFromCash(request, cash(request)); }
