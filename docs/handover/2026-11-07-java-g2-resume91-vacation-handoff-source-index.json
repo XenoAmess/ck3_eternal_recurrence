@@ -1,0 +1,233 @@
+{
+  "schema": "xar.resume91.vacation-handoff-source-index/v1",
+  "date": "2026-11-07",
+  "generated_at_utc": "2026-11-07T06:43:58.255235+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "latest_user_directive": "Vacation handoff to docs; no new implementation, compile, model dispatch, Game action, live query, deployment, launch or recovery.",
+  "resume_requires_later_explicit_user_instruction": true,
+  "business_java_state": "last registered PID24536 exited4 on 2026-11-06T20:42:09.517668Z; no new business START in known registrations",
+  "last_OS_identity_cut_utc": "2026-11-07T04:42:43.690923Z",
+  "game": {
+    "pid": 102152,
+    "birth_filetime": "134384631867107774",
+    "not_rechecked_for_handoff": true
+  },
+  "keeper": {
+    "pid": 35300,
+    "birth_filetime": "134384631396059561",
+    "not_rechecked_for_handoff": true
+  },
+  "ledger": {
+    "head": 47,
+    "state": "repair_required/BATCH_INTERRUPTED",
+    "parent": 46,
+    "parent_state": "COMPOSITE_UNKNOWN/UNRESOLVED",
+    "registered_children": 1,
+    "original_run_child": null,
+    "original_deadline_utc": "2026-11-06T21:06:53.1953352Z",
+    "live_recovery_admission": false
+  },
+  "provider_rejection": {
+    "task": "/root/m6_continue",
+    "diagnostic": "P100",
+    "reason": "This content was flagged for possible cybersecurity risk.",
+    "confirmed_security_vulnerability": false,
+    "same_chain_retried_or_routed_around": false
+  },
+  "commits_before_handoff": {
+    "p097": "5b18edbcec6ff40eabbdbab7b301bcf453095a77",
+    "p101_source": "b51bbb9eb7c2cb7459cc8b99daed5cfb4f2cf55b",
+    "p101_formal_qualification": "a52ac0cfa14a4f968ec0627c2d0ef8f616e32788",
+    "p102_production": "be44e4bb7d41331ea9aca121068c1da3536db298",
+    "p102_measurement": "a7007b1b088eb78c7088f3140c1e62fa40178c60"
+  },
+  "formal_checkout_at_handoff": {
+    "path": "D:/r64d",
+    "head": "a7007b1b088eb78c7088f3140c1e62fa40178c60",
+    "detached": true,
+    "clean": true,
+    "preserve_frozen_checkout": true
+  },
+  "performance": {
+    "component_A_mean_ms": "204.92905",
+    "component_B_mean_ms": "155.662225",
+    "all_measured_samples_per_mode": 4,
+    "runtime_adopted": false,
+    "end_to_end_gain_proven": false,
+    "latest_recorded_wall_cut_utc": "2026-11-07T03:33:45.264918Z",
+    "wall_seconds": "59962.9166735",
+    "new_verified_saved_days_in_same_window": 38,
+    "seconds_per_verified_saved_day": "1577.9714914",
+    "tail_seconds": "42277.0727136",
+    "tail_new_verified_saved_days": 0,
+    "tail_seconds_per_day": null,
+    "ten_second_goal_met": false,
+    "new_verified_saved_days_in_last_work_turn": 0
+  },
+  "large_artifacts_historical_report_only": [
+    {
+      "kind": "save1475",
+      "bytes": 83015547,
+      "sha256": "333979275a1e808be2cb58e0ac818f98c0e95121e68426a8789bd5cd23a714c3",
+      "reread_for_handoff": false
+    },
+    {
+      "kind": "Driver1475",
+      "bytes": 5255697,
+      "sha256": "092b7df37ab70b5d28981b1c681fbf96cc1e58f0029706bab15fd741adc705f4",
+      "reread_for_handoff": false
+    }
+  ],
+  "records": [
+    {
+      "id": "handoff_main",
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-11-07-java-g2-resume91-vacation-handoff.md",
+      "bytes": 11110,
+      "sha256": "6160e50ccb589b6c61ceedbd2b04baa933aa98b9956a45ac97f4682263ca99d4",
+      "scope": "current handoff document",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "handoff_native",
+      "path": "Z:/ck3_mod_rewrite/docs/native-handoff-2026-11-07-vacation.md",
+      "bytes": 4344,
+      "sha256": "227197119117829a3bd51ddb2c5a61ea4261b46bce8ee66d20380a363a435296",
+      "scope": "current Native handoff document",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "runtime_os_registry",
+      "path": "D:/ck3-state/resume91-runtime/resume-after-user-play-20261105/runtime-independent-owner-os-check-20261107T0440/OWNER-REGISTRATION-AND-TWO-PID-OS.json",
+      "bytes": 2782,
+      "sha256": "e1d74f8bc4dddb877c0bbb29ab8e069299439716fbd2dc9dc7df2f7fbe94e8aa",
+      "scope": "last bounded owner registry and two PID OS identity facts; not publication-time live state",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "last_java_exit",
+      "path": "D:/ck3-state/resume91-runtime/resume-after-user-play-20261105/m7-retained-repair99/CREATOR-EXIT.json",
+      "bytes": 1054,
+      "sha256": "96f577270ac815bbec285280f30ef6a474b3cd420120880591a178814729742a",
+      "scope": "original exit receipt; no new stop action",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "wall_accounting",
+      "path": "D:/ck3-state/resume91-runtime/resume-after-user-play-20261105/runtime-independent-os-wall-20261107T033239Z/KNOWN-EVIDENCE-WALL-ACCOUNTING.json",
+      "bytes": 1416,
+      "sha256": "b44e2a93872624096b6af7574c3cc03d7d8c0d9b84150acbe51c98f902683a17",
+      "scope": "historical 03:33 UTC known saved credit window",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p101_qualified",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/loaded-saved-original-recovery101/QUALIFIED-FORMAL-BASELINE02-EXPLICIT134-AND-TWO-GENERIC-DATA.json",
+      "bytes": 24447,
+      "sha256": "d02977a6e6251fadc8fd3051f7415e81202ab74cf850f324701796221f5a6f83",
+      "scope": "finite formal type and two generic DATA qualification; not live admission",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p101_owner",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/loaded-saved-original-recovery101/OWNER-FORMAL-BASELINE-DELIVERY02.json",
+      "bytes": 3321,
+      "sha256": "f13a3556cc7ca305f959a300b06f2741f3c058eb036ac8c35db651149876872b",
+      "scope": "owner software closure",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p101_published",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/loaded-saved-original-recovery101/FORMAL-BASELINE-FACTS-PUBLISHED02.json",
+      "bytes": 612,
+      "sha256": "7584714d4114506f78d7b07a170a0d6db0e22cb2e70844c7ce8710937d5185ff",
+      "scope": "prior qualification publication receipt",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p102_actual",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/checkpoint-saved-encoding-reuse102/native-benchmark01/ACTUAL-ALL-RAW-COMPONENT-BENCHMARK01.json",
+      "bytes": 27721,
+      "sha256": "c3ccd54d30af0d9ca71d79c77c5a787bac7bf33a1b0473819b50a1bb01a7cca0",
+      "scope": "complete fixed component benchmark observation",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p102_raw",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/checkpoint-saved-encoding-reuse102/native-benchmark01/actual/main/stdout.bin",
+      "bytes": 5212,
+      "sha256": "980628dcb2e4afca63c65d6a7765a8fb1762420e1693bde7e0dd67f43824d6d8",
+      "scope": "all 21 original records, warm and measured samples retained",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p102_analysis",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/checkpoint-saved-encoding-reuse102/benchmark01/ALL-SAMPLES-ANALYSIS01.json",
+      "bytes": 9960,
+      "sha256": "8c001a56e0b6639c2380daf9a8b10b4120ab2451eba26954e0f4f32770b6dfb7",
+      "scope": "all sample analysis; no new JVM",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p102_owner",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/checkpoint-saved-encoding-reuse102/OWNER-COMPONENT-BENCHMARK01.json",
+      "bytes": 3675,
+      "sha256": "9fb2a20bfbd9899784c56505b656042cb165b288c8f12002a124ab7be5aad49a",
+      "scope": "owner component-only scope and resource closure",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p102_published",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261105/checkpoint-saved-encoding-reuse102/BENCHMARK-PUBLISHED01.json",
+      "bytes": 1312,
+      "sha256": "f12d15b2c956dd0e5545bedc384b256734d83211966541bee42c9592171aa511",
+      "scope": "prior benchmark publication receipt",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p101_independent",
+      "path": "D:/ck3-state/resume91-root/loaded-saved-original-recovery-independent101/FORMAL-SEVEN-BASELINE-SIGNATURES-AND-EXACT-REUSE46-07.json",
+      "bytes": 28394,
+      "sha256": "563c3bb580e471148fa1035c4b9689b0559b3c04f9d75f94f6f081e0bbe514eb",
+      "scope": "source API and class family independent review",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "p102_independent",
+      "path": "D:/ck3-state/resume91-root/checkpoint-saved-encoding-independent102/FINITE-COMPONENT-ABAB-BABA-SOURCE03.json",
+      "bytes": 9390,
+      "sha256": "006b2bc2b749adffa28c92b6d5b373577b7ae3c260aa809f7e8feabddf37ebf0",
+      "scope": "finite benchmark source independent review",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "root_current",
+      "path": "D:/ck3-state/resume91-root/resume-after-vacation-20261104/ROOT-CURRENT-20261107-0445.md",
+      "bytes": 14512,
+      "sha256": "9afde6e31ccaaac1a30cb0189ac276f6dad629dc13e0fcc8a7e714bcb0148578",
+      "scope": "latest frozen chronology and original UNKNOWN boundary",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "root_metrics_cut",
+      "path": "D:/ck3-state/resume91-root/resume-after-vacation-20261104/ROOT-CURRENT-20261107-0337.md",
+      "bytes": 20032,
+      "sha256": "98eac3bf7301ba85fd3f70548c5d4b822726c815fe3742ab877f12d429bf6de5",
+      "scope": "historical metrics cut and independent work baseline",
+      "availability_at_documentation": "read_existing_file_only"
+    },
+    {
+      "id": "root_block_cut",
+      "path": "D:/ck3-state/resume91-root/resume-after-vacation-20261104/ROOT-CURRENT-20261106-2132.md",
+      "bytes": 19425,
+      "sha256": "115600ddcb29aeec07e29501dcba4a1f214b7e313d86ff1870e4732fa2331a3e",
+      "scope": "historical P100 refusal and current original action uncertainty; navigation only",
+      "availability_at_documentation": "read_existing_file_only"
+    }
+  ],
+  "legacy_entrypoints_preserved": [
+    "docs/handover/2026-11-04-java-g2-resume91-vacation-handoff.md",
+    "docs/handover/2026-11-04-java-g2-resume91-vacation-handoff-source-index.json",
+    "docs/native-handoff-2026-11-04-vacation.md"
+  ],
+  "validation_scope": "Document links, JSON shape, exact existing small evidence bytes/SHA only; no software tests, JVM, model HTTP, Native, Game query or control."
+}
