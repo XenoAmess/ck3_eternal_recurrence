@@ -146,7 +146,11 @@ final class SelectorRootPrivateCopyOracleTest {
         return (Boolean) invoke("isQualifyingRootContextRead", new Class<?>[] { JsonNode.class }, row);
     }
     private static ObjectNode project(ObjectNode row, ArrayNode dictionary) throws Exception {
-        return (ObjectNode) invoke("projectRootContextRead", new Class<?>[] { ObjectNode.class, ArrayNode.class }, row, dictionary);
+        java.util.Map<String,Integer> indices=new java.util.LinkedHashMap<>();
+        for(int index=0;index<dictionary.size();index++)
+            indices.put(java.util.Base64.getEncoder().encodeToString(wire(dictionary.get(index))),index);
+        return (ObjectNode) invoke("projectRootContextRead",
+                new Class<?>[] { ObjectNode.class, ArrayNode.class, java.util.Map.class }, row, dictionary, indices);
     }
     private static Object invoke(String name, Class<?>[] types, Object... args) throws Exception {
         Method method = RootOnlineDecisionSelector.class.getDeclaredMethod(name, types);

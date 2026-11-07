@@ -214,9 +214,10 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         }
         // Compare the unprojected history above before changing only this model input tree.
         ArrayNode rootFacts = data.putArray("root_facts");
+        java.util.Map<String, Integer> rootFactIndices = new java.util.LinkedHashMap<>();
         for (int index = 0; index < history.size(); index++) {
             JsonNode row = history.get(index);
-            if (isQualifyingRootContextRead(row)) history.set(index, projectRootContextRead((ObjectNode) row, rootFacts));
+            if (isQualifyingRootContextRead(row)) history.set(index, projectRootContextRead((ObjectNode) row, rootFacts, rootFactIndices));
         }
         data.put("history_projection_schema", "xar.model-root-history-dictionary/v1");
         if (applyDeclarableWarHistoryAlias(history)) data.put("history_declarable_wars_projection_schema", "xar.model-history-declarable-wars-alias/v1");
@@ -862,15 +863,14 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         return wars.isArray() && !wars.isEmpty();
     }
 
-    /** Intern complete arrays by JsonNode.equals; preserve all unknown fields and distinct metadata. */
+    /** Intern complete arrays by byte-identical encoding; preserve all unknown fields and distinct metadata. */
     private static boolean applyDeclarableWarHistoryAlias(ArrayNode history) {
         // A pre-existing ref could be mistaken for our projection under the request-wide marker.
         // Preserve the entire history without this alias whenever that technical name is occupied.
         for (JsonNode row : history) {
             if (row.path("result").has("declarable_wars_history_ref")) return false;
         }
-        List<JsonNode> interned = new ArrayList<>();
-        List<Integer> positions = new ArrayList<>();
+        java.util.Map<String, Integer> interned = new java.util.LinkedHashMap<>();
         boolean changed = false;
         for (int i = 0; i < history.size(); i++) {
             JsonNode row = history.get(i);
@@ -878,13 +878,10 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             ObjectNode result = (ObjectNode) row.get("result");
             if (result.has("declarable_wars_history_ref")) continue; // Collision: skip unchanged.
             JsonNode wars = result.get("declarable_wars");
-            int firstIndex = -1;
-            for (int j = 0; j < interned.size(); j++) {
-                if (interned.get(j).equals(wars)) { firstIndex = positions.get(j); break; }
-            }
-            if (firstIndex < 0) {
-                interned.add(wars);
-                positions.add(i);
+            String encoded = Base64.getEncoder().encodeToString(FullJsonTree.encode(wars, MAX_MATERIAL_BYTES));
+            Integer firstIndex = interned.get(encoded);
+            if (firstIndex == null) {
+                interned.put(encoded, i);
             } else {
                 ObjectNode projected = row.deepCopy();
                 ObjectNode projectedResult = (ObjectNode) projected.get("result");
@@ -952,8 +949,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         return projected;
     }
 
-    /** Structural JSON equality preserves integer precision and all unknown ROOT fields. */
-    private static ObjectNode projectRootContextRead(ObjectNode row, ArrayNode rootFacts) {
+    /** Byte-identical encoding preserves integer precision, member order and all unknown ROOT fields. */
+    private static ObjectNode projectRootContextRead(ObjectNode row, ArrayNode rootFacts, java.util.Map<String, Integer> rootFactIndices) {
         ObjectNode projected = row.deepCopy();
         ObjectNode result = (ObjectNode) projected.get("result");
         ObjectNode root = (ObjectNode) result.get("campaign_root_context");
@@ -961,9 +958,13 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         ObjectNode facts = root; // Private row copy; result replaces this node with ref below.
         facts.remove("snapshot_revision");
         ((ObjectNode) facts.get("player_heir_candidate_v1")).remove("snapshot_revision");
-        int reference = 0;
-        while (reference < rootFacts.size() && !rootFacts.get(reference).equals(facts)) reference++;
-        if (reference == rootFacts.size()) rootFacts.add(facts);
+        String encoded = Base64.getEncoder().encodeToString(FullJsonTree.encode(facts, MAX_MATERIAL_BYTES));
+        Integer reference = rootFactIndices.get(encoded);
+        if (reference == null) {
+            reference = rootFacts.size();
+            rootFactIndices.put(encoded, reference);
+            rootFacts.add(facts);
+        }
         ObjectNode ref = object(); ref.put("root_ref", reference);
         ref.set("snapshot_revision", rootStamp);
         ref.set("player_heir_candidate_v1_snapshot_revision", heirStamp);
