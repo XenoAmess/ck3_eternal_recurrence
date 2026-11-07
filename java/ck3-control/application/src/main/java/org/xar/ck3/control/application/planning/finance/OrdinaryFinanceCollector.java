@@ -265,17 +265,46 @@ public final class OrdinaryFinanceCollector {
                 require(supplied == null || supplied.equals(expected), "loan CASH query metadata drift: " + key);
                 original = original.with("queried_" + key, expected);
             }
-            Obj wrapper = obj("snapshot", snapshot, "cash_resources", original, "cash_source_frame", source);
+            Obj wrapper = obj("snapshot", financingSnapshot(snapshot), "cash_resources", original, "cash_source_frame", source);
             var input = LoanFinancingCodec.decodeAndProject(org.xar.ck3.control.application.driver.DriverJson.encode(wrapper));
             return new Known<>(new LoanObservation(wrapper, input, packet));
         } catch (IllegalArgumentException invalid) { return missing("current loan observation rejected: " + invalid.getMessage()); }
     }
     public static Obj financingGap(PlanningRequest request, Current current) {
-        return obj("schema", new Text(FinancingGapCodec.REQUEST_SCHEMA), "snapshot", request.observations().snapshot(),
+        return obj("schema", new Text(FinancingGapCodec.REQUEST_SCHEMA), "snapshot", financingSnapshot(request.observations().snapshot()),
                 "priority", object(parse(current.priority().toJson()), "actual current war priority"), "root", current.root(),
                 "construction_ledger", current.state().ledger(FinanceStatePort.Domain.CONSTRUCTION).orElseThrow().original(),
                 "bridge_capabilities", new Arr(request.observations().bridgeCapabilities().stream().sorted().map(Text::new).map(Value.class::cast).toList()));
     }
+    /** Only the Gap/Emergency/Loan snapshot role; full state and originals remain in the request and packet.
+     * Keep this union synchronized with FinancingGapCodec, EmergencyFinancingAssessmentCodec,
+     * LoanFinancingCodec and RawCashCodec. Copy-present preserves missing, null and malformed values.
+     */
+    private static Obj financingSnapshot(Obj original) {
+        Obj result = financingFields(original, List.of("played_character_id", "played_character", "native_revision", "date_raw",
+                "snapshot_id", "revision", "episode_run_id", "active_wars", "played_character_gold", "paused", "map_ready", "diagnostics"));
+        if (result.get("played_character") instanceof Obj actor)
+            result = result.with("played_character", financingFields(actor, List.of("character_id", "alive")));
+        if (result.get("played_character_gold") instanceof Obj gold)
+            result = result.with("played_character_gold", financingFields(gold, List.of("scale", "raw")));
+        if (result.get("active_wars") instanceof Arr wars) {
+            result = result.with("active_wars", new Arr(wars.items().stream()
+                    .map(value -> value instanceof Obj row ? (Value) financingFields(row, List.of("war_id")) : value).toList()));
+        }
+        if (result.get("diagnostics") instanceof Obj diagnostics) {
+            Obj source = financingFields(diagnostics, List.of("bridge_pid", "connection_generation", "hello"));
+            if (source.get("hello") instanceof Obj hello)
+                source = source.with("hello", financingFields(hello, List.of("expected_ck3_version", "expected_ck3_sha256", "game_version", "executable_sha256")));
+            result = result.with("diagnostics", source);
+        }
+        return result;
+    }
+    private static Obj financingFields(Obj original, List<String> names) {
+        var fields = new LinkedHashMap<String, Value>();
+        original.members().forEach((name, value) -> { if (names.contains(name)) fields.put(name, value); });
+        return new Obj(fields);
+    }
+
     /** The original assessment owns every false submission/received-funds flag and zero funding credit. */
     public static Obj financingRequest(Obj gap, Optional<LoanObservation> loan, Value pending) {
         return obj("schema", new Text(EmergencyFinancingAssessmentCodec.REQUEST_SCHEMA), "gap_request", gap,
