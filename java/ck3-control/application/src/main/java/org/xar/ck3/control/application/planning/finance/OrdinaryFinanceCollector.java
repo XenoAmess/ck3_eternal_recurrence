@@ -322,9 +322,22 @@ public final class OrdinaryFinanceCollector {
         var source = request.before().frame(); var f = source.identity();
         Obj inputs = obj("actor_character_id",new IntegerValue(f.player()),"snapshot_revision",new IntegerValue(f.nativeRevision()),
                 "date_raw",new IntegerValue(f.dateRaw()),"post_snapshot_id",new Text(source.snapshotId()),"queried_revision",new IntegerValue(source.revision()));
-        Obj wrapper = obj("schema",new Text(FeastBudgetCodec.SCHEMA),"snapshot",request.observations().snapshot(),
+        Obj wrapper = obj("schema",new Text(FeastBudgetCodec.SCHEMA),"snapshot",budgetSnapshot(request.observations().snapshot()),
                 "inputs",inputs,"ledgers",new Obj(ledgers),"campaign_root",root);
         return FeastBudgetPolicy.observe(FeastBudgetCodec.decode(org.xar.ck3.control.application.driver.DriverJson.encode(wrapper)));
+    }
+    /** Snapshot role of FeastBudgetCodec only; pending retains its full original presence/value.
+     * Complete snapshot, inputs, ledgers and campaign root stay in their original owners.
+     */
+    private static Obj budgetSnapshot(Obj original) {
+        Obj result = financingFields(original, List.of("paused", "map_ready", "played_character", "native_revision", "date_raw",
+                "snapshot_id", "revision", "active_wars", "pending_character_interaction"));
+        if (result.get("played_character") instanceof Obj actor)
+            result = result.with("played_character", financingFields(actor, List.of("character_id")));
+        if (result.get("active_wars") instanceof Arr wars)
+            result = result.with("active_wars", new Arr(wars.items().stream()
+                    .map(value -> value instanceof Obj row ? (Value) financingFields(row, List.of("war_id")) : value).toList()));
+        return result;
     }
     private record LedgerName(String name,FinanceStatePort.Domain domain) { }
     public Read<Gift> gift(PlanningRequest request, Current current) { return gift(request,current,BigInteger.valueOf(10_000_000)); }
