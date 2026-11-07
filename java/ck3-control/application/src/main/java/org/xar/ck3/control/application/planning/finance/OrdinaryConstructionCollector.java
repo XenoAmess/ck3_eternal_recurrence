@@ -202,10 +202,30 @@ public final class OrdinaryConstructionCollector {
     static Obj finalizePeacetime(Obj actualInput) {
         require(new Bool(false).equals(actualInput.get("material_receipt")) && new Bool(false).equals(actualInput.get("wartime_observation")),
                 "M5 peaceful proposal input cannot borrow completion or wartime-only observation");
-        Obj finalized = DriverJson.object(ConstructionQueryCodec.finalizeObservation(encode(actualInput)), ConstructionQueryCodec.MAX_BYTES);
+        // Only the temporary SDK input is projected; the caller retains the complete query and its originals.
+        Obj sdkInput=actualInput;
+        for(String key:List.of("starting_snapshot","ending_snapshot")) {
+            if(actualInput.get(key) instanceof Obj snapshot) {
+                Obj role=peacetimeFields(snapshot,List.of("paused","active_wars","played_character","native_revision","revision","snapshot_id",
+                        "date_raw","map_ready","player_armies","active_event","pending_character_interaction","episode_run_id","diagnostics"));
+                if(role.get("diagnostics") instanceof Obj diagnostic) {
+                    Obj selected=peacetimeFields(diagnostic,List.of("hello"));
+                    if(selected.get("hello") instanceof Obj hello)
+                        selected=selected.with("hello",peacetimeFields(hello,List.of("expected_ck3_version","game_version","expected_ck3_sha256","executable_sha256")));
+                    role=role.with("diagnostics",selected);
+                }
+                sdkInput=sdkInput.with(key,role);
+            }
+        }
+        Obj finalized = DriverJson.object(ConstructionQueryCodec.finalizeObservation(encode(sdkInput)), ConstructionQueryCodec.MAX_BYTES);
         require(List.of(new Text("selected"), new Text("no_legal_budgeted_building")).contains(finalized.get("status")),
                 "actual native construction finalizer is incomplete: " + finalized.get("status"));
         return finalized;
+    }
+    private static Obj peacetimeFields(Obj original,List<String> fields) {
+        var selected=new java.util.LinkedHashMap<String,Value>();
+        for(var entry:original.members().entrySet())if(fields.contains(entry.getKey()))selected.put(entry.getKey(),entry.getValue());
+        return new Obj(selected);
     }
     /** Cold/completion material reads borrow the actual writer session; absent optional income/cash stays absent. */
     public MaterialRead material(Session session, PlanningRequest request) {

@@ -116,6 +116,7 @@
       <testResource><directory>../wave2-finance/src/test/resources</directory><includes><include>factionalerts/original-producer-golden.json</include></includes></testResource>
       <testResource><directory>../governance-policy/src/test/resources</directory><includes><include>crownauthority/original-producer-golden.json</include></includes></testResource>
       <testResource><directory>../wave3-governance/src/test/resources</directory><includes><include>governmentquery/original-producer-golden.json</include></includes></testResource>
+      <testResource><directory>../application/src/test/resources</directory><includes><include>org/xar/ck3/control/application/checkpoint/encoding102/driver1475.json.gz</include></includes></testResource>
     </testResources>
     <plugins>
       <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><executions><execution><id>default-jar</id><phase>process-test-classes</phase><goals><goal>jar</goal></goals></execution><execution><id>shared-existing-test-helpers</id><phase>test-compile</phase><goals><goal>test-jar</goal></goals></execution></executions></plugin>
