@@ -195,7 +195,7 @@ public final class FinanceEvidenceArchive {
             Obj cash=obj("schema",new Text(GiftWarCashCodec.SCHEMA),"snapshot",before.semantic(),"candidate",candidateWire,"root",root,
                     "spending",object(parse(FeastBudgetCodec.encode(budget)),"actual original budget"),"market",market.original(),
                     "market_source_frame",OrdinaryFinanceCollector.sourceFrame(command.before()),"mercenary_ledger",Objects.requireNonNull(procurement));
-            require(GiftWarCashPolicy.assess(GiftWarCashCodec.decode(encode(cash))).newGiftSpendingAllowed(),"original current-cash budget does not authorize gift spending");
+            require(GiftWarCashPolicy.assess(GiftWarCashCodec.decode(encode(OrdinaryFinanceCollector.projectCashContext(cash)))).newGiftSpendingAllowed(),"original current-cash budget does not authorize gift spending");
             NativeFinanceEffects.giftBaseline(arguments);
         }
     }

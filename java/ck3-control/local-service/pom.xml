@@ -106,7 +106,9 @@
       <testResource><directory>src/test/resources</directory></testResource>
       <testResource><directory>../g2-research/src/test/resources</directory></testResource>
       <testResource><directory>../finance-policy/src/test/resources</directory><includes><include>feastbudget/original-producer-golden.json</include></includes></testResource>
-      <testResource><directory>../wave2-finance/src/test/resources</directory><includes><include>holyloan/original-v1.jsonl.gz</include></includes></testResource>
+      <testResource><directory>../wave2-finance/src/test/resources</directory><includes><include>holyloan/original-v1.jsonl.gz</include><include>giftwarcash/original-producer-golden.json</include></includes></testResource>
+      <testResource><directory>../wave3-development/src/test/resources</directory><includes><include>wartimeconstructioncash/original-producer-golden.json.gz</include></includes></testResource>
+      <testResource><directory>../wave3-planning/src/test/resources</directory><includes><include>warpriorityfocus/golden.json</include></includes></testResource>
       <testResource><directory>../wave2-events/src/test/resources</directory><includes><include>unhandledevent/unhandled-event-golden-v1.json.gz</include></includes></testResource>
       <testResource><directory>../continuity-core/src/test/resources</directory><includes><include>original-reducer-calls-v2.json.gz</include></includes></testResource>
       <testResource><directory>../wave2-runtime/src/test/resources</directory><includes><include>closedadoption/**</include><include>clockreader/**</include></includes></testResource>

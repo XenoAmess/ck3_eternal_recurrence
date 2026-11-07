@@ -380,7 +380,28 @@ public final class OrdinaryFinanceCollector {
         if (candidate!=null) entries.put("candidate",candidate); entries.put("root",current.root()); entries.put("spending",current.spendingJson());
         entries.put("market",current.market().original()); entries.put("market_source_frame",sourceFrame(request));
         entries.put("mercenary_ledger",current.state().ledger(FinanceStatePort.Domain.MERCENARY).orElseThrow(()->new IllegalArgumentException("actual procurement ledger missing")).original());
-        return new Obj(entries);
+        return projectCashContext(new Obj(entries));
+    }
+    /** Declared Cash/Construction/Focus SDK role shared with original-evidence verification.
+     * This is not a lossless archive: full request, roots, packets and documents remain with their owners.
+     * Complete business subtrees, opaque political identities and post-quote income material are retained.
+     */
+    public static Obj projectCashContext(Obj original) {
+        Obj result = original;
+        if (original.get("snapshot") instanceof Obj snapshot) {
+            Obj view = financingFields(snapshot, List.of("source", "paused", "map_ready", "played_character_id", "played_character", "played_character_gold",
+                    "native_revision", "date_raw", "snapshot_id", "revision", "episode_run_id", "active_event", "pending_character_interaction",
+                    "active_wars", "player_armies", "army_strengths_status", "army_strengths", "army_strengths_queried_snapshot_id",
+                    "army_strengths_queried_revision", "war_termination_options", "diagnostics"));
+            if (view.get("diagnostics") instanceof Obj diagnostics)
+                view = view.with("diagnostics", financingFields(diagnostics, List.of("connected", "bridge_pid", "connection_generation")));
+            result = result.with("snapshot", view);
+        }
+        if (original.get("root") instanceof Obj root)
+            result = result.with("root", financingFields(root, List.of("status", "player_character_id", "snapshot_revision", "date_raw",
+                    "player_max_monthly_gold_maintenance_v1", "primary_title", "held_title_partition", "player_character_alive", "independent",
+                    "readiness", "immediate_liege_character_id", "top_liege_character_id", "provenance", "player_monthly_gold_income")));
+        return result;
     }
     public Read<Feast> feast(PlanningRequest request,Spending current) {
         Read<FinanceReadContracts.Packet> read=query(FinanceReadContracts.Query.FEAST_INPUTS,request);
