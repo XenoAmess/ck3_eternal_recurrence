@@ -225,22 +225,29 @@ public final class CheckpointCommitVerifier {
         java.util.Map.Entry<DriverStateSnapshot.Complete,java.io.Closeable> physicalRecheck=null;
         if(retained)saved=combined.isPresent()?combined.orElseThrow().savedDriver():saves.retainedDriver(borrowed,pair);
         else {physicalRecheck=drivers.readVerifiedOriginalForRecheck(pair,before.session());saved=physicalRecheck.getKey();}
-        requireSaveProjection(before,saved,pair); if(!retained)physicalRecheck.getValue().close();
-        if(!retained)combined=Objects.requireNonNull(saves.verifyWithDriver(borrowed,session,pair,proof,false));
-        String saveDigest=combined.isPresent()?combined.orElseThrow().digest()
-                :retained?saves.verifyRetained(borrowed,session,pair,proof):saves.verify(borrowed,session,pair,proof);
-        WriterContracts.requireDigest(saveDigest);requireLease(borrowed);
-        if(combined.isPresent())StrictJson.require(Arrays.equals(saved.encode(),combined.orElseThrow().savedDriver().encode()),
-                "combined canonical SAVE Driver differs from the verified complete projection");
-        ObjectNode binding=StrictJson.object(); binding.put("writer_head_sha256",originalHeadDigest);
-        binding.put("session_id",session.sessionId()); binding.put("canonical_save_sha256",saveDigest); binding.put("semantic_verifier_sha256",semanticDigest);
-        binding.put("cycle_state_sha256",proof.cycleStateDigest()); binding.put("completed_cycles",proof.completedCycles());
-        binding.set("pair",StrictJson.parse(CheckpointPairCodec.encode(pair)));
-        var refs=binding.putArray("semantic_sources"); proof.semantic().references().forEach(ref->refs.add(ref.toJson()));
-        java.util.Optional<DriverStateSnapshot.Complete> archived=combined.map(SaveWithDriver::savedDriver);
-        if(retained&&archived.isEmpty())archived=java.util.Optional.of(saved);
-        StrictJson.require(current.equals(borrowed.head().digest()),"SAVE binding validation changed the current writer head");
-        return new CheckedBinding(binding,archived);
+        java.util.Map.Entry<DriverStateSnapshot.Complete,byte[]> savedEncoding;
+        {
+            byte[] encoded=saveProjectionEncoding(before,saved,pair,null);
+            // Only this private nonretained path obtained saved from the fixed strict physical decoder.
+            savedEncoding=retained?null:sameCallSavedEncoding(before,saved,encoded);
+        }
+        try {
+            if(!retained)physicalRecheck.getValue().close();
+            if(!retained)combined=Objects.requireNonNull(saves.verifyWithDriver(borrowed,session,pair,proof,false));
+            String saveDigest=combined.isPresent()?combined.orElseThrow().digest()
+                    :retained?saves.verifyRetained(borrowed,session,pair,proof):saves.verify(borrowed,session,pair,proof);
+            WriterContracts.requireDigest(saveDigest);requireLease(borrowed);
+            if(combined.isPresent())requireCombinedSaveDriver(saved,combined.orElseThrow().savedDriver(),savedEncoding,null);
+            ObjectNode binding=StrictJson.object(); binding.put("writer_head_sha256",originalHeadDigest);
+            binding.put("session_id",session.sessionId()); binding.put("canonical_save_sha256",saveDigest); binding.put("semantic_verifier_sha256",semanticDigest);
+            binding.put("cycle_state_sha256",proof.cycleStateDigest()); binding.put("completed_cycles",proof.completedCycles());
+            binding.set("pair",StrictJson.parse(CheckpointPairCodec.encode(pair)));
+            var refs=binding.putArray("semantic_sources"); proof.semantic().references().forEach(ref->refs.add(ref.toJson()));
+            java.util.Optional<DriverStateSnapshot.Complete> archived=combined.map(SaveWithDriver::savedDriver);
+            if(retained&&archived.isEmpty())archived=java.util.Optional.of(saved);
+            StrictJson.require(current.equals(borrowed.head().digest()),"SAVE binding validation changed the current writer head");
+            return new CheckedBinding(binding,archived);
+        } finally { if(savedEncoding!=null)savedEncoding.setValue(null); }
     }
     private byte[] readExact(ExactRef ref) throws IOException {
         var actual=files.observe(Path.of(ref.path())).orElseThrow(()->new IOException("original checkpoint semantic source unavailable"));
@@ -248,7 +255,14 @@ public final class CheckpointCommitVerifier {
         return files.read(actual,DriverCheckpointStore.MAX_DRIVER_BYTES);
     }
     static void requireSaveProjection(DriverStateSnapshot.Complete before, DriverStateSnapshot.Complete saved, CheckpointPair pair) {
-        if (Arrays.equals(before.encode(),saved.encode())) return;
+        saveProjectionEncoding(before,saved,pair,null);
+    }
+    /** Pure encoded DATA only; it issues no material, physical qualification or current owner permission. */
+    static byte[] saveProjectionEncoding(DriverStateSnapshot.Complete before,DriverStateSnapshot.Complete saved,
+            CheckpointPair pair,Runnable savedEncoded) {
+        byte[] prior=before.encode(),encoded=saved.encode();
+        if(savedEncoded!=null)savedEncoded.run();
+        if (Arrays.equals(prior,encoded)) return encoded;
         StrictJson.require(before.session().equals(saved.session()) && saved.commandHistory().size()==before.commandHistory().size()+1,
                 "SAVE may append exactly one row to the complete semantic Driver");
         for(int i=0;i<before.commandHistory().size();i++)
@@ -260,6 +274,24 @@ public final class CheckpointCommitVerifier {
         StrictJson.require(saved.rollbackWarFailure() instanceof DriverStateSnapshot.NullValue
                 &&saved.rollbackWarFailures() instanceof DriverStateSnapshot.Value value
                 &&StrictJson.parse(value.json()).isArray()&&StrictJson.parse(value.json()).isEmpty(),"new SAVE clears only original rollback advisory scope");
+        return encoded;
+    }
+    /** Own one encode result only for the same immutable local value; no field or cross-call retention. */
+    static java.util.Map.Entry<DriverStateSnapshot.Complete,byte[]> sameCallSavedEncoding(
+            DriverStateSnapshot.Complete before,DriverStateSnapshot.Complete saved,byte[] encoded) {
+        return encoded.length<=8*1024*1024&&before.session().actorId().getClass()==java.math.BigInteger.class
+                &&saved.session().actorId().getClass()==java.math.BigInteger.class
+                ?new java.util.AbstractMap.SimpleEntry<>(saved,encoded):null;
+    }
+    /** Fixed encoder and original exact comparison remain the only producers/consumers of these DATA bytes. */
+    static void requireCombinedSaveDriver(DriverStateSnapshot.Complete saved,DriverStateSnapshot.Complete combined,
+            java.util.Map.Entry<DriverStateSnapshot.Complete,byte[]> savedEncoding,Runnable savedEncoded) {
+        byte[] encoded=savedEncoding==null?null:savedEncoding.setValue(null);
+        if(savedEncoding==null||savedEncoding.getKey()!=saved||encoded==null){
+            encoded=saved.encode();if(savedEncoded!=null)savedEncoded.run();
+        }
+        StrictJson.require(Arrays.equals(encoded,combined.encode()),
+                "combined canonical SAVE Driver differs from the verified complete projection");
     }
     private static boolean same(DriverStateSnapshot.Slot left, DriverStateSnapshot.Slot right) {
         if(left instanceof DriverStateSnapshot.Value first&&right instanceof DriverStateSnapshot.Value second)
