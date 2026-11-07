@@ -415,11 +415,22 @@ public final class RootJavaSavedBootstrap {
     /** Pure existing-ledger checks. This creates no physical/Native/dispatch qualification. */
     public static void requireRetainedSavedSourceSuffix(ConfirmedSource source,ContinuityStorePort.Session same,
             NativeOutcomeArchive archive)throws IOException {
+        var original=existingSavedSource(source,same,archive,true);var head=original.getKey();var entry=original.getValue();
+        requireReadOnlySavedContinuation(same,entry);
+        StrictJson.require(head.digest().equals(same.head().digest()),"retained Saved preflight changed actual head");
+    }
+    /** Exact original canonical Entry/source DATA only; no new admission or pending-action permission. */
+    static java.util.Map.Entry<WriterContracts.Head,WriterContracts.HistoricalTransition> existingSavedSource(
+            ConfirmedSource source,ContinuityStorePort.Session same,NativeOutcomeArchive archive)throws IOException {
+        return existingSavedSource(source,same,archive,false);
+    }
+    private static java.util.Map.Entry<WriterContracts.Head,WriterContracts.HistoricalTransition> existingSavedSource(
+            ConfirmedSource source,ContinuityStorePort.Session same,NativeOutcomeArchive archive,boolean requireEmptyActions)throws IOException {
         Objects.requireNonNull(source);Objects.requireNonNull(same);Objects.requireNonNull(archive);
         archive.writer().requireSession(same);var head=same.head();var state=head.state();
         StrictJson.require(source.writer!=archive.writer()&&!source.writer.originalLockPath().equals(archive.writer().originalLockPath())
                 &&!(state.pendingCycle() instanceof ContinuityState.Present)
-                &&ContinuityActionJournal.receipts(state,archive.withSession(same)).isEmpty(),
+                &&(!requireEmptyActions||ContinuityActionJournal.receipts(state,archive.withSession(same)).isEmpty()),
                 "retained Saved startup requires independent writer and empty canonical action/pending history");
         var marker=ContinuityJson.object(state.toJson().get(org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD));
         WriterContracts.HistoricalTransition entry=null;
@@ -443,8 +454,8 @@ public final class RootJavaSavedBootstrap {
                 &&ExactRef.fromJson(marker.get("confirmation_reference")).equals(source.confirmation().eventPin().reference())
                 &&ContinuityJson.same(state.toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD),marker.get("full_driver")),
                 "retained Saved startup changed source pair, owner, origin or saved frontier/baseline");
-        requireReadOnlySavedContinuation(same,entry);
-        StrictJson.require(head.digest().equals(same.head().digest()),"retained Saved preflight changed actual head");
+        StrictJson.require(head.digest().equals(same.head().digest()),"existing Saved source changed actual head");
+        return java.util.Map.entry(head,entry);
     }
 
     /** One domain-import prefix, optionally followed by one closed actionless interrupted READ batch. */

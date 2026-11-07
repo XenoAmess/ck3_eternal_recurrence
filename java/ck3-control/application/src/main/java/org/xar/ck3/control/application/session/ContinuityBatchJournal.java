@@ -1525,6 +1525,30 @@ public final class ContinuityBatchJournal implements BatchJournal {
         } catch (RuntimeException rejected) { return Optional.empty(); }
     }
 
+    /** Historical routing DATA only; actual canonical Entry/custody/history remains mandatory before adoption. */
+    static java.util.Map.Entry<String,java.math.BigInteger> savedRecoveryIdentityData(ContinuityState current,SessionIdentity owner,
+            ActionCommand command,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        var marker=current.toJson().get(org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD);
+        if(marker==null||marker.isNull())return java.util.Map.entry(owner.sessionId(),command.before().frame().identity().player());
+        org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(ContinuityJson.object(marker));
+        StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(marker.get("session")).equals(owner)
+                &&ContinuityJson.same(current.toJson().get("game_binding"),owner.game().toJson()),"Saved recovery retains its actual transport owner");
+        var reference=ExactRef.fromJson(marker.get("full_driver"));
+        StrictJson.require(reference.bytes()>0&&reference.bytes()<=8*1024*1024
+                &&ContinuityJson.same(current.toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD),marker.get("full_driver")),
+                "Saved recovery retains its finite original Driver baseline");
+        byte[] raw=originals.loadFullMaterial(reference).bytes();
+        StrictJson.require(raw.length==reference.bytes()&&ActionCodec.sha256(raw).equals(reference.sha256()),"Saved recovery original Driver bytes differ");
+        var driver=org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.decodeComplete(raw);
+        var opening=org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(marker.get("opening"));
+        StrictJson.require(opening.machineId().equals(owner.machineId())&&opening.game().equals(owner.game())
+                &&driver.session().bridgePid()==owner.game().pid()
+                &&driver.session().actorId().equals(opening.frame().identity().player())
+                &&driver.session().episodeRunId().equals(opening.frame().episodeRunId()),
+                "Saved recovery original Driver/opening episode or actor differs");
+        return java.util.Map.entry(driver.session().episodeRunId(),driver.session().actorId());
+    }
+
     /** Isolated DATA for one original Sway stage or exact pending saved scheduler; no terminal/submit authority. */
     public static Optional<ActionReceipt> readOnlyUnstartedSwayRecoveryRoot(ContinuityState current, SessionIdentity owner,
             java.util.List<ActionReceipt> canonicalActions,
@@ -1557,9 +1581,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     ||!originals.loadRecord(org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(current).orElseThrow()).receipt().equals(original)
                     ||!(original.state() instanceof ActionState.CompositeUnknown unknown))return Optional.empty();
             var command=original.command();
+            var recoveryIdentity=savedRecoveryIdentityData(current,owner,command,originals);String recoveryEpisode=recoveryIdentity.getKey();
             if(!command.before().machineId().equals(owner.machineId())||!command.before().game().equals(owner.game())
                     ||!command.sessionId().equals(owner.sessionId())||!command.source().machineId().equals(owner.machineId())
-                    ||!command.before().frame().episodeRunId().equals(owner.sessionId())
+                    ||!command.before().frame().episodeRunId().equals(recoveryEpisode)
+                    ||!command.before().frame().identity().player().equals(recoveryIdentity.getValue())
                     ||!original.bodySha256().equals(ActionCodec.bodySha256(command)))return Optional.empty();
             org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.requireNoGameplayWriteData(command,unknown.execution());
             org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(current,original,originals);
@@ -1570,7 +1596,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var body=StrictJson.parse(bodyBytes,org.xar.ck3.control.application.planning.sway.SwayFormalCodec.MAX);
             if(!bodyRef.contractSchema().equals(StrictJson.text(body.get("schema"))))return Optional.empty();
             if(!body.isObject()||!owner.machineId().equals(StrictJson.text(body.get("machine_id")))
-                    ||!owner.sessionId().equals(StrictJson.text(body.get("episode_run_id")))
+                    ||!recoveryEpisode.equals(StrictJson.text(body.get("episode_run_id")))
                     ||!body.path("previous").isArray()||body.path("previous").size()!=0)return Optional.empty();
             for(String field:java.util.List.of("pending","resolved","imported_legacy"))
                 if(body.get(field)==null||!body.get(field).isNull())return Optional.empty();
@@ -1585,7 +1611,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 byte[] priorBytes=originals.loadMaterial(stage.inputDomain()).bytes();
                 var prior=org.xar.ck3.control.application.planning.sway.SwayFormalCodec.decode(priorBytes);
                 var priorJson=StrictJson.parse(priorBytes,org.xar.ck3.control.application.planning.sway.SwayFormalCodec.MAX);
-                if(!prior.machineId().equals(owner.machineId())||!prior.episodeRunId().equals(owner.sessionId())
+                if(!prior.machineId().equals(owner.machineId())||!prior.episodeRunId().equals(recoveryEpisode)
                         ||!priorJson.path("previous").isArray()||priorJson.path("previous").size()!=0)return Optional.empty();
                 if(savedScheduler) {
                     if(!prior.originalMigrationInput().equals(ExactRef.fromJson(body.get("original_migration_input"))))return Optional.empty();
@@ -1602,7 +1628,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                             if(oldCommand.actionId().equals(command.actionId())||!oldCommand.source().equals(command.source())
                                     ||!oldCommand.sessionId().equals(command.sessionId())||!oldCommand.before().machineId().equals(owner.machineId())
                                     ||!oldCommand.before().game().equals(command.before().game())
-                                    ||!oldCommand.before().frame().episodeRunId().equals(owner.sessionId())
+                                    ||!oldCommand.before().frame().episodeRunId().equals(recoveryEpisode)
                                     ||!oldCommand.before().frame().identity().player().equals(command.before().frame().identity().player())
                                     ||oldCommand.before().frame().identity().dateRaw().compareTo(command.before().frame().identity().dateRaw())>0)return Optional.empty();
                             var oldCanonical=canonicalActions.stream().filter(a->a.command().actionId().equals(oldCommand.actionId())).findFirst().orElseThrow();

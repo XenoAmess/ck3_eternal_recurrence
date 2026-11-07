@@ -41,7 +41,7 @@ public final class RootLoadedSavedResumeMain250 {
         byte[] ownerDescriptorRaw = read(ownerDescriptorRef), requestRaw = read(requestRef);
         var requestData=StrictJson.parse(requestRaw,MAX);
         int mode=requestMode(requestData);
-        boolean passive=mode==2,preentry=mode!=0;
+        boolean passive=mode==2,preentry=mode==1||passive,originalRecovery=mode==3;
         ObjectNode request=(ObjectNode)requestData;
         String machine = StrictJson.text(request.get("machineId"));
         ExactRef oldConfigRef = ExactRef.fromJson(request.get("sourceRuntimeConfiguration"));
@@ -85,7 +85,8 @@ public final class RootLoadedSavedResumeMain250 {
             });
             var source = RootJavaSavedBootstrap.qualify(oldCore, new NativeCheckpointFiles(), oldConfig.stateDirectory().resolve("checkpoints/attachments"), oldSourcePrepared.plan().pipeName(), pair, confirmation);
             emit(event(clock, "SOURCE_QUALIFIED").put("source_head_sequence", source.sourceHead().sequence()).put("confirmation_sequence", source.confirmation().sequence()).put("saved_date_raw", source.savedState().settledDateRaw()).put("saved_cycles", source.savedState().settledCycles()).put("new_saved_day_credit", 0));
-            newPrepared = preentry?RootOrdinaryRuntimeAssembly.prepareLoadedSaved(newConfig,clock,source)
+            newPrepared = originalRecovery?RootOrdinaryRuntimeAssembly.prepareExistingLoadedSavedRecovery(newConfig,clock,source)
+                    :preentry?RootOrdinaryRuntimeAssembly.prepareLoadedSaved(newConfig,clock,source)
                     :RootOrdinaryRuntimeAssembly.prepareRetainedLoadedSaved(newConfig, clock, source);
             StrictJson.require(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(newPrepared.plan())).equals(NativeLaunchPlanCodec.toJson(ownerDescriptor.configuration())), "actual Prepared plan differs from exact owner descriptor");
             read(ownerDescriptorRef); read(requestRef); read(oldConfigRef); read(newConfigRef); read(pairRef); read(confirmationRef);
@@ -102,10 +103,13 @@ public final class RootLoadedSavedResumeMain250 {
             if(passive) {
                 result=capturePassive(attached,custody,evidenceRoot,clock);
             }else {
-            running = preentry?newPrepared.openLoadedSaved(attached,source,custody,clock.instant().plus(Duration.ofMinutes(10)))
+            if(originalRecovery)custody.requireCurrent();
+            running = originalRecovery?newPrepared.openExistingSameGameRecovery(attached,java.util.Optional.empty(),clock.instant().plus(Duration.ofMinutes(10)))
+                    :preentry?newPrepared.openLoadedSaved(attached,source,custody,clock.instant().plus(Duration.ofMinutes(10)))
                     :newPrepared.openRetainedLoadedSaved(attached, source, custody, clock.instant().plus(Duration.ofMinutes(10)));
+            if(originalRecovery){custody.requireCurrent();custody.releasePreparation();}
             var adoptedHead = running.core().writer().locked(same -> same.head());
-            ObjectNode adopted = event(clock, "SAVED_ENTRY_ADOPTED");
+            ObjectNode adopted = event(clock,originalRecovery?"SAVED_ORIGINAL_RECOVERY_ADOPTED":"SAVED_ENTRY_ADOPTED");
             adopted.set("game", attached.generation().toJson());
             adopted.put("actual_head_sequence", adoptedHead.state().sequence()); adopted.put("actual_head_digest", adoptedHead.digest());
             adopted.put("next_sequence", Long.toString(running.nextBatchSequence())); emit(adopted);
@@ -159,12 +163,13 @@ public final class RootLoadedSavedResumeMain250 {
         String schema=StrictJson.text(request.get("schema"));
         if("xar.java-loaded-saved-resume-request/v1".equals(schema))return 0;
         if("xar.java-loaded-saved-preentry-request/v1".equals(schema))return 1;
+        if("xar.java-loaded-saved-original-recovery-request/v1".equals(schema))return 3;
         StrictJson.require("xar.java-loaded-saved-passive-observer-request/v1".equals(schema),"resume request schema required");
         return 2;
     }
     static boolean preentryRequest(com.fasterxml.jackson.databind.JsonNode value) {
         int mode=requestMode(value);
-        StrictJson.require(mode!=2,"passive observer request grants no Saved entry route");
+        StrictJson.require(mode==0||mode==1,"request grants no initial or retained Saved entry route");
         return mode==1;
     }
     /** One bounded passive receive, never the two-argument observe overload that can issue a fresh query. */
