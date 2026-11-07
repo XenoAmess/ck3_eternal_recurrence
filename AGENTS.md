@@ -1,5 +1,13 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-07 用户最新明确：批准自动游玩并继续任务
+
+用户进一步明确：“我批准你自动游玩。继续执行任务。”现有自动游玩及必要同局恢复已有明确授权，无需再次询问许可；下方休假和07:48有限核对只保留各自历史，不作为新的用户停止或待批准门。唯一Runtime owner `/root/runtime_continue`核实当前真实Game/birth、keeper、原账本、stop与world/continuity，按标准已有入口受控处理，文档/Git不作运行前置。
+
+本轮14:09标准CORE_PREFIX只读已实际成功，原Game/birth与keeper保持，map_ready=true、actor31254存活、date53168040；结果PARTIAL，不授业务/source准入。14:12标准已有入口适用结论仍未取得qualified continuation，业务worker未启动、LOOP未到、新SAVE0。现有no-gameplay-write分支要求children为空，交接冻结registered child1不满足；原恢复禁止fresh initial回退。此为源码guard适用及原账本字节未变的结论，未盲跑CLI/GET重现拒绝、未调查原动作链，不能改述为本轮实际CLI拒绝或缺用户许可。
+
+批准不等于原UNKNOWN已解决或当前Guard准入已成立。原件保存、UNKNOWN/已执行/已结算动作不重放、旧deadline不刷新、账本不清及许可/后态不伪造继续适用；P100被拒同链仍不得改述、重投、换岗或借独立软件绕行。源码、软件、实际装载、恢复入口通过、LOOP、推进与SAVE按真实回执分别记录，不把新批准写成已恢复。冻结 `D:/r64d`的HEAD/租约与Z既有修改保持；正式Git只在允许隔离目录进行。
+
 ## 2026-11-07 用户后到明确续行：从本次三份交接继续任务
 
 用户最新明确要求“阅读交接文档，继续执行任务”，指定本次总交接、源码与证据索引及Native交接；三入口已经读取。本条结束下方休假停止要求，原交接、停止事实、失败与UNKNOWN完整保留为历史，不把旧休假当作新的停止授权。
