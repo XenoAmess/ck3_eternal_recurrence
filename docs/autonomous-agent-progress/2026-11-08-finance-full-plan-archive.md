@@ -14,7 +14,7 @@ verify 与 originalRequest 共用严格版本加载器，每次重新实际打�
 
 完整公共集成使用 ActionWriterIntegrationFixture、实际 collector、PlanningReadCoordinator、ContinuityWriter 与 NativeOutcomeArchive；只在自有临时目录内生成明确软件数据。七领域在同一 writer 注册并导入，四读由实际 Guard 和 receipt 生产，checkpoint port 明示软件标记而非 SAVE。源码中的 dispatch／observer 与历史 ROOT 回调均禁止在本单元调用。测试复制真实 ready 发布的非 snapshot 观察字段，当前 snapshot 则来自真实 held Complete，不用构造 actionSteps 充当注册证明。
 
-完整软件验证已通过，三个新方法分别来自三个真实 JVM：Test03 的旧 v2 结构／cap／decimal 方法 1P，Test07 的 small v2 公共集成 1P，Test08 的 large v3 公共集成 1P；不是一次同 JVM 3P。large 最终实际 42.1415376 秒、outer 42.8581214 秒、XML 40409 ms，UTC 20:59:20.715767Z 实际关闭并释放资源。
+完整软件验证已通过，三个新方法分别来自三个真实 JVM：Test03 的旧 v2 结构／cap／decimal 方法 1P，Test07 的 small v2 公共集成 1P，Test08 的 large v3 公共集成 1P；不是一次同 JVM 3P。large 最终实际 42.1415376 秒、outer 42.8581214 秒、控制台 runner 40409 ms；XML suite 为 40.165 秒、唯一 testcase 为 40.134 秒。UTC 20:59:20.715767Z 实际关闭并释放资源。
 
 最终 large 原 PlanningWire 为 1060851 B／SHA256 `96e5502c07617103fb4debc7a05169111878d3ce624ecec8ec70c83f4f43009a`，manifest 为 13737 B；small 原件 8060 B、v2 manifest 21488 B。大原件包含未知成员顺序和 1.00／-0.0 词法，完整回读及 PlanningWire 重解码均逐 byte 相同。实际 bind→verify→originalRequest、重建业务 Archive 对象冷读、严格 FullMaterial lane、无 full lane 的显式拒绝、未知／缺／null／非文本／混合 schema、超 64 MiB 引用、缺件／错误 SHA／错误文档及外部同字节别名拒绝全部通过。原七领域文档、head、完整 request 与零 action writes 断言通过；未冷启真实 writer、执行 Native action 或制造 Root 权限。
 
@@ -26,4 +26,4 @@ verify 与 originalRequest 共用严格版本加载器，每次重新实际打�
 
 具名原件目录：`D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/finance-full-plan111`；生产实际为 `D:/ck3-state/resume91-native-integration/p111-finance-full-plan-prod01`，公共夹具首次两 TU／39 class 为 `p111-public-fixtures01`，0 旧测试执行。最终 large 原件为 `p111-finance-full-plan-test08/actual/junit`，依赖闭合为 `p111-current-finance-consumers01/REUSED-CURRENT-P090-CONSUMERS.json`，64081 B／`e92bc3ef10e7e2143e6173e112276b790154e1f020375a9df9dde3d428e9bb1c`。全部环境、源码、旧缓存及 lease 编排失败原件分别保留。P112 已独立正常发表；P113 完整 Construction quote／material 的原件引用闭环继续，原 UNKNOWN／P100 限制不变，10 秒／新增保存日目标未达。
 
-最终资格为 `D:/ck3-state/resume91-native-integration/p111-finance-full-plan-test08/QUALIFIED-P111-FULL-PLANNING-ARCHIVE.json`，17694 B／`19752cf5fddd64e6736f00449ab2b72f32b5677a0b3b076f1e48b24a2e01f80a`。一个新 Test TU 累计六次必要变源编译，首 RED／五次 green；不是六个新增测试 TU。manifest 大小缩减来自引用表示，全文仍独立保存，不是存储压缩或已测运行提速。
+原资格 `D:/ck3-state/resume91-native-integration/p111-finance-full-plan-test08/QUALIFIED-P111-FULL-PLANNING-ARCHIVE.json`（17694 B／`19752cf5fddd64e6736f00449ab2b72f32b5677a0b3b076f1e48b24a2e01f80a`）保留；其误名 manifest SHA 字段已在同根 `QUALIFIED-P111-FULL-PLANNING-ARCHIVE02.json` 更正为 full_planning_sha256，18384 B／`d622728027ecdc0683e8c32da9ae43e970021de7d41e32fa32d41b89d61324f2`。本文 96e55… 始终指完整 PlanningWire，未给 manifest 虚填哈希。一个新 Test TU 累计六次必要变源编译，首 RED／五次 green；不是六个新增测试 TU。manifest 大小缩减来自引用表示，全文仍独立保存，不是存储压缩或已测运行提速。
