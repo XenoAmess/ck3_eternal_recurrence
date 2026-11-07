@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.application.effects.NativeConstructionEffects;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyAdapters;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyCodec;
@@ -19,10 +20,11 @@ import org.xar.ck3.control.wave3.development.constructionquery.ConstructionQuery
 public final class ConstructionMaterialReducer {
     public static final String LEGACY_SCHEMA = "xar.construction-material-reducer-input/v1";
     public static final String SCHEMA = "xar.construction-material-reducer-input/v2";
+    public static final String FULL_SCHEMA = "xar.construction-material-reducer-input/v3";
     public static final int MAX_INPUT_BYTES = 4_194_304;
     public static final BigInteger MONTH = BigInteger.valueOf(720);
     public enum Disposition { MATERIAL_UPDATED, PRIOR_MATERIAL_RETAINED, RESTORED_BEFORE_ACTION }
-    public enum InputVersion { LEGACY_V1, REFRESH_V2 }
+    public enum InputVersion { LEGACY_V1, REFRESH_V2, FULL_V3 }
     public enum RefreshKind { COLD_MATERIAL, COMPLETED_CASH, COMPLETED_PROVINCE, MONTHLY_COMPLETION, PREPARED_ZERO_DISPATCH }
     public record Input(InputVersion version, Optional<RefreshKind> refreshKind, ConstructionLedgerCodec.Ledger ledger,
             String actionRequestId, Obj queryObservation, Optional<Obj> root, Optional<Obj> cash) {
@@ -54,6 +56,26 @@ public final class ConstructionMaterialReducer {
                 text(input.get("action_request_id"), "actual action identity"), object(input.get("query_observation"), "actual native observation"),
                 optionalObject(input.get("root"), "root"), optionalObject(input.get("cash"), "cash"));
     }
+
+    public static Input decodeFullMaterial(byte[] raw) {
+        Obj input = DriverJson.object(raw, FullJsonTree.MAXIMUM_BYTES);
+        require(new Text(FULL_SCHEMA).equals(input.get("schema")), "exact full material schema required");
+        require(input.members().keySet().equals(Set.of("schema", "refresh_kind", "ledger", "action_request_id", "query_observation", "root", "cash")), "exact full material input required");
+        InputVersion version = InputVersion.FULL_V3;
+        Optional<RefreshKind> kind = Optional.of(RefreshKind.valueOf(text(input.get("refresh_kind"), "material refresh kind")));
+        return new Input(version, kind, ConstructionLedgerCodec.decodeLedger(DriverJson.encode(object(input.get("ledger"), "actual original ledger"))),
+                text(input.get("action_request_id"), "actual action identity"), object(input.get("query_observation"), "actual native observation"),
+                optionalObject(input.get("root"), "root"), optionalObject(input.get("cash"), "cash"));
+    }
+
+    public static Obj fullInput(RefreshKind kind, ConstructionLedgerCodec.Ledger ledger, String actionRequestId, Obj queryObservation,
+            Optional<Obj> root, Optional<Obj> cash) {
+        Obj value = obj("schema", new Text(FULL_SCHEMA), "refresh_kind", new Text(Objects.requireNonNull(kind).name()),
+                "ledger", ledger.original(), "action_request_id", new Text(actionRequestId),
+                "query_observation", queryObservation, "root", root.<Value>map(row -> row).orElse(Nil.INSTANCE),
+                "cash", cash.<Value>map(row -> row).orElse(Nil.INSTANCE));
+        decodeFullMaterial(DriverJson.encode(value)); return value;
+    }
     public static Obj input(RefreshKind kind, ConstructionLedgerCodec.Ledger ledger, String actionRequestId, Obj queryObservation,
             Optional<Obj> root, Optional<Obj> cash) {
         Obj value = obj("schema", new Text(SCHEMA), "refresh_kind", new Text(Objects.requireNonNull(kind).name()),
@@ -78,7 +100,13 @@ public final class ConstructionMaterialReducer {
                 "cold follow-up requires already verified material; unknown intent is not adopted");
         Obj queryInput = input.queryObservation();
         require(new Bool(true).equals(queryInput.get("material_receipt")) && new Bool(false).equals(queryInput.get("wartime_observation")), "actual material query mode required");
-        Obj query = DriverJson.object(ConstructionQueryCodec.finalizeObservation(encode(queryInput)), ConstructionQueryCodec.MAX_BYTES);
+        byte[] queryBytes;
+        if (input.version() == InputVersion.FULL_V3) {
+            queryBytes = ConstructionQueryCodec.finalizeObservation(ConstructionQueryCodec.projectFullMaterialInput(DriverJson.encode(queryInput)));
+        } else {
+            queryBytes = ConstructionQueryCodec.finalizeObservation(encode(queryInput));
+        }
+        Obj query = DriverJson.object(queryBytes, ConstructionQueryCodec.MAX_BYTES);
         require(new Text("material_source").equals(query.get("status")), "actual material native source unavailable");
         Obj frame = object(query.get("source_frame"), "actual material source frame"), snapshot = object(queryInput.get("starting_snapshot"), "actual source snapshot");
         require(new Text(previous.identity().episode()).equals(frame.get("episode_run_id"))

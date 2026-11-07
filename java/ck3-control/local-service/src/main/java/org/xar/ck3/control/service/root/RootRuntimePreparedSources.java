@@ -133,9 +133,16 @@ public final class RootRuntimePreparedSources {
                 Objects.requireNonNull(sources),Objects.requireNonNull(clock));
     }
 
-    public static ConstructionRuntimeInstaller.Sources construction(RootRuntimeDefinitions.Inputs inputs) {
+    public static ConstructionRuntimeInstaller.Sources construction(RootRuntimeDefinitions.Inputs inputs) throws IOException {
         Objects.requireNonNull(inputs);
-        var domain = ConstructionDomainLifecycle.prepare(inputs.closure(CONSTRUCTION_DOMAIN), inputs.source(CONSTRUCTION_OBSERVER));
+        var selected = new RootRuntimeSelectedSources(inputs);
+        var closure = inputs.closure(CONSTRUCTION_DOMAIN);
+        for (Class<?> added : List.of(org.xar.ck3.control.application.planning.finance.ConstructionOriginalSource.class,
+                org.xar.ck3.control.application.planning.finance.ConstructionFullMaterialSource.class)) {
+            var exact = selected.javaSource(RootRuntimeSelectedSources.Module.APPLICATION, added);
+            if (!closure.contains(exact)) throw new IOException("configured construction closure omits the selected full-original producer: " + added.getName());
+        }
+        var domain = ConstructionDomainLifecycle.prepare(closure, inputs.source(CONSTRUCTION_OBSERVER));
         return new ConstructionRuntimeInstaller.Sources(inputs.source(CONSTRUCTION_POLICY),
                 inputs.source(CONSTRUCTION_COLLECTOR), inputs.source(CONSTRUCTION_NATIVE_ACTION),
                 inputs.source(CONSTRUCTION_OBSERVER), inputs.source(CONSTRUCTION_ARCHIVE_VERIFIER),

@@ -51,6 +51,8 @@ import org.xar.ck3.control.application.checkpoint.CheckpointService;
 import org.xar.ck3.control.application.advance.ClockStatusRead;
 import org.xar.ck3.control.wave2.military.combatroles.CombatRolesCodec;
 import org.xar.ck3.control.application.planning.finance.ConstructionDomainLifecycle;
+import org.xar.ck3.control.application.planning.finance.ConstructionOriginalSource;
+import org.xar.ck3.control.application.planning.finance.ConstructionFullMaterialSource;
 import org.xar.ck3.control.application.planning.finance.ConstructionSnapshotVerifier;
 import org.xar.ck3.control.nativebridge.capabilities.army.ContactScopeReads;
 import org.xar.ck3.control.governance.council.CouncilActionCodec;
@@ -273,7 +275,8 @@ public final class RootOrdinaryPlainProducts {
             var action=m(NativeConstructionEffects.class);var observer=m(NativeConstructionEffects.class);
             var replay=m(NativeConstructionEffects.class);var lifecycle=m(ConstructionDomainLifecycle.class);
             var snapshot=m(ConstructionSnapshotVerifier.class);var originals=m(RootConstructionDomainOriginals.class);
-            var closure=List.of(policy,collector,action,observer,replay,lifecycle,snapshot,originals).stream().distinct().toList();
+            var closure=List.of(policy,collector,action,observer,replay,lifecycle,snapshot,originals,
+                    m(ConstructionOriginalSource.class),m(ConstructionFullMaterialSource.class)).stream().distinct().toList();
             return new ConstructionRuntimeInstaller.Sources(policy,collector,action,observer,replay,lifecycle,snapshot,originals,
                     ConstructionDomainLifecycle.prepare(closure,observer));
         }

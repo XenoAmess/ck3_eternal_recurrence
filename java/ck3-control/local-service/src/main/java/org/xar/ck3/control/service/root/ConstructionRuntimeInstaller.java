@@ -48,6 +48,8 @@ public final class ConstructionRuntimeInstaller {
         try {
             context.game().launchPlan().sources().requireLoadedClass(ConstructionFundingEvidence.class);
             context.game().launchPlan().sources().requireLoadedClass(ConstructionMaterialSource.class);
+            context.game().launchPlan().sources().requireLoadedClass(ConstructionOriginalSource.class);
+            context.game().launchPlan().sources().requireLoadedClass(ConstructionFullMaterialSource.class);
         }
         catch (IOException failure) { throw new UncheckedIOException("actual construction funding/material bridge is outside the selected loaded source graph", failure); }
         sources.domain().bindCore(context.writer(), context.archive(), context.frameLoader(), finance.definitions());
@@ -70,7 +72,8 @@ public final class ConstructionRuntimeInstaller {
                     return new OrdinaryConstructionCollector.MaterialAvailable(input, known.root(), known.cash(), known.originalReads());
                 }), context::borrowedSession);
         policy = new OrdinaryConstructionPolicy(sources.policySource(), collector,
-                (request, arguments) -> Optional.of(NativeConstructionEffects.expected(request.before(), request.source(), arguments)), completion);
+                (request, arguments) -> Optional.of(NativeConstructionEffects.expected(request.before(), request.source(), arguments)), completion,
+                new ConstructionOriginalSource(context.archive(), context::borrowedSession));
         OrdinaryPolicy actualPolicy = trackedPolicy(policy);
         NativeEffectRegistry.Observer observer = (command, attempt, dispatch) -> {
             try {
@@ -91,8 +94,9 @@ public final class ConstructionRuntimeInstaller {
         };
         var effect = new NativeEffectRegistry.Binding(OrdinaryConstructionPolicy.OPERATION, sources.nativeActionSource(), primitive, observer);
         var action = new RootExecutableBindings.ActionBinding(effect, ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP, Optional.empty(), sources.observerSource());
-        var archived = NativeConstructionEffects.archivedVerifier(OrdinaryConstructionPolicy.OPERATION, sources.archiveVerifierSource(),
-                context.frameLoader(), finance.definitions().contract(FinanceReadContracts.Query.CONSTRUCTION));
+        var archived = ConstructionOriginalSource.archivedBinding(NativeConstructionEffects.archivedVerifier(
+                OrdinaryConstructionPolicy.OPERATION, sources.archiveVerifierSource(), context.frameLoader(),
+                finance.definitions().contract(FinanceReadContracts.Query.CONSTRUCTION)), context::borrowedSession);
         var pending = new RootDomainIntentPreparation.Binding("construction.original-pending.v1", sources.lifecycleSource(),
                 command -> command.operation().equals(OrdinaryConstructionPolicy.OPERATION), this::beforeIntent);
         OrdinaryPlanCompletion actualCompletion = new OrdinaryPlanCompletion() {

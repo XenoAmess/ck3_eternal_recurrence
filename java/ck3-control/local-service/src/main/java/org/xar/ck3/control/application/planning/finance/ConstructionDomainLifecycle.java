@@ -96,7 +96,20 @@ public final class ConstructionDomainLifecycle {
             Bound actual = required(); actual.writer.requireSession(session);
             var read = session.readDomain(DomainBodies.Slot.CONSTRUCTION);
             if (!(read instanceof DomainBodies.Available known)) throw new IOException("original construction domain body unavailable: " + read);
-            return ConstructionLedgerCodec.decodeLedger(known.canonicalBody());
+            var ledger = ConstructionLedgerCodec.decodeLedger(known.canonicalBody());
+            ConstructionFullMaterialSource.requireRetained(session, actual.archive, ledger.original());
+            return ledger;
+        }
+        /** The finance reader consumes the same owning full source rather than trusting an unknown body extension. */
+        public FinanceStatePort.Pending financePending(FinanceStatePort.Document document) {
+            var ledger = ConstructionLedgerCodec.decodeLedger(document.bytes());
+            if (ConstructionFullMaterialSource.fromBody(ledger.original()).isPresent()) {
+                try {
+                    Bound actual = required(); var same = actual.writer.borrowedSession(); actual.writer.requireSession(same);
+                    ConstructionFullMaterialSource.requireRetained(same, actual.archive, ledger.original());
+                } catch (IOException missing) { throw new IllegalArgumentException("retained construction full material unavailable", missing); }
+            }
+            return ledger.pending().isPresent() ? FinanceStatePort.Pending.PENDING : FinanceStatePort.Pending.CLEAR;
         }
         /** Only the actual Root original-proof producer can derive a fresh or restored full body. */
         public Publication publishOriginal(ContinuityStorePort.Session session, Kind kind, Obj input, List<ExactRef> evidence) throws IOException {
@@ -107,6 +120,7 @@ public final class ConstructionDomainLifecycle {
             if (existing instanceof DomainBodies.Available known) previous = Optional.of(ConstructionLedgerCodec.decodeLedger(known.canonicalBody()));
             else require(existing instanceof DomainBodies.Unavailable unavailable && unavailable.reason() == DomainBodies.Reason.UNIMPORTED,
                     "original import requires exact current body or actual UNIMPORTED, not an unavailable identity/source");
+            if (previous.isPresent()) ConstructionFullMaterialSource.requireRetained(session, actual.archive, previous.orElseThrow().original());
             OriginalBody replayed = originalProducer().replay(session, session.head(), kind, input, previous);
             require(replayed.evidence().equals(List.copyOf(evidence)), "construction original producer evidence differs");
             Obj details = obj("schema", new Text(SCHEMA), "kind", new Text(kind.name()), "original_input", input);
@@ -121,7 +135,7 @@ public final class ConstructionDomainLifecycle {
             var archive = actual.archive.withSession(session);
             ExactRef original = actual.archive.preserveArtifact(session, ActionCodec.encodeCommand(command), ActionCodec.MAX_COMMAND_BYTES);
             Obj details = obj("schema", new Text(SCHEMA), "kind", new Text(Kind.INTENT.name()), "command_ref", ref(original));
-            Obj body = intent(read(session), command);
+            Obj body = intent(read(session), command, ConstructionOriginalSource.resolveCommand(session, actual.archive, command));
             publish(session, details, body, List.of(original), "construction-intent:" + command.actionId());
         }
         /** Applied, zero-dispatch rejection and UNKNOWN all consume the real surviving canonical coordinator receipt. */
@@ -148,10 +162,10 @@ public final class ConstructionDomainLifecycle {
             require(Objects.requireNonNull(kind) != ConstructionMaterialReducer.RefreshKind.PREPARED_ZERO_DISPATCH,
                     "ordinary material publication cannot enter prepared zero-dispatch recovery");
             require(read(session).original().equals(previous.original()), "construction body changed before original material publication");
-            Obj input = ConstructionMaterialReducer.input(kind, previous, actionId, material.queryInput(), material.root(), material.cash());
+            Obj input = ConstructionMaterialReducer.fullInput(kind, previous, actionId, material.queryInput(), material.root(), material.cash());
             var archive = actual.archive.withSession(session);
             List<ExactRef> reads = material.originalReads().stream().map(archive::readReferenceOf).toList();
-            var source = ConstructionMaterialSource.preserve(session, actual.archive, input);
+            var source = ConstructionFullMaterialSource.preserve(session, actual.archive, input);
             Obj details = obj("schema", new Text(SCHEMA), "kind", new Text(Kind.MATERIAL.name()), "material_source", source.toJson(),
                     "read_refs", new Arr(reads.stream().<Value>map(ConstructionDomainLifecycle::ref).toList()));
             Obj body = material(session.head(), details, actual, session);
@@ -164,9 +178,9 @@ public final class ConstructionDomainLifecycle {
             Bound actual = required(); actual.writer.requireSession(session); var ledger = read(session);
             if (!recoverablePreparedHead(session.head(), ledger, actual.archive.withSession(session))) return Optional.empty();
             var pending = ledger.pending().orElseThrow();
-            Obj reducerInput = ConstructionMaterialReducer.input(ConstructionMaterialReducer.RefreshKind.PREPARED_ZERO_DISPATCH, ledger, pending.identity().actionRequestId(), material.queryInput(), material.root(), material.cash());
+            Obj reducerInput = ConstructionMaterialReducer.fullInput(ConstructionMaterialReducer.RefreshKind.PREPARED_ZERO_DISPATCH, ledger, pending.identity().actionRequestId(), material.queryInput(), material.root(), material.cash());
             var archive = actual.archive.withSession(session); var refs = material.originalReads().stream().map(archive::readReferenceOf).toList();
-            var source = ConstructionMaterialSource.preserve(session, actual.archive, reducerInput);
+            var source = ConstructionFullMaterialSource.preserve(session, actual.archive, reducerInput);
             Obj details = obj("schema", new Text(SCHEMA), "kind", new Text(Kind.PREPARED_ZERO_DISPATCH.name()), "material_source", source.toJson(),
                     "read_refs", new Arr(refs.stream().<Value>map(ConstructionDomainLifecycle::ref).toList()));
             var input = materialInput(session.head(), details, actual, session);
@@ -212,12 +226,14 @@ public final class ConstructionDomainLifecycle {
                 require(details.members().keySet().equals(Set.of("schema", "kind", "original_input")), "exact original-proof input required");
                 Optional<ConstructionLedgerCodec.Ledger> current = previous.isEmpty() ? Optional.empty()
                         : Optional.of(ConstructionLedgerCodec.decodeLedger(actual.archive.readArtifact(session, previous.orElseThrow().payload(), MAX_BYTES)));
+                if (current.isPresent()) ConstructionFullMaterialSource.requireRetained(session, actual.archive, current.orElseThrow().original());
                 OriginalBody replayed = originalProducer().replay(session, head, kind, object(details.get("original_input"), "actual original proof input"), current);
                 require(request.evidence().containsAll(replayed.evidence()), "actual original proof evidence omitted from writer request");
                 expected = replayed.body();
             } else {
                 require(previous.isPresent(), "construction mutation requires its actual original body");
                 var original = ConstructionLedgerCodec.decodeLedger(actual.archive.readArtifact(session, previous.orElseThrow().payload(), MAX_BYTES));
+                ConstructionFullMaterialSource.requireRetained(session, actual.archive, original.original());
                 expected = switch (kind) {
                     case INTENT -> {
                         require(details.members().keySet().equals(Set.of("schema", "kind", "command_ref")), "exact original intent fields required");
@@ -227,7 +243,7 @@ public final class ConstructionDomainLifecycle {
                         ConstructionFundingEvidence.command(command);
                         require(ContinuityActionJournal.lookup(head.state(), command.actionId(), actual.archive.withSession(session)).isEmpty(), "pending producer cannot replace an already durable command");
                         require(request.evidence().contains(reference), "pending command original is absent from evidence");
-                        yield intent(original, command);
+                        yield intent(original, command, ConstructionOriginalSource.resolveCommand(session, actual.archive, command));
                     }
                     case OUTCOME -> {
                         require(details.members().keySet().equals(Set.of("schema", "kind", "receipt_ref")), "exact outcome fields required");
@@ -257,6 +273,7 @@ public final class ConstructionDomainLifecycle {
                 };
             }
             require(Arrays.equals(body, encode(expected)), "construction body differs from its actual owning lifecycle reducer");
+            ConstructionFullMaterialSource.requireRetained(session, actual.archive, expected);
             return ActionCodec.sha256(encode(obj("input_sha256", new Text(ActionCodec.sha256(request.producerInput())), "body_sha256", new Text(ActionCodec.sha256(body)))));
         }
         private Obj outcome(Head head, ConstructionLedgerCodec.Ledger ledger, ActionReceipt receipt, Bound actual, ContinuityStorePort.Session session) throws IOException {
@@ -266,21 +283,27 @@ public final class ConstructionDomainLifecycle {
                     && new Text(receipt.bodySha256()).equals(pending.original().get("coordinator_body_sha256"))
                     && pending.identity().actionRequestId().equals(RequestIds.forActionBody(receipt.bodySha256())), "construction pending/canonical command identity drift");
             var archive = actual.archive.withSession(session);
+            // Inline originals already accompany historical command bytes. Every new sidecar remains required in all outcome branches.
+            Obj supplied = object(receipt.command().arguments().get("ordinary_cash_request"), "construction outcome original");
+            if (new Text(ConstructionOriginalSource.SCHEMA).equals(supplied.get("schema")))
+                ConstructionOriginalSource.resolveCommand(session, actual.archive, receipt.command());
             if (receipt.state() instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.Applied) {
-                NativeConstructionEffects.archivedVerifier(OrdinaryConstructionPolicy.OPERATION, observerSource, actual.frames, actual.query).verifier().verify(head, receipt, archive);
+                ConstructionOriginalSource.archivedBinding(NativeConstructionEffects.archivedVerifier(
+                        OrdinaryConstructionPolicy.OPERATION, observerSource, actual.frames, actual.query), () -> session)
+                        .verifier().verify(head, receipt, archive);
                 var original = NativeEffectEvidence.load(receipt, archive, actual.frames);
                 Obj material = DriverJson.object(original.compatibleResult().bytes(), 262_144);
                 Obj confirmed = ConstructionMaterialReducer.confirmedStart(pending, material, original.frames().after().semantic());
                 List<Value> prior = new ArrayList<>(ledger.prior().stream().<Value>map(ConstructionLedgerCodec.Receipt::original).toList());
                 ledger.applied().filter(row -> !row.completed() || row.economy().postGross().isEmpty()).ifPresent(row -> prior.add(row.original()));
-                return ledger.original().with("pending", Nil.INSTANCE).with("applied", confirmed).with("applied_prior", new Arr(prior));
+                return manifestBody(receipt.command(), ledger.original().with("pending", Nil.INSTANCE).with("applied", confirmed).with("applied_prior", new Arr(prior)));
             }
             if (receipt.state() instanceof ActionState.RejectedBeforeDispatch
                     || receipt.state() instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.Rejected) {
-                return ledger.original().with("pending", Nil.INSTANCE).with("last_rejected_coordinator_receipt", ref(archive.receiptReferenceOf(receipt)));
+                return manifestBody(receipt.command(), ledger.original().with("pending", Nil.INSTANCE).with("last_rejected_coordinator_receipt", ref(archive.receiptReferenceOf(receipt))));
             }
-            return ledger.original().with("pending", pending.original().with("status", new Text("action_state_unknown"))
-                    .with("java_original_coordinator_receipt", ref(archive.receiptReferenceOf(receipt))));
+            return manifestBody(receipt.command(), ledger.original().with("pending", pending.original().with("status", new Text("action_state_unknown"))
+                    .with("java_original_coordinator_receipt", ref(archive.receiptReferenceOf(receipt)))));
         }
         private Obj material(Head head, Obj details, Bound actual, ContinuityStorePort.Session session) throws IOException {
             var input = materialInput(head, details, actual, session);
@@ -288,7 +311,8 @@ public final class ConstructionDomainLifecycle {
         }
         private ConstructionMaterialReducer.Input materialInput(Head head, Obj details, Bound actual, ContinuityStorePort.Session session) throws IOException {
             var decoded = materialSource(details).load(session, actual.archive);
-            if (decoded.version() == ConstructionMaterialReducer.InputVersion.REFRESH_V2) {
+            if (decoded.version() == ConstructionMaterialReducer.InputVersion.REFRESH_V2
+                    || decoded.version() == ConstructionMaterialReducer.InputVersion.FULL_V3) {
                 var kind = decoded.refreshKind().orElseThrow();
                 require(new Text(Kind.MATERIAL.name()).equals(details.get("kind"))
                                 && kind != ConstructionMaterialReducer.RefreshKind.PREPARED_ZERO_DISPATCH
@@ -312,9 +336,19 @@ public final class ConstructionDomainLifecycle {
             return decoded;
         }
     }
-    private static ConstructionMaterialSource materialSource(Obj details) {
+    private static MaterialOriginal materialSource(Obj details) {
         require(details.members().keySet().equals(Set.of("schema", "kind", "material_source", "read_refs")), "exact referenced material transition fields required");
-        return ConstructionMaterialSource.decode(object(details.get("material_source"), "complete original material source"));
+        Obj source = object(details.get("material_source"), "complete original material source");
+        if (new Text(ConstructionFullMaterialSource.SCHEMA).equals(source.get("schema")))
+            return new MaterialOriginal(null, ConstructionFullMaterialSource.decode(source));
+        return new MaterialOriginal(ConstructionMaterialSource.decode(source), null);
+    }
+    private record MaterialOriginal(ConstructionMaterialSource legacy, ConstructionFullMaterialSource full) {
+        ExactRef input() { return full == null ? legacy.input() : full.input(); }
+        ConstructionMaterialReducer.Input load(ContinuityStorePort.Session same, ActionPorts.OutcomeArchive archive) throws IOException {
+            return full == null ? legacy.load(same, archive) : full.load(same, archive);
+        }
+        Obj retainIn(Obj body) { return full == null ? legacy.retainIn(body) : full.retainIn(body); }
     }
     static Obj intent(ConstructionLedgerCodec.Ledger ledger, ActionCommand command) {
         require(command.operation().equals(OrdinaryConstructionPolicy.OPERATION) && ledger.pending().isEmpty(), "exact construction action and original clear body required");
@@ -322,11 +356,20 @@ public final class ConstructionDomainLifecycle {
         Optional<CanonicalFundingPending.SourceEvidence> funding = command.arguments().members().containsKey(ConstructionFundingEvidence.FIELD)
                 ? Optional.of(ConstructionFundingEvidence.command(command)) : Optional.empty();
         var original = new OrdinaryWartimeConstructionCodec.ObservedRequest(encode(object(command.arguments().get("ordinary_cash_request"), "original quoted actual cash input")));
+        return intent(ledger, command, funding, original, DriverJson.object(original.original(), OrdinaryWartimeConstructionCodec.MAX_BYTES));
+    }
+    static Obj intent(ConstructionLedgerCodec.Ledger ledger, ActionCommand command, ConstructionOriginalSource.Loaded loaded) {
+        require(command.operation().equals(OrdinaryConstructionPolicy.OPERATION) && ledger.pending().isEmpty(), "exact construction action and original clear body required");
+        Optional<CanonicalFundingPending.SourceEvidence> funding = command.arguments().members().containsKey(ConstructionFundingEvidence.FIELD)
+                ? Optional.of(ConstructionFundingEvidence.command(command)) : Optional.empty();
+        return manifestBody(command, intent(ledger, command, funding, loaded.observed(), loaded.original()));
+    }
+    private static Obj intent(ConstructionLedgerCodec.Ledger ledger, ActionCommand command,
+            Optional<CanonicalFundingPending.SourceEvidence> funding, OrdinaryWartimeConstructionCodec.ObservedRequest original, Obj request) {
         var assessment = OrdinaryWartimeConstruction.compose(original.input());
         require(assessment.disposition() == OrdinaryWartimeConstruction.Disposition.QUOTED_CANDIDATE, "pending construction requires the original qualified quoted outlay");
-        Obj request = DriverJson.object(original.original(), OrdinaryWartimeConstructionCodec.MAX_BYTES);
         Obj query = object(object(request.get("quoted_outlay"), "original outlay").get("query_observation"), "actual original Native query");
-        Obj finalized = DriverJson.object(ConstructionQueryCodec.finalizeObservation(encode(query)), ConstructionQueryCodec.MAX_BYTES);
+        Obj finalized = DriverJson.object(ConstructionOriginalSource.finalizeQuery(DriverJson.encode(query)), ConstructionQueryCodec.MAX_BYTES);
         Obj before = object(query.get("starting_snapshot"), "original complete frame"), source = object(finalized.get("source_frame"), "actual quote source");
         var f = command.before().frame();
         require(source.get("snapshot_id").equals(new Text(f.snapshotId())) && source.get("revision").equals(new IntegerValue(f.revision()))
@@ -363,6 +406,13 @@ public final class ConstructionDomainLifecycle {
         ConstructionLedgerCodec.intent(pending); return ledger.original().with("pending", pending);
     }
 
+    /** Only the new manifest producer enters the existing canonical destination body lane; old inline output is unchanged. */
+    private static Obj manifestBody(ActionCommand command, Obj produced) {
+        Value input = command.arguments().get("ordinary_cash_request");
+        if (input instanceof Obj manifest && new Text(ConstructionOriginalSource.SCHEMA).equals(manifest.get("schema")))
+            return DriverJson.object(Prepared.canonicalBody(produced), MAX_BYTES);
+        return produced;
+    }
     private static boolean recoverablePreparedHead(Head head, ConstructionLedgerCodec.Ledger ledger, ActionPorts.OutcomeArchive archive) {
         if (ledger.pending().isEmpty() || ActionScope.currentActionId().isPresent()) return false;
         var pending = ledger.pending().orElseThrow();
@@ -377,7 +427,7 @@ public final class ConstructionDomainLifecycle {
         require(!pending.original().members().containsKey("native_ack") && !pending.original().members().containsKey("native_submit_result")
                 && !pending.original().members().containsKey("java_original_coordinator_receipt"), "prepared zero-dispatch cannot clear retained dispatch evidence");
         require(new Bool(true).equals(originalQuery.get("material_receipt")), "zero-dispatch requires an actual independent material query");
-        Obj query = DriverJson.object(ConstructionQueryCodec.finalizeObservation(encode(originalQuery)), ConstructionQueryCodec.MAX_BYTES);
+        Obj query = DriverJson.object(ConstructionOriginalSource.finalizeQuery(DriverJson.encode(originalQuery)), ConstructionQueryCodec.MAX_BYTES);
         require(new Text("material_source").equals(query.get("status")), "zero-dispatch actual native material source unavailable");
         Obj frame = object(query.get("source_frame"), "actual recovery frame"), world = object(query.get("world"), "actual project inventory");
         require(new Text(pending.identity().episode()).equals(frame.get("episode_run_id")) && new IntegerValue(pending.identity().actor()).equals(frame.get("actor_character_id")), "prepared recovery crossed its original episode/player");
@@ -423,7 +473,7 @@ public final class ConstructionDomainLifecycle {
         Optional<Obj> normalized = cash.stream().findFirst().map(read -> {
             Obj value = DriverJson.object(read.original().originalResultToken().orElseThrow().bytes(), 262_144);
             Obj raw = object(value.get("war_cash_current_resources"), "actual native cash");
-            Obj result = object(parse(org.xar.ck3.control.wave2.finance.rawcash.RawCashCodec.normalize(encode(raw), encode(object(input.queryObservation().get("starting_snapshot"), "starting snapshot"))).toJson()), "actual normalized cash");
+            Obj result = object(parse(org.xar.ck3.control.wave2.finance.rawcash.RawCashCodec.normalize(encode(raw), DriverJson.encode(OrdinaryFinanceCollector.financingSnapshot(object(input.queryObservation().get("starting_snapshot"), "starting snapshot")))).toJson()), "actual normalized cash");
             var frame = read.request().before().frame(); return result.with("queried_snapshot_id", new Text(frame.snapshotId()))
                     .with("queried_revision", new IntegerValue(frame.revision())).with("queried_native_revision", new IntegerValue(frame.identity().nativeRevision()));
         });

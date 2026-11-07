@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyAdapters;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyModel.ConstructionQuote;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyModel.QuoteCashObservation;
@@ -80,6 +81,33 @@ public final class OrdinaryWartimeConstruction {
             return selected;
         }
         public Optional<String> constructionKind() { return constructionKind; }
+
+        /** Full-material DATA lane: retains full original bytes, derives SDK state from projection. */
+        public static NativeQuote fromFullMaterial(byte[] fullOriginal) {
+            if (fullOriginal == null || fullOriginal.length == 0 || fullOriginal.length > FullJsonTree.MAXIMUM_BYTES) {
+                throw new IllegalArgumentException("full material input byte budget");
+            }
+            byte[] exactFull = fullOriginal.clone();
+            byte[] sdkBytes = ConstructionQueryCodec.projectFullMaterialInput(exactFull);
+            return new NativeQuote(exactFull, sdkBytes);
+        }
+
+        private NativeQuote(byte[] exactFull, byte[] sdkBytes) {
+            this.original = exactFull;
+            this.observation = ConstructionQueryCodec.decode(sdkBytes);
+            var result = ConstructionQueryPolicy.finalizeObservation(observation);
+            if (result instanceof ConstructionQueryModel.Ready ready && ready.kind() == ConstructionQueryModel.ReadyKind.SELECTED) {
+                byte[] finalized = ConstructionQueryCodec.finalizeObservation(sdkBytes);
+                if (finalized.length <= org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyCodec.MAX_BYTES) {
+                    selected = Optional.of(org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyCodec.decodeQuote(finalized));
+                    constructionKind = Optional.of(ready.candidate().slotWasEmpty() ? "new_building" : "upgrade_building");
+                } else {
+                    selected = Optional.empty(); constructionKind = Optional.empty();
+                }
+            } else {
+                selected = Optional.empty(); constructionKind = Optional.empty();
+            }
+        }
     }
     public record QuotedOutlay(NativeQuote nativeQuote, QuoteCashObservation currentCash) {
         public QuotedOutlay { Objects.requireNonNull(nativeQuote); Objects.requireNonNull(currentCash); }

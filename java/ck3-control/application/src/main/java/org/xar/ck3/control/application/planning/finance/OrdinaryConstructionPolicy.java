@@ -43,9 +43,18 @@ public final class OrdinaryConstructionPolicy implements OrdinaryPolicy {
     private final OrdinaryConstructionCollector collector;
     private final Effects effects;
     private final MaterialFollowup material;
+    private final Optional<ConstructionOriginalSource> originals;
     public OrdinaryConstructionPolicy(ExactRef source, OrdinaryConstructionCollector collector, Effects effects, MaterialFollowup material) {
+        this(source,collector,effects,material,Optional.empty());
+    }
+    public OrdinaryConstructionPolicy(ExactRef source, OrdinaryConstructionCollector collector, Effects effects, MaterialFollowup material,
+            ConstructionOriginalSource originals) {
+        this(source,collector,effects,material,Optional.of(Objects.requireNonNull(originals)));
+    }
+    private OrdinaryConstructionPolicy(ExactRef source, OrdinaryConstructionCollector collector, Effects effects, MaterialFollowup material,
+            Optional<ConstructionOriginalSource> originals) {
         this.source = Objects.requireNonNull(source); this.collector = Objects.requireNonNull(collector);
-        this.effects = Objects.requireNonNull(effects); this.material = Objects.requireNonNull(material);
+        this.effects = Objects.requireNonNull(effects); this.material = Objects.requireNonNull(material);this.originals=originals;
         require(source.bytes() > 0, "actual complete construction implementation source required");
     }
     @Override public PlanningStage stage() { return PlanningStage.CONSTRUCTION; }
@@ -137,14 +146,14 @@ public final class OrdinaryConstructionPolicy implements OrdinaryPolicy {
             if (!(quoted.fundingSource() instanceof CanonicalFundingPending.Observed funding))
                 return deferred("actual owned-submission inventory unavailable at the quoted outlay: "
                         + ((CanonicalFundingPending.Unavailable) quoted.fundingSource()).reason());
-            Obj finalized = object(parse(ConstructionQueryCodec.finalizeObservation(
+            Obj finalized = object(parse(ConstructionOriginalSource.finalizeQuery(
                     quoted.value().input().quoted().orElseThrow().nativeQuote().original())), "original finalized quote");
             Obj candidate = object(finalized.get("candidate"), "complete selected construction candidate");
+            if (!request.observations().actionSteps().contains(OPERATION)) return deferred("actual construction action registration absent");
             Obj args = obj("candidate", candidate, "pre_proof_epoch", finalized.get("proof_epoch"),
-                    "ordinary_cash_request", DriverJson.object(quoted.value().original(), OrdinaryWartimeConstructionCodec.MAX_BYTES),
+                    "ordinary_cash_request", originals.map(source->source.preserve(quoted.value())).orElseGet(()->DriverJson.object(quoted.value().original(), OrdinaryWartimeConstructionCodec.MAX_BYTES)),
                     "ordinary_cash_result", DriverJson.object(OrdinaryWartimeConstructionCodec.encode(result), OrdinaryWartimeConstructionCodec.MAX_BYTES),
                     ConstructionFundingEvidence.FIELD, ConstructionFundingEvidence.capture(funding, quoted.financing()));
-            if (!request.observations().actionSteps().contains(OPERATION)) return deferred("actual construction action registration absent");
             Optional<ExpectedPostcondition> expected = effects.expected(request, args);
             if (expected.isEmpty()) return deferred("actual independent construction material observer is unregistered");
             require(expected.orElseThrow().equals(NativeConstructionEffects.expected(request.before(), request.source(), args)),
@@ -166,8 +175,13 @@ public final class OrdinaryConstructionPolicy implements OrdinaryPolicy {
         Objects.requireNonNull(originalWriterSession);
         require(command.operation().equals(OPERATION) && command.before().equals(fresh.before()) && command.source().equals(fresh.source())
                 && command.sessionId().equals(fresh.sessionId()), "construction dispatch complete source drift");
-        var planned = new OrdinaryWartimeConstructionCodec.ObservedRequest(encode(object(command.arguments().get("ordinary_cash_request"), "planned quoted request")));
-        Obj original = DriverJson.object(planned.original(), OrdinaryWartimeConstructionCodec.MAX_BYTES);
+        OrdinaryWartimeConstructionCodec.ObservedRequest planned;Obj original;
+        if(originals.isPresent()) {
+            var loaded=originals.orElseThrow().load(originalWriterSession,command);planned=loaded.observed();original=loaded.original();
+        } else {
+            planned=new OrdinaryWartimeConstructionCodec.ObservedRequest(encode(object(command.arguments().get("ordinary_cash_request"),"planned quoted request")));
+            original=DriverJson.object(planned.original(),OrdinaryWartimeConstructionCodec.MAX_BYTES);
+        }
         Obj originalCash = object(original.get("cash_input"), "planned cash input");
         Obj procurement = originalCash.get("procurement_decision") instanceof Obj value ? value : obj();
         var current = collector.before(originalWriterSession, fresh, planned.input().selection(), procurement, planned.input().current().kindWire());

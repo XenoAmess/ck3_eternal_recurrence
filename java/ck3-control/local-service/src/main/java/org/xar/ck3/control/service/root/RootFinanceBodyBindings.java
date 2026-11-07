@@ -32,8 +32,7 @@ public final class RootFinanceBodyBindings {
         Objects.requireNonNull(constructionDecoder);Objects.requireNonNull(familyDecoder);
         var result=new ArrayList<CanonicalFinanceStateSource.Binding>();var building=construction.registration();
         result.add(new CanonicalFinanceStateSource.Binding(new FinanceStatePort.ReaderBinding(FinanceStatePort.Domain.CONSTRUCTION,
-                constructionDecoder,document->
-                    ConstructionLedgerCodec.decodeLedger(document.bytes()).pending().isPresent()?FinanceStatePort.Pending.PENDING:FinanceStatePort.Pending.CLEAR),
+                constructionDecoder,construction.domain()::financePending),
                 building.slot(),building.contractSchema(),building.maximumBodyBytes(),building.producerSources()));
         for(var registration:family.domainRegistrations()){
             FinanceStatePort.Domain domain=switch(registration.slot()){

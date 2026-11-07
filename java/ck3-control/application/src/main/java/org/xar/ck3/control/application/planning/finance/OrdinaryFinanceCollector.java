@@ -280,7 +280,7 @@ public final class OrdinaryFinanceCollector {
      * Keep this union synchronized with FinancingGapCodec, EmergencyFinancingAssessmentCodec,
      * LoanFinancingCodec and RawCashCodec. Copy-present preserves missing, null and malformed values.
      */
-    private static Obj financingSnapshot(Obj original) {
+    static Obj financingSnapshot(Obj original) {
         Obj result = financingFields(original, List.of("played_character_id", "played_character", "native_revision", "date_raw",
                 "snapshot_id", "revision", "episode_run_id", "active_wars", "played_character_gold", "paused", "map_ready", "diagnostics"));
         if (result.get("played_character") instanceof Obj actor)

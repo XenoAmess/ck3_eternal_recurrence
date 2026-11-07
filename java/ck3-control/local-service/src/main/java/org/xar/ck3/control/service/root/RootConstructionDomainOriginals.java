@@ -4,6 +4,7 @@ import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 import static org.xar.ck3.control.application.planning.finance.OrdinaryFinanceCollector.obj;
 import java.io.IOException;
 import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -68,6 +69,7 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
         var current = same.readDomain(DomainBodies.Slot.CONSTRUCTION);
         if (current instanceof DomainBodies.Available known) {
             Obj old = ConstructionLedgerCodec.decodeLedger(known.canonicalBody()).original();
+            ConstructionFullMaterialSource.requireRetained(same, core.archive(), old);
             if (old.get(ConstructionNextEpisodeReducer.FIELD) instanceof Obj audit
                     && new Text(proof.kind().name()).equals(audit.get("origin"))
                     && json(org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.fileWitnessToJson(proof.baselineMaterial().witness())).equals(audit.get("baseline_material_witness"))
@@ -176,6 +178,7 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
         var head = same.requireHistoricalState(material.originalHeadSequence(), material.originalHeadDigest());
         var oldDomain = proof.oldDomain(DomainBodies.Slot.CONSTRUCTION);
         var original = ConstructionSavedBody.read(same, head, oldDomain.producerSources());
+        ConstructionFullMaterialSource.requireRetained(same, core.archive(), original.ledger().original());
         StrictJson.require(original.reference().equals(oldDomain), "construction original BodyRef/FileID differs from private baseline custody");
         var before = proof.predecessorDriver(); var first = proof.firstSavedDriver(); var current = proof.currentDriver();
         ExactRef beforeRef = core.archive().preserveArtifact(same, before.encode(), NEXT_DRIVER_LIMIT);
@@ -191,6 +194,7 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
         var actual = same.readDomain(DomainBodies.Slot.CONSTRUCTION);
         if (actual instanceof DomainBodies.Available known) {
             Obj body = ConstructionLedgerCodec.decodeLedger(known.canonicalBody()).original();
+            ConstructionFullMaterialSource.requireRetained(same, core.archive(), body);
             return body.get(field) instanceof Obj row && ref(basis).equals(row.get(key));
         }
         StrictJson.require(actual instanceof DomainBodies.Unavailable missing && missing.reason() == DomainBodies.Reason.UNIMPORTED,
@@ -243,6 +247,7 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
             StrictJson.require(rereadBasis.equals(basis), "episode construction original BodyRef, material witness or source changed");
             var savedHead = same.requireHistoricalState(basis.baselineSequence(), basis.baselineDigest());
             var saved = ConstructionSavedBody.read(same, savedHead, basis.originalBody().producerSources());
+            ConstructionFullMaterialSource.requireRetained(same, core.archive(), saved.ledger().original());
             StrictJson.require(saved.reference().equals(basis.originalBody()) && saved.reference().equals(proof.oldDomain(DomainBodies.Slot.CONSTRUCTION)),
                     "construction initialization replay changed the original BodyRef/native FileID");
             if (previous.isPresent()) StrictJson.require(previous.orElseThrow().original().equals(saved.ledger().original()),
@@ -348,6 +353,8 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
             StrictJson.require(ContinuityJson.same(savedHead.toJson(), savedMaterial.originalHead().toJson()),
                     "construction restoration material differs from its complete original canonical head");
             var saved = ConstructionSavedBody.read(same, savedHead, domain.registration().producerSources());
+            ConstructionFullMaterialSource.requireRetained(same, core.archive(), saved.ledger().original());
+            if (previous.isPresent()) ConstructionFullMaterialSource.requireRetained(same, core.archive(), previous.orElseThrow().original());
             var pair = savedMaterial.pair(); var frame = pair.frame().frame().identity();
             var restoredFrame = original.semantic().frame().frame();
             StrictJson.require(pair.frame().machineId().equals(context.game().machineId())
@@ -363,7 +370,13 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
             var audit = new ConstructionRestoreProvenance(basis, savedMaterial.reference(), saved.reference().payload(),
                     savedHead.sequence(), ContinuityJson.digest(savedHead.toJson()), pair.frame().frame().episodeRunId(), frame.player(),
                     context.game().generation(), context.game().sessionId());
-            Obj body = ConstructionRestoreReducer.reduce(saved.ledger(), previous, guards, audit);
+            var resolved = new LinkedHashMap<String, ConstructionOriginalSource.Loaded>();
+            for (var row : guards) {
+                Value supplied = row.receipt().command().arguments().get("ordinary_cash_request");
+                if (supplied instanceof Obj manifest && new Text(ConstructionOriginalSource.SCHEMA).equals(manifest.get("schema")))
+                    resolved.put(row.receipt().bodySha256(), ConstructionOriginalSource.resolveCommand(same, core.archive(), row.receipt().command()));
+            }
+            Obj body = ConstructionRestoreReducer.reduce(saved.ledger(), previous, guards, audit, resolved);
             var evidence = new LinkedHashSet<ExactRef>(original.evidence());
             evidence.addAll(saved.evidence()); guards.forEach(row -> evidence.add(row.originalReceipt()));
             DomainBodies.reference(actual.state(), DomainBodies.Slot.CONSTRUCTION).ifPresent(row -> evidence.add(row.payload()));
@@ -374,7 +387,11 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
     }
     private Optional<ConstructionLedgerCodec.Ledger> current(Session same) throws IOException {
         var actual = same.readDomain(DomainBodies.Slot.CONSTRUCTION);
-        if (actual instanceof DomainBodies.Available known) return Optional.of(ConstructionLedgerCodec.decodeLedger(known.canonicalBody()));
+        if (actual instanceof DomainBodies.Available known) {
+            var ledger = ConstructionLedgerCodec.decodeLedger(known.canonicalBody());
+            ConstructionFullMaterialSource.requireRetained(same, core.archive(), ledger.original());
+            return Optional.of(ledger);
+        }
         StrictJson.require(actual instanceof DomainBodies.Unavailable missing && missing.reason() == DomainBodies.Reason.UNIMPORTED,
                 "construction current body is not an authentic imported body or true UNIMPORTED state");
         return Optional.empty();

@@ -132,7 +132,10 @@ public final class OrdinaryConstructionCollector {
                     "ending_snapshot", actualEnding, "native_envelope", DriverJson.object(packet.originalFrame(), ConstructionQueryCodec.MAX_BYTES),
                     "expected_revision", new IntegerValue(request.before().frame().revision()), "native_query_request_id", new Text(packet.receipt().requestId()),
                     "material_receipt", new Bool(false), "wartime_observation", new Bool(false));
-            OrdinaryWartimeConstruction.NativeQuote selected = new OrdinaryWartimeConstruction.NativeQuote(encode(nativeInput));
+            byte[] fullNativeInput=DriverJson.encode(nativeInput);
+            OrdinaryWartimeConstruction.NativeQuote selected = fullNativeInput.length>ConstructionQueryCodec.MAX_BYTES
+                    ? OrdinaryWartimeConstruction.NativeQuote.fromFullMaterial(fullNativeInput)
+                    : new OrdinaryWartimeConstruction.NativeQuote(encode(nativeInput));
             if (selected.selected().isEmpty()) return new QuoteMissing("original native finalizer has no qualified positive legal budgeted construction");
             var candidate = selected.selected().orElseThrow();
             var cashRead = query(session, FinanceReadContracts.Query.CASH, request);
@@ -141,7 +144,7 @@ public final class OrdinaryConstructionCollector {
             FinanceReadContracts.Packet cashPacket = cashKnown.value(); stableReceipt(request, cashPacket.receipt());
             requireStableSnapshot(request, ending(session, request));
             Obj rawCash = object(cashPacket.result().get("war_cash_current_resources"), "actual native current cash resources");
-            var actualCash = RawCashCodec.normalize(DriverJson.encode(rawCash), DriverJson.encode(request.observations().snapshot()));
+            var actualCash = RawCashCodec.normalize(DriverJson.encode(rawCash), DriverJson.encode(OrdinaryFinanceCollector.financingSnapshot(request.observations().snapshot())));
             Obj normalized = object(parse(actualCash.toJson()), "normalized native cash");
             var frame = request.before().frame();
             normalized = normalized.with("queried_snapshot_id", new Text(frame.snapshotId())).with("queried_revision", new IntegerValue(frame.revision()))
@@ -187,7 +190,7 @@ public final class OrdinaryConstructionCollector {
             if (cashRead instanceof OrdinaryFinanceCollector.Known<FinanceReadContracts.Packet> cashKnown) {
                 stableReceipt(request, cashKnown.value().receipt()); original.add(cashKnown.value().receipt());
                 Obj raw = object(cashKnown.value().result().get("war_cash_current_resources"), "actual peaceful current cash resources");
-                Obj normalized = object(parse(RawCashCodec.normalize(encode(raw), encode(request.observations().snapshot())).toJson()), "normalized peaceful cash");
+                Obj normalized = object(parse(RawCashCodec.normalize(encode(raw), DriverJson.encode(OrdinaryFinanceCollector.financingSnapshot(request.observations().snapshot()))).toJson()), "normalized peaceful cash");
                 var frame = request.before().frame();
                 normalized = normalized.with("queried_snapshot_id", new Text(frame.snapshotId())).with("queried_revision", new IntegerValue(frame.revision()))
                         .with("queried_native_revision", new IntegerValue(frame.identity().nativeRevision()));
@@ -242,7 +245,7 @@ public final class OrdinaryConstructionCollector {
             if (cashRead instanceof OrdinaryFinanceCollector.Known<FinanceReadContracts.Packet> known) {
                 stableReceipt(request, known.value().receipt()); original.add(known.value().receipt());
                 Obj raw = object(known.value().result().get("war_cash_current_resources"), "actual material cash resources");
-                Obj normalized = object(parse(RawCashCodec.normalize(encode(raw), encode(request.observations().snapshot())).toJson()), "normalized material cash");
+                Obj normalized = object(parse(RawCashCodec.normalize(encode(raw), DriverJson.encode(OrdinaryFinanceCollector.financingSnapshot(request.observations().snapshot()))).toJson()), "normalized material cash");
                 var frame = request.before().frame();
                 cash = Optional.of(normalized.with("queried_snapshot_id", new Text(frame.snapshotId())).with("queried_revision", new IntegerValue(frame.revision()))
                         .with("queried_native_revision", new IntegerValue(frame.identity().nativeRevision())));
@@ -255,7 +258,7 @@ public final class OrdinaryConstructionCollector {
                     "ending_snapshot", actualEnding, "native_envelope", DriverJson.object(known.value().originalFrame(), ConstructionQueryCodec.MAX_BYTES),
                     "expected_revision", new IntegerValue(request.before().frame().revision()), "native_query_request_id", new Text(known.value().receipt().requestId()),
                     "material_receipt", new Bool(true), "wartime_observation", new Bool(false));
-            Obj finalized = DriverJson.object(ConstructionQueryCodec.finalizeObservation(encode(queryInput)), ConstructionQueryCodec.MAX_BYTES);
+            Obj finalized = DriverJson.object(ConstructionOriginalSource.finalizeQuery(DriverJson.encode(queryInput)), ConstructionQueryCodec.MAX_BYTES);
             require(new Text("material_source").equals(finalized.get("status")), "current material query is not source_available");
             return new MaterialAvailable(queryInput, root, cash, original);
         } catch (Changed rejected) { return new MaterialFrameChanged(rejected.getMessage()); }
@@ -298,10 +301,11 @@ public final class OrdinaryConstructionCollector {
                 .with("kind", new Text(kind)).with("construction_gold_raw", new IntegerValue(cost)).with("procurement_decision", procurement);
     }
     public static ObservedRequest envelope(Selection selection, String stage, Obj cash, Value quoted, Value financing) {
-        return new ObservedRequest(DriverJson.encode(obj("schema", new Text(OrdinaryWartimeConstructionCodec.SCHEMA), "stage", new Text(stage),
+        byte[] full=DriverJson.encode(obj("schema", new Text(OrdinaryWartimeConstructionCodec.SCHEMA), "stage", new Text(stage),
                 "original_selected_step", selection.step().<Value>map(Text::new).orElse(Nil.INSTANCE),
                 "original_phase", selection.phase().<Value>map(Text::new).orElse(Nil.INSTANCE), "opportunity", new Text(selection.opportunity().name()),
-                "cash_input", cash, "quoted_outlay", quoted, "financing_request", financing)));
+                "cash_input", cash, "quoted_outlay", quoted, "financing_request", financing));
+        return full.length>OrdinaryWartimeConstructionCodec.MAX_BYTES?ObservedRequest.fromFullMaterial(full):new ObservedRequest(full);
     }
     private static void stableReceipt(PlanningRequest request, PlanningReadReceipt receipt) {
         if (!receipt.before().binding().observed().equals(request.before()) || !receipt.after().binding().observed().equals(request.before())

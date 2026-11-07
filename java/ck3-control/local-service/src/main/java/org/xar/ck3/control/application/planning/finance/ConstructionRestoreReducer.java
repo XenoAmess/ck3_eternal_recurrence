@@ -2,6 +2,7 @@ package org.xar.ck3.control.application.planning.finance;
 
 import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.*;
@@ -16,7 +17,14 @@ public final class ConstructionRestoreReducer {
     }
     public static Obj reduce(ConstructionLedgerCodec.Ledger saved, Optional<ConstructionLedgerCodec.Ledger> current,
             List<Canonical> actualCanonical, ConstructionRestoreProvenance originalProvenance) {
+        return reduce(saved, current, actualCanonical, originalProvenance, Map.of());
+    }
+    /** The owning same-session caller resolves originals before entering this pure DATA reducer. */
+    public static Obj reduce(ConstructionLedgerCodec.Ledger saved, Optional<ConstructionLedgerCodec.Ledger> current,
+            List<Canonical> actualCanonical, ConstructionRestoreProvenance originalProvenance,
+            Map<String, ConstructionOriginalSource.Loaded> resolvedOriginals) {
         Objects.requireNonNull(saved); Objects.requireNonNull(current); actualCanonical = List.copyOf(actualCanonical); Objects.requireNonNull(originalProvenance);
+        resolvedOriginals = Map.copyOf(resolvedOriginals);
         saved.pending().ifPresent(pending -> requireOwner(pending, originalProvenance));
         Optional<ConstructionLedgerCodec.Intent> retained = current.flatMap(ConstructionLedgerCodec.Ledger::pending);
         retained.ifPresent(pending -> requireOwner(pending, originalProvenance));
@@ -33,12 +41,18 @@ public final class ConstructionRestoreReducer {
             require(receipt.command().before().frame().episodeRunId().equals(originalProvenance.savedEpisodeRunId())
                     && receipt.command().before().frame().identity().player().equals(originalProvenance.savedActorCharacterId()),
                     "canonical construction UNKNOWN crossed the actual saved episode/player");
+            ConstructionOriginalSource.Loaded loaded = resolvedOriginals.get(receipt.bodySha256());
+            Obj supplied = object(receipt.command().arguments().get("ordinary_cash_request"), "canonical construction source");
+            if (new Text(ConstructionOriginalSource.SCHEMA).equals(supplied.get("schema")))
+                require(loaded != null, "full construction original must be reopened by the owning same-session restore caller");
             if (retained.isEmpty()) {
-                Obj derived = ConstructionDomainLifecycle.intent(ConstructionLedgerCodec.decodeLedger(encode(restored.with("pending", Nil.INSTANCE))), receipt.command());
+                var clear = ConstructionLedgerCodec.decodeLedger(encode(restored.with("pending", Nil.INSTANCE)));
+                Obj derived = loaded == null ? ConstructionDomainLifecycle.intent(clear, receipt.command())
+                        : ConstructionDomainLifecycle.intent(clear, receipt.command(), loaded);
                 retained = Optional.of(ConstructionLedgerCodec.intent(object(derived.get("pending"), "actual canonical original intent")));
             }
             var pending = retained.orElseThrow();
-            require(matches(pending, receipt), "restored pending differs from the actual canonical UNKNOWN construction");
+            require(matches(pending, receipt, loaded), "restored pending differs from the actual canonical UNKNOWN construction");
             Obj original = pending.original().with("status", new Text("action_state_unknown"))
                     .with("java_original_coordinator_receipt", object(parse(StrictJson.canonical(row.originalReceipt().toJson())), "actual canonical receipt source"));
             restored = restored.with("pending", original);
@@ -59,7 +73,7 @@ public final class ConstructionRestoreReducer {
                 && Objects.equals(current.original().get("coordinator_body_sha256"), saved.original().get("coordinator_body_sha256"))
                 && Objects.equals(current.original().get("candidate"), saved.original().get("candidate"));
     }
-    private static boolean matches(ConstructionLedgerCodec.Intent pending, ActionReceipt receipt) {
+    private static boolean matches(ConstructionLedgerCodec.Intent pending, ActionReceipt receipt, ConstructionOriginalSource.Loaded loaded) {
         var before = receipt.command().before();
         if (!Objects.equals(pending.original().get("candidate"), receipt.command().arguments().get("candidate"))
                 || !new IntegerValue(pending.proofEpoch()).equals(receipt.command().arguments().get("pre_proof_epoch"))) return false;
@@ -70,7 +84,8 @@ public final class ConstructionRestoreReducer {
                 || !pending.identity().actor().equals(before.frame().identity().player())
                 || !pending.source().nativeRevision().equals(before.frame().identity().nativeRevision())
                 || !pending.source().dateRaw().equals(before.frame().identity().dateRaw())) return false;
-        Obj cash = object(receipt.command().arguments().get("ordinary_cash_request"), "actual canonical construction cash source");
+        Obj cash = loaded == null ? object(receipt.command().arguments().get("ordinary_cash_request"), "actual canonical construction cash source")
+                : loaded.original();
         Obj outlay = object(cash.get("quoted_outlay"), "actual canonical quoted outlay");
         Obj query = object(outlay.get("query_observation"), "actual canonical original construction query");
         Obj diagnostic = object(object(query.get("starting_snapshot"), "actual canonical before snapshot").get("diagnostics"), "actual canonical before process");

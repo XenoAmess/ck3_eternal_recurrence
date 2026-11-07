@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.wave2.development.constructionmode3.ConstructionMode3;
 import org.xar.ck3.control.wave2.development.constructionmode3.ConstructionMode3Codec;
 import org.xar.ck3.control.wave2.development.constructionscene.ConstructionSceneModel.Field;
@@ -28,6 +29,37 @@ public final class ConstructionQueryCodec {
     private ConstructionQueryCodec() { }
 
     public static Observation decode(byte[] raw) { return decodeNode(StrictJson.parse(raw, MAX_BYTES)); }
+
+    /** DATA-only full-original projection; caller custody and all source guards remain outside this codec. */
+    public static byte[] projectFullMaterialInput(byte[] fullOriginal) {
+        JsonNode original=FullJsonTree.parse(fullOriginal,FullJsonTree.MAXIMUM_BYTES);
+        StrictJson.object(original,Set.of("schema","starting_snapshot","ending_snapshot","native_envelope","expected_revision",
+                "native_query_request_id","material_receipt","wartime_observation"));
+        StrictJson.require(SCHEMA.equals(StrictJson.text(original.get("schema"))),"construction query observation schema required");
+        ObjectNode sdk=StrictJson.object();
+        for(var entry:original.properties()) {
+            String key=entry.getKey();JsonNode value=entry.getValue();
+            sdk.set(key,key.equals("starting_snapshot")||key.equals("ending_snapshot")?fullSnapshotRole(value):value);
+        }
+        return FullJsonTree.encode(sdk,MAX_BYTES);
+    }
+    private static JsonNode fullSnapshotRole(JsonNode original) {
+        if(original==null||!original.isObject())return original;
+        ObjectNode role=fullFields(original,Set.of("paused","active_wars","played_character","native_revision","revision","snapshot_id",
+                "date_raw","map_ready","player_armies","active_event","pending_character_interaction","episode_run_id","diagnostics"));
+        JsonNode diagnostic=role.get("diagnostics");
+        if(diagnostic!=null&&diagnostic.isObject()) {
+            ObjectNode selected=fullFields(diagnostic,Set.of("hello"));JsonNode hello=selected.get("hello");
+            if(hello!=null&&hello.isObject())selected.set("hello",fullFields(hello,Set.of("expected_ck3_version","game_version","expected_ck3_sha256","executable_sha256")));
+            role.set("diagnostics",selected);
+        }
+        return role;
+    }
+    private static ObjectNode fullFields(JsonNode original,Set<String> selected) {
+        ObjectNode result=StrictJson.object();
+        for(var entry:original.properties())if(selected.contains(entry.getKey()))result.set(entry.getKey(),entry.getValue());
+        return result;
+    }
     public static byte[] finalizeObservation(byte[] raw) {
         JsonNode request = StrictJson.parse(raw, MAX_BYTES); Observation observation = decodeNode(request);
         Result result = ConstructionQueryPolicy.finalizeObservation(observation); ObjectNode output = StrictJson.object();

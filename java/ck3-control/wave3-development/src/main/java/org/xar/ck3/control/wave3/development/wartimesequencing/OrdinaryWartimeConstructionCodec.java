@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyCodec;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyModel.NoCashObservation;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyModel.ObservedCash;
@@ -35,6 +36,45 @@ public final class OrdinaryWartimeConstructionCodec {
         public ObservedRequest(byte[] original) { this.input = decode(original); this.original = original.clone(); }
         public byte[] original() { return original.clone(); }
         public Request input() { return input; }
+
+        /** Full-material DATA lane: retains full original bytes, derives SDK state from projection. */
+        public static ObservedRequest fromFullMaterial(byte[] fullOriginal) {
+            if (fullOriginal == null || fullOriginal.length == 0 || fullOriginal.length > FullJsonTree.MAXIMUM_BYTES) {
+                throw new IllegalArgumentException("full material input byte budget");
+            }
+            byte[] exactFull = fullOriginal.clone();
+            JsonNode root = FullJsonTree.parse(exactFull, FullJsonTree.MAXIMUM_BYTES);
+            StrictJson.object(root, Set.of("schema", "stage", "original_selected_step", "original_phase", "opportunity", "cash_input", "quoted_outlay", "financing_request"));
+            StrictJson.require(SCHEMA.equals(StrictJson.text(root.get("schema"))), "ordinary wartime construction schema");
+
+            Stage stage = enumValue(Stage.class, root.get("stage"));
+            Opportunity opportunity = enumValue(Opportunity.class, root.get("opportunity"));
+            JsonNode selected = root.get("original_selected_step");
+            Optional<String> step = selected.isNull() ? Optional.empty() : Optional.of(StrictJson.text(selected));
+            Optional<String> phase = root.get("original_phase").isNull() ? Optional.empty() : Optional.of(StrictJson.text(root.get("original_phase")));
+
+            Optional<QuotedOutlay> quoted = Optional.empty();
+            if (!root.get("quoted_outlay").isNull()) {
+                ObjectNode outlay = StrictJson.object(root.get("quoted_outlay"), Set.of("query_observation", "cash_observation"));
+                JsonNode queryNode = outlay.get("query_observation");
+                byte[] queryBytes = FullJsonTree.encode(queryNode, FullJsonTree.MAXIMUM_BYTES);
+                NativeQuote nativeQuote = NativeQuote.fromFullMaterial(queryBytes);
+                QuoteCashObservation cashObs = observation(outlay.get("cash_observation"));
+                quoted = Optional.of(new QuotedOutlay(nativeQuote, cashObs));
+            }
+
+            var current = WartimeConstructionCodec.decode(bytes(root.get("cash_input")));
+            Optional<EmergencyFinancingAssessmentCodec.Request> financing = root.get("financing_request").isNull() ? Optional.empty()
+                    : Optional.of(EmergencyFinancingAssessmentCodec.decode(bytes(root.get("financing_request"))));
+
+            Request input = new Request(new Selection(step, phase, opportunity), stage, current, quoted, financing);
+            return new ObservedRequest(exactFull, input);
+        }
+
+        private ObservedRequest(byte[] exactFull, Request input) {
+            this.original = exactFull;
+            this.input = input;
+        }
     }
 
     public static Request decode(byte[] original) {

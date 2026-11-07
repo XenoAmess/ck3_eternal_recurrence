@@ -135,6 +135,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
              "rollback_war_failure":null,"managed_restore_transaction":null,"succession_expectation":null,"campaign_goal":null}
             """;
     public final Path root;
+    private final long maximumArchiveBytes;
     public final ContinuityWriter writer;
     public final NativeOutcomeArchive archive;
     public final ContinuityActionJournal journal;
@@ -287,6 +288,13 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         this(root,loseAck,false,false,Optional.of(java.util.Objects.requireNonNull(reads)),List.copyOf(actions),List.copyOf(composites),
                 java.util.Objects.requireNonNull(actualDomains));
     }
+    /** Explicit total immutable SOFTWARE archive budget for large-original integration cases; old callers retain 16 MiB. */
+    public ActionWriterIntegrationFixture(Path root,boolean loseAck,SoftwareReadScenario reads,List<SoftwareActionScenario> actions,
+            List<SoftwareCompositeScenario> composites,
+            java.util.function.Function<ExactRef,List<DomainBodies.Registration>> actualDomains,long maximumArchiveBytes) throws IOException {
+        this(root,loseAck,false,false,Optional.of(java.util.Objects.requireNonNull(reads)),List.copyOf(actions),List.copyOf(composites),
+                java.util.Objects.requireNonNull(actualDomains),Clock.systemUTC(),SoftwareReadGuardContext::guard,Duration.ofSeconds(30),maximumArchiveBytes);
+    }
     private ActionWriterIntegrationFixture(Path root, boolean loseAck, boolean council, boolean compositeMode,
             Optional<SoftwareReadScenario> scenario, List<SoftwareActionScenario> actionScenarios) throws IOException {
         this(root,loseAck,council,compositeMode,scenario,actionScenarios,List.of());
@@ -317,6 +325,15 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             Optional<SoftwareReadScenario> scenario,List<SoftwareActionScenario> actionScenarios,List<SoftwareCompositeScenario> compositeScenarios,
             java.util.function.Function<ExactRef,List<DomainBodies.Registration>> actualDomains,Clock receivedClock,
             SoftwareReadGuardDecoration decoration,Duration readinessValidity) throws IOException {
+        this(root,loseAck,council,compositeMode,scenario,actionScenarios,compositeScenarios,actualDomains,receivedClock,
+                decoration,readinessValidity,16L*1024*1024);
+    }
+    private ActionWriterIntegrationFixture(Path root,boolean loseAck,boolean council,boolean compositeMode,
+            Optional<SoftwareReadScenario> scenario,List<SoftwareActionScenario> actionScenarios,List<SoftwareCompositeScenario> compositeScenarios,
+            java.util.function.Function<ExactRef,List<DomainBodies.Registration>> actualDomains,Clock receivedClock,
+            SoftwareReadGuardDecoration decoration,Duration readinessValidity,long maximumArchiveBytes) throws IOException {
+        StrictJson.require(maximumArchiveBytes>0&&maximumArchiveBytes<=64L*1024*1024,"finite explicit software archive budget required");
+        this.maximumArchiveBytes=maximumArchiveBytes;
         java.util.Objects.requireNonNull(receivedClock);
         java.util.Objects.requireNonNull(readinessValidity);
         actionScenarios = List.copyOf(actionScenarios);
@@ -390,7 +407,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         Files.createDirectory(root.resolve("ROOT-CONTINUITY-WINDOW-EVENTS")); Files.createDirectory(root.resolve("artifacts"));
         var layout = new WriterContracts.Layout(snapshot, reference(anchor), MACHINE);
         storageGuard=StorageWriteGuardTestSupport.create(layout);
-        var artifacts = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(root.resolve("artifacts"), layout.lock(), 16 * 1024 * 1024),storageGuard);
+        var artifacts = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(root.resolve("artifacts"), layout.lock(), maximumArchiveBytes),storageGuard);
         assertSame(storageGuard,artifacts.storageGuard());
         continuations = new CouncilContinuationCoordinator(layout.lock(), List.of(reviewed), Clock.systemUTC(), boundary -> {
             if (failContinuationAt.compareAndSet(boundary, null)) throw new IOException("controlled durable boundary " + boundary);
@@ -907,7 +924,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         var layout = new WriterContracts.Layout(root.resolve("ROOT-CONTINUITY-WINDOW.json"), reference(root.resolve("anchor.json")), MACHINE);
         var restored = new CouncilContinuationCoordinator(layout.lock(), List.of(source.sourceRef()), Clock.systemUTC());
         CouncilContinuationPorts.SeedAuthority neverSeedAgain = (same, head, manifest, archived) -> { throw new AssertionError("recovery cannot seed or clear existing original state"); };
-        var store = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(root.resolve("artifacts"), layout.lock(), 16 * 1024 * 1024),storageGuard);
+        var store = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(root.resolve("artifacts"), layout.lock(), maximumArchiveBytes),storageGuard);
         assertSame(storageGuard,store.storageGuard());
         var recoveredWriter = new ContinuityWriter(layout, List.of(source.sourceRef()), new WriterContracts.TransitionAuthority() {
             @Override public String revalidate(ContinuityState state, WriterContracts.Request request) { throw new AssertionError("collect-only recovery cannot append a new world-action transition"); }
@@ -945,7 +962,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     public byte[] ledgerBytes() throws IOException { return Files.readAllBytes(root.resolve("ROOT-CONTINUITY-WINDOW.json")); }
     public ActionReceipt reopenAndReturnExisting(ActionCommand command) throws IOException {
         var layout = new WriterContracts.Layout(root.resolve("ROOT-CONTINUITY-WINDOW.json"), reference(root.resolve("anchor.json")), MACHINE);
-        var reopenedArtifacts = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(root.resolve("artifacts"), layout.lock(), 16 * 1024 * 1024),storageGuard);
+        var reopenedArtifacts = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(root.resolve("artifacts"), layout.lock(), maximumArchiveBytes),storageGuard);
         assertSame(storageGuard,reopenedArtifacts.storageGuard());
         var reopenedWriter = new ContinuityWriter(layout, List.of(source.sourceRef()), new WriterContracts.TransitionAuthority() {
             @Override public String revalidate(ContinuityState previous, WriterContracts.Request request) { throw new AssertionError("existing UNKNOWN must not preview a new event"); }
@@ -1004,12 +1021,16 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     private static byte[] packet(String value) { try { return NativeWire.packet(bytes(value)); } catch (IOException failure) { throw new UncheckedIOException(failure); } }
     static final class ScriptedPackets implements NativePacketPort {
         String fresh179Mode;
+        boolean fresh179PreserveSnapshotId;
         int fresh179Writes, fresh179EmptyReads;
         byte[] fresh179Snapshot = new byte[0], fresh179Ack = new byte[0];
         void configureFresh179(String mode) {
             StrictJson.require(fresh179Mode == null && Set.of("success", "missing-ack", "negative-ack", "mismatched-ack").contains(mode),
                     "one finite software fresh-read mode required");
             fresh179Mode = mode;
+        }
+        void configureFresh179(String mode, boolean preserveSourceSnapshotId) {
+            configureFresh179(mode); fresh179PreserveSnapshotId = preserveSourceSnapshotId;
         }
         private void fresh179(ObjectNode request) throws IOException {
             var names = new java.util.HashSet<String>(); request.properties().forEach(entry -> names.add(entry.getKey()));
@@ -1030,7 +1051,8 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                 }
             }
             ObjectNode frame = NativeWire.object(NativeWire.parse(Arrays.copyOfRange(sourceSnapshot, 4, sourceSnapshot.length))).deepCopy();
-            frame.put("read_request_id", id).put("snapshot_id", "software-fresh-" + fresh179Writes);
+            frame.put("read_request_id", id);
+            if (!fresh179PreserveSnapshotId) frame.put("snapshot_id", "software-fresh-" + fresh179Writes);
             fresh179Snapshot = NativeWire.packet(org.xar.ck3.control.contracts.FullJsonTree.encode(frame, NativeWire.MAXIMUM_FRAME_BYTES));
             ObjectNode result = StrictJson.object().put("schema", NativeFreshSnapshotPort.RESULT_SCHEMA)
                     .put("request_id", id).put("snapshot_id", frame.path("snapshot_id").textValue());
@@ -1333,6 +1355,14 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             StrictJson.require(same.head().state().sequence() == 0 && packets.actionWrites == 0,
                     "software fresh-read scenario precedes original ACTION");
             packets.configureFresh179(mode); return null;
+        });
+    }
+    /** The native producer keeps its own snapshot name; independent fresh identity remains read_request_id and packet chronology. */
+    public void configureSoftwareFreshRead179(String mode, boolean preserveSourceSnapshotId) throws IOException {
+        writer.locked(same -> {
+            StrictJson.require(same.head().state().sequence() == 0 && packets.actionWrites == 0,
+                    "fresh READ source must install before the first canonical event or actual action write");
+            packets.configureFresh179(mode, preserveSourceSnapshotId); return null;
         });
     }
     public int softwareFreshWrites179() { return packets.fresh179Writes; }
