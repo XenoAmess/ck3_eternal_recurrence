@@ -1,5 +1,15 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-07 用户后到明确续行：从本次三份交接继续任务
+
+用户最新明确要求“阅读交接文档，继续执行任务”，指定本次总交接、源码与证据索引及Native交接；三入口已经读取。本条结束下方休假停止要求，原交接、停止事实、失败与UNKNOWN完整保留为历史，不把旧休假当作新的停止授权。
+
+唯一Runtime owner `/root/runtime_continue`先核实当前真实Game/birth、keeper、原账本与stop状态。当前有限新核对只证明07:48:06Z两个原具名进程OS存活与顶层head47/repair_required/BATCH_INTERRUPTED；未读取当前world，恢复准入仍NOT_HELD。不得重放已执行、已结算或UNKNOWN动作，刷新旧deadline、清账本、伪造许可/后态或因续行重启Game/DLL。P100既有provider拒绝同链仍不得改述、重投、换岗或借独立软件绕行；P101/P102软件资格不补授head47准入。
+
+正常游玩和必要P0功能/性能仍是目标；独立离线软件工作按真实项目推进，不恢复固定并发配额。Runtime独占现场/worker/keeper/账本/实际采用/GET，Java负责正式源码与Git，Native负责必要有限编测，Models按既有规范运营。源码、编译、装载、LOOP、行为与SAVE分开验收，文档发表不作Runtime恢复前置。冻结 `D:/r64d`的HEAD/租约保持，正式发表仅在允许隔离目录，Z既有修改不覆盖。
+
+本次事实见[续行记录](docs/autonomous-agent-progress/2026-11-07-post-vacation-continuation.md)、[本日日报](docs/autonomous-agent-progress/daily/2026-11-07.md)和[本周补记](docs/autonomous-agent-progress/weekly/2026-W45.md)。
+
 ## 2026-11-07 用户最新：休假收尾与本次交接入口
 
 用户最新明确要求休假，并把交接文档输出到 docs。当前停止新增实现、编测、本地模型 HTTP 派发、业务 worker、Game／Native live 查询、动作、采样、录制、部署、装载、launch、恢复及 GET；只收束本指令前已经 BEGIN 的事项和本次交接文档的正常 Git 发表。下方历史持续执行、自由使用 CK3 或并发目标不授权本次休假期间自动续行。

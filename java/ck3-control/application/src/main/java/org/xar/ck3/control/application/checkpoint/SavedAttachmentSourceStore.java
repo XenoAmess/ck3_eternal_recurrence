@@ -411,8 +411,14 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         var borrowed=sessions.current();var predecessor=borrowed.head().state();
         material.requirePhysical(borrowed);
         StrictJson.require(ContinuityJson.digest(predecessor.toJson()).equals(request.expectedHeadDigest()),"original restore predecessor drift before material production");
-        StrictJson.require(Arrays.equals(saved.encode(),material.savedDriver().encode())
-                &&Arrays.equals(saved.encode(),drivers.readVerifiedOriginal(request.pair(),saved.session()).encode()),"actual full saved Driver required");
+        {
+            byte[] savedBytes=saved.encode();
+            boolean materialMatches=Arrays.equals(savedBytes,material.savedDriver().encode());
+            if(saved.session().actorId().getClass()!=java.math.BigInteger.class||savedBytes.length>8*1024*1024)
+                savedBytes=null;
+            StrictJson.require(materialMatches
+                    &&Arrays.equals(savedBytes!=null?savedBytes:saved.encode(),drivers.readVerifiedOriginal(request.pair(),saved.session()).encode()),"actual full saved Driver required");
+        }
         ObjectNode opening=opening(request,restored);ObjectNode game=restored.actual().session().game().toJson();
         requireOpening(request.pair(),opening,game,restored.originalNativePacket());
         String restoreKey=DriverCheckpointStore.sha256(request.requestId().getBytes(StandardCharsets.UTF_8));
