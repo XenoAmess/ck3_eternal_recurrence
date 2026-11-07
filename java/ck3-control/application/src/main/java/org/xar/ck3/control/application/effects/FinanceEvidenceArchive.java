@@ -39,10 +39,13 @@ import org.xar.ck3.control.wave2.finance.giftwarcash.GiftWarCashPolicy;
 public final class FinanceEvidenceArchive {
     public static final String ARGUMENT="finance_quote_evidence";
     public static final String SCHEMA="xar.java.finance-original-quote/v2";
+    private static final String SCHEMA_V3="xar.java.finance-original-quote/v3";
     /** Deliberate quote leaf budget supported by the shared exact JSON codec. */
     private static final int MAX_BYTES=StrictJson.EXPLICIT_MAX_BYTES;
     private static final Set<String> FIELDS=Set.of("schema","operation","before","source","session_id","arguments",
             "canonical_head","head_archive","spending","documents","reads","planning_request");
+    private static final Set<String> V3_FIELDS=Set.of("schema","operation","before","source","session_id","arguments",
+            "canonical_head","head_archive","spending","documents","reads","planning_request_ref");
     private final ActionPorts.OutcomeArchive archive;
     private final org.xar.ck3.control.continuity.writer.ContinuityStorePort writer;
     private final Supplier<Session> borrowed;
@@ -93,7 +96,16 @@ public final class FinanceEvidenceArchive {
                 ObjectNode row=StrictJson.object();row.put("schema",SCHEMA);row.put("operation",operation.value());
                 row.set("before",ProposalLifecycleCodec.observation(request.before()));row.set("source",ProposalLifecycleCodec.source(request.source()));
                 row.put("session_id",request.sessionId());row.set("arguments",toNode(arguments));row.set("canonical_head",head.toJson());row.set("head_archive",frozenHead.toJson());
-                row.set("planning_request",StrictJson.parse(org.xar.ck3.control.application.planning.PlanningWire.encodeRequest(request),MAX_BYTES));
+                byte[] planBytes=org.xar.ck3.control.application.planning.PlanningWire.encodeRequest(request);
+                require(planBytes.length<=RawJson.MAXIMUM_BYTES,"original planning request exceeds full material budget");
+                if(planBytes.length>MAX_BYTES) {
+                    RawJson full=RawJson.fullMaterial(planBytes);
+                    ExactRef planRef=scoped.preserveMaterial(full);
+                    RawJson loaded=scoped.loadFullMaterial(planRef);
+                    RootGuardChecks.exact(planRef,loaded.bytes());
+                    require(java.util.Arrays.equals(planBytes,loaded.bytes()),"original planning request material changed during archive readback");
+                    row.put("schema",SCHEMA_V3);row.set("planning_request_ref",planRef.toJson());
+                } else row.set("planning_request",StrictJson.parse(planBytes,MAX_BYTES));
                 row.set("spending",toNode(current.spendingJson()));var docs=row.putArray("documents");
                 for(var domain:requiredDomains()) {
                     var ledger=current.state().ledger(domain).orElseThrow(()->new IllegalArgumentException("original quote spending body missing: "+domain));
@@ -113,7 +125,7 @@ public final class FinanceEvidenceArchive {
                     verifyRead(read,request.before(),request.source(),request.sessionId(),scoped,Optional.of(target));
                     ObjectNode item=refs.addObject();item.put("query",query.name());item.set("definition_source",definition.toJson());item.set("receipt",ref.toJson());
                 }
-                ExactRef basis=preserve(scoped,new RawJson(quoteBytes(row)));
+                ExactRef basis=preserve(scoped,new RawJson(encodeManifest(row)));
                 return arguments.with(ARGUMENT,object(parse(StrictJson.canonical(basis.toJson(),4096)),"original quote reference"));
             } catch(IOException failure) { throw new UncheckedIOException("original quote custody unavailable",failure); }
         }); } catch(IllegalStateException | UncheckedIOException unavailable) { throw new IllegalArgumentException("original quote requires the held writer and archive scope",unavailable); }
@@ -122,8 +134,9 @@ public final class FinanceEvidenceArchive {
     public void verify(ActionCommand command,ActionPorts.OutcomeArchive sameWriterArchive) {
         verifyDefinitions(Objects.requireNonNull(borrowed.get(),"actual held writer Session required"));
         Obj arguments=withoutEvidence(command.arguments());ExactRef ref=reference(command.arguments());RawJson raw=sameWriterArchive.loadMaterial(ref);RootGuardChecks.exact(ref,raw.bytes());
-        ObjectNode row=quoteObject(raw);
-        require(SCHEMA.equals(StrictJson.text(row.get("schema")))&&command.operation().value().equals(StrictJson.text(row.get("operation")))
+        ObjectNode row=decodeManifest(raw);
+        String manifestSchema=StrictJson.text(row.get("schema"));
+        require((SCHEMA.equals(manifestSchema)||SCHEMA_V3.equals(manifestSchema))&&command.operation().value().equals(StrictJson.text(row.get("operation")))
                 &&command.before().equals(ProposalLifecycleCodec.decodeObservation(row.get("before")))
                 &&ProposalLifecycleCodec.source(command.source()).equals(row.get("source"))
                 &&command.sessionId().equals(StrictJson.text(row.get("session_id")))&&toNode(arguments).equals(row.get("arguments")),"quote evidence crossed command/source/session/arguments");
@@ -148,7 +161,7 @@ public final class FinanceEvidenceArchive {
             require(packets.putIfAbsent(query,definitions.decodeOriginal(query,read,original.semantic()))==null,"duplicate original quote query");
         }
         require(before!=null,"original quote has no complete native frame");
-        PlanningRequest originalRequest=org.xar.ck3.control.application.planning.PlanningWire.decodeRequest(StrictJson.canonical(row.get("planning_request"),MAX_BYTES));
+        PlanningRequest originalRequest=loadPlanningRequest(row,sameWriterArchive);
         require(originalRequest.before().equals(command.before())&&originalRequest.source().equals(command.source())
                 &&originalRequest.sessionId().equals(command.sessionId())&&originalRequest.deadline().equals(command.deadline())
                 &&originalRequest.observations().snapshot().equals(before.semantic())&&originalRequest.observations().actionSteps().contains(command.operation()),
@@ -204,12 +217,37 @@ public final class FinanceEvidenceArchive {
     /** The exact complete request captured by the actual quote producer, never an empty projection of unrelated fields. */
     public PlanningRequest originalRequest(Session session,ActionCommand command) {
         return archive.inSession(session,scoped->{verify(command,scoped);var raw=scoped.loadMaterial(reference(command.arguments()));
-            var row=quoteObject(raw);
-            return org.xar.ck3.control.application.planning.PlanningWire.decodeRequest(StrictJson.canonical(row.get("planning_request"),MAX_BYTES));});
+            var row=decodeManifest(raw);
+            return loadPlanningRequest(row,scoped);});
     }
     /** Shared bounded producer/consumer entry. These JSON checks grant no archive, source, or spending authority. */
     static ObjectNode quoteObject(RawJson raw) { return StrictJson.object(StrictJson.parse(raw.bytes(),MAX_BYTES),FIELDS); }
     static byte[] quoteBytes(JsonNode row) { StrictJson.object(row,FIELDS);return StrictJson.canonical(row,MAX_BYTES); }
+    /** Version dispatch is strict; legacy structure-only codecs and their one-MiB domain remain unchanged. */
+    private static ObjectNode decodeManifest(RawJson raw) {
+        JsonNode parsed=StrictJson.parse(raw.bytes(),MAX_BYTES);
+        String schema=StrictJson.text(parsed.get("schema"));
+        if(SCHEMA.equals(schema))return StrictJson.object(parsed,FIELDS);
+        if(SCHEMA_V3.equals(schema))return StrictJson.object(parsed,V3_FIELDS);
+        throw new IllegalArgumentException("unsupported original finance quote schema");
+    }
+    private static byte[] encodeManifest(ObjectNode row) {
+        String schema=StrictJson.text(row.get("schema"));
+        if(SCHEMA.equals(schema))return quoteBytes(row);
+        require(SCHEMA_V3.equals(schema),"unsupported original finance quote schema");
+        StrictJson.object(row,V3_FIELDS);return StrictJson.canonical(row,MAX_BYTES);
+    }
+    /** Both consumers perform the original read again in their own scoped archive; no ref-only admission or fallback. */
+    private static PlanningRequest loadPlanningRequest(ObjectNode row,ActionPorts.OutcomeArchive archive) {
+        String schema=StrictJson.text(row.get("schema"));
+        if(SCHEMA.equals(schema))return org.xar.ck3.control.application.planning.PlanningWire.decodeRequest(
+                StrictJson.canonical(row.get("planning_request"),MAX_BYTES));
+        require(SCHEMA_V3.equals(schema),"unsupported original finance quote schema");
+        ExactRef ref=ExactRef.fromJson(row.get("planning_request_ref"));
+        require(ref.bytes()>0&&ref.bytes()<=RawJson.MAXIMUM_BYTES,"original planning request material reference exceeds budget");
+        RawJson original=archive.loadFullMaterial(ref);RootGuardChecks.exact(ref,original.bytes());
+        return org.xar.ck3.control.application.planning.PlanningWire.decodeRequest(original.bytes());
+    }
     private void verifyDefinitions(Session session) {
         try { RootGuardChecks.source(session,implementationSource);for(var reader:readers.values())RootGuardChecks.source(session,reader.definitionSource());
             for(var query:List.of(FinanceReadContracts.Query.ROOT,FinanceReadContracts.Query.MERCENARIES,FinanceReadContracts.Query.FACTION_GIFT,FinanceReadContracts.Query.FACTION_ALERTS))

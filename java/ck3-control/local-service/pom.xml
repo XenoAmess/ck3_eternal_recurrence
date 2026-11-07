@@ -116,6 +116,7 @@
       <testResource><directory>../wave2-finance/src/test/resources</directory><includes><include>factionalerts/original-producer-golden.json</include></includes></testResource>
       <testResource><directory>../governance-policy/src/test/resources</directory><includes><include>crownauthority/original-producer-golden.json</include></includes></testResource>
       <testResource><directory>../wave3-governance/src/test/resources</directory><includes><include>governmentquery/original-producer-golden.json</include></includes></testResource>
+      <testResource><directory>../application/src/test/resources</directory><includes><include>finance/faction-generation-native90/authored-root.json</include><include>finance/faction-generation-native90/packets/faction-zero-final/private-query-faction-gift-member-v1.json.packet.bin</include></includes></testResource>
       <testResource><directory>../application/src/test/resources</directory><includes><include>org/xar/ck3/control/application/checkpoint/encoding102/driver1475.json.gz</include></includes></testResource>
     </testResources>
     <plugins>
