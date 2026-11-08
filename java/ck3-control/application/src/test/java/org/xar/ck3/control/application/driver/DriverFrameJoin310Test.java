@@ -28,6 +28,139 @@ import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 public class DriverFrameJoin310Test {
+    private static final String ASM137="org.xar.ck3.control.application.driver.DriverObservationAssembler";
+    /** Only the six previously qualified Assembler definitions use this loader; all arguments/dependencies remain parent-owned. */
+    private static final class Assembler137Loader extends java.net.URLClassLoader {
+        private static final java.util.Set<String> FAMILY=java.util.Set.of(ASM137,ASM137+"$CanonicalNativeState",ASM137+"$Complete",ASM137+"$FullSnapshot",ASM137+"$Incomplete",ASM137+"$Result");
+        Assembler137Loader()throws Exception {super(new java.net.URL[]{java.nio.file.Path.of(java.util.Objects.requireNonNull(System.getProperty("ck3.p137.oldAssemblerRoot"),"explicit qualified oldAssembler root required")).toRealPath().toUri().toURL()},DriverFrameJoin310Test.class.getClassLoader());}
+        @Override protected Class<?> loadClass(String name,boolean resolve)throws ClassNotFoundException {
+            synchronized(getClassLoadingLock(name)) {
+                if(!FAMILY.contains(name)) {
+                    if(name.startsWith(ASM137+"$"))throw new ClassNotFoundException("unlisted old Assembler family member "+name);
+                    return getParent().loadClass(name);
+                }
+                Class<?> type=findLoadedClass(name);if(type==null)type=findClass(name);if(resolve)resolveClass(type);return type;
+            }
+        }
+    }
+    private static OpportunityJson.Obj state137(Method method,NativeObservationPort.ObservedFrame frame)throws Throwable {
+        try{return assertInstanceOf(OpportunityJson.Obj.class,method.invoke(null,frame));}
+        catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
+    }
+    private static NativeObservationPort.ObservedFrame stateBytes137(NativeObservationPort.ObservedFrame frame,byte[] bytes) {
+        return new NativeObservationPort.ObservedFrame(frame.session(),frame.snapshotId(),frame.nativeRevision(),new RawJson(bytes),frame.originalPacket(),frame.observedAt());
+    }
+    private static NativeObservationPort.ObservedFrame packet137(NativeObservationPort.ObservedFrame frame,byte[] packet) {
+        return new NativeObservationPort.ObservedFrame(frame.session(),frame.snapshotId(),frame.nativeRevision(),frame.state(),packet,frame.observedAt());
+    }
+    private static Method oldState137(Assembler137Loader loader)throws Exception {
+        Class<?> old=Class.forName(ASM137,true,loader);assertSame(loader,old.getClassLoader());
+        Method method=old.getMethod("originalNativeState",NativeObservationPort.ObservedFrame.class);
+        assertSame(OpportunityJson.Obj.class,method.getReturnType());
+        assertSame(DriverJson.class.getClassLoader(),DriverObservationAssembler.class.getClassLoader());
+        assertNotSame(loader,DriverObservationAssembler.class.getClassLoader());return method;
+    }
+    private static void equalState137(Method old,Method current,NativeObservationPort.ObservedFrame frame)throws Throwable {
+        byte[] packetBefore=frame.originalPacket(),stateBefore=frame.state().bytes();
+        var a=state137(old,frame);var b=state137(current,frame);
+        assertEquals(a,b);assertEquals(new ArrayList<>(a.members().keySet()),new ArrayList<>(b.members().keySet()));
+        assertArrayEquals(DriverJson.encode(a),DriverJson.encode(b));assertArrayEquals(packetBefore,frame.originalPacket());assertArrayEquals(stateBefore,frame.state().bytes());
+    }
+    private static void sameFailure137(Method old,Method current,NativeObservationPort.ObservedFrame frame) {
+        var a=assertThrows(IllegalArgumentException.class,()->state137(old,frame));
+        var b=assertThrows(IllegalArgumentException.class,()->state137(current,frame));
+        assertEquals(a.getClass(),b.getClass());assertEquals(a.getMessage(),b.getMessage());
+    }
+    @Test public void exactPrivatePacketStateReuseAndEveryLexicalOrFailureMissKeepOldDataSemantics137()throws Throwable {
+        try(var loader=new Assembler137Loader()) {
+            Method old=oldState137(loader),current=DriverObservationAssembler.class.getMethod("originalNativeState",NativeObservationPort.ObservedFrame.class);
+            String expectedText="😀 quote \" backslash \\ control \n";
+            String textWire=new String(DriverJson.encode(new OpportunityJson.Text(expectedText)),StandardCharsets.UTF_8);
+            String literal=STATE.replace("\"original_metric\":1.00","\"original_metric\":1.00,\"opaque137\":{\"zero\":-0,\"negative_zero\":-0.0,\"exp\":1e+0,\"text\":"+textWire+"}");
+            var original=actual(literal);var model=DriverJson.object(original.state().bytes(),DriverJson.MAX_NATIVE_BYTES);
+            byte[] canonical=DriverJson.encode(model);var matched=stateBytes137(original,canonical);
+            assertTrue(DriverJson.encodedContentEquals(model,canonical));equalState137(old,current,matched);
+            assertFalse(DriverJson.encodedContentEquals(model,java.util.Arrays.copyOf(canonical,canonical.length-1)));
+            byte[] longer=java.util.Arrays.copyOf(canonical,canonical.length+1);longer[longer.length-1]=' ';
+            assertFalse(DriverJson.encodedContentEquals(model,longer));
+            var output=state137(current,matched);assertEquals("1.00",assertInstanceOf(OpportunityJson.DecimalValue.class,output.get("original_metric")).token());
+            var opaque=assertInstanceOf(OpportunityJson.Obj.class,output.get("opaque137"));
+            assertEquals("-0.0",assertInstanceOf(OpportunityJson.DecimalValue.class,opaque.get("negative_zero")).token());
+            assertEquals("1e+0",assertInstanceOf(OpportunityJson.DecimalValue.class,opaque.get("exp")).token());
+            assertEquals(expectedText,assertInstanceOf(OpportunityJson.Text.class,opaque.get("text")).value());
+            assertFalse(DriverJson.encodedContentEquals(model,original.state().bytes()),"original whitespace/integer -0 wire is a real miss");
+            equalState137(old,current,original);
+            var reversed=new java.util.LinkedHashMap<String,OpportunityJson.Value>();var keys=new ArrayList<>(model.members().keySet());java.util.Collections.reverse(keys);
+            for(String key:keys)reversed.put(key,model.get(key));byte[] reordered=DriverJson.encode(new OpportunityJson.Obj(reversed));
+            assertFalse(DriverJson.encodedContentEquals(model,reordered));equalState137(old,current,stateBytes137(original,reordered));
+            assertEquals(keys,new ArrayList<>(state137(current,stateBytes137(original,reordered)).members().keySet()));
+            byte[] characters=DriverJson.encodeCharacters(model);assertFalse(java.util.Arrays.equals(canonical,characters));
+            assertFalse(DriverJson.encodedContentEquals(model,characters));equalState137(old,current,stateBytes137(original,characters));
+            sameFailure137(old,current,stateBytes137(original,bytes(literal.replace("\"original_metric\":1.00","\"original_metric\":1e+0"))));
+            sameFailure137(old,current,stateBytes137(original,bytes(literal.replace("\"speed\":3","\"speed\":4"))));
+            var array=actual("[]");sameFailure137(old,current,array);sameFailure137(old,current,stateBytes137(array,canonical));
+            String deep="0";for(int i=0;i<65;i++)deep="["+deep+"]";
+            sameFailure137(old,current,stateBytes137(original,bytes("{\"deep\":"+deep+"}")));
+            byte[] packet=original.originalPacket();String body=new String(packet,4,packet.length-4,StandardCharsets.UTF_8).replace("\"protocol_version\":1","\"protocol_version\":2");
+            var headerAndStateBad=packet137(stateBytes137(original,bytes("[]")),org.xar.ck3.control.nativebridge.NativeWire.packet(bytes(body)));
+            sameFailure137(old,current,headerAndStateBad);
+            assertEquals("original native envelope differs",assertThrows(IllegalArgumentException.class,()->state137(current,headerAndStateBad)).getMessage());
+            var encodedFailure=new java.util.concurrent.atomic.AtomicBoolean();
+            BigInteger hostile=new BigInteger("1") {private static final long serialVersionUID=1L;
+                @Override public String toString(){encodedFailure.set(true);throw new IllegalStateException("explicit DATA-only encoder failure137");}};
+            assertFalse(DriverJson.encodedContentEquals(new OpportunityJson.IntegerValue(hostile),bytes("0")));assertTrue(encodedFailure.get());
+        }
+    }
+
+    /** Old qualified Assembler6 child A and new parent B; shared new Driver's old public algorithms are unchanged. */
+    @Test public void canonicalMatchAndLexicalMissCompareQualifiedOldAssemblerWithoutReplacingGuards137()throws Throwable {
+        long startWindow=System.nanoTime();var report=new java.util.LinkedHashMap<String,Object>();var rows=new ArrayList<Map<String,Object>>();report.put("rows",rows);Throwable failed=null;
+        report.put("schema","ck3.p137.original-native-state-component/v1");report.put("fixed_order_per_dataset",List.of("A","B","B","A"));
+        report.put("dataset_order",List.of("canonical_match","lexical_whitespace_miss"));report.put("extra_warmups",0);
+        report.put("A","qualified old P134Assembler6 only child-first; shared current parent dependencies");report.put("B","new Assembler and new DriverJson in same parent loader");
+        report.put("whole_old_binary_AB",false);report.put("physicalIO_Game_SAVE_HTTP_Runtime",0);
+        report.put("selected_leaf_old_new_binary_same_process_common_dependencies",true);report.put("same_binary_entries",false);
+        try(var loader=new Assembler137Loader()) {
+            Method old=oldState137(loader),current=DriverObservationAssembler.class.getMethod("originalNativeState",NativeObservationPort.ObservedFrame.class);
+            report.put("old_root",System.getProperty("ck3.p137.oldAssemblerRoot"));report.put("old_code_source",old.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toString());
+            String large=STATE.replace("\"original_metric\":1.00","\"original_metric\":1.00,\"opaque_unconsumed_extension\":\""+"x".repeat(3_400_000)+"\"");
+            var lexical=actual(large);var model=DriverJson.object(lexical.state().bytes(),DriverJson.MAX_NATIVE_BYTES);byte[] canonical=DriverJson.encode(model);
+            var matched=stateBytes137(lexical,canonical);assertTrue(DriverJson.encodedContentEquals(model,canonical));assertFalse(DriverJson.encodedContentEquals(model,lexical.state().bytes()));
+            var cpu=java.lang.management.ManagementFactory.getThreadMXBean();boolean cpuAvailable=cpu.isCurrentThreadCpuTimeSupported();
+            if(cpuAvailable&&!cpu.isThreadCpuTimeEnabled())cpu.setThreadCpuTimeEnabled(true);
+            com.sun.management.ThreadMXBean allocation=cpu instanceof com.sun.management.ThreadMXBean bean?bean:null;
+            boolean allocAvailable=allocation!=null&&allocation.isThreadAllocatedMemorySupported();if(allocAvailable&&!allocation.isThreadAllocatedMemoryEnabled())allocation.setThreadAllocatedMemoryEnabled(true);
+            report.put("CPU_available",cpuAvailable);report.put("allocation_available",allocAvailable);report.put("setup_ns_before_rows",System.nanoTime()-startWindow);
+            for(String dataset:List.of("canonical_match","lexical_whitespace_miss")) {
+                var frame=dataset.equals("canonical_match")?matched:lexical;String rawSha=DriverJson.sha256(frame.state().bytes()),packetSha=DriverJson.sha256(frame.originalPacket());String expected=null;
+                for(int i=0;i<4;i++) {
+                    String route=i==0||i==3?"A":"B";var row=new java.util.LinkedHashMap<String,Object>();rows.add(row);
+                    row.put("dataset",dataset);row.put("index",i);row.put("entry",route);row.put("new_predicate_expected_match",dataset.equals("canonical_match"));
+                    long cpuStart=cpuAvailable?cpu.getCurrentThreadCpuTime():-1,allocatedStart=allocAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1;
+                    long begin=System.nanoTime();OpportunityJson.Obj result;boolean completed=false;
+                    try {result=state137(route.equals("A")?old:current,frame);completed=true;}
+                    finally {long end=System.nanoTime(),allocatedEnd=allocAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1,cpuEnd=cpuAvailable?cpu.getCurrentThreadCpuTime():-1;
+                        row.put("wall_start_ns",begin);row.put("wall_end_ns",end);row.put("wall_ns",end-begin);row.put("CPU_start_ns",cpuStart);row.put("CPU_end_ns",cpuEnd);row.put("CPU_ns",cpuAvailable?cpuEnd-cpuStart:-1);
+                        row.put("allocation_start_bytes",allocatedStart);row.put("allocation_end_bytes",allocatedEnd);row.put("thread_allocated_bytes",allocAvailable?allocatedEnd-allocatedStart:-1);row.put("completed",completed);}
+                    assertEquals("1.00",assertInstanceOf(OpportunityJson.DecimalValue.class,result.get("original_metric")).token());
+                    assertEquals(3_400_000,assertInstanceOf(OpportunityJson.Text.class,result.get("opaque_unconsumed_extension")).value().length());
+                    String semantic=DriverJson.sha256(DriverJson.encode(result));if(expected==null)expected=semantic;assertEquals(expected,semantic);
+                    assertEquals(rawSha,DriverJson.sha256(frame.state().bytes()));assertEquals(packetSha,DriverJson.sha256(frame.originalPacket()));
+                    row.put("semantic_sha256",semantic);row.put("state_sha256",rawSha);row.put("packet_sha256",packetSha);row.put("all_post_checks_passed",true);
+                }
+            }
+        }catch(Throwable failure){failed=failure;report.put("failure_class",failure.getClass().getName());report.put("failure_message",String.valueOf(failure.getMessage()));throw failure;}
+        finally {
+            report.put("completed",failed==null);report.put("window_ns_before_report_materialization",System.nanoTime()-startWindow);
+            report.put("scope","selected-leaf old/new binary, same process/common dependencies, 2samples/entry/dataset; not same-binary entries or whole old/new CP or actual worker. Both Method.invoke overhead included; fixture setup parses/encodes, postchecks/report/close held in whole JUnit. Report scenarios separately; no unknown natural hitrate combination.");
+            try{byte[] encoded=org.xar.ck3.control.contracts.FullJsonTree.encode(new com.fasterxml.jackson.databind.ObjectMapper().valueToTree(report),1_048_576);
+                var output=directory.resolve("p137-native-state-component.json");java.nio.file.Files.write(output,encoded,java.nio.file.StandardOpenOption.CREATE_NEW,java.nio.file.StandardOpenOption.WRITE);
+                System.out.println("P137 native state component "+output);
+            }catch(Throwable outputFailure){if(failed==null)throw outputFailure;if(failed!=outputFailure)failed.addSuppressed(outputFailure);}
+        }
+    }
+
+
     @org.junit.jupiter.api.io.TempDir(cleanup=org.junit.jupiter.api.io.CleanupMode.NEVER) java.nio.file.Path directory;
 
     @Test public void firstProjectionFailuresStayDirectAndLateIdentityStillUsesOriginalResultLayer() {

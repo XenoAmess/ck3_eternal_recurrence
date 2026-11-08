@@ -307,7 +307,11 @@ public final class DriverObservationAssembler {
                 && BigInteger.ONE.equals(OpportunityJson.integer(packet.get("protocol_version"), "protocol_version"))
                 && actual.snapshotId().equals(OpportunityJson.text(packet.get("snapshot_id"), "snapshot_id"))
                 && actual.nativeRevision().equals(OpportunityJson.integer(packet.get("revision"), "revision")), "original native envelope differs");
-        OpportunityJson.Obj state = DriverJson.object(actual.state().bytes(), DriverJson.MAX_NATIVE_BYTES);
+        byte[] stateBytes=actual.state().bytes();
+        if(packet.get("state") instanceof OpportunityJson.Obj parsedState) {
+            if(stateBytes.length<=DriverJson.MAX_NATIVE_BYTES && DriverJson.encodedContentEquals(parsedState,stateBytes))return parsedState;
+        }
+        OpportunityJson.Obj state = DriverJson.object(stateBytes, DriverJson.MAX_NATIVE_BYTES);
         StrictJson.require(state.equals(OpportunityJson.object(packet.get("state"), "state")), "raw state differs from original native packet");
         return state;
     }

@@ -109,6 +109,37 @@ public final class DriverJson {
         return object.get(field) == OpportunityJson.Nil.INSTANCE ? new DriverStateSnapshot.NullValue()
                 : new DriverStateSnapshot.Value(encode(object.get(field)));
     }
+    /** DATA-only byte-generator comparison; no source/parse authority. The caller owns stable expected bytes.
+     * Stops at the first difference; encoding failure is a miss so the caller retains its original parser/error path. */
+    static boolean encodedContentEquals(OpportunityJson.Value value,byte[] expected) {
+        if(expected==null)return false;
+        var output=new ContentComparison(expected);
+        try(JsonGenerator generator=JSON.createGenerator(output)) { write(generator,value,0); }
+        catch(IOException | RuntimeException failure) { return false; }
+        return !output.mismatch && output.position==expected.length;
+    }
+    /** No output array, DOM or callback escapes this same-call comparator. */
+    private static final class ContentComparison extends java.io.OutputStream {
+        private final byte[] expected;
+        private int position;
+        private boolean mismatch;
+        private ContentComparison(byte[] expected) { this.expected=expected; }
+        private void differs() throws IOException { mismatch=true;throw new IOException("JSON byte comparison differs"); }
+        @Override public void write(int value) throws IOException {
+            if(mismatch)return;
+            if(position>=expected.length || expected[position]!=(byte)value) { differs();return; }
+            position++;
+        }
+        @Override public void write(byte[] value,int offset,int length) throws IOException {
+            if(mismatch)return;
+            java.util.Objects.checkFromIndexSize(offset,length,value.length);
+            if(length>expected.length-position || !java.util.Arrays.equals(value,offset,offset+length,expected,position,position+length)) {
+                differs();return;
+            }
+            position+=length;
+        }
+    }
+
     public static byte[] encode(OpportunityJson.Value value) {
         try {
             ByteArrayOutputStream output=new ByteArrayOutputStream();
