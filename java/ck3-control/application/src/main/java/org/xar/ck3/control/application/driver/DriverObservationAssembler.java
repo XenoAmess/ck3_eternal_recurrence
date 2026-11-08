@@ -309,11 +309,27 @@ public final class DriverObservationAssembler {
                 && actual.nativeRevision().equals(OpportunityJson.integer(packet.get("revision"), "revision")), "original native envelope differs");
         byte[] stateBytes=actual.state().bytes();
         if(packet.get("state") instanceof OpportunityJson.Obj parsedState) {
-            if(stateBytes.length<=DriverJson.MAX_NATIVE_BYTES && DriverJson.encodedContentEquals(parsedState,stateBytes))return parsedState;
+            if(stateBytes.length<=DriverJson.MAX_NATIVE_BYTES && compactStatePrefixCandidate(stateBytes) && DriverJson.encodedContentEquals(parsedState,stateBytes))return parsedState;
         }
         OpportunityJson.Obj state = DriverJson.object(stateBytes, DriverJson.MAX_NATIVE_BYTES);
         StrictJson.require(state.equals(OpportunityJson.object(packet.get("state"), "state")), "raw state differs from original native packet");
         return state;
+    }
+    /** Optimization veto only for this call's byte-parsed standard state and frozen compact writer.
+     * At most 256 bytes; no parsing/validation/normalization. Any uncertain prefix keeps the full comparator. */
+    private static boolean compactStatePrefixCandidate(byte[] stateBytes) {
+        boolean inString=false,escaped=false;
+        int limit=Math.min(stateBytes.length,256);
+        for(int index=0;index<limit;index++) {
+            int current=stateBytes[index]&0xff;
+            if(inString) {
+                if(escaped)escaped=false;
+                else if(current=='\\')escaped=true;
+                else if(current=='"')inString=false;
+            } else if(current=='"')inString=true;
+            else if(current==' ' || current=='\t' || current=='\n' || current=='\r')return false;
+        }
+        return true;
     }
     /** Canonical DATA is never accepted as an original native input. */
     public static final class CanonicalNativeState {

@@ -29,18 +29,60 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 public class DriverFrameJoin310Test {
     private static final String ASM137="org.xar.ck3.control.application.driver.DriverObservationAssembler";
-    /** Only the six previously qualified Assembler definitions use this loader; all arguments/dependencies remain parent-owned. */
+    private static final String DRIVER138="org.xar.ck3.control.application.driver.DriverJson";
+    /** P138: exact old P137 Assembler6 and Driver2 share one child runtime package; all DTOs/Jackson remain parent-owned. */
     private static final class Assembler137Loader extends java.net.URLClassLoader {
-        private static final java.util.Set<String> FAMILY=java.util.Set.of(ASM137,ASM137+"$CanonicalNativeState",ASM137+"$Complete",ASM137+"$FullSnapshot",ASM137+"$Incomplete",ASM137+"$Result");
-        Assembler137Loader()throws Exception {super(new java.net.URL[]{java.nio.file.Path.of(java.util.Objects.requireNonNull(System.getProperty("ck3.p137.oldAssemblerRoot"),"explicit qualified oldAssembler root required")).toRealPath().toUri().toURL()},DriverFrameJoin310Test.class.getClassLoader());}
+        private static final java.util.Set<String> FAMILY=java.util.Set.of(ASM137,ASM137+"$CanonicalNativeState",ASM137+"$Complete",ASM137+"$FullSnapshot",ASM137+"$Incomplete",ASM137+"$Result",DRIVER138,DRIVER138+"$ContentComparison");
+        Assembler137Loader()throws Exception {super(new java.net.URL[]{
+                java.nio.file.Path.of(java.util.Objects.requireNonNull(System.getProperty("ck3.p138.oldAssemblerRoot"),"explicit qualified oldAssembler root required")).toRealPath().toUri().toURL(),
+                java.nio.file.Path.of(java.util.Objects.requireNonNull(System.getProperty("ck3.p138.oldDriverRoot"),"explicit qualified oldDriver root required")).toRealPath().toUri().toURL()},DriverFrameJoin310Test.class.getClassLoader());}
         @Override protected Class<?> loadClass(String name,boolean resolve)throws ClassNotFoundException {
             synchronized(getClassLoadingLock(name)) {
                 if(!FAMILY.contains(name)) {
-                    if(name.startsWith(ASM137+"$"))throw new ClassNotFoundException("unlisted old Assembler family member "+name);
+                    if(name.startsWith(ASM137+"$")||name.startsWith(DRIVER138+"$"))throw new ClassNotFoundException("unlisted old runtime-package family member "+name);
                     return getParent().loadClass(name);
                 }
                 Class<?> type=findLoadedClass(name);if(type==null)type=findClass(name);if(resolve)resolveClass(type);return type;
             }
+        }
+    }
+    /** Class initialization is explicit setup, not an invocation/warmup of the measured target. */
+    private static Map<String,Object> initializeDrivers138(Assembler137Loader loader)throws Exception {
+        long oldStart=System.nanoTime();Class<?> old=Class.forName(DRIVER138,true,loader);long oldEnd=System.nanoTime();
+        long parentStart=System.nanoTime();Class<?> current=Class.forName(DRIVER138,true,DriverFrameJoin310Test.class.getClassLoader());long parentEnd=System.nanoTime();
+        assertSame(loader,old.getClassLoader());assertSame(DriverJson.class,current);assertNotSame(old,current);
+        return Map.of("old_driver_Class_forName_true_ns",oldEnd-oldStart,"parent_driver_Class_forName_true_ns",parentEnd-parentStart,
+                "old_driver_code_source",old.getProtectionDomain().getCodeSource().getLocation().toString(),
+                "old_and_parent_have_distinct_static_factories",true,"target_warmup_calls",0);
+    }
+    /** Reflects only the private DATA veto, never a constructor/issuer/authority. Literal vectors supplement public old/new oracles. */
+    private static boolean prefix138(byte[] raw)throws Exception {
+        Method method=DriverObservationAssembler.class.getDeclaredMethod("compactStatePrefixCandidate",byte[].class);
+        method.setAccessible(true);return assertInstanceOf(Boolean.class,method.invoke(null,(Object)raw));
+    }
+    private static void prefixBoundaries138(Method old,Method current)throws Throwable {
+        String stringSpace="{\"x\":\"inside space\"}";
+        assertTrue(prefix138(bytes(stringSpace)));equalState137(old,current,actual(stringSpace));
+        byte[] odd={123,34,120,34,58,34,92,92,92,34,32,34,125};
+        assertTrue(prefix138(odd));equalState137(old,current,actual(new String(odd,StandardCharsets.UTF_8)));
+        byte[] even={123,34,120,34,58,34,92,92,34,32,125};
+        assertFalse(prefix138(even));equalState137(old,current,actual(new String(even,StandardCharsets.UTF_8)));
+        String unicodeEscape="{\"x\":\""+(char)92+"u0020\"}";
+        assertTrue(prefix138(bytes(unicodeEscape)));equalState137(old,current,actual(unicodeEscape));
+        byte[] inside255=bytes("{\"x\":\""+"x".repeat(248)+"\" }");
+        assertEquals(32,inside255[255]);assertFalse(prefix138(inside255));equalState137(old,current,actual(new String(inside255,StandardCharsets.UTF_8)));
+        byte[] outside256=bytes("{\"x\":\""+"x".repeat(249)+"\" }");
+        assertEquals(32,outside256[256]);assertTrue(prefix138(outside256));equalState137(old,current,actual(new String(outside256,StandardCharsets.UTF_8)));
+        String stringCut="{\"x\":\""+"x".repeat(250)+"\" }";
+        assertTrue(prefix138(bytes(stringCut)));equalState137(old,current,actual(stringCut));
+        String escapeCut="{\"x\":\""+"x".repeat(249)+(char)92+"\"\"}";
+        assertEquals(92,bytes(escapeCut)[255]);assertTrue(prefix138(bytes(escapeCut)));equalState137(old,current,actual(escapeCut));
+        String utfCut="{\"x\":\""+"x".repeat(248)+"😀\"}";
+        byte[] utf=bytes(utfCut);assertEquals(0xf0,utf[254]&0xff);assertEquals(0x9f,utf[255]&0xff);
+        assertTrue(prefix138(utf));equalState137(old,current,actual(utfCut));
+        for(byte whitespace:new byte[]{32,9,10,13}) {
+            byte[] raw={123,whitespace,34,120,34,58,49,125};
+            assertFalse(prefix138(raw));equalState137(old,current,actual(new String(raw,StandardCharsets.UTF_8)));
         }
     }
     private static OpportunityJson.Obj state137(Method method,NativeObservationPort.ObservedFrame frame)throws Throwable {
@@ -73,7 +115,9 @@ public class DriverFrameJoin310Test {
     }
     @Test public void exactPrivatePacketStateReuseAndEveryLexicalOrFailureMissKeepOldDataSemantics137()throws Throwable {
         try(var loader=new Assembler137Loader()) {
+            initializeDrivers138(loader);
             Method old=oldState137(loader),current=DriverObservationAssembler.class.getMethod("originalNativeState",NativeObservationPort.ObservedFrame.class);
+            prefixBoundaries138(old,current);
             String expectedText="😀 quote \" backslash \\ control \n";
             String textWire=new String(DriverJson.encode(new OpportunityJson.Text(expectedText)),StandardCharsets.UTF_8);
             String literal=STATE.replace("\"original_metric\":1.00","\"original_metric\":1.00,\"opaque137\":{\"zero\":-0,\"negative_zero\":-0.0,\"exp\":1e+0,\"text\":"+textWire+"}");
@@ -112,17 +156,19 @@ public class DriverFrameJoin310Test {
         }
     }
 
-    /** Old qualified Assembler6 child A and new parent B; shared new Driver's old public algorithms are unchanged. */
+    /** P138 selected old P137 Assembler6+Driver2 child A; new Assembler/current Driver parent B. DTOs/Jackson are shared; static factories are distinct. */
     @Test public void canonicalMatchAndLexicalMissCompareQualifiedOldAssemblerWithoutReplacingGuards137()throws Throwable {
         long startWindow=System.nanoTime();var report=new java.util.LinkedHashMap<String,Object>();var rows=new ArrayList<Map<String,Object>>();report.put("rows",rows);Throwable failed=null;
-        report.put("schema","ck3.p137.original-native-state-component/v1");report.put("fixed_order_per_dataset",List.of("A","B","B","A"));
+        report.put("schema","ck3.p138.compact-prefix-veto-component/v1");report.put("fixed_order_per_dataset",List.of("A","B","B","A"));
         report.put("dataset_order",List.of("canonical_match","lexical_whitespace_miss"));report.put("extra_warmups",0);
-        report.put("A","qualified old P134Assembler6 only child-first; shared current parent dependencies");report.put("B","new Assembler and new DriverJson in same parent loader");
+        report.put("A","qualified old P137Assembler6+Driver2 same child runtime package; parent DTO/Jackson dependencies");report.put("B","new Assembler and new DriverJson in same parent loader");
         report.put("whole_old_binary_AB",false);report.put("physicalIO_Game_SAVE_HTTP_Runtime",0);
         report.put("selected_leaf_old_new_binary_same_process_common_dependencies",true);report.put("same_binary_entries",false);
         try(var loader=new Assembler137Loader()) {
+            report.put("explicit_driver_initialization",initializeDrivers138(loader));
             Method old=oldState137(loader),current=DriverObservationAssembler.class.getMethod("originalNativeState",NativeObservationPort.ObservedFrame.class);
-            report.put("old_root",System.getProperty("ck3.p137.oldAssemblerRoot"));report.put("old_code_source",old.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toString());
+            report.put("old_driver_root",System.getProperty("ck3.p138.oldDriverRoot"));
+            report.put("old_root",System.getProperty("ck3.p138.oldAssemblerRoot"));report.put("old_code_source",old.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toString());
             String large=STATE.replace("\"original_metric\":1.00","\"original_metric\":1.00,\"opaque_unconsumed_extension\":\""+"x".repeat(3_400_000)+"\"");
             var lexical=actual(large);var model=DriverJson.object(lexical.state().bytes(),DriverJson.MAX_NATIVE_BYTES);byte[] canonical=DriverJson.encode(model);
             var matched=stateBytes137(lexical,canonical);assertTrue(DriverJson.encodedContentEquals(model,canonical));assertFalse(DriverJson.encodedContentEquals(model,lexical.state().bytes()));
@@ -152,10 +198,10 @@ public class DriverFrameJoin310Test {
         }catch(Throwable failure){failed=failure;report.put("failure_class",failure.getClass().getName());report.put("failure_message",String.valueOf(failure.getMessage()));throw failure;}
         finally {
             report.put("completed",failed==null);report.put("window_ns_before_report_materialization",System.nanoTime()-startWindow);
-            report.put("scope","selected-leaf old/new binary, same process/common dependencies, 2samples/entry/dataset; not same-binary entries or whole old/new CP or actual worker. Both Method.invoke overhead included; fixture setup parses/encodes, postchecks/report/close held in whole JUnit. Report scenarios separately; no unknown natural hitrate combination.");
+            report.put("scope","selected-leaf P137/P138 old/new binary, same process; DTOs/Jackson shared, each Driver has distinct frozen-default factory initialized explicitly in setup. 2samples/entry/dataset; not same-binary entries or whole old/new CP or actual worker. Both Method.invoke overhead included; setup init/fixture parse/encode/postchecks/report/close held in whole JUnit. Scenarios separate; no unknown hitrate combination.");
             try{byte[] encoded=org.xar.ck3.control.contracts.FullJsonTree.encode(new com.fasterxml.jackson.databind.ObjectMapper().valueToTree(report),1_048_576);
-                var output=directory.resolve("p137-native-state-component.json");java.nio.file.Files.write(output,encoded,java.nio.file.StandardOpenOption.CREATE_NEW,java.nio.file.StandardOpenOption.WRITE);
-                System.out.println("P137 native state component "+output);
+                var output=directory.resolve("p138-native-state-component.json");java.nio.file.Files.write(output,encoded,java.nio.file.StandardOpenOption.CREATE_NEW,java.nio.file.StandardOpenOption.WRITE);
+                System.out.println("P138 native state component "+output);
             }catch(Throwable outputFailure){if(failed==null)throw outputFailure;if(failed!=outputFailure)failed.addSuppressed(outputFailure);}
         }
     }
