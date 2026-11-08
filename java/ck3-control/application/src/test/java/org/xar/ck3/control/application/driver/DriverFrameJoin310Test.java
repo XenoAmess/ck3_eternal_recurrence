@@ -28,6 +28,109 @@ import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 public class DriverFrameJoin310Test {
+    /** Exact P143 complete runtime package, including its counter; other DTO/dependency classes stay parent. */
+    private static final class Project144Loader extends java.net.URLClassLoader {
+        private static final java.util.Set<String> FAMILY=java.util.Set.of(ASM137,ASM137+"$CanonicalNativeState",ASM137+"$Complete",ASM137+"$FullSnapshot",ASM137+"$Incomplete",ASM137+"$Result",
+                DRIVER138,DRIVER138+"$ContentComparison",DRIVER138+"$EncodedByteCount");
+        Project144Loader()throws Exception {super(new java.net.URL[]{java.nio.file.Path.of(java.util.Objects.requireNonNull(System.getProperty("ck3.p144.oldSourceRoot"),"explicit qualified P143 old9 root required")).toRealPath().toUri().toURL()},DriverFrameJoin310Test.class.getClassLoader());}
+        @Override protected Class<?> loadClass(String name,boolean resolve)throws ClassNotFoundException {
+            synchronized(getClassLoadingLock(name)) {
+                if(!FAMILY.contains(name)) {
+                    if(name.startsWith(ASM137+"$")||name.startsWith(DRIVER138+"$"))throw new ClassNotFoundException("unlisted P144 old runtime-package member "+name);
+                    return getParent().loadClass(name);
+                }
+                Class<?> type=findLoadedClass(name);if(type==null)type=findClass(name);if(resolve)resolveClass(type);return type;
+            }
+        }
+    }
+    private static Map<String,Object> initialize144(Project144Loader loader)throws Exception {
+        long start=System.nanoTime();var oldDriver=Class.forName(DRIVER138,true,loader);long oldEnd=System.nanoTime();
+        var newDriver=Class.forName(DRIVER138,true,DriverFrameJoin310Test.class.getClassLoader());long newEnd=System.nanoTime();
+        var old=Class.forName(ASM137,true,loader);var current=Class.forName(ASM137,true,DriverFrameJoin310Test.class.getClassLoader());long asmEnd=System.nanoTime();
+        assertSame(loader,oldDriver.getClassLoader());assertSame(loader,old.getClassLoader());assertSame(DriverJson.class,newDriver);assertSame(DriverObservationAssembler.class,current);
+        assertSame(loader,Class.forName(DRIVER138+"$EncodedByteCount",false,loader).getClassLoader());
+        return Map.of("old_driver_init_ns",oldEnd-start,"parent_driver_init_ns",newEnd-oldEnd,"assembler_load_init_ns",asmEnd-newEnd,
+                "old_source",old.getProtectionDomain().getCodeSource().getLocation().toString(),"B_source",current.getProtectionDomain().getCodeSource().getLocation().toString(),"target_warmups",0);
+    }
+    private static Method projectMethod144(Class<?> type)throws Exception {return type.getMethod("projectFull",NativeObservationPort.ObservedFrame.class,DriverObservationFacts.class,ExactRef.class);}
+    private static Object project144(Method method,Object assembler,NativeObservationPort.ObservedFrame frame,DriverObservationFacts facts,ExactRef evidence)throws Throwable {
+        try{return method.invoke(assembler,frame,facts,evidence);}catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
+    }
+    private static DriverObservationFacts facts144(NativeObservationPort.ObservedFrame frame,String stateSha) {
+        return new DriverObservationFacts(known().driver(),3,7,frame.session(),frame.snapshotId(),frame.nativeRevision(),stateSha,BigInteger.valueOf(2),3,source(),new OpportunityJson.Obj(Map.of()),ref(bytes("p144-facts")));
+    }
+    private static String failure144(Method old,Object oldAssembler,Method current,Object currentAssembler,NativeObservationPort.ObservedFrame frame,DriverObservationFacts facts,ExactRef evidence) {
+        Throwable a=assertThrows(Throwable.class,()->project144(old,oldAssembler,frame,facts,evidence));
+        Throwable b=assertThrows(Throwable.class,()->project144(current,currentAssembler,frame,facts,evidence));
+        assertEquals(a.getClass(),b.getClass());assertEquals(a.getMessage(),b.getMessage());return a.getMessage();
+    }
+    private static OpportunityJson.Obj checkSnapshot144(Object value,NativeObservationPort.ObservedFrame frame,DriverObservationFacts facts,ExactRef evidence)throws Exception {
+        Class<?> type=value.getClass();assertEquals(ASM137+"$FullSnapshot",type.getName());
+        assertSame(frame,type.getMethod("actual").invoke(value));assertSame(facts,type.getMethod("facts").invoke(value));assertEquals(evidence,type.getMethod("originalEvidence").invoke(value));
+        return assertInstanceOf(OpportunityJson.Obj.class,type.getMethod("semantic").invoke(value));
+    }
+    @Test public void evidenceLengthAndShaKeepEveryEarlierGuardAndFullProjection144()throws Throwable {
+        try(var loader=new Project144Loader()) {
+            initialize144(loader);Class<?> old=Class.forName(ASM137,true,loader),current=DriverObservationAssembler.class;
+            Method a=projectMethod144(old),b=projectMethod144(current);Object aa=old.getConstructor().newInstance(),bb=current.getConstructor().newInstance();
+            var frame=actual(STATE);var facts=facts144(frame,DriverJson.sha256(frame.state().bytes()));var good=ref(frame.originalPacket());
+            failure144(a,aa,b,bb,null,null,null);failure144(a,aa,b,bb,frame,null,null);
+            var crossed=facts144(frame,"0".repeat(64));failure144(a,aa,b,bb,frame,crossed,null);
+            assertEquals("Driver facts crossed the native frame/session",failure144(a,aa,b,bb,frame,crossed,new ExactRef(good.path(),good.bytes()-1,"0".repeat(64))));
+            assertEquals("original native evidence differs",failure144(a,aa,b,bb,frame,facts,new ExactRef(good.path(),good.bytes()-1,"0".repeat(64))));
+            assertEquals("original native evidence differs",failure144(a,aa,b,bb,frame,facts,new ExactRef(good.path(),good.bytes(),"0".repeat(64))));
+            byte[] broken=frame.originalPacket();broken[0]^=1;
+            var badFrame=new NativeObservationPort.ObservedFrame(frame.session(),frame.snapshotId(),frame.nativeRevision(),frame.state(),broken,frame.observedAt());
+            assertEquals("original native evidence differs",failure144(a,aa,b,bb,badFrame,facts,new ExactRef(good.path(),broken.length-1,"0".repeat(64))));
+            String framing=failure144(a,aa,b,bb,badFrame,facts,ref(broken));assertNotEquals("original native evidence differs",framing);
+            var x=project144(a,aa,frame,facts,good);var y=project144(b,bb,frame,facts,good);
+            var sx=checkSnapshot144(x,frame,facts,good);var sy=checkSnapshot144(y,frame,facts,good);
+            assertEquals(sx,sy);assertArrayEquals(DriverJson.encode(sx),DriverJson.encode(sy));assertEquals(new ArrayList<>(sx.members().keySet()),new ArrayList<>(sy.members().keySet()));
+            assertEquals(x.getClass().getMethod("fullBindingSha256").invoke(x),y.getClass().getMethod("fullBindingSha256").invoke(y));
+        }
+    }
+    /** Actual public v3 projectFull component; old/new both include P143's count conversion. */
+    @Test public void fullProjectionComparesP143OldNineAndPrivateEvidenceCopy144()throws Throwable {
+        long windowStart=System.nanoTime();var report=new java.util.LinkedHashMap<String,Object>();var rows=new ArrayList<Map<String,Object>>();report.put("rows",rows);Throwable failure=null;
+        report.put("schema","ck3.p144.evidence-packet-copy-public-project-component/v1");report.put("fixed_order",List.of("A","B","B","A"));report.put("target_warmups",0);
+        report.put("A","adopted P143 Assembler6+Driver3 same child9 including EncodedByteCount");report.put("B","new Assembler6 plus unchanged P143Driver3 parent");
+        try(var loader=new Project144Loader()) {
+            report.put("class_initialization",initialize144(loader));Class<?> old=Class.forName(ASM137,true,loader),current=DriverObservationAssembler.class;
+            Method a=projectMethod144(old),b=projectMethod144(current);Object aa=old.getConstructor().newInstance(),bb=current.getConstructor().newInstance();
+            report.put("old_root",System.getProperty("ck3.p144.oldSourceRoot"));
+            String large=STATE.replace("\"original_metric\":1.00","\"original_metric\":1.00,\"opaque_unconsumed_extension\":\""+"x".repeat(3_400_000)+"\"");
+            var frame=actual(large);String stateSha=DriverJson.sha256(frame.state().bytes()),packetSha=DriverJson.sha256(frame.originalPacket());var facts=facts144(frame,stateSha);var evidence=ref(frame.originalPacket());
+            report.put("state_bytes",frame.state().bytes().length);report.put("packet_bytes",frame.originalPacket().length);report.put("observation_version",facts.observationVersion());
+            var cpu=java.lang.management.ManagementFactory.getThreadMXBean();boolean cpuAvailable=cpu.isCurrentThreadCpuTimeSupported();if(cpuAvailable&&!cpu.isThreadCpuTimeEnabled())cpu.setThreadCpuTimeEnabled(true);
+            com.sun.management.ThreadMXBean allocation=cpu instanceof com.sun.management.ThreadMXBean bean?bean:null;boolean allocAvailable=allocation!=null&&allocation.isThreadAllocatedMemorySupported();
+            if(allocAvailable&&!allocation.isThreadAllocatedMemoryEnabled())allocation.setThreadAllocatedMemoryEnabled(true);
+            report.put("CPU_available",cpuAvailable);report.put("allocation_available",allocAvailable);report.put("setup_ns_before_rows",System.nanoTime()-windowStart);
+            String expectedSemantic=null,expectedBinding=null;List<String> expectedOrder=null;
+            for(int index=0;index<4;index++) {
+                String route=index==0||index==3?"A":"B";var row=new java.util.LinkedHashMap<String,Object>();rows.add(row);row.put("index",index);row.put("entry",route);
+                long cs=cpuAvailable?cpu.getCurrentThreadCpuTime():-1,as=allocAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1;
+                long start=System.nanoTime();Object result;boolean completed=false;
+                try{result=project144(route.equals("A")?a:b,route.equals("A")?aa:bb,frame,facts,evidence);completed=true;}
+                finally{long end=System.nanoTime(),ae=allocAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1,ce=cpuAvailable?cpu.getCurrentThreadCpuTime():-1;
+                    row.put("wall_start_ns",start);row.put("wall_end_ns",end);row.put("wall_ns",end-start);row.put("CPU_start_ns",cs);row.put("CPU_end_ns",ce);row.put("CPU_ns",cpuAvailable?ce-cs:-1);
+                    row.put("allocation_start_bytes",as);row.put("allocation_end_bytes",ae);row.put("thread_allocated_bytes",allocAvailable?ae-as:-1);row.put("completed",completed);}
+                var semantic=checkSnapshot144(result,frame,facts,evidence);String sha=DriverJson.sha256(DriverJson.encode(semantic));var order=new ArrayList<>(semantic.members().keySet());
+                String binding=assertInstanceOf(String.class,result.getClass().getMethod("fullBindingSha256").invoke(result));
+                if(expectedSemantic==null){expectedSemantic=sha;expectedOrder=order;expectedBinding=binding;}assertEquals(expectedSemantic,sha);assertEquals(expectedOrder,order);assertEquals(expectedBinding,binding);
+                assertEquals("1.00",assertInstanceOf(OpportunityJson.DecimalValue.class,semantic.get("original_metric")).token());assertEquals(3_400_000,assertInstanceOf(OpportunityJson.Text.class,semantic.get("opaque_unconsumed_extension")).value().length());
+                assertEquals(stateSha,DriverJson.sha256(frame.state().bytes()));assertEquals(packetSha,DriverJson.sha256(frame.originalPacket()));
+                row.put("semantic_sha256",sha);row.put("full_binding_sha256",binding);row.put("member_order",order);row.put("state_sha256",stateSha);row.put("packet_sha256",packetSha);row.put("all_post_checks_passed",true);
+            }
+        }catch(Throwable caught){failure=caught;report.put("failure_class",caught.getClass().getName());report.put("failure_message",String.valueOf(caught.getMessage()));throw caught;}
+        finally {
+            report.put("completed",failure==null);report.put("window_ns_before_report_materialization",System.nanoTime()-windowStart);
+            report.put("scope","Actual public projectFull v3 same shared original/frame/facts/ref. Both reflect target symmetrically; own FullSnapshot getters/semantic bytes/order/binding checked after target bracket, no parentFullSnapshot cast. All cold/init/setup/post/report/close retained. Not private packet-path timing, fullverify/IO/worker/Runtime; no natural-frequency/peak claim. P141 had no direct sample for these guard clones.");
+            try{byte[] bytes=org.xar.ck3.control.contracts.FullJsonTree.encode(new com.fasterxml.jackson.databind.ObjectMapper().valueToTree(report),1_048_576);
+                var path=directory.resolve("p144-evidence-packet-copy-component.json");java.nio.file.Files.write(path,bytes,java.nio.file.StandardOpenOption.CREATE_NEW,java.nio.file.StandardOpenOption.WRITE);System.out.println("P144 evidence packet component "+path);
+            }catch(Throwable outputFailure){if(failure==null)throw outputFailure;if(failure!=outputFailure)failure.addSuppressed(outputFailure);}
+        }
+    }
+
     private static void sameNode143(OpportunityJson.Value value,int maximumBytes) {
         var expected=DriverJson.toNode(value,maximumBytes);
         var actual=DriverJson.parsedNode(value,maximumBytes);

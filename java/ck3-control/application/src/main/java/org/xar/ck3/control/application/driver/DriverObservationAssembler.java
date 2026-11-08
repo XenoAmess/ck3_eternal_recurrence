@@ -112,8 +112,9 @@ public final class DriverObservationAssembler {
             StrictJson.require(actual.session().equals(facts.transport()) && actual.snapshotId().equals(facts.snapshotId())
                     && actual.nativeRevision().equals(facts.nativeRevision())
                     && DriverJson.sha256(actual.state().bytes()).equals(facts.nativeStateSha256()), "Driver facts crossed the native frame/session");
-            StrictJson.require(evidence.bytes() == actual.originalPacket().length
-                    && evidence.sha256().equals(DriverJson.sha256(actual.originalPacket())), "original native evidence differs");
+            byte[] originalPacket;
+            StrictJson.require(evidence.bytes() == (originalPacket=actual.originalPacket()).length
+                    && evidence.sha256().equals(DriverJson.sha256(originalPacket)), "original native evidence differs");
             OpportunityJson.Obj state=originalNativeState(actual);
             Map<String,OpportunityJson.Value> fields = new LinkedHashMap<>(state.members());
             for (var entry : facts.originalSemanticFields().members().entrySet()) {
@@ -201,8 +202,9 @@ public final class DriverObservationAssembler {
             StrictJson.require(actual.session().equals(facts.transport()) && actual.snapshotId().equals(facts.snapshotId())
                     && actual.nativeRevision().equals(facts.nativeRevision())
                     && DriverJson.sha256(actual.state().bytes()).equals(facts.nativeStateSha256()), "Driver facts crossed the native frame/session");
-            StrictJson.require(evidence.bytes() == actual.originalPacket().length
-                    && evidence.sha256().equals(DriverJson.sha256(actual.originalPacket())), "original native evidence differs");
+            byte[] originalPacket;
+            StrictJson.require(evidence.bytes() == (originalPacket=actual.originalPacket()).length
+                    && evidence.sha256().equals(DriverJson.sha256(originalPacket)), "original native evidence differs");
             OpportunityJson.Obj state=originalNativeStateWithNativePacket(actual,packetInput);
             Map<String,OpportunityJson.Value> fields = new LinkedHashMap<>(state.members());
             for (var entry : facts.originalSemanticFields().members().entrySet()) {
