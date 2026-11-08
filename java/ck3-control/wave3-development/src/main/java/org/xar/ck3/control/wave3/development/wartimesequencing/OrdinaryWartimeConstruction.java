@@ -78,6 +78,10 @@ public final class OrdinaryWartimeConstruction {
             }
         }
         public byte[] original() { return original.clone(); }
+        /** Compares actual original bytes without exposing, cloning or retaining the caller's array. */
+        public boolean originalContentEquals(byte[] expected) {
+            return java.util.Arrays.equals(expected, original);
+        }
         /** Exact first finalizer bytes from this selected full-material instance, if available. */
         public Optional<byte[]> exactFullFinalizedBytes() {
             return exactFullFinalized == null ? Optional.empty() : Optional.of(exactFullFinalized.clone());

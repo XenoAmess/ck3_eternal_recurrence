@@ -372,7 +372,7 @@ public final class ConstructionDomainLifecycle {
         byte[] queryBytes = DriverJson.encode(query);
         byte[] finalizedBytes = queryBytes;
         var cachedQuote = original.input().quoted().flatMap(value -> value.nativeQuote().exactFullFinalizedBytes());
-        if (cachedQuote.isPresent() && Arrays.equals(queryBytes, original.input().quoted().orElseThrow().nativeQuote().original())) {
+        if (cachedQuote.isPresent() && original.input().quoted().orElseThrow().nativeQuote().originalContentEquals(queryBytes)) {
             finalizedBytes = cachedQuote.get();
         } else {
             finalizedBytes = ConstructionOriginalSource.finalizeQuery(queryBytes);
