@@ -178,9 +178,14 @@ public final class DriverObservationEvidenceReader {
         var row=checkedManifest(manifestReference,manifest);
         StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
                 "bounded archived original native frame required");
-        var actual=nativeFrame(row,framedNative.clone());
-        var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
-        return actualAssembler.assembleOriginals(actual,facts,nativeReference);
+        var captured=capturedNativeFrame(row,framedNative.clone());
+        try {
+            var actual=captured.actual();
+            var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
+            return actualAssembler.assembleOriginalsWithNativePacket(actual,facts,nativeReference,captured.packetInput());
+        } finally {
+            captured.packetInput().clear();
+        }
     }
     private static DriverObservationFacts replayFacts(ExactRef manifestReference,OpportunityJson.Obj row,
             RawJson fullDriver,NativeObservationPort.ObservedFrame actual) {

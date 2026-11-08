@@ -90,6 +90,16 @@ public final class DriverObservationAssembler {
             return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
         }
     }
+    /** Scoped byte-reader route: projection errors remain direct; only late identity gaps become Incomplete. */
+    Result assembleOriginalsWithNativePacket(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,
+            DriverObservationEvidenceReader.NativePacketInput packetInput) {
+        FullSnapshot full=projectFullWithNativePacket(actual,facts,evidence,packetInput);
+        try {
+            return completeIdentity(full);
+        } catch (IllegalArgumentException | ArithmeticException failure) {
+            return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
+        }
+    }
     /** Only snapshots produced inside this final assembler reach the shared identity/Complete tail. */
     private Complete completeIdentity(FullSnapshot full) {
         var actual=full.actual();var facts=full.facts();var evidence=full.originalEvidence();
