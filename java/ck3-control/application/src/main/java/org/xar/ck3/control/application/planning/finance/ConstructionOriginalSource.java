@@ -49,7 +49,6 @@ public final class ConstructionOriginalSource {
                 return DriverJson.object(full,OrdinaryWartimeConstructionCodec.MAX_BYTES);
             }
             Obj value=DriverJson.object(full,FullJsonTree.MAXIMUM_BYTES);
-            ObservedRequest.fromFullMaterial(full);
             ExactRef reference=scoped.preserveMaterial(RawJson.fullMaterial(full));
             RawJson reopened=scoped.loadFullMaterial(reference);exact(reference,reopened.bytes());
             require(Arrays.equals(full,reopened.bytes()),"construction full original changed during archive readback");
