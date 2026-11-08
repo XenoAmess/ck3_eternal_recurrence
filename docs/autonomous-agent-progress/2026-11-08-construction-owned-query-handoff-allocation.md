@@ -28,7 +28,7 @@ Native只必要Ordinary12＋Codec3两个TU，exit0／5.8942683s，newclass=0。�
 
 A为P122 NativeQuote12＋原Codec3，B为新两族15；其它Query3／P122Lifecycle8／旧Source3／Policy／Main及CP相同。原6831978B input／Q2／source／绝对CAS／EXPECTED不动，无Main／Query／Source／Test重编、新PREP、DATA刷新、P119flags或P121后pass替换。logical A0／B0／B1／A1仍对应raw B0／B0／B1／B1；真正variant由完整families、first-origin、ordered CP核验，原cache标记不假称owner mode计数。
 
-四独立JVM各2warm＋4measure，CPU1／Xmx384MiB／90秒；全部8warm／16measure、24call保留，无forceGC／过滤／后继挑样。marker等于原EXPECTED、warm CAS／cache均true，whole等于11个disjoint phase wall／CPU／allocated之和。实际保存／full读回／lenSHA／cold resolve／独立固定DATA Q2／pure intent及全部clone／比较／new field／JIT／GC成本都包含或另列，原固定物理文件和四新card分开记。
+四独立JVM各2warm＋4measure，CPU1／Xmx384MiB／90秒；全部8warm／16measure、24call保留，无forceGC／过滤／后继挑样。marker等于原EXPECTED、warm CAS／cache均true，whole等于11个disjoint phase wall／CPU／allocated之和。实际归档写入／full读回／lenSHA／cold resolve／独立固定DATA Q2／pure intent及全部clone／比较／new field／JIT／GC成本都包含或另列，原固定物理文件和四新card分开记。
 
 | 指标 | P122当前基线A | P125 B |
 | --- | ---: | ---: |
