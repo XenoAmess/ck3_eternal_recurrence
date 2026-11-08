@@ -132,14 +132,10 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
         try { driverOwnerGate.accept(session); }
         catch (RuntimeException | Error failure) { replayDiagnostic(26); throw failure; }
     }
-    @Override public DriverObservationAssembler.Complete load(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
-        var full = loadFull(basis, archive);
-        var result = assembler.assemble(full.actual(), full.facts(), full.originalEvidence());
-        StrictJson.require(result instanceof DriverObservationAssembler.Complete, "archived native/complete Driver no longer rebuild an accepted original semantic frame");
-        return (DriverObservationAssembler.Complete) result;
-    }
-    /** Complete retained native/Driver DATA, including unavailable/dead player scopes. No ordinary identity is invented. */
-    public DriverObservationAssembler.FullSnapshot loadFull(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
+    /** Private same-call original bytes only; no Session, checked projection, callback or authority is retained. */
+    private record OriginalBytes(org.xar.ck3.control.application.action.RawJson manifest,
+            org.xar.ck3.control.application.action.RawJson driver,byte[] nativePacket) { }
+    private OriginalBytes captureOriginals(NativeEffectEvidence.FrameBasis basis,ActionPorts.OutcomeArchive archive) {
         var manifest = archive.loadFullMaterial(basis.driverFacts()); RootGuardChecks.exact(basis.driverFacts(), manifest.bytes());
         byte[] nativePacket = archive.loadNativeFrame(basis.nativeFrame()); RootGuardChecks.exact(basis.nativeFrame(), nativePacket);
         StrictJson.require(nativePacket.length >= 5
@@ -148,10 +144,25 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
         nativePacket = nativePacket.clone();
         var driverReference = DriverObservationEvidenceReader.currentDriverReference(basis.driverFacts(), manifest);
         var driver = archive.loadFullMaterial(driverReference); RootGuardChecks.exact(driverReference, driver.bytes());
+        return new OriginalBytes(manifest,driver,nativePacket);
+    }
+    @Override public DriverObservationAssembler.Complete load(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
+        var originals = captureOriginals(basis, archive);
+        var result = scopedDriverDecode
+                ? DriverObservationEvidenceReader.assembleOriginalsWithScopedDriverDecode(basis.driverFacts(), originals.manifest(),
+                        originals.driver(), originals.nativePacket(), basis.nativeFrame(), assembler, this)
+                : DriverObservationEvidenceReader.assembleOriginals(basis.driverFacts(), originals.manifest(), originals.driver(),
+                        originals.nativePacket(), basis.nativeFrame(), assembler);
+        StrictJson.require(result instanceof DriverObservationAssembler.Complete, "archived native/complete Driver no longer rebuild an accepted original semantic frame");
+        return (DriverObservationAssembler.Complete) result;
+    }
+    /** Complete retained native/Driver DATA, including unavailable/dead player scopes. No ordinary identity is invented. */
+    public DriverObservationAssembler.FullSnapshot loadFull(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
+        var originals = captureOriginals(basis, archive);
         if (scopedDriverDecode)
-            return DriverObservationEvidenceReader.projectOriginalsWithScopedDriverDecode(basis.driverFacts(), manifest,
-                    driver, nativePacket, basis.nativeFrame(), assembler, this);
-        return DriverObservationEvidenceReader.projectOriginals(basis.driverFacts(), manifest, driver, nativePacket,
+            return DriverObservationEvidenceReader.projectOriginalsWithScopedDriverDecode(basis.driverFacts(), originals.manifest(),
+                    originals.driver(), originals.nativePacket(), basis.nativeFrame(), assembler, this);
+        return DriverObservationEvidenceReader.projectOriginals(basis.driverFacts(), originals.manifest(), originals.driver(), originals.nativePacket(),
                 basis.nativeFrame(), assembler);
     }
 }

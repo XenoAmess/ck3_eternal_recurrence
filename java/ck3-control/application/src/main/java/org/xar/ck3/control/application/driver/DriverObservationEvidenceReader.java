@@ -162,6 +162,25 @@ public final class DriverObservationEvidenceReader {
         var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
         return actualAssembler.projectFull(actual,facts,nativeReference);
     }
+    /** Byte-only Loader route. Initial full projection errors remain direct; late identity gaps remain Incomplete. */
+    public static DriverObservationAssembler.Result assembleOriginals(ExactRef manifestReference,RawJson manifest,
+            RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,DriverObservationAssembler actualAssembler) {
+        return assembleOriginalsWithScopedDriverDecode(manifestReference,manifest,fullDriver,framedNative,
+                nativeReference,actualAssembler,null);
+    }
+    /** Same strict original-byte decoders as full projection; never accepts a caller-supplied FullSnapshot or facts. */
+    public static DriverObservationAssembler.Result assembleOriginalsWithScopedDriverDecode(ExactRef manifestReference,
+            RawJson manifest,RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,
+            DriverObservationAssembler actualAssembler,
+            org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
+        Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
+        var row=checkedManifest(manifestReference,manifest);
+        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                "bounded archived original native frame required");
+        var actual=nativeFrame(row,framedNative.clone());
+        var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
+        return actualAssembler.assembleOriginals(actual,facts,nativeReference);
+    }
     private static DriverObservationFacts replayFacts(ExactRef manifestReference,OpportunityJson.Obj row,
             RawJson fullDriver,NativeObservationPort.ObservedFrame actual) {
         return replayFacts(manifestReference,row,fullDriver,actual,null);

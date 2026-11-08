@@ -28,6 +28,112 @@ import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 public class DriverFrameJoin310Test {
+    @org.junit.jupiter.api.io.TempDir(cleanup=org.junit.jupiter.api.io.CleanupMode.NEVER) java.nio.file.Path directory;
+
+    @Test public void firstProjectionFailuresStayDirectAndLateIdentityStillUsesOriginalResultLayer() {
+        var malformed=fixture(STATE.replace("\"paused\":true","\"paused\":\"true\""));
+        var assembler=new DriverObservationAssembler();var loader=new DriverFrameEvidenceLoader(assembler);
+        var oldOriginals=new Originals(malformed);var newOriginals=new Originals(malformed);
+        var expected=assertThrows(IllegalArgumentException.class,()->oldLoad(assembler,loader,malformed,oldOriginals.archive()));
+        var actual=assertThrows(IllegalArgumentException.class,()->loader.load(malformed.basis(),newOriginals.archive()));
+        assertEquals(expected.getClass(),actual.getClass());assertEquals(expected.getMessage(),actual.getMessage());
+        assertNotEquals("archived native/complete Driver no longer rebuild an accepted original semantic frame",actual.getMessage());
+        oldOriginals.assertReads(1);newOriginals.assertReads(1);
+        var rawReplay=assertInstanceOf(DriverObservationAssembler.Incomplete.class,DriverObservationEvidenceReader.replayOriginals(
+                malformed.manifestRef(),malformed.manifest(),malformed.driver(),malformed.packet(),malformed.nativeRef()));
+        assertEquals(List.of("native_driver_fact_join: "+expected.getMessage()),rawReplay.reasons());
+
+        var late=fixture(STATE.replace("\"character_id\":73","\"character_id\":74"));
+        var oldLate=new Originals(late);var newLate=new Originals(late);
+        var oldFailure=assertThrows(IllegalArgumentException.class,()->oldLoad(assembler,loader,late,oldLate.archive()));
+        var newFailure=assertThrows(IllegalArgumentException.class,()->loader.load(late.basis(),newLate.archive()));
+        assertEquals(oldFailure.getClass(),newFailure.getClass());assertEquals(oldFailure.getMessage(),newFailure.getMessage());
+        assertEquals("archived native/complete Driver no longer rebuild an accepted original semantic frame",newFailure.getMessage());
+        oldLate.assertReads(1);newLate.assertReads(1);
+        assertInstanceOf(DriverObservationAssembler.Incomplete.class,DriverObservationEvidenceReader.replayOriginals(
+                late.manifestRef(),late.manifest(),late.driver(),late.packet(),late.nativeRef()));
+    }
+
+    /** DATA-original archive callbacks, not disk reads or Game. Same binary's old source chain versus new load. */
+    @Test public void largeOriginalsCompareOldSourceChainAndSingleProjectionComponent() throws Throwable {
+        long windowStart=System.nanoTime();var report=new java.util.LinkedHashMap<String,Object>();
+        var rows=new ArrayList<Map<String,Object>>();report.put("rows",rows);Throwable failed=null;
+        report.put("schema","ck3.p134.native-originals-component/v1");
+        report.put("same_new_binary_two_entries",true);report.put("old_binary_AB",false);
+        report.put("archive_kind","existing310 in-memory original byte fixture; no physicalIO/Game");
+        report.put("fixed_order",List.of("A","B","B","A"));report.put("extra_warmups",0);
+        report.put("profile",1);report.put("scoped_driver_decode",false);
+        report.put("CPU_allocation_queries_bracket_wall",true);report.put("Game_Native_live_HTTP_SAVE_Runtime",0);
+        try {
+            String large=STATE.replace("\"original_metric\":1.00","\"original_metric\":1.00,\"opaque_unconsumed_extension\":\""+"x".repeat(3_400_000)+"\"");
+            var f=fixture(large);var assembler=new DriverObservationAssembler();var loader=new DriverFrameEvidenceLoader(assembler);
+            String manifestSha=DriverJson.sha256(f.manifest().bytes()),nativeSha=DriverJson.sha256(f.packet()),driverSha=DriverJson.sha256(f.driver().bytes());
+            report.put("manifest_sha256",manifestSha);report.put("native_packet_sha256",nativeSha);report.put("driver_sha256",driverSha);
+            report.put("manifest_bytes",f.manifestRef().bytes());report.put("native_packet_bytes",f.nativeRef().bytes());report.put("driver_bytes",f.driverRef().bytes());
+            report.put("state_bytes",f.actual().state().bytes().length);report.put("opaque_ASCII_characters",3_400_000);
+            var cpu=java.lang.management.ManagementFactory.getThreadMXBean();boolean cpuAvailable=cpu.isCurrentThreadCpuTimeSupported();
+            if(cpuAvailable&&!cpu.isThreadCpuTimeEnabled())cpu.setThreadCpuTimeEnabled(true);
+            com.sun.management.ThreadMXBean allocation=cpu instanceof com.sun.management.ThreadMXBean bean?bean:null;
+            boolean allocationAvailable=allocation!=null&&allocation.isThreadAllocatedMemorySupported();
+            if(allocationAvailable&&!allocation.isThreadAllocatedMemoryEnabled())allocation.setThreadAllocatedMemoryEnabled(true);
+            report.put("CPU_available",cpuAvailable);report.put("allocation_available",allocationAvailable);
+            report.put("setup_ns_before_rows",System.nanoTime()-windowStart);
+            String expectedSemantic=null,expectedBinding=null,expectedIdentity=null;
+            for(int index=0;index<4;index++) {
+                String route=index==0||index==3?"A":"B";var originals=new Originals(f);
+                var row=new java.util.LinkedHashMap<String,Object>();rows.add(row);row.put("index",index);row.put("entry",route);
+                long cpuStart=cpuAvailable?cpu.getCurrentThreadCpuTime():-1;
+                long allocationStart=allocationAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1;
+                long start=System.nanoTime();DriverObservationAssembler.Complete value;boolean completed=false;
+                try {
+                    value=route.equals("A")?oldLoad(assembler,loader,f,originals.archive()):loader.load(f.basis(),originals.archive());
+                    completed=true;
+                } finally {
+                    long end=System.nanoTime();long allocationEnd=allocationAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1;
+                    long cpuEnd=cpuAvailable?cpu.getCurrentThreadCpuTime():-1;
+                    row.put("wall_start_ns",start);row.put("wall_end_ns",end);row.put("wall_ns",end-start);
+                    row.put("CPU_start_ns",cpuStart);row.put("CPU_end_ns",cpuEnd);row.put("CPU_ns",cpuAvailable?cpuEnd-cpuStart:-1);
+                    row.put("allocation_start_bytes",allocationStart);row.put("allocation_end_bytes",allocationEnd);
+                    row.put("thread_allocated_bytes",allocationAvailable?allocationEnd-allocationStart:-1);row.put("completed",completed);
+                    row.put("original_callback_reads",originals.reads.size());
+                }
+                originals.assertReads(1);
+                assertEquals("1.00",assertInstanceOf(OpportunityJson.DecimalValue.class,value.semantic().get("original_metric")).token());
+                assertEquals(3_400_000,assertInstanceOf(OpportunityJson.Text.class,value.semantic().get("opaque_unconsumed_extension")).value().length());
+                String semanticSha=DriverJson.sha256(DriverJson.encode(value.semantic()));
+                String identity=value.identity().toString();
+                if(index==0){expectedSemantic=semanticSha;expectedBinding=value.fullBindingSha256();expectedIdentity=identity;}
+                assertEquals(expectedSemantic,semanticSha);assertEquals(expectedBinding,value.fullBindingSha256());assertEquals(expectedIdentity,identity);
+                assertEquals(source(),value.source());assertEquals("held-session",value.sessionId());assertEquals(f.nativeRef(),value.originalEvidence());
+                assertEquals(f.actual().observedAt(),value.observedAt());assertEquals(BigInteger.valueOf(5),value.connectionGeneration());
+                assertTrue(value.originalProjection().isEmpty(),"profile1 remains profile1; profile4 constructor replay is not elided");
+                assertEquals(manifestSha,DriverJson.sha256(f.manifest().bytes()));assertEquals(nativeSha,DriverJson.sha256(f.packet()));assertEquals(driverSha,DriverJson.sha256(f.driver().bytes()));
+                row.put("semantic_sha256",semanticSha);row.put("full_binding_sha256",value.fullBindingSha256());row.put("identity",identity);
+                row.put("read_ref_SHA_order",originals.reads.stream().map(ExactRef::sha256).toList());row.put("all_post_checks_passed",true);
+            }
+        } catch(Throwable failure) {
+            failed=failure;report.put("failure_class",failure.getClass().getName());report.put("failure_message",String.valueOf(failure.getMessage()));throw failure;
+        } finally {
+            report.put("completed",failed==null);report.put("window_ns_before_report_output",System.nanoTime()-windowStart);
+            report.put("two_samples_each_not_robust_latency",true);
+            report.put("setup_and_post_verification_report_cost_retained_in_whole_JUnit_actor",true);
+            try {
+                byte[] encoded=org.xar.ck3.control.contracts.FullJsonTree.encode(new com.fasterxml.jackson.databind.ObjectMapper().valueToTree(report),1_048_576);
+                var output=directory.resolve("p134-native-originals-component.json");
+                java.nio.file.Files.write(output,encoded,java.nio.file.StandardOpenOption.CREATE_NEW,java.nio.file.StandardOpenOption.WRITE);
+                System.out.println("P134 native original component report "+output);
+            } catch(Throwable outputFailure) {if(failed==null)throw outputFailure;if(failed!=outputFailure)failed.addSuppressed(outputFailure);}
+        }
+    }
+    private static DriverObservationAssembler.Complete oldLoad(DriverObservationAssembler assembler,DriverFrameEvidenceLoader loader,
+            Fixture f,OutcomeArchive archive) {
+        var full=loader.loadFull(f.basis(),archive);
+        var result=assembler.assemble(full.actual(),full.facts(),full.originalEvidence());
+        org.xar.ck3.control.contracts.StrictJson.require(result instanceof DriverObservationAssembler.Complete,
+                "archived native/complete Driver no longer rebuild an accepted original semantic frame");
+        return (DriverObservationAssembler.Complete)result;
+    }
+
     private static final String WIRE = """
         {"format_version":2,"pipe_name":"test-pipe","bridge_pid":42,"episode_character_id":73,"episode_run_id":"episode-real-1",
          "last_checkpoint":null,"command_history":[

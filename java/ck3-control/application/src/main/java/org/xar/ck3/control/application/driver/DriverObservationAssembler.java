@@ -76,22 +76,36 @@ public final class DriverObservationAssembler {
         if (facts == null) return new Incomplete(List.of("real_driver_and_public_revision_facts_unavailable"));
         try {
             FullSnapshot full=projectFull(actual,facts,evidence);
-            OpportunityJson.Obj semantic=full.semantic();
-            var session=facts.driver().session();
-            OpportunityJson.Obj player = OpportunityJson.object(semantic.get("played_character"), "played_character");
-            BigInteger actor = NativeCharacterId.of(OpportunityJson.integer(player.get("character_id"), "character_id")).asBigInteger();
-            StrictJson.require(actor.equals(session.actorId()), "unreconciled played-character/episode transition");
-            OpportunityJson.bool(player.get("alive"), "alive");
-            BigInteger date = OpportunityJson.integer(semantic.get("date_raw"), "date_raw");
-            var frame = new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(actor, actual.nativeRevision(), date),
-                    actual.snapshotId(),facts.publicRevision(),session.episodeRunId());
-            ObservationIdentity identity = new ObservationIdentity(actual.session().machineId(),actual.session().game(),frame,facts.observationVersion());
-            if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)NativeCalendarObservation.project(identity,facts.source(),semantic);
-            return new Complete(identity,facts.source(),actual.session().sessionId(),actual.session().connectionGeneration(),semantic,
-                    evidence,actual.observedAt(),full.fullBindingSha256(),facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION?Optional.of(full):Optional.empty());
+            return completeIdentity(full);
         } catch (IllegalArgumentException | ArithmeticException failure) {
             return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
         }
+    }
+    /** Internal byte-reader route: create the full projection here, before the original identity catch. */
+    Result assembleOriginals(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence) {
+        FullSnapshot full=projectFull(actual,facts,evidence);
+        try {
+            return completeIdentity(full);
+        } catch (IllegalArgumentException | ArithmeticException failure) {
+            return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
+        }
+    }
+    /** Only snapshots produced inside this final assembler reach the shared identity/Complete tail. */
+    private Complete completeIdentity(FullSnapshot full) {
+        var actual=full.actual();var facts=full.facts();var evidence=full.originalEvidence();
+        OpportunityJson.Obj semantic=full.semantic();
+        var session=facts.driver().session();
+        OpportunityJson.Obj player = OpportunityJson.object(semantic.get("played_character"), "played_character");
+        BigInteger actor = NativeCharacterId.of(OpportunityJson.integer(player.get("character_id"), "character_id")).asBigInteger();
+        StrictJson.require(actor.equals(session.actorId()), "unreconciled played-character/episode transition");
+        OpportunityJson.bool(player.get("alive"), "alive");
+        BigInteger date = OpportunityJson.integer(semantic.get("date_raw"), "date_raw");
+        var frame = new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(actor, actual.nativeRevision(), date),
+                actual.snapshotId(),facts.publicRevision(),session.episodeRunId());
+        ObservationIdentity identity = new ObservationIdentity(actual.session().machineId(),actual.session().game(),frame,facts.observationVersion());
+        if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)NativeCalendarObservation.project(identity,facts.source(),semantic);
+        return new Complete(identity,facts.source(),actual.session().sessionId(),actual.session().connectionGeneration(),semantic,
+                evidence,actual.observedAt(),full.fullBindingSha256(),facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION?Optional.of(full):Optional.empty());
     }
     public FullSnapshot projectFull(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence) {
             Objects.requireNonNull(actual);Objects.requireNonNull(facts);Objects.requireNonNull(evidence);
@@ -175,19 +189,7 @@ public final class DriverObservationAssembler {
         if (facts == null) return new Incomplete(List.of("real_driver_and_public_revision_facts_unavailable"));
         try {
             FullSnapshot full=projectFullWithNativePacket(actual,facts,evidence,packetInput);
-            OpportunityJson.Obj semantic=full.semantic();
-            var session=facts.driver().session();
-            OpportunityJson.Obj player = OpportunityJson.object(semantic.get("played_character"), "played_character");
-            BigInteger actor = NativeCharacterId.of(OpportunityJson.integer(player.get("character_id"), "character_id")).asBigInteger();
-            StrictJson.require(actor.equals(session.actorId()), "unreconciled played-character/episode transition");
-            OpportunityJson.bool(player.get("alive"), "alive");
-            BigInteger date = OpportunityJson.integer(semantic.get("date_raw"), "date_raw");
-            var frame = new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(actor, actual.nativeRevision(), date),
-                    actual.snapshotId(),facts.publicRevision(),session.episodeRunId());
-            ObservationIdentity identity = new ObservationIdentity(actual.session().machineId(),actual.session().game(),frame,facts.observationVersion());
-            if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)NativeCalendarObservation.project(identity,facts.source(),semantic);
-            return new Complete(identity,facts.source(),actual.session().sessionId(),actual.session().connectionGeneration(),semantic,
-                    evidence,actual.observedAt(),full.fullBindingSha256(),facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION?Optional.of(full):Optional.empty());
+            return completeIdentity(full);
         } catch (IllegalArgumentException | ArithmeticException failure) {
             return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
         }
