@@ -4,7 +4,7 @@
 
 源码仅ConstructionDomainLifecycle的既有private五参数intent计算，9add／1del。原DriverJson.encode(query)继续执行；只有同一ObservedRequest的NativeQuote已有P114 exact cache，且queryBytes与该quote.original()逐byte相等时，才复用防御clone所得结果。cache absent或原件表示不同就lazy调用原ConstructionOriginalSource.finalizeQuery；旧small／inline保持原fallback。未使用会经经济codec重编码的selected().original()。该处只复用纯计算DATA，完整same-session CAS／cold reload、header／frame／candidate／expected／diagnostics／income和目标body规范输出核验原样保留，未缓存跨READ或实际权限。
 
-真实模型任务在2026-11-08T01:02:53.796378Z开始，单POST200／stop，总6.5775491秒、TTFT2.9545723秒、22282prompt／564output，cached tokens=null。采用完整literal单hunk，已有Arrays import；其中无害的冗余局部初始化也未为风格改变。模型没有运行测试或业务动作，输入为五份完整当前源码快照。正式仅Lifecycle一TU／8class实际编译通过，5.546034秒；Native第一次准备器旧helper文件名误配发生在claim／JVM／BEGIN前，独立留证，不计源码编译RED。
+POST_BEGIN事件时刻为2026-11-08T01:02:53.796378Z（attempt.started_at为01:02:53.795974Z，另一记录边界），单POST200／stop，总6.5775491秒、TTFT2.9545723秒、22282prompt／564output，cached tokens=null。采用完整literal单hunk，已有Arrays import；其中无害的冗余局部初始化也未为风格改变。模型没有运行测试或业务动作，输入为五份完整当前源码快照。正式仅Lifecycle一TU／8class实际编译通过，5.546034秒；Native第一次准备器旧helper文件名误配发生在claim／JVM／BEGIN前，独立留证，不计源码编译RED。
 
 ## 新回归与作用域
 

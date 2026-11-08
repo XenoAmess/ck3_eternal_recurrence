@@ -98,6 +98,11 @@ public final class OrdinaryWartimeConstruction {
             return new NativeQuote(exactFull, sdkBytes);
         }
 
+        /** Package-private derived factory for sole ObservedRequest path; consumes closed carrier clone getters. */
+        static NativeQuote fromDerivedProjection(ConstructionQueryCodec.QueryProjectionCarrier carrier) {
+            return new NativeQuote(carrier.originalQueryBytes(), carrier.sdkRoleBytes());
+        }
+
         private NativeQuote(byte[] exactFull, byte[] sdkBytes) {
             this.original = exactFull;
             byte[] retainedFinalized = null;

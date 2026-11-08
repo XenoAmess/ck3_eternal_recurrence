@@ -6,12 +6,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.DecimalNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.fasterxml.jackson.databind.node.BooleanNode;
+import com.fasterxml.jackson.databind.node.NullNode;
+import com.fasterxml.jackson.databind.node.BigIntegerNode;
 import java.math.BigInteger;
 import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.DecimalTokenNode;
 import org.xar.ck3.control.wave2.development.constructionmode3.ConstructionMode3;
 import org.xar.ck3.control.wave2.development.constructionmode3.ConstructionMode3Codec;
 import org.xar.ck3.control.wave2.development.constructionscene.ConstructionSceneModel.Field;
@@ -33,6 +38,11 @@ public final class ConstructionQueryCodec {
     /** DATA-only full-original projection; caller custody and all source guards remain outside this codec. */
     public static byte[] projectFullMaterialInput(byte[] fullOriginal) {
         JsonNode original=FullJsonTree.parse(fullOriginal,FullJsonTree.MAXIMUM_BYTES);
+        return projectFullMaterialInputNode(original);
+    }
+
+    /** Sole private authoritative projector for closed8field/schema/snapshot-role loop. */
+    private static byte[] projectFullMaterialInputNode(JsonNode original) {
         StrictJson.object(original,Set.of("schema","starting_snapshot","ending_snapshot","native_envelope","expected_revision",
                 "native_query_request_id","material_receipt","wartime_observation"));
         StrictJson.require(SCHEMA.equals(StrictJson.text(original.get("schema"))),"construction query observation schema required");
@@ -42,6 +52,60 @@ public final class ConstructionQueryCodec {
             sdk.set(key,key.equals("starting_snapshot")||key.equals("ending_snapshot")?fullSnapshotRole(value):value);
         }
         return FullJsonTree.encode(sdk,MAX_BYTES);
+    }
+
+    /** Closed DATA carrier for nested query projection; no public raw+SDK/typed pair constructor/factory. */
+    public static final class QueryProjectionCarrier {
+        private final byte[] originalQueryBytes;
+        private final byte[] sdkRoleBytes;
+        private QueryProjectionCarrier(byte[] originalQueryBytes, byte[] sdkRoleBytes) {
+            this.originalQueryBytes = originalQueryBytes;
+            this.sdkRoleBytes = sdkRoleBytes;
+        }
+        public byte[] originalQueryBytes() { return originalQueryBytes.clone(); }
+        public byte[] sdkRoleBytes() { return sdkRoleBytes.clone(); }
+    }
+
+    /** Public node factory: creates private supported standard-node snapshot, encodes once, projects once. */
+    public static QueryProjectionCarrier deriveFullMaterialQuery(JsonNode snapshot) {
+        JsonNode owned = rebuildStandardSnapshot(snapshot, 0);
+        byte[] originalQueryBytes = FullJsonTree.encode(owned, FullJsonTree.MAXIMUM_BYTES);
+        byte[] sdkRoleBytes = projectFullMaterialInputNode(owned);
+        return new QueryProjectionCarrier(originalQueryBytes, sdkRoleBytes);
+    }
+
+    /** Recursively rebuild ObjectNode/ArrayNode in original order; share only FullJsonTree-produced immutable scalars. */
+    private static JsonNode rebuildStandardSnapshot(JsonNode node, int depth) {
+        StrictJson.require(node != null && depth <= 64, "bounded nonnull complete JSON node required");
+        Class<?> type = node.getClass();
+        if (type == ObjectNode.class) {
+            // The original parser counts the root container as1; a container at value-depth64 would be65.
+            StrictJson.require(depth < 64, "bounded complete JSON container depth required");
+            ObjectNode result = StrictJson.object();
+            for (var entry : node.properties()) {
+                StrictJson.require(entry.getKey() != null, "nonnull complete JSON field name required");
+                result.set(entry.getKey(), rebuildStandardSnapshot(entry.getValue(), depth + 1));
+            }
+            return result;
+        }
+        if (type == ArrayNode.class) {
+            StrictJson.require(depth < 64, "bounded complete JSON container depth required");
+            ArrayNode result = JSON.createArrayNode();
+            for (JsonNode child : node) result.add(rebuildStandardSnapshot(child, depth + 1));
+            return result;
+        }
+        if (type == TextNode.class) {
+            // Empty/long/escaped-surrogate opaque text is not the bounded StrictJson.text field domain.
+            StrictJson.require(node.textValue() != null, "nonnull complete JSON text required");
+            return node;
+        }
+        if (type == BooleanNode.class || type == NullNode.class || type == DecimalTokenNode.class) return node;
+        if (type == BigIntegerNode.class) {
+            BigInteger payload = node.bigIntegerValue();
+            StrictJson.require(payload != null && payload.getClass() == BigInteger.class, "exact immutable BigInteger payload required");
+            return node;
+        }
+        throw new IllegalArgumentException("unsupported complete JSON snapshot node class");
     }
     private static JsonNode fullSnapshotRole(JsonNode original) {
         if(original==null||!original.isObject())return original;

@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.wave3.development.constructionquery.ConstructionQueryCodec;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyCodec;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyModel.NoCashObservation;
 import org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyModel.ObservedCash;
@@ -62,8 +63,8 @@ public final class OrdinaryWartimeConstructionCodec {
             if (!root.get("quoted_outlay").isNull()) {
                 ObjectNode outlay = StrictJson.object(root.get("quoted_outlay"), Set.of("query_observation", "cash_observation"));
                 JsonNode queryNode = outlay.get("query_observation");
-                byte[] queryBytes = FullJsonTree.encode(queryNode, FullJsonTree.MAXIMUM_BYTES);
-                NativeQuote nativeQuote = NativeQuote.fromFullMaterial(queryBytes);
+                ConstructionQueryCodec.QueryProjectionCarrier carrier = ConstructionQueryCodec.deriveFullMaterialQuery(queryNode);
+                NativeQuote nativeQuote = NativeQuote.fromDerivedProjection(carrier);
                 QuoteCashObservation cashObs = observation(outlay.get("cash_observation"));
                 quoted = Optional.of(new QuotedOutlay(nativeQuote, cashObs));
             }
