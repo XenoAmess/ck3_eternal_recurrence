@@ -41,6 +41,7 @@ public final class OrdinaryWartimeConstructionCodec {
         }
         byte[] originalBytes() { return originalBytes.clone(); }
         byte[] sdkBytes() { return sdkBytes.clone(); }
+        boolean originalContentEquals(byte[] expected) { return java.util.Arrays.equals(expected, originalBytes); }
     }
 
     /** Original bytes and the sole decoded contract stay together through local/HTTP consumers. */

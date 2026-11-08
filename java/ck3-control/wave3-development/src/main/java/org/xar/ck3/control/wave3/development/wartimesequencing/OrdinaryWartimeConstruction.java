@@ -56,6 +56,7 @@ public final class OrdinaryWartimeConstruction {
     /** Original native observation, finalized by the real source validator and authored selector. */
     public static final class NativeQuote {
         private final byte[] original;
+        private final OrdinaryWartimeConstructionCodec.OwnedQueryProjection owner;
         private final byte[] exactFullFinalized;
         private final ConstructionQueryModel.Observation observation;
         private final Optional<ConstructionQuote> selected;
@@ -63,6 +64,7 @@ public final class OrdinaryWartimeConstruction {
         public NativeQuote(byte[] original) {
             this.observation = ConstructionQueryCodec.decode(original);
             this.original = original.clone();
+            this.owner = null;
             this.exactFullFinalized = null;
             var result = ConstructionQueryPolicy.finalizeObservation(observation);
             if (result instanceof ConstructionQueryModel.Ready ready && ready.kind() == ConstructionQueryModel.ReadyKind.SELECTED) {
@@ -77,10 +79,10 @@ public final class OrdinaryWartimeConstruction {
                 selected = Optional.empty(); constructionKind = Optional.empty();
             }
         }
-        public byte[] original() { return original.clone(); }
+        public byte[] original() { return owner == null ? original.clone() : owner.originalBytes(); }
         /** Compares actual original bytes without exposing, cloning or retaining the caller's array. */
         public boolean originalContentEquals(byte[] expected) {
-            return java.util.Arrays.equals(expected, original);
+            return owner == null ? java.util.Arrays.equals(expected, original) : owner.originalContentEquals(expected);
         }
         /** Exact first finalizer bytes from this selected full-material instance, if available. */
         public Optional<byte[]> exactFullFinalizedBytes() {
@@ -107,13 +109,24 @@ public final class OrdinaryWartimeConstruction {
             return new NativeQuote(carrier.originalQueryBytes(), carrier.sdkRoleBytes());
         }
 
-        /** Package-private owned projection factory; consumes closed owned token clone getters. */
+        /** Package-private owned route retains the closed immutable owner; only SDK bytes are cloned here. */
         static NativeQuote fromOwnedProjection(OrdinaryWartimeConstructionCodec.OwnedQueryProjection token) {
-            return new NativeQuote(token.originalBytes(), token.sdkBytes());
+            return new NativeQuote(token);
+        }
+
+        private NativeQuote(OrdinaryWartimeConstructionCodec.OwnedQueryProjection token) {
+            this(null, token, token.sdkBytes());
         }
 
         private NativeQuote(byte[] exactFull, byte[] sdkBytes) {
+            this(exactFull, null, sdkBytes);
+        }
+
+        private NativeQuote(byte[] exactFull, OrdinaryWartimeConstructionCodec.OwnedQueryProjection owner, byte[] sdkBytes) {
+            if ((exactFull == null) == (owner == null))
+                throw new IllegalArgumentException("exactly one owned original representation required");
             this.original = exactFull;
+            this.owner = owner;
             byte[] retainedFinalized = null;
             this.observation = ConstructionQueryCodec.decode(sdkBytes);
             var result = ConstructionQueryPolicy.finalizeObservation(observation);
