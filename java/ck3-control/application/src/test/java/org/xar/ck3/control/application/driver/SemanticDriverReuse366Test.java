@@ -150,10 +150,10 @@ final class SemanticDriverReuse366Test {
     }
     private static final String READER139="org.xar.ck3.control.application.driver.DriverObservationEvidenceReader";
     private static final String VERIFIER139="org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier";
-    /** Only the exact source-qualified d56 Reader3/Verifier2; shared DTOs and algorithms remain parent-owned. */
+    /** P142 exact adopted cc/P139 Reader4 (including Stage) and Verifier2; shared parent DTOs/algorithms. */
     private static final class OldSource139Loader extends java.net.URLClassLoader {
-        private static final java.util.Set<String> FAMILY=java.util.Set.of(READER139,READER139+"$NativePacketInput",READER139+"$NativeFrameInput",VERIFIER139,VERIFIER139+"$ArtifactReader");
-        OldSource139Loader()throws Exception {super(new java.net.URL[]{Path.of(java.util.Objects.requireNonNull(System.getProperty("ck3.p139.oldSourceRoot"),"explicit d56 source-qualified old root required")).toRealPath().toUri().toURL()},SemanticDriverReuse366Test.class.getClassLoader());}
+        private static final java.util.Set<String> FAMILY=java.util.Set.of(READER139,READER139+"$NativePacketInput",READER139+"$NativeFrameInput",READER139+"$NativeBodyStage",VERIFIER139,VERIFIER139+"$ArtifactReader");
+        OldSource139Loader()throws Exception {super(new java.net.URL[]{Path.of(java.util.Objects.requireNonNull(System.getProperty("ck3.p142.oldSourceRoot"),"explicit adopted P139 complete-six old root required")).toRealPath().toUri().toURL()},SemanticDriverReuse366Test.class.getClassLoader());}
         @Override protected Class<?> loadClass(String name,boolean resolve)throws ClassNotFoundException {
             synchronized(getClassLoadingLock(name)) {
                 if(!FAMILY.contains(name)) {
@@ -270,10 +270,41 @@ final class SemanticDriverReuse366Test {
         if(trigger.equals(actual.manifestRef()))assertTrue(error.getMessage().contains("archived native framing/manifest differs"));
         return error;
     }
+    private static IllegalArgumentException decodeFailure142(ClassLoader loader,Originals actual,
+            Map<String,OpportunityJson.Value> changes,NativeObservationPort.ObservedFrame frame)throws Exception {
+        var fields=new java.util.LinkedHashMap<>(DriverJson.object(actual.manifest().bytes(),DriverJson.MAX_NATIVE_BYTES).members());fields.putAll(changes);
+        var manifest=RawJson.fullMaterial(DriverJson.encode(new OpportunityJson.Obj(fields)));var manifestRef=ref(manifest.bytes());
+        Class<?> reader=Class.forName(READER139,true,loader);
+        var method=reader.getMethod("decodeTypedDriver",ExactRef.class,RawJson.class,DriverStateSnapshot.Complete.class,NativeObservationPort.ObservedFrame.class);
+        return assertThrows(IllegalArgumentException.class,()->{
+            try{method.invoke(null,manifestRef,manifest,actual.driver(),frame);}
+            catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
+        });
+    }
+    private static void bindFailures142(ClassLoader old,ClassLoader current,Originals actual)throws Exception {
+        var original=actual.nativeFrame();var session=original.session();
+        var otherSession=new NativeObservationPort.TransportSession(session.machineId(),session.game(),session.connectionGeneration(),session.sessionId()+"-other");
+        var early=new NativeObservationPort.ObservedFrame(otherSession,original.snapshotId(),original.nativeRevision(),original.state(),original.originalPacket(),original.observedAt());
+        var wrongHashType=Map.<String,OpportunityJson.Value>of("native_packet_sha256",new OpportunityJson.Bool(false));
+        var wrongHashThenBadLength=Map.<String,OpportunityJson.Value>of("native_packet_sha256",new OpportunityJson.Text("0".repeat(64)),"native_packet_bytes",new OpportunityJson.Bool(false));
+        var badLengthType=Map.<String,OpportunityJson.Value>of("native_packet_bytes",new OpportunityJson.Bool(false));
+        var badLengthValue=Map.<String,OpportunityJson.Value>of("native_packet_bytes",new OpportunityJson.IntegerValue(BigInteger.valueOf(original.originalPacket().length+1L)));
+        String guard="archived semantic facts crossed actual native packet/session";
+        var a=decodeFailure142(old,actual,wrongHashType,early);var b=decodeFailure142(current,actual,wrongHashType,early);
+        assertEquals(guard,a.getMessage());assertEquals(a.getClass(),b.getClass());assertEquals(a.getMessage(),b.getMessage());
+        a=decodeFailure142(old,actual,wrongHashThenBadLength,original);b=decodeFailure142(current,actual,wrongHashThenBadLength,original);
+        assertEquals(guard,a.getMessage());assertEquals(a.getClass(),b.getClass());assertEquals(a.getMessage(),b.getMessage());
+        for(var changes:List.of(wrongHashType,badLengthType,badLengthValue)) {
+            a=decodeFailure142(old,actual,changes,original);b=decodeFailure142(current,actual,changes,original);
+            assertEquals(a.getClass(),b.getClass());assertEquals(a.getMessage(),b.getMessage());
+            if(changes==badLengthValue)assertEquals(guard,a.getMessage());else assertNotEquals(guard,a.getMessage(),"reachable later typed field keeps its original failure");
+        }
+    }
     private static void fullFailureOracles139()throws Exception {
         try(var old=new OldSource139Loader()) {
             initialize139(old);ClassLoader current=SemanticDriverReuse366Test.class.getClassLoader();
             var actual=originals(DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION,false);
+            bindFailures142(old,current,actual);
             for(var trigger:List.of(actual.evidence().driverStamp(),actual.evidence().originalDriver(),actual.manifestRef()))sameError139(nativeMutation139(old,actual,trigger),nativeMutation139(current,actual,trigger));
             byte[] malformed=bytes("{"),badNative=org.xar.ck3.control.nativebridge.NativeWire.packet(malformed);
             byte[] packet=actual.nativeFrame().originalPacket();String body=new String(packet,4,packet.length-4,StandardCharsets.UTF_8);
@@ -295,15 +326,15 @@ final class SemanticDriverReuse366Test {
     }
 
     @org.junit.jupiter.api.io.TempDir(cleanup=org.junit.jupiter.api.io.CleanupMode.NEVER) Path directory139;
-    /** Full production verify, map-backed original callbacks; source-qualified oldA, not current build307 binary equivalence. */
+    /** P142 full verify: oldA is exact current adopted P139 B6; new parent differs only in packet length clone reuse. */
     @Test void sameOriginalsCompareSourceQualifiedOldVerifierAndOwnedBodyStage139()throws Throwable {
         long startWindow=System.nanoTime();var report=new java.util.LinkedHashMap<String,Object>();var rows=new ArrayList<Map<String,Object>>();report.put("rows",rows);Throwable failed=null;
-        report.put("schema","ck3.p139.full-semantic-verify-component/v1");report.put("scenario","native_campaign_v4_large_pretty_originals");
-        report.put("fixed_order",List.of("A","B","B","A"));report.put("target_warmups",0);report.put("current_C_old_binary_equivalence",false);
+        report.put("schema","ck3.p142.packet-length-clone-full-verify-component/v1");report.put("scenario","native_campaign_v4_large_pretty_originals");
+        report.put("fixed_order",List.of("A","B","B","A"));report.put("target_warmups",0);report.put("current_C_old_binary_equivalence",false);report.put("A_is_actual_adopted_P139_B6",true);report.put("old_d56_five_used",false);report.put("only_change","private packet clone saved at original SHA operand and reused solely for next length");
         report.put("archive_kind","map-backed DATA original callbacks and read-only Head; not physicalIO/Game/authority");
         report.put("adapters","Both corresponding ArtifactReader Proxy plus common parent SemanticVerifier interface call; construction/init in setup.");
         try(var old=new OldSource139Loader()) {
-            report.put("class_initialization",initialize139(old));report.put("old_root",System.getProperty("ck3.p139.oldSourceRoot"));
+            report.put("class_initialization",initialize139(old));report.put("old_root",System.getProperty("ck3.p142.oldSourceRoot"));
             String state=STATE.replace("\"diagnostics\":","\"opaque139\":\""+"x".repeat(3_400_000)+"\",\"diagnostics\":");
             var actual=originals(DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION,false,state);
             var expectedReads=List.of(actual.evidence().semantic(),actual.evidence().originalNativePacket(),actual.evidence().driverStamp(),actual.evidence().originalDriver(),actual.manifestRef());
@@ -333,9 +364,9 @@ final class SemanticDriverReuse366Test {
         }catch(Throwable failure){failed=failure;report.put("failure_class",failure.getClass().getName());report.put("failure_message",String.valueOf(failure.getMessage()));throw failure;}
         finally{
             report.put("completed",failed==null);report.put("window_ns_before_report_materialization",System.nanoTime()-startWindow);
-            report.put("limits","Two samples per entry/one v4 large scenario; full verify plus actual callback clones/hash/parse/guards/result. Stage body/Obj liveness, O(n) compare and synchronization included. Cumulative allocation is not live/peak heap; OS peak for this mixed JVM cannot be attributed per variant. No extra target warmup, no worker/physicalIO/Runtime speed or old C provenance claim.");
+            report.put("limits","P142 two samples per entry/one v4 large scenario. OldA exact adopted P139 six classes, not d56 five: both already include same body Stage/compare/liveness. NewB only avoids second packet getter clone for length. Full actual verify/callback clones/hash/parse/guards/result retained. Cumulative allocation not peak/live; mixed JVM OS peak not attributable per entry. No warmup/worker/physicalIO/Runtime or historical C provenance claim.");
             try{byte[] raw=org.xar.ck3.control.contracts.FullJsonTree.encode(new com.fasterxml.jackson.databind.ObjectMapper().valueToTree(report),1_048_576);
-                var output=directory139.resolve("p139-semantic-verify-component.json");java.nio.file.Files.write(output,raw,java.nio.file.StandardOpenOption.CREATE_NEW,java.nio.file.StandardOpenOption.WRITE);System.out.println("P139 full verify report "+output);
+                var output=directory139.resolve("p142-semantic-packet-length-component.json");java.nio.file.Files.write(output,raw,java.nio.file.StandardOpenOption.CREATE_NEW,java.nio.file.StandardOpenOption.WRITE);System.out.println("P142 full verify packet clone report "+output);
             }catch(Throwable outputFailure){if(failed==null)throw outputFailure;if(failed!=outputFailure)failed.addSuppressed(outputFailure);}
         }
     }

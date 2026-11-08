@@ -83,13 +83,14 @@ public final class DriverObservationEvidenceReader {
 
     private static DriverObservationFacts bindDecodedDriver(ExactRef manifestReference,OpportunityJson.Obj row,
             DriverStateSnapshot.Complete driver,NativeObservationPort.ObservedFrame actual) {
+        byte[] originalPacket;
         StrictJson.require(actual.session().equals(session(row.get("transport")))
                 && actual.snapshotId().equals(string(row,"snapshot_id"))
                 && actual.nativeRevision().equals(OpportunityJson.integer(row.get("native_revision"),"native_revision"))
                 && actual.observedAt().equals(Instant.parse(string(row,"observed_at")))
                 && DriverJson.sha256(actual.state().bytes()).equals(string(row,"native_state_sha256"))
-                && DriverJson.sha256(actual.originalPacket()).equals(string(row,"native_packet_sha256"))
-                && actual.originalPacket().length==longInteger(row,"native_packet_bytes",1),"archived semantic facts crossed actual native packet/session");
+                && DriverJson.sha256(originalPacket=actual.originalPacket()).equals(string(row,"native_packet_sha256"))
+                && originalPacket.length==longInteger(row,"native_packet_bytes",1),"archived semantic facts crossed actual native packet/session");
         G2Source source=source(row.get("source"));
         StrictJson.require(driver.session().bridgePid()==actual.session().game().pid()
                 && source.machineId().equals(actual.session().machineId()),"archived Driver/source crossed actual Game");
