@@ -30,7 +30,7 @@ DataLoss事件0不等于全采样。原始 recorded stack limit64：Execution 1,
 | 观察扫描 elapsed | 22.7883378s | 1.6444526s |
 | 最大观察间隔 | 301.6867ms | 495.5894ms |
 
-完整 controller operator151.679131秒；Java SourceReady→最后CLOSE547.823491秒，首准备原件15:38:28.481291Z→最后CLOSE548.077925秒。更早准备耗时 UNKNOWN，不记0。启动、录制、dump、source-mode编译、解码、父校验、观察、等待和后处理全部保留；这些重叠窗口不相加或相减成“纯序列化／GC”。完整父进程 CPU及未观察尾部峰值未知。不能拿旧 P141 约129秒与本次比较授提速。
+完整 controller operator151.679131秒；P148 Native `SOURCE-READY-MANAGED01`→最后CLOSE547.823491秒，首准备原件15:38:28.481291Z→最后CLOSE548.077925秒。更早准备耗时 UNKNOWN，不记0。启动、录制、dump、source-mode编译、解码、父校验、观察、等待和后处理全部保留；这些重叠窗口不相加或相减成“纯序列化／GC”。完整父进程 CPU及未观察尾部峰值未知。不能拿旧 P141 约129秒与本次比较授提速。
 
 P141历史 `PARTIAL_BUDGET_FAILURE` 原件保持，本单独立预算通过不修复或覆盖它。P147当前软件350不变，无生产／测试源码采用、Runtime／新类型热载／P100／head47／Game／SAVE信用，10秒／新增确认保存日目标未通过；后续性能主线继续。
 
