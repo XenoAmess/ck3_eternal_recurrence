@@ -77,12 +77,14 @@ public final class ConstructionOriginalSource {
         ExactRef reference=ExactRef.fromJson(StrictJson.parse(DriverJson.encode(object(supplied.get("input_ref"),"construction full input reference"))));
         require(reference.bytes()>0&&reference.bytes()<=RawJson.MAXIMUM_BYTES,"construction full input reference exceeds material budget");
         RawJson raw=scoped.loadFullMaterial(reference);byte[] full=raw.bytes();exact(reference,full);
-        Obj original=DriverJson.object(full,FullJsonTree.MAXIMUM_BYTES);
-        // ActionCodec owns canonical typed argument ordering. Compare its complete projection on both sides, never structural equality.
-        require(Arrays.equals(PublicDataJson.encodeTyped(supplied.get("financing_request")).bytes(),
-                        PublicDataJson.encodeTyped(original.get("financing_request")).bytes()),
-                "construction manifest financing differs from full original");
-        return new Loaded(original,ObservedRequest.fromFullMaterial(full));
+        try(var stage=OrdinaryWartimeConstructionCodec.stageFullMaterial(full)) {
+            Obj original=stage.model();
+            // ActionCodec owns canonical typed argument ordering. Compare its complete projection on both sides, never structural equality.
+            require(Arrays.equals(PublicDataJson.encodeTyped(supplied.get("financing_request")).bytes(),
+                            PublicDataJson.encodeTyped(original.get("financing_request")).bytes()),
+                    "construction manifest financing differs from full original");
+            return new Loaded(original,stage.finish());
+        }
     }
     public static Loaded resolveCommand(Session same,ActionPorts.OutcomeArchive archive,ActionCommand command) {
         require(command.operation().equals(OrdinaryConstructionPolicy.OPERATION),"construction command required");

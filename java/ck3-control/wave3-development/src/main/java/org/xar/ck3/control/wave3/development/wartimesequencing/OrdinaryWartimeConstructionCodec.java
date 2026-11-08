@@ -44,6 +44,51 @@ public final class OrdinaryWartimeConstructionCodec {
         boolean originalContentEquals(byte[] expected) { return java.util.Arrays.equals(expected, originalBytes); }
     }
 
+    /** Construction-only byte staging. The private DOM never escapes; callers must close this resource. */
+    public static FullMaterialStage stageFullMaterial(byte[] fullOriginal) {
+        return new FullMaterialStage(fullOriginal);
+    }
+    public static final class FullMaterialStage implements AutoCloseable {
+        private byte[] exactFull;
+        private JsonNode root;
+        private boolean consumed;
+        private FullMaterialStage(byte[] fullOriginal) {
+            if (fullOriginal == null || fullOriginal.length == 0 || fullOriginal.length > FullJsonTree.MAXIMUM_BYTES) {
+                throw new IllegalArgumentException("full material input byte budget");
+            }
+            exactFull = fullOriginal.clone();
+            root = FullJsonTree.parse(exactFull, FullJsonTree.MAXIMUM_BYTES);
+        }
+        /** Complete immutable DATA view, using the original full Driver structural converter and root-object guard. */
+        public synchronized org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj model() {
+            requireAvailable();
+            return org.xar.ck3.control.planning.opportunity.OpportunityJson.object(
+                    org.xar.ck3.control.planning.opportunity.OpportunityJson.fromFullMaterialNode(root,0), "full JSON");
+        }
+        /** Single consumption; success or failure releases the staging DOM and raw references. */
+        public synchronized ObservedRequest finish() {
+            requireAvailable();
+            consumed = true;
+            byte[] ownedRaw = exactFull;
+            JsonNode ownedRoot = root;
+            try {
+                return ObservedRequest.decodeOwnedFull(ownedRaw,ownedRoot);
+            } finally {
+                exactFull = null;
+                root = null;
+            }
+        }
+        /** Drop references only. Never erase bytes that a successfully returned ObservedRequest owns. */
+        @Override public synchronized void close() {
+            consumed = true;
+            exactFull = null;
+            root = null;
+        }
+        private void requireAvailable() {
+            if (consumed) throw new IllegalStateException("construction full material stage already consumed or closed");
+        }
+    }
+
     /** Original bytes and the sole decoded contract stay together through local/HTTP consumers. */
     public static final class ObservedRequest {
         private final byte[] original;
@@ -64,6 +109,10 @@ public final class OrdinaryWartimeConstructionCodec {
             }
             byte[] exactFull = fullOriginal.clone();
             JsonNode root = FullJsonTree.parse(exactFull, FullJsonTree.MAXIMUM_BYTES);
+            return decodeOwnedFull(exactFull,root);
+        }
+
+        private static ObservedRequest decodeOwnedFull(byte[] exactFull,JsonNode root) {
             StrictJson.object(root, Set.of("schema", "stage", "original_selected_step", "original_phase", "opportunity", "cash_input", "quoted_outlay", "financing_request"));
             StrictJson.require(SCHEMA.equals(StrictJson.text(root.get("schema"))), "ordinary wartime construction schema");
 

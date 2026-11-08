@@ -97,22 +97,7 @@ public final class DriverJson {
         };
     }
     private static OpportunityJson.Value model(JsonNode value,int depth) {
-        StrictJson.require(value!=null && depth<=64,"bounded original native JSON node required");
-        if(value.isObject()) {
-            Map<String,OpportunityJson.Value> fields=new LinkedHashMap<>();
-            value.properties().forEach(entry->fields.put(entry.getKey(),model(entry.getValue(),depth+1)));
-            return new OpportunityJson.Obj(fields);
-        }
-        if(value.isArray()) {List<OpportunityJson.Value> rows=new ArrayList<>();value.forEach(item->rows.add(model(item,depth+1)));return new OpportunityJson.Arr(rows);}
-        if(value.isTextual())return new OpportunityJson.Text(value.textValue());
-        if(value.isIntegralNumber())return new OpportunityJson.IntegerValue(value.bigIntegerValue());
-        if(value.isFloatingPointNumber()) {
-            StrictJson.require(!value.isDouble() && !value.isFloat(),"native decimal interop must retain exact BigDecimal tokens");
-            return new OpportunityJson.DecimalValue(value instanceof DecimalTokenNode token ? token.originalToken() : value.asText());
-        }
-        if(value.isBoolean())return new OpportunityJson.Bool(value.booleanValue());
-        if(value.isNull())return OpportunityJson.Nil.INSTANCE;
-        throw new IllegalArgumentException("unsupported original native JSON node type");
+        return OpportunityJson.fromFullMaterialNode(value,depth);
     }
 
     public static OpportunityJson.Obj object(byte[] raw, int maximumBytes) {

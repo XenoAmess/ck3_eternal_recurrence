@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.DecimalTokenNode;
+import org.xar.ck3.control.contracts.StrictJson;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -38,6 +39,33 @@ public final class OpportunityJson {
     }
     public record Bool(boolean value) implements Value { }
     public enum Nil implements Value { INSTANCE }
+
+    /**
+     * Complete structural DATA conversion, with the caller's existing traversal depth.
+     * No byte budget, parsing, normalization or source authority is implied.
+     */
+    public static Value fromFullMaterialNode(JsonNode value,int depth) {
+        StrictJson.require(depth>=0,"nonnegative full JSON traversal depth required");
+        return fullMaterialModel(value,depth);
+    }
+    private static OpportunityJson.Value fullMaterialModel(JsonNode value,int depth) {
+        StrictJson.require(value!=null && depth<=64,"bounded original native JSON node required");
+        if(value.isObject()) {
+            Map<String,OpportunityJson.Value> fields=new LinkedHashMap<>();
+            value.properties().forEach(entry->fields.put(entry.getKey(),fullMaterialModel(entry.getValue(),depth+1)));
+            return new OpportunityJson.Obj(fields);
+        }
+        if(value.isArray()) {List<OpportunityJson.Value> rows=new ArrayList<>();value.forEach(item->rows.add(fullMaterialModel(item,depth+1)));return new OpportunityJson.Arr(rows);}
+        if(value.isTextual())return new OpportunityJson.Text(value.textValue());
+        if(value.isIntegralNumber())return new OpportunityJson.IntegerValue(value.bigIntegerValue());
+        if(value.isFloatingPointNumber()) {
+            StrictJson.require(!value.isDouble() && !value.isFloat(),"native decimal interop must retain exact BigDecimal tokens");
+            return new OpportunityJson.DecimalValue(value instanceof DecimalTokenNode token ? token.originalToken() : value.asText());
+        }
+        if(value.isBoolean())return new OpportunityJson.Bool(value.booleanValue());
+        if(value.isNull())return OpportunityJson.Nil.INSTANCE;
+        throw new IllegalArgumentException("unsupported original native JSON node type");
+    }
 
     public static Value parse(byte[] bytes) {
         require(bytes != null && bytes.length <= 131072, "request exceeds 128 KiB");
