@@ -103,6 +103,11 @@ public final class OrdinaryWartimeConstruction {
             return new NativeQuote(carrier.originalQueryBytes(), carrier.sdkRoleBytes());
         }
 
+        /** Package-private owned projection factory; consumes closed owned token clone getters. */
+        static NativeQuote fromOwnedProjection(OrdinaryWartimeConstructionCodec.OwnedQueryProjection token) {
+            return new NativeQuote(token.originalBytes(), token.sdkBytes());
+        }
+
         private NativeQuote(byte[] exactFull, byte[] sdkBytes) {
             this.original = exactFull;
             byte[] retainedFinalized = null;

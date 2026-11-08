@@ -74,6 +74,12 @@ public final class ConstructionQueryCodec {
         return new QueryProjectionCarrier(originalQueryBytes, sdkRoleBytes);
     }
 
+    /** Role-only SDK DATA; caller keeps the tree stable during this synchronous projection.
+     * Does not validate complete original wire, create a carrier, or grant source/native authority. */
+    public static byte[] projectMaterialRole(JsonNode original) {
+        return projectFullMaterialInputNode(original);
+    }
+
     /** Recursively rebuild ObjectNode/ArrayNode in original order; share only FullJsonTree-produced immutable scalars. */
     private static JsonNode rebuildStandardSnapshot(JsonNode node, int depth) {
         StrictJson.require(node != null && depth <= 64, "bounded nonnull complete JSON node required");

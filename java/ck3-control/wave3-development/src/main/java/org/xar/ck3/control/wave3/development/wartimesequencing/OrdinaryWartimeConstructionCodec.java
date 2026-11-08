@@ -30,6 +30,19 @@ public final class OrdinaryWartimeConstructionCodec {
     public static final String RESULT_SCHEMA = "xar.ordinary-wartime-construction.v1";
     public static final int MAX_BYTES = 262_144;
     private OrdinaryWartimeConstructionCodec() { }
+
+    /** Internal owned projection token: encodes stable node then projects role. No public mint. */
+    static final class OwnedQueryProjection {
+        private final byte[] originalBytes;
+        private final byte[] sdkBytes;
+        private OwnedQueryProjection(JsonNode node) {
+            this.originalBytes = FullJsonTree.encode(node, FullJsonTree.MAXIMUM_BYTES);
+            this.sdkBytes = ConstructionQueryCodec.projectMaterialRole(node);
+        }
+        byte[] originalBytes() { return originalBytes.clone(); }
+        byte[] sdkBytes() { return sdkBytes.clone(); }
+    }
+
     /** Original bytes and the sole decoded contract stay together through local/HTTP consumers. */
     public static final class ObservedRequest {
         private final byte[] original;
@@ -63,8 +76,8 @@ public final class OrdinaryWartimeConstructionCodec {
             if (!root.get("quoted_outlay").isNull()) {
                 ObjectNode outlay = StrictJson.object(root.get("quoted_outlay"), Set.of("query_observation", "cash_observation"));
                 JsonNode queryNode = outlay.get("query_observation");
-                ConstructionQueryCodec.QueryProjectionCarrier carrier = ConstructionQueryCodec.deriveFullMaterialQuery(queryNode);
-                NativeQuote nativeQuote = NativeQuote.fromDerivedProjection(carrier);
+                OwnedQueryProjection token = new OwnedQueryProjection(queryNode);
+                NativeQuote nativeQuote = NativeQuote.fromOwnedProjection(token);
                 QuoteCashObservation cashObs = observation(outlay.get("cash_observation"));
                 quoted = Optional.of(new QuotedOutlay(nativeQuote, cashObs));
             }
