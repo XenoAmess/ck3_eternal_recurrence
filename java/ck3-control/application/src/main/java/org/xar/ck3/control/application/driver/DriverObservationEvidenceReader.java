@@ -201,11 +201,43 @@ public final class DriverObservationEvidenceReader {
                 OpportunityJson.object(row.get("original_semantic_fields"),"original_semantic_fields"),manifestReference);
     }
 
+    /** DATA parse only: this first framed body has no manifest/source authority. No borrowed array or DOM escapes. */
+    public static NativeBodyStage stageNativeBody(byte[] bytes) {
+        StrictJson.require(bytes.length >= 5 && ByteBuffer.wrap(bytes, 0, 4).order(ByteOrder.LITTLE_ENDIAN).getInt() == bytes.length - 4,
+                "exact original native LE uint32 length required");
+        byte[] body=Arrays.copyOfRange(bytes, 4, bytes.length);
+        return new NativeBodyStage(body,DriverJson.object(body, DriverJson.MAX_NATIVE_BYTES));
+    }
+    /** Closed byte-only producer result; caller owns its same-call lifetime. Existing fresh checks remain mandatory. */
+    public static final class NativeBodyStage implements AutoCloseable {
+        private byte[] body;
+        private OpportunityJson.Obj envelope;
+        private NativeBodyStage(byte[] body,OpportunityJson.Obj envelope) {
+            this.body=body;this.envelope=envelope;
+        }
+        public synchronized OpportunityJson.Obj envelope() {
+            if(envelope==null)throw new IllegalStateException("native body stage closed");
+            return envelope;
+        }
+        private synchronized OpportunityJson.Obj matchingBody(byte[] freshBody) {
+            return body!=null && Arrays.equals(body,freshBody)?envelope:null;
+        }
+        @Override public synchronized void close() { body=null;envelope=null; }
+    }
+
     /** Reconstructs the original received frame using exact token byte offsets; lexical numeric tokens are retained. */
     public static NativeObservationPort.ObservedFrame nativeFrame(ExactRef manifestReference,RawJson manifest,byte[] framedNative) {
         return nativeFrame(checkedManifest(manifestReference,manifest),framedNative);
     }
+    /** Optional same-call DATA parse candidate; framing, fresh hash and token checks are unchanged. */
+    public static NativeObservationPort.ObservedFrame nativeFrame(ExactRef manifestReference,RawJson manifest,byte[] framedNative,
+            NativeBodyStage candidate) {
+        return nativeFrame(checkedManifest(manifestReference,manifest),framedNative,candidate);
+    }
     private static NativeObservationPort.ObservedFrame nativeFrame(OpportunityJson.Obj row,byte[] framedNative) {
+        return nativeFrame(row,framedNative,null);
+    }
+    private static NativeObservationPort.ObservedFrame nativeFrame(OpportunityJson.Obj row,byte[] framedNative,NativeBodyStage candidate) {
         StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
                 "bounded archived original native frame required");
         int length=ByteBuffer.wrap(framedNative,0,4).order(ByteOrder.LITTLE_ENDIAN).getInt();
@@ -213,7 +245,8 @@ public final class DriverObservationEvidenceReader {
                 && framedNative.length==longInteger(row,"native_packet_bytes",1)
                 && DriverJson.sha256(framedNative).equals(string(row,"native_packet_sha256")),"archived native framing/manifest differs");
         byte[] packet=Arrays.copyOfRange(framedNative,4,framedNative.length);
-        var envelope=DriverJson.object(packet,DriverJson.MAX_NATIVE_BYTES);
+        OpportunityJson.Obj envelope=candidate==null?null:candidate.matchingBody(packet);
+        if(envelope==null)envelope=DriverJson.object(packet,DriverJson.MAX_NATIVE_BYTES);
         StrictJson.require("state_snapshot".equals(string(envelope,"type"))
                 && BigInteger.ONE.equals(OpportunityJson.integer(envelope.get("protocol_version"),"protocol_version"))
                 && string(envelope,"snapshot_id").equals(string(row,"snapshot_id"))

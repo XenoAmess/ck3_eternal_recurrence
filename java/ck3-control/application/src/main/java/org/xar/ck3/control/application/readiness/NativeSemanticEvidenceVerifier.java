@@ -5,8 +5,6 @@ import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +35,7 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
             SemanticEvidence evidence) throws IOException {
         Objects.requireNonNull(borrowed); Objects.requireNonNull(session); Objects.requireNonNull(evidence);
         String headBefore = borrowed.head().digest();
+        DriverObservationEvidenceReader.NativeBodyStage parsedNative=null;
         try {
             var id = evidence.frame(); var frame = id.frame();
             require(session.machineId().equals(id.machineId()) && session.game().equals(id.game()), "semantic evidence crossed owned Game");
@@ -46,7 +45,8 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
             byte[] driverBytes = read(borrowed, evidence.originalDriver(), ReadinessArchive.Role.DRIVER.maximumBytes());
             Obj semantic = DriverJson.object(semanticBytes, ReadinessArchive.Role.SEMANTIC.maximumBytes());
             Obj stamp = DriverJson.object(stampBytes, ReadinessArchive.Role.DRIVER_STAMP.maximumBytes());
-            Obj raw = framed(nativeBytes); DriverStateSnapshot.Complete driver = DriverStateSnapshot.decodeComplete(driverBytes);
+            parsedNative=DriverObservationEvidenceReader.stageNativeBody(nativeBytes);
+            Obj raw = parsedNative.envelope(); DriverStateSnapshot.Complete driver = DriverStateSnapshot.decodeComplete(driverBytes);
             require(stamp.members().keySet().equals(Set.of("schema", "machine_id", "game_pid", "game_creation_filetime", "session_id",
                     "connection_generation", "driver_version", "episode_epoch", "observation_version", "full_binding_sha256",
                     "driver_sha256", "episode_run_id", "snapshot_id", "revision",
@@ -80,8 +80,8 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
             Obj nativeState = object(raw.get("state"), "state");
             boolean nativeCampaign=id.observationVersion()==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION;
             boolean canonical=id.observationVersion()==DriverObservationAssembler.CANONICAL_OBSERVATION_VERSION||nativeCampaign;
-            if(canonical)requireCanonicalProjection(borrowed,evidence,semantic,nativeBytes,driverBytes,driver,canonicalDriver);
-            else requireNativeState(nativeState, semantic);
+            if(canonical)requireCanonicalProjection(borrowed,evidence,semantic,nativeBytes,driverBytes,driver,canonicalDriver,parsedNative);
+            else { requireNativeState(nativeState, semantic);parsedNative.close(); }
             for (Obj row : List.of(semantic, stamp)) {
                 require(frame.snapshotId().equals(text(row.get("snapshot_id"), "snapshot_id"))
                         && frame.revision().equals(integer(row.get("revision"), "revision"))
@@ -119,14 +119,19 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
             return new VerifiedSemantic(id, evidence.observedAt(), "semantic-" + digest, digest);
         } catch (IllegalArgumentException | ArithmeticException | java.time.DateTimeException failure) {
             throw new IOException("archived native semantic evidence failed: " + failure.getMessage(), failure);
+        } finally {
+            if(parsedNative!=null)parsedNative.close();
         }
     }
     /** Current canonical profiles replay their sole original producer; raw fields may have legitimate normalized values. */
     private void requireCanonicalProjection(ContinuityStorePort.Session borrowed,SemanticEvidence evidence,Obj semantic,
-            byte[] nativeBytes,byte[] driverBytes,DriverStateSnapshot.Complete driver,byte[] canonicalDriver)throws IOException {
+            byte[] nativeBytes,byte[] driverBytes,DriverStateSnapshot.Complete driver,byte[] canonicalDriver,
+            DriverObservationEvidenceReader.NativeBodyStage parsedNative)throws IOException {
         ExactRef manifestRef=DriverObservationEvidenceReader.reference(semantic.get("java_driver_facts_evidence"));
         RawJson manifest=RawJson.fullMaterial(read(borrowed,manifestRef,DriverJson.MAX_NATIVE_BYTES));
-        var actual=DriverObservationEvidenceReader.nativeFrame(manifestRef,manifest,nativeBytes);
+        org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame actual;
+        try { actual=DriverObservationEvidenceReader.nativeFrame(manifestRef,manifest,nativeBytes,parsedNative); }
+        finally { parsedNative.close(); }
         ExactRef driverRef=DriverObservationEvidenceReader.currentDriverReference(manifestRef,manifest);
         byte[] manifestDriver;
         if (driverRef.equals(evidence.originalDriver())) {
@@ -160,11 +165,6 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
         byte[] bytes = archive.read(borrowed, ref, maximumBytes);
         require(bytes != null && bytes.length == ref.bytes() && ref.sha256().equals(DriverJson.sha256(bytes)), "actual original bytes differ from exact reference");
         return bytes;
-    }
-    private static Obj framed(byte[] bytes) {
-        require(bytes.length >= 5 && ByteBuffer.wrap(bytes, 0, 4).order(ByteOrder.LITTLE_ENDIAN).getInt() == bytes.length - 4,
-                "exact original native LE uint32 length required");
-        return DriverJson.object(Arrays.copyOfRange(bytes, 4, bytes.length), DriverJson.MAX_NATIVE_BYTES);
     }
     private static void requireNativeState(Obj nativeState, Obj semantic) {
         for (var entry : nativeState.members().entrySet()) {
