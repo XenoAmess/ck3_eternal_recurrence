@@ -285,12 +285,13 @@ public final class ConstructionDomainLifecycle {
             var archive = actual.archive.withSession(session);
             // Inline originals already accompany historical command bytes. Every new sidecar remains required in all outcome branches.
             Obj supplied = object(receipt.command().arguments().get("ordinary_cash_request"), "construction outcome original");
+            ConstructionOriginalSource.Loaded loadedOriginal = null;
             if (new Text(ConstructionOriginalSource.SCHEMA).equals(supplied.get("schema")))
-                ConstructionOriginalSource.resolveCommand(session, actual.archive, receipt.command());
+                loadedOriginal = ConstructionOriginalSource.resolveCommand(session, actual.archive, receipt.command());
             if (receipt.state() instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.Applied) {
-                ConstructionOriginalSource.archivedBinding(NativeConstructionEffects.archivedVerifier(
-                        OrdinaryConstructionPolicy.OPERATION, observerSource, actual.frames, actual.query), () -> session)
-                        .verifier().verify(head, receipt, archive);
+                ConstructionOriginalSource.verifyArchived(NativeConstructionEffects.archivedVerifier(
+                        OrdinaryConstructionPolicy.OPERATION, observerSource, actual.frames, actual.query), () -> session,
+                        head, receipt, archive, loadedOriginal);
                 var original = NativeEffectEvidence.load(receipt, archive, actual.frames);
                 Obj material = DriverJson.object(original.compatibleResult().bytes(), 262_144);
                 Obj confirmed = ConstructionMaterialReducer.confirmedStart(pending, material, original.frames().after().semantic());

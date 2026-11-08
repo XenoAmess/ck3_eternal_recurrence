@@ -12,6 +12,7 @@ import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.driver.PublicDataJson;
 import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
+import org.xar.ck3.control.continuity.writer.WriterContracts.Head;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -28,8 +29,10 @@ public final class ConstructionOriginalSource {
     public static final class Loaded {
         private final Obj original;
         private final ObservedRequest observed;
-        private Loaded(Obj original,ObservedRequest observed) {
+        private final ExactRef fullInputReference;
+        private Loaded(Obj original,ObservedRequest observed,ExactRef fullInputReference) {
             this.original=Objects.requireNonNull(original);this.observed=Objects.requireNonNull(observed);
+            this.fullInputReference=fullInputReference;
         }
         public Obj original(){return original;}
         public ObservedRequest observed(){return observed;}
@@ -67,29 +70,38 @@ public final class ConstructionOriginalSource {
     }
     /** Both versions have exact independent parsers. No parse or custody failure changes lanes. */
     public static Loaded resolve(Session same,ActionPorts.OutcomeArchive archive,Obj supplied) {
+        return resolve(same,archive,supplied,null);
+    }
+    private static Loaded resolve(Session same,ActionPorts.OutcomeArchive archive,Obj supplied,Loaded candidate) {
         Objects.requireNonNull(supplied);var scoped=Objects.requireNonNull(archive).withSession(Objects.requireNonNull(same));
         if(new Text(OrdinaryWartimeConstructionCodec.SCHEMA).equals(supplied.get("schema"))) {
             ObservedRequest original=new ObservedRequest(encode(supplied));
-            return new Loaded(DriverJson.object(original.original(),OrdinaryWartimeConstructionCodec.MAX_BYTES),original);
+            return new Loaded(DriverJson.object(original.original(),OrdinaryWartimeConstructionCodec.MAX_BYTES),original,null);
         }
         require(new Text(SCHEMA).equals(supplied.get("schema"))
                 &&supplied.members().keySet().equals(Set.of("schema","input_ref","financing_request")),"exact construction full manifest required");
         ExactRef reference=ExactRef.fromJson(StrictJson.parse(DriverJson.encode(object(supplied.get("input_ref"),"construction full input reference"))));
         require(reference.bytes()>0&&reference.bytes()<=RawJson.MAXIMUM_BYTES,"construction full input reference exceeds material budget");
         RawJson raw=scoped.loadFullMaterial(reference);byte[] full=raw.bytes();exact(reference,full);
+        // Same-call closed DATA only, under frozen codec defaults. Fresh physical custody and binding checks remain required.
+        if(candidate!=null&&reference.equals(candidate.fullInputReference)
+                &&Arrays.equals(full,candidate.observed.original())) {
+            requireFinancing(supplied,candidate.original);
+            return candidate;
+        }
         try(var stage=OrdinaryWartimeConstructionCodec.stageFullMaterial(full)) {
             Obj original=stage.model();
-            // ActionCodec owns canonical typed argument ordering. Compare its complete projection on both sides, never structural equality.
-            require(Arrays.equals(PublicDataJson.encodeTyped(supplied.get("financing_request")).bytes(),
-                            PublicDataJson.encodeTyped(original.get("financing_request")).bytes()),
-                    "construction manifest financing differs from full original");
-            return new Loaded(original,stage.finish());
+            requireFinancing(supplied,original);
+            return new Loaded(original,stage.finish(),reference);
         }
     }
     public static Loaded resolveCommand(Session same,ActionPorts.OutcomeArchive archive,ActionCommand command) {
+        return resolveCommand(same,archive,command,null);
+    }
+    private static Loaded resolveCommand(Session same,ActionPorts.OutcomeArchive archive,ActionCommand command,Loaded candidate) {
         require(command.operation().equals(OrdinaryConstructionPolicy.OPERATION),"construction command required");
         Obj supplied=object(command.arguments().get("ordinary_cash_request"),"construction original request");
-        Loaded loaded=resolve(same,archive,supplied);
+        Loaded loaded=resolve(same,archive,supplied,candidate);
         if(new Text(OrdinaryWartimeConstructionCodec.SCHEMA).equals(supplied.get("schema")))return loaded;
         require(loaded.observed().input().stage()==OrdinaryWartimeConstruction.Stage.QUOTED_OUTLAY,"construction command requires its quoted original");
         Obj outlay=object(loaded.original().get("quoted_outlay"),"original quoted outlay");
@@ -110,14 +122,25 @@ public final class ConstructionOriginalSource {
     /** The archived binding consumes the original sidecar before delegating the unchanged native verifier. */
     public static NativeRecordedEvidenceVerifier.Binding archivedBinding(NativeRecordedEvidenceVerifier.Binding original,Borrowed borrowed) {
         Objects.requireNonNull(original);Objects.requireNonNull(borrowed);
-        return new NativeRecordedEvidenceVerifier.Binding(original.operation(),original.definitionSource(),(head,receipt,archive)->{
-            Obj supplied=object(receipt.command().arguments().get("ordinary_cash_request"),"archived construction original");
-            if(new Text(SCHEMA).equals(supplied.get("schema"))) {
-                try { resolveCommand(borrowed.current(),archive,receipt.command()); }
-                catch(IOException unavailable) { throw new IllegalArgumentException("archived construction original writer unavailable",unavailable); }
-            } else require(new Text(OrdinaryWartimeConstructionCodec.SCHEMA).equals(supplied.get("schema")),"unsupported archived construction request schema");
-            original.verifier().verify(head,receipt,archive);
-        });
+        return new NativeRecordedEvidenceVerifier.Binding(original.operation(),original.definitionSource(),
+                (head,receipt,archive)->verifyArchived(original,borrowed,head,receipt,archive,null));
+    }
+    /** Immediate same-call verification; candidate is only decoded DATA and is never captured in a returned binding. */
+    static void verifyArchived(NativeRecordedEvidenceVerifier.Binding original,Borrowed borrowed,Head head,ActionReceipt receipt,
+            ActionPorts.OutcomeArchive archive,Loaded candidate) {
+        Objects.requireNonNull(original);Objects.requireNonNull(borrowed);
+        Obj supplied=object(receipt.command().arguments().get("ordinary_cash_request"),"archived construction original");
+        if(new Text(SCHEMA).equals(supplied.get("schema"))) {
+            try { resolveCommand(borrowed.current(),archive,receipt.command(),candidate); }
+            catch(IOException unavailable) { throw new IllegalArgumentException("archived construction original writer unavailable",unavailable); }
+        } else require(new Text(OrdinaryWartimeConstructionCodec.SCHEMA).equals(supplied.get("schema")),"unsupported archived construction request schema");
+        original.verifier().verify(head,receipt,archive);
+    }
+    private static void requireFinancing(Obj supplied,Obj original) {
+        // ActionCodec owns canonical typed argument ordering. Compare its complete projection on both sides, never structural equality.
+        require(Arrays.equals(PublicDataJson.encodeTyped(supplied.get("financing_request")).bytes(),
+                        PublicDataJson.encodeTyped(original.get("financing_request")).bytes()),
+                "construction manifest financing differs from full original");
     }
     private static Obj reference(ExactRef reference) {return DriverJson.object(StrictJson.canonical(reference.toJson(),4096),4096);}
     private static void exact(ExactRef reference,byte[] full) {

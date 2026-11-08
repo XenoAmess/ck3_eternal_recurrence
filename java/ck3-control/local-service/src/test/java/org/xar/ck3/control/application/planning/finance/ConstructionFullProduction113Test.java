@@ -46,7 +46,10 @@ final class ConstructionFullProduction113Test {
     @Test void rejectedSoftwareCommandStillRequiresFullOriginalBeforeClearingPending()throws Exception {exercise(Mode.REJECTED);}
     @Test void unknownSoftwareCommandStillRequiresFullOriginalAndNeverResubmits()throws Exception {exercise(Mode.UNKNOWN);}
 
-    private void exercise(Mode mode)throws Exception {
+    @Test void appliedPendingBindingComponentsKeepEveryOriginalReadAndVerifier()throws Exception {exercise(Mode.APPLIED,true);}
+
+    private void exercise(Mode mode)throws Exception {exercise(mode,false);}
+    private void exercise(Mode mode,boolean measureBindings)throws Exception {
         var c=new Context();var scenario=scenario(c);
         ActionPorts.PostconditionPort observer=(command,attempt,dispatch)->{
             var actual=c.fixture.get();var p=actual.physicalInputs();
@@ -183,6 +186,7 @@ final class ConstructionFullProduction113Test {
                 if(mode==Mode.APPLIED){
                     assertTrue(receipt.applied().isPresent(),()->"software construction outcome "+receipt.state());
                     cold.verifier().verify(same.head(),receipt,new NativeOutcomeArchive(f.archive.artifactStore(),f.writer).withSession(same));
+                    if(measureBindings)bindingComponents(c,f,same,receipt);
                 } else if(mode==Mode.REJECTED){
                     var rejected=assertInstanceOf(ActionState.RejectedBeforeDispatch.class,receipt.state());
                     assertEquals(NativeActionPort.ZeroDispatchStage.BEFORE_WRITE,rejected.dispatch().proof().stage());
@@ -210,6 +214,122 @@ final class ConstructionFullProduction113Test {
             });
         }
     }
+    /** Same current binary, two entry paths, one actual Applied receipt/pending head. No publication or extra Native query. */
+    private void bindingComponents(Context c,ActionWriterIntegrationFixture f,Session same,ActionReceipt receipt) throws IOException {
+        long windowStart=System.nanoTime();
+        Path output=directory.resolve("p133-binding-component-report.json");
+        if(Files.exists(output))throw new IOException("exclusive component report already exists");
+        var report=new LinkedHashMap<String,Object>();var rows=new ArrayList<Map<String,Object>>();report.put("rows",rows);
+        report.put("schema","ck3.p133.same-binary-binding-component/v1");
+        report.put("boundary","firstresolve+second physical read/hash/header/frame+actual archived native verifier; excludes owning Outcome publication");
+        report.put("same_current_binary_two_entries",true);report.put("pre_P133_binary_AB",false);report.put("whole_Outcome_timed",false);
+        report.put("fixed_order",List.of("A","B","B","A"));report.put("extra_warmups",0);
+        report.put("fixture_already_completed_actual_Applied_and_one_cold_positive",true);
+        report.put("A_first_Loaded_discarded_not_strongly_retained",true);report.put("B_clone_memcmp_and_retention_included",true);
+        report.put("CPU_allocation_query_windows_bracket_wall",true);
+        report.put("Game_Native_HTTP_SAVE_Runtime",0);
+        String fixedHead=same.head().digest();long fixedSequence=same.head().state().sequence();
+        byte[] canonical=ActionCodec.encodeCommand(receipt.command());
+        var fixedBody=assertInstanceOf(DomainBodies.Available.class,same.readDomain(DomainBodies.Slot.CONSTRUCTION));
+        String fixedBodySha=ActionCodec.sha256(fixedBody.canonicalBody());
+        Obj supplied=object(receipt.command().arguments().get("ordinary_cash_request"),"component full manifest");
+        ExactRef input=reference(supplied.get("input_ref"));
+        report.put("input_path",input.path());report.put("input_bytes",input.bytes());report.put("input_sha256",input.sha256());
+        report.put("head",fixedHead);report.put("sequence",fixedSequence);report.put("body_sha256",fixedBodySha);
+        report.put("command_sha256",ActionCodec.sha256(canonical));report.put("receipt_body_sha256",receipt.bodySha256());
+        report.put("business_deadline_unchanged",receipt.command().deadline().toString());
+        int fixedWrites=f.nativeActionWrites(),fixedReads=f.nativeReadWrites();
+        var cpu=java.lang.management.ManagementFactory.getThreadMXBean();
+        boolean cpuAvailable=cpu.isCurrentThreadCpuTimeSupported();
+        if(cpuAvailable&&!cpu.isThreadCpuTimeEnabled())cpu.setThreadCpuTimeEnabled(true);
+        com.sun.management.ThreadMXBean allocation=cpu instanceof com.sun.management.ThreadMXBean bean?bean:null;
+        boolean allocationAvailable=allocation!=null&&allocation.isThreadAllocatedMemorySupported();
+        if(allocationAvailable&&!allocation.isThreadAllocatedMemoryEnabled())allocation.setThreadAllocatedMemoryEnabled(true);
+        report.put("current_thread_CPU_available",cpuAvailable);report.put("thread_allocation_available",allocationAvailable);
+        report.put("setup_ns_before_pairs",System.nanoTime()-windowStart);
+        Throwable failed=null;
+        try {
+            for(int index=0;index<4;index++) {
+                String route=(index==0||index==3)?"A":"B";
+                var row=new LinkedHashMap<String,Object>();rows.add(row);row.put("index",index);row.put("entry",route);
+                row.put("head_before",same.head().digest());row.put("body_sha256_before",ActionCodec.sha256(
+                        assertInstanceOf(DomainBodies.Available.class,same.readDomain(DomainBodies.Slot.CONSTRUCTION)).canonicalBody()));
+                var targetReads=new AtomicInteger();var nativeVerifications=new AtomicInteger();
+                ActionPorts.OutcomeArchive archive=componentArchive(f.archive,input,targetReads);
+                long cpuStart=cpuAvailable?cpu.getCurrentThreadCpuTime():-1;
+                long allocationStart=allocationAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1;
+                long start=System.nanoTime();boolean completed=false;
+                try {
+                    if(route.equals("A")) {
+                        // Match the old Outcome's discarded return value; do not retain a first Loaded through second parse.
+                        ConstructionOriginalSource.resolveCommand(same,archive,receipt.command());
+                        var actual=NativeConstructionEffects.archivedVerifier(OrdinaryConstructionPolicy.OPERATION,
+                                c.source.get(),f.frameLoader(),c.definitions.get().contract(FinanceReadContracts.Query.CONSTRUCTION));
+                        var counted=completedNativeVerifier(actual,nativeVerifications);
+                        ConstructionOriginalSource.archivedBinding(counted,()->same).verifier().verify(same.head(),receipt,archive.withSession(same));
+                    } else {
+                        var first=ConstructionOriginalSource.resolveCommand(same,archive,receipt.command());
+                        var actual=NativeConstructionEffects.archivedVerifier(OrdinaryConstructionPolicy.OPERATION,
+                                c.source.get(),f.frameLoader(),c.definitions.get().contract(FinanceReadContracts.Query.CONSTRUCTION));
+                        var counted=completedNativeVerifier(actual,nativeVerifications);
+                        ConstructionOriginalSource.verifyArchived(counted,()->same,same.head(),receipt,archive.withSession(same),first);
+                    }
+                    completed=true;
+                } finally {
+                    long end=System.nanoTime();
+                    long allocationEnd=allocationAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1;
+                    long cpuEnd=cpuAvailable?cpu.getCurrentThreadCpuTime():-1;
+                    row.put("wall_start_ns",start);row.put("wall_end_ns",end);row.put("wall_ns",end-start);
+                    row.put("CPU_start_ns",cpuStart);row.put("CPU_end_ns",cpuEnd);row.put("CPU_ns",cpuAvailable?cpuEnd-cpuStart:-1);
+                    row.put("allocation_start_bytes",allocationStart);row.put("allocation_end_bytes",allocationEnd);
+                    row.put("thread_allocated_bytes",allocationAvailable?allocationEnd-allocationStart:-1);
+                    row.put("target_full_reads",targetReads.get());row.put("actual_native_verifications_completed",nativeVerifications.get());
+                    row.put("completed",completed);
+                }
+                assertEquals(2,targetReads.get(),"both entry paths require two actual source full reads");
+                assertEquals(1,nativeVerifications.get(),"the unchanged real native verifier must complete");
+                assertEquals(fixedHead,same.head().digest());assertEquals(fixedSequence,same.head().state().sequence());
+                assertEquals(fixedBodySha,ActionCodec.sha256(assertInstanceOf(DomainBodies.Available.class,
+                        same.readDomain(DomainBodies.Slot.CONSTRUCTION)).canonicalBody()));
+                assertArrayEquals(canonical,ActionCodec.encodeCommand(receipt.command()));
+                assertEquals(fixedWrites,f.nativeActionWrites());assertEquals(fixedReads,f.nativeReadWrites());
+                row.put("head_after",same.head().digest());row.put("body_sha256_after",fixedBodySha);
+                row.put("native_action_writes_after",f.nativeActionWrites());row.put("native_read_writes_after",f.nativeReadWrites());
+            }
+        } catch(IOException|RuntimeException|Error failure) {
+            failed=failure;report.put("failure_class",failure.getClass().getName());report.put("failure_message",String.valueOf(failure.getMessage()));throw failure;
+        } finally {
+            report.put("window_ns_before_report_output",System.nanoTime()-windowStart);report.put("completed",failed==null);
+            report.put("completed_row_count",rows.stream().filter(row->Boolean.TRUE.equals(row.get("completed"))).count());
+            report.put("only_two_samples_per_entry_not_robust_latency_claim",true);
+            report.put("wrapper_report_and_whole_fixture_cost_in_actor",true);
+            try {
+                byte[] encoded=FullJsonTree.encode(new com.fasterxml.jackson.databind.ObjectMapper().valueToTree(report),1_048_576);
+                Files.write(output,encoded,StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE);
+                System.out.println("P133 binding component report "+output);
+            } catch(IOException|RuntimeException|Error outputFailure) {
+                if(failed==null)throw outputFailure;
+                if(failed!=outputFailure)failed.addSuppressed(outputFailure);
+            }
+        }
+    }
+    private static NativeRecordedEvidenceVerifier.Binding completedNativeVerifier(NativeRecordedEvidenceVerifier.Binding actual,AtomicInteger completed) {
+        return new NativeRecordedEvidenceVerifier.Binding(actual.operation(),actual.definitionSource(),(head,receipt,archive)->{
+            actual.verifier().verify(head,receipt,archive);completed.incrementAndGet();
+        });
+    }
+    /** Every operation delegates; count only reads of this complete original ref, not other native evidence materials. */
+    private static ActionPorts.OutcomeArchive componentArchive(ActionPorts.OutcomeArchive actual,ExactRef target,AtomicInteger reads) {
+        return (ActionPorts.OutcomeArchive)java.lang.reflect.Proxy.newProxyInstance(ActionPorts.OutcomeArchive.class.getClassLoader(),
+                new Class<?>[]{ActionPorts.OutcomeArchive.class},(proxy,method,args)->{
+                    if(method.getName().equals("loadFullMaterial")&&target.equals(args[0]))reads.incrementAndGet();
+                    try {
+                        Object result=method.invoke(actual,args);
+                        return method.getName().equals("withSession")?componentArchive((ActionPorts.OutcomeArchive)result,target,reads):result;
+                    } catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
+                });
+    }
+
     private final AtomicReference<OrdinaryConstructionCollector> productionCollector=new AtomicReference<>();
 
     /** Software installed material source; the unchanged publisher alone creates canonical history/coverage. */
