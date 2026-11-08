@@ -38,6 +38,31 @@ public final class DriverJson {
         StrictJson.require(encode(value).length<=maximumBytes,"bounded native tree required");
         return node(value,0);
     }
+    /** DATA-only conversion for this package's same-call strict byte-parsed immutable models.
+     * Uses the original byte generator for the complete budget check without materializing its output.
+     * Generic public conversions retain their existing encoding behavior. */
+    static JsonNode parsedNode(OpportunityJson.Value value,int maximumBytes) {
+        StrictJson.require(maximumBytes>=1 && maximumBytes<=FullJsonTree.MAXIMUM_DRIVER_BYTES,"explicit full tree budget required");
+        long encodedBytes;
+        try {
+            var output=new EncodedByteCount();
+            try(JsonGenerator generator=JSON.createGenerator(output)) { write(generator,value,0); }
+            encodedBytes=output.count;
+        } catch(IOException failure) { throw new IllegalArgumentException("full JSON encoding failed",failure); }
+        StrictJson.require(encodedBytes<=268435456,"bounded full Driver JSON required");
+        StrictJson.require(encodedBytes<=maximumBytes,"bounded native tree required");
+        return node(value,0);
+    }
+    /** Only a count is retained; all generator writes and close/flush complete before either bound. */
+    private static final class EncodedByteCount extends java.io.OutputStream {
+        private long count;
+        @Override public void write(int value) { count=Math.addExact(count,1L); }
+        @Override public void write(byte[] value,int offset,int length) {
+            java.util.Objects.checkFromIndexSize(offset,length,value.length);
+            count=Math.addExact(count,(long)length);
+        }
+    }
+
     /** Already-normalized semantic tree interop; never invokes a native normalizer. */
     public static JsonNode toNormalizedNode(OpportunityJson.Value value) { return toNode(value); }
     public static OpportunityJson.Value fromNode(JsonNode value) {

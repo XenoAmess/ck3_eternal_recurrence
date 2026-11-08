@@ -346,7 +346,7 @@ public final class DriverObservationAssembler {
     private static OpportunityJson.Obj normalizeCanonicalState(OpportunityJson.Obj raw, ObservedFrame original) {
         // Preserve historical military's order and parser; contracts cannot depend on a military/application module.
         Objects.requireNonNull(raw);
-        var nativeTree=(com.fasterxml.jackson.databind.node.ObjectNode)DriverJson.toNode(raw);
+        var nativeTree=(com.fasterxml.jackson.databind.node.ObjectNode)DriverJson.parsedNode(raw,DriverJson.MAX_NATIVE_BYTES);
         var wars=NativeActiveWarsCodec.normalize(nativeTree.get("active_wars"));
         var armies=ArmyStateProjection.playerArmiesFromState(wars,nativeTree.get("player_armies"));
         Map<String,OpportunityJson.Value> fields=new LinkedHashMap<>(raw.members());
@@ -375,7 +375,7 @@ public final class DriverObservationAssembler {
     /** Exact version-2 projection retained exclusively for historical manifests. */
     private static OpportunityJson.Obj canonicalMilitaryState(OpportunityJson.Obj raw) {
         Objects.requireNonNull(raw);
-        var tree=DriverJson.toNode(raw);
+        var tree=DriverJson.parsedNode(raw,DriverJson.MAX_NATIVE_BYTES);
         var wars=NativeActiveWarsCodec.normalize(tree.get("active_wars"));
         var armies=ArmyStateProjection.playerArmiesFromState(wars,tree.get("player_armies"));
         Map<String,OpportunityJson.Value> fields=new LinkedHashMap<>(raw.members());

@@ -28,14 +28,127 @@ import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 public class DriverFrameJoin310Test {
+    private static void sameNode143(OpportunityJson.Value value,int maximumBytes) {
+        var expected=DriverJson.toNode(value,maximumBytes);
+        var actual=DriverJson.parsedNode(value,maximumBytes);
+        assertEquals(expected,actual);
+        assertArrayEquals(DriverJson.encodeNode(expected),DriverJson.encodeNode(actual));
+        if(expected.isObject())assertEquals(new ArrayList<>(expected.properties().stream().map(Map.Entry::getKey).toList()),
+                new ArrayList<>(actual.properties().stream().map(Map.Entry::getKey).toList()));
+    }
+    private static void sameNodeFailure143(OpportunityJson.Value value,int maximumBytes) {
+        var a=assertThrows(RuntimeException.class,()->DriverJson.toNode(value,maximumBytes));
+        var b=assertThrows(RuntimeException.class,()->DriverJson.parsedNode(value,maximumBytes));
+        assertEquals(a.getClass(),b.getClass());assertEquals(a.getMessage(),b.getMessage());
+    }
+    /** Finite closed-model/budget oracle plus real historical v2 and current canonical callers. */
+    @Test public void privateParsedCountKeepsTypedTokensBudgetsAndHistoricalCallers143()throws Throwable {
+        String literal="{\"z\":null,\"empty\":[],\"integer\":-0,\"big\":90071992547409931234567890123456789,"
+                +"\"decimals\":[-0.0,1.00,1e+0,1e999],\"unicode\":\"雪😀\",\"escape\":\"q\\\"\\\\\\n\",\"opaque\":{\"b\":false,\"a\":true}}";
+        var model=DriverJson.object(bytes(literal),4096);
+        int encoded=DriverJson.encode(model).length;
+        sameNode143(model,encoded);sameNode143(model,encoded+1);sameNodeFailure143(model,encoded-1);
+        assertEquals(List.of("z","empty","integer","big","decimals","unicode","escape","opaque"),new ArrayList<>(model.members().keySet()));
+        var decimals=assertInstanceOf(OpportunityJson.Arr.class,model.get("decimals")).items();
+        assertEquals(List.of("-0.0","1.00","1e+0","1e999"),decimals.stream().map(v->assertInstanceOf(OpportunityJson.DecimalValue.class,v).token()).toList());
+        String expansion="{\"x\":\""+"😀".repeat(20)+"\"}";
+        var expanded=DriverJson.object(bytes(expansion),4096);
+        assertTrue(DriverJson.encode(expanded).length>bytes(expansion).length);
+        sameNodeFailure143(expanded,bytes(expansion).length);
+        sameNode143(expanded,DriverJson.encode(expanded).length);
+        for(int n:List.of(32,63)) {
+            String deep="{\"n\":"+"[".repeat(n)+"0"+"]".repeat(n)+"}";
+            var parsed=DriverJson.object(bytes(deep),4096);sameNode143(parsed,DriverJson.encode(parsed).length);
+        }
+        assertThrows(RuntimeException.class,()->DriverJson.object(bytes("{\"n\":"+"[".repeat(64)+"0"+"]".repeat(64)+"}"),4096));
+        // Invalid synthetic DATA outside the parsed-input domain witnesses full-writer error precedence only.
+        OpportunityJson.Value tooDeep=OpportunityJson.Nil.INSTANCE;
+        for(int n=0;n<65;n++)tooDeep=new OpportunityJson.Arr(List.of(tooDeep));
+        final var invalid=tooDeep;
+        sameNodeFailure143(invalid,1);sameNodeFailure143(invalid,0);
+        assertNotEquals(assertThrows(RuntimeException.class,()->DriverJson.toNode(invalid,1)).getMessage(),
+                assertThrows(RuntimeException.class,()->DriverJson.toNode(model,1)).getMessage());
+        try(var loader=new Assembler137Loader("ck3.p143.oldAssemblerRoot","ck3.p143.oldDriverRoot")) {
+            initializeDrivers138(loader);
+            Class<?> old=Class.forName(ASM137,true,loader),current=DriverObservationAssembler.class;
+            var frame=actual(STATE.replace("\"original_metric\":1.00","\"original_metric\":1.00,\"opaque\":{\"unicode\":\"雪😀\",\"token\":-0.0,\"exp\":1e+0}"));
+            var k=known();var facts=new DriverObservationFacts(k.driver(),3,7,frame.session(),frame.snapshotId(),frame.nativeRevision(),
+                    DriverJson.sha256(frame.state().bytes()),BigInteger.valueOf(2),2,source(),new OpportunityJson.Obj(Map.of()),ref(bytes("p143-v2-facts")));
+            var evidence=ref(frame.originalPacket());Object a,b;
+            Method oldProject=old.getMethod("projectFull",NativeObservationPort.ObservedFrame.class,DriverObservationFacts.class,ExactRef.class);
+            Method newProject=current.getMethod("projectFull",NativeObservationPort.ObservedFrame.class,DriverObservationFacts.class,ExactRef.class);
+            try {a=oldProject.invoke(old.getConstructor().newInstance(),frame,facts,evidence);b=newProject.invoke(current.getConstructor().newInstance(),frame,facts,evidence);}
+            catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
+            var aSemantic=assertInstanceOf(OpportunityJson.Obj.class,a.getClass().getMethod("semantic").invoke(a));
+            var bSemantic=assertInstanceOf(OpportunityJson.Obj.class,b.getClass().getMethod("semantic").invoke(b));
+            assertEquals(aSemantic,bSemantic);assertArrayEquals(DriverJson.encode(aSemantic),DriverJson.encode(bSemantic));
+            assertEquals(a.getClass().getMethod("fullBindingSha256").invoke(a),b.getClass().getMethod("fullBindingSha256").invoke(b));
+            Method oldCanonical=old.getMethod("canonicalNativeState",NativeObservationPort.ObservedFrame.class);
+            Method newCanonical=current.getMethod("canonicalNativeState",NativeObservationPort.ObservedFrame.class);
+            var ca=canonical143(oldCanonical,frame);var cb=canonical143(newCanonical,frame);
+            assertEquals(ca,cb);assertArrayEquals(DriverJson.encode(ca),DriverJson.encode(cb));
+        }
+    }
+    private static OpportunityJson.Obj canonical143(Method method,NativeObservationPort.ObservedFrame frame)throws Throwable {
+        Object value;
+        try{value=method.invoke(null,frame);}catch(java.lang.reflect.InvocationTargetException failure){throw failure.getCause();}
+        return assertInstanceOf(OpportunityJson.Obj.class,value.getClass().getMethod("semantic").invoke(value));
+    }
+    /** Actual public canonical receive/fingerprint caller; two samples per side, not whole verify/worker. */
+    @Test public void canonicalNativeStateComparesQualifiedOldArraysAndPrivateCount143()throws Throwable {
+        long startWindow=System.nanoTime();var report=new java.util.LinkedHashMap<String,Object>();var rows=new ArrayList<Map<String,Object>>();report.put("rows",rows);Throwable failed=null;
+        report.put("schema","ck3.p143.private-count-canonical-caller-component/v1");report.put("fixed_order",List.of("A","B","B","A"));report.put("target_warmups",0);
+        report.put("A","actual P138 Assembler6 + P137 Driver2 same child; current P142 unaffected caller baseline");report.put("B","candidate Assembler6 + Driver3 same parent runtime package");
+        report.put("scenario","same original large pretty state, actual public canonicalNativeState; shared parent DATA and normalizers");
+        try(var loader=new Assembler137Loader("ck3.p143.oldAssemblerRoot","ck3.p143.oldDriverRoot")) {
+            report.put("explicit_driver_initialization",initializeDrivers138(loader));
+            long init=System.nanoTime();Class<?> old=Class.forName(ASM137,true,loader),current=Class.forName(ASM137,true,DriverFrameJoin310Test.class.getClassLoader());report.put("assembler_load_init_ns",System.nanoTime()-init);
+            Method a=old.getMethod("canonicalNativeState",NativeObservationPort.ObservedFrame.class),b=current.getMethod("canonicalNativeState",NativeObservationPort.ObservedFrame.class);
+            report.put("old_assembler_root",System.getProperty("ck3.p143.oldAssemblerRoot"));report.put("old_driver_root",System.getProperty("ck3.p143.oldDriverRoot"));
+            report.put("old_code_source",old.getProtectionDomain().getCodeSource().getLocation().toString());report.put("B_code_source",current.getProtectionDomain().getCodeSource().getLocation().toString());
+            String large=STATE.replace("\"original_metric\":1.00","\"original_metric\":1.00,\"opaque_unconsumed_extension\":\""+"x".repeat(3_400_000)+"\"");
+            var frame=actual(large);String rawSha=DriverJson.sha256(frame.state().bytes()),packetSha=DriverJson.sha256(frame.originalPacket());
+            report.put("state_bytes",frame.state().bytes().length);report.put("packet_bytes",frame.originalPacket().length);
+            var cpu=java.lang.management.ManagementFactory.getThreadMXBean();boolean cpuAvailable=cpu.isCurrentThreadCpuTimeSupported();if(cpuAvailable&&!cpu.isThreadCpuTimeEnabled())cpu.setThreadCpuTimeEnabled(true);
+            com.sun.management.ThreadMXBean allocation=cpu instanceof com.sun.management.ThreadMXBean bean?bean:null;boolean allocAvailable=allocation!=null&&allocation.isThreadAllocatedMemorySupported();
+            if(allocAvailable&&!allocation.isThreadAllocatedMemoryEnabled())allocation.setThreadAllocatedMemoryEnabled(true);
+            report.put("CPU_available",cpuAvailable);report.put("allocation_available",allocAvailable);report.put("setup_ns_before_rows",System.nanoTime()-startWindow);
+            String expected=null;List<String> expectedKeys=null;
+            for(int index=0;index<4;index++) {
+                String route=index==0||index==3?"A":"B";var row=new java.util.LinkedHashMap<String,Object>();rows.add(row);row.put("index",index);row.put("entry",route);
+                long cpuStart=cpuAvailable?cpu.getCurrentThreadCpuTime():-1,allocStart=allocAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1;
+                long start=System.nanoTime();OpportunityJson.Obj result;boolean complete=false;
+                try{result=canonical143(route.equals("A")?a:b,frame);complete=true;}
+                finally{long end=System.nanoTime(),allocEnd=allocAvailable?allocation.getThreadAllocatedBytes(Thread.currentThread().threadId()):-1,cpuEnd=cpuAvailable?cpu.getCurrentThreadCpuTime():-1;
+                    row.put("wall_start_ns",start);row.put("wall_end_ns",end);row.put("wall_ns",end-start);row.put("CPU_start_ns",cpuStart);row.put("CPU_end_ns",cpuEnd);row.put("CPU_ns",cpuAvailable?cpuEnd-cpuStart:-1);
+                    row.put("allocation_start_bytes",allocStart);row.put("allocation_end_bytes",allocEnd);row.put("thread_allocated_bytes",allocAvailable?allocEnd-allocStart:-1);row.put("completed",complete);}
+                assertEquals("1.00",assertInstanceOf(OpportunityJson.DecimalValue.class,result.get("original_metric")).token());
+                assertEquals(3_400_000,assertInstanceOf(OpportunityJson.Text.class,result.get("opaque_unconsumed_extension")).value().length());
+                String sha=DriverJson.sha256(DriverJson.encode(result));var keys=new ArrayList<>(result.members().keySet());
+                if(expected==null){expected=sha;expectedKeys=keys;}assertEquals(expected,sha);assertEquals(expectedKeys,keys);
+                assertEquals(rawSha,DriverJson.sha256(frame.state().bytes()));assertEquals(packetSha,DriverJson.sha256(frame.originalPacket()));
+                row.put("semantic_sha256",sha);row.put("state_sha256",rawSha);row.put("packet_sha256",packetSha);row.put("member_order",keys);row.put("all_post_checks_passed",true);
+            }
+        }catch(Throwable failure){failed=failure;report.put("failure_class",failure.getClass().getName());report.put("failure_message",String.valueOf(failure.getMessage()));throw failure;}
+        finally {
+            report.put("completed",failed==null);report.put("window_ns_before_report_materialization",System.nanoTime()-startWindow);
+            report.put("scope","Selected leaves old/new binary in one process. Actual public canonical caller, not full verify/IO/Game/Runtime. Both Method.invoke and semantic reflection retained; all cold samples, setup, original checks, report and close kept. Full writer traversal remains; cumulative allocation is not peak/live. No natural frequency or CPU gain claim.");
+            try{byte[] encoded=org.xar.ck3.control.contracts.FullJsonTree.encode(new com.fasterxml.jackson.databind.ObjectMapper().valueToTree(report),1_048_576);
+                var output=directory.resolve("p143-private-count-component.json");java.nio.file.Files.write(output,encoded,java.nio.file.StandardOpenOption.CREATE_NEW,java.nio.file.StandardOpenOption.WRITE);
+                System.out.println("P143 private count component "+output);
+            }catch(Throwable outputFailure){if(failed==null)throw outputFailure;if(failed!=outputFailure)failed.addSuppressed(outputFailure);}
+        }
+    }
+
     private static final String ASM137="org.xar.ck3.control.application.driver.DriverObservationAssembler";
     private static final String DRIVER138="org.xar.ck3.control.application.driver.DriverJson";
     /** P138: exact old P137 Assembler6 and Driver2 share one child runtime package; all DTOs/Jackson remain parent-owned. */
     private static final class Assembler137Loader extends java.net.URLClassLoader {
         private static final java.util.Set<String> FAMILY=java.util.Set.of(ASM137,ASM137+"$CanonicalNativeState",ASM137+"$Complete",ASM137+"$FullSnapshot",ASM137+"$Incomplete",ASM137+"$Result",DRIVER138,DRIVER138+"$ContentComparison");
-        Assembler137Loader()throws Exception {super(new java.net.URL[]{
-                java.nio.file.Path.of(java.util.Objects.requireNonNull(System.getProperty("ck3.p138.oldAssemblerRoot"),"explicit qualified oldAssembler root required")).toRealPath().toUri().toURL(),
-                java.nio.file.Path.of(java.util.Objects.requireNonNull(System.getProperty("ck3.p138.oldDriverRoot"),"explicit qualified oldDriver root required")).toRealPath().toUri().toURL()},DriverFrameJoin310Test.class.getClassLoader());}
+        Assembler137Loader()throws Exception {this("ck3.p138.oldAssemblerRoot","ck3.p138.oldDriverRoot");}
+        Assembler137Loader(String assemblerRootProperty,String driverRootProperty)throws Exception {super(new java.net.URL[]{
+                java.nio.file.Path.of(java.util.Objects.requireNonNull(System.getProperty(assemblerRootProperty),"explicit qualified oldAssembler root required")).toRealPath().toUri().toURL(),
+                java.nio.file.Path.of(java.util.Objects.requireNonNull(System.getProperty(driverRootProperty),"explicit qualified oldDriver root required")).toRealPath().toUri().toURL()},DriverFrameJoin310Test.class.getClassLoader());}
         @Override protected Class<?> loadClass(String name,boolean resolve)throws ClassNotFoundException {
             synchronized(getClassLoadingLock(name)) {
                 if(!FAMILY.contains(name)) {
