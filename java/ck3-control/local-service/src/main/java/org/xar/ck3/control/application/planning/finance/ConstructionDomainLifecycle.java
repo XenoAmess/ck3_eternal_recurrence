@@ -369,7 +369,15 @@ public final class ConstructionDomainLifecycle {
         var assessment = OrdinaryWartimeConstruction.compose(original.input());
         require(assessment.disposition() == OrdinaryWartimeConstruction.Disposition.QUOTED_CANDIDATE, "pending construction requires the original qualified quoted outlay");
         Obj query = object(object(request.get("quoted_outlay"), "original outlay").get("query_observation"), "actual original Native query");
-        Obj finalized = DriverJson.object(ConstructionOriginalSource.finalizeQuery(DriverJson.encode(query)), ConstructionQueryCodec.MAX_BYTES);
+        byte[] queryBytes = DriverJson.encode(query);
+        byte[] finalizedBytes = queryBytes;
+        var cachedQuote = original.input().quoted().flatMap(value -> value.nativeQuote().exactFullFinalizedBytes());
+        if (cachedQuote.isPresent() && Arrays.equals(queryBytes, original.input().quoted().orElseThrow().nativeQuote().original())) {
+            finalizedBytes = cachedQuote.get();
+        } else {
+            finalizedBytes = ConstructionOriginalSource.finalizeQuery(queryBytes);
+        }
+        Obj finalized = DriverJson.object(finalizedBytes, ConstructionQueryCodec.MAX_BYTES);
         Obj before = object(query.get("starting_snapshot"), "original complete frame"), source = object(finalized.get("source_frame"), "actual quote source");
         var f = command.before().frame();
         require(source.get("snapshot_id").equals(new Text(f.snapshotId())) && source.get("revision").equals(new IntegerValue(f.revision()))
