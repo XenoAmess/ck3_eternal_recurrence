@@ -33,9 +33,14 @@ public final class OrdinaryWartimeConstructionCodec {
     public static final class ObservedRequest {
         private final byte[] original;
         private final Request input;
-        public ObservedRequest(byte[] original) { this.input = decode(original); this.original = original.clone(); }
+        private final byte[] exactFinancingWrapper;
+        public ObservedRequest(byte[] original) { this.input = decode(original); this.original = original.clone(); this.exactFinancingWrapper = null; }
         public byte[] original() { return original.clone(); }
         public Request input() { return input; }
+        /** Optional exact DATA projection; absence keeps the full-parse path, including oversized headers. */
+        public Optional<byte[]> exactFinancingWrapper() {
+            return exactFinancingWrapper == null ? Optional.empty() : Optional.of(exactFinancingWrapper.clone());
+        }
 
         /** Full-material DATA lane: retains full original bytes, derives SDK state from projection. */
         public static ObservedRequest fromFullMaterial(byte[] fullOriginal) {
@@ -68,12 +73,18 @@ public final class OrdinaryWartimeConstructionCodec {
                     : Optional.of(EmergencyFinancingAssessmentCodec.decode(bytes(root.get("financing_request"))));
 
             Request input = new Request(new Selection(step, phase, opportunity), stage, current, quoted, financing);
-            return new ObservedRequest(exactFull, input);
+            ObjectNode wrapper = StrictJson.object();
+            wrapper.set("financing_request", root.get("financing_request"));
+            // This is a retention bound, never a narrower accepted-input budget. Encoding cost also applies on a miss.
+            // Derived UTF-8 may expand original non-BMP strings; original input remains capped at64MiB.
+            byte[] encodedWrapper = FullJsonTree.encode(wrapper, FullJsonTree.MAXIMUM_DRIVER_BYTES);
+            return new ObservedRequest(exactFull, input, encodedWrapper.length <= MAX_BYTES ? encodedWrapper : null);
         }
 
-        private ObservedRequest(byte[] exactFull, Request input) {
+        private ObservedRequest(byte[] exactFull, Request input, byte[] exactFinancingWrapper) {
             this.original = exactFull;
             this.input = input;
+            this.exactFinancingWrapper = exactFinancingWrapper;
         }
     }
 

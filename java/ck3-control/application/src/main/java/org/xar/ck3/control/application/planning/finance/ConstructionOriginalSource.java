@@ -48,11 +48,13 @@ public final class ConstructionOriginalSource {
                 new ObservedRequest(full); // Preserve the old decoder and its narrower domain; never catch-fallback.
                 return DriverJson.object(full,OrdinaryWartimeConstructionCodec.MAX_BYTES);
             }
-            Obj value=DriverJson.object(full,FullJsonTree.MAXIMUM_BYTES);
+            Value financing=original.exactFinancingWrapper()
+                    .map(wrapper->DriverJson.object(wrapper,OrdinaryWartimeConstructionCodec.MAX_BYTES).get("financing_request"))
+                    .orElseGet(()->DriverJson.object(full,FullJsonTree.MAXIMUM_BYTES).get("financing_request"));
             ExactRef reference=scoped.preserveMaterial(RawJson.fullMaterial(full));
             RawJson reopened=scoped.loadFullMaterial(reference);exact(reference,reopened.bytes());
             require(Arrays.equals(full,reopened.bytes()),"construction full original changed during archive readback");
-            Obj manifest=obj("schema",new Text(SCHEMA),"input_ref",reference(reference),"financing_request",value.get("financing_request"));
+            Obj manifest=obj("schema",new Text(SCHEMA),"input_ref",reference(reference),"financing_request",financing);
             require(DriverJson.encode(manifest).length<=ActionCodec.MAX_COMMAND_BYTES,"construction manifest exceeds command bound");
             return manifest;
         } catch(IOException unavailable) { throw new IllegalArgumentException("held construction original archive unavailable",unavailable); }
