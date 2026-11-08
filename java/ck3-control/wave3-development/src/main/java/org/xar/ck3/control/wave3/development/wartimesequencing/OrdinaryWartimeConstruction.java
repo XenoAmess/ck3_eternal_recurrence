@@ -56,12 +56,14 @@ public final class OrdinaryWartimeConstruction {
     /** Original native observation, finalized by the real source validator and authored selector. */
     public static final class NativeQuote {
         private final byte[] original;
+        private final byte[] exactFullFinalized;
         private final ConstructionQueryModel.Observation observation;
         private final Optional<ConstructionQuote> selected;
         private final Optional<String> constructionKind;
         public NativeQuote(byte[] original) {
             this.observation = ConstructionQueryCodec.decode(original);
             this.original = original.clone();
+            this.exactFullFinalized = null;
             var result = ConstructionQueryPolicy.finalizeObservation(observation);
             if (result instanceof ConstructionQueryModel.Ready ready && ready.kind() == ConstructionQueryModel.ReadyKind.SELECTED) {
                 byte[] finalized = ConstructionQueryCodec.finalizeObservation(this.original);
@@ -76,6 +78,10 @@ public final class OrdinaryWartimeConstruction {
             }
         }
         public byte[] original() { return original.clone(); }
+        /** Exact first finalizer bytes from this selected full-material instance, if available. */
+        public Optional<byte[]> exactFullFinalizedBytes() {
+            return exactFullFinalized == null ? Optional.empty() : Optional.of(exactFullFinalized.clone());
+        }
         public ConstructionQueryModel.Observation observation() { return observation; }
         public Optional<ConstructionQuote> selected() {
             return selected;
@@ -94,6 +100,7 @@ public final class OrdinaryWartimeConstruction {
 
         private NativeQuote(byte[] exactFull, byte[] sdkBytes) {
             this.original = exactFull;
+            byte[] retainedFinalized = null;
             this.observation = ConstructionQueryCodec.decode(sdkBytes);
             var result = ConstructionQueryPolicy.finalizeObservation(observation);
             if (result instanceof ConstructionQueryModel.Ready ready && ready.kind() == ConstructionQueryModel.ReadyKind.SELECTED) {
@@ -101,12 +108,14 @@ public final class OrdinaryWartimeConstruction {
                 if (finalized.length <= org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyCodec.MAX_BYTES) {
                     selected = Optional.of(org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyCodec.decodeQuote(finalized));
                     constructionKind = Optional.of(ready.candidate().slotWasEmpty() ? "new_building" : "upgrade_building");
+                    retainedFinalized = finalized;
                 } else {
                     selected = Optional.empty(); constructionKind = Optional.empty();
                 }
             } else {
                 selected = Optional.empty(); constructionKind = Optional.empty();
             }
+            this.exactFullFinalized = retainedFinalized;
         }
     }
     public record QuotedOutlay(NativeQuote nativeQuote, QuoteCashObservation currentCash) {

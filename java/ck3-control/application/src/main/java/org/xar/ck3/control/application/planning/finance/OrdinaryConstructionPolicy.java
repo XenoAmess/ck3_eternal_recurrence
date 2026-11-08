@@ -146,8 +146,9 @@ public final class OrdinaryConstructionPolicy implements OrdinaryPolicy {
             if (!(quoted.fundingSource() instanceof CanonicalFundingPending.Observed funding))
                 return deferred("actual owned-submission inventory unavailable at the quoted outlay: "
                         + ((CanonicalFundingPending.Unavailable) quoted.fundingSource()).reason());
-            Obj finalized = object(parse(ConstructionOriginalSource.finalizeQuery(
-                    quoted.value().input().quoted().orElseThrow().nativeQuote().original())), "original finalized quote");
+            var nativeQuote = quoted.value().input().quoted().orElseThrow().nativeQuote();
+            Obj finalized = object(parse(nativeQuote.exactFullFinalizedBytes().orElseGet(
+                    () -> ConstructionOriginalSource.finalizeQuery(nativeQuote.original()))), "original finalized quote");
             Obj candidate = object(finalized.get("candidate"), "complete selected construction candidate");
             if (!request.observations().actionSteps().contains(OPERATION)) return deferred("actual construction action registration absent");
             Obj args = obj("candidate", candidate, "pre_proof_epoch", finalized.get("proof_epoch"),
