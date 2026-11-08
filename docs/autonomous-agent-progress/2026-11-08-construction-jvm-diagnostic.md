@@ -4,7 +4,7 @@
 
 ## 实际执行与输出边界
 
-原方案曾请求独立 128MiB 输出空间及 32MiB JFR。没有取得可用的现行分配入口，原 STORAGE-REQUEST01 仅 request_only／admission=false；随后明确撤回，未启动 JFR、repository、decoder 工具 JVM 或第二次业务运行。未借用过期卡或改 Guard／原 32MiB 软件 CAS 配置。旧 P118 文档中的 JFR／GC 是当时的下一步意图，本条记录其最终实际范围。
+原方案曾请求独立 128MiB 输出空间及 32MiB JFR。没有取得可用的现行分配入口，原 STORAGE-REQUEST01 仅 request_only／admission=false；随后明确撤回，未启动 JFR、repository、decoder 工具 JVM 或第二次业务运行。未借用过期卡或改 Guard／原 64MiB 软件 CAS 配置。旧 P118 文档中的 JFR／GC 是当时的下一步意图，本条记录其最终实际范围。
 
 最终只用已有离线小元数据通道：GC＋safepoint 写入已捕获 stdout，stdout 上限 1MiB、该独立诊断根管理上限 4MiB。实际 stdout 为 23706B，stderr 为 0，分析后具名小根合计 787178B；大 JFR 请求目录另有 44783B 请求／准备元数据，没有 recording。现有源码编译、旧 Test RUN、Main 重编、新 PREP、HTTP、Game／GET／SAVE 均为零。
 
