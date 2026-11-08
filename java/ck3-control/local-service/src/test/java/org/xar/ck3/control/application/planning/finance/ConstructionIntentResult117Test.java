@@ -42,6 +42,13 @@ final class ConstructionIntentResult117Test {
                 var decoded=ActionCodec.decodeCommand(canonical);var loaded=ConstructionOriginalSource.resolveCommand(same,new NativeOutcomeArchive(f.store,f.writer),decoded);
                 assertArrayEquals(queryBytes,loaded.observed().input().quoted().orElseThrow().nativeQuote().original());
                 byte[] consumerGetter=loaded.observed().input().quoted().orElseThrow().nativeQuote().exactFullFinalizedBytes().orElseThrow();consumerGetter[0]='!';
+                // The private Loaded couples only its own immutable views; equal values do not confer that relationship.
+                byte[] coupled=loaded.cacheFor(loaded.original(),loaded.observed()).orElseThrow();assertArrayEquals(fixed,coupled);
+                coupled[0]='!';assertArrayEquals(fixed,loaded.cacheFor(loaded.original(),loaded.observed()).orElseThrow());
+                Obj equalOriginal=new Obj(loaded.original().members());assertEquals(loaded.original(),equalOriginal);assertNotSame(loaded.original(),equalOriginal);
+                assertTrue(loaded.cacheFor(equalOriginal,loaded.observed()).isEmpty());
+                var equalObserved=ObservedRequest.fromFullMaterial(loaded.observed().original());assertNotSame(loaded.observed(),equalObserved);
+                assertArrayEquals(loaded.observed().original(),equalObserved.original());assertTrue(loaded.cacheFor(loaded.original(),equalObserved).isEmpty());
                 Obj actual=ConstructionDomainLifecycle.intent(clear(),decoded,loaded);
                 var oldSmall=new ObservedRequest(DriverJson.encode(small));assertTrue(oldSmall.input().quoted().orElseThrow().nativeQuote().exactFullFinalizedBytes().isEmpty());
                 // The same command/request with an equivalent original small typed input forces the unchanged finalizer.

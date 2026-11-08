@@ -5,6 +5,7 @@ import static org.xar.ck3.control.application.planning.finance.OrdinaryFinanceCo
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.driver.DriverJson;
@@ -32,6 +33,11 @@ public final class ConstructionOriginalSource {
         }
         public Obj original(){return original;}
         public ObservedRequest observed(){return observed;}
+        /** DATA reuse only for these exact immutable views under the project's frozen codec defaults. */
+        Optional<byte[]> cacheFor(Obj expectedOriginal,ObservedRequest expectedObserved) {
+            if(original!=expectedOriginal||observed!=expectedObserved)return Optional.empty();
+            return observed.input().quoted().flatMap(value->value.nativeQuote().exactFullFinalizedBytes());
+        }
     }
     private final ActionPorts.OutcomeArchive archive;
     private final Borrowed borrowed;

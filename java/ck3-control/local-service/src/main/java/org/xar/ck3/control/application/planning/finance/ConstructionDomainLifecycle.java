@@ -362,20 +362,32 @@ public final class ConstructionDomainLifecycle {
         require(command.operation().equals(OrdinaryConstructionPolicy.OPERATION) && ledger.pending().isEmpty(), "exact construction action and original clear body required");
         Optional<CanonicalFundingPending.SourceEvidence> funding = command.arguments().members().containsKey(ConstructionFundingEvidence.FIELD)
                 ? Optional.of(ConstructionFundingEvidence.command(command)) : Optional.empty();
-        return manifestBody(command, intent(ledger, command, funding, loaded.observed(), loaded.original()));
+        return manifestBody(command, intent(ledger, command, funding, loaded.observed(), loaded.original(), loaded));
     }
     private static Obj intent(ConstructionLedgerCodec.Ledger ledger, ActionCommand command,
             Optional<CanonicalFundingPending.SourceEvidence> funding, OrdinaryWartimeConstructionCodec.ObservedRequest original, Obj request) {
+        return intent(ledger, command, funding, original, request, null);
+    }
+    private static Obj intent(ConstructionLedgerCodec.Ledger ledger, ActionCommand command,
+            Optional<CanonicalFundingPending.SourceEvidence> funding, OrdinaryWartimeConstructionCodec.ObservedRequest original, Obj request,
+            ConstructionOriginalSource.Loaded context) {
         var assessment = OrdinaryWartimeConstruction.compose(original.input());
         require(assessment.disposition() == OrdinaryWartimeConstruction.Disposition.QUOTED_CANDIDATE, "pending construction requires the original qualified quoted outlay");
         Obj query = object(object(request.get("quoted_outlay"), "original outlay").get("query_observation"), "actual original Native query");
-        byte[] queryBytes = DriverJson.encode(query);
-        byte[] finalizedBytes = queryBytes;
-        var cachedQuote = original.input().quoted().flatMap(value -> value.nativeQuote().exactFullFinalizedBytes());
-        if (cachedQuote.isPresent() && original.input().quoted().orElseThrow().nativeQuote().originalContentEquals(queryBytes)) {
-            finalizedBytes = cachedQuote.get();
+        // Only a private Loaded can couple these same-byte immutable views; arbitrary inputs keep the original fallback.
+        var coupledCache = context == null ? Optional.<byte[]>empty() : context.cacheFor(request, original);
+        byte[] finalizedBytes;
+        if (coupledCache.isPresent()) {
+            finalizedBytes = coupledCache.get();
         } else {
-            finalizedBytes = ConstructionOriginalSource.finalizeQuery(queryBytes);
+            byte[] queryBytes = DriverJson.encode(query);
+            finalizedBytes = queryBytes;
+            var cachedQuote = original.input().quoted().flatMap(value -> value.nativeQuote().exactFullFinalizedBytes());
+            if (cachedQuote.isPresent() && original.input().quoted().orElseThrow().nativeQuote().originalContentEquals(queryBytes)) {
+                finalizedBytes = cachedQuote.get();
+            } else {
+                finalizedBytes = ConstructionOriginalSource.finalizeQuery(queryBytes);
+            }
         }
         Obj finalized = DriverJson.object(finalizedBytes, ConstructionQueryCodec.MAX_BYTES);
         Obj before = object(query.get("starting_snapshot"), "original complete frame"), source = object(finalized.get("source_frame"), "actual quote source");
