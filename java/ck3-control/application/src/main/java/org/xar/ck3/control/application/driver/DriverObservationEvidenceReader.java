@@ -268,6 +268,7 @@ public final class DriverObservationEvidenceReader {
     static final class NativePacketInput {
         private byte[] originalFramed;
         private OpportunityJson.Obj envelope;
+        private RawJson capturedState;
         private NativePacketInput(byte[] originalFramed,OpportunityJson.Obj envelope) {
             this.originalFramed=originalFramed.clone();
             this.envelope=Objects.requireNonNull(envelope);
@@ -275,7 +276,8 @@ public final class DriverObservationEvidenceReader {
         OpportunityJson.Obj matchingEnvelope(byte[] actualFramed) {
             return Arrays.equals(originalFramed,actualFramed)?envelope:null;
         }
-        void clear() { originalFramed=null; envelope=null; }
+        boolean matchesCapturedState(RawJson state) { return capturedState!=null && capturedState==state; }
+        void clear() { originalFramed=null; envelope=null; capturedState=null; }
     }
     private record NativeFrameInput(NativeObservationPort.ObservedFrame actual,NativePacketInput packetInput) { }
 
@@ -298,6 +300,7 @@ public final class DriverObservationEvidenceReader {
         var packetInput = new NativePacketInput(framedNative,envelope);
         var actual = new NativeObservationPort.ObservedFrame(session(row.get("transport")),string(row,"snapshot_id"),
                 OpportunityJson.integer(row.get("native_revision"),"native_revision"),new RawJson(state),framedNative,Instant.parse(string(row,"observed_at")));
+        packetInput.capturedState=actual.state();
         return new NativeFrameInput(actual,packetInput);
     }
 

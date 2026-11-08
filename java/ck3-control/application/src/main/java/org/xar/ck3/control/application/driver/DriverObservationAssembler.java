@@ -294,11 +294,14 @@ public final class DriverObservationAssembler {
             int length=java.nio.ByteBuffer.wrap(framed,0,4).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt();
             StrictJson.require(length>0 && length<=DriverJson.MAX_NATIVE_BYTES && framed.length==length+4,"exact original LE uint32 frame length required");
             OpportunityJson.Obj packet = packetInput.matchingEnvelope(framed);
+            boolean packetMatched=packet!=null;
             if(packet==null)packet=DriverJson.object(java.util.Arrays.copyOfRange(framed,4,framed.length),DriverJson.MAX_NATIVE_BYTES);
             StrictJson.require("state_snapshot".equals(OpportunityJson.text(packet.get("type"), "type"))
                     && BigInteger.ONE.equals(OpportunityJson.integer(packet.get("protocol_version"), "protocol_version"))
                     && actual.snapshotId().equals(OpportunityJson.text(packet.get("snapshot_id"), "snapshot_id"))
                     && actual.nativeRevision().equals(OpportunityJson.integer(packet.get("revision"), "revision")), "original native envelope differs");
+            if(packetMatched && packetInput.matchesCapturedState(actual.state())
+                    && packet.get("state") instanceof OpportunityJson.Obj parsedState)return parsedState;
             OpportunityJson.Obj state = DriverJson.object(actual.state().bytes(), DriverJson.MAX_NATIVE_BYTES);
             StrictJson.require(state.equals(OpportunityJson.object(packet.get("state"), "state")), "raw state differs from original native packet");
             return state;
