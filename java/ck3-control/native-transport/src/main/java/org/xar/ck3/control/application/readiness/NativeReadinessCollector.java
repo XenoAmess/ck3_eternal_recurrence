@@ -1388,7 +1388,9 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
             }
         }
         DriverObservationAssembler.Result assembled = assembler.assemble(actual, facts, original);
-        require(assembled instanceof Complete, "actual native/Driver observation join is incomplete: " + assembled);
+        if (!(assembled instanceof Complete)) {
+            require(assembled instanceof Complete, "actual native/Driver observation join is incomplete: " + assembled);
+        }
         Complete frame = (Complete) assembled;
         Instant now = clock.instant();
         requireObservationTiming(frame.observedAt(), now, ioDeadline, scopeDeadline);
