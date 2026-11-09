@@ -197,7 +197,7 @@ public final class ConstructionMaterialReducer {
         Optional<BigInteger> oldCheck = previous.lastCheck();
         if (!complete && !previous.completed() && oldCheck.filter(old -> old.compareTo(date) <= 0 && date.compareTo(old.add(MONTH)) < 0).isPresent()) check = oldCheck.orElseThrow();
         Obj progress = matchingActive.isEmpty() ? obj("status", new Text("not_active"), "native_remaining_work_raw", Nil.INSTANCE, "native_progress_divisor_raw", Nil.INSTANCE) : progress(matchingActive.getFirst());
-        progress = progress.with("snapshot_id", frame.get("snapshot_id")).with("native_revision", new IntegerValue(revision)).with("date_raw", new IntegerValue(date));
+        { Value progressSnapshotId = frame.get("snapshot_id"); var progressMembers = new java.util.LinkedHashMap<>(progress.members()); progressMembers.put("snapshot_id", progressSnapshotId); progressMembers.put("native_revision", new IntegerValue(revision)); progressMembers.put("date_raw", new IntegerValue(date)); progress = new Obj(progressMembers); }
         var retainedMembers = new java.util.LinkedHashMap<>(prior.members());
         Value oldUnavailable = retainedMembers.remove("material_observation_unavailable_v1");
         if (oldUnavailable != null) retainedMembers.put("prior_material_observation_unavailable_v1", oldUnavailable);
