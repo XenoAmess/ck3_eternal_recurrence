@@ -192,7 +192,7 @@ final class LedgerFiles {
                         8|(write.replace()?1:0)))throw new IOException("ledger atomic rename Win32="+Native.getLastError());
                 return null;
             });
-            Document persisted=read(write.target(),write.bytes().length);
+            Document persisted=read(write.target(),raw.length);
             if(!Arrays.equals(raw,persisted.bytes()))throw new IOException("ledger committed readback differs");
             return null;
         });
