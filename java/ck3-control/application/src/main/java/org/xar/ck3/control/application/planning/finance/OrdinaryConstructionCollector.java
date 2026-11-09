@@ -192,8 +192,8 @@ public final class OrdinaryConstructionCollector {
                 Obj raw = object(cashKnown.value().result().get("war_cash_current_resources"), "actual peaceful current cash resources");
                 Obj normalized = object(parse(RawCashCodec.normalize(encode(raw), DriverJson.encode(OrdinaryFinanceCollector.financingSnapshot(request.observations().snapshot()))).toJson()), "normalized peaceful cash");
                 var frame = request.before().frame();
-                normalized = normalized.with("queried_snapshot_id", new Text(frame.snapshotId())).with("queried_revision", new IntegerValue(frame.revision()))
-                        .with("queried_native_revision", new IntegerValue(frame.identity().nativeRevision()));
+                { Value peacetimeSnapshotId = new Text(frame.snapshotId()); var peacetimeCashMembers = new java.util.LinkedHashMap<>(normalized.members()); peacetimeCashMembers.put("queried_snapshot_id", peacetimeSnapshotId); peacetimeCashMembers.put("queried_revision", new IntegerValue(frame.revision()));
+                    peacetimeCashMembers.put("queried_native_revision", new IntegerValue(frame.identity().nativeRevision())); normalized = new Obj(peacetimeCashMembers); }
                 cash = new org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyModel.ObservedCash(
                         org.xar.ck3.control.wave2.development.constructioneconomy.ConstructionEconomyCodec.decodeCash(encode(normalized)), ConstructionValuePolicy.RESERVE_RAW);
             }
@@ -247,8 +247,8 @@ public final class OrdinaryConstructionCollector {
                 Obj raw = object(known.value().result().get("war_cash_current_resources"), "actual material cash resources");
                 Obj normalized = object(parse(RawCashCodec.normalize(encode(raw), DriverJson.encode(OrdinaryFinanceCollector.financingSnapshot(request.observations().snapshot()))).toJson()), "normalized material cash");
                 var frame = request.before().frame();
-                cash = Optional.of(normalized.with("queried_snapshot_id", new Text(frame.snapshotId())).with("queried_revision", new IntegerValue(frame.revision()))
-                        .with("queried_native_revision", new IntegerValue(frame.identity().nativeRevision())));
+                { Value materialSnapshotId = new Text(frame.snapshotId()); var materialCashMembers = new java.util.LinkedHashMap<>(normalized.members()); materialCashMembers.put("queried_snapshot_id", materialSnapshotId); materialCashMembers.put("queried_revision", new IntegerValue(frame.revision()));
+                    materialCashMembers.put("queried_native_revision", new IntegerValue(frame.identity().nativeRevision())); cash = Optional.of(new Obj(materialCashMembers)); }
             }
             var nativeRead = finance.query(session, FinanceReadContracts.Query.CONSTRUCTION, request);
             if (!(nativeRead instanceof OrdinaryFinanceCollector.Known<FinanceReadContracts.Packet> known)) return new MaterialMissing("registered current material Native source unavailable");
