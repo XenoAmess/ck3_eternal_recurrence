@@ -113,7 +113,7 @@ public final class NativeEffectRegistry implements ActionPorts.PreparationPort, 
                 StrictJson.require(previous == null || previous.equals(result), "conflicting material history projection");
                 StrictJson.require(previous != null || compatible.size() < retainedLimit, "effect history retention bound reached");
                 StrictJson.require(previous != null || retainedBytes + result.bytes().length <= MAXIMUM_MATERIAL_BYTES, "effect history material byte bound reached");
-                if (previous == null) { compatible.put(key, result); retainedBytes += result.bytes().length; }
+                if (previous == null) { compatible.put(key, result); retainedBytes += result.byteLength(); }
             });
         }
         return observed.result();

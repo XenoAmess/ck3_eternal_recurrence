@@ -44,7 +44,7 @@ public final class RawJson {
             validateDocument(factory);
         } catch (IOException error) { throw new IllegalArgumentException("invalid UTF-8/duplicate/token Native JSON", error); }
     }
-    public byte[] bytes() { return bytes.clone(); }
+    public byte[] bytes() { return bytes.clone(); } public int byteLength() { return bytes.length; }
     /** Explicit complete material cannot bypass the original Native/public protocol number bound. */
     public void requireProtocolBound() {
         if(factory==FACTORY)return;
