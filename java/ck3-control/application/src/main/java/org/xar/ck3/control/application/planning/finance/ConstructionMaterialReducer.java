@@ -201,21 +201,21 @@ public final class ConstructionMaterialReducer {
         var retainedMembers = new java.util.LinkedHashMap<>(prior.members());
         Value oldUnavailable = retainedMembers.remove("material_observation_unavailable_v1");
         if (oldUnavailable != null) retainedMembers.put("prior_material_observation_unavailable_v1", oldUnavailable);
-        Obj updated = new Obj(retainedMembers).with("completion_status", new Text(complete ? "completed" : "in_progress"))
-                .with("construction_progress_observation", progress).with("construction_province_income_observation", province)
-                .with("completion_last_check_date_raw", new IntegerValue(check))
-                .with("completion_observed_date_raw", complete ? prior.get("completion_observed_date_raw") instanceof IntegerValue old ? old : new IntegerValue(date)
-                        : prior.get("completion_observed_date_raw") == null ? Nil.INSTANCE : prior.get("completion_observed_date_raw"))
-                .with("observed_player_monthly_gold_income_raw", optionalNumber(income)).with("income_observed_date_raw", optionalNumber(incomeDate))
-                .with("observed_player_monthly_income_delta_raw", complete ? delta(ConstructionLedgerCodec.optionalInteger(prior, "pre_player_monthly_gold_income_raw"), income) : Nil.INSTANCE)
-                .with("observed_province_monthly_income_delta_raw", complete ? delta(provinceValue(prior.get("pre_province_income_observation")), provinceValue(province)) : Nil.INSTANCE)
-                .with("post_snapshot_id", frame.get("snapshot_id")).with("post_public_revision", frame.get("revision"))
-                .with("post_native_revision", new IntegerValue(revision)).with("post_date_raw", new IntegerValue(date)).with("post_proof_epoch", new IntegerValue(proof))
-                .with("post_player_gold_raw", new IntegerValue(wallet)).with("post_bridge_pid", new IntegerValue(pid)).with("post_bridge_creation_date", new Text(birth))
-                .with("start_receipt", prior.get("start_receipt") instanceof Obj original ? original : prior)
-                .with("readonly_material_recheck", obj("schema", new Text("xar.construction-readonly-material-recheck.v1"), "native_query_request_id", query.get("native_query_request_id"),
+        retainedMembers.put("completion_status", new Text(complete ? "completed" : "in_progress"));
+                retainedMembers.put("construction_progress_observation", progress); retainedMembers.put("construction_province_income_observation", province);
+                retainedMembers.put("completion_last_check_date_raw", new IntegerValue(check));
+                retainedMembers.put("completion_observed_date_raw", complete ? prior.get("completion_observed_date_raw") instanceof IntegerValue old ? old : new IntegerValue(date)
+                        : prior.get("completion_observed_date_raw") == null ? Nil.INSTANCE : prior.get("completion_observed_date_raw"));
+                retainedMembers.put("observed_player_monthly_gold_income_raw", optionalNumber(income)); retainedMembers.put("income_observed_date_raw", optionalNumber(incomeDate));
+                retainedMembers.put("observed_player_monthly_income_delta_raw", complete ? delta(ConstructionLedgerCodec.optionalInteger(prior, "pre_player_monthly_gold_income_raw"), income) : Nil.INSTANCE);
+                retainedMembers.put("observed_province_monthly_income_delta_raw", complete ? delta(provinceValue(prior.get("pre_province_income_observation")), provinceValue(province)) : Nil.INSTANCE);
+                retainedMembers.put("post_snapshot_id", frame.get("snapshot_id")); retainedMembers.put("post_public_revision", frame.get("revision"));
+                retainedMembers.put("post_native_revision", new IntegerValue(revision)); retainedMembers.put("post_date_raw", new IntegerValue(date)); retainedMembers.put("post_proof_epoch", new IntegerValue(proof));
+                retainedMembers.put("post_player_gold_raw", new IntegerValue(wallet)); retainedMembers.put("post_bridge_pid", new IntegerValue(pid)); retainedMembers.put("post_bridge_creation_date", new Text(birth));
+                retainedMembers.put("start_receipt", prior.get("start_receipt") instanceof Obj original ? original : prior);
+                retainedMembers.put("readonly_material_recheck", obj("schema", new Text("xar.construction-readonly-material-recheck.v1"), "native_query_request_id", query.get("native_query_request_id"),
                         "source_frame", source, "post_bridge_pid", new IntegerValue(pid), "post_bridge_creation_date", new Text(birth), "post_proof_epoch", new IntegerValue(proof),
-                        "original_action_counters_preserved", new Bool(true), "native_submit_calls", number(0)));
+                        "original_action_counters_preserved", new Bool(true), "native_submit_calls", number(0))); Obj updated = new Obj(retainedMembers);
         if (preserveIncomeFields) {
             var fields = new java.util.LinkedHashMap<>(updated.members());
             for (String field : List.of("observed_player_monthly_gold_income_raw", "income_observed_date_raw")) {
