@@ -283,21 +283,21 @@ public final class OrdinaryFinanceCollector {
     static Obj financingSnapshot(Obj original) {
         Obj result = financingFields(original, List.of("played_character_id", "played_character", "native_revision", "date_raw",
                 "snapshot_id", "revision", "episode_run_id", "active_wars", "played_character_gold", "paused", "map_ready", "diagnostics"));
-        if (result.get("played_character") instanceof Obj actor)
-            result = result.with("played_character", financingFields(actor, List.of("character_id", "alive")));
-        if (result.get("played_character_gold") instanceof Obj gold)
-            result = result.with("played_character_gold", financingFields(gold, List.of("scale", "raw")));
+        LinkedHashMap<String, Value> members = null; if (result.get("played_character") instanceof Obj actor) {
+            Obj actorProjection = financingFields(actor, List.of("character_id", "alive")); members = new LinkedHashMap<>(result.members()); members.put("played_character", actorProjection); }
+        if (result.get("played_character_gold") instanceof Obj gold) {
+            Obj goldProjection = financingFields(gold, List.of("scale", "raw")); if (members == null) members = new LinkedHashMap<>(result.members()); members.put("played_character_gold", goldProjection); }
         if (result.get("active_wars") instanceof Arr wars) {
-            result = result.with("active_wars", new Arr(wars.items().stream()
-                    .map(value -> value instanceof Obj row ? (Value) financingFields(row, List.of("war_id")) : value).toList()));
+            Arr warsProjection = new Arr(wars.items().stream()
+                    .map(value -> value instanceof Obj row ? (Value) financingFields(row, List.of("war_id")) : value).toList()); if (members == null) members = new LinkedHashMap<>(result.members()); members.put("active_wars", warsProjection);
         }
         if (result.get("diagnostics") instanceof Obj diagnostics) {
             Obj source = financingFields(diagnostics, List.of("bridge_pid", "connection_generation", "hello"));
             if (source.get("hello") instanceof Obj hello)
                 source = source.with("hello", financingFields(hello, List.of("expected_ck3_version", "expected_ck3_sha256", "game_version", "executable_sha256")));
-            result = result.with("diagnostics", source);
+            if (members == null) members = new LinkedHashMap<>(result.members()); members.put("diagnostics", source);
         }
-        return result;
+        return members == null ? result : new Obj(members);
     }
     private static Obj financingFields(Obj original, List<String> names) {
         var fields = new LinkedHashMap<String, Value>();
