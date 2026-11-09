@@ -963,7 +963,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     private void captureFreshSnapshot(NativeWire.Snapshot received,ObservedFrame actual,NativeRequestChronology.Event event)throws IOException {
         var capture=pendingFreshSnapshot;if(capture==null)return;
-        ObjectNode raw=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(received.packet().value(),4,received.packet().value().length)));
+        ObjectNode raw=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(received.packet().value(),4,received.packet().byteLength())));
         var marker=raw.get("read_request_id");if(marker==null)return;
         if(!marker.isTextual()){capture.invalid="fresh state request marker has the wrong JSON type";return;}
         if(!capture.requestId.equals(marker.textValue()))return;
