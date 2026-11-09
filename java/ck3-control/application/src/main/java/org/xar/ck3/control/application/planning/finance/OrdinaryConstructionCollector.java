@@ -147,8 +147,8 @@ public final class OrdinaryConstructionCollector {
             var actualCash = RawCashCodec.normalize(DriverJson.encode(rawCash), DriverJson.encode(OrdinaryFinanceCollector.financingSnapshot(request.observations().snapshot())));
             Obj normalized = object(parse(actualCash.toJson()), "normalized native cash");
             var frame = request.before().frame();
-            normalized = normalized.with("queried_snapshot_id", new Text(frame.snapshotId())).with("queried_revision", new IntegerValue(frame.revision()))
-                    .with("queried_native_revision", new IntegerValue(frame.identity().nativeRevision()));
+            { Value quotedSnapshotId = new Text(frame.snapshotId()); var quotedCashMembers = new java.util.LinkedHashMap<>(normalized.members()); quotedCashMembers.put("queried_snapshot_id", quotedSnapshotId); quotedCashMembers.put("queried_revision", new IntegerValue(frame.revision()));
+                quotedCashMembers.put("queried_native_revision", new IntegerValue(frame.identity().nativeRevision())); normalized = new Obj(quotedCashMembers); }
             Obj cashObservation = obj("kind", new Text("observed"), "cash", normalized,
                     "reserve_gold_raw", new IntegerValue(ConstructionValuePolicy.RESERVE_RAW));
             Obj outlay = obj("query_observation", nativeInput, "cash_observation", cashObservation);
