@@ -25,8 +25,8 @@ public final class NativeTransportDiagnostics {
     public record ReceivedSnapshot(TransportSession session,BigInteger ordinal,NativeWire.Bytes originalPacket,Instant observedAt) {
         public ReceivedSnapshot {Objects.requireNonNull(session);positive(ordinal);Objects.requireNonNull(originalPacket);Objects.requireNonNull(observedAt);int originalPacketLength=originalPacket.byteLength();StrictJson.require(originalPacketLength>=5&&originalPacketLength<=NativeWire.MAXIMUM_FRAME_BYTES+4,"bounded actual snapshot packet required");}
         public SnapshotFields fields()throws IOException {
-            ObjectNode frame=originalObject(originalPacket.value());
-            byte[] payload=Arrays.copyOfRange(originalPacket.value(),4,originalPacket.value().length);
+            byte[] packetBytes=originalPacket.value();ObjectNode frame=originalObject(packetBytes);
+            byte[] payload=Arrays.copyOfRange(packetBytes,4,packetBytes.length);
             StrictJson.require(frame.path("type").isTextual()&&frame.get("type").textValue().equals("state_snapshot")
                     &&NativeWire.integer(frame.get("protocol_version"),BigInteger.ONE,BigInteger.ONE).equals(BigInteger.ONE),"actual protocol-v1 state_snapshot required");
             ObjectNode state=frame.get("state") instanceof ObjectNode object?object:NativeWire.object(NativeWire.parse(new byte[]{'{','}'}));
