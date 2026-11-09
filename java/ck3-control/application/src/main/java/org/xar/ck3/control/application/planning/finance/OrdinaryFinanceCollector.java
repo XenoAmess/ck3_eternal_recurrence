@@ -387,7 +387,7 @@ public final class OrdinaryFinanceCollector {
      * Complete business subtrees, opaque political identities and post-quote income material are retained.
      */
     public static Obj projectCashContext(Obj original) {
-        Obj result = original;
+        LinkedHashMap<String, Value> members = null;
         if (original.get("snapshot") instanceof Obj snapshot) {
             Obj view = financingFields(snapshot, List.of("source", "paused", "map_ready", "played_character_id", "played_character", "played_character_gold",
                     "native_revision", "date_raw", "snapshot_id", "revision", "episode_run_id", "active_event", "pending_character_interaction",
@@ -395,13 +395,13 @@ public final class OrdinaryFinanceCollector {
                     "army_strengths_queried_revision", "war_termination_options", "diagnostics"));
             if (view.get("diagnostics") instanceof Obj diagnostics)
                 view = view.with("diagnostics", financingFields(diagnostics, List.of("connected", "bridge_pid", "connection_generation")));
-            result = result.with("snapshot", view);
+            members = new LinkedHashMap<>(original.members()); members.put("snapshot", view);
         }
-        if (original.get("root") instanceof Obj root)
-            result = result.with("root", financingFields(root, List.of("status", "player_character_id", "snapshot_revision", "date_raw",
+        if (original.get("root") instanceof Obj root) {
+            Obj projectedRoot = financingFields(root, List.of("status", "player_character_id", "snapshot_revision", "date_raw",
                     "player_max_monthly_gold_maintenance_v1", "primary_title", "held_title_partition", "player_character_alive", "independent",
-                    "readiness", "immediate_liege_character_id", "top_liege_character_id", "provenance", "player_monthly_gold_income")));
-        return result;
+                    "readiness", "immediate_liege_character_id", "top_liege_character_id", "provenance", "player_monthly_gold_income")); if (members == null) members = new LinkedHashMap<>(original.members()); members.put("root", projectedRoot); }
+        return members == null ? original : new Obj(members);
     }
     public Read<Feast> feast(PlanningRequest request,Spending current) {
         Read<FinanceReadContracts.Packet> read=query(FinanceReadContracts.Query.FEAST_INPUTS,request);
