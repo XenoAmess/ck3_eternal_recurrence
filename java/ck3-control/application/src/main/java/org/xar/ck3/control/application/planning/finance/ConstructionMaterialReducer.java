@@ -116,7 +116,7 @@ public final class ConstructionMaterialReducer {
         Obj diagnostic = object(snapshot.get("diagnostics"), "actual process diagnostics");
         BigInteger pid = integer(diagnostic.get("bridge_pid"), "bridge_pid"); positive(pid);
         String birth = text(diagnostic.get("bridge_creation_date"), "actual process birth"); require(!birth.isEmpty(), "actual process birth required");
-        Obj source = frame.with("bridge_pid", new IntegerValue(pid)).with("bridge_creation_date", new Text(birth));
+        Obj source; { Value sourcePid = new IntegerValue(pid); var sourceMembers = new java.util.LinkedHashMap<>(frame.members()); sourceMembers.put("bridge_pid", sourcePid); sourceMembers.put("bridge_creation_date", new Text(birth)); source = new Obj(sourceMembers); }
         BigInteger date = integer(frame.get("date_raw"), "date_raw"), revision = integer(frame.get("native_revision"), "native_revision"); positive(revision);
         BigInteger preDate = integer(prior.get("pre_date_raw"), "original action date"); require(date.compareTo(preDate) >= 0, "material predates original action");
         BigInteger proof = integer(query.get("proof_epoch"), "actual material proof"); positive(proof);
