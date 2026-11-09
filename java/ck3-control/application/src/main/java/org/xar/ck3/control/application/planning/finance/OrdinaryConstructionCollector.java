@@ -297,8 +297,8 @@ public final class OrdinaryConstructionCollector {
         EmergencyFinancingAssessmentCodec.decode(DriverJson.encode(input)); return new FinancingCapture(input, source);
     }
     private static Obj cash(PlanningRequest request, OrdinaryFinanceCollector.Current current, Obj procurement, String kind, BigInteger cost) {
-        return OrdinaryFinanceCollector.cashContext(request, current, WartimeConstructionCodec.SCHEMA, null)
-                .with("kind", new Text(kind)).with("construction_gold_raw", new IntegerValue(cost)).with("procurement_decision", procurement);
+        Obj context = OrdinaryFinanceCollector.cashContext(request, current, WartimeConstructionCodec.SCHEMA, null); Text kindValue = new Text(kind);
+        var members = new java.util.LinkedHashMap<>(context.members()); members.put("kind", kindValue); members.put("construction_gold_raw", new IntegerValue(cost)); members.put("procurement_decision", procurement); return new Obj(members);
     }
     public static ObservedRequest envelope(Selection selection, String stage, Obj cash, Value quoted, Value financing) {
         byte[] full=DriverJson.encode(obj("schema", new Text(OrdinaryWartimeConstructionCodec.SCHEMA), "stage", new Text(stage),
