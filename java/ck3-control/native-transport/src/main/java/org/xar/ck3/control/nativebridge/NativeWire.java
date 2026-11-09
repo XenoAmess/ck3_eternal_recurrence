@@ -40,7 +40,7 @@ public final class NativeWire {
 
     public record Bytes(byte[] value) {
         public Bytes { value = value.clone(); }
-        @Override public byte[] value() { return value.clone(); }
+        @Override public byte[] value() { return value.clone(); } public int byteLength(){return value.length;}
     }
     public enum Presence { ABSENT, NULL, VALUE }
     public record Field(Presence presence, Optional<Bytes> token) {
