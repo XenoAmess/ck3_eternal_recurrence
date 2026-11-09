@@ -1780,14 +1780,14 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 return;
             }
         }
-        int bytes = result.packet().value().length;
+        int bytes = result.packet().byteLength();
         if (lateResults.size() >= maximumFramesPerOperation || (long) retainedResultBytes + bytes > NativeWire.MAXIMUM_FRAME_BYTES + 4L) {
             terminalFailure = "undrained original Native result custody budget exhausted"; throw new IOException(terminalFailure);
         }
         lateResults.add(result); retainedResultBytes += bytes;
     }
     private void removeRetained(NativeWire.CommandResult result) {
-        if (lateResults.remove(result)) retainedResultBytes -= result.packet().value().length;
+        if (lateResults.remove(result)) retainedResultBytes -= result.packet().byteLength();
     }
     private void requireIdentity(CommandOrigin origin) throws IOException {
         if (!origin.machineId().equals(config.machineId()) || !origin.game().equals(config.game()))
