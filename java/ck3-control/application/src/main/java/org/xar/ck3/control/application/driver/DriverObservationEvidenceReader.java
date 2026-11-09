@@ -49,8 +49,8 @@ public final class DriverObservationEvidenceReader {
         row.put("transport",session(actual.session()));row.put("snapshot_id",text(actual.snapshotId()));
         row.put("native_revision",new OpportunityJson.IntegerValue(actual.nativeRevision()));
         row.put("native_state_sha256",text(DriverJson.sha256(actual.state().bytes())));
-        row.put("native_packet_sha256",text(DriverJson.sha256(actual.originalPacket())));
-        row.put("native_packet_bytes",integer(actual.originalPacket().length));row.put("observed_at",text(actual.observedAt().toString()));
+        byte[] originalPacket;row.put("native_packet_sha256",text(DriverJson.sha256(originalPacket=actual.originalPacket())));
+        row.put("native_packet_bytes",integer(originalPacket.length));row.put("observed_at",text(actual.observedAt().toString()));
         row.put("public_revision",new OpportunityJson.IntegerValue(publicRevision));row.put("observation_version",integer(observationVersion));
         row.put("source",source(source));row.put("original_semantic_fields",semantic);
         return RawJson.fullMaterial(DriverJson.encode(new OpportunityJson.Obj(row)));
