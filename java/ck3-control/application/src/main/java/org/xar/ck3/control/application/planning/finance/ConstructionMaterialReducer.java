@@ -156,7 +156,7 @@ public final class ConstructionMaterialReducer {
                     "action_request_id", new Text(input.actionRequestId()), "source_frame", source, "native_query_request_id", query.get("native_query_request_id"),
                     "native_proof_epoch", new IntegerValue(proof), "reason", new Text(covered ? "tracked_tuple_not_observed_in_current_material_projection" : "subject_outside_current_direct_holding_projection"),
                     "retry_not_before_date_raw", new IntegerValue(date.add(MONTH)), "prior_material_receipt_retained", new Bool(true));
-            Obj retained = prior.with("completion_last_check_date_raw", new IntegerValue(date)).with("material_observation_unavailable_v1", observation);
+            Obj retained; { Value retainedCheckDate = new IntegerValue(date); var retainedMembersForUnavailable = new java.util.LinkedHashMap<>(prior.members()); retainedMembersForUnavailable.put("completion_last_check_date_raw", retainedCheckDate); retainedMembersForUnavailable.put("material_observation_unavailable_v1", observation); retained = new Obj(retainedMembersForUnavailable); }
             return new Reduced(Disposition.PRIOR_MATERIAL_RETAINED, replace(ledger, input.actionRequestId(), Optional.of(retained)), observation, Optional.of(retained));
         }
         boolean complete = !matchingCompleted.isEmpty();
