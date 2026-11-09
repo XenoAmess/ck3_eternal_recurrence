@@ -141,7 +141,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     public synchronized Optional<StateRevision> latestStateRevision(){
         return stateRevisionAvailable?Optional.ofNullable(latestStateRevision):Optional.empty();
     }
-    private OpportunityJson.Obj lastAcceptedSemantic;
+    private OpportunityJson.Obj lastAcceptedSemantic;private OpportunityJson.Obj ownerCanonicalObj;private com.fasterxml.jackson.databind.JsonNode derivedJsonNode;
     private AcceptedSnapshotRevision latestAcceptedSnapshotRevision;
     private final Map<BigInteger, AcceptedSnapshotRevision> acceptedSnapshotRevisions = new LinkedHashMap<>();
     /** Original accepted receive DATA; only this receiver constructs it. No live-read or Ready authority. */
@@ -186,14 +186,14 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private void retainAcceptedSnapshotRevision(ObservedFrame actual, NativeRequestChronology.Event received,
             OpportunityJson.Obj semantic) throws IOException {
         BigInteger next=statePublicRevision;
-        if(!NativeSemanticFingerprint.equivalent(DriverJson.toNode(semantic),
-                lastAcceptedSemantic==null?null:DriverJson.toNode(lastAcceptedSemantic)))next=next.add(BigInteger.ONE);
+        var currentNode=DriverJson.toNode(semantic);if(!NativeSemanticFingerprint.equivalent(currentNode,
+                lastAcceptedSemantic==null?null:(lastAcceptedSemantic==ownerCanonicalObj&&derivedJsonNode!=null?derivedJsonNode:DriverJson.toNode(lastAcceptedSemantic))))next=next.add(BigInteger.ONE);
         if(next.compareTo(NativeWire.UINT64_MAX)>0)throw new IOException("actual received public revision exhausted uint64");
         var token=new AcceptedSnapshotRevision(actual,received,next);
         if(acceptedSnapshotRevisions.size()>=Math.max(4096,maximumFramesPerOperation))
             acceptedSnapshotRevisions.remove(acceptedSnapshotRevisions.keySet().iterator().next());
         acceptedSnapshotRevisions.put(received.order(),token);latestAcceptedSnapshotRevision=token;
-        statePublicRevision=next;lastAcceptedSemantic=semantic;
+        statePublicRevision=next;lastAcceptedSemantic=semantic;ownerCanonicalObj=semantic;derivedJsonNode=currentNode;
         latestStateRevision=new StateRevision(session(),received,next,StateRevisionKind.SNAPSHOT,Optional.empty());
     }
     private boolean closed;
@@ -1940,7 +1940,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private static String reason(Exception failure) { return failure.getClass().getSimpleName() + ": " + Objects.toString(failure.getMessage(), "unavailable"); }
     @Override public synchronized void close() throws IOException {
         closed=true;
-        try {endpoint.close();} finally {
+        try {endpoint.close();} finally {ownerCanonicalObj=null;derivedJsonNode=null;
             retainActualDisconnection(null);
             if(hello!=null&&stateConnected) {
                 stateRevisionAvailable=false;
