@@ -23,7 +23,7 @@ public final class NativeTransportDiagnostics {
     }
     /** Each ordinal names one actual receive, even when the publisher repeats identical bytes. */
     public record ReceivedSnapshot(TransportSession session,BigInteger ordinal,NativeWire.Bytes originalPacket,Instant observedAt) {
-        public ReceivedSnapshot {Objects.requireNonNull(session);positive(ordinal);Objects.requireNonNull(originalPacket);Objects.requireNonNull(observedAt);StrictJson.require(originalPacket.value().length>=5&&originalPacket.value().length<=NativeWire.MAXIMUM_FRAME_BYTES+4,"bounded actual snapshot packet required");}
+        public ReceivedSnapshot {Objects.requireNonNull(session);positive(ordinal);Objects.requireNonNull(originalPacket);Objects.requireNonNull(observedAt);int originalPacketLength=originalPacket.value().length;StrictJson.require(originalPacketLength>=5&&originalPacketLength<=NativeWire.MAXIMUM_FRAME_BYTES+4,"bounded actual snapshot packet required");}
         public SnapshotFields fields()throws IOException {
             ObjectNode frame=originalObject(originalPacket.value());
             byte[] payload=Arrays.copyOfRange(originalPacket.value(),4,originalPacket.value().length);
