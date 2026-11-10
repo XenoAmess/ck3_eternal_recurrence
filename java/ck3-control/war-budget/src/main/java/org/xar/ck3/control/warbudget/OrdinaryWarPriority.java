@@ -35,7 +35,7 @@ public final class OrdinaryWarPriority {
         private final ObjectNode originalSnapshot;
         private final ObjectNode priority;
         private Observation(ObjectNode snapshot, ObjectNode priority) {
-            this.originalSnapshot = snapshot.deepCopy(); this.priority = priority.deepCopy();
+            this.originalSnapshot = snapshot; this.priority = priority;
         }
         public byte[] toJson() { return encode(priority); }
         public byte[] sourceSnapshot() { return FullJsonTree.encode(originalSnapshot, FullJsonTree.MAXIMUM_BYTES); }
