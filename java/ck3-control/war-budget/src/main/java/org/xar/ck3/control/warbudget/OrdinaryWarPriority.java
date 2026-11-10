@@ -87,8 +87,8 @@ public final class OrdinaryWarPriority {
     }
     /** The existing shared finance arithmetic, with no copied reserve formula or policy alteration. */
     public static byte[] finance(FinanceRequest request) {
-        ObjectNode snapshot = record(parseFull(request.observations().snapshot()));
-        JsonNode root = StrictJson.parse(request.observations().nullableCampaignRoot(), StrictJson.EXPLICIT_MAX_BYTES);
+        ObjectNode snapshot = record(parseFull(request.observations().snapshot));
+        JsonNode root = StrictJson.parse(request.observations().nullableCampaignRoot, StrictJson.EXPLICIT_MAX_BYTES);
         JsonNode price = request.price().<JsonNode>map(com.fasterxml.jackson.databind.node.BigIntegerNode::valueOf)
                 .orElse(com.fasterxml.jackson.databind.node.NullNode.instance);
         JsonNode months = request.contractMonths().<JsonNode>map(com.fasterxml.jackson.databind.node.BigIntegerNode::valueOf)
