@@ -53,6 +53,11 @@ public final class GameSupervisor {
             System.out.println("STOP_REQUEST_PUBLISHED");
             return;
         }
+        if (args.length == 4 && args[0].equals("current-steam-mode")) {
+            int status = runCurrentSteamMode(Path.of(args[1]), Path.of(args[2]), Path.of(args[3]));
+            if (status != 0) System.exit(status);
+            return;
+        }
         if (args.length != 2) throw new IllegalArgumentException(
                 "GameSupervisor requires ordinary-configuration and absent-owner-directory, or stop owner.json request-id timeout-seconds");
         int status = run(Path.of(args[0]), Path.of(args[1]));
@@ -60,6 +65,14 @@ public final class GameSupervisor {
     }
 
     public static int run(Path configuration, Path ownerDirectory) throws IOException, InterruptedException {
+        return run(configuration, ownerDirectory, null);
+    }
+    public static int runCurrentSteamMode(Path configuration, Path ownerDirectory, Path authorization)
+            throws IOException, InterruptedException {
+        return run(configuration, ownerDirectory, Objects.requireNonNull(authorization));
+    }
+    private static int run(Path configuration, Path ownerDirectory, Path authorization)
+            throws IOException, InterruptedException {
         Path directory = ownerDirectory.toAbsolutePath().normalize();
         Files.createDirectory(directory);
         var document = StrictJson.parse(GameSupervisorControl.readBounded(configuration, NativeLaunchPlanCodec.MAXIMUM_BYTES),
@@ -67,8 +80,9 @@ public final class GameSupervisor {
         var body = document.has("configuration") ? document.get("configuration") : document;
         NativeLaunchPlan plan = NativeLaunchPlanCodec.fromJson(body).accept();
         JavaGameLifecycle lifecycle = new JavaGameLifecycle(List.of());
-        var launched = plan.load() instanceof NativeLaunchPlan.SavedGame
-                ? lifecycle.launchSaved(plan) : lifecycle.launchNew(plan);
+        var launched = authorization == null
+                ? (plan.load() instanceof NativeLaunchPlan.SavedGame ? lifecycle.launchSaved(plan) : lifecycle.launchNew(plan))
+                : lifecycle.launchSavedCurrentMode(plan, authorization);
         if (!(launched instanceof JavaGameLifecycle.Started started)) {
             ObjectNode failure = base(plan, "LAUNCH_NOT_STARTED");
             failure.put("detail", bounded(launched.toString()));

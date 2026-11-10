@@ -31,6 +31,7 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
     private final WindowsJobProcess process;
     private final WindowsPreloadCustody.Lease custody;
     private final SteamOfflineProbe.QualifiedOffline offline;
+    private final CurrentSteamLaunch.QualifiedCurrent currentSteam;
     private final NativeGameTransport transport;
     private final LifecycleEvidence evidence;
     private final JavaGameLifecycle owner;
@@ -47,6 +48,19 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
     ManagedGameSession(NativeLaunchPlan plan,WindowsJobProcess process,WindowsPreloadCustody.Lease custody,
             SteamOfflineProbe.QualifiedOffline offline,NativeGameTransport transport,LifecycleEvidence evidence,JavaGameLifecycle owner,
             NativePipeEndpoint.Config actualConfig,NativeProcessGuard actualGuard){
+        this(plan,process,custody,Objects.requireNonNull(offline),null,transport,evidence,owner,actualConfig,actualGuard);
+    }
+    ManagedGameSession(NativeLaunchPlan plan,WindowsJobProcess process,WindowsPreloadCustody.Lease custody,
+            CurrentSteamLaunch.QualifiedCurrent currentSteam,NativeGameTransport transport,LifecycleEvidence evidence,JavaGameLifecycle owner,
+            NativePipeEndpoint.Config actualConfig,NativeProcessGuard actualGuard){
+        this(plan,process,custody,null,Objects.requireNonNull(currentSteam),transport,evidence,owner,actualConfig,actualGuard);
+    }
+    private ManagedGameSession(NativeLaunchPlan plan,WindowsJobProcess process,WindowsPreloadCustody.Lease custody,
+            SteamOfflineProbe.QualifiedOffline offline,CurrentSteamLaunch.QualifiedCurrent currentSteam,
+            NativeGameTransport transport,LifecycleEvidence evidence,JavaGameLifecycle owner,
+            NativePipeEndpoint.Config actualConfig,NativeProcessGuard actualGuard){
+        if((offline==null)==(currentSteam==null))throw new IllegalArgumentException("Exactly one original Steam qualification required");
+        this.currentSteam=currentSteam;
         this.mode=Mode.OWNED;
         this.plan=plan;this.process=process;this.custody=custody;this.offline=offline;this.transport=transport;this.evidence=evidence;this.owner=owner;
         this.originalIdentity=process.identity();this.generation=generation(originalIdentity);
@@ -59,7 +73,7 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         this.mode=Mode.ATTACHED;
         this.plan=plan;this.attachedHandle=Objects.requireNonNull(handle);this.originalIdentity=Objects.requireNonNull(identity);
         this.generation=Objects.requireNonNull(generation);this.transport=Objects.requireNonNull(transport);this.evidence=Objects.requireNonNull(evidence);
-        this.process=null;this.custody=null;this.offline=null;this.owner=null;
+        this.process=null;this.custody=null;this.offline=null;this.currentSteam=null;this.owner=null;
         this.physicalSource=new NativePhysicalSourceAccess(this,Objects.requireNonNull(actualConfig),Objects.requireNonNull(actualGuard));
     }
 
@@ -187,7 +201,7 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         IOException cleanup=null;
         try{transport.close();}catch(IOException failure){cleanup=failure;}
         try{custody.close();}catch(IOException failure){if(cleanup==null)cleanup=failure;else cleanup.addSuppressed(failure);}
-        try{offline.close();}catch(IOException failure){if(cleanup==null)cleanup=failure;else cleanup.addSuppressed(failure);}
+        try{closeSteamAdmission();}catch(IOException failure){if(cleanup==null)cleanup=failure;else cleanup.addSuppressed(failure);}
         if(cleanup!=null)throw cleanup;
         process.close();closed=true;
         owner.clearTrackingAfterProvenExit(this);
@@ -200,10 +214,15 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
             try{process.close();}catch(RuntimeException cleanup){failure.addSuppressed(cleanup);}closed=true;
             try{transport.close();}catch(IOException|RuntimeException cleanup){failure.addSuppressed(cleanup);}
             try{custody.close();}catch(IOException|RuntimeException cleanup){failure.addSuppressed(cleanup);}
-            try{offline.close();}catch(IOException|RuntimeException cleanup){failure.addSuppressed(cleanup);}
+            try{closeSteamAdmission();}catch(IOException|RuntimeException cleanup){failure.addSuppressed(cleanup);}
             if(watchdog!=null)watchdog.cancel();
             throw failure;
         }
+    }
+    private void closeSteamAdmission()throws IOException{
+        if(offline!=null)offline.close();
+        else if(currentSteam!=null)currentSteam.close();
+        else throw new IOException("Owned Game lost its original Steam qualification");
     }
     private static Instant min(Instant a,Instant b){return a.isBefore(b)?a:b;}
     /** In-process control category for a known pre-termination deadline refusal; not a Native/Game issuer or successful terminal. */

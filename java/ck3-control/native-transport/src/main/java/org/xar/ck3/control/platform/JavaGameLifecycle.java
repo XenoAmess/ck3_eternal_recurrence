@@ -64,6 +64,7 @@ public final class JavaGameLifecycle {
     private static final String MUTEX="Local\\XarJavaGameLifecycle-v1";
     private final Map<String,LaunchResult> results=new ConcurrentHashMap<>();
     private final Map<String,NativeLaunchPlanCodec.Configuration> launchRequests=new java.util.LinkedHashMap<>();
+    private final Map<String,ControlBuild.FileRef> launchModes=new java.util.LinkedHashMap<>();
     private final ConcurrentHashMap<ManagedGameSession,TrackingState> tracking=new ConcurrentHashMap<>();
     private volatile ManagedGameSession currentSession;
     private final Map<String,ReplacementRequest> replacementRequests=new java.util.LinkedHashMap<>();
@@ -103,6 +104,11 @@ public final class JavaGameLifecycle {
     public synchronized LaunchResult launchSaved(NativeLaunchPlan plan)throws IOException,InterruptedException{
         if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))return new Rejected("launchSaved requires an exact physical save");
         return launch(plan);
+    }
+    /** Explicit user-authorized Saved launch in unchanged current Steam mode; no offline claim. */
+    public synchronized LaunchResult launchSavedCurrentMode(NativeLaunchPlan plan,Path authorization)throws IOException,InterruptedException{
+        if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))return new Rejected("Current Steam mode launch requires exact SavedGame");
+        return launch(plan,CurrentSteamLaunch.authorizationSource(authorization));
     }
     /** Query is read-only. Missing owner memory cannot prove that an older CREATE never entered. */
     public synchronized LaunchResult query(String requestId){
@@ -183,15 +189,20 @@ public final class JavaGameLifecycle {
         }
     }
     private LaunchResult launch(NativeLaunchPlan plan)throws IOException,InterruptedException{
+        return launch(plan,null);
+    }
+    private LaunchResult launch(NativeLaunchPlan plan,ControlBuild.FileRef currentAuthorization)throws IOException,InterruptedException{
         Objects.requireNonNull(plan);
         NativeLaunchPlanCodec.Configuration body=NativeLaunchPlanCodec.describe(plan),previous=launchRequests.get(plan.requestId());
         if(previous!=null){
-            if(!previous.equals(body))return new Unknown(plan.requestId(),"Original launch ID changed its exact configuration; no replay",null);
+            if(!previous.equals(body)||!Objects.equals(launchModes.get(plan.requestId()),currentAuthorization))
+                return new Unknown(plan.requestId(),"Original launch ID changed its configuration or Steam admission mode; no replay",null);
             return results.getOrDefault(plan.requestId(),new Unknown(plan.requestId(),"Original launch entered without a retained terminal; query only",null));
         }
         if(launchRequests.size()>=4096)return new Rejected("Original once-only request retention is full");
         NativeLaunchPolicy.requireCurrent(plan);
         launchRequests.put(plan.requestId(),body);
+        launchModes.put(plan.requestId(),currentAuthorization);
         Win32Host.deadline(plan.deadline());
         Path control=plan.stateDirectory().resolve("control");Files.createDirectories(control);
         String key=plan.sources().review().machineId()+"|"+Path.of(plan.sources().review().gameExecutable().path()).toRealPath();
@@ -199,6 +210,7 @@ public final class JavaGameLifecycle {
         boolean entered=false,registered=false;
         LifecycleEvidence evidence=new LifecycleEvidence(plan);ExactRef last=null;
         WindowsJobProcess process=null;SteamOfflineProbe.QualifiedOffline offline=null;
+        CurrentSteamLaunch.QualifiedCurrent currentSteam=null;
         AtomicReference<WindowsPreloadCustody.Lease> lease=new AtomicReference<>();
         AtomicReference<NativePipeEndpoint> endpoint=new AtomicReference<>();
         AtomicReference<NativePipeEndpoint.Config> endpointConfig=new AtomicReference<>();
@@ -212,9 +224,11 @@ public final class JavaGameLifecycle {
             Files.createDirectory(plan.evidenceRoot());
             writeClaim(plan,nonce,ClaimState.RESERVED,null,true);
             last=evidence.write(LifecycleEvidence.Event.INTENT,null,null,null,null,"Configured Java Game launch requested");
-            offline=SteamOfflineProbe.observe(plan.steam(),plan.evidenceRoot().resolve("steam-offline.json"));
+            if(currentAuthorization==null)offline=SteamOfflineProbe.observe(plan.steam(),plan.evidenceRoot().resolve("steam-offline.json"));
+            else currentSteam=CurrentSteamLaunch.observe(plan,currentAuthorization);
             if(!inventory(plan,evidence,"BEFORE_CREATE").isEmpty())throw new IOException("Qualified running CK3 appeared after preflight");
-            offline.consumeBeforeGameCreate();
+            if(currentSteam==null)offline.consumeBeforeGameCreate();
+            else currentSteam.consumeBeforeGameCreate();
             prepareNoModsProfile(plan.preparedProfile(),plan.profileDirectory());
             if (plan.load() instanceof NativeLaunchPlan.SavedGame saved) {
                 NativeSavedGameFiles.materialize(plan.profileDirectory(), saved);
@@ -253,8 +267,9 @@ public final class JavaGameLifecycle {
             transport.awaitHello(helloDeadline);held.observeLoaded();
             Path hello=plan.evidenceRoot().resolve("native-hello.packet");Files.write(hello,transport.lastOriginalPacket(),StandardOpenOption.CREATE_NEW);
             last=evidence.write(LifecycleEvidence.Event.HELLO,process.identity(),process.accounting(),null,null,"Original Native hello/actual kernel peer/connection generation accepted; loaded DLL matches continuous pre-load FileID");
-            ManagedGameSession session=new ManagedGameSession(plan,process,held,offline,transport,evidence,this,
-                    endpointConfig.get(),endpointGuard.get());
+            ManagedGameSession session=currentSteam==null
+                    ?new ManagedGameSession(plan,process,held,offline,transport,evidence,this,endpointConfig.get(),endpointGuard.get())
+                    :new ManagedGameSession(plan,process,held,currentSteam,transport,evidence,this,endpointConfig.get(),endpointGuard.get());
             session.verify();
             Tracking record=new Tracking("xar.java-game-tracking/v1",plan.sources().review().machineId(),plan.requestId(),plan.sessionId(),nonce,process.identity(),session.command(),"KILL_ON_JOB_CLOSE|JOB_MEMORY; exact retained process/thread and DLL lease");
             Path track=control.resolve("java-game.json");atomic(track,record,false);
@@ -265,15 +280,16 @@ public final class JavaGameLifecycle {
         }catch(IOException|RuntimeException failure){
             if(!entered){
                 if(offline!=null)try{offline.close();}catch(IOException cleanup){failure.addSuppressed(cleanup);}
+                if(currentSteam!=null)try{currentSteam.close();}catch(IOException cleanup){failure.addSuppressed(cleanup);}
                 return reject(plan,failure.toString());
             }
             WindowsJobProcess.ProcessIdentity failedIdentity=process!=null?process.identity():null;
-            ExactRef cleanup=cleanupUnknown(process,endpoint.get(),lease.get(),offline,evidence,failure);
+            ExactRef cleanup=cleanupUnknown(process,endpoint.get(),lease.get(),offline,currentSteam,evidence,failure);
             if(cleanup!=null)last=cleanup;
             writeClaim(plan,nonce,ClaimState.UNKNOWN,failedIdentity,false);
             Unknown unknown=new Unknown(plan.requestId(),failure.toString(),last);results.put(plan.requestId(),unknown);return unknown;
         }catch(InterruptedException interrupted){
-            ExactRef cleanup=cleanupUnknown(process,endpoint.get(),lease.get(),offline,evidence,interrupted);
+            ExactRef cleanup=cleanupUnknown(process,endpoint.get(),lease.get(),offline,currentSteam,evidence,interrupted);
             if(cleanup!=null)last=cleanup;
             if(entered){Unknown unknown=new Unknown(plan.requestId(),"Interrupted after original CREATE; no replay",last);results.put(plan.requestId(),unknown);}
             Thread.currentThread().interrupt();throw interrupted;
@@ -282,7 +298,7 @@ public final class JavaGameLifecycle {
         }
     }
     private static ExactRef cleanupUnknown(WindowsJobProcess process,NativePipeEndpoint endpoint,WindowsPreloadCustody.Lease custody,
-            SteamOfflineProbe.QualifiedOffline offline,LifecycleEvidence evidence,Exception original){
+            SteamOfflineProbe.QualifiedOffline offline,CurrentSteamLaunch.QualifiedCurrent currentSteam,LifecycleEvidence evidence,Exception original){
         ExactRef terminalProof=null;
         if(process!=null){
             boolean restoreInterrupt=Thread.interrupted();
@@ -303,6 +319,7 @@ public final class JavaGameLifecycle {
         if(endpoint!=null)try{endpoint.close();}catch(IOException|RuntimeException error){original.addSuppressed(error);}
         if(custody!=null)try{custody.close();}catch(IOException|RuntimeException error){original.addSuppressed(error);}
         if(offline!=null)try{offline.close();}catch(IOException|RuntimeException error){original.addSuppressed(error);}
+        if(currentSteam!=null)try{currentSteam.close();}catch(IOException|RuntimeException error){original.addSuppressed(error);}
         return terminalProof;
     }
     /** Bounded safety cleanup consumes the original process wait/exit/Job; it grants no retry authority. */
