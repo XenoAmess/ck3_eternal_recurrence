@@ -58,6 +58,14 @@ public final class FactionGiftPolicy {
                     .maxNumberLength(4300).maxStringLength(16_384).build()).build())
             .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
 
+    private static final Set<String> REQUIRED_TRUE_OBSERVATION_FIELDS = Set.of("available", "paused", "player_resources_query_complete",
+                    "source_faction_requery_complete", "recipient_identity_resolved",
+                    "recipient_opinion_query_complete", "source_faction_metrics_available");
+    private static final Set<String> OBSERVATION_BOOLEAN_FIELDS = Set.of("source_faction_present", "source_faction_targeting_player",
+                    "source_faction_at_war", "recipient_alive", "recipient_is_ai",
+                    "recipient_is_direct_landed_vassal", "gift_opinion_present");
+    private static final Set<String> PREVIEW_BOOLEAN_FIELDS = Set.of("available", "interaction_legal", "auto_accept");
+
     private FactionGiftPolicy() { }
 
     /** The numeric wire is Python-only; JavaScript callers must not round-trip it via Number. */
@@ -89,9 +97,7 @@ public final class FactionGiftPolicy {
             if (modifier != null && !modifier.isNull() && integer(modifier, false) == null) {
                 throw invalid("gift_opinion_modifier_value metadata must be null or an integer");
             }
-            for (String field : Set.of("available", "paused", "player_resources_query_complete",
-                    "source_faction_requery_complete", "recipient_identity_resolved",
-                    "recipient_opinion_query_complete", "source_faction_metrics_available")) {
+            for (String field : REQUIRED_TRUE_OBSERVATION_FIELDS) {
                 if (!isTrue(observation.get(field))) return declined(Reason.NATIVE_OBSERVATION_INCOMPLETE);
             }
             BigInteger revision = integer(observation.get("snapshot_revision"), true);
@@ -128,9 +134,7 @@ public final class FactionGiftPolicy {
                     return declined(Reason.FACTION_MEMBERSHIP_UNAVAILABLE);
                 }
             }
-            for (String field : Set.of("source_faction_present", "source_faction_targeting_player",
-                    "source_faction_at_war", "recipient_alive", "recipient_is_ai",
-                    "recipient_is_direct_landed_vassal", "gift_opinion_present")) {
+            for (String field : OBSERVATION_BOOLEAN_FIELDS) {
                 if (!isBoolean(observation.get(field))) {
                     return declined(Reason.FACTION_OR_RECIPIENT_STATE_UNAVAILABLE);
                 }
@@ -140,7 +144,7 @@ public final class FactionGiftPolicy {
             JsonNode preview = observation.get("gift_preview");
             if (preview == null || !preview.isObject()) return declined(Reason.GIFT_PREVIEW_UNAVAILABLE);
             allowedFields(preview, PREVIEW_FIELDS, "gift_preview");
-            for (String field : Set.of("available", "interaction_legal", "auto_accept")) {
+            for (String field : PREVIEW_BOOLEAN_FIELDS) {
                 if (!isBoolean(preview.get(field))) return declined(Reason.GIFT_LEGALITY_UNAVAILABLE);
             }
             BigInteger definitionHash = integer(preview.get("definition_stable_hash"), true);
