@@ -52,7 +52,18 @@ final class BudgetObservations {
             || !positive(get(war, "war_id")) || !exact(get(war, "player_relative_war_score"))) {
             return unavailable("current_primary_rebel_attacker_identity_unavailable");
         }
-        var matches = rows(get(snapshot, "active_wars")).stream().filter(row -> equal(get(row, "war_id"), get(war, "war_id"))).toList();
+        List<ObjectNode> matches;
+        {
+            JsonNode activeWarRows = get(snapshot, "active_wars");
+            matches = new java.util.ArrayList<>();
+            if (activeWarRows != null && activeWarRows.isArray()) {
+                for (JsonNode item : activeWarRows) {
+                    if (item instanceof ObjectNode row && equal(get(row, "war_id"), get(war, "war_id"))) {
+                        matches.add(row);
+                    }
+                }
+            }
+        }
         if (matches.size() != 1 || !matches.getFirst().equals(war)) { return unavailable("unique_current_active_war_unavailable"); }
         if (!(root instanceof ObjectNode) || !text(get(root, "status"), "available")
             || !positive(get(root, "player_character_id")) || !equal(get(root, "player_character_id"), actor)
@@ -70,7 +81,18 @@ final class BudgetObservations {
             if (positive(opponent) && !equal(opponent, actor) && positive(get(root, key)) && equal(get(root, key), opponent)) { relation = key; break; }
         }
         if (relation == null) { return unavailable("defender_not_observed_in_current_player_liege_chain"); }
-        var queries = rows(get(snapshot, "war_termination_options")).stream().filter(row -> equal(get(row, "war_id"), get(war, "war_id"))).toList();
+        List<ObjectNode> queries;
+        {
+            JsonNode terminationRows = get(snapshot, "war_termination_options");
+            queries = new java.util.ArrayList<>();
+            if (terminationRows != null && terminationRows.isArray()) {
+                for (JsonNode item : terminationRows) {
+                    if (item instanceof ObjectNode row && equal(get(row, "war_id"), get(war, "war_id"))) {
+                        queries.add(row);
+                    }
+                }
+            }
+        }
         if (queries.size() != 1) { return unavailable("unique_same_frame_cb_query_unavailable"); }
         ObjectNode query = queries.getFirst();
         boolean binding = text(get(query, "source"), "native") && positive(get(query, "query_sequence"))
