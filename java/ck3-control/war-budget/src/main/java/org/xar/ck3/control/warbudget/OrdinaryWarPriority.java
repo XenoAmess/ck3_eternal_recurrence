@@ -99,8 +99,8 @@ public final class OrdinaryWarPriority {
 
 
     public static Observation observe(Input input) {
-        ObjectNode snapshot = record(parseFull(input.snapshot()));
-        JsonNode suppliedRoot = StrictJson.parse(input.nullableCampaignRoot(), StrictJson.EXPLICIT_MAX_BYTES);
+        ObjectNode snapshot = record(parseFull(input == null ? input.snapshot() : input.snapshot));
+        JsonNode suppliedRoot = StrictJson.parse(input.nullableCampaignRoot, StrictJson.EXPLICIT_MAX_BYTES);
         List<ObjectNode> own = rows(get(snapshot, "player_armies")), active = rows(get(snapshot, "active_wars"));
         BigInteger ownCount = get(snapshot, "player_armies").isArray() ? count(own, snapshot, "player", null) : null;
         boolean retreating = !own.isEmpty() && own.stream().allMatch(a -> yes(get(a, "retreating")));
