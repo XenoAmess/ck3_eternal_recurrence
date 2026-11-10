@@ -250,9 +250,9 @@ public final class ConstructionMaterialReducer {
         Obj diagnostic = object(actualSnapshot.get("diagnostics"), "actual process diagnostics");
         require(new IntegerValue(intent.source().process().pid()).equals(diagnostic.get("bridge_pid"))
                 && new Text(intent.source().process().legacyCreationToken()).equals(diagnostic.get("bridge_creation_date")), "verified start crossed its original Game process");
-        Obj receipt = intent.original();
-        for (var entry : effect.members().entrySet()) if (!entry.getKey().equals("candidate")) receipt = receipt.with(entry.getKey(), entry.getValue());
-        receipt = receipt.with("post_bridge_pid", diagnostic.get("bridge_pid")).with("post_bridge_creation_date", diagnostic.get("bridge_creation_date"));
+        Obj receipt; { var confirmedStartMembers = new java.util.LinkedHashMap<>(intent.original().members());
+        for (var entry : effect.members().entrySet()) if (!entry.getKey().equals("candidate")) confirmedStartMembers.put(entry.getKey(), entry.getValue());
+        confirmedStartMembers.put("post_bridge_pid", diagnostic.get("bridge_pid")); confirmedStartMembers.put("post_bridge_creation_date", diagnostic.get("bridge_creation_date")); receipt = new Obj(confirmedStartMembers); }
         require(Objects.equals(actualSnapshot.get("date_raw"), receipt.get("post_date_raw")) && Objects.equals(actualSnapshot.get("native_revision"), receipt.get("post_native_revision"))
                 && new Text(intent.identity().episode()).equals(actualSnapshot.get("episode_run_id")), "actual start snapshot frame drift");
         require(new Bool(true).equals(actualSnapshot.get("paused")) && new Bool(true).equals(actualSnapshot.get("map_ready"))
