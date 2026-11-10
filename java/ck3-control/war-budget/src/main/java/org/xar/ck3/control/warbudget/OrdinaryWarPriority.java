@@ -184,7 +184,7 @@ public final class OrdinaryWarPriority {
                 .thenComparing(w -> exact(get(w, "player_relative_war_score")) ? integer(get(w, "player_relative_war_score")) : BigInteger.ZERO)
                 .thenComparing(w -> exact(get(w, "war_id")) ? integer(get(w, "war_id")) : BigInteger.valueOf(-1))).toList();
         ObjectNode out = obj().put("schema", "xar.war-spending-priority.v1").put("read_only", true);
-        out.put("defer_new_economic_construction", wars.stream().anyMatch(w -> !rowsOrValues(get(w, "protect_cash_reasons")).isEmpty()));
+        out.put("defer_new_economic_construction", !protectedWars.isEmpty());
         out.put("nonleading_realm_siege_construction_deferred_v1", wars.stream().anyMatch(w -> yes(get(get(w, "nonleading_realm_siege_cash_protection_v1"), "qualified_current_scope"))));
         ArrayNode outWars = out.putArray("wars"); wars.forEach(outWars::add);
         out.put("count_scope", "observed raised armies; no unraised reserves or promised allies");
