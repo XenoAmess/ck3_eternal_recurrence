@@ -197,13 +197,19 @@ public final class BattleRetreatPolicy {
                 && !opposingAttack.nativePrimaryLevyGetterObservedByRunner()) {
             return query(request, "current_loss_inputs_v1.sides[" + (1 - side) + "].levy_damage_raw");
         }
-        List<OwnerDelta> ownRows = ownLosses.ownerHardLedgerDeltas().stream()
-                .filter(row -> row.ownerCharacterId() == observed.selectedOwnerCharacterId()).toList();
-        if (ownRows.size() != 1 || ownRows.getFirst().hardCasualtiesRawDelta() == null
-                || ownRows.getFirst().hardCasualtiesRawDelta().signum() < 0) {
+        int matchingOwnerRows = 0;
+        OwnerDelta uniqueOwnerRow = null;
+        for (OwnerDelta row : ownLosses.ownerHardLedgerDeltas()) {
+            if (row.ownerCharacterId() == observed.selectedOwnerCharacterId()) {
+                matchingOwnerRows++;
+                uniqueOwnerRow = row;
+            }
+        }
+        if (matchingOwnerRows != 1 || uniqueOwnerRow.hardCasualtiesRawDelta() == null
+                || uniqueOwnerRow.hardCasualtiesRawDelta().signum() < 0) {
             return query(request, "selected_owner_current_entry_hard_loss_delta");
         }
-        BigInteger hard = ownRows.getFirst().hardCasualtiesRawDelta();
+        BigInteger hard = uniqueOwnerRow.hardCasualtiesRawDelta();
         boolean exceeded = hard.compareTo(request.maximumNextTickHardLossRaw()) > 0;
         if (!exceeded) { return observe(request, hard, false, "frozen_selected_owner_hard_loss_within_caller_budget"); }
         if (!frame.legality().legalNow()) {
