@@ -21,3 +21,5 @@ SwayCanonicalDomain 仅改新发布 encoder、两处 producer decoder 和 regist
 当前原件记录新 Game04、owner23 首批失败后 parent36 UNKNOWN/registered child1、无 child Intent/receipt/Run.child；期限08:49:49.300706500Z保持，不刷新。诊断日志已实际采用并命中，codec 修复截至本切点只有软件资格，尚无其 Runtime 采用或当前同ID恢复回执。不能删 reservation、造 child receipt、削弱覆盖守卫或冷启新业务绕过 UNKNOWN；LOOP 历史起点不外推为当前持续运行。新增 SAVE=0，秒/新增确认保存日=null，不授性能或整局速度收益。
 
 证据根为 `D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/sway-integer-preintent-p0-20261111` 与 `D:/ck3-state/resume91-native-integration/sway-preintent-p0-20261111`。源 Ready5124/ec513bd2、formal mapping3956/61968df8、owner Code24429/14122ace +3121/2cdebf26、Root Code1584/eb3aea42、新构造器 stdout1478/b30a8222、实际14输出59904/057d53ab、12阶段完整引用见 PREPUBLICATION-12JVM-COST01.json；Runtime 真栈位于 attempt23/new-batch0-terminal-20261111-04，原诊断采用/9类实际匹配/真栈三层分别保留。
+
+后到成本偏差（初次源码发表29c6b01f00之后到达）：Native按原aggregate roots重算 F4523948B+J988043B=5511991B，超过原4194304B元数据预算1317687B，metadata-budget=FAILED。12个真实软件JVM及功能/Code/构造器正负例结果保持，但不能改述全部资源预算通过。保留全部CFG/BEGIN/源与错误原件，不删除、搬移、重分类、抬旧cap或重跑补绿；这是成本控制偏差，不改变producer原65536上限。原提交切点保持，本条为正常后到追加；Runtime采用、当前UNKNOWN恢复及新增保存仍未由本条授信。
