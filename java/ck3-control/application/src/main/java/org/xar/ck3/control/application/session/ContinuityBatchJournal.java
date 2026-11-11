@@ -3251,6 +3251,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                             entry.snapshotId(),java.math.BigInteger.valueOf(entry.revision()),entry.episodeId()),observation.observationVersion());
             var previousTransport=nativeFrame.session();
             WriterContracts.HistoricalTransition retainedRecovery=null;
+            WriterContracts.HistoricalTransition operatorRecovery=null;
             var used=new java.util.LinkedHashSet<String>();
             String batchPrefix=null,openBatch=null;
             var history=new java.util.ArrayList<ExactRef>();
@@ -3522,6 +3523,81 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     }
                 } else if(edge.kind().equals(OrdinaryCycleTransitions.CYCLE_KIND)) {
                     String operation=StrictJson.text(details.get("operation"));
+                    if(OrdinaryCycleTransitions.OPERATOR_QUARANTINE_RECOVERY_OPERATION.equals(operation)) {
+                        StrictJson.object(details,java.util.Set.of("evidence_id","source","session","operation","predecessor_head_digest","receipt_ref","operator_observation","controller_ref","retained_driver","batch_id","next_sequence","consumed_batches","semantic"));
+                        StrictJson.require(operatorRecovery==null&&openBatch==null&&pending==null&&completedCycles==0
+                                &&latest==null&&lastCycleRef==null&&savedPair.isEmpty()&&used.size()==1&&batchPrefix!=null
+                                &&"java-operator-quarantine-recovery/v1".equals(StrictJson.text(details.get("source")))
+                                &&OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)
+                                &&StrictJson.text(details.get("batch_id")).equals(batchPrefix+"-0")
+                                &&StrictJson.text(details.get("batch_id")).equals(used.getLast())
+                                &&StrictJson.integer(details.get("next_sequence"),1,1)==1,
+                                "operator recovery history changed its exact closed initial batch0/next1 frontier");
+                        var consumed=details.get("consumed_batches");
+                        StrictJson.require(consumed.isArray()&&consumed.size()==1&&StrictJson.text(consumed.get(0)).equals(used.getLast()),
+                                "operator recovery history changed its consumed original batch");
+                        var receiptRef=ExactRef.fromJson(details.get("receipt_ref"));var retired=originals.loadReceipt(receiptRef);
+                        StrictJson.require(retired.state() instanceof ActionState.CompositeOperatorQuarantined
+                                &&retired.outcome()==ActionReceipt.Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT
+                                &&!retired.visibleGameplay()&&!retired.eligibleAdvance()&&retired.applied().isEmpty()
+                                &&retired.command().origin().machineId().equals(owner.machineId())
+                                &&retired.command().origin().game().equals(owner.game())&&retired.command().sessionId().equals(owner.sessionId()),
+                                "operator recovery history is not its true unknown-effect canonical observation");
+                        var atPoint=org.xar.ck3.control.application.action.ContinuityActionJournal.lookup(edge.before(),retired.command().actionId(),originals).orElseThrow();
+                        StrictJson.require(originals.receiptReferenceOf(atPoint).equals(receiptRef)
+                                &&java.util.Arrays.equals(org.xar.ck3.control.application.action.ActionReceiptCodec.encodeReceipt(atPoint,originals),
+                                    org.xar.ck3.control.application.action.ActionReceiptCodec.encodeReceipt(retired,originals)),
+                                "operator recovery receipt is not the exact canonical action before its original event");
+                        var proof=org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(retired,originals);
+                        StrictJson.require(((ActionState.CompositeOperatorQuarantined)retired.state()).observationRef().equals(ExactRef.fromJson(details.get("operator_observation")))
+                                &&ContinuityJson.digest(edge.before().toJson()).equals(StrictJson.text(details.get("predecessor_head_digest"))),
+                                "operator recovery history changed its observation or append predecessor");
+                        var originalState=same.requireHistoricalCanonicalState(proof.predecessorSequence(),proof.predecessorDigest());
+                        StrictJson.require(org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(originalState).equals(Optional.of(proof.originalActionHead()))
+                                &&java.util.Arrays.equals(ContinuityJson.canonical(originalState.toJson(),ContinuityJson.LEDGER_MAX_BYTES),originals.loadMaterial(proof.predecessorState()).bytes()),
+                                "operator observation lost its exact original historical ACTION prefix");
+                        var parent=originals.loadReceipt(proof.originalReceipt());
+                        proof.requireOriginal(parent,((ActionState.CompositeOperatorQuarantined)retired.state()).execution());
+                        org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(originalState,parent,originals);
+                        var first=new ExactRef[proof.reservations().size()];var seen=new java.util.HashSet<ExactRef>();
+                        Optional<ExactRef> cursor=Optional.of(proof.originalActionHead());long priorSequence=Long.MAX_VALUE;
+                        while(cursor.isPresent()) {
+                            var reference=cursor.orElseThrow();StrictJson.require(seen.add(reference)&&seen.size()<=100000,"finite complete operator ACTION prefix required");
+                            var record=originals.loadRecord(reference);var action=record.receipt();
+                            StrictJson.require(action.sequence()<priorSequence,"operator reservation ancestry order differs");priorSequence=action.sequence();
+                            if(action.command().actionId().equals(parent.command().actionId())) {
+                                StrictJson.require(action.bodySha256().equals(parent.bodySha256()),"operator original parent body conflict");
+                                var execution=org.xar.ck3.control.application.action.ActionTransitions.composite(action.state());
+                                if(execution.isPresent())for(int j=0;j<Math.min(first.length,execution.orElseThrow().children().size());j++) {
+                                    var child=execution.orElseThrow().children().get(j);var reservation=proof.reservations().get(j);
+                                    StrictJson.require(child.actionId().equals(reservation.actionId())&&child.bodySha256().equals(reservation.bodySha256()),"operator reservation history changed its child vector");first[j]=reference;
+                                }
+                            }
+                            cursor=record.previous();
+                        }
+                        for(int j=0;j<first.length;j++)StrictJson.require(proof.reservations().get(j).firstReservationRecord().equals(first[j]),"operator first reservation record differs from actual full prefix");
+                        var installedRequest=org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest.decode(originals.loadMaterial(proof.requestMaterial()).bytes());
+                        installedRequest.requireParent(parent);
+                        StrictJson.require(installedRequest.originalReceipt().equals(proof.originalReceipt())
+                                &&installedRequest.expectedHeadSequence()==proof.predecessorSequence()&&installedRequest.expectedHeadDigest().equals(proof.predecessorDigest()),
+                                "operator recovery history changed its installed request original binding");
+                        var capturedController=ControllerRestartState.decode(originals.loadMaterial(ExactRef.fromJson(details.get("controller_ref"))).bytes());
+                        StrictJson.require(capturedController.owner().equals(owner)&&capturedController.batchPrefix().equals(batchPrefix)
+                                &&capturedController.nextBatchSequence()==1&&capturedController.usedBatches().equals(used)
+                                &&capturedController.savedPair().isEmpty()&&capturedController.unsavedGameplayActions().isEmpty()
+                                &&capturedController.eligibleSinceSave()==0&&!capturedController.dirty()&&capturedController.totalCommittedDays()==0
+                                &&ExactRef.fromJson(details.get("retained_driver")).equals(retained.fullDriver()),
+                                "operator recovery history cannot change original Controller credit/consumed batches or retained Driver");
+                        var replay=transitions.reduce(edge.before(),new WriterContracts.Request(edge.kind(),edge.details(),java.util.List.of())).toJson();
+                        replay.put("sequence",edge.sequence());replay.put("last_event_identity",edge.eventIdentity());
+                        StrictJson.require(ContinuityJson.same(replay,edge.after().toJson()),"operator recovery differs from its actual independent reducer edge");
+                        var recovered=OrdinaryCycleTransitions.semanticFromJson(details.get("semantic"));
+                        StrictJson.require(!recovered.observedAt().isBefore(installedRequest.issuedAt())&&recovered.observedAt().isBefore(installedRequest.observationDeadline()),
+                                "operator recovery SEM was outside its original distinct decision window");
+                        requireSettledObservedContinuation(latestObserved,recovered.frame());
+                        previousTransport=settledSemanticTransport(recovered,owner,originals);latestObserved=recovered.frame();
+                        operatorRecovery=edge;continue; // No latest cycle, saved pair, Driver replacement or old settled-recovery role is created.
+                    }
                     if("SETTLED_SAME_GAME_RECOVERY".equals(operation)) {
                         StrictJson.require((openBatch==null||retainedRecovery!=null&&openBatch.equals(used.getLast()))
                                 &&pending==null&&latest!=null&&!used.isEmpty()
