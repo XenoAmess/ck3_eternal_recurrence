@@ -1495,6 +1495,19 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         // These exact source-validated Life controls retain their effects without a second recorder row.
         var prefixControls = new java.util.HashSet<ActionReceipt>();
         for (ActionReceipt parent : durable.actions()) {
+            if(parent.state() instanceof ActionState.CompositeOperatorQuarantined retired
+                    &&org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(parent.command().operation().value())
+                    &&retired.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
+                    &&parent.command().before().game().equals(known.stamp().game())
+                    &&parent.command().before().frame().episodeRunId().equals(known.driver().session().episodeRunId())) {
+                for(var child:retired.execution().children()) {
+                    var original=durable.actions().stream().filter(value->value.command().actionId().equals(child.actionId())&&value.bodySha256().equals(child.bodySha256())).findFirst().orElseThrow();
+                    var command=original.command();StrictJson.require(original.settled()&&org.xar.ck3.control.application.advance.AdvancePrimitives.supports(command.operation())
+                            &&command.arguments().members().isEmpty()&&command.expected().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.expected(command.before(),command.source(),command.operation(),command.arguments())),
+                            "operator-retired Life retains its real settled source-owned control children; no recorder row or cycle is fabricated");
+                    prefixControls.add(original);
+                }
+            }
             if (!(parent.state() instanceof ActionState.CompositeSettled settled)
                     || !parent.command().before().game().equals(known.stamp().game())
                     || !parent.command().before().frame().episodeRunId().equals(known.driver().session().episodeRunId())) continue;
@@ -1596,8 +1609,10 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                 continue; // The verified interrupted prefix has no Native command-history row or cycle credit.
             }
             if(action.state() instanceof ActionState.CompositeOperatorQuarantined retired) {
-                StrictJson.require(action.command().operation().equals(org.xar.ck3.control.application.planning.sway.OrdinarySwayPolicy.OPERATION)
+                StrictJson.require((action.command().operation().equals(org.xar.ck3.control.application.planning.sway.OrdinarySwayPolicy.OPERATION)
                         &&retired.execution().handlerId().equals(org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.HANDLER)
+                        ||org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(action.command().operation().value())
+                        &&retired.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER))
                         &&action.outcome()==ActionReceipt.Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT&&!action.visibleGameplay()&&!action.eligibleAdvance(),"operator quarantine coverage is its distinct canonical unknown-effect Sway observation");
                 continue; // Original effect remains unknown: no invented legacy recorder row, version or cycle credit.
             }

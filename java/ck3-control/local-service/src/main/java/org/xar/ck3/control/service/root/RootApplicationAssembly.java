@@ -2901,6 +2901,9 @@ public final class RootApplicationAssembly {
                 else {core.readHistory.initial(readHistory);core.actionHistory.initial(actionHistory());}
                 knownReads.bind(capabilities); if (!restoring) inputs.bind(capabilities, planningInputs);
                 if(!restoring&&!next)cycles.bindOperatorAuthority(core.operatorAuthority());
+                if(!restoring&&!next)cycles.bindOperatorRetirementVerifier((same,head,retired)->
+                        core.operatorQuarantineSource().orElseThrow(()->new IOException("actual configured operator retirement source is absent"))
+                                .verify(same,head,retired,core.archive().withSession(same)));
                 ContinuityBatchJournal batches = next?nextEpisode.batches:(core.cleanRestartBatches != null ? core.cleanRestartBatches :
                         (core.settledSameGameBatches != null ? core.settledSameGameBatches :
                         (core.unresolvedSameGameBatches != null ? core.unresolvedSameGameBatches :

@@ -62,6 +62,13 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     private final SessionAuthority sessionAuthority;
     private volatile NativeEffectEvidence.FrameLoader terminalFrames;
     private volatile OperatorAuthority operatorAuthority;
+    @FunctionalInterface public interface OperatorRetirementVerifier {
+        void verify(ContinuityStorePort.Session same,WriterContracts.Head head,ActionReceipt retired)throws IOException;
+    }
+    private volatile OperatorRetirementVerifier operatorRetirementVerifier;
+    public synchronized void bindOperatorRetirementVerifier(OperatorRetirementVerifier actual) {
+        StrictJson.require(operatorRetirementVerifier==null,"actual operator retirement verifier installs once");operatorRetirementVerifier=Objects.requireNonNull(actual);
+    }
     private static final String OPERATOR_ORIGIN_SCHEMA="xar.java-ordinary-operator-origin/v1";
     private static final String TRANSPORT_ORIGIN_SCHEMA="xar.java-ordinary-transport-origin/v1";
     private volatile SameGameTransportContinuity.Port transportRebindPort;
@@ -133,6 +140,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     /** Distinct operator retirement recovery. It never describes the old action as no-dispatch or no-effect. */
     static final String OPERATOR_QUARANTINE_RECOVERY_OPERATION="OPERATOR_QUARANTINE_RECOVERY";
     static final String OPERATOR_QUARANTINE_RECOVERY_FIELD="java_operator_quarantine_recovery";
+    static final String OPERATOR_LIFE_INTERRUPTION_OPERATION="OPERATOR_LIFE_INTERRUPTION_RECOVERY";
+    static final String OPERATOR_LIFE_INTERRUPTION_FIELD="java_operator_life_interruption_recovery";
     private record OperatorQuarantineContext(ContinuityBatchJournal.OperatorQuarantineRecovery admission,SemanticEvidence semantic,byte[] details) { }
     private final ThreadLocal<OperatorQuarantineContext> operatorQuarantineContext=new ThreadLocal<>();
     WriterContracts.Receipt commitOperatorQuarantineRecovery(ContinuityStorePort.Session same,
@@ -140,8 +149,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(active.get()==same&&operatorQuarantineContext.get()==null,"operator recovery requires its unique original journal scope");
         admission.requireCurrent(same);Objects.requireNonNull(semantic);
         ObjectNode row=StrictJson.object();row.put("evidence_id","operator-quarantine-recovery:"+admission.terminalReceipt().command().actionId()+":"+admission.sequence());
-        row.put("source","java-operator-quarantine-recovery/v1");row.set("session",sessionToJson(admission.owner()));
-        row.put("operation",OPERATOR_QUARANTINE_RECOVERY_OPERATION);row.put("predecessor_head_digest",admission.digest());
+        row.put("source",admission.lifeInterruption()?"java-operator-life-interruption-recovery/v1":"java-operator-quarantine-recovery/v1");row.set("session",sessionToJson(admission.owner()));
+        row.put("operation",admission.lifeInterruption()?OPERATOR_LIFE_INTERRUPTION_OPERATION:OPERATOR_QUARANTINE_RECOVERY_OPERATION);row.put("predecessor_head_digest",admission.digest());
         row.set("receipt_ref",admission.receiptReference().toJson());row.set("operator_observation",admission.observationReference().toJson());
         row.set("controller_ref",admission.controllerReference().toJson());row.set("retained_driver",admission.retainedDriver().toJson());
         row.put("batch_id",admission.consumedBatchId());row.put("next_sequence",admission.nextBatchSequence());
@@ -158,8 +167,10 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var admission=context.admission();admission.requireCurrent(same);strictOperatorQuarantineRecovery(details);
         StrictJson.require(java.util.Arrays.equals(context.details(),ContinuityJson.canonical(details))
                 &&head.digest().equals(admission.digest()),"operator recovery changed its exact private producer/predecessor");
-        admission.requireCanonicalTerminal(same);requireOwner(head.state(),admission.owner());requireOperatorQuarantineFrontier(head.state());
-        var checked=verify(same,admission.owner(),context.semantic());requireSettledBinding(head.state(),checked.frame());
+        admission.requireCanonicalTerminal(same);requireOwner(head.state(),admission.owner());
+        if(admission.lifeInterruption())requireOperatorLifeFrontier(head.state(),admission.owner());else requireOperatorQuarantineFrontier(head.state());
+        var checked=verify(same,admission.owner(),context.semantic());
+        if(admission.lifeInterruption())requireObservedBindingNotRegressed(head.state(),checked.frame());else requireSettledBinding(head.state(),checked.frame());
         var observation=org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(admission.terminalReceipt(),archive.withSession(same));
         var request=org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest.decode(archive.withSession(same).loadMaterial(observation.requestMaterial()).bytes());
         StrictJson.require(!checked.observedAt().isBefore(request.issuedAt())&&checked.observedAt().isBefore(request.observationDeadline()),
@@ -168,25 +179,45 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         proof.put("semantic",checked.materialDigest());proof.put("controller",admission.controllerReference().sha256());return ContinuityJson.digest(proof);
     }
     private ContinuityState reduceOperatorQuarantineRecovery(ContinuityState predecessor,ObjectNode details) {
-        strictOperatorQuarantineRecovery(details);requireOwner(predecessor,sessionFromJson(details.get("session")));requireOperatorQuarantineFrontier(predecessor);
+        strictOperatorQuarantineRecovery(details);var owner=sessionFromJson(details.get("session"));requireOwner(predecessor,owner);
+        boolean life=OPERATOR_LIFE_INTERRUPTION_OPERATION.equals(text(details,"operation"));
+        if(life)requireOperatorLifeFrontier(predecessor,owner);else requireOperatorQuarantineFrontier(predecessor);
         StrictJson.require(ContinuityJson.digest(predecessor.toJson()).equals(text(details,"predecessor_head_digest")),"operator recovery predecessor changed");
-        var semantic=semanticFromJson(details.get("semantic"));requireSettledBinding(predecessor,semantic.frame());
+        var semantic=semanticFromJson(details.get("semantic"));if(life)requireObservedBindingNotRegressed(predecessor,semantic.frame());else requireSettledBinding(predecessor,semantic.frame());
         var original=StrictJson.object();original.put("evidence_id",text(details,"evidence_id"));original.set("source",details.get("source"));original.put("machine_id",predecessor.machineId());
-        original.put("completed_cycles",predecessor.settledCycles());original.set("frame",originalFrame(semantic.frame()));
+        original.put("completed_cycles",life?StrictJson.integer(predecessor.toJson().get(STATE_FIELD).get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER):predecessor.settledCycles());original.set("frame",originalFrame(semantic.frame()));
         original.set("session",details.get("session"));original.set("batch_id",details.get("batch_id"));original.set("next_sequence",details.get("next_sequence"));
         original.set("operator_observation",details.get("operator_observation"));
-        var next=OriginalWindowReducer.reduce(predecessor.toJson(),"operator_quarantine_recovery",original,policy);
-        next.set(OPERATOR_QUARANTINE_RECOVERY_FIELD,details.deepCopy());
+                var next=OriginalWindowReducer.reduce(predecessor.toJson(),life?"operator_life_interruption_recovery":"operator_quarantine_recovery",original,policy);
+        next.set(life?OPERATOR_LIFE_INTERRUPTION_FIELD:OPERATOR_QUARANTINE_RECOVERY_FIELD,details.deepCopy());
+        if(life)StrictJson.require(java.util.Objects.equals(next.get(STATE_FIELD),predecessor.toJson().get(STATE_FIELD))
+                &&java.util.Objects.equals(next.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),predecessor.toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)),"Life retirement cannot change completed cycle or saved pair credit");
         StrictJson.require(number(next,"last_settled_cycles")==predecessor.settledCycles()&&number(next,"last_settled_date_raw")==predecessor.settledDateRaw(),
                 "operator recovery cannot grant or rewind saved/cycle progress");
         return ContinuityState.fromJson(next,predecessor.machineId());
     }
     private static void strictOperatorQuarantineRecovery(ObjectNode row) {
         StrictJson.object(row,Set.of("evidence_id","source","session","operation","predecessor_head_digest","receipt_ref","operator_observation","controller_ref","retained_driver","batch_id","next_sequence","consumed_batches","semantic"));
-        StrictJson.require(OPERATOR_QUARANTINE_RECOVERY_OPERATION.equals(text(row,"operation"))&&"java-operator-quarantine-recovery/v1".equals(text(row,"source"))
-                &&number(row,"next_sequence")==1,"operator recovery is the explicit interrupted initial batch0 to next1 contract");
-        JsonNode consumed=row.get("consumed_batches");StrictJson.require(consumed.isArray()&&consumed.size()==1&&StrictJson.text(consumed.get(0)).equals(text(row,"batch_id")),
-                "operator recovery must consume its one original interrupted batch");
+        boolean life=OPERATOR_LIFE_INTERRUPTION_OPERATION.equals(text(row,"operation"));
+        StrictJson.require(life?"java-operator-life-interruption-recovery/v1".equals(text(row,"source"))&&number(row,"next_sequence")>=2:
+                OPERATOR_QUARANTINE_RECOVERY_OPERATION.equals(text(row,"operation"))&&"java-operator-quarantine-recovery/v1".equals(text(row,"source"))&&number(row,"next_sequence")==1,
+                "explicit operator recovery operation/source/batch sequence required");
+        JsonNode consumed=row.get("consumed_batches");StrictJson.require(consumed.isArray()&&!consumed.isEmpty(),"operator recovery must retain consumed batch identities");
+        if(life) {
+            var identities=new java.util.HashSet<String>();for(JsonNode value:consumed)StrictJson.require(identities.add(StrictJson.text(value)),"duplicate consumed operator batch identity");
+            StrictJson.require(identities.contains(text(row,"batch_id")),"operator interruption must preserve the original consumed batch; Set iteration order is not batch order");
+        } else StrictJson.require(consumed.size()==1&&StrictJson.text(consumed.get(0)).equals(text(row,"batch_id")),"initial operator recovery retains its one original batch");
+    }
+    /** Pure DATA boundary only; no writer, readiness or native permission is issued. */
+    public static void requireOperatorLifeFrontier(ContinuityState state,SessionIdentity owner) {
+        requireOwner(state,owner);var whole=state.toJson();var cycle=whole.get(STATE_FIELD);
+        StrictJson.require(state.status()==ContinuityState.Status.REPAIR_REQUIRED&&cycle!=null&&cycle.isObject()
+                &&sessionFromJson(cycle.get("session")).equals(owner)&&StrictJson.integer(cycle.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER)>=1
+                &&cycle.hasNonNull("head")&&cycle.has("pending_receipt")&&cycle.get("pending_receipt").isNull()
+                &&whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),"Life interruption requires its real nonzero completed/saved frontier with no pending cycle");
+        var boundary=StrictJson.object(whole.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD),Set.of("evidence_id","session","batch_id","boundary"));
+        StrictJson.require("BATCH_INTERRUPTED".equals(text(boundary,"boundary"))&&sessionFromJson(boundary.get("session")).equals(owner),"Life operator recovery must consume its exact interrupted batch owner");
+        for(String field:List.of("pending_cycle","pending_checkpoint","current_cycle_pending")){var pending=whole.get(field);StrictJson.require(pending==null||pending.isNull(),"Life operator recovery cannot clear pending obligations: "+field);}
     }
     private static void requireOperatorQuarantineFrontier(ContinuityState state) {
         StrictJson.require(state.status()==ContinuityState.Status.REPAIR_REQUIRED&&state.settledCycles()==0,"operator recovery only resumes the unchanged interrupted initial frontier");
@@ -635,6 +666,24 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 "saved open recovery changed its complete actual canonical action set");
         var latest=actions.stream().max(java.util.Comparator.comparingLong(ActionReceipt::sequence)).orElseThrow();
         var anchored=bound.loadRecord(ContinuityActionJournal.recordHead(current).orElseThrow()).receipt();
+        if(latest.state() instanceof ActionState.CompositeOperatorQuarantined retired) {
+            StrictJson.require(anchored.equals(latest)&&latest.sequence()<=current.sequence()&&latest.command().source().equals(data.source())
+                    &&latest.bodySha256().equals(ActionCodec.bodySha256(latest.command()))
+                    &&org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(latest.command().operation().value())
+                    &&org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER.equals(retired.execution().handlerId())
+                    &&latest.outcome()==ActionReceipt.Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT&&!latest.visibleGameplay()&&!latest.eligibleAdvance(),
+                    "operator continuation requires its exact canonical retired Life original with unknown effects");
+            var recovery=ContinuityJson.object(current.toJson().get(OPERATOR_LIFE_INTERRUPTION_FIELD));strictOperatorQuarantineRecovery(recovery);
+            StrictJson.require(OPERATOR_LIFE_INTERRUPTION_OPERATION.equals(text(recovery,"operation"))
+                    &&sessionFromJson(recovery.get("session")).equals(owner)
+                    &&ExactRef.fromJson(recovery.get("receipt_ref")).equals(bound.receiptReferenceOf(latest))
+                    &&number(recovery,"next_sequence")<=data.controller().nextBatchSequence()-1,
+                    "operator continuation lost its already committed same-decision recovery or consumed batch");
+            var verifier=operatorRetirementVerifier;StrictJson.require(verifier!=null,"operator continuation needs the actual installed retirement verifier");
+            verifier.verify(same,same.head(),latest);ContinuityActionJournal.requireHistoricalReceipt(current,latest,bound);
+            context.role().requireCurrent(same,data);StrictJson.require(same.head().digest().equals(data.canonicalHeadDigest()),"operator continuation changed its original saved/open-batch head");
+            return; // This administrative continuation does not call the old Sway no-gameplay path or grant a cycle.
+        }
         StrictJson.require(anchored.equals(latest)&&latest.sequence()<=current.sequence()
                 &&latest.command().source().equals(data.source())
                 &&latest.bodySha256().equals(ActionCodec.bodySha256(latest.command()))
@@ -767,7 +816,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         ObjectNode proof = StrictJson.object(); proof.put("head_digest", actualHead.digest()); proof.put("request", request.identity());
         if (request.kind().equals(NEXT_BASELINE_KIND)) return revalidateNextBaseline(session,actualHead,details);
         if (request.kind().equals(CYCLE_KIND)) {
-            if (OPERATOR_QUARANTINE_RECOVERY_OPERATION.equals(text(details,"operation"))) return revalidateOperatorQuarantineRecovery(session,actualHead,details);
+            if (Set.of(OPERATOR_QUARANTINE_RECOVERY_OPERATION,OPERATOR_LIFE_INTERRUPTION_OPERATION).contains(text(details,"operation"))) return revalidateOperatorQuarantineRecovery(session,actualHead,details);
             if (SAVED_READ_ONLY_RECOVERY_OPERATION.equals(text(details,"operation"))) return revalidateSavedReadOnlyRecovery(session,actualHead,details);
             if (SETTLED_SAME_GAME_OPERATION.equals(text(details, "operation"))) return revalidateSettledSameGameRecovery(session, actualHead, details);
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return revalidateInitialNoDispatchRecovery(session,actualHead,details);
@@ -832,7 +881,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireOwner(predecessor, owner); ObjectNode next = predecessor.toJson();
         if (request.kind().equals(NEXT_BASELINE_KIND)) return reduceNextBaseline(predecessor,details);
         if (request.kind().equals(CYCLE_KIND)) {
-            if (OPERATOR_QUARANTINE_RECOVERY_OPERATION.equals(text(details,"operation"))) return reduceOperatorQuarantineRecovery(predecessor,details);
+            if (Set.of(OPERATOR_QUARANTINE_RECOVERY_OPERATION,OPERATOR_LIFE_INTERRUPTION_OPERATION).contains(text(details,"operation"))) return reduceOperatorQuarantineRecovery(predecessor,details);
             if (SAVED_READ_ONLY_RECOVERY_OPERATION.equals(text(details,"operation"))) return reduceSavedReadOnlyRecovery(predecessor,details);
             if (SETTLED_SAME_GAME_OPERATION.equals(text(details, "operation"))) return reduceSettledSameGameRecovery(predecessor, details);
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return reduceInitialNoDispatchRecovery(predecessor,details);
@@ -2004,6 +2053,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 &&number(interruption,"completed_cycles")==head.settledCycles()
                 &&!hasUnresolvedOtherAction(head,receipt),
                 "only this ordinary interrupted batch with resolved originals may recover a cycle");
+        if(requirePublishedAppliedLifeRepair(head,receipt,owner))return;
         Optional<ExactRef> cursor=ContinuityActionJournal.recordHead(head);
         Set<ExactRef> seen=new HashSet<>();long maximum=head.sequence();boolean originalUnknown=false;
         while(cursor.isPresent()) {
@@ -2021,6 +2071,30 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             cursor=record.previous();
         }
         StrictJson.require(originalUnknown,"repair recovery requires this same canonical original UNKNOWN before its confirmed reconciliation");
+    }
+    /** Pre-RETAIN unretained Life and post-RETAIN exact pending Life are distinct real states, neither invents UNKNOWN. */
+    private boolean requirePublishedAppliedLifeRepair(ContinuityState head,ActionReceipt receipt,SessionIdentity owner) {
+        var same=active.get();StrictJson.require(same!=null,"Life repair material consumption requires the actual locked writer");
+        var originals=archive.withSession(same);var actions=ContinuityActionJournal.receipts(head,originals);
+        var actual=ContinuityBatchJournal.readOnlyUnretainedAppliedLifeRoot(head,owner,actions,originals)
+                .or(()->ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(head,owner,actions,originals));
+        if(actual.filter(receipt::equals).isEmpty())return false;
+        var publication=org.xar.ck3.control.application.driver.DriverActionHistoryState.decode(
+                ContinuityJson.object(head.toJson().get(WriterContracts.DRIVER_ACTION_HISTORY_FIELD)),receipt);
+        StrictJson.require(publication.command().equals(receipt.command())&&publication.bodySha256().equals(receipt.bodySha256())
+                &&publication.actionSequence()==receipt.sequence(),"repair Life RETAIN/SETTLE must consume its actual already published same-source material");
+        try {
+            sessionAuthority.require(same);var locked=same.head();String expected=ContinuityJson.digest(head.toJson());
+            if(locked.state().sequence()==head.sequence())StrictJson.require(locked.digest().equals(expected),"Life repair changed its actual current predecessor");
+            else {
+                StrictJson.require(head.sequence()<locked.state().sequence(),"Life repair cannot consume a future predecessor");
+                var historical=same.requireHistoricalCanonicalState(head.sequence(),expected);
+                StrictJson.require(ContinuityJson.same(historical.toJson(),head.toJson()),"Life repair historical predecessor is not its exact original canonical state");
+            }
+            org.xar.ck3.control.application.driver.DriverActionHistoryState.requireOriginals(same,List.of(publication),List.of(receipt),originals);
+            StrictJson.require(same.head().digest().equals(locked.digest()),"published Life repair material changed the actual locked writer head");
+        }catch(IOException failure){throw new java.io.UncheckedIOException(failure);}
+        return true;
     }
     private boolean hasUnresolvedOtherAction(ContinuityState head, ActionReceipt receipt) {
         return ContinuityActionJournal.receipts(head, archive).stream().anyMatch(item -> !item.settled()
@@ -2263,6 +2337,21 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     /** Retain only the exact already-applied known reply; this grants no current action or SAVE proof. */
     private boolean matchesRecordedKnownCompletion(ContinuityStorePort.Session same, WriterContracts.Head head,
             CycleState branch, ActionReceipt receipt) throws IOException {
+        if(head.state().status()==ContinuityState.Status.REPAIR_REQUIRED
+                &&receipt.state() instanceof ActionState.CompositeSettled life
+                &&life.settlement() instanceof ActionState.Applied
+                &&org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())
+                &&org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER.equals(life.execution().handlerId())) {
+            if(!requirePublishedAppliedLifeRepair(head.state(),receipt,branch.session()))return false;
+            var before=receipt.command().before();requireObservedBindingNotRegressed(head.state(),before);
+            var retained=load(branch.head().orElseThrow()).semantic();requireObservedContinuation(retained.frame(),before);
+            StrictJson.require(before.frame().revision().compareTo(StrictJson.integer(head.state().toJson().get("latest_binding").get("revision"),BigInteger.ZERO,StrictJson.UINT64_MAX))>=0
+                    &&before.frame().revision().compareTo(retained.frame().frame().revision())>=0
+                    &&!life.execution().guard().observedAt().isBefore(retained.observedAt()),
+                    "confirmed Life material must preserve the actual original guard and retained cycle observation");
+            StrictJson.require(head.digest().equals(same.head().digest()),"confirmed Life material RETAIN changed the actual writer head");return true;
+        }
+        if(!(receipt.state() instanceof ActionState.Settled))return false;
         var originals = archive.withSession(same);
         var known = ContinuityBatchJournal.readOnlyPendingKnownCompletionRoot(head.state(), branch.session(),
                 ContinuityActionJournal.receipts(head.state(), originals), originals);

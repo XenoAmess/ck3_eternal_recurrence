@@ -17,10 +17,18 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
         LifeAdvanceEvidence.BoundFrameVerifier, NativeRecordedEvidenceVerifier.ArchivedVerifier {
     private final NativeEffectEvidence.FrameLoader frames;
     private final AdvanceClockArchivedReplay timeline;
+    private final java.util.function.Supplier<Optional<CompositeOperatorQuarantineSource>> operatorSource;
+    private final java.util.function.Supplier<org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session> operatorSession;
 
     public LifeAdvanceRootReplay(NativeEffectEvidence.FrameLoader actualFrames) {
+        this(actualFrames,Optional::empty,()->{throw new IllegalStateException("actual Life operator writer session is not installed");});
+    }
+    public LifeAdvanceRootReplay(NativeEffectEvidence.FrameLoader actualFrames,
+            java.util.function.Supplier<Optional<CompositeOperatorQuarantineSource>> actualOperatorSource,
+            java.util.function.Supplier<org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session> actualOperatorSession) {
         this.frames = Objects.requireNonNull(actualFrames);
         this.timeline = new AdvanceClockArchivedReplay(actualFrames);
+        this.operatorSource=Objects.requireNonNull(actualOperatorSource);this.operatorSession=Objects.requireNonNull(actualOperatorSession);
     }
 
     public NativeRecordedEvidenceVerifier.Binding binding(OperationKey exactOperation, ExactRef actualDefinition) {
@@ -85,6 +93,11 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
 
     @Override public void verify(WriterContracts.Head actualLockedHead, ActionReceipt proposed,
             ActionPorts.OutcomeArchive sameWriterArchive) {
+        if(proposed.state() instanceof ActionState.CompositeOperatorQuarantined) {
+            var actual=operatorSource.get().orElseThrow(()->new IllegalStateException("actual Life operator decision source is absent"));
+            try {actual.verify(Objects.requireNonNull(operatorSession.get()),actualLockedHead,proposed,sameWriterArchive);}
+            catch(java.io.IOException failure){throw new java.io.UncheckedIOException(failure);}return;
+        }
         verifyAndReadRecorded(actualLockedHead, proposed, sameWriterArchive);
     }
 

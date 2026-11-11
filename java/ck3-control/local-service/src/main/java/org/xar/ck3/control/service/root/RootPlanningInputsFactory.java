@@ -316,18 +316,6 @@ public final class RootPlanningInputsFactory {
                     // Retain the real canonical original before classifying system controls.
                     // SAVE has its own exact verifier and never invents a business domain.
                     ExactRef original = originals.receiptReferenceOf(receipt);
-                    Classification classification;
-                    try { classification = Objects.requireNonNull(domains.classify(receipt,capture.session(),originals),
-                            "actual installed action classification required"); }
-                    catch (IOException failure) { throw new UncheckedIOException(failure); }
-                    if (classification instanceof SystemControl control) {
-                        if (receipt.state() instanceof ActionState.IntentAbandoned)
-                            IntentAbandonmentProof.verifyArchived(receipt, originals);
-                        requireSettledControl(control, receipt, lease.snapshot().actions());
-                        continue;
-                    }
-                    if (!(classification instanceof BusinessDomain business))
-                        throw new IllegalStateException("unrecognized installed action classification");
                     if(receipt.state() instanceof ActionState.CompositeOperatorQuarantined) {
                         StrictJson.require(receipt.outcome()==ActionReceipt.Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT
                                 &&!receipt.visibleGameplay()&&!receipt.eligibleAdvance(),"operator quarantine cannot claim applied effects or cycle credit");
@@ -340,6 +328,18 @@ public final class RootPlanningInputsFactory {
                         // it is not an outstanding global request that may block unrelated policies or be retried.
                         continue;
                     }
+                    Classification classification;
+                    try { classification = Objects.requireNonNull(domains.classify(receipt,capture.session(),originals),
+                            "actual installed action classification required"); }
+                    catch (IOException failure) { throw new UncheckedIOException(failure); }
+                    if (classification instanceof SystemControl control) {
+                        if (receipt.state() instanceof ActionState.IntentAbandoned)
+                            IntentAbandonmentProof.verifyArchived(receipt, originals);
+                        requireSettledControl(control, receipt, lease.snapshot().actions());
+                        continue;
+                    }
+                    if (!(classification instanceof BusinessDomain business))
+                        throw new IllegalStateException("unrecognized installed action classification");
                     Domain domain = business.domain();
                     ExternalState state = externalState(receipt);
                     facts.add(new ExternalFact(command.actionId(), receipt.bodySha256(), command.before(), state,

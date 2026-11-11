@@ -393,8 +393,8 @@ public final class SessionController {
                     &&!dirty&&eligibleSinceSave==0&&totalCommittedDays==0,"operator recovery cannot overwrite an executed, pending or saved Controller");
             ((ContinuityBatchJournal)journal).requireOperatorQuarantineRecovery(same,actual,identity);
             var captured=actual.capturedController();
-            StrictJson.require(captured.owner().equals(identity)&&captured.savedPair().isEmpty()&&captured.unsavedGameplayActions().isEmpty()
-                    &&captured.eligibleSinceSave()==0&&!captured.dirty()&&captured.totalCommittedDays()==0,"operator recovery captured Controller has other gameplay obligations");
+            StrictJson.require(captured.owner().equals(identity)&&(actual.lifeInterruption()||captured.savedPair().isEmpty()&&captured.unsavedGameplayActions().isEmpty()
+                    &&captured.eligibleSinceSave()==0&&!captured.dirty()&&captured.totalCommittedDays()==0),"operator recovery cannot replace another captured Controller or discard its original gameplay obligations");
             restoreCapturedController(same,captured);usedBatches.addAll(actual.consumedBatchIds());
             quarantined=false;localUnresolved=false;ledgerHead=Optional.of(same.persistedHead());
             // All credit, original queues/analysis, stop state and consumed identities are preserved; no report is invented.

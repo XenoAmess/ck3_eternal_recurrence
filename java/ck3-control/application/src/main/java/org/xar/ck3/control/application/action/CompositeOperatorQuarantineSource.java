@@ -55,6 +55,14 @@ public final class CompositeOperatorQuarantineSource {
     public void verify(ContinuityStorePort.Session same,WriterContracts.Head actualHead,ActionReceipt proposed,ActionPorts.OutcomeArchive archive)throws IOException {
         require(same.head().digest().equals(actualHead.digest()),"operator verifier escaped original locked head");
         var proof=CompositeOperatorQuarantineObservation.load(proposed,archive);
+        if(!proof.requestSource().equals(requestRef)) {
+            require(proposed.sequence()<=actualHead.state().sequence()&&request.priorRequests().contains(proof.requestSource()),"only explicitly retained prior operator requests may replay archived decisions");
+            byte[] priorBytes=archive.loadMaterial(proof.requestMaterial()).bytes();var prior=CompositeOperatorQuarantineRequest.decode(priorBytes);
+            require(CompositeOperatorQuarantineRequest.SCOPE.equals(prior.scope())&&prior.priorRequests().isEmpty(),"prior request replay is limited to the original optional Sway decision");
+            var priorSource=new CompositeOperatorQuarantineSource(proof.requestSource(),priorBytes,archive.loadMaterial(archive.materialReference(prior.authorizedBy().sha256(),prior.authorizedBy().bytes())).bytes(),request.game(),request.episodeRunId(),
+                    org.xar.ck3.control.application.planning.sway.OrdinarySwayPolicy.OPERATION,org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.HANDLER,clock);
+            priorSource.verify(same,actualHead,proposed,archive);return;
+        }
         require(proof.requestSource().equals(requestRef)&&Arrays.equals(archive.loadMaterial(proof.requestMaterial()).bytes(),requestBytes),"operator observation is not from the installed configured request");
         var original=archive.loadReceipt(proof.originalReceipt());requireOriginalBinding(original);
         require(proof.originalReceipt().equals(request.originalReceipt())&&proof.predecessorSequence()==request.expectedHeadSequence()&&proof.predecessorDigest().equals(request.expectedHeadDigest()),"operator observation changed configured parent/predecessor");

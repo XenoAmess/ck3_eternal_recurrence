@@ -19,7 +19,7 @@ final class RootOperatorQuarantineRuntime {
     static void install(RootApplicationAssembly.Core core,ManagedGameSession game,ExactRef configuredRequest,Clock clock)throws IOException {
         byte[] requestBytes=readExact(configuredRequest);var request=CompositeOperatorQuarantineRequest.decode(requestBytes);
         StrictJson.require(request.machineId().equals(game.machineId()),"operator request belongs to another runtime machine");
-        var source=new CompositeOperatorQuarantineSource(configuredRequest,requestBytes,readExact(request.authorizedBy()),game.generation(),game.sessionId(),OrdinarySwayPolicy.OPERATION,SwayOrdinaryComposite.HANDLER,clock);
+        var source=new CompositeOperatorQuarantineSource(configuredRequest,requestBytes,readExact(request.authorizedBy()),game.generation(),game.sessionId(),request.lifeInterruption()?new org.xar.ck3.control.application.action.OperationKey("life-advance"):OrdinarySwayPolicy.OPERATION,request.lifeInterruption()?org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER:SwayOrdinaryComposite.HANDLER,clock);
         core.bindOperatorQuarantineSource(source);
     }
     private static byte[] readExact(ExactRef reference)throws IOException {
