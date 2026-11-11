@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.m6.SwayLifecycle;
@@ -18,6 +19,7 @@ public final class SwayTransitionCodec {
     public static final String SCHEMA = "xar.java.sway-domain-transition/v2";
     public static final String PUBLIC_START_SCHEMA = "xar.java.sway-domain-transition/v3";
     public static final String FOLLOWING_GAMEPLAY_SCHEMA = "xar.java.sway-domain-transition/v4";
+    public static final String IMPORT_SCHEMA = "xar.java.sway-domain-transition-import/v1";
     private SwayTransitionCodec() { }
     public record Proofs(List<ExactRef> reads, Optional<ExactRef> dispatch, Optional<ExactRef> nativeFrame, List<ExactRef> materials) {
         public Proofs(List<ExactRef> reads, Optional<ExactRef> dispatch, Optional<ExactRef> nativeFrame) { this(reads, dispatch, nativeFrame, List.of()); }
@@ -41,6 +43,24 @@ public final class SwayTransitionCodec {
         java.util.ArrayList<ExactRef> refs = new java.util.ArrayList<>(); reads.forEach(value -> refs.add(ExactRef.fromJson(value)));
         JsonNode materials = proofs.get("materials"); require(materials.isArray() && materials.size() <= 8, "bounded original material references"); java.util.ArrayList<ExactRef> materialRefs = new java.util.ArrayList<>(); materials.forEach(value -> materialRefs.add(ExactRef.fromJson(value)));
         return new Input(ExactRef.fromJson(row.get("predecessor")), change(row.get("change"), before), new Proofs(refs, SwayFormalCodec.optional(proofs.get("dispatch")).map(ExactRef::fromJson), SwayFormalCodec.optional(proofs.get("native_frame")).map(ExactRef::fromJson), materialRefs));
+    }
+    /** Import-only envelope: exact legacy transition bytes, without numeric JSON leaves. */
+    public static byte[] encodeForImport(Input input) {
+        ObjectNode row = StrictJson.object();
+        row.put("schema", IMPORT_SCHEMA);
+        row.set("original_transition_base64", SwayFormalCodec.chunks(encode(input)));
+        return ContinuityJson.canonical(row, ContinuityJson.DOCUMENT_MAX_BYTES);
+    }
+    /** Legacy inputs retain their decoder; the new envelope is canonical and cannot nest. */
+    public static Input decodeForImport(byte[] raw, Ledger before) {
+        JsonNode row = StrictJson.parse(raw, SwayFormalCodec.MAX);
+        if (!IMPORT_SCHEMA.equals(SwayNativeWire.string(row, "schema"))) return decode(raw, before);
+        StrictJson.object(row, Set.of("schema", "original_transition_base64"));
+        byte[] original = SwayFormalCodec.bytes(row.get("original_transition_base64"));
+        Input input = decode(original, before);
+        require(java.util.Arrays.equals(encode(input), original), "exact canonical original Sway transition required");
+        require(java.util.Arrays.equals(encodeForImport(input), raw), "exact canonical Sway import envelope required");
+        return input;
     }
     static ObjectNode change(Change value) {
         ObjectNode row = StrictJson.object();

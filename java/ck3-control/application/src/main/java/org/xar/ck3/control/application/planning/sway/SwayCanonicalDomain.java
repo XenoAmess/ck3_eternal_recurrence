@@ -100,7 +100,7 @@ public final class SwayCanonicalDomain {
     private Publication commitScoped(ContinuityStorePort.Session borrowed, Change change, SwayTransitionCodec.Proofs proofs, ActionPorts.OutcomeArchive scoped) throws IOException {
         require(!(change instanceof Following), "legacy read-only Following cannot produce a new canonical transition; exact gameplay receipt required");
         borrowed.requireWriter(originalLock); Loaded before = load(borrowed); SwayTransitionCodec.Input input = new SwayTransitionCodec.Input(before.original().reference().payload(), change, proofs);
-        byte[] producerInput = SwayTransitionCodec.encode(input);
+        byte[] producerInput = SwayTransitionCodec.encodeForImport(input);
         // The same replay used by Registration runs here and again inside original preview/commit lock.
         verifyOriginals(borrowed.head().state(), before.ledger(), change, proofs, scoped); Ledger reduced = SwayFormalState.reduce(before.ledger(), change);
         byte[] body = SwayFormalCodec.encode(reduced); ExactRef originalBody = scoped.preserveMaterial(new RawJson(body));
@@ -137,7 +137,7 @@ public final class SwayCanonicalDomain {
                 && publishedSources.equals(witness.result().producerSources()), "Sway actual publication producer closure differs");
         require(!currentPublication || publishedSources.equals(producerSources), "Sway current publication differs from its installed producer closure");
         byte[] inputBytes = originals.loadMaterial(witness.producerInput()).bytes(); Ledger before = SwayFormalCodec.decode(originals.loadMaterial(witness.predecessor().payload()).bytes());
-        var input = SwayTransitionCodec.decode(inputBytes, before);
+        var input = SwayTransitionCodec.decodeForImport(inputBytes, before);
         require(input.predecessor().equals(witness.predecessor().payload()) && refs(source.get("evidence")).equals(input.proofs().all()) && StrictJson.text(details.get("precondition_digest")).equals(ActionCodec.sha256(inputBytes)) && StrictJson.text(details.get("evidence_id")).equals("domain-body:SWAY:sway-" + ActionCodec.sha256(inputBytes)), "Sway original publication input/evidence differs");
         byte[] actual = originals.loadMaterial(witness.result().payload()).bytes();
         ExactRef original = ExactRef.fromJson(source.get("original_body")); require(Arrays.equals(originals.loadMaterial(original).bytes(), actual), "Sway immutable body differs from original producer output");
@@ -182,11 +182,11 @@ public final class SwayCanonicalDomain {
                 DomainBodies.BodyRef beforeRef = previous.orElseThrow(() -> new IOException("Sway original import is required; no implicit empty initialization"));
                 require(beforeRef.contractSchema().equals(SCHEMA), "Sway predecessor contract differs");
                 Ledger before = SwayFormalCodec.decode(archive.loadMaterial(beforeRef.payload()).bytes()); require(before.machineId().equals(actualHead.machineId()), "Sway replay machine drift");
-                SwayTransitionCodec.Input input = SwayTransitionCodec.decode(request.producerInput(), before);
+                SwayTransitionCodec.Input input = SwayTransitionCodec.decodeForImport(request.producerInput(), before);
                 require(input.predecessor().equals(beforeRef.payload()) && request.evidence().equals(input.proofs().all()), "Sway domain predecessor/evidence changed");
                 verifyOriginals(actualHead, before, input.change(), input.proofs(), archive);
                 Ledger expected = SwayFormalState.reduce(before, input.change()); require(Arrays.equals(SwayFormalCodec.encode(expected), actualBody), "Sway canonical body differs from actual native-source reducer");
-                return ActionCodec.sha256(SwayTransitionCodec.encode(input));
+                return ActionCodec.sha256(SwayTransitionCodec.IMPORT_SCHEMA.equals(SwayNativeWire.string(incoming, "schema")) ? request.producerInput() : SwayTransitionCodec.encode(input));
             }
         });
     }
