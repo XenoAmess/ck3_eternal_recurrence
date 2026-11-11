@@ -188,11 +188,11 @@ public final class DefenderContinueRisk {
     public static Envelope observe(Request request) {
         require(request != null, "risk request required");
         Set<Blocker> blockers = new TreeSet<>((left, right) -> left.wire().compareTo(right.wire()));
-        blockers.addAll(List.of(Blocker.CURRENT_CB_MATERIAL_TERMS_REQUIRED,
-                Blocker.CURRENT_ASSET_EXPOSURE_AND_VALUATION_REQUIRED,
-                Blocker.FINITE_HORIZON_TAIL_LOSS_UPPER_REQUIRED,
-                Blocker.FINITE_HORIZON_WAR_CASH_UPPER_REQUIRED,
-                Blocker.COMPLETE_ENCOUNTER_PARTICIPANT_SCOPE_REQUIRED));
+        blockers.add(Blocker.CURRENT_CB_MATERIAL_TERMS_REQUIRED);
+        blockers.add(Blocker.CURRENT_ASSET_EXPOSURE_AND_VALUATION_REQUIRED);
+        blockers.add(Blocker.FINITE_HORIZON_TAIL_LOSS_UPPER_REQUIRED);
+        blockers.add(Blocker.FINITE_HORIZON_WAR_CASH_UPPER_REQUIRED);
+        blockers.add(Blocker.COMPLETE_ENCOUNTER_PARTICIPANT_SCOPE_REQUIRED);
         ContactResult contactResult;
         Contact contact = request.contact();
         if (contact == null) {
