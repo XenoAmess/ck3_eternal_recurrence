@@ -53,6 +53,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         ContinuityState predecessor = actualLockedHead.state();
         ActionReceipt receipt = receipt(request);
         List<ActionReceipt> canonicalReceipts = canonicalReceipts(predecessor);
+        if (!(receipt.state() instanceof ActionState.CompositeOperatorQuarantined)) CompositeOperatorQuarantinePolicy.requireNewActionAllowed(canonicalReceipts.stream().filter(value -> !value.command().actionId().equals(receipt.command().actionId())).toList(), receipt.command());
         ProtocolIdentityAdmission.requireUnique(canonicalReceipts, receipt.command());
         Optional<ActionReceipt> existing = canonicalReceipts.stream().filter(r -> r.command().actionId().equals(receipt.command().actionId())).findFirst();
         ActionTransitions.validate(existing, receipt.command(), receipt.bodySha256(), receipt.state());
@@ -84,6 +85,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
     @Override public ContinuityState reduce(ContinuityState predecessor, WriterContracts.Request request) {
         ActionReceipt receipt = receipt(request);
         List<ActionReceipt> canonicalReceipts = canonicalReceipts(predecessor);
+        if (!(receipt.state() instanceof ActionState.CompositeOperatorQuarantined)) CompositeOperatorQuarantinePolicy.requireNewActionAllowed(canonicalReceipts.stream().filter(value -> !value.command().actionId().equals(receipt.command().actionId())).toList(), receipt.command());
         ProtocolIdentityAdmission.requireUnique(canonicalReceipts, receipt.command());
         StrictJson.require(receipt.sequence() == Math.addExact(predecessor.sequence(), 1), "action event must consume actual next writer sequence");
         StrictJson.require(receipt.command().origin().machineId().equals(predecessor.machineId()), "action machine must equal canonical writer machine");

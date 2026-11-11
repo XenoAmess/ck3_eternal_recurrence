@@ -114,6 +114,7 @@ public final class ContinuityActionJournal implements ActionJournal {
                     if (next instanceof ActionState.IntentAbandoned abandoned) {
                         evidence.add(abandoned.originalIntentRecord()); evidence.add(abandoned.originalActionHead());
                     }
+                    if (next instanceof ActionState.CompositeOperatorQuarantined quarantined) evidence.add(quarantined.observationRef());
                     if (next instanceof ActionState.Unknown unknown) evidence.addAll(unknown.evidence());
                     if (next instanceof ActionState.CompositeUnknown unknown) evidence.addAll(unknown.evidence());
                     WriterContracts.Request request = new WriterContracts.Request(KIND, ContinuityJson.canonical(details), evidence.stream().distinct().toList());

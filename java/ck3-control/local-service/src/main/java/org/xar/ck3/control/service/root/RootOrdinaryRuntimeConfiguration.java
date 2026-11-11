@@ -52,7 +52,7 @@ public final class RootOrdinaryRuntimeConfiguration {
         "freshness_ms", "heartbeat_maximum_age_ms", "batch_id_prefix", "maximum_turns",
         "batch_wall_ms", "readiness_timeout_ms", "poll_interval_ms", "checkpoint_every_advances",
         "maximum_frames_per_operation", "maximum_submissions", "maximum_storage_bytes", "decision_provider",
-        "m5_joint_peacetime_enabled", "first_heir_marriage_enabled", "new_marriage_proposals_enabled"
+        "m5_joint_peacetime_enabled", "first_heir_marriage_enabled", "new_marriage_proposals_enabled", "operator_quarantine"
     );
 
     private final Path configurationFile;
@@ -81,6 +81,7 @@ public final class RootOrdinaryRuntimeConfiguration {
     private final boolean m5JointPeacetimeEnabled;
     private final boolean firstHeirMarriageEnabled;
     private final boolean newMarriageProposalsEnabled;
+    private final java.util.Optional<org.xar.ck3.control.contracts.ExactRef> operatorQuarantine;
 
     public static RootOrdinaryRuntimeConfiguration read(Path configPath) throws IOException {
         try {
@@ -209,7 +210,8 @@ public final class RootOrdinaryRuntimeConfiguration {
             maximumFramesPerOperation,
             maximumSubmissions,
             maximumStorageBytes,
-            loopConfig, decisionProvider, m5JointPeacetimeEnabled, firstHeirMarriageEnabled, newMarriageProposalsEnabled
+            loopConfig, decisionProvider, m5JointPeacetimeEnabled, firstHeirMarriageEnabled, newMarriageProposalsEnabled,
+            root.has("operator_quarantine") ? java.util.Optional.of(org.xar.ck3.control.contracts.ExactRef.fromJson(root.get("operator_quarantine"))) : java.util.Optional.empty()
         );
     }
 
@@ -293,7 +295,8 @@ public final class RootOrdinaryRuntimeConfiguration {
         java.util.Optional<DecisionProvider> decisionProvider,
         boolean m5JointPeacetimeEnabled,
         boolean firstHeirMarriageEnabled,
-        boolean newMarriageProposalsEnabled
+        boolean newMarriageProposalsEnabled,
+        java.util.Optional<org.xar.ck3.control.contracts.ExactRef> operatorQuarantine
     ) {
         this.configurationFile = configurationFile;
         this.machineId = machineId;
@@ -321,6 +324,7 @@ public final class RootOrdinaryRuntimeConfiguration {
         this.m5JointPeacetimeEnabled = m5JointPeacetimeEnabled;
         this.firstHeirMarriageEnabled = firstHeirMarriageEnabled;
         this.newMarriageProposalsEnabled = newMarriageProposalsEnabled;
+        this.operatorQuarantine = java.util.Objects.requireNonNull(operatorQuarantine);
     }
 
     public Path configurationFile() { return configurationFile; }
@@ -349,4 +353,5 @@ public final class RootOrdinaryRuntimeConfiguration {
     public boolean m5JointPeacetimeEnabled() { return m5JointPeacetimeEnabled; }
     public boolean firstHeirMarriageEnabled() { return firstHeirMarriageEnabled; }
     public boolean newMarriageProposalsEnabled() { return newMarriageProposalsEnabled; }
+    public java.util.Optional<org.xar.ck3.control.contracts.ExactRef> operatorQuarantine() { return operatorQuarantine; }
 }

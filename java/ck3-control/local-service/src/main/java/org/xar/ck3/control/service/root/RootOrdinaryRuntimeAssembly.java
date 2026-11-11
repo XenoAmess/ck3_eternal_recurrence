@@ -554,6 +554,7 @@ public final class RootOrdinaryRuntimeAssembly {
             core.bindM5JointPeacetimeEnabled(config.m5JointPeacetimeEnabled());
             core.bindFirstHeirMarriageEnabled(config.firstHeirMarriageEnabled());
             core.bindNewMarriageProposalsEnabled(config.newMarriageProposalsEnabled());
+            if(config.operatorQuarantine().isPresent()) RootOperatorQuarantineRuntime.install(core,actual,config.operatorQuarantine().orElseThrow(),clock);
             ports.bindCore(core);catalogs.bindCore(core);
             products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
             actual.nativeTransport().awaitHello(clock.instant().plus(config.operationTimeout()));
@@ -623,6 +624,15 @@ public final class RootOrdinaryRuntimeAssembly {
             var source=new G2Source(actual.machineId(),clock.instant().toString(),hello.gameSha256(),
                     metadata.implementation(RootOrdinaryRuntimeAssembly.class));
             return new Opened(this,source);
+        }
+
+        /** Explicit new operator decision; never a fresh campaign or replay fallback. */
+        public Running openOperatorQuarantineRecovery(ManagedGameSession actual,Instant deadline)throws IOException,InterruptedException {
+            if(config.operatorQuarantine().isEmpty())throw new IOException("operator-quarantine mode requires its explicit configured request pin");
+            var opened=open(actual);
+            var data=opened.core().readOperatorQuarantineOriginal(actual,cyclePolicy).orElseThrow(()->new IOException("operator recovery requires its original authoritative unresolved same-Game data"));
+            var driver=runOperationPhase(clock,config.operationTimeout(),phaseDeadline->opened.core().adoptUnresolvedSameGame(actual,data,config.retainedFrames(),cyclePolicy,phaseDeadline));
+            return new Opened(this,driver.source()).finishOperatorQuarantine(driver,data,deadline);
         }
 
 public Running openSameGameBootstrap(ManagedGameSession actual, Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline) throws IOException, InterruptedException {
@@ -850,6 +860,23 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
                 session.install(new OrdinarySessionHost(),phaseDeadline);return null;
             });
             return new Running(owner,session,data.controller().batchPrefix(),data.controller().nextBatchSequence());
+        }
+
+        private Running finishOperatorQuarantine(DriverBootstrap.Adopted driver,ContinuityBatchJournal.UnresolvedSameGameData data,Instant deadline)throws IOException,InterruptedException {
+            consumed=true;
+            if(owner.config.decisionProvider().isPresent()) {
+                var selector=new RootOnlineDecisionSelector(owner.config.decisionProvider().orElseThrow(),owner.clock,raw->{
+                    var writer=owner.core.writer();var active=writer.activeSession();
+                    if(active.isPresent())return owner.core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                    return writer.locked(same->owner.core.archive().withSession(same).preserveMaterial(raw));
+                });owner.core.bindDecisionSelector(selector);
+            }
+            installed=runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->owner.catalogs.install(owner.core,owner.game,source,owner.core.planningReads(),owner.clock,phaseDeadline));
+            var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
+            var session=owner.core.finishUnresolvedSameGame(installed,driver,configuration,owner.services(source));
+            long next=owner.core.completeOperatorQuarantineRecovery(session,driver,data);
+            runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{session.install(new OrdinarySessionHost(),phaseDeadline);return null;});
+            return new Running(owner,session,data.capturedController().batchPrefix(),next);
         }
 
         private Running finishUnresolvedSameGame(DriverBootstrap.Adopted driver, ContinuityBatchJournal.UnresolvedSameGameData data, Instant deadline) throws IOException, InterruptedException {

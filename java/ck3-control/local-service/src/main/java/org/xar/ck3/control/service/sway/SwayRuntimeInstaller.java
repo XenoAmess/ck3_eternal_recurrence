@@ -163,10 +163,13 @@ public final class SwayRuntimeInstaller implements SwayOrdinaryExecutor.CurrentP
         SwaySessionInputs inputs = new SwaySessionInputs(domain, this::session);
         executor = new SwayOrdinaryExecutor(domain, context.archive(), context.reads(), sharedRoot, registered, nativeActions,
                 context::bindings, this::session, this::captureCurrent, this, this::independentFinal, context::requireRestoration, planner);
-        var composite = new SwayOrdinaryComposite(executor, domain, this::session);
+        var composite = new SwayOrdinaryComposite(executor, domain, this::session, context.core()::operatorQuarantineSource);
         var parent = new RootExecutableBindings.CompositeBinding(composite, ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP, Optional.empty(), prepared.sources.composite(), prepared.sources.composite());
         OrdinarySwayPolicy policy = OrdinarySwayPolicyFactory.create(prepared.sources.policy(), context.reads(), sharedRoot, inputs,
                 request -> { originalPlanning = Objects.requireNonNull(request); return prepared.configuration.capabilities(); }, SwayOrdinaryComposite::expected);
+        policy.bindOperatorQuarantine(request->{try{return context.withSession(same->context.core().actions().withFrozen(same,lease->{
+            boolean retired=CompositeOperatorQuarantinePolicy.quarantinedSway(lease.snapshot().actions(),request.before().game(),request.before().frame().episodeRunId());lease.assertCurrent();return retired;
+        }));}catch(IOException failure){throw new UncheckedIOException(failure);}});
         RootDomainIntentPreparation.Binding pending = new RootDomainIntentPreparation.Binding("sway-original-native-intent/v2", prepared.sources.pendingProducer(), command -> {
             return supportsPendingOperation(command.operation(), nativeActions.startFamily(), key -> context.bindings().actualFamily(key));
         }, lifecycle.pendingProducer());

@@ -1054,6 +1054,17 @@ public final class DriverBootstrap {
         return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,false,true);
     }
 
+    /** New explicit operator scope retains unknown effects; adoption stays read-only until its canonical retirement commits. */
+    public static Adopted adoptOperatorQuarantineOriginal(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
+            org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest request,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline)
+            throws IOException,InterruptedException {
+        StrictJson.require(data.retainedHistory().isPresent(),"operator adoption requires its complete original history reader");
+        return adoptSameGameHistory(data.retainedHistory().orElseThrow(),same,actions,transport,archive,currentSession,retainedFrames,deadline,true,false,Optional.of(request));
+    }
+
     /** Reattaches retained Life action or pending-cycle recovery with its latest Driver, without granting Ready. */
     public static Adopted adoptUnresolvedSameGame(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
@@ -1079,6 +1090,14 @@ public final class DriverBootstrap {
             ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
             ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
             boolean isolatedLife,boolean historicalReads) throws IOException,InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,isolatedLife,historicalReads,Optional.empty());
+    }
+    private static Adopted adoptSameGameHistory(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
+            boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest)throws IOException,InterruptedException {
+        Objects.requireNonNull(operatorRequest);
         Objects.requireNonNull(data);Objects.requireNonNull(same);Objects.requireNonNull(actions);
         Objects.requireNonNull(transport);Objects.requireNonNull(archive);Objects.requireNonNull(currentSession);
         Objects.requireNonNull(deadline);
@@ -1092,7 +1111,7 @@ public final class DriverBootstrap {
                 &&retained.driver().session().bridgePid()==current.game().pid()
                 &&retained.driver().session().pipeName().equals(transport.pipeName()),
                 "settled retained Driver belongs to another physical Game or pipe");
-        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads);
+        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads,operatorRequest);
         var repository=new DriverFactsRepository(retained);
         var producer=new NativeDriverObservationProducer(repository,transport,data.source(),
                 wire->borrowedArchive(archive,currentSession).preserveMaterial(RawJson.fullMaterial(wire)));
@@ -1142,7 +1161,7 @@ public final class DriverBootstrap {
     private static void qualifySameGameActionHistory(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
             ContinuityStorePort.Session same,ActionSnapshotReader actions,ActionPorts.OutcomeArchive archive,
-            boolean isolatedLife,boolean historicalReads) throws IOException {
+            boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest) throws IOException {
         var retained=data.retainedFacts();var old=data.previousTransport();
         ActionPorts.CheckedArchiveRead<Void> qualification=originals->{
             var finalizationHead = same.head().state();
@@ -1152,7 +1171,13 @@ public final class DriverBootstrap {
                 StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
                         &&basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
                         "same-Game continuation cannot replace its actual original history");
-                if (isolatedLife) {
+                if(operatorRequest.isPresent()) {
+                    var owner=new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(old.machineId(),old.game(),old.sessionId());
+                    StrictJson.require(isolatedLife&&new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))
+                            &&org.xar.ck3.control.application.session.ContinuityBatchJournal.operatorQuarantineOriginalRoot(
+                                    finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same),operatorRequest.orElseThrow()).isPresent(),
+                            "operator readonly adoption changed its exact request-bound canonical original");
+                } else if (isolatedLife) {
                     var owner = new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(old.machineId(), old.game(), old.sessionId());
                     StrictJson.require(new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))
                             && (org.xar.ck3.control.application.session.ContinuityBatchJournal

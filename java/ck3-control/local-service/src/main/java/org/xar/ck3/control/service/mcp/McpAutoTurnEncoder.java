@@ -79,7 +79,7 @@ public final class McpAutoTurnEncoder {
         }
         McpAutoFailure.fromReceipt(receipt).ifPresent(failure -> {throw failure;});
         String selected=receipt.command().operation().value();
-        Status status=switch(receipt.outcome()){case UNRESOLVED -> Status.PENDING;case REJECTED_BEFORE_DISPATCH,REJECTED_CONFIRMED -> Status.BLOCKED;
+        Status status=switch(receipt.outcome()){case OPERATOR_ABANDONED_UNKNOWN_EFFECT -> Status.BLOCKED;case UNRESOLVED -> Status.PENDING;case REJECTED_BEFORE_DISPATCH,REJECTED_CONFIRMED -> Status.BLOCKED;
             case APPLIED_CONFIRMED -> receipt.visibleGameplay()?Status.EXECUTED:Status.OBSERVED;
             case SEND_CONFIRMED,TERMINAL_WITHOUT_EFFECT -> Status.OBSERVED;};
         payload.put("status",status.token());payload.put("selected_step",selected);
@@ -194,6 +194,7 @@ public final class McpAutoTurnEncoder {
         case ActionState.IntentAbandoned ignored -> Optional.empty();case ActionState.IntentDurable ignored -> Optional.empty();case ActionState.Submitting value -> Optional.of(value.attempt().guard());case ActionState.AckReceived value -> Optional.of(value.attempt().guard());
         case ActionState.Unknown value -> value.attempt().map(ActionState.Attempt::guard);case ActionState.Settled value -> Optional.of(value.attempt().guard());case ActionState.RejectedBeforeDispatch value -> Optional.of(value.attempt().guard());
         case ActionState.CompositeRunning value -> Optional.of(value.execution().guard());case ActionState.CompositeUnknown value -> Optional.of(value.execution().guard());case ActionState.CompositeSettled value -> Optional.of(value.execution().guard());
+        case ActionState.CompositeOperatorQuarantined value -> Optional.of(value.execution().guard());
         case PhysicalActionState value -> Optional.of(value.guard());};}
     private static Payload finish(ObjectNode original){return finish(original,Optional.empty(),Optional.empty());}
     private static Payload finish(ObjectNode original,Optional<RawJson> result,Optional<PlanTrace> trace){

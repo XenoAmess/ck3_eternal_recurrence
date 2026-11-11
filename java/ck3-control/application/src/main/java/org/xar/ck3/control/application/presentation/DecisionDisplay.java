@@ -176,6 +176,7 @@ public final class DecisionDisplay {
                 case REJECTED_CONFIRMED -> Status.REJECTED;
                 case REJECTED_BEFORE_DISPATCH -> Status.REJECTED_BEFORE_DISPATCH;
                 case TERMINAL_WITHOUT_EFFECT -> Status.TERMINAL_WITHOUT_EFFECT;
+                case OPERATOR_ABANDONED_UNKNOWN_EFFECT -> Status.UNRESOLVED;
             };
             Card next = new Card(identity.context(), Optional.of(identity), prior.parents(), prior.policy(), prior.phase(),
                     prior.rationale(), status, request.isPresent() ? request : prior.attemptRequestId(),

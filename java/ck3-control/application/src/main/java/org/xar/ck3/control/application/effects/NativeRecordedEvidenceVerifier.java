@@ -174,6 +174,15 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
             ActionTransitions.dispatch(proposed.state()).ifPresent(dispatch -> StrictJson.require(dispatch.equals(archive.load(archive.referenceOf(dispatch))), "actual archived dispatch changed"));
             if (proposed.state() instanceof ActionState.Settled primitive)
                 ActionEffects.validate(proposed.command(), primitive.attempt(), primitive.dispatch(), primitive.settlement());
+            if (proposed.state() instanceof ActionState.CompositeOperatorQuarantined) {
+                var operatorBinding = catalog == null ? bindings.get(proposed.command().operation())
+                        : catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
+                StrictJson.require(operatorBinding != null,"operator quarantine has no installed exact-operation verifier");
+                RootGuardChecks.source(session,operatorBinding.definitionSource());
+                org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(proposed,archive);
+                operatorBinding.verifier().verify(actualLockedHead,proposed,archive);
+                return;
+            }
             ActionState.Settlement settlement = settlement(proposed.state());
             if (settlement == null) return;
             Binding binding = catalog == null ? bindings.get(proposed.command().operation())

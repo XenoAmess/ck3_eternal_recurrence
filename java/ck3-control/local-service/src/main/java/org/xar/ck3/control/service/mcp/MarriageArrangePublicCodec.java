@@ -57,6 +57,7 @@ public final class MarriageArrangePublicCodec {
             case REJECTED_CONFIRMED -> "rejected";
             case REJECTED_BEFORE_DISPATCH -> "rejected_before_dispatch";
             case TERMINAL_WITHOUT_EFFECT -> "terminal_without_effect";
+            case OPERATOR_ABANDONED_UNKNOWN_EFFECT -> throw new IllegalArgumentException("operator abandonment with unknown effects is not a public marriage send result");
             case APPLIED_CONFIRMED -> throw new IllegalArgumentException("a generic Applied is not a public marriage send result");
         };
         ObjectNode row=StrictJson.object().put("step",intent.step()).put("status",receipt.outcome().name().toLowerCase(Locale.ROOT))

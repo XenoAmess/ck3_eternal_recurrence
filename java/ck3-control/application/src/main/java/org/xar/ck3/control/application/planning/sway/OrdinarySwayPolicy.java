@@ -41,6 +41,11 @@ public final class OrdinarySwayPolicy implements OrdinaryPolicy {
     private final CopiedSource collector;
     private final CompositePostcondition postcondition;
     private final OrdinarySwayService service = new OrdinarySwayService();
+    private java.util.function.Predicate<PlanningRequest> operatorQuarantine=request->false;
+    private boolean operatorQuarantineBound;
+    public synchronized void bindOperatorQuarantine(java.util.function.Predicate<PlanningRequest> actual) {
+        require(!operatorQuarantineBound,"operator quarantine reader binds once before policy use");operatorQuarantine=Objects.requireNonNull(actual);operatorQuarantineBound=true;
+    }
 
     /** Reads a frozen planning view; native reading uses the sole admitted PlanningReadPort outside this leaf. */
     @FunctionalInterface public interface CopiedSource { CapturedView collect(PlanningRequest request); }
@@ -64,6 +69,7 @@ public final class OrdinarySwayPolicy implements OrdinaryPolicy {
 
     @Override public OrdinaryPolicy.Decision evaluate(PlanningRequest request, Draft previous) {
         Objects.requireNonNull(request); Objects.requireNonNull(previous);
+        if(operatorQuarantine.test(request)) return new Keep("optional Sway automation is operator-quarantined for this Game/episode; original effects remain UNKNOWN");
         if (previous.command().isEmpty() || !previous.command().orElseThrow().operation().value().equals("life-advance")) {
             return new Keep("ordinary Sway preserves the selected non-life-advance step");
         }

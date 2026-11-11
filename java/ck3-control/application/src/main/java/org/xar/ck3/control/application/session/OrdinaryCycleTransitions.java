@@ -129,6 +129,72 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(terminalFrames == null, "the actual cycle terminal frame loader is installed once");
         terminalFrames = actualLoader;
     }
+
+    /** Distinct operator retirement recovery. It never describes the old action as no-dispatch or no-effect. */
+    static final String OPERATOR_QUARANTINE_RECOVERY_OPERATION="OPERATOR_QUARANTINE_RECOVERY";
+    static final String OPERATOR_QUARANTINE_RECOVERY_FIELD="java_operator_quarantine_recovery";
+    private record OperatorQuarantineContext(ContinuityBatchJournal.OperatorQuarantineRecovery admission,SemanticEvidence semantic,byte[] details) { }
+    private final ThreadLocal<OperatorQuarantineContext> operatorQuarantineContext=new ThreadLocal<>();
+    WriterContracts.Receipt commitOperatorQuarantineRecovery(ContinuityStorePort.Session same,
+            ContinuityBatchJournal.OperatorQuarantineRecovery admission,SemanticEvidence semantic)throws IOException {
+        StrictJson.require(active.get()==same&&operatorQuarantineContext.get()==null,"operator recovery requires its unique original journal scope");
+        admission.requireCurrent(same);Objects.requireNonNull(semantic);
+        ObjectNode row=StrictJson.object();row.put("evidence_id","operator-quarantine-recovery:"+admission.terminalReceipt().command().actionId()+":"+admission.sequence());
+        row.put("source","java-operator-quarantine-recovery/v1");row.set("session",sessionToJson(admission.owner()));
+        row.put("operation",OPERATOR_QUARANTINE_RECOVERY_OPERATION);row.put("predecessor_head_digest",admission.digest());
+        row.set("receipt_ref",admission.receiptReference().toJson());row.set("operator_observation",admission.observationReference().toJson());
+        row.set("controller_ref",admission.controllerReference().toJson());row.set("retained_driver",admission.retainedDriver().toJson());
+        row.put("batch_id",admission.consumedBatchId());row.put("next_sequence",admission.nextBatchSequence());
+        var batches=row.putArray("consumed_batches");admission.consumedBatchIds().forEach(batches::add);
+        row.set("semantic",semanticToJson(semantic));
+        byte[] bytes=ContinuityJson.canonical(row);var refs=new ArrayList<ExactRef>(admission.history());refs.addAll(semantic.references());
+        var request=new WriterContracts.Request(CYCLE_KIND,bytes,refs.stream().distinct().toList());
+        operatorQuarantineContext.set(new OperatorQuarantineContext(admission,semantic,bytes));
+        try {var prepared=same.preview(request);var receipt=same.commit(prepared);same.requireCommitted(prepared,receipt);admission.committed(prepared,receipt);return receipt;}
+        finally {operatorQuarantineContext.remove();}
+    }
+    private String revalidateOperatorQuarantineRecovery(ContinuityStorePort.Session same,WriterContracts.Head head,ObjectNode details)throws IOException {
+        var context=operatorQuarantineContext.get();StrictJson.require(context!=null,"operator recovery requires its actual private journal admission");
+        var admission=context.admission();admission.requireCurrent(same);strictOperatorQuarantineRecovery(details);
+        StrictJson.require(java.util.Arrays.equals(context.details(),ContinuityJson.canonical(details))
+                &&head.digest().equals(admission.digest()),"operator recovery changed its exact private producer/predecessor");
+        admission.requireCanonicalTerminal(same);requireOwner(head.state(),admission.owner());requireOperatorQuarantineFrontier(head.state());
+        var checked=verify(same,admission.owner(),context.semantic());requireSettledBinding(head.state(),checked.frame());
+        var observation=org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(admission.terminalReceipt(),archive.withSession(same));
+        var request=org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest.decode(archive.withSession(same).loadMaterial(observation.requestMaterial()).bytes());
+        StrictJson.require(!checked.observedAt().isBefore(request.issuedAt())&&checked.observedAt().isBefore(request.observationDeadline()),
+                "operator recovery SEM is outside its distinct decision observation window");
+        var proof=StrictJson.object();proof.put("predecessor",head.digest());proof.put("operator_observation",admission.observationReference().sha256());
+        proof.put("semantic",checked.materialDigest());proof.put("controller",admission.controllerReference().sha256());return ContinuityJson.digest(proof);
+    }
+    private ContinuityState reduceOperatorQuarantineRecovery(ContinuityState predecessor,ObjectNode details) {
+        strictOperatorQuarantineRecovery(details);requireOwner(predecessor,sessionFromJson(details.get("session")));requireOperatorQuarantineFrontier(predecessor);
+        StrictJson.require(ContinuityJson.digest(predecessor.toJson()).equals(text(details,"predecessor_head_digest")),"operator recovery predecessor changed");
+        var semantic=semanticFromJson(details.get("semantic"));requireSettledBinding(predecessor,semantic.frame());
+        var original=StrictJson.object();original.put("evidence_id",text(details,"evidence_id"));original.set("source",details.get("source"));original.put("machine_id",predecessor.machineId());
+        original.put("completed_cycles",predecessor.settledCycles());original.set("frame",originalFrame(semantic.frame()));
+        original.set("session",details.get("session"));original.set("batch_id",details.get("batch_id"));original.set("next_sequence",details.get("next_sequence"));
+        original.set("operator_observation",details.get("operator_observation"));
+        var next=OriginalWindowReducer.reduce(predecessor.toJson(),"operator_quarantine_recovery",original,policy);
+        next.set(OPERATOR_QUARANTINE_RECOVERY_FIELD,details.deepCopy());
+        StrictJson.require(number(next,"last_settled_cycles")==predecessor.settledCycles()&&number(next,"last_settled_date_raw")==predecessor.settledDateRaw(),
+                "operator recovery cannot grant or rewind saved/cycle progress");
+        return ContinuityState.fromJson(next,predecessor.machineId());
+    }
+    private static void strictOperatorQuarantineRecovery(ObjectNode row) {
+        StrictJson.object(row,Set.of("evidence_id","source","session","operation","predecessor_head_digest","receipt_ref","operator_observation","controller_ref","retained_driver","batch_id","next_sequence","consumed_batches","semantic"));
+        StrictJson.require(OPERATOR_QUARANTINE_RECOVERY_OPERATION.equals(text(row,"operation"))&&"java-operator-quarantine-recovery/v1".equals(text(row,"source"))
+                &&number(row,"next_sequence")==1,"operator recovery is the explicit interrupted initial batch0 to next1 contract");
+        JsonNode consumed=row.get("consumed_batches");StrictJson.require(consumed.isArray()&&consumed.size()==1&&StrictJson.text(consumed.get(0)).equals(text(row,"batch_id")),
+                "operator recovery must consume its one original interrupted batch");
+    }
+    private static void requireOperatorQuarantineFrontier(ContinuityState state) {
+        StrictJson.require(state.status()==ContinuityState.Status.REPAIR_REQUIRED&&state.settledCycles()==0,"operator recovery only resumes the unchanged interrupted initial frontier");
+        var row=state.toJson();
+        for(String field:List.of(WriterContracts.ORDINARY_CYCLE_FIELD,WriterContracts.ORDINARY_SAVED_CYCLE_FIELD,"pending_cycle","pending_checkpoint","current_cycle_pending")) {
+            JsonNode value=row.get(field);StrictJson.require(value==null||value.isNull(),"operator recovery cannot discard an existing cycle/SAVE/pending field: "+field);
+        }
+    }
     private static final String INITIAL_NO_DISPATCH_OPERATION="INITIAL_NO_DISPATCH_RECOVERY";
     private static final String CAPTURED_NO_DISPATCH_OPERATION="CAPTURED_NO_DISPATCH_RECOVERY";
     private record InitialRecoveryContext(ContinuityBatchJournal.InitialNoDispatchRecovery admission,SemanticEvidence semantic) { }
@@ -701,6 +767,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         ObjectNode proof = StrictJson.object(); proof.put("head_digest", actualHead.digest()); proof.put("request", request.identity());
         if (request.kind().equals(NEXT_BASELINE_KIND)) return revalidateNextBaseline(session,actualHead,details);
         if (request.kind().equals(CYCLE_KIND)) {
+            if (OPERATOR_QUARANTINE_RECOVERY_OPERATION.equals(text(details,"operation"))) return revalidateOperatorQuarantineRecovery(session,actualHead,details);
             if (SAVED_READ_ONLY_RECOVERY_OPERATION.equals(text(details,"operation"))) return revalidateSavedReadOnlyRecovery(session,actualHead,details);
             if (SETTLED_SAME_GAME_OPERATION.equals(text(details, "operation"))) return revalidateSettledSameGameRecovery(session, actualHead, details);
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return revalidateInitialNoDispatchRecovery(session,actualHead,details);
@@ -765,6 +832,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireOwner(predecessor, owner); ObjectNode next = predecessor.toJson();
         if (request.kind().equals(NEXT_BASELINE_KIND)) return reduceNextBaseline(predecessor,details);
         if (request.kind().equals(CYCLE_KIND)) {
+            if (OPERATOR_QUARANTINE_RECOVERY_OPERATION.equals(text(details,"operation"))) return reduceOperatorQuarantineRecovery(predecessor,details);
             if (SAVED_READ_ONLY_RECOVERY_OPERATION.equals(text(details,"operation"))) return reduceSavedReadOnlyRecovery(predecessor,details);
             if (SETTLED_SAME_GAME_OPERATION.equals(text(details, "operation"))) return reduceSettledSameGameRecovery(predecessor, details);
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return reduceInitialNoDispatchRecovery(predecessor,details);

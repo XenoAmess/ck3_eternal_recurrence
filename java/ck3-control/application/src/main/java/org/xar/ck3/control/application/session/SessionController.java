@@ -381,6 +381,25 @@ public final class SessionController {
             restoreCapturedController(same,actual.controller());
         } finally {running.set(false);}
     }
+
+    /** A new operator decision retires only the bound unresolved composite; original effects remain UNKNOWN. */
+    public void restoreOperatorQuarantine(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
+            ContinuityBatchJournal.OperatorQuarantineRecovery actual)throws IOException {
+        Objects.requireNonNull(same);Objects.requireNonNull(actual);
+        StrictJson.require(running.compareAndSet(false,true),"operator recovery requires an idle Controller");
+        try {
+            StrictJson.require(journal instanceof ContinuityBatchJournal&&!retired&&usedBatches.isEmpty()&&lastReport.isEmpty()
+                    &&unsavedGameplayActions.isEmpty()&&savedPair.isEmpty()&&pendingReadParent.isEmpty()&&publicCheckpointUnknown.isEmpty()
+                    &&!dirty&&eligibleSinceSave==0&&totalCommittedDays==0,"operator recovery cannot overwrite an executed, pending or saved Controller");
+            ((ContinuityBatchJournal)journal).requireOperatorQuarantineRecovery(same,actual,identity);
+            var captured=actual.capturedController();
+            StrictJson.require(captured.owner().equals(identity)&&captured.savedPair().isEmpty()&&captured.unsavedGameplayActions().isEmpty()
+                    &&captured.eligibleSinceSave()==0&&!captured.dirty()&&captured.totalCommittedDays()==0,"operator recovery captured Controller has other gameplay obligations");
+            restoreCapturedController(same,captured);usedBatches.addAll(actual.consumedBatchIds());
+            quarantined=false;localUnresolved=false;ledgerHead=Optional.of(same.persistedHead());
+            // All credit, original queues/analysis, stop state and consumed identities are preserved; no report is invented.
+        } finally {running.set(false);}
+    }
     /** Preserve all proven consumed initial batches without reconstructing or clearing any runtime queue. */
     public void restoreInitialNoDispatchRecovery(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
             ContinuityBatchJournal.InitialNoDispatchRecovery actual)throws IOException {

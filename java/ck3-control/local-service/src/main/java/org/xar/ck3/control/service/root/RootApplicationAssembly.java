@@ -576,6 +576,7 @@ public final class RootApplicationAssembly {
         private OrdinaryCycleTransitions unresolvedSameGameCycles;
         private ContinuityBatchJournal unresolvedSameGameBatches;
         private ContinuityBatchJournal.UnresolvedSameGameData unresolvedSameGameData;
+        private ContinuityBatchJournal.UnresolvedSameGameData operatorQuarantineOriginalData;
         private OriginalWindowReducer.Policy unresolvedSameGamePolicy;
         private OrdinaryCycleTransitions settledSameGameCycles;
         private ContinuityBatchJournal settledSameGameBatches;
@@ -664,6 +665,11 @@ public final class RootApplicationAssembly {
         public synchronized Optional<org.xar.ck3.control.application.planning.OrdinaryDecisionSelector> decisionSelector() {
             return Optional.ofNullable(decisionSelector);
         }
+        private org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource operatorQuarantine;
+        public synchronized void bindOperatorQuarantineSource(org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource actual) {
+            StrictJson.require(operatorQuarantine==null,"operator quarantine source binds once to this actual Core");operatorQuarantine=Objects.requireNonNull(actual);
+        }
+        public synchronized Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource> operatorQuarantineSource(){return Optional.ofNullable(operatorQuarantine);}
         public ContinuityWriter writer() { return writer; }
         public NativeOutcomeArchive archive() { return archive; }
         public ArchiveOriginalEvidencePort originals() { return originals; }
@@ -1198,6 +1204,20 @@ public final class RootApplicationAssembly {
             });
         }
 
+        /** Configured operator decision has a separate zero-cycle/registered-child read role; ordinary readers are unchanged. */
+        public synchronized Optional<ContinuityBatchJournal.UnresolvedSameGameData> readOperatorQuarantineOriginal(
+                ManagedGameSession game,OriginalWindowReducer.Policy cyclePolicy)throws IOException {
+            StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty(),"operator original reads the unused actual Core");
+            var source=operatorQuarantineSource().orElseThrow(()->new IOException("operator original requires its installed exact request"));
+            return writer.locked(same->{
+                var identity=new SessionIdentity(game.machineId(),game.generation(),game.sessionId());
+                var cycles=new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,cyclePolicy,writer::requireSession);
+                cycles.bindTerminalFrameLoader(frames);var batches=new ContinuityBatchJournal(writer,cycles);
+                var data=batches.readOperatorQuarantineOriginal(same,identity,source.request());
+                unresolvedSameGameCycles=cycles;unresolvedSameGameBatches=batches;unresolvedSameGameData=data;
+                operatorQuarantineOriginalData=data;unresolvedSameGamePolicy=cyclePolicy;return Optional.of(data);
+            });
+        }
         public synchronized Optional<ContinuityBatchJournal.UnresolvedSameGameData> readUnresolvedSameGame(
                 ManagedGameSession game, OriginalWindowReducer.Policy cyclePolicy) throws IOException {
             StrictJson.require(menu == null && !staged && !finished && adopted.isEmpty(), "unresolved reconstruction reads the unused actual Core");
@@ -1249,7 +1269,9 @@ public final class RootApplicationAssembly {
                     &&owner.sessionId().equals(game.sessionId()),"unresolved Controller belongs to another actual Game");
             return writer.locked(same->{
                 final DriverBootstrap.Adopted result;
-                try{result=DriverBootstrap.adoptUnresolvedSameGame(data,same,actions,game.nativeTransport(),archive,
+                try{result=data==operatorQuarantineOriginalData
+                        ?DriverBootstrap.adoptOperatorQuarantineOriginal(data,operatorQuarantineSource().orElseThrow().request(),same,actions,game.nativeTransport(),archive,writer::borrowedSession,retainedFrames,deadline)
+                        :DriverBootstrap.adoptUnresolvedSameGame(data,same,actions,game.nativeTransport(),archive,
                         writer::borrowedSession,retainedFrames,deadline);}
                 catch(InterruptedException interrupted){
                     Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("same-Game unresolved Driver adoption interrupted");
@@ -1592,6 +1614,33 @@ public final class RootApplicationAssembly {
                     "settled continuation retains its actual data and cycle policy");
             driver.requireSettledSameGame(settledSameGameData);
             return finishObserved(installed,driver,configuration,services,Optional.empty());
+        }
+
+        /** Only explicit operator mode invokes this; existing recovery/settlement paths retain their contracts. */
+        public long completeOperatorQuarantineRecovery(RootApplicationSession actual,DriverBootstrap.Adopted driver,
+                ContinuityBatchJournal.UnresolvedSameGameData original)throws IOException {
+            StrictJson.require(actual==activeSession&&adopted.contains(driver)&&original==unresolvedSameGameData,
+                    "operator recovery belongs to another actual Root/Driver/original interrupted batch");
+            var source=operatorQuarantineSource().orElseThrow(()->new IOException("actual configured operator quarantine source is absent"));
+            return writer.locked(same->archive.inSession(same,originals->{try {
+                var request=source.request();
+                var before=ContinuityActionJournal.lookup(same.head().state(),request.parentActionId(),originals).orElseThrow();
+                var observation=source.capture(same,before,originals);
+                var terminal=journal.locked(same,locked->{
+                    var retained=locked.find(request.parentActionId()).orElseThrow();
+                    StrictJson.require(retained.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown,"operator original is no longer its retained unknown");
+                    return locked.append(retained.command(),retained.bodySha256(),new org.xar.ck3.control.application.action.ActionState.CompositeOperatorQuarantined(((org.xar.ck3.control.application.action.ActionState.CompositeUnknown)retained.state()).execution(),observation));
+                });
+                source.verify(same,same.head(),terminal,originals);
+                var history=actionHistory.required().completed(same,terminal);
+                StrictJson.require(history instanceof DriverActionHistoryPublisher.Unchanged unchanged
+                        &&unchanged.reason()==DriverActionHistoryPublisher.Reason.OPERATOR_QUARANTINED_UNKNOWN_EFFECT_VERIFIED,
+                        "operator retirement must not invent a legacy recorder row or Driver CAS");
+                var semantic=initialRecoverySemantic(same,driver,actual.identity());
+                var recovery=unresolvedSameGameBatches.commitOperatorQuarantineRecovery(same,original,terminal,semantic);
+                actual.controllerForPublication().restoreOperatorQuarantine(same,recovery);
+                return recovery.nextBatchSequence();
+            }catch(IOException failure){throw new UncheckedIOException(failure);}}));
         }
 
         public RootApplicationSession finishUnresolvedSameGame(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,FreshSessionConfiguration configuration,FreshSessionServices services)throws IOException,InterruptedException{

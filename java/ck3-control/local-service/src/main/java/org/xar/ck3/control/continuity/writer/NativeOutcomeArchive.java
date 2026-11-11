@@ -996,6 +996,18 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }
         var composite = ActionTransitions.composite(original.state());
         if (composite.isPresent()) verifyGuardOriginals(composite.orElseThrow().guard());
+        if (original.state() instanceof ActionState.CompositeOperatorQuarantined) {
+            var proof=org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(original,this);
+            loadMaterial(proof.predecessorState());loadMaterial(proof.requestMaterial());
+            for(var reservation:proof.reservations()) {
+                var record=loadRecord(reservation.firstReservationRecord());
+                if(!record.receipt().command().actionId().equals(original.command().actionId())
+                        ||!record.receipt().bodySha256().equals(original.bodySha256()))throw new IOException("operator reservation original parent differs");
+                var retained=ActionTransitions.composite(record.receipt().state()).orElseThrow();int index=reservation.ordinal()-1;
+                if(index>=retained.children().size()||!retained.children().get(index).actionId().equals(reservation.actionId())
+                        ||!retained.children().get(index).bodySha256().equals(reservation.bodySha256()))throw new IOException("operator reservation original child vector differs");
+            }
+        }
         if (original.state() instanceof ActionState.Settled settled) {
             if (settled.settlement() instanceof ActionState.FixtureStarted started)
                 started.observation().validate(original.command(), settled.attempt(), settled.dispatch());

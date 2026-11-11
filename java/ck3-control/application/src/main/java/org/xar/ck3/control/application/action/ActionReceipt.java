@@ -6,13 +6,14 @@ import org.xar.ck3.control.contracts.StrictJson;
 
 /** Authoritative writer projection; sequence is assigned by the one durable writer, never by an HTTP caller. */
 public record ActionReceipt(int version, long sequence, ActionCommand command, String bodySha256, ActionState state) {
-    public enum Outcome { UNRESOLVED, APPLIED_CONFIRMED, SEND_CONFIRMED, REJECTED_CONFIRMED, REJECTED_BEFORE_DISPATCH, TERMINAL_WITHOUT_EFFECT }
+    public enum Outcome { UNRESOLVED, APPLIED_CONFIRMED, SEND_CONFIRMED, REJECTED_CONFIRMED, REJECTED_BEFORE_DISPATCH, TERMINAL_WITHOUT_EFFECT, OPERATOR_ABANDONED_UNKNOWN_EFFECT }
     public ActionReceipt {
         StrictJson.require(version == 1, "action receipt version 1 required"); StrictJson.safe(sequence, 1);
         Objects.requireNonNull(command); Objects.requireNonNull(state);
         StrictJson.require(bodySha256 != null && bodySha256.matches("[0-9a-f]{64}") && bodySha256.equals(ActionCodec.bodySha256(command)), "complete canonical action body SHA required");
     }
     public Outcome outcome() {
+        if (state instanceof ActionState.CompositeOperatorQuarantined) return Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT;
         if (state instanceof ActionState.IntentAbandoned) return Outcome.TERMINAL_WITHOUT_EFFECT;
         if (state instanceof PhysicalActionState physical) return physical.terminal() ? Outcome.TERMINAL_WITHOUT_EFFECT : Outcome.UNRESOLVED;
         if (state instanceof ActionState.Settled settled) return classify(settled.settlement());

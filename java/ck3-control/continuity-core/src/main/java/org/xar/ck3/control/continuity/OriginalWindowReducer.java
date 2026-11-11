@@ -173,6 +173,33 @@ public final class OriginalWindowReducer {
                         "Saved read-only recovery cannot change its saved subject/date or regress actual revisions");
                 state.put("status","running");binding(state,actual);
             }
+
+            case "operator_quarantine_recovery" -> {
+                StrictJson.object(details,Set.of("evidence_id","source","machine_id","completed_cycles","frame","session","batch_id","next_sequence","operator_observation"));
+                ObjectNode retained=frame(object(state.get("latest_binding"))),actual=frame(object(details.get("frame")));
+                ObjectNode boundary=object(state.get(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD));
+                StrictJson.require("java-operator-quarantine-recovery/v1".equals(StrictJson.text(source))
+                        &&"repair_required".equals(StrictJson.text(state.get("status")))
+                        &&number(state,"last_settled_cycles",0)==0&&number(details,"completed_cycles",0)==0
+                        &&"BATCH_INTERRUPTED".equals(StrictJson.text(boundary.get("boundary")))
+                        &&ContinuityJson.same(boundary.get("session"),details.get("session"))
+                        &&StrictJson.text(boundary.get("batch_id")).equals(StrictJson.text(details.get("batch_id")))
+                        &&number(details,"next_sequence",1)==1
+                        &&number(actual,"date_raw",0)==number(state,"last_settled_date_raw",0)
+                        &&number(actual,"date_raw",0)==number(state,"start_date_raw",0)
+                        &&NativeCharacterId.fromJson(actual.get("actor_character_id")).equals(NativeCharacterId.fromJson(retained.get("actor_character_id")))
+                        &&StrictJson.text(actual.get("episode_run_id")).equals(StrictJson.text(retained.get("episode_run_id")))
+                        &&StrictJson.integer(actual.get("native_revision"),java.math.BigInteger.ZERO,StrictJson.UINT64_MAX)
+                            .compareTo(StrictJson.integer(retained.get("native_revision"),java.math.BigInteger.ZERO,StrictJson.UINT64_MAX))>=0,
+                        "operator quarantine recovery changed its original interrupted owner/frontier or credit");
+                for(String field:java.util.List.of(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_CYCLE_FIELD,
+                        org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_SAVED_CYCLE_FIELD,"pending_cycle","pending_checkpoint","current_cycle_pending")) {
+                    JsonNode value=state.get(field);StrictJson.require(value==null||value.isNull(),"operator recovery cannot clear existing pending/cycle/SAVE state: "+field);
+                }
+                org.xar.ck3.control.contracts.ExactRef.fromJson(details.get("operator_observation"));
+                state.put("status","running");binding(state,actual);
+                if(state.has("last_error"))state.putNull("last_error");
+            }
             case "captured_no_dispatch_recovery" -> {
                 ObjectNode retainedFrame=frame(object(state.get("latest_binding"))),actual=frame(object(details.get("frame")));
                 StrictJson.require("repair_required".equals(StrictJson.text(state.get("status")))

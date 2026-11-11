@@ -20,6 +20,10 @@ public final class SwayOrdinaryComposite implements CompositeActionPort.ZeroGame
     public static final String OBSERVER = "xar.java.sway-scheduler-terminal/v1";
     private final SwayOrdinaryExecutor executor; private final SwayCanonicalDomain domain; private final Supplier<ContinuityStorePort.Session> sessions;
     public SwayOrdinaryComposite(SwayOrdinaryExecutor executor, SwayCanonicalDomain domain, Supplier<ContinuityStorePort.Session> sessions) { this.executor = Objects.requireNonNull(executor); this.domain = Objects.requireNonNull(domain); this.sessions = Objects.requireNonNull(sessions); }
+    private java.util.function.Supplier<java.util.Optional<CompositeOperatorQuarantineSource>> operatorQuarantine=java.util.Optional::empty;
+    public SwayOrdinaryComposite(SwayOrdinaryExecutor executor,SwayCanonicalDomain domain,Supplier<ContinuityStorePort.Session> sessions,java.util.function.Supplier<java.util.Optional<CompositeOperatorQuarantineSource>> operatorQuarantine) {
+        this(executor,domain,sessions);this.operatorQuarantine=Objects.requireNonNull(operatorQuarantine);
+    }
     @Override public String handlerId() { return HANDLER; }
     @Override public boolean supports(OperationKey operation) { return OrdinarySwayPolicy.OPERATION.equals(operation); }
     @Override public void validate(ActionCommand parent) {
@@ -78,6 +82,12 @@ public final class SwayOrdinaryComposite implements CompositeActionPort.ZeroGame
     }
     public NativeRecordedEvidenceVerifier.Binding recorded(ExactRef implementation) {
         return new NativeRecordedEvidenceVerifier.Binding(OrdinarySwayPolicy.OPERATION, implementation, (head, proposed, sameArchive) -> {
+            if(proposed.state() instanceof ActionState.CompositeOperatorQuarantined) {
+                validate(proposed.command());
+                var actual=operatorQuarantine.get().orElseThrow(()->new IllegalStateException("actual operator quarantine request is not installed"));
+                try {actual.verify(Objects.requireNonNull(sessions.get()),head,proposed,sameArchive);}
+                catch(IOException failure){throw new UncheckedIOException(failure);}return;
+            }
             if(proposed.state() instanceof ActionState.CompositeSettled noWrite
                     &&noWrite.settlement() instanceof ActionState.CompositeNoGameplayWrite terminal) {
                 terminal.observation().validate(proposed.command(),noWrite.execution());

@@ -1595,6 +1595,12 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                     && settled.settlement() instanceof ActionState.LifeControlPrefixInterrupted) {
                 continue; // The verified interrupted prefix has no Native command-history row or cycle credit.
             }
+            if(action.state() instanceof ActionState.CompositeOperatorQuarantined retired) {
+                StrictJson.require(action.command().operation().equals(org.xar.ck3.control.application.planning.sway.OrdinarySwayPolicy.OPERATION)
+                        &&retired.execution().handlerId().equals(org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.HANDLER)
+                        &&action.outcome()==ActionReceipt.Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT&&!action.visibleGameplay()&&!action.eligibleAdvance(),"operator quarantine coverage is its distinct canonical unknown-effect Sway observation");
+                continue; // Original effect remains unknown: no invented legacy recorder row, version or cycle credit.
+            }
             DriverSnapshotFacts.ActionRow coverage=rows.get(action.command().actionId());
             if (coverage==null && prefixControls.contains(action)) continue; // Exact canonical child needs no second recorder row.
             if(coverage==null || !coverage.bodySha256().equals(action.bodySha256()) || coverage.durableSequence()>action.sequence()) {

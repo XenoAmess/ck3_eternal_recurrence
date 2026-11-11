@@ -328,6 +328,18 @@ public final class RootPlanningInputsFactory {
                     }
                     if (!(classification instanceof BusinessDomain business))
                         throw new IllegalStateException("unrecognized installed action classification");
+                    if(receipt.state() instanceof ActionState.CompositeOperatorQuarantined) {
+                        StrictJson.require(receipt.outcome()==ActionReceipt.Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT
+                                &&!receipt.visibleGameplay()&&!receipt.eligibleAdvance(),"operator quarantine cannot claim applied effects or cycle credit");
+                        try {
+                            var source=capture.context().core().operatorQuarantineSource().orElseThrow(
+                                    ()->new IOException("canonical operator quarantine requires its actual configured source"));
+                            source.verify(capture.session(),capture.session().head(),receipt,originals);
+                        } catch(IOException failure) {throw new UncheckedIOException(failure);}
+                        // The source-verified operator retirement remains canonical. Its episode Sway admission/collector gates stay closed;
+                        // it is not an outstanding global request that may block unrelated policies or be retried.
+                        continue;
+                    }
                     Domain domain = business.domain();
                     ExternalState state = externalState(receipt);
                     facts.add(new ExternalFact(command.actionId(), receipt.bodySha256(), command.before(), state,
@@ -346,6 +358,7 @@ public final class RootPlanningInputsFactory {
             case SEND_CONFIRMED -> ExternalState.SEND_CONFIRMED;
             case REJECTED_CONFIRMED, REJECTED_BEFORE_DISPATCH -> ExternalState.REJECTED_CONFIRMED;
             case TERMINAL_WITHOUT_EFFECT -> ExternalState.TERMINAL_WITHOUT_EFFECT;
+            case OPERATOR_ABANDONED_UNKNOWN_EFFECT -> ExternalState.UNKNOWN;
             case UNRESOLVED -> receipt.state() instanceof ActionState.AckReceived ? ExternalState.ACK_RECEIVED : ExternalState.UNKNOWN;
         };
     }

@@ -151,6 +151,7 @@ public final class CanonicalFundingPending {
             case ActionState.CompositeRunning ignored->Phase.COMPOSITE_RUNNING;case ActionState.CompositeUnknown ignored->Phase.COMPOSITE_UNKNOWN;
             case ActionState.Settled ignored->Phase.SETTLED;case ActionState.RejectedBeforeDispatch ignored->Phase.REJECTED_BEFORE_DISPATCH;
             case ActionState.CompositeSettled ignored->Phase.COMPOSITE_SETTLED;
+            case ActionState.CompositeOperatorQuarantined ignored->throw new IllegalArgumentException("operator-quarantined composite is not a funding pending phase");
             case PhysicalActionState physical->switch(physical.phase()) {
                 case SUBMITTING->Phase.PHYSICAL_SUBMITTING;case UNKNOWN->Phase.PHYSICAL_UNKNOWN;
                 case COMPLETED->Phase.PHYSICAL_COMPLETED;case NOT_POSTED->Phase.PHYSICAL_NOT_POSTED;

@@ -13,7 +13,7 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 /** UNKNOWN has no replay transition. ACK and independently observed game effect remain separate facts. */
 public sealed interface ActionState permits ActionState.IntentDurable, ActionState.Submitting, ActionState.AckReceived,
         ActionState.Unknown, ActionState.Settled, ActionState.RejectedBeforeDispatch, ActionState.IntentAbandoned, ActionState.CompositeRunning,
-        ActionState.CompositeUnknown, ActionState.CompositeSettled, PhysicalActionState {
+        ActionState.CompositeUnknown, ActionState.CompositeSettled, ActionState.CompositeOperatorQuarantined, PhysicalActionState {
     record Attempt(String requestId, Instant submittedAt, GuardEvidence guard, NativeRequest preparedRequest) {
         public Attempt { StrictJson.text(requestId); Objects.requireNonNull(submittedAt); Objects.requireNonNull(guard); Objects.requireNonNull(preparedRequest); }
     }
@@ -139,6 +139,10 @@ public sealed interface ActionState permits ActionState.IntentDurable, ActionSta
     record CompositeRunning(CompositeExecution execution) implements ActionState { public CompositeRunning { Objects.requireNonNull(execution); } }
     record CompositeUnknown(CompositeExecution execution, String reason, List<ExactRef> evidence) implements ActionState {
         public CompositeUnknown { Objects.requireNonNull(execution); StrictJson.text(reason); evidence = List.copyOf(evidence); }
+    }
+    /** Operator retired this immutable execution; all historical effects remain UNKNOWN. */
+    record CompositeOperatorQuarantined(CompositeExecution execution, ExactRef observationRef) implements ActionState {
+        public CompositeOperatorQuarantined { Objects.requireNonNull(execution); Objects.requireNonNull(observationRef); }
     }
     record CompositeSettled(CompositeExecution execution, Settlement settlement) implements ActionState {
         public CompositeSettled { Objects.requireNonNull(execution); Objects.requireNonNull(settlement); }

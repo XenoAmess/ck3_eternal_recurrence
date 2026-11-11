@@ -71,6 +71,19 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
         this.attemptCompletion = Objects.requireNonNull(attemptCompletion);
         this.intentBarrier = Objects.requireNonNull(intentBarrier);
     }
+    /** Appends only a configured operator observation; no child execution, query, collect or deadline renewal. */
+    public ActionReceipt observeOperatorQuarantine(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
+            String actionId, org.xar.ck3.control.contracts.ExactRef observationRef) {
+        Objects.requireNonNull(same);Objects.requireNonNull(observationRef);StrictJson.text(actionId);
+        return journal.locked(same,locked->ActionScope.run(actionId,()->{
+            var original=locked.find(actionId).orElseThrow(()->new IllegalArgumentException("operator original action absent"));
+            if(original.state() instanceof ActionState.CompositeOperatorQuarantined) return original;
+            StrictJson.require(original.state() instanceof ActionState.CompositeUnknown,"only the exact unresolved composite can be operator-quarantined");
+            preparation.requireOutsideReadOnlyScope(same,original.command());
+            var execution=((ActionState.CompositeUnknown)original.state()).execution();
+            return append(locked,original.command(),original.bodySha256(),new ActionState.CompositeOperatorQuarantined(execution,observationRef));
+        }));
+    }
     @Override public ActionReceipt execute(ActionCommand command) {
         Objects.requireNonNull(command);
         return journal.locked(locked -> ActionScope.run(command.actionId(), () -> executeLocked(locked, command, List.of())));
@@ -158,6 +171,7 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
                 StrictJson.require(existing.orElseThrow().bodySha256().equals(digest), "action ID body conflict");
                 return existing.orElseThrow(); // Even INTENT/SUBMITTING/UNKNOWN are returned, never retried.
             }
+            CompositeOperatorQuarantinePolicy.requireNewActionAllowed(locked.snapshot().actions(), command);
             PhysicalActionRegistry.VerifiedPresentations optional;
             try{optional=physicalActions==null?null:physicalActions.verified(locked.writerSession(),locked.snapshot());}
             catch(java.io.IOException failure){throw new java.io.UncheckedIOException(failure);}

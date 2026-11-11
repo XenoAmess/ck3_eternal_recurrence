@@ -30,8 +30,9 @@ public final class ActionTransitions {
             case ActionState.IntentAbandoned ignored -> false;
             case ActionState.RejectedBeforeDispatch ignored -> false;
             case ActionState.CompositeRunning ignored -> next instanceof ActionState.CompositeRunning || next instanceof ActionState.CompositeUnknown || next instanceof ActionState.CompositeSettled;
-            case ActionState.CompositeUnknown ignored -> next instanceof ActionState.CompositeUnknown || next instanceof ActionState.CompositeSettled;
+            case ActionState.CompositeUnknown ignored -> next instanceof ActionState.CompositeUnknown || next instanceof ActionState.CompositeSettled || next instanceof ActionState.CompositeOperatorQuarantined;
             case ActionState.CompositeSettled ignored -> false;
+            case ActionState.CompositeOperatorQuarantined ignored -> false;
         };
         StrictJson.require(allowed, "invalid action transition; UNKNOWN must never return to dispatch");
         if (next instanceof ActionState.Settled settled) ActionEffects.validate(command, settled.attempt(), settled.dispatch(), settled.settlement());
@@ -84,6 +85,7 @@ public final class ActionTransitions {
             case ActionState.CompositeRunning ignored -> Optional.empty();
             case ActionState.CompositeUnknown ignored -> Optional.empty();
             case ActionState.CompositeSettled ignored -> Optional.empty();
+            case ActionState.CompositeOperatorQuarantined ignored -> Optional.empty();
         };
     }
     public static Optional<NativeActionPort.DispatchOutcome> dispatch(ActionState state) {
@@ -99,6 +101,7 @@ public final class ActionTransitions {
         if (state instanceof ActionState.CompositeRunning value) return Optional.of(value.execution());
         if (state instanceof ActionState.CompositeUnknown value) return Optional.of(value.execution());
         if (state instanceof ActionState.CompositeSettled value) return Optional.of(value.execution());
+        if (state instanceof ActionState.CompositeOperatorQuarantined value) return Optional.of(value.execution());
         return Optional.empty();
     }
 }

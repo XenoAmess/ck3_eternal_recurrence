@@ -36,12 +36,15 @@ public final class DriverActionHistoryPublisher implements WriterContracts.Trans
         default void requireLifeControlPrefixInterruption(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals,List<ActionReceipt> canonicalChildren)throws IOException {
             throw new IOException("actual source-owned Life control prefix interruption verifier is not installed");
         }
+        default void requireOperatorQuarantine(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals)throws IOException {
+            throw new IOException("actual operator quarantine history verifier is not installed");
+        }
         DriverActionHistoryCodec.OriginalMaterial capture(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals) throws IOException;
         void requireOriginal(Session same,ActionReceipt actual,DriverActionHistoryCodec.OriginalMaterial captured,
                 ActionPorts.OutcomeArchive originals) throws IOException;
     }
     public sealed interface Disposition permits Unchanged,Published { }
-    public enum Reason { UNRESOLVED, NON_GAMEPLAY, OUTSIDE_ACTIVE_EPISODE, ALREADY_COVERED, OPERATOR_CANONICAL_RECEIPT_VERIFIED, OPERATOR_NO_REBIND_RECEIPT_VERIFIED, NO_GAMEPLAY_WRITE_RECEIPT_VERIFIED, LIFE_CONTROL_PREFIX_INTERRUPTED_VERIFIED }
+    public enum Reason { UNRESOLVED, NON_GAMEPLAY, OUTSIDE_ACTIVE_EPISODE, ALREADY_COVERED, OPERATOR_CANONICAL_RECEIPT_VERIFIED, OPERATOR_NO_REBIND_RECEIPT_VERIFIED, NO_GAMEPLAY_WRITE_RECEIPT_VERIFIED, LIFE_CONTROL_PREFIX_INTERRUPTED_VERIFIED, OPERATOR_QUARANTINED_UNKNOWN_EFFECT_VERIFIED }
     public record Unchanged(Reason reason) implements Disposition {public Unchanged {Objects.requireNonNull(reason);}}
     public record Published(DriverSnapshotFacts.Stamp before,DriverSnapshotFacts.Stamp after,ExactRef fullDriver,
             ExactRef originalSource,Optional<ExactRef> legacyRow) implements Disposition {
@@ -110,6 +113,13 @@ public final class DriverActionHistoryPublisher implements WriterContracts.Trans
     }
     private Disposition publish(Session same,ActionReceipt actual,ActionJournal.LockedJournal locked) throws IOException {
         if(!actual.settled())return new Unchanged(Reason.UNRESOLVED);
+        if(actual.state() instanceof ActionState.CompositeOperatorQuarantined) {
+            StrictJson.require(pending==null&&locked.find(actual.command().actionId()).filter(actual::equals).isPresent(),"operator quarantine history requires its exact canonical terminal and no pending history CAS");
+            StrictJson.require(actual.outcome()==ActionReceipt.Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT&&!actual.visibleGameplay()&&!actual.eligibleAdvance()&&actual.applied().isEmpty(),"operator retirement has no resolved-effect or gameplay credit");
+            var originals=archive.withSession(same);materials.requireOwner(authority,journal,archive);materials.requireOperatorQuarantine(same,actual,originals);
+            return new Unchanged(Reason.OPERATOR_QUARANTINED_UNKNOWN_EFFECT_VERIFIED);
+        }
+
         if(actual.command().expectation() instanceof CommandExpectation.OperatorRebind) {
             StrictJson.require(pending==null&&locked.find(actual.command().actionId()).filter(actual::equals).isPresent(),
                     "operator verification requires its actual canonical action and no pending ordinary history publication");

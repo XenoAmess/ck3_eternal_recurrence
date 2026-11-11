@@ -39,6 +39,7 @@ public final class ActionReceiptCodec {
     public static final int MAXIMUM_RECEIPT_BYTES = 2 * 1024 * 1024;
     private ActionReceiptCodec() { }
     public static byte[] encodeReceipt(ActionReceipt receipt, ActionPorts.OutcomeArchive archive) {
+        if (receipt.state() instanceof ActionState.CompositeOperatorQuarantined) return CompositeOperatorQuarantineReceiptCodec.encodeReceipt(receipt, archive);
         boolean evolved = !(receipt.command().origin() instanceof CommandOrigin.Gameplay) || evolved(receipt.state());
         boolean typed = containsPush(receipt.state()) || containsFreshSnapshotQuery(receipt.state()); boolean family = containsFamilySend(receipt.state());
         ObjectNode row = StrictJson.object(); row.put("schema", containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : receipt.state() instanceof ActionState.IntentAbandoned ? INTENT_ABANDONED_SCHEMA : lifeControlPrefix(receipt) ? LIFE_CONTROL_PREFIX_SCHEMA : compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : family ? FAMILY_SEND_SCHEMA : containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : typed ? PROVENANCE_SCHEMA : evolved ? EVOLVED_SCHEMA : SCHEMA); row.put("version", receipt.version()); row.put("sequence", receipt.sequence());
@@ -59,7 +60,9 @@ public final class ActionReceiptCodec {
         return decodeReceipt(bytes, archive, true);
     }
     private static ActionReceipt decodeReceipt(byte[] bytes, ActionPorts.OutcomeArchive archive, boolean reuseCanonicalCommand) {
-        ObjectNode row = StrictJson.object(ProposalLifecycleCodec.decodePayload(bytes, MAXIMUM_RECEIPT_BYTES), Set.of("schema", "version", "sequence", "command", "body_sha256", "state"));
+        JsonNode document = ProposalLifecycleCodec.decodePayload(bytes, MAXIMUM_RECEIPT_BYTES);
+        if (CompositeOperatorQuarantineReceiptCodec.SCHEMA.equals(document.path("schema").asText())) return CompositeOperatorQuarantineReceiptCodec.decodeReceipt(document, archive);
+        ObjectNode row = StrictJson.object(document, Set.of("schema", "version", "sequence", "command", "body_sha256", "state"));
         String schema = text(row, "schema"); StrictJson.require(SCHEMA.equals(schema) || EVOLVED_SCHEMA.equals(schema) || PROVENANCE_SCHEMA.equals(schema) || FAMILY_SEND_SCHEMA.equals(schema) || PHYSICAL_SCHEMA.equals(schema) || RECONCILED_CONTROL_SCHEMA.equals(schema) || OPERATOR_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || DIRECT_WINDOW_SCHEMA.equals(schema) || COMPOSITE_FAILURE_EVIDENCE_SCHEMA.equals(schema) || FIXTURE_SCHEMA.equals(schema) || COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA.equals(schema) || LIFE_CONTROL_PREFIX_SCHEMA.equals(schema) || INTENT_ABANDONED_SCHEMA.equals(schema) || FRESH_SNAPSHOT_QUERY_SCHEMA.equals(schema), "exact action receipt schema required");
         OpportunityJson.Obj originalCommand = OpportunityJson.object(DriverJson.object(bytes, MAXIMUM_RECEIPT_BYTES).get("command"), "original receipt command");
         byte[] canonicalCommand = PublicDataJson.encodeTypedBytes(originalCommand, RawJson.MAXIMUM_BYTES);

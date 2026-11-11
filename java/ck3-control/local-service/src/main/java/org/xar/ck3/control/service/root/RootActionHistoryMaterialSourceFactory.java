@@ -231,6 +231,13 @@ public final class RootActionHistoryMaterialSourceFactory {
             if(!selected.isOrdinary())
                 for(ExactRef ref:selected.originals()){var pin=same.capturePin(ref,WriterContracts.MAX_PIN_BYTES);same.verifyPin(pin);}
         }
+        @Override public void requireOperatorQuarantine(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals)throws IOException {
+            context.writer().requireSession(same);requireOwner(authority,journal,archive);
+            require(actual.state() instanceof ActionState.CompositeOperatorQuarantined,"typed operator quarantine required");
+            var replay=catalog.bindings().actualArchivedVerifier(actual.command().operation()).orElseThrow(()->new IllegalArgumentException("operator quarantine exact-operation source is not installed"));
+            var before=same.head();replay.verifier().verify(before,actual,originals);
+            require(same.head().digest().equals(before.digest()),"operator history replay changed the original writer");
+        }
         @Override public void requireNoGameplayWrite(Session same,ActionReceipt actual,ActionPorts.OutcomeArchive originals)throws IOException {
             Objects.requireNonNull(actual);Objects.requireNonNull(originals);context.writer().requireSession(same);requireOwner(authority,journal,archive);
             require(actual.state() instanceof ActionState.CompositeSettled
