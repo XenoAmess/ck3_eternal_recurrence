@@ -18,6 +18,7 @@ import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.CheckpointResult;
 import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore;
 import org.xar.ck3.control.application.driver.DriverBootstrap;
+import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.application.readiness.NativeReadinessCollector;
 import org.xar.ck3.control.application.session.*;
 import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
@@ -814,8 +815,48 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
         try {
             requireOwner();requireNoPendingCheckpointAdoption();requireDeadline(deadline);
             controller.drainForCleanRestart(deadline);
-            return owner.withBorrowed(()->controller.captureCleanRestart(owner.activeBorrowedSession(),batchPrefix,nextSequence));
+            try {
+                return owner.withBorrowed(()->controller.captureCleanRestart(owner.activeBorrowedSession(),batchPrefix,nextSequence));
+            } catch(OrdinaryCycleTransitions.MissingDriverObservation missing) {
+                // The original writer/CAS attempt has exited without publishing any capture.
+                refreshCaptureObservation(deadline);
+                return owner.withBorrowed(()->controller.captureCleanRestart(owner.activeBorrowedSession(),batchPrefix,nextSequence));
+            }
         } finally {calls.unlock();}
+    }
+
+    private void refreshCaptureObservation(Instant deadline)throws IOException,InterruptedException {
+        requireOwner();requireNoPendingCheckpointAdoption();requireDeadline(deadline);
+        NativeFreshSnapshotPort.Result fresh;
+        try {
+            fresh=nativeTransport().readFreshFullState(deadline);
+        } catch(InterruptedException interrupted) {
+            Thread.currentThread().interrupt();throw interrupted;
+        }
+        owner.withBorrowed(()->{
+            var same=owner.activeBorrowedSession();writer.requireSession(same);
+            var originals=archive.withSession(same);
+            if(fresh instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
+                originals.preserve(unavailable.dispatch());unavailable.originalFrame().ifPresent(originals::preserveNativeFrame);
+                String reason=unavailable.reason();
+                throw new IOException("actual clean-capture fresh observation unavailable: "+reason.substring(0,Math.min(512,reason.length())));
+            }
+            var received=(NativeFreshSnapshotPort.Received)fresh;
+            var actualFrame=received.originalFrame();
+            NativeFreshSnapshotPort.verifyOriginal(received.acknowledgement(),actualFrame,received.snapshotReceived());
+            originals.preserve(received.acknowledgement());
+            var originalNativeReference=originals.preserveNativeFrame(actualFrame);
+            requireDeadline(deadline);
+            StrictJson.require(!actualFrame.observedAt().isAfter(deadline),"clean-capture actual observation is after its finite read deadline");
+            driver.authority().withFrozenRawObservation(actualFrame,same,frozen->{
+                var projected=owner.observationAssembler().assemble(actualFrame,frozen.facts(),originalNativeReference);
+                if(!(projected instanceof org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete))
+                    throw new IOException("actual clean-capture fresh observation produced incomplete Driver facts");
+                return null;
+            });
+            return null;
+        });
+        requireDeadline(deadline);
     }
     /** The Root calls lock and original Controller CAS jointly qualify one clean unissued wall capture. */
     public Optional<ContinuityBatchJournal.CleanRestartTicket> captureCleanPlanningWall(
