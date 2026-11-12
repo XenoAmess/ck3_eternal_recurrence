@@ -54,8 +54,33 @@ public final class RawJson {
     private void validateDocument(JsonFactory actualFactory)throws IOException {
         try(JsonParser parser=actualFactory.createParser(bytes)) {
             if(parser.nextToken()==null)throw new IOException("JSON value required");
-            validate(parser);
+            if (conservativeProof()) validateFast(parser);
+            else validate(parser);
             if(parser.nextToken()!=null)throw new IOException("trailing Native JSON value");
+        }
+    }
+
+    private boolean conservativeProof() {
+        for (int i = 0; i < bytes.length; i++) {
+            if (bytes[i] == 0) return false;
+            if (bytes[i] == 0x5c && i + 1 < bytes.length && bytes[i + 1] == 0x75) return false;
+        }
+        return true;
+    }
+
+    private static void validateFast(JsonParser parser) throws IOException {
+        JsonToken token = parser.currentToken();
+        if (token == JsonToken.START_OBJECT) {
+            while (parser.nextToken() != JsonToken.END_OBJECT) {
+                if (parser.currentToken() != JsonToken.FIELD_NAME) throw new IOException("JSON object field required");
+                parser.nextToken(); validateFast(parser);
+            }
+        } else if (token == JsonToken.START_ARRAY) {
+            while (parser.nextToken() != JsonToken.END_ARRAY) validateFast(parser);
+        } else if (token == JsonToken.VALUE_STRING) {
+            // Fast path: no unicode() check required due to conservativeProof
+        } else if (token == null || !token.isScalarValue()) {
+            throw new IOException("JSON scalar value required");
         }
     }
     /** Validates object shape without exposing an untyped Java map to producers or consumers. */

@@ -1,0 +1,15 @@
+# RawJson 保守字节证明与完整 token 验证
+
+已有定向JFR中，RawJson.validate 的29个业务样本来自归档token16、完整material9及PublicData编码4；它们不是CPU时间或提速归因。归档已经有私有scope的ref/profile缓存，未持同scope同ref双profile实际重合，本单元没有新增那条理论缓存桥。这里优化每次实际验证内部的重复字符串工作：构造器原私有clone及strictUTF8检查之后，读取不可变自有bytes作保守证明，再沿原factory完整递归nextToken，仅在可证明域省去每个fieldName／string的Unicode materialization与字符扫描。
+
+快速条件必须同时没有原始NUL和相邻反斜杠／小写u。含任一条件时调用整个原validate；所有公开byte[]入口、null／大小／clone／UTF8错误先序、两factory、dup/depth/number/trailing/token检查和requireProtocolBound原体保留，没有skipChildren、调用方trusted AST或缓存。原始字节数不超过64MiB，证明域中解码字符串UTF16长度不会超过其原始字节数，因而仍满足原64MiB字符串界；数字协议4300与完整material64MiB域分别保。正式原byteLength API另行保留。
+
+NUL是owner在实现前补充的必要保守条件：Jackson byte-source会自动识别UTF16/32，strictUTF8可接受的原bytes不意味着parser仍按UTF8解释。更明确的源推例是UTF16编码的JSON文本包含Unicode escape：零字节分隔使原bytes中没有相邻escape prefix，编码识别后才产生它。这个更强合成例本轮未执行，不授测试信用。两份已经冻结的C52 cycle／parent材料合计11878B、SHA均核，2/2满足proof，只说明这两份适用，不推整体频率或ROI。
+
+新Test将完整冻结5905B旧RawJson仅作嵌套类名／缩进转换作为独立oracle，没有复制新proof。完整六项对照旧／新公开constructor、fullMaterial、ProtocolBound、bytes／fieldNames／equals／hash／contentEquals与完整异常链，覆盖UTF8/BMP/supplementary、literal与escaped Unicode、非法UTF8优先、invalid escape/control/EOF/duplicate/trailing、四种ASCII宽编码、原六字节UTF16数据、4300/4301/full8000数字、depth1000/1001及ownership。单64MiB+1数组只走size拒绝，不构造巨大合法树或复制大数组。
+
+actual与formal各必要单TU／单类首次编译0；同一修正Test三类在两个前缀上分别完整6P/0F/0E/0skip、POST输入不变、CLOSE释放。actual ACTUAL1403B／`913b70dc330d7ce28ad7784c40b5dcf809ed8249d42b2a990aad4f4ea237d355`、CLOSE204B／`f63c345a3b028e7b6a48683f8089e61475f2a75bc091283760563c4e7a3f69a1`；formal ACTUAL1414B／`20b21775359ac8484eddfb45a031e7c7c546ac4e10113d4cacbf9a1005f7284a`、CLOSE204B／`c27e9bd7268bf93f4576ac9e2d7906c489b15e329c4d16d7f99a3cab36f4d20c`。原件为D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/rawjson63-{whole6-junit02,formal-whole6-junit01}，机器xenoamess-full-tower-eb9d2c1186，2026-11-12。
+
+首whole6的5P1F保留：旧／新六字节数据的完整异常链比较已经通过，测试另硬编码其legacy cause为unpaired surrogate而实际为EOF，额外归因断言错误。修正只删除它并改中立注释，原输入、两profile、wholeLegacy和生产均未改，不作为产品差异或已实证无NUL漏洞。生产采用模型完整一个hunk，只有CRLF/LF机械适配；方向／NUL合同与actualcore核验由owner先给，测试由独立helper完成，没有借模型回归文字给测试信用。
+
+软件和本次正式Git不授运行分支、CPU／墙钟收益或10秒目标；实际装载、完整周期和新增SAVE按Runtime独立回执验收，不以2份适用材料或29样本代替。
