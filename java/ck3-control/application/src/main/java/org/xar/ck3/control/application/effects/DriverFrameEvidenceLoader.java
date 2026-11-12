@@ -148,11 +148,8 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     }
     @Override public DriverObservationAssembler.Complete load(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
         var originals = captureOriginals(basis, archive);
-        var result = scopedDriverDecode
-                ? DriverObservationEvidenceReader.assembleOriginalsWithScopedDriverDecode(basis.driverFacts(), originals.manifest(),
-                        originals.driver(), originals.nativePacket(), basis.nativeFrame(), assembler, this)
-                : DriverObservationEvidenceReader.assembleOriginals(basis.driverFacts(), originals.manifest(), originals.driver(),
-                        originals.nativePacket(), basis.nativeFrame(), assembler);
+        var result = DriverObservationEvidenceReader.assembleValidatedOriginalsWithScopedDriverDecode(basis.driverFacts(), originals.manifest(),
+                originals.driver(), originals.nativePacket(), basis.nativeFrame(), assembler, scopedDriverDecode?this:null);
         StrictJson.require(result instanceof DriverObservationAssembler.Complete, "archived native/complete Driver no longer rebuild an accepted original semantic frame");
         return (DriverObservationAssembler.Complete) result;
     }

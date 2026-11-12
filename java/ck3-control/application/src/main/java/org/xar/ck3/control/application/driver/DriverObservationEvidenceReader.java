@@ -187,6 +187,35 @@ public final class DriverObservationEvidenceReader {
             captured.packetInput().clear();
         }
     }
+    /** Nominal same-call parser output; only this strict Reader can construct or retain its internal packet input. */
+    static final class ValidatedOriginals {
+        final NativeObservationPort.ObservedFrame actual;
+        final DriverObservationFacts facts;
+        final ExactRef evidence;
+        final NativePacketInput packetInput;
+        private ValidatedOriginals(NativeObservationPort.ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,
+                NativePacketInput packetInput) {
+            this.actual=actual;this.facts=facts;this.evidence=evidence;this.packetInput=packetInput;
+        }
+    }
+    /** Raw-byte Loader path only; existing same-call packet parsing and strict Driver decoding remain the issuers. */
+    public static DriverObservationAssembler.Result assembleValidatedOriginalsWithScopedDriverDecode(ExactRef manifestReference,
+            RawJson manifest,RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,
+            DriverObservationAssembler actualAssembler,
+            org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
+        Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
+        var row=checkedManifest(manifestReference,manifest);
+        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                "bounded archived original native frame required");
+        var captured=capturedNativeFrame(row,framedNative.clone());
+        try {
+            var actual=captured.actual();
+            var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
+            return actualAssembler.assembleValidatedOriginals(new ValidatedOriginals(actual,facts,nativeReference,captured.packetInput()));
+        } finally {
+            captured.packetInput().clear();
+        }
+    }
     private static DriverObservationFacts replayFacts(ExactRef manifestReference,OpportunityJson.Obj row,
             RawJson fullDriver,NativeObservationPort.ObservedFrame actual) {
         return replayFacts(manifestReference,row,fullDriver,actual,null);

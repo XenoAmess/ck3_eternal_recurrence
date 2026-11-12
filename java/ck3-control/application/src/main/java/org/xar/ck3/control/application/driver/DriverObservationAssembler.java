@@ -29,6 +29,36 @@ public final class DriverObservationAssembler {
     public static final long WAR_ARMY_OBSERVATION_VERSION=2;
     public static final long CANONICAL_OBSERVATION_VERSION=3;
     public static final long NATIVE_CAMPAIGN_OBSERVATION_VERSION=4;
+    /** Same-stack constructor handoff only. Never a cache, public issuer, or caller-provided trusted Full. */
+    private static final ThreadLocal<VerifiedProjection> VERIFIED_PROJECTION=new ThreadLocal<>();
+    private static final class VerifiedProjection {
+        private final FullSnapshot full;
+        private final ObservationIdentity identity;
+        private final G2Source source;
+        private final String sessionId;
+        private final BigInteger connectionGeneration;
+        private final OpportunityJson.Obj semantic;
+        private final ExactRef evidence;
+        private final Instant observedAt;
+        private final String digest;
+        private final Optional<FullSnapshot> projection;
+        private VerifiedProjection(FullSnapshot full,ObservationIdentity identity,G2Source source,String sessionId,
+                BigInteger connectionGeneration,OpportunityJson.Obj semantic,ExactRef evidence,Instant observedAt,
+                String digest,Optional<FullSnapshot> projection) {
+            this.full=full;this.identity=identity;this.source=source;this.sessionId=sessionId;this.connectionGeneration=connectionGeneration;
+            this.semantic=semantic;this.evidence=evidence;this.observedAt=observedAt;this.digest=digest;this.projection=projection;
+        }
+        private boolean matches(FullSnapshot actualFull,ObservationIdentity actualIdentity,G2Source actualSource,String actualSession,
+                BigInteger actualConnection,OpportunityJson.Obj actualSemantic,ExactRef actualEvidence,Instant actualObservedAt,
+                String actualDigest,Optional<FullSnapshot> actualProjection) {
+            return actualFull==full&&actualIdentity==identity&&actualSource==source&&actualSession==sessionId
+                    &&actualConnection==connectionGeneration&&actualSemantic==semantic&&actualEvidence==evidence
+                    &&actualObservedAt==observedAt&&actualDigest==digest&&actualProjection==projection;
+        }
+    }
+    private static VerifiedProjection consumeVerifiedProjection() {
+        var actual=VERIFIED_PROJECTION.get();VERIFIED_PROJECTION.remove();return actual;
+    }
     public sealed interface Result permits Complete, Incomplete { }
     public record Complete(ObservationIdentity identity, G2Source source, String sessionId,
             BigInteger connectionGeneration, OpportunityJson.Obj semantic, ExactRef originalEvidence,
@@ -38,6 +68,7 @@ public final class DriverObservationAssembler {
             this(identity,source,sessionId,connectionGeneration,semantic,originalEvidence,observedAt,fullBindingSha256,Optional.empty());
         }
         public Complete {
+            var verified=consumeVerifiedProjection();
             Objects.requireNonNull(identity); Objects.requireNonNull(source); StrictJson.text(sessionId);
             Objects.requireNonNull(connectionGeneration); Objects.requireNonNull(semantic);
             Objects.requireNonNull(originalEvidence); Objects.requireNonNull(observedAt);
@@ -46,6 +77,8 @@ public final class DriverObservationAssembler {
             StrictJson.require(identity.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION?originalProjection.isPresent():originalProjection.isEmpty(),
                     "only native campaign profile four requires its complete original projection");
             originalProjection.ifPresent(full->{
+                if(verified!=null&&verified.matches(full,identity,source,sessionId,connectionGeneration,semantic,
+                        originalEvidence,observedAt,fullBindingSha256,originalProjection))return;
                 var replay=new DriverObservationAssembler().projectFull(full.actual(),full.facts(),full.originalEvidence());
                 StrictJson.require(replay.semantic().equals(full.semantic())&&replay.semantic().equals(semantic)
                         &&replay.fullBindingSha256().equals(fullBindingSha256)&&replay.originalEvidence().equals(originalEvidence)
@@ -116,6 +149,41 @@ public final class DriverObservationAssembler {
         if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)NativeCalendarObservation.project(identity,facts.source(),semantic);
         return new Complete(identity,facts.source(),actual.session().sessionId(),actual.session().connectionGeneration(),semantic,
                 evidence,actual.observedAt(),full.fullBindingSha256(),facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION?Optional.of(full):Optional.empty());
+    }
+    /** Only the Reader's private-constructor raw-original result enters this closed package path. */
+    Result assembleValidatedOriginals(DriverObservationEvidenceReader.ValidatedOriginals parsed) {
+        Objects.requireNonNull(parsed);
+        // Reuse the existing private packet producer and preserve direct first-projection failures.
+        FullSnapshot full=projectFullWithNativePacket(parsed.actual,parsed.facts,parsed.evidence,parsed.packetInput);
+        try {
+            return completeValidatedIdentity(full);
+        } catch (IllegalArgumentException | ArithmeticException failure) {
+            return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
+        }
+    }
+    private Complete completeValidatedIdentity(FullSnapshot full) {
+        var actual=full.actual();var facts=full.facts();var evidence=full.originalEvidence();
+        OpportunityJson.Obj semantic=full.semantic();
+        var session=facts.driver().session();
+        OpportunityJson.Obj player = OpportunityJson.object(semantic.get("played_character"), "played_character");
+        BigInteger actor = NativeCharacterId.of(OpportunityJson.integer(player.get("character_id"), "character_id")).asBigInteger();
+        StrictJson.require(actor.equals(session.actorId()), "unreconciled played-character/episode transition");
+        OpportunityJson.bool(player.get("alive"), "alive");
+        BigInteger date = OpportunityJson.integer(semantic.get("date_raw"), "date_raw");
+        var frame = new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(actor, actual.nativeRevision(), date),
+                actual.snapshotId(),facts.publicRevision(),session.episodeRunId());
+        ObservationIdentity identity = new ObservationIdentity(actual.session().machineId(),actual.session().game(),frame,facts.observationVersion());
+        if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)NativeCalendarObservation.project(identity,facts.source(),semantic);
+        var source=facts.source();var sessionId=actual.session().sessionId();var connection=actual.session().connectionGeneration();
+        var observedAt=actual.observedAt();var digest=full.fullBindingSha256();
+        Optional<FullSnapshot> projection=facts.observationVersion()==NATIVE_CAMPAIGN_OBSERVATION_VERSION?Optional.of(full):Optional.empty();
+        var previous=VERIFIED_PROJECTION.get();
+        try {
+            VERIFIED_PROJECTION.set(new VerifiedProjection(full,identity,source,sessionId,connection,semantic,evidence,observedAt,digest,projection));
+            return new Complete(identity,source,sessionId,connection,semantic,evidence,observedAt,digest,projection);
+        } finally {
+            if(previous==null)VERIFIED_PROJECTION.remove();else VERIFIED_PROJECTION.set(previous);
+        }
     }
     public FullSnapshot projectFull(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence) {
             Objects.requireNonNull(actual);Objects.requireNonNull(facts);Objects.requireNonNull(evidence);
