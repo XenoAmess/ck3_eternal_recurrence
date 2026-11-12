@@ -130,9 +130,7 @@ public final class RootDerivedChildAuthority {
                         "derived replay needs the exact actual child's original primitive Attempt");
                 requireCanonicalOrPreview(head, child, archive);
                 var historical = same.requireHistoricalState(proof.actualHeadSequence(), proof.actualHeadDigest());
-                var parent = archive.loadReceipt(proof.parentReceipt());
-                ContinuityActionJournal.requireHistoricalReceipt(historical, parent, archive);
-                ContinuityActionJournal.requireHistoricalReceipt(head.state(), parent, archive);
+                var parent = loadDerivedParentForHistoricalValidation(historical, head.state(), proof.parentReceipt(), archive);
                 require(parent.bodySha256().equals(proof.parentBodySha256()),"derived proof changed its historical original parent body");
                 var running = executionFor(parent,child.command());
                 require(running.handlerId().equals(proof.handlerId()) && running.children().size() == proof.childOrdinal(),
@@ -312,6 +310,18 @@ public final class RootDerivedChildAuthority {
                 && original.bodySha256().equals(ActionCodec.bodySha256(child)) && original.state() instanceof ActionState.IntentDurable,
                 "only an absent child or its exact unsubmitted IntentDurable can revalidate admission; Attempt/UNKNOWN never replay"));
     }
+    /** Pure DATA router: the real final Archive may reuse one fully held identical chain.
+     * Arbitrary archives keep the original load and both complete membership readers. */
+    static ActionReceipt loadDerivedParentForHistoricalValidation(ContinuityState historical, ContinuityState current,
+            ExactRef parentReference, ActionPorts.OutcomeArchive archive) {
+        if (archive instanceof org.xar.ck3.control.continuity.writer.NativeOutcomeArchive actual)
+            return actual.loadDerivedParentForHistoricalValidation(historical, current, parentReference);
+        var parent = archive.loadReceipt(parentReference);
+        ContinuityActionJournal.requireHistoricalReceipt(historical, parent, archive);
+        ContinuityActionJournal.requireHistoricalReceipt(current, parent, archive);
+        return parent;
+    }
+
     /** The real writer validates a candidate before commit; archived events retain complete receipt membership. */
     static void requireCanonicalOrPreview(WriterContracts.Head head, ActionReceipt child, ActionPorts.OutcomeArchive archive) {
         Objects.requireNonNull(head); Objects.requireNonNull(child); Objects.requireNonNull(archive);

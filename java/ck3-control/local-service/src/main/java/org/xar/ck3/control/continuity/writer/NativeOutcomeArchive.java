@@ -430,6 +430,85 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         if(cache!=null&&cache.commandReads!=null)cache.commandReads.disqualifyDependencies();
     }
 
+    /** Loads the original parent and validates both memberships in the original order.
+     * Only a fully retained, identical canonical chain may omit its second complete walk. */
+    public ActionReceipt loadDerivedParentForHistoricalValidation(
+            org.xar.ck3.control.continuity.ContinuityState historical,
+            org.xar.ck3.control.continuity.ContinuityState currentState, ExactRef parentReference) {
+        return unchecked(() -> {
+            ActionReceipt parent = loadReceipt(parentReference);
+            ParsedMaterialCache cache = parsedMaterialCache.get();
+            ContinuityStorePort.Session session = borrowed;
+            ImmutableArtifactStore.HistoricalReads reads = cache == null ? null : cache.commandReads;
+            boolean scoped = session != null && current.get() == session && reads != null
+                    && readOriginalCapture.get() == null && owner.artifacts == artifacts
+                    && owner.sameWriter == sameWriter && owner.current == current
+                    && owner.parsedMaterialCache == parsedMaterialCache;
+            if (!scoped) {
+                org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(historical, parent, this);
+                org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(currentState, parent, this);
+                return parent;
+            }
+            // Preserve the first reader's pure top/header failures before any optional trace guard.
+            Objects.requireNonNull(parent);
+            StrictJson.require(parent.sequence() <= historical.sequence()
+                    && parent.command().origin().machineId().equals(historical.machineId()),
+                    "historical receipt crossed actual writer machine/sequence");
+            if (org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(historical).isEmpty()) {
+                org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(historical, parent, this);
+                org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(currentState, parent, this);
+                return parent;
+            }
+            ExactRef firstRecord;
+            java.util.Optional<Set<ExactRef>> dependencies;
+            try (var trace = reads.traceDependencies()) {
+                firstRecord = org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(historical, parent, this);
+                dependencies = trace.retainedDependencies();
+            }
+            if (dependencies.isEmpty() || current.get() != session || parsedMaterialCache.get() != cache
+                    || cache.commandReads != reads || readOriginalCapture.get() != null) {
+                org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(currentState, parent, this);
+                return parent;
+            }
+            // This is still the original second validation's first failure boundary.
+            StrictJson.require(parent.sequence() <= currentState.sequence()
+                    && parent.command().origin().machineId().equals(currentState.machineId()),
+                    "historical receipt crossed actual writer machine/sequence");
+            if (historical.sequence() != currentState.sequence()
+                    || !historical.machineId().equals(currentState.machineId())
+                    || !org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(historical)
+                            .equals(org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(currentState))) {
+                org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(currentState, parent, this);
+                return parent;
+            }
+            ExactRef persisted = session.persistedHead();
+            requireSession(session); reads.requireActive();
+            if (!persisted.equals(session.persistedHead()) || !reads.verifyRetainedDependencies(dependencies.orElseThrow())) {
+                org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(currentState, parent, this);
+                return parent;
+            }
+            // Re-open the actual selected record; both original full receipt encoders still run.
+            java.util.Optional<Set<ExactRef>> secondDependencies;
+            try (var trace = reads.traceDependencies()) {
+                ActionRecord actual = loadRecord(firstRecord);
+                StrictJson.require(actual.receipt().sequence() == parent.sequence(),
+                        "receipt is not in the surviving canonical action record chain");
+                StrictJson.require(java.util.Arrays.equals(ActionReceiptCodec.encodeReceipt(parent, this),
+                        ActionReceiptCodec.encodeReceipt(actual.receipt(), this)),
+                        "historical action record has another complete original receipt body");
+                secondDependencies = trace.retainedDependencies();
+            }
+            requireSession(session); reads.requireActive();
+            if (current.get() != session || parsedMaterialCache.get() != cache || cache.commandReads != reads
+                    || readOriginalCapture.get() != null || !persisted.equals(session.persistedHead())
+                    || secondDependencies.isEmpty()
+                    || !reads.verifyRetainedDependencies(dependencies.orElseThrow())
+                    || !reads.verifyRetainedDependencies(secondDependencies.orElseThrow()))
+                throw new IOException("derived parent DATA validation left its exact retained writer scope");
+            return parent;
+        });
+    }
+
     private void requireSession(ContinuityStorePort.Session session) throws IOException {
         try {
             Objects.requireNonNull(session); sameWriter.requireSession(session); session.requireWriter(artifacts.originalWriterLock());
