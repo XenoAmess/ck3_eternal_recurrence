@@ -21,3 +21,13 @@ formal Controller／BatchLimits／Loop 的 BASE 与候选均与 actual 逐字相
 本单元与已过差分的 Source69 私有 encoder 一起交运行岗选择原 C65 清洁边界。源码／软件通过不等于已装载、实际提前退让、SAVE 或性能目标；私有 Main canonical capture、真实 writer 发行与 live 行为另按回执确认。当前仍未达到10秒／新增确认保存日。
 
 最终 actual whole4 原件：F/postlife-renewal71-whole4-junit03，2026-11-12T18:57:49.841071Z CLOSE released；Jupiter48727B／e7d17285441940fdd490bf3c6057a49f5857bc10627a6f94f7d6bac04202ff58，POST1516B／0be05835c89ae49434fe6cab2f003d4a6e19792f1565e2784bc9f322b3b76f75。formal 四TU独立首0／35类，复用同一最终 Test12 对正式产物独立 whole4P：F/postlife-renewal71-formal-compile01／formal-whole4-junit01，2026-11-12T19:03:17.257540Z CLOSE released；Jupiter48661B／0b3a9030d25b45e81c14c88825606be54324e9fa4e5fe40057acfede92882853。未重复编译测试，未外推私有 Main issuer 或全平台。
+
+## 后到实际采用及首自然提前续批
+
+machine_id：`xenoamess-full-tower-eb9d2c1186`。运行岗在原 C65 完整收尾后，以一次五叶 normal fullreload 一致采用69＋71；同 host161132／原 birth、同 Game145132／keeper56732保持，新委托 cce3454f／restart2 于2026-11-12T19:38:04.2614466Z真实 LOOP。五个 Maven top.class均与软件合格原件逐字节／SHA一致，未做cold启动或重放原动作。
+
+STOP→LOOP完整438.6166586秒，包含121.1270404秒GET及61.768秒augment WARN；新窗起点480observed／463eligible／373saved，0新增SAVE。原件 `R/attempt69/ACTUAL-LOOP-COHERENT69-71-AND-FULL-HANDOFF-COST01.json`（5505B／704f47c7ccb7cbc777e18e23af1db7e0a094eb937384592683cfb825fa154068），R为D:/ck3-state/resume91-runtime/quarkus-dev307-runtime。
+
+首新 C66 于20:02:23.0783011Z实际SETTLE，488observed／471eligible／373saved；batch55 report实为WALL_TIMEOUT，detail为POST_SETTLE_LIFE_BUDGET_DEFERRED，剩344.6079997秒小于原reserve1033.7493942秒。实际Root沿BATCH_DEFERRED进入batch56，20:02:32.7951394Z开始，距SETTLE9.7168383秒；无新GET／STOP／提前SAVE。这已证明新提前续批正分支及实际连续消费者命中，未授私有encoder单独贡献或因果速度。
+
+该report完整墙钟1456.6101694秒、ACTION1028.6855487秒，OBS172.1049409秒、PLAN158.4749803秒、JOURNAL87.6126642秒；nested阶段不相加当CPU。原件 `R/attempt69/BATCH55-FIRST-POSTLIFE-RENEWAL.original.json`（50053B／dd13f600d9de917185069846e337953b2a1d3d82cbfd5513efdf6df3d0a8015f）。旧Source68完整窗保留10658.401408秒／39新增eligible且0新增SAVE，不用不同周期做严格A/B或以eligible替代新增保存分母；当前10秒目标仍未达到。

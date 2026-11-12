@@ -17,3 +17,5 @@ formalBASE与actual整字节同10911／0307…、candidate同12444／69a835…�
 两个模型完整响应保留：首答非法访问FullJsonTree.JSON(private)且缺IO import；唯一纠错只补import，仍未实现合法私writer。最终部分采用importIO、两个私有caller替换及helper序列化／lease／IO小体；合法mapper、配置、private引用替换、原leasevalidity guard与注释由owner完成。静态缺陷不是实际javac RED；DecimalToken的writeNumber首述正确，owner曾误记writeRawValue后已纠正。
 
 本单元仅软件候选，当前Source68正常业务不为它单独再支付handoff成本。待更大的提前budget-renew／历史prefix单元或具体必要P0组成一致cohort，再由运行岗择实际边界；未授装载、live分支、ROI或10秒／新增确认保存日目标。
+
+后到实际：该单元已与71作为五叶一致cohort实际normalfullreload，2026-11-12T19:38:04.2614466Z同host／同Game恢复LOOP；后续首C66真实结算和71提前续批正分支另见[具名采用及完整窗口](2026-11-13-post-life-early-batch-renewal.md)。这是后到事实，保留上文首次发表时尚未采用的切点；无单叶因果／新增SAVE／10秒授信。
