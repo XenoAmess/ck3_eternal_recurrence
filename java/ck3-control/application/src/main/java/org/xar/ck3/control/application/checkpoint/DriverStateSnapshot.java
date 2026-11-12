@@ -47,8 +47,9 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
         /** Strict bytes stay local; only detached typed DATA reaches the fixed anchor verifier. */
         static Complete decodeAndVerify(byte[] raw, java.util.function.BiConsumer<Complete, ObjectNode> verifier) {
             Objects.requireNonNull(verifier);
-            ObjectNode row = object(parse(raw));
-            Complete complete = decodeParsedComplete(row);
+            byte[] owned = raw == null || raw.length == 0 || raw.length > DriverCheckpointStore.MAX_DRIVER_BYTES ? raw : raw.clone();
+            ObjectNode row = object(parse(owned));
+            Complete complete = decodeParsedComplete(row, provenStable(owned));
             verifier.accept(complete, row);
             return complete;
         }
@@ -62,18 +63,20 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
         }
     }
     static Complete decodeComplete(byte[] raw) {
-        return decodeParsedComplete(object(parse(raw)));
+        byte[] owned = raw == null || raw.length == 0 || raw.length > DriverCheckpointStore.MAX_DRIVER_BYTES ? raw : raw.clone();
+        ObjectNode row = object(parse(owned));
+        return decodeParsedComplete(row, provenStable(owned));
     }
-    private static Complete decodeParsedComplete(ObjectNode row) {
+    private static Complete decodeParsedComplete(ObjectNode row, boolean provenStable) {
         Set<String> allowed = Set.of("format_version","pipe_name","bridge_pid","episode_character_id","episode_run_id","last_checkpoint","command_history","rollback_war_failure","managed_restore_transaction","succession_expectation","succession_lifecycle","campaign_goal","rollback_war_failures");
         row.fieldNames().forEachRemaining(key -> StrictJson.require(allowed.contains(key), "unmigrated top-level Driver field: " + key));
         StrictJson.integer(row.get("format_version"), 2, 2); StrictJson.require(row.get("command_history") != null && row.get("command_history").isArray(), "full Driver history required");
-        List<HistoryEntry> history = new ArrayList<>(); for (JsonNode item : row.get("command_history")) { ObjectNode entry = object(item); history.add(parsedEntry(entry)); }
+        List<HistoryEntry> history = new ArrayList<>(); for (JsonNode item : row.get("command_history")) { ObjectNode entry = object(item); history.add(parsedEntry(entry, provenStable)); }
         return new Complete(new Session(StrictJson.text(row.get("pipe_name")), StrictJson.integer(row.get("bridge_pid"), 1, 0xffff_ffffL),
                 NativeCharacterId.fromJson(row.get("episode_character_id")).asBigInteger(), StrictJson.text(row.get("episode_run_id"))), history,
-                slot(row,"last_checkpoint"),slot(row,"rollback_war_failure"),slot(row,"managed_restore_transaction"),slot(row,"succession_expectation"),slot(row,"succession_lifecycle"),slot(row,"campaign_goal"),slot(row,"rollback_war_failures"));
+                slot(row,"last_checkpoint",provenStable),slot(row,"rollback_war_failure",provenStable),slot(row,"managed_restore_transaction",provenStable),slot(row,"succession_expectation",provenStable),slot(row,"succession_lifecycle",provenStable),slot(row,"campaign_goal",provenStable),slot(row,"rollback_war_failures",provenStable));
     }
-    private static Slot slot(ObjectNode row, String key) { return !row.has(key) ? new Missing() : row.get(key).isNull() ? new NullValue() : parsedValue(row.get(key)); }
+    private static Slot slot(ObjectNode row, String key, boolean provenStable) { return !row.has(key) ? new Missing() : row.get(key).isNull() ? new NullValue() : parsedValue(row.get(key), provenStable); }
     private static void put(ObjectNode row, String key, Slot slot) { switch (slot) { case Missing ignored -> { } case NullValue ignored -> row.putNull(key); case Value value -> row.set(key,parse(value.json)); } }
     private static byte[] checked(byte[] raw) {
         var scope = Complete.CONSTRUCTION.get();
@@ -88,19 +91,19 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
         return StrictJson.integer(row.get("index"), 1, StrictJson.MAX_SAFE_INTEGER);
     }
     // Called only with private strict-parser trees. The first encode retains all original tree/budget checks.
-    private static Value parsedValue(JsonNode node) {
+    private static Value parsedValue(JsonNode node, boolean provenStable) {
         byte[] raw = bytes(node);
-        if (!stableParserTree(node)) return new Value(raw);
+        if (!provenStable && !stableParserTree(node)) return new Value(raw);
         var previous = Complete.CONSTRUCTION.get();
         var scope = new java.util.IdentityHashMap<Object, Object>();
         scope.put(raw, raw); Complete.CONSTRUCTION.set(scope);
         try { return new Value(raw); }
         finally { if (previous == null) Complete.CONSTRUCTION.remove(); else Complete.CONSTRUCTION.set(previous); }
     }
-    private static HistoryEntry parsedEntry(ObjectNode node) {
+    private static HistoryEntry parsedEntry(ObjectNode node, boolean provenStable) {
         long index = StrictJson.integer(node.get("index"), 1, StrictJson.MAX_SAFE_INTEGER);
         byte[] raw = bytes(node);
-        if (!stableParserTree(node)) return new HistoryEntry(index, new Value(raw));
+        if (!provenStable && !stableParserTree(node)) return new HistoryEntry(index, new Value(raw));
         var previous = Complete.CONSTRUCTION.get();
         var scope = new java.util.IdentityHashMap<Object, Object>();
         scope.put(raw, raw); Complete.CONSTRUCTION.set(scope);
@@ -123,6 +126,16 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
     private static boolean hasSurrogate(String text) {
         for (int i = 0; i < text.length(); i++) if (Character.isSurrogate(text.charAt(i))) return true;
         return false;
+    }
+
+    private static boolean provenStable(byte[] raw) {
+        if (raw == null) return false;
+        for (int i = 0; i < raw.length; i++) {
+            int b = raw[i] & 0xFF;
+            if (b == 0x5C && i + 1 < raw.length && raw[i + 1] == 0x75) return false;
+            if (b >= 0xF0) return false;
+        }
+        return true;
     }
     private static JsonNode parse(byte[] raw) {
         // The sole material parser validates JSON tokens. Opaque decimal lexemes are not binary64 fields.
