@@ -1,0 +1,21 @@
+# 从已完成 Life 学习保守调度尾耗时
+
+实际C66的Source71已正常在Life SETTLE后提前续批，但原保留reserve1033.7493942秒主要由物理SavedLife采样更新。年度SAVE下，未保存Life的实际ACTION约1028.7秒，后续仍有OUTCOME/JOURNAL工作；这说明原已知估计未必覆盖增长的尾，不以不同phase相加当新的训练值或CPU。C69随后原期限结束、APPLIED后RETAIN尚pending，既有warm只读恢复独立继续，没有延长旧动作期限或重发。
+
+Source74只在既有 `SessionController.retainLifeBudgetHint` 增加一个保守样本：报告必须是Source71真实 `POST_SETTLE_LIFE_BUDGET_DEFERRED` 正常WALL出口，最后一个turn是已结算、APPLIED、visible且eligible的同一Life handler，原owned session／Game／subject和last-plan before一致，物理baseline存在且dirty、无本批新SAVE。原混合reconciliation／生命周期动作／terminal observation／失败或中断phase不采。正常同Game Running生命周期探测与RETURNED观测phase保留，不能将它们误认生命周期动作。
+
+测量使用最后一个RETURNED ACTION的原单调开始tick到报告结束tick的包络，保留之后的outcome、after-SEM、SETTLE、最终journal、重叠与空隙；不计此前小动作或Ready，不相加nested phase。所有span须在报告区间，新sample必须正值且不超过原hint一天上界；无效sample直接忽略，原valid hint不丢。仅 `reserve_floor_nanos` 单调提高；`saved_life_tail_nanos` 仍只按原物理SavedLife路径更新。
+
+Controller原finally和RootMain原schedulingHints持久消费者都调用这个同一个static方法，所以不是只在私变量保存。原wall/2与readiness下界、retainedFloor、年度SAVE、旧六参默认、原command／deadline／horizon和action／source Guard均不降低或扩张。hint始终是调度DATA，不构成action、SAVE、恢复或完成许可。
+
+actual corrected单TU19类首编0，owner23真实Controller／公开合法Life receipt／checkedJournal与共享Clock整3最终3P/0FES。真实连续报告学习640→769秒、savedtail保持0，同Controller后继与新Controller.restore读到同值；先有121秒小动作时仍只采最后Life640秒，未标记／legacy默认／foreign subject／mixed／失败phase／超一天样本保原hint。正式原BASE与actual整raw相同，仍做必要formal单TU19类独立编译，同最终Test10独立整3首次全P，22:36:03.025283Z释放；不是沿actual绿转授。
+
+前件保留：首owner源误把每轮正常Running探测及LIFECYCLE span全拒，只做过typing、无JUnit／装载；测试作者源审发现后owner最小修正，真实fixture与oracle未裁。首whole3的2P1F是测试误给small→Life中间多计一次5秒batch-final journal，原Run只在整个batch尾commit。只修对应full833／lastAction193／earliest814的时钟常量和角色注释，640／769生产sample与全部Clock／ports不改；旧失败XML、源码和CLOSE保。第一runner top名映射准备错误为零JVM，不叫源码RED。
+
+模型两次完整答复共198208输入／1845输出tokens、24.7829339秒HTTP；首private-field访问和earliest取样被静态拒，未编成RED。第二答的static retainer hook及last-returned ACTION／ended()包络partial采用；owner补clean/session/subject/有限界与无效sample保旧，正常Running误排与纠正属于owner，模型没有被追记这个缺陷。没有第三请求。
+
+来源根 `D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/completed-life-reserve-source74` 的SOURCE-READY74-02.json（3024B／8f673b12…）和SOURCE-READY74-FORMAL.json（3779B／6ec2b8bb…）链接BASE140121B／`b70b6512874da7d3132b1b018cd1ae6c51bd9424fcc0526d01d42b8723c5f7d1`、candidate143130B／`cd1d7825f1f5f30b3c39299f2a70fb0a2957fcafc79448e38a220d43e8378306`。owner23 finalTest29844B／`0c6108ce922781cd67abb48251ea57eda8ffdf7837f18997516320b78b59a60f`。
+
+Native原件根 `D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01`：completed-life-reserve74-compile03、whole3-junit01原2P1F／whole3-junit02最终3P、formal-compile01／formal-whole3-junit01。各输入未变，ACTUAL／完整XML／CLOSE释放；无旧suite扩展或诊断JVM。原19类／public protected API保，private新增方法属于结构变更，不宣HCR；没有新field/type。
+
+当前尚未Runtime采用，不修改仍在处理的C69及旧deadline。正常叶采用、实际hint持久化／后继预算拒入与自然新Life／SAVE待独立回执；软件通过不授性能或10秒目标，正常游戏与既有warm恢复不等Git。

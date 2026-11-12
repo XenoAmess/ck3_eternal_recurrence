@@ -1050,6 +1050,8 @@ public final class SessionController {
             if (Set.of(Terminal.TURN_BOUND, Terminal.OPERATOR_STOP, Terminal.WALL_TIMEOUT, Terminal.EPISODE_HANDOFF).contains(report.terminal())) {
                 long measured = observedSavedLifeTailNanos(report);
                 if (measured > 0) { tail = Math.max(tail, measured); subject = anchor; }
+                long unsaved = measuredOrdinaryLifeTailNanos(report);
+                if (unsaved > 0) { floor = Math.max(floor, unsaved); subject = anchor; }
             }
             if (tail == 0 && floor == 0) return Optional.empty();
             var row = StrictJson.object(); row.put("schema", "xar.life-budget-hint/v1");
@@ -1111,6 +1113,43 @@ public final class SessionController {
         long forecast = observedSavedLifeTailNanos > Long.MAX_VALUE - readiness
                 ? Long.MAX_VALUE : observedSavedLifeTailNanos + readiness;
         return Math.max(floor, forecast);
+    }
+
+    /** Advisory only: one clean post-settle Life report, never a SAVE or action proof. */
+    private static long measuredOrdinaryLifeTailNanos(BatchReport report) {
+        if (report.terminal() != Terminal.WALL_TIMEOUT
+                || !report.detail().startsWith("POST_SETTLE_LIFE_BUDGET_DEFERRED: ")
+                || report.turns().isEmpty() || report.lastPlan().isEmpty() || report.lastSavedPair().isEmpty()
+                || !report.dirtySinceSave() || report.committedSavedDays() != 0
+                || !report.reconciliations().isEmpty() || !report.lifecycleTurns().isEmpty()
+                || !report.readPublicationReconciliations().isEmpty() || !report.revisionReplans().isEmpty()
+                || report.lastTerminalObservation().isPresent()
+                || report.lastLifecycle().filter(value -> value instanceof GameLifecycle.Running running
+                    && running.measured().equals(report.session().game())).isEmpty()) return 0;
+        var receipt = report.turns().getLast().receipt();
+        if (!receipt.settled() || receipt.outcome() != ActionReceipt.Outcome.APPLIED_CONFIRMED
+                || !receipt.visibleGameplay() || !receipt.eligibleAdvance()
+                || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())
+                || !(receipt.state() instanceof ActionState.CompositeSettled settled)
+                || !(settled.settlement() instanceof ActionState.Applied)
+                || !settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)) return 0;
+        var before = receipt.command().before();
+        if (!receipt.command().origin().machineId().equals(report.session().machineId())
+                || !before.game().equals(report.session().game())
+                || !receipt.command().sessionId().equals(report.session().sessionId())
+                || !before.equals(report.lastPlan().orElseThrow().before())
+                || !sameLifeBudgetSubject(report.lastSavedPair().orElseThrow().frame(), before)) return 0;
+        long lastActionStart = -1;
+        for (var span : report.phases()) {
+            if (span.terminal() != PhaseTerminal.RETURNED
+                    || span.phase() == Phase.ACTION_RECONCILIATION
+                    || span.phase() == Phase.CHECKPOINT
+                    || span.began().elapsedNanos() < report.began().elapsedNanos()
+                    || span.ended().elapsedNanos() > report.ended().elapsedNanos()) return 0;
+            if (span.phase() == Phase.ACTION) lastActionStart = Math.max(lastActionStart, span.began().elapsedNanos());
+        }
+        long elapsed = report.ended().elapsedNanos() - lastActionStart;
+        return lastActionStart >= 0 && elapsed > 0 && elapsed <= Duration.ofDays(1).toNanos() ? elapsed : 0;
     }
 
     private static long observedSavedLifeTailNanos(BatchReport report) {
