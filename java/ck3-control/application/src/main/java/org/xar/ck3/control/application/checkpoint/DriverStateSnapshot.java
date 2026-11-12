@@ -2,6 +2,7 @@ package org.xar.ck3.control.application.checkpoint;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
 import java.math.BigInteger;
 import org.xar.ck3.control.contracts.NativeCharacterId;
 import java.util.ArrayList;
@@ -37,6 +38,13 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
             Slot rollbackWarFailures) implements DriverStateSnapshot {
         // Exact, one-use constructor identities; never a cache or a caller-declared trust flag.
         private static final ThreadLocal<java.util.IdentityHashMap<Object, Object>> CONSTRUCTION = new ThreadLocal<>();
+        // Same factory configuration as the unchanged complete-material encoder; private parser trees only.
+        private static final com.fasterxml.jackson.databind.ObjectMapper PARSED_JSON = new com.fasterxml.jackson.databind.ObjectMapper(
+                com.fasterxml.jackson.core.JsonFactory.builder()
+                        .enable(com.fasterxml.jackson.core.StreamReadFeature.STRICT_DUPLICATE_DETECTION)
+                        .streamReadConstraints(com.fasterxml.jackson.core.StreamReadConstraints.builder().maxNestingDepth(64)
+                                .maxStringLength(FullJsonTree.MAXIMUM_DRIVER_BYTES)
+                                .maxNumberLength(FullJsonTree.MAXIMUM_DRIVER_BYTES).build()).build());
         public Complete {
             Objects.requireNonNull(session); commandHistory = List.copyOf(commandHistory);
             for (int i = 0; i < commandHistory.size(); i++) StrictJson.require(commandHistory.get(i).index() == i + 1L, "complete ordered Driver history");
@@ -90,9 +98,9 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
         ObjectNode row = object(parse(value.json));
         return StrictJson.integer(row.get("index"), 1, StrictJson.MAX_SAFE_INTEGER);
     }
-    // Called only with private strict-parser trees. The first encode retains all original tree/budget checks.
+    // Private parsing supplies tree checks; encoding retains the original byte lease.
     private static Value parsedValue(JsonNode node, boolean provenStable) {
-        byte[] raw = bytes(node);
+        byte[] raw = encodeParsed(node);
         if (!provenStable && !stableParserTree(node)) return new Value(raw);
         var previous = Complete.CONSTRUCTION.get();
         var scope = new java.util.IdentityHashMap<Object, Object>();
@@ -102,7 +110,7 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
     }
     private static HistoryEntry parsedEntry(ObjectNode node, boolean provenStable) {
         long index = StrictJson.integer(node.get("index"), 1, StrictJson.MAX_SAFE_INTEGER);
-        byte[] raw = bytes(node);
+        byte[] raw = encodeParsed(node);
         if (!provenStable && !stableParserTree(node)) return new HistoryEntry(index, new Value(raw));
         var previous = Complete.CONSTRUCTION.get();
         var scope = new java.util.IdentityHashMap<Object, Object>();
@@ -143,4 +151,18 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
     }
     private static ObjectNode object(JsonNode node) { StrictJson.require(node instanceof ObjectNode, "Driver object required"); return (ObjectNode)node; }
     private static byte[] bytes(JsonNode node) { return FullJsonTree.encode(node,DriverCheckpointStore.MAX_DRIVER_BYTES); }
+
+    /** Only private strict-parser subtrees reach this encoder before any verifier callback. */
+    private static byte[] encodeParsed(JsonNode node) {
+        StrictJson.require(DriverCheckpointStore.MAX_DRIVER_BYTES > 0
+                && DriverCheckpointStore.MAX_DRIVER_BYTES <= FullJsonTree.MAXIMUM_DRIVER_BYTES,
+                "finite complete JSON material lease required");
+        try {
+            byte[] result = Complete.PARSED_JSON.writeValueAsBytes(node);
+            StrictJson.require(result.length <= DriverCheckpointStore.MAX_DRIVER_BYTES, "complete JSON material exceeds its explicit lease");
+            return result;
+        } catch (IOException failure) {
+            throw new IllegalArgumentException("complete JSON encoding failed", failure);
+        }
+    }
 }
