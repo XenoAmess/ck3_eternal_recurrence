@@ -70,7 +70,7 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
                     current.readPublication=Optional.empty();
                     current.preparedSelection=null;
                     return finishOriginalWork(()->timedPlanningWork(work,timing),()->flushInSession(borrowed),()->current.flushFailed);
-                },()->current.readPublication.isPresent(),()->timedReadReplan(borrowed,timing)))),Optional.empty()); }
+                },()->current.readPublication.isPresent(),()->current.preparedSelection==null?null:(SelectionDisposition)current.preparedSelection.actual(),()->timedReadReplan(borrowed,timing)))),Optional.empty()); }
                 catch(org.xar.ck3.control.application.planning.PlanningReadFailure failure) {
                     if(!org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(failure))throw failure;
                     return new ScopeExit<T>(Optional.empty(),Optional.of(failure));
@@ -95,6 +95,11 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
             ScopeResult<T> completed=work.run();
             if(!readPublished.getAsBoolean()||!replan.prepare())return completed;
         }
+    }
+    /** Local seam: allows actual Published preparation to request the same existing original rejoin. */
+    static <T> ScopeResult<T> finishPlanningReads(ScopeWork<ScopeResult<T>> work,
+            java.util.function.BooleanSupplier readPublished,java.util.function.Supplier<SelectionDisposition> preparedSelection,ReadReplan replan)throws IOException,InterruptedException {
+        return finishPlanningReads(work,()->readPublished.getAsBoolean()||(preparedSelection.get() instanceof Published),replan);
     }
     /** Same production control flow; package-only for failure-preservation regression, never source/Ready authority. */
     static <T> ScopeResult<T> finishOriginalWork(ScopeWork<T> work,PublicationFlush publication,java.util.function.BooleanSupplier alreadyFailed)
