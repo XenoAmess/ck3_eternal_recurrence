@@ -234,7 +234,9 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             try {
                 reads.requireActive();
                 Objects.requireNonNull(commandCache).commandReads = reads;
-                T result = operation.read(new NativeOutcomeArchive(owner, session));
+                ActionPorts.OutcomeArchive facade = new NativeOutcomeArchive(owner, session);
+                T result = org.xar.ck3.control.application.driver.DriverCapabilityRuntime.inOwnedHistoricalPersistentReplay(
+                        owner, facade, session, operation);
                 reads.requireActive();
                 return result;
             } catch (IOException problem) {
@@ -363,6 +365,71 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             if (cacheBefore == null) reportParsedMaterialDiagnostics(cache, completed);
         }
     }
+
+    /** Returns pure scope machinery only for this final Archive's actual private bound facade.
+     * Arbitrary OutcomeArchive implementations and ordinary inSession scopes are ineligible. */
+    public org.xar.ck3.control.application.driver.DriverPersistentPlanningState.OwnedPrefixAccess
+            ownedPersistentPrefixAccess(ActionPorts.OutcomeArchive facade, ContinuityStorePort.Session session) throws IOException {
+        requireSession(session);
+        ParsedMaterialCache cache = parsedMaterialCache.get();
+        if (cache == null || cache.commandReads == null || readOriginalCapture.get() != null || current.get() != session
+                || !(facade instanceof NativeOutcomeArchive actual) || actual.owner != owner
+                || actual.artifacts != artifacts || actual.sameWriter != sameWriter
+                || actual.borrowed != session || actual.current != current || actual.parsedMaterialCache != parsedMaterialCache)
+            return null;
+        cache.commandReads.requireActive();
+        if (cache.persistentAccess == null) cache.persistentAccess = new PersistentPrefixAccess(cache, session);
+        return cache.persistentAccess;
+    }
+    private final class PersistentPrefixAccess implements org.xar.ck3.control.application.driver.DriverPersistentPlanningState.OwnedPrefixAccess {
+        private final ParsedMaterialCache cache;
+        private final ContinuityStorePort.Session session;
+        private final ImmutableArtifactStore.HistoricalReads reads;
+        private final ExactRef canonicalHead;
+        private Object checkpoint;
+        PersistentPrefixAccess(ParsedMaterialCache cache,ContinuityStorePort.Session session) throws IOException {
+            this.cache=cache;this.session=session;this.reads=cache.commandReads;this.canonicalHead=session.persistedHead();
+        }
+        private void active() throws IOException {
+            requireSession(session); reads.requireActive();
+            if(current.get()!=session || parsedMaterialCache.get()!=cache || cache.commandReads!=reads
+                    || !canonicalHead.equals(session.persistedHead()))
+                throw new IOException("persistent prefix left its exact source-owned historical scope/head");
+        }
+        @Override public boolean accepts(ActionPorts.OutcomeArchive value) throws IOException {
+            active();
+            return readOriginalCapture.get()==null && value instanceof NativeOutcomeArchive actual && actual.owner==owner && actual.borrowed==session
+                    && actual.current==current && actual.parsedMaterialCache==parsedMaterialCache
+                    && actual.artifacts==artifacts && actual.sameWriter==sameWriter;
+        }
+        @Override public Object current() throws IOException { active();return checkpoint; }
+        @Override public void current(Object value) throws IOException {
+            if(value==null){checkpoint=null;return;}
+            active();checkpoint=value;
+        }
+        @Override public Object beginCapture() throws IOException { active();return reads.traceDependencies(); }
+        private ImmutableArtifactStore.HistoricalReads.DependencyTrace trace(Object value) throws IOException {
+            active();
+            if(!(value instanceof ImmutableArtifactStore.HistoricalReads.DependencyTrace actual))
+                throw new IOException("persistent prefix requires its private owned dependency trace");
+            return actual;
+        }
+        @Override public java.util.Optional<Set<ExactRef>> dependencies(Object value) throws IOException {
+            return trace(value).retainedDependencies();
+        }
+        @Override public void closeCapture(Object value) throws IOException {
+            // Close still restores trace nesting after a poisoned read scope.
+            if(!(value instanceof ImmutableArtifactStore.HistoricalReads.DependencyTrace actual))
+                throw new IOException("persistent prefix requires its private owned dependency trace");
+            actual.close();
+        }
+        @Override public boolean verify(Set<ExactRef> dependencies) throws IOException { active();return reads.verifyRetainedDependencies(dependencies); }
+    }
+    private void disqualifyPersistentPrefix() throws IOException {
+        ParsedMaterialCache cache=parsedMaterialCache.get();
+        if(cache!=null&&cache.commandReads!=null)cache.commandReads.disqualifyDependencies();
+    }
+
     private void requireSession(ContinuityStorePort.Session session) throws IOException {
         try {
             Objects.requireNonNull(session); sameWriter.requireSession(session); session.requireWriter(artifacts.originalWriterLock());
@@ -581,6 +648,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         return value;
     }
     private void verifyFrontendWindowRequest(FrontendWindowCaptureRequest original) throws IOException {
+        disqualifyPersistentPrefix();
         presentationExisting(original.actualFrontendEvidence());
         for (ExactRef evidence : original.preparationEvidence()) presentationExisting(evidence);
         // Preserve the actual selected source locator. Use the existing writer's native pin
@@ -777,6 +845,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     @Override public void verifyReadFailureOriginals(PlanningReadFailure original) {
         unchecked(() -> writing(() -> {
             Objects.requireNonNull(original);
+            disqualifyPersistentPrefix(); // Historical-head validation is outside retained CAS custody.
             ContinuityStorePort.Session same = activeSession();
             if (same == null) throw new IOException("failed read requires its actual owning writer session");
             var head = same.head();
@@ -1193,6 +1262,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         for (ExactRef retained : PhysicalActionCodec.references(original, this)) presentationExisting(retained);
     }
     private byte[] verifyRetainedSourceOriginal(ExactRef original) throws IOException {
+        disqualifyPersistentPrefix();
         if (original.bytes() < 1 || original.bytes() > WriterContracts.MAX_PIN_BYTES)
             throw new IOException("bounded retained source original required");
         ContinuityStorePort.Session session = activeSession();
@@ -1214,6 +1284,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         // READ. Reopening follows that retained Ref; it never consults a current export path.
         if (original.retainedMaterial().isPresent()) loadMaterial(original.retainedMaterial().orElseThrow().original());
         if (original.adoption().isPresent()) {
+            disqualifyPersistentPrefix();
             PlanningReadAdoption adopted = original.adoption().orElseThrow(); adopted.requireReceipt(original);
             ContinuityStorePort.Session same = activeSession();
             if (same == null) throw new IOException("late read requires its actual same-writer historical head scope");
@@ -1263,6 +1334,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             throw new IOException("actual outbound revision differs from its original guarded frame");
     }
     private void verifyOperatorGuardOriginals(ActionCommand command, GuardEvidence original) throws IOException {
+        disqualifyPersistentPrefix();
         ContinuityStorePort.Session same = activeSession();
         if (same == null) throw new IOException("operator guard requires its actual owning historical writer session");
         // The sole source-owned codec reopens the exact full before projection, HELLO/HB,
@@ -1292,6 +1364,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         for (ExactRef locator : original.supportingEvidence()) token(locator);
     }
     private void verifyPhysicalStatusOriginals(GuardEvidence original, CommandOrigin.PhysicalStatusOnly physical) throws IOException {
+        disqualifyPersistentPrefix();
         ContinuityStorePort.Session same = activeSession();
         if (same == null) throw new IOException("physical Status originals require their actual owning writer session");
         var identity = physical.identity();
@@ -1348,6 +1421,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     }
     private void verifyReconciliationHistory(ReconciliationIdentity identity, RawJson manifest,
             RawJson currentDriver, byte[] originalNative) throws IOException {
+        disqualifyPersistentPrefix();
         ContinuityStorePort.Session same = activeSession();
         if (same == null) throw new IOException("history reconciliation requires its actual writer Session");
         synchronized (historyBindings) {
@@ -1670,12 +1744,13 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }
         // Pure byte-decoded Gameplay DATA stays private to the owning archive scope.
         private ImmutableArtifactStore.HistoricalReads commandReads;
+        private org.xar.ck3.control.application.driver.DriverPersistentPlanningState.OwnedPrefixAccess persistentAccess;
         private static final int MAX_COMMAND_ENTRIES = 16;
         private static final long MAX_COMMAND_KEY_BYTES = 8L * 1024 * 1024;
         private final Map<java.nio.ByteBuffer, ActionCommand> commands = new LinkedHashMap<>(16, 0.75f, true);
         private long commandKeyBytes;
         void clearCommands() {
-            commands.clear(); commandKeyBytes = 0; commandReads = null;
+            commands.clear(); commandKeyBytes = 0; commandReads = null; persistentAccess = null;
         }
         ActionCommand decodeCommand(byte[] canonical) {
             if (canonical == null || canonical.length < 1

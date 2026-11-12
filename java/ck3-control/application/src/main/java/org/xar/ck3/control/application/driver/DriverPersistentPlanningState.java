@@ -42,6 +42,34 @@ public final class DriverPersistentPlanningState {
     private static final String SCHEMA="xar.driver-persistent-planning-source/v2";
     private static final int MAX_CHAIN=4096;
     private DriverPersistentPlanningState() { }
+
+    /** Pure replay machinery, not a Source/Guard or a public way to install a replay scope.
+     * Only the same-package local-service bridge registers its actual final Archive access. */
+    public interface OwnedPrefixAccess {
+        boolean accepts(ActionPorts.OutcomeArchive archive) throws IOException;
+        Object current() throws IOException;
+        void current(Object value) throws IOException;
+        Object beginCapture() throws IOException;
+        Optional<Set<ExactRef>> dependencies(Object capture) throws IOException;
+        void closeCapture(Object capture) throws IOException;
+        boolean verify(Set<ExactRef> dependencies) throws IOException;
+    }
+    private static final ThreadLocal<OwnedPrefixAccess> OWNED_PREFIX = new ThreadLocal<>();
+    private record VerifiedPrefix(OwnedPrefixAccess owner, ExactRef reference, State state,
+            List<ExactRef> processed, Obj finalProof, Set<ExactRef> proofSources,
+            Set<ExactRef> dependencies) { }
+    /** Package-private registration; arbitrary public OutcomeArchive implementations keep full replay. */
+    static <T> T inOwnedPrefixScope(OwnedPrefixAccess access, ActionPorts.OutcomeArchive archive,
+            ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        OwnedPrefixAccess prior = OWNED_PREFIX.get();
+        if (access == null) return operation.read(archive);
+        OWNED_PREFIX.set(access);
+        try { return operation.read(archive); }
+        catch (IOException | RuntimeException | Error failure) {
+            try { access.current(null); } catch (IOException cleanup) { failure.addSuppressed(cleanup); }
+            throw failure;
+        } finally { if (prior == null) OWNED_PREFIX.remove(); else OWNED_PREFIX.set(prior); }
+    }
     /** No public constructor or untyped auxiliary setter. */
     public static final class Publication {
         private final DriverSnapshotFacts.Stamp expectedStamp;
@@ -202,6 +230,33 @@ public final class DriverPersistentPlanningState {
     }
     /** Full source chain and typed serialization replay; this does not grant native or action eligibility. */
     public static void replay(Obj auxiliary,ActionPorts.OutcomeArchive archive) {
+        OwnedPrefixAccess access = OWNED_PREFIX.get();
+        try {
+            if (access == null || !access.accepts(archive)) { replayOriginal(auxiliary, archive, null, null); return; }
+            try { validateReplayHeader(auxiliary,archive); }
+            catch (RuntimeException | Error problem) {
+                try { access.current(null); } catch (IOException cleanup) { problem.addSuppressed(cleanup); }
+                throw problem;
+            }
+            Object capture = access.beginCapture();
+            Throwable failure = null;
+            try { replayCooldown(auxiliary, archive, access, capture); }
+            catch (IOException | RuntimeException | Error problem) {
+                failure = problem;
+                try { access.current(null); } catch (IOException cleanup) { problem.addSuppressed(cleanup); }
+                throw problem;
+            } finally {
+                try { access.closeCapture(capture); }
+                catch (IOException cleanup) { if (failure != null) failure.addSuppressed(cleanup); else throw cleanup; }
+            }
+        } catch (IOException failure) { throw new java.io.UncheckedIOException(failure); }
+    }
+    private static void replayOriginal(Obj auxiliary,ActionPorts.OutcomeArchive archive,
+            OwnedPrefixAccess access,Object capture) throws IOException {
+        validateReplayHeader(auxiliary,archive);
+        replayCooldown(auxiliary,archive,access,capture);
+    }
+    private static void validateReplayHeader(Obj auxiliary,ActionPorts.OutcomeArchive archive) {
         DriverDeclarationContinuityState.replay(auxiliary,archive);
         Value strategy=auxiliary.get(STRATEGY_SOURCE);
         require(auxiliary.members().containsKey("one_life_strategy")==auxiliary.members().containsKey(STRATEGY_SOURCE),"strategy and source must be present together");
@@ -213,10 +268,32 @@ public final class DriverPersistentPlanningState {
             Obj expected=DriverJson.object(CrossRunPlanning.encodeState(state),CrossRunPlanning.MAX_BYTES);
             require(expected.equals(proof.get("strategy"))&&expected.equals(auxiliary.get("one_life_strategy")),"actual canonical strategy source differs from auxiliary");
         }
+    }
+    private static void replayCooldown(Obj auxiliary,ActionPorts.OutcomeArchive archive,
+            OwnedPrefixAccess access,Object capture) throws IOException {
         if(!auxiliary.members().containsKey(COOLDOWN_STATE)) { require(!auxiliary.members().containsKey(COOLDOWN_SOURCE),"cooldown source without state");return; }
         ExactRef current=source(auxiliary);List<Obj> reverse=new ArrayList<>();Set<ExactRef> seen=new java.util.HashSet<>();
-        while(current!=null) { require(seen.add(current)&&reverse.size()<MAX_CHAIN,"cyclic or excessive cooldown source chain");Obj proof=material(archive,current);reverse.add(proof);current=proof.get("previous")==Nil.INSTANCE?null:reference(proof.get("previous")); }
-        State state=null;List<ExactRef> processed=List.of();Obj finalProof=null;
+        List<ExactRef> reverseSources = new ArrayList<>();
+        Object retained = access == null ? null : access.current();
+        VerifiedPrefix cached = retained instanceof VerifiedPrefix value && value.owner() == access ? value : null;
+        VerifiedPrefix anchor = null;
+        while(current!=null) {
+            require(seen.add(current)&&reverse.size()<MAX_CHAIN,"cyclic or excessive cooldown source chain");
+            if (cached != null && current.equals(cached.reference())) {
+                require(reverse.size() + cached.proofSources().size() <= MAX_CHAIN,"cyclic or excessive cooldown source chain");
+                for (ExactRef prior : cached.proofSources())
+                    require(prior.equals(current) || !seen.contains(prior),"cyclic or excessive cooldown source chain");
+                if (access.verify(cached.dependencies())) { anchor = cached; break; }
+                cached = null; access.current(null);
+            }
+            Obj proof=material(archive,current);reverse.add(proof);reverseSources.add(current);
+            current=proof.get("previous")==Nil.INSTANCE?null:reference(proof.get("previous"));
+        }
+        State state=anchor==null?null:anchor.state();
+        List<ExactRef> processed=anchor==null?List.of():anchor.processed();
+        Obj finalProof=anchor==null?null:anchor.finalProof();
+        var verifiedSources = new java.util.LinkedHashSet<ExactRef>();
+        if (anchor != null) verifiedSources.addAll(anchor.proofSources());
         for(int i=reverse.size()-1;i>=0;i--) {
             Obj proof=reverse.get(i);require(proof.members().keySet().equals(Set.of("schema","mode","previous","frame","input","state","view","processed"))
                     &&new Text(SCHEMA).equals(proof.get("schema")),"exact cooldown proof schema required");
@@ -270,8 +347,17 @@ public final class DriverPersistentPlanningState {
             if(mode.equals("LIFE")) {var expected=new ArrayList<>(processed);expected.add(reference(object(proof.get("input"),"input").get("receipt")));require(expected.equals(next),"processed life receipt chain differs");}
             else require(processed.equals(next),"non-life transition changed processed receipts");
             processed=next;state=reduced.state();finalProof=proof;
+            verifiedSources.add(reverseSources.get(i));
+            if (access != null && verifiedSources.size() >= 2) {
+                Optional<Set<ExactRef>> dependencies = access.dependencies(capture);
+                if (dependencies.isPresent()) access.current(new VerifiedPrefix(access, reverseSources.get(i), state,
+                        List.copyOf(processed), finalProof,
+                        java.util.Collections.unmodifiableSet(new java.util.LinkedHashSet<>(verifiedSources)),
+                        dependencies.orElseThrow()));
+            }
         }
         require(finalProof!=null&&finalProof.get("state").equals(auxiliary.get(COOLDOWN_STATE))&&finalProof.get("view").equals(auxiliary.get(DeclarationOpportunityCooldown.VIEW_KEY)),"persistent cooldown auxiliary differs from its complete source chain");
+        if (anchor != null) require(access.verify(anchor.dependencies()),"owned cooldown prefix lost its retained originals after replay");
     }
     /** Pure DATA projection only; uncertain public typed graphs retain the original full conversion. */
     static DeclarationOpportunityCooldown.Snapshot cooldownSnapshot(Obj semantic) {

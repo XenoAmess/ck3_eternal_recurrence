@@ -105,6 +105,7 @@ public final class ImmutableArtifactStore {
         private long bytes;
         private boolean closed;
         private volatile Throwable firstFailure;
+        private DependencyTrace dependencyTrace;
         private long publicationAttempts;
         private long heldPathAttempts;
         private long acquisitionAttempts;
@@ -167,6 +168,86 @@ public final class ImmutableArtifactStore {
                 authority.require(); session.requireWriter(config.originalWriterLock());
             } catch (IOException | RuntimeException | Error failure) { recordFailure(failure); throw failure; }
         }
+        /** Reads performed in this exact owned scope only; a snapshot alone grants no replay authority. */
+        final class DependencyTrace implements AutoCloseable {
+            private final DependencyTrace previous;
+            private final java.util.LinkedHashSet<ExactRef> references = new java.util.LinkedHashSet<>();
+            private boolean allRetained = true;
+            private boolean traceClosed;
+            private DependencyTrace(DependencyTrace previous) { this.previous = previous; }
+            private void requireCurrent() throws IOException {
+                requireActive();
+                if (traceClosed || dependencyTrace != this) {
+                    IOException failure = new IOException("historical dependency trace is not the current owned trace");
+                    recordFailure(failure); throw failure;
+                }
+            }
+            /** Immutable DATA snapshot; final fresh qualification is a separate operation. */
+            java.util.Optional<Set<ExactRef>> retainedDependencies() throws IOException {
+                requireCurrent();
+                if (!allRetained) return java.util.Optional.empty();
+                return java.util.Optional.of(java.util.Collections.unmodifiableSet(new java.util.LinkedHashSet<>(references)));
+            }
+            /** External/pinned/callback dependencies without this store's custody cannot enter a prefix cell. */
+            void disqualify() throws IOException {
+                requireCurrent(); disqualifyDependencyTraces();
+            }
+            @Override public void close() throws IOException {
+                if (traceClosed) return;
+                if (Thread.currentThread() != thread || historicalReads.get() != HistoricalReads.this || dependencyTrace != this) {
+                    IOException failure = new IOException("historical dependency trace close crossed its owned nesting or lifetime");
+                    recordFailure(failure); throw failure;
+                }
+                dependencyTrace = previous; traceClosed = true; references.clear();
+            }
+        }
+        /** New traces nest without hiding the inner reads from an outer dependency closure. */
+        DependencyTrace traceDependencies() throws IOException {
+            requireActive();
+            DependencyTrace trace = new DependencyTrace(dependencyTrace); dependencyTrace = trace; return trace;
+        }
+        /** Mark an actual external dependency without requiring an Archive callback to own the top trace. */
+        void disqualifyDependencies() throws IOException { requireActive(); disqualifyDependencyTraces(); }
+        private void disqualifyDependencyTraces() {
+            for (DependencyTrace trace = dependencyTrace; trace != null; trace = trace.previous) {
+                trace.allRetained = false; trace.references.clear();
+            }
+        }
+        private void recordDependency(ExactRef reference, boolean retained) {
+            for (DependencyTrace trace = dependencyTrace; trace != null; trace = trace.previous) {
+                if (!trace.allRetained) continue;
+                if (!retained) { trace.allRetained = false; trace.references.clear(); }
+                else trace.references.add(reference);
+            }
+        }
+        private void clearDependencyTraces() {
+            while (dependencyTrace != null) {
+                DependencyTrace trace = dependencyTrace; dependencyTrace = trace.previous;
+                trace.traceClosed = true; trace.references.clear();
+            }
+        }
+        /** No acquisition, byte copy, payload hash, parser or bound change. False means missing custody only. */
+        boolean verifyRetainedDependencies(Set<ExactRef> dependencies) throws IOException {
+            try {
+                requireActive();
+                var expected = new java.util.LinkedHashSet<>(Objects.requireNonNull(dependencies));
+                var held = new java.util.ArrayList<java.util.Map.Entry<ExactRef, PublicationLease>>(expected.size());
+                for (ExactRef reference : expected) {
+                    requireReference(Objects.requireNonNull(reference), MAXIMUM_ARTIFACT_BYTES);
+                    PublicationLease lease = entries.get(reference);
+                    if (lease == null) { recordDependency(reference, false); requireActive(); return false; }
+                    held.add(java.util.Map.entry(reference, lease));
+                }
+                for (var dependency : held) {
+                    if (entries.get(dependency.getKey()) != dependency.getValue())
+                        throw new IOException("historical dependency custody changed during fresh qualification");
+                    readLeasedPublication(dependency.getValue(), dependency.getKey(), MAXIMUM_ARTIFACT_BYTES);
+                    // A caller reusing a verified prefix must include its original dependencies in its own trace.
+                    recordDependency(dependency.getKey(), true);
+                }
+                requireActive(); return true;
+            } catch (IOException | RuntimeException | Error failure) { recordFailure(failure); throw failure; }
+        }
         /** Preserve an already escaping original exception, adding all cleanup errors to it. */
         void finish(Throwable escaping) throws IOException {
             if (Thread.currentThread() != thread) throw new IOException("historical CAS close crossed its owner thread");
@@ -182,7 +263,7 @@ public final class ImmutableArtifactStore {
                         if (cleanup == null) cleanup = closing; else cleanup.addSuppressed(closing);
                     }
                 }
-            } finally { entries.clear(); bytes = 0; historicalReads.remove(); }
+            } finally { clearDependencyTraces(); entries.clear(); bytes = 0; historicalReads.remove(); }
             if (escaping != null) {
                 boolean alreadyCarried = false;
                 int causeDepth = 0;
@@ -504,13 +585,15 @@ public final class ImmutableArtifactStore {
                 PublicationLease held = reads.entries.get(expected);
                 if (held != null) {
                     reads.heldPathAttempts = HistoricalReads.nextCount(reads.heldPathAttempts);
-                    return readLeasedPublication(held, expected, maximum);
+                    Published actual = readLeasedPublication(held, expected, maximum);
+                    reads.recordDependency(expected, true); return actual;
                 }
                 // Reserve two transient qualification handles in addition to both new custody handles.
                 if (reads.entries.size() < reads.maximumEntries && reads.entries.size() * 2 <= reads.maximumHandles - 4
                         && expected.bytes() <= (reads.maximumBytes - reads.bytes) / 2) {
                     reads.acquisitionAttempts = HistoricalReads.nextCount(reads.acquisitionAttempts);
-                    return acquirePublication(reads, expected, maximum);
+                    Published actual = acquirePublication(reads, expected, maximum);
+                    reads.recordDependency(expected, reads.entries.containsKey(expected)); return actual;
                 }
                 // Attempt single-pair retirement if admission is blocked by entry or handle limits
                 // and the oldest entry can free enough bytes for the new request.
@@ -525,6 +608,7 @@ public final class ImmutableArtifactStore {
                             oldestLease.close();
                             // Remove from map and adjust accounting only after successful close
                             reads.entries.remove(oldestKey);
+                            reads.recordDependency(oldestKey, false); // Retired custody cannot support a new prefix cell.
                             reads.bytes -= freedBytes;
                             // Retry admission with updated state
                             if (reads.entries.size() < reads.maximumEntries && reads.entries.size() * 2 <= reads.maximumHandles - 4
@@ -539,7 +623,9 @@ public final class ImmutableArtifactStore {
             }
             LedgerFiles.Document metadata=LedgerFiles.read(commit(expected.sha256()),COMMIT_LIMIT);
             Commit bound=decode(metadata);if(!bound.payload().reference().equals(expected))throw new IOException("artifact commit/ref drift");
-            return new Published(verifyRaw(bound.payload(),maximum),metadata,bound.planningOrigin());
+            Published actual = new Published(verifyRaw(bound.payload(),maximum),metadata,bound.planningOrigin());
+            if (reads != null) reads.recordDependency(expected, false);
+            return actual;
         });
     }
     private LedgerFiles.Document verifyRaw(Pin pin, int maximum) throws IOException {
