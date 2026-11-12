@@ -220,7 +220,6 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             if (isQualifyingRootContextRead(row)) history.set(index, projectRootContextRead((ObjectNode) row, rootFacts, rootFactIndices));
         }
         data.put("history_projection_schema", "xar.model-root-history-dictionary/v1");
-        if (applyDeclarableWarHistoryAlias(history)) data.put("history_declarable_wars_projection_schema", "xar.model-history-declarable-wars-alias/v1");
         ArrayNode capabilities = data.putArray("capabilities");
         request.observations().bridgeCapabilities().stream().sorted().forEach(capabilities::add);
         ArrayNode routable = data.putArray("routable_operations");
@@ -240,7 +239,18 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             if (data.has(field)) orderedData.set(field, data.get(field));
         }
         orderedData.setAll(data);
-        byte[] ordinaryPayload = encodeModelInput(orderedData, POLICY);
+        return encodeDeclarableWarAlternatives(orderedData);
+    }
+
+    /** Pure complete-wire choice; both existing formats start from the unchanged pre-alias tree. */
+    private byte[] encodeDeclarableWarAlternatives(ObjectNode orderedData) {
+        // Build both alternatives from the SAME complete model tree after root-history-dictionary projection but before either declarable-war projection.
+        ObjectNode baselineData = shallowCopy(orderedData);
+        ArrayNode baselineHistory = JsonNodeFactory.instance.arrayNode();
+        for (JsonNode row : orderedData.get("history")) baselineHistory.add(row);
+        baselineData.set("history", baselineHistory);
+        if (applyDeclarableWarHistoryAlias(baselineHistory)) baselineData.put("history_declarable_wars_projection_schema", "xar.model-history-declarable-wars-alias/v1");
+        byte[] ordinaryPayload = encodeModelInput(baselineData, POLICY);
         // Optional DATA-only encoding cannot suppress an original payload/authority failure.
         try {
             ObjectNode projected = projectDeclarableWarItems(orderedData);
@@ -1120,6 +1130,12 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         return materials.preserve(RawJson.fullMaterial(FullJsonTree.encode(material, MAX_MATERIAL_BYTES)));
     }
     private static ObjectNode object() { return JsonNodeFactory.instance.objectNode(); }
+
+    private static ObjectNode shallowCopy(ObjectNode source) {
+        ObjectNode copy = object();
+        for (var field : source.properties()) copy.set(field.getKey(), field.getValue());
+        return copy;
+    }
 
     private static boolean applyFamilyLegalityAlias(JsonNode command) {
         if (!command.isObject()) return false;
