@@ -28,11 +28,11 @@ import org.xar.ck3.control.wave2.events.eventtraits.*;
 final class NativeEventEvidenceProducerTest {
     private static final Instant DEADLINE = Instant.parse("2030-01-01T00:00:00Z");
     private static final String STATE = """
-        {"paused":true,"map_ready":true,"speed":3,"date_raw":10660101,
+        {"paused":true,"map_ready":true,"speed":3,"date_raw":53144328,
          "played_character":{"character_id":73,"alive":true,"stress_points":10},
          "active_event":{"instance_id":17,"option_count":3},"pending_character_interaction":null,
-         "one_life_terminal_reason":null,"active_wars":[],"player_armies":[]}
-        """;
+         "one_life_terminal_reason":null,"active_wars":[],"player_armies":[],"diagnostics":{"bridge_pid":42,"connection_generation":5}}
+        """.strip();
     private static NativeObservationPort.ObservedFrame frame(int revision, boolean advanced) {
         String state = advanced ? STATE.replace("{\"instance_id\":17,\"option_count\":3}", "null") : STATE;
         byte[] body = DriverStateAssemblerTest.bytes("{\"protocol_version\":1,\"type\":\"state_snapshot\",\"snapshot_id\":\"snapshot-" + revision + "\",\"revision\":" + revision + ",\"state\":" + state + "}");
@@ -52,7 +52,7 @@ final class NativeEventEvidenceProducerTest {
         var args = StrictJson.object();
         if (poet) {
             var original = new PoetTraitOutcome.PublicFrame(before.identity().frame().snapshotId(), before.identity().frame().revision(),
-                new EventTraitMembership.Frame(before.identity().frame().identity().nativeRevision(), 10660101, 73));
+                new EventTraitMembership.Frame(before.identity().frame().identity().nativeRevision(), 53144328, 73));
             args.set("event_material_postcondition", StrictJson.parse(PoetTraitOutcome.encode(new PoetTraitOutcome.Ready(new PoetTraitOutcome.Binding(PoetTraitOutcome.Choice.POET, original)))));
             args.set("event_effect_phase", StrictJson.parse(EventEffectPhase.encode(EventEffectPhase.classify(PoetTraitOutcome.EVENT,
                 new EventEffectPhase.SourceBinding("1.20.0.4", EventEffectPhase.EXE, PoetTraitOutcome.SOURCE_PATH, PoetTraitOutcome.SOURCE_SHA256), 0).orElseThrow())));
@@ -168,7 +168,7 @@ final class NativeEventEvidenceProducerTest {
         var loader = new DriverFrameEvidenceLoader(new DriverObservationAssembler());
         assertDoesNotThrow(() -> NativeEventEffects.archivedVerifier(command.operation(), DriverStateAssemblerTest.ref(new byte[]{1}), loader, queries()).verifier().verify(null, receipt, archive));
         assertEquals(1, delivered.get(), "archive replay must not invoke the live incident journal again");
-        assertFalse(receipt.visibleGameplay()); assertFalse(receipt.eligibleAdvance());
+        assertTrue(receipt.visibleGameplay(), "independently observed APPLIED modal consumption is visible business without an invented native ACK"); assertFalse(receipt.eligibleAdvance());
         assertEquals(projected.compatibleResult().orElseThrow(), NativeEffectEvidence.load(receipt, archive, loader).compatibleResult());
         JsonNode result = StrictJson.parse(projected.compatibleResult().orElseThrow().bytes());
         assertTrue(result.get("active_event").isNull());assertTrue(result.get("paused").booleanValue());
@@ -255,11 +255,44 @@ final class NativeEventEvidenceProducerTest {
         assertInstanceOf(ActionPorts.Pending.class, output.result());
         assertTrue(output.compatibleResult().isEmpty());
     }
+    @Test void ordinaryEffectSkipsAnUndeliveredPreSubmissionPacketThenReplaysItsRealLaterPublication()throws InterruptedException {
+        var archive=new Archive();var receives=new AtomicInteger();
+        var held=new HeldDriverObservationPort(deadline->{
+            int read=receives.getAndIncrement();return frame(read==0?9:read==1?10:12,read>=2);
+        },actual->new DriverObservationFacts.Known(facts(actual,archive)),archive::preserveNativeFrame,new DriverObservationAssembler(),8);
+        var before=held.observe(DEADLINE);var command=command(before,false);var original=attempt(command,before);
+        var attempt=new ActionState.Attempt(original.requestId(),frame(11,false).observedAt(),original.guard(),original.preparedRequest());
+        var token=new RawJson(DriverStateAssemblerTest.bytes("{\"step\":\"select-event-option-1\",\"accepted\":true}"));
+        var ack=new NativeActionPort.AckReceived(attempt.requestId(),true,Optional.of(token),token,new byte[]{1});
+        var projected=new NativeEventEffects(new NativeEffectSnapshots(held,archive),NO_READS,queries()).observe(command,attempt,ack);
+        var observation=assertInstanceOf(ActionPorts.EffectObserved.class,projected.result()).observation();
+        assertEquals("snapshot-12",observation.after().frame().snapshotId());assertEquals(frame(12,true).observedAt(),observation.observedAt());
+        assertEquals(3,receives.get());assertInstanceOf(ObservationProvenance.Push.class,observation.provenance());
+        assertArrayEquals(frame(10,false).originalPacket(),archive.loadNativeFrame(Archive.ref("native",frame(10,false).originalPacket())));
+        var receipt=new ActionReceipt(1,1,command,ActionCodec.bodySha256(command),new ActionState.Settled(attempt,ack,new ActionState.Applied(observation)));
+        assertDoesNotThrow(()->replay(command,receipt,archive,new DriverFrameEvidenceLoader(new DriverObservationAssembler())));
+    }
+    @Test void unavailableReceiveAfterStalePublicationNeverInventsACompletedEvent()throws InterruptedException {
+        var archive=new Archive();var receives=new AtomicInteger();
+        var unavailable=new java.io.UncheckedIOException(new java.io.IOException("original software receive unavailable"));
+        var held=new HeldDriverObservationPort(deadline->{
+            int read=receives.getAndIncrement();if(read>=2)throw unavailable;return frame(read==0?9:10,false);
+        },actual->new DriverObservationFacts.Known(facts(actual,archive)),archive::preserveNativeFrame,new DriverObservationAssembler(),8);
+        var before=held.observe(DEADLINE);var command=command(before,false);var original=attempt(command,before);
+        var attempt=new ActionState.Attempt(original.requestId(),frame(11,false).observedAt(),original.guard(),original.preparedRequest());
+        var token=new RawJson(DriverStateAssemblerTest.bytes("{\"step\":\"select-event-option-1\",\"accepted\":true}"));
+        var ack=new NativeActionPort.AckReceived(attempt.requestId(),true,Optional.of(token),token,new byte[]{1});
+        assertSame(unavailable,assertThrows(java.io.UncheckedIOException.class,()->new NativeEventEffects(new NativeEffectSnapshots(held,archive),NO_READS,queries(),
+                (c,a,p,result)->fail("stale publication and failed receive cannot create an incident after")).observe(command,attempt,ack)));
+        assertEquals(3,receives.get());
+        assertArrayEquals(frame(10,false).originalPacket(),archive.loadNativeFrame(Archive.ref("native",frame(10,false).originalPacket())));
+    }
     private static final class Archive implements ActionPorts.OutcomeArchive {
         private final Map<ExactRef, RawJson> materials = new HashMap<>(); private final Map<ExactRef, byte[]> nativeFrames = new HashMap<>();
         private static ExactRef ref(String kind, byte[] raw) { return new ExactRef("memory/" + kind + "/" + DriverJson.sha256(raw), raw.length, DriverJson.sha256(raw)); }
         @Override public ExactRef preserveMaterial(RawJson raw) { var reference = ref("material", raw.bytes()); materials.putIfAbsent(reference, raw); return reference; }
         @Override public RawJson loadMaterial(ExactRef reference) { return java.util.Objects.requireNonNull(materials.get(reference)); }
+        @Override public RawJson loadFullMaterial(ExactRef reference) { return loadMaterial(reference); }
         @Override public ExactRef materialReferenceOf(RawJson raw) { var reference = ref("material", raw.bytes()); assertEquals(raw, materials.get(reference)); return reference; }
         @Override public ExactRef preserveNativeFrame(NativeObservationPort.ObservedFrame raw) { var reference = ref("native", raw.originalPacket()); nativeFrames.putIfAbsent(reference, raw.originalPacket()); return reference; }
         @Override public byte[] loadNativeFrame(ExactRef reference) { return java.util.Objects.requireNonNull(nativeFrames.get(reference)).clone(); }

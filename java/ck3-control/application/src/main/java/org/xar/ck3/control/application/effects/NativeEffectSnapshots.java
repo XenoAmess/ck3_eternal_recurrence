@@ -87,6 +87,23 @@ public final class NativeEffectSnapshots {
         }
         return (alreadyResolved==null?Objects.requireNonNull(held.get(),"current physical held Game is not adopted"):alreadyResolved).observe(deadline);
     }
+    /** Ordinary held observations may contain an undelivered pre-submit packet; retain it, then keep receiving within the same bound. */
+    private Complete observeAfter(ActionCommand command,java.time.Instant deadline,HeldDriverObservationPort alreadyResolved,
+            java.time.Instant submittedAt) throws java.io.IOException,InterruptedException {
+        Objects.requireNonNull(submittedAt);Objects.requireNonNull(deadline);
+        if(privateAfter.isPresent()) {
+            var actual=Objects.requireNonNull(privateAfter.orElseThrow().observe(command,deadline));
+            if(actual.isPresent())return actual.orElseThrow();
+        }
+        var actualHeld=alreadyResolved==null?Objects.requireNonNull(held.get(),"current physical held Game is not adopted"):alreadyResolved;
+        for(int publications=0;publications<4096;publications++) {
+            if(!java.time.Instant.now().isBefore(deadline))
+                throw new java.io.IOException("post-submission Native publication observation deadline expired; original action is not replayed");
+            Complete actual=actualHeld.observe(deadline);
+            if(!actual.observedAt().isBefore(submittedAt))return actual;
+        }
+        throw new java.io.IOException("post-submission Native publication observation budget exhausted; original action is not replayed");
+    }
     public ExactRef evidence(ActionCommand command, ActionState.Attempt attempt, Pair pair, List<PlanningReadReceipt> independentReads,
             RawJson compatible) { return NativeEffectEvidence.preserve(command, attempt, pair, independentReads, compatible, archive); }
     public ExactRef evidence(ActionCommand command, ActionState.Attempt attempt, Pair pair, List<PlanningReadReceipt> independentReads,
@@ -250,7 +267,7 @@ public final class NativeEffectSnapshots {
                 && before.sessionId().equals(command.sessionId()), "retained before-frame drift");
         Complete after;
         try { after = reconciliation ? ActionReconciliationScope.requireFrame(command, attempt)
-                : observeAfter(command,fixedDeadline,actualHeld); }
+                : observeAfter(command,fixedDeadline,actualHeld,attempt.submittedAt()); }
         catch (java.io.IOException unavailable) { throw new java.io.UncheckedIOException("original pending observation scope unavailable", unavailable); }
         catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();
@@ -259,7 +276,7 @@ public final class NativeEffectSnapshots {
         StrictJson.require(cachedFamilySend || !after.observedAt().isBefore(attempt.submittedAt()), "Native publication predates submission");
         if (pendingClosure && !reconciliation) {
             Pair actual = awaitPendingClosure(attempt, new Pair(before, after), fixedDeadline,
-                    deadline -> observeAfter(command, deadline, actualHeld));
+                    deadline -> observeAfter(command, deadline, actualHeld,attempt.submittedAt()));
             after = actual.after();
         }
         return new org.xar.ck3.control.application.effects.family.FamilySendObservation.OriginalFrames(before, after);
