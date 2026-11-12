@@ -25,6 +25,11 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     private final ThreadLocal<LinkedHashMap<byte[], DriverStateSnapshot.Complete>> completeDrivers = new ThreadLocal<>();
     private final ThreadLocal<long[]> completeOriginalBytes = new ThreadLocal<>();
     private final ThreadLocal<java.util.Map.Entry<DriverStateSnapshot.Complete,java.util.List<OpportunityJson.Value>>> projectedHistory = new ThreadLocal<>();
+    // Cross-driver row memo: bounded by entry count and key bytes, scoped to the current owner/session.
+    private static final int MAX_ROW_MEMO_ENTRIES = 1024;
+    private static final long MAX_ROW_MEMO_KEY_BYTES = 16L * 1024 * 1024;
+    private final ThreadLocal<LinkedHashMap<Integer, java.util.Map.Entry<byte[], OpportunityJson.Obj>>> rowMemo = new ThreadLocal<>();
+    private final ThreadLocal<long[]> rowMemoKeyBytes = new ThreadLocal<>();
     // Diagnostics only. They never enable reuse, clear a cache, change a point, or supply authority.
     private static final java.util.concurrent.atomic.AtomicInteger REPLAY_DIAGNOSTIC_COMPLETIONS = new java.util.concurrent.atomic.AtomicInteger();
     private final ThreadLocal<long[]> replayDiagnostics = new ThreadLocal<>();
@@ -48,33 +53,37 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     /** The archive invokes this only after installing its actual same-thread Session scope. */
     public <T> T inCompleteDriverDecodeScope(Object actualOwner, ContinuityStorePort.Session session,
             ActionPorts.OutcomeArchive archive, ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
-        Objects.requireNonNull(operation); Objects.requireNonNull(archive);
+        try { Objects.requireNonNull(operation); Objects.requireNonNull(archive); }
+        catch (RuntimeException | Error failure) { projectedHistory.remove(); rowMemo.remove(); rowMemoKeyBytes.remove(); throw failure; }
         if (!scopedDriverDecode || actualOwner != driverOwner || driverOwnerGate == null) {
-            projectedHistory.remove();
+            projectedHistory.remove(); rowMemo.remove(); rowMemoKeyBytes.remove();
             throw new IllegalStateException("actual bound Driver decoder owner required");
         }
         try { checkedDriverOwner(Objects.requireNonNull(session)); }
-        catch (RuntimeException | Error failure) { projectedHistory.remove();throw failure; }
+        catch (RuntimeException | Error failure) { projectedHistory.remove(); rowMemo.remove(); rowMemoKeyBytes.remove(); throw failure; }
         var before = driverSession.get();
         if (before != null && before != session) {
             projectedHistory.remove();
+            rowMemo.remove(); rowMemoKeyBytes.remove();
             throw new IllegalStateException("different Sessions cannot share complete Driver DATA");
         }
         if (before != null) {
             replayDiagnostic(3);
             try { return operation.read(archive); }
-            catch (IOException | RuntimeException | Error failure) { projectedHistory.remove();throw failure; }
+            catch (IOException | RuntimeException | Error failure) { projectedHistory.remove(); rowMemo.remove(); rowMemoKeyBytes.remove(); throw failure; }
         }
         replayDiagnostic(1);
         var freshEntries = new LinkedHashMap<byte[], DriverStateSnapshot.Complete>(4, 0.75f, true);
         long[] freshBytes = new long[1];
         try {
             projectedHistory.remove();
+            rowMemo.remove(); rowMemoKeyBytes.remove();
             driverSession.set(session); completeDrivers.set(freshEntries); completeOriginalBytes.set(freshBytes);
             return operation.read(archive);
         } finally {
             replayDiagnostic(2);
             projectedHistory.remove();
+            rowMemo.remove(); rowMemoKeyBytes.remove();
             freshEntries.clear(); completeDrivers.remove(); completeOriginalBytes.remove(); driverSession.remove();
         }
     }
@@ -84,7 +93,7 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
         var entries = completeDrivers.get();
         if (!scopedDriverDecode || entries == null) return DriverStateSnapshot.decodeComplete(original);
         try { checkedDriverOwner(driverSession.get()); }
-        catch (RuntimeException | Error failure) { projectedHistory.remove();throw failure; }
+        catch (RuntimeException | Error failure) { projectedHistory.remove(); rowMemo.remove(); rowMemoKeyBytes.remove(); throw failure; }
         try {
             // Public entry never trusts a caller-owned array to stay unchanged during decode/keying.
             byte[] privateOriginal = Objects.requireNonNull(original).clone();
@@ -111,7 +120,7 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
             entries.put(privateOriginal, decoded); retained[0] += privateOriginal.length;
             return decoded;
         } catch (RuntimeException | Error failure) {
-            projectedHistory.remove();entries.clear(); completeOriginalBytes.get()[0] = 0; throw failure;
+            projectedHistory.remove();entries.clear(); completeOriginalBytes.get()[0] = 0; rowMemo.remove(); rowMemoKeyBytes.remove(); throw failure;
         }
     }
     /** Pure rows only. The existing private decoder map, never caller equality, qualifies same-scope reuse. */
@@ -125,14 +134,37 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
         }
         if (prior != null) return prior.getValue();
         try {
-            java.util.List<OpportunityJson.Value> rows=driver.commandHistory().stream()
-                    .map(row->(OpportunityJson.Value)DriverJson.object(row.originalRow().json(),DriverJson.MAX_NATIVE_BYTES)).toList();
-            if (eligible)projectedHistory.set(java.util.Map.entry(driver,rows));
+            java.util.List<OpportunityJson.Value> rows;
+            if (eligible) {
+                var memo = rowMemo.get();
+                if (memo == null) { memo = new LinkedHashMap<Integer, java.util.Map.Entry<byte[], OpportunityJson.Obj>>(16, 0.75f, true); rowMemo.set(memo); rowMemoKeyBytes.set(new long[1]); }
+                final java.util.LinkedHashMap<Integer, java.util.Map.Entry<byte[], OpportunityJson.Obj>> finalMemo = memo;
+                final long[] finalBytes = rowMemoKeyBytes.get();
+                rows = driver.commandHistory().stream().<OpportunityJson.Value>map(row -> {
+                    byte[] key = row.originalRow().json();
+                    int hash = Arrays.hashCode(key);
+                    var cached = finalMemo.get(hash);
+                    if (cached != null && Arrays.equals(cached.getKey(), key)) return cached.getValue();
+                    var parsed = DriverJson.object(key, DriverJson.MAX_NATIVE_BYTES);
+                    long replacingBytes = cached == null ? 0 : cached.getKey().length;
+                    long retainedBytes = finalBytes[0] - replacingBytes + key.length;
+                    if (key.length <= MAX_ROW_MEMO_KEY_BYTES
+                            && (cached != null || finalMemo.size() < MAX_ROW_MEMO_ENTRIES)
+                            && retainedBytes <= MAX_ROW_MEMO_KEY_BYTES) {
+                        finalMemo.put(hash, java.util.Map.entry(key.clone(), parsed));
+                        finalBytes[0] = retainedBytes;
+                    }
+                    return parsed;
+                }).toList();
+            } else {
+                rows = driver.commandHistory().stream().map(row -> (OpportunityJson.Value) DriverJson.object(row.originalRow().json(), DriverJson.MAX_NATIVE_BYTES)).toList();
+            }
+            if (eligible) projectedHistory.set(java.util.Map.entry(driver,rows));
             return rows;
-        } catch (RuntimeException | Error failure) { projectedHistory.remove();throw failure; }
+        } catch (RuntimeException | Error failure) { projectedHistory.remove(); rowMemo.remove(); rowMemoKeyBytes.remove(); throw failure; }
     }
     /** Failure cleanup only; it cannot supply a parsed row or alter the original decoder/owner scope. */
-    public void discardHistoryProjection() { projectedHistory.remove(); }
+    public void discardHistoryProjection() { projectedHistory.remove(); rowMemo.remove(); rowMemoKeyBytes.remove(); }
     /** Strict historical replay only. No complete result or additional input-key buffers are retained. */
     public DriverObservationAssembler.Result replayCompleteOriginals(org.xar.ck3.control.contracts.ExactRef manifestReference,
             org.xar.ck3.control.application.action.RawJson manifest, org.xar.ck3.control.application.action.RawJson fullDriver,
@@ -145,7 +177,7 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
             return DriverObservationEvidenceReader.replayOriginalsWithScopedDriverDecode(manifestReference,
                     manifest, fullDriver, framedNative, nativeReference, this);
         } catch (RuntimeException | Error failure) {
-            projectedHistory.remove();replayDiagnostic(27); throw failure;
+            projectedHistory.remove();rowMemo.remove();rowMemoKeyBytes.remove();replayDiagnostic(27); throw failure;
         }
     }
     /** Begin only at an outer planning caller; at most four normally completed rounds per Loader generation. */
