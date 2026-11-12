@@ -940,6 +940,7 @@ public final class SessionController {
                     if (stopRequested()) { run.terminal = Terminal.OPERATOR_STOP; break; }
                     break;
                 }
+                run.deferAfterSettledLifeIfBudgetInsufficient(receipt, checkpointsEnabled);
             }
             if (checkpointsEnabled && dirty) {
                 Ready fresh = run.ready(true);
@@ -1201,6 +1202,43 @@ public final class SessionController {
             var disposition=Objects.requireNonNull(measured(Phase.OUTCOME_CONSUMPTION,()->completion.afterPlanning(ready.request(),planned)),"actual planning completion disposition required");
             requireTime();
             return new PlannedRound(ready,planned,disposition);
+        }
+        void deferAfterSettledLifeIfBudgetInsufficient(ActionReceipt receipt, boolean checkpointsEnabled) {
+            if (!limits.optInEarlyRenew() || completedCount() >= limits.maximumTurns()
+                    || !checkpointsEnabled || terminalConstraint.isPresent() || pendingOnly || savedPair.isEmpty()
+                    || quarantined || localUnresolved || retired || cyclePending || journalUnknown || observedPendingAction
+                    || pendingReadParent.isPresent() || publicCheckpointUnknown.isPresent() || pendingUi.isPresent()
+                    || checkpointAdoptionDeferred || savingProof.isPresent() || !dirty
+                    || receipt.outcome() != ActionReceipt.Outcome.APPLIED_CONFIRMED || !receipt.settled()
+                    || !receipt.visibleGameplay() || !receipt.eligibleAdvance()
+                    || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())
+                    || !(receipt.state() instanceof ActionState.CompositeSettled settled)
+                    || !(settled.settlement() instanceof ActionState.Applied)
+                    || !settled.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)) return;
+            if (latest.isEmpty()) return;
+            Ready fresh = latest.orElseThrow();
+            var subject = fresh.request().before();
+            if (fresh.semanticEvidence().isEmpty() || !fresh.semanticEvidence().orElseThrow().frame().equals(subject)
+                    || fresh.checkpointEligibility() != CheckpointEligibility.SAFE
+                    || !fresh.request().sessionId().equals(identity.sessionId())
+                    || !sameLifeBudgetSubject(receipt.command().before(), subject)
+                    || subject.frame().identity().dateRaw().compareTo(receipt.command().before().frame().identity().dateRaw()) <= 0
+                    || fresh.request().observations().actionFacts().stream().anyMatch(fact -> fact.unresolved())) return;
+            var snapshot = fresh.request().observations().snapshot();
+            if (!(snapshot.get("paused") instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.Bool paused) || !paused.value()
+                    || !(snapshot.get("map_ready") instanceof org.xar.ck3.control.planning.opportunity.OpportunityJson.Bool mapReady) || !mapReady.value()) return;
+            var saved = savedPair.orElseThrow().frame();
+            var unsaved = subject.frame().identity().dateRaw().subtract(saved.frame().identity().dateRaw());
+            if (!sameLifeBudgetSubject(saved, subject) || unsaved.signum() < 0
+                    || unsaved.compareTo(BigInteger.valueOf(8_760)) >= 0) return;
+            requireTime();
+            if (stopRequested()) return; // The original loop retains its OPERATOR_STOP and SAVE ordering.
+            long remaining = untilNanos - clock.now().elapsedNanos();
+            if (remaining <= 0) { requireTime(); return; }
+            long reserve = retainedLifeBudgetReserveNanos(limits, subject);
+            if (remaining < reserve) throw new End(Terminal.WALL_TIMEOUT,
+                    "POST_SETTLE_LIFE_BUDGET_DEFERRED: remaining_nanos=" + remaining + "; reserve_nanos=" + reserve
+                    + "; completed original cycle retained; next batch must freshly observe and plan");
         }
         void deferUnissuedLifeIfBudgetInsufficient(Ready ready, ActionCommand selected, boolean checkpointsEnabled) {
             if (!checkpointsEnabled || terminalConstraint.isPresent() || pendingOnly

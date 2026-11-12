@@ -39,6 +39,8 @@ public final class RootOrdinaryWorkerLoop {
 
     public interface Control {
         boolean stopRequested();
+        /** Scheduling only: this owner will continue a clean early boundary with a fresh next batch. */
+        default boolean allowPostCycleBudgetRenewal() { return false; }
         void onBatchCompleted(BatchReport report, long nextBatchSequence) throws IOException, InterruptedException;
         /** Only the actual Root implementation opts in after its privately qualified canonical capture. */
         default boolean captureCleanPlanningWall(BatchReport report,long nextBatchSequence)throws IOException,InterruptedException {return false;}
@@ -96,11 +98,13 @@ public final class RootOrdinaryWorkerLoop {
                 break;
             }
 
+            boolean allowEarlyRenewal;
             try {
                 if (control.stopRequested()) {
                     stopReason = StopReason.OPERATOR_STOP;
                     break;
                 }
+                allowEarlyRenewal = sequence < Long.MAX_VALUE - 1 && control.allowPostCycleBudgetRenewal();
             } catch (RuntimeException e) {
                 stopReason = StopReason.TERMINAL_FAILURE;
                 failureDetail = Optional.of(e.toString());
@@ -114,7 +118,8 @@ public final class RootOrdinaryWorkerLoop {
                 configuration.wallTime,
                 configuration.readinessTimeout,
                 configuration.pollInterval,
-                configuration.checkpointEveryEligibleAdvances
+                configuration.checkpointEveryEligibleAdvances,
+                allowEarlyRenewal
             );
 
             BatchReport report;

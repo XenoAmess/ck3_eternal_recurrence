@@ -6,7 +6,7 @@ import org.xar.ck3.control.contracts.StrictJson;
 
 /** One finite batch on the already owned, persistent ordinary session. */
 public record BatchLimits(String batchId, int maximumTurns, Duration wallTime,
-        Duration readinessTimeout, Duration pollInterval, int checkpointEveryEligibleAdvances) {
+        Duration readinessTimeout, Duration pollInterval, int checkpointEveryEligibleAdvances, boolean optInEarlyRenew) {
     public BatchLimits {
         StrictJson.require(batchId != null && batchId.matches("[A-Za-z0-9][A-Za-z0-9._-]{0,127}"), "bounded unique batch ID required");
         StrictJson.require(maximumTurns >= 1 && maximumTurns <= 100_000, "finite positive ordinary turn bound required");
@@ -16,6 +16,10 @@ public record BatchLimits(String batchId, int maximumTurns, Duration wallTime,
         StrictJson.require(pollInterval.compareTo(readinessTimeout) <= 0, "poll interval exceeds readiness timeout");
         StrictJson.require(checkpointEveryEligibleAdvances >= 1 && checkpointEveryEligibleAdvances <= 100_000,
                 "finite positive checkpoint cadence required");
+    }
+    public BatchLimits(String batchId, int maximumTurns, Duration wallTime,
+            Duration readinessTimeout, Duration pollInterval, int checkpointEveryEligibleAdvances) {
+        this(batchId, maximumTurns, wallTime, readinessTimeout, pollInterval, checkpointEveryEligibleAdvances, false);
     }
     private static void positiveMillis(Duration value, long maximum, String label) {
         Objects.requireNonNull(value, label);

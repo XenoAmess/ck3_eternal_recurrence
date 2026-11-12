@@ -90,6 +90,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             var warmRunning = running;
             var control = new RootOrdinaryWorkerLoop.Control() {
                 @Override public boolean stopRequested() { return Files.exists(config.stopPath()); }
+                @Override public boolean allowPostCycleBudgetRenewal() { return true; }
                 @Override public void onBatchCompleted(BatchReport actual, long nextSequence) throws IOException {
                     var hint = org.xar.ck3.control.application.session.SessionController.retainLifeBudgetHint(actual, schedulingHints.get());
                     schedulingHints.set(hint);
