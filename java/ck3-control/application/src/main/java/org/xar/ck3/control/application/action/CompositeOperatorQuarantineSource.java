@@ -58,6 +58,21 @@ public final class CompositeOperatorQuarantineSource {
         if(!proof.requestSource().equals(requestRef)) {
             require(proposed.sequence()<=actualHead.state().sequence()&&request.priorRequests().contains(proof.requestSource()),"only explicitly retained prior operator requests may replay archived decisions");
             byte[] priorBytes=archive.loadMaterial(proof.requestMaterial()).bytes();var prior=CompositeOperatorQuarantineRequest.decode(priorBytes);
+            if(prior.lifeInterruption()) {
+                require(request.lifeInterruption()&&prior.machineId().equals(request.machineId())&&prior.game().equals(request.game())
+                        &&prior.episodeRunId().equals(request.episodeRunId())
+                        &&prior.expectedHeadSequence()<request.expectedHeadSequence()&&prior.issuedAt().isBefore(request.issuedAt())
+                        &&proposed.sequence()<=request.expectedHeadSequence()&&!prior.parentActionId().equals(request.parentActionId())
+                        &&request.priorRequests().containsAll(prior.priorRequests()),"prior Life replay requires an explicitly retained earlier same-owner decision and bounded ancestor set");
+                var priorOriginal=archive.loadReceipt(proof.originalReceipt());prior.requireParent(priorOriginal);
+                var configuredOriginal=archive.loadReceipt(request.originalReceipt());request.requireParent(configuredOriginal);
+                require(priorOriginal.command().source().equals(configuredOriginal.command().source()),"prior Life replay crossed the installed original operation source");
+                var priorSource=new CompositeOperatorQuarantineSource(proof.requestSource(),priorBytes,
+                        archive.loadMaterial(archive.materialReference(prior.authorizedBy().sha256(),prior.authorizedBy().bytes())).bytes(),
+                        request.game(),request.episodeRunId(),priorOriginal.command().operation(),
+                        org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock);
+                priorSource.verify(same,actualHead,proposed,archive);return;
+            }
             require(CompositeOperatorQuarantineRequest.SCOPE.equals(prior.scope())&&prior.priorRequests().isEmpty(),"prior request replay is limited to the original optional Sway decision");
             var priorSource=new CompositeOperatorQuarantineSource(proof.requestSource(),priorBytes,archive.loadMaterial(archive.materialReference(prior.authorizedBy().sha256(),prior.authorizedBy().bytes())).bytes(),request.game(),request.episodeRunId(),
                     org.xar.ck3.control.application.planning.sway.OrdinarySwayPolicy.OPERATION,org.xar.ck3.control.application.planning.sway.SwayOrdinaryComposite.HANDLER,clock);

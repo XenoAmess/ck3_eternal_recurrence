@@ -2016,11 +2016,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty()
                         || savedPendingLifeData(retained,unresolvedActions)
                         || savedIsolatedLifeData(retained,unresolvedActions)
+                        || savedCurrentCanonicalLifeData(retained,unresolvedActions)
                         || savedOperatorLifeHeadData(retained,unresolvedActions)
                         || savedUnretainedAppliedLifeData(retained,unresolvedActions)
                         || savedIsolatedCouncilData(retained,unresolvedActions)
                         || savedIsolatedSaveData(retained,unresolvedActions)
-                         || savedPendingEventCompletionData(retained,unresolvedActions) || savedIsolatedSwayData(retained,unresolvedActions)),
+                         || savedIsolatedEventData(retained,unresolvedActions)
+                          || savedPendingEventCompletionData(retained,unresolvedActions) || savedIsolatedSwayData(retained,unresolvedActions)),
                     "an absent restart capture requires its actual isolated CurrentMap or saved pending Life history");
         }
         public CleanBatchRestart capturedManifest() {
@@ -2067,6 +2069,27 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&command.source().equals(history.source())&&command.before().machineId().equals(owner.machineId())
                 &&command.before().game().equals(owner.game())&&command.sessionId().equals(owner.sessionId())
                 &&actual.bodySha256().equals(ActionCodec.bodySha256(command));
+    }
+
+    /** Current canonical UNKNOWN Life DATA: retain the verified ARM/ACKed-Unknown prefix for observation only. */
+    private static boolean savedCurrentCanonicalLifeData(SettledSameGameData history,java.util.List<ActionReceipt> isolated) {
+        if(!(history.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap)
+                ||history.cycleSemantic().isEmpty()||history.controller().savedPair().isEmpty()||isolated.size()!=1)return false;
+        var parent=isolated.getFirst();var command=parent.command();var owner=history.controller().owner();
+        if(parent.sequence()!=history.canonicalSequence()||!history.settledActions().contains(parent)
+                ||!readOnlyLifeRecoveryRoot(history.settledActions()).filter(parent::equals).isPresent()
+                ||!command.source().equals(history.source())||!command.before().machineId().equals(owner.machineId())
+                ||!command.before().game().equals(owner.game())||!command.sessionId().equals(owner.sessionId())
+                ||!parent.bodySha256().equals(ActionCodec.bodySha256(command)))return false;
+        var before=command.before().frame();var semantic=history.cycleSemantic().orElseThrow().frame().frame();
+        var latest=history.latestObservedFrame().frame();
+        var plan=org.xar.ck3.control.application.advance.AdvancePlan.decode(command);
+        return plan.startingDateRaw().equals(before.identity().dateRaw())
+                &&before.identity().dateRaw().equals(semantic.identity().dateRaw())
+                &&before.identity().dateRaw().equals(latest.identity().dateRaw())
+                &&before.identity().player().equals(semantic.identity().player())
+                &&before.identity().player().equals(latest.identity().player())
+                &&before.episodeRunId().equals(semantic.episodeRunId())&&before.episodeRunId().equals(latest.episodeRunId());
     }
 
     /** Current canonical Life head DATA after a read-only child/parent observation; no synthetic restart capture or admission. */
@@ -2285,6 +2308,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     && retained.entry().origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
                     && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty();
             StrictJson.require(captured.get() != null || initialCurrentMap || savedIsolatedLifeData(retained,isolated)
+                    || savedCurrentCanonicalLifeData(retained,isolated)
                     || savedIsolatedCouncilData(retained,isolated) || savedIsolatedSaveData(retained,isolated)
                     || savedIsolatedEventData(retained,isolated) || savedPendingEventCompletionData(retained,isolated) || savedIsolatedSwayData(retained,isolated)
                     || savedUnretainedAppliedLifeData(retained,isolated),
