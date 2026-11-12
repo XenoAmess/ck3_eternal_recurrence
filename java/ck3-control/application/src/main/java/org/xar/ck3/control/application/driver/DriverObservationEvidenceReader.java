@@ -117,7 +117,7 @@ public final class DriverObservationEvidenceReader {
         // This private copy cannot change between framing/hash checks and the constructed immutable frame.
         var actual=nativeFrame(row,framedNative.clone());
         var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
-        return new DriverObservationAssembler().assemble(actual,facts,nativeReference);
+        return new DriverObservationAssembler().assembleReplayedOriginals(new ValidatedOriginals(actual,facts,nativeReference,null));
     }
 
     /** Same captured rebuild only: check the manifest once before the original Driver read.
@@ -140,7 +140,7 @@ public final class DriverObservationEvidenceReader {
         var captured=capturedNativeFrame(row,framedNative.clone());
         var actual=captured.actual();
         var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
-        return new DriverObservationAssembler().assembleWithNativePacket(actual,facts,nativeReference,captured.packetInput());
+        return new DriverObservationAssembler().assembleReplayedOriginals(new ValidatedOriginals(actual,facts,nativeReference,captured.packetInput()));
     }
 
     /** Pure full projection also preserves death/unavailable scopes; the caller retains its production assembler. */

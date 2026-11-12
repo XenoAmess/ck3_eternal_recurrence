@@ -161,6 +161,17 @@ public final class DriverObservationAssembler {
             return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
         }
     }
+    /** Strict public replay keeps its first projection inside the original Incomplete catch. */
+    Result assembleReplayedOriginals(DriverObservationEvidenceReader.ValidatedOriginals parsed) {
+        Objects.requireNonNull(parsed);
+        Objects.requireNonNull(parsed.actual); Objects.requireNonNull(parsed.evidence);
+        try {
+            FullSnapshot full=projectFullWithNativePacket(parsed.actual,parsed.facts,parsed.evidence,parsed.packetInput);
+            return completeValidatedIdentity(full);
+        } catch (IllegalArgumentException | ArithmeticException failure) {
+            return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
+        }
+    }
     private Complete completeValidatedIdentity(FullSnapshot full) {
         var actual=full.actual();var facts=full.facts();var evidence=full.originalEvidence();
         OpportunityJson.Obj semantic=full.semantic();
