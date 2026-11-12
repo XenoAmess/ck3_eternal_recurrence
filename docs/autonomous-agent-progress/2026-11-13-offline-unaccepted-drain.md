@@ -1,0 +1,19 @@
+# 停止捕获时真实重试未接受的离线分析原件
+
+实际batch58／59先报告offline analysis enqueue失败：bounded offline queue is full。c606委托于22:45:32.0150019Z以ContractViolationException结束，原clean restart drain Guard拒绝捕获；这是WORKER_FAILED／wrapper exit4，不是clean END，也没有新的clean ticket。原canonical1672为BATCH_DEFERRED／C70 pending=null，游戏动作均已APPLIED。原动作、失败、停止标记、账本和旧ticket1619保留，没有用队列完成文件伪造Java成功或后继捕获。
+
+源因单元：Controller enqueue608先保留精确captured BatchRequest，Worker enqueue196队列满在publish204之前抛出，因此该work尚未成为worker磁盘request或accepted ticket。旧drain只join已接受futures并枚举port.retainedOriginals，漏了自己retainedAnalysisInputs，却在最终四项Guard要求它为空。这条可实际复现的缺口独立于磁盘terminal是否存在；只看空pending不能认为queue已clean。
+
+Source75保留原accepted futures先join／reap，然后将Controller仍未接受的原件与port durable originals严格合并。所有同batchId必须原件完全一致，先校完整union和原4096 unique上界，再对任何新work调用原enqueue／await／reap，始终使用调用者原deadline。真正已验证completedAnalysisIds只能移除其matching local copy；失败future、超时、retained失败及lastReport failed IDs继续拒绝clean。原四项Guard逐字保留，未改queue4／retention128／Controller backlog32，不删除active或durable job、不假completion、capture或许可。
+
+candidate基于完整qualified Source74，同一Controller叶包含两项修复。actual owner02单TU19类首编0、owner25单Test9类首编0，完整三项首次3P/0FES；formal同源单TU19类独立首编0，同Test9独立三项首次全P，23:26:15.763140Z释放。测试用真实EpisodeIncidentJournal capture/scan和immutable temp refs；file-backed受控OfflinePort在ACK前CREATE_NEW工作文件，真实review／knowledge原件先于CompletableFuture成功。覆盖队列满且durables为空后真实drain同对象一次／后继不重复、全union冲突先拒零enqueue、已接受future先join、异常future与5ms真实timeout不取消原future、真实failed-last-report仍拒。不是实际Worker executor、私Root cleanCapture或现场HCR资格。
+
+前一owner源只typing成功、未JUnit或采用；静态审查随后将逐项合并改为全union预验证，避免先enqueue／移除local才遇后面的冲突durable。最终回归绑定owner02，旧源码／编译原件保留。没有为了通过测试清队列、减Clock或裁Guard。
+
+Models独立source与小metadata审计发现相同遗漏：fixedroot37文件／9个durable request，7字段binding同current config44；报告58／59 pending并集6个已有complete metadata，最晚mtime早于END，但这不证明Javafuture成功或四个私字段全空。11个incident batch与9个worker request之间有2个精确名字差集，未读取Driver／SEM／analysis result大体，也未据此声称唯一现场根因。单次完整coding响应148424输入／1289输出tokens、26.546295秒HTTP；其候选漏strict union和已完成local／32-cap处理，未编未采用。生产由owner在该响应END前独立落稿，0model hunk，source/metadata共同诊断信用单列，没有第二HTTP。
+
+具名来源根 `D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/offline-queue-drain-source75`：SOURCE-READY75-02.json（3008B／470f2067…）、SOURCE-READY75-FORMAL.json（3709B／1883e697…）、revision02规范化patch。最终source143839B／SHA256 `88287a8b17754d7a918b9cba1c203a10100ebd5739f5d1d868f97c758a9a8895`，与Source74只有drain body差；19类所有field／method metadata与API保持，无新type／field／method／schema，结构相同不自动授HCR。
+
+Native原件根 `D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01`：offline-queue75-compile02、whole3-junit01、formal-compile01／formal-whole3-junit01；SOURCE75-ACTUAL-FORMAL-WHOLE3-AND-198JVM-FINAL01.json（11280B／ea0fbfc9…）保完整XML／ACTUAL／POST输入未变／CLOSE。actual和formal资格独立，事后同字节不删两次真实JVM成本；不扩大旧suite。
+
+后到恢复属于另一层：Runtime沿已有allsettled BATCH_DEFERRED saved-history路径，仅采用Source74，于23:24:08.8992569Z同host真实LOOP／batch60／C70 pending=null，510observed／493eligible／373saved。它没有补授此前failed drain或新clean ticket，Source75尚未copy／GET。新P0软件与正常Git不阻此成熟恢复；未来75原地instrumentation或自然边界采用、真实drain与capture须各有独立回执，不为已恢复worker盲重启，不重发动作或刷新旧deadline。新增SAVE仍0，不报有限秒／保存日或速度达标。

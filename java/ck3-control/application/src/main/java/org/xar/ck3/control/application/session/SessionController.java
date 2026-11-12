@@ -276,13 +276,22 @@ public final class SessionController {
             requireCleanRestartIdle();
             for(var ticket:List.copyOf(pendingAnalyses.values())) awaitAnalysisForRestart(ticket,deadline);
             reapAnalyses();
-            List<BatchRequest> originals=List.copyOf(Objects.requireNonNull(analyses.retainedOriginals()));
-            StrictJson.require(originals.size()<=4096,"bounded durable offline originals required before clean restart");
-            var seen=new LinkedHashMap<String,BatchRequest>();
-            for(BatchRequest work:originals) {
-                BatchRequest duplicate=seen.putIfAbsent(work.batchId(),work);
+            List<BatchRequest> durable=List.copyOf(Objects.requireNonNull(analyses.retainedOriginals()));
+            StrictJson.require(durable.size()<=4096,"bounded durable offline originals required before clean restart");
+            // A full executor refuses before publishing a durable work request. Keep those exact
+            // Controller-owned originals in this drain as well; they are not successful admissions.
+            var originals=new LinkedHashMap<String,BatchRequest>(retainedAnalysisInputs);
+            for(BatchRequest work:durable) {
+                BatchRequest duplicate=originals.putIfAbsent(work.batchId(),work);
                 StrictJson.require(duplicate==null||duplicate.equals(work),"durable offline batch ID changed captured originals");
-                if(duplicate!=null||completedAnalysisIds.contains(work.batchId()))continue;
+                StrictJson.require(originals.size()<=4096,"bounded durable offline originals required before clean restart");
+            }
+            // Validate the complete merged identity set before accepting any previously refused work.
+            for(BatchRequest work:originals.values()) {
+                if(completedAnalysisIds.contains(work.batchId())) {
+                    // Only an original already validated by reapAnalyses may remove its matching local copy.
+                    retainedAnalysisInputs.remove(work.batchId(),work);continue;
+                }
                 if(!retainedAnalysisInputs.containsKey(work.batchId())&&retainedAnalysisInputs.size()>=32)
                     throw new IOException("bounded unaccepted offline backlog retains its original inputs for a later batch");
                 mergeAnalysisInput(retainedAnalysisInputs,work);
