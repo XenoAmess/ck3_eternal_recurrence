@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.CharacterCodingException;
 
 /** Sole raw-token parser for complete native, semantic and Driver material; StrictJson stays a receipt lane. */
 public final class FullJsonTree {
@@ -23,6 +24,12 @@ public final class FullJsonTree {
             .streamReadConstraints(StreamReadConstraints.builder().maxNestingDepth(64)
                     .maxStringLength(MAXIMUM_DRIVER_BYTES).maxNumberLength(MAXIMUM_DRIVER_BYTES).build()).build();
     private static final ObjectMapper JSON = new ObjectMapper(FACTORY);
+    private static final JsonFactory BYTE_FACTORY = JsonFactory.builder()
+            .enable(StreamReadFeature.STRICT_DUPLICATE_DETECTION)
+            .streamReadConstraints(StreamReadConstraints.builder().maxNestingDepth(64)
+                    .maxStringLength(MAXIMUM_DRIVER_BYTES).maxNumberLength(MAXIMUM_DRIVER_BYTES).build())
+            .disable(JsonFactory.Feature.CHARSET_DETECTION)
+            .build();
     private FullJsonTree() { }
 
     /** No field normalization is applied. Decimal tokens, integer tokens, missing and null stay distinct. */
@@ -40,9 +47,56 @@ public final class FullJsonTree {
                     + (original == null ? "null" : original.length) + " max=" + maximumBytes
                     + " callers=" + frames);
         }
+        byte[] snapshot = original.clone();
+        strictUtf8Scan(snapshot);
+        if (snapshot.length >= 3 && snapshot[0] == (byte) 0xEF && snapshot[1] == (byte) 0xBB && snapshot[2] == (byte) 0xBF) {
+            return legacyParse(snapshot);
+        }
+        try (JsonParser parser = BYTE_FACTORY.createParser(snapshot)) {
+            StrictJson.require(parser.nextToken() != null, "complete JSON value required");
+            JsonNode result = read(parser, 0);
+            StrictJson.require(parser.nextToken() == null, "trailing complete JSON rejected");
+            return result;
+        } catch (IOException | RuntimeException failure) {
+            return legacyParse(snapshot);
+        }
+    }
+
+    private static void strictUtf8Scan(byte[] input) {
+        try {
+            var decoder = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT);
+            var inputBuffer = ByteBuffer.wrap(input);
+            var scratch = CharBuffer.allocate(8192);
+            while (true) {
+                var result = decoder.decode(inputBuffer, scratch, true);
+                if (result.isOverflow()) {
+                    scratch.clear();
+                } else if (result.isUnderflow()) {
+                    break;
+                } else {
+                    result.throwException();
+                }
+            }
+            while (true) {
+                var result = decoder.flush(scratch);
+                if (result.isOverflow()) {
+                    scratch.clear();
+                } else if (result.isUnderflow()) {
+                    break;
+                } else {
+                    result.throwException();
+                }
+            }
+            } catch (CharacterCodingException failure) {
+            throw new IllegalArgumentException("invalid complete JSON material", failure);
+        }
+    }
+
+    private static JsonNode legacyParse(byte[] input) {
         try {
             CharBuffer decoded = StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT)
-                    .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(original));
+                    .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(input));
             // Match the original String API's short fixed-buffer parser route; keep its large Reader route.
             try (JsonParser parser = decoded.hasArray() && decoded.remaining() <= 0x8000
                     ? FACTORY.createParser(decoded.array(), decoded.arrayOffset() + decoded.position(), decoded.remaining())
