@@ -13,3 +13,7 @@ actual 三 TU／11类和 formal 三 TU／14类分别首次编译0。actual 新 S
 首 Test 的两处 checked IOException 不符合原 Function callback，修正版只作 unchecked 包装并检查原 cause，生产 callback 签名未扩。原编译RED保留；一个已被前置合格类遮蔽的旧 mutable C alias预检拒绝为0JVM，未当源错误或追绿。两次模型候选均拒收、零hunk采用；生产由owner接管手写，独立helper提供真实归档测试。
 
 该资格只证明所调用的软件边界，不授线上 scope 命中比例、实际装载或墙钟收益；正式发表不是现场采用前置。新增确认保存日与10秒目标继续按独立实际连续窗口验收，不用样本、软件通过或累计旧保存日替代。
+
+后到实际切点（2026-11-12）：旧代码年度 SAVE 原1230/1231经1233首次稳定观察UNKNOWN、同ID1234自然SETTLED，1235于11:31:04.959373700Z实际SAVE_CONFIRMED，新365物理日保存、累计373saved／356eligible，旧17日不补eligible。该保存发生候选Source62采用前；主窗SAVE71（11月11日16:17:10.968224200Z）→1235全部69233.9911495秒／365新增保存日＝189.6821675328767秒／日，包含失败、恢复、准备、采样、STOP与等待，未达10秒。
+
+随后Runtime63正常fullreload实际采用Source62三叶，11:36:52.910991Z LOOP；1257于11:52:57.579010600Z完成首新C52，Root／Controller／材料RETAIN／SETTLE完整通过，373→380新增7eligible，当前380observed／363eligible／373saved。postload964.6680196秒／7＝137.8097170857143秒／eligible日；完整STOP→C52为2425.7568286秒，混合旧代码8日与新代码7日，不能作为候选收益。postload新增SAVE_CONFIRMED为0，不报有限保存秒／日，也没有私cachehit计数／严格因果A/B。原薄件在Runtime attempt63：CYCLE52-FIRST-POSTLOAD-CONTINUOUS-METRIC-CUT01.json2497B／`3ff4c49eb23b9d12b33a48df3733144d57f50897b78b5369865376e1af06f0a8`；MAIN-SAVE71-TO1235-CONTINUOUS-WINDOW01.json1811B／`4c777b77c88a278f22fe286a2da81760644de764c28073478e92438bc0e2b77d`。本次文档只读消费既有原件，0新Game查询／GET／录制／SAVE。
