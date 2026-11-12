@@ -110,14 +110,19 @@ public final class DriverObservationEvidenceReader {
     public static DriverObservationAssembler.Result replayOriginalsWithScopedDriverDecode(ExactRef manifestReference,RawJson manifest,
             RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,
             org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
-        Objects.requireNonNull(fullDriver);
-        var row=checkedManifest(manifestReference,manifest);
-        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
-                "bounded archived original native frame required");
-        // This private copy cannot change between framing/hash checks and the constructed immutable frame.
-        var actual=nativeFrame(row,framedNative.clone());
-        var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
-        return new DriverObservationAssembler().assembleReplayedOriginals(new ValidatedOriginals(actual,facts,nativeReference,null));
+        try {
+            Objects.requireNonNull(fullDriver);
+            var row=checkedManifest(manifestReference,manifest);
+            StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                    "bounded archived original native frame required");
+            // This private copy cannot change between framing/hash checks and the constructed immutable frame.
+            var actual=nativeFrame(row,framedNative.clone());
+            var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
+            return new DriverObservationAssembler().assembleReplayedOriginals(new ValidatedOriginals(actual,facts,nativeReference,null,actualDecoder));
+            } catch (RuntimeException | Error failure) {
+            if (actualDecoder != null) actualDecoder.discardHistoryProjection();
+            throw failure;
+        }
     }
 
     /** Same captured rebuild only: check the manifest once before the original Driver read.
@@ -155,13 +160,18 @@ public final class DriverObservationEvidenceReader {
             RawJson manifest,RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,
             DriverObservationAssembler actualAssembler,
             org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
-        Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
-        var row=checkedManifest(manifestReference,manifest);
-        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
-                "bounded archived original native frame required");
-        var actual=nativeFrame(row,framedNative.clone());
-        var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
-        return actualAssembler.projectFull(actual,facts,nativeReference);
+        try {
+            Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
+            var row=checkedManifest(manifestReference,manifest);
+            StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                    "bounded archived original native frame required");
+            var actual=nativeFrame(row,framedNative.clone());
+            var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
+            return actualAssembler.projectValidatedOriginals(new ValidatedOriginals(actual,facts,nativeReference,null,actualDecoder));
+            } catch (RuntimeException | Error failure) {
+            if (actualDecoder != null) actualDecoder.discardHistoryProjection();
+            throw failure;
+        }
     }
     /** Byte-only Loader route. Initial full projection errors remain direct; late identity gaps remain Incomplete. */
     public static DriverObservationAssembler.Result assembleOriginals(ExactRef manifestReference,RawJson manifest,
@@ -174,17 +184,22 @@ public final class DriverObservationEvidenceReader {
             RawJson manifest,RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,
             DriverObservationAssembler actualAssembler,
             org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
-        Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
-        var row=checkedManifest(manifestReference,manifest);
-        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
-                "bounded archived original native frame required");
-        var captured=capturedNativeFrame(row,framedNative.clone());
         try {
-            var actual=captured.actual();
-            var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
-            return actualAssembler.assembleOriginalsWithNativePacket(actual,facts,nativeReference,captured.packetInput());
-        } finally {
-            captured.packetInput().clear();
+            Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
+            var row=checkedManifest(manifestReference,manifest);
+            StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                    "bounded archived original native frame required");
+            var captured=capturedNativeFrame(row,framedNative.clone());
+            try {
+                var actual=captured.actual();
+                var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
+                return actualAssembler.assembleOriginalsWithNativePacket(actual,facts,nativeReference,captured.packetInput());
+            } finally {
+                captured.packetInput().clear();
+            }
+            } catch (RuntimeException | Error failure) {
+            if (actualDecoder != null) actualDecoder.discardHistoryProjection();
+            throw failure;
         }
     }
     /** Nominal same-call parser output; only this strict Reader can construct or retain its internal packet input. */
@@ -193,9 +208,14 @@ public final class DriverObservationEvidenceReader {
         final DriverObservationFacts facts;
         final ExactRef evidence;
         final NativePacketInput packetInput;
+        final org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder;
         private ValidatedOriginals(NativeObservationPort.ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,
                 NativePacketInput packetInput) {
-            this.actual=actual;this.facts=facts;this.evidence=evidence;this.packetInput=packetInput;
+            this(actual,facts,evidence,packetInput,null);
+        }
+        private ValidatedOriginals(NativeObservationPort.ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,
+                NativePacketInput packetInput,org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
+            this.actual=actual;this.facts=facts;this.evidence=evidence;this.packetInput=packetInput;this.actualDecoder=actualDecoder;
         }
     }
     /** Raw-byte Loader path only; existing same-call packet parsing and strict Driver decoding remain the issuers. */
@@ -203,17 +223,22 @@ public final class DriverObservationEvidenceReader {
             RawJson manifest,RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,
             DriverObservationAssembler actualAssembler,
             org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
-        Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
-        var row=checkedManifest(manifestReference,manifest);
-        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
-                "bounded archived original native frame required");
-        var captured=capturedNativeFrame(row,framedNative.clone());
         try {
-            var actual=captured.actual();
-            var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
-            return actualAssembler.assembleValidatedOriginals(new ValidatedOriginals(actual,facts,nativeReference,captured.packetInput()));
-        } finally {
-            captured.packetInput().clear();
+            Objects.requireNonNull(fullDriver);Objects.requireNonNull(actualAssembler);
+            var row=checkedManifest(manifestReference,manifest);
+            StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                    "bounded archived original native frame required");
+            var captured=capturedNativeFrame(row,framedNative.clone());
+            try {
+                var actual=captured.actual();
+                var facts=replayFacts(manifestReference,row,fullDriver,actual,actualDecoder);
+                return actualAssembler.assembleValidatedOriginals(new ValidatedOriginals(actual,facts,nativeReference,captured.packetInput(),actualDecoder));
+            } finally {
+                captured.packetInput().clear();
+            }
+            } catch (RuntimeException | Error failure) {
+            if (actualDecoder != null) actualDecoder.discardHistoryProjection();
+            throw failure;
         }
     }
     private static DriverObservationFacts replayFacts(ExactRef manifestReference,OpportunityJson.Obj row,

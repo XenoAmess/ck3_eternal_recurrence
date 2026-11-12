@@ -154,10 +154,11 @@ public final class DriverObservationAssembler {
     Result assembleValidatedOriginals(DriverObservationEvidenceReader.ValidatedOriginals parsed) {
         Objects.requireNonNull(parsed);
         // Reuse the existing private packet producer and preserve direct first-projection failures.
-        FullSnapshot full=projectFullWithNativePacket(parsed.actual,parsed.facts,parsed.evidence,parsed.packetInput);
+        FullSnapshot full=projectValidatedOriginals(parsed);
         try {
             return completeValidatedIdentity(full);
         } catch (IllegalArgumentException | ArithmeticException failure) {
+            if (parsed.actualDecoder != null) parsed.actualDecoder.discardHistoryProjection();
             return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
         }
     }
@@ -166,9 +167,10 @@ public final class DriverObservationAssembler {
         Objects.requireNonNull(parsed);
         Objects.requireNonNull(parsed.actual); Objects.requireNonNull(parsed.evidence);
         try {
-            FullSnapshot full=projectFullWithNativePacket(parsed.actual,parsed.facts,parsed.evidence,parsed.packetInput);
+            FullSnapshot full=projectValidatedOriginals(parsed);
             return completeValidatedIdentity(full);
         } catch (IllegalArgumentException | ArithmeticException failure) {
+            if (parsed.actualDecoder != null) parsed.actualDecoder.discardHistoryProjection();
             return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
         }
     }
@@ -195,6 +197,10 @@ public final class DriverObservationAssembler {
         } finally {
             if(previous==null)VERIFIED_PROJECTION.remove();else VERIFIED_PROJECTION.set(previous);
         }
+    }
+    FullSnapshot projectValidatedOriginals(DriverObservationEvidenceReader.ValidatedOriginals parsed) {
+        Objects.requireNonNull(parsed);
+        return projectFullWithNativePacket(parsed.actual,parsed.facts,parsed.evidence,parsed.packetInput,parsed.actualDecoder);
     }
     public FullSnapshot projectFull(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence) {
             Objects.requireNonNull(actual);Objects.requireNonNull(facts);Objects.requireNonNull(evidence);
@@ -287,6 +293,12 @@ public final class DriverObservationAssembler {
 
     private FullSnapshot projectFullWithNativePacket(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,
             DriverObservationEvidenceReader.NativePacketInput packetInput) {
+        return projectFullWithNativePacket(actual,facts,evidence,packetInput,null);
+    }
+    private FullSnapshot projectFullWithNativePacket(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,
+            DriverObservationEvidenceReader.NativePacketInput packetInput,
+            org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader actualDecoder) {
+        try {
             Objects.requireNonNull(actual);Objects.requireNonNull(facts);Objects.requireNonNull(evidence);
             StrictJson.require(actual.session().equals(facts.transport()) && actual.snapshotId().equals(facts.snapshotId())
                     && actual.nativeRevision().equals(facts.nativeRevision())
@@ -338,8 +350,10 @@ public final class DriverObservationAssembler {
             put(fields,"episode_character_id",new OpportunityJson.IntegerValue(session.actorId()));
             StrictJson.require(!state.members().containsKey("java_driver_facts_evidence"),"native packet cannot supply the Java Driver evidence field");
             fields.put("java_driver_facts_evidence",DriverObservationEvidenceReader.reference(facts.semanticFactsEvidence()));
-            fields.put("native_command_history",new OpportunityJson.Arr(facts.driver().commandHistory().stream()
-                    .map(row -> (OpportunityJson.Value) DriverJson.object(row.originalRow().json(), DriverJson.MAX_NATIVE_BYTES)).toList()));
+            fields.put("native_command_history",new OpportunityJson.Arr(actualDecoder == null
+                    ? facts.driver().commandHistory().stream()
+                        .map(row -> (OpportunityJson.Value) DriverJson.object(row.originalRow().json(), DriverJson.MAX_NATIVE_BYTES)).toList()
+                    : actualDecoder.projectOwnedHistoryRows(facts.driver())));
             if(facts.observationVersion()!=NATIVE_CAMPAIGN_OBSERVATION_VERSION)retain(fields,"succession_lifecycle",facts.driver().successionLifecycle());
             retain(fields,"campaign_goal",facts.driver().campaignGoal());
             retain(fields,"native_rollback_war_failure",facts.driver().rollbackWarFailure());
@@ -361,6 +375,10 @@ public final class DriverObservationAssembler {
             OpportunityJson.object(semantic.get("diagnostics"), "diagnostics");
             OpportunityJson.integer(semantic.get("date_raw"),"date_raw");
             return new FullSnapshot(actual,facts,semantic,evidence,bindingSha256(semantic));
+            } catch (RuntimeException | Error failure) {
+            if (actualDecoder != null) actualDecoder.discardHistoryProjection();
+            throw failure;
+        }
     }
 
     private static OpportunityJson.Obj originalNativeStateWithNativePacket(ObservedFrame actual,

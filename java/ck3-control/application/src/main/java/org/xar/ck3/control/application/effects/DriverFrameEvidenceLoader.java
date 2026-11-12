@@ -10,6 +10,8 @@ import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler;
 import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
+import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** Pure replay of the actual native packet plus the complete original Driver, using the sole production assembler. */
@@ -22,6 +24,7 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     private final ThreadLocal<ContinuityStorePort.Session> driverSession = new ThreadLocal<>();
     private final ThreadLocal<LinkedHashMap<byte[], DriverStateSnapshot.Complete>> completeDrivers = new ThreadLocal<>();
     private final ThreadLocal<long[]> completeOriginalBytes = new ThreadLocal<>();
+    private final ThreadLocal<java.util.Map.Entry<DriverStateSnapshot.Complete,java.util.List<OpportunityJson.Value>>> projectedHistory = new ThreadLocal<>();
     // Diagnostics only. They never enable reuse, clear a cache, change a point, or supply authority.
     private static final java.util.concurrent.atomic.AtomicInteger REPLAY_DIAGNOSTIC_COMPLETIONS = new java.util.concurrent.atomic.AtomicInteger();
     private final ThreadLocal<long[]> replayDiagnostics = new ThreadLocal<>();
@@ -46,21 +49,32 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     public <T> T inCompleteDriverDecodeScope(Object actualOwner, ContinuityStorePort.Session session,
             ActionPorts.OutcomeArchive archive, ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
         Objects.requireNonNull(operation); Objects.requireNonNull(archive);
-        if (!scopedDriverDecode || actualOwner != driverOwner || driverOwnerGate == null)
+        if (!scopedDriverDecode || actualOwner != driverOwner || driverOwnerGate == null) {
+            projectedHistory.remove();
             throw new IllegalStateException("actual bound Driver decoder owner required");
-        checkedDriverOwner(Objects.requireNonNull(session));
+        }
+        try { checkedDriverOwner(Objects.requireNonNull(session)); }
+        catch (RuntimeException | Error failure) { projectedHistory.remove();throw failure; }
         var before = driverSession.get();
-        if (before != null && before != session)
+        if (before != null && before != session) {
+            projectedHistory.remove();
             throw new IllegalStateException("different Sessions cannot share complete Driver DATA");
-        if (before != null) { replayDiagnostic(3); return operation.read(archive); }
+        }
+        if (before != null) {
+            replayDiagnostic(3);
+            try { return operation.read(archive); }
+            catch (IOException | RuntimeException | Error failure) { projectedHistory.remove();throw failure; }
+        }
         replayDiagnostic(1);
         var freshEntries = new LinkedHashMap<byte[], DriverStateSnapshot.Complete>(4, 0.75f, true);
         long[] freshBytes = new long[1];
         try {
+            projectedHistory.remove();
             driverSession.set(session); completeDrivers.set(freshEntries); completeOriginalBytes.set(freshBytes);
             return operation.read(archive);
         } finally {
             replayDiagnostic(2);
+            projectedHistory.remove();
             freshEntries.clear(); completeDrivers.remove(); completeOriginalBytes.remove(); driverSession.remove();
         }
     }
@@ -69,28 +83,56 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
     public DriverStateSnapshot.Complete decodeCompleteDriverBytes(byte[] original) {
         var entries = completeDrivers.get();
         if (!scopedDriverDecode || entries == null) return DriverStateSnapshot.decodeComplete(original);
-        checkedDriverOwner(driverSession.get());
+        try { checkedDriverOwner(driverSession.get()); }
+        catch (RuntimeException | Error failure) { projectedHistory.remove();throw failure; }
         try {
             // Public entry never trusts a caller-owned array to stay unchanged during decode/keying.
             byte[] privateOriginal = Objects.requireNonNull(original).clone();
             byte[] matching = null;
             for (byte[] key : entries.keySet()) if (Arrays.equals(key, privateOriginal)) { matching = key; break; }
-            if (matching != null) return entries.get(matching);
+            if (matching != null) {
+                var decoded=entries.get(matching);
+                var prior=projectedHistory.get();
+                if (prior != null && prior.getKey() != decoded) projectedHistory.remove();
+                return decoded;
+            }
+            projectedHistory.remove();
             DriverStateSnapshot.Complete decoded = DriverStateSnapshot.decodeComplete(privateOriginal);
             if (privateOriginal.length > MAX_COMPLETE_ORIGINAL_BYTES) return decoded;
             long[] retained = completeOriginalBytes.get();
             while (!entries.isEmpty() && (entries.size() >= MAX_COMPLETE_ENTRIES
                     || retained[0] + privateOriginal.length > MAX_COMPLETE_ORIGINAL_BYTES)) {
                 var oldest = entries.entrySet().iterator(); var removed = oldest.next();
+                var prior=projectedHistory.get();
+                if (prior != null && prior.getKey() == removed.getValue()) projectedHistory.remove();
                 retained[0] -= removed.getKey().length; oldest.remove();
             }
             // The map never exposes or changes any private pre-decode cloned byte-array key.
             entries.put(privateOriginal, decoded); retained[0] += privateOriginal.length;
             return decoded;
         } catch (RuntimeException | Error failure) {
-            entries.clear(); completeOriginalBytes.get()[0] = 0; throw failure;
+            projectedHistory.remove();entries.clear(); completeOriginalBytes.get()[0] = 0; throw failure;
         }
     }
+    /** Pure rows only. The existing private decoder map, never caller equality, qualifies same-scope reuse. */
+    public java.util.List<OpportunityJson.Value> projectOwnedHistoryRows(DriverStateSnapshot.Complete driver) {
+        var entries=completeDrivers.get();
+        boolean eligible=scopedDriverDecode&&driverSession.get()!=null&&entries!=null
+                &&entries.values().stream().anyMatch(decoded->decoded==driver);
+        var prior=projectedHistory.get();
+        if (prior != null && (!eligible || prior.getKey() != driver)) {
+            projectedHistory.remove();prior=null;
+        }
+        if (prior != null) return prior.getValue();
+        try {
+            java.util.List<OpportunityJson.Value> rows=driver.commandHistory().stream()
+                    .map(row->(OpportunityJson.Value)DriverJson.object(row.originalRow().json(),DriverJson.MAX_NATIVE_BYTES)).toList();
+            if (eligible)projectedHistory.set(java.util.Map.entry(driver,rows));
+            return rows;
+        } catch (RuntimeException | Error failure) { projectedHistory.remove();throw failure; }
+    }
+    /** Failure cleanup only; it cannot supply a parsed row or alter the original decoder/owner scope. */
+    public void discardHistoryProjection() { projectedHistory.remove(); }
     /** Strict historical replay only. No complete result or additional input-key buffers are retained. */
     public DriverObservationAssembler.Result replayCompleteOriginals(org.xar.ck3.control.contracts.ExactRef manifestReference,
             org.xar.ck3.control.application.action.RawJson manifest, org.xar.ck3.control.application.action.RawJson fullDriver,
@@ -103,7 +145,7 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
             return DriverObservationEvidenceReader.replayOriginalsWithScopedDriverDecode(manifestReference,
                     manifest, fullDriver, framedNative, nativeReference, this);
         } catch (RuntimeException | Error failure) {
-            replayDiagnostic(27); throw failure;
+            projectedHistory.remove();replayDiagnostic(27); throw failure;
         }
     }
     /** Begin only at an outer planning caller; at most four normally completed rounds per Loader generation. */
@@ -147,19 +189,29 @@ public final class DriverFrameEvidenceLoader implements NativeEffectEvidence.Fra
         return new OriginalBytes(manifest,driver,nativePacket);
     }
     @Override public DriverObservationAssembler.Complete load(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
-        var originals = captureOriginals(basis, archive);
-        var result = DriverObservationEvidenceReader.assembleValidatedOriginalsWithScopedDriverDecode(basis.driverFacts(), originals.manifest(),
-                originals.driver(), originals.nativePacket(), basis.nativeFrame(), assembler, scopedDriverDecode?this:null);
-        StrictJson.require(result instanceof DriverObservationAssembler.Complete, "archived native/complete Driver no longer rebuild an accepted original semantic frame");
-        return (DriverObservationAssembler.Complete) result;
+        try {
+            var originals = captureOriginals(basis, archive);
+            var result = DriverObservationEvidenceReader.assembleValidatedOriginalsWithScopedDriverDecode(basis.driverFacts(), originals.manifest(),
+                    originals.driver(), originals.nativePacket(), basis.nativeFrame(), assembler, scopedDriverDecode?this:null);
+            StrictJson.require(result instanceof DriverObservationAssembler.Complete, "archived native/complete Driver no longer rebuild an accepted original semantic frame");
+            return (DriverObservationAssembler.Complete) result;
+            } catch (RuntimeException | Error failure) {
+            discardHistoryProjection();
+            throw failure;
+        }
     }
     /** Complete retained native/Driver DATA, including unavailable/dead player scopes. No ordinary identity is invented. */
     public DriverObservationAssembler.FullSnapshot loadFull(NativeEffectEvidence.FrameBasis basis, ActionPorts.OutcomeArchive archive) {
-        var originals = captureOriginals(basis, archive);
-        if (scopedDriverDecode)
-            return DriverObservationEvidenceReader.projectOriginalsWithScopedDriverDecode(basis.driverFacts(), originals.manifest(),
-                    originals.driver(), originals.nativePacket(), basis.nativeFrame(), assembler, this);
-        return DriverObservationEvidenceReader.projectOriginals(basis.driverFacts(), originals.manifest(), originals.driver(), originals.nativePacket(),
-                basis.nativeFrame(), assembler);
+        try {
+            var originals = captureOriginals(basis, archive);
+            if (scopedDriverDecode)
+                return DriverObservationEvidenceReader.projectOriginalsWithScopedDriverDecode(basis.driverFacts(), originals.manifest(),
+                        originals.driver(), originals.nativePacket(), basis.nativeFrame(), assembler, this);
+            return DriverObservationEvidenceReader.projectOriginals(basis.driverFacts(), originals.manifest(), originals.driver(), originals.nativePacket(),
+                    basis.nativeFrame(), assembler);
+            } catch (RuntimeException | Error failure) {
+            discardHistoryProjection();
+            throw failure;
+        }
     }
 }
