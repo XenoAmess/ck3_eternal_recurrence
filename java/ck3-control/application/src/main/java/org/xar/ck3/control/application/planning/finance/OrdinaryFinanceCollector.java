@@ -220,8 +220,8 @@ public final class OrdinaryFinanceCollector {
             Read<FinanceReadContracts.Packet> marketRead = query(FinanceReadContracts.Query.MERCENARIES, request);
             if (!(marketRead instanceof Known<FinanceReadContracts.Packet> marketKnown)) return missing("current native mercenary market unavailable");
             NativeMercenaryMarket.Observation market = NativeMercenaryMarket.decode(marketKnown.value(), request);
-            OrdinaryWarPriority.Observation priority = OrdinaryWarPriority.observe(new OrdinaryWarPriority.Input(
-                    org.xar.ck3.control.application.driver.DriverJson.encode(request.observations().snapshot()),org.xar.ck3.control.application.driver.DriverJson.encode(actual.root())));
+            OrdinaryWarPriority.Observation priority = OrdinaryWarPriority.observe(
+                    org.xar.ck3.control.application.driver.DriverJson.encode(request.observations().snapshot()),org.xar.ck3.control.application.driver.DriverJson.encode(actual.root()));
             return new Known<>(new Current(actual.root(), actual.spending(), actual.spendingJson(), market, priority, actual.state(),
                     List.of(actual.rootObservation().receipt(),marketKnown.value().receipt())));
         } catch (IllegalArgumentException invalid) { return missing("current finance observation rejected: " + invalid.getMessage()); }

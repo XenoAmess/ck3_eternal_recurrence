@@ -98,9 +98,22 @@ public final class OrdinaryWarPriority {
     }
 
 
+    public static Observation observe(byte[] snapshot, byte[] nullableCampaignRoot) {
+        byte[] ownedSnapshot = Objects.requireNonNull(snapshot).clone();
+        byte[] ownedRoot = Objects.requireNonNull(nullableCampaignRoot).clone();
+        ObjectNode parsedSnapshot = record(parseFull(ownedSnapshot));
+        JsonNode parsedRoot = StrictJson.parse(ownedRoot, StrictJson.EXPLICIT_MAX_BYTES);
+        input(parsedRoot.isNull() || parsedRoot.isObject(), "nullable current campaign root required");
+        return observeParsed(parsedSnapshot, parsedRoot);
+    }
+
     public static Observation observe(Input input) {
         ObjectNode snapshot = record(parseFull(input == null ? input.snapshot() : input.snapshot));
         JsonNode suppliedRoot = StrictJson.parse(input.nullableCampaignRoot, StrictJson.EXPLICIT_MAX_BYTES);
+        return observeParsed(snapshot, suppliedRoot);
+    }
+
+    private static Observation observeParsed(ObjectNode snapshot, JsonNode suppliedRoot) {
         List<ObjectNode> own = rows(get(snapshot, "player_armies")), active = rows(get(snapshot, "active_wars"));
         BigInteger ownCount = get(snapshot, "player_armies").isArray() ? count(own, snapshot, "player", null) : null;
         boolean retreating = !own.isEmpty() && own.stream().allMatch(a -> yes(get(a, "retreating")));
