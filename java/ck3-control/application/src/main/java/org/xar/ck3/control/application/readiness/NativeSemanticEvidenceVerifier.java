@@ -23,6 +23,7 @@ import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 /** Independently reads all originals under the borrowed writer lock. Metadata never substitutes for bytes. */
 public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
@@ -80,7 +81,8 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
             Obj nativeState = object(raw.get("state"), "state");
             boolean nativeCampaign=id.observationVersion()==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION;
             boolean canonical=id.observationVersion()==DriverObservationAssembler.CANONICAL_OBSERVATION_VERSION||nativeCampaign;
-            if(canonical)requireCanonicalProjection(borrowed,evidence,semantic,nativeBytes,driverBytes,driver,canonicalDriver,parsedNative);
+            List<OpportunityJson.Value> canonicalHistory = null;
+            if(canonical)canonicalHistory=requireCanonicalProjection(borrowed,evidence,semantic,nativeBytes,driverBytes,driver,canonicalDriver,parsedNative);
             else { requireNativeState(nativeState, semantic);parsedNative.close(); }
             for (Obj row : List.of(semantic, stamp)) {
                 require(frame.snapshotId().equals(text(row.get("snapshot_id"), "snapshot_id"))
@@ -103,8 +105,15 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
                     && driver.session().actorId().equals(frame.identity().player()), "full Driver session differs");
             List<Value> history = array(semantic.get("native_command_history"), "native_command_history");
             require(history.size() == driver.commandHistory().size(), "semantic history is incomplete");
-            for (int index = 0; index < history.size(); index++)
-                require(history.get(index).equals(DriverJson.object(driver.commandHistory().get(index).originalRow().json(), DriverJson.MAX_NATIVE_BYTES)), "semantic history differs from actual full Driver");
+            for (int index = 0; index < history.size(); index++) {
+                OpportunityJson.Value expected;
+                if (canonicalHistory != null) {
+                    expected = canonicalHistory.get(index);
+                } else {
+                    expected = DriverJson.object(driver.commandHistory().get(index).originalRow().json(), DriverJson.MAX_NATIVE_BYTES);
+                }
+                require(history.get(index).equals(expected), "semantic history differs from actual full Driver");
+            }
             requireSlot(semantic, "campaign_goal", driver.campaignGoal());
             if(!nativeCampaign)requireSlot(semantic, "succession_lifecycle", driver.successionLifecycle());
             requireSlot(semantic, "native_rollback_war_failure", driver.rollbackWarFailure());
@@ -124,7 +133,7 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
         }
     }
     /** Current canonical profiles replay their sole original producer; raw fields may have legitimate normalized values. */
-    private void requireCanonicalProjection(ContinuityStorePort.Session borrowed,SemanticEvidence evidence,Obj semantic,
+    private List<OpportunityJson.Value> requireCanonicalProjection(ContinuityStorePort.Session borrowed,SemanticEvidence evidence,Obj semantic,
             byte[] nativeBytes,byte[] driverBytes,DriverStateSnapshot.Complete driver,byte[] canonicalDriver,
             DriverObservationEvidenceReader.NativeBodyStage parsedNative)throws IOException {
         ExactRef manifestRef=DriverObservationEvidenceReader.reference(semantic.get("java_driver_facts_evidence"));
@@ -159,6 +168,13 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
                 &&complete.semantic().equals(semantic),"canonical archived SEM crossed its actual actor/frame/public revision/Driver originals");
         if(facts.observationVersion()==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION)
             NativeCampaignProjection.requireJoinedSnapshot(complete.originalProjection().orElseThrow(),RawJson.fullMaterial(DriverJson.encode(semantic)));
+        if(facts.driver()==driver) {
+            var history = complete.semantic().get("native_command_history");
+            if (history instanceof OpportunityJson.Arr arr) {
+                return arr.items();
+            }
+        }
+        return null;
     }
     private byte[] read(ContinuityStorePort.Session borrowed, ExactRef ref, int maximumBytes) throws IOException {
         require(ref.bytes() > 0 && ref.bytes() <= maximumBytes, "bounded nonempty semantic original required");
