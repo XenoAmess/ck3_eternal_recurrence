@@ -420,6 +420,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
         StrictJson.require(ExactRef.fromJson(details.get("before_driver")).equals(driverRef)
                 &&driverRef.bytes()==pair.driver().reference().bytes()&&driverRef.sha256().equals(pair.driver().reference().sha256())
                 &&save.command().actionId().equals(pair.saveActionId()),"saved Driver READ changed its exact immutable pair source");
+        return retainConfirmedSaveMaterial(previous,pair,save,driverRef,originals);
+    }
+    private RetainedReadDriver retainConfirmedSaveMaterial(RetainedReadDriver previous,CheckpointPair pair,
+            ActionReceipt save,ExactRef driverRef,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals)throws IOException {
+        var known=previous.facts();var old=known.driver();
         byte[] raw=originals.loadFullMaterial(driverRef).bytes();
         StrictJson.require(raw.length==driverRef.bytes()&&ActionCodec.sha256(raw).equals(driverRef.sha256()),
                 "saved Driver original bytes differ from their exact reference");
@@ -495,6 +501,47 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 known.stamp().game(),known.stamp().episodeRunId(),driverRef.sha256());
         return new RetainedReadDriver(new DriverSnapshotFacts.Known(driver,stamp,known.originalHistoryBasis(),coverage,
                 new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty()),driverRef);
+    }
+    /** Replays the confirmed SAVE before a real closed-batch capture, without inventing a READ edge. */
+    private RetainedReadDriver retainConfirmedSaveCaptureDriver(SessionIdentity owner,
+            WriterContracts.HistoricalTransition savedEdge,java.util.List<WriterContracts.HistoricalTransition> metadataEdges,
+            WriterContracts.HistoricalTransition captureEdge,RetainedReadDriver previous,CheckpointPair pair,ActionReceipt save,
+            DriverSnapshotFacts.Known captured,CleanBatchRestart manifest,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals)throws IOException {
+        StrictJson.require(metadataEdges.size()==1,"saved Driver capture requires its one actual finished-batch boundary");
+        var finished=metadataEdges.getFirst();
+        var details=ContinuityJson.parseObject(finished.details(),ContinuityJson.LEDGER_MAX_BYTES);
+        var savedDetails=ContinuityJson.parseObject(savedEdge.details(),ContinuityJson.LEDGER_MAX_BYTES);
+        StrictJson.require(savedEdge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
+                &&JournalKind.SAVE_CONFIRMED.name().equals(StrictJson.text(savedDetails.get("boundary")))
+                &&finished.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
+                &&JournalKind.BATCH_FINISHED.name().equals(StrictJson.text(details.get("boundary")))
+                &&StrictJson.text(savedDetails.get("batch_id")).equals(StrictJson.text(details.get("batch_id")))
+                &&OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)
+                &&details.get("checkpoint_pair").isNull()&&details.get("completed_cycle_proof").isNull()
+                &&finished.sequence()==savedEdge.sequence()+1&&captureEdge.sequence()==finished.sequence()+1
+                &&finished.before().status()==ContinuityState.Status.RUNNING&&finished.after().status()==ContinuityState.Status.RUNNING
+                &&ContinuityJson.same(savedEdge.after().toJson(),finished.before().toJson())
+                &&ContinuityJson.same(finished.after().toJson(),captureEdge.before().toJson()),
+                "saved Driver capture crossed its original SAVE/finished-batch frontier");
+        var before=finished.before().toJson();var after=finished.after().toJson();
+        for(String field:java.util.List.of("sequence","last_event_identity",WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)) {
+            before.remove(field);after.remove(field);
+        }
+        StrictJson.require(ContinuityJson.same(before,after),"saved Driver capture batch boundary changed business DATA");
+        var replay=transitions.reduce(finished.before(),new WriterContracts.Request(finished.kind(),finished.details(),java.util.List.of())).toJson();
+        replay.put("sequence",finished.sequence());replay.put("last_event_identity",finished.eventIdentity());
+        StrictJson.require(ContinuityJson.same(replay,finished.after().toJson()),
+                "saved Driver capture batch boundary differs from its actual source-owned reducer");
+        var known=previous.facts();var driverRef=save.applied().orElseThrow().observation().supportingEvidence().get(1);
+        StrictJson.require(known.stamp().game().equals(owner.game())&&pair.frame().game().equals(owner.game())
+                &&captured.stamp().driverVersion()==Math.addExact(known.stamp().driverVersion(),1)
+                &&captured.stamp().episodeEpoch()==known.stamp().episodeEpoch()
+                &&manifest.fullDriver().equals(driverRef)
+                &&driverRef.bytes()==pair.driver().reference().bytes()&&driverRef.sha256().equals(pair.driver().reference().sha256())
+                &&save.command().actionId().equals(pair.saveActionId()),
+                "saved Driver capture changed its exact confirmed pair/version/epoch/Game");
+        return retainConfirmedSaveMaterial(previous,pair,save,driverRef,originals);
     }
     /** Replays committed typed READ DATA only; no query, live decoder or Native action is invoked. */
     private static RetainedReadDriver retainCapturedRead(ContinuityStorePort.Session same,SessionIdentity owner,
@@ -3625,6 +3672,18 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         var capturedOriginal=originals.loadFullMaterial(manifest.driverFacts());
                         var capturedKnown=DriverSnapshotFacts.decodeKnownOriginal(capturedOriginal,Optional.empty());
                         byte[] capturedFull=originals.loadFullMaterial(manifest.fullDriver()).bytes();
+                        if(savedPair.isPresent()&&savedDriverIndex>=0&&savedDriverIndex<i
+                                &&capturedKnown.stamp().driverVersion()==Math.addExact(retained.facts().stamp().driverVersion(),1)) {
+                            var savedEdge=edges.get(savedDriverIndex);
+                            StrictJson.require(savedThroughSequence==savedEdge.sequence(),
+                                    "saved Driver capture requires its actual latest fully verified SAVE confirmation");
+                            var pair=savedPair.orElseThrow();
+                            var saves=actions.stream().filter(value->value.command().actionId().equals(pair.saveActionId())).toList();
+                            StrictJson.require(saves.size()==1&&confirmedSaves.contains(originals.receiptReferenceOf(saves.getFirst())),
+                                    "saved Driver capture requires its one fully verified canonical SAVE receipt");
+                            retained=retainConfirmedSaveCaptureDriver(owner,savedEdge,edges.subList(savedDriverIndex+1,i),
+                                    edge,retained,pair,saves.getFirst(),capturedKnown,manifest,originals);
+                        }
                         StrictJson.require(sameKnownRestartOriginal(capturedOriginal.bytes(),capturedKnown)
                                 &&java.util.Arrays.equals(capturedFull,capturedKnown.driver().encode())
                                 &&java.util.Arrays.equals(capturedFull,retained.facts().driver().encode())

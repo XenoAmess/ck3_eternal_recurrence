@@ -295,7 +295,13 @@ public final class OrdinaryPlanner {
                         "this optional stage already completed before the actual fresh ordinary continuation"));
                 return;
             }
-            Decision decision = Objects.requireNonNull(evaluate(policy,stage), "typed Java policy result required");
+            Decision decision;
+            try { decision = Objects.requireNonNull(evaluate(policy,stage), "typed Java policy result required"); }
+            catch (PlanningDeadlineExpiry expiry) {
+                if (expiry.request() != request || expiry.getCause() != null || expiry.getSuppressed().length != 0)
+                    throw expiry;
+                decision = new Stop(StopReason.DEADLINE, "ordinary planning deadline expired during command preparation");
+            }
             Outcome outcome;
             switch (decision) {
                 case Keep ignored -> outcome = Outcome.KEPT;

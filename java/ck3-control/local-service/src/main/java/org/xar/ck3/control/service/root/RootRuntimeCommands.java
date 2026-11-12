@@ -37,7 +37,7 @@ import org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain;
 public final class RootRuntimeCommands implements MilitaryPlanningDecision.CommandFactory, OrdinaryCorePolicy.CommandBinding {
     public static final class CommandUnavailable extends IllegalStateException {
         private static final long serialVersionUID = 1L;
-        private final OperationKey operation;
+        private final transient OperationKey operation;
         CommandUnavailable(OperationKey operation, String reason) {
             super("INCOMPLETE_ROOT_COMMAND: " + Objects.requireNonNull(operation).value() + ": " + StrictJson.text(reason));
             this.operation = operation;
@@ -303,7 +303,7 @@ public final class RootRuntimeCommands implements MilitaryPlanningDecision.Comma
     }
 
     private void requireRequest(PlanningRequest request) throws IOException {
-        context.requireCurrent(request.deadline());
+        context.requirePlanningCurrent(request);
         StrictJson.require(request.source().equals(context.source()) && request.sessionId().equals(context.game().sessionId())
                 && request.before().machineId().equals(context.game().machineId()) && request.before().game().equals(context.game().generation()),
                 "command preparation crossed the retained actual physical Game/source/session");

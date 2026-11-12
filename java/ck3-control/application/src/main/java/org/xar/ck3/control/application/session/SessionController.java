@@ -950,7 +950,10 @@ public final class SessionController {
                     else { run.terminal = Terminal.CHECKPOINT_DEFERRED; run.detail = "dirty tail retained: " + fresh.checkpointEligibility(); }
                 }
             }
-        } catch (End end) { run.terminal = end.terminal; run.detail = end.getMessage(); }
+        } catch (End end) {
+            if (end.getSuppressed().length != 0) run.failIo(end);
+            else { run.terminal = end.terminal; run.detail = end.getMessage(); }
+        }
         catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt(); quarantineUnresolved(); run.terminal = Terminal.INTERNAL_FAILURE;
             run.detail = "owner thread interrupted; no action/save replay";

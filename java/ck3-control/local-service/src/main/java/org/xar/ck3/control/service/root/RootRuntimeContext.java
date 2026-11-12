@@ -358,6 +358,14 @@ public final class RootRuntimeContext {
         StrictJson.require(clock.instant().isBefore(Objects.requireNonNull(deadline)),"runtime context deadline expired");
         requireActiveGame();
     }
+    /** Command preparation stops before dispatch when its unchanged planning budget expires. */
+    void requirePlanningCurrent(org.xar.ck3.control.application.planning.PlanningRequest request)throws IOException {
+        Objects.requireNonNull(request);
+        Instant observed=clock.instant();
+        if(!observed.isBefore(request.deadline()))
+            throw new org.xar.ck3.control.application.planning.PlanningDeadlineExpiry(request,observed);
+        requireActiveGame();
+    }
     /** Local assembly verifies the living Game without borrowing an operation's expired time budget. */
     void requireActiveGame()throws IOException {
         game.verify();
