@@ -18,4 +18,12 @@ actual corrected单TU19类首编0，owner23真实Controller／公开合法Life r
 
 Native原件根 `D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01`：completed-life-reserve74-compile03、whole3-junit01原2P1F／whole3-junit02最终3P、formal-compile01／formal-whole3-junit01。各输入未变，ACTUAL／完整XML／CLOSE释放；无旧suite扩展或诊断JVM。原19类／public protected API保，private新增方法属于结构变更，不宣HCR；没有新field/type。
 
-当前尚未Runtime采用，不修改仍在处理的C69及旧deadline。正常叶采用、实际hint持久化／后继预算拒入与自然新Life／SAVE待独立回执；软件通过不授性能或10秒目标，正常游戏与既有warm恢复不等Git。
+上述软件发表切点尚未Runtime采用，不修改当时仍在处理的C69及旧deadline。正常叶采用、实际hint持久化／后继预算拒入与自然新Life／SAVE待独立回执；软件通过不授性能或10秒目标，正常游戏与既有warm恢复不等Git。
+
+后到实际采用与首自然样本：2026-11-12T23:24:08.8992569Z，Runtime在同host／Game完成Source74单叶normalfullreload并进入LOOP，19个实际class逐字匹配qualified产物。采用走原1672全settled BATCH_DEFERRED的成熟saved-history恢复，不把此前offline drain失败改记clean END，也没有采用Source75或重放旧Life。STOP→LOOP完整2402.7025079秒、START→LOOP1130.7842581秒，包括failed-drain诊断、必要源码、GET、BOOT和等待，handoff新增eligible／SAVE均为0。
+
+原batch60报告在C71 SETTLE（1695／23:53:00.808346Z）后正常POST_SETTLE退出，结束23:53:05.1486168Z；各phase的nonreturned_spans为0，分析enqueue无附加失败。detail保留该次判断使用的旧reserve1033749394200ns及remaining70902671000ns，而同一原报告的life_budget_hint已将reserve_floor_nanos提高到1125353825600ns（增加91.6044314秒）。saved_life_tail_nanos仍为973749394200，subject仍绑定原saved373／date53176992。至此已持有实际“未物理保存Life→新floor”正例；1696／1697行政事件没有hint字段，batch61下一次具体预算是否使用新floor尚无自然日志，不以源码路径补授运行命中。
+
+消费者源码边界不变：Controller finally与RootMain schedulingHints均调用同一static retainer；同Controller后继预算仅在原same-subject匹配后取旧公式与retained floor的max，post-settle和pre-intent两个既有预算点都消费它。C71累计518physical／501eligible／373saved，本周期新增8eligible、0SAVE。完整STOP→C71为4134.611597秒／8eligible，LOOP后1731.9090891秒／8eligible；含全部失败、恢复和等待，均不是新增保存日速度或因果A/B，10秒目标仍未通过。
+
+实际原件位于 `D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt71`：ACTUAL-SOURCE74-LOOP71-AND-FULL-HANDOFF01.json（3260B／`ac97bb4eb6eee1fad6aa724ec38e16568bdfbc566a83bafb7108266d36c761a7`）、BATCH60.original.json（92663B／`52a0b6718f8680a646bcf6cb98d055f71f3faf199b03a6e9c648a66d6654f413`）、CYCLE71-AND-SOURCE74-NATURAL-FLOOR-METRIC01.json（6237B／`a39fd3f4b329dcb4fae4c0f06943dca143560d11d21920dd0768ba66db84a63a`）。原软件、未采用及失败切点继续保留。
