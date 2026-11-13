@@ -3323,7 +3323,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             StrictJson.require(entry.machineId().equals(owner.machineId())&&entry.game().equals(owner.game())
                     &&entry.sessionId().equals(owner.sessionId()),"settled recovery crossed the actual Game owner");
             var checkedHistory = transitions.restartArchive(same).inHistoricalReadScope(same,
-                    new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(4096, 256L * 1024 * 1024, 8192),
+                    new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(8192, 256L * 1024 * 1024, 16384),
                     originals -> {
             var capturedManifests = new java.util.ArrayList<CleanBatchRestart>();
             var actionPublications = new java.util.ArrayList<org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication>();
