@@ -1,0 +1,21 @@
+# 减少回执解码中丢弃的投影对象
+
+实际Action历史读取仍逐条调用ActionReceiptCodec。其私decodeReceipt先由ProposalLifecycleCodec.decodePayload执行ProjectionJson整材料验证，再建标准BigInteger／BigDecimal的metadata ObjectNode；schema检查后，DriverJson.object又经FullJsonTree做保原数值词法的完整解析，并把整棵树投影为OpportunityJson，只取其中command。Source76保留这些既有表示和整材料解析，减少第二步中不再使用的非command Obj／Arr／scalar wrapper构造。
+
+私helper仍先FullJsonTree.parse整个原材料，再按原OpportunityJson边界检查根对象，使用原DriverJson.model逐case算法、从command在根中的depth1开始投影。所有非command字段仍经过完整UTF-8、duplicate、token、深度64与原2MiB角色上界校验。第一ProjectionJson的BOM、raw NUL、surrogate与默认parser约束、metadata标准BigDecimal语义和schema失败先序保留；command负零、指数、尾零及整数／decimal类别保留。之后原PublicDataJson编码、canonical-command decode及state／archive callbacks顺序不变，公开encoder、完整receipt编码比较、freshread／SHA／Guard也未修改。没有整receipt缓存、公开trusted-AST入口或新增持有状态。
+
+actual单Codec TU／1类首次0，owner27单Test TU／4类首次0，完整whole4首次4P／0FES，00:48:27.864378Z释放。测试内完整54330B旧Codec仅机械静态嵌套、自名／构造器重命名与缩进，inverse恢复原BASE；未复制新helper作oracle。两public decode入口逐值比较receipt、重新encode与command bodySHA、异常class／消息／递归cause／suppressed／parser位置和archive调用序。
+
+四组覆盖原数值lexeme（-0.0、1.2300、1E+3、1e10000、大整数）、真实超过1MiB且不超过2MiB的非command材料、root下command的64／65深度边界与非command整parse错误；unknown schema先于第二parse错误，metadata的1.0／1e0仍在原command callback后按“非整数”拒绝；callback原异常同对象、真实重入和callback后调用者raw数组变更均与完整旧实现一致。首层ProjectionJson本来就拒绝escaped lone surrogate，不将此负例误授FullJsonTree的拒绝范围。使用公开DATA archive Proxy，无writer、Store、Root issuer、Native动作或旧Numeric suite重复。
+
+正式变体仅移植同三处delta并逆恢复原正式BASE，保留既有schema／evidence差异；必要独立单TU／1类首0，同一不变Test4独立whole4首次4P／0FES，00:58:39.386133Z释放。formal测试未重编，使用相同有限公共DATA cases的完整旧actual Codec oracle；不是对未覆盖schema、正式Root许可或Runtime效果的全域授信。实际与正式资格及成本分开，不沿actual绿色转授。
+
+源模型只做一次完整窄审，76285输入／1757输出tokens、22.1591938秒HTTP。其标准DecimalNode不能替原command lexeme的判断保留；最终NO没有处理“保原metadata与整parse、仅减少非command投影”的明确小scope，拒收为unsupported NO，不作为技术不可行结论。没有第二请求或模型实现hunk采用；生产代码由owner独立实现，旧NO与静态切点保留。
+
+来源根 `D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/receipt-command-projection-source76`：actual BASE54330B／`e142910af54fb6be9cf245d125e34e59ad63d3f7783cb9bd6a404659ab4ec2a0`、owner01 candidate56700B／`6fa780306dfd325f06823f1c1906605065683401ca880486f81c1ccdc8d6d3fc`，SOURCE-READY76-01.json（8700B／85165ef6…）。正式原BASE52991B／`65ce064ff46295de3d37d4c3da40d72b63ce5a0de3ec36bc7c19c121ea350640`，formal candidate55361B／`0694f2d8d67d59676fcc7fd783d1fe36b46b87ef155df3da59ad4a2274e714c3`，三delta可逆恢复原正式BASE；并非actual整叶覆盖。最终Test72176B／`8d6841df15d27b8964f14fedba6957037afee8808fda8f35e740ae275195ce81`，SOURCE-READY01.json（5994B／a7691439…）与Legacy inverse（1312B／b2beb295…）留在tests-owner27。
+
+Native根 `D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01` 的receipt-command76-compile01、test27-compile01、whole4-junit01及独立formal-compile01／formal-whole4-junit01保原ACTUAL、完整三engine XML、POST输入未变和MANAGED-CLOSE释放。SOURCE76-ACTUAL-WHOLE4-AND-207JVM-COST01.json（22130B／`f78fa02d2336933349847605f1d26c1a0567b80d6207198127315423374af6a7`）列完整软件与成本。原public／protected API、字段、类族保，私方法／lambda结构变化，不能称body-only或预授HCR。
+
+本候选未Runtime采用，也没有这个单位的独立wall／allocation或实际收益测量；四组差分仅授所列DATA行为，不授热Action总体覆盖、SAVE或10秒目标。75＋70／72B六叶必要cold与本候选分开交付，未将Source76加入，不为Git或研究打断同局运行。
+
+正式whole4原件：ACTUAL.json（1375B／`6e26dbf90639ec82fa02695ea6da41d54fb8600b2209ace69d95e45d991dbef3`）、POST.json（1510B／`96e350dd6a9940de2c3e9cf97e39a4c6cae67d6eabf0dfa593fa6070a2e2a859`）、Jupiter XML（48926B／`b6521a1e9fa6da1b7e6d089113597af28ee8a18fc86c479ef234a6ba0f96d6ec`）与CLOSE（204B／8957f481…）全部输入未变／资源释放；仅执行已授唯一正式运行，没有追加旧Numeric或诊断run。

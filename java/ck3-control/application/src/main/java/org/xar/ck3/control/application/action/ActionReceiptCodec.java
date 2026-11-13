@@ -13,6 +13,8 @@ import org.xar.ck3.control.application.driver.PublicDataJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.CrossJsDecimalUInt64;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.DecimalTokenNode;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Wire;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition;
@@ -64,7 +66,7 @@ public final class ActionReceiptCodec {
         if (CompositeOperatorQuarantineReceiptCodec.SCHEMA.equals(document.path("schema").asText())) return CompositeOperatorQuarantineReceiptCodec.decodeReceipt(document, archive);
         ObjectNode row = StrictJson.object(document, Set.of("schema", "version", "sequence", "command", "body_sha256", "state"));
         String schema = text(row, "schema"); StrictJson.require(SCHEMA.equals(schema) || EVOLVED_SCHEMA.equals(schema) || PROVENANCE_SCHEMA.equals(schema) || FAMILY_SEND_SCHEMA.equals(schema) || PHYSICAL_SCHEMA.equals(schema) || RECONCILED_CONTROL_SCHEMA.equals(schema) || OPERATOR_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || DIRECT_WINDOW_SCHEMA.equals(schema) || COMPOSITE_FAILURE_EVIDENCE_SCHEMA.equals(schema) || FIXTURE_SCHEMA.equals(schema) || COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA.equals(schema) || LIFE_CONTROL_PREFIX_SCHEMA.equals(schema) || INTENT_ABANDONED_SCHEMA.equals(schema) || FRESH_SNAPSHOT_QUERY_SCHEMA.equals(schema), "exact action receipt schema required");
-        OpportunityJson.Obj originalCommand = OpportunityJson.object(DriverJson.object(bytes, MAXIMUM_RECEIPT_BYTES).get("command"), "original receipt command");
+        OpportunityJson.Obj originalCommand = originalReceiptCommand(bytes);
         byte[] canonicalCommand = PublicDataJson.encodeTypedBytes(originalCommand, RawJson.MAXIMUM_BYTES);
         // The encoder returns a fresh local array; keep encodeTyped's original
         // RawJson protocol validation before passing those bytes to the decoder.
@@ -77,6 +79,39 @@ public final class ActionReceiptCodec {
                 : !(command.origin() instanceof CommandOrigin.Gameplay) || evolved(receipt.state()) ? EVOLVED_SCHEMA : SCHEMA;
         StrictJson.require(expectedSchema.equals(schema), "receipt schema must describe its exact origin/evidence/provenance version");
         return receipt;
+    }
+    /** Keep the complete lexical parse; only the command needs a second typed DATA projection.
+     * The first metadata ObjectNode and its ProjectionJson validation remain unchanged. */
+    private static OpportunityJson.Obj originalReceiptCommand(byte[] raw) {
+        JsonNode whole = FullJsonTree.parse(raw, MAXIMUM_RECEIPT_BYTES);
+        if (!whole.isObject()) return OpportunityJson.object(null, "full JSON");
+        JsonNode command = whole.get("command");
+        return OpportunityJson.object(command == null ? null : originalReceiptCommandValue(command, 1),
+                "original receipt command");
+    }
+    /** Same typed projection as DriverJson.model, at the original command depth inside the full root.
+     * FullJsonTree has already checked every node of the complete private tree before this runs. */
+    private static OpportunityJson.Value originalReceiptCommandValue(JsonNode value, int depth) {
+        StrictJson.require(value != null && depth <= 64, "bounded original native JSON node required");
+        if (value.isObject()) {
+            var fields = new java.util.LinkedHashMap<String, OpportunityJson.Value>();
+            value.properties().forEach(entry -> fields.put(entry.getKey(), originalReceiptCommandValue(entry.getValue(), depth + 1)));
+            return new OpportunityJson.Obj(fields);
+        }
+        if (value.isArray()) {
+            List<OpportunityJson.Value> rows = new ArrayList<>();
+            value.forEach(item -> rows.add(originalReceiptCommandValue(item, depth + 1)));
+            return new OpportunityJson.Arr(rows);
+        }
+        if (value.isTextual()) return new OpportunityJson.Text(value.textValue());
+        if (value.isIntegralNumber()) return new OpportunityJson.IntegerValue(value.bigIntegerValue());
+        if (value.isFloatingPointNumber()) {
+            StrictJson.require(!value.isDouble() && !value.isFloat(), "native decimal interop must retain exact BigDecimal tokens");
+            return new OpportunityJson.DecimalValue(value instanceof DecimalTokenNode token ? token.originalToken() : value.asText());
+        }
+        if (value.isBoolean()) return new OpportunityJson.Bool(value.booleanValue());
+        if (value.isNull()) return OpportunityJson.Nil.INSTANCE;
+        throw new IllegalArgumentException("unsupported original native JSON node type");
     }
     private static boolean fixture(ActionReceipt receipt){
         var settlement=receipt.state() instanceof ActionState.Settled settled?settled.settlement()
