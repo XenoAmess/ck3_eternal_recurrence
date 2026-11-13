@@ -30,3 +30,16 @@ Native根 `D:/ck3-state/resume91-native-integration/life-postcondition-p0-202611
 N4四个ABBA round中新路径3慢1快，N7为3快1慢；没有稳定收益结论。N4首warm A151.3814ms／B52.7783ms及N7 warm A81.4360ms／B92.6497ms全部保留，不宣称稳态JIT。A仍需第一次O(N)完整walk与trace，新增前后O(D)依赖fresh验证；B在相同HistoricalReads内也已有lease及command cache，第二walk不是第二次冷磁盘获取。这个同command的小链不能代表真实异command长链，55→30 publication也不等于总metadata／IO下降。当前不为70／72B冷启健康worker，不授Runtime命中、总体Action提速、保存日速度或10秒目标。
 
 冻结测量源：`D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/action-canonical-history-perf-owner26/draft01/DerivedParent72BFullScopeTimingTest.java`（12103B／`804b1bd67279b870b655f21ff97158f830ed2b0942aeef0f1d0759a2602b6b03`）。Native原件为同Native根action-canonical72B-fullscope-perf-junit01／actual／prod的ACTUAL、POST、MANAGED-CLOSE及stdout.bin（8617B／`9628b6fdd8907bbdcac39a226907088074a9acff35e10e0e1438455907a105ab`），00:00:54.111403Z已释放。独立模型测量review一次完整stop，误把warmup计入measure index而建议18；实际代码warm后重置index并恰16，已源核拒收，0代码／测量改动，未设为实验门。
+
+随后按事前固定N16／N32进行第二项有界规模实验，未重跑N4／N7或改其结论。最终Test12403B逐字发表在local-service测试目录，仍为同一个完整scope A对原三行B、warm AB＋四轮ABBA，无性能阈值。HistoricalReadLimits使用生产同界4096entries／256MiB／8192handles，防止较长链被旧fixture的63handle上界截成fallback；这没有修改生产cap或Guard。初始自然N4后，仅用原已验证UNKNOWN关系合法追加12＋16条，计时外建成N16／N32，没有造新action或隐藏增长成本。
+
+| 固定链记录数 | A中位数ms | 原三行B中位数ms | A合计ms／8次 | B合计ms／8次 |
+| --- | ---: | ---: | ---: | ---: |
+| 16 | 123.74725 | 150.69460 | 1043.8928 | 1198.7982 |
+| 32 | 221.84010 | 275.54580 | 1719.8730 | 2172.6497 |
+
+相对中位数分别低17.8821%／19.4907%，两个cut的八个ABBA round均A总耗时低于B。36原序样本（四warm＋32measure）全部返回相同receipt，36段实际metrics全部finish成功，fallback／unretained／bounds／validation失败均0。N16两边同39个acquired物料、peak130407B，publication A138／B271；N32同71个物料、peak254783B，publication A282／B559。由完整scope wall而非publication计数得到的收益只授这两个受控、重复同command链；不外推真实千record、多command／16entry cache失效或整Action比例，不授物理IO减少、Runtime命中、SAVE或10秒目标。
+
+本项CPU1／Xmx192、child480／outer510秒，首唯一JUnit1P／0FES，00:19:23.911083Z已释放。fixture setup17.6410063秒、两次真实增长22.1728942＋46.7243944秒全部保留；compile outer7.8329923秒、JUnit outer100.0141912秒分列，不把嵌套actor再相加。没有按结果追加样本／重投／新的模型review，也没有为此重载健康worker。实际cohort采用仍由Runtime在原周期边界独立处理。
+
+最终测量源 `java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/DerivedParent72BFullScopeTimingTest.java` 与owner26 draft02逐字同为12403B／`afc79c1bead32a454aa5680390cd7d0b5505fbdbfc0f03be20cafbd4d1ba1a36`；只是受控测量复现来源，没有独立formal wall结果。Native原件为action-canonical72B-n16-n32-perf-junit01／actual／prod：stdout.bin（9334B／`a138e48832ea05762441e79293cc2605a8b50fb7f4205ac56dd110e3e2297231`）、stderr.bin（94925B／`6f6666f7b7624958d05c0c024e202649cce363c261230b229aee263a755dde1c`）、ACTUAL／POST输入未变／MANAGED-CLOSE；原N4／N7、软件双2P和所有失败／未采用切点保留。
