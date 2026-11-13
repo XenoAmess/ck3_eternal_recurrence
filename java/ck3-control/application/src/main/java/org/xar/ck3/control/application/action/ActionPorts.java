@@ -135,9 +135,9 @@ public final class ActionPorts {
      */
     public record HistoricalReadLimits(int maximumPublications, long maximumRetainedBytes, int maximumHandles) {
         public HistoricalReadLimits {
-            StrictJson.require(maximumPublications >= 1 && maximumPublications <= 4096
+            StrictJson.require(maximumPublications >= 1 && maximumPublications <= 8192
                     && maximumRetainedBytes >= 1 && maximumRetainedBytes <= 256L * 1024 * 1024
-                    && maximumHandles >= 4 && maximumHandles <= 8192, "finite historical CAS read bounds required");
+                    && maximumHandles >= 4 && maximumHandles <= 16384, "finite historical CAS read bounds required");
         }
     }
     @FunctionalInterface public interface CheckedArchiveRead<T> {

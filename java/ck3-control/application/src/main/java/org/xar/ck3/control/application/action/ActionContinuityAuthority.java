@@ -115,7 +115,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
                 "read validation cannot nest a separate writer/head scope");
         StrictJson.require(borrowedSessions.get() == same, "read validation must borrow the identical original writer Session");
         requireValidationHead(actualLockedHead, same);
-        return archive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(4096, 256L * 1024 * 1024, 8192), scoped -> {
+        return archive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(8192, 256L * 1024 * 1024, 16384), scoped -> {
             try {
                 validationHead.set(actualLockedHead); validationSession.set(same); validationArchive.set(scoped);
                 requireValidationHead(actualLockedHead, same);

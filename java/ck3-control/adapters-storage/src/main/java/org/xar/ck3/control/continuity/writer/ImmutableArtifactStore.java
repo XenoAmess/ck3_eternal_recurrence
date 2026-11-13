@@ -311,8 +311,8 @@ public final class ImmutableArtifactStore {
             long maximumBytes, int maximumHandles, HistoricalReadAuthority authority) throws IOException {
         if (readonlyMode) StorageWriteGuard.requireNoWritesOpen(storage);
         Objects.requireNonNull(session); Objects.requireNonNull(authority);
-        if (maximumEntries < 1 || maximumEntries > 4096 || maximumBytes < 1 || maximumBytes > 256L * 1024 * 1024
-                || maximumHandles < 4 || maximumHandles > 8192)
+        if (maximumEntries < 1 || maximumEntries > 8192 || maximumBytes < 1 || maximumBytes > 256L * 1024 * 1024
+                || maximumHandles < 4 || maximumHandles > 16384)
             throw new IOException("finite historical CAS read bounds required");
         if (historicalReads.get() != null) {
             IOException failure = new IOException("nested historical CAS read scopes are not permitted");
