@@ -62,6 +62,85 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
             return complete;
         }
         public byte[] encode() {
+            if (!canEmbedOwnedValues()) return legacyEncode();
+            return encodeOwnedValues();
+        }
+        /** Only immutable private Value bytes enter this lane. Borderline domains keep the entire old encoder. */
+        private boolean canEmbedOwnedValues() {
+            if (session.actorId().getClass() != BigInteger.class || hasSurrogate(session.pipeName())
+                    || hasSurrogate(session.episodeRunId())) return false;
+            for (HistoryEntry entry : commandHistory) if (!embeddableOwned(entry.originalRow().json, 2)) return false;
+            for (Slot slot : List.of(lastCheckpoint, rollbackWarFailure, managedRestoreTransaction, successionExpectation,
+                    successionLifecycle, campaignGoal, rollbackWarFailures))
+                if (slot instanceof Value value && !embeddableOwned(value.json, 1)) return false;
+            return true;
+        }
+        /** Structural depth of already validated canonical bytes, never an alternative JSON parser. */
+        private static boolean embeddableOwned(byte[] raw, int enclosingDepth) {
+            int containers = 0; boolean quoted = false, escaped = false;
+            for (int index = 0; index < raw.length; index++) {
+                int token = raw[index] & 0xff;
+                // Match the existing private stable round-trip domain. Non-BMP/escaped Unicode is legacy.
+                if (token >= 0xf0 || token == 0x5c && index + 1 < raw.length && raw[index + 1] == 0x75) return false;
+                if (quoted) {
+                    if (escaped) escaped = false;
+                    else if (token == 0x5c) escaped = true;
+                    else if (token == 0x22) quoted = false;
+                    continue;
+                }
+                if (token == 0x7d || token == 0x5d) { if (--containers < 0) return false; continue; }
+                if (token == 0x20 || token == 0x09 || token == 0x0a || token == 0x0d || token == 0x2c || token == 0x3a) continue;
+                // Deliberately leave depth64 and its adjacent boundary to the original full-tree validation.
+                if (containers + enclosingDepth >= 64) return false;
+                if (token == 0x22) quoted = true;
+                else if (token == 0x7b || token == 0x5b) containers++;
+            }
+            return containers == 0 && !quoted && !escaped;
+        }
+        private byte[] encodeOwnedValues() {
+            ObjectNode row = com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode(); row.put("format_version", 2); row.put("pipe_name", session.pipeName()); row.put("bridge_pid", session.bridgePid());
+            row.put("episode_character_id", session.actorId()); row.put("episode_run_id", session.episodeRunId());
+            // The original sole tree encoder owns scalar quoting and integer representation.
+            byte[] header = bytes(row);
+            long size;
+            try {
+                size = Math.addExact(header.length - 1L, "command_history".length() + 7L);
+                for (int index = 0; index < commandHistory.size(); index++)
+                    size = Math.addExact(size, commandHistory.get(index).originalRow().json.length + (index == 0 ? 0L : 1L));
+                size = Math.addExact(size, ownedSlotBytes("last_checkpoint", lastCheckpoint));
+                size = Math.addExact(size, ownedSlotBytes("rollback_war_failure", rollbackWarFailure));
+                size = Math.addExact(size, ownedSlotBytes("managed_restore_transaction", managedRestoreTransaction));
+                size = Math.addExact(size, ownedSlotBytes("succession_expectation", successionExpectation));
+                size = Math.addExact(size, ownedSlotBytes("succession_lifecycle", successionLifecycle));
+                size = Math.addExact(size, ownedSlotBytes("campaign_goal", campaignGoal));
+                size = Math.addExact(size, ownedSlotBytes("rollback_war_failures", rollbackWarFailures));
+            } catch (ArithmeticException unprovenLength) { return legacyEncode(); }
+            if (size > DriverCheckpointStore.MAX_DRIVER_BYTES) return legacyEncode();
+            var output = new java.io.ByteArrayOutputStream((int) size);
+            output.write(header, 0, header.length - 1); ownedField(output, "command_history"); output.write(0x5b);
+            for (int index = 0; index < commandHistory.size(); index++) {
+                if (index != 0) output.write(0x2c);
+                output.writeBytes(commandHistory.get(index).originalRow().json);
+            }
+            output.write(0x5d);
+            putOwned(output,"last_checkpoint",lastCheckpoint); putOwned(output,"rollback_war_failure",rollbackWarFailure); putOwned(output,"managed_restore_transaction",managedRestoreTransaction);
+            putOwned(output,"succession_expectation",successionExpectation); putOwned(output,"succession_lifecycle",successionLifecycle); putOwned(output,"campaign_goal",campaignGoal); putOwned(output,"rollback_war_failures",rollbackWarFailures);
+            output.write(0x7d);
+            return output.toByteArray();
+        }
+        private static long ownedSlotBytes(String name, Slot slot) {
+            return slot instanceof Missing ? 0L : name.length() + 4L + (slot instanceof Value value ? value.json.length : 4L);
+        }
+        private static void ownedField(java.io.ByteArrayOutputStream output, String name) {
+            output.write(0x2c); output.write(0x22); output.writeBytes(name.getBytes(java.nio.charset.StandardCharsets.US_ASCII)); output.write(0x22); output.write(0x3a);
+        }
+        private static void putOwned(java.io.ByteArrayOutputStream output, String name, Slot slot) {
+            if (slot instanceof Missing) return;
+            ownedField(output, name);
+            if (slot instanceof Value value) output.writeBytes(value.json);
+            else { output.write(0x6e); output.write(0x75); output.write(0x6c); output.write(0x6c); }
+        }
+        private byte[] legacyEncode() {
             ObjectNode row = com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode(); row.put("format_version", 2); row.put("pipe_name", session.pipeName()); row.put("bridge_pid", session.bridgePid());
             row.put("episode_character_id", session.actorId()); row.put("episode_run_id", session.episodeRunId());
             var history = row.putArray("command_history"); commandHistory.forEach(entry -> history.add(parse(entry.originalRow().json)));
