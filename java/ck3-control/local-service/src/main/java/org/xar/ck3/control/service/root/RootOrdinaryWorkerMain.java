@@ -154,8 +154,34 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             // The real capture owns the clean/pending decision and drains actual offline work. Dirty is preserved.
             var currentRunning = running;
             var currentResult = result;
+            boolean extendedUnissuedCapture = false;
+            if (!classifyFailureStop(currentResult)
+                    && currentResult.stopReason() == RootOrdinaryWorkerLoop.StopReason.NO_PROGRESS
+                    && currentResult.lastReport().isPresent()) {
+                var actualReport = currentResult.lastReport().orElseThrow();
+                var actualController = currentRunning.core().sessionAccess().current().controllerForPublication();
+                if (actualController.lastReport().orElse(null) == actualReport
+                        && actualReport.terminal() == BatchReport.Terminal.WALL_TIMEOUT
+                        && actualReport.detail().equals("complete batch monotonic wall bound expired")
+                        && RootOrdinaryWorkerLoop.noProgressAfterWall(actualReport,
+                                actualController.lastBatchBoundary(), config.loop().wallTime())) {
+                    boolean allReturned = true;
+                    for (var phase : actualReport.phases()) {
+                        if (phase.terminal() != BatchReport.PhaseTerminal.RETURNED) { allReturned = false; break; }
+                    }
+                    extendedUnissuedCapture = allReturned && !control.stopRequested();
+                }
+            }
+            // A new read-only phase for this actual unissued wall boundary, never an extension of its batch or command.
+            // Capture's own retries receive this one immutable deadline. Stop is checked at phase admission only.
+            final java.time.Instant capturePhaseDeadline = extendedUnissuedCapture
+                    ? clock.instant().plus(java.time.Duration.ofMinutes(10)) : null;
             var captured = captureForStop(currentResult, () -> currentRunning.core().sessionAccess().current().captureCleanRestart(
-                    currentRunning.batchPrefix(), currentResult.nextBatchSequence(), clock.instant().plus(config.operationTimeout())));
+                    currentRunning.batchPrefix(), currentResult.nextBatchSequence(), capturePhaseDeadline != null
+                            ? capturePhaseDeadline : clock.instant().plus(config.operationTimeout())));
+            if (capturePhaseDeadline != null)
+                StrictJson.require(clock.instant().isBefore(capturePhaseDeadline),
+                        "unissued wall capture exceeded its fixed read-only phase deadline");
             if (captured.isEmpty()) {
                 ObjectNode deferred = event(clock, "WORKER_RESTART_CAPTURE_DEFERRED");
                 deferred.set("game", attached.generation().toJson());
