@@ -33,13 +33,14 @@ public final class PauseConfirmation {
         var custody = ack.custody().orElseThrow(() -> new IllegalArgumentException("pause original receive custody is unavailable"));
         custody.verify(ack, attempt.guard());
         boolean freshQuery = observation.provenance() instanceof ObservationProvenance.FreshSnapshotQuery;
+        boolean physicalAfterAck = observation.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement;
         if (observation.provenance() instanceof ObservationProvenance.FreshSnapshotQuery query) {
             StrictJson.require(query.basis() instanceof ObservationProvenance.LiveAfterSetter
                     && query.snapshotReceived().order().compareTo(custody.responseReceived().order()) > 0
                     && !query.snapshotReceived().observedAt().isBefore(custody.responseReceived().observedAt()),
                     "pause fresh query requires its live setter basis and actual later receive event");
         }
-        StrictJson.require((observation.provenance() instanceof ObservationProvenance.Push || freshQuery)
+        StrictJson.require((observation.provenance() instanceof ObservationProvenance.Push || freshQuery || physicalAfterAck)
                 && observation.provenance().independentOf(attempt.requestId())
                 && observation.sessionId().equals(command.sessionId()) && observation.source().equals(command.source())
                 && !observation.originalEvidence().equals(attempt.guard().nativeEvidence())

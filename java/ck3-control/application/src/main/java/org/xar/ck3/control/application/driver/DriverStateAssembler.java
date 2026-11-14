@@ -58,13 +58,130 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
     private org.xar.ck3.control.application.history.DriverEarlyExecuteFailure.Source earlyFailureSource;
     private final ActionSnapshotReader actions;
     private org.xar.ck3.control.application.action.PhysicalActionRegistry presentationSource;
+    /** Actual Root callback. It must verify this Session/head/canonical terminal,
+     * the original event predecessor, installed source and strict v3 Subject.
+     * A public request/snapshot or DATA codec is never this source qualification. */
+    @FunctionalInterface public interface ReservedLifeRetirementVerifier {
+        void verify(ContinuityStorePort.Session same,ActionJournal.Snapshot snapshot,ActionReceipt parent)throws IOException;
+    }
+    private ReservedLifeRetirementVerifier reservedLifeRetirementVerifier;
+    private ActionPorts.OutcomeArchive reservedLifeProjectionArchive;
+    private java.util.function.Supplier<ContinuityStorePort.Session> reservedLifeProjectionSession;
+    public synchronized void bindReservedLifeRetirementVerifier(ReservedLifeRetirementVerifier actual) {
+        Objects.requireNonNull(actual);
+        StrictJson.require(reservedLifeRetirementVerifier==null||reservedLifeRetirementVerifier==actual,
+                "reserved Life retirement Driver verifier belongs to one installed owner");
+        reservedLifeRetirementVerifier=actual;
+    }
+    /** Readonly projection dependency before the ordinary SAVE/runtime owner is installed. It grants no SAVE publication. */
+    public synchronized void bindReservedLifeRetirementVerifier(ReservedLifeRetirementVerifier actual,
+            ActionPorts.OutcomeArchive actualArchive,java.util.function.Supplier<ContinuityStorePort.Session> originalSession) {
+        Objects.requireNonNull(actual);Objects.requireNonNull(actualArchive);Objects.requireNonNull(originalSession);
+        StrictJson.require(reservedLifeProjectionArchive==null&&reservedLifeProjectionSession==null
+                &&(reservedLifeRetirementVerifier==null||reservedLifeRetirementVerifier==actual),
+                "one actual readonly reserved Life projection archive/session owner required");
+        reservedLifeProjectionArchive=actualArchive;reservedLifeProjectionSession=originalSession;
+        bindReservedLifeRetirementVerifier(actual);
+    }
+    private synchronized CheckpointArchive reservedLifeProjectionArchive() {
+        if(reservedLifeProjectionArchive==null)return checkpointArchive(null);
+        var same=Objects.requireNonNull(reservedLifeProjectionSession.get(),"actual borrowed projection writer session required");
+        return new CheckpointArchive(same,reservedLifeProjectionArchive.withSession(same));
+    }
+    private static final ThreadLocal<ReservedLifeProjectionScope> verifiedReservedLife=new ThreadLocal<>();
+    private <T>T presentationScope(ActionJournal.Snapshot snapshot,PresentationWork<T> work)throws IOException {
+        ReservedLifeRetirementVerifier verifier;
+        synchronized(this){verifier=reservedLifeRetirementVerifier;}
+        if(verifier==null)return presentationScopeOriginal(snapshot,work);
+        var custody=reservedLifeProjectionArchive();var current=facts.locked(state->state);
+        var scope=new ReservedLifeProjectionScope(this,custody,snapshot,current,verifier);
+        var before=verifiedReservedLife.get();verifiedReservedLife.set(scope);
+        try{return presentationScopeOriginal(snapshot,work);}
+        finally{scope.open=false;if(before==null)verifiedReservedLife.remove();else verifiedReservedLife.set(before);}
+    }
+    private static final class ReservedLifeProjectionScope {
+        private final DriverStateAssembler owner;private final CheckpointArchive custody;
+        private final ActionJournal.Snapshot snapshot;private final DriverSnapshotFacts.State known;
+        private final ReservedLifeRetirementVerifier verifier;private final Thread thread=Thread.currentThread();
+        private final Map<ActionReceipt,List<ActionReceipt>> verified=new java.util.IdentityHashMap<>();
+        private boolean open=true;private boolean verifying;
+        private ReservedLifeProjectionScope(DriverStateAssembler owner,CheckpointArchive custody,ActionJournal.Snapshot snapshot,
+                DriverSnapshotFacts.State known,ReservedLifeRetirementVerifier verifier) {
+            this.owner=owner;this.custody=custody;this.snapshot=snapshot;this.known=known;this.verifier=verifier;
+        }
+        private void requireCurrent()throws IOException {
+            StrictJson.require(open&&Thread.currentThread()==thread&&verifiedReservedLife.get()==this
+                    &&owner.facts.locked(state->state)==known&&custody.session().head().digest().equals(snapshot.headSha256())
+                    &&custody.session().head().state().sequence()==snapshot.ledgerSequence(),
+                    "reserved Life Driver projection left its actual frozen owner/session/head");
+        }
+        private List<ActionReceipt> firstFive(DriverSnapshotFacts.Known actual,ActionJournal.Snapshot durable,ActionReceipt parent)throws IOException {
+            if(actual!=known||durable!=snapshot)return null;requireCurrent();
+            var retired=(ActionState.CompositeOperatorQuarantined)parent.state();
+            if(retired.execution().children().size()!=6)return null;
+            var archive=custody.originals();
+            var proof=org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.decode(archive.loadMaterial(retired.observationRef()).bytes());
+            byte[] requestBytes=archive.loadMaterial(proof.requestMaterial()).bytes();
+            var request=org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest.decode(requestBytes);
+            if(!request.reservedTailInterruption())return null;
+            StrictJson.require(!verifying,"reserved Life Driver source verification cannot recursively project its own scope");
+            var prior=verified.get(parent);if(prior!=null)return prior;
+            StrictJson.require(parent.sequence()==Math.addExact(proof.predecessorSequence(),1)
+                    &&request.expectedHeadSequence()==proof.predecessorSequence()&&request.expectedHeadDigest().equals(proof.predecessorDigest())
+                    &&request.originalReceipt().equals(proof.originalReceipt())
+                    &&proof.requestMaterial().bytes()==requestBytes.length&&proof.requestMaterial().sha256().equals(ActionCodec.sha256(requestBytes)),
+                    "reserved Life Driver observation changed its configured predecessor/request original");
+            byte[] raw=archive.loadMaterial(proof.originalReceipt()).bytes();
+            var row=DriverJson.object(raw,org.xar.ck3.control.application.action.ActionReceiptCodec.MAXIMUM_RECEIPT_BYTES);
+            StrictJson.require(new OpportunityJson.Text("COMPOSITE_UNKNOWN").equals(OpportunityJson.object(row.get("state"),"operator original state").get("kind")),
+                    "reserved Life Driver original must be UNKNOWN DATA");
+            var original=org.xar.ck3.control.application.action.ActionReceiptCodec.decodeReceipt(raw,archive);
+            request.requireParent(original);proof.requireOriginal(original,retired.execution());
+            StrictJson.require(original.command().equals(parent.command())&&original.bodySha256().equals(parent.bodySha256())
+                    &&original.sequence()<=proof.predecessorSequence(),"reserved Life Driver changed its original immutable parent");
+            var preparation=((ActionState.CompositeUnknown)original.state()).evidence().getLast();
+            var descriptor=org.xar.ck3.control.application.advance.PreparedCleanupSuccessorEvidence.loadDescriptor(preparation,archive);
+            verifying=true;try{verifier.verify(custody.session(),snapshot,parent);}finally{verifying=false;}
+            requireCurrent();
+            var tail=retired.execution().children().get(5);
+            StrictJson.require(snapshot.actions().stream().noneMatch(action->action.command().actionId().equals(tail.actionId()))
+                    &&descriptor.command().actionId().equals(tail.actionId())&&ActionCodec.bodySha256(descriptor.command()).equals(tail.bodySha256())
+                    &&descriptor.command().actionId().equals(org.xar.ck3.control.application.action.ActionIds.child(parent.command().actionId(),6,descriptor.command().operation())),
+                    "reserved Life Driver tail is not its absent exact derived sixth original");
+            var originals=new ArrayList<ActionReceipt>();long sequence=0;
+            for(int i=0;i<5;i++) {
+                var binding=retired.execution().children().get(i);
+                var child=snapshot.actions().stream().filter(value->value.command().actionId().equals(binding.actionId())
+                        &&value.bodySha256().equals(binding.bodySha256())).findFirst().orElseThrow();
+                var command=child.command();
+                StrictJson.require(child.settled()&&child.sequence()>sequence&&child.sequence()<parent.sequence()
+                        &&org.xar.ck3.control.application.advance.AdvancePrimitives.supports(command.operation())
+                        &&command.arguments().members().isEmpty()&&command.expected().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.expected(command.before(),command.source(),command.operation(),command.arguments()))
+                        &&command.source().equals(parent.command().source())&&command.sessionId().equals(parent.command().sessionId())
+                        &&command.before().game().equals(parent.command().before().game())
+                        &&command.before().frame().episodeRunId().equals(parent.command().before().frame().episodeRunId()),
+                        "reserved Life Driver projection retains only its five exact settled source-owned controls");
+                originals.add(child);sequence=child.sequence();
+            }
+            var fourth=originals.get(3);var fifth=originals.get(4);
+            StrictJson.require(fourth.state() instanceof ActionState.CleanupNoEffectConfirmed c4&&c4.proofReference().equals(descriptor.aProofReference())
+                    &&fifth.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed c5&&c5.proofReference().equals(descriptor.c5NoEffectProofReference())
+                    &&descriptor.aTerminalReference().equals(descriptor.childReferences().get(3))
+                    &&descriptor.c5TerminalReference().equals(descriptor.childReferences().getLast())
+                    &&parent.outcome()==ActionReceipt.Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT
+                    &&!parent.visibleGameplay()&&!parent.eligibleAdvance()&&parent.applied().isEmpty()&&parent.ack().isEmpty(),
+                    "reserved Life Driver projection changed its C4/C5 proof roles or invented effect credit");
+            var result=List.copyOf(originals);verified.put(parent,result);requireCurrent();return result;
+        }
+    }
+
     private static final ThreadLocal<org.xar.ck3.control.application.action.PhysicalActionRegistry.VerifiedPresentations> verifiedPresentation=new ThreadLocal<>();
     public synchronized void bindPresentationSource(org.xar.ck3.control.application.action.PhysicalActionRegistry actual){
         StrictJson.require(presentationSource==null||presentationSource==actual,"Driver presentation source cannot be replaced");
         presentationSource=Objects.requireNonNull(actual);
     }
     @FunctionalInterface private interface PresentationWork<T>{T run()throws IOException;}
-    private <T>T presentationScope(ActionJournal.Snapshot snapshot,PresentationWork<T> work)throws IOException{
+    private <T>T presentationScopeOriginal(ActionJournal.Snapshot snapshot,PresentationWork<T> work)throws IOException{
         var source=presentationSource;if(source==null)return work.run();
         var before=verifiedPresentation.get();var scope=source.verified(checkpointArchive(null).session(),snapshot);
         verifiedPresentation.set(scope);
@@ -1500,6 +1617,12 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                     &&retired.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
                     &&parent.command().before().game().equals(known.stamp().game())
                     &&parent.command().before().frame().episodeRunId().equals(known.driver().session().episodeRunId())) {
+                var reservedScope=verifiedReservedLife.get();
+                if(reservedScope!=null) {
+                    List<ActionReceipt> reserved;
+                    try{reserved=reservedScope.firstFive(known,durable,parent);}catch(IOException failure){throw new UncheckedIOException(failure);}
+                    if(reserved!=null){prefixControls.addAll(reserved);continue;}
+                }
                 for(var child:retired.execution().children()) {
                     var original=durable.actions().stream().filter(value->value.command().actionId().equals(child.actionId())&&value.bodySha256().equals(child.bodySha256())).findFirst().orElseThrow();
                     var command=original.command();StrictJson.require(original.settled()&&org.xar.ck3.control.application.advance.AdvancePrimitives.supports(command.operation())

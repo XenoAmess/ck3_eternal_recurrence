@@ -12,7 +12,7 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 
 /** UNKNOWN has no replay transition. ACK and independently observed game effect remain separate facts. */
 public sealed interface ActionState permits ActionState.IntentDurable, ActionState.Submitting, ActionState.AckReceived,
-        ActionState.Unknown, ActionState.Settled, ActionState.RejectedBeforeDispatch, ActionState.IntentAbandoned, ActionState.CompositeRunning,
+        ActionState.Unknown, ActionState.CleanupNoEffectConfirmed, ActionState.PreparedCleanupNoEffectConfirmed, ActionState.ReservedPreparedCleanupNoEffectConfirmed, PreparedCleanupAction, ActionState.Settled, ActionState.RejectedBeforeDispatch, ActionState.IntentAbandoned, ActionState.CompositeRunning,
         ActionState.CompositeUnknown, ActionState.CompositeSettled, ActionState.CompositeOperatorQuarantined, PhysicalActionState {
     record Attempt(String requestId, Instant submittedAt, GuardEvidence guard, NativeRequest preparedRequest) {
         public Attempt { StrictJson.text(requestId); Objects.requireNonNull(submittedAt); Objects.requireNonNull(guard); Objects.requireNonNull(preparedRequest); }
@@ -34,6 +34,37 @@ public sealed interface ActionState permits ActionState.IntentDurable, ActionSta
         public Unknown {
             attempt = Objects.requireNonNull(attempt); dispatch = Objects.requireNonNull(dispatch); StrictJson.text(reason);
             evidence = List.copyOf(evidence); if (dispatch.isPresent()) { StrictJson.require(attempt.isPresent(), "dispatch requires original attempt"); matching(attempt.orElseThrow(), dispatch.orElseThrow()); }
+        }
+    }
+    /** Independently proved absence of the original cleanup effect. No dispatch or ACK is inferred. */
+    record CleanupNoEffectConfirmed(Optional<Attempt> originalAttempt,
+            Optional<NativeActionPort.DispatchOutcome> originalDispatch, ExactRef proofReference) implements ActionState {
+        public CleanupNoEffectConfirmed {
+            originalAttempt=Objects.requireNonNull(originalAttempt); originalDispatch=Objects.requireNonNull(originalDispatch);
+            Objects.requireNonNull(proofReference); StrictJson.require(proofReference.bytes()>0,"complete cleanup NoEffect proof required");
+            if(originalDispatch.isPresent()) {
+                StrictJson.require(originalAttempt.isPresent(),"retained dispatch requires its retained original attempt");
+                matching(originalAttempt.orElseThrow(),originalDispatch.orElseThrow());
+            }
+        }
+    }
+    /** Independently observed NoEffect of one original prepared cleanup.
+     * Its whole prior state remains DATA; no Attempt, ACK or dispatch stage is inferred. */
+    record PreparedCleanupNoEffectConfirmed(PreparedCleanupAction originalPreparedState,ExactRef proofReference) implements ActionState {
+        public PreparedCleanupNoEffectConfirmed {
+            Objects.requireNonNull(originalPreparedState);Objects.requireNonNull(proofReference);
+            StrictJson.require(!originalPreparedState.terminal()&&proofReference.bytes()>0,
+                    "prepared NoEffect requires its nonterminal original prepared state and complete proof");
+        }
+    }
+    /** Positive post-exit NoEffect of one existing reservation without a prior child lifecycle.
+     * The command stays its original body/deadline; no Prepared/Attempt/ACK is fabricated. */
+    record ReservedPreparedCleanupNoEffectConfirmed(ExactRef preparationReference,ExactRef proofReference) implements ActionState {
+        public ReservedPreparedCleanupNoEffectConfirmed {
+            Objects.requireNonNull(preparationReference);Objects.requireNonNull(proofReference);
+            StrictJson.require(preparationReference.bytes()>0&&preparationReference.bytes()<=64*1024
+                    &&proofReference.bytes()>0&&proofReference.bytes()<=64*1024&&!preparationReference.equals(proofReference),
+                    "reserved cleanup NoEffect needs distinct bounded original preparation and proof");
         }
     }
     sealed interface Settlement permits FixtureStarted, FixtureBusinessCompleted, DirectFixedWindowCompleted, PauseConfirmed, ControlSequenceCompleted, Applied, Rejected, ControlApplied, CompositeControlApplied, FrontendApplied, GameplayEntered, LifecycleApplied, NonAppliedTerminal, CompositeRejected, LifecycleControlApplied, SwaySchedulerCompleted, FamilySendConfirmed, NativeSourceCompleted, NormalExitPhaseConfirmed, OperatorRebound, CompositeNoGameplayWrite, LifeControlPrefixInterrupted { }

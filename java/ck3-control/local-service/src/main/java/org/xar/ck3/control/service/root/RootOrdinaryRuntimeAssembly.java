@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -28,6 +29,7 @@ import org.xar.ck3.control.build.runtime.HostMode;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.continuity.writer.StorageWriteGuard;
+import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.NativePrivateActionPermission;
@@ -181,7 +183,8 @@ public final class RootOrdinaryRuntimeAssembly {
                     OriginalRuntimeHandoffProof.unavailable(),operator,metadata,clock);
             var products=RootOrdinaryPlainProducts.prepare(config,app,runtimePorts,config.initialPolicy(),plan);
             var catalogs=products.runtime().catalogs();
-            var permissions=catalogs.privatePermissions(ports::qualifyPrivate);
+            var permissions=new ArrayList<NativePrivateActionPermission>(catalogs.privatePermissions(ports::qualifyPrivate));
+            permissions.add(RootPreparedCleanupScope.permission(metadata.implementation(RootPreparedCleanupScope.class)));
             var lifecycle=new JavaGameLifecycle(permissions,config.operationTimeout());
             return new Prepared(config,clock,plan,metadata,app,ports,storage,files,products,catalogs,permissions,lifecycle);
         }catch(IOException|RuntimeException|Error failure) {
@@ -359,6 +362,11 @@ public final class RootOrdinaryRuntimeAssembly {
         return expected;
     }
 
+    public record PreparedCleanupResult(org.xar.ck3.control.application.action.ActionReceipt childReceipt,
+            org.xar.ck3.control.application.action.ActionReceipt parentReceipt,ExactRef preparationRef){
+        public PreparedCleanupResult{Objects.requireNonNull(childReceipt);Objects.requireNonNull(parentReceipt);Objects.requireNonNull(preparationRef);}
+        public boolean complete(){return childReceipt.settled()&&parentReceipt.settled();}
+    }
     public static final class Prepared implements AutoCloseable {
         private final RootOrdinaryRuntimeConfiguration config;
         private final Clock clock;
@@ -382,6 +390,8 @@ public final class RootOrdinaryRuntimeAssembly {
         private RootJavaSavedBootstrap.ConfirmedSource loadedSavedSource;
         private RootJavaSavedBootstrap.ConfirmedSource retainedSavedSource;
         private RootJavaSavedBootstrap.ConfirmedSource originalSavedRecoverySource;
+        private OrdinarySessionHost ordinaryHost = new OrdinarySessionHost();
+        private boolean externalOrdinaryHostBound;
         private final boolean sourceOnly;
 
         private Prepared(RootOrdinaryRuntimeConfiguration config,Clock clock,NativeLaunchPlan plan,
@@ -400,6 +410,14 @@ public final class RootOrdinaryRuntimeAssembly {
             this.storage=storage;this.files=files;this.products=products;this.catalogs=catalogs;
             this.permissions=List.copyOf(permissions);this.lifecycle=lifecycle;this.noWrites=noWrites;
             this.sourceOnly=noWrites!=null;
+        }
+        public synchronized void bindOrdinaryHost(OrdinarySessionHost actual) throws IOException {
+            Objects.requireNonNull(actual);
+            if (sourceOnly || closed || entered || core != null || game != null || externalOrdinaryHostBound
+                    || actual.current().isPresent())
+                throw new IOException("ordinary public host must bind once before actual Root entry");
+            ordinaryHost = actual;
+            externalOrdinaryHostBound = true;
         }
         public RootOrdinaryRuntimeConfiguration configuration(){return config;}
         public InitialEpisodePolicy initialPolicy(){return config.initialPolicy();}
@@ -604,7 +622,10 @@ public final class RootOrdinaryRuntimeAssembly {
             core.bindM5JointPeacetimeEnabled(config.m5JointPeacetimeEnabled());
             core.bindFirstHeirMarriageEnabled(config.firstHeirMarriageEnabled());
             core.bindNewMarriageProposalsEnabled(config.newMarriageProposalsEnabled());
+            if(config.operatorQuarantine().isPresent()) RootOperatorQuarantineRuntime.install(core,actual,config.operatorQuarantine().orElseThrow(),clock);
             ports.bindCore(core);catalogs.bindCore(core);
+            } else if(config.operatorQuarantine().isPresent()) {
+                RootOperatorQuarantineRuntime.install(core,actual,config.operatorQuarantine().orElseThrow(),clock);
             }
             if(originalSavedRecoverySource!=null)core.writer().locked(same->{
                 var original=RootJavaSavedBootstrap.existingSavedSource(originalSavedRecoverySource,same,core.archive());
@@ -626,10 +647,78 @@ public final class RootOrdinaryRuntimeAssembly {
             return new Opened(this,source);
         }
 
+        /** Re-entry of the exact already-committed configured decision is ordinary recovery, never a new decision. */
+        private boolean configuredOperatorRecoveryCommitted(RootApplicationAssembly.Core actualCore)throws IOException {
+            var source=actualCore.operatorQuarantineSource().orElseThrow(()->new IOException("operator re-entry requires its installed configured source"));
+            return actualCore.writer().locked(same->{
+                var head=same.head();var originals=actualCore.archive().withSession(same);var request=source.request();
+                var found=org.xar.ck3.control.application.action.ContinuityActionJournal.lookup(head.state(),request.parentActionId(),originals);
+                if(found.isEmpty()||!(found.orElseThrow().state() instanceof ActionState.CompositeOperatorQuarantined))return false;
+                var terminal=found.orElseThrow();
+                var observation=org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(terminal,originals);
+                org.xar.ck3.control.contracts.StrictJson.require(observation.requestSource().equals(source.requestReference()),
+                        "operator re-entry cannot substitute a different configured decision or retained prior request");
+                source.verify(same,head,terminal,originals);
+                long recoverySequence=Math.addExact(terminal.sequence(),1);
+                WriterContracts.HistoricalTransition recovery=null;
+                for(var pin:head.documents()) {
+                    String name=Path.of(pin.reference().path()).getFileName().toString();
+                    if(name.equals(String.format(java.util.Locale.ROOT,"%08d.json",recoverySequence))) {
+                        if(recovery!=null)throw new IOException("duplicate original operator recovery event");
+                        recovery=same.readHistoricalTransition(pin);
+                    }
+                }
+                if(recovery==null) {
+                    if(request.reservedTailInterruption()) {
+                        org.xar.ck3.control.contracts.StrictJson.require(head.state().sequence()==terminal.sequence()
+                                &&!head.snapshotNeedsRecovery()&&head.indexRepairs().isEmpty(),"reserved terminal-only re-entry requires the complete exact current WAL and absent next event");
+                        return false; // The explicit v3 branch below resumes recovery; it never re-appends retirement.
+                    }
+                    throw new IOException("configured operator terminal has no committed recovery; cannot repeat its original decision");
+                }
+                var keys=new java.util.HashSet<String>(java.util.Set.of("evidence_id","source","session","operation","predecessor_head_digest","receipt_ref","operator_observation",
+                        "controller_ref","retained_driver","batch_id","next_sequence","consumed_batches","semantic"));
+                if(request.reservedTailInterruption()){keys.add("completion_issued_at");keys.add("completion_deadline");}
+                var details=org.xar.ck3.control.contracts.StrictJson.object(org.xar.ck3.control.contracts.StrictJson.parse(recovery.details()),keys);
+                var owner=org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionFromJson(details.get("session"));
+                String operation=request.lifeInterruption()?"OPERATOR_LIFE_INTERRUPTION_RECOVERY":"OPERATOR_QUARANTINE_RECOVERY";
+                String recoverySource=request.reservedTailInterruption()?"java-operator-life-interruption-recovery/v2":request.lifeInterruption()?"java-operator-life-interruption-recovery/v1":"java-operator-quarantine-recovery/v1";
+                org.xar.ck3.control.contracts.StrictJson.require(recovery.sequence()==recoverySequence
+                        &&org.xar.ck3.control.application.session.OrdinaryCycleTransitions.CYCLE_KIND.equals(recovery.kind())
+                        &&operation.equals(org.xar.ck3.control.contracts.StrictJson.text(details.get("operation")))
+                        &&recoverySource.equals(org.xar.ck3.control.contracts.StrictJson.text(details.get("source")))
+                        &&owner.machineId().equals(request.machineId())&&owner.game().equals(request.game())&&owner.sessionId().equals(request.episodeRunId())
+                        &&org.xar.ck3.control.contracts.ExactRef.fromJson(details.get("receipt_ref")).equals(originals.receiptReferenceOf(terminal))
+                        &&org.xar.ck3.control.contracts.ExactRef.fromJson(details.get("operator_observation")).equals(((ActionState.CompositeOperatorQuarantined)terminal.state()).observationRef())
+                        &&org.xar.ck3.control.continuity.ContinuityJson.digest(recovery.before().toJson()).equals(org.xar.ck3.control.contracts.StrictJson.text(details.get("predecessor_head_digest")))
+                        &&recovery.before().status()==org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED
+                        &&recovery.after().status()==org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING,
+                        "operator re-entry requires its exact committed typed recovery and original predecessor/owner/observation");
+                var atPoint=org.xar.ck3.control.application.action.ContinuityActionJournal.lookup(recovery.before(),request.parentActionId(),originals).orElseThrow();
+                org.xar.ck3.control.contracts.StrictJson.require(java.util.Arrays.equals(
+                        org.xar.ck3.control.application.action.ActionReceiptCodec.encodeReceipt(atPoint,originals),
+                        org.xar.ck3.control.application.action.ActionReceiptCodec.encodeReceipt(terminal,originals)),
+                        "operator recovery did not follow its exact canonical configured terminal");
+                // The unchanged normal reader below independently validates all history, SEM, credit and the latest unknown action.
+                return true;
+            });
+        }
+
         /** Explicit new operator decision; never a fresh campaign or replay fallback. */
         public Running openOperatorQuarantineRecovery(ManagedGameSession actual,Instant deadline)throws IOException,InterruptedException {
             if(config.operatorQuarantine().isEmpty())throw new IOException("operator-quarantine mode requires its explicit configured request pin");
             var opened=open(actual);
+            var operator=opened.core().operatorQuarantineSource().orElseThrow();
+            if(operator.request().reservedTailInterruption()) {
+                // Administrative UNKNOWN_EFFECT retirement precedes generic Driver/history reconstruction.
+                opened.core().retireReservedLifeInterruptionOnly(actual,deadline);
+                if(configuredOperatorRecoveryCommitted(opened.core()))return openSameGameBootstrapOpened(opened,actual,Optional.empty(),deadline,false);
+                var original=opened.core().readRetiredLifeInterruptionOriginal(actual,cyclePolicy);
+                var driver=opened.core().adoptRetiredLifeInterruption(actual,original,config.retainedFrames(),deadline);
+                return new Opened(this,driver.source()).finishRetiredLifeInterruption(driver,original,deadline);
+            }
+            if(configuredOperatorRecoveryCommitted(opened.core()))
+                return openSameGameBootstrapOpened(opened,actual,Optional.empty(),deadline,false);
             var data=opened.core().readOperatorQuarantineOriginal(actual,cyclePolicy).orElseThrow(()->new IOException("operator recovery requires its original authoritative unresolved same-Game data"));
             var driver=runOperationPhase(clock,config.operationTimeout(),phaseDeadline->opened.core().adoptUnresolvedSameGame(actual,data,config.retainedFrames(),cyclePolicy,phaseDeadline));
             return new Opened(this,driver.source()).finishOperatorQuarantine(driver,data,deadline);
@@ -645,7 +734,11 @@ public Running openExistingSameGameRecovery(ManagedGameSession actual, Optional<
 }
 
 private Running openSameGameBootstrapInternal(ManagedGameSession actual, Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline, boolean allowObservedInitial) throws IOException, InterruptedException {
-    var opened = open(actual);
+    return openSameGameBootstrapOpened(open(actual),actual,pointer,deadline,allowObservedInitial);
+}
+
+/** Reuses the one already-opened actual Core; existing readers retain all recovery authority. */
+private Running openSameGameBootstrapOpened(Opened opened, ManagedGameSession actual, Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline, boolean allowObservedInitial) throws IOException, InterruptedException {
     if (pointer.isPresent() && opened.core().matchesCleanRestartHead(pointer.orElseThrow())) {
         var driver = runOperationPhase(clock,java.time.Duration.ofMinutes(10),phaseDeadline->
                 opened.core().adoptCleanRestart(actual,pointer.orElseThrow(),config.retainedFrames(),cyclePolicy,phaseDeadline,
@@ -684,6 +777,92 @@ private Running openSameGameBootstrapInternal(ManagedGameSession actual, Optiona
     return runOperationPhase(clock,config.operationTimeout(),phaseDeadline->opened.finishObservedMap(received,initial,phaseDeadline));
 }
 
+        /** Independent read-only terminal entry. Does not install a Host, start a worker or continue/reconcile the parent. */
+        public org.xar.ck3.control.application.action.ActionReceipt reconcilePostExitCleanupNoEffectOnly(ManagedGameSession actual,Instant deadline)
+                throws IOException,InterruptedException {
+            var opened=open(actual);
+            var data=opened.core().readUnresolvedSameGame(actual,cyclePolicy)
+                    .orElseThrow(()->new IOException("NoEffect-only reconciliation requires the exact existing unresolved same-Game data"));
+            var driver=runOperationPhase(clock,config.operationTimeout(),until->
+                    opened.core().adoptUnresolvedSameGame(actual,data,config.retainedFrames(),cyclePolicy,until));
+            var retained=new Opened(this,driver.source());
+            retained.consumed=true;
+            retained.installed=runOperationPhase(clock,config.operationTimeout(),until->catalogs.install(core,game,driver.source(),core.planningReads(),clock,until));
+            var configuration=runOperationPhase(clock,config.operationTimeout(),this::sessionConfiguration);
+            var session=core.finishUnresolvedSameGame(retained.installed,driver,configuration,services(driver.source()));
+            var life=retained.installed.remainingDomains().life();
+            var token=life.postExitNoEffectReconciliation(deadline);
+            return session.reconcilePostExitCleanupNoEffect(token);
+        }
+
+        /** Independent readonly fifth-child NoEffect entry; no ordinary Host, parent continuation or Native control. */
+        public org.xar.ck3.control.application.action.ActionReceipt reconcilePreparedCleanupNoEffectOnly(ManagedGameSession actual,Instant deadline)
+                throws IOException,InterruptedException {
+            var opened=open(actual);
+            var data=opened.core().readUnresolvedSameGame(actual,cyclePolicy)
+                    .orElseThrow(()->new IOException("prepared NoEffect requires the exact unresolved same-Game history"));
+            var driver=runOperationPhase(clock,config.operationTimeout(),until->
+                    opened.core().adoptUnresolvedSameGame(actual,data,config.retainedFrames(),cyclePolicy,until));
+            var retained=new Opened(this,driver.source());retained.consumed=true;
+            retained.installed=runOperationPhase(clock,config.operationTimeout(),until->catalogs.install(core,game,driver.source(),core.planningReads(),clock,until));
+            var configuration=runOperationPhase(clock,config.operationTimeout(),this::sessionConfiguration);
+            var session=core.finishUnresolvedSameGame(retained.installed,driver,configuration,services(driver.source()));
+            var token=retained.installed.remainingDomains().life().preparedCleanupNoEffectReconciliation(deadline);
+            return session.reconcilePreparedCleanupNoEffect(token);
+        }
+
+        /** Independent readonly reserved-sixth NoEffect entry; no ordinary Host, parent continuation or Native control. */
+        public org.xar.ck3.control.application.action.ActionReceipt reconcileReservedPreparedCleanupNoEffectOnly(ManagedGameSession actual,Instant deadline)
+                throws IOException,InterruptedException {
+            var opened=open(actual);
+            var data=opened.core().readUnresolvedSameGame(actual,cyclePolicy)
+                    .orElseThrow(()->new IOException("reserved NoEffect requires the exact unresolved same-Game history"));
+            var driver=runOperationPhase(clock,config.operationTimeout(),until->
+                    opened.core().adoptUnresolvedSameGame(actual,data,config.retainedFrames(),cyclePolicy,until));
+            var retained=new Opened(this,driver.source());retained.consumed=true;
+            retained.installed=runOperationPhase(clock,config.operationTimeout(),until->catalogs.install(core,game,driver.source(),core.planningReads(),clock,until));
+            var configuration=runOperationPhase(clock,config.operationTimeout(),this::sessionConfiguration);
+            var session=core.finishUnresolvedSameGame(retained.installed,driver,configuration,services(driver.source()));
+            var reference=retained.installed.remainingDomains().life().reservedPreparedCleanupNoEffectProof(deadline);
+            return session.reconcileReservedPreparedCleanupNoEffect(reference,deadline);
+        }
+
+        /** One independent C81 cleanup operation. No ordinary Host, Controller
+         * loop, lifecycle action or Quarkus worker is installed or started here. */
+        public PreparedCleanupResult finishPreparedCleanupOnly(ManagedGameSession actual,Instant deadline)throws IOException,InterruptedException {
+            var opened=open(actual);
+            var data=opened.core().readUnresolvedSameGame(actual,cyclePolicy).orElseThrow(()->new IOException("prepared cleanup requires its original unresolved same-Game data"));
+            var driver=runOperationPhase(clock,config.operationTimeout(),until->opened.core().adoptUnresolvedSameGame(actual,data,config.retainedFrames(),cyclePolicy,until));
+            var retained=new Opened(this,driver.source());retained.consumed=true;
+            retained.installed=runOperationPhase(clock,config.operationTimeout(),until->catalogs.install(core,game,driver.source(),core.planningReads(),clock,until));
+            var configuration=runOperationPhase(clock,config.operationTimeout(),this::sessionConfiguration);
+            var session=core.finishUnresolvedSameGame(retained.installed,driver,configuration,services(driver.source()));
+            var life=retained.installed.remainingDomains().life();
+            var parent=core.actions().find("action-c1bbea09a8bffc735d1ac887e9c3020a1de4f59cca8d647378ec7a3efc47c5a8").orElseThrow();
+            var token=life.composite().preparedCleanupToken(parent,deadline).orElseThrow(()->new IOException("actual Life source did not issue a new distinct prepared cleanup; existing/UNKNOWN is collection only"));
+            session.continuePreparedCleanup(token);
+            var child=core.actions().find(token.prepared().command().actionId()).orElseThrow();
+            var current=core.actions().find(parent.command().actionId()).orElseThrow();
+            return new PreparedCleanupResult(child,current,token.prepared().reference());
+        }
+        /** Distinct ordinal-six recovery only after actual canonical C5 NoEffect; never retries the fifth action. */
+        public PreparedCleanupResult finishPreparedCleanupSuccessorOnly(ManagedGameSession actual,Instant deadline)throws IOException,InterruptedException {
+            var opened=open(actual);
+            var data=opened.core().readUnresolvedSameGame(actual,cyclePolicy).orElseThrow(()->new IOException("prepared successor requires its exact unresolved original history"));
+            var driver=runOperationPhase(clock,config.operationTimeout(),until->opened.core().adoptUnresolvedSameGame(actual,data,config.retainedFrames(),cyclePolicy,until));
+            var retained=new Opened(this,driver.source());retained.consumed=true;
+            retained.installed=runOperationPhase(clock,config.operationTimeout(),until->catalogs.install(core,game,driver.source(),core.planningReads(),clock,until));
+            var configuration=runOperationPhase(clock,config.operationTimeout(),this::sessionConfiguration);
+            var session=core.finishUnresolvedSameGame(retained.installed,driver,configuration,services(driver.source()));
+            var life=retained.installed.remainingDomains().life();
+            var parent=core.actions().find("action-c1bbea09a8bffc735d1ac887e9c3020a1de4f59cca8d647378ec7a3efc47c5a8").orElseThrow();
+            var token=life.composite().preparedCleanupSuccessorToken(parent,deadline)
+                    .orElseThrow(()->new IOException("actual source did not issue a distinct ordinal-six preparation after canonical C5 NoEffect"));
+            session.continuePreparedCleanup(token);
+            var child=core.actions().find(token.prepared().command().actionId()).orElseThrow();
+            var current=core.actions().find(parent.command().actionId()).orElseThrow();
+            return new PreparedCleanupResult(child,current,token.prepared().reference());
+        }
         public Running openCleanRestart(ManagedGameSession actual,ContinuityBatchJournal.CleanRestartTicket ticket,
                 Instant deadline)throws IOException,InterruptedException {
             if(sourceOnly)throw new IOException("source-only reader cannot open clean restart");
@@ -789,7 +968,7 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
                 session = owner.core.finishFresh(installed, driver, configuration, services);
             }
             runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{
-                session.install(new OrdinarySessionHost(),phaseDeadline);
+                session.install(owner.ordinaryHost,phaseDeadline);
                 return null;
             });
             String prefix=restart.isPresent()?restart.orElseThrow().controller().batchPrefix():
@@ -834,7 +1013,7 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
             var session=owner.core.finishConfirmedSaved(installed,driver,configuration,owner.services(source));
             runOperationPhase(owner.clock,owner.config.operationTimeout(),until->{
-                session.install(new OrdinarySessionHost(),until);return null;
+                session.install(owner.ordinaryHost,until);return null;
             });
             if(retained.isPresent())owner.core.writer().locked(same->{retained.orElseThrow().requireRetained(same);return null;});
             owner.core.promoteSavedLive(session);
@@ -857,11 +1036,27 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
             var session=owner.core.finishSettledSameGame(installed,driver,configuration,owner.services(source));
             runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{
-                session.install(new OrdinarySessionHost(),phaseDeadline);return null;
+                session.install(owner.ordinaryHost,phaseDeadline);return null;
             });
             return new Running(owner,session,data.controller().batchPrefix(),data.controller().nextBatchSequence());
         }
 
+        private Running finishRetiredLifeInterruption(DriverBootstrap.Adopted driver,ContinuityBatchJournal.RetiredLifeInterruptionOriginal original,Instant deadline)throws IOException,InterruptedException {
+            consumed=true;
+            if(owner.config.decisionProvider().isPresent()) {
+                var selector=new RootOnlineDecisionSelector(owner.config.decisionProvider().orElseThrow(),owner.clock,raw->{
+                    var writer=owner.core.writer();var active=writer.activeSession();
+                    if(active.isPresent())return owner.core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                    return writer.locked(same->owner.core.archive().withSession(same).preserveMaterial(raw));
+                });owner.core.bindDecisionSelector(selector);
+            }
+            installed=runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->owner.catalogs.install(owner.core,owner.game,source,owner.core.planningReads(),owner.clock,phaseDeadline));
+            var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
+            var session=owner.core.finishUnresolvedSameGame(installed,driver,configuration,owner.services(source));
+            long next=owner.core.completeRetiredLifeInterruptionRecovery(session,driver,original);
+            runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{session.install(owner.ordinaryHost,phaseDeadline);return null;});
+            return new Running(owner,session,original.retainedHistory().controller().batchPrefix(),next);
+        }
         private Running finishOperatorQuarantine(DriverBootstrap.Adopted driver,ContinuityBatchJournal.UnresolvedSameGameData data,Instant deadline)throws IOException,InterruptedException {
             consumed=true;
             if(owner.config.decisionProvider().isPresent()) {
@@ -875,7 +1070,7 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
             var session=owner.core.finishUnresolvedSameGame(installed,driver,configuration,owner.services(source));
             long next=owner.core.completeOperatorQuarantineRecovery(session,driver,data);
-            runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{session.install(new OrdinarySessionHost(),phaseDeadline);return null;});
+            runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{session.install(owner.ordinaryHost,phaseDeadline);return null;});
             return new Running(owner,session,data.capturedController().batchPrefix(),next);
         }
 
@@ -896,7 +1091,7 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             var services=owner.services(source);
             RootApplicationSession session = owner.core.finishUnresolvedSameGame(installed, driver, configuration, services);
             runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{
-                session.install(new OrdinarySessionHost(),phaseDeadline);
+                session.install(owner.ordinaryHost,phaseDeadline);
                 return null;
             });
             // Restore quarantine and reconcile unresolved action
@@ -916,7 +1111,16 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
                 var retainedOriginal = data.unresolvedActions().getFirst();
                 if (org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(retainedOriginal.command().operation().value())) {
                     receipt = runOperationPhase(owner.clock, java.time.Duration.ofMinutes(10), phaseDeadline -> {
-                        var cancellation = installed.remainingDomains().life().composite().cancellationToken(retainedOriginal, phaseDeadline);
+                        var life=installed.remainingDomains().life().composite();
+                        if(retainedOriginal.state() instanceof ActionState.CompositeUnknown unknown
+                                &&unknown.reason().startsWith(org.xar.ck3.control.application.advance.LifePostResumePauseCleanupEvidence.CURSOR_PREFIX))
+                            return session.reconcileUnresolvedOriginal(data,phaseDeadline);
+                        var postResumeCancellation=life.postResumePauseCancellationToken(retainedOriginal,phaseDeadline);
+                        if(postResumeCancellation.isPresent()) {
+                            session.continueOriginalComposite(postResumeCancellation.orElseThrow());
+                            return session.reconcileUnresolvedOriginal(data,phaseDeadline);
+                        }
+                        var cancellation = life.cancellationToken(retainedOriginal, phaseDeadline);
                         if (cancellation.isEmpty()) return null;
                         session.continueOriginalComposite(cancellation.orElseThrow());
                         return session.reconcileUnresolvedOriginal(data, phaseDeadline);
@@ -943,6 +1147,14 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
                 var original = receipt;
                 receipt = runOperationPhase(owner.clock, java.time.Duration.ofMinutes(10), phaseDeadline -> {
                     var source = installed.remainingDomains().life().composite();
+                    if(original.state() instanceof ActionState.CompositeUnknown unknown
+                            &&unknown.reason().startsWith(org.xar.ck3.control.application.advance.LifePostResumePauseCleanupEvidence.CURSOR_PREFIX))
+                        return session.reconcileUnresolvedOriginal(data,phaseDeadline);
+                    var postResumeCancellation=source.postResumePauseCancellationToken(original,phaseDeadline);
+                    if(postResumeCancellation.isPresent()) {
+                        session.continueOriginalComposite(postResumeCancellation.orElseThrow());
+                        return session.reconcileUnresolvedOriginal(data,phaseDeadline);
+                    }
                     var cancellation = source.cancellationToken(original, phaseDeadline);
                     if (cancellation.isEmpty()) return original;
                     session.continueOriginalComposite(cancellation.orElseThrow());

@@ -21,6 +21,32 @@ public interface CompositeActionPort {
         ActionPorts.PostconditionResult continueOriginal(ActionCommand parent, CompositeExecution retained,
                 CompositeContinuationToken token, Children children) throws InterruptedException;
     }
+    /** Separately qualified prepared control. Every method is entered only through this
+     * exact installed source, the same actual writer scope and its private token.
+     * Heavy source/original validation and kept dependency leases precede observeLate.
+     * The SDK final qualification must use the live scope capability, not replay them. */
+    interface PreparedCleanupSource extends OriginalContinuation {
+        org.xar.ck3.control.application.advance.PreparedCleanupEvidence.Prepared requirePreparedCleanup(
+                ActionCommand child,CompositeContinuationToken token);
+        default org.xar.ck3.control.application.advance.PreparedCleanupParentProjection projectPreparedCleanup(
+                CompositeContinuationToken token,org.xar.ck3.control.application.advance.PreparedCleanupEvidence.Prepared prepared,
+                org.xar.ck3.control.application.advance.PreparedCleanupEvidence.PostAckCaptured captured,org.xar.ck3.control.contracts.ExactRef captureReference){
+            throw new IllegalStateException("actual prepared source has no complete captured-frame projection");
+        }
+        default ActionState.EffectObservation completePreparedCleanupParent(CompositeContinuationToken token,
+                org.xar.ck3.control.application.advance.PreparedCleanupEvidence.Prepared prepared,ActionReceipt actualChild,
+                org.xar.ck3.control.application.advance.PreparedCleanupParentProjection projection){
+            throw new IllegalStateException("actual prepared source has no complete five-child parent producer");
+        }
+        ActionPorts.OutcomeArchive preparedCleanupArchive();
+        org.xar.ck3.control.application.advance.LifeAdvanceEvidence.BoundFrameVerifier preparedCleanupFrames();
+        <T> T withPreparedCleanupWrite(ActionCommand child,CompositeContinuationToken token,
+                org.xar.ck3.control.application.advance.PreparedCleanupEvidence.Prepared actualPrepared,
+                PreparedCleanupWork<T> operation) throws java.io.IOException,InterruptedException;
+    }
+    @FunctionalInterface interface PreparedCleanupWork<T> {
+        T run() throws java.io.IOException,InterruptedException;
+    }
     interface Children {
         String nextActionId();
         default String nextActionId(OperationKey operation) { return nextActionId(); }

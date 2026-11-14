@@ -370,6 +370,10 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
         catch (java.io.UncheckedIOException failure) { throw failure.getCause(); }
     }
     private CompositeContinuationReport continueLocked(ActionJournal.LockedJournal locked, CompositeContinuationToken token) {
+        if(token instanceof org.xar.ck3.control.application.advance.LifePreparedCleanupContinuation prepared){
+            preparation.requireOutsideReadOnlyScope(locked.writerSession(),token.originalParent());
+            return PreparedCleanupCoordinatorSupport.run(locked,prepared,composites,nativePort,clock);
+        }
         preparation.requireOutsideReadOnlyScope(locked.writerSession(), token.originalParent());
         displayBefore(locked, token.originalParent(), List.of(), true);
         try {
@@ -411,6 +415,11 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
             preparation.requireOutsideReadOnlyScope(locked.writerSession(), retained.command());
             ActionReceipt current = retained;
             if (current.settled()) return current;
+            if(current.state() instanceof PreparedCleanupAction
+                    ||org.xar.ck3.control.application.advance.PreparedCleanupCursor.marked(current))return current;
+            // The independent prepared read-only proof collector is a separate
+            // protocol. Generic UNKNOWN reconciliation must never recreate its
+            // old Attempt/Guard or issue another control/observation capability.
             if (current.state() instanceof PhysicalActionState) {
                 PhysicalActionRegistry physical = physicalActions;
                 StrictJson.require(physical != null, "original physical source registry is unavailable; no replay");

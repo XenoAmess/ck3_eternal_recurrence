@@ -96,6 +96,28 @@ public final class ActionChildPlanningScope {
                 "continuation token crossed its exact canonical parent");
         return Optional.of(held.continuationToken());
     }
+    /** Budget identification only; this cannot issue a token, authorize a child or supply observation facts. */
+    public static boolean isPostResumePauseCancellationObservation(ActionCommand exactChild) {
+        java.util.Objects.requireNonNull(exactChild);
+        Held held=CURRENT.get();
+        if(held==null||!held.continuation()
+                ||!(held.continuationToken() instanceof org.xar.ck3.control.application.advance.LifePostResumePauseCancellation token))return false;
+        StrictJson.require(token.kind()==CompositeContinuationToken.Kind.LIFE_POST_RESUME_PAUSE_CANCEL,
+                "post-resume cancellation observation changed its private continuation kind");
+        var original=org.xar.ck3.control.application.advance.LifePostResumePauseCleanupProof.original(
+                token.originalParentReceipt(),token.originalChildren());
+        var expected=org.xar.ck3.control.application.advance.LifePostResumePauseCleanupProof.cancellationCommand(
+                original,token.beforeCancel(),token.deadline());
+        StrictJson.require(java.util.Arrays.equals(ActionCodec.encodeCommand(expected),ActionCodec.encodeCommand(exactChild)),
+                "post-resume cancellation observation crossed its complete exact child command");
+        try {
+            var active=reservedParent(held.session(),held.session().head(),exactChild).orElseThrow();
+            StrictJson.require(active.actionId().equals(token.originalParent().actionId())
+                    &&active.bodySha256().equals(ActionCodec.bodySha256(token.originalParent())),
+                    "post-resume cancellation observation crossed its actual reserved parent");
+        } catch(IOException unavailable) {throw new java.io.UncheckedIOException(unavailable);}
+        return true;
+    }
     /** Revalidates the private Held, actual original writer and current canonical parent on every invocation. */
     public static FixtureCursor fixtureCurrent(ContinuityStorePort.Session same,WriterContracts.Head actualHead,
             ActionCommand exactParent,String actualHandlerId)throws IOException {
@@ -131,7 +153,8 @@ public final class ActionChildPlanningScope {
                 && (parent.command().origin() instanceof CommandOrigin.LifecycleTerminal
                     && parent.command().lifecycleExpected().operation() == LifecycleExpectedPostcondition.Operation.CONTINUE_SUCCESSOR
                     ||FixturePlan.isParent(parent.command())&&FixturePlan.requireParent(parent.command())!=null
-                    ||held.continuationToken().kind()==CompositeContinuationToken.Kind.LIFE_SENTINEL_CANCEL
+                    ||(held.continuationToken().kind()==CompositeContinuationToken.Kind.LIFE_SENTINEL_CANCEL
+                         ||held.continuationToken().kind()==CompositeContinuationToken.Kind.LIFE_POST_RESUME_PAUSE_CANCEL)
                         &&held.parent().handlerId().equals(LifeAdvanceComposite.HANDLER)
                         &&LifeAdvanceComposite.accepts(parent.command().operation().value())
                         &&parent.command().origin() instanceof CommandOrigin.Gameplay),

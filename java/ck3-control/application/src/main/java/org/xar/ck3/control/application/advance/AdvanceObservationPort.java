@@ -16,6 +16,12 @@ public interface AdvanceObservationPort {
     Frame current(ActionCommand parent, Instant deadline);
     Frame next(ActionCommand parent, ObservationIdentity after, Instant deadline);
 
+    /** Pure proposal preparation. Other producers retain their existing observation contract by default. */
+    default Frame currentForPreparation(org.xar.ck3.control.application.planning.PlanningRequest request,
+            ActionCommand proposed, Instant deadline) {
+        return current(proposed, deadline);
+    }
+
     /** Conservative default for clock control basis: delegates to current observation. */
     default <T> T withClockControlBasis(ActionCommand command, Instant deadline, java.util.function.Function<Frame, T> work) {
         Objects.requireNonNull(work);

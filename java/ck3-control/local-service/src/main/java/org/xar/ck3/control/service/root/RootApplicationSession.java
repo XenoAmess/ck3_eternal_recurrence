@@ -31,6 +31,10 @@ import org.xar.ck3.control.service.OrdinarySessionHost;
 
 /** Private-minted session owner. External callers cannot install a PID, replace its writer or clear quarantine. */
 public final class RootApplicationSession implements ActionCoordinatorPort {
+    private final ThreadLocal<org.xar.ck3.control.application.advance.LifePreparedCleanupContinuation> preparedCleanupEntry=new ThreadLocal<>();
+    private final ThreadLocal<org.xar.ck3.control.application.advance.PreparedNoEffectReconciliationToken> preparedNoEffectEntry=new ThreadLocal<>();
+    private final ThreadLocal<org.xar.ck3.control.contracts.ExactRef> reservedNoEffectEntry=new ThreadLocal<>();
+    private final ThreadLocal<Instant> reservedNoEffectDeadline=new ThreadLocal<>();
     private final RootApplicationAssembly.Core owner;
     private final RootSessionSwitchboard submissions;
     private final RootSessionSwitchboard.View authorityView;
@@ -1168,7 +1172,8 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
     }
     private void requireOwnedContinuation(CompositeContinuationToken token){
         requireOwner();Objects.requireNonNull(token);requireDeadline(token.deadline());var parent=Objects.requireNonNull(token.originalParent());
-        if (token instanceof org.xar.ck3.control.application.advance.LifeSentinelCancellation) {
+        if (token instanceof org.xar.ck3.control.application.advance.LifeSentinelCancellation
+                ||token instanceof org.xar.ck3.control.application.advance.LifePostResumePauseCancellation) {
             StrictJson.require(parent.origin() instanceof CommandOrigin.Gameplay
                     && parent.origin().machineId().equals(identity().machineId()) && parent.origin().game().equals(identity().game())
                     && parent.sessionId().equals(identity().sessionId()), "Life continuation crossed its owned Game/session");
@@ -1182,6 +1187,181 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
         StrictJson.require(parent.origin() instanceof CommandOrigin.LifecycleTerminal&&parent.operation().value().equals("continue-as-reconciled-successor")
                 &&parent.origin().machineId().equals(identity().machineId())&&parent.origin().game().equals(identity().game())
                 &&parent.sessionId().equals(identity().sessionId()),"continuation crossed its original terminal Continue parent or owned Game/session");
+    }
+    /** The independent prepared control route uses this actual registered Root
+     * session; it does not install an ordinary Host or fabricate old Ready. */
+    public CompositeContinuationReport continuePreparedCleanup(org.xar.ck3.control.application.advance.LifePreparedCleanupContinuation token)throws IOException {
+        calls.lock();try{
+            owner.requirePublicWork(this);Objects.requireNonNull(token);requireDeadline(token.deadline());
+            StrictJson.require(resourceCatalog!=null,"prepared cleanup has no actual registered source catalog");
+            var installed=resourceCatalog.remainingDomains().life();
+            StrictJson.require(preparedCleanupEntry.get()==null,"prepared cleanup actual entry cannot nest");
+            preparedCleanupEntry.set(token);
+            try{
+                requirePreparedCleanupScopeOwner(resourceCatalog.context(),installed,installed.composite());
+                installed.composite().requirePreparedCleanup(token.prepared().command(),token);
+                return coordinator.continueOriginalComposite(token);
+            }finally{preparedCleanupEntry.remove();}
+        }finally{calls.unlock();}
+    }
+    void requirePreparedCleanupScopeOwner(RootRuntimeContext context,RootLifeRuntimeFactory.Installed installed,
+            org.xar.ck3.control.application.advance.LifeAdvanceComposite actualSource)throws IOException {
+        owner.requirePublicWork(this);
+        StrictJson.require(calls.isHeldByCurrentThread()&&preparedCleanupEntry.get()!=null&&!controller.isRetired()&&resourceCatalog!=null
+                &&resourceCatalog.context()==context&&context.core()==owner&&context.actions()==this
+                &&resourceCatalog.remainingDomains().life()==installed&&installed.composite()==actualSource,
+                "prepared cleanup lost its actual Core/session/catalog/source ownership");
+        installed.requireContext(context);requireNoPendingCheckpointAdoption();
+    }
+    void requirePreparedCleanupParentProposal(ActionReceipt parent,org.xar.ck3.control.application.advance.PreparedCleanupEvidence.Prepared prepared)throws IOException {
+        var token=preparedCleanupEntry.get();
+        StrictJson.require(token!=null&&calls.isHeldByCurrentThread()&&token.prepared().reference().equals(prepared.reference())
+                &&parent.command().equals(token.originalParent()),"prepared parent proposal has no actual source entry capability");
+        requirePreparedCleanupScopeOwner(resourceCatalog.context(),resourceCatalog.remainingDomains().life(),resourceCatalog.remainingDomains().life().composite());
+    }
+    void requirePreparedCleanupProposal(ActionReceipt receipt,org.xar.ck3.control.application.advance.PreparedCleanupEvidence.Prepared prepared)throws IOException {
+        var token=preparedCleanupEntry.get();
+        StrictJson.require(calls.isHeldByCurrentThread()&&token!=null&&token.prepared().reference().equals(prepared.reference())
+                &&token.prepared().command().equals(receipt.command())&&receipt.bodySha256().equals(org.xar.ck3.control.application.action.ActionCodec.bodySha256(token.prepared().command())),
+                "prepared proposal has no actual source-owned entry capability");
+        requirePreparedCleanupScopeOwner(resourceCatalog.context(),resourceCatalog.remainingDomains().life(),resourceCatalog.remainingDomains().life().composite());
+    }
+    /** Source-owned read-only reconciliation; never enters the coordinator/native submission path. */
+    public ActionReceipt reconcilePostExitCleanupNoEffect(org.xar.ck3.control.application.advance.NoEffectReconciliationToken token)throws IOException {
+        calls.lock();
+        try {
+            owner.requirePublicWork(this);Objects.requireNonNull(token);requireDeadline(token.deadline());
+            StrictJson.require(!controller.isRetired()&&resourceCatalog!=null&&resourceCatalog.context().core()==owner
+                    &&resourceCatalog.context().actions()==this,"NoEffect requires the exact current Core/source-owned read-only session");
+            var source=resourceCatalog.remainingDomains().life().composite();
+            source.requireNoEffectReconciliation(token);
+            try{return owner.journal().locked(locked->{
+                var bound=archive.withSession(locked.writerSession());
+                source.requireNoEffectReconciliation(token);
+                var parent=locked.find(token.parentReceipt().command().actionId()).orElseThrow();
+                StrictJson.require(parent.equals(token.parentReceipt()),"NoEffect writer parent/prefix changed");
+                var current=locked.find(token.child4().command().actionId()).orElseThrow();
+                if(current.state() instanceof ActionState.CleanupNoEffectConfirmed terminal) {
+                    StrictJson.require(terminal.proofReference().equals(token.proofReference()),"NoEffect idempotent read found another proof");
+                    org.xar.ck3.control.application.advance.PostExitCleanupNoEffectProof.verifyArchivedState(current,
+                            terminal.proofReference(),terminal.originalAttempt(),terminal.originalDispatch(),bound);
+                    return current;
+                }
+                StrictJson.require(current.equals(token.child4())&&current.state() instanceof ActionState.Unknown,
+                        "NoEffect writer no longer holds its exact original UNKNOWN child");
+                var unknown=(ActionState.Unknown)current.state();
+                var result=locked.append(current.command(),current.bodySha256(),new ActionState.CleanupNoEffectConfirmed(
+                        unknown.attempt(),unknown.dispatch(),token.proofReference()));
+                StrictJson.require(locked.find(parent.command().actionId()).filter(parent::equals).isPresent(),
+                        "read-only NoEffect changed its unresolved original parent");
+                return result;
+            });}catch(java.io.UncheckedIOException failure){throw failure.getCause();}
+        } finally {calls.unlock();}
+    }
+    /** Independent readonly reconciliation of the exact original prepared fifth child. */
+    public ActionReceipt reconcilePreparedCleanupNoEffect(org.xar.ck3.control.application.advance.PreparedNoEffectReconciliationToken token)throws IOException {
+        calls.lock();
+        try {
+            owner.requirePublicWork(this);Objects.requireNonNull(token);requireDeadline(token.deadline());
+            StrictJson.require(preparedNoEffectEntry.get()==null,"prepared NoEffect entry cannot nest");
+            preparedNoEffectEntry.set(token);
+            try {
+                requirePreparedNoEffectOwner();
+                var source=resourceCatalog.remainingDomains().life().composite();
+                source.requirePreparedNoEffectReconciliation(token);
+                try{return owner.journal().locked(locked->{
+                    var bound=archive.withSession(locked.writerSession());
+                    source.requirePreparedNoEffectReconciliation(token);requireDeadline(token.deadline());
+                    var parent=locked.find(token.parentReceipt().command().actionId()).orElseThrow();
+                    StrictJson.require(parent.equals(token.parentReceipt()),"prepared NoEffect writer parent/prefix changed");
+                    var current=locked.find(token.child5().command().actionId()).orElseThrow();
+                    if(current.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed terminal){
+                        StrictJson.require(terminal.proofReference().equals(token.proofReference())&&terminal.originalPreparedState().equals(token.originalPreparedState()),
+                                "prepared NoEffect idempotent read found another complete proof/original state");
+                        org.xar.ck3.control.application.advance.PreparedCleanupNoEffectProof.verifyArchivedState(current,terminal.proofReference(),terminal.originalPreparedState(),bound);
+                        return current;
+                    }
+                    StrictJson.require(current.equals(token.child5())&&current.state() instanceof PreparedCleanupAction,
+                            "prepared NoEffect writer no longer holds its exact original fifth prepared state");
+                    var result=locked.append(current.command(),current.bodySha256(),new ActionState.PreparedCleanupNoEffectConfirmed(
+                            token.originalPreparedState(),token.proofReference()));
+                    StrictJson.require(locked.find(parent.command().actionId()).filter(parent::equals).isPresent(),
+                            "readonly prepared NoEffect changed its unresolved five-child parent");
+                    return result;
+                });}catch(java.io.UncheckedIOException failure){throw failure.getCause();}
+            }finally{preparedNoEffectEntry.remove();}
+        }finally{calls.unlock();}
+    }
+    private void requirePreparedNoEffectOwner() {
+        owner.requirePublicWork(this);
+        StrictJson.require(calls.isHeldByCurrentThread()&&preparedNoEffectEntry.get()!=null&&!controller.isRetired()&&resourceCatalog!=null
+                &&resourceCatalog.context().core()==owner&&resourceCatalog.context().actions()==this,
+                "prepared NoEffect requires its identical active Core, installed source and readonly session");
+    }
+    void requirePreparedNoEffectProposal(ActionReceipt receipt,org.xar.ck3.control.application.advance.PreparedCleanupNoEffectProof.Originals proof)throws IOException {
+        requirePreparedNoEffectOwner();var token=preparedNoEffectEntry.get();requireDeadline(token.deadline());
+        resourceCatalog.remainingDomains().life().composite().requirePreparedNoEffectReconciliation(token);
+        StrictJson.require(receipt.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed
+                &&receipt.command().equals(token.child5().command())&&receipt.bodySha256().equals(token.child5().bodySha256())
+                &&proof.proofReference().equals(token.proofReference())&&proof.parentReceipt().equals(token.parentReceipt())
+                &&proof.child5().equals(token.child5()),"prepared NoEffect proposal has no identical actual source-owned readonly token");
+        var terminal=(ActionState.PreparedCleanupNoEffectConfirmed)receipt.state();
+        StrictJson.require(terminal.proofReference().equals(token.proofReference())&&terminal.originalPreparedState().equals(token.originalPreparedState()),
+                "prepared NoEffect proposal changed the whole original prepared state");
+    }
+    /** Existing reservation's first NoEffect receipt only; does not create PREPARED or continue its parent. */
+    public ActionReceipt reconcileReservedPreparedCleanupNoEffect(org.xar.ck3.control.contracts.ExactRef reference,Instant deadline)throws IOException {
+        calls.lock();try{
+            owner.requirePublicWork(this);Objects.requireNonNull(reference);Objects.requireNonNull(deadline);requireDeadline(deadline);
+            StrictJson.require(reservedNoEffectEntry.get()==null&&reservedNoEffectDeadline.get()==null,"reserved NoEffect entry cannot nest");
+            reservedNoEffectEntry.set(reference);reservedNoEffectDeadline.set(deadline);
+            try{
+                requireReservedNoEffectOwner();var source=resourceCatalog.remainingDomains().life().composite();
+                try{return owner.journal().locked(locked->{
+                    var bound=archive.withSession(locked.writerSession());
+                    // Full actual-WAL/current-prefix qualification precedes any short validation token.
+                    var proof=source.qualifyReservedNoEffect(reference);requireDeadline(deadline);
+                    var parent=locked.find(proof.parentReceipt().command().actionId()).orElseThrow();
+                    StrictJson.require(parent.equals(proof.parentReceipt()),"reserved NoEffect writer parent changed");
+                    var existing=locked.find(proof.command().actionId());
+                    if(existing.isPresent()) {
+                        var current=existing.orElseThrow();StrictJson.require(current.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed,
+                                "reserved NoEffect cannot overwrite an existing child lifecycle");
+                        var terminal=(ActionState.ReservedPreparedCleanupNoEffectConfirmed)current.state();
+                        StrictJson.require(terminal.preparationReference().equals(proof.preparationReference())&&terminal.proofReference().equals(reference),
+                                "reserved NoEffect idempotent read changed proof/preparation");
+                        org.xar.ck3.control.application.advance.ReservedPreparedCleanupNoEffectProof.verifyArchivedState(current,reference,terminal.preparationReference(),bound);
+                        return current;
+                    }
+                    var command=proof.command();var result=locked.append(command,org.xar.ck3.control.application.action.ActionCodec.bodySha256(command),
+                            new ActionState.ReservedPreparedCleanupNoEffectConfirmed(proof.preparationReference(),reference));
+                    StrictJson.require(locked.find(parent.command().actionId()).filter(parent::equals).isPresent(),"reserved NoEffect changed its six-child parent");
+                    return result;
+                });}catch(java.io.UncheckedIOException failure){throw failure.getCause();}
+            }finally{reservedNoEffectEntry.remove();reservedNoEffectDeadline.remove();}
+        }finally{calls.unlock();}
+    }
+    private void requireReservedNoEffectOwner(){
+        owner.requirePublicWork(this);
+        StrictJson.require(calls.isHeldByCurrentThread()&&reservedNoEffectEntry.get()!=null&&reservedNoEffectDeadline.get()!=null
+                &&!controller.isRetired()&&resourceCatalog!=null&&resourceCatalog.context().core()==owner&&resourceCatalog.context().actions()==this,
+                "reserved NoEffect requires its active actual Core/source and readonly entry");
+    }
+    void requireReservedNoEffectProposal(ActionReceipt receipt,org.xar.ck3.control.application.advance.ReservedPreparedCleanupNoEffectProof.Originals proof)throws IOException {
+        requireReservedNoEffectOwner();requireDeadline(reservedNoEffectDeadline.get());
+        StrictJson.require(reservedNoEffectEntry.get().equals(proof.proofReference())&&receipt.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed
+                &&receipt.command().equals(proof.command())&&receipt.bodySha256().equals(org.xar.ck3.control.application.action.ActionCodec.bodySha256(proof.command())),
+                "reserved NoEffect proposal is outside its exact readonly entry");
+        // This mandatory actual-source callback runs after slow archive/proof/backend/WAL validation.
+        // Preview and commit revalidation each bind the original same operation deadline; neither grants Native authority.
+        var source=resourceCatalog.remainingDomains().life().composite();
+        var token=source.reservedNoEffectReconciliationToken(proof.proofReference(),reservedNoEffectDeadline.get())
+                .orElseThrow(()->new IOException("reserved NoEffect readonly validation window is unavailable"));
+        source.requireReservedNoEffectReconciliation(token);
+        var terminal=(ActionState.ReservedPreparedCleanupNoEffectConfirmed)receipt.state();
+        StrictJson.require(terminal.proofReference().equals(token.proofReference())&&terminal.preparationReference().equals(token.preparationReference())
+                &&proof.parentReceipt().equals(token.parentReceipt())&&proof.children().equals(token.children()),
+                "reserved NoEffect proposal changed its actual-source proof/preparation/prefix");
     }
     public void requestStop() { controller.requestStop(); }
     /** Physical Game cleanup is owned by ManagedGameSession; retirement only revokes this application owner. */

@@ -190,6 +190,9 @@ public final class ClockStatusRead {
         return read;
     }
     public Observation observe(ActionCommand parent, AdvanceObservationPort.Frame current, Instant deadline) {
+        if (parentStatusRead.isPresent() && LifeAdvanceComposite.accepts(parent.operation().value())
+                && current.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement)
+            return observeRetainedParent(parent, current, deadline);
         require(current.source().equals(parent.source()) && current.sessionId().equals(parent.sessionId())
                 && current.identity().game().equals(parent.before().game()), "clock read crossed held Game/source/session");
         var request = new PlanningReadRequest(current.identity(), parent.source(), parent.sessionId(), new OperationKey(STEP),

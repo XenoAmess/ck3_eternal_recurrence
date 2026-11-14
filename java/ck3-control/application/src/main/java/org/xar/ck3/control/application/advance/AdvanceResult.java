@@ -177,14 +177,25 @@ public record AdvanceResult(ActionCommand command, AdvancePlan plan, AdvanceObse
         require(readRef != null, "advance native read reference field missing");
         if (!readRef.isNull()) {
             PlanningReadReceipt read = archive.loadRead(ExactRef.fromJson(readRef));
-            require(read.request().source().equals(receipt.command().source()) && read.request().sessionId().equals(receipt.command().sessionId())
-                    && read.request().before().game().equals(receipt.command().before().game()) && read.contractId().equals(ClockStatusRead.CONTRACT_ID)
-                    && read.request().operation().value().equals(ClockStatusRead.STEP), "archived native stop read crossed registered operation/source/session/Game");
+            requireRegisteredStopRead(receipt.command(), read, archive);
             var clock = row.has("campaign_deadline_native_clock_v1") ? row.get("campaign_deadline_native_clock_v1") : row.get("exact_day_native_clock");
             require(clock != null && clock.isObject() && clock.has("stopped")
                     && SentinelObservation.decode(clock.get("stopped")).equals(ClockStatusRead.decode(read.original())), "archived stop status differs from the actual independent original query");
         }
         return Optional.of(original);
+    }
+    /** Original registered Status DATA only; no ordinary observation identity is invented for physical reads. */
+    static void requireRegisteredStopRead(ActionCommand parent, PlanningReadReceipt read, ActionPorts.OutcomeArchive archive) {
+        if (read.request().origin() instanceof CommandOrigin.PhysicalStatusOnly) {
+            var observation = new ClockStatusRead.Observation(ClockStatusRead.decode(read.original()), read, archive.referenceOf(read.original()));
+            observation.requirePhysicalParent(parent);
+            org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(read, archive);
+            read.original().custody().orElseThrow(() -> new IllegalArgumentException("physical Status actual query custody absent")).verify(read);
+        } else {
+            require(read.request().source().equals(parent.source()) && read.request().sessionId().equals(parent.sessionId())
+                    && read.request().before().game().equals(parent.before().game()) && read.contractId().equals(ClockStatusRead.CONTRACT_ID)
+                    && read.request().operation().value().equals(ClockStatusRead.STEP), "archived native stop read crossed registered operation/source/session/Game");
+        }
     }
     private static Optional<ExpectedText> textField(List<ExpectedValue> values, String field) {
         List<ExpectedValue> found = values.stream().filter(value -> value.field().value().equals(field)).toList();

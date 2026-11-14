@@ -260,6 +260,10 @@ public final class RootApplicationAssembly {
         private WriterContracts.TransitionAuthority startupWriterAuthority() {
             return new WriterContracts.TransitionAuthority() {
                 private WriterContracts.TransitionAuthority selected(WriterContracts.Request request) {
+                    var retirement=reservedRetirement.get();
+                    if(retirement!=null&&ContinuityActionJournal.KIND.equals(request.kind())) {
+                        retirement.requireCurrent();return retirement.authority;
+                    }
                     return org.xar.ck3.control.continuity.SavedContinuityBootstrap.KIND.equals(request.kind())
                             ?confirmedSavedAuthority:router;
                 }
@@ -670,6 +674,86 @@ public final class RootApplicationAssembly {
             StrictJson.require(operatorQuarantine==null,"operator quarantine source binds once to this actual Core");operatorQuarantine=Objects.requireNonNull(actual);
         }
         public synchronized Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource> operatorQuarantineSource(){return Optional.ofNullable(operatorQuarantine);}
+        /** A private administrative scope: it grants exactly one configured parent retirement, never ordinary ACTION/READ/SDK permission. */
+        private final ThreadLocal<ReservedRetirementScope> reservedRetirement=new ThreadLocal<>();
+        private final class ReservedRetirementScope implements AutoCloseable {
+            final ContinuityStorePort.Session same; final ManagedGameSession game;
+            final org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource source; final Instant deadline;
+            RootReservedRetirementArchive raw;
+            ActionPorts.OutcomeArchive data;
+            WriterContracts.TransitionAuthority authority;
+            NativeRecordedEvidenceVerifier verifier;
+            ContinuityActionJournal administrativeJournal;
+            ReservedRetirementScope(ContinuityStorePort.Session same,ManagedGameSession game,
+                    org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource source,Instant deadline) {
+                this.same=same;this.game=game;this.source=source;this.deadline=deadline;
+            }
+            void initialize() {
+                requireCurrent();
+                raw=RootReservedRetirementArchive.create(archive.withSession(same),same,originals,this::requireCurrent,
+                        source.request().parentActionId(),source.request().parentBodySha256());data=raw.archive();
+                var definition=new RootOrdinaryImplementationMetadata().implementation(
+                        org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource.class);
+                verifier=new NativeRecordedEvidenceVerifier(data,borrowed(),originals,
+                        RootAdvanceInfrastructureFactory.freshFrameLoader(frames),List.of(new NativeRecordedEvidenceVerifier.Binding(
+                        data.loadReceipt(source.request().originalReceipt()).command().operation(),definition,(head,receipt,scoped)->{
+                            requireCurrent();var request=source.request();
+                            StrictJson.require(receipt.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeOperatorQuarantined
+                                    &&receipt.command().actionId().equals(request.parentActionId())
+                                    &&receipt.bodySha256().equals(request.parentBodySha256())
+                                    &&receipt.sequence()==Math.addExact(request.expectedHeadSequence(),1),
+                                    "administrative verifier accepts only its actual configured parent retirement");
+                            try{source.verify(same,head,receipt,scoped);}
+                            catch(IOException failure){throw new UncheckedIOException(failure);}
+                        })));
+                authority=new ActionContinuityAuthority("reserved-life-operator-retirement",data,
+                        (head,command)->{throw new IllegalStateException("administrative retirement grants no command guard");},
+                        verifier,clock);
+                administrativeJournal=new ContinuityActionJournal(writer,data);
+            }
+            void requireCurrent() {
+                try {
+                    writer.requireSession(same);game.verify();
+                    StrictJson.require(reservedRetirement.get()==this&&operatorQuarantine==source&&source.request().reservedTailInterruption()
+                            &&activeSession==null&&!finished&&!router.isSealed()&&clock.instant().isBefore(deadline)
+                            &&source.request().machineId().equals(game.machineId())&&source.request().game().equals(game.generation())
+                            &&source.request().episodeRunId().equals(game.sessionId()),
+                            "private retirement scope lost its actual uninstalled Core/Game/source/writer ownership");
+                }catch(IOException failure){throw new UncheckedIOException(failure);}
+            }
+            @Override public void close(){if(raw!=null)raw.close();}
+        }
+        /** Administrative v3 only. Ordinary Driver/controller restoration remains a separate fully guarded step. */
+        public ActionReceipt retireReservedLifeInterruptionOnly(ManagedGameSession game,Instant deadline)throws IOException {
+            Objects.requireNonNull(game);Objects.requireNonNull(deadline);
+            var source=operatorQuarantineSource().orElseThrow(()->new IOException("configured reserved-tail operator source is absent"));
+            StrictJson.require(source.request().reservedTailInterruption()&&activeSession==null&&!finished&&!router.isSealed()
+                    &&reservedRetirement.get()==null&&clock.instant().isBefore(deadline),
+                    "independent reserved-tail retirement requires its uninstalled actual Core and finite operation window");
+            return writer.locked(same->archive.inSession(same,actualArchive->{
+                var scope=new ReservedRetirementScope(same,game,source,deadline);reservedRetirement.set(scope);
+                try(scope) {
+                    scope.initialize();var originals=scope.data;var request=source.request();var head=same.head();
+                    StrictJson.require(head.state().machineId().equals(game.machineId()),"retirement Core belongs to another machine");
+                    var original=ContinuityActionJournal.lookup(head.state(),request.parentActionId(),originals).orElseThrow();
+                    if(original.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeOperatorQuarantined) {
+                        var proof=org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(original,originals);
+                        StrictJson.require(proof.requestSource().equals(source.requestReference()),"existing retirement belongs to another request");
+                        scope.verifier.verify(head,original);return original;
+                    }
+                    request.requireParent(original);var observation=source.capture(same,original,originals);
+                    var terminal=scope.administrativeJournal.locked(same,locked->{
+                        var retained=locked.find(request.parentActionId()).orElseThrow();
+                        StrictJson.require(retained.equals(original)&&retained.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown,
+                                "reserved-tail parent changed before its actual administrative append");
+                        return locked.append(retained.command(),retained.bodySha256(),new org.xar.ck3.control.application.action.ActionState.CompositeOperatorQuarantined(
+                                ((org.xar.ck3.control.application.action.ActionState.CompositeUnknown)retained.state()).execution(),observation));
+                    });
+                    scope.verifier.verify(same.head(),terminal);return terminal;
+                }catch(IOException failure){throw new UncheckedIOException(failure);}
+                finally{reservedRetirement.remove();}
+            }));
+        }
         public ContinuityWriter writer() { return writer; }
         public NativeOutcomeArchive archive() { return archive; }
         public ArchiveOriginalEvidencePort originals() { return originals; }
@@ -1192,7 +1276,10 @@ public final class RootApplicationAssembly {
             return writer.locked(same->{
                 final DriverBootstrap.Adopted result;
                 try {
-                    result=DriverBootstrap.adoptSettledSameGameWithHistoricalReads(data,same,actions,game.nativeTransport(),archive,
+                    if(operatorQuarantineSource().map(value->value.request().reservedTailInterruption()).orElse(false))
+                        result=DriverBootstrap.adoptSettledSameGameWithReservedLifeVerifier(data,same,actions,game.nativeTransport(),archive,
+                                writer::borrowedSession,retainedFrames,deadline,this::verifyReservedRetirement);
+                    else result=DriverBootstrap.adoptSettledSameGameWithHistoricalReads(data,same,actions,game.nativeTransport(),archive,
                             writer::borrowedSession,retainedFrames,deadline);
                 }catch(InterruptedException interrupted){
                     Thread.currentThread().interrupt();
@@ -1204,6 +1291,82 @@ public final class RootApplicationAssembly {
             });
         }
 
+        private ContinuityBatchJournal.RetiredLifeInterruptionOriginal reservedLifeRecovery;
+        /** Lexical DATA custody only, also usable by the genuinely installed ordinary Core. Never an ACTION authority. */
+        private <T>T withReservedRetirementData(ContinuityStorePort.Session same,ActionPorts.CheckedArchiveRead<T> work)throws IOException {
+            writer.requireSession(same);var source=operatorQuarantineSource().orElseThrow();var thread=Thread.currentThread();var head=same.head();
+            Runnable owner=()->{try {
+                writer.requireSession(same);
+                boolean current=Thread.currentThread()==thread&&operatorQuarantine==source&&source.request().reservedTailInterruption()&&!resourcesClosed
+                        &&same.head().state().sequence()==head.state().sequence();
+                if(current){var observed=same.head();current=observed==head||observed.digest().equals(head.digest());}
+                StrictJson.require(current,"retirement DATA projection lost its actual Core/source/writer/thread/current held head");
+            }catch(IOException failure){throw new UncheckedIOException(failure);}};
+            try(var raw=RootReservedRetirementArchive.create(archive.withSession(same),same,originals,owner,source.request().parentActionId(),source.request().parentBodySha256())) {
+                return work.read(raw.archive());
+            }
+        }
+        /** The exact real Core verifies only its installed source's historical retirement; this grants no writer or SDK capability. */
+        private void verifyReservedRetirement(ContinuityStorePort.Session same,ActionJournal.Snapshot snapshot,ActionReceipt parent)throws IOException {
+            writer.requireSession(same);var source=operatorQuarantineSource().orElseThrow();
+            StrictJson.require(source.request().reservedTailInterruption()&&parent.command().actionId().equals(source.request().parentActionId())
+                    &&parent.bodySha256().equals(source.request().parentBodySha256())&&snapshot.actions().contains(parent),"retirement projection crossed configured Core/source/parent");
+            withReservedRetirementData(same,scoped->{
+                StrictJson.require(same.head().state().sequence()==snapshot.ledgerSequence()&&same.head().digest().equals(snapshot.headSha256()),
+                        "retirement projection snapshot differs from its actual held writer head");
+                var canonical=ContinuityActionJournal.lookup(same.head().state(),parent.command().actionId(),scoped).orElseThrow();
+                StrictJson.require(canonical.equals(parent),"retirement projection parent is not its actual canonical original");
+                var definition=new RootOrdinaryImplementationMetadata().implementation(org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource.class);
+                var verifier=new NativeRecordedEvidenceVerifier(scoped,borrowed(),originals,RootAdvanceInfrastructureFactory.freshFrameLoader(frames),
+                        List.of(new NativeRecordedEvidenceVerifier.Binding(parent.command().operation(),definition,(head,receipt,actualArchive)->{
+                            StrictJson.require(receipt.equals(parent),"retirement projection verifier changed its exact canonical parent");
+                            try{source.verify(same,head,receipt,actualArchive);}catch(IOException failure){throw new UncheckedIOException(failure);}
+                        })));
+                verifier.verify(same.head(),parent);return null;
+            });
+        }
+        public synchronized ContinuityBatchJournal.RetiredLifeInterruptionOriginal readRetiredLifeInterruptionOriginal(
+                ManagedGameSession game,OriginalWindowReducer.Policy policy)throws IOException {
+            StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty(),"retired reconstruction reads this unused actual Core");
+            var source=operatorQuarantineSource().orElseThrow();
+            return writer.locked(same->{
+                withReservedRetirementData(same,scoped->{
+                    var parent=ContinuityActionJournal.lookup(same.head().state(),source.request().parentActionId(),scoped).orElseThrow();
+                    source.verify(same,same.head(),parent,scoped);return null;
+                });
+                var cycles=new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,policy,writer::requireSession);cycles.bindTerminalFrameLoader(frames);
+                var batches=new ContinuityBatchJournal(writer,cycles);
+                var original=batches.readRetiredLifeInterruptionOriginal(same,new SessionIdentity(game.machineId(),game.generation(),game.sessionId()),source.request());
+                unresolvedSameGameCycles=cycles;unresolvedSameGameBatches=batches;unresolvedSameGamePolicy=policy;reservedLifeRecovery=original;return original;
+            });
+        }
+        public synchronized DriverBootstrap.Adopted adoptRetiredLifeInterruption(ManagedGameSession game,
+                ContinuityBatchJournal.RetiredLifeInterruptionOriginal original,int retainedFrames,Instant deadline)throws IOException,InterruptedException {
+            StrictJson.require(original==reservedLifeRecovery&&menu==null&&!staged&&!finished&&adopted.isEmpty(),"retired adoption requires this actual Core's journal-issued original");
+            return writer.locked(same->{
+                try {
+                    var result=DriverBootstrap.adoptRetiredLifeInterruption(original,same,actions,game.nativeTransport(),archive,writer::borrowedSession,retainedFrames,deadline,
+                            this::verifyReservedRetirement,()->{
+                                var issued=clock.instant();var until=issued.plus(Duration.ofMinutes(10));if(deadline.isBefore(until))until=deadline;
+                                original.beginCompletion(same,clock,until);
+                            });
+                    adopted.add(result);return result;
+                }catch(InterruptedException interrupted){Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("retired Life adoption interrupted");failure.initCause(interrupted);throw failure;}
+            });
+        }
+        public long completeRetiredLifeInterruptionRecovery(RootApplicationSession actual,DriverBootstrap.Adopted driver,
+                ContinuityBatchJournal.RetiredLifeInterruptionOriginal original)throws IOException {
+            StrictJson.require(actual==activeSession&&adopted.contains(driver)&&original==reservedLifeRecovery,"retired completion crossed its actual Root/Driver/journal");
+            return writer.locked(same->{
+                original.requireCurrent(same);var source=operatorQuarantineSource().orElseThrow();source.verify(same,same.head(),original.terminal(),archive.withSession(same));
+                var history=actionHistory.required().completed(same,original.terminal());
+                StrictJson.require(history instanceof DriverActionHistoryPublisher.Unchanged unchanged&&unchanged.reason()==DriverActionHistoryPublisher.Reason.OPERATOR_QUARANTINED_UNKNOWN_EFFECT_VERIFIED,
+                        "administrative retirement cannot create a recorder row or credit");
+                var current=initialRecoverySemantic(same,driver,actual.identity());
+                var recovery=unresolvedSameGameBatches.commitRetiredLifeInterruptionRecovery(same,original,current);
+                actual.controllerForPublication().restoreOperatorQuarantine(same,recovery);return recovery.nextBatchSequence();
+            });
+        }
         /** Configured operator decision has a separate zero-cycle/registered-child read role; ordinary readers are unchanged. */
         public synchronized Optional<ContinuityBatchJournal.UnresolvedSameGameData> readOperatorQuarantineOriginal(
                 ManagedGameSession game,OriginalWindowReducer.Policy cyclePolicy)throws IOException {
@@ -1644,7 +1807,7 @@ public final class RootApplicationAssembly {
         }
 
         public RootApplicationSession finishUnresolvedSameGame(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,FreshSessionConfiguration configuration,FreshSessionServices services)throws IOException,InterruptedException{
-            StrictJson.require(unresolvedSameGameData != null, "unresolved same-game data required");
+            StrictJson.require(unresolvedSameGameData != null||reservedLifeRecovery!=null, "actual unresolved or retired same-game reader original required");
             StrictJson.require(unresolvedSameGamePolicy.equals(configuration.cyclePolicy()), "unresolved same-game policy mismatch");
             return finishObserved(installed, driver, configuration, services, Optional.empty());
         }
@@ -1698,7 +1861,7 @@ public final class RootApplicationAssembly {
             var authorityId=configuration.authorityId();
 
             installed.bindPhysicalDriver(driver);
-            var staged=unresolvedSameGameData==null
+            var staged=unresolvedSameGameData==null&&reservedLifeRecovery==null
                     ?stage(driver,game,sources,policy,freshness,files,checkpoints.driverCheckpoint(),checkpoints.checkpointEvidence(),checkpoints.attachmentEvidence(),remaining.lifecycle().seedAdoption(),checkpoints.lineageId(),checkpoints.save())
                     :stageReadonly(driver,game,sources,policy,freshness,files,checkpoints.driverCheckpoint(),checkpoints.checkpointEvidence(),checkpoints.attachmentEvidence(),remaining.lifecycle().seedAdoption(),checkpoints.lineageId(),checkpoints.save());
             installed.bindSave(staged);
@@ -1743,7 +1906,7 @@ public final class RootApplicationAssembly {
                     }
                     publishMissingSettledCouncilHistory(same,driver,staged);
                     runtime.capabilities().restoreRetainedPlanning(same);
-                } else if (unresolvedSameGameData != null) {
+                } else if (unresolvedSameGameData != null||reservedLifeRecovery!=null) {
                     // Restore the existing per-graph reader without capture/publication or canonical head changes.
                     runtime.capabilities().restoreRetainedPlanning(same);
                 } else if(confirmedSavedEntry!=null||retainedSavedEntry!=null) {
@@ -1803,7 +1966,7 @@ public final class RootApplicationAssembly {
                 RootNativeSourceAuthority sources, NativeReadiness.Policy policy, Duration freshness,
                 CheckpointFiles files, Path driverCheckpointPath, Path checkpointEvidence,
                 Path attachmentEvidence, CheckpointService.SeedAdoptionPort seeds, String lineageId, Path savePath) throws IOException {
-            StrictJson.require(!staged&&!finished&&adopted.contains(driver)&&unresolvedSameGameData!=null
+            StrictJson.require(!staged&&!finished&&adopted.contains(driver)&&(unresolvedSameGameData!=null||reservedLifeRecovery!=null)
                     &&driver.status()==DriverBootstrap.AdoptionStatus.READ_ONLY_UNRESOLVED,
                     "readonly reconstruction requires this Core's actual unresolved Driver");
             return stagePhysical(driver,game,sources,policy,freshness,files,driverCheckpointPath,checkpointEvidence,attachmentEvidence,seeds,lineageId,savePath);

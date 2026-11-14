@@ -38,8 +38,14 @@ public final class AdvanceClock {
                     && (nativeStopRead.isEmpty() || stopped.orElseThrow().equals(nativeStopRead.orElseThrow().status())), "native stop needs its exact original independent Status receipt");
         }
     }
-    public record Outcome(AdvanceObservationPort.Frame endingFrame, Diagnostics diagnostics) {
-        public Outcome { Objects.requireNonNull(endingFrame); Objects.requireNonNull(diagnostics); }
+    public record Outcome(AdvanceObservationPort.Frame endingFrame, Diagnostics diagnostics,
+            Optional<AdvanceObservationPort.Frame> modalAvailabilityBeforeStatus) {
+        public Outcome(AdvanceObservationPort.Frame endingFrame,Diagnostics diagnostics) {
+            this(endingFrame,diagnostics,Optional.empty());
+        }
+        public Outcome {
+            Objects.requireNonNull(endingFrame);Objects.requireNonNull(diagnostics);Objects.requireNonNull(modalAvailabilityBeforeStatus);
+        }
     }
     public static final class ChildUnresolved extends IllegalStateException {
         private static final long serialVersionUID = 1L;
@@ -99,6 +105,7 @@ public final class AdvanceClock {
         AdvanceObservationPort.Frame current = starting;
         Optional<Status> armed = Optional.empty(), stopped = Optional.empty(); boolean canceled = false;
         Optional<ClockStatusRead.Observation> nativeStopRead = Optional.empty();
+        Optional<AdvanceObservationPort.Frame> modalAvailabilityBeforeStatus=Optional.empty();
         int childStart = children.completed().size();
         if (integer(current.semantic().get("speed"), "speed").intValueExact() != plan.speed()) {
             ActionReceipt setter = submit(parent, children, current, "set-speed-" + plan.speed(), bounded(parent, commandTimeout));
@@ -176,7 +183,17 @@ public final class AdvanceClock {
                 // Keep the actual endpoint after that query on normal stops as well.
                 AdvanceObservationPort.Frame afterStatus = current(parent);
                 requireAfterControl(parent, current, read, afterStatus);
-                require(sameBoundary(current, afterStatus), "native triggered boundary changed after independent terminal Status");
+                if(!sameBoundary(current,afterStatus)) {
+                    require(LifeAdvanceComposite.accepts(parent.operation().value())
+                            &&current.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement
+                            &&afterStatus.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement
+                            &&read.physicalIdentity().isPresent()
+                            &&read.physicalIdentity().orElseThrow().nativeRevision().compareTo(current.identity().frame().identity().nativeRevision())>=0
+                            &&!read.physicalIdentity().orElseThrow().observedAt().isBefore(current.observedAt())
+                            &&PhysicalModalAvailability.unavailableProfileTransition(current.semantic(),afterStatus.semantic()),
+                            "native triggered boundary changed after independent terminal Status");
+                    modalAvailabilityBeforeStatus=Optional.of(current);
+                }
                 current = afterStatus;
             }
         } else if (AdvanceProgress.newModal(current.semantic(), starting.identity(), Optional.of(starting.semantic())).isPresent()
@@ -189,7 +206,7 @@ public final class AdvanceClock {
                 && integer(actualEnding.semantic().get("speed"), "speed").intValueExact() == 2, "daily watch actual post-Status ending owner/speed changed"));
         if (plan.dailyWatch().isPresent()) watchedBoundary(plan, actualEnding);
         return new Outcome(current, new Diagnostics(plan.startingDateRaw(), end, end.subtract(plan.startingDateRaw()).divide(AdvancePlan.DAY).intValueExact(),
-                plan.horizonDays(), plan.speed(), plan.policy(), progress, armed, stopped, canceled, ids, elapsed(begun), nativeStopRead));
+                plan.horizonDays(), plan.speed(), plan.policy(), progress, armed, stopped, canceled, ids, elapsed(begun), nativeStopRead),modalAvailabilityBeforeStatus);
     }
     public ActionReceipt submit(ActionCommand parent, CompositeActionPort.Children children, AdvanceObservationPort.Frame frame, String step, Instant deadline) {
         require(children.completed().stream().allMatch(ActionReceipt::settled), "UNKNOWN child cannot be followed by another native mutation");

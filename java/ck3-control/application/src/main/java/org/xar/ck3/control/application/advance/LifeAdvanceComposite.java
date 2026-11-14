@@ -17,7 +17,7 @@ import org.xar.ck3.control.reconciliation.LateOutcome.State;
 import org.xar.ck3.control.reconciliation.LateOutcome.Status;
 
 /** The production Java owner of life-advance and life-advance-one-day. Native receives only durable children. */
-public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGameplayBeforeChildren, CompositeActionPort.LifeControlPrefixSource, CompositeActionPort.OriginalContinuation {
+public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGameplayBeforeChildren, CompositeActionPort.LifeControlPrefixSource, CompositeActionPort.OriginalContinuation,CompositeActionPort.PreparedCleanupSource {
     public static final String HANDLER = "java.native-driver.life-advance.v1";
     private final AdvanceObservationPort observations;
     private final AdvanceReadiness.Port readiness;
@@ -30,8 +30,35 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
     @FunctionalInterface public interface CancellationReads {
         CancellationRead read(ActionCommand parent, CompositeExecution execution, List<ActionReceipt> canonicalChildren, Instant deadline);
     }
-    public record CancellationRead(PlanningReadResult.Known<Status> status, AdvanceObservationPort.Frame ending) {
-        public CancellationRead { Objects.requireNonNull(status); Objects.requireNonNull(ending);
+    /** Actual installed source provider only. An implementation or DATA record cannot grant Root/native custody. */
+    public interface PostResumePauseCancellationReads extends CancellationReads {
+        void requireQualifiedBackend(ActionReceipt original,List<ActionReceipt> canonicalOriginalChildren);
+        default void requireQualifiedNoEffectBackend(PostExitCleanupNoEffectProof.Verified proof) {
+            throw new IllegalStateException("actual source has no accepted post-exit NoEffect qualification");
+        }
+    }
+    /** Actual installed Root provider only; old lambdas and old providers have
+     * no prepared-cleanup capability. SDK independently rechecks the private Root
+     * lexical capability; implementing this interface does not register authority. */
+    public interface PreparedCleanupReads extends PostResumePauseCancellationReads {
+        default void requireQualifiedReservedNoEffectBackend(ReservedPreparedCleanupNoEffectProof.Verified proof) {
+            throw new IllegalStateException("actual source has no accepted reserved-cleanup NoEffect qualification");
+        }
+        default void requireQualifiedPreparedNoEffectBackend(PreparedCleanupNoEffectProof.Verified proof) {
+            throw new IllegalStateException("actual source has no accepted prepared-cleanup NoEffect qualification");
+        }
+        PreparedCleanupParentProjection projectPreparedParent(LifeAdvanceComposite actual,LifePreparedCleanupContinuation token,
+                PreparedCleanupEvidence.Prepared prepared,PreparedCleanupEvidence.PostAckCaptured captured,ExactRef captureReference);
+        <T>T withPreparedCleanupScope(LifeAdvanceComposite actual,LifePreparedCleanupContinuation token,
+                PreparedCleanupEvidence.Prepared prepared,CompositeActionPort.PreparedCleanupWork<T> work)
+                throws java.io.IOException,InterruptedException;
+    }
+    public record CancellationRead(PlanningReadResult.Known<Status> status, AdvanceObservationPort.Frame ending,
+            Optional<ExactRef> postResumeAuthorization) {
+        public CancellationRead(PlanningReadResult.Known<Status> status,AdvanceObservationPort.Frame ending) {
+            this(status,ending,Optional.empty());
+        }
+        public CancellationRead { Objects.requireNonNull(status); Objects.requireNonNull(ending); Objects.requireNonNull(postResumeAuthorization);
             require(status.value().equals(ClockStatusRead.decode(status.receipt().original())), "actual physical Status value differs"); }
     }
     private final CancellationReads cancellationReads;
@@ -177,6 +204,13 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
             return new ActionPorts.CompositeNoGameplayWriteObserved(observation);
         }
 
+        var actualPreparedCursor=actions.find(parent.actionId());
+        if(actualPreparedCursor.filter(PreparedCleanupCursor::marked).isPresent()){
+            var original=actualPreparedCursor.orElseThrow();
+            PreparedCleanupCursor.load(original,archive,preparedCleanupFrames());
+            return new ActionPorts.Pending(PreparedCleanupEvidence.CURSOR_PREFIX+"read-only prepared cursor; completed child proof requires its dedicated parent replay",((ActionState.CompositeUnknown)original.state()).evidence());
+        }
+        if(postResumePauseCleanupCursor(parent,retained))return observePostResumePauseCleanup(parent,retained);
         Optional<ActionPorts.Pending> originalFailure = ExactDayClockFailureEvidence.retainedPending(parent, retained, actions, archive);
         if (originalFailure.isPresent()) return originalFailure.orElseThrow();
         List<ActionReceipt> children = new ArrayList<>();
@@ -272,6 +306,375 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         ExactRef basis = LifeAdvanceEvidence.preserve(parent, starting, current, progress, terminal, children, Optional.empty(), archive);
         return completed(parent, plan, current, progress, null, terminal, children, List.of(basis));
     }
+    // Only the actual installed Root's private, exact-subject backend provider may qualify this new role.
+    // Existing constructors and ordinary CancellationReads lambdas remain unqualified and issue no token.
+    public Optional<LifePostResumePauseCancellation> postResumePauseCancellationToken(ActionReceipt original,Instant requestedDeadline) {
+        if(!(cancellationReads instanceof PostResumePauseCancellationReads qualified))return Optional.empty();
+        if(!(original.state() instanceof ActionState.CompositeUnknown unknown)||unknown.execution().children().size()<3)return Optional.empty();
+        if(unknown.reason().startsWith(LifePostResumePauseCleanupEvidence.CURSOR_PREFIX))return Optional.empty();
+        var prefix=canonicalChildren(unknown.execution());
+        if(prefix.stream().anyMatch(child->!child.settled())||!prefix.getLast().command().operation().value().equals("pause-map")
+                ||prefix.stream().noneMatch(child->child.command().operation().value().equals("resume-map")
+                    &&child.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED))return Optional.empty();
+        require(actions.find(original.command().actionId()).filter(original::equals).isPresent(),
+                "post-resume cancellation issuer needs the exact latest canonical original");
+        qualified.requireQualifiedBackend(original,prefix);
+        LifePostResumePauseCleanupProof.original(original,prefix);
+        if(!(entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier actualFrames))return Optional.empty();
+        var issued=clock.instant();var maximum=issued.plus(java.time.Duration.ofMinutes(10));
+        var deadline=requestedDeadline.isBefore(maximum)?requestedDeadline:maximum;
+        if(!issued.isBefore(deadline))return Optional.empty();
+        var fresh=cancellationReads.read(original.command(),unknown.execution(),prefix,deadline);
+        var reference=fresh.postResumeAuthorization().orElseThrow(()->new IllegalStateException("actual post-resume authorization producer is absent"));
+        var authorization=LifePostResumePauseCleanupEvidence.loadAuthorization(reference,archive,actualFrames);
+        require(authorization.original().parent().equals(original)&&authorization.original().children().equals(prefix)
+                &&authorization.deadline().equals(deadline)&&authorization.armedStatus().receipt().equals(fresh.status().receipt())
+                &&authorization.beforeCancel().equals(fresh.ending()),"post-resume issuer received another original prefix or physical read");
+        LifePostResumePauseCleanupProof.requireFreshArmedPaused(authorization.original(),authorization.armedStatus(),authorization.beforeCancel(),
+                authorization.issuedAt(),deadline,clock.instant());
+        require(clock.instant().isBefore(authorization.armedStatus().receipt().request().deadline()),
+                "post-resume issuer may not mint a token from an already expired physical observation window");
+        return Optional.of(new LifePostResumePauseCancellation(this,original,authorization.parentReference(),prefix,authorization.childReferences(),
+                authorization.armedStatus(),authorization.beforeCancel(),authorization.issuedAt(),deadline,reference));
+    }
+    /** A new, different ordinal only after actual canonical NoEffect. Preserving
+     * preparation DATA is slow and confers no Native or late-frame authority. */
+    public Optional<LifePreparedCleanupContinuation> preparedCleanupToken(ActionReceipt original,Instant requestedDeadline) {
+        if(!(cancellationReads instanceof PreparedCleanupReads qualified)
+                ||!(entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier frames))return Optional.empty();
+        if(!(original.state() instanceof ActionState.CompositeUnknown unknown)||unknown.execution().children().size()!=4)return Optional.empty();
+        require(actions.find(original.command().actionId()).filter(original::equals).isPresent(),"prepared cleanup issuer requires its latest canonical parent");
+        var children=canonicalChildren(unknown.execution());
+        if(!(children.getLast().state() instanceof ActionState.CleanupNoEffectConfirmed terminal))return Optional.empty();
+        var proof=PostExitCleanupNoEffectProof.load(terminal.proofReference(),archive,frames);
+        qualified.requireQualifiedNoEffectBackend(proof);
+        require(children.subList(0,3).equals(proof.children().subList(0,3))&&original.command().equals(proof.parentReceipt().command())
+                &&unknown.execution().equals(((ActionState.CompositeUnknown)proof.parentReceipt().state()).execution()),
+                "prepared cleanup changed the actual immutable four-child parent/prefix");
+        var issued=clock.instant();var maximum=issued.plus(java.time.Duration.ofMinutes(10));
+        var deadline=requestedDeadline.isBefore(maximum)?requestedDeadline:maximum;if(!issued.isBefore(deadline))return Optional.empty();
+        var operation=children.getLast().command().operation();var arguments=new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of());
+        var before=children.getLast().command().before();
+        var child=new ActionCommand(ActionIds.child(original.command().actionId(),5,operation),before,original.command().source(),original.command().sessionId(),
+                operation,arguments,AdvancePrimitives.expected(before,original.command().source(),operation,arguments),original.command().claims(),deadline);
+        var reference=PreparedCleanupEvidence.preservePrepared(original,children,child,AdvancePrimitives.prepareRequest(child),
+                java.util.UUID.randomUUID().toString(),issued,deadline,archive,frames);
+        var prepared=PreparedCleanupEvidence.loadPrepared(reference,archive,frames);
+        require(clock.instant().isBefore(deadline),"new prepared operation expired during durable preparation; do not renew it");
+        return Optional.of(new LifePreparedCleanupContinuation(this,prepared,issued,deadline));
+    }
+    /** New ordinal six only after the actual current fifth child is independently NoEffect terminal. */
+    public Optional<LifePreparedCleanupContinuation> preparedCleanupSuccessorToken(ActionReceipt original,Instant requestedDeadline) {
+        if(!(cancellationReads instanceof PreparedCleanupReads qualified)||!(entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier frames))return Optional.empty();
+        if(!(original.state() instanceof ActionState.CompositeUnknown unknown)||unknown.execution().children().size()!=5)return Optional.empty();
+        require(actions.find(original.command().actionId()).filter(original::equals).isPresent(),"prepared successor requires the latest exact five-child parent");
+        var children=canonicalChildren(unknown.execution());
+        if(!(children.getLast().state() instanceof ActionState.PreparedCleanupNoEffectConfirmed terminal))return Optional.empty();
+        var predecessor=PreparedCleanupNoEffectProof.load(terminal.proofReference(),archive,frames);
+        PreparedCleanupNoEffectProof.verifyArchivedState(children.getLast(),terminal.proofReference(),terminal.originalPreparedState(),archive);
+        qualified.requireQualifiedPreparedNoEffectBackend(predecessor);
+        require(original.equals(predecessor.parentReceipt())&&children.subList(0,4).equals(predecessor.children().subList(0,4))
+                &&terminal.originalPreparedState().equals(predecessor.originalPreparedState()),
+                "prepared successor changed original five bindings or the complete canonical fifth NoEffect state");
+        var issued=clock.instant();var maximum=issued.plus(java.time.Duration.ofMinutes(20));
+        var deadline=requestedDeadline.isBefore(maximum)?requestedDeadline:maximum;if(!issued.isBefore(deadline))return Optional.empty();
+        var operation=children.getLast().command().operation();var arguments=new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of());
+        var before=children.getLast().command().before();
+        var command=new ActionCommand(ActionIds.child(original.command().actionId(),6,operation),before,original.command().source(),original.command().sessionId(),
+                operation,arguments,AdvancePrimitives.expected(before,original.command().source(),operation,arguments),original.command().claims(),deadline);
+        var reference=PreparedCleanupSuccessorEvidence.preservePrepared(original,children,command,AdvancePrimitives.prepareRequest(command),
+                java.util.UUID.randomUUID().toString(),issued,deadline,archive,frames);
+        var prepared=PreparedCleanupSuccessorEvidence.loadPrepared(reference,archive,frames);
+        require(clock.instant().isBefore(deadline),"new ordinal-six preparation expired; its issued command is never renewed");
+        return Optional.of(LifePreparedCleanupContinuation.successor(this,prepared,predecessor,issued,deadline));
+    }
+    private PreparedCleanupEvidence.Prepared requirePreparedCleanupSuccessor(ActionCommand child,LifePreparedCleanupContinuation token){
+        require(token.issuedBy(this)&&cancellationReads instanceof PreparedCleanupReads&&clock.instant().isBefore(token.deadline()),
+                "prepared successor lost its identical installed source or own operation deadline");
+        var prepared=PreparedCleanupSuccessorEvidence.loadPrepared(token.prepared().reference(),archive,preparedCleanupFrames());
+        require(prepared.command().equals(child)&&prepared.preparationNonce().equals(token.prepared().preparationNonce())
+                &&prepared.nativePrepared().equals(token.prepared().nativePrepared()),"prepared successor changed immutable command/preparation");
+        var terminal=(ActionState.PreparedCleanupNoEffectConfirmed)prepared.children().getLast().state();
+        var proof=PreparedCleanupNoEffectProof.load(terminal.proofReference(),archive,preparedCleanupFrames());
+        ((PreparedCleanupReads)cancellationReads).requireQualifiedPreparedNoEffectBackend(proof);
+        var parent=actions.find(token.originalParent().actionId()).orElseThrow();
+        require(parent.command().equals(token.originalParent())&&parent.state() instanceof ActionState.CompositeUnknown,
+                "prepared successor parent changed or already completed");
+        var prefix=((ActionState.CompositeUnknown)prepared.parentReceipt().state()).execution();var cursor=((ActionState.CompositeUnknown)parent.state()).execution();
+        require(cursor.handlerId().equals(prefix.handlerId())&&cursor.startedAt().equals(prefix.startedAt())&&cursor.guard().equals(prefix.guard())
+                &&cursor.children().size()>=5&&cursor.children().size()<=6&&cursor.children().subList(0,5).equals(prefix.children()),
+                "prepared successor changed its complete original five-child prefix");
+        for(var original:prepared.children())require(actions.find(original.command().actionId()).filter(original::equals).isPresent(),
+                "prepared successor lost one of its five exact current canonical originals");
+        if(cursor.children().size()==6)require(cursor.children().getLast().equals(new CompositeExecution.Child(child.actionId(),ActionCodec.bodySha256(child))),
+                "prepared successor current sixth reservation changed");
+        return prepared;
+    }
+    @Override public PreparedCleanupEvidence.Prepared requirePreparedCleanup(ActionCommand child,CompositeContinuationToken actual) {
+        require(actual instanceof LifePreparedCleanupContinuation,"prepared cleanup requires its distinct source token");
+        var token=(LifePreparedCleanupContinuation)actual;
+        if(PreparedCleanupSuccessorEvidence.isSuccessor(token.prepared()))return requirePreparedCleanupSuccessor(child,token);
+        require(token.issuedBy(this)&&cancellationReads instanceof PreparedCleanupReads&&clock.instant().isBefore(token.deadline()),
+                "prepared cleanup lost its identical installed source or finite own deadline");
+        var prepared=PreparedCleanupEvidence.loadPrepared(token.prepared().reference(),archive,preparedCleanupFrames());
+        require(prepared.reference().equals(token.prepared().reference())&&prepared.command().equals(child)
+                &&prepared.preparationNonce().equals(token.prepared().preparationNonce())
+                &&prepared.nativePrepared().equals(token.prepared().nativePrepared()),"prepared cleanup changed immutable complete command/preparation");
+        var proof=PostExitCleanupNoEffectProof.load(prepared.aProofReference(),archive,preparedCleanupFrames());
+        ((PreparedCleanupReads)cancellationReads).requireQualifiedNoEffectBackend(proof);
+        var current=actions.find(token.originalParent().actionId()).orElseThrow();
+        require(current.command().equals(token.originalParent())&&current.state() instanceof ActionState.CompositeUnknown,
+                "prepared cleanup changed its actual original parent");
+        var cursor=((ActionState.CompositeUnknown)current.state()).execution();
+        var prefix=((ActionState.CompositeUnknown)prepared.parentReceipt().state()).execution();
+        require(cursor.handlerId().equals(prefix.handlerId())&&cursor.guard().equals(prefix.guard())&&cursor.startedAt().equals(prefix.startedAt())
+                &&cursor.children().size()>=4&&cursor.children().size()<=5&&cursor.children().subList(0,4).equals(prefix.children()),
+                "prepared cleanup changed its complete original four-child prefix");
+        for(int index=0;index<4;index++)require(actions.find(prepared.children().get(index).command().actionId()).filter(prepared.children().get(index)::equals).isPresent(),
+                "prepared cleanup requires all four current canonical original children");
+        if(cursor.children().size()==5)require(cursor.children().getLast().equals(new CompositeExecution.Child(child.actionId(),ActionCodec.bodySha256(child))),
+                "prepared cleanup current fifth reservation changed");
+        return prepared;
+    }
+    @Override public PreparedCleanupParentProjection projectPreparedCleanup(CompositeContinuationToken actual,PreparedCleanupEvidence.Prepared prepared,
+            PreparedCleanupEvidence.PostAckCaptured captured,ExactRef captureReference){
+        require(actual instanceof LifePreparedCleanupContinuation token&&token.issuedBy(this)
+                &&token.prepared().reference().equals(prepared.reference())&&cancellationReads instanceof PreparedCleanupReads,
+                "prepared projection lost its actual source or immutable original preparation");
+        return ((PreparedCleanupReads)cancellationReads).projectPreparedParent(this,(LifePreparedCleanupContinuation)actual,prepared,captured,captureReference);
+    }
+    @Override public ActionState.EffectObservation completePreparedCleanupParent(CompositeContinuationToken actual,PreparedCleanupEvidence.Prepared prepared,
+            ActionReceipt actualChild,PreparedCleanupParentProjection projection){
+        require(actual instanceof LifePreparedCleanupContinuation token&&token.issuedBy(this)
+                &&token.prepared().reference().equals(prepared.reference())&&projection.preparationReference().equals(prepared.reference()),
+                "prepared parent completion lost its original source binding");
+        if(PreparedCleanupSuccessorEvidence.isSuccessor(prepared))return completePreparedCleanupSuccessorParent(actual,prepared,actualChild,projection);
+        var parent=actions.find(actual.originalParent().actionId()).orElseThrow();
+        require(parent.state() instanceof ActionState.CompositeUnknown&&PreparedCleanupCursor.marked(parent),"prepared parent is no longer its exact unresolved cursor");
+        var execution=((ActionState.CompositeUnknown)parent.state()).execution();var children=canonicalChildren(execution);
+        require(children.size()==5&&children.getLast().equals(actualChild)&&children.stream().allMatch(ActionReceipt::settled),
+                "prepared parent completion requires all five real canonical settled originals");
+        var loaded=PreparedCleanupParentProjection.load(projection.reference(),archive,preparedCleanupFrames());
+        var basis=PreparedCleanupParentEvidence.preserve(parent.command(),execution,children,prepared.reference(),loaded.captureReference(),
+                loaded.starting(),loaded.ending(),archive,preparedCleanupFrames());
+        return PreparedCleanupParentEvidence.verifyEffect(parent,children,loaded.ending(),basis,archive,preparedCleanupFrames());
+    }
+    private ActionState.EffectObservation completePreparedCleanupSuccessorParent(CompositeContinuationToken actual,PreparedCleanupEvidence.Prepared prepared,
+            ActionReceipt actualChild,PreparedCleanupParentProjection projection){
+        var parent=actions.find(actual.originalParent().actionId()).orElseThrow();
+        require(parent.state() instanceof ActionState.CompositeUnknown&&PreparedCleanupCursor.marked(parent),"prepared successor lost its explicit six-child cursor");
+        var execution=((ActionState.CompositeUnknown)parent.state()).execution();var children=canonicalChildren(execution);
+        require(children.size()==6&&children.getLast().equals(actualChild)&&children.stream().allMatch(ActionReceipt::settled),
+                "prepared successor completion requires all six real canonical settled children");
+        var loaded=PreparedCleanupParentProjection.load(projection.reference(),archive,preparedCleanupFrames());
+        var basis=PreparedCleanupParentEvidence.preserve(parent.command(),execution,children,prepared.reference(),loaded.captureReference(),
+                loaded.starting(),loaded.ending(),archive,preparedCleanupFrames());
+        return PreparedCleanupParentEvidence.verifyEffect(parent,children,loaded.ending(),basis,archive,preparedCleanupFrames());
+    }
+    @Override public ActionPorts.OutcomeArchive preparedCleanupArchive(){return archive;}
+    @Override public LifeAdvanceEvidence.BoundFrameVerifier preparedCleanupFrames(){
+        require(entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier,"prepared cleanup has no complete original frame verifier");
+        return (LifeAdvanceEvidence.BoundFrameVerifier)entryFrames;
+    }
+    @Override public <T>T withPreparedCleanupWrite(ActionCommand child,CompositeContinuationToken actual,PreparedCleanupEvidence.Prepared prepared,
+            CompositeActionPort.PreparedCleanupWork<T> work)throws java.io.IOException,InterruptedException {
+        requirePreparedCleanup(child,actual);
+        ((LifePreparedCleanupContinuation)actual).claimScope(this);
+        return ((PreparedCleanupReads)cancellationReads).withPreparedCleanupScope(this,(LifePreparedCleanupContinuation)actual,prepared,work);
+    }
+    /** Read-only source capability. This cannot continue the parent or create a native permit. */
+    public Optional<NoEffectReconciliationToken> noEffectReconciliationToken(ExactRef proofReference,Instant requestedDeadline) {
+        if(!(cancellationReads instanceof PostResumePauseCancellationReads qualified)
+                ||!(entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier frames))return Optional.empty();
+        var proof=PostExitCleanupNoEffectProof.load(proofReference,archive,frames);
+        qualified.requireQualifiedNoEffectBackend(proof);
+        requireNoEffectCanonical(proof);
+        var issuedAt=clock.instant();var maximum=issuedAt.plus(java.time.Duration.ofMinutes(10));
+        var deadline=requestedDeadline.isBefore(maximum)?requestedDeadline:maximum;
+        if(!issuedAt.isBefore(deadline))return Optional.empty();
+        return Optional.of(new NoEffectReconciliationToken(this,proof,issuedAt,deadline));
+    }
+    public void requireNoEffectReconciliation(NoEffectReconciliationToken token) {
+        require(token.issuedBy(this)&&clock.instant().isBefore(token.deadline())
+                &&cancellationReads instanceof PostResumePauseCancellationReads
+                &&entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier,
+                "NoEffect token lost its actual source or own reconciliation window");
+        var proof=PostExitCleanupNoEffectProof.load(token.proofReference(),archive,(LifeAdvanceEvidence.BoundFrameVerifier)entryFrames);
+        require(proof.parentReceipt().equals(token.parentReceipt())&&proof.children().equals(token.children()),
+                "NoEffect token changed its complete durable original proof");
+        ((PostResumePauseCancellationReads)cancellationReads).requireQualifiedNoEffectBackend(proof);
+        requireNoEffectCanonical(proof);
+    }
+    private void requireNoEffectCanonical(PostExitCleanupNoEffectProof.Verified proof) {
+        require(actions.find(proof.parentReceipt().command().actionId()).filter(proof.parentReceipt()::equals).isPresent(),
+                "NoEffect requires the exact latest four-child UNKNOWN parent");
+        var child=actions.find(proof.child4().command().actionId()).orElseThrow();
+        if(child.state() instanceof ActionState.CleanupNoEffectConfirmed terminal) {
+            require(terminal.proofReference().equals(proof.proofReference()),"NoEffect child already has another terminal proof");
+            PostExitCleanupNoEffectProof.verifyArchivedState(child,terminal.proofReference(),terminal.originalAttempt(),terminal.originalDispatch(),archive);
+        } else require(child.equals(proof.child4()),"NoEffect replaced the original canonical UNKNOWN child");
+    }
+    /** A distinct read-only capability; cannot enter any CompositeContinuation/native submission path. */
+    public Optional<PreparedNoEffectReconciliationToken> preparedNoEffectReconciliationToken(ExactRef reference,Instant requestedDeadline) {
+        if(!(cancellationReads instanceof PreparedCleanupReads qualified)
+                ||!(entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier frames))return Optional.empty();
+        var proof=PreparedCleanupNoEffectProof.load(reference,archive,frames);
+        qualified.requireQualifiedPreparedNoEffectBackend(proof);
+        requirePreparedNoEffectCanonical(proof);
+        // All potentially slow original/backend/canonical verification precedes this new token window.
+        var issued=clock.instant();var maximum=issued.plus(java.time.Duration.ofMinutes(10));
+        var deadline=requestedDeadline.isBefore(maximum)?requestedDeadline:maximum;
+        if(!issued.isBefore(deadline))return Optional.empty();
+        return Optional.of(new PreparedNoEffectReconciliationToken(this,proof,issued,deadline));
+    }
+    public void requirePreparedNoEffectReconciliation(PreparedNoEffectReconciliationToken token) {
+        require(token.issuedBy(this)&&clock.instant().isBefore(token.deadline())&&cancellationReads instanceof PreparedCleanupReads
+                &&entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier,"prepared NoEffect lost its actual source or own readonly token window");
+        var proof=PreparedCleanupNoEffectProof.load(token.proofReference(),archive,(LifeAdvanceEvidence.BoundFrameVerifier)entryFrames);
+        require(proof.parentReceipt().equals(token.parentReceipt())&&proof.children().equals(token.children())
+                &&proof.originalPreparedState().equals(token.originalPreparedState()),"prepared NoEffect token changed its complete original proof");
+        ((PreparedCleanupReads)cancellationReads).requireQualifiedPreparedNoEffectBackend(proof);
+        requirePreparedNoEffectCanonical(proof);
+    }
+    private void requirePreparedNoEffectCanonical(PreparedCleanupNoEffectProof.Verified proof) {
+        require(actions.find(proof.parentReceipt().command().actionId()).filter(proof.parentReceipt()::equals).isPresent(),
+                "prepared NoEffect requires the identical latest five-child UNKNOWN parent");
+        for(var original:proof.children().subList(0,4))require(actions.find(original.command().actionId()).filter(original::equals).isPresent(),
+                "prepared NoEffect changed one of the four canonical settled original children");
+        var current=actions.find(proof.child5().command().actionId()).orElseThrow();
+        if(current.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed terminal){
+            require(terminal.proofReference().equals(proof.proofReference())&&terminal.originalPreparedState().equals(proof.originalPreparedState()),
+                    "prepared NoEffect already has another terminal proof or original state");
+            PreparedCleanupNoEffectProof.verifyArchivedState(current,terminal.proofReference(),terminal.originalPreparedState(),archive);
+        }else require(current.equals(proof.child5()),"prepared NoEffect replaced its original unresolved fifth child");
+    }
+    /** Full slow qualification. The returned DATA is not a Native or writer capability. */
+    public ReservedPreparedCleanupNoEffectProof.Verified qualifyReservedNoEffect(ExactRef reference) {
+        require(cancellationReads instanceof PreparedCleanupReads&&entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier,
+                "reserved NoEffect has no actual installed source/frame qualification");
+        var proof=ReservedPreparedCleanupNoEffectProof.load(reference,archive,(LifeAdvanceEvidence.BoundFrameVerifier)entryFrames);
+        ((PreparedCleanupReads)cancellationReads).requireQualifiedReservedNoEffectBackend(proof);
+        requireReservedNoEffectCanonical(proof);return proof;
+    }
+    /** Mint only at the end of full proof/backend/current canonical validation. No Native permit exists. */
+    public Optional<ReservedCleanupNoEffectReconciliationToken> reservedNoEffectReconciliationToken(ExactRef reference,Instant requestedDeadline) {
+        var proof=qualifyReservedNoEffect(reference);var issued=clock.instant();var maximum=issued.plus(java.time.Duration.ofMinutes(10));
+        var deadline=requestedDeadline.isBefore(maximum)?requestedDeadline:maximum;if(!issued.isBefore(deadline))return Optional.empty();
+        return Optional.of(ReservedCleanupNoEffectReconciliationToken.issue(this,proof,issued,deadline));
+    }
+    /** Bounded immediate check after issuance; all full replay precedes mint. */
+    public void requireReservedNoEffectReconciliation(ReservedCleanupNoEffectReconciliationToken token) {
+        require(token.issuedBy(this)&&clock.instant().isBefore(token.deadline())&&cancellationReads instanceof PreparedCleanupReads
+                &&entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier,
+                "reserved NoEffect lost its actual source or finite readonly validation window");
+        require(token.proofReference().equals(token.proof().proofReference())&&token.command().equals(token.proof().command())
+                &&token.parentReceipt().equals(token.proof().parentReceipt()),"reserved NoEffect token changed its owned immutable proof");
+    }
+    private void requireReservedNoEffectCanonical(ReservedPreparedCleanupNoEffectProof.Verified proof) {
+        require(actions.find(proof.parentReceipt().command().actionId()).filter(proof.parentReceipt()::equals).isPresent(),
+                "reserved NoEffect lost its exact current six-child parent");
+        for(var original:proof.children())require(actions.find(original.command().actionId()).filter(original::equals).isPresent(),
+                "reserved NoEffect lost an exact canonical settled predecessor");
+        var current=actions.find(proof.command().actionId());
+        if(current.isPresent()) {
+            var receipt=current.orElseThrow();require(receipt.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed,
+                    "reserved NoEffect cannot replace any original child lifecycle");
+            var terminal=(ActionState.ReservedPreparedCleanupNoEffectConfirmed)receipt.state();
+            require(terminal.preparationReference().equals(proof.preparationReference())&&terminal.proofReference().equals(proof.proofReference()),
+                    "reserved NoEffect already has a different terminal preparation/proof");
+            ReservedPreparedCleanupNoEffectProof.verifyArchivedState(receipt,terminal.proofReference(),terminal.preparationReference(),archive);
+        }
+    }
+    private void requirePostResumePauseContinuation(ActionCommand parent,CompositeExecution retained,LifePostResumePauseCancellation token) {
+        require(cancellationReads instanceof PostResumePauseCancellationReads&&token.issuedBy(this)&&token.originalParent().equals(parent)
+                &&clock.instant().isBefore(token.deadline()),"post-resume cancellation lacks its qualified actual source/backend or own finite window");
+        ((PostResumePauseCancellationReads)cancellationReads).requireQualifiedBackend(token.originalParentReceipt(),token.originalChildren());
+        require(entryFrames instanceof LifeAdvanceEvidence.BoundFrameVerifier,"post-resume source lacks its complete archived frame verifier");
+        var authorization=LifePostResumePauseCleanupEvidence.loadAuthorization(token.authorizationReference(),archive,
+                (LifeAdvanceEvidence.BoundFrameVerifier)entryFrames);
+        require(authorization.original().parent().equals(token.originalParentReceipt())&&authorization.parentReference().equals(token.originalParentReference())
+                &&authorization.original().children().equals(token.originalChildren())&&authorization.childReferences().equals(token.originalChildReferences())
+                &&authorization.armedStatus().equals(token.armedStatus())&&authorization.beforeCancel().equals(token.beforeCancel())
+                &&authorization.issuedAt().equals(token.issuedAt())&&authorization.deadline().equals(token.deadline()),
+                "post-resume token differs from its complete durable original authorization");
+        LifePostResumePauseCleanupProof.requireFreshArmedPaused(authorization.original(),token.armedStatus(),token.beforeCancel(),
+                token.issuedAt(),token.deadline(),clock.instant());
+        var current=actions.find(parent.actionId()).orElseThrow();
+        require(current.command().equals(parent)&&current.state() instanceof ActionState.CompositeUnknown,
+                "post-resume cancellation current parent changed or already completed");
+        var cursor=((ActionState.CompositeUnknown)current.state()).execution();
+        require(retained.equals(cursor)||retained.equals(token.originalExecution()),"post-resume cancellation borrowed another execution");
+        var actual=new ArrayList<ActionReceipt>(token.originalChildren());
+        if(cursor.children().size()==token.originalChildren().size()+1)
+            actions.find(cursor.children().getLast().actionId()).ifPresent(actual::add);
+        LifePostResumePauseCleanupProof.requireSuccessorPrefix(authorization.original(),cursor,actual,token.beforeCancel(),token.deadline(),
+                actual.size()>token.originalChildren().size());
+    }
+    private static ActionCommand postResumePauseCancellationChild(ActionCommand parent,LifePostResumePauseCancellation token,String actionId) {
+        var operation=new OperationKey(ClockStatusRead.CANCEL_PREFIX+token.generation());
+        var arguments=new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of());
+        return new ActionCommand(actionId,token.beforeCancel().identity(),parent.source(),parent.sessionId(),operation,arguments,
+                AdvancePrimitives.expected(token.beforeCancel().identity(),parent.source(),operation,arguments),parent.claims(),token.deadline());
+    }
+    private ActionPorts.PostconditionResult continuePostResumePauseCancellation(ActionCommand parent,CompositeExecution retained,
+            LifePostResumePauseCancellation token,Children children) {
+        requirePostResumePauseContinuation(parent,retained,token);
+        if(retained.children().size()!=token.originalChildren().size())
+            return new ActionPorts.Pending("post-resume CANCEL already reserved; same-ID collection only",List.of(token.authorizationReference()));
+        var operation=new OperationKey(ClockStatusRead.CANCEL_PREFIX+token.generation());
+        var child=postResumePauseCancellationChild(parent,token,children.nextActionId(operation));
+        var canceled=children.submit(child);
+        if(!canceled.settled()||canceled.outcome()!=ActionReceipt.Outcome.APPLIED_CONFIRMED)
+            return new ActionPorts.Pending("post-resume CANCEL is unresolved; no new control or retry",List.of(token.authorizationReference()));
+        var completed=children.completed();
+        var execution=new CompositeExecution(retained.handlerId(),retained.startedAt(),retained.guard(),completed.stream()
+                .map(value->new CompositeExecution.Child(value.command().actionId(),value.bodySha256())).toList());
+        return finishPostResumePauseCleanup(parent,execution,completed,token.authorizationReference(),token.deadline());
+    }
+    private ActionPorts.PostconditionResult finishPostResumePauseCleanup(ActionCommand parent,CompositeExecution successor,List<ActionReceipt> children,
+            ExactRef authorizationReference,Instant readDeadline) {
+        require(entryFrames instanceof LifeAdvanceRootReplay,"post-resume cleanup needs its installed full original frame/timeline replay");
+        var replay=(LifeAdvanceRootReplay)entryFrames;
+        var authorization=LifePostResumePauseCleanupEvidence.loadAuthorization(authorizationReference,archive,replay);
+        LifePostResumePauseCleanupProof.requireSuccessorPrefix(authorization.original(),successor,children,authorization.beforeCancel(),authorization.deadline(),true);
+        var fresh=cancellationReads.read(parent,successor,children,readDeadline);
+        var terminal=new ClockStatusRead.Observation(fresh.status().value(),fresh.status().receipt(),archive.referenceOf(fresh.status().receipt().original()));
+        replay.verifyPostResumePauseCleanup(authorization,successor,children,terminal,fresh.ending(),archive);
+        var starting=entryFrames.read(parent,successor.guard(),archive).orElseThrow();
+        var ordinary=LifeAdvanceEvidence.preserve(parent,starting,fresh.ending(),AdvanceClock.ProgressStatus.WALL_TIMEOUT_WITH_DATE_PROGRESS,
+                Optional.of(terminal),children,Optional.empty(),archive);
+        var complete=LifePostResumePauseCleanupEvidence.preserveTerminal(authorizationReference,ordinary,archive);
+        return completed(parent,AdvancePlan.decode(parent),fresh.ending(),AdvanceClock.ProgressStatus.WALL_TIMEOUT_WITH_DATE_PROGRESS,
+                null,Optional.of(terminal),children,List.of(complete));
+    }
+    private boolean postResumePauseCleanupCursor(ActionCommand parent,CompositeExecution retained) {
+        var current=actions.find(parent.actionId());
+        return current.isPresent()&&current.orElseThrow().state() instanceof ActionState.CompositeUnknown unknown
+                &&unknown.execution().equals(retained)&&unknown.reason().startsWith(LifePostResumePauseCleanupEvidence.CURSOR_PREFIX);
+    }
+    private ActionPorts.PostconditionResult observePostResumePauseCleanup(ActionCommand parent,CompositeExecution retained) {
+        var current=actions.find(parent.actionId()).orElseThrow();
+        var evidence=((ActionState.CompositeUnknown)current.state()).evidence();
+        require(!evidence.isEmpty(),"cleanup cursor lost its durable original authorization");
+        var reference=evidence.getLast();
+        try {
+            require(current.command().equals(parent)&&((ActionState.CompositeUnknown)current.state()).execution().equals(retained),
+                    "cleanup observation borrowed another canonical cursor");
+            var completed=new ArrayList<ActionReceipt>();
+            for(var binding:retained.children()) {
+                var child=actions.find(binding.actionId());
+                if(child.isEmpty()||!child.orElseThrow().settled())
+                    return new ActionPorts.Pending(LifePostResumePauseCleanupEvidence.CURSOR_PREFIX
+                            +"reserved or UNKNOWN CANCEL needs its original ACK; same-ID collection only",List.of(reference));
+                require(child.orElseThrow().bodySha256().equals(binding.bodySha256()),"cleanup observation child body differs");
+                completed.add(child.orElseThrow());
+            }
+            return finishPostResumePauseCleanup(parent,retained,completed,reference,ActionObservationWindow.deadline(parent));
+        } catch(RuntimeException unavailable) {
+            return new ActionPorts.Pending(LifePostResumePauseCleanupEvidence.CURSOR_PREFIX+"complete originals remain unavailable: "+unavailable.getClass().getSimpleName()
+                    +": "+Objects.toString(unavailable.getMessage(),"unavailable"),List.of(reference));
+        }
+    }
     /** Issues only from the canonical independently confirmed, never-resumed original ARM prefix. */
     public Optional<LifeSentinelCancellation> cancellationToken(ActionReceipt original, Instant deadline) {
         if (!(original.state() instanceof ActionState.CompositeUnknown unknown)) return Optional.empty();
@@ -327,6 +730,9 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
     }
 
     @Override public void requireContinuation(ActionCommand parent, CompositeExecution retained, CompositeContinuationToken token) {
+        if(token instanceof LifePostResumePauseCancellation cleanup) {
+            requirePostResumePauseContinuation(parent,retained,cleanup);return;
+        }
         require(token instanceof LifeSentinelCancellation, "this Life source issues only sentinel cancellation continuation");
         LifeSentinelCancellation cancellation = (LifeSentinelCancellation) token;
         require(cancellation.issuedBy(this) && cancellation.originalParent().equals(parent), "Life cancellation token has another issuer or parent");
@@ -368,6 +774,13 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
     @Override public void requireContinuationChild(ActionCommand parent, CompositeExecution retained,
             CompositeContinuationToken token, ActionCommand child) {
         requireContinuation(parent, retained, token);
+        if(token instanceof LifePostResumePauseCancellation cleanup) {
+            require(retained.children().size()==cleanup.originalExecution().children().size()
+                    &&child.actionId().equals(ActionIds.child(parent.actionId(),retained.children().size()+1,child.operation()))
+                    &&child.equals(postResumePauseCancellationChild(parent,cleanup,child.actionId())),
+                    "post-resume continuation permits only its one exact new CANCEL child");
+            return;
+        }
         var cancellation = (LifeSentinelCancellation) token;
         require(retained.children().size() == cancellation.originalExecution().children().size()
                 && child.actionId().equals(ActionIds.child(parent.actionId(), retained.children().size() + 1, child.operation()))
@@ -378,6 +791,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
     @Override public ActionPorts.PostconditionResult continueOriginal(ActionCommand parent, CompositeExecution retained,
             CompositeContinuationToken token, Children children) {
         requireContinuation(parent, retained, token);
+        if(token instanceof LifePostResumePauseCancellation cleanup)return continuePostResumePauseCancellation(parent,retained,cleanup,children);
         var cancellation = (LifeSentinelCancellation) token;
         require(clock.instant().isBefore(cancellation.deadline()), "Life cancellation operation deadline expired");
         require(retained.children().size() == cancellation.originalExecution().children().size(),

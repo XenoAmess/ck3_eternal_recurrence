@@ -261,7 +261,9 @@ public final class RootAdvanceInfrastructureFactory {
             RootUnknownSentinelReadProfile.requireInstalled(physicalStatus,statuses);
             timeline=new AdvanceClock(observations,statuses,readiness,context.clock(),timings.maximumFrames(),timings.commandTimeout(),timings.advanceTimeout());
             primitives=new AdvancePrimitives(observations,statuses,context.clock(),timings.maximumFrames(),pendingDate,timings.advanceTimeout());
-            replay=new AdvancePrimitiveArchivedReplay(freshFrameLoader(context.frameLoader()));
+            replay=new AdvancePrimitiveArchivedReplay(freshFrameLoader(context.frameLoader()),
+                    (terminal,archive)->RootLifeRuntimeFactory.verifyQualifiedPostExitNoEffect(context,terminal,archive),
+                    (head,receipt,archive)->RootLifeRuntimeFactory.verifyQualifiedPreparedCleanup(context,head,receipt,archive));
             List<RootExecutableBindings.ActionBinding> fixed=new ArrayList<>();
             List<NativeRecordedEvidenceVerifier.Binding> archived=new ArrayList<>();
             for(String step:List.of("pause-map","resume-map","set-speed-1","set-speed-2","set-speed-3","set-speed-4","set-speed-5")) {
@@ -300,12 +302,23 @@ public final class RootAdvanceInfrastructureFactory {
                             "physical Life Status escaped its original coordinator parent");
                     var archive=context.archive().withSession(same);var head=same.head();
                     var actions=context.core().journal().locked(same,locked->List.copyOf(locked.snapshot().actions()));
-                    var original=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(actions)
+                    boolean warm=current.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement;
+                    var original=warm?context.core().journal().locked(same,locked->locked.find(parent.actionId()).orElseThrow()):
+                            org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyObservedLifeRecoveryRoot(actions)
                             .orElseThrow(()->new IOException("physical Life Status has no unique canonical read-only parent"));
+                    if(warm) require(original.state() instanceof ActionState.CompositeRunning running
+                            &&running.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                            &&LifeAdvanceComposite.accepts(parent.operation().value()),
+                            "warm physical Status requires its canonical running Life parent");
                     require(original.bodySha256().equals(ActionCodec.bodySha256(parent))
                             && java.util.Arrays.equals(ActionCodec.encodeCommand(original.command()),ActionCodec.encodeCommand(parent)),
                             "physical Life Status changed its actual original parent command");
-                    var execution=((ActionState.CompositeUnknown)original.state()).execution();
+                    var execution=warm?((ActionState.CompositeRunning)original.state()).execution():
+                            ActionTransitions.composite(original.state()).orElseThrow();
+                    if(warm) require(parent.origin().acceptsGuard(execution.guard().origin())
+                            &&execution.guard().observed().equals(parent.before())&&execution.guard().source().equals(parent.source())
+                            &&execution.guard().sessionId().equals(parent.sessionId())&&execution.guard().operation().equals(parent.operation()),
+                            "warm physical Status changed its original Life execution guard");
                     var children=execution.children().stream().map(binding->{
                         var matches=actions.stream().filter(value->value.command().actionId().equals(binding.actionId())).toList();
                         require(matches.size()==1&&matches.getFirst().bodySha256().equals(binding.bodySha256())
@@ -313,7 +326,14 @@ public final class RootAdvanceInfrastructureFactory {
                         return matches.getFirst();
                     }).toList();
                     require(!children.isEmpty(),"physical Life Status requires its complete original child prefix");
-                    AdvanceClockArchivedReplay.verifyChildBindings(parent,children);requireWatchRole(original,children.getLast());
+                    AdvanceClockArchivedReplay.verifyChildBindings(parent,children);
+                    if(!warm) {
+                        if(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyPostResumePauseLifeRecoveryRoot(actions)
+                                .filter(original::equals).isPresent())
+                            org.xar.ck3.control.application.session.ContinuityBatchJournal.requirePostResumePauseWatchRole(
+                                    original,children.get(children.size()-2),children.getLast());
+                        else requireWatchRole(original,children.getLast());
+                    }
                     var plan=AdvancePlan.decode(parent);
                     var arm=children.stream().filter(value->value.command().operation().value().equals(plan.armStep()))
                             .findFirst().orElseThrow(()->new IOException("physical Life Status lost its original ARM"));
@@ -328,9 +348,30 @@ public final class RootAdvanceInfrastructureFactory {
                             &&complete.observedAt().equals(current.observedAt())&&complete.originalEvidence().equals(current.originalEvidence()),
                             "physical Life Status changed its complete original current observation");
                     requireFrameBinding(parent,complete);
-                    require(current.provenance() instanceof ObservationProvenance.FreshSnapshotQuery,
-                            "physical Life Status requires its actual independent current READ");
-                    verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery)current.provenance(),complete,archive);
+                    if(warm) {
+                        var proof=(ObservationProvenance.PhysicalAfterAcknowledgement)current.provenance();
+                        verifyPhysicalAfterAcknowledgement(proof,complete,archive);
+                        var recorded=TimelinePhysicalAfterAckEvidence.decode(archive.loadMaterial(proof.occurrenceEvidence()));
+                        var basisParent=archive.loadReceipt(recorded.runningParentReceipt());
+                        var basisExecution=((ActionState.CompositeRunning)basisParent.state()).execution();
+                        require(basisParent.sequence()<=original.sequence()
+                                &&basisParent.bodySha256().equals(original.bodySha256())
+                                &&java.util.Arrays.equals(ActionCodec.encodeCommand(basisParent.command()),ActionCodec.encodeCommand(parent))
+                                &&basisExecution.guard().equals(execution.guard())
+                                &&basisExecution.children().size()<=execution.children().size()
+                                &&execution.children().subList(0,basisExecution.children().size()).equals(basisExecution.children()),
+                                "warm physical Status observation is not the canonical Life child prefix");
+                        var basisSetter=archive.loadReceipt(recorded.setterReceipt());
+                        var matches=children.stream().filter(value->value.command().actionId().equals(basisSetter.command().actionId())).toList();
+                        require(matches.size()==1&&matches.getFirst().bodySha256().equals(basisSetter.bodySha256())
+                                &&java.util.Arrays.equals(ActionCodec.encodeCommand(matches.getFirst().command()),ActionCodec.encodeCommand(basisSetter.command()))
+                                &&matches.getFirst().ack().filter(value->archive.referenceOf(value).equals(recorded.setterAcknowledgement())).isPresent(),
+                                "warm physical Status changed the canonical already settled setter");
+                    } else {
+                        require(current.provenance() instanceof ObservationProvenance.FreshSnapshotQuery,
+                                "physical Life Status requires its actual independent current READ");
+                        verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery)current.provenance(),complete,archive);
+                    }
                     var pins=List.of(same.capturePin(current.originalEvidence(),org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES),
                             same.capturePin(facts,org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES));
                     var observation=context.physicalStatusReads().withObserved(same,deadline,lease->{
@@ -343,7 +384,7 @@ public final class RootAdvanceInfrastructureFactory {
                         var state=org.xar.ck3.control.application.driver.DriverJson.object(frame.state().bytes(),
                                 org.xar.ck3.control.application.driver.DriverJson.MAX_NATIVE_BYTES);
                         var player=org.xar.ck3.control.planning.opportunity.OpportunityJson.object(state.get("played_character"),"physical Life Status player");
-                        require(org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(state.get("paused"),"paused")
+                        require((warm||org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(state.get("paused"),"paused"))
                                 &&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(state.get("map_ready"),"map_ready")
                                 &&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(player.get("alive"),"alive")
                                 &&org.xar.ck3.control.planning.opportunity.OpportunityJson.integer(player.get("character_id"),"character_id")
@@ -363,6 +404,25 @@ public final class RootAdvanceInfrastructureFactory {
                                 "physical Life Status returned another original query or decoded value");
                         return new ClockStatusRead.Observation(known.value(),known.receipt(),archive.preserve(known.receipt().original()));
                     });
+                    // A paused Game need not publish another unsolicited snapshot. Exit Status-only custody,
+                    // then obtain the existing genuine fresh READ after this exact Status response.
+                    if(warm&&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(current.semantic().get("paused"),"paused")) {
+                        NativeFreshSnapshotPort.Result fresh;
+                        try {
+                            fresh=readAvailableFreshSnapshot(context.transport(),deadline,context.clock(),timings.maximumFrames(),unavailable->{
+                                archive.preserve(unavailable.dispatch());unavailable.originalFrame().ifPresent(archive::preserveNativeFrame);
+                            });
+                        } catch(InterruptedException interrupted) {
+                            Thread.currentThread().interrupt();
+                            var failure=new InterruptedIOException("warm after-Status fresh READ interrupted; original action is not replayed");
+                            failure.initCause(interrupted);throw failure;
+                        }
+                        if(fresh instanceof NativeFreshSnapshotPort.Unavailable unavailable)
+                            throw new IOException("warm after-Status fresh READ unavailable: "+unavailable.reason());
+                        var received=(NativeFreshSnapshotPort.Received)fresh;
+                        NativeFreshSnapshotPort.verifyAfter(observation.receipt().original(),received);
+                        archive.preserve(received.acknowledgement());archive.preserveNativeFrame(received.originalFrame());
+                    }
                     for(var pin:pins)same.verifyPin(pin);
                     context.requireCurrent(deadline);context.writer().requireSession(same);
                     require(head.digest().equals(same.head().digest()),"physical Life Status changed canonical history");
@@ -412,6 +472,10 @@ public final class RootAdvanceInfrastructureFactory {
         return new NativeEffectEvidence.FrameLoader() {
             @Override public DriverObservationAssembler.Complete load(NativeEffectEvidence.FrameBasis basis,
                     ActionPorts.OutcomeArchive archive) { return actual.load(basis, archive); }
+            @Override public void verifyPhysicalAfterAcknowledgement(ObservationProvenance.PhysicalAfterAcknowledgement proof,
+                    DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive) {
+                RootAdvanceInfrastructureFactory.verifyPhysicalAfterAcknowledgement(proof,complete,archive);
+            }
             @Override public void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
                     DriverObservationAssembler.Complete complete, ActionPorts.OutcomeArchive archive) {
                 RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(proof, complete, archive);
@@ -421,7 +485,39 @@ public final class RootAdvanceInfrastructureFactory {
 
     /** Original DATA validation only: this cannot issue a source session, Received, or writer permission. */
     static void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
-            DriverObservationAssembler.Complete complete, ActionPorts.OutcomeArchive archive) {
+            DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive) {
+        if(proof.basis() instanceof ObservationProvenance.PreparedCleanupSuccessorWatch watch){
+            var prepared=org.xar.ck3.control.application.advance.PreparedCleanupSuccessorEvidence.loadPreparedOriginals(watch.preparationReference(),archive);
+            var captured=org.xar.ck3.control.application.advance.PreparedCleanupEvidence.loadPostAckCapturedOriginals(watch.captureReference(),archive);
+            var terminal=(ActionState.PreparedCleanupNoEffectConfirmed)prepared.children().getLast().state();
+            require(prepared.parentReference().equals(watch.originalParentReceipt())&&prepared.childReferences().getLast().equals(watch.predecessorNoEffectReceipt())
+                    &&terminal.proofReference().equals(watch.predecessorNoEffectProof())&&captured.binding().prepared().reference().equals(prepared.reference())
+                    &&proof.requestId().equals(captured.freshSnapshotAck().requestId())&&proof.readAcknowledgement().equals(archive.referenceOf(captured.freshSnapshotAck()))
+                    &&proof.snapshotReceived().equals(captured.snapshotReceived()),"prepared successor snapshot basis changed its actual five-reference captured originals");
+            var raw=captured.afterFrame();
+            require(complete.identity().game().equals(raw.session().game())&&complete.identity().machineId().equals(raw.session().machineId())
+                    &&complete.sessionId().equals(raw.session().sessionId())&&complete.source().equals(prepared.command().source())
+                    &&complete.identity().frame().snapshotId().equals(raw.snapshotId())&&complete.identity().frame().identity().nativeRevision().equals(raw.nativeRevision())
+                    &&complete.observedAt().equals(raw.observedAt())&&complete.originalEvidence().bytes()==raw.originalPacket().length
+                    &&complete.originalEvidence().sha256().equals(ActionCodec.sha256(raw.originalPacket())),"prepared successor full Driver projection changed the actual raw snapshot");
+            try{NativeFreshSnapshotPort.verifyAfterOriginal(captured.idle2().acknowledgement(),captured.freshSnapshotAck(),raw,captured.snapshotReceived());}
+            catch(IOException unavailable){throw new UncheckedIOException(unavailable);}return;
+        }
+        if(proof.basis() instanceof ObservationProvenance.PreparedCleanupWatch watch){
+            var prepared=org.xar.ck3.control.application.advance.PreparedCleanupEvidence.loadPreparedOriginals(watch.preparationReference(),archive);
+            var captured=org.xar.ck3.control.application.advance.PreparedCleanupEvidence.loadPostAckCapturedOriginals(watch.captureReference(),archive);
+            require(prepared.parentReference().equals(watch.originalParentReceipt())&&captured.binding().prepared().reference().equals(prepared.reference())
+                    &&proof.requestId().equals(captured.freshSnapshotAck().requestId())&&proof.readAcknowledgement().equals(archive.referenceOf(captured.freshSnapshotAck()))
+                    &&proof.snapshotReceived().equals(captured.snapshotReceived()),"prepared snapshot basis changed actual captured originals");
+            var raw=captured.afterFrame();
+            require(complete.identity().game().equals(raw.session().game())&&complete.identity().machineId().equals(raw.session().machineId())
+                    &&complete.sessionId().equals(raw.session().sessionId())&&complete.source().equals(prepared.command().source())
+                    &&complete.identity().frame().snapshotId().equals(raw.snapshotId())&&complete.identity().frame().identity().nativeRevision().equals(raw.nativeRevision())
+                    &&complete.observedAt().equals(raw.observedAt())&&complete.originalEvidence().bytes()==raw.originalPacket().length
+                    &&complete.originalEvidence().sha256().equals(ActionCodec.sha256(raw.originalPacket())),"prepared full Driver projection changed actual raw snapshot");
+            try{NativeFreshSnapshotPort.verifyAfterOriginal(captured.idle2().acknowledgement(),captured.freshSnapshotAck(),raw,captured.snapshotReceived());}
+            catch(IOException unavailable){throw new UncheckedIOException(unavailable);}return;
+        }
         Objects.requireNonNull(proof);Objects.requireNonNull(complete);Objects.requireNonNull(archive);
         try {
             var read=successfulAck(archive.load(proof.readAcknowledgement()));
@@ -507,6 +603,56 @@ public final class RootAdvanceInfrastructureFactory {
                     require(custody.session().connectionGeneration().compareTo(prior.session().connectionGeneration())>=0
                             && custody.writeEntered().observedAt().isAfter(prior.responseReceived().observedAt()),"cold read crossed connection or predates ACK");
                 }
+            } else if(proof.basis() instanceof ObservationProvenance.PostResumePauseWatch watch) {
+                var parent=archive.loadReceipt(watch.originalParentReceipt());
+                var resume=archive.loadReceipt(watch.originalResumeReceipt());
+                var pause=archive.loadReceipt(watch.originalPauseReceipt());
+                require(archive.receiptReferenceOf(parent).equals(watch.originalParentReceipt())
+                        &&archive.receiptReferenceOf(resume).equals(watch.originalResumeReceipt())
+                        &&archive.receiptReferenceOf(pause).equals(watch.originalPauseReceipt()),"post-resume pause original references differ");
+                org.xar.ck3.control.application.session.ContinuityBatchJournal.requirePostResumePauseWatchRole(parent,resume,pause);
+                requireFrameBinding(parent.command(),complete);
+                for(var original:List.of(resume,pause)) {
+                    var attempt=((ActionState.Settled)original.state()).attempt();var originalAck=original.ack().orElseThrow();
+                    var command=original.command();var prepared=attempt.preparedRequest();
+                    var produced=AdvancePrimitives.prepareRequest(command);
+                    require(prepared.step().equals(produced.step())&&prepared.requiredCapability().equals(produced.requiredCapability())
+                            &&java.util.Arrays.equals(prepared.additionalFields().bytes(),produced.additionalFields().bytes()),
+                            "post-resume pause preparation differs from its actual primitive producer");
+                    var outbound=NativeWire.decodeExecuteRequest(originalAck.outbound().orElseThrow().originalPacket());
+                    require(outbound.requestId().equals(attempt.requestId())&&outbound.step().equals(command.operation().value())
+                            &&outbound.expectedRevision().or(()->outbound.expectedSnapshotRevision())
+                                .filter(command.before().frame().identity().nativeRevision()::equals).isPresent()
+                            &&java.util.Arrays.equals(outbound.normalizedAdditionalFields().value(),prepared.additionalFields().bytes()),
+                            "post-resume pause original outbound differs from its exact command and preparation");
+                    require(archive.load(archive.referenceOf(originalAck)).equals(originalAck)
+                            &&archive.loadRequest(archive.requestReferenceOf(attempt.preparedRequest())).equals(attempt.preparedRequest()),
+                            "post-resume pause watch changed an original ACK or prepared request");
+                    var originalDecoded=NativeWire.decode(originalAck.originalPacket());
+                    require(originalDecoded instanceof NativeWire.CommandResult result&&result.nativeOk()
+                            &&result.requestId().equals(originalAck.requestId())
+                            &&java.util.Arrays.equals(result.payload().value(),originalAck.originalFrame().bytes())
+                            &&result.result().token().isPresent()==originalAck.originalResultToken().isPresent()
+                            &&(result.result().token().isEmpty()||java.util.Arrays.equals(result.result().token().orElseThrow().value(),
+                                originalAck.originalResultToken().orElseThrow().bytes())),
+                            "post-resume pause watch original ACK packet or token differs");
+                }
+                var setter=pause.ack().orElseThrow();var prior=setter.custody().orElseThrow();
+                prior.verify(setter,((ActionState.Settled)pause.state()).attempt().guard());
+                require(prior.session().machineId().equals(custody.session().machineId())
+                        &&prior.session().game().equals(custody.session().game())
+                        &&prior.session().sessionId().equals(custody.session().sessionId())
+                        &&custody.session().connectionGeneration().compareTo(prior.session().connectionGeneration())>=0
+                        &&!read.requestId().equals(setter.requestId())
+                        &&!custody.writeEntered().observedAt().isBefore(prior.responseReceived().observedAt()),
+                        "post-resume pause READ predates or crosses its final original pause ACK");
+                var originalPause=ActionEffects.observation(pause).orElseThrow();
+                require(complete.identity().frame().identity().dateRaw().equals(originalPause.after().frame().identity().dateRaw())
+                        &&complete.identity().frame().identity().nativeRevision().compareTo(originalPause.after().frame().identity().nativeRevision())>=0
+                        &&AdvancePolicy.truth(complete.semantic(),"paused")&&AdvancePolicy.truth(complete.semantic(),"map_ready"),
+                        "post-resume pause READ changed the actual original paused date or regressed its native frame");
+                if(prior.session().equals(custody.session())&&prior.custodyEpoch().equals(custody.custodyEpoch()))
+                    NativeFreshSnapshotPort.verifyAfterOriginal(setter,read,actual,proof.snapshotReceived());
             } else {
                 var watch=(ObservationProvenance.SameGameWatch)proof.basis();
                 var parent=archive.loadReceipt(watch.originalParentReceipt());
@@ -524,6 +670,97 @@ public final class RootAdvanceInfrastructureFactory {
         } catch(IOException failure) {throw new UncheckedIOException("actual fresh READ originals differ",failure);}
     }
 
+    /** Archive DATA only; a recorded occurrence never issues a receiver token or dispatch permission. */
+    static void verifyPhysicalAfterAcknowledgement(ObservationProvenance.PhysicalAfterAcknowledgement proof,
+            DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive) {
+        Objects.requireNonNull(proof);Objects.requireNonNull(complete);Objects.requireNonNull(archive);
+        try {
+            proof.validate(complete.identity(),complete.originalEvidence());
+            var evidence=archive.loadMaterial(proof.occurrenceEvidence());
+            require(proof.occurrenceEvidence().bytes()==evidence.bytes().length
+                    &&proof.occurrenceEvidence().sha256().equals(ActionCodec.sha256(evidence.bytes())),"physical occurrence bytes differ");
+            var recorded=TimelinePhysicalAfterAckEvidence.decode(evidence);
+            var parent=archive.loadReceipt(recorded.runningParentReceipt());var setter=archive.loadReceipt(recorded.setterReceipt());
+            require(archive.receiptReferenceOf(parent).equals(recorded.runningParentReceipt())
+                    &&archive.receiptReferenceOf(setter).equals(recorded.setterReceipt())
+                    &&parent.bodySha256().equals(ActionCodec.bodySha256(parent.command()))
+                    &&setter.bodySha256().equals(ActionCodec.bodySha256(setter.command())),"physical parent/setter complete original references differ");
+            require(parent.state() instanceof ActionState.CompositeRunning
+                    &&((ActionState.CompositeRunning)parent.state()).execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                    &&LifeAdvanceComposite.accepts(parent.command().operation().value())
+                    &&parent.command().origin() instanceof CommandOrigin.Gameplay
+                    &&(setter.state() instanceof ActionState.AckReceived||setter.state() instanceof ActionState.Settled),
+                    "physical after-ACK proof requires the actual warm Life parent and acknowledged or settled original setter");
+            var execution=((ActionState.CompositeRunning)parent.state()).execution();
+            var parentGuard=execution.guard();
+            require(parent.command().origin().acceptsGuard(parentGuard.origin())&&parentGuard.observed().equals(parent.command().before())
+                    &&parentGuard.source().equals(parent.command().source())&&parentGuard.sessionId().equals(parent.command().sessionId())
+                    &&parentGuard.operation().equals(parent.command().operation()),"physical original Life execution changed its complete entry guard binding");
+            require(!execution.children().isEmpty()&&execution.children().size()<=256,"physical parent lacks its finite original reserved children");
+            var last=execution.children().getLast();var command=setter.command();var owner=parent.command();
+            require(last.actionId().equals(command.actionId())&&last.bodySha256().equals(setter.bodySha256())
+                    &&execution.children().stream().filter(value->value.actionId().equals(command.actionId())).count()==1
+                    &&command.actionId().equals(ActionIds.child(owner.actionId(),execution.children().size(),command.operation()))
+                    &&command.origin() instanceof CommandOrigin.Gameplay&&command.source().equals(owner.source())
+                    &&command.sessionId().equals(owner.sessionId())&&command.claims().equals(owner.claims())
+                    &&!command.deadline().isAfter(owner.deadline())
+                    &&command.before().machineId().equals(owner.before().machineId())&&command.before().game().equals(owner.before().game())
+                    &&command.before().frame().episodeRunId().equals(owner.before().frame().episodeRunId())
+                    &&command.before().frame().identity().player().equals(owner.before().frame().identity().player()),
+                    "physical setter differs from its exact parent/last ordinal/source/session/claims/original deadline");
+            String step=command.operation().value();
+            require(step.equals("pause-map")||step.equals("resume-map")||step.matches("set-speed-[1-5]"),"physical proof cannot substitute for ARM/CANCEL/query or other gameplay");
+            AdvancePlan.decode(owner);
+            var attempt=ActionTransitions.attempt(setter.state()).orElseThrow();
+            var ack=successfulAck(ActionTransitions.dispatch(setter.state()).orElseThrow());var guard=attempt.guard();
+            require(setter.ack().filter(ack::equals).isPresent()&&ack.equals(archive.load(recorded.setterAcknowledgement()))
+                    &&archive.referenceOf(ack).equals(recorded.setterAcknowledgement())&&ack.requestId().equals(attempt.requestId())
+                    &&guard.origin() instanceof CommandOrigin.Gameplay&&command.origin().acceptsGuard(guard.origin())
+                    &&guard.observed().equals(command.before())&&guard.source().equals(command.source())
+                    &&guard.sessionId().equals(command.sessionId())&&guard.operation().equals(command.operation()),
+                    "physical setter changed its actual successful ACK, Attempt or complete before guard");
+            var prepared=attempt.preparedRequest();
+            require(prepared.equals(AdvancePrimitives.prepareRequest(command))
+                    &&prepared.equals(archive.loadRequest(archive.requestReferenceOf(prepared))),"physical setter preparation differs from its actual timeline producer");
+            var outbound=NativeWire.decodeExecuteRequest(ack.outbound().orElseThrow().originalPacket());
+            require(outbound.requestId().equals(attempt.requestId())&&outbound.step().equals(step)
+                    &&outbound.expectedRevision().or(()->outbound.expectedSnapshotRevision()).filter(command.before().frame().identity().nativeRevision()::equals).isPresent()
+                    &&java.util.Arrays.equals(outbound.normalizedAdditionalFields().value(),prepared.additionalFields().bytes()),"physical setter outbound differs from its complete original prepared command");
+            var decodedAck=NativeWire.decode(ack.originalPacket());
+            require(decodedAck instanceof NativeWire.CommandResult result&&result.nativeOk()&&result.requestId().equals(ack.requestId())
+                    &&java.util.Arrays.equals(result.payload().value(),ack.originalFrame().bytes())
+                    &&result.result().token().isPresent()==ack.originalResultToken().isPresent()
+                    &&(result.result().token().isEmpty()||java.util.Arrays.equals(result.result().token().orElseThrow().value(),ack.originalResultToken().orElseThrow().bytes())),
+                    "physical setter original Native result differs from its packet/payload/token");
+            AdvancePrimitives.nativeResult(ack,step);
+            var custody=ack.custody().orElseThrow();custody.verify(ack,guard);
+            require(custody.equals(recorded.setterChronology())&&!custody.writeEntered().observedAt().isBefore(attempt.submittedAt())
+                    &&recorded.snapshotReceived().order().compareTo(custody.responseReceived().order())>0
+                    &&!recorded.snapshotReceived().observedAt().isBefore(custody.responseReceived().observedAt())
+                    &&!recorded.snapshotReceived().observedAt().isAfter(owner.deadline()),"physical original receive chronology or unchanged parent deadline differs");
+            byte[] packet=archive.loadNativeFrame(recorded.nativePacket());
+            require(recorded.nativePacket().bytes()==packet.length&&recorded.nativePacket().sha256().equals(ActionCodec.sha256(packet))
+                    &&recorded.originalPacketIdentity().matches(packet),"physical original Native snapshot bytes differ");
+            var decoded=NativeWire.decode(packet);
+            require(decoded instanceof NativeWire.Snapshot,"physical after-ACK original is not an actual Native snapshot");
+            var snapshot=(NativeWire.Snapshot)decoded;var identity=complete.identity();var session=custody.session();
+            require(recorded.nativePacket().equals(proof.originalPacket())&&recorded.nativePacket().equals(complete.originalEvidence())
+                    &&recorded.snapshotId().equals(proof.snapshotId())&&recorded.snapshotId().equals(snapshot.snapshotId())
+                    &&recorded.snapshotId().equals(identity.frame().snapshotId())
+                    &&recorded.nativeRevision().equals(proof.nativeRevision())&&recorded.nativeRevision().equals(snapshot.revision())
+                    &&recorded.nativeRevision().equals(identity.frame().identity().nativeRevision())
+                    &&recorded.publicRevision().equals(identity.frame().revision())
+                    &&recorded.snapshotReceived().observedAt().equals(complete.observedAt())
+                    &&session.machineId().equals(identity.machineId())&&session.game().equals(identity.game())
+                    &&session.sessionId().equals(complete.sessionId())&&session.connectionGeneration().equals(complete.connectionGeneration()),
+                    "physical recorded occurrence differs from the actual full Native/Driver frame/session/revisions");
+            requireFrameBinding(owner,complete);requireFrameBinding(command,complete);
+            require(identity.frame().identity().nativeRevision().compareTo(command.before().frame().identity().nativeRevision())>=0
+                    &&identity.frame().identity().dateRaw().compareTo(command.before().frame().identity().dateRaw())>=0,
+                    "physical after-ACK observation regressed the original setter Native/date identity");
+        } catch(IOException failure) {throw new UncheckedIOException("actual physical after-ACK originals differ",failure);}
+    }
+
     private static NativeActionPort.AckReceived successfulAck(NativeActionPort.DispatchOutcome value) {
         require(value instanceof NativeActionPort.AckReceived ack && ack.nativeOk(), "successful original native ACK required");
         return (NativeActionPort.AckReceived)value;
@@ -537,9 +774,11 @@ public final class RootAdvanceInfrastructureFactory {
                 "fresh observation crossed original parent source/session/Game/episode/actor");
     }
     private static void requireWatchRole(ActionReceipt parent,ActionReceipt resume) {
-        require(parent.state() instanceof ActionState.CompositeUnknown && LifeAdvanceComposite.accepts(parent.command().operation().value()),
+        require((parent.state() instanceof ActionState.CompositeUnknown
+                ||org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyRunningLifeRecovery(parent))
+                && LifeAdvanceComposite.accepts(parent.command().operation().value()),
                 "same-Game watch requires its original UNKNOWN Life parent");
-        var execution=((ActionState.CompositeUnknown)parent.state()).execution();
+        var execution=ActionTransitions.composite(parent.state()).orElseThrow();
         require(execution.handlerId().equals(LifeAdvanceComposite.HANDLER) && !execution.children().isEmpty()
                 && parent.command().origin().acceptsGuard(execution.guard().origin())
                 && execution.guard().source().equals(parent.command().source())
@@ -577,13 +816,35 @@ public final class RootAdvanceInfrastructureFactory {
                 require(actual==null || actual==held,"same physical clock cannot replace its actual held observation producer");actual=held;return held;
             } catch(IOException failure){throw new UncheckedIOException("actual adopted clock observation unavailable",failure);}
         }
+        @Override public Frame currentForPreparation(org.xar.ck3.control.application.planning.PlanningRequest request,
+                ActionCommand proposed, Instant deadline) {
+            Objects.requireNonNull(request); Objects.requireNonNull(proposed);
+            actual(proposed, deadline);
+            try {
+                return context.withSession(same -> context.collector().borrowCurrent(same, request.before(), deadline, admitted ->
+                        context.collector().currentPlanning(same, request, proposed, deadline, (original, lease) -> {
+                            require(original == request && lease == admitted,
+                                    "clock preparation replaced its original request or actual admitted lease");
+                            var frame = lease.frame();
+                            require(frame.identity().equals(proposed.before()) && frame.source().equals(proposed.source())
+                                    && frame.sessionId().equals(proposed.sessionId()),
+                                    "clock preparation crossed its admitted planning frame/source/session");
+                            var push = new ObservationProvenance.Push(frame.identity().frame().snapshotId(),
+                                    frame.identity().frame().identity().nativeRevision(), frame.originalEvidence());
+                            return new Frame(frame.identity(), frame.source(), frame.sessionId(), frame.semantic(), push,
+                                    frame.observedAt(), frame.originalEvidence());
+                        })));
+            } catch (IOException failure) {
+                throw new UncheckedIOException(clockObservationFailure(failure), failure);
+            }
+        }
         @Override public Frame current(ActionCommand parent,Instant deadline){
             HeldDriverObservationPort sameHeld=actual(parent,deadline);
             try {
                 return context.withSession(same->{
                     if (ActionChildPlanningScope.isReservedChild(same, same.head(), parent)) {
                         context.adopted().authority().requireOutsideObservationScope(same);
-                        return freshReservedChildObservation(same, parent, deadline, sameHeld);
+                        return freshReservedChildObservation(same, parent, deadline, sameHeld, null);
                     }
                     var borrowed=context.collector().withActiveCurrent(same,parent.before(),deadline,lease->{
                         var original=lease.frame();
@@ -616,7 +877,7 @@ public final class RootAdvanceInfrastructureFactory {
                             return sameHeld.retainedEntryReplay(parent, guard, deadline, replayed);
                         }
                     }
-                    return freshParentObservation(same, parent, deadline);
+                    return freshParentObservation(same, parent, deadline, null);
                 });
             }catch(IOException failure){throw new UncheckedIOException(clockObservationFailure(failure),failure);}
         }
@@ -653,11 +914,13 @@ public final class RootAdvanceInfrastructureFactory {
             }
         }
         @Override public Frame next(ActionCommand parent,ObservationIdentity after,Instant deadline){
-            actual(parent,deadline);
+            HeldDriverObservationPort sameHeld=actual(parent,deadline);
             try {return context.withSession(same->{
                 context.adopted().authority().requireOutsideObservationScope(same);
                 for(int count=0;count<timings.maximumFrames() && context.clock().instant().isBefore(deadline);count++) {
-                    Frame frame=freshParentObservation(same,parent,deadline);
+                    Frame frame=ActionChildPlanningScope.isReservedChild(same,same.head(),parent)
+                            ? freshReservedChildObservation(same,parent,deadline,sameHeld,after.frame().identity().nativeRevision())
+                            : freshParentObservation(same,parent,deadline,after.frame().identity().nativeRevision());
                     if(frame.identity().frame().identity().nativeRevision().compareTo(after.frame().identity().nativeRevision())>0)return frame;
                 }
                 throw new IOException("actual fresh next frame did not advance its native revision within the original finite budget");
@@ -671,7 +934,9 @@ public final class RootAdvanceInfrastructureFactory {
             try {
                 return context.withSession(same -> {
                     if (RootPlanningReadGuard.lifeCancellationStatusSource(same, same.head(), parent,
-                            context.archive().withSession(same)).isPresent()) {
+                            context.archive().withSession(same)).isPresent()
+                            ||RootPlanningReadGuard.postResumePauseCancellationStatusSource(same,same.head(),parent,
+                                context.archive().withSession(same)).isPresent()) {
                         return context.collector().currentDerivedCleanup(same, parent.before(), deadline,
                                 lease -> clockControlBasis(parent, lease.frame(), work));
                     }
@@ -699,16 +964,22 @@ public final class RootAdvanceInfrastructureFactory {
         }
 
         private Frame freshReservedChildObservation(ContinuityStorePort.Session same, ActionCommand child,
-                Instant deadline, HeldDriverObservationPort sameHeld) throws IOException {
+                Instant deadline, HeldDriverObservationPort sameHeld,BigInteger afterNativeRevision) throws IOException {
             var receipt=context.core().journal().locked(same,locked->locked.find(child.actionId()).orElseThrow());
             require(receipt.command().equals(child),"reserved child receipt differs from its actual command");
             var ack=receipt.ack().filter(NativeActionPort.AckReceived::nativeOk).orElseThrow();
             var archive=context.archive().withSession(same);
+            var activeParent=ActionChildPlanningScope.reservedParent(same,same.head(),child).orElseThrow();
+            var parent=context.core().journal().locked(same,locked->locked.find(activeParent.actionId()).orElseThrow());
+            if(parent.state() instanceof ActionState.CompositeRunning running
+                    &&running.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                    &&LifeAdvanceComposite.accepts(parent.command().operation().value())&&physicalTimelineStep(child.operation().value()))
+                return physicalAfterAcknowledgement(same,child,parent,receipt,deadline,afterNativeRevision);
             var proofBasis=new ObservationProvenance.LiveAfterSetter(archive.preserve(ack));
             return freshObservation(same,child,deadline,proofBasis);
         }
 
-        private Frame freshParentObservation(ContinuityStorePort.Session same,ActionCommand parent,Instant deadline)throws IOException {
+        private Frame freshParentObservation(ContinuityStorePort.Session same,ActionCommand parent,Instant deadline,BigInteger afterNativeRevision)throws IOException {
             var canonical=context.core().journal().locked(same,locked->locked.find(parent.actionId()).orElseThrow());
             require(canonical.command().equals(parent),"fresh parent differs from its current canonical command");
             var execution=canonical.state() instanceof ActionState.CompositeUnknown unknown?unknown.execution():
@@ -722,16 +993,96 @@ public final class RootAdvanceInfrastructureFactory {
             AdvanceClockArchivedReplay.verifyChildBindings(parent,children);
             var last=children.getLast();var ack=last.ack().filter(NativeActionPort.AckReceived::nativeOk).orElseThrow();
             var archive=context.archive().withSession(same);
+            if(canonical.state() instanceof ActionState.CompositeRunning
+                    &&LifeAdvanceComposite.accepts(parent.operation().value())&&physicalTimelineStep(last.command().operation().value())
+                    &&ack.custody().orElseThrow().session().equals(context.adopted().session()))
+                return physicalAfterAcknowledgement(same,parent,canonical,last,deadline,afterNativeRevision);
             ObservationProvenance.FreshSnapshotBasis basis;
-            if(canonical.state() instanceof ActionState.CompositeUnknown
-                    && !ack.custody().orElseThrow().session().equals(context.adopted().session())) {
-                requireWatchRole(canonical,last);
-                require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(
-                        ContinuityActionJournal.receipts(same.head().state(),archive)).filter(canonical::equals).isPresent(),
-                        "same-Game watch is not the admitted complete canonical Life prefix");
-                basis=new ObservationProvenance.SameGameWatch(archive.receiptReferenceOf(canonical),archive.receiptReferenceOf(last));
+            if(canonical.state() instanceof ActionState.CompositeUnknown && last.command().operation().value().equals("pause-map")
+                    || (canonical.state() instanceof ActionState.CompositeUnknown
+                        ||org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyRunningLifeRecovery(canonical))
+                        && !ack.custody().orElseThrow().session().equals(context.adopted().session())) {
+                var originals=ContinuityActionJournal.receipts(same.head().state(),archive);
+                if(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyPostResumePauseLifeRecoveryRoot(originals)
+                        .filter(canonical::equals).isPresent()) {
+                    var resume=children.get(children.size()-2);
+                    org.xar.ck3.control.application.session.ContinuityBatchJournal.requirePostResumePauseWatchRole(canonical,resume,last);
+                    basis=new ObservationProvenance.PostResumePauseWatch(archive.receiptReferenceOf(canonical),
+                            archive.receiptReferenceOf(resume),archive.receiptReferenceOf(last));
+                } else {
+                    requireWatchRole(canonical,last);
+                    require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyObservedLifeRecoveryRoot(originals)
+                            .filter(canonical::equals).isPresent(),"same-Game watch is not the admitted complete canonical Life prefix");
+                    basis=new ObservationProvenance.SameGameWatch(archive.receiptReferenceOf(canonical),archive.receiptReferenceOf(last));
+                }
             } else basis=new ObservationProvenance.LiveAfterSetter(archive.preserve(ack));
             return freshObservation(same,parent,deadline,basis);
+        }
+
+        private static boolean physicalTimelineStep(String step) {
+            return step.equals("pause-map")||step.equals("resume-map")||step.matches("set-speed-[1-5]");
+        }
+        /** Warm canonical Life only: receive actual packets after the already retained setter ACK, never send another command. */
+        private Frame physicalAfterAcknowledgement(ContinuityStorePort.Session same,ActionCommand observer,
+                ActionReceipt parent,ActionReceipt setter,Instant deadline,BigInteger afterNativeRevision)throws IOException {
+            require(parent.state() instanceof ActionState.CompositeRunning
+                    &&((ActionState.CompositeRunning)parent.state()).execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                    &&LifeAdvanceComposite.accepts(parent.command().operation().value())
+                    &&(setter.state() instanceof ActionState.AckReceived||setter.state() instanceof ActionState.Settled)
+                    &&physicalTimelineStep(setter.command().operation().value()),
+                    "physical after-ACK observation requires its actual warm running Life and known setter");
+            var archive=context.archive().withSession(same);var transport=context.transport();
+            var ack=setter.ack().filter(NativeActionPort.AckReceived::nativeOk).orElseThrow();
+            var chronology=transport.originalRequestChronology(ack.requestId()).orElseThrow(
+                    ()->new IOException("warm setter has no actual retained transport chronology"));
+            chronology.verify(ack);
+            require(ack.custody().filter(chronology::equals).isPresent()
+                    &&chronology.session().equals(context.adopted().session()),"warm setter crossed actual held Native session");
+            try {
+                var peek=transport.currentSnapshot(deadline);
+                var actual=peek;int receivedFrames=0;boolean peekDelivered=false;
+                while(context.clock().instant().isBefore(deadline)) {
+                    var accepted=transport.acceptedSnapshotRevision(actual);accepted.requireOriginal(actual);
+                    if(accepted.received().order().compareTo(chronology.responseReceived().order())<=0
+                            ||afterNativeRevision!=null&&actual.nativeRevision().compareTo(afterNativeRevision)<=0) {
+                        archive.preserveNativeFrame(actual);
+                        if(receivedFrames>=timings.maximumFrames())break;
+                        var received=transport.observe(deadline);
+                        // currentSnapshot does not consume an undelivered peek. Draining that same
+                        // already accepted object once receives no new packet and consumes no frame budget.
+                        if(received==peek&&!peekDelivered)peekDelivered=true;
+                        else receivedFrames++;
+                        actual=received;
+                        continue;
+                    }
+                    var witness=transport.acceptedAfterAcknowledgement(actual,ack);witness.requireOriginal(transport,actual);
+                    require(context.clock().instant().isBefore(deadline)&&!actual.observedAt().isAfter(deadline),
+                            "physical observation exceeded its unchanged original observation deadline");
+                    var selected=actual;
+                    var complete=context.adopted().authority().withFrozenRawObservation(selected,same,frozen->{
+                        var original=archive.preserveNativeFrame(selected);
+                        var projected=context.core().observationAssembler().assemble(selected,frozen.facts(),original);
+                        if(projected instanceof DriverObservationAssembler.Incomplete missing)
+                            throw new IllegalStateException("incomplete physical after-ACK semantic observation: "+String.join(",",missing.reasons()));
+                        return (DriverObservationAssembler.Complete)projected;
+                    });
+                    requireFrameBinding(observer,complete);requireFrameBinding(parent.command(),complete);
+                    witness.requireOriginal(transport,actual);
+                    var recorded=new TimelinePhysicalAfterAckEvidence.Recorded(witness.setterChronology(),actual.snapshotId(),actual.nativeRevision(),
+                            complete.identity().frame().revision(),witness.acceptedRevision().received(),witness.acceptedRevision().originalPacket(),
+                            complete.originalEvidence(),archive.preserve(ack),archive.preserveReceipt(setter),archive.preserveReceipt(parent));
+                    var reference=TimelinePhysicalAfterAckEvidence.preserve(recorded,archive);
+                    var proof=new ObservationProvenance.PhysicalAfterAcknowledgement(actual.snapshotId(),actual.nativeRevision(),complete.originalEvidence(),reference);
+                    verifyPhysicalAfterAcknowledgement(proof,complete,archive);
+                    require(context.clock().instant().isBefore(deadline),"physical full-frame projection exceeded its original deadline");
+                    return new Frame(complete.identity(),complete.source(),complete.sessionId(),complete.semantic(),proof,
+                            complete.observedAt(),complete.originalEvidence());
+                }
+            } catch(InterruptedException interrupted) {
+                Thread.currentThread().interrupt();var failure=new InterruptedIOException("actual physical after-ACK receive interrupted; original action is not replayed");
+                failure.initCause(interrupted);throw failure;
+            }
+            throw new IOException("no actual after-ACK snapshot arrived within the unchanged finite observation budget");
         }
 
         private Frame freshObservation(ContinuityStorePort.Session same,ActionCommand parent,Instant deadline,

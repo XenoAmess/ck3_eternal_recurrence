@@ -458,7 +458,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
             require(current.actionRows().equals(retained.actionRows()), "planning round lost its actual frozen full Driver: actionRows");
             require(current.loop().equals(retained.loop()), "planning round lost its actual frozen full Driver: loop");
             require(current.observation().equals(retained.observation()), "planning round lost its actual frozen full Driver: observation");
-            require(DriverStateAssembler.projectObservation(captured.lease().driver(), frozen.actions(), frozen.activeActionId())
+            require(DriverStateAssembler.projectObservation(current, frozen.actions(), frozen.activeActionId())
                     instanceof DriverStateSnapshot.Complete, "unresolved actions cannot reuse a planning lease");
             return inPlanningScope(borrowed, captured, same -> borrowedPlanningRead(planningReadScope.get(), borrowed, expected, deadline, work));
         });

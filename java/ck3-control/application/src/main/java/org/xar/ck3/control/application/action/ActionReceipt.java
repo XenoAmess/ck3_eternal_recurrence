@@ -14,6 +14,10 @@ public record ActionReceipt(int version, long sequence, ActionCommand command, S
     }
     public Outcome outcome() {
         if (state instanceof ActionState.CompositeOperatorQuarantined) return Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT;
+        if(state instanceof PreparedCleanupAction prepared)return prepared.terminal()?Outcome.TERMINAL_WITHOUT_EFFECT:Outcome.UNRESOLVED;
+        if (state instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed) return Outcome.TERMINAL_WITHOUT_EFFECT;
+        if (state instanceof ActionState.PreparedCleanupNoEffectConfirmed) return Outcome.TERMINAL_WITHOUT_EFFECT;
+        if (state instanceof ActionState.CleanupNoEffectConfirmed) return Outcome.TERMINAL_WITHOUT_EFFECT;
         if (state instanceof ActionState.IntentAbandoned) return Outcome.TERMINAL_WITHOUT_EFFECT;
         if (state instanceof PhysicalActionState physical) return physical.terminal() ? Outcome.TERMINAL_WITHOUT_EFFECT : Outcome.UNRESOLVED;
         if (state instanceof ActionState.Settled settled) return classify(settled.settlement());
@@ -51,6 +55,7 @@ public record ActionReceipt(int version, long sequence, ActionCommand command, S
         return Optional.empty();
     }
     public Optional<NativeActionPort.AckReceived> ack() {
+        if(state instanceof PreparedCleanupAction value&&value.originalDispatch().orElse(null) instanceof NativeActionPort.AckReceived ack)return Optional.of(ack);
         if (state instanceof ActionState.AckReceived value) return Optional.of(value.dispatch());
         if (state instanceof ActionState.Settled value && value.dispatch() instanceof NativeActionPort.AckReceived ack) return Optional.of(ack);
         if (state instanceof ActionState.Unknown value && value.dispatch().orElse(null) instanceof NativeActionPort.AckReceived ack) return Optional.of(ack);

@@ -81,18 +81,20 @@ public final class RootActionGuard implements ActionPorts.GuardPort {
                 publicPauseChild=RootExecutableBindings.isPublicPauseParent(parent.command());
             }
             final boolean sourceOwnedPublicPause=publicPauseChild;
-            var cancellation=sourceQualifiedCancellation(session,actualLockedHead,command,definition,sameWriterArchive);
-            if(reservedPause || cancellation.isPresent()) {
+            var postCancellation=sourceQualifiedPostResumePauseCancellation(session,actualLockedHead,command,definition,sameWriterArchive);
+            var cancellation=postCancellation.isPresent()?java.util.Optional.<LifeSentinelCancellation>empty()
+                    :sourceQualifiedCancellation(session,actualLockedHead,command,definition,sameWriterArchive);
+            if(reservedPause || cancellation.isPresent() || postCancellation.isPresent()) {
                 var running = authority.currentDerivedCleanup(session,command.before(),command.deadline(),physical -> {
-                    if(cancellation.isPresent()) {
-                        var before=cancellation.orElseThrow().beforeCancel();
+                    if(cancellation.isPresent()||postCancellation.isPresent()) {
+                        var before=postCancellation.isPresent()?postCancellation.orElseThrow().beforeCancel():cancellation.orElseThrow().beforeCancel();
                         StrictJson.require(before.identity().equals(physical.frame().identity())
                                 &&before.source().equals(physical.frame().source())
                                 &&before.sessionId().equals(physical.frame().sessionId()),
                                 "Life cancellation changed its actual source-qualified before frame");
                         RootGuardChecks.livingPaused(physical);
                     }
-                    if(cancellation.isEmpty()&&!sourceOwnedPublicPause&&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(physical.frame().semantic().get("paused"),"paused"))
+                    if(cancellation.isEmpty()&&postCancellation.isEmpty()&&!sourceOwnedPublicPause&&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(physical.frame().semantic().get("paused"),"paused"))
                         return java.util.Optional.<GuardEvidence>empty();
                     // The public source owns its exact first map-unavailable attempt and at most one qualified retry.
                     // Internal Life/Battle cleanup retains every original living/map qualification.
@@ -102,7 +104,22 @@ public final class RootActionGuard implements ActionPorts.GuardPort {
                             "actual bridge did not advertise the installed cleanup capability"));
                     GuardEvidence binding=RootGuardChecks.binding(physical,command.origin(),command.source(),command.sessionId(),command.operation(),
                             command.deadline(),sameWriterArchive,clock,actualLockedHead,authorityId,session,originals);
-                    return java.util.Optional.of(withDerived(binding,proof));
+                    var bound=withDerived(binding,proof);
+                    if(postCancellation.isPresent()) {
+                        var token=postCancellation.orElseThrow();
+                        bound=withDerived(bound,token.authorizationReference());
+                        var readMaximum=token.armedRead().original().custody().orElseThrow().responseReceived().observedAt()
+                                .plus(java.time.Duration.ofMinutes(2));
+                        var frameMaximum=token.beforeCancel().observedAt().plus(java.time.Duration.ofMinutes(2));
+                        var validUntil=bound.validUntil();
+                        if(readMaximum.isBefore(validUntil))validUntil=readMaximum;
+                        if(frameMaximum.isBefore(validUntil))validUntil=frameMaximum;
+                        StrictJson.require(clock.instant().isBefore(validUntil),
+                                "post-resume cancellation pre-write evidence is no longer fresh");
+                        bound=new GuardEvidence(bound.origin(),bound.source(),bound.sessionId(),bound.connectionGeneration(),bound.operation(),
+                                bound.nativeEvidence(),bound.capabilityEvidence(),bound.authorityId(),bound.observedAt(),validUntil,bound.supportingEvidence());
+                    }
+                    return java.util.Optional.of(bound);
                 });
                 if(running.isPresent())return running.orElseThrow();
                 // A paused physical DATA frame cannot grant ordinary Ready. Its scope is now closed.
@@ -144,6 +161,35 @@ public final class RootActionGuard implements ActionPorts.GuardPort {
                 &&clock.instant().isBefore(token.deadline())&&!child.deadline().isAfter(token.deadline()),
                 "Life cancellation changed its original source token or finite deadline");
         var cancellation=(LifeSentinelCancellation)token;
+        source.requireContinuationChild(parent.command(),cancellation.originalExecution(),token,child);
+        StrictJson.require(AdvancePrimitives.cancelGeneration(child.operation().value()).equals(cancellation.generation())
+                &&child.arguments().members().isEmpty(),"Life cancellation changed its original generation or empty arguments");
+        return java.util.Optional.of(cancellation);
+    }
+    private java.util.Optional<LifePostResumePauseCancellation> sourceQualifiedPostResumePauseCancellation(
+            ContinuityStorePort.Session same,WriterContracts.Head head,ActionCommand child,
+            ExecutableStepBindings.InstalledStep definition,ActionPorts.OutcomeArchive currentArchive)throws IOException {
+        if(definition.kind()!=ExecutableStepBindings.Kind.ACTION
+                ||!child.operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX))return java.util.Optional.empty();
+        var reserved=ActionChildPlanningScope.reservedParent(same,head,child);
+        if(reserved.isEmpty())return java.util.Optional.empty();
+        var parent=ContinuityActionJournal.lookup(head.state(),reserved.orElseThrow().actionId(),currentArchive).orElseThrow();
+        if(!(parent.state() instanceof ActionState.CompositeUnknown unknown))return java.util.Optional.empty();
+        var actual=installed.composites().find(parent.command().operation()).orElseThrow();
+        StrictJson.require(actual instanceof LifeAdvanceComposite
+                &&actual instanceof CompositeActionPort.OriginalContinuation
+                &&unknown.execution().handlerId().equals(LifeAdvanceComposite.HANDLER),
+                "unresolved cleanup has no actual registered Life continuation producer");
+        var token=ActionChildPlanningScope.continuationToken(same,head,parent.command(),child).orElseThrow(
+                ()->new IOException("Life cancellation has no original source-qualified held token"));
+        if(!(token instanceof LifePostResumePauseCancellation))return java.util.Optional.empty();
+        var source=(CompositeActionPort.OriginalContinuation)actual;
+        source.requireContinuation(parent.command(),unknown.execution(),token);
+        StrictJson.require(token instanceof LifePostResumePauseCancellation
+                &&token.kind()==CompositeContinuationToken.Kind.LIFE_POST_RESUME_PAUSE_CANCEL
+                &&clock.instant().isBefore(token.deadline())&&!child.deadline().isAfter(token.deadline()),
+                "Life cancellation changed its original source token or finite deadline");
+        var cancellation=(LifePostResumePauseCancellation)token;
         source.requireContinuationChild(parent.command(),cancellation.originalExecution(),token,child);
         StrictJson.require(AdvancePrimitives.cancelGeneration(child.operation().value()).equals(cancellation.generation())
                 &&child.arguments().members().isEmpty(),"Life cancellation changed its original generation or empty arguments");

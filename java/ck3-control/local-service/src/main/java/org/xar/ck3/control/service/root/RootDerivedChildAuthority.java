@@ -169,6 +169,17 @@ public final class RootDerivedChildAuthority {
             var source=(CompositeActionPort.OriginalContinuation)parentBinding.handler();
             var execution=executionFor(parent,child);
             source.requireContinuation(parent.command(),execution,token);
+            if(token instanceof LifePostResumePauseCancellation cleanup) {
+                require(token.kind()==CompositeContinuationToken.Kind.LIFE_POST_RESUME_PAUSE_CANCEL
+                        &&context.clock().instant().isBefore(token.deadline())&&!child.deadline().isAfter(token.deadline()),
+                        "post-resume cancellation changed its private source token or own finite deadline");
+                source.requireContinuationChild(parent.command(),cleanup.originalExecution(),token,child);
+                require(cleanup.beforeCancel().identity().equals(current.identity())
+                        &&cleanup.beforeCancel().source().equals(current.source())&&cleanup.beforeCancel().sessionId().equals(current.sessionId())
+                        &&AdvancePrimitives.cancelGeneration(child.operation().value()).equals(cleanup.generation())
+                        &&child.arguments().members().isEmpty(),"post-resume cancellation changed its exact fresh paused frame or generation");
+                return;
+            }
             require(token instanceof LifeSentinelCancellation
                     &&token.kind()==CompositeContinuationToken.Kind.LIFE_SENTINEL_CANCEL
                     &&context.clock().instant().isBefore(token.deadline())&&!child.deadline().isAfter(token.deadline()),

@@ -10,6 +10,40 @@ import org.xar.ck3.control.contracts.StrictJson;
 public interface NativeActionPort {
     DispatchOutcome submit(SubmissionPermit permit, NativeRequest request, Instant deadline) throws InterruptedException;
 
+    /** Retains actual successful/failed READ originals when late observation is
+     * incomplete. This exception carries no world-write or zero-write grant. */
+    // Raw originals are explicitly archived as protocol DATA. Java object
+    // serialization of this runtime diagnostic exception is not a supported wire.
+    @SuppressWarnings("serial")
+    final class PreparedCleanupObservationFailure extends java.io.IOException {
+        private static final long serialVersionUID=1L;
+        private final java.util.List<DispatchOutcome> originals;
+        public PreparedCleanupObservationFailure(String message,java.util.List<DispatchOutcome> originals,Throwable cause) {
+            super(message,cause);this.originals=java.util.List.copyOf(originals);
+            org.xar.ck3.control.contracts.StrictJson.require(this.originals.size()<=5,"bounded actual late READ failure chain required");
+        }
+        public java.util.List<DispatchOutcome> originals(){return originals;}
+    }
+    /** Pure local finite-capacity preflight. It issues no READ or mutation and
+     * cannot expand request-identity/byte retention limits. */
+    default void requirePreparedCleanupCapacity(org.xar.ck3.control.application.advance.PreparedCleanupEvidence.Prepared prepared)
+            throws java.io.IOException {
+        throw new java.io.IOException("actual Native provider has no prepared cleanup capacity contract");
+    }
+    /** Fixed new-role late observation only. It cannot submit any world command.
+     * The actual SDK requires the installed Root's source-owned, writer-held capability;
+     * arbitrary implementations and public DATA cannot opt into this by default. */
+    default org.xar.ck3.control.application.advance.PreparedCleanupEvidence.LateBinding observePreparedCleanupLate(
+            PreparedCleanupObservationPermit permit) throws java.io.IOException,InterruptedException {
+        throw new java.io.IOException("actual Native provider has no qualified prepared-cleanup observation role");
+    }
+    /** One exact new world CANCEL and its immediately captured raw post-ACK reads.
+     * No slow durable ACK or foreign callback may intervene before IDLE1/IDLE2/fullframe. */
+    default PreparedCleanupNativeOutcome submitPreparedCleanup(PreparedCleanupPermit permit,NativeRequest request,
+            Instant deadline) throws InterruptedException {
+        throw new IllegalStateException("actual Native provider has no qualified prepared-cleanup submit role");
+    }
+
     /** Exact-ID pop of an already received original. Empty means no matching cached ACK, never unsupported. */
     default Optional<AckReceived> pollOriginalOutcome(String attemptedRequestId) throws IOException {
         throw new IOException("actual Native action provider does not implement zero-I/O original outcome polling");

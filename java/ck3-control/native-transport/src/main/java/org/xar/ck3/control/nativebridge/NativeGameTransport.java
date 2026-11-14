@@ -29,6 +29,11 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.application.action.PhysicalStatusIdentity;
 import org.xar.ck3.control.application.advance.AdvancePrimitives;
+import org.xar.ck3.control.application.advance.ClockStatusRead;
+import org.xar.ck3.control.application.advance.PreparedCleanupEvidence;
+import org.xar.ck3.control.application.action.PreparedCleanupPermit;
+import org.xar.ck3.control.application.action.PreparedCleanupObservationPermit;
+import org.xar.ck3.control.application.action.PreparedCleanupNativeOutcome;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.PlanningReadFailure;
 import org.xar.ck3.control.application.action.PlanningReadFailureCodec;
@@ -115,6 +120,95 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private Instant snapshotObservedAt;
     private boolean snapshotUndelivered;
     private ObservedFrame acceptedSnapshotFrame;
+
+    /** Receiver-owned live witness for an actual after-ACK snapshot occurrence. */
+    public static final class AfterAcknowledgementSnapshot {
+        private final NativeGameTransport issuer;
+        private final ObservedFrame actual;
+        private final AcceptedSnapshotRevision accepted;
+        private final NativeRequestChronology setterChronology;
+        private final NativeActionPort.AckReceived setter;
+
+        private AfterAcknowledgementSnapshot(NativeGameTransport issuer, ObservedFrame actual,
+                AcceptedSnapshotRevision accepted, NativeRequestChronology setterChronology,
+                NativeActionPort.AckReceived setter) {
+            this.issuer = issuer;
+            this.actual = actual;
+            this.accepted = accepted;
+            this.setterChronology = setterChronology;
+            this.setter = setter;
+        }
+
+        public ObservedFrame originalFrame() { return actual; }
+        public AcceptedSnapshotRevision acceptedRevision() { return accepted; }
+        public NativeRequestChronology setterChronology() { return setterChronology; }
+        public UUID custodyEpoch() { return setterChronology.custodyEpoch(); }
+
+        public void requireOriginal(NativeGameTransport actualHeld, ObservedFrame actual) throws IOException {
+            if (issuer != actualHeld || this.actual != actual)
+                throw new IOException("after-ACK witness requires its identical transport and received frame occurrence");
+            var rebound = actualHeld.acceptedAfterAcknowledgement(actual, setter);
+            if (rebound.accepted != accepted || !rebound.setterChronology.equals(setterChronology))
+                throw new IOException("after-ACK witness no longer has its identical retained receiver and setter custody");
+        }
+    }
+
+    public synchronized AfterAcknowledgementSnapshot acceptedAfterAcknowledgement(ObservedFrame actual,
+            NativeActionPort.AckReceived setter) throws IOException {
+        Objects.requireNonNull(actual); Objects.requireNonNull(setter);
+        if (!setter.nativeOk()) throw new IOException("actual positive setter ACK required");
+        if (closed || terminalFailure != null) throw new IOException("transport is closed or terminal");
+        if (hello == null) throw new IOException("no held hello");
+        var token = acceptedSnapshotRevision(actual);
+        token.requireOriginal(actual);
+        var chronology = originalRequestChronology(setter.requestId()).orElseThrow(
+                () -> new IOException("setter chronology unavailable"));
+        if (!chronology.equals(setter.custody().orElseThrow()))
+            throw new IOException("setter chronology differs from ACK custody");
+        if (!chronology.custodyEpoch().equals(custodyEpoch))
+            throw new IOException("setter chronology epoch differs from transport");
+        if (!chronology.session().equals(session()))
+            throw new IOException("setter chronology session differs from transport");
+        chronology.verify(setter);
+        var outbound = originalOutboundPacket(setter.requestId()).orElseThrow(
+                () -> new IOException("setter outbound packet unavailable"));
+        if (!Arrays.equals(outbound.originalPacket(), setter.outbound().orElseThrow().originalPacket()))
+            throw new IOException("setter outbound packet differs from ACK");
+        var decoded = NativeWire.decode(setter.originalPacket());
+        if (!(decoded instanceof NativeWire.CommandResult result)) throw new IOException("setter packet is not a command result");
+        if (!result.requestId().equals(setter.requestId()) || !result.nativeOk())
+            throw new IOException("setter command result differs from ACK");
+        if (!Arrays.equals(result.payload().value(), setter.originalFrame().bytes()))
+            throw new IOException("setter payload differs from ACK");
+        var resultToken = result.result().token().map(value -> value.value());
+        var setterToken = setter.originalResultToken().map(value -> value.bytes());
+        if (resultToken.isPresent() != setterToken.isPresent())
+            throw new IOException("setter result token presence differs from ACK");
+        if (resultToken.isPresent() && !Arrays.equals(resultToken.get(), setterToken.get()))
+            throw new IOException("setter result token bytes differ from ACK");
+        var request = NativeWire.decodeExecuteRequest(outbound.originalPacket());
+        if (!request.requestId().equals(setter.requestId()))
+            throw new IOException("setter request id differs from ACK");
+        var step = request.step();
+        if (!step.equals("pause-map") && !step.equals("resume-map") && !step.equals("set-speed-1")
+                && !step.equals("set-speed-2") && !step.equals("set-speed-3")
+                && !step.equals("set-speed-4") && !step.equals("set-speed-5"))
+            throw new IOException("setter step is not a valid timeline primitive");
+        org.xar.ck3.control.application.advance.AdvancePrimitives.nativeResult(setter, step);
+        if (!token.session().equals(actual.session()) || !token.session().equals(chronology.session()))
+            throw new IOException("accepted snapshot differs from the actual setter and current held session");
+        if (!token.snapshotId().equals(actual.snapshotId())) throw new IOException("accepted snapshot id differs from actual frame");
+        if (!token.nativeRevision().equals(actual.nativeRevision())) throw new IOException("accepted native revision differs from actual frame");
+        if (!token.originalPacket().equals(NativeRequestChronology.PacketIdentity.of(actual.originalPacket())))
+            throw new IOException("accepted packet identity differs from actual frame");
+        if (!token.received().observedAt().equals(actual.observedAt()))
+            throw new IOException("accepted received time differs from actual frame observed time");
+        if (token.received().order().compareTo(chronology.responseReceived().order()) <= 0)
+            throw new IOException("accepted snapshot did not follow setter ACK");
+        if (token.received().observedAt().isBefore(chronology.responseReceived().observedAt()))
+            throw new IOException("accepted snapshot time regressed before setter ACK");
+        return new AfterAcknowledgementSnapshot(this, actual, token, chronology, setter);
+    }
     private BigInteger statePublicRevision = BigInteger.ZERO;
     private boolean stateConnected;
     private boolean stateRevisionAvailable=true;
@@ -1173,6 +1267,264 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }
         throw new IOException("typed snapshot WAIT packet budget exhausted without an accepted original or zero-prefix deadline");
     }
+    // The new prepared role never reuses legacy SubmissionPermit/CommandOrigin admission.
+    private final Set<String> preparedCleanupObservedNonces=new HashSet<>();
+    private final Set<String> preparedCleanupWriteNonces=new HashSet<>();
+    private PreparedCleanupLateCapture preparedCleanupLateCapture;
+    private record PreparedCleanupLateCapture(PreparedCleanupObservationPermit observation,
+            PreparedCleanupEvidence.LateBinding binding) { }
+    private record PreparedCleanupDispatch(DispatchOutcome original,Optional<Throwable> originalFailure) { }
+
+    @Override public synchronized PreparedCleanupEvidence.LateBinding observePreparedCleanupLate(
+            PreparedCleanupObservationPermit permit)throws IOException,InterruptedException {
+        Objects.requireNonNull(permit);var originals=new ArrayList<DispatchOutcome>();
+        try {
+            if(permit.consumed()||preparedCleanupObservedNonces.contains(permit.preparation().preparationNonce()))
+                throw new IOException("prepared cleanup observation already attempted; retain original DATA without replay");
+            if(preparedCleanupLateCapture!=null)throw new IOException("another original prepared late binding is still held");
+            requirePreparedCleanupCapacity(permit.preparation());open(permit.deadline());awaitHello(permit.deadline());verifyEndpoint();
+            var permission=preparedCleanupPermission(permit.preparation().command().operation());
+            permission.verifyPreparedObservation(config,hello,permit);
+            latestReadEvidence=null;
+            requirePreparedCleanupCapacity(permit.preparation());requirePreparedCleanupHello();requireLivingPausedMap();
+            Instant readUntil=preparedCleanupReadDeadline(permit.deadline());
+            String nonce=permit.preparation().preparationNonce();
+            var status=preparedCleanupStatus("prepared-status-"+nonce+"-late",readUntil,originals,()->{
+                permit.consumeOnce();if(!preparedCleanupObservedNonces.add(nonce))throw new IllegalStateException("prepared observation nonce already used");
+            });
+            var fresh=preparedCleanupFresh("prepared-fresh-"+nonce+"-late",readUntil,originals);
+            NativeFreshSnapshotPort.verifyAfterOriginal(status.acknowledgement(),fresh.acknowledgement(),fresh.originalFrame(),fresh.snapshotReceived());
+            Instant now=chronologyClock.instant();
+            Instant expiry=preparedCleanupMin(permit.deadline(),preparedCleanupMin(
+                    status.acknowledgement().custody().orElseThrow().responseReceived().observedAt().plus(Duration.ofMinutes(2)),
+                    fresh.originalFrame().observedAt().plus(Duration.ofMinutes(2))));
+            var binding=PreparedCleanupEvidence.bindLate(permit.preparation(),status,fresh.acknowledgement(),fresh.originalFrame(),
+                    fresh.snapshotReceived(),now,expiry,now);
+            requirePreparedCleanupActualFrame(binding,now);
+            preparedCleanupLateCapture=new PreparedCleanupLateCapture(permit,binding);return binding;
+        } catch(Throwable failure) {
+            if(failure instanceof InterruptedException)Thread.currentThread().interrupt();
+            throw new NativeActionPort.PreparedCleanupObservationFailure("prepared cleanup late observation failed; no world submission from this entry",originals,failure);
+        }
+    }
+    private NativePrivateActionPermission preparedCleanupPermission(org.xar.ck3.control.application.action.OperationKey operation)throws IOException {
+        return privateActions.stream().filter(value->value.operation().equals(operation)).findFirst()
+                .orElseThrow(()->new IOException("prepared cleanup has no actual installed Root qualification"));
+    }
+    private void preparedCleanupCapacity(int remaining)throws IOException {
+        if(pendingFreshSnapshot!=null)throw new IOException("original fresh READ is unresolved; collect its same ID instead of preparing cleanup");
+        if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||mailboxPoison!=null)
+            throw new IOException("prepared cleanup cannot cross another actual Native producer scope");
+        if(remaining<1||maximumSubmissions-sentRequestIds.size()<remaining)
+            throw new IOException("prepared cleanup lacks its complete fixed READ/write identity budget");
+        if(preparedCleanupObservedNonces.size()>=maximumSubmissions||preparedCleanupWriteNonces.size()>=maximumSubmissions)
+            throw new IOException("prepared cleanup nonce retention bound exhausted");
+    }
+    private void requirePreparedCleanupHello()throws IOException {
+        if(hello==null||snapshot==null||acceptedSnapshotFrame==null)throw new IOException("prepared cleanup needs the original HELLO and accepted raw snapshot");
+        if(!hello.capabilities().containsAll(Set.of(ClockStatusRead.STATUS_CAP,ClockStatusRead.CANCEL_CAP,
+                NativeFreshSnapshotPort.CAPABILITY,"game.state.snapshot")))throw new IOException("prepared cleanup original HELLO lacks required fixed capabilities");
+        var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        String version=NativeWire.text(original.get("expected_ck3_version"));
+        boolean exactSix=hello.adapterId().equals("ck3-1.19.0.6-msvc-x64")&&hello.gameSha256().equalsIgnoreCase("2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86")&&version.equals("1.19.0.6");
+        boolean exactFour=hello.adapterId().equals("ck3-1.20.0.4-msvc-x64")&&hello.gameSha256().equalsIgnoreCase("98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")&&version.equals("1.20.0.4");
+        if(!(exactSix||exactFour))throw new IOException("prepared cleanup lacks the exact existing .6/.4 full-state READ profile");
+    }
+    private Instant preparedCleanupReadDeadline(Instant upper) {
+        return preparedCleanupMin(upper,preparedCleanupMin(readDeadline(upper),chronologyClock.instant().plus(Duration.ofMinutes(2))));
+    }
+    private static Instant preparedCleanupMin(Instant a,Instant b){return a.isBefore(b)?a:b;}
+
+    @Override public synchronized void requirePreparedCleanupCapacity(PreparedCleanupEvidence.Prepared prepared)throws IOException {
+        Objects.requireNonNull(prepared);preparedCleanupCapacity(6);
+        if(preparedCleanupLateCapture!=null)throw new IOException("an original prepared late binding is already held");
+        if(!lateResults.isEmpty()||retainedResultBytes!=0)throw new IOException("prepared cleanup requires original outstanding ACK custody to be consumed first");
+        requirePreparedCleanupBytes(prepared,6);
+    }
+    private void requirePreparedCleanupBytes(PreparedCleanupEvidence.Prepared prepared,int remaining)throws IOException {
+        String nonce=prepared.preparationNonce();long bytes=0;
+        if(remaining==6) {
+            bytes+=NativeWire.execute("prepared-status-"+nonce+"-late",ClockStatusRead.STEP,NativeWire.UINT64_MAX,new byte[]{'{','}'}).length;
+            bytes+=NativeWire.execute("prepared-fresh-"+nonce+"-late",NativeFreshSnapshotPort.STEP,BigInteger.ZERO,new byte[]{'{','}'}).length;
+        } else if(remaining!=4)throw new IOException("prepared cleanup fixed capacity role differs");
+        bytes+=NativeWire.execute(prepared.nativeRequestId(),prepared.nativePrepared().step(),NativeWire.UINT64_MAX,prepared.nativePrepared().additionalFields().bytes()).length;
+        for(String suffix:List.of("idle1","idle2"))bytes+=NativeWire.execute("prepared-status-"+nonce+"-"+suffix,ClockStatusRead.STEP,NativeWire.UINT64_MAX,new byte[]{'{','}'}).length;
+        bytes+=NativeWire.execute("prepared-fresh-"+nonce+"-post",NativeFreshSnapshotPort.STEP,BigInteger.ZERO,new byte[]{'{','}'}).length;
+        if(retainedOutboundBytes+bytes>NativeWire.MAXIMUM_FRAME_BYTES+4L)throw new IOException("prepared cleanup full fixed request chain exceeds the retained original outbound budget");
+    }
+    private PreparedCleanupEvidence.StatusSample preparedCleanupStatus(String id,Instant deadline,List<DispatchOutcome> originals,Runnable consume)throws IOException,InterruptedException {
+        open(deadline);verifyEndpoint();requirePreparedCleanupHello();
+        if(sentRequestIds.contains(id)||sentRequestIds.size()>=maximumSubmissions)throw new IOException("original prepared Status identity already attempted or exhausted");
+        var original=dispatchPreparedCleanup(id,NativeWire.execute(id,ClockStatusRead.STEP,snapshot.revision(),new byte[]{'{','}'}),deadline,consume,null);
+        originals.add(original.original());
+        if(original.originalFailure().isPresent())throw preparedCleanupReadFailure("original prepared Status transfer failed",original.originalFailure().orElseThrow());
+        if(!(original.original() instanceof AckReceived ack)||!ack.nativeOk())throw new IOException("original prepared Status has no successful native ACK; raw outcome retained");
+        return new PreparedCleanupEvidence.StatusSample(ack,deadline);
+    }
+    private NativeFreshSnapshotPort.Received preparedCleanupFresh(String id,Instant deadline,List<DispatchOutcome> originals)throws IOException,InterruptedException {
+        if(pendingFreshSnapshot!=null)throw new IOException("original fresh READ unresolved; no second prepared fresh read");
+        open(deadline);verifyEndpoint();requirePreparedCleanupHello();
+        if(sentRequestIds.contains(id)||sentRequestIds.size()>=maximumSubmissions)throw new IOException("original prepared fresh identity already attempted or exhausted");
+        var capture=new FreshSnapshotCapture(id);pendingFreshSnapshot=capture;
+        var dispatch=dispatchPreparedCleanup(id,NativeWire.execute(id,NativeFreshSnapshotPort.STEP,BigInteger.ZERO,new byte[]{'{','}'}),deadline,()->{},null);
+        originals.add(dispatch.original());capture.outcome=dispatch.original();
+        if(dispatch.original() instanceof RejectedBeforeDispatch||dispatch.original() instanceof AckReceived negative&&!negative.nativeOk())pendingFreshSnapshot=null;
+        if(dispatch.originalFailure().isPresent())throw preparedCleanupReadFailure("original prepared fresh transfer failed",dispatch.originalFailure().orElseThrow());
+        if(!(dispatch.original() instanceof AckReceived ack)||!ack.nativeOk())throw new IOException("original prepared fresh READ has no successful native ACK; collect its same ID only");
+        if(capture.invalid!=null)throw new IOException("prepared fresh state rejected: "+capture.invalid);
+        if(capture.frame==null||capture.received==null)throw new IOException("prepared fresh ACK has no matching independently received original state");
+        var result=new NativeFreshSnapshotPort.Received(ack,capture.frame,capture.received);
+        pendingFreshSnapshot=null;heldSnapshotInvalidated=false;return result;
+    }
+    private static IOException preparedCleanupReadFailure(String message,Throwable original) {
+        if(original instanceof InterruptedException)Thread.currentThread().interrupt();return new IOException(message,original);
+    }
+
+    @Override public synchronized PreparedCleanupNativeOutcome submitPreparedCleanup(PreparedCleanupPermit permit,NativeRequest request,Instant deadline)throws InterruptedException {
+        Objects.requireNonNull(permit);Objects.requireNonNull(request);Objects.requireNonNull(deadline);
+        String id=permit.requestId();var observations=new ArrayList<DispatchOutcome>();DispatchOutcome original=null;boolean dispatchEntered=false;
+        try {
+            if(permit.consumed()||preparedCleanupWriteNonces.contains(permit.nonce())||sentRequestIds.contains(id))
+                throw new PreparedCleanupPriorAttempt("prepared cleanup nonce/request already attempted; same-ID collection only");
+            var held=preparedCleanupLateCapture;
+            if(held==null||held.binding()!=permit.binding()||held.observation().preparationSequence()!=permit.preparationSequence()
+                    ||!held.observation().preparation().reference().equals(permit.preparation().reference()))
+                throw new IOException("prepared cleanup permit lacks this SDK's actual one-shot late binding");
+            preparedCleanupCapacity(4);requirePreparedCleanupBytes(permit.preparation(),4);
+            open(deadline);verifyEndpoint();requirePreparedCleanupHello();
+            if(!request.equals(permit.preparedRequest()))throw new IOException("prepared cleanup request changed its durable preparation");
+            NativeStepDiscriminator.requireRequest(permit.command().operation(),Kind.ACTION,request);
+            var permission=preparedCleanupPermission(permit.command().operation());permission.verifyPreparedWrite(config,hello,permit,request);
+            // All actual Root callbacks have now ended; recheck mutable endpoint/snapshot facts and finite local budgets.
+            preparedCleanupCapacity(4);requirePreparedCleanupBytes(permit.preparation(),4);verifyEndpoint();
+            permit.requireFresh();requirePreparedCleanupActualChild(permit);requirePreparedCleanupActualFrame(permit.binding(),chronologyClock.instant());
+            Instant actualDeadline=preparedCleanupMin(deadline,permit.writeDeadline());
+            byte[] packet=NativeWire.execute(id,request.step(),permit.actualExpectedRevision(),request.additionalFields().bytes());
+            if(!preparedCleanupWriteNonces.add(permit.nonce()))throw new PreparedCleanupPriorAttempt("prepared cleanup nonce already entered its one attempt");
+            dispatchEntered=true;
+            var write=dispatchPreparedCleanup(id,packet,actualDeadline,permit::consumeOnce,permit);
+            original=write.original();
+            if(write.originalFailure().isPresent())return preparedCleanupFailure(permit,original,observations,write.originalFailure().orElseThrow());
+            if(!(original instanceof AckReceived ack)||!ack.nativeOk())
+                return preparedCleanupFailure(permit,original,observations,new IOException("prepared cleanup has no positive cancellation ACK; original outcome retained"));
+            var result=NativeWire.object(NativeWire.parse(ack.originalResultToken().orElseThrow().bytes()));
+            if(!preparedCleanupKeys(result).equals(Set.of("step","accepted","status"))||!request.step().equals(NativeWire.text(result.get("step")))
+                    ||!result.path("accepted").isBoolean()||!result.path("accepted").booleanValue()||!"canceled".equals(NativeWire.text(result.get("status"))))
+                throw new IOException("prepared cleanup ACK is not the original accepted canceled result");
+            Instant captureDeadline=preparedCleanupMin(deadline,ack.custody().orElseThrow().responseReceived().observedAt().plus(Duration.ofMinutes(2)));
+            var idle1=preparedCleanupStatus("prepared-status-"+permit.nonce()+"-idle1",preparedCleanupReadDeadline(captureDeadline),observations,()->{});
+            var idle2=preparedCleanupStatus("prepared-status-"+permit.nonce()+"-idle2",preparedCleanupReadDeadline(captureDeadline),observations,()->{});
+            var fresh=preparedCleanupFresh("prepared-fresh-"+permit.nonce()+"-post",preparedCleanupReadDeadline(captureDeadline),observations);
+            NativeFreshSnapshotPort.verifyAfterOriginal(idle2.acknowledgement(),fresh.acknowledgement(),fresh.originalFrame(),fresh.snapshotReceived());
+            var captured=new PreparedCleanupEvidence.PostAckCaptured(permit.binding(),ack,idle1,idle2,fresh.acknowledgement(),fresh.originalFrame(),fresh.snapshotReceived(),captureDeadline);
+            PreparedCleanupEvidence.requirePostAckCaptured(captured);
+            return new PreparedCleanupNativeOutcome(permit.nonce(),original,Optional.of(captured),Optional.empty(),Optional.empty());
+        } catch(Throwable failure) {
+            if(failure instanceof InterruptedException)Thread.currentThread().interrupt();
+            if(original==null)original=failure instanceof PreparedCleanupPriorAttempt||dispatchEntered
+                    ?new Unknown(id,preparedCleanupReason(failure),retainedOutbound(id),Optional.empty(),Optional.of(dispatchFailure(failure,NativeActionPort.FailureStage.WRITE,NativeActionPort.FailureKind.RUNTIME_FAILURE)))
+                    :zero(id,preparedCleanupReason(failure));
+            return preparedCleanupFailure(permit,original,observations,failure);
+        } finally {preparedCleanupLateCapture=null;}
+    }
+    private static final class PreparedCleanupPriorAttempt extends IOException {
+        private static final long serialVersionUID=1L;
+        private PreparedCleanupPriorAttempt(String message){super(message);}
+    }
+
+    /** Only current in-memory SDK facts; no clock, endpoint, source, archive or writer callback here. */
+    private void requirePreparedCleanupActualFrame(PreparedCleanupEvidence.LateBinding binding,Instant actualNow)throws IOException {
+        if(actualNow.isBefore(binding.boundAt())||!actualNow.isBefore(binding.writeDeadline())||!actualNow.isBefore(binding.prepared().deadline()))
+            throw new IOException("prepared cleanup actual late freshness/operation deadline expired or regressed");
+        Instant expiry=preparedCleanupMin(binding.prepared().deadline(),preparedCleanupMin(
+                binding.status().acknowledgement().custody().orElseThrow().responseReceived().observedAt().plus(Duration.ofMinutes(2)),
+                binding.writeFrame().observedAt().plus(Duration.ofMinutes(2))));
+        if(!binding.writeDeadline().equals(expiry))throw new IOException("prepared cleanup actual expiry tuple changed");
+        if(closed||terminalFailure!=null||!stateConnected||hello==null||snapshot==null||acceptedSnapshotFrame==null||heldSnapshotInvalidated)
+            throw new IOException("prepared cleanup current actual endpoint/snapshot is unavailable or invalidated");
+        var expected=binding.writeFrame();
+        if(!session().equals(expected.session())||!custodyEpoch.equals(binding.freshSnapshotAck().custody().orElseThrow().custodyEpoch())
+                ||!snapshot.snapshotId().equals(expected.snapshotId())||!snapshot.revision().equals(expected.nativeRevision())
+                ||!snapshotObservedAt.equals(expected.observedAt())||!Arrays.equals(snapshot.packet().value(),expected.originalPacket())
+                ||!Arrays.equals(acceptedSnapshotFrame.originalPacket(),expected.originalPacket()))
+            throw new IOException("prepared cleanup late frame is not this endpoint's actual unchanged accepted packet");
+        if(originalRequestChronology(binding.status().acknowledgement().requestId()).filter(binding.status().acknowledgement().custody().orElseThrow()::equals).isEmpty()
+                ||originalRequestChronology(binding.freshSnapshotAck().requestId()).filter(binding.freshSnapshotAck().custody().orElseThrow()::equals).isEmpty())
+            throw new IOException("prepared cleanup late READ custody was not received by this actual SDK");
+    }
+    private PreparedCleanupNativeOutcome preparedCleanupFailure(PreparedCleanupPermit permit,DispatchOutcome original,
+            List<DispatchOutcome> observations,Throwable failure) {
+        if(failure instanceof InterruptedException)Thread.currentThread().interrupt();
+        Optional<PreparedCleanupEvidence.FailureData> data=Optional.empty();
+        try {data=Optional.of(new PreparedCleanupEvidence.FailureData(permit.preparation(),Optional.of(permit.binding()),original,
+                observations,chronologyClock.instant(),List.of()));}
+        catch(Throwable metadataFailure){if(metadataFailure!=failure)failure.addSuppressed(metadataFailure);}
+        return new PreparedCleanupNativeOutcome(permit.nonce(),original,Optional.empty(),data,Optional.of(failure));
+    }
+    private static Set<String> preparedCleanupKeys(ObjectNode value) {var keys=new HashSet<String>();value.fieldNames().forEachRemaining(keys::add);return keys;}
+    private static String preparedCleanupReason(Throwable failure) {return failure.getClass().getName()+": "+Objects.toString(failure.getMessage(),"unavailable");}
+
+    /** Dedicated new-role transfer preserves the entire original Throwable. Legacy dispatchOriginal stays byte-for-byte unchanged. */
+    private PreparedCleanupDispatch dispatchPreparedCleanup(String id,byte[] packet,Instant deadline,Runnable consume,
+            PreparedCleanupPermit control)throws InterruptedException {
+        boolean enteredWrite=false,writeReturned=false;
+        try {
+            var payload=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(packet,4,packet.length)));
+            requireDispatchScope(NativeWire.text(payload.get("step")),false,id);
+            if(originalOutboundPackets.containsKey(id)||retainedOutboundBytes+packet.length>NativeWire.MAXIMUM_FRAME_BYTES+4L)
+                throw new IOException("prepared original outbound is duplicate or its unchanged byte budget is exhausted");
+            verifyEndpoint();open(deadline);
+            NativeRequestChronology.PacketIdentity originalRequest=packetIdentity(packet);
+            consume.run();
+            // The actual chronology clock is the last callback. All following checks are pure until endpoint.writePacket.
+            NativeRequestChronology.Event entered=chronologyEvent();
+            if(!entered.observedAt().isBefore(deadline))throw new IOException("prepared actual write deadline expired after final callbacks");
+            if(control!=null){requirePreparedCleanupActualChild(control);requirePreparedCleanupActualFrame(control.binding(),entered.observedAt());}
+            sentRequestIds.add(id);originalOutboundPackets.put(id,new NativeWire.Bytes(packet));retainedOutboundBytes+=packet.length;
+            writtenRequests.put(id,new WrittenRequest(session(),originalRequest,entered,Optional.empty()));
+            if(control!=null){latestReadEvidence=null;heldSnapshotInvalidated=true;}
+            enteredWrite=true;endpoint.writePacket(packet,deadline);writeReturned=true;
+            NativeRequestChronology.Event completed=chronologyEvent();writtenRequests.put(id,new WrittenRequest(session(),originalRequest,entered,Optional.of(completed)));
+            for(int count=0;count<maximumFramesPerOperation;count++) {
+                var frame=read(deadline);
+                if(frame.isPresent()&&frame.orElseThrow() instanceof NativeWire.CommandResult result&&result.requestId().equals(id)) {
+                    var ack=new AckReceived(id,result.nativeOk(),result.result().token().map(value->new RawJson(value.value())),new RawJson(result.payload().value()),
+                            result.packet().value(),Optional.of(new NativeActionPort.OutboundPacket(id,packet)),originalRequestChronology(id));
+                    removeRetained(result);return new PreparedCleanupDispatch(ack,Optional.empty());
+                }
+            }
+            var failure=new IOException("prepared original command_result frame budget exhausted; same-ID collection only");
+            return new PreparedCleanupDispatch(new Unknown(id,failure.getMessage(),packet,Optional.empty(),Optional.of(new NativeActionPort.FailureCause(
+                    NativeActionPort.FailureKind.FRAME_BUDGET_EXHAUSTED,NativeActionPort.FailureStage.RESPONSE_WAIT,
+                    Optional.empty(),Optional.empty(),Optional.empty()))),Optional.of(failure));
+        } catch(NativePipeEndpoint.TransferFailure failure) {
+            preparedCleanupRetainDisconnection(failure);
+            if(!enteredWrite)return new PreparedCleanupDispatch(zero(id,preparedCleanupReason(failure)),Optional.of(failure));
+            if(enteredWrite&&!writeReturned&&!failure.writeAttempted()&&failure.writtenBytes()==0&&Arrays.equals(failure.retainedBytes(),packet)) {
+                NativeWire.Bytes removed=originalOutboundPackets.remove(id);if(removed!=null)retainedOutboundBytes-=removed.value().length;writtenRequests.remove(id);
+                return new PreparedCleanupDispatch(zero(id,failure.getMessage()),Optional.of(failure));
+            }
+            return new PreparedCleanupDispatch(new Unknown(id,preparedCleanupReason(failure),packet,Optional.empty(),Optional.of(dispatchFailure(failure,
+                    writeReturned?NativeActionPort.FailureStage.RESPONSE_WAIT:NativeActionPort.FailureStage.WRITE,NativeActionPort.FailureKind.TRANSFER_IO))),Optional.of(failure));
+        } catch(Throwable failure) {
+            preparedCleanupRetainDisconnection(failure);if(failure instanceof InterruptedException)Thread.currentThread().interrupt();
+            DispatchOutcome result=enteredWrite?new Unknown(id,preparedCleanupReason(failure),packet,Optional.empty(),Optional.of(dispatchFailure(failure,
+                    writeReturned?NativeActionPort.FailureStage.RESPONSE_WAIT:NativeActionPort.FailureStage.WRITE,
+                    failure instanceof InterruptedException?NativeActionPort.FailureKind.INTERRUPTED:failure instanceof IOException?NativeActionPort.FailureKind.IO_FAILURE:NativeActionPort.FailureKind.RUNTIME_FAILURE)))
+                    :zero(id,preparedCleanupReason(failure));
+            return new PreparedCleanupDispatch(result,Optional.of(failure));
+        }
+    }
+
+    private void requirePreparedCleanupActualChild(PreparedCleanupPermit permit)throws IOException {
+        var actual=org.xar.ck3.control.application.action.ActionCommandScope.current().orElseThrow(()->new IOException("prepared cleanup write lacks the actual child command scope"));
+        if(!actual.equals(permit.command()))
+            throw new IOException("prepared cleanup write changed its current complete child command/body");
+    }
+    private void preparedCleanupRetainDisconnection(Throwable original) {
+        try {retainActualDisconnection(original);}catch(Throwable diagnosticFailure){if(diagnosticFailure!=original)original.addSuppressed(diagnosticFailure);}
+    }
+
     @Override public synchronized DispatchOutcome submit(SubmissionPermit permit, NativeRequest request, Instant deadline) throws InterruptedException {
         Objects.requireNonNull(permit); Objects.requireNonNull(request);
         String id = permit.requestId();
@@ -1209,6 +1561,14 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             // Every check above is before the irreversible boundary. No application request is sent by observe/hello.
             latestReadEvidence = null;
             Instant actualDeadline = AdvancePrimitives.supports(permit.guard().operation()) ? readDeadline(deadline) : deadline;
+            var activeCommand=org.xar.ck3.control.application.action.ActionCommandScope.current();
+            if(activeCommand.isPresent()&&activeCommand.orElseThrow().actionId().equals(permit.actionId())
+                    &&org.xar.ck3.control.application.action.ActionCodec.bodySha256(activeCommand.orElseThrow()).equals(permit.bodySha256())
+                    &&org.xar.ck3.control.application.action.ActionChildPlanningScope.isPostResumePauseCancellationObservation(activeCommand.orElseThrow())
+                    &&permit.guard().validUntil().isBefore(actualDeadline))
+                actualDeadline=permit.guard().validUntil();
+            // For this exact new cleanup only, the actual endpoint deadline stays inside both
+            // freshness expiries even when the original beforeFirstWrite callbacks consume time.
             DispatchOutcome original = dispatch(id, packet, actualDeadline, () -> {
                 permit.consumeOnce();
                 heldSnapshotInvalidated = true;

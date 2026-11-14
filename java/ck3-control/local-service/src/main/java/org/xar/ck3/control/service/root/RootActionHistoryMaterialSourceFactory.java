@@ -460,6 +460,10 @@ public final class RootActionHistoryMaterialSourceFactory {
                 var recorded=recordedLife.orElseThrow(()->new IllegalArgumentException("advance has no semantic terminal observation"));
                 var evidence=new LinkedHashSet<Evidence>();
                 frame(evidence,recorded.starting().nativeFrame(),recorded.starting().driverFacts());frame(evidence,recorded.ending().nativeFrame(),recorded.ending().driverFacts());
+                if(recorded.modalAvailabilityBeforeStatus().isPresent()) {
+                    var beforeStatus=recorded.modalAvailabilityBeforeStatus().orElseThrow();
+                    frame(evidence,beforeStatus.nativeFrame(),beforeStatus.driverFacts());
+                }
                 ActionEffects.observation(actual).ifPresent(value->value.supportingEvidence().forEach(ref->evidence.add(new Evidence(EvidenceKind.MATERIAL,ref))));
                 if(recorded.originalCompatible().isEmpty())return only(CanonicalReason.RECONCILED_WITHOUT_ORIGINAL_REPORT,evidence,producers);
                 var original=recorded.originalCompatible().orElseThrow();evidence.add(new Evidence(EvidenceKind.MATERIAL,original.original()));

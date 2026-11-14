@@ -17,7 +17,25 @@ import org.xar.ck3.control.reconciliation.LateOutcome.State;
 /** Replays original timeline primitives against their native packets and complete Driver manifests. No I/O to Game. */
 public final class AdvancePrimitiveArchivedReplay {
     private final NativeEffectEvidence.FrameLoader frames;
-    public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames) { this.frames = Objects.requireNonNull(frames); }
+    @FunctionalInterface public interface CleanupNoEffectVerifier {
+        void verify(ActionReceipt exactTerminal,ActionPorts.OutcomeArchive archive);
+    }
+    @FunctionalInterface public interface PreparedCleanupVerifier {
+        void verify(Optional<WriterContracts.Head> originalLockedHead,ActionReceipt receipt,ActionPorts.OutcomeArchive archive);
+    }
+    private final Optional<PreparedCleanupVerifier> preparedCleanupVerifier;
+    private final Optional<CleanupNoEffectVerifier> cleanupNoEffectVerifier;
+    public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames) {
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.empty();this.preparedCleanupVerifier=Optional.empty();
+    }
+    public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,CleanupNoEffectVerifier actualNoEffectVerifier) {
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));this.preparedCleanupVerifier=Optional.empty();
+    }
+    public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,CleanupNoEffectVerifier actualNoEffectVerifier,
+            PreparedCleanupVerifier actualPreparedVerifier){
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));
+        this.preparedCleanupVerifier=Optional.of(Objects.requireNonNull(actualPreparedVerifier));
+    }
     public NativeRecordedEvidenceVerifier.Binding binding(OperationKey operation, ExactRef actualDefinition) {
         require(AdvancePrimitives.supports(operation), "registered timeline primitive required");
         return new NativeRecordedEvidenceVerifier.Binding(operation, actualDefinition, this::verify);
@@ -30,6 +48,41 @@ public final class AdvancePrimitiveArchivedReplay {
     }
     private void verify(Optional<WriterContracts.Head> lockedHead, ActionReceipt child, ActionPorts.OutcomeArchive archive) {
         Objects.requireNonNull(child); Objects.requireNonNull(archive);
+        if(child.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed terminal) {
+            ReservedPreparedCleanupNoEffectProof.fullLoadAndVerifyState(child,terminal.proofReference(),terminal.preparationReference(),archive,
+                    new LifeAdvanceRootReplay(frames));
+            preparedCleanupVerifier.orElseThrow(()->new IllegalStateException("actual reserved cleanup NoEffect source qualification is absent"))
+                    .verify(lockedHead,child,archive);return;
+        }
+        if(child.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed terminal) {
+            PreparedCleanupNoEffectProof.verifyArchivedState(child,terminal.proofReference(),terminal.originalPreparedState(),archive);
+            PreparedCleanupNoEffectProof.load(terminal.proofReference(),archive,new LifeAdvanceRootReplay(frames));
+            preparedCleanupVerifier.orElseThrow(()->new IllegalStateException("actual prepared NoEffect source qualification is absent"))
+                    .verify(lockedHead,child,archive);return;
+        }
+        if(child.state() instanceof PreparedCleanupAction){
+            PreparedCleanupReplay.verify(child,archive,new LifeAdvanceRootReplay(frames));
+            preparedCleanupVerifier.orElseThrow(()->new IllegalStateException("actual prepared cleanup source qualification is absent"))
+                    .verify(lockedHead,child,archive);return;
+        }
+        if(child.state() instanceof ActionState.CleanupNoEffectConfirmed terminal) {
+            PostExitCleanupNoEffectProof.verifyArchivedState(child,terminal.proofReference(),
+                    terminal.originalAttempt(),terminal.originalDispatch(),archive);
+            PostExitCleanupNoEffectProof.load(terminal.proofReference(),archive,new LifeAdvanceRootReplay(frames));
+            cleanupNoEffectVerifier.orElseThrow(()->new IllegalStateException("actual cleanup NoEffect source qualification is absent"))
+                    .verify(child,archive);
+            lockedHead.ifPresent(head->{
+                if(child.sequence()<=head.state().sequence())
+                    ContinuityActionJournal.requireHistoricalReceipt(head.state(),child,archive);
+                else {
+                    require(child.sequence()==head.state().sequence()+1,"NoEffect writer proposal skipped its actual next sequence");
+                    var proof=PostExitCleanupNoEffectProof.loadOriginals(terminal.proofReference(),archive);
+                    require(ContinuityActionJournal.lookup(head.state(),child.command().actionId(),archive)
+                            .filter(proof.child4()::equals).isPresent(),"NoEffect proposal replaced its original canonical UNKNOWN");
+                }
+            });
+            return;
+        }
         if (child.state() instanceof ActionState.IntentAbandoned) {
             IntentAbandonmentProof.verifyArchived(child, archive);
             lockedHead.ifPresent(head -> ContinuityActionJournal.requireHistoricalReceipt(head.state(), child, archive));

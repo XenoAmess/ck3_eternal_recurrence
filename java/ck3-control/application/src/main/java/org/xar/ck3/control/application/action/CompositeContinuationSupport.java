@@ -2,6 +2,8 @@ package org.xar.ck3.control.application.action;
 
 import java.time.Clock;
 import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
+import org.xar.ck3.control.application.advance.LifePostResumePauseCancellation;
+import org.xar.ck3.control.application.advance.LifePostResumePauseCleanupEvidence;
 import org.xar.ck3.control.application.advance.AdvancePrimitives;
 import org.xar.ck3.control.application.advance.ClockStatusRead;
 import java.util.ArrayList;
@@ -29,7 +31,8 @@ final class CompositeContinuationSupport {
         StrictJson.require(java.util.Arrays.equals(ActionCodec.encodeCommand(parent), ActionCodec.encodeCommand(original.command())), "continuation changed the original parent body");
         boolean fixture=FixturePlan.isParent(parent)&&token.kind()==CompositeContinuationToken.Kind.FIXTURE_STARTUP;
         if(fixture)FixturePlan.requireParent(parent);
-        boolean life=token.kind()==CompositeContinuationToken.Kind.LIFE_SENTINEL_CANCEL;
+        boolean postPause=token.kind()==CompositeContinuationToken.Kind.LIFE_POST_RESUME_PAUSE_CANCEL;
+        boolean life=token.kind()==CompositeContinuationToken.Kind.LIFE_SENTINEL_CANCEL||postPause;
         if(life)StrictJson.require(LifeAdvanceComposite.accepts(parent.operation().value())&&parent.origin() instanceof CommandOrigin.Gameplay,
                 "only the exact registered Life gameplay parent has sentinel cancel continuation");
         StrictJson.require(fixture||life||parent.origin() instanceof CommandOrigin.LifecycleTerminal
@@ -90,9 +93,16 @@ final class CompositeContinuationSupport {
                 source.requireContinuationChild(parent, previous, token, child);
                 if(fixture)((FixtureCompositeActionPort)source).requireFixtureChild(parent,previous,child);
                 var reserved = new ArrayList<>(previous.children()); reserved.add(new CompositeExecution.Child(child.actionId(), ActionCodec.bodySha256(child)));
+                var retainedEvidence=((ActionState.CompositeUnknown)locked.find(parent.actionId()).orElseThrow().state()).evidence();
+                if(postPause) {
+                    StrictJson.require(token instanceof LifePostResumePauseCancellation,"post-resume cleanup requires its distinct source-owned token");
+                    var authorization=((LifePostResumePauseCancellation)token).authorizationReference();
+                    var evidence=new ArrayList<>(retainedEvidence);if(!evidence.contains(authorization))evidence.add(authorization);
+                    retainedEvidence=List.copyOf(evidence);
+                }
                 ActionCoordinator.append(locked, parent, original.bodySha256(), new ActionState.CompositeUnknown(
                         new CompositeExecution(previous.handlerId(), previous.startedAt(), previous.guard(), reserved),
-                        "source-qualified successor continuation reserved its original child", ((ActionState.CompositeUnknown) locked.find(parent.actionId()).orElseThrow().state()).evidence()));
+                        (postPause?LifePostResumePauseCleanupEvidence.CURSOR_PREFIX:"")+"source-qualified successor continuation reserved its original child", retainedEvidence));
                 var receipt = CompositeContinuationNesting.within(parent, token, child, () -> submit.apply(child));
                 collectNew(locked, receipt, initialSequence, created, 0);
                 StrictJson.require(receipt.settled(), "continuation child is unknown; retain it and do not dispatch another");
@@ -119,6 +129,14 @@ final class CompositeContinuationSupport {
         catch (ReadPublicationRequiredException publication) { throw publication; }
         catch (RuntimeException failure) { result = new ActionPorts.Pending(ActionCoordinator.diagnostic("source-qualified continuation incomplete", failure), List.of()); }
         finally { active.set(false); }
+        if(postPause&&result instanceof ActionPorts.Pending pending) {
+            var evidence=new ArrayList<>(((ActionState.CompositeUnknown)locked.find(parent.actionId()).orElseThrow().state()).evidence());
+            var authorization=((LifePostResumePauseCancellation)token).authorizationReference();
+            evidence.addAll(pending.evidence());evidence.removeIf(authorization::equals);evidence.add(authorization);
+            var reason=pending.reason().startsWith(LifePostResumePauseCleanupEvidence.CURSOR_PREFIX)?pending.reason()
+                    :LifePostResumePauseCleanupEvidence.CURSOR_PREFIX+pending.reason();
+            result=new ActionPorts.Pending(reason,List.copyOf(evidence));
+        }
         var cursor = ((ActionState.CompositeUnknown) locked.find(parent.actionId()).orElseThrow().state()).execution();
         ActionReceipt finished = CompositeCoordinatorSupport.finish(locked, parent, original.bodySha256(), cursor, Objects.requireNonNull(result),source);
         return new CompositeContinuationReport(finished, created, created.isEmpty() ? CompositeContinuationReport.Disposition.NO_NEW_CHILD_ATTEMPT : CompositeContinuationReport.Disposition.NEW_CHILD_ATTEMPT);

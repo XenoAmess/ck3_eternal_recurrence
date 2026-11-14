@@ -220,6 +220,16 @@ public final class ActionEffects {
                 refs.add(fresh.readAcknowledgement());
                 if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
                 else if (fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) refs.add(cold.originalReceipt());
+                else if(fresh.basis() instanceof ObservationProvenance.PreparedCleanupSuccessorWatch watch){
+                    refs.add(watch.originalParentReceipt());refs.add(watch.predecessorNoEffectReceipt());refs.add(watch.predecessorNoEffectProof());
+                    refs.add(watch.preparationReference());refs.add(watch.captureReference());
+                }
+                else if(fresh.basis() instanceof ObservationProvenance.PreparedCleanupWatch watch){
+                    refs.add(watch.originalParentReceipt());refs.add(watch.preparationReference());refs.add(watch.captureReference());
+                }
+                else if (fresh.basis() instanceof ObservationProvenance.PostResumePauseWatch watch) {
+                    refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); refs.add(watch.originalPauseReceipt());
+                }
                 else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
             }
             return java.util.List.copyOf(refs);
@@ -233,6 +243,16 @@ public final class ActionEffects {
                 refs.add(fresh.readAcknowledgement());
                 if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
                 else if (fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) refs.add(cold.originalReceipt());
+                else if(fresh.basis() instanceof ObservationProvenance.PreparedCleanupSuccessorWatch watch){
+                    refs.add(watch.originalParentReceipt());refs.add(watch.predecessorNoEffectReceipt());refs.add(watch.predecessorNoEffectProof());
+                    refs.add(watch.preparationReference());refs.add(watch.captureReference());
+                }
+                else if(fresh.basis() instanceof ObservationProvenance.PreparedCleanupWatch watch){
+                    refs.add(watch.originalParentReceipt());refs.add(watch.preparationReference());refs.add(watch.captureReference());
+                }
+                else if (fresh.basis() instanceof ObservationProvenance.PostResumePauseWatch watch) {
+                    refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); refs.add(watch.originalPauseReceipt());
+                }
                 else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
             }
             return java.util.List.copyOf(refs);
@@ -248,6 +268,16 @@ public final class ActionEffects {
                 refs.add(fresh.readAcknowledgement());
                 if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
                 else if (fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) refs.add(cold.originalReceipt());
+                else if(fresh.basis() instanceof ObservationProvenance.PreparedCleanupSuccessorWatch watch){
+                    refs.add(watch.originalParentReceipt());refs.add(watch.predecessorNoEffectReceipt());refs.add(watch.predecessorNoEffectProof());
+                    refs.add(watch.preparationReference());refs.add(watch.captureReference());
+                }
+                else if(fresh.basis() instanceof ObservationProvenance.PreparedCleanupWatch watch){
+                    refs.add(watch.originalParentReceipt());refs.add(watch.preparationReference());refs.add(watch.captureReference());
+                }
+                else if (fresh.basis() instanceof ObservationProvenance.PostResumePauseWatch watch) {
+                    refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); refs.add(watch.originalPauseReceipt());
+                }
                 else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
             }
             return java.util.List.copyOf(refs);
@@ -259,6 +289,16 @@ public final class ActionEffects {
                 refs.add(fresh.readAcknowledgement());
                 if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter live) refs.add(live.setterAcknowledgement());
                 else if (fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement cold) refs.add(cold.originalReceipt());
+                else if(fresh.basis() instanceof ObservationProvenance.PreparedCleanupSuccessorWatch watch){
+                    refs.add(watch.originalParentReceipt());refs.add(watch.predecessorNoEffectReceipt());refs.add(watch.predecessorNoEffectProof());
+                    refs.add(watch.preparationReference());refs.add(watch.captureReference());
+                }
+                else if(fresh.basis() instanceof ObservationProvenance.PreparedCleanupWatch watch){
+                    refs.add(watch.originalParentReceipt());refs.add(watch.preparationReference());refs.add(watch.captureReference());
+                }
+                else if (fresh.basis() instanceof ObservationProvenance.PostResumePauseWatch watch) {
+                    refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); refs.add(watch.originalPauseReceipt());
+                }
                 else { var watch = (ObservationProvenance.SameGameWatch) fresh.basis(); refs.add(watch.originalParentReceipt()); refs.add(watch.originalResumeReceipt()); }
             }
             return java.util.List.copyOf(refs);

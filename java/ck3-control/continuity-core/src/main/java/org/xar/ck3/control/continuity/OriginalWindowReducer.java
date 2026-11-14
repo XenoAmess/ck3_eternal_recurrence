@@ -203,6 +203,35 @@ public final class OriginalWindowReducer {
                 state.put("status","running");binding(state,actual);if(state.has("last_error"))state.putNull("last_error");
                 // Preserve current cycle 13, saved cycle 1, all original dates/credit/domain/Driver and the old interruption facts.
             }
+            case "operator_life_reserved_tail_recovery" -> {
+                StrictJson.object(details,Set.of("evidence_id","source","machine_id","completed_cycles","frame","session","batch_id","next_sequence","operator_observation"));
+                ObjectNode retained=frame(object(state.get("latest_binding"))),actual=frame(object(details.get("frame")));
+                ObjectNode cycle=object(state.get(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_CYCLE_FIELD));
+                ObjectNode boundary=object(state.get(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD));
+                StrictJson.require("java-operator-life-interruption-recovery/v2".equals(StrictJson.text(source))
+                        &&"repair_required".equals(StrictJson.text(state.get("status")))
+                        &&number(cycle,"completed_cycles",1)==number(details,"completed_cycles",1)
+                        &&cycle.hasNonNull("head")&&cycle.has("pending_receipt")&&cycle.get("pending_receipt").isNull()
+                        &&state.hasNonNull(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
+                        &&ContinuityJson.same(cycle.get("session"),details.get("session"))
+                        &&"BATCH_INTERRUPTED".equals(StrictJson.text(boundary.get("boundary")))
+                        &&ContinuityJson.same(boundary.get("session"),details.get("session"))
+                        &&StrictJson.text(boundary.get("batch_id")).equals(StrictJson.text(details.get("batch_id")))
+                        &&number(details,"next_sequence",2)>=2
+                        &&StrictJson.text(details.get("batch_id")).endsWith("-"+(number(details,"next_sequence",2)-1))
+                        &&number(actual,"date_raw",0)>=number(retained,"date_raw",0)
+                        &&NativeCharacterId.fromJson(actual.get("actor_character_id")).equals(NativeCharacterId.fromJson(retained.get("actor_character_id")))
+                        &&StrictJson.text(actual.get("episode_run_id")).equals(StrictJson.text(retained.get("episode_run_id")))
+                        &&StrictJson.integer(actual.get("native_revision"),java.math.BigInteger.ZERO,StrictJson.UINT64_MAX)
+                            .compareTo(StrictJson.integer(retained.get("native_revision"),java.math.BigInteger.ZERO,StrictJson.UINT64_MAX))>=0,
+                        "Life interruption must preserve its exact nonzero completed/saved frontier without awarding observed days");
+                for(String field:java.util.List.of("pending_cycle","pending_checkpoint","current_cycle_pending")) {
+                    JsonNode value=state.get(field);StrictJson.require(value==null||value.isNull(),"Life interruption cannot clear pending state: "+field);
+                }
+                org.xar.ck3.control.contracts.ExactRef.fromJson(details.get("operator_observation"));
+                state.put("status","running");binding(state,actual);if(state.has("last_error"))state.putNull("last_error");
+                // Preserve current cycle 13, saved cycle 1, all original dates/credit/domain/Driver and the old interruption facts.
+            }
             case "operator_quarantine_recovery" -> {
                 StrictJson.object(details,Set.of("evidence_id","source","machine_id","completed_cycles","frame","session","batch_id","next_sequence","operator_observation"));
                 ObjectNode retained=frame(object(state.get("latest_binding"))),actual=frame(object(details.get("frame")));

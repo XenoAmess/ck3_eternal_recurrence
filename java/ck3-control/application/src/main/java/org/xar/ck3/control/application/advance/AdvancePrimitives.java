@@ -158,9 +158,18 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
                 return new ActionPorts.RejectionObserved(new ActionState.Rejected(attempt.requestId(), error.textValue(), clockStatus.preserve(ack)));
             return new ActionPorts.Pending("native rejection lacks its exact original error", List.of(clockStatus.preserve(ack)));
         }
-        Instant window = observationDeadline(command);
+        Instant requestedWindow = observationDeadline(command);
         boolean reconciling = ActionReconciliationScope.activeFor(command);
         String controlStep = command.operation().value();
+        Instant window;
+        if(!reconciling&&command.expected().observerSchema().equals(CLOCK_OBSERVER)
+                &&controlStep.startsWith(ClockStatusRead.CANCEL_PREFIX)
+                &&ActionChildPlanningScope.isPostResumePauseCancellationObservation(command)) {
+            Instant actualMaximum=ack.custody().orElseThrow(()->new IllegalArgumentException(
+                    "post-resume cancellation Status requires its actual ACK receive chronology"))
+                    .responseReceived().observedAt().plus(Duration.ofMinutes(2));
+            window=actualMaximum.isBefore(requestedWindow)?actualMaximum:requestedWindow;
+        } else window=requestedWindow;
         if (!reconciling && command.expected().observerSchema().equals(CLOCK_OBSERVER) && ARM.matcher(controlStep).matches()) {
             return observations.withClockControlBasis(command, window, basis -> {
                 var read = clockStatus.observe(command, basis, window);

@@ -35,6 +35,11 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
     }
 
     @Override public int run(String... args) throws Exception {
+        return runWithHost(new org.xar.ck3.control.service.OrdinarySessionHost(), args);
+    }
+
+    public int runWithHost(org.xar.ck3.control.service.OrdinarySessionHost ordinaryHost, String... args) throws Exception {
+        java.util.Objects.requireNonNull(ordinaryHost);
         if (args.length != 3) throw new IllegalArgumentException("ordinary-worker requires owner.json, business configuration, and fresh|resume|current-map|operator-quarantine");
         String mode = args[2];
         if (!"fresh".equals(mode) && !"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)) throw new IllegalArgumentException("ordinary-worker mode must be fresh, resume, current-map or operator-quarantine");
@@ -51,6 +56,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         Exception primary = null;
         try {
             prepared = RootOrdinaryRuntimeAssembly.prepare(config, clock);
+            prepared.bindOrdinaryHost(ordinaryHost);
             attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(plan, descriptor.generation(),
                     prepared.privatePermissions(), config.maximumFramesPerOperation(), config.maximumSubmissions()),
                     clock.instant().plus(config.operationTimeout()), config.operationTimeout());
@@ -60,7 +66,17 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             if (("current-map".equals(mode) || "operator-quarantine".equals(mode)) && !mapReady)
                 throw new IOException("current-map requires an actual ready map; new campaign startup is not permitted");
             if ("operator-quarantine".equals(mode)) {
-                running = prepared.openOperatorQuarantineRecovery(attached, clock.instant().plus(config.operationTimeout()));
+                var operatorTimeout=config.operationTimeout();
+                if(config.operatorQuarantine().isPresent()) {
+                    var configured=config.operatorQuarantine().orElseThrow();
+                    StrictJson.require(configured.bytes()>0&&configured.bytes()<=65536,"finite configured operator request required");
+                    byte[] requestBytes;try(var input=Files.newInputStream(Path.of(configured.path()))){requestBytes=input.readNBytes(65537);}
+                    StrictJson.require(requestBytes.length==configured.bytes()&&org.xar.ck3.control.application.action.ActionCodec.sha256(requestBytes).equals(configured.sha256()),"configured operator request changed before caller classification");
+                    if(org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest.decode(requestBytes).reservedTailInterruption())
+                        operatorTimeout=java.time.Duration.ofMinutes(45);
+                }
+                // Only the new administrative role has this finite recovery envelope. Source.capture still enforces the original decision window.
+                running = prepared.openOperatorQuarantineRecovery(attached, clock.instant().plus(operatorTimeout));
             } else if ("resume".equals(mode)) {
                 Optional<CleanRestartTicket> pointer = Files.exists(ticketPath) ? Optional.of(readTicket(ticketPath)) : Optional.empty();
                 running = prepared.openExistingSameGameRecovery(attached, pointer, clock.instant().plus(config.operationTimeout()));

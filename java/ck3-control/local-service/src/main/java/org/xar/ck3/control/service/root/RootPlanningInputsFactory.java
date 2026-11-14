@@ -335,6 +335,19 @@ public final class RootPlanningInputsFactory {
                     if (classification instanceof SystemControl control) {
                         if (receipt.state() instanceof ActionState.IntentAbandoned)
                             IntentAbandonmentProof.verifyArchived(receipt, originals);
+                        if (isNoEffectTimelineControl(control, receipt)) {
+                            // Metadata classification is not proof authority: replay through this
+                            // installed primitive's original verifier and mandatory actual Root source.
+                            var actual = capture.context().bindings();
+                            var callable = actual.actualActionBinding(command.operation()).orElseThrow(
+                                    () -> new IllegalArgumentException("NoEffect timeline control lost its actual callable"));
+                            StrictJson.require(callable.preparation() instanceof org.xar.ck3.control.application.advance.AdvancePrimitives,
+                                    "NoEffect timeline control requires its actual shared primitive producer");
+                            var replay = actual.actualArchivedVerifier(command.operation()).orElseThrow(
+                                    () -> new IllegalArgumentException("NoEffect timeline control lost its actual archived verifier"));
+                            try { replay.verifier().verify(capture.session().head(), receipt, originals); }
+                            catch (IOException failure) { throw new UncheckedIOException(failure); }
+                        }
                         requireSettledControl(control, receipt, lease.snapshot().actions());
                         continue;
                     }
@@ -389,6 +402,11 @@ public final class RootPlanningInputsFactory {
         StrictJson.require(!parent.getFirst().visibleGameplay() && !parent.getFirst().eligibleAdvance() && parent.getFirst().applied().isEmpty(),
                 "cancelled Life parent cannot claim gameplay or advance");
     }
+    private static boolean isNoEffectTimelineControl(SystemControl control, ActionReceipt receipt) {
+        return control.kind() == ControlKind.TIMELINE_PRIMITIVE
+                && (receipt.state() instanceof ActionState.CleanupNoEffectConfirmed
+                        || receipt.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed);
+    }
     static void requireSettledControl(SystemControl control, ActionReceipt receipt, List<ActionReceipt> canonicalActions) {
         Objects.requireNonNull(control);Objects.requireNonNull(receipt);Objects.requireNonNull(canonicalActions);
         StrictJson.require(receipt.settled(), "an unresolved system control blocks every ordinary action");
@@ -438,6 +456,19 @@ public final class RootPlanningInputsFactory {
                     requireAbandonedResumeInCancelledLife(receipt, canonicalActions);
                     break;
                 }
+                if (isNoEffectTimelineControl(control, receipt)) {
+                    StrictJson.require(command.operation().value().startsWith(
+                                    org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX)
+                            && expected.observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.CLOCK_OBSERVER)
+                            && receipt.bodySha256().equals(ActionCodec.bodySha256(command))
+                            && receipt.outcome() == ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT
+                            && receipt.ack().isEmpty() && receipt.applied().isEmpty()
+                            && !receipt.visibleGameplay() && !receipt.eligibleAdvance(),
+                            "NoEffect timeline control must retain its original cancel body and cannot claim ACK or credit");
+                    // Actual source/proof replay precedes this filter in actionFacts. These two
+                    // dedicated terminals do not invent a primitive Settled or a timeline row.
+                    break;
+                }
                 if(receipt.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH) {
                     StrictJson.require(receipt.state() instanceof ActionState.RejectedBeforeDispatch,
                             "timeline zero-dispatch control requires its actual rejection");
@@ -446,7 +477,16 @@ public final class RootPlanningInputsFactory {
                 StrictJson.require(receipt.state() instanceof ActionState.Settled,
                         "timeline control requires its original primitive settlement");
                 var settled=(ActionState.Settled)receipt.state();
-                if(receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED) {
+                if(settled.settlement() instanceof ActionState.PauseConfirmed) {
+                    // PauseConfirmed is deliberately TERMINAL_WITHOUT_EFFECT. Its
+                    // exact typed confirmation must not depend on an APPLIED outcome.
+                    StrictJson.require(command.operation().value().equals("pause-map")
+                            && expected.observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.TIMELINE_OBSERVER)
+                            && receipt.outcome()==ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT
+                            && receipt.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent()
+                            && receipt.applied().isEmpty() && !receipt.visibleGameplay() && !receipt.eligibleAdvance(),
+                            "pause control requires its original positive ACK and zero-credit typed confirmation");
+                } else if(receipt.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED) {
                     if(expected.observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.CLOCK_OBSERVER))
                         StrictJson.require(settled.settlement() instanceof ActionState.ControlApplied observed
                                 &&observed.observerSchema().equals(expected.observerSchema())

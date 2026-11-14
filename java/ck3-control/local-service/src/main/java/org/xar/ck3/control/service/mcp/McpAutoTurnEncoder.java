@@ -194,6 +194,10 @@ public final class McpAutoTurnEncoder {
         case ActionState.IntentAbandoned ignored -> Optional.empty();case ActionState.IntentDurable ignored -> Optional.empty();case ActionState.Submitting value -> Optional.of(value.attempt().guard());case ActionState.AckReceived value -> Optional.of(value.attempt().guard());
         case ActionState.Unknown value -> value.attempt().map(ActionState.Attempt::guard);case ActionState.Settled value -> Optional.of(value.attempt().guard());case ActionState.RejectedBeforeDispatch value -> Optional.of(value.attempt().guard());
         case ActionState.CompositeRunning value -> Optional.of(value.execution().guard());case ActionState.CompositeUnknown value -> Optional.of(value.execution().guard());case ActionState.CompositeSettled value -> Optional.of(value.execution().guard());
+        case org.xar.ck3.control.application.action.PreparedCleanupAction ignored -> Optional.empty();
+        case ActionState.ReservedPreparedCleanupNoEffectConfirmed ignored -> Optional.empty();
+        case ActionState.PreparedCleanupNoEffectConfirmed ignored -> Optional.empty();
+        case ActionState.CleanupNoEffectConfirmed value -> value.originalAttempt().map(ActionState.Attempt::guard);
         case ActionState.CompositeOperatorQuarantined value -> Optional.of(value.execution().guard());
         case PhysicalActionState value -> Optional.of(value.guard());};}
     private static Payload finish(ObjectNode original){return finish(original,Optional.empty(),Optional.empty());}

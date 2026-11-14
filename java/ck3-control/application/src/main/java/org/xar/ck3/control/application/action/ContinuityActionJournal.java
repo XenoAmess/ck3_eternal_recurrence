@@ -114,6 +114,15 @@ public final class ContinuityActionJournal implements ActionJournal {
                     if (next instanceof ActionState.IntentAbandoned abandoned) {
                         evidence.add(abandoned.originalIntentRecord()); evidence.add(abandoned.originalActionHead());
                     }
+                    if(next instanceof PreparedCleanupAction prepared)evidence.addAll(PreparedCleanupActionCodec.references(prepared,archive));
+                     if(next instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed terminal){
+                         evidence.add(terminal.preparationReference());evidence.add(terminal.proofReference());
+                     }
+                    if(next instanceof ActionState.PreparedCleanupNoEffectConfirmed terminal){
+                        evidence.addAll(PreparedCleanupActionCodec.references(terminal.originalPreparedState(),archive));
+                        evidence.add(terminal.proofReference());
+                    }
+                    if(next instanceof ActionState.CleanupNoEffectConfirmed terminal)evidence.add(terminal.proofReference());
                     if (next instanceof ActionState.CompositeOperatorQuarantined quarantined) evidence.add(quarantined.observationRef());
                     if (next instanceof ActionState.Unknown unknown) evidence.addAll(unknown.evidence());
                     if (next instanceof ActionState.CompositeUnknown unknown) evidence.addAll(unknown.evidence());

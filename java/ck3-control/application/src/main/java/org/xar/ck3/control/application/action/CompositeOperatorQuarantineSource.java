@@ -43,6 +43,7 @@ public final class CompositeOperatorQuarantineSource {
         require(head.state().sequence()==request.expectedHeadSequence()&&head.digest().equals(request.expectedHeadDigest()),"operator request predecessor changed; no stale-head append");
         requireOriginalBinding(original);
         require(archive.receiptReferenceOf(original).equals(request.originalReceipt()),"configured original receipt reference differs");
+        if(request.reservedTailInterruption())requireReservedSubject(same,head,original,archive);
         var actionHead=ContinuityActionJournal.recordHead(head.state()).orElseThrow();
         var reservations=reservations(actionHead,original,archive);
         var originalState=archive.preserveMaterial(new RawJson(ContinuityJson.canonical(head.state().toJson(),ContinuityJson.LEDGER_MAX_BYTES)));
@@ -95,9 +96,22 @@ public final class CompositeOperatorQuarantineSource {
         }
         require(Arrays.equals(ContinuityJson.canonical(before.state().toJson(),ContinuityJson.LEDGER_MAX_BYTES),archive.loadMaterial(proof.predecessorState()).bytes()),"operator predecessor snapshot changed");
         require(ContinuityActionJournal.recordHead(before.state()).equals(Optional.of(proof.originalActionHead())),"operator proof changed actual ACTION prefix");
+        if(request.reservedTailInterruption())requireReservedSubject(same,before,original,archive);
         var atPoint=ContinuityActionJournal.lookup(before.state(),original.command().actionId(),archive).orElseThrow();
         require(Arrays.equals(ActionReceiptCodec.encodeReceipt(atPoint,archive),ActionReceiptCodec.encodeReceipt(original,archive)),"operator parent was not the exact retained unknown at its predecessor");
         require(proof.reservations().equals(reservations(proof.originalActionHead(),original,archive)),"operator first reservation references changed");
+    }
+    /** This is an administrative retirement, not an old-action outcome or a replacement lifecycle. */
+    private void requireReservedSubject(ContinuityStorePort.Session same,WriterContracts.Head predecessor,
+            ActionReceipt original,ActionPorts.OutcomeArchive archive)throws IOException {
+        require(!predecessor.snapshotNeedsRecovery()&&predecessor.indexRepairs().isEmpty(),
+                "reserved-tail decision requires a complete unrepaired canonical predecessor");
+        // capture supplies same.head(); verify supplies either that held Head or requireHistoricalHead.
+        // Never fabricate a Head from public snapshot DATA or compare historical-file pins with current pins.
+        require(predecessor.state().sequence()==request.expectedHeadSequence()&&predecessor.digest().equals(request.expectedHeadDigest()),
+                "reserved-tail decision changed its actual complete writer WAL predecessor");
+        var canonical=ContinuityActionJournal.receipts(predecessor.state(),archive);
+        ReservedLifeRetirementSubject.require(request,predecessor.state(),original,canonical,archive);
     }
     private void requireOriginalBinding(ActionReceipt original) {
         request.requireParent(original);require(original.command().operation().equals(operation)&&((ActionState.CompositeUnknown)original.state()).execution().handlerId().equals(handler),"operator proof has no installed operation/handler binding");

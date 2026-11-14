@@ -79,6 +79,15 @@ public final class AdvanceClockArchivedReplay {
     }
     private static void verifyEndingQuery(ActionCommand parent, AdvanceObservationPort.Frame ending,
             List<ActionReceipt> children, ActionPorts.OutcomeArchive archive) {
+        if (ending.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement physical) {
+            var recorded = TimelinePhysicalAfterAckEvidence.decode(archive.loadMaterial(physical.occurrenceEvidence()));
+            ActionReceipt last = null;
+            for (ActionReceipt child : children) if (child.settled() && child.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent()) last = child;
+            require(last != null && recorded.setterAcknowledgement().equals(archive.referenceOf(last.ack().orElseThrow()))
+                    && java.util.Arrays.equals(ActionCodec.encodeCommand(archive.loadReceipt(recorded.runningParentReceipt()).command()), ActionCodec.encodeCommand(parent)),
+                    "physical clock endpoint must follow the exact original parent's last successful native child");
+            return;
+        }
         if (!(ending.provenance() instanceof ObservationProvenance.FreshSnapshotQuery query)) return;
         if (query.basis() instanceof ObservationProvenance.LiveAfterSetter live) {
             ActionReceipt last = null;
@@ -90,7 +99,8 @@ public final class AdvanceClockArchivedReplay {
         } else if (query.basis() instanceof ObservationProvenance.SameGameWatch watch) {
             ActionReceipt originalParent = archive.loadReceipt(watch.originalParentReceipt());
             ActionReceipt originalResume = archive.loadReceipt(watch.originalResumeReceipt());
-            require(originalParent.command().equals(parent) && originalParent.state() instanceof ActionState.CompositeUnknown
+            require(originalParent.command().equals(parent) && (originalParent.state() instanceof ActionState.CompositeUnknown
+                    ||org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyRunningLifeRecovery(originalParent))
                     && archive.receiptReferenceOf(originalParent).equals(watch.originalParentReceipt())
                     && archive.receiptReferenceOf(originalResume).equals(watch.originalResumeReceipt()),
                     "cold clock endpoint crossed its exact original unknown parent/resume receipts");
@@ -98,10 +108,29 @@ public final class AdvanceClockArchivedReplay {
                     && originalResume.state() instanceof ActionState.Settled resumeState
                     && resumeState.settlement() instanceof ActionState.Applied
                     && children.stream().filter(child -> child.equals(originalResume)).count() == 1
-                    && ((ActionState.CompositeUnknown) originalParent.state()).execution().children().stream()
+                    && ActionTransitions.composite(originalParent.state()).orElseThrow().children().stream()
                         .filter(child -> child.actionId().equals(originalResume.command().actionId())
                             && child.bodySha256().equals(originalResume.bodySha256())).count() == 1,
                     "cold clock endpoint lacks the exact canonical settled resume child");
+            if(originalParent.state() instanceof ActionState.CompositeRunning) {
+                var originals=new java.util.ArrayList<ActionReceipt>(children);originals.add(originalParent);
+                require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyRunningLifeRecoveryRoot(originals)
+                        .filter(originalParent::equals).isPresent(),
+                        "running Life clock watch lost its complete settled original child prefix");
+            }
+        } else if(query.basis() instanceof ObservationProvenance.PostResumePauseWatch watch) {
+            var originalParent=archive.loadReceipt(watch.originalParentReceipt());
+            var originalResume=archive.loadReceipt(watch.originalResumeReceipt());
+            var originalPause=archive.loadReceipt(watch.originalPauseReceipt());
+            require(originalParent.command().equals(parent)&&archive.receiptReferenceOf(originalParent).equals(watch.originalParentReceipt())
+                    &&archive.receiptReferenceOf(originalResume).equals(watch.originalResumeReceipt())
+                    &&archive.receiptReferenceOf(originalPause).equals(watch.originalPauseReceipt())
+                    &&children.size()>=3&&children.get(children.size()-2).equals(originalResume)&&children.getLast().equals(originalPause),
+                    "post-resume pause clock endpoint changed its original parent/resume/final pause receipts");
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.requirePostResumePauseWatchRole(originalParent,originalResume,originalPause);
+            var originals=new java.util.ArrayList<ActionReceipt>(children);originals.add(originalParent);
+            require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyPostResumePauseLifeRecoveryRoot(originals)
+                    .filter(originalParent::equals).isPresent(),"post-resume pause clock endpoint lost its full original canonical prefix");
         } else throw new IllegalArgumentException("unsupported fresh clock source basis");
     }
     private void verifyWatch(ActionCommand parent, AdvancePlan plan, AdvanceObservationPort.Frame starting, AdvanceObservationPort.Frame ending,

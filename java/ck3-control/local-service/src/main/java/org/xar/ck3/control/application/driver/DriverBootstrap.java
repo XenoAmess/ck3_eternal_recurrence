@@ -1054,6 +1054,15 @@ public final class DriverBootstrap {
         return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,false,true);
     }
 
+    /** Same guarded ordinary adoption with an actually installed source-owned administrative presentation verifier. */
+    public static Adopted adoptSettledSameGameWithReservedLifeVerifier(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
+            DriverStateAssembler.ReservedLifeRetirementVerifier verifier)throws IOException,InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,
+                false,true,Optional.empty(),Optional.of(verifier),Optional.empty());
+    }
     /** New explicit operator scope retains unknown effects; adoption stays read-only until its canonical retirement commits. */
     public static Adopted adoptOperatorQuarantineOriginal(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
@@ -1065,6 +1074,17 @@ public final class DriverBootstrap {
         return adoptSameGameHistory(data.retainedHistory().orElseThrow(),same,actions,transport,archive,currentSession,retainedFrames,deadline,true,false,Optional.of(request));
     }
 
+    /** Genuine journal-issued terminal-only recovery. Neither a public Unresolved DTO nor a repeated retirement. */
+    public static Adopted adoptRetiredLifeInterruption(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.RetiredLifeInterruptionOriginal original,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
+            DriverStateAssembler.ReservedLifeRetirementVerifier verifier,RecoveryReadWindow window)throws IOException,InterruptedException {
+        original.requireCurrent(same);
+        return adoptSameGameHistory(original.retainedHistory(),same,actions,transport,archive,currentSession,retainedFrames,deadline,
+                true,false,Optional.of(original.request()),Optional.of(verifier),Optional.of(window));
+    }
+    @FunctionalInterface public interface RecoveryReadWindow {void begin()throws IOException;}
     /** Reattaches retained Life action or pending-cycle recovery with its latest Driver, without granting Ready. */
     public static Adopted adoptUnresolvedSameGame(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
@@ -1097,6 +1117,14 @@ public final class DriverBootstrap {
             ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
             ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
             boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest)throws IOException,InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,isolatedLife,historicalReads,operatorRequest,Optional.empty(),Optional.empty());
+    }
+    private static Adopted adoptSameGameHistory(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
+            boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
+            Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier,Optional<RecoveryReadWindow> recoveryReadWindow)throws IOException,InterruptedException {
         Objects.requireNonNull(operatorRequest);
         Objects.requireNonNull(data);Objects.requireNonNull(same);Objects.requireNonNull(actions);
         Objects.requireNonNull(transport);Objects.requireNonNull(archive);Objects.requireNonNull(currentSession);
@@ -1117,9 +1145,13 @@ public final class DriverBootstrap {
                 wire->borrowedArchive(archive,currentSession).preserveMaterial(RawJson.fullMaterial(wire)));
         producer.bindSettledSameGame(data,same);
         var authority=new DriverStateAssembler(actions,repository,producer);
+        if(retirementVerifier.isPresent())authority.bindReservedLifeRetirementVerifier(retirementVerifier.orElseThrow(),archive,()->{
+            try{return currentSession.current();}catch(IOException failure){throw new UncheckedIOException(failure);}
+        });
         var held=new HeldDriverObservationPort(transport,authority,
                 frame->borrowedArchive(archive,currentSession).preserveNativeFrame(frame),
                 new DriverObservationAssembler(),retainedFrames);
+        if(recoveryReadWindow.isPresent())recoveryReadWindow.orElseThrow().begin();
         transport.startHandshake(deadline);
         var result=transport.readFreshFullState(deadline);
         if(!(result instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received))

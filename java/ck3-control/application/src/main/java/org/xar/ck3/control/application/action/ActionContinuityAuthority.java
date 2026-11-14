@@ -73,6 +73,14 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         // This terminal has no native Attempt. The actual writer independently checks every canonical event.
         if (receipt.state() instanceof ActionState.IntentAbandoned)
             IntentAbandonmentProof.verify(predecessor, receipt, archive);
+        if(receipt.state() instanceof ActionState.CleanupNoEffectConfirmed terminal) {
+            var proof=org.xar.ck3.control.application.advance.PostExitCleanupNoEffectProof.verifyArchivedState(
+                    receipt,terminal.proofReference(),terminal.originalAttempt(),terminal.originalDispatch(),archive);
+            StrictJson.require(ContinuityActionJournal.lookup(predecessor,receipt.command().actionId(),archive)
+                    .filter(proof.child4()::equals).isPresent(),"NoEffect no longer follows its exact original canonical UNKNOWN");
+            StrictJson.require(ContinuityActionJournal.lookup(predecessor,proof.parentReceipt().command().actionId(),archive)
+                    .filter(proof.parentReceipt()::equals).isPresent(),"NoEffect changed its actual unresolved four-child parent");
+        }
         evidenceVerifier.verify(actualLockedHead, receipt);
         if (receipt.state() instanceof ActionState.CompositeSettled settled)
             ActionEffects.validateCompositeChildren(receipt.command(), settled.execution(), settled.settlement(), settled.execution().children().stream()
@@ -153,7 +161,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         if (borrowedSessions == null) return ContinuityActionJournal.receipts(predecessor, archive);
         try {
             var same = java.util.Objects.requireNonNull(borrowedSessions.get());
-            return archive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(4096, 256L * 1024 * 1024, 8192),
+            return archive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(8192, 256L * 1024 * 1024, 16384),
                     scoped -> ContinuityActionJournal.receipts(predecessor, scoped));
         } catch (java.io.IOException failure) { throw new java.io.UncheckedIOException(failure); }
     }

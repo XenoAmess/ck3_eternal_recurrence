@@ -11,6 +11,7 @@ import org.xar.ck3.control.application.advance.AdvancePrimitives;
 import org.xar.ck3.control.application.advance.ClockStatusRead;
 import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
 import org.xar.ck3.control.application.advance.LifeSentinelCancellation;
+import org.xar.ck3.control.application.advance.LifePostResumePauseCancellation;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
 import org.xar.ck3.control.application.readiness.ReadinessAuthority;
 import org.xar.ck3.control.application.planning.ReadonlyPlanningRetry;
@@ -164,8 +165,9 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
         return sameArchive.inHistoricalReadScope(same, new ActionPorts.HistoricalReadLimits(4096, 256L * 1024 * 1024, 8192),
             scoped -> {
                 var child = ContinuityActionJournal.lookup(head.state(), activeActionId, scoped);
-                boolean cancellation = child.isPresent() && lifeCancellationStatusSource(same, head,
-                        child.orElseThrow().command(), scoped).isPresent();
+                boolean cancellation = child.isPresent() && (lifeCancellationStatusSource(same, head,
+                        child.orElseThrow().command(), scoped).isPresent()||postResumePauseCancellationStatusSource(same,head,
+                        child.orElseThrow().command(),scoped).isPresent());
                 var watch = cancellation || child.isEmpty() ? java.util.Optional.<ActionReceipt>empty()
                         : lifeWatchStatusSource(child.orElseThrow().command(),
                                 ContinuityActionJournal.receipts(head.state(), scoped));
@@ -216,6 +218,31 @@ public final class RootPlanningReadGuard implements PlanningReadCoordinator.Read
         var parent = ContinuityActionJournal.lookup(head.state(), reserved.orElseThrow().actionId(), sameArchive).orElseThrow();
         var token = ActionChildPlanningScope.continuationToken(same, head, parent.command(), child);
         if (token.isEmpty() || !(token.orElseThrow() instanceof LifeSentinelCancellation cancellation)) return java.util.Optional.empty();
+        StrictJson.require(parent.state() instanceof ActionState.CompositeUnknown unknown
+                && unknown.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                && parent.command().equals(cancellation.originalParent())
+                && child.before().equals(cancellation.beforeCancel().identity())
+                && child.source().equals(parent.command().source()) && child.sessionId().equals(parent.command().sessionId())
+                && child.claims().equals(parent.command().claims()) && child.deadline().equals(cancellation.deadline())
+                && child.operation().value().equals(ClockStatusRead.CANCEL_PREFIX + cancellation.generation())
+                && child.arguments().members().isEmpty()
+                && child.expected().equals(AdvancePrimitives.expected(child.before(), child.source(), child.operation(), child.arguments())),
+                "Status basis changed its source-issued original generation cancellation");
+        var actual = ContinuityActionJournal.lookup(head.state(), child.actionId(), sameArchive).orElseThrow();
+        StrictJson.require(actual.command().equals(child) && actual.bodySha256().equals(ActionCodec.bodySha256(child))
+                && actual.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent(),
+                "cancellation Status requires its actual successful canonical original ACK");
+        return java.util.Optional.of(cancellation);
+    }
+    public static java.util.Optional<LifePostResumePauseCancellation> postResumePauseCancellationStatusSource(
+            ContinuityStorePort.Session same, WriterContracts.Head head, ActionCommand child,
+            ActionPorts.OutcomeArchive sameArchive) throws IOException {
+        if (!child.operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)) return java.util.Optional.empty();
+        var reserved = ActionChildPlanningScope.reservedParent(same, head, child);
+        if (reserved.isEmpty()) return java.util.Optional.empty();
+        var parent = ContinuityActionJournal.lookup(head.state(), reserved.orElseThrow().actionId(), sameArchive).orElseThrow();
+        var token = ActionChildPlanningScope.continuationToken(same, head, parent.command(), child);
+        if (token.isEmpty() || !(token.orElseThrow() instanceof LifePostResumePauseCancellation cancellation)) return java.util.Optional.empty();
         StrictJson.require(parent.state() instanceof ActionState.CompositeUnknown unknown
                 && unknown.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
                 && parent.command().equals(cancellation.originalParent())

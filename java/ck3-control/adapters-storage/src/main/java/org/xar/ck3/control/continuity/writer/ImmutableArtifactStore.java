@@ -106,6 +106,7 @@ public final class ImmutableArtifactStore {
         private boolean closed;
         private volatile Throwable firstFailure;
         private DependencyTrace dependencyTrace;
+        private TransientLeaseTrace transientLeaseTrace;
         private long publicationAttempts;
         private long heldPathAttempts;
         private long acquisitionAttempts;
@@ -121,16 +122,17 @@ public final class ImmutableArtifactStore {
         private static long nextCount(long value) { return value == Long.MAX_VALUE ? value : value + 1; }
         private void recordRetained() {
             retainedPublications = nextCount(retainedPublications);
-            peakEntries = Math.max(peakEntries, entries.size());
+            peakEntries = Math.max(peakEntries, retainedEntryCount());
             peakBytes = Math.max(peakBytes, bytes);
         }
-        private void recordFallback(ExactRef expected) {
+        private void recordFallback(ExactRef expected) throws IOException {
             fallbackAttempts = nextCount(fallbackAttempts);
             largestFallbackExpectedBytes = Math.max(largestFallbackExpectedBytes, expected.bytes());
             // Classify the first failed predicate in the unchanged admission order.
-            if (entries.size() >= maximumEntries) entryBoundFallbacks = nextCount(entryBoundFallbacks);
-            else if (entries.size() * 2 > maximumHandles - 4) handleBoundFallbacks = nextCount(handleBoundFallbacks);
+            if (retainedEntryCount() >= maximumEntries) entryBoundFallbacks = nextCount(entryBoundFallbacks);
+            else if (retainedHandleCount() > maximumHandles - 4L) handleBoundFallbacks = nextCount(handleBoundFallbacks);
             else if (expected.bytes() > (maximumBytes - bytes) / 2) byteBoundFallbacks = nextCount(byteBoundFallbacks);
+            if (transientLeaseTrace != null) transientLeaseTrace.unknownExternal();
         }
         /** Best-effort completed-scope DATA only; never current or custody qualification. */
         void reportDiagnostics(boolean finishSucceeded) {
@@ -191,6 +193,7 @@ public final class ImmutableArtifactStore {
             /** External/pinned/callback dependencies without this store's custody cannot enter a prefix cell. */
             void disqualify() throws IOException {
                 requireCurrent(); disqualifyDependencyTraces();
+                if (transientLeaseTrace != null) transientLeaseTrace.unknownExternal();
             }
             @Override public void close() throws IOException {
                 if (traceClosed) return;
@@ -207,19 +210,185 @@ public final class ImmutableArtifactStore {
             DependencyTrace trace = new DependencyTrace(dependencyTrace); dependencyTrace = trace; return trace;
         }
         /** Mark an actual external dependency without requiring an Archive callback to own the top trace. */
-        void disqualifyDependencies() throws IOException { requireActive(); disqualifyDependencyTraces(); }
+        void disqualifyDependencies() throws IOException {
+            requireActive(); disqualifyDependencyTraces();
+            if (transientLeaseTrace != null) transientLeaseTrace.unknownExternal();
+        }
         private void disqualifyDependencyTraces() {
             for (DependencyTrace trace = dependencyTrace; trace != null; trace = trace.previous) {
                 trace.allRetained = false; trace.references.clear();
             }
         }
-        private void recordDependency(ExactRef reference, boolean retained) {
+        private void recordDependency(ExactRef reference, boolean retained) throws IOException {
             for (DependencyTrace trace = dependencyTrace; trace != null; trace = trace.previous) {
                 if (!trace.allRetained) continue;
                 if (!retained) { trace.allRetained = false; trace.references.clear(); }
                 else trace.references.add(reference);
             }
+            if (transientLeaseTrace != null) transientLeaseTrace.dependency(reference, retained);
         }
+        /** Separate lexical custody trace, never a DPP prefix or public authority. */
+        final class TransientLeaseTrace implements AutoCloseable {
+            private final java.util.LinkedHashSet<ExactRef> references = new java.util.LinkedHashSet<>();
+            private final java.util.Map<ExactRef, Pin> casSources = new java.util.LinkedHashMap<>();
+            private final java.util.Map<ExactRef, ExternalSource> sources = new java.util.LinkedHashMap<>();
+            private boolean unknown;
+            private boolean admissionSealed;
+            private boolean traceClosed;
+            private record ExternalSource(Pin expected, int maximum, LedgerFiles.LeasedDocument lease, long bytes) { }
+            private TransientLeaseTrace() { }
+            private void requireCurrent() throws IOException {
+                requireActive();
+                if (traceClosed || transientLeaseTrace != this) {
+                    IOException failure = new IOException("transient CAS/source trace left its owned lifetime");
+                    recordFailure(failure); throw failure;
+                }
+            }
+            /** Constant-time monotone eligibility check; no dependency copy, traversal or new authority. */
+            void requireEligible() throws IOException {
+                requireCurrent();
+                if (unknown) throw new IOException("transient CAS/source trace contains an unknown dependency");
+            }
+            /** Freeze the already qualified dependency roles before any late observation or write. */
+            void sealAdmission() throws IOException { requireEligible(); admissionSealed = true; }
+            java.util.Optional<Set<ExactRef>> retainedDependencies() throws IOException {
+                requireCurrent();
+                if (unknown) return java.util.Optional.empty();
+                return java.util.Optional.of(java.util.Collections.unmodifiableSet(new java.util.LinkedHashSet<>(references)));
+            }
+            /** Unknown dependencies invalidate this entire trace; they are never inferred from DTO names. */
+            void unknownExternal() throws IOException {
+                requireCurrent(); unknown = true; references.clear(); casSources.clear();
+                releaseSources();
+            }
+            private void dependency(ExactRef reference, boolean retained) throws IOException {
+                if (unknown) return;
+                if (admissionSealed && !references.contains(reference)) {
+                    unknownExternal();
+                    throw new IOException("new CAS dependency after transient admission was sealed");
+                }
+                if (!retained) unknownExternal(); else references.add(reference);
+            }
+            /** Pin/bytes already checked by the caller must additionally acquire continuous custody here. */
+            void retainSource(ExactRef reference, Pin expected, int maximumBytes) throws IOException {
+                try {
+                    requireCurrent(); Objects.requireNonNull(reference); Objects.requireNonNull(expected);
+                    int maximum = limit(maximumBytes);
+                    if (reference.bytes() < 1 || reference.bytes() > maximum || !reference.equals(expected.reference()))
+                        throw new IOException("bounded exact source reference and original Pin required");
+                    if (unknown) throw new IOException("transient source trace already has unknown dependencies");
+                    if (admissionSealed && !casSources.containsKey(reference) && !sources.containsKey(reference)) {
+                        unknownExternal();
+                        throw new IOException("new source role after transient admission was sealed");
+                    }
+                    checkRoot();
+                    Path path = Path.of(reference.path()).toAbsolutePath().normalize();
+                    if (path.startsWith(config.root())) {
+                        Published actual = readPublication(reference, maximum);
+                        requirePin(actual.data().pin(), expected);
+                        if (!entries.containsKey(reference)) {
+                            unknownExternal();
+                            throw new IOException("CAS source lacks continuous commit and payload custody");
+                        }
+                        Pin previous = casSources.putIfAbsent(reference, expected);
+                        if (previous != null) requirePin(expected, previous);
+                        return;
+                    }
+                    ExternalSource prior = sources.get(reference);
+                    if (prior != null) {
+                        requirePin(expected, prior.expected());
+                        LedgerFiles.Document current = prior.lease().read(); checkRoot();
+                        if (current.pin().reference().bytes() > maximum) throw new IOException("external source exceeds its current declared bound");
+                        requirePin(current.pin(), expected); requireActive(); return;
+                    }
+                    if (retainedEntryCount() >= maximumEntries || retainedHandleCount() > maximumHandles - 4L
+                            || reference.bytes() > (HistoricalReads.this.maximumBytes - bytes) / 2) {
+                        unknownExternal();
+                        throw new IOException("external source exceeds shared historical custody bounds");
+                    }
+                    LedgerFiles.LeasedDocument acquired = null; boolean kept = false; Throwable primary = null;
+                    try {
+                        acquired = LedgerFiles.lease(reference, maximum);
+                        LedgerFiles.Document current = acquired.read(); requirePin(current.pin(), expected); requireActive(); checkRoot();
+                        long retainedBytes = acquired.retainedBytes();
+                        if (retainedBytes > HistoricalReads.this.maximumBytes - bytes) {
+                            unknownExternal();
+                            throw new IOException("external source retained bytes exceed shared historical custody bounds");
+                        }
+                        sources.put(reference, new ExternalSource(expected, maximum, acquired, retainedBytes));
+                        bytes = Math.addExact(bytes, retainedBytes); kept = true;
+                        peakEntries = Math.max(peakEntries, retainedEntryCount()); peakBytes = Math.max(peakBytes, bytes);
+                    } catch (IOException | RuntimeException | Error failure) { primary = failure; throw failure; }
+                    finally {
+                        if (!kept && acquired != null) try { acquired.close(); }
+                        catch (IOException | RuntimeException | Error closing) {
+                            if (primary != null) primary.addSuppressed(closing); else throw closing;
+                        }
+                    }
+                } catch (IOException | RuntimeException | Error failure) { recordFailure(failure); throw failure; }
+            }
+            /** Fresh source validation is required independently of the immutable CAS dependency set. */
+            void verifySources() throws IOException {
+                try {
+                    requireCurrent();
+                    if (unknown) throw new IOException("transient source trace contains an unknown dependency");
+                    checkRoot();
+                    for (var source : casSources.entrySet()) {
+                        PublicationLease lease = entries.get(source.getKey());
+                        if (lease == null) {
+                            unknownExternal(); throw new IOException("transient CAS source lost its publication custody");
+                        }
+                        requirePin(readLeasedPublication(lease, source.getKey(), MAXIMUM_ARTIFACT_BYTES).data().pin(), source.getValue());
+                    }
+                    for (var source : sources.entrySet()) {
+                        LedgerFiles.Document current = source.getValue().lease().read();
+                        if (current.pin().reference().bytes() > source.getValue().maximum())
+                            throw new IOException("external source exceeds its retained declared bound");
+                        requirePin(current.pin(), source.getValue().expected());
+                    }
+                    requireCurrent(); checkRoot();
+                } catch (IOException | RuntimeException | Error failure) { recordFailure(failure); throw failure; }
+            }
+            private void releaseSources() throws IOException {
+                IOException failure = null;
+                try {
+                    for (ExternalSource source : sources.values()) {
+                        try { source.lease().close(); }
+                        catch (IOException | RuntimeException | Error problem) {
+                            IOException closing = closeFailure(problem);
+                            if (failure == null) failure = closing; else failure.addSuppressed(closing);
+                        } finally { bytes -= source.bytes(); }
+                    }
+                } finally { sources.clear(); }
+                if (failure != null) { recordFailure(failure); throw failure; }
+            }
+            @Override public void close() throws IOException {
+                if (traceClosed) return;
+                if (Thread.currentThread() != thread || historicalReads.get() != HistoricalReads.this || transientLeaseTrace != this) {
+                    IOException failure = new IOException("transient source trace close crossed its owned lifetime");
+                    recordFailure(failure); throw failure;
+                }
+                try { releaseSources(); }
+                finally { references.clear(); casSources.clear(); traceClosed = true; transientLeaseTrace = null; }
+            }
+            private void finishClose() throws IOException {
+                try { releaseSources(); }
+                finally { references.clear(); casSources.clear(); traceClosed = true; }
+            }
+        }
+        TransientLeaseTrace traceTransientLeases() throws IOException {
+            requireActive();
+            if (transientLeaseTrace != null) {
+                IOException failure = new IOException("transient CAS/source custody trace cannot nest");
+                recordFailure(failure); throw failure;
+            }
+            TransientLeaseTrace trace = new TransientLeaseTrace(); transientLeaseTrace = trace; return trace;
+        }
+        /** Only identified source-owned callbacks may separate persistent reuse from transient custody. */
+        void disqualifyPersistentDependenciesOnly() throws IOException { requireActive(); disqualifyDependencyTraces(); }
+        private int retainedEntryCount() { return entries.size() + (transientLeaseTrace == null ? 0 : transientLeaseTrace.sources.size()); }
+        private long retainedHandleCount() { return entries.size() * 2L + (transientLeaseTrace == null ? 0 : transientLeaseTrace.sources.size()); }
+
         private void clearDependencyTraces() {
             while (dependencyTrace != null) {
                 DependencyTrace trace = dependencyTrace; dependencyTrace = trace.previous;
@@ -263,7 +432,14 @@ public final class ImmutableArtifactStore {
                         if (cleanup == null) cleanup = closing; else cleanup.addSuppressed(closing);
                     }
                 }
-            } finally { clearDependencyTraces(); entries.clear(); bytes = 0; historicalReads.remove(); }
+                if (transientLeaseTrace != null) {
+                    try { transientLeaseTrace.finishClose(); }
+                    catch (IOException | RuntimeException | Error problem) {
+                        IOException closing = closeFailure(problem);
+                        if (cleanup == null) cleanup = closing; else cleanup.addSuppressed(closing);
+                    }
+                }
+            } finally { clearDependencyTraces(); transientLeaseTrace = null; entries.clear(); bytes = 0; historicalReads.remove(); }
             if (escaping != null) {
                 boolean alreadyCarried = false;
                 int causeDepth = 0;
@@ -309,10 +485,19 @@ public final class ImmutableArtifactStore {
     }
     HistoricalReads beginHistoricalReads(ContinuityStorePort.Session session, int maximumEntries,
             long maximumBytes, int maximumHandles, HistoricalReadAuthority authority) throws IOException {
+        return beginHistoricalReads(session,maximumEntries,maximumBytes,maximumHandles,authority,false);
+    }
+    /** Fixed recovery-only tier. General callers and their 256 MiB validation retain the original entry. */
+    HistoricalReads beginSameGameHistoricalRecoveryReads(ContinuityStorePort.Session session,
+            HistoricalReadAuthority authority) throws IOException {
+        return beginHistoricalReads(session,16384,768L * 1024 * 1024,32768,authority,true);
+    }
+    private HistoricalReads beginHistoricalReads(ContinuityStorePort.Session session, int maximumEntries,
+            long maximumBytes, int maximumHandles, HistoricalReadAuthority authority, boolean sameGameRecovery) throws IOException {
         if (readonlyMode) StorageWriteGuard.requireNoWritesOpen(storage);
         Objects.requireNonNull(session); Objects.requireNonNull(authority);
-        if (maximumEntries < 1 || maximumEntries > 8192 || maximumBytes < 1 || maximumBytes > 256L * 1024 * 1024
-                || maximumHandles < 4 || maximumHandles > 16384)
+        if (maximumEntries < 1 || maximumEntries > (sameGameRecovery ? 16384 : 8192) || maximumBytes < 1 || maximumBytes > (sameGameRecovery ? 768L : 256L) * 1024 * 1024
+                || maximumHandles < 4 || maximumHandles > (sameGameRecovery ? 32768 : 16384))
             throw new IOException("finite historical CAS read bounds required");
         if (historicalReads.get() != null) {
             IOException failure = new IOException("nested historical CAS read scopes are not permitted");
@@ -589,7 +774,7 @@ public final class ImmutableArtifactStore {
                     reads.recordDependency(expected, true); return actual;
                 }
                 // Reserve two transient qualification handles in addition to both new custody handles.
-                if (reads.entries.size() < reads.maximumEntries && reads.entries.size() * 2 <= reads.maximumHandles - 4
+                if (reads.retainedEntryCount() < reads.maximumEntries && reads.retainedHandleCount() <= reads.maximumHandles - 4L
                         && expected.bytes() <= (reads.maximumBytes - reads.bytes) / 2) {
                     reads.acquisitionAttempts = HistoricalReads.nextCount(reads.acquisitionAttempts);
                     Published actual = acquirePublication(reads, expected, maximum);

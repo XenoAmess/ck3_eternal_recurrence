@@ -151,6 +151,10 @@ public final class CanonicalFundingPending {
             case ActionState.CompositeRunning ignored->Phase.COMPOSITE_RUNNING;case ActionState.CompositeUnknown ignored->Phase.COMPOSITE_UNKNOWN;
             case ActionState.Settled ignored->Phase.SETTLED;case ActionState.RejectedBeforeDispatch ignored->Phase.REJECTED_BEFORE_DISPATCH;
             case ActionState.CompositeSettled ignored->Phase.COMPOSITE_SETTLED;
+            case org.xar.ck3.control.application.action.PreparedCleanupAction ignored->throw new IllegalArgumentException("cleanup NoEffect is not a funding phase");
+            case ActionState.ReservedPreparedCleanupNoEffectConfirmed ignored->throw new IllegalArgumentException("cleanup NoEffect is not a funding phase");
+            case ActionState.PreparedCleanupNoEffectConfirmed ignored->throw new IllegalArgumentException("cleanup NoEffect is not a funding phase");
+            case ActionState.CleanupNoEffectConfirmed ignored->throw new IllegalArgumentException("cleanup NoEffect is not a funding phase");
             case ActionState.CompositeOperatorQuarantined ignored->throw new IllegalArgumentException("operator-quarantined composite is not a funding pending phase");
             case PhysicalActionState physical->switch(physical.phase()) {
                 case SUBMITTING->Phase.PHYSICAL_SUBMITTING;case UNKNOWN->Phase.PHYSICAL_UNKNOWN;

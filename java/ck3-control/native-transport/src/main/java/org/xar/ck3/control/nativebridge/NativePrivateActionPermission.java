@@ -17,6 +17,16 @@ public final class NativePrivateActionPermission {
         ExactRef verify(NativePipeEndpoint.Config actualConfig, NativeWire.Hello actualHello,
                 GuardEvidence actualFrame, NativeRequest typedRequest) throws IOException;
     }
+    /** Separate actual Root lexical write-capability qualification. Heavy canonical,
+     * A-proof, exact-original and retained-lease work has already completed before
+     * either callback. These verify identity/active scope/head/body/once only. */
+    public interface PreparedQualification {
+        ExactRef requireObservation(NativePipeEndpoint.Config actualConfig,NativeWire.Hello actualHello,
+                org.xar.ck3.control.application.action.PreparedCleanupObservationPermit actual) throws IOException;
+        ExactRef requireWrite(NativePipeEndpoint.Config actualConfig,NativeWire.Hello actualHello,
+                org.xar.ck3.control.application.action.PreparedCleanupPermit actual,NativeRequest request) throws IOException;
+    }
+    private final java.util.Optional<PreparedQualification> preparedQualification;
     private final OperationKey operation;
     private final String permissionKey;
     private final ExactRef originalProducerSource;
@@ -29,6 +39,11 @@ public final class NativePrivateActionPermission {
     }
     private NativePrivateActionPermission(OperationKey operation,String permissionKey,ExactRef originalProducerSource,
             RequestValidator validator,java.util.Optional<QualificationVerifier> qualification) {
+        this(operation,permissionKey,originalProducerSource,validator,qualification,java.util.Optional.empty());
+    }
+    private NativePrivateActionPermission(OperationKey operation,String permissionKey,ExactRef originalProducerSource,
+            RequestValidator validator,java.util.Optional<QualificationVerifier> qualification,java.util.Optional<PreparedQualification> prepared) {
+        preparedQualification=Objects.requireNonNull(prepared);
         this.operation = Objects.requireNonNull(operation); this.permissionKey = Objects.requireNonNull(permissionKey);
         if (permissionKey.isBlank()) throw new IllegalArgumentException("explicit original private permission key required");
         this.originalProducerSource = Objects.requireNonNull(originalProducerSource);
@@ -54,6 +69,30 @@ public final class NativePrivateActionPermission {
                     if (additionalEvidence == null || additionalEvidence.bytes() < 1) throw new IOException("private mutation additional qualification returned absent or empty evidence");
                     return additionalEvidence;
                 });
+    }
+    public NativePrivateActionPermission withPreparedQualification(PreparedQualification actualRoot) {
+        if(preparedQualification.isPresent())throw new IllegalStateException("prepared cleanup has two actual Root qualification owners");
+        return new NativePrivateActionPermission(operation,permissionKey,originalProducerSource,validator,qualification,
+                java.util.Optional.of(Objects.requireNonNull(actualRoot)));
+    }
+    void verifyPreparedObservation(NativePipeEndpoint.Config config,NativeWire.Hello hello,
+            org.xar.ck3.control.application.action.PreparedCleanupObservationPermit actual)throws IOException {
+        if(!operation.equals(actual.preparation().command().operation()))throw new IOException("prepared observation changed fixed operation");
+        validator.validate(actual.preparation().nativePrepared());
+        var proof=preparedQualification.orElseThrow(()->new IOException("actual Root prepared qualification is absent"))
+                .requireObservation(config,hello,actual);
+        if(proof==null||!proof.equals(actual.preparation().reference()))throw new IOException("prepared observation changed actual Root write-capability binding");
+    }
+    void verifyPreparedWrite(NativePipeEndpoint.Config config,NativeWire.Hello hello,
+            org.xar.ck3.control.application.action.PreparedCleanupPermit actual,NativeRequest request)throws IOException {
+        if(!operation.equals(actual.command().operation())||!request.equals(actual.preparedRequest()))
+            throw new IOException("prepared cleanup changed fixed operation or durable Native request");
+        try{NativeStepDiscriminator.requireRequest(operation,Kind.ACTION,request);}
+        catch(IllegalArgumentException invalid){throw new IOException("prepared cleanup changed logical request",invalid);}
+        validator.validate(request);
+        var proof=preparedQualification.orElseThrow(()->new IOException("actual Root prepared qualification is absent"))
+                .requireWrite(config,hello,actual,request);
+        if(proof==null||!proof.equals(actual.preparation().reference()))throw new IOException("prepared cleanup changed actual Root write-capability binding");
     }
     void verify(NativePipeEndpoint.Config config, NativeWire.Hello hello, GuardEvidence guard, NativeRequest request) throws IOException {
         if (request.requiredCapability().isPresent()) throw new IOException("private mutation differs from its fixed root registration");

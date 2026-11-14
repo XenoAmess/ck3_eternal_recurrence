@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -116,9 +117,10 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }
     }
     private final ThreadLocal<ReadOriginalCapture> readOriginalCapture;
+    private final ThreadLocal<TransientOwnedCASLeaseScope> transientCasLeases;
     /** Same-scope parsing reuse for complete RawJson material. Bounded by entry count and total bytes.
      * Only valid within the current active writer session scope; cleared on scope exit or error. */
-    private static final int MAX_PARSED_ENTRIES = 64;
+    private static final int MAX_PARSED_ENTRIES = 1024;
     private static final long MAX_PARSED_BYTES = 64L * 1024 * 1024;
     private enum ParseProfile { PROTOCOL, FULL_MATERIAL }
     private final ThreadLocal<ParsedMaterialCache> parsedMaterialCache;
@@ -192,6 +194,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         this.artifacts = Objects.requireNonNull(artifacts); this.sameWriter = Objects.requireNonNull(sameWriter);
         owner = this; borrowed = null; publication=Publication.DURABLE; current = new ThreadLocal<>(); historyBindings = new HistoryBindings();
         readOriginalCapture = new ThreadLocal<>();
+        transientCasLeases = new ThreadLocal<>();
         parsedMaterialCache = new ThreadLocal<>();
         physicalStatusOriginals = new LinkedHashMap<>();
         if (!artifacts.originalWriterLock().equals(sameWriter.originalLockPath())
@@ -215,6 +218,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         current = owner.current; historyBindings = owner.historyBindings; this.borrowed = Objects.requireNonNull(borrowed);
         this.publication=Objects.requireNonNull(publication);
         readOriginalCapture = owner.readOriginalCapture;
+        transientCasLeases = owner.transientCasLeases;
         parsedMaterialCache = owner.parsedMaterialCache;
         completeDriverDecoder = owner.completeDriverDecoder;
         physicalStatusOriginals = owner.physicalStatusOriginals;
@@ -225,10 +229,21 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
     /** Explicit optional historical optimization; the application contract owns its checked callback/types. */
     @Override public <T> T inHistoricalReadScope(ContinuityStorePort.Session session, ActionPorts.HistoricalReadLimits limits,
             ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        return historicalReadScope(session,limits,operation,false);
+    }
+    /** This fixed byte tier is selected only by the complete same-Game history recovery consumer. */
+    @Override public <T> T inSameGameHistoricalRecoveryScope(ContinuityStorePort.Session session,
+            ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        return historicalReadScope(session,new ActionPorts.HistoricalReadLimits(8192,256L * 1024 * 1024,16384),operation,true);
+    }
+    private <T> T historicalReadScope(ContinuityStorePort.Session session, ActionPorts.HistoricalReadLimits limits,
+            ActionPorts.CheckedArchiveRead<T> operation, boolean sameGameRecovery) throws IOException {
         Objects.requireNonNull(limits); Objects.requireNonNull(operation);
         try { return scoped(session, () -> {
-            ImmutableArtifactStore.HistoricalReads reads = artifacts.beginHistoricalReads(session,
-                    limits.maximumPublications(), limits.maximumRetainedBytes(), limits.maximumHandles(), () -> requireSession(session));
+            ImmutableArtifactStore.HistoricalReads reads = sameGameRecovery
+                    ? artifacts.beginSameGameHistoricalRecoveryReads(session, () -> requireSession(session))
+                    : artifacts.beginHistoricalReads(session,
+                        limits.maximumPublications(), limits.maximumRetainedBytes(), limits.maximumHandles(), () -> requireSession(session));
             Throwable failure = null;
             ParsedMaterialCache commandCache = parsedMaterialCache.get();
             try {
@@ -424,6 +439,116 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             actual.close();
         }
         @Override public boolean verify(Set<ExactRef> dependencies) throws IOException { active();return reads.verifyRetainedDependencies(dependencies); }
+    }
+    /** Lexical custody only. It never becomes a persistent-prefix cell or a World capability. */
+    public TransientOwnedCASLeaseScope openTransientOwnedCASLeaseScope(ActionPorts.OutcomeArchive facade,
+            ContinuityStorePort.Session session)throws IOException {
+        requireSession(session);var cache=parsedMaterialCache.get();
+        if(cache==null||cache.commandReads==null||readOriginalCapture.get()!=null||current.get()!=session
+                ||!(facade instanceof NativeOutcomeArchive actual)||actual.owner!=owner||actual.artifacts!=artifacts
+                ||actual.sameWriter!=sameWriter||actual.borrowed!=session||actual.current!=current
+                ||actual.parsedMaterialCache!=parsedMaterialCache||transientCasLeases.get()!=null)
+            throw new IOException("transient custody requires its exact owned archive/session/read scope");
+        var trace=cache.commandReads.traceTransientLeases();
+        var scope=new TransientOwnedCASLeaseScope(session,cache,cache.commandReads,trace);
+        transientCasLeases.set(scope);return scope;
+    }
+    public final class TransientOwnedCASLeaseScope implements AutoCloseable {
+        private final Thread thread=Thread.currentThread();
+        private final ContinuityStorePort.Session session;
+        private final ParsedMaterialCache cache;
+        private final ImmutableArtifactStore.HistoricalReads reads;
+        private final ImmutableArtifactStore.HistoricalReads.TransientLeaseTrace trace;
+        private final Map<GuardEvidence,Integer> pendingPhysical=new LinkedHashMap<>();
+        private final Map<ExactRef,Integer> pendingSource=new LinkedHashMap<>();
+        private final Map<GuardEvidence,PhysicalStatusOriginals> physical=new LinkedHashMap<>();
+        private final Map<ExactRef,Pin> sourcePins=new LinkedHashMap<>();
+        private Set<ExactRef> admittedCAS=Set.of(),admittedSources=Set.of();
+        private boolean admitted,verified,closed;
+        private TransientOwnedCASLeaseScope(ContinuityStorePort.Session session,ParsedMaterialCache cache,
+                ImmutableArtifactStore.HistoricalReads reads,ImmutableArtifactStore.HistoricalReads.TransientLeaseTrace trace){
+            this.session=session;this.cache=cache;this.reads=reads;this.trace=trace;
+        }
+        private void live()throws IOException {
+            if(closed||Thread.currentThread()!=thread||transientCasLeases.get()!=this||current.get()!=session
+                    ||parsedMaterialCache.get()!=cache||cache.commandReads!=reads||readOriginalCapture.get()!=null)
+                throw new IOException("transient custody escaped actual owner/session/thread/active-read lifetime");
+            requireSession(session);reads.requireActive();
+        }
+        private <K>void begin(Map<K,Integer> pending,K key)throws IOException {
+            live();pending.merge(key,1,Integer::sum);
+        }
+        private <K>void end(Map<K,Integer> pending,K key)throws IOException {
+            live();Integer count=pending.get(key);if(count==null||count<1)throw new IOException("unpaired transient original qualification");
+            if(count==1)pending.remove(key);else pending.put(key,count-1);
+        }
+        private void verifiedPhysical(GuardEvidence original,PhysicalStatusOriginals installed)throws IOException {
+            live();if(installed==null)throw new IOException("transient physical replay requires its real installed source-owned provider");
+            var previous=physical.putIfAbsent(original,installed);
+            if(previous!=null&&previous!=installed)throw new IOException("transient physical provider identity changed");
+            end(pendingPhysical,original);
+        }
+        private void source(ExactRef ref,Pin pin,int maximum)throws IOException {
+            live();trace.retainSource(ref,pin,maximum);var previous=sourcePins.putIfAbsent(ref,pin);
+            if(previous!=null&&!previous.equals(pin))throw new IOException("transient qualified source Pin changed");
+        }
+        public void retainQualifiedSource(ExactRef ref,int maximum)throws IOException {
+            live();reads.disqualifyPersistentDependenciesOnly();
+            var actual=LedgerFiles.exact(ref,maximum);session.verifyPin(actual.pin());source(ref,actual.pin(),maximum);
+        }
+        public void retainQualifiedSource(Pin pin,int maximum)throws IOException {
+            live();session.verifyPin(pin);retainQualifiedSource(pin.reference(),maximum);
+            if(!pin.equals(sourcePins.get(pin.reference())))throw new IOException("transient configured source identity changed");
+        }
+        private void completeQualifications()throws IOException {
+            live();if(!pendingPhysical.isEmpty()||!pendingSource.isEmpty())throw new IOException("transient original qualification did not complete");
+        }
+        public void requirePreparedCustody()throws IOException {
+            completeQualifications();if(admitted)throw new IOException("transient custody cannot be reminted");
+            var dependencies=trace.retainedDependencies().orElseThrow(()->new IOException("transient CAS/source originals were not all held or had unknown external dependencies"));
+            if(!reads.verifyRetainedDependencies(dependencies))throw new IOException("transient CAS custody is incomplete before late observation");
+            trace.verifySources();admittedCAS=Set.copyOf(dependencies);admittedSources=Set.copyOf(sourcePins.keySet());trace.sealAdmission();admitted=true;
+        }
+        /** Bounded final callback: no dependency walk, source hashing or semantic replay. */
+        public void requireActive()throws IOException {live();trace.requireEligible();if(!admitted)throw new IOException("actual transient custody has not been admitted");}
+        public void verifyAndClose()throws IOException {
+            Throwable primary=null;
+            try{
+                requireActive();
+                for(var entry:new ArrayList<>(physical.entrySet())){
+                    if(!(entry.getKey().origin() instanceof CommandOrigin.PhysicalStatusOnly origin))
+                        throw new IOException("transient physical provider was bound to a foreign guard origin");
+                    var identity=origin.identity();
+                    synchronized(physicalStatusOriginals){
+                        if(physicalStatusOriginals.get(identity.game())!=entry.getValue())throw new IOException("installed transient physical provider was replaced");
+                    }
+                    verifyPhysicalStatusOriginals(entry.getKey(),origin);
+                }
+                completeQualifications();
+                var complete=trace.retainedDependencies().orElseThrow(()->new IOException("transient custody lost a held original or met unknown external work"));
+                if(!complete.equals(admittedCAS)||!sourcePins.keySet().equals(admittedSources))
+                    throw new IOException("transient original dependency closure changed after late observation");
+                if(!reads.verifyRetainedDependencies(admittedCAS))throw new IOException("transient CAS originals lost custody before close");
+                trace.verifySources();verified=true;
+            }catch(IOException|RuntimeException|Error failure){primary=failure;throw failure;}
+            finally{
+                try{release();}catch(IOException|RuntimeException|Error closing){if(primary!=null){if(closing!=primary)primary.addSuppressed(closing);}else throw closing;}
+            }
+        }
+        private void release()throws IOException {
+            if(closed)return;
+            if(Thread.currentThread()!=thread||transientCasLeases.get()!=this)throw new IOException("transient source close crossed its actual lifetime");
+            try{trace.close();}finally{closed=true;transientCasLeases.remove();}
+        }
+        @Override public void close()throws IOException {
+            if(closed)return;boolean missing=admitted&&!verified;release();
+            if(missing)throw new IOException("transient admitted custody was closed without final original qualification");
+        }
+    }
+    private TransientOwnedCASLeaseScope knownTransient()throws IOException {
+        var scope=transientCasLeases.get();if(scope!=null)scope.live();
+        var cache=parsedMaterialCache.get();if(cache!=null&&cache.commandReads!=null)cache.commandReads.disqualifyPersistentDependenciesOnly();
+        return scope;
     }
     private void disqualifyPersistentPrefix() throws IOException {
         ParsedMaterialCache cache=parsedMaterialCache.get();
@@ -1127,6 +1252,21 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
      * Source-code references belong to the writer source guard and are never searched in this store.
      */
     private void verifyReceiptOriginals(ActionReceipt original) throws IOException {
+        if(original.state() instanceof org.xar.ck3.control.application.action.PreparedCleanupAction)
+            org.xar.ck3.control.application.advance.PreparedCleanupReplay.verifyOriginals(original,this);
+        if(original.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed terminal) {
+            org.xar.ck3.control.application.advance.ReservedPreparedCleanupNoEffectProof.verifyArchivedState(original,
+                    terminal.proofReference(),terminal.preparationReference(),this);
+        }
+        if(original.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed terminal) {
+            var proof=org.xar.ck3.control.application.advance.PreparedCleanupNoEffectProof.verifyArchivedState(original,
+                    terminal.proofReference(),terminal.originalPreparedState(),this);
+            // Preserve and reopen every original PREPARED/UNKNOWN optional, not a synthetic no-send receipt.
+            org.xar.ck3.control.application.advance.PreparedCleanupReplay.verifyOriginals(proof.child5(),this);
+        }
+        if(original.state() instanceof ActionState.CleanupNoEffectConfirmed terminal)
+            org.xar.ck3.control.application.advance.PostExitCleanupNoEffectProof.verifyArchivedState(original,
+                    terminal.proofReference(),terminal.originalAttempt(),terminal.originalDispatch(),this);
         if (original.state() instanceof PhysicalActionState physical) verifyPhysicalOriginals(physical);
         if (original.command().expectation() instanceof org.xar.ck3.control.application.action.CommandExpectation.OperatorRebind
                 && ActionTransitions.composite(original.state()).isPresent())
@@ -1341,7 +1481,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         for (ExactRef retained : PhysicalActionCodec.references(original, this)) presentationExisting(retained);
     }
     private byte[] verifyRetainedSourceOriginal(ExactRef original) throws IOException {
-        disqualifyPersistentPrefix();
+        var transientScope=knownTransient();if(transientScope!=null)transientScope.begin(transientScope.pendingSource,original);
         if (original.bytes() < 1 || original.bytes() > WriterContracts.MAX_PIN_BYTES)
             throw new IOException("bounded retained source original required");
         ContinuityStorePort.Session session = activeSession();
@@ -1356,6 +1496,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         byte[] bytes = result.bytes();
         session.verifyPin(pin);
         rememberReadOriginal(session, pin);
+        if(transientScope!=null){transientScope.source(original,pin,maximum);transientScope.end(transientScope.pendingSource,original);}
         return bytes;
     }
     private void verifyReadOriginals(PlanningReadReceipt original) throws IOException {
@@ -1443,7 +1584,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         for (ExactRef locator : original.supportingEvidence()) token(locator);
     }
     private void verifyPhysicalStatusOriginals(GuardEvidence original, CommandOrigin.PhysicalStatusOnly physical) throws IOException {
-        disqualifyPersistentPrefix();
+        var transientScope=knownTransient();if(transientScope!=null)transientScope.begin(transientScope.pendingPhysical,original);
         ContinuityStorePort.Session same = activeSession();
         if (same == null) throw new IOException("physical Status originals require their actual owning writer session");
         var identity = physical.identity();
@@ -1461,6 +1602,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                 ? org.xar.ck3.control.service.root.RootPhysicalStatusReadAuthority.verifyArchivedData(original,same,this::readArtifact)
                 : installed.bindings().requirePhysicalStatusAuthority(identity).verifyArchived(original,this,same,installed.originals());
         if (!identity.equals(verified)) throw new IOException("physical Status original verifier returned another complete identity");
+        if(transientScope!=null)transientScope.verifiedPhysical(original,installed);
     }
     private void verifyReconciliationOriginals(ReconciliationIdentity original) throws IOException {
         var evidence = original.evidence();

@@ -174,6 +174,11 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
             ActionTransitions.dispatch(proposed.state()).ifPresent(dispatch -> StrictJson.require(dispatch.equals(archive.load(archive.referenceOf(dispatch))), "actual archived dispatch changed"));
             if (proposed.state() instanceof ActionState.Settled primitive)
                 ActionEffects.validate(proposed.command(), primitive.attempt(), primitive.dispatch(), primitive.settlement());
+            if(org.xar.ck3.control.application.advance.PreparedCleanupCursor.marked(proposed)) {
+                var actual=catalog==null?bindings.get(proposed.command().operation()):catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
+                StrictJson.require(actual!=null,"prepared Life cursor has no actual installed domain replay");
+                RootGuardChecks.source(session,actual.definitionSource());actual.verifier().verify(actualLockedHead,proposed,archive);return;
+            }
             if (proposed.state() instanceof ActionState.CompositeOperatorQuarantined) {
                 var operatorBinding = catalog == null ? bindings.get(proposed.command().operation())
                         : catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
@@ -181,6 +186,47 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
                 RootGuardChecks.source(session,operatorBinding.definitionSource());
                 org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(proposed,archive);
                 operatorBinding.verifier().verify(actualLockedHead,proposed,archive);
+                return;
+            }
+            if(proposed.state() instanceof PreparedCleanupAction) {
+                if(catalog!=null)StrictJson.require(catalog.actualActionBinding(proposed.command().operation()).isPresent(),
+                        "prepared cleanup has no actual installed action family");
+                var actual=catalog==null?bindings.get(proposed.command().operation()):catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
+                StrictJson.require(actual!=null,"prepared cleanup has no actual installed original replay");
+                RootGuardChecks.source(session,actual.definitionSource());actual.verifier().verify(actualLockedHead,proposed,archive);return;
+            }
+            if(proposed.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed) {
+                // Resolve the actual exact-operation family before original replay; no preparation/dispatch has occurred on this readonly path.
+                if(catalog!=null)StrictJson.require(catalog.actualActionBinding(proposed.command().operation()).isPresent(),
+                        "reserved cleanup NoEffect has no installed exact-operation action family");
+                var actualBinding=catalog==null?bindings.get(proposed.command().operation())
+                        :catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
+                StrictJson.require(actualBinding!=null,"reserved cleanup NoEffect has no installed exact-operation original verifier");
+                RootGuardChecks.source(session,actualBinding.definitionSource());
+                actualBinding.verifier().verify(actualLockedHead,proposed,archive);
+                return;
+            }
+            if(proposed.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed) {
+                // Resolve the actual dynamic action family before its original-evidence binding.
+                if(catalog!=null)StrictJson.require(catalog.actualActionBinding(proposed.command().operation()).isPresent(),
+                        "prepared NoEffect has no installed exact-operation action family");
+                var actualBinding=catalog==null?bindings.get(proposed.command().operation())
+                        :catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
+                StrictJson.require(actualBinding!=null,"prepared NoEffect has no installed exact-operation original verifier");
+                RootGuardChecks.source(session,actualBinding.definitionSource());
+                actualBinding.verifier().verify(actualLockedHead,proposed,archive);
+                return;
+            }
+            if(proposed.state() instanceof ActionState.CleanupNoEffectConfirmed) {
+                // This read-only terminal did not run preparation/execute, so a dynamic
+                // installed family may not yet have retained its exact replay binding.
+                if(catalog!=null)StrictJson.require(catalog.actualActionBinding(proposed.command().operation()).isPresent(),
+                        "cleanup NoEffect has no installed exact-operation action family");
+                var actualBinding=catalog==null?bindings.get(proposed.command().operation())
+                        :catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
+                StrictJson.require(actualBinding!=null,"cleanup NoEffect has no installed exact-operation original verifier");
+                RootGuardChecks.source(session,actualBinding.definitionSource());
+                actualBinding.verifier().verify(actualLockedHead,proposed,archive);
                 return;
             }
             ActionState.Settlement settlement = settlement(proposed.state());

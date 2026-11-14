@@ -12,6 +12,7 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 /** Exact after-frame locator for a timeline primitive, retaining both native and complete Driver inputs. */
 public final class AdvancePrimitiveEvidence {
     public static final String SCHEMA = "xar.java.timeline-primitive-original-basis/v1";
+    public static final String PHYSICAL_AFTER_ACK_SCHEMA = "xar.java.timeline-primitive-physical-after-ack-basis/v1";
     private AdvancePrimitiveEvidence() { }
     public static ExactRef preserve(ActionCommand command, AdvanceObservationPort.Frame actual, ActionPorts.OutcomeArchive archive) {
         var manifest = actual.semantic().get("java_driver_facts_evidence");
@@ -19,7 +20,7 @@ public final class AdvancePrimitiveEvidence {
         ExactRef driver = ExactRef.fromJson(OpportunityJson.toNode(manifest));
         exact(actual.originalEvidence(), archive.loadNativeFrame(actual.originalEvidence()));
         exact(driver, archive.loadFullMaterial(driver).bytes());
-        var row = StrictJson.object(); row.put("schema", SCHEMA); row.put("command_body_sha256", ActionCodec.bodySha256(command));
+        var row = StrictJson.object(); row.put("schema", actual.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement ? PHYSICAL_AFTER_ACK_SCHEMA : SCHEMA); row.put("command_body_sha256", ActionCodec.bodySha256(command));
         row.set("native_frame", actual.originalEvidence().toJson()); row.set("driver_facts", driver.toJson());
         row.set("provenance", ObservationProvenanceCodec.encode(actual.provenance()));
         RawJson body = new RawJson(StrictJson.canonical(row)); ExactRef ref = archive.preserveMaterial(body);
@@ -40,13 +41,24 @@ public final class AdvancePrimitiveEvidence {
         require(effect.supportingEvidence().size() == 1, "historical timeline receipt lacks its complete after-frame basis");
         ExactRef ref = effect.supportingEvidence().getFirst(); RawJson raw = archive.loadMaterial(ref); exact(ref, raw.bytes());
         var row = StrictJson.object(StrictJson.parse(raw.bytes()), Set.of("schema", "command_body_sha256", "native_frame", "driver_facts", "provenance"));
-        require(SCHEMA.equals(StrictJson.text(row.get("schema"))) && child.bodySha256().equals(StrictJson.text(row.get("command_body_sha256"))),
+        require((SCHEMA.equals(StrictJson.text(row.get("schema"))) || PHYSICAL_AFTER_ACK_SCHEMA.equals(StrictJson.text(row.get("schema")))) && child.bodySha256().equals(StrictJson.text(row.get("command_body_sha256"))),
                 "timeline after-frame basis crossed its immutable child");
         var basis = new NativeEffectEvidence.FrameBasis(ExactRef.fromJson(row.get("native_frame")), ExactRef.fromJson(row.get("driver_facts")));
         exact(basis.nativeFrame(), archive.loadNativeFrame(basis.nativeFrame())); exact(basis.driverFacts(), archive.loadFullMaterial(basis.driverFacts()).bytes());
         Complete actual = frames.load(basis, archive);
         var provenance = ObservationProvenanceCodec.decode(row.get("provenance"));
-        if (provenance instanceof ObservationProvenance.FreshSnapshotQuery query) {
+        require(PHYSICAL_AFTER_ACK_SCHEMA.equals(StrictJson.text(row.get("schema"))) == (provenance instanceof ObservationProvenance.PhysicalAfterAcknowledgement),
+                "physical after-ACK primitive requires its distinct exact basis schema");
+        if (provenance instanceof ObservationProvenance.PhysicalAfterAcknowledgement physical) {
+            frames.verifyPhysicalAfterAcknowledgement(physical, actual, archive);
+            var recorded = TimelinePhysicalAfterAckEvidence.decode(archive.loadMaterial(physical.occurrenceEvidence()));
+            var original = archive.loadReceipt(recorded.setterReceipt());
+            require(java.util.Arrays.equals(ActionCodec.encodeCommand(original.command()), ActionCodec.encodeCommand(child.command()))
+                    && original.bodySha256().equals(child.bodySha256()) && original.sequence() <= child.sequence()
+                    && ActionTransitions.attempt(original.state()).equals(ActionTransitions.attempt(child.state()))
+                    && original.ack().equals(child.ack()) && recorded.setterAcknowledgement().equals(archive.referenceOf(child.ack().orElseThrow())),
+                    "physical after-ACK basis changed the exact original timeline child and setter ACK");
+        } else if (provenance instanceof ObservationProvenance.FreshSnapshotQuery query) {
             frames.verifyFreshSnapshotQuery(query, actual, archive);
             if (query.basis() instanceof ObservationProvenance.LiveAfterSetter setter) {
                 require(setter.setterAcknowledgement().equals(archive.referenceOf(child.ack().orElseThrow())),

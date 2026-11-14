@@ -214,6 +214,14 @@ public final class ActionPorts {
             return work.read(this);
         }
 
+        /** Optional same-Game full-history recovery retention tier only; no source, control or read authority.
+         * Implementations without the concrete recovery tier keep the existing bounded 256 MiB scope.
+         */
+        default <T> T inSameGameHistoricalRecoveryScope(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session session,
+                CheckedArchiveRead<T> work) throws java.io.IOException {
+            return inHistoricalReadScope(session,new HistoricalReadLimits(8192,256L * 1024 * 1024,16384),work);
+        }
+
         /** Optional DATA-only decoder for complete Driver material. Returns null if unavailable.
          * Strict legacy fallback remains mandatory when null. No source/session authority is implied.
          */

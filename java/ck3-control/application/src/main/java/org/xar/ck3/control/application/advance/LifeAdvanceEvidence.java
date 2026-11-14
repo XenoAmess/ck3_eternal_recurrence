@@ -21,9 +21,12 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 /** Immutable full-frame basis. The Root must install its independent archived domain verifier. */
 public final class LifeAdvanceEvidence {
     public static final String SCHEMA = "xar.ck3.java-life-advance-evidence/v2";
+    public static final String PHYSICAL_AFTER_ACK_SCHEMA = "xar.ck3.java-life-advance-physical-after-ack-evidence/v1";
+    public static final String PHYSICAL_MODAL_AVAILABILITY_SCHEMA = "xar.ck3.java-life-advance-physical-modal-availability/v1";
     public static final String LEGACY_QUERY_SCHEMA = "xar.ck3.java-life-advance-evidence/v1";
     public static final String FRESH_QUERY_SCHEMA = "xar.ck3.java-life-advance-evidence/v3";
     private static final Set<String> BASIS_FIELDS = Set.of("schema", "action_body_sha256", "starting", "ending", "progress_status", "clock_read", "children", "compatible_result");
+    private static final Set<String> MODAL_BASIS_FIELDS = Set.of("schema", "action_body_sha256", "starting", "ending", "progress_status", "clock_read", "children", "compatible_result", "before_status", "modal_availability_schema");
     private LifeAdvanceEvidence() { }
     public record FrameRecord(ObservationIdentity identity, ObservationProvenance provenance, Instant observedAt,
             ExactRef nativeFrame, ExactRef driverFacts, ExactRef semantic) {
@@ -43,8 +46,15 @@ public final class LifeAdvanceEvidence {
         }
     }
     /** Complete replayed original frame records. This grants no current observation, writer or Driver publication authority. */
-    public record Recorded(FrameRecord starting, FrameRecord ending, Optional<OriginalResult> originalCompatible) {
-        public Recorded { Objects.requireNonNull(starting); Objects.requireNonNull(ending); Objects.requireNonNull(originalCompatible); }
+    public record Recorded(FrameRecord starting, FrameRecord ending, Optional<OriginalResult> originalCompatible,
+            Optional<FrameRecord> modalAvailabilityBeforeStatus) {
+        public Recorded(FrameRecord starting, FrameRecord ending, Optional<OriginalResult> originalCompatible) {
+            this(starting, ending, originalCompatible, Optional.empty());
+        }
+        public Recorded {
+            Objects.requireNonNull(starting); Objects.requireNonNull(ending); Objects.requireNonNull(originalCompatible);
+            Objects.requireNonNull(modalAvailabilityBeforeStatus);
+        }
     }
     /** Must rebuild from the exact native packet and Driver facts manifest using the real assembler. */
     @FunctionalInterface public interface BoundFrameVerifier {
@@ -61,29 +71,49 @@ public final class LifeAdvanceEvidence {
     public static ExactRef preserve(ActionCommand parent, AdvanceObservationPort.Frame starting,
             AdvanceObservationPort.Frame ending, AdvanceClock.ProgressStatus progress, Optional<ClockStatusRead.Observation> clockRead,
             List<ActionReceipt> children, Optional<ExactRef> compatibleResult, ActionPorts.OutcomeArchive archive) {
-        return preserveRead(parent, starting, ending, progress, clockRead.map(ClockStatusRead.Observation::receipt), children, compatibleResult, archive);
+        return preserve(parent, starting, ending, progress, clockRead, children, compatibleResult, archive, Optional.empty());
+    }
+    public static ExactRef preserve(ActionCommand parent, AdvanceObservationPort.Frame starting,
+            AdvanceObservationPort.Frame ending, AdvanceClock.ProgressStatus progress, Optional<ClockStatusRead.Observation> clockRead,
+            List<ActionReceipt> children, Optional<ExactRef> compatibleResult, ActionPorts.OutcomeArchive archive,
+            Optional<AdvanceObservationPort.Frame> modalAvailabilityBeforeStatus) {
+        Objects.requireNonNull(modalAvailabilityBeforeStatus);
+        modalAvailabilityBeforeStatus.ifPresent(before -> requireModalAvailability(parent, before, ending,
+                clockRead.orElseThrow(() -> new IllegalArgumentException("physical modal availability lacks original Status")), archive));
+        return preserveRead(parent, starting, ending, progress, clockRead.map(ClockStatusRead.Observation::receipt), children,
+                compatibleResult, archive, modalAvailabilityBeforeStatus);
     }
     public static ExactRef preserveCancelled(ActionCommand parent, AdvanceObservationPort.Frame starting,
             AdvanceObservationPort.Frame ending, PlanningReadReceipt terminal, List<ActionReceipt> children, ActionPorts.OutcomeArchive archive) {
         return preserveRead(parent, starting, ending, AdvanceClock.ProgressStatus.INITIALIZATION_CANCELLED,
-                Optional.of(terminal), children, Optional.empty(), archive);
+                Optional.of(terminal), children, Optional.empty(), archive, Optional.empty());
     }
     private static ExactRef preserveRead(ActionCommand parent, AdvanceObservationPort.Frame starting,
             AdvanceObservationPort.Frame ending, AdvanceClock.ProgressStatus progress, Optional<PlanningReadReceipt> clockRead,
-            List<ActionReceipt> children, Optional<ExactRef> compatibleResult, ActionPorts.OutcomeArchive archive) {
+            List<ActionReceipt> children, Optional<ExactRef> compatibleResult, ActionPorts.OutcomeArchive archive,
+            Optional<AdvanceObservationPort.Frame> modalAvailabilityBeforeStatus) {
         require(starting.identity().equals(parent.before()), "advance evidence did not retain the actual immutable entry frame");
         List<Value> receipts = new ArrayList<>();
         for (ActionReceipt child : children) {
             require(child.settled(), "unresolved child cannot become completed advance evidence");
             receipts.add(ref(archive.preserveReceipt(child)));
         }
-        String schema = starting.provenance() instanceof ObservationProvenance.FreshSnapshotQuery
+        String schema = starting.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement
+                || ending.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement ? PHYSICAL_AFTER_ACK_SCHEMA
+                : starting.provenance() instanceof ObservationProvenance.FreshSnapshotQuery
                 || ending.provenance() instanceof ObservationProvenance.FreshSnapshotQuery ? FRESH_QUERY_SCHEMA : SCHEMA;
         Obj body = new Obj(Map.of("schema", new Text(schema), "action_body_sha256", new Text(ActionCodec.bodySha256(parent)),
                 "starting", frame(preserveFrame(starting, archive)), "ending", frame(preserveFrame(ending, archive)),
                 "progress_status", new Text(progress.name()),
                 "clock_read", clockRead.<Value>map(value -> ref(archive.preserveRead(value))).orElse(Nil.INSTANCE),
                 "children", new Arr(receipts), "compatible_result", compatibleResult.<Value>map(LifeAdvanceEvidence::ref).orElse(Nil.INSTANCE)));
+        if (modalAvailabilityBeforeStatus.isPresent()) {
+            var fields = new java.util.LinkedHashMap<>(body.members());
+            fields.put("schema", new Text(PHYSICAL_MODAL_AVAILABILITY_SCHEMA));
+            fields.put("modal_availability_schema", new Text(PhysicalModalAvailability.SCHEMA));
+            fields.put("before_status", frame(preserveFrame(modalAvailabilityBeforeStatus.orElseThrow(), archive)));
+            body = new Obj(fields);
+        }
         return archive.preserveMaterial(new RawJson(DriverJson.encode(body)));
     }
     static FrameRecord preserveFrame(AdvanceObservationPort.Frame value, ActionPorts.OutcomeArchive archive) {
@@ -106,21 +136,30 @@ public final class LifeAdvanceEvidence {
         require(effect.observerSchema().equals(AdvancePlan.OBSERVER) && effect.supportingEvidence().size() == 1,
                 "completed life endpoint lacks the sole complete archived basis");
         Obj body = DriverJson.object(archive.loadMaterial(effect.supportingEvidence().getFirst()).bytes(), RawJson.MAXIMUM_BYTES);
-        require(body.members().keySet().equals(BASIS_FIELDS),
+        if(PreparedCleanupParentEvidence.isSchema(body)
+                ||new Text(LifePostResumePauseCleanupEvidence.TERMINAL_SCHEMA).equals(body.get("schema"))) {
+            require(sameRootFrames instanceof LifeAdvanceRootReplay,"cleanup endpoint requires its installed full archived replay");
+            var verified=((LifeAdvanceRootReplay)sameRootFrames).readRecorded(actualCanonical,archive);
+            return restore(actualCanonical.command(),verified.ending(),archive,sameRootFrames);
+        }
+        boolean modalSchema = new Text(PHYSICAL_MODAL_AVAILABILITY_SCHEMA).equals(body.get("schema"));
+        require(body.members().keySet().equals(modalSchema ? MODAL_BASIS_FIELDS : BASIS_FIELDS),
                 "completed life basis fields differ");
         boolean legacy = new Text(LEGACY_QUERY_SCHEMA).equals(body.get("schema"));
         boolean freshSchema = new Text(FRESH_QUERY_SCHEMA).equals(body.get("schema"));
-        require((legacy || freshSchema || new Text(SCHEMA).equals(body.get("schema")))
+        boolean physicalSchema = modalSchema || new Text(PHYSICAL_AFTER_ACK_SCHEMA).equals(body.get("schema"));
+        require((legacy || freshSchema || physicalSchema || new Text(SCHEMA).equals(body.get("schema")))
                 && new Text(actualCanonical.bodySha256()).equals(body.get("action_body_sha256")),
                 "completed life basis crossed its original action body");
         FrameRecord startingRecord = decodeFrame(object(body.get("starting"), "starting"), legacy);
         FrameRecord endingRecord = decodeFrame(object(body.get("ending"), "ending"), legacy);
-        requireFreshSchema(freshSchema, startingRecord, endingRecord);
+        requirePhysicalSchema(physicalSchema, freshSchema, startingRecord, endingRecord);
         AdvanceObservationPort.Frame ending = restore(actualCanonical.command(), endingRecord, archive, sameRootFrames);
         require(ending.identity().equals(effect.after()) && ending.source().equals(effect.source())
                 && ending.sessionId().equals(effect.sessionId()) && ending.provenance().equals(effect.provenance())
                 && ending.observedAt().equals(effect.observedAt()) && ending.originalEvidence().equals(effect.originalEvidence()),
                 "full rebuilt ending frame differs from the canonical applied observation");
+        if (modalSchema) verifyModalAvailabilityBasis(actualCanonical.command(), body, ending, archive, sameRootFrames);
         return ending;
     }
     public static void verifyRecorded(ActionReceipt receipt, ActionPorts.OutcomeArchive archive, BoundFrameVerifier frames,
@@ -136,20 +175,36 @@ public final class LifeAdvanceEvidence {
     public static Recorded readRecorded(ActionReceipt receipt, ActionPorts.OutcomeArchive archive, BoundFrameVerifier frames,
             AdvanceClockArchivedReplay timeline) {
         Objects.requireNonNull(archive); Objects.requireNonNull(frames); Objects.requireNonNull(timeline);
+        if(LifeAdvanceRootReplay.preparedParent(receipt))return PreparedCleanupParentEvidence.readRecorded(receipt,archive,frames);
         require(LifeAdvanceComposite.accepts(receipt.command().operation().value()), "life verifier cannot verify another operation");
         ActionState.EffectObservation effect = ActionEffects.observation(receipt).orElseThrow(() -> new IllegalArgumentException("advance has no semantic terminal observation"));
         require(effect.supportingEvidence().size() == 1, "advance needs one exact complete archived basis");
         ExactRef basisRef = effect.supportingEvidence().getFirst();
         Obj body = DriverJson.object(archive.loadMaterial(basisRef).bytes(), RawJson.MAXIMUM_BYTES);
-        require(body.members().keySet().equals(BASIS_FIELDS), "life basis fields differ");
+        Optional<LifePostResumePauseCleanupEvidence.Authorization> postResumeCleanup=Optional.empty();
+        if(new Text(LifePostResumePauseCleanupEvidence.TERMINAL_SCHEMA).equals(body.get("schema"))) {
+            require(body.members().keySet().equals(Set.of("schema","authorization","basis")),"cleanup terminal wrapper fields differ");
+            var authorization=LifePostResumePauseCleanupEvidence.exact(body.get("authorization"));
+            var actualBasis=LifePostResumePauseCleanupEvidence.exact(body.get("basis"));
+            require(!authorization.equals(actualBasis)&&!authorization.equals(basisRef)&&!actualBasis.equals(basisRef),
+                    "cleanup terminal lost its distinct authorization and complete Life originals");
+            postResumeCleanup=Optional.of(LifePostResumePauseCleanupEvidence.loadAuthorization(authorization,archive,frames));
+            byte[] actualBytes=archive.loadMaterial(actualBasis).bytes();
+            require(actualBytes.length==actualBasis.bytes()&&ActionCodec.sha256(actualBytes).equals(actualBasis.sha256()),
+                    "cleanup complete Life basis bytes differ");
+            body=DriverJson.object(actualBytes,RawJson.MAXIMUM_BYTES);
+        }
+        boolean modalSchema = new Text(PHYSICAL_MODAL_AVAILABILITY_SCHEMA).equals(body.get("schema"));
+        require(body.members().keySet().equals(modalSchema ? MODAL_BASIS_FIELDS : BASIS_FIELDS), "life basis fields differ");
         boolean legacyQuery = new Text(LEGACY_QUERY_SCHEMA).equals(body.get("schema"));
         boolean freshSchema = new Text(FRESH_QUERY_SCHEMA).equals(body.get("schema"));
-        require((new Text(SCHEMA).equals(body.get("schema")) || legacyQuery || freshSchema)
+        boolean physicalSchema = modalSchema || new Text(PHYSICAL_AFTER_ACK_SCHEMA).equals(body.get("schema"));
+        require((new Text(SCHEMA).equals(body.get("schema")) || legacyQuery || freshSchema || physicalSchema)
                 && new Text(receipt.bodySha256()).equals(body.get("action_body_sha256")), "life evidence crossed the exact durable body");
         ActionCommand parent = receipt.command();
         FrameRecord startingRecord = decodeFrame(object(body.get("starting"), "starting"), legacyQuery);
         FrameRecord endingRecord = decodeFrame(object(body.get("ending"), "ending"), legacyQuery);
-        requireFreshSchema(freshSchema, startingRecord, endingRecord);
+        requirePhysicalSchema(physicalSchema, freshSchema, startingRecord, endingRecord);
         AdvanceObservationPort.Frame starting = restore(parent, startingRecord, archive, frames);
         AdvanceObservationPort.Frame ending = restore(parent, endingRecord, archive, frames);
         require(starting.identity().equals(parent.before()), "archived starting frame differs from the original action");
@@ -171,6 +226,8 @@ public final class LifeAdvanceEvidence {
         AdvanceClock.ProgressStatus progress = AdvanceClock.ProgressStatus.valueOf(text(body.get("progress_status"), "progress_status"));
         Optional<PlanningReadReceipt> clockRead = body.get("clock_read") == Nil.INSTANCE ? Optional.empty()
                 : Optional.of(archive.loadRead(exactRef(body.get("clock_read"))));
+        Optional<FrameRecord> modalBeforeStatus = modalSchema
+                ? Optional.of(verifyModalAvailabilityBasis(parent, body, ending, archive, frames)) : Optional.empty();
         if (progress == AdvanceClock.ProgressStatus.INITIALIZATION_CANCELLED) {
             require(body.get("compatible_result") == Nil.INSTANCE && receipt.state() instanceof ActionState.CompositeSettled settled
                     && settled.settlement() instanceof ActionState.CompositeControlApplied,
@@ -185,7 +242,17 @@ public final class LifeAdvanceEvidence {
         }
         Optional<ClockStatusRead.Observation> archivedClock = clockRead.map(value -> new ClockStatusRead.Observation(
                 ClockStatusRead.decode(value.original()), value, archive.referenceOf(value.original())));
-        timeline.verify(parent, plan, starting, ending, progress, archivedClock, children, archive);
+        if(postResumeCleanup.isPresent()) {
+            require(progress==AdvanceClock.ProgressStatus.WALL_TIMEOUT_WITH_DATE_PROGRESS&&!modalSchema
+                    &&body.get("compatible_result")==Nil.INSTANCE&&frames instanceof LifeAdvanceRootReplay,
+                    "post-resume cleanup cannot borrow another progress, result or unregistered full-frame replay");
+            var authorization=postResumeCleanup.orElseThrow();
+            require(authorization.original().parent().command().equals(parent)
+                    &&receipt.bodySha256().equals(authorization.original().parent().bodySha256()),
+                    "post-resume cleanup crossed its exact original parent command");
+            ((LifeAdvanceRootReplay)frames).verifyPostResumePauseCleanup(authorization,execution,children,
+                    archivedClock.orElseThrow(()->new IllegalArgumentException("cleanup requires its actual independent terminal Status")),ending,archive);
+        } else timeline.verify(parent, plan, starting, ending, progress, archivedClock, children, archive);
         Optional<ExactRef> compatible = body.get("compatible_result") == Nil.INSTANCE ? Optional.empty() : Optional.of(exactRef(body.get("compatible_result")));
         ActionState.EffectObservation rebuilt = LifeAdvanceComposite.observation(parent, plan, ending, progress, compatible.orElse(null), List.of(basisRef));
         require(rebuilt.equals(effect), "life semantic terminal differs from the independently rebuilt archived basis");
@@ -204,7 +271,43 @@ public final class LifeAdvanceEvidence {
             require(rebuiltControl.equals(control.observation()), "zero-day control settlement differs from retained arm/cancel and fresh semantic proof");
         }
         return new Recorded(startingRecord, endingRecord, result.map(original ->
-                new OriginalResult(archive.materialReferenceOf(original), original)));
+                new OriginalResult(archive.materialReferenceOf(original), original)), modalBeforeStatus);
+    }
+    /** New physical-only profile transition; every input remains its actual archived observation. */
+    private static void requireModalAvailability(ActionCommand parent, AdvanceObservationPort.Frame before,
+            AdvanceObservationPort.Frame ending, ClockStatusRead.Observation terminal, ActionPorts.OutcomeArchive archive) {
+        require(LifeAdvanceComposite.accepts(parent.operation().value())
+                && AdvancePolicy.truth(before.semantic(), "paused") && AdvancePolicy.truth(before.semantic(), "map_ready")
+                && before.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement
+                && ending.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement
+                && terminal.physicalIdentity().isPresent()
+                && terminal.status().state() == org.xar.ck3.control.reconciliation.LateOutcome.State.TRIGGERED
+                && PhysicalModalAvailability.unavailableProfileTransition(before.semantic(), ending.semantic()),
+                "physical modal availability is not the exact unavailable profile transition");
+        terminal.requirePhysicalParent(parent);
+        var identity = terminal.physicalIdentity().orElseThrow();
+        org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(terminal.receipt(), archive);
+        var custody = terminal.receipt().original().custody().orElseThrow();
+        custody.verify(terminal.receipt());
+        require(terminal.originalEvidence().equals(archive.referenceOf(terminal.receipt().original()))
+                && !terminal.receipt().request().deadline().isAfter(parent.deadline())
+                && identity.nativeRevision().compareTo(before.identity().frame().identity().nativeRevision()) >= 0
+                && !identity.observedAt().isBefore(before.observedAt())
+                && !custody.writeEntered().observedAt().isBefore(before.observedAt()),
+                "physical modal availability crossed its original before-frame or terminal Status chronology");
+        AdvanceClock.requireAfterControl(parent, before, terminal, ending);
+    }
+    private static FrameRecord verifyModalAvailabilityBasis(ActionCommand parent, Obj body,
+            AdvanceObservationPort.Frame ending, ActionPorts.OutcomeArchive archive, BoundFrameVerifier frames) {
+        require(new Text(PhysicalModalAvailability.SCHEMA).equals(body.get("modal_availability_schema")),
+                "physical modal availability schema differs");
+        FrameRecord beforeRecord = decodeFrame(object(body.get("before_status"), "before_status"), false);
+        AdvanceObservationPort.Frame before = restore(parent, beforeRecord, archive, frames);
+        require(body.get("clock_read") != Nil.INSTANCE, "physical modal availability lacks its original terminal Status");
+        PlanningReadReceipt read = archive.loadRead(exactRef(body.get("clock_read")));
+        var terminal = new ClockStatusRead.Observation(ClockStatusRead.decode(read.original()), read, archive.referenceOf(read.original()));
+        requireModalAvailability(parent, before, ending, terminal, archive);
+        return beforeRecord;
     }
     /** Complete semantic material DATA only; current/Root qualification still requires the independent frame verifier. */
     static Obj originalSemantic(FrameRecord value, ActionPorts.OutcomeArchive archive) {
@@ -220,16 +323,22 @@ public final class LifeAdvanceEvidence {
                 && exactRef(actualSemantic.get("java_driver_facts_evidence")).equals(value.driverFacts()), "complete archived native/Driver facts reconstruction differs");
         return rebuilt;
     }
+    private static void requirePhysicalSchema(boolean physicalSchema, boolean freshSchema, FrameRecord starting, FrameRecord ending) {
+        boolean hasPhysical = starting.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement
+                || ending.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement;
+        require(physicalSchema == hasPhysical, "physical after-ACK provenance requires its distinct Life basis schema");
+        if (!physicalSchema) requireFreshSchema(freshSchema, starting, ending);
+    }
     private static void requireFreshSchema(boolean freshSchema, FrameRecord starting, FrameRecord ending) {
         boolean hasFresh = starting.provenance() instanceof ObservationProvenance.FreshSnapshotQuery
                 || ending.provenance() instanceof ObservationProvenance.FreshSnapshotQuery;
         require(freshSchema == hasFresh, "fresh query provenance requires its distinct life basis schema");
     }
-    private static Obj frame(FrameRecord value) {
+    static Obj frame(FrameRecord value) {
         return new Obj(Map.of("identity", OpportunityJsonValue.observation(value.identity()), "observation_provenance", provenance(value.provenance()),
                 "observed_at_utc", new Text(value.observedAt().toString()), "native_frame", ref(value.nativeFrame()), "driver_facts", ref(value.driverFacts()), "semantic", ref(value.semantic())));
     }
-    private static FrameRecord decodeFrame(Obj value, boolean legacyQuery) {
+    static FrameRecord decodeFrame(Obj value, boolean legacyQuery) {
         require(value.members().keySet().equals(Set.of("identity", legacyQuery ? "read_request_id" : "observation_provenance", "observed_at_utc", "native_frame", "driver_facts", "semantic")), "archived frame fields differ");
         ObservationProvenance provenance = legacyQuery ? new ObservationProvenance.Query(text(value.get("read_request_id"), "read_request_id"))
                 : ObservationProvenanceCodec.decode(toNode(value.get("observation_provenance")));
