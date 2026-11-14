@@ -941,6 +941,29 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
         }finally{calls.unlock();}
     }
 
+    /** Core-only pre-Host completion: never reconcile, retain or settle the already completed EVENT again. */
+    void completeSettledEventOutcomeOnly(ContinuityStorePort.Session same,
+            ContinuityBatchJournal.SettledSameGameData data,ActionReceipt original,Instant deadline)throws IOException,InterruptedException {
+        calls.lockInterruptibly();
+        try {
+            writer.requireSession(same);owner.requirePublicWork(this);requireNoPendingCheckpointAdoption();requireDeadline(deadline);
+            StrictJson.require(installedHost==null&&!controller.isRetired()&&!controller.isRunning(),
+                    "settled EVENT completion requires this unused pre-Host actual Root");
+            driver.requireSettledSameGame(data);
+            owner.requireCompletedEventOutcomeEmptySway(this,same,data,original);
+            var disposition=Objects.requireNonNull(readCompletion.afterExecution(original),"actual settled EVENT outcome disposition required");
+            // READ publications may move sequence/head. The source-owned actual cycle/action frontier must remain the same.
+            owner.requireCompletedEventOutcomeCurrent(this,same,data,original);requireDeadline(deadline);
+            if(disposition instanceof org.xar.ck3.control.application.planning.OrdinaryPlanCompletion.Blocked blocked)
+                throw new IOException("settled EVENT outcome publication blocked: "+blocked.reason());
+            if(disposition instanceof org.xar.ck3.control.application.planning.OrdinaryPlanCompletion.Published)
+                throw new IOException("settled EVENT outcome published an actual head; remaining consumers are not confirmed complete");
+            StrictJson.require(disposition instanceof org.xar.ck3.control.application.planning.OrdinaryPlanCompletion.Unchanged,
+                    "settled EVENT outcome has no complete Unchanged publication disposition");
+            owner.requireCompletedEventOutcomeEmptySway(this,same,data,original);
+        }finally{calls.unlock();}
+    }
+
     public void restoreUnresolvedSameGame(ContinuityBatchJournal.UnresolvedSameGameData data) throws IOException, InterruptedException {
         calls.lockInterruptibly();
         try {

@@ -2390,6 +2390,127 @@ public final class ContinuityBatchJournal implements BatchJournal {
         } catch (RuntimeException rejected) { return Optional.empty(); }
     }
 
+    /** Exact RUNNING post-RETAIN zero-day EVENT DATA; the actual Journal separately proves the current RETAIN WAL edge. */
+    public static Optional<ActionReceipt> readOnlyRetainedAppliedEventCompletionRoot(ContinuityState current, SessionIdentity owner,
+            java.util.List<ActionReceipt> canonicalActions,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        if (current == null || owner == null || canonicalActions == null || originals == null
+                || current.status() != ContinuityState.Status.RUNNING
+                || !current.machineId().equals(owner.machineId())) return Optional.empty();
+        try {
+            var whole = current.toJson();
+            var boundary = whole.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+            var cycle = whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+            if (boundary == null || !boundary.isObject()
+                    || !OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)
+                    || cycle == null || !cycle.isObject()
+                    || !OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
+                    || cycle.get("head") == null || cycle.get("head").isNull()
+                    || cycle.get("pending_receipt") == null || cycle.get("pending_receipt").isNull()
+                    || !whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)) return Optional.empty();
+            if (!JournalKind.BATCH_STARTED.name().equals(StrictJson.text(boundary.get("boundary")))) return Optional.empty();
+            StrictJson.text(boundary.get("batch_id"));
+            long completed = StrictJson.integer(cycle.get("completed_cycles"), 1, StrictJson.MAX_SAFE_INTEGER);
+            canonicalActions = java.util.List.copyOf(canonicalActions);
+            if (canonicalActions.isEmpty() || canonicalActions.stream().anyMatch(action -> !action.settled())
+                    || canonicalActions.stream().map(action -> action.command().actionId()).distinct().count() != canonicalActions.size())
+                return Optional.empty();
+            var actualActions = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(current, originals);
+            if (actualActions.size() != canonicalActions.size()
+                    || !new java.util.HashSet<>(actualActions).equals(new java.util.HashSet<>(canonicalActions))) return Optional.empty();
+            var latest = canonicalActions.stream().max(java.util.Comparator.comparingLong(ActionReceipt::sequence)).orElseThrow();
+            var pendingReference = ExactRef.fromJson(cycle.get("pending_receipt"));
+            if (!pendingReference.equals(originals.receiptReferenceOf(latest)) || latest.sequence() >= current.sequence()) return Optional.empty();
+            var actionHead = org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(current).orElseThrow();
+            if (latest.sequence() > current.sequence() || !originals.loadRecord(actionHead).receipt().equals(latest)
+                    || latest.outcome() != ActionReceipt.Outcome.APPLIED_CONFIRMED || !latest.visibleGameplay() || latest.eligibleAdvance()
+                    || !(latest.state() instanceof org.xar.ck3.control.application.action.ActionState.Settled settled)
+                    || !(settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.Applied applied))
+                return Optional.empty();
+            var command = latest.command();
+            if (!(command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay)
+                    || !command.before().machineId().equals(owner.machineId()) || !command.before().game().equals(owner.game())
+                    || !command.sessionId().equals(owner.sessionId()) || !command.source().machineId().equals(owner.machineId())
+                    || !latest.bodySha256().equals(org.xar.ck3.control.application.action.ActionCodec.bodySha256(command))) return Optional.empty();
+            var observation = applied.observation();
+            if (!command.operation().value().matches("select-event-option-[1-9][0-9]{0,8}")
+                    || !command.expected().observerSchema().equals(org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.EVENT_SCHEMA)
+                    || !(observation.provenance() instanceof org.xar.ck3.control.application.action.ObservationProvenance.Push push)) return Optional.empty();
+            push.validate(observation.after(),observation.originalEvidence());
+            org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(current,latest,originals);
+            var publication=org.xar.ck3.control.application.driver.DriverActionHistoryState.decode(
+                    ContinuityJson.object(whole.get(WriterContracts.DRIVER_ACTION_HISTORY_FIELD)),latest);
+            if (!publication.command().equals(command)||!publication.bodySha256().equals(latest.bodySha256())
+                    ||publication.actionSequence()!=latest.sequence()) return Optional.empty();
+            if (!(settled.dispatch() instanceof org.xar.ck3.control.application.action.NativeActionPort.AckReceived ack)
+                    || !ack.nativeOk() || !ack.requestId().equals(settled.attempt().requestId()) || ack.outbound().isEmpty()
+                    || !originals.load(originals.referenceOf(ack)).equals(ack)
+                    || !originals.loadRequest(originals.requestReferenceOf(settled.attempt().preparedRequest())).equals(settled.attempt().preparedRequest()))
+                return Optional.empty();
+            if (!observation.observerSchema().equals(command.expected().observerSchema())
+                    || !observation.source().equals(command.source()) || !observation.sessionId().equals(command.sessionId())
+                    || !observation.after().machineId().equals(command.before().machineId())
+                    || !observation.after().game().equals(command.before().game())
+                    || !observation.after().frame().episodeRunId().equals(command.before().frame().episodeRunId())
+                    || !observation.after().frame().identity().player().equals(command.before().frame().identity().player())
+                    || !observation.after().frame().identity().dateRaw().equals(command.before().frame().identity().dateRaw())
+                    || observation.supportingEvidence().isEmpty() || ack.custody().isEmpty()) return Optional.empty();
+            ack.custody().orElseThrow().verify(ack, settled.attempt().guard());
+            org.xar.ck3.control.application.action.ActionEffects.validate(command, settled.attempt(), settled.settlement());
+            var frontier = saveFinalizationCycleReceipt(owner, (com.fasterxml.jackson.databind.node.ObjectNode) cycle,
+                    completed, canonicalActions, originals);
+            return frontier.sequence() < latest.sequence() ? Optional.of(latest) : Optional.empty();
+        } catch (RuntimeException rejected) { return Optional.empty(); }
+    }
+
+    /** Private source qualification: a public pending DTO is never a RETAIN or recovery authority. */
+    private void requireCurrentRetainedEventWal(ContinuityStorePort.Session same, SessionIdentity owner,
+            ActionReceipt actual, org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) throws IOException {
+        store.requireSession(same);var head=same.head();
+        StrictJson.require(!head.snapshotNeedsRecovery()&&head.indexRepairs().isEmpty(),
+                "retained Event recovery requires the complete current unrepaired writer WAL");
+        var currentActions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(head.state(),originals);
+        StrictJson.require(readOnlyRetainedAppliedEventCompletionRoot(head.state(),owner,currentActions,originals).filter(actual::equals).isPresent(),
+                "retained Event recovery changed its exact current pending original");
+        var directory=java.nio.file.Path.of(same.persistedHead().path()).toAbsolutePath().normalize()
+                .resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS");
+        String name=String.format(java.util.Locale.ROOT,"%08d.json",head.state().sequence());
+        WriterContracts.Pin selected=null;
+        for(var pin:head.documents()) {
+            var path=java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize();
+            if(directory.equals(path.getParent())&&name.equals(path.getFileName().toString())) {
+                StrictJson.require(selected==null,"retained Event current WAL event is not unique");selected=pin;
+            }
+        }
+        StrictJson.require(selected!=null,"retained Event requires its actual final RETAIN event");
+        var edge=same.readHistoricalTransition(selected);
+        StrictJson.require(edge.sequence()==head.state().sequence()&&Math.addExact(edge.before().sequence(),1)==edge.sequence()
+                &&OrdinaryCycleTransitions.CYCLE_KIND.equals(edge.kind())
+                &&ContinuityJson.same(edge.after().toJson(),head.state().toJson()),
+                "retained Event current head is not the exact canonical RETAIN edge");
+        var details=StrictJson.object(ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES),
+                java.util.Set.of("evidence_id","source","session","operation","receipt_ref","semantic","cycle_record_ref","cycle_record"));
+        var receipt=originals.receiptReferenceOf(actual);
+        StrictJson.require("RETAIN".equals(StrictJson.text(details.get("operation")))
+                &&"java-ordinary-auto-sem/v1".equals(StrictJson.text(details.get("source")))
+                &&("RETAIN:"+receipt.sha256()).equals(StrictJson.text(details.get("evidence_id")))
+                &&OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)
+                &&receipt.equals(ExactRef.fromJson(details.get("receipt_ref")))
+                &&details.get("semantic").isNull()&&details.get("cycle_record_ref").isNull()&&details.get("cycle_record").isNull(),
+                "retained Event WAL changed its original receipt, owner or RETAIN-only role");
+        var originalBefore=same.requireHistoricalHead(edge.before().sequence(),ContinuityJson.digest(edge.before().toJson()));
+        StrictJson.require(ContinuityJson.same(originalBefore.state().toJson(),edge.before().toJson()),
+                "retained Event predecessor is not its actual complete historical WAL head");
+        var beforeActions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(edge.before(),originals);
+        StrictJson.require(readOnlyAppliedEventCompletionRoot(edge.before(),owner,beforeActions,originals).filter(actual::equals).isPresent(),
+                "retained Event has no exact original before-RETAIN Push completion");
+        var replay=transitions.reduce(edge.before(),new WriterContracts.Request(edge.kind(),edge.details(),java.util.List.of())).toJson();
+        replay.put("sequence",edge.sequence());replay.put("last_event_identity",edge.eventIdentity());
+        StrictJson.require(ContinuityJson.same(replay,edge.after().toJson())&&same.head().state().sequence()==head.state().sequence()
+                &&same.head().digest().equals(head.digest()),
+                "retained Event differs from the real reducer or changed its current writer head");
+    }
+
     /** Canonical normal Push EVENT completion, before real RETAIN: no synthetic UNKNOWN or fresh observation. */
     public static Optional<ActionReceipt> readOnlyAppliedEventCompletionRoot(ContinuityState current, SessionIdentity owner,
             java.util.List<ActionReceipt> canonicalActions,
@@ -3239,6 +3360,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     .or(() -> readOnlyPendingKnownCompletionRoot(current, owner, actions, originals))
                     .or(() -> readOnlyPendingEventCompletionRoot(current, owner, actions, originals))
                     .or(() -> readOnlyAppliedEventCompletionRoot(current,owner,actions,originals))
+                    .or(() -> readOnlyRetainedAppliedEventCompletionRoot(current,owner,actions,originals))
                     .or(() -> readOnlyUnstartedSwayRecoveryRoot(current, owner, actions, originals)).or(() -> finalization)
                     .map(java.util.List::of).orElseGet(java.util.List::of);
         });
@@ -3473,6 +3595,160 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private long acceptedSettledSameGameSequence;
     private String acceptedSettledSameGameDigest;
     private SavedSettledHistory issuedSavedSettledHistory;
+
+    private record CompletedEventOutcomeWitness(WriterContracts.Pin settlementEvent, ExactRef receiptReference,
+            ActionReceipt receipt, ExactRef cycleReference, SemanticEvidence semantic, ExactRef actionHead,
+            long completedCycles) { }
+    private SettledSameGameData completedEventOutcomeData;
+    private CompletedEventOutcomeWitness completedEventOutcomeWitness;
+
+    /** Only the actual committed settled-history DATA may return its last completed Push EVENT for publication. */
+    public Optional<ActionReceipt> completedEventOutcomeOriginal(ContinuityStorePort.Session same,
+            SettledSameGameData data) throws IOException {
+        store.requireSession(same);Objects.requireNonNull(data);
+        return transitions.withLocked(same,()->{
+            boolean saved=issuedSavedSettledHistory!=null&&issuedSavedSettledHistory.data==data;
+            StrictJson.require((saved||issuedSettledSameGameData==data)&&committedSettledSameGameData==data
+                    &&completedEventOutcomeData==data&&acceptedSettledSameGameDigest!=null,
+                    "completed EVENT publication requires this Journal's actual issued and committed settled DATA");
+            if(completedEventOutcomeWitness==null)return Optional.empty();
+            var witness=completedEventOutcomeWitness;var owner=data.controller().owner();var head=same.head();
+            StrictJson.require(!head.snapshotNeedsRecovery()&&head.indexRepairs().isEmpty()
+                    &&head.state().status()==ContinuityState.Status.RUNNING,
+                    "completed EVENT publication requires the real complete running writer history");
+            same.requireHistoricalHead(acceptedSettledSameGameSequence,acceptedSettledSameGameDigest);
+            WriterContracts.Pin selected=null;
+            for(var pin:head.documents())if(pin.reference().equals(witness.settlementEvent().reference())) {
+                StrictJson.require(selected==null&&pin.equals(witness.settlementEvent()),
+                        "completed EVENT SETTLE original changed its exact canonical file custody");selected=pin;
+            }
+            StrictJson.require(selected!=null,"completed EVENT SETTLE original is absent from current history");
+            var edge=same.readHistoricalTransition(selected);
+            return transitions.restartArchive(same).inSession(same,originals->{
+                requireCompletedEventOutcomeEdge(witness,edge,owner,originals);
+                var cycle=head.state().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
+                StrictJson.require(cycle!=null&&cycle.isObject()
+                        &&OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
+                        &&cycle.get("pending_receipt")!=null&&cycle.get("pending_receipt").isNull()
+                        &&witness.cycleReference().equals(ExactRef.fromJson(cycle.get("head")))
+                        &&StrictJson.integer(cycle.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER)==witness.completedCycles()
+                        &&data.cycleSemantic().filter(witness.semantic()::equals).isPresent()
+                        &&data.source().equals(witness.receipt().command().source())
+                        &&org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(head.state())
+                            .filter(witness.actionHead()::equals).isPresent(),
+                        "completed EVENT publication changed its original current cycle, source or canonical action frontier");
+                var current=originals.loadRecord(witness.actionHead()).receipt();
+                StrictJson.require(current.equals(witness.receipt())
+                        &&originals.receiptReferenceOf(current).equals(witness.receiptReference())
+                        &&data.settledActions().contains(current),
+                        "completed EVENT publication changed its full original canonical result");
+                final WriterContracts.Head after;
+                try {after=same.head();}catch(IOException failure){throw new java.io.UncheckedIOException(failure);}
+                StrictJson.require(after.state().sequence()==head.state().sequence()&&after.digest().equals(head.digest()),
+                        "completed EVENT publication qualification changed the held writer head");
+                return Optional.of(current);
+            });
+        });
+    }
+
+    private static boolean isCompletedPushEventOutcome(ActionReceipt receipt) {
+        if(receipt.outcome()!=ActionReceipt.Outcome.APPLIED_CONFIRMED||!receipt.visibleGameplay()||receipt.eligibleAdvance()
+                ||!(receipt.state() instanceof ActionState.Settled settled)
+                ||!(settled.settlement() instanceof ActionState.Applied applied))return false;
+        var command=receipt.command();var observation=applied.observation();
+        if(!(command.origin() instanceof CommandOrigin.Gameplay)||!(command.expectation() instanceof CommandExpectation.Gameplay)
+                ||!(command.protocolIdentity() instanceof org.xar.ck3.control.application.action.ProtocolRequestIdentity.BodyDerived)
+                ||!command.operation().value().matches("select-event-option-[1-9][0-9]{0,8}")
+                ||!command.expected().observerSchema().equals(org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.EVENT_SCHEMA)
+                ||!(observation.provenance() instanceof ObservationProvenance.Push push))return false;
+        if(!receipt.bodySha256().equals(ActionCodec.bodySha256(command))
+                ||!command.expected().before().equals(command.before())||!command.expected().source().equals(command.source())
+                ||!observation.observerSchema().equals(command.expected().observerSchema())
+                ||!observation.source().equals(command.source())||!observation.sessionId().equals(command.sessionId())
+                ||!observation.after().machineId().equals(command.before().machineId())
+                ||!observation.after().game().equals(command.before().game())
+                ||!observation.after().frame().episodeRunId().equals(command.before().frame().episodeRunId())
+                ||!observation.after().frame().identity().player().equals(command.before().frame().identity().player())
+                ||!observation.after().frame().identity().dateRaw().equals(command.before().frame().identity().dateRaw())
+                ||observation.supportingEvidence().isEmpty()
+                ||!(settled.dispatch() instanceof NativeActionPort.AckReceived ack)||!ack.nativeOk()
+                ||!ack.requestId().equals(settled.attempt().requestId())||ack.outbound().isEmpty()||ack.custody().isEmpty())return false;
+        push.validate(observation.after(),observation.originalEvidence());
+        ack.custody().orElseThrow().verify(ack,settled.attempt().guard());
+        ActionEffects.validate(command,settled.attempt(),settled.settlement());
+        return true;
+    }
+
+    private static void requireCompletedEventOutcomeEdge(CompletedEventOutcomeWitness witness,
+            WriterContracts.HistoricalTransition edge,SessionIdentity owner,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        var receipt=witness.receipt();var command=receipt.command();
+        StrictJson.require(edge.eventPin().equals(witness.settlementEvent())
+                &&OrdinaryCycleTransitions.CYCLE_KIND.equals(edge.kind())&&receipt.sequence()<edge.sequence()
+                &&isCompletedPushEventOutcome(receipt)
+                &&command.origin().machineId().equals(owner.machineId())&&command.origin().game().equals(owner.game())
+                &&command.before().machineId().equals(owner.machineId())&&command.before().game().equals(owner.game())
+                &&command.sessionId().equals(owner.sessionId())&&command.source().machineId().equals(owner.machineId()),
+                "completed EVENT SETTLE changed its exact event, original Push result or owner");
+        var details=StrictJson.object(ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES),
+                java.util.Set.of("evidence_id","source","session","operation","receipt_ref","semantic","cycle_record_ref","cycle_record"));
+        var semantic=OrdinaryCycleTransitions.semanticFromJson(details.get("semantic"));
+        StrictJson.require("SETTLE".equals(StrictJson.text(details.get("operation")))
+                &&"java-ordinary-auto-sem/v1".equals(StrictJson.text(details.get("source")))
+                &&("SETTLE:"+witness.receiptReference().sha256()+":"+semantic.semantic().sha256()).equals(StrictJson.text(details.get("evidence_id")))
+                &&OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)
+                &&witness.receiptReference().equals(ExactRef.fromJson(details.get("receipt_ref")))
+                &&witness.cycleReference().equals(ExactRef.fromJson(details.get("cycle_record_ref")))
+                &&witness.semantic().equals(semantic)
+                &&semantic.frame().frame().identity().dateRaw().equals(command.before().frame().identity().dateRaw()),
+                "completed EVENT SETTLE changed its strict original source, receipt, cycle or zero-day SEM");
+        var record=StrictJson.object(details.get("cycle_record"),java.util.Set.of(
+                "schema","classification","completed_cycles","previous","receipt_ref","semantic","session"));
+        StrictJson.require("xar.java-ordinary-cycle-record/v1".equals(StrictJson.text(record.get("schema")))
+                &&"VISIBLE_GAMEPLAY".equals(StrictJson.text(record.get("classification")))
+                &&StrictJson.integer(record.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER)==witness.completedCycles()
+                &&witness.receiptReference().equals(ExactRef.fromJson(record.get("receipt_ref")))
+                &&OrdinaryCycleTransitions.sessionFromJson(record.get("session")).equals(owner)
+                &&ContinuityJson.same(record.get("semantic"),details.get("semantic"))
+                &&ContinuityJson.same(record,ContinuityJson.parseObject(originals.loadMaterial(witness.cycleReference()).bytes(),StrictJson.INPUT_MAX_BYTES)),
+                "completed EVENT SETTLE differs from its immutable exact cycle record");
+        var before=edge.before().toJson();var after=edge.after().toJson();
+        var oldCycle=before.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+        var newCycle=after.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+        StrictJson.require(edge.before().machineId().equals(owner.machineId())&&edge.after().machineId().equals(owner.machineId())
+                &&edge.after().status()==ContinuityState.Status.RUNNING&&oldCycle!=null&&oldCycle.isObject()
+                &&newCycle!=null&&newCycle.isObject()
+                &&OrdinaryCycleTransitions.sessionFromJson(oldCycle.get("session")).equals(owner)
+                &&OrdinaryCycleTransitions.sessionFromJson(newCycle.get("session")).equals(owner)
+                &&witness.receiptReference().equals(ExactRef.fromJson(oldCycle.get("pending_receipt")))
+                &&newCycle.get("pending_receipt")!=null&&newCycle.get("pending_receipt").isNull()
+                &&StrictJson.integer(newCycle.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER)==witness.completedCycles()
+                &&Math.addExact(StrictJson.integer(oldCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER),1)==witness.completedCycles()
+                &&ContinuityJson.same(record.get("previous"),oldCycle.get("head"))
+                &&witness.cycleReference().equals(ExactRef.fromJson(newCycle.get("head")))
+                &&org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(edge.before()).filter(witness.actionHead()::equals).isPresent()
+                &&org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(edge.after()).filter(witness.actionHead()::equals).isPresent(),
+                "completed EVENT SETTLE changed its exact pending-to-closed cycle or canonical action frontier");
+        for(String field:java.util.List.of(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD,
+                "last_settled_cycles","last_settled_date_raw","last_settled_source"))
+            StrictJson.require(ContinuityJson.same(before.get(field),after.get(field)),
+                    "completed EVENT SETTLE cannot alter actual saved-day credit");
+    }
+
+    private static Optional<CompletedEventOutcomeWitness> completedEventOutcomeWitness(WriterContracts.Pin event,
+            WriterContracts.HistoricalTransition edge,ActionReceipt receipt,ExactRef cycleReference,
+            SemanticEvidence semantic,long completedCycles,SessionIdentity owner,
+            org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
+        if(!isCompletedPushEventOutcome(receipt)
+                ||!semantic.frame().frame().identity().dateRaw().equals(receipt.command().before().frame().identity().dateRaw()))return Optional.empty();
+        var actionHead=org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(edge.after()).orElseThrow();
+        if(!originals.loadRecord(actionHead).receipt().equals(receipt))return Optional.empty();
+        var result=new CompletedEventOutcomeWitness(event,originals.receiptReferenceOf(receipt),receipt,
+                cycleReference,semantic,actionHead,completedCycles);
+        requireCompletedEventOutcomeEdge(result,edge,owner,originals);
+        return Optional.of(result);
+    }
+
 
     static final class SavedSettledHistory {
         private final ContinuityBatchJournal issuer;
@@ -4279,11 +4555,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
 
     private record CheckedSameGameHistory(SettledSameGameData data, boolean isolated,
             java.util.Set<ExactRef> confirmedSaveReceipts, WriterContracts.HistoricalTransition retainedRecovery,
-            boolean unfinishedReadOnlyBatch, java.util.List<CleanBatchRestart> capturedManifests) {
+            boolean unfinishedReadOnlyBatch, java.util.List<CleanBatchRestart> capturedManifests,
+            Optional<CompletedEventOutcomeWitness> completedEventOutcome) {
         private CheckedSameGameHistory {
             Objects.requireNonNull(data);
             confirmedSaveReceipts = java.util.Set.copyOf(confirmedSaveReceipts);
             capturedManifests = java.util.List.copyOf(capturedManifests);
+            Objects.requireNonNull(completedEventOutcome);
         }
     }
 
@@ -4317,8 +4595,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var actions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(state,originals);
             var finalizationSave = readOnlySaveFinalizationRoot(state, owner, actions, originals);
             var pendingKnownCompletion = readOnlyPendingKnownCompletionRoot(state, owner, actions, originals);
+            var retainedEventCompletion=readOnlyRetainedAppliedEventCompletionRoot(state,owner,actions,originals);
+            if(retainedEventCompletion.isPresent())requireCurrentRetainedEventWal(same,owner,retainedEventCompletion.orElseThrow(),originals);
             var pendingEventCompletion = readOnlyPendingEventCompletionRoot(state, owner, actions, originals)
-                    .or(()->readOnlyAppliedEventCompletionRoot(state,owner,actions,originals));
+                    .or(()->readOnlyAppliedEventCompletionRoot(state,owner,actions,originals)).or(()->retainedEventCompletion);
             boolean isolatedKnown = readOnlyKnownPendingRecoveryRoot(actions).isPresent();
             boolean isolatedEvent = readOnlyEventRecoveryRoot(actions).isPresent();
             boolean isolatedOperator=operatorRequest.map(request->operatorQuarantineOriginalRoot(state,owner,actions,originals,request).isPresent()).orElse(false);
@@ -4417,6 +4697,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var history=new java.util.ArrayList<ExactRef>();
             var cycleReceipts=new java.util.HashSet<ExactRef>();
             ExactRef pending=null,lastCycleRef=null;
+            Optional<CompletedEventOutcomeWitness> lastCompletedEventOutcome=Optional.empty();
             SemanticEvidence latest=null;
             long completedCycles=0;
             Optional<CheckpointPair> savedPair=Optional.empty();
@@ -4425,6 +4706,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             int savedDriverIndex=-1;
             var confirmedSaves=new java.util.HashSet<ExactRef>();
             boolean pendingOriginalProven=false;
+            boolean retainedEventOriginalProven=false;
             boolean existingOpeningRead=false;
             for(int i=0;i<edges.size();i++) {
                 var edge=edges.get(i);history.add(requested.get(i).reference());
@@ -4882,6 +5164,14 @@ public final class ContinuityBatchJournal implements BatchJournal {
                                 requireSettledObservedContinuation(latestObserved,actualAfter);latestObserved=actualAfter;
                             }
                         }
+                        if(retainedEventCompletion.isPresent()&&originals.receiptReferenceOf(retainedEventCompletion.orElseThrow()).equals(receiptRef)) {
+                            StrictJson.require(!retainedEventOriginalProven&&edge.sequence()==state.sequence()
+                                    &&openBatch!=null&&openBatch.equals(StrictJson.text(whole.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).get("batch_id")))
+                                    &&details.get("semantic").isNull()&&details.get("cycle_record_ref").isNull()&&details.get("cycle_record").isNull(),
+                                    "retained Event must be its sole actual current-batch RETAIN without SETTLE credit");
+                            // requireCurrentRetainedEventWal independently reopens this final edge and replays the original reducer.
+                            retainedEventOriginalProven=true;
+                        }
                         pending=receiptRef;
                     } else {
                         StrictJson.require("SETTLE".equals(operation)&&receiptRef.equals(pending)&&cycleReceipts.add(receiptRef),
@@ -4903,6 +5193,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         latestObserved=latest.frame();
                         previousTransport=settledSemanticTransport(latest,owner,originals,parsedSemantic);
                         lastCycleRef=ExactRef.fromJson(details.get("cycle_record_ref"));
+                        lastCompletedEventOutcome=Optional.empty();
+                        var currentCycle=whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+                        if(currentCycle!=null&&currentCycle.isObject()&&currentCycle.hasNonNull("head")
+                                &&currentCycle.get("pending_receipt")!=null&&currentCycle.get("pending_receipt").isNull()
+                                &&lastCycleRef.equals(ExactRef.fromJson(currentCycle.get("head"))))
+                            lastCompletedEventOutcome=completedEventOutcomeWitness(requested.get(i),edge,receipt,lastCycleRef,
+                                    latest,completedCycles,owner,originals);
                         pending=null;
                     }
                 } else {
@@ -4935,12 +5232,17 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean retainedControl = pendingControl.isPresent() && pendingOriginalProven && pending != null
                     && pending.equals(originals.receiptReferenceOf(pendingControl.orElseThrow()))
                     && pending.equals(ExactRef.fromJson(cycle.get("pending_receipt")));
+            boolean retainedEvent=retainedEventCompletion.isPresent()&&retainedEventOriginalProven&&pending!=null
+                    &&pending.equals(originals.receiptReferenceOf(retainedEventCompletion.orElseThrow()))
+                    &&pending.equals(ExactRef.fromJson(cycle.get("pending_receipt")));
+            StrictJson.require(retainedEventCompletion.isEmpty()||retainedEvent,
+                    "retained Event recovery lacks its actual complete current WAL RETAIN proof");
             boolean firstPending=retainedControl&&initialCurrentMapPendingFrontier(state,owner)&&existingOpening
                     &&savedPair.isEmpty()&&completedCycles==0&&lastCycleRef==null&&latest==null
                     &&openBatch==null&&used.size()==1&&retainedRecovery==null;
             StrictJson.require(initialCurrentMap || firstPending || ((!unfinishedReadOnlyBatch||(retainedRecovery!=null||savedPair.isPresent()||retainedControl)&&state.status()==ContinuityState.Status.RUNNING)
-                    &&!used.isEmpty()&&(pending==null || retainedControl)&&latest!=null
-                    &&(cycle.get("pending_receipt").isNull() || retainedControl)
+                    &&!used.isEmpty()&&(pending==null || retainedControl || retainedEvent)&&latest!=null
+                    &&(cycle.get("pending_receipt").isNull() || retainedControl || retainedEvent)
                     &&StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
                     &&ExactRef.fromJson(cycle.get("head")).equals(lastCycleRef)),
                     "settled recovery requires the actual closed cycle frontier");
@@ -4977,7 +5279,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         "saved settled recovery requires its complete confirmed SAVE and closed canonical actions");
             }
             return new CheckedSameGameHistory(data, isolated, confirmedSaves, retainedRecovery,
-                    unfinishedReadOnlyBatch, capturedManifests);
+                    unfinishedReadOnlyBatch, capturedManifests,lastCompletedEventOutcome.filter(value->
+                            org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(state).filter(value.actionHead()::equals).isPresent()));
             });
             });
             var data = checkedHistory.data();
@@ -4985,6 +5288,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "settled canonical recovery head changed while closing historical reads");
             for (var captured : checkedHistory.capturedManifests()) captures.accept(captured);
             if (checkedHistory.isolated()) return data; // Isolated/unresolved DATA grants no settled recovery authority.
+            completedEventOutcomeData=data;completedEventOutcomeWitness=checkedHistory.completedEventOutcome().orElse(null);
             if (data.controller().savedPair().isPresent()) {
                 issuedSavedSettledHistory = new SavedSettledHistory(this, data, checkedHistory.confirmedSaveReceipts());
                 return data;

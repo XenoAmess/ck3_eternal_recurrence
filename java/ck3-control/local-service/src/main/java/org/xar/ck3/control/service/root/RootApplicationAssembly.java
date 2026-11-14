@@ -580,6 +580,7 @@ public final class RootApplicationAssembly {
         private OrdinaryCycleTransitions unresolvedSameGameCycles;
         private ContinuityBatchJournal unresolvedSameGameBatches;
         private ContinuityBatchJournal.UnresolvedSameGameData unresolvedSameGameData;
+        private ContinuityBatchJournal.UnresolvedSameGameData retainedAppliedEventOriginalData;
         private ContinuityBatchJournal.UnresolvedSameGameData operatorQuarantineOriginalData;
         private OriginalWindowReducer.Policy unresolvedSameGamePolicy;
         private OrdinaryCycleTransitions settledSameGameCycles;
@@ -1250,6 +1251,7 @@ public final class RootApplicationAssembly {
                     if (result && ContinuityBatchJournal.readOnlyPendingEventCompletionRoot(finalizationHead, new SessionIdentity(game.machineId(), game.generation(), game.sessionId()), lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
                         result = false;
                     }
+                    if(result&&ContinuityBatchJournal.readOnlyAppliedEventCompletionRoot(finalizationHead,new SessionIdentity(game.machineId(),game.generation(),game.sessionId()),lease.snapshot().actions(),archive.withSession(same)).isPresent())result=false;
                     lease.assertCurrent();return result;
                 });
                 if(!settled)return Optional.empty();
@@ -1297,9 +1299,9 @@ public final class RootApplicationAssembly {
             writer.requireSession(same);var source=operatorQuarantineSource().orElseThrow();var thread=Thread.currentThread();var head=same.head();
             Runnable owner=()->{try {
                 writer.requireSession(same);
-                boolean current=Thread.currentThread()==thread&&operatorQuarantine==source&&source.request().reservedTailInterruption()&&!resourcesClosed
-                        &&same.head().state().sequence()==head.state().sequence();
-                if(current){var observed=same.head();current=observed==head||observed.digest().equals(head.digest());}
+                boolean current=Thread.currentThread()==thread&&operatorQuarantine==source&&source.request().reservedTailInterruption()&&!resourcesClosed;
+                if(current){var observed=same.head();current=observed.state().sequence()==head.state().sequence();
+                    if(current)current=observed==head||observed.digest().equals(head.digest());}
                 StrictJson.require(current,"retirement DATA projection lost its actual Core/source/writer/thread/current held head");
             }catch(IOException failure){throw new UncheckedIOException(failure);}};
             try(var raw=RootReservedRetirementArchive.create(archive.withSession(same),same,originals,owner,source.request().parentActionId(),source.request().parentBodySha256())) {
@@ -1385,11 +1387,12 @@ public final class RootApplicationAssembly {
                 ManagedGameSession game, OriginalWindowReducer.Policy cyclePolicy) throws IOException {
             StrictJson.require(menu == null && !staged && !finished && adopted.isEmpty(), "unresolved reconstruction reads the unused actual Core");
             Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);
+            retainedAppliedEventOriginalData=null;
             return writer.locked(same -> {
                 var finalizationHead = same.head().state();
                 var identity = new SessionIdentity(game.machineId(), game.generation(), game.sessionId());
                 var originals = archive.withSession(same);
-                record PendingRole(boolean legacyPending, boolean completedLife, boolean saveFinalization, boolean runningSavedSway) { }
+                record PendingRole(boolean legacyPending, boolean completedLife, boolean saveFinalization, boolean runningSavedSway, boolean normalAppliedEvent, boolean runningLife, boolean retainedAppliedEvent) { }
                 var snapshot = actions.withFrozen(same, lease -> {
                     var actionsList = lease.snapshot().actions();
                     var saveFinalization = ContinuityBatchJournal.readOnlySaveFinalizationRoot(finalizationHead, identity, actionsList, originals).isPresent();
@@ -1399,17 +1402,21 @@ public final class RootApplicationAssembly {
                             || saveFinalization
                             || ContinuityBatchJournal.readOnlyPendingKnownCompletionRoot(finalizationHead, identity, actionsList, originals).isPresent()
                             || ContinuityBatchJournal.readOnlyPendingEventCompletionRoot(finalizationHead, identity, actionsList, originals).isPresent();
-                    var completedLife = ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(finalizationHead, identity, actionsList, originals).isPresent();
+                    var completedLife = ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(finalizationHead, identity, actionsList, originals).isPresent()
+                            || ContinuityBatchJournal.readOnlyPendingPreparedPartialCycle(finalizationHead, identity, actionsList, originals).isPresent();
                     var runningSavedSway = finalizationHead.status() == org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING
                             && ContinuityBatchJournal.readOnlyUnstartedSwayRecoveryRoot(finalizationHead, identity, actionsList, originals).isPresent();
+                    var normalAppliedEvent=ContinuityBatchJournal.readOnlyAppliedEventCompletionRoot(finalizationHead,identity,actionsList,originals).isPresent();
+                    var retainedAppliedEvent=ContinuityBatchJournal.readOnlyRetainedAppliedEventCompletionRoot(finalizationHead,identity,actionsList,originals).isPresent();
                     lease.assertCurrent();
-                    return new PendingRole(legacyPending, completedLife, saveFinalization, runningSavedSway);
+                    var runningLife=ContinuityBatchJournal.readOnlyRunningLifeRecoveryRoot(actionsList).isPresent();
+                    return new PendingRole(legacyPending||normalAppliedEvent||retainedAppliedEvent, completedLife, saveFinalization, runningSavedSway, normalAppliedEvent, runningLife, retainedAppliedEvent);
                 });
                 var status = finalizationHead.status();
                 if ((!snapshot.legacyPending() && !snapshot.completedLife())
                         || (status != org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED
                             && !(status == org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING
-                                && (snapshot.completedLife() || snapshot.saveFinalization() || snapshot.runningSavedSway()))))
+                                && (snapshot.completedLife() || snapshot.saveFinalization() || snapshot.runningSavedSway() || snapshot.normalAppliedEvent() || snapshot.runningLife() || snapshot.retainedAppliedEvent()))))
                     return Optional.empty();
                 var cycles = new OrdinaryCycleTransitions(archive, semanticVerifier, checkpointVerifiers, cyclePolicy, writer::requireSession);
                 cycles.bindTerminalFrameLoader(frames);
@@ -1417,6 +1424,7 @@ public final class RootApplicationAssembly {
                 var data = batches.readUnresolvedSameGame(same, identity);
                 unresolvedSameGameCycles = cycles; unresolvedSameGameBatches = batches;
                 unresolvedSameGameData = data; unresolvedSameGamePolicy = cyclePolicy;
+                retainedAppliedEventOriginalData=snapshot.retainedAppliedEvent()?data:null;
                 return Optional.of(data);
             });
         }
@@ -1438,6 +1446,46 @@ public final class RootApplicationAssembly {
                         writer::borrowedSession,retainedFrames,deadline);}
                 catch(InterruptedException interrupted){
                     Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("same-Game unresolved Driver adoption interrupted");
+                    failure.initCause(interrupted);throw failure;
+                }
+                adopted.add(result);return result;
+            });
+        }
+
+        /** Only this Core's actual post-RETAIN EVENT DATA may acquire a late independent READ window. */
+        public synchronized DriverBootstrap.Adopted adoptUnresolvedSameGame(ManagedGameSession game,
+                ContinuityBatchJournal.UnresolvedSameGameData data,int retainedFrames,
+                OriginalWindowReducer.Policy cyclePolicy,Instant phaseDeadline,Instant preparationEnvelope)throws IOException,InterruptedException {
+            if(data==null||data!=retainedAppliedEventOriginalData)
+                return adoptUnresolvedSameGame(game,data,retainedFrames,cyclePolicy,phaseDeadline);
+            StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty(),"post-RETAIN EVENT Driver binds once to the unused Core");
+            StrictJson.require(data==unresolvedSameGameData&&unresolvedSameGameCycles!=null&&unresolvedSameGameBatches!=null
+                    &&unresolvedSameGamePolicy.equals(cyclePolicy)&&data.retainedHistory().isPresent()
+                    &&data.unresolvedActions().size()==1,"post-RETAIN EVENT adoption retains this actual Journal DATA and cycle policy");
+            Objects.requireNonNull(preparationEnvelope);
+            StrictJson.require(!preparationEnvelope.equals(Instant.MAX)&&clock.instant().isBefore(preparationEnvelope),
+                    "post-RETAIN EVENT original preparation envelope has expired");
+            var owner=data.capturedController().owner();
+            StrictJson.require(owner.machineId().equals(game.machineId())&&owner.game().equals(game.generation())
+                    &&owner.sessionId().equals(game.sessionId()),"post-RETAIN EVENT Controller belongs to another actual Game");
+            return writer.locked(same->{
+                var head=same.head();
+                StrictJson.require(data==retainedAppliedEventOriginalData&&data==unresolvedSameGameData
+                        &&head.state().sequence()==data.canonicalSequence()&&head.digest().equals(data.canonicalHeadDigest()),
+                        "post-RETAIN EVENT adoption changed its actual Journal writer predecessor");
+                var source=operatorQuarantineSource().orElseThrow(()->new IOException("post-RETAIN EVENT requires its installed reserved Life retirement source"));
+                StrictJson.require(source.request().reservedTailInterruption(),"post-RETAIN EVENT requires its actual installed v3 retirement verifier");
+                final DriverBootstrap.Adopted result;
+                try {
+                    result=DriverBootstrap.adoptRetainedAppliedEventCompletion(data,same,actions,game.nativeTransport(),archive,
+                            writer::borrowedSession,retainedFrames,preparationEnvelope,this::verifyReservedRetirement,()->{
+                                var now=clock.instant();
+                                StrictJson.require(now.isBefore(preparationEnvelope),"post-RETAIN EVENT qualification exhausted its original preparation envelope");
+                                var until=now.plus(Duration.ofMinutes(10));
+                                return until.isAfter(preparationEnvelope)?preparationEnvelope:until;
+                            });
+                }catch(InterruptedException interrupted){
+                    Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("post-RETAIN EVENT Driver adoption interrupted");
                     failure.initCause(interrupted);throw failure;
                 }
                 adopted.add(result);return result;
@@ -1810,6 +1858,61 @@ public final class RootApplicationAssembly {
             StrictJson.require(unresolvedSameGameData != null||reservedLifeRecovery!=null, "actual unresolved or retired same-game reader original required");
             StrictJson.require(unresolvedSameGamePolicy.equals(configuration.cyclePolicy()), "unresolved same-game policy mismatch");
             return finishObserved(installed, driver, configuration, services, Optional.empty());
+        }
+
+        /** Only this Core's committed actual settled-history DATA may complete its last EVENT outcome. */
+        void completeSettledEventOutcomeOnly(RootApplicationSession actual,
+                ContinuityBatchJournal.SettledSameGameData data,Instant preparationEnvelope)throws IOException,InterruptedException {
+            Objects.requireNonNull(actual);Objects.requireNonNull(data);Objects.requireNonNull(preparationEnvelope);
+            StrictJson.require(data==settledSameGameData&&settledSameGameBatches!=null,
+                    "settled EVENT outcome belongs to this Core's actual Journal DATA");
+            try {
+                writer.locked(same->{
+                    var original=settledSameGameBatches.completedEventOutcomeOriginal(same,data);
+                    if(original.isEmpty())return null; // Existing non-EVENT settled recovery has no new completion phase.
+                    requireCompletedEventOutcomeCurrent(actual,same,data,original.orElseThrow());
+                    var now=clock.instant();
+                    StrictJson.require(!preparationEnvelope.equals(Instant.MAX)&&now.isBefore(preparationEnvelope),
+                            "settled EVENT outcome original preparation envelope expired");
+                    var until=now.plus(java.time.Duration.ofMinutes(10));
+                    final Instant completionDeadline=until.isAfter(preparationEnvelope)?preparationEnvelope:until;
+                    // The READ-completion wrapper borrows journal.locked(); inherit this exact writer instead of nesting one.
+                    journal.locked(same,locked->{
+                        try {actual.completeSettledEventOutcomeOnly(same,data,original.orElseThrow(),completionDeadline);return null;}
+                        catch(IOException failure){throw new UncheckedIOException(failure);}
+                        catch(InterruptedException interrupted){throw new InterruptedAssembly(interrupted);}
+                    });
+                    return null;
+                });
+            }catch(UncheckedIOException failure){throw failure.getCause();}
+            catch(InterruptedAssembly interrupted){Thread.currentThread().interrupt();throw interrupted.interruption;}
+        }
+        void requireCompletedEventOutcomeCurrent(RootApplicationSession actual,ContinuityStorePort.Session same,
+                ContinuityBatchJournal.SettledSameGameData data,ActionReceipt expected)throws IOException {
+            writer.requireSession(same);requirePublicWork(actual);
+            StrictJson.require(data==settledSameGameData&&settledSameGameBatches!=null&&adopted.contains(actual.driver())
+                    &&actual.writer()==writer&&actual.archive()==archive&&actual.identity().equals(data.controller().owner())
+                    &&actual.driver().source().equals(data.source())&&expected.command().source().equals(data.source())
+                    &&expected.command().before().machineId().equals(actual.identity().machineId())
+                    &&expected.command().before().game().equals(actual.identity().game())
+                    &&expected.command().sessionId().equals(actual.identity().sessionId()),
+                    "settled EVENT outcome changed its exact Core/Root/Driver/writer/Game/source owner");
+            var current=settledSameGameBatches.completedEventOutcomeOriginal(same,data)
+                    .orElseThrow(()->new IOException("actual current completed EVENT outcome original is unavailable"));
+            StrictJson.require(current.equals(expected),"settled EVENT outcome changed its complete original receipt");
+        }
+        void requireCompletedEventOutcomeEmptySway(RootApplicationSession actual,ContinuityStorePort.Session same,
+                ContinuityBatchJournal.SettledSameGameData data,ActionReceipt original)throws IOException {
+            requireCompletedEventOutcomeCurrent(actual,same,data,original);
+            var body=same.readDomain(org.xar.ck3.control.continuity.writer.DomainBodies.Slot.SWAY);
+            if(!(body instanceof org.xar.ck3.control.continuity.writer.DomainBodies.Available known))
+                throw new IOException("settled EVENT outcome requires its actual source-owned Sway body");
+            var ledger=org.xar.ck3.control.application.planning.sway.SwayFormalCodec.decode(known.canonicalBody());
+            StrictJson.require(ledger.machineId().equals(actual.identity().machineId())
+                    &&ledger.episodeRunId().equals(original.command().before().frame().episodeRunId())
+                    &&ledger.pending().isEmpty()&&ledger.resolved().isEmpty(),
+                    "settled EVENT outcome is limited to the actual empty current Sway episode");
+            // This is an additional scope filter. The actual following consumer still loads/verifies its domain after EVENT replay.
         }
 
         /** Completes archived zero-write Council or never-written SAVE coverage after real settled recovery/Controller restore. */

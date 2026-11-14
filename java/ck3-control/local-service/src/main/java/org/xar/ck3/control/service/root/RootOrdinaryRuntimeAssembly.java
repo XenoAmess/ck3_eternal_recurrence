@@ -757,7 +757,7 @@ private Running openSameGameBootstrapOpened(Opened opened, ManagedGameSession ac
     if (unresolved.isPresent()) {
         var unresolvedData=unresolved.orElseThrow();
         var driver = runOperationPhase(clock,config.operationTimeout(),phaseDeadline->
-                opened.core().adoptUnresolvedSameGame(actual, unresolvedData, config.retainedFrames(), cyclePolicy, phaseDeadline));
+                opened.core().adoptUnresolvedSameGame(actual, unresolvedData, config.retainedFrames(), cyclePolicy, phaseDeadline, deadline));
         return new Opened(this, driver.source()).finishUnresolvedSameGame(driver, unresolvedData, deadline);
     }
     if(originalSavedRecoverySource!=null)throw new IOException("original Saved recovery requires actual settled or qualified unresolved source; initial-entry fallback is forbidden");
@@ -1035,6 +1035,7 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
                     owner.catalogs.install(owner.core,owner.game,source,owner.core.planningReads(),owner.clock,phaseDeadline));
             var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
             var session=owner.core.finishSettledSameGame(installed,driver,configuration,owner.services(source));
+            owner.core.completeSettledEventOutcomeOnly(session,data,deadline);
             runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{
                 session.install(owner.ordinaryHost,phaseDeadline);return null;
             });

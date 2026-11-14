@@ -233,6 +233,15 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
             if (settlement == null) return;
             Binding binding = catalog == null ? bindings.get(proposed.command().operation())
                     : catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
+            if (binding == null && catalog != null
+                    && proposed.command().expected().observerSchema().equals(
+                            org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.EVENT_SCHEMA)
+                    && proposed.command().operation().value().matches("select-event-option-[1-9][0-9]{0,8}")) {
+                // Materialize only the exact installed EVENT family if the archived verifier is absent.
+                // This uses the existing catalog API which triggers issueFromOperation for dynamic families.
+                catalog.actualActionBinding(proposed.command().operation());
+                binding = catalog.actualArchivedVerifier(proposed.command().operation()).orElse(null);
+            }
             StrictJson.require(binding != null, "settlement has no installed original-evidence domain verifier");
             RootGuardChecks.source(session, binding.definitionSource());
             if (settlement instanceof ActionState.CompositeNoGameplayWrite terminal) {
