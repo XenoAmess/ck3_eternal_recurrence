@@ -1,5 +1,15 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-16 用户最新：休假交接，停止新增执行
+
+用户最新明确：“你要去度假了。编写交接文档到docs，这个工作后续有你的同事接手。”本次真实新指令覆盖下方11月11日正常持续工作及历史“继续”授权。停止新增实现、编测、本地模型HTTP及请求准备、业务worker、Game/Native live查询与动作、采样、录像、部署、装载、launch、恢复和GET；只收束指令前已经BEGIN的事项及本次交接的正常Git发表。
+
+接手入口：[本次总交接](docs/handover/2026-11-16-java-g2-resume91-vacation-handoff.md)、[源码与证据索引](docs/handover/2026-11-16-java-g2-resume91-vacation-handoff-source-index.json)、[Native交接](docs/native-handoff-2026-11-16-vacation.md)。先读三份入口；只有本次休假之后的明确续行指令才恢复新增执行。此前E19环境消息无新STOP的声明仅说明其较早切点，不覆盖本次真正新休假。旧11月7日入口及历史原件保留，不按旧head47/Sway事实覆盖当前现场。
+
+最后实际E18为FAILED_IDLE_NO_RETRY/head2001：原ARM80于1996独立确认；新CANCEL2000为BEFORE_WRITE/0bytes终态拒绝，原父仍UNKNOWN。委托START至END3673.2212536秒，0新增日/SAVE/LOOP；长期宿主、Game与keeper的当前存活/退出/资源释放NOT_HELD。本次不为交接新发STOP、SAVE、现场或OS查询、GET，不将委托END等同所有进程已停。
+
+Runtime仍独占现场、账本、source307/build307、采用和GET；Game、keeper、原件及UNKNOWN保留。不重放、不刷新原期限、不清账本、不伪造许可/后态。E18旧wrapper绑定head1995且已消费，不能重跑；下一CANCEL修复仅有3叶部分RAM草稿，其余6叶未实现，无完整候选/编测/部署资格。冻结D:/r64d工作树、HEAD和租约保持；本次只由Java在D:/r64v0711发表三个docs与本入口，不动Z原dirty工作树。
+
 ## 当前指令：正常持续工作与 CK3 自动游玩（2026-11-11）
 
 用户最新明确：“我允许你恢复正常工作，之前那次事故已经停止了，你以后给我一直继续工作就行了。相关记录该删除就删除。”此前休假、手玩暂停、P100 同链禁令和本次恢复协议待批准状态均已失效，不再据此停工或重复询问一般许可。正常自动游玩、功能和性能故障修复、本地模型运营、必要增量编测及正常 Git 交付持续推进。

@@ -1,0 +1,1008 @@
+{
+  "schema": "ck3.resume91.vacation-handoff-source-index/v2",
+  "document_date_local": "2026-11-16",
+  "timezone": "Asia/Shanghai",
+  "generated_at_utc": "2026-11-15T17:25:35.479509+00:00",
+  "latest_user_quote": "你要去度假了。编写交接文档到docs，这个工作后续有你的同事接手。",
+  "authority": "genuinely later main-thread user vacation request; prior Continue and E19 are historical",
+  "status": "VACATION_HANDOFF_ONLY",
+  "autoplay_objective_complete": false,
+  "explicit_later_resume_required": true,
+  "handoff_operations": "Read existing named originals, serialize handoff documentation and normal Git only; no implementation/build/model HTTP/live/OS query/STOP/SAVE/GET",
+  "entrypoints": [
+    "docs/handover/2026-11-16-java-g2-resume91-vacation-handoff.md",
+    "docs/handover/2026-11-16-java-g2-resume91-vacation-handoff-source-index.json",
+    "docs/native-handoff-2026-11-16-vacation.md"
+  ],
+  "repository": {
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence",
+    "branch": "master",
+    "allowed_worktree": "D:/r64v0711",
+    "production_head_before_docs": "04a226422b60c4f3e2604af538c9cf1da7101b40",
+    "parent": "21cc26ddc5c8d0cbc57884743c3d1a62f0347f13",
+    "documentation_commit": "This file is committed in the subsequent docs-only commit; no self-referential commit hash",
+    "untouched": [
+      "Z:/ck3_mod_rewrite original dirty tree",
+      "D:/r64d frozen tree/HEAD/lease"
+    ]
+  },
+  "last_actual_runtime": {
+    "state": "FAILED_IDLE_NO_RETRY",
+    "head": 2001,
+    "head_pin_captured_in_e18_index": {
+      "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\continuity.json",
+      "bytes": 100052,
+      "sha256": "58c1e2992c5ccfa69ce3b51d4309179da1abd4a135c2090b57fcb59b1f31cbdb"
+    },
+    "host_pid": 156476,
+    "host_birth": "134391948759537025",
+    "instance": "825f10dc-9272-41b5-98b2-a2cf30907cb7",
+    "loader": "DEV restart6@512d8080",
+    "start_utc": "2026-11-15T15:22:55.007426400Z",
+    "delegate_end_utc": "2026-11-15T16:24:08.228680Z",
+    "delegate_seconds": 3673.2212536,
+    "outer_exit_code": 4,
+    "new_game_days": 0,
+    "new_SAVE_CONFIRMED_days": 0,
+    "new_LOOP": 0,
+    "game_pid": 145132,
+    "game_birth": "134388549310428814",
+    "keeper_pid": 56732,
+    "keeper_birth": "134388549278629455",
+    "game_keeper_identity_observed_utc": "2026-11-15T15:22:48Z",
+    "physical_observed_days": 581,
+    "eligible_days": 562,
+    "confirmed_saved_days": 373,
+    "uncredited_gap_days": 19,
+    "raw_date": 53181984,
+    "annual_baseline_raw": 53176992,
+    "annual_threshold_raw": 53185752,
+    "cycle": 81,
+    "pending_cycle": null,
+    "saved_cycle": 51,
+    "action_status": "ARM80 SETTLED1996; CANCEL terminal-no-effect2000; parent UNKNOWN2001",
+    "seconds_per_new_saved_day": null,
+    "target10s_achieved": false
+  },
+  "process_claim_limits": {
+    "current_liveness": "NOT_HELD",
+    "no_new_OS_query": true,
+    "Game_keeper_last_identity_utc": "2026-11-15T15:22:48Z",
+    "delegate_END_is_not_host_exit": true,
+    "long_lived_Quarkus_Maven_outer_observer310_exit_release": "NOT_HELD",
+    "inflight_by_owner_report": {
+      "runtime_GET_jcmd_business_launch": 0,
+      "native_JVM": 0,
+      "java_exec_JVM_HTTP": 0,
+      "models_HTTP": 0
+    }
+  },
+  "action_frontier_from_frozen_e18_index": {
+    "source_id": "e18_failed_end",
+    "records": [
+      {
+        "sequence": 1996,
+        "at_utc": "2026-11-15T16:04:47.016762Z",
+        "wal": {
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00001996.json",
+          "bytes": 101160,
+          "sha256": "4af5030ce418bf82f9c7b92bfbf6bed4c7059c5fa0a86af12c6cb29dd102c118"
+        },
+        "record_ref": {
+          "bytes": 588,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\56a64ce575c7d4e37e8e0be728f5d633ecf2d8926a6896e8d576d177b1dc1d3e.bin",
+          "sha256": "56a64ce575c7d4e37e8e0be728f5d633ecf2d8926a6896e8d576d177b1dc1d3e"
+        },
+        "receipt_ref": {
+          "bytes": 7384,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\5a5b891473ab055abd7713eb814467e2591b87b8c13f0bc511f29be62e52a5db.bin",
+          "sha256": "5a5b891473ab055abd7713eb814467e2591b87b8c13f0bc511f29be62e52a5db"
+        },
+        "action_id": "child-5ed710998dce87d4bfa5006938053bd279bb7e6076b3b8ace489a0308489ec6b",
+        "operation": "research-arm-tactical-daily-sentinel-v1-53181984-to-53182176-speed-5-mode-terminal-a-0",
+        "deadline": "2026-11-15T06:10:37.647576600Z",
+        "body_sha256": "144df0d17f0ba75ddd8e0efcbf7aa1c20cd3a6c54ded6e8ca6afb126591ee160",
+        "state": "SETTLED",
+        "reason": null,
+        "dispatch_ref": {
+          "bytes": 2066,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\85f458a36fd09505e5018b3ad743d2acd32cfc887778539b16add161812d7542.bin",
+          "sha256": "85f458a36fd09505e5018b3ad743d2acd32cfc887778539b16add161812d7542"
+        }
+      },
+      {
+        "sequence": 1997,
+        "at_utc": "2026-11-15T16:06:17.037579500Z",
+        "wal": {
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00001997.json",
+          "bytes": 101164,
+          "sha256": "2aa17238afc3076c410973af278a1aad9d30b8ae5d8aee20a4b067920281a9e5"
+        },
+        "record_ref": {
+          "bytes": 588,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\960ef0a787c11fff2393040ab3d791845183150081dee28115e55a17e6530e8b.bin",
+          "sha256": "960ef0a787c11fff2393040ab3d791845183150081dee28115e55a17e6530e8b"
+        },
+        "receipt_ref": {
+          "bytes": 6407,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\eec4a8605d7cdd8db843977bc7088dfaca811d1dc9ffd556bb9e481d9f74711d.bin",
+          "sha256": "eec4a8605d7cdd8db843977bc7088dfaca811d1dc9ffd556bb9e481d9f74711d"
+        },
+        "action_id": "action-90ed2633c97d0ef5d88720ccad61885eecae0d3af8f877f67bca801358296c0f",
+        "operation": "life-advance",
+        "deadline": "2026-11-15T06:10:37.647576600Z",
+        "body_sha256": "f1438cd4cadf7662395d5afa56372d1bd9395587be95103c17f3cb5f5d7b490f",
+        "state": "COMPOSITE_UNKNOWN",
+        "reason": "original ARM is independently confirmed; source-issued generation cancellation is required before ordinary play",
+        "dispatch_ref": null
+      },
+      {
+        "sequence": 1998,
+        "at_utc": "2026-11-15T16:10:44.643503900Z",
+        "wal": {
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00001998.json",
+          "bytes": 101164,
+          "sha256": "bbf74800b6d0fc79e08b07bf7d74d3d2a9ce9687f37ce72415fe3e2bdec68f2f"
+        },
+        "record_ref": {
+          "bytes": 588,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\8c5eb386f035e3c774db919edce632d3daabeb314b3fbcdeb809af2a510e6bad.bin",
+          "sha256": "8c5eb386f035e3c774db919edce632d3daabeb314b3fbcdeb809af2a510e6bad"
+        },
+        "receipt_ref": {
+          "bytes": 6531,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\9fd4d09c8c23374b2f15cb5fd2f074c571b9fe3059114a3ae861bdaa36173eea.bin",
+          "sha256": "9fd4d09c8c23374b2f15cb5fd2f074c571b9fe3059114a3ae861bdaa36173eea"
+        },
+        "action_id": "action-90ed2633c97d0ef5d88720ccad61885eecae0d3af8f877f67bca801358296c0f",
+        "operation": "life-advance",
+        "deadline": "2026-11-15T06:10:37.647576600Z",
+        "body_sha256": "f1438cd4cadf7662395d5afa56372d1bd9395587be95103c17f3cb5f5d7b490f",
+        "state": "COMPOSITE_UNKNOWN",
+        "reason": "source-qualified successor continuation reserved its original child",
+        "dispatch_ref": null
+      },
+      {
+        "sequence": 1999,
+        "at_utc": "2026-11-15T16:14:45.401002800Z",
+        "wal": {
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00001999.json",
+          "bytes": 101163,
+          "sha256": "58cbe4508859e962bb1af150243fe7113b0375a6318b735283d9b4df04d7a038"
+        },
+        "record_ref": {
+          "bytes": 588,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\9eecdc3a9735692b296facb9fc2a5a6b8de476704b2ae908bbd3f6be3e73c888.bin",
+          "sha256": "9eecdc3a9735692b296facb9fc2a5a6b8de476704b2ae908bbd3f6be3e73c888"
+        },
+        "receipt_ref": {
+          "bytes": 2394,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\0343083695f0ed90a158e58599cf2f7cede6e5970b2398e50123707aeca64f31.bin",
+          "sha256": "0343083695f0ed90a158e58599cf2f7cede6e5970b2398e50123707aeca64f31"
+        },
+        "action_id": "child-3c3d91c010f0bb27422c04e9f3e9566ef179b401e98d63392000b989c4f5b544",
+        "operation": "research-cancel-tactical-daily-sentinel-v1-generation-80",
+        "deadline": "2026-11-15T16:16:38.437412300Z",
+        "body_sha256": "138b9562fc47778128a8883a9eb9485f0085916aaceb7f9073cebf2dd66cd852",
+        "state": "INTENT_DURABLE",
+        "reason": null,
+        "dispatch_ref": null
+      },
+      {
+        "sequence": 2000,
+        "at_utc": "2026-11-15T16:21:26.000399100Z",
+        "wal": {
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00002000.json",
+          "bytes": 101163,
+          "sha256": "1c840bc09392343eb9159ee1ef01c0e21338ab1792bf0e88ef204d74a69739f3"
+        },
+        "record_ref": {
+          "bytes": 588,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\4aa181d56eda7bb539b2c46746db0cd32c50667695f110482125588a0d593809.bin",
+          "sha256": "4aa181d56eda7bb539b2c46746db0cd32c50667695f110482125588a0d593809"
+        },
+        "receipt_ref": {
+          "bytes": 5396,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\2e5bc750dd9ec7fe42a2636d3665096205cc77779d21827da016bf4939329f6f.bin",
+          "sha256": "2e5bc750dd9ec7fe42a2636d3665096205cc77779d21827da016bf4939329f6f"
+        },
+        "action_id": "child-3c3d91c010f0bb27422c04e9f3e9566ef179b401e98d63392000b989c4f5b544",
+        "operation": "research-cancel-tactical-daily-sentinel-v1-generation-80",
+        "deadline": "2026-11-15T16:16:38.437412300Z",
+        "body_sha256": "138b9562fc47778128a8883a9eb9485f0085916aaceb7f9073cebf2dd66cd852",
+        "state": "REJECTED_BEFORE_DISPATCH",
+        "reason": null,
+        "dispatch_ref": {
+          "bytes": 362,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\0d7983a87635101ab6309029d8afeeb49b1da2b83d7b511606a95150cb305fa7.bin",
+          "sha256": "0d7983a87635101ab6309029d8afeeb49b1da2b83d7b511606a95150cb305fa7"
+        }
+      },
+      {
+        "sequence": 2001,
+        "at_utc": "2026-11-15T16:23:46.002401200Z",
+        "wal": {
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00002001.json",
+          "bytes": 101164,
+          "sha256": "ef1bc9ba6ec3f1c491fd11744d27c2c63f85e303371b033eccde1f023d3b7f83"
+        },
+        "record_ref": {
+          "bytes": 588,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\78c66d0060b628ec352dc1f090cc95f4468c1f709e77675827e31efef54bab19.bin",
+          "sha256": "78c66d0060b628ec352dc1f090cc95f4468c1f709e77675827e31efef54bab19"
+        },
+        "receipt_ref": {
+          "bytes": 6370,
+          "path": "D:\\ck3-state\\ck3-java-resume91_offline04_20261111T071454Z\\business\\continuity\\artifacts\\731ac686a4c5b2dffcd43249937658ae1645074874b0b7ec77ee14f13fa6d519.bin",
+          "sha256": "731ac686a4c5b2dffcd43249937658ae1645074874b0b7ec77ee14f13fa6d519"
+        },
+        "action_id": "action-90ed2633c97d0ef5d88720ccad61885eecae0d3af8f877f67bca801358296c0f",
+        "operation": "life-advance",
+        "deadline": "2026-11-15T06:10:37.647576600Z",
+        "body_sha256": "f1438cd4cadf7662395d5afa56372d1bd9395587be95103c17f3cb5f5d7b490f",
+        "state": "COMPOSITE_UNKNOWN",
+        "reason": "source-qualified continuation incomplete:org.xar.ck3.control.contracts.ContractViolationException:only an actual pause, resume or ARM zero-write result is replayed here",
+        "dispatch_ref": null
+      }
+    ],
+    "records_wal_references": "Recorded by frozen index, not reread for this handoff",
+    "original_parent_and_ARM_deadline_utc": "2026-11-15T06:10:37.647576600Z",
+    "cancel_own_deadline_utc": "2026-11-15T16:16:38.437412300Z",
+    "cancel_submitted_at_utc": "2026-11-15T16:16:56.258008100Z",
+    "cancel2000": "Canonical REJECTED_BEFORE_DISPATCH/BEFORE_WRITE0/noACK, not sentinel cancelled",
+    "parent2001": "COMPOSITE_UNKNOWN",
+    "E18_wrapper": "consumed, bound to old head1995, no rerun",
+    "safe_current_recovery_wrapper": "NONE"
+  },
+  "formal_published_source_pins": [
+    {
+      "git_path": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/action/ContinuityActionJournal.java",
+      "bytes": 27720,
+      "sha256": "cd5147e97004fb9faf5e85c3c5c43d82362079d5df826c2e54808cf8e20c06ef"
+    },
+    {
+      "git_path": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/action/ReconciliationPendingBinding.java",
+      "bytes": 22327,
+      "sha256": "b4ef9e518969d078ddbc294a8d27ff51197ee19722f9ac2eb0b64059ae781bfc"
+    },
+    {
+      "git_path": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootLifecycleAuthority.java",
+      "bytes": 46122,
+      "sha256": "d482f4e24525993078610a8554800bc29aabc4cc5388b345e1528707f41fea11"
+    },
+    {
+      "git_path": "java/ck3-control/application/src/test/java/org/xar/ck3/control/application/action/CanonicalHistoryFreshBatchTest.java",
+      "bytes": 18127,
+      "sha256": "166ff08d38b4ced0cb475131e6500990d2177cf92ff60691b33ba9678966080b"
+    }
+  ],
+  "source_qualification": {
+    "formal04": "Life first1/11 plus rawsame application10 reuse; members1138 gap0; independent whole7P; no repo full Maven or CI result",
+    "formal21": "first8/96+reuse20; members6148 gap0; firstwhole12 8P4E, later4P after config/time fixes; split12 only",
+    "actual_E18": "first3/21; new3P+old4P; members532 gap0; actual adoption but failed control continuation",
+    "Hpp": "first2/25; new3+old12=15P, UNADOPTED"
+  },
+  "actual_source_roots_recorded_not_probed": {
+    "source307": "C:/ck3-state/resume91-root/quarkus-dev307/source307",
+    "build307": "C:/ck3-state/resume91-root/quarkus-dev307/build307",
+    "business": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business",
+    "cfg_properties_request": "cfg240, properties, request80 retained; no deployment by this handoff"
+  },
+  "actual_formal_differences": {
+    "actualLife": {
+      "bytes": 50010,
+      "sha256": "6e182d3edb9d0b11726ac575e6c12b4acf44b45d4b0468eb4f15571855ffecbd"
+    },
+    "formalLife": {
+      "bytes": 46122,
+      "sha256": "d482f4e24525993078610a8554800bc29aabc4cc5388b345e1528707f41fea11"
+    },
+    "actualCore": {
+      "bytes": 293562,
+      "sha256": "163ae6e295b223f492969ef91f60802adb1eb7bcb0b9d9c3bb5f9037d895c091"
+    },
+    "warning": "Do not whole-copy formal source over actual D-only diagnostics/other differing branches"
+  },
+  "pending_CANCEL_source_WIP": {
+    "fullSourceReady": false,
+    "coherent_candidate": false,
+    "typing_tests_adoption": false,
+    "new_candidate_fund": false,
+    "nine_planned_leaves": [
+      {
+        "relative_path": "application/src/main/java/org/xar/ck3/control/application/action/ContinuityActionJournal.java",
+        "actual_BASE_existing_at_stop": {
+          "path": "C:/ck3-state/resume91-root/quarkus-dev307/source307/application/src/main/java/org/xar/ck3/control/application/action/ContinuityActionJournal.java",
+          "bytes": 27720,
+          "sha256": "cd5147e97004fb9faf5e85c3c5c43d82362079d5df826c2e54808cf8e20c06ef"
+        },
+        "completion": "RAM_CODE_COMPONENT: existing batch entry public modifier only; not typed",
+        "new_full_source_written": false,
+        "compiled": false,
+        "existing_RAM_virtual_pin": {
+          "bytes": 27727,
+          "sha256": "30f411952fbf17ecec9b0ab5588afdeb5ec3921b9a15ca8c8beacde0cb88fcd8"
+        },
+        "existing_inverse_rawexact": true
+      },
+      {
+        "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootDerivedChildAuthority.java",
+        "actual_BASE_existing_at_stop": {
+          "path": "C:/ck3-state/resume91-root/quarkus-dev307/source307/local-service/src/main/java/org/xar/ck3/control/service/root/RootDerivedChildAuthority.java",
+          "bytes": 31965,
+          "sha256": "26f9ac953ef1d7d7a2bb0c923a7c67026bc79ee6c60e7e5ef0b2a59b598c32a2"
+        },
+        "completion": "RAM_CODE_COMPONENT: same Head fresh logical lookup/preceding batch, prelude/tail split and resolve-only helper; not typed or semantically qualified",
+        "new_full_source_written": false,
+        "compiled": false,
+        "existing_RAM_virtual_pin": {
+          "bytes": 36197,
+          "sha256": "c74bcd96fb323569596a9cfb4b5ec751da1fbb8834984228cae77027747d0e5f"
+        },
+        "existing_inverse_rawexact": true
+      },
+      {
+        "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootLifecycleAuthority.java",
+        "actual_BASE_existing_at_stop": {
+          "path": "C:/ck3-state/resume91-root/quarkus-dev307/source307/local-service/src/main/java/org/xar/ck3/control/service/root/RootLifecycleAuthority.java",
+          "bytes": 50010,
+          "sha256": "6e182d3edb9d0b11726ac575e6c12b4acf44b45d4b0468eb4f15571855ffecbd"
+        },
+        "completion": "PARTIAL_RAM_CODE: derived early-link call only; new zero-suffix preparation/role behavior remains unimplemented",
+        "new_full_source_written": false,
+        "compiled": false,
+        "existing_RAM_virtual_pin": {
+          "bytes": 50073,
+          "sha256": "42c963a5bd2347cf7accb165400d8bca1c0d19125727e891e30d246f0ac5e4eb"
+        },
+        "existing_inverse_rawexact": true
+      },
+      {
+        "relative_path": "application/src/main/java/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay.java",
+        "actual_BASE_existing_at_stop": {
+          "path": "C:/ck3-state/resume91-root/quarkus-dev307/source307/application/src/main/java/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay.java",
+          "bytes": 22312,
+          "sha256": "66bf8d89a0e849f983b9955727d8e3050db112104571e818b8c42f024f8e1bc4"
+        },
+        "completion": "RO_DESIGN_ONLY: exact CANCEL BeforeWrite0 branch absent; public DATA vs actual Root/derived gate interface not finalized; no virtual/patch",
+        "new_full_source_written": false,
+        "compiled": false
+      },
+      {
+        "relative_path": "application/src/main/java/org/xar/ck3/control/application/advance/LifeSentinelCancellationProof.java",
+        "actual_BASE_existing_at_stop": {
+          "path": "C:/ck3-state/resume91-root/quarkus-dev307/source307/application/src/main/java/org/xar/ck3/control/application/advance/LifeSentinelCancellationProof.java",
+          "bytes": 14057,
+          "sha256": "046ea0c935d98eea5a692ef4f6937077b9b1ee5cafd2884f003668a194bb5511"
+        },
+        "completion": "RO_DESIGN_ONLY: old full prefix plus one same-generation canonical strict zero-write cancel, optional genuine final successful cancel; helper API not finalized; no virtual/patch",
+        "new_full_source_written": false,
+        "compiled": false
+      },
+      {
+        "relative_path": "application/src/main/java/org/xar/ck3/control/application/advance/LifeAdvanceComposite.java",
+        "actual_BASE_existing_at_stop": {
+          "path": "C:/ck3-state/resume91-root/quarkus-dev307/source307/application/src/main/java/org/xar/ck3/control/application/advance/LifeAdvanceComposite.java",
+          "bytes": 87370,
+          "sha256": "becae7a0bbbcf111b06d117e5a3b2d155021afb77f737bd520b316e73c7006a3"
+        },
+        "completion": "RO_DESIGN_ONLY: observe/issuer/requireContinuation/new distinct successor and full-vector success consumers still need code; no virtual/patch",
+        "new_full_source_written": false,
+        "compiled": false
+      },
+      {
+        "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootLifeRuntimeFactory.java",
+        "actual_BASE_existing_at_stop": {
+          "path": "C:/ck3-state/resume91-root/quarkus-dev307/source307/local-service/src/main/java/org/xar/ck3/control/service/root/RootLifeRuntimeFactory.java",
+          "bytes": 113600,
+          "sha256": "fdc52489593be6c28d2099a050de758d155b44692864d34095e7e2d0445b5414"
+        },
+        "completion": "RO_DESIGN_ONLY: last CANCEL currently always routes success prefix; zero role must take armed prefix with actual registered cold verification before real fresh Status/frame; no virtual/patch",
+        "new_full_source_written": false,
+        "compiled": false
+      },
+      {
+        "relative_path": "local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+        "actual_BASE_existing_at_stop": {
+          "path": "C:/ck3-state/resume91-root/quarkus-dev307/source307/local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+          "bytes": 293562,
+          "sha256": "163ae6e295b223f492969ef91f60802adb1eb7bcb0b9d9c3bb5f9037d895c091"
+        },
+        "completion": "RO_DESIGN_ONLY: Core sole-ARM private DATA identity role cannot admit current two-child parent; separate genuine zero-suffix identity/adoption needs code; no virtual/patch",
+        "new_full_source_written": false,
+        "compiled": false
+      },
+      {
+        "relative_path": "local-service/src/main/java/org/xar/ck3/control/application/driver/DriverBootstrap.java",
+        "actual_BASE_existing_at_stop": {
+          "path": "C:/ck3-state/resume91-root/quarkus-dev307/source307/local-service/src/main/java/org/xar/ck3/control/application/driver/DriverBootstrap.java",
+          "bytes": 159778,
+          "sha256": "4c6caa26141089c597e61bfc1ae41cc16d39bd5ac722e2c790bb69acb6357376"
+        },
+        "completion": "RO_DESIGN_ONLY: old sole ARM qualification requires independent strict zero-suffix canonical/registered role; old EVENT/default branches must remain; no virtual/patch",
+        "new_full_source_written": false,
+        "compiled": false
+      }
+    ],
+    "only_three_partial_RAM_leaves": true,
+    "six_NOT_IMPLEMENTED": true,
+    "extra_Session_consumer_scope": "NOT_CLOSED",
+    "component_patch_builder": {
+      "component": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/cancel-zero-successor-derived-batch-candidate01/RAM-COMPONENT-DERIVED-GUARD-BATCH3-01.json",
+        "bytes": 4113,
+        "sha256": "012cda38a507c9622c1d70853377b02f4d36e08d07f1ae56192ac5805463efac"
+      },
+      "patch": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/cancel-zero-successor-derived-batch-candidate01/DERIVED-SAMEHEAD-FRESH-BATCH-COMPONENT3-01.patch",
+        "bytes": 12841,
+        "sha256": "2accf9fac012a1de7ddc00458d11cdbcdd3b58156e735d6923d06e5273ff046a"
+      },
+      "builder": {
+        "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/cancel-zero-successor-derived-batch-candidate01/prepare_derived_virtual.py",
+        "bytes": 11656,
+        "sha256": "ea48ce5cab5ea3fb0b4491284a00d566c8e1cd0dda0d2d5a45710522d9cb0344"
+      }
+    },
+    "reconstruction_limits": "Do not run builder during vacation. After later resume, verify all three actual BASE hashes, including Derived not hard-asserted by builder. build() RAM only; no __main__, no C/VM write. Partial3 is not coherent9."
+  },
+  "model_operations": {
+    "current_HTTP_by_owner": 0,
+    "last_actual_POST_utc": "2026-11-15T14:39:33.174684Z",
+    "last_END_utc": "2026-11-15T14:40:04.746220Z",
+    "latest_shared_main": "fd8507fc390b25a7deef014dc4c49d2c08015084",
+    "latest_own_case_commit": "76ca1741b4fab6029b641007340306341337eceb",
+    "checkout_last_used": "Z:/workspace/local-model-operations",
+    "A_B_candidates": "0POST/0persistentREQUEST/0fund; interface/input not frozen; no model candidate implementation",
+    "all_four_closed_unused_returned_once": true,
+    "all_four_code_Test_adoptions": 0,
+    "profile_length_response": "whole UNUSED/unread/UNANSWERED, never splice or repost",
+    "pending_input_gap": "ActionRecordCodec whole1338B absent; owner later read does not repair original input"
+  },
+  "last_business_material_accounting": {
+    "raw": 976582088,
+    "normal": 24389632,
+    "cap_bytes": 1719664640,
+    "excludes_later_handoff_docs_and_Git": true,
+    "no_open_business_fund": true
+  },
+  "diagnostics": "E17 one attach consumed; E18 postreturn SKIP0BEGIN consumed; E18 CANCEL separate attach consumed. Rejection stack is after original guard failure, not unique cause or CPU attribution.",
+  "local_evidence_portability": "Git contains docs and published source. Machine-local D/C/Z evidence not uploaded; require originals on execution machine before recovery. Index is no substitute for receipts or Guard.",
+  "evidence_files": [
+    {
+      "id": "e18_failed_end",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/canonical-fresh-reentry18/E18-ACTUAL-FAILED-END01/INDEX.json",
+      "bytes": 14485,
+      "sha256": "f2e664b8a748399dd87aa359dc82648dba9aa07305384f2e45666f4351a29f5d",
+      "scope": "Final delegate END and records1996..2001",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_complete_log",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/canonical-fresh-reentry18/E18-ACTUAL-FAILED-END01/COMPLETE-ACTUAL-START-THROUGH-END.original.log",
+      "bytes": 32076,
+      "sha256": "e0ca69bcca677a340600e6593f19363bef9efe6bf156ae4fabaea9f663126f9c",
+      "scope": "Original START through failed END",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_arm_confirmed_cancel_intent",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/canonical-fresh-reentry18/E18-ARM-CONFIRMED-AND-CANCEL-INTENT01/INDEX.json",
+      "bytes": 11889,
+      "sha256": "0f4349d7b7791ff551821430c0716af7edcdb6738bc8b680efdc8aca0316cfd6",
+      "scope": "Original ARM confirmation and distinct CANCEL intent",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_begin",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/canonical-fresh-reentry18/ACTUAL-BEGIN.json",
+      "bytes": 2347,
+      "sha256": "99dbdf1186af79c95b8dacb67aa8f41277f9906421f9ec1d347e34b20c1919a6",
+      "scope": "Historical process identity at BEGIN only",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_get_end",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/canonical-fresh-reentry18/ACTUAL-END.json",
+      "bytes": 3327,
+      "sha256": "f06dfa40164b8379c91bd00a4bcdefe5a3166c509b2b7887464a988ddb7a5861",
+      "scope": "One GET200; not control success",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_adoption",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/canonical-fresh-reentry18/ACTUAL-MAVEN-SOURCE3-CLASS21-BATCH-LINKAGE-START01.json",
+      "bytes": 3277,
+      "sha256": "fdde2fc6685aac1d56def79441ebf36d20c3a58f9a5e9352ff4292ff46e218fe",
+      "scope": "Actual source3/class21 adoption",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_first_timing",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/canonical-fresh-reentry18/NATURAL-ARM-FRESH-AND-SCOPE-FIRST-CUT01.original.log",
+      "bytes": 6850,
+      "sha256": "257a28872a55530ff9f2fb407ad707ba93cc4267c36b02e903cb657f3fec4d3e",
+      "scope": "Bounded natural first timing",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_second_timing",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/canonical-fresh-reentry18/NATURAL-ARM-FRESH-AND-SCOPE-AFTER-FIRST-CUT02.original.log",
+      "bytes": 6029,
+      "sha256": "af4c59ff65dbc00c61fda393e6eacf07c1a142a56633f662ee35626b536d9b31",
+      "scope": "96.8348696s callback; not seconds/saved day",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action1996_record_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/56a64ce575c7d4e37e8e0be728f5d633ecf2d8926a6896e8d576d177b1dc1d3e.bin",
+      "bytes": 588,
+      "sha256": "56a64ce575c7d4e37e8e0be728f5d633ecf2d8926a6896e8d576d177b1dc1d3e",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action1996_receipt_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/5a5b891473ab055abd7713eb814467e2591b87b8c13f0bc511f29be62e52a5db.bin",
+      "bytes": 7384,
+      "sha256": "5a5b891473ab055abd7713eb814467e2591b87b8c13f0bc511f29be62e52a5db",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action1996_dispatch_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/85f458a36fd09505e5018b3ad743d2acd32cfc887778539b16add161812d7542.bin",
+      "bytes": 2066,
+      "sha256": "85f458a36fd09505e5018b3ad743d2acd32cfc887778539b16add161812d7542",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action1997_record_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/960ef0a787c11fff2393040ab3d791845183150081dee28115e55a17e6530e8b.bin",
+      "bytes": 588,
+      "sha256": "960ef0a787c11fff2393040ab3d791845183150081dee28115e55a17e6530e8b",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action1997_receipt_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/eec4a8605d7cdd8db843977bc7088dfaca811d1dc9ffd556bb9e481d9f74711d.bin",
+      "bytes": 6407,
+      "sha256": "eec4a8605d7cdd8db843977bc7088dfaca811d1dc9ffd556bb9e481d9f74711d",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action1998_record_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/8c5eb386f035e3c774db919edce632d3daabeb314b3fbcdeb809af2a510e6bad.bin",
+      "bytes": 588,
+      "sha256": "8c5eb386f035e3c774db919edce632d3daabeb314b3fbcdeb809af2a510e6bad",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action1998_receipt_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/9fd4d09c8c23374b2f15cb5fd2f074c571b9fe3059114a3ae861bdaa36173eea.bin",
+      "bytes": 6531,
+      "sha256": "9fd4d09c8c23374b2f15cb5fd2f074c571b9fe3059114a3ae861bdaa36173eea",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action1999_record_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/9eecdc3a9735692b296facb9fc2a5a6b8de476704b2ae908bbd3f6be3e73c888.bin",
+      "bytes": 588,
+      "sha256": "9eecdc3a9735692b296facb9fc2a5a6b8de476704b2ae908bbd3f6be3e73c888",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action1999_receipt_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/0343083695f0ed90a158e58599cf2f7cede6e5970b2398e50123707aeca64f31.bin",
+      "bytes": 2394,
+      "sha256": "0343083695f0ed90a158e58599cf2f7cede6e5970b2398e50123707aeca64f31",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action2000_record_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/4aa181d56eda7bb539b2c46746db0cd32c50667695f110482125588a0d593809.bin",
+      "bytes": 588,
+      "sha256": "4aa181d56eda7bb539b2c46746db0cd32c50667695f110482125588a0d593809",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action2000_receipt_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/2e5bc750dd9ec7fe42a2636d3665096205cc77779d21827da016bf4939329f6f.bin",
+      "bytes": 5396,
+      "sha256": "2e5bc750dd9ec7fe42a2636d3665096205cc77779d21827da016bf4939329f6f",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action2000_dispatch_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/0d7983a87635101ab6309029d8afeeb49b1da2b83d7b511606a95150cb305fa7.bin",
+      "bytes": 362,
+      "sha256": "0d7983a87635101ab6309029d8afeeb49b1da2b83d7b511606a95150cb305fa7",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action2001_record_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/78c66d0060b628ec352dc1f090cc95f4468c1f709e77675827e31efef54bab19.bin",
+      "bytes": 588,
+      "sha256": "78c66d0060b628ec352dc1f090cc95f4468c1f709e77675827e31efef54bab19",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "action2001_receipt_ref",
+      "path": "D:/ck3-state/ck3-java-resume91_offline04_20261111T071454Z/business/continuity/artifacts/731ac686a4c5b2dffcd43249937658ae1645074874b0b7ec77ee14f13fa6d519.bin",
+      "bytes": 6370,
+      "sha256": "731ac686a4c5b2dffcd43249937658ae1645074874b0b7ec77ee14f13fa6d519",
+      "scope": "Immutable action artifact; no replay authorization",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e17_stack_end",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/e17-exact-pair-once-thread96K01/ACTUAL-END.json",
+      "bytes": 1463,
+      "sha256": "685390cdd772dc7e3cf40f653753a28f574ce76863d5aeb884b101387eef3e7b",
+      "scope": "Consumed one-time E17 diagnostic",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e17_stack",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/e17-exact-pair-once-thread96K01/stdout.original.bin",
+      "bytes": 41072,
+      "sha256": "00b75b64e11a48f494be16e2feaff99c271e71e81a919583a82fca4f228480b2",
+      "scope": "Historical receipt callback; no CPU attribution",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_postreturn_skip",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/e18-postreturn-once-thread96K01/ACTUAL-SKIP0BEGIN.json",
+      "bytes": 146,
+      "sha256": "0c04dd88535e64e8d53d40813651dd2c3df99190ffd7331cc1320ca1185c55c9",
+      "scope": "Permanently consumed SKIP0BEGIN; no stack",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_cancel_stack_end",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/e18-cancel80-preack-once-thread96K01/ACTUAL-END.json",
+      "bytes": 1500,
+      "sha256": "8019b88b34b1a320b3ed9f6dbf901b8f2203a68f7137c233686830b815589813",
+      "scope": "Consumed distinct one-time diagnostic",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_cancel_stack",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/e18-cancel80-preack-once-thread96K01/stdout.original.bin",
+      "bytes": 36302,
+      "sha256": "bc63caa5a963c728d393489b078aa9be39a3363778d05f4d22fe52ed768904b4",
+      "scope": "Rejection archival after guard failure, not original throw",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "e18_cancel_trace",
+      "path": "D:/ck3-state/resume91-runtime/quarkus-dev307-runtime/attempt85/e18-cancel80-preack-once-thread96K01/REJECTION2000-SOURCE-TRACE01.json",
+      "bytes": 9020,
+      "sha256": "f653a0cd5cb32f5eb1f3698ab069aac2ed6c34471c3e9a5b1f67cc8e8a8d55f2",
+      "scope": "Exact guard and archival source trace",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal04_publication",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/formal-canonical-fresh-batch3-port01/PUBLISHED-FORMAL-CANONICAL-BATCH4-01.json",
+      "bytes": 5386,
+      "sha256": "a7b37b2fb0adbe1579499c5f7838965c9805058be5ecbd3acaf86799174e1dd7",
+      "scope": "Formal3+Test1 independent qualification, not active Life source",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal04_source_ready",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/formal-canonical-fresh-batch3-port01/SOURCE-READY-FORMAL-CANONICAL-BATCH3-FIRST1-REUSE10-01.json",
+      "bytes": 10168,
+      "sha256": "86cb39e183ad5c1f9b60fa7d0ddd9f17f6c13c148a5bb324118f0d0da1e82225",
+      "scope": "Formal source and normal Git provenance",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal04_Git_receipt",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/formal-canonical-fresh-batch3-port01/PUBLISHED-FORMAL-CANONICAL-BATCH4-GIT-RECEIPT01.json",
+      "bytes": 2186,
+      "sha256": "830aba06899f3080e3722ac20f8d289d4c8e17112d31b8863421e15b3a893930",
+      "scope": "Formal source and normal Git provenance",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal04_proof",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/FORMAL-CANONICAL-LIFE11-REUSE10-TEST7-FULL-MEMBERS-RO01.json",
+      "bytes": 421431,
+      "sha256": "f2798345a5f41666910d0ae0dde8ea5cebe15318504f1cad0954d6ed4da373c9",
+      "scope": "Formal newLife11/reuse10/1138 refs/whole7P",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal04_XML",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/fcb95j1/reports/TEST-junit-jupiter.xml",
+      "bytes": 50973,
+      "sha256": "3f01ce132f3d6844595c54306ce4255bbc99269f01d694c98d2b81773f2cd03f",
+      "scope": "Formal newLife11/reuse10/1138 refs/whole7P",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal04_ACTUAL",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/fcb95j1/actual/prod/ACTUAL.json",
+      "bytes": 1325,
+      "sha256": "8fa33ae20297fd8f9e8fe05366a7181cd6623c737ee96d39674587c176874b54",
+      "scope": "Formal newLife11/reuse10/1138 refs/whole7P",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal04_POST",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/fcb95j1/actual/prod/POST.json",
+      "bytes": 1892,
+      "sha256": "3c4743f428e8aec91a4c68b1b84697c7f57d6ebb7e699abe2283e01378766b23",
+      "scope": "Formal newLife11/reuse10/1138 refs/whole7P",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal04_CLOSE",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/fcb95j1/actual/prod/MANAGED-CLOSE.json",
+      "bytes": 204,
+      "sha256": "704daee291abba37a9958c4e3ec03570d9e85f46a93d14bdb19fb5046f4e0a78",
+      "scope": "Formal newLife11/reuse10/1138 refs/whole7P",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal21_publication",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/formal-arm-jdk-observation-projection10-port02/PUBLISHED-FORMAL-FINAL-JDK10-TEST1-01.json",
+      "bytes": 6398,
+      "sha256": "068d70b7200de2fedea9d64f6c513d682fe41f28cb1975a8a5f90c752d8b76f0",
+      "scope": "Previous10prod+Test1; split12, not single whole12 green",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "formal21_git",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/formal-arm-jdk-observation-projection10-port02/PUBLISHED-FORMAL-JDK11-GIT-RECEIPT01.json",
+      "bytes": 4054,
+      "sha256": "3c455e2505f40fdd1dff6d1cdb5bc253ea463e794237b0c613c63a04129eb9e1",
+      "scope": "Previous21cc normal Git",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "actual_batch_source_ready",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/canonical-fresh-batch-three-candidate02/SOURCE-READY-ACTUAL-CANONICAL-FRESH-BATCH3-02.json",
+      "bytes": 7967,
+      "sha256": "d16d69044b4bb28c9d5ef3a4934f7ed5ecf2039582f5994d875f0a748e99ec47",
+      "scope": "Actual3 with D-only diagnostics, distinct Life source",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "actual_batch_software_closed",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/canonical-fresh-batch-three-candidate02/SOFTWARE-CLOSED-CANONICAL-FRESH-BATCH3-21-NEW3-OLD4-01.json",
+      "bytes": 11780,
+      "sha256": "c67092b47efc53c20f345db276acc955e2736cf94bbaaca7dd82ffd6774f0630",
+      "scope": "Actual first3/21,new3P+old4P, not control success",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "hpp_source_ready",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/historical-payload-proof-separation-candidate01/SOURCE-READY-HISTORICAL-PAYLOAD-PROOF-ACTUAL2-02.json",
+      "bytes": 8758,
+      "sha256": "2a26631bc7c1d313641adbf473252037b3881cfa8d35252394fa44d3f1bdbc65",
+      "scope": "Unadopted Hpp2 source; new class/loader boundary",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "hpp_software_closed",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/historical-payload-proof-separation-candidate01/SOFTWARE-CLOSED-HISTORY25-NEW3-OLD12-TRUE15P-01.json",
+      "bytes": 8892,
+      "sha256": "cc154a103e780aa93413f827749ea81ac8f2cf0cadd76c35517c5ec992a89b3c",
+      "scope": "Hpp25/15P, not actual adoption",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "cancel_wip_freeze",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/cancel-zero-successor-derived-batch-candidate01/VACATION-WIP-FREEZE-20261116-01.json",
+      "bytes": 13033,
+      "sha256": "9debea6dc4ec4631cca688e14a298f34ef822132c1738a54cd3c87ec8609bf84",
+      "scope": "Only3 partial RAM components, six not implemented; no coherent9",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "cancel_wip_component",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/cancel-zero-successor-derived-batch-candidate01/RAM-COMPONENT-DERIVED-GUARD-BATCH3-01.json",
+      "bytes": 4113,
+      "sha256": "012cda38a507c9622c1d70853377b02f4d36e08d07f1ae56192ac5805463efac",
+      "scope": "Uncompiled partial3 only; do not run builder during vacation",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "cancel_wip_patch",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/cancel-zero-successor-derived-batch-candidate01/DERIVED-SAMEHEAD-FRESH-BATCH-COMPONENT3-01.patch",
+      "bytes": 12841,
+      "sha256": "2accf9fac012a1de7ddc00458d11cdbcdd3b58156e735d6923d06e5273ff046a",
+      "scope": "Uncompiled partial3 only; do not run builder during vacation",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "cancel_wip_builder",
+      "path": "D:/ck3-state/resume91-java-delivery/ordinary-p0-20261108/life-postcondition-p0-20261112-01/cancel-zero-successor-derived-batch-candidate01/prepare_derived_virtual.py",
+      "bytes": 11656,
+      "sha256": "ea48ce5cab5ea3fb0b4491284a00d566c8e1cd0dda0d2d5a45710522d9cb0344",
+      "scope": "Uncompiled partial3 only; do not run builder during vacation",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "actual_batch_member_schema",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/CANONICAL-FRESH-BATCH-FULL21-SCHEMA-ACTUAL-MEMBERS-RO01.json",
+      "bytes": 89386,
+      "sha256": "b22e1acb54638f6510c773cd21fea8cc54c4c7a1f73a14895e3299314ce656f4",
+      "scope": "Actual21 schema and532 memberrefs,0gap",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "actual_new3P",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/cbt74j1/reports/TEST-junit-jupiter.xml",
+      "bytes": 45350,
+      "sha256": "8cb02748522b679feb9f4a194a2d36c0476db1c4925898c94a8c158559868cd7",
+      "scope": "New3 exact methods passed",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "actual_old4P",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/cbo74j1/reports/TEST-junit-jupiter.xml",
+      "bytes": 46566,
+      "sha256": "29b580663af4404d165a6c9943e21b4ec5859cfa627ebedcbd3900bcb303b17e",
+      "scope": "Old4 direct methods passed",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "resource_formal04",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/RESOURCE-FORMAL-CANONICAL-LIFE11-REUSE10-TRUE7P-PUBLISHED4-ALL-CLOSED01.json",
+      "bytes": 7439,
+      "sha256": "ea76749df8d853ca04b7d0760c256e09e0aed83c53d38184c55328c5eae6345e",
+      "scope": "Latest closed business accounting; Git upper guard not all new actual",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "resource_actual_batch",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/RESOURCE-CANONICAL-BATCH21-NEW3-OLD4-ALL-CLOSED-ONLYUNUSED-ONCE01.json",
+      "bytes": 9470,
+      "sha256": "b4ed38ac5e077bb705fda37b4dbc28ed3660444b87c4c77b67b8f99bb2fc0652",
+      "scope": "Unused returned once; Runtime normal reserve separate",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "resource_formal21",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/RESOURCE-FORMAL-FINAL96-REUSE20-SPLIT12-PUBLISHED11-ALL-CLOSED01.json",
+      "bytes": 8584,
+      "sha256": "f49e49a75dc180930725aa77b634b7fa13321cef01aa7366024b8004449bd0ae",
+      "scope": "Previous formal scope closed; split12 preserved",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "resource_e17",
+      "path": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01/RESOURCE-E17-LIFE1-FULL11-SCHEMA293-CLOSED-ONLYUNUSED-ONCE01.json",
+      "bytes": 3624,
+      "sha256": "75c0c5dafce66d39a7ed02ce5b08393bd25bde97831f85101fb0a22622b541fa",
+      "scope": "Earlier diagnostics closed; no repeat deduction",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "model_hpp",
+      "path": "D:/ck3-state/resume91-models-delivery/ordinary-p0-20261112/HISTORICAL-PAYLOAD-PROOF-TWO-CLOSED01.json",
+      "bytes": 15532,
+      "sha256": "2c730bd9548c686ebfcc53004b7fa3ab53b9d6c084738c933d08b4399be8b1d8",
+      "scope": "Closed model input/output/accounting; zero code or Test adoption",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "model_profile",
+      "path": "D:/ck3-state/resume91-models-delivery/ordinary-p0-20261112/JDK3-PROFILE4-INNER-CPU-ONE-CLOSED01.json",
+      "bytes": 12695,
+      "sha256": "337546523e6eb7530179bb96214422295285aaea8cb97bda0609323dc155ccaf",
+      "scope": "Closed model input/output/accounting; zero code or Test adoption",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "model_digest",
+      "path": "D:/ck3-state/resume91-models-delivery/ordinary-p0-20261112/HEAD-DIGEST-IMMUTABILITY-CACHE-TWO-CLOSED01.json",
+      "bytes": 16589,
+      "sha256": "182cc053b2cba5e7560b83d192c81a5e0d259dfcb436c2f4b59f9107817ff778",
+      "scope": "Closed model input/output/accounting; zero code or Test adoption",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "model_pending",
+      "path": "D:/ck3-state/resume91-models-delivery/ordinary-p0-20261112/PENDING-CANONICAL-SINGLESCAN-CLOSED01.json",
+      "bytes": 11009,
+      "sha256": "8190326c2e5ff72ffdc95f902dc7a1b5ac1b8d307eac717b4110f8274f417d4a",
+      "scope": "Closed model input/output/accounting; zero code or Test adoption",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "model_profile_unused_close",
+      "path": "D:/ck3-state/resume91-root/post-vacation-20261107/RESOURCE-PROFILE4-MODEL1-UNUSED-CLOSE-ONLYUNUSED-ONCE01.json",
+      "bytes": 666,
+      "sha256": "afe55fbe909349285eeaa5e46464227555c242b08a617b272d4844d8691ac3e6",
+      "scope": "284294 unused returned once",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "model_pending_unused_close",
+      "path": "D:/ck3-state/resume91-root/post-vacation-20261107/RESOURCE-PENDING-SINGLESCAN-MODEL1-CLOSE-ONLYUNUSED-ONCE01.json",
+      "bytes": 714,
+      "sha256": "3d38f9aa45465b9eda0561a44c24f599f4be20e58154665f48c0b8de5737e25b",
+      "scope": "575738 unused returned once",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "earlier_env_only_order",
+      "path": "D:/ck3-state/resume91-root/post-vacation-20261107/ROOT-MAIN-THREAD-USER-ORDER-20261116-ENV-ONLY-E19.json",
+      "bytes": 7254,
+      "sha256": "5fdf7731e5983f67dd143c42bca3750886b5e4aac74817efa5b0a5f58c3a6386",
+      "scope": "Earlier environment-only message had no STOP; genuinely later vacation now overrides continuation",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "old_main",
+      "path": "D:/r64v0711/docs/handover/2026-11-07-java-g2-resume91-vacation-handoff.md",
+      "bytes": 11110,
+      "sha256": "6160e50ccb589b6c61ceedbd2b04baa933aa98b9956a45ac97f4682263ca99d4",
+      "scope": "Historical November7 handoff retained; superseded facts not current",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "old_index",
+      "path": "D:/r64v0711/docs/handover/2026-11-07-java-g2-resume91-vacation-handoff-source-index.json",
+      "bytes": 10905,
+      "sha256": "70fec908424e80de8f61887240db25448d974dc6acd3b5fecadd7e614a55486a",
+      "scope": "Historical November7 handoff retained; superseded facts not current",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "old_native",
+      "path": "D:/r64v0711/docs/native-handoff-2026-11-07-vacation.md",
+      "bytes": 4344,
+      "sha256": "227197119117829a3bd51ddb2c5a61ea4261b46bce8ee66d20380a363a435296",
+      "scope": "Historical November7 handoff retained; superseded facts not current",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "root_pre_vacation_snapshot",
+      "path": "D:/ck3-state/resume91-root/post-vacation-20261107/vacation-handoff-20261116/ROOT-RESUME-NOW.pre-vacation.original.json",
+      "bytes": 151391,
+      "sha256": "615cbfa5ee94dec2560d0b535081860856d3defcb4d82206cd959493f0820265",
+      "scope": "Historical mutable Root note frozen verbatim; its old Continue/top-level head1985 are superseded",
+      "verification": "read_existing_named_file_only_no_live_query"
+    },
+    {
+      "id": "root_vacation_current",
+      "path": "D:/ck3-state/resume91-root/post-vacation-20261107/vacation-handoff-20261116/ROOT-VACATION-CURRENT-20261116.json",
+      "bytes": 3505,
+      "sha256": "25fd4c862185904cac9064fba233442cbbb64eea4a48f64733765dda194d2d73",
+      "scope": "Authoritative later vacation cut; no current OS query",
+      "verification": "read_existing_named_file_only_no_live_query"
+    }
+  ],
+  "document_payloads": [
+    {
+      "repository_path": "docs/handover/2026-11-16-java-g2-resume91-vacation-handoff.md",
+      "path": "D:/ck3-state/resume91-root/post-vacation-20261107/vacation-handoff-20261116/2026-11-16-java-g2-resume91-vacation-handoff.md",
+      "bytes": 16015,
+      "sha256": "18167f66efe9c48046506d0067a063952a8c3af9b92d3b2ed9c8e78a38b1760a"
+    },
+    {
+      "repository_path": "docs/native-handoff-2026-11-16-vacation.md",
+      "path": "D:/ck3-state/resume91-root/post-vacation-20261107/vacation-handoff-20261116/native-handoff-2026-11-16-vacation.md",
+      "bytes": 5295,
+      "sha256": "3fe070b1916f2bffa1dd63887de6ffa4cbd5f6cd5ae675275a70e15852b9386c"
+    }
+  ],
+  "documentation_encoding": "UTF-8; repository text payloads use canonical LF. Existing machine-local evidence pins remain their original raw bytes."
+}
