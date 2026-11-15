@@ -1349,11 +1349,12 @@ public final class CiBootstrap {
 
     private static void download(URI uri, Path target, long maximum) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15))
-                .followRedirects(HttpClient.Redirect.NEVER).build();
+                .followRedirects(HttpClient.Redirect.NORMAL).build();
         HttpResponse<InputStream> response = client.send(HttpRequest.newBuilder(uri).timeout(Duration.ofMinutes(2)).GET().build(),
                 HttpResponse.BodyHandlers.ofInputStream());
         try (InputStream input = response.body(); var output = Files.newOutputStream(target, StandardOpenOption.CREATE_NEW)) {
-            if (response.statusCode() != 200) throw new IOException("official fixed tool download unavailable");
+            if (response.statusCode() != 200) throw new IOException("official fixed tool download unavailable: HTTP "
+                    + response.statusCode() + " from " + uri);
             transferBounded(input, output, maximum, Duration.ofMinutes(2));
         }
     }
