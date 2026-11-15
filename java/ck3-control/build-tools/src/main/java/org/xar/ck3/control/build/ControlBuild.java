@@ -505,7 +505,9 @@ public final class ControlBuild {
     public static final String ACCOUNTING_FILE = "xar-workpackage-accounting.json";
     public enum AccountingMode { FULL_PART_INVENTORY, CONSERVATIVE_VOLUME_ATTEMPT }
     public enum RepositoryAccountingState { FULL_PART_MEASURED, CONSERVATIVE_VOLUME_COVERAGE }
-    public enum FinancialLayout { CAPACITY_SUPPLEMENT18 }
+    public enum FinancialLayout { CAPACITY_SUPPLEMENT18, ROOT_STANDALONE_V1 }
+    public static final String ROOT_STANDALONE_FINANCIAL_SCHEMA = "xar.java-control.root-standalone-financial/v1";
+    public static final String ROOT_STANDALONE_AUTHORITY_SCHEMA = "xar.java-control.root-standalone-authority/v1";
     private static final Set<String> ATTEMPT_SCOPES = Set.of("source_snapshot", "build", "private_tmp", "artifacts", "logs");
     private static final Set<String> ATTEMPT_ROOTS = Set.of("maven_repository", "source_snapshot", "build", "private_tmp", "artifacts", "logs");
     public record VolumeObservation(String volumeRoot, long totalBytes, long usableBytes, long usedUpperBytes,
@@ -638,7 +640,7 @@ public final class ControlBuild {
             Map<String, Long> nativeCapsByScope, long maximumNewNativeBytes, long canonicalM2GrowthReservationBytes) {
         public AttemptAccountingAuthority {
             if (!ATTEMPT_AUTHORITY_SCHEMA.equals(schema) || attempt == null || !attempt.matches("[a-zA-Z0-9][a-zA-Z0-9_-]{0,47}")
-                    || financialLayout != FinancialLayout.CAPACITY_SUPPLEMENT18 || financialSourceRef == null
+                    || financialLayout == null || financialSourceRef == null
                     || maximumNewLogicalBytes <= 0 || maximumNewNativeBytes <= 0 || canonicalM2GrowthReservationBytes <= 0)
                 throw new IllegalArgumentException("Explicit bounded attempt accounting authority required");
             reservationSourceRefs = List.copyOf(reservationSourceRefs); measuredRoots = Map.copyOf(measuredRoots);
@@ -802,7 +804,7 @@ public final class ControlBuild {
             throw new IOException("Source closure grew or changed after build");
         }
         verifyCompletedAccounting(receipt.schema().equals(SCOPED_BUILD_SCHEMA), receipt.capacityReleaseRef(), receipt.machineId(), completed,
-                Path.of(receipt.compiledSourceRoot()), Path.of(receipt.sourceRoot()), receipt.workpackageAccountingRef(), receipt.finalLogicalBytesByPart());
+                Path.of(receipt.compiledSourceRoot()), Path.of(receipt.sourceRoot()), receipt.workpackageAccountingRef(), receipt.finalLogicalBytesByPart(), receipt.targetKind());
         Path argumentManifest = Path.of(receipt.compiledSourceRoot()).resolve(MavenArgumentFile.MANIFEST);
         if (Files.isRegularFile(argumentManifest, LinkOption.NOFOLLOW_LINKS)) {
             var manifest = JSON.readValue(readLimited(argumentManifest, MavenArgumentFile.MAXIMUM_BYTES), MavenArgumentFile.Manifest.class);
@@ -937,7 +939,7 @@ public final class ControlBuild {
             throw new IOException("Capture compiler input/created-file/test-binary SourceFile origin closure changed");
         }
         if (receipt.schema().equals(SCOPED_CAPTURE_SCHEMA)) verifyCompletedAccounting(true, receipt.capacityReleaseRef(), machine, completed,
-                snapshot, Path.of(receipt.sourceRoot()), receipt.workpackageAccountingRef(), receipt.finalLogicalBytesByPart());
+                snapshot, Path.of(receipt.sourceRoot()), receipt.workpackageAccountingRef(), receipt.finalLogicalBytesByPart(), TargetKind.SERVICE_FAST_JAR);
         else {
             if (lease.attemptAuthority() != null || !receipt.finalLogicalBytesByPart().keySet().equals(lease.caps().keySet())) throw new IOException("Complete historical capture final part accounting required");
             for (var item : receipt.finalLogicalBytesByPart().entrySet()) if (item.getValue() < 0 || item.getValue() > lease.caps().get(item.getKey())) throw new IOException("Capture final part exceeded its actual release");
@@ -947,7 +949,7 @@ public final class ControlBuild {
     }
 
     private static void verifyCompletedAccounting(boolean scoped, FileRef releaseRef, String machine, Instant completed,
-            Path snapshot, Path sourceRoot, FileRef accountingRef, Map<String, Long> historicalParts) throws IOException {
+            Path snapshot, Path sourceRoot, FileRef accountingRef, Map<String, Long> historicalParts, TargetKind targetKind) throws IOException {
         JsonNode original = object(JSON.readTree(exactAccountingBytes(releaseRef, 128 << 10)));
         boolean versioned = text(original, "schema").equals(ATTEMPT_RELEASE_SCHEMA);
         if (scoped != versioned) throw new IOException("Receipt accounting mode differs from original issuer schema");
@@ -962,7 +964,7 @@ public final class ControlBuild {
         WorkpackageAccounting accounting = retained.accounting();
         AccountingSources sources = completedAccountingSources(accountingRef, releaseRef, release);
         Config config = new Config(sourceRoot, work, Path.of(releaseRef.path()), authority.attempt(), release.ownerTask(), null, work,
-                "3.10.0", 900, TargetKind.SERVICE_FAST_JAR, SourceLimitProfile.STANDARD_8_MIB);
+                "3.10.0", 900, targetKind, SourceLimitProfile.STANDARD_8_MIB);
         readAttemptLease(config, machine, release, completed, sources);
         Instant observed = Instant.parse(accounting.observedAtUtc());
         if (accounting.mode() != AccountingMode.CONSERVATIVE_VOLUME_ATTEMPT || !accounting.capacityReleaseRef().equals(releaseRef)
@@ -978,13 +980,18 @@ public final class ControlBuild {
         for (VolumeObservation volume : accounting.volumes()) {
             Path root = Path.of(volume.volumeRoot()); String letter = root.toString().substring(0, 1).toUpperCase(Locale.ROOT);
             CiBootstrap.VolumeBudget budget = release.volumes().entrySet().stream().filter(entry -> Path.of(entry.getKey()).equals(root)).map(Map.Entry::getValue).findFirst().orElseThrow(() -> new IOException("Foreign completed volume"));
-            JsonNode old = object(object(financial.get("fresh_observations")).get(letter)); JsonNode reserves = object(financial.get("reserves"));
-            long held = positive(financial, letter.equals("D") ? "all_holds_including_current_R3_bytes" : letter + "_other_unspent_holds_bytes");
+            boolean standalone = authority.financialLayout() == FinancialLayout.ROOT_STANDALONE_V1;
+            JsonNode old = standalone ? object(object(financial.get("volume_observations")).get(root.toString()))
+                    : object(object(financial.get("fresh_observations")).get(letter));
+            JsonNode reserves = standalone ? old : object(financial.get("reserves"));
+            long held = standalone ? positive(old, "all_holds_bytes")
+                    : positive(financial, letter.equals("D") ? "all_holds_including_current_R3_bytes" : letter + "_other_unspent_holds_bytes");
             if (!observedRoots.add(root) || volume.totalBytes() != budget.totalVolumeBytes() || volume.requiredFreeBytes() != budget.requiredFree()
                     || volume.effectiveProjectQuota() != budget.effectiveProjectQuota() || volume.allHoldsBytes() != held
-                    || volume.systemGrowthReserve() != positive(reserves, letter + "_system_growth") || volume.safetyReserve() != positive(reserves, letter + "_safety")
+                    || volume.systemGrowthReserve() != positive(reserves, standalone ? "system_growth_reserve" : letter + "_system_growth")
+                    || volume.safetyReserve() != positive(reserves, standalone ? "safety_reserve" : letter + "_safety")
                     || volume.quotaUsedUpperBytes() < positive(old, "used_upper")) throw new IOException("Completed quote differs from retained source or grants deletion credit");
-            requireVolumeQuote(volume);
+            if (standalone) requireRootStandaloneVolumeQuote(volume, nonnegative(old, "other_unspent_project_holds_bytes")); else requireVolumeQuote(volume);
         }
         sources.verify(release.policyRef()); authority.financialSourceRef().verify();
         for (FileRef ref : authority.reservationSourceRefs()) sources.verify(ref);
@@ -1989,6 +1996,8 @@ public final class ControlBuild {
             boolean observeCurrent, AccountingSources sources) throws IOException {
         AttemptAccountingAuthority authority = release.workpackageAccounting();
         JsonNode financial = object(JSON.readTree(exactAccountingBytes(authority.financialSourceRef(), 128 << 10)));
+        if (authority.financialLayout() == FinancialLayout.ROOT_STANDALONE_V1)
+            return validateRootStandaloneFinancial(config, release, authorityAt, observeCurrent, sources, financial);
         if (!text(financial, "schema").equals("xar.java-phase1.resume56-r3-financial-supplement/v1")
                 || !text(financial, "machine_id").equals(release.machineId())
                 || !text(financial, "status").equals("RELEASED_EXPLICIT_ROOT_AUTHORIZED_0830_REVIEW_SUCCESSOR_WITHOUT_CAP_INCREASE")
@@ -2025,7 +2034,126 @@ public final class ControlBuild {
         return List.copyOf(result);
     }
 
+    /** Separate Root grant: the volume upper remains UNKNOWN project inventory; shared m2 is never inventoried. */
+    private static List<VolumeObservation> validateRootStandaloneFinancial(Config config, AttemptCapacityRelease release,
+            Instant authorityAt, boolean observeCurrent, AccountingSources sources, JsonNode financial) throws IOException {
+        requireAccountingKeys(financial, Set.of("schema", "machine_id", "status", "issuer_task", "owner_task", "attempt",
+                "observed_at_utc", "review_at_utc", "work_root", "attempt_roots", "policy_ref", "root_authority_ref", "native_fund_ref",
+                "reservation_source_refs", "canonical_maven_repository", "repository_accounting_state", "current_whole_project_actual_usage_bytes",
+                "maximum_new_native_bytes", "maximum_project_bytes", "shared_canonical_m2_growth_hold_once_bytes", "volume_observations"));
+        AttemptAccountingAuthority authority = release.workpackageAccounting();
+        String issuer = text(financial, "issuer_task");
+        if (config.targetKind() != TargetKind.BUILD_TOOLS_RUNTIME || config.sourceLimitProfile() != SourceLimitProfile.STANDARD_8_MIB
+                || !text(financial, "schema").equals(ROOT_STANDALONE_FINANCIAL_SCHEMA)
+                || !text(financial, "status").equals("RELEASED_ROOT_STANDALONE_BOUNDED_BUILD")
+                || !issuer.equals("/root/ck3-resume91-root-20261116-research")
+                || !text(financial, "machine_id").equals(release.machineId())
+                || !text(financial, "owner_task").equals(release.ownerTask()) || !text(financial, "attempt").equals(config.attempt())
+                || !text(financial, "repository_accounting_state").equals("CONSERVATIVE_VOLUME_COVERAGE")
+                || !financial.get("current_whole_project_actual_usage_bytes").isNull())
+            throw new IOException("Root standalone issuer, attempt, machine, owner or UNKNOWN inventory rejected");
+        Instant observed = Instant.parse(text(financial, "observed_at_utc")), review = Instant.parse(text(financial, "review_at_utc"));
+        if (!review.isAfter(observed) || review.isAfter(observed.plusSeconds(3600))
+                || observed.isAfter(Instant.parse(release.observedAtUtc())) || authorityAt.isBefore(observed) || !authorityAt.isBefore(review)
+                || Instant.parse(release.reviewAtUtc()).isAfter(review)) throw new IOException("Root standalone finite one-hour grant is not current");
+        requireAccountingPath(financial, "work_root", config.workRoot());
+        requireAccountingPath(financial, "canonical_maven_repository", config.workRoot().resolve("m2").toRealPath());
+        JsonNode roots = object(financial.get("attempt_roots")); requireAccountingKeys(roots, ATTEMPT_ROOTS);
+        for (var entry : authority.measuredRoots().entrySet()) requireAccountingPath(roots, entry.getKey(), Path.of(entry.getValue()));
+        FileRef policyRef = JSON.treeToValue(financial.get("policy_ref"), FileRef.class);
+        FileRef rootRef = JSON.treeToValue(financial.get("root_authority_ref"), FileRef.class);
+        FileRef fundRef = JSON.treeToValue(financial.get("native_fund_ref"), FileRef.class);
+        JsonNode refNodes = financial.get("reservation_source_refs"); List<FileRef> refs = new ArrayList<>();
+        if (refNodes == null || !refNodes.isArray()) throw new IOException("Ordered Root reservation sources required");
+        for (JsonNode ref : refNodes) refs.add(JSON.treeToValue(ref, FileRef.class));
+        if (!policyRef.equals(release.policyRef()) || !refs.equals(authority.reservationSourceRefs())
+                || !refs.containsAll(List.of(policyRef, rootRef, fundRef)) || Set.of(policyRef.path(), rootRef.path(), fundRef.path()).size() != 3)
+            throw new IOException("Root policy, authority, Native fund or reservation source substitution rejected");
+        for (FileRef ref : refs) sources.verify(ref);
+        long maximum = positive(financial, "maximum_new_native_bytes"), quota = positive(financial, "maximum_project_bytes");
+        long m2Hold = positive(financial, "shared_canonical_m2_growth_hold_once_bytes");
+        if (maximum != (64L << 20) || m2Hold != (8L << 20) || authority.canonicalM2GrowthReservationBytes() != m2Hold
+                || Math.addExact(authority.maximumNewNativeBytes(), m2Hold) > maximum
+                || exactSum(authority.nativeCapsByScope()) > authority.maximumNewNativeBytes()
+                || exactSum(authority.logicalCapsByScope()) > authority.maximumNewLogicalBytes())
+            throw new IOException("Root 64MiB grant includes the canonical m2 hold exactly once");
+        JsonNode root = object(JSON.readTree(sources.read(rootRef, 128 << 10)));
+        if (!text(root, "schema").equals(ROOT_STANDALONE_AUTHORITY_SCHEMA)
+                || !text(root, "machine_id").equals(release.machineId()) || !text(root, "issuer_task").equals(issuer)
+                || !text(root, "owner_task").equals(release.ownerTask()) || !text(root, "attempt").equals(config.attempt())
+                || !Instant.parse(text(root, "observed_at_utc")).equals(observed) || !Instant.parse(text(root, "review_at_utc")).equals(review)
+                || !JSON.treeToValue(root.get("policy_ref"), FileRef.class).equals(policyRef)
+                || !JSON.treeToValue(root.get("native_fund_ref"), FileRef.class).equals(fundRef)
+                || positive(root, "maximum_new_project_bytes") != maximum || positive(root, "maximum_project_bytes") != quota)
+            throw new IOException("Independent Root authority does not bind this finite attempt and exact sources");
+        requireAccountingPath(root, "work_root", config.workRoot());
+        JsonNode rootProjectHolds = object(root.get("other_unspent_project_holds_bytes_by_volume"));
+        requireAccountingKeys(rootProjectHolds, release.volumes().keySet());
+        JsonNode fund = object(JSON.readTree(sources.read(fundRef, 128 << 10)));
+        if (!text(fund, "schema").equals("native.allocator.runtime-qualified-env-tools64-prospective/v1")
+                || !text(fund, "machine_id").equals(release.machineId()) || !text(fund, "owner").equals(release.ownerTask())
+                || !text(fund, "allocator").equals("/root/native_continue") || Instant.parse(text(fund, "atUtc")).isAfter(observed)
+                || positive(fund, "new_distinct_net_upper_once_bytes") != maximum
+                || Math.subtractExact(positive(fund, "raw_after"), nonnegative(fund, "raw_before")) != maximum
+                || positive(object(fund.get("quota_exception")), "maximum_new_project_bytes") != maximum)
+            throw new IOException("Independent Native 64MiB fund does not cover this owner");
+        JsonNode quote = object(fund.get("quote"));
+        requireAccountingKeys(quote, Set.of("source", "incremental_build_and_completed_deployment", "tmp", "logs_and_durable_receipt", "new_m2_metadata_only"));
+        long quoteSum = 0; for (String key : List.of("source", "incremental_build_and_completed_deployment", "tmp", "logs_and_durable_receipt", "new_m2_metadata_only")) quoteSum = Math.addExact(quoteSum, positive(quote, key));
+        if (quoteSum != maximum || positive(quote, "new_m2_metadata_only") != m2Hold
+                || authority.nativeCapsByScope().get("source_snapshot") > positive(quote, "source")
+                || authority.nativeCapsByScope().get("build") > positive(quote, "incremental_build_and_completed_deployment")
+                || authority.nativeCapsByScope().get("private_tmp") > positive(quote, "tmp")
+                || Math.addExact(authority.nativeCapsByScope().get("logs"), authority.nativeCapsByScope().get("artifacts")) > positive(quote, "logs_and_durable_receipt"))
+            throw new IOException("Actual attempt scope caps exceed the independent Native allocation");
+        JsonNode volumes = object(financial.get("volume_observations")); requireAccountingKeys(volumes, release.volumes().keySet());
+        List<VolumeObservation> result = new ArrayList<>();
+        for (var entry : release.volumes().entrySet()) {
+            Path volumeRoot = Path.of(entry.getKey()).toRealPath(); JsonNode original = object(volumes.get(entry.getKey()));
+            requireAccountingKeys(original, Set.of("total", "free", "used_upper", "actual_cluster_bytes", "native_root_identity", "effective_project_quota", "all_holds_bytes", "other_unspent_project_holds_bytes", "system_growth_reserve", "safety_reserve"));
+            requireAccountingKeys(object(original.get("native_root_identity")), Set.of("api", "volume_serial_decimal", "file_index_decimal"));
+            CiBootstrap.VolumeBudget budget = entry.getValue(); long holds = positive(original, "all_holds_bytes");
+            long projectHolds = nonnegative(original, "other_unspent_project_holds_bytes");
+            if (projectHolds != nonnegative(rootProjectHolds, entry.getKey())) throw new IOException("Root authority does not bind the real other project holds");
+            long system = positive(original, "system_growth_reserve"), safety = positive(original, "safety_reserve");
+            long required = Math.addExact(holds, Math.addExact(system, safety));
+            if (positive(original, "total") != budget.totalVolumeBytes() || nonnegative(original, "free") != budget.availableBytes()
+                    || positive(original, "used_upper") != budget.currentProjectUsageConservativeUpper()
+                    || Math.addExact(nonnegative(original, "free"), positive(original, "used_upper")) != positive(original, "total")
+                    || positive(original, "effective_project_quota") != quota || budget.effectiveProjectQuota() != quota
+                    || budget.thisWritePeak() != maximum || holds != Math.addExact(budget.thisWritePeak(), budget.otherUnspentReservations())
+                    || projectHolds > budget.otherUnspentReservations()
+                    || Math.addExact(budget.currentProjectUsageConservativeUpper(), Math.addExact(maximum, projectHolds)) > quota
+                    || required != budget.requiredFree() || system != budget.systemGrowthReserve() || safety != budget.safetyReserve())
+                throw new IOException("Root volume quote does not consume the original fresh observation and all reserves");
+            CiBootstrap.QuotaOverride override = release.quotaOverrides().get(entry.getKey());
+            if (override != null && (!issuer.equals(override.owner()) || !rootRef.equals(new FileRef(override.sourceRef().path(), override.sourceRef().bytes(), override.sourceRef().sha256()))))
+                throw new IOException("Root quota override is not the same independently retained authority");
+            if (observeCurrent) {
+                VolumeObservation current = observeAccountingVolume(volumeRoot, original, required, quota, holds, system, safety, true);
+                requireRootStandaloneVolumeQuote(current, projectHolds); result.add(current);
+            }
+        }
+        if (release.volumes().keySet().stream().map(Path::of).noneMatch(config.workRoot().getRoot()::equals)) throw new IOException("Actual Root work volume is not covered");
+        return List.copyOf(result);
+    }
+
+    private static void requireAccountingKeys(JsonNode node, Set<String> expected) throws IOException {
+        object(node); Set<String> actual = new HashSet<>(); node.fieldNames().forEachRemaining(actual::add);
+        if (!actual.equals(expected)) throw new IOException("Exact versioned accounting fields required: " + expected);
+    }
+
+    private static void requireAccountingPath(JsonNode node, String field, Path expected) throws IOException {
+        Path path = Path.of(text(node, field));
+        if (!path.isAbsolute() || !path.equals(path.toAbsolutePath().normalize()) || !path.equals(expected))
+            throw new IOException("Exact normalized Root accounting path required: " + field);
+    }
+
     private static VolumeObservation observeAccountingVolume(Path root, JsonNode original, long required, long quota, long holds, long system, long safety) throws IOException {
+        return observeAccountingVolume(root, original, required, quota, holds, system, safety, false);
+    }
+
+    private static VolumeObservation observeAccountingVolume(Path root, JsonNode original, long required, long quota, long holds, long system, long safety, boolean rootStandalone) throws IOException {
         SharedSourceFiles.NativeFile identity = accountingDirectory(root);
         requireAccountingAllocationUnit(root, positive(original, "actual_cluster_bytes"));
         JsonNode expected = object(original.get("native_root_identity"));
@@ -2037,7 +2165,8 @@ public final class ControlBuild {
         if (total != positive(original, "total")) throw new IOException("Actual volume geometry changed");
         long used = Math.subtractExact(total, usable), upper = Math.max(used, positive(original, "used_upper"));
         VolumeObservation observation = new VolumeObservation(root.toString(), total, usable, used, upper, required, quota, holds, system, safety);
-        requireVolumeQuote(observation); return observation;
+        if (rootStandalone) requireRootStandaloneVolumeQuote(observation); else requireVolumeQuote(observation);
+        return observation;
     }
 
     private static SharedSourceFiles.NativeFile accountingDirectory(Path path) throws IOException {
@@ -2065,6 +2194,17 @@ public final class ControlBuild {
         if (observation.usableBytes() < observation.requiredFreeBytes()
                 || Math.addExact(observation.quotaUsedUpperBytes(), observation.requiredFreeBytes()) > observation.effectiveProjectQuota())
             throw new IOException("Conservative actual volume upper plus all holds/reserves exceeds available/quota");
+    }
+
+    /** Admission already charged the whole one-time write peak; live usedUpper includes subsequent writes. */
+    static void requireRootStandaloneVolumeQuote(VolumeObservation observation) throws IOException {
+        requireRootStandaloneVolumeQuote(observation, 0);
+    }
+
+    static void requireRootStandaloneVolumeQuote(VolumeObservation observation, long otherProjectHolds) throws IOException {
+        if (otherProjectHolds < 0 || observation.usableBytes() < observation.requiredFreeBytes()
+                || Math.addExact(observation.quotaUsedUpperBytes(), otherProjectHolds) > observation.effectiveProjectQuota())
+            throw new IOException("Root conservative volume upper exceeds project quota or physical free lacks all reserves");
     }
 
     private record ScopeUsage(long logicalBytes, long nativeBytes) { }
