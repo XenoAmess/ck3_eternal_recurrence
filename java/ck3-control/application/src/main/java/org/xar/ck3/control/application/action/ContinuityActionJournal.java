@@ -214,6 +214,39 @@ public final class ContinuityActionJournal implements ActionJournal {
         for (Historical item : historical(state, archive)) latest.putIfAbsent(item.receipt().command().actionId(), item.receipt());
         return List.copyOf(latest.values());
     }
+    /** One complete fresh logical batch, not a cache or a caller-provided history authority.
+     * The private full chain is produced at the original lookup boundary; each query keeps its own old checks.
+     * Separate canonical calls and the historical WAL-prefix state still perform their independent full reads. */
+    static <T>T withCanonicalHistory(ContinuityState state,ActionPorts.OutcomeArchive archive,
+            java.util.function.BiFunction<java.util.function.Function<String,Optional<ActionReceipt>>,
+                    java.util.function.Function<ActionReceipt,org.xar.ck3.control.contracts.ExactRef>,java.util.concurrent.Callable<T>> work)
+            throws java.io.IOException {
+        java.util.Objects.requireNonNull(work);
+        List<Historical> complete=historical(state,archive);
+        Thread thread=Thread.currentThread();boolean[] open={true};
+        java.util.function.Function<String,Optional<ActionReceipt>> lookup=actionId->{
+            StrictJson.require(open[0]&&Thread.currentThread()==thread,"canonical history query escaped its source-owned thread/callback");
+            for(Historical item:complete)if(item.receipt().command().actionId().equals(actionId))return Optional.of(item.receipt());
+            return Optional.empty();
+        };
+        java.util.function.Function<ActionReceipt,org.xar.ck3.control.contracts.ExactRef> membership=exact->{
+            StrictJson.require(open[0]&&Thread.currentThread()==thread,"canonical history query escaped its source-owned thread/callback");
+            java.util.Objects.requireNonNull(exact);StrictJson.require(exact.sequence()<=state.sequence()
+                    &&exact.command().origin().machineId().equals(state.machineId()),"historical receipt crossed actual writer machine/sequence");
+            Historical actual=complete.stream().filter(item->item.receipt().sequence()==exact.sequence()).findFirst()
+                    .orElseThrow(()->new IllegalArgumentException("receipt is not in the surviving canonical action record chain"));
+            StrictJson.require(java.util.Arrays.equals(ActionReceiptCodec.encodeReceipt(exact,archive),ActionReceiptCodec.encodeReceipt(actual.receipt(),archive)),
+                    "historical action record has another complete original receipt body");
+            return actual.record();
+        };
+        try{return java.util.Objects.requireNonNull(work.apply(lookup,membership)).call();}
+        catch(java.io.IOException|RuntimeException|Error failure){throw failure;}
+        catch(Exception failure){
+            if(failure instanceof InterruptedException)Thread.currentThread().interrupt();
+            throw new java.io.IOException("canonical history batch raised an unsupported checked exception",failure);
+        }finally{open[0]=false;}
+    }
+
     /** Immutable original prefix from the same canonical chain; the caller supplies the actual locked Head state. */
     public static List<ActionReceipt> receiptsBeforeIntent(ContinuityState current, String originalActionId, ActionPorts.OutcomeArchive scoped) {
         StrictJson.text(originalActionId); java.util.Objects.requireNonNull(scoped);

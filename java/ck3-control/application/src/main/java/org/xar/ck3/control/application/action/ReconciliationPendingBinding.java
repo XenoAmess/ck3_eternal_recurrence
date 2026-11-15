@@ -74,6 +74,28 @@ public final class ReconciliationPendingBinding {
         this.store=Objects.requireNonNull(store);this.archive=Objects.requireNonNull(archive);this.originals=Objects.requireNonNull(originals);
         this.historyQualification=Objects.requireNonNull(historyQualification);
     }
+    /** Resolve this actual definition and its batch producer only; no history, archive, observation or permission is read. */
+    public static void requireCanonicalHistoryBatchLinkage() {
+        try {
+            var lookup=java.lang.invoke.MethodHandles.lookup();
+            lookup.findStatic(ContinuityActionJournal.class,"withCanonicalHistory",java.lang.invoke.MethodType.methodType(
+                    Object.class,ContinuityState.class,ActionPorts.OutcomeArchive.class,java.util.function.BiFunction.class));
+            lookup.findVirtual(ReconciliationPendingBinding.class,"canonicalFromFreshHistory",java.lang.invoke.MethodType.methodType(
+                    Canonical.class,ContinuityStorePort.Session.class,WriterContracts.Head.class,ActionPorts.OutcomeArchive.class,
+                    ActionReceipt.class,List.class,boolean.class,ActionState.Attempt.class,java.util.function.Function.class,
+                    java.util.function.Function.class));
+        }catch(NoSuchMethodException|IllegalAccessException cause){
+            throw new LinkageError("actual canonical fresh history batch linkage unavailable",cause);
+        }
+        try {
+            ClassLoader binding=ReconciliationPendingBinding.class.getClassLoader(),journal=ContinuityActionJournal.class.getClassLoader();
+            System.getLogger(ReconciliationPendingBinding.class.getName()).log(System.Logger.Level.INFO,
+                    "CANONICAL_HISTORY_BATCH_LINKAGE resolved capability=single_canonical_fresh_batch_v1 binding_loader="
+                    +(binding==null?"bootstrap":binding.getClass().getName()+"@"+Integer.toHexString(System.identityHashCode(binding)))
+                    +" journal_loader="+(journal==null?"bootstrap":journal.getClass().getName()+"@"+Integer.toHexString(System.identityHashCode(journal))));
+        }catch(RuntimeException|Error diagnosticUnavailable){ /* Optional output cannot replace successful method resolution. */ }
+    }
+
     public HistoryQualification historyQualification(){return historyQualification;}
     /** Exact installed owners only. This identity check supplies no history qualification or epoch authority. */
     public void requireOwner(ContinuityStorePort actualStore,ActionPorts.OutcomeArchive actualArchive)throws IOException {
@@ -141,7 +163,15 @@ public final class ReconciliationPendingBinding {
     private Canonical canonical(ContinuityStorePort.Session session,WriterContracts.Head head,
             ActionPorts.OutcomeArchive bound,ActionReceipt original,List<WriterContracts.Pin> pins,boolean historical)throws IOException{
         ActionState.Attempt attempt=ReconciliationIdentity.primitiveAttempt(original);
-        ActionReceipt current=ContinuityActionJournal.lookup(head.state(),original.command().actionId(),bound)
+        return ContinuityActionJournal.withCanonicalHistory(head.state(),bound,(lookup,membership)->()->
+                canonicalFromFreshHistory(session,head,bound,original,pins,historical,attempt,lookup,membership));
+    }
+    /** Private only: these two query closures can be issued solely by the Journal's complete current-call read. */
+    private Canonical canonicalFromFreshHistory(ContinuityStorePort.Session session,WriterContracts.Head head,
+            ActionPorts.OutcomeArchive bound,ActionReceipt original,List<WriterContracts.Pin> pins,boolean historical,
+            ActionState.Attempt attempt,java.util.function.Function<String,java.util.Optional<ActionReceipt>> lookup,
+            java.util.function.Function<ActionReceipt,ExactRef> membership)throws IOException {
+        ActionReceipt current=lookup.apply(original.command().actionId())
                 .orElseThrow(()->new IOException("original primitive is absent from the actual canonical action chain"));
         if(!historical){
             ReconciliationIdentity.primitiveAttempt(current);
@@ -162,8 +192,8 @@ public final class ReconciliationPendingBinding {
                 "actual immutable receipt differs from the original canonical pending");
         capture(session,receiptRef,ActionReceiptCodec.MAXIMUM_RECEIPT_BYTES,pins);
         capture(session,bound.receiptReferenceOf(current),ActionReceiptCodec.MAXIMUM_RECEIPT_BYTES,pins);
-        capture(session,ContinuityActionJournal.requireHistoricalReceipt(head.state(),current,bound),WriterContracts.MAX_PIN_BYTES,pins);
-        ExactRef recordRef=ContinuityActionJournal.requireHistoricalReceipt(head.state(),original,bound);
+        capture(session,membership.apply(current),WriterContracts.MAX_PIN_BYTES,pins);
+        ExactRef recordRef=membership.apply(original);
         capture(session,recordRef,WriterContracts.MAX_PIN_BYTES,pins);
         requireHistoricalPoint(session,head,original,recordRef,bound);
         capture(session,bound.requestReferenceOf(attempt.preparedRequest()),WriterContracts.MAX_PIN_BYTES,pins);

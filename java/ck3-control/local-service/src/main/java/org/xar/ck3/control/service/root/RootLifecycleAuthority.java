@@ -430,6 +430,7 @@ public final class RootLifecycleAuthority {
 
     /** Resolve only, using this actual Life definition's loader; no projection, observation, permission or Game I/O. */
     static void requireCapturedProjectionLinkage() {
+        org.xar.ck3.control.application.action.ReconciliationPendingBinding.requireCanonicalHistoryBatchLinkage();
         try {
             var lookup=java.lang.invoke.MethodHandles.lookup();
             lookup.findVirtual(DriverObservationAssembler.class,"withCapturedProjection",java.lang.invoke.MethodType.methodType(
