@@ -86,13 +86,22 @@ final class LedgerFiles {
         }
     }
     static LeasedDocument lease(ExactRef expected, int maximum) throws IOException {
-        LeasedDocument lease = lease(Path.of(expected.path()), maximum);
+        Path path = Path.of(expected.path());
+        IdentityBearingFileAttributes.ReadOnlyLease lease = IdentityBearingFileAttributes.leaseBoundedWindows(path, maximum);
         try {
-            Document actual = lease.original();
-            if (actual.pin().reference().bytes() != expected.bytes() || !actual.pin().reference().sha256().equals(expected.sha256())
-                    || !Path.of(expected.path()).toAbsolutePath().normalize().equals(Path.of(actual.pin().reference().path())))
+            var observed = lease.originalRead();
+            BasicFileAttributes after = observed.attributes();
+            WindowsFileIdentity key = (WindowsFileIdentity) after.fileKey();
+            FileIdentity identity = new FileIdentity(key.volumeSerialDecimal(), key.fileIdDecimal(), key.creationFiletimeDecimal(),
+                    after.lastModifiedTime().toInstant().toString(), after.size());
+            byte[] raw = observed.bytes();
+            Pin actual = new Pin(new ExactRef(path.toAbsolutePath().normalize().toString(), raw.length, sha(raw)), identity);
+            if (actual.reference().bytes() != expected.bytes() || !actual.reference().sha256().equals(expected.sha256())
+                    || !Path.of(expected.path()).toAbsolutePath().normalize().equals(Path.of(actual.reference().path())))
                 throw new IOException("leased original bytes/SHA/path changed");
-            return new LeasedDocument(lease.lease, new Document(new Pin(expected, actual.pin().identity()), actual.bytes));
+            Document document = new Document(new Pin(expected, actual.identity()), raw);
+            lease.releaseOriginalBytes();
+            return new LeasedDocument(lease, document);
         } catch (IOException | RuntimeException | Error failure) {
             try { lease.close(); } catch (IOException closing) { failure.addSuppressed(closing); }
             throw failure;
