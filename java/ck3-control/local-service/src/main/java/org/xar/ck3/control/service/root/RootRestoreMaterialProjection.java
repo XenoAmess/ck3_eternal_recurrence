@@ -110,7 +110,8 @@ public final class RootRestoreMaterialProjection {
         Obj control=input.actualLifecycleControl();
         StrictJson.require(text(control.get("schema"),"xar.java-game-replacement/v1")
                 &&text(control.get("parentLifecycleIntentId"),input.requestId())
-                &&text(control.get("phase"),"NATIVE_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED")
+                &&(text(control.get("phase"),"NATIVE_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED")
+                    ||text(control.get("phase"),"EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED"))
                 &&OpportunityJson.integer(control.get("oldPid"),"original lifecycle PID").equals(BigInteger.valueOf(input.previous().pid()))
                 &&text(control.get("oldBirthDecimal"),input.previous().creationFiletime().value().toString()),"actual lifecycle original parent/generation source differs");
     }

@@ -14,15 +14,28 @@ import org.xar.ck3.control.contracts.ExactRef;
 public final class GameRestoreAdapter implements RestoreCheckpointService.LifecyclePort {
     private final JavaGameLifecycle lifecycle;
     private final NativeLaunchPlan template;
+    private final java.util.Optional<JavaGameLifecycle.ExitedGeneration> exitedSource;
     private final NativeCheckpointFiles files=new NativeCheckpointFiles();
     public GameRestoreAdapter(JavaGameLifecycle lifecycle,NativeLaunchPlan reviewedTemplate){
+        this.lifecycle=Objects.requireNonNull(lifecycle);this.template=Objects.requireNonNull(reviewedTemplate);this.exitedSource=java.util.Optional.empty();
+    }
+    public GameRestoreAdapter(JavaGameLifecycle lifecycle,NativeLaunchPlan reviewedTemplate,JavaGameLifecycle.ExitedGeneration actualExitedSource){
         this.lifecycle=Objects.requireNonNull(lifecycle);this.template=Objects.requireNonNull(reviewedTemplate);
+        this.exitedSource=java.util.Optional.of(Objects.requireNonNull(actualExitedSource));
     }
     @Override public RestoreCheckpointService.LaunchResult replaceOnce(RestoreCheckpointService.Request request)throws IOException,InterruptedException{
         Objects.requireNonNull(request);Win32Host.deadline(request.deadline());
         files.verify(request.pair());template.sources().verify();
-        JavaGameLifecycle.ReplacementResult result=lifecycle.replaceSavedOnce(new JavaGameLifecycle.ReplacementRequest(
-                request.requestId(),request.current().observed().game(),replacementPlan(request),true));
+        var replacement=new JavaGameLifecycle.ReplacementRequest(request.requestId(),request.current().observed().game(),
+                replacementPlan(request),exitedSource.isEmpty());
+        JavaGameLifecycle.ReplacementResult result;
+        if(exitedSource.isPresent()) {
+            var actual=exitedSource.orElseThrow();lifecycle.requireExitedSource(actual,template,request.deadline());
+            if(!actual.generation().equals(request.current().observed().game())
+                    ||!actual.sourceSessionId().equals(request.current().sessionId()))
+                throw new IOException("checkpoint restoration changed its actual exited source session or Game birth");
+            result=lifecycle.replaceExitedSavedOnce(replacement,actual);
+        } else result=lifecycle.replaceSavedOnce(replacement);
         if(result instanceof JavaGameLifecycle.Replaced replaced)return new RestoreCheckpointService.ReplacementAck(request.requestId(),
                 replaced.previous(),replaced.replacement().session().generation(),request.pair().save().reference(),replaced.lifecycleEvidence());
         if(result instanceof JavaGameLifecycle.ReplacementRejected rejected)return new RestoreCheckpointService.LaunchRejected(rejected.reason());

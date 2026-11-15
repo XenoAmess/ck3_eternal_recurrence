@@ -116,14 +116,20 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     private final MaterialSink materials;
     private final HttpClient http;
     private final URI completionEndpoint;
+    private final RootCodexFileDecisionExchange codexFiles;
 
     public RootOnlineDecisionSelector(RootOrdinaryRuntimeConfiguration.DecisionProvider config, Clock clock, MaterialSink materials) {
         this.config = Objects.requireNonNull(config); this.clock = Objects.requireNonNull(clock);
         this.materials = Objects.requireNonNull(materials);
-        http = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).proxy(java.net.ProxySelector.of(null)).build();
-        String base = config.endpoint().toString();
-        while (base.endsWith("/")) base = base.substring(0, base.length() - 1);
-        completionEndpoint = URI.create(base + "/chat/completions");
+        if (config.codexFile()) {
+            http = null; completionEndpoint = config.endpoint();
+            codexFiles = new RootCodexFileDecisionExchange(java.nio.file.Path.of(config.endpoint()), clock);
+        } else {
+            http = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).proxy(java.net.ProxySelector.of(null)).build();
+            String base = config.endpoint().toString();
+            while (base.endsWith("/")) base = base.substring(0, base.length() - 1);
+            completionEndpoint = URI.create(base + "/chat/completions"); codexFiles = null;
+        }
     }
 
     @Override public Selection select(PlanningRequest request, PlanningResult.ActionSelected proposal) {
@@ -164,12 +170,22 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 long left = remaining(wallEnd, nanoEnd);
                 if (left <= 0) { reason = "model_decision_deadline_exhausted"; break; }
                 String attemptStartedAt = beginProgress(machineId, identity, attempt, wallEnd, payload.length);
-                Exchange exchange = call(payload, wallEnd, nanoEnd);
+                RootCodexFileDecisionExchange.Reply fileReply = null;
+                Exchange exchange;
+                if (codexFiles == null) exchange = call(payload, wallEnd, nanoEnd);
+                else {
+                    JsonNode command = FullJsonTree.parse(ActionCodec.encodeCommand(proposal.command()), ActionCodec.MAX_COMMAND_BYTES);
+                    fileReply = codexFiles.exchange(requestRef, machineId, identity, sha, command.get("before"), wallEnd, nanoEnd);
+                    exchange = new Exchange(0, fileReply.raw(), fileReply.content(), -1, null,
+                            fileReply.totalMs(), fileReply.failure(), false, fileReply.complete(), new Usage(null,null,null,null));
+                }
                 endProgress(machineId, identity, attempt, attemptStartedAt, wallEnd, payload.length, exchange);
                 ObjectNode raw = object();
-                raw.put("schema", "xar.ordinary-model-http-attempt/v1"); raw.put("attempt", attempt);
+                raw.put("schema", codexFiles == null ? "xar.ordinary-model-http-attempt/v1" : "xar.ordinary-codex-file-attempt/v1"); raw.put("attempt", attempt);
                 raw.put("machine_id", machineId); raw.put("observed_at_utc", clock.instant().toString());
-                raw.put("status", exchange.status()); raw.put("wire_base64", Base64.getEncoder().encodeToString(exchange.raw()));
+                if (codexFiles == null) raw.put("status", exchange.status());
+                else { raw.put("transport", "codex-file"); raw.put("provider", config.model()); }
+                raw.put("wire_base64", Base64.getEncoder().encodeToString(exchange.raw()));
                 if (exchange.headersMs() < 0) raw.putNull("headers_ms"); else raw.put("headers_ms", exchange.headersMs());
                 if (exchange.ttftMs() == null) raw.putNull("ttft_ms"); else raw.put("ttft_ms", exchange.ttftMs());
                 raw.put("total_ms", exchange.totalMs()); raw.put("content", exchange.content());
@@ -178,8 +194,9 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 appendUsage(raw, exchange.usage());
                 ExactRef attemptRef=preserve(raw);
                 attempts.add(attemptRef);
+                if (fileReply != null) codexFiles.acknowledge(fileReply, attemptRef);
                 archivedProgress(machineId,identity,attempt,requestRef,attemptRef);
-                if (exchange.status() == 200 && exchange.complete() && exchange.failure().isEmpty()) {
+                if ((codexFiles != null || exchange.status() == 200) && exchange.complete() && exchange.failure().isEmpty()) {
                     try {
                         JsonNode selected = FullJsonTree.parse(exchange.content().getBytes(StandardCharsets.UTF_8), MAX_WIRE_BYTES);
                         StrictJson.object(selected, Set.of("decision", "proposal_id", "body_sha256", "reason"));
@@ -192,7 +209,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                     } catch (RuntimeException malformed) { reason = "model_invalid_selection:" + malformed.getMessage(); }
                     break;
                 }
-                reason = "model_http_failure:" + exchange.status() + ":" + exchange.failure();
+                reason = codexFiles == null ? "model_http_failure:" + exchange.status() + ":" + exchange.failure()
+                        : "codex_file_failure:" + exchange.failure();
                 if (!exchange.transientFailure() || attempt == config.maximumAttempts()) break;
                 long delay = retryDelayNanos(attempt, config.retryBackoff().toNanos());
                 long remainingBudget = remaining(wallEnd, nanoEnd);
@@ -1318,7 +1336,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
 
     private ExactRef receipt(String machineId, ExactRef request, List<ExactRef> attempts, String identity, String sha,
                              String modelChoice, Choice effective, String reason) throws IOException {
-        ObjectNode receipt = object(); receipt.put("schema", "xar.ordinary-model-decision/v1");
+        ObjectNode receipt = object(); receipt.put("schema", codexFiles == null ? "xar.ordinary-model-decision/v1" : "xar.ordinary-codex-decision/v1");
+        if (codexFiles != null) { receipt.put("provider", config.model()); receipt.put("transport", "codex-file"); }
         receipt.put("machine_id", machineId); receipt.put("observed_at_utc", clock.instant().toString());
         receipt.put("proposal_id", identity); receipt.put("body_sha256", sha);
         receipt.put("model_decision", modelChoice); receipt.put("effective_decision", effective.name()); receipt.put("reason", reason);
@@ -1398,8 +1417,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         try {
             String startedAt = clock.instant().toString();
             ObjectNode event = object();
-            event.put("schema", "xar.ordinary-model-http-progress/v1");
-            event.put("status", "ORDINARY_MODEL_HTTP_BEGIN");
+            event.put("schema", progressSchema());
+            event.put("status", codexFiles == null ? "ORDINARY_MODEL_HTTP_BEGIN" : "ORDINARY_CODEX_FILE_BEGIN");
             event.put("machine_id", machineId);
             event.put("proposal_id", proposalId);
             event.put("attempt", attempt);
@@ -1417,8 +1436,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         if (startedAt == null) return;
         try {
             ObjectNode event = object();
-            event.put("schema", "xar.ordinary-model-http-progress/v1");
-            event.put("status", "ORDINARY_MODEL_HTTP_END");
+            event.put("schema", progressSchema());
+            event.put("status", codexFiles == null ? "ORDINARY_MODEL_HTTP_END" : "ORDINARY_CODEX_FILE_END");
             event.put("machine_id", machineId);
             event.put("proposal_id", proposalId);
             event.put("attempt", attempt);
@@ -1427,7 +1446,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             event.put("started_at_utc", startedAt);
             event.put("deadline_utc", deadline.toString());
             event.put("payload_bytes", payloadBytes);
-            event.put("http_status", exchange.status());
+            if (codexFiles == null) event.put("http_status", exchange.status());
+            else event.put("transport", "codex-file");
             if (exchange.headersMs() < 0) event.putNull("headers_ms"); else event.put("headers_ms", exchange.headersMs());
             if (exchange.ttftMs() == null) event.putNull("ttft_ms"); else event.put("ttft_ms", exchange.ttftMs());
             event.put("total_ms", exchange.totalMs());
@@ -1442,12 +1462,16 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     /** Emitted only after the existing complete request and attempt materials have actually been preserved. */
     private void archivedProgress(String machineId,String proposalId,int attempt,ExactRef requestRef,ExactRef attemptRef) {
         try {
-            ObjectNode event=object();event.put("schema","xar.ordinary-model-http-progress/v1");
-            event.put("status","ORDINARY_MODEL_HTTP_ARCHIVED");event.put("machine_id",machineId);
+            ObjectNode event=object();event.put("schema",progressSchema());
+            event.put("status",codexFiles == null ? "ORDINARY_MODEL_HTTP_ARCHIVED" : "ORDINARY_CODEX_FILE_ARCHIVED");event.put("machine_id",machineId);
             event.put("proposal_id",proposalId);event.put("attempt",attempt);event.put("observed_at_utc",clock.instant().toString());
             event.set("request_ref",requestRef.toJson());event.set("attempt_ref",attemptRef.toJson());
             emitEvent(event);
         } catch(RuntimeException|IOException ignored) { }
+    }
+
+    private String progressSchema() {
+        return codexFiles == null ? "xar.ordinary-model-http-progress/v1" : "xar.ordinary-codex-file-progress/v1";
     }
 
     private void emitEvent(ObjectNode event) throws IOException {

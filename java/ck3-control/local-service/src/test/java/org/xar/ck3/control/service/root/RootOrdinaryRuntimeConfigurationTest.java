@@ -161,6 +161,19 @@ final class RootOrdinaryRuntimeConfigurationTest {
         assertTrue(actual.decisionProvider().isEmpty());
     }
 
+    @Test void explicitCodexFileProviderHasOneRequestAndNoHttpRetryDefaults() throws Exception {
+        var root = configuration();
+        root.set("decision_provider", StrictJson.object().put("endpoint", directory.resolve("codex-queue").toUri().toString())
+                .put("model", "codex-session").put("timeout_ms", 120000));
+        var configured = RootOrdinaryRuntimeConfiguration.read(write(root)).decisionProvider().orElseThrow();
+        assertTrue(configured.codexFile()); assertEquals(1, configured.maximumAttempts());
+        assertEquals(java.time.Duration.ZERO, configured.retryBackoff());
+        assertEquals(directory.resolve("codex-queue"), Path.of(configured.endpoint()));
+        assertFalse(Files.exists(directory.resolve("codex-queue")), "configuration parsing does not create a queue");
+        ((ObjectNode) root.get("decision_provider")).put("maximum_attempts", 2);
+        assertThrows(IOException.class, () -> RootOrdinaryRuntimeConfiguration.read(write(root)));
+    }
+
     private ObjectNode configuration() throws IOException {
         var policy = StrictJson.object(); policy.set("succession_lifecycle", lifecycle());
         policy.put("environment_manifest", "deliberately-does-not-exist.json");

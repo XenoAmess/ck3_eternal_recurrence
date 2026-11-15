@@ -19,6 +19,8 @@ public final class NativeRunProfileManifest {
 
     public static final String EXPLICIT_SCHEMA="xar.java-native-run-profile-environment/v3";
     public static final String EXPLICIT_REQUEST_SCHEMA="xar.java-explicit-native-profile-request/v1";
+    public static final String EXPLICIT_SAVED_LAYOUT_SCHEMA="xar.java-native-run-profile-environment/v4";
+    public static final String EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA="xar.java-explicit-native-profile-request/v2";
     public enum ProfileKind { ORDINARY_PRODUCTION,SAVED_VANILLA,SAVED_PRODUCT_ONLY,FRESH_FRONTEND_FIXTURE }
     public enum SavedKind { VANILLA,PRODUCT_ONLY }
     public enum DlcDeclaration { ABSENT,DECLARED }
@@ -60,13 +62,46 @@ public final class NativeRunProfileManifest {
     }
     public record ExplicitRequest(String schema,String machineId,String reviewAtUtc,String stateDir,String sourceWorkingDirectory,
             FileRef qualifiedToolsBuild,FileRef gameExecutable,FileRef vanillaRules,FileRef launcherSettings,
-            boolean debugMode,ExplicitSource source) {
+            boolean debugMode,ExplicitSource source,
+            @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL) String profileDirectory) {
         public ExplicitRequest {
-            require(EXPLICIT_REQUEST_SCHEMA.equals(schema),"exact explicit profile request required");machine(machineId);Instant.parse(reviewAtUtc);
+            require(EXPLICIT_REQUEST_SCHEMA.equals(schema)||EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(schema),"exact explicit profile request required");machine(machineId);Instant.parse(reviewAtUtc);
             absolute(stateDir);absolute(sourceWorkingDirectory);file(qualifiedToolsBuild,16L<<20);file(gameExecutable,64L<<30);
             file(vanillaRules,4L<<20);file(launcherSettings,65536);Objects.requireNonNull(source);require(!debugMode||source instanceof SavedSource,"debug is an explicit Saved-only option");
+            if(EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(schema)) {
+                require(source instanceof SavedSource,"explicit retained profile layout is Saved-only");absolute(profileDirectory);
+            } else require(profileDirectory==null,"legacy explicit request cannot add a retained profile layout");
         }
-        public Path profile(){return Path.of(stateDir).resolve("profile");}
+        /** The historical constructor and v1 wire retain the original isolated state/profile layout. */
+        public ExplicitRequest(String schema,String machineId,String reviewAtUtc,String stateDir,String sourceWorkingDirectory,
+                FileRef qualifiedToolsBuild,FileRef gameExecutable,FileRef vanillaRules,FileRef launcherSettings,
+                boolean debugMode,ExplicitSource source) {
+            this(schema,machineId,reviewAtUtc,stateDir,sourceWorkingDirectory,qualifiedToolsBuild,gameExecutable,vanillaRules,launcherSettings,
+                    debugMode,source,null);
+        }
+        public Path profile(){return profileDirectory==null?Path.of(stateDir).resolve("profile"):Path.of(profileDirectory);}
+        /** One strict reader also serves nested requests read by existing ControlBuild consumers. */
+        @com.fasterxml.jackson.annotation.JsonCreator(mode=com.fasterxml.jackson.annotation.JsonCreator.Mode.DELEGATING)
+        public static ExplicitRequest fromJson(JsonNode value) {
+            require(value!=null&&value.isObject(),"explicit profile request object required");
+            String version=explicitText(value.get("schema"));
+            var expected=new java.util.HashSet<>(List.of("schema","machine_id","review_at_utc","state_dir","source_working_directory",
+                    "qualified_tools_build","game_executable","vanilla_rules","launcher_settings","debug_mode","source"));
+            if(EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(version))expected.add("profile_directory");
+            else require(EXPLICIT_REQUEST_SCHEMA.equals(version),"supported explicit profile request version required");
+            var actual=new java.util.HashSet<String>();value.fieldNames().forEachRemaining(actual::add);
+            require(actual.equals(expected),"exact versioned explicit profile request fields required");
+            require(value.get("debug_mode").isBoolean(),"explicit debug boolean required");
+            try {
+                var mapper=manifestMapper();
+                return new ExplicitRequest(version,explicitText(value.get("machine_id")),explicitText(value.get("review_at_utc")),
+                        explicitText(value.get("state_dir")),explicitText(value.get("source_working_directory")),
+                        mapper.treeToValue(value.get("qualified_tools_build"),FileRef.class),mapper.treeToValue(value.get("game_executable"),FileRef.class),
+                        mapper.treeToValue(value.get("vanilla_rules"),FileRef.class),mapper.treeToValue(value.get("launcher_settings"),FileRef.class),
+                        value.get("debug_mode").booleanValue(),mapper.treeToValue(value.get("source"),ExplicitSource.class),
+                        EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(version)?explicitText(value.get("profile_directory")):null);
+            }catch(IOException invalid){throw new IllegalArgumentException("invalid explicit profile request source fields",invalid);}
+        }
     }
     public record DeclaredDlc(DlcDeclaration declaration,List<String> disabledDlcs) {
         public DeclaredDlc {Objects.requireNonNull(declaration);disabledDlcs=List.copyOf(disabledDlcs);
@@ -125,9 +160,11 @@ public final class NativeRunProfileManifest {
             ExplicitGame game,ExplicitRequest request,ExplicitProfile profile,List<SharedSourceFiles.Witness> profileAssets,Dlc dlc,
             List<SharedSourceFiles.Witness> originals,FileRef producerToolsBuild,List<FileRef> producerRuntime,String environmentSha256) implements ProfileEnvironment {
         public ExplicitManifest {
-            require(EXPLICIT_SCHEMA.equals(schema)&&formatVersion==3,"exact explicit profile v3 required");machine(machineId);Instant.parse(observedAtUtc);
-            absolute(stateDir);absolute(profileDir);require(Path.of(profileDir).equals(Path.of(stateDir).resolve("profile")),"same actual isolated profile required");
             Objects.requireNonNull(game);Objects.requireNonNull(request);Objects.requireNonNull(profile);Objects.requireNonNull(dlc);
+            require(EXPLICIT_SCHEMA.equals(schema)&&formatVersion==3&&EXPLICIT_REQUEST_SCHEMA.equals(request.schema())
+                    ||EXPLICIT_SAVED_LAYOUT_SCHEMA.equals(schema)&&formatVersion==4&&EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(request.schema()),
+                    "exact matching explicit environment/request versions required");machine(machineId);Instant.parse(observedAtUtc);
+            absolute(stateDir);absolute(profileDir);require(Path.of(profileDir).equals(request.profile()),"same actual requested profile layout required");
             profileAssets=List.copyOf(profileAssets);originals=List.copyOf(originals);producerRuntime=List.copyOf(producerRuntime);file(producerToolsBuild,16L<<20);digest(environmentSha256);
             require(request.machineId().equals(machineId)&&request.stateDir().equals(stateDir)&&request.qualifiedToolsBuild().equals(producerToolsBuild)
                     &&request.gameExecutable().path().equals(game.executable())&&request.gameExecutable().sha256().equals(game.executableSha256())
@@ -292,7 +329,7 @@ public final class NativeRunProfileManifest {
     }
     public static ProfileEnvironment decodeEnvironment(byte[] raw)throws IOException {
         bounded(raw);JsonNode tree=manifestMapper().readTree(raw);if(tree==null||!tree.isObject())throw new IOException("profile environment object required");requireSupported(tree);
-        if(tree.has("schema")&&EXPLICIT_SCHEMA.equals(tree.get("schema").textValue())){
+        if(tree.has("schema")&&(EXPLICIT_SCHEMA.equals(tree.get("schema").textValue())||EXPLICIT_SAVED_LAYOUT_SCHEMA.equals(tree.get("schema").textValue()))){
             ExplicitManifest value=manifestMapper().readValue(raw,ExplicitManifest.class);
             if(!digestOf(tree).equals(value.environmentSha256()))throw new IOException("explicit environment digest differs from original bytes");return value;
         }
@@ -328,7 +365,7 @@ public final class NativeRunProfileManifest {
         if(bytes.length!=original.bytes()||!NativeRunProfileRules.sha(bytes).equals(original.sha256()))throw new IOException("environment original changed during complete read");
         SharedSourceFiles.assertUnchanged(held);return bytes;
     }
-    public static boolean isCurrentVersion(JsonNode value){return value!=null&&value.isObject()&&value.has("schema")&&value.get("schema").isTextual()&&(SCHEMA.equals(value.get("schema").textValue())||EXPLICIT_SCHEMA.equals(value.get("schema").textValue()));}
+    public static boolean isCurrentVersion(JsonNode value){return value!=null&&value.isObject()&&value.has("schema")&&value.get("schema").isTextual()&&(SCHEMA.equals(value.get("schema").textValue())||EXPLICIT_SCHEMA.equals(value.get("schema").textValue())||EXPLICIT_SAVED_LAYOUT_SCHEMA.equals(value.get("schema").textValue()));}
     /** The original Python v1 producer had no schema property; unknown versioned wires cannot fall back to it. */
     public static void requireSupported(JsonNode value)throws IOException{
         if(value!=null&&value.isObject()&&value.has("schema")&&!isCurrentVersion(value))
@@ -354,5 +391,6 @@ public final class NativeRunProfileManifest {
     static void digest(String value){require(value!=null&&value.matches("[0-9a-f]{64}"),"canonical source digest required");}
     static void machine(String value){require(value!=null&&value.matches("[a-z0-9][a-z0-9-]{0,127}")&&!value.equals("unknown"),"known actual machine required");}
     static void file(FileRef ref,long max){Objects.requireNonNull(ref);absolute(ref.path());digest(ref.sha256());require(ref.bytes()>0&&ref.bytes()<=max,"bounded source file required");}
+    private static String explicitText(JsonNode value){require(value!=null&&value.isTextual(),"explicit textual source field required");return value.textValue();}
     static void require(boolean condition,String message){if(!condition)throw new IllegalArgumentException(message);}
 }

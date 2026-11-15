@@ -57,6 +57,28 @@ public final class RootRestoreMaterialFactory {
         return RootRestoreMaterials.ordinary(writer,archive,lifecycle,files,drivers,saved,previous,source,retainedFrames,current);
     }
 
+    RootRestoreAdapters.MaterialPort create(ContinuityWriter writer,NativeOutcomeArchive archive,CheckpointFiles files,
+            DriverCheckpointStore drivers,SavedCheckpointMaterialStore saved,RootApplicationAssembly.Core.ColdRestoreSource previous)throws IOException {
+        return RootRestoreMaterials.exited(writer,archive,lifecycle,files,drivers,saved,previous,source,retainedFrames,originalFrozen);
+    }
+
+    /** Before replacement, only the actual private exited source supplies predecessor custody. */
+    public static RootRestoreAdapters.MaterialPort exited(ContinuityWriter writer,NativeOutcomeArchive archive,
+            JavaGameLifecycle lifecycle,CheckpointFiles files,RootApplicationAssembly.Core.ColdRestoreSource previous,
+            ExactRef actualProducerSource,int retainedFrames)throws IOException {
+        return exited(writer,archive,lifecycle,files,previous,actualProducerSource,retainedFrames,Optional.empty());
+    }
+
+    /** The private Frozen is the real explicit profile producer, never a nullable lifecycle or caller flag. */
+    public static RootRestoreAdapters.MaterialPort exited(ContinuityWriter writer,NativeOutcomeArchive archive,
+            JavaGameLifecycle lifecycle,CheckpointFiles files,RootApplicationAssembly.Core.ColdRestoreSource previous,
+            ExactRef actualProducerSource,int retainedFrames,Optional<RootFrozenRunProfile.FrozenRunProfile> actualProfile)throws IOException {
+        Objects.requireNonNull(previous);Objects.requireNonNull(actualProfile);
+        if(actualProfile.isPresent())actualProfile.orElseThrow().requireExplicitNativeCampaign();
+        return RootRestoreMaterials.exited(writer,archive,lifecycle,files,previous.driverCheckpoints(),previous.materials(),
+                previous,actualProducerSource,retainedFrames,actualProfile);
+    }
+
     /** Actual launch configuration lineage; request, session and load change for genuine replacements. */
     static void requireOrdinaryConfiguration(NativeLaunchPlan original,NativeLaunchPlan current)throws IOException {
         Objects.requireNonNull(original);Objects.requireNonNull(current);

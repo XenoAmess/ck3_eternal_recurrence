@@ -69,6 +69,7 @@ public final class JavaGameLifecycle {
     private volatile ManagedGameSession currentSession;
     private final Map<String,ReplacementRequest> replacementRequests=new java.util.LinkedHashMap<>();
     private final Map<String,ReplacementResult> replacements=new java.util.LinkedHashMap<>();
+    private final Map<String,ExitedGeneration> exitedReplacementSources=new java.util.LinkedHashMap<>();
     private final List<NativePrivateActionPermission> privateActions;
     private record TrackingState(NativeLaunchPlan plan,String nonce,String registryKey,Path trackingPath) { }
 
@@ -116,6 +117,73 @@ public final class JavaGameLifecycle {
     }
     public synchronized java.util.Optional<ManagedGameSession> currentSession(){return java.util.Optional.ofNullable(currentSession);}
 
+    /** Opaque source role issued after reopening the real supervisor terminal and observing the OS.
+     * It is neither a parsed terminal DTO nor a replacement ManagedGameSession/STOP capability. */
+    public static final class ExitedGeneration {
+        private final JavaGameLifecycle owner;
+        private final NativeLaunchPlan template;
+        private final ExitedGameSource.Qualified source;
+        private final Instant deadline;
+        private ExitedGeneration(JavaGameLifecycle owner,NativeLaunchPlan template,ExitedGameSource.Qualified source,Instant deadline) {
+            this.owner=owner;this.template=template;this.source=source;this.deadline=deadline;
+        }
+        public GameGeneration generation(){return source.descriptor().generation();}
+        public String sourceSessionId(){return source.descriptor().sessionId();}
+        public String machineId(){return source.descriptor().machineId();}
+        public ExactRef evidence(){return source.currentObservation();}
+        public Instant observedAt(){return source.observedAt();}
+        public Instant deadline(){return deadline;}
+        public NativeLaunchPlanCodec.Configuration originalConfiguration(){return source.descriptor().configuration();}
+        public void requireOwner(JavaGameLifecycle expectedOwner,Instant operationDeadline)throws IOException {
+            if(expectedOwner!=owner)throw new IOException("exited-generation source belongs to another lifecycle instance");
+            owner.requireExitedSource(this,template,operationDeadline);
+        }
+        /** Lexical membership only. It observes neither source files nor the OS and grants no current physical permit. */
+        public void requireMembership(JavaGameLifecycle expectedOwner,Instant operationDeadline)throws IOException {
+            if(expectedOwner!=owner)throw new IOException("exited-generation membership belongs to another lifecycle instance");
+            owner.requireExitedMembership(this,template,operationDeadline);
+        }
+        /** Original source membership only; no expired submission window or physical Game permit is renewed. */
+        public void requireHistoricalOwner(JavaGameLifecycle expectedOwner)throws IOException {
+            if(expectedOwner!=owner)throw new IOException("historical exited source belongs to another lifecycle instance");
+            ExitedGameSource.revalidateOriginals(source,template);
+        }
+        /** The exact privately retained replacement, never a parsed launch ACK, owns the new independent read. */
+        public void requireReplacementOwner(JavaGameLifecycle expectedOwner,Replaced actual,Instant readDeadline)throws IOException {
+            if(expectedOwner!=owner)throw new IOException("exited replacement belongs to another lifecycle instance");
+            owner.requireExitedReplacement(this,actual,readDeadline);
+        }
+    }
+    public synchronized ExitedGeneration qualifyExitedOwner(Path ownerDescriptor,GameGeneration expected,
+            NativeLaunchPlan reviewedReplacementTemplate,Instant deadline)throws IOException {
+        Win32Host.deadline(deadline);
+        if(Instant.MAX.equals(deadline))throw new IOException("finite exited-generation source window required");
+        if(currentSession!=null&&!currentSession.generation().equals(expected))
+            throw new IOException("another current managed Game blocks exited owner import");
+        var source=ExitedGameSource.qualify(ownerDescriptor,expected,reviewedReplacementTemplate,deadline);
+        return new ExitedGeneration(this,reviewedReplacementTemplate,source,deadline);
+    }
+    synchronized void requireExitedSource(ExitedGeneration actual,NativeLaunchPlan template,Instant deadline)throws IOException {
+        requireExitedMembership(actual,template,deadline);
+        ExitedGameSource.revalidate(actual.source,template,deadline);
+    }
+    private synchronized void requireExitedMembership(ExitedGeneration actual,NativeLaunchPlan template,Instant deadline)throws IOException {
+        Objects.requireNonNull(actual);Objects.requireNonNull(deadline);Win32Host.deadline(deadline);
+        if(actual.owner!=this||actual.template!=template||deadline.isAfter(actual.deadline)
+                ||!Instant.now().isBefore(actual.deadline)
+                ||currentSession!=null&&!currentSession.generation().equals(actual.generation()))
+            throw new IOException("exited-generation role changed its actual owner, template, Game or original finite window");
+    }
+    private synchronized void requireExitedReplacement(ExitedGeneration original,Replaced actual,Instant deadline)throws IOException {
+        Objects.requireNonNull(actual);Win32Host.deadline(deadline);
+        boolean retained=false;
+        for(var entry:replacements.entrySet())if(entry.getValue()==actual&&exitedReplacementSources.get(entry.getKey())==original)retained=true;
+        if(original.owner!=this||!retained||!actual.previous().equals(original.generation())
+                ||currentSession!=actual.replacement().session()||currentSession.generation().equals(original.generation()))
+            throw new IOException("new read did not retain this exact source-owned exited replacement");
+        ExitedGameSource.revalidateOriginals(original.source,original.template);currentSession.verify();
+    }
+
     public synchronized void adoptAttached(ManagedGameSession actual) throws IOException {
         Objects.requireNonNull(actual);
         if (actual.mode() != ManagedGameSession.Mode.ATTACHED)
@@ -150,6 +218,56 @@ public final class JavaGameLifecycle {
     }
     public synchronized ReplacementResult queryReplacement(String parentLifecycleIntentId){
         return replacements.getOrDefault(parentLifecycleIntentId,new ReplacementUnknown(parentLifecycleIntentId,"No retained original replacement; query never launches or adopts"));
+    }
+    /** The original supervisor already proved exit and Job0. Import sends no old Game STOP. */
+    public synchronized ReplacementResult replaceExitedSavedOnce(ReplacementRequest request,ExitedGeneration actual)
+            throws IOException,InterruptedException {
+        Objects.requireNonNull(request);Objects.requireNonNull(actual);String id=request.parentLifecycleIntentId();
+        if(replacementRequests.containsKey(id)) {
+            if(!replacementRequests.get(id).equals(request)||exitedReplacementSources.get(id)!=actual)
+                return new ReplacementUnknown(id,"original exited replacement changed its exact body/source role; query only");
+            return queryReplacement(id);
+        }
+        if(replacementRequests.size()>=4096)return new ReplacementRejected("Replacement retention is full");
+        NativeLaunchPlan plan=request.savedPlan();
+        if(request.requireRunning()||!request.expectedOld().equals(actual.generation()))
+            return new ReplacementRejected("exited replacement needs its exact source-proven old generation");
+        requireExitedSource(actual,actual.template,plan.deadline());
+        NativeLaunchPlan.SavedGame save=(NativeLaunchPlan.SavedGame)plan.load();
+        var exactPlan=actual.template.savedReplacement(id,save.save(),plan.deadline());
+        if(!NativeLaunchPlanCodec.describe(exactPlan).equals(NativeLaunchPlanCodec.describe(plan)))
+            return new ReplacementRejected("exited replacement changed its original exact Saved child producer");
+        Path claim=plan.stateDirectory().resolve("control/"+plan.requestId()+"-parent.json");
+        // Business workers are disposable. A new request ID or new lifecycle object cannot redispatch this old generation.
+        String generationKey=actual.machineId()+":"+actual.generation().pid()+":"+actual.generation().creationFiletime().value();
+        Path generationClaim=plan.stateDirectory().resolve("control/exited-generation-"+replacementRequestId(generationKey)+".json");
+        try(Win32Host.Mutex mutex=Win32Host.mutex(MUTEX,plan.deadline())) {
+            mutex.requireHeld();requireExitedSource(actual,actual.template,plan.deadline());
+            if(Files.exists(claim)||Files.exists(generationClaim))return new ReplacementUnknown(id,"persistent exited-generation replacement already entered; no replay/adoption");
+            NativeLaunchPolicy.requireCurrent(plan);
+            var entered=new ReplacementControl("xar.java-game-replacement/v1",id,"EXITED_SOURCE_ACCEPTED_SAVED_LAUNCH_ENTERED",
+                    actual.generation().pid(),actual.generation().creationFiletime().value().toString(),save.save(),actual.evidence(),null);
+            atomic(generationClaim,entered,true);atomic(claim,entered,true);
+            replacementRequests.put(id,request);exitedReplacementSources.put(id,actual);
+            replacements.put(id,new ReplacementUnknown(id,"original exited replacement entered; query only"));
+            try {
+                // Attachments own only their old pipe/query handle. The supervisor already closed its original Job.
+                if(currentSession!=null&&currentSession.mode()==ManagedGameSession.Mode.ATTACHED)currentSession.close();
+                LaunchResult result=launchSaved(plan);
+                if(!(result instanceof Started started)) {
+                    replacements.put(id,new ReplacementUnknown(id,"exited original retained; Saved child not proven: "+result));
+                    return queryReplacement(id);
+                }
+                if(started.session().generation().equals(actual.generation()))throw new IOException("exited replacement did not create a different measured Game birth");
+                var accepted=new ReplacementControl("xar.java-game-replacement/v1",id,"EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED",
+                        actual.generation().pid(),actual.generation().creationFiletime().value().toString(),save.save(),actual.evidence(),started.launchEvidence());
+                atomic(generationClaim,accepted,false);atomic(claim,accepted,false);
+                var replaced=new Replaced(actual.generation(),started,LifecycleEvidence.exact(ControlBuild.FileRef.measure(claim)));
+                replacements.put(id,replaced);return replaced;
+            }catch(IOException|RuntimeException failure) {
+                replacements.put(id,new ReplacementUnknown(id,"exited Saved replacement UNKNOWN: "+failure));return queryReplacement(id);
+            }
+        }
     }
     /** Same producer for checkpoint restoration and immutable-seed next episode; no synthetic CheckpointPair needed. */
     public synchronized ReplacementResult replaceSavedOnce(ReplacementRequest request)throws IOException,InterruptedException{

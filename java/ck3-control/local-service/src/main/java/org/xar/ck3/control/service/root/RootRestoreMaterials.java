@@ -87,6 +87,7 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
     private final DriverCheckpointStore drivers;
     private final SavedCheckpointMaterialStore savedSources;
     private final DriverBootstrap.Adopted previous;
+    private final RootApplicationAssembly.Core.ColdRestoreSource coldPrevious;
     private final RestoreCapabilityAdoption capabilities;
     private final ExactRef producerSource;
     private final int retainedFrames;
@@ -121,11 +122,31 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
             CheckpointFiles files,DriverCheckpointStore drivers,SavedCheckpointMaterialStore savedSources,
             DriverBootstrap.Adopted previous,ExactRef producerSource,int retainedFrames,
             Optional<RootFrozenRunProfile.FrozenRunProfile> originalFrozen,Optional<ManagedGameSession> ordinaryPrevious) {
+        this(writer,archive,lifecycle,files,drivers,savedSources,previous,null,producerSource,retainedFrames,originalFrozen,ordinaryPrevious);
+    }
+    static RootRestoreMaterials exited(ContinuityWriter writer,NativeOutcomeArchive archive,JavaGameLifecycle lifecycle,
+            CheckpointFiles files,DriverCheckpointStore drivers,SavedCheckpointMaterialStore savedSources,
+            RootApplicationAssembly.Core.ColdRestoreSource previous,ExactRef producerSource,int retainedFrames,
+            Optional<RootFrozenRunProfile.FrozenRunProfile> originalFrozen)throws IOException {
+        Objects.requireNonNull(previous);
+        if(previous.materials()!=savedSources||previous.driverCheckpoints()!=drivers)
+            throw new IOException("exited restore materials changed their private original checkpoint stores");
+        return new RootRestoreMaterials(writer,archive,lifecycle,files,drivers,savedSources,null,previous,producerSource,
+                retainedFrames,originalFrozen,Optional.empty());
+    }
+    private RootRestoreMaterials(ContinuityWriter writer,NativeOutcomeArchive archive,JavaGameLifecycle lifecycle,
+            CheckpointFiles files,DriverCheckpointStore drivers,SavedCheckpointMaterialStore savedSources,
+            DriverBootstrap.Adopted previous,RootApplicationAssembly.Core.ColdRestoreSource coldPrevious,
+            ExactRef producerSource,int retainedFrames,Optional<RootFrozenRunProfile.FrozenRunProfile> originalFrozen,
+            Optional<ManagedGameSession> ordinaryPrevious) {
         this.writer=Objects.requireNonNull(writer);this.archive=Objects.requireNonNull(archive);this.lifecycle=Objects.requireNonNull(lifecycle);
         this.files=Objects.requireNonNull(files);this.drivers=Objects.requireNonNull(drivers);this.savedSources=Objects.requireNonNull(savedSources);
-        this.previous=Objects.requireNonNull(previous);this.producerSource=Objects.requireNonNull(producerSource);this.retainedFrames=retainedFrames;
+        this.previous=previous;this.coldPrevious=coldPrevious;
+        StrictJson.require((previous==null)!=(coldPrevious==null),"one actual live or private exited predecessor required");
+        this.producerSource=Objects.requireNonNull(producerSource);this.retainedFrames=retainedFrames;
         this.originalFrozen=Objects.requireNonNull(originalFrozen);this.ordinaryPrevious=Objects.requireNonNull(ordinaryPrevious);
-        StrictJson.require(originalFrozen.isPresent()!=ordinaryPrevious.isPresent(),"one actual restore material branch required");
+        StrictJson.require(originalFrozen.isPresent()!=ordinaryPrevious.isPresent()||coldPrevious!=null&&ordinaryPrevious.isEmpty(),
+                "one actual restore material branch required");
         StrictJson.require(archive.writer()==writer&&producerSource.bytes()>0&&retainedFrames>=2&&retainedFrames<=4096,
                 "same original writer/archive and bounded source-qualified retention required");
         capabilities=new RestoreCapabilityAdoption(archive);
@@ -207,7 +228,8 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         if(!selected)return false;
         // This Frozen belongs to the original run. Never qualify it against the replacement Saved plan.
         frozen.requireExplicitNativeCampaign();
-        previous.producer().requireNativeCampaignProjectionOrigin(frozen);
+        if(coldPrevious==null)previous.producer().requireNativeCampaignProjectionOrigin(frozen);
+        else coldPrevious.requireOriginal(same);
         Capture retained=captures.get(ticket.requestId);
         requireSavedNativeCampaign(same,retained);
         ManagedGameSession owner=replacement(retained.request(),retained.nativeCandidate());
@@ -264,7 +286,10 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         pin(borrowed,abandonedDriver,DRIVER_LIMIT,pins);
         if(abandoned.loop().isPresent())pin(borrowed,abandoned.loop().orElseThrow().originalFacts(),DOCUMENT_LIMIT,pins);
         org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete before;
-        try { before=previous.observations().requireRetained(request.current().observed(),request.current().nativeEvidence()); }
+        try {
+            if(coldPrevious==null)before=previous.observations().requireRetained(request.current().observed(),request.current().nativeEvidence());
+            else {coldPrevious.requireArchivedBefore(borrowed,request);before=coldPrevious.archivedBefore();}
+        }
         catch(IllegalStateException missingOriginal) { throw new IOException("actual original abandoned frame unavailable; no replacement observation or fabricated before snapshot",missingOriginal); }
         StrictJson.require(before.source().equals(request.current().source())&&before.sessionId().equals(request.current().sessionId())
                 &&before.identity().game().equals(abandoned.stamp().game()),"actual retained abandoned native frame differs from original request");
@@ -282,8 +307,15 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         ExactRef stopped=reference(control.get("stopEvidence")),launched=reference(control.get("launchEvidence"));
         StrictJson.require(launched.equals(replaced.replacement().launchEvidence()),"retained launch evidence differs from original replacement control");
         Obj stop=readObject(borrowed,stopped,LIFECYCLE_LIMIT,pins),launch=readObject(borrowed,launched,LIFECYCLE_LIMIT,pins);
-        requireLifecycleRows(stop,launch,new LifecycleJoin(request.current().observed().machineId(),request.current().sessionId(),
-                replacement.sessionId(),request.current().observed().game(),replacement.generation(),JavaGameLifecycle.replacementRequestId(request.requestId())));
+        var lifecycleJoin=new LifecycleJoin(request.current().observed().machineId(),request.current().sessionId(),
+                replacement.sessionId(),request.current().observed().game(),replacement.generation(),JavaGameLifecycle.replacementRequestId(request.requestId()));
+        if(coldPrevious==null)requireLifecycleRows(stop,launch,lifecycleJoin);
+        else {
+            coldPrevious.requireReplacement(borrowed,request,replacement,request.deadline());
+            StrictJson.require(stopped.equals(coldPrevious.exitedEvidence()),"cold lifecycle source changed its private actual exited observation");
+            requireEvent(launch,"HELLO",lifecycleJoin.machineId(),lifecycleJoin.replacementSessionId(),lifecycleJoin.replacement());
+            StrictJson.require(text(launch.get("requestId"),lifecycleJoin.launchRequestId()),"cold replacement HELLO child request differs");
+        }
         var helloDocument=readPinned(borrowed,files,replaced.replacement().nativeHello(),DOCUMENT_LIMIT);pins.add(helloDocument.pin());
         var decodedHello=NativeWire.decode(helloDocument.contents());
         StrictJson.require(decodedHello instanceof NativeWire.Hello,"retained actual lifecycle HELLO packet unavailable");
@@ -334,6 +366,7 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
                     "ordinary restore crossed its actual retained previous managed owner");
             RootRestoreMaterialFactory.requireOrdinaryConfiguration(original.launchPlan(),replacement.launchPlan());
         }
+        if(coldPrevious!=null)coldPrevious.requireReplacement(writer.borrowedSession(),request,replacement,request.deadline());
         var launchSave=((NativeLaunchPlan.SavedGame)replacement.launchPlan().load()).save();
         StrictJson.require(launchSave.path().equals(request.pair().save().reference().path())&&launchSave.bytes()==request.pair().save().reference().bytes()
                 &&launchSave.sha256().equals(request.pair().save().reference().sha256()),"actual lifecycle loaded another physical saved source");return replacement;

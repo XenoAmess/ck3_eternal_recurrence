@@ -140,6 +140,74 @@ final class NativeRunProfileProducerTest {
                 request.gameExecutable().path(),request.gameExecutable().sha256(),request.vanillaRules().path(),request.vanillaRules().sha256(),true));
         assertThrows(IOException.class,()->decode(encodeEnvironment(environment)));
     }
+    @Test void legacyExplicitRequestKeepsExactV1BytesAndDirectStrictNestedReaderCompatibility()throws Exception{
+        String hash="a".repeat(64);
+        var build=new FileRef("D:/legacy/build.json",1,hash);var executable=new FileRef("D:/legacy/ck3.exe",1,hash);
+        var rules=new FileRef("D:/legacy/rules.txt",1,hash);var launcher=new FileRef("D:/legacy/launcher.json",1,hash);
+        var source=new SavedSource(SavedKind.VANILLA,new FileRef("D:/legacy/inventory.json",1,hash));
+        var request=new ExplicitRequest(EXPLICIT_REQUEST_SCHEMA,"fixture-machine","2026-11-16T00:00:00Z","D:/legacy/state","D:/legacy",
+                build,executable,rules,launcher,false,source);
+        String expected="""
+                {"debug_mode":false,"game_executable":{"bytes":1,"path":"D:/legacy/ck3.exe","sha256":"@HASH@"},"launcher_settings":{"bytes":1,"path":"D:/legacy/launcher.json","sha256":"@HASH@"},"machine_id":"fixture-machine","qualified_tools_build":{"bytes":1,"path":"D:/legacy/build.json","sha256":"@HASH@"},"review_at_utc":"2026-11-16T00:00:00Z","schema":"xar.java-explicit-native-profile-request/v1","source":{"kind":"VANILLA","product_inventory":{"bytes":1,"path":"D:/legacy/inventory.json","sha256":"@HASH@"},"profile_domain":"SAVED_NATIVE"},"source_working_directory":"D:/legacy","state_dir":"D:/legacy/state","vanilla_rules":{"bytes":1,"path":"D:/legacy/rules.txt","sha256":"@HASH@"}}
+                """.strip().replace("@HASH@",hash);
+        byte[] oldBytes=expected.getBytes(StandardCharsets.UTF_8);
+        assertArrayEquals(oldBytes,encodeExplicitRequest(request));assertEquals(request,decodeExplicitRequest(oldBytes));
+        assertEquals(request,ControlBuild.strictMapper().readValue(oldBytes,ExplicitRequest.class));
+        assertNull(request.profileDirectory());assertFalse(expected.contains("profile_directory"));
+        var fixture=explicitFixture(0,false,false);var prepared=NativeRunProfileProducer.deriveExplicit(fixture.request(),fixture.runtime());
+        var environment=NativeRunProfileProducer.finishExplicit(prepared,Clock.systemUTC());byte[] wire=encodeEnvironment(environment);
+        assertEquals(EXPLICIT_SCHEMA,environment.schema());assertEquals(3,environment.formatVersion());
+        assertFalse(ControlBuild.strictMapper().readTree(wire).get("request").has("profile_directory"));
+        assertEquals(environment,ControlBuild.strictMapper().readValue(wire,ExplicitManifest.class));
+        assertArrayEquals(wire,encodeEnvironment(decodeEnvironment(wire)));
+    }
+    @Test void savedV2RequestObservesTheExistingSiblingProfileAndProducesStrictV4Environment()throws Exception{
+        var fixture=explicitFixture(2,true,false,true);var request=fixture.request();
+        assertEquals(EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA,request.schema());assertNotNull(request.profileDirectory());
+        assertEquals(Path.of(request.stateDir()).getParent(),request.profile().getParent());
+        assertNotEquals(Path.of(request.stateDir()).resolve("profile"),request.profile());
+        var prepared=NativeRunProfileProducer.deriveExplicit(request,fixture.runtime());
+        var environment=NativeRunProfileProducer.finishExplicit(prepared,Clock.systemUTC());
+        assertEquals(EXPLICIT_SAVED_LAYOUT_SCHEMA,environment.schema());assertEquals(4,environment.formatVersion());
+        assertEquals(request.profile().toString(),environment.profileDir());assertEquals(request.stateDir(),environment.stateDir());
+        assertEquals(SharedSourceFiles.nativeDirectory(request.profile()),environment.profile().custody().profileIdentity());
+        assertEquals(fixture.productFiles().size(),environment.profile().custody().productFiles().size());
+        assertEquals(List.of("mod/product1.mod","mod/product0.mod"),environment.profile().loadProfile().enabledMods());
+        assertEquals(request,decodeExplicitRequest(encodeExplicitRequest(request)));
+        assertEquals(request,ControlBuild.strictMapper().readValue(encodeExplicitRequest(request),ExplicitRequest.class));
+        byte[] encoded=encodeEnvironment(environment);assertEquals(environment,decodeEnvironment(encoded));
+        assertEquals(environment,ControlBuild.strictMapper().readValue(encoded,ExplicitManifest.class));
+        assertTrue(isCurrentVersion(ControlBuild.strictMapper().readTree(encoded)));
+        var original=write(temporary.resolve("siblings-environment.json"),encoded);
+        assertEquals(environment,readEnvironmentOriginal(original));
+        assertThrows(IOException.class,()->NativeRunProfileProducer.readEnvironmentVerified(original),"unqualified build never becomes a public physical permit");
+        assertThrows(IOException.class,()->NativeRunProfileProducer.prepareSaved(request,Clock.systemUTC()));
+    }
+    @Test void savedExplicitLayoutRejectsWrongPhysicalProfileAndCrossVersionOrFixtureRequests()throws Exception{
+        var fixture=explicitFixture(0,false,false,true);var request=fixture.request();
+        Path other=Files.createDirectory(temporary.resolve("other-profile"));Files.writeString(other.resolve("dlc_load.json"),"{\"enabled_mods\":[]}");
+        var wrong=new ExplicitRequest(request.schema(),request.machineId(),request.reviewAtUtc(),request.stateDir(),request.sourceWorkingDirectory(),
+                request.qualifiedToolsBuild(),request.gameExecutable(),request.vanillaRules(),request.launcherSettings(),false,request.source(),other.toString());
+        assertThrows(IOException.class,()->NativeRunProfileProducer.deriveExplicit(wrong,fixture.runtime()));
+        assertThrows(IllegalArgumentException.class,()->new ExplicitRequest(EXPLICIT_REQUEST_SCHEMA,request.machineId(),request.reviewAtUtc(),request.stateDir(),request.sourceWorkingDirectory(),
+                request.qualifiedToolsBuild(),request.gameExecutable(),request.vanillaRules(),request.launcherSettings(),false,request.source(),request.profileDirectory()));
+        var wire=(com.fasterxml.jackson.databind.node.ObjectNode)ControlBuild.strictMapper().readTree(encodeExplicitRequest(request));
+        var absent=wire.deepCopy();absent.remove("profile_directory");
+        assertThrows(IOException.class,()->decodeExplicitRequest(canonical(absent)));
+        var downgraded=wire.deepCopy();downgraded.put("schema",EXPLICIT_REQUEST_SCHEMA);
+        assertThrows(IOException.class,()->decodeExplicitRequest(canonical(downgraded)));
+        var relative=wire.deepCopy();relative.put("profile_directory","relative-profile");
+        assertThrows(IOException.class,()->decodeExplicitRequest(canonical(relative)));
+        var old=explicitFixture(0,false,false);var oldWire=(com.fasterxml.jackson.databind.node.ObjectNode)ControlBuild.strictMapper().readTree(encodeExplicitRequest(old.request()));
+        oldWire.putNull("profile_directory");assertThrows(IOException.class,()->decodeExplicitRequest(canonical(oldWire)));
+        var fixtureSource=new FixtureSource(((SavedSource)request.source()).productInventory(),
+                List.of(((SavedSource)request.source()).productInventory()),List.of("mod/product.mod"));
+        assertThrows(IllegalArgumentException.class,()->new ExplicitRequest(request.schema(),request.machineId(),request.reviewAtUtc(),request.stateDir(),request.sourceWorkingDirectory(),
+                request.qualifiedToolsBuild(),request.gameExecutable(),request.vanillaRules(),request.launcherSettings(),false,fixtureSource,request.profileDirectory()));
+        var prepared=NativeRunProfileProducer.deriveExplicit(request,fixture.runtime());var environment=NativeRunProfileProducer.finishExplicit(prepared,Clock.systemUTC());
+        assertThrows(IllegalArgumentException.class,()->new ExplicitManifest(EXPLICIT_SCHEMA,3,environment.machineId(),environment.observedAtUtc(),environment.stateDir(),environment.profileDir(),
+                environment.game(),environment.request(),environment.profile(),environment.profileAssets(),environment.dlc(),environment.originals(),environment.producerToolsBuild(),environment.producerRuntime(),environment.environmentSha256()));
+    }
     @Test void multipleSavedModsRetainActualOrderDisabledDlcAndCompletePhysicalInventory()throws Exception{
         var fixture=explicitFixture(2,true,false);
         var prepared=NativeRunProfileProducer.deriveExplicit(fixture.request(),fixture.runtime());
@@ -255,8 +323,11 @@ final class NativeRunProfileProducerTest {
     }
     private record ExplicitFixture(ExplicitRequest request,List<FileRef> runtime,List<FileRef> productFiles){ }
     private ExplicitFixture explicitFixture(int count,boolean declaredDlc,boolean coldRegistrar)throws Exception{
+        return explicitFixture(count,declaredDlc,coldRegistrar,false);
+    }
+    private ExplicitFixture explicitFixture(int count,boolean declaredDlc,boolean coldRegistrar,boolean siblingProfile)throws Exception{
         Path base=Files.createTempDirectory(temporary,"explicit-"),state=Files.createDirectory(base.resolve("state"));
-        Path profile=Files.createDirectory(state.resolve("profile")),game=Files.createDirectory(base.resolve("game"));
+        Path profile=Files.createDirectory(siblingProfile?base.resolve("profile"):state.resolve("profile")),game=Files.createDirectory(base.resolve("game"));
         Path binaries=Files.createDirectory(game.resolve("binaries"));Files.createDirectories(game.resolve("game/dlc"));
         Path launcher=Files.createDirectory(game.resolve("launcher"));
         var exe=write(binaries.resolve("ck3.exe"),"software-executable-never-run".getBytes(StandardCharsets.UTF_8));
@@ -280,8 +351,8 @@ final class NativeRunProfileProducerTest {
         inventory.set("enabled_mods",enabled.deepCopy());var rows=inventory.putArray("product_files");
         for(var file:products)rows.addObject().put("path",file.path()).put("bytes",file.bytes()).put("sha256",file.sha256().toUpperCase(java.util.Locale.ROOT));
         var source=write(state.resolve("saved-product-inventory.json"),mapper.writeValueAsBytes(inventory));
-        var request=new ExplicitRequest(EXPLICIT_REQUEST_SCHEMA,WindowsJobProcess.currentMachineId(),Instant.now().plusSeconds(3600).toString(),state.toString(),base.toString(),
-                build,exe,rules,identity,false,new SavedSource(count==0?SavedKind.VANILLA:SavedKind.PRODUCT_ONLY,source));
+        var request=new ExplicitRequest(siblingProfile?EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA:EXPLICIT_REQUEST_SCHEMA,WindowsJobProcess.currentMachineId(),Instant.now().plusSeconds(3600).toString(),state.toString(),base.toString(),
+                build,exe,rules,identity,false,new SavedSource(count==0?SavedKind.VANILLA:SavedKind.PRODUCT_ONLY,source),siblingProfile?profile.toString():null);
         return new ExplicitFixture(request,List.copyOf(runtime),List.copyOf(products));
     }
     private static ExplicitRequest explicitRequest(ExplicitFixture fixture,ExplicitSource source,boolean debug){

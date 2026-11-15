@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.application.action.ActionReceipt;
 import java.util.concurrent.CompletionException;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.ActionTransitions;
@@ -393,6 +394,10 @@ public final class RootOrdinaryRuntimeAssembly {
         private OrdinarySessionHost ordinaryHost = new OrdinarySessionHost();
         private boolean externalOrdinaryHostBound;
         private final boolean sourceOnly;
+        private org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exitedRecovery;
+        private org.xar.ck3.control.platform.SavedGameOwnerLifetime249.Retained exitedOwnerLifetime;
+        private JavaGameLifecycle.Started exitedOwnerStart;
+        private Path exitedOwnerDirectory;
 
         private Prepared(RootOrdinaryRuntimeConfiguration config,Clock clock,NativeLaunchPlan plan,
                 RootOrdinaryImplementationMetadata metadata,RootApplicationConfiguration app,RootCoreBoundPorts ports,
@@ -591,6 +596,104 @@ public final class RootOrdinaryRuntimeAssembly {
         }
 
 
+
+        /** Source-proven retirement runs before any old-Game attachment and never creates or queries Game. */
+        public synchronized ActionReceipt retireExitedLifeInterruptionOnly(Path ownerDescriptor,
+                org.xar.ck3.control.contracts.GameGeneration expected,Instant deadline)throws IOException {
+            Objects.requireNonNull(ownerDescriptor);Objects.requireNonNull(expected);Objects.requireNonNull(deadline);
+            if(sourceOnly||closed||entered||core!=null||game!=null)
+                throw new IOException("exited retirement requires the unused actual writable preparation");
+            var configured=config.operatorQuarantine().orElseThrow(()->new IOException("exited retirement requires its new configured operator request"));
+            var exited=lifecycle.qualifyExitedOwner(ownerDescriptor,expected,plan,deadline);
+            exitedRecovery=exited;
+            var actual=openSavedSourceCore();
+            RootOperatorQuarantineRuntime.installExited(actual,lifecycle,exited,configured,clock,deadline);
+            return actual.retireExitedLifeInterruptionOnly(lifecycle,exited,deadline);
+        }
+
+        /** A new source-qualified daemon restores the exact original pair in the same canonical writer. */
+        public synchronized Running openExitedCheckpointRecovery(Path ownerDescriptor,
+                org.xar.ck3.control.contracts.GameGeneration expected,Instant deadline)throws IOException,InterruptedException {
+            retireExitedLifeInterruptionOnly(ownerDescriptor,expected,deadline);
+            var exited=Objects.requireNonNull(exitedRecovery);
+            var qualified=RootExitedSavedMaterialSource.qualify(core,config,lifecycle,exited,deadline);
+            var material=core.writer().locked(qualified::material);
+            var original=core.qualifyColdRestoreSource(lifecycle,exited,qualified.materials(),material,
+                    qualified.driverCheckpoints(),cyclePolicy,deadline);
+            var restoredProfile=RootExitedSavedMaterialSource.nativeCampaignProfile(material,plan,clock);
+            var before=original.archivedBefore();
+            // These are explicitly archived facts. An exited generation supplies no current paused-map readiness.
+            var current=new org.xar.ck3.control.application.checkpoint.CheckpointRequest.Readiness(before.identity(),before.source(),
+                    before.sessionId(),material.pair().lineageId(),false,false,false,
+                    "source-proven exited generation; archived original frame only; no current Game readiness",before.originalEvidence(),before.observedAt());
+            String head=core.writer().locked(same->{original.requireCurrent(same);return same.head().digest();});
+            String requestId=RootPublicRestoreRuntime.requestIdentity(original.previousOwner(),head,material.pair());
+            var request=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Request(requestId,material.pair(),current,head,deadline,material);
+            var source=new G2Source(config.machineId(),clock.instant().toString(),plan.sources().review().gameExecutable().sha256(),
+                    metadata.implementation(RootOrdinaryRuntimeAssembly.class));
+            var readiness=new RootRuntimeReadiness(core,policy,config.freshness(),clock);
+            var publication=restoredProfile.isPresent()
+                    ?new RootPostAdoptionCollector(core,ports,catalogs,readiness,config.freshness(),clock,restoredProfile.orElseThrow())
+                    :RootPostAdoptionCollector.ordinary(core,ports,catalogs,readiness,config.freshness(),clock);
+            var materials=RootRestoreMaterialFactory.exited(core.writer(),core.archive(),lifecycle,files,original,
+                    metadata.implementation(RootRestoreMaterials.class),config.retainedFrames(),restoredProfile);
+            var adapters=new RootRestoreAdapters(core.writer(),core.archive(),core.actions(),original,
+                    original.materials().ordinaryStore(),original.materials(),materials,publication);
+            core.bindColdRestoreAdapters(original,adapters);
+            products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
+            var physical=new org.xar.ck3.control.platform.GameRestoreAdapter(lifecycle,plan,exited);
+            var replacement=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LifecyclePort() {
+                @Override public org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LaunchResult replaceOnce(
+                        org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Request actual)throws IOException,InterruptedException {
+                    var result=physical.replaceOnce(actual);retainExitedReplacement(actual.requestId());return result;
+                }
+                @Override public org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LaunchResult query(String id,Instant until)throws IOException,InterruptedException {
+                    var result=physical.query(id,until);retainExitedReplacement(id);return result;
+                }
+            };
+            var nativeFrames=new org.xar.ck3.control.platform.GameRestoreNativeAdapter(lifecycle,source,material.pair().lineageId(),
+                    core.archive(),core.writer(),core.writer()::activeSession,core.writer()::requireSession);
+            var service=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService(files,qualified.driverCheckpoints(),replacement,
+                    nativeFrames,core.writer(),original.materials(),adapters,adapters,clock);
+            var result=service.restore(request);
+            if(!(result instanceof org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Restored restored))
+                throw new IOException("exited restoration retains its exact original result and replacement; no relaunch: "+result);
+            game=lifecycle.currentSession().orElseThrow(()->new IOException("actual restored owned Game unavailable"));
+            var base=sessionConfiguration(deadline);var paths=base.checkpoints();
+            var checkpoints=new RootStartupConfiguration.CheckpointPaths(paths.driverCheckpoint(),paths.checkpointEvidence(),paths.attachmentEvidence(),
+                    material.pair().lineageId(),Path.of(material.pair().save().reference().path()));
+            var configuration=new RootApplicationAssembly.FreshSessionConfiguration(base.authorityId(),base.policy(),base.freshness(),
+                    checkpoints,base.cyclePolicy(),deadline);
+            var session=core.finishColdRestored(original,adapters,service,restored.binding(),game,configuration,services(source));
+            session.install(ordinaryHost,deadline);
+            return new Running(this,session,original.savedController().batchPrefix(),original.savedController().nextBatchSequence());
+        }
+
+        private synchronized void retainExitedReplacement(String requestId)throws IOException {
+            if(exitedOwnerLifetime!=null)return;
+            var result=lifecycle.queryReplacement(requestId);
+            if(!(result instanceof JavaGameLifecycle.Replaced replaced))return;
+            var started=replaced.replacement();
+            Path directory=config.stateDirectory().resolve("restored-owner-"+org.xar.ck3.control.application.action.ActionCodec.sha256(
+                    requestId.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+            exitedOwnerLifetime=org.xar.ck3.control.platform.SavedGameOwnerLifetime249.retain(lifecycle,started,directory);
+            exitedOwnerStart=started;exitedOwnerDirectory=directory;
+        }
+        public synchronized ManagedGameSession exitedReplacementGame()throws IOException {
+            if(exitedOwnerStart==null)throw new IOException("exited restoration has no retained original replacement");
+            return exitedOwnerStart.session();
+        }
+        public synchronized Path exitedReplacementOwnerDescriptor()throws IOException {
+            if(exitedOwnerDirectory==null||exitedOwnerStart==null)
+                throw new IOException("exited restoration has no published actual Saved owner");
+            return exitedOwnerDirectory.resolve(org.xar.ck3.control.platform.GameSupervisorControl.DESCRIPTOR_FILE);
+        }
+        /** Reuse the existing Saved owner loop before the ordinary business finally may close its OWNED Game. */
+        public void awaitExitedReplacementOwner()throws IOException,InterruptedException {
+            var lifetime=exitedOwnerLifetime;if(lifetime==null)return;
+            Objects.requireNonNull(exitedOwnerStart).session().nativeTransport().close();
+            lifetime.awaitExit();
+        }
 
         /** Opens only this configured old writer and source graph; it creates no Game or live authority. */
         public synchronized RootApplicationAssembly.Core openSavedSourceCore()throws IOException {

@@ -69,13 +69,19 @@ public final class RootJavaSavedBootstrap {
         cycles.bindTerminalFrameLoader(sourceCore.frameLoader());
         var store=new SavedAttachmentSourceStore(actualFiles,drivers,verifier,writer::borrowedSession,materialRoot,
                 cycles::verifyCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);
+        var firstVerifier=new org.xar.ck3.control.application.checkpoint.FirstCheckpointVerifier(actualFiles,drivers,
+                (same,owner,semantic)->sourceCore.semanticVerifier().verify(same,owner,semantic).materialDigest(),
+                writer.originalLockPath(),writer::requireSession,saves);
+        var firstStore=new org.xar.ck3.control.application.checkpoint.SavedFirstCheckpointMaterialStore(
+                actualFiles,firstVerifier,writer::borrowedSession,materialRoot.resolve("first"));
+        var materials=new org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore(store,firstStore);
         return writer.locked(same->{
             writer.requireSession(same);
             for(var action:ContinuityActionJournal.receipts(same.head().state(),sourceCore.archive().withSession(same)))
                 StrictJson.require(action.settled(),"confirmed saved source cannot erase an unresolved canonical action");
             var actual=store.requalifyConfirmed(same,confirmation,pair);
             var material=actual.requireCurrent(same);
-            return new ConfirmedSource(writer,store,actual,material,sourceCore.archive());
+            return new ConfirmedSource(writer,store,actual,material,sourceCore.archive(),drivers,materials);
         });
     }
 
@@ -87,15 +93,29 @@ public final class RootJavaSavedBootstrap {
         private final SavedAttachmentSourceStore.SavedMaterial material;
         private final byte[] savedDriverCanonical;
         private final NativeOutcomeArchive sourceArchive;
+        private final DriverCheckpointStore drivers;
+        private final org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore materials;
         private ConfirmedSource(ContinuityWriter writer,SavedAttachmentSourceStore store,
                 SavedAttachmentSourceStore.RequalifiedConfirmed qualified,SavedAttachmentSourceStore.SavedMaterial material,
-                NativeOutcomeArchive sourceArchive) {
+                NativeOutcomeArchive sourceArchive,DriverCheckpointStore drivers,
+                org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore materials) {
             this.writer=writer;this.store=store;this.qualified=qualified;this.material=material;
             this.savedDriverCanonical=material.savedDriver().encode();
             this.sourceArchive=Objects.requireNonNull(sourceArchive);
+            this.drivers=Objects.requireNonNull(drivers);this.materials=Objects.requireNonNull(materials);
             StrictJson.require(sourceArchive.writer()==writer,"confirmed source archive must belong to the actual source writer");
         }
         public CheckpointPair pair(){return material.pair();}
+        /** Package-owned same-writer restore source; this exposes actual issuers, never a replacement or planning permit. */
+        DriverCheckpointStore driverCheckpoints(){return drivers;}
+        org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore materials(){return materials;}
+        org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterial material(ContinuityStorePort.Session same)throws IOException {
+            writer.requireSession(same);var current=qualified.requireCurrent(same);
+            StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
+                    &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
+                    "same-writer saved source changed its private original material");
+            materials.requireOwn(material);material.requirePhysical(same);return material;
+        }
         public ContinuityState savedState(){return qualified.confirmation().after();}
         public ContinuityState sourceHead(){return qualified.sourceHead();}
         public WriterContracts.HistoricalTransition confirmation(){return qualified.confirmation();}

@@ -82,6 +82,15 @@ class RootRestoreMaterialsTest {
         Obj result=OpportunityJson.object(first.completedRow().get("result"),"result");
         assertEquals(DriverObservationRef(nativeRef()),result.get("original_native_packet"));
     }
+    @Test void explicitExitedSourcePhaseFeedsTheSameSavedColdReducerWithoutAStoppedClaim() {
+        var ordinary=RootRestoreMaterialProjection.reduce(input(nativeState(),control(),saved(),abandoned()));
+        var exitedControl=json(encoded(control()).replace("NATIVE_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED",
+                "EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED"));
+        var exited=RootRestoreMaterialProjection.reduce(input(nativeState(),exitedControl,saved(),abandoned()));
+        assertArrayEquals(ordinary.provisional().encode(),exited.provisional().encode());
+        assertEquals(ordinary.completedRow(),exited.completedRow());
+        assertEquals(ordinary.restoredSemantic(),exited.restoredSemantic());
+    }
     @Test void lifecycleControlCannotSubstituteBooleanPidWrongParentOrRoundedBirth() {
         for(String raw:List.of(encoded(control()).replace("\"oldPid\":7","\"oldPid\":true"),
                 encoded(control()).replace(REQUEST,"foreign-parent"),encoded(control()).replace("134373229053165471","134373229053165470"),

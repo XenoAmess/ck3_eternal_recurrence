@@ -84,6 +84,7 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
     private final NativeOutcomeArchive archive;
     private final ActionSnapshotReader actions;
     private final DriverBootstrap.Adopted previous;
+    private final RootApplicationAssembly.Core.ColdRestoreSource coldPrevious;
     private final SavedAttachmentSourceStore sources;
     private final SavedCheckpointMaterialStore savedMaterials;
     private final MaterialPort materials;
@@ -94,11 +95,25 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
             MaterialPort materials, PostAdoptionPort publications) {
         this.writer = Objects.requireNonNull(writer); this.archive = Objects.requireNonNull(archive); this.actions = Objects.requireNonNull(actions);
         this.previous = Objects.requireNonNull(previous); this.sources = Objects.requireNonNull(sources);
+        coldPrevious=null;
         this.savedMaterials=Objects.requireNonNull(savedMaterials);
         this.materials = Objects.requireNonNull(materials); this.publications = Objects.requireNonNull(publications);
         StrictJson.require(archive.writer() == writer && !materials.getClass().isSynthetic() && !materials.getClass().isAnonymousClass()
                 && !publications.getClass().isSynthetic() && !publications.getClass().isAnonymousClass(),
                 "same original writer/archive and named actual restore producers required");
+    }
+    /** A new daemon retains a canonical archived predecessor, never a fabricated old Adopted transport. */
+    public RootRestoreAdapters(ContinuityWriter writer,NativeOutcomeArchive archive,ActionSnapshotReader actions,
+            RootApplicationAssembly.Core.ColdRestoreSource previous,SavedAttachmentSourceStore sources,
+            SavedCheckpointMaterialStore savedMaterials,MaterialPort materials,PostAdoptionPort publications) {
+        this.writer=Objects.requireNonNull(writer);this.archive=Objects.requireNonNull(archive);this.actions=Objects.requireNonNull(actions);
+        this.previous=null;coldPrevious=Objects.requireNonNull(previous);this.sources=Objects.requireNonNull(sources);
+        this.savedMaterials=Objects.requireNonNull(savedMaterials);this.materials=Objects.requireNonNull(materials);
+        this.publications=Objects.requireNonNull(publications);
+        StrictJson.require(archive.writer()==writer&&coldPrevious.materials()==savedMaterials
+                &&!materials.getClass().isSynthetic()&&!materials.getClass().isAnonymousClass()
+                &&!publications.getClass().isSynthetic()&&!publications.getClass().isAnonymousClass(),
+                "cold restore adapters require their actual Core material issuer and named producers");
     }
     @Override public synchronized Attachment prepare(Request request, NativeCandidate actual, DriverStateSnapshot.Complete saved,ReadWindow reads) throws IOException {
         Objects.requireNonNull(reads).requireOriginal(request);
@@ -106,7 +121,7 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
         Stage retained = stages.get(request.requestId());
         if (retained != null) { sameAttempt(retained, request, actual);retained.reads=reads; verifyAttachmentSource(borrowed, borrowed.head().state(), retained.attachment.request()); return retained.attachment; }
         StrictJson.require(stages.size() < 64, "bounded restore attempts require original reconciliation");
-        DriverSnapshotFacts.Known abandoned = previous.authority().withFrozenFacts(borrowed, frozen -> {
+        DriverSnapshotFacts.Known abandoned = coldPrevious!=null?coldAbandoned(borrowed,request):previous.authority().withFrozenFacts(borrowed, frozen -> {
             if (!(frozen.state() instanceof DriverSnapshotFacts.Known known)) throw new IOException("actual abandoned complete Driver unavailable");
             return known;
         });
@@ -145,6 +160,13 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
         Attachment attachment = new Attachment(event, new SavedContinuityAttachment.Input(original.predecessor(), event.details(), original.basis(), original.game(), original.opening(), original.progress()),physical.material());
         Stage created = new Stage(request, actual, saved, abandoned, material, staged, seed, attachment,reads); stages.put(request.requestId(), created);
         verifyAttachmentSource(borrowed, borrowed.head().state(), event); return attachment;
+    }
+    private DriverSnapshotFacts.Known coldAbandoned(ContinuityStorePort.Session same,Request request)throws IOException {
+        coldPrevious.requireArchivedBefore(same,request);return coldPrevious.abandonedFacts();
+    }
+    void requireColdOwner(RootApplicationAssembly.Core.ColdRestoreSource expected)throws IOException {
+        if(coldPrevious!=Objects.requireNonNull(expected)||previous!=null||savedMaterials!=expected.materials())
+            throw new IOException("cold restore adapters belong to another actual private predecessor source");
     }
     /** Additional reducer qualification used together with the sole physical SavedAttachmentSourceStore loader. */
     public void verifyAttachmentSource(ContinuityStorePort.Session borrowed, ContinuityState predecessor, WriterContracts.Request event) throws IOException {

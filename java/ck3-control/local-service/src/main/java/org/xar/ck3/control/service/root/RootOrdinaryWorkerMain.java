@@ -40,9 +40,10 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
 
     public int runWithHost(org.xar.ck3.control.service.OrdinarySessionHost ordinaryHost, String... args) throws Exception {
         java.util.Objects.requireNonNull(ordinaryHost);
-        if (args.length != 3) throw new IllegalArgumentException("ordinary-worker requires owner.json, business configuration, and fresh|resume|current-map|operator-quarantine");
+        if (args.length != 3) throw new IllegalArgumentException("ordinary-worker requires owner.json, business configuration, and fresh|resume|current-map|operator-quarantine|retire-exited|restore-exited");
         String mode = args[2];
-        if (!"fresh".equals(mode) && !"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)) throw new IllegalArgumentException("ordinary-worker mode must be fresh, resume, current-map or operator-quarantine");
+        if (!"fresh".equals(mode) && !"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)
+                &&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)) throw new IllegalArgumentException("ordinary-worker mode must be fresh, resume, current-map, operator-quarantine, retire-exited or restore-exited");
         Clock clock = Clock.systemUTC();
         RootOrdinaryRuntimeConfiguration config = RootOrdinaryRuntimeConfiguration.read(Path.of(args[1]));
         var descriptor = GameSupervisorControl.readDescriptor(Path.of(args[0]));
@@ -57,6 +58,25 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         try {
             prepared = RootOrdinaryRuntimeAssembly.prepare(config, clock);
             prepared.bindOrdinaryHost(ordinaryHost);
+            if("retire-exited".equals(mode)) {
+                // This branch precedes NativeGameAttachment: an exited original cannot supply a HELLO or current map.
+                var terminal=prepared.retireExitedLifeInterruptionOnly(Path.of(args[0]),descriptor.generation(),
+                        clock.instant().plus(java.time.Duration.ofMinutes(10)));
+                ObjectNode retired=event(clock,"EXITED_LIFE_INTERRUPTION_RETIRED");
+                retired.put("action_id",terminal.command().actionId()).put("sequence",terminal.sequence())
+                        .put("effect","UNKNOWN").put("new_game_days",0).put("new_saved_day_credit",0)
+                        .put("game_launch_requested",false).put("native_attachment_requested",false);
+                emit(retired);return 0;
+            }
+            if("restore-exited".equals(mode)) {
+                running=prepared.openExitedCheckpointRecovery(Path.of(args[0]),descriptor.generation(),clock.instant().plus(java.time.Duration.ofMinutes(45)));
+                attached=prepared.exitedReplacementGame();
+                var restored=event(clock,"EXITED_SAVED_RESTORATION_ADOPTED");
+                restored.set("game",attached.generation().toJson());
+                restored.put("owner_descriptor",prepared.exitedReplacementOwnerDescriptor().toString())
+                        .put("new_saved_day_credit",0).put("ordinary_batch_started",false);
+                emit(restored);
+            } else {
             attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(plan, descriptor.generation(),
                     prepared.privatePermissions(), config.maximumFramesPerOperation(), config.maximumSubmissions()),
                     clock.instant().plus(config.operationTimeout()), config.operationTimeout());
@@ -88,6 +108,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                 var dayZero = RootNativeFreshStartup.startFreshRobert(attached, plan, prepared.initialPolicy().kind(),
                         prepared.initialPolicy().lifecycle(), clock, clock.instant().plus(plan.startupTimeout()));
                 running = opened.finishFresh(dayZero.startAck(), dayZero.read(), dayZero.produced(), clock.instant().plus(config.operationTimeout()));
+            }
             }
             var schedulingController = running.core().sessionAccess().current().controllerForPublication();
             var importedLifeHint = readLifeBudgetHint(config.stateDirectory().resolve("worker-batches.jsonl"), schedulingController.identity());
@@ -244,6 +265,12 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             catch (IOException outputFailure) { failed.addSuppressed(outputFailure); }
             throw failed;
         } finally {
+            // The existing Saved supervisor loop retains an actual OWNED replacement across business completion.
+            // Closing Prepared first would terminate its Job and erase the separately retained Game lifetime.
+            if(prepared!=null) {
+                try {prepared.awaitExitedReplacementOwner();}
+                catch(Exception awaiting){if(primary!=null)primary.addSuppressed(awaiting);else throw awaiting;}
+            }
             closeResources(primary, running, opened, prepared, attached);
         }
     }

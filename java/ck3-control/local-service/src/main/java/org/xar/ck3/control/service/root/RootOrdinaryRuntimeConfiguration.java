@@ -16,7 +16,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 public final class RootOrdinaryRuntimeConfiguration {
 
     /**
-     * Runtime model endpoint is the base /v1 URI; the provider appends /chat/completions.
+     * An HTTP runtime endpoint is the base /v1 URI; the provider appends /chat/completions.
+     * A local file URI explicitly selects the source-bound Codex decision exchange. It has one
+     * finite request, no HTTP client, and no automatic fallback or request retry.
      * {@code retryBackoff} is the initial retry delay, including when explicitly configured:
      * later failed attempts double that base up to 60 seconds before applying up to 20% jitter.
      * Zero requests immediate retries. The maximum attempts includes the first HTTP request;
@@ -27,10 +29,19 @@ public final class RootOrdinaryRuntimeConfiguration {
         public DecisionProvider {
             java.util.Objects.requireNonNull(endpoint); StrictJson.text(model);
             java.util.Objects.requireNonNull(timeout); java.util.Objects.requireNonNull(retryBackoff);
-            StrictJson.require(endpoint.isAbsolute() && endpoint.getHost() != null
-                    && ("http".equalsIgnoreCase(endpoint.getScheme()) || "https".equalsIgnoreCase(endpoint.getScheme()))
+            boolean file = "file".equalsIgnoreCase(endpoint.getScheme());
+            boolean http = endpoint.getHost() != null
+                    && ("http".equalsIgnoreCase(endpoint.getScheme()) || "https".equalsIgnoreCase(endpoint.getScheme()));
+            StrictJson.require(endpoint.isAbsolute() && !endpoint.isOpaque() && (http || file)
                     && endpoint.getRawUserInfo() == null && endpoint.getRawQuery() == null && endpoint.getRawFragment() == null,
-                    "absolute HTTP(S) model endpoint without userinfo/query/fragment required");
+                    "explicit absolute HTTP(S) endpoint or local file decision directory required");
+            if (file) {
+                StrictJson.require(endpoint.getRawAuthority() == null && Path.of(endpoint).isAbsolute(),
+                        "Codex decision exchange requires a local absolute file URI");
+                StrictJson.require("codex-session".equals(model), "file decisions must explicitly identify the Codex session provider");
+                StrictJson.require(maximumAttempts == 1 && retryBackoff.isZero(),
+                        "Codex file decisions use one original request without retry/backoff");
+            }
             StrictJson.require(!timeout.isNegative() && !timeout.isZero() && timeout.compareTo(Duration.ofMillis(120000)) <= 0,
                     "model timeout must be 1..120000 milliseconds");
             StrictJson.require(timeout.compareTo(Duration.ofMillis(1)) >= 0 && maximumAttempts >= 1 && maximumAttempts <= 6,
@@ -38,6 +49,7 @@ public final class RootOrdinaryRuntimeConfiguration {
             StrictJson.require(!retryBackoff.isNegative() && retryBackoff.compareTo(Duration.ofMillis(10000)) <= 0,
                     "model retry backoff must be 0..10000 milliseconds");
         }
+        public boolean codexFile() { return "file".equalsIgnoreCase(endpoint.getScheme()); }
     }
 
 
@@ -181,11 +193,13 @@ public final class RootOrdinaryRuntimeConfiguration {
         if (root.has("decision_provider")) {
             JsonNode provider = StrictJson.object(root.get("decision_provider"),
                     Set.of("endpoint", "model", "timeout_ms"), Set.of("maximum_attempts", "retry_backoff_ms"));
+            java.net.URI endpoint = java.net.URI.create(StrictJson.text(provider.get("endpoint")));
+            boolean file = "file".equalsIgnoreCase(endpoint.getScheme());
             decisionProvider = java.util.Optional.of(new DecisionProvider(
-                    java.net.URI.create(StrictJson.text(provider.get("endpoint"))), StrictJson.text(provider.get("model")),
+                    endpoint, StrictJson.text(provider.get("model")),
                     Duration.ofMillis(StrictJson.integer(provider.get("timeout_ms"), 1, 120000)),
-                    provider.has("maximum_attempts") ? (int) StrictJson.integer(provider.get("maximum_attempts"), 1, 6) : 6,
-                    Duration.ofMillis(provider.has("retry_backoff_ms") ? StrictJson.integer(provider.get("retry_backoff_ms"), 0, 10000) : 10000)));
+                    provider.has("maximum_attempts") ? (int) StrictJson.integer(provider.get("maximum_attempts"), 1, 6) : file ? 1 : 6,
+                    Duration.ofMillis(provider.has("retry_backoff_ms") ? StrictJson.integer(provider.get("retry_backoff_ms"), 0, 10000) : file ? 0 : 10000)));
         }
 
         return new RootOrdinaryRuntimeConfiguration(

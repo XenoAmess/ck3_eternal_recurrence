@@ -344,7 +344,8 @@ public final class NativeRunProfileProducer {
         Objects.requireNonNull(prepared);currentExplicit(prepared.request,clock);verifyExplicitSources(prepared);return sealExplicit(body(prepared,clock));
     }
     private static ExplicitManifest body(PreparedExplicit prepared,Clock clock){
-        return new ExplicitManifest(EXPLICIT_SCHEMA,3,prepared.request.machineId(),clock.instant().toString(),prepared.request.stateDir(),prepared.request.profile().toString(),
+        boolean retained=EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(prepared.request.schema());
+        return new ExplicitManifest(retained?EXPLICIT_SAVED_LAYOUT_SCHEMA:EXPLICIT_SCHEMA,retained?4:3,prepared.request.machineId(),clock.instant().toString(),prepared.request.stateDir(),prepared.request.profile().toString(),
                 prepared.game,prepared.request,prepared.profile,prepared.assets,prepared.dlc,prepared.originals,prepared.request.qualifiedToolsBuild(),prepared.runtime,"0".repeat(64));
     }
     /** Full physical prelaunch reader. After Game, immutable ENV readers use readEnvironmentOriginal instead. */

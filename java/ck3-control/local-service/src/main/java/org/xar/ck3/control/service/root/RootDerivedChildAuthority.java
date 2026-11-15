@@ -46,10 +46,10 @@ public final class RootDerivedChildAuthority {
                 require(ContinuityActionJournal.lookup(head.state(),child.command().actionId(),archive)
                                 .filter(child::equals).isPresent(),
                         "zero cancellation is not the actual unchanged canonical terminal");
-                require(child.command().source().equals(context.source())
-                                &&child.command().sessionId().equals(context.game().sessionId())
-                                &&child.command().before().game().equals(context.game().generation()),
-                        "zero cancellation crossed its actual Root source, Game or session");
+                boolean sameOwner=child.command().source().equals(context.source())
+                        &&child.command().sessionId().equals(context.game().sessionId())
+                        &&child.command().before().game().equals(context.game().generation());
+                if(!sameOwner)context.core().requireColdArchivedZeroCancellation(context,head,child,archive);
                 var actual=install(context,context.bindings(),infrastructure);
                 var attempt=ActionTransitions.attempt(child.state()).orElseThrow();
                 actual.verifyArchived(head,child,attempt.guard(),archive);
