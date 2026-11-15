@@ -228,7 +228,7 @@ public final class CiBootstrap {
     public static final String MAVEN_ZIP_SHA512 =
             "22d31676d5b92ed53308c19ecded3245d0efd0cddfec51ec7bab62f4f13ad70ddddceff"
             + "8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337";
-    private static final URI MAVEN_ZIP = URI.create("https://downloads.apache.org/maven/maven-3/"
+    private static final URI MAVEN_ZIP = URI.create("https://archive.apache.org/dist/maven/maven-3/"
             + MAVEN_VERSION + "/binaries/apache-maven-" + MAVEN_VERSION + "-bin.zip");
     private static final URI MAVEN_CHECKSUM = URI.create(MAVEN_ZIP + ".sha512");
     private static final long MIB = 1L << 20;

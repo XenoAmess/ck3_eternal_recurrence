@@ -71,3 +71,35 @@ Native资源闭账：同根 `cz96c1/RESOURCE-CLOSED14-TEST1-WHOLE36-ONLYUNUSED-O
 官方CI最新6cc5dd7e6b的运行43747045789在reactor前下载Maven失败；旧过时运行已取消，未声称CI通过。已查官方固定Maven3.10.0下载会转向Apache archive，原SHA512一致；Root已修CiBootstrap的重定向处理，本地真实302→200回归1P，断言原body精确字节与两路各一次HTTP；生产校验和、大小与超时限制保持，该JUnit不声称覆盖SHA512。CI2已独立提交并正常FF推送 `a2ba2ade141697e9f8ca9cb680f4ec986a6718b2`，远端exact核实；新的 [Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/43758282621)仍运行，不阻塞Runtime继续新ENV/恢复。
 
 截至本段记录，尚未启动新Game，也没有新增确认保存日；G2仍沿用最后完整6/8，不计算有限秒/保存日。软件、正式发表、实际安装、实际运行与SAVE分别报告。后继继续实际恢复和真实Root循环，不在行政成功或软件闭档时停止。
+
+## 工具真实构建、完成发布与读取修复（继续执行）
+
+正式ControlBuild于20:52:25Z真实BEGIN，唯一attempt `resume91-tools-env01-20261116`，default Maven3.10.0/JDK21.0.10。仅本包135个main Java源真实构建，Maven自身23.522秒；受管cmd阶段25.9837926秒、exit0、Job active0、peakJob653148160B。该standalone baseline没有Test源码，原日志No tests to run如实保留；已有34/9/财务4软件结果分账，不冒全图测试。ControlBuild全阶段61.4542449999135秒exit1，因最终发布预留拒绝，未宣qualifying receipt。
+
+精确原因：logs scope当前Native2454696B加固定2MiB receipt worst bound为4551848B，大于logs cap4194304B；whole当前Native28711184B小于58720256B。本次不缺全局64MiB。只读probe首编因package-private IoGuard访问失败，改为同接口ClassLoader的反射Proxy取得原生产计量，未将诊断false角色当completion许可。原ended-JVM历史filesystem peak未持久化，保留UNKNOWN/null，不能把新进程当前census冒原全程实测。
+
+最小修复在原ControlBuild增加原成功Maven的完成发布与精确逐文件allocation计算，最终body上限保留；新typed来源强制区分CURRENT_COMPLETION_PHASE_ONLY和历史UNKNOWN，绑定原RED、原lease、原source/snapshot/6target及真实producer closure。原RED磁盘pretty为84959B（不同于compact stdout76142B），未改写。原135输入、snapshot和6target均冻结；外置增量63class/12.405秒GREEN，新3项软件回归3P/0F/0E/0skip，10.669秒，仅smoke数学/allocator/source边界，不冒真实reader通过。
+
+第一次真实completion-only调用5.4367秒exit1，已CREATE正常完成凭据、会计与mandatory source三个文件，写后自验JSON object required。源头已实证为合法卷键D:/与Java规范根D:\的字符串错位；匹配release原entry key即可，不能改旧输入追认。另历史读取不能要求新reader与旧producer closure相同，改为核recorded producer完整冻结closure。最终reader2单叶63class/12.057秒GREEN，旧中间formal d306仅typing、已封未采用。
+
+21:29:42.919088Z→21:29:44.290853Z，正式公开 `ControlBuild.main --verify-completion-source` 真实exit0/stderr0，消费原source与正常完成凭据；没有重CREATE或重Maven。证据 `D:/ck3-state/resume91-runtime/exited-restore-dev01/runs/tools-env-completion01/READER2-VERIFY-ACTUAL01.json`；原completion source8003B/SHA `6ded2cf22a4c8aeafbc7cc514f7d5769a8563c6bab76e9420cf0b599538c517e`，normal PASS85097B/SHA `c2aeff8b0f956807c39325fcf820c8e9e7ca541085d563cb9068635401974abc`。实际reader jar183597B/SHA `7322e89d8e265f4b7461a57b01edc954ee2e9b9fe26e39b33d41912526c3f120`，旧21:25:40lease按原21:16完成时刻验证，未刷新。
+
+后继ENV还有真实CodeSource/closure约束：旧target6自带同reader缺陷，单换classpath不能冒称旧6读取成功。限定三family的read-repair composition v1正在施工：原Maven6、mandatory source、当前独立Root授权、新reader/producer/manifest三个源码与受管编译family、同CodeSource patchJar和六份原件来源copy，组成显式runtime7；新requestv3/ENVv5仅此分支可用，旧6与旧wire保持。编译证据列表复用已绿reader2，只编新Producer/Manifest2叶；直接cold消费者已核通过动态Manifest方法，无额外Root源码或内联旧ENVv4/runtime6硬值，不扩全loaded-class审计。
+
+原lease及已产历史输出不改。当前read-repair准备/增量安装/校验另获Root有限授权21:25:09Z→22:25:09Z，限各既有scope累计cap，quota上界仍13303228397187B，当前新scope由Native按实际峰值独立fund，旧unused不重复退。新的SCREEN clean稀疏checkout已准备HEAD02e63089/dirty0，实际CLI source与installed SHA一致，尚未领取lease或启动Game。
+
+CI最新实证补正：a2ba的Official run43758282621在step46仍于下载前失败，新错误明确HTTP404，固定ZIP在downloads站已移除。Root查官方archive目录与sha512同原pin，实际ZIP HEAD200/10102082B；只将CiBootstrap固定下载地址改为archive，版本3.10.0与校验和不变，单叶typing待首个非P0空档。旧302测试通过不证明该ZIP地址可用；最新完整Official CI尚未通过。中间ea642b运行已取消，保留02e当前完整运行与实际失败记录。
+
+本段截止仍无新Game、新游戏日、新SAVE或真实模型决策，仍持续ENV→SCREEN→同pair恢复，不以工具读取成功或源码发表停止。
+
+## 实际 ENVv5 已产出，继续同战役恢复
+
+composition Producer/Manifest两叶真实10.953秒/44class GREEN，复用reader63；唯一定义source_ready为aggregate FileRef、compilations为列表。公共首调用在输入有效期34分钟被原30分钟上限拒绝；新独立请求改为有限窗口，旧请求保留。第二次到Rootauth精确比较时暴露Jackson LongNode/IntNode同wire整数差异，严格wire roundtrip修复，不放宽浮点/布尔。又为新Producer复用旧phase的Manifest33、丢弃旧Producer11，明确最终三family逐class来自对应source row，旧未采用Producer原件保留。只重编Producer1，67398B/SHA前缀edd2319f，11class/10.315秒GREEN；不重Manifest/reader/135。最终三family共107class，patchJar真实292294B。
+
+另有真实公共metadata发行链旧issuer门：只在现有Contract/Guard/Command三localservice叶增当前Root capacity5/binding5，保留原declaration4/census4与旧v4角色。issuer为 `/root/ck3-resume91-root-20261116-research`，declaration owner仍真实/root，Runtime受Root委托执行；只限PROFILE_ENVIRONMENT、INITIAL_POLICY、ORIGINAL_DRIVER_RUN_PROFILE三个必要小metadata roles。首编Guard局部变量重名真实RED11.234秒，保留Contract17，仅修变量名后补Guard+Command25/11.881秒GREEN，三叶42class完整。没有借用budget_fast_lane身份，Native allocator仅作为真实fund来源。实际cold走ordinary容量guard，不读另一旧strict runtimeissuer合同，未另建runtime协议。
+
+预算按物理计量补正：旧mirror曾按逻辑大小估算并退unused，不能称Native物理闭合。GetFileStandardInfo/FileID去重的当前实际allocation227168000B，较旧retained171966066B多55201934B；独立56MiB=58720256B修正，余3518322B只后继小尾，旧低估/UNKNOWN历史peak保留、旧unused不重退。另独立256MiB=268435456B用于同pair恢复与首有限OODA，替换320MiB提议；两READ cap128MiB/provider64MiB/driver和日志余64MiB，firstSAVE按实际已写与峰值另核，不降年度保存政策。两项fund后raw1623553224B/normal24389632B/cap1719664640B；后到issuer/Producer必要4MiB使raw1627747528B，仍留67527480B。卷used漂移原因UNKNOWN，当前quota13305050079232B仅有限范围与观测余量，review仍22:25:09Z，实际各scope不扩。
+
+**22:06:38Z真实PUBLIC_ENV03 exit0**：三公共发行调用declare→census→Rootallocation（真实256fund）→binding5全部exit0，原Main消费binding后真正CREATE并readback。ENVv5为35866B/SHA `87972e61238c709bc48d3b50bd6cf96170ef09477dccf4fcdea1e74b973284b0`，Native FileID844424948039045/allocated36864B；guard ADMITTED，asset40960/control25136/unresolved0。原UNKNOWN、Maven6与历史lease都未改。此为真实环境产出，仍不是新Game或SAVE；后继立即公共SavedPolicy/OriginalDriverRunProfile、fresh SCREEN与同pair恢复。
+
+CI archive URL单叶也已真正typing GREEN，7.083秒/70class，source163269B/SHA `0c8f67b0d34059c4761e62ba1ab3bb83ea0645f04c222722d4c8c21828d95378`；只复用冻结CI70作应用CP，无新runner，无重复302测试。最新02e旧URL的OfficialCI也在step46明确404，未进reactor；本次仅发表archive地址修复与真实进度，不声称完整CI已过。
