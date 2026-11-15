@@ -27,6 +27,40 @@ import org.xar.ck3.control.contracts.ExactRef;
 public final class RootDerivedChildAuthority {
     private RootDerivedChildAuthority() { }
 
+    /** Resolve this existing Root definition against the public fresh-batch entry before recovery history. */
+    public static void requireFreshBatchLinkage() { Installed.requireFreshBatchLinkage(); }
+
+    /** The installed Root reopens the canonical zero result and its registered historical derived guard.
+     * A shape check or caller-owned archive never grants this authority. No live command is issued here. */
+    static void verifyZeroCancellation(RootRuntimeContext context,
+            RootAdvanceInfrastructureFactory.Installed infrastructure, Optional<WriterContracts.Head> proposedHead,
+            ActionReceipt child, ActionPorts.OutcomeArchive archive) {
+        require(LifeAdvanceComposite.isZeroWriteInitializationCancellation(child),
+                "actual Root zero cancellation requires the strict original CLOCK/BEFORE_WRITE result");
+        try {
+            context.withSession(same -> {
+                context.writer().requireSession(same);
+                var head=same.head();
+                require(proposedHead.isEmpty()||proposedHead.orElseThrow().digest().equals(head.digest()),
+                        "zero cancellation replay crossed the actual held writer head");
+                require(ContinuityActionJournal.lookup(head.state(),child.command().actionId(),archive)
+                                .filter(child::equals).isPresent(),
+                        "zero cancellation is not the actual unchanged canonical terminal");
+                require(child.command().source().equals(context.source())
+                                &&child.command().sessionId().equals(context.game().sessionId())
+                                &&child.command().before().game().equals(context.game().generation()),
+                        "zero cancellation crossed its actual Root source, Game or session");
+                var actual=install(context,context.bindings(),infrastructure);
+                var attempt=ActionTransitions.attempt(child.state()).orElseThrow();
+                actual.verifyArchived(head,child,attempt.guard(),archive);
+                unchanged(same,head);
+                return null;
+            });
+        } catch(IOException failure) {
+            throw new UncheckedIOException("actual canonical zero cancellation derived replay unavailable",failure);
+        }
+    }
+
     public static Installed install(RootRuntimeContext context, RootExecutableBindings bindings,
             RootAdvanceInfrastructureFactory.Installed infrastructure) {
         Objects.requireNonNull(context); Objects.requireNonNull(bindings); Objects.requireNonNull(infrastructure);
@@ -35,6 +69,26 @@ public final class RootDerivedChildAuthority {
         return new Installed(context, bindings, infrastructure);
     }
     public static final class Installed {
+        private static void requireFreshBatchLinkage() {
+            try {
+                var lookup=java.lang.invoke.MethodHandles.lookup();
+                lookup.findStatic(ContinuityActionJournal.class,"withCanonicalHistory",java.lang.invoke.MethodType.methodType(
+                        Object.class,ContinuityState.class,ActionPorts.OutcomeArchive.class,java.util.function.BiFunction.class));
+                lookup.findVirtual(Installed.class,"admitFromFreshHistory",java.lang.invoke.MethodType.methodType(
+                        ExactRef.class,ContinuityStorePort.Session.class,WriterContracts.Head.class,ActionCommand.class,
+                        PhysicalReadLease.class,ExecutableStepBindings.InstalledStep.class,ActionPorts.OutcomeArchive.class,
+                        ActionChildPlanningScope.Parent.class,java.util.function.Function.class));
+            }catch(NoSuchMethodException|IllegalAccessException cause){
+                throw new LinkageError("actual derived canonical fresh-batch linkage unavailable",cause);
+            }
+            try {
+                ClassLoader derived=Installed.class.getClassLoader(),journal=ContinuityActionJournal.class.getClassLoader();
+                System.getLogger(RootDerivedChildAuthority.class.getName()).log(System.Logger.Level.INFO,
+                        "DERIVED_FRESH_BATCH_LINKAGE resolved capability=same_head_derived_guard_batch_v1 installed_loader="
+                        +(derived==null?"bootstrap":derived.getClass().getName()+"@"+Integer.toHexString(System.identityHashCode(derived)))
+                        +" journal_loader="+(journal==null?"bootstrap":journal.getClass().getName()+"@"+Integer.toHexString(System.identityHashCode(journal))));
+            }catch(RuntimeException|Error diagnosticUnavailable){ /* Optional output never replaces actual resolution. */ }
+        }
         private final RootRuntimeContext context;
         private final RootExecutableBindings bindings;
         private final RootAdvanceInfrastructureFactory.Installed infrastructure;
@@ -60,14 +114,17 @@ public final class RootDerivedChildAuthority {
                             "physical derived admission needs an exact pause or source-qualified Life cancel");
                     var scope=ActionChildPlanningScope.reservedParent(same,head,child).orElseThrow(
                             ()->new IOException("physical pause has no actual canonical reserved parent"));
-                    var parent=ContinuityActionJournal.lookup(head.state(),scope.actionId(),archive).orElseThrow();
-                    if(pause) require(RootExecutableBindings.isPublicPauseParent(parent.command())
-                            ||!org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(lease.frame().semantic().get("paused"),"paused"),
-                            "internal physical derived admission remains limited to a running cleanup pause");
-                    else require(retainedLifeCancel(parent,child)
-                            &&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(lease.frame().semantic().get("paused"),"paused"),
-                            "physical cancellation requires its retained Life parent and actual paused frame");
-                    return admit(same,head,child,lease,definition,archive);
+                    return ContinuityActionJournal.withCanonicalHistory(head.state(),archive,(lookup,membership)->()->{
+                        var parent=lookup.apply(scope.actionId()).orElseThrow();
+                        if(pause) require(RootExecutableBindings.isPublicPauseParent(parent.command())
+                                ||!org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(lease.frame().semantic().get("paused"),"paused"),
+                                "internal physical derived admission remains limited to a running cleanup pause");
+                        else require(retainedLifeCancel(parent,child)
+                                &&org.xar.ck3.control.planning.opportunity.OpportunityJson.bool(lease.frame().semantic().get("paused"),"paused"),
+                                "physical cancellation requires its retained Life parent and actual paused frame");
+                        return admitFromFreshHistory(same,head,child,lease,definition,archive,
+                                requireAdmissionScope(same,head,child,archive),lookup);
+                    });
                 }
             };
         }
@@ -80,19 +137,29 @@ public final class RootDerivedChildAuthority {
         }
         private ExactRef admit(ContinuityStorePort.Session same, WriterContracts.Head head, ActionCommand child,
                 PhysicalReadLease lease, ExecutableStepBindings.InstalledStep definition, ActionPorts.OutcomeArchive archive) throws IOException {
+            var scope=requireAdmissionScope(same,head,child,archive);
+            return ContinuityActionJournal.withCanonicalHistory(head.state(),archive,(lookup,membership)->()->
+                    admitFromFreshHistory(same,head,child,lease,definition,archive,scope,lookup));
+        }
+        private ActionChildPlanningScope.Parent requireAdmissionScope(ContinuityStorePort.Session same,WriterContracts.Head head,
+                ActionCommand child,ActionPorts.OutcomeArchive archive)throws IOException {
             requireOwner(context, bindings); context.writer().requireSession(same); unchanged(same, head);
             context.requireCurrent(child.deadline()); infrastructure.timings().requireOriginal(archive);
             require(child.origin() instanceof CommandOrigin.Gameplay && child.source().equals(context.source())
                     && child.sessionId().equals(context.game().sessionId()) && child.before().game().equals(context.game().generation()),
                     "derived child changed the actual physical Root source/Game/session");
-            var scope = ActionChildPlanningScope.reservedParent(same, head, child).orElseThrow(
+            return ActionChildPlanningScope.reservedParent(same, head, child).orElseThrow(
                     () -> new IOException("INCOMPLETE: no original same-writer composite Children callback owns this child"));
-            var parent = ContinuityActionJournal.lookup(head.state(), scope.actionId(), archive).orElseThrow();
+        }
+        private ExactRef admitFromFreshHistory(ContinuityStorePort.Session same,WriterContracts.Head head,ActionCommand child,
+                PhysicalReadLease lease,ExecutableStepBindings.InstalledStep definition,ActionPorts.OutcomeArchive archive,
+                ActionChildPlanningScope.Parent scope,java.util.function.Function<String,Optional<ActionReceipt>> lookup)throws IOException {
+            var parent = lookup.apply(scope.actionId()).orElseThrow();
             require(parent.bodySha256().equals(scope.bodySha256()),"derived child lost its actual canonical parent body");
             var running = executionFor(parent,child);
             require(running.handlerId().equals(scope.handlerId()), "derived child escaped its actual source-owned handler");
             if(RootExecutableBindings.isPublicPauseParent(parent.command())){
-                requireUnsubmitted(ContinuityActionJournal.lookup(head.state(),child.actionId(),archive),child);
+                requireUnsubmitted(lookup.apply(child.actionId()),child);
                 var actual=bindings.requirePublicPauseAuthority(parent.command());
                 ExactRef proof=Objects.requireNonNull(actual.verifyReservedPause(same,head,child,lease,definition,archive));
                 unchanged(same,head);return proof;
@@ -100,10 +167,10 @@ public final class RootDerivedChildAuthority {
             var parentBinding = parentBinding(parent, running.handlerId());
             if(retainedLifeCancel(parent,child))requireCancellation(same,head,parent,child,lease.frame(),parentBinding,archive);
             requireChildDefinition(child, definition);
-            requireUnsubmitted(ContinuityActionJournal.lookup(head.state(), child.actionId(), archive), child);
+            requireUnsubmitted(lookup.apply(child.actionId()), child);
             var before = RootGuardEvidence.loadFrame(running.guard(), archive, context.frameLoader());
             RootGuardEvidence.requireHistory(running.guard(), archive, same);
-            var previous = preceding(head.state(), parent, child, archive);
+            var previous = precedingFromFreshHistory(parent, child, lookup);
             qualify(parent, parentBinding, child, before, lease.frame(), previous, archive);
             var parentBasis = NativeEffectEvidence.basis(before); var basis = NativeEffectEvidence.basis(lease.frame());
             var verifier = bindings.actualArchivedVerifier(child.operation()).orElseThrow();
@@ -307,6 +374,21 @@ public final class RootDerivedChildAuthority {
             var all = ContinuityActionJournal.receipts(state, archive);
             for (var key : keys.subList(0, keys.size() - 1)) {
                 var old = all.stream().filter(receipt -> receipt.command().actionId().equals(key.actionId())).findFirst().orElseThrow();
+                require(old.settled() && old.bodySha256().equals(key.bodySha256()), "UNKNOWN preceding child forbids subsequent submission or cleanup"); previous.add(old);
+            }
+        }
+        return List.copyOf(previous);
+    }
+    private static List<ActionReceipt> precedingFromFreshHistory(ActionReceipt parent, ActionCommand child,
+            java.util.function.Function<String,Optional<ActionReceipt>> lookup) {
+        var running = executionFor(parent,child); var keys = running.children();
+        require(!keys.isEmpty() && keys.getLast().equals(new CompositeExecution.Child(child.actionId(), ActionCodec.bodySha256(child)))
+                && child.actionId().equals(ActionIds.child(parent.command().actionId(), keys.size(), child.operation())),
+                "derived child is not the exact last reserved canonical child ID/body/ordinal");
+        var previous = new ArrayList<ActionReceipt>();
+        if (keys.size() > 1) {
+            for (var key : keys.subList(0, keys.size() - 1)) {
+                var old = lookup.apply(key.actionId()).orElseThrow();
                 require(old.settled() && old.bodySha256().equals(key.bodySha256()), "UNKNOWN preceding child forbids subsequent submission or cleanup"); previous.add(old);
             }
         }

@@ -583,6 +583,7 @@ public final class RootApplicationAssembly {
         private ContinuityBatchJournal.UnresolvedSameGameData retainedAppliedEventOriginalData;
         private ContinuityBatchJournal.UnresolvedSameGameData readOnlyLifeArmOriginalData;
         private Instant readOnlyLifeArmOriginalDeadline;
+        private ContinuityBatchJournal.UnresolvedSameGameData readOnlyLifeCancelZeroOriginalData;
         private ContinuityBatchJournal.UnresolvedSameGameData operatorQuarantineOriginalData;
         private OriginalWindowReducer.Policy unresolvedSameGamePolicy;
         private OrdinaryCycleTransitions settledSameGameCycles;
@@ -1397,6 +1398,7 @@ public final class RootApplicationAssembly {
             Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);
             retainedAppliedEventOriginalData=null;
             readOnlyLifeArmOriginalData=null;readOnlyLifeArmOriginalDeadline=null;
+            readOnlyLifeCancelZeroOriginalData=null;
             return writer.locked(same -> {
                 var finalizationHead = same.head().state();
                 var identity = new SessionIdentity(game.machineId(), game.generation(), game.sessionId());
@@ -1438,6 +1440,7 @@ public final class RootApplicationAssembly {
                 if(armDeadline.isPresent()) {
                     readOnlyLifeArmOriginalData=data;readOnlyLifeArmOriginalDeadline=armDeadline.orElseThrow();
                 }
+                if(readOnlyLifeCancelZeroData(same,data))readOnlyLifeCancelZeroOriginalData=data;
                 return Optional.of(data);
             });
         }
@@ -1468,6 +1471,33 @@ public final class RootApplicationAssembly {
         /** Identity of this Core's already authenticated/adopted original ARM DATA; no caller DTO grants it. */
         synchronized boolean ownsReadOnlyLifeArmRecovery(ContinuityBatchJournal.UnresolvedSameGameData data) {
             return data!=null&&data==readOnlyLifeArmOriginalData&&data==unresolvedSameGameData;
+        }
+        /** Identity of this Core's fully reconstructed zero-write cancellation DATA, separate from original ARM recovery. */
+        synchronized boolean ownsReadOnlyLifeCancelZeroRecovery(ContinuityBatchJournal.UnresolvedSameGameData data) {
+            return data!=null&&data==readOnlyLifeCancelZeroOriginalData&&data==unresolvedSameGameData;
+        }
+        private boolean readOnlyLifeCancelZeroData(ContinuityStorePort.Session same,
+                ContinuityBatchJournal.UnresolvedSameGameData data)throws IOException {
+            writer.requireSession(same);
+            if(data.retainedHistory().isEmpty()||data.unresolvedActions().size()!=1)return false;
+            var parent=data.unresolvedActions().getFirst();
+            var canonical=data.retainedHistory().orElseThrow().settledActions();
+            if(!(parent.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown unknown)
+                    ||unknown.execution().children().size()<2
+                    ||!ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical).filter(parent::equals).isPresent())return false;
+            var children=unknown.execution().children().stream().map(binding->canonical.stream()
+                    .filter(value->value.command().actionId().equals(binding.actionId())&&value.bodySha256().equals(binding.bodySha256()))
+                    .findFirst().orElseThrow()).toList();
+            if(!org.xar.ck3.control.application.advance.LifeAdvanceComposite.isZeroWriteInitializationCancellation(children.getLast()))return false;
+            org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireArmedInitializationWithZeroCancellationPrefix(parent.command(),unknown.execution(),children);
+            var head=same.head();var originals=archive.withSession(same);
+            StrictJson.require(head.state().sequence()==data.canonicalSequence()&&head.digest().equals(data.canonicalHeadDigest())
+                    &&originals.loadRecord(ContinuityActionJournal.recordHead(head.state()).orElseThrow()).receipt().equals(parent),
+                    "zero-write cancellation DATA changed its actual Journal predecessor");
+            for(var child:children)StrictJson.require(child.sequence()<parent.sequence()
+                    &&child.equals(originals.loadReceipt(originals.receiptReferenceOf(child))),
+                    "zero-write cancellation DATA lost its unchanged complete original child");
+            return true;
         }
         /** Narrow DATA role, issued only after this Journal's complete history has been reconstructed. */
         private Optional<Instant> readOnlyLifeArmDeadline(ContinuityStorePort.Session same,
@@ -1565,6 +1595,8 @@ public final class RootApplicationAssembly {
                 ContinuityBatchJournal.UnresolvedSameGameData data,int retainedFrames,
                 OriginalWindowReducer.Policy cyclePolicy,Instant phaseDeadline,Instant preparationEnvelope,
                 Instant armPreparationEnvelope)throws IOException,InterruptedException {
+            if(data!=null&&data==readOnlyLifeCancelZeroOriginalData)
+                return adoptReadOnlyLifeCancelZeroRecovery(game,data,retainedFrames,cyclePolicy,armPreparationEnvelope);
             if(data==null||data!=readOnlyLifeArmOriginalData)
                 return adoptUnresolvedSameGame(game,data,retainedFrames,cyclePolicy,phaseDeadline,preparationEnvelope);
             StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty()&&data==unresolvedSameGameData
@@ -1598,6 +1630,43 @@ public final class RootApplicationAssembly {
                             });
                 }catch(InterruptedException interrupted){
                     Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("same-Game read-only ARM Driver adoption interrupted");
+                    failure.initCause(interrupted);throw failure;
+                }
+                adopted.add(result);return result;
+            });
+        }
+
+        /** Cold preparation for the unchanged armed prefix and its one terminal unsubmitted cancellation. */
+        private DriverBootstrap.Adopted adoptReadOnlyLifeCancelZeroRecovery(ManagedGameSession game,
+                ContinuityBatchJournal.UnresolvedSameGameData data,int retainedFrames,
+                OriginalWindowReducer.Policy cyclePolicy,Instant preparationEnvelope)throws IOException,InterruptedException {
+            StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty()
+                    &&ownsReadOnlyLifeCancelZeroRecovery(data)&&unresolvedSameGameCycles!=null&&unresolvedSameGameBatches!=null
+                    &&unresolvedSameGamePolicy.equals(cyclePolicy),
+                    "zero-write cancellation adoption retains this unused Core's exact Journal DATA and cycle policy");
+            Objects.requireNonNull(preparationEnvelope);
+            StrictJson.require(!preparationEnvelope.equals(Instant.MAX)&&clock.instant().isBefore(preparationEnvelope)
+                    &&!preparationEnvelope.isAfter(clock.instant().plus(Duration.ofMinutes(45))),
+                    "zero-write cancellation requires its finite original preparation envelope");
+            var owner=data.capturedController().owner();
+            StrictJson.require(owner.machineId().equals(game.machineId())&&owner.game().equals(game.generation())
+                    &&owner.sessionId().equals(game.sessionId()),"zero-write cancellation Controller crossed the actual Game");
+            return writer.locked(same->{
+                StrictJson.require(ownsReadOnlyLifeCancelZeroRecovery(data)&&readOnlyLifeCancelZeroData(same,data),
+                        "zero-write cancellation adoption lost its private canonical DATA identity");
+                var source=operatorQuarantineSource().orElseThrow(()->new IOException("zero-write cancellation recovery requires its installed historical retirement verifier"));
+                StrictJson.require(source.request().reservedTailInterruption(),"zero-write cancellation requires its actual installed historical v3 verifier");
+                final DriverBootstrap.Adopted result;
+                try {
+                    result=DriverBootstrap.adoptReadOnlyLifeCancelZeroRecovery(data,same,actions,game.nativeTransport(),archive,
+                            writer::borrowedSession,retainedFrames,preparationEnvelope,this::verifyReservedRetirement,()->{
+                                var now=clock.instant();
+                                StrictJson.require(now.isBefore(preparationEnvelope),"zero-write cancellation exhausted its original preparation envelope");
+                                var readUntil=now.plus(Duration.ofMinutes(10));
+                                return readUntil.isAfter(preparationEnvelope)?preparationEnvelope:readUntil;
+                            });
+                }catch(InterruptedException interrupted){
+                    Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("same-Game zero-write cancellation Driver adoption interrupted");
                     failure.initCause(interrupted);throw failure;
                 }
                 adopted.add(result);return result;

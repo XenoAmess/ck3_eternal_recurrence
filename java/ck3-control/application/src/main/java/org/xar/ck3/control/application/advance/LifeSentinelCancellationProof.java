@@ -29,7 +29,7 @@ final class LifeSentinelCancellationProof {
         parent(parent, execution);
         AdvancePlan plan = AdvancePlan.decode(parent);
         require(children.size() == execution.children().size() && children.size() >= (canceled ? 2 : 1)
-                && children.size() <= (canceled ? 5 : 4), "complete finite original Life prefix required");
+                && children.size() <= (canceled ? 6 : 5), "complete finite original Life prefix required");
         int index = 0; long previous = 0;
         if (children.get(index).command().operation().value().equals("pause-map")) index++;
         if (index < children.size() && children.get(index).command().operation().value().equals("set-speed-" + plan.speed())) index++;
@@ -39,16 +39,21 @@ final class LifeSentinelCancellationProof {
         int resumeIndex = index + 1;
         boolean unsentResume = resumeIndex < children.size()
                 && children.get(resumeIndex).command().operation().value().equals("resume-map");
-        require(children.size() == index + 1 + (unsentResume ? 1 : 0) + (canceled ? 1 : 0),
-                "Life cancellation permits only original ARM, optional proven unsubmitted resume, and one CANCEL");
+        int zeroIndex = index + 1 + (unsentResume ? 1 : 0);
+        boolean zeroCancellation = zeroIndex < children.size()
+                && LifeAdvanceComposite.isZeroWriteInitializationCancellation(children.get(zeroIndex));
+        require(children.size() == zeroIndex + (zeroCancellation ? 1 : 0) + (canceled ? 1 : 0),
+                "Life cancellation permits only original ARM, optional unsubmitted resume, one zero-write CANCEL and one confirmed CANCEL");
         for (int ordinal = 0; ordinal < children.size(); ordinal++) {
             ActionReceipt child = children.get(ordinal); ActionCommand command = child.command();
             CompositeExecution.Child bound = execution.children().get(ordinal);
-            boolean cancel = canceled && ordinal == children.size() - 1;
+            boolean zero = zeroCancellation && ordinal == zeroIndex;
+            boolean cancel = zero || canceled && ordinal == children.size() - 1;
             boolean neverSubmitted = unsentResume && ordinal == resumeIndex;
             boolean confirmedPause = command.operation().value().equals("pause-map") && child.state() instanceof ActionState.Settled pause
                     && pause.settlement() instanceof ActionState.PauseConfirmed;
-            require(child.settled() && (neverSubmitted ? LifeAdvanceComposite.isNeverResumedResume(child)
+            require(child.settled() && (zero ? LifeAdvanceComposite.isZeroWriteInitializationCancellation(child)
+                        : neverSubmitted ? LifeAdvanceComposite.isNeverResumedResume(child)
                         : child.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED || confirmedPause)
                     && child.sequence() > previous && child.bodySha256().equals(ActionCodec.bodySha256(command))
                     && bound.actionId().equals(command.actionId()) && bound.bodySha256().equals(child.bodySha256())
@@ -60,7 +65,10 @@ final class LifeSentinelCancellationProof {
                     && (cancel || !command.deadline().isAfter(parent.deadline())),
                     "Life cancellation child is not the complete canonical ordered source-bound timeline child");
             sameFrame(parent, command.before());
-            if (!neverSubmitted) {
+            if (zero) {
+                require(command.operation().value().equals(ClockStatusRead.CANCEL_PREFIX + armed.generation().decimal()),
+                        "zero-write cancellation targets another initialized native generation");
+            } else if (!neverSubmitted) {
                 require(child.state() instanceof ActionState.Settled, "Life initialization control needs its real native attempt");
                 ActionState.Settled settled = (ActionState.Settled) child.state();
                 ActionEffects.validate(command, settled.attempt(), settled.dispatch(), settled.settlement());

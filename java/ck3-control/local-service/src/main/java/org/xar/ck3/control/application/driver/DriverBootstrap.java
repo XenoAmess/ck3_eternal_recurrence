@@ -1149,6 +1149,45 @@ public final class DriverBootstrap {
                 Optional.empty(),Optional.of(Objects.requireNonNull(lateReadDeadline)),true);
     }
 
+    /** Separate cold DATA role; the actual Root archive replays the registered unsubmitted cancellation. */
+    public static Adopted adoptReadOnlyLifeCancelZeroRecovery(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant preparationEnvelope,
+            DriverStateAssembler.ReservedLifeRetirementVerifier verifier,
+            java.util.function.Supplier<Instant> lateReadDeadline)throws IOException,InterruptedException {
+        StrictJson.require(data.retainedHistory().isPresent()&&data.unresolvedActions().size()==1,
+                "zero-write cancellation adoption requires the complete actual retained history");
+        var retained=data.retainedHistory().orElseThrow();
+        var parent=requireReadOnlyLifeCancelZeroPrefix(retained.settledActions());
+        StrictJson.require(parent.equals(data.unresolvedActions().getFirst())
+                &&same.head().state().sequence()==data.canonicalSequence()&&same.head().digest().equals(data.canonicalHeadDigest()),
+                "zero-write cancellation adoption changed its canonical parent or held writer");
+        return adoptSameGameHistory(retained,same,actions,transport,archive,currentSession,
+                retainedFrames,preparationEnvelope,true,true,Optional.empty(),Optional.of(Objects.requireNonNull(verifier)),
+                Optional.empty(),Optional.of(Objects.requireNonNull(lateReadDeadline)),ReadOnlyLifeRecoveryRole.ZERO_WRITE_CANCELLATION);
+    }
+
+    private enum ReadOnlyLifeRecoveryRole { NONE, ARM, ZERO_WRITE_CANCELLATION }
+
+    private static ActionReceipt requireReadOnlyLifeCancelZeroPrefix(List<ActionReceipt> canonical) {
+        var parent=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical).orElseThrow();
+        StrictJson.require(parent.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown,
+                "zero-write cancellation READ requires its original UNKNOWN Life parent");
+        var execution=((org.xar.ck3.control.application.action.ActionState.CompositeUnknown)parent.state()).execution();
+        var children=execution.children().stream().map(binding->{
+            var matches=canonical.stream().filter(value->value.command().actionId().equals(binding.actionId())
+                    &&value.bodySha256().equals(binding.bodySha256())).toList();
+            StrictJson.require(matches.size()==1,"zero-write cancellation prefix is not uniquely canonical");
+            return matches.getFirst();
+        }).toList();
+        StrictJson.require(children.size()>=2
+                &&org.xar.ck3.control.application.advance.LifeAdvanceComposite.isZeroWriteInitializationCancellation(children.getLast()),
+                "zero-write cancellation READ requires its one actual terminal unsubmitted cancellation");
+        org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireArmedInitializationWithZeroCancellationPrefix(parent.command(),execution,children);
+        return parent;
+    }
+
     /** Journal-issued post-RETAIN EVENT recovery, with its independent READ window acquired after qualification. */
     public static Adopted adoptRetainedAppliedEventCompletion(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
@@ -1210,6 +1249,18 @@ public final class DriverBootstrap {
             boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
             Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier,Optional<RecoveryReadWindow> recoveryReadWindow,
             Optional<java.util.function.Supplier<Instant>> lateReadDeadline,boolean readOnlyLifeArmOnly)throws IOException,InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,
+                isolatedLife,historicalReads,operatorRequest,retirementVerifier,recoveryReadWindow,lateReadDeadline,
+                readOnlyLifeArmOnly?ReadOnlyLifeRecoveryRole.ARM:ReadOnlyLifeRecoveryRole.NONE);
+    }
+    private static Adopted adoptSameGameHistory(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
+            boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
+            Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier,Optional<RecoveryReadWindow> recoveryReadWindow,
+            Optional<java.util.function.Supplier<Instant>> lateReadDeadline,ReadOnlyLifeRecoveryRole readOnlyRole)throws IOException,InterruptedException {
+        Objects.requireNonNull(readOnlyRole);
         Objects.requireNonNull(operatorRequest);
         Objects.requireNonNull(data);Objects.requireNonNull(same);Objects.requireNonNull(actions);
         Objects.requireNonNull(transport);Objects.requireNonNull(archive);Objects.requireNonNull(currentSession);
@@ -1224,7 +1275,8 @@ public final class DriverBootstrap {
                 &&retained.driver().session().bridgePid()==current.game().pid()
                 &&retained.driver().session().pipeName().equals(transport.pipeName()),
                 "settled retained Driver belongs to another physical Game or pipe");
-        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads,operatorRequest,lateReadDeadline.isPresent()&&!readOnlyLifeArmOnly,readOnlyLifeArmOnly);
+        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads,operatorRequest,
+                lateReadDeadline.isPresent()&&readOnlyRole==ReadOnlyLifeRecoveryRole.NONE,readOnlyRole);
         var repository=new DriverFactsRepository(retained);
         var producer=new NativeDriverObservationProducer(repository,transport,data.source(),
                 wire->borrowedArchive(archive,currentSession).preserveMaterial(RawJson.fullMaterial(wire)));
@@ -1298,6 +1350,14 @@ public final class DriverBootstrap {
             ContinuityStorePort.Session same,ActionSnapshotReader actions,ActionPorts.OutcomeArchive archive,
             boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
             boolean retainedAppliedEventOnly,boolean readOnlyLifeArmOnly) throws IOException {
+        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads,operatorRequest,retainedAppliedEventOnly,
+                readOnlyLifeArmOnly?ReadOnlyLifeRecoveryRole.ARM:ReadOnlyLifeRecoveryRole.NONE);
+    }
+    private static void qualifySameGameActionHistory(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,ActionPorts.OutcomeArchive archive,
+            boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
+            boolean retainedAppliedEventOnly,ReadOnlyLifeRecoveryRole readOnlyRole) throws IOException {
         var retained=data.retainedFacts();var old=data.previousTransport();
         ActionPorts.CheckedArchiveRead<Void> qualification=originals->{
             var finalizationHead = same.head().state();
@@ -1307,7 +1367,12 @@ public final class DriverBootstrap {
                 StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
                         &&basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
                         "same-Game continuation cannot replace its actual original history");
-                if(readOnlyLifeArmOnly) {
+                if(readOnlyRole==ReadOnlyLifeRecoveryRole.ZERO_WRITE_CANCELLATION) {
+                    StrictJson.require(isolatedLife&&!retainedAppliedEventOnly&&operatorRequest.isEmpty()
+                            &&new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions())),
+                            "zero-write cancellation READ retains the complete actual canonical action set");
+                    requireReadOnlyLifeCancelZeroPrefix(lease.snapshot().actions());
+                } else if(readOnlyRole==ReadOnlyLifeRecoveryRole.ARM) {
                     var parent=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(lease.snapshot().actions()).orElseThrow();
                     StrictJson.require(isolatedLife&&!retainedAppliedEventOnly&&operatorRequest.isEmpty()
                             &&new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))

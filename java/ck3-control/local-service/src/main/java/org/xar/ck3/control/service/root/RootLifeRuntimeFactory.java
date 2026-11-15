@@ -111,7 +111,8 @@ public final class RootLifeRuntimeFactory {
             infrastructure=clockInfrastructure.install(context,scopedReadiness,pendingUiScope);
             replay=new LifeAdvanceRootReplay(RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()),context.core()::operatorQuarantineSource,this::borrowedSession,
                     (head,cursor,archive)->verifyQualifiedPreparedCursor(context,head,cursor,archive),
-                    (head,parent,archive)->verifyQualifiedPreparedParent(context,head,parent,archive));
+                    (head,parent,archive)->verifyQualifiedPreparedParent(context,head,parent,archive),
+                    (head,receipt,archive)->RootDerivedChildAuthority.verifyZeroCancellation(context,infrastructure,head,receipt,archive));
             composite=new LifeAdvanceComposite(infrastructure.observations(),scopedReadiness,infrastructure.timeline(),
                     infrastructure.statuses(),context.core().actions(),context.archive(),context.clock(),replay,
                     new LifeAdvanceComposite.PreparedCleanupReads() {
@@ -397,16 +398,19 @@ public final class RootLifeRuntimeFactory {
                 return context.withSession(same -> {
                     var originalArchive = context.archive().withSession(same);
                     var heldHead = same.head();
-                    var actual = ContinuityActionJournal.lookup(heldHead.state(), parent.actionId(), originalArchive).orElseThrow();
-                    require(actual.command().equals(parent) && actual.state() instanceof ActionState.CompositeUnknown unknown
-                            && unknown.execution().equals(execution), "Life physical Status changed its canonical unresolved parent");
-                    var children = execution.children().stream().map(bound -> {
-                        var child = ContinuityActionJournal.lookup(heldHead.state(), bound.actionId(), originalArchive).orElseThrow();
-                        require(child.bodySha256().equals(bound.bodySha256()), "Life physical Status child body differs from canonical history");
-                        return child;
-                    }).toList();
+                    var children = ContinuityActionJournal.withCanonicalHistory(heldHead.state(),originalArchive,(lookup,membership)->()->{
+                        var actual=lookup.apply(parent.actionId()).orElseThrow();
+                        require(actual.command().equals(parent)&&actual.state() instanceof ActionState.CompositeUnknown unknown
+                                &&unknown.execution().equals(execution),"Life physical Status changed its canonical unresolved parent");
+                        return execution.children().stream().map(bound->{
+                            var child=lookup.apply(bound.actionId()).orElseThrow();
+                            require(child.bodySha256().equals(bound.bodySha256()),"Life physical Status child body differs from canonical history");
+                            return child;
+                        }).toList();
+                    });
                     require(children.equals(proposedChildren), "Life physical Status borrowed another child prefix");
-                    if (children.getLast().command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX))
+                    if (children.getLast().command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)
+                            &&!LifeAdvanceComposite.isZeroWriteInitializationCancellation(children.getLast()))
                         LifeAdvanceComposite.requireCancelledInitializationPrefix(parent, execution, children);
                     else LifeAdvanceComposite.requireArmedInitializationPrefix(parent, execution, children);
                     var profile = infrastructure.physicalStatuses();

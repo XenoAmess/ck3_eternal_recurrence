@@ -1596,7 +1596,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         if (!(receipt.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown unknown)
                 || !org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(receipt.command().operation().value())
                 || !unknown.execution().handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER)
-                || unknown.execution().children().size() > 5) return false;
+                || unknown.execution().children().size() > 6) return false;
         var command = receipt.command();
         var guard = unknown.execution().guard();
         return command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
@@ -2953,7 +2953,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
                             parent.command(), prefixExecution, children);
                     resume = true;
                 } else if (operation.startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX)) {
-                    StrictJson.require(arm && !cancel, "Life cancellation requires its prior ARM");
+                    StrictJson.require(arm && (!cancel
+                            || org.xar.ck3.control.application.advance.LifeAdvanceComposite.isZeroWriteInitializationCancellation(children.getLast())
+                                && !org.xar.ck3.control.application.advance.LifeAdvanceComposite.isZeroWriteInitializationCancellation(child)),
+                            "Life cancellation requires its prior ARM and at most one prior zero-write CANCEL");
                     // Validate the prefix (pause/speed/arm) is fully settled and canonical before accepting CANCEL
                     var prefixExecution = new org.xar.ck3.control.application.action.CompositeExecution(
                             execution.handlerId(), execution.startedAt(), execution.guard(),
@@ -2986,7 +2989,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         && command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
                         && command.source().equals(original.source()) && command.sessionId().equals(original.sessionId())
                         && command.claims().equals(original.claims()) && (!command.deadline().isAfter(original.deadline())
-                            || cancel && child == children.getLast()
+                            || cancel && (child == children.getLast()
+                                || org.xar.ck3.control.application.advance.LifeAdvanceComposite.isZeroWriteInitializationCancellation(child))
                                 && command.operation().value().startsWith(org.xar.ck3.control.application.advance.ClockStatusRead.CANCEL_PREFIX))
                         && command.before().game().equals(original.before().game())
                         && command.before().machineId().equals(original.before().machineId())

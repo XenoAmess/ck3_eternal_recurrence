@@ -1010,6 +1010,9 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
             if(owner.ownsReadOnlyLifeArmRecovery(data))
                 return physical.withOriginalArmReadPreparation(data,deadline,
                         ()->controller.reconcileUnresolvedOriginal(data,deadline));
+            if(owner.ownsReadOnlyLifeCancelZeroRecovery(data))
+                return physical.withZeroCancellationReadPreparation(data,deadline,
+                        ()->controller.reconcileUnresolvedOriginal(data,deadline));
             return controller.reconcileUnresolvedOriginal(data, deadline);
         } finally { calls.unlock(); }
     }

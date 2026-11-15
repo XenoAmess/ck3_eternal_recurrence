@@ -16,6 +16,11 @@ public final class AdvanceClockArchivedReplay {
     private final AdvancePrimitiveArchivedReplay primitives;
     private final NativeEffectEvidence.FrameLoader frames;
     public AdvanceClockArchivedReplay(NativeEffectEvidence.FrameLoader frames) { this.frames = Objects.requireNonNull(frames); primitives = new AdvancePrimitiveArchivedReplay(frames); }
+    public AdvanceClockArchivedReplay(NativeEffectEvidence.FrameLoader frames,
+            AdvancePrimitiveArchivedReplay.ZeroCancellationVerifier actualZeroCancellationVerifier) {
+        this.frames=Objects.requireNonNull(frames);
+        this.primitives=new AdvancePrimitiveArchivedReplay(frames,Objects.requireNonNull(actualZeroCancellationVerifier));
+    }
     public static void verifyChildBindings(ActionCommand parent, List<ActionReceipt> children) {
         Objects.requireNonNull(parent); children = List.copyOf(children); require(children.size() <= 256, "finite original timeline child list required");
         var ids = new HashSet<String>(); long previousSequence = 0;

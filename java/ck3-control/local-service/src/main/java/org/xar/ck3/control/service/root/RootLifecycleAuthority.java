@@ -187,6 +187,7 @@ public final class RootLifecycleAuthority {
         }
     }
     private final ThreadLocal<OriginalArmReadPreparation> originalArmPreparation=new ThreadLocal<>();
+    private final ThreadLocal<Boolean> zeroCancellationPreparation=new ThreadLocal<>();
     private static final int MAX_ORIGINAL=WriterContracts.MAX_PIN_BYTES;
     private final ContinuityWriter writer;
     private final NativeOutcomeArchive archive;
@@ -251,6 +252,50 @@ public final class RootLifecycleAuthority {
         });
         originalArmPreparation.set(prepared);
         try{return work.run();}finally{originalArmPreparation.remove();}
+    }
+    /** A separate preparation role for an already terminal zero-write cancellation.
+     * It authenticates the complete retained prefix before the coordinator starts its short new token window.
+     * Core has already checked private DATA identity; this scope grants no READ, Ready, dispatch or write bypass. */
+    <T>T withZeroCancellationReadPreparation(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
+            Instant callerDeadline,PreparedReadWork<T> work)throws IOException,InterruptedException {
+        Objects.requireNonNull(data);Objects.requireNonNull(callerDeadline);Objects.requireNonNull(work);
+        require(originalArmPreparation.get()==null&&zeroCancellationPreparation.get()==null&&active.get()==null,
+                "zero cancellation preparation cannot nest an observation or another preparation");
+        Instant now=clock.instant(),local=now.plus(Duration.ofMinutes(10));
+        Instant until=callerDeadline.isBefore(local)?callerDeadline:local;
+        require(now.isBefore(until),"zero cancellation preparation caller deadline expired");
+        writer.locked(same->{
+            requireSession(same);var head=same.head();var bound=archive.withSession(same);
+            require(data.unresolvedActions().size()==1&&data.retainedHistory().isPresent()
+                            &&head.state().sequence()==data.canonicalSequence()
+                            &&head.digest().equals(data.canonicalHeadDigest()),
+                    "zero cancellation preparation changed its actual retained DATA/head");
+            var parent=data.unresolvedActions().getFirst();
+            var canonical=ContinuityActionJournal.receipts(head.state(),bound);
+            require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical)
+                            .filter(parent::equals).isPresent()&&parent.state() instanceof ActionState.CompositeUnknown,
+                    "zero cancellation preparation lost its canonical original Life root");
+            var execution=((ActionState.CompositeUnknown)parent.state()).execution();
+            var children=execution.children().stream().map(binding->{
+                var child=canonical.stream().filter(value->value.command().actionId().equals(binding.actionId())).findFirst().orElseThrow();
+                require(child.bodySha256().equals(binding.bodySha256())
+                                &&data.retainedHistory().orElseThrow().settledActions().contains(child)
+                                &&child.equals(bound.loadReceipt(bound.receiptReferenceOf(child))),
+                        "zero cancellation preparation replaced a complete retained child original");
+                return child;
+            }).toList();
+            org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireArmedInitializationWithZeroCancellationPrefix(
+                    parent.command(),execution,children);
+            require(parent.command().source().equals(source)
+                            &&parent.command().sessionId().equals(data.capturedController().owner().sessionId())
+                            &&parent.command().before().game().equals(data.capturedController().owner().game())
+                            &&head.digest().equals(same.head().digest())&&clock.instant().isBefore(until),
+                    "zero cancellation preparation crossed its actual source/Game/session or finite envelope");
+            return null;
+        });
+        zeroCancellationPreparation.set(Boolean.TRUE);
+        try{return work.run();}finally{zeroCancellationPreparation.remove();}
     }
     /** This optional deadline is available only inside the actual Root's canonical original ARM call. */
     Optional<Instant> originalArmReadPreparationDeadline(ContinuityStorePort.Session same,ActionReceipt original)throws IOException {
@@ -431,6 +476,7 @@ public final class RootLifecycleAuthority {
     /** Resolve only, using this actual Life definition's loader; no projection, observation, permission or Game I/O. */
     static void requireCapturedProjectionLinkage() {
         org.xar.ck3.control.application.action.ReconciliationPendingBinding.requireCanonicalHistoryBatchLinkage();
+        RootDerivedChildAuthority.requireFreshBatchLinkage();
         try {
             var lookup=java.lang.invoke.MethodHandles.lookup();
             lookup.findVirtual(DriverObservationAssembler.class,"withCapturedProjection",java.lang.invoke.MethodType.methodType(

@@ -53,6 +53,16 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
         this.operatorSource=Objects.requireNonNull(actualOperatorSource);this.operatorSession=Objects.requireNonNull(actualOperatorSession);
         this.preparedCursorVerifier=Optional.of(Objects.requireNonNull(actualCursor));this.preparedParentVerifier=Optional.of(Objects.requireNonNull(actualParent));
     }
+    public LifeAdvanceRootReplay(NativeEffectEvidence.FrameLoader actualFrames,
+            java.util.function.Supplier<Optional<CompositeOperatorQuarantineSource>> actualOperatorSource,
+            java.util.function.Supplier<org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session> actualOperatorSession,
+            PreparedCursorVerifier actualCursor,PreparedCursorVerifier actualParent,
+            AdvancePrimitiveArchivedReplay.ZeroCancellationVerifier actualZeroCancellationVerifier) {
+        this.frames=Objects.requireNonNull(actualFrames);
+        this.timeline=new AdvanceClockArchivedReplay(actualFrames,Objects.requireNonNull(actualZeroCancellationVerifier));
+        this.operatorSource=Objects.requireNonNull(actualOperatorSource);this.operatorSession=Objects.requireNonNull(actualOperatorSession);
+        this.preparedCursorVerifier=Optional.of(Objects.requireNonNull(actualCursor));this.preparedParentVerifier=Optional.of(Objects.requireNonNull(actualParent));
+    }
     public NativeRecordedEvidenceVerifier.Binding binding(OperationKey exactOperation, ExactRef actualDefinition) {
         require(LifeAdvanceComposite.accepts(exactOperation.value()), "life archived verifier requires one exact registered operation");
         return new NativeRecordedEvidenceVerifier.Binding(exactOperation, actualDefinition, this);

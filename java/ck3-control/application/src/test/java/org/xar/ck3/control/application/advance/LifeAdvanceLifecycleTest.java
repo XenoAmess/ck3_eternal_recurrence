@@ -125,6 +125,168 @@ final class LifeAdvanceLifecycleTest {
         assertArrayEquals(originalParent, ActionCodec.encodeCommand(fixture.parent));
     }
 
+    /** The original rejection consumer must keep the sentinel armed without replay. */
+    @Test void zeroWriteCancellationTailRemainsArmedAndObservationDoesNotCancelOrReplay() {
+        Fixture fixture = armedWithZeroCancellation();
+        var original = fixture.children.getLast();
+        byte[] parentBytes = ActionCodec.encodeCommand(fixture.parent), rejectedBytes = ActionCodec.encodeCommand(original.command());
+        assertTrue(LifeAdvanceComposite.isZeroWriteInitializationCancellation(original));
+        LifeAdvanceComposite.requireArmedInitializationWithZeroCancellationPrefix(fixture.parent, fixture.execution(), fixture.children);
+        assertThrows(IllegalArgumentException.class, () -> LifeAdvanceComposite.requireCancelledInitializationPrefix(
+                fixture.parent, fixture.execution(), fixture.children));
+        int reads = fixture.reads, requests = fixture.requests;
+        assertInstanceOf(ActionPorts.Pending.class, fixture.life.observe(fixture.parent, fixture.execution()));
+        assertEquals(reads, fixture.reads); assertEquals(requests, fixture.requests);
+        assertEquals(List.of(fixture.plan.armStep()), fixture.steps);
+        assertFalse(fixture.canceled); assertFalse(fixture.resumed);
+        assertFalse(original.eligibleAdvance()); assertFalse(original.visibleGameplay());
+        assertArrayEquals(parentBytes, ActionCodec.encodeCommand(fixture.parent));
+        assertArrayEquals(rejectedBytes, ActionCodec.encodeCommand(original.command()));
+    }
+    @Test void newOrdinalAfterZeroCancellationNeedsIndependentSuccessfulCancelAndKeepsReadOnlyRecovery() {
+        Fixture fixture = armedWithZeroCancellation();
+        ActionReceipt rejected = fixture.children.getLast();
+        var frame = fixture.current(fixture.parent, NOW.plusSeconds(150));
+        var operation = new OperationKey(ClockStatusRead.CANCEL_PREFIX + "37");
+        var next = cancellationChild(fixture, frame, operation, 3, NOW.plusSeconds(150));
+        assertNotEquals(rejected.command().actionId(), next.actionId());
+        fixture.submit(next);
+        LifeAdvanceComposite.requireCancelledInitializationPrefix(fixture.parent, fixture.execution(), fixture.children);
+        var parent = new ActionReceipt(1, 100, fixture.parent, ActionCodec.bodySha256(fixture.parent),
+                new ActionState.CompositeUnknown(fixture.execution(), "retained original", List.of(DEFINITION)));
+        var canonical = new ArrayList<>(fixture.children); canonical.add(parent);
+        assertEquals(Optional.of(parent), org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical));
+        var successful = fixture.children.getLast(); var state = (ActionState.Settled) successful.state();
+        var unknown = new ActionReceipt(1, successful.sequence(), successful.command(), successful.bodySha256(),
+                new ActionState.Unknown(Optional.of(state.attempt()), Optional.of(state.dispatch()), "actual final confirmation unavailable", List.of(DEFINITION)));
+        canonical.set(2, unknown);
+        assertEquals(Optional.of(parent), org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical));
+        assertThrows(IllegalArgumentException.class, () -> LifeAdvanceComposite.requireCancelledInitializationPrefix(
+                fixture.parent, fixture.execution(), List.of(fixture.children.getFirst(), rejected, unknown)));
+        assertEquals(NOW.plusSeconds(120), rejected.command().deadline());
+        assertEquals(ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH, rejected.outcome());
+    }
+    @Test void duplicateZeroCancellationTailAndAnotherGenerationDoNotGrantASecondContinuation() {
+        Fixture duplicate = armedWithZeroCancellation();
+        appendZeroCancellation(duplicate, "37", NOW.plusSeconds(150));
+        assertThrows(IllegalArgumentException.class, () -> LifeAdvanceComposite.requireArmedInitializationWithZeroCancellationPrefix(
+                duplicate.parent, duplicate.execution(), duplicate.children));
+        var parent = new ActionReceipt(1, 100, duplicate.parent, ActionCodec.bodySha256(duplicate.parent),
+                new ActionState.CompositeUnknown(duplicate.execution(), "duplicate zero cancellation", List.of(DEFINITION)));
+        var canonical = new ArrayList<>(duplicate.children); canonical.add(parent);
+        assertTrue(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical).isEmpty());
+        Fixture changed = new Fixture(false, false, false);
+        var start = changed.current(changed.parent, changed.parent.deadline());
+        var arm = new OperationKey(changed.plan.armStep());
+        changed.submit(AdvancePrimitives.child(changed.parent, start, ActionIds.child(changed.parent.actionId(), 1, arm), arm.value(), changed.parent.deadline()));
+        appendZeroCancellation(changed, "38", NOW.plusSeconds(120));
+        assertThrows(IllegalArgumentException.class, () -> LifeAdvanceComposite.requireArmedInitializationWithZeroCancellationPrefix(
+                changed.parent, changed.execution(), changed.children));
+    }
+    @Test void cancellationZeroReplayRequiresAnInstalledActualCanonicalVerifier() {
+        Fixture fixture = armedWithZeroCancellation(); var rejected = fixture.children.getLast();
+        assertThrows(IllegalStateException.class, () -> new AdvancePrimitiveArchivedReplay(fixture::complete).verify(rejected, fixture.archive));
+        int[] calls = {0};
+        AdvancePrimitiveArchivedReplay.ZeroCancellationVerifier accepted = (head, child, archive) -> {
+            assertTrue(head.isEmpty()); assertEquals(rejected, child); assertSame(fixture.archive, archive); calls[0]++;
+        };
+        new AdvancePrimitiveArchivedReplay(fixture::complete, accepted).verify(rejected, fixture.archive);
+        assertEquals(1, calls[0]);
+        AdvancePrimitiveArchivedReplay.ZeroCancellationVerifier unavailable = (head, child, archive) -> {
+            throw new IllegalStateException("actual canonical registration absent");
+        };
+        assertThrows(IllegalStateException.class, () -> new AdvancePrimitiveArchivedReplay(fixture::complete, unavailable).verify(rejected, fixture.archive));
+    }
+    @Test void sourceIssuedTokenAfterZeroTailUsesNewChildAndIndependentParentIdleWithoutDayCredit() {
+        Fixture fixture = armedWithZeroCancellation();
+        var start = fixture.produced.values().stream().min(java.util.Comparator.comparing(AdvanceObservationPort.Frame::observedAt)).orElseThrow();
+        var execution = fixture.execution();
+        var original = new ActionReceipt(1, 100, fixture.parent, ActionCodec.bodySha256(fixture.parent),
+                new ActionState.CompositeUnknown(execution, "retained zero-write cancellation", List.of(DEFINITION)));
+        fixture.retainedParent = original;
+        int[] physicalReads = {0};
+        var status = new ClockStatusRead(fixture, DEFINITION, fixture.archive);
+        var source = new LifeAdvanceComposite(fixture, (command, frame) ->
+                new AdvanceReadiness.Facts(frame.identity(), STEPS, CAPS, false, false, false, 45, DEFINITION),
+                fixture.timeline, status, new ActionSnapshotReader(new SnapshotJournal(fixture)), fixture.archive, CLOCK,
+                (command, guard, archive) -> Optional.of(start), (parent, retained, children, deadline) -> {
+                    physicalReads[0]++; return physicalCancellationRead(fixture, deadline);
+                });
+        var token = source.cancellationToken(original, NOW.plusSeconds(180)).orElseThrow();
+        assertEquals(2, token.originalExecution().children().size()); assertEquals(1, physicalReads[0]);
+        assertEquals(NOW.plusSeconds(120), fixture.children.get(1).command().deadline());
+        var children = new CompositeActionPort.Children() {
+            @Override public String nextActionId() { throw new IllegalStateException("typed operation required"); }
+            @Override public String nextActionId(OperationKey operation) {
+                return ActionIds.child(fixture.parent.actionId(), fixture.children.size() + 1, operation);
+            }
+            @Override public List<ActionReceipt> completed() { return fixture.completed(); }
+            @Override public ActionReceipt submit(ActionCommand child) { return fixture.submit(child); }
+        };
+        var result = assertInstanceOf(ActionPorts.CompositeControlObserved.class,
+                source.continueOriginal(fixture.parent, execution, token, children));
+        assertEquals(2, physicalReads[0]);
+        assertEquals(3, fixture.children.size());
+        assertEquals(ActionIds.child(fixture.parent.actionId(), 3, new OperationKey(ClockStatusRead.CANCEL_PREFIX + "37")),
+                fixture.children.getLast().command().actionId());
+        assertEquals(List.of(fixture.plan.armStep(), ClockStatusRead.CANCEL_PREFIX + "37"), fixture.steps);
+        assertNotEquals(result.observation().terminalStatus().requestId(), result.observation().supportingReads().getFirst().requestId());
+        LifeAdvanceComposite.requireCancelledInitialization(fixture.parent,
+                new CompositeExecution(execution.handlerId(), execution.startedAt(), execution.guard(),
+                        fixture.children.stream().map(child -> new CompositeExecution.Child(child.command().actionId(), child.bodySha256())).toList()),
+                result.observation(), fixture.children);
+        assertTrue(result.observation().semantic().actual().contains(new ExpectedText(new FieldKey("progress_status"), "initialization_cancelled")));
+        assertTrue(result.observation().semantic().actual().contains(new ExpectedBoolean(new FieldKey("timeline.advance_verified"), false)));
+        assertTrue(result.observation().semantic().actual().contains(new ExpectedBoolean(new FieldKey("timeline.checkpoint_eligible"), false)));
+    }
+    /** Software transport events and original packets exercise the physical read consumer, without Root installation. */
+    private static LifeAdvanceComposite.CancellationRead physicalCancellationRead(Fixture fixture, Instant deadline) {
+        var frame = fixture.current(fixture.parent, deadline);
+        var transport = new NativeObservationPort.TransportSession(SOURCE.machineId(), fixture.parent.before().game(), BigInteger.ONE, "fixture-session");
+        var identity = new PhysicalStatusIdentity(transport, frame.identity().frame().snapshotId(), frame.identity().frame().identity().nativeRevision(),
+                SOURCE, frame.originalEvidence(), DEFINITION, DEFINITION, Optional.empty(), Optional.empty(), frame.observedAt());
+        var request = PlanningReadRequest.newStatusOnly(identity, new OperationKey(ClockStatusRead.STEP), new Obj(Map.of()), deadline);
+        var guard = new GuardEvidence(request.origin(), SOURCE, "fixture-session", BigInteger.ONE, request.operation(),
+                identity.nativeEvidence(), identity.helloEvidence(), "software-physical-cancellation-reader", identity.observedAt(), deadline, List.of(DEFINITION));
+        var guarded = new PlanningReadGuard(guard, new PlanningReadGuard.PhysicalStatus(identity), "c".repeat(64));
+        String id = "physical-status-" + ++fixture.requests;
+        var exchange = fixture.write(id, ClockStatusRead.STEP, frame);
+        var ack = fixture.ack(exchange, nativeToken(ClockStatusRead.STEP, "available", fixture.currentStatus()));
+        var receipt = new PlanningReadReceipt(request, PhysicalStatusIdentity.CONTRACT_ID, id, guarded, guarded, ack);
+        var known = new PlanningReadResult.Known<>(fixture.currentStatus(), receipt, fixture.archive.preserveRead(receipt));
+        return new LifeAdvanceComposite.CancellationRead(known, fixture.current(fixture.parent, deadline));
+    }
+    private static Fixture armedWithZeroCancellation() {
+        Fixture fixture = new Fixture(false, false, false);
+        var start = fixture.current(fixture.parent, fixture.parent.deadline());
+        var arm = new OperationKey(fixture.plan.armStep());
+        fixture.submit(AdvancePrimitives.child(fixture.parent, start,
+                ActionIds.child(fixture.parent.actionId(), 1, arm), arm.value(), fixture.parent.deadline()));
+        appendZeroCancellation(fixture, "37", NOW.plusSeconds(120));
+        return fixture;
+    }
+    private static ActionReceipt appendZeroCancellation(Fixture fixture, String generation, Instant deadline) {
+        var frame = fixture.current(fixture.parent, deadline);
+        var operation = new OperationKey(ClockStatusRead.CANCEL_PREFIX + generation);
+        var command = cancellationChild(fixture, frame, operation, fixture.children.size() + 1, deadline);
+        String requestId = "zero-cancel-" + (fixture.children.size() + 1);
+        var attempt = new ActionState.Attempt(requestId, frame.observedAt(), fixture.guard(operation, frame), AdvancePrimitives.prepareRequest(command));
+        var dispatch = new NativeActionPort.RejectedBeforeDispatch(requestId,
+                new NativeActionPort.ZeroDispatchProof(NativeActionPort.ZeroDispatchStage.BEFORE_WRITE, 0, "original finite deadline exhausted", Optional.empty()));
+        var receipt = new ActionReceipt(1, fixture.children.size() + 1, command, ActionCodec.bodySha256(command),
+                new ActionState.RejectedBeforeDispatch(attempt, dispatch));
+        fixture.archive.preserveRequest(attempt.preparedRequest()); fixture.archive.preserve(dispatch); fixture.archive.preserveReceipt(receipt);
+        fixture.children.add(receipt); return receipt;
+    }
+    private static ActionCommand cancellationChild(Fixture fixture, AdvanceObservationPort.Frame frame,
+            OperationKey operation, int ordinal, Instant deadline) {
+        var arguments = new Obj(Map.of());
+        return new ActionCommand(ActionIds.child(fixture.parent.actionId(), ordinal, operation), frame.identity(),
+                fixture.parent.source(), fixture.parent.sessionId(), operation, arguments,
+                AdvancePrimitives.expected(frame.identity(), fixture.parent.source(), operation, arguments),
+                fixture.parent.claims(), deadline);
+    }
+
     private static final class MutableClock extends Clock {
         private Instant now;
         MutableClock(Instant initial) { now = initial; }
@@ -477,6 +639,7 @@ final class LifeAdvanceLifecycleTest {
         final java.util.UUID custodyEpoch = java.util.UUID.randomUUID();
         long observationTicks; long endpointOrder;
         final List<ActionReceipt> children = new ArrayList<>(); final List<String> steps = new ArrayList<>();
+        ActionReceipt retainedParent;
         final Map<ExactRef, AdvanceObservationPort.Frame> produced = new HashMap<>();
         final boolean modalAfterArm; final boolean unknownResume; final boolean modalAfterResume; final boolean watchMode; final boolean finishDay;
         boolean armed; boolean canceled; boolean resumed; boolean rosterDriftAfterSpeed; boolean laggingPause;
@@ -718,10 +881,15 @@ final class LifeAdvanceLifecycleTest {
         @Override public <T> T locked(Function<LockedJournal,T> work) {
             return work.apply(new LockedJournal() {
                 @Override public Optional<ActionReceipt> find(String actionId) {
+                    if (fixture.retainedParent != null && actionId.equals(fixture.parent.actionId())) return Optional.of(fixture.retainedParent);
                     if (fixture.parent != null && actionId.equals(fixture.parent.actionId())) return Optional.of(new ActionReceipt(1,100,fixture.parent,ActionCodec.bodySha256(fixture.parent),new ActionState.CompositeRunning(fixture.execution())));
                     return fixture.children.stream().filter(value -> value.command().actionId().equals(actionId)).findFirst();
                 }
-                @Override public ActionJournal.Snapshot snapshot() { return new ActionJournal.Snapshot(100,fixture.originalHead.digest(),List.copyOf(fixture.children),new ActionJournal.MissingHistoryBasis()); }
+                @Override public ActionJournal.Snapshot snapshot() {
+                    var canonical = new ArrayList<>(fixture.children);
+                    if (fixture.parent != null) canonical.add(find(fixture.parent.actionId()).orElseThrow());
+                    return new ActionJournal.Snapshot(100,fixture.originalHead.digest(),canonical,new ActionJournal.MissingHistoryBasis());
+                }
                 @Override public List<ActionReceipt> unresolved() { return fixture.children.stream().filter(value -> !value.settled()).toList(); }
                 @Override public ActionReceipt append(ActionCommand command, String digest, ActionState next) { throw new IllegalStateException("reconciliation fixture cannot mutate the journal"); }
             });

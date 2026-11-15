@@ -217,7 +217,7 @@ public final class ContinuityActionJournal implements ActionJournal {
     /** One complete fresh logical batch, not a cache or a caller-provided history authority.
      * The private full chain is produced at the original lookup boundary; each query keeps its own old checks.
      * Separate canonical calls and the historical WAL-prefix state still perform their independent full reads. */
-    static <T>T withCanonicalHistory(ContinuityState state,ActionPorts.OutcomeArchive archive,
+    public static <T>T withCanonicalHistory(ContinuityState state,ActionPorts.OutcomeArchive archive,
             java.util.function.BiFunction<java.util.function.Function<String,Optional<ActionReceipt>>,
                     java.util.function.Function<ActionReceipt,org.xar.ck3.control.contracts.ExactRef>,java.util.concurrent.Callable<T>> work)
             throws java.io.IOException {

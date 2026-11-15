@@ -263,7 +263,8 @@ public final class RootAdvanceInfrastructureFactory {
             primitives=new AdvancePrimitives(observations,statuses,context.clock(),timings.maximumFrames(),pendingDate,timings.advanceTimeout());
             replay=new AdvancePrimitiveArchivedReplay(freshFrameLoader(context.frameLoader()),
                     (terminal,archive)->RootLifeRuntimeFactory.verifyQualifiedPostExitNoEffect(context,terminal,archive),
-                    (head,receipt,archive)->RootLifeRuntimeFactory.verifyQualifiedPreparedCleanup(context,head,receipt,archive));
+                    (head,receipt,archive)->RootLifeRuntimeFactory.verifyQualifiedPreparedCleanup(context,head,receipt,archive),
+                    (head,receipt,archive)->RootDerivedChildAuthority.verifyZeroCancellation(context,this,head,receipt,archive));
             List<RootExecutableBindings.ActionBinding> fixed=new ArrayList<>();
             List<NativeRecordedEvidenceVerifier.Binding> archived=new ArrayList<>();
             for(String step:List.of("pause-map","resume-map","set-speed-1","set-speed-2","set-speed-3","set-speed-4","set-speed-5")) {

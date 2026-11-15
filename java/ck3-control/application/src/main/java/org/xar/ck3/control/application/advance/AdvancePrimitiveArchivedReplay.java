@@ -23,18 +23,32 @@ public final class AdvancePrimitiveArchivedReplay {
     @FunctionalInterface public interface PreparedCleanupVerifier {
         void verify(Optional<WriterContracts.Head> originalLockedHead,ActionReceipt receipt,ActionPorts.OutcomeArchive archive);
     }
+    @FunctionalInterface public interface ZeroCancellationVerifier {
+        void verify(Optional<WriterContracts.Head> originalLockedHead,ActionReceipt exactTerminal,ActionPorts.OutcomeArchive archive);
+    }
+    private final Optional<ZeroCancellationVerifier> zeroCancellationVerifier;
     private final Optional<PreparedCleanupVerifier> preparedCleanupVerifier;
     private final Optional<CleanupNoEffectVerifier> cleanupNoEffectVerifier;
     public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames) {
-        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.empty();this.preparedCleanupVerifier=Optional.empty();
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.empty();this.preparedCleanupVerifier=Optional.empty();this.zeroCancellationVerifier=Optional.empty();
     }
     public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,CleanupNoEffectVerifier actualNoEffectVerifier) {
-        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));this.preparedCleanupVerifier=Optional.empty();
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));this.preparedCleanupVerifier=Optional.empty();this.zeroCancellationVerifier=Optional.empty();
     }
     public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,CleanupNoEffectVerifier actualNoEffectVerifier,
             PreparedCleanupVerifier actualPreparedVerifier){
         this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));
+        this.preparedCleanupVerifier=Optional.of(Objects.requireNonNull(actualPreparedVerifier));this.zeroCancellationVerifier=Optional.empty();
+    }
+    public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,ZeroCancellationVerifier actualZeroCancellationVerifier) {
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.empty();this.preparedCleanupVerifier=Optional.empty();
+        this.zeroCancellationVerifier=Optional.of(Objects.requireNonNull(actualZeroCancellationVerifier));
+    }
+    public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,CleanupNoEffectVerifier actualNoEffectVerifier,
+            PreparedCleanupVerifier actualPreparedVerifier,ZeroCancellationVerifier actualZeroCancellationVerifier) {
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));
         this.preparedCleanupVerifier=Optional.of(Objects.requireNonNull(actualPreparedVerifier));
+        this.zeroCancellationVerifier=Optional.of(Objects.requireNonNull(actualZeroCancellationVerifier));
     }
     public NativeRecordedEvidenceVerifier.Binding binding(OperationKey operation, ExactRef actualDefinition) {
         require(AdvancePrimitives.supports(operation), "registered timeline primitive required");
@@ -107,14 +121,20 @@ public final class AdvancePrimitiveArchivedReplay {
         require(command.equals(AdvancePrimitives.child(command, beforeFrame, command.actionId(), command.operation().value(), command.deadline())),
                 "original primitive expected fields differ from the shared actual command producer");
         if (zero) {
+            boolean cancel = command.operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX);
             require(command.operation().value().equals("pause-map") || command.operation().value().equals("resume-map")
-                    || command.operation().value().startsWith(ClockStatusRead.ARM_PREFIX), "only an actual pause, resume or ARM zero-write result is replayed here");
+                    || command.operation().value().startsWith(ClockStatusRead.ARM_PREFIX)
+                    || cancel && LifeAdvanceComposite.isZeroWriteInitializationCancellation(child),
+                    "only an actual pause, resume, ARM or source-qualified CANCEL zero-write result is replayed here");
             requireOriginalReceipt(lockedHead, child, attempt, dispatch, archive);
             var original = (NativeActionPort.RejectedBeforeDispatch) dispatch;
             require(original.requestId().equals(attempt.requestId())
                     && original.proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
                     && original.proof().requestBytesWritten() == 0 && child.ack().isEmpty(),
                     "zero-write proof differs from the original unsubmitted attempt");
+            if (cancel) zeroCancellationVerifier.orElseThrow(() ->
+                    new IllegalStateException("actual canonical derived cancellation zero-write verifier is absent"))
+                    .verify(lockedHead,child,archive);
             return;
         }
         var settled = (ActionState.Settled) child.state();

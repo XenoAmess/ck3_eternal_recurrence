@@ -224,8 +224,11 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
                 && children.stream().noneMatch(child -> child.command().operation().value().equals("resume-map") && !isNeverResumedResume(child))) {
             // Both terminal roles retain the original resume child; its dispatch is never retried.
             for (var child : children) if (isAbandonedResume(child)) IntentAbandonmentProof.verifyArchived(child, archive);
-            if (children.getLast().command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX))
+            if (children.getLast().command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)
+                    && !isZeroWriteInitializationCancellation(children.getLast()))
                 return cancelledInitialization(parent, retained, children, ActionObservationWindow.deadline(parent));
+            if (isZeroWriteInitializationCancellation(children.getLast()))
+                LifeSentinelCancellationProof.prefix(parent, retained, children, false);
             if (children.size() == 1 && children.getFirst().state() instanceof ActionState.RejectedBeforeDispatch) {
                 requireRejectedInitialization(parent, retained, children);
                 return new ActionPorts.CompositeRejectionObserved("original ARM rejected before dispatch; no replay", retained.children());
@@ -686,10 +689,10 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         if (plan.clockMode() == AdvancePlan.ClockMode.POLLED || prefix.isEmpty()) return Optional.empty();
         ActionReceipt last = prefix.getLast();
         boolean abandonedResume = isNeverResumedResume(last);
-        if (!last.command().operation().value().equals(plan.armStep()) && !abandonedResume) return Optional.empty();
+        boolean zeroCancellation = isZeroWriteInitializationCancellation(last);
+        if (!last.command().operation().value().equals(plan.armStep()) && !abandonedResume && !zeroCancellation) return Optional.empty();
         if (prefix.stream().anyMatch(child -> !child.settled()) || prefix.stream().anyMatch(child ->
-                child.command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)
-                || child.command().operation().value().equals("resume-map") && !isNeverResumedResume(child))) return Optional.empty();
+                child.command().operation().value().equals("resume-map") && !isNeverResumedResume(child))) return Optional.empty();
         for (var child : prefix) if (isAbandonedResume(child)) IntentAbandonmentProof.verifyArchived(child, archive);
         if (prefix.size() == 1 && prefix.getFirst().state() instanceof ActionState.RejectedBeforeDispatch) {
             requireRejectedInitialization(parent, retained, prefix);
@@ -708,6 +711,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         var custody = LifeSentinelCancellationProof.physical(parent, refreshed.status().receipt());
         require(!beforeCancel.observedAt().isBefore(custody.responseReceived().observedAt()),
                 "Life cancellation starting frame predates its fresh independent ARM Status");
+        require(clock.instant().isBefore(deadline), "fresh initialization cancellation reads exhausted their finite deadline");
         return Optional.of(new LifeSentinelCancellation(this, parent, retained, refreshed.status().receipt(), beforeCancel,
                 new BigInteger(status.generation().decimal()), deadline));
     }
@@ -842,11 +846,37 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
                 && attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command));
     }
 
+    /** Shape and original-attempt fields only; actual Root/canonical registration is independently required. */
+    public static boolean isZeroWriteInitializationCancellation(ActionReceipt child) {
+        if (!(child.state() instanceof ActionState.RejectedBeforeDispatch rejected)
+                || !child.command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)
+                || !(child.command().origin() instanceof CommandOrigin.Gameplay)
+                || !child.command().arguments().members().isEmpty()) return false;
+        var command = child.command(); var attempt = rejected.attempt(); var guard = attempt.guard();
+        return child.bodySha256().equals(ActionCodec.bodySha256(command))
+                && command.expected().observerSchema().equals(AdvancePrimitives.CLOCK_OBSERVER)
+                && rejected.dispatch().proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                && rejected.dispatch().proof().requestBytesWritten() == 0 && child.ack().isEmpty()
+                && rejected.dispatch().requestId().equals(attempt.requestId())
+                && command.origin().acceptsGuard(guard.origin()) && guard.observed().equals(command.before())
+                && command.source().equals(guard.source()) && command.sessionId().equals(guard.sessionId())
+                && command.operation().equals(guard.operation())
+                && command.expected().equals(AdvancePrimitives.expected(command.before(), command.source(), command.operation(), command.arguments()))
+                && attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command));
+    }
+
     /** Pure canonical DATA proof shared by the source's physical read callback and its archive replay. */
     public static void requireCancelledInitializationPrefix(ActionCommand parent, CompositeExecution execution, List<ActionReceipt> canonicalChildren) {
         LifeSentinelCancellationProof.prefix(parent, execution, canonicalChildren, true);
     }
     public static void requireArmedInitializationPrefix(ActionCommand parent, CompositeExecution execution, List<ActionReceipt> canonicalChildren) {
+        LifeSentinelCancellationProof.prefix(parent, execution, canonicalChildren, false);
+    }
+    /** Strict DATA role for cold recovery after the sole actual cancellation wrote no bytes. */
+    public static void requireArmedInitializationWithZeroCancellationPrefix(ActionCommand parent, CompositeExecution execution,
+            List<ActionReceipt> canonicalChildren) {
+        require(!canonicalChildren.isEmpty() && isZeroWriteInitializationCancellation(canonicalChildren.getLast()),
+                "initialization recovery requires its one exact zero-write cancellation tail");
         LifeSentinelCancellationProof.prefix(parent, execution, canonicalChildren, false);
     }
     /** The installed archive verifier separately rebuilds the complete paused ending frame. */
