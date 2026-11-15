@@ -707,7 +707,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&StrictJson.text(details.get("read_head_sha256")).equals(predecessor),"captured READ crossed its actual Driver version/epoch/head");
         ExactRef beforeRef=ExactRef.fromJson(details.get("before_driver")),afterRef=ExactRef.fromJson(details.get("after_driver"));
         StrictJson.require(beforeRef.equals(previous.fullDriver())
-                &&java.util.Arrays.equals(originals.loadFullMaterial(beforeRef).bytes(),known.driver().encode()),"captured READ changed the complete Driver prefix");
+                &&originals.loadFullMaterial(beforeRef).contentEquals(known.driver().encode()),"captured READ changed the complete Driver prefix");
         var appended=new java.util.ArrayList<>(known.driver().commandHistory());var rows=details.get("read_rows");
         StrictJson.require(rows!=null&&rows.isArray()&&!rows.isEmpty()&&rows.size()<=128,"finite actual captured READ rows required");
         for(var value:rows) {
