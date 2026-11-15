@@ -1308,9 +1308,11 @@ public final class RootApplicationAssembly {
                     if(current)current=observed==head||observed.digest().equals(head.digest());}
                 StrictJson.require(current,"retirement DATA projection lost its actual Core/source/writer/thread/current held head");
             }catch(IOException failure){throw new UncheckedIOException(failure);}};
-            try(var raw=RootReservedRetirementArchive.create(archive.withSession(same),same,originals,owner,source.request().parentActionId(),source.request().parentBodySha256())) {
-                return work.read(raw.archive());
-            }
+            return archive.inReservedRetirementDataReadScope(same,bound->{
+                try(var raw=RootReservedRetirementArchive.create(bound,same,originals,owner,source.request().parentActionId(),source.request().parentBodySha256())) {
+                    return work.read(raw.archive());
+                }
+            });
         }
         /** The exact real Core verifies only its installed source's historical retirement; this grants no writer or SDK capability. */
         private void verifyReservedRetirement(ContinuityStorePort.Session same,ActionJournal.Snapshot snapshot,ActionReceipt parent)throws IOException {

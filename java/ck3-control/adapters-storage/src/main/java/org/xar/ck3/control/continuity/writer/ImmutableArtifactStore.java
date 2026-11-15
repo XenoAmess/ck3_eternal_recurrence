@@ -76,6 +76,19 @@ public final class ImmutableArtifactStore {
         HistoricalReads reads = historicalReads.get();
         if (reads != null) reads.recordFailure(failure);
     }
+    /** Exact existing CAS custody only; package-private identity, never a new scope or permission. */
+    HistoricalReads currentHistoricalReadsFor(ContinuityStorePort.Session session) throws IOException {
+        HistoricalReads reads = historicalReads.get();
+        try {
+            Objects.requireNonNull(session);
+            if (reads == null) return null;
+            if (reads.session != session) throw new IOException("historical CAS custody belongs to another identical writer Session");
+            reads.requireActive(); return reads;
+        } catch (IOException | RuntimeException | Error failure) {
+            if (reads != null) reads.recordFailure(failure);
+            throw failure;
+        }
+    }
     @FunctionalInterface private interface OriginalRead<T> { T run() throws IOException; }
     private <T> T historicalRead(OriginalRead<T> operation) throws IOException {
         HistoricalReads reads = historicalReads.get();

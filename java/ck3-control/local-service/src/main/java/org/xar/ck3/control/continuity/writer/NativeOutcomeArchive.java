@@ -231,6 +231,35 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
         return historicalReadScope(session,limits,operation,false);
     }
+    /** Lexical DATA verification only. Borrow exact owned custody; never replace or finish an outer scope. */
+    public <T> T inReservedRetirementDataReadScope(ContinuityStorePort.Session session,
+            ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        try {
+            Objects.requireNonNull(operation); requireSession(session);
+            ImmutableArtifactStore.HistoricalReads reads = artifacts.currentHistoricalReadsFor(session);
+            ParsedMaterialCache cache = parsedMaterialCache.get();
+            if (reads == null) {
+                if (cache != null && cache.commandReads != null)
+                    throw new IOException("retirement DATA found detached historical cache custody");
+                return inHistoricalReadScope(session, new ActionPorts.HistoricalReadLimits(8192, 256L * 1024 * 1024, 16384), operation);
+            }
+            if (current.get() != session || cache == null || cache.commandReads != reads)
+                throw new IOException("retirement DATA requires its identical archive cache/current CAS custody");
+            reads.requireActive();
+            T result = operation.read(new NativeOutcomeArchive(owner, session));
+            requireSession(session);
+            if (current.get() != session || parsedMaterialCache.get() != cache || cache.commandReads != reads
+                    || artifacts.currentHistoricalReadsFor(session) != reads)
+                throw new IOException("retirement DATA left its identical archive cache/current CAS custody");
+            reads.requireActive(); return result;
+        } catch (IOException problem) {
+            IOException actual = problem instanceof java.nio.file.NoSuchFileException
+                    ? new IOException("historical original validation failed; not optional absence", problem) : problem;
+            artifacts.recordHistoricalFailure(actual); throw actual;
+        } catch (RuntimeException | Error problem) {
+            artifacts.recordHistoricalFailure(problem); throw problem;
+        }
+    }
     /** This fixed byte tier is selected only by the complete same-Game history recovery consumer. */
     @Override public <T> T inSameGameHistoricalRecoveryScope(ContinuityStorePort.Session session,
             ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
