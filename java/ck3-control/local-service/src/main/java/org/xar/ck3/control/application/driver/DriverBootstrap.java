@@ -1133,6 +1133,22 @@ public final class DriverBootstrap {
                 same,actions,transport,archive,retainedFrames,deadline);
     }
 
+    /** The actual Core admits this original ARM prefix; no command is submitted by Driver reconstruction. */
+    public static Adopted adoptReadOnlyLifeArmRecovery(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant preparationEnvelope,
+            DriverStateAssembler.ReservedLifeRetirementVerifier verifier,
+            java.util.function.Supplier<Instant> lateReadDeadline)throws IOException,InterruptedException {
+        StrictJson.require(data.retainedHistory().isPresent()&&data.unresolvedActions().size()==1
+                &&org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(
+                        data.retainedHistory().orElseThrow().settledActions()).filter(data.unresolvedActions().getFirst()::equals).isPresent(),
+                "read-only ARM adoption requires its actual complete retained Life history");
+        return adoptSameGameHistory(data.retainedHistory().orElseThrow(),same,actions,transport,archive,currentSession,
+                retainedFrames,preparationEnvelope,true,true,Optional.empty(),Optional.of(Objects.requireNonNull(verifier)),
+                Optional.empty(),Optional.of(Objects.requireNonNull(lateReadDeadline)),true);
+    }
+
     /** Journal-issued post-RETAIN EVENT recovery, with its independent READ window acquired after qualification. */
     public static Adopted adoptRetainedAppliedEventCompletion(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
@@ -1184,6 +1200,16 @@ public final class DriverBootstrap {
             boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
             Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier,Optional<RecoveryReadWindow> recoveryReadWindow,
             Optional<java.util.function.Supplier<Instant>> lateReadDeadline)throws IOException,InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,
+                isolatedLife,historicalReads,operatorRequest,retirementVerifier,recoveryReadWindow,lateReadDeadline,false);
+    }
+    private static Adopted adoptSameGameHistory(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive,BorrowedSessionReader currentSession,int retainedFrames,Instant deadline,
+            boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
+            Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier,Optional<RecoveryReadWindow> recoveryReadWindow,
+            Optional<java.util.function.Supplier<Instant>> lateReadDeadline,boolean readOnlyLifeArmOnly)throws IOException,InterruptedException {
         Objects.requireNonNull(operatorRequest);
         Objects.requireNonNull(data);Objects.requireNonNull(same);Objects.requireNonNull(actions);
         Objects.requireNonNull(transport);Objects.requireNonNull(archive);Objects.requireNonNull(currentSession);
@@ -1198,7 +1224,7 @@ public final class DriverBootstrap {
                 &&retained.driver().session().bridgePid()==current.game().pid()
                 &&retained.driver().session().pipeName().equals(transport.pipeName()),
                 "settled retained Driver belongs to another physical Game or pipe");
-        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads,operatorRequest,lateReadDeadline.isPresent());
+        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads,operatorRequest,lateReadDeadline.isPresent()&&!readOnlyLifeArmOnly,readOnlyLifeArmOnly);
         var repository=new DriverFactsRepository(retained);
         var producer=new NativeDriverObservationProducer(repository,transport,data.source(),
                 wire->borrowedArchive(archive,currentSession).preserveMaterial(RawJson.fullMaterial(wire)));
@@ -1265,6 +1291,13 @@ public final class DriverBootstrap {
             ContinuityStorePort.Session same,ActionSnapshotReader actions,ActionPorts.OutcomeArchive archive,
             boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
             boolean retainedAppliedEventOnly) throws IOException {
+        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads,operatorRequest,retainedAppliedEventOnly,false);
+    }
+    private static void qualifySameGameActionHistory(
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,ActionPorts.OutcomeArchive archive,
+            boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
+            boolean retainedAppliedEventOnly,boolean readOnlyLifeArmOnly) throws IOException {
         var retained=data.retainedFacts();var old=data.previousTransport();
         ActionPorts.CheckedArchiveRead<Void> qualification=originals->{
             var finalizationHead = same.head().state();
@@ -1274,7 +1307,21 @@ public final class DriverBootstrap {
                 StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
                         &&basis.originalDriverHistory().equals(retained.originalHistoryBasis()),
                         "same-Game continuation cannot replace its actual original history");
-                if(retainedAppliedEventOnly) {
+                if(readOnlyLifeArmOnly) {
+                    var parent=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(lease.snapshot().actions()).orElseThrow();
+                    StrictJson.require(isolatedLife&&!retainedAppliedEventOnly&&operatorRequest.isEmpty()
+                            &&new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))
+                            &&parent.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown unknown
+                            &&unknown.execution().children().size()==1,
+                            "late ARM READ requires its exact complete canonical original Life prefix");
+                    var execution=((org.xar.ck3.control.application.action.ActionState.CompositeUnknown)parent.state()).execution();
+                    var child=lease.snapshot().actions().stream().filter(value->value.command().actionId().equals(execution.children().getFirst().actionId())).findFirst().orElseThrow();
+                    StrictJson.require(child.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown
+                            &&child.command().operation().value().equals(org.xar.ck3.control.application.advance.AdvancePlan.decode(parent.command()).armStep())
+                            &&child.ack().isPresent()&&child.ack().orElseThrow().nativeOk()
+                            &&child.ack().orElseThrow().outbound().isPresent()&&child.ack().orElseThrow().custody().isPresent(),
+                            "late ARM READ cannot borrow another terminal, missing ACK or Life stage");
+                } else if(retainedAppliedEventOnly) {
                     var owner=new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(old.machineId(),old.game(),old.sessionId());
                     StrictJson.require(isolatedLife&&operatorRequest.isEmpty()
                             &&new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions()))

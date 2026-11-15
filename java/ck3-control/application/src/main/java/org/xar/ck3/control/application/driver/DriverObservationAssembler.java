@@ -104,6 +104,39 @@ public final class DriverObservationAssembler {
     /** Full native/Driver join also represents death or an unreconciled successor, without a fabricated player identity. */
     public record FullSnapshot(ObservedFrame actual,DriverObservationFacts facts,OpportunityJson.Obj semantic,
             ExactRef originalEvidence,String fullBindingSha256) { }
+    // Per assembler and per defining thread. Only projectFull's exact instance can enter the private consumer.
+    private final ThreadLocal<java.util.ArrayDeque<FullSnapshot>> capturedProjections=new ThreadLocal<>();
+    /** JDK-only callback boundary. FullSnapshot remains ordinary public DATA outside this lexical issuer scope. */
+    public <T>T withCapturedProjection(ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence,
+            java.util.function.Function<FullSnapshot,java.util.concurrent.Callable<T>> work)throws java.io.IOException {
+        Objects.requireNonNull(work);
+        FullSnapshot full=projectFull(actual,facts,evidence);
+        var stack=capturedProjections.get();
+        if(stack==null){stack=new java.util.ArrayDeque<>();capturedProjections.set(stack);}
+        stack.push(full);
+        try {
+            return Objects.requireNonNull(work.apply(full),"captured projection requires its synchronous work").call();
+        }catch(java.io.IOException|RuntimeException|Error failure){throw failure;}
+        catch(Exception failure){
+            if(failure instanceof InterruptedException)Thread.currentThread().interrupt();
+            throw new java.io.IOException("captured projection work raised an unsupported checked exception",failure);
+        }finally{
+            FullSnapshot popped=stack.poll();if(stack.isEmpty())capturedProjections.remove();
+            StrictJson.require(popped==full,"captured projection lexical identity stack is unbalanced");
+        }
+    }
+    /** Public DATA is not a token: both the issuer's active identity membership and all original objects are required. */
+    public Result assembleCapturedProjection(FullSnapshot full,ObservedFrame actual,DriverObservationFacts facts,ExactRef evidence) {
+        var stack=capturedProjections.get();boolean held=false;
+        if(stack!=null)for(FullSnapshot entry:stack)if(entry==full){held=true;break;}
+        StrictJson.require(held,"captured projection escaped its exact issuer thread/callback lifetime");
+        StrictJson.require(actual==full.actual()&&facts==full.facts()&&evidence==full.originalEvidence(),
+                "captured projection cannot consume another raw frame, facts/source or original packet reference");
+        try { return completeValidatedIdentity(full); }
+        catch (IllegalArgumentException | ArithmeticException failure) {
+            return new Incomplete(List.of("native_driver_fact_join: " + failure.getMessage()));
+        }
+    }
     public Result assemble(ObservedFrame actual, DriverObservationFacts facts, ExactRef evidence) {
         Objects.requireNonNull(actual); Objects.requireNonNull(evidence);
         if (facts == null) return new Incomplete(List.of("real_driver_and_public_revision_facts_unavailable"));

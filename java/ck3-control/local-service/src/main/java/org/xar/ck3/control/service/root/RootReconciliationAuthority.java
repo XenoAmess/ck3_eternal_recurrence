@@ -305,7 +305,9 @@ public final class RootReconciliationAuthority {
     public <T>T withObserved(ContinuityStorePort.Session same,ActionReceipt original,Instant deadline,LeaseWork<T> observer)throws IOException {
         Objects.requireNonNull(original);Objects.requireNonNull(deadline);Objects.requireNonNull(observer);store.requireSession(same);
         require(active.get()==null&&publicWindowSnapshot.get()==null,"reconciliation observation cannot replace an original pending/public-window scope");
-        require(clock.instant().isBefore(deadline),"reconciliation deadline expired before any Native I/O");
+        Optional<Instant> preparedUntil=physical.originalArmReadPreparationDeadline(same,original);
+        Instant preparationDeadline=preparedUntil.orElse(deadline);
+        require(clock.instant().isBefore(preparationDeadline),"reconciliation deadline expired before any Native I/O");
         ActionState.Attempt attempt=pending.requirePending(same,original);
         var bound=archive.withSession(same);
         RootGuardEvidence.requireHistory(attempt.guard(),bound,same);
@@ -317,10 +319,19 @@ public final class RootReconciliationAuthority {
         boolean freshRead = (original.command().operation().value().equals("save-checkpoint")
                 || original.command().operation().value().equals("resume-map")
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(original)
-                || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyEventRecovery(original))
+                || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyEventRecovery(original)
+                || isPositiveAckClockArm(original))
                 && original.ack().isPresent() && original.ack().orElseThrow().nativeOk();
 
-        return physical.withReconciliationSnapshot(same,deadline,freshRead,captured->{
+        final Instant observationDeadline;
+        if(preparedUntil.isPresent()) {
+            require(isPositiveAckClockArm(original),"prepared observation requires its actual canonical positive ARM ACK");
+            Instant until=physical.originalArmReadPreparationDeadline(same,original).orElseThrow();
+            Instant local=clock.instant().plus(ActionObservationWindow.MAXIMUM_WINDOW);
+            observationDeadline=until.isBefore(local)?until:local;
+        }else observationDeadline=deadline;
+        require(clock.instant().isBefore(observationDeadline),"actual ARM observation window expired after read-only preparation");
+        return physical.withReconciliationSnapshot(same,observationDeadline,freshRead,captured->{
             captured.assertCurrent(same);
             if(captured.ordinary().isEmpty()) {
                 captured.assertCurrent(same);
@@ -358,10 +369,26 @@ public final class RootReconciliationAuthority {
             List<AllowedRead> reads=installed(same,original,identity,before,actual,captured.validUntil());
             var lease=new Lease(this,captured,original,attempt,before,actual,provenance,identity,reads);
             GuardEvidence observation=observationBinding(lease,same);
-            var scope=new Scope(same,lease,observation,same.head().digest(),deadline);active.set(scope);
-            try {assertScope(scope,same,deadline);T result=observer.apply(lease);assertScope(scope,same,deadline);return result;}
+            var scope=new Scope(same,lease,observation,same.head().digest(),observationDeadline);active.set(scope);
+            try {assertScope(scope,same,observationDeadline);T result=observer.apply(lease);assertScope(scope,same,observationDeadline);return result;}
             finally {active.remove();}
         });
+    }
+
+    /** Classification of existing canonical DATA only; it supplies no dispatch or settlement permission. */
+    static boolean isPositiveAckClockArm(ActionReceipt original) {
+        if(original.settled()||!(original.state() instanceof ActionState.Unknown||original.state() instanceof ActionState.AckReceived)
+                ||!original.command().expected().observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.CLOCK_OBSERVER)
+                ||original.ack().isEmpty()||!original.ack().orElseThrow().nativeOk()
+                ||original.ack().orElseThrow().outbound().isEmpty()||original.ack().orElseThrow().custody().isEmpty())return false;
+        var attempt=ActionTransitions.attempt(original.state()).orElse(null);
+        if(attempt==null||!attempt.requestId().equals(original.ack().orElseThrow().requestId()))return false;
+        try {
+            org.xar.ck3.control.application.advance.AdvancePrimitives.armSpec(original.command().operation().value());
+            return original.command().arguments().members().isEmpty()
+                    &&org.xar.ck3.control.application.advance.AdvancePrimitives.expected(original.command().before(),original.command().source(),
+                            original.command().operation(),original.command().arguments()).equals(original.command().expected());
+        }catch(IllegalArgumentException rejected){return false;}
     }
 
     private static ObservationProvenance freshAfterAckProvenance(RootLifecycleAuthority.SnapshotLease captured,Complete actual,
@@ -369,8 +396,9 @@ public final class RootReconciliationAuthority {
         require((original.command().operation().value().equals("save-checkpoint")
                 || original.command().operation().value().equals("resume-map")
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(original)
-                || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyEventRecovery(original)) && !original.settled(),
-                "cold after-ACK observation requires its exact unresolved SAVE, resume-map, known pending or EVENT primitive");
+                || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyEventRecovery(original)
+                || isPositiveAckClockArm(original)) && !original.settled(),
+                "cold after-ACK observation requires its exact unresolved SAVE, resume-map, known pending, EVENT or positive-ACK CLOCK ARM primitive");
         var fresh=captured.freshSnapshot().orElseThrow(()->new IOException("fresh SAVE reconciliation requires actual independent READ custody"));
         var frame=fresh.originalFrame();var physical=captured.fullSnapshot().actual();
         require(frame.session().equals(physical.session()) && frame.snapshotId().equals(physical.snapshotId())

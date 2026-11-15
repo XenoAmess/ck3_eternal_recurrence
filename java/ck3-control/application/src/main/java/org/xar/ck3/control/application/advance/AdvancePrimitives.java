@@ -162,17 +162,21 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         boolean reconciling = ActionReconciliationScope.activeFor(command);
         String controlStep = command.operation().value();
         Instant window;
-        if(!reconciling&&command.expected().observerSchema().equals(CLOCK_OBSERVER)
+        boolean anchoredCancellation = !reconciling&&command.expected().observerSchema().equals(CLOCK_OBSERVER)
                 &&controlStep.startsWith(ClockStatusRead.CANCEL_PREFIX)
-                &&ActionChildPlanningScope.isPostResumePauseCancellationObservation(command)) {
+                &&ActionChildPlanningScope.isPostResumePauseCancellationObservation(command);
+        if(anchoredCancellation) {
             Instant actualMaximum=ack.custody().orElseThrow(()->new IllegalArgumentException(
                     "post-resume cancellation Status requires its actual ACK receive chronology"))
                     .responseReceived().observedAt().plus(Duration.ofMinutes(2));
             window=actualMaximum.isBefore(requestedWindow)?actualMaximum:requestedWindow;
         } else window=requestedWindow;
         if (!reconciling && command.expected().observerSchema().equals(CLOCK_OBSERVER) && ARM.matcher(controlStep).matches()) {
-            return observations.withClockControlBasis(command, window, basis -> {
-                var read = clockStatus.observe(command, basis, window);
+            Instant outerWindow = ActionObservationWindow.deadline(command);
+            return observations.withClockControlBasis(command, outerWindow, basis -> {
+                Instant statusWindow = observationDeadline(command);
+                if (outerWindow.isBefore(statusWindow)) statusWindow = outerWindow;
+                var read = clockStatus.observe(command, basis, statusWindow);
                 Status actual = read.status();
                 ArmSpec arm = armSpec(controlStep); Status original = acknowledgedSentinel(ack, controlStep);
                 require(actual.equals(original) && actual.generation().decimal().matches("[1-9][0-9]*"),
@@ -184,8 +188,14 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         }
         // The source keeps one actual read-only basis alive through the independent cancellation Status.
         if (!reconciling && command.expected().observerSchema().equals(CLOCK_OBSERVER) && controlStep.startsWith(ClockStatusRead.CANCEL_PREFIX)) {
-            return observations.withClockControlBasis(command, window, basis -> {
-                var read = clockStatus.observe(command, basis, window);
+            Instant outerWindow = anchoredCancellation ? window : ActionObservationWindow.deadline(command);
+            return observations.withClockControlBasis(command, outerWindow, basis -> {
+                Instant statusWindow = outerWindow;
+                if (!anchoredCancellation) {
+                    statusWindow = observationDeadline(command);
+                    if (outerWindow.isBefore(statusWindow)) statusWindow = outerWindow;
+                }
+                var read = clockStatus.observe(command, basis, statusWindow);
                 Status actual = read.status();
                 BigInteger generation = cancelGeneration(controlStep);
                 JsonNode result = nativeResult(ack, controlStep);

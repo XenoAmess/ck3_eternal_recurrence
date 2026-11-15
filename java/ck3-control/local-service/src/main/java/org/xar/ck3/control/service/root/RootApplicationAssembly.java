@@ -581,6 +581,8 @@ public final class RootApplicationAssembly {
         private ContinuityBatchJournal unresolvedSameGameBatches;
         private ContinuityBatchJournal.UnresolvedSameGameData unresolvedSameGameData;
         private ContinuityBatchJournal.UnresolvedSameGameData retainedAppliedEventOriginalData;
+        private ContinuityBatchJournal.UnresolvedSameGameData readOnlyLifeArmOriginalData;
+        private Instant readOnlyLifeArmOriginalDeadline;
         private ContinuityBatchJournal.UnresolvedSameGameData operatorQuarantineOriginalData;
         private OriginalWindowReducer.Policy unresolvedSameGamePolicy;
         private OrdinaryCycleTransitions settledSameGameCycles;
@@ -1394,6 +1396,7 @@ public final class RootApplicationAssembly {
             StrictJson.require(menu == null && !staged && !finished && adopted.isEmpty(), "unresolved reconstruction reads the unused actual Core");
             Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);
             retainedAppliedEventOriginalData=null;
+            readOnlyLifeArmOriginalData=null;readOnlyLifeArmOriginalDeadline=null;
             return writer.locked(same -> {
                 var finalizationHead = same.head().state();
                 var identity = new SessionIdentity(game.machineId(), game.generation(), game.sessionId());
@@ -1431,6 +1434,10 @@ public final class RootApplicationAssembly {
                 unresolvedSameGameCycles = cycles; unresolvedSameGameBatches = batches;
                 unresolvedSameGameData = data; unresolvedSameGamePolicy = cyclePolicy;
                 retainedAppliedEventOriginalData=snapshot.retainedAppliedEvent()?data:null;
+                var armDeadline=readOnlyLifeArmDeadline(same,data);
+                if(armDeadline.isPresent()) {
+                    readOnlyLifeArmOriginalData=data;readOnlyLifeArmOriginalDeadline=armDeadline.orElseThrow();
+                }
                 return Optional.of(data);
             });
         }
@@ -1452,6 +1459,145 @@ public final class RootApplicationAssembly {
                         writer::borrowedSession,retainedFrames,deadline);}
                 catch(InterruptedException interrupted){
                     Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("same-Game unresolved Driver adoption interrupted");
+                    failure.initCause(interrupted);throw failure;
+                }
+                adopted.add(result);return result;
+            });
+        }
+
+        /** Identity of this Core's already authenticated/adopted original ARM DATA; no caller DTO grants it. */
+        synchronized boolean ownsReadOnlyLifeArmRecovery(ContinuityBatchJournal.UnresolvedSameGameData data) {
+            return data!=null&&data==readOnlyLifeArmOriginalData&&data==unresolvedSameGameData;
+        }
+        /** Narrow DATA role, issued only after this Journal's complete history has been reconstructed. */
+        private Optional<Instant> readOnlyLifeArmDeadline(ContinuityStorePort.Session same,
+                ContinuityBatchJournal.UnresolvedSameGameData data)throws IOException {
+            writer.requireSession(same);
+            if(data.retainedHistory().isEmpty()||data.unresolvedActions().size()!=1)return Optional.empty();
+            var parent=data.unresolvedActions().getFirst();
+            var canonical=data.retainedHistory().orElseThrow().settledActions();
+            if(!ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical).filter(parent::equals).isPresent()
+                    ||!(parent.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown unknown)
+                    ||unknown.execution().children().size()!=1)return Optional.empty();
+            var binding=unknown.execution().children().getFirst();
+            var child=canonical.stream().filter(value->value.command().actionId().equals(binding.actionId())).findFirst().orElseThrow();
+            var plan=org.xar.ck3.control.application.advance.AdvancePlan.decode(parent.command());
+            if(!child.command().operation().value().equals(plan.armStep())
+                    ||!(child.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown pending)
+                    ||child.ack().isEmpty()||!child.ack().orElseThrow().nativeOk())return Optional.empty();
+            var ack=child.ack().orElseThrow();var attempt=pending.attempt().orElseThrow();
+            StrictJson.require(ack.outbound().isPresent()&&ack.custody().isPresent()
+                    &&attempt.requestId().equals(ack.requestId())&&child.bodySha256().equals(binding.bodySha256())
+                    &&child.command().expected().observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.CLOCK_OBSERVER),
+                    "read-only ARM recovery requires its original positive ACK, outbound bytes and actual custody");
+            var head=same.head();var originals=archive.withSession(same);
+            StrictJson.require(head.state().sequence()==data.canonicalSequence()&&head.digest().equals(data.canonicalHeadDigest()),
+                    "read-only ARM DATA changed its actual Journal predecessor");
+            var parentRef=ContinuityActionJournal.recordHead(head.state()).orElseThrow();
+            var parentRecord=originals.loadRecord(parentRef);
+            StrictJson.require(parentRecord.receipt().equals(parent),"read-only ARM parent is not the actual latest action record");
+            var childRef=parentRecord.previous().orElseThrow();var childRecord=originals.loadRecord(childRef);
+            StrictJson.require(childRecord.receipt().equals(child),"read-only ARM UNKNOWN is not the actual parent predecessor");
+            var ackRef=childRecord.previous().orElseThrow();ActionRecord acknowledged;
+            long priorSequence=child.sequence();var seenRecords=new java.util.HashSet<org.xar.ck3.control.contracts.ExactRef>();
+            while(true) {
+                StrictJson.require(seenRecords.add(ackRef)&&seenRecords.size()<=4096,
+                        "read-only ARM reconciliation ancestry is cyclic or exceeds its finite original-record bound");
+                acknowledged=originals.loadRecord(ackRef);var prior=acknowledged.receipt();
+                StrictJson.require(prior.sequence()<priorSequence,"read-only ARM reconciliation ancestry must strictly descend");
+                if(prior.state() instanceof org.xar.ck3.control.application.action.ActionState.AckReceived)break;
+                boolean sameChild=prior.command().equals(child.command())&&prior.bodySha256().equals(child.bodySha256())
+                        &&prior.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown earlier
+                        &&earlier.attempt().equals(pending.attempt())&&earlier.dispatch().equals(pending.dispatch());
+                boolean sameParent=prior.command().equals(parent.command())&&prior.bodySha256().equals(parent.bodySha256())
+                        &&prior.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown earlier
+                        &&earlier.execution().equals(unknown.execution());
+                StrictJson.require(sameChild||sameParent,
+                        "read-only ARM ancestry crossed another action, body, Attempt, dispatch or Life prefix");
+                priorSequence=prior.sequence();ackRef=acknowledged.previous().orElseThrow();
+            }
+            StrictJson.require(acknowledged.receipt().command().equals(child.command())
+                    &&acknowledged.receipt().bodySha256().equals(child.bodySha256())
+                    &&acknowledged.receipt().state() instanceof org.xar.ck3.control.application.action.ActionState.AckReceived received
+                    &&received.attempt().equals(attempt)&&received.dispatch().equals(ack)
+                    &&acknowledged.receipt().sequence()<child.sequence()&&child.sequence()<parent.sequence(),
+                    "read-only ARM UNKNOWN lost its exact preceding canonical positive ACK");
+            var name=String.format(java.util.Locale.ROOT,"%08d.json",acknowledged.receipt().sequence());
+            var pins=head.documents().stream().filter(pin->Path.of(pin.reference().path()).getFileName().toString().equals(name)).toList();
+            StrictJson.require(pins.size()==1,"read-only ARM requires its one actual canonical ACK event");
+            var edge=same.readHistoricalTransition(pins.getFirst());
+            var details=StrictJson.object(StrictJson.parse(edge.details()),java.util.Set.of("evidence_id","source","receipt_ref"));
+            StrictJson.require(edge.sequence()==acknowledged.receipt().sequence()&&edge.kind().equals(ContinuityActionJournal.KIND)
+                    &&org.xar.ck3.control.contracts.ExactRef.fromJson(details.get("receipt_ref")).equals(ackRef)
+                    &&StrictJson.text(details.get("evidence_id")).equals(child.command().actionId()+":"+edge.sequence())
+                    &&details.get("source").equals(org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(child.command().source()))
+                    &&ContinuityActionJournal.recordHead(edge.after()).filter(ackRef::equals).isPresent()
+                    &&ContinuityActionJournal.recordHead(edge.before()).equals(acknowledged.previous()),
+                    "read-only ARM ACK is not the exact canonical source-bound ACTION edge");
+            long tailLength=head.state().sequence()-edge.sequence();
+            StrictJson.require(tailLength>0&&tailLength<=4096,"read-only ARM requires its finite complete post-ACK canonical interval");
+            var eventDirectory=Path.of(pins.getFirst().reference().path()).getParent();
+            var tail=new java.util.TreeMap<Long,WriterContracts.Pin>();
+            for(var pin:head.documents()) {
+                var path=Path.of(pin.reference().path());var file=path.getFileName().toString();
+                if(!Objects.equals(path.getParent(),eventDirectory)||!file.matches("[0-9]{8,16}\\.json"))continue;
+                long sequence=Long.parseLong(file.substring(0,file.length()-5));
+                if(sequence>edge.sequence()&&sequence<=head.state().sequence())
+                    StrictJson.require(tail.put(sequence,pin)==null,"read-only ARM canonical interval repeated an original event");
+            }
+            StrictJson.require(tail.size()==tailLength,"read-only ARM canonical interval lost an original event");
+            long expectedSequence=edge.sequence();
+            for(var entry:tail.entrySet()) {
+                StrictJson.require(entry.getKey()==++expectedSequence,"read-only ARM canonical interval contains a gap");
+                var actual=same.readHistoricalTransition(entry.getValue());
+                StrictJson.require(actual.sequence()==entry.getKey()&&!actual.kind().equals(OrdinaryCycleTransitions.CYCLE_KIND),
+                        "read-only ARM reconciliation cannot cross an ordinary cycle transition");
+            }
+            var status=org.xar.ck3.control.application.advance.AdvancePrimitives.acknowledgedSentinel(ack,plan.armStep());
+            StrictJson.require(status.generation().decimal().matches("[1-9][0-9]*")
+                    &&org.xar.ck3.control.application.advance.AdvancePrimitives.statusValues(status).containsAll(child.command().expected().values()),
+                    "read-only ARM positive ACK changed its original generation or requested sentinel content");
+            return Optional.of(child.command().deadline());
+        }
+
+        /** A separate finite preparation budget is consumed only by this Core's authenticated ARM DATA. */
+        public synchronized DriverBootstrap.Adopted adoptUnresolvedSameGame(ManagedGameSession game,
+                ContinuityBatchJournal.UnresolvedSameGameData data,int retainedFrames,
+                OriginalWindowReducer.Policy cyclePolicy,Instant phaseDeadline,Instant preparationEnvelope,
+                Instant armPreparationEnvelope)throws IOException,InterruptedException {
+            if(data==null||data!=readOnlyLifeArmOriginalData)
+                return adoptUnresolvedSameGame(game,data,retainedFrames,cyclePolicy,phaseDeadline,preparationEnvelope);
+            StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty()&&data==unresolvedSameGameData
+                    &&unresolvedSameGameCycles!=null&&unresolvedSameGameBatches!=null&&unresolvedSameGamePolicy.equals(cyclePolicy),
+                    "read-only ARM adoption retains this unused Core's exact Journal DATA and cycle policy");
+            Objects.requireNonNull(armPreparationEnvelope);
+            StrictJson.require(!armPreparationEnvelope.equals(Instant.MAX)
+                    &&!armPreparationEnvelope.isAfter(clock.instant().plus(Duration.ofMinutes(45))),
+                    "read-only ARM requires the original finite preparation phase anchor");
+            var until=armPreparationEnvelope;
+            StrictJson.require(!until.equals(Instant.MAX)&&clock.instant().isBefore(until),
+                    "post-ACK read-only ARM preparation exhausted its original finite preparation envelope");
+            var owner=data.capturedController().owner();
+            StrictJson.require(owner.machineId().equals(game.machineId())&&owner.game().equals(game.generation())
+                    &&owner.sessionId().equals(game.sessionId()),"read-only ARM Controller belongs to another actual Game");
+            return writer.locked(same->{
+                var head=same.head();
+                StrictJson.require(data==readOnlyLifeArmOriginalData&&data==unresolvedSameGameData
+                        &&head.state().sequence()==data.canonicalSequence()&&head.digest().equals(data.canonicalHeadDigest()),
+                        "read-only ARM adoption changed its actual Journal writer predecessor");
+                var source=operatorQuarantineSource().orElseThrow(()->new IOException("read-only ARM recovery requires its installed historical retirement verifier"));
+                StrictJson.require(source.request().reservedTailInterruption(),"read-only ARM recovery requires its actual installed historical v3 verifier");
+                final DriverBootstrap.Adopted result;
+                try {
+                    result=DriverBootstrap.adoptReadOnlyLifeArmRecovery(data,same,actions,game.nativeTransport(),archive,
+                            writer::borrowedSession,retainedFrames,until,this::verifyReservedRetirement,()->{
+                                var now=clock.instant();
+                                StrictJson.require(now.isBefore(until),"read-only ARM qualification exhausted its original bounded preparation envelope");
+                                var readUntil=now.plus(Duration.ofMinutes(10));
+                                return readUntil.isAfter(until)?until:readUntil;
+                            });
+                }catch(InterruptedException interrupted){
+                    Thread.currentThread().interrupt();var failure=new java.io.InterruptedIOException("same-Game read-only ARM Driver adoption interrupted");
                     failure.initCause(interrupted);throw failure;
                 }
                 adopted.add(result);return result;

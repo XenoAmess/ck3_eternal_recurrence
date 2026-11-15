@@ -458,6 +458,21 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
                 current = append(locked, current.command(), current.bodySha256(), unknown(attempt.orElseThrow(), Optional.of(dispatch), "restored SUBMITTING is unknown; no replay"));
             return observe(locked, current, attempt.orElseThrow(), dispatch, true);
     }
+    /** Classification consumes the real journal receipt supplied by this coordinator; it issues no permission. */
+    private static boolean positiveAckClockArm(ActionReceipt original) {
+        if(original.settled()||!(original.state() instanceof ActionState.Unknown||original.state() instanceof ActionState.AckReceived)
+                ||!original.command().expected().observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePrimitives.CLOCK_OBSERVER)
+                ||original.ack().isEmpty()||!original.ack().orElseThrow().nativeOk()
+                ||original.ack().orElseThrow().outbound().isEmpty()||original.ack().orElseThrow().custody().isEmpty())return false;
+        var attempt=ActionTransitions.attempt(original.state()).orElse(null);
+        if(attempt==null||!attempt.requestId().equals(original.ack().orElseThrow().requestId()))return false;
+        try {
+            org.xar.ck3.control.application.advance.AdvancePrimitives.armSpec(original.command().operation().value());
+            return original.command().arguments().members().isEmpty()
+                    &&org.xar.ck3.control.application.advance.AdvancePrimitives.expected(original.command().before(),original.command().source(),
+                            original.command().operation(),original.command().arguments()).equals(original.command().expected());
+        }catch(IllegalArgumentException rejected){return false;}
+    }
     private ActionReceipt observe(ActionJournal.LockedJournal locked, ActionReceipt current, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome dispatch) {
         return observe(locked, current, attempt, dispatch, false);
     }
@@ -483,9 +498,11 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
                             (frame, provenance, identity, basis) -> {
                                 StrictJson.require(!entered[0], "a reconciliation authority may enter the original observer only once");
                                 entered[0] = true;
-                                return observed[0] = ActionReconciliationScope.within(locked, current, attempt, frame, provenance, identity, basis,
-                                        authorityId, ActionObservationWindow.deadline(command), clock,
-                                        () -> Objects.requireNonNull(postcondition.observe(command, attempt, dispatch)));
+                                java.util.function.Supplier<ActionPorts.PostconditionResult> actualObserver=()->ActionReconciliationScope.within(
+                                        locked,current,attempt,frame,provenance,identity,basis,authorityId,ActionObservationWindow.deadline(command),clock,
+                                        ()->Objects.requireNonNull(postcondition.observe(command,attempt,dispatch)));
+                                return observed[0]=positiveAckClockArm(current)
+                                        ?ActionObservationWindow.withPhysicalArmObservation(current,basis,clock,actualObserver):actualObserver.get();
                             }));
                     StrictJson.require(!entered[0] || result == observed[0], "reconciliation provider replaced the actual observer result");
                     StrictJson.require(entered[0] || result instanceof ActionPorts.Pending, "raw-only observation cannot invent a semantic settlement");

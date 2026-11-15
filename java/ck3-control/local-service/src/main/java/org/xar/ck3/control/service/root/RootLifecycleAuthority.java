@@ -175,7 +175,18 @@ public final class RootLifecycleAuthority {
         public Set<String> bridgeCapabilities() { return physical.bridgeCapabilities(); }
         public void assertCurrent(ContinuityStorePort.Session borrowed) throws IOException { physical.assertCurrent(borrowed); }
     }
-    private record Scope(ContinuityStorePort.Session session,SnapshotLease snapshot,String head,Instant deadline) { }
+    private record Scope(ContinuityStorePort.Session session,SnapshotLease snapshot,String head,Instant deadline,Instant heartbeatObservedAt) { }
+    @FunctionalInterface interface PreparedReadWork<T> { T run() throws IOException,InterruptedException; }
+    private static final class OriginalArmReadPreparation {
+        private final ActionReceipt parent,child;
+        private final String head;
+        private final Instant deadline;
+        private ContinuityStorePort.Session session;
+        private OriginalArmReadPreparation(ActionReceipt parent,ActionReceipt child,String head,Instant deadline) {
+            this.parent=parent;this.child=child;this.head=head;this.deadline=deadline;
+        }
+    }
+    private final ThreadLocal<OriginalArmReadPreparation> originalArmPreparation=new ThreadLocal<>();
     private static final int MAX_ORIGINAL=WriterContracts.MAX_PIN_BYTES;
     private final ContinuityWriter writer;
     private final NativeOutcomeArchive archive;
@@ -204,6 +215,52 @@ public final class RootLifecycleAuthority {
         semantics=new NativeSemanticEvidenceVerifier((borrowed,ref,maximum)->archive.readArtifact(borrowed,ref,maximum));
         require(archive.writer()==writer,"physical snapshot must share the sole writer/archive");
         require(!freshness.isNegative()&&!freshness.isZero()&&freshness.compareTo(Duration.ofMinutes(1))<=0,"finite physical snapshot freshness required");
+    }
+
+    /** Package-owned Root call only. The actual Core private DATA identity is checked before this entry. */
+    <T>T withOriginalArmReadPreparation(org.xar.ck3.control.application.session.ContinuityBatchJournal.UnresolvedSameGameData data,
+            Instant callerDeadline,PreparedReadWork<T> work)throws IOException,InterruptedException {
+        Objects.requireNonNull(data);Objects.requireNonNull(callerDeadline);Objects.requireNonNull(work);
+        require(originalArmPreparation.get()==null&&active.get()==null,"original ARM preparation cannot nest an observation or preparation");
+        Instant now=clock.instant(),local=now.plus(Duration.ofMinutes(10));
+        Instant until=callerDeadline.isBefore(local)?callerDeadline:local;
+        require(now.isBefore(until),"original ARM read preparation caller deadline expired");
+        // Complete actual canonical membership is authenticated before the parent Coordinator mints its old 120s window.
+        OriginalArmReadPreparation prepared=writer.locked(same->{
+            requireSession(same);var head=same.head();var bound=archive.withSession(same);
+            require(data.unresolvedActions().size()==1&&data.retainedHistory().isPresent(),"original ARM preparation requires its actual retained single root");
+            ActionReceipt parent=data.unresolvedActions().getFirst();
+            var canonical=ContinuityActionJournal.receipts(head.state(),bound);
+            require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical).filter(parent::equals).isPresent()
+                    &&parent.state() instanceof ActionState.CompositeUnknown,"original ARM preparation lost its canonical Life root");
+            var execution=((ActionState.CompositeUnknown)parent.state()).execution();
+            require(execution.children().size()==1,"original ARM preparation permits its sole original ARM child only");
+            var binding=execution.children().getFirst();
+            ActionReceipt child=canonical.stream().filter(value->value.command().actionId().equals(binding.actionId())).findFirst().orElseThrow();
+            ActionReceipt retained=data.retainedHistory().orElseThrow().settledActions().stream()
+                    .filter(value->value.command().actionId().equals(binding.actionId())).findFirst().orElseThrow();
+            var plan=org.xar.ck3.control.application.advance.AdvancePlan.decode(parent.command());
+            require(child.equals(retained)&&child.bodySha256().equals(binding.bodySha256())
+                    &&child.command().operation().value().equals(plan.armStep())&&RootReconciliationAuthority.isPositiveAckClockArm(child)
+                    &&child.command().source().equals(source)&&child.command().sessionId().equals(data.capturedController().owner().sessionId())
+                    &&child.command().origin().game().equals(data.capturedController().owner().game()),
+                    "original ARM preparation changed its actual ACK/Attempt/body/source/Game/sole prefix");
+            require(head.digest().equals(same.head().digest())&&clock.instant().isBefore(until),
+                    "original ARM preparation changed its writer or exhausted its one caller envelope");
+            return new OriginalArmReadPreparation(parent,child,head.digest(),until);
+        });
+        originalArmPreparation.set(prepared);
+        try{return work.run();}finally{originalArmPreparation.remove();}
+    }
+    /** This optional deadline is available only inside the actual Root's canonical original ARM call. */
+    Optional<Instant> originalArmReadPreparationDeadline(ContinuityStorePort.Session same,ActionReceipt original)throws IOException {
+        OriginalArmReadPreparation prepared=originalArmPreparation.get();
+        if(prepared==null||!prepared.child.equals(original))return Optional.empty();
+        requireSession(same);
+        if(prepared.session==null)prepared.session=same;
+        require(prepared.session==same&&active.get()==null&&prepared.head.equals(same.head().digest())
+                &&clock.instant().isBefore(prepared.deadline),"original ARM preparation escaped its actual writer/head/thread/caller envelope");
+        return Optional.of(prepared.deadline);
     }
 
     /** No planning input, capability projection, onObserved domain hook, publication or second Native observe. */
@@ -251,6 +308,11 @@ public final class RootLifecycleAuthority {
         }
         requireSession(borrowed);String head=borrowed.head().digest();
         DriverStateAssembler actualDriver=Objects.requireNonNull(driver.resolve(borrowed),"actual adopted Driver authority is unavailable");
+        OriginalArmReadPreparation prepared=originalArmPreparation.get();
+        final long[] readPhases;
+        if(freshRead&&prepared!=null&&prepared.session==borrowed) {
+            long started=System.nanoTime();readPhases=new long[]{started,started};
+        }else readPhases=null;
         synchronized(transport) {
             final NativeObservationPort.ObservedFrame actual;
             final Optional<NativeFreshSnapshotPort.Received> freshResult;
@@ -295,11 +357,13 @@ public final class RootLifecycleAuthority {
                 freshResult=Optional.empty();
             }
             require(actual.session().machineId().equals(source.machineId()),"actual physical Native source machine differs");
+            reportArmReadPhase(readPhases,"read_complete",actual,null);
             ExactRef packet=preserve(borrowed,actual.originalPacket(),MAX_ORIGINAL);
             return actualDriver.withFrozenRawObservation(actual,borrowed,frozen->{
                 var facts=frozen.facts();var known=frozen.state();
                 require(facts.source().equals(source),"physical original Driver source differs from the installed source");
-                var full=assembler.projectFull(actual,facts,packet);
+                return assembler.withCapturedProjection(actual,facts,packet,full->()->{
+                reportArmReadPhase(readPhases,"full_projected",actual,packet);
                 var diagnostics=transport.diagnostics();
                 require(diagnostics.receivedState()==NativeGameTransport.ReceivedState.HELLO_VERIFIED&&diagnostics.terminalFailure().isEmpty()
                         &&diagnostics.session().filter(actual.session()::equals).isPresent(),"actual held physical transport is unavailable");
@@ -327,6 +391,7 @@ public final class RootLifecycleAuthority {
                         &&decoded.episodeEpoch()==known.stamp().episodeEpoch()&&decoded.publicRevision().equals(facts.publicRevision())
                         &&decoded.observationVersion()==facts.observationVersion()&&decoded.source().equals(source)
                         &&decoded.originalSemanticFields().equals(facts.originalSemanticFields()),"physical manifest/full Driver producer roundtrip differs");
+                reportArmReadPhase(readPhases,"manifest_driver_verified",actual,packet);
                 Optional<DriverObservationAssembler.Complete> ordinary=Optional.empty();
                 Optional<LifecycleIdentity> terminal=Optional.empty();
                 Optional<LifecycleObservationPort.Snapshot> terminalSnapshot=Optional.empty();
@@ -335,7 +400,7 @@ public final class RootLifecycleAuthority {
                 boolean living=player instanceof LifecycleIdentity.Character current
                         &&current.alive()&&current.characterId().equals(known.driver().session().actorId());
                 if(living) {
-                    var joined=assembler.assemble(actual,facts,packet);
+                    var joined=assembler.assembleCapturedProjection(full,actual,facts,packet);
                     require(joined instanceof DriverObservationAssembler.Complete,"actual living physical snapshot is not a complete data join: "+joined);
                     ordinary=Optional.of((DriverObservationAssembler.Complete)joined);
                 } else {
@@ -346,15 +411,54 @@ public final class RootLifecycleAuthority {
                     terminalSnapshot=Optional.of(new LifecycleObservationPort.Snapshot(actual,source,phase.semantic(),known,packet));
                     terminalSemantic=Optional.of(preserve(borrowed,DriverJson.encode(phase.semantic()),MAX_ORIGINAL));
                 }
+                reportArmReadPhase(readPhases,living?"living_assembled":"terminal_projected",actual,packet);
                 ExactRef semantic=preserve(borrowed,DriverJson.encode(full.semantic()),MAX_ORIGINAL);
+                reportArmReadPhase(readPhases,"semantic_archived",actual,packet);
                 Instant until=earliest(deadline,actual.observedAt().plus(effectiveFreshness),heartbeat.observedAt().plus(effectiveFreshness));
                 var captured=new SnapshotLease(this,full,known,facts,ordinary,terminal,terminalSnapshot,terminalSemantic,freshResult,helloRef,heartbeatRef,
                         originalDriver,semantic,qualified,until,Set.copyOf(hello.original().capabilities()),frozen::projection);
-                Scope scope=new Scope(borrowed,captured,head,deadline);
+                Scope scope=new Scope(borrowed,captured,head,deadline,heartbeat.observedAt());
                 require(active.get()==null,"physical callback cannot replace another frozen observation");active.set(scope);
-                try{return borrowed(scope,borrowed,deadline,work);}finally{active.remove();}
+                try {
+                    reportArmReadPhase(readPhases,"scope_enter_attempt",actual,packet);
+                    return borrowed(scope,borrowed,deadline,work);
+                }finally{active.remove();}
+                });
             });
         }
+    }
+
+    /** Resolve only, using this actual Life definition's loader; no projection, observation, permission or Game I/O. */
+    static void requireCapturedProjectionLinkage() {
+        try {
+            var lookup=java.lang.invoke.MethodHandles.lookup();
+            lookup.findVirtual(DriverObservationAssembler.class,"withCapturedProjection",java.lang.invoke.MethodType.methodType(
+                    Object.class,NativeObservationPort.ObservedFrame.class,org.xar.ck3.control.application.driver.DriverObservationFacts.class,
+                    ExactRef.class,java.util.function.Function.class));
+            lookup.findVirtual(DriverObservationAssembler.class,"assembleCapturedProjection",java.lang.invoke.MethodType.methodType(
+                    DriverObservationAssembler.Result.class,DriverObservationAssembler.FullSnapshot.class,NativeObservationPort.ObservedFrame.class,
+                    org.xar.ck3.control.application.driver.DriverObservationFacts.class,ExactRef.class));
+        }catch(NoSuchMethodException|IllegalAccessException cause){
+            throw new LinkageError("actual captured projection JDK method linkage unavailable",cause);
+        }
+        try {
+            ClassLoader life=RootLifecycleAuthority.class.getClassLoader(),projection=DriverObservationAssembler.class.getClassLoader();
+            System.getLogger(RootLifecycleAuthority.class.getName()).log(System.Logger.Level.INFO,
+                    "CAPTURED_PROJECTION_LINKAGE resolved life_loader="+(life==null?"bootstrap":life.getClass().getName()+"@"+Integer.toHexString(System.identityHashCode(life)))
+                    +" assembler_loader="+(projection==null?"bootstrap":projection.getClass().getName()+"@"+Integer.toHexString(System.identityHashCode(projection))));
+        }catch(RuntimeException|Error diagnosticUnavailable){ /* Optional output cannot replace successful resolution. */ }
+    }
+
+    /** Bounded natural diagnostics for this actual Root-owned ARM READ only; never a qualifier or a new observation. */
+    private void reportArmReadPhase(long[] phases,String stage,NativeObservationPort.ObservedFrame actual,ExactRef packet) {
+        if(phases==null)return;
+        try {
+            long now=System.nanoTime(),previous=phases[1];phases[1]=now;
+            System.getLogger(RootLifecycleAuthority.class.getName()).log(System.Logger.Level.INFO,
+                    "ARM_FRESH_PHASE stage="+stage+" elapsed_ns="+Math.max(0L,now-phases[0])+" stage_ns="+Math.max(0L,now-previous)
+                    +" checked_at="+clock.instant()+" observed_at="+actual.observedAt()
+                    +" native_packet_ref_sha256="+(packet==null?"not_yet_archived":packet.sha256()));
+        }catch(RuntimeException|Error diagnosticUnavailable) { /* Only optional output is contained; all work/guards remain outside. */ }
     }
 
     /** The same physical producer seals and independently replays four SEM originals, without ordinary eligibility or domain hooks. */
@@ -413,7 +517,9 @@ public final class RootLifecycleAuthority {
         requireSession(borrowed);require(scope.session()==borrowed&&active.get()==scope,"physical read escaped the original borrowed writer/frozen callback");
         require(scope.head().equals(borrowed.head().digest()),"writer changed inside observation-only physical scope");
         Instant now=clock.instant();require(!now.isBefore(scope.snapshot().fullSnapshot().actual().observedAt())&&now.isBefore(scope.snapshot().validUntil())
-                &&now.isBefore(scope.deadline())&&now.isBefore(deadline),"actual physical lease/caller deadline expired");
+                &&now.isBefore(scope.deadline())&&now.isBefore(deadline),"actual physical lease/caller deadline expired: checked_at="+now
+                +", snapshot_valid_until="+scope.snapshot().validUntil()+", scope_deadline="+scope.deadline()+", caller_deadline="+deadline
+                +", observed_at="+scope.snapshot().fullSnapshot().actual().observedAt()+", heartbeat_observed_at="+scope.heartbeatObservedAt());
         transport.verifyHeld(deadline);
     }
     private void requireSession(ContinuityStorePort.Session borrowed)throws IOException{

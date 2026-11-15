@@ -739,6 +739,9 @@ private Running openSameGameBootstrapInternal(ManagedGameSession actual, Optiona
 
 /** Reuses the one already-opened actual Core; existing readers retain all recovery authority. */
 private Running openSameGameBootstrapOpened(Opened opened, ManagedGameSession actual, Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline, boolean allowObservedInitial) throws IOException, InterruptedException {
+    RootLifecycleAuthority.requireCapturedProjectionLinkage();
+    // Mint once before DATA/history preparation. Only the Core's exact ARM role may consume this separate budget.
+    final Instant armPreparationEnvelope=clock.instant().plus(java.time.Duration.ofMinutes(45));
     if (pointer.isPresent() && opened.core().matchesCleanRestartHead(pointer.orElseThrow())) {
         var driver = runOperationPhase(clock,java.time.Duration.ofMinutes(10),phaseDeadline->
                 opened.core().adoptCleanRestart(actual,pointer.orElseThrow(),config.retainedFrames(),cyclePolicy,phaseDeadline,
@@ -757,7 +760,7 @@ private Running openSameGameBootstrapOpened(Opened opened, ManagedGameSession ac
     if (unresolved.isPresent()) {
         var unresolvedData=unresolved.orElseThrow();
         var driver = runOperationPhase(clock,config.operationTimeout(),phaseDeadline->
-                opened.core().adoptUnresolvedSameGame(actual, unresolvedData, config.retainedFrames(), cyclePolicy, phaseDeadline, deadline));
+                opened.core().adoptUnresolvedSameGame(actual, unresolvedData, config.retainedFrames(), cyclePolicy, phaseDeadline, deadline, armPreparationEnvelope));
         return new Opened(this, driver.source()).finishUnresolvedSameGame(driver, unresolvedData, deadline);
     }
     if(originalSavedRecoverySource!=null)throw new IOException("original Saved recovery requires actual settled or qualified unresolved source; initial-entry fallback is forbidden");

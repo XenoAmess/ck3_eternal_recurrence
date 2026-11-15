@@ -1007,6 +1007,9 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
             requireDeadline(deadline);
             // Reconciliation and cycle completion each borrow the sole writer in sequence.
             // An outer borrowed session would make retainCycle open a nested writer session.
+            if(owner.ownsReadOnlyLifeArmRecovery(data))
+                return physical.withOriginalArmReadPreparation(data,deadline,
+                        ()->controller.reconcileUnresolvedOriginal(data,deadline));
             return controller.reconcileUnresolvedOriginal(data, deadline);
         } finally { calls.unlock(); }
     }
