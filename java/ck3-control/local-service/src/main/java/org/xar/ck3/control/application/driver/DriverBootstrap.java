@@ -632,6 +632,22 @@ public final class DriverBootstrap {
     public static Adopted adoptCleanRestart(org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission actual,
             ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,G2Source source,
             ActionPorts.OutcomeArchive archive,ExactArtifactReader originals,int retainedFrames,Instant deadline,java.util.function.Supplier<Instant> postPreparationIoDeadline)throws IOException,InterruptedException {
+        return adoptCleanRestart(actual,same,actions,transport,source,archive,originals,retainedFrames,deadline,postPreparationIoDeadline,Optional.empty(),Optional.empty());
+    }
+    /** Binds only the actual Core's reserved-Life source verifier and its live writer supplier. */
+    public static Adopted adoptCleanRestartWithReservedLifeVerifier(org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission actual,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,G2Source source,
+            ActionPorts.OutcomeArchive archive,ExactArtifactReader originals,int retainedFrames,Instant deadline,
+            java.util.function.Supplier<Instant> postPreparationIoDeadline,BorrowedSessionReader currentSession,
+            DriverStateAssembler.ReservedLifeRetirementVerifier retirementVerifier)throws IOException,InterruptedException {
+        return adoptCleanRestart(actual,same,actions,transport,source,archive,originals,retainedFrames,deadline,postPreparationIoDeadline,
+                Optional.of(Objects.requireNonNull(currentSession)),Optional.of(Objects.requireNonNull(retirementVerifier)));
+    }
+    private static Adopted adoptCleanRestart(org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission actual,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,G2Source source,
+            ActionPorts.OutcomeArchive archive,ExactArtifactReader originals,int retainedFrames,Instant deadline,
+            java.util.function.Supplier<Instant> postPreparationIoDeadline,Optional<BorrowedSessionReader> currentSession,
+            Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier)throws IOException,InterruptedException {
         Objects.requireNonNull(postPreparationIoDeadline);
         Objects.requireNonNull(actual);actual.requireCurrent(same);
         StrictJson.require(source.equals(actual.manifest().source()),"same-Game restart retains its logical source DATA without a new startup audit");
@@ -664,7 +680,7 @@ public final class DriverBootstrap {
         };
         transport.startHandshake(deadline);
         var result=adoptInternal(seed,same,actions,transport,source,archive,originals,coverage,retainedFrames,deadline,AdoptionKind.JAVA_HOT,
-                Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(actual),postPreparationIoDeadline);
+                Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(actual),postPreparationIoDeadline,currentSession,retirementVerifier);
         StrictJson.require(result.status()==AdoptionStatus.QUALIFICATION_REQUIRED
                 &&result.first().identity().frame().identity().dateRaw().longValueExact()==actual.manifest().dateRaw(),
                 "clean restart cannot discard unresolved history or a changed game date");
@@ -777,10 +793,22 @@ public final class DriverBootstrap {
             Optional<NativeObservationPort.ObservedFrame> resolvedRaw,Optional<SavedNativeBootstrap> savedNative,
             Optional<RootRestoreMaterials.ColdAdoption> restoredNative,
             Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission> cleanRestart,java.util.function.Supplier<Instant> postPreparationIoDeadline)throws IOException,InterruptedException {
+        return adoptInternal(seed,borrowed,actions,transport,source,archive,originals,coverage,retainedFrames,deadline,kind,
+                resolvedRaw,savedNative,restoredNative,cleanRestart,postPreparationIoDeadline,Optional.empty(),Optional.empty());
+    }
+    private static Adopted adoptInternal(Seed seed,ContinuityStorePort.Session borrowed,ActionSnapshotReader actions,
+            NativeGameTransport transport,G2Source source,ActionPorts.OutcomeArchive archive,ExactArtifactReader originals,
+            HistoryCoverageReader coverage,int retainedFrames,Instant deadline,AdoptionKind kind,
+            Optional<NativeObservationPort.ObservedFrame> resolvedRaw,Optional<SavedNativeBootstrap> savedNative,
+            Optional<RootRestoreMaterials.ColdAdoption> restoredNative,
+            Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission> cleanRestart,java.util.function.Supplier<Instant> postPreparationIoDeadline,
+            Optional<BorrowedSessionReader> currentSession,Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier)throws IOException,InterruptedException {
         Objects.requireNonNull(seed);Objects.requireNonNull(borrowed);Objects.requireNonNull(actions);Objects.requireNonNull(transport);
         Objects.requireNonNull(source);Objects.requireNonNull(archive);Objects.requireNonNull(originals);Objects.requireNonNull(coverage);Objects.requireNonNull(deadline);
         Objects.requireNonNull(resolvedRaw);Objects.requireNonNull(savedNative);Objects.requireNonNull(restoredNative);
-        Objects.requireNonNull(postPreparationIoDeadline);
+        Objects.requireNonNull(postPreparationIoDeadline);Objects.requireNonNull(currentSession);Objects.requireNonNull(retirementVerifier);
+        StrictJson.require(currentSession.isPresent()==retirementVerifier.isPresent()&&(!retirementVerifier.isPresent()||cleanRestart.isPresent()),
+                "reserved Life bootstrap projection needs its actual clean admission and current writer supplier");
         StrictJson.require(savedNative.isEmpty()||restoredNative.isEmpty(),"one actual private projection source required");
         StrictJson.require(Instant.now().isBefore(deadline),"Driver adoption deadline expired");
         StrictJson.require(source.machineId().equals(seed.expectedSession().machineId()),"seed/source machine differs");
@@ -847,13 +875,22 @@ public final class DriverBootstrap {
                         rows.addAll(cleanRows);
                     }
                     var known=new DriverSnapshotFacts.Known(driver,stamp,seed.originalHistoryBasis(),rows,seed.auxiliary(),seed.loop(),Optional.empty());
-                    DriverStateSnapshot projected=DriverStateAssembler.project(known,lease.snapshot(),Optional.empty());
+                    var repository=new DriverFactsRepository(known);
+                    var producer=new NativeDriverObservationProducer(repository,transport,source,wire -> archive.preserveMaterial(RawJson.fullMaterial(wire)));
+                    var authority=new DriverStateAssembler(actions,repository,producer);
+                    if(retirementVerifier.isPresent()) {
+                        var sessions=currentSession.orElseThrow();
+                        authority.bindReservedLifeRetirementVerifier(retirementVerifier.orElseThrow(),archive,()->{
+                            try{return sessions.current();}catch(IOException failure){throw new UncheckedIOException(failure);}
+                        });
+                    }
+                    DriverStateSnapshot projected=retirementVerifier.isPresent()
+                            ?authority.withFrozenFacts(borrowed,frozen->DriverStateAssembler.project(frozen.state(),frozen.actions(),frozen.activeActionId()))
+                            :DriverStateAssembler.project(known,lease.snapshot(),Optional.empty());
                     if(projected instanceof DriverStateSnapshot.Incomplete incomplete)
                         for(String reason:incomplete.missingOrUnreconciledFields()) if(!gaps.contains(reason))gaps.add(reason);
                     final Instant ioDeadline=cleanRestart.isPresent()?Objects.requireNonNull(postPreparationIoDeadline.get()):deadline;
                     StrictJson.require(transport.awaitHello(ioDeadline).equals(seed.expectedSession()),"actual held Native hello differs from immutable seed session");
-                    var repository=new DriverFactsRepository(known);
-                    var producer=new NativeDriverObservationProducer(repository,transport,source,wire -> archive.preserveMaterial(RawJson.fullMaterial(wire)));
                     if(cleanRestart.isPresent())producer.bindCleanRestart(cleanRestart.orElseThrow(),borrowed);
                     if(savedNative.isPresent()) {
                         var retained=savedNative.orElseThrow();
@@ -864,7 +901,6 @@ public final class DriverBootstrap {
                     }
                     if(restoredNative.isPresent())
                         producer.bindNativeCampaignRestored(restoredNative.orElseThrow(),seed,borrowed,archive);
-                    var authority=new DriverStateAssembler(actions,repository,producer);
                     var held=new HeldDriverObservationPort(transport,authority,archive::preserveNativeFrame,new DriverObservationAssembler(),retainedFrames);
                     if(kind!=AdoptionKind.UNCLASSIFIED)transport.startHandshake(ioDeadline);
                     Optional<NativeObservationPort.ObservedFrame> firstRaw=resolvedRaw;

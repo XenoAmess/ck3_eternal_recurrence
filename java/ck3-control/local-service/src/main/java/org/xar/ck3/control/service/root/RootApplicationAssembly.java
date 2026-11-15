@@ -1209,7 +1209,11 @@ public final class RootApplicationAssembly {
             var admission = batches.admitCleanRestart(same, ticket);
             var source=admission.manifest().source();
             DriverBootstrap.Adopted result;
-            try { result = DriverBootstrap.adoptCleanRestart(admission, same, actions, game.nativeTransport(), source, archive, (ref, max) -> archive.readArtifact(same, ref, Math.min(max, ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES)), retainedFrames, deadline, postPreparationIoDeadline); }
+            try {
+                if(operatorQuarantineSource().map(value->value.request().reservedTailInterruption()).orElse(false))
+                    result = DriverBootstrap.adoptCleanRestartWithReservedLifeVerifier(admission, same, actions, game.nativeTransport(), source, archive, (ref, max) -> archive.readArtifact(same, ref, Math.min(max, ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES)), retainedFrames, deadline, postPreparationIoDeadline, writer::borrowedSession, this::verifyReservedRetirement);
+                else result = DriverBootstrap.adoptCleanRestart(admission, same, actions, game.nativeTransport(), source, archive, (ref, max) -> archive.readArtifact(same, ref, Math.min(max, ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES)), retainedFrames, deadline, postPreparationIoDeadline);
+            }
             catch(InterruptedException interrupted) {
                 Thread.currentThread().interrupt();
                 var failure=new java.io.InterruptedIOException("same-Game Driver adoption interrupted");
