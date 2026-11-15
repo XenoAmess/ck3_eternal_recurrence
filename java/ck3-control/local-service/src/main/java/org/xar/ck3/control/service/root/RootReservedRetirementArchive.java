@@ -121,6 +121,15 @@ final class RootReservedRetirementArchive implements AutoCloseable {
         @Override public <T>T inSession(ContinuityStorePort.Session borrowed,Function<ActionPorts.OutcomeArchive,T> work){
             withSession(borrowed);T result=Objects.requireNonNull(work).apply(this);check();return result;
         }
+        /** Retain original CAS custody while the caller still sees only this restricted DATA view. */
+        @Override public <T>T inHistoricalReadScope(ContinuityStorePort.Session borrowed,
+                ActionPorts.HistoricalReadLimits limits,ActionPorts.CheckedArchiveRead<T> work)throws IOException {
+            withSession(borrowed);Objects.requireNonNull(limits);Objects.requireNonNull(work);
+            T result=actual.inHistoricalReadScope(borrowed,limits,ignoredNativeArchive->{
+                check();T value=work.read(this);check();return value;
+            });
+            check();return result;
+        }
         @Override public ActionCommand decodeCanonicalCommand(byte[] canonical){return checked(()->ActionCodec.decodeCommand(canonical));}
         @Override public NativeActionPort.DispatchOutcome load(ExactRef original){
             return checked(()->remember(codec.decodeDispatchData(original),original));

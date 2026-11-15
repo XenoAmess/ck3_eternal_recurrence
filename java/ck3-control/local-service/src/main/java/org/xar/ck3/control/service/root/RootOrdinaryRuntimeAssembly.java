@@ -614,6 +614,8 @@ public final class RootOrdinaryRuntimeAssembly {
         /** A new source-qualified daemon restores the exact original pair in the same canonical writer. */
         public synchronized Running openExitedCheckpointRecovery(Path ownerDescriptor,
                 org.xar.ck3.control.contracts.GameGeneration expected,Instant deadline)throws IOException,InterruptedException {
+            var configuredDecision=config.decisionProvider().orElseThrow(()->
+                    new IOException("exited checkpoint recovery requires its explicit decision provider"));
             retireExitedLifeInterruptionOnly(ownerDescriptor,expected,deadline);
             var exited=Objects.requireNonNull(exitedRecovery);
             var qualified=RootExitedSavedMaterialSource.qualify(core,config,lifecycle,exited,deadline);
@@ -664,6 +666,12 @@ public final class RootOrdinaryRuntimeAssembly {
                     material.pair().lineageId(),Path.of(material.pair().save().reference().path()));
             var configuration=new RootApplicationAssembly.FreshSessionConfiguration(base.authorityId(),base.policy(),base.freshness(),
                     checkpoints,base.cyclePolicy(),deadline);
+            var selector=new RootOnlineDecisionSelector(configuredDecision,clock,raw->{
+                var writer=core.writer();var active=writer.activeSession();
+                if(active.isPresent())return core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                return writer.locked(same->core.archive().withSession(same).preserveMaterial(raw));
+            });
+            core.bindDecisionSelector(selector);
             var session=core.finishColdRestored(original,adapters,service,restored.binding(),game,configuration,services(source));
             session.install(ordinaryHost,deadline);
             return new Running(this,session,original.savedController().batchPrefix(),original.savedController().nextBatchSequence());
