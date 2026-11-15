@@ -45,3 +45,29 @@ Native资源闭账：同根 `cz96c1/RESOURCE-CLOSED14-TEST1-WHOLE36-ONLYUNUSED-O
 ## 研究结论的等级
 
 本轮首先解决有真实失败依据的恢复消费者缺口；未声明新增游戏能力、LOOP、游戏日或 SAVE。G2 沿用最后完整6/8，10秒/新增确认保存日目标仍未达。零新增确认保存日不计算有限秒/日。旧年度保存政策继续沿用。
+
+## 持续执行：退出现场的同检查点恢复（进行中）
+
+用户指出单包发表后仍应继续演进，Root纠正了按单包交付停止的判断。用户随后明确“本地模型暂不可用，你来代替它完成全部任务”，当前执行者与现有分工接管实现、审阅、诊断及真实运行决策，不等待本地模型、不再发本地模型HTTP，也不把一个commit或软件通过作为停止条件。
+
+原savedPair的save、Driver与ACK已核bytes/SHA及文件身份；Supervisor原terminal证明 `GAME_EXITED/NATURAL_EXIT/exit0/Job active0/cleanup_proven=true`。原worker只有ATTACHED连接，OWNED属于已退出Supervisor，不能沿旧PID颁发STOP权。原件在 `D:/ck3-state/resume91-runtime/research-resume-20261116-readonly02/` 的 `SAVEDPAIR-AND-EXITED-GAME01.json` 与 `EXIT-SOURCE-OPERATOR-INPUTS01.json`。
+
+一次性初始化D盘actual开发图已完成：`D:/ck3-state/resume91-runtime/exited-restore-dev01`，source3201文件/46034039B，可复用build16859文件/111506942B，正文SHA及mtime一致，旧C源未改。报告 `ACTUAL-BASELINE-COPY01.json`，1353B/SHA `e73a285242ce4b8ed6fb1b4649392923bef6245ca41d962080089d775a959c42`。后继按叶增量，保留actual Life诊断、Core与postResume差异，未以formal整树覆盖。
+
+`retire-exited`在Native attach之前，以真实退出私有角色进入原Core/原writer，追加v2行政隔离。第一次实际调用失败604.620秒，定位每次归档访问都重复Win32全机扫描；只把同锁成员资格检查与完整来源/进程检查分开，完整检查仍在准入、pre-append及结束。第二次失败92.792秒，原因是输入误用包含末尾LF的原文件SHA充当canonical Head.digest；保留两次失败原件、原请求和期限，均零追加。canonical head摘要核为 `bb6af7530c1d9c7f71281a6500e9b1e7594bc511d258728d515b84935c84a1ed`。
+
+第三次独立新请求于 `2026-11-15T19:54:44.233430Z` 真实exit0，用时126.1786959秒，结果 `EXITED_LIFE_INTERRUPTION_RETIRED`。同writer追加sequence2002，effect仍为UNKNOWN；新head原文件100052B/SHA `d8b37715a6917d06b165dfd63353d0d8c26403fd7f2e6a02dc2a4f9f040a2e03`。原父、两个child、执行原件和UNKNOWN_EFFECT均保留，旧ID仍禁重发。未启动/attach Game，没有新增游戏日、SAVE或模型HTTP。原件 `runs/retire-exited03/ACTUAL-OUTCOME-WAL03.json`，7052B/SHA `0638d0f790130ca8d71889e833fb9e3c6ada6144f4aaa001a9447fbb3d71f64e`，相对上述actual开发根。
+
+软件资格分开记账：实际opaque退出角色4项和旧writer/consumer2项已通过。早期Core夹具使用无效CAS输入，被旧Native归档guard拒绝；为此产生的05生产绕过已完全撤回，未被实际采用。Core负向回归保留该guard；真实正向资格来自上述第三次行政调用，不能将夹具或未采用候选当作正向证据。
+
+完整 `restore-exited`复用原savedPair、lineage、episode、writer和Core恢复链，要求新Game两次独立READ、原Driver采用及真实OWNED生命周期。actual完整增量14源首编仅两个package-private SHA调用失败；只修该叶，并复用首轮成功的7源65class，再编剩余7源。最终actual完整族已安装，累计32源260class逐件核pin。完整Materials14与ENV Producer20回归为 **34P/0F/0E/0skip**，21.207秒；XML为Native根 `er97coldj1/reports/TEST-junit-jupiter.xml`，71205B/SHA `3dbf47ac45c2c3b8cfe69c96e604c6bd547aa0fdaa5e54a8b9c8f34d5dd35cc5`。
+
+决策通道显式配置为file provider、`codex-session`、单次120秒、零backoff；保留原完整payload、原proposal/body/frame和期限guard，无HTTP fallback。请求metadata引用原完整payload，不截断为16KiB。实际3源8class已安装；File4、Config3及旧Pending2为 **9P/0F/0E/0skip**，10.810秒。软件闭档 `df98c1/SOFTWARE-CLOSED-ACTUAL-FILE3-TEST3-9PASS-01.json`，5122B/SHA `c412da02d8f3750bb5f42b5fd934a4574fcf86ef30736b2619d2fe8a4606b1d2`。专属执行者接待真实queue，当前0实际请求/0决策，不把测试决策计为实机。
+
+当前后继阻点是正式Saved ENV生产工具的真实completion：旧工具财务schema只接受历史issuer和口径，不能伪造旧授权。正实现最小版本化ROOT_STANDALONE_V1分支，以本轮Root、attempt和真实fund核准；卷free继续覆盖峰值、其他未消费holds、system及safety，项目quota仅计保守占用上界、项目新增和其他真实项目holds，系统预留不冒充项目写入。独立64MiB scope不扩张；quota例外截至 `2026-11-15T21:25:40Z` 复核，max_project13303228397187B，依据最新全卷used上界13302571618304B、本次67108864B、当时other52799107B和512MiB仅供全卷baseline观测漂移的quota余量；余量不是项目新写入或新资金。Native逐scope剩余上界28409475B，Runtime normal24389632B无法立即分解时全部保守计入；后到finance4未消费余额另按真实数更新。此前小额度在全卷used漂移106541056B时真实拒绝，保留失败，不把unknown项目库存写成0。实际ControlBuild单源首编已GREEN，11.587秒/62class，产物即时交Runtime，不等Test或Git；来源 `finance101c1/ACTUAL-CONTROLBUILD1-COMPLETE-FAMILY09.json`，26736B/SHA `0b151778bfc27933f934b0ce6cac48c306940de54120e42156e381dbff6697e4`。新财务分支四项回归已 **4P/0F/0E/0skip**，14.053秒，XML `finance101j1/reports/TEST-junit-jupiter.xml`，50198B/SHA `dd98093a5dea49b690433f813393b314a27263217db59a1936d7870299260c3e`；首轮helper编译因文件末未使用的RegressionMain缺两个无关Test而RED，保留已生成class后只补必要helper，未扩旧金融测试全图。正式ControlBuild单源另取得typing资格，12.107秒/62class，未重跑4项。新财务生产源与Test两文件独立commit为 `80e146826f9d2ff7e8db925358f220d0d3a8900b`，parent为ea642b75，本轮报告随其后正常发表。4P是软件夹具验证，尚不是本轮工具真实receipt。Runtime已物理采用actual33源累计322class并全pins核对，bootstrap regular6jar已产出（主jar3650299B/SHA `f76a9df3d11d5e6ea856524818234126b330051d303d8417ec6ece0233c910ed`），5个旧D依赖同FileID只读硬链接复用、零依赖body复制。最后financial02以other64MiB明确保守上界绑定原期限，尚不预报真实ControlBuild结果。工具真实completion后生产新ENV，再取新SCREEN exact CAS并执行同pair恢复。
+
+正式源typing与actual源编测分别保留。正式恢复17源及4项必要支持依赖typing已GREEN，正式Selector单源另取得typing资格；正式Materials whole14加Core占位CAS guard负例1终验 **15P/0F/0E/0skip**，28.315秒，XML `er97formalj15/reports/TEST-junit-jupiter.xml`，58528B/SHA `5f2e63fb4744aab36fd842ea4ed1dd6ab69af8921066d5d7885fd73a52119878`。不将actual通过外推formal全图或正式File行为9P。正式恢复与file provider共20生产源/6个Test已按26文件独立提交并普通FF推送 `ea642b750fab97254813238a93bea7ec82ca367f`，parent为a2ba2ade14，远端exact核实；首次误推不存在的main分支被Git拒绝，未改remote ref，随后正确推master成功。Linear history已通过，[Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/43759986575)仍运行。Native只补必要依赖、复用未变化class，旧CANCEL36和退出角色已绿项不重跑。
+
+官方CI最新6cc5dd7e6b的运行43747045789在reactor前下载Maven失败；旧过时运行已取消，未声称CI通过。已查官方固定Maven3.10.0下载会转向Apache archive，原SHA512一致；Root已修CiBootstrap的重定向处理，本地真实302→200回归1P，断言原body精确字节与两路各一次HTTP；生产校验和、大小与超时限制保持，该JUnit不声称覆盖SHA512。CI2已独立提交并正常FF推送 `a2ba2ade141697e9f8ca9cb680f4ec986a6718b2`，远端exact核实；新的 [Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/43758282621)仍运行，不阻塞Runtime继续新ENV/恢复。
+
+截至本段记录，尚未启动新Game，也没有新增确认保存日；G2仍沿用最后完整6/8，不计算有限秒/保存日。软件、正式发表、实际安装、实际运行与SAVE分别报告。后继继续实际恢复和真实Root循环，不在行政成功或软件闭档时停止。
