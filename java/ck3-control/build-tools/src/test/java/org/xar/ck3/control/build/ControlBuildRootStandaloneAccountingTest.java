@@ -87,6 +87,33 @@ final class ControlBuildRootStandaloneAccountingTest {
         assertThrows(IOException.class, () -> ControlBuild.verifiedCompletedReceipt(ControlBuild.FileRef.measure(receipt)));
     }
 
+    @Test void completedReaderPreservesTheReleasedForwardSlashVolumeKeyInsteadOfRenderingItsPathAgain() throws Exception {
+        Fixture fixture = fixture("root-forward-slash"); var mapper = ControlBuild.strictMapper();
+        String oldKey = fixture.base().release().volumes().keySet().iterator().next(); String wireKey = oldKey.replace('\\', '/');
+        ObjectNode financial = (ObjectNode) mapper.readTree(Files.readAllBytes(fixture.financial()));
+        var rootRef = mapper.treeToValue(financial.path("root_authority_ref"), ControlBuild.FileRef.class);
+        ObjectNode root = (ObjectNode) mapper.readTree(Files.readAllBytes(Path.of(rootRef.path())));
+        ObjectNode holds = (ObjectNode) root.path("other_unspent_project_holds_bytes_by_volume"); holds.set(wireKey, holds.remove(oldKey));
+        Files.write(Path.of(rootRef.path()), mapper.writeValueAsBytes(root)); var newRootRef = ControlBuild.FileRef.measure(Path.of(rootRef.path()));
+        ObjectNode volumes = (ObjectNode) financial.path("volume_observations"); volumes.set(wireKey, volumes.remove(oldKey));
+        financial.set("root_authority_ref", mapper.valueToTree(newRootRef));
+        List<ControlBuild.FileRef> refs = new ArrayList<>(fixture.base().release().workpackageAccounting().reservationSourceRefs());
+        refs.set(refs.indexOf(rootRef), newRootRef); financial.set("reservation_source_refs", mapper.valueToTree(refs));
+        Files.write(fixture.financial(), mapper.writeValueAsBytes(financial));
+        ObjectNode release = mapper.valueToTree(fixture.base().release()); ObjectNode releasedVolumes = (ObjectNode) release.path("volumes");
+        releasedVolumes.set(wireKey, releasedVolumes.remove(oldKey));
+        ObjectNode authority = (ObjectNode) release.path("workpackage_accounting"); authority.set("reservation_source_refs", mapper.valueToTree(refs));
+        authority.set("financial_source_ref", mapper.valueToTree(ControlBuild.FileRef.measure(fixture.financial())));
+        Files.write(fixture.base().config().capacityRelease(), mapper.writeValueAsBytes(release));
+        var accounting = ControlBuild.accountWorkpackage(fixture.base().config(), () -> {});
+        assertNotEquals(wireKey, accounting.volumes().getFirst().volumeRoot());
+        assertEquals(Path.of(wireKey), Path.of(accounting.volumes().getFirst().volumeRoot()));
+        Files.write(fixture.base().accounting(), mapper.writeValueAsBytes(accounting));
+        var terminal = ControlBuildTest.completedReceiptFixture(temporary.resolve("forward-slash-terminal"));
+        Path receipt = temporary.resolve("forward-slash-completed.json"); Files.write(receipt, mapper.writeValueAsBytes(completed(fixture.base(), terminal.receipt())));
+        assertEquals(ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME, ControlBuild.verifiedCompletedReceipt(ControlBuild.FileRef.measure(receipt)).targetKind());
+    }
+
     private Fixture fixture(String attempt) throws Exception {
         var existing = new ControlBuildAccountingTest(); existing.temporary = temporary;
         var base = existing.fixture(attempt); var old = base.release(); var mapper = ControlBuild.strictMapper();

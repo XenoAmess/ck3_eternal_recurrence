@@ -37,6 +37,7 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
     private record Scan(SharedSourceFiles.DirectoryIdentity directory,List<Entry> entries,long charged,List<DirectoryEntry> directories,long retained){ }
     private record Quote(Output output,Path target,long peak){ }
     private final Binding binding;private final Declaration declaration;private final AssetCensus census;private final CapacityRelease capacity;
+    private final RootAllocation rootAllocation;
     private final Clock clock;private final List<SharedSourceFiles.Witness> originals;
     private final NativeCheckpointFiles raw=new NativeCheckpointFiles();private final CheckpointFiles files=new ImmutableFiles();
     private final Map<Path,FileWitness> completed=new LinkedHashMap<>();private final Map<Path,Quote> pending=new LinkedHashMap<>();
@@ -45,8 +46,9 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
     private final Map<Path,SharedSourceFiles.DirectoryIdentity> directories=new LinkedHashMap<>();
     private long pendingDirectoryPeak;
     private RootBootstrapOutputGuard(Binding binding,Declaration declaration,AssetCensus census,CapacityRelease capacity,
-            List<SharedSourceFiles.Witness> originals,Clock clock)throws IOException {
+            RootAllocation rootAllocation,List<SharedSourceFiles.Witness> originals,Clock clock)throws IOException {
         this.binding=binding;this.declaration=declaration;this.census=census;this.capacity=capacity;this.originals=List.copyOf(originals);this.clock=clock;
+        this.rootAllocation=rootAllocation;
         validate();assertCurrent();Scan actual=assetScan(declaration);
         if(!actual.directory().equals(census.assetDirectory())||!actual.entries().equals(census.entries())||actual.charged()!=census.chargedUpperBytes()||!actual.directories().equals(census.directories())||actual.retained()!=census.retainedAllocatedUpperBytes())
             throw new IOException("actual complete bootstrap asset census differs from the exact issuer-selected original");
@@ -73,13 +75,15 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
         Objects.requireNonNull(clock);var originals=new ArrayList<SharedSourceFiles.Witness>();
         Binding binding=read(exactBinding,Binding.class,originals);Declaration declaration=read(binding.declarationRef(),Declaration.class,originals);
         AssetCensus census=read(binding.censusRef(),AssetCensus.class,originals);CapacityRelease capacity=read(binding.capacityRef(),CapacityRelease.class,originals);
-        retain(capacity.policyRef(),originals);retain(capacity.originalFinancialHeadRef(),originals);
+        retain(capacity.policyRef(),originals);byte[] financial=retain(capacity.originalFinancialHeadRef(),originals);
+        RootAllocation rootAllocation=ROOT_CAPACITY.equals(capacity.schema())?decodeRootAllocation(financial):null;
+        if(rootAllocation!=null)for(FileRef fund:rootAllocation.nativeFundRefs())retain(fund,originals);
         for(var input:declaration.retainedInputs())retain(input.productionInventory(),originals);
         for(var allocation:capacity.retainedAllocations()){retain(allocation.existingUsageEvidence(),originals);retain(allocation.heldCustodyEvidence(),originals);}
         for(Volume volume:capacity.volumes()){
             retain(volume.existingUsage().evidenceRef(),originals);for(OtherReservation reservation:volume.otherReservations())retain(reservation.authorityRef(),originals);
         }
-        return new RootBootstrapOutputGuard(binding,declaration,census,capacity,originals,clock);
+        return new RootBootstrapOutputGuard(binding,declaration,census,capacity,rootAllocation,originals,clock);
     }
     /** Issuer observation producer only: no capacity or write admission is granted by a census record. */
     public static AssetCensus observeAssetRoot(FileRef declarationRef,Clock clock)throws IOException {
@@ -189,6 +193,7 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
         if(!binding.machineId().equals(WindowsJobProcess.currentMachineId()))throw new IOException("bootstrap capacity is foreign to the actual execution machine");
         requireCurrentPeriod(binding.observedAtUtc(),binding.reviewAtUtc(),clock);requireCurrentPeriod(declaration.observedAtUtc(),declaration.reviewAtUtc(),clock);
         requireCurrentPeriod(census.observedAtUtc(),census.reviewAtUtc(),clock);requireCurrentPeriod(capacity.observedAtUtc(),capacity.reviewAtUtc(),clock);
+        if(rootAllocation!=null)requireCurrentPeriod(rootAllocation.observedAtUtc(),rootAllocation.reviewAtUtc(),clock);
         for(var original:originals)SharedSourceFiles.assertUnchanged(original);
         for(var original:completed.values())raw.verify(original);
         for(var entry:directories.entrySet())if(!entry.getValue().equals(SharedSourceFiles.nativeDirectory(entry.getKey())))
@@ -226,7 +231,12 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
     private void validate()throws IOException {
         try{
             boolean formal=declaration.branch()==Branch.FORMAL_RELEASE;
-            require(branch(binding.schema(),binding.purpose(),BINDING,FORMAL_BINDING)==declaration.branch()
+            boolean root=ROOT_CAPACITY.equals(capacity.schema());
+            if(root){
+                require(rootAllocation!=null&&ROOT_BINDING.equals(binding.schema())&&PURPOSE.equals(binding.purpose())&&PURPOSE.equals(capacity.purpose())
+                        &&DECLARATION.equals(declaration.schema())&&CENSUS.equals(census.schema())&&!formal,"Root v5 capacity/binding require the original ordinary declaration4/census4 pair");
+                validateRootAllocation();
+            }else require(rootAllocation==null&&branch(binding.schema(),binding.purpose(),BINDING,FORMAL_BINDING)==declaration.branch()
                     &&branch(capacity.schema(),capacity.purpose(),CAPACITY,FORMAL_CAPACITY)==declaration.branch()
                     &&census.schema().equals(formal?FORMAL_CENSUS:CENSUS),"every issuer-selected original must use the identical explicit bootstrap branch");
             require(List.of(binding.machineId(),declaration.machineId(),census.machineId(),capacity.machineId()).stream().distinct().count()==1
@@ -259,8 +269,8 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
             var order=List.of(declaration.observedAtUtc(),census.observedAtUtc(),capacity.observedAtUtc(),binding.observedAtUtc());
             for(int index=1;index<order.size();index++)require(!instant(order.get(index)).isBefore(instant(order.get(index-1))),"bootstrap authority must follow declaration -> actual census -> release -> binding");
             for(String review:List.of(declaration.reviewAtUtc(),census.reviewAtUtc(),capacity.reviewAtUtc()))require(!instant(binding.reviewAtUtc()).isAfter(instant(review)),"bootstrap binding cannot outlive any original authority");
-            for(Path root:List.of(Path.of(declaration.assetRoot()),Path.of(declaration.controlRoot())))
-                require(capacity.volumes().stream().filter(volume->root.startsWith(Path.of(volume.volumeRoot()))).count()==1,"each bootstrap root requires exactly one actual volume release");
+            for(Path managedRoot:List.of(Path.of(declaration.assetRoot()),Path.of(declaration.controlRoot())))
+                require(capacity.volumes().stream().filter(volume->managedRoot.startsWith(Path.of(volume.volumeRoot()))).count()==1,"each bootstrap root requires exactly one actual volume release");
             for(Volume volume:capacity.volumes()){
                 long roots=0;if(Path.of(declaration.assetRoot()).startsWith(Path.of(volume.volumeRoot())))roots=add(roots,declaration.assetMaximumChargedBytes());
                 if(Path.of(declaration.controlRoot()).startsWith(Path.of(volume.volumeRoot())))roots=add(roots,declaration.controlMaximumChargedBytes());
@@ -278,6 +288,35 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
                     &&rules.get("default_project_quota_volume_fraction").isNumber()&&rules.get("default_project_quota_volume_fraction").decimalValue().compareTo(new java.math.BigDecimal("0.10"))==0,
                     "actual common bootstrap safety/quota constants differ");
         }catch(IllegalArgumentException|java.util.NoSuchElementException failure){throw new IOException("invalid actual bootstrap authority originals",failure);}
+    }
+    private void validateRootAllocation()throws IOException {
+        rootOutputPlan(declaration.outputs());
+        require(rootAllocation.machineId().equals(capacity.machineId())&&rootAllocation.windowId().equals(capacity.windowId())
+                &&same(rootAllocation.policyRef(),capacity.policyRef())&&same(rootAllocation.declarationRef(),capacity.declarationRef())
+                &&same(rootAllocation.censusRef(),capacity.censusRef())&&rootAllocation.jointMaximumChargedBytes()==capacity.jointMaximumChargedBytes()
+                &&rootAllocation.volumes().equals(capacity.volumes())&&rootAllocation.outputs().equals(declaration.outputs())
+                &&rootAllocation.retainedAllocations().equals(capacity.retainedAllocations()),"Root allocation changed its exact policy, original plan, complete volumes or capacity");
+        require(!instant(rootAllocation.observedAtUtc()).isBefore(instant(census.observedAtUtc()))
+                &&!instant(capacity.observedAtUtc()).isBefore(instant(rootAllocation.observedAtUtc()))
+                &&!instant(capacity.reviewAtUtc()).isAfter(instant(rootAllocation.reviewAtUtc())),"Root allocation must follow its actual census and cover the complete finite capacity period");
+        boolean metadataCovered=false;
+        for(FileRef ref:rootAllocation.nativeFundRefs()){
+            var fund=StrictJson.parse(RootRuntimeDefinitions.read(ref,MAXIMUM_BYTES),MAXIMUM_BYTES);
+            require(ROOT_DELEGATE.equals(StrictJson.text(fund.get("owner")))&&"/root/native_continue".equals(StrictJson.text(fund.get("allocator"))),"Root allocation requires the actual delegated Native funding source");
+            long amount=StrictJson.integer(fund.get("new_distinct_net_upper_once_bytes"),1,StrictJson.MAX_SAFE_INTEGER);
+            long before=StrictJson.integer(fund.get("raw_before"),0,StrictJson.MAX_SAFE_INTEGER),after=StrictJson.integer(fund.get("raw_after"),1,StrictJson.MAX_SAFE_INTEGER);
+            require(after-before==amount&&add(after,StrictJson.integer(fund.get("normal_unchanged"),0,StrictJson.MAX_SAFE_INTEGER))<=StrictJson.integer(fund.get("cap_unchanged"),1,StrictJson.MAX_SAFE_INTEGER)
+                    &&!java.time.Instant.parse(StrictJson.text(fund.get("atUtc"))).isAfter(instant(rootAllocation.observedAtUtc())),"Native funding source arithmetic, issue time or shared cap differs");
+            var quote=fund.get("quote");
+            if(quote!=null&&quote.isObject()&&quote.has("driver_lifecycle_attachment_logs_NativeAllocation_residual_cap64MiB")){
+                long metadata=StrictJson.integer(quote.get("driver_lifecycle_attachment_logs_NativeAllocation_residual_cap64MiB"),1,StrictJson.MAX_SAFE_INTEGER);
+                long reads=StrictJson.integer(quote.get("two_real_READ_wire_cap64MiB_each"),1,StrictJson.MAX_SAFE_INTEGER),provider=StrictJson.integer(quote.get("provider_payload_cap64MiB"),1,StrictJson.MAX_SAFE_INTEGER);
+                require(add(add(metadata,reads),provider)==amount&&StrictJson.integer(fund.get("same_profile_savedPair_copy"),0,0)==0
+                        &&fund.get("originalsource_snapshot_6jar_Frozen")!=null&&fund.get("originalsource_snapshot_6jar_Frozen").isBoolean()&&fund.get("originalsource_snapshot_6jar_Frozen").booleanValue(),"same-pair lifecycle metadata fund must preserve its exact quote and frozen original sources");
+                if(metadata>=capacity.jointMaximumChargedBytes())metadataCovered=true;
+            }
+        }
+        require(metadataCovered,"Root bootstrap metadata must fit one actual same-pair lifecycle allocation; mirror correction is not fresh metadata permission");
     }
     private static Scan assetScan(Declaration declaration)throws IOException {
         var actual=RootBootstrapAssetTree.scan(declaration);

@@ -979,9 +979,10 @@ public final class ControlBuild {
         Set<Path> observedRoots = new HashSet<>();
         for (VolumeObservation volume : accounting.volumes()) {
             Path root = Path.of(volume.volumeRoot()); String letter = root.toString().substring(0, 1).toUpperCase(Locale.ROOT);
-            CiBootstrap.VolumeBudget budget = release.volumes().entrySet().stream().filter(entry -> Path.of(entry.getKey()).equals(root)).map(Map.Entry::getValue).findFirst().orElseThrow(() -> new IOException("Foreign completed volume"));
+            var releasedVolume = release.volumes().entrySet().stream().filter(entry -> Path.of(entry.getKey()).equals(root)).findFirst().orElseThrow(() -> new IOException("Foreign completed volume"));
+            CiBootstrap.VolumeBudget budget = releasedVolume.getValue();
             boolean standalone = authority.financialLayout() == FinancialLayout.ROOT_STANDALONE_V1;
-            JsonNode old = standalone ? object(object(financial.get("volume_observations")).get(root.toString()))
+            JsonNode old = standalone ? object(object(financial.get("volume_observations")).get(releasedVolume.getKey()))
                     : object(object(financial.get("fresh_observations")).get(letter));
             JsonNode reserves = standalone ? old : object(financial.get("reserves"));
             long held = standalone ? positive(old, "all_holds_bytes")
@@ -1142,6 +1143,176 @@ public final class ControlBuild {
                 evidence.sourcePostcheck(), evidence.compiledPostcheck(), config.targetKind(), config.sourceLimitProfile(),
                 evidence.source(), evidence.compiled(), evidence.closure(), producerClosure(), FileRef.measure(config.capacityRelease()),
                 evidence.toolchain(), FileRef.measure(config.javaHome().resolve("bin/java.exe")), evidence.probe(), evidence.result(), evidence.finalSizes(), failure, evidence.accountingRef());
+    }
+
+    public static final String MAVEN_COMPLETION_AUTHORITY_SCHEMA = "xar.java-control.successful-maven-completion-authority/v1";
+    private static final String PENDING_ACCOUNTING_FAILURE = "Final actual accounting unavailable: java.io.IOException: Pending publication cannot fit original logical/Native attempt reservation";
+    private static final String UNPERSISTED_MAVEN_PEAK = "UNKNOWN_NOT_PERSISTED";
+    private record MavenCompletionSource(String schema, String observedAtUtc, FileRef completionAuthorityRef, FileRef originalRedRef,
+            FileRef completedReceiptRef, FileRef accountingRef, List<FileRef> completionProducerRuntimePins,
+            String historicalMavenFilesystemPeakState, Long historicalMavenLogicalFilesystemPeakBytes, Long historicalMavenNativeFilesystemPeakBytes,
+            AttemptAccountingAuthority originalGuardPolicyCaps, FileRef originalCapacityReleaseRef, String originalGuardPolicyCapsSemantics,
+            String completionAccountingScope, WorkpackageAccounting completionCensus) {
+        private MavenCompletionSource {
+            completionProducerRuntimePins = List.copyOf(completionProducerRuntimePins);
+            if (!"xar.java-control.successful-maven-completion-source/v1".equals(schema)
+                    || !UNPERSISTED_MAVEN_PEAK.equals(historicalMavenFilesystemPeakState)
+                    || historicalMavenLogicalFilesystemPeakBytes != null || historicalMavenNativeFilesystemPeakBytes != null
+                    || !"AUTHORITY_AND_SAMPLE_CHECK_LIMITS_NOT_PROVEN_HISTORICAL_UPPER".equals(originalGuardPolicyCapsSemantics)
+                    || !"CURRENT_COMPLETION_PHASE_ONLY".equals(completionAccountingScope) || completionProducerRuntimePins.isEmpty()
+                    || originalGuardPolicyCaps == null || completionCensus == null)
+                throw new IllegalArgumentException("Completion must retain UNKNOWN historical peak and a separate current-phase census");
+            Instant.parse(observedAtUtc);
+        }
+    }
+
+    /** Completes only the retained successful Maven attempt whose metadata envelope reservation failed. */
+    public static BuildReceipt completeSuccessfulBuild(Config config, FileRef originalRedRef, FileRef authorityRef) throws IOException {
+        ProjectStoragePolicy.requireBulkOutput(config.workRoot()); requireNativeScratch(config.workRoot().resolve("scratch"));
+        String machine = WindowsJobProcess.currentMachineId(); Lease lease = readLease(config, machine);
+        if (lease.attemptAuthority() == null || lease.attemptAuthority().financialLayout() != FinancialLayout.ROOT_STANDALONE_V1
+                || config.targetKind() != TargetKind.BUILD_TOOLS_RUNTIME || config.sourceLimitProfile() != SourceLimitProfile.STANDARD_8_MIB)
+            throw new IOException("Completion requires the current original Root standalone tools lease");
+        Path logs = config.workRoot().resolve("logs");
+        requireExactPath(originalRedRef, logs.resolve("build-" + config.attempt() + ".json"));
+        Path receiptPath = logs.resolve("build-" + config.attempt() + "-completed.json");
+        Path provenancePath = logs.resolve("build-" + config.attempt() + "-completion-source.json");
+        Path accountingPath = logs.resolve("build-" + config.attempt() + "-accounting.json");
+        originalRedRef.verify(); BuildReceipt original = decodeBuildReceipt(readReceiptEnvelope(originalRedRef));
+        JsonNode authority = object(JSON.readTree(exactAccountingBytes(authorityRef, 128 << 10)));
+        requireAccountingKeys(authority, Set.of("schema", "machine_id", "issuer_task", "owner_task", "attempt", "observed_at_utc", "review_at_utc",
+                "original_red_ref", "capacity_release_ref", "source_root", "compiled_source_root", "deployment_root", "output_receipt", "provenance_output", "historical_maven_filesystem_peak_state"));
+        Instant observed = Instant.parse(text(authority, "observed_at_utc")), deadline = Instant.parse(text(authority, "review_at_utc"));
+        if (!text(authority, "schema").equals(MAVEN_COMPLETION_AUTHORITY_SCHEMA)
+                || !text(authority, "machine_id").equals(machine) || !text(authority, "issuer_task").equals("/root/ck3-resume91-root-20261116-research")
+                || !text(authority, "owner_task").equals(config.ownerTask()) || !text(authority, "attempt").equals(config.attempt())
+                || !JSON.treeToValue(authority.get("original_red_ref"), FileRef.class).equals(originalRedRef)
+                || !JSON.treeToValue(authority.get("capacity_release_ref"), FileRef.class).equals(lease.releaseRef())
+                || !text(authority, "historical_maven_filesystem_peak_state").equals(UNPERSISTED_MAVEN_PEAK)
+                || observed.isBefore(Instant.parse(original.observedAtUtc())) || !deadline.isAfter(observed)
+                || deadline.isAfter(observed.plusSeconds(3600)) || deadline.isAfter(lease.deadline()))
+            throw new IOException("Independent finite Root completion authority does not bind this original attempt");
+        Path snapshot = config.workRoot().resolve("scratch/source-" + config.attempt());
+        Path deployment = config.workRoot().resolve("build/" + config.attempt() + "/ck3-control-build-tools");
+        requireAccountingPath(authority, "source_root", config.sourceRoot()); requireAccountingPath(authority, "compiled_source_root", snapshot);
+        requireAccountingPath(authority, "deployment_root", deployment); requireAccountingPath(authority, "output_receipt", receiptPath);
+        requireAccountingPath(authority, "provenance_output", provenancePath);
+        if (!original.schema().equals(SCOPED_BUILD_SCHEMA) || !original.status().equals("RED") || !pendingAccountingOnly(original.error())
+                || !original.machineId().equals(machine) || original.targetKind() != config.targetKind() || original.sourceLimitProfile() != config.sourceLimitProfile()
+                || !Path.of(original.sourceRoot()).equals(config.sourceRoot()) || !Path.of(original.compiledSourceRoot()).equals(snapshot)
+                || !Path.of(original.deploymentRoot()).equals(deployment) || !original.capacityReleaseRef().equals(lease.releaseRef())
+                || original.workpackageAccountingRef() != null || !original.finalLogicalBytesByPart().isEmpty()
+                || original.sourcePostcheck().state() != SourceState.MATCH || original.compiledSourcePostcheck().state() != SourceState.MATCH
+                || original.toolchainProbe() == null || !original.toolchainProbe().passed() || original.mavenResult() == null || !original.mavenResult().passed()
+                || original.mavenToolchain() == null || original.sourcePins().isEmpty() || original.compiledSourcePins().isEmpty()
+                || original.completeDeployment().isEmpty() || original.producerRuntimePins().isEmpty())
+            throw new IOException("Original receipt is not solely a metadata reservation failure after successful Maven and Job-zero");
+        CiBootstrap.IoGuard active = () -> {
+            if (Thread.currentThread().isInterrupted() || Instant.now().isBefore(observed) || !Instant.now().isBefore(deadline))
+                throw new IOException("Completion authority expired, unopened or interrupted");
+            originalRedRef.verify(); authorityRef.verify(); lease.releaseRef().verify();
+        };
+        active.check();
+        try (FileChannel channel = FileChannel.open(config.workRoot().resolve(".java-control-build.lock"), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+                FileLock lock = channel.tryLock()) {
+            if (lock == null || !lock.isValid()) throw new IOException("Another Maven writer owns this workpackage");
+            if (Files.exists(receiptPath) || Files.exists(provenancePath) || Files.exists(accountingPath)) throw new IOException("Completion output already exists; original attempt is never replayed");
+            verifyRetainedSuccessfulMaven(original, lease, config, deployment);
+            WorkpackageAccounting accounting = accountWorkpackage(config, active, false);
+            byte[] accountingBytes = completedAccountingBytes(accounting, lease.attemptAuthority(), active);
+            FileRef accountingRef = pendingAccountingRef(accountingPath, accountingBytes);
+            Instant completed = Instant.now();
+            BuildReceipt receipt = new BuildReceipt(SCOPED_BUILD_SCHEMA, machine, completed.toString(), "PASS", original.sourceRoot(), original.compiledSourceRoot(),
+                    original.deploymentRoot(), new SourcePostcheck(SourceState.MATCH, null), new SourcePostcheck(SourceState.MATCH, null), original.targetKind(), original.sourceLimitProfile(),
+                    original.sourcePins(), original.compiledSourcePins(), original.completeDeployment(), original.producerRuntimePins(), original.capacityReleaseRef(), original.mavenToolchain(),
+                    original.javaExecutableRef(), original.toolchainProbe(), original.mavenResult(), Map.of(), null, accountingRef);
+            byte[] receiptBytes = buildReceiptBytes(receipt); FileRef receiptRef = pendingAccountingRef(receiptPath, receiptBytes);
+            var source = new MavenCompletionSource("xar.java-control.successful-maven-completion-source/v1", completed.toString(), authorityRef, originalRedRef,
+                    receiptRef, accountingRef, producerClosure(), UNPERSISTED_MAVEN_PEAK, null, null, lease.attemptAuthority(), lease.releaseRef(),
+                    "AUTHORITY_AND_SAMPLE_CHECK_LIMITS_NOT_PROVEN_HISTORICAL_UPPER", "CURRENT_COMPLETION_PHASE_ONLY", accounting);
+            byte[] provenanceBytes = JSON.writeValueAsBytes(source);
+            long pending = Math.addExact(accountingBytes.length, Math.addExact(receiptBytes.length, provenanceBytes.length));
+            // Three actual new files, each rounded independently; the shared log directory remains fully counted.
+            long nativePending = Math.addExact(roundAccountingFile(accountingBytes.length), Math.addExact(roundAccountingFile(receiptBytes.length), roundAccountingFile(provenanceBytes.length)));
+            requirePendingAttemptExact(accounting, lease.attemptAuthority(), "logs", pending, nativePending);
+            active.check(); verifyRetainedSuccessfulMaven(original, lease, config, deployment);
+            Lease current = readLeaseAt(config, machine, Instant.now());
+            if (!lease.attemptAuthority().equals(current.attemptAuthority()) || !lease.releaseRef().equals(current.releaseRef())) throw new IOException("Original completion lease changed");
+            Files.write(accountingPath, accountingBytes, StandardOpenOption.CREATE_NEW); accountingRef.verify();
+            active.check(); Files.write(receiptPath, receiptBytes, StandardOpenOption.CREATE_NEW); receiptRef.verify();
+            Files.write(provenancePath, provenanceBytes, StandardOpenOption.CREATE_NEW);
+            active.check(); verifyCompletionSource(FileRef.measure(provenancePath)); originalRedRef.verify(); return receipt;
+        }
+    }
+
+    private static void verifyRetainedSuccessfulMaven(BuildReceipt original, Lease lease, Config config, Path deployment) throws IOException {
+        Instant opened = completedLeaseWindow(original.capacityReleaseRef(), original.machineId(), Instant.parse(original.observedAtUtc())).opened();
+        requireCompletedNativeWindow(original.toolchainProbe(), opened, Instant.parse(original.observedAtUtc()));
+        requireCompletedNativeWindow(original.mavenResult(), opened, Instant.parse(original.observedAtUtc()));
+        original.mavenToolchain().distributionLauncherRef().verify(); original.javaExecutableRef().verify();
+        if (original.mavenToolchain().explicitOverrideRef() != null) original.mavenToolchain().explicitOverrideRef().verify();
+        for (FileRef ref : original.producerRuntimePins()) ref.verify();
+        if (!sourceManifest(config.sourceRoot(), config.sourceLimitProfile()).equals(original.sourcePins())
+                || !sourceManifest(Path.of(original.compiledSourceRoot()), config.sourceLimitProfile()).equals(original.compiledSourcePins())
+                || !deploymentManifest(deployment, config.targetKind()).equals(original.completeDeployment()))
+            throw new IOException("Retained successful Maven source, compiled source or complete deployment changed");
+        requireSameContents(config.sourceRoot(), Path.of(original.compiledSourceRoot()), original.sourcePins(), original.compiledSourcePins());
+        lease.releaseRef().verify();
+    }
+
+    private static FileRef pendingAccountingRef(Path path, byte[] bytes) {
+        return new FileRef(path.toString(), bytes.length, accountingDigest(bytes));
+    }
+
+    private static boolean pendingAccountingOnly(String error) {
+        return PENDING_ACCOUNTING_FAILURE.equals(error) || (error != null && error.startsWith(PENDING_ACCOUNTING_FAILURE + "; scope="));
+    }
+
+    /** The new producer verifies provenance; the original target runtime can still read the ordinary v6 receipt. */
+    public static BuildReceipt verifyCompletionSource(FileRef provenanceRef) throws IOException {
+        MavenCompletionSource source = JSON.readValue(exactAccountingBytes(provenanceRef, 128 << 10), MavenCompletionSource.class);
+        source.completionAuthorityRef().verify(); source.originalRedRef().verify(); source.originalCapacityReleaseRef().verify();
+        verifyHistoricalCompletionProducer(source.completionProducerRuntimePins());
+        BuildReceipt original = decodeBuildReceipt(readReceiptEnvelope(source.originalRedRef()));
+        BuildReceipt receipt = verifiedCompletedReceipt(source.completedReceiptRef());
+        AttemptCapacityRelease release = JSON.readValue(exactAccountingBytes(source.originalCapacityReleaseRef(), 128 << 10), AttemptCapacityRelease.class);
+        if (!original.status().equals("RED") || !pendingAccountingOnly(original.error()) || !receipt.observedAtUtc().equals(source.observedAtUtc())
+                || !receipt.capacityReleaseRef().equals(source.originalCapacityReleaseRef()) || !original.capacityReleaseRef().equals(source.originalCapacityReleaseRef())
+                || !source.originalGuardPolicyCaps().equals(release.workpackageAccounting()) || !source.accountingRef().equals(receipt.workpackageAccountingRef())
+                || !source.completionCensus().equals(completedAccountingEvidence(source.accountingRef()).accounting())
+                || !receipt.sourcePins().equals(original.sourcePins()) || !receipt.compiledSourcePins().equals(original.compiledSourcePins())
+                || !receipt.completeDeployment().equals(original.completeDeployment()) || !receipt.producerRuntimePins().equals(original.producerRuntimePins())
+                || !receipt.mavenResult().equals(original.mavenResult()) || !receipt.toolchainProbe().equals(original.toolchainProbe())
+                || !receipt.mavenToolchain().equals(original.mavenToolchain()) || !receipt.javaExecutableRef().equals(original.javaExecutableRef()))
+            throw new IOException("Completion provenance changed original Maven facts or confused current-phase accounting with historical peak");
+        JsonNode authority = object(JSON.readTree(exactAccountingBytes(source.completionAuthorityRef(), 128 << 10)));
+        Instant opened = Instant.parse(text(authority, "observed_at_utc")), review = Instant.parse(text(authority, "review_at_utc")), completed = Instant.parse(source.observedAtUtc());
+        if (!text(authority, "schema").equals(MAVEN_COMPLETION_AUTHORITY_SCHEMA) || !text(authority, "issuer_task").equals("/root/ck3-resume91-root-20261116-research")
+                || !text(authority, "machine_id").equals(receipt.machineId()) || !text(authority, "owner_task").equals(release.ownerTask())
+                || !text(authority, "attempt").equals(release.workpackageAccounting().attempt()) || !text(authority, "historical_maven_filesystem_peak_state").equals(UNPERSISTED_MAVEN_PEAK)
+                || !JSON.treeToValue(authority.get("original_red_ref"), FileRef.class).equals(source.originalRedRef())
+                || !JSON.treeToValue(authority.get("capacity_release_ref"), FileRef.class).equals(source.originalCapacityReleaseRef())
+                || opened.isBefore(Instant.parse(original.observedAtUtc())) || completed.isBefore(opened) || !completed.isBefore(review)
+                || review.isAfter(opened.plusSeconds(3600)) || review.isAfter(Instant.parse(release.reviewAtUtc())))
+            throw new IOException("Completion provenance lacks the independent finite historical-UNKNOWN Root authority");
+        requireAccountingPath(authority, "source_root", Path.of(receipt.sourceRoot())); requireAccountingPath(authority, "compiled_source_root", Path.of(receipt.compiledSourceRoot()));
+        requireAccountingPath(authority, "deployment_root", Path.of(receipt.deploymentRoot())); requireAccountingPath(authority, "output_receipt", Path.of(source.completedReceiptRef().path()));
+        requireAccountingPath(authority, "provenance_output", Path.of(provenanceRef.path())); provenanceRef.verify(); return receipt;
+    }
+
+    /** Historical creator bytes are retained evidence; a corrected reader need not execute that archive. */
+    private static void verifyHistoricalCompletionProducer(List<FileRef> recorded) throws IOException {
+        if (recorded.size() < 2 || recorded.size() > 101 || recorded.stream().map(FileRef::path).distinct().count() != recorded.size())
+            throw new IOException("Complete historical completion producer archive and adjacent lib pins required");
+        for (FileRef ref : recorded) ref.verify();
+        int matches = 0;
+        for (FileRef candidate : recorded) {
+            Path archive = Path.of(candidate.path()); Path libraries = archive.getParent().resolve("lib");
+            if (!archive.getFileName().toString().endsWith(".jar") || recorded.stream().filter(ref -> !ref.equals(candidate)).anyMatch(ref -> !Path.of(ref.path()).startsWith(libraries))) continue;
+            List<FileRef> closure = new ArrayList<>(); closure.add(FileRef.measure(archive)); closure.addAll(manifest(libraries, false, 100, 64L << 20));
+            closure.sort(Comparator.comparing(FileRef::path)); if (closure.equals(recorded)) matches++;
+        }
+        if (matches != 1) throw new IOException("Historical completion producer pins do not equal one actual archive plus its complete adjacent lib closure");
     }
 
     private static BuildEvidence buildLocked(Config config, Lease lease, String machine, Path logs, BuildPurpose purpose,
@@ -2273,15 +2444,7 @@ public final class ControlBuild {
         Lease live = readLeaseAt(config, WindowsJobProcess.currentMachineId(), Instant.now());
         if (!authority.equals(live.attemptAuthority()) || !accounting.capacityReleaseRef().equals(live.releaseRef()))
             throw new IOException("Completed accounting publication requires its original current attempt lease");
-        List<RetainedAccountingSource> retained = new ArrayList<>();
-        for (FileRef source : authority.reservationSourceRefs()) {
-            active.check();
-            retained.add(new RetainedAccountingSource(source,
-                    java.util.Base64.getEncoder().encodeToString(exactAccountingBytes(source, 128 << 10))));
-        }
-        CompletedWorkpackageAccounting completed = new CompletedWorkpackageAccounting(COMPLETED_ACCOUNTING_SCHEMA, accounting, retained);
-        byte[] bytes=JSON.writeValueAsBytes(completed);
-        if(bytes.length>(128<<10))throw new IOException("Bounded accounting receipt including exact retained source bodies required");
+        byte[] bytes = completedAccountingBytes(accounting, authority, active);
         int receiptBound=receiptMaxBytes(config.sourceLimitProfile());
         requirePendingAttempt(accounting,authority,"logs",Math.addExact(bytes.length,receiptBound));
         requirePendingAttempt(accounting,authority,"logs",receiptBound);
@@ -2297,13 +2460,35 @@ public final class ControlBuild {
         return published;
     }
 
+    private static byte[] completedAccountingBytes(WorkpackageAccounting accounting, AttemptAccountingAuthority authority, CiBootstrap.IoGuard active) throws IOException {
+        List<RetainedAccountingSource> retained = new ArrayList<>();
+        for (FileRef source : authority.reservationSourceRefs()) {
+            active.check();
+            retained.add(new RetainedAccountingSource(source,
+                    java.util.Base64.getEncoder().encodeToString(exactAccountingBytes(source, 128 << 10))));
+        }
+        CompletedWorkpackageAccounting completed = new CompletedWorkpackageAccounting(COMPLETED_ACCOUNTING_SCHEMA, accounting, retained);
+        byte[] bytes=JSON.writeValueAsBytes(completed);
+        if(bytes.length>(128<<10))throw new IOException("Bounded accounting receipt including exact retained source bodies required");
+        return bytes;
+    }
+
     private static void requirePendingAttempt(WorkpackageAccounting accounting, AttemptAccountingAuthority authority, String scope, long bytes) throws IOException {
-        long allocatedUpper = Math.multiplyExact(Math.floorDiv(Math.addExact(bytes, 4095), 4096), 4096);
+        requirePendingAttemptExact(accounting, authority, scope, bytes, roundAccountingFile(bytes));
+    }
+
+    private static long roundAccountingFile(long bytes) { return Math.multiplyExact(Math.floorDiv(Math.addExact(bytes, 4095), 4096), 4096); }
+
+    private static void requirePendingAttemptExact(WorkpackageAccounting accounting, AttemptAccountingAuthority authority, String scope, long bytes, long allocatedUpper) throws IOException {
         if (Math.addExact(accounting.logicalBytesByScope().get(scope), bytes) > authority.logicalCapsByScope().get(scope)
                 || Math.addExact(accounting.nativeAllocatedBytesByScope().get(scope), allocatedUpper) > authority.nativeCapsByScope().get(scope)
                 || Math.addExact(accounting.peakNewLogicalBytes(), bytes) > authority.maximumNewLogicalBytes()
                 || Math.addExact(accounting.peakNewNativeAllocatedBytes(), allocatedUpper) > authority.maximumNewNativeBytes())
-            throw new IOException("Pending publication cannot fit original logical/Native attempt reservation");
+            throw new IOException("Pending publication cannot fit original logical/Native attempt reservation; scope=" + scope
+                    + "; logical_current=" + accounting.logicalBytesByScope().get(scope) + "; logical_pending=" + bytes + "; logical_cap=" + authority.logicalCapsByScope().get(scope)
+                    + "; native_current=" + accounting.nativeAllocatedBytesByScope().get(scope) + "; native_pending=" + allocatedUpper + "; native_cap=" + authority.nativeCapsByScope().get(scope)
+                    + "; whole_logical_peak=" + accounting.peakNewLogicalBytes() + "; whole_logical_pending=" + bytes + "; whole_logical_max=" + authority.maximumNewLogicalBytes()
+                    + "; whole_native_peak=" + accounting.peakNewNativeAllocatedBytes() + "; whole_native_pending=" + allocatedUpper + "; whole_native_max=" + authority.maximumNewNativeBytes());
     }
 
     private static long exactSum(Map<String, Long> values) { long result = 0; for (long value : values.values()) result = Math.addExact(result, value); return result; }
@@ -3105,7 +3290,7 @@ public final class ControlBuild {
     private static long positive(JsonNode node, String name) throws IOException { long value = nonnegative(node, name); if (value == 0) throw new IOException("Positive integer required: " + name); return value; }
 
     public static Config parseArguments(String[] args) throws IOException {
-        Set<String> allowed = Set.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task", "--maven-cmd", "--java-home", "--minimum-maven-version", "--timeout-seconds", "--target-kind", "--source-limit-profile", "--build-purpose");
+        Set<String> allowed = Set.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task", "--maven-cmd", "--java-home", "--minimum-maven-version", "--timeout-seconds", "--target-kind", "--source-limit-profile", "--build-purpose", "--complete-from", "--completion-authority");
         Map<String, String> values = new HashMap<>();
         if (args.length % 2 != 0) throw new IOException("Arguments must be exact key/value pairs");
         for (int i = 0; i < args.length; i += 2) {
@@ -3113,6 +3298,9 @@ public final class ControlBuild {
         }
         for (String key : List.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task")) if (!values.containsKey(key)) throw new IOException("Missing " + key);
         BuildPurpose.valueOf(values.getOrDefault("--build-purpose", "VERIFY"));
+        if (values.containsKey("--complete-from") != values.containsKey("--completion-authority")
+                || (values.containsKey("--complete-from") && !values.getOrDefault("--build-purpose", "VERIFY").equals("VERIFY")))
+            throw new IOException("Completion requires both original RED and independent authority, without capture replay");
         requireNativeScratch(Path.of(values.get("--work-root")).resolve("scratch"));
         String machine = WindowsJobProcess.currentMachineId();
         if (!machine.equals(LOCAL_MACHINE) && !values.containsKey("--java-home")) throw new IOException("Other machines require an explicit Java home");
@@ -3133,9 +3321,21 @@ public final class ControlBuild {
 
     public static void main(String[] args) {
         try {
+            if (args.length == 2 && args[0].equals("--verify-completion-source")) {
+                BuildReceipt receipt = verifyCompletionSource(FileRef.measure(Path.of(args[1])));
+                System.out.println(JSON.writeValueAsString(receipt)); System.exit(0); return;
+            }
             Config config = parseArguments(args); BuildPurpose purpose = BuildPurpose.VERIFY;
+            Path completeFrom = null, completionAuthority = null;
             for (int index = 0; index < args.length; index += 2) if (args[index].equals("--build-purpose")) purpose = BuildPurpose.valueOf(args[index + 1]);
-            if (purpose == BuildPurpose.TEST_COMPILED_CAPTURE_ONLY) {
+            for (int index = 0; index < args.length; index += 2) {
+                if (args[index].equals("--complete-from")) completeFrom = Path.of(args[index + 1]);
+                if (args[index].equals("--completion-authority")) completionAuthority = Path.of(args[index + 1]);
+            }
+            if (completeFrom != null) {
+                BuildReceipt receipt = completeSuccessfulBuild(config, FileRef.measure(completeFrom), FileRef.measure(completionAuthority));
+                System.out.println(JSON.writeValueAsString(receipt)); System.exit(0);
+            } else if (purpose == BuildPurpose.TEST_COMPILED_CAPTURE_ONLY) {
                 System.out.println(JSON.writeValueAsString(buildCapture(config))); System.exit(0);
             } else {
                 BuildReceipt receipt = build(config);

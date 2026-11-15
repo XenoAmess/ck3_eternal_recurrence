@@ -21,6 +21,8 @@ public final class NativeRunProfileManifest {
     public static final String EXPLICIT_REQUEST_SCHEMA="xar.java-explicit-native-profile-request/v1";
     public static final String EXPLICIT_SAVED_LAYOUT_SCHEMA="xar.java-native-run-profile-environment/v4";
     public static final String EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA="xar.java-explicit-native-profile-request/v2";
+    public static final String COMPOSED_SAVED_SCHEMA="xar.java-native-run-profile-environment/v5";
+    public static final String COMPOSED_SAVED_REQUEST_SCHEMA="xar.java-explicit-native-profile-request/v3";
     public enum ProfileKind { ORDINARY_PRODUCTION,SAVED_VANILLA,SAVED_PRODUCT_ONLY,FRESH_FRONTEND_FIXTURE }
     public enum SavedKind { VANILLA,PRODUCT_ONLY }
     public enum DlcDeclaration { ABSENT,DECLARED }
@@ -65,10 +67,10 @@ public final class NativeRunProfileManifest {
             boolean debugMode,ExplicitSource source,
             @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL) String profileDirectory) {
         public ExplicitRequest {
-            require(EXPLICIT_REQUEST_SCHEMA.equals(schema)||EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(schema),"exact explicit profile request required");machine(machineId);Instant.parse(reviewAtUtc);
+            require(EXPLICIT_REQUEST_SCHEMA.equals(schema)||EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(schema)||COMPOSED_SAVED_REQUEST_SCHEMA.equals(schema),"exact explicit profile request required");machine(machineId);Instant.parse(reviewAtUtc);
             absolute(stateDir);absolute(sourceWorkingDirectory);file(qualifiedToolsBuild,16L<<20);file(gameExecutable,64L<<30);
             file(vanillaRules,4L<<20);file(launcherSettings,65536);Objects.requireNonNull(source);require(!debugMode||source instanceof SavedSource,"debug is an explicit Saved-only option");
-            if(EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(schema)) {
+            if(EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(schema)||COMPOSED_SAVED_REQUEST_SCHEMA.equals(schema)) {
                 require(source instanceof SavedSource,"explicit retained profile layout is Saved-only");absolute(profileDirectory);
             } else require(profileDirectory==null,"legacy explicit request cannot add a retained profile layout");
         }
@@ -87,7 +89,7 @@ public final class NativeRunProfileManifest {
             String version=explicitText(value.get("schema"));
             var expected=new java.util.HashSet<>(List.of("schema","machine_id","review_at_utc","state_dir","source_working_directory",
                     "qualified_tools_build","game_executable","vanilla_rules","launcher_settings","debug_mode","source"));
-            if(EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(version))expected.add("profile_directory");
+            if(EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(version)||COMPOSED_SAVED_REQUEST_SCHEMA.equals(version))expected.add("profile_directory");
             else require(EXPLICIT_REQUEST_SCHEMA.equals(version),"supported explicit profile request version required");
             var actual=new java.util.HashSet<String>();value.fieldNames().forEachRemaining(actual::add);
             require(actual.equals(expected),"exact versioned explicit profile request fields required");
@@ -99,7 +101,7 @@ public final class NativeRunProfileManifest {
                         mapper.treeToValue(value.get("qualified_tools_build"),FileRef.class),mapper.treeToValue(value.get("game_executable"),FileRef.class),
                         mapper.treeToValue(value.get("vanilla_rules"),FileRef.class),mapper.treeToValue(value.get("launcher_settings"),FileRef.class),
                         value.get("debug_mode").booleanValue(),mapper.treeToValue(value.get("source"),ExplicitSource.class),
-                        EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(version)?explicitText(value.get("profile_directory")):null);
+                        (EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(version)||COMPOSED_SAVED_REQUEST_SCHEMA.equals(version))?explicitText(value.get("profile_directory")):null);
             }catch(IOException invalid){throw new IllegalArgumentException("invalid explicit profile request source fields",invalid);}
         }
     }
@@ -162,7 +164,8 @@ public final class NativeRunProfileManifest {
         public ExplicitManifest {
             Objects.requireNonNull(game);Objects.requireNonNull(request);Objects.requireNonNull(profile);Objects.requireNonNull(dlc);
             require(EXPLICIT_SCHEMA.equals(schema)&&formatVersion==3&&EXPLICIT_REQUEST_SCHEMA.equals(request.schema())
-                    ||EXPLICIT_SAVED_LAYOUT_SCHEMA.equals(schema)&&formatVersion==4&&EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(request.schema()),
+                    ||EXPLICIT_SAVED_LAYOUT_SCHEMA.equals(schema)&&formatVersion==4&&EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(request.schema())
+                    ||COMPOSED_SAVED_SCHEMA.equals(schema)&&formatVersion==5&&COMPOSED_SAVED_REQUEST_SCHEMA.equals(request.schema()),
                     "exact matching explicit environment/request versions required");machine(machineId);Instant.parse(observedAtUtc);
             absolute(stateDir);absolute(profileDir);require(Path.of(profileDir).equals(request.profile()),"same actual requested profile layout required");
             profileAssets=List.copyOf(profileAssets);originals=List.copyOf(originals);producerRuntime=List.copyOf(producerRuntime);file(producerToolsBuild,16L<<20);digest(environmentSha256);
@@ -171,7 +174,8 @@ public final class NativeRunProfileManifest {
                     &&request.vanillaRules().path().equals(game.vanillaRules())&&request.vanillaRules().sha256().equals(game.vanillaRulesSha256())
                     &&request.launcherSettings().path().equals(game.launcherSettings())&&request.launcherSettings().sha256().equals(game.launcherSettingsSha256())
                     &&request.debugMode()==game.debugMode()&&profile.custody().profileRoot().equals(profileDir),"explicit common source facts differ from the same request");
-            require(producerRuntime.size()==6&&producerRuntime.stream().map(FileRef::path).distinct().count()==6,"same actual complete producer runtime required");
+            int runtimeFiles=COMPOSED_SAVED_SCHEMA.equals(schema)?7:6;
+            require(producerRuntime.size()==runtimeFiles&&producerRuntime.stream().map(FileRef::path).distinct().count()==runtimeFiles,"same actual complete producer runtime required");
             require(!originals.isEmpty()&&originals.size()<=16384&&originals.stream().map(row->row.source().path()).distinct().count()==originals.size(),"explicit original source closure required");
             if(request.source() instanceof SavedSource saved)require(profile instanceof SavedProfile actual&&actual.kind()==saved.kind()&&actual.productInventory().equals(saved.productInventory()),"Saved source/projection differs");
             else {var fixture=(FixtureSource)request.source();require(profile instanceof FreshFixtureProfile actual&&actual.policySource().equals(fixture.policySource())
@@ -329,7 +333,7 @@ public final class NativeRunProfileManifest {
     }
     public static ProfileEnvironment decodeEnvironment(byte[] raw)throws IOException {
         bounded(raw);JsonNode tree=manifestMapper().readTree(raw);if(tree==null||!tree.isObject())throw new IOException("profile environment object required");requireSupported(tree);
-        if(tree.has("schema")&&(EXPLICIT_SCHEMA.equals(tree.get("schema").textValue())||EXPLICIT_SAVED_LAYOUT_SCHEMA.equals(tree.get("schema").textValue()))){
+        if(tree.has("schema")&&(EXPLICIT_SCHEMA.equals(tree.get("schema").textValue())||EXPLICIT_SAVED_LAYOUT_SCHEMA.equals(tree.get("schema").textValue())||COMPOSED_SAVED_SCHEMA.equals(tree.get("schema").textValue()))){
             ExplicitManifest value=manifestMapper().readValue(raw,ExplicitManifest.class);
             if(!digestOf(tree).equals(value.environmentSha256()))throw new IOException("explicit environment digest differs from original bytes");return value;
         }
@@ -365,7 +369,7 @@ public final class NativeRunProfileManifest {
         if(bytes.length!=original.bytes()||!NativeRunProfileRules.sha(bytes).equals(original.sha256()))throw new IOException("environment original changed during complete read");
         SharedSourceFiles.assertUnchanged(held);return bytes;
     }
-    public static boolean isCurrentVersion(JsonNode value){return value!=null&&value.isObject()&&value.has("schema")&&value.get("schema").isTextual()&&(SCHEMA.equals(value.get("schema").textValue())||EXPLICIT_SCHEMA.equals(value.get("schema").textValue())||EXPLICIT_SAVED_LAYOUT_SCHEMA.equals(value.get("schema").textValue()));}
+    public static boolean isCurrentVersion(JsonNode value){return value!=null&&value.isObject()&&value.has("schema")&&value.get("schema").isTextual()&&(SCHEMA.equals(value.get("schema").textValue())||EXPLICIT_SCHEMA.equals(value.get("schema").textValue())||EXPLICIT_SAVED_LAYOUT_SCHEMA.equals(value.get("schema").textValue())||COMPOSED_SAVED_SCHEMA.equals(value.get("schema").textValue()));}
     /** The original Python v1 producer had no schema property; unknown versioned wires cannot fall back to it. */
     public static void requireSupported(JsonNode value)throws IOException{
         if(value!=null&&value.isObject()&&value.has("schema")&&!isCurrentVersion(value))

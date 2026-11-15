@@ -22,6 +22,11 @@ public final class RootBootstrapOutputContract {
     public static final String BINDING="xar.java-root-bootstrap-binding/v4";
     public static final String PURPOSE="ROOT_BOOTSTRAP_IMMUTABLE_INPUTS";
     public static final String ISSUER="/root/budget_fast_lane";
+    public static final String ROOT_CAPACITY="xar.java-root-bootstrap-capacity/v5";
+    public static final String ROOT_BINDING="xar.java-root-bootstrap-binding/v5";
+    public static final String ROOT_ALLOCATION="xar.java-root-bootstrap-root-allocation/v1";
+    public static final String ROOT_ISSUER="/root/ck3-resume91-root-20261116-research";
+    public static final String ROOT_DELEGATE="/root/runtime_continue";
     public static final String FORMAL_DECLARATION="xar.java-root-bootstrap-formal-release-declaration/v2";
     public static final String FORMAL_CENSUS="xar.java-root-bootstrap-formal-release-census/v2";
     public static final String FORMAL_CAPACITY="xar.java-root-bootstrap-formal-release-capacity/v2";
@@ -143,8 +148,8 @@ public final class RootBootstrapOutputContract {
             String observedAtUtc,String reviewAtUtc,FileRef policyRef,FileRef declarationRef,FileRef censusRef,
             FileRef originalFinancialHeadRef,long jointMaximumChargedBytes,List<Volume> volumes,List<RetainedAllocation> retainedAllocations) implements Authority {
         public CapacityRelease {
-            boolean formal=branch(schema,purpose,CAPACITY,FORMAL_CAPACITY)==Branch.FORMAL_RELEASE;
-            require(ISSUER.equals(issuerTask)&&"/root".equals(ownerTask),"sole issuer bootstrap-purpose capacity release required");
+            boolean root=ROOT_CAPACITY.equals(schema);boolean formal=root?false:branch(schema,purpose,CAPACITY,FORMAL_CAPACITY)==Branch.FORMAL_RELEASE;
+            require((root?ROOT_ISSUER:ISSUER).equals(issuerTask)&&"/root".equals(ownerTask)&&(!root||PURPOSE.equals(purpose)),"sole versioned issuer bootstrap-purpose capacity release required");
             machine(machineId);id(windowId);period(observedAtUtc,reviewAtUtc);
             for(FileRef ref:List.of(policyRef,declarationRef,censusRef,originalFinancialHeadRef))file(ref);
             require(jointMaximumChargedBytes>0&&jointMaximumChargedBytes<=(formal?FORMAL_MAXIMUM_ASSET_BYTES+MAXIMUM_CONTROL_BYTES:2L<<20),"finite allocation must stay inside its explicit bootstrap branch ceiling");
@@ -156,10 +161,38 @@ public final class RootBootstrapOutputContract {
     public record Binding(String schema,String purpose,String machineId,String ownerTask,String issuerTask,String windowId,
             String observedAtUtc,String reviewAtUtc,FileRef declarationRef,FileRef censusRef,FileRef capacityRef) implements Authority {
         public Binding {
-            branch(schema,purpose,BINDING,FORMAL_BINDING);
-            require(ISSUER.equals(issuerTask)&&"/root".equals(ownerTask),"actual immutable bootstrap binding required");
+            boolean root=ROOT_BINDING.equals(schema);if(!root)branch(schema,purpose,BINDING,FORMAL_BINDING);
+            require((root?ROOT_ISSUER:ISSUER).equals(issuerTask)&&"/root".equals(ownerTask)&&(!root||PURPOSE.equals(purpose)),"actual versioned immutable bootstrap binding required");
             machine(machineId);id(windowId);period(observedAtUtc,reviewAtUtc);for(FileRef ref:List.of(declarationRef,censusRef,capacityRef))file(ref);
         }
+    }
+    /** Actual Root issuance for the three resumed same-pair metadata roles, never a Game permission. */
+    public record RootAllocation(String schema,String machineId,String issuerTask,String ownerTask,String delegateTask,String windowId,
+            String observedAtUtc,String reviewAtUtc,FileRef policyRef,FileRef declarationRef,FileRef censusRef,long jointMaximumChargedBytes,
+            List<Volume> volumes,List<Output> outputs,List<RetainedAllocation> retainedAllocations,List<FileRef> nativeFundRefs) {
+        public RootAllocation {
+            require(ROOT_ALLOCATION.equals(schema)&&ROOT_ISSUER.equals(issuerTask)&&"/root".equals(ownerTask)&&ROOT_DELEGATE.equals(delegateTask),"actual Root issuer and delegated output owner required");
+            machine(machineId);id(windowId);period(observedAtUtc,reviewAtUtc);
+            require(Duration.between(instant(observedAtUtc),instant(reviewAtUtc)).compareTo(Duration.ofHours(1))<=0,"Root bootstrap allocation is limited to one fresh hour");
+            for(FileRef ref:List.of(policyRef,declarationRef,censusRef))file(ref);
+            require(jointMaximumChargedBytes>0&&jointMaximumChargedBytes<=2L<<20,"Root output allocation preserves the ordinary joint byte ceiling");
+            volumes=List.copyOf(volumes);outputs=List.copyOf(outputs);retainedAllocations=List.copyOf(retainedAllocations);nativeFundRefs=List.copyOf(nativeFundRefs);
+            require(!volumes.isEmpty()&&volumes.size()<=16&&volumes.stream().map(Volume::volumeRoot).distinct().count()==volumes.size(),"exact complete Root allocation volumes required");
+            require(retainedAllocations.size()<=1&&!nativeFundRefs.isEmpty()&&nativeFundRefs.size()<=16&&nativeFundRefs.stream().map(FileRef::path).distinct().count()==nativeFundRefs.size(),"bounded actual retained and Native funding originals required");
+            for(FileRef ref:nativeFundRefs)file(ref);rootOutputPlan(outputs);
+        }
+    }
+    static void rootOutputPlan(List<Output> outputs){
+        require(!outputs.isEmpty()&&outputs.size()<=3&&outputs.stream().map(Output::kind).distinct().count()==outputs.size(),"only the three unique Root resumed metadata roles are admitted");
+        for(Output output:outputs)require((output.kind()==Kind.PROFILE_ENVIRONMENT||output.kind()==Kind.INITIAL_POLICY||output.kind()==Kind.ORIGINAL_DRIVER_RUN_PROFILE)
+                &&(output.kind()!=Kind.ORIGINAL_DRIVER_RUN_PROFILE||output.bytes()<=65536),"Root v5 output role or original run-profile byte bound rejected");
+    }
+    public static byte[] encodeRootAllocation(RootAllocation typed)throws IOException {
+        return StrictJson.canonical(ControlBuild.strictMapper().valueToTree(Objects.requireNonNull(typed)),MAXIMUM_BYTES);
+    }
+    public static RootAllocation decodeRootAllocation(byte[] bytes)throws IOException {
+        try{StrictJson.parse(bytes,MAXIMUM_BYTES);return ControlBuild.strictMapper().readValue(bytes,RootAllocation.class);}
+        catch(IllegalArgumentException invalid){throw new IOException("invalid actual Root bootstrap allocation",invalid);}
     }
     public static byte[] encode(Authority typed)throws IOException {
         Objects.requireNonNull(typed);

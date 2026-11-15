@@ -26,6 +26,55 @@ import static org.xar.ck3.control.build.NativeRunProfileManifest.*;
 public final class NativeRunProfileProducer {
     public static final String REQUEST_SCHEMA="xar.java-native-run-profile-request/v1";
     public static final String ENVIRONMENT_NAME="xar-autoplayer-environment.json";
+    public static final String TOOL_COMPOSITION_SCHEMA="xar.java-native-profile-tool-composition/v1";
+    public static final String TOOL_COMPOSITION_AUTHORITY_SCHEMA="xar.root-native-profile-tool-composition-authorization/v1";
+    private static final java.util.Set<String> PATCH_FAMILIES=java.util.Set.of("ControlBuild","NativeRunProfileProducer","NativeRunProfileManifest");
+    public record CompileEvidence(FileRef actual,FileRef outputs){
+        public CompileEvidence{file(actual,MAXIMUM_BYTES);file(outputs,MAXIMUM_BYTES);}
+    }
+    /** The binary name is the original compiler manifest's slash-separated metadata.name. */
+    public record PatchedClass(String binaryName,FileRef output){
+        public PatchedClass{require(patchFamily(binaryName)!=null,"one of the three explicit compiled families required");file(output,4L<<20);}
+    }
+    public record RuntimeCopy(FileRef original,FileRef copy){
+        public RuntimeCopy{file(original,64L<<20);file(copy,64L<<20);require(original.bytes()==copy.bytes()&&original.sha256().equals(copy.sha256()),"runtime copy must retain original bytes/SHA");}
+    }
+    /** Composition DATA alone never mints the private loaded-runtime qualification below. */
+    public record ToolComposition(String schema,String machineId,String reviewAtUtc,FileRef baseToolsBuild,FileRef completionSource,
+            FileRef rootAuthorization,FileRef sourceReady,List<CompileEvidence> compilations,List<FileRef> patchedSources,
+            List<PatchedClass> patchedClasses,FileRef patchJar,List<RuntimeCopy> runtimeCopies,List<FileRef> completeRuntime){
+        public ToolComposition{
+            require(TOOL_COMPOSITION_SCHEMA.equals(schema),"exact explicit profile tool composition required");machine(machineId);Instant.parse(reviewAtUtc);
+            for(var source:List.of(baseToolsBuild,completionSource,rootAuthorization,sourceReady))file(source,MAXIMUM_BYTES);
+            compilations=List.copyOf(compilations);patchedSources=List.copyOf(patchedSources);patchedClasses=List.copyOf(patchedClasses);
+            runtimeCopies=List.copyOf(runtimeCopies);completeRuntime=List.copyOf(completeRuntime);file(patchJar,16L<<20);
+            require(!compilations.isEmpty()&&compilations.size()<=3,"finite actual staged compiler evidence required");
+            require(patchedSources.size()==3&&patchedSources.stream().map(ref->Path.of(ref.path()).getFileName().toString()).collect(java.util.stream.Collectors.toSet())
+                    .equals(PATCH_FAMILIES.stream().map(name->name+".java").collect(java.util.stream.Collectors.toSet())),"exact three patched source leaves required");
+            for(var source:patchedSources)file(source,MAXIMUM_BYTES);
+            require(patchedClasses.size()>=3&&patchedClasses.size()<=256&&patchedClasses.stream().map(PatchedClass::binaryName).distinct().count()==patchedClasses.size()
+                    &&patchedClasses.stream().map(row->patchFamily(row.binaryName())).collect(java.util.stream.Collectors.toSet()).equals(PATCH_FAMILIES),"complete unique three-family compiled outputs required");
+            require(runtimeCopies.size()==6&&runtimeCopies.stream().map(row->row.original().path()).distinct().count()==6
+                    &&runtimeCopies.stream().map(row->row.copy().path()).distinct().count()==6,"six distinct original runtime files and byte copies required");
+            require(completeRuntime.size()==7&&completeRuntime.stream().map(FileRef::path).distinct().count()==7,"explicit composed producer has exactly seven runtime files");
+        }
+    }
+    private static String patchFamily(String binaryName){
+        if(binaryName==null||!binaryName.startsWith("org/xar/ck3/control/build/"))return null;
+        String name=binaryName.substring("org/xar/ck3/control/build/".length());int nested=name.indexOf('$');String family=nested<0?name:name.substring(0,nested);
+        return PATCH_FAMILIES.contains(family)&&name.matches("[A-Za-z0-9_$]+")?family:null;
+    }
+    private static final class QualifiedComposition {
+        private final FileRef original;private final ToolComposition data;private final List<SharedSourceFiles.Witness> originals;
+        private QualifiedComposition(FileRef original,ToolComposition data,List<SharedSourceFiles.Witness> originals){
+            this.original=original;this.data=data;this.originals=List.copyOf(originals);
+        }
+        private void requireCurrent(Clock clock)throws IOException{
+            if(!clock.instant().isBefore(Instant.parse(data.reviewAtUtc())))throw new IOException("profile tool composition authorization expired");
+            for(var held:originals)SharedSourceFiles.assertUnchanged(held);
+            if(!sameRuntime(data.completeRuntime(),ControlBuild.producerClosure()))throw new IOException("actual composed profile runtime changed");
+        }
+    }
     private NativeRunProfileProducer(){ }
     public record Request(String schema,String machineId,String reviewAtUtc,String stateDir,String productionRoot,
             FileRef qualifiedToolsBuild,FileRef gameExecutable,FileRef vanillaRules,FileRef launcherSettings,
@@ -215,9 +264,10 @@ public final class NativeRunProfileProducer {
     public static final class PreparedExplicit {
         private final ExplicitRequest request;private final ExplicitGame game;private final ExplicitProfile profile;
         private final List<SharedSourceFiles.Witness> assets,originals;private final Dlc dlc;private final List<FileRef> runtime;
+        private final QualifiedComposition composition;
         private PreparedExplicit(ExplicitRequest request,ExplicitGame game,ExplicitProfile profile,List<SharedSourceFiles.Witness> assets,
-                Dlc dlc,List<SharedSourceFiles.Witness> originals,List<FileRef> runtime){
-            this.request=request;this.game=game;this.profile=profile;this.assets=List.copyOf(assets);this.dlc=dlc;this.originals=List.copyOf(originals);this.runtime=List.copyOf(runtime);
+                Dlc dlc,List<SharedSourceFiles.Witness> originals,List<FileRef> runtime,QualifiedComposition composition){
+            this.request=request;this.game=game;this.profile=profile;this.assets=List.copyOf(assets);this.dlc=dlc;this.originals=List.copyOf(originals);this.runtime=List.copyOf(runtime);this.composition=composition;
         }
         public ExplicitRequest request(){return request;}public ExplicitProfile profile(){return profile;}
         public ExplicitCustody inputCustody(){return profile.custody();}
@@ -230,7 +280,12 @@ public final class NativeRunProfileProducer {
         return decodeExplicitRequest(read(original,MAXIMUM_BYTES,new ArrayList<>()));
     }
     public static PreparedExplicit prepareExplicit(ExplicitRequest request,Clock clock)throws IOException{
-        currentExplicit(request,clock);return deriveExplicit(request,qualifiedRuntime(request.qualifiedToolsBuild(),request.machineId()));
+        currentExplicit(request,clock);
+        if(COMPOSED_SAVED_REQUEST_SCHEMA.equals(request.schema())){
+            var actual=qualifyComposition(request.qualifiedToolsBuild(),request.machineId(),clock);
+            return deriveExplicit(request,actual.data.completeRuntime(),actual);
+        }
+        return deriveExplicit(request,qualifiedRuntime(request.qualifiedToolsBuild(),request.machineId()));
     }
     public static PreparedExplicit prepareSaved(ExplicitRequest request,Clock clock)throws IOException{
         if(!(request.source() instanceof SavedSource))throw new IOException("explicit Saved source request required");return prepareExplicit(request,clock);
@@ -249,8 +304,165 @@ public final class NativeRunProfileProducer {
             throw new IOException("profile and completed-build producer are not in the same actual runtime");
         return receipt.completeDeployment();
     }
+    private static QualifiedComposition qualifyComposition(FileRef original,String machine,Clock clock)throws IOException{
+        var witnesses=new ArrayList<SharedSourceFiles.Witness>();
+        ToolComposition composition=ControlBuild.strictMapper().readValue(compositionRead(original,MAXIMUM_BYTES,witnesses),ToolComposition.class);
+        if(!composition.machineId().equals(machine)||!machine.equals(WindowsJobProcess.currentMachineId())
+                ||!clock.instant().isBefore(Instant.parse(composition.reviewAtUtc())))throw new IOException("current same-machine tool composition required");
+        JsonNode authority=ControlBuild.strictMapper().readTree(compositionRead(composition.rootAuthorization(),MAXIMUM_BYTES,witnesses));
+        JsonNode observed=authority.get("observed_at_utc");
+        if(observed==null||!observed.isTextual())throw new IOException("independent Root composition observation required");
+        Instant opened=Instant.parse(observed.textValue()),until=Instant.parse(composition.reviewAtUtc());
+        var expectedAuthority=compositionAuthority(composition,observed.textValue());
+        if(!expectedAuthority.equals(authority)||opened.isAfter(clock.instant())||!until.isAfter(opened)||until.isAfter(opened.plusSeconds(3600)))
+            throw new IOException("Root composition authorization does not bind these exact original inputs and current finite window");
+        observeComposition(composition.baseToolsBuild(),witnesses);observeComposition(composition.completionSource(),witnesses);
+        var base=ControlBuild.verifiedCompletedReceipt(composition.baseToolsBuild());
+        var completed=ControlBuild.verifyCompletionSource(composition.completionSource());
+        if(base.targetKind()!=ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME||!base.machineId().equals(machine)||base.completeDeployment().size()!=6
+                ||!ControlBuild.strictMapper().valueToTree(base).equals(ControlBuild.strictMapper().valueToTree(completed)))
+            throw new IOException("composition must consume the same normal successful Maven six-file receipt and mandatory completion source");
+        var originalRuntime=composition.runtimeCopies().stream().map(RuntimeCopy::original).toList();
+        if(!sameRuntime(base.completeDeployment(),originalRuntime))throw new IOException("composition replaced an original Maven runtime file");
+        Path libraries=Path.of(composition.patchJar().path()).getParent().resolve("lib");
+        var runtime=new ArrayList<FileRef>();runtime.add(composition.patchJar());
+        for(var copy:composition.runtimeCopies()){
+            if(!Path.of(copy.copy().path()).getParent().equals(libraries))throw new IOException("composed runtime copies must be its exact adjacent six-file lib");
+            observeComposition(copy.original(),witnesses);observeComposition(copy.copy(),witnesses);runtime.add(copy.copy());
+        }
+        if(!sameRuntime(runtime,composition.completeRuntime())||!sameRuntime(ControlBuild.producerClosure(),composition.completeRuntime()))
+            throw new IOException("composition differs from the actual complete seven-file loaded runtime");
+        for(Class<?> anchor:List.of(ControlBuild.class,NativeRunProfileProducer.class,NativeRunProfileManifest.class)){
+            if(anchor.getProtectionDomain().getCodeSource()==null)throw new IOException("actual composed reader/producer/manifest CodeSource required");
+            try{if(!Path.of(anchor.getProtectionDomain().getCodeSource().getLocation().toURI()).equals(Path.of(composition.patchJar().path())))
+                    throw new IOException("all three actual producer anchors must come from this one patch archive");
+            }catch(java.net.URISyntaxException invalid){throw new IOException("invalid actual composition CodeSource",invalid);}
+        }
+        JsonNode ready=ControlBuild.strictMapper().readTree(compositionRead(composition.sourceReady(),MAXIMUM_BYTES,witnesses));
+        for(FileRef source:composition.patchedSources()){
+            if(!containsPin(ready,source))throw new IOException("composition SourceReady omitted an exact patched source");
+        }
+        verifyCompilationEvidence(composition,witnesses);
+        observeComposition(composition.patchJar(),witnesses);verifyPatchArchive(composition);
+        var result=new QualifiedComposition(original,composition,witnesses);result.requireCurrent(clock);return result;
+    }
+    /** Compare original JSON integers in one wire domain; this does not coerce floating point or booleans. */
+    static com.fasterxml.jackson.databind.node.ObjectNode compositionAuthority(ToolComposition composition,String observedAtUtc)throws IOException{
+        var mapper=ControlBuild.strictMapper();
+        var expected=(com.fasterxml.jackson.databind.node.ObjectNode)mapper.readTree(mapper.writeValueAsBytes(composition));
+        expected.remove(List.of("schema","root_authorization"));expected.put("composition_schema",TOOL_COMPOSITION_SCHEMA);
+        expected.put("schema",TOOL_COMPOSITION_AUTHORITY_SCHEMA);expected.put("issuer_task","/root/ck3-resume91-root-20261116-research");
+        expected.put("observed_at_utc",observedAtUtc);return expected;
+    }
+    private static boolean sameFileRef(FileRef expected,FileRef actual){
+        return expected!=null&&actual!=null&&Path.of(expected.path()).equals(Path.of(actual.path()))
+                &&expected.bytes()==actual.bytes()&&expected.sha256().equals(actual.sha256());
+    }
+    private static void observeComposition(FileRef source,List<SharedSourceFiles.Witness> witnesses)throws IOException{
+        var actual=SharedSourceFiles.observe(Path.of(source.path()));
+        if(!sameFileRef(source,actual.source()))throw new IOException("composition original content differs from its actual file pin");witnesses.add(actual);
+    }
+    private static byte[] compositionRead(FileRef source,int maximum,List<SharedSourceFiles.Witness> witnesses)throws IOException{
+        file(source,maximum);observeComposition(source,witnesses);byte[] bytes;
+        try(var input=Files.newInputStream(Path.of(source.path()))){bytes=input.readNBytes(maximum+1);}
+        if(bytes.length!=source.bytes()||!NativeRunProfileRules.sha(bytes).equals(source.sha256()))throw new IOException("composition original changed during bounded read");
+        SharedSourceFiles.assertUnchanged(witnesses.getLast());return bytes;
+    }
+    private static boolean sameRuntime(List<FileRef> expected,List<FileRef> actual){
+        if(expected.size()!=actual.size())return false;
+        var remaining=new java.util.HashMap<Path,FileRef>();
+        for(var ref:expected)if(remaining.put(Path.of(ref.path()),ref)!=null)return false;
+        for(var ref:actual){var old=remaining.remove(Path.of(ref.path()));if(old==null||old.bytes()!=ref.bytes()||!old.sha256().equals(ref.sha256()))return false;}
+        return remaining.isEmpty();
+    }
+    private static boolean containsPin(JsonNode value,FileRef expected){
+        if(value==null)return false;
+        if(value.isObject()&&value.has("path")&&value.has("bytes")&&value.has("sha256")
+                &&value.get("path").isTextual()&&value.get("bytes").isIntegralNumber()&&value.get("sha256").isTextual()
+                &&Path.of(value.get("path").textValue()).equals(Path.of(expected.path()))
+                &&value.get("bytes").longValue()==expected.bytes()&&value.get("sha256").textValue().equals(expected.sha256()))return true;
+        if(value.isContainerNode())for(JsonNode child:value)if(containsPin(child,expected))return true;
+        return false;
+    }
+    private static FileRef evidencePin(JsonNode value)throws IOException{return ControlBuild.strictMapper().treeToValue(value,FileRef.class);}
+    private static boolean exactBoolean(JsonNode value,boolean expected){return value!=null&&value.isBoolean()&&value.booleanValue()==expected;}
+    static void verifyCompilationEvidence(ToolComposition composition,List<SharedSourceFiles.Witness> witnesses)throws IOException{
+        var found=new java.util.TreeMap<String,FileRef>();var compiledSources=new java.util.HashSet<FileRef>();
+        for(var source:composition.patchedSources())observeComposition(source,witnesses);
+        for(var phase:composition.compilations()){
+            JsonNode actual=ControlBuild.strictMapper().readTree(compositionRead(phase.actual(),MAXIMUM_BYTES,witnesses));
+            JsonNode outputs=ControlBuild.strictMapper().readTree(compositionRead(phase.outputs(),MAXIMUM_BYTES,witnesses));
+            if(!actual.path("schema").asText().equals("composite-operator-integration-actual/v1")||!actual.path("phase").asText().equals("prod")
+                    ||!actual.path("exit_code").isIntegralNumber()||actual.path("exit_code").intValue()!=0
+                    ||!exactBoolean(actual.get("timeout"),false)||!exactBoolean(actual.get("contract_accepted"),true)
+                    ||!sameFileRef(evidencePin(actual.get("output_manifest")),phase.outputs())
+                    ||!outputs.path("phase").asText().equals("prod")||!exactBoolean(outputs.get("success"),true)
+                    ||!outputs.path("errors").isArray()||!outputs.path("errors").isEmpty()||!outputs.path("classes").isArray())
+                throw new IOException("actual successful managed compilation and its exact complete output manifest required");
+            FileRef configRef=evidencePin(actual.get("config"));
+            JsonNode config=ControlBuild.strictMapper().readTree(compositionRead(configRef,2*MAXIMUM_BYTES,witnesses));
+            JsonNode post=ControlBuild.strictMapper().readTree(compositionRead(evidencePin(actual.get("post")),MAXIMUM_BYTES,witnesses));
+            if(!exactBoolean(post.get("inputs_unchanged"),true)||!exactBoolean(post.get("contract_accepted"),true)
+                    ||!sameFileRef(evidencePin(post.get("output_manifest")),phase.outputs()))
+                throw new IOException("managed compilation source postcheck or complete output reference changed");
+            JsonNode sourceRows=config.path("phases").path("prod").path("sources");
+            if(!sourceRows.isArray())throw new IOException("actual managed compiler source list required");
+            var phaseSources=new java.util.HashMap<String,FileRef>();
+            for(JsonNode sourceRow:sourceRows){
+                FileRef source=evidencePin(sourceRow);String name=Path.of(source.path()).getFileName().toString();
+                if(name.endsWith(".java")&&PATCH_FAMILIES.contains(name.substring(0,name.length()-5))){
+                    if(phaseSources.putIfAbsent(name,source)!=null)throw new IOException("one managed phase has duplicate source family owners");
+                    observeComposition(source,witnesses);
+                }
+            }
+            for(var source:composition.patchedSources())if(containsPin(sourceRows,source))compiledSources.add(source);
+            if(outputs.get("classes").size()>256)throw new IOException("bounded explicit three-family output census required");
+            for(JsonNode row:outputs.get("classes")){
+                String name=row.path("metadata").path("name").asText();String family=patchFamily(name);
+                if(family==null)throw new IOException("composition compiler emitted an unrequested class family");
+                String sourceFile=row.path("metadata").path("SourceFile").asText();
+                FileRef source=composition.patchedSources().stream().filter(ref->Path.of(ref.path()).getFileName().toString().equals(family+".java")).findFirst().orElseThrow();
+                FileRef phaseSource=phaseSources.get(family+".java");
+                if(!sourceFile.equals(family+".java")||phaseSource==null)throw new IOException("compiled family differs from its actual source pin");
+                FileRef pin=evidencePin(row.get("pin"));observeComposition(pin,witnesses);
+                if(!sameFileRef(phaseSource,source)){
+                    if(phaseSource.bytes()==source.bytes()&&phaseSource.sha256().equals(source.sha256()))
+                        throw new IOException("selected source pin must name its actual compiler input, not an equivalent path alias");
+                    // A retained earlier phase can also contain a superseded version of this family.
+                    // Its original outputs stay checked and retained, but never enter the final patch census.
+                    continue;
+                }
+                if(found.putIfAbsent(name,pin)!=null)throw new IOException("one composed class has duplicate compilation owners");
+            }
+        }
+        var declared=new java.util.TreeMap<String,FileRef>();for(var row:composition.patchedClasses())declared.put(row.binaryName(),row.output());
+        if(!found.keySet().equals(declared.keySet())||found.entrySet().stream().anyMatch(row->!sameFileRef(row.getValue(),declared.get(row.getKey())))
+                ||!compiledSources.equals(new java.util.HashSet<>(composition.patchedSources())))
+            throw new IOException("patched class/source census is not the complete exact managed compilation union");
+    }
+    /** Narrow archive-byte check for this exact repair; it does not qualify loaded runtime or source authority. */
+    static void verifyPatchArchive(ToolComposition composition)throws IOException{
+        var remaining=new java.util.HashMap<String,FileRef>();for(var row:composition.patchedClasses())remaining.put(row.binaryName()+".class",row.output());
+        try(var archive=new java.util.zip.ZipFile(composition.patchJar().path())){
+            var entries=archive.entries();var seen=new java.util.HashSet<String>();
+            while(entries.hasMoreElements()){
+                var entry=entries.nextElement();if(entry.isDirectory())continue;
+                if(!seen.add(entry.getName()))throw new IOException("duplicate patched class archive entry");
+                FileRef output=remaining.remove(entry.getName());if(output==null)throw new IOException("patch archive contains a class outside the exact three-family managed outputs");
+                output.verify();byte[] bytes;try(var input=archive.getInputStream(entry)){bytes=input.readNBytes(Math.toIntExact(output.bytes())+1);}
+                if(bytes.length!=output.bytes()||!NativeRunProfileRules.sha(bytes).equals(output.sha256()))throw new IOException("patch archive class bytes differ from the actual managed compiler output");
+            }
+        }
+        if(!remaining.isEmpty())throw new IOException("patch archive omitted a managed class family member");
+    }
     /** Same production derivation, exercised on owned software inputs; no build/capacity/Game qualification is minted here. */
     static PreparedExplicit deriveExplicit(ExplicitRequest request,List<FileRef> runtime)throws IOException{
+        if(COMPOSED_SAVED_REQUEST_SCHEMA.equals(request.schema()))throw new IOException("composed profile needs its private actual runtime qualification, not request DATA");
+        return deriveExplicit(request,runtime,null);
+    }
+    private static PreparedExplicit deriveExplicit(ExplicitRequest request,List<FileRef> runtime,QualifiedComposition composition)throws IOException{
+        if(COMPOSED_SAVED_REQUEST_SCHEMA.equals(request.schema())&&(composition==null||!composition.original.equals(request.qualifiedToolsBuild())
+                ||!sameRuntime(composition.data.completeRuntime(),runtime)))throw new IOException("actual composed profile qualification changed");
         var observed=new ExplicitObservation();Path profile=request.profile();SharedSourceFiles.plainAncestors(profile);
         if(!Files.isDirectory(profile,LinkOption.NOFOLLOW_LINKS))throw new IOException("actual explicit profile must already exist");
         var profileIdentity=SharedSourceFiles.nativeDirectory(profile);
@@ -338,14 +550,16 @@ public final class NativeRunProfileProducer {
         var dlcWitnesses=new ArrayList<SharedSourceFiles.Witness>();Dlc dlc=observeDlc(Path.of(request.gameExecutable().path()).getParent().getParent(),dlcWitnesses);
         for(var held:dlcWitnesses)observed.hold(held.source());
         if(!SharedSourceFiles.nativeDirectory(profile).equals(profileIdentity))throw new IOException("explicit profile root identity changed during derivation");
-        var result=new PreparedExplicit(request,game,typed,assets,dlc,observed.all(),runtime);verifyExplicitSources(result);return result;
+        var result=new PreparedExplicit(request,game,typed,assets,dlc,observed.all(),runtime,composition);verifyExplicitSources(result);return result;
     }
     public static ExplicitManifest finishExplicit(PreparedExplicit prepared,Clock clock)throws IOException{
         Objects.requireNonNull(prepared);currentExplicit(prepared.request,clock);verifyExplicitSources(prepared);return sealExplicit(body(prepared,clock));
     }
     private static ExplicitManifest body(PreparedExplicit prepared,Clock clock){
         boolean retained=EXPLICIT_SAVED_LAYOUT_REQUEST_SCHEMA.equals(prepared.request.schema());
-        return new ExplicitManifest(retained?EXPLICIT_SAVED_LAYOUT_SCHEMA:EXPLICIT_SCHEMA,retained?4:3,prepared.request.machineId(),clock.instant().toString(),prepared.request.stateDir(),prepared.request.profile().toString(),
+        boolean composed=COMPOSED_SAVED_REQUEST_SCHEMA.equals(prepared.request.schema());
+        if(composed&&prepared.composition==null)throw new IllegalStateException("composed profile lacks its private producer qualification");
+        return new ExplicitManifest(composed?COMPOSED_SAVED_SCHEMA:retained?EXPLICIT_SAVED_LAYOUT_SCHEMA:EXPLICIT_SCHEMA,composed?5:retained?4:3,prepared.request.machineId(),clock.instant().toString(),prepared.request.stateDir(),prepared.request.profile().toString(),
                 prepared.game,prepared.request,prepared.profile,prepared.assets,prepared.dlc,prepared.originals,prepared.request.qualifiedToolsBuild(),prepared.runtime,"0".repeat(64));
     }
     /** Full physical prelaunch reader. After Game, immutable ENV readers use readEnvironmentOriginal instead. */
@@ -354,14 +568,16 @@ public final class NativeRunProfileProducer {
         if(environment instanceof Manifest)return readVerified(original);
         var actual=(ExplicitManifest)environment;
         if(!actual.machineId().equals(WindowsJobProcess.currentMachineId()))throw new IOException("explicit profile belongs to another machine");
-        var runtime=qualifiedRuntime(actual.producerToolsBuild(),actual.machineId());
+        QualifiedComposition composition=COMPOSED_SAVED_SCHEMA.equals(actual.schema())?qualifyComposition(actual.producerToolsBuild(),actual.machineId(),Clock.systemUTC()):null;
+        var runtime=composition==null?qualifiedRuntime(actual.producerToolsBuild(),actual.machineId()):composition.data.completeRuntime();
         if(!runtime.equals(actual.producerRuntime()))throw new IOException("explicit producer historical complete runtime changed");
-        var derived=deriveExplicit(actual.request(),runtime);verifyExplicitSources(derived);
+        var derived=composition==null?deriveExplicit(actual.request(),runtime):deriveExplicit(actual.request(),runtime,composition);verifyExplicitSources(derived);
         var expected=sealExplicit(body(derived,Clock.fixed(Instant.parse(actual.observedAtUtc()),java.time.ZoneOffset.UTC)));
         if(!Arrays.equals(encodeEnvironment(actual),encodeEnvironment(expected)))throw new IOException("explicit profile is not the exact physical source-bound producer output");
         return actual;
     }
     private static void verifyExplicitSources(PreparedExplicit value)throws IOException{
+        if(value.composition!=null)value.composition.requireCurrent(Clock.systemUTC());
         for(var held:value.originals)SharedSourceFiles.assertUnchanged(held);
         var custody=value.profile.custody();if(!SharedSourceFiles.nativeDirectory(Path.of(custody.profileRoot())).equals(custody.profileIdentity()))
             throw new IOException("explicit profile root was replaced");
