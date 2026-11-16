@@ -255,3 +255,24 @@ Test2首次11.858秒RED/0class，因RootTest两处JUnit BooleanSupplier重载泛
 后置formal只Native+Store两rawdiff叶13.691035秒GREEN/37class，Root/DPS与actual rawexact复用；完整family12998B/73331737…，没有Maven/135/旧矩阵重跑。实际48及8绿已直交Runtime，不等formal/Git或资源闭档；完整源REV04 Ready18696B/39be849a…保持实际/正式差异，不整叶覆盖现场。
 
 Runtime03:19:32 archive05真实PASS：204files51dirs原logical30051910B→353084B TAR.XZ+109967B索引，全部roundtrip和源二次验证后精确清理，活输入/尾/源码不变、前后lease通过，未新fund/退unused。原P6三公共输出03:21:53真实全exit0、来源03:15→04:15保留原件；由于候选修复耗时，Root授权最终8绿后以实际当次UTC晚签独立60min新来源，旧窗口/输出/动作deadline不改。当前无第五业务/Game/保存信用，最终CP87/五wire/8资格后才新BEGIN。
+
+
+## 第五次实际恢复开始；完整 CI 暴露共享夹具错误
+
+受限DATA四生产/两Test与五报告已正常FF发表 `5f878ecad486bd7dfcddd1662669b34d7a40f1dd`，parent1f361f55，remote exact/index空；PUB11为7840B/SHA `98599884ff239310341be6f2a5a8589993ad6c21a33b592fb8ff8b6b7c401a38`。canonical disk210337B在Git224KiB guard内，非FS净增或峰值；源/编测/发表各自资源闭合，没有重复退款。
+
+**P6-late第五次唯一业务于03:49:26.200887Z真实BEGIN**，公共RootOrdinaryWorkerMain restore-exited，JVM187700/birth134392745662034652/session30935。新独立来源03:42:11→04:42:11，旧03:15→04:15保留；prepared584505B/SHA `f02a8bf0698e68f2664585ad1dbc947bd07ede04343b24f667b96f6fa73b948e`，176 CP/87 unique首定义及Codex file五wire均核。heap4GiB/诊断true，新私有DATA v1为16384/256MiB/32772，旧generic/Native tier和memo预算未改。45min约04:34:26为观察检查点，未授权timer强杀。
+
+BEGIN前archive06真实无损完成168files/42dirs、原logical24746202B，逐项roundtrip/源二次验证后才精确清理，活输入/尾/源码不变、前后lease通过。运行现量51921368B+keeper60817408B+两READ134217728B+尾8388608B=255345112B<原256MiB；provider/首SAVE仍须按实际READ实量另核，不借未来fund。heap4GiB+native1GiB是估算，不是硬RSS上限，future Game32GiB及CI2GiB独立相加39GiB，fresh物理/commit余量与D quota通过。
+
+03:52:34 initialSavedBootstrap真实finish1/validation0：publication167791/held116901/retained1024/fallback49866全entry_bound、peak17374522B；03:54:09 material scope finish1/validation0：publication135318/held104472/retained1024/fallback29822全entry_bound、peak28461667B。两者原1024/64MiB/2052，parse各completed1，无eviction。03:57:28/实际elapsed481.9s已越Core材料precheck934，进入Core940→readSettledSameGame/readSameGameHistory，held metadata读取、handles11947，累计读10.496GB/990807ops。此时新DATA最终计数尚NOT_HELD，stdout空/templateonly、无真END或Game，不授收益、READ、队列或SAVE信用。
+
+并行Official run43795343586（head1f）实际bootstrapTools为1229总/1226P/0F/3E/0skip，artifact14196267135/530327B有界内存读取。三E均ControlCiStageTest实际producer链：actualTypedProducerRoundTripsThroughTheSharedReaderWithOneNestedGoldenPlan、portableCheckoutSourceDataTravelsThroughTheOriginalFixtureRequestProducerAndReader、readerRejectsRemovedGoldenPlanAndARequestBeyondTheSharedWorkDeadline。生产显式Tools guard正确拒绝fixture的artifactId=metadata；仅将其共享producerInputs改成canonical standalone Tools POM并用既有显式TOOLS_20261116_12_MIB sourcePins，生产/断言不改。RootSoftwareFixtureInputsProducerTest只生成g2-http JSON、不拥有该POM，不扩改。前13选定方法未覆盖此三实际fixture，不能外推完整CI绿色。
+
+当前新Test1候选61645B/f66a792a…，Ready6023B/26a2a7be…；源256KiB和distinct编测6MiB分别fund，先失败3再whole26一次，不跑本地Maven/full1229或重13。首编9.842秒RED/0class因Native漏已绿旧helper输出CP，保留失败，只修CP重编同源，不改生产迎合依赖。新Official43799855518截至04:00仍执行，尚无完整CI/Own绿色；实际恢复不等待此旁支。
+
+
+Test1同源补既有helper CP后10.274780秒GREEN；三真实失败selectors14.966510秒3P/0F/0E/0skip。whole26首次真实16.160秒为19P/7E，七E均既有ControlCi.currentJavaCarrier同CodeSource guard：离线增编将ControlCi与CiBootstrap/ControlBuild分别置于两次绿输出目录，正式Maven为同目录，原选定13未覆盖此carrier。保留19P7E原XML，不改生产guard或Test断言；仅在同6MiB内把三族既有完整class同FileID hardlink到一个同源origin（0javac/0正文复制），核原bytes/SHA及首定义后只补失败7。最终若通过应记26 distinct组合，不称单份whole26全绿。
+
+
+三族ControlCi50+ControlBuild63+CiBootstrap71共184原class真实同FileID hardlink共目录后，补失败7于43.621474秒真实7P/0F/0E/0skip；0javac/0生产guard改变。补7 XML `F/ci118j2/carrier-repair03/reports/TEST-junit-jupiter.xml`53070B/SHA `023d9d8ac00fcca9cc020fc2fc192301225b79dc583bebc22bac6fe0e651fc22`。原whole26 XML68199B/SHA `65b6c36d3359e606ed2b6543ab02f3fbd001967139536478ae44af14864bf523`保持19P/7E；新7与原19组成26 distinct最终通过，原三实际失败另已3P，不能改写为单份whole26全绿。此次仅Test1两行canonical fixture/pins改动，软件资格已齐，正常单包发表不等P6终态；完整Official及Own仍待真实后继结果。

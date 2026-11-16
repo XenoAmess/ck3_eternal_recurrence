@@ -292,13 +292,13 @@ final class ControlCiStageTest {
         Files.createDirectories(oracle.resolve(".github/workflows"));
         Files.writeString(oracle.resolve(".github/workflows/static-ci.yml"), "# isolated metadata contract fixture");
         Path tools = repo.resolve("java/ck3-control/build-tools"); Files.createDirectories(tools);
-        Files.writeString(tools.resolve("pom.xml"), "<project><modelVersion>4.0.0</modelVersion><groupId>fixture</groupId><artifactId>metadata</artifactId><version>1</version></project>");
+        Files.writeString(tools.resolve("pom.xml"), "<project xmlns=\"http://maven.apache.org/POM/4.0.0\"><modelVersion>4.0.0</modelVersion><groupId>org.xar.ck3.control</groupId><artifactId>ck3-control-build-tools</artifactId><version>0.1.0-SNAPSHOT</version></project>");
         Files.createDirectories(work.resolve("artifacts"));
         Path git = root.resolve("git.exe"); Files.writeString(git, "metadata fixture, never executable");
         var ref = pin("metadata.pin"); var golden = goldenPlan();
         Path goldenPath = root.resolve("golden-plan.json"); Files.write(goldenPath, ControlBuild.strictMapper().writeValueAsBytes(golden));
         String machine = WindowsJobProcess.currentMachineId(), review = Instant.now().plusSeconds(300).toString();
-        var sourcePins = ControlBuild.sourceManifest(tools).stream().map(value -> new CiBootstrap.FilePin(value.path(), value.bytes(), value.sha256())).toList();
+        var sourcePins = ControlBuild.sourceManifest(tools, ControlBuild.SourceLimitProfile.TOOLS_20261116_12_MIB).stream().map(value -> new CiBootstrap.FilePin(value.path(), value.bytes(), value.sha256())).toList();
         var plan = new CiBootstrap.Plan(CiBootstrap.PLAN_SCHEMA, machine, Instant.now().toString(), review,
                 repo.toString(), work.toString(), root.toString(), "mvn", ref.path(), "metadata-fixture",
                 sourcePins.getFirst(), java.util.Map.of(), java.util.Map.of(), java.util.Map.of(), sourcePins, sourcePins, false, false);
