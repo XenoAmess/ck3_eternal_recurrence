@@ -130,6 +130,16 @@ public final class CheckpointSourceCompositionTest {
                 Optional<ActionWriterIntegrationFixture.SoftwareDispatch> physicalSaveWrite,
                 Optional<ActionWriterIntegrationFixture.SoftwareReadScenario> freshReconciliationReads,boolean guardedMaterialOutputs,
                 boolean nativeSavedSnapshotIdentity)throws Exception {
+            this(root,loseAck,serviceClock,snapshots,afterPostcondition,additionalActions,commandBudget,physicalSaveRoot,physicalSaveWrite,
+                    freshReconciliationReads,guardedMaterialOutputs,nativeSavedSnapshotIdentity,1);
+        }
+        Fixture(Path root,boolean loseAck,Clock serviceClock,Optional<SnapshotSupplierDecorator> snapshots,
+                Optional<AfterPostcondition> afterPostcondition,
+                List<ActionWriterIntegrationFixture.SoftwareActionScenario> additionalActions,java.time.Duration commandBudget,Path physicalSaveRoot,
+                Optional<ActionWriterIntegrationFixture.SoftwareDispatch> physicalSaveWrite,
+                Optional<ActionWriterIntegrationFixture.SoftwareReadScenario> freshReconciliationReads,boolean guardedMaterialOutputs,
+                boolean nativeSavedSnapshotIdentity,int savedNativeRevisionAdvance)throws Exception {
+            StrictJson.require(savedNativeRevisionAdvance==1||savedNativeRevisionAdvance==2,"explicit software SAVE raw revision advance is one or two");
             Objects.requireNonNull(commandBudget);
             StrictJson.require(!commandBudget.isNegative()&&!commandBudget.isZero()
                     &&commandBudget.compareTo(java.time.Duration.ofMinutes(2))<=0,"bounded software SAVE command budget required");
@@ -246,7 +256,7 @@ public final class CheckpointSourceCompositionTest {
             Ready before=actual.ready();proof=batch.cycleProof(owner,before.semanticEvidence().orElseThrow()).orElseThrow();
             byte[] original=Files.readAllBytes(Path.of(proof.semantic().originalNativePacket().path()));
             var initial=(NativeWire.Snapshot)NativeWire.decode(original);var post=StrictJson.object();post.put("type","state_snapshot");post.put("protocol_version",1);
-            var postRevision=initial.revision().add(java.math.BigInteger.ONE);
+            var postRevision=initial.revision().add(java.math.BigInteger.valueOf(savedNativeRevisionAdvance));
             post.put("snapshot_id",nativeSavedSnapshotIdentity?"native:"+postRevision:"fixture-save-snapshot-2");post.put("revision",postRevision);
             var postState=(com.fasterxml.jackson.databind.node.ObjectNode)org.xar.ck3.control.contracts.FullJsonTree.parse(
                     initial.state().value(),org.xar.ck3.control.application.driver.DriverJson.MAX_NATIVE_BYTES);

@@ -115,10 +115,7 @@ public final class RootJavaSavedBootstrap {
         org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore materials(){return materials;}
         org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterial material(ContinuityStorePort.Session same)throws IOException {
             writer.requireSession(same);var current=qualified.requireCurrent(same);
-            StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
-                    &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
-                    "same-writer saved source changed its private original material");
-            materials.requireOwn(material);material.requirePhysical(same);return material;
+            return reuseCurrentMaterial(materials,material,current,savedDriverCanonical);
         }
         public ContinuityState savedState(){return qualified.confirmation().after();}
         public ContinuityState sourceHead(){return qualified.sourceHead();}
@@ -595,6 +592,19 @@ public final class RootJavaSavedBootstrap {
         return new SavedReadOnlySuffix(reads,originalPins);
     }
 
+    /** Consumes the actual current result from the immediately preceding full physical producer call. DATA only. */
+    static SavedAttachmentSourceStore.SavedMaterial reuseCurrentMaterial(
+            org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore materials,
+            SavedAttachmentSourceStore.SavedMaterial original,SavedAttachmentSourceStore.SavedMaterial current,byte[] savedDriverCanonical) {
+        materials.requireOwn(original);materials.requireOwn(current);
+        StrictJson.require(current.session().equals(original.session())&&current.pair().equals(original.pair())
+                        &&current.witness().equals(original.witness())
+                        &&current.originalHeadDigest().equals(original.originalHeadDigest())
+                        &&current.checkpointDigest().equals(original.checkpointDigest())
+                        &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
+                "same-writer saved source changed its private original material");
+        return original;
+    }
     private static ObjectNode requireSavedHistorical(ConfirmedSource source,RootRuntimeContext context,
             ContinuityStorePort.Session same,WriterContracts.HistoricalTransition original,boolean initial)throws IOException {
         context.writer().requireSession(same);

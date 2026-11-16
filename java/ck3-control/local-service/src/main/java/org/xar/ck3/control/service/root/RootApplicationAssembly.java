@@ -993,21 +993,35 @@ public final class RootApplicationAssembly {
             public ControllerRestartState savedController(){return history.controller();}
             public long savedDays(){return history.controller().totalCommittedDays();}
             public void requireOriginal(ContinuityStorePort.Session same)throws IOException {
-                core.writer.requireSession(same);exited.requireHistoricalOwner(lifecycle);
-                StrictJson.require(core.coldRestoreSource==this&&!core.resourcesClosed,"cold restore source belongs to another Core lifetime");
-                same.requireHistoricalHead(history.canonicalSequence(),history.canonicalHeadDigest());
-                materials.requireOwn(material);material.requireRetained(same);
+                requireOriginalMembership(same);
+                material.requireRetained(same);
                 StrictJson.require(java.util.Arrays.equals(readRetainedDriverOriginal(core.archive,same,history.retainedFullDriver()),
                         history.retainedFacts().driver().encode()),"cold restore predecessor full Driver changed");
             }
+            private void requireOriginalMembership(ContinuityStorePort.Session same)throws IOException {
+                core.writer.requireSession(same);exited.requireHistoricalOwner(lifecycle);
+                StrictJson.require(core.coldRestoreSource==this&&!core.resourcesClosed,"cold restore source belongs to another Core lifetime");
+                same.requireHistoricalHead(history.canonicalSequence(),history.canonicalHeadDigest());
+                materials.requireOwn(material);
+            }
             public void requireCurrent(ContinuityStorePort.Session same)throws IOException {
-                requireOriginal(same);exited.requireOwner(lifecycle,deadline);
+                // This exact final producer's physical read includes its complete retained receipt/Driver/ACK proof.
+                // Other kinds keep their original retained-first route; no qualification crosses this call.
+                if(material instanceof SavedAttachmentSourceStore.SavedMaterial)requireOriginalMembership(same);
+                else requireOriginal(same);
+                exited.requireOwner(lifecycle,deadline);
                 StrictJson.require(core.coldRestoreSource==this&&core.activeSession==null&&!core.finished&&!core.resourcesClosed
                         &&same.head().state().sequence()==history.canonicalSequence()&&same.head().digest().equals(history.canonicalHeadDigest())
                         &&core.clock.instant().isBefore(deadline),"cold restore source lost its exact unused Core, exited owner or canonical predecessor");
+                requireCurrentPhysicalMaterial(same,materials,material,core.archive,history.retainedFullDriver(),history.retainedFacts().driver());
+            }
+            /** Same-call complete physical validation only. This helper issues no ColdRestoreSource or live permission. */
+            static void requireCurrentPhysicalMaterial(ContinuityStorePort.Session same,SavedCheckpointMaterialStore materials,
+                    SavedCheckpointMaterial material,NativeOutcomeArchive archive,
+                    org.xar.ck3.control.contracts.ExactRef retainedDriver,org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Complete expectedDriver)throws IOException {
                 materials.requireOwn(material);material.requirePhysical(same);
-                StrictJson.require(java.util.Arrays.equals(readRetainedDriverOriginal(core.archive,same,history.retainedFullDriver()),
-                        history.retainedFacts().driver().encode()),"cold restore predecessor full Driver changed");
+                StrictJson.require(java.util.Arrays.equals(readRetainedDriverOriginal(archive,same,retainedDriver),
+                        expectedDriver.encode()),"cold restore predecessor full Driver changed");
             }
             public void requireArchivedBefore(ContinuityStorePort.Session same,RestoreCheckpointService.Request request)throws IOException {
                 requireOriginal(same);

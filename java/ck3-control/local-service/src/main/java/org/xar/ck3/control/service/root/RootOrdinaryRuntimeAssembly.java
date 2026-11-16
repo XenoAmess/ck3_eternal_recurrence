@@ -46,6 +46,17 @@ import org.xar.ck3.control.service.OrdinarySessionHost;
 public final class RootOrdinaryRuntimeAssembly {
     private RootOrdinaryRuntimeAssembly() { }
 
+    /** DATA spelling only; the caller retains all actual loaded-custody and executable qualification checks. */
+    static G2Source loadedExecutionSource(String machineId,Instant observedAt,
+            org.xar.ck3.control.build.ControlBuild.FileRef reviewedExecutable,G2Source historical,ExactRef implementation)throws IOException {
+        Objects.requireNonNull(reviewedExecutable);Objects.requireNonNull(historical);
+        String reviewed=reviewedExecutable.sha256(),original=historical.exactBuild();
+        if(!reviewed.matches("[0-9a-f]{64}")||!original.matches("[0-9a-fA-F]{64}")
+                ||!java.security.MessageDigest.isEqual(java.util.HexFormat.of().parseHex(reviewed),java.util.HexFormat.of().parseHex(original)))
+            throw new IOException("loaded exact build differs from the actual reviewed executable SHA-256");
+        return new G2Source(machineId,observedAt.toString(),original,implementation);
+    }
+
     @FunctionalInterface
     interface OperationPhase<T> {
         T run(Instant deadline) throws IOException, InterruptedException;
@@ -747,8 +758,8 @@ public final class RootOrdinaryRuntimeAssembly {
             loaded.requireOriginalRequest(request);
             game=attached;lifecycle.adoptAttached(attached);
             products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
-            var source=new G2Source(config.machineId(),clock.instant().toString(),plan.sources().review().gameExecutable().sha256(),
-                    metadata.implementation(RootOrdinaryRuntimeAssembly.class));
+            var source=loadedExecutionSource(config.machineId(),clock.instant(),plan.sources().review().gameExecutable(),
+                    before.source(),metadata.implementation(RootOrdinaryRuntimeAssembly.class));
             var readiness=new RootRuntimeReadiness(actualCore,policy,config.freshness(),clock);
             var publication=new RootPostAdoptionCollector(actualCore,ports,catalogs,readiness,config.freshness(),clock,frozen);
             var materials=RootRestoreMaterialFactory.exited(actualCore.writer(),actualCore.archive(),lifecycle,files,original,

@@ -36,6 +36,22 @@ public final class RootFrozenRunProfile {
             "session_id","environment_manifest","lifecycle","ordinary_campaign_no_pact","legacy_import");
     private static final Set<String> LOADED_FIELDS=Set.of("schema","fresh_profile","owner_descriptor","parent_control","generation_claim","checkpoint_pair");
     private RootFrozenRunProfile(){ }
+
+    /** DATA partition only; only the private loaded profile can select a qualified physical SAVE role. */
+    static List<ExactRef> physicalSaveMetadataReferences(
+            org.xar.ck3.control.application.checkpoint.CheckpointFiles files,List<SharedSourceFiles.Witness> originals,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness physicalSave,ExactRef qualifiedSavedGame)throws IOException {
+        Objects.requireNonNull(files);Objects.requireNonNull(originals);Objects.requireNonNull(physicalSave);Objects.requireNonNull(qualifiedSavedGame);
+        if(!physicalSave.reference().equals(qualifiedSavedGame))throw new IOException("physical SAVE differs from the qualified SavedGame source");
+        var metadata=new java.util.LinkedHashSet<ExactRef>();boolean witnessed=false;
+        for(var original:originals) {
+            var source=original.source();var ref=new ExactRef(source.path(),source.bytes(),source.sha256());
+            if(ref.equals(qualifiedSavedGame)){SharedSourceFiles.assertUnchanged(original);witnessed=true;}
+            else metadata.add(ref);
+        }
+        if(!witnessed)throw new IOException("qualified physical SAVE has no retained original FileWitness");
+        files.verify(physicalSave);return List.copyOf(metadata);
+    }
     public enum LifecycleMode {
         ROGUE_ONE_LIFE("rogue_one_life"),ORDINARY_CAMPAIGN_SUCCESSION("ordinary_campaign_succession"),NATIVE_CAMPAIGN("native_campaign");
         private final String wire;LifecycleMode(String wire){this.wire=wire;}public String wire(){return wire;}
@@ -164,6 +180,18 @@ public final class RootFrozenRunProfile {
         /** Same private prepared object produced once while this actual profile is read. */
         public Optional<PreparedFixture> fixture(){return fixture;}
         public Optional<FixtureStartupCase> startupCase(){return startupCase;}
+        /** The exact loaded SavedGame remains physical evidence; every other original keeps its old pin contract. */
+        public List<ExactRef> loadedMetadataReferences(NativeLaunchPlan identical,
+                org.xar.ck3.control.application.checkpoint.CheckpointPair pair,
+                org.xar.ck3.control.application.checkpoint.CheckpointFiles files)throws IOException {
+            if(loadedRole==null||loadedRequest==null||!(request.legacyImport() instanceof EnabledNativeCampaign)
+                    ||fixture.isPresent()||startupCase.isPresent())throw new IOException("private loaded Saved projection required for physical evidence");
+            requireCurrent(identical,Clock.systemUTC());
+            if(!loadedRole.pair().equals(pair)||!(plan.load() instanceof NativeLaunchPlan.SavedGame saved))
+                throw new IOException("physical SAVE belongs to another private loaded pair or plan");
+            var source=saved.save();var qualified=new ExactRef(source.path(),source.bytes(),source.sha256());
+            return physicalSaveMetadataReferences(files,originals,pair.save(),qualified);
+        }
         public List<ExactRef> originalReferences(){
             var refs=new ArrayList<ExactRef>(originals.stream().map(item->new ExactRef(item.source().path(),item.source().bytes(),item.source().sha256())).toList());
             fixture.ifPresent(actual->refs.addAll(actual.inputClosure()));startupCase.ifPresent(actual->refs.addAll(actual.sourceClosure()));return refs.stream().distinct().toList();

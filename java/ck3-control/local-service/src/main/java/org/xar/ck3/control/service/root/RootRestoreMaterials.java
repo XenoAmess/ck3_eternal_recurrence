@@ -283,8 +283,12 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
     private Originals readOriginals(Session borrowed,Request request,NativeCandidate actual,DriverStateSnapshot.Complete saved,
             DriverSnapshotFacts.Known abandoned,ManagedGameSession replacement) throws IOException {
         requireHead(borrowed,request);var pins=new ArrayList<WriterContracts.Pin>();
-        if(originalFrozen.isPresent())
-            for(ExactRef ref:originalFrozen.orElseThrow().originalReferences())pin(borrowed,ref,WriterContracts.MAX_PIN_BYTES,pins);
+        if(originalFrozen.isPresent()) {
+            var frozen=originalFrozen.orElseThrow();
+            var metadata=coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent()
+                    ?frozen.loadedMetadataReferences(replacement.launchPlan(),request.pair(),files):frozen.originalReferences();
+            for(ExactRef ref:metadata)pin(borrowed,ref,WriterContracts.MAX_PIN_BYTES,pins);
+        }
         SavedCheckpointMaterial material=requireRetainedSource(borrowed,savedSources,request,saved);
         files.verify(material.witness());
         StrictJson.require(Arrays.equals(saved.encode(),drivers.readVerifiedOriginal(request.pair(),saved.session()).encode()),"cold source differs from the actual physical saved Driver");
