@@ -473,7 +473,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         }
         ObjectNode opening=opening(request,restored);ObjectNode game=restored.actual().session().game().toJson();
         requireOpening(request.pair(),opening,game,restored.originalNativePacket());
-        String restoreKey=DriverCheckpointStore.sha256(request.requestId().getBytes(StandardCharsets.UTF_8));
+        String restoreKey=restoreDirectoryKey(request.requestId(),restored.originalNativePacket(),physicalSaveWitness.isPresent());
         Path directory=root.resolve("restores").resolve(restoreKey);
         ExactRef basis=immutable(directory.resolve("basis.json"),metadataBytes(actualBasis));
         ExactRef gameRef=immutable(directory.resolve("game.json"),metadataBytes(game));
@@ -488,6 +488,13 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         var action=new WriterContracts.Request(kind,metadataBytes(details),List.copyOf(evidence));
         SavedAttachmentAuthority.Loaded loaded=loadMaterial(predecessor,action,material,actualBasis);
         return new RestoreCheckpointService.Attachment(action,loaded.input(),material);
+    }
+    /** Internal namespace only: an actual loaded capture has its own immutable originals. */
+    static String restoreDirectoryKey(String requestId,ExactRef originalNativePacket,boolean loaded) {
+        if(!loaded)return DriverCheckpointStore.sha256(requestId.getBytes(StandardCharsets.UTF_8));
+        var key=StrictJson.object();key.put("request_id",requestId);
+        key.set("original_native_packet",Objects.requireNonNull(originalNativePacket).toJson());
+        return DriverCheckpointStore.sha256(StrictJson.canonical(key));
     }
     @Override public SavedAttachmentAuthority.Loaded load(ContinuityState predecessor,WriterContracts.Request request) throws IOException {
         StrictJson.require(SavedAttachmentAuthority.KIND.equals(request.kind()),"ordinary attachment kind required");

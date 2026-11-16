@@ -76,7 +76,12 @@ public final class SavedAttachmentAuthority implements WriterContracts.Transitio
         Loaded actual = checked(predecessor,request); var row = StrictJson.object(); row.set("pair", ContinuityJson.parseObject(CheckpointPairCodec.encode(actual.pair()),65536));
         row.set("previous",predecessor.toJson()); row.set("details",ContinuityJson.parseObject(actual.input().details(),65536)); row.set("basis",ContinuityJson.parseObject(actual.input().basis(),65536));
         row.set("game",ContinuityJson.parseObject(actual.input().game(),65536)); row.set("opening",ContinuityJson.parseObject(actual.input().opening(),65536)); row.set("progress",ContinuityJson.parseObject(actual.input().progress(),65536));
-        return ContinuityJson.digest(row);
+        return revalidationDigest(row);
+    }
+    /** Off-ledger proof aggregate: one bounded ledger plus six bounded documents, not a new ledger limit. */
+    static String revalidationDigest(com.fasterxml.jackson.databind.node.ObjectNode row) {
+        return org.xar.ck3.control.application.action.ActionCodec.sha256(
+                ContinuityJson.canonical(row,ContinuityJson.DOMAIN_MAX_BYTES));
     }
     @Override public ContinuityState reduce(ContinuityState predecessor, WriterContracts.Request request) throws IOException { return SavedContinuityAttachment.reduce(checked(predecessor,request).input()); }
 }
