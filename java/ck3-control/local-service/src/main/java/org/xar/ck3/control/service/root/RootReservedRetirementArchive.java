@@ -39,6 +39,13 @@ public final class RootReservedRetirementArchive implements AutoCloseable {
             requireSource(nativeArchive,session,requested);
             return nativeArchive.retainedDataReplayAccess(this,requested,session);
         }
+        /** Keep the actual Native owner private while requiring this token's exact restricted View. */
+        public <T>T inHistoricalRecoveryScope(ActionPorts.OutcomeArchive requested,ContinuityStorePort.Session session,
+                NativeOutcomeArchive.RootDataHistoryTier tier,ActionPorts.CheckedArchiveRead<T> work)throws IOException {
+            raw.check();
+            if(!(raw.actual instanceof NativeOutcomeArchive nativeArchive))throw new IOException("actual Root DATA custody source unavailable");
+            return nativeArchive.inRootDataHistoricalRecoveryScope(this,requested,session,tier,work);
+        }
     }
 
     private final ContinuityStorePort.Session same;
@@ -150,6 +157,13 @@ public final class RootReservedRetirementArchive implements AutoCloseable {
                 check();T value=org.xar.ck3.control.application.driver.DriverCapabilityRuntime.inRetainedDataReplay(
                         replaySource,this,borrowed,work);check();return value;
             });
+            check();return result;
+        }
+        /** A genuine private Root source selects the DATA-only v1 roster, not the Native recovery tier. */
+        @Override public <T>T inSameGameHistoricalRecoveryScope(ContinuityStorePort.Session borrowed,
+                ActionPorts.CheckedArchiveRead<T> work)throws IOException {
+            withSession(borrowed);Objects.requireNonNull(work);
+            T result=replaySource.inHistoricalRecoveryScope(this,borrowed,NativeOutcomeArchive.RootDataHistoryTier.V1,work);
             check();return result;
         }
         @Override public ActionCommand decodeCanonicalCommand(byte[] canonical){return checked(()->ActionCodec.decodeCommand(canonical));}

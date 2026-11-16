@@ -81,9 +81,14 @@ public final class DriverPersistentPlanningState {
         private long estimatedBytes;
         private int dependencyMemberships;
         private long fullReplays, hits, ineligible, unretained;
+        // Single-candidate rejection and first-triggered LRU eviction causes are distinct DATA facts.
+        private long dependencyRejections, weightRejections, evictions, entryEvictions, weightEvictions, membershipEvictions;
+        private long successfulPublishes, peakEstimatedBytes;
+        private int peakEntries, peakDependencyMemberships;
         private RetainedDataReplayScope(RetainedDataReplayAccess access, ActionPorts.OutcomeArchive facade) {
             this.access = access; this.facade = facade;
         }
+        // A failed validation clears every cell; prior successful-publication diagnostics remain visible.
         private void clear() { verified.clear(); estimatedBytes = 0; dependencyMemberships = 0; }
         private void remove(Obj auxiliary) {
             VerifiedDataReplay previous = verified.remove(auxiliary);
@@ -126,23 +131,37 @@ public final class DriverPersistentPlanningState {
                 if (!access.accepts(archive)) { ineligible++; return; }
                 if (dependencies.isEmpty()) { unretained++; return; }
                 Set<ExactRef> complete = dependencies.orElseThrow();
-                if (complete.size() > MAX_DEPENDENCY_MEMBERSHIPS) return;
+                if (complete.size() > MAX_DEPENDENCY_MEMBERSHIPS) {
+                    dependencyRejections = nextDiagnosticCount(dependencyRejections); return;
+                }
                 long weight = dataWeight(auxiliary, 0);
                 for (ExactRef reference : complete) weight = addWeight(weight,
                         addWeight(128, addWeight(stringWeight(reference.path()), stringWeight(reference.sha256()))));
-                if (weight > MAX_ESTIMATED_BYTES) return;
+                if (weight > MAX_ESTIMATED_BYTES) { weightRejections = nextDiagnosticCount(weightRejections); return; }
                 complete = Set.copyOf(complete);
                 if (!access.verify(complete)) { unretained++; return; }
                 access.requireCurrent();
                 if (!access.accepts(archive)) { ineligible++; return; }
                 while (!verified.isEmpty() && (verified.size() >= MAX_ENTRIES
                         || weight > MAX_ESTIMATED_BYTES - estimatedBytes
-                        || complete.size() > MAX_DEPENDENCY_MEMBERSHIPS - dependencyMemberships))
+                        || complete.size() > MAX_DEPENDENCY_MEMBERSHIPS - dependencyMemberships)) {
+                    int cause = verified.size() >= MAX_ENTRIES ? 0
+                            : weight > MAX_ESTIMATED_BYTES - estimatedBytes ? 1 : 2;
                     remove(verified.keySet().iterator().next());
+                    evictions = nextDiagnosticCount(evictions);
+                    if (cause == 0) entryEvictions = nextDiagnosticCount(entryEvictions);
+                    else if (cause == 1) weightEvictions = nextDiagnosticCount(weightEvictions);
+                    else membershipEvictions = nextDiagnosticCount(membershipEvictions);
+                }
                 verified.put(auxiliary, new VerifiedDataReplay(complete, weight));
                 estimatedBytes += weight; dependencyMemberships += complete.size();
+                successfulPublishes = nextDiagnosticCount(successfulPublishes);
+                peakEntries = Math.max(peakEntries, verified.size());
+                peakEstimatedBytes = Math.max(peakEstimatedBytes, estimatedBytes);
+                peakDependencyMemberships = Math.max(peakDependencyMemberships, dependencyMemberships);
             } catch (IOException | RuntimeException | Error failure) { clear(); throw failure; }
         }
+        private static long nextDiagnosticCount(long value) { return value == Long.MAX_VALUE ? value : value + 1; }
         private static long addWeight(long left, long right) {
             return left > MAX_ESTIMATED_BYTES || right > MAX_ESTIMATED_BYTES - left ? MAX_ESTIMATED_BYTES + 1 : left + right;
         }
@@ -177,6 +196,11 @@ public final class DriverPersistentPlanningState {
                 System.err.println("DATA_REPLAY_MEMO_METRICS full_replays=" + fullReplays + " hits=" + hits
                         + " ineligible=" + ineligible + " unretained=" + unretained + " entries=" + verified.size()
                         + " estimated_bytes=" + estimatedBytes + " dependency_memberships=" + dependencyMemberships
+                        + " dependency_rejections=" + dependencyRejections + " weight_rejections=" + weightRejections
+                        + " evictions=" + evictions + " entry_evictions=" + entryEvictions + " weight_evictions=" + weightEvictions
+                        + " membership_evictions=" + membershipEvictions + " successful_publishes=" + successfulPublishes
+                        + " peak_entries=" + peakEntries + " peak_estimated_bytes=" + peakEstimatedBytes
+                        + " peak_dependency_memberships=" + peakDependencyMemberships
                         + " scope_callback_succeeded=" + (succeeded ? 1 : 0));
             } catch (RuntimeException | Error diagnosticFailure) { /* Diagnostics carry no validation credit. */ }
         }

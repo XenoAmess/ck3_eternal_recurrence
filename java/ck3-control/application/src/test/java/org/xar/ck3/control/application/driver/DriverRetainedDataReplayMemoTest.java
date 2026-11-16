@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Proxy;
 import java.math.BigInteger;
@@ -276,7 +278,7 @@ final class DriverRetainedDataReplayMemoTest {
 
     @Test void entryWeightAndDependencyBudgetsOnlyDeclineRetention() throws Exception {
         var f = new Fixture(); Obj auxiliary = f.strategy(new Obj(Map.of()));
-        f.scope(archive -> {
+        var metrics = captureMetrics(() -> f.scope(archive -> {
             for (int i = 0; i < 129; i++) DriverPersistentPlanningState.replay(auxiliary.with("ignored", new IntegerValue(BigInteger.valueOf(i))), archive);
             int reads = f.reads;
             DriverPersistentPlanningState.replay(auxiliary.with("ignored", new IntegerValue(BigInteger.ZERO)), archive); assertTrue(f.reads > reads);
@@ -290,7 +292,56 @@ final class DriverRetainedDataReplayMemoTest {
             DriverPersistentPlanningState.replay(tooMany, archive); reads = f.reads;
             DriverPersistentPlanningState.replay(tooMany, archive); assertTrue(f.reads > reads);
             return null;
-        });
+        }));
+        assertEquals(2L, metric(metrics, "dependency_rejections")); assertEquals(2L, metric(metrics, "weight_rejections"));
+        assertEquals(2L, metric(metrics, "evictions")); assertEquals(2L, metric(metrics, "entry_evictions"));
+        assertEquals(0L, metric(metrics, "weight_evictions")); assertEquals(0L, metric(metrics, "membership_evictions"));
+        assertEquals(130L, metric(metrics, "successful_publishes")); assertEquals(128L, metric(metrics, "peak_entries"));
+        assertEquals(256L, metric(metrics, "peak_dependency_memberships"));
+        assertTrue(metric(metrics, "peak_estimated_bytes") > 0 && metric(metrics, "peak_estimated_bytes") <= (8L << 20));
+    }
+
+    @Test void successfulPublishPeaksSurviveValidationAndCloseFailures() throws Exception {
+        for (boolean closeFailure : List.of(false, true)) {
+            var f = new Fixture(); Obj auxiliary = f.strategy(new Obj(Map.of()));
+            var metrics = captureMetrics(() -> f.scope(archive -> {
+                DriverPersistentPlanningState.replay(auxiliary, archive);
+                if (closeFailure) {
+                    f.access.failClose = true;
+                    assertThrows(UncheckedIOException.class, () -> DriverPersistentPlanningState.replay(auxiliary.with("ignored", new Bool(true)), archive));
+                } else {
+                    assertThrows(IllegalArgumentException.class, () -> DriverPersistentPlanningState.replay(auxiliary.with("one_life_strategy", new Obj(Map.of())), archive));
+                }
+                assertEquals(1, f.access.verifiedDependencies.size(), "diagnostics add no verify call to either original failure path");
+                return null;
+            }));
+            assertEquals(0L, metric(metrics, "entries")); assertEquals(0L, metric(metrics, "estimated_bytes"));
+            assertEquals(0L, metric(metrics, "dependency_memberships"));
+            assertEquals(1L, metric(metrics, "successful_publishes")); assertEquals(1L, metric(metrics, "peak_entries"));
+            assertEquals(2L, metric(metrics, "peak_dependency_memberships")); assertTrue(metric(metrics, "peak_estimated_bytes") > 0);
+            assertEquals(0L, metric(metrics, "evictions")); assertEquals(0L, metric(metrics, "dependency_rejections"));
+            assertEquals(0L, metric(metrics, "weight_rejections"));
+        }
+    }
+
+    @Test void weightEvictionMetricsPreserveTheOriginalFullAndHitResults() throws Exception {
+        var f = new Fixture(); Obj auxiliary = f.strategy(new Obj(Map.of()));
+        String large = "x".repeat(2 * 1024 * 1024);
+        Obj first = auxiliary.with("ignored", new Text(large)), second = first.with("memo_tag", new Bool(true));
+        var metrics = captureMetrics(() -> f.scope(archive -> {
+            DriverPersistentPlanningState.replay(first, archive); DriverPersistentPlanningState.replay(second, archive);
+            int reads = f.reads;
+            DriverPersistentPlanningState.replay(second, archive); assertEquals(reads, f.reads);
+            assertEquals(2, f.access.captures); assertEquals(3, f.access.verifiedDependencies.size());
+            return null;
+        }));
+        assertEquals(2L, metric(metrics, "full_replays")); assertEquals(1L, metric(metrics, "hits"));
+        assertEquals(1L, metric(metrics, "evictions")); assertEquals(1L, metric(metrics, "weight_evictions"));
+        assertEquals(0L, metric(metrics, "entry_evictions")); assertEquals(0L, metric(metrics, "membership_evictions"));
+        assertEquals(0L, metric(metrics, "weight_rejections")); assertEquals(0L, metric(metrics, "dependency_rejections"));
+        assertEquals(2L, metric(metrics, "successful_publishes")); assertEquals(1L, metric(metrics, "peak_entries"));
+        assertEquals(2L, metric(metrics, "peak_dependency_memberships"));
+        assertTrue(metric(metrics, "peak_estimated_bytes") > (4L << 20) && metric(metrics, "peak_estimated_bytes") <= (8L << 20));
     }
 
     @Test void nullAccessRunsFullAndCannotBorrowAnOuterMemo() throws Exception {
@@ -306,4 +357,23 @@ final class DriverRetainedDataReplayMemoTest {
             return null;
         });
     }
+
+    @FunctionalInterface private interface MetricsWork { void run() throws IOException; }
+    private static Map<String, Long> captureMetrics(MetricsWork operation) throws IOException {
+        synchronized (DriverRetainedDataReplayMemoTest.class) {
+            var buffer = new ByteArrayOutputStream(); PrintStream original = System.err;
+            try (var captured = new PrintStream(buffer, true, StandardCharsets.UTF_8)) {
+                System.setErr(captured); try { operation.run(); } finally { System.setErr(original); }
+            }
+            String output = buffer.toString(StandardCharsets.UTF_8); original.print(output);
+            List<String> rows = output.lines().filter(line -> line.startsWith("DATA_REPLAY_MEMO_METRICS ")).toList();
+            assertEquals(1, rows.size(), output);
+            var result = new LinkedHashMap<String, Long>();
+            for (String field : rows.getFirst().substring("DATA_REPLAY_MEMO_METRICS ".length()).split(" ")) {
+                String[] pair = field.split("=", 2); assertEquals(2, pair.length, field); result.put(pair[0], Long.parseLong(pair[1]));
+            }
+            return Map.copyOf(result);
+        }
+    }
+    private static long metric(Map<String, Long> values, String name) { assertTrue(values.containsKey(name), name); return values.get(name); }
 }

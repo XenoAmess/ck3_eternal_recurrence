@@ -1,5 +1,7 @@
 package org.xar.ck3.control.continuity.writer;
 
+import org.xar.ck3.control.continuity.ContinuityJson;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -265,14 +267,65 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
         return historicalReadScope(session,new ActionPorts.HistoricalReadLimits(8192,256L * 1024 * 1024,16384),operation,true);
     }
+    /** Resource data only: this enum never authenticates or opens a DATA scope by itself. */
+    public enum RootDataHistoryTier {
+        V1;
+        public int maximumPublications() { return ImmutableArtifactStore.ROOT_DATA_HISTORY_V1_ENTRIES; }
+        public long maximumRetainedBytes() { return ImmutableArtifactStore.ROOT_DATA_HISTORY_V1_BYTES; }
+        public int maximumHandles() { return ImmutableArtifactStore.ROOT_DATA_HISTORY_V1_HANDLES; }
+    }
+    /** Authenticate the private Root source before selecting its independent DATA resource tier.
+     * The callback receives the identical restricted View, never the Native facade or decoder. */
+    public <T> T inRootDataHistoricalRecoveryScope(
+            org.xar.ck3.control.service.root.RootReservedRetirementArchive.DataReplaySource source,
+            ActionPorts.OutcomeArchive restricted, ContinuityStorePort.Session session,
+            RootDataHistoryTier tier, ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        try {
+            Objects.requireNonNull(source); Objects.requireNonNull(restricted); Objects.requireNonNull(tier);
+            Objects.requireNonNull(operation); requireSession(session);
+            source.requireSource(this, session, restricted);
+            Thread sourceThread = Thread.currentThread();
+            var canonicalHead = session.persistedHead();
+            // One independently owned head HANDLE stays live until after CAS finish. Snapshot
+            // bytes/hash and full identity are rechecked at boundaries, not once per CAS read.
+            try (var headLease = LedgerFiles.lease(canonicalHead, ContinuityJson.LEDGER_MAX_BYTES)) {
+                ImmutableArtifactStore.HistoricalReadAuthority active = () -> {
+                    requireSession(session); source.requireSource(this, session, restricted);
+                    if (Thread.currentThread() != sourceThread)
+                        throw new IOException("Root DATA history changed its owning thread");
+                };
+                IoWork<Void> requireHead = () -> {
+                    active.require();
+                    if (!canonicalHead.equals(headLease.read().pin().reference())
+                            || !canonicalHead.equals(session.persistedHead()))
+                        throw new IOException("Root DATA history changed its continuously held writer head");
+                    return null;
+                };
+                T result = historicalReadScopeWithFactory(session, ignoredNativeFacade -> {
+                    requireHead.run();
+                    T value = org.xar.ck3.control.application.driver.DriverCapabilityRuntime.inRetainedDataReplay(
+                            source, restricted, session, operation);
+                    requireHead.run(); return value;
+                }, () -> artifacts.beginRootDataHistoricalRecoveryReads(session, active));
+                requireHead.run(); return result;
+            }
+        } catch (IOException | RuntimeException | Error failure) {
+            artifacts.recordHistoricalFailure(failure); throw failure;
+        }
+    }
     private <T> T historicalReadScope(ContinuityStorePort.Session session, ActionPorts.HistoricalReadLimits limits,
             ActionPorts.CheckedArchiveRead<T> operation, boolean sameGameRecovery) throws IOException {
         Objects.requireNonNull(limits); Objects.requireNonNull(operation);
+        return historicalReadScopeWithFactory(session, operation, () -> sameGameRecovery
+                ? artifacts.beginSameGameHistoricalRecoveryReads(session, () -> requireSession(session))
+                : artifacts.beginHistoricalReads(session,
+                    limits.maximumPublications(), limits.maximumRetainedBytes(), limits.maximumHandles(), () -> requireSession(session)));
+    }
+    private <T> T historicalReadScopeWithFactory(ContinuityStorePort.Session session,
+            ActionPorts.CheckedArchiveRead<T> operation, IoWork<ImmutableArtifactStore.HistoricalReads> factory) throws IOException {
+        Objects.requireNonNull(operation); Objects.requireNonNull(factory);
         try { return scoped(session, () -> {
-            ImmutableArtifactStore.HistoricalReads reads = sameGameRecovery
-                    ? artifacts.beginSameGameHistoricalRecoveryReads(session, () -> requireSession(session))
-                    : artifacts.beginHistoricalReads(session,
-                        limits.maximumPublications(), limits.maximumRetainedBytes(), limits.maximumHandles(), () -> requireSession(session));
+            ImmutableArtifactStore.HistoricalReads reads = Objects.requireNonNull(factory.run());
             Throwable failure = null;
             ParsedMaterialCache commandCache = parsedMaterialCache.get();
             try {

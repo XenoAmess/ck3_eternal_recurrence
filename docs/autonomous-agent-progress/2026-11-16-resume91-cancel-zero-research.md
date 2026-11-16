@@ -239,3 +239,19 @@ Root授权新独立DATA tier v1候选16384entries/256MiB/32772handles；这是�
 keeper旧审计archive04在新授权下02:43:08.909001Z/18.078秒真实PASS：444files111dirs、原logical65393586B→621664B TAR.XZ+236981B索引，全roundtrip和源二次复验后精确清理、与02/03不重叠，活输入/尾/源码不动、前后livelease通过，未新fund/返unused。旧P5来源02:35及45min包络原样，不追改失败。
 
 并行读取e26e的Religious Ritual Fusion Static run43791639268发现独立真实故障：121个测试仅relocation source qualification因other.txt raw hash漂移报错。Root受控小Git复现（独立1MiB、仅子进程临时global配置、未改真实Git设置）：LF源8B，global autocrlf=true时默认clone变9B CRLF，显式clone local core.autocrlf=false恢复原8B及同SHA。证据 `D:/ck3-state/resume91-root-ci/rrf-clone-eol01/CONTROLLED-CLONE-EOL-RESULT01.json`2522B/SHA `3ebbab999c359af525313af104e47b0a03030c3b560d29b76e42332e16075c0a`。仅修改该Test的clone局部选项并新增raw signature断言；生产严格raw-hash拒绝不变，模块整链验证交后继真实CI，尚未宣称该121方法通过。
+
+Root的RRF Test1+五报告6文件已独立正常FF发表 `1f361f55b66dfe02d4725b987b6af2241f00739e`，parent e26e，remote exact/index空，仅DATA tier候选仍WIP。PUB6为2269B/SHA `79c0aeab181666c2d6808dad91ca331347efef719e2c6fcdfc2f11a9c49b5fcb`；canonical1commit17tree6blob disk83814B非FS净增/peak。独立1MiB probe按current directory-guard340320B+原closure64KiB保守结清，只返unused642720一次；336KiB Pub guard保守关闭，不以未知Git peak退额。
+
+该修复的**真实后继CI已通过**：Religious Ritual Fusion Static run43795343520（head1f361f55）completed success，03:01:36日志明确SourceQualificationTest10/0F/0E/0skip、RRF总121/0F/0E/0skip、BUILD SUCCESS。旧e26e失败保留，没有改生产raw-hash资格规则。上个e26e Official43791639141已请求取消，最新1f Official43795343586仍执行，不能用RRF绿色外推整个Official或Own通过。DATA tier源码/必要新回归继续，不以这次旁支交付停止恢复主线。
+
+## 受限 DATA tier 四生产及必要八方法资格完成
+
+最终四生产叶为RootReservedRetirementArchive、NativeOutcomeArchive、ImmutableArtifactStore及DPS；不改ActionPorts旧DTO、Core/Main、Native768MiB或策略。Store只增加包私有固定DATA factory 16384/256MiB/32772；public tier枚举仅资源数据，不能自己开启范围。Native必须核私有Root token的actual/view/session/thread/fixed head，callback始终同一受限View。DPS保128/8MiB/32768和验证顺序，仅增加singleton依赖/weight拒绝、原OR首因的LRU淘汰、successful publish及entries/bytes/memberships峰值，异常clear不清峰，不造不可达membership正例。
+
+初actual4真实16.733335秒GREEN/48class（Root4/Native19/Store18/DPS7）后，源码复审发现新authority逐read调用session.persistedHead会反复读/hash snapshot，Runtime明确hold该Native19而未采用。仅Native修为独立只读头lease持续至整个CAS finish之后，前后边界完整读/hash及FileID/mtime/size复验，scope内cheap source/session/thread检查；写/delete/rebind由真实Win32持有保护。其间11.032秒RED为缺ContinuityJson import、0class，精确补import后12.418866秒GREEN/19class，不重另外三族。最终actual48 family `dat117c1/ACTUAL-TIER4-FINAL-REV03-COMPLETE-MODULE-FAMILIES01.json`19602B/7e41b698…，旧Native superseded原件保留。
+
+Test2首次11.858秒RED/0class，因RootTest两处JUnit BooleanSupplier重载泛型推断；只加显式Boolean type witness、不改生产或断言，11.398秒Test2编译通过。实际8方法于03:36:08.944Z BEGIN→03:36:21.271Z ACTUAL，12.327505秒8P/0F/0E/0skip：Root5+DPS3。XML `dat117j1/reports/TEST-junit-jupiter.xml`54364B/SHA `aa1fdb3c458d30204f9b45cf7cd84c7c33a8235a3b8a662d7897157ed1b45c23`，ACTUAL1270B/510bda79…。覆盖旧generic大值拒绝、真factory实际limits诊断、无/错token/view/session/thread、原受限callback及无decoder/写、头/CAS正常异常释放、2×80KiB payload轮换持续双pair、entry1失格吸收与nested依赖，以及新DPS准入/峰值统计。没有16k文件物化、没有全规模OS压力或恢复收益结论。
+
+后置formal只Native+Store两rawdiff叶13.691035秒GREEN/37class，Root/DPS与actual rawexact复用；完整family12998B/73331737…，没有Maven/135/旧矩阵重跑。实际48及8绿已直交Runtime，不等formal/Git或资源闭档；完整源REV04 Ready18696B/39be849a…保持实际/正式差异，不整叶覆盖现场。
+
+Runtime03:19:32 archive05真实PASS：204files51dirs原logical30051910B→353084B TAR.XZ+109967B索引，全部roundtrip和源二次验证后精确清理，活输入/尾/源码不变、前后lease通过，未新fund/退unused。原P6三公共输出03:21:53真实全exit0、来源03:15→04:15保留原件；由于候选修复耗时，Root授权最终8绿后以实际当次UTC晚签独立60min新来源，旧窗口/输出/动作deadline不改。当前无第五业务/Game/保存信用，最终CP87/五wire/8资格后才新BEGIN。

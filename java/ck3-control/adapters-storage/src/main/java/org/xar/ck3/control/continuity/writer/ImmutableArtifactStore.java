@@ -514,6 +514,18 @@ public final class ImmutableArtifactStore {
     private static IOException closeFailure(Throwable problem) {
         return problem instanceof IOException failure ? failure : new IOException("historical native cleanup failed", problem);
     }
+    // Resource profile only. Native authenticates the actual private Root DATA source.
+    // These constants and the package-private factory grant no World or Native rights.
+    static final int ROOT_DATA_HISTORY_V1_ENTRIES = 16384;
+    static final long ROOT_DATA_HISTORY_V1_BYTES = 256L * 1024 * 1024;
+    static final int ROOT_DATA_HISTORY_V1_HANDLES = 32772;
+    HistoricalReads beginRootDataHistoricalRecoveryReads(ContinuityStorePort.Session session,
+            HistoricalReadAuthority authority) throws IOException {
+        if (readonlyMode) StorageWriteGuard.requireNoWritesOpen(storage);
+        Objects.requireNonNull(session); Objects.requireNonNull(authority);
+        return openHistoricalReads(session, ROOT_DATA_HISTORY_V1_ENTRIES, ROOT_DATA_HISTORY_V1_BYTES,
+                ROOT_DATA_HISTORY_V1_HANDLES, authority);
+    }
     HistoricalReads beginHistoricalReads(ContinuityStorePort.Session session, int maximumEntries,
             long maximumBytes, int maximumHandles, HistoricalReadAuthority authority) throws IOException {
         return beginHistoricalReads(session,maximumEntries,maximumBytes,maximumHandles,authority,false);
@@ -530,6 +542,10 @@ public final class ImmutableArtifactStore {
         if (maximumEntries < 1 || maximumEntries > (sameGameRecovery ? 16384 : 8192) || maximumBytes < 1 || maximumBytes > (sameGameRecovery ? 768L : 256L) * 1024 * 1024
                 || maximumHandles < 4 || maximumHandles > (sameGameRecovery ? 32768 : 16384))
             throw new IOException("finite historical CAS read bounds required");
+        return openHistoricalReads(session, maximumEntries, maximumBytes, maximumHandles, authority);
+    }
+    private HistoricalReads openHistoricalReads(ContinuityStorePort.Session session, int maximumEntries,
+            long maximumBytes, int maximumHandles, HistoricalReadAuthority authority) throws IOException {
         if (historicalReads.get() != null) {
             IOException failure = new IOException("nested historical CAS read scopes are not permitted");
             recordHistoricalFailure(failure); throw failure;
