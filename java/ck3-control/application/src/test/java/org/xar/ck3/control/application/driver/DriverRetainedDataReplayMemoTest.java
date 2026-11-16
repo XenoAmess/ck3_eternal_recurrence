@@ -57,6 +57,8 @@ final class DriverRetainedDataReplayMemoTest {
         final Map<ExactRef, RawJson> materials = new LinkedHashMap<>();
         final Map<ExactRef, byte[]> packets = new LinkedHashMap<>();
         final Access access = new Access();
+        final Prefix prefix = new Prefix();
+        DriverObservationAssembler.Complete cooldownFrame;
         int reads;
         final ActionPorts.OutcomeArchive archive = archive();
         private ActionPorts.OutcomeArchive archive() {
@@ -105,6 +107,7 @@ final class DriverRetainedDataReplayMemoTest {
             ExactRef manifestRef = material(manifest);
             var frame = assertInstanceOf(DriverObservationAssembler.Complete.class,
                     DriverObservationEvidenceReader.replayOriginals(manifestRef, manifest, driver, packet, nativeRef));
+            cooldownFrame = frame;
             var identity = DeclarationOpportunityCooldown.frame(frame);
             var snapshot = DeclarationOpportunityCooldown.snapshot(DriverJson.toNode(frame.semantic()));
             var state = DeclarationOpportunityCooldown.decode(com.fasterxml.jackson.databind.node.NullNode.getInstance(), identity);
@@ -123,6 +126,36 @@ final class DriverRetainedDataReplayMemoTest {
         }
         <T> T scope(ActionPorts.CheckedArchiveRead<T> work) throws IOException {
             return DriverPersistentPlanningState.inRetainedDataReplayScope(access, archive, work);
+        }
+        <T> T prefixScope(ActionPorts.CheckedArchiveRead<T> work) throws IOException {
+            return DriverPersistentPlanningState.inOwnedPrefixScope(prefix, archive,
+                    ignored -> DriverPersistentPlanningState.inRetainedDataReplayScope(access, prefix, archive, work));
+        }
+        Obj appendView(Obj auxiliary) {
+            ExactRef previous = DriverObservationEvidenceReader.reference(auxiliary.get(DriverPersistentPlanningState.COOLDOWN_SOURCE));
+            Obj prior = DriverJson.object(materials.get(previous).bytes(), StrictJson.EXPLICIT_MAX_BYTES);
+            var identity = DeclarationOpportunityCooldown.frame(cooldownFrame);
+            var state = DeclarationOpportunityCooldown.decode(DriverJson.toNode(prior.get("state")), identity);
+            var reduced = DeclarationOpportunityCooldown.view(state, DeclarationOpportunityCooldown.snapshot(DriverJson.toNode(cooldownFrame.semantic())), identity);
+            Obj encodedState = node(DeclarationOpportunityCooldown.encode(reduced.state())), view = node(DeclarationOpportunityCooldown.encodeView(reduced.view()));
+            ExactRef next = material(new RawJson(DriverJson.encode(prior.with("mode", new Text("VIEW")).with("previous", reference(previous))
+                    .with("input", Nil.INSTANCE).with("state", encodedState).with("view", view))));
+            return auxiliary.with(DriverPersistentPlanningState.COOLDOWN_SOURCE, reference(next))
+                    .with(DriverPersistentPlanningState.COOLDOWN_STATE, encodedState).with(DeclarationOpportunityCooldown.VIEW_KEY, view);
+        }
+        final class Prefix implements DriverPersistentPlanningState.OwnedPrefixAccess {
+            Object checkpoint; int publications; boolean failClear;
+            @Override public boolean accepts(ActionPorts.OutcomeArchive value) { return access.accepts(value); }
+            @Override public Object current() { return checkpoint; }
+            @Override public void current(Object value) throws IOException {
+                checkpoint = value;
+                if (value != null) publications++;
+                else if (failClear) { failClear = false; throw new IOException("software prefix clear failed"); }
+            }
+            @Override public Object beginCapture() { return access.beginCapture(); }
+            @Override public Optional<Set<ExactRef>> dependencies(Object capture) { return access.dependencies(capture); }
+            @Override public void closeCapture(Object capture) throws IOException { access.closeCapture(capture); }
+            @Override public boolean verify(Set<ExactRef> dependencies) { return access.verify(dependencies); }
         }
         final class Trace { final Set<ExactRef> references = new LinkedHashSet<>(); }
         final class Access implements DriverPersistentPlanningState.RetainedDataReplayAccess {
@@ -356,6 +389,113 @@ final class DriverRetainedDataReplayMemoTest {
             reads = f.reads; DriverPersistentPlanningState.replay(auxiliary, archive); assertEquals(reads, f.reads);
             return null;
         });
+    }
+
+    @Test void boundDataPrefixReusesSameSourceAcrossAuxiliariesAndPropagatesNestedClosure() throws Exception {
+        var f = new Fixture(); Obj auxiliary = f.strategy(f.appendView(f.cooldown()));
+        var metrics = captureMetrics(() -> f.prefixScope(archive -> {
+            DriverPersistentPlanningState.replay(auxiliary.with("variant", new IntegerValue(BigInteger.ZERO)), archive);
+            assertNotNull(f.prefix.checkpoint);
+            Object outer = f.access.beginCapture(); int reads = f.reads;
+            DriverPersistentPlanningState.replay(auxiliary.with("variant", new IntegerValue(BigInteger.ONE)), archive);
+            assertEquals(reads + 2, f.reads, "the original strategy header still runs; the cooldown anchor omits its old rebuilds");
+            var expected = new LinkedHashSet<>(f.materials.keySet()); expected.addAll(f.packets.keySet());
+            assertEquals(expected, f.access.dependencies(outer).orElseThrow());
+            f.access.closeCapture(outer); return null;
+        }));
+        assertEquals(2L, metric(metrics, "full_replays")); assertEquals(0L, metric(metrics, "hits"));
+        assertEquals(1L, metric(metrics, "prefix_anchor_hits")); assertEquals(2L, metric(metrics, "prefix_proofs_replayed"));
+    }
+
+    @Test void boundDataPrefixExtendsOnlyTheNewSuffix() throws Exception {
+        var f = new Fixture(); Obj first = f.appendView(f.cooldown()), suffix = f.appendView(first);
+        var metrics = captureMetrics(() -> f.prefixScope(archive -> {
+            DriverPersistentPlanningState.replay(first, archive); int reads = f.reads;
+            DriverPersistentPlanningState.replay(suffix, archive);
+            assertEquals(reads + 4, f.reads, "one new proof plus its manifest/native/Driver originals are replayed");
+            reads = f.reads; DriverPersistentPlanningState.replay(suffix, archive); assertEquals(reads, f.reads);
+            return null;
+        }));
+        assertEquals(2L, metric(metrics, "full_replays")); assertEquals(1L, metric(metrics, "hits"));
+        assertEquals(1L, metric(metrics, "prefix_anchor_hits")); assertEquals(3L, metric(metrics, "prefix_proofs_replayed"));
+    }
+
+    @Test void boundDataPrefixAndMemoAreClearedAfterHeaderFinalAuxiliaryAndCloseFailure() throws Exception {
+        for (String failure : List.of("header", "auxiliary", "close")) {
+            var f = new Fixture(); Obj auxiliary = f.appendView(f.cooldown());
+            var metrics = captureMetrics(() -> f.prefixScope(archive -> {
+                DriverPersistentPlanningState.replay(auxiliary, archive); assertNotNull(f.prefix.checkpoint);
+                if (failure.equals("header")) assertThrows(IllegalArgumentException.class,
+                        () -> DriverPersistentPlanningState.replay(auxiliary.with("one_life_strategy", new Obj(Map.of())), archive));
+                else if (failure.equals("auxiliary")) assertThrows(IllegalArgumentException.class,
+                        () -> DriverPersistentPlanningState.replay(auxiliary.with(DeclarationOpportunityCooldown.VIEW_KEY, Nil.INSTANCE), archive));
+                else {
+                    f.access.failClose = true;
+                    assertThrows(UncheckedIOException.class, () -> DriverPersistentPlanningState.replay(auxiliary.with("variant", new Bool(true)), archive));
+                }
+                assertNull(f.prefix.checkpoint); int reads = f.reads;
+                DriverPersistentPlanningState.replay(auxiliary, archive);
+                assertEquals(reads + 8, f.reads, "both the previous whole memo and the prefix were discarded");
+                return null;
+            }));
+            assertEquals(4L, metric(metrics, "prefix_proofs_replayed"));
+            assertEquals(failure.equals("header") ? 0L : 1L, metric(metrics, "prefix_anchor_hits"));
+        }
+    }
+
+    @Test void partialPrefixFailureClearsBothAndRetainsCleanupSuppressionOrder() throws Exception {
+        for (boolean cleanupFailure : List.of(false, true)) {
+            var f = new Fixture(); Obj first = f.appendView(f.cooldown()), next = f.appendView(first);
+            ExactRef nextRef = DriverObservationEvidenceReader.reference(next.get(DriverPersistentPlanningState.COOLDOWN_SOURCE));
+            Obj proof = DriverJson.object(f.materials.get(nextRef).bytes(), StrictJson.EXPLICIT_MAX_BYTES);
+            ExactRef badRef = f.material(new RawJson(DriverJson.encode(proof.with("state", new Obj(Map.of())))));
+            Obj bad = next.with(DriverPersistentPlanningState.COOLDOWN_SOURCE, reference(badRef));
+            var metrics = captureMetrics(() -> f.prefixScope(archive -> {
+                f.access.failClose = cleanupFailure; f.prefix.failClear = cleanupFailure;
+                var rejected = assertThrows(IllegalArgumentException.class, () -> DriverPersistentPlanningState.replay(bad, archive));
+                assertTrue(f.prefix.publications > 0, "two earlier proofs really produced the partial checkpoint");
+                assertNull(f.prefix.checkpoint);
+                assertEquals(cleanupFailure ? 2 : 0, rejected.getSuppressed().length);
+                if (cleanupFailure) {
+                    assertEquals("software trace close failed", rejected.getSuppressed()[0].getMessage());
+                    assertEquals("software prefix clear failed", rejected.getSuppressed()[1].getMessage());
+                }
+                int reads = f.reads; DriverPersistentPlanningState.replay(first, archive); assertEquals(reads + 8, f.reads);
+                return null;
+            }));
+            assertEquals(4L, metric(metrics, "prefix_proofs_replayed")); assertEquals(0L, metric(metrics, "prefix_anchor_hits"));
+        }
+    }
+
+    @Test void unheldAndCaptureIneligibleDataKeepTheFullReader() throws Exception {
+        var f = new Fixture(); Obj auxiliary = f.appendView(f.cooldown());
+        var metrics = captureMetrics(() -> f.prefixScope(archive -> {
+            DriverPersistentPlanningState.replay(auxiliary, archive);
+            f.access.eligible = false; int reads = f.reads;
+            DriverPersistentPlanningState.replay(auxiliary.with("variant", new IntegerValue(BigInteger.ONE)), archive); assertEquals(reads + 8, f.reads);
+            f.access.eligible = true; f.access.retained = false; f.access.complete = false; reads = f.reads;
+            DriverPersistentPlanningState.replay(auxiliary.with("variant", new IntegerValue(BigInteger.TWO)), archive); assertEquals(reads + 8, f.reads);
+            assertNull(f.prefix.checkpoint);
+            f.access.retained = true; f.access.complete = true; reads = f.reads;
+            DriverPersistentPlanningState.replay(auxiliary.with("variant", new IntegerValue(BigInteger.valueOf(3))), archive); assertEquals(reads + 8, f.reads);
+            reads = f.reads; DriverPersistentPlanningState.replay(auxiliary.with("variant", new IntegerValue(BigInteger.valueOf(4))), f.archive()); assertEquals(reads + 8, f.reads);
+            return null;
+        }));
+        assertEquals(0L, metric(metrics, "prefix_anchor_hits")); assertEquals(6L, metric(metrics, "prefix_proofs_replayed"));
+    }
+
+    @Test void threeArgumentDataScopeCannotBorrowOrClearAnOuterPrefix() throws Exception {
+        var f = new Fixture(); Obj auxiliary = f.appendView(f.cooldown());
+        f.prefixScope(archive -> { DriverPersistentPlanningState.replay(auxiliary, archive); return null; });
+        Object prior = f.prefix.checkpoint;
+        var metrics = captureMetrics(() -> DriverPersistentPlanningState.inOwnedPrefixScope(f.prefix, f.archive,
+                ignored -> f.scope(archive -> {
+                    int reads = f.reads; DriverPersistentPlanningState.replay(auxiliary.with("variant", new Bool(true)), archive); assertEquals(reads + 8, f.reads);
+                    assertThrows(IllegalArgumentException.class, () -> DriverPersistentPlanningState.replay(auxiliary.with("one_life_strategy", new Obj(Map.of())), archive));
+                    assertSame(prior, f.prefix.checkpoint, "an unbound DATA scope does not mutate the outer prefix owner");
+                    return null;
+                })));
+        assertEquals(0L, metric(metrics, "prefix_anchor_hits")); assertEquals(0L, metric(metrics, "prefix_proofs_replayed"));
     }
 
     @FunctionalInterface private interface MetricsWork { void run() throws IOException; }

@@ -27,7 +27,28 @@ public final class DriverCapabilityRuntime implements PlanningReadCoordinator.Kn
             ActionPorts.OutcomeArchive facade,ContinuityStorePort.Session session,
             ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
         var access = Objects.requireNonNull(source).openAccess(facade, session);
-        return DriverPersistentPlanningState.inRetainedDataReplayScope(access, facade, operation);
+        var prefix = access == null ? null : new RootDataPrefixAccess(access);
+        return DriverPersistentPlanningState.inOwnedPrefixScope(prefix, facade,
+                ignored -> DriverPersistentPlanningState.inRetainedDataReplayScope(access, prefix, facade, operation));
+    }
+
+    /** Pure cooldown State custody for the identical authenticated DATA scope. It exposes
+     * neither the Native facade nor the Native-owned prefix source to the restricted View. */
+    private static final class RootDataPrefixAccess implements DriverPersistentPlanningState.OwnedPrefixAccess {
+        private final DriverPersistentPlanningState.RetainedDataReplayAccess access;
+        private Object checkpoint;
+        private RootDataPrefixAccess(DriverPersistentPlanningState.RetainedDataReplayAccess access) { this.access = access; }
+        @Override public boolean accepts(ActionPorts.OutcomeArchive value) throws IOException { return access.accepts(value); }
+        @Override public Object current() throws IOException { access.requireCurrent(); return checkpoint; }
+        @Override public void current(Object value) throws IOException {
+            // Failure cleanup must still discard a partially verified prefix after scope poisoning.
+            if (value != null) access.requireCurrent();
+            checkpoint = value;
+        }
+        @Override public Object beginCapture() throws IOException { return access.beginCapture(); }
+        @Override public Optional<java.util.Set<ExactRef>> dependencies(Object capture) throws IOException { return access.dependencies(capture); }
+        @Override public void closeCapture(Object capture) throws IOException { access.closeCapture(capture); }
+        @Override public boolean verify(java.util.Set<ExactRef> dependencies) throws IOException { return access.verify(dependencies); }
     }
 
 

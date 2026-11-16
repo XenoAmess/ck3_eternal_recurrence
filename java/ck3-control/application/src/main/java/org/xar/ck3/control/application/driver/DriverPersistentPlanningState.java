@@ -75,6 +75,7 @@ public final class DriverPersistentPlanningState {
         private static final long MAX_ESTIMATED_BYTES = 8L * 1024 * 1024;
         private static final int MAX_DEPENDENCY_MEMBERSHIPS = 32768;
         private final RetainedDataReplayAccess access;
+        private final OwnedPrefixAccess prefix;
         private final ActionPorts.OutcomeArchive facade;
         private final Thread thread = Thread.currentThread();
         private final Map<Obj, VerifiedDataReplay> verified = new LinkedHashMap<>(16, 0.75f, true);
@@ -84,9 +85,14 @@ public final class DriverPersistentPlanningState {
         // Single-candidate rejection and first-triggered LRU eviction causes are distinct DATA facts.
         private long dependencyRejections, weightRejections, evictions, entryEvictions, weightEvictions, membershipEvictions;
         private long successfulPublishes, peakEstimatedBytes;
+        private long prefixAnchorHits, prefixProofsReplayed;
         private int peakEntries, peakDependencyMemberships;
-        private RetainedDataReplayScope(RetainedDataReplayAccess access, ActionPorts.OutcomeArchive facade) {
-            this.access = access; this.facade = facade;
+        private RetainedDataReplayScope(RetainedDataReplayAccess access, OwnedPrefixAccess prefix, ActionPorts.OutcomeArchive facade) {
+            this.access = access; this.prefix = access == null ? null : prefix; this.facade = facade;
+        }
+        private boolean ownsPrefix(OwnedPrefixAccess candidate, ActionPorts.OutcomeArchive archive) {
+            return prefix != null && prefix == candidate && OWNED_PREFIX.get() == prefix
+                    && facade == archive && Thread.currentThread() == thread;
         }
         // A failed validation clears every cell; prior successful-publication diagnostics remain visible.
         private void clear() { verified.clear(); estimatedBytes = 0; dependencyMemberships = 0; }
@@ -120,7 +126,8 @@ public final class DriverPersistentPlanningState {
                 Throwable failure = null;
                 try {
                     // The whole original call includes the header, nested rebuilds and final auxiliary comparison.
-                    replayOriginal(auxiliary, archive, null, null);
+                    OwnedPrefixAccess owned = ownsPrefix(prefix, archive) && prefix.accepts(archive) ? prefix : null;
+                    replayOriginal(auxiliary, archive, owned, capture);
                     dependencies = access.dependencies(capture);
                 } catch (IOException | RuntimeException | Error problem) { failure = problem; throw problem; }
                 finally {
@@ -159,7 +166,12 @@ public final class DriverPersistentPlanningState {
                 peakEntries = Math.max(peakEntries, verified.size());
                 peakEstimatedBytes = Math.max(peakEstimatedBytes, estimatedBytes);
                 peakDependencyMemberships = Math.max(peakDependencyMemberships, dependencyMemberships);
-            } catch (IOException | RuntimeException | Error failure) { clear(); throw failure; }
+            } catch (IOException | RuntimeException | Error failure) {
+                clear();
+                if (prefix != null) try { prefix.current(null); }
+                catch (IOException | RuntimeException | Error cleanup) { if (cleanup != failure) failure.addSuppressed(cleanup); }
+                throw failure;
+            }
         }
         private static long nextDiagnosticCount(long value) { return value == Long.MAX_VALUE ? value : value + 1; }
         private static long addWeight(long left, long right) {
@@ -201,6 +213,7 @@ public final class DriverPersistentPlanningState {
                         + " membership_evictions=" + membershipEvictions + " successful_publishes=" + successfulPublishes
                         + " peak_entries=" + peakEntries + " peak_estimated_bytes=" + peakEstimatedBytes
                         + " peak_dependency_memberships=" + peakDependencyMemberships
+                        + " prefix_anchor_hits=" + prefixAnchorHits + " prefix_proofs_replayed=" + prefixProofsReplayed
                         + " scope_callback_succeeded=" + (succeeded ? 1 : 0));
             } catch (RuntimeException | Error diagnosticFailure) { /* Diagnostics carry no validation credit. */ }
         }
@@ -208,8 +221,13 @@ public final class DriverPersistentPlanningState {
     /** Only the same-package authenticated local-service bridge installs the distinct DATA scope. */
     static <T> T inRetainedDataReplayScope(RetainedDataReplayAccess access, ActionPorts.OutcomeArchive archive,
             ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        return inRetainedDataReplayScope(access, null, archive, operation);
+    }
+    /** The authenticated bridge explicitly binds its DATA prefix; an outer Native prefix is never inferred. */
+    static <T> T inRetainedDataReplayScope(RetainedDataReplayAccess access, OwnedPrefixAccess prefix,
+            ActionPorts.OutcomeArchive archive, ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
         RetainedDataReplayScope prior = RETAINED_DATA_REPLAY.get();
-        RetainedDataReplayScope scope = new RetainedDataReplayScope(access, archive);
+        RetainedDataReplayScope scope = new RetainedDataReplayScope(access, prefix, archive);
         RETAINED_DATA_REPLAY.set(scope);
         boolean succeeded = false;
         try { T result = operation.read(archive); succeeded = true; return result; }
@@ -437,6 +455,8 @@ public final class DriverPersistentPlanningState {
     }
     private static void replayCooldown(Obj auxiliary,ActionPorts.OutcomeArchive archive,
             OwnedPrefixAccess access,Object capture) throws IOException {
+        RetainedDataReplayScope data = RETAINED_DATA_REPLAY.get();
+        if (data != null && !data.ownsPrefix(access, archive)) data = null;
         if(!auxiliary.members().containsKey(COOLDOWN_STATE)) { require(!auxiliary.members().containsKey(COOLDOWN_SOURCE),"cooldown source without state");return; }
         ExactRef current=source(auxiliary);List<Obj> reverse=new ArrayList<>();Set<ExactRef> seen=new java.util.HashSet<>();
         List<ExactRef> reverseSources = new ArrayList<>();
@@ -449,7 +469,11 @@ public final class DriverPersistentPlanningState {
                 require(reverse.size() + cached.proofSources().size() <= MAX_CHAIN,"cyclic or excessive cooldown source chain");
                 for (ExactRef prior : cached.proofSources())
                     require(prior.equals(current) || !seen.contains(prior),"cyclic or excessive cooldown source chain");
-                if (access.verify(cached.dependencies())) { anchor = cached; break; }
+                if (access.verify(cached.dependencies())) {
+                    anchor = cached;
+                    if (data != null && data.ownsPrefix(access, archive)) data.prefixAnchorHits = RetainedDataReplayScope.nextDiagnosticCount(data.prefixAnchorHits);
+                    break;
+                }
                 cached = null; access.current(null);
             }
             Obj proof=material(archive,current);reverse.add(proof);reverseSources.add(current);
@@ -514,6 +538,7 @@ public final class DriverPersistentPlanningState {
             else require(processed.equals(next),"non-life transition changed processed receipts");
             processed=next;state=reduced.state();finalProof=proof;
             verifiedSources.add(reverseSources.get(i));
+            if (data != null && data.ownsPrefix(access, archive)) data.prefixProofsReplayed = RetainedDataReplayScope.nextDiagnosticCount(data.prefixProofsReplayed);
             if (access != null && verifiedSources.size() >= 2) {
                 Optional<Set<ExactRef>> dependencies = access.dependencies(capture);
                 if (dependencies.isPresent()) access.current(new VerifiedPrefix(access, reverseSources.get(i), state,

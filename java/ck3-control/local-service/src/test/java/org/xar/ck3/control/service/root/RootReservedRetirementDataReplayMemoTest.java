@@ -201,6 +201,81 @@ final class RootReservedRetirementDataReplayMemoTest {
         }
     }
 
+    @Test void realRootViewReusesVerifiedCooldownPrefixesAcrossAuxiliaryKeysAndAbsorbsDependencies() throws Exception {
+        try (var fixture = new ActionWriterIntegrationFixture(root.resolve("real-data-prefix"), false)) {
+            var observed = fixture.command("data-prefix-setup", java.time.Duration.ofSeconds(60));
+            fixture.writer.locked(same -> {
+                var auxiliary = new java.util.ArrayList<Obj>();
+                var proofs = new java.util.ArrayList<ExactRef>();
+                fixture.collector.current(same, observed.before(), java.time.Instant.now().plusSeconds(60), lease -> {
+                    var frame = lease.frame();
+                    var identity = org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.frame(frame);
+                    var snapshot = org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.snapshot(
+                            org.xar.ck3.control.application.driver.DriverJson.toNode(frame.semantic()));
+                    var state = org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.decode(
+                            com.fasterxml.jackson.databind.node.NullNode.getInstance(), identity);
+                    var reduced = org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.view(state, snapshot, identity);
+                    Obj encodedState = dataNode(org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.encode(reduced.state()));
+                    Obj view = dataNode(org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.encodeView(reduced.view()));
+                    Obj basis = new Obj(Map.of("manifest", dataRef(lease.driver().observation().orElseThrow().semanticFactsEvidence()),
+                            "native", dataRef(frame.originalEvidence())));
+                    var nil = org.xar.ck3.control.planning.opportunity.OpportunityJson.Nil.INSTANCE;
+                    Obj initial = new Obj(Map.of("configured_path", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(
+                            root.toAbsolutePath().resolve(org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.LEGACY_FILENAME).toString()),
+                            "observed_at", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(java.time.Instant.now().toString()),
+                            "original", nil, "saved", nil, "baseline_receipts", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Arr(List.of())));
+                    for (int ordinal = 0; ordinal < 3; ordinal++) {
+                        Obj proof = new Obj(Map.of("schema", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text("xar.driver-persistent-planning-source/v2"),
+                                "mode", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(ordinal == 0 ? "INITIAL" : "VIEW"),
+                                "previous", ordinal == 0 ? nil : dataRef(proofs.getLast()), "frame", basis,
+                                "input", ordinal == 0 ? initial : nil, "state", encodedState, "view", view,
+                                "processed", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Arr(List.of())));
+                        ExactRef original = fixture.archive.preserveMaterial(new RawJson(org.xar.ck3.control.application.driver.DriverJson.encode(proof)));
+                        proofs.add(original);
+                        auxiliary.add(new Obj(Map.of(DriverPersistentPlanningState.COOLDOWN_SOURCE, dataRef(original),
+                                DriverPersistentPlanningState.COOLDOWN_STATE, encodedState,
+                                org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.VIEW_KEY, view)));
+                    }
+                    return null;
+                });
+                int actions = fixture.nativeActionWrites(), reads = fixture.nativeReadWrites();
+                String metrics = captureMetrics(() -> {
+                    try (var owner = owner(fixture, same)) {
+                        var data = owner.archive(); var source = owner.dataReplaySource();
+                        return data.inHistoricalReadScope(same, LIMITS, scoped -> {
+                            assertSame(data, scoped); assertNull(scoped.scopedDriverDecoder());
+                            assertNull(fixture.archive.ownedPersistentPrefixAccess(scoped, same), "DATA View never becomes the Native-owned facade");
+                            DriverPersistentPlanningState.replay(auxiliary.get(1), scoped);
+                            var access = source.openAccess(scoped, same); Object outer = access.beginCapture();
+                            try {
+                                DriverPersistentPlanningState.replay(auxiliary.get(1).with("different_auxiliary", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Bool(true)), scoped);
+                                Set<ExactRef> absorbed = access.dependencies(outer).orElseThrow();
+                                assertTrue(absorbed.containsAll(proofs.subList(0, 2)), "prefix verify must register its earlier complete source chain into the outer trace");
+                                assertTrue(absorbed.size() > 2, "the original Driver/manifest/native closure is nonempty");
+                            } finally { access.closeCapture(outer); }
+                            DriverPersistentPlanningState.replay(auxiliary.get(2), scoped);
+                            assertThrows(IllegalArgumentException.class, () -> DriverPersistentPlanningState.replay(auxiliary.get(2).with(
+                                    org.xar.ck3.control.nativebridge.capabilities.army.DeclarationOpportunityCooldown.VIEW_KEY, EMPTY), scoped));
+                            DriverPersistentPlanningState.replay(auxiliary.get(1).with("after_failure", new org.xar.ck3.control.planning.opportunity.OpportunityJson.Bool(true)), scoped);
+                            assertThrows(UnsupportedOperationException.class, () -> scoped.preserveRequest(null));
+                            return true;
+                        });
+                    }
+                });
+                assertTrue(metrics.contains("prefix_anchor_hits=3 "), metrics);
+                assertTrue(metrics.contains("prefix_proofs_replayed=5 "), metrics);
+                assertEquals(actions, fixture.nativeActionWrites()); assertEquals(reads, fixture.nativeReadWrites());
+                return null;
+            });
+        }
+    }
+    private static Obj dataNode(com.fasterxml.jackson.databind.JsonNode value) {
+        return org.xar.ck3.control.application.driver.DriverJson.object(org.xar.ck3.control.contracts.StrictJson.canonical(value), org.xar.ck3.control.contracts.StrictJson.EXPLICIT_MAX_BYTES);
+    }
+    private static Obj dataRef(ExactRef value) {
+        return org.xar.ck3.control.application.capabilities.DriverRuntimeCapabilities.referenceJson(value);
+    }
+
     private static boolean accepts(DriverPersistentPlanningState.RetainedDataReplayAccess access, ActionPorts.OutcomeArchive facade) {
         try { return access.accepts(facade); } catch (IOException | RuntimeException ended) { return false; }
     }
