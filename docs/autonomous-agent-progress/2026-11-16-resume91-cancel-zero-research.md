@@ -276,3 +276,37 @@ Test1同源补既有helper CP后10.274780秒GREEN；三真实失败selectors14.9
 
 
 三族ControlCi50+ControlBuild63+CiBootstrap71共184原class真实同FileID hardlink共目录后，补失败7于43.621474秒真实7P/0F/0E/0skip；0javac/0生产guard改变。补7 XML `F/ci118j2/carrier-repair03/reports/TEST-junit-jupiter.xml`53070B/SHA `023d9d8ac00fcca9cc020fc2fc192301225b79dc583bebc22bac6fe0e651fc22`。原whole26 XML68199B/SHA `65b6c36d3359e606ed2b6543ab02f3fbd001967139536478ae44af14864bf523`保持19P/7E；新7与原19组成26 distinct最终通过，原三实际失败另已3P，不能改写为单份whole26全绿。此次仅Test1两行canonical fixture/pins改动，软件资格已齐，正常单包发表不等P6终态；完整Official及Own仍待真实后继结果。
+
+
+P6-late04:14:20/elapsed1494秒仍Core940，现成栈DriverJson.model/LinkedHashMap递归规范转换；读29.304GB/1424101ops、handles18823、OSprivate4.511GB非heap结论，stderr尚无DATA/memo/parse终计数、无Game/真END。窄只读源码映射由Runtime当前firstorigin小件 `LOADED-FOUR-SOURCE-CURRENT-ORIGIN-PINS01.json`8243B/SHA `54bd8bac61c141c6ac383346880a1c9c6d3e1a4d6a0ec80e4831610a60dc8d81`绑定，不拿formal近似源当actual：Core940→CBJ4557同Game scope→4698逐READ→retainCapturedRead；Reader209 bytes/exactSHA→211因受限View decoder=null而DriverStateSnapshot.decodeComplete。Native parsed缓存为RawJson封套/验证，并非Complete或完整Jackson树，parsed hit不等于下游decode跳过。DPS memo hit省完整void header/cooldown/rebuild，但CBJ710/752/756的快照encode与SHA在其外；Complete快encode只拼私有Value bytes、小header，legacy才全树，单BigIntegerNode样本无法区分。调用次数、快路比例、同实例复用、CPU份额及主瓶颈均NOT_PROVEN，Hpp2 held也不等于payload字节驻留。
+
+基于同一retainCapturedRead内afterDriver.encode连续重复的源码事实，另做只读最小机会核验：检查中间mutation/sideeffect与确定性，若成立仅在本次调用局部复用相同encoded byte[]用于原比较及原SHA；不跨调用cache、不减少exact验证，不改活P6。候选尚未实现/编测，收益未知，与新DATA tier最终结果独立。
+
+
+CI fixture Test1+五报告已正常FF发表 `170f7b4837d2fae21480df8e8ec5b8b9ed5267b6`，parent5f878eca、remote exact/整树clean。PUB6为5853B/SHA `8cdcd071c98bce60927313103c3fa2c30353d6004998f763e36c78f90982f69c`；canonical graphdisk104127B非FS净增/peak，独立208KiB guard保守关闭。完整软件闭档 `F/ci118t1/SOFTWARE-CLOSED-CI-CANONICAL-FIXTURE-TEST1-FIRST3-WHOLE19-REPAIR7-DISTINCT26-01.json`17096B/SHA `9ba117195d55a388112376923eacfae6867e183cb4294a91a5b226e9f05f856b`一次核读；source256KiB及编测6MiB只返各自真实unused81920/1691696一次，Native该波按协议结束，不空闲轮询。新Official43802085477已启动，旧5f43799855518向服务端请求取消，取消不算通过；新完整CI尚未结论。
+
+P6-late04:19:32/elapsed1806.3秒仍Core940 DriverJson.model/OpportunityJson.Obj规范转换，读38.127GB/1622523ops、handles19541，新DATA终计数仍NOT_HELD，stdout/template空/真END未有。OSprivate4.511GB不作heap用量或GC后live结论；不将单帧栈或旧parsed命中当性能根因。
+
+源码局部复用只读资格已闭：Complete为final record，历史List.copyOf、sealed Slot/Value持私有bytes/clone accessor，编码之间仅原件读取比较与可选capturePin，无Driver mutation。actorId允许BigInteger子类，故不能无条件删除其第二次编码；采用邻近retainReadCapabilities既有的exact BigInteger class guard，标准不可变对象局部复用第一次encodedDriver，子类保第二encode原位置。原首encode→原件load/compare→原capturePin→SHA/stamp顺序和所有异常不变，零跨调用缓存。actual BASE553186B/16647bc5、formal BASE556842B/4cf5fc34；最终after553335B/72acc5e0与556991B/00fd1a3b只同一hunk，原3656B差异保全。
+
+新独立source2MiB已fund，Ready02为4296B/a2a32d54…，根 `J/retained-read-after-driver-local-encoding-candidate01`；BASE仅引用旧冻结源/Git而非双复制。仅既有CleanRestartCanonicalWriterTest72242B/90d82daa一叶必要typing及capturedReadSuffixRetainsActualPublishedDriverWithoutReplayingReads方法，涵盖3条已发布READ、最终Driver bytes/stamp和改原row拒绝，不整类11或大Transport。actual1→Test1→该方法→formal1的distinct8MiB已授权，尚未报真实结果；不以源级少一次编码宣称实际收益或改活P6。
+
+
+## P6 自然失败揭示 memo 权重压力；继续核实际回放机制
+
+P6-late于04:34:34.592905Z真实自然END，exit1/wall2708.3920787秒、0kill；retained exact HANDLE的exitFILETIME134392772742097234，原session30935真实终态保留。错误仍Lifecycle observation deadline expired，Win32Host115→Life165→Core707→Root View.loadReceipt181→DPS.replayCooldown495→CBJ.retainCapturedRead741/Core940。04:36:04末态 `P6-late/logs/RESTORE-EXITED05-TRUE-END-VERIFIED01.json`8757B/SHA `f6e692708b529441a25025f4a0d9eabb109d7c32cac7e9c204baf252adbd3b6e`：0ck3/ownedchild/claim，head raw100052B/SHA d8b37715…仍2002，numericWAL/sourcebindings各2002，原savedPair FileID/bytes/mtime原样，不重读87MB；四旧宿主同birth活，SCREEN freshCAS10467，旧UNKNOWN_EFFECT与quarantine不变，0新业务/READ/Driver/queue/SAVE信用。
+
+新CAS acquired_retained10289/unretained0/fallback0，entry/byte/handle回退均0，peak10289/268435456B，实际私有16384/256MiB/32772。tier确已消旧句柄回退，不能据此授完整恢复或性能成功。finish_succeeded1仅Native finish(failure)返回，validation_failed1因callback截止firstFailure非空，非callback成功、坏件或close失败；stderr无suppressed close异常。
+
+**DATA full242/hits28/unretained0/successful_publishes241，weight_evictions234、entry/membership eviction0；peak_entries33/estimated_bytes8384693/memberships10480，dependency_rejections0/weight_rejections0。** 这证明原8MiB权重压力，不证明被淘汰key会再次使用或调高一定有收益。parse Core slot4 completed0，evict73327（byte73220/entry108非互斥）、fullMaterial hit2045/protocol27970。stdout379B/2f10321f…、stderr11039B/a430f851…保原件。04:31:30现成Win32整个JVM user591.609+kernel39.078秒，main134.313秒；同一Thread.print的VM Thread485.250秒、C2Compiler10.641秒/C10.297秒，不把main当全JVMCPU、VM Thread全归GC或OSprivate当heap。
+
+下一先窄读真实memo key/复用关系和已有cooldown前缀机制，不盲调权重：DPS DATA分支若miss调用replayOriginal(...,null,null)，会绕开已有OwnedPrefixAccess的已验证前缀复用；Root受限View目前只装DATA scope。核其能否对同私有Root actual/View/session/thread/fixedhead复用已有OwnedPrefix，同时保持完整header、原件/依赖trace、nested rebuild、最终aux比较和失败吸收。此为只读施工评估，尚未实现/增编/采用，也未认定主因；旧8MiB/128/32768继续保持。
+
+局部CBJ编码候选actual1真实27.015895秒/23class绿；Test1 typing20.491547秒/12class，旧fixture37family复用0编。Test准备的两次firstorigin拒均0BEGIN/0javac，分别旧fixture路径覆盖及相同root重复索引，只修CP metadata。直接READ1实际75.345064秒1E，原BASE23/同Testbinary/CP对照67.482766秒同E，触发旧retainReadCapabilities guard（candidate804/base802，由741先调用，未达752hunk），保两XML、不授采用。formal1随后24.688087秒23class绿亦不作行为通过。真实fixture遗漏为第2批READ前仍用初始空history的capability_state_source，最小Test修为每批前真实collector→既有refresh/publishCapabilityInputs→退出后重collect READ；保原2+1及全部断言/生产guard，单叶重编及同1方法补验中，不重BASE/两生产族或whole11。
+
+
+CBJ真实fixture修复后，Test1再typing17.069296秒/12class，直接capturedReadSuffix方法73.983154秒1P/0F/0E/0skip；XML `F/cbj119j1/fixture-repair03/reports/TEST-junit-jupiter.xml`48179B/SHA `60c16e03e8f6635f60b4a2ed37213c30b6b7915486531b5bea569c7a4827e262`。生产actual23/formal23不重、原候选75.345秒及BASE67.483秒同guard失败均保。只Test每批前用既有producer刷新与发布当前Driver绑定的capability，原2+1已发布READ和最终bytes/stamp/改row拒绝断言不变。局部编码生产1+最小Test1与五报告按独立7文件正常发表；软件通过不授P6采用或速度收益。
+
+下一P0只读确认：memo key是immutable Obj完整结构值、access-order LRU，非每次唯一identity；28hit证明有同值复用，但无evicted-key-return统计不能断言升32MiB有效。另DATA miss确实replayOriginal(...,null,null)，绕开既有OwnedPrefix；原Native prefix刻意只accept真Native facade，不能简单改宽。最小2prod(DPS+Bridge)+2Test方案已授权source1MiB，使用已认证private Root source.openAccess的同RetainedDataReplayAccess创建私有prefix适配器，checkpoint不外露、无Native/decoder/write；同词法scope，miss在原完整outer capture内复用原replayCooldown算法，保每次header、cycle/frame/processed/final aux及anchor依赖再次verify，nested trace吸收全部旧依赖，任何replay/verify/traceclose失败同时清prefix与memo，capture/unheld失格仍全读。旧Native accepts、DATA128/8MiB/32768、CAS档位不变；未写/未编测/未采用时不报收益。
+
+P6后实际8个Runtime roots Native93557344B，按下一hour keeper64MiB+两READ128MiB+tail8MiB预估303272544B>原256MiB，当前不授新phase。fresh物理55.064GB/commit70.954GB，扣source5+Game32+CI2=39GiB估算后仍有13.188/29.078GB，DusedUpper13309771223040加原other512MiB/meta2MiB仍在quota内。Root据真实存储缺口授权archive07一次，沿既有lossless/全部roundtrip和源二次身份内容核验后exact清理，仅closed age>=10min且非最新9dirs，输出/index/receipt aggregate<=4MiB/120s、前后fresh lease，0新fund/假unused退款；未发新Main/source窗，归档结果尚待。

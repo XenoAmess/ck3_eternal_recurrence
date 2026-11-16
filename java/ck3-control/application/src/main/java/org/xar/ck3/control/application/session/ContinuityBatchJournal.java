@@ -749,11 +749,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var driver=new org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Complete(old.session(),appended,
                 old.lastCheckpoint(),old.rollbackWarFailure(),old.managedRestoreTransaction(),old.successionExpectation(),
                 old.successionLifecycle(),old.campaignGoal(),old.rollbackWarFailures());
-        StrictJson.require(java.util.Arrays.equals(driver.encode(),originals.loadFullMaterial(afterRef).bytes()),
+        byte[] encodedDriver=driver.encode();
+        StrictJson.require(java.util.Arrays.equals(encodedDriver,originals.loadFullMaterial(afterRef).bytes()),
                 "captured READ changed a non-history Driver slot or original row");
         if(retainPins){originalsPins.add(same.capturePin(beforeRef,WriterContracts.MAX_PIN_BYTES));originalsPins.add(same.capturePin(afterRef,WriterContracts.MAX_PIN_BYTES));}
         var stamp=new org.xar.ck3.control.application.driver.DriverSnapshotFacts.Stamp(nextVersion,known.stamp().episodeEpoch(),
-                known.stamp().game(),known.stamp().episodeRunId(),org.xar.ck3.control.application.driver.DriverJson.sha256(driver.encode()));
+                known.stamp().game(),known.stamp().episodeRunId(),org.xar.ck3.control.application.driver.DriverJson.sha256(
+                        driver.session().actorId().getClass()==java.math.BigInteger.class?encodedDriver:driver.encode()));
         var auxiliary=new java.util.LinkedHashMap<>(known.auxiliary().members());
         auxiliary.put("driver_read_publication",new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of(
                 "event_identity",new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(edge.eventIdentity()),

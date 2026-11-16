@@ -474,6 +474,16 @@ final class CleanRestartCanonicalWriterTest {
             input.batches().commit(new JournalInput(owner,"read-worker-0",JournalKind.BATCH_STARTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
             fixture.writer.locked(same->{
                 for(int count:List.of(2,1)) {
+                    // Each published history batch advances the Driver. Refresh the actual capability
+                    // source before collecting the next READ frame, as the ordinary runtime does.
+                    fixture.collector.current(same,input.observed().before(),Instant.now().plusSeconds(60),lease->{
+                        var refreshed=DriverCapabilityStateProducer.refresh(lease.frame(),lease.driver(),fixture.archive.withSession(same));
+                        if(refreshed.isPresent()) {
+                            var produced=refreshed.orElseThrow();
+                            fixture.driverAuthority().publishCapabilityInputs(same,lease.driver().stamp(),produced.expectedAuxiliarySha256(),produced);
+                        }
+                        return null;
+                    });
                     fixture.collector.current(same,input.observed().before(),Instant.now().plusSeconds(60),lease->{
                         for(int ordinal=0;ordinal<count;ordinal++) {
                             var request=new PlanningReadRequest(lease.frame().identity(),lease.frame().source(),lease.frame().sessionId(),contract.operation(),new Obj(java.util.Map.of()),Instant.now().plusSeconds(60));
