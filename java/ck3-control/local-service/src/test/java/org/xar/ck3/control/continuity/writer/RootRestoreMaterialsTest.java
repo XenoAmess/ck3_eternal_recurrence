@@ -98,6 +98,27 @@ class RootRestoreMaterialsTest {
             assertThrows(IllegalArgumentException.class,()->RootRestoreMaterialProjection.reduce(input(nativeState(),json(raw),saved(),abandoned())));
         }
     }
+    @Test void exactSnakeProducerControlFeedsThePureReducerAndPreservesTheCamelFixtureBranch() {
+        var camel=RootRestoreMaterialProjection.reduce(input(nativeState(),control(),saved(),abandoned()));
+        for(String phase:List.of("NATIVE_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED","EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED")) {
+            var snake=RootRestoreMaterialProjection.reduce(input(nativeState(),snakeControl(phase),saved(),abandoned()));
+            assertArrayEquals(camel.provisional().encode(),snake.provisional().encode());
+            assertEquals(camel.completedRow(),snake.completedRow());assertEquals(camel.restoredSemantic(),snake.restoredSemantic());
+        }
+    }
+    @Test void snakeControlRequiresExactEightFieldsAndTypedOriginalReferences() {
+        String original=encoded(snakeControl("EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED"));
+        for(String changed:List.of(original.replace("\"old_pid\":7","\"old_pid\":true"),
+                original.replace("\"old_pid\":7","\"old_pid\":7.0"),original.replace(REQUEST,"different-parent"),
+                original.replace("\"old_birth_decimal\":\"134373229053165471\"","\"old_birth_decimal\":134373229053165471"),
+                original.replace("134373229053165471","134373229053165470"),
+                original.replace("EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED","STOP_ENTERED"),
+                original.replace("\"bytes\":100","\"bytes\":true"),original.replace("\"bytes\":100","\"bytes\":100.0"),
+                original.replace("Z:/fixture/actual-lifecycle.json","relative.json"),
+                original.replace("\"save\":", "\"unrecognized_save\":"),
+                original.substring(0,original.length()-1)+",\"oldPid\":7}"))
+            assertThrows(IllegalArgumentException.class,()->RootRestoreMaterialProjection.reduce(input(nativeState(),json(changed),saved(),abandoned())));
+    }
     @Test void mapPausedLivingDateActorAndConnectionAreValidatedBeforeColdProjection() {
         for(String raw:List.of(encoded(nativeState()).replace("\"map_ready\":true","\"map_ready\":false"),
                 encoded(nativeState()).replace("\"paused\":true","\"paused\":false"),encoded(nativeState()).replace("\"alive\":true","\"alive\":false"),
@@ -200,6 +221,10 @@ class RootRestoreMaterialsTest {
     private static Obj DriverObservationRef(ExactRef ref){return org.xar.ck3.control.application.driver.DriverObservationEvidenceReader.reference(ref);}
     private static Obj nativeState(){return json("{\"map_ready\":true,\"paused\":true,\"date_raw\":100,\"played_character\":{\"character_id\":1,\"alive\":true},\"active_wars\":[],\"player_armies\":[],\"diagnostics\":{\"bridge_pid\":9,\"connection_generation\":4}}");}
     private static Obj control(){return json("{\"schema\":\"xar.java-game-replacement/v1\",\"parentLifecycleIntentId\":\""+REQUEST+"\",\"phase\":\"NATIVE_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED\",\"oldPid\":7,\"oldBirthDecimal\":\"134373229053165471\"}");}
+    private static Obj snakeControl(String phase){return new Obj(java.util.Map.of("schema",new Text("xar.java-game-replacement/v1"),
+            "parent_lifecycle_intent_id",new Text(REQUEST),"phase",new Text(phase),"old_pid",new IntegerValue(BigInteger.valueOf(7)),
+            "old_birth_decimal",new Text("134373229053165471"),"save",DriverObservationRef(lifecycleRef()),
+            "stop_evidence",DriverObservationRef(lifecycleRef()),"launch_evidence",DriverObservationRef(nativeRef())));}
     private static Obj unknown(){return json("{\"index\":1,\"command\":\"unknown-original\",\"ok\":false,\"result\":null,\"error\":\"real failure\",\"extension\":[null,[],{}]}");}
     private static Obj checkpoint(){return json("{\"history_index\":2,\"sha256\":\""+"a".repeat(64)+"\",\"size\":4096,\"date_raw\":100,\"episode_character_id\":1,\"episode_run_id\":\"ep\"}");}
     private static Obj anchor(){return json("{\"index\":2,\"command\":\"save-checkpoint\",\"ok\":true,\"result\":{\"checkpoint\":"+encoded(checkpoint())+"}}");}

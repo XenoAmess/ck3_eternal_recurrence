@@ -46,6 +46,21 @@ final class RootOperatorQuarantineRuntime {
                 org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock);
         exited.requireOwner(lifecycle,deadline);core.bindOperatorQuarantineSource(source);
     }
+    /** The loaded role supplies only the old canonical subject; this path never captures or appends a decision. */
+    static void installLoaded(RootApplicationAssembly.Core core,
+            org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded,
+            ExactRef configuredRequest,Clock clock,java.time.Instant deadline)throws IOException {
+        loaded.requireCurrent(deadline);
+        byte[] bytes=readExact(configuredRequest);var request=CompositeOperatorQuarantineRequest.decode(bytes);
+        var old=loaded.previousOwner();
+        StrictJson.require(request.lifeInterruption()&&!request.reservedTailInterruption()
+                &&request.machineId().equals(old.machineId())&&request.game().equals(old.game())
+                &&request.episodeRunId().equals(old.sessionId()),"loaded recovery requires its actual old configured Life terminal source");
+        var source=new CompositeOperatorQuarantineSource(configuredRequest,bytes,readExact(request.authorizedBy()),old.game(),old.sessionId(),
+                new org.xar.ck3.control.application.action.OperationKey("life-advance"),
+                org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock);
+        loaded.requireCurrent(deadline);core.bindOperatorQuarantineSource(source);
+    }
     private static byte[] readExact(ExactRef reference)throws IOException {
         StrictJson.require(reference.bytes()>0&&reference.bytes()<=65536,"bounded explicit operator configuration required");
         byte[] raw;try(var stream=Files.newInputStream(Path.of(reference.path()))){raw=stream.readNBytes(65537);}

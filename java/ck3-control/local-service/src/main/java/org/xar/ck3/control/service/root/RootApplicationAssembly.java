@@ -750,12 +750,42 @@ public final class RootApplicationAssembly {
                 source.verify(same,head,parent,originals);game.verify();
             }
         }
+        /** Two source-proven predecessor branches; DATA cannot enter either native source role. */
+        private static final class ColdOwner {
+            final org.xar.ck3.control.platform.JavaGameLifecycle owner;
+            final org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration original;
+            final org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded;
+            ColdOwner(org.xar.ck3.control.platform.JavaGameLifecycle owner,
+                    org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration original) {
+                this.owner=Objects.requireNonNull(owner);this.original=Objects.requireNonNull(original);loaded=null;
+            }
+            ColdOwner(org.xar.ck3.control.platform.JavaGameLifecycle owner,
+                    org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded) {
+                this.owner=Objects.requireNonNull(owner);this.loaded=Objects.requireNonNull(loaded);original=null;
+            }
+            private void owner(org.xar.ck3.control.platform.JavaGameLifecycle same)throws IOException {
+                if(same!=owner)throw new IOException("cold predecessor crossed its actual lifecycle composition");
+            }
+            String machineId(){return loaded==null?original.machineId():loaded.previousOwner().machineId();}
+            org.xar.ck3.control.contracts.GameGeneration generation(){return loaded==null?original.generation():loaded.previousOwner().game();}
+            String sourceSessionId(){return loaded==null?original.sourceSessionId():loaded.previousOwner().sessionId();}
+            org.xar.ck3.control.contracts.ExactRef evidence(){return loaded==null?original.evidence():loaded.oldSourceEvidence();}
+            void requireOwner(org.xar.ck3.control.platform.JavaGameLifecycle same,Instant until)throws IOException {
+                owner(same);if(loaded==null)original.requireOwner(same,until);else loaded.requireCurrent(until);
+            }
+            void requireMembership(org.xar.ck3.control.platform.JavaGameLifecycle same,Instant until)throws IOException {
+                owner(same);if(loaded==null)original.requireMembership(same,until);else loaded.requireMembership(until);
+            }
+            void requireHistoricalOwner(org.xar.ck3.control.platform.JavaGameLifecycle same)throws IOException {
+                owner(same);if(loaded==null)original.requireHistoricalOwner(same);else loaded.requireOriginals();
+            }
+        }
         /** A private administrative scope: it grants exactly one configured parent retirement, never ordinary ACTION/READ/SDK permission. */
         private final ThreadLocal<ReservedRetirementScope> reservedRetirement=new ThreadLocal<>();
         private final class ReservedRetirementScope implements AutoCloseable {
             final ContinuityStorePort.Session same; final ManagedGameSession game;
             final org.xar.ck3.control.platform.JavaGameLifecycle exitedOwner;
-            final org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exited;
+            final ColdOwner exited;
             final org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource source; final Instant deadline;
             RootReservedRetirementArchive raw;
             ActionPorts.OutcomeArchive data;
@@ -770,7 +800,13 @@ public final class RootApplicationAssembly {
                     org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exited,
                     org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource source,Instant deadline) {
                 this.same=same;game=null;this.source=source;this.deadline=deadline;
-                exitedOwner=Objects.requireNonNull(owner);this.exited=Objects.requireNonNull(exited);
+                exitedOwner=Objects.requireNonNull(owner);this.exited=new ColdOwner(owner,exited);
+            }
+            ReservedRetirementScope(ContinuityStorePort.Session same,org.xar.ck3.control.platform.JavaGameLifecycle owner,
+                    org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded,
+                    org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource source,Instant deadline) {
+                this.same=same;game=null;this.source=source;this.deadline=deadline;
+                exitedOwner=Objects.requireNonNull(owner);this.exited=new ColdOwner(owner,loaded);
             }
             void initialize() {
                 requireCurrent();
@@ -791,6 +827,14 @@ public final class RootApplicationAssembly {
                             try{source.verify(same,head,receipt,scoped);}
                             catch(IOException failure){throw new UncheckedIOException(failure);}
                         })));
+                if(exited!=null&&exited.loaded!=null) {
+                    try {
+                        var retained=ContinuityActionJournal.lookup(same.head().state(),source.request().parentActionId(),data).orElseThrow();
+                        StrictJson.require(retained.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeOperatorQuarantined,
+                                "loaded recovery only verifies its committed operator terminal; no administrative append");
+                        verifier.verify(same.head(),retained);requireExitedPhysical();return;
+                    } catch(IOException failure) {throw new UncheckedIOException(failure);}
+                }
                 authority=new ActionContinuityAuthority(exited==null?"reserved-life-operator-retirement":"exited-life-operator-retirement",data,
                         (head,command)->{throw new IllegalStateException("administrative retirement grants no command guard");},
                         verifier,clock);
@@ -915,7 +959,7 @@ public final class RootApplicationAssembly {
         public static final class ColdRestoreSource {
             private final Core core;
             private final org.xar.ck3.control.platform.JavaGameLifecycle lifecycle;
-            private final org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exited;
+            private final ColdOwner exited;
             private final SavedCheckpointMaterialStore materials;
             private final SavedCheckpointMaterial material;
             private final DriverCheckpointStore drivers;
@@ -926,7 +970,7 @@ public final class RootApplicationAssembly {
             private RestoreCheckpointService.Request replacementRequest;
             private ManagedGameSession replacement;
             private ColdRestoreSource(Core core,org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
-                    org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exited,SavedCheckpointMaterialStore materials,
+                    ColdOwner exited,SavedCheckpointMaterialStore materials,
                     SavedCheckpointMaterial material,DriverCheckpointStore drivers,ContinuityBatchJournal.SettledSameGameData history,
                     DriverObservationAssembler.Complete before,OriginalWindowReducer.Policy policy,Instant deadline) {
                 this.core=core;this.lifecycle=lifecycle;this.exited=exited;this.materials=materials;this.material=material;
@@ -938,6 +982,7 @@ public final class RootApplicationAssembly {
                 return archive.readArtifact(same,original,Math.min(RawJson.MAXIMUM_BYTES,ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES));
             }
             public SavedCheckpointMaterial material(){return material;}
+            Optional<org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement> loadedReplacement(){return Optional.ofNullable(exited.loaded);}
             public SavedCheckpointMaterialStore materials(){return materials;}
             public DriverCheckpointStore driverCheckpoints(){return drivers;}
             public DriverSnapshotFacts.Known abandonedFacts(){return history.retainedFacts();}
@@ -975,11 +1020,27 @@ public final class RootApplicationAssembly {
             public void requireReplacement(ContinuityStorePort.Session same,RestoreCheckpointService.Request request,
                     ManagedGameSession replacement,Instant operationDeadline)throws IOException {
                 requireArchivedBefore(same,request);
+                if(exited.loaded!=null) {
+                    var actual=exited.loaded;
+                    actual.requireAck(actual.cachedAck(),operationDeadline);
+                    StrictJson.require(actual.originalParentId().equals(request.requestId())
+                            &&actual.originalDeadline().equals(request.deadline())&&actual.pair().equals(request.pair())
+                            &&actual.previousOwner().equals(new SessionIdentity(request.current().observed().machineId(),
+                                    request.current().observed().game(),request.current().sessionId()))
+                            &&actual.attached()==replacement,
+                            "loaded restoration changed its genuine original replacement, deadline, pair or previous owner");
+                    synchronized(this) {
+                        if(replacementRequest==null){replacementRequest=request;this.replacement=replacement;}
+                        else StrictJson.require(replacementRequest.equals(request)&&this.replacement==replacement,
+                                "loaded source cannot substitute another original replacement occurrence");
+                    }
+                    return;
+                }
                 var result=lifecycle.queryReplacement(request.requestId());
                 StrictJson.require(result instanceof org.xar.ck3.control.platform.JavaGameLifecycle.Replaced,
                         "cold restore source has no original completed replacement");
                 var actual=(org.xar.ck3.control.platform.JavaGameLifecycle.Replaced)result;
-                exited.requireReplacementOwner(lifecycle,actual,operationDeadline);
+                exited.original.requireReplacementOwner(lifecycle,actual,operationDeadline);
                 StrictJson.require(actual.replacement().session()==replacement,
                         "cold restore source cannot borrow another actual replacement owner");
                 synchronized(this) {
@@ -1022,14 +1083,25 @@ public final class RootApplicationAssembly {
         public synchronized ColdRestoreSource qualifyColdRestoreSource(org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
                 org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exited,SavedCheckpointMaterialStore materials,
                 SavedCheckpointMaterial material,DriverCheckpointStore drivers,OriginalWindowReducer.Policy policy,Instant deadline)throws IOException {
-            Objects.requireNonNull(lifecycle);Objects.requireNonNull(exited);Objects.requireNonNull(materials);
-            Objects.requireNonNull(material);Objects.requireNonNull(drivers);Objects.requireNonNull(policy);Objects.requireNonNull(deadline);
+            return qualifyColdRestoreSource(new ColdOwner(lifecycle,exited),materials,material,drivers,policy,deadline);
+        }
+        public synchronized ColdRestoreSource qualifyLoadedRestoreSource(org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
+                org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement actual,SavedCheckpointMaterialStore materials,
+                SavedCheckpointMaterial material,DriverCheckpointStore drivers,OriginalWindowReducer.Policy policy,Instant deadline)throws IOException {
+            return qualifyColdRestoreSource(new ColdOwner(lifecycle,actual),materials,material,drivers,policy,deadline);
+        }
+        private ColdRestoreSource qualifyColdRestoreSource(ColdOwner exited,SavedCheckpointMaterialStore materials,
+                SavedCheckpointMaterial material,DriverCheckpointStore drivers,OriginalWindowReducer.Policy policy,Instant deadline)throws IOException {
+            var lifecycle=exited.owner;
+            Objects.requireNonNull(materials);Objects.requireNonNull(material);Objects.requireNonNull(drivers);
+            Objects.requireNonNull(policy);Objects.requireNonNull(deadline);
             StrictJson.require(coldRestoreSource==null&&activeSession==null&&!staged&&!finished&&!router.isSealed()&&adopted.isEmpty()
                     &&reservedRetirement.get()==null&&clock.instant().isBefore(deadline),"cold restore source binds once to an unused actual Core");
             exited.requireOwner(lifecycle,deadline);
             var source=operatorQuarantineSource().orElseThrow(()->new IOException("cold exited restore requires its installed original administrative source"));
             return writer.locked(same->archive.inSession(same,actualArchive->{
-                var scope=new ReservedRetirementScope(same,lifecycle,exited,source,deadline);reservedRetirement.set(scope);
+                var scope=exited.loaded==null?new ReservedRetirementScope(same,lifecycle,exited.original,source,deadline):
+                        new ReservedRetirementScope(same,lifecycle,exited.loaded,source,deadline);reservedRetirement.set(scope);
                 try(scope) {
                     scope.initialize();materials.requireOwn(material);material.requirePhysical(same);
                     var owner=new SessionIdentity(exited.machineId(),exited.generation(),exited.sourceSessionId());

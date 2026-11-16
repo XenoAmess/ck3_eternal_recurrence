@@ -11,10 +11,14 @@ import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
+import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.build.WindowsJobProcess;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.GameGeneration;
+import org.xar.ck3.control.contracts.StrictJson;
 
 /** Revalidates the new daemon's actual Saved creator. A PID, descriptor or old daemon ticket cannot enter. */
 public final class RootProcessAttach {
@@ -147,6 +151,12 @@ public final class RootProcessAttach {
         public Path evidenceDirectory(){return directory;}
         public Instant deadline(){return deadline;}
         public ExactRef evidence(){return exact(receipt.source());}
+        /** Lexical custody only; it neither rereads evidence nor queries a process. */
+        synchronized void requireMembership(Instant until)throws IOException {
+            if(closed||released||Thread.currentThread()!=thread||mutex==null||until==null||until.isAfter(deadline)
+                    ||!Instant.now().isBefore(until)||!Instant.now().isBefore(deadline))throw new IOException("Loaded custody lost its original thread or finite source membership");
+            mutex.requireHeld();
+        }
         public synchronized void requireEvidence()throws IOException {
             requireWitness(descriptor);requireWitness(currentHello);requireWitness(receipt);
             readLoaded(owner.nativeHello(),ColdBootstrapJson.MAX_BYTES);readLoaded(owner.launchEvidence(),ColdBootstrapJson.MAX_BYTES);
@@ -176,6 +186,120 @@ public final class RootProcessAttach {
             if(failure!=null)throw failure;
         }
         @Override public synchronized void close()throws IOException {if(!closed){closed=true;release();}}
+    }
+
+    /** Closed actual replacement-control wire. Its decoded value is evidence, never a process capability. */
+    record LoadedReplacementControl(String parentId,GameGeneration previous,ExactRef save,ExactRef stopped,ExactRef launched){ }
+    static LoadedReplacementControl decodeLoadedReplacementControl(byte[] bytes)throws IOException {
+        try{
+            var row=StrictJson.object(StrictJson.parse(bytes,65536),java.util.Set.of("schema","parent_lifecycle_intent_id","phase","old_pid","old_birth_decimal","save","stop_evidence","launch_evidence"));
+            if(!"xar.java-game-replacement/v1".equals(StrictJson.text(row.get("schema")))
+                    ||!"EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED".equals(StrictJson.text(row.get("phase"))))throw new IOException("original exited replacement has not retained its genuine new HELLO");
+            String parent=StrictJson.text(row.get("parent_lifecycle_intent_id"));if(parent.length()>256)throw new IOException("bounded original replacement parent required");
+            return new LoadedReplacementControl(parent,new GameGeneration(StrictJson.integer(row.get("old_pid"),1,4294967295L),GameGeneration.parseCreationFiletime(row.get("old_birth_decimal"))),
+                    ExactRef.fromJson(row.get("save")),ExactRef.fromJson(row.get("stop_evidence")),ExactRef.fromJson(row.get("launch_evidence")));
+        }catch(IllegalArgumentException invalid){throw new IOException("invalid original snake-case replacement control",invalid);}
+    }
+    /** Read-only existing occurrence. It never registers Started/Replaced or acquires Job/STOP/CREATE authority. */
+    public static final class LoadedReplacement implements AutoCloseable {
+        private final LoadedCustody custody;
+        private final LoadedReplacementControl control;
+        private final ExitedGameSource.Historical old;
+        private final ExactRef parentControl,generationClaim;
+        private final List<SharedSourceFiles.Witness> witnesses;
+        private final Instant observedAt,deadline;
+        private final Thread thread=Thread.currentThread();
+        private final RestoreCheckpointService.ReplacementAck acknowledgement;
+        private final SourceWindow window;
+        private boolean closed;
+        private LoadedReplacement(LoadedCustody custody,LoadedReplacementControl control,ExitedGameSource.Historical old,
+                ExactRef parentControl,ExactRef generationClaim,List<SharedSourceFiles.Witness> witnesses,Instant observedAt,Instant deadline){
+            this.custody=custody;this.control=control;this.old=old;this.parentControl=parentControl;this.generationClaim=generationClaim;
+            this.witnesses=List.copyOf(witnesses);this.observedAt=observedAt;this.deadline=deadline;
+            acknowledgement=new RestoreCheckpointService.ReplacementAck(control.parentId(),control.previous(),custody.game().generation(),control.save(),parentControl);window=new SourceWindow(this);
+        }
+        public ManagedGameSession attached(){return custody.game();}
+        public CheckpointPair pair(){return custody.pair();}
+        public String originalParentId(){return control.parentId();}
+        public Instant originalDeadline(){return custody.owner.configuration().deadline();}
+        public SessionIdentity previousOwner(){var descriptor=old.source().descriptor();return new SessionIdentity(descriptor.machineId(),descriptor.generation(),descriptor.sessionId());}
+        public NativeLaunchPlanCodec.Configuration originalConfiguration(){return old.source().descriptor().configuration();}
+        public String originalPipe(){return originalConfiguration().pipeName();}
+        public ExactRef oldSourceEvidence(){return old.source().currentObservation();}
+        public ExactRef oldOwner(){return old.source().descriptorReference();}
+        public ExactRef parentControl(){return parentControl;}
+        public ExactRef generationClaim(){return generationClaim;}
+        public ExactRef ownerDescriptor(){return custody.descriptorRef;}
+        public ExactRef launchEvidence(){return custody.owner.launchEvidence();}
+        public ExactRef originalLaunchHello(){return custody.owner.nativeHello();}
+        public ExactRef currentAttachedHello(){return exact(custody.currentHello.source());}
+        /** Data only. Both Native receiver and private ReadWindow must requalify this exact instance. */
+        public RestoreCheckpointService.ReplacementAck cachedAck(){return acknowledgement;}
+        public Instant deadline(){return deadline;}
+        public SourceWindow sourceWindow(){return window;}
+        public List<ExactRef> originalReferences(){
+            var refs=new java.util.LinkedHashSet<ExactRef>(old.references());refs.addAll(List.of(parentControl,generationClaim,ownerDescriptor(),launchEvidence(),originalLaunchHello(),currentAttachedHello(),custody.evidence()));return List.copyOf(refs);
+        }
+        public synchronized void requireMembership(Instant until)throws IOException {
+            if(closed||Thread.currentThread()!=thread||window.owner!=this||until==null||until.isAfter(deadline)||!Instant.now().isBefore(until)||!Instant.now().isBefore(deadline))throw new IOException("Loaded replacement lost its exact finite source membership");
+            custody.requireMembership(until);
+        }
+        /** Historical originals only: no submission-window renewal, process query or active-custody requirement. */
+        public void requireOriginals()throws IOException {
+            for(var witness:witnesses)requireWitness(witness);old.requireOriginals();custody.requireEvidence();
+            var parent=decodeLoadedReplacementControl(readLoaded(parentControl,65536));var generation=decodeLoadedReplacementControl(readLoaded(generationClaim,65536));
+            if(!parent.equals(control)||!generation.equals(control))throw new IOException("original replacement control or generation claim changed");
+        }
+        public void requireCurrent()throws IOException {requireCurrent(deadline);}
+        public synchronized void requireCurrent(Instant until)throws IOException {
+            requireMembership(until);custody.requireCurrent();requireOriginals();ExitedGameSource.requireOldGenerationExited(old,until);requireMembership(until);
+        }
+        public void requireAck(RestoreCheckpointService.ReplacementAck actual,Instant until)throws IOException {
+            if(actual!=acknowledgement)throw new IOException("Loaded replacement requires its privately retained exact ACK instance");requireCurrent(until);
+        }
+        /** Original lifecycle body only. A fresh READ window never edits these historical request fields. */
+        public void requireOriginalRequest(RestoreCheckpointService.Request request)throws IOException {
+            Objects.requireNonNull(request);SessionIdentity previous=previousOwner();
+            if(!request.requestId().equals(originalParentId())||!request.deadline().equals(originalDeadline())||!request.pair().equals(pair())
+                    ||!request.current().observed().game().equals(previous.game())||!request.current().observed().machineId().equals(previous.machineId())
+                    ||!request.current().sessionId().equals(previous.sessionId()))throw new IOException("existing replacement changed its original request ID, deadline, previous owner or physical pair");
+        }
+        @Override public synchronized void close()throws IOException {if(Thread.currentThread()!=thread)throw new IOException("Loaded replacement close changed owning thread");if(!closed){closed=true;custody.close();}}
+        /** Opaque current observation/adoption source; the historical launch/configuration deadlines remain unchanged. */
+        public static final class SourceWindow {
+            private final LoadedReplacement owner;
+            private SourceWindow(LoadedReplacement owner){this.owner=owner;}
+            public String machineId(){return owner.attached().machineId();}
+            public GameGeneration game(){return owner.attached().generation();}
+            public String sessionId(){return owner.attached().sessionId();}
+            public Instant observedAt(){return owner.observedAt;}
+            public Instant deadline(){return owner.deadline;}
+            public List<ExactRef> refs(){return owner.originalReferences();}
+            public void requireOwner(LoadedReplacement expected,Instant until)throws IOException {
+                if(expected!=owner||owner.window!=this)throw new IOException("Loaded source window belongs to another physical role");owner.requireMembership(until);
+            }
+        }
+    }
+    public static LoadedReplacement qualifyLoadedReplacement(LoadedCustody actual,ExactRef parentControl,
+            ExactRef generationClaim,CheckpointPair pair,Instant readDeadline)throws IOException {
+        Objects.requireNonNull(actual);Objects.requireNonNull(pair);Objects.requireNonNull(parentControl);Objects.requireNonNull(generationClaim);Win32Host.deadline(readDeadline);
+        Instant observed=Instant.now();if(readDeadline.isAfter(observed.plus(Duration.ofMinutes(45))))throw new IOException("finite loaded source/adoption window must not exceed forty-five minutes");
+        actual.requireMembership(readDeadline);actual.requireCurrent();
+        if(!actual.pair().equals(pair))throw new IOException("loaded replacement changed its exact physical saved pair");
+        LoadedReplacementControl control=decodeLoadedReplacementControl(readLoaded(parentControl,65536)),generation=decodeLoadedReplacementControl(readLoaded(generationClaim,65536));
+        if(!control.equals(generation)||!control.save().equals(pair.save().reference())||!control.previous().equals(pair.frame().game())||!control.launched().equals(actual.owner.launchEvidence())
+                ||!JavaGameLifecycle.replacementRequestId(control.parentId()).equals(actual.owner.configuration().requestId()))throw new IOException("loaded replacement changed its original parent, SAVE, old birth or new launch source");
+        Path controls=actual.game().launchPlan().stateDirectory().resolve("control");
+        String oldKey=actual.game().machineId()+":"+control.previous().pid()+":"+control.previous().creationFiletime().value();
+        if(!Path.of(parentControl.path()).equals(controls.resolve(JavaGameLifecycle.replacementRequestId(control.parentId())+"-parent.json"))
+                ||!Path.of(generationClaim.path()).equals(controls.resolve("exited-generation-"+JavaGameLifecycle.replacementRequestId(oldKey)+".json")))throw new IOException("loaded replacement control did not come from the exact original producer paths");
+        var old=ExitedGameSource.readHistorical(control.stopped(),control.previous());var before=old.source().descriptor().configuration();var now=actual.owner.configuration();
+        if(!before.profileDirectory().equals(now.profileDirectory())||!before.stateDirectory().equals(now.stateDirectory())
+                ||!before.review().gameExecutable().equals(now.review().gameExecutable())||!old.source().descriptor().machineId().equals(actual.game().machineId()))throw new IOException("loaded replacement crossed the original profile/state/executable lineage");
+        var witnesses=new java.util.ArrayList<SharedSourceFiles.Witness>();for(ExactRef ref:List.of(parentControl,generationClaim,actual.descriptorRef,actual.owner.launchEvidence(),actual.owner.nativeHello())){
+            var witness=SharedSourceFiles.observe(Path.of(ref.path()));if(!exact(witness.source()).equals(ref))throw new IOException("loaded original witness differs from its exact reference");witnesses.add(witness);
+        }
+        LoadedReplacement result=new LoadedReplacement(actual,control,old,parentControl,generationClaim,witnesses,observed,readDeadline);result.requireCurrent(readDeadline);return result;
     }
 
     public static LoadedCustody retainLoadedSaved(ManagedGameSession attached,ExactRef ownerDescriptor,

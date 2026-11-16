@@ -24,6 +24,7 @@ import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.service.root.CanonicalSaveReceiptVerifier;
+import org.xar.ck3.control.service.root.RootRuntimeStorageGuard;
 
 /** Controlled raw packet/file edges compose the actual SAVE producer, canonical writer and saved source consumer. */
 public final class CheckpointSourceCompositionTest {
@@ -53,6 +54,13 @@ public final class CheckpointSourceCompositionTest {
     @FunctionalInterface interface SnapshotSupplierDecorator {
         DriverCheckpointStore.SnapshotSupplier decorate(DriverCheckpointStore.SnapshotSupplier actual);
     }
+    /** Existing controlled raw packet producer profile; it grants no loaded Game or production Native authority. */
+    static ActionWriterIntegrationFixture.SoftwareReadScenario freshReconciliationReads() {
+        return new ActionWriterIntegrationFixture.SoftwareReadScenario(
+                org.xar.ck3.control.contracts.ExactCk3Build.CK3_12004.executableSha256(),"ck3-1.20.0.4-msvc-x64",
+                source->List.of(),request->{throw new AssertionError("no additional ordinary READ installed");},
+                Optional.of(org.xar.ck3.control.contracts.ExactCk3Build.CK3_12004.version()),java.util.Set.of(NativeFreshSnapshotPort.CAPABILITY));
+    }
     static final class Fixture implements AutoCloseable {
         final ActionWriterIntegrationFixture actual;
         final NativeCheckpointFiles files=new NativeCheckpointFiles();
@@ -64,6 +72,8 @@ public final class CheckpointSourceCompositionTest {
         final SavedAttachmentSourceStore sources;
         final SavedFirstCheckpointMaterialStore firstSources;
         final SavedCheckpointMaterialStore materials;
+        final RootRuntimeStorageGuard materialOutputGuard;
+        final CheckpointFiles materialOutputFiles;
         final SessionIdentity owner;
         final DeferredSeeds seedLink=new DeferredSeeds();
         final AtomicReference<Instant> lastCheckpointObservationDeadline=new AtomicReference<>();
@@ -96,11 +106,36 @@ public final class CheckpointSourceCompositionTest {
                 Optional<AfterPostcondition> afterPostcondition,
                 List<ActionWriterIntegrationFixture.SoftwareActionScenario> additionalActions,java.time.Duration commandBudget,Path physicalSaveRoot,
                 Optional<ActionWriterIntegrationFixture.SoftwareDispatch> physicalSaveWrite)throws Exception {
+            this(root,loseAck,serviceClock,snapshots,afterPostcondition,additionalActions,commandBudget,physicalSaveRoot,physicalSaveWrite,Optional.empty());
+        }
+        Fixture(Path root,boolean loseAck,Clock serviceClock,Optional<SnapshotSupplierDecorator> snapshots,
+                Optional<AfterPostcondition> afterPostcondition,
+                List<ActionWriterIntegrationFixture.SoftwareActionScenario> additionalActions,java.time.Duration commandBudget,Path physicalSaveRoot,
+                Optional<ActionWriterIntegrationFixture.SoftwareDispatch> physicalSaveWrite,
+                Optional<ActionWriterIntegrationFixture.SoftwareReadScenario> freshReconciliationReads)throws Exception {
+            this(root,loseAck,serviceClock,snapshots,afterPostcondition,additionalActions,commandBudget,physicalSaveRoot,physicalSaveWrite,
+                    freshReconciliationReads,false);
+        }
+        Fixture(Path root,boolean loseAck,Clock serviceClock,Optional<SnapshotSupplierDecorator> snapshots,
+                Optional<AfterPostcondition> afterPostcondition,
+                List<ActionWriterIntegrationFixture.SoftwareActionScenario> additionalActions,java.time.Duration commandBudget,Path physicalSaveRoot,
+                Optional<ActionWriterIntegrationFixture.SoftwareDispatch> physicalSaveWrite,
+                Optional<ActionWriterIntegrationFixture.SoftwareReadScenario> freshReconciliationReads,boolean guardedMaterialOutputs)throws Exception {
+            this(root,loseAck,serviceClock,snapshots,afterPostcondition,additionalActions,commandBudget,physicalSaveRoot,physicalSaveWrite,
+                    freshReconciliationReads,guardedMaterialOutputs,false);
+        }
+        Fixture(Path root,boolean loseAck,Clock serviceClock,Optional<SnapshotSupplierDecorator> snapshots,
+                Optional<AfterPostcondition> afterPostcondition,
+                List<ActionWriterIntegrationFixture.SoftwareActionScenario> additionalActions,java.time.Duration commandBudget,Path physicalSaveRoot,
+                Optional<ActionWriterIntegrationFixture.SoftwareDispatch> physicalSaveWrite,
+                Optional<ActionWriterIntegrationFixture.SoftwareReadScenario> freshReconciliationReads,boolean guardedMaterialOutputs,
+                boolean nativeSavedSnapshotIdentity)throws Exception {
             Objects.requireNonNull(commandBudget);
             StrictJson.require(!commandBudget.isNegative()&&!commandBudget.isZero()
                     &&commandBudget.compareTo(java.time.Duration.ofMinutes(2))<=0,"bounded software SAVE command budget required");
             Objects.requireNonNull(snapshots);Objects.requireNonNull(afterPostcondition);additionalActions=List.copyOf(additionalActions);
             Objects.requireNonNull(physicalSaveWrite);
+            Objects.requireNonNull(freshReconciliationReads);
             AtomicReference<CheckpointService> serviceRef=new AtomicReference<>();
             AtomicReference<ActionWriterIntegrationFixture> actualRef=new AtomicReference<>();
             AtomicReference<byte[]> afterPacket=new AtomicReference<>();Path save=physicalSaveRoot.resolve("save games").resolve("xar_checkpoint.ck3");
@@ -114,14 +149,15 @@ public final class CheckpointSourceCompositionTest {
                         else Files.writeString(save,"actual controlled SAVE bytes from the original native write");
                         actualRef.get().enqueueSoftwareNativePacket(afterPacket.get());
                     },Optional.empty(),Optional.empty(),true);
-            if(additionalActions.isEmpty())actual=new ActionWriterIntegrationFixture(root,loseAck,scenario);
+            if(additionalActions.isEmpty()&&freshReconciliationReads.isEmpty())actual=new ActionWriterIntegrationFixture(root,loseAck,scenario);
             else {
                 var actions=new java.util.ArrayList<ActionWriterIntegrationFixture.SoftwareActionScenario>();
                 actions.add(scenario);actions.addAll(additionalActions);
                 var noAdditionalReads=new ActionWriterIntegrationFixture.SoftwareReadScenario("0".repeat(64),"fixture-adapter",
                         reviewed->List.of(),request->{throw new AssertionError("no extra software READ was installed");});
-                actual=new ActionWriterIntegrationFixture(root,loseAck,noAdditionalReads,List.copyOf(actions));
+                actual=new ActionWriterIntegrationFixture(root,loseAck,freshReconciliationReads.orElse(noAdditionalReads),List.copyOf(actions));
             }
+            if(freshReconciliationReads.isPresent())actual.configureSoftwareFreshRead179("success",true);
             actualRef.set(actual);owner=actual.observationIdentity();
             actual.preserveInitialObservationData();
             var inputs=actual.physicalInputs();
@@ -188,7 +224,17 @@ public final class CheckpointSourceCompositionTest {
             for(String kind:cycles.kinds())actual.bindAdditionalTransitionAuthority(kind,cycles);
             var materialRoot = root.resolve("saved-material");
             Files.createDirectories(materialRoot.resolve("checkpoints"));
-            sources=new SavedAttachmentSourceStore(files,drivers,pairs,actual.writer::borrowedSession,materialRoot,
+            RootRuntimeStorageGuard outputGuard=null;CheckpointFiles outputFiles=files;
+            if(guardedMaterialOutputs) {
+                var initial=new WriterContracts.InitialLayout(root.resolve("ROOT-CONTINUITY-WINDOW.json"),root.resolve("anchor.json"),owner.machineId());
+                outputGuard=RootRuntimeStorageGuard.ordinary(initial,root.resolve("artifacts"),()->actual.writer,List.of(root),64L<<20,Clock.systemUTC());
+                try {
+                    outputGuard.requireInitialization(initial.lock(),List.of(root));
+                    outputFiles=outputGuard.checkpointFiles(files);outputGuard.requireCompleteAdmission();
+                }catch(IOException|RuntimeException|Error failure){try{outputGuard.close();}catch(IOException close){failure.addSuppressed(close);}throw failure;}
+            }
+            materialOutputGuard=outputGuard;materialOutputFiles=outputFiles;
+            sources=new SavedAttachmentSourceStore(materialOutputFiles,drivers,pairs,actual.writer::borrowedSession,materialRoot,
                     cycles::verifyCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);sourceRef.set(sources);
             var firstVerifier=new FirstCheckpointVerifier(files,drivers,(same,source,material)->semantic.verify(same,source,material).materialDigest(),
                     root.resolve("ROOT-CONTINUITY-WINDOW.lock"),actual.writer::requireSession,originals);
@@ -200,7 +246,8 @@ public final class CheckpointSourceCompositionTest {
             Ready before=actual.ready();proof=batch.cycleProof(owner,before.semanticEvidence().orElseThrow()).orElseThrow();
             byte[] original=Files.readAllBytes(Path.of(proof.semantic().originalNativePacket().path()));
             var initial=(NativeWire.Snapshot)NativeWire.decode(original);var post=StrictJson.object();post.put("type","state_snapshot");post.put("protocol_version",1);
-            post.put("snapshot_id","fixture-save-snapshot-2");post.put("revision",initial.revision().add(java.math.BigInteger.ONE));
+            var postRevision=initial.revision().add(java.math.BigInteger.ONE);
+            post.put("snapshot_id",nativeSavedSnapshotIdentity?"native:"+postRevision:"fixture-save-snapshot-2");post.put("revision",postRevision);
             var postState=(com.fasterxml.jackson.databind.node.ObjectNode)org.xar.ck3.control.contracts.FullJsonTree.parse(
                     initial.state().value(),org.xar.ck3.control.application.driver.DriverJson.MAX_NATIVE_BYTES);
             postState.put("retained_save_poststate_original","x".repeat(70000));post.set("state",postState);
@@ -212,7 +259,10 @@ public final class CheckpointSourceCompositionTest {
             return batch.commit(new JournalInput(owner,"software-save-composition",JournalKind.SAVE_CONFIRMED,Optional.of(pair.frame()),
                     Optional.of(pair),Optional.of(proof),List.of(pair.save().reference(),pair.driver().reference(),pair.nativeAckRef())));
         }
-        @Override public void close()throws IOException {actual.close();}
+        @Override public void close()throws IOException {
+            if(materialOutputGuard==null)actual.close();
+            else try(materialOutputGuard){actual.close();}
+        }
     }
     @Test void actualCanonicalSaveAndStableFilesProduceSavedMaterialAndCanonicalSavedBoundary()throws Exception {
         try(var f=new Fixture(temporary.resolve("confirmed"),false)){

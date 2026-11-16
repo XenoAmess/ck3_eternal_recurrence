@@ -15,15 +15,21 @@ public final class GameRestoreAdapter implements RestoreCheckpointService.Lifecy
     private final JavaGameLifecycle lifecycle;
     private final NativeLaunchPlan template;
     private final java.util.Optional<JavaGameLifecycle.ExitedGeneration> exitedSource;
+    private final java.util.Optional<RootProcessAttach.LoadedReplacement> loadedReplacement;
     private final NativeCheckpointFiles files=new NativeCheckpointFiles();
     public GameRestoreAdapter(JavaGameLifecycle lifecycle,NativeLaunchPlan reviewedTemplate){
-        this.lifecycle=Objects.requireNonNull(lifecycle);this.template=Objects.requireNonNull(reviewedTemplate);this.exitedSource=java.util.Optional.empty();
+        this.lifecycle=Objects.requireNonNull(lifecycle);this.template=Objects.requireNonNull(reviewedTemplate);this.exitedSource=java.util.Optional.empty();this.loadedReplacement=java.util.Optional.empty();
     }
     public GameRestoreAdapter(JavaGameLifecycle lifecycle,NativeLaunchPlan reviewedTemplate,JavaGameLifecycle.ExitedGeneration actualExitedSource){
         this.lifecycle=Objects.requireNonNull(lifecycle);this.template=Objects.requireNonNull(reviewedTemplate);
-        this.exitedSource=java.util.Optional.of(Objects.requireNonNull(actualExitedSource));
+        this.exitedSource=java.util.Optional.of(Objects.requireNonNull(actualExitedSource));this.loadedReplacement=java.util.Optional.empty();
+    }
+    public GameRestoreAdapter(JavaGameLifecycle lifecycle,NativeLaunchPlan reviewedTemplate,RootProcessAttach.LoadedReplacement actualLoadedReplacement){
+        this.lifecycle=Objects.requireNonNull(lifecycle);this.template=Objects.requireNonNull(reviewedTemplate);
+        this.exitedSource=java.util.Optional.empty();this.loadedReplacement=java.util.Optional.of(Objects.requireNonNull(actualLoadedReplacement));
     }
     @Override public RestoreCheckpointService.LaunchResult replaceOnce(RestoreCheckpointService.Request request)throws IOException,InterruptedException{
+        if(loadedReplacement.isPresent())throw new IOException("existing loaded replacement is query-only; CREATE and STOP are unavailable");
         Objects.requireNonNull(request);Win32Host.deadline(request.deadline());
         files.verify(request.pair());template.sources().verify();
         var replacement=new JavaGameLifecycle.ReplacementRequest(request.requestId(),request.current().observed().game(),
@@ -43,6 +49,11 @@ public final class GameRestoreAdapter implements RestoreCheckpointService.Lifecy
     }
     @Override public RestoreCheckpointService.LaunchResult query(String requestId,Instant deadline)throws IOException{
         Win32Host.deadline(deadline);
+        if(loadedReplacement.isPresent()){
+            var actual=loadedReplacement.orElseThrow();
+            if(!actual.originalParentId().equals(requestId))throw new IOException("loaded replacement query changed its original parent identity");
+            var ack=actual.cachedAck();actual.requireAck(ack,deadline);return ack;
+        }
         JavaGameLifecycle.ReplacementResult result=lifecycle.queryReplacement(requestId);
         if(result instanceof JavaGameLifecycle.Replaced replaced){
             ExactRef proof=replaced.lifecycleEvidence();new ControlBuild.FileRef(proof.path(),proof.bytes(),proof.sha256()).verify();

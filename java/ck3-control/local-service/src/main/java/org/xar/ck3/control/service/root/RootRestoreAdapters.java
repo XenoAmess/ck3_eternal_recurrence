@@ -41,6 +41,8 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
         }
     }
     public interface MaterialPort {
+        /** Original issuer-bound read budget; this does not extend the immutable lifecycle Request. */
+        default void bindReadWindow(Request request,ReadWindow reads)throws IOException { Objects.requireNonNull(reads).requireOriginal(request); }
         Materials capture(ContinuityStorePort.Session borrowed, Request request, NativeCandidate actual,
                 DriverStateSnapshot.Complete saved, DriverSnapshotFacts.Known abandoned) throws IOException;
         /** Re-derive solely from the original immutable artifacts. No Game action or cold reducer mutation. */
@@ -117,6 +119,7 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
     }
     @Override public synchronized Attachment prepare(Request request, NativeCandidate actual, DriverStateSnapshot.Complete saved,ReadWindow reads) throws IOException {
         Objects.requireNonNull(reads).requireOriginal(request);
+        materials.bindReadWindow(request,reads);
         ContinuityStorePort.Session borrowed = writer.borrowedSession(); writer.requireSession(borrowed);
         Stage retained = stages.get(request.requestId());
         if (retained != null) { sameAttempt(retained, request, actual);retained.reads=reads; verifyAttachmentSource(borrowed, borrowed.head().state(), retained.attachment.request()); return retained.attachment; }
@@ -146,7 +149,8 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
                 Math.addExact(abandoned.stamp().driverVersion(), 1), material.provisional().episodeEpoch(), actual.actual().session(),
                 material.provisional().auxiliary(), material.provisional().loop());
         savedMaterials.requireOwn(request.savedMaterial());request.savedMaterial().requirePhysical(borrowed);
-        Attachment physical = savedMaterials.prepare(request, actual, saved);
+        Attachment physical = coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent()?
+                sources.prepareLoaded(request,actual,saved):savedMaterials.prepare(request, actual, saved);
         var details = physical.request().detailsObject().deepCopy(); var delta = details.putObject("driver_snapshot");
         delta.put("expected_version", abandoned.stamp().driverVersion()); delta.put("expected_epoch", abandoned.stamp().episodeEpoch());
         delta.put("next_epoch", seed.episodeEpoch()); delta.put("before_sha256", abandoned.stamp().driverSha256()); delta.put("after_sha256", finalDriver.sha256());
@@ -186,6 +190,7 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
     @Override public PublishedDriver publish(Request request, NativeCandidate actual, DriverStateSnapshot.Complete saved,
             WriterContracts.Prepared prepared, WriterContracts.Receipt committed,ReadWindow reads) throws IOException {
         Objects.requireNonNull(reads).requireOriginal(request);
+        materials.bindReadWindow(request,reads);
         Stage stage = required(request.requestId()); synchronized (stage) {
             sameAttempt(stage, request, actual);stage.reads=reads;
             return writer.locked(borrowed -> {
@@ -209,7 +214,7 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
     @Override public void requireCurrent(PublishedDriver published, NativeCandidate actual, WriterContracts.Receipt committed,ReadWindow reads) throws IOException {
         ContinuityStorePort.Session borrowed = writer.borrowedSession(); writer.requireSession(borrowed);
         Stage stage = stages.values().stream().filter(value -> value.published == published).findFirst().orElseThrow(() -> new IOException("publication is not from this actual restore adapter"));
-        Objects.requireNonNull(reads).requireOriginal(stage.request);stage.reads=reads;
+        Objects.requireNonNull(reads).requireOriginal(stage.request);materials.bindReadWindow(stage.request,reads);stage.reads=reads;
         sameAttempt(stage, stage.request, actual);
         StrictJson.require(committed.eventIdentity().equals(stage.attachment.request().identity()), "fresh publication crossed canonical restore commit");
         PublishedDriver current = fresh(stage, borrowed,actual);
@@ -305,7 +310,7 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
         Stage stage = stages.values().stream().filter(value -> value.adopted == adopted && value.published != null).findFirst()
                 .orElseThrow(() -> new IOException("actual source-qualified restore runtime not retained"));
         synchronized (stage) {
-            stage.reads=actual.readWindow();stage.reads.requireOriginal(stage.request);
+            stage.reads=actual.readWindow();stage.reads.requireOriginal(stage.request);materials.bindReadWindow(stage.request,stage.reads);
             if (stage.runtime == null) {
                 if (stage.runtimeEntered) throw new IOException("original admitted restore runtime construction failed; no second binding or replacement is authorized");
                 stage.runtimeEntered = true;

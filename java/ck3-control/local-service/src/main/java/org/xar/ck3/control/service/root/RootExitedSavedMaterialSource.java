@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.driver.InitialEpisodePolicy;
+import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.action.ActionCodec;
@@ -66,9 +67,24 @@ final class RootExitedSavedMaterialSource {
     static RootJavaSavedBootstrap.ConfirmedSource qualify(RootApplicationAssembly.Core core,
             RootOrdinaryRuntimeConfiguration configuration,JavaGameLifecycle lifecycle,
             JavaGameLifecycle.ExitedGeneration exited,Instant deadline)throws IOException {
-        Objects.requireNonNull(core);Objects.requireNonNull(configuration);Objects.requireNonNull(lifecycle);
-        Objects.requireNonNull(exited);exited.requireOwner(lifecycle,deadline);
-        var files=new NativeCheckpointFiles();
+        Objects.requireNonNull(lifecycle);Objects.requireNonNull(exited);
+        return qualifyOriginal(core,configuration,exited.machineId(),exited.generation(),exited.sourceSessionId(),
+                exited.originalConfiguration().pipeName(),()->exited.requireOwner(lifecycle,deadline),new NativeCheckpointFiles());
+    }
+    static RootJavaSavedBootstrap.ConfirmedSource qualifyLoaded(RootApplicationAssembly.Core core,
+            RootOrdinaryRuntimeConfiguration configuration,CheckpointFiles actualGuardedFiles,org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded,
+            Instant deadline)throws IOException {
+        Objects.requireNonNull(loaded);
+        var result=qualifyOriginal(core,configuration,loaded.previousOwner().machineId(),loaded.previousOwner().game(),
+                loaded.previousOwner().sessionId(),loaded.originalPipe(),()->loaded.requireCurrent(deadline),Objects.requireNonNull(actualGuardedFiles));
+        StrictJson.require(result.pair().equals(loaded.pair()),"loaded continuation source changed its original physical saved pair");
+        loaded.requireCurrent(deadline);return result;
+    }
+    @FunctionalInterface private interface SourceCheck { void require()throws IOException; }
+    private static RootJavaSavedBootstrap.ConfirmedSource qualifyOriginal(RootApplicationAssembly.Core core,
+            RootOrdinaryRuntimeConfiguration configuration,String machineId,org.xar.ck3.control.contracts.GameGeneration oldGame,
+            String oldSession,String oldPipe,SourceCheck source,CheckpointFiles files)throws IOException {
+        Objects.requireNonNull(core);Objects.requireNonNull(configuration);source.require();
         Path materialRoot=configuration.stateDirectory().resolve("checkpoints/attachments");
         Located located=core.writer().locked(same->{
             var head=same.head();
@@ -78,9 +94,9 @@ final class RootExitedSavedMaterialSource {
             StrictJson.require(saved!=null&&saved.isObject()&&saved.hasNonNull("pair"),
                     "exited restoration requires the canonical latest ordinary saved pair");
             var pair=CheckpointPairCodec.decode(StrictJson.canonical(saved.get("pair")));
-            StrictJson.require(pair.frame().machineId().equals(exited.machineId())
-                            &&pair.frame().game().equals(exited.generation())
-                            &&pair.frame().frame().episodeRunId().equals(exited.sourceSessionId()),
+            StrictJson.require(pair.frame().machineId().equals(machineId)
+                            &&pair.frame().game().equals(oldGame)
+                            &&pair.frame().frame().episodeRunId().equals(oldSession),
                     "exited restoration crossed the canonical saved machine, Game or episode");
             Path path=materialRoot.resolve("checkpoints").resolve(ActionCodec.sha256(CheckpointPairCodec.encode(pair))+".json");
             var witness=files.observe(path).orElseThrow(()->new IOException("original saved material is unavailable"));
@@ -89,7 +105,7 @@ final class RootExitedSavedMaterialSource {
                             &&pair.equals(CheckpointPairCodec.decode(StrictJson.canonical(document.get("pair"))))
                             &&document.get("original_writer_head") instanceof com.fasterxml.jackson.databind.node.ObjectNode,
                     "saved material locator differs from the canonical physical pair");
-            var before=ContinuityState.fromJson((com.fasterxml.jackson.databind.node.ObjectNode)document.get("original_writer_head"),exited.machineId());
+            var before=ContinuityState.fromJson((com.fasterxml.jackson.databind.node.ObjectNode)document.get("original_writer_head"),machineId);
             String name=String.format(java.util.Locale.ROOT,"%08d.json",Math.addExact(before.sequence(),1));
             var matches=head.documents().stream().filter(pin->Path.of(pin.reference().path()).getFileName().toString().equals(name)).toList();
             StrictJson.require(matches.size()==1,"saved source requires its unique actual SAVE_CONFIRMED predecessor edge");
@@ -98,7 +114,7 @@ final class RootExitedSavedMaterialSource {
             return new Located(pair,matches.getFirst());
         });
         var result=RootJavaSavedBootstrap.qualify(core,files,materialRoot,
-                exited.originalConfiguration().pipeName(),located.pair(),located.confirmation());
-        exited.requireOwner(lifecycle,deadline);return result;
+                oldPipe,located.pair(),located.confirmation());
+        source.require();return result;
     }
 }

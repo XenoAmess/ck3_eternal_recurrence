@@ -108,12 +108,37 @@ public final class RootRestoreMaterialProjection {
     }
     private static void requireLifecycle(Input input) {
         Obj control=input.actualLifecycleControl();
+        if(control.members().containsKey("parent_lifecycle_intent_id")||control.members().containsKey("old_pid")
+                ||control.members().containsKey("old_birth_decimal")||control.members().containsKey("stop_evidence")
+                ||control.members().containsKey("launch_evidence")) {
+            StrictJson.require(control.members().keySet().equals(java.util.Set.of("schema","parent_lifecycle_intent_id","phase",
+                    "old_pid","old_birth_decimal","save","stop_evidence","launch_evidence")),"exact original lifecycle producer fields required");
+            StrictJson.require(text(control.get("schema"),"xar.java-game-replacement/v1")
+                    &&text(control.get("parent_lifecycle_intent_id"),input.requestId())
+                    &&(text(control.get("phase"),"NATIVE_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED")
+                        ||text(control.get("phase"),"EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED"))
+                    &&OpportunityJson.integer(control.get("old_pid"),"original lifecycle PID").equals(BigInteger.valueOf(input.previous().pid()))
+                    &&text(control.get("old_birth_decimal"),input.previous().creationFiletime().value().toString()),
+                    "actual snake lifecycle original parent/generation source differs");
+            lifecycleReference(control.get("save"));lifecycleReference(control.get("stop_evidence"));lifecycleReference(control.get("launch_evidence"));
+            return;
+        }
         StrictJson.require(text(control.get("schema"),"xar.java-game-replacement/v1")
                 &&text(control.get("parentLifecycleIntentId"),input.requestId())
                 &&(text(control.get("phase"),"NATIVE_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED")
                     ||text(control.get("phase"),"EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED"))
                 &&OpportunityJson.integer(control.get("oldPid"),"original lifecycle PID").equals(BigInteger.valueOf(input.previous().pid()))
                 &&text(control.get("oldBirthDecimal"),input.previous().creationFiletime().value().toString()),"actual lifecycle original parent/generation source differs");
+    }
+    private static void lifecycleReference(Value value) {
+        Obj reference=OpportunityJson.object(value,"original lifecycle source reference");
+        StrictJson.require(reference.members().keySet().equals(java.util.Set.of("path","bytes","sha256")),"exact original lifecycle reference fields required");
+        String path=OpportunityJson.text(reference.get("path"),"original lifecycle reference path");
+        var actual=java.nio.file.Path.of(path);
+        StrictJson.require(actual.isAbsolute()&&actual.normalize().equals(actual)
+                &&OpportunityJson.integer(reference.get("bytes"),"original lifecycle reference bytes").signum()>0
+                &&OpportunityJson.text(reference.get("sha256"),"original lifecycle reference SHA").matches("[0-9a-f]{64}"),
+                "canonical positive typed original lifecycle reference required");
     }
     private static Obj semantic(Obj raw,DriverStateSnapshot.Session driver,NativeObservationPort.TransportSession actual) {
         var fields=new LinkedHashMap<>(raw.members());

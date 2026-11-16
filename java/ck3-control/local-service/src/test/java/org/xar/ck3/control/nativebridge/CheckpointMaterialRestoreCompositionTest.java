@@ -33,9 +33,22 @@ final class CheckpointMaterialRestoreCompositionTest {
         public void close()throws IOException{f.close();}
     }
     private Harness actualSaved(String name)throws Exception{
-        var f=new CheckpointSourceCompositionTest.Fixture(temporary.resolve(name),false);
+        Path root=temporary.resolve(name);
+        var f=new CheckpointSourceCompositionTest.Fixture(root,false,Clock.systemUTC(),java.util.Optional.empty(),java.util.Optional.empty(),
+                java.util.List.of(),java.time.Duration.ofSeconds(8),root.resolve("profile"),java.util.Optional.empty(),
+                java.util.Optional.of(CheckpointSourceCompositionTest.freshReconciliationReads()));
         try{
-            var saved=assertInstanceOf(CheckpointResult.Confirmed.class,f.service.checkpoint(f.request));
+            var actual=f.service.checkpoint(f.request);
+            if(actual instanceof CheckpointResult.Unknown unknown&&unknown.action().flatMap(receipt->receipt.ack()).filter(ack->ack.nativeOk()).isPresent()) {
+                var original=f.request.saveCommand();int writes=f.actual.nativeActionWrites();
+                String body=org.xar.ck3.control.application.action.ActionCodec.bodySha256(original);Instant deadline=original.deadline();
+                actual=f.service.queryOriginal(original.actionId(),Instant.now().plusSeconds(30));
+                assertEquals(writes,f.actual.nativeActionWrites(),"second stable observation collects the original SAVE without another write");
+                assertEquals(body,org.xar.ck3.control.application.action.ActionCodec.bodySha256(f.request.saveCommand()));
+                assertEquals(deadline,f.request.saveCommand().deadline());
+            }
+            var collected=actual;
+            var saved=assertInstanceOf(CheckpointResult.Confirmed.class,collected,()->"actual saved-material fixture "+name+" returned "+collected);
             f.saveBoundary(saved.pair());f.actual.ready();
             var ready=f.actual.collector.checkpoint("software-save-lineage").observe(Instant.now().plusSeconds(30));
             var request=f.actual.writer.locked(same->{
@@ -95,6 +108,86 @@ final class CheckpointMaterialRestoreCompositionTest {
             h.f.actual.writer.locked(same->{assertTrue(service.originalReboundOrigin(same,h.request.requestId()).isEmpty());return null;});
             assertEquals(1,launches.get());assertEquals(1,queries.get());assertEquals(1,h.f.actual.nativeActionWrites());
             assertEquals(before,h.f.actual.writer.<Long>locked(same->same.head().state().sequence()).longValue());
+        }
+    }
+    @Test void existingLoadedApplicationEntryQueriesWithFreshReadWindowAndKeepsOriginalExpiredRequest()throws Exception {
+        try(var h=actualSaved("existing-query-only")) {
+            var original=new RestoreCheckpointService.Request(h.request.requestId(),h.pair,h.ready,h.request.expectedHeadDigest(),
+                    Instant.now().minusSeconds(1),h.request.savedMaterial());
+            var queries=new AtomicInteger();Instant fresh=Instant.now().plusSeconds(30);
+            var service=service(h,new RestoreCheckpointService.LifecyclePort(){
+                public RestoreCheckpointService.LaunchResult replaceOnce(RestoreCheckpointService.Request request){
+                    throw new AssertionError("existing-loaded application recovery cannot create or replace Game");
+                }
+                public RestoreCheckpointService.LaunchResult query(String id,Instant deadline){
+                    assertEquals(original.requestId(),id);assertEquals(fresh,deadline);queries.incrementAndGet();
+                    return new RestoreCheckpointService.LaunchUnknown("fixture query has no original Native issuer");
+                }
+            },CheckpointMaterialRestoreCompositionTest::cannotObserve);
+            String before=h.f.actual.writer.locked(same->same.head().digest());
+            assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restoreExisting(original,fresh));
+            assertEquals(1,queries.get());assertTrue(original.deadline().isBefore(Instant.now()));
+            var changed=new RestoreCheckpointService.Request(original.requestId(),original.pair(),original.current(),original.expectedHeadDigest(),
+                    original.deadline().plusSeconds(1),original.savedMaterial());
+            var refused=assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restoreExisting(changed,fresh));
+            assertTrue(refused.reason().contains("changed its exact body"),refused.reason());assertEquals(1,queries.get());
+            h.f.actual.writer.locked(same->{assertEquals(before,same.head().digest());return null;});
+            assertEquals(1,h.f.actual.nativeActionWrites(),"only the fixture's original SAVE exists; no Native recovery role was fabricated");
+        }
+    }
+    @Test void existingLoadedEntryRequiresFiniteFreshWindowBeforeRetainingAnAttempt()throws Exception {
+        try(var h=actualSaved("existing-window")) {
+            var queries=new AtomicInteger();var service=service(h,new RestoreCheckpointService.LifecyclePort(){
+                public RestoreCheckpointService.LaunchResult replaceOnce(RestoreCheckpointService.Request request){throw new AssertionError("query only");}
+                public RestoreCheckpointService.LaunchResult query(String id,Instant deadline){queries.incrementAndGet();return new RestoreCheckpointService.LaunchUnknown("fixture only");}
+            },CheckpointMaterialRestoreCompositionTest::cannotObserve);
+            assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restoreExisting(h.request,Instant.now().minusSeconds(1)));
+            assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restoreExisting(h.request,Instant.now().plusSeconds(1801)));
+            var absent=assertInstanceOf(RestoreCheckpointService.Unknown.class,service.queryOriginal(h.request.requestId(),Instant.now().plusSeconds(30)));
+            assertTrue(absent.reason().contains("no original private restore attempt"),absent.reason());assertEquals(0,queries.get());
+            assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restoreExisting(h.request,Instant.now().plusSeconds(30)));
+            assertEquals(1,queries.get());
+        }
+    }
+    @Test void existingLoadedEntryPreservesHeadPhysicalSourceAndUnlaunchedFailureGuards()throws Exception {
+        try(var h=actualSaved("existing-source-guards")) {
+            var queries=new AtomicInteger();var service=service(h,new RestoreCheckpointService.LifecyclePort(){
+                public RestoreCheckpointService.LaunchResult replaceOnce(RestoreCheckpointService.Request request){throw new AssertionError("source failure must not launch");}
+                public RestoreCheckpointService.LaunchResult query(String id,Instant deadline){queries.incrementAndGet();throw new AssertionError("invalid predecessor cannot query a replacement");}
+            },CheckpointMaterialRestoreCompositionTest::cannotObserve);
+            var wrongHead=new RestoreCheckpointService.Request("existing-wrong-head",h.pair,h.ready,"0".repeat(64),
+                    Instant.now().plusSeconds(30),h.request.savedMaterial());
+            assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restore(wrongHead));
+            var unlaunched=assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restoreExisting(wrongHead,Instant.now().plusSeconds(30)));
+            assertTrue(unlaunched.reason().contains("unlaunched restore attempt"),unlaunched.reason());
+            var freshWrongHead=new RestoreCheckpointService.Request("fresh-existing-wrong-head",h.pair,h.ready,"0".repeat(64),
+                    Instant.now().minusSeconds(1),h.request.savedMaterial());
+            assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restoreExisting(freshWrongHead,Instant.now().plusSeconds(30)));
+            Files.writeString(Path.of(h.pair.save().reference().path()),"changed original physical SAVE");
+            assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restoreExisting(h.request,Instant.now().plusSeconds(30)));
+            assertEquals(0,queries.get());assertEquals(1,h.f.actual.nativeActionWrites());
+        }
+    }
+    @Test void existingLoadedQueryAckStillNeedsTwoIndependentOriginalReadProofs()throws Exception {
+        try(var h=actualSaved("existing-two-read-proof")) {
+            var candidate=actualReplacementPacket(h,"existing-cache");var queries=new AtomicInteger();var observed=new AtomicInteger();
+            var ack=new RestoreCheckpointService.ReplacementAck(h.request.requestId(),h.pair.frame().game(),candidate.actual().session().game(),
+                    h.pair.save().reference(),candidate.originalNativePacket());
+            var service=service(h,new RestoreCheckpointService.LifecyclePort(){
+                public RestoreCheckpointService.LaunchResult replaceOnce(RestoreCheckpointService.Request request){throw new AssertionError("existing recovery cannot replace");}
+                public RestoreCheckpointService.LaunchResult query(String id,Instant deadline){queries.incrementAndGet();return ack;}
+            },(original,reads)->{
+                assertSame(ack,original);assertSame(h.request,reads.original());assertTrue(reads.queryOnly());reads.requireReplacement(original);
+                observed.incrementAndGet();return candidate;
+            });
+            String before=h.f.actual.writer.locked(same->same.head().digest());
+            var first=assertInstanceOf(RestoreCheckpointService.Unknown.class,service.restoreExisting(h.request,Instant.now().plusSeconds(30)));
+            assertTrue(first.reason().contains("independent restore READ custody unavailable"),first.reason());
+            var later=assertInstanceOf(RestoreCheckpointService.Unknown.class,service.queryOriginal(h.request.requestId(),Instant.now().plusSeconds(30)));
+            assertTrue(later.reason().contains("independent restore READ custody unavailable"),later.reason());
+            assertEquals(1,queries.get());assertEquals(4,observed.get());
+            h.f.actual.writer.locked(same->{assertEquals(before,same.head().digest());assertTrue(service.originalReboundOrigin(same,h.request.requestId()).isEmpty());return null;});
+            assertEquals(1,h.f.actual.nativeActionWrites(),"software LifecyclePort ACK and cached DATA do not mint a Native role or attachment");
         }
     }
     @Test void physicalSourceDriftAndWrongHeadRefuseBeforeAnyLifecycleDispatch()throws Exception {

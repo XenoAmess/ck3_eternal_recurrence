@@ -40,10 +40,11 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
 
     public int runWithHost(org.xar.ck3.control.service.OrdinarySessionHost ordinaryHost, String... args) throws Exception {
         java.util.Objects.requireNonNull(ordinaryHost);
-        if (args.length != 3) throw new IllegalArgumentException("ordinary-worker requires owner.json, business configuration, and fresh|resume|current-map|operator-quarantine|retire-exited|restore-exited");
+        boolean loaded=args.length>=3&&"resume-loaded-replacement".equals(args[2]);
+        if (args.length != (loaded?6:3)) throw new IllegalArgumentException("ordinary-worker requires owner.json, configuration, mode; resume-loaded-replacement additionally needs recovery-request exact3");
         String mode = args[2];
         if (!"fresh".equals(mode) && !"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)
-                &&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)) throw new IllegalArgumentException("ordinary-worker mode must be fresh, resume, current-map, operator-quarantine, retire-exited or restore-exited");
+                &&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)&&!loaded) throw new IllegalArgumentException("unknown ordinary-worker mode");
         Clock clock = Clock.systemUTC();
         RootOrdinaryRuntimeConfiguration config = RootOrdinaryRuntimeConfiguration.read(Path.of(args[1]));
         var descriptor = GameSupervisorControl.readDescriptor(Path.of(args[0]));
@@ -53,10 +54,12 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         Opened opened = null;
         Running running = null;
         ManagedGameSession attached = null;
+        org.xar.ck3.control.platform.RootProcessAttach.LoadedCustody loadedCustody=null;
+        org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loadedRole=null;
         RootOrdinaryWorkerLoop.Result result = null;
         Exception primary = null;
         try {
-            prepared = RootOrdinaryRuntimeAssembly.prepare(config, clock);
+            prepared = loaded?RootOrdinaryRuntimeAssembly.prepareLoadedReplacement(config,clock):RootOrdinaryRuntimeAssembly.prepare(config, clock);
             prepared.bindOrdinaryHost(ordinaryHost);
             if("retire-exited".equals(mode)) {
                 // This branch precedes NativeGameAttachment: an exited original cannot supply a HELLO or current map.
@@ -68,7 +71,29 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                         .put("game_launch_requested",false).put("native_attachment_requested",false);
                 emit(retired);return 0;
             }
-            if("restore-exited".equals(mode)) {
+            if(loaded) {
+                if(!args[4].matches("[1-9][0-9]{0,5}"))throw new IOException("bounded exact loaded recovery request required");
+                var requestRef=new org.xar.ck3.control.contracts.ExactRef(args[3],Long.parseLong(args[4]),args[5]);
+                var input=RootLoadedReplacementRecoveryInputs.readExact(requestRef,clock);
+                RootLoadedReplacementRecoveryInputs.verify(input.ownerDescriptor());
+                if(!Path.of(input.ownerDescriptor().path()).equals(Path.of(args[0]).toAbsolutePath().normalize())
+                        ||!org.xar.ck3.control.platform.NativeLaunchPlanCodec.describe(prepared.plan()).equals(descriptor.configuration()))
+                    throw new IOException("loaded recovery configuration must retain the exact current owner's physical plan");
+                var pair=input.pair();
+                java.time.Instant attachDeadline=clock.instant().plus(config.operationTimeout());
+                if(attachDeadline.isAfter(input.deadline()))attachDeadline=input.deadline();
+                attached=NativeGameAttachment.attach(new NativeGameAttachment.Request(prepared.plan(),descriptor.generation(),
+                        prepared.privatePermissions(),config.maximumFramesPerOperation(),config.maximumSubmissions()),attachDeadline,config.operationTimeout());
+                loadedCustody=org.xar.ck3.control.platform.RootProcessAttach.retainLoadedSaved(attached,input.ownerDescriptor(),pair,
+                        input.evidenceDirectory(),input.deadline());
+                loadedRole=org.xar.ck3.control.platform.RootProcessAttach.qualifyLoadedReplacement(loadedCustody,input.parentControl(),
+                        input.generationClaim(),pair,input.deadline());
+                running=prepared.openLoadedCheckpointRecovery(attached,loadedRole,input);
+                var restored=event(clock,"LOADED_SAVED_RESTORATION_ADOPTED");restored.set("game",attached.generation().toJson());
+                restored.put("owner_descriptor",input.ownerDescriptor().path()).put("new_saved_day_credit",0)
+                        .put("new_game_days",0).put("lifecycle_create_requested",false).put("ordinary_batch_started",false);
+                emit(restored);
+            } else if("restore-exited".equals(mode)) {
                 running=prepared.openExitedCheckpointRecovery(Path.of(args[0]),descriptor.generation(),clock.instant().plus(java.time.Duration.ofMinutes(45)));
                 attached=prepared.exitedReplacementGame();
                 var restored=event(clock,"EXITED_SAVED_RESTORATION_ADOPTED");
@@ -271,7 +296,15 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                 try {prepared.awaitExitedReplacementOwner();}
                 catch(Exception awaiting){if(primary!=null)primary.addSuppressed(awaiting);else throw awaiting;}
             }
-            closeResources(primary, running, opened, prepared, attached);
+            Exception closing=primary;
+            try {closeResources(primary, running, opened, prepared, attached);}
+            catch(Exception failure){closing=failure;throw failure;}
+            finally {
+                try {
+                    if(loadedRole!=null)loadedRole.close();
+                    else if(loadedCustody!=null)loadedCustody.close();
+                } catch(Exception failure){if(closing!=null)closing.addSuppressed(failure);else throw failure;}
+            }
         }
     }
 

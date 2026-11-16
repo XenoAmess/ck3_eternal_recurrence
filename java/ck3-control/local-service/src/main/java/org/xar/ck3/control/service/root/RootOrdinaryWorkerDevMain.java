@@ -59,12 +59,14 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
     void start(@Observes StartupEvent event) throws Exception {
         // Other Quarkus dev mains must not read worker arguments/configuration or create worker resources.
         if(LaunchMode.current()!=LaunchMode.DEVELOPMENT||!enabled())return;
-        if(arguments.length!=2&&arguments.length!=3)throw new IllegalArgumentException("ordinary-worker-dev requires owner.json, existing business configuration, and optional resume|current-map|operator-quarantine|retire-exited|restore-exited");
-        String mode=arguments.length==3?arguments[2]:"resume";
-        if(!"resume".equals(mode)&&!"current-map".equals(mode)&&!"operator-quarantine".equals(mode)&&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode))
-            throw new IllegalArgumentException("ordinary-worker-dev mode must be resume, current-map, operator-quarantine, retire-exited or restore-exited");
+        boolean loaded=arguments.length>=3&&"resume-loaded-replacement".equals(arguments[2]);
+        if(loaded?arguments.length!=6:arguments.length!=2&&arguments.length!=3)
+            throw new IllegalArgumentException("ordinary-worker-dev requires owner/config/mode; loaded replacement also needs exact recovery request3");
+        String mode=arguments.length>=3?arguments[2]:"resume";
+        if(!"resume".equals(mode)&&!"current-map".equals(mode)&&!"operator-quarantine".equals(mode)&&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)&&!loaded)
+            throw new IllegalArgumentException("unknown ordinary-worker-dev mode");
         configuration=RootOrdinaryRuntimeConfiguration.read(Path.of(arguments[1]));
-        String[] actual={arguments[0],arguments[1],mode};
+        String[] actual=loaded?arguments.clone():new String[]{arguments[0],arguments[1],mode};
         Files.createDirectories(configuration.stateDirectory());
         try {
             lockChannel=FileChannel.open(configuration.stateDirectory().resolve("ordinary-worker-dev.lock"),StandardOpenOption.CREATE,StandardOpenOption.WRITE);

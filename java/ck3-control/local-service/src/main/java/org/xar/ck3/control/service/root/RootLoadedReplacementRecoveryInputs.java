@@ -1,0 +1,87 @@
+package org.xar.ck3.control.service.root;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+import java.util.Set;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
+import org.xar.ck3.control.build.ControlBuild;
+import org.xar.ck3.control.build.SharedSourceFiles;
+import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.StrictJson;
+
+/** Fresh source DATA for the existing worker's already-created Saved Game route. No launch capability. */
+public final class RootLoadedReplacementRecoveryInputs {
+    public static final String SCHEMA="xar.java-existing-saved-replacement-recovery/v1";
+    private static final int LIMIT=65536;
+    private RootLoadedReplacementRecoveryInputs(){ }
+    public record Request(String machineId,Instant issuedAt,Instant deadline,ExactRef runtimeConfiguration,
+            ExactRef ownerDescriptor,ExactRef parentControl,ExactRef generationClaim,ExactRef checkpointPair,
+            ExactRef currentLoadedProfile,ExactRef savedPolicy,Path evidenceDirectory,String expectedHeadDigest) {
+        public Request {
+            StrictJson.text(machineId);
+            StrictJson.require(issuedAt.isBefore(deadline)&&Duration.between(issuedAt,deadline).compareTo(Duration.ofMinutes(45))<=0,
+                    "fresh finite loaded recovery source must fit45 minutes");
+            for(var ref:List.of(runtimeConfiguration,ownerDescriptor,parentControl,generationClaim,checkpointPair,currentLoadedProfile,savedPolicy))
+                StrictJson.require(ref.bytes()>0&&ref.bytes()<=(1L<<20)&&Path.of(ref.path()).isAbsolute(),"bounded exact loaded source originals required");
+            StrictJson.require(evidenceDirectory.isAbsolute()&&evidenceDirectory.normalize().equals(evidenceDirectory),
+                    "exact fresh loaded evidence directory required");
+            StrictJson.require(expectedHeadDigest!=null&&expectedHeadDigest.matches("[0-9a-f]{64}"),"original unchanged predecessor digest required");
+        }
+        public CheckpointPair pair()throws IOException {
+            return CheckpointPairCodec.decode(read(checkpointPair,LIMIT));
+        }
+        public void requireCurrent(Clock clock)throws IOException {
+            Instant now=clock.instant();
+            if(now.isBefore(issuedAt)||!now.isBefore(deadline))throw new IOException("new loaded recovery source window expired");
+            for(var ref:List.of(runtimeConfiguration,ownerDescriptor,parentControl,generationClaim,checkpointPair,currentLoadedProfile,savedPolicy))verify(ref);
+        }
+    }
+    public static Request readExact(ExactRef original,Clock clock)throws IOException {
+        var held=SharedSourceFiles.observe(Path.of(original.path()));
+        if(!same(held.source(),original))throw new IOException("loaded recovery source identity differs");
+        try {
+            var result=decode(read(original,LIMIT));
+            result.requireCurrent(clock);SharedSourceFiles.assertUnchanged(held);return result;
+        } catch(IllegalArgumentException invalid){throw new IOException("invalid loaded recovery source",invalid);}
+    }
+    public static Request decode(byte[] bytes) {
+            var row=StrictJson.object(StrictJson.parse(bytes,LIMIT),Set.of("schema","machine_id","issued_at_utc","deadline_utc",
+                    "runtime_configuration","owner_descriptor","parent_control","generation_claim","checkpoint_pair","current_loaded_profile",
+                    "saved_policy","evidence_directory","expected_head_digest"));
+            StrictJson.require(SCHEMA.equals(StrictJson.text(row.get("schema"))),"exact loaded recovery source version required");
+            return new Request(StrictJson.text(row.get("machine_id")),Instant.parse(StrictJson.text(row.get("issued_at_utc"))),
+                    Instant.parse(StrictJson.text(row.get("deadline_utc"))),ExactRef.fromJson(row.get("runtime_configuration")),
+                    ExactRef.fromJson(row.get("owner_descriptor")),ExactRef.fromJson(row.get("parent_control")),
+                    ExactRef.fromJson(row.get("generation_claim")),ExactRef.fromJson(row.get("checkpoint_pair")),
+                    ExactRef.fromJson(row.get("current_loaded_profile")),ExactRef.fromJson(row.get("saved_policy")),
+                    Path.of(StrictJson.text(row.get("evidence_directory"))),StrictJson.text(row.get("expected_head_digest")));
+    }
+    /** Metadata only. Eligibility comes from the later actual LoadedReplacement and complete Core proof. */
+    public static byte[] encode(Request value) {
+        var row=StrictJson.object().put("schema",SCHEMA).put("machine_id",value.machineId())
+                .put("issued_at_utc",value.issuedAt().toString()).put("deadline_utc",value.deadline().toString())
+                .put("evidence_directory",value.evidenceDirectory().toString()).put("expected_head_digest",value.expectedHeadDigest());
+        row.set("runtime_configuration",value.runtimeConfiguration().toJson());row.set("owner_descriptor",value.ownerDescriptor().toJson());
+        row.set("parent_control",value.parentControl().toJson());row.set("generation_claim",value.generationClaim().toJson());
+        row.set("checkpoint_pair",value.checkpointPair().toJson());row.set("current_loaded_profile",value.currentLoadedProfile().toJson());
+        row.set("saved_policy",value.savedPolicy().toJson());return StrictJson.canonical(row,LIMIT);
+    }
+    static byte[] read(ExactRef ref,int maximum)throws IOException {
+        if(ref.bytes()<1||ref.bytes()>maximum)throw new IOException("loaded source exceeds its finite role bound");
+        byte[] bytes;try(var in=Files.newInputStream(Path.of(ref.path()))){bytes=in.readNBytes(maximum+1);}
+        if(bytes.length!=ref.bytes()||!org.xar.ck3.control.application.action.ActionCodec.sha256(bytes).equals(ref.sha256()))
+            throw new IOException("loaded source original bytes changed");
+        return bytes;
+    }
+    static void verify(ExactRef ref)throws IOException {new ControlBuild.FileRef(ref.path(),ref.bytes(),ref.sha256()).verify();}
+    static boolean same(ControlBuild.FileRef ref,ExactRef expected) {
+        return Path.of(ref.path()).equals(Path.of(expected.path()))&&ref.bytes()==expected.bytes()&&ref.sha256().equals(expected.sha256());
+    }
+}
+

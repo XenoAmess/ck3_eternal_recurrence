@@ -16,6 +16,7 @@ import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
+import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.NativeCandidate;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Request;
 import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterial;
@@ -94,6 +95,25 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
     private final Optional<RootFrozenRunProfile.FrozenRunProfile> originalFrozen;
     private final Optional<ManagedGameSession> ordinaryPrevious;
     private final Map<String,Capture> captures=new LinkedHashMap<>();
+    private final Map<String,RestoreCheckpointService.ReadWindow> loadedReadWindows=new LinkedHashMap<>();
+
+    @Override public synchronized void bindReadWindow(Request request,RestoreCheckpointService.ReadWindow reads)throws IOException {
+        Objects.requireNonNull(reads).requireOriginal(request);
+        if(coldPrevious==null||coldPrevious.loadedReplacement().isEmpty())return;
+        if(!loadedReadWindows.containsKey(request.requestId())&&loadedReadWindows.size()>=64)
+            throw new IOException("bounded loaded restoration read windows exhausted");
+        var loaded=coldPrevious.loadedReplacement().orElseThrow();
+        loaded.requireAck(loaded.cachedAck(),reads.deadline());
+        StrictJson.require(request.requestId().equals(loaded.originalParentId())&&request.deadline().equals(loaded.originalDeadline())
+                &&request.pair().equals(loaded.pair()),"loaded read window changed its original request or physical pair");
+        loadedReadWindows.put(request.requestId(),reads);
+    }
+    private java.time.Instant operationDeadline(Request request)throws IOException {
+        if(coldPrevious==null||coldPrevious.loadedReplacement().isEmpty())return request.deadline();
+        var reads=loadedReadWindows.get(request.requestId());
+        if(reads==null)throw new IOException("loaded restore materials require the original service's actual read window");
+        reads.requireOriginal(request);return reads.deadline();
+    }
 
     public RootRestoreMaterials(ContinuityWriter writer,NativeOutcomeArchive archive,JavaGameLifecycle lifecycle,
             CheckpointFiles files,DriverCheckpointStore drivers,SavedCheckpointMaterialStore savedSources,
@@ -268,7 +288,8 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         SavedCheckpointMaterial material=requireRetainedSource(borrowed,savedSources,request,saved);
         files.verify(material.witness());
         StrictJson.require(Arrays.equals(saved.encode(),drivers.readVerifiedOriginal(request.pair(),saved.session()).encode()),"cold source differs from the actual physical saved Driver");
-        pin(borrowed,request.pair().save().reference(),WriterContracts.MAX_PIN_BYTES,pins);
+        if(coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent())files.verify(request.pair().save());
+        else pin(borrowed,request.pair().save().reference(),WriterContracts.MAX_PIN_BYTES,pins);
         pin(borrowed,request.pair().driver().reference(),DRIVER_LIMIT,pins);
         pin(borrowed,material.reference(),DOCUMENT_LIMIT,pins);
         for(ExactRef source:material.sourceSemantic().references())pin(borrowed,source,WriterContracts.MAX_PIN_BYTES,pins);
@@ -300,23 +321,39 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         StrictJson.require(originalBefore.snapshotId().equals(before.identity().frame().snapshotId())
                 &&originalBefore.revision().equals(before.identity().frame().identity().nativeRevision()),"retained abandoned original packet belongs to another frame");
         pin(borrowed,before.originalEvidence(),DOCUMENT_LIMIT,pins);
-        var replaced=(JavaGameLifecycle.Replaced)lifecycle.queryReplacement(request.requestId());
-        Obj control=readObject(borrowed,replaced.lifecycleEvidence(),LIFECYCLE_LIMIT,pins);
-        StrictJson.require(control.members().keySet().equals(Set.of("schema","parentLifecycleIntentId","phase","oldPid","oldBirthDecimal","save","stopEvidence","launchEvidence"))
+        var loaded=coldPrevious==null?Optional.<org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement>empty():coldPrevious.loadedReplacement();
+        var replaced=loaded.isPresent()?null:(JavaGameLifecycle.Replaced)lifecycle.queryReplacement(request.requestId());
+        ExactRef lifecycleOriginal=loaded.isPresent()?loaded.orElseThrow().parentControl():replaced.lifecycleEvidence();
+        Obj control=readObject(borrowed,lifecycleOriginal,LIFECYCLE_LIMIT,pins);
+        boolean actualLoaded=loaded.isPresent();
+        StrictJson.require(control.members().keySet().equals(actualLoaded?
+                    Set.of("schema","parent_lifecycle_intent_id","phase","old_pid","old_birth_decimal","save","stop_evidence","launch_evidence"):
+                    Set.of("schema","parentLifecycleIntentId","phase","oldPid","oldBirthDecimal","save","stopEvidence","launchEvidence"))
                 &&reference(control.get("save")).equals(request.pair().save().reference()),"original lifecycle physical SAVE/control field contract drift");
-        ExactRef stopped=reference(control.get("stopEvidence")),launched=reference(control.get("launchEvidence"));
-        StrictJson.require(launched.equals(replaced.replacement().launchEvidence()),"retained launch evidence differs from original replacement control");
+        ExactRef stopped=reference(control.get(actualLoaded?"stop_evidence":"stopEvidence")),
+                launched=reference(control.get(actualLoaded?"launch_evidence":"launchEvidence"));
+        StrictJson.require(launched.equals(actualLoaded?loaded.orElseThrow().launchEvidence():replaced.replacement().launchEvidence()),
+                "retained launch evidence differs from original replacement control");
         Obj stop=readObject(borrowed,stopped,LIFECYCLE_LIMIT,pins),launch=readObject(borrowed,launched,LIFECYCLE_LIMIT,pins);
         var lifecycleJoin=new LifecycleJoin(request.current().observed().machineId(),request.current().sessionId(),
                 replacement.sessionId(),request.current().observed().game(),replacement.generation(),JavaGameLifecycle.replacementRequestId(request.requestId()));
         if(coldPrevious==null)requireLifecycleRows(stop,launch,lifecycleJoin);
         else {
-            coldPrevious.requireReplacement(borrowed,request,replacement,request.deadline());
+            coldPrevious.requireReplacement(borrowed,request,replacement,operationDeadline(request));
             StrictJson.require(stopped.equals(coldPrevious.exitedEvidence()),"cold lifecycle source changed its private actual exited observation");
-            requireEvent(launch,"HELLO",lifecycleJoin.machineId(),lifecycleJoin.replacementSessionId(),lifecycleJoin.replacement());
-            StrictJson.require(text(launch.get("requestId"),lifecycleJoin.launchRequestId()),"cold replacement HELLO child request differs");
+            if(actualLoaded)requireLoadedLaunch(launch,lifecycleJoin);
+            else {
+                requireEvent(launch,"HELLO",lifecycleJoin.machineId(),lifecycleJoin.replacementSessionId(),lifecycleJoin.replacement());
+                StrictJson.require(text(launch.get("requestId"),lifecycleJoin.launchRequestId()),"cold replacement HELLO child request differs");
+            }
         }
-        var helloDocument=readPinned(borrowed,files,replaced.replacement().nativeHello(),DOCUMENT_LIMIT);pins.add(helloDocument.pin());
+        if(actualLoaded) {
+            var historicalHello=readPinned(borrowed,files,loaded.orElseThrow().originalLaunchHello(),DOCUMENT_LIMIT);pins.add(historicalHello.pin());
+            StrictJson.require(NativeWire.decode(historicalHello.contents()) instanceof NativeWire.Hello,
+                    "loaded replacement lost its separately retained original launch HELLO");
+            for(var source:loaded.orElseThrow().originalReferences())pin(borrowed,source,WriterContracts.MAX_PIN_BYTES,pins);
+        }
+        var helloDocument=readPinned(borrowed,files,actualLoaded?loaded.orElseThrow().currentAttachedHello():replaced.replacement().nativeHello(),DOCUMENT_LIMIT);pins.add(helloDocument.pin());
         var decodedHello=NativeWire.decode(helloDocument.contents());
         StrictJson.require(decodedHello instanceof NativeWire.Hello,"retained actual lifecycle HELLO packet unavailable");
         var hello=(NativeWire.Hello)decodedHello;
@@ -335,8 +372,9 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         Obj auxiliary=capabilities.requireReduced(recovered,RootRestoreMaterialProjection.reduceAuxiliary(recovered.ownerAuxiliary(),nativeState));
         var input=new RootRestoreMaterialProjection.Input(request.requestId(),request.current().observed().game(),actual.actual().session(),
                 replacement.nativeTransport().pipeName(),actual.actual().snapshotId(),actual.actual().nativeRevision(),saved,abandoned.driver(),nativeState,
-                control,replaced.lifecycleEvidence(),actual.originalNativePacket(),Optional.of(before.semantic()));
+                control,lifecycleOriginal,actual.originalNativePacket(),Optional.of(before.semantic()));
         material.requireRetained(borrowed);files.verify(material.witness());drivers.verifyOriginal(request.pair(),saved.session());
+        if(actualLoaded)files.verify(request.pair().save());
         for(var pin:pins)borrowed.verifyPin(pin);return new Originals(input,auxiliary,material.witness(),pins);
     }
     /** Same configured aggregate and original issuer only. Retained source validation grants no replacement Game or physical reload. */
@@ -349,6 +387,19 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         return material;
     }
     private ManagedGameSession replacement(Request request,NativeCandidate actual) throws IOException {
+        if(coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent()) {
+            var loaded=coldPrevious.loadedReplacement().orElseThrow();
+            loaded.requireAck(loaded.cachedAck(),operationDeadline(request));
+            ManagedGameSession replacement=loaded.attached();replacement.verify();
+            StrictJson.require(loaded.originalParentId().equals(request.requestId())&&loaded.originalDeadline().equals(request.deadline())
+                    &&loaded.pair().equals(request.pair())&&loaded.previousOwner().game().equals(request.current().observed().game())
+                    &&replacement.generation().equals(actual.actual().session().game())
+                    &&replacement.machineId().equals(actual.actual().session().machineId())
+                    &&replacement.sessionId().equals(actual.actual().session().sessionId()),
+                    "loaded restore crossed its actual private replacement, original request or current read session");
+            coldPrevious.requireReplacement(writer.borrowedSession(),request,replacement,operationDeadline(request));
+            return replacement;
+        }
         var retained=lifecycle.queryReplacement(request.requestId());
         if(!(retained instanceof JavaGameLifecycle.Replaced replaced))throw new IOException("actual original lifecycle replacement is unresolved; material cannot mint Game authority");
         ManagedGameSession replacement=replaced.replacement().session();replacement.verify();
@@ -366,7 +417,7 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
                     "ordinary restore crossed its actual retained previous managed owner");
             RootRestoreMaterialFactory.requireOrdinaryConfiguration(original.launchPlan(),replacement.launchPlan());
         }
-        if(coldPrevious!=null)coldPrevious.requireReplacement(writer.borrowedSession(),request,replacement,request.deadline());
+        if(coldPrevious!=null)coldPrevious.requireReplacement(writer.borrowedSession(),request,replacement,operationDeadline(request));
         var launchSave=((NativeLaunchPlan.SavedGame)replacement.launchPlan().load()).save();
         StrictJson.require(launchSave.path().equals(request.pair().save().reference().path())&&launchSave.bytes()==request.pair().save().reference().bytes()
                 &&launchSave.sha256().equals(request.pair().save().reference().sha256()),"actual lifecycle loaded another physical saved source");return replacement;
@@ -408,6 +459,20 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
             Objects.requireNonNull(previous);Objects.requireNonNull(replacement);
             StrictJson.require(!previous.equals(replacement),"physical replacement generation must differ");
         }
+    }
+    static void requireLoadedLaunch(Obj launched,LifecycleJoin expected) {
+        StrictJson.require(launched.members().keySet().equals(Set.of("schema","machine_id","observed_at_utc","request_id","session_id",
+                        "event","game","accounting","terminal","terminal_kind","detail"))
+                &&text(launched.get("schema"),"xar.java-game-lifecycle-event/v1")&&text(launched.get("event"),"HELLO")
+                &&text(launched.get("machine_id"),expected.machineId())&&text(launched.get("session_id"),expected.replacementSessionId())
+                &&text(launched.get("request_id"),expected.launchRequestId()),"actual loaded HELLO event differs from its original producer subject");
+        Obj game=OpportunityJson.object(launched.get("game"),"actual loaded HELLO Game identity");
+        StrictJson.require(game.members().keySet().equals(Set.of("pid","creation_filetime_decimal","executable"))
+                &&game.get("pid") instanceof IntegerValue pid&&pid.value().equals(java.math.BigInteger.valueOf(expected.replacement().pid()))
+                &&text(game.get("creation_filetime_decimal"),expected.replacement().creationFiletime().value().toString())
+                &&game.get("executable") instanceof Text executable&&!executable.value().isBlank(),
+                "actual loaded HELLO crossed its original full process birth");
+        StrictJson.utc(OpportunityJson.text(launched.get("observed_at_utc"),"actual loaded HELLO time"));
     }
     public static void requireLifecycleRows(Obj stopped,Obj launched,LifecycleJoin expected) {
         requireEvent(stopped,"STOPPED",expected.machineId(),expected.previousSessionId(),expected.previous());

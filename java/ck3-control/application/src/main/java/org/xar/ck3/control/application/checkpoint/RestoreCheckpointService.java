@@ -272,6 +272,28 @@ public final class RestoreCheckpointService {
             }catch(IOException|IllegalArgumentException|ArithmeticException failure){return new Unknown(request.requestId(),failure.toString());}
         }
     }
+    /**
+     * Recover a separately qualified already-loaded replacement through its original lifecycle query.
+     * This application entry has no Native permission and accepts no caller-supplied replacement ACK.
+     * The original Request and lifecycle deadline remain immutable; only this read window is fresh.
+     */
+    public Result restoreExisting(Request original,Instant freshReadDeadline)throws InterruptedException {
+        Objects.requireNonNull(original);Objects.requireNonNull(freshReadDeadline);
+        Instant now=clock.instant();
+        if(!now.isBefore(freshReadDeadline)||Duration.between(now,freshReadDeadline).compareTo(Duration.ofMinutes(30))>0)
+            return new Unknown(original.requestId(),"fresh finite restore read deadline required");
+        Attempt actual=attempts.computeIfAbsent(original.requestId(),ignored->{
+            var existing=new Attempt(original);existing.entered=true;existing.launched=true;return existing;
+        });
+        synchronized(actual){
+            try {
+                StrictJson.require(actual.request.equals(original),"same restore request ID changed its exact body");
+                if(!actual.entered||!actual.launched)
+                    return new Unknown(original.requestId(),"original unlaunched restore attempt cannot become an existing replacement");
+                return executeOriginal(actual,openReadWindow(actual,freshReadDeadline,true));
+            }catch(IOException|IllegalArgumentException|ArithmeticException failure){return new Unknown(original.requestId(),failure.toString());}
+        }
+    }
     /** Reads/resolves only an existing entered lifecycle. It cannot create a Request or call replaceOnce. */
     public Result queryOriginal(String requestId,Instant readDeadline)throws InterruptedException {
         StrictJson.text(requestId);Objects.requireNonNull(readDeadline);

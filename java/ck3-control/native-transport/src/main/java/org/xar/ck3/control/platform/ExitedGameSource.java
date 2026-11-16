@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.build.WindowsJobProcess;
+import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.GameLifecycle;
@@ -27,6 +28,58 @@ final class ExitedGameSource {
     record Qualified(GameSupervisorControl.Descriptor descriptor,Terminal terminal,ExactRef descriptorReference,
             ExactRef terminalReference,ExactRef currentObservation,Instant observedAt) { }
     record KernelObservation(Win32Host.ProcessObservation originalPid,Win32Host.ProcessInventory gameInventory) { }
+    /** Read-only predecessor provenance. This is not an ExitedGeneration submission/STOP capability. */
+    record Historical(Qualified source,List<SharedSourceFiles.Witness> originals) {
+        Historical {originals=List.copyOf(originals);}
+        List<ExactRef> references(){return originals.stream().map(value->LifecycleEvidence.exact(value.source())).toList();}
+        void requireOriginals()throws IOException {
+            for(var witness:originals)SharedSourceFiles.assertUnchanged(witness);
+            var current=readHistorical(source.currentObservation(),source.descriptor().generation());
+            require(current.source().equals(source)&&current.originals().equals(originals),"historical exited producer originals changed");
+        }
+    }
+    static Historical readHistorical(ExactRef observation,GameGeneration expected)throws IOException {
+        Objects.requireNonNull(observation);Objects.requireNonNull(expected);verify(observation);
+        var row=StrictJson.object(StrictJson.parse(GameSupervisorControl.readBounded(Path.of(observation.path()),262144),262144),
+                Set.of("schema","machine_id","session_id","observed_at_utc","game","owner_reference","terminal_reference","terminal_evidence","kernel"));
+        require("xar.java-exited-game-source-observation/v1".equals(StrictJson.text(row.get("schema")))&&GameGeneration.fromJson(row.get("game")).equals(expected),"original exited observation schema/Game differs");
+        ExactRef owner=ExactRef.fromJson(row.get("owner_reference")),terminalRef=ExactRef.fromJson(row.get("terminal_reference"));verify(owner);verify(terminalRef);
+        var descriptor=GameSupervisorControl.readDescriptor(Path.of(owner.path()));var terminal=readTerminal(GameSupervisorControl.readBounded(Path.of(terminalRef.path()),262144));
+        require(descriptor.generation().equals(expected)&&descriptor.machineId().equals(WindowsJobProcess.currentMachineId())
+                &&descriptor.machineId().equals(StrictJson.text(row.get("machine_id")))&&descriptor.sessionId().equals(StrictJson.text(row.get("session_id")))
+                &&exact(descriptor.terminalPath()).equals(terminalRef)&&terminal.machineId().equals(descriptor.machineId())
+                &&terminal.sessionId().equals(descriptor.sessionId())&&terminal.game().equals(descriptor.gameIdentity())
+                &&terminal.originalEvidence().equals(ExactRef.fromJson(row.get("terminal_evidence"))),"original exited owner/terminal/session binding differs");
+        verifyLaunch(descriptor);verifyTerminalEvent(descriptor,terminal);
+        KernelObservation kernel=ControlBuild.strictMapper().treeToValue(row.get("kernel"),KernelObservation.class);
+        requireExitObservation(kernel.originalPid(),descriptor.gameIdentity(),terminal.exitCode());
+        require("ck3.exe".equalsIgnoreCase(kernel.gameInventory().exactName())&&kernel.gameInventory().qualifiedRunning().isEmpty(),"original pre-launch exited observation did not prove its empty exact Game inventory");
+        Instant observed=Instant.parse(StrictJson.text(row.get("observed_at_utc")));
+        require(!observed.isBefore(terminal.observedAt()),"original exited observation predates supervisor terminal");
+        var source=new Qualified(descriptor,terminal,owner,terminalRef,observation,observed);
+        var refs=List.of(observation,owner,terminalRef,descriptor.nativeHello(),descriptor.launchEvidence(),terminal.originalEvidence());
+        var originals=new java.util.ArrayList<SharedSourceFiles.Witness>();
+        for(ExactRef ref:refs){verify(ref);var witness=SharedSourceFiles.observe(Path.of(ref.path()));require(LifecycleEvidence.exact(witness.source()).equals(ref),"historical exited original identity changed");originals.add(witness);}
+        return new Historical(source,originals);
+    }
+    /** The known successor may already be alive; only the old exact generation is required absent/exited. */
+    static void requireOldGenerationExited(Historical old,Instant deadline)throws IOException {
+        Win32Host.deadline(deadline);old.requireOriginals();
+        requireExitObservation(Win32Host.inspectProcess(old.source().descriptor().gameIdentity().pid(),0,deadline),old.source().descriptor().gameIdentity(),old.source().terminal().exitCode());
+    }
+    private static void requireExitObservation(Win32Host.ProcessObservation original,WindowsJobProcess.ProcessIdentity expected,int exitCode)throws IOException {
+        require(original.pid()==expected.pid(),"exited observation changed original PID");
+        if(original.state()==Win32Host.ProcessState.UNAVAILABLE){
+            require(original.failures().size()==1&&original.failures().getFirst().operation()==Win32Host.ProcessOperation.OPEN
+                    &&Integer.valueOf(87).equals(original.failures().getFirst().win32Error()),"old Game identity unavailable rather than proved absent");
+        }else {
+            require(original.times()!=null,"old PID has no proved current birth identity");
+            if(expected.creationFiletimeDecimal().equals(original.times().creationFiletimeDecimal())){
+            require(original.state()==Win32Host.ProcessState.SIGNALLED&&original.exitCode()!=null&&original.exitCode()==Integer.toUnsignedLong(exitCode),"original Game still runs or its terminal differs");
+            if(original.executable()!=null)require(samePath(original.executable(),expected.executable()),"original exited Game image differs");
+            }
+        }
+    }
 
     static Qualified qualify(Path descriptorPath,GameGeneration expected,NativeLaunchPlan template,Instant deadline)throws IOException {
         Win32Host.deadline(deadline);Objects.requireNonNull(expected);Objects.requireNonNull(template);

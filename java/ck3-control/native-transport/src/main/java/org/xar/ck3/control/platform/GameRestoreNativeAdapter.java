@@ -43,6 +43,7 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
     private final BorrowedSessions borrowed;
     private final SessionAuthority authority;
     private final JavaGameLifecycle lifecycle;
+    private final Optional<RootProcessAttach.LoadedReplacement> loadedReplacement;
     private final G2Source source;
     private final String lineageId;
     private final ActionPorts.OutcomeArchive archive;
@@ -84,13 +85,23 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
     private record ArchivedRead(NativeActionPort.AckReceived ack,NativeObservationPort.ObservedFrame frame,NativeRequestChronology.Event received){ }
     public GameRestoreNativeAdapter(JavaGameLifecycle lifecycle,G2Source source,String lineageId,ActionPorts.OutcomeArchive archive,
             ContinuityStorePort store,BorrowedSessions borrowed,SessionAuthority authority){
+        this(lifecycle,source,lineageId,archive,store,borrowed,authority,Optional.empty());
+    }
+    public GameRestoreNativeAdapter(JavaGameLifecycle lifecycle,G2Source source,String lineageId,ActionPorts.OutcomeArchive archive,
+            ContinuityStorePort store,BorrowedSessions borrowed,SessionAuthority authority,RootProcessAttach.LoadedReplacement actualLoadedReplacement){
+        this(lifecycle,source,lineageId,archive,store,borrowed,authority,Optional.of(Objects.requireNonNull(actualLoadedReplacement)));
+    }
+    private GameRestoreNativeAdapter(JavaGameLifecycle lifecycle,G2Source source,String lineageId,ActionPorts.OutcomeArchive archive,
+            ContinuityStorePort store,BorrowedSessions borrowed,SessionAuthority authority,Optional<RootProcessAttach.LoadedReplacement> loadedReplacement){
         this.lifecycle=Objects.requireNonNull(lifecycle);this.source=Objects.requireNonNull(source);this.archive=Objects.requireNonNull(archive);
         this.store=Objects.requireNonNull(store);this.borrowed=Objects.requireNonNull(borrowed);this.authority=Objects.requireNonNull(authority);
+        this.loadedReplacement=Objects.requireNonNull(loadedReplacement);
         if(lineageId==null||lineageId.isBlank())throw new IllegalArgumentException("Original lineage required");this.lineageId=lineageId;
     }
     @Override public NativeCandidate observe(ReplacementAck ack,ReadWindow reads)throws IOException,InterruptedException {
         Objects.requireNonNull(ack);Objects.requireNonNull(reads);reads.requireReplacement(ack);Win32Host.deadline(reads.deadline());
-        ManagedGameSession session=requireReplacement(ack);
+        if(loadedReplacement.isPresent())loadedReplacement.orElseThrow().requireOriginalRequest(reads.original());
+        ManagedGameSession session=requireReplacement(ack,reads.deadline());
         if(!readsByRestore.containsKey(ack.requestId())&&readsByRestore.size()>=MAX_RESTORES)throw new IOException("bounded restore READ custody exhausted");
         ReadState state=readsByRestore.computeIfAbsent(ack.requestId(),ignored->new ReadState(ack));
         synchronized(state) {
@@ -102,7 +113,7 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
                 if(unavailable.originalFrame().isPresent())original.preserveNativeFrame(unavailable.originalFrame().orElseThrow());return null;
             }));
             NativeFreshSnapshotPort.verifyOriginal(actual.acknowledgement(),actual.originalFrame(),actual.snapshotReceived());
-            reads.requireReplacement(ack);if(requireReplacement(ack)!=session)throw new IOException("actual replacement changed during original READ");
+            reads.requireReplacement(ack);if(requireReplacement(ack,reads.deadline())!=session)throw new IOException("actual replacement changed during original READ");
             var frame=actual.originalFrame();
             if(!frame.session().game().equals(session.generation())||!frame.session().sessionId().equals(session.sessionId())
                     ||!frame.session().machineId().equals(session.machineId()))throw new IOException("replacement READ native session changed");
@@ -116,7 +127,14 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
             state.fresh.archived(actual);return result;
         }
     }
-    private ManagedGameSession requireReplacement(ReplacementAck ack)throws IOException {
+    private ManagedGameSession requireReplacement(ReplacementAck ack,Instant readDeadline)throws IOException {
+        if(loadedReplacement.isPresent()){
+            var actual=loadedReplacement.orElseThrow();actual.requireAck(ack,readDeadline);ManagedGameSession session=actual.attached();
+            if(!session.generation().equals(ack.replacement())||!session.machineId().equals(source.machineId())
+                    ||!actual.pair().lineageId().equals(lineageId)||!actual.pair().save().reference().equals(ack.loadedSave()))
+                throw new IOException("loaded replacement READ crossed its exact Game/source/SAVE lineage");
+            var origin=source.sourceRef();new ControlBuild.FileRef(origin.path(),origin.bytes(),origin.sha256()).verify();return session;
+        }
         JavaGameLifecycle.ReplacementResult retained=lifecycle.queryReplacement(ack.requestId());
         if(!(retained instanceof JavaGameLifecycle.Replaced replaced)||!replaced.previous().equals(ack.previous())
                 ||!replaced.lifecycleEvidence().equals(ack.lifecycleEvidence()))throw new IOException("no same-producer original replacement ACK retained");

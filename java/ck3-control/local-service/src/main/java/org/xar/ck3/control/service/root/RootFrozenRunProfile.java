@@ -20,6 +20,8 @@ import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.build.WindowsJobProcess;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.platform.NativeLaunchPlan;
+import org.xar.ck3.control.platform.RootProcessAttach;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.*;
 import org.xar.ck3.control.wave3.governance.lifecycle.SuccessionLifecycleBinding;
@@ -28,9 +30,11 @@ import org.xar.ck3.control.wave3.governance.lifecycle.SuccessionLifecycleCodec;
 /** Actual run request plus the identical retained launch plan's environment. No DTO can issue a FrozenRunProfile. */
 public final class RootFrozenRunProfile {
     public static final String SCHEMA="xar.java-original-driver-import-run-profile/v4";
+    public static final String LOADED_SCHEMA="xar.java-original-driver-import-run-profile/v5";
     public static final int MAXIMUM_REQUEST_BYTES=65536;
     private static final Set<String> FIELDS=Set.of("schema","machine_id","observed_at_utc","review_at_utc","request_id",
             "session_id","environment_manifest","lifecycle","ordinary_campaign_no_pact","legacy_import");
+    private static final Set<String> LOADED_FIELDS=Set.of("schema","fresh_profile","owner_descriptor","parent_control","generation_claim","checkpoint_pair");
     private RootFrozenRunProfile(){ }
     public enum LifecycleMode {
         ROGUE_ONE_LIFE("rogue_one_life"),ORDINARY_CAMPAIGN_SUCCESSION("ordinary_campaign_succession"),NATIVE_CAMPAIGN("native_campaign");
@@ -68,6 +72,42 @@ public final class RootFrozenRunProfile {
             absolute(Path.of(environmentManifest.path()));require(environmentManifest.bytes()>0&&environmentManifest.bytes()<=1048576,"bounded actual environment manifest required");
         }
     }
+    /** Exact source locators only. Neither this record nor its codec can issue a loaded role. */
+    public record LoadedRequest(Request freshProfile,ExactRef ownerDescriptor,ExactRef parentControl,
+            ExactRef generationClaim,ExactRef checkpointPair) {
+        public LoadedRequest {
+            Objects.requireNonNull(freshProfile);
+            require(freshProfile.legacyImport() instanceof EnabledNativeCampaign
+                    &&freshProfile.lifecycle()==LifecycleMode.NATIVE_CAMPAIGN,"loaded current profile requires the explicit Saved native mode");
+            require(Duration.between(freshProfile.observedAt(),freshProfile.reviewAt()).compareTo(Duration.ofHours(1))<=0,
+                    "loaded profile source window cannot exceed one hour");
+            for(var ref:List.of(ownerDescriptor,parentControl,generationClaim,checkpointPair)) {
+                absolute(Path.of(ref.path()));require(ref.bytes()>0,"positive original loaded source locator required");
+            }
+        }
+    }
+    public static LoadedRequest decodeLoaded(byte[] raw) {
+        ObjectValue value=object(OriginalDriverJournal.parse(raw,MAXIMUM_REQUEST_BYTES),"loaded run profile request object required");exact(value,LOADED_FIELDS);
+        require(text(value.get("schema")).equals(LOADED_SCHEMA),"loaded run profile schema changed");
+        Request profile=decode(OriginalDriverJournal.canonical(value.get("fresh_profile"),MAXIMUM_REQUEST_BYTES).bytes());
+        return new LoadedRequest(profile,reference(value.get("owner_descriptor")),reference(value.get("parent_control")),
+                reference(value.get("generation_claim")),reference(value.get("checkpoint_pair")));
+    }
+    public static byte[] encodeLoaded(LoadedRequest explicit) {
+        Objects.requireNonNull(explicit);
+        return OriginalDriverJournal.canonical(new ObjectValue(java.util.Map.of("schema",new StringValue(LOADED_SCHEMA),
+                "fresh_profile",OriginalDriverJournal.parse(encode(explicit.freshProfile()),MAXIMUM_REQUEST_BYTES),
+                "owner_descriptor",reference(explicit.ownerDescriptor()),"parent_control",reference(explicit.parentControl()),
+                "generation_claim",reference(explicit.generationClaim()),"checkpoint_pair",reference(explicit.checkpointPair()))),MAXIMUM_REQUEST_BYTES).bytes();
+    }
+    /** DATA reader for the Main entry before it acquires a real loaded role. */
+    public static LoadedRequest readLoadedRequest(ExactRef original)throws IOException {
+        try {
+            var held=new ArrayList<SharedSourceFiles.Witness>();
+            LoadedRequest request=decodeLoaded(read(Objects.requireNonNull(original),MAXIMUM_REQUEST_BYTES,held));
+            for(var source:held)SharedSourceFiles.assertUnchanged(source);return request;
+        } catch(IllegalArgumentException invalid) { throw new IOException("actual loaded profile DATA is invalid",invalid); }
+    }
     public static Request decode(byte[] raw) {
         ObjectValue value=object(OriginalDriverJournal.parse(raw,MAXIMUM_REQUEST_BYTES),"run profile request object required");exact(value,FIELDS);
         require(text(value.get("schema")).equals(SCHEMA),"run profile schema changed");
@@ -101,9 +141,12 @@ public final class RootFrozenRunProfile {
     }
     public static final class FrozenRunProfile {
         private final NativeLaunchPlan plan;private final Request request;private final ExactRef requestRef;
+        private final LoadedRequest loadedRequest;private final RootProcessAttach.LoadedReplacement loadedRole;
         private final Optional<SuccessionLifecycleBinding> binding;private final InitialEpisodePolicy initialPolicy;private final List<SharedSourceFiles.Witness> originals;private final Optional<PreparedFixture> fixture;private final Optional<FixtureStartupCase> startupCase;
-        private FrozenRunProfile(NativeLaunchPlan plan,Request request,ExactRef requestRef,Optional<SuccessionLifecycleBinding> binding,InitialEpisodePolicy initialPolicy,List<SharedSourceFiles.Witness> originals,Optional<PreparedFixture> fixture,Optional<FixtureStartupCase> startupCase) {
+        private FrozenRunProfile(NativeLaunchPlan plan,Request request,ExactRef requestRef,Optional<SuccessionLifecycleBinding> binding,InitialEpisodePolicy initialPolicy,List<SharedSourceFiles.Witness> originals,Optional<PreparedFixture> fixture,Optional<FixtureStartupCase> startupCase,
+                LoadedRequest loadedRequest,RootProcessAttach.LoadedReplacement loadedRole) {
             this.plan=plan;this.request=request;this.requestRef=requestRef;this.binding=binding;this.initialPolicy=initialPolicy;this.originals=List.copyOf(originals);this.fixture=Objects.requireNonNull(fixture);this.startupCase=Objects.requireNonNull(startupCase);
+            this.loadedRequest=loadedRequest;this.loadedRole=loadedRole;
         }
         public Request request(){return request;}
         public InitialEpisodePolicy initialPolicy(){return initialPolicy;}
@@ -127,6 +170,7 @@ public final class RootFrozenRunProfile {
         }
         public void requireCurrent(NativeLaunchPlan identical,Clock actualClock)throws IOException {
             if(identical!=plan)throw new IOException("frozen run profile belongs to another retained launch plan instance");
+            if(loadedRole!=null)requireLoadedCurrent(loadedRequest,plan,loadedRole);
             current(request,plan,actualClock);initialPolicy.verify();
             if(request.lifecycle()==LifecycleMode.NATIVE_CAMPAIGN)requireExplicitNativeCampaign();
             for(var original:originals)SharedSourceFiles.assertUnchanged(original);
@@ -157,14 +201,40 @@ public final class RootFrozenRunProfile {
         return readExact(actualRequest,identicalPlan,policy,actualClock);
     }
     public static FrozenRunProfile readExact(ExactRef actualRequest,NativeLaunchPlan identicalPlan,InitialEpisodePolicy sameActualPolicy,Clock actualClock)throws IOException {
+        return readBound(actualRequest,identicalPlan,sameActualPolicy,actualClock,null);
+    }
+    /** Only the actual current loaded-role issuer can replace the new request's old prepared-input membership gate. */
+    public static FrozenRunProfile readLoadedExact(ExactRef actualRequest,NativeLaunchPlan identicalPlan,ExactRef actualSavedPolicy,
+            RootProcessAttach.LoadedReplacement actualRole,Clock actualClock)throws IOException {
+        Objects.requireNonNull(actualRequest);Objects.requireNonNull(identicalPlan);Objects.requireNonNull(actualSavedPolicy);
+        Objects.requireNonNull(actualRole);Objects.requireNonNull(actualClock);
+        try {
+            var held=new ArrayList<SharedSourceFiles.Witness>();
+            LoadedRequest loaded=decodeLoaded(read(actualRequest,MAXIMUM_REQUEST_BYTES,held));
+            current(loaded.freshProfile(),identicalPlan,actualClock);requireLoadedCurrent(loaded,identicalPlan,actualRole);
+            InitialEpisodePolicy policy=InitialEpisodePolicy.readExactSaved(actualSavedPolicy,identicalPlan);
+            for(var original:held)SharedSourceFiles.assertUnchanged(original);
+            return readBound(actualRequest,identicalPlan,policy,actualClock,actualRole);
+        } catch(IllegalArgumentException invalid) { throw new IOException("actual loaded frozen profile is unavailable or incompatible",invalid); }
+    }
+    private static FrozenRunProfile readBound(ExactRef actualRequest,NativeLaunchPlan identicalPlan,InitialEpisodePolicy sameActualPolicy,
+            Clock actualClock,RootProcessAttach.LoadedReplacement actualRole)throws IOException {
         Objects.requireNonNull(actualRequest);Objects.requireNonNull(identicalPlan);Objects.requireNonNull(sameActualPolicy);Objects.requireNonNull(actualClock);
         var originals=new ArrayList<SharedSourceFiles.Witness>();
         try {
-            Request request=decode(read(actualRequest,MAXIMUM_REQUEST_BYTES,originals));current(request,identicalPlan,actualClock);
+            byte[] raw=read(actualRequest,MAXIMUM_REQUEST_BYTES,originals);
+            LoadedRequest loaded=actualRole==null?null:decodeLoaded(raw);
+            Request request=loaded==null?decode(raw):loaded.freshProfile();current(request,identicalPlan,actualClock);
             FileRef environment=identicalPlan.preparedProfile().environmentManifest();
             require(same(environment,request.environmentManifest()),"explicit current environment differs from retained plan");
             // The run request is itself an exact prepared input. A nearby historical manifest is insufficient.
-            require(identicalPlan.preparedProfile().preparedInputs().stream().anyMatch(ref->same(ref,actualRequest)),"run request missing from identical plan's prepared input closure");
+            if(loaded==null)require(identicalPlan.preparedProfile().preparedInputs().stream().anyMatch(ref->same(ref,actualRequest)),"run request missing from identical plan's prepared input closure");
+            else {
+                requireLoadedCurrent(loaded,identicalPlan,actualRole);
+                for(var ref:List.of(loaded.ownerDescriptor(),loaded.parentControl(),loaded.generationClaim(),loaded.checkpointPair()))
+                    originals.add(retainOriginalEvidence(ref));
+                for(var ref:actualRole.sourceWindow().refs())originals.add(retainOriginalEvidence(ref));
+            }
             byte[] environmentBytes=read(request.environmentManifest(),1048576,originals);
             ObjectValue manifest=object(OriginalDriverJournal.parse(environmentBytes,1048576),"actual environment object required");
             var environmentTree=org.xar.ck3.control.build.ControlBuild.strictMapper().readTree(environmentBytes);
@@ -212,9 +282,24 @@ public final class RootFrozenRunProfile {
                     startupCase=Optional.of(prepared);
                 }
             }
-            FrozenRunProfile result=new FrozenRunProfile(identicalPlan,request,actualRequest,normalized,sameActualPolicy,originals,fixture,startupCase);
+            FrozenRunProfile result=new FrozenRunProfile(identicalPlan,request,actualRequest,normalized,sameActualPolicy,originals,fixture,startupCase,loaded,actualRole);
             result.requireCurrent(identicalPlan,actualClock);return result;
         }catch(IllegalArgumentException invalid){throw new IOException("actual frozen run profile is unavailable or incompatible",invalid);}
+    }
+    private static void requireLoadedCurrent(LoadedRequest loaded,NativeLaunchPlan identicalPlan,
+            RootProcessAttach.LoadedReplacement role)throws IOException {
+        Objects.requireNonNull(loaded);Objects.requireNonNull(role);
+        Instant until=loaded.freshProfile().reviewAt();role.requireCurrent(until);
+        var window=role.sourceWindow();window.requireOwner(role,until);
+        require(!until.isAfter(window.deadline()),"loaded profile exceeds the actual fresh source window");
+        require(role.attached().launchPlan()==identicalPlan,"loaded profile requires the identical actual attached plan instance");
+        require(loaded.ownerDescriptor().equals(role.ownerDescriptor())&&loaded.parentControl().equals(role.parentControl())
+                &&loaded.generationClaim().equals(role.generationClaim()),"loaded request source locators differ from the actual private role");
+        var held=new ArrayList<SharedSourceFiles.Witness>();
+        require(CheckpointPairCodec.decode(read(loaded.checkpointPair(),65536,held)).equals(role.pair()),
+                "loaded checkpoint locator does not decode to the actual private role pair");
+        for(var source:held)SharedSourceFiles.assertUnchanged(source);
+        window.requireOwner(role,until);
     }
     /** Closed configuration-domain check only; never issues a private FrozenRunProfile or Game qualification. */
     public static void requireEnvironmentDomain(ImportMode mode,org.xar.ck3.control.build.NativeRunProfileManifest.ProfileEnvironment actual) {

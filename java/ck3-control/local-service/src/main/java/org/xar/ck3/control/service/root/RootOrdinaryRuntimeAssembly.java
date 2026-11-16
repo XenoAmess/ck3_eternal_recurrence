@@ -60,6 +60,13 @@ public final class RootOrdinaryRuntimeAssembly {
     public static Prepared prepare(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
         return prepare(config,clock,Optional.empty());
     }
+    /** Existing saved-replacement recovery can never initialize a missing or partial canonical writer. */
+    public static Prepared prepareLoadedReplacement(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
+        Objects.requireNonNull(config);Objects.requireNonNull(clock);
+        var configuredDecision=config.decisionProvider().orElseThrow(()->new IOException("loaded recovery requires its explicit decision provider"));
+        if(!configuredDecision.codexFile())throw new IOException("loaded recovery requires the configured direct Codex file provider");
+        return prepare(config,clock,Optional.empty(),true);
+    }
 
     /** Source-only reader for an existing old Saved daemon; no allocation, genesis, or write authority. */
     public static Prepared prepareReadOnlySavedSource(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
@@ -136,6 +143,10 @@ public final class RootOrdinaryRuntimeAssembly {
 
     private static Prepared prepare(RootOrdinaryRuntimeConfiguration config,Clock clock,
             Optional<org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan> savedGenesis)throws IOException {
+        return prepare(config,clock,savedGenesis,false);
+    }
+    private static Prepared prepare(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            Optional<org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan> savedGenesis,boolean requireExisting)throws IOException {
         Objects.requireNonNull(config);Objects.requireNonNull(clock);
         var metadata=new RootOrdinaryImplementationMetadata();
         Path root=Objects.requireNonNull(config.stateDirectory().getParent(),"state directory needs an application parent");
@@ -150,6 +161,10 @@ public final class RootOrdinaryRuntimeAssembly {
         var paths=new WriterContracts.InitialLayout(root.resolve("continuity/continuity.json"),
                 root.resolve("continuity/genesis-anchor.json"),config.machineId());
         Path archiveRoot=root.resolve("continuity/artifacts");
+        if(requireExisting&&(!Files.isRegularFile(paths.anchor(),java.nio.file.LinkOption.NOFOLLOW_LINKS)
+                ||!Files.isRegularFile(paths.snapshot(),java.nio.file.LinkOption.NOFOLLOW_LINKS)
+                ||!Files.isDirectory(paths.events(),java.nio.file.LinkOption.NOFOLLOW_LINKS)))
+            throw new IOException("loaded recovery requires the complete existing canonical writer; no new genesis");
         var outputRoots=List.of(config.stateDirectory(),archiveRoot,paths.snapshot().getParent(),
                 root.resolve("checkpoints"),root.resolve("receipts"),root.resolve("artifacts"),plan.profileDirectory().resolve("save games"),plan.evidenceRoot());
         for(Path directory:outputRoots)Files.createDirectories(directory);
@@ -157,6 +172,7 @@ public final class RootOrdinaryRuntimeAssembly {
         Files.createDirectories(config.stateDirectory().resolve("incidents/scan"));
         Files.createDirectories(plan.profileDirectory().resolve("save games/tutorial"));
         boolean anchor=Files.exists(paths.anchor()),snapshot=Files.exists(paths.snapshot()),events=Files.exists(paths.events());
+        if(requireExisting&&!(anchor&&snapshot&&events))throw new IOException("loaded recovery canonical source disappeared; no genesis");
         if((anchor||snapshot||events)&&!(anchor&&snapshot&&events))
             throw new IOException("partial canonical ledger initialization is retained for recovery; it cannot be overwritten");
         if(savedGenesis.isPresent()&&(anchor||snapshot||events))
@@ -683,6 +699,89 @@ public final class RootOrdinaryRuntimeAssembly {
             session.install(ordinaryHost,deadline);
             return new Running(this,session,original.savedController().batchPrefix(),original.savedController().nextBatchSequence());
         }
+
+
+        /** Same canonical writer and already-created Game. This route has no lifecycle replacement call. */
+        public synchronized Running openLoadedCheckpointRecovery(
+                org.xar.ck3.control.platform.ManagedGameSession attached,
+                org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded,
+                RootLoadedReplacementRecoveryInputs.Request input)throws IOException,InterruptedException {
+            Objects.requireNonNull(attached);Objects.requireNonNull(loaded);Objects.requireNonNull(input);
+            var configuredDecision=config.decisionProvider().orElseThrow(()->new IOException("loaded recovery requires its explicit decision provider"));
+            if(!configuredDecision.codexFile())throw new IOException("loaded recovery requires the configured direct Codex file provider");
+            input.requireCurrent(clock);loaded.requireCurrent(input.deadline());
+            if(sourceOnly||closed||entered||core!=null||game!=null||loaded.attached()!=attached
+                    ||attached.mode()!=ManagedGameSession.Mode.ATTACHED||attached.launchPlan()!=plan
+                    ||!config.machineId().equals(input.machineId())
+                    ||!Path.of(input.ownerDescriptor().path()).equals(config.launchPlanFile())
+                    ||!RootLoadedReplacementRecoveryInputs.same(
+                            org.xar.ck3.control.build.ControlBuild.FileRef.measure(config.configurationFile()),input.runtimeConfiguration()))
+                throw new IOException("loaded recovery requires its exact unused configured writer and actual read-only attached owner");
+            var actualCore=openSavedSourceCore();
+            actualCore.writer().locked(same->{
+                storage.requireReadScope(same,files);
+                if(!same.head().digest().equals(input.expectedHeadDigest()))throw new IOException("loaded recovery original predecessor changed");
+                return null;
+            });
+            var configured=config.operatorQuarantine().orElseThrow(()->new IOException("loaded recovery requires its existing historical operator source"));
+            RootOperatorQuarantineRuntime.installLoaded(actualCore,loaded,configured,clock,input.deadline());
+            var qualified=RootExitedSavedMaterialSource.qualifyLoaded(actualCore,config,files,loaded,input.deadline());
+            if(!qualified.pair().equals(input.pair()))throw new IOException("loaded source changed its original exact checkpoint pair");
+            var material=actualCore.writer().locked(same->actualCore.archive().inHistoricalReadScope(same,
+                    new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(1024,64L*1024*1024,2052),
+                    ignored->qualified.material(same)));
+            var original=actualCore.qualifyLoadedRestoreSource(lifecycle,loaded,qualified.materials(),material,
+                    qualified.driverCheckpoints(),cyclePolicy,input.deadline());
+            var frozen=RootFrozenRunProfile.readLoadedExact(input.currentLoadedProfile(),plan,input.savedPolicy(),loaded,clock);
+            frozen.requireExplicitNativeCampaign();
+            var before=original.archivedBefore();
+            var archived=new org.xar.ck3.control.application.checkpoint.CheckpointRequest.Readiness(before.identity(),before.source(),
+                    before.sessionId(),material.pair().lineageId(),false,false,false,
+                    "archived original before the actual already-created replacement; no current readiness granted",
+                    before.originalEvidence(),before.observedAt());
+            String head=actualCore.writer().locked(same->{original.requireCurrent(same);return same.head().digest();});
+            String parent=RootPublicRestoreRuntime.requestIdentity(original.previousOwner(),head,material.pair());
+            if(!parent.equals(loaded.originalParentId()))throw new IOException("existing replacement differs from the exact original restore identity");
+            var request=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Request(parent,material.pair(),archived,
+                    head,loaded.originalDeadline(),material);
+            loaded.requireOriginalRequest(request);
+            game=attached;lifecycle.adoptAttached(attached);
+            products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
+            var source=new G2Source(config.machineId(),clock.instant().toString(),plan.sources().review().gameExecutable().sha256(),
+                    metadata.implementation(RootOrdinaryRuntimeAssembly.class));
+            var readiness=new RootRuntimeReadiness(actualCore,policy,config.freshness(),clock);
+            var publication=new RootPostAdoptionCollector(actualCore,ports,catalogs,readiness,config.freshness(),clock,frozen);
+            var materials=RootRestoreMaterialFactory.exited(actualCore.writer(),actualCore.archive(),lifecycle,files,original,
+                    metadata.implementation(RootRestoreMaterials.class),config.retainedFrames(),Optional.of(frozen));
+            var adapters=new RootRestoreAdapters(actualCore.writer(),actualCore.archive(),actualCore.actions(),original,
+                    original.materials().ordinaryStore(),original.materials(),materials,publication);
+            actualCore.bindColdRestoreAdapters(original,adapters);
+            var physical=new org.xar.ck3.control.platform.GameRestoreAdapter(lifecycle,plan,loaded);
+            var nativeFrames=new org.xar.ck3.control.platform.GameRestoreNativeAdapter(lifecycle,source,material.pair().lineageId(),
+                    actualCore.archive(),actualCore.writer(),actualCore.writer()::activeSession,actualCore.writer()::requireSession,loaded);
+            var service=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService(files,qualified.driverCheckpoints(),physical,
+                    nativeFrames,actualCore.writer(),original.materials(),adapters,adapters,clock);
+            java.time.Instant readDeadline=clock.instant().plus(java.time.Duration.ofMinutes(30));
+            if(readDeadline.isAfter(input.deadline()))readDeadline=input.deadline();
+            var result=service.restoreExisting(request,readDeadline);
+            if(!(result instanceof org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Restored restored))
+                throw new IOException("same existing replacement retains its original read result; no relaunch: "+result);
+            var base=sessionConfiguration(readDeadline);var paths=base.checkpoints();
+            var checkpoints=new RootStartupConfiguration.CheckpointPaths(paths.driverCheckpoint(),paths.checkpointEvidence(),paths.attachmentEvidence(),
+                    material.pair().lineageId(),Path.of(material.pair().save().reference().path()));
+            var configuration=new RootApplicationAssembly.FreshSessionConfiguration(base.authorityId(),base.policy(),base.freshness(),
+                    checkpoints,base.cyclePolicy(),readDeadline);
+            var selector=new RootOnlineDecisionSelector(configuredDecision,clock,raw->{
+                var writer=actualCore.writer();var active=writer.activeSession();
+                if(active.isPresent())return actualCore.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                return writer.locked(same->actualCore.archive().withSession(same).preserveMaterial(raw));
+            });
+            actualCore.bindDecisionSelector(selector);
+            var session=actualCore.finishColdRestored(original,adapters,service,restored.binding(),attached,configuration,services(source));
+            session.install(ordinaryHost,readDeadline);input.requireCurrent(clock);
+            return new Running(this,session,original.savedController().batchPrefix(),original.savedController().nextBatchSequence());
+        }
+
 
         private synchronized void retainExitedReplacement(String requestId)throws IOException {
             if(exitedOwnerLifetime!=null)return;
