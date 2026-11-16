@@ -99,7 +99,9 @@ public final class RootProfileBootstrapInputs {
     public static Prepared originalDriverRunProfile(RootOriginalDriverRunProfileProducer.Prepared actual)throws IOException {
         Objects.requireNonNull(actual);actual.verifyOriginals();Path target=actual.target();
         var body=new Body(Kind.ORIGINAL_DRIVER_RUN_PROFILE,target,actual.bytes());
-        return new Prepared(target.getParent(),List.of(body),List.of(),List.of(),List.of(),actual::verifyOriginals,
+        var bodies=new ArrayList<Body>();bodies.add(body);
+        actual.ordinaryPolicyCopy().ifPresent(copy->bodies.add(new Body(Kind.INITIAL_POLICY,copy.target(),copy.bytes())));
+        return new Prepared(target.getParent(),bodies,List.of(),List.of(),List.of(),actual::verifyOriginals,
                 actual::verifyOriginals,actual::verifyCreated);
     }
     public static Prepared assets(NativeRunProfileProducer.Prepared actual,FileRef productionInventory)throws IOException {

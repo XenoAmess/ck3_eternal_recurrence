@@ -743,8 +743,17 @@ public final class RootOrdinaryRuntimeAssembly {
                     ignored->qualified.material(same)));
             var original=actualCore.qualifyLoadedRestoreSource(lifecycle,loaded,qualified.materials(),material,
                     qualified.driverCheckpoints(),cyclePolicy,input.deadline());
-            var frozen=RootFrozenRunProfile.readLoadedExact(input.currentLoadedProfile(),plan,input.savedPolicy(),loaded,clock);
-            frozen.requireExplicitNativeCampaign();
+            Optional<RootFrozenRunProfile.FrozenRunProfile> frozen;
+            if(input.mode()==RootLoadedReplacementRecoveryInputs.Mode.ORDINARY_PROFILE3) {
+                actualCore.writer().locked(same->{
+                    RootLoadedOrdinaryProfile.readExact(input.currentLoadedProfile(),input.savedPolicy(),input.runtimeConfiguration(),
+                            plan,loaded,same,material,config.initialPolicy(),clock);return null;
+                });
+                frozen=Optional.empty();
+            } else {
+                var nativeProfile=RootFrozenRunProfile.readLoadedExact(input.currentLoadedProfile(),plan,input.savedPolicy(),loaded,clock);
+                nativeProfile.requireExplicitNativeCampaign();frozen=Optional.of(nativeProfile);
+            }
             var before=original.archivedBefore();
             var archived=new org.xar.ck3.control.application.checkpoint.CheckpointRequest.Readiness(before.identity(),before.source(),
                     before.sessionId(),material.pair().lineageId(),false,false,false,
@@ -761,9 +770,11 @@ public final class RootOrdinaryRuntimeAssembly {
             var source=loadedExecutionSource(config.machineId(),clock.instant(),plan.sources().review().gameExecutable(),
                     before.source(),metadata.implementation(RootOrdinaryRuntimeAssembly.class));
             var readiness=new RootRuntimeReadiness(actualCore,policy,config.freshness(),clock);
-            var publication=new RootPostAdoptionCollector(actualCore,ports,catalogs,readiness,config.freshness(),clock,frozen);
+            var publication=frozen.isPresent()
+                    ?new RootPostAdoptionCollector(actualCore,ports,catalogs,readiness,config.freshness(),clock,frozen.orElseThrow())
+                    :RootPostAdoptionCollector.ordinary(actualCore,ports,catalogs,readiness,config.freshness(),clock);
             var materials=RootRestoreMaterialFactory.exited(actualCore.writer(),actualCore.archive(),lifecycle,files,original,
-                    metadata.implementation(RootRestoreMaterials.class),config.retainedFrames(),Optional.of(frozen));
+                    metadata.implementation(RootRestoreMaterials.class),config.retainedFrames(),frozen);
             var adapters=new RootRestoreAdapters(actualCore.writer(),actualCore.archive(),actualCore.actions(),original,
                     original.materials().ordinaryStore(),original.materials(),materials,publication);
             actualCore.bindColdRestoreAdapters(original,adapters);

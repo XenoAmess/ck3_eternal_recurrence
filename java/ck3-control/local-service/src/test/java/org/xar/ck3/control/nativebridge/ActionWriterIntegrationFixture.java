@@ -332,6 +332,21 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             Optional<SoftwareReadScenario> scenario,List<SoftwareActionScenario> actionScenarios,List<SoftwareCompositeScenario> compositeScenarios,
             java.util.function.Function<ExactRef,List<DomainBodies.Registration>> actualDomains,Clock receivedClock,
             SoftwareReadGuardDecoration decoration,Duration readinessValidity,long maximumArchiveBytes) throws IOException {
+        this(root,loseAck,council,compositeMode,scenario,actionScenarios,compositeScenarios,actualDomains,receivedClock,
+                decoration,readinessValidity,maximumArchiveBytes,Optional.empty());
+    }
+    /** Explicit original software Driver producer; never changes an emitted packet, receipt or persisted Driver. */
+    public static ActionWriterIntegrationFixture withInitialOrdinaryLifecycle(Path root,boolean loseAck,SoftwareReadScenario reads,
+            List<SoftwareActionScenario> actions,org.xar.ck3.control.application.action.RawJson lifecycle)throws IOException {
+        return new ActionWriterIntegrationFixture(root,loseAck,false,false,Optional.of(reads),List.copyOf(actions),List.of(),
+                ignored->List.of(),Clock.systemUTC(),SoftwareReadGuardContext::guard,Duration.ofSeconds(30),16L*1024*1024,Optional.of(lifecycle));
+    }
+    private ActionWriterIntegrationFixture(Path root,boolean loseAck,boolean council,boolean compositeMode,
+            Optional<SoftwareReadScenario> scenario,List<SoftwareActionScenario> actionScenarios,List<SoftwareCompositeScenario> compositeScenarios,
+            java.util.function.Function<ExactRef,List<DomainBodies.Registration>> actualDomains,Clock receivedClock,
+            SoftwareReadGuardDecoration decoration,Duration readinessValidity,long maximumArchiveBytes,
+            Optional<org.xar.ck3.control.application.action.RawJson> initialLifecycle) throws IOException {
+        java.util.Objects.requireNonNull(initialLifecycle);
         StrictJson.require(maximumArchiveBytes>0&&maximumArchiveBytes<=64L*1024*1024,"finite explicit software archive budget required");
         this.maximumArchiveBytes=maximumArchiveBytes;
         java.util.Objects.requireNonNull(receivedClock);
@@ -353,7 +368,16 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         executableBuilder.addAll(softwareCompositeOperations);
         Set<OperationKey> executable = Set.copyOf(executableBuilder);
         this.root = root; Files.createDirectory(root);
-        Path driverFile = root.resolve("original-driver.json"); Files.writeString(driverFile, DRIVER, StandardOpenOption.CREATE_NEW);
+        Path driverFile = root.resolve("original-driver.json");
+        byte[] originalDriverBytes=DRIVER.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        if(initialLifecycle.isPresent()) {
+            var binding=org.xar.ck3.control.wave3.governance.lifecycle.SuccessionLifecycleCodec.decode(initialLifecycle.orElseThrow().bytes());
+            StrictJson.require(binding.profile().ordinary(),"explicit initial software lifecycle must be ordinary");
+            var initialDriver=(com.fasterxml.jackson.databind.node.ObjectNode)StrictJson.parse(originalDriverBytes,1<<20);
+            initialDriver.set("succession_lifecycle",StrictJson.parse(org.xar.ck3.control.wave3.governance.lifecycle.SuccessionLifecycleCodec.encode(binding),1<<20));
+            originalDriverBytes=StrictJson.canonical(initialDriver);
+        }
+        Files.write(driverFile,originalDriverBytes,StandardOpenOption.CREATE_NEW);
         Path sourceFile = root.resolve("reviewed-fixture-source.txt"); Files.writeString(sourceFile, scenario.flatMap(SoftwareReadScenario::controlledReviewedSource)
                 .orElse("controlled fixture source, never a live package qualification"), StandardOpenOption.CREATE_NEW);
         ExactRef originalDriver = reference(driverFile), reviewed = reference(sourceFile);

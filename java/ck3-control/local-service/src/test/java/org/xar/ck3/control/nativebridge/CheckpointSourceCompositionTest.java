@@ -139,6 +139,17 @@ public final class CheckpointSourceCompositionTest {
                 Optional<ActionWriterIntegrationFixture.SoftwareDispatch> physicalSaveWrite,
                 Optional<ActionWriterIntegrationFixture.SoftwareReadScenario> freshReconciliationReads,boolean guardedMaterialOutputs,
                 boolean nativeSavedSnapshotIdentity,int savedNativeRevisionAdvance)throws Exception {
+            this(root,loseAck,serviceClock,snapshots,afterPostcondition,additionalActions,commandBudget,physicalSaveRoot,physicalSaveWrite,
+                    freshReconciliationReads,guardedMaterialOutputs,nativeSavedSnapshotIdentity,savedNativeRevisionAdvance,Optional.empty());
+        }
+        Fixture(Path root,boolean loseAck,Clock serviceClock,Optional<SnapshotSupplierDecorator> snapshots,
+                Optional<AfterPostcondition> afterPostcondition,
+                List<ActionWriterIntegrationFixture.SoftwareActionScenario> additionalActions,java.time.Duration commandBudget,Path physicalSaveRoot,
+                Optional<ActionWriterIntegrationFixture.SoftwareDispatch> physicalSaveWrite,
+                Optional<ActionWriterIntegrationFixture.SoftwareReadScenario> freshReconciliationReads,boolean guardedMaterialOutputs,
+                boolean nativeSavedSnapshotIdentity,int savedNativeRevisionAdvance,
+                Optional<org.xar.ck3.control.application.action.RawJson> initialLifecycle)throws Exception {
+            Objects.requireNonNull(initialLifecycle);
             StrictJson.require(savedNativeRevisionAdvance==1||savedNativeRevisionAdvance==2,"explicit software SAVE raw revision advance is one or two");
             Objects.requireNonNull(commandBudget);
             StrictJson.require(!commandBudget.isNegative()&&!commandBudget.isZero()
@@ -159,13 +170,16 @@ public final class CheckpointSourceCompositionTest {
                         else Files.writeString(save,"actual controlled SAVE bytes from the original native write");
                         actualRef.get().enqueueSoftwareNativePacket(afterPacket.get());
                     },Optional.empty(),Optional.empty(),true);
-            if(additionalActions.isEmpty()&&freshReconciliationReads.isEmpty())actual=new ActionWriterIntegrationFixture(root,loseAck,scenario);
+            if(additionalActions.isEmpty()&&freshReconciliationReads.isEmpty()&&initialLifecycle.isEmpty())actual=new ActionWriterIntegrationFixture(root,loseAck,scenario);
             else {
                 var actions=new java.util.ArrayList<ActionWriterIntegrationFixture.SoftwareActionScenario>();
                 actions.add(scenario);actions.addAll(additionalActions);
                 var noAdditionalReads=new ActionWriterIntegrationFixture.SoftwareReadScenario("0".repeat(64),"fixture-adapter",
                         reviewed->List.of(),request->{throw new AssertionError("no extra software READ was installed");});
-                actual=new ActionWriterIntegrationFixture(root,loseAck,freshReconciliationReads.orElse(noAdditionalReads),List.copyOf(actions));
+                var selectedReads=freshReconciliationReads.orElse(noAdditionalReads);
+                actual=initialLifecycle.isPresent()
+                        ?ActionWriterIntegrationFixture.withInitialOrdinaryLifecycle(root,loseAck,selectedReads,List.copyOf(actions),initialLifecycle.orElseThrow())
+                        :new ActionWriterIntegrationFixture(root,loseAck,selectedReads,List.copyOf(actions));
             }
             if(freshReconciliationReads.isPresent())actual.configureSoftwareFreshRead179("success",true);
             actualRef.set(actual);owner=actual.observationIdentity();

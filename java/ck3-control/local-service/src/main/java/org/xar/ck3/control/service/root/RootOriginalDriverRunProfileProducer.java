@@ -79,10 +79,20 @@ public final class RootOriginalDriverRunProfileProducer {
     public static Prepared prepare(FileRef originalRequest,Path target,Clock clock)throws IOException {
         try {
             var parsed=OriginalDriverJournal.parse(RootRuntimeDefinitions.read(Objects.requireNonNull(originalRequest),MAXIMUM_REQUEST_BYTES),MAXIMUM_REQUEST_BYTES);
+            if(parsed instanceof ObjectValue ordinaryRoot&&ordinaryRoot.get("schema") instanceof StringValue ordinarySchema
+                    &&RootLoadedOrdinaryProfile.REQUEST_SCHEMA.equals(ordinarySchema.value()))
+                return prepareOrdinary(originalRequest,target,clock);
             if(parsed instanceof ObjectValue root&&root.get("schema") instanceof StringValue schema&&LOADED_SCHEMA.equals(schema.value()))
                 return prepareLoaded(originalRequest,target,clock);
         } catch(IllegalArgumentException invalid) { throw new IOException("actual run-profile producer request is invalid",invalid); }
         return prepareLegacy(originalRequest,target,clock);
+    }
+    private static Prepared prepareOrdinary(FileRef originalRequest,Path target,Clock clock)throws IOException {
+        var witness=SharedSourceFiles.observe(Path.of(originalRequest.path()));requireSame(witness.source(),originalRequest);
+        var request=RootLoadedOrdinaryProfile.decodeRequest(RootRuntimeDefinitions.read(originalRequest,MAXIMUM_REQUEST_BYTES));
+        var ordinary=RootLoadedOrdinaryProfile.prepare(request,target,clock);
+        var prepared=new Prepared(target,request.profile(),ordinary.bytes(),List.of(witness),clock,null,ordinary);
+        prepared.verifyOriginals();return prepared;
     }
     private static Prepared prepareLegacy(FileRef originalRequest,Path target,Clock clock)throws IOException {
         Objects.requireNonNull(originalRequest);Objects.requireNonNull(clock);absolute(target);
@@ -122,14 +132,23 @@ public final class RootOriginalDriverRunProfileProducer {
         private final List<SharedSourceFiles.Witness> originals;
         private final Clock clock;
         private final RootFrozenRunProfile.LoadedRequest loadedProfile;
+        private final RootLoadedOrdinaryProfile.Prepared ordinary;
         private Prepared(Path target,RootFrozenRunProfile.Request profile,byte[] bytes,
                 List<SharedSourceFiles.Witness> originals,Clock clock) {
             this(target,profile,bytes,originals,clock,null);
         }
         private Prepared(Path target,RootFrozenRunProfile.Request profile,byte[] bytes,
                 List<SharedSourceFiles.Witness> originals,Clock clock,RootFrozenRunProfile.LoadedRequest loadedProfile) {
+            this(target,profile,bytes,originals,clock,loadedProfile,null);
+        }
+        private Prepared(Path target,RootFrozenRunProfile.Request profile,byte[] bytes,
+                List<SharedSourceFiles.Witness> originals,Clock clock,RootFrozenRunProfile.LoadedRequest loadedProfile,
+                RootLoadedOrdinaryProfile.Prepared ordinary) {
             this.target=target;this.profile=profile;this.bytes=bytes.clone();this.originals=List.copyOf(originals);this.clock=clock;
-            this.loadedProfile=loadedProfile;
+            this.loadedProfile=loadedProfile;this.ordinary=ordinary;
+        }
+        public java.util.Optional<RootLoadedOrdinaryProfile.PolicyCopy> ordinaryPolicyCopy(){
+            return java.util.Optional.ofNullable(ordinary).map(RootLoadedOrdinaryProfile.Prepared::policyCopy);
         }
         public Path target(){return target;}
         public byte[] bytes(){return bytes.clone();}
@@ -137,10 +156,12 @@ public final class RootOriginalDriverRunProfileProducer {
             RootRuntimeDefinitions.requireCurrent(profile.machineId(),profile.observedAt().toString(),profile.reviewAt().toString(),
                     WindowsJobProcess.currentMachineId(),clock,"original Driver run-profile configuration");
             for(var original:originals)SharedSourceFiles.assertUnchanged(original);
+            if(ordinary!=null)ordinary.verifyOriginals();
         }
         /** Called after the existing CREATE_NEW writer and its own readback; does not perform a write. */
         public void verifyCreated()throws IOException {
             verifyOriginals();
+            if(ordinary!=null){ordinary.verifyCreated(target);verifyOriginals();return;}
             FileRef expected=new FileRef(target.toString(),bytes.length,OriginalDriverJournal.sha256(bytes));
             byte[] actual=RootRuntimeDefinitions.read(expected,RootFrozenRunProfile.MAXIMUM_REQUEST_BYTES);
             if(!Arrays.equals(bytes,actual)||(loadedProfile==null ? !RootFrozenRunProfile.decode(actual).equals(profile)

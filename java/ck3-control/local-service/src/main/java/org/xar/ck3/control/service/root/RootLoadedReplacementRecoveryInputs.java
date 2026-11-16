@@ -18,12 +18,21 @@ import org.xar.ck3.control.contracts.StrictJson;
 /** Fresh source DATA for the existing worker's already-created Saved Game route. No launch capability. */
 public final class RootLoadedReplacementRecoveryInputs {
     public static final String SCHEMA="xar.java-existing-saved-replacement-recovery/v1";
+    public static final String ORDINARY_SCHEMA="xar.java-existing-saved-replacement-recovery/v2";
+    public enum Mode { NATIVE_CAMPAIGN,ORDINARY_PROFILE3 }
     private static final int LIMIT=65536;
     private RootLoadedReplacementRecoveryInputs(){ }
     public record Request(String machineId,Instant issuedAt,Instant deadline,ExactRef runtimeConfiguration,
             ExactRef ownerDescriptor,ExactRef parentControl,ExactRef generationClaim,ExactRef checkpointPair,
-            ExactRef currentLoadedProfile,ExactRef savedPolicy,Path evidenceDirectory,String expectedHeadDigest) {
+            ExactRef currentLoadedProfile,ExactRef savedPolicy,Path evidenceDirectory,String expectedHeadDigest,Mode mode) {
+        public Request(String machineId,Instant issuedAt,Instant deadline,ExactRef runtimeConfiguration,
+                ExactRef ownerDescriptor,ExactRef parentControl,ExactRef generationClaim,ExactRef checkpointPair,
+                ExactRef currentLoadedProfile,ExactRef savedPolicy,Path evidenceDirectory,String expectedHeadDigest) {
+            this(machineId,issuedAt,deadline,runtimeConfiguration,ownerDescriptor,parentControl,generationClaim,checkpointPair,
+                    currentLoadedProfile,savedPolicy,evidenceDirectory,expectedHeadDigest,Mode.NATIVE_CAMPAIGN);
+        }
         public Request {
+            java.util.Objects.requireNonNull(mode);
             StrictJson.text(machineId);
             StrictJson.require(issuedAt.isBefore(deadline)&&Duration.between(issuedAt,deadline).compareTo(Duration.ofMinutes(45))<=0,
                     "fresh finite loaded recovery source must fit45 minutes");
@@ -51,6 +60,8 @@ public final class RootLoadedReplacementRecoveryInputs {
         } catch(IllegalArgumentException invalid){throw new IOException("invalid loaded recovery source",invalid);}
     }
     public static Request decode(byte[] bytes) {
+        var version=StrictJson.parse(bytes,LIMIT).get("schema");
+        if(version!=null&&version.isTextual()&&ORDINARY_SCHEMA.equals(version.textValue()))return decodeOrdinary(bytes);
             var row=StrictJson.object(StrictJson.parse(bytes,LIMIT),Set.of("schema","machine_id","issued_at_utc","deadline_utc",
                     "runtime_configuration","owner_descriptor","parent_control","generation_claim","checkpoint_pair","current_loaded_profile",
                     "saved_policy","evidence_directory","expected_head_digest"));
@@ -64,6 +75,7 @@ public final class RootLoadedReplacementRecoveryInputs {
     }
     /** Metadata only. Eligibility comes from the later actual LoadedReplacement and complete Core proof. */
     public static byte[] encode(Request value) {
+        if(value.mode()==Mode.ORDINARY_PROFILE3)return encodeOrdinary(value);
         var row=StrictJson.object().put("schema",SCHEMA).put("machine_id",value.machineId())
                 .put("issued_at_utc",value.issuedAt().toString()).put("deadline_utc",value.deadline().toString())
                 .put("evidence_directory",value.evidenceDirectory().toString()).put("expected_head_digest",value.expectedHeadDigest());
@@ -71,6 +83,25 @@ public final class RootLoadedReplacementRecoveryInputs {
         row.set("parent_control",value.parentControl().toJson());row.set("generation_claim",value.generationClaim().toJson());
         row.set("checkpoint_pair",value.checkpointPair().toJson());row.set("current_loaded_profile",value.currentLoadedProfile().toJson());
         row.set("saved_policy",value.savedPolicy().toJson());return StrictJson.canonical(row,LIMIT);
+    }
+    private static Request decodeOrdinary(byte[] bytes) {
+        var row=StrictJson.object(StrictJson.parse(bytes,LIMIT),Set.of("schema","machine_id","issued_at_utc","deadline_utc",
+                "runtime_configuration","owner_descriptor","parent_control","generation_claim","checkpoint_pair","current_loaded_profile",
+                "saved_policy","evidence_directory","expected_head_digest","recovery_mode"));
+        StrictJson.require(ORDINARY_SCHEMA.equals(StrictJson.text(row.get("schema")))
+                &&"ordinary_profile3".equals(StrictJson.text(row.get("recovery_mode"))),"explicit ordinary recovery version/mode required");
+        var shared=row.deepCopy();shared.remove("recovery_mode");shared.put("schema",SCHEMA);
+        var value=decode(StrictJson.canonical(shared,LIMIT));
+        return new Request(value.machineId(),value.issuedAt(),value.deadline(),value.runtimeConfiguration(),value.ownerDescriptor(),
+                value.parentControl(),value.generationClaim(),value.checkpointPair(),value.currentLoadedProfile(),value.savedPolicy(),
+                value.evidenceDirectory(),value.expectedHeadDigest(),Mode.ORDINARY_PROFILE3);
+    }
+    private static byte[] encodeOrdinary(Request value) {
+        var legacy=new Request(value.machineId(),value.issuedAt(),value.deadline(),value.runtimeConfiguration(),value.ownerDescriptor(),
+                value.parentControl(),value.generationClaim(),value.checkpointPair(),value.currentLoadedProfile(),value.savedPolicy(),
+                value.evidenceDirectory(),value.expectedHeadDigest());
+        var row=(com.fasterxml.jackson.databind.node.ObjectNode)StrictJson.parse(encode(legacy),LIMIT);row.put("schema",ORDINARY_SCHEMA);
+        row.put("recovery_mode","ordinary_profile3");return StrictJson.canonical(row,LIMIT);
     }
     static byte[] read(ExactRef ref,int maximum)throws IOException {
         if(ref.bytes()<1||ref.bytes()>maximum)throw new IOException("loaded source exceeds its finite role bound");
