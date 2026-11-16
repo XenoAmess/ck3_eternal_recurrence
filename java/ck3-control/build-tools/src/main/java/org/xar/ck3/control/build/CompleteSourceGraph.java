@@ -50,7 +50,8 @@ public final class CompleteSourceGraph {
         G2_FULL_PARITY_20261024_R4(5120, 64L << 20, 80L << 20),
         G2_FULL_PARITY_20261024_R5(6144, 96L << 20, 112L << 20),
         G2_FULL_PARITY_20261024_R6(6144, 96L << 20, 112L << 20),
-        G2_FULL_PARITY_20261025_R7(6144, 96L << 20, 112L << 20);
+        G2_FULL_PARITY_20261025_R7(6144, 96L << 20, 112L << 20),
+        G2_FULL_PARITY_20261116_R8(6144, 96L << 20, 112L << 20);
         private final int files;
         private final long logicalBytes;
         private final long nativeBytes;
@@ -63,7 +64,7 @@ public final class CompleteSourceGraph {
         public boolean completeG2() { return this != JAVA29_REPAIR_20261023; }
         public boolean fullParity() { return this == G2_FULL_PARITY_20261024 || resumedParity(); }
         private boolean resumedParity() { return this == G2_FULL_PARITY_20261024_R2 || this == G2_FULL_PARITY_20261024_R3
-                || this == G2_FULL_PARITY_20261024_R4 || this == G2_FULL_PARITY_20261024_R5 || this == G2_FULL_PARITY_20261024_R6 || this == G2_FULL_PARITY_20261025_R7; }
+                || this == G2_FULL_PARITY_20261024_R4 || this == G2_FULL_PARITY_20261024_R5 || this == G2_FULL_PARITY_20261024_R6 || this == G2_FULL_PARITY_20261025_R7 || this == G2_FULL_PARITY_20261116_R8; }
         public int copyProofMaxBytes() { return resumedParity() ? 16 << 20 : 8 << 20; }
         public int childModules() { return modules(this).size(); }
         public int reactorProjects() { return childModules() + 1; }
@@ -79,6 +80,7 @@ public final class CompleteSourceGraph {
                 case G2_FULL_PARITY_20261024_R5 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R5;
                 case G2_FULL_PARITY_20261024_R6 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R6;
                 case G2_FULL_PARITY_20261025_R7 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261025_R7;
+                case G2_FULL_PARITY_20261116_R8 -> ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261116_R8;
             };
         }
     }

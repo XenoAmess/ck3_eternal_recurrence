@@ -97,7 +97,7 @@ public final class ToolsPostqualificationInputProducer41 {
         if (manifest.equals(target)) throw new IOException("Distinct fresh manifest and typed input outputs required");
         var completed = ControlBuild.verifiedCompletedReceipt(request.toolsReceiptRef());
         if (completed.targetKind() != ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME
-                || completed.sourceLimitProfile() != ControlBuild.SourceLimitProfile.STANDARD_8_MIB
+                || !completed.sourceLimitProfile().toolsRuntimeSources()
                 || !machine.equals(completed.machineId()) || !completed.completeDeployment().equals(ControlBuild.producerClosure()))
             throw new IOException("Exact verified completed Tools archive and its running closure are required");
         request.capacityReleaseRef().verify();

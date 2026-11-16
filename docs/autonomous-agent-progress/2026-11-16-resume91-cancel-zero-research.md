@@ -215,3 +215,13 @@ P5三公共输出01:23:59.933837Z全部exit0。原8组scope census发现keeper�
 P5-late实际01:48:13完成初Bootstrap scope：publication167791/held116901/acquire1024/retained1024/unretained0，fallback49866全entry_bound、peak17374522B，原1024/64MiB/2052，finish1/validation0。01:49:57新material scope也真实完成：publication135318/held104472/acquire1024/retained1024/unretained0、fallback29822全entry_bound、peak28461667B、finish1/validation0。两段parse诊断分别protocol_hits23952/19281、fullMaterial_hits400/320，均miss759+8、无bytesUnequal/evictions，entries767/retained23219949B。此为本轮两个独立scope成功，尚非Core整体或Game；未做控制变量性能比较，不据更早阶段外推10秒目标。
 
 后置formal Hpp2 Store1真实12.084533秒GREEN/18class，`hpp116f1` OUTPUTS43060B/5f651dc8…。Ledger旧7与源rawexact复用；正式纳入的旧新增3方法源与原完整3class fresh一致，23个直接Ledger/Store符号在formal Store18+Ledger7均可解析，ABI复用小件 `FORMAL-HPP2-RAWEXACT-OLDTEST3-ABI-REUSE01.json`8320B/b4199221…。未新跑旧3/15、不冒新formal行为矩阵。P5实际装载和软件兼容此前已完成，源码与回归据此独立正常发表；CI13仍另包继续。
+
+## 显式源码封套的必要 13 方法已通过
+
+Hpp2生产2+原新增回归1与Root五报告共8文件已正常FF发表 `0f0a83d7c0146a67ec57a1fc186d652d25e15c6f`，parent d1da4d，remote exact/index空，CI九叶继续未stage。PUBLICATION8为7575B/SHA `6feb86ec00bbc05baf26e4be890ad9502ea94abc47121cd406c30043879eab8d`；canonical对象disk100778B非FS净增，独立208KiB guard保守关闭。上个d1da4d Official run43783527222已向服务端请求取消，保留最新运行，未把取消记测试通过。
+
+CI必要Test依赖补齐后15.198812秒GREEN/6class：只编HEAD两个小helper与未产Test2，原ToolsTest1class保留未重。六生产族226class+必要HEAD依赖9class、三个Test5class+helper2完整typing闭合；原25.094秒生产依赖差异RED及10.241529秒Test缺helper RED保留，正式profile逻辑未因这两次失败修改，没有fresh全六或135/Maven。
+
+**新13方法真实17.431708秒13P/0F/0E/0skip**，显式parallel=false：Tools新11+选定Stage1/Parity1。XML `F/ci114j1/reports/TEST-junit-jupiter.xml`56774B/SHA `0cc8a92bbda012abfe7e1eae231908aacfb21105f2efe554218dc15d4ea41e1e`，ACTUAL1266B/569d90a7…。验证覆盖旧STD8/R6/R7枚举和上限不变、新Tools单项目/1000files/12MiB与.mvn8MiB、src/pom/固定资源全量同pin、精确12MiB与首超字节、1001文件拒绝、35项目R8仅Tools模块扩界、LEGACY/complete两入口新选择、Tools与Service/RootCard区分、原Lobby输入门及receipt读取边界。测试只建小POM图及单棵边界payload，未物化整图、未Maven/Own，也没有新的Official全绿信用。
+
+P5-late 1584.35秒样本02:11:27仍Core DATA fullcapture、0Game/claim；read23814366570B/1342259ops、OS handles16804。标准只读heap_info同birth前后核：new total1258304K used707864K，tenured total2796224K used2045189K（73%），Metaspace37783K；未GC.run/hist/dump，不从OS private4506554368B/WS4504997888B推heap使用或GC后live量。最终Hpp/entry/byte/memo统计和完整cold终态仍待，不以已发表源码或本次CI13改写本轮结果。

@@ -1282,13 +1282,49 @@ public final class CiBootstrap {
         }
     }
 
-    private static List<FilePin> sourcePins(Path source) throws IOException {
-        List<FilePin> result = new ArrayList<>();
-        try (var paths = Files.walk(source.resolve("src"))) {
-            for (Path path : paths.filter(Files::isRegularFile).sorted().toList()) result.add(measure(path));
+    // This JDK source-file entry cannot depend on ControlBuild/Jackson/JNA. A regression binds these
+    // source-only constants and the exact pin set to ControlBuild's explicit Tools envelope.
+    static final String TOOLS_SOURCE_PROFILE = "TOOLS_20261116_12_MIB";
+    static final int TOOLS_SOURCE_MAX_FILES = 1000;
+    static final long TOOLS_SOURCE_MAX_BYTES = 12L << 20;
+    static List<FilePin> sourcePins(Path source) throws IOException {
+        source = source.toRealPath();
+        List<FilePin> result = new ArrayList<>(); long[] total = {0};
+        java.util.function.Consumer<FilePin> add = pin -> {
+            result.add(pin); total[0] = Math.addExact(total[0], pin.bytes());
+        };
+        add.accept(measure(source.resolve("pom.xml")));
+        if (total[0] > TOOLS_SOURCE_MAX_BYTES) throw new IOException("Tools source closure exceeds " + TOOLS_SOURCE_PROFILE);
+        for (String directory : List.of("src", ".mvn")) {
+            Path part = source.resolve(directory);
+            if (!Files.exists(part, LinkOption.NOFOLLOW_LINKS)) continue;
+            if (!Files.isDirectory(part, LinkOption.NOFOLLOW_LINKS) || Files.isSymbolicLink(part))
+                throw new IOException("Plain canonical Tools source directory required");
+            Path boundary = part.toRealPath(); int[] entries = {0}; long[] partBytes = {0};
+            long partLimit = directory.equals("src") ? TOOLS_SOURCE_MAX_BYTES : 8L << 20;
+            Files.walkFileTree(part, new SimpleFileVisitor<>() {
+                private void check(Path path, BasicFileAttributes attributes) throws IOException {
+                    if (Thread.currentThread().isInterrupted()) throw new InterruptedIOException("Bootstrap source inventory interrupted");
+                    if (++entries[0] > TOOLS_SOURCE_MAX_FILES || attributes.isSymbolicLink()
+                            || !path.toRealPath().startsWith(boundary)) throw new IOException("Bounded plain Tools source inventory required");
+                }
+                @Override public FileVisitResult preVisitDirectory(Path directoryPath, BasicFileAttributes attributes) throws IOException {
+                    check(directoryPath, attributes); return FileVisitResult.CONTINUE;
+                }
+                @Override public FileVisitResult visitFile(Path path, BasicFileAttributes attributes) throws IOException {
+                    check(path, attributes);
+                    if (!attributes.isRegularFile()) throw new IOException("Regular Tools source file required");
+                    FilePin pin = measure(path); partBytes[0] = Math.addExact(partBytes[0], pin.bytes());
+                    add.accept(pin);
+                    if (result.size() > TOOLS_SOURCE_MAX_FILES || total[0] > TOOLS_SOURCE_MAX_BYTES || partBytes[0] > partLimit)
+                        throw new IOException("Tools source closure exceeds " + TOOLS_SOURCE_PROFILE);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
         }
-        result.add(measure(source.resolve("pom.xml")));
-        return List.copyOf(result);
+        if (result.size() > TOOLS_SOURCE_MAX_FILES || total[0] > TOOLS_SOURCE_MAX_BYTES)
+            throw new IOException("Tools source closure exceeds " + TOOLS_SOURCE_PROFILE);
+        result.sort(Comparator.comparing(FilePin::path)); return List.copyOf(result);
     }
 
     private static void runPlain(List<String> command, Path cwd, Map<String, String> environment,

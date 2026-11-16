@@ -99,7 +99,9 @@ public final class ControlBuild {
         G2_FULL_PARITY_20261024_R4(5120, 64L << 20),
         G2_FULL_PARITY_20261024_R5(6144, 96L << 20),
         G2_FULL_PARITY_20261024_R6(6144, 96L << 20),
-        G2_FULL_PARITY_20261025_R7(6144, 96L << 20);
+        G2_FULL_PARITY_20261025_R7(6144, 96L << 20),
+        TOOLS_20261116_12_MIB(1000, 12L << 20),
+        G2_FULL_PARITY_20261116_R8(6144, 96L << 20);
 
         private final int maxFiles;
         private final long maxBytes;
@@ -112,13 +114,18 @@ public final class ControlBuild {
         }
         public boolean fullParity() { return this == G2_FULL_PARITY_20261024 || resumedParity(); }
         public boolean resumedParity() { return this == G2_FULL_PARITY_20261024_R2 || currentParity(); }
-        public boolean currentParity() { return this == G2_FULL_PARITY_20261024_R3 || this == G2_FULL_PARITY_20261024_R4 || this == G2_FULL_PARITY_20261024_R5 || this == G2_FULL_PARITY_20261024_R6 || this == G2_FULL_PARITY_20261025_R7; }
+        public boolean currentParity() { return this == G2_FULL_PARITY_20261024_R3 || this == G2_FULL_PARITY_20261024_R4 || this == G2_FULL_PARITY_20261024_R5 || this == G2_FULL_PARITY_20261024_R6 || this == G2_FULL_PARITY_20261025_R7 || this == G2_FULL_PARITY_20261116_R8; }
+        /** Source-family test only; callers must separately require an actual Tools target and provenance. */
+        public boolean toolsRuntimeSources() { return this == STANDARD_8_MIB || this == TOOLS_20261116_12_MIB; }
         public long moduleSourceBytes(String module, String directory) {
-            if ((this == G2_FULL_PARITY_20261024_R5 || this == G2_FULL_PARITY_20261024_R6 || this == G2_FULL_PARITY_20261025_R7) && directory.equals("src")) {
+            if (directory.equals("src") && ((this == TOOLS_20261116_12_MIB && module.isEmpty())
+                    || (this == G2_FULL_PARITY_20261116_R8 && module.equals("build-tools")))) return 12L << 20;
+            if ((this == G2_FULL_PARITY_20261024_R5 || this == G2_FULL_PARITY_20261024_R6 || this == G2_FULL_PARITY_20261025_R7 || this == G2_FULL_PARITY_20261116_R8) && directory.equals("src")) {
+                boolean r7ModuleCaps = this == G2_FULL_PARITY_20261025_R7 || this == G2_FULL_PARITY_20261116_R8;
                 return switch (module) {
-                    case "local-service" -> this == G2_FULL_PARITY_20261025_R7 ? 19L << 20 : 16L << 20;
+                    case "local-service" -> r7ModuleCaps ? 19L << 20 : 16L << 20;
                     case "application" -> this == G2_FULL_PARITY_20261024_R5 ? 12L << 20
-                            : this == G2_FULL_PARITY_20261025_R7 ? 14L << 20 : 13L << 20;
+                            : r7ModuleCaps ? 14L << 20 : 13L << 20;
                     case "native-transport" -> 12L << 20;
                     default -> 8L << 20;
                 };
@@ -126,7 +133,7 @@ public final class ControlBuild {
             return this == G2_FULL_PARITY_20261024_R4 && directory.equals("src")
                     && (module.equals("application") || module.equals("local-service")) ? 12L << 20 : 8L << 20;
         }
-        public int maxReactorProjects() { return fullParity() ? 35 : 32; }
+        public int maxReactorProjects() { return this == TOOLS_20261116_12_MIB ? 1 : fullParity() ? 35 : 32; }
     }
     private static final Set<String> EXISTING_MIGRATION_MODULES = Set.of(
             "contracts",
@@ -322,6 +329,8 @@ public final class ControlBuild {
             if (sourceLimitProfile.currentParity() && targetKind != TargetKind.SERVICE_FAST_JAR) {
                 throw new IllegalArgumentException("R3 full parity is the complete service reactor; standalone tools keep their independent standard profile");
             }
+            if (sourceLimitProfile == SourceLimitProfile.TOOLS_20261116_12_MIB && targetKind != TargetKind.BUILD_TOOLS_RUNTIME)
+                throw new IllegalArgumentException("The explicit Tools source envelope requires the standalone Tools target");
         }
     }
 
@@ -1497,7 +1506,7 @@ public final class ControlBuild {
         }
         java.util.Optional<LobbyVerifyTestInputs.Recorded> lobby = java.util.Optional.empty();
         if (consumeTestInputs && config.targetKind() == TargetKind.BUILD_TOOLS_RUNTIME
-                && config.sourceLimitProfile() == SourceLimitProfile.STANDARD_8_MIB
+                && config.sourceLimitProfile().toolsRuntimeSources()
                 && LobbyVerifyTestInputs.selected(snapshot)) {
             boolean hasExternalKeys = environment.containsKey(LobbyVerifyTestInputs.ENV)
                     || environment.containsKey(LobbyVerifyTestInputs.ENV + "_BYTES")
@@ -3107,8 +3116,13 @@ public final class ControlBuild {
             factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             Element project = factory.newDocumentBuilder().parse(pom.toFile()).getDocumentElement();
-            if (profile == SourceLimitProfile.EXISTING_MIGRATION_20261022 || profile.completeG2()) {
-                if (module.equals(boundary) && !"ck3-control-parent".equals(directText(project, "artifactId"))) {
+            if (profile == SourceLimitProfile.TOOLS_20261116_12_MIB
+                    && (!module.equals(boundary) || !"ck3-control-build-tools".equals(directText(project, "artifactId"))
+                        || project.getElementsByTagNameNS("*", "modules").getLength() != 0))
+                throw new IOException("The explicit Tools envelope requires its one canonical standalone Tools project");
+            if (profile == SourceLimitProfile.EXISTING_MIGRATION_20261022 || profile.completeG2()
+                    || profile == SourceLimitProfile.TOOLS_20261116_12_MIB) {
+                if (profile != SourceLimitProfile.TOOLS_20261116_12_MIB && module.equals(boundary) && !"ck3-control-parent".equals(directText(project, "artifactId"))) {
                     throw new IOException("Finite migration profile requires the existing control parent");
                 }
                 if (project.getElementsByTagNameNS("*", "sourceDirectory").getLength() != 0

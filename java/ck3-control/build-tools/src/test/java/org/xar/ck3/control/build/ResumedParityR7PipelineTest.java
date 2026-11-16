@@ -121,7 +121,7 @@ final class ResumedParityR7PipelineTest {
         assertThrows(IOException.class, () -> mapper.treeToValue(numeric, Plan.class));
     }
 
-    @Test void completeCurrentRouteSelectsR7AndLegacyRouteRetainsR6() {
+    @Test void currentCanonicalSourceEnvelopeSelectsR8WithoutChangingEitherPipelineTier() {
         Instant start = Instant.parse(OBSERVED); String review = start.plus(Duration.ofHours(6)).toString();
         var pin = new CiBootstrap.FilePin(temporary.resolve("software-policy.json").toAbsolutePath().toString(), 1, "0".repeat(64));
         var current = new CiBootstrap.Plan(CiBootstrap.COMPLETE_PLAN_SCHEMA, MACHINE, OBSERVED, review,
@@ -130,8 +130,10 @@ final class ResumedParityR7PipelineTest {
         var legacy = new CiBootstrap.Plan(CiBootstrap.PLAN_SCHEMA, MACHINE, OBSERVED, review,
                 current.repoRoot(), current.workRoot(), current.javaHome(), null, current.pythonExecutable(), current.ownerTask(),
                 pin, Map.of(), Map.of(), Map.of(), List.of(pin), List.of(pin), false, false);
-        assertEquals(R7.sourceLimitProfile(), ControlCi.reactorSourceProfile(current));
-        assertEquals(R6.sourceLimitProfile(), ControlCi.reactorSourceProfile(legacy));
+        assertEquals(Profile.G2_FULL_PARITY_20261116_R8.sourceLimitProfile(), ControlCi.reactorSourceProfile(current));
+        assertEquals(Profile.G2_FULL_PARITY_20261116_R8.sourceLimitProfile(), ControlCi.reactorSourceProfile(legacy));
+        assertEquals(CiBootstrap.PipelineProfile.COMPLETE_CURRENT, CiBootstrap.pipelineProfile(current));
+        assertEquals(CiBootstrap.PipelineProfile.LEGACY, CiBootstrap.pipelineProfile(legacy));
     }
 
     private Path reactor() throws IOException {

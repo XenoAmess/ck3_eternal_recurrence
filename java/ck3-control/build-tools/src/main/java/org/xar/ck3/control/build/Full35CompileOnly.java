@@ -494,9 +494,10 @@ public final class Full35CompileOnly {
                 && plan.profile() != CompleteSourceGraph.Profile.G2_FULL_PARITY_20261024_R4
                 && plan.profile() != CompleteSourceGraph.Profile.G2_FULL_PARITY_20261024_R5
                 && plan.profile() != CompleteSourceGraph.Profile.G2_FULL_PARITY_20261024_R6
-                && plan.profile() != CompleteSourceGraph.Profile.G2_FULL_PARITY_20261025_R7)
+                && plan.profile() != CompleteSourceGraph.Profile.G2_FULL_PARITY_20261025_R7
+                && plan.profile() != CompleteSourceGraph.Profile.G2_FULL_PARITY_20261116_R8)
                 || plan.modules().size() != 34)
-            throw new IOException("Actual R2, R4, R5, R6 or R7 34-child/35-project compiler plan required");
+            throw new IOException("Actual R2, R4, R5, R6, R7 or R8 34-child/35-project compiler plan required");
         return plan.profile().sourceLimitProfile();
     }
 

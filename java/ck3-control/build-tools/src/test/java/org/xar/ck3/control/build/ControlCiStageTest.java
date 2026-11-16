@@ -514,7 +514,7 @@ final class ControlCiStageTest {
         return new FreshSdkFixtureStage.ProducerGoldenPlan("xar.sdk-producer-golden-plan/v1", WindowsJobProcess.currentMachineId(), ControlBuild.FileRef.measure(originPath),
                 new SdkSourceAssembly.Digest(clientRef.bytes(), clientRef.sha256()), new SdkSourceAssembly.Digest(testRef.bytes(), testRef.sha256()), refs.get(0), refs.get(1), refs.get(2), vectors);
     }
-    @Test void actualHostedReactorConfigProducesR6AndToolsKeepsItsIndependentProfile() throws Exception {
+    @Test void actualHostedReactorConfigProducesR8AndToolsKeepsItsIndependentProfile() throws Exception {
         var plan = utf8Plan("hosted-r6");
         var producer = ControlCi.class.getDeclaredMethod("config", CiBootstrap.Plan.class, Path.class, Path.class,
                 String.class, ControlBuild.TargetKind.class);
@@ -523,12 +523,12 @@ final class ControlCiStageTest {
         Path release = root.resolve("config-data-only-release.json");
         var actual = (ControlBuild.Config) producer.invoke(null, plan, reactor, release, "hosted-r6-fixture",
                 ControlBuild.TargetKind.SERVICE_FAST_JAR);
-        assertEquals(ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R6, actual.sourceLimitProfile());
+        assertEquals(ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261116_R8, actual.sourceLimitProfile());
         var mapper = ControlBuild.strictMapper();
         assertEquals(actual, mapper.readValue(mapper.writeValueAsBytes(actual), ControlBuild.Config.class));
         var tools = (ControlBuild.Config) producer.invoke(null, plan, reactor.resolve("build-tools"), release,
                 "tools-fixture", ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME);
-        assertEquals(ControlBuild.SourceLimitProfile.STANDARD_8_MIB, tools.sourceLimitProfile());
+        assertEquals(ControlBuild.SourceLimitProfile.TOOLS_20261116_12_MIB, tools.sourceLimitProfile());
         assertEquals(3600,tools.timeoutSeconds());assertEquals(3600,actual.timeoutSeconds());
         var bounded = ControlCi.class.getDeclaredMethod("config", CiBootstrap.Plan.class, Path.class, Path.class,
                 String.class, ControlBuild.TargetKind.class, int.class);

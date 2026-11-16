@@ -48,7 +48,7 @@ public final class ControlCi {
                     || ownerTask.equals("github-actions-java-ci") || slotId == null || !slotId.matches("[a-z0-9][a-z0-9-]{0,63}")
                     || resourcePlanRef == null || runtimeBindingRef == null || capacityReleaseRef == null
                     || toolsBuildReceiptRef == null || reactorBuildReceiptRef == null || sourceLimitProfile == null
-                    || sourceLimitProfile == ControlBuild.SourceLimitProfile.STANDARD_8_MIB) {
+                    || sourceLimitProfile.toolsRuntimeSources()) {
                 throw new IllegalArgumentException("Explicit Root software purpose, finite resources and normal G2 reactor required");
             }
             if (POSTQUALIFIED_ROOT_CARD_SCHEMA.equals(schema) && toolsPostqualificationRef == null)
@@ -1618,7 +1618,7 @@ public final class ControlCi {
             case G2_STABILIZATION_20261023 -> ReactorTestClosure.g2StabilizationHttpRequirements();
             case G2_FULL_PARITY_20261024 -> ReactorTestClosure.g2FullParityRequirements();
             case G2_FULL_PARITY_20261024_R2 -> ReactorTestClosure.g2FullParityResumeRequirements();
-            case G2_FULL_PARITY_20261024_R3, G2_FULL_PARITY_20261024_R4, G2_FULL_PARITY_20261024_R5, G2_FULL_PARITY_20261024_R6, G2_FULL_PARITY_20261025_R7 -> ReactorTestClosure.g2FullParityCurrentRequirements();
+            case G2_FULL_PARITY_20261024_R3, G2_FULL_PARITY_20261024_R4, G2_FULL_PARITY_20261024_R5, G2_FULL_PARITY_20261024_R6, G2_FULL_PARITY_20261025_R7, G2_FULL_PARITY_20261116_R8 -> ReactorTestClosure.g2FullParityCurrentRequirements();
             default -> throw new IllegalArgumentException("Explicit complete selected G2 profile required for HTTP report closure");
         };
     }
@@ -1686,7 +1686,8 @@ public final class ControlCi {
         for (CiBootstrap.FilePin pin : plan.sourcePins()) ref(pin).verify();
         for (CiBootstrap.FilePin pin : plan.bootstrapRuntimeClosure()) ref(pin).verify();
         List<ControlBuild.FileRef> expected = plan.sourcePins().stream().map(ControlCi::ref).sorted(Comparator.comparing(ControlBuild.FileRef::path)).toList();
-        if (!expected.equals(ControlBuild.sourceManifest(Path.of(plan.repoRoot()).resolve("java/ck3-control/build-tools")))) {
+        if (!expected.equals(ControlBuild.sourceManifest(Path.of(plan.repoRoot()).resolve("java/ck3-control/build-tools"),
+                ControlBuild.SourceLimitProfile.TOOLS_20261116_12_MIB))) {
             throw new IOException("Bootstrap source closure changed or grew");
         }
         if (!qualifiedInvocation && !ControlBuild.producerClosure().equals(plan.bootstrapRuntimeClosure().stream().map(ControlCi::ref).sorted(Comparator.comparing(ControlBuild.FileRef::path)).toList())) {
@@ -2358,9 +2359,18 @@ public final class ControlCi {
     }
 
     static ControlBuild.SourceLimitProfile reactorSourceProfile(CiBootstrap.Plan plan) {
-        return CiBootstrap.completeProfile(CiBootstrap.pipelineProfile(plan))
-                ? ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261025_R7
-                : ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261024_R6;
+        // The current canonical source graph includes Tools in both pipeline tiers. This source
+        // envelope does not change the original pipeline tier's fixtures, clock or qualification.
+        CiBootstrap.pipelineProfile(plan);
+        return ControlBuild.SourceLimitProfile.G2_FULL_PARITY_20261116_R8;
+    }
+
+    static ControlBuild.SourceLimitProfile buildSourceProfile(CiBootstrap.Plan plan, Path source) {
+        Path reactor = Path.of(plan.repoRoot()).resolve("java/ck3-control");
+        if (source.equals(reactor)) return reactorSourceProfile(plan);
+        if (source.equals(reactor.resolve("build-tools"))) return ControlBuild.SourceLimitProfile.TOOLS_20261116_12_MIB;
+        // The expected Maven-model failure and other small fixtures retain their original standard envelope.
+        return ControlBuild.SourceLimitProfile.STANDARD_8_MIB;
     }
 
     private static ControlBuild.Config config(CiBootstrap.Plan plan, Path source, Path release, String attempt, ControlBuild.TargetKind target) {
@@ -2372,9 +2382,7 @@ public final class ControlCi {
         if(timeoutSeconds<1||timeoutSeconds>maximum)throw new IllegalArgumentException("Bounded selected build stage timeout required");
         return new ControlBuild.Config(source, Path.of(plan.workRoot()), release, attempt, plan.ownerTask(), null,
                 Path.of(plan.javaHome()), CiBootstrap.MINIMUM_MAVEN_VERSION, timeoutSeconds, target,
-                source.equals(Path.of(plan.repoRoot()).resolve("java/ck3-control"))
-                        ? reactorSourceProfile(plan)
-                        : ControlBuild.SourceLimitProfile.STANDARD_8_MIB);
+                buildSourceProfile(plan, source));
     }
 
     private static ControlBuild.FileRef ref(CiBootstrap.FilePin pin) { return new ControlBuild.FileRef(pin.path(), pin.bytes(), pin.sha256()); }
