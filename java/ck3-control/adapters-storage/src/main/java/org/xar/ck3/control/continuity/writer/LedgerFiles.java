@@ -108,6 +108,62 @@ final class LedgerFiles {
         }
     }
 
+    /** Historical payload custody outlives its optional detached byte snapshot. */
+    static final class HistoricalDocument implements AutoCloseable {
+        private final IdentityBearingFileAttributes.ReadOnlyLease lease;
+        private final Pin pin;
+        private Document payload;
+        private HistoricalDocument(IdentityBearingFileAttributes.ReadOnlyLease lease, Document payload) {
+            this.lease = lease; this.pin = payload.pin(); this.payload = payload;
+        }
+        Pin verifyCurrent() throws IOException {
+            BasicFileAttributes actual = lease.verifyCurrent();
+            WindowsFileIdentity key = (WindowsFileIdentity) actual.fileKey();
+            if (!LeasedDocument.matchesIdentity(pin.identity(), key, actual.lastModifiedTime().toInstant().toString(), actual.size()))
+                throw new IOException("leased original full identity drift");
+            return pin;
+        }
+        Document read(int maximum) throws IOException {
+            verifyCurrent();
+            // A retired snapshot grants no bytes: the original bounded full reader and hash run again.
+            return payload == null ? exact(pin.reference(), maximum) : payload;
+        }
+        void retainPayload(Document actual) throws IOException {
+            if (!actual.pin().equals(pin) || actual.bytes.length != pin.reference().bytes())
+                throw new IOException("historical payload differs from its continuous custody Pin");
+            payload = actual;
+        }
+        long retainedBytes() { return payload == null ? 0 : payload.bytes.length; }
+        long releasePayload() throws IOException {
+            lease.releaseOriginalBytes();
+            long released = retainedBytes(); payload = null; return released;
+        }
+        @Override public void close() throws IOException { lease.close(); payload = null; }
+    }
+    /** Historical-only acquisition; ordinary leased Document identity/alias contracts stay unchanged. */
+    static HistoricalDocument leaseHistorical(ExactRef expected, int maximum) throws IOException {
+        Path path = Path.of(expected.path());
+        IdentityBearingFileAttributes.ReadOnlyLease lease = IdentityBearingFileAttributes.leaseBoundedWindows(path, maximum);
+        try {
+            var observed = lease.originalRead();
+            BasicFileAttributes after = observed.attributes();
+            WindowsFileIdentity key = (WindowsFileIdentity) after.fileKey();
+            FileIdentity identity = new FileIdentity(key.volumeSerialDecimal(), key.fileIdDecimal(), key.creationFiletimeDecimal(),
+                    after.lastModifiedTime().toInstant().toString(), after.size());
+            byte[] raw = observed.bytes();
+            Pin actual = new Pin(new ExactRef(path.toAbsolutePath().normalize().toString(), raw.length, sha(raw)), identity);
+            if (actual.reference().bytes() != expected.bytes() || !actual.reference().sha256().equals(expected.sha256())
+                    || !Path.of(expected.path()).toAbsolutePath().normalize().equals(Path.of(actual.reference().path())))
+                throw new IOException("leased original bytes/SHA/path changed");
+            Document document = new Document(new Pin(expected, actual.identity()), raw);
+            lease.releaseOriginalBytes();
+            return new HistoricalDocument(lease, document);
+        } catch (IOException | RuntimeException | Error failure) {
+            try { lease.close(); } catch (IOException closing) { failure.addSuppressed(closing); }
+            throw failure;
+        }
+    }
+
     static FileIdentity identity(Path path) throws IOException {
         if (!Platform.isWindows()) throw new IOException("native Windows file identity required");
         Path absolute = path.toAbsolutePath().normalize();

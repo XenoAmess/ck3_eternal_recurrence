@@ -183,3 +183,35 @@ P4 initialscope1于00:27:07真实完成，指标与P3同167791 publication/14051
 P1软件现已全部通过：actual2/18class17.890796秒GREEN，完整family `p1h113c1`6858B/54ae3f12…；仅新增Test1真实21.823354秒1P/0F/0E/0skip，XML `p1h113j1/reports/TEST-junit-jupiter.xml`48728B/SHA `d52446135632e7ba055f3e5657bce10c5f13ba912ded0c556adadb0b34840400`；formal差异2/18class15.440923秒GREEN，`p1h113f1` family6732B/0c264d37…。未重旧43/15/135，不外推2052全规模OS压力或实际cold收益；P4继续原参数与原代码，没有热换。
 
 P4第30分18秒样本00:53:15仍在Core DATA完整capture分支，read23613584774B/2192001ops、other26679476ops，stdout0/无END/claim absent，第二CAS与DATA最终统计未出。新CI封套6生产+3Test已冻结Ready10537B/2297b6ca…：Tools12MiB/1000files、一项目；R8保6144files/96MiB源/112MiBcopy及R7其它模块上限，只扩build-tools src至12MiB；当前LEGACY及complete canonical reactor均选择R8，pipeline HTTP/fixture级别仍原样。新11项加两旧selector方法待独立最小增编验证，旧STANDARD/R6/R7及冻结135的财务/completion段原body保留，尚无新的CI绿色信用。
+
+## P4 真实终态及证据改变后的后继选择
+
+P1三文件与五报告8文件已正常FF发表 `d1da4d07c15b7527eb2a7c19c54247336e5c2e34`，parent96dbec，远端exact/index空，CI九叶WIP明确未stage。PUBLICATION8为5217B/SHA `14d366aed76440f4e42f09486d20f57238d29f806eba497ffc3c0daded7e4cc9`；canonical新对象disk121044B不冒FS净增，独立208KiB guard保守关闭。旧96dbec的Official run43780185697已向服务端请求取消，d1da4d当前43783527222仍在执行；Linear history通过，完整Official绿色尚未取得。
+
+P4于01:08:11.925485Z真实自然END，exit1、wall2714.8576838秒；原错Lifecycle observation deadline expired，未kill。stderr8230B/SHA `8816d0a55f35ee3cdb256154c8e4c8541561aa9f0ac8f417f038717e4021a845`；stdout379B WORKER_FAILED/game_stop_requested=false/pause NOT_ATTEMPTED。首次完整memo指标full_replays174、hits21、ineligible0、unretained109、scope_callback_succeeded0；异常clear导致entries/estimated_bytes/dependency_memberships为0，不能说从未有缓存。21个真实hit不等于完整cold或整体性能成功。
+
+CAS2 publication434482、held342407、acquisition14325、retained6072/unretained8253、fallback77750全部byte_bound；peak6072/268434935B，原8192/256MiB/16384未变；finish1/validation1仍是超期callback收尾，不是独立坏件结论。01:10:20有界末态原件5434B/SHA `15bf54781b7aecd2d5b375007d2c33ac11ed33695845cb4768f3f9b325d2974e`：同birth自然exit1、ck3/workerchild空、claim absent、templateonly、head2002/raw d8b3…及numericWAL/sourcebindings2002不变；原save/driver FileID/mtime/bytes pointstat未变，未重复读87MB。四旧宿主同birth存活、唯一keeper正常；0第四业务、0新保存日。
+
+01:03轻OS快照：ownedJVM private2355384320B/WS2363875328B、handles12566；global physicalavailable52350771200B、commitavailable68772405248B。01:05:44只读jcmd GC.heap_info（未GC.run/hist/dump）显示defnew629120K used315049K，tenured1398144K used1398144K，Metaspace used37404K；不是GC后live量或RSS上限。Root据此授权下一独立01:12→02:12来源在fresh容量/内存核验后采用P1，并只将source JVM heap2→4GiB、保持45min包络；4GiBheap+1GiB native是预算估算，未来Game32GiB/CI2GiB另计，不借Game Job或称硬RSS上限。复用原有archiveParsedMaterialDiagnostics只读开关，不新增缓存。
+
+P4的新byte-bound证据使旧Hpp2重新成为直接相关候选：其payload字节可轮换，而metadata/Commit、payload HANDLE、Pin持续至finish；verifyLeasedPublication不为纯资格重新载入payload，缺pair仍失格。此前无scope/handle-bound的拒用理由保留为当时事实，不能继续用来否定本次新问题。Root授权fresh核原Ready及D两BASE仍exact、复用旧25class/15P，并在该overlay下只补当前真实Root非空DATA adapter方法兼容验证；不重编25/重跑全15、不加DATA256MiB、entry或handle上限。最终P5 BEGIN须独立资格/CP首定义核验，不用旧软件结果冒实际收益；原P1/CI包不混改。
+
+CI六叶首编25.094秒RED，因复用actualD的RootSoftwareChildBootstrap.Config有15参数而正式HEAD为14；保留已产ControlBuild63/CiBootstrap71共134类，不修改正式消费者去迎合旧CP。仅补未改HEAD必要依赖1叶及四个未产消费者，17.893989秒GREEN/101class；变更六族完整226类另加该HEAD依赖9类。原RED保留，新13方法仍待真实运行，未跑Maven/135或Own，未授完整CI通过。
+
+## 第四次唯一业务采用已验证的 payload/证明分离
+
+P5 fresh物理内存available58150670336B、commitavailable74388615168B；4GiBheap+1GiB JVM native估算、Game32GiB、CI2GiB独立相加41875931136B，仍留physical16274739200B/commit32512684032B。DusedUpper13308216119296B（项目真实量/漂移原因UNKNOWN），加原other512MiB和metadata2MiB后仍小于既有quota13313094979584B，system64GiB+safety20GiB通过。只读诊断并非原actual已具备：formal有而actual6ac41b没有，故没有只加-D冒称启用；Java仅把7个既有diagnostic hunks移到冻结actual，逆向rawexact，actual其它两类差异保留。
+
+新actual Native160594B/e028775e…真实1TU/18class12.460167秒GREEN，完整family6693B/327f84b0…。旧Hpp2 fresh核D BASE Ledger15833/9dda及Store63817/02d189、Ready2a26631b、完整25class、原15P及schema全部匹配，证明小件9742B/e9bf1dbd…。只补当前Root非空DATA方法，在新Native18+Hpp25+原memo43 overlay与诊断true下10.188428秒1P/0F/0E/0skip，XML48883B/SHA `545643ac43f500a5d257a59d44c308dfd8c344d26c1bef7d52ac38af02067a20`；真实stderr有scope_summary=true/key_absent1/final_entries1/retained_bytes3/completed1/limit64。未重编旧25或重跑原15，不授实际cold收益。
+
+P5三公共输出01:23:59.933837Z全部exit0。原8组scope census发现keeper重长后若再加future尾量/READ会超256，Root另授权archive03，与archive02不重叠：01:27:29.920315Z/15.718秒真实PASS，396files/99dirs原logical58323306B→TAR.XZ568620B+索引211552B，逐项及源二次核后才精确清理，活输入/尾/源码未动；前后livelease通过，无新fund或unused退。tools日志误纳全W命名空间160MB仅是保守上界，补按production build-attempt前缀的actual28731664B/目录guard28829968B+m2hold8388608B<64MiB，不误称超额或退余额。
+
+原P5 review02:12不足最后完整45min包络，Root在01:34授权独立晚签01:35→02:35，不改旧输出或deadline。新prepared559016B/d37d8b72…与旧175CP字符串、86class首定义、JVM与DATA组均相同，仅增加两份真实1P资格XML及新source/plan/cfg引用；决策岗只核差异。最终cfg2101B/68e7c785…五wire仍file queue01/codex-session/120000/1/0，plan5205B/4141e772…；Hpp25+NativeDiag18+P1callers18+memo剩25共86unique，旧Native18已在首定义中替换，没有误算旧43全族。
+
+**P5-late第四且唯一业务于01:45:02.702082Z真实BEGIN**，JVM181900/birth134392671027048433，公共RootOrdinaryWorkerMain restore-exited。45min检查包络约02:30:02，来源review02:35；Heap4GiB、诊断true，DATA仍8192/256MiB/16384，原证据、旧UNKNOWN与head2002不改。归档后fresh6runroots Native58682608B+futurekeeper60817408B+两READ134217728B+8MiB尾=262106352B<原256MiB，余6329104B，provider/SAVE仍另按实量分阶段核。BEGIN30720B/fb77c3c4…、finalqualification4010B/0b6d5438…；软件、实际装载、BEGIN、Game/READ/Driver/queue/SAVE继续分账。
+
+正式Hpp2差异另行移植：Ledger19391/b623与旧actual rawexact，Store68225/1fd4384b仅9个唯一hunks、其它formal差异保留；原新增3方法回归16128B/15d3b6e4…同rawexact纳入正式源，不用旧12替代新合同。Ready2为6027B/bdd0a334…，必要formal Store1 typing后单独发表，不是P5前置。CI Test3首编10.241529秒RED，只产新ToolsTest1class，缺HEAD两个小test helper；已定位723B+15709B，没有生产或断言修复，现让位P5后补helper2+未产Test2，原13方法尚未通过。
+
+P5-late实际01:48:13完成初Bootstrap scope：publication167791/held116901/acquire1024/retained1024/unretained0，fallback49866全entry_bound、peak17374522B，原1024/64MiB/2052，finish1/validation0。01:49:57新material scope也真实完成：publication135318/held104472/acquire1024/retained1024/unretained0、fallback29822全entry_bound、peak28461667B、finish1/validation0。两段parse诊断分别protocol_hits23952/19281、fullMaterial_hits400/320，均miss759+8、无bytesUnequal/evictions，entries767/retained23219949B。此为本轮两个独立scope成功，尚非Core整体或Game；未做控制变量性能比较，不据更早阶段外推10秒目标。
+
+后置formal Hpp2 Store1真实12.084533秒GREEN/18class，`hpp116f1` OUTPUTS43060B/5f651dc8…。Ledger旧7与源rawexact复用；正式纳入的旧新增3方法源与原完整3class fresh一致，23个直接Ledger/Store符号在formal Store18+Ledger7均可解析，ABI复用小件 `FORMAL-HPP2-RAWEXACT-OLDTEST3-ABI-REUSE01.json`8320B/b4199221…。未新跑旧3/15、不冒新formal行为矩阵。P5实际装载和软件兼容此前已完成，源码与回归据此独立正常发表；CI13仍另包继续。

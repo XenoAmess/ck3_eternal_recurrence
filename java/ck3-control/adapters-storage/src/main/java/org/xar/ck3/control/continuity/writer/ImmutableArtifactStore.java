@@ -115,6 +115,8 @@ public final class ImmutableArtifactStore {
         private final long maximumBytes;
         private final int maximumHandles;
         private final java.util.Map<ExactRef, PublicationLease> entries = new java.util.LinkedHashMap<>();
+        // Proof entries retain insertion/close order. Only optional payload snapshots rotate FIFO.
+        private final java.util.LinkedHashMap<ExactRef, PublicationLease> payloads = new java.util.LinkedHashMap<>();
         private long bytes;
         private boolean closed;
         private volatile Throwable firstFailure;
@@ -351,7 +353,7 @@ public final class ImmutableArtifactStore {
                         if (lease == null) {
                             unknownExternal(); throw new IOException("transient CAS source lost its publication custody");
                         }
-                        requirePin(readLeasedPublication(lease, source.getKey(), MAXIMUM_ARTIFACT_BYTES).data().pin(), source.getValue());
+                        requirePin(verifyLeasedPublication(lease, source.getKey(), MAXIMUM_ARTIFACT_BYTES), source.getValue());
                     }
                     for (var source : sources.entrySet()) {
                         LedgerFiles.Document current = source.getValue().lease().read();
@@ -399,6 +401,22 @@ public final class ImmutableArtifactStore {
         }
         /** Only identified source-owned callbacks may separate persistent reuse from transient custody. */
         void disqualifyPersistentDependenciesOnly() throws IOException { requireActive(); disqualifyDependencyTraces(); }
+        private boolean makePayloadRoom(long required) throws IOException {
+            while (required > maximumBytes - bytes && !payloads.isEmpty()) {
+                var oldest = payloads.entrySet().iterator();
+                PublicationLease entry = oldest.next().getValue();
+                bytes -= entry.data.releasePayload(); oldest.remove();
+            }
+            return required <= maximumBytes - bytes;
+        }
+        private void retainPayload(ExactRef reference, PublicationLease entry, LedgerFiles.Document actual) throws IOException {
+            if (entry.data.retainedBytes() != 0) return;
+            long count = actual.pin().reference().bytes();
+            if (makePayloadRoom(count)) {
+                entry.data.retainPayload(actual); bytes += count; payloads.put(reference, entry);
+                peakBytes = Math.max(peakBytes, bytes);
+            }
+        }
         private int retainedEntryCount() { return entries.size() + (transientLeaseTrace == null ? 0 : transientLeaseTrace.sources.size()); }
         private long retainedHandleCount() { return entries.size() * 2L + (transientLeaseTrace == null ? 0 : transientLeaseTrace.sources.size()); }
 
@@ -423,7 +441,7 @@ public final class ImmutableArtifactStore {
                 for (var dependency : held) {
                     if (entries.get(dependency.getKey()) != dependency.getValue())
                         throw new IOException("historical dependency custody changed during fresh qualification");
-                    readLeasedPublication(dependency.getValue(), dependency.getKey(), MAXIMUM_ARTIFACT_BYTES);
+                    verifyLeasedPublication(dependency.getValue(), dependency.getKey(), MAXIMUM_ARTIFACT_BYTES);
                     // A caller reusing a verified prefix must include its original dependencies in its own trace.
                     recordDependency(dependency.getKey(), true);
                 }
@@ -452,7 +470,7 @@ public final class ImmutableArtifactStore {
                         if (cleanup == null) cleanup = closing; else cleanup.addSuppressed(closing);
                     }
                 }
-            } finally { clearDependencyTraces(); transientLeaseTrace = null; entries.clear(); bytes = 0; historicalReads.remove(); }
+            } finally { clearDependencyTraces(); transientLeaseTrace = null; payloads.clear(); entries.clear(); bytes = 0; historicalReads.remove(); }
             if (escaping != null) {
                 boolean alreadyCarried = false;
                 int causeDepth = 0;
@@ -477,14 +495,14 @@ public final class ImmutableArtifactStore {
     }
     private static final class PublicationLease implements AutoCloseable {
         private final LedgerFiles.LeasedDocument metadata;
-        private final LedgerFiles.LeasedDocument data;
+        private final LedgerFiles.HistoricalDocument data;
         private final Commit bound;
-        private PublicationLease(LedgerFiles.LeasedDocument metadata, LedgerFiles.LeasedDocument data, Commit bound) {
+        private PublicationLease(LedgerFiles.LeasedDocument metadata, LedgerFiles.HistoricalDocument data, Commit bound) {
             this.metadata = metadata; this.data = data; this.bound = bound;
         }
         @Override public void close() throws IOException { closePair(data, metadata); }
     }
-    private static void closePair(LedgerFiles.LeasedDocument data, LedgerFiles.LeasedDocument metadata) throws IOException {
+    private static void closePair(LedgerFiles.HistoricalDocument data, LedgerFiles.LeasedDocument metadata) throws IOException {
         IOException failure = null;
         if (data != null) try { data.close(); } catch (IOException | RuntimeException | Error problem) { failure = closeFailure(problem); }
         if (metadata != null) try { metadata.close(); } catch (IOException | RuntimeException | Error problem) {
@@ -524,26 +542,39 @@ public final class ImmutableArtifactStore {
     private Published readLeasedPublication(PublicationLease lease, ExactRef expected, int maximum) throws IOException {
         LedgerFiles.Document metadata = lease.metadata.read();
         if (!lease.bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
-        LedgerFiles.Document data = lease.data.read();
+        LedgerFiles.Document data = lease.data.read(maximum);
         if (data.pin().reference().bytes() > maximum) throw new IOException("leased artifact exceeds its current declared bound");
         requirePin(data.pin(), lease.bound.payload()); checkRoot();
         return new Published(data, metadata, lease.bound.planningOrigin());
     }
+    /** Fresh original pair custody/Pin qualification, independent of optional payload residency. */
+    private Pin verifyLeasedPublication(PublicationLease lease, ExactRef expected, int maximum) throws IOException {
+        lease.metadata.read();
+        if (!lease.bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
+        Pin data = lease.data.verifyCurrent();
+        if (data.reference().bytes() > maximum) throw new IOException("leased artifact exceeds its current declared bound");
+        requirePin(data, lease.bound.payload()); checkRoot(); return data;
+    }
     private Published acquirePublication(HistoricalReads reads, ExactRef expected, int maximum) throws IOException {
-        LedgerFiles.LeasedDocument metadata = null, data = null;
+        LedgerFiles.LeasedDocument metadata = null; LedgerFiles.HistoricalDocument data = null;
         boolean retained = false;
         Throwable failure = null;
         try {
             metadata = LedgerFiles.lease(commit(expected.sha256()), COMMIT_LIMIT);
             Commit bound = decode(metadata.original());
             if (!bound.payload().reference().equals(expected)) throw new IOException("artifact commit/ref drift");
-            data = LedgerFiles.lease(bound.payload().reference(), maximum);
+            data = LedgerFiles.leaseHistorical(bound.payload().reference(), maximum);
             PublicationLease lease = new PublicationLease(metadata, data, bound);
             Published actual = readLeasedPublication(lease, expected, maximum);
-            long retainedBytes = Math.addExact(data.retainedBytes(), metadata.retainedBytes());
+            long metadataBytes = metadata.retainedBytes();
             reads.requireActive();
-            if (retainedBytes <= reads.maximumBytes - reads.bytes) {
+            if (reads.makePayloadRoom(metadataBytes)) {
+                long retainedBytes = Math.addExact(metadataBytes, data.retainedBytes());
+                if (!reads.makePayloadRoom(retainedBytes)) {
+                    data.releasePayload(); retainedBytes = metadataBytes;
+                }
                 reads.entries.put(expected, lease); reads.bytes += retainedBytes; retained = true;
+                if (data.retainedBytes() != 0) reads.payloads.put(expected, lease);
                 reads.recordRetained();
             } else {
                 reads.unretainedPublications = HistoricalReads.nextCount(reads.unretainedPublications);
@@ -784,11 +815,11 @@ public final class ImmutableArtifactStore {
                 if (held != null) {
                     reads.heldPathAttempts = HistoricalReads.nextCount(reads.heldPathAttempts);
                     Published actual = readLeasedPublication(held, expected, maximum);
+                    reads.retainPayload(expected, held, actual.data());
                     reads.recordDependency(expected, true); return actual;
                 }
                 // Reserve two transient qualification handles in addition to both new custody handles.
-                if (reads.retainedEntryCount() < reads.maximumEntries && reads.retainedHandleCount() <= reads.maximumHandles - 4L
-                        && expected.bytes() <= (reads.maximumBytes - reads.bytes) / 2) {
+                if (reads.retainedEntryCount() < reads.maximumEntries && reads.retainedHandleCount() <= reads.maximumHandles - 4L) {
                     reads.acquisitionAttempts = HistoricalReads.nextCount(reads.acquisitionAttempts);
                     Published actual = acquirePublication(reads, expected, maximum);
                     reads.recordDependency(expected, reads.entries.containsKey(expected)); return actual;
