@@ -58,6 +58,142 @@ public final class DriverPersistentPlanningState {
     private record VerifiedPrefix(OwnedPrefixAccess owner, ExactRef reference, State state,
             List<ExactRef> processed, Obj finalProof, Set<ExactRef> proofSources,
             Set<ExactRef> dependencies) { }
+    /** Complete DATA replay only. The local-service bridge authenticates the private
+     * restricted source before installing this machinery; this interface grants no authority. */
+    public interface RetainedDataReplayAccess {
+        boolean accepts(ActionPorts.OutcomeArchive archive) throws IOException;
+        Object beginCapture() throws IOException;
+        Optional<Set<ExactRef>> dependencies(Object capture) throws IOException;
+        void closeCapture(Object capture) throws IOException;
+        boolean verify(Set<ExactRef> dependencies) throws IOException;
+        void requireCurrent() throws IOException;
+    }
+    private static final ThreadLocal<RetainedDataReplayScope> RETAINED_DATA_REPLAY = new ThreadLocal<>();
+    private record VerifiedDataReplay(Set<ExactRef> dependencies, long estimatedBytes) { }
+    private static final class RetainedDataReplayScope {
+        private static final int MAX_ENTRIES = 128;
+        private static final long MAX_ESTIMATED_BYTES = 8L * 1024 * 1024;
+        private static final int MAX_DEPENDENCY_MEMBERSHIPS = 32768;
+        private final RetainedDataReplayAccess access;
+        private final ActionPorts.OutcomeArchive facade;
+        private final Thread thread = Thread.currentThread();
+        private final Map<Obj, VerifiedDataReplay> verified = new LinkedHashMap<>(16, 0.75f, true);
+        private long estimatedBytes;
+        private int dependencyMemberships;
+        private long fullReplays, hits, ineligible, unretained;
+        private RetainedDataReplayScope(RetainedDataReplayAccess access, ActionPorts.OutcomeArchive facade) {
+            this.access = access; this.facade = facade;
+        }
+        private void clear() { verified.clear(); estimatedBytes = 0; dependencyMemberships = 0; }
+        private void remove(Obj auxiliary) {
+            VerifiedDataReplay previous = verified.remove(auxiliary);
+            if (previous != null) {
+                estimatedBytes -= previous.estimatedBytes(); dependencyMemberships -= previous.dependencies().size();
+            }
+        }
+        private void replay(Obj auxiliary, ActionPorts.OutcomeArchive archive) throws IOException {
+            try {
+                if (access == null || Thread.currentThread() != thread || archive != facade || !access.accepts(archive)
+                        || !snapshotProjectionSafe(auxiliary, 0)) {
+                    ineligible++; fullReplays++; replayOriginal(auxiliary, archive, null, null); return;
+                }
+                access.requireCurrent();
+                VerifiedDataReplay prior = verified.get(auxiliary);
+                if (prior != null) {
+                    if (access.verify(prior.dependencies())) {
+                        access.requireCurrent();
+                        if (access.accepts(archive)) { hits++; return; }
+                    }
+                    remove(auxiliary);
+                }
+                if (!access.accepts(archive)) {
+                    ineligible++; fullReplays++; replayOriginal(auxiliary, archive, null, null); return;
+                }
+                fullReplays++;
+                Object capture = access.beginCapture();
+                Optional<Set<ExactRef>> dependencies;
+                Throwable failure = null;
+                try {
+                    // The whole original call includes the header, nested rebuilds and final auxiliary comparison.
+                    replayOriginal(auxiliary, archive, null, null);
+                    dependencies = access.dependencies(capture);
+                } catch (IOException | RuntimeException | Error problem) { failure = problem; throw problem; }
+                finally {
+                    try { access.closeCapture(capture); }
+                    catch (IOException | RuntimeException | Error cleanup) { if (failure != null) failure.addSuppressed(cleanup); else throw cleanup; }
+                }
+                access.requireCurrent();
+                if (!access.accepts(archive)) { ineligible++; return; }
+                if (dependencies.isEmpty()) { unretained++; return; }
+                Set<ExactRef> complete = dependencies.orElseThrow();
+                if (complete.size() > MAX_DEPENDENCY_MEMBERSHIPS) return;
+                long weight = dataWeight(auxiliary, 0);
+                for (ExactRef reference : complete) weight = addWeight(weight,
+                        addWeight(128, addWeight(stringWeight(reference.path()), stringWeight(reference.sha256()))));
+                if (weight > MAX_ESTIMATED_BYTES) return;
+                complete = Set.copyOf(complete);
+                if (!access.verify(complete)) { unretained++; return; }
+                access.requireCurrent();
+                if (!access.accepts(archive)) { ineligible++; return; }
+                while (!verified.isEmpty() && (verified.size() >= MAX_ENTRIES
+                        || weight > MAX_ESTIMATED_BYTES - estimatedBytes
+                        || complete.size() > MAX_DEPENDENCY_MEMBERSHIPS - dependencyMemberships))
+                    remove(verified.keySet().iterator().next());
+                verified.put(auxiliary, new VerifiedDataReplay(complete, weight));
+                estimatedBytes += weight; dependencyMemberships += complete.size();
+            } catch (IOException | RuntimeException | Error failure) { clear(); throw failure; }
+        }
+        private static long addWeight(long left, long right) {
+            return left > MAX_ESTIMATED_BYTES || right > MAX_ESTIMATED_BYTES - left ? MAX_ESTIMATED_BYTES + 1 : left + right;
+        }
+        private static long stringWeight(String value) { return addWeight(48, (long)value.length() * 2); }
+        private static long dataWeight(Value value, int depth) {
+            // Eligibility already established an immutable built-in graph; no encoding or new JSON rejection is needed.
+            if (depth > 64) return MAX_ESTIMATED_BYTES + 1;
+            long weight = 64;
+            switch (value) {
+                case Obj object -> {
+                    for (var entry : object.members().entrySet()) {
+                        weight = addWeight(weight, addWeight(64, addWeight(stringWeight(entry.getKey()), dataWeight(entry.getValue(), depth + 1))));
+                        if (weight > MAX_ESTIMATED_BYTES) return weight;
+                    }
+                }
+                case Arr array -> {
+                    for (Value item : array.items()) {
+                        weight = addWeight(weight, addWeight(16, dataWeight(item, depth + 1)));
+                        if (weight > MAX_ESTIMATED_BYTES) return weight;
+                    }
+                }
+                case Text text -> weight = addWeight(weight, stringWeight(text.value()));
+                case IntegerValue integer -> weight = addWeight(weight, 64 + (integer.value().bitLength() + 7L) / 8);
+                case DecimalValue decimal -> weight = addWeight(weight, stringWeight(decimal.token()));
+                case Bool ignored -> { }
+                case Nil ignored -> { }
+            }
+            return weight;
+        }
+        private void report(boolean succeeded) {
+            try {
+                System.err.println("DATA_REPLAY_MEMO_METRICS full_replays=" + fullReplays + " hits=" + hits
+                        + " ineligible=" + ineligible + " unretained=" + unretained + " entries=" + verified.size()
+                        + " estimated_bytes=" + estimatedBytes + " dependency_memberships=" + dependencyMemberships
+                        + " scope_callback_succeeded=" + (succeeded ? 1 : 0));
+            } catch (RuntimeException | Error diagnosticFailure) { /* Diagnostics carry no validation credit. */ }
+        }
+    }
+    /** Only the same-package authenticated local-service bridge installs the distinct DATA scope. */
+    static <T> T inRetainedDataReplayScope(RetainedDataReplayAccess access, ActionPorts.OutcomeArchive archive,
+            ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        RetainedDataReplayScope prior = RETAINED_DATA_REPLAY.get();
+        RetainedDataReplayScope scope = new RetainedDataReplayScope(access, archive);
+        RETAINED_DATA_REPLAY.set(scope);
+        boolean succeeded = false;
+        try { T result = operation.read(archive); succeeded = true; return result; }
+        finally {
+            if (prior == null) RETAINED_DATA_REPLAY.remove(); else RETAINED_DATA_REPLAY.set(prior);
+            scope.report(succeeded); scope.clear();
+        }
+    }
     /** Package-private registration; arbitrary public OutcomeArchive implementations keep full replay. */
     static <T> T inOwnedPrefixScope(OwnedPrefixAccess access, ActionPorts.OutcomeArchive archive,
             ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
@@ -230,6 +366,12 @@ public final class DriverPersistentPlanningState {
     }
     /** Full source chain and typed serialization replay; this does not grant native or action eligibility. */
     public static void replay(Obj auxiliary,ActionPorts.OutcomeArchive archive) {
+        RetainedDataReplayScope data = RETAINED_DATA_REPLAY.get();
+        if (data != null) {
+            try { data.replay(auxiliary, archive); }
+            catch (IOException failure) { throw new java.io.UncheckedIOException(failure); }
+            return;
+        }
         OwnedPrefixAccess access = OWNED_PREFIX.get();
         try {
             if (access == null || !access.accepts(archive)) { replayOriginal(auxiliary, archive, null, null); return; }

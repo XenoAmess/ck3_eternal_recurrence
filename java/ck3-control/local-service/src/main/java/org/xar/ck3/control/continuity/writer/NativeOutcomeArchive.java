@@ -469,6 +469,75 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }
         @Override public boolean verify(Set<ExactRef> dependencies) throws IOException { active();return reads.verifyRetainedDependencies(dependencies); }
     }
+    /** DATA replay custody only. A Root-owned token cannot become a Native facade or prefix cell. */
+    public org.xar.ck3.control.application.driver.DriverPersistentPlanningState.RetainedDataReplayAccess retainedDataReplayAccess(
+            org.xar.ck3.control.service.root.RootReservedRetirementArchive.DataReplaySource source,
+            ActionPorts.OutcomeArchive facade,ContinuityStorePort.Session session)throws IOException {
+        Objects.requireNonNull(source);Objects.requireNonNull(facade);requireSession(session);
+        source.requireSource(this,session,facade);
+        ParsedMaterialCache cache=parsedMaterialCache.get();
+        ImmutableArtifactStore.HistoricalReads reads=artifacts.currentHistoricalReadsFor(session);
+        if(cache==null||reads==null||cache.commandReads!=reads||current.get()!=session
+                ||readOriginalCapture.get()!=null||transientCasLeases.get()!=null)return null;
+        reads.requireActive();return new RetainedDataAccess(source,facade,session,cache,reads);
+    }
+    private final class RetainedDataAccess implements org.xar.ck3.control.application.driver.DriverPersistentPlanningState.RetainedDataReplayAccess {
+        private final org.xar.ck3.control.service.root.RootReservedRetirementArchive.DataReplaySource source;
+        private final ActionPorts.OutcomeArchive facade;
+        private final ContinuityStorePort.Session session;
+        private final ParsedMaterialCache cache;
+        private final ImmutableArtifactStore.HistoricalReads reads;
+        private final ExactRef canonicalHead;
+        private final Thread thread=Thread.currentThread();
+        private final NativeOutcomeArchive originalOwner=owner;
+        private final ImmutableArtifactStore originalStore=artifacts;
+        private final ContinuityWriter originalWriter=sameWriter;
+        private RetainedDataAccess(org.xar.ck3.control.service.root.RootReservedRetirementArchive.DataReplaySource source,
+                ActionPorts.OutcomeArchive facade,ContinuityStorePort.Session session,ParsedMaterialCache cache,
+                ImmutableArtifactStore.HistoricalReads reads)throws IOException {
+            this.source=source;this.facade=facade;this.session=session;this.cache=cache;this.reads=reads;
+            canonicalHead=session.persistedHead();requireCurrent();
+        }
+        @Override public void requireCurrent()throws IOException {
+            source.requireSource(NativeOutcomeArchive.this,session,facade);requireSession(session);reads.requireActive();
+            if(Thread.currentThread()!=thread||owner!=originalOwner||artifacts!=originalStore||sameWriter!=originalWriter
+                    ||current.get()!=session||parsedMaterialCache.get()!=cache||cache.commandReads!=reads
+                    ||artifacts.currentHistoricalReadsFor(session)!=reads||!canonicalHead.equals(session.persistedHead()))
+                throw new IOException("DATA replay left its exact source, store, session, thread, read scope or fixed head");
+        }
+        private boolean noCapture(){return readOriginalCapture.get()==null&&transientCasLeases.get()==null;}
+        @Override public boolean accepts(ActionPorts.OutcomeArchive requested)throws IOException {
+            requireCurrent();return requested==facade&&noCapture();
+        }
+        @Override public Object beginCapture()throws IOException {
+            requireCurrent();return new RetainedDataCapture(this,reads.traceDependencies());
+        }
+        private RetainedDataCapture capture(Object value)throws IOException {
+            if(!(value instanceof NativeOutcomeArchive.RetainedDataCapture captured)||captured.source!=this)
+                throw new IOException("DATA replay requires its own private complete dependency capture");
+            return captured;
+        }
+        @Override public Optional<Set<ExactRef>> dependencies(Object value)throws IOException {
+            requireCurrent();return capture(value).trace.retainedDependencies();
+        }
+        @Override public void closeCapture(Object value)throws IOException {
+            // Trace cleanup must still restore nesting after a poisoned read scope.
+            capture(value).trace.close();
+        }
+        @Override public boolean verify(Set<ExactRef> dependencies)throws IOException {
+            requireCurrent();if(!noCapture())return false;
+            boolean retained=reads.verifyRetainedDependencies(Objects.requireNonNull(dependencies));
+            requireCurrent();return retained&&noCapture();
+        }
+    }
+    private final class RetainedDataCapture {
+        private final RetainedDataAccess source;
+        private final ImmutableArtifactStore.HistoricalReads.DependencyTrace trace;
+        private RetainedDataCapture(RetainedDataAccess source,ImmutableArtifactStore.HistoricalReads.DependencyTrace trace){
+            this.source=source;this.trace=trace;
+        }
+    }
+
     /** Lexical custody only. It never becomes a persistent-prefix cell or a World capability. */
     public TransientOwnedCASLeaseScope openTransientOwnedCASLeaseScope(ActionPorts.OutcomeArchive facade,
             ContinuityStorePort.Session session)throws IOException {

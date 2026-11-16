@@ -21,7 +21,26 @@ import org.xar.ck3.control.continuity.writer.WriterContracts;
 /** Private administrative DATA view. Physical reads retain the actual Store's
  * identity/hash/lease checks. Decoding does not replay a child effect or grant
  * Native, Frame, writer, installed-source or retirement authority. */
-final class RootReservedRetirementArchive implements AutoCloseable {
+public final class RootReservedRetirementArchive implements AutoCloseable {
+    /** Private-source DATA proof only. This object never exposes a Native facade or decoder. */
+    public static final class DataReplaySource {
+        private final RootReservedRetirementArchive raw;
+        private DataReplaySource(RootReservedRetirementArchive raw){this.raw=raw;}
+        public void requireSource(NativeOutcomeArchive expected,ContinuityStorePort.Session session,
+                ActionPorts.OutcomeArchive requested){
+            raw.check();
+            StrictJson.require(expected!=null&&raw.actual==expected&&raw.same==session&&raw.view==requested,
+                    "retirement DATA replay requires its exact original archive, session and restricted View");
+        }
+        public org.xar.ck3.control.application.driver.DriverPersistentPlanningState.RetainedDataReplayAccess openAccess(
+                ActionPorts.OutcomeArchive requested,ContinuityStorePort.Session session)throws IOException {
+            raw.check();
+            if(!(raw.actual instanceof NativeOutcomeArchive nativeArchive))throw new IOException("actual Native custody source unavailable");
+            requireSource(nativeArchive,session,requested);
+            return nativeArchive.retainedDataReplayAccess(this,requested,session);
+        }
+    }
+
     private final ContinuityStorePort.Session same;
     private final OriginalEvidencePort originals;
     private final Runnable requireActive;
@@ -32,6 +51,7 @@ final class RootReservedRetirementArchive implements AutoCloseable {
     private final NativeArchiveDataCodec codec;
     private final Map<Object,ExactRef> references=new IdentityHashMap<>();
     private final ActionPorts.OutcomeArchive view=new View();
+    private final DataReplaySource replaySource=new DataReplaySource(this);
     private boolean closed;
 
     static RootReservedRetirementArchive create(ActionPorts.OutcomeArchive actual,ContinuityStorePort.Session same,
@@ -51,6 +71,7 @@ final class RootReservedRetirementArchive implements AutoCloseable {
         this.codec=new NativeArchiveDataCodec(this::readRaw);check();
     }
     ActionPorts.OutcomeArchive archive(){check();return view;}
+    DataReplaySource dataReplaySource(){check();return replaySource;}
     private void check(){
         if(closed||Thread.currentThread()!=thread)throw new IllegalStateException("reserved retirement DATA archive escaped its owning scope/thread");
         requireActive.run();
@@ -126,7 +147,8 @@ final class RootReservedRetirementArchive implements AutoCloseable {
                 ActionPorts.HistoricalReadLimits limits,ActionPorts.CheckedArchiveRead<T> work)throws IOException {
             withSession(borrowed);Objects.requireNonNull(limits);Objects.requireNonNull(work);
             T result=actual.inHistoricalReadScope(borrowed,limits,ignoredNativeArchive->{
-                check();T value=work.read(this);check();return value;
+                check();T value=org.xar.ck3.control.application.driver.DriverCapabilityRuntime.inRetainedDataReplay(
+                        replaySource,this,borrowed,work);check();return value;
             });
             check();return result;
         }

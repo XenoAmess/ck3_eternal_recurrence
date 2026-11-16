@@ -103,3 +103,65 @@ composition Producer/Manifest两叶真实10.953秒/44class GREEN，复用reader6
 **22:06:38Z真实PUBLIC_ENV03 exit0**：三公共发行调用declare→census→Rootallocation（真实256fund）→binding5全部exit0，原Main消费binding后真正CREATE并readback。ENVv5为35866B/SHA `87972e61238c709bc48d3b50bd6cf96170ef09477dccf4fcdea1e74b973284b0`，Native FileID844424948039045/allocated36864B；guard ADMITTED，asset40960/control25136/unresolved0。原UNKNOWN、Maven6与历史lease都未改。此为真实环境产出，仍不是新Game或SAVE；后继立即公共SavedPolicy/OriginalDriverRunProfile、fresh SCREEN与同pair恢复。
 
 CI archive URL单叶也已真正typing GREEN，7.083秒/70class，source163269B/SHA `0c8f67b0d34059c4761e62ba1ab3bb83ea0645f04c222722d4c8c21828d95378`；只复用冻结CI70作应用CP，无新runner，无重复302测试。最新02e旧URL的OfficialCI也在step46明确404，未进reactor；本次仅发表archive地址修复与真实进度，不声称完整CI已过。
+
+## 首次 cold 实际终态与两个受限读取候选
+
+SavedPolicy于22:10真实exit0，587B/SHA `88d4412b8e7931998555ba827d1377a3d7f892c0a43d8ad72972b29fec713682`；OriginalDriverRunProfile于22:11:37真实exit0，753B/SHA `18aa1a6a36f5211796288244b833122cc8048ad0fe46ce6296ebbb001d25d778`。最终plan5167B已由公共RootFrozenRunProfile.readExact真实6.1秒通过。新业务cfg2096B/SHA `9d4a9b14ead6629286630847818a040e0b9ba40c8a6db67276d69694c85b6b6d`，仍file/codex-session/120000ms/1attempt/0backoff；decision岗复核并持续监听，0实际请求。
+
+首cold公共Main于22:17:43.692458Z真实BEGIN，JVM145896/birth134392546636823733。两次定点栈从SavedAttachmentSourceStore.requalifyConfirmed→historical cycle walk，推进至CanonicalSaveReceiptVerifier/PreparedCleanupNoEffectProof/FullJsonTree；119.9秒CPU5.3秒、289.7秒CPU10.8秒，主要是旧原件资格I/O，并非原重复Win32枚举故障。22:31:48精确进程GetProcessIoCounters读21091530778B/2927993次、other23185806次，不能当物理占盘或磁盘实际读取。原来源自然过期未刷新，始终无Game CREATE。
+
+Root根据实证授权安全结束这次纯source调用。Runtime在fresh纯历史栈、ck3=0/child=0/claim absent、head/WAL2002与旧plan未变、NativeLaunchPolicy过期前claim边界核实之后，以保留精确kernel HANDLE只终止owned145896。22:45:07.529Z真实END，exit1223、WAIT signalled、wall1643.850996秒，stdout/stderr各0B。该阶段没有协作取消接口或独立console组，未冒CtrlBreak成功；早期helper把2002条numeric WAL及2002条sidecar合算4004而拒绝，未发termination，按原文件名协议纠正后才执行。未触旧Quarkus、Maven、复用PID或Game，也无第二并发worker。
+
+SCREEN续租记录如实保留：实际源码上限600秒，180只是建议节奏。一次将其混淆而在仍fresh时正常release/reclaim；另一次安全停止检查期间超过600秒，终态/0CREATE确认后按原owner/latestseq正常expired release，22:47:37以03唯一新claim承接准备，未做过期heartbeat或改flags。Root已找到仓库现成ck3_mod_acceptance_keeper与shared screen_bus_lease，可由Runtime按真实当前CLI SHA、冻结checkout、唯一CAS writer复用，不另造runner；当前是否切换以运行岗实际回执为准。
+
+源码只读结论排除直接安装旧Hpp2：Dmirror Ledger15833/9dda与Store63817/02d189仍exact，但初段qualify仅writer.locked，没有CAS historical scope。后续Core cold的data又是RootReservedRetirementArchive.View，默认generic scope没有向actual转发。Hpp2旧25class/15P不能解决无scope入口，未采用，不能由CreateFile栈推断收益。
+
+独立候选1仅在RootJavaSavedBootstrap.qualify的writer.locked初始纯source callback开已有general scope，1024entries/64MiB/256handles，与后段同限界，不包Game CREATE、新READ或withObserved。actual59488B/SHA前缀36bcf9ae，base59172B/39852798；首编13.375秒/9class GREEN，映射 `initial108c1/ACTUAL-INITIAL-SCOPE1-COMPLETE-FAMILY01.json`，5680B/SHA `dea58f69cb6e1475480da3ad3d38ea828592431e841c29b0b6cc1cb17c3867a2`。这仅typing，不冒当前caller或提速资格。
+
+独立候选2仅给受限DATA View转发generic historical scope，启用接口原sameGame default8192entries/256MiB/16384handles；callback仍原View、无Native facade/decoder/prefix及写权限，不借Native768MiB tier。actual13959B/11df4921，base13334B/876465c0，首编8.280秒/3class GREEN，映射 `forward109c1/ACTUAL-DATA-VIEW-FORWARD1-COMPLETE-FAMILY02.json`，3030B/SHA `f26954d7c8d48b49ee43817310e7700da4ae557522624f12abe7f12d7a991a2b`。新3项真实sharing32、关闭释放、身份/session/thread/写拒边界测试已3P/0F/0E/0skip，14.261秒，XML `forward109j1/reports/TEST-junit-jupiter.xml` 49683B/SHA `ce6b7a1cb88913e6ed885f492140771fd5d0dd8a150dcd28f7b3743161478518`，不以旧15替代。未混Hpp、未覆盖活源/类或冒第二次业务结果，完整receipt proof仍必须实际验证。
+
+新独立Root来源窗口22:28:24Z→23:28:24Z，仅原107class/Maven6/samepair/56+256既有caps与同quota；旧源与旧Main期限不改。composition/ENV request/Frozen profile/plan按已有≤1h，outer bootstrap/declare/census/cap当次新签25min且不放宽原30min。最终新调用只能在上述真实END和0CREATE确认后进行，下一集成结果、Game/READ/Driver/LOOP/SAVE继续分账。
+
+## 显式决策绑定、现成 keeper 与第二次真实 cold
+
+决策岗只读发现实际openExitedCheckpointRecovery没有其它finish路径已有的bindDecisionSelector。若遗漏则nullable selector可能绕过file provider。本次只在新cold入口要求显式decisionProvider，缺失在Game前IOException；finishColdRestored之前按原activeSession/否则writer.locked材料sink绑定同selector，原六处/default/HTTP/Guard不改。actualAssembly97376B/SHA `6d47f3112b049882661a749d8eb1250d3049e95672521fb3132a096f94057cd9`，实际1TU/9class/13.939秒GREEN；formal102432B/a324另typing12.380秒GREEN。决策岗再次核Core.finishColdRestored→Staged.finish→pipeline.create→decisionSelector.ifPresent.bindSelector，绑定确入新ordinaryPlanner，不是闲置字段；最终174项CP九个Assembly首定义均在hook111c1且与完整family map逐件相同，旧R没有遮蔽。
+
+初始scope/受限View/决策hook三生产源与新Test四文件已正式commit并普通FF发表 `e9d2ace1aad19e1294428d1cd29125f3dc4a5243`，parentf271，remote exact已核。正式Bootstrap额外typing16.054秒/9class，View与Test rawexactactual3P复用，未重旧135/15/file9。PUB4原件：`D:/ck3-state/resume91-java-delivery/exited-game-recovery-20261116/PUBLICATION4-COLD-HISTORY-AND-DECISION-HOOK-01.json`，5899B/SHA `c413640c48566e48974c2daaaf3958a396037f41344ad3dc4d24d6f8bd66bf88`；canonical Git disk80174B不冒FS净增。
+
+既有keeper已真实接通而非新runner：同02e独立clean sparse checkout含原tracked CLI、ck3_mod_acceptance_keeper和shared lease模块，旧frozen checkout不改。旧03 freshCAS释放后04唯一claim，22:55:40Z keeper PID186736/birth134392569351637714 READY/首CAS10211；interval120、当前919…UPPER SHA明确覆盖旧默认、source==installed、无录制。manual对04完全停止，单一heartbeat writer；日志repo外、无STOP_REQUIRED。
+
+P3三公共输出于23:15:10真实全部exit0，包含quote/declare/census/Rootcap5/binding5/CREATE/readback。最终newreview到2026-11-16T00:05:09Z，旧P1/P2材料与所有期限原样保留；finalcfg2096B/SHA `ea715b70eaab13e7f910a5f7949084d85027820146b6ac0067c0529f2caf0b08`仍五wire file/codex-session/120000/1/0。prepared入口177892B/SHA `90f51a14bae53c4c80e065e7ca75743cefc105bce1963eb80b96e78c21b7adb5`已由决策岗独立核首定义；公共FrozenSaved与keeper fresh检查通过。
+
+**第二真实single于23:18:59.355932Z BEGIN**，JVM184880/birth134392583393363452，原公共RootOrdinaryWorkerMain restore-exited。旧145896真实terminal后才启动，0并发；外置21class（scope1 9/View3/hook9）已采用，原R/Maven135未覆盖。约45分钟资格包络到00:03:59，当前仅报告真实BEGIN，新的source/IO、Game、两READ、Driver、LOOP/queue/SAVE必须另取实际结果，未授性能提升或10秒目标。
+
+23:24:57Z首个新scope1生产诊断真实完成：publication_attempts167791、held_path27147、acquired_retained127、fallback140517；entry_bound0/byte_bound0/handle_bound140517，peak_entries127、retained7648157B，原caps1024/64MiB/256handles；finish_succeeded1/validation_failed0。仅该scope完整成功，不是全cold或提速成功；Hpp不解handle-bound，当前活轮与bounds保持，等Core较大既有scope实测。
+
+## 第二 cold 自然失败，继续修复完整 DATA 回放的重复工作
+
+第二次真实调用于2026-11-16T00:04:23.534248Z自然END，exit1、wall2724.200283秒；同birth184880的OS exitFILETIME134392610633315079及controller END一致，未执行kill。stdout为WORKER_FAILED、game_stop_requested=false、pause NOT_ATTEMPTED。完整stderr在 `D:/ck3-state/resume91-runtime/samepair-restore03-20261116/logs/RESTORE-EXITED02.stderr`，7786B/SHA `90f224577f65a311bb9410c7126875d8458bad9e63ce984715ea07f120591cb0`。实际cause为Win32Host.deadline→JavaGameLifecycle.requireExitedMembership→Core.ReservedRetirementScope.requireCurrent→受限View.loadMaterial→DPS.rebuild/replayCooldown→readSameGameHistory：Lifecycle observation deadline expired；不是新Game退出或模型服务故障。
+
+第二DATA scope最终publication410649、held331317、acquire13116、retained6072、unretained7044；fallback66216全部byte_bound，peak_entries6072、retained268434935B，原caps8192/268435456B/16384handles。finish_succeeded1仅说明finish函数完成；validation_failed1记录本次callback生命周期超期，stderr无suppressed清理异常，不能称完整资格成功或CAS坏件。23:58样本已累计24.54GB/222.7万逻辑readops，仍在DPS.rebuild/projectFull；过程IO计数不等于物理占盘或硬盘实际读量。终态head/claim等由Runtime另核；截至目前仍无新Game、READ、Driver、queue或SAVE信用。
+
+下一候选只修复这条真实热点：四个生产叶DPS/DriverCapabilityRuntime/NativeOutcomeArchive/RootReservedRetirementArchive，加两个新Test共14项。Root私有构造的DATA source token绑定原受限View/session/thread，不暴露Native facade/decoder/prefix；仅在完整replayOriginal（含header、nested rebuild和最终aux比较）成功、trace关闭与当前来源复验后，保存完整aux的void校验结果。命中仍验证全部retained依赖并向外层trace登记；capture/transient/unheld/dynamic来源走完整原路径。独立128cells/8MiB估重/32768dependency memberships只控制可选复用准入，不扩大历史scope上限。
+
+SourceReady03为 `D:/ck3-state/resume91-java-delivery/exited-game-recovery-20261116/data-replay-memo-candidate01/SOURCE-READY-DATA-ONLY-REPLAY-MEMO4-TEST2-03.json`，4572B/SHA前缀39a01a43。actual四叶首次真实typing17.578307秒GREEN/43class，完整family map `memo112c1/ACTUAL-DATA-MEMO4-COMPLETE-MODULE-FAMILIES01.json`17591B/SHA前缀b9277db6；新14测试与必要formal差异编译仍待。新source1536KiB与编测6MiB独立fund后raw1640097760B/normal24389632B/cap1719664640B，余55177248B；旧unused不重复退。部分实际closure可能全部落held集合，也可能合法零命中，实际收益NOT_PROVEN；不为命中削弱资格或改caps。
+
+CI新实证：archive URL修复后的Official run43767579135已完成bootstrap-tools与qualified-tools两轮，各1207项/0F/0E/0skip，随后qualified child于2.963801秒exit1。缺件为hosted `artifacts/tools-postqualification/actual.json`（ControlCi.runQualified:1947）；不是原Maven下载404。原artifact14186941806为1113578B，Root只做有界内存读取，没有落盘复制。既有complete-Own及两项JUnit门保留，正在定位真实producer与hosted接线，不能伪造actual或称完整CI通过。
+
+00:09:23Z真实末态核实：P3 ck3与worker-child均空，generationclaim absent，native-launch仅template01；head raw d8b37715…/sequence2002、numericWAL2002及sourcebindings2002均未变。TRUE-END-VERIFIED01为4940B/SHA `f39c334539be03105b5fb0af42eedde8200e7b606036f22270f083f6c16c95d9`；四个旧长宿主仍同birth存活，SCREEN仍唯一keeper。没有TerminateProcess，也没有以reap后的OpenProcess87否认此前同birth自然退出原件。
+
+P4新来源准备00:10:09Z先真实拒绝：全D卷usedUpper13308196032512B，加原other512MiB及metadata2MiB后比旧quota13307902017536B多832983040B；当次无P4/binding/worker。Root随后给新独立00:10→01:10Z来源max_project13313094979584B＝该used上界+64MiB+原other512MiB+4GiB观测漂移余量，待fresh核。全卷增长原因及项目实际量仍UNKNOWN；观测余量不授新写额度、不改任何fund/scope cap，system64GiB+safety20GiB仍核。原P3及旧source/期限一律不改。
+
+## 完整 DATA 复用的软件资格与 P4 准备
+
+memo四actual生产叶首次17.578307秒/43class GREEN（Root4/Native18/Bridge14/DPS7）；formal仅Native+Bridge两rawdiff叶14.544161秒/32class GREEN，Root+DPS rawexact复用，没有重135源。第一轮新测试为APP10P/Root4E，Root均因java.io.tmpdir缺失在JUnit @TempDir前失败；只修实际目录准备后Root3P/1E，余1是负例夹具同线程嵌套另writer，未到目标断言。保留两轮RED，仅修合法foreign-session夹具，不改生产或断言。随后只重编RootTest1、跑未通过1及新增非空adapter1，18.904604秒2P/0F/0E/0skip。最终15个不同用例全部通过，不能称首轮14项全绿。
+
+新增真实Native adapter用例由原writer建立合法CAS，原受限View load→独立trace非空→close，再新trace仅verify该依赖，证实同集合向外层trace传播，没有Game或Native动作。最终RootTest15287B/SHA前缀fe810465；新增两项XML `memo112j1/root-remaining2-03/reports/TEST-junit-jupiter.xml`49425B/SHA `56827c8fcba87c494e11359fd8f23da8fad685d4b62816339bc5ee4362256560`。已通过APP10/Root3未重跑，43生产类未重编。实际活READcapture/transient场景仍只有静态及机制失格证据，真实Native输入正例NOT_HELD；不将其写成实测。全cold实际可复用性与性能仍待P4。
+
+P4三公共输出00:14:17.775416Z实际全部exit0：ENV35866B/0997096d…、SavedPolicy587B/8a27674d…、runprofile753B/0d747dc2…；新plan5165B/713aec8d…、cfg2096B/1f45a715…，旧P3不改。准备入口442969B/SHA `7cda92452616f3b2e34f9781009cb2f23449d03d10c5d1e8339eb0335f62f54b`，174项CP；决策岗独立核61个首定义全部匹配（memo43/initial9/hook9），旧forward family已移除，file/codex-session/120000/1/0五wire精确。此为metadata与软件准备通过，尚未BEGIN第三次业务。
+
+实际新roots Native占94171952B，原256MiB余174263504B；SCREEN keeper每120秒原全量list审计约1.77MB，保守2MiB/轮，不能计0。余55分钟若再留56MiB尾量与两READ128MiB峰会超原scope，Root优先授权对已完成、早于当前10分钟且非最近三轮的旧renewal审计做一次无损归档，原inputs/ready/journal/admission及当前尾不动。普通逐文件ZIP达到3.67MB界后真实拒绝，0旧件删除；正在尝试唯一一次长字典TAR.XZ，≤4MiB且逐项bytes/SHA核对成功后才清理精确旧副本。未为此新fund40MiB，失败和占量如实保留；新的worker仍等实际容量资格。
+
+最新e9的Official run43773320840实际更早失败，与d8b的missing-Own分开：ControlCi.verifyPlan:1689以默认8MiB调用sourceManifest，报Manifest content limit exceeded。当前Git build-tools总8438287B，含main Java4033910B/Test Java2638525B及固定资源，已跨旧界；该run尚未进入qualifiedTools阶段。原d8b两轮各1207P仍仅属于其原运行。CI只读结论还指出hosted未供应真实Own七项原始refs及匹配同机materialized map；真实Producer41/postqualifyTools实现存在，但不能靠伪actual或一行接线宣绿。当前不为P4扩profile或改冻结Maven，完整CI继续RED，后续按真实输入修复。
+
+00:20:01.615823Z旧审计TAR.XZ真实PASS，20.7877秒：108个完整旧目录/432files、原logical63626830B，归档607616B+逐项索引235373B，共842989B<4MiB。每项解包path/bytes/SHA与源identity/mtime/content二次复验成功后，才逐精确文件unlink及空目录rmdir；inputs/ready/journal/admission/当前尾/keeper源码均未改，前后独立live_lease通过，原失败DEFLATE保留。证据 `P2/keeper-audit-archive02/ARCHIVE-VERIFIED-END01.json`2191B/SHA前缀324d40c5。旧字节完整可追溯，实际physical回收量以新census为准，不用logical差冒Native；没有新40MiB fund或重复unused退账。P4公共FrozenSaved也实际exit0，第三业务仍在最终阶段容量核验，尚不记BEGIN。

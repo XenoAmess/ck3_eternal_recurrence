@@ -21,6 +21,16 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 /** One concrete runtime adapter shared by ordinary/native reads, readiness, public get and resource. */
 public final class DriverCapabilityRuntime implements PlanningReadCoordinator.KnownReadObserver,NativeReadinessCollector.CapabilitiesPort {
 
+    /** Private Root-owned retained DATA replay; this does not install a Native prefix or action/read authority. */
+    public static <T> T inRetainedDataReplay(
+            org.xar.ck3.control.service.root.RootReservedRetirementArchive.DataReplaySource source,
+            ActionPorts.OutcomeArchive facade,ContinuityStorePort.Session session,
+            ActionPorts.CheckedArchiveRead<T> operation) throws IOException {
+        var access = Objects.requireNonNull(source).openAccess(facade, session);
+        return DriverPersistentPlanningState.inRetainedDataReplayScope(access, facade, operation);
+    }
+
+
     /** Explicit private-source historical replay scope; no external Archive or live operation is promoted. */
     public static <T> T inOwnedHistoricalPersistentReplay(
             org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive,
