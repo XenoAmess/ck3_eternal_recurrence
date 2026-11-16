@@ -19,6 +19,7 @@ import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.NativeCandidate;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Request;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterial;
 import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
@@ -258,9 +259,14 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
                 "native campaign restore crossed its genuine Saved replacement or lost the original null lifecycle");
         requireColdAdoption(same,ticket,exact,actual);return true;
     }
+    private static DriverStateSnapshot.Complete semanticDriver(Session same,SavedCheckpointMaterial material,
+            DriverStateSnapshot.Complete actuallySaved)throws IOException {
+        return material instanceof SavedAttachmentSourceStore.SavedMaterial ordinary
+                ?ordinary.requireSemanticDriver(same,actuallySaved):actuallySaved;
+    }
     private void requireSavedNativeCampaign(Session same,Capture retained)throws IOException {
         SavedCheckpointMaterial material=requireRetainedSource(same,savedSources,retained.request(),retained.saved());
-        requireNativeCampaignSavedOriginals(same,archive,material.session(),material.sourceSemantic(),material.savedDriver());
+        requireNativeCampaignSavedOriginals(same,archive,material.session(),material.sourceSemantic(),semanticDriver(same,material,material.savedDriver()));
         material.requireRetained(same);files.verify(material.witness());
     }
     /** Archived DATA consistency only. Only the private capture above may choose the live producer branch. */
@@ -369,7 +375,7 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         pin(borrowed,actual.originalNativePacket(),DOCUMENT_LIMIT,pins);
         Obj nativeState=DriverJson.object(actual.actual().state().bytes(),DriverJson.MAX_NATIVE_BYTES);
         // Replay the sole capability state producer from saved SEM, then reduce the actual original private fields.
-        var recovered=capabilities.replay(borrowed,material.sourceSemantic(),saved);
+        var recovered=capabilities.replay(borrowed,material.sourceSemantic(),semanticDriver(borrowed,material,saved));
         pin(borrowed,recovered.stateSource(),DOCUMENT_LIMIT,pins);
         // state/v2 replay is the complete private owner auxiliary, including noncache fields and deletions.
         // An older semantic_source can be a valid mint predecessor, but cannot supply the saved owner's current fields.

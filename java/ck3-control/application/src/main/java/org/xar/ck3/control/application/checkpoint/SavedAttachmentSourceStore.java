@@ -85,6 +85,27 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         public String checkpointDigest(){return checkpointDigest;}
         /** Archived complete Driver; this data accessor grants no current physical reload permit. */
         public DriverStateSnapshot.Complete savedDriver(){return savedDriver;}
+        /** Exact pre-SAVE semantic DATA from this private material; grants no live restore authority. */
+        public DriverStateSnapshot.Complete requireSemanticDriver(ContinuityStorePort.Session same,
+                DriverStateSnapshot.Complete actuallySaved)throws IOException {
+            Objects.requireNonNull(same);Objects.requireNonNull(actuallySaved);
+            StrictJson.require(issuer.sessions.current()==same,"semantic Driver requires its actual material issuer Session");
+            String head=same.head().digest();issuer.files.verify(manifest);
+            var physical=issuer.drivers.readArchivedSnapshot(pair,issuer.files.read(pair.driver(),DriverCheckpointStore.MAX_DRIVER_BYTES));
+            byte[] saved=savedDriver.encode();
+            StrictJson.require(Arrays.equals(saved,physical.encode())&&Arrays.equals(saved,actuallySaved.encode()),
+                    "semantic Driver bridge differs from its complete physical saved Driver");
+            ExactRef source=proof.semantic().originalDriver();
+            FileWitness original=issuer.files.observe(Path.of(source.path()))
+                    .orElseThrow(()->new IOException("original pre-SAVE semantic Driver unavailable"));
+            StrictJson.require(original.reference().equals(source),"original pre-SAVE semantic Driver differs");
+            var before=DriverStateSnapshot.decodeComplete(issuer.files.read(original,DriverCheckpointStore.MAX_DRIVER_BYTES));
+            CheckpointCommitVerifier.requireSaveProjection(before,savedDriver,pair);
+            issuer.files.verify(original);issuer.files.verify(pair.driver());issuer.files.verify(manifest);
+            StrictJson.require(issuer.sessions.current()==same&&head.equals(same.head().digest()),
+                    "semantic Driver bridge changed its actual issuer Session or canonical head");
+            return before;
+        }
     }
     public static record Sources(SavedCheckpointMaterial.Kind kind,FileWitness material,ExactRef basis,ExactRef game,ExactRef opening,
             ExactRef progress,ExactRef restoredNative,Optional<FileWitness> physicalSaveWitness) {
