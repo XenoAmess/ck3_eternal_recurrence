@@ -805,8 +805,8 @@ public final class RootOrdinaryRuntimeAssembly {
         /** Reuse the existing Saved owner loop before the ordinary business finally may close its OWNED Game. */
         public void awaitExitedReplacementOwner()throws IOException,InterruptedException {
             var lifetime=exitedOwnerLifetime;if(lifetime==null)return;
-            Objects.requireNonNull(exitedOwnerStart).session().nativeTransport().close();
-            lifetime.awaitExit();
+            awaitOwnerAfterBusinessRelease(()->closeBusinessResources(core,storage),
+                    ()->Objects.requireNonNull(exitedOwnerStart).session().nativeTransport().close(),lifetime::awaitExit);
         }
 
         /** Opens only this configured old writer and source graph; it creates no Game or live authority. */
@@ -1119,12 +1119,7 @@ private Running openSameGameBootstrapOpened(Opened opened, ManagedGameSession ac
 
         public void closeResourcesOnly()throws IOException {close();}
         @Override public synchronized void close()throws IOException {
-            if(closed)return;closed=true;Throwable failure=null;
-            if(core!=null) {
-                try {core.close();}catch(RuntimeException|Error close){failure=close;}
-                try {core.closeCompletion().toCompletableFuture().join();}
-                catch(RuntimeException|Error close){failure=merge(failure,close);}
-            }else try {storage.close();}catch(IOException|RuntimeException|Error close){failure=close;}
+            if(closed)return;closed=true;Throwable failure=closeBusinessResourcesFailure(core,storage);
             if(sourceOnly) {
                 try {noWrites.close();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
                 try {storage.close();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
@@ -1406,6 +1401,34 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
         public long nextBatchSequence(){return next;}
         public void closeResourcesOnly()throws IOException {owner.close();}
         @Override public void close()throws IOException {owner.close();}
+    }
+
+    @FunctionalInterface interface BusinessRelease {void run()throws IOException;}
+    @FunctionalInterface interface OwnerWait {void run()throws IOException,InterruptedException;}
+
+    /** Business-only drain. No Game/session/lifetime object or shutdown authority enters this method. */
+    static void closeBusinessResources(RootApplicationAssembly.Core core,RootRuntimeStorageGuard storage)throws IOException {
+        Throwable failure=closeBusinessResourcesFailure(core,storage);
+        if(failure!=null)throwClose(failure);
+    }
+    private static Throwable closeBusinessResourcesFailure(RootApplicationAssembly.Core core,RootRuntimeStorageGuard storage) {
+        Throwable failure=null;
+        if(core!=null) {
+            try {core.close();}catch(RuntimeException|Error close){failure=close;}
+            try {core.closeCompletion().toCompletableFuture().join();}
+            catch(RuntimeException|Error close){failure=merge(failure,close);}
+        }else try {storage.close();}catch(IOException|RuntimeException|Error close){failure=close;}
+        return failure;
+    }
+    /** Cleanup failures remain observable after the original single-use owner wait, never bypass it. */
+    static void awaitOwnerAfterBusinessRelease(BusinessRelease business,BusinessRelease transport,OwnerWait owner)
+            throws IOException,InterruptedException {
+        Throwable failure=null;
+        try {business.run();}catch(IOException|RuntimeException|Error close){failure=close;}
+        try {transport.run();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
+        try {owner.run();}catch(IOException|InterruptedException|RuntimeException|Error waiting){failure=merge(failure,waiting);}
+        if(failure instanceof InterruptedException interrupted)throw interrupted;
+        if(failure!=null)throwClose(failure);
     }
 
     private static Throwable merge(Throwable first,Throwable next) {
