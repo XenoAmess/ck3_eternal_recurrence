@@ -932,6 +932,11 @@ public final class RootApplicationAssembly {
                 this.core=core;this.lifecycle=lifecycle;this.exited=exited;this.materials=materials;this.material=material;
                 this.drivers=drivers;this.history=history;this.before=before;this.policy=policy;this.deadline=deadline;
             }
+            /** Retained Driver DATA is a full-material CAS publication, independently of the larger physical checkpoint-file limit. */
+            static byte[] readRetainedDriverOriginal(NativeOutcomeArchive archive,ContinuityStorePort.Session same,
+                    org.xar.ck3.control.contracts.ExactRef original)throws IOException {
+                return archive.readArtifact(same,original,Math.min(RawJson.MAXIMUM_BYTES,ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES));
+            }
             public SavedCheckpointMaterial material(){return material;}
             public SavedCheckpointMaterialStore materials(){return materials;}
             public DriverCheckpointStore driverCheckpoints(){return drivers;}
@@ -947,7 +952,7 @@ public final class RootApplicationAssembly {
                 StrictJson.require(core.coldRestoreSource==this&&!core.resourcesClosed,"cold restore source belongs to another Core lifetime");
                 same.requireHistoricalHead(history.canonicalSequence(),history.canonicalHeadDigest());
                 materials.requireOwn(material);material.requireRetained(same);
-                StrictJson.require(java.util.Arrays.equals(core.archive.readArtifact(same,history.retainedFullDriver(),DriverCheckpointStore.MAX_DRIVER_BYTES),
+                StrictJson.require(java.util.Arrays.equals(readRetainedDriverOriginal(core.archive,same,history.retainedFullDriver()),
                         history.retainedFacts().driver().encode()),"cold restore predecessor full Driver changed");
             }
             public void requireCurrent(ContinuityStorePort.Session same)throws IOException {
@@ -956,7 +961,7 @@ public final class RootApplicationAssembly {
                         &&same.head().state().sequence()==history.canonicalSequence()&&same.head().digest().equals(history.canonicalHeadDigest())
                         &&core.clock.instant().isBefore(deadline),"cold restore source lost its exact unused Core, exited owner or canonical predecessor");
                 materials.requireOwn(material);material.requirePhysical(same);
-                StrictJson.require(java.util.Arrays.equals(core.archive.readArtifact(same,history.retainedFullDriver(),DriverCheckpointStore.MAX_DRIVER_BYTES),
+                StrictJson.require(java.util.Arrays.equals(readRetainedDriverOriginal(core.archive,same,history.retainedFullDriver()),
                         history.retainedFacts().driver().encode()),"cold restore predecessor full Driver changed");
             }
             public void requireArchivedBefore(ContinuityStorePort.Session same,RestoreCheckpointService.Request request)throws IOException {

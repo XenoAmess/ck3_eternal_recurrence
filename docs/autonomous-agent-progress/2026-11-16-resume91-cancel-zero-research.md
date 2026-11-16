@@ -328,3 +328,47 @@ Runtime完成tools64 exact attempt无child/未来写入声明2436B/4f0f62e4…�
 
 
 D11后置formalBridge1真实12.096506秒GREEN完整15class，DPS与actual rawexact7复用、0重复编；family `F/dp120f1/FORMAL-DATA-PREFIX-BRIDGE1-COMPLETE-FAMILY15-01.json`8122B/SHA `2b4f9a8c7504d68dd96c8497612157d862d568b1be4f83b20272e833b38aeaa1`。最终actual22、Test2 typing9、七项真P与formal差异15资格齐，未重旧15/135/整图，四源码/Test+五报告9文件正常独立发表，不等实际BEGIN。Decider亦独立读取CP111/六组ACTUAL/OUTPUTS、CBJ1P和D11真XML/精确7方法/ACTUAL0d78655f…，来源/首定义一致；group3旧说明文字含DPS7但实际只有Store18+Root4，真实新DPS7位于D11首定义，原件保留、最终资格明确superseded。仍待Runtime新source/cfg及fresh资源后一次真实Main，不能据软件/预组CP称实际装载或恢复成功。
+
+
+## 第六次 P7 真 BEGIN 与前两资格范围
+
+D11四源码/Test与五报告已正常FF发表 `7c84876b45a3604669e394abed767261e7cdf188`，parent c4cb56ab、remote exact/整树clean。PUB9为11878B/SHA `897e05e964b9cbf47017555224010a68b1646cb4c1ff19a8c5d47ca249895499`，实际56新对象disk164603B在Git256KiB guard内，非FS净增/peak；Pub272KiB保守关闭0未知退款。完整软件闭档 `F/dp120a1/SOFTWARE-CLOSED-ROOT-DATA-PREFIX-ACTUAL22-TEST7-FORMALBRIDGE15-GREEN01.json`6688B/dce85b65…，finalhandoff3033B/b8b25015…；source1MiB/编测6MiB各只返unused434176/2790176一次，最新raw1658506416/normal24389632/余36768592，本波0未来hold。
+
+archive08于05:17:10/10.792秒真实完成192files/48closed dirs，原logical28280384B无损保留，tar329684B+index84566B；全roundtrip+源二次身份/mtime/content核后exact清理，fresh lease10497，0新fund/假unused。选中NativeAlloc28664704不是净物理回收。基于fresh真实超256MiB峰，Root后续同流程站立授权仅在current+实际剩余Review keeper尾+128MiB READ+8MiBtail超原cap时维护，最多每10分钟一轮、每轮独立编号/完整验与receipt、只closed age>=10min且非最新9dirs、输出/index/receipt<=4MiB/120s、不碰活输入/别的路径；目标消超额加最多8MiB余量，不能循环无条件清理或借闭scope尾额。
+
+**P7第六次同savedPair public RootOrdinaryWorkerMain restore-exited于05:24:44.605268Z真实BEGIN**，JVM185724/birth134392802846079027/session46585。主root `D:/ck3-state/resume91-runtime/samepair-restore07-20261116`（以下P7R）。BEGIN `P7R/logs/RESTORE-EXITED06-BEGIN.json`28103B/SHA `d02701233c27bef9cfe06ceb6e1fada5133453ea467d4c2c2ddc40dde6a08d9a`。新独立来源实际签发05:18:45→06:18:45，旧P6期限/动作不改；45min约06:09:44为观察检查点非强杀timer，sourceheap4GiB/ActiveProcessor1、CAS v1/memo8MiB旧限额保持。
+
+三公共输出05:19:49全exit0，索引 `P7R/input01/PUBLIC-THREE-OUTPUTS-FINAL-SOURCE01.json`1781B/SHA `800520b7cd8e53cb0b07b49a8d57477fb3e70338a6d42ff82f10f41dacdc4c08`；FrozenSaved05:21:54 exit0。prepared `P7R/input01/PUBLIC-COLD-WORKER-ENTRY-PREPARED01.json`890924B/SHA `1a3131cd9a375dba2038a0b728c8b21117e33d952ab92814f10e60214fa37e11`；cfg2096B/SHA `d91d48abacdd5aa93934ef6111125ead40879a183491c8bf3b9323046961f5ca`，原file queue01/codex-session/120000/1/0；plan5165B/SHA `5491a5b939ffed22634d1612602599040151862413c029f4f00f4b42c35f8a22`，均在P7R/input01。Decider独立差异核177roots/111首定义及真软件资格，恢复唯一真实响应，未预填/HTTP/刷新原请求deadline。
+
+05:24:06 fresh0Game/claim、head2002/raw d8b3…、原savedPair FileID/mtime与keeper租约全部通过。Runtime Native61305376+真实剩余Review keeper62914560+两READ134217728+tail8388608=266826272B<268435456B；provider64MiB/firstSAVE未预授，后阶段须按实际READ量核。physical/commit扣source5+futureGame32+CI2=39GiB估算后余15.833/32.078GB，Dquota通过；不把估算称RSS硬上限。
+
+初始scope05:27:49、material scope05:29:23均真实finish1/validation0；publication167791/135318、fallback49866/29822全entry_bound，原1024/64MiB/2052，parse slots2/3 completed1且0evict。05:33:01/elapsed497.06秒仍Core940同战役历史、取样ContinuityState.toJson/ScopedHistory.edge，IO10.670GB/997910reads，OSprivate2.377GB非heap结论；新DATA/prefix末计数NOT_HELD、stdout空/templateonly、无真END/Game。仅确认实际装载与前两阶段，未据此授整体收益、READ/Driver/OODA/SAVE或有限秒/保存日。
+
+完整CI保留170f43802085477已到Java整链阶段，最新7c43808836914执行；Root只请求取消中间c4 43805867697，取消不算通过。Java另接真实P1：旧run过Tools后缺postqualification实际产物，窄读发现外部D的Own24c源码不在repo且硬STANDARD8，与新Tools12M不兼容；真实expired历史完成件、genuine G2 capture-only/NOT_RUN和quota拒绝也需诚实供应。只读寻找显式新版consumer及现producers闭环，不降门/塞fixture/修改P7；完整Official/Own仍未获绿。
+
+
+P7现成BEGIN/prepared/cfg/plan/公共三产物/FrozenSaved/最终phase绝对路径机器索引：`D:/ck3-state/resume91-runtime/samepair-restore07-20261116/logs/P7-ACTUAL-BEGIN-FROZEN-INPUTS-EXACT-INDEX01.json`2236B/SHA `1578eef41cb4ac61478f00de432c1f45874d1b6f29721da145096e0e148dd3a8`；只汇已有FileRef，未新增OS/Game查询或收益资格。
+
+
+## P7 历史范围首次完成；真实 CAS 调用者上界修复
+
+P7于05:44:31.440951Z真实自然END，exit1/wall1186.8357386秒，exact HANDLE exitFILETIME134392814710956667/session46585，不是45min超期、0kill。**Core历史DATA范围05:43:34真实callback成功**：full254/hits28/unretained0/scope_callback_succeeded1、prefix_anchor_hits249/proofs_replayed110、weight_evictions247；CAS publication418062/held406753/retained11309/fallback0，finish1/validation0。已证明新机制在实际历史使用并使该范围完整通过；此次同时采用局部encode和prefix，未做单变量因果比较，亦非整体恢复/Game/保存成功。
+
+随后第一次实际到达的错误为 `ContractViolationException: finite immutable artifact bound required`，Store.limit897→readOriginal808→Native.readArtifact807→Core.ColdRestoreSource.requireOriginal855→requireCurrent859→qualifyColdRestoreSource955。stderr7034B/SHA `0ecc404eb9c90e080975ceabcab110abde4d9840f0a589aaad8c2ab72b307106`，stdout416B/a64c3b7…。外层parse.completed0是后续bound异常导致外层callback失败，与已成功的内层DATA/CAS分开，不称close失败或坏件。末态 `P7R/logs/RESTORE-EXITED06-TRUE-END-VERIFIED01.json`8478B/SHA `5cf94bd748ac3a1bb1093a6140bbbc66818670944dfb3a301181ed26814be722`：05:50:44真实0Game/ownedchild/claim，head2002/raw100052B d8b3…、2002numericWAL/sourcebindings、原save/driver FileID/bytes/mtime全不变，四旧host同birth活、keeperCAS10526，0重复save读取/动作或新日数。Decider05:52:48核queue absent/0requests/0responses后按协议结束watch，下一独立source再followup。
+
+新的OtherOps诊断只读已有原件，不凭单帧判根因：P6 elapsed770.21秒CPU86.421875秒/Other23299286/read1027979/11528559569B；P7 elapsed863.04秒CPU79.828125/Other35040349/read1065542/12475994921B；P6 upper1057.78秒CPU130.609375/Other27755895/read1132311/15835134396B，无等时/等阶段对齐。源核Store dep loop前后requireActive，中间每ref metadata lease.read/payload.verifyCurrent及archive目录stamp；不能省各ref身份，Writer/WindowsLock/NoWrites为内存/ThreadLocal检查，不误称每ref Win32/读头。未证明目录持续custody/异常窗口等价，停止扩优化，转修本轮明确caller错误。
+
+真实caller两处均在Core.ColdRestoreSource，错误把物理DriverCheckpointStore.MAX_DRIVER_BYTES=256MiB用于上游RawJson.fullMaterial的64MiB CAS原件。唯一包私有pure-byte helper改为 `min(RawJson.MAXIMUM_BYTES, ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES)`，两原调用经helper，原全部session/head/material/deadline guard、完整bytes/encode比较与顺序保持。物理checkpoint256MiB、Store64MiB及历史其它limits均不改。只读发现同形的RootCanonicalDriverCoverage39属于旧Resolved迁移路线，current无实际caller，未扩改该类/Prisoners。
+
+actual源337699B/386a08bf…→338142B/7d4b31a9…，formal344786B/81ef…→345229B/594c798b…，原7087B差异保全。新source2MiB独立fund06291e80…，actualCore1首编6.417199秒RED/0class为旧Tools JAR Manifest隐式lib/lib五个不存在alias触发-Xlint:path/Werror；显式P7原177CP本来有五个真实JAR。只在该轮javac排除path lint，保其它lint/Werror、原177CP和源不变，不造别名目录/改JAR；五真实JAR逐pin/首定义小件9352B/7a61bfd1…，原RED保。
+
+actualCore1随后24.071355秒真实GREEN完整34class（旧R34被替换不叠算），`F/cas121a1/ACTUAL-COLD-CAS-BOUND-CORE1-COMPLETE-FAMILY34-01.json`17182B/SHA `282d9f5d27873ebb1410d1f985e85b9ad5c7c0e150563e2c6ba165be5e3a6ae9`。旧er97cold1曾为partial phase但所产34与R安装/本P7实际CP38逐SHA一致，不把旧partial冒整体绿。新Test3868B/e6e1b5c… typing13.683741秒，真实CAS角色1方法15.125632秒1P/0F/0E/0skip：合法>128KiB完整Driver正例、错bytes/SHA/超64MiB roleRef/物理tamper拒绝，无64MiB大分配或反射伪Core许可。XML `F/cas121j1/reports/TEST-junit-jupiter.xml`31474B/SHA `a00a1aed37d6aae460e9671cf1ff031837431203dc95ca8abca096ca430fdb7e`；实际资格1376B/SHA `cc2dcffa49bf1058f9d84872024bf9cbe8e9bf75fb77ac3b2109695d18c16320`，已直Runtime，formal1仅后补中。
+
+Runtime预组CP145/178roots，`P7R/logs/NEXT-COLD-WHOLE-CP145-CANDIDATE-PREPARED01.json`1206490B/SHA `22d8c22838f0f343b5b82142456ba8452f0ac7c61e6525b5c1684dff18d7a842`；Decider独立核新34首位及原111逐rawpin全同、源码/实际编译资格一致。Root在真实CAS1P后授权下一第七P8：真实当次UTC独立60min新来源、公共输出/原pair/head/0Game/租约/物理commit和阶段容量/finalcfg差异全过后一次public restore-exited，旧P7不重跑，heap4GiB/1CPU/45min观察及全部限额保留。当前无新source/Main/Game，formal/Git/close不作运行准备前置。
+
+真实完整Official run43802085477（170f）已结束失败，但bootstrap/qualified Tools分别163XML/**1229P/0F/0E/0skip**，两份ControlCiStageTest26及Tools12MiB11均全P，证明夹具修复后实际整类通过；后续exact NoSuchFile为tools-postqualification/actual.json。artifact14199902972/1133541B/SHA `60d54cc29c126649ac4872befd91f43d1480a483b6ec8f705ca4dde26c81f1b8`有界内存读取无ZIP落盘，汇总 `D:/ck3-state/resume91-root-ci/OFFICIAL-170F-TOOLS1229X2-POSTQUAL-MISSING-SUMMARY01.json`1926B/SHA `98f37246e6dffd3d73ad711b66a0c74a8f4e80eb3d4090f8510421cdd605155a`；仍无fullCI/Own绿色。
+
+CI可施工新版方案独立source2MiB已fund09595503…，根 `J/hosted-tools-current-own-v2-candidate01`，在P0必要1P后开始，不与Core/Test混stage：repo-owned新Own test-source及明确v2输入/当前R8 capture-only、真实历史A/C与fullTools B、原正lease和genuine低subquota负准入+真实public CLI/0Maven拒绝原件、完整当前源projection/真产物>512，而非占位或冒旧CI-bug同card双判。原短lease必须原完成时有效，再自然过期，不回填；显式新CI有限window/profile，旧90min/v1/24c保持。复用既有Job/UTF8/ControlBuild/postqual链，无新runner/Python；离线16MiB只prospective，首次actual须hosted真A/C/B/Own/JUnit2，不能由小fixture授完整Own。当前caller6MiB独立，CI编测未BEGIN。
+
+
+Caller修复后置formalCore1真实19.487734秒GREEN完整35class，源345229B/594c798b…及原7087B差异保持；family `F/cas121f1/FORMAL-COLD-CAS-BOUND-CORE1-COMPLETE-FAMILY35-01.json`17172B/SHA `e015095ed29d4ce57c289b2cf43e60937d1e69c7fd4395d5cfb34ca2b368ca52`。正式CP独立且all,-try/Werror原样，无-path例外；局部path排除仅此前actual旧Jar隐式alias环境。最终actual34+真实CAS1P+formal35软件齐，生产1/Test1+五报告7文件正常独立发表；CI新source/工作叶另包，不误stage，也不以发表挡Runtime下一独立source/实际恢复。
