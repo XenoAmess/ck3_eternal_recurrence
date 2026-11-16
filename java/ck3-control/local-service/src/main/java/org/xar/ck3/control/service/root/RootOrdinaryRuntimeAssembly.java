@@ -619,7 +619,14 @@ public final class RootOrdinaryRuntimeAssembly {
             retireExitedLifeInterruptionOnly(ownerDescriptor,expected,deadline);
             var exited=Objects.requireNonNull(exitedRecovery);
             var qualified=RootExitedSavedMaterialSource.qualify(core,config,lifecycle,exited,deadline);
-            var material=core.writer().locked(qualified::material);
+            var material=core.writer().locked(same->{
+                if(!clock.instant().isBefore(deadline))throw new IOException("cold saved material qualification deadline expired");
+                var checked=core.archive().inHistoricalReadScope(same,
+                        new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(1024,64L*1024*1024,2052),
+                        ignoredArchive->qualified.material(same));
+                if(!clock.instant().isBefore(deadline))throw new IOException("cold saved material qualification deadline expired");
+                return checked;
+            });
             var original=core.qualifyColdRestoreSource(lifecycle,exited,qualified.materials(),material,
                     qualified.driverCheckpoints(),cyclePolicy,deadline);
             var restoredProfile=RootExitedSavedMaterialSource.nativeCampaignProfile(material,plan,clock);

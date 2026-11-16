@@ -79,7 +79,7 @@ public final class RootJavaSavedBootstrap {
             writer.requireSession(same);
             // Pure old-source qualification only; the scope closes before replacement or new READ.
             return sourceCore.archive().inHistoricalReadScope(same,
-                    new ActionPorts.HistoricalReadLimits(1024, 64L * 1024 * 1024, 256), ignoredArchive -> {
+                    new ActionPorts.HistoricalReadLimits(1024, 64L * 1024 * 1024, 2052), ignoredArchive -> {
                 for(var action:ContinuityActionJournal.receipts(same.head().state(),sourceCore.archive().withSession(same)))
                     StrictJson.require(action.settled(),"confirmed saved source cannot erase an unresolved canonical action");
                 var actual=store.requalifyConfirmed(same,confirmation,pair);

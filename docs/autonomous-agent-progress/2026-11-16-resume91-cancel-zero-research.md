@@ -165,3 +165,21 @@ P4三公共输出00:14:17.775416Z实际全部exit0：ENV35866B/0997096d…、Sav
 最新e9的Official run43773320840实际更早失败，与d8b的missing-Own分开：ControlCi.verifyPlan:1689以默认8MiB调用sourceManifest，报Manifest content limit exceeded。当前Git build-tools总8438287B，含main Java4033910B/Test Java2638525B及固定资源，已跨旧界；该run尚未进入qualifiedTools阶段。原d8b两轮各1207P仍仅属于其原运行。CI只读结论还指出hosted未供应真实Own七项原始refs及匹配同机materialized map；真实Producer41/postqualifyTools实现存在，但不能靠伪actual或一行接线宣绿。当前不为P4扩profile或改冻结Maven，完整CI继续RED，后续按真实输入修复。
 
 00:20:01.615823Z旧审计TAR.XZ真实PASS，20.7877秒：108个完整旧目录/432files、原logical63626830B，归档607616B+逐项索引235373B，共842989B<4MiB。每项解包path/bytes/SHA与源identity/mtime/content二次复验成功后，才逐精确文件unlink及空目录rmdir；inputs/ready/journal/admission/当前尾/keeper源码均未改，前后独立live_lease通过，原失败DEFLATE保留。证据 `P2/keeper-audit-archive02/ARCHIVE-VERIFIED-END01.json`2191B/SHA前缀324d40c5。旧字节完整可追溯，实际physical回收量以新census为准，不用logical差冒Native；没有新40MiB fund或重复unused退账。P4公共FrozenSaved也实际exit0，第三业务仍在最终阶段容量核验，尚不记BEGIN。
+
+## 第三次唯一业务已开始，持续观察实际复用
+
+四生产/两Test及Root五报告共11文件已正常FF发表 `96dbec280a5af31a8ede95ac38ac69dd8dd8cc25`，parent e9d2ace，远端master exact、index空、整树clean；没有为Git推迟业务。软件闭档 `memo112c1/SOFTWARE-CLOSED-DATA-MEMO4-15-DISTINCT-CASE-PASSES01.json`12702B/SHA前缀d28c1362。源scope与编测scope只退真实unused一次，后续Git独立272KiB，最新raw1639652816B/normal24389632B/cap1719664640B，余55622192B，Git scope尚待闭合，不借源尾或扩大运行fund。
+
+P4于2026-11-16T00:22:57.067830Z真实BEGIN，JVM151504/birth134392621770699837，公共RootOrdinaryWorkerMain restore-exited；旧两个caller已真实terminal，单worker/无并发Game。启动前61首定义、15distinct逐method合并、FrozenSaved及SCREEN live lease均已核。归档后运行新roots Native44310152B，加未来keeper56MiB、两READ128MiB、8MiB小尾为245636744B<原256MiB，尚余22798712B；provider/SAVE须待实际READ量分阶段另核，未预授。资格原件 `P4/input01/EXECUTION-QUALIFICATION-AND-RESTORE-STAGE-ADMISSION01.json`14385B/SHA前缀52f9ee07，BEGIN28784B/e7e31777。
+
+58秒样本仍retireExitedLifeInterruptionOnly历史原件读，新NativeArchive类已真实加载，尚未到memo；153.3秒样本已进入initialscope1→SavedAttachmentSourceStore.requalifyConfirmed，read2913201032B/369708ops、write14675B/3ops。此为逻辑进程IO与阶段证据，非Native占盘或收益。当前仍template01、claim absent、无新Game/READ/Driver/queue/SAVE；继续实际阶段与完整cold终态，不在发表或启动时停止。
+
+P4 initialscope1于00:27:07真实完成，指标与P3同167791 publication/140517 handle_bound，finish1/validation0。其后349.7秒栈证明 `openExitedCheckpointRecovery→writer.locked(qualified::material)→ConfirmedSource.material→requirePhysical` 仍是另一段未包historical scope的完整fresh物理原件验证；并非新DATA memo失效。477.8秒样本才真实进入RetainedDataReplayScope.replay:118和新bridge/View；该118行是capture后的完整replayOriginal，不能当cache-hit。1229.8秒样本仍此完整分支，read18861559465B/2017066ops，尚无最终DATA指标或新Game/claim。
+
+依据这两个已复现热点，Root授权独立P1两叶候选：只初始pure-source caller由256handles改2052，1024entries/64MiB及后段两处原限不变；只qualified.material原locked callback包同既有historical scope，完整fresh physical函数、session和原deadline均保留，不包Core后续、Game、新READ或写。原Store公式E=C+S、Hheld=2C+S，最后一CAS对前保4headroom，1024全CAS集的理论caller条件为2050；2052是本次独立选择，不将计数上界冒OS总句柄/kernel池或实际全集持有证明。actual Bootstrap59489B/095da3a6…、Assembly97938B/d7be6dff…；formal60023/5efc…、102994/3e42…，均未用于P4。
+
+新Test6411B/fc58…使用12真实CAS/24文件核最后一对的26handles条件、25不足、entry11仍限制，以及正常/异常关闭后共享写句柄恢复、ledger与原件不变；不镜像2052常量。SourceReady7611B/cd8ea74c…，独立source640KiB已fund。现开始必要actual2/Test1/formal差异2增编，测试与收益均待真实终态，不混已闭memo资源或重跑旧43/15。CI另独立source3MiB用于显式Tools12MiB与新reactor封套六叶；旧8MiB/R6/R7不变，hosted legacy入口也须闭合，真实Own缺口仍保留。
+
+P1软件现已全部通过：actual2/18class17.890796秒GREEN，完整family `p1h113c1`6858B/54ae3f12…；仅新增Test1真实21.823354秒1P/0F/0E/0skip，XML `p1h113j1/reports/TEST-junit-jupiter.xml`48728B/SHA `d52446135632e7ba055f3e5657bce10c5f13ba912ded0c556adadb0b34840400`；formal差异2/18class15.440923秒GREEN，`p1h113f1` family6732B/0c264d37…。未重旧43/15/135，不外推2052全规模OS压力或实际cold收益；P4继续原参数与原代码，没有热换。
+
+P4第30分18秒样本00:53:15仍在Core DATA完整capture分支，read23613584774B/2192001ops、other26679476ops，stdout0/无END/claim absent，第二CAS与DATA最终统计未出。新CI封套6生产+3Test已冻结Ready10537B/2297b6ca…：Tools12MiB/1000files、一项目；R8保6144files/96MiB源/112MiBcopy及R7其它模块上限，只扩build-tools src至12MiB；当前LEGACY及complete canonical reactor均选择R8，pipeline HTTP/fixture级别仍原样。新11项加两旧selector方法待独立最小增编验证，旧STANDARD/R6/R7及冻结135的财务/completion段原body保留，尚无新的CI绿色信用。
