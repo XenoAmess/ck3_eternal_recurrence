@@ -225,3 +225,17 @@ CI必要Test依赖补齐后15.198812秒GREEN/6class：只编HEAD两个小helper�
 **新13方法真实17.431708秒13P/0F/0E/0skip**，显式parallel=false：Tools新11+选定Stage1/Parity1。XML `F/ci114j1/reports/TEST-junit-jupiter.xml`56774B/SHA `0cc8a92bbda012abfe7e1eae231908aacfb21105f2efe554218dc15d4ea41e1e`，ACTUAL1266B/569d90a7…。验证覆盖旧STD8/R6/R7枚举和上限不变、新Tools单项目/1000files/12MiB与.mvn8MiB、src/pom/固定资源全量同pin、精确12MiB与首超字节、1001文件拒绝、35项目R8仅Tools模块扩界、LEGACY/complete两入口新选择、Tools与Service/RootCard区分、原Lobby输入门及receipt读取边界。测试只建小POM图及单棵边界payload，未物化整图、未Maven/Own，也没有新的Official全绿信用。
 
 P5-late 1584.35秒样本02:11:27仍Core DATA fullcapture、0Game/claim；read23814366570B/1342259ops、OS handles16804。标准只读heap_info同birth前后核：new total1258304K used707864K，tenured total2796224K used2045189K（73%），Metaspace37783K；未GC.run/hist/dump，不从OS private4506554368B/WS4504997888B推heap使用或GC后live量。最终Hpp/entry/byte/memo统计和完整cold终态仍待，不以已发表源码或本次CI13改写本轮结果。
+
+## P5 真实句柄上限与后继受限 DATA tier
+
+CI九叶与五报告14文件已正常FF发表 `e26e5ac318ae4ff68f1c3158767c279852d57cb3`，parent0f0a83d，remote exact/整树clean。PUB14为9530B/SHA `b9f89a828b0871e869e0133a809893c395f7e14d1e44bcb4aa1116b3bcd73bf6`；default-zlib219877B只是估计，实际Git blobs271990B/graph311838B，已按实际报价补64KiB使Git320KiB+meta16KiB guard覆盖，不称FS净增或未知退款。上个0f0a83d Official43789361076已请求取消，最新e26e Official43791639141继续；完整Official仍未通过。
+
+P5-late于02:30:09.219723Z真实自然END，exit1/wall2706.5176786秒、Lifecycle observation deadline expired，未kill。Hpp/CAS Core publication791167/held708654/acquisition8191/retained8191/unretained0，fallback74322全部handle_bound，entry0/byte0；peak_entries8191/bytes268435456，原8192/256MiB/16384，finish1/validation1。Hpp2已消除此轮byte-bound，当前瓶颈已改变，不能以此授恢复或整体性能成功。DATA full242/hit28/ineligible0/unretained85/callback0，异常clear后的entries0不代表从未存储。Core parse completed0，protocol hit28000/miss63941、fullMaterial hit2045/miss9572，evictions73492、entry108/byte73385非互斥，peak1024/67108847B，byte缓存原限未改。
+
+末态原件7553B/SHA `321720e5065985a3570350dba4547197a778a8e4154ade76b1ecf25844349828`：ck3/workerchild空、claim absent/templateonly、head2002/raw d8b3…及2002 numericWAL/sourcebindings不变；原save/driver pointstat原样、四长宿主同birth活、唯一keeper正常。退出时kernel FILETIME此轮NOT_HELD，不编造；immutable controller真实wait exit1/BEGIN同birth及session89624原件保留。stderr10753B/SHA `70fc9477f3a42c5bf6d47dc0585b3152bfaf432b4263e5259953e10c560f5298`，仍0新Game/READ/Driver/queue/SAVE信用。
+
+Root授权新独立DATA tier v1候选16384entries/256MiB/32772handles；这是有限资源选择，不把74322次数当unique refs数，也不保证全集必然可留。旧ActionPorts generic DTO硬界8192/256MiB/16384及Native768MiB分支保持；只有私有Root来源token能开启新Store范围，same session/thread/fixed head和受限View、无decoder/native facade/写仍保。DPS只补既有admission拒绝/淘汰/成功publish/高水位诊断，128cells/8MiB/32768成员及验证顺序不变。源3MiB已独立fund，实际与formal BASE分开port，当前未编测/未采用/无第五业务；完整Ready和必要scaled回归后再给新独立来源窗口。
+
+keeper旧审计archive04在新授权下02:43:08.909001Z/18.078秒真实PASS：444files111dirs、原logical65393586B→621664B TAR.XZ+236981B索引，全roundtrip和源二次复验后精确清理、与02/03不重叠，活输入/尾/源码不动、前后livelease通过，未新fund/返unused。旧P5来源02:35及45min包络原样，不追改失败。
+
+并行读取e26e的Religious Ritual Fusion Static run43791639268发现独立真实故障：121个测试仅relocation source qualification因other.txt raw hash漂移报错。Root受控小Git复现（独立1MiB、仅子进程临时global配置、未改真实Git设置）：LF源8B，global autocrlf=true时默认clone变9B CRLF，显式clone local core.autocrlf=false恢复原8B及同SHA。证据 `D:/ck3-state/resume91-root-ci/rrf-clone-eol01/CONTROLLED-CLONE-EOL-RESULT01.json`2522B/SHA `3ebbab999c359af525313af104e47b0a03030c3b560d29b76e42332e16075c0a`。仅修改该Test的clone局部选项并新增raw signature断言；生产严格raw-hash拒绝不变，模块整链验证交后继真实CI，尚未宣称该121方法通过。

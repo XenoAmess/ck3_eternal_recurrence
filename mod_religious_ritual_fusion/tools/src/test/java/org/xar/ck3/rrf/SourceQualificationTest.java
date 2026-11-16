@@ -81,7 +81,9 @@ final class SourceQualificationTest {
     @Test void actualRelocationProducerPreservesPriorPinsAndQualifiesCurrentSharedCheckout() throws Exception {
         Fixture fixture = fixture(true);
         Path shared = directory.resolve("shared-sdk"), relocated = directory.resolve("relocated-base");
-        command(List.of("git", "clone", "--quiet", "--shared", fixture.root().toString(), shared.toString()));
+        // Qualification pins raw bytes, so this synthetic clone must preserve the fixture's LF source on Windows.
+        command(List.of("git", "clone", "--quiet", "--shared", "--config", "core.autocrlf=false", fixture.root().toString(), shared.toString()));
+        assertEquals(signature(pin(fixture.root().resolve("other.txt"))), signature(pin(shared.resolve("other.txt"))));
         Files.createDirectory(relocated);
         JsonNode originalDelta = Json.read(Files.readAllBytes(Path.of(fixture.request().sourceDelta().path())), JsonNode.class);
         Pin parentRuntime = Json.read(Json.write(originalDelta.get("base_runtime")), Pin.class);
