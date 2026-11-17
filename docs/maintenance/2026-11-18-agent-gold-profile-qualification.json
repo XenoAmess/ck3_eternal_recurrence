@@ -1,0 +1,161 @@
+{
+  "schema": "xar.agent-florin.gold-and-settings-qualification/v1",
+  "qualification": "PERSONAL_GOLD_PARTIAL_AND_EXPLICIT_PROFILE_INPUTS_ONLY",
+  "sources": [
+    {
+      "repo_path": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/CoreFrame.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\CoreFrame.java",
+      "bytes": 5299,
+      "sha256": "c518573841e3a833474a118ffd720a8ac44a9db05e8ff971695e24f7448be0e4"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/PersonalGoldFrame.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFrame.java",
+      "bytes": 4810,
+      "sha256": "c0ba4b2a232a0cbf20e54c95a01e0e826858eed2fc9e39eba603e43dc5ddc243"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/PersonalGoldFramePublicCodec.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFramePublicCodec.java",
+      "bytes": 5296,
+      "sha256": "ea672ca1e9a11953b125ee391ec839f386d194b3037998c1640710699bbd8c94"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+      "bytes": 204293,
+      "sha256": "31705bf3fe79a63a0c9674c88f55f8d166520b95b244eeced0a4af12ce1902d6"
+    },
+    {
+      "repo_path": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+      "bytes": 34843,
+      "sha256": "652b062f527681fb92f559ef2fe8bab548c868c59dea53e7ac949378737b3ddf"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativePersonalGoldFrame1210ProducerTest.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativePersonalGoldFrame1210ProducerTest.java",
+      "bytes": 19384,
+      "sha256": "d717600e11bbef47b0fb92a47df1f3d42b072897ac04f29a996e00c61af86c84"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/capabilities/registry/PersonalGoldFrameCppProducerTest.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFrameCppProducerTest.java",
+      "bytes": 18193,
+      "sha256": "8fc463930103b43fe01a6320aeb4bca2e09074d03c602a53ba72e9df0565f05f"
+    },
+    {
+      "repo_path": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerCoreModeTest.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerCoreModeTest.java",
+      "bytes": 5075,
+      "sha256": "1847cbf23452746f67eda61ba599f9c9bf40c1c3702d41596e35be7d15586331"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/NativeLaunchPlan.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\NativeLaunchPlan.java",
+      "bytes": 14787,
+      "sha256": "54b9f467ef60c472c631c25be3429440ec4992ace73faede2f325803066f2004"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/NativeLaunchPlanCodec.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\NativeLaunchPlanCodec.java",
+      "bytes": 17635,
+      "sha256": "b41a2e67a515d0f75592dbd8df96626f91becfe82949e93dbfb855938c9f1af2"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/JavaGameLifecycle.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\JavaGameLifecycle.java",
+      "bytes": 47323,
+      "sha256": "3aba24e15ad349f57f62bb392af6ce5be628a3774b245c7d500d33a3895f1eaa"
+    },
+    {
+      "repo_path": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootNativeLaunchPlanInputs.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootNativeLaunchPlanInputs.java",
+      "bytes": 23160,
+      "sha256": "4ba25d043c4f9f74a7140ab516c6132b6691ad48468ae19c1a54a03a91c3444f"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/platform/NativeLaunchPlanSettingsSeedCodecTest.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\platform\\NativeLaunchPlanSettingsSeedCodecTest.java",
+      "bytes": 12842,
+      "sha256": "6f9b80d6c729b1360d435c17ba33f3f3dd71703064da5e40a34375da59f1a615"
+    },
+    {
+      "repo_path": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/platform/JavaGameSettingsSeedTest.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\platform\\JavaGameSettingsSeedTest.java",
+      "bytes": 4362,
+      "sha256": "b4195958489478e49990a56d43e7d530b9313ab5fb7755dd7ded833862e55702"
+    },
+    {
+      "repo_path": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/RootNativeSettingsSeedInputsTest.java",
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-checkout\\java\\ck3-control\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\RootNativeSettingsSeedInputsTest.java",
+      "bytes": 2231,
+      "sha256": "c5644ac6f42f54fa51512f47e0ba4a0742fc55d123c2627ff3f5ea62dc483b0d"
+    }
+  ],
+  "gold": {
+    "dto_distinct_passed": 6,
+    "phases": "initial 5P1F, exact failed numeric-token case 1P after Core tree decoding repair; no claim of one 6P run",
+    "receiver_and_v5_endpoint_passed": 7,
+    "receiver_report": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-personal-gold01\\receiver-cli03\\reports\\TEST-junit-jupiter.xml",
+      "bytes": 38364,
+      "sha256": "dc56af1e9f3c1dfe5ca17227a83aa6d26f78a1c48c42deef0c10e523f2a694ca"
+    },
+    "dto_initial_report": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-personal-gold01\\data-qualification01\\reports\\TEST-junit-jupiter.xml",
+      "bytes": 38505,
+      "sha256": "a6d794c8a90fb1df45860dc75af8c130a918c971653ba7f85207a0f0d3bf561b"
+    },
+    "dto_affected_repair_report": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-personal-gold01\\number-kind-repair02\\reports\\TEST-junit-jupiter.xml",
+      "bytes": 35015,
+      "sha256": "4f966f8fc867e895940fd582a295709768bb8ecc80b7835d3e2f993d8e53cdc1"
+    },
+    "abi": {
+      "new_classes": 49,
+      "old_classes": 41,
+      "methods": 241,
+      "fields": 19,
+      "missing": 0
+    },
+    "actual_minimized_read": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\AGENT1210-PERSONAL-GOLD-MINIMIZED-READONLY-PASS01.json",
+      "bytes": 1795,
+      "sha256": "451fd0d288d1cb19a61af9045c1519b77575e6d693ab5d4e160f445fd45d9259"
+    },
+    "actual_natural_close": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\R4-GOLD-READONLY-NATURAL-CLOSE01.json",
+      "bytes": 1667,
+      "sha256": "b8fc8e298c80edb3214acf31e1fd279d4aa99a89c97830e6555b0fbc26a680fe"
+    }
+  },
+  "settings": {
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "report": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-explicit-settings-seed01\\qualification01\\reports\\TEST-junit-jupiter.xml",
+      "bytes": 42851,
+      "sha256": "dfc34ff7286489b8a36f073d1ef908d3dbb043c4a9512b28347f8e976b089c7b"
+    },
+    "abi": {
+      "classes": 35,
+      "methods": 252,
+      "fields": 13,
+      "missing": 0
+    },
+    "new_lifecycle_v5_real_game_launch": "NOT_RUN",
+    "settings_as_unique_cause_of_scene_load_delay": "NOT_PROVEN",
+    "initial_test_typing_error_preserved": true
+  },
+  "not_qualified": [
+    "complete_snapshot",
+    "treasury",
+    "monthly_flow",
+    "driver_adoption",
+    "Root_Host_MCP_readiness",
+    "ordinary_actions",
+    "legacy_material_replay"
+  ]
+}

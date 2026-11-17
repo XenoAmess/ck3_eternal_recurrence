@@ -75,7 +75,9 @@ public final class NativeLaunchPlanCodec {
                 plan.injectorMemoryBytes(),plan.deadline(),plan.injectorTimeout(),plan.startupTimeout(),plan.steam(),plan.preparedProfile(),plan.maximumEvidenceRows());
     }
     public static ObjectNode toJson(Configuration data){
-        ObjectNode root=StrictJson.object();String schema=data.preparedProfile().declaration() instanceof NativeLaunchPlan.PreparedProfile.NoMods?"xar.java-game-launch-plan/v4":data.preparedProfile().kind()==org.xar.ck3.control.build.NativeRunProfileManifest.ProfileKind.ORDINARY_PRODUCTION?"xar.java-game-launch-plan/v2":"xar.java-game-launch-plan/v3";root.put("schema",schema);
+        ObjectNode root=StrictJson.object();String schema=data.preparedProfile().declaration() instanceof NativeLaunchPlan.PreparedProfile.NoMods
+                ?(data.preparedProfile().settingsSeed().isPresent()?"xar.java-game-launch-plan/v5":"xar.java-game-launch-plan/v4")
+                :data.preparedProfile().kind()==org.xar.ck3.control.build.NativeRunProfileManifest.ProfileKind.ORDINARY_PRODUCTION?"xar.java-game-launch-plan/v2":"xar.java-game-launch-plan/v3";root.put("schema",schema);
         root.put("request_id",data.requestId());root.put("session_id",data.sessionId());root.set("review",review(data.review()));
         root.put("profile_directory",data.profileDirectory().toString());root.put("state_directory",data.stateDirectory().toString());root.put("evidence_root",data.evidenceRoot().toString());
         root.put("pipe_name",data.pipeName());root.put("bridge_version",data.bridgeVersion());root.put("adapter_id",data.adapterId());
@@ -98,15 +100,18 @@ public final class NativeLaunchPlanCodec {
             }
             root.set("prepared_profile",profile);
         }
+        prepared.settingsSeed().ifPresent(seed->root.set("pdx_settings_seed",ref(seed)));
         root.put("maximum_evidence_rows",data.maximumEvidenceRows());return root;
     }
     public static Configuration fromJson(JsonNode value){
         String schema=text(value,"schema");
         boolean v4=schema.equals("xar.java-game-launch-plan/v4");
+        boolean v5=schema.equals("xar.java-game-launch-plan/v5");
         boolean ordinary=schema.equals("xar.java-game-launch-plan/v2");
-        StrictJson.require(ordinary||schema.equals("xar.java-game-launch-plan/v3")||v4,"exact launch schema required");
+        StrictJson.require(ordinary||schema.equals("xar.java-game-launch-plan/v3")||v4||v5,"exact launch schema required");
         Set<String> fields=new java.util.HashSet<>(Set.of("schema","request_id","session_id","review","profile_directory","state_directory","evidence_root","pipe_name","bridge_version","adapter_id","load","debug_mode","window_policy","environment","game_memory_bytes","injector_memory_bytes","deadline","injector_timeout_millis","startup_timeout_millis","steam","maximum_evidence_rows"));
-        if(!v4)fields.add("prepared_profile");
+        if(!v4&&!v5)fields.add("prepared_profile");
+        if(v5)fields.add("pdx_settings_seed");
         ObjectNode root=StrictJson.object(value,fields);
         JsonNode loadNode=root.get("load");String kind=text(loadNode,"kind");NativeLaunchPlan.Load load;
         if(kind.equals("NEW_GAME")){StrictJson.object(loadNode,Set.of("kind"));load=new NativeLaunchPlan.NewGame();}
@@ -114,7 +119,8 @@ public final class NativeLaunchPlanCodec {
         JsonNode envNode=root.get("environment");StrictJson.require(envNode!=null&&envNode.isObject()&&envNode.size()<=256,"bounded environment object required");
         Map<String,String> environment=new LinkedHashMap<>();envNode.properties().forEach(entry->{String key=StrictJson.text(entry.getKey());StrictJson.require(key.indexOf('=')<0&&key.indexOf('\0')<0,"valid environment key required");JsonNode item=entry.getValue();StrictJson.require(item.isTextual()&&item.textValue().length()<=32768&&item.textValue().indexOf('\0')<0,"environment string required");environment.put(key,item.textValue());});
         JsonNode steam=StrictJson.object(root.get("steam"),Set.of("machine_id","executable","deadline"));
-        NativeLaunchPlan.PreparedProfile prepared=v4?NativeLaunchPlan.PreparedProfile.vanilla():prepared(root.get("prepared_profile"),ordinary);
+        NativeLaunchPlan.PreparedProfile prepared=v5?NativeLaunchPlan.PreparedProfile.vanilla(ref(root.get("pdx_settings_seed")))
+                :v4?NativeLaunchPlan.PreparedProfile.vanilla():prepared(root.get("prepared_profile"),ordinary);
         StrictJson.require(root.get("debug_mode").isBoolean(),"debug mode must be an actual boolean");
         return new Configuration(text(root,"request_id"),text(root,"session_id"),review(root.get("review")),path(root,"profile_directory"),path(root,"state_directory"),path(root,"evidence_root"),
                 text(root,"pipe_name"),text(root,"bridge_version"),text(root,"adapter_id"),load,root.get("debug_mode").booleanValue(),NativeLaunchPlan.WindowPolicy.valueOf(text(root,"window_policy")),environment,

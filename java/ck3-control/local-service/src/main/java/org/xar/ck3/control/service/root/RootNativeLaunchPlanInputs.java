@@ -298,13 +298,13 @@ public final class RootNativeLaunchPlanInputs {
             throw new IOException("Invalid finite current Native plan DATA",invalid);
         }
     }
-    private static List<SharedSourceFiles.Witness> profileWitnesses(NativeLaunchPlan.PreparedProfile prepared)
+    static List<SharedSourceFiles.Witness> profileWitnesses(NativeLaunchPlan.PreparedProfile prepared)
             throws IOException {
-        if (prepared.declaration() instanceof NativeLaunchPlan.PreparedProfile.NoMods) return List.of();
-        var refs=new ArrayList<FileRef>(); refs.add(prepared.environmentManifest());
+        var refs=new ArrayList<FileRef>();
+        if(prepared.noMods().isEmpty())refs.add(prepared.environmentManifest());
         refs.addAll(prepared.preparedInputs());
         if(prepared.ordinary().isPresent())refs.addAll(prepared.completeProductionFiles());
-        else {
+        else if(prepared.noMods().isEmpty()) {
             var original=NativeRunProfileProducer.readEnvironmentVerified(prepared.environmentManifest());
             if(!(original instanceof NativeRunProfileManifest.ExplicitManifest explicit))
                 throw new IOException("Explicit prepared profile requires its actual physical ENV");

@@ -27,6 +27,8 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFramePublicCodec;
 import org.xar.ck3.control.contracts.semantic.NativeSemanticFingerprint;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
@@ -969,6 +971,71 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** Keeps the actual returned ACK/UNKNOWN/zero-dispatch evidence without manufacturing a different outcome. */
     public record CoreReadUnavailable(DispatchOutcome original,String reason) implements CoreRead {
         public CoreReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public sealed interface PersonalGoldRead permits PersonalGoldReceived,PersonalGoldReadUnavailable {
+        DispatchOutcome original();
+    }
+    /** A read-only resource occurrence. Its nested Core DATA cannot become a Core control receipt. */
+    public static final class PersonalGoldReceived implements PersonalGoldRead {
+        private final NativeGameTransport issuer;
+        private final PersonalGoldFrame frame;
+        private final AckReceived original;
+        private final NativeRequestChronology custody;
+        private final Instant validUntil;
+        private PersonalGoldReceived(NativeGameTransport issuer,PersonalGoldFrame frame,AckReceived original,
+                NativeRequestChronology custody,Instant validUntil) {
+            this.issuer=issuer;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=validUntil;
+        }
+        public PersonalGoldFrame frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actualHeld,Instant deadline)throws IOException {
+            Objects.requireNonNull(actualHeld).requirePersonalGoldOriginal(this,deadline);
+        }
+    }
+    public record PersonalGoldReadUnavailable(DispatchOutcome original,String reason)implements PersonalGoldRead {
+        public PersonalGoldReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public synchronized PersonalGoldRead readPersonalGoldFrameReceived(Instant deadline)throws InterruptedException {
+        Instant until=readDeadline(Objects.requireNonNull(deadline));
+        DispatchOutcome original=readPersonalGoldFrame(until);
+        try {
+            PersonalGoldFrame frame=PersonalGoldFramePublicCodec.decodeOutcome(original);var ack=(AckReceived)original;
+            var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("actual personal-gold ACK custody unavailable"));
+            var received=new PersonalGoldReceived(this,frame,ack,custody,until);
+            requirePersonalGoldOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){return new PersonalGoldReadUnavailable(original,reason(invalid));}
+    }
+    private void requirePersonalGoldOriginal(PersonalGoldReceived actual,Instant deadline)throws IOException {
+        Objects.requireNonNull(deadline);
+        if(actual.issuer!=this||hello==null||closed||terminalFailure!=null)throw new IOException("personal gold requires its identical live held receiver");
+        Instant now=chronologyClock.instant();
+        if(!now.isBefore(actual.validUntil)||!now.isBefore(deadline)||deadline.isAfter(actual.validUntil)
+                ||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)
+                ||actual.custody.writeEntered().observedAt().isBefore(helloObservedAt))throw new IOException("personal gold escaped its original query window or HELLO chronology");
+        verifyHeld(deadline);
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)
+                ||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())
+            throw new IOException("personal gold crossed its original Game/session/connection/custody");
+        actual.custody.verify(actual.original);
+        var decoded=PersonalGoldFramePublicCodec.decodeOutcome(actual.original);
+        var originalHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        if(!decoded.equals(actual.frame)||!decoded.build().matches(NativeWire.text(originalHello.get("expected_ck3_version")),hello.gameSha256())
+                ||!hello.adapterId().equals(PersonalGoldFrame.ADAPTER))throw new IOException("personal gold belongs to another exact executable or original frame");
+    }
+    /** Independent paused resource query only; it does not refresh a full Snapshot or authorize a control. */
+    public synchronized DispatchOutcome readPersonalGoldFrame(Instant deadline)throws InterruptedException {
+        String id="personal-gold-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            awaitHello(deadline);verifyEndpoint();
+            var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+            if(!ExactCk3Build.CK3_1210.matches(NativeWire.text(original.get("expected_ck3_version")),hello.gameSha256())
+                    ||!hello.adapterId().equals(PersonalGoldFrame.ADAPTER)||!hello.capabilities().contains(PersonalGoldFrame.CAPABILITY))
+                throw new IOException("standalone personal gold requires exact Florin identity and its advertised capability");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            return retainReadOutcome(dispatch(id,NativeWire.execute(id,PersonalGoldFrame.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
+        }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
     }
     private Unknown unresolvedCoreControl;
     private AckReceived indeterminateCoreAcknowledgement;

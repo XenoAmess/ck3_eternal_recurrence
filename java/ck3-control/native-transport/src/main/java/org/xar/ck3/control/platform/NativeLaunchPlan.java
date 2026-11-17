@@ -53,6 +53,7 @@ public record NativeLaunchPlan(String requestId, String sessionId, LaunchSourceB
         private final Optional<ControlBuild.FileRef> environmentManifest;
         private final List<ControlBuild.FileRef> preparedInputs;
         private final Declaration declaration;
+        private final Optional<ControlBuild.FileRef> settingsSeed;
         /** Historical ordinary production constructor and its strict domain remain available. */
         public PreparedProfile(ControlBuild.FileRef environmentManifest,Path productionRoot,String enabledOuterDescriptorRef,
                 List<ControlBuild.FileRef> preparedInputs,List<ControlBuild.FileRef> completeProductionFiles) {
@@ -62,7 +63,21 @@ public record NativeLaunchPlan(String requestId, String sessionId, LaunchSourceB
             this(Optional.of(Objects.requireNonNull(environmentManifest)),preparedInputs,declaration);
         }
         private PreparedProfile(Optional<ControlBuild.FileRef> environmentManifest,List<ControlBuild.FileRef> preparedInputs,Declaration declaration) {
+            this(environmentManifest,preparedInputs,declaration,Optional.empty());
+        }
+        private PreparedProfile(Optional<ControlBuild.FileRef> environmentManifest,List<ControlBuild.FileRef> preparedInputs,
+                Declaration declaration,Optional<ControlBuild.FileRef> settingsSeed) {
             this.environmentManifest=Objects.requireNonNull(environmentManifest);this.preparedInputs=List.copyOf(preparedInputs);this.declaration=Objects.requireNonNull(declaration);
+            this.settingsSeed=Objects.requireNonNull(settingsSeed);
+            if(declaration instanceof NoMods) {
+                if(environmentManifest.isPresent()||(settingsSeed.isEmpty()?!this.preparedInputs.isEmpty()
+                        :!this.preparedInputs.equals(List.of(settingsSeed.orElseThrow()))))
+                    throw new IllegalArgumentException("NoMods requires no ENV and only its explicitly declared settings seed");
+            } else if(settingsSeed.isPresent())throw new IllegalArgumentException("settings seed requires the explicit NoMods domain");
+            settingsSeed.ifPresent(seed->{
+                if(!absolute(Path.of(seed.path()))||seed.bytes()<=0||seed.bytes()>1048576)
+                    throw new IllegalArgumentException("positive bounded absolute settings seed required");
+            });
         }
         /** Data declaration only; no historical environment qualification is performed at launch. */
         public static PreparedProfile explicit(ControlBuild.FileRef environmentManifest,ProfileKind kind,
@@ -72,6 +87,7 @@ public record NativeLaunchPlan(String requestId, String sessionId, LaunchSourceB
         public ControlBuild.FileRef environmentManifest(){return environmentManifest.orElseThrow(()->new IllegalStateException("No environment manifest for NoMods profile"));}
         public Optional<ControlBuild.FileRef> optionalEnvironmentManifest(){return environmentManifest;}
         public List<ControlBuild.FileRef> preparedInputs(){return preparedInputs;}
+        public Optional<ControlBuild.FileRef> settingsSeed(){return settingsSeed;}
         public Declaration declaration(){return declaration;}
         public ProfileKind kind(){if(declaration instanceof NoMods)throw new IllegalStateException("NoMods has no ProfileKind");return declaration instanceof OrdinaryProduction?ProfileKind.ORDINARY_PRODUCTION:((ExplicitEnvironment)declaration).kind();}
         public List<Path> productionRoots(){if(declaration instanceof NoMods)return List.of();return declaration instanceof OrdinaryProduction value?List.of(value.productionRoot()):((ExplicitEnvironment)declaration).productionRoots();}
@@ -83,6 +99,11 @@ public record NativeLaunchPlan(String requestId, String sessionId, LaunchSourceB
         public String enabledOuterDescriptorRef(){return singleton().enabledOuterDescriptorRef();}
         public List<ControlBuild.FileRef> completeProductionFiles(){return singleton().completeProductionFiles();}
         public static PreparedProfile vanilla(){return new PreparedProfile(Optional.empty(),List.of(),new NoMods());}
+        /** Explicit settings source metadata only. The actual lifecycle revalidates and copies the original bytes. */
+        public static PreparedProfile vanilla(ControlBuild.FileRef settingsSeed) {
+            Objects.requireNonNull(settingsSeed);
+            return new PreparedProfile(Optional.empty(),List.of(settingsSeed),new NoMods(),Optional.of(settingsSeed));
+        }
         @Override public boolean equals(Object value){return value instanceof PreparedProfile other&&environmentManifest.equals(other.environmentManifest)&&preparedInputs.equals(other.preparedInputs)&&declaration.equals(other.declaration);}
         @Override public int hashCode(){return Objects.hash(environmentManifest,preparedInputs,declaration);}
 

@@ -40,7 +40,11 @@ public sealed interface CoreFrame permits CoreFrame.Partial, CoreFrame.Unavailab
         };
     }
     static CoreFrame decode(RawJson original) {
-        ObjectNode row = RegistryJson.object(original); RegistryJson.keys(row, FIELDS);
+        return decodeObject(RegistryJson.object(original));
+    }
+    /** Validate an existing parsed tree without serializing away its original integer/float token kind. */
+    static CoreFrame decodeObject(ObjectNode row) {
+        Objects.requireNonNull(row);RegistryJson.keys(row, FIELDS);
         String version = RegistryJson.text(row.get("game_version"));
         String sha256 = RegistryJson.text(row.get("executable_sha256"));
         ExactCk3Build build;

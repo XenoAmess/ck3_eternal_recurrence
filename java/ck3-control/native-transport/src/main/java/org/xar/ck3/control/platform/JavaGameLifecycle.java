@@ -455,6 +455,7 @@ public final class JavaGameLifecycle {
     static void prepareNoModsProfile(NativeLaunchPlan.PreparedProfile profile,Path profileDirectory)throws IOException{
         Objects.requireNonNull(profile);
         if(profile.noMods().isEmpty())return;
+        if(profile.settingsSeed().isPresent())prepareSettingsSeed(profile.settingsSeed().orElseThrow(),profileDirectory);
         Path dlcLoad=profileDirectory.resolve("dlc_load.json");
         ObjectNode configuration;
         if(Files.exists(dlcLoad)){
@@ -484,6 +485,47 @@ public final class JavaGameLifecycle {
         }finally{
             Files.deleteIfExists(temp);
         }
+    }
+
+    /** Copies only an explicitly declared settings original into this launch's isolated profile. */
+    private static void prepareSettingsSeed(ControlBuild.FileRef seed,Path profileDirectory)throws IOException{
+        Path source=Path.of(seed.path()),target=profileDirectory.resolve("pdx_settings.txt");
+        SharedSourceFiles.plainAncestors(source);SharedSourceFiles.plainAncestors(target);
+        var original=SharedSourceFiles.observe(source);
+        if(!original.source().equals(seed))throw new IOException("Declared pdx_settings seed changed before profile preparation");
+        byte[] complete;
+        try(var input=Files.newInputStream(source)){complete=input.readNBytes((1<<20)+1);}
+        if(complete.length!=seed.bytes()||complete.length==0||complete.length>(1<<20)
+                ||!java.util.HexFormat.of().formatHex(sha256(complete)).equals(seed.sha256()))
+            throw new IOException("Bounded exact pdx_settings seed required");
+        SharedSourceFiles.assertUnchanged(original);
+        if(Files.exists(target,java.nio.file.LinkOption.NOFOLLOW_LINKS)){
+            var existing=SharedSourceFiles.observe(target);
+            if(existing.source().bytes()!=seed.bytes()||!existing.source().sha256().equals(seed.sha256()))
+                throw new IOException("Conflicting isolated pdx_settings.txt already exists");
+            SharedSourceFiles.assertUnchanged(original);SharedSourceFiles.assertUnchanged(existing);return;
+        }
+        Files.createDirectories(profileDirectory);SharedSourceFiles.plainAncestors(profileDirectory);
+        Path pending=Files.createTempFile(profileDirectory,"xar-settings-",".pending");
+        try{
+            try(FileChannel output=FileChannel.open(pending,StandardOpenOption.WRITE)){
+                java.nio.ByteBuffer bytes=java.nio.ByteBuffer.wrap(complete);
+                while(bytes.hasRemaining())output.write(bytes);output.force(true);
+            }
+            var staged=ControlBuild.FileRef.measure(pending);
+            if(staged.bytes()!=seed.bytes()||!staged.sha256().equals(seed.sha256()))
+                throw new IOException("Staged pdx_settings seed differs from declared original");
+            SharedSourceFiles.assertUnchanged(original);
+            Files.move(pending,target);
+            var created=SharedSourceFiles.observe(target);
+            if(created.source().bytes()!=seed.bytes()||!created.source().sha256().equals(seed.sha256()))
+                throw new IOException("Created pdx_settings seed differs from declared original");
+            SharedSourceFiles.assertUnchanged(original);
+        }finally{Files.deleteIfExists(pending);}
+    }
+    private static byte[] sha256(byte[] bytes){
+        try{return java.security.MessageDigest.getInstance("SHA-256").digest(bytes);}
+        catch(java.security.NoSuchAlgorithmException impossible){throw new IllegalStateException(impossible);}
     }
 
     /** Actual Game child inheritance; explicit isolated paths override the parent without exposing its values. */
