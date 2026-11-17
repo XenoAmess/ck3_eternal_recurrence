@@ -23,7 +23,7 @@ import socket
 import struct
 import sys
 import time
-from urllib.parse import urlsplit
+from urllib.parse import parse_qsl, urlsplit
 from typing import Literal
 
 from steam_offline_state_contract import (
@@ -38,10 +38,28 @@ _SOURCE_RELATIVE = Path("steamui/chunk~2dcc5aaf7.js")
 _SOURCE_BYTES = 14382868
 _SOURCE_SHA = "f9606b111203c9140dcdd6fc016a0ee00e4c8406aeb786187c42873f08d071fb"
 _QUALIFIED_VERSION = "10.96.30.42"
+_CEF_SOURCE_PROFILES: dict[str, tuple[Path, int, str]] = {
+    # Exact installed source and both live states reviewed on 2026-11-18.
+    # This qualifies the existing read-only App getters, not native offsets.
+    "11.23.65.88": (
+        Path("steamui/sp.js"), 16224005,
+        "4b818cd371388e06c66fe8c0bb592b7dfd4a6fb55eb56844d1b360b64aec3046",
+    ),
+}
 
 
 class ProbeError(RuntimeError):
     """A bounded, safe failure to obtain a live observation."""
+
+
+def debug_ports_from_command_line(command: str) -> tuple[int, ...]:
+    """Accept Steam's unquoted renderer and quoted browser port arguments."""
+    values = re.findall(
+        r'(?:^|\s)(?:--remote-debugging-port(?:=|\s+)([0-9]{1,5})|'
+        r'"--remote-debugging-port=([0-9]{1,5})")(?=\s|$)', command,
+    )
+    return tuple(sorted({int(plain or quoted) for plain, quoted in values
+                         if 1 <= int(plain or quoted) <= 65535}))
 
 
 class _ProcessEntry(ctypes.Structure):
@@ -204,12 +222,7 @@ class WindowsReader:
                     not base <= address <= address + value.length <= base + len(buffer)):
                 raise ProbeError("invalid process command line buffer")
             command = ctypes.wstring_at(address, value.length // 2)
-            values = re.findall(
-                r"(?:^|\s)--remote-debugging-port(?:=|\s+)([0-9]{1,5})(?=\s|$)",
-                command,
-            )
-            return tuple(sorted({int(port) for port in values
-                                 if 1 <= int(port) <= 65535}))
+            return debug_ports_from_command_line(command)
         finally:
             self.kernel.CloseHandle(handle)
 
@@ -237,9 +250,15 @@ class WindowsReader:
 
 
 def qualified_source(steam: ProcessIdentity) -> SourceIdentity:
-    path = Path(steam.exe).parent / _SOURCE_RELATIVE
+    profile = _CEF_SOURCE_PROFILES.get(steam.file_version)
+    if profile is None:
+        if steam.file_version != _QUALIFIED_VERSION:
+            raise ProbeError("installed Steam source/version not qualified")
+        profile = (_SOURCE_RELATIVE, _SOURCE_BYTES, _SOURCE_SHA)
+    relative, expected_bytes, expected_sha = profile
+    path = Path(steam.exe).parent / relative
     before = path.stat()
-    if before.st_size != _SOURCE_BYTES or steam.file_version != _QUALIFIED_VERSION:
+    if before.st_size != expected_bytes:
         raise ProbeError("installed Steam source/version not qualified")
     digest = hashlib.sha256()
     with path.open("rb") as source:
@@ -248,7 +267,7 @@ def qualified_source(steam: ProcessIdentity) -> SourceIdentity:
     after = path.stat()
     if ((before.st_ino, before.st_mtime_ns, before.st_size) !=
             (after.st_ino, after.st_mtime_ns, after.st_size) or
-            digest.hexdigest() != _SOURCE_SHA):
+            digest.hexdigest() != expected_sha):
         raise ProbeError("installed Steam source changed or not qualified")
     return SourceIdentity(str(path.resolve()), after.st_size, digest.hexdigest(),
                           str(after.st_ino), str(after.st_mtime_ns))
@@ -269,7 +288,7 @@ return {nonce: """ + json.dumps(nonce) + """,
 def http_json(port: int, path: str, timeout: float) -> object:
     connection = http.client.HTTPConnection("127.0.0.1", port, timeout=timeout)
     try:
-        connection.request("GET", path, headers={"Host": "127.0.0.1"})
+        connection.request("GET", path, headers={"Host": f"127.0.0.1:{port}"})
         response = connection.getresponse()
         if response.status != 200:
             raise ProbeError("CDP discovery unavailable")
@@ -402,16 +421,36 @@ def target_candidates(port: int, timeout: float) -> tuple[tuple[str, str, str], 
         target_url = text(item.get("url"))
         # Reject auth-bearing URLs and bind discovery ID to the queried target.
         parsed = urlsplit(target_url)
-        shared = target_url == "about:blank" and item.get("title") == "SharedJSContext"
+        shared_title = item.get("title") == "SharedJSContext"
+        shared = target_url == "about:blank" and shared_title
+        startup_query = shared_title and parsed.path == "/index.html" and _startup_query_matches(parsed.query)
         if not shared and (parsed.scheme != "https" or
-                parsed.hostname != "steamloopback.host" or parsed.query or
-                parsed.fragment or parsed.username is not None):
+                parsed.hostname != "steamloopback.host" or (parsed.query and not startup_query) or
+                parsed.fragment or parsed.username is not None or parsed.password is not None):
             continue
         target_id, websocket = text(item.get("id")), text(item.get("webSocketDebuggerUrl"))
         if urlsplit(websocket).path != "/devtools/page/" + target_id:
             continue
         result.append((target_id, target_url, websocket))
     return tuple(result)
+
+
+def _startup_query_matches(query: str) -> bool:
+    """Exact non-auth startup fields used by the qualified 2026-11 client."""
+    patterns = {
+        "LOCAL_HOSTNAME": r"[A-Za-z0-9_-]{1,128}",
+        "LANGUAGE": r"[a-z_]{2,24}", "COUNTRY": r"[A-Z]{2}",
+        "LAUNCHER_TYPE": r"0", "CLIENT_SESSION": r"[0-9]{1,20}",
+        "PACKAGE_CL": r"[0-9]{1,20}", "IN_CLIENT": r"true",
+        "PLATFORM": r"windows", "ARCH": r"x64", "SILENT_STARTUP": r"true|false",
+    }
+    try:
+        pairs = parse_qsl(query, keep_blank_values=True, strict_parsing=True, max_num_fields=16)
+    except ValueError:
+        return False
+    values = dict(pairs)
+    return (len(values) == len(pairs) and values.keys() == patterns.keys() and
+            all(re.fullmatch(pattern, values[name]) is not None for name, pattern in patterns.items()))
 
 
 def _descendants(rows: dict[int, tuple[int, str]], steam_pid: int) -> frozenset[int]:

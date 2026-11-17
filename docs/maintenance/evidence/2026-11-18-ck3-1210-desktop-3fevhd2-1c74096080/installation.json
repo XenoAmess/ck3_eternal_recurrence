@@ -1,0 +1,222 @@
+{
+  "schema": "steam-ck3-versions-v1",
+  "command": "wait",
+  "started_at_utc": "2026-11-17T18:53:20.796231+00:00",
+  "ok": true,
+  "steam_mode_mutated": false,
+  "game_launched": false,
+  "manifest_or_client_config_written": false,
+  "restore_offline_required": false,
+  "installation": {
+    "steam_dir": "D:\\Program Files (x86)\\Steam",
+    "manifest_path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf"
+  },
+  "status": "installed_verified",
+  "installed": {
+    "observed_at_utc": "2026-11-17T18:53:25.311898+00:00",
+    "manifest_path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "manifest_sha256": "1679597bc8f5b75953d444238e5754e88acc15855ece19ec913d004760be7441",
+    "app_id": "1158310",
+    "branch": "public",
+    "numbers": {
+      "StateFlags": 4,
+      "buildid": 26622941,
+      "TargetBuildID": 0,
+      "BytesToDownload": 0,
+      "BytesDownloaded": 0,
+      "BytesToStage": 0,
+      "BytesStaged": 0,
+      "UpdateResult": 6
+    },
+    "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+    "launcher": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+      "raw_version": "1.21.0",
+      "display_version": "1.21.0 (Florin)",
+      "sha256": "9494b94341519fb94dd7d56f48a3aae50ee8a0b418a40de1b4b3a5695f3e83b8"
+    },
+    "executable": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exists": true,
+      "bytes": 114756216,
+      "mtime_ns": 1794941420595213200,
+      "sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"
+    },
+    "installed_depots": {
+      "1158311": {
+        "manifest": "8225296921500747624",
+        "size": "20381195261"
+      },
+      "1158312": {
+        "manifest": "2992116263717886865",
+        "size": "222235720"
+      },
+      "1158315": {
+        "manifest": "5266646228209551931",
+        "size": "198457555"
+      },
+      "1296730": {
+        "manifest": "4673314442703562503",
+        "size": "84848",
+        "dlcappid": "1296730"
+      },
+      "1296731": {
+        "manifest": "6186085975311389712",
+        "size": "65328",
+        "dlcappid": "1296731"
+      },
+      "1303183": {
+        "manifest": "319832865587329166",
+        "size": "25074458",
+        "dlcappid": "1303183"
+      },
+      "1303182": {
+        "manifest": "3468873485590171544",
+        "size": "23359792",
+        "dlcappid": "1303182"
+      },
+      "1303184": {
+        "manifest": "5241138021689778611",
+        "size": "9854377",
+        "dlcappid": "1303184"
+      },
+      "2114760": {
+        "manifest": "3994555691751599121",
+        "size": "9199940",
+        "dlcappid": "2114760"
+      },
+      "2311920": {
+        "manifest": "8719583443579045955",
+        "size": "30559359",
+        "dlcappid": "2311920"
+      },
+      "2311930": {
+        "manifest": "6473405525877152548",
+        "size": "80415",
+        "dlcappid": "2311930"
+      },
+      "2313541": {
+        "manifest": "3449603529685425916",
+        "size": "6707287",
+        "dlcappid": "2313541"
+      },
+      "2313540": {
+        "manifest": "9046852841453602413",
+        "size": "15690475",
+        "dlcappid": "2313540"
+      },
+      "2671060": {
+        "manifest": "3480737143151580105",
+        "size": "15898541",
+        "dlcappid": "2671060"
+      },
+      "2671030": {
+        "manifest": "2257513862370412160",
+        "size": "100482",
+        "dlcappid": "2671030"
+      },
+      "2671040": {
+        "manifest": "836968934287748787",
+        "size": "64416",
+        "dlcappid": "2671040"
+      },
+      "2671070": {
+        "manifest": "7182082075039972348",
+        "size": "21073072",
+        "dlcappid": "2671070"
+      },
+      "3077630": {
+        "manifest": "1712003839548962838",
+        "size": "69250933",
+        "dlcappid": "3077630"
+      },
+      "2671080": {
+        "manifest": "4340206838279069052",
+        "size": "82855",
+        "dlcappid": "2671080"
+      },
+      "3275760": {
+        "manifest": "4288366890699939411",
+        "size": "99060",
+        "dlcappid": "3275760"
+      },
+      "3315550": {
+        "manifest": "2840621713410264825",
+        "size": "1852566",
+        "dlcappid": "3315550"
+      },
+      "3315540": {
+        "manifest": "1359283799129796893",
+        "size": "19982507",
+        "dlcappid": "3315540"
+      },
+      "3315500": {
+        "manifest": "4503344207642007609",
+        "size": "72114",
+        "dlcappid": "3315500"
+      },
+      "3315510": {
+        "manifest": "790589402422625178",
+        "size": "18258763",
+        "dlcappid": "3315510"
+      },
+      "3315530": {
+        "manifest": "3349156447638110814",
+        "size": "90723528",
+        "dlcappid": "3315530"
+      },
+      "3315520": {
+        "manifest": "7521553339934362737",
+        "size": "84060",
+        "dlcappid": "3315520"
+      },
+      "3315560": {
+        "manifest": "5111920289037265676",
+        "size": "98743",
+        "dlcappid": "3315560"
+      },
+      "3315570": {
+        "manifest": "409066589632915157",
+        "size": "98734",
+        "dlcappid": "3315570"
+      },
+      "4232870": {
+        "manifest": "6970199339967430673",
+        "size": "96059",
+        "dlcappid": "4232870"
+      },
+      "4232860": {
+        "manifest": "2743333143025069241",
+        "size": "94895",
+        "dlcappid": "4232860"
+      },
+      "3315580": {
+        "manifest": "6705959764445437481",
+        "size": "4625479",
+        "dlcappid": "3315580"
+      },
+      "3315590": {
+        "manifest": "3805573564847634757",
+        "size": "35828368",
+        "dlcappid": "3315590"
+      },
+      "4232890": {
+        "manifest": "994388108942955474",
+        "size": "69984",
+        "dlcappid": "4232890"
+      },
+      "4232900": {
+        "manifest": "4759350661389176956",
+        "size": "14106186",
+        "dlcappid": "4232900"
+      },
+      "4232910": {
+        "manifest": "1904692127832182817",
+        "size": "28176651",
+        "dlcappid": "4232910"
+      }
+    }
+  },
+  "selection_verified": false,
+  "completed_at_utc": "2026-11-17T18:53:25.314468+00:00"
+}

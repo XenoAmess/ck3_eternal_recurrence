@@ -1,0 +1,16 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-17T18:54:55Z",
+  "url": "https://steamcommunity.com/workshop/browse/?appid=1158310&l=english&section=readytouseitems&browsesort=lastupdated",
+  "http_status": 200,
+  "raw_html": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\workshop-filter-1794941695062106600.html",
+    "bytes": 340391,
+    "sha256": "2caf6e1e419a4dca4cd783c8d6276f5869acd4fc36ca8108c4dc5114f3911352"
+  },
+  "category": "Compatible Version",
+  "tag_id": "655385",
+  "tag_name": "1.21 'Florin'",
+  "descriptor_registry_only": true,
+  "products_published": 0
+}

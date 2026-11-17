@@ -1,0 +1,44 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-17T19:05:48.098683+00:00",
+  "policy_version": "1.0.0",
+  "scope": "expired project profile/shadercache/*.scache only",
+  "source_saves_and_reports_preserved": true,
+  "batches": [
+    {
+      "receipt": "D:\\ck3-state\\upgrade-20261118\\shader-cleanup-1794941050225047200\\summary.json",
+      "sha256": "a44fc38dfe6c31133c598b4a425974a52a5d7839845cb7c28ed5ba49be9c0226",
+      "deleted_files": 5678,
+      "deleted_logical_bytes": 390003599,
+      "failed_count": 0
+    },
+    {
+      "receipt": "D:\\ck3-state\\upgrade-20261118\\shader-cleanup-1794941072837463000\\summary.json",
+      "sha256": "f1af61d2fbd211ee4fd1b173488a708cd4d1a8fdec755b1042fc818cc012113f",
+      "deleted_files": 32264,
+      "deleted_logical_bytes": 2219899135,
+      "failed_count": 0
+    },
+    {
+      "receipt": "D:\\ck3-state\\upgrade-20261118\\shader-cleanup-1794941178842206300\\summary.json",
+      "sha256": "c48bd474cedc11a714ca4d9cef89c558bc0fe71d71efb0dd10916c3d844df895",
+      "deleted_files": 11278,
+      "deleted_logical_bytes": 767290586,
+      "failed_count": 0
+    },
+    {
+      "receipt": "D:\\ck3-state\\upgrade-20261118\\shader-cleanup-1794941456926498500\\summary.json",
+      "sha256": "a38a2d2a7f7a5f197c5440b3d5011f9fbc035c83f32a3b829edc2726c3ab97cd",
+      "deleted_files": 28040,
+      "deleted_logical_bytes": 1902697224,
+      "failed_count": 0
+    }
+  ],
+  "total_deleted_files": 77260,
+  "total_deleted_logical_bytes": 5279890544,
+  "current_free_bytes": {
+    "C:/": 43677175808,
+    "D:/": 20067028992
+  },
+  "logical_bytes_are_not_claimed_physical_delta": true
+}

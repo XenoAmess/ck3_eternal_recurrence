@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-17T18:55:56.831305+00:00",
+  "steam_version": "11.23.65.88",
+  "source_path": "D:\\Program Files (x86)\\Steam\\steamui\\sp.js",
+  "source_bytes": 16224005,
+  "source_sha256": "4b818cd371388e06c66fe8c0bb592b7dfd4a6fb55eb56844d1b360b64aec3046",
+  "offline_getter": "BIsOfflineMode(){return this.m_CurrentUser?.bIsOfflineMode}",
+  "current_user_getter": "GetCurrentUser(){return this.m_CurrentUser}",
+  "offline_after_update": true,
+  "mode_observations": [
+    "cef-mode-1794941600440293200.json",
+    "cef-getter-source-1794941726556215900.json"
+  ],
+  "online_observation": "cef-status-1794941454930975400.json",
+  "native_provider_qualified": false,
+  "method": "source-bound read-only CEF App getters; no native offsets added"
+}

@@ -4,12 +4,16 @@ from __future__ import annotations
 import base64
 from dataclasses import replace
 import hashlib
+from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import socket
 import struct
 import threading
 import time
 import unittest
+from pathlib import Path
+import tempfile
+from urllib.parse import urlsplit
 from unittest.mock import patch
 
 from steam_offline_state_contract import (
@@ -18,6 +22,7 @@ from steam_offline_state_contract import (
 )
 from steam_offline_state_probe import (
     ProbeError, _descendants, cdp_evaluate, getter_expression, target_candidates,
+    debug_ports_from_command_line, qualified_source,
 )
 
 _NONCE = "0123456789abcdef0123456789abcdef"
@@ -37,6 +42,73 @@ def sample() -> ProbeResult:
 
 
 class ContractTests(unittest.TestCase):
+    def test_discovery_host_keeps_nondefault_port_in_actual_response_endpoint(self) -> None:
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self) -> None:
+                value = ({"Browser": "Chrome/142.0", "Protocol-Version": "1.3"}
+                         if self.path == '/json/version' else [{
+                             "type": "page", "id": "actual", "title": "SharedJSContext",
+                             "url": "about:blank",
+                             "webSocketDebuggerUrl": f'ws://{self.headers["Host"]}/devtools/page/actual',
+                         }])
+                raw = json.dumps(value).encode()
+                self.send_response(200)
+                self.send_header('Content-Length', str(len(raw)))
+                self.end_headers()
+                self.wfile.write(raw)
+
+            def log_message(self, format: str, *args: object) -> None:
+                pass
+
+        server = HTTPServer(('127.0.0.1', 0), Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            port = server.server_address[1]
+            targets = target_candidates(port, 2)
+            self.assertEqual(len(targets), 1)
+            self.assertEqual(urlsplit(targets[0][2]).port, port)
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(2)
+
+    def test_actual_quoted_browser_and_unquoted_renderer_port_shapes(self) -> None:
+        for command in (
+            'steamwebhelper.exe "-steampid=27432" "--remote-debugging-port=8080" "-uimode=7"',
+            'steamwebhelper.exe --type=renderer --remote-debugging-port=8080 --lang=zh-CN',
+            'steamwebhelper.exe --remote-debugging-port 8080',
+        ):
+            with self.subTest(command=command):
+                self.assertEqual(debug_ports_from_command_line(command), (8080,))
+
+    def test_invalid_or_partial_debugger_arguments_do_not_grant_a_port(self) -> None:
+        for command in (
+            'steamwebhelper.exe "--remote-debugging-port=8080',
+            'steamwebhelper.exe --remote-debugging-port=8080junk',
+            'steamwebhelper.exe --remote-debugging-port=65536',
+            'steamwebhelper.exe --remote-debugging-port=0',
+            'steamwebhelper.exe --unrelated-remote-debugging-port=8080',
+        ):
+            with self.subTest(command=command):
+                self.assertEqual(debug_ports_from_command_line(command), ())
+
+    def test_qualified_current_source_requires_exact_version_size_and_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'steamui/sp.js'
+            source.parent.mkdir()
+            source.write_bytes(b'qualified-source')
+            identity = ProcessIdentity(41, '134369704160368681', str(root / 'steam.exe'), '11.23.65.88')
+            profile = (Path('steamui/sp.js'), 16, hashlib.sha256(source.read_bytes()).hexdigest())
+            with patch.dict('steam_offline_state_probe._CEF_SOURCE_PROFILES', {'11.23.65.88': profile}):
+                self.assertEqual(qualified_source(identity).sha256, profile[2])
+                source.write_bytes(b'corrupted-source')
+                with self.assertRaises(ProbeError):
+                    qualified_source(identity)
+                with self.assertRaises(ProbeError):
+                    qualified_source(replace(identity, file_version='11.23.65.89'))
+
     def test_both_getters_produce_each_state(self) -> None:
         for value, state in ((True, "offline"), (False, "online")):
             with self.subTest(value=value):
@@ -141,6 +213,20 @@ class ContractTests(unittest.TestCase):
         self.assertIn("app.BIsOfflineMode()", expression)
         for forbidden in ("SetOffline", "GoOnline", "SteamAPI_Init", "fetch(", "eval("):
             self.assertNotIn(forbidden, expression)
+
+    def test_actual_startup_route_is_discovered_but_auth_or_duplicate_query_is_rejected(self) -> None:
+        query = ('LOCAL_HOSTNAME=DESKTOP-3FEVHD2&LANGUAGE=schinese&COUNTRY=JP&'
+                 'LAUNCHER_TYPE=0&CLIENT_SESSION=1794940707&PACKAGE_CL=1794536281&'
+                 'IN_CLIENT=true&PLATFORM=windows&ARCH=x64&SILENT_STARTUP=true')
+        good = {"type": "page", "id": "actual", "title": "SharedJSContext",
+                "url": "https://steamloopback.host/index.html?" + query,
+                "webSocketDebuggerUrl": "ws://127.0.0.1:9/devtools/page/actual"}
+        bad = [{**good, "url": good["url"] + suffix} for suffix in
+               ('&auth=secret', '&CLIENT_SESSION=1794940707', '&cookie=secret')]
+        with patch("steam_offline_state_probe.http_json", side_effect=[
+            {"Browser": "Chrome/142.0", "Protocol-Version": "1.3"}, [good, *bad],
+        ]):
+            self.assertEqual(target_candidates(9, .1), (("actual", good["url"], good["webSocketDebuggerUrl"]),))
 
 
 
