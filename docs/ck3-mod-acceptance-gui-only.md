@@ -38,6 +38,7 @@ product 只声明 `runtime_mod_key`、`external_mod` 与 cases。每个 case 明
 - 可选 `source_repo`：产品 clean 源仓目录。
 - 可选 `debug_mode`：literal boolean，默认false；true才添加原生游戏 `-debug_mode`，供console fixture、文本存档等验收动作使用，不授native bridge资格。
 - 可选 `save`：明确存档的精确pin，复制到隔离 `save games` 并计入准备预算；由操作者经官方菜单加载，可在同场切换新局和旧档，工具不自动读档。
+- 可选 `fixture` 与 `fixture_manifest`：必须成对提供外置业务夹具目录及逐文件精确清单 pin。准备时校验、独立复制至 `mod-content/fixture`，排在正式产品之后挂载，计入同一准备预算并冻结全部来源和复制后字节。正式产品 staging 不改，不上传夹具；此选项不授业务通过。`workshop_cache` 仍拒绝夹具输入。
 
 先按通用存储策略取得本轮容量准入。模块另外核准备输入字节预算与当前可用空间；它不是通用容量预约器，不替代 Root 的容量预约/存储闭账。
 

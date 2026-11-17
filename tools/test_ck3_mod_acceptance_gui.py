@@ -107,6 +107,57 @@ class GuiAcceptanceTests(unittest.TestCase):
             self.prepare()
         self.assertFalse(self.args.prepare_output.exists())
 
+    def fixture_inputs(self):
+        fixture = self.root / 'fixture'
+        fixture.mkdir()
+        (fixture / 'descriptor.mod').write_text('name="Acceptance fixture"\n', encoding='utf-8')
+        (fixture / 'observe.txt').write_text('fixture_observer = yes\n', encoding='utf-8-sig')
+        manifest = self.root / 'fixture-manifest.json'
+        self.write(manifest, {'files': [{'path': name, 'bytes': row['bytes'], 'sha256': row['sha256']}
+                                     for name, row in gui.inventory(fixture).items()]})
+        inputs = gui.read_json(self.inputs)
+        inputs.update(fixture=str(fixture), fixture_manifest=gui.pin(manifest))
+        self.write(self.inputs, inputs)
+        return fixture, manifest
+
+    def test_source_business_fixture_is_separate_from_formal_product_and_frozen(self):
+        fixture, _ = self.fixture_inputs()
+        before = gui.inventory(self.staging)
+        result = self.prepare()
+        profile = Path(result['profile'])
+        self.assertEqual(gui.read_json(profile / 'dlc_load.json')['enabled_mods'],
+                         ['mod/product.mod', 'mod/fixture.mod'])
+        self.assertEqual((profile / 'mod-content/fixture/observe.txt').read_bytes(),
+                         (fixture / 'observe.txt').read_bytes())
+        self.assertEqual(before, gui.inventory(self.staging))
+        self.assertIn('mod-content/fixture/observe.txt', result['profile_files'])
+        self.assertFalse(result['business_pass'])
+        self.assertEqual(result['runtime_status'], 'NOT_RUN')
+
+    def test_fixture_tamper_or_missing_manifest_rejects_before_preparation(self):
+        fixture, _ = self.fixture_inputs()
+        (fixture / 'observe.txt').write_text('changed', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'Formal staging bytes differ'):
+            self.prepare()
+        self.assertFalse(self.args.prepare_output.exists())
+        inputs = gui.read_json(self.inputs)
+        del inputs['fixture_manifest']
+        self.write(self.inputs, inputs)
+        with self.assertRaisesRegex(ValueError, 'supplied together'):
+            self.prepare()
+
+    def test_fixture_bytes_are_charged_to_preparation_budget(self):
+        fixture, manifest = self.fixture_inputs()
+        (fixture / 'observe.txt').write_bytes(b'x' * 8192)
+        self.write(manifest, {'files': [{'path': name, 'bytes': row['bytes'], 'sha256': row['sha256']}
+                                     for name, row in gui.inventory(fixture).items()]})
+        inputs = gui.read_json(self.inputs)
+        inputs['fixture_manifest'] = gui.pin(manifest)
+        self.write(self.inputs, inputs)
+        with self.assertRaisesRegex(ValueError, 'Prepared input exceeds allocated byte budget'):
+            self.prepare()
+        self.assertFalse(self.args.prepare_output.exists())
+
     def test_actual_game_mismatch_is_still_rejected(self):
         (self.game / 'binaries/ck3.exe').write_bytes(b'new-game')
         self.args.mode = 'preflight'

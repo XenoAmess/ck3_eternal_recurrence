@@ -79,6 +79,14 @@ jobs:
         run: python tools/test_audit_coa_runtime_registry_boundary.py
       - name: Test Steam CK3 version skill without Steam or desktop access
         run: python -B -X utf8 tools/test_steam_ck3_versions.py
+      - name: Test background Steam state and exact GUI fixture preparation without a game
+        run: |
+          python -B -X utf8 -m unittest discover -s tools -p "test_steam_offline_state_probe.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p "test_fixture_engine_prepare.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p "test_ck3_mod_acceptance_gui.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test native Workshop publication text bounds without Steam
         env:
           PYTHONPATH: ck3_workshop_mcp/src

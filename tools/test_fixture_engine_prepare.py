@@ -25,7 +25,7 @@ def native_builds():
     try:
         spec.loader.exec_module(module)
         return tuple(build for build in module.NATIVE_BUILD_IDENTITIES
-                     if build.game_version.startswith("1.20."))
+                     if build.game_version.startswith(("1.20.", "1.21.")))
     finally:
         sys.modules.pop(name, None)
 

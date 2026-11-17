@@ -159,7 +159,7 @@ class GuiSelection:
                 'lease_head': head, 'source_head': source_head, 'checked_inputs': checked}
 
 
-def prepare(selection):
+def prepare(selection: GuiSelection) -> dict[str, object]:
     args = selection.args
     require(args.case_inputs and args.prepare_output, 'prepare requires case-inputs and prepare-output')
     selection.preflight()
@@ -175,12 +175,21 @@ def prepare(selection):
             check_pin(inputs['formal_manifest']), check_pin(inputs['settings'])]
     pins.extend(check_pin(row) for row in inputs['mcp_fallback_evidence'])
     pins.extend(rows.values())
+    fixture = inputs.get('fixture')
+    fixture_manifest = inputs.get('fixture_manifest')
+    require(bool(fixture) == bool(fixture_manifest), 'Fixture directory and exact manifest must be supplied together')
+    fixture_rows = exact_formal(fixture, fixture_manifest) if fixture else {}
+    if fixture:
+        require(Path(fixture).resolve() != staging, 'Fixture must remain separate from formal product staging')
+        pins.append(check_pin(fixture_manifest))
+        pins.extend(fixture_rows.values())
     require(type(inputs.get('debug_mode', False)) is bool, 'debug_mode must be an explicit boolean')
     saved = check_pin(inputs['save']) if inputs.get('save') else None
     if saved:
         pins.append(saved)
     cache = inventory(inputs['warm_cache']) if inputs.get('warm_cache') else {}
     total = sum(row['bytes'] for row in rows.values()) + sum(row['bytes'] for row in cache.values())
+    total += sum(row['bytes'] for row in fixture_rows.values())
     total += pins[4]['bytes']
     total += saved['bytes'] if saved else 0
     require(total <= selection.budgets['max_prepare_bytes'], 'Prepared input exceeds allocated byte budget')
@@ -210,6 +219,15 @@ def prepare(selection):
     content = settings.read_text(encoding='utf-8-sig')
     settings.write_text(chinese_settings(content), encoding='utf-8', newline='\n')
     exact_formal(profile / 'mod-content/product', inputs['formal_manifest'])
+    if fixture:
+        target = profile / 'mod-content/fixture'
+        shutil.copytree(fixture, target)
+        exact_formal(target, fixture_manifest)
+        (profile / 'mod/fixture.mod').write_text(_outer_from_inner(target / 'descriptor.mod', target), encoding='utf-8')
+        write_load = read_json(profile / 'dlc_load.json')
+        require(write_load['enabled_mods'] == ['mod/product.mod'], 'Unexpected base product mod list')
+        write_load['enabled_mods'].append('mod/fixture.mod')
+        (profile / 'dlc_load.json').write_text(json.dumps(write_load, ensure_ascii=False) + '\n', encoding='utf-8')
     if cache:
         for relative, row in cache.items():
             checked_copy(row, profile / 'shadercache' / relative)

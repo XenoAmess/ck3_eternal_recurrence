@@ -39,9 +39,9 @@ def engine_identity(repo: Path, *, game_dir: Path | None = None,
     game = (game_dir or (Path(configured) if configured else repo / "Crusader Kings III")).resolve()
     exe_sha256 = digest(game / "binaries/ck3.exe")
     matches = [item for item in registry.NATIVE_BUILD_IDENTITIES
-               if item.executable_sha256.lower() == exe_sha256 and item.game_version.startswith("1.20.")]
+               if item.executable_sha256.lower() == exe_sha256 and item.game_version.startswith(("1.20.", "1.21."))]
     if len(matches) != 1:
-        raise ValueError("installed EXE differs from the native registry's exact CK3 1.20 builds")
+        raise ValueError("installed EXE differs from the registry's exact CK3 1.20/1.21 identities")
     build = registry.require_exact_native_build(matches[0].game_version, exe_sha256)
     configured_manifest = os.environ.get("XAR_CK3_STEAM_MANIFEST")
     manifest = (steam_manifest or (Path(configured_manifest) if configured_manifest
