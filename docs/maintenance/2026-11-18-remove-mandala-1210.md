@@ -13,3 +13,5 @@ machine_id: `desktop-3fevhd2-1c74096080`。目标为 CK3 `1.21.0 (Florin)`／bui
 Open Kaishek 实际 JAR 对四份生产脚本的通用语法 parse 均退出 0。报告保存实际命令、JAR SHA、checkout HEAD 与原始输出 SHA：`D:/ck3-state/upgrade-20261118/mrm-kaishek-summary.json`；该检查只授语法子集，未提供 CK3 1.21 语义 profile，也不把 checkout HEAD 推断为此旧 JAR 的编译来源。
 
 当前为源码／软件候选，实机与工坊发布仍 NOT_RUN。后续只更新 canonical Workshop `3797711947`；正式 1.0.2 Notes、公开全文读回、真实缓存加载及永久 changelog 完整后才记发布完成。
+
+首次公共启动尝试 R0001 在创建游戏进程前被门禁拒绝：后台探针已取得当前客户端的 exact-source CEF 离线回执，但旧启动消费者只资格化 native provider。共同门禁现对 CEF 路由重新调用实际 source-qualified／owned background producer，并要求 Steam incarnation、源文件与 CEF endpoint 全部匹配原新鲜回执；Popen 前再次执行相同重验。旧 native producer 的 exact profile／anchor 合同保留。9 项消费者回归及单文件 strict mypy 通过；此修复不授 R0001 实机信用，原拒绝保留。

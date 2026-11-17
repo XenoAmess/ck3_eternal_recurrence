@@ -83,6 +83,8 @@ jobs:
         run: |
           python -B -X utf8 -m unittest discover -s tools -p "test_steam_offline_state_probe.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p "test_steam_offline_native_profiles.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p "test_fixture_engine_prepare.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p "test_ck3_mod_acceptance_gui.py"

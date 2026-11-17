@@ -60,8 +60,16 @@ def validate_observation(value: object, *, machine_id: str, reader: IdentityRead
     if reader.identity(result.steam.pid) != result.steam:
         raise ValueError('Observed Steam incarnation changed')
     _validated_identity(result.steam)
-    # This launch profile admits only the exact native offline-positive producer.
-    # The general parser also understands CEF, which this launch profile does not qualify.
+    if result.observation_method == 'cef_app_getters':
+        # Re-observe through the source-qualified, owned background producer.
+        # A syntactically valid persisted CEF receipt alone grants no launch.
+        from steam_offline_state_probe import run_probe
+        live = run_probe(machine_id)
+        if (live.status != 'offline' or live.observation_method != 'cef_app_getters'
+                or live.steam != result.steam or live.source != result.source
+                or live.endpoint != result.endpoint):
+            raise ValueError('Qualified live CEF observation no longer matches admission')
+        return result
     from steam_offline_native_profiles import select_profile
     profile = select_profile(result.steam.file_version, result.source.bytes, result.source.sha256)
     evidence = result.native_evidence
@@ -90,7 +98,11 @@ def _validate_receipt(path: Path, *, machine_id: str, reader: IdentityReader,
     steam = result.steam
     if source is None or steam is None:
         raise ValueError('Actual source absent')
-    actual_source = _qualified_source(source.path)
+    if result.observation_method == 'cef_app_getters':
+        from steam_offline_state_probe import qualified_source
+        actual_source = qualified_source(steam)
+    else:
+        actual_source = _qualified_source(source.path)
     if actual_source != source:
         raise ValueError('Observed Steam source changed')
     receipt = FilePin(path=str(path.resolve()), bytes=len(payload),
