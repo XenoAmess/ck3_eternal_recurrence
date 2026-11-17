@@ -45,6 +45,7 @@ public final class LoadedFeaturesData {
     public record Manifest(Build build, BigInteger nativeRevision, int dateRaw, Optional<UnavailableReason> unavailableReason,
             Flags flags, ScriptDlcs scriptDlcKeys, Readiness readiness, Provenance provenance) {
         public Manifest {
+            Objects.requireNonNull(build).requireLoadedFeatures();
             Objects.requireNonNull(build); positiveU64(nativeRevision); Objects.requireNonNull(unavailableReason); Objects.requireNonNull(flags); Objects.requireNonNull(scriptDlcKeys); Objects.requireNonNull(readiness); Objects.requireNonNull(provenance);
             require(unavailableReason.isEmpty() == readiness.actionableReady(), "manifest availability/readiness contradiction");
             require((flags instanceof AvailableFlags) == readiness.actionableReady() && (scriptDlcKeys instanceof AvailableScriptDlcs) == readiness.actionableReady(), "manifest collection availability contradiction");

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.io.IOException;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PublicRoutes;
 import org.xar.ck3.control.wave2.events.catalog.VanillaEventCatalog;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson;
+import org.xar.ck3.control.wave2.events.unhandledevent.SourceCompatibilityReview;
 import static org.xar.ck3.control.service.mcp.PublicMcpDirectory.*;
 
 /** Original offline public query, explicitly sharing the complete catalog used by discovery. */
@@ -31,7 +33,13 @@ public final class VanillaEventKnowledgeMethods {
     }
     public Response query(Request request) {
         Objects.requireNonNull(request);
-        var original = fullCatalog.fullQuery(request.ck3Build(), request.eventDefinitionKey());
+        RetainedJson.ObjectValue original;
+        if (SourceCompatibilityReview.BUILD.equals(request.ck3Build())) {
+            try { original = SourceCompatibilityReview.load().query(request.eventDefinitionKey()); }
+            catch (IOException | IllegalArgumentException unavailable) {
+                original = SourceCompatibilityReview.unavailable(request.eventDefinitionKey());
+            }
+        } else original = fullCatalog.fullQuery(request.ck3Build(), request.eventDefinitionKey());
         RawJson encoded = new RawJson(RetainedJson.pythonCanonical(original,
                 new RetainedJson.CanonicalBudget(RawJson.MAXIMUM_BYTES, RawJson.MAXIMUM_BYTES, 1000)).bytes());
         McpJson.publicNumbers(McpJson.parse(encoded.bytes()));

@@ -1,4 +1,4 @@
-﻿#if defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1) || defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1) || defined(XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1)
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1) || defined(XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1) || defined(XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1)
 #include "current_player_observers12004.hpp"
 #endif
 #include <chrono>
@@ -26,6 +26,11 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
+#include "xar_bridge/ck3_1210_core_frame_v1.hpp"
+#include "xar_bridge/ck3_1210_core_control_v1.hpp"
+#include "xar_bridge/ck3_1210_thread_runtime.hpp"
+#include "xar_bridge/main_thread_timeline_policy_v1.hpp"
+#include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_features.hpp"
@@ -12284,6 +12289,10 @@ public:
   }
 
   void MaybeInstallFrontend() noexcept {
+    if (game_ != nullptr && xar::game::IsCk3_1210Descriptor(game_->descriptor())) {
+      InstallCoreFrame1210();
+      return;
+    }
     if (game_ != nullptr && xar::game::IsCk3_12004Descriptor(game_->descriptor())) {
       InstallCoreFrame12004();
       return;
@@ -12554,6 +12563,7 @@ public:
     if (!installed_) {
       return;
     }
+    xar::ck3_11906::UnregisterMainThreadTimelineExecutorsV1(g_main_thread_query_mailbox_v1);
     while (true) {
       const auto result = xar::ck3_11906::UninstallMainThreadQueryMailboxV1(
           g_main_thread_query_mailbox_v1, 250);
@@ -12571,6 +12581,26 @@ public:
   }
 
  private:
+  void InstallCoreFrame1210() noexcept {
+    if (installed_ || attempted_ || game_ == nullptr || !game_->enabled() ||
+        !game_->supports(xar::ck3_1210::kCoreFrameCapabilityV1)) return;
+    attempted_ = true;
+    const bool control=game_->supports(xar::ck3_1210::kCoreControlCapabilityV1);
+    const std::array<xar::ck3_11906::MainThreadQueryExecutorV1,2> executors{
+        &xar::ck3_1210::ExecuteCoreFrameMailboxV1,
+        &xar::ck3_1210::ExecuteCoreControlMailboxV1};
+    const auto environment=xar::ck3_1210::BindThreadRuntimeImage(
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+        game_->descriptor().executable_sha256,
+        std::span<const xar::ck3_11906::MainThreadQueryExecutorV1>(executors.data(),control?2:1));
+    installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
+        g_main_thread_query_mailbox_v1, environment);
+    if (installed_) {
+      (void)xar::ck3_11906::RegisterMainThreadTimelineExecutorsV1(
+          g_main_thread_query_mailbox_v1,executors[0],control?executors[1]:nullptr);
+    }
+  }
+
   void InstallCoreFrame12004() noexcept {
     if (installed_ || attempted_ || game_ == nullptr || !game_->enabled() ||
         !game_->supports(xar::ck3_12004::kCoreFrameCapabilityV1)) return;
@@ -15256,6 +15286,88 @@ std::string RunCoreFrameQuery12004(const xar::game::GameAdapter &game,
   return xar::ck3_12004::SerializeCoreFrameCommandResultV1(request_id, query.observation);
 }
 
+std::string RunCoreFrameQuery1210(const xar::game::GameAdapter &game,
+    std::string_view request_id, std::string_view payload) {
+  constexpr std::string_view step = xar::ck3_1210::kCoreFrameStepV1;
+  std::uint64_t expected_revision = 0;
+  if (!xar::bridge::JsonUnsignedField(payload, "expected_revision", expected_revision) ||
+      expected_revision != 0) {
+    return CommandResultFrame(request_id, step, false,
+        "core-frame query requires standalone expected_revision zero");
+  }
+  if (!xar::game::IsCk3_1210Descriptor(game.descriptor()) || !game.supports_step(step)) {
+    return CommandResultFrame(request_id, step, false,
+        "exact core-frame query is unavailable");
+  }
+  xar::ck3_1210::CoreFrameMailboxContextV1 query{};
+  query.game = &game;
+  query.read_core = &xar::game::ReadCk3_1210TimelineCoreSnapshot;
+  xar::ck3_11906::MainThreadQueryTicketV1 ticket{};
+  const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, &xar::ck3_1210::ExecuteCoreFrameMailboxV1,
+      &query, ticket);
+  if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    query.observation.unavailable_reason = "application_main_not_ready";
+    return xar::ck3_1210::SerializeCoreFrameCommandResultV1(request_id, query.observation);
+  }
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, ticket, 8'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running) {
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, ticket, 2'000);
+  }
+  if (wait != xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+    query.observation = {};
+    query.observation.unavailable_reason = "application_main_executor_unavailable";
+  }
+  if (xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1, ticket) !=
+      xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    query.observation = {};
+    query.observation.unavailable_reason = "application_main_result_not_reclaimable";
+  }
+  return xar::ck3_1210::SerializeCoreFrameCommandResultV1(request_id, query.observation);
+}
+
+std::string RunCoreControl1210(const xar::game::GameAdapter &game,
+    std::string_view request_id, std::string_view step, std::string_view payload) {
+  using namespace xar::ck3_1210;
+  CoreControlContextV1 query{};
+  if (!ParseCoreControlRequestV1(payload,query.request) || query.request.step!=step) {
+    return CommandResultFrame(request_id,step,false,"invalid exact held-core clock control request");
+  }
+  if (!xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+      !game.enabled() || !game.supports(kCoreControlCapabilityV1) || !game.supports_step(step)) {
+    return SerializeCoreControlCommandResultV1(request_id,step,query.result);
+  }
+  const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.game=&game;
+  query.core=BindCoreImage(module,game.descriptor().executable_sha256);
+  query.commands=BindCommandImage(module,game.descriptor().executable_sha256);
+  query.mailbox=&g_main_thread_query_mailbox_v1;
+  ArmCoreControlDeadlineV1(query);
+  const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecuteCoreControlMailboxV1,&query,query.ticket);
+  if (submitted!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    return SerializeCoreControlCommandResultV1(request_id,step,query.result);
+  }
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,query.ticket,8'000);
+  // A callback owns this stack context until its terminal state. Never discard
+  // or replay an executing request merely because a pipe deadline expired.
+  while (wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running) {
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1,query.ticket,2'000);
+  }
+  const auto reclaimed=xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,query.ticket);
+  if (wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      reclaimed!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    query.result.status=query.result.effect_attempted
+        ? CoreControlStatusV1::indeterminate : CoreControlStatusV1::unavailable;
+  }
+  return SerializeCoreControlCommandResultV1(request_id,step,query.result);
+}
+
 void RunConnectedSession(
     HANDLE pipe, const xar::game::GameAdapter &game, WorkerState &state,
     WarEntryApplicationMainMailboxWorkerLifetime &mailbox_lifetime) noexcept {
@@ -15857,9 +15969,17 @@ void RunConnectedSession(
         }
 #endif
         if (!early_step_dispatched && step == xar::ck3_12004::kCoreFrameStepV1) {
-          connected = write_frame(pipe, RunCoreFrameQuery12004(
-              game, request_id, incoming.payload));
+          connected = write_frame(pipe,
+              xar::game::IsCk3_1210Descriptor(game.descriptor())
+                  ? RunCoreFrameQuery1210(game, request_id, incoming.payload)
+                  : RunCoreFrameQuery12004(game, request_id, incoming.payload));
           early_step_dispatched = true;
+        }
+        if (!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+            (step=="pause-map" || step=="resume-map" || step=="save-checkpoint" ||
+             (step.size()==11 && step.starts_with("set-speed-") && step[10]>='1' && step[10]<='5'))) {
+          connected=write_frame(pipe,RunCoreControl1210(game,request_id,step,incoming.payload));
+          early_step_dispatched=true;
         }
         if (!early_step_dispatched && step == "query-fresh-full-state-v1") {
           connected = RunFreshFullStateQuery12004(
@@ -30674,6 +30794,9 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   }
   if (!game->enabled()) {
     return TRUE;
+  }
+  if (xar::game::IsCk3_1210Descriptor(game->descriptor())) {
+    return TRUE; // Florin core observation requires no historical startup patch.
   }
   if (xar::game::IsCk3_12004Descriptor(game->descriptor())) {
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));

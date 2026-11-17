@@ -22,9 +22,11 @@ public final class RootCoreFrameRuntime {
     /** Caller holds Root's standalone call scope and the original writer Session; a failed result is preserved before refusal. */
     public CoreFrame read(RootApplicationSession actual,ContinuityStorePort.Session same,Instant deadline)throws IOException,InterruptedException {
         context.writer().requireSession(Objects.requireNonNull(same));requireOwner(actual);context.requireCurrent(Objects.requireNonNull(deadline));
-        var transport=context.transport();var original=transport.readCoreFrame(deadline);
-        context.writer().requireSession(same);context.archive().withSession(same).preserve(original);
-        CoreFrame result=CoreFramePublicCodec.decodeOutcome(original);
+        var transport=context.transport();var read=transport.readCoreFrameReceived(deadline);
+        context.writer().requireSession(same);context.archive().withSession(same).preserve(read.original());
+        if(!(read instanceof org.xar.ck3.control.nativebridge.NativeGameTransport.CoreReceived received))
+            throw new IOException("actual same-receiver core result unavailable: "+((org.xar.ck3.control.nativebridge.NativeGameTransport.CoreReadUnavailable)read).reason());
+        CoreFrame result=received.frame();
         requireOwner(actual);context.requireCurrent(deadline);context.writer().requireSession(same);return result;
     }
 }

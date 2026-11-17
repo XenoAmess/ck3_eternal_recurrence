@@ -272,6 +272,24 @@ final class NativeFreshFullStateReadTest {
             }
         }
     }
+    @Test void recognizedFlorinCannotWriteFreshReadsBeforeItsNativeCapabilityMigration()throws Exception {
+        var build=org.xar.ck3.control.contracts.ExactCk3Build.CK3_1210;
+        String adapter="ck3-1.21.0-msvc-x64";
+        for(boolean advertisedReady:new boolean[]{false,true}) {
+            var replay=valid();replay.packets.clear();
+            var advertised=hello().put("expected_ck3_version",build.version())
+                    .put("expected_ck3_sha256",build.executableSha256()).put("game_adapter_id",adapter)
+                    .put("game_adapter_status",advertisedReady?"ready":"unsupported_build")
+                    .put("ck3_build_match",advertisedReady);
+            if(!advertisedReady)advertised.putArray("capabilities");
+            replay.add(advertised);
+            try(var actual=transport(replay,build.executableSha256(),adapter)) {
+                var result=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
+                assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class,result.dispatch());
+                assertEquals(0,replay.writes);
+            }
+        }
+    }
     @Test void independentReadKeepsBothActualPacketsChronologyAndUnchangedStateInsteadOfTheCachedFrame()throws Exception {
         var replay=valid();try(var actual=transport(replay)) {
             var before=actual.observe(deadline());var received=assertInstanceOf(NativeFreshSnapshotPort.Received.class,actual.readFreshFullState(deadline()));

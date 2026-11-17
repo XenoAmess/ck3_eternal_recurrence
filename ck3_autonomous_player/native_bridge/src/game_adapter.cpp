@@ -2,6 +2,7 @@
 #include "xar_bridge/military_reinforcement_action_12004.hpp"
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/ordinary_interaction_request_v1.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
@@ -751,7 +752,7 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 }
 
 const AdapterDescriptor &PreferredAdapterDescriptor() noexcept {
-  return Ck3_12004AdapterDescriptor();
+  return Ck3_1210AdapterDescriptor();
 }
 
 std::unique_ptr<GameAdapter>
@@ -776,7 +777,8 @@ SelectAdapter(std::string_view executable_sha256,
 std::unique_ptr<GameAdapter> SelectCurrentProcessAdapter() noexcept {
   // Add one factory for each exact CK3 build. Order controls the preferred
   // diagnostic descriptor only; the first exact enabled match always wins.
-  constexpr std::array<AdapterFactory, 4> factories{
+  constexpr std::array<AdapterFactory, 5> factories{
+      &CreateCk3_1210Adapter,
       &CreateCk3_12004Adapter,
       &CreateCk3_12003Adapter,
       &CreateCk3_12002Adapter,

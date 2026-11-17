@@ -89,6 +89,14 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p "test_ck3_mod_acceptance_gui.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test exact Florin Core and bounded control producer without CK3
+        run: |
+          python -B -X utf8 ck3_autonomous_player/native_bridge/research/test_compare_build_anchors.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-florin-core-ci" --configuration Release --jobs 1 --configure --build --target xar_ck3_1210_identity_test xar_ck3_1210_core_frame_test xar_ck3_1210_core_control_test xar_ck3_main_thread_query_mailbox_v1_test --cmake-define BUILD_TESTING=ON
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^xar_ck3_native_bridge_1210_(identity|core_frame|core_control|timeline_mailbox)$" --no-tests=error --output-on-failure
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test native Workshop publication text bounds without Steam
         env:
           PYTHONPATH: ck3_workshop_mcp/src

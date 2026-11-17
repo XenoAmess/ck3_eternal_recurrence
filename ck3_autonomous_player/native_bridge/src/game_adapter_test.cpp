@@ -2,6 +2,8 @@
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/ingame_military_opener_12004.hpp"
 #include "xar_bridge/military_reinforcement_action_12004.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
@@ -1220,13 +1222,19 @@ int main(int argc, char **argv) {
       new_known.checkpoint_save_name != "xar_checkpoint") {
     return Fail("explicit .3 exact-build descriptor drifted");
   }
-  const auto &preferred = xar::game::Ck3_12004AdapterDescriptor();
-  if (preferred.adapter_id != "ck3-1.20.0.4-msvc-x64" ||
-      preferred.game_version != "1.20.0.4" ||
-      preferred.executable_sha256 != xar::ck3_12004::kExecutableSha256 ||
+  const auto &preferred = xar::game::Ck3_1210AdapterDescriptor();
+  if (preferred.adapter_id != "ck3-1.21.0-msvc-x64" ||
+      preferred.game_version != "1.21.0" ||
+      preferred.executable_sha256 != xar::ck3_1210::kExecutableSha256 ||
+#if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+      preferred.capabilities.size() != 1 ||
+      preferred.capabilities.front() != "game.query.core-frame.v1" ||
+#else
+      !preferred.capabilities.empty() ||
+#endif
       preferred.checkpoint_save_name != "xar_checkpoint" ||
       &xar::game::PreferredAdapterDescriptor() != &preferred) {
-    return Fail("preferred .4 exact-build descriptor drifted");
+    return Fail("preferred Florin unported descriptor drifted");
   }
   constexpr std::array<xar::game::AdapterFactory, 3> real_builds{
       &xar::game::CreateCk3_12003Adapter,
@@ -1302,6 +1310,15 @@ int main(int argc, char **argv) {
     return Fail("unmatched real registry did not retain disabled new metadata");
   }
 
+  constexpr std::array<xar::game::AdapterFactory, 4> historical_factories{
+      &xar::game::CreateCk3_12004Adapter, &xar::game::CreateCk3_12003Adapter,
+      &xar::game::CreateCk3_12002Adapter, &xar::game::CreateCk3_11906Adapter};
+  for (const auto factory : historical_factories) {
+    auto old = factory(xar::ck3_1210::kExecutableSha256);
+    if (old != nullptr && old->enabled()) {
+      return Fail("Florin SHA admitted a historical native binding");
+    }
+  }
   auto current = xar::game::SelectCurrentProcessAdapter();
   if (current == nullptr || current->enabled() ||
       &current->descriptor() != &preferred ||

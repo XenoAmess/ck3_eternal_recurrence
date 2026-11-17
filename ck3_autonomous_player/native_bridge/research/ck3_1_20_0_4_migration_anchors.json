@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "build": {
+    "product_version": "1.20.0.4",
+    "sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "file_size": 101040248,
+    "pe_timestamp": 1791204405,
+    "image_base": "0x140000000",
+    "size_of_image": 102518784
+  },
+  "signature_anchors": [
+    {
+      "name": "kThreadGuardWindowsPump",
+      "rva": "0x040D93D0",
+      "pattern": "48 89 5c 24 08 48 89 74 24 18 57 48 83 ec 60 ff 15 4b 11 30 00 33 f6 8b f8 8b de 39 1d 6f 72 35",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardFirstPeekCall",
+      "rva": "0x040D9402",
+      "pattern": "45 33 c0 48 8d 4c 24 30 33 d2 ff 15 26 1a 30 00",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardDevicePumpInstall",
+      "rva": "0x040F399B",
+      "pattern": "48 8d 05 2e 5a fe ff 48 89 85 38 02 00 00",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardSdlPumpDispatch",
+      "rva": "0x040C8854",
+      "pattern": "48 85 f6 74 09 48 8b ce ff 96 38 02 00 00 83",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardRngOwnerDiagnostic",
+      "rva": "0x0393EE3A",
+      "pattern": "e8 b1 63 7b 00 48 8b 0b 44 8b 41 10 44 3b c0 74 20 33",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardCurrentThreadThunk",
+      "rva": "0x040F51F0",
+      "pattern": "48 ff 25 a1 53 2e 00",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardTlsGetter",
+      "rva": "0x03F784A0",
+      "pattern": "40 53 48 83 ec 20 65 48 8b 04 25 58 00 00 00 48 8b 08 ba 28 32 00 00 8b 04 0a 41 b8 30 32 00 00",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardTlsGetterMarkerInit",
+      "rva": "0x03F784E5",
+      "pattern": "c6 43 20 00 b8 10 00 00 00 8b 04 08 39 05 1d 8d",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardTlsStartup",
+      "rva": "0x008545F8",
+      "pattern": "c6 05 c0 a0 46 05 01 e8 9c 3e 72 03 c6 40 20 01",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardHandleTlsGate",
+      "rva": "0x03E1468D",
+      "pattern": "0f b6 05 2b a0 ea 01 84 c0 74 28 e8 03 3e 16 00 80 78 20 00 74 1d",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardApplicationPumpGate",
+      "rva": "0x03929466",
+      "pattern": "80 b9 60 01 00 00 00 48 8b d9 75 5b 80 b9 89 00 00 00 00",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardApplicationEventCall",
+      "rva": "0x039294BB",
+      "pattern": "48 8b cb e8 fd f8 ff ff",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardEventSingletonConstruct",
+      "rva": "0x00854FAB",
+      "pattern": "48 8d 05 e6 b4 14 04 48 89 03 4c 89 63 38 4c 89 63 40 4c 89 63 48 ff 15 81 f7 c7 04 48 89 1d b2 56 41 05",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardEventSingletonLoad",
+      "rva": "0x03928E29",
+      "pattern": "48 8b 35 50 18 34 02",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardEventSingletonVslot",
+      "rva": "0x03928E6B",
+      "pattern": "48 8b 06 4c 8b 50 08 48 8b 47 28 48 89 54 24 28 48 89 44 24 20 4c 8b 4f 20 4c 8b 47 18 48 8b ce 41 ff d2",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardPdxSdlPollSlot",
+      "rva": "0x03E148DE",
+      "pattern": "48 8d 4c 24 48 ff 15 0f fb 6b 01",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardSdlPollSlotBind",
+      "rva": "0x04099D76",
+      "pattern": "48 8d 05 a3 eb 02 00 48 89 05 74 a6 43 01",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "kThreadGuardSdlUpperPumpCall",
+      "rva": "0x040C8950",
+      "pattern": "8d 48 01 e8 98 fe ff ff",
+      "source": "src/ck3_12004_abi_profile.cpp VerifyThreadRuntimeImage",
+      "confidence": "historical .4 guard only"
+    },
+    {
+      "name": "GetLocalPlayer",
+      "rva": "0x383e290",
+      "pattern": "48 89 5c 24 08 57 48 83 ec 20 48 8b 59 18 45 32 c9 44 38 0d 70 c2 42 02 48 8d bb f8 01 00 00 75 0f 48 8b cf e8 27 37 9e 00 85 c0 75 53 41 b1 01",
+      "confidence": "historical .4 named function"
+    },
+    {
+      "name": "QueueOwnedCommand",
+      "rva": "0x37f06d0",
+      "pattern": "4c 89 4c 24 20 48 89 54 24 10 53 56 57 48 83 ec 20 41 8b d8 48 8b fa 48 8b f1 41 8b c0 c1 e8 03 a8 01 74 07 48 8b 02 80 48 08 20 48 8b 89 d8 03",
+      "confidence": "historical .4 named function"
+    },
+    {
+      "name": "SdlPumpEvents",
+      "rva": "0x40c87f0",
+      "pattern": "48 8b c4 48 83 ec 68 83 3d ee 4f c5 01 00 48 89 68 10 8b e9 48 89 70 18 48 8b 35 19 b5 bf 01 74 43 48 89 58 08 33 db 48 89 78 f8 48 8d 3d c8 43",
+      "confidence": "historical .4 named function"
+    },
+    {
+      "name": "HandlePdxEvents",
+      "rva": "0x3e14670",
+      "pattern": "48 89 5c 24 08 48 89 74 24 10 57 48 83 ec 30 49 8b f8 48 8b da 48 8b f1 48 85 d2 74 4b 0f b6 05 2b a0 ea 01 84 c0 74 28 e8 03 3e 16 00 80 78 20",
+      "confidence": "historical .4 named function"
+    }
+  ],
+  "vtable_prefixes": [],
+  "scope": "source byte identity only; candidates do not admit Florin ABI"
+}

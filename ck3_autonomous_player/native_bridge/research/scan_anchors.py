@@ -41,6 +41,7 @@ class PeImage:
         self.size_of_image = struct.unpack_from("<I", data, optional + 56)[0]
         section_table = optional + optional_size
         self.sections: list[tuple[int, int, int, int]] = []
+        self.executable_sections: list[tuple[int, int, int]] = []
         for index in range(section_count):
             entry = section_table + index * 40
             virtual_size, virtual_address, raw_size, raw_offset = struct.unpack_from(
@@ -49,6 +50,11 @@ class PeImage:
             self.sections.append(
                 (virtual_address, max(virtual_size, raw_size), raw_offset, raw_size)
             )
+            characteristics = struct.unpack_from("<I", data, entry + 36)[0]
+            if raw_offset + raw_size > len(data):
+                raise ValueError("section raw bytes exceed PE file")
+            if characteristics & 0x20000000 and raw_size:
+                self.executable_sections.append((virtual_address, raw_offset, raw_size))
 
     def rva_to_offset(self, rva: int) -> int:
         for virtual_address, span, raw_offset, raw_size in self.sections:

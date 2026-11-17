@@ -7,6 +7,11 @@ import java.util.Objects;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.wave2.events.interactionsourceblocks.InteractionSourceBlocks;
 
@@ -43,6 +48,20 @@ public final class EventSourceCatalogue {
         public boolean registryContractAccepted() { return false; }
     }
     private record Token(String value, int start, int end) { }
+
+    /** Fingerprints authored tokens using this same lexer; it grants no source/native mapping. */
+    public static String sourceTokenSha256(String source) {
+        Objects.requireNonNull(source);
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            for (Token token : tokens(source)) {
+                byte[] value = token.value().getBytes(StandardCharsets.UTF_8);
+                digest.update(ByteBuffer.allocate(Integer.BYTES).putInt(value.length).array());
+                digest.update(value);
+            }
+            return HexFormat.of().formatHex(digest.digest());
+        } catch (NoSuchAlgorithmException impossible) { throw new AssertionError(impossible); }
+    }
 
     /** The exact _blocks behavior: every matching direct child at token depth one, including same-line children. */
     public static List<String> blocks(String text, String wanted) {

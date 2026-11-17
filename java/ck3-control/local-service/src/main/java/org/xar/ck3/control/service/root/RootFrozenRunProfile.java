@@ -165,6 +165,10 @@ public final class RootFrozenRunProfile {
             this.loadedRequest=loadedRequest;this.loadedRole=loadedRole;
         }
         public Request request(){return request;}
+        /** Retained origin identity only; current readiness still requires requireCurrent. */
+        public void requirePlan(NativeLaunchPlan identical)throws IOException {
+            if(identical!=plan)throw new IOException("frozen run profile belongs to another retained launch plan instance");
+        }
         public InitialEpisodePolicy initialPolicy(){return initialPolicy;}
         public ExactRef requestReference(){return requestRef;}
         public SuccessionLifecycleBinding binding(){return binding.orElseThrow(()->new IllegalStateException("native_campaign has null lifecycle provenance"));}
@@ -197,7 +201,7 @@ public final class RootFrozenRunProfile {
             fixture.ifPresent(actual->refs.addAll(actual.inputClosure()));startupCase.ifPresent(actual->refs.addAll(actual.sourceClosure()));return refs.stream().distinct().toList();
         }
         public void requireCurrent(NativeLaunchPlan identical,Clock actualClock)throws IOException {
-            if(identical!=plan)throw new IOException("frozen run profile belongs to another retained launch plan instance");
+            requirePlan(identical);
             if(loadedRole!=null)requireLoadedCurrent(loadedRequest,plan,loadedRole);
             current(request,plan,actualClock);initialPolicy.verify();
             if(request.lifecycle()==LifecycleMode.NATIVE_CAMPAIGN)requireExplicitNativeCampaign();

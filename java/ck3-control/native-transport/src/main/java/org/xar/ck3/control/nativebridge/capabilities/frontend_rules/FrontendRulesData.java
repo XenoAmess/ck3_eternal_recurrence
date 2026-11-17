@@ -13,7 +13,8 @@ public final class FrontendRulesData {
         CK3_11906("1.19.0.6", "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"),
         CK3_12002("1.20.0.2", "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"),
         CK3_12003("1.20.0.3", "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"),
-        CK3_12004("1.20.0.4", "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518");
+        CK3_12004("1.20.0.4", "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"),
+        CK3_1210("1.21.0", "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC");
         private final String version;
         private final String sha256;
         Build(String version, String sha256) { this.version = version; this.sha256 = sha256; }
@@ -26,7 +27,8 @@ public final class FrontendRulesData {
             throw new IllegalArgumentException("mixed or unknown exact native build");
         }
         public void requireRules() { FrontendRulesData.require(this == CK3_12003 || this == CK3_12004, "rules require actual .3/.4"); }
-        public void requireFrontend() { FrontendRulesData.require(this != CK3_12002, "frontend route build is not admitted"); }
+        public void requireFrontend() { FrontendRulesData.require(this == CK3_11906 || this == CK3_12003 || this == CK3_12004, "frontend route build is not admitted"); }
+        public void requireLoadedFeatures() { FrontendRulesData.require(this == CK3_11906 || this == CK3_12002 || this == CK3_12003 || this == CK3_12004, "loaded-feature layout is not admitted"); }
     }
     public record Binding(long bridgePid, BigInteger connectionGeneration) {
         public Binding { require(bridgePid >= 1 && bridgePid <= 0xffff_ffffL, "positive u32 bridge PID required"); positiveU64(connectionGeneration); }

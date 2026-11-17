@@ -1272,6 +1272,13 @@ add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
   src/ck3_12003_adapter.cpp
     src/ck3_12004_adapter.cpp
+    src/ck3_1210_adapter.cpp
+    src/ck3_1210_core.cpp
+    src/ck3_1210_thread_runtime.cpp
+    src/ck3_1210_core_frame_v1.cpp
+    src/ck3_1210_commands.cpp
+    src/ck3_1210_core_control_request_v1.cpp
+    src/ck3_1210_core_control_v1.cpp
     src/ck3_12004_abi_profile.cpp
     src/ck3_12004_core_frame_v1.cpp
   src/ck3_12004_battle.cpp
@@ -10167,3 +10174,61 @@ include(cmake/fresh_full_state12004.cmake)
 xar_add_fresh_full_state12004_tests("${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/tests")
 
 include(cmake/m7_idler_components_v1.cmake)
+
+# Florin identity qualification is deliberately independent of every old
+# runtime binding. This fixture never opens or invokes a game process.
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_identity_test
+    src/ck3_1210_adapter.cpp
+    src/ck3_1210_core.cpp
+    src/game_adapter_capabilities.cpp
+    src/ck3_1210_identity_test.cpp)
+  target_include_directories(xar_ck3_1210_identity_test PRIVATE include)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_identity_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_identity
+    COMMAND xar_ck3_1210_identity_test)
+endif()
+
+option(XAR_CK3_ENABLE_1210_CORE_FRAME_V1 "Enable only the reviewed Florin application-main core prefix" OFF)
+if(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+  target_compile_definitions(xar_ck3_12002_runtime PUBLIC XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_core_frame_test
+    src/ck3_1210_core.cpp src/ck3_1210_thread_runtime.cpp
+    src/ck3_1210_core_frame_v1.cpp src/game_adapter_capabilities.cpp
+    src/ck3_1210_core_frame_test.cpp)
+  target_include_directories(xar_ck3_1210_core_frame_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_core_frame_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_core_frame_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_core_frame COMMAND xar_ck3_1210_core_frame_test)
+endif()
+
+option(XAR_CK3_ENABLE_1210_CORE_CONTROL_V1 "Enable reviewed Florin held-core clock command queue" OFF)
+if(XAR_CK3_ENABLE_1210_CORE_CONTROL_V1)
+  if(NOT XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+    message(FATAL_ERROR "Florin clock control requires its exact core reader")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_CORE_CONTROL_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_core_control_test
+    src/ck3_1210_commands.cpp src/ck3_1210_core_control_request_v1.cpp
+    src/ck3_1210_core_control_v1.cpp src/ck3_1210_core.cpp
+    src/ck3_1210_core_frame_v1.cpp src/ck3_1210_thread_runtime.cpp
+    src/game_adapter_capabilities.cpp src/ck3_1210_core_control_test.cpp)
+  target_include_directories(xar_ck3_1210_core_control_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_core_control_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_core_control_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_core_control COMMAND xar_ck3_1210_core_control_test)
+endif()
+
+if(BUILD_TESTING)
+  add_test(NAME xar_ck3_native_bridge_1210_timeline_mailbox COMMAND xar_ck3_main_thread_query_mailbox_v1_test --timeline-only)
+endif()

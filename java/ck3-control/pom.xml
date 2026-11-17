@@ -121,6 +121,28 @@
 
   <profiles>
     <profile>
+      <id>ck3-version-identity-tests</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <!-- Finite identity/protocol qualification; this is not the complete acceptance suite. -->
+              <testIncludes>
+                <testInclude>**/ExactCk3BuildTest.java</testInclude>
+                <testInclude>**/FrontendBuildIdentityTest.java</testInclude>
+                <testInclude>**/NativeFreshFullStateReadTest.java</testInclude>
+                <testInclude>**/NativeGuiProducerConsumerTest.java</testInclude>
+                <testInclude>**/NativeTransportSubmissionFixture.java</testInclude>
+                <testInclude>**/CoreFrameBuildIdentityTest.java</testInclude>
+              </testIncludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>xar-compile-diagnostics</id>
       <build>
         <plugins>

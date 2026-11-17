@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.TreeMap;
 import org.xar.ck3.control.contracts.projection.EventSourceReadContext;
 import org.xar.ck3.control.contracts.projection.ProjectionEvidenceGrant;
 import org.xar.ck3.control.contracts.projection.ProjectionEvidenceRole;
@@ -32,10 +34,12 @@ public final class TrustedEventSourceContext {
     private final DirectoryWitness state;
     private final DirectoryWitness stock;
     private final List<ProjectionEvidenceGrant> grants;
+    private final Optional<String> reviewedSourceBuild;
 
     private TrustedEventSourceContext(String machineId, DirectoryWitness state, DirectoryWitness stock,
-            List<ProjectionEvidenceGrant> grants) {
+            List<ProjectionEvidenceGrant> grants, Optional<String> reviewedSourceBuild) {
         this.machineId = machineId; this.state = state; this.stock = stock; this.grants = List.copyOf(grants);
+        this.reviewedSourceBuild = Objects.requireNonNull(reviewedSourceBuild);
     }
 
     /** The host supplies its independently observed stable machine identity, never a payload assertion. */
@@ -48,18 +52,29 @@ public final class TrustedEventSourceContext {
         try {
             Objects.requireNonNull(configured, "configured read context");
             List<ProjectionEvidenceGrant> snapshot = List.copyOf(configured.evidenceGrants());
-            return new TrustedEventSourceContext(configured.machineId(), root(configured.stateRoot()), root(configured.stockGameRoot()), snapshot);
+            return new TrustedEventSourceContext(configured.machineId(), root(configured.stateRoot()), root(configured.stockGameRoot()), snapshot, Optional.empty());
         } catch (IOException | IllegalArgumentException error) {
             throw new UnavailableException("configured event source roots are unavailable", error);
         }
     }
 
-    /** Full event review additionally binds the five already reviewed stock source/GUI inputs. */
+    /** Full source review binds an actual reviewed revision; Native binding admission remains separate. */
     public static TrustedEventSourceContext open(EventSourceReadContext configured) {
         TrustedEventSourceContext context = openEvidence(configured);
-        context.verifyCurrentRoots();
-        return context;
+        try {
+            Map<String, String> actual = context.stockHashes();
+            String build;
+            if (actual.equals(ReviewedLetterSourceRebind.installedSourceHashes())) build = "1.20.0.4";
+            else if (actual.equals(SourceCompatibilityReview.load().targetStockHashes())) build = SourceCompatibilityReview.BUILD;
+            else throw new IOException("configured stock source/GUI has no reviewed revision");
+            TrustedEventSourceContext selected = new TrustedEventSourceContext(context.machineId, context.state, context.stock,
+                    context.grants, Optional.of(build));
+            selected.verifyCurrentRoots(); return selected;
+        } catch (IOException | IllegalArgumentException error) {
+            throw new UnavailableException("configured event source revision unavailable", error);
+        }
     }
+    public Optional<String> reviewedSourceBuild() { return reviewedSourceBuild; }
     public String machineId() { return machineId; }
     public Path stateDirectory() { return state.path(); }
     public Path stockGameDirectory() { return stock.path(); }
@@ -171,20 +186,28 @@ public final class TrustedEventSourceContext {
     public void verifyCurrentRoots() {
         try {
             verifyRequired(state); verifyRequired(stock);
-            for (Map.Entry<String, String> pin : ReviewedLetterSourceRebind.installedSourceHashes().entrySet()) {
-                FileRole role = pin.getKey().startsWith("gui/") ? FileRole.GUI : FileRole.SOURCE;
-                byte[] raw = read(stock.path().resolve(pin.getKey()), 2_097_152, role);
-                if (!SourceReviewJson.sha(raw).equals(pin.getValue())) {
-                    throw new IOException("configured stock source/GUI differs from the existing .4 review");
-                }
-            }
+            Map<String, String> expected = reviewedSourceBuild.filter(SourceCompatibilityReview.BUILD::equals).isPresent()
+                    ? SourceCompatibilityReview.load().targetStockHashes() : ReviewedLetterSourceRebind.installedSourceHashes();
+            if (!stockHashes().equals(expected)) throw new IOException("configured stock source/GUI differs from its fixed reviewed revision");
         } catch (IOException | IllegalArgumentException error) {
             throw new UnavailableException("trusted event source context changed or is unavailable", error);
         }
     }
 
     void requireBuild(String build) {
+        verifyCurrentRoots();
+        if (!reviewedSourceBuild.orElse("1.20.0.4").equals(build))
+            throw new IllegalArgumentException("Native event binding and reviewed source revision differ");
         if (!"1.20.0.4".equals(build)) throw new IllegalArgumentException("configured event source context only binds reviewed .4 source inputs");
+    }
+
+    private Map<String, String> stockHashes() throws IOException {
+        Map<String, String> hashes = new TreeMap<>();
+        for (String relative : ReviewedLetterSourceRebind.installedSourceHashes().keySet()) {
+            FileRole role = relative.startsWith("gui/") ? FileRole.GUI : FileRole.SOURCE;
+            hashes.put(relative, SourceReviewJson.sha(read(stock.path().resolve(relative), 2097152, role)));
+        }
+        return Map.copyOf(hashes);
     }
 
     byte[] read(Path supplied, int maximum, FileRole role) throws IOException {

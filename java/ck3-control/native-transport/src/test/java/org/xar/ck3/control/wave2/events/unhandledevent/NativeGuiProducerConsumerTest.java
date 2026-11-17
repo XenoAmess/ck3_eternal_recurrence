@@ -16,7 +16,7 @@ import org.xar.ck3.control.contracts.events.GuiAvailabilityObservation;
 import org.xar.ck3.control.nativebridge.capabilities.events.EventWindowCodec;
 import org.xar.ck3.control.nativebridge.capabilities.events.EventWindowModels;
 
-/** Actual Native freeze03 serializer bytes in a software-only frame wrapper; no Game or Bridge. */
+/** Actual Native freeze03 serializer bytes across the Native and event modules; no Game or Bridge. */
 final class NativeGuiProducerConsumerTest {
     private record Result(byte[] original, ObjectValue context, UnhandledEventFallback.Plan plan, ObjectValue before) { }
     private static byte[] resource(String name) throws Exception {

@@ -1,4 +1,5 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 #include "xar_bridge/date_pause_publication_v1.hpp"
 #include "xar_bridge/war_declared_overview_v1.hpp"
 #include "xar_bridge/war_results_ui_scope_transition_v1.hpp"
@@ -1747,6 +1748,64 @@ bool TestFrontendMailboxWithoutGameplayState() {
   return true;
 }
 
+std::atomic<unsigned> g_timeline_control_calls{0};
+bool ExecuteTimelineControl(void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  g_timeline_control_calls.fetch_add(1,std::memory_order_relaxed);
+  return Execute(opaque,stamp);
+}
+
+bool TestRegisteredTimelineUnpausedOwner() {
+  using namespace xar::ck3_11906;
+  g_failure_stage="timeline_unpaused_owner";
+  constexpr std::uint32_t owner=0x51U;
+  FakeRuntime runtime(owner,53176992);
+  runtime.SetPaused(0);
+  void *iat=reinterpret_cast<void *>(&FakePeekMessage);
+  auto &mailbox=g_test_mailbox;
+  auto env=runtime.Environment(0x140000000ULL,&iat,&FakePeekMessage);
+  env.permitted_executor=&Execute;
+  env.permitted_executor_secondary=&ExecuteSecondary;
+  env.permitted_executor_tertiary=&ExecuteTimelineControl;
+  if (!InstallMainThreadQueryMailboxV1(mailbox,env) ||
+      !RegisterMainThreadTimelineExecutorsV1(mailbox,&ExecuteSecondary,&ExecuteTimelineControl)) return false;
+  g_failure_stage="timeline_registered";
+  ExecutorContext context{}; MainThreadQueryTicketV1 ticket{};
+  if (TrySubmitMainThreadQueryV1(mailbox,&ExecuteSecondary,&context,ticket)!=
+      MainThreadQuerySubmitResultV1::application_main_not_observed) return false;
+  g_failure_stage="timeline_warm";
+  for(int n=0;n<2;++n) (void)ObserveMainThreadPumpAndDrainV1(
+      mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
+  if (TrySubmitMainThreadQueryV1(mailbox,&Execute,&context,ticket)!=
+      MainThreadQuerySubmitResultV1::paused_main_thread_not_observed) return false;
+  g_failure_stage="timeline_legacy_isolated";
+  const auto complete=[&](MainThreadQueryExecutorV1 executor) {
+    return TrySubmitMainThreadQueryV1(mailbox,executor,&context,ticket)==MainThreadQuerySubmitResultV1::submitted &&
+        ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner) &&
+        WaitForMainThreadQueryV1(mailbox,ticket,0)==MainThreadQueryWaitResultV1::completed &&
+        ReclaimMainThreadQueryV1(mailbox,ticket)==MainThreadQueryReclaimResultV1::reclaimed;
+  };
+  // Core read and queued pause callback remain on the same unpaused boundary.
+  g_failure_stage="timeline_unpaused_read_control";
+  if (!complete(&ExecuteSecondary) || context.observed.paused ||
+      !complete(&ExecuteTimelineControl) || context.observed.paused || context.calls!=2) return false;
+  g_failure_stage="timeline_pause_applied";
+  runtime.SetPaused(1); // The simulated command applies after queue callback.
+  if (!complete(&ExecuteSecondary) || !context.observed.paused) return false;
+  // The timeline role receives no frontend date/world drift exception.
+  g_failure_stage="timeline_afterstamp_drift";
+  runtime.SetPaused(0); context.mutate_date=true; context.runtime=&runtime;
+  if (TrySubmitMainThreadQueryV1(mailbox,&ExecuteSecondary,&context,ticket)!=MainThreadQuerySubmitResultV1::submitted ||
+      !ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner) ||
+      (mailbox.failure_flags.load() & main_thread_query_failure_post_execution_drift)==0 ||
+      WaitForMainThreadQueryV1(mailbox,ticket,0)!=MainThreadQueryWaitResultV1::infrastructure_failed ||
+      ReclaimMainThreadQueryV1(mailbox,ticket)!=MainThreadQueryReclaimResultV1::reclaimed) return false;
+  g_failure_stage="timeline_cleanup";
+  UnregisterMainThreadTimelineExecutorsV1(mailbox);
+  return !IsMainThreadTimelineExecutorV1(mailbox,&ExecuteSecondary) &&
+      UninstallMainThreadQueryMailboxV1(mailbox,10)==MainThreadQueryUninstallResultV1::uninstalled;
+}
+
 bool TestPausedQueuePostsInertOwnerWake(bool skip_first_wake = false) {
   using namespace xar::ck3_11906;
   g_failure_stage = "paused_queue_posted_owner_wake";
@@ -2806,6 +2865,19 @@ static int TestFastDatePausePublicationGuard() {
 }
 
 int main(int argc, char **argv) {
+  if (argc==2 && std::string_view(argv[1])=="--state-only") {
+    const bool okay=TestMailboxStateMachine() && TestFrontendMailboxWithoutGameplayState() &&
+        TestPausedQueuePostsInertOwnerWake() && TestPausedQueuePostsInertOwnerWake(true) &&
+        TestQueuedWakeStillCancelsWithoutPump();
+    if (!okay) std::fprintf(stderr,"mailbox state fixture stage: %s",g_failure_stage);
+    return okay?0:7;
+  }
+
+  if (argc==2 && std::string_view(argv[1])=="--timeline-only") {
+    if (TestRegisteredTimelineUnpausedOwner()) return 0;
+    std::fprintf(stderr,"mailbox fixture failed at %s\n",g_failure_stage); return 6;
+  }
+
   if (TestFastDatePausePublicationGuard() != 18) return 5;
   if (argc == 2 && std::string_view(argv[1]) == "--date-pause-only") return 0;
   if (TestWarResultsUiScopeTransitions() != 0) return 4;

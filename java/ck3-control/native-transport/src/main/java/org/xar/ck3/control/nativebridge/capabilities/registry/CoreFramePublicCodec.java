@@ -47,11 +47,12 @@ public final class CoreFramePublicCodec {
         try {return CoreFrame.decode(new RawJson(token));}
         catch(IllegalArgumentException invalid) {throw new IOException("actual core-frame profile or partial result is unavailable",invalid);}
     }
-    /** Sole public normalization, matching the original .4 producer after exact native source validation. */
+    /** Public normalization retains the exact build of the independently validated partial prefix. */
     public static RawJson encode(CoreFrame actual) {
         Objects.requireNonNull(actual);ObjectNode row=JsonNodeFactory.instance.objectNode();
-        row.put("schema","ck3_12004_core_frame_v1");row.put("game_version","1.20.0.4");row.put("executable_sha256",RegistryJson.EXE);
-        row.put("adapter_id","ck3-1.20.0.4-msvc-x64");row.put("backend","ck3-1.20.0.4-native-headless-main-thread");
+        var build=actual.build();
+        row.put("schema",CoreFrame.schema(build));row.put("game_version",build.version());row.put("executable_sha256",build.executableSha256().toUpperCase(java.util.Locale.ROOT));
+        row.put("adapter_id","ck3-"+build.version()+"-msvc-x64");row.put("backend","ck3-"+build.version()+"-native-headless-main-thread");
         row.put("complete_snapshot",false);var excluded=row.putArray("excluded_snapshot_families");CoreFrame.EXCLUDED.forEach(excluded::add);
         if(actual instanceof CoreFrame.Partial partial) {
             var prefix=partial.prefix();row.put("status","partial");row.put("core_available",true);row.put("application_main_observed",true);row.putNull("unavailable_reason");

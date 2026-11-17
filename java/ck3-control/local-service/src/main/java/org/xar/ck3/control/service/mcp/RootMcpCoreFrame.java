@@ -39,7 +39,7 @@ public final class RootMcpCoreFrame {
         var binding=Objects.requireNonNull(registry).register(PublicMethod.QUERY_CORE_FRAME_V1,CoreFramePublicCodec.Request.class,CoreFrame.class,
                 this::read,CoreFramePublicCodec::decodeArguments,CoreFramePublicCodec::encode,
                 new PublicRoutes.Target(RootMcpCoreFrame.class.getName(),"read",Objects.requireNonNull(thisSource)),PublicRoutes.Status.IMPLEMENTED,
-                "actual standalone .4 app-main core prefix; no complete Snapshot, world refresh, action, or fabricated profile");
+                "actual exact-build app-main core prefix; no complete Snapshot, world refresh, action, or fabricated profile");
         return List.of(binding);
     }
 }

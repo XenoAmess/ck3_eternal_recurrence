@@ -1,4 +1,5 @@
-﻿#include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 
 #if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
@@ -1641,15 +1642,16 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
   }
   const bool frontend_executor =
       executor == mailbox.permitted_frontend_executor;
+  const bool timeline_executor = IsMainThreadTimelineExecutorV1(mailbox,executor);
   if (frontend_executor) {
     (void)TryInstallMainThreadFrontendBoundaryHookV1(mailbox);
   }
   if (mailbox.owner_thread_id.load(std::memory_order_acquire) == 0) {
-    return frontend_executor
+    return (frontend_executor || timeline_executor)
                ? MainThreadQuerySubmitResultV1::application_main_not_observed
                : MainThreadQuerySubmitResultV1::paused_main_thread_not_observed;
   }
-  if (frontend_executor) {
+  if (frontend_executor || timeline_executor) {
     if (mailbox.owner_verified_pump_epochs.load(std::memory_order_acquire) <
         kMainThreadQueryMinimumOwnerVerifiedPumpEpochs) {
       return MainThreadQuerySubmitResultV1::application_main_not_observed;
@@ -1937,6 +1939,9 @@ bool ObserveMainThreadPumpAndDrainV1(
 #endif
   }
   const auto queued_executor = mailbox.executor.load(std::memory_order_acquire);
+  const bool timeline_request_queued_hint =
+      mailbox.state.load(std::memory_order_acquire)==MainThreadQueryMailboxStateV1::queued &&
+      IsMainThreadTimelineExecutorV1(mailbox,queued_executor);
   const bool frontend_request_queued_hint =
       mailbox.state.load(std::memory_order_acquire) ==
           MainThreadQueryMailboxStateV1::queued &&
@@ -1960,7 +1965,8 @@ bool ObserveMainThreadPumpAndDrainV1(
     // deciding whether the fixed frontend executor may drain.
     mailbox.owner_thread_id.store(before.thread_id,
                                   std::memory_order_release);
-    if (!frontend_request_queued_hint && !modal_choice_request_queued_hint) {
+    if (!frontend_request_queued_hint && !modal_choice_request_queued_hint &&
+        !timeline_request_queued_hint) {
       mailbox.drain_guard.clear(std::memory_order_release);
       return false;
     }
@@ -2012,14 +2018,26 @@ bool ObserveMainThreadPumpAndDrainV1(
   // a different ticket before this pump acquires executing ownership.
   const bool frontend_request_claimed =
       executor == mailbox.permitted_frontend_executor;
+  // Re-evaluate the actual claimed callback after cancellation/reclaim races.
+  // This role reads only the reviewed core prefix or submits its guarded clock
+  // command; it never acquires the frontend/world-drift exception.
+  const bool timeline_request_claimed =
+      IsMainThreadTimelineExecutorV1(mailbox,executor);
+  const bool timeline_owner_ready = timeline_request_claimed &&
+      mailbox.owner_verified_pump_epochs.load(std::memory_order_acquire)>=
+          kMainThreadQueryMinimumOwnerVerifiedPumpEpochs &&
+      mailbox.owner_thread_id.load(std::memory_order_acquire)==before.thread_id &&
+      before.tls_initialized==1 && before.tls_main_thread_marker==1 &&
+      before.tls_context!=0 && before.jomini_state!=0 && before.game_state!=0;
   const bool modal_choice_request_claimed =
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
       executor == mailbox.permitted_executor_mandatory_choice12004;
 #else
       false;
 #endif
-  if (!gameplay_pause_observed && !frontend_request_claimed &&
-      !modal_choice_request_claimed) {
+  if ((timeline_request_claimed && !timeline_owner_ready) ||
+      (!gameplay_pause_observed && !frontend_request_claimed &&
+       !modal_choice_request_claimed && !timeline_owner_ready)) {
     mailbox.completed_sequence.store(sequence, std::memory_order_release);
     mailbox.state.store(MainThreadQueryMailboxStateV1::infrastructure_failed,
                         std::memory_order_release);

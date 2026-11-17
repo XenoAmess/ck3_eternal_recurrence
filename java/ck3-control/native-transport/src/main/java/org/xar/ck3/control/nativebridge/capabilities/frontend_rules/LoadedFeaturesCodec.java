@@ -34,6 +34,7 @@ public final class LoadedFeaturesCodec {
     }
     public record Envelope(Manifest manifest, BigInteger querySequence) { public Envelope { java.util.Objects.requireNonNull(manifest); positiveU64(querySequence); } }
     public static Envelope decode(RawJson raw, Build expectedBuild, BigInteger expectedNativeRevision, int expectedDateRaw) {
+        expectedBuild.requireLoadedFeatures();
         ObjectNode envelope = object(raw); Set<String> fields = new java.util.HashSet<>(Set.of("step", "accepted", "status", "query_sequence", "snapshot_revision", "loaded_feature_manifest"));
         if (envelope.has("backend_id")) fields.add("backend_id"); exact(envelope, fields); nativeBackend(envelope);
         equalText(envelope, "step", "query-loaded-feature-manifest-v1"); expectedBool(envelope, "accepted", true);

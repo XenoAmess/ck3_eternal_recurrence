@@ -31,6 +31,18 @@ final class NativeLaunchPlanCodecTest {
             assertEquals(original,NativeLaunchPlanCodec.fromJson(StrictJson.parse(raw,NativeLaunchPlanCodec.MAXIMUM_BYTES)));
         }
     }
+    @Test void agentSupervisorRejectsShownPolicyBeforeAnyGameLaunch() throws Exception {
+        var json=NativeLaunchPlanCodec.toJson(configuration(new NativeLaunchPlan.NewGame()));
+        json.put("schema","xar.java-game-launch-plan/v4");json.remove("prepared_profile");
+        var review=(com.fasterxml.jackson.databind.node.ObjectNode)json.get("review");
+        for(String name:List.of("machine_id","expires_at","native_evidence","native_source_root","complete_runtime_sources"))review.remove(name);
+        json.put("window_policy","SHOWN_NO_ACTIVATE");
+        Path config=temporary.resolve("shown-config.json"),owner=temporary.resolve("shown-owner");
+        Files.write(config,StrictJson.canonical(json,NativeLaunchPlanCodec.MAXIMUM_BYTES));
+        var failure=assertThrows(java.io.IOException.class,()->GameSupervisor.run(config,owner));
+        assertTrue(failure.getMessage().contains("MINIMIZED_NO_ACTIVATE before Game creation"));
+        try(var children=Files.list(owner)){assertEquals(0,children.count());}
+    }
     @Test void malformedConfigurationAndChangedExactBytesRejectBeforeAnyAdmission()throws Exception{
         var valid=NativeLaunchPlanCodec.toJson(configuration(new NativeLaunchPlan.NewGame()));
         var wrong=valid.deepCopy();wrong.put("game_memory_bytes",1.0);assertThrows(IllegalArgumentException.class,()->NativeLaunchPlanCodec.fromJson(wrong));

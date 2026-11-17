@@ -79,6 +79,7 @@ public final class GameSupervisor {
                 NativeLaunchPlanCodec.MAXIMUM_BYTES);
         var body = document.has("configuration") ? document.get("configuration") : document;
         NativeLaunchPlan plan = NativeLaunchPlanCodec.fromJson(body).accept();
+        requireBackgroundPolicy(plan.windowPolicy());
         JavaGameLifecycle lifecycle = new JavaGameLifecycle(List.of());
         var launched = authorization == null
                 ? (plan.load() instanceof NativeLaunchPlan.SavedGame ? lifecycle.launchSaved(plan) : lifecycle.launchNew(plan))
@@ -141,6 +142,11 @@ public final class GameSupervisor {
                 throw failure;
             }
         }
+    }
+
+    static void requireBackgroundPolicy(NativeLaunchPlan.WindowPolicy policy) throws IOException {
+        if (policy != NativeLaunchPlan.WindowPolicy.MINIMIZED_NO_ACTIVATE)
+            throw new IOException("agent owner requires MINIMIZED_NO_ACTIVATE before Game creation");
     }
 
     /** No launch deadline, worker liveness test, native pipe call, or process-tree scan exists in this loop. */

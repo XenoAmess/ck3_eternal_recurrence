@@ -24,6 +24,9 @@ import java.util.Set;
 import java.util.UUID;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
 import org.xar.ck3.control.contracts.semantic.NativeSemanticFingerprint;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
@@ -941,19 +944,125 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         adoptionDiagnostic = new NativeTransportDiagnostics.Observed(Optional.of(refusal));
         terminalFailure = message;
     }
-    /** The one original standalone partial-prefix read. It cannot carry a caller-selected step or mutation. */
+    public sealed interface CoreRead permits CoreReceived,CoreReadUnavailable {
+        DispatchOutcome original();
+    }
+    /** A real core ACK occurrence from this held receiver; public CoreFrame DATA cannot construct it. */
+    public static final class CoreReceived implements CoreRead {
+        private final NativeGameTransport issuer;
+        private final CoreFrame frame;
+        private final AckReceived original;
+        private final NativeRequestChronology custody;
+        private final Instant validUntil;
+        private boolean controlAttempted;
+        private CoreReceived(NativeGameTransport issuer,CoreFrame frame,AckReceived original,
+                NativeRequestChronology custody,Instant validUntil) {
+            this.issuer=issuer;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=validUntil;
+        }
+        public CoreFrame frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actualHeld,Instant operationDeadline)throws IOException {
+            Objects.requireNonNull(actualHeld).requireCoreOriginal(this,operationDeadline);
+        }
+    }
+    /** Keeps the actual returned ACK/UNKNOWN/zero-dispatch evidence without manufacturing a different outcome. */
+    public record CoreReadUnavailable(DispatchOutcome original,String reason) implements CoreRead {
+        public CoreReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    private Unknown unresolvedCoreControl;
+    /**
+     * A separate fixed core-only control path. It does not create a full-observation SubmissionPermit,
+     * a business receipt, a confirmed SAVE, or an observed engine effect. UNKNOWN keeps its original ID.
+     */
+    public synchronized DispatchOutcome submitCoreClockControl(CoreReceived before,CoreClockControl.Step step,
+            Instant deadline)throws InterruptedException {
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        String id="core-control-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            Objects.requireNonNull(before);Objects.requireNonNull(step);Objects.requireNonNull(deadline);
+            requireCoreOriginal(before,deadline);
+            if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("standalone core control cannot borrow a business mailbox or recovery scope");
+            if(before.controlAttempted)throw new IOException("this original core receipt already entered a control write");
+            if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("actual available partial core required for core control");
+            var prefix=partial.prefix();
+            if(!prefix.mapReady()||!prefix.hasPlayedCharacter()||!prefix.playedCharacterAlive())
+                throw new IOException("core control requires the actual living played character and ready map");
+            if(step==CoreClockControl.Step.SAVE_CHECKPOINT&&!prefix.paused())
+                throw new IOException("core SAVE submission requires an actual paused core prefix");
+            NativeRequest request=CoreClockControl.request(step,partial);
+            if(!hello.capabilities().contains(step.requiredCapability()))throw new IOException("actual core control capability is unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            ObjectNode fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+            long until=deadline.toEpochMilli();
+            if(until<=0||until>before.validUntil.toEpochMilli())throw new IOException("core control cannot extend its original absolute query deadline");
+            fields.put("core_control_deadline_unix_ms",until);
+            byte[] packet=NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+            DispatchOutcome outcome=dispatch(id,packet,deadline,()->{
+                if(before.controlAttempted)throw new IllegalStateException("original core receipt is already consumed");
+                before.controlAttempted=true;
+            });
+            if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;
+            return outcome;
+        } catch(IOException|RuntimeException failure) {
+            if(sentRequestIds.contains(id)) {
+                unresolvedCoreControl=new Unknown(id,"core control failed after actual write entry; never replay: "+reason(failure),retainedOutbound(id),Optional.empty());
+                return unresolvedCoreControl;
+            }
+            return zero(id,reason(failure));
+        }
+    }
+    /** Freeze this query's actual deadline; a later consumer cannot give an old ACK a new window. */
+    public synchronized CoreRead readCoreFrameReceived(Instant deadline)throws InterruptedException {
+        Instant until=readDeadline(Objects.requireNonNull(deadline));
+        DispatchOutcome original=readCoreFrame(until);
+        try {
+            CoreFrame frame=CoreFramePublicCodec.decodeOutcome(original);
+            AckReceived ack=(AckReceived)original;
+            NativeRequestChronology custody=originalRequestChronology(ack.requestId())
+                    .orElseThrow(()->new IOException("actual core ACK custody unavailable"));
+            var received=new CoreReceived(this,frame,ack,custody,until);
+            requireCoreOriginal(received,until);return received;
+        } catch(IOException|RuntimeException invalid) {return new CoreReadUnavailable(original,reason(invalid));}
+    }
+    private void requireCoreOriginal(CoreReceived actual,Instant operationDeadline)throws IOException {
+        Objects.requireNonNull(operationDeadline);
+        if(actual.issuer!=this||hello==null||closed||terminalFailure!=null)
+            throw new IOException("core receipt requires its identical live held receiver");
+        Instant now=chronologyClock.instant();
+        if(!now.isBefore(actual.validUntil)||!now.isBefore(operationDeadline)||operationDeadline.isAfter(actual.validUntil)
+                ||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)
+                ||actual.custody.writeEntered().observedAt().isBefore(helloObservedAt))
+            throw new IOException("core receipt escaped its original finite query window or HELLO chronology");
+        verifyHeld(operationDeadline);
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)
+                ||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())
+            throw new IOException("core receipt crossed its original Game/session/connection/custody");
+        actual.custody.verify(actual.original);
+        CoreFrame decoded=CoreFramePublicCodec.decodeOutcome(actual.original);
+        ObjectNode rawHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        String version=NativeWire.text(rawHello.get("expected_ck3_version"));
+        if(!decoded.equals(actual.frame)||!decoded.build().matches(version,hello.gameSha256())
+                ||!hello.adapterId().equals("ck3-"+decoded.build().version()+"-msvc-x64"))
+            throw new IOException("core result belongs to another exact executable or original received frame");
+    }
+    /** The fixed standalone partial-prefix read. It cannot carry a caller-selected step or mutation. */
     @Override public synchronized DispatchOutcome readCoreFrame(Instant deadline) throws InterruptedException {
         String id = "core-frame-" + UUID.randomUUID().toString().replace("-", "");
         try {
             awaitHello(deadline); verifyEndpoint();
             ObjectNode original = NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(), 4, hello.packet().value().length)));
-            if (!hello.capabilities().contains("game.query.core-frame.v1")
-                    || !hello.adapterId().equals("ck3-1.20.0.4-msvc-x64")
-                    || !hello.gameSha256().equalsIgnoreCase("98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")
-                    || !NativeWire.text(original.get("expected_ck3_version")).equals("1.20.0.4"))
-                throw new IOException("standalone core prefix requires the original ready exact .4 hello and advertised core-frame capability");
+            String version=NativeWire.text(original.get("expected_ck3_version"));
+            boolean exactFour=ExactCk3Build.CK3_12004.matches(version,hello.gameSha256())
+                    &&hello.adapterId().equals("ck3-1.20.0.4-msvc-x64");
+            boolean exactFlorin=ExactCk3Build.CK3_1210.matches(version,hello.gameSha256())
+                    &&hello.adapterId().equals("ck3-1.21.0-msvc-x64");
+            if (!hello.capabilities().contains("game.query.core-frame.v1")||!(exactFour||exactFlorin))
+                throw new IOException("standalone core prefix requires the original ready exact core build and advertised capability");
             if (sentRequestIds.size() >= maximumSubmissions) throw new IOException("Native request identity retention limit reached");
-            return retainReadOutcome(dispatch(id, NativeWire.execute(id, "query-core-frame-v1", BigInteger.ZERO, new byte[] {'{', '}'}), deadline, () -> { }));
+            return retainReadOutcome(dispatch(id, NativeWire.execute(id, "query-core-frame-v1", BigInteger.ZERO, new byte[] {'{', '}'}), readDeadline(deadline), () -> { }));
         } catch (IOException | RuntimeException failure) { return retainReadOutcome(zero(id, reason(failure))); }
     }
     /** Independently published READ for either exact .6 or .4 producer. No unresolved original is resubmitted. */

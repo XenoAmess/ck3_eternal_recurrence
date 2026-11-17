@@ -48,7 +48,7 @@ final class RootBootstrapOwnedFocusTest {
         }
     }
 
-    @Test void onlyTypedUnavailableGetsOneFocusAndOneFreshRead() throws Exception {
+    @Test void onlyTypedUnavailableGetsOneBackgroundRetryWithoutFocus() throws Exception {
         for (boolean observed : List.of(false, true)) {
             var unavailable = ack("first", new CoreFrame.Unavailable(observed, "application_main_not_ready"));
             var ready = ack("second", partial(true));
@@ -60,8 +60,8 @@ final class RootBootstrapOwnedFocusTest {
                     case 2 -> ready;
                     default -> throw new AssertionError("third core read forbidden");
                 };
-            }, deadline -> { assertFalse(deadline.isAfter(DEADLINE)); events.add("focus"); }, clock(), DEADLINE);
-            assertSame(ready, actual); assertEquals(List.of("read", "focus", "read"), events);
+            }, deadline -> { throw new AssertionError("background startup must never focus"); }, clock(), DEADLINE);
+            assertSame(ready, actual); assertEquals(List.of("read", "read"), events);
         }
     }
 
@@ -93,7 +93,7 @@ final class RootBootstrapOwnedFocusTest {
         assertThrows(IOException.class, () -> RootNativeFreshStartup.decodeCore(returned.originalResultToken().orElseThrow()));
     }
 
-    @Test void readFocusAndSecondResultFailuresNeverLoopOrReplay() throws Exception {
+    @Test void readAndSecondResultFailuresNeverFocusLoopOrReplay() throws Exception {
         var readFailure = new IOException("software read failure");
         var reads = new AtomicInteger(); var focuses = new AtomicInteger();
         assertSame(readFailure, assertThrows(IOException.class, () -> RootNativeFreshStartup.observeBootstrapCore(deadline -> {
@@ -107,13 +107,6 @@ final class RootBootstrapOwnedFocusTest {
                         deadline -> { throw new AssertionError("focus on interrupt"); }, clock(), DEADLINE)));
 
         var unavailable = ack("first", new CoreFrame.Unavailable(false, "unavailable"));
-        var focusFailure = new IOException("software focus result uncertain");
-        var focusReads = new AtomicInteger(); var failedFocuses = new AtomicInteger();
-        assertSame(focusFailure, assertThrows(IOException.class, () -> RootNativeFreshStartup.observeBootstrapCore(deadline -> {
-            focusReads.incrementAndGet(); return unavailable;
-        }, deadline -> { failedFocuses.incrementAndGet(); throw focusFailure; }, clock(), DEADLINE)));
-        assertEquals(1, focusReads.get()); assertEquals(1, failedFocuses.get());
-
         for (var second : List.of(ack("second", new CoreFrame.Unavailable(true, "still_unavailable")),
                 wireAck("second", true, raw("{}")))) {
             var secondReads = new AtomicInteger(); var secondFocuses = new AtomicInteger();
@@ -127,7 +120,7 @@ final class RootBootstrapOwnedFocusTest {
                 assertThrows(IOException.class, () -> RootNativeFreshStartup.decodeCore(returned.originalResultToken().orElseThrow()));
             else assertInstanceOf(CoreFrame.Unavailable.class,
                     RootNativeFreshStartup.decodeCore(returned.originalResultToken().orElseThrow()));
-            assertEquals(2, secondReads.get()); assertEquals(1, secondFocuses.get());
+            assertEquals(2, secondReads.get()); assertEquals(0, secondFocuses.get());
         }
         var secondReadFailure = new IOException("software second read failed");
         var secondReads = new AtomicInteger(); var secondFocuses = new AtomicInteger();
@@ -135,10 +128,10 @@ final class RootBootstrapOwnedFocusTest {
             if (secondReads.incrementAndGet() == 1) return unavailable;
             throw secondReadFailure;
         }, deadline -> secondFocuses.incrementAndGet(), clock(), DEADLINE)));
-        assertEquals(2, secondReads.get()); assertEquals(1, secondFocuses.get());
+        assertEquals(2, secondReads.get()); assertEquals(0, secondFocuses.get());
     }
 
-    @Test void originalDeadlineCannotBeExtendedAcrossFocusOrRead() throws Exception {
+    @Test void originalDeadlineCannotBeExtendedAcrossBackgroundReads() throws Exception {
         var expiredReads = new AtomicInteger(); var expiredFocuses = new AtomicInteger();
         assertThrows(IOException.class, () -> RootNativeFreshStartup.observeBootstrapCore(deadline -> {
             expiredReads.incrementAndGet(); throw new AssertionError("expired read");
@@ -153,12 +146,11 @@ final class RootBootstrapOwnedFocusTest {
         }, deadline -> focusCount.incrementAndGet(), afterRead, DEADLINE));
         assertEquals(1, readCount.get()); assertEquals(0, focusCount.get());
 
-        var afterFocus = new ControlledClock(NOW);
-        var focusReads = new AtomicInteger(); var focuses = new AtomicInteger();
-        assertThrows(IOException.class, () -> RootNativeFreshStartup.observeBootstrapCore(deadline -> {
-            focusReads.incrementAndGet(); return unavailable;
-        }, deadline -> { focuses.incrementAndGet(); afterFocus.set(DEADLINE); }, afterFocus, DEADLINE));
-        assertEquals(1, focusReads.get()); assertEquals(1, focuses.get());
+        var secondReads = new AtomicInteger(); var unusedFocus = new AtomicInteger();
+        assertSame(unavailable, RootNativeFreshStartup.observeBootstrapCore(deadline -> {
+            secondReads.incrementAndGet(); return unavailable;
+        }, deadline -> { unusedFocus.incrementAndGet(); throw new IOException("must never execute"); }, clock(), DEADLINE));
+        assertEquals(2, secondReads.get()); assertEquals(0, unusedFocus.get());
     }
 
     @Test void sharedWindowFocusUsesOnlyTheBoundedForegroundOperations() throws Exception {
