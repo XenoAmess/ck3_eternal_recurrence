@@ -1,0 +1,17 @@
+Mandala Purge / 肃清曼荼罗伪信 1.0.2 — CK3 1.21.0 (Florin)
+
+Changes from the previous public release, 1.0.1:
+• Updated the supported game version from CK3 1.20.0.3 to 1.21.0 and the Workshop compatibility category to 1.21 'Florin'.
+• Kept the existing default-enabled Mandala Purge rule, all four production scripts, nine localizations and the 15-file release inventory unchanged apart from the version descriptor.
+• Mandala rulers still become Wanua at game start, after one day and every month. Temple Citadels still become Castles at game start, after two days and every year. Successful AI transitions into Mandala still redirect immediately to Wanua.
+• Checked the actual 1.21.0 stock definitions and exercised startup removal, day-one/day-two cleanup, AI redirection and the recurring production dispatchers in a new single-player campaign.
+
+Recurring dispatchers use the existing accelerated eight-day acceptance fixture; this does not claim a naturally elapsed year, a disabled-rule test or an independent save/load matrix. A new single-player game is recommended. Changing holding type can remove Castle-incompatible buildings through normal CK3 behavior. Third-party mods replacing the same keys are not guaranteed compatible. Test fixtures are not included in the download.
+
+相对上一公开版本 1.0.1：
+• 游戏兼容声明从 CK3 1.20.0.3 更新至 1.21.0，工坊兼容分类更新为 1.21 'Florin'。
+• 保留默认开启的【肃清曼荼罗伪信】规则、四份生产脚本、九语本地化与 15 文件发行范围；仅版本描述符变化。
+• 曼荼罗统治者仍在开局、后一日及每月转为村社制；寺庙城寨仍在开局、后两日及每年转为城堡；AI 成功转入曼荼罗后仍立即转回村社制。
+• 核对实际 1.21.0 原版定义，并在新单人局验证开局清除、首日／次日清理、AI 重定向及生产周期调度。
+
+周期调度复用原有八日加速验收夹具，不代表自然等待一年、关闭规则分支或独立保存／载入矩阵已验证。推荐新开单人存档。地产改变可能由原版引擎移除与城堡不兼容的建筑；覆盖同名键的第三方 mod 不保证兼容。测试夹具不包含在下载中。

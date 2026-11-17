@@ -1,0 +1,20 @@
+{
+  "schema": "steam-change-notes-frozen-candidate-v1",
+  "product_key": "remove-mandala",
+  "version": "1.0.2",
+  "previous_version": "1.0.1",
+  "workshop_item_id": "3797711947",
+  "text_file": "workshop/change_notes/remove-mandala/1.0.2.txt",
+  "bytes": 2244,
+  "characters": 1642,
+  "lines": 17,
+  "sha256": "aff904d5c942bb1fb0a4037d817404a11153a741f2ebd77a8d6271494be0d75e",
+  "encoding": "utf-8",
+  "line_endings": "LF",
+  "trailing_newline": false,
+  "status": "BUSINESS_VERIFIED_PENDING_PUBLICATION",
+  "published": false,
+  "release_tag": "remove-mandala-v1.0.2",
+  "release_commit": "44d7693ec12b0ed8b41353c4851aee1e21dc664b",
+  "machine_id": "desktop-3fevhd2-1c74096080"
+}

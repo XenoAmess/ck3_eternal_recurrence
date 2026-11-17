@@ -15,3 +15,8 @@ Open Kaishek 实际 JAR 对四份生产脚本的通用语法 parse 均退出 0�
 当前为源码／软件候选，实机与工坊发布仍 NOT_RUN。后续只更新 canonical Workshop `3797711947`；正式 1.0.2 Notes、公开全文读回、真实缓存加载及永久 changelog 完整后才记发布完成。
 
 首次公共启动尝试 R0001 在创建游戏进程前被门禁拒绝：后台探针已取得当前客户端的 exact-source CEF 离线回执，但旧启动消费者只资格化 native provider。共同门禁现对 CEF 路由重新调用实际 source-qualified／owned background producer，并要求 Steam incarnation、源文件与 CEF endpoint 全部匹配原新鲜回执；Popen 前再次执行相同重验。旧 native producer 的 exact profile／anchor 合同保留。9 项消费者回归及单文件 strict mypy 通过；此修复不授 R0001 实机信用，原拒绝保留。
+
+
+2026-11-17T20:03Z（本机）实际业务已通过：公共 GUI-only `desktop-3fevhd2-1c74096080--remove-mandala--R0003`，正式 tag 的 15 文件与独立夹具挂载。实际规则页默认启用并 Apply，1066 罗贝尔单次 Start；1066-09-15 → 09-23 八日，十个完整 marker 各一次、FAIL0、error.log 0 B。月／年为原 dispatcher 加速检查，不授自然一年或旧档矩阵。实际成功事件与角色页“村社领地”已直接审阅；显式暂停后经游戏菜单“退出到桌面”，原 Popen.wait 返回0，无 WM_CLOSE/STOP，keeper 与 CAS 闭合。公共 verify 的 case_acceptance_pass=true，产品发布仍待完整工坊闭环。R0002 在创建进程前再次被旧 native identity 检查拒绝，后继把该检查保留在 native 分支；新版本 CEF 单测及实际门禁／Popen前重验均通过。
+
+原件：`D:/ck3-state/upgrade-20261118/mrm-business-verification.json`，业务 review SHA `1a704117bf9c247fc5e32e6ae667a57c6b870af094547918473d5c645adb5e59`；实际 debug.log 1,201,033 B／SHA `8352e9e5e59d14d78681bf0c8814d9b804c616e765761ffbce5e443c3aec668c`。初次 EULA 有前后截图与创建时 profile pins，但未取得紧邻点击前 root marker hash；隐私页补齐即时前后 marker hashes，不补造首次缺件。R0002 release summary 误写R0001，真实 task/run identity 仍为R0002，原错误保留。系统 Toast 按既有授权实际设置 HKCU ToastEnabled=0 并读回。
