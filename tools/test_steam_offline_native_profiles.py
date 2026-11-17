@@ -60,6 +60,7 @@ def wire(profile: NativeOfflineProfile) -> tuple[dict[str,object],Reader]:
 class ProfilesTest(unittest.TestCase):
     def test_cef_gate_requires_same_fresh_owned_producer_result(self) -> None:
         value, reader = wire(PROFILE_1112)
+        reader.steam = replace(reader.steam, file_version='11.23.65.88')
         endpoint = EndpointIdentity(12002, '134000000000000002', 8080, 'target',
                                     'https://steamloopback.host/index.html')
         live = ProbeResult('synthetic-profile-machine', str(value['observed_at_utc']),

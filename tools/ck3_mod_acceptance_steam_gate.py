@@ -59,7 +59,6 @@ def validate_observation(value: object, *, machine_id: str, reader: IdentityRead
         raise ValueError('Fresh same-machine background offline observation required')
     if reader.identity(result.steam.pid) != result.steam:
         raise ValueError('Observed Steam incarnation changed')
-    _validated_identity(result.steam)
     if result.observation_method == 'cef_app_getters':
         # Re-observe through the source-qualified, owned background producer.
         # A syntactically valid persisted CEF receipt alone grants no launch.
@@ -70,6 +69,7 @@ def validate_observation(value: object, *, machine_id: str, reader: IdentityRead
                 or live.endpoint != result.endpoint):
             raise ValueError('Qualified live CEF observation no longer matches admission')
         return result
+    _validated_identity(result.steam)
     from steam_offline_native_profiles import select_profile
     profile = select_profile(result.steam.file_version, result.source.bytes, result.source.sha256)
     evidence = result.native_evidence
