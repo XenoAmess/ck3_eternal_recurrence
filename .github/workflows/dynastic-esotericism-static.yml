@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'mod_dynastic_esotericism/**'
+      - 'tools/java-case-handoff/**'
       - 'pom.xml'
       - 'java/ck3-save-core/**'
       - 'tools/ck3_mod_acceptance_prepare.py'
@@ -43,6 +44,7 @@ on:
   pull_request:
     paths:
       - 'mod_dynastic_esotericism/**'
+      - 'tools/java-case-handoff/**'
       - 'pom.xml'
       - 'java/ck3-save-core/**'
       - 'tools/ck3_mod_acceptance_prepare.py'
@@ -110,6 +112,8 @@ jobs:
         run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --verify-maven-evidence-root "%RUNNER_TEMP%\dynastic-esotericism-maven"
       - name: Observe default Maven
         run: mvn --version
+      - name: Verify controller to Root phase ownership and concurrent-control refusal
+        run: mvn --batch-mode --no-transfer-progress -f tools/java-case-handoff/pom.xml -Dcase.handoff.output=${{ runner.temp }}/case-phase-handoff verify
       - name: Install the shared SDK and strict type-check dependencies
         run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 psutil==7.2.2 types-psutil==7.2.2.20260906 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
       - name: Compile and verify the actual product builder and fixture producer
