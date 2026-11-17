@@ -8,6 +8,8 @@
 	NOT = { exists = dynasty }
 	has_trait = giant
 	has_trait = fecund
-	prowess >= 46
-	prowess <= 66
+	# Base 40-60 + giant 6 + Kanuri ethos_bellicose 2. The actual 1.21
+	# tooltip confirmed 60 + 6 + 2 = 68; the former 46-66 omitted culture.
+	prowess >= 48
+	prowess <= 68
 }
