@@ -312,8 +312,23 @@ class SteamNativeTests(unittest.TestCase):
                 del self.plan[field]
             opened.assert_not_called()
 
+    def test_florin_staging_reaches_publication_with_exact_derived_tag(self) -> None:
+        descriptor = self.content / "descriptor.mod"
+        raw = b'supported_version="1.21.0"\n'
+        descriptor.write_bytes(raw)
+        self.plan.update(operation="update", target_item_id="9000000010",
+                         tags=["Gameplay", "Balance ", "1.20 'Crozier'"])
+        self._write_plan()
+        client = FakeSteamClient()
+        result = self._publish(client)
+        self.assertTrue(result["ok"])
+        self.assertIn(("tags", ("Gameplay", "Balance ", "1.21 'Florin'")), client.fields)
+        self.assertEqual(0, client.create_calls)
+        self.assertEqual(1, client.submit_calls)
+        self.assertEqual(raw, descriptor.read_bytes())
+
     def test_unknown_staging_minor_rejected_before_any_SDK_client(self) -> None:
-        (self.content / "descriptor.mod").write_text('supported_version="1.21.0"\n', encoding="utf-8")
+        (self.content / "descriptor.mod").write_text('supported_version="1.22.0"\n', encoding="utf-8")
         with patch.object(steam_native, "_open_client") as opened:
             with self.assertRaisesRegex(steam_native.SteamNativeError, "no confirmed"):
                 steam_native.publish("unused.dll", self.plan_file, self.receipt_file)

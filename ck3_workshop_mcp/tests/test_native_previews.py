@@ -55,7 +55,9 @@ class NativePreviewPlanTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         self.stage = self.root / "staging"
         self.stage.mkdir()
-        (self.stage / "descriptor.mod").write_text('name="Fixture"\n', encoding="utf-8")
+        (self.stage / "descriptor.mod").write_text(
+            'name="Fixture"\nsupported_version="1.20.0.3"\n', encoding="utf-8"
+        )
         self.files = []
         for index in range(3):
             path = self.root / f"new-{index}.png"

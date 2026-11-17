@@ -12,12 +12,26 @@ from ck3_workshop_mcp.compatibility_tags import (
 
 class CompatibilityTagsTests(unittest.TestCase):
     def test_numeric_and_wildcard_descriptor_versions_use_confirmed_minor(self):
-        for version in ("1.20", "1.20.0", "1.20.0.3", "1.20.*", "1.20.*.*"):
-            with self.subTest(version=version):
-                self.assertEqual(
-                    "1.20 'Crozier'",
-                    compatibility_tag_from_descriptor(f'supported_version="{version}"\n'),
-                )
+        for minor, label in (("1.20", "1.20 'Crozier'"), ("1.21", "1.21 'Florin'")):
+            for version in (minor, minor + ".0", minor + ".0.3", minor + ".*", minor + ".*.*"):
+                with self.subTest(version=version):
+                    self.assertEqual(
+                        label,
+                        compatibility_tag_from_descriptor(f'supported_version="{version}"\n'),
+                    )
+
+    def test_florin_uses_staging_and_preserves_descriptor_and_other_tag_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            staging = Path(directory)
+            descriptor = staging / "descriptor.mod"
+            raw = b'\xef\xbb\xbfname="Fixture"\r\nsupported_version="1.21.0"\r\n'
+            descriptor.write_bytes(raw)
+            tags = ("Gameplay", "Balance ", "1.20 'Crozier'", "1.21 mod features")
+            expected = ("Gameplay", "Balance ", "1.21 mod features", "1.21 'Florin'")
+            actual = compatibility_tags_for_staging(staging, tags)
+            self.assertEqual(expected, actual)
+            self.assertEqual(expected, compatibility_tags_for_staging(staging, actual))
+            self.assertEqual(raw, descriptor.read_bytes())
 
     def test_old_versions_replaced_other_tags_preserved_and_idempotent(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -42,7 +56,7 @@ class CompatibilityTagsTests(unittest.TestCase):
             )
 
     def test_unknown_minor_fails_without_fabricating_label(self):
-        for version in ("1.21.0", "2.0"):
+        for version in ("1.22.0", "2.0"):
             with self.subTest(version=version), self.assertRaisesRegex(ValueError, "no confirmed"):
                 compatibility_tag_from_descriptor(f'supported_version="{version}"\n')
 
@@ -63,15 +77,15 @@ class CompatibilityTagsTests(unittest.TestCase):
     def test_future_confirmed_registry_entry_automatically_replaces_old_minor(self):
         with tempfile.TemporaryDirectory() as directory:
             staging = Path(directory)
-            (staging / "descriptor.mod").write_text('supported_version="1.21.0.1"\n', encoding="utf-8")
+            (staging / "descriptor.mod").write_text('supported_version="1.22.0.1"\n', encoding="utf-8")
             # Synthetic registry entry tests extensibility; it is not a real
             # public version label and never leaves this patched test scope.
-            with patch.dict(CK3_WORKSHOP_VERSION_TAGS, {"1.21": "1.21 'Confirmed test fixture'"}):
+            with patch.dict(CK3_WORKSHOP_VERSION_TAGS, {"1.22": "1.22 'Confirmed test fixture'"}):
                 self.assertEqual(
-                    ("Gameplay", "1.21 'Confirmed test fixture'"),
+                    ("Gameplay", "1.22 'Confirmed test fixture'"),
                     compatibility_tags_for_staging(staging, ["Gameplay", "1.20 'Crozier'"]),
                 )
-            self.assertNotIn("1.21", CK3_WORKSHOP_VERSION_TAGS)
+            self.assertNotIn("1.22", CK3_WORKSHOP_VERSION_TAGS)
 
     def test_missing_duplicate_or_malformed_version_fails(self):
         for text in (

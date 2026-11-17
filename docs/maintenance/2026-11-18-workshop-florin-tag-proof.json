@@ -1,0 +1,47 @@
+{
+  "schema": "ck3.migration.workshop-florin-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "base_commit": "52315df59f784da5f338299a497405848a1fa43f",
+  "scope": "Workshop compatible-version registry, real staging derivation and fake publication regression",
+  "official_tag": {
+    "url": "https://steamcommunity.com/workshop/browse/?appid=1158310&section=readytouseitems&browsesort=trend",
+    "observed_at_utc": "2026-11-17T18:18:03.734971Z",
+    "appid": 1158310,
+    "tag_id": "655385",
+    "name": "1.21 'Florin'",
+    "display_name": "1.21 'Florin'",
+    "raw_path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/STEAM-WORKSHOP-FILTER-1.21-RAW01.html",
+    "raw_bytes": 343534,
+    "raw_sha256": "63ed366f1ff731b55e0fd4bba13031bdb3e3ad836990ba16951b9e94d3939eee",
+    "extraction_path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/STEAM-WORKSHOP-FILTER-1.21-EXACT01.json",
+    "extraction_bytes": 1097,
+    "extraction_sha256": "4b59017bfe177afa83df873f0a0170ff2c12c250c5bd3aeef9a2ee00007d68f8"
+  },
+  "source_pins": [
+    {"path": "ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py", "bytes": 3262, "sha256": "2299c70e9400d4e24b2fae07e2c7e5bca4bb4102fd5f31125ff51f13b9c432da"},
+    {"path": "ck3_workshop_mcp/tests/test_compatibility_tags.py", "bytes": 6039, "sha256": "bc9f780895189c21fdb1c552517461fb9e43febe5ed974f4edc50493c7acf937"},
+    {"path": "ck3_workshop_mcp/tests/test_steam_native.py", "bytes": 16854, "sha256": "e75976d9f89c9322f45650ae526011a41a864c86e7b861d258ba21a485df22e7"},
+    {"path": "ck3_workshop_mcp/tests/test_native_previews.py", "bytes": 13125, "sha256": "476a30f6047e81f3309bfe9397067f2170ad6330b0c741e7427994cee13b614e"}
+  ],
+  "regression": {
+    "runner": "Python unittest.defaultTestLoader.discover('ck3_workshop_mcp/tests', top_level_dir='ck3_workshop_mcp') followed by TextTestRunner; PYTHONPATH=ck3_workshop_mcp/src; process-only TEMP/TMP on D",
+    "tests": 86,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 26.571294900029898,
+    "log_path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/MCP-FULL-REGRESSION-FINAL01.log",
+    "log_bytes": 14528,
+    "log_sha256": "2eefeba7cb7d0a67fac05a166988abefbe2fe25c7f0be9ab05e7d5978b076ef9",
+    "earlier_red": "First full discovery: 8 failures and 3 errors from media fixtures missing supported_version; fixed legal legacy fixture only. Final complete run passed."
+  },
+  "typing": {
+    "tool": "mypy 2.4.1",
+    "command": "mypy --strict --follow-imports=silent --no-incremental --cache-dir=nul ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+    "result": "PASS: 1 source file",
+    "excluded_claim": "Full imported-package strict check previously reported four fcntl attribute errors in existing POSIX WAL code; no full-package typing qualification."
+  },
+  "remote_writes": 0,
+  "live_game_qualification": false,
+  "mod_compatibility_or_publication_qualification": false
+}

@@ -15,7 +15,10 @@ from typing import Sequence
 
 # Single registry for both native publication and staging descriptor rendering.
 # Future confirmed minors need only a new entry here; consumers remain unchanged.
-CK3_WORKSHOP_VERSION_TAGS = {"1.20": "1.20 'Crozier'"}
+CK3_WORKSHOP_VERSION_TAGS = {
+    "1.20": "1.20 'Crozier'",
+    "1.21": "1.21 'Florin'",
+}
 _SUPPORTED_VERSION = re.compile(
     r'^\s*supported_version\s*=\s*"([^"\r\n]+)"\s*(?:#.*)?$',
     re.MULTILINE,

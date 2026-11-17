@@ -1,6 +1,6 @@
 # Steam Workshop Compatible Version 自动维护
 
-本项目从 CK3 1.20 开始自动维护工坊的 Compatible Version。该分类对应普通 Steam item tag；当前精确值为 `1.20 'Crozier'`。它是发布版本的兼容声明，实机覆盖范围仍以各产品验收和永久 changelog 为准。
+本项目从 CK3 1.20 开始自动维护工坊的 Compatible Version。该分类对应普通 Steam item tag；registry 已核实 `1.20 'Crozier'` 和 `1.21 'Florin'`。它是发布版本的兼容声明，实机覆盖范围仍以各产品验收和永久 changelog 为准。
 
 ## 机制与单一版本来源
 
@@ -8,7 +8,13 @@
 
 CK3 的[示例物品 3182367229](https://steamcommunity.com/sharedfiles/filedetails/?id=3182367229)右栏显示 `Compatible Version: 1.20 'Crozier'`；其值链接使用[普通 requiredtags 分类筛选](https://steamcommunity.com/workshop/browse/?appid=1158310&browsesort=toprated&requiredtags%5B%5D=1.20+%27Crozier%27&section=readytouseitems)。这是字段机制的证据，不用于推断本项目其他物品已回补成功。2026-10-06 的来源核验、历史 HTTP429/SSL 失败和未写入边界保存在[原始审查](C:/workspace/ck3-upgrade-20261005/steam-compatible-version-primary-audit-agent-01/review-01.json)，6782 bytes，SHA-256 `a34dfbd8f43e2dc2be779e423a757b38fda6ce33d4e3c8a861c5894961cb6c7c`。
 
-兼容值唯一来源是当次正式发布 descriptor.mod 的 `supported_version`，先提取 major.minor，再查[唯一 registry](../ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py)的 `CK3_WORKSHOP_VERSION_TAGS`。`1.20.0.3`、`1.20.*` 和 `1.20` 都映射到当前值。不得从 mod 自身版本号、描述、旧构建常量、源码候选或页面更新时间猜兼容版本。
+兼容值唯一来源是当次正式发布 descriptor.mod 的 `supported_version`，先提取 major.minor，再查[唯一 registry](../ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py)的 `CK3_WORKSHOP_VERSION_TAGS`。`1.20.0.3`、`1.20.*` 和 `1.20` 映射到 Crozier；`1.21.0`、`1.21.*` 和 `1.21` 映射到 Florin。不得从 mod 自身版本号、描述、旧构建常量、源码候选或页面更新时间猜兼容版本。
+
+## 2026-11-18 Florin 迁移
+
+2026-11-17 18:18:03 UTC 只读核对 [CK3 官方 Workshop 分类](https://steamcommunity.com/workshop/browse/?appid=1158310&section=readytouseitems&browsesort=trend)：实际配置的 tag ID 为 `655385`，`name` 与 `display_name` 均为 `1.21 'Florin'`。精确来源、原始响应 pins 和测试范围保存在[迁移证据](maintenance/2026-11-18-workshop-florin-tag-proof.json)。未调用 Steam SDK 或上传接口。
+
+实际 staging 派生和 FakeSteamClient 提交路径均覆盖 1.21；BOM、CRLF、descriptor 原字节及其他 tag 的空格和顺序继续受保护。未知未来 minor 的拒绝用例顺延到 1.22。媒体预览测试夹具只补合法的历史 `supported_version`，生产媒体守卫未调整。完整 MCP 软件回归 86 项通过；这不增加模组的 1.21 实机或公开发布资格。整套系统迁移进度见[总清单](ck3-1.21.0-migration-2026-11-18.md)。
 
 CK3 1.20 以前返回 None，并原样保留标签；公开 1.19 产品不能因为新源码声明 1.20 就提前回补。1.20 及以后遇到未知 minor，或 supported_version 缺失、重复、格式错误时，构建／发布先拒绝。升级到未来 minor 时，先核实其实际 CK3 分类值，再只在上述 registry 增加一次映射；各构建器和原生发布随后自动取新值，不在产品脚本中另建映射。
 
