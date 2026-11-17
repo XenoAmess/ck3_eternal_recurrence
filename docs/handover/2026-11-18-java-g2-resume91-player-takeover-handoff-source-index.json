@@ -1,0 +1,177 @@
+{
+  "schema": "xar.ck3.player-takeover-source-index/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "local_date": "2026-11-18",
+  "state": "STOP_NO_NEW_EXECUTION_PLAYER_TAKEOVER",
+  "user_instruction": "阶段性收尾并提交推送，CK3将更新/用户自己玩",
+  "published_writer_commit": "2ea5cf0f131b2e70db211885cab09008ddf3a326",
+  "runtime_handback": {
+    "game_pid": 178484,
+    "game_exit": 0,
+    "creator_pid": 155432,
+    "creator_terminal": "2026-11-17T16:40:21.767667900Z",
+    "kind": "NATURAL_EXIT/GAME_EXITED",
+    "cleanup_proven": true,
+    "Jobactive": 0,
+    "keeper_exit": true,
+    "old_screen_release": 11900,
+    "temporary_screen_release": 11902,
+    "resources": [],
+    "taskbus_sequence": 11903,
+    "taskbus_state": "waiting/resources[]"
+  },
+  "ledger": {
+    "head": 2003,
+    "canonical": "0ff5baf6b9fd34207e69e3f5aff7871309f3b5996fff5d2d91e1c56a394e17b8",
+    "event2003_sha256": "41259b11189212113d6b72af9b13ab608177cc63c37e3353e2605b8abb4419da",
+    "no_reapply": true,
+    "UNKNOWN_preserved": true,
+    "new_saved_days": 0
+  },
+  "actual_sources": [
+    {
+      "name": "Core",
+      "bytes": 387732,
+      "sha256": "afbae5a5496465076d37c8f8bd22eae179224ab8901a3047e8bc7f6495862ddd",
+      "formal_domain_delta": 7087
+    },
+    {
+      "name": "DriverBootstrap",
+      "bytes": 177250,
+      "sha256": "98ebfa398061b8555d8ae6f89e1946840ae4821533a63dcb307a930a7e672c8c",
+      "formal_rawexact": true
+    },
+    {
+      "name": "RootCommittedDriverSource",
+      "bytes": 21875,
+      "sha256": "ac13114526ee5545b6baeed443f5e4b3b4a59f6b7b84f27897cb5e87cdb0be15",
+      "formal_rawexact": true
+    },
+    {
+      "name": "NativeOutcomeArchive",
+      "bytes": 169105,
+      "sha256": "ffce11d5142b4fdf61d327f355e5022e3c0c1ee83ad423656588c2092b61d15f",
+      "formal_domain_delta": 71
+    }
+  ],
+  "artifacts": [
+    {
+      "role": "production_stage",
+      "path": "committed-restore-pre-read-driver-projection01/FINAL-STAGE-READY02.json",
+      "bytes": 7697,
+      "sha256": "5eb00d6f21936a455dd7c3f559d8e493e3c10d50fe2dcba16b62052b3d9199b7",
+      "root": "java"
+    },
+    {
+      "role": "production_config",
+      "path": "preread148/archive-closure02/CONFIG.json",
+      "bytes": 65727,
+      "sha256": "45c1a52cf8d8495304d7cda4d52ff563d521fadee50587904d40e119be2444ec",
+      "root": "native"
+    },
+    {
+      "role": "production_outputs",
+      "path": "preread148/archive-closure02/actual/prod/OUTPUTS.json",
+      "bytes": 455459,
+      "sha256": "bffde3e63861ba7d5004ee7bd39b6643ed96bbecb912306d7f1d0035bb71ae31",
+      "root": "native"
+    },
+    {
+      "role": "candidate_unexecuted",
+      "path": "input01/COMMITTED2003-P0-PREREAD89-CP208-CANDIDATE01.json",
+      "bytes": 309025,
+      "sha256": "3ec19064ccc3650bf21e13a862568cb02b2b80b79040608609d06e8eac3aa914",
+      "root": "runtime"
+    },
+    {
+      "role": "final_test_repair",
+      "path": "committed-restore-pre-read-driver-projection01/TEST-FRESH-HELLO-PRODUCER-REPAIR-READY04.json",
+      "bytes": 2009,
+      "sha256": "a4585acdd88cbaf74085868a221f2e228fd7c9912c0d3fb9bd659c3ce1e73e88",
+      "root": "java"
+    },
+    {
+      "role": "original_2P1F",
+      "path": "preread148-test01/junit1/reports/TEST-junit-jupiter.xml",
+      "bytes": 37056,
+      "sha256": "90d55a4c08a351b96c6db81f566f4fd3fb86d55a9096ac6c7ea12ef03e2249a8",
+      "root": "native"
+    },
+    {
+      "role": "positive_1P",
+      "path": "preread148-test01/fresh-hello04/junit1/reports/TEST-junit-jupiter.xml",
+      "bytes": 34615,
+      "sha256": "57d5abfb3e743e71cefc9c3303392e3656a7a8d5e928edadb4cb9919435afd6b",
+      "root": "native"
+    },
+    {
+      "role": "main_begin",
+      "path": "logs/COMMITTED2003-MAIN01-BEGIN.json",
+      "bytes": 32149,
+      "sha256": "7c78fd3e7a6974cddec864169ee6423a9e2c493840f9932edbf9738476d7b17a",
+      "root": "runtime"
+    },
+    {
+      "role": "main_end",
+      "path": "logs/COMMITTED2003-MAIN01-TRUE-END.json",
+      "bytes": 2033,
+      "sha256": "5bdcd42a1ce3fe957b69599f76828108d215ad614012e52796af5f6f36917925",
+      "root": "runtime"
+    },
+    {
+      "role": "writer_receipt",
+      "path": "publication3-writer-combined-validation-contract-20261117/PUBLICATION3-WRITER-COMBINED-EXACT-RECEIPT01.json",
+      "bytes": 5653,
+      "sha256": "b58b2cbeaa6fb0fe2031491a3891199842300a88c5722acb87a8eedc79769f04",
+      "root": "java"
+    },
+    {
+      "role": "software_handoff",
+      "path": "preread148/SOFTWARE-PREREAD89-THREE-DISTINCT-PASS-USERSTOP-HANDOFF01.json",
+      "bytes": 3301,
+      "sha256": "6528a7d926df49560086107fbfeef5514a258f5c66f8a4db45f40044c9b382de",
+      "root": "native"
+    },
+    {
+      "role": "runtime_handoff",
+      "path": "logs/USER-HANDOFF-COMPLETED01.json",
+      "bytes": 3371,
+      "sha256": "dc3961ad4c8a76215f332118cee0dceb29ea1ed26771c51ea3c4aac45971857f",
+      "root": "runtime"
+    }
+  ],
+  "qualification": {
+    "production_classes": 89,
+    "old_family_classes": 81,
+    "old_methods": 554,
+    "old_fields": 24,
+    "compile_seconds": 23.935106,
+    "tracked": 466,
+    "primary": 227,
+    "CP": 208,
+    "distinct_software_passes": 3,
+    "single_three_case_green_report": false,
+    "NoGame_only": true,
+    "new_P0_Main": false,
+    "new_Host_Driver_adoption": false,
+    "real60s_effect": "NOT_HELD",
+    "formal_domain_qualification": "PENDING"
+  },
+  "final_test_source": {
+    "path": "D:/r64v0711/java/ck3-control/local-service/src/test/java/org/xar/ck3/control/nativebridge/CommittedPreReadProjectionContractTest.java",
+    "bytes": 8285,
+    "sha256": "62d58dcf2a64f3e2b1f07e3745d11ab95e8c97b754e176a66efcf3baa183159f"
+  },
+  "preserve": [
+    "source307/build307",
+    "UNKNOWN+original deadlines",
+    "savedPair+head2003",
+    "business/CI13 WIP"
+  ],
+  "resume_requires": "Explicit user resume, updated build/DLL/profile/process. Never reuse old source/P/Main/PID.",
+  "roots": {
+    "runtime": "D:/ck3-state/resume91-runtime/samegame-loaded-recovery16-20261117",
+    "native": "D:/ck3-state/resume91-native-integration/life-postcondition-p0-20261112-01",
+    "java": "D:/ck3-state/resume91-java-delivery/exited-game-recovery-20261116"
+  }
+}

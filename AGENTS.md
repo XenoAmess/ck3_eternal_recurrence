@@ -1,5 +1,13 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-18 用户最新：阶段性收尾、提交推送，交还 CK3 手玩与更新
+
+用户明确：“做个阶段性收尾，然后提交推送。ck3过会儿要更新了，我要自己玩了。”这是当前停止新增执行的指令，覆盖下方持续研究及模型代管要求。停止新增源码、编测、模型HTTP、业务worker、Game/Native查询和动作、采样、部署、恢复、装载、launch、GET及新source窗口；仅收束指令前已BEGIN的原作业、正常退出/释放与本次文档Git发表。单纯已签P/Ready不等于已BEGIN。
+
+Runtime独占正常关场，不粗杀、不重旧SAVE/UNKNOWN。原Game已正常GUI Exit to Desktop且取消退出自动保存，原creator已NATURAL_EXIT/cleanup_proven/Jobactive0；keeper退出、旧及临时SCREEN claim均已释放。具体时间、原件和最新阶段见[本次交接](docs/handover/2026-11-18-java-g2-resume91-player-takeover-handoff.md)及[源码证据索引](docs/handover/2026-11-18-java-g2-resume91-player-takeover-handoff-source-index.json)。软件3distinct分批P不授实机新鲜度、Host/Driver采用或SAVE；P0新Main未启动。业务/CI13未发表WIP保留，不混入本次8文档提交。
+
+后续仅在用户明确恢复后继续；先重新核更新后的机器、EXE/build、实际DLL和游戏/profile/lease。不得复用旧PID、source窗口、已消费P、旧Main wrapper或注入地址，不因旧自动游玩授权重占用户会话。原head2003、savedPair、lineage及UNKNOWN事实保持，历史资料按原保护与通用存储策略到期复核。
+
 ## 2026-11-16 用户最新：接手交接并继续 CK3 智能体研究
 
 用户本轮明确：“阅读交接文档，继续推进ck3智能体研究”，并指定下列三份11月16日交接。此指令满足交接要求的休假后明确续行条件，恢复研究、必要实现和增量编测，不再等待一般恢复确认。先核实际机器、当前现场与原件，不能把交接中的历史 PID/head 当作当前状态。
