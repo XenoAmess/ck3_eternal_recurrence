@@ -1,0 +1,892 @@
+From 9c4b1bf999471eedfeaea36dad78c80f5e5d6430 Mon Sep 17 00:00:00 2001
+From: XenoAmess <xenoamess@gmail.com>
+Date: Sun, 25 Oct 2026 16:42:25 +0800
+Subject: [PATCH 1/2] fix(native): bind prisoner source SHA to canonical
+ admitted identity
+
+---
+ .../workflows/prisoner-selected-source.yml    | 55 +++++++++++++
+ ...prisoner_selected_quote_source_12004.cmake | 23 ++++++
+ .../prisoner_quote_readonly_source_12004.hpp  | 18 +++++
+ .../src/ck3_12004_prisoner_mailbox.cpp        |  4 +-
+ ..._selected_quote_source_connected_12004.cpp | 26 ++++++-
+ ...prisoner-selected-source-sha-2026-10-25.md | 15 ++++
+ .../docs/acceptance/R0014-2026-10-25.json     | 77 +++++++++++++++++++
+ 7 files changed, 215 insertions(+), 3 deletions(-)
+ create mode 100644 .github/workflows/prisoner-selected-source.yml
+ create mode 100644 docs/ck3-native-ai/prisoner-selected-source-sha-2026-10-25.md
+ create mode 100644 mod_dynastic_esotericism/docs/acceptance/R0014-2026-10-25.json
+
+diff --git a/.github/workflows/prisoner-selected-source.yml b/.github/workflows/prisoner-selected-source.yml
+new file mode 100644
+index 0000000000..f7cca9b5c5
+--- /dev/null
++++ b/.github/workflows/prisoner-selected-source.yml
+@@ -0,0 +1,55 @@
++name: Prisoner Selected Source Contract
++
++on:
++  push:
++    branches: [master]
++    paths:
++      - 'ck3_autonomous_player/native_bridge/**'
++      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner*'
++      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/player_prisoner_collection_private_transport.py'
++      - 'ck3_autonomous_player/tests/prisoner_selected_quote_source_wire_first.py'
++      - '.github/workflows/prisoner-selected-source.yml'
++  pull_request:
++    paths:
++      - 'ck3_autonomous_player/native_bridge/**'
++      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner*'
++      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/player_prisoner_collection_private_transport.py'
++      - 'ck3_autonomous_player/tests/prisoner_selected_quote_source_wire_first.py'
++      - '.github/workflows/prisoner-selected-source.yml'
++  workflow_dispatch:
++
++permissions:
++  contents: read
++
++jobs:
++  source-wire:
++    runs-on: windows-latest
++    timeout-minutes: 45
++    defaults:
++      run:
++        shell: cmd
++        working-directory: ck3_autonomous_player
++    env:
++      PYTHONDONTWRITEBYTECODE: '1'
++      PYTHONUTF8: '1'
++      PYTHONPATH: ${{ github.workspace }}/ck3_autonomous_player/src
++      GIT_CONFIG_COUNT: '1'
++      GIT_CONFIG_KEY_0: core.longpaths
++      GIT_CONFIG_VALUE_0: 'true'
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-python@v6
++        with:
++          python-version: '3.14'
++      - name: Install shared SDK test dependencies
++        run: python -m pip install mcp==2.0.0 pydantic==2.13.5 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0 psutil==7.2.2
++      - name: Build and consume the actual selected source wire
++        run: |
++          python -B -X utf8 ../tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\prisoner-source-native" --configuration Release --jobs 3 --configure --build --target xar_prisoner_selected_quote_source_12004_test ck3_12003_prisoner_negotiated_preview_test --cmake-define BUILD_TESTING=ON
++          if not "%errorlevel%"=="0" exit /b %errorlevel%
++          "%RUNNER_TEMP%\prisoner-source-native\xar_prisoner_selected_quote_source_12004_test.exe" --prisoner-selected-quote-source-wire-repair-12004 > "%RUNNER_TEMP%\prisoner-source-wire.stdout.txt"
++          if not "%errorlevel%"=="0" exit /b %errorlevel%
++          python -B -X utf8 tests/prisoner_selected_quote_source_wire_first.py --native-stdout "%RUNNER_TEMP%\prisoner-source-wire.stdout.txt" --result "%RUNNER_TEMP%\prisoner-source-wire.result.json"
++          if not "%errorlevel%"=="0" exit /b %errorlevel%
++          ctest --test-dir "%RUNNER_TEMP%\prisoner-source-native" -C Release -R "^(xar_prisoner_selected_quote_source_12004_test|ck3_12003_prisoner_negotiated_preview_test)$" --output-on-failure --no-tests=error
++          if not "%errorlevel%"=="0" exit /b %errorlevel%
+diff --git a/ck3_autonomous_player/native_bridge/cmake/prisoner_selected_quote_source_12004.cmake b/ck3_autonomous_player/native_bridge/cmake/prisoner_selected_quote_source_12004.cmake
+index e0cac31c61..c94d6751f6 100644
+--- a/ck3_autonomous_player/native_bridge/cmake/prisoner_selected_quote_source_12004.cmake
++++ b/ck3_autonomous_player/native_bridge/cmake/prisoner_selected_quote_source_12004.cmake
+@@ -14,3 +14,26 @@ target_sources(xar_ck3_12002_runtime PRIVATE
+   src/prisoner_scope_clone_vector100_12004.cpp
+   src/prisoner_support_predicate_3727580_readonly_12004.cpp
+   src/prisoner_ransom_scope_clone_373acf0_12004.cpp)
++
++# Exercise the shared mailbox seed helper, the production serializer and the
++# existing SDK wire consumer. This fixture adds no runtime callbacks or actions.
++if(BUILD_TESTING)
++  add_executable(xar_prisoner_selected_quote_source_12004_test
++    tests/prisoner_selected_quote_source_connected_12004.cpp
++    src/ck3_12004_prisoner_collection_result.cpp
++    src/player_prisoner_collection_query_v1_private.cpp
++    src/player_prisoner_ransom_wire_v1.cpp
++    src/protocol.cpp)
++  target_include_directories(xar_prisoner_selected_quote_source_12004_test PRIVATE include src research)
++  target_compile_features(xar_prisoner_selected_quote_source_12004_test PRIVATE cxx_std_20)
++  target_link_libraries(xar_prisoner_selected_quote_source_12004_test PRIVATE xar_ck3_12002_runtime)
++  if(MSVC)
++    target_compile_options(xar_prisoner_selected_quote_source_12004_test PRIVATE
++      /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
++  else()
++    target_compile_options(xar_prisoner_selected_quote_source_12004_test PRIVATE
++      -UNDEBUG -Wall -Wextra -Werror)
++  endif()
++  add_test(NAME xar_prisoner_selected_quote_source_12004_test
++    COMMAND xar_prisoner_selected_quote_source_12004_test --prisoner-selected-quote-source-wire-repair-12004)
++endif()
+diff --git a/ck3_autonomous_player/native_bridge/include/xar_bridge/prisoner_quote_readonly_source_12004.hpp b/ck3_autonomous_player/native_bridge/include/xar_bridge/prisoner_quote_readonly_source_12004.hpp
+index 737e5ff07a..e7a0d35b87 100644
+--- a/ck3_autonomous_player/native_bridge/include/xar_bridge/prisoner_quote_readonly_source_12004.hpp
++++ b/ck3_autonomous_player/native_bridge/include/xar_bridge/prisoner_quote_readonly_source_12004.hpp
+@@ -5,6 +5,7 @@
+ #include <limits>
+ #include <optional>
+ #include <string>
++#include <string_view>
+ #include <vector>
+ 
+ #define XAR_HAS_PRISONER_QUOTE_READONLY_SOURCE_12004 1
+@@ -36,6 +37,23 @@ struct PrisonerQuoteSourceFrame12004 {
+   friend bool operator==(const PrisonerQuoteSourceFrame12004 &,
+                          const PrisonerQuoteSourceFrame12004 &) = default;
+ };
++// The game descriptor admits this exact hash using hexadecimal identity. The
++// selected-source wire contract uses its canonical lowercase representation.
++// Validate the supplied identity before writing; an unknown build stays unbound.
++inline bool BindPrisonerQuoteSourceExecutable12004(
++    PrisonerQuoteSourceFrame12004 &frame, std::string_view admitted_sha256) {
++  frame.executable_sha256.clear();
++  constexpr std::string_view expected{kPrisonerQuoteSourceExecutableSha25612004};
++  if (admitted_sha256.size() != expected.size()) return false;
++  for (std::size_t index = 0; index < expected.size(); ++index) {
++    const char input = admitted_sha256[index];
++    const char canonical = input >= 'A' && input <= 'F'
++        ? static_cast<char>(input + ('a' - 'A')) : input;
++    if (canonical != expected[index]) return false;
++  }
++  frame.executable_sha256.assign(expected);
++  return true;
++}
+ inline bool PrisonerQuoteSourceFrameReady12004(const PrisonerQuoteSourceFrame12004 &frame) noexcept {
+   return frame.executable_sha256 == kPrisonerQuoteSourceExecutableSha25612004 &&
+       frame.module_base != 0 && frame.native_revision != 0 && frame.query_sequence != 0 &&
+diff --git a/ck3_autonomous_player/native_bridge/src/ck3_12004_prisoner_mailbox.cpp b/ck3_autonomous_player/native_bridge/src/ck3_12004_prisoner_mailbox.cpp
+index 662dc07db6..095fefcb9e 100644
+--- a/ck3_autonomous_player/native_bridge/src/ck3_12004_prisoner_mailbox.cpp
++++ b/ck3_autonomous_player/native_bridge/src/ck3_12004_prisoner_mailbox.cpp
+@@ -195,7 +195,9 @@ bool ExecutePlayerPrisonerCollection12004(void *opaque,
+     if (query.ordinal < query.collection.returned_count) {
+       const auto prisoner = query.collection.rows[query.ordinal].full_character_id;
+       PrisonerQuoteSourceFrame12004 source_frame{};
+-      source_frame.executable_sha256 = kExecutableSha256;
++      if (envelope->game)
++        (void)BindPrisonerQuoteSourceExecutable12004(
++            source_frame, envelope->game->descriptor().executable_sha256);
+       source_frame.module_base = query.module;
+       source_frame.native_revision = query.collection.frame.native_revision;
+       source_frame.query_sequence = query.source_query_sequence;
+diff --git a/ck3_autonomous_player/native_bridge/tests/prisoner_selected_quote_source_connected_12004.cpp b/ck3_autonomous_player/native_bridge/tests/prisoner_selected_quote_source_connected_12004.cpp
+index 8d443de47f..bbf503b432 100644
+--- a/ck3_autonomous_player/native_bridge/tests/prisoner_selected_quote_source_connected_12004.cpp
++++ b/ck3_autonomous_player/native_bridge/tests/prisoner_selected_quote_source_connected_12004.cpp
+@@ -1,5 +1,6 @@
+ #include "xar_bridge/prisoner_selected_quote_query_capture_12004.hpp"
+ #include "xar_bridge/ck3_12004_prisoner_collection_result.hpp"
++#include "xar_bridge/ck3_12004.hpp"
+ #include <cstring>
+ #include <iostream>
+ #include <stdexcept>
+@@ -56,8 +57,9 @@ struct Graph {
+     Put(vtable, 0x30, std::uintptr_t{0x72000000});
+     rows.fill(reinterpret_cast<std::uintptr_t>(modifier.data()));
+   }
+-  PrisonerQuoteSourceFrame12004 Seed() const {
+-    PrisonerQuoteSourceFrame12004 f{}; f.executable_sha256 = kPrisonerQuoteSourceExecutableSha25612004;
++  PrisonerQuoteSourceFrame12004 Seed(std::string_view executable_sha256 = kExecutableSha256) const {
++    PrisonerQuoteSourceFrame12004 f{};
++    Check(BindPrisonerQuoteSourceExecutable12004(f, executable_sha256), "shared mailbox seed build binding");
+     f.module_base = 0x10000000; f.native_revision = 17; f.query_sequence = 23; f.proof_epoch = 29;
+     f.date_raw = std::int32_t{0}; f.jailer_full_id = std::uint32_t{0x41000001}; f.prisoner_full_id = std::uint32_t{0x41000002};
+     f.same_frame_confirmed = true; return f;
+@@ -81,6 +83,25 @@ struct Graph {
+ };
+ Graph *original_graph = nullptr;
+ std::string cost_wire;
++void CheckExecutableBinding() {
++  Graph graph{};
++  for (const std::string_view sha : {std::string_view{kExecutableSha256},
++      std::string_view{kPrisonerQuoteSourceExecutableSha25612004},
++      std::string_view{"98702f88A547cDe2eAf29a85F93b85F68ee4Cf8148336A4f7aFaeb75319DD518"}}) {
++    Check(graph.Seed(sha).executable_sha256 == kPrisonerQuoteSourceExecutableSha25612004,
++        "known admitted build canonicalized");
++  }
++  const std::string valid{kExecutableSha256};
++  auto wrong = valid; wrong[0] = '0';
++  auto nonhex = valid; nonhex[0] = 'g';
++  auto nonascii = valid; nonascii[0] = static_cast<char>(0xE9);
++  auto nul = valid; nul[0] = '\0';
++  for (const auto &sha : {std::string{}, valid.substr(1), valid + "0", wrong, nonhex, nonascii, nul}) {
++    auto frame = graph.Seed();
++    Check(!BindPrisonerQuoteSourceExecutable12004(frame, sha) && frame.executable_sha256.empty() &&
++        !PrisonerQuoteSourceFrameReady12004(frame), "unknown or malformed build remains unbound");
++  }
++}
+ std::int64_t *OriginalScore(void *context, std::int64_t *output) {
+   auto &g = *original_graph; ++g.calls; g.seen_context = context; g.seen_output = output;
+   *output = -123456; return g.wrong_return ? output + 1 : output;
+@@ -144,6 +165,7 @@ std::string RunRemainingWire() {
+ int main(int argc, char **argv) {
+   if (argc != 2 || std::string_view(argv[1]) != "--prisoner-selected-quote-source-wire-repair-12004") return 64;
+   try {
++    CheckExecutableBinding();
+     const auto wire = RunRemainingWire();
+     std::cout << "SOURCE_WIRE_BEGIN\n" << wire << "\nSOURCE_WIRE_END\n";
+     std::cout << "SOURCE_COST_BEGIN\n" << cost_wire << "\nSOURCE_COST_END\n";
+diff --git a/docs/ck3-native-ai/prisoner-selected-source-sha-2026-10-25.md b/docs/ck3-native-ai/prisoner-selected-source-sha-2026-10-25.md
+new file mode 100644
+index 0000000000..954bbec9b8
+--- /dev/null
++++ b/docs/ck3-native-ai/prisoner-selected-source-sha-2026-10-25.md
+@@ -0,0 +1,15 @@
++# Selected prisoner source frame: canonical executable identity
++
++Observed on `machine_id: desktop-3fevhd2-1c74096080`, 2026-10-25, CK3 1.20.0.4 / build25734779. Original evidence is retained under `C:/ck3-dynastic-esotericism-20261024/common-runtime-a13/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0014`. Review retained evidence by 2026-10-31.
++
++The real selected banishment preview failed in the SDK with `selected prisoner source: actual build`. The collection mailbox seeded its source frame with the global uppercase SHA, while `PrisonerQuoteSourceFrameReady12004` and the SDK selected-source contract require lowercase. The underlying executable identity was the same. This also left the native source samples numerically unqualified; successful preview values did not qualify their source.
++
++The shared mailbox now binds the actual adapter descriptor SHA through `BindPrisonerQuoteSourceExecutable12004`. This helper accepts only the known 64-character ASCII hexadecimal identity, canonicalizes its representation, and clears the binding for an unknown or malformed value. The strict native frame and SDK checks remain in force. Frame revisions, roles and query identities still come from the current collection and quote readers.
++
++The existing connected C++ fixture now uses the same helper with the actual uppercase build constant. It covers lowercase and mixed case, wrong identity, wrong length, nonhexadecimal, non-ASCII and embedded NUL inputs. The registered target serializes the production source wire; the existing `prisoner_selected_quote_source_wire_first.py` consumes that wire through the real SDK transport. The dedicated persistent workflow also runs the existing negotiated-preview fixture.
++
++Implementation is awaiting compilation, the complete workflow command group, and a new live session. These changes do not turn the original R0014 failure into a pass. Original frame/SDK/DLL remain frozen.
++
++R0014 closed with actual Game exit0, host exit1, public run2, keeper allocator0 and SCREEN release sequence8937. Its failure lifecycle completed, with normal-close and business qualification false. The actual frozen allocator failure-resource consumer returned0 for the retained 31-pin closure. This permits administrative continuation only.
++
++Detailed original diagnosis: `C:/ck3-dynastic-esotericism-20261024/R14-runtime-preparation-a13/R14-BANISH-SOURCE-FRAME-DIAGNOSIS.a01.md`, SHA256 `cc02a06698f18dd99f1fc2378c463b2539034bc4f7e49fb4afef21e7bc5c5200`. Failure closure: `C:/ck3-dynastic-esotericism-20261024/R0014-preserved-failure-close-a01/failure-close.json`, 9391 bytes, SHA256 `f564867a00a3fdc3479d1a4c9797bc59329d8b4eedb8b30d888572bf25f259fc`.
+diff --git a/mod_dynastic_esotericism/docs/acceptance/R0014-2026-10-25.json b/mod_dynastic_esotericism/docs/acceptance/R0014-2026-10-25.json
+new file mode 100644
+index 0000000000..0dc692a2e8
+--- /dev/null
++++ b/mod_dynastic_esotericism/docs/acceptance/R0014-2026-10-25.json
+@@ -0,0 +1,77 @@
++{
++  "schema": "des-actual-attempt-summary-v1",
++  "machine_id": "desktop-3fevhd2-1c74096080",
++  "observed_at_utc": "2026-10-25T08:39:05.610622+00:00",
++  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0014",
++  "sdk_source_head": "6241c6134ddb5a166f5c7228f3bf84b178487e74",
++  "actual_passed_root_phases": 2,
++  "required_root_phases": 6,
++  "actual_members_each_natural_day": 63,
++  "verified_dates_raw": [
++    53144376,
++    53144400
++  ],
++  "business_pass": false,
++  "release_pass": false,
++  "failed_tool": "ck3_query_player_prisoner_collection_private_v1",
++  "failure": "selected prisoner source: actual build; uppercase Native seed rejected by strict lowercase contract",
++  "actual_original_exit_codes": {
++    "game": 0,
++    "host": 1,
++    "public_run": 2,
++    "allocator": 0,
++    "public_verify": 2,
++    "failure_resource_consumer": 0
++  },
++  "failure_lifecycle_completed": true,
++  "normal_close_qualified": false,
++  "screen_release_sequence": 8937,
++  "evidence": {
++    "phase1": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a13\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0014\\case-output\\actual-default-cancel-and-create-ui-accepted.json",
++      "bytes": 6304,
++      "sha256": "70c96f79d96d01be7096c4707f2ff14cb2b80f65409f4bf79d695b6df8306ca8"
++    },
++    "phase2": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a13\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0014\\case-output\\actual-members-and-same-faith-input-accepted.json",
++      "bytes": 3147,
++      "sha256": "b151c64bd72e3f35685aa14ad1ad1dad791668a3f9240e11b5de921f8b209eb6"
++    },
++    "normal_close": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a13\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0014\\case-output\\normal-close-result.json",
++      "bytes": 10665,
++      "sha256": "4fdccaca499682e79899ca3bc7eb14c3d982e2585b851bc5e0092c842a3005b5"
++    },
++    "public_run": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a33.actual.json",
++      "bytes": 2222,
++      "sha256": "1f8ea8d56375836a316f5c8c3cbb0ea4681059f02c4ed87621970bca0a58c993"
++    },
++    "allocator": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\allocate-core-a33.actual.json",
++      "bytes": 2491,
++      "sha256": "734c5534dfe5af6456d1b32eb0e33bef993b8f65b0f1a880281e5df37b8660c0"
++    },
++    "screen_release": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0014-screen-release.actual.json",
++      "bytes": 1369,
++      "sha256": "e86b02b13c2054984c1352749665f24d626c7007111f3ab1698e02a1f68efa04"
++    },
++    "public_verify": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0014-public-verify.actual.json",
++      "bytes": 1124,
++      "sha256": "b2725307f214ecbcc8b15b5525479804b8ed6901a4bd020e94b6c1a99583981a"
++    },
++    "failure_resource_closure": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0014-preserved-failure-close-a01\\failure-close.json",
++      "bytes": 9391,
++      "sha256": "f564867a00a3fdc3479d1a4c9797bc59329d8b4eedb8b30d888572bf25f259fc"
++    },
++    "real_failure_consumer": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0014-preserved-failure-close-a01\\actual-consumer.actual.json",
++      "bytes": 13068,
++      "sha256": "32917fc20cc547c20dd0e9c325a05b4ac41fcecd55db3a713a7beb68f08d305c"
++    }
++  },
++  "review_at_utc": "2026-10-31T00:00:00Z"
++}
+-- 
+2.55.0.windows.5
+
+
+From 0e62073e3a1eb96cf3ade16755275d0ff5751592 Mon Sep 17 00:00:00 2001
+From: XenoAmess <xenoamess@gmail.com>
+Date: Sun, 25 Oct 2026 21:58:41 +0800
+Subject: [PATCH 2/2] Record Dynastic Esotericism first release and prepare
+ real-heir validation
+
+Publish 0.1.0 test baseline as item3826991345, preserving remaining acceptance gaps. Support the actual cross-faith primary heir through stock Faith then Rite input and guard the emitted producer path against four semantic mutations.
+---
+ AGENTS.md                                     |   2 +-
+ .../0.1.0-initial-baseline.md                 |  36 +++++++
+ mod_dynastic_esotericism/README.md            |   2 +-
+ .../docs/acceptance/R0015-2026-10-25.json     | 101 ++++++++++++++++++
+ .../first-publication-2026-10-25.json         |  20 ++++
+ .../docs/acceptance/operator-runbook.md       |   8 +-
+ .../docs/delivery-status.md                   |   4 +-
+ mod_dynastic_esotericism/docs/release-plan.md |   2 +
+ mod_dynastic_esotericism/docs/test-plan.md    |   6 +-
+ .../des_acceptance_extended_decisions.txt     |   9 +-
+ .../des_acceptance_extended_l_english.yml     |   2 +-
+ ...des_acceptance_extended_l_simp_chinese.yml |   2 +-
+ .../acceptance/FixtureEmitterTest.java        |  58 +++++++++-
+ tools/ck3_mod_acceptance_products.json        |   2 +-
+ ...ynastic_esotericism_change_notes_0.1.0.txt |   5 +
+ .../dynastic_esotericism_description.bbcode   |   5 +
+ workshop/products.json                        |   8 +-
+ 17 files changed, 256 insertions(+), 16 deletions(-)
+ create mode 100644 docs/release-changelogs/dynastic-esotericism/0.1.0-initial-baseline.md
+ create mode 100644 mod_dynastic_esotericism/docs/acceptance/R0015-2026-10-25.json
+ create mode 100644 mod_dynastic_esotericism/docs/acceptance/first-publication-2026-10-25.json
+
+diff --git a/AGENTS.md b/AGENTS.md
+index 404f0f811e..8b4ee74943 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -79,7 +79,7 @@
+ - `mod_superman_qiang/` — “超人强：越超人越强”原创独立版；Workshop item id：**3812991990**；无上游产品；正式发布只使用其 `tools/build_release.py` 生成的 22 文件 staging。测试方案、实机和发布证据在该模组 `docs/`，永久 changelog 在 `docs/release-changelogs/superman-qiang/`；remote_file_id 仅保留用户目录外层 `.mod`。
+ - `mod_superman_qiang/` — 原创独立版“超人强：越超人越强”；Workshop item ID 待实际首次发布；规则、验收及发布记录在其 `docs/`。正式上传只用其 `tools/build_release.py` 生成的 22 文件 staging，角色经验与六项净属性修正由变量保存，生成文件只改生成器再运行。
+ - `mod_li_yu_dao/` — “礼与道：儒家礼仪与学统 / Rites and the Way”；Workshop item ID：**3817934804**。0.1.0 Beta 为首次公开试玩基线；0.1.2 Alpha 已按用户2026-10-15明确指令发布为内部测试，一期仍未完整验收。正式上传只用其 `tools/build_release.py` 生成的 staging（0.1.2 含 83 文件，排除无有效条目的历史占位；0.1.1 历史发布为 71 文件）；说明见 `workshop/li_yu_dao_description.bbcode`，永久发布记录见 `docs/release-changelogs/li-yu-dao/`，`remote_file_id` 仅保留用户目录外层 `.mod`。[2026-10-15 历史切换证据](skills/steam-ck3-versions/references/qualification-2026-10-15.json)记录某台机器从1.20.1回切至1.20.0.4/build25734779并恢复 Steam 离线，但其 `machine_id: unknown`，所属机器未核实，不能代表当前执行机器。每次实机仍核机器 ID、实际 EXE 与运行时绑定，不因其他机器的版本回切追认本机业务资格，缓存加载不抵扣业务验收。
+-- `mod_dynastic_esotericism/` — “宗族化密教 / Dynastic Esotericism”原创独立版，Workshop ID 待实际首发；需求、测试、研究和实际状态在其 `docs/`。正式上传只用其 Java／Quarkus `tools/` 构建器的显式清单 staging，不上传源目录或验收 fixture。用户于2026-10-24授权按需求→测试方案→编码→验收→发布完成全流程。
++- `mod_dynastic_esotericism/` — “宗族化密教 / Dynastic Esotericism”原创独立版，Workshop ID **3826991345**（0.1.0初始公开测试版；2026-10-25首发，machine_id: desktop-3fevhd2-1c74096080；完整业务继续验证）；需求、测试、研究和实际状态在其 `docs/`。正式上传只用其 Java／Quarkus `tools/` 构建器的显式清单 staging，不上传源目录或验收 fixture。用户于2026-10-24授权按需求→测试方案→编码→验收→发布完成全流程。
+ - `mod_religious_ritual_fusion/` — “宗教礼仪融合 / Religious & Ritual Fusion”原创独立版，`0.1.0-alpha`。Workshop ID **3826756673** 已实际创建，2026-10-25首次内容提交明确失败；本机4-8e1c2f1861清理38.3GB后容量已满足，后继更新因另一台计算机登录导致本机认证失效，在Submit前拒绝，尚未公开发布。后续只更新同一条目，不重复创建。正式上传只用 Java／Quarkus `tools/` 构建器的75文件canonical manifest staging，当前保全a03／`religious-ritual-fusion-v0.1.0-alpha-publish1`。实机整场仍有GAP，发布、来源资格与机器状态见该模组 `docs/publication-0.1.0-alpha-2026-10-25.md`，永久changelog在 `docs/release-changelogs/religious-ritual-fusion/`。
+ - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
+ - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
+diff --git a/docs/release-changelogs/dynastic-esotericism/0.1.0-initial-baseline.md b/docs/release-changelogs/dynastic-esotericism/0.1.0-initial-baseline.md
+new file mode 100644
+index 0000000000..1d7ffb6f80
+--- /dev/null
++++ b/docs/release-changelogs/dynastic-esotericism/0.1.0-initial-baseline.md
+@@ -0,0 +1,36 @@
++# 宗族化密教 0.1.0：初始公开测试基线
++
++2026-10-25T13:28:15.832604Z，machine_id: desktop-3fevhd2-1c74096080。
++
++[Steam 创意工坊 3826991345](https://steamcommunity.com/sharedfiles/filedetails/?id=3826991345)。用户要求先发布，再继续本地验证。实际创建与提交均EResult1；公共API标题、完整说明、公开状态、AppID及三个标签一致。更新日志网页HTTP429待补查，缓存下载/加载及完整业务均未验收。Steam已通过后台原生回执恢复离线。
++
++正式25文件包源于6241c6134ddb5a166f5c7228f3bf84b178487e74，实际manifest SHA ddeb804cb74a0e9b7ea4f0fc15927422966beb89204670448733200cbf7c80f1。复用当前9c4产品字节另有一致性证明，不能改写原构建owner。
++
++首发完整Change Notes：
++
++宗族化密教 0.1.0 — 初始公开版本（initial baseline）
++
++新增
++- 在礼仪创建、改革与编辑的原版教义选择中加入“宗族化 / 无”。原版已有礼仪默认保持“无”。
++- 宗族化礼仪创建对应宗族，创建者及全部在世信徒加入；支持玩家、AI、有地、无地与儿童。
++- 现任家族族长优先交接族长后建族；没有合法交接对象或其他创始人时，生成并保留一名真实同礼仪成年创始人物，因此会增加人物并形成宗族历史。
++- 新改信者迁入对应宗族；已有合法旁支保留家族。重复编辑、关闭后重新开启均复用原宗族。
++- 仍属宗族却背离对应礼仪的人，受到该礼仪其他信徒的一项-100好感修正，并产生监禁、放逐、处决理由。
++- 回归对应礼仪或停止宗族化后撤销本来源的背离规则；后台持续校正不反复刷新已赦免或消耗的犯罪理由。
++- 提供新局初始化与旧档首次启用决议，保存礼仪、宗族与家族的对应关系。
++
++兼容与存档
++- 使用CK3 1.20礼仪系统，沿用原版创建、编辑资格、费用、监禁管辖与处决囚禁要求。
++- 入教会替换人物原有的宗族和家族归属，可能影响继承、族长、宗族声望等玩法；不会改写血缘。
++- 关闭宗族化保留已创建的宗族与人物当前身份，不自动恢复旧家族。
++
++已知范围
++- 其他模组直接改家族的路径可能需要等待周期校正。
++- 多人尚未验收。
++
++当前验证状态
++- 本次先公开发布测试版本，随后继续本地验证。
++- 长期计时、真实继承后的编辑、冷重载与旧档初始化尚未全部验收；修复并验证后更新同一条目。
++
++
++实际依据见[首发记录](../../../mod_dynastic_esotericism/docs/acceptance/first-publication-2026-10-25.json)。后续发现问题，修复并验证后更新同一工坊条目。
+diff --git a/mod_dynastic_esotericism/README.md b/mod_dynastic_esotericism/README.md
+index a67530dc9e..152b9fbd7c 100644
+--- a/mod_dynastic_esotericism/README.md
++++ b/mod_dynastic_esotericism/README.md
+@@ -2,7 +2,7 @@
+ 
+ 独立模组预研目录：`mod_dynastic_esotericism/`；产品 key：`dynastic-esotericism`；拟用脚本前缀：`des_`。
+ 
+-当前为开发候选：游戏脚本、原创图标与工坊预览、Java 正式构建器及测试夹具已实现，离线构建检查已执行；实际游戏业务验收进行中，尚未公开发布或分配 Workshop ID。具体结果以[交付状态](docs/delivery-status.md)与实际回执为准。
++0.1.0 已作为初始公开测试版发布：[Steam 创意工坊 3826991345](https://steamcommunity.com/sharedfiles/filedetails/?id=3826991345)。实际游戏业务验收继续进行，完整矩阵与缓存加载验收尚未通过。具体结果以[交付状态](docs/delivery-status.md)与实际回执为准。
+ 
+ 需求包括：礼仪创建／改革时选择“宗族化”或“无”；宗族化礼仪创建对应宗族，创建者与全部信徒加入；宗族成员背离对应礼仪时，受到该礼仪信徒的一项 `-100` 好感修正，并被视为具有监禁、处决等惩罚理由。
+ 
+diff --git a/mod_dynastic_esotericism/docs/acceptance/R0015-2026-10-25.json b/mod_dynastic_esotericism/docs/acceptance/R0015-2026-10-25.json
+new file mode 100644
+index 0000000000..6ffb631e51
+--- /dev/null
++++ b/mod_dynastic_esotericism/docs/acceptance/R0015-2026-10-25.json
+@@ -0,0 +1,101 @@
++{
++  "schema": "des-actual-attempt-summary-v1",
++  "machine_id": "desktop-3fevhd2-1c74096080",
++  "observed_at_utc": "2026-10-25T12:46:09.555566+00:00",
++  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015",
++  "sdk_source_head": "9c4b1bf999471eedfeaea36dad78c80f5e5d6430",
++  "actual_passed_root_phases": 4,
++  "required_root_phases": 6,
++  "actual_members_first_day": 62,
++  "R15_exact_plus2_saved_observation": false,
++  "actual_observed_member_save_dates_raw": [
++    53144376,
++    53144424
++  ],
++  "business_pass": false,
++  "release_pass": false,
++  "failed_tool": "ck3_open_ingame_decisions_v1",
++  "failure": "Root repeated opener at same public revision after extended_start; exact action claim already existed and guard correctly rejected before native dispatch. Existing SDK/persistence/once rules unchanged.",
++  "correction": "Query original keyed decision tree before opening; if currently visible choose actual item without another opener. Complete plus1/plus2 Saves before phase1 signoff; consume each CaseClient automatic date advance before another manual day.",
++  "actual_original_exit_codes": {
++    "game": 0,
++    "host": 1,
++    "public_run": 2,
++    "allocator": 0,
++    "public_verify": 2,
++    "failure_resource_consumer": 0
++  },
++  "failure_lifecycle_completed": true,
++  "normal_close_qualified": false,
++  "screen_release_sequence": 8968,
++  "Native05_actual_fix_verified": true,
++  "actual_banish_option_mask": 4,
++  "actual_banish_Can": true,
++  "actual_banish_send": false,
++  "actual_directional_product_opinion_counts": [
++    1,
++    1,
++    0,
++    0
++  ],
++  "actual_positive_product_opinion": -100,
++  "future_primary_heir_input_defect_detected_before_execution": true,
++  "evidence": {
++    "phase1": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\case-output\\actual-default-cancel-and-create-ui-accepted.json",
++      "bytes": 3777,
++      "sha256": "348e115880ef99eb6765ea817ddfba4d438a00de4f0341a767ab7e0933c8da8d"
++    },
++    "phase2": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\case-output\\actual-members-and-same-faith-input-accepted.json",
++      "bytes": 2301,
++      "sha256": "95f23e008c300cce5432016c52919bb08eacf48b617b18051b62a4b9fdd98c01"
++    },
++    "phase3": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\case-output\\actual-same-faith-crime-direction-and-cross-faith-input-accepted.json",
++      "bytes": 2638,
++      "sha256": "63a8b9afeb37472cb00061a47fbca34c87edda8542ec7e592c9e5b1c7199f6d8"
++    },
++    "phase4": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\case-output\\actual-cross-faith-crime-and-repentance-input-accepted.json",
++      "bytes": 1616,
++      "sha256": "3f3ee69e2e6cda5e986ab71dbe29f53a8a21267ece4c9995e81941b766a9b621"
++    },
++    "timing_gap": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\operator-evidence\\r15-member-observation-timing-gap-a01.json",
++      "bytes": 995,
++      "sha256": "95f94fc0f1d41551bc2e9d1982142f1f2dc4454d49bcb8059cb41bfdb4c2ac8d"
++    },
++    "failure": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\operator-evidence\\r15-second-open-a01.actual.json",
++      "bytes": 1882,
++      "sha256": "a012371f5ab5a684df6caac1634267d17cf3c3a533edb4507027803deffeb21c"
++    },
++    "banish": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\operator-evidence\\r15-control-banish-preview-a01.actual.json",
++      "bytes": 71254,
++      "sha256": "30aa3a475a393681ea81842056c1fe05f8d17f5af3c56fe808d92b19ae108af0"
++    },
++    "directional_opinions": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\operations-r15-opinion-pairs-a01\\SELECTED-PAIRS.actual.json",
++      "bytes": 12665,
++      "sha256": "2a17257f001afad7b516d0f7d385525451ef31cc9fd7c8b474b5e3209eba2195"
++    },
++    "closure": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0015-preserved-failure-close-a01\\failure-close.json",
++      "bytes": 9533,
++      "sha256": "f9c58de37bcfe3ecb1b867b8a1dbed81b0bbb54db72e879d1b2d983b268c9684"
++    },
++    "closure_consumer": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0015-preserved-failure-close-a01\\actual-consumer.actual.json",
++      "bytes": 13198,
++      "sha256": "f7c7424291b249f28f60c8cf1c8299dd2de4d37cebaaf27958b5d64bf5c630d0"
++    },
++    "primary_heir_contract_review": {
++      "path": "C:\\ck3-dynastic-esotericism-20261024\\R15-primary-heir-contract-review-a01\\REVIEW.actual.json",
++      "bytes": 11745,
++      "sha256": "d74ad2213be48bb04bd192d00408d88f01b49ad91df19a9476a5f16abe3695ee"
++    }
++  },
++  "review_at_utc": "2026-10-31T00:00:00Z"
++}
+diff --git a/mod_dynastic_esotericism/docs/acceptance/first-publication-2026-10-25.json b/mod_dynastic_esotericism/docs/acceptance/first-publication-2026-10-25.json
+new file mode 100644
+index 0000000000..9b79f0ddf5
+--- /dev/null
++++ b/mod_dynastic_esotericism/docs/acceptance/first-publication-2026-10-25.json
+@@ -0,0 +1,20 @@
++{
++  "machine_id": "desktop-3fevhd2-1c74096080",
++  "published_at_utc": "2026-10-25T13:28:15.832604+00:00",
++  "workshop_item_id": "3826991345",
++  "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3826991345",
++  "version": "0.1.0",
++  "create_result": 1,
++  "submit_result": 1,
++  "public_title_description_visibility_app_tags_verified": true,
++  "change_notes_public_readback": "HTTP429_PENDING",
++  "cache_acceptance": "NOT_RUN",
++  "full_business_acceptance": false,
++  "upload_source_head": "6241c6134ddb5a166f5c7228f3bf84b178487e74",
++  "SDK_native_source_head": "9c4b1bf999471eedfeaea36dad78c80f5e5d6430",
++  "formal_files": 25,
++  "upload_evidence": "C:\\ck3-dynastic-esotericism-20261024\\first-publication-a01\\create-receipt.json",
++  "public_api_evidence": "C:\\ck3-dynastic-esotericism-20261024\\first-publication-a01\\anonymous-item-raw-a02.json",
++  "offline_restored_evidence": "C:\\ck3-dynastic-esotericism-20261024\\first-publication-a01\\STEAM-OFFLINE-RESTORED.actual.json",
++  "user_order": "Publish first, then continue local validation; fix and validate before later same-item updates."
++}
+diff --git a/mod_dynastic_esotericism/docs/acceptance/operator-runbook.md b/mod_dynastic_esotericism/docs/acceptance/operator-runbook.md
+index 12d26ed7c4..1b8f291638 100644
+--- a/mod_dynastic_esotericism/docs/acceptance/operator-runbook.md
++++ b/mod_dynastic_esotericism/docs/acceptance/operator-runbook.md
+@@ -73,7 +73,9 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
+ 
+ 控制器会打印 `CK3_ROOT_CHECKPOINT <run>/case-output/<phase>-awaiting.json`。Root 先读取该文件的实际 snapshot、要求、原始 hold deadline，再提交原生操作。控制器此时保持同一会话；每个公开队列计划必须用新的文件名与 step ID。
+ 
+-创建后的 capture 决议仅提交一次，保留独立后态。新 fixture 的实验等待为 +2 日：Root 在 capture 后真实 +1、+2 自然日分别固定完整原生成员名单及保存，按本场实际 ID 对照 House→Dynasty 和 stock 回调标记；不复用 R0009 的成员 ID，不以单一 flag 授资格。只消费原 `binding_and_members` 全量守卫；+2 未同步或其他原守卫失败仍为 FAIL，不延后等待周期修复、不补写产品状态、不重放 capture。两次读回计入原 deadline／400 日预算。R0009 不追认，REQ-05 普通转换同次同步另按原要求验收。
++创建后的 capture 决议仅提交一次，保留独立后态。新 fixture 的实验等待为 +2 日：Root 必须在签认 phase 1 前，先于 capture 后真实 +1、+2 自然日分别固定完整原生成员名单、同帧 Save／原 SDK pin／保全副本，并完成独立解码核图；签认后先消费控制器自动推进、重新读取实际日期，再决定是否推进下一日。按本场实际 ID 对照 House→Dynasty 和 stock 回调标记；不复用 R0009 的成员 ID，不以单一 flag 授资格。只消费原 `binding_and_members` 全量守卫；+2 未同步或其他原守卫失败仍为 FAIL，不延后等待周期修复、不补写产品状态、不重放 capture。两次读回计入原 deadline／400 日预算。R0009 不追认，REQ-05 普通转换同次同步另按原要求验收。
++
++R0015（`machine_id: desktop-3fevhd2-1c74096080`）只固定了 +1（1066.9.17）和 +3（1066.9.19）的成员 Save；+2 时点未保存，原缺口与签认保留，不能把 +3 充当 +2 证据。
+ 
+ R0013已实际通过前两阶段、两日全部61名成员归族及两种head建族分支，但第三阶段的合法囚犯预览未完成。Game／host实际0，public2、keeper／allocator0、SCREEN8892；normal-close=true仅生命周期。后继不修改其冻结图，不重复提交其动作，不把原监禁查询的`can_send=true`当作监禁已生效。原件见[R0013](R0013-2026-10-25.json)。
+ 
+@@ -81,6 +83,8 @@ R0013已实际通过前两阶段、两日全部61名成员归族及两种head建
+ 
+ 保存并独立核对control身份与Root的实际监禁关系，再查询原`execute_prisoner_interaction`的完整当前预览。驱逐必须使用`release_from_prison_interaction`的`banish`选项；不存在独立的`banish_interaction`。新图仅在实际DLL的两项囚犯只读编译开关、来源／ABI及本core的宿主权限都资格化后，通过既有`ck3_query_player_prisoner_collection_private_v1`传`release_option_keys=["banish"]`（原合同mask=4）。读取实际control行、精确所选flag、原完整Can及成本／接受度和同一暂停帧；工具注册、编译或ACK不能代替这些读回。执行与驱逐均只预览，不发送；保留全部action开关关闭。接口不可用、仍非Root囚犯、选项映射不符或原Can拒绝时如实保留未验，不用默认释放预览抵扣。
+ 
++普通囚犯交互菜单先查询本场实际 keyed scripted-widget tree 与可见状态；菜单已显示时直接选择当前实际 key，不在同 revision 再调用 opener。只有菜单尚未显示且原生通道可用时才提交一次打开请求，随后独立 query。R0015 的同 revision 重复 opener 被 once 守卫正确拒绝，属于调用顺序错误；不修改 SDK、一次性或持久化合同，不重放已提交或结果未知的打开动作。
++
+ 主目标的−100唯一来源和三类理由另按原要求核对，非礼仪观察者的负例方向必须是`outsider→apostate`，不能用`Root→outsider`或反向记录替代。完成囚犯预览及上述读回后，才调用原跨信仰输入决议并签认phase 3。新增control不进入继任者迁移白名单，不改原23个marker含义；core新增`prisoner_control_ready`后共24个必需marker，其他case仍保留各自原输入及范围。
+ 
+ ### 两位真实 head 的后继 core 顺序（候选，未授继承资格）
+@@ -90,7 +94,7 @@ R0013已实际通过前两阶段、两日全部61名成员归族及两种head建
+ phase 1–4 按原要求完成；phase 5 从 `repentance` 就绪后按以下顺序执行，Root 必须始终读取本次 awaiting 原要求与原 deadline：
+ 
+ 1. **先在旧 Root 上完成全部长程路径**：`des_acceptance_extended_start_decision`；`des_acceptance_second_rite_decision` 后真实 31 日；`des_acceptance_cross_rites_decision`／`des_acceptance_cross_migration_decision` 后各真实一日；`des_acceptance_stock_crime_decision`／`des_acceptance_stock_repent_decision` 后各真实一日；实际出生再推进恰好一日并独立验证身份／归属／有资格者知识；生成、合法旁支、外改 House 校正、原 timer 的真实 61 日与两次 callback 证据。最后也须完成原 `des_acceptance_founder_death_decision` 的**第二位 NPC founder 死亡后真实 31 日**，可在 second_verified 后与其他计时重叠，但不能以稍后的玩家死亡替代。此时不执行 pardon_prepare，不先开关教义。
+-2. 新 step 执行 `des_acceptance_primary_heir_prepare_decision`，pin 真实 `primary_heir`、前任及原主头衔；只公开执行 stock 同 Faith Rite 输入，不能设置其 Dynasty／House／产品绑定。至少经过一个实际自然日（`current_date > des_test_heir_input_date`，不是要求恰好一日）后调用 `des_acceptance_primary_heir_readback_decision`，并独立保存 native／Save 的 heir 身份、存活成年、当前继承资格及实际 Rite／Dynasty／House。缺失、未成年、继承改变或不合格均为 NOT_READY，不能造继承人。
++2. 旧 Root 全部长期 observer 通过后，新 step 执行 `des_acceptance_primary_heir_prepare_decision`，pin 当前真实 `primary_heir`、前任及原主头衔。继承人 Faith 不同时公开执行 stock `set_character_faith = root.faith`，随后执行 `set_character_rite = root.rite`；不预先要求同 Faith，不另选继承人，不设置其 Dynasty／House／产品绑定。若该继承人也是旧后代负例，先固定其仍未改信且未被连带迁族的历史证据；本次主动改信之后不再把它标为未改信负例。至少经过一个实际自然日（`current_date > des_test_heir_input_date`，不是要求恰好一日）后调用 `des_acceptance_primary_heir_readback_decision`，并独立保存 native／Save 的 heir 身份、存活成年、当前继承资格及实际 Rite／Dynasty／House。缺失、未成年、继承改变或不合格均为 NOT_READY，不能造继承人。
+ 3. 对当前真实旧 head 执行 `des_acceptance_edit_input_prepare_decision` → `des_acceptance_edit_input_readback_decision`。它们只复用空槽原版司祭／神学傀儡 helper；没有清理冲突或重置 once flag 的权限。编辑资格与创建资格分开，创建后 aggregate create-ready 不能当作 edit-ready。通过下文通用礼仪操作真实选择 None，验证实质变化、完整 Can 与报价，prepare／confirm 各一次，按事件规则处理后独立 verify，再 `des_acceptance_closed_readback_decision`；固定同一 Rite／绑定 Dynasty。
+ 4. 旧 Root 的全部 observer 与 closed 原件齐全后，`des_acceptance_primary_death_stage_decision` 只安排一次次日 stock death。使用现有事件边界原生 advance，并显式允许观察 actor 改变；返回后先处理实际事件，再独立确认可用暂停帧。不要预先认为 title heir 就是 Rite head，不重置 clock 或原 deadline。
+ 5. 先从实际 native 和独立 Save 固定四项证据：`actual_predecessor_death_and_primary_title_succession`、`actual_current_player_is_the_pinned_living_primary_heir`、`actual_same_primary_rite_and_bound_dynasty_survive`、`actual_native_current_rite_head_is_the_successor`。再调用 `des_acceptance_successor_readback_decision`，其脚本必要条件还核原 title holder／primary title、olddead、真实新 head 与绑定；它不等待额外 fixture 事件，不设置玩家／head。唯一新增 marker 是 `DESAF: TEST PASS actual_primary_heir_successor`。四证据同时列于 phase 5 requirements，不能依赖可能未触发的 dead-player fallback。
+diff --git a/mod_dynastic_esotericism/docs/delivery-status.md b/mod_dynastic_esotericism/docs/delivery-status.md
+index 9e5c79b4b3..535f0162c5 100644
+--- a/mod_dynastic_esotericism/docs/delivery-status.md
++++ b/mod_dynastic_esotericism/docs/delivery-status.md
+@@ -1,5 +1,7 @@
+ # 制作与发布状态
+ 
++观察2026-10-25T13:30:38.536581Z（machine_id: desktop-3fevhd2-1c74096080）：按用户最新“先发布，再继续本地验证”指令，0.1.0初始公开测试版已发布到[Steam创意工坊3826991345](https://steamcommunity.com/sharedfiles/filedetails/?id=3826991345)。CreateItem与SubmitItemUpdate均实际EResult1，公共API读回公开状态、标题、完整说明、AppID与三个标签一致；更新日志网页HTTP429尚待补查，缓存下载/加载验收未执行。后台原生回执已确认恢复Steam离线。R0015签署核心前四阶段，保留+2日全员保存缺口；Root在同一revision重复打开已打开的决策菜单，被SDK正确拒绝，业务失败及闭场原件保留。后续先修复继承输入夹具和操作顺序，再继续长期、继承、cold/old验证；修复并验证后更新同一条目。完整业务未通过。见[首发实际记录](acceptance/first-publication-2026-10-25.json)、[R0015](acceptance/R0015-2026-10-25.json)。
++
+ 观察2026-10-25T02:55:27Z（machine_id: `desktop-3fevhd2-1c74096080`）：R0013实际通过核心前两阶段；创建后+1、+2日各61名原生信徒均由保存独立核为House12760→Dyn12156，未改信后代仍为House174→Dyn174。原族长交接给真实旧家族成员后建族，以及singleton生成并保留真实同礼仪成年创始人，两条分支均取得实际保存后态。正式创建、取消无副作用、两个教义的创建／编辑显示也通过。第三阶段尚缺合法囚犯的处决／驱逐选项预览，Root如实返回INCOMPLETE，没有提交不支持的监禁动作。Game0、host0、public2、keeper／allocator0、SCREEN8892，normal-close=true仅生命周期，完整核心仍未通过。当前总体约62%，完整矩阵、seed／cold／old和Workshop尚未完成。见[R0013实际证据](acceptance/R0013-2026-10-25.json)。下列较早观察保留其历史范围。
+ 
+ 观察2026-10-25T00:03:25.441948+00:00（machine_id: `desktop-3fevhd2-1c74096080`）：R0012已完成typed原生退出与资源闭场，业务0/6；原失败和autosave=false保留。e703产品静态CI40143646790实际success。新候选统一canonical source index并显式保历史只读兼容；原请求者优先卸任、singleton生成真实NPC，以及stock家庭转换同callback共享同步均纳入新源码。18文件开发包／25文件九语清单已同步，完整回归、a15工具／a16新包／runtimea12和全部实机矩阵仍在执行，不能拿旧产物抵扣。当前总体约60%，seed/cold/old与Workshop尚未完成。以下为各观察时间的历史记录。
+@@ -22,7 +24,7 @@
+ | 测试方案 | 已制定版本 1，尚未授予测试通过 | [test-plan.md](test-plan.md) |
+ | 编码 | 18de31e4源码的交接／singleton真实NPC及家庭转换同步已在R0013取得实际后态；现有囚犯预览通道与测试输入仍须补齐 | [R0013](acceptance/R0013-2026-10-25.json)、[测试方案](test-plan.md) |
+ | 测试验收 | R0013核心2/6阶段通过，全体61人两日核对与两种建族分支通过；第三阶段未完整验收，核心整体INCOMPLETE。seed/cold/old未完成 | [R0013实际范围](acceptance/R0013-2026-10-25.json) |
+-| 发布 | NOT_PUBLISHED，Workshop ID 未分配 | 待业务验收及正式发布闭环 |
++| 发布 | 0.1.0初始公开测试版已发布，Workshop ID 3826991345；继续本地验证，缓存与完整业务未通过 | [首发实际范围](acceptance/first-publication-2026-10-25.json) |
+ 
+ 2026-10-24T21:15Z补记（北京时间05:15，machine_id: `desktop-3fevhd2-1c74096080`）：用户提出卸任家族族长再建新宗族。已核 exact .4 原版 `set_house_head` 会同步重算 Dynast；窄生产候选优先已有合格真实信徒，无人时才让另一存活同旧House人物接任，并在实际双重离任守卫后建族。旧House只有本人时仍未解决，不默认新建NPC，等待用户对该边界的选择。见[原版来源、影响和待验边界](2026-10-25-house-head-handover.md)。新S11候选61b4b05不改SDK/native，完整默认Maven16项0失败/错误/跳过及15资源、17文件开发包/ZIP/13文件fixture实际生产链通过，回执 `C:/ck3-dynastic-esotericism-20261024/resume-builder-a12/SUMMARY.actual.json`，SHA `b0977cbc628e5c2c9021774fe48c706e7846ab1f15baaa3db8da06bf1b181076`。当前新增交接路径尚未实机，不能从构建或研究追认通过；下一图准备还将检查能否以真实输入触发fallback。R0009公共verify已实际退出2，case_acceptance_pass及qualified_boundary_pass为false，原normal_close=true仅生命周期继续保留。
+ 
+diff --git a/mod_dynastic_esotericism/docs/release-plan.md b/mod_dynastic_esotericism/docs/release-plan.md
+index 8397eb8669..c6373f2579 100644
+--- a/mod_dynastic_esotericism/docs/release-plan.md
++++ b/mod_dynastic_esotericism/docs/release-plan.md
+@@ -1,5 +1,7 @@
+ # 0.1.0 首次发布准备
+ 
++2026-10-25T13:30:38.536581Z补记，machine_id: desktop-3fevhd2-1c74096080：用户明确改为“先发布，然后继续本地验证；有问题修复验证后更新”。该最新指令取代下文历史草案的完整业务先行顺序。现已公开首发0.1.0测试版，Workshop ID 3826991345；实际Create/Submit EResult1，公共API全文/可见性/标签一致，Steam后台确认恢复离线。完整业务、缓存验收仍未通过，公开Change Notes页HTTP429待补查。首发实际正式包来源6241c6134ddb5a166f5c7228f3bf84b178487e74，25文件，manifest未预填tag；历史构建来源不改写。后续同条目更新仍须修复后验证。见[首发实际记录](acceptance/first-publication-2026-10-25.json)。
++
+ 状态：DRAFT／NOT_PUBLISHED。产品 Workshop ID 未分配，不预填其他产品 ID；用户本次已明确授权测试验收后发布。
+ 
+ 标题拟用“宗族化密教 / Dynastic Esotericism”；描述源为 [BBCode](../../workshop/dynastic_esotericism_description.bbcode)，完整更新说明源为 [Change Notes](../../workshop/dynastic_esotericism_change_notes_0.1.0.txt)。当前文字描述目标行为；业务验收后按真实结果复核并冻结，不能以草稿推导已发布事实。
+diff --git a/mod_dynastic_esotericism/docs/test-plan.md b/mod_dynastic_esotericism/docs/test-plan.md
+index 0e51bd7a53..275927a636 100644
+--- a/mod_dynastic_esotericism/docs/test-plan.md
++++ b/mod_dynastic_esotericism/docs/test-plan.md
+@@ -48,7 +48,9 @@
+ 
+ 人数、Rite／Dynasty／House 对象、角色当前归属、好感逐项来源、`has_imprisonment_reason`／`has_execute_reason`／`has_banish_reason` 与交互最终理由须来自实际原生读回、游戏保存内容或实际界面。解析错误、raw key、错误罪行方向、跨派污染和未移除的本来源均为业务失败；fixture／宿主故障单独分类并保留原回执。
+ 
+-2026-10-25，`machine_id: desktop-3fevhd2-1c74096080`：R0009 的原 `binding_and_members` FAIL 保留。下一轮 capture 后的原 `des_acceptance.2` 改在真实 +2 日检查，仅用于区分原版转换与 `on_rite_change` 的完成时序；生产同步、全成员量词及 REQ-05“同次同步”不变。这不是两日产品时限或修复通过。Root 须在真实 +1、+2 日分别读取完整原生成员集合及同帧保存，逐 ID 对照 Rite／Faith、存活、实际 House→Dynasty 和 stock `changed_rite_flag` 原始 presence／value／tick，保留新增／消失及原 House。缺失、null、false 不合并，不以不同 House 直接推断不同 Dynasty。单个 flag 不能独立证明本次回调时点。+2 仍有任何活成员未归族或原必要守卫失败即保持 FAIL，不等周期校正、不补写状态、不筛除新增者；即使 +2 后态通过，也不能替代 LIVE-04 的普通转换时序验收。详见 [R0009 原件摘要](acceptance/R0009-2026-10-25.json)。
++2026-10-25，`machine_id: desktop-3fevhd2-1c74096080`：R0009 的原 `binding_and_members` FAIL 保留。下一轮 capture 后的原 `des_acceptance.2` 改在真实 +2 日检查，仅用于区分原版转换与 `on_rite_change` 的完成时序；生产同步、全成员量词及 REQ-05“同次同步”不变。这不是两日产品时限或修复通过。Root 须在签认 phase 1 之前，先于真实 +1、+2 日分别读取完整原生成员集合及同帧保存并完成独立解码核图；签认后先消费 CaseClient 的自动推进并查询实际日期，再决定下一次 advance。逐 ID 对照 Rite／Faith、存活、实际 House→Dynasty 和 stock `changed_rite_flag` 原始 presence／value／tick，保留新增／消失及原 House。缺失、null、false 不合并，不以不同 House 直接推断不同 Dynasty。单个 flag 不能独立证明本次回调时点。+2 仍有任何活成员未归族或原必要守卫失败即保持 FAIL，不等周期校正、不补写状态、不筛除新增者；即使 +2 后态通过，也不能替代 LIVE-04 的普通转换时序验收。详见 [R0009 原件摘要](acceptance/R0009-2026-10-25.json)。
++
++2026-10-25，`machine_id: desktop-3fevhd2-1c74096080`：R0015 的真实 +1 Save 为 1066.9.17，后继保存已到 +3 的 1066.9.19；phase 1 签认后的自动一日推进与额外 advance 之间没有固定 +2 Save。保留该缺口，不能以 +3 改标签补签 +2 的同帧存档证明，也不修改原签认或回执。
+ 
+ 真正多人场景尚无预先资格，不以单人多角色控制宣称多人通过；首次发布如未进行多人验收，明确标注“多人未验收”。其余上述首版核心功能未通过时不公开发布完整功能版本。
+ 
+@@ -82,7 +84,7 @@ core 原始 JSON 本身是 adapter 配置。现有三个策略字段放在它的
+ 六个 phase、旧 required assertions 和原 marker 含义全部保留。phase 1–4 仍完成默认／取消／真实创建、成员、同 Faith／跨 Faith 背离、罪行方向及悔改。phase 5 的内部顺序调整为：
+ 
+ 1. **旧 Root 存活且仍为玩家时先做完长程观察**：`des_acceptance_extended_start_decision`、第二 Rite 31 日、cross-rites／migration、独立 stock crime 加 repentance、实际出生再推进恰好一日、生成／合法旁支／外改 House 校正、原 61 日 timer 证据，以及**既有第二位 NPC founder 死亡后真实 31 日稳定性**。第二 founder 证明不能被新的玩家死亡替代。所有 observer、真实日期与原 actor 证据在转移前固定；允许时间重叠不保证预算足够。
+-2. `des_acceptance_primary_heir_prepare_decision` pin 真实前任／primary heir／primary title，仅以公开 stock `set_character_rite` 输入让真实继承人进入已创建的同 Faith Rite。至少经过一个实际自然日后，`des_acceptance_primary_heir_readback_decision` 重验继承人仍相同、存活成年、实际继承资格及自然形成的 Rite／Dynasty／House；另留 native 与独立 Save 读回。不能设置其 House／Dynasty 或产品绑定；未成年、失位、缺失或不合格为 NOT_READY。
++2. `des_acceptance_primary_heir_prepare_decision` 在全部前任长期观察完成后 pin 真实前任／primary heir／primary title，不预先要求继承人与 Root 同 Faith。继承人 Faith 不同时公开执行 stock `set_character_faith = root.faith`，随后执行 `set_character_rite = root.rite`，由共享产品路径自然形成宗族／家族归属。若该真实继承人也是旧后代负例，只保留此公开输入之前未被连带迁族的历史证明；主动改信后不能继续称其未改信。至少经过一个实际自然日后，`des_acceptance_primary_heir_readback_decision` 重验继承人仍相同、存活成年、实际继承资格及自然形成的 Rite／Dynasty／House；另留 native 与独立 Save 读回。不能设置其 House／Dynasty 或产品绑定；未成年、失位、缺失或不合格为 NOT_READY。
+ 3. 对实际旧 head 执行 `des_acceptance_edit_input_prepare_decision` → `des_acceptance_edit_input_readback_decision`，只复用原空槽神学傀儡准备并读回真实关系。编辑 readiness 与创建 readiness 分开；创建后 `can_create_rite_trigger=false` 不等于不可编辑。实际选择 None，验证实质草案变化、完整原生 Can／报价，确认一次并独立核 closed、同 Rite／Dynasty。
+ 4. 所有旧 Root observer 完成且 closed 已证实后，`des_acceptance_primary_death_stage_decision` 一次安排次日 stock death；用已有事件边界推进观察真实转换。先从 native 与独立 Save 证明上述四项，再调用 `des_acceptance_successor_readback_decision`。它没有选择／设置玩家或 head 的功能，不等待额外 fixture 事件；缺少自动续行的可用原生帧、要求未支持的 Continue 或新玩家不是实际 head 均停止为真实未合格，不改原版一次限制。
+ 5. 在真正新 head 上再次执行同一 edit prepare／readback，独立确认其 `has_edited_a_rite` 未用过；不清除、复制或伪造原版 once flags。实际选择 Dynastic、完整 Can／报价、确认一次、处理真实事件并独立核 reopened 与原绑定复用。
+diff --git a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt
+index a4b9abbb83..bf1be58cc6 100644
+--- a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt
++++ b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt
+@@ -271,7 +271,6 @@ des_acceptance_primary_heir_prepare_decision = {
+                         is_adult = yes
+                         is_incapable = no
+                         NOT = { this = root }
+-                        faith = root.faith
+                         NOT = { has_variable = has_edited_a_rite }
+                     }
+                 }
+@@ -280,7 +279,13 @@ des_acceptance_primary_heir_prepare_decision = {
+                 set_variable = { name = des_test_ref_primary_title value = primary_title }
+                 set_variable = { name = des_test_heir_input_date value = current_date }
+                 add_character_flag = des_test_primary_heir_prepared
+-                primary_heir = { set_character_rite = root.rite }
++                primary_heir = {
++                    if = {
++                        limit = { NOT = { faith = root.faith } }
++                        set_character_faith = root.faith
++                    }
++                    set_character_rite = root.rite
++                }
+                 debug_log = "DESAF: PREPARATION stock_primary_heir_rite_input"
+             }
+             else = { debug_log = "DESAF: NOT_READY actual_primary_heir_input" }
+diff --git a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_acceptance_extended_l_english.yml b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_acceptance_extended_l_english.yml
+index fbd299dca0..c9736ef4dc 100644
+--- a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_acceptance_extended_l_english.yml
++++ b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_acceptance_extended_l_english.yml
+@@ -52,7 +52,7 @@
+  des_acceptance_legacy_after_decision_confirm: "Perform this disclosed test step"
+  des_acceptance_legacy_after_decision_tooltip: "Test preparation or native readback; business credit requires actual evidence."
+  des_acceptance_primary_heir_prepare_decision: "[TEST] Prepare the actual primary heir's rite"
+- des_acceptance_primary_heir_prepare_decision_desc: "After all predecessor-owned observations, pin the real living adult primary heir and title. Apply only the stock character-rite input to a same-faith heir. No heir, House, dynasty, player or head is created or selected. Wait at least one natural day and read the actual natural membership. Ineligible inputs remain NOT_READY."
++ des_acceptance_primary_heir_prepare_decision_desc: "After all predecessor-owned observations, pin the real living adult primary heir and title. If the heir has another faith, apply the stock change to the player's faith, then apply the stock change to the player's current rite. Dynasty and House membership must form through the normal product path. No heir, House, dynasty, player or head is created or selected here. Wait at least one natural day and read actual membership. An old descendant used as this heir is an unconverted negative control only before this disclosed input. Ineligible inputs remain NOT_READY."
+  des_acceptance_primary_heir_prepare_decision_confirm: "Apply this disclosed stock input"
+  des_acceptance_primary_heir_prepare_decision_tooltip: "Preparation only; real inheritance and rite-head succession require independent evidence."
+  des_acceptance_primary_heir_readback_decision: "[TEST] Read the settled primary heir"
+diff --git a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_acceptance_extended_l_simp_chinese.yml b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_acceptance_extended_l_simp_chinese.yml
+index ca91eeccd6..c0dfab8d2f 100644
+--- a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_acceptance_extended_l_simp_chinese.yml
++++ b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_acceptance_extended_l_simp_chinese.yml
+@@ -52,7 +52,7 @@
+  des_acceptance_legacy_after_decision_confirm: "执行此声明的验收步骤"
+  des_acceptance_legacy_after_decision_tooltip: "测试准备或原生读回；业务通过仍须实际证据。"
+  des_acceptance_primary_heir_prepare_decision: "[验收] 准备真实第一继承人的礼仪"
+- des_acceptance_primary_heir_prepare_decision_desc: "完成前任全部长期观察后，固定真实存活成年第一继承人和主头衔。仅对同信仰继承人施加原版角色礼仪输入，不制造继承人、不设置家族、宗族、玩家或领袖。至少推进一个自然日后独立读回自然归族；缺资格时保留 NOT_READY。"
++ des_acceptance_primary_heir_prepare_decision_desc: "完成前任全部长期观察后，固定真实存活成年第一继承人和主头衔。继承人信仰不同时先用原版效果转为玩家的当前信仰，再转为玩家的当前礼仪，由正常产品路径自然归族；不制造或另选继承人，不设置家族、宗族、玩家或领袖。至少推进一个自然日后独立读回归属。若该继承人也是旧后代负例，其未改信负例证明仅限本次公开输入之前；缺资格时保留 NOT_READY。"
+  des_acceptance_primary_heir_prepare_decision_confirm: "施加公开的原版输入"
+  des_acceptance_primary_heir_prepare_decision_tooltip: "仅属准备；真实继承和礼仪领袖仍须独立证明。"
+  des_acceptance_primary_heir_readback_decision: "[验收] 读回实际第一继承人"
+diff --git a/mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/FixtureEmitterTest.java b/mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/FixtureEmitterTest.java
+index b28e0bc503..29e7209e92 100644
+--- a/mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/FixtureEmitterTest.java
++++ b/mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/FixtureEmitterTest.java
+@@ -139,10 +139,12 @@ final class FixtureEmitterTest {
+         assertEquals(21, observation.path("successor_history_transfer_count").intValue());
+         assertFalse(observation.path("engine_semantics_verified").booleanValue());
+         assertTrue(observation.path("heir_minimum_day_guard_validated").booleanValue());
++        assertTrue(observation.path("heir_stock_faith_rite_input_validated").booleanValue());
+         assertTrue(observation.path("separate_prisoner_control_custody_validated").booleanValue());
+ 
+         for (String mutation : List.of("missing-head", "product-write", "pardon-copy",
+                 "date-literal", "date-no-source", "date-same-day",
++                "heir-same-faith", "heir-no-faith-input", "heir-root-input", "heir-input-order",
+                 "prison-main-target", "prison-no-reason", "prison-product-write")) {
+             ProbeResult forbidden = probeFixture(current, baseline, mutation);
+             assertNotEquals(0, forbidden.exitCode(), forbidden.output());
+@@ -152,6 +154,10 @@ final class FixtureEmitterTest {
+                 case "date-literal" -> "INVALID_DATE_LITERAL_VARIABLE_TRIGGER";
+                 case "date-no-source" -> "MISSING_HEIR_INPUT_DATE_GUARD";
+                 case "date-same-day" -> "HEIR_MINIMUM_DAY_GUARD_CHANGED";
++                case "heir-same-faith" -> "HEIR_CROSS_FAITH_INPUT_BLOCKED";
++                case "heir-no-faith-input" -> "HEIR_STOCK_FAITH_INPUT_CHANGED";
++                case "heir-root-input" -> "HEIR_INPUT_RECIPIENT_CHANGED";
++                case "heir-input-order" -> "HEIR_STOCK_INPUT_ORDER_CHANGED";
+                 case "prison-main-target" -> "PRISON_CUSTODY_TARGET_CHANGED";
+                 case "prison-no-reason" -> "PRISON_PRE_CUSTODY_REASON_MISSING";
+                 case "prison-product-write" -> "PRISON_UNDECLARED_EFFECT";
+@@ -353,6 +359,46 @@ final class FixtureEmitterTest {
+                     require(ready_guard,reason,control_scope,'PRISON_CUSTODY_READBACK_MISSING')
+                 require(ready,'add_character_flag','des_test_prison_control_ready','PRISON_CUSTODY_READBACK_MISSING')
+                 require(ready,'debug_log',json.dumps('DESAF: TEST PASS prisoner_control_ready'),'PRISON_CUSTODY_READBACK_MISSING')
++                # R0015's real primary heir is the Orthodox old-descendant
++                # input. The emitted preparation must support that real heir
++                # through stock Faith then Rite, without writing membership.
++                heir_prepare=one(extended_decisions,'des_acceptance_primary_heir_prepare_decision',required=True)
++                heir_input_branch=one(one(one(heir_prepare,'effect',required=True),'hidden_effect',required=True),'if',required=True)
++                heir_input_guard=one(heir_input_branch,'limit',required=True)
++                heir_identity=one(heir_input_guard,'primary_heir',required=True)
++                if mutation=='heir-same-faith':
++                    heir_identity.append({'key':'faith','value':'root.faith'})
++                if any(row['key']=='faith' for row in walk(heir_identity)):
++                    reject('HEIR_CROSS_FAITH_INPUT_BLOCKED')
++                identity_reason='HEIR_PREPARATION_IDENTITY_GUARD_MISSING'
++                for key,value in [('is_alive','yes'),('is_adult','yes'),('is_incapable','no'),('NOT',[{'key':'this','value':'root'}]),('NOT',[{'key':'has_variable','value':'has_edited_a_rite'}])]:
++                    require(heir_identity,key,value,identity_reason)
++                for key,value in [('this','global_var:des_test_extended_owner'),('exists','primary_heir'),('exists','primary_title'),('primary_title',[{'key':'holder','value':'root'}]),('rite','var:des_test_primary_rite'),('rite',[{'key':'des_has_active_binding_trigger','value':'yes'}])]:
++                    require(heir_input_guard,key,value,identity_reason)
++                inputs=[row for row in heir_input_branch if row['key']=='primary_heir']
++                if mutation=='heir-root-input':
++                    inputs[0]['key']='root'
++                inputs=[row for row in heir_input_branch if row['key']=='primary_heir']
++                if len(inputs)!=1:
++                    reject('HEIR_INPUT_RECIPIENT_CHANGED')
++                heir_input=inputs[0]['value']
++                faith_input=one(heir_input,'if',required=True)
++                if mutation=='heir-no-faith-input':
++                    faith_input[:]=[row for row in faith_input if row['key']!='set_character_faith']
++                elif mutation=='heir-input-order':
++                    heir_input.reverse()
++                if faith_input!=[{'key':'limit','value':[{'key':'NOT','value':[{'key':'faith','value':'root.faith'}]}]},{'key':'set_character_faith','value':'root.faith'}]:
++                    reject('HEIR_STOCK_FAITH_INPUT_CHANGED')
++                if heir_input!=[{'key':'if','value':faith_input},{'key':'set_character_rite','value':'root.rite'}]:
++                    reject('HEIR_STOCK_INPUT_ORDER_CHANGED')
++                pinned={'des_test_ref_predecessor':'this','des_test_ref_primary_heir':'primary_heir','des_test_ref_primary_title':'primary_title','des_test_heir_input_date':'current_date'}
++                writes=[row for row in heir_input_branch if row['key']=='set_variable']
++                if writes!=[{'key':'set_variable','value':[{'key':'name','value':name},{'key':'value','value':value}]} for name,value in pinned.items()]:
++                    reject('HEIR_PREPARATION_WRITES_OUTSIDE_CONTRACT')
++                if any(heir_input_branch.index(row)>=heir_input_branch.index(inputs[0]) for row in writes):
++                    reject('HEIR_IDENTITY_NOT_PINNED_BEFORE_INPUT')
++                if [row for row in heir_input_branch if row['key']=='add_character_flag']!=[{'key':'add_character_flag','value':'des_test_primary_heir_prepared'}] or any(row['key'] not in ('limit','set_variable','add_character_flag','primary_heir','debug_log') for row in heir_input_branch):
++                    reject('HEIR_PREPARATION_WRITES_OUTSIDE_CONTRACT')
+                 heir_readback=one(extended_decisions,'des_acceptance_primary_heir_readback_decision',required=True)
+                 heir_branch=one(one(one(heir_readback,'effect',required=True),'hidden_effect',required=True),'if',required=True)
+                 heir_guard=one(heir_branch,'limit',required=True)
+@@ -374,6 +420,14 @@ final class FixtureEmitterTest {
+                 # a '<' assignment block. Check its order and exact day offset.
+                 if pairs.count((date_left,date_right))!=1:
+                     reject('HEIR_MINIMUM_DAY_GUARD_CHANGED')
++                for key,value in [('exists','primary_heir'),('exists','primary_title'),('primary_heir','var:des_test_ref_primary_heir'),('primary_title','var:des_test_ref_primary_title'),('primary_title',[{'key':'holder','value':'root'}])]:
++                    require(heir_guard,key,value,'HEIR_SETTLED_IDENTITY_GUARD_MISSING')
++                # The guard contains both a scalar identity and a scoped block.
++                settled_heirs=[row['value'] for row in heir_guard if row['key']=='primary_heir' and isinstance(row['value'],list)]
++                if len(settled_heirs)!=1:
++                    reject('HEIR_SETTLED_IDENTITY_GUARD_MISSING')
++                for key,value in [('is_alive','yes'),('is_adult','yes'),('is_incapable','no'),('faith','root.faith'),('rite','root.var:des_test_primary_rite'),('dynasty','root.var:des_test_bound_dynasty'),('house','root.var:des_test_primary_rite.var:des_join_house'),('NOT',[{'key':'has_variable','value':'has_edited_a_rite'}])]:
++                    require(settled_heirs[0],key,value,'HEIR_SETTLED_IDENTITY_GUARD_MISSING')
+                 original_prepare=one(effects,prepare_key,required=True)
+                 prepare_branches=[row['value'] for row in original_prepare if row['key']=='if']
+                 if len(prepare_branches)!=2:
+@@ -429,6 +483,8 @@ final class FixtureEmitterTest {
+                     require(predecessor,'has_variable',name,'SUCCESSOR_SOURCE_VALUE_MISSING')
+                 for name in flags:
+                     require(predecessor,'has_character_flag',name,'SUCCESSOR_HISTORY_NOT_PROVEN')
++                    if name!='des_test_closed_verified':
++                        require(heir_input_guard,'has_character_flag',name,'HEIR_PREDECESSOR_HISTORY_NOT_PROVEN')
+                 expected_writes={name:'scope:des_test_predecessor.var:'+name for name in refs}
+                 expected_writes.update(des_test_ref_predecessor='scope:des_test_predecessor',des_test_ref_primary_heir='this',des_test_ref_primary_title='primary_title')
+                 actual_writes={}
+@@ -488,7 +544,7 @@ final class FixtureEmitterTest {
+                     outsider=json.loads(one(one(branch,'scope:des_test_outsider',required=True),'debug_log',required=True))
+                     if [observer,outsider]!=guard['success_logs']:
+                         reject('CHANGED_SCOPED_SUCCESS_MARKERS',event=event)
+-                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'separate_prisoner_control_custody_validated':True,'engine_semantics_verified':False}))
++                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'heir_stock_faith_rite_input_validated':True,'separate_prisoner_control_custody_validated':True,'engine_semantics_verified':False}))
+                 """;
+         Process process = new ProcessBuilder("python", "-B", "-X", "utf8", "-c", program,
+                 repository().toString(), fixture.fixture().toString(), fixture.manifest().toString(), baseline.toString(), mutation)
+diff --git a/tools/ck3_mod_acceptance_products.json b/tools/ck3_mod_acceptance_products.json
+index 1dfd72ec12..10ab8a25f1 100644
+--- a/tools/ck3_mod_acceptance_products.json
++++ b/tools/ck3_mod_acceptance_products.json
+@@ -215,7 +215,7 @@
+     },
+     "dynastic-esotericism": {
+       "directory": "mod_dynastic_esotericism",
+-      "workshop_item_id": null,
++      "workshop_item_id": "3826991345",
+       "forbidden_upstream_ids": [],
+       "builder": "{repo_root}/mod_dynastic_esotericism/tools/pom.xml",
+       "integration_status": "java_prebuilt_fixture_source_ready_live_not_run",
+diff --git a/workshop/dynastic_esotericism_change_notes_0.1.0.txt b/workshop/dynastic_esotericism_change_notes_0.1.0.txt
+index dff189898d..9f01cf95d0 100644
+--- a/workshop/dynastic_esotericism_change_notes_0.1.0.txt
++++ b/workshop/dynastic_esotericism_change_notes_0.1.0.txt
+@@ -3,6 +3,7 @@
+ 新增
+ - 在礼仪创建、改革与编辑的原版教义选择中加入“宗族化 / 无”。原版已有礼仪默认保持“无”。
+ - 宗族化礼仪创建对应宗族，创建者及全部在世信徒加入；支持玩家、AI、有地、无地与儿童。
++- 现任家族族长优先交接族长后建族；没有合法交接对象或其他创始人时，生成并保留一名真实同礼仪成年创始人物，因此会增加人物并形成宗族历史。
+ - 新改信者迁入对应宗族；已有合法旁支保留家族。重复编辑、关闭后重新开启均复用原宗族。
+ - 仍属宗族却背离对应礼仪的人，受到该礼仪其他信徒的一项-100好感修正，并产生监禁、放逐、处决理由。
+ - 回归对应礼仪或停止宗族化后撤销本来源的背离规则；后台持续校正不反复刷新已赦免或消耗的犯罪理由。
+@@ -16,3 +17,7 @@
+ 已知范围
+ - 其他模组直接改家族的路径可能需要等待周期校正。
+ - 多人尚未验收。
++
++当前验证状态
++- 本次先公开发布测试版本，随后继续本地验证。
++- 长期计时、真实继承后的编辑、冷重载与旧档初始化尚未全部验收；修复并验证后更新同一条目。
+diff --git a/workshop/dynastic_esotericism_description.bbcode b/workshop/dynastic_esotericism_description.bbcode
+index 44b2192a00..b31aeeec27 100644
+--- a/workshop/dynastic_esotericism_description.bbcode
++++ b/workshop/dynastic_esotericism_description.bbcode
+@@ -7,6 +7,8 @@
+ 
+ 实际启用后，该礼仪创建一个对应的新宗族。创建者与全部信奉该礼仪的在世人物加入，包括AI、无地人物和儿童。此后改信者也会迁入。重复编辑同一礼仪会复用宗族，合法旁支家族继续保留。
+ 
++如果创建者是现任家族族长，会优先将族长交给原家族中合格的在世人物，再创建新宗族。若没有可交接的人物或其他合法创始人，模组会生成并保留一名真实的同礼仪成年创始人物，以保证建族；这会增加一名人物并留下宗族历史记录。
++
+ [h2]背离就是罪行[/h2]
+ 仍在对应宗族中，却不再奉行该礼仪的人，被视为“背离宗族礼仪”：
+ [list]
+@@ -28,3 +30,6 @@
+ 使用CK3 1.20的礼仪系统。原版创建、改革、编辑资格和费用继续适用。其他模组直接改变人物家族的路径由周期校正处理；没有通用原生变更钩子的路径可能延迟到下一次校正。
+ 
+ 多人尚未验收。此处不把单人多角色检查视为多人验证。
++
++[h2]当前测试状态[/h2]
++0.1.0 为初始公开测试版。长期计时、真实继承后的编辑、冷重载与旧档初始化仍在继续本地验证；发现问题后会在修复与验证完成后更新本条目。
+diff --git a/workshop/products.json b/workshop/products.json
+index f30c06c37e..31a7600183 100644
+--- a/workshop/products.json
++++ b/workshop/products.json
+@@ -129,7 +129,7 @@
+     {
+       "key": "dynastic-esotericism",
+       "directory": "mod_dynastic_esotericism",
+-      "workshop_item_id": null,
++      "workshop_item_id": "3826991345",
+       "forbidden_upstream_ids": [],
+       "builder": "mod_dynastic_esotericism/tools/pom.xml",
+       "release_flags": [
+@@ -137,9 +137,11 @@
+         "--output",
+         "{new-output}",
+         "--git-tag",
+-        "{matching-product-tag}"
++        "{matching-product-tag}",
++        "--workshop-item-id",
++        "3826991345"
+       ],
+-      "publication": "Not published; first Workshop item ID remains null until actual CreateItem. Java/Quarkus release builder is compiled through this Maven POM."
++      "publication": "0.1.0 initial public test; actual CreateItem and SubmitItemUpdate EResult1 on 2026-10-25. Core partial; continued local validation and cache acceptance pending."
+     },
+     {
+       "key": "religious-ritual-fusion",
+-- 
+2.55.0.windows.5
+

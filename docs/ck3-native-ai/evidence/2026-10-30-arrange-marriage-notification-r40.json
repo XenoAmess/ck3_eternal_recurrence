@@ -1,0 +1,67 @@
+{
+  "schema": "xar.source-bound-notification-offline-analysis.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-30T08:25:29.713Z",
+  "source_HEAD": "c0a9e71115e7263fa318f96f484e385d17b6eb4d",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0040",
+  "instance_id": 67108867,
+  "definition_key": "arrange_marriage_interaction",
+  "status": "KNOWN_ANALYZED_WITH_OPAQUE_MARRIAGE_TERMS",
+  "existing_analysis": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\2026-10-29-arrange-marriage-notification-r33.json",
+    "bytes": 3892,
+    "sha256": "02d6898e6d4d49744c16bd098494f3cb364a27f65fa9e52eab016f8aa3613059"
+  },
+  "actual_context": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\retest-source98-a01\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0040\\operator-evidence\\r40-notification-67108867-context-a01.actual.json",
+    "bytes": 41513,
+    "sha256": "dbf48cfea792accf4174bc0571c00d7efb93088ffaf8f18c57025961d80a9772"
+  },
+  "actual_reply_and_same_date_gone": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\retest-source98-a01\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0040\\operator-evidence\\r40-notification-67108867-left-reject-a01.actual.json",
+    "bytes": 63376,
+    "sha256": "538e50ecea0f4e5cd92ee6564a8056631255b5f4f67cc41aa4e41e6e6a7800b0"
+  },
+  "original_root_decision": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\retest-source98-a01\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0040\\operator-evidence\\r40-notification-67108867-root-decision.actual.json",
+    "bytes": 2009,
+    "sha256": "9bbff66a2fd9702a26d94a01a9643bab4a26b12d17593cc94f01195a99dc53f9"
+  },
+  "correction": "Original R40 Root decision described absence of a dedicated analyzed strategy. The source-bound R33 analysis already existed and matches this exact game build and three source SHA pins. Its ordinary non-autoaccept left-reject rule agrees with the R40 action; no action was replayed. Runtime registry remains frozen.",
+  "source_files": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_marriage_interactions.txt",
+      "bytes": 170817,
+      "sha256": "9481fd44a078f2d06034dd4a2107fe183f231d2b49d8b90f106c1d54f7a501f0"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\interaction_marriage_notification_window.gui",
+      "bytes": 4192,
+      "sha256": "cb31a53b90b4cfd68145068a0d43780d9287249a6dbe20566c2459610cd07398"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\interaction_notification_window.gui",
+      "bytes": 2750,
+      "sha256": "a3c946a98346de2f57c5c3408a24bf298329df24a6ab25ec88d893befa1fe6e0"
+    }
+  ],
+  "actual_roles": {
+    "actor_character_id": 34028,
+    "recipient_character_id": 31254,
+    "secondary_actor_character_id": 39049,
+    "secondary_recipient_character_id": 38924,
+    "intermediary_character_id": -1
+  },
+  "reply": {
+    "accept": false,
+    "ack_status": "submitted",
+    "window_gone": true
+  },
+  "future_recognition": {
+    "do_not_replay_old_instance": true,
+    "match_definition": "arrange_marriage_interaction",
+    "normal_non_autoaccept_left_reply": "reject",
+    "require_fresh_actual_roles_route_autoaccept_and_legality": true,
+    "require_same_build_and_source_pins": true
+  }
+}

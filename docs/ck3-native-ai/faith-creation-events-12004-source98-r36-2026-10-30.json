@@ -1,0 +1,155 @@
+{
+  "schema": "xar.ck3-event-source-knowledge-note.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-29T22:34:53.952Z",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0036",
+  "source_HEAD": "c0a9e71115e7263fa318f96f484e385d17b6eb4d",
+  "game": {
+    "version": "1.20.0.4",
+    "steam_build": "25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "status": "OFFLINE_SOURCE_REVIEWED",
+  "runtime_registry_ingestion_proven": false,
+  "entries": [
+    {
+      "definition_key": "head_of_faith.0100",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/events/religion_events/head_of_faith_events.txt",
+        "bytes": 23954,
+        "sha256": "3b3817eb662206fb58fb67cef76dee5f70cc577f857bdfeb8705d9f1c92e5cbf"
+      },
+      "actual": {
+        "instance_id": 1,
+        "calculated_event_id": 5240100,
+        "root_character_id": 31254,
+        "hof_character_id": 30490,
+        "date_raw": 53144352,
+        "shown_native_indexes": [
+          0,
+          1
+        ],
+        "selected_native_index": 0,
+        "old_event_gone_observed": true
+      },
+      "trigger": "exists=faith.religious_head",
+      "immediate": [
+        "play_music_cue=mx_cue_sacredrite",
+        "save faith.religious_head as hof"
+      ],
+      "options": [
+        {
+          "native_index": 0,
+          "source_name": "head_of_faith.0100.a",
+          "direct_effects": [
+            "reverse_add_opinion target=scope:hof modifier=repentant_opinion opinion=25"
+          ],
+          "authored_ai": "base100; opinion toward hof multiplier5"
+        },
+        {
+          "native_index": 1,
+          "source_name": "head_of_faith.0100.b",
+          "direct_effects": [
+            "add_character_flag=wishes_to_schism_caliphate_flag",
+            "custom_tooltip=head_of_faith.0000.wishes_to_schism_caliphate_flag_added"
+          ],
+          "authored_ai": "base100; ai_vengefulness1; ai_zeal1; opinion toward hof multiplier-2"
+        }
+      ],
+      "policy": "Actual first displayed enabled Native option. Specific opinion effect was not independently queried; no material/outcome credit inferred."
+    },
+    {
+      "definition_key": "faith_creation.1021",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/events/religion_events/faith_creation_events.txt",
+        "bytes": 33619,
+        "sha256": "419c04b9ca889e96e572b894ec346ae6119af2fd6eb9be4833d6659edfba923e"
+      },
+      "actual": {
+        "instance_id": 2,
+        "calculated_event_id": 5281021,
+        "root_character_id": 31254,
+        "founder_character_id": 31254,
+        "converted_capital_title_id": 2231,
+        "date_raw": 53144376,
+        "basic_authored_option_count": 4,
+        "shown_native_indexes": [
+          0,
+          1
+        ],
+        "selected_native_index": 0,
+        "old_event_gone_observed": true
+      },
+      "trigger": "exists founder,new_rite,source_rite,old_faith",
+      "immediate": [
+        "play_music_cue=mx_cue_sacredrite"
+      ],
+      "options": [
+        {
+          "native_index": 0,
+          "source_name": "faith_creation.1021.a.founder",
+          "trigger": "this=scope:founder",
+          "direct_effects": [
+            "change_spiritual_fulfillment=medium_spiritual_fulfillment_value",
+            "add_piety=minor_piety_gain"
+          ]
+        },
+        {
+          "native_index": 1,
+          "source_name": "faith_creation.1021.b.founder",
+          "trigger": "this=scope:founder",
+          "direct_effects": [
+            "add_prestige=medium_prestige_gain",
+            "add_piety=minor_piety_loss"
+          ]
+        },
+        {
+          "native_index": 2,
+          "source_name": "faith_creation.1021.a",
+          "trigger": "NOT this=scope:founder",
+          "direct_effects": [
+            "change_spiritual_fulfillment=medium_spiritual_fulfillment_value"
+          ]
+        },
+        {
+          "native_index": 3,
+          "source_name": "faith_creation.1021.b",
+          "trigger": "NOT this=scope:founder",
+          "direct_effects": [
+            "add_piety=minor_piety_gain"
+          ]
+        }
+      ],
+      "policy": "Actual first displayed enabled Native option. Conversion already occurs before this event; source states effects stay on chooser. Do not attribute D1 member increase to this button. Scripted-value magnitudes and specific fulfillment/material poststate were not independently qualified here."
+    }
+  ],
+  "reuse_guards": [
+    "same exact executable/build/provider",
+    "same definition key and whole source SHA",
+    "same authored option catalogue and current root/founder/hof shape",
+    "actual current Native shown/enabled order, original once submission and independent event-gone readback",
+    "calculated/runtime ordinal changes require fresh binding; historical IDs never overwrite new instances"
+  ],
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\retest-source98-a01\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0036\\operator-evidence\\r36-create-event-observe-a01.actual.json",
+      "bytes": 31991,
+      "sha256": "f9cd29c70a001e205da0f4a5baa127e3a569a1d72388468183c2b55b1f06c6f8"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\retest-source98-a01\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0036\\operator-evidence\\r36-create-event-first-a01.actual.json",
+      "bytes": 66155,
+      "sha256": "8ae4d1dd5f7962e533f9e7b86aaa4e74699403d7618ccd75bbff100895331f0c"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\retest-source98-a01\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0036\\operator-evidence\\r36-d1-event-observe-a01.actual.json",
+      "bytes": 40997,
+      "sha256": "391d638b0f12e259c56f7501d16f2986f4f2e2f53e163cbb66d0384045a2f5b5"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\retest-source98-a01\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0036\\operator-evidence\\r36-d1-event-first-a01.actual.json",
+      "bytes": 66135,
+      "sha256": "03188bfb0a491fe4c471052a7eb579918b874682f93f644a11efaf3cbfdb10cb"
+    }
+  ]
+}
