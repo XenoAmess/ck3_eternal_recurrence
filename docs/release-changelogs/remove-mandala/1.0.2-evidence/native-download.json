@@ -1,0 +1,65 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-17T20:09:35.898882+00:00",
+  "returncode": 0,
+  "result": {
+    "app_id": 1158310,
+    "callback": {
+      "app_id": 1158310,
+      "callback_id": 3406,
+      "item_id": "3797711947",
+      "result": 1
+    },
+    "dll_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\steam_api64.dll",
+    "dll_sha256": "1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3",
+    "download_info": {
+      "available": true,
+      "downloaded_bytes": 0,
+      "total_bytes": 0
+    },
+    "elapsed_seconds": 11.077,
+    "expected_cache_absent_before_start": true,
+    "expected_cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947",
+    "fresh_cache_requested": true,
+    "ignored_callbacks": 605,
+    "install_info": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947",
+      "size_on_disk": 777258,
+      "timestamp": 1794946175
+    },
+    "isolated_worker": true,
+    "item_id": "3797711947",
+    "ok": true,
+    "schema": "ck3_workshop_mcp.steam_native.download.v1",
+    "started": true,
+    "state_flags": {
+      "download_pending": false,
+      "downloading": false,
+      "installed": true,
+      "legacy": false,
+      "needs_update": false,
+      "raw": 5,
+      "subscribed": true
+    },
+    "status": "complete",
+    "timeout_seconds": 180.0,
+    "worker_exit_code": 0,
+    "worker_pid": 31216
+  },
+  "command": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-m",
+    "ck3_workshop_mcp.steam_native",
+    "download",
+    "--item-id",
+    "3797711947",
+    "--expected-cache-path",
+    "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947",
+    "--timeout-seconds",
+    "180",
+    "--dll",
+    "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\steam_api64.dll"
+  ]
+}

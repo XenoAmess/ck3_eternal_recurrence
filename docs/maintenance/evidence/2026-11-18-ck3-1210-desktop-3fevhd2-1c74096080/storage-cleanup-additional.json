@@ -1,0 +1,89 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-17T20:22:10.977871+00:00",
+  "scope": "Subsequent cleanup after initial shader-only record; historical initial statement remains true for its cutoff.",
+  "actual_cleanup": "16 hash-identical old save copies 1250856016B; 19 superseded closed September large JSON exports 1097113508B; unique/newest keepers retained. Initial expired-export attempt failed before any deletion; corrected a02 actual results retained.",
+  "receipts": {
+    "summary.json": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-17T19:23:39.446439+00:00",
+      "deleted_files": 19,
+      "deleted_logical_bytes": 1097113508,
+      "failed": [],
+      "free_before": {
+        "C:/": 43666964480,
+        "D:/": 21316366336
+      },
+      "free_after": {
+        "C:/": 43667030016,
+        "D:/": 22413512704
+      }
+    },
+    "gui-storage-admission.json": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-17T19:36:21.848401+00:00",
+      "owner": "/root",
+      "volumes": {
+        "C:/": {
+          "total": 511133945856,
+          "used": 467482808320,
+          "free": 43651137536
+        },
+        "D:/": {
+          "total": 500090007552,
+          "used": 477678292992,
+          "free": 22411714560
+        }
+      },
+      "reserve_bytes": 21474836480,
+      "first_run_peak_increment_bytes": 671088640,
+      "other_growth_reserve_bytes": 67108864,
+      "first_run_peak_components": {
+        "shader_and_graphics_cache": 419430400,
+        "save_and_logs_screenshots_and_profile": 251658240
+      },
+      "admitted": true,
+      "scope": "one sequential GUI-only product run; recheck before next run; no simultaneous heavy writers observed",
+      "observed_heavy_writers": [],
+      "temporary_quota_override": {
+        "expires_utc": "2026-11-24T19:36:21.848401+00:00",
+        "reason": "existing historical project footprint not fully enumerated; charge entire volume-used upper bound rather than pretend zero",
+        "per_volume_used_upper_bound_bytes": {
+          "C:/": 467482808320,
+          "D:/": 477678292992
+        },
+        "task_incremental_ceiling_bytes": 671088640
+      },
+      "cleanup_receipts": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\duplicate-cleanup-1794942225048016900\\summary.json",
+          "bytes": 329,
+          "sha256": "d90ed92ccf308cae65c4346e0f792465585eed84f22c805b059615b49ae445f8"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\expired-exports-1794943248523509200-a02\\summary.json",
+          "bytes": 329,
+          "sha256": "dffdd052aab23e1dfc0184f49e4d7c77f93f3d536a8cec99d54036fadf07f4b6"
+        }
+      ],
+      "retention": "unique retained saves and newest audit cases preserved; failed first expired-export cleanup attempt retained as failure"
+    },
+    "mrm-cache-storage-admission.json": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-17T20:14:19.544609+00:00",
+      "scope": "one GUI-only menu/cache mount run; no campaign, fixture or save; prior temporary quota TTL retained",
+      "free_D": 22046253056,
+      "reserve": 21474836480,
+      "incremental_peak_bytes": 268435456,
+      "other_growth_reserve": 67108864,
+      "measured_reference": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\mrm-profile-footprint.json",
+        "bytes": 876,
+        "sha256": "15f3ab115232408b23c008183c67d79cb2378c4c736b82ecf4795767b2e74172"
+      },
+      "components": "measured 182529334B shader cache plus 85MiB for logs, ordinary configuration and limited direct-review images",
+      "admitted": true
+    }
+  },
+  "current_free_D": 21951344640
+}

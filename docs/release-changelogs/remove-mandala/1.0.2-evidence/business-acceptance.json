@@ -1,0 +1,57 @@
+{
+  "status": "PASS",
+  "process_pass": true,
+  "closure_pass": true,
+  "gui_business_pass": true,
+  "case_acceptance_pass": true,
+  "business_pass": true,
+  "product_release_pass": false,
+  "native_capability_pass": false,
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\mrm-rules-dragged-bottom-01.png",
+      "bytes": 952173,
+      "sha256": "76194991d11fbcef7f7f9eaf78e96086044321b1690859e18412df9e6ba8cc07"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\mrm-rules-applied-01.png.json",
+      "bytes": 1444,
+      "sha256": "14f56f7b486e7554b672c6146129e7b96e868b0c312125d3bb77bdd65b2c35da"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\mrm-eight-day-outcome-01.png",
+      "bytes": 1139991,
+      "sha256": "83ef2faf141fc8a188f95611613fab81a68019fc458021ac47af05d737fadb53"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\mrm-character-readback-01-view.png",
+      "bytes": 1110239,
+      "sha256": "458b7ca0dc4bfe15f2a8a0c2d8e904e2a606de619494bf71c4d69205a76dfe55"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-479f3a745447473e86d53ea254d4c8ef\\profile\\logs\\debug.log",
+      "bytes": 1201033,
+      "sha256": "8352e9e5e59d14d78681bf0c8814d9b804c616e765761ffbce5e443c3aec668c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-479f3a745447473e86d53ea254d4c8ef\\profile\\logs\\error.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\mrm-markers-live.json",
+      "bytes": 2017,
+      "sha256": "aa4f4992cd6c73cd26c91d5be3fae096f8f6f2b10bfb61c5ebb1bf0985c2b290"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\mrm-normal-exit-dialog-01-view.png",
+      "bytes": 681439,
+      "sha256": "55ff3548cd315609771f864f9581c2270ed7db1c9dfc2a2fa1b1f34bf08bd7aa"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\mrm-quit-desktop-once-01.png.json",
+      "bytes": 1455,
+      "sha256": "648b92ce93f0e0b344fc7d035bf5da37a4dacbbcdc21f3e5d4006c2cccda0aaf"
+    }
+  ]
+}

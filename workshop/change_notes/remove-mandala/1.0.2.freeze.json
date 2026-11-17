@@ -12,9 +12,12 @@
   "encoding": "utf-8",
   "line_endings": "LF",
   "trailing_newline": false,
-  "status": "BUSINESS_VERIFIED_PENDING_PUBLICATION",
-  "published": false,
+  "status": "PUBLISHED_PUBLIC_FULLTEXT_VERIFIED",
+  "published": true,
   "release_tag": "remove-mandala-v1.0.2",
   "release_commit": "44d7693ec12b0ed8b41353c4851aee1e21dc664b",
-  "machine_id": "desktop-3fevhd2-1c74096080"
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "entry_id": "1794946175",
+  "public_exact_readback": true,
+  "published_at_utc": "2026-11-17T20:09:23.584469+00:00"
 }

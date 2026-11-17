@@ -1,0 +1,122 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-17T20:13:09.124788+00:00",
+  "item_id": "3797711947",
+  "entry_id": "1794946175",
+  "anonymous_full_notes_exact": true,
+  "notes": {
+    "characters": 1642,
+    "lines": 17,
+    "path": "D:\\ck3-state\\upgrade-20261118\\mrm-publication\\public-notes-exact.txt",
+    "bytes": 2244,
+    "sha256": "aff904d5c942bb1fb0a4037d817404a11153a741f2ebd77a8d6271494be0d75e"
+  },
+  "raw_changelog": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\mrm-publication\\anonymous-after-publish-1794946197502501500\\changelog.html",
+    "bytes": 55407,
+    "sha256": "adc2a049d288d6347311ac2425405e3b9ecd609ed017d151c52b8c005c7b4ec4"
+  },
+  "raw_metadata": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\mrm-publication\\post-metadata.raw.json",
+    "bytes": 4194,
+    "sha256": "7701980aefb50fda34b147e8170a40d51ecb12f1f7f2f5c6249961353b87c5aa"
+  },
+  "owner_app_visibility_title_description_tags_exact": true,
+  "native_upload_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\mrm-publication\\native-publish-receipt.json",
+    "bytes": 654,
+    "sha256": "cf2d14773f647192b11ef7ae172d707fa22e91f932aaab50d573974d96fdb01b"
+  },
+  "native_download": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\mrm-publication\\native-download.json",
+    "bytes": 1988,
+    "sha256": "2e34bd5535f8fbcdf1bf57019d9c98b4ec0dc99a33a42f295f156a2bfe64c14c"
+  },
+  "cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947",
+  "file_count": 15,
+  "cache_strict_exact": true,
+  "descriptor_exception_used": false,
+  "cache_files": {
+    "descriptor.mod": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\descriptor.mod",
+      "bytes": 152,
+      "sha256": "96d65dd4ac351e77f1afd5753679591695c2cdf0cdd04f55ebb188d2cfb86ce2"
+    },
+    "thumbnail.png": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\thumbnail.png",
+      "bytes": 770575,
+      "sha256": "e25dec879bf83fec2960a0c194e2f623cc2127902929a6e402ea2daf11e0415c"
+    },
+    "events/mrm_events.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\events\\mrm_events.txt",
+      "bytes": 571,
+      "sha256": "afc24b47667fe358404db88c1cf9ac6e7134f017b68bbcd4af5b4b070b97d258"
+    },
+    "localization/english/mrm_l_english.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\english\\mrm_l_english.yml",
+      "bytes": 442,
+      "sha256": "d84b2429db75323f44eb79e3cc9877299068349c9a427d06d8ae47f4917df5c0"
+    },
+    "localization/french/mrm_l_french.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\french\\mrm_l_french.yml",
+      "bytes": 448,
+      "sha256": "f1fb0135ac2f4599e068a748d69bb8d91dab66a105454331537e4b9d1f04d19b"
+    },
+    "localization/german/mrm_l_german.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\german\\mrm_l_german.yml",
+      "bytes": 486,
+      "sha256": "5bd279c345fb0797eec815701b98b3d24a0dfd598aed0e280eacecfbf2a3e604"
+    },
+    "localization/japanese/mrm_l_japanese.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\japanese\\mrm_l_japanese.yml",
+      "bytes": 506,
+      "sha256": "a157af00d059965f2330f0e49c4b534e6328cc9b9840f911d8e6e6c5cfafb5ec"
+    },
+    "localization/korean/mrm_l_korean.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\korean\\mrm_l_korean.yml",
+      "bytes": 470,
+      "sha256": "18bbc161a5f009e4fb22b00770c1181fe602fca3ecb34733ed5642b4011343d7"
+    },
+    "localization/polish/mrm_l_polish.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\polish\\mrm_l_polish.yml",
+      "bytes": 466,
+      "sha256": "9d45391dde0c7780108c9b83531b86c40a9a44b103708426f486a4837da18867"
+    },
+    "localization/russian/mrm_l_russian.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\russian\\mrm_l_russian.yml",
+      "bytes": 652,
+      "sha256": "218fcf8a51077711d84bfa18b92de98887df7dd867e83b4c4cf8a66883a5af66"
+    },
+    "localization/simp_chinese/mrm_l_simp_chinese.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\simp_chinese\\mrm_l_simp_chinese.yml",
+      "bytes": 387,
+      "sha256": "6676321df938db0bd479dbb13540b7c09c3651bf4bc6cdcb3b3d16c26ade07c6"
+    },
+    "localization/spanish/mrm_l_spanish.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\localization\\spanish\\mrm_l_spanish.yml",
+      "bytes": 446,
+      "sha256": "a01803e84ac2f2418444bcfa68491ce0d5f83837938e308ed02dbf07f2696767"
+    },
+    "common/game_rules/mrm_game_rules.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\common\\game_rules\\mrm_game_rules.txt",
+      "bytes": 124,
+      "sha256": "1748485695ddb6f3ea92f4920e179d35bcf3526279d57b06140819b7e410fe3a"
+    },
+    "common/on_action/mrm_on_actions.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\common\\on_action\\mrm_on_actions.txt",
+      "bytes": 1189,
+      "sha256": "129c94e5cf239de2a638b0e2ecd0017cbd7ae88f6eaf646af727b60d6c785eb2"
+    },
+    "common/scripted_effects/mrm_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947\\common\\scripted_effects\\mrm_effects.txt",
+      "bytes": 344,
+      "sha256": "57ef7c63b1faae6a1d968b7467a5ddb1b03ddfeb50977994be27262f253a4ea3"
+    }
+  },
+  "actual_engine_cache_load": "NOT_RUN",
+  "offline_restored": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\offline-restored-after-publication.json",
+    "bytes": 1330,
+    "sha256": "f82aed970d81265e327bdf8f59225f0e8fc0c44f5913cf03296b1a38314168cb"
+  }
+}
