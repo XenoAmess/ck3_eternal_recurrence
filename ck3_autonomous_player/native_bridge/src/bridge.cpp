@@ -29,6 +29,7 @@
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
+#include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
@@ -12586,18 +12587,21 @@ public:
         !game_->supports(xar::ck3_1210::kCoreFrameCapabilityV1)) return;
     attempted_ = true;
     const bool control=game_->supports(xar::ck3_1210::kCoreControlCapabilityV1);
-    const std::array<xar::ck3_11906::MainThreadQueryExecutorV1,2> executors{
-        &xar::ck3_1210::ExecuteCoreFrameMailboxV1,
-        &xar::ck3_1210::ExecuteCoreControlMailboxV1};
+    std::array<xar::ck3_11906::MainThreadQueryExecutorV1,3> executors{
+        &xar::ck3_1210::ExecuteCoreFrameMailboxV1};
+    std::size_t count=1;
+    if(control) executors[count++]=&xar::ck3_1210::ExecuteCoreControlMailboxV1;
+    if(game_->supports(xar::ck3_1210::kPersonalGoldCapabilityV1))
+      executors[count++]=&xar::ck3_1210::ExecutePersonalGoldMailboxV1;
     const auto environment=xar::ck3_1210::BindThreadRuntimeImage(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         game_->descriptor().executable_sha256,
-        std::span<const xar::ck3_11906::MainThreadQueryExecutorV1>(executors.data(),control?2:1));
+        std::span<const xar::ck3_11906::MainThreadQueryExecutorV1>(executors.data(),count));
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
     if (installed_) {
       (void)xar::ck3_11906::RegisterMainThreadTimelineExecutorsV1(
-          g_main_thread_query_mailbox_v1,executors[0],control?executors[1]:nullptr);
+          g_main_thread_query_mailbox_v1,executors[0],control?&xar::ck3_1210::ExecuteCoreControlMailboxV1:nullptr);
     }
   }
 
@@ -15328,6 +15332,37 @@ std::string RunCoreFrameQuery1210(const xar::game::GameAdapter &game,
   return xar::ck3_1210::SerializeCoreFrameCommandResultV1(request_id, query.observation);
 }
 
+std::string RunPersonalGoldQuery1210(const xar::game::GameAdapter &game,
+    std::string_view id,std::string_view payload) {
+  using namespace xar::ck3_1210;
+  PersonalGoldMailboxContextV1 q{};
+  std::uint64_t revision=0;
+  if (!xar::bridge::JsonUnsignedField(payload,"expected_revision",revision) || revision!=0 ||
+      !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+      !game.enabled() || !game.supports(kPersonalGoldCapabilityV1)) {
+    q.observation.unavailable_reason="exact_personal_gold_query_unavailable";
+    return SerializePersonalGoldCommandResultV1(id,q);
+  }
+  q.game=&game;q.mailbox=&g_main_thread_query_mailbox_v1;
+  q.bindings=BindPersonalGoldImageV1(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+      game.descriptor().executable_sha256);
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecutePersonalGoldMailboxV1,&q,q.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    q.observation.unavailable_reason="paused_application_main_not_ready";
+    return SerializePersonalGoldCommandResultV1(id,q);
+  }
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,q.ticket,8'000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,q.ticket,2'000);
+  const auto reclaimed=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,q.ticket);
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      reclaimed!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    q.observation={};q.observation.unavailable_reason="application_main_executor_unavailable";
+  }
+  return SerializePersonalGoldCommandResultV1(id,q);
+}
+
 std::string RunCoreControl1210(const xar::game::GameAdapter &game,
     std::string_view request_id, std::string_view step, std::string_view payload) {
   using namespace xar::ck3_1210;
@@ -15336,13 +15371,17 @@ std::string RunCoreControl1210(const xar::game::GameAdapter &game,
     return CommandResultFrame(request_id,step,false,"invalid exact held-core clock control request");
   }
   if (!xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
-      !game.enabled() || !game.supports(kCoreControlCapabilityV1) || !game.supports_step(step)) {
+      !game.enabled() || !game.supports(kCoreControlCapabilityV1) ||
+      (step==kApplicationExitStepV1 ? !game.supports(kApplicationExitCapabilityV1) : !game.supports_step(step))) {
     return SerializeCoreControlCommandResultV1(request_id,step,query.result);
   }
   const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   query.game=&game;
   query.core=BindCoreImage(module,game.descriptor().executable_sha256);
   query.commands=BindCommandImage(module,game.descriptor().executable_sha256);
+  static xar::ck3_1210::ApplicationExitSessionV1 application_exit_session;
+  query.application_exit=BindApplicationExitImageV1(module,game.descriptor().executable_sha256);
+  query.application_exit_session=&application_exit_session;
   query.mailbox=&g_main_thread_query_mailbox_v1;
   ArmCoreControlDeadlineV1(query);
   const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(
@@ -15975,8 +16014,14 @@ void RunConnectedSession(
                   : RunCoreFrameQuery12004(game, request_id, incoming.payload));
           early_step_dispatched = true;
         }
+        if (!early_step_dispatched && step==xar::ck3_1210::kPersonalGoldStepV1 &&
+            xar::game::IsCk3_1210Descriptor(game.descriptor())) {
+          connected=write_frame(pipe,RunPersonalGoldQuery1210(game,request_id,incoming.payload));
+          early_step_dispatched=true;
+        }
         if (!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
             (step=="pause-map" || step=="resume-map" || step=="save-checkpoint" ||
+             step==xar::ck3_1210::kApplicationExitStepV1 ||
              (step.size()==11 && step.starts_with("set-speed-") && step[10]>='1' && step[10]<='5'))) {
           connected=write_frame(pipe,RunCoreControl1210(game,request_id,step,incoming.payload));
           early_step_dispatched=true;

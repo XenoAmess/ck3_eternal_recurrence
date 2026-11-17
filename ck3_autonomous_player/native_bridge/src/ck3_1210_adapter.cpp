@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
+#include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
 #include <array>
 #if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
 #include <windows.h>
@@ -179,15 +180,22 @@ private:
 } // namespace
 
 const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
-#if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1) && defined(XAR_CK3_ENABLE_1210_CORE_CONTROL_V1)
-  static constexpr std::array<std::string_view, 10> capabilities{
-      ck3_1210::kCoreFrameCapabilityV1, ck3_1210::kCoreControlCapabilityV1,
+#if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+  static constexpr std::string_view capabilities[]{
+      ck3_1210::kCoreFrameCapabilityV1,
+#if defined(XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1)
+      ck3_1210::kPersonalGoldCapabilityV1,
+#endif
+#if defined(XAR_CK3_ENABLE_1210_CORE_CONTROL_V1)
+      ck3_1210::kCoreControlCapabilityV1,
       "game.command.pause-map", "game.command.resume-map",
       "game.command.set-speed-1", "game.command.set-speed-2", "game.command.set-speed-3",
-      "game.command.set-speed-4", "game.command.set-speed-5", "game.command.save-checkpoint"};
-#elif defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
-  static constexpr std::array<std::string_view, 1> capabilities{
-      ck3_1210::kCoreFrameCapabilityV1};
+      "game.command.set-speed-4", "game.command.set-speed-5", "game.command.save-checkpoint",
+#if defined(XAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1)
+      ck3_1210::kApplicationExitCapabilityV1,
+#endif
+#endif
+  };
 #else
   static constexpr std::array<std::string_view, 0> capabilities{};
 #endif

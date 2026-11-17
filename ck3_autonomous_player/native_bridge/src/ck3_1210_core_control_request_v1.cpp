@@ -57,7 +57,7 @@ bool identity(Cursor &c, std::string_view expected, bool hash = false) noexcept 
   std::string_view value;
   return c.string(value) && (hash ? hash_matches(value) : value == expected);
 }
-bool claim(Cursor &c, CoreSnapshotPrefix &expected) noexcept {
+bool claim(Cursor &c, CoreSnapshotPrefix &expected,bool exit_claim) noexcept {
   if (!c.take('{')) return false;
   std::uint32_t seen = 0; bool first = true;
   while (!c.take('}')) {
@@ -66,7 +66,7 @@ bool claim(Cursor &c, CoreSnapshotPrefix &expected) noexcept {
     std::string_view key;
     if (!c.string(key) || !c.take(':')) return false;
     std::uint32_t bit = 0; bool valid = false;
-    if (key == "schema") { bit=1U<<0; valid=identity(c,kCoreControlSchemaV1); }
+    if (key == "schema") { bit=1U<<0; valid=identity(c,exit_claim?kApplicationExitSchemaV1:kCoreControlSchemaV1); }
     else if (key == "game_version") { bit=1U<<1; valid=identity(c,kGameVersion); }
     else if (key == "executable_sha256") { bit=1U<<2; valid=identity(c,kExecutableSha256,true); }
     else if (key == "adapter_id") { bit=1U<<3; valid=identity(c,kAdapterId); }
@@ -101,7 +101,7 @@ bool ParseCoreControlRequestV1(std::string_view payload,
   output = {};
   if (payload.size() > 16384) return false;
   Cursor c{payload}; CoreControlRequestV1 parsed{};
-  std::uint32_t seen = 0; bool first = true;
+  std::uint32_t seen = 0; bool first = true; bool exit_claim=false;
   if (!c.take('{')) return false;
   while (!c.take('}')) {
     if (!first && !c.take(',')) return false;
@@ -113,7 +113,8 @@ bool ParseCoreControlRequestV1(std::string_view payload,
     else if (key == "request_id") { bit=1U<<2; valid=c.string(value) && request_id(value); }
     else if (key == "step") { bit=1U<<3; valid=c.string(parsed.step); }
     else if (key == "expected_revision") { bit=1U<<4; valid=c.number(number) && number==0; }
-    else if (key == "core_clock_control") { bit=1U<<5; valid=claim(c,parsed.expected); }
+    else if (key == "core_clock_control") { bit=1U<<5; valid=claim(c,parsed.expected,false); }
+    else if (key == "core_application_exit") { bit=1U<<5; exit_claim=true; valid=claim(c,parsed.expected,true); }
     else if (key == "core_control_deadline_unix_ms") {
       bit=1U<<6; valid=c.number(parsed.deadline_unix_ms) && parsed.deadline_unix_ms>0;
     } else if (key == "arguments") { bit=1U<<7; valid=c.take('{') && c.take('}'); }
@@ -122,7 +123,9 @@ bool ParseCoreControlRequestV1(std::string_view payload,
   }
   c.space();
   if (c.at != payload.size() || (seen & 127U) != 127U) return false;
-  if (parsed.step == "pause-map") { parsed.operation=CoreControlOperationV1::pause; parsed.step="pause-map"; }
+  if (exit_claim != (parsed.step==kApplicationExitStepV1)) return false;
+  if (parsed.step == kApplicationExitStepV1) { parsed.operation=CoreControlOperationV1::application_exit; parsed.step=kApplicationExitStepV1; }
+  else if (parsed.step == "pause-map") { parsed.operation=CoreControlOperationV1::pause; parsed.step="pause-map"; }
   else if (parsed.step == "resume-map") { parsed.operation=CoreControlOperationV1::resume; parsed.step="resume-map"; }
   else if (parsed.step == "save-checkpoint") { parsed.operation=CoreControlOperationV1::save; parsed.step="save-checkpoint"; }
   else if (parsed.step.size()==11 && parsed.step.starts_with("set-speed-") &&

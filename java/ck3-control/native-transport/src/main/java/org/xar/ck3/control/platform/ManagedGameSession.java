@@ -250,7 +250,13 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         if(mode!=Mode.OWNED)return null;
         if(shutdown!=null||closed||stopping)return null;
         if(!process.isRunning())return GameLifecycle.TerminalKind.NATURAL_EXIT;
-        verify();return null;
+        verify();
+        if(plan.windowPolicy()==NativeLaunchPlan.WindowPolicy.MINIMIZED_NO_ACTIVATE)
+            BackgroundGameWindowPolicy.enforce(generation,expected->{
+                if(!generation.equals(expected))throw new IOException("background guard crossed its original Game generation");
+                verify();
+            });
+        return null;
     }
     @Override public void close()throws IOException{
         if(mode==Mode.ATTACHED){

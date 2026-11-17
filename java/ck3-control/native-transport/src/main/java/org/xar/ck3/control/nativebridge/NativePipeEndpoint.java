@@ -111,6 +111,11 @@ public final class NativePipeEndpoint implements AutoCloseable, NativePacketPort
         catch (IOException | RuntimeException failure) { api.CloseHandle(pipe); throw failure; }
     }
     public Config config() { return config; }
+    @Override public synchronized void verifyCoreControlWindowPolicy()throws IOException {
+        verify();
+        org.xar.ck3.control.platform.BackgroundGameWindowPolicy.enforce(config.game(),guard);
+        verify();
+    }
     /** Last partial read or attempted write, available even when JSON decoding was impossible. */
     public synchronized byte[] retainedFailureBytes() { return retainedFailureBytes.clone(); }
     @Override public synchronized void verify() throws IOException {

@@ -39,4 +39,17 @@ final class NativeOwnerCoreModeTest {
             assertThrows(IllegalArgumentException.class,()->NativeOwnerSnapshotMain268.observationMode(input));
         }
     }
+    @Test void backgroundExitRequiresItsOwnV4WithoutAClockStepOrLegacyFlag() {
+        var input=StrictJson.object().put("schema","xar.native-owner-snapshot-config/v4").put("mode","core_application_exit");
+        assertEquals(NativeOwnerSnapshotMain268.ObservationMode.CORE_EXIT,NativeOwnerSnapshotMain268.observationMode(input));
+        for(String field:new String[]{"control_step","core_prefix_only"}) {
+            var changed=input.deepCopy();changed.put(field,"pause-map");
+            assertThrows(IllegalArgumentException.class,()->NativeOwnerSnapshotMain268.observationMode(changed));
+        }
+        for(String schema:new String[]{"xar.native-owner-snapshot-config/v1","xar.native-owner-snapshot-config/v2","xar.native-owner-snapshot-config/v3"}) {
+            var changed=input.deepCopy().put("schema",schema);
+            assertThrows(IllegalArgumentException.class,()->NativeOwnerSnapshotMain268.observationMode(changed));
+        }
+        assertThrows(IllegalArgumentException.class,()->NativeOwnerSnapshotMain268.observationMode(input.deepCopy().put("mode","core_clock_control")));
+    }
 }

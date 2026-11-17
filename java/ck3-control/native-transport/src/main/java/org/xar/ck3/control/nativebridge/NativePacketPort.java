@@ -68,6 +68,10 @@ public interface NativePacketPort extends AutoCloseable {
     /** Pure actual source readback, never inferred from close(), IOException text, timeout or an ACK. */
     default java.util.Optional<Disconnection> originalDisconnection(){return java.util.Optional.empty();}
     void verify() throws IOException;
+    /** A core mutation requires an actual current background-policy check; legacy/unknown wrappers fail closed. */
+    default void verifyCoreControlWindowPolicy() throws IOException {
+        throw new IOException("actual core-control background window guard is unavailable");
+    }
     void awaitConnection(Instant deadline) throws IOException, InterruptedException;
     byte[] readPacket(Instant deadline) throws IOException, InterruptedException;
     /** Legacy providers cannot infer a timeout from an IOException or silently call another observation route. */

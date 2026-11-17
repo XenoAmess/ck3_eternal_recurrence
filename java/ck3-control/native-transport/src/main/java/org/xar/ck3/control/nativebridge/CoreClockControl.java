@@ -1,6 +1,7 @@
 package org.xar.ck3.control.nativebridge;
 
 import java.util.Objects;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.xar.ck3.control.application.action.NativeRequest;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.contracts.ExactCk3Build;
@@ -43,6 +44,13 @@ public final class CoreClockControl {
 
     public static NativeRequest request(Step step, CoreFrame.Partial frame) {
         Objects.requireNonNull(step, "step");
+        var fields = StrictJson.object();
+        fields.set("core_clock_control", claim(frame));
+        return new NativeRequest(step.wire(), step.requiredCapability(),
+                new RawJson(StrictJson.canonical(fields)));
+    }
+
+    static ObjectNode claim(CoreFrame.Partial frame) {
         Objects.requireNonNull(frame, "frame");
         StrictJson.require(frame.build() == ExactCk3Build.CK3_1210,
                 "core clock control requires the exact CK3 1.21.0 build");
@@ -61,9 +69,6 @@ public final class CoreClockControl {
         control.put("has_played_character", prefix.hasPlayedCharacter());
         control.put("played_character_id", prefix.playedCharacterId());
         control.put("played_character_alive", prefix.playedCharacterAlive());
-        var fields = StrictJson.object();
-        fields.set("core_clock_control", control);
-        return new NativeRequest(step.wire(), step.requiredCapability(),
-                new RawJson(StrictJson.canonical(fields)));
+        return control;
     }
 }

@@ -22,6 +22,7 @@ bool Unexpired(const CoreControlContextV1 &c) noexcept {
       Mono(c) < c.monotonic_deadline_ms;
 }
 const char *RequiredCapability(const CoreControlRequestV1 &r) noexcept {
+  if (r.operation==CoreControlOperationV1::application_exit && r.step==kApplicationExitStepV1) return kApplicationExitCapabilityV1;
   if (r.operation==CoreControlOperationV1::pause && r.step=="pause-map") return "game.command.pause-map";
   if (r.operation==CoreControlOperationV1::resume && r.step=="resume-map") return "game.command.resume-map";
   if (r.operation==CoreControlOperationV1::save && r.step=="save-checkpoint") return "game.command.save-checkpoint";
@@ -38,7 +39,7 @@ bool Owned(CoreControlContextV1 &c,
   if (required==nullptr || c.game == nullptr || !c.game->enabled() || !c.game->supports(required) ||
       !game::IsCk3_1210Descriptor(c.game->descriptor()) ||
       !c.game->supports(kCoreControlCapabilityV1) || c.mailbox == nullptr ||
-      !c.core.enabled || !c.commands.enabled || c.ticket.sequence == 0 ||
+      !c.core.enabled || (c.request.operation!=CoreControlOperationV1::application_exit && !c.commands.enabled) || c.ticket.sequence == 0 ||
       stamp.pump_epoch == 0 || stamp.thread_id == 0 ||
       GetCurrentThreadId() != stamp.thread_id || stamp.tls_initialized != 1 ||
       stamp.tls_main_thread_marker != 1 || stamp.tls_context == 0 ||
@@ -75,6 +76,14 @@ bool BeforeQueue(void *opaque) noexcept {
   c.result.effect_attempted=true;
   return true;
 }
+bool BeforeApplicationExit(void *opaque) noexcept {
+  auto &c=static_cast<Admission *>(opaque)->context;
+  const bool valid=BeforeQueue(opaque);
+  // Validation alone is not an exit attempt. The lifetime claim/call below
+  // determines whether this packet crossed a dispatch boundary.
+  c.result.effect_attempted=false;
+  return valid;
+}
 bool Execute(CoreControlContextV1 &c,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   c.result={};
@@ -86,12 +95,29 @@ bool Execute(CoreControlContextV1 &c,
       current.clock.date_raw!=stamp.date_raw || current.clock.paused!=stamp.paused) {
     c.result.status=CoreControlStatusV1::stale; return true;
   }
-  if (!current.map_ready || current.local_player_id<0) {
+  if (c.request.operation!=CoreControlOperationV1::application_exit &&
+      (!current.map_ready || current.local_player_id<0)) {
     c.result.status=CoreControlStatusV1::requires_map; return true;
   }
   Admission admission{c,stamp};
   CommandSubmitResult submitted=CommandSubmitResult::unavailable;
   switch (c.request.operation) {
+  case CoreControlOperationV1::application_exit: {
+    if (c.application_exit_session==nullptr) return true;
+    const bool previously_claimed=c.application_exit_session->claimed.load(std::memory_order_acquire);
+    const auto result=RequestApplicationExitV1(c.application_exit,*c.application_exit_session,
+        &BeforeApplicationExit,&admission);
+    c.result.effect_attempted=!previously_claimed &&
+        c.application_exit_session->claimed.load(std::memory_order_acquire) &&
+        (result==ApplicationExitStatusV1::requested || result==ApplicationExitStatusV1::indeterminate);
+    if (c.result.status==CoreControlStatusV1::expired || c.result.status==CoreControlStatusV1::stale) return true;
+    c.result.status=result==ApplicationExitStatusV1::requested ? CoreControlStatusV1::exit_requested
+        : result==ApplicationExitStatusV1::already_requested ? CoreControlStatusV1::exit_already_requested
+        : result==ApplicationExitStatusV1::indeterminate ? CoreControlStatusV1::indeterminate
+        : result==ApplicationExitStatusV1::claim_consumed ? CoreControlStatusV1::exit_claim_consumed
+        : CoreControlStatusV1::unavailable;
+    return true;
+  }
   case CoreControlOperationV1::pause:
   case CoreControlOperationV1::resume: {
     const bool paused=c.request.operation==CoreControlOperationV1::pause;
@@ -183,6 +209,9 @@ void AppendString(std::string &output, std::string_view value) {
 
 const char *StatusName(CoreControlStatusV1 status) noexcept {
   switch (status) {
+  case CoreControlStatusV1::exit_claim_consumed: return "claim_consumed";
+  case CoreControlStatusV1::exit_requested: return "requested";
+  case CoreControlStatusV1::exit_already_requested: return "already_requested";
   case CoreControlStatusV1::expired: return "expired";
   case CoreControlStatusV1::stale: return "stale_core_prefix";
   case CoreControlStatusV1::requires_map: return "requires_map";
@@ -198,22 +227,25 @@ const char *StatusName(CoreControlStatusV1 status) noexcept {
 std::string SerializeCoreControlCommandResultV1(std::string_view request_id,
     std::string_view step, const CoreControlResultV1 &result) {
   const bool accepted=result.status==CoreControlStatusV1::submitted ||
-      result.status==CoreControlStatusV1::already_satisfied;
+      result.status==CoreControlStatusV1::already_satisfied ||
+      result.status==CoreControlStatusV1::exit_requested || result.status==CoreControlStatusV1::exit_already_requested;
   std::string output=R"({"type":"command_result","protocol_version":1,"request_id":)";
   AppendString(output,request_id);
   output += accepted ? R"(,"ok":true,"result":{"schema":)"
                      : R"(,"ok":false,"result":{"schema":)";
-  AppendString(output,kCoreControlResultSchemaV1);
+  const bool application_exit=step==kApplicationExitStepV1;
+  AppendString(output,application_exit?kApplicationExitResultSchemaV1:kCoreControlResultSchemaV1);
   output += R"(,"game_version":)"; AppendString(output,kGameVersion);
   output += R"(,"executable_sha256":)"; AppendString(output,kExecutableSha256);
   output += R"(,"adapter_id":)"; AppendString(output,kAdapterId);
   output += R"(,"backend":)"; AppendString(output,kCoreBackendV1);
   output += R"(,"step":)"; AppendString(output,step);
   output += accepted ? R"(,"accepted":true)" : R"(,"accepted":false)";
-  output += R"(,"queue_status":)"; AppendString(output,StatusName(result.status));
+  output += application_exit?R"(,"dispatch_status":)":R"(,"queue_status":)"; AppendString(output,StatusName(result.status));
   output += result.effect_attempted ? R"(,"effect_attempted":true)"
                                     : R"(,"effect_attempted":false)";
   output += R"(,"complete_snapshot":false,"physical_save_confirmed":false)";
+  if (application_exit) output += R"(,"normal_exit_confirmed":false)";
   if (step=="save-checkpoint") {
     output += R"(,"save_name":)"; AppendString(output,kCheckpointSaveName);
   }

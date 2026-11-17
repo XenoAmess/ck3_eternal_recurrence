@@ -12,8 +12,8 @@
 namespace {
 using namespace xar::game;
 using namespace xar::ck3_1210;
-constexpr std::array<std::string_view, 10> kCapabilities{kCoreFrameCapabilityV1,
-    kCoreControlCapabilityV1,"game.command.pause-map","game.command.resume-map",
+constexpr std::array<std::string_view, 11> kCapabilities{kCoreFrameCapabilityV1,
+    kCoreControlCapabilityV1,kApplicationExitCapabilityV1,"game.command.pause-map","game.command.resume-map",
     "game.command.set-speed-1","game.command.set-speed-2","game.command.set-speed-3",
     "game.command.set-speed-4","game.command.set-speed-5","game.command.save-checkpoint"};
 const AdapterDescriptor kDescriptor{kAdapterId, kGameVersion,
@@ -217,6 +217,8 @@ bool Queue(void *,void **owned,std::uint32_t flags) {
   ++queues; std::memcpy(observed_command.data(),*owned,object_size);
   Destroy(*owned,1); *owned=nullptr; return !reject;
 }
+unsigned exit_calls=0;
+void NativeApplicationQuit(void *app) { ++exit_calls; static_cast<unsigned char *>(app)[0x89]=1; }
 std::string Payload() {
   return std::string(R"({"type":"execute_step","protocol_version":1,"request_id":"control-fixture","step":"set-speed-3","expected_revision":0,"core_control_deadline_unix_ms":2000,"core_clock_control":{"schema":"ck3_1210_core_clock_control_v1","game_version":"1.21.0","executable_sha256":")")+
       kExecutableSha256+R"(","adapter_id":"ck3-1.21.0-msvc-x64","backend":"ck3-1.21.0-native-headless-main-thread","date_raw":123456,"speed":5,"paused":true,"local_player_id":7,"map_ready":true,"has_played_character":true,"played_character_id":16777217,"played_character_alive":true},"arguments":{}})";
@@ -270,6 +272,14 @@ int main() {
       Changed(Payload(),",\"core_control_deadline_unix_ms\":2000","")}) {
     CoreControlRequestV1 invalid{}; CHECK(!ParseCoreControlRequestV1(bad,invalid));
   }
+  auto exit_payload=Changed(Changed(Changed(Payload(),"set-speed-3",kApplicationExitStepV1),
+      "core_clock_control", "core_application_exit"),kCoreControlSchemaV1,kApplicationExitSchemaV1);
+  CoreControlRequestV1 exit_request{};
+  CHECK(ParseCoreControlRequestV1(exit_payload,exit_request));
+  CHECK(exit_request.operation==CoreControlOperationV1::application_exit);
+  CHECK(!ParseCoreControlRequestV1(Changed(Payload(),"set-speed-3",kApplicationExitStepV1),exit_request));
+  CHECK(!ParseCoreControlRequestV1(Changed(exit_payload,kApplicationExitStepV1,"pause-map"),exit_request));
+  CHECK(ParseCoreControlRequestV1(exit_payload,exit_request));
   FixtureAdapter adapter(kDescriptor);
   xar::ck3_11906::MainThreadQueryMailboxV1 mailbox{};
   xar::ck3_11906::MainThreadExecutionStampV1 stamp{};
@@ -336,6 +346,39 @@ int main() {
   CHECK(observed_command[8]==std::byte{0x20});
   CHECK(std::memcmp(observed_command.data()+0x20,kCheckpointSaveName,sizeof(kCheckpointSaveName))==0);
   CHECK(!BindCommandImage(0x140000000,"old-hash").enabled);
+  std::array<unsigned char,0x100> app{};void *app_slot=app.data();
+  const std::uintptr_t app_vtable=0x12340;std::memcpy(app.data(),&app_vtable,sizeof(app_vtable));
+  ApplicationExitSessionV1 exit_session;
+  const auto arm_exit=[&]() {
+    context.request=exit_request;
+    context.application_exit={true,&app_slot,&NativeApplicationQuit,app_vtable,app_vtable+8};
+    context.application_exit_session=&exit_session;
+  };
+  reset();arm_exit();CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::exit_requested && exit_calls==1 &&
+      context.result.effect_attempted && queues==0 && clones==0);
+  CoreControlResultV1 consumed{};consumed.status=CoreControlStatusV1::exit_claim_consumed;
+  const auto consumed_ack=SerializeCoreControlCommandResultV1("exit-consumed",kApplicationExitStepV1,consumed);
+  CHECK(consumed_ack.find("accepted\":false")!=std::string::npos);
+  const auto exit_ack=SerializeCoreControlCommandResultV1("exit-fixture",kApplicationExitStepV1,context.result);
+  CHECK(exit_ack.find("normal_exit_confirmed\":false")!=std::string::npos);
+  CHECK(exit_ack.find("dispatch_status\":\"requested")!=std::string::npos);
+  reset();arm_exit();CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::exit_already_requested && exit_calls==1 && !context.result.effect_attempted);
+  ApplicationExitSessionV1 expired_session;
+  reset();arm_exit();context.application_exit_session=&expired_session;clocks.wall=3000;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::expired && !expired_session.claimed.load() && exit_calls==1);
+  // A real Partial with no actor/map still grants no gameplay command, but
+  // the same owner-held application can request its own normal shutdown.
+  ApplicationExitSessionV1 menu_session;app[0x89]=0;Store(player,0x70,std::int32_t{-1});
+  CoreSnapshotPrefix menu{};CHECK(ReadCoreSnapshot(gBindings,menu));
+  CHECK(!menu.map_ready && !menu.has_played_character);
+  reset();arm_exit();context.request.expected=menu;context.application_exit_session=&menu_session;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::exit_requested && exit_calls==2 && queues==0);
+  Store(player,0x70,std::int32_t{7});
+  std::cout<<exit_ack<<std::endl;
   std::cout<<ack<<std::endl;
   std::cout<<"PASS strict claim ownership/lifetime; all prefix fields; monotonic expiry; native clone/queue cleanup; speed count; save shape (NoGame)"<<std::endl;
   return 0;

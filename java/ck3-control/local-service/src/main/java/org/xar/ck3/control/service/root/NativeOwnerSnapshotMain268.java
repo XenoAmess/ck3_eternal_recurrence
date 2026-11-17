@@ -66,8 +66,10 @@ public final class NativeOwnerSnapshotMain268 {
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
                 "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step"));
         ObservationMode observationMode=observationMode(config);
+        boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
         CoreClockControl.Step controlStep=observationMode==ObservationMode.CORE_CONTROL
                 ?CoreClockControl.Step.fromWire(StrictJson.text(config.get("control_step"))):null;
+        boolean coreCommand=applicationExit||controlStep!=null;
         ExactRef expectedDescriptor = ExactRef.fromJson(config.get("owner_descriptor"));
         StrictJson.require(Path.of(expectedDescriptor.path()).toAbsolutePath().normalize().equals(descriptorPath), "descriptor path differs from explicit config");
         long overall = StrictJson.integer(config.get("overall_timeout_seconds"), 1, 600);
@@ -85,7 +87,7 @@ public final class NativeOwnerSnapshotMain268 {
         var plan = owner.configuration().accept();
         if(observationMode==ObservationMode.MENU_CORE) {
             if(!(plan.load() instanceof NativeLaunchPlan.NewGame))throw new IOException("explicit menu core mode requires its actual NewGame owner plan");
-        } else if (observationMode!=ObservationMode.CORE_CONTROL&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
+        } else if (!coreCommand&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
         Files.createDirectory(output);
         createdOutput = output;
         ObjectNode originals = StrictJson.object();
@@ -107,10 +109,12 @@ public final class NativeOwnerSnapshotMain268 {
         result.set("game", owner.generation().toJson());
         if(controlStep!=null)result.put("schema","xar.native-owner-core-clock-control/v1").put("mode","core_clock_control")
                 .put("control_step",controlStep.wire()).put("effect_confirmed",false).put("save_confirmed",false);
+        if(applicationExit)result.put("schema","xar.native-owner-core-application-exit/v1").put("mode","core_application_exit")
+                .put("normal_exit_confirmed",false);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames, controlStep==null?1:2);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames, coreCommand?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
             try (ManagedGameSession game = NativeGameAttachment.attach(request, deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
@@ -122,6 +126,18 @@ public final class NativeOwnerSnapshotMain268 {
                 if (corePrefixOnly) {
                     stage = "ONE_CORE_PREFIX_READ";
                     var coreRead=transport.readCoreFrameReceived(deadline);
+                    // Snapshot already received evidence only: no additional Native query or window operation.
+                    var diagnostics=transport.diagnostics();
+                    ObjectNode natural=StrictJson.object().put("received_state",diagnostics.receivedState().name())
+                            .put("heartbeat_present",diagnostics.latestHeartbeat().isPresent());
+                    if(diagnostics.terminalFailure().isPresent())natural.put("terminal_failure",bounded(diagnostics.terminalFailure().orElseThrow(),4096));
+                    if(diagnostics.latestHeartbeat().isPresent()) {
+                        var heartbeat=diagnostics.latestHeartbeat().orElseThrow();
+                        natural.put("heartbeat_observed_at_utc",heartbeat.observedAt().toString());
+                        natural.set("heartbeat_packet",write(output,"natural-heartbeat.bin",heartbeat.original().packet().value()));
+                        natural.set("heartbeat_payload",write(output,"natural-heartbeat-payload.json",heartbeat.original().payload().value()));
+                    }
+                    originals.set("natural_transport_diagnostics",write(output,"natural-transport-diagnostics.json",FullJsonTree.encode(natural,SMALL)));
                     NativeActionPort.DispatchOutcome dispatch = coreRead.original();
                     originals.set("dispatch", saveDispatch(output, dispatch));
                     if (!(coreRead instanceof org.xar.ck3.control.nativebridge.NativeGameTransport.CoreReceived received)) {
@@ -161,17 +177,24 @@ public final class NativeOwnerSnapshotMain268 {
                             observed.putNull(field);
                     }
                     result.set("observed", observed);
-                    if(controlStep!=null) {
-                        stage="ONE_CORE_CLOCK_CONTROL_SUBMISSION";
+                    if(coreCommand) {
+                        stage=applicationExit?"ONE_CORE_APPLICATION_EXIT_REQUEST":"ONE_CORE_CLOCK_CONTROL_SUBMISSION";
                         Instant controlDeadline=received.validUntil().isBefore(deadline)?received.validUntil():deadline;
-                        var control=transport.submitCoreClockControl(received,controlStep,controlDeadline);
-                        Path controlOutput=output.resolve("control");Files.createDirectory(controlOutput);
-                        originals.set("control_dispatch",saveDispatch(controlOutput,control));
-                        result.put("control_request_id",control.requestId()).put("control_dispatch_class",control.getClass().getSimpleName())
-                                .put("control_deadline_utc",controlDeadline.toString()).put("control_calls",1);
+                        var control=applicationExit?transport.submitCoreNormalExit(received,controlDeadline)
+                                :transport.submitCoreClockControl(received,controlStep,controlDeadline);
+                        String action=applicationExit?"exit":"control";
+                        Path controlOutput=output.resolve(action);Files.createDirectory(controlOutput);
+                        originals.set(action+"_dispatch",saveDispatch(controlOutput,control));
+                        result.put(action+"_request_id",control.requestId()).put(action+"_dispatch_class",control.getClass().getSimpleName())
+                                .put(action+"_deadline_utc",controlDeadline.toString()).put(action+"_calls",1);
                         // An ACK is the original submission result; no engine effect or physical SAVE is inferred.
-                        if(control instanceof NativeActionPort.AckReceived submitted)result.put("control_native_ok",submitted.nativeOk());
-                        if(control instanceof NativeActionPort.Unknown)result.put("control_replay_forbidden",true);
+                        if(control instanceof NativeActionPort.AckReceived submitted)result.put(action+"_native_ok",submitted.nativeOk());
+                        if(control instanceof NativeActionPort.Unknown)result.put(action+"_replay_forbidden",true);
+                        var uncertainAck=transport.originalIndeterminateCoreAcknowledgement(control.requestId());
+                        if(uncertainAck.isPresent()) {
+                            Path retained=controlOutput.resolve("indeterminate-ack");Files.createDirectory(retained);
+                            originals.set(action+"_indeterminate_native_ack",saveDispatch(retained,uncertainAck.orElseThrow()));
+                        }
                     }
                 } else {
                 stage = "ONE_FRESH_READ";
@@ -213,8 +236,8 @@ public final class NativeOwnerSnapshotMain268 {
                 var keys = result.putArray("native_state_top_keys");
                 for (var field : state.properties()) keys.add(field.getKey());
                 }
-                requireSupervisor(supervisor, owner.supervisorIdentity());
-                game.verify();
+                // Exit may already have completed. This branch records originals, never a new live role or terminal.
+                if(!applicationExit) {requireSupervisor(supervisor, owner.supervisorIdentity());game.verify();}
                 if (!descriptorWitness.equals(SharedSourceFiles.observe(descriptorPath))) throw new IOException("original owner descriptor changed during READ");
                 stage = "RELEASE_ENDPOINT";
             }
@@ -222,16 +245,21 @@ public final class NativeOwnerSnapshotMain268 {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v4")) {
+            StrictJson.require(!config.has("core_prefix_only")&&!config.has("control_step")
+                    &&"core_application_exit".equals(StrictJson.text(config.get("mode"))),"explicit background application exit mode required");
+            return ObservationMode.CORE_EXIT;
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v3")) {
             StrictJson.require(!config.has("core_prefix_only")&&"core_clock_control".equals(StrictJson.text(config.get("mode"))),"explicit core control mode required");
             CoreClockControl.Step.fromWire(StrictJson.text(config.get("control_step")));

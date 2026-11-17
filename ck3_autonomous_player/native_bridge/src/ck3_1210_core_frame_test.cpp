@@ -250,7 +250,7 @@ int wmain(int argc, wchar_t **argv) {
   const auto unavailable_reply = SerializeCoreFrameCommandResultV1("producer-unavailable", context.observation);
   CHECK(!BindThreadRuntimeImage(1, "wrong").exact_build_admitted);
   CHECK(!BindThreadRuntimeImage(0, kExecutableSha256).exact_build_admitted);
-  const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 3> too_many{&ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1};
+  const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 4> too_many{&ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1};
   CHECK(!BindThreadRuntimeImage(1, kExecutableSha256, too_many).exact_build_admitted);
   CHECK(!VerifyThreadRuntimeImage(0));
   if (argc == 2) {

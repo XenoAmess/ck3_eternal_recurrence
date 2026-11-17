@@ -971,6 +971,46 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         public CoreReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
     }
     private Unknown unresolvedCoreControl;
+    private AckReceived indeterminateCoreAcknowledgement;
+    /** Passive access to the exact uncertain Native result; no query, resend, deadline or live role is created. */
+    public synchronized Optional<AckReceived> originalIndeterminateCoreAcknowledgement(String requestId) {
+        Objects.requireNonNull(requestId);
+        return indeterminateCoreAcknowledgement!=null&&indeterminateCoreAcknowledgement.requestId().equals(requestId)
+                ?Optional.of(indeterminateCoreAcknowledgement):Optional.empty();
+    }
+    private boolean applicationExitAttempted;
+    /** The private original Core permits one background application-exit request, never an exit receipt. */
+    public synchronized DispatchOutcome submitCoreNormalExit(CoreReceived before,Instant deadline)throws InterruptedException {
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        String id="core-exit-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            Objects.requireNonNull(before);Objects.requireNonNull(deadline);requireCoreOriginal(before,deadline);
+            if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("application exit cannot borrow a business mailbox or recovery scope");
+            if(applicationExitAttempted||before.controlAttempted)throw new IOException("application exit or this original Core already entered a write");
+            if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("actual available partial Core required for application exit");
+            NativeRequest request=CoreApplicationExit.request(partial);
+            if(!hello.capabilities().contains(CoreApplicationExit.CAPABILITY))throw new IOException("actual application exit capability is unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            ObjectNode fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+            long until=deadline.toEpochMilli();
+            if(until<=0||until>before.validUntil.toEpochMilli())throw new IOException("application exit cannot extend its original absolute query deadline");
+            fields.put("core_control_deadline_unix_ms",until);
+            byte[] packet=NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+            DispatchOutcome outcome=dispatch(id,packet,deadline,()->{
+                requireBackgroundAtCoreWrite();
+                if(applicationExitAttempted||before.controlAttempted)throw new IllegalStateException("original application exit claim is consumed");
+                before.controlAttempted=true;applicationExitAttempted=true;
+            });
+            return retainCoreControlOutcome(outcome);
+        } catch(IOException|RuntimeException failure) {
+            if(sentRequestIds.contains(id)) {
+                unresolvedCoreControl=new Unknown(id,"application exit failed after actual write entry; never replay: "+reason(failure),retainedOutbound(id),Optional.empty());
+                return unresolvedCoreControl;
+            }
+            return zero(id,reason(failure));
+        }
+    }
     /**
      * A separate fixed core-only control path. It does not create a full-observation SubmissionPermit,
      * a business receipt, a confirmed SAVE, or an observed engine effect. UNKNOWN keeps its original ID.
@@ -982,6 +1022,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         try {
             Objects.requireNonNull(before);Objects.requireNonNull(step);Objects.requireNonNull(deadline);
             requireCoreOriginal(before,deadline);
+            if(applicationExitAttempted)throw new IOException("application exit already entered a write in this held transport");
             if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
                 throw new IOException("standalone core control cannot borrow a business mailbox or recovery scope");
             if(before.controlAttempted)throw new IOException("this original core receipt already entered a control write");
@@ -1000,11 +1041,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             fields.put("core_control_deadline_unix_ms",until);
             byte[] packet=NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
             DispatchOutcome outcome=dispatch(id,packet,deadline,()->{
+                requireBackgroundAtCoreWrite();
                 if(before.controlAttempted)throw new IllegalStateException("original core receipt is already consumed");
                 before.controlAttempted=true;
             });
-            if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;
-            return outcome;
+            return retainCoreControlOutcome(outcome);
         } catch(IOException|RuntimeException failure) {
             if(sentRequestIds.contains(id)) {
                 unresolvedCoreControl=new Unknown(id,"core control failed after actual write entry; never replay: "+reason(failure),retainedOutbound(id),Optional.empty());
@@ -1012,6 +1053,27 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             }
             return zero(id,reason(failure));
         }
+    }
+    private void requireBackgroundAtCoreWrite() {
+        try {endpoint.verifyCoreControlWindowPolicy();}
+        catch(IOException failure){throw new java.io.UncheckedIOException(failure);}
+    }
+    private DispatchOutcome retainCoreControlOutcome(DispatchOutcome outcome) {
+        if(outcome instanceof AckReceived ack&&ack.originalResultToken().isPresent()) {
+            try {
+                var result=NativeWire.object(NativeWire.parse(ack.originalResultToken().orElseThrow().bytes()));
+                if(textEquals(result,"queue_status","indeterminate")||textEquals(result,"dispatch_status","indeterminate")) {
+                    indeterminateCoreAcknowledgement=ack;
+                    unresolvedCoreControl=new Unknown(ack.requestId(),"Native core result is indeterminate; retain the original only, never replay",
+                            ack.outbound().orElseThrow().originalPacket(),Optional.of(ack.originalFrame()));
+                    return unresolvedCoreControl;
+                }
+            } catch(IOException|RuntimeException malformed) {
+                // An unrecognized ACK remains original DATA; it grants neither effect nor a confirmed SAVE/exit.
+            }
+        }
+        if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;
+        return outcome;
     }
     /** Freeze this query's actual deadline; a later consumer cannot give an old ACK a new window. */
     public synchronized CoreRead readCoreFrameReceived(Instant deadline)throws InterruptedException {

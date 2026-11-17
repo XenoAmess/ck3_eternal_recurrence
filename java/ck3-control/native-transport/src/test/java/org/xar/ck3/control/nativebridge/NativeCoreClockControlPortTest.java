@@ -94,6 +94,31 @@ final class NativeCoreClockControlPortTest {
             assertTrue(fixture.actual.latestObservedSnapshot().isEmpty());
         }
     }
+    @Test
+    void aFailedBackgroundGuardWritesNothingAndDoesNotConsumeTheOriginalReceipt() throws Exception {
+        try(var fixture=new Fixture(partial(),true,false)) {
+            var before=fixture.received();var until=before.validUntil().minusSeconds(5);
+            fixture.source.backgroundReady=false;
+            zero(fixture.actual.submitCoreClockControl(before,CoreClockControl.Step.PAUSE_MAP,until));
+            assertCounts(fixture,0);
+            fixture.source.backgroundReady=true;
+            assertInstanceOf(NativeActionPort.AckReceived.class,fixture.actual.submitCoreClockControl(before,CoreClockControl.Step.PAUSE_MAP,until));
+            assertCounts(fixture,1);
+        }
+    }
+    @Test void anIndeterminateNativeQueueAckRetainsTheSameUnknownAndOriginalResult()throws Exception {
+        try(var fixture=new Fixture(partial(),true,false)) {
+            fixture.source.controlResponse="{\"queue_status\":\"indeterminate\"}".getBytes(StandardCharsets.UTF_8);
+            fixture.source.controlOk=false;
+            var before=fixture.received();var until=before.validUntil().minusSeconds(5);
+            var unknown=assertInstanceOf(NativeActionPort.Unknown.class,fixture.actual.submitCoreClockControl(before,CoreClockControl.Step.PAUSE_MAP,until));
+            var ack=fixture.actual.originalIndeterminateCoreAcknowledgement(unknown.requestId()).orElseThrow();
+            assertFalse(ack.nativeOk());ack.custody().orElseThrow().verify(ack);
+            assertEquals(ack.originalFrame(),unknown.rawReturn().orElseThrow());
+            assertArrayEquals(ack.outbound().orElseThrow().originalPacket(),unknown.originalRequestPacket());
+            assertSame(unknown,fixture.actual.submitCoreClockControl(before,CoreClockControl.Step.RESUME_MAP,until));assertCounts(fixture,1);
+        }
+    }
 
     @Test
     void sameSessionForeignIssuerAndMissingControlCapabilityCannotWriteAControl() throws Exception {
@@ -303,6 +328,8 @@ final class NativeCoreClockControlPortTest {
         final boolean unknownControl;
         int queries, writes, fullStateWrites;
         boolean closed;
+        boolean backgroundReady=true;
+        byte[] controlResponse=SUBMITTED.clone();boolean controlOk=true;
 
         Replay(byte[] result, ObjectNode hello, MutableClock clock, boolean unknownControl) throws IOException {
             this.result = result.clone(); this.clock = clock; this.unknownControl = unknownControl;
@@ -310,6 +337,9 @@ final class NativeCoreClockControlPortTest {
         }
 
         @Override public void verify() throws IOException { if (closed) throw new IOException("software source closed"); }
+        @Override public void verifyCoreControlWindowPolicy()throws IOException {
+            verify();if(!backgroundReady)throw new IOException("software background guard unavailable");
+        }
         @Override public void awaitConnection(Instant until) throws IOException { check(until); }
         private void check(Instant until) throws IOException {
             verify(); if (!clock.instant().isBefore(until)) throw new IOException("software operation deadline expired");
@@ -337,11 +367,11 @@ final class NativeCoreClockControlPortTest {
                 CoreClockControl.Step.fromWire(command.step());
                 controls.add(original.clone());
                 if (unknownControl) return;
-                response = SUBMITTED;
+                response = controlResponse;
             }
             var output = new ByteArrayOutputStream();
             output.writeBytes(("{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\""
-                    + command.requestId() + "\",\"ok\":true,\"result\":").getBytes(StandardCharsets.UTF_8));
+                    + command.requestId() + "\",\"ok\":"+(command.step().equals(CoreFrame.STEP)||controlOk)+",\"result\":").getBytes(StandardCharsets.UTF_8));
             output.writeBytes(response); output.write('}');
             packets.add(NativeWire.packet(output.toByteArray()));
         }

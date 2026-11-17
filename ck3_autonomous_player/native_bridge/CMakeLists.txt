@@ -1276,6 +1276,9 @@ add_library(xar_ck3_12002_runtime STATIC
     src/ck3_1210_core.cpp
     src/ck3_1210_thread_runtime.cpp
     src/ck3_1210_core_frame_v1.cpp
+    src/ck3_1210_personal_gold_v1.cpp
+    src/ck3_1210_personal_gold_frame_v1.cpp
+    src/ck3_1210_application_exit_v1.cpp
     src/ck3_1210_commands.cpp
     src/ck3_1210_core_control_request_v1.cpp
     src/ck3_1210_core_control_v1.cpp
@@ -10217,6 +10220,7 @@ if(XAR_CK3_ENABLE_1210_CORE_CONTROL_V1)
 endif()
 if(BUILD_TESTING)
   add_executable(xar_ck3_1210_core_control_test
+    src/ck3_1210_application_exit_v1.cpp
     src/ck3_1210_commands.cpp src/ck3_1210_core_control_request_v1.cpp
     src/ck3_1210_core_control_v1.cpp src/ck3_1210_core.cpp
     src/ck3_1210_core_frame_v1.cpp src/ck3_1210_thread_runtime.cpp
@@ -10231,4 +10235,51 @@ endif()
 
 if(BUILD_TESTING)
   add_test(NAME xar_ck3_native_bridge_1210_timeline_mailbox COMMAND xar_ck3_main_thread_query_mailbox_v1_test --timeline-only)
+endif()
+
+option(XAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1 "Enable native application quit request under held CoreReceived" OFF)
+if(XAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1)
+  if(NOT XAR_CK3_ENABLE_1210_CORE_CONTROL_V1)
+    message(FATAL_ERROR "Florin application exit requires its private held-core control provider")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_application_exit_test
+    src/ck3_1210_application_exit_v1.cpp src/ck3_1210_application_exit_v1_test.cpp)
+  target_include_directories(xar_ck3_1210_application_exit_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_application_exit_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_application_exit_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_application_exit COMMAND xar_ck3_1210_application_exit_test)
+endif()
+
+option(XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1 "Enable only paused current-player personal wallet observation" OFF)
+if(XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1)
+  if(NOT XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+    message(FATAL_ERROR "Florin personal gold requires the exact Core reader")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_personal_gold_test
+    src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_personal_gold_frame_v1.cpp
+    src/ck3_1210_personal_gold_v1_test.cpp src/ck3_1210_core.cpp
+    src/ck3_1210_adapter.cpp src/ck3_1210_core_frame_v1.cpp
+    src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
+  target_include_directories(xar_ck3_1210_personal_gold_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_personal_gold_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN
+    XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1 XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1=1
+    XAR_CK3_PERSONAL_GOLD_FRAME_TEST=1)
+  add_executable(xar_ck3_1210_actor_foundation_test
+    src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_actor_foundation_v1_test.cpp src/ck3_1210_core.cpp)
+  target_include_directories(xar_ck3_1210_actor_foundation_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_actor_foundation_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_personal_gold_test PRIVATE /W4 /WX /permissive- /EHsc)
+    target_compile_options(xar_ck3_1210_actor_foundation_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_personal_gold COMMAND xar_ck3_1210_personal_gold_test)
+  add_test(NAME xar_ck3_native_bridge_1210_actor_foundation COMMAND xar_ck3_1210_actor_foundation_test)
 endif()

@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.build.WindowsJobProcess;
+import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameLifecycle;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -44,6 +45,11 @@ public final class GameSupervisor {
 
     /** Start: configuration owner-directory. STOP: stop owner.json request-id timeout-seconds. */
     public static void main(String... args) throws Exception {
+        if(args.length==4&&args[0].equals("maintain-background")) {
+            int status=maintainBackground(Path.of(args[1]),args[2],Long.parseLong(args[3]));
+            if(status!=0)System.exit(status);
+            return;
+        }
         if (args.length == 4 && args[0].equals("stop")) {
             var descriptor = GameSupervisorControl.readDescriptor(Path.of(args[1]));
             long seconds = Long.parseLong(args[3]);
@@ -62,6 +68,61 @@ public final class GameSupervisor {
                 "GameSupervisor requires ordinary-configuration and absent-owner-directory, or stop owner.json request-id timeout-seconds");
         int status = run(Path.of(args[0]), Path.of(args[1]));
         if (status != 0) System.exit(status);
+    }
+
+    /** Read-only process custody and minimize-only window maintenance; this process never owns or terminates a Job. */
+    public static int maintainBackground(Path descriptorPath,String descriptorSha256,long seconds)throws IOException,InterruptedException {
+        if(seconds<1||seconds>21600||descriptorSha256==null||!descriptorSha256.matches("[a-fA-F0-9]{64}"))
+            throw new IOException("finite background maintenance duration and exact descriptor SHA256 required");
+        Path path=descriptorPath.toAbsolutePath().normalize();
+        byte[] bytes=GameSupervisorControl.readBounded(path,GameSupervisorControl.MAXIMUM_DESCRIPTOR_BYTES);
+        if(!NativeDigest.sha256(bytes).equalsIgnoreCase(descriptorSha256))throw new IOException("background maintenance descriptor SHA256 differs");
+        var witness=SharedSourceFiles.observe(path);var descriptor=GameSupervisorControl.readDescriptor(path);
+        if(witness.source().bytes()!=bytes.length||!witness.source().sha256().equalsIgnoreCase(descriptorSha256)
+                ||!witness.equals(SharedSourceFiles.observe(path))
+                ||!Arrays.equals(bytes,GameSupervisorControl.readBounded(path,GameSupervisorControl.MAXIMUM_DESCRIPTOR_BYTES)))
+            throw new IOException("background maintenance descriptor changed during capture");
+        if(!descriptor.machineId().equals(WindowsJobProcess.currentMachineId()))throw new IOException("background maintenance descriptor belongs to another machine");
+        requireBackgroundPolicy(descriptor.configuration().accept().windowPolicy());
+        Instant until=Instant.now().plusSeconds(seconds);
+        try(var game=WindowsJobProcess.retainReadOnlyProcess(descriptor.gameIdentity().pid());
+                var owner=WindowsJobProcess.retainReadOnlyProcess(descriptor.supervisorIdentity().pid())) {
+            if(!game.identity().equals(descriptor.gameIdentity())||!owner.identity().equals(descriptor.supervisorIdentity()))
+                throw new IOException("background maintenance crossed the original Game or supervisor birth");
+            org.xar.ck3.control.nativebridge.NativeProcessGuard held=expected->{
+                if(!expected.equals(descriptor.generation())||game.waitZero()!=258L||owner.waitZero()!=258L
+                        ||!game.identity().equals(descriptor.gameIdentity())||!owner.identity().equals(descriptor.supervisorIdentity())
+                        ||!witness.equals(SharedSourceFiles.observe(path)))throw new IOException("background maintenance lost its exact original custody");
+            };
+            boolean published=false;
+            boolean unavailable=false;
+            while(Instant.now().isBefore(until)) {
+                if(game.waitZero()==0L) {System.out.println("BACKGROUND_POLICY_GAME_EXITED");return 0;}
+                held.verify(descriptor.generation());
+                try {BackgroundGameWindowPolicy.enforce(descriptor.generation(),held);}
+                catch(IOException pending) {
+                    held.verify(descriptor.generation());
+                    if(!unavailable)System.err.println("BACKGROUND_POLICY_UNAVAILABLE; Native prewrite checks must still succeed: "+pending.getMessage());
+                    unavailable=true;Thread.sleep(500);continue;
+                }
+                if(!published||unavailable) {
+                    System.out.println(StrictJson.object().put("schema","xar.agent-background-maintenance/v1").put("status","BACKGROUND_POLICY_ACTIVE")
+                            .put("owner_descriptor_sha256",descriptorSha256.toLowerCase(java.util.Locale.ROOT)).put("deadline",until.toString())
+                            .set("game",descriptor.generation().toJson()));
+                    published=true;
+                    unavailable=false;
+                }
+                Thread.sleep(500);
+            }
+            System.err.println("BACKGROUND_POLICY_EXPIRED; no Game termination or new actions authorized");return 2;
+        }
+    }
+
+    private static final class NativeDigest {
+        static String sha256(byte[] bytes)throws IOException {
+            try{return java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(bytes));}
+            catch(java.security.NoSuchAlgorithmException impossible){throw new IOException("SHA-256 unavailable",impossible);}
+        }
     }
 
     public static int run(Path configuration, Path ownerDirectory) throws IOException, InterruptedException {
