@@ -1,0 +1,58 @@
+{
+  "schema": "ck3.migration.normal-exit-gui-static-generation/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-11-17T18:48:55.525341+00:00",
+  "ended_at_utc": "2026-11-17T18:49:00.789455+00:00",
+  "source_base_commit": "52315df59f784da5f338299a497405848a1fa43f",
+  "generator": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\source\\tools\\gen_normal_exit_gui_source_contract_v1.py",
+    "bytes": 10452,
+    "sha256": "d73e6981727f59938e3d88f4b2981eb4a582f6bd3cacda5bb9c2b1adfde2a5d3"
+  },
+  "imports": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_gui_sources_v1.py",
+      "bytes": 5164,
+      "sha256": "df2b0143d7c9267f8aee0958615cd59f7f0f205d58f1b835750ebf608460cb06"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_source_inventory_v1.py",
+      "bytes": 11097,
+      "sha256": "ae2c74c22d93a45e90d33d04f8733c23d034f09ad7bd3309095e1866a4714bf0"
+    }
+  ],
+  "executable": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 114756216,
+    "sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"
+  },
+  "outputs": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\normal_exit_gui_source_contract_1210.json",
+      "bytes": 6357,
+      "sha256": "fc7347a3945cb5984314a67d9ca6044cb6a5638e049c30885277bf21134b0f31"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\normal_exit_gui_source_contract_1210.hpp",
+      "bytes": 5327,
+      "sha256": "f9c7ff66a375ad23cc6632486d383dd029d48fb1b8e5b84e1996636e36da77d8"
+    }
+  ],
+  "counts": {
+    "stock_gui": 6,
+    "stock_gui_dependencies": 12,
+    "protected_gui_symbols": 99,
+    "protected_gui_paths": 18,
+    "fixed_gui_roots": 3
+  },
+  "tests": {
+    "command": "py -3 -m unittest -v test_gen_normal_exit_gui_source_contract_v1",
+    "passed": 7,
+    "failures": 0,
+    "errors": 0,
+    "typing": "mypy --strict --follow-imports=silent --no-incremental --cache-dir=nul tools/gen_normal_exit_gui_source_contract_v1.py: PASS 1 source file"
+  },
+  "qualification": "OFFLINE_DATA_GENERATION_ONLY",
+  "live_game_actions": 0,
+  "normal_exit_or_native_GUI_qualification": false
+}

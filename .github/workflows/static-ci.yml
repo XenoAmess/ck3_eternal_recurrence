@@ -117,6 +117,15 @@ jobs:
         run: python ck3_autonomous_player/native_bridge/research/test_native_verifier_evidence_scope.py
       - name: Test managed normal-exit profile and terminal host execution without CK3
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_normal_exit_profile.py
+      - name: Test exact-build normal-exit GUI source generation without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
+          MYPYPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
+        run: |
+          python -B -X utf8 -m unittest -v test_gen_normal_exit_gui_source_contract_v1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m mypy --strict --follow-imports=silent --no-incremental --cache-dir nul tools/gen_normal_exit_gui_source_contract_v1.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test formal product ordinary campaign and capture admission without CK3
         run: |
           python -B -X utf8 tools/test_ck3_mod_acceptance_product_preparation.py

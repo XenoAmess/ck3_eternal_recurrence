@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import gen_normal_exit_gui_source_contract_v1 as generator
 
@@ -57,6 +58,32 @@ class GuiContractGeneratorTests(unittest.TestCase):
         executable.write_bytes(b'another build')
         with self.assertRaisesRegex(ValueError, 'not the supported CK3'):
             generator.build_contract(self.root)
+
+    def test_florin_contract_uses_its_own_hash_and_namespace(self):
+        florin = next(profile for profile in generator.EXACT_BUILDS
+                      if profile.game_version == '1.21.0')
+        with patch.object(generator, '_hash_file', return_value=florin.executable_sha256):
+            contract = generator.build_contract(self.root, '1.21.0')
+            with self.assertRaisesRegex(ValueError, 'not the supported CK3 1.20.0.4'):
+                generator.build_contract(self.root)
+        self.assertEqual(contract['game_version'], '1.21.0')
+        self.assertEqual(contract['executable_sha256'], florin.executable_sha256)
+        header = generator.render_header(contract)
+        self.assertIn('namespace xar::ck3_1210 {', header)
+        self.assertNotIn('namespace xar::ck3_12003', header)
+        self.assertEqual(header, generator.render_header(json.loads(json.dumps(contract))))
+
+    def test_crossed_or_unknown_build_cannot_render_header(self):
+        contract = {'schema': generator.SCHEMA, 'game_version': '1.21.0',
+                    'executable_sha256': generator.EXECUTABLE_SHA256,
+                    **generator.collect_gui_data(self.root)}
+        with self.assertRaisesRegex(ValueError, 'cross exact builds'):
+            generator.render_header(contract)
+        contract['game_version'] = '1.21.0.0'
+        with self.assertRaisesRegex(ValueError, 'Unsupported exact GUI source build'):
+            generator.render_header(contract)
+        with self.assertRaisesRegex(ValueError, 'Unsupported exact GUI source build'):
+            generator.build_contract(self.root, '1.22.0')
 
     def test_header_is_deterministic_lowercase_data_without_gui_bodies(self):
         contract = {'game_version': generator.GAME_VERSION,

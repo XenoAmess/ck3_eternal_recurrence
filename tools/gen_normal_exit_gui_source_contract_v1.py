@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -10,6 +11,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+from typing import TypedDict
 
 REPOSITORY = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPOSITORY / 'ck3_autonomous_player' / 'src'))
@@ -22,12 +24,74 @@ EXECUTABLE_SHA256 = '98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319
 SCHEMA = 'ck3-normal-exit-gui-source-contract-v1'
 
 
+@dataclass(frozen=True)
+class ExactGuiBuild:
+    game_version: str
+    executable_sha256: str
+    cpp_namespace: str
+
+
+EXACT_BUILDS = (
+    ExactGuiBuild(GAME_VERSION, EXECUTABLE_SHA256, 'xar::ck3_12003'),
+    ExactGuiBuild('1.21.0',
+                  '2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc',
+                  'xar::ck3_1210'),
+)
+
+
+class SourcePin(TypedDict):
+    relative_path: str
+    bytes: int
+    sha256: str
+
+
+class GuiSources(TypedDict):
+    stock_gui: list[SourcePin]
+    stock_gui_dependencies: list[SourcePin]
+    protected_gui_symbols: list[str]
+    protected_gui_paths: list[str]
+    fixed_gui_roots: list[str]
+
+
+class GuiContract(GuiSources):
+    schema: str
+    game_version: str
+    executable_sha256: str
+
+
+class FilePin(TypedDict):
+    path: str
+    bytes: int
+    sha256: str
+
+
+def _exact_build(game_version: str, executable_sha256: str | None = None) -> ExactGuiBuild:
+    matches = [profile for profile in EXACT_BUILDS if profile.game_version == game_version]
+    if len(matches) != 1:
+        raise ValueError('Unsupported exact GUI source build: ' + game_version)
+    profile = matches[0]
+    if executable_sha256 is not None and executable_sha256 != profile.executable_sha256:
+        raise ValueError('GUI source version and executable SHA cross exact builds')
+    return profile
+
+
+def _strings(value: object) -> list[str]:
+    if not isinstance(value, (list, set)):
+        raise ValueError('GUI closure requires a string collection')
+    result: list[str] = []
+    for item in value:
+        if not isinstance(item, str):
+            raise ValueError('GUI closure requires string members')
+        result.append(item)
+    return sorted(result)
+
+
 def _hash_file(path: Path) -> str:
     with path.open('rb') as handle:
         return hashlib.file_digest(handle, 'sha256').hexdigest()
 
 
-def _source_pin(game_root: Path, relative: str) -> dict:
+def _source_pin(game_root: Path, relative: str) -> SourcePin:
     path = (game_root / relative).resolve()
     if not path.is_relative_to(game_root) or path.relative_to(game_root).as_posix() != relative:
         raise ValueError('GUI dependency source escapes the supplied game root')
@@ -36,27 +100,29 @@ def _source_pin(game_root: Path, relative: str) -> dict:
             'sha256': hashlib.sha256(content).hexdigest()}
 
 
-def collect_gui_data(game_root: Path) -> dict:
+def collect_gui_data(game_root: Path) -> GuiSources:
     """Reuse the production Python closure reader, including all providers."""
     game_root = game_root.resolve()
     closure = exit_gui_dependency_contract(game_root, STOCK_GUI_PATHS)
     return {
         'stock_gui': [_source_pin(game_root, relative) for relative in STOCK_GUI_PATHS],
         'stock_gui_dependencies': [_source_pin(game_root, relative)
-                                   for relative in closure['dependencies']],
-        'protected_gui_symbols': sorted(closure['symbols']),
-        'protected_gui_paths': sorted(closure['protected_paths']),
-        'fixed_gui_roots': sorted(closure['fixed_roots']),
+                                   for relative in _strings(closure['dependencies'])],
+        'protected_gui_symbols': _strings(closure['symbols']),
+        'protected_gui_paths': _strings(closure['protected_paths']),
+        'fixed_gui_roots': _strings(closure['fixed_roots']),
     }
 
 
-def build_contract(game_root: Path) -> dict:
+def build_contract(game_root: Path, game_version: str = GAME_VERSION) -> GuiContract:
+    profile = _exact_build(game_version)
     game_root = game_root.resolve()
     executable = game_root.parent / 'binaries' / 'ck3.exe'
-    if _hash_file(executable) != EXECUTABLE_SHA256:
-        raise ValueError('Source executable is not the supported CK3 1.20.0.4 exact build')
-    return {'schema': SCHEMA, 'game_version': GAME_VERSION,
-            'executable_sha256': EXECUTABLE_SHA256, **collect_gui_data(game_root)}
+    if _hash_file(executable) != profile.executable_sha256:
+        raise ValueError('Source executable is not the supported CK3 '
+                         + profile.game_version + ' exact build')
+    return {'schema': SCHEMA, 'game_version': profile.game_version,
+            'executable_sha256': profile.executable_sha256, **collect_gui_data(game_root)}
 
 
 def _cpp_string(value: str) -> str:
@@ -67,12 +133,13 @@ def _cpp_string(value: str) -> str:
     return json.dumps(value, ensure_ascii=True)
 
 
-def render_header(contract: dict) -> str:
+def render_header(contract: GuiContract) -> str:
+    profile = _exact_build(contract['game_version'], contract['executable_sha256'])
     lines = [
         '// Generated by tools/gen_normal_exit_gui_source_contract_v1.py; do not edit.',
         '// Exact-build identifiers and digests only; no stock GUI source is embedded.',
         '#pragma once', '#include <array>', '#include <cstdint>', '#include <string_view>',
-        '', 'namespace xar::ck3_12003 {',
+        '', 'namespace ' + profile.cpp_namespace + ' {',
         'inline constexpr std::string_view kNormalExitGuiGameVersionV1 = '
         + _cpp_string(contract['game_version']) + ';',
         'inline constexpr std::string_view kNormalExitGuiExecutableSha256V1 = '
@@ -88,23 +155,22 @@ def render_header(contract: dict) -> str:
         lines.append('    {' + _cpp_string(row['relative_path']) + ', '
                      + str(row['bytes']) + 'ULL, ' + _cpp_string(row['sha256']) + '},')
     lines.append('}};')
-    for key, name in [
-        ('protected_gui_symbols', 'kNormalExitProtectedGuiSymbolsV1'),
-        ('protected_gui_paths', 'kNormalExitProtectedGuiPathsV1'),
-        ('fixed_gui_roots', 'kNormalExitFixedGuiRootsV1'),
+    for values, name in [
+        (contract['protected_gui_symbols'], 'kNormalExitProtectedGuiSymbolsV1'),
+        (contract['protected_gui_paths'], 'kNormalExitProtectedGuiPathsV1'),
+        (contract['fixed_gui_roots'], 'kNormalExitFixedGuiRootsV1'),
     ]:
-        values = contract[key]
         if values != sorted(set(values)) or any(value != value.lower() for value in values):
             raise ValueError('GUI contract names must be unique, lower-case and sorted')
         lines.append('inline constexpr std::array<std::string_view, ' + str(len(values))
                      + '> ' + name + '{{')
         lines.extend('    ' + _cpp_string(value) + ',' for value in values)
         lines.append('}};')
-    lines.extend(['} // namespace xar::ck3_12003', ''])
+    lines.extend(['} // namespace ' + profile.cpp_namespace, ''])
     return '\n'.join(lines)
 
 
-def _pin(path: Path) -> dict:
+def _pin(path: Path) -> FilePin:
     return {'path': str(path.resolve()), 'bytes': path.stat().st_size,
             'sha256': _hash_file(path)}
 
@@ -112,6 +178,9 @@ def _pin(path: Path) -> dict:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--game-root', required=True, type=Path)
+    parser.add_argument('--game-version', default=GAME_VERSION,
+                        choices=[profile.game_version for profile in EXACT_BUILDS],
+                        help='Exact source build; selects its paired SHA and C++ namespace')
     parser.add_argument('--header', required=True, type=Path)
     parser.add_argument('--json', required=True, type=Path)
     parser.add_argument('--receipt', required=True, type=Path,
@@ -121,7 +190,7 @@ def main(argv: list[str] | None = None) -> int:
         raise ValueError('Generation receipt already exists; preserve prior evidence')
     started_at = datetime.now(timezone.utc).isoformat()
     usage_before = shutil.disk_usage(args.game_root.resolve())
-    contract = build_contract(args.game_root)
+    contract = build_contract(args.game_root, args.game_version)
     header = render_header(contract)
     for target, content in [(args.header, header),
                             (args.json, json.dumps(contract, indent=2) + '\n')]:
@@ -132,14 +201,16 @@ def main(argv: list[str] | None = None) -> int:
         'machine_id': current_machine_id(), 'observed_at_utc': started_at,
         'source_game_root': str(args.game_root.resolve()),
         'source_executable': _pin(args.game_root.resolve().parent / 'binaries' / 'ck3.exe'),
-        'game_version': GAME_VERSION,
+        'game_version': contract['game_version'],
         'source_commit': subprocess.check_output(
             ['git', 'rev-parse', 'HEAD'], cwd=REPOSITORY, text=True).strip(),
         'generator': _pin(Path(__file__)), 'header': _pin(args.header),
         'contract_json': _pin(args.json),
-        'counts': {key: len(contract[key]) for key in [
-            'stock_gui', 'stock_gui_dependencies', 'protected_gui_symbols',
-            'protected_gui_paths', 'fixed_gui_roots']},
+        'counts': {'stock_gui': len(contract['stock_gui']),
+                   'stock_gui_dependencies': len(contract['stock_gui_dependencies']),
+                   'protected_gui_symbols': len(contract['protected_gui_symbols']),
+                   'protected_gui_paths': len(contract['protected_gui_paths']),
+                   'fixed_gui_roots': len(contract['fixed_gui_roots'])},
         'open_kaishek': {'status': 'not-applicable',
                         'reason': 'C++ source inventory and GUI namespace data generation have '
                                   'no supported game-script runtime semantics.'},
