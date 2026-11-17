@@ -1095,12 +1095,13 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 try {
                     qualified = selectedAuthority.withReadValidation(before, request, this, borrowed -> {
                         StrictJson.require(borrowed == this, "validation callback crossed its original writer Session");
-                        String digest = selectedAuthority.revalidate(before, request); requireDigest(digest);
-                        if (validationDiagnostics) { validationTimes[0] = System.nanoTime(); validationPhase[1] = 5; }
-                        validationPhase[0] = 6;
-                        ContinuityState value = selectedAuthority.reduce(before.state(), request);
+                        var result = selectedAuthority.revalidateAndReduce(before, request, digest -> {
+                            requireDigest(digest);
+                            if (validationDiagnostics) { validationTimes[0] = System.nanoTime(); validationPhase[1] = 5; }
+                            validationPhase[0] = 6;
+                        });
                         if (validationDiagnostics) { validationTimes[1] = System.nanoTime(); validationPhase[1] = 6; }
-                        return new java.util.AbstractMap.SimpleImmutableEntry<>(digest, value);
+                        return result;
                     });
                     if (validationDiagnostics) validationTimes[1] = System.nanoTime(); // Include live read-scope close in reduction cost.
                 } finally {
@@ -1212,13 +1213,14 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 try {
                     qualified = selectedAuthority.withReadValidation(actual, request, this, borrowed -> {
                         StrictJson.require(borrowed == this, "validation callback crossed its original writer Session");
-                        String digest = selectedAuthority.revalidate(actual, request); requireDigest(digest);
-                        StrictJson.require(digest.equals(prepared.preconditionDigest()), "actual domain preconditions changed inside original writer lock");
-                        if (validationDiagnostics) { validationTimes[0] = System.nanoTime(); validationPhase[1] = 7; }
-                        validationPhase[0] = 8;
-                        ContinuityState value = selectedAuthority.reduce(actual.state(), request);
+                        var result = selectedAuthority.revalidateAndReduce(actual, request, digest -> {
+                            requireDigest(digest);
+                            StrictJson.require(digest.equals(prepared.preconditionDigest()), "actual domain preconditions changed inside original writer lock");
+                            if (validationDiagnostics) { validationTimes[0] = System.nanoTime(); validationPhase[1] = 7; }
+                            validationPhase[0] = 8;
+                        });
                         if (validationDiagnostics) { validationTimes[1] = System.nanoTime(); validationPhase[1] = 8; }
-                        return new java.util.AbstractMap.SimpleImmutableEntry<>(digest, value);
+                        return result;
                     });
                     if (validationDiagnostics) validationTimes[1] = System.nanoTime(); // Include live read-scope close in reduction cost.
                 } finally {

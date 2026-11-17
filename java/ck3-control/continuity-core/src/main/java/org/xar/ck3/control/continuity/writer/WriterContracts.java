@@ -236,6 +236,14 @@ public final class WriterContracts {
         default String revalidate(Head predecessor, Request request) throws java.io.IOException {
             return revalidate(predecessor.state(), request);
         }
+        /** One read-validation phase. The original writer supplies the digest gate before reduction.
+         * Other authorities retain their separate revalidate/gate/reduce calls by default. */
+        default java.util.Map.Entry<String,ContinuityState> revalidateAndReduce(Head predecessor,Request request,
+                java.util.function.Consumer<String> digestGate) throws java.io.IOException {
+            String digest=revalidate(predecessor,request);
+            Objects.requireNonNull(digestGate).accept(digest);
+            return new java.util.AbstractMap.SimpleImmutableEntry<>(digest,reduce(predecessor.state(),request));
+        }
         /** Exactly the same pure reducer is used for preview and while the original writer lock is held. */
         ContinuityState reduce(ContinuityState predecessor, Request request) throws java.io.IOException;
     }
