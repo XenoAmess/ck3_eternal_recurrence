@@ -442,14 +442,19 @@ def _startup_query_matches(query: str) -> bool:
         "LANGUAGE": r"[a-z_]{2,24}", "COUNTRY": r"[A-Z]{2}",
         "LAUNCHER_TYPE": r"0", "CLIENT_SESSION": r"[0-9]{1,20}",
         "PACKAGE_CL": r"[0-9]{1,20}", "IN_CLIENT": r"true",
-        "PLATFORM": r"windows", "ARCH": r"x64", "SILENT_STARTUP": r"true|false",
+        "PLATFORM": r"windows", "ARCH": r"x64",
     }
     try:
         pairs = parse_qsl(query, keep_blank_values=True, strict_parsing=True, max_num_fields=16)
     except ValueError:
         return False
     values = dict(pairs)
-    return (len(values) == len(pairs) and values.keys() == patterns.keys() and
+    # A normal interactive start omits this field; -silent supplies it.
+    # Both routes use the same qualified SharedJSContext and App getters.
+    silent = values.pop("SILENT_STARTUP", None)
+    if silent is not None and re.fullmatch(r"true|false", silent) is None:
+        return False
+    return (len(dict(pairs)) == len(pairs) and values.keys() == patterns.keys() and
             all(re.fullmatch(pattern, values[name]) is not None for name, pattern in patterns.items()))
 
 

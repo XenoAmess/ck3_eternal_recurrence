@@ -214,6 +214,23 @@ class ContractTests(unittest.TestCase):
         for forbidden in ("SetOffline", "GoOnline", "SteamAPI_Init", "fetch(", "eval("):
             self.assertNotIn(forbidden, expression)
 
+    def test_interactive_and_silent_startup_contexts_discover_same_getters(self) -> None:
+        query = ("LOCAL_HOSTNAME=PC-20260924RTUF&LANGUAGE=schinese&COUNTRY=US&"
+                 "LAUNCHER_TYPE=0&CLIENT_SESSION=1795017263&PACKAGE_CL=1794536281&"
+                 "IN_CLIENT=true&PLATFORM=windows&ARCH=x64")
+        base = {"type": "page", "id": "actual", "title": "SharedJSContext",
+                "webSocketDebuggerUrl": "ws://127.0.0.1:9/devtools/page/actual"}
+        for suffix in ("", "&SILENT_STARTUP=true", "&SILENT_STARTUP=false"):
+            url = "https://steamloopback.host/index.html?" + query + suffix
+            with self.subTest(suffix=suffix), patch(
+                "steam_offline_state_probe.http_json", side_effect=[
+                    {"Browser": "Chrome/142.0", "Protocol-Version": "1.3"},
+                    [{**base, "url": url}],
+                ]
+            ):
+                self.assertEqual(target_candidates(9, 0.1),
+                                 (("actual", url, base["webSocketDebuggerUrl"]),))
+
     def test_actual_startup_route_is_discovered_but_auth_or_duplicate_query_is_rejected(self) -> None:
         query = ('LOCAL_HOSTNAME=DESKTOP-3FEVHD2&LANGUAGE=schinese&COUNTRY=JP&'
                  'LAUNCHER_TYPE=0&CLIENT_SESSION=1794940707&PACKAGE_CL=1794536281&'
