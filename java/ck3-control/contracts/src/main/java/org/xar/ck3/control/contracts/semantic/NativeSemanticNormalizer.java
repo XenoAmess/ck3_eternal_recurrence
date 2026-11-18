@@ -10,6 +10,7 @@ import org.xar.ck3.control.contracts.StrictJson;
 
 /** Shared seven-field native projection. Raw and normalized trees are distinct DATA domains. */
 public final class NativeSemanticNormalizer {
+    public static final String FLORIN_SCHEMA="ck3_1210_full_state_v1";
     private static final JsonNodeFactory JSON = JsonNodeFactory.instance;
     private static final Set<String> OWNED = Set.of("format_version", "snapshot_id", "revision", "history",
             "active_event", "one_life_settlement", "played_character", "played_character_gold",
@@ -35,13 +36,15 @@ public final class NativeSemanticNormalizer {
         StrictJson.require(snapshotId != null && !snapshotId.isEmpty() && nativeRevision.signum() >= 0,
                 "actual nonempty snapshot identity and nonnegative native revision required");
         ObjectNode raw = original.original;
+        boolean florin=florinState(raw);
         ObjectNode result = raw.deepCopy();
         result.put("format_version", 1); result.put("snapshot_id", snapshotId); result.put("revision", nativeRevision);
         result.set("history", raw.path("history").isArray() ? raw.path("history").deepCopy() : JSON.arrayNode());
         result.set("active_event", NativeActiveEvent.normalize(input(raw, "active_event"), "native"));
         result.set("one_life_settlement", NativeOneLifeSettlement.normalize(input(raw, "one_life_settlement")));
-        result.set("played_character", NativePlayedCharacter.normalize(raw.path("played_character"),
-                nativeRevision, raw.path("date_raw")));
+        result.set("played_character",florin
+                ?NativePlayedCharacter.normalizeFlorin(raw.path("played_character"),nativeRevision,raw.path("date_raw"))
+                :NativePlayedCharacter.normalize(raw.path("played_character"),nativeRevision,raw.path("date_raw")));
         for (NativePlayedResources.Resource resource : NativePlayedResources.Resource.values())
             result.set(resource.wire(), NativePlayedResources.normalize(input(raw, resource.wire()), resource));
         result.set("pending_character_interaction", NativePendingInteraction.normalize(input(raw, "pending_character_interaction")));
@@ -50,6 +53,17 @@ public final class NativeSemanticNormalizer {
             result.set("top_exclusive_modal_choice_hint", stable);
         }
         return new Canonical(result);
+    }
+    private static boolean florinState(ObjectNode raw) {
+        JsonNode marker=raw.get("schema");
+        if(marker!=null&&marker.isTextual()&&FLORIN_SCHEMA.equals(marker.textValue())) {
+            NativePlayedCharacter.requireFlorinIdentity(raw,FLORIN_SCHEMA);return true;
+        }
+        // Historical unknown root metadata remains transparent. A Florin actor cannot escape its explicit root branch.
+        JsonNode actor=raw.path("played_character"),actorMarker=actor.path("schema");
+        StrictJson.require(!actorMarker.isTextual()||!NativePlayedCharacter.FLORIN_SCHEMA.equals(actorMarker.textValue()),
+                "Florin actor marker requires its explicit full-state root marker");
+        return false;
     }
     private static JsonNode input(ObjectNode raw, String field) { return pythonFloatingPoint(raw.path(field), 0); }
 

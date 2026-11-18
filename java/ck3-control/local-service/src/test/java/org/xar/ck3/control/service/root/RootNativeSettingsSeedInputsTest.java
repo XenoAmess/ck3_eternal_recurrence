@@ -35,4 +35,16 @@ final class RootNativeSettingsSeedInputsTest {
     @Test void unchangedLegacyVanillaHasNoInventedProfileInput()throws Exception{
         assertTrue(RootNativeLaunchPlanInputs.profileWitnesses(NativeLaunchPlan.PreparedProfile.vanilla()).isEmpty());
     }
+    @Test void equivalentWindowsSlashSeedKeepsCanonicalWitnessAndDoesNotIgnoreContentChanges()throws Exception{
+        Path source=temporary.resolve("slash-settings.txt");Files.writeString(source,"save_on_exit=no");
+        var measured=FileRef.measure(source);var forward=new FileRef(measured.path().replace((char)92,'/'),measured.bytes(),measured.sha256());
+        assertNotEquals(measured.path(),forward.path());var profile=NativeLaunchPlan.PreparedProfile.vanilla(forward);
+        var witnesses=RootNativeLaunchPlanInputs.profileWitnesses(profile);assertEquals(1,witnesses.size());
+        assertEquals(Path.of(forward.path()),Path.of(witnesses.getFirst().source().path()));
+        assertEquals(measured.sha256(),witnesses.getFirst().source().sha256());SharedSourceFiles.assertUnchanged(witnesses.getFirst());
+        Files.writeString(source,"changed");
+        assertThrows(IOException.class,()->RootNativeLaunchPlanInputs.profileWitnesses(profile));
+        assertThrows(IOException.class,()->SharedSourceFiles.assertUnchanged(witnesses.getFirst()));
+    }
+
 }

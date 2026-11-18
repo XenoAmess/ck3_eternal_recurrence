@@ -492,7 +492,9 @@ public final class JavaGameLifecycle {
         Path source=Path.of(seed.path()),target=profileDirectory.resolve("pdx_settings.txt");
         SharedSourceFiles.plainAncestors(source);SharedSourceFiles.plainAncestors(target);
         var original=SharedSourceFiles.observe(source);
-        if(!original.source().equals(seed))throw new IOException("Declared pdx_settings seed changed before profile preparation");
+        if(!Path.of(original.source().path()).equals(source)||original.source().bytes()!=seed.bytes()
+                ||!original.source().sha256().equals(seed.sha256()))
+            throw new IOException("Declared pdx_settings seed changed before profile preparation");
         byte[] complete;
         try(var input=Files.newInputStream(source)){complete=input.readNBytes((1<<20)+1);}
         if(complete.length!=seed.bytes()||complete.length==0||complete.length>(1<<20)

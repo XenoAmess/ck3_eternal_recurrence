@@ -13,10 +13,15 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
+import org.xar.ck3.control.contracts.ExactCk3Build;
 
 /** Shared receive projection for fingerprint, Driver and replay. Public actor IDs follow the actual native signed-int32 wire;
  * this intentionally fixes legacy Python's nonnegative narrowing. Nested leaf domains retain their independent rules. */
 public final class NativePlayedCharacter {
+    public static final String FLORIN_SCHEMA="ck3_1210_played_character_v1";
+    public static final String FLORIN_ADAPTER="ck3-1.21.0-msvc-x64";
+    public static final String FLORIN_BACKEND="ck3-1.21.0-native-headless-main-thread";
+    private static final List<String> FLORIN_IDENTITY=List.of("schema","game_version","executable_sha256","adapter_id","backend");
     private static final BigInteger STRESS_MAXIMUM = BigInteger.valueOf(Integer.MAX_VALUE);
     private NativePlayedCharacter() { }
 
@@ -45,6 +50,25 @@ public final class NativePlayedCharacter {
 
     /** Java parameters are nonnull; original absent/null played value is JSON null. Extra original actor fields are projected away. */
     public static JsonNode normalize(JsonNode original, BigInteger nativeRevision, JsonNode dateRaw) {
+        return normalizeActor(original,nativeRevision,dateRaw,false);
+    }
+
+    /** Explicit Florin DATA projection; no version/SHA alone selects it or grants a live source role. */
+    public static JsonNode normalizeFlorin(JsonNode original,BigInteger nativeRevision,JsonNode dateRaw) {
+        Objects.requireNonNull(original);Objects.requireNonNull(nativeRevision);Objects.requireNonNull(dateRaw);
+        if(original.isMissingNode()||original.isNull())return NullNode.instance;
+        requireFlorinIdentity(original,FLORIN_SCHEMA);
+        return normalizeActor(original,nativeRevision,dateRaw,true);
+    }
+    static void requireFlorinIdentity(JsonNode original,String schema) {
+        need(original!=null&&original.isObject(),"explicit Florin object required");
+        for(String field:FLORIN_IDENTITY)need(original.path(field).isTextual(),"exact Florin identity field required: "+field);
+        need(schema.equals(original.path("schema").textValue())
+                &&ExactCk3Build.CK3_1210.matches(original.path("game_version").textValue(),original.path("executable_sha256").textValue())
+                &&FLORIN_ADAPTER.equals(original.path("adapter_id").textValue())&&FLORIN_BACKEND.equals(original.path("backend").textValue()),
+                "explicit Florin marker and exact source tuple differ");
+    }
+    private static JsonNode normalizeActor(JsonNode original,BigInteger nativeRevision,JsonNode dateRaw,boolean florin) {
         Objects.requireNonNull(original); Objects.requireNonNull(nativeRevision); Objects.requireNonNull(dateRaw);
         if (original.isMissingNode() || original.isNull()) return NullNode.instance;
         need(original instanceof ObjectNode, "native played_character must be an object");
@@ -64,9 +88,9 @@ public final class NativePlayedCharacter {
             JsonNode hasHeir = original.get("has_heir"); need(hasHeir != null && hasHeir.isBoolean(), "original has_heir must be boolean");
             JsonNode id = original.get("primary_heir_id");
             Optional<BigInteger> actualId;
-            if (hasHeir.booleanValue()) actualId = Optional.of(nonnegative(id, "primary_heir_id"));
+            if (hasHeir.booleanValue()) actualId = Optional.of(characterLeaf(id, "primary_heir_id",florin));
             else {
-                need(id == null || id.isNull(), "original primary_heir_id conflicts with has_heir");
+                need(florin ? id != null && id.isNull() : id == null || id.isNull(), "original primary_heir_id conflicts with has_heir");
                 actualId = Optional.empty();
             }
             heir = Optional.of(new Heir(hasHeir.booleanValue(), actualId));
@@ -77,11 +101,13 @@ public final class NativePlayedCharacter {
             need(betrothed && primary && spouses, "original relationship state is incomplete");
             JsonNode ids = original.get("spouse_ids"); need(ids.isArray(), "original spouse_ids must be an array");
             List<BigInteger> values = new ArrayList<>();
-            for (JsonNode id : ids) values.add(nonnegative(id, "spouse_ids item"));
-            relations = Optional.of(new Relations(nullableId(original.get("betrothed_id"), "betrothed_id"),
-                    nullableId(original.get("primary_spouse_id"), "primary_spouse_id"), values));
+            for (JsonNode id : ids) values.add(characterLeaf(id, "spouse_ids item",florin));
+            relations = Optional.of(new Relations(nullableId(original.get("betrothed_id"), "betrothed_id",florin),
+                    nullableId(original.get("primary_spouse_id"), "primary_spouse_id",florin), values));
         }
-        return toJson(new Played(characterId, alive.booleanValue(), stress, traits, heir, relations));
+        ObjectNode result=toJson(new Played(characterId, alive.booleanValue(), stress, traits, heir, relations));
+        if(florin)for(String field:FLORIN_IDENTITY)result.set(field,original.get(field).deepCopy());
+        return result;
     }
 
     private static ObjectNode toJson(Played value) {
@@ -101,9 +127,12 @@ public final class NativePlayedCharacter {
         });
         return row;
     }
-    private static Optional<BigInteger> nullableId(JsonNode value, String field) {
+    private static Optional<BigInteger> nullableId(JsonNode value, String field,boolean florin) {
         need(value != null, "required nullable original relationship field missing");
-        return value.isNull() ? Optional.empty() : Optional.of(nonnegative(value, field));
+        return value.isNull() ? Optional.empty() : Optional.of(characterLeaf(value, field,florin));
+    }
+    private static BigInteger characterLeaf(JsonNode value,String field,boolean florin) {
+        return florin?NativeCharacterId.fromJson(value).asBigInteger():nonnegative(value,field);
     }
     private static BigInteger nonnegative(JsonNode value, String field) {
         need(value != null && value.isIntegralNumber() && value.bigIntegerValue().signum() >= 0,

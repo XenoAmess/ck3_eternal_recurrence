@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.25)
 
 project(xar_ck3_native_bridge VERSION 0.1.0 LANGUAGES CXX)
 
@@ -1276,6 +1276,11 @@ add_library(xar_ck3_12002_runtime STATIC
     src/ck3_1210_core.cpp
     src/ck3_1210_thread_runtime.cpp
     src/ck3_1210_core_frame_v1.cpp
+    src/ck3_1210_actor_foundation_v1.cpp
+    src/ck3_1210_current_event_snapshot_v1.cpp
+    src/ck3_1210_pending_snapshot_v1.cpp
+    src/ck3_1210_military_empty_v1.cpp
+    src/ck3_1210_full_snapshot_v1.cpp
     src/ck3_1210_personal_gold_v1.cpp
     src/ck3_1210_personal_gold_frame_v1.cpp
     src/ck3_1210_application_exit_v1.cpp
@@ -10264,6 +10269,7 @@ if(XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1)
 endif()
 if(BUILD_TESTING)
   add_executable(xar_ck3_1210_personal_gold_test
+    src/ck3_1210_actor_foundation_v1.cpp
     src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_personal_gold_frame_v1.cpp
     src/ck3_1210_personal_gold_v1_test.cpp src/ck3_1210_core.cpp
     src/ck3_1210_adapter.cpp src/ck3_1210_core_frame_v1.cpp
@@ -10273,13 +10279,47 @@ if(BUILD_TESTING)
     XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1 XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1=1
     XAR_CK3_PERSONAL_GOLD_FRAME_TEST=1)
   add_executable(xar_ck3_1210_actor_foundation_test
-    src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_actor_foundation_v1_test.cpp src/ck3_1210_core.cpp)
+    src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_actor_foundation_v1_test.cpp src/ck3_1210_core.cpp
+    src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_personal_gold_frame_v1.cpp
+    src/ck3_1210_core_frame_v1.cpp src/ck3_1210_thread_runtime.cpp
+    src/ck3_1210_adapter.cpp src/game_adapter_capabilities.cpp)
   target_include_directories(xar_ck3_1210_actor_foundation_test PRIVATE include)
-  target_compile_definitions(xar_ck3_1210_actor_foundation_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  target_compile_definitions(xar_ck3_1210_actor_foundation_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN
+    XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1 XAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1=1
+    XAR_CK3_ACTOR_FOUNDATION_FRAME_TEST=1)
   if(MSVC)
     target_compile_options(xar_ck3_1210_personal_gold_test PRIVATE /W4 /WX /permissive- /EHsc)
     target_compile_options(xar_ck3_1210_actor_foundation_test PRIVATE /W4 /WX /permissive- /EHsc)
   endif()
   add_test(NAME xar_ck3_native_bridge_1210_personal_gold COMMAND xar_ck3_1210_personal_gold_test)
   add_test(NAME xar_ck3_native_bridge_1210_actor_foundation COMMAND xar_ck3_1210_actor_foundation_test)
+endif()
+
+option(XAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1 "Enable paused current actor resources and relationships partial observation" OFF)
+if(XAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1)
+  if(NOT XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+    message(FATAL_ERROR "Florin actor foundation requires its exact Core reader")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1=1)
+endif()
+
+option(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1 "Enable strict paused Florin full observation with complete empty military proof" OFF)
+if(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+  if(NOT XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+    message(FATAL_ERROR "Florin full observation requires exact Core")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1=1)
+endif()
+
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_full_snapshot_test
+    src/ck3_1210_full_snapshot_v1_test.cpp src/ck3_1210_full_snapshot_v1.cpp
+    src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_current_event_snapshot_v1.cpp
+    src/ck3_1210_pending_snapshot_v1.cpp src/ck3_1210_military_empty_v1.cpp src/ck3_1210_core.cpp)
+  target_include_directories(xar_ck3_1210_full_snapshot_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_full_snapshot_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_full_snapshot_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_full_snapshot COMMAND xar_ck3_1210_full_snapshot_test)
 endif()

@@ -1,4 +1,9 @@
 #include "xar_bridge/ck3_1210_actor_foundation_v1.hpp"
+#if defined(XAR_CK3_ACTOR_FOUNDATION_FRAME_TEST)
+#include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
+#include "xar_bridge/ck3_1210_adapter.hpp"
+#include <windows.h>
+#endif
 
 #include <array>
 #include <bit>
@@ -347,6 +352,35 @@ int main() {
       .exact_build_admitted, "old identity rejected");
   Require(!BindActorFoundationImageV1((std::numeric_limits<std::uintptr_t>::max)(),
       kExecutableSha256).exact_build_admitted, "base overflow rejected");
+#if defined(XAR_CK3_ACTOR_FOUNDATION_FRAME_TEST)
+  {
+    using namespace xar::ck3_11906;
+    Fixture f;auto expected=f.Expected();
+    auto game=xar::game::CreateCk3_1210AdapterFromBindings(f.bindings.core);
+    Require(game->supports(kActorFoundationCapabilityV1),"exact foundation feature selected");
+    MainThreadQueryMailboxV1 m{};PersonalGoldMailboxContextV1 q{};
+    q.kind=ActorObservationKindV1::foundation;q.game=game.get();q.bindings={true,f.bindings.core};q.mailbox=&m;q.ticket.sequence=9;
+    MainThreadExecutionStampV1 stamp{};stamp.thread_id=GetCurrentThreadId();stamp.pump_epoch=2;
+    stamp.tls_initialized=1;stamp.tls_main_thread_marker=1;stamp.tls_context=1;
+    stamp.game_state=reinterpret_cast<std::uintptr_t>(f.state_pointer);
+    stamp.jomini_state=reinterpret_cast<std::uintptr_t>(f.jomini_pointer);
+    stamp.date_raw=expected.clock.date_raw;stamp.paused=true;
+    m.state.store(MainThreadQueryMailboxStateV1::executing);m.iat_hook_installed.store(true);
+    m.owner_thread_id.store(stamp.thread_id);m.paused_owner_verified_pump_epochs.store(2);
+    m.published_sequence.store(9);m.executor.store(&ExecutePersonalGoldMailboxV1);m.executor_context=&q;
+    Require(ExecutePersonalGoldMailboxV1(&q,stamp) && q.foundation.resources_ready && q.foundation.relationships_ready,"real actor mailbox observes both groups");
+    std::cout<<SerializeActorFoundationCommandResultV1("foundation-empty-fixture",q)<<std::endl;
+    f.WithSpouses();(void)f.Expected();
+    Require(ExecutePersonalGoldMailboxV1(&q,stamp) && q.foundation.relationships && q.foundation.relationships->spouse_character_ids.size()==2,"nonempty full32 peers preserved");
+    std::cout<<SerializeActorFoundationCommandResultV1("foundation-nonempty-fixture",q)<<std::endl;
+    Store(f.family,0x2C,std::int32_t{65});
+    Require(ExecutePersonalGoldMailboxV1(&q,stamp) && q.foundation.resources_ready && !q.foundation.relationships_ready,"bad family cannot fabricate empty; other group remains partial");
+    std::cout<<SerializeActorFoundationCommandResultV1("foundation-partial-fixture",q)<<std::endl;
+    stamp.paused=false;
+    Require(ExecutePersonalGoldMailboxV1(&q,stamp) && !q.foundation.available,"foundation never borrows unpaused Core exemption");
+    std::cout<<SerializeActorFoundationCommandResultV1("foundation-unavailable-fixture",q)<<std::endl;
+  }
+#endif
   std::cout << "PASS synthetic actor resources/family/full-generation/partial/"
       "bounds/stability guards; no EXE or game code executed\n";
   return 0;

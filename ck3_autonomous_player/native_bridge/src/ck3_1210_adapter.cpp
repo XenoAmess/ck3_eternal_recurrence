@@ -4,6 +4,8 @@
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
 #include <array>
+#include "xar_bridge/ck3_1210_full_snapshot_v1.hpp"
+#include <mutex>
 #if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
 #include <windows.h>
 #endif
@@ -14,14 +16,24 @@ namespace {
 // unavailable; no historical adapter or domain provider is borrowed.
 class FlorinAdapter final : public GameAdapter {
 public:
-  explicit FlorinAdapter(ck3_1210::CoreBindings bindings) noexcept : core_(bindings) {}
+  explicit FlorinAdapter(ck3_1210::CoreBindings bindings, ck3_1210::FullSnapshotBindingsV1 full={}) noexcept : core_(bindings),full_(full) {}
   const AdapterDescriptor &descriptor() const noexcept override {
     return Ck3_1210AdapterDescriptor();
   }
   bool enabled() const noexcept override { return core_.enabled; }
   bool read_snapshot(xar::game::Snapshot &output) const noexcept override {
     output = {};
+#if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+    ck3_1210::FullSnapshotDiagnosticsV1 diagnostics{};
+    const bool result=ck3_1210::ReadFullSnapshotV1(full_,output,diagnostics);
+    try {std::lock_guard lock(diagnostic_mutex_);diagnostics_=diagnostics;} catch(...) {}
+    return result;
+#else
     return false;
+#endif
+  }
+  ck3_1210::FullSnapshotDiagnosticsV1 FullDiagnostics() const noexcept {
+    try {std::lock_guard lock(diagnostic_mutex_);return diagnostics_;} catch(...) {return {};}
   }
   xar::game::PauseSubmitResult
   submit_pause_map(xar::game::Snapshot *observed_snapshot) const noexcept override {
@@ -176,6 +188,9 @@ public:
   }
 private:
   ck3_1210::CoreBindings core_{};
+  ck3_1210::FullSnapshotBindingsV1 full_{};
+  mutable std::mutex diagnostic_mutex_;
+  mutable ck3_1210::FullSnapshotDiagnosticsV1 diagnostics_{};
 };
 } // namespace
 
@@ -183,14 +198,22 @@ const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
   static constexpr std::string_view capabilities[]{
       ck3_1210::kCoreFrameCapabilityV1,
+#if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+      "game.state.snapshot", "game.query.fresh-full-state.v1",
+#endif
 #if defined(XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1)
       ck3_1210::kPersonalGoldCapabilityV1,
 #endif
+#if defined(XAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1)
+      ck3_1210::kActorFoundationCapabilityV1,
+#endif
 #if defined(XAR_CK3_ENABLE_1210_CORE_CONTROL_V1)
       ck3_1210::kCoreControlCapabilityV1,
+#if !defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
       "game.command.pause-map", "game.command.resume-map",
       "game.command.set-speed-1", "game.command.set-speed-2", "game.command.set-speed-3",
       "game.command.set-speed-4", "game.command.set-speed-5", "game.command.save-checkpoint",
+#endif
 #if defined(XAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1)
       ck3_1210::kApplicationExitCapabilityV1,
 #endif
@@ -210,6 +233,10 @@ std::unique_ptr<GameAdapter> CreateCk3_1210AdapterFromBindings(
   return std::make_unique<FlorinAdapter>(bindings);
 }
 
+ck3_1210::FullSnapshotDiagnosticsV1 ReadCk3_1210FullSnapshotDiagnostics(const GameAdapter &game) noexcept {
+ const auto *native=dynamic_cast<const FlorinAdapter*>(&game);
+ return native?native->FullDiagnostics():ck3_1210::FullSnapshotDiagnosticsV1{};
+}
 bool ReadCk3_1210TimelineCoreSnapshot(const GameAdapter &adapter,
     Snapshot &output) noexcept {
   output = {};
@@ -226,6 +253,11 @@ std::unique_ptr<GameAdapter> CreateCk3_1210Adapter(
 #else
   static_cast<void>(executable_sha256);
 #endif
+#if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+  return std::make_unique<FlorinAdapter>(core,ck3_1210::BindFullSnapshotImageV1(
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),executable_sha256));
+#else
   return CreateCk3_1210AdapterFromBindings(core);
+#endif
 }
 } // namespace xar::game

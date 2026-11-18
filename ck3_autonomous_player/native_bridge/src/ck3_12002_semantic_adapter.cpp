@@ -1,9 +1,10 @@
-﻿#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/ck3_12002_marriage_probe.hpp"
 #include "xar_bridge/snapshot_read_failure_diagnostics_12004.hpp"
 #include <atomic>
@@ -64,16 +65,22 @@ std::string SerializeInboxFixture(ConsoleFixtureResult result) {
   json += ",\"fixed_command\":\"run xar_mcp_inbox.txt\",\"marker_confirmed\":false}";
   return json;
 }
+bool SupportsFreshFullOwner(const game::GameAdapter &game) noexcept {
+ return game::IsCk3_12004Descriptor(game.descriptor()) ||
+   (game::IsCk3_1210Descriptor(game.descriptor()) && game.supports_snapshot() &&
+    game.supports("game.query.fresh-full-state.v1"));
+}
 bool OwnsFreshSnapshotSlot(const QueryMailboxEnvelope &query,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   if (query.game == nullptr || query.mailbox == nullptr ||
       query.ticket.sequence == 0 || !query.game->enabled() ||
-      !game::IsCk3_12004Descriptor(query.game->descriptor()) ||
+      !SupportsFreshFullOwner(*query.game) ||
       !query.game->supports_snapshot() || stamp.pump_epoch == 0 ||
       stamp.thread_id == 0 || GetCurrentThreadId() != stamp.thread_id ||
       stamp.tls_initialized != 1 || stamp.tls_main_thread_marker != 1 ||
       stamp.tls_context == 0 || stamp.jomini_state == 0 ||
       stamp.game_state == 0) return false;
+  if(game::IsCk3_1210Descriptor(query.game->descriptor()) && !stamp.paused) return false;
   const auto &mailbox = *query.mailbox;
   return mailbox.state.load(std::memory_order_acquire) ==
              ck3_11906::MainThreadQueryMailboxStateV1::executing &&
@@ -158,7 +165,7 @@ bool WorkerAdapter::read_fresh_snapshot(game::Snapshot &output) const noexcept {
   output = {};
   if (native_ == nullptr || mailbox_ == nullptr ||
       GetCurrentThreadId() != worker_thread_id_ || !native_->enabled() ||
-      !game::IsCk3_12004Descriptor(native_->descriptor()) ||
+      !SupportsFreshFullOwner(*native_) ||
       !native_->supports_snapshot()) return false;
   try {
     SemanticRequest request{};
@@ -313,9 +320,9 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
 bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   std::uint64_t generation = 0;
   try {
-    const bool actual4 = game::IsCk3_12004Descriptor(descriptor()) &&
-        supports_snapshot();
-    if (!enabled() || (!game::IsReviewedCrozierAdapter(*this) && !actual4) ||
+    const bool actual4 = SupportsFreshFullOwner(*native_) && supports_snapshot();
+    if (!enabled() || (game::IsCk3_1210Descriptor(descriptor()) && !stamp.paused) ||
+        (!game::IsReviewedCrozierAdapter(*this) && !actual4) ||
         stamp.pump_epoch == 0 || stamp.thread_id == 0 ||
         GetCurrentThreadId() != stamp.thread_id || stamp.tls_initialized != 1 ||
         stamp.tls_main_thread_marker != 1) return false;

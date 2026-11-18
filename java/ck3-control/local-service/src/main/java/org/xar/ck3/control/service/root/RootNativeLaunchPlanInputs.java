@@ -319,7 +319,10 @@ public final class RootNativeLaunchPlanInputs {
         var witnesses=new ArrayList<SharedSourceFiles.Witness>();
         for (var ref:unique.values()) {
             var witness=SharedSourceFiles.observe(Path.of(ref.path()));
-            if (!witness.source().equals(ref)) throw new IOException("Profile source changed before first plan");
+            boolean exactSeed=prepared.settingsSeed().filter(ref::equals).isPresent()
+                    &&Path.of(witness.source().path()).equals(Path.of(ref.path()))
+                    &&witness.source().bytes()==ref.bytes()&&witness.source().sha256().equals(ref.sha256());
+            if (!witness.source().equals(ref)&&!exactSeed) throw new IOException("Profile source changed before first plan");
             witnesses.add(witness);
         }
         return List.copyOf(witnesses);

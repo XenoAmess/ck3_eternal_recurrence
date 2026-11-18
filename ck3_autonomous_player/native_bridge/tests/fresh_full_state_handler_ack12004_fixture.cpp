@@ -7,6 +7,7 @@
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_1210_adapter.hpp"
 
 #include <array>
 #include <cstdlib>
@@ -879,8 +880,27 @@ bool TestFreshAckWriteFailureOnly() {
   return TestFreshHandlerAck(true);
 }
 } // namespace
+bool TestFlorinVersionMarkers() {
+  xar::game::Snapshot observed{};
+  observed.has_played_character=true;observed.played_character_alive=true;
+  observed.played_character_id=(std::numeric_limits<std::int32_t>::min)();
+  observed.played_character_stress_points=0;
+  const xar::game::AdapterDescriptor exact{xar::ck3_1210::kAdapterId,xar::ck3_1210::kGameVersion,
+      xar::ck3_1210::kExecutableSha256,"xar_checkpoint",{}};
+  const auto packet=StateSnapshotFrame(observed,17,{}, {},"original-request",&exact);
+  CHECK(packet.find("\"state\":{\"schema\":\"ck3_1210_full_state_v1\"")!=std::string::npos);
+  CHECK(packet.find("\"played_character\":{\"schema\":\"ck3_1210_played_character_v1\"")!=std::string::npos);
+  CHECK(packet.find("\"character_id\":-2147483648")!=std::string::npos);
+  CHECK(packet.find("\"one_life_settlement\":null")!=std::string::npos);
+  CHECK(packet.find("event_trait_membership")==std::string::npos);
+  auto mixed=exact;mixed.executable_sha256="wrong";
+  const auto legacy=StateSnapshotFrame(observed,17,{}, {},"original-request");
+  CHECK(legacy==StateSnapshotFrame(observed,17,{}, {},"original-request",&mixed));
+  CHECK(legacy.find("ck3_1210_")==std::string::npos);
+  return true;
+}
 int main(int argc, char **argv) {
-  if (argc == 1) return TestFreshHandlerAck() ? 0 : 1;
+  if (argc == 1) return TestFlorinVersionMarkers() && TestFreshHandlerAck() ? 0 : 1;
   if (argc == 2 && std::strcmp(argv[1], "--ack-write-failure-only") == 0)
     return TestFreshAckWriteFailureOnly() ? 0 : 1;
   return 2;

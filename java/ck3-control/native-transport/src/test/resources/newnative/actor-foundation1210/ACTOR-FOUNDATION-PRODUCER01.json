@@ -1,0 +1,44 @@
+{
+  "producer": "actual C++ SerializeActorFoundationCommandResultV1 via fixed paused mailbox NoGame fixture",
+  "live": false,
+  "qualification": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ACTOR-FOUNDATION-FRAME-QUALIFICATION02.json",
+  "packets": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\actor-foundation-producer-empty01.json",
+      "bytes": 1582,
+      "sha256": "e7c66e80cd0f45e238de06957de5b7e9789bdfae51f0c7c3c5d2b85e0dff57a0"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\actor-foundation-producer-nonempty01.json",
+      "bytes": 1613,
+      "sha256": "32402538d29b5cc366a1877e5b535a26d7baf3159af243aca94b3c04963a7f8f"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\actor-foundation-producer-partial01.json",
+      "bytes": 1520,
+      "sha256": "da062a2496a134653744af75aeb65018489d1420da29d50c1b7fc8aea9348936"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\actor-foundation-producer-unavailable01.json",
+      "bytes": 1467,
+      "sha256": "cc351f3cd22c3094ec7a4943c4ce5d51a506823da46619f3f3803c469a18f7bc"
+    }
+  ],
+  "sources": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_1210_personal_gold_frame_v1.hpp",
+      "bytes": 1627,
+      "sha256": "8700c46de3caaf439e0a7458f15ea35693734947187cabd3ddff2cd8c658e19e"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_personal_gold_frame_v1.cpp",
+      "bytes": 7808,
+      "sha256": "34a16450fdc7250205697d161cf8b9f1e5d6c177e68440d330fef171637ace4c"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_actor_foundation_v1_test.cpp",
+      "bytes": 20877,
+      "sha256": "96562c02c3237b0289558ae00f85e328eca9c02dbed0929f59f277f4a62b975f"
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_1210_full_snapshot_v1.hpp"
 
 namespace xar::game {
 const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept;
@@ -12,6 +13,7 @@ inline bool IsCk3_1210Descriptor(const AdapterDescriptor &descriptor) noexcept {
 }
 std::unique_ptr<GameAdapter> CreateCk3_1210AdapterFromBindings(
     ck3_1210::CoreBindings bindings) noexcept;
+ck3_1210::FullSnapshotDiagnosticsV1 ReadCk3_1210FullSnapshotDiagnostics(const GameAdapter&) noexcept;
 bool ReadCk3_1210TimelineCoreSnapshot(const GameAdapter &adapter,
     Snapshot &output) noexcept;
 // Identity-only by default. The explicit core-only build option admits no

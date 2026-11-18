@@ -29,6 +29,8 @@ import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFramePublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.ActorFoundationFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.ActorFoundationFramePublicCodec;
 import org.xar.ck3.control.contracts.semantic.NativeSemanticFingerprint;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
@@ -1037,6 +1039,71 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return retainReadOutcome(dispatch(id,NativeWire.execute(id,PersonalGoldFrame.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
         }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
     }
+    public sealed interface ActorFoundationRead permits ActorFoundationReceived,ActorFoundationReadUnavailable {
+        DispatchOutcome original();
+    }
+    /** A read-only resource occurrence. Its nested Core DATA cannot become a Core control receipt. */
+    public static final class ActorFoundationReceived implements ActorFoundationRead {
+        private final NativeGameTransport issuer;
+        private final ActorFoundationFrame frame;
+        private final AckReceived original;
+        private final NativeRequestChronology custody;
+        private final Instant validUntil;
+        private ActorFoundationReceived(NativeGameTransport issuer,ActorFoundationFrame frame,AckReceived original,
+                NativeRequestChronology custody,Instant validUntil) {
+            this.issuer=issuer;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=validUntil;
+        }
+        public ActorFoundationFrame frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actualHeld,Instant deadline)throws IOException {
+            Objects.requireNonNull(actualHeld).requireActorFoundationOriginal(this,deadline);
+        }
+    }
+    public record ActorFoundationReadUnavailable(DispatchOutcome original,String reason)implements ActorFoundationRead {
+        public ActorFoundationReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public synchronized ActorFoundationRead readActorFoundationFrameReceived(Instant deadline)throws InterruptedException {
+        Instant until=readDeadline(Objects.requireNonNull(deadline));
+        DispatchOutcome original=readActorFoundationFrame(until);
+        try {
+            ActorFoundationFrame frame=ActorFoundationFramePublicCodec.decodeOutcome(original);var ack=(AckReceived)original;
+            var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("actual actor-foundation ACK custody unavailable"));
+            var received=new ActorFoundationReceived(this,frame,ack,custody,until);
+            requireActorFoundationOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){return new ActorFoundationReadUnavailable(original,reason(invalid));}
+    }
+    private void requireActorFoundationOriginal(ActorFoundationReceived actual,Instant deadline)throws IOException {
+        Objects.requireNonNull(deadline);
+        if(actual.issuer!=this||hello==null||closed||terminalFailure!=null)throw new IOException("actor foundation requires its identical live held receiver");
+        Instant now=chronologyClock.instant();
+        if(!now.isBefore(actual.validUntil)||!now.isBefore(deadline)||deadline.isAfter(actual.validUntil)
+                ||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)
+                ||actual.custody.writeEntered().observedAt().isBefore(helloObservedAt))throw new IOException("actor foundation escaped its original query window or HELLO chronology");
+        verifyHeld(deadline);
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)
+                ||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())
+            throw new IOException("actor foundation crossed its original Game/session/connection/custody");
+        actual.custody.verify(actual.original);
+        var decoded=ActorFoundationFramePublicCodec.decodeOutcome(actual.original);
+        var originalHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        if(!decoded.equals(actual.frame)||!decoded.build().matches(NativeWire.text(originalHello.get("expected_ck3_version")),hello.gameSha256())
+                ||!hello.adapterId().equals(ActorFoundationFrame.ADAPTER))throw new IOException("actor foundation belongs to another exact executable or original frame");
+    }
+    /** Independent paused resource query only; it does not refresh a full Snapshot or authorize a control. */
+    public synchronized DispatchOutcome readActorFoundationFrame(Instant deadline)throws InterruptedException {
+        String id="actor-foundation-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            awaitHello(deadline);verifyEndpoint();
+            var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+            if(!ExactCk3Build.CK3_1210.matches(NativeWire.text(original.get("expected_ck3_version")),hello.gameSha256())
+                    ||!hello.adapterId().equals(ActorFoundationFrame.ADAPTER)||!hello.capabilities().contains(ActorFoundationFrame.CAPABILITY))
+                throw new IOException("standalone actor foundation requires exact Florin identity and its advertised capability");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            return retainReadOutcome(dispatch(id,NativeWire.execute(id,ActorFoundationFrame.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
+        }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
+    }
     private Unknown unresolvedCoreControl;
     private AckReceived indeterminateCoreAcknowledgement;
     /** Passive access to the exact uncertain Native result; no query, resend, deadline or live role is created. */
@@ -1194,7 +1261,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return retainReadOutcome(dispatch(id, NativeWire.execute(id, "query-core-frame-v1", BigInteger.ZERO, new byte[] {'{', '}'}), readDeadline(deadline), () -> { }));
         } catch (IOException | RuntimeException failure) { return retainReadOutcome(zero(id, reason(failure))); }
     }
-    /** Independently published READ for either exact .6 or .4 producer. No unresolved original is resubmitted. */
+    /** Independently published READ for an exact supported full-state producer. No unresolved original is resubmitted. */
     @Override public synchronized NativeFreshSnapshotPort.Result readFreshFullState(Instant deadline)throws InterruptedException {
         if(pendingFreshSnapshot!=null)return freshUnavailable(pendingFreshSnapshot,"original fresh READ remains unresolved; collect its original outcome without resubmission");
         String id="fresh-state-"+UUID.randomUUID().toString().replace("-","");
@@ -1208,8 +1275,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             boolean exactFour=hello.adapterId().equals("ck3-1.20.0.4-msvc-x64")
                     &&hello.gameSha256().equalsIgnoreCase("98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")
                     &&version.equals("1.20.0.4");
-            if(!hello.capabilities().contains(NativeFreshSnapshotPort.CAPABILITY)||!hello.capabilities().contains("game.state.snapshot")||!(exactSix||exactFour))
-                throw new IOException("fresh full-state READ requires an exact .6 or .4 HELLO and its independent read capability");
+            boolean exactFlorin=ExactCk3Build.CK3_1210.matches(version,hello.gameSha256())
+                    &&hello.adapterId().equals("ck3-1.21.0-msvc-x64");
+            if(!hello.capabilities().contains(NativeFreshSnapshotPort.CAPABILITY)||!hello.capabilities().contains("game.state.snapshot")||!(exactSix||exactFour||exactFlorin))
+                throw new IOException("fresh full-state READ requires an exact supported HELLO and both independent full-state capabilities");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             byte[] request=NativeWire.execute(id,NativeFreshSnapshotPort.STEP,BigInteger.ZERO,new byte[]{'{','}'});
             var capture=new FreshSnapshotCapture(id);pendingFreshSnapshot=capture;
@@ -2292,6 +2361,31 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         catch (IOException failure) {retainActualDisconnection(failure);throw failure;}
         return ingestOriginalPacket(original);
     }
+    /** The new raw semantic marker is accepted only with its actual held exact-build HELLO. */
+    private void requireFullSnapshotBuild(NativeWire.Snapshot received)throws IOException {
+        ObjectNode raw=NativeWire.object(NativeWire.parse(received.state().value()));
+        ObjectNode originalHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        boolean florin=ExactCk3Build.CK3_1210.matches(NativeWire.text(originalHello.get("expected_ck3_version")),hello.gameSha256())
+                &&hello.adapterId().equals("ck3-1.21.0-msvc-x64");
+        var actor=raw.get("played_character");
+        if(florin) {
+            StrictJson.require(hello.capabilities().contains(NativeFreshSnapshotPort.CAPABILITY)
+                    &&hello.capabilities().contains("game.state.snapshot"),"Florin full state requires both advertised full-state capabilities");
+            requireFlorinFullTuple(raw,"ck3_1210_full_state_v1");
+            if(actor!=null&&!actor.isNull())requireFlorinFullTuple(NativeWire.object(actor),"ck3_1210_played_character_v1");
+        } else {
+            StrictJson.require(!raw.path("schema").asText().equals("ck3_1210_full_state_v1")
+                    &&(actor==null||!actor.path("schema").asText().equals("ck3_1210_played_character_v1")),
+                    "Florin full-state semantics cannot borrow a legacy HELLO");
+        }
+    }
+    private static void requireFlorinFullTuple(ObjectNode value,String schema)throws IOException {
+        StrictJson.require(schema.equals(NativeWire.text(value.get("schema")))
+                &&ExactCk3Build.CK3_1210.matches(NativeWire.text(value.get("game_version")),NativeWire.text(value.get("executable_sha256")))
+                &&"ck3-1.21.0-msvc-x64".equals(NativeWire.text(value.get("adapter_id")))
+                &&"ck3-1.21.0-native-headless-main-thread".equals(NativeWire.text(value.get("backend"))),
+                "Florin full-state schema/executable/adapter/backend tuple mismatch");
+    }
     /** Sole decoder/accounting path for both ordinary reception and typed WAIT. */
     private Optional<NativeWire.Frame> ingestOriginalPacket(byte[] original) throws IOException {
         NativeRequestChronology.Event receivedAt;
@@ -2323,6 +2417,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 // Reuse the sole current native collection parser. No second normalizer or guessed counter is introduced.
                 ObservedFrame actual = new ObservedFrame(session(),received.snapshotId(),received.revision(),new RawJson(received.state().value()),received.packet().value(),receivedAt.observedAt());
                 final OpportunityJson.Obj semantic;
+                try { requireFullSnapshotBuild(received); }
+                catch(IOException|IllegalArgumentException invalidIdentity) { rejectSnapshot(candidate,invalidIdentity); return Optional.empty(); }
                 try {
                     semantic=DriverObservationAssembler.canonicalNativeState(actual).semantic();
                     // The Driver consumes this exact integer; a rejected date never mints a receiver occurrence.

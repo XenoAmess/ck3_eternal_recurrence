@@ -1,0 +1,22 @@
+{
+  "qualification": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\FULL-VERSIONED-WIRE-QUALIFICATION05.json",
+  "producer": "actual ReadFullSnapshotV1 real-child RAM fixture plus extracted actual StateSnapshotFrame",
+  "live": false,
+  "packets": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-snapshot-producer-002.json",
+      "bytes": 1171,
+      "sha256": "5eca02fea7c3f5095d675238f59b69b8d166ed17a0bd4c208b0e133700d7e550"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-snapshot-producer-102.json",
+      "bytes": 1322,
+      "sha256": "a27f2dd30ad69b8927a133509a25be216bf7ce250fdf0a9b325bece78d355ae5"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-snapshot-producer-202.json",
+      "bytes": 1180,
+      "sha256": "d0fc50433b8e3e30e35a81b44d87f307213692646613fdc371970e1d5784f12a"
+    }
+  ]
+}

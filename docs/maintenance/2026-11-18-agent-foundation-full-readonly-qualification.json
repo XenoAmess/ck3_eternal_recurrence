@@ -1,0 +1,93 @@
+{
+  "schema": "xar.agent-florin.foundation-full-readonly-qualification/v1",
+  "native_source_delta": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/dll-build01/r2-full10/source-retained/SOURCE-DELTA10.json",
+    "bytes": 7715,
+    "sha256": "543541e34de8bc73416d3c8a81e98cab81eb157dd01dd88e35a1d4d3b9f8f9ab"
+  },
+  "native_full_ready": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/dll-build01/r2-full10/NATIVE-1210-FULL-READONLY-DLL-READY10.json",
+    "bytes": 2944,
+    "sha256": "3c7f09378b7dd85ed14991926b89274813d6cf732f4031e9167b9f2dc13ef6b2"
+  },
+  "foundation": {
+    "software_passed": 13,
+    "report": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-actor-foundation01/qualification01/reports/TEST-junit-jupiter.xml",
+      "bytes": 42614,
+      "sha256": "3d4ce4a5228f1bbef7c8e7aa646c9b3eda20cb0fc7162dd88c30ec6d39c6d40b"
+    },
+    "old_abi": {
+      "classes": 39,
+      "methods": 225,
+      "fields": 16,
+      "missing": 0
+    },
+    "actual_original_pair_read": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/AGENT1210-ACTOR-FOUNDATION-ORIGINAL-PAIRED-PASS01.json",
+      "bytes": 2380,
+      "sha256": "b08bab4ae88e310055b09d8d6a0773791ecd95751e2fc72ea6c56e09cc8dad08"
+    },
+    "actual_natural_close": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/R5-FOUNDATION-ORIGINAL-PAIRED-NATURAL-CLOSE01.json",
+      "bytes": 1881,
+      "sha256": "a98e221964c382a643ab44b6b10561fb0caf04ab96b53b9a1ab33d75c32eedaf"
+    },
+    "fixture_budget_metadata_correction": "Actor receiver constructor uses maximumFramesPerOperation=16 and maximumSubmissions=8; an earlier source-only handoff reversed the labels. Source behavior is unchanged."
+  },
+  "full_readonly": {
+    "software_passed": 22,
+    "report": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-full1210-receiver01/qualification01/reports/TEST-junit-jupiter.xml",
+      "bytes": 47763,
+      "sha256": "3f4b06097bd9526fba71bd3f9a2d5b7530cb12e7232e1e8350eb5c4bb19bc5fc"
+    },
+    "old_abi": {
+      "classes": 46,
+      "methods": 258,
+      "fields": 10,
+      "missing": 0
+    },
+    "new_data_and_cpp_receiver_cases": 12,
+    "legacy_semantic_cases": 10,
+    "actual_full_scene": "ACTUAL_INDEPENDENT_FULL_READONLY_PASSED",
+    "passive_diagnostics_only_typing": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-full1210-receiver01/full-diagnostics-overlay02/FULL-PASSIVE-DIAGNOSTICS-RUNTIME-READY02.json",
+      "bytes": 1824,
+      "sha256": "000b4ac2473f43dc36bcdce5fb549889801b2d960060e7eb6e25c1ddb31ced81"
+    },
+    "actual_proof": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/AGENT1210-FULL-READONLY-ORIGINAL-PAIRED-PASS01.json",
+      "bytes": 4315,
+      "sha256": "b2720b432f12f8dd7a0cc553c7ca8fae39c199359d474a3135c418dc5a09216d"
+    },
+    "actual_natural_close": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/R6-FULL-READONLY-ORIGINAL-PAIRED-NATURAL-CLOSE01.json",
+      "bytes": 1812,
+      "sha256": "4b284cdf4bc6ac1002b4fea248214c665de8eb4d99d431e223b96b232c783a65"
+    }
+  },
+  "seed_path_repair": {
+    "software_passed": 2,
+    "report": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-explicit-settings-seed01/path-spelling-repair02/reports/TEST-junit-jupiter.xml",
+      "bytes": 36055,
+      "sha256": "635a489be9991605a646f5d3f560a7f44fe053c5b38a6a6d0ebf214465a33f05"
+    },
+    "initial_actual_v5_precreate_rejection": "Preserved by Runtime: slash string equality; zero Game creation",
+    "canonical_path_workaround": "Original v5 precreate rejection preserved, canonical attempt succeeded; R6 then used the qualified repair class prefix. Forward-slash spelling is covered by the two software regressions."
+  },
+  "preserved": [
+    "53 existing business/CI WIP",
+    "old UNKNOWN and original deadlines",
+    "old semantic normalization and family checks",
+    "original87MB paired source distinct from experimental160MB SAVE"
+  ],
+  "not_qualified": [
+    "ordinary full-revision time/SAVE actions",
+    "running Complete observations",
+    "Driver adoption",
+    "Root Host/MCP catalog readiness",
+    "unmigrated domain contracts"
+  ]
+}

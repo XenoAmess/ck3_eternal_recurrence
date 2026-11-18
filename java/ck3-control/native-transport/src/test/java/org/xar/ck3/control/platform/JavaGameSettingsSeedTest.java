@@ -62,4 +62,16 @@ final class JavaGameSettingsSeedTest {
         JavaGameLifecycle.prepareNoModsProfile(NativeLaunchPlan.PreparedProfile.vanilla(),absent);
         assertFalse(Files.exists(absent.resolve("pdx_settings.txt")));
     }
+    @Test void equivalentWindowsSlashSpellingCopiesTheSameSeedAndStillRejectsChangedBytes()throws Exception{
+        var measured=seed();var forward=new FileRef(measured.path().replace((char)92,'/'),measured.bytes(),measured.sha256());
+        assertEquals(Path.of(measured.path()),Path.of(forward.path()));
+        assertNotEquals(measured.path(),forward.path(),"fixture must exercise both actual Windows spellings");
+        var declared=NativeLaunchPlan.PreparedProfile.vanilla(forward);Path profile=temporary.resolve("forward-profile");
+        JavaGameLifecycle.prepareNoModsProfile(declared,profile);
+        var target=FileRef.measure(profile.resolve("pdx_settings.txt"));assertEquals(measured.sha256(),target.sha256());
+        Files.writeString(Path.of(measured.path()),"changed original after first copy");
+        Path missing=temporary.resolve("tampered-forward-profile");
+        assertThrows(IOException.class,()->JavaGameLifecycle.prepareNoModsProfile(declared,missing));assertFalse(Files.exists(missing));
+    }
+
 }

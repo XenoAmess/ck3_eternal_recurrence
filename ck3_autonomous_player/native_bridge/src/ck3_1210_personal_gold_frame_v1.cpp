@@ -5,10 +5,10 @@ namespace xar::ck3_1210 {
 namespace {
 bool Read(PersonalGoldMailboxContextV1 &q,
     const ck3_11906::MainThreadExecutionStampV1 &s) noexcept {
-  q.observation={};q.application_main_observed=false;
+  q.observation={};q.foundation={};q.application_main_observed=false;
   if (q.game==nullptr || !q.game->enabled() ||
       !game::IsCk3_1210Descriptor(q.game->descriptor()) ||
-      !q.game->supports(kPersonalGoldCapabilityV1) || q.mailbox==nullptr ||
+      !q.game->supports(q.kind==ActorObservationKindV1::foundation ? kActorFoundationCapabilityV1 : kPersonalGoldCapabilityV1) || q.mailbox==nullptr ||
       !q.bindings.exact_build_admitted || q.ticket.sequence==0) return true;
   const auto &m=*q.mailbox;const auto &b=q.bindings.core;
   if (s.thread_id==0 || s.thread_id!=GetCurrentThreadId() || s.pump_epoch==0 ||
@@ -24,11 +24,13 @@ bool Read(PersonalGoldMailboxContextV1 &q,
       reinterpret_cast<std::uintptr_t>(*b.jomini_state_slot)!=s.jomini_state) return true;
   q.application_main_observed=true;
   CoreSnapshotPrefix prefix{};
-  if (!ReadCoreSnapshot(b,prefix)) { q.observation.unavailable_reason="core_read_failed";return true; }
+  if (!ReadCoreSnapshot(b,prefix)) { q.observation.unavailable_reason="core_read_failed";q.foundation.unavailable_reason="core_read_failed";return true; }
   if (prefix.clock.date_raw!=s.date_raw || prefix.clock.paused!=s.paused) {
-    q.observation.unavailable_reason="core_frame_changed";return true;
+    q.observation.unavailable_reason="core_frame_changed";q.foundation.unavailable_reason="core_frame_changed";return true;
   }
-  (void)ReadPersonalGoldV1(q.bindings,prefix,q.observation);
+  if(q.kind==ActorObservationKindV1::foundation)
+    (void)ReadActorFoundationV1({q.bindings.exact_build_admitted,q.bindings.core},prefix,q.foundation);
+  else (void)ReadPersonalGoldV1(q.bindings,prefix,q.observation);
   return true;
 }
 void Quoted(std::string &s,std::string_view value) {
@@ -42,6 +44,11 @@ void Quoted(std::string &s,std::string_view value) {
 
 }
 }
+// Keep STL destruction outside the thin SEH boundary.
+static void MarkActorReadFailure(PersonalGoldMailboxContextV1 &q) noexcept {
+  q.observation={};q.foundation={};q.observation.unavailable_reason="memory_read_failed";
+  q.foundation.unavailable_reason="memory_read_failed";
+}
 bool ExecutePersonalGoldMailboxV1(void *opaque,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   if(opaque==nullptr) return false;
@@ -49,7 +56,7 @@ bool ExecutePersonalGoldMailboxV1(void *opaque,
 #if defined(_MSC_VER)
   __try { return Read(q,stamp); }
   __except(EXCEPTION_EXECUTE_HANDLER) {
-    q.observation={};q.observation.unavailable_reason="memory_read_failed";return true;
+    MarkActorReadFailure(q);return true;
   }
 #else
   return Read(q,stamp);
@@ -79,4 +86,44 @@ std::string SerializePersonalGoldCommandResultV1(std::string_view id,
   if(available) out+="null";else Quoted(out,o.unavailable_reason);
   out+="}}";return out;
 }
+std::string SerializeActorFoundationCommandResultV1(std::string_view id,
+    const PersonalGoldMailboxContextV1 &q) {
+  const auto &o=q.foundation;
+  const bool resources=o.resources_ready && o.gold_raw && o.prestige_raw && o.piety_raw && o.stress_points;
+  const bool relations=o.relationships_ready && o.relationships.has_value();
+  const bool available=o.same_frame_ready && (resources||relations);
+  CoreFrameObservationV1 core{};core.application_main_observed=q.application_main_observed;
+  core.core_available=o.same_frame_ready;core.core=o.frame;core.unavailable_reason=o.unavailable_reason;
+  std::string out=R"({"type":"command_result","protocol_version":1,"request_id":)";
+  Quoted(out,id);out+=R"(,"ok":true,"result":{"step":)";Quoted(out,kActorFoundationStepV1);
+  out+=R"(,"schema":)";Quoted(out,kActorFoundationFrameSchemaV1);
+  out+=R"(,"game_version":)";Quoted(out,kGameVersion);
+  out+=R"(,"executable_sha256":)";Quoted(out,kExecutableSha256);
+  out+=R"(,"adapter_id":)";Quoted(out,kAdapterId);
+  out+=R"(,"backend":"ck3-1.21.0-native-headless-main-thread","status":)";Quoted(out,available?"partial":"unavailable");
+  out+=R"(,"foundation_available":)";out+=available?"true":"false";
+  out+=R"(,"resources_available":)";out+=resources?"true":"false";
+  out+=R"(,"relationships_available":)";out+=relations?"true":"false";
+  out+=R"(,"application_main_observed":)";out+=q.application_main_observed?"true":"false";
+  out+=R"(,"complete_snapshot":false,"treasury_observed":false,"monthly_flow_observed":false,"core_frame":)";
+  out+=SerializeCoreFrameV1(core);out+=R"(,"resources":)";
+  if(resources) {
+    const auto amount=[](std::int64_t raw) { return R"({"raw":)"+std::to_string(raw)+R"(,"scale":100000})"; };
+    out+=R"({"gold":)"+amount(*o.gold_raw)+R"(,"prestige":)"+amount(*o.prestige_raw)+
+        R"(,"piety":)"+amount(*o.piety_raw)+R"(,"stress_points":)"+std::to_string(*o.stress_points)+"}";
+  } else out+="null";
+  out+=R"(,"relationships":)";
+  if(relations) {
+    const auto &f=*o.relationships;
+    out+=R"({"betrothed_character_id":)"+std::to_string(f.betrothed_character_id)+
+        R"(,"primary_spouse_character_id":)"+std::to_string(f.primary_spouse_character_id)+R"(,"spouse_character_ids":[)";
+    bool first=true;for(const auto peer:f.spouse_character_ids) { if(!first)out+=',';first=false;out+=std::to_string(peer); }
+    out+="]}";
+  } else out+="null";
+  out+=R"(,"resources_unavailable_reason":)";if(resources)out+="null";else Quoted(out,o.resources_unavailable_reason);
+  out+=R"(,"relationships_unavailable_reason":)";if(relations)out+="null";else Quoted(out,o.relationships_unavailable_reason);
+  out+=R"(,"unavailable_reason":)";if(available)out+="null";else Quoted(out,o.unavailable_reason);
+  out+="}}";return out;
+}
+
 }
