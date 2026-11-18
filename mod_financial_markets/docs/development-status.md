@@ -2,7 +2,15 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（17:26 UTC 更新）
+## 当前状态（17:44 UTC 更新）
+
+云端独立分支真实run [44359949157](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44359949157)已通过：共享存档库10项、金融246项，29个JUnit suite逐例核对，0failure/error/skip；源码validator与候选allowlist均196文件。仓库路径修复已正常接到远端并推送`89e5e07f43b3009dd75c67112baf9f358bb1130b`；金融生产字节及工具与该云场完全相同。前三次云端失败均保留。
+
+第七场`R0007/a85`用于取证，仍在启动FreshFull原8秒期限失败，零业务动作/新增日/SAVE。两次有限OS线程诊断实际成功并释放PSS；第二次前已确认37843ms无新的Peek/Poll进入，RIP在`NtYieldExecution`，原生候选地址涉及Core取玩家与Full观察。只保留owner上下文及有限栈，未clone全内存、未输入或抢焦点。原Game失败exit1/Job0/treegone、原Host和keeper wait已核，17:36:35Z资源释放。[原件摘要](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0007.json)。
+
+正在用精确PE栈展开元数据核实真实阻塞帧。raw栈中的可执行地址不是正式调用链，旧GUI构造地址不能单独证明当前仍在构造；发布的heartbeat可能在observer执行期间保持旧值，`active=0/read_in_progress=false`也不能证明当前没有观察器在运行。暂不据此新增初始化门、getter替换或hook。
+
+## 第六场与前序云端失败
 
 第六场`R0006/a84`已实际装载Q11及196文件产品profile，主窗口最小化、非置顶、非前台。17:05:40Z普通Full可用后，唯一强制读取仍在8秒原期限失败：32次thread wake成功，owner的Peek/Poll进入与完成计数均不变，active=0，executor未开始。新SDL hook确实已安装，但未覆盖该等待窗口；不再把单纯“换到更上层hook”假定为足够。原场已失败exit1/Job0/treegone，Host与keeper原wait均确认，17:07:27Z资源实际释放。零金融动作、零新增日、零SAVE；正在根据自然事件长间隔及SDL等待/唤醒链继续最小修复。
 
