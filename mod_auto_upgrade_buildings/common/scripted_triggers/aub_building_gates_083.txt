@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_grain_stores_5_trigger = {
+	can_start_building_construction_for_owner = grain_stores_5
+}
+
+aub_can_upgrade_to_grindstone_maker_2_trigger = {
+	can_start_building_construction_for_owner = grindstone_maker_2
+}
+
+aub_can_upgrade_to_grindstone_maker_3_trigger = {
+	can_start_building_construction_for_owner = grindstone_maker_3
+}
+
+aub_can_upgrade_to_grindstone_maker_4_trigger = {
+	can_start_building_construction_for_owner = grindstone_maker_4
+}
+
+aub_can_upgrade_to_grindstone_maker_5_trigger = {
+	can_start_building_construction_for_owner = grindstone_maker_5
+}
+
+aub_can_upgrade_to_guild_builders_2_trigger = {
+	can_start_building_construction_for_owner = guild_builders_2
+}
+
+aub_can_upgrade_to_guild_builders_3_trigger = {
+	can_start_building_construction_for_owner = guild_builders_3
+}
+
+aub_can_upgrade_to_guild_builders_4_trigger = {
+	can_start_building_construction_for_owner = guild_builders_4
+}
+
+aub_can_upgrade_to_guild_builders_5_trigger = {
+	can_start_building_construction_for_owner = guild_builders_5
+}
+
+aub_can_upgrade_to_guild_butchery_2_trigger = {
+	can_start_building_construction_for_owner = guild_butchery_2
+}

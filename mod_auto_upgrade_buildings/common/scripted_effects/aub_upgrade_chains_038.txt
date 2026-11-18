@@ -1,0 +1,478 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+
+aub_upgrade_chain_oath_warriors_building_01_effect = {
+	if = {
+		limit = {
+			has_building = oath_warriors_building_01
+			aub_can_upgrade_to_oath_warriors_building_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_2_cost }
+			scope:aub_payer = { prestige >= 250 }
+		}
+		upgrade_building_effect = oath_warriors_building_01
+		if = {
+			limit = { has_building = oath_warriors_building_02 }
+			aub_pay_gold_prestige_building_cost_effect = { GOLD = expensive_building_tier_2_cost PRESTIGE = 250 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oath_warriors_building_02
+			aub_can_upgrade_to_oath_warriors_building_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_3_cost }
+			scope:aub_payer = { prestige >= 375 }
+		}
+		upgrade_building_effect = oath_warriors_building_02
+		if = {
+			limit = { has_building = oath_warriors_building_03 }
+			aub_pay_gold_prestige_building_cost_effect = { GOLD = expensive_building_tier_3_cost PRESTIGE = 375 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oath_warriors_building_03
+			aub_can_upgrade_to_oath_warriors_building_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+			scope:aub_payer = { prestige >= 500 }
+		}
+		upgrade_building_effect = oath_warriors_building_03
+		if = {
+			limit = { has_building = oath_warriors_building_04 }
+			aub_pay_gold_prestige_building_cost_effect = { GOLD = expensive_building_tier_4_cost PRESTIGE = 500 }
+		}
+	}
+}
+
+# oil_apothecary_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_oil_apothecary_1_effect = {
+	if = {
+		limit = {
+			has_building = oil_apothecary_1
+			aub_can_upgrade_to_oil_apothecary_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = oil_apothecary_1
+		if = {
+			limit = { has_building = oil_apothecary_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_apothecary_2
+			aub_can_upgrade_to_oil_apothecary_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = oil_apothecary_2
+		if = {
+			limit = { has_building = oil_apothecary_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_apothecary_3
+			aub_can_upgrade_to_oil_apothecary_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = oil_apothecary_3
+		if = {
+			limit = { has_building = oil_apothecary_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_apothecary_4
+			aub_can_upgrade_to_oil_apothecary_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = oil_apothecary_4
+		if = {
+			limit = { has_building = oil_apothecary_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# oil_resource_building_1: 9 frozen upgrade edge(s)
+aub_upgrade_chain_oil_resource_building_1_effect = {
+	if = {
+		limit = {
+			has_building = oil_resource_building_1
+			aub_can_upgrade_to_oil_resource_building_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = oil_resource_building_1
+		if = {
+			limit = { has_building = oil_resource_building_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_resource_building_2
+			aub_can_upgrade_to_oil_resource_building_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = oil_resource_building_2
+		if = {
+			limit = { has_building = oil_resource_building_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_resource_building_3
+			aub_can_upgrade_to_oil_resource_building_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = oil_resource_building_3
+		if = {
+			limit = { has_building = oil_resource_building_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_resource_building_4
+			aub_can_upgrade_to_oil_resource_building_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = oil_resource_building_4
+		if = {
+			limit = { has_building = oil_resource_building_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_resource_building_5
+			aub_can_upgrade_to_oil_resource_building_6_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_6_cost }
+		}
+		upgrade_building_effect = oil_resource_building_5
+		if = {
+			limit = { has_building = oil_resource_building_6 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_resource_building_6
+			aub_can_upgrade_to_oil_resource_building_7_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_7_cost }
+		}
+		upgrade_building_effect = oil_resource_building_6
+		if = {
+			limit = { has_building = oil_resource_building_7 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_resource_building_7
+			aub_can_upgrade_to_oil_resource_building_8_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_8_cost }
+		}
+		upgrade_building_effect = oil_resource_building_7
+		if = {
+			limit = { has_building = oil_resource_building_8 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_8_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_resource_building_8
+			aub_can_upgrade_to_oil_resource_building_9_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_9_cost }
+		}
+		upgrade_building_effect = oil_resource_building_8
+		if = {
+			limit = { has_building = oil_resource_building_9 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_9_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_resource_building_9
+			aub_can_upgrade_to_oil_resource_building_10_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_10_cost }
+		}
+		upgrade_building_effect = oil_resource_building_9
+		if = {
+			limit = { has_building = oil_resource_building_10 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_10_cost }
+		}
+	}
+}
+
+# oil_soapworks_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_oil_soapworks_1_effect = {
+	if = {
+		limit = {
+			has_building = oil_soapworks_1
+			aub_can_upgrade_to_oil_soapworks_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = oil_soapworks_1
+		if = {
+			limit = { has_building = oil_soapworks_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_soapworks_2
+			aub_can_upgrade_to_oil_soapworks_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = oil_soapworks_2
+		if = {
+			limit = { has_building = oil_soapworks_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_soapworks_3
+			aub_can_upgrade_to_oil_soapworks_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = oil_soapworks_3
+		if = {
+			limit = { has_building = oil_soapworks_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_soapworks_4
+			aub_can_upgrade_to_oil_soapworks_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = oil_soapworks_4
+		if = {
+			limit = { has_building = oil_soapworks_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# oil_waxworks_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_oil_waxworks_1_effect = {
+	if = {
+		limit = {
+			has_building = oil_waxworks_1
+			aub_can_upgrade_to_oil_waxworks_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = oil_waxworks_1
+		if = {
+			limit = { has_building = oil_waxworks_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_waxworks_2
+			aub_can_upgrade_to_oil_waxworks_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = oil_waxworks_2
+		if = {
+			limit = { has_building = oil_waxworks_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_waxworks_3
+			aub_can_upgrade_to_oil_waxworks_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = oil_waxworks_3
+		if = {
+			limit = { has_building = oil_waxworks_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = oil_waxworks_4
+			aub_can_upgrade_to_oil_waxworks_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = oil_waxworks_4
+		if = {
+			limit = { has_building = oil_waxworks_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# ointment_maker_1: 1 frozen upgrade edge(s)
+aub_upgrade_chain_ointment_maker_1_effect = {
+	if = {
+		limit = {
+			has_building = ointment_maker_1
+			aub_can_upgrade_to_ointment_maker_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = ointment_maker_1
+		if = {
+			limit = { has_building = ointment_maker_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+}
+
+# olive_groves_1: 2 frozen upgrade edge(s)
+aub_upgrade_chain_olive_groves_1_effect = {
+	if = {
+		limit = {
+			has_building = olive_groves_1
+			aub_can_upgrade_to_olive_groves_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = olive_groves_1
+		if = {
+			limit = { has_building = olive_groves_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = olive_groves_2
+			aub_can_upgrade_to_olive_groves_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = olive_groves_2
+		if = {
+			limit = { has_building = olive_groves_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+}
+
+# olive_mill_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_olive_mill_1_effect = {
+	if = {
+		limit = {
+			has_building = olive_mill_1
+			aub_can_upgrade_to_olive_mill_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = olive_mill_1
+		if = {
+			limit = { has_building = olive_mill_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = olive_mill_2
+			aub_can_upgrade_to_olive_mill_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = olive_mill_2
+		if = {
+			limit = { has_building = olive_mill_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = olive_mill_3
+			aub_can_upgrade_to_olive_mill_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = olive_mill_3
+		if = {
+			limit = { has_building = olive_mill_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = olive_mill_4
+			aub_can_upgrade_to_olive_mill_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = olive_mill_4
+		if = {
+			limit = { has_building = olive_mill_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# outer_walls_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_outer_walls_1_effect = {
+	if = {
+		limit = {
+			has_building = outer_walls_1
+			aub_can_upgrade_to_outer_walls_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = outer_walls_1
+		if = {
+			limit = { has_building = outer_walls_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = outer_walls_2
+			aub_can_upgrade_to_outer_walls_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = outer_walls_2
+		if = {
+			limit = { has_building = outer_walls_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = outer_walls_3
+			aub_can_upgrade_to_outer_walls_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = outer_walls_3
+		if = {
+			limit = { has_building = outer_walls_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = outer_walls_4
+			aub_can_upgrade_to_outer_walls_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = outer_walls_4
+		if = {
+			limit = { has_building = outer_walls_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# palace_of_ctesiphon_01: 1 frozen upgrade edge(s)
+aub_upgrade_chain_palace_of_ctesiphon_01_effect = {
+	if = {
+		limit = {
+			has_building = palace_of_ctesiphon_01
+			aub_can_upgrade_to_palace_of_ctesiphon_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = 2000 }
+		}
+		upgrade_building_effect = palace_of_ctesiphon_01
+		if = {
+			limit = { has_building = palace_of_ctesiphon_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = 2000 }
+		}
+	}
+}
+
+# palisaded_villages_1: 4 frozen upgrade edge(s)

@@ -1,124 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_administrative_palace_2_trigger = {
+	can_start_building_construction_for_owner = administrative_palace_2
+}
+
+aub_can_upgrade_to_administrative_palace_3_trigger = {
+	can_start_building_construction_for_owner = administrative_palace_3
+}
+
+aub_can_upgrade_to_administrative_palace_4_trigger = {
+	can_start_building_construction_for_owner = administrative_palace_4
+}
+
+aub_can_upgrade_to_administrative_palace_5_trigger = {
+	can_start_building_construction_for_owner = administrative_palace_5
+}
+
+aub_can_upgrade_to_admiralty_court_02_trigger = {
+	can_start_building_construction_for_owner = admiralty_court_02
+}
+
+aub_can_upgrade_to_admiralty_court_03_trigger = {
+	can_start_building_construction_for_owner = admiralty_court_03
+}
+
+aub_can_upgrade_to_admiralty_court_04_trigger = {
+	can_start_building_construction_for_owner = admiralty_court_04
+}
+
+aub_can_upgrade_to_admiralty_court_05_trigger = {
+	can_start_building_construction_for_owner = admiralty_court_05
+}
 
 aub_can_upgrade_to_alamut_castle_02_trigger = {
-	# vanilla can_construct
-	scope:holder = {
-		employs_court_position = master_assassin_court_position
-	}
+	can_start_building_construction_for_owner = alamut_castle_02
 }
 
 aub_can_upgrade_to_alhambra_02_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	scope:holder.culture = {
-		has_innovation = innovation_hoardings
-	}
+	can_start_building_construction_for_owner = alhambra_02
 }
-
-aub_can_upgrade_to_allaq_mines_02_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	culture = {
-		has_innovation = innovation_manorialism
-	}
-}
-
-aub_can_upgrade_to_allaq_mines_03_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	culture = {
-		has_innovation = innovation_windmills
-	}
-}
-
-aub_can_upgrade_to_allaq_mines_04_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	culture = {
-		has_innovation = innovation_cranes
-	}
-}
-
-aub_can_upgrade_to_archery_ranges_02_trigger = {
-	# vanilla is_enabled
-	county.holder = {
-		has_title = prev.duchy
-	}
-	# vanilla can_construct_potential
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	building_requirement_tribal = no
-	# vanilla can_construct_showing_failures_only
-	culture = {
-		has_innovation = innovation_castle_baileys
-	}
-}
-
-aub_can_upgrade_to_archery_ranges_03_trigger = {
-	# vanilla is_enabled
-	county.holder = {
-		has_title = prev.duchy
-	}
-	# vanilla can_construct_potential
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	building_requirement_tribal = no
-	# vanilla can_construct_showing_failures_only
-	culture = {
-		has_innovation = innovation_royal_armory
-	}
-}
-
-aub_can_upgrade_to_argentiera_mines_02_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	culture = {
-		has_innovation = innovation_manorialism
-	}
-}
-
-aub_can_upgrade_to_argentiera_mines_03_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	culture = {
-		has_innovation = innovation_windmills
-	}
-}
-
-aub_can_upgrade_to_argentiera_mines_04_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	culture = {
-		has_innovation = innovation_cranes
-	}
-}
-

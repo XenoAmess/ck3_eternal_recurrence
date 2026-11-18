@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_trade_watchtower_02_trigger = {
+	can_start_building_construction_for_owner = trade_watchtower_02
+}
+
+aub_can_upgrade_to_trade_watchtower_03_trigger = {
+	can_start_building_construction_for_owner = trade_watchtower_03
+}
+
+aub_can_upgrade_to_trade_watchtower_04_trigger = {
+	can_start_building_construction_for_owner = trade_watchtower_04
+}
+
+aub_can_upgrade_to_trade_watchtower_05_trigger = {
+	can_start_building_construction_for_owner = trade_watchtower_05
+}
+
+aub_can_upgrade_to_traders_meet_2_trigger = {
+	can_start_building_construction_for_owner = traders_meet_2
+}
+
+aub_can_upgrade_to_traders_meet_3_trigger = {
+	can_start_building_construction_for_owner = traders_meet_3
+}
+
+aub_can_upgrade_to_traders_meet_4_trigger = {
+	can_start_building_construction_for_owner = traders_meet_4
+}
+
+aub_can_upgrade_to_traders_meet_5_trigger = {
+	can_start_building_construction_for_owner = traders_meet_5
+}
+
+aub_can_upgrade_to_trappers_2_trigger = {
+	can_start_building_construction_for_owner = trappers_2
+}
+
+aub_can_upgrade_to_trappers_3_trigger = {
+	can_start_building_construction_for_owner = trappers_3
+}

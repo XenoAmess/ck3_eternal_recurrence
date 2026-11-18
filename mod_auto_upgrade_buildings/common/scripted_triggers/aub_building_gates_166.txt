@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_quilting_workshop_3_trigger = {
+	can_start_building_construction_for_owner = quilting_workshop_3
+}
+
+aub_can_upgrade_to_quilting_workshop_4_trigger = {
+	can_start_building_construction_for_owner = quilting_workshop_4
+}
+
+aub_can_upgrade_to_quilting_workshop_5_trigger = {
+	can_start_building_construction_for_owner = quilting_workshop_5
+}
+
+aub_can_upgrade_to_qutb_minar_02_trigger = {
+	can_start_building_construction_for_owner = qutb_minar_02
+}
+
+aub_can_upgrade_to_qutb_minar_03_trigger = {
+	can_start_building_construction_for_owner = qutb_minar_03
+}
+
+aub_can_upgrade_to_qutb_minar_04_trigger = {
+	can_start_building_construction_for_owner = qutb_minar_04
+}
+
+aub_can_upgrade_to_rammelsberg_mines_02_trigger = {
+	can_start_building_construction_for_owner = rammelsberg_mines_02
+}
+
+aub_can_upgrade_to_rammelsberg_mines_03_trigger = {
+	can_start_building_construction_for_owner = rammelsberg_mines_03
+}
+
+aub_can_upgrade_to_rammelsberg_mines_04_trigger = {
+	can_start_building_construction_for_owner = rammelsberg_mines_04
+}
+
+aub_can_upgrade_to_ramparts_2_trigger = {
+	can_start_building_construction_for_owner = ramparts_2
+}

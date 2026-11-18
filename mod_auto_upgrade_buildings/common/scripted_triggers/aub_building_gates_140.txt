@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_moneychangers_5_trigger = {
+	can_start_building_construction_for_owner = moneychangers_5
+}
+
+aub_can_upgrade_to_monsoon_water_management_2_trigger = {
+	can_start_building_construction_for_owner = monsoon_water_management_2
+}
+
+aub_can_upgrade_to_monsoon_water_management_3_trigger = {
+	can_start_building_construction_for_owner = monsoon_water_management_3
+}
+
+aub_can_upgrade_to_monsoon_water_management_4_trigger = {
+	can_start_building_construction_for_owner = monsoon_water_management_4
+}
+
+aub_can_upgrade_to_monsoon_water_management_5_trigger = {
+	can_start_building_construction_for_owner = monsoon_water_management_5
+}
+
+aub_can_upgrade_to_mont_st_michel_02_trigger = {
+	can_start_building_construction_for_owner = mont_st_michel_02
+}
+
+aub_can_upgrade_to_mont_st_michel_03_trigger = {
+	can_start_building_construction_for_owner = mont_st_michel_03
+}
+
+aub_can_upgrade_to_mont_st_michel_04_trigger = {
+	can_start_building_construction_for_owner = mont_st_michel_04
+}
+
+aub_can_upgrade_to_mortar_workshop_2_trigger = {
+	can_start_building_construction_for_owner = mortar_workshop_2
+}
+
+aub_can_upgrade_to_mortar_workshop_3_trigger = {
+	can_start_building_construction_for_owner = mortar_workshop_3
+}

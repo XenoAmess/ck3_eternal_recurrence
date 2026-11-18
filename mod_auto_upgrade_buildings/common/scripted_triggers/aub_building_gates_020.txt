@@ -1,173 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_hospices_06_trigger = {
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	culture = {
-		has_innovation = innovation_windmills
-	}
+aub_can_upgrade_to_capital_magistracy_4_trigger = {
+	can_start_building_construction_for_owner = capital_magistracy_4
 }
 
-aub_can_upgrade_to_hospices_07_trigger = {
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_capital_magistracy_5_trigger = {
+	can_start_building_construction_for_owner = capital_magistracy_5
 }
 
-aub_can_upgrade_to_hospices_08_trigger = {
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_caravanserai_2_trigger = {
+	can_start_building_construction_for_owner = caravanserai_2
 }
 
-aub_can_upgrade_to_hotin_fort_02_trigger = {
-	# vanilla can_construct_potential
-	# vanilla can_construct
-	scope:holder.culture = {
-		has_innovation = innovation_hoardings
-	}
+aub_can_upgrade_to_caravanserai_3_trigger = {
+	can_start_building_construction_for_owner = caravanserai_3
 }
 
-aub_can_upgrade_to_hpakant_mines_02_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_caravanserai_4_trigger = {
+	can_start_building_construction_for_owner = caravanserai_4
 }
 
-aub_can_upgrade_to_hpakant_mines_03_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	culture = {
-		has_innovation = innovation_windmills
-	}
+aub_can_upgrade_to_caravanserai_5_trigger = {
+	can_start_building_construction_for_owner = caravanserai_5
 }
 
-aub_can_upgrade_to_hpakant_mines_04_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_castello_2_trigger = {
+	can_start_building_construction_for_owner = castello_2
 }
 
-aub_can_upgrade_to_hunting_grounds_02_trigger = {
-	# vanilla is_enabled
-	scope:holder.culture = {
-		NOT = {
-			has_cultural_parameter = vegetarian_building_ban
-		}
-	}
-	culture = {
-		NOT = {
-			has_cultural_parameter = vegetarian_building_ban
-		}
-	}
-	# vanilla can_construct_potential
-	building_hunting_grounds_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	scope:holder.culture = {
-		NOT = {
-			has_cultural_parameter = vegetarian_building_ban
-		}
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	scope:holder.culture = {
-		has_innovation = innovation_crop_rotation
-	}
+aub_can_upgrade_to_castello_3_trigger = {
+	can_start_building_construction_for_owner = castello_3
 }
 
-aub_can_upgrade_to_hunting_grounds_03_trigger = {
-	# vanilla is_enabled
-	scope:holder.culture = {
-		NOT = {
-			has_cultural_parameter = vegetarian_building_ban
-		}
-	}
-	culture = {
-		NOT = {
-			has_cultural_parameter = vegetarian_building_ban
-		}
-	}
-	# vanilla can_construct_potential
-	building_hunting_grounds_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_manorialism
-	}
-	scope:holder.culture = {
-		NOT = {
-			has_cultural_parameter = vegetarian_building_ban
-		}
-	}
+aub_can_upgrade_to_castello_4_trigger = {
+	can_start_building_construction_for_owner = castello_4
 }
 
-aub_can_upgrade_to_hunting_grounds_04_trigger = {
-	# vanilla is_enabled
-	scope:holder.culture = {
-		NOT = {
-			has_cultural_parameter = vegetarian_building_ban
-		}
-	}
-	culture = {
-		NOT = {
-			has_cultural_parameter = vegetarian_building_ban
-		}
-	}
-	# vanilla can_construct_potential
-	building_hunting_grounds_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_manorialism
-	}
-	scope:holder.culture = {
-		NOT = {
-			has_cultural_parameter = vegetarian_building_ban
-		}
-	}
+aub_can_upgrade_to_castello_5_trigger = {
+	can_start_building_construction_for_owner = castello_5
 }
-

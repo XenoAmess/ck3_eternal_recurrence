@@ -1,148 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_palace_of_ctesiphon_02_trigger = {
-	# vanilla can_construct
-	scope:holder = {
-		AND = {
-			OR = {
-				zoroastrian_or_syncretic_with_eastern_trigger = {
-					CHARACTER = scope:holder
-				}
-				faith = faith:manichaean_faith
-				faith = faith:nestorian
-				faith = faith:hellenic_pagan
-			}
-			highest_held_title_tier >= tier_kingdom
-			top_liege = this
-		}
-	}
+aub_can_upgrade_to_city_archive_4_trigger = {
+	can_start_building_construction_for_owner = city_archive_4
 }
 
-aub_can_upgrade_to_palisades_02_trigger = {
-	# vanilla is_enabled
-	building_requirement_tribal = yes
-	# vanilla can_construct_potential
-	has_building_or_higher = tribe_01
-	scope:holder = {
-		NOT = {
-			government_has_flag = government_is_wanua
-		}
-	}
-	# vanilla can_construct_showing_failures_only
-	OR = {
-		mpo_permafrost_building_trigger = yes
-		scope:holder = {
-			culture = {
-				has_innovation = innovation_barracks
-			}
-		}
-	}
+aub_can_upgrade_to_city_archive_5_trigger = {
+	can_start_building_construction_for_owner = city_archive_5
 }
 
-aub_can_upgrade_to_pansjhir_mines_02_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_city_council_hall_2_trigger = {
+	can_start_building_construction_for_owner = city_council_hall_2
 }
 
-aub_can_upgrade_to_pansjhir_mines_03_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	culture = {
-		has_innovation = innovation_windmills
-	}
+aub_can_upgrade_to_city_council_hall_3_trigger = {
+	can_start_building_construction_for_owner = city_council_hall_3
 }
 
-aub_can_upgrade_to_pansjhir_mines_04_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_city_council_hall_4_trigger = {
+	can_start_building_construction_for_owner = city_council_hall_4
 }
 
-aub_can_upgrade_to_pastures_02_trigger = {
-	# vanilla can_construct_potential
-	building_pastures_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	scope:holder.culture = {
-		has_innovation = innovation_crop_rotation
-	}
+aub_can_upgrade_to_city_council_hall_5_trigger = {
+	can_start_building_construction_for_owner = city_council_hall_5
 }
 
-aub_can_upgrade_to_pastures_03_trigger = {
-	# vanilla can_construct_potential
-	building_pastures_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_city_local_shrine_2_trigger = {
+	can_start_building_construction_for_owner = city_local_shrine_2
 }
 
-aub_can_upgrade_to_pastures_04_trigger = {
-	# vanilla can_construct_potential
-	building_pastures_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_city_local_shrine_3_trigger = {
+	can_start_building_construction_for_owner = city_local_shrine_3
 }
 
-aub_can_upgrade_to_pastures_05_trigger = {
-	# vanilla can_construct_potential
-	building_pastures_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_guilds
-	}
+aub_can_upgrade_to_city_local_shrine_4_trigger = {
+	can_start_building_construction_for_owner = city_local_shrine_4
 }
 
-aub_can_upgrade_to_pastures_06_trigger = {
-	# vanilla can_construct_potential
-	building_pastures_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_guilds
-	}
+aub_can_upgrade_to_city_local_shrine_5_trigger = {
+	can_start_building_construction_for_owner = city_local_shrine_5
 }
-

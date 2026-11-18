@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_tallow_rendering_3_trigger = {
+	can_start_building_construction_for_owner = tallow_rendering_3
+}
+
+aub_can_upgrade_to_tallow_rendering_4_trigger = {
+	can_start_building_construction_for_owner = tallow_rendering_4
+}
+
+aub_can_upgrade_to_tallow_rendering_5_trigger = {
+	can_start_building_construction_for_owner = tallow_rendering_5
+}
+
+aub_can_upgrade_to_tartar_collector_2_trigger = {
+	can_start_building_construction_for_owner = tartar_collector_2
+}
+
+aub_can_upgrade_to_tartar_collector_3_trigger = {
+	can_start_building_construction_for_owner = tartar_collector_3
+}
+
+aub_can_upgrade_to_tartar_collector_4_trigger = {
+	can_start_building_construction_for_owner = tartar_collector_4
+}
+
+aub_can_upgrade_to_tartar_collector_5_trigger = {
+	can_start_building_construction_for_owner = tartar_collector_5
+}
+
+aub_can_upgrade_to_tavern_street_2_trigger = {
+	can_start_building_construction_for_owner = tavern_street_2
+}
+
+aub_can_upgrade_to_tavern_street_3_trigger = {
+	can_start_building_construction_for_owner = tavern_street_3
+}
+
+aub_can_upgrade_to_tavern_street_4_trigger = {
+	can_start_building_construction_for_owner = tavern_street_4
+}

@@ -92,15 +92,15 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
         self.assertTrue(any("missing runtime file" in error for error in errors))
         self.assertTrue(any("outside allowlist" in error for error in errors))
 
-    def test_old_faith_gate_cannot_enter_release(self) -> None:
+    def test_weakened_native_construction_gate_cannot_enter_release(self) -> None:
         path = next(self.source / relative for relative in sorted(release.RUNTIME_FILES)
                     if relative.startswith("common/scripted_triggers/") and
-                    "rite_has_parameter = sky_burials_active" in
+                    "can_start_building_construction_for_owner = charnel_grounds_02" in
                     (self.source / relative).read_text(encoding="utf-8-sig"))
         text = path.read_text(encoding="utf-8-sig")
-        self.assertIn("rite_has_parameter = sky_burials_active", text)
+        self.assertIn("can_start_building_construction_for_owner = charnel_grounds_02", text)
         path.write_text(
-            text.replace("rite_has_parameter = sky_burials_active", "has_doctrine_parameter = sky_burials_active", 1),
+            text.replace("can_start_building_construction_for_owner = charnel_grounds_02", "always = yes", 1),
             encoding="utf-8-sig",
         )
         with self.assertRaisesRegex(ValueError, "reviewed building contract"):
@@ -133,7 +133,7 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
         loaded = json.loads(manifest_path.read_text(encoding="utf-8"))
         self.assertEqual(loaded, manifest)
         self.assertEqual(loaded["product_id"], release.PRODUCT_ID)
-        self.assertEqual(loaded["mod_version"], "4.0.3")
+        self.assertEqual(loaded["mod_version"], "4.0.4")
         self.assertIsNone(loaded["git_tag"])
         self.assertIsNone(loaded["workshop_item_id"])
 
@@ -153,7 +153,7 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
             self.root / "canonical" / release.PRODUCT_ID,
             REVISION,
             item_id,
-            git_tag=release.product_tag("4.0.3"),
+            git_tag=release.product_tag("4.0.4"),
         )
         self.assertEqual(manifest["workshop_item_id"], item_id)
         cache = self.root / "cache"
@@ -261,6 +261,40 @@ class FlorinBuildingExtractionTests(unittest.TestCase):
 
 
 class BuildingSnapshotContractTests(unittest.TestCase):
+    def test_district_levels_and_json_types_cannot_bypass_contract(self) -> None:
+        payload = copy.deepcopy(data.SNAPSHOT_DATA)
+        edge = next(e for e in payload["included_edges"] if e["district_level_requirement"] is not None)
+        edge["district_level_requirement"] = None
+        with self.assertRaisesRegex(ValueError, "policy contract"):
+            data.validate_snapshot_contract(payload)
+        for wrong in (1, 1.0, "true", None):
+            with self.assertRaises(ValueError):
+                data._boolean(wrong, "primary_building")
+        with self.assertRaises(ValueError):
+            data._requirement({"kind": "scalar", "value": True})
+        with self.assertRaises(ValueError):
+            data._requirement({"kind": "scalar", "value": "2", "body": "2"})
+
+    def test_district_delegation_uses_complete_engine_eligibility(self) -> None:
+        parsed = extractor.parse_clausewitz(release.generator.render_triggers())
+        definitions = {e.key: e.value for e in parsed.entries}
+        for edge in data.EDGES:
+            self.assertEqual(definitions[release.generator.trigger_name(edge)],
+                             extractor.parse_clausewitz(f"can_start_building_construction_for_owner = {edge.target}"))
+        effects = release.generator.render_effects()
+        province = validator.extract_block(effects, "aub_upgrade_all_supported_buildings_effect", top_level=True)
+        self.assertEqual((province or "").count("every_built_buildings = {"), 1)
+        self.assertEqual((province or "").count("is_primary_building = yes"), 1)
+        self.assertEqual((province or "").count("building_district = {"), 1)
+        self.assertEqual((province or "").count("aub_upgrade_supported_district_buildings_effect = yes"), 1)
+        self.assertNotIn("remove_building", effects)
+        self.assertNotIn("add_special_building", effects)
+        for chain in data.CHAINS:
+            body = "\n".join(release.generator.render_chain(chain))
+            for edge in chain.edges:
+                self.assertIn(f"upgrade_building_effect = {edge.source}", body)
+                self.assertIn(f"limit = {{ has_building = {edge.target} }}", body)
+
     def test_same_counts_cannot_hide_a_changed_price(self) -> None:
         payload = copy.deepcopy(data.SNAPSHOT_DATA)
         payload["included_edges"][0]["resources"]["gold"] = "1"
@@ -274,39 +308,56 @@ class BuildingSnapshotContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "gate contract"):
             data.validate_snapshot_contract(payload)
 
-    def test_no_new_church_or_great_project_edges(self) -> None:
+    def test_historical_policy_unchanged_and_florin_great_projects_excluded(self) -> None:
         old = json.loads((data.ROOT / "tools/auto_upgrade_buildings_1_19_0_6.json").read_text(encoding="utf-8"))
+        historical = json.loads((data.ROOT / "tools/auto_upgrade_buildings_1_20_0_2.json").read_text(encoding="utf-8"))
         self.assertEqual(
-            [{key:value for key,value in e.items() if key != "gates"} for e in data.SNAPSHOT_DATA["included_edges"]],
+            [{key:value for key,value in e.items() if key != "gates"} for e in historical["included_edges"]],
             [{key:value for key,value in e.items() if key != "gates"} for e in old["included_edges"]],
         )
-        self.assertEqual(data.SNAPSHOT_DATA["excluded_edges"], old["excluded_edges"])
+        self.assertEqual(historical["excluded_edges"], old["excluded_edges"])
+        self.assertEqual({edge.chain_root for edge in data.EXCLUDED_EDGES}, data.EXPECTED_EXCLUDED_CHAIN_ROOTS)
+        self.assertFalse(set(edge.chain_root for edge in data.EXCLUDED_EDGES) & set(chain.root for chain in data.CHAINS))
 
-    def test_reviewed_rite_and_temple_citadel_changes(self) -> None:
-        edges = {e.target: e for e in data.EDGES}
+    def test_historical_reviewed_rite_and_temple_citadel_changes(self) -> None:
+        historical = json.loads((data.ROOT / "tools/auto_upgrade_buildings_1_20_0_2.json").read_text(encoding="utf-8"))
+        edges = {e["target"]: e["gates"] for e in historical["included_edges"]}
         for target in ("charnel_grounds_02", "charnel_grounds_03"):
-            gates = "\n".join(dict(edges[target].gates).values())
+            gates = "\n".join(edges[target].values())
             self.assertIn("rite_has_parameter = sky_burials_active", gates)
             self.assertNotIn("has_doctrine_parameter", gates)
-        gates = "\n".join(dict(edges["megalith_02"].gates).values())
+        gates = "\n".join(edges["megalith_02"].values())
         self.assertIn("scope:holder.rite", gates)
         self.assertIn("has_building_or_higher = temple_citadel_01", gates)
-        self.assertIn("has_holding_type = temple_citadel_holding", dict(edges["monastic_schools_02"].gates)["can_construct_potential"])
-        self.assertIn("rite_has_doctrine = special_doctrine_is_eastern_christian_faith", dict(edges["meteora_02"].gates)["is_enabled"])
-        self.assertIn("faith = faith:manichaean_faith", dict(edges["palace_of_ctesiphon_02"].gates)["can_construct"])
+        self.assertIn("has_holding_type = temple_citadel_holding", edges["monastic_schools_02"]["can_construct_potential"])
+        self.assertIn("rite_has_doctrine = special_doctrine_is_eastern_christian_faith", edges["meteora_02"]["is_enabled"])
+        self.assertIn("faith = faith:manichaean_faith", edges["palace_of_ctesiphon_02"]["can_construct"])
 
-    def test_dlc_and_final_scriptorium_qualification_are_preserved(self) -> None:
-        edges = {e.target: e for e in data.EDGES}
+    def test_historical_dlc_and_final_scriptorium_qualification_are_preserved(self) -> None:
+        historical = json.loads((data.ROOT / "tools/auto_upgrade_buildings_1_20_0_2.json").read_text(encoding="utf-8"))
+        edges = {e["target"]: e["gates"] for e in historical["included_edges"]}
         for prefix in ("citadel_shrine", "sacred_pool", "vihara_halls"):
             for level in range(3, 9):
-                gates = dict(edges[f"{prefix}_{level:02}"].gates)
+                gates = edges[f"{prefix}_{level:02}"]
                 self.assertEqual(gates["can_construct_potential"], 'has_dlc = "All Under Heaven"')
                 self.assertNotIn("has_dlc", gates["can_construct"])
-        gate = dict(edges["scriptorium_08"].gates)["can_construct"]
+        gate = edges["scriptorium_08"]["can_construct"]
         self.assertIn("has_building_or_higher = temple_04", gate)
         self.assertIn("has_building_or_higher = temple_citadel_04", gate)
         self.assertNotIn("has_building_or_higher = temple_03", gate)
         self.assertIn("has_dlc_feature = legends", gate)
+
+    def test_florin_renamed_chains_and_rite_qualification(self) -> None:
+        edges = {edge.target: edge for edge in data.EDGES}
+        for prefix, top_level in (("temple_citadel_shrine", 4), ("sacred_pool", 5), ("temple_viharas", 5), ("scriptorium", 5)):
+            for level in range(2, top_level + 1):
+                self.assertEqual(edges[f"{prefix}_{level}"].district_level_requirement,
+                                 {"kind": "scalar", "value": str(min(level, 4))})
+        for target in ("charnel_grounds_02", "charnel_grounds_03"):
+            self.assertIn("rite_has_parameter = sky_burials_active", dict(edges[target].gates)["can_construct_potential"])
+        self.assertIn("scope:holder.rite", dict(edges["megalith_2"].gates)["can_construct_potential"])
+        self.assertIn("rite_has_doctrine = special_doctrine_is_eastern_christian_faith", dict(edges["meteora_02"].gates)["is_enabled"])
+        self.assertIn("faith = faith:manichaean_faith", dict(edges["palace_of_ctesiphon_02"].gates)["can_construct"])
 
 
 if __name__ == "__main__":

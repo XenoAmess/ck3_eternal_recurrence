@@ -1,0 +1,403 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+
+aub_upgrade_chain_pb_entrepot_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_entrepot_01
+			aub_can_upgrade_to_pb_entrepot_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = entrepot_district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_entrepot_01
+		if = {
+			limit = { has_building = pb_entrepot_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = entrepot_district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_entrepot_02
+			aub_can_upgrade_to_pb_entrepot_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = entrepot_district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_entrepot_02
+		if = {
+			limit = { has_building = pb_entrepot_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = entrepot_district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_entrepot_03
+			aub_can_upgrade_to_pb_entrepot_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = entrepot_district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_entrepot_03
+		if = {
+			limit = { has_building = pb_entrepot_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = entrepot_district_tier_4_cost }
+		}
+	}
+}
+
+# pb_guild_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_pb_guild_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_guild_01
+			aub_can_upgrade_to_pb_guild_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_guild_01
+		if = {
+			limit = { has_building = pb_guild_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_guild_02
+			aub_can_upgrade_to_pb_guild_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_guild_02
+		if = {
+			limit = { has_building = pb_guild_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_guild_03
+			aub_can_upgrade_to_pb_guild_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_guild_03
+		if = {
+			limit = { has_building = pb_guild_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# pb_mandala_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_pb_mandala_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_mandala_01
+			aub_can_upgrade_to_pb_mandala_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = capital_district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_mandala_01
+		if = {
+			limit = { has_building = pb_mandala_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = capital_district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_mandala_02
+			aub_can_upgrade_to_pb_mandala_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = capital_district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_mandala_02
+		if = {
+			limit = { has_building = pb_mandala_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = capital_district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_mandala_03
+			aub_can_upgrade_to_pb_mandala_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = capital_district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_mandala_03
+		if = {
+			limit = { has_building = pb_mandala_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = capital_district_tier_4_cost }
+		}
+	}
+}
+
+# pb_manor_houses_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_pb_manor_houses_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_manor_houses_01
+			aub_can_upgrade_to_pb_manor_houses_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_manor_houses_01
+		if = {
+			limit = { has_building = pb_manor_houses_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_manor_houses_02
+			aub_can_upgrade_to_pb_manor_houses_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_manor_houses_02
+		if = {
+			limit = { has_building = pb_manor_houses_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_manor_houses_03
+			aub_can_upgrade_to_pb_manor_houses_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_manor_houses_03
+		if = {
+			limit = { has_building = pb_manor_houses_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# pb_market_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_pb_market_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_market_01
+			aub_can_upgrade_to_pb_market_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_market_01
+		if = {
+			limit = { has_building = pb_market_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_market_02
+			aub_can_upgrade_to_pb_market_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_market_02
+		if = {
+			limit = { has_building = pb_market_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_market_03
+			aub_can_upgrade_to_pb_market_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_market_03
+		if = {
+			limit = { has_building = pb_market_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# pb_military_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_pb_military_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_military_01
+			aub_can_upgrade_to_pb_military_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_military_01
+		if = {
+			limit = { has_building = pb_military_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_military_02
+			aub_can_upgrade_to_pb_military_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_military_02
+		if = {
+			limit = { has_building = pb_military_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_military_03
+			aub_can_upgrade_to_pb_military_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_military_03
+		if = {
+			limit = { has_building = pb_military_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# pb_patrician_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_pb_patrician_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_patrician_01
+			aub_can_upgrade_to_pb_patrician_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_patrician_01
+		if = {
+			limit = { has_building = pb_patrician_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_patrician_02
+			aub_can_upgrade_to_pb_patrician_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_patrician_02
+		if = {
+			limit = { has_building = pb_patrician_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_patrician_03
+			aub_can_upgrade_to_pb_patrician_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_patrician_03
+		if = {
+			limit = { has_building = pb_patrician_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# pb_port_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_pb_port_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_port_01
+			aub_can_upgrade_to_pb_port_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_port_01
+		if = {
+			limit = { has_building = pb_port_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_port_02
+			aub_can_upgrade_to_pb_port_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_port_02
+		if = {
+			limit = { has_building = pb_port_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_port_03
+			aub_can_upgrade_to_pb_port_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_port_03
+		if = {
+			limit = { has_building = pb_port_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# pb_religious_community_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_pb_religious_community_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_religious_community_01
+			aub_can_upgrade_to_pb_religious_community_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_religious_community_01
+		if = {
+			limit = { has_building = pb_religious_community_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_religious_community_02
+			aub_can_upgrade_to_pb_religious_community_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_religious_community_02
+		if = {
+			limit = { has_building = pb_religious_community_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_religious_community_03
+			aub_can_upgrade_to_pb_religious_community_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_religious_community_03
+		if = {
+			limit = { has_building = pb_religious_community_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# pb_royal_palace_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_pb_royal_palace_01_effect = {
+	if = {
+		limit = {
+			has_building = pb_royal_palace_01
+			aub_can_upgrade_to_pb_royal_palace_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = capital_district_tier_2_cost }
+		}
+		upgrade_building_effect = pb_royal_palace_01
+		if = {
+			limit = { has_building = pb_royal_palace_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = capital_district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_royal_palace_02
+			aub_can_upgrade_to_pb_royal_palace_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = capital_district_tier_3_cost }
+		}
+		upgrade_building_effect = pb_royal_palace_02
+		if = {
+			limit = { has_building = pb_royal_palace_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = capital_district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = pb_royal_palace_03
+			aub_can_upgrade_to_pb_royal_palace_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = capital_district_tier_4_cost }
+		}
+		upgrade_building_effect = pb_royal_palace_03
+		if = {
+			limit = { has_building = pb_royal_palace_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = capital_district_tier_4_cost }
+		}
+	}
+}
+
+# pb_temple_01: 3 frozen upgrade edge(s)

@@ -1,0 +1,224 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T15:23:20.951014+00:00",
+  "candidate": "auto-upgrade-buildings 4.0.4 / CK3 1.21.0",
+  "software_pass": true,
+  "test_count": 26,
+  "runtime_file_count": 344,
+  "checks": [
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-18T15:21:52.439952+00:00",
+      "checks": [
+        {
+          "label": "generate",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "tools/gen_auto_upgrade_buildings.py"
+          ],
+          "exit": 0,
+          "elapsed_seconds": 0.8104951999994228,
+          "tail": "ing_gates_237.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_238.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_239.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_240.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_241.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_242.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_243.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_244.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_245.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_246.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_247.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_248.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_249.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_250.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_251.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_252.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_253.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_254.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_255.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_256.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_257.txt\r\nGenerated D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_258.txt\r\nInventory: 677 chains, 2583 edges\r\n"
+        },
+        {
+          "label": "tests",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "tools/test_build_auto_upgrade_buildings_release.py"
+          ],
+          "exit": 0,
+          "elapsed_seconds": 46.871916100004455,
+          "tail": "..........................\r\n----------------------------------------------------------------------\r\nRan 26 tests in 46.100s\r\n\r\nOK\r\n"
+        },
+        {
+          "label": "mypy",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-m",
+            "mypy",
+            "--strict",
+            "--follow-imports=skip",
+            "tools/auto_upgrade_buildings_data.py",
+            "tools/gen_auto_upgrade_buildings.py",
+            "tools/extract_auto_upgrade_buildings.py",
+            "tools/validate_auto_upgrade_buildings_static.py"
+          ],
+          "exit": 0,
+          "elapsed_seconds": 0.8511900000012247,
+          "tail": "Success: no issues found in 4 source files\r\n"
+        },
+        {
+          "label": "static",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "tools/validate_auto_upgrade_buildings_static.py"
+          ],
+          "exit": 0,
+          "elapsed_seconds": 16.8644742999968,
+          "tail": "AUTO UPGRADE BUILDINGS STATIC VALIDATION OK\r\nRuntime files: 344\r\nBuilding chains: 677\r\nFrozen vanilla building inputs (1.21.0 snapshot) checked against installed data: yes\r\n"
+        }
+      ],
+      "software_pass": true,
+      "business_pass": false
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-18T15:23:07.599722+00:00",
+      "checks": [
+        {
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "tools/build_auto_upgrade_buildings_release.py",
+            "--check"
+          ],
+          "exit": 0,
+          "elapsed_seconds": 7.637156999997387,
+          "tail": "AUTO UPGRADE BUILDINGS RELEASE CHECK OK\r\nFiles: 344\r\nManifest SHA-256: 101a4e145c7aec9b15584fdf243422bffbbe305fc5829fce3fad003f44bc25e3\r\nZIP SHA-256: 763c4f1be89d47046def5439545a110632c19f45f85b60002d69df059b039496\r\n"
+        }
+      ],
+      "passed": true,
+      "business_pass": false
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\auto_upgrade_buildings_data.py",
+      "bytes": 12171,
+      "sha256": "9bc7fa0fb64e2b6386a50c16ada9d8700641088073d2c99287767ba62982af0d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\auto_upgrade_buildings_1_21_0.json",
+      "bytes": 2255413,
+      "sha256": "3e56398586b81ae702751f23b4d991f3525bd16f7d3ec01dd77a080bc2ce3c46"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\gen_auto_upgrade_buildings.py",
+      "bytes": 12816,
+      "sha256": "e4a60acda58a672704df0460098f3c94c36948e5c68b836b9daa0e8e3816e53b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\extract_auto_upgrade_buildings.py",
+      "bytes": 19405,
+      "sha256": "439608c3b9b30bd16a093e31d866e10e823928b4bed1d999ab0ee6bef2f6bf95"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_auto_upgrade_buildings_static.py",
+      "bytes": 38854,
+      "sha256": "4e47a27aecd20805c901729ed0643adcc985ba19b2fe78fc8cb9296a587c3bdb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_build_auto_upgrade_buildings_release.py",
+      "bytes": 20355,
+      "sha256": "d2a5b83075d271a7d696fd46a8e47a45cce4c5e1fc6f729a31e348e59b8c2321"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\events\\auto_build.txt",
+      "bytes": 3466,
+      "sha256": "35db888a96d0cab22e5938c0d233a5de61d3eff4da4e57755855661f1d58d4d6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\descriptor.mod",
+      "bytes": 130,
+      "sha256": "0d434c90eb45336bec5ba935a3d19e64da7ca088fa87d684e738239591f122ac"
+    }
+  ],
+  "runtime_tree_sha256": "9c0eb2558db36657445439779ddde496b398839fe98e836ebfaf905de73d5c8d",
+  "native_readonly_source_review": {
+    "observed_at_utc": "2026-11-18T15:16:32Z",
+    "reviewer": "/root/aub_florin_review",
+    "exe": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 114756216,
+      "sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"
+    },
+    "sources": [
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\districts\\_districts.info",
+        "bytes": 6637,
+        "sha256": "eb0b1d1ef652b8aaac4bf63454c644a4ddb26b8da8818ef935ab0c0345d486ac"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\_buildings.info",
+        "bytes": 23131,
+        "sha256": "f3a7d3f962711e17dd88905cb63e1b169dfebde9f7d277c308c867f02879a545"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_building_effects.txt",
+        "bytes": 42650,
+        "sha256": "6540dd747dedbb40c6248681063d8d47c07e743272493440811171297eb5ea97"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\gdp_merchant_scripted_effects.txt",
+        "bytes": 234720,
+        "sha256": "44b987f213985620046f6439bc8471f46cbd9d6bb5f140d898507dcbf8bc0298"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\gdp\\gdp_merchant_luxury_contract_events.txt",
+        "bytes": 214684,
+        "sha256": "53aa3fa79656ec9ec92694fb2aa27a068a6b551e7f4eac605b34c8dd50fc94ab"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\great_projects\\types\\00_republic_projects.txt",
+        "bytes": 273788,
+        "sha256": "cce8ee5b058544716f6833d02856f9ca2c140ff683adead356b842cb6592ad97"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\district_triggers.txt",
+        "bytes": 7602,
+        "sha256": "02cb7ae44e0076e621d799d2bd37a23d96422d549e353c5cff074db7d3ac155d"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\gdp_republic_interactions.txt",
+        "bytes": 201161,
+        "sha256": "49ecc40b7fd725651d2260a0ecbcd340eefed1955dcc460c0c94f7a8ba30b82c"
+      }
+    ],
+    "facts": [
+      "Installed 352 district definitions each bind one unique primary building; built_buildings documentation and stock province -> built building -> building_district use support one active district visit via primary building.",
+      "Native construction-for-owner trigger has an independent and_afford version. Frozen scalar/block district requirements are retained; native eligibility is used rather than reconstructing its gates.",
+      "District-scoped upgrade_building_effect source-tier invocation exists in current vanilla great projects. No destructive special-building remove/recreate path remains.",
+      "Trade post can have a different owner from its host. Owner lookup is only inside trade_post_district, requiring an existing owning title and matching holder; otherwise the district is excluded, with per-province stale-scope clearing and guarded comparisons."
+    ],
+    "limitations": [
+      "Read-only source/binary documentation review, not runtime qualification.",
+      "Need engine verification of iterator mutation during primary-building upgrade, full native condition semantics, no-charge rejection, source preservation, callbacks and special buildings.",
+      "No vanilla entrepot third-party ownership path found; this absence is not proof excluding all runtime states."
+    ]
+  },
+  "prior_failures": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-runtime-software-a01\\summary.json",
+      "bytes": 6917,
+      "sha256": "c2fad7a01de932eb5e08acec784c2f0255a71e957cd1ddf95d4fcb2aa4534c2c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-runtime-software-a02\\summary.json",
+      "bytes": 2816,
+      "sha256": "2fca7b8825f7a8feef23ddd7162518f00b0d233787f4a1aedf688b6a8cda5985"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-runtime-software-a03\\summary.json",
+      "bytes": 2836,
+      "sha256": "2412ffcb969757e319e807e10b334beacaa9107049ccd86aa2d946d411ca33fb"
+    }
+  ],
+  "scope": "Complete new frozen source graph adopted. Generated 677 chains/2583 edges split into <=10 definitions per file, native district eligibility, same-district effect and postcheck, unchanged payment/quota/domain/succession policy. Existing old core fixture has not yet been migrated; current static fixture checks do not qualify it for1.21 execution.",
+  "business_pass": false,
+  "workshop_published": false,
+  "game_started": false,
+  "steam_online_operations": 0,
+  "external_review_date": "2026-12-18"
+}

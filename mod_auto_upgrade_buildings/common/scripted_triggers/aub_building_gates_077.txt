@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_garbler_office_2_trigger = {
+	can_start_building_construction_for_owner = garbler_office_2
+}
+
+aub_can_upgrade_to_garbler_office_3_trigger = {
+	can_start_building_construction_for_owner = garbler_office_3
+}
+
+aub_can_upgrade_to_garbler_office_4_trigger = {
+	can_start_building_construction_for_owner = garbler_office_4
+}
+
+aub_can_upgrade_to_garbler_office_5_trigger = {
+	can_start_building_construction_for_owner = garbler_office_5
+}
+
+aub_can_upgrade_to_garden_calligraphy_houses_2_trigger = {
+	can_start_building_construction_for_owner = garden_calligraphy_houses_2
+}
+
+aub_can_upgrade_to_garden_calligraphy_houses_3_trigger = {
+	can_start_building_construction_for_owner = garden_calligraphy_houses_3
+}
+
+aub_can_upgrade_to_garden_calligraphy_houses_4_trigger = {
+	can_start_building_construction_for_owner = garden_calligraphy_houses_4
+}
+
+aub_can_upgrade_to_garden_calligraphy_houses_5_trigger = {
+	can_start_building_construction_for_owner = garden_calligraphy_houses_5
+}
+
+aub_can_upgrade_to_garden_complex_2_trigger = {
+	can_start_building_construction_for_owner = garden_complex_2
+}
+
+aub_can_upgrade_to_garden_complex_3_trigger = {
+	can_start_building_construction_for_owner = garden_complex_3
+}

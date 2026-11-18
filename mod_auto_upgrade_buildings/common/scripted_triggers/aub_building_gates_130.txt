@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_military_elephant_compound_2_trigger = {
+	can_start_building_construction_for_owner = military_elephant_compound_2
+}
+
+aub_can_upgrade_to_military_elephant_compound_3_trigger = {
+	can_start_building_construction_for_owner = military_elephant_compound_3
+}
+
+aub_can_upgrade_to_military_elephant_compound_4_trigger = {
+	can_start_building_construction_for_owner = military_elephant_compound_4
+}
+
+aub_can_upgrade_to_military_elephant_compound_5_trigger = {
+	can_start_building_construction_for_owner = military_elephant_compound_5
+}
+
+aub_can_upgrade_to_military_infirmaries_2_trigger = {
+	can_start_building_construction_for_owner = military_infirmaries_2
+}
+
+aub_can_upgrade_to_military_infirmaries_3_trigger = {
+	can_start_building_construction_for_owner = military_infirmaries_3
+}
+
+aub_can_upgrade_to_military_infirmaries_4_trigger = {
+	can_start_building_construction_for_owner = military_infirmaries_4
+}
+
+aub_can_upgrade_to_military_infirmaries_5_trigger = {
+	can_start_building_construction_for_owner = military_infirmaries_5
+}
+
+aub_can_upgrade_to_militia_camps_2_trigger = {
+	can_start_building_construction_for_owner = militia_camps_2
+}
+
+aub_can_upgrade_to_militia_camps_3_trigger = {
+	can_start_building_construction_for_owner = militia_camps_3
+}

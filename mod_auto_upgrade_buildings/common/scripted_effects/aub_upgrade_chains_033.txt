@@ -1,0 +1,535 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+
+aub_upgrade_chain_medicaments_resource_building_1_effect = {
+	if = {
+		limit = {
+			has_building = medicaments_resource_building_1
+			aub_can_upgrade_to_medicaments_resource_building_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = medicaments_resource_building_1
+		if = {
+			limit = { has_building = medicaments_resource_building_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = medicaments_resource_building_2
+			aub_can_upgrade_to_medicaments_resource_building_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = medicaments_resource_building_2
+		if = {
+			limit = { has_building = medicaments_resource_building_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = medicaments_resource_building_3
+			aub_can_upgrade_to_medicaments_resource_building_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = medicaments_resource_building_3
+		if = {
+			limit = { has_building = medicaments_resource_building_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = medicaments_resource_building_4
+			aub_can_upgrade_to_medicaments_resource_building_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = medicaments_resource_building_4
+		if = {
+			limit = { has_building = medicaments_resource_building_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = medicaments_resource_building_5
+			aub_can_upgrade_to_medicaments_resource_building_6_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_6_cost }
+		}
+		upgrade_building_effect = medicaments_resource_building_5
+		if = {
+			limit = { has_building = medicaments_resource_building_6 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = medicaments_resource_building_6
+			aub_can_upgrade_to_medicaments_resource_building_7_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_7_cost }
+		}
+		upgrade_building_effect = medicaments_resource_building_6
+		if = {
+			limit = { has_building = medicaments_resource_building_7 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = medicaments_resource_building_7
+			aub_can_upgrade_to_medicaments_resource_building_8_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_8_cost }
+		}
+		upgrade_building_effect = medicaments_resource_building_7
+		if = {
+			limit = { has_building = medicaments_resource_building_8 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_8_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = medicaments_resource_building_8
+			aub_can_upgrade_to_medicaments_resource_building_9_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_9_cost }
+		}
+		upgrade_building_effect = medicaments_resource_building_8
+		if = {
+			limit = { has_building = medicaments_resource_building_9 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_9_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = medicaments_resource_building_9
+			aub_can_upgrade_to_medicaments_resource_building_10_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_10_cost }
+		}
+		upgrade_building_effect = medicaments_resource_building_9
+		if = {
+			limit = { has_building = medicaments_resource_building_10 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_10_cost }
+		}
+	}
+}
+
+# megalith_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_megalith_1_effect = {
+	if = {
+		limit = {
+			has_building = megalith_1
+			aub_can_upgrade_to_megalith_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = megalith_1
+		if = {
+			limit = { has_building = megalith_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = megalith_2
+			aub_can_upgrade_to_megalith_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = megalith_2
+		if = {
+			limit = { has_building = megalith_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = megalith_3
+			aub_can_upgrade_to_megalith_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = megalith_3
+		if = {
+			limit = { has_building = megalith_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = megalith_4
+			aub_can_upgrade_to_megalith_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = megalith_4
+		if = {
+			limit = { has_building = megalith_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# menageries_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_menageries_1_effect = {
+	if = {
+		limit = {
+			has_building = menageries_1
+			aub_can_upgrade_to_menageries_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = menageries_1
+		if = {
+			limit = { has_building = menageries_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = menageries_2
+			aub_can_upgrade_to_menageries_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = menageries_2
+		if = {
+			limit = { has_building = menageries_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = menageries_3
+			aub_can_upgrade_to_menageries_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = menageries_3
+		if = {
+			limit = { has_building = menageries_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = menageries_4
+			aub_can_upgrade_to_menageries_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = menageries_4
+		if = {
+			limit = { has_building = menageries_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# merchant_lodging_houses_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_merchant_lodging_houses_1_effect = {
+	if = {
+		limit = {
+			has_building = merchant_lodging_houses_1
+			aub_can_upgrade_to_merchant_lodging_houses_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = merchant_lodging_houses_1
+		if = {
+			limit = { has_building = merchant_lodging_houses_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = merchant_lodging_houses_2
+			aub_can_upgrade_to_merchant_lodging_houses_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = merchant_lodging_houses_2
+		if = {
+			limit = { has_building = merchant_lodging_houses_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = merchant_lodging_houses_3
+			aub_can_upgrade_to_merchant_lodging_houses_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = merchant_lodging_houses_3
+		if = {
+			limit = { has_building = merchant_lodging_houses_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = merchant_lodging_houses_4
+			aub_can_upgrade_to_merchant_lodging_houses_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = merchant_lodging_houses_4
+		if = {
+			limit = { has_building = merchant_lodging_houses_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# meteora_01: 1 frozen upgrade edge(s)
+aub_upgrade_chain_meteora_01_effect = {
+	if = {
+		limit = {
+			has_building = meteora_01
+			aub_can_upgrade_to_meteora_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = 1000 }
+		}
+		upgrade_building_effect = meteora_01
+		if = {
+			limit = { has_building = meteora_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = 1000 }
+		}
+	}
+}
+
+# military_academy_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_military_academy_01_effect = {
+	if = {
+		limit = {
+			has_building = military_academy_01
+			aub_can_upgrade_to_military_academy_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = military_academy_01
+		if = {
+			limit = { has_building = military_academy_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_academy_02
+			aub_can_upgrade_to_military_academy_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = military_academy_02
+		if = {
+			limit = { has_building = military_academy_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_academy_03
+			aub_can_upgrade_to_military_academy_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = military_academy_03
+		if = {
+			limit = { has_building = military_academy_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_academy_04
+			aub_can_upgrade_to_military_academy_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = military_academy_04
+		if = {
+			limit = { has_building = military_academy_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+}
+
+# military_duchy_building_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_military_duchy_building_01_effect = {
+	if = {
+		limit = {
+			has_building = military_duchy_building_01
+			aub_can_upgrade_to_military_duchy_building_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = military_duchy_building_01
+		if = {
+			limit = { has_building = military_duchy_building_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_duchy_building_02
+			aub_can_upgrade_to_military_duchy_building_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = military_duchy_building_02
+		if = {
+			limit = { has_building = military_duchy_building_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_duchy_building_03
+			aub_can_upgrade_to_military_duchy_building_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = military_duchy_building_03
+		if = {
+			limit = { has_building = military_duchy_building_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# military_elephant_compound_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_military_elephant_compound_1_effect = {
+	if = {
+		limit = {
+			has_building = military_elephant_compound_1
+			aub_can_upgrade_to_military_elephant_compound_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = military_elephant_compound_1
+		if = {
+			limit = { has_building = military_elephant_compound_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_elephant_compound_2
+			aub_can_upgrade_to_military_elephant_compound_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = military_elephant_compound_2
+		if = {
+			limit = { has_building = military_elephant_compound_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_elephant_compound_3
+			aub_can_upgrade_to_military_elephant_compound_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = military_elephant_compound_3
+		if = {
+			limit = { has_building = military_elephant_compound_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_elephant_compound_4
+			aub_can_upgrade_to_military_elephant_compound_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = military_elephant_compound_4
+		if = {
+			limit = { has_building = military_elephant_compound_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# military_infirmaries_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_military_infirmaries_1_effect = {
+	if = {
+		limit = {
+			has_building = military_infirmaries_1
+			aub_can_upgrade_to_military_infirmaries_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = military_infirmaries_1
+		if = {
+			limit = { has_building = military_infirmaries_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_infirmaries_2
+			aub_can_upgrade_to_military_infirmaries_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = military_infirmaries_2
+		if = {
+			limit = { has_building = military_infirmaries_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_infirmaries_3
+			aub_can_upgrade_to_military_infirmaries_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = military_infirmaries_3
+		if = {
+			limit = { has_building = military_infirmaries_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = military_infirmaries_4
+			aub_can_upgrade_to_military_infirmaries_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = military_infirmaries_4
+		if = {
+			limit = { has_building = military_infirmaries_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# militia_camps_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_militia_camps_1_effect = {
+	if = {
+		limit = {
+			has_building = militia_camps_1
+			aub_can_upgrade_to_militia_camps_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = militia_camps_1
+		if = {
+			limit = { has_building = militia_camps_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = militia_camps_2
+			aub_can_upgrade_to_militia_camps_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = militia_camps_2
+		if = {
+			limit = { has_building = militia_camps_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = militia_camps_3
+			aub_can_upgrade_to_militia_camps_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = militia_camps_3
+		if = {
+			limit = { has_building = militia_camps_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = militia_camps_4
+			aub_can_upgrade_to_militia_camps_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = militia_camps_4
+		if = {
+			limit = { has_building = militia_camps_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# militia_musterhouses_1: 4 frozen upgrade edge(s)

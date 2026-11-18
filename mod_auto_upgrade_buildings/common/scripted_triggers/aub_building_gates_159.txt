@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_performance_stage_3_trigger = {
+	can_start_building_construction_for_owner = performance_stage_3
+}
+
+aub_can_upgrade_to_performance_stage_4_trigger = {
+	can_start_building_construction_for_owner = performance_stage_4
+}
+
+aub_can_upgrade_to_performance_stage_5_trigger = {
+	can_start_building_construction_for_owner = performance_stage_5
+}
+
+aub_can_upgrade_to_perfume_street_2_trigger = {
+	can_start_building_construction_for_owner = perfume_street_2
+}
+
+aub_can_upgrade_to_perfume_street_3_trigger = {
+	can_start_building_construction_for_owner = perfume_street_3
+}
+
+aub_can_upgrade_to_perfume_street_4_trigger = {
+	can_start_building_construction_for_owner = perfume_street_4
+}
+
+aub_can_upgrade_to_perfume_street_5_trigger = {
+	can_start_building_construction_for_owner = perfume_street_5
+}
+
+aub_can_upgrade_to_perfumery_2_trigger = {
+	can_start_building_construction_for_owner = perfumery_2
+}
+
+aub_can_upgrade_to_perfumery_3_trigger = {
+	can_start_building_construction_for_owner = perfumery_3
+}
+
+aub_can_upgrade_to_perfumery_4_trigger = {
+	can_start_building_construction_for_owner = perfumery_4
+}

@@ -1,136 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_vihara_halls_04_trigger = {
-	# vanilla can_construct_potential
-	has_dlc = "All Under Heaven"
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	has_building_or_higher = temple_citadel_02
-	culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_ducal_chase_04_trigger = {
+	can_start_building_construction_for_owner = ducal_chase_04
 }
 
-aub_can_upgrade_to_vihara_halls_05_trigger = {
-	# vanilla can_construct_potential
-	has_dlc = "All Under Heaven"
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	has_building_or_higher = temple_citadel_03
-	culture = {
-		has_innovation = innovation_windmills
-	}
+aub_can_upgrade_to_ducal_chase_05_trigger = {
+	can_start_building_construction_for_owner = ducal_chase_05
 }
 
-aub_can_upgrade_to_vihara_halls_06_trigger = {
-	# vanilla can_construct_potential
-	has_dlc = "All Under Heaven"
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	has_building_or_higher = temple_citadel_03
-	culture = {
-		has_innovation = innovation_windmills
-	}
+aub_can_upgrade_to_ducal_residence_02_trigger = {
+	can_start_building_construction_for_owner = ducal_residence_02
 }
 
-aub_can_upgrade_to_vihara_halls_07_trigger = {
-	# vanilla can_construct_potential
-	has_dlc = "All Under Heaven"
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	has_building_or_higher = temple_citadel_04
-	culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_ducal_residence_03_trigger = {
+	can_start_building_construction_for_owner = ducal_residence_03
 }
 
-aub_can_upgrade_to_vihara_halls_08_trigger = {
-	# vanilla can_construct_potential
-	has_dlc = "All Under Heaven"
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	has_building_or_higher = temple_citadel_03
-	culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_ducal_residence_04_trigger = {
+	can_start_building_construction_for_owner = ducal_residence_04
 }
 
-aub_can_upgrade_to_wantilan_02_trigger = {
-	# vanilla is_enabled
-	building_requirement_wanua = yes
-	# vanilla can_construct_potential
-	has_building_or_higher = tribe_01
-	scope:holder ?= {
-		government_has_flag = government_is_wanua
-	}
+aub_can_upgrade_to_dunhuang_market_02_trigger = {
+	can_start_building_construction_for_owner = dunhuang_market_02
 }
 
-aub_can_upgrade_to_wantilan_03_trigger = {
-	# vanilla is_enabled
-	building_requirement_wanua = yes
-	# vanilla can_construct_potential
-	has_building_or_higher = tribe_01
-	scope:holder ?= {
-		government_has_flag = government_is_wanua
-	}
+aub_can_upgrade_to_duomo_florence_02_trigger = {
+	can_start_building_construction_for_owner = duomo_florence_02
 }
 
-aub_can_upgrade_to_wantilan_04_trigger = {
-	# vanilla is_enabled
-	building_requirement_wanua = yes
-	# vanilla can_construct_potential
-	has_building_or_higher = tribe_01
-	scope:holder ?= {
-		government_has_flag = government_is_wanua
-	}
+aub_can_upgrade_to_duomo_florence_03_trigger = {
+	can_start_building_construction_for_owner = duomo_florence_03
 }
 
-aub_can_upgrade_to_war_camps_02_trigger = {
-	# vanilla is_enabled
-	building_requirement_tribal = yes
-	# vanilla can_construct_potential
-	has_building_or_higher = tribe_01
-	scope:holder = {
-		NOT = {
-			government_has_flag = government_is_wanua
-		}
-	}
-	# vanilla can_construct_showing_failures_only
-	OR = {
-		mpo_permafrost_building_trigger = yes
-		scope:holder = {
-			culture = {
-				has_innovation = innovation_barracks
-			}
-		}
-	}
+aub_can_upgrade_to_duomo_florence_04_trigger = {
+	can_start_building_construction_for_owner = duomo_florence_04
 }
 
-aub_can_upgrade_to_warrior_lodges_02_trigger = {
-	# vanilla can_construct_potential
-	building_warrior_lodges_requirement_terrain = yes
-	trigger_if = {
-		limit = {
-			scope:holder = {
-				NOT = {
-					government_has_flag = government_is_tribal
-				}
-			}
-		}
-		NOT = {
-			has_holding_type = tribal_holding
-		}
-	}
-	# vanilla can_construct_showing_failures_only
-	scope:holder.culture = {
-		has_innovation = innovation_barracks
-	}
+aub_can_upgrade_to_dushan_mines_02_trigger = {
+	can_start_building_construction_for_owner = dushan_mines_02
 }
-

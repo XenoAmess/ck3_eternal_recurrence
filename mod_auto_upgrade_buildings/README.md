@@ -9,19 +9,19 @@
 
 - 入口：玩家决议“启用自动建造”与“禁用自动建造”。
 - 启用后：由唯一全局循环每 15 个游戏日检查玩家直接持有的地产；每名人物每次扫描最多成功升级 15 栋建筑，每条已有下一等级、符合原版资格条件的建筑链每轮最多即时升级一级。
-- 覆盖：CK3 1.19.0.6 的 605 条普通建筑流程升级边，包括城堡、城市、神殿、部落和曼荼罗神殿城塞地产中的主建筑、普通建筑、公国建筑与特殊建筑。
+- 覆盖：CK3 1.21.0 的677条建筑链、2,583条非伟大工程升级边；只在玩家直接持有的城堡、城市、神殿、部落和神殿城塞地产内处理已有建筑。
 - 费用：使用对应建筑的原版基础费用和金币／威望／虔诚／scripted cost 资源形状；启用时可选择“只用国库”“只用个人金钱”或“优先国库”，同一笔金币费用不拆分，资源不足时不升级、不扣款。
 - 超直辖策略：启用时同时选择“超直辖暂停”或“超直辖继续”。暂停只跳过超直辖期间的整轮修建，不关闭 15 日循环；回到直辖上限内后自动恢复。
 - 继承：玩家角色死亡并继续扮演继承人时，启用状态、资金策略和超直辖策略会原样迁移，唯一 15 日循环继续生效。
-- 排除：所有住所系统、游牧／牧民地产、曼荼罗都城的 4 条 Great Project 升级边、正在施工或出租的地产、空槽与没有下一等级的终级建筑。
-- 资格：生成器逐条投影当前 CK3 1.19.0.6 的建筑资格门槛，不兑现原版定义之外的提前升级。
+- 排除：所有住所系统、游牧／牧民地产、16条伟大工程链的61条升级边、其他领主持有或所有权未知的贸易站、正在施工或出租的地产、空槽与没有下一等级的终级建筑。
+- 资格：在建筑所在区域调用原版完整建造资格检查，包含区域等级、革新、文化、礼仪及其他门槛；资金单独按所选策略检查，不兑现原版定义之外的提前升级。
 - 玩家/AI：只允许真人玩家启用，AI 永不触发。
 - 旧存档：保留上游 `auto_build` 事件命名空间和 `enable_auto_build` 角色 flag；没有三期资金 flag 时继续按“优先国库”运行，没有四期暂停 flag 时继续在超直辖状态修建；4.0.1 起，已经启用的玩家会从下一次死亡继承开始自动迁移这些状态。4.0.2 的每轮计数在扫描开始时自动清零，无需存档迁移。
 
 ## 维护目标
 
-目标运行时为本机冻结的 CK3 `1.19.0.6 (Scribe)`、Steam build `23530548`。兼容性修复、静态门与隔离核心实机矩阵均已完成；
-维护基线证据见 `../docs/auto-upgrade-buildings-maintenance.md`，三期资金策略与 R0025 证据见 `../docs/auto-upgrade-buildings-phase-3-plan.md`，四期超直辖策略见 `../docs/auto-upgrade-buildings-phase-4-plan.md`。正式版提供简体中文、英文、法文、德文、日文、韩文、波兰文、俄文和西班牙文；Workshop 文案维护在
+当前开发候选为4.0.4，目标 CK3 `1.21.0 (Florin)`；新版软件及实机资格分别记录于 `../docs/maintenance/2026-11-18-aub-florin.md`，候选版本号不代表已发布或实机通过。
+历史维护基线证据见 `../docs/auto-upgrade-buildings-maintenance.md`，三期资金策略与 R0025 证据见 `../docs/auto-upgrade-buildings-phase-3-plan.md`，四期超直辖策略见 `../docs/auto-upgrade-buildings-phase-4-plan.md`。正式版提供简体中文、英文、法文、德文、日文、韩文、波兰文、俄文和西班牙文；Workshop 文案维护在
 `../workshop/auto_upgrade_buildings_description.bbcode`。
 
 本维护版保留上游署名和来源，并已获得原 Mod 作者授权进行二次开发与发布。
@@ -33,13 +33,13 @@
 
 ## 生成与校验
 
-`common/scripted_effects/build_scripted_effect.txt` 与 `common/scripted_triggers/aub_building_triggers.txt` 是生成文件。建筑图谱来自
-`../tools/auto_upgrade_buildings_1_20_0_2.json`；旧 `1_19_0_6` 快照保留为历史政策对照。
+`common/scripted_effects/build_scripted_effect.txt`、`common/scripted_triggers/aub_building_triggers.txt`及各自的分片是生成文件，每文件最多10个顶层定义。建筑图谱来自
+`../tools/auto_upgrade_buildings_1_21_0.json`；旧 `1_19_0_6`、`1_20_0_2` 快照保留为历史政策对照。
 刷新 exact 原版定义时先运行提取器、审阅全部图谱／费用／资格差异，再更新独立冻结合同并运行生成器。
 普通提取器与生成器不会更新 `auto_upgrade_buildings_data.py` 的政策和资格 SHA-256。当前快照的只读检查与构建命令为：
 
 ```text
-tools\.venv\Scripts\python.exe tools\extract_auto_upgrade_buildings.py --check
+tools\.venv\Scripts\python.exe tools\extract_auto_upgrade_buildings.py --game-version 1.21.0 --output tools/auto_upgrade_buildings_1_21_0.json --check
 tools\.venv\Scripts\python.exe tools\gen_auto_upgrade_buildings.py --check
 tools\.venv\Scripts\python.exe tools\validate_auto_upgrade_buildings_static.py
 tools\.venv\Scripts\python.exe tools\test_build_auto_upgrade_buildings_release.py

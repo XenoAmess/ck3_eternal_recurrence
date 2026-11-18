@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_rice_bran_mill_2_trigger = {
+	can_start_building_construction_for_owner = rice_bran_mill_2
+}
+
+aub_can_upgrade_to_rice_bran_mill_3_trigger = {
+	can_start_building_construction_for_owner = rice_bran_mill_3
+}
+
+aub_can_upgrade_to_rice_bran_mill_4_trigger = {
+	can_start_building_construction_for_owner = rice_bran_mill_4
+}
+
+aub_can_upgrade_to_rice_bran_mill_5_trigger = {
+	can_start_building_construction_for_owner = rice_bran_mill_5
+}
+
+aub_can_upgrade_to_rice_confectionary_2_trigger = {
+	can_start_building_construction_for_owner = rice_confectionary_2
+}
+
+aub_can_upgrade_to_rice_confectionary_3_trigger = {
+	can_start_building_construction_for_owner = rice_confectionary_3
+}
+
+aub_can_upgrade_to_rice_confectionary_4_trigger = {
+	can_start_building_construction_for_owner = rice_confectionary_4
+}
+
+aub_can_upgrade_to_rice_confectionary_5_trigger = {
+	can_start_building_construction_for_owner = rice_confectionary_5
+}
+
+aub_can_upgrade_to_rice_resource_building_2_trigger = {
+	can_start_building_construction_for_owner = rice_resource_building_2
+}
+
+aub_can_upgrade_to_rice_resource_building_3_trigger = {
+	can_start_building_construction_for_owner = rice_resource_building_3
+}

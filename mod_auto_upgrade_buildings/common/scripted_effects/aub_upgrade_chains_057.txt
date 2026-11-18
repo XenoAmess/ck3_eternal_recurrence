@@ -1,0 +1,475 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+
+aub_upgrade_chain_trade_consulate_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_consulate_01
+			aub_can_upgrade_to_trade_consulate_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_consulate_01
+		if = {
+			limit = { has_building = trade_consulate_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_consulate_02
+			aub_can_upgrade_to_trade_consulate_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_consulate_02
+		if = {
+			limit = { has_building = trade_consulate_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_consulate_03
+			aub_can_upgrade_to_trade_consulate_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+		upgrade_building_effect = trade_consulate_03
+		if = {
+			limit = { has_building = trade_consulate_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_consulate_04
+			aub_can_upgrade_to_trade_consulate_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+		upgrade_building_effect = trade_consulate_04
+		if = {
+			limit = { has_building = trade_consulate_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+	}
+}
+
+# trade_counting_house_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_trade_counting_house_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_counting_house_01
+			aub_can_upgrade_to_trade_counting_house_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_counting_house_01
+		if = {
+			limit = { has_building = trade_counting_house_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_counting_house_02
+			aub_can_upgrade_to_trade_counting_house_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_counting_house_02
+		if = {
+			limit = { has_building = trade_counting_house_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_counting_house_03
+			aub_can_upgrade_to_trade_counting_house_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+		upgrade_building_effect = trade_counting_house_03
+		if = {
+			limit = { has_building = trade_counting_house_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_counting_house_04
+			aub_can_upgrade_to_trade_counting_house_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+		upgrade_building_effect = trade_counting_house_04
+		if = {
+			limit = { has_building = trade_counting_house_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+	}
+}
+
+# trade_food_depot_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_trade_food_depot_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_food_depot_01
+			aub_can_upgrade_to_trade_food_depot_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_food_depot_01
+		if = {
+			limit = { has_building = trade_food_depot_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_food_depot_02
+			aub_can_upgrade_to_trade_food_depot_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_food_depot_02
+		if = {
+			limit = { has_building = trade_food_depot_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_food_depot_03
+			aub_can_upgrade_to_trade_food_depot_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+		upgrade_building_effect = trade_food_depot_03
+		if = {
+			limit = { has_building = trade_food_depot_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_food_depot_04
+			aub_can_upgrade_to_trade_food_depot_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+		upgrade_building_effect = trade_food_depot_04
+		if = {
+			limit = { has_building = trade_food_depot_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+	}
+}
+
+# trade_gem_exchange_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_trade_gem_exchange_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_gem_exchange_01
+			aub_can_upgrade_to_trade_gem_exchange_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_gem_exchange_01
+		if = {
+			limit = { has_building = trade_gem_exchange_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_gem_exchange_02
+			aub_can_upgrade_to_trade_gem_exchange_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_gem_exchange_02
+		if = {
+			limit = { has_building = trade_gem_exchange_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_gem_exchange_03
+			aub_can_upgrade_to_trade_gem_exchange_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+		upgrade_building_effect = trade_gem_exchange_03
+		if = {
+			limit = { has_building = trade_gem_exchange_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_gem_exchange_04
+			aub_can_upgrade_to_trade_gem_exchange_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+		upgrade_building_effect = trade_gem_exchange_04
+		if = {
+			limit = { has_building = trade_gem_exchange_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+	}
+}
+
+# trade_granary_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_trade_granary_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_granary_01
+			aub_can_upgrade_to_trade_granary_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_granary_01
+		if = {
+			limit = { has_building = trade_granary_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_granary_02
+			aub_can_upgrade_to_trade_granary_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_granary_02
+		if = {
+			limit = { has_building = trade_granary_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_granary_03
+			aub_can_upgrade_to_trade_granary_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+		upgrade_building_effect = trade_granary_03
+		if = {
+			limit = { has_building = trade_granary_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_granary_04
+			aub_can_upgrade_to_trade_granary_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+		upgrade_building_effect = trade_granary_04
+		if = {
+			limit = { has_building = trade_granary_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+	}
+}
+
+# trade_league_arsenal_01: 2 frozen upgrade edge(s)
+aub_upgrade_chain_trade_league_arsenal_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_league_arsenal_01
+			aub_can_upgrade_to_trade_league_arsenal_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_league_arsenal_01
+		if = {
+			limit = { has_building = trade_league_arsenal_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_league_arsenal_02
+			aub_can_upgrade_to_trade_league_arsenal_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_league_arsenal_02
+		if = {
+			limit = { has_building = trade_league_arsenal_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+}
+
+# trade_league_treasury_01: 2 frozen upgrade edge(s)
+aub_upgrade_chain_trade_league_treasury_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_league_treasury_01
+			aub_can_upgrade_to_trade_league_treasury_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_league_treasury_01
+		if = {
+			limit = { has_building = trade_league_treasury_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_league_treasury_02
+			aub_can_upgrade_to_trade_league_treasury_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_league_treasury_02
+		if = {
+			limit = { has_building = trade_league_treasury_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+}
+
+# trade_lodgings_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_trade_lodgings_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_lodgings_01
+			aub_can_upgrade_to_trade_lodgings_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_lodgings_01
+		if = {
+			limit = { has_building = trade_lodgings_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_lodgings_02
+			aub_can_upgrade_to_trade_lodgings_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_lodgings_02
+		if = {
+			limit = { has_building = trade_lodgings_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_lodgings_03
+			aub_can_upgrade_to_trade_lodgings_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+		upgrade_building_effect = trade_lodgings_03
+		if = {
+			limit = { has_building = trade_lodgings_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_lodgings_04
+			aub_can_upgrade_to_trade_lodgings_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+		upgrade_building_effect = trade_lodgings_04
+		if = {
+			limit = { has_building = trade_lodgings_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+	}
+}
+
+# trade_mercenary_office_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_trade_mercenary_office_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_mercenary_office_01
+			aub_can_upgrade_to_trade_mercenary_office_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_mercenary_office_01
+		if = {
+			limit = { has_building = trade_mercenary_office_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_mercenary_office_02
+			aub_can_upgrade_to_trade_mercenary_office_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_mercenary_office_02
+		if = {
+			limit = { has_building = trade_mercenary_office_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_mercenary_office_03
+			aub_can_upgrade_to_trade_mercenary_office_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+		upgrade_building_effect = trade_mercenary_office_03
+		if = {
+			limit = { has_building = trade_mercenary_office_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_mercenary_office_04
+			aub_can_upgrade_to_trade_mercenary_office_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+		upgrade_building_effect = trade_mercenary_office_04
+		if = {
+			limit = { has_building = trade_mercenary_office_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+	}
+}
+
+# trade_recruitment_office_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_trade_recruitment_office_01_effect = {
+	if = {
+		limit = {
+			has_building = trade_recruitment_office_01
+			aub_can_upgrade_to_trade_recruitment_office_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+		upgrade_building_effect = trade_recruitment_office_01
+		if = {
+			limit = { has_building = trade_recruitment_office_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_2_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_recruitment_office_02
+			aub_can_upgrade_to_trade_recruitment_office_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+		upgrade_building_effect = trade_recruitment_office_02
+		if = {
+			limit = { has_building = trade_recruitment_office_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_3_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_recruitment_office_03
+			aub_can_upgrade_to_trade_recruitment_office_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+		upgrade_building_effect = trade_recruitment_office_03
+		if = {
+			limit = { has_building = trade_recruitment_office_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_4_cost_value }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = trade_recruitment_office_04
+			aub_can_upgrade_to_trade_recruitment_office_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+		upgrade_building_effect = trade_recruitment_office_04
+		if = {
+			limit = { has_building = trade_recruitment_office_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = trade_post_building_tier_5_cost_value }
+		}
+	}
+}
+
+# trade_secure_storeroom_01: 4 frozen upgrade edge(s)

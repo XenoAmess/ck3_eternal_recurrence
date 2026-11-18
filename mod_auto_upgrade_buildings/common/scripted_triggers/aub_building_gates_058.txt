@@ -1,288 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_windmills_03_trigger = {
-	# vanilla can_construct_potential
-	OR = {
-		building_windmills_requirement_terrain = yes
-		AND = {
-			has_building_or_higher = hill_farms_04
-			culture = {
-				has_cultural_parameter = windmills_hill_farms_unlock
-			}
-		}
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-				culture = {
-					has_cultural_parameter = windmills_hill_farms_unlock
-				}
-			}
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-	}
-	trigger_else = {
-		OR = {
-			culture = {
-				has_innovation = innovation_windmills
-			}
-			culture = {
-				has_cultural_parameter = next_level_w_mills
-				has_innovation = innovation_manorialism
-			}
-			AND = {
-				has_building_or_higher = hill_farms_04
-				culture = {
-					has_cultural_parameter = windmills_hill_farms_unlock
-				}
-			}
-		}
-	}
+aub_can_upgrade_to_entrepot_additive_market_2_trigger = {
+	can_start_building_construction_for_owner = entrepot_additive_market_2
 }
 
-aub_can_upgrade_to_windmills_04_trigger = {
-	# vanilla can_construct_potential
-	OR = {
-		building_windmills_requirement_terrain = yes
-		AND = {
-			has_building_or_higher = hill_farms_04
-			culture = {
-				has_cultural_parameter = windmills_hill_farms_unlock
-			}
-		}
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-				culture = {
-					has_cultural_parameter = windmills_hill_farms_unlock
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 02
-		}
-	}
-	trigger_else = {
-		OR = {
-			culture = {
-				has_innovation = innovation_windmills
-			}
-			culture = {
-				has_cultural_parameter = next_level_w_mills
-				has_innovation = innovation_manorialism
-			}
-			AND = {
-				has_building_or_higher = hill_farms_04
-				culture = {
-					has_cultural_parameter = windmills_hill_farms_unlock
-				}
-			}
-		}
-	}
+aub_can_upgrade_to_entrepot_additive_market_3_trigger = {
+	can_start_building_construction_for_owner = entrepot_additive_market_3
 }
 
-aub_can_upgrade_to_windmills_05_trigger = {
-	# vanilla can_construct_potential
-	building_windmills_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	scope:holder.culture = {
-		has_innovation = innovation_windmills
-	}
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-	}
-	trigger_else = {
-		scope:holder.culture = {
-			has_cultural_parameter = next_level_w_mills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 02
-		}
-	}
+aub_can_upgrade_to_entrepot_additive_market_4_trigger = {
+	can_start_building_construction_for_owner = entrepot_additive_market_4
 }
 
-aub_can_upgrade_to_windmills_06_trigger = {
-	# vanilla can_construct_potential
-	building_windmills_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_cranes
-		}
-	}
-	trigger_else = {
-		scope:holder.culture = {
-			has_cultural_parameter = next_level_w_mills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 02
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-	}
+aub_can_upgrade_to_entrepot_additive_market_5_trigger = {
+	can_start_building_construction_for_owner = entrepot_additive_market_5
 }
 
-aub_can_upgrade_to_windmills_07_trigger = {
-	# vanilla can_construct_potential
-	building_windmills_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 04
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_cranes
-		}
-	}
-	trigger_else = {
-		scope:holder.culture = {
-			has_cultural_parameter = next_level_w_mills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-	}
+aub_can_upgrade_to_entrepot_aromatic_market_2_trigger = {
+	can_start_building_construction_for_owner = entrepot_aromatic_market_2
 }
 
-aub_can_upgrade_to_windmills_08_trigger = {
-	# vanilla can_construct_potential
-	building_windmills_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 04
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_cranes
-		}
-	}
-	trigger_else = {
-		scope:holder.culture = {
-			has_cultural_parameter = next_level_w_mills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-	}
+aub_can_upgrade_to_entrepot_aromatic_market_3_trigger = {
+	can_start_building_construction_for_owner = entrepot_aromatic_market_3
 }
 
-aub_can_upgrade_to_workshops_02_trigger = {
-	# vanilla can_construct_potential
-	building_workshops_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	scope:holder.culture = {
-		has_innovation = innovation_advanced_bowmaking
-	}
+aub_can_upgrade_to_entrepot_aromatic_market_4_trigger = {
+	can_start_building_construction_for_owner = entrepot_aromatic_market_4
 }
 
-aub_can_upgrade_to_workshops_03_trigger = {
-	# vanilla can_construct_potential
-	building_workshops_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_advanced_bowmaking
-	}
+aub_can_upgrade_to_entrepot_aromatic_market_5_trigger = {
+	can_start_building_construction_for_owner = entrepot_aromatic_market_5
 }
 
-aub_can_upgrade_to_workshops_04_trigger = {
-	# vanilla can_construct_potential
-	building_workshops_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_advanced_bowmaking
-	}
+aub_can_upgrade_to_entrepot_fabric_market_2_trigger = {
+	can_start_building_construction_for_owner = entrepot_fabric_market_2
 }
 
-aub_can_upgrade_to_workshops_05_trigger = {
-	# vanilla can_construct_potential
-	building_workshops_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_advanced_bowmaking
-	}
+aub_can_upgrade_to_entrepot_fabric_market_3_trigger = {
+	can_start_building_construction_for_owner = entrepot_fabric_market_3
 }
-

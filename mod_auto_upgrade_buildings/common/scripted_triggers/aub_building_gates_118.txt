@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_local_tea_house_2_trigger = {
+	can_start_building_construction_for_owner = local_tea_house_2
+}
+
+aub_can_upgrade_to_local_tea_house_3_trigger = {
+	can_start_building_construction_for_owner = local_tea_house_3
+}
+
+aub_can_upgrade_to_local_tea_house_4_trigger = {
+	can_start_building_construction_for_owner = local_tea_house_4
+}
+
+aub_can_upgrade_to_local_tea_house_5_trigger = {
+	can_start_building_construction_for_owner = local_tea_house_5
+}
+
+aub_can_upgrade_to_long_term_wine_storage_2_trigger = {
+	can_start_building_construction_for_owner = long_term_wine_storage_2
+}
+
+aub_can_upgrade_to_long_term_wine_storage_3_trigger = {
+	can_start_building_construction_for_owner = long_term_wine_storage_3
+}
+
+aub_can_upgrade_to_long_term_wine_storage_4_trigger = {
+	can_start_building_construction_for_owner = long_term_wine_storage_4
+}
+
+aub_can_upgrade_to_long_term_wine_storage_5_trigger = {
+	can_start_building_construction_for_owner = long_term_wine_storage_5
+}
+
+aub_can_upgrade_to_luxury_carpet_workshop_2_trigger = {
+	can_start_building_construction_for_owner = luxury_carpet_workshop_2
+}
+
+aub_can_upgrade_to_luxury_carpet_workshop_3_trigger = {
+	can_start_building_construction_for_owner = luxury_carpet_workshop_3
+}

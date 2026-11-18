@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_war_storage_4_trigger = {
+	can_start_building_construction_for_owner = war_storage_4
+}
+
+aub_can_upgrade_to_war_storage_5_trigger = {
+	can_start_building_construction_for_owner = war_storage_5
+}
+
+aub_can_upgrade_to_warhorse_training_2_trigger = {
+	can_start_building_construction_for_owner = warhorse_training_2
+}
+
+aub_can_upgrade_to_warhorse_training_3_trigger = {
+	can_start_building_construction_for_owner = warhorse_training_3
+}
+
+aub_can_upgrade_to_warhorse_training_4_trigger = {
+	can_start_building_construction_for_owner = warhorse_training_4
+}
+
+aub_can_upgrade_to_warhorse_training_5_trigger = {
+	can_start_building_construction_for_owner = warhorse_training_5
+}
+
+aub_can_upgrade_to_warrior_households_2_trigger = {
+	can_start_building_construction_for_owner = warrior_households_2
+}
+
+aub_can_upgrade_to_warrior_households_3_trigger = {
+	can_start_building_construction_for_owner = warrior_households_3
+}
+
+aub_can_upgrade_to_warrior_households_4_trigger = {
+	can_start_building_construction_for_owner = warrior_households_4
+}
+
+aub_can_upgrade_to_warrior_households_5_trigger = {
+	can_start_building_construction_for_owner = warrior_households_5
+}

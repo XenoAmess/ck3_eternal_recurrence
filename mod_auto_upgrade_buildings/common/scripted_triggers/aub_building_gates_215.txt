@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_tool_smith_2_trigger = {
+	can_start_building_construction_for_owner = tool_smith_2
+}
+
+aub_can_upgrade_to_tool_smith_3_trigger = {
+	can_start_building_construction_for_owner = tool_smith_3
+}
+
+aub_can_upgrade_to_tool_smith_4_trigger = {
+	can_start_building_construction_for_owner = tool_smith_4
+}
+
+aub_can_upgrade_to_tool_smith_5_trigger = {
+	can_start_building_construction_for_owner = tool_smith_5
+}
+
+aub_can_upgrade_to_town_liberties_court_02_trigger = {
+	can_start_building_construction_for_owner = town_liberties_court_02
+}
+
+aub_can_upgrade_to_town_liberties_court_03_trigger = {
+	can_start_building_construction_for_owner = town_liberties_court_03
+}
+
+aub_can_upgrade_to_town_liberties_court_04_trigger = {
+	can_start_building_construction_for_owner = town_liberties_court_04
+}
+
+aub_can_upgrade_to_town_liberties_court_05_trigger = {
+	can_start_building_construction_for_owner = town_liberties_court_05
+}
+
+aub_can_upgrade_to_trade_apothecary_guild_02_trigger = {
+	can_start_building_construction_for_owner = trade_apothecary_guild_02
+}
+
+aub_can_upgrade_to_trade_apothecary_guild_03_trigger = {
+	can_start_building_construction_for_owner = trade_apothecary_guild_03
+}

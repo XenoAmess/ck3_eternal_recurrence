@@ -1,225 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_watermills_06_trigger = {
-	# vanilla can_construct_potential
-	building_watermills_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_cranes
-		}
-	}
-	trigger_else = {
-		scope:holder.culture = {
-			has_cultural_parameter = next_level_w_mills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 02
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-	}
+aub_can_upgrade_to_dyes_resource_building_6_trigger = {
+	can_start_building_construction_for_owner = dyes_resource_building_6
 }
 
-aub_can_upgrade_to_watermills_07_trigger = {
-	# vanilla can_construct_potential
-	building_watermills_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 04
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_cranes
-		}
-	}
-	trigger_else = {
-		scope:holder.culture = {
-			has_cultural_parameter = next_level_w_mills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-	}
+aub_can_upgrade_to_dyes_resource_building_7_trigger = {
+	can_start_building_construction_for_owner = dyes_resource_building_7
 }
 
-aub_can_upgrade_to_watermills_08_trigger = {
-	# vanilla can_construct_potential
-	building_watermills_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 04
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_cranes
-		}
-	}
-	trigger_else = {
-		scope:holder.culture = {
-			has_cultural_parameter = next_level_w_mills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-	}
+aub_can_upgrade_to_dyes_resource_building_8_trigger = {
+	can_start_building_construction_for_owner = dyes_resource_building_8
 }
 
-aub_can_upgrade_to_waterworks_02_trigger = {
-	# vanilla is_enabled
-	# vanilla can_construct_potential
-	building_waterworks_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	county = {
-		NOT = {
-			has_county_modifier = backwater_county_modifier
-		}
-	}
-	# vanilla can_construct
+aub_can_upgrade_to_dyes_resource_building_9_trigger = {
+	can_start_building_construction_for_owner = dyes_resource_building_9
 }
 
-aub_can_upgrade_to_waterworks_03_trigger = {
-	# vanilla is_enabled
-	# vanilla can_construct_potential
-	building_waterworks_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	county = {
-		NOT = {
-			has_county_modifier = backwater_county_modifier
-		}
-	}
-	# vanilla can_construct
+aub_can_upgrade_to_dyes_resource_building_10_trigger = {
+	can_start_building_construction_for_owner = dyes_resource_building_10
 }
 
-aub_can_upgrade_to_waterworks_04_trigger = {
-	# vanilla is_enabled
-	# vanilla can_construct_potential
-	building_waterworks_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	county = {
-		NOT = {
-			has_county_modifier = backwater_county_modifier
-		}
-	}
-	# vanilla can_construct
+aub_can_upgrade_to_ecclesiastical_courts_2_trigger = {
+	can_start_building_construction_for_owner = ecclesiastical_courts_2
 }
 
-aub_can_upgrade_to_waterworks_05_trigger = {
-	# vanilla is_enabled
-	# vanilla can_construct_potential
-	building_waterworks_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	county = {
-		NOT = {
-			has_county_modifier = backwater_county_modifier
-		}
-	}
-	# vanilla can_construct
+aub_can_upgrade_to_ecclesiastical_courts_3_trigger = {
+	can_start_building_construction_for_owner = ecclesiastical_courts_3
 }
 
-aub_can_upgrade_to_waterworks_06_trigger = {
-	# vanilla is_enabled
-	# vanilla can_construct_potential
-	building_waterworks_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	county = {
-		NOT = {
-			has_county_modifier = backwater_county_modifier
-		}
-	}
-	# vanilla can_construct
+aub_can_upgrade_to_ecclesiastical_courts_4_trigger = {
+	can_start_building_construction_for_owner = ecclesiastical_courts_4
 }
 
-aub_can_upgrade_to_waterworks_07_trigger = {
-	# vanilla is_enabled
-	# vanilla can_construct_potential
-	building_waterworks_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	county = {
-		NOT = {
-			has_county_modifier = backwater_county_modifier
-		}
-	}
-	# vanilla can_construct
+aub_can_upgrade_to_ecclesiastical_courts_5_trigger = {
+	can_start_building_construction_for_owner = ecclesiastical_courts_5
 }
 
-aub_can_upgrade_to_waterworks_08_trigger = {
-	# vanilla is_enabled
-	# vanilla can_construct_potential
-	building_waterworks_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	county = {
-		NOT = {
-			has_county_modifier = backwater_county_modifier
-		}
-	}
-	# vanilla can_construct
+aub_can_upgrade_to_elephantry_barracks_2_trigger = {
+	can_start_building_construction_for_owner = elephantry_barracks_2
 }
-

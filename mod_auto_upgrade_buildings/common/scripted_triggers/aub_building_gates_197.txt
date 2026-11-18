@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_storehouses_3_trigger = {
+	can_start_building_construction_for_owner = storehouses_3
+}
+
+aub_can_upgrade_to_storehouses_4_trigger = {
+	can_start_building_construction_for_owner = storehouses_4
+}
+
+aub_can_upgrade_to_storehouses_5_trigger = {
+	can_start_building_construction_for_owner = storehouses_5
+}
+
+aub_can_upgrade_to_straw_weavery_2_trigger = {
+	can_start_building_construction_for_owner = straw_weavery_2
+}
+
+aub_can_upgrade_to_straw_weavery_3_trigger = {
+	can_start_building_construction_for_owner = straw_weavery_3
+}
+
+aub_can_upgrade_to_straw_weavery_4_trigger = {
+	can_start_building_construction_for_owner = straw_weavery_4
+}
+
+aub_can_upgrade_to_straw_weavery_5_trigger = {
+	can_start_building_construction_for_owner = straw_weavery_5
+}
+
+aub_can_upgrade_to_stupefactives_apothecary_2_trigger = {
+	can_start_building_construction_for_owner = stupefactives_apothecary_2
+}
+
+aub_can_upgrade_to_stupefactives_apothecary_3_trigger = {
+	can_start_building_construction_for_owner = stupefactives_apothecary_3
+}
+
+aub_can_upgrade_to_stupefactives_apothecary_4_trigger = {
+	can_start_building_construction_for_owner = stupefactives_apothecary_4
+}

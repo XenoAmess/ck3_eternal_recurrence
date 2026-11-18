@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_taghaza_mines_03_trigger = {
+	can_start_building_construction_for_owner = taghaza_mines_03
+}
+
+aub_can_upgrade_to_taghaza_mines_04_trigger = {
+	can_start_building_construction_for_owner = taghaza_mines_04
+}
+
+aub_can_upgrade_to_tailor_shops_2_trigger = {
+	can_start_building_construction_for_owner = tailor_shops_2
+}
+
+aub_can_upgrade_to_tailor_shops_3_trigger = {
+	can_start_building_construction_for_owner = tailor_shops_3
+}
+
+aub_can_upgrade_to_tailor_shops_4_trigger = {
+	can_start_building_construction_for_owner = tailor_shops_4
+}
+
+aub_can_upgrade_to_tailor_shops_5_trigger = {
+	can_start_building_construction_for_owner = tailor_shops_5
+}
+
+aub_can_upgrade_to_takkeda_mines_02_trigger = {
+	can_start_building_construction_for_owner = takkeda_mines_02
+}
+
+aub_can_upgrade_to_takkeda_mines_03_trigger = {
+	can_start_building_construction_for_owner = takkeda_mines_03
+}
+
+aub_can_upgrade_to_takkeda_mines_04_trigger = {
+	can_start_building_construction_for_owner = takkeda_mines_04
+}
+
+aub_can_upgrade_to_tallow_rendering_2_trigger = {
+	can_start_building_construction_for_owner = tallow_rendering_2
+}

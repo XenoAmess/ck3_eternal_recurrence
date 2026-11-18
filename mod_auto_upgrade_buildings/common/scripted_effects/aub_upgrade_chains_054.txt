@@ -1,0 +1,427 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+
+aub_upgrade_chain_temple_01_effect = {
+	if = {
+		limit = {
+			has_building = temple_01
+			aub_can_upgrade_to_temple_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = main_building_tier_2_cost }
+		}
+		upgrade_building_effect = temple_01
+		if = {
+			limit = { has_building = temple_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_02
+			aub_can_upgrade_to_temple_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = main_building_tier_3_cost }
+		}
+		upgrade_building_effect = temple_02
+		if = {
+			limit = { has_building = temple_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_03
+			aub_can_upgrade_to_temple_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = main_building_tier_4_cost }
+		}
+		upgrade_building_effect = temple_03
+		if = {
+			limit = { has_building = temple_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_4_cost }
+		}
+	}
+}
+
+# temple_archives_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_temple_archives_1_effect = {
+	if = {
+		limit = {
+			has_building = temple_archives_1
+			aub_can_upgrade_to_temple_archives_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = temple_archives_1
+		if = {
+			limit = { has_building = temple_archives_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_archives_2
+			aub_can_upgrade_to_temple_archives_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = temple_archives_2
+		if = {
+			limit = { has_building = temple_archives_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_archives_3
+			aub_can_upgrade_to_temple_archives_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = temple_archives_3
+		if = {
+			limit = { has_building = temple_archives_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_archives_4
+			aub_can_upgrade_to_temple_archives_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = temple_archives_4
+		if = {
+			limit = { has_building = temple_archives_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# temple_citadel_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_temple_citadel_01_effect = {
+	if = {
+		limit = {
+			has_building = temple_citadel_01
+			aub_can_upgrade_to_temple_citadel_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = main_building_tier_2_cost }
+		}
+		upgrade_building_effect = temple_citadel_01
+		if = {
+			limit = { has_building = temple_citadel_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_citadel_02
+			aub_can_upgrade_to_temple_citadel_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = main_building_tier_3_cost }
+		}
+		upgrade_building_effect = temple_citadel_02
+		if = {
+			limit = { has_building = temple_citadel_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_citadel_03
+			aub_can_upgrade_to_temple_citadel_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = main_building_tier_4_cost }
+		}
+		upgrade_building_effect = temple_citadel_03
+		if = {
+			limit = { has_building = temple_citadel_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_4_cost }
+		}
+	}
+}
+
+# temple_citadel_outer_wall_1: 3 frozen upgrade edge(s)
+aub_upgrade_chain_temple_citadel_outer_wall_1_effect = {
+	if = {
+		limit = {
+			has_building = temple_citadel_outer_wall_1
+			aub_can_upgrade_to_temple_citadel_outer_wall_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = temple_citadel_outer_wall_1
+		if = {
+			limit = { has_building = temple_citadel_outer_wall_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_citadel_outer_wall_2
+			aub_can_upgrade_to_temple_citadel_outer_wall_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = temple_citadel_outer_wall_2
+		if = {
+			limit = { has_building = temple_citadel_outer_wall_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_citadel_outer_wall_3
+			aub_can_upgrade_to_temple_citadel_outer_wall_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = temple_citadel_outer_wall_3
+		if = {
+			limit = { has_building = temple_citadel_outer_wall_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+}
+
+# temple_citadel_shrine_1: 3 frozen upgrade edge(s)
+aub_upgrade_chain_temple_citadel_shrine_1_effect = {
+	if = {
+		limit = {
+			has_building = temple_citadel_shrine_1
+			aub_can_upgrade_to_temple_citadel_shrine_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = temple_citadel_shrine_1
+		if = {
+			limit = { has_building = temple_citadel_shrine_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_citadel_shrine_2
+			aub_can_upgrade_to_temple_citadel_shrine_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = temple_citadel_shrine_2
+		if = {
+			limit = { has_building = temple_citadel_shrine_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_citadel_shrine_3
+			aub_can_upgrade_to_temple_citadel_shrine_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = temple_citadel_shrine_3
+		if = {
+			limit = { has_building = temple_citadel_shrine_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+}
+
+# temple_citadel_tithe_collection_1: 3 frozen upgrade edge(s)
+aub_upgrade_chain_temple_citadel_tithe_collection_1_effect = {
+	if = {
+		limit = {
+			has_building = temple_citadel_tithe_collection_1
+			aub_can_upgrade_to_temple_citadel_tithe_collection_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = temple_citadel_tithe_collection_1
+		if = {
+			limit = { has_building = temple_citadel_tithe_collection_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_citadel_tithe_collection_2
+			aub_can_upgrade_to_temple_citadel_tithe_collection_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = temple_citadel_tithe_collection_2
+		if = {
+			limit = { has_building = temple_citadel_tithe_collection_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_citadel_tithe_collection_3
+			aub_can_upgrade_to_temple_citadel_tithe_collection_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = temple_citadel_tithe_collection_3
+		if = {
+			limit = { has_building = temple_citadel_tithe_collection_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+}
+
+# temple_hospices_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_temple_hospices_1_effect = {
+	if = {
+		limit = {
+			has_building = temple_hospices_1
+			aub_can_upgrade_to_temple_hospices_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = temple_hospices_1
+		if = {
+			limit = { has_building = temple_hospices_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_hospices_2
+			aub_can_upgrade_to_temple_hospices_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = temple_hospices_2
+		if = {
+			limit = { has_building = temple_hospices_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_hospices_3
+			aub_can_upgrade_to_temple_hospices_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = temple_hospices_3
+		if = {
+			limit = { has_building = temple_hospices_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_hospices_4
+			aub_can_upgrade_to_temple_hospices_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = temple_hospices_4
+		if = {
+			limit = { has_building = temple_hospices_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# temple_hostels_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_temple_hostels_1_effect = {
+	if = {
+		limit = {
+			has_building = temple_hostels_1
+			aub_can_upgrade_to_temple_hostels_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = temple_hostels_1
+		if = {
+			limit = { has_building = temple_hostels_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_hostels_2
+			aub_can_upgrade_to_temple_hostels_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = temple_hostels_2
+		if = {
+			limit = { has_building = temple_hostels_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_hostels_3
+			aub_can_upgrade_to_temple_hostels_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = temple_hostels_3
+		if = {
+			limit = { has_building = temple_hostels_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_hostels_4
+			aub_can_upgrade_to_temple_hostels_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = temple_hostels_4
+		if = {
+			limit = { has_building = temple_hostels_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# temple_of_uppsala_01: 1 frozen upgrade edge(s)
+aub_upgrade_chain_temple_of_uppsala_01_effect = {
+	if = {
+		limit = {
+			has_building = temple_of_uppsala_01
+			aub_can_upgrade_to_temple_of_uppsala_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = 1000 }
+		}
+		upgrade_building_effect = temple_of_uppsala_01
+		if = {
+			limit = { has_building = temple_of_uppsala_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = 1000 }
+		}
+	}
+}
+
+# temple_religious_fairs_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_temple_religious_fairs_1_effect = {
+	if = {
+		limit = {
+			has_building = temple_religious_fairs_1
+			aub_can_upgrade_to_temple_religious_fairs_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = temple_religious_fairs_1
+		if = {
+			limit = { has_building = temple_religious_fairs_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_religious_fairs_2
+			aub_can_upgrade_to_temple_religious_fairs_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = temple_religious_fairs_2
+		if = {
+			limit = { has_building = temple_religious_fairs_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_religious_fairs_3
+			aub_can_upgrade_to_temple_religious_fairs_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = temple_religious_fairs_3
+		if = {
+			limit = { has_building = temple_religious_fairs_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = temple_religious_fairs_4
+			aub_can_upgrade_to_temple_religious_fairs_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = temple_religious_fairs_4
+		if = {
+			limit = { has_building = temple_religious_fairs_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# temple_reliquary_1: 4 frozen upgrade edge(s)

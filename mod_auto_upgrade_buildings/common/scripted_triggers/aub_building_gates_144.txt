@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_nishapur_mines_04_trigger = {
+	can_start_building_construction_for_owner = nishapur_mines_04
+}
+
+aub_can_upgrade_to_noble_hunting_lodges_2_trigger = {
+	can_start_building_construction_for_owner = noble_hunting_lodges_2
+}
+
+aub_can_upgrade_to_noble_hunting_lodges_3_trigger = {
+	can_start_building_construction_for_owner = noble_hunting_lodges_3
+}
+
+aub_can_upgrade_to_noble_hunting_lodges_4_trigger = {
+	can_start_building_construction_for_owner = noble_hunting_lodges_4
+}
+
+aub_can_upgrade_to_noble_hunting_lodges_5_trigger = {
+	can_start_building_construction_for_owner = noble_hunting_lodges_5
+}
+
+aub_can_upgrade_to_noble_townhouses_2_trigger = {
+	can_start_building_construction_for_owner = noble_townhouses_2
+}
+
+aub_can_upgrade_to_noble_townhouses_3_trigger = {
+	can_start_building_construction_for_owner = noble_townhouses_3
+}
+
+aub_can_upgrade_to_noble_townhouses_4_trigger = {
+	can_start_building_construction_for_owner = noble_townhouses_4
+}
+
+aub_can_upgrade_to_noble_townhouses_5_trigger = {
+	can_start_building_construction_for_owner = noble_townhouses_5
+}
+
+aub_can_upgrade_to_notary_2_trigger = {
+	can_start_building_construction_for_owner = notary_2
+}

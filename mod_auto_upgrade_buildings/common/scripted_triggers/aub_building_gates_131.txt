@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_militia_camps_4_trigger = {
+	can_start_building_construction_for_owner = militia_camps_4
+}
+
+aub_can_upgrade_to_militia_camps_5_trigger = {
+	can_start_building_construction_for_owner = militia_camps_5
+}
+
+aub_can_upgrade_to_militia_musterhouses_2_trigger = {
+	can_start_building_construction_for_owner = militia_musterhouses_2
+}
+
+aub_can_upgrade_to_militia_musterhouses_3_trigger = {
+	can_start_building_construction_for_owner = militia_musterhouses_3
+}
+
+aub_can_upgrade_to_militia_musterhouses_4_trigger = {
+	can_start_building_construction_for_owner = militia_musterhouses_4
+}
+
+aub_can_upgrade_to_militia_musterhouses_5_trigger = {
+	can_start_building_construction_for_owner = militia_musterhouses_5
+}
+
+aub_can_upgrade_to_millet_brewery_2_trigger = {
+	can_start_building_construction_for_owner = millet_brewery_2
+}
+
+aub_can_upgrade_to_millet_brewery_3_trigger = {
+	can_start_building_construction_for_owner = millet_brewery_3
+}
+
+aub_can_upgrade_to_millet_brewery_4_trigger = {
+	can_start_building_construction_for_owner = millet_brewery_4
+}
+
+aub_can_upgrade_to_millet_brewery_5_trigger = {
+	can_start_building_construction_for_owner = millet_brewery_5
+}

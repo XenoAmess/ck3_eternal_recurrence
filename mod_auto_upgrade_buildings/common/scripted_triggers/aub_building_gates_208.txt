@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_temple_hospices_3_trigger = {
+	can_start_building_construction_for_owner = temple_hospices_3
+}
+
+aub_can_upgrade_to_temple_hospices_4_trigger = {
+	can_start_building_construction_for_owner = temple_hospices_4
+}
+
+aub_can_upgrade_to_temple_hospices_5_trigger = {
+	can_start_building_construction_for_owner = temple_hospices_5
+}
+
+aub_can_upgrade_to_temple_hostels_2_trigger = {
+	can_start_building_construction_for_owner = temple_hostels_2
+}
+
+aub_can_upgrade_to_temple_hostels_3_trigger = {
+	can_start_building_construction_for_owner = temple_hostels_3
+}
+
+aub_can_upgrade_to_temple_hostels_4_trigger = {
+	can_start_building_construction_for_owner = temple_hostels_4
+}
+
+aub_can_upgrade_to_temple_hostels_5_trigger = {
+	can_start_building_construction_for_owner = temple_hostels_5
+}
+
+aub_can_upgrade_to_temple_of_uppsala_02_trigger = {
+	can_start_building_construction_for_owner = temple_of_uppsala_02
+}
+
+aub_can_upgrade_to_temple_religious_fairs_2_trigger = {
+	can_start_building_construction_for_owner = temple_religious_fairs_2
+}
+
+aub_can_upgrade_to_temple_religious_fairs_3_trigger = {
+	can_start_building_construction_for_owner = temple_religious_fairs_3
+}

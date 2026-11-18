@@ -1,125 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_qanats_03_trigger = {
-	# vanilla can_construct_potential
-	building_qanats_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
+aub_can_upgrade_to_colonization_office_03_trigger = {
+	can_start_building_construction_for_owner = colonization_office_03
 }
 
-aub_can_upgrade_to_qanats_04_trigger = {
-	# vanilla can_construct_potential
-	building_qanats_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
+aub_can_upgrade_to_colonization_office_04_trigger = {
+	can_start_building_construction_for_owner = colonization_office_04
 }
 
-aub_can_upgrade_to_qanats_05_trigger = {
-	# vanilla can_construct_potential
-	building_qanats_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
+aub_can_upgrade_to_colonization_office_05_trigger = {
+	can_start_building_construction_for_owner = colonization_office_05
 }
 
-aub_can_upgrade_to_qanats_06_trigger = {
-	# vanilla can_construct_potential
-	building_qanats_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
+aub_can_upgrade_to_comfit_maker_2_trigger = {
+	can_start_building_construction_for_owner = comfit_maker_2
 }
 
-aub_can_upgrade_to_qanats_07_trigger = {
-	# vanilla can_construct_potential
-	building_qanats_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
+aub_can_upgrade_to_comfit_maker_3_trigger = {
+	can_start_building_construction_for_owner = comfit_maker_3
 }
 
-aub_can_upgrade_to_qanats_08_trigger = {
-	# vanilla can_construct_potential
-	building_qanats_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
+aub_can_upgrade_to_comfit_maker_4_trigger = {
+	can_start_building_construction_for_owner = comfit_maker_4
 }
 
-aub_can_upgrade_to_quarries_02_trigger = {
-	# vanilla can_construct_potential
-	building_quarries_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	scope:holder.culture = {
-		has_innovation = innovation_crop_rotation
-	}
+aub_can_upgrade_to_comfit_maker_5_trigger = {
+	can_start_building_construction_for_owner = comfit_maker_5
 }
 
-aub_can_upgrade_to_quarries_03_trigger = {
-	# vanilla can_construct_potential
-	building_quarries_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_communal_bread_ovens_2_trigger = {
+	can_start_building_construction_for_owner = communal_bread_ovens_2
 }
 
-aub_can_upgrade_to_quarries_04_trigger = {
-	# vanilla can_construct_potential
-	building_quarries_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_communal_bread_ovens_3_trigger = {
+	can_start_building_construction_for_owner = communal_bread_ovens_3
 }
 
-aub_can_upgrade_to_quarries_05_trigger = {
-	# vanilla can_construct_potential
-	building_quarries_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_guilds
-	}
+aub_can_upgrade_to_communal_bread_ovens_4_trigger = {
+	can_start_building_construction_for_owner = communal_bread_ovens_4
 }
-

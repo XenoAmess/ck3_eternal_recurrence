@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_megalith_2_trigger = {
+	can_start_building_construction_for_owner = megalith_2
+}
+
+aub_can_upgrade_to_megalith_3_trigger = {
+	can_start_building_construction_for_owner = megalith_3
+}
+
+aub_can_upgrade_to_megalith_4_trigger = {
+	can_start_building_construction_for_owner = megalith_4
+}
+
+aub_can_upgrade_to_megalith_5_trigger = {
+	can_start_building_construction_for_owner = megalith_5
+}
+
+aub_can_upgrade_to_menageries_2_trigger = {
+	can_start_building_construction_for_owner = menageries_2
+}
+
+aub_can_upgrade_to_menageries_3_trigger = {
+	can_start_building_construction_for_owner = menageries_3
+}
+
+aub_can_upgrade_to_menageries_4_trigger = {
+	can_start_building_construction_for_owner = menageries_4
+}
+
+aub_can_upgrade_to_menageries_5_trigger = {
+	can_start_building_construction_for_owner = menageries_5
+}
+
+aub_can_upgrade_to_merchant_lodging_houses_2_trigger = {
+	can_start_building_construction_for_owner = merchant_lodging_houses_2
+}
+
+aub_can_upgrade_to_merchant_lodging_houses_3_trigger = {
+	can_start_building_construction_for_owner = merchant_lodging_houses_3
+}

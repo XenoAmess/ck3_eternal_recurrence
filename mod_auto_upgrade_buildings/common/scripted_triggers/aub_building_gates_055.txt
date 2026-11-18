@@ -1,326 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_watchtowers_06_trigger = {
-	# vanilla can_construct_potential
-	building_watchtowers_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				culture = {
-					has_cultural_parameter = next_level_fortification
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_hoardings
-		}
-	}
-	trigger_else = {
-		building_requirement_castle_city_church = {
-			LEVEL = 02
-		}
-		culture = {
-			has_cultural_parameter = next_level_fortification
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_battlements
-		}
-	}
+aub_can_upgrade_to_dyes_local_2_trigger = {
+	can_start_building_construction_for_owner = dyes_local_2
 }
 
-aub_can_upgrade_to_watchtowers_07_trigger = {
-	# vanilla can_construct_potential
-	building_watchtowers_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				culture = {
-					has_cultural_parameter = next_level_fortification
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 04
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_machicolations
-		}
-	}
-	trigger_else = {
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-		culture = {
-			has_cultural_parameter = next_level_fortification
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_hoardings
-		}
-	}
+aub_can_upgrade_to_dyes_local_3_trigger = {
+	can_start_building_construction_for_owner = dyes_local_3
 }
 
-aub_can_upgrade_to_watchtowers_08_trigger = {
-	# vanilla can_construct_potential
-	building_watchtowers_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				culture = {
-					has_cultural_parameter = next_level_fortification
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 04
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_machicolations
-		}
-	}
-	trigger_else = {
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-		culture = {
-			has_cultural_parameter = next_level_fortification
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_hoardings
-		}
-	}
+aub_can_upgrade_to_dyes_packing_warehouse_2_trigger = {
+	can_start_building_construction_for_owner = dyes_packing_warehouse_2
 }
 
-aub_can_upgrade_to_water_temples_02_trigger = {
-	# vanilla is_enabled
-	building_requirement_wanua = yes
-	# vanilla can_construct_potential
-	has_building_or_higher = tribe_01
-	scope:holder ?= {
-		government_has_flag = government_is_wanua
-	}
+aub_can_upgrade_to_dyes_packing_warehouse_3_trigger = {
+	can_start_building_construction_for_owner = dyes_packing_warehouse_3
 }
 
-aub_can_upgrade_to_water_temples_03_trigger = {
-	# vanilla is_enabled
-	building_requirement_wanua = yes
-	# vanilla can_construct_potential
-	has_building_or_higher = tribe_01
-	scope:holder ?= {
-		government_has_flag = government_is_wanua
-	}
+aub_can_upgrade_to_dyes_packing_warehouse_4_trigger = {
+	can_start_building_construction_for_owner = dyes_packing_warehouse_4
 }
 
-aub_can_upgrade_to_water_temples_04_trigger = {
-	# vanilla is_enabled
-	building_requirement_wanua = yes
-	# vanilla can_construct_potential
-	has_building_or_higher = tribe_01
-	scope:holder ?= {
-		government_has_flag = government_is_wanua
-	}
+aub_can_upgrade_to_dyes_packing_warehouse_5_trigger = {
+	can_start_building_construction_for_owner = dyes_packing_warehouse_5
 }
 
-aub_can_upgrade_to_watermills_02_trigger = {
-	# vanilla can_construct_potential
-	OR = {
-		building_watermills_requirement_terrain = yes
-		AND = {
-			has_building_or_higher = logging_camps_04
-			culture = {
-				has_cultural_parameter = watermills_forestries_unlock
-			}
-		}
-	}
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-				culture = {
-					has_cultural_parameter = watermills_forestries_unlock
-				}
-			}
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-	}
-	trigger_else = {
-		OR = {
-			culture = {
-				has_innovation = innovation_windmills
-			}
-			culture = {
-				has_cultural_parameter = next_level_w_mills
-				has_innovation = innovation_manorialism
-			}
-			AND = {
-				has_building_or_higher = logging_camps_04
-				culture = {
-					has_cultural_parameter = watermills_forestries_unlock
-				}
-			}
-		}
-	}
+aub_can_upgrade_to_dyes_resource_building_2_trigger = {
+	can_start_building_construction_for_owner = dyes_resource_building_2
 }
 
-aub_can_upgrade_to_watermills_03_trigger = {
-	# vanilla can_construct_potential
-	OR = {
-		building_watermills_requirement_terrain = yes
-		AND = {
-			has_building_or_higher = logging_camps_04
-			culture = {
-				has_cultural_parameter = watermills_forestries_unlock
-			}
-		}
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-				culture = {
-					has_cultural_parameter = watermills_forestries_unlock
-				}
-			}
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 02
-		}
-	}
-	trigger_else = {
-		OR = {
-			culture = {
-				has_innovation = innovation_windmills
-			}
-			culture = {
-				has_cultural_parameter = next_level_w_mills
-				has_innovation = innovation_manorialism
-			}
-			AND = {
-				has_building_or_higher = logging_camps_04
-				culture = {
-					has_cultural_parameter = watermills_forestries_unlock
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 01
-		}
-	}
+aub_can_upgrade_to_dyes_resource_building_3_trigger = {
+	can_start_building_construction_for_owner = dyes_resource_building_3
 }
 
-aub_can_upgrade_to_watermills_04_trigger = {
-	# vanilla can_construct_potential
-	OR = {
-		building_watermills_requirement_terrain = yes
-		AND = {
-			has_building_or_higher = logging_camps_04
-			culture = {
-				has_cultural_parameter = watermills_forestries_unlock
-			}
-		}
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-				culture = {
-					has_cultural_parameter = watermills_forestries_unlock
-				}
-			}
-		}
-		scope:holder.culture = {
-			has_innovation = innovation_windmills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 02
-		}
-	}
-	trigger_else = {
-		OR = {
-			culture = {
-				has_innovation = innovation_windmills
-			}
-			culture = {
-				has_cultural_parameter = next_level_w_mills
-				has_innovation = innovation_manorialism
-			}
-			AND = {
-				has_building_or_higher = logging_camps_04
-				culture = {
-					has_cultural_parameter = watermills_forestries_unlock
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 01
-		}
-	}
+aub_can_upgrade_to_dyes_resource_building_4_trigger = {
+	can_start_building_construction_for_owner = dyes_resource_building_4
 }
 
-aub_can_upgrade_to_watermills_05_trigger = {
-	# vanilla can_construct_potential
-	building_watermills_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	scope:holder.culture = {
-		has_innovation = innovation_cranes
-	}
-	trigger_if = {
-		limit = {
-			NOT = {
-				scope:holder.culture = {
-					has_cultural_parameter = next_level_w_mills
-				}
-			}
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 03
-		}
-	}
-	trigger_else = {
-		scope:holder.culture = {
-			has_cultural_parameter = next_level_w_mills
-		}
-		building_requirement_castle_city_church = {
-			LEVEL = 02
-		}
-	}
+aub_can_upgrade_to_dyes_resource_building_5_trigger = {
+	can_start_building_construction_for_owner = dyes_resource_building_5
 }
-

@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_royal_mausoleum_3_trigger = {
+	can_start_building_construction_for_owner = royal_mausoleum_3
+}
+
+aub_can_upgrade_to_royal_mausoleum_4_trigger = {
+	can_start_building_construction_for_owner = royal_mausoleum_4
+}
+
+aub_can_upgrade_to_royal_mausoleum_5_trigger = {
+	can_start_building_construction_for_owner = royal_mausoleum_5
+}
+
+aub_can_upgrade_to_royal_palace_library_2_trigger = {
+	can_start_building_construction_for_owner = royal_palace_library_2
+}
+
+aub_can_upgrade_to_royal_palace_library_3_trigger = {
+	can_start_building_construction_for_owner = royal_palace_library_3
+}
+
+aub_can_upgrade_to_royal_palace_library_4_trigger = {
+	can_start_building_construction_for_owner = royal_palace_library_4
+}
+
+aub_can_upgrade_to_royal_palace_library_5_trigger = {
+	can_start_building_construction_for_owner = royal_palace_library_5
+}
+
+aub_can_upgrade_to_royal_wardrobe_2_trigger = {
+	can_start_building_construction_for_owner = royal_wardrobe_2
+}
+
+aub_can_upgrade_to_royal_wardrobe_3_trigger = {
+	can_start_building_construction_for_owner = royal_wardrobe_3
+}
+
+aub_can_upgrade_to_royal_wardrobe_4_trigger = {
+	can_start_building_construction_for_owner = royal_wardrobe_4
+}

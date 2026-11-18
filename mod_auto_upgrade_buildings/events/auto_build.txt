@@ -47,7 +47,7 @@ auto_build.0004 = {
                 every_directly_owned_province = {
                     limit = {
                         scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-                        has_ongoing_construction = no
+                        has_ongoing_holding_construction = no
                         barony = { is_leased_out = no }
                         OR = {
                             has_holding_type = castle_holding

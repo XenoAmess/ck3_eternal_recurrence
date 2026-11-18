@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate all CK3 1.20.0.2 Auto Upgrade Buildings runtime branches."""
+"""Generate CK3 1.21.0 district-scoped Auto Upgrade Buildings branches."""
 
 from __future__ import annotations
 
@@ -34,7 +34,8 @@ def render_triggers() -> str:
     lines = [
         "# GENERATED FILE. DO NOT EDIT.",
         f"# Source: tools/{SNAPSHOT.name}",
-        "# Every trigger reproduces the target building's four vanilla construction gates.",
+        "# District scope. The engine checks the full target construction contract,",
+        "# including district level requirements, without checking owner affordability.",
         "",
         "aub_can_pay_gold_building_cost_trigger = {",
         "\ttrigger_if = {",
@@ -64,12 +65,7 @@ def render_triggers() -> str:
     ]
     for edge in EDGES:
         lines.append(f"{trigger_name(edge)} = {{")
-        if not edge.gates:
-            lines.append("\talways = yes")
-        else:
-            for field, body in edge.gates:
-                lines.append(f"\t# vanilla {field}")
-                lines.extend(_indent_body(body, 1))
+        lines.append(f"\tcan_start_building_construction_for_owner = {edge.target}")
         lines.extend(["}", ""])
     return "\n".join(lines)
 
@@ -119,24 +115,10 @@ def render_chain(chain: BuildingChain) -> list[str]:
         )
         lines.extend(_resource_limits(edge))
         lines.append("\t\t}")
-        if edge.target_type == "special":
-            # Special buildings occupy their own fixed slot. CK3's generic
-            # add_building effect refuses to replace an occupied special slot;
-            # vanilla scripted upgrades remove the old tier and then use
-            # add_special_building for the new tier.
-            lines.extend(
-                [
-                    f"\t\tremove_building = {edge.source}",
-                    "\t\tscope:aub_payer = { save_scope_as = character }",
-                    f"\t\tadd_special_building = {edge.target}",
-                ]
-            )
-        else:
-            # CK3 exposes a dedicated immediate upgrade effect for an existing
-            # province building. Unlike add_building, it does not synthesize a
-            # fresh construction-completion context with a missing payer scope.
-            # Qualification and payment remain under this generated branch.
-            lines.append(f"\t\tupgrade_building_effect = {edge.source}")
+        # Florin's native district effect replaces the existing tier in place,
+        # including special district buildings. A rejected upgrade preserves the
+        # source, so no destructive remove/insert rollback is needed.
+        lines.append(f"\t\tupgrade_building_effect = {edge.source}")
         lines.extend(
             [
                 "\t\tif = {",
@@ -145,17 +127,6 @@ def render_chain(chain: BuildingChain) -> list[str]:
                 "\t\t}",
             ]
         )
-        if edge.target_type == "special":
-            # A failed engine insertion must not silently destroy the source
-            # special building and is never charged.
-            lines.extend(
-                [
-                    "\t\telse = {",
-                    "\t\t\tscope:aub_payer = { save_scope_as = character }",
-                    f"\t\t\tadd_special_building = {edge.source}",
-                    "\t\t}",
-                ]
-            )
         lines.append("\t}")
     lines.extend(["}", ""])
     return lines
@@ -253,7 +224,50 @@ def render_effects() -> str:
     ]
     for chain in CHAINS:
         lines.extend(render_chain(chain))
-    lines.append("aub_upgrade_all_supported_buildings_effect = {")
+    lines.extend([
+        "# Province entry: a district has exactly one primary building, so visit",
+        "# each represented district once even when it has multiple buildings.",
+        "aub_upgrade_all_supported_buildings_effect = {",
+        "\tif = {",
+        "\t\tlimit = { exists = scope:aub_foreign_trade_post }",
+        "\t\tclear_saved_scope = aub_foreign_trade_post",
+        "\t}",
+        "\ttrade_post_district ?= {",
+        "\t\tif = {",
+        "\t\t\tlimit = {",
+        "\t\t\t\tNOT = {",
+        "\t\t\t\t\tAND = {",
+        "\t\t\t\t\t\texists = district_owning_title",
+        "\t\t\t\t\t\tdistrict_owning_title = { holder = scope:aub_payer }",
+        "\t\t\t\t\t}",
+        "\t\t\t\t}",
+        "\t\t\t}",
+        "\t\t\tsave_scope_as = aub_foreign_trade_post",
+        "\t\t}",
+        "\t}",
+        "\tevery_built_buildings = {",
+        "\t\tlimit = {",
+        "\t\t\tis_primary_building = yes",
+        "\t\t\tscope:aub_payer = { var:aub_upgrades_this_scan < 15 }",
+        "\t\t}",
+        "\t\tbuilding_district = {",
+        "\t\t\tif = {",
+        "\t\t\t\tlimit = {",
+        "\t\t\t\t\ttrigger_if = {",
+        "\t\t\t\t\t\tlimit = { exists = scope:aub_foreign_trade_post }",
+        "\t\t\t\t\t\tNOT = { this = scope:aub_foreign_trade_post }",
+        "\t\t\t\t\t}",
+        "\t\t\t\t}",
+        "\t\t\t\taub_upgrade_supported_district_buildings_effect = yes",
+        "\t\t\t}",
+        "\t\t}",
+        "\t}",
+        "}",
+        "",
+        "# District scope. Construction eligibility and post-upgrade checks stay",
+        "# in this exact district; another district cannot satisfy either check.",
+        "aub_upgrade_supported_district_buildings_effect = {",
+    ])
     for chain in CHAINS:
         lines.extend(
             [
@@ -293,10 +307,10 @@ def generated_outputs() -> dict[Path, bytes]:
             (leaves if match[1].startswith(prefix) else common).append(body)
         if not 1 <= len(common) <= 10:
             raise ValueError("generated lifecycle/payment/dispatch group exceeds its definition budget")
-        outputs[destination] = (header + "".join(common)).encode("utf-8-sig")
+        outputs[destination] = (header + "".join(common)).rstrip().encode("utf-8-sig") + b"\n"
         for offset in range(0, len(leaves), 10):
             path = destination.with_name(f"{family}_{offset // 10:03}.txt")
-            outputs[path] = (header + "".join(leaves[offset:offset + 10])).encode("utf-8-sig")
+            outputs[path] = (header + "".join(leaves[offset:offset + 10])).rstrip().encode("utf-8-sig") + b"\n"
     return outputs
 
 

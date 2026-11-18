@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_mine_tier_5_trigger = {
+	can_start_building_construction_for_owner = mine_tier_5
+}
+
+aub_can_upgrade_to_mine_tier_6_trigger = {
+	can_start_building_construction_for_owner = mine_tier_6
+}
+
+aub_can_upgrade_to_mine_tier_7_trigger = {
+	can_start_building_construction_for_owner = mine_tier_7
+}
+
+aub_can_upgrade_to_mine_tier_8_trigger = {
+	can_start_building_construction_for_owner = mine_tier_8
+}
+
+aub_can_upgrade_to_mine_tier_9_trigger = {
+	can_start_building_construction_for_owner = mine_tier_9
+}
+
+aub_can_upgrade_to_mine_tier_10_trigger = {
+	can_start_building_construction_for_owner = mine_tier_10
+}
+
+aub_can_upgrade_to_mining_office_02_trigger = {
+	can_start_building_construction_for_owner = mining_office_02
+}
+
+aub_can_upgrade_to_mining_office_03_trigger = {
+	can_start_building_construction_for_owner = mining_office_03
+}
+
+aub_can_upgrade_to_mining_office_04_trigger = {
+	can_start_building_construction_for_owner = mining_office_04
+}
+
+aub_can_upgrade_to_mining_office_05_trigger = {
+	can_start_building_construction_for_owner = mining_office_05
+}

@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_watchtowers_2_trigger = {
+	can_start_building_construction_for_owner = watchtowers_2
+}
+
+aub_can_upgrade_to_watchtowers_3_trigger = {
+	can_start_building_construction_for_owner = watchtowers_3
+}
+
+aub_can_upgrade_to_watchtowers_4_trigger = {
+	can_start_building_construction_for_owner = watchtowers_4
+}
+
+aub_can_upgrade_to_watchtowers_5_trigger = {
+	can_start_building_construction_for_owner = watchtowers_5
+}
+
+aub_can_upgrade_to_water_management_2_trigger = {
+	can_start_building_construction_for_owner = water_management_2
+}
+
+aub_can_upgrade_to_water_management_3_trigger = {
+	can_start_building_construction_for_owner = water_management_3
+}
+
+aub_can_upgrade_to_water_management_4_trigger = {
+	can_start_building_construction_for_owner = water_management_4
+}
+
+aub_can_upgrade_to_water_management_5_trigger = {
+	can_start_building_construction_for_owner = water_management_5
+}
+
+aub_can_upgrade_to_water_temples_2_trigger = {
+	can_start_building_construction_for_owner = water_temples_2
+}
+
+aub_can_upgrade_to_water_temples_3_trigger = {
+	can_start_building_construction_for_owner = water_temples_3
+}

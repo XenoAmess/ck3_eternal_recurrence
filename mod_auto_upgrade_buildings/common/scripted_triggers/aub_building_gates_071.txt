@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_fortified_compounds_2_trigger = {
+	can_start_building_construction_for_owner = fortified_compounds_2
+}
+
+aub_can_upgrade_to_fortified_compounds_3_trigger = {
+	can_start_building_construction_for_owner = fortified_compounds_3
+}
+
+aub_can_upgrade_to_fortified_compounds_4_trigger = {
+	can_start_building_construction_for_owner = fortified_compounds_4
+}
+
+aub_can_upgrade_to_fortified_compounds_5_trigger = {
+	can_start_building_construction_for_owner = fortified_compounds_5
+}
+
+aub_can_upgrade_to_fortified_holds_2_trigger = {
+	can_start_building_construction_for_owner = fortified_holds_2
+}
+
+aub_can_upgrade_to_fortified_holds_3_trigger = {
+	can_start_building_construction_for_owner = fortified_holds_3
+}
+
+aub_can_upgrade_to_fortified_holds_4_trigger = {
+	can_start_building_construction_for_owner = fortified_holds_4
+}
+
+aub_can_upgrade_to_fortified_holds_5_trigger = {
+	can_start_building_construction_for_owner = fortified_holds_5
+}
+
+aub_can_upgrade_to_fritware_workshops_2_trigger = {
+	can_start_building_construction_for_owner = fritware_workshops_2
+}
+
+aub_can_upgrade_to_fritware_workshops_3_trigger = {
+	can_start_building_construction_for_owner = fritware_workshops_3
+}

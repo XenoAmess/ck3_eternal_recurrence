@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_prerogative_chancery_05_trigger = {
+	can_start_building_construction_for_owner = prerogative_chancery_05
+}
+
+aub_can_upgrade_to_preserved_fruit_workshops_2_trigger = {
+	can_start_building_construction_for_owner = preserved_fruit_workshops_2
+}
+
+aub_can_upgrade_to_preserved_fruit_workshops_3_trigger = {
+	can_start_building_construction_for_owner = preserved_fruit_workshops_3
+}
+
+aub_can_upgrade_to_preserved_fruit_workshops_4_trigger = {
+	can_start_building_construction_for_owner = preserved_fruit_workshops_4
+}
+
+aub_can_upgrade_to_preserved_fruit_workshops_5_trigger = {
+	can_start_building_construction_for_owner = preserved_fruit_workshops_5
+}
+
+aub_can_upgrade_to_printing_press_2_trigger = {
+	can_start_building_construction_for_owner = printing_press_2
+}
+
+aub_can_upgrade_to_printing_press_3_trigger = {
+	can_start_building_construction_for_owner = printing_press_3
+}
+
+aub_can_upgrade_to_printing_press_4_trigger = {
+	can_start_building_construction_for_owner = printing_press_4
+}
+
+aub_can_upgrade_to_printing_press_5_trigger = {
+	can_start_building_construction_for_owner = printing_press_5
+}
+
+aub_can_upgrade_to_processions_2_trigger = {
+	can_start_building_construction_for_owner = processions_2
+}

@@ -1,127 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_plantations_07_trigger = {
-	# vanilla can_construct_potential
-	building_plantations_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_clerical_housing_2_trigger = {
+	can_start_building_construction_for_owner = clerical_housing_2
 }
 
-aub_can_upgrade_to_plantations_08_trigger = {
-	# vanilla can_construct_potential
-	building_plantations_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_clerical_housing_3_trigger = {
+	can_start_building_construction_for_owner = clerical_housing_3
 }
 
-aub_can_upgrade_to_powder_magazine_02_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	# vanilla can_construct_showing_failures_only
-	scope:holder.culture = {
-		has_cultural_parameter = unlock_powder_magazines
-	}
-	building_requirement_tribal = no
+aub_can_upgrade_to_clerical_housing_4_trigger = {
+	can_start_building_construction_for_owner = clerical_housing_4
 }
 
-aub_can_upgrade_to_powder_magazine_03_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	# vanilla can_construct_showing_failures_only
-	scope:holder.culture = {
-		has_cultural_parameter = unlock_powder_magazines
-	}
-	building_requirement_tribal = no
+aub_can_upgrade_to_clerical_housing_5_trigger = {
+	can_start_building_construction_for_owner = clerical_housing_5
 }
 
-aub_can_upgrade_to_powder_magazine_04_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	# vanilla can_construct_showing_failures_only
-	scope:holder.culture = {
-		has_cultural_parameter = unlock_powder_magazines
-	}
-	building_requirement_tribal = no
+aub_can_upgrade_to_cluny_abbey_02_trigger = {
+	can_start_building_construction_for_owner = cluny_abbey_02
 }
 
-aub_can_upgrade_to_powder_magazine_05_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	# vanilla can_construct_showing_failures_only
-	scope:holder.culture = {
-		has_cultural_parameter = unlock_powder_magazines
-	}
-	building_requirement_tribal = no
+aub_can_upgrade_to_college_of_arms_2_trigger = {
+	can_start_building_construction_for_owner = college_of_arms_2
 }
 
-aub_can_upgrade_to_powder_magazine_06_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	# vanilla can_construct_showing_failures_only
-	scope:holder.culture = {
-		has_cultural_parameter = unlock_powder_magazines
-	}
-	building_requirement_tribal = no
+aub_can_upgrade_to_college_of_arms_3_trigger = {
+	can_start_building_construction_for_owner = college_of_arms_3
 }
 
-aub_can_upgrade_to_powder_magazine_07_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	# vanilla can_construct_showing_failures_only
-	scope:holder.culture = {
-		has_cultural_parameter = unlock_powder_magazines
-	}
-	building_requirement_tribal = no
+aub_can_upgrade_to_college_of_arms_4_trigger = {
+	can_start_building_construction_for_owner = college_of_arms_4
 }
 
-aub_can_upgrade_to_powder_magazine_08_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	# vanilla can_construct_showing_failures_only
-	scope:holder.culture = {
-		has_cultural_parameter = unlock_powder_magazines
-	}
-	building_requirement_tribal = no
+aub_can_upgrade_to_college_of_arms_5_trigger = {
+	can_start_building_construction_for_owner = college_of_arms_5
 }
 
-aub_can_upgrade_to_qanats_02_trigger = {
-	# vanilla can_construct_potential
-	building_qanats_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
+aub_can_upgrade_to_colonization_office_02_trigger = {
+	can_start_building_construction_for_owner = colonization_office_02
 }
-

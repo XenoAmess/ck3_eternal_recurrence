@@ -1,523 +1,475 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
+# Source: tools/auto_upgrade_buildings_1_21_0.json
 
-aub_upgrade_chain_dunhuang_market_01_effect = {
+aub_upgrade_chain_beehives_1_effect = {
 	if = {
 		limit = {
-			has_building = dunhuang_market_01
-			aub_can_upgrade_to_dunhuang_market_02_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = 800 }
+			has_building = beehives_1
+			aub_can_upgrade_to_beehives_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
 		}
-		remove_building = dunhuang_market_01
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = dunhuang_market_02
+		upgrade_building_effect = beehives_1
 		if = {
-			limit = { has_building = dunhuang_market_02 }
-			aub_pay_gold_building_cost_effect = { GOLD = 800 }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = dunhuang_market_01
-		}
-	}
-}
-
-# duomo_florence_01: 3 frozen upgrade edge(s)
-aub_upgrade_chain_duomo_florence_01_effect = {
-	if = {
-		limit = {
-			has_building = duomo_florence_01
-			aub_can_upgrade_to_duomo_florence_02_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = 1000 }
-		}
-		remove_building = duomo_florence_01
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = duomo_florence_02
-		if = {
-			limit = { has_building = duomo_florence_02 }
-			aub_pay_gold_building_cost_effect = { GOLD = 1000 }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = duomo_florence_01
+			limit = { has_building = beehives_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
 		}
 	}
 	else_if = {
 		limit = {
-			has_building = duomo_florence_02
-			aub_can_upgrade_to_duomo_florence_03_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = 1000 }
+			has_building = beehives_2
+			aub_can_upgrade_to_beehives_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
 		}
-		remove_building = duomo_florence_02
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = duomo_florence_03
+		upgrade_building_effect = beehives_2
 		if = {
-			limit = { has_building = duomo_florence_03 }
-			aub_pay_gold_building_cost_effect = { GOLD = 1000 }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = duomo_florence_02
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = duomo_florence_03
-			aub_can_upgrade_to_duomo_florence_04_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = 1000 }
-		}
-		remove_building = duomo_florence_03
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = duomo_florence_04
-		if = {
-			limit = { has_building = duomo_florence_04 }
-			aub_pay_gold_building_cost_effect = { GOLD = 1000 }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = duomo_florence_03
+			limit = { has_building = beehives_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
 		}
 	}
 }
 
-# dushan_mines_01: 3 frozen upgrade edge(s)
-aub_upgrade_chain_dushan_mines_01_effect = {
+# beer_brewery_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_beer_brewery_1_effect = {
 	if = {
 		limit = {
-			has_building = dushan_mines_01
-			aub_can_upgrade_to_dushan_mines_02_trigger = yes
+			has_building = beer_brewery_1
+			aub_can_upgrade_to_beer_brewery_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = beer_brewery_1
+		if = {
+			limit = { has_building = beer_brewery_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = beer_brewery_2
+			aub_can_upgrade_to_beer_brewery_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = beer_brewery_2
+		if = {
+			limit = { has_building = beer_brewery_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = beer_brewery_3
+			aub_can_upgrade_to_beer_brewery_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = beer_brewery_3
+		if = {
+			limit = { has_building = beer_brewery_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = beer_brewery_4
+			aub_can_upgrade_to_beer_brewery_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = beer_brewery_4
+		if = {
+			limit = { has_building = beer_brewery_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# bell_foundry_1: 2 frozen upgrade edge(s)
+aub_upgrade_chain_bell_foundry_1_effect = {
+	if = {
+		limit = {
+			has_building = bell_foundry_1
+			aub_can_upgrade_to_bell_foundry_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = bell_foundry_1
+		if = {
+			limit = { has_building = bell_foundry_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = bell_foundry_2
+			aub_can_upgrade_to_bell_foundry_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = bell_foundry_2
+		if = {
+			limit = { has_building = bell_foundry_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+}
+
+# belltower_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_belltower_1_effect = {
+	if = {
+		limit = {
+			has_building = belltower_1
+			aub_can_upgrade_to_belltower_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = belltower_1
+		if = {
+			limit = { has_building = belltower_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = belltower_2
+			aub_can_upgrade_to_belltower_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = belltower_2
+		if = {
+			limit = { has_building = belltower_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = belltower_3
+			aub_can_upgrade_to_belltower_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = belltower_3
+		if = {
+			limit = { has_building = belltower_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = belltower_4
+			aub_can_upgrade_to_belltower_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = belltower_4
+		if = {
+			limit = { has_building = belltower_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# biscuit_bakery_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_biscuit_bakery_1_effect = {
+	if = {
+		limit = {
+			has_building = biscuit_bakery_1
+			aub_can_upgrade_to_biscuit_bakery_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = biscuit_bakery_1
+		if = {
+			limit = { has_building = biscuit_bakery_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = biscuit_bakery_2
+			aub_can_upgrade_to_biscuit_bakery_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = biscuit_bakery_2
+		if = {
+			limit = { has_building = biscuit_bakery_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = biscuit_bakery_3
+			aub_can_upgrade_to_biscuit_bakery_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = biscuit_bakery_3
+		if = {
+			limit = { has_building = biscuit_bakery_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = biscuit_bakery_4
+			aub_can_upgrade_to_biscuit_bakery_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = biscuit_bakery_4
+		if = {
+			limit = { has_building = biscuit_bakery_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# blacksmiths_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_blacksmiths_01_effect = {
+	if = {
+		limit = {
+			has_building = blacksmiths_01
+			aub_can_upgrade_to_blacksmiths_02_trigger = yes
 			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
 		}
-		remove_building = dushan_mines_01
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = dushan_mines_02
+		upgrade_building_effect = blacksmiths_01
 		if = {
-			limit = { has_building = dushan_mines_02 }
-			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = dushan_mines_01
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = dushan_mines_02
-			aub_can_upgrade_to_dushan_mines_03_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
-		}
-		remove_building = dushan_mines_02
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = dushan_mines_03
-		if = {
-			limit = { has_building = dushan_mines_03 }
-			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = dushan_mines_02
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = dushan_mines_03
-			aub_can_upgrade_to_dushan_mines_04_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_6_cost }
-		}
-		remove_building = dushan_mines_03
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = dushan_mines_04
-		if = {
-			limit = { has_building = dushan_mines_04 }
-			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = dushan_mines_03
-		}
-	}
-}
-
-# dvin_shuka_01: 1 frozen upgrade edge(s)
-aub_upgrade_chain_dvin_shuka_01_effect = {
-	if = {
-		limit = {
-			has_building = dvin_shuka_01
-			aub_can_upgrade_to_dvin_shuka_02_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = 800 }
-		}
-		remove_building = dvin_shuka_01
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = dvin_shuka_02
-		if = {
-			limit = { has_building = dvin_shuka_02 }
-			aub_pay_gold_building_cost_effect = { GOLD = 800 }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = dvin_shuka_01
-		}
-	}
-}
-
-# elephant_pens_01: 7 frozen upgrade edge(s)
-aub_upgrade_chain_elephant_pens_01_effect = {
-	if = {
-		limit = {
-			has_building = elephant_pens_01
-			aub_can_upgrade_to_elephant_pens_02_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_2_cost }
-		}
-		upgrade_building_effect = elephant_pens_01
-		if = {
-			limit = { has_building = elephant_pens_02 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = elephant_pens_02
-			aub_can_upgrade_to_elephant_pens_03_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_3_cost }
-		}
-		upgrade_building_effect = elephant_pens_02
-		if = {
-			limit = { has_building = elephant_pens_03 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = elephant_pens_03
-			aub_can_upgrade_to_elephant_pens_04_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_4_cost }
-		}
-		upgrade_building_effect = elephant_pens_03
-		if = {
-			limit = { has_building = elephant_pens_04 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = elephant_pens_04
-			aub_can_upgrade_to_elephant_pens_05_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_5_cost }
-		}
-		upgrade_building_effect = elephant_pens_04
-		if = {
-			limit = { has_building = elephant_pens_05 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = elephant_pens_05
-			aub_can_upgrade_to_elephant_pens_06_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_6_cost }
-		}
-		upgrade_building_effect = elephant_pens_05
-		if = {
-			limit = { has_building = elephant_pens_06 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = elephant_pens_06
-			aub_can_upgrade_to_elephant_pens_07_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_7_cost }
-		}
-		upgrade_building_effect = elephant_pens_06
-		if = {
-			limit = { has_building = elephant_pens_07 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = elephant_pens_07
-			aub_can_upgrade_to_elephant_pens_08_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_8_cost }
-		}
-		upgrade_building_effect = elephant_pens_07
-		if = {
-			limit = { has_building = elephant_pens_08 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
-		}
-	}
-}
-
-# examination_hall_01: 2 frozen upgrade edge(s)
-aub_upgrade_chain_examination_hall_01_effect = {
-	if = {
-		limit = {
-			has_building = examination_hall_01
-			aub_can_upgrade_to_examination_hall_02_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
-		}
-		upgrade_building_effect = examination_hall_01
-		if = {
-			limit = { has_building = examination_hall_02 }
+			limit = { has_building = blacksmiths_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
 		}
 	}
 	else_if = {
 		limit = {
-			has_building = examination_hall_02
-			aub_can_upgrade_to_examination_hall_03_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
-		}
-		upgrade_building_effect = examination_hall_02
-		if = {
-			limit = { has_building = examination_hall_03 }
-			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
-		}
-	}
-}
-
-# falun_mines_01: 3 frozen upgrade edge(s)
-aub_upgrade_chain_falun_mines_01_effect = {
-	if = {
-		limit = {
-			has_building = falun_mines_01
-			aub_can_upgrade_to_falun_mines_02_trigger = yes
+			has_building = blacksmiths_02
+			aub_can_upgrade_to_blacksmiths_03_trigger = yes
 			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
 		}
-		remove_building = falun_mines_01
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = falun_mines_02
+		upgrade_building_effect = blacksmiths_02
 		if = {
-			limit = { has_building = falun_mines_02 }
+			limit = { has_building = blacksmiths_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
 		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = falun_mines_01
-		}
 	}
 	else_if = {
 		limit = {
-			has_building = falun_mines_02
-			aub_can_upgrade_to_falun_mines_03_trigger = yes
+			has_building = blacksmiths_03
+			aub_can_upgrade_to_blacksmiths_04_trigger = yes
 			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
 		}
-		remove_building = falun_mines_02
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = falun_mines_03
+		upgrade_building_effect = blacksmiths_03
 		if = {
-			limit = { has_building = falun_mines_03 }
+			limit = { has_building = blacksmiths_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
 		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = falun_mines_02
-		}
 	}
 	else_if = {
 		limit = {
-			has_building = falun_mines_03
-			aub_can_upgrade_to_falun_mines_04_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_6_cost }
-		}
-		remove_building = falun_mines_03
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = falun_mines_04
-		if = {
-			limit = { has_building = falun_mines_04 }
-			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = falun_mines_03
-		}
-	}
-}
-
-# farm_estates_01: 7 frozen upgrade edge(s)
-aub_upgrade_chain_farm_estates_01_effect = {
-	if = {
-		limit = {
-			has_building = farm_estates_01
-			aub_can_upgrade_to_farm_estates_02_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_2_cost }
-		}
-		upgrade_building_effect = farm_estates_01
-		if = {
-			limit = { has_building = farm_estates_02 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = farm_estates_02
-			aub_can_upgrade_to_farm_estates_03_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_3_cost }
-		}
-		upgrade_building_effect = farm_estates_02
-		if = {
-			limit = { has_building = farm_estates_03 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = farm_estates_03
-			aub_can_upgrade_to_farm_estates_04_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_4_cost }
-		}
-		upgrade_building_effect = farm_estates_03
-		if = {
-			limit = { has_building = farm_estates_04 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = farm_estates_04
-			aub_can_upgrade_to_farm_estates_05_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_5_cost }
-		}
-		upgrade_building_effect = farm_estates_04
-		if = {
-			limit = { has_building = farm_estates_05 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = farm_estates_05
-			aub_can_upgrade_to_farm_estates_06_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_6_cost }
-		}
-		upgrade_building_effect = farm_estates_05
-		if = {
-			limit = { has_building = farm_estates_06 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = farm_estates_06
-			aub_can_upgrade_to_farm_estates_07_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_7_cost }
-		}
-		upgrade_building_effect = farm_estates_06
-		if = {
-			limit = { has_building = farm_estates_07 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = farm_estates_07
-			aub_can_upgrade_to_farm_estates_08_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = normal_building_tier_8_cost }
-		}
-		upgrade_building_effect = farm_estates_07
-		if = {
-			limit = { has_building = farm_estates_08 }
-			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
-		}
-	}
-}
-
-# fengtian_mines_01: 2 frozen upgrade edge(s)
-aub_upgrade_chain_fengtian_mines_01_effect = {
-	if = {
-		limit = {
-			has_building = fengtian_mines_01
-			aub_can_upgrade_to_fengtian_mines_02_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
-		}
-		remove_building = fengtian_mines_01
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = fengtian_mines_02
-		if = {
-			limit = { has_building = fengtian_mines_02 }
-			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = fengtian_mines_01
-		}
-	}
-	else_if = {
-		limit = {
-			has_building = fengtian_mines_02
-			aub_can_upgrade_to_fengtian_mines_03_trigger = yes
+			has_building = blacksmiths_04
+			aub_can_upgrade_to_blacksmiths_05_trigger = yes
 			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
 		}
-		remove_building = fengtian_mines_02
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = fengtian_mines_03
+		upgrade_building_effect = blacksmiths_04
 		if = {
-			limit = { has_building = fengtian_mines_03 }
+			limit = { has_building = blacksmiths_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = fengtian_mines_02
 		}
 	}
 }
 
-# generic_copper_mines_01: 3 frozen upgrade edge(s)
-aub_upgrade_chain_generic_copper_mines_01_effect = {
+# blacksmiths_forge_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_blacksmiths_forge_1_effect = {
 	if = {
 		limit = {
-			has_building = generic_copper_mines_01
-			aub_can_upgrade_to_generic_copper_mines_02_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+			has_building = blacksmiths_forge_1
+			aub_can_upgrade_to_blacksmiths_forge_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
 		}
-		remove_building = generic_copper_mines_01
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = generic_copper_mines_02
+		upgrade_building_effect = blacksmiths_forge_1
 		if = {
-			limit = { has_building = generic_copper_mines_02 }
-			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = generic_copper_mines_01
+			limit = { has_building = blacksmiths_forge_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
 		}
 	}
 	else_if = {
 		limit = {
-			has_building = generic_copper_mines_02
-			aub_can_upgrade_to_generic_copper_mines_03_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+			has_building = blacksmiths_forge_2
+			aub_can_upgrade_to_blacksmiths_forge_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
 		}
-		remove_building = generic_copper_mines_02
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = generic_copper_mines_03
+		upgrade_building_effect = blacksmiths_forge_2
 		if = {
-			limit = { has_building = generic_copper_mines_03 }
-			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
-		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = generic_copper_mines_02
+			limit = { has_building = blacksmiths_forge_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
 		}
 	}
 	else_if = {
 		limit = {
-			has_building = generic_copper_mines_03
-			aub_can_upgrade_to_generic_copper_mines_04_trigger = yes
-			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_6_cost }
+			has_building = blacksmiths_forge_3
+			aub_can_upgrade_to_blacksmiths_forge_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
 		}
-		remove_building = generic_copper_mines_03
-		scope:aub_payer = { save_scope_as = character }
-		add_special_building = generic_copper_mines_04
+		upgrade_building_effect = blacksmiths_forge_3
 		if = {
-			limit = { has_building = generic_copper_mines_04 }
-			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
+			limit = { has_building = blacksmiths_forge_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
 		}
-		else = {
-			scope:aub_payer = { save_scope_as = character }
-			add_special_building = generic_copper_mines_03
+	}
+	else_if = {
+		limit = {
+			has_building = blacksmiths_forge_4
+			aub_can_upgrade_to_blacksmiths_forge_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = blacksmiths_forge_4
+		if = {
+			limit = { has_building = blacksmiths_forge_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
 		}
 	}
 }
 
-# generic_gold_mines_01: 3 frozen upgrade edge(s)
+# blacksmiths_guild_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_blacksmiths_guild_1_effect = {
+	if = {
+		limit = {
+			has_building = blacksmiths_guild_1
+			aub_can_upgrade_to_blacksmiths_guild_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = premium_building_cost_tier_2 }
+		}
+		upgrade_building_effect = blacksmiths_guild_1
+		if = {
+			limit = { has_building = blacksmiths_guild_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = premium_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = blacksmiths_guild_2
+			aub_can_upgrade_to_blacksmiths_guild_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = premium_building_cost_tier_3 }
+		}
+		upgrade_building_effect = blacksmiths_guild_2
+		if = {
+			limit = { has_building = blacksmiths_guild_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = premium_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = blacksmiths_guild_3
+			aub_can_upgrade_to_blacksmiths_guild_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = premium_building_cost_tier_4 }
+		}
+		upgrade_building_effect = blacksmiths_guild_3
+		if = {
+			limit = { has_building = blacksmiths_guild_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = premium_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = blacksmiths_guild_4
+			aub_can_upgrade_to_blacksmiths_guild_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = premium_building_cost_tier_5 }
+		}
+		upgrade_building_effect = blacksmiths_guild_4
+		if = {
+			limit = { has_building = blacksmiths_guild_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = premium_building_cost_tier_5 }
+		}
+	}
+}
+
+# bladesmiths_of_toledo_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_bladesmiths_of_toledo_1_effect = {
+	if = {
+		limit = {
+			has_building = bladesmiths_of_toledo_1
+			aub_can_upgrade_to_bladesmiths_of_toledo_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = premium_building_cost_tier_2 }
+		}
+		upgrade_building_effect = bladesmiths_of_toledo_1
+		if = {
+			limit = { has_building = bladesmiths_of_toledo_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = premium_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = bladesmiths_of_toledo_2
+			aub_can_upgrade_to_bladesmiths_of_toledo_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = premium_building_cost_tier_3 }
+		}
+		upgrade_building_effect = bladesmiths_of_toledo_2
+		if = {
+			limit = { has_building = bladesmiths_of_toledo_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = premium_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = bladesmiths_of_toledo_3
+			aub_can_upgrade_to_bladesmiths_of_toledo_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = premium_building_cost_tier_4 }
+		}
+		upgrade_building_effect = bladesmiths_of_toledo_3
+		if = {
+			limit = { has_building = bladesmiths_of_toledo_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = premium_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = bladesmiths_of_toledo_4
+			aub_can_upgrade_to_bladesmiths_of_toledo_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = premium_building_cost_tier_5 }
+		}
+		upgrade_building_effect = bladesmiths_of_toledo_4
+		if = {
+			limit = { has_building = bladesmiths_of_toledo_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = premium_building_cost_tier_5 }
+		}
+	}
+}
+
+# blast_furnace_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_blast_furnace_1_effect = {
+	if = {
+		limit = {
+			has_building = blast_furnace_1
+			aub_can_upgrade_to_blast_furnace_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_expensive_tier_7_cost }
+		}
+		upgrade_building_effect = blast_furnace_1
+		if = {
+			limit = { has_building = blast_furnace_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_expensive_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = blast_furnace_2
+			aub_can_upgrade_to_blast_furnace_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_expensive_tier_8_cost }
+		}
+		upgrade_building_effect = blast_furnace_2
+		if = {
+			limit = { has_building = blast_furnace_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_expensive_tier_8_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = blast_furnace_3
+			aub_can_upgrade_to_blast_furnace_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_expensive_tier_9_cost }
+		}
+		upgrade_building_effect = blast_furnace_3
+		if = {
+			limit = { has_building = blast_furnace_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_expensive_tier_9_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = blast_furnace_4
+			aub_can_upgrade_to_blast_furnace_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_expensive_tier_10_cost }
+		}
+		upgrade_building_effect = blast_furnace_4
+		if = {
+			limit = { has_building = blast_furnace_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_expensive_tier_10_cost }
+		}
+	}
+}
+
+# border_bulwarks_1: 4 frozen upgrade edge(s)

@@ -1,141 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_pastures_07_trigger = {
-	# vanilla can_construct_potential
-	building_pastures_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_city_magistrate_2_trigger = {
+	can_start_building_construction_for_owner = city_magistrate_2
 }
 
-aub_can_upgrade_to_pastures_08_trigger = {
-	# vanilla can_construct_potential
-	building_pastures_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_city_magistrate_3_trigger = {
+	can_start_building_construction_for_owner = city_magistrate_3
 }
 
-aub_can_upgrade_to_peat_quarries_02_trigger = {
-	# vanilla can_construct_potential
-	building_peat_quarries_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	scope:holder.culture = {
-		has_innovation = innovation_crop_rotation
-	}
+aub_can_upgrade_to_city_magistrate_4_trigger = {
+	can_start_building_construction_for_owner = city_magistrate_4
 }
 
-aub_can_upgrade_to_peat_quarries_03_trigger = {
-	# vanilla can_construct_potential
-	building_peat_quarries_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_city_magistrate_5_trigger = {
+	can_start_building_construction_for_owner = city_magistrate_5
 }
 
-aub_can_upgrade_to_peat_quarries_04_trigger = {
-	# vanilla can_construct_potential
-	building_peat_quarries_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_city_town_market_2_trigger = {
+	can_start_building_construction_for_owner = city_town_market_2
 }
 
-aub_can_upgrade_to_peat_quarries_05_trigger = {
-	# vanilla can_construct_potential
-	building_peat_quarries_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_guilds
-	}
+aub_can_upgrade_to_city_town_market_3_trigger = {
+	can_start_building_construction_for_owner = city_town_market_3
 }
 
-aub_can_upgrade_to_peat_quarries_06_trigger = {
-	# vanilla can_construct_potential
-	building_peat_quarries_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_guilds
-	}
+aub_can_upgrade_to_city_town_market_4_trigger = {
+	can_start_building_construction_for_owner = city_town_market_4
 }
 
-aub_can_upgrade_to_peat_quarries_07_trigger = {
-	# vanilla can_construct_potential
-	building_peat_quarries_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_city_town_market_5_trigger = {
+	can_start_building_construction_for_owner = city_town_market_5
 }
 
-aub_can_upgrade_to_peat_quarries_08_trigger = {
-	# vanilla can_construct_potential
-	building_peat_quarries_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_city_town_watch_2_trigger = {
+	can_start_building_construction_for_owner = city_town_watch_2
 }
 
-aub_can_upgrade_to_phnom_dek_mines_02_trigger = {
-	# vanilla can_construct_potential
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_city_town_watch_3_trigger = {
+	can_start_building_construction_for_owner = city_town_watch_3
 }
-

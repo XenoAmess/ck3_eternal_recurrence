@@ -1,0 +1,523 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+
+aub_upgrade_chain_wanua_fruit_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_fruit_barter_1
+			aub_can_upgrade_to_wanua_fruit_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_fruit_barter_1
+		if = {
+			limit = { has_building = wanua_fruit_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_fruit_barter_2
+			aub_can_upgrade_to_wanua_fruit_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_fruit_barter_2
+		if = {
+			limit = { has_building = wanua_fruit_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_fruit_barter_3
+			aub_can_upgrade_to_wanua_fruit_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_fruit_barter_3
+		if = {
+			limit = { has_building = wanua_fruit_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_fruit_barter_4
+			aub_can_upgrade_to_wanua_fruit_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_fruit_barter_4
+		if = {
+			limit = { has_building = wanua_fruit_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_furs_barter_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_wanua_furs_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_furs_barter_1
+			aub_can_upgrade_to_wanua_furs_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_furs_barter_1
+		if = {
+			limit = { has_building = wanua_furs_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_furs_barter_2
+			aub_can_upgrade_to_wanua_furs_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_furs_barter_2
+		if = {
+			limit = { has_building = wanua_furs_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_furs_barter_3
+			aub_can_upgrade_to_wanua_furs_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_furs_barter_3
+		if = {
+			limit = { has_building = wanua_furs_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_furs_barter_4
+			aub_can_upgrade_to_wanua_furs_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_furs_barter_4
+		if = {
+			limit = { has_building = wanua_furs_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_grain_barter_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_wanua_grain_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_grain_barter_1
+			aub_can_upgrade_to_wanua_grain_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_grain_barter_1
+		if = {
+			limit = { has_building = wanua_grain_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_grain_barter_2
+			aub_can_upgrade_to_wanua_grain_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_grain_barter_2
+		if = {
+			limit = { has_building = wanua_grain_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_grain_barter_3
+			aub_can_upgrade_to_wanua_grain_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_grain_barter_3
+		if = {
+			limit = { has_building = wanua_grain_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_grain_barter_4
+			aub_can_upgrade_to_wanua_grain_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_grain_barter_4
+		if = {
+			limit = { has_building = wanua_grain_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_hemp_barter_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_wanua_hemp_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_hemp_barter_1
+			aub_can_upgrade_to_wanua_hemp_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_hemp_barter_1
+		if = {
+			limit = { has_building = wanua_hemp_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_hemp_barter_2
+			aub_can_upgrade_to_wanua_hemp_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_hemp_barter_2
+		if = {
+			limit = { has_building = wanua_hemp_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_hemp_barter_3
+			aub_can_upgrade_to_wanua_hemp_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_hemp_barter_3
+		if = {
+			limit = { has_building = wanua_hemp_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_hemp_barter_4
+			aub_can_upgrade_to_wanua_hemp_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_hemp_barter_4
+		if = {
+			limit = { has_building = wanua_hemp_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_honey_barter_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_wanua_honey_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_honey_barter_1
+			aub_can_upgrade_to_wanua_honey_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_honey_barter_1
+		if = {
+			limit = { has_building = wanua_honey_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_honey_barter_2
+			aub_can_upgrade_to_wanua_honey_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_honey_barter_2
+		if = {
+			limit = { has_building = wanua_honey_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_honey_barter_3
+			aub_can_upgrade_to_wanua_honey_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_honey_barter_3
+		if = {
+			limit = { has_building = wanua_honey_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_honey_barter_4
+			aub_can_upgrade_to_wanua_honey_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_honey_barter_4
+		if = {
+			limit = { has_building = wanua_honey_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_horses_barter_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_wanua_horses_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_horses_barter_1
+			aub_can_upgrade_to_wanua_horses_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_horses_barter_1
+		if = {
+			limit = { has_building = wanua_horses_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_horses_barter_2
+			aub_can_upgrade_to_wanua_horses_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_horses_barter_2
+		if = {
+			limit = { has_building = wanua_horses_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_horses_barter_3
+			aub_can_upgrade_to_wanua_horses_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_horses_barter_3
+		if = {
+			limit = { has_building = wanua_horses_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_horses_barter_4
+			aub_can_upgrade_to_wanua_horses_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_horses_barter_4
+		if = {
+			limit = { has_building = wanua_horses_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_incense_barter_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_wanua_incense_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_incense_barter_1
+			aub_can_upgrade_to_wanua_incense_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_incense_barter_1
+		if = {
+			limit = { has_building = wanua_incense_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_incense_barter_2
+			aub_can_upgrade_to_wanua_incense_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_incense_barter_2
+		if = {
+			limit = { has_building = wanua_incense_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_incense_barter_3
+			aub_can_upgrade_to_wanua_incense_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_incense_barter_3
+		if = {
+			limit = { has_building = wanua_incense_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_incense_barter_4
+			aub_can_upgrade_to_wanua_incense_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_incense_barter_4
+		if = {
+			limit = { has_building = wanua_incense_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_ivory_barter_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_wanua_ivory_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_ivory_barter_1
+			aub_can_upgrade_to_wanua_ivory_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_ivory_barter_1
+		if = {
+			limit = { has_building = wanua_ivory_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_ivory_barter_2
+			aub_can_upgrade_to_wanua_ivory_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_ivory_barter_2
+		if = {
+			limit = { has_building = wanua_ivory_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_ivory_barter_3
+			aub_can_upgrade_to_wanua_ivory_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_ivory_barter_3
+		if = {
+			limit = { has_building = wanua_ivory_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_ivory_barter_4
+			aub_can_upgrade_to_wanua_ivory_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_ivory_barter_4
+		if = {
+			limit = { has_building = wanua_ivory_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_medicaments_barter_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_wanua_medicaments_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_medicaments_barter_1
+			aub_can_upgrade_to_wanua_medicaments_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_medicaments_barter_1
+		if = {
+			limit = { has_building = wanua_medicaments_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_medicaments_barter_2
+			aub_can_upgrade_to_wanua_medicaments_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_medicaments_barter_2
+		if = {
+			limit = { has_building = wanua_medicaments_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_medicaments_barter_3
+			aub_can_upgrade_to_wanua_medicaments_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_medicaments_barter_3
+		if = {
+			limit = { has_building = wanua_medicaments_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_medicaments_barter_4
+			aub_can_upgrade_to_wanua_medicaments_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_medicaments_barter_4
+		if = {
+			limit = { has_building = wanua_medicaments_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_millet_barter_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_wanua_millet_barter_1_effect = {
+	if = {
+		limit = {
+			has_building = wanua_millet_barter_1
+			aub_can_upgrade_to_wanua_millet_barter_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = wanua_millet_barter_1
+		if = {
+			limit = { has_building = wanua_millet_barter_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_millet_barter_2
+			aub_can_upgrade_to_wanua_millet_barter_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = wanua_millet_barter_2
+		if = {
+			limit = { has_building = wanua_millet_barter_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_millet_barter_3
+			aub_can_upgrade_to_wanua_millet_barter_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = wanua_millet_barter_3
+		if = {
+			limit = { has_building = wanua_millet_barter_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = wanua_millet_barter_4
+			aub_can_upgrade_to_wanua_millet_barter_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = wanua_millet_barter_4
+		if = {
+			limit = { has_building = wanua_millet_barter_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# wanua_mine_alum_barter_1: 4 frozen upgrade edge(s)

@@ -165,7 +165,7 @@ def validate_vanilla(game_root: Path) -> tuple[list[str], bool]:
     if not buildings.is_dir() or not holdings.is_dir():
         return [], False
     try:
-        current = extractor.render_snapshot(extractor.build_snapshot(game_root))
+        current = extractor.render_snapshot(extractor.build_snapshot(game_root, EXPECTED_GAME_VERSION))
         frozen = SNAPSHOT.read_bytes()
     except (OSError, UnicodeError, extractor.ExtractionError) as error:
         return [f"installed vanilla extraction failed: {error}"], True
@@ -185,15 +185,15 @@ def validate(
     errors = builder.source_errors(MOD)
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     expected_descriptor = (
-        'version="4.0.3"\n'
+        'version="4.0.4"\n'
         'tags={\n\t"Balance"\n}\n'
         'name="自动升级建筑（XenoAmess维护版）"\n'
-        'supported_version="1.20.0.3"\n'
+        'supported_version="1.21.0"\n'
     )
     from workshop_compatibility_tags import render_workshop_descriptor_bytes
     expected_descriptor = render_workshop_descriptor_bytes(expected_descriptor.encode("utf-8")).decode("utf-8")
     if descriptor != expected_descriptor:
-        errors.append("descriptor.mod differs from the 4.0.3 / 1.20.0.3 maintenance contract")
+        errors.append("descriptor.mod differs from the 4.0.4 / 1.21.0 maintenance contract")
 
     decisions = text("common/decisions/build_decision.txt")
     on_actions = text("common/on_action/aub_on_actions.txt")
@@ -240,7 +240,7 @@ def validate(
         errors.append("global every_province scan is forbidden")
     required_event_fragments = (
         "every_directly_owned_province = {",
-        "has_ongoing_construction = no",
+        "has_ongoing_holding_construction = no",
         "save_scope_as = aub_payer",
         "save_scope_as = character",
         "save_scope_as = holder",
@@ -453,18 +453,26 @@ def validate(
             errors.append("successor does not retain the enabled state exactly once")
         if succession_transfer.count("aub_start_global_loop_effect = yes") != 1:
             errors.append("successor does not re-seed the unique global loop")
-    for root in ("citadel_shrine_01", "sacred_pool_01", "vihara_halls_01"):
+    for root, edge_count in (("temple_citadel_shrine_1", 3), ("sacred_pool_1", 4), ("temple_viharas_1", 4)):
         chain = extract_block(effects, f"aub_upgrade_chain_{root}_effect")
         if chain is None:
             errors.append(f"Mandala minor-building chain is missing: {root}")
             continue
         if f"has_building_or_higher = {root}" not in effects:
             errors.append(f"Mandala minor-building dispatcher is missing: {root}")
-        if f"# {root}: 7 frozen upgrade edge(s)" not in effects:
+        if f"# {root}: {edge_count} frozen upgrade edge(s)" not in effects:
             errors.append(f"Mandala minor-building edge inventory drifted: {root}")
     if effects.count("aub_upgrade_chain_") != len(CHAINS) * 2:
         errors.append("generated building chain call/definition inventory drifted")
-    dispatch = extract_block(effects, "aub_upgrade_all_supported_buildings_effect")
+    province_entry = extract_block(effects, "aub_upgrade_all_supported_buildings_effect", top_level=True)
+    for fragment in ("every_built_buildings = {", "is_primary_building = yes",
+                     "building_district = {", "aub_upgrade_supported_district_buildings_effect = yes",
+                     "clear_saved_scope = aub_foreign_trade_post", "trade_post_district ?= {",
+                     "exists = district_owning_title", "district_owning_title = { holder = scope:aub_payer }",
+                     "NOT = { this = scope:aub_foreign_trade_post }"):
+        if province_entry is None or province_entry.count(fragment) != 1:
+            errors.append(f"unique district traversal contract missing: {fragment}")
+    dispatch = extract_block(effects, "aub_upgrade_supported_district_buildings_effect", top_level=True)
     if dispatch is None or dispatch.count(
         "scope:aub_payer = { var:aub_upgrades_this_scan < 15 }"
     ) != len(CHAINS):
@@ -517,18 +525,7 @@ def validate(
         effects,
     ):
         errors.append("legacy per-edge treasury-or-personal affordability template remains")
-    expected_regular_upgrades = Counter(
-        edge.source for edge in EDGES if edge.target_type != "special"
-    )
-    expected_special_adds = Counter(
-        item
-        for edge in EDGES
-        if edge.target_type == "special"
-        for item in (edge.target, edge.source)
-    )
-    expected_special_removals = Counter(
-        edge.source for edge in EDGES if edge.target_type == "special"
-    )
+    expected_regular_upgrades = Counter(edge.source for edge in EDGES)
     actual_regular_upgrades = Counter(
         re.findall(
             r"(?m)^\s*upgrade_building_effect\s*=\s*([A-Za-z_][A-Za-z0-9_]*)\s*$",
@@ -546,22 +543,21 @@ def validate(
     )
     if actual_regular_upgrades != expected_regular_upgrades:
         errors.append("generated regular/duchy native-upgrade inventory drifted")
-    if actual_special_adds != expected_special_adds:
-        errors.append("generated special target/rollback insertion inventory drifted")
-    if actual_special_removals != expected_special_removals:
-        errors.append("generated special source removal inventory drifted")
-    if effects.count("scope:aub_payer = { save_scope_as = character }") != (
-        2 * sum(edge.target_type == "special" for edge in EDGES)
-    ):
-        errors.append("special target/rollback payer-context inventory drifted")
+    if actual_special_adds or actual_special_removals:
+        errors.append("Florin native in-place upgrades must not destroy and recreate buildings")
     for edge in EDGES:
         if effects.count(f"\n\t\t\thas_building = {edge.source}\n") != 1:
             errors.append(f"generated source edge inventory drifted: {edge.source}")
         if triggers.count(f"aub_can_upgrade_to_{edge.target}_trigger = {{") != 1:
             errors.append(f"generated target gate inventory drifted: {edge.target}")
-    for edge in EXCLUDED_EDGES:
-        if edge.source in effects or edge.target in effects or edge.source in triggers or edge.target in triggers:
-            errors.append(f"Great Project edge leaked into production: {edge.source} -> {edge.target}")
+        gate = extract_block(triggers, f"aub_can_upgrade_to_{edge.target}_trigger", top_level=True)
+        if gate is None or extractor.parse_clausewitz(gate).entries[0].value != extractor.parse_clausewitz(
+            f"can_start_building_construction_for_owner = {edge.target}"
+        ):
+            errors.append(f"complete native target qualification drifted: {edge.target}")
+    for excluded in EXCLUDED_EDGES:
+        if excluded.source in effects or excluded.target in effects or excluded.source in triggers or excluded.target in triggers:
+            errors.append(f"Great Project edge leaked into production: {excluded.source} -> {excluded.target}")
     for forbidden in (
         "domicile",
         "great_project",
@@ -759,7 +755,8 @@ def validate(
         workshop_description = WORKSHOP_DESCRIPTION.read_text(encoding="utf-8")
         for fragment in (
             "[h1]自动升级建筑（XenoAmess维护版）[/h1]",
-            "Version 4.0.3 · CK3 1.20.0.3",
+            "Version 4.0.4 · CK3 1.21.0",
+            "[h1]4.0.4 更新记录[/h1]",
             "[h1]4.0.3 更新记录[/h1]",
             "[h1]4.0.2 更新记录[/h1]",
             "[h1]4.0.1 更新记录[/h1]",

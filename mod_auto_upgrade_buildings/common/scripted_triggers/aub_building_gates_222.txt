@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_trade_tanners_stables_04_trigger = {
+	can_start_building_construction_for_owner = trade_tanners_stables_04
+}
+
+aub_can_upgrade_to_trade_tanners_stables_05_trigger = {
+	can_start_building_construction_for_owner = trade_tanners_stables_05
+}
+
+aub_can_upgrade_to_trade_treasury_02_trigger = {
+	can_start_building_construction_for_owner = trade_treasury_02
+}
+
+aub_can_upgrade_to_trade_treasury_03_trigger = {
+	can_start_building_construction_for_owner = trade_treasury_03
+}
+
+aub_can_upgrade_to_trade_treasury_04_trigger = {
+	can_start_building_construction_for_owner = trade_treasury_04
+}
+
+aub_can_upgrade_to_trade_treasury_05_trigger = {
+	can_start_building_construction_for_owner = trade_treasury_05
+}
+
+aub_can_upgrade_to_trade_warehouse_02_trigger = {
+	can_start_building_construction_for_owner = trade_warehouse_02
+}
+
+aub_can_upgrade_to_trade_warehouse_03_trigger = {
+	can_start_building_construction_for_owner = trade_warehouse_03
+}
+
+aub_can_upgrade_to_trade_warehouse_04_trigger = {
+	can_start_building_construction_for_owner = trade_warehouse_04
+}
+
+aub_can_upgrade_to_trade_warehouse_05_trigger = {
+	can_start_building_construction_for_owner = trade_warehouse_05
+}

@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_wall_wardens_offices_4_trigger = {
+	can_start_building_construction_for_owner = wall_wardens_offices_4
+}
+
+aub_can_upgrade_to_wall_wardens_offices_5_trigger = {
+	can_start_building_construction_for_owner = wall_wardens_offices_5
+}
+
+aub_can_upgrade_to_walled_compound_2_trigger = {
+	can_start_building_construction_for_owner = walled_compound_2
+}
+
+aub_can_upgrade_to_walled_compound_3_trigger = {
+	can_start_building_construction_for_owner = walled_compound_3
+}
+
+aub_can_upgrade_to_walled_compound_4_trigger = {
+	can_start_building_construction_for_owner = walled_compound_4
+}
+
+aub_can_upgrade_to_walled_compound_5_trigger = {
+	can_start_building_construction_for_owner = walled_compound_5
+}
+
+aub_can_upgrade_to_walrus_hunting_camp_2_trigger = {
+	can_start_building_construction_for_owner = walrus_hunting_camp_2
+}
+
+aub_can_upgrade_to_walrus_hunting_camp_3_trigger = {
+	can_start_building_construction_for_owner = walrus_hunting_camp_3
+}
+
+aub_can_upgrade_to_walrus_hunting_camp_4_trigger = {
+	can_start_building_construction_for_owner = walrus_hunting_camp_4
+}
+
+aub_can_upgrade_to_walrus_hunting_camp_5_trigger = {
+	can_start_building_construction_for_owner = walrus_hunting_camp_5
+}

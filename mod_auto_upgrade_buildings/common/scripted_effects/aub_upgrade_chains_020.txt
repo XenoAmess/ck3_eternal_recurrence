@@ -1,0 +1,487 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+
+aub_upgrade_chain_gem_freeminers_1_effect = {
+	if = {
+		limit = {
+			has_building = gem_freeminers_1
+			aub_can_upgrade_to_gem_freeminers_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = gem_freeminers_1
+		if = {
+			limit = { has_building = gem_freeminers_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = gem_freeminers_2
+			aub_can_upgrade_to_gem_freeminers_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = gem_freeminers_2
+		if = {
+			limit = { has_building = gem_freeminers_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+}
+
+# generic_copper_mines_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_generic_copper_mines_01_effect = {
+	if = {
+		limit = {
+			has_building = generic_copper_mines_01
+			aub_can_upgrade_to_generic_copper_mines_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = generic_copper_mines_01
+		if = {
+			limit = { has_building = generic_copper_mines_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = generic_copper_mines_02
+			aub_can_upgrade_to_generic_copper_mines_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = generic_copper_mines_02
+		if = {
+			limit = { has_building = generic_copper_mines_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = generic_copper_mines_03
+			aub_can_upgrade_to_generic_copper_mines_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_6_cost }
+		}
+		upgrade_building_effect = generic_copper_mines_03
+		if = {
+			limit = { has_building = generic_copper_mines_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
+		}
+	}
+}
+
+# generic_gold_mines_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_generic_gold_mines_01_effect = {
+	if = {
+		limit = {
+			has_building = generic_gold_mines_01
+			aub_can_upgrade_to_generic_gold_mines_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = generic_gold_mines_01
+		if = {
+			limit = { has_building = generic_gold_mines_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = generic_gold_mines_02
+			aub_can_upgrade_to_generic_gold_mines_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = generic_gold_mines_02
+		if = {
+			limit = { has_building = generic_gold_mines_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = generic_gold_mines_03
+			aub_can_upgrade_to_generic_gold_mines_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_6_cost }
+		}
+		upgrade_building_effect = generic_gold_mines_03
+		if = {
+			limit = { has_building = generic_gold_mines_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
+		}
+	}
+}
+
+# generic_silver_mines_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_generic_silver_mines_01_effect = {
+	if = {
+		limit = {
+			has_building = generic_silver_mines_01
+			aub_can_upgrade_to_generic_silver_mines_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = generic_silver_mines_01
+		if = {
+			limit = { has_building = generic_silver_mines_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = generic_silver_mines_02
+			aub_can_upgrade_to_generic_silver_mines_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = generic_silver_mines_02
+		if = {
+			limit = { has_building = generic_silver_mines_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = generic_silver_mines_03
+			aub_can_upgrade_to_generic_silver_mines_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_6_cost }
+		}
+		upgrade_building_effect = generic_silver_mines_03
+		if = {
+			limit = { has_building = generic_silver_mines_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
+		}
+	}
+}
+
+# glue_cauldrons_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_glue_cauldrons_1_effect = {
+	if = {
+		limit = {
+			has_building = glue_cauldrons_1
+			aub_can_upgrade_to_glue_cauldrons_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = glue_cauldrons_1
+		if = {
+			limit = { has_building = glue_cauldrons_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = glue_cauldrons_2
+			aub_can_upgrade_to_glue_cauldrons_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = glue_cauldrons_2
+		if = {
+			limit = { has_building = glue_cauldrons_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = glue_cauldrons_3
+			aub_can_upgrade_to_glue_cauldrons_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = glue_cauldrons_3
+		if = {
+			limit = { has_building = glue_cauldrons_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = glue_cauldrons_4
+			aub_can_upgrade_to_glue_cauldrons_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = glue_cauldrons_4
+		if = {
+			limit = { has_building = glue_cauldrons_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# gold_freeminers_1: 2 frozen upgrade edge(s)
+aub_upgrade_chain_gold_freeminers_1_effect = {
+	if = {
+		limit = {
+			has_building = gold_freeminers_1
+			aub_can_upgrade_to_gold_freeminers_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = gold_freeminers_1
+		if = {
+			limit = { has_building = gold_freeminers_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = gold_freeminers_2
+			aub_can_upgrade_to_gold_freeminers_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = gold_freeminers_2
+		if = {
+			limit = { has_building = gold_freeminers_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+}
+
+# governance_district_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_governance_district_01_effect = {
+	if = {
+		limit = {
+			has_building = governance_district_01
+			aub_can_upgrade_to_governance_district_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = governance_district_01
+		if = {
+			limit = { has_building = governance_district_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = governance_district_02
+			aub_can_upgrade_to_governance_district_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = governance_district_02
+		if = {
+			limit = { has_building = governance_district_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = governance_district_03
+			aub_can_upgrade_to_governance_district_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = governance_district_03
+		if = {
+			limit = { has_building = governance_district_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# grain_distillery_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_grain_distillery_1_effect = {
+	if = {
+		limit = {
+			has_building = grain_distillery_1
+			aub_can_upgrade_to_grain_distillery_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = grain_distillery_1
+		if = {
+			limit = { has_building = grain_distillery_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_distillery_2
+			aub_can_upgrade_to_grain_distillery_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = grain_distillery_2
+		if = {
+			limit = { has_building = grain_distillery_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_distillery_3
+			aub_can_upgrade_to_grain_distillery_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = grain_distillery_3
+		if = {
+			limit = { has_building = grain_distillery_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_distillery_4
+			aub_can_upgrade_to_grain_distillery_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = grain_distillery_4
+		if = {
+			limit = { has_building = grain_distillery_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# grain_exchange_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_grain_exchange_01_effect = {
+	if = {
+		limit = {
+			has_building = grain_exchange_01
+			aub_can_upgrade_to_grain_exchange_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = grain_exchange_01
+		if = {
+			limit = { has_building = grain_exchange_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_exchange_02
+			aub_can_upgrade_to_grain_exchange_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = grain_exchange_02
+		if = {
+			limit = { has_building = grain_exchange_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_exchange_03
+			aub_can_upgrade_to_grain_exchange_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = grain_exchange_03
+		if = {
+			limit = { has_building = grain_exchange_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_exchange_04
+			aub_can_upgrade_to_grain_exchange_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = grain_exchange_04
+		if = {
+			limit = { has_building = grain_exchange_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+}
+
+# grain_resource_building_1: 9 frozen upgrade edge(s)
+aub_upgrade_chain_grain_resource_building_1_effect = {
+	if = {
+		limit = {
+			has_building = grain_resource_building_1
+			aub_can_upgrade_to_grain_resource_building_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = grain_resource_building_1
+		if = {
+			limit = { has_building = grain_resource_building_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_resource_building_2
+			aub_can_upgrade_to_grain_resource_building_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = grain_resource_building_2
+		if = {
+			limit = { has_building = grain_resource_building_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_resource_building_3
+			aub_can_upgrade_to_grain_resource_building_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = grain_resource_building_3
+		if = {
+			limit = { has_building = grain_resource_building_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_resource_building_4
+			aub_can_upgrade_to_grain_resource_building_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = grain_resource_building_4
+		if = {
+			limit = { has_building = grain_resource_building_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_resource_building_5
+			aub_can_upgrade_to_grain_resource_building_6_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_6_cost }
+		}
+		upgrade_building_effect = grain_resource_building_5
+		if = {
+			limit = { has_building = grain_resource_building_6 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_resource_building_6
+			aub_can_upgrade_to_grain_resource_building_7_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_7_cost }
+		}
+		upgrade_building_effect = grain_resource_building_6
+		if = {
+			limit = { has_building = grain_resource_building_7 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_resource_building_7
+			aub_can_upgrade_to_grain_resource_building_8_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_8_cost }
+		}
+		upgrade_building_effect = grain_resource_building_7
+		if = {
+			limit = { has_building = grain_resource_building_8 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_8_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_resource_building_8
+			aub_can_upgrade_to_grain_resource_building_9_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_9_cost }
+		}
+		upgrade_building_effect = grain_resource_building_8
+		if = {
+			limit = { has_building = grain_resource_building_9 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_9_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = grain_resource_building_9
+			aub_can_upgrade_to_grain_resource_building_10_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_10_cost }
+		}
+		upgrade_building_effect = grain_resource_building_9
+		if = {
+			limit = { has_building = grain_resource_building_10 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_10_cost }
+		}
+	}
+}
+
+# grain_stores_1: 4 frozen upgrade edge(s)

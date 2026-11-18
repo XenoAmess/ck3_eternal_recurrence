@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_victualing_quarter_2_trigger = {
+	can_start_building_construction_for_owner = victualing_quarter_2
+}
+
+aub_can_upgrade_to_victualing_quarter_3_trigger = {
+	can_start_building_construction_for_owner = victualing_quarter_3
+}
+
+aub_can_upgrade_to_victualing_quarter_4_trigger = {
+	can_start_building_construction_for_owner = victualing_quarter_4
+}
+
+aub_can_upgrade_to_victualing_quarter_5_trigger = {
+	can_start_building_construction_for_owner = victualing_quarter_5
+}
+
+aub_can_upgrade_to_village_butcher_2_trigger = {
+	can_start_building_construction_for_owner = village_butcher_2
+}
+
+aub_can_upgrade_to_village_butcher_3_trigger = {
+	can_start_building_construction_for_owner = village_butcher_3
+}
+
+aub_can_upgrade_to_village_butcher_4_trigger = {
+	can_start_building_construction_for_owner = village_butcher_4
+}
+
+aub_can_upgrade_to_village_butcher_5_trigger = {
+	can_start_building_construction_for_owner = village_butcher_5
+}
+
+aub_can_upgrade_to_village_council_2_trigger = {
+	can_start_building_construction_for_owner = village_council_2
+}
+
+aub_can_upgrade_to_village_council_3_trigger = {
+	can_start_building_construction_for_owner = village_council_3
+}

@@ -1,189 +1,44 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
-# Every trigger reproduces the target building's four vanilla construction gates.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
 
-aub_can_upgrade_to_capital_bureau_04_trigger = {
-	# vanilla is_enabled
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-		capital_province = root
-	}
-	# vanilla can_construct_potential
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	culture = {
-		has_innovation = innovation_manorialism
-	}
+aub_can_upgrade_to_amber_resource_building_3_trigger = {
+	can_start_building_construction_for_owner = amber_resource_building_3
 }
 
-aub_can_upgrade_to_capital_bureau_05_trigger = {
-	# vanilla is_enabled
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-		capital_province = root
-	}
-	# vanilla can_construct_potential
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	culture = {
-		has_innovation = innovation_windmills
-	}
+aub_can_upgrade_to_amber_resource_building_4_trigger = {
+	can_start_building_construction_for_owner = amber_resource_building_4
 }
 
-aub_can_upgrade_to_capital_bureau_06_trigger = {
-	# vanilla is_enabled
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-		capital_province = root
-	}
-	# vanilla can_construct_potential
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	culture = {
-		has_innovation = innovation_windmills
-	}
+aub_can_upgrade_to_amber_resource_building_5_trigger = {
+	can_start_building_construction_for_owner = amber_resource_building_5
 }
 
-aub_can_upgrade_to_capital_bureau_07_trigger = {
-	# vanilla is_enabled
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-		capital_province = root
-	}
-	# vanilla can_construct_potential
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_amber_resource_building_6_trigger = {
+	can_start_building_construction_for_owner = amber_resource_building_6
 }
 
-aub_can_upgrade_to_capital_bureau_08_trigger = {
-	# vanilla is_enabled
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-		capital_province = root
-	}
-	# vanilla can_construct_potential
-	scope:holder = {
-		government_has_flag = government_is_administrative
-		is_independent_ruler = yes
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 04
-	}
-	culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_amber_resource_building_7_trigger = {
+	can_start_building_construction_for_owner = amber_resource_building_7
 }
 
-aub_can_upgrade_to_caravanserai_02_trigger = {
-	# vanilla can_construct_potential
-	building_caravanserai_requirement_terrain = yes
-	building_requirement_castle_city_church = {
-		LEVEL = 01
-	}
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	scope:holder.culture = {
-		has_innovation = innovation_guilds
-	}
+aub_can_upgrade_to_amber_resource_building_8_trigger = {
+	can_start_building_construction_for_owner = amber_resource_building_8
 }
 
-aub_can_upgrade_to_caravanserai_03_trigger = {
-	# vanilla can_construct_potential
-	building_caravanserai_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_guilds
-	}
+aub_can_upgrade_to_amber_resource_building_9_trigger = {
+	can_start_building_construction_for_owner = amber_resource_building_9
 }
 
-aub_can_upgrade_to_caravanserai_04_trigger = {
-	# vanilla can_construct_potential
-	building_caravanserai_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 02
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_guilds
-	}
+aub_can_upgrade_to_amber_resource_building_10_trigger = {
+	can_start_building_construction_for_owner = amber_resource_building_10
 }
 
-aub_can_upgrade_to_caravanserai_05_trigger = {
-	# vanilla can_construct_potential
-	building_caravanserai_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_guilds
-	}
+aub_can_upgrade_to_apothecary_2_trigger = {
+	can_start_building_construction_for_owner = apothecary_2
 }
 
-aub_can_upgrade_to_caravanserai_06_trigger = {
-	# vanilla can_construct_potential
-	building_caravanserai_requirement_terrain = yes
-	# vanilla can_construct_showing_failures_only
-	building_requirement_tribal = no
-	# vanilla can_construct
-	building_requirement_castle_city_church = {
-		LEVEL = 03
-	}
-	scope:holder.culture = {
-		has_innovation = innovation_cranes
-	}
+aub_can_upgrade_to_apothecary_3_trigger = {
+	can_start_building_construction_for_owner = apothecary_3
 }
-

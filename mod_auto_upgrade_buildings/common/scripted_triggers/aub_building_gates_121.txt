@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_manor_hunting_grounds_5_trigger = {
+	can_start_building_construction_for_owner = manor_hunting_grounds_5
+}
+
+aub_can_upgrade_to_manor_kitchens_2_trigger = {
+	can_start_building_construction_for_owner = manor_kitchens_2
+}
+
+aub_can_upgrade_to_manor_kitchens_3_trigger = {
+	can_start_building_construction_for_owner = manor_kitchens_3
+}
+
+aub_can_upgrade_to_manor_kitchens_4_trigger = {
+	can_start_building_construction_for_owner = manor_kitchens_4
+}
+
+aub_can_upgrade_to_manor_kitchens_5_trigger = {
+	can_start_building_construction_for_owner = manor_kitchens_5
+}
+
+aub_can_upgrade_to_manor_parlor_2_trigger = {
+	can_start_building_construction_for_owner = manor_parlor_2
+}
+
+aub_can_upgrade_to_manor_parlor_3_trigger = {
+	can_start_building_construction_for_owner = manor_parlor_3
+}
+
+aub_can_upgrade_to_manor_parlor_4_trigger = {
+	can_start_building_construction_for_owner = manor_parlor_4
+}
+
+aub_can_upgrade_to_manor_parlor_5_trigger = {
+	can_start_building_construction_for_owner = manor_parlor_5
+}
+
+aub_can_upgrade_to_manor_reeves_office_2_trigger = {
+	can_start_building_construction_for_owner = manor_reeves_office_2
+}

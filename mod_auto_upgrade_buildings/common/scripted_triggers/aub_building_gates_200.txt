@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_survey_office_02_trigger = {
+	can_start_building_construction_for_owner = survey_office_02
+}
+
+aub_can_upgrade_to_survey_office_03_trigger = {
+	can_start_building_construction_for_owner = survey_office_03
+}
+
+aub_can_upgrade_to_survey_office_04_trigger = {
+	can_start_building_construction_for_owner = survey_office_04
+}
+
+aub_can_upgrade_to_survey_office_05_trigger = {
+	can_start_building_construction_for_owner = survey_office_05
+}
+
+aub_can_upgrade_to_surveyors_hall_2_trigger = {
+	can_start_building_construction_for_owner = surveyors_hall_2
+}
+
+aub_can_upgrade_to_surveyors_hall_3_trigger = {
+	can_start_building_construction_for_owner = surveyors_hall_3
+}
+
+aub_can_upgrade_to_surveyors_hall_4_trigger = {
+	can_start_building_construction_for_owner = surveyors_hall_4
+}
+
+aub_can_upgrade_to_surveyors_hall_5_trigger = {
+	can_start_building_construction_for_owner = surveyors_hall_5
+}
+
+aub_can_upgrade_to_suvarnadvipa_mines_02_trigger = {
+	can_start_building_construction_for_owner = suvarnadvipa_mines_02
+}
+
+aub_can_upgrade_to_suvarnadvipa_mines_03_trigger = {
+	can_start_building_construction_for_owner = suvarnadvipa_mines_03
+}

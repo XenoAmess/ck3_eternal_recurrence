@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_honey_resource_building_9_trigger = {
+	can_start_building_construction_for_owner = honey_resource_building_9
+}
+
+aub_can_upgrade_to_honey_resource_building_10_trigger = {
+	can_start_building_construction_for_owner = honey_resource_building_10
+}
+
+aub_can_upgrade_to_honey_waxworks_2_trigger = {
+	can_start_building_construction_for_owner = honey_waxworks_2
+}
+
+aub_can_upgrade_to_honey_waxworks_3_trigger = {
+	can_start_building_construction_for_owner = honey_waxworks_3
+}
+
+aub_can_upgrade_to_honey_waxworks_4_trigger = {
+	can_start_building_construction_for_owner = honey_waxworks_4
+}
+
+aub_can_upgrade_to_honey_waxworks_5_trigger = {
+	can_start_building_construction_for_owner = honey_waxworks_5
+}
+
+aub_can_upgrade_to_horse_archer_paddocks_2_trigger = {
+	can_start_building_construction_for_owner = horse_archer_paddocks_2
+}
+
+aub_can_upgrade_to_horse_archer_paddocks_3_trigger = {
+	can_start_building_construction_for_owner = horse_archer_paddocks_3
+}
+
+aub_can_upgrade_to_horse_archer_paddocks_4_trigger = {
+	can_start_building_construction_for_owner = horse_archer_paddocks_4
+}
+
+aub_can_upgrade_to_horse_archer_paddocks_5_trigger = {
+	can_start_building_construction_for_owner = horse_archer_paddocks_5
+}

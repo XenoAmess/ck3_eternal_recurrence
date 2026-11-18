@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_water_temples_4_trigger = {
+	can_start_building_construction_for_owner = water_temples_4
+}
+
+aub_can_upgrade_to_water_temples_5_trigger = {
+	can_start_building_construction_for_owner = water_temples_5
+}
+
+aub_can_upgrade_to_wawel_cathedral_02_trigger = {
+	can_start_building_construction_for_owner = wawel_cathedral_02
+}
+
+aub_can_upgrade_to_wawel_cathedral_03_trigger = {
+	can_start_building_construction_for_owner = wawel_cathedral_03
+}
+
+aub_can_upgrade_to_weapon_armor_smith_2_trigger = {
+	can_start_building_construction_for_owner = weapon_armor_smith_2
+}
+
+aub_can_upgrade_to_weapon_armor_smith_3_trigger = {
+	can_start_building_construction_for_owner = weapon_armor_smith_3
+}
+
+aub_can_upgrade_to_weapon_armor_smith_4_trigger = {
+	can_start_building_construction_for_owner = weapon_armor_smith_4
+}
+
+aub_can_upgrade_to_weapon_armor_smith_5_trigger = {
+	can_start_building_construction_for_owner = weapon_armor_smith_5
+}
+
+aub_can_upgrade_to_weavers_guild_2_trigger = {
+	can_start_building_construction_for_owner = weavers_guild_2
+}
+
+aub_can_upgrade_to_weavers_guild_3_trigger = {
+	can_start_building_construction_for_owner = weavers_guild_3
+}

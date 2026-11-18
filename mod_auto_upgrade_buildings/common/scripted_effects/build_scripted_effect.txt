@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# Source: tools/auto_upgrade_buildings_1_20_0_2.json
+# Source: tools/auto_upgrade_buildings_1_21_0.json
 
 aub_start_global_loop_effect = {
 	if = {
@@ -85,8 +85,61 @@ aub_pay_gold_piety_building_cost_effect = {
 	}
 }
 
-# alamut_castle_01: 1 frozen upgrade edge(s)
+# administrative_palace_1: 4 frozen upgrade edge(s)
 aub_upgrade_all_supported_buildings_effect = {
+	if = {
+		limit = { exists = scope:aub_foreign_trade_post }
+		clear_saved_scope = aub_foreign_trade_post
+	}
+	trade_post_district ?= {
+		if = {
+			limit = {
+				NOT = {
+					AND = {
+						exists = district_owning_title
+						district_owning_title = { holder = scope:aub_payer }
+					}
+				}
+			}
+			save_scope_as = aub_foreign_trade_post
+		}
+	}
+	every_built_buildings = {
+		limit = {
+			is_primary_building = yes
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+		}
+		building_district = {
+			if = {
+				limit = {
+					trigger_if = {
+						limit = { exists = scope:aub_foreign_trade_post }
+						NOT = { this = scope:aub_foreign_trade_post }
+					}
+				}
+				aub_upgrade_supported_district_buildings_effect = yes
+			}
+		}
+	}
+}
+
+# District scope. Construction eligibility and post-upgrade checks stay
+# in this exact district; another district cannot satisfy either check.
+aub_upgrade_supported_district_buildings_effect = {
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = administrative_palace_1
+		}
+		aub_upgrade_chain_administrative_palace_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = admiralty_court_01
+		}
+		aub_upgrade_chain_admiralty_court_01_effect = yes
+	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
@@ -111,9 +164,79 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = almonry_general_01
+		}
+		aub_upgrade_chain_almonry_general_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = alnagers_office_01
+		}
+		aub_upgrade_chain_alnagers_office_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = alum_apothecary_1
+		}
+		aub_upgrade_chain_alum_apothecary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ambassadorial_residences_1
+		}
+		aub_upgrade_chain_ambassadorial_residences_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = amber_carver_1
+		}
+		aub_upgrade_chain_amber_carver_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = amber_collectors_1
+		}
+		aub_upgrade_chain_amber_collectors_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = amber_oil_maker_1
+		}
+		aub_upgrade_chain_amber_oil_maker_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = amber_resource_building_1
+		}
+		aub_upgrade_chain_amber_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = apothecary_1
+		}
+		aub_upgrade_chain_apothecary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = archery_ranges_01
 		}
 		aub_upgrade_chain_archery_ranges_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = archery_ranges_1
+		}
+		aub_upgrade_chain_archery_ranges_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -125,6 +248,62 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = armed_clans_1
+		}
+		aub_upgrade_chain_armed_clans_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = armorer_1
+		}
+		aub_upgrade_chain_armorer_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = artillery_works_1
+		}
+		aub_upgrade_chain_artillery_works_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = assay_district_01
+		}
+		aub_upgrade_chain_assay_district_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = audience_pavilions_1
+		}
+		aub_upgrade_chain_audience_pavilions_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = bailiwick_01
+		}
+		aub_upgrade_chain_bailiwick_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = banner_halls_1
+		}
+		aub_upgrade_chain_banner_halls_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = banquet_hall_1
+		}
+		aub_upgrade_chain_banquet_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = baofeng_mines_01
 		}
 		aub_upgrade_chain_baofeng_mines_01_effect = yes
@@ -132,9 +311,65 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = barracks_01
+			has_building_or_higher = bartering_markets_1
 		}
-		aub_upgrade_chain_barracks_01_effect = yes
+		aub_upgrade_chain_bartering_markets_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = bathhouses_1
+		}
+		aub_upgrade_chain_bathhouses_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = bead_turner_1
+		}
+		aub_upgrade_chain_bead_turner_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = beam_press_1
+		}
+		aub_upgrade_chain_beam_press_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = beehives_1
+		}
+		aub_upgrade_chain_beehives_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = beer_brewery_1
+		}
+		aub_upgrade_chain_beer_brewery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = bell_foundry_1
+		}
+		aub_upgrade_chain_bell_foundry_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = belltower_1
+		}
+		aub_upgrade_chain_belltower_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = biscuit_bakery_1
+		}
+		aub_upgrade_chain_biscuit_bakery_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -146,9 +381,100 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = breweries_01
+			has_building_or_higher = blacksmiths_forge_1
 		}
-		aub_upgrade_chain_breweries_01_effect = yes
+		aub_upgrade_chain_blacksmiths_forge_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = blacksmiths_guild_1
+		}
+		aub_upgrade_chain_blacksmiths_guild_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = bladesmiths_of_toledo_1
+		}
+		aub_upgrade_chain_bladesmiths_of_toledo_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = blast_furnace_1
+		}
+		aub_upgrade_chain_blast_furnace_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = border_bulwarks_1
+		}
+		aub_upgrade_chain_border_bulwarks_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = borghi_1
+		}
+		aub_upgrade_chain_borghi_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = bran_mill_1
+		}
+		aub_upgrade_chain_bran_mill_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = breaking_mill_1
+		}
+		aub_upgrade_chain_breaking_mill_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = brewers_guild_1
+		}
+		aub_upgrade_chain_brewers_guild_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = bronze_artisan_workshop_1
+		}
+		aub_upgrade_chain_bronze_artisan_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = brothels_1
+		}
+		aub_upgrade_chain_brothels_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = bulwarks_and_gun_loops_1
+		}
+		aub_upgrade_chain_bulwarks_and_gun_loops_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = bureaucratic_mint_1
+		}
+		aub_upgrade_chain_bureaucratic_mint_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = burgage_plots_1
+		}
+		aub_upgrade_chain_burgage_plots_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -160,23 +486,37 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = camel_farms_01
+			has_building_or_higher = butchery_1
 		}
-		aub_upgrade_chain_camel_farms_01_effect = yes
+		aub_upgrade_chain_butchery_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = capital_bureau_01
+			has_building_or_higher = camelry_compound_1
 		}
-		aub_upgrade_chain_capital_bureau_01_effect = yes
+		aub_upgrade_chain_camelry_compound_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = caravanserai_01
+			has_building_or_higher = capital_magistracy_1
 		}
-		aub_upgrade_chain_caravanserai_01_effect = yes
+		aub_upgrade_chain_capital_magistracy_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = caravanserai_1
+		}
+		aub_upgrade_chain_caravanserai_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = castello_1
+		}
+		aub_upgrade_chain_castello_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -188,9 +528,128 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = cereal_fields_01
+			has_building_or_higher = castle_citadel_1
 		}
-		aub_upgrade_chain_cereal_fields_01_effect = yes
+		aub_upgrade_chain_castle_citadel_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = castle_court_1
+		}
+		aub_upgrade_chain_castle_court_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = castle_garrison_1
+		}
+		aub_upgrade_chain_castle_garrison_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = castle_great_hall_1
+		}
+		aub_upgrade_chain_castle_great_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = castle_larder_1
+		}
+		aub_upgrade_chain_castle_larder_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = castle_training_grounds_1
+		}
+		aub_upgrade_chain_castle_training_grounds_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cattle_resource_building_1
+		}
+		aub_upgrade_chain_cattle_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cattle_tannery_1
+		}
+		aub_upgrade_chain_cattle_tannery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cavalry_stables_1
+		}
+		aub_upgrade_chain_cavalry_stables_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = celestial_great_barracks_01
+		}
+		aub_upgrade_chain_celestial_great_barracks_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cemeteries_1
+		}
+		aub_upgrade_chain_cemeteries_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = census_register_1
+		}
+		aub_upgrade_chain_census_register_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ceramic_tile_workshops_1
+		}
+		aub_upgrade_chain_ceramic_tile_workshops_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ceramics_dragon_kiln_1
+		}
+		aub_upgrade_chain_ceramics_dragon_kiln_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ceramics_glazeworks_1
+		}
+		aub_upgrade_chain_ceramics_glazeworks_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ceramics_resource_building_1
+		}
+		aub_upgrade_chain_ceramics_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cereal_stockpile_1
+		}
+		aub_upgrade_chain_cereal_stockpile_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ceremony_office_1
+		}
+		aub_upgrade_chain_ceremony_office_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -209,9 +668,58 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = charcoal_production_1
+		}
+		aub_upgrade_chain_charcoal_production_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = charities_1
+		}
+		aub_upgrade_chain_charities_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = charnel_grounds_01
 		}
 		aub_upgrade_chain_charnel_grounds_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cheese_cave_1
+		}
+		aub_upgrade_chain_cheese_cave_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cheesemaker_1
+		}
+		aub_upgrade_chain_cheesemaker_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = chiefly_armsmen_1
+		}
+		aub_upgrade_chain_chiefly_armsmen_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = chiefly_longhouse_1
+		}
+		aub_upgrade_chain_chiefly_longhouse_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = chiefs_hall_1
+		}
+		aub_upgrade_chain_chiefs_hall_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -230,16 +738,23 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = citadel_of_aleppo_01
+			has_building_or_higher = church_treasury_1
 		}
-		aub_upgrade_chain_citadel_of_aleppo_01_effect = yes
+		aub_upgrade_chain_church_treasury_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = citadel_shrine_01
+			has_building_or_higher = cider_brewery_1
 		}
-		aub_upgrade_chain_citadel_shrine_01_effect = yes
+		aub_upgrade_chain_cider_brewery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = citadel_of_aleppo_01
+		}
+		aub_upgrade_chain_citadel_of_aleppo_01_effect = yes
 	}
 	if = {
 		limit = {
@@ -258,6 +773,69 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = city_archive_1
+		}
+		aub_upgrade_chain_city_archive_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = city_council_hall_1
+		}
+		aub_upgrade_chain_city_council_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = city_local_shrine_1
+		}
+		aub_upgrade_chain_city_local_shrine_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = city_magistrate_1
+		}
+		aub_upgrade_chain_city_magistrate_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = city_town_market_1
+		}
+		aub_upgrade_chain_city_town_market_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = city_town_watch_1
+		}
+		aub_upgrade_chain_city_town_watch_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = city_watch_1
+		}
+		aub_upgrade_chain_city_watch_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = civic_projects_1
+		}
+		aub_upgrade_chain_civic_projects_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = clerical_housing_1
+		}
+		aub_upgrade_chain_clerical_housing_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = cluny_abbey_01
 		}
 		aub_upgrade_chain_cluny_abbey_01_effect = yes
@@ -265,16 +843,191 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = common_tradeport_01
+			has_building_or_higher = college_of_arms_1
 		}
-		aub_upgrade_chain_common_tradeport_01_effect = yes
+		aub_upgrade_chain_college_of_arms_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = curtain_walls_01
+			has_building_or_higher = colonization_office_01
 		}
-		aub_upgrade_chain_curtain_walls_01_effect = yes
+		aub_upgrade_chain_colonization_office_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = comfit_maker_1
+		}
+		aub_upgrade_chain_comfit_maker_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = communal_bread_ovens_1
+		}
+		aub_upgrade_chain_communal_bread_ovens_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = communal_farming_1
+		}
+		aub_upgrade_chain_communal_farming_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = communal_mill_1
+		}
+		aub_upgrade_chain_communal_mill_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = communal_plantations_1
+		}
+		aub_upgrade_chain_communal_plantations_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = communal_wells_1
+		}
+		aub_upgrade_chain_communal_wells_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = communal_woodland_1
+		}
+		aub_upgrade_chain_communal_woodland_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = compound_perfumery_1
+		}
+		aub_upgrade_chain_compound_perfumery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = compound_powder_grinder_1
+		}
+		aub_upgrade_chain_compound_powder_grinder_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = confectionaries_1
+		}
+		aub_upgrade_chain_confectionaries_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = confectionary_1
+		}
+		aub_upgrade_chain_confectionary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = confraternity_hall_1
+		}
+		aub_upgrade_chain_confraternity_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = consistory_01
+		}
+		aub_upgrade_chain_consistory_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cookshops_1
+		}
+		aub_upgrade_chain_cookshops_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cooper_workshop_1
+		}
+		aub_upgrade_chain_cooper_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = copper_freeminers_1
+		}
+		aub_upgrade_chain_copper_freeminers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cordwainers_1
+		}
+		aub_upgrade_chain_cordwainers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cosmetic_shop_1
+		}
+		aub_upgrade_chain_cosmetic_shop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cotton_resource_building_1
+		}
+		aub_upgrade_chain_cotton_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = cottonseed_mill_1
+		}
+		aub_upgrade_chain_cottonseed_mill_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = court_of_law_1
+		}
+		aub_upgrade_chain_court_of_law_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = court_of_the_towns_01
+		}
+		aub_upgrade_chain_court_of_the_towns_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = courts_of_commons_01
+		}
+		aub_upgrade_chain_courts_of_commons_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = customs_house_1
+		}
+		aub_upgrade_chain_customs_house_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = day_market_1
+		}
+		aub_upgrade_chain_day_market_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -286,6 +1039,27 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = devaraja_image_1
+		}
+		aub_upgrade_chain_devaraja_image_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = dharma_halls_1
+		}
+		aub_upgrade_chain_dharma_halls_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = diwan_al_zimam_1
+		}
+		aub_upgrade_chain_diwan_al_zimam_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = dome_of_the_rock_01
 		}
 		aub_upgrade_chain_dome_of_the_rock_01_effect = yes
@@ -293,9 +1067,44 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = donation_store_1
+		}
+		aub_upgrade_chain_donation_store_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = double_cropping_1
+		}
+		aub_upgrade_chain_double_cropping_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = dragon_kiln_01
 		}
 		aub_upgrade_chain_dragon_kiln_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = drying_terraces_1
+		}
+		aub_upgrade_chain_drying_terraces_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ducal_chase_01
+		}
+		aub_upgrade_chain_ducal_chase_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ducal_residence_01
+		}
+		aub_upgrade_chain_ducal_residence_01_effect = yes
 	}
 	if = {
 		limit = {
@@ -321,16 +1130,100 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = dvin_shuka_01
+			has_building_or_higher = dyehouse_1
 		}
-		aub_upgrade_chain_dvin_shuka_01_effect = yes
+		aub_upgrade_chain_dyehouse_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = elephant_pens_01
+			has_building_or_higher = dyeing_pits_1
 		}
-		aub_upgrade_chain_elephant_pens_01_effect = yes
+		aub_upgrade_chain_dyeing_pits_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = dyes_local_1
+		}
+		aub_upgrade_chain_dyes_local_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = dyes_packing_warehouse_1
+		}
+		aub_upgrade_chain_dyes_packing_warehouse_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = dyes_resource_building_1
+		}
+		aub_upgrade_chain_dyes_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ecclesiastical_courts_1
+		}
+		aub_upgrade_chain_ecclesiastical_courts_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = elephantry_barracks_1
+		}
+		aub_upgrade_chain_elephantry_barracks_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = enclosed_lists_1
+		}
+		aub_upgrade_chain_enclosed_lists_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = endowment_district_01
+		}
+		aub_upgrade_chain_endowment_district_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = entrepot_additive_market_1
+		}
+		aub_upgrade_chain_entrepot_additive_market_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = entrepot_aromatic_market_1
+		}
+		aub_upgrade_chain_entrepot_aromatic_market_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = entrepot_fabric_market_1
+		}
+		aub_upgrade_chain_entrepot_fabric_market_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = entrepot_jewelers_market_1
+		}
+		aub_upgrade_chain_entrepot_jewelers_market_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = entrepot_mercers_market_1
+		}
+		aub_upgrade_chain_entrepot_mercers_market_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -342,6 +1235,20 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = exchequer_01
+		}
+		aub_upgrade_chain_exchequer_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fabric_market_1
+		}
+		aub_upgrade_chain_fabric_market_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = falun_mines_01
 		}
 		aub_upgrade_chain_falun_mines_01_effect = yes
@@ -349,9 +1256,23 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = farm_estates_01
+			has_building_or_higher = family_chapels_1
 		}
-		aub_upgrade_chain_farm_estates_01_effect = yes
+		aub_upgrade_chain_family_chapels_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = family_lineage_archive_1
+		}
+		aub_upgrade_chain_family_lineage_archive_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = farming_fields_1
+		}
+		aub_upgrade_chain_farming_fields_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -359,6 +1280,258 @@ aub_upgrade_all_supported_buildings_effect = {
 			has_building_or_higher = fengtian_mines_01
 		}
 		aub_upgrade_chain_fengtian_mines_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = feodarys_circuit_01
+		}
+		aub_upgrade_chain_feodarys_circuit_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fine_flour_mills_1
+		}
+		aub_upgrade_chain_fine_flour_mills_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fine_tailors_1
+		}
+		aub_upgrade_chain_fine_tailors_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = firewood_collection_1
+		}
+		aub_upgrade_chain_firewood_collection_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fish_oil_vats_1
+		}
+		aub_upgrade_chain_fish_oil_vats_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fish_resource_building_1
+		}
+		aub_upgrade_chain_fish_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fish_saltery_1
+		}
+		aub_upgrade_chain_fish_saltery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fishing_villages_1
+		}
+		aub_upgrade_chain_fishing_villages_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = flax_resource_building_1
+		}
+		aub_upgrade_chain_flax_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = floss_spinnery_1
+		}
+		aub_upgrade_chain_floss_spinnery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fodder_stores_1
+		}
+		aub_upgrade_chain_fodder_stores_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = foraging_storage_1
+		}
+		aub_upgrade_chain_foraging_storage_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = foreign_trade_quarter_1
+		}
+		aub_upgrade_chain_foreign_trade_quarter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = foreigners_quarter_1
+		}
+		aub_upgrade_chain_foreigners_quarter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = forest_glass_1
+		}
+		aub_upgrade_chain_forest_glass_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = forestry_resource_building_1
+		}
+		aub_upgrade_chain_forestry_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = forges_and_bloomeries_1
+		}
+		aub_upgrade_chain_forges_and_bloomeries_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fortified_compounds_1
+		}
+		aub_upgrade_chain_fortified_compounds_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fortified_holds_1
+		}
+		aub_upgrade_chain_fortified_holds_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fritware_workshops_1
+		}
+		aub_upgrade_chain_fritware_workshops_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fruit_distillery_1
+		}
+		aub_upgrade_chain_fruit_distillery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fruit_gardens_1
+		}
+		aub_upgrade_chain_fruit_gardens_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fruit_resource_building_1
+		}
+		aub_upgrade_chain_fruit_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fuel_charcoal_burners_1
+		}
+		aub_upgrade_chain_fuel_charcoal_burners_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = fulling_mill_1
+		}
+		aub_upgrade_chain_fulling_mill_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = funerary_complexes_1
+		}
+		aub_upgrade_chain_funerary_complexes_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = furriers_1
+		}
+		aub_upgrade_chain_furriers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = furs_resource_building_1
+		}
+		aub_upgrade_chain_furs_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = furs_tannery_1
+		}
+		aub_upgrade_chain_furs_tannery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = furs_trade_post_1
+		}
+		aub_upgrade_chain_furs_trade_post_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = garbler_office_1
+		}
+		aub_upgrade_chain_garbler_office_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = garden_calligraphy_houses_1
+		}
+		aub_upgrade_chain_garden_calligraphy_houses_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = garden_complex_1
+		}
+		aub_upgrade_chain_garden_complex_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = garum_vats_1
+		}
+		aub_upgrade_chain_garum_vats_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = gatehouses_1
+		}
+		aub_upgrade_chain_gatehouses_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = gem_freeminers_1
+		}
+		aub_upgrade_chain_gem_freeminers_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -384,9 +1557,156 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = guild_halls_01
+			has_building_or_higher = glue_cauldrons_1
 		}
-		aub_upgrade_chain_guild_halls_01_effect = yes
+		aub_upgrade_chain_glue_cauldrons_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = gold_freeminers_1
+		}
+		aub_upgrade_chain_gold_freeminers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = governance_district_01
+		}
+		aub_upgrade_chain_governance_district_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = grain_distillery_1
+		}
+		aub_upgrade_chain_grain_distillery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = grain_exchange_01
+		}
+		aub_upgrade_chain_grain_exchange_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = grain_resource_building_1
+		}
+		aub_upgrade_chain_grain_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = grain_stores_1
+		}
+		aub_upgrade_chain_grain_stores_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = grindstone_maker_1
+		}
+		aub_upgrade_chain_grindstone_maker_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_builders_1
+		}
+		aub_upgrade_chain_guild_builders_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_butchery_1
+		}
+		aub_upgrade_chain_guild_butchery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_carpenters_1
+		}
+		aub_upgrade_chain_guild_carpenters_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_charities_1
+		}
+		aub_upgrade_chain_guild_charities_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_court_of_law_1
+		}
+		aub_upgrade_chain_guild_court_of_law_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_feast_hall_1
+		}
+		aub_upgrade_chain_guild_feast_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_glassmakers_1
+		}
+		aub_upgrade_chain_guild_glassmakers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_goldsmiths_1
+		}
+		aub_upgrade_chain_guild_goldsmiths_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_hall_1
+		}
+		aub_upgrade_chain_guild_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_hospitals_1
+		}
+		aub_upgrade_chain_guild_hospitals_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_notary_1
+		}
+		aub_upgrade_chain_guild_notary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_parchment_workshop_1
+		}
+		aub_upgrade_chain_guild_parchment_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_tannery_1
+		}
+		aub_upgrade_chain_guild_tannery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = guild_textiles_silk_1
+		}
+		aub_upgrade_chain_guild_textiles_silk_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -398,9 +1718,30 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = gunsmiths_1
+		}
+		aub_upgrade_chain_gunsmiths_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = gurganj_bazaar_01
+		}
+		aub_upgrade_chain_gurganj_bazaar_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = hagia_sophia_01
 		}
 		aub_upgrade_chain_hagia_sophia_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = half_silk_weavery_1
+		}
+		aub_upgrade_chain_half_silk_weavery_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -419,9 +1760,58 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = hanseatic_kontor_01
+		}
+		aub_upgrade_chain_hanseatic_kontor_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = hanxing_mines_01
 		}
 		aub_upgrade_chain_hanxing_mines_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = harvest_festivals_1
+		}
+		aub_upgrade_chain_harvest_festivals_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = heavy_cavalry_compound_1
+		}
+		aub_upgrade_chain_heavy_cavalry_compound_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = hemp_naval_supplies_1
+		}
+		aub_upgrade_chain_hemp_naval_supplies_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = hemp_resource_building_1
+		}
+		aub_upgrade_chain_hemp_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = hemp_thatching_1
+		}
+		aub_upgrade_chain_hemp_thatching_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = hemp_weaving_1
+		}
+		aub_upgrade_chain_hemp_weaving_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -433,6 +1823,20 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = herb_gardens_1
+		}
+		aub_upgrade_chain_herb_gardens_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = herbal_gardens_1
+		}
+		aub_upgrade_chain_herbal_gardens_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = hetian_mines_01
 		}
 		aub_upgrade_chain_hetian_mines_01_effect = yes
@@ -440,23 +1844,9 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = hill_farms_01
+			has_building_or_higher = high_street_market_1
 		}
-		aub_upgrade_chain_hill_farms_01_effect = yes
-	}
-	if = {
-		limit = {
-			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = hill_forts_01
-		}
-		aub_upgrade_chain_hill_forts_01_effect = yes
-	}
-	if = {
-		limit = {
-			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = hillside_grazing_01
-		}
-		aub_upgrade_chain_hillside_grazing_01_effect = yes
+		aub_upgrade_chain_high_street_market_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -468,16 +1858,65 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = horse_pastures_01
+			has_building_or_higher = honey_apothecary_1
 		}
-		aub_upgrade_chain_horse_pastures_01_effect = yes
+		aub_upgrade_chain_honey_apothecary_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = hospices_01
+			has_building_or_higher = honey_resource_building_1
 		}
-		aub_upgrade_chain_hospices_01_effect = yes
+		aub_upgrade_chain_honey_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = honey_waxworks_1
+		}
+		aub_upgrade_chain_honey_waxworks_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = horse_archer_paddocks_1
+		}
+		aub_upgrade_chain_horse_archer_paddocks_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = horse_grazing_1
+		}
+		aub_upgrade_chain_horse_grazing_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = horse_studfarm_1
+		}
+		aub_upgrade_chain_horse_studfarm_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = horses_resource_building_1
+		}
+		aub_upgrade_chain_horses_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = hospitals_1
+		}
+		aub_upgrade_chain_hospitals_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = hostelry_1
+		}
+		aub_upgrade_chain_hostelry_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -496,16 +1935,37 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = hunting_grounds_01
+			has_building_or_higher = hunter_lodgings_1
 		}
-		aub_upgrade_chain_hunting_grounds_01_effect = yes
+		aub_upgrade_chain_hunter_lodgings_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = idjang_forts_01
+			has_building_or_higher = hunters_lodges_1
 		}
-		aub_upgrade_chain_idjang_forts_01_effect = yes
+		aub_upgrade_chain_hunters_lodges_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = hunting_lodges_1
+		}
+		aub_upgrade_chain_hunting_lodges_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = husk_warehouse_1
+		}
+		aub_upgrade_chain_husk_warehouse_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = idjang_forts_1
+		}
+		aub_upgrade_chain_idjang_forts_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -513,6 +1973,62 @@ aub_upgrade_all_supported_buildings_effect = {
 			has_building_or_higher = ijil_mines_01
 		}
 		aub_upgrade_chain_ijil_mines_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = illumination_workshop_1
+		}
+		aub_upgrade_chain_illumination_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = incense_distillation_workshop_1
+		}
+		aub_upgrade_chain_incense_distillation_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = incense_harvester_1
+		}
+		aub_upgrade_chain_incense_harvester_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = incense_resource_building_1
+		}
+		aub_upgrade_chain_incense_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = incense_warehouse_1
+		}
+		aub_upgrade_chain_incense_warehouse_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = infirmary_1
+		}
+		aub_upgrade_chain_infirmary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = iron_freeminers_1
+		}
+		aub_upgrade_chain_iron_freeminers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = irrigation_network_1
+		}
+		aub_upgrade_chain_irrigation_network_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -531,6 +2047,48 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ivory_camp_1
+		}
+		aub_upgrade_chain_ivory_camp_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ivory_carvers_1
+		}
+		aub_upgrade_chain_ivory_carvers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ivory_labor_elephants_1
+		}
+		aub_upgrade_chain_ivory_labor_elephants_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ivory_resource_building_1
+		}
+		aub_upgrade_chain_ivory_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = jar_packing_workshops_1
+		}
+		aub_upgrade_chain_jar_packing_workshops_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = jewellers_workshop_1
+		}
+		aub_upgrade_chain_jewellers_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = jiaodong_mines_01
 		}
 		aub_upgrade_chain_jiaodong_mines_01_effect = yes
@@ -545,9 +2103,23 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = jungle_fort_1
+		}
+		aub_upgrade_chain_jungle_fort_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = kaibao_mines_01
 		}
 		aub_upgrade_chain_kaibao_mines_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = keen_weapons_1
+		}
+		aub_upgrade_chain_keen_weapons_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -559,9 +2131,9 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = khiva_bazaar_01
+			has_building_or_higher = knights_stables_1
 		}
-		aub_upgrade_chain_khiva_bazaar_01_effect = yes
+		aub_upgrade_chain_knights_stables_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -587,9 +2159,9 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = kora_kora_yards_01
+			has_building_or_higher = kora_kora_yards_1
 		}
-		aub_upgrade_chain_kora_kora_yards_01_effect = yes
+		aub_upgrade_chain_kora_kora_yards_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -608,9 +2180,23 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = lacquerware_workshop_1
+		}
+		aub_upgrade_chain_lacquerware_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = lahur_bazaar_01
 		}
 		aub_upgrade_chain_lahur_bazaar_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = lake_pigment_workshop_1
+		}
+		aub_upgrade_chain_lake_pigment_workshop_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -643,16 +2229,79 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = logging_camps_01
+			has_building_or_higher = linseed_oil_1
 		}
-		aub_upgrade_chain_logging_camps_01_effect = yes
+		aub_upgrade_chain_linseed_oil_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = longhouses_01
+			has_building_or_higher = livestock_market_1
 		}
-		aub_upgrade_chain_longhouses_01_effect = yes
+		aub_upgrade_chain_livestock_market_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = local_bailiffs_1
+		}
+		aub_upgrade_chain_local_bailiffs_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = local_flax_1
+		}
+		aub_upgrade_chain_local_flax_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = local_hemp_1
+		}
+		aub_upgrade_chain_local_hemp_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = local_hospital_1
+		}
+		aub_upgrade_chain_local_hospital_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = local_pottery_1
+		}
+		aub_upgrade_chain_local_pottery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = local_tea_house_1
+		}
+		aub_upgrade_chain_local_tea_house_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = long_term_wine_storage_1
+		}
+		aub_upgrade_chain_long_term_wine_storage_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = luxury_carpet_workshop_1
+		}
+		aub_upgrade_chain_luxury_carpet_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = luxury_ceramics_workshops_1
+		}
+		aub_upgrade_chain_luxury_ceramics_workshops_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -664,6 +2313,69 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = manor_buying_agent_1
+		}
+		aub_upgrade_chain_manor_buying_agent_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = manor_chamber_blocks_1
+		}
+		aub_upgrade_chain_manor_chamber_blocks_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = manor_hunting_grounds_1
+		}
+		aub_upgrade_chain_manor_hunting_grounds_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = manor_kitchens_1
+		}
+		aub_upgrade_chain_manor_kitchens_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = manor_parlor_1
+		}
+		aub_upgrade_chain_manor_parlor_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = manor_reeves_office_1
+		}
+		aub_upgrade_chain_manor_reeves_office_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = manor_study_1
+		}
+		aub_upgrade_chain_manor_study_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = manor_tower_1
+		}
+		aub_upgrade_chain_manor_tower_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = manure_piles_1
+		}
+		aub_upgrade_chain_manure_piles_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = march_01
 		}
 		aub_upgrade_chain_march_01_effect = yes
@@ -671,16 +2383,86 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = market_villages_01
+			has_building_or_higher = marcher_garrisons_1
 		}
-		aub_upgrade_chain_market_villages_01_effect = yes
+		aub_upgrade_chain_marcher_garrisons_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = megalith_01
+			has_building_or_higher = maritime_court_1
 		}
-		aub_upgrade_chain_megalith_01_effect = yes
+		aub_upgrade_chain_maritime_court_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = market_court_1
+		}
+		aub_upgrade_chain_market_court_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = market_fairs_1
+		}
+		aub_upgrade_chain_market_fairs_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = martial_cloisters_1
+		}
+		aub_upgrade_chain_martial_cloisters_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = martial_festivals_1
+		}
+		aub_upgrade_chain_martial_festivals_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = mead_brewery_1
+		}
+		aub_upgrade_chain_mead_brewery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = meadowlands_pastures_1
+		}
+		aub_upgrade_chain_meadowlands_pastures_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = medicaments_resource_building_1
+		}
+		aub_upgrade_chain_medicaments_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = megalith_1
+		}
+		aub_upgrade_chain_megalith_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = menageries_1
+		}
+		aub_upgrade_chain_menageries_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = merchant_lodging_houses_1
+		}
+		aub_upgrade_chain_merchant_lodging_houses_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -699,9 +2481,177 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = military_camps_01
+			has_building_or_higher = military_duchy_building_01
 		}
-		aub_upgrade_chain_military_camps_01_effect = yes
+		aub_upgrade_chain_military_duchy_building_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = military_elephant_compound_1
+		}
+		aub_upgrade_chain_military_elephant_compound_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = military_infirmaries_1
+		}
+		aub_upgrade_chain_military_infirmaries_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = militia_camps_1
+		}
+		aub_upgrade_chain_militia_camps_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = militia_musterhouses_1
+		}
+		aub_upgrade_chain_militia_musterhouses_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = millet_brewery_1
+		}
+		aub_upgrade_chain_millet_brewery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = millet_distillery_1
+		}
+		aub_upgrade_chain_millet_distillery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = millet_fields_1
+		}
+		aub_upgrade_chain_millet_fields_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = millet_granaries_1
+		}
+		aub_upgrade_chain_millet_granaries_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = millet_resource_building_1
+		}
+		aub_upgrade_chain_millet_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = millstone_workshop_1
+		}
+		aub_upgrade_chain_millstone_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = minaret_1
+		}
+		aub_upgrade_chain_minaret_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = mine_tier_1
+		}
+		aub_upgrade_chain_mine_tier_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = mining_office_01
+		}
+		aub_upgrade_chain_mining_office_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = minor_alum_mine_1
+		}
+		aub_upgrade_chain_minor_alum_mine_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = minor_cotton_fields_1
+		}
+		aub_upgrade_chain_minor_cotton_fields_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = minor_forestry_1
+		}
+		aub_upgrade_chain_minor_forestry_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = minor_grain_farms_1
+		}
+		aub_upgrade_chain_minor_grain_farms_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = minor_grazing_1
+		}
+		aub_upgrade_chain_minor_grazing_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = minor_jade_mine_1
+		}
+		aub_upgrade_chain_minor_jade_mine_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = minor_silk_plantation_1
+		}
+		aub_upgrade_chain_minor_silk_plantation_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = mint_1
+		}
+		aub_upgrade_chain_mint_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = minting_court_01
+		}
+		aub_upgrade_chain_minting_court_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = mixed_fabric_weaver_1
+		}
+		aub_upgrade_chain_mixed_fabric_weaver_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = moats_1
+		}
+		aub_upgrade_chain_moats_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -713,9 +2663,23 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = monastic_schools_01
+			has_building_or_higher = monastic_grange_1
 		}
-		aub_upgrade_chain_monastic_schools_01_effect = yes
+		aub_upgrade_chain_monastic_grange_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = moneychangers_1
+		}
+		aub_upgrade_chain_moneychangers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = monsoon_water_management_1
+		}
+		aub_upgrade_chain_monsoon_water_management_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -727,6 +2691,13 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = mortar_workshop_1
+		}
+		aub_upgrade_chain_mortar_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = mount_athos_01
 		}
 		aub_upgrade_chain_mount_athos_01_effect = yes
@@ -734,9 +2705,44 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = murex_farm_01
+			has_building_or_higher = mulberry_paper_mill_1
 		}
-		aub_upgrade_chain_murex_farm_01_effect = yes
+		aub_upgrade_chain_mulberry_paper_mill_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = murex_fisheries_1
+		}
+		aub_upgrade_chain_murex_fisheries_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = musk_processing_shop_1
+		}
+		aub_upgrade_chain_musk_processing_shop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = mustering_grounds_1
+		}
+		aub_upgrade_chain_mustering_grounds_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = naphta_pit_1
+		}
+		aub_upgrade_chain_naphta_pit_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = netmakers_1
+		}
+		aub_upgrade_chain_netmakers_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -744,6 +2750,27 @@ aub_upgrade_all_supported_buildings_effect = {
 			has_building_or_higher = nishapur_mines_01
 		}
 		aub_upgrade_chain_nishapur_mines_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = noble_hunting_lodges_1
+		}
+		aub_upgrade_chain_noble_hunting_lodges_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = noble_townhouses_1
+		}
+		aub_upgrade_chain_noble_townhouses_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = notary_1
+		}
+		aub_upgrade_chain_notary_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -769,23 +2796,58 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = orchards_01
+			has_building_or_higher = oil_apothecary_1
 		}
-		aub_upgrade_chain_orchards_01_effect = yes
+		aub_upgrade_chain_oil_apothecary_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = outposts_01
+			has_building_or_higher = oil_resource_building_1
 		}
-		aub_upgrade_chain_outposts_01_effect = yes
+		aub_upgrade_chain_oil_resource_building_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = paddy_fields_01
+			has_building_or_higher = oil_soapworks_1
 		}
-		aub_upgrade_chain_paddy_fields_01_effect = yes
+		aub_upgrade_chain_oil_soapworks_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = oil_waxworks_1
+		}
+		aub_upgrade_chain_oil_waxworks_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ointment_maker_1
+		}
+		aub_upgrade_chain_ointment_maker_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = olive_groves_1
+		}
+		aub_upgrade_chain_olive_groves_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = olive_mill_1
+		}
+		aub_upgrade_chain_olive_mill_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = outer_walls_1
+		}
+		aub_upgrade_chain_outer_walls_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -797,9 +2859,16 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = palisades_01
+			has_building_or_higher = palisaded_villages_1
 		}
-		aub_upgrade_chain_palisades_01_effect = yes
+		aub_upgrade_chain_palisaded_villages_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pan_smith_1
+		}
+		aub_upgrade_chain_pan_smith_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -811,16 +2880,205 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = pastures_01
+			has_building_or_higher = paper_workshop_1
 		}
-		aub_upgrade_chain_pastures_01_effect = yes
+		aub_upgrade_chain_paper_workshop_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = peat_quarries_01
+			has_building_or_higher = pasta_mill_1
 		}
-		aub_upgrade_chain_peat_quarries_01_effect = yes
+		aub_upgrade_chain_pasta_mill_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pastures_1
+		}
+		aub_upgrade_chain_pastures_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = patrician_audience_halls_1
+		}
+		aub_upgrade_chain_patrician_audience_halls_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_border_forts_01
+		}
+		aub_upgrade_chain_pb_border_forts_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_bureaucratic_01
+		}
+		aub_upgrade_chain_pb_bureaucratic_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_entertainment_01
+		}
+		aub_upgrade_chain_pb_entertainment_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_entrepot_01
+		}
+		aub_upgrade_chain_pb_entrepot_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_guild_01
+		}
+		aub_upgrade_chain_pb_guild_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_mandala_01
+		}
+		aub_upgrade_chain_pb_mandala_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_manor_houses_01
+		}
+		aub_upgrade_chain_pb_manor_houses_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_market_01
+		}
+		aub_upgrade_chain_pb_market_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_military_01
+		}
+		aub_upgrade_chain_pb_military_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_patrician_01
+		}
+		aub_upgrade_chain_pb_patrician_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_port_01
+		}
+		aub_upgrade_chain_pb_port_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_religious_community_01
+		}
+		aub_upgrade_chain_pb_religious_community_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_royal_palace_01
+		}
+		aub_upgrade_chain_pb_royal_palace_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_temple_01
+		}
+		aub_upgrade_chain_pb_temple_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_trade_office_01
+		}
+		aub_upgrade_chain_pb_trade_office_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_tribal_economy_prestige_01
+		}
+		aub_upgrade_chain_pb_tribal_economy_prestige_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_tribal_military_01
+		}
+		aub_upgrade_chain_pb_tribal_military_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_tribal_wanua_01
+		}
+		aub_upgrade_chain_pb_tribal_wanua_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_urban_housing_01
+		}
+		aub_upgrade_chain_pb_urban_housing_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_villages_01
+		}
+		aub_upgrade_chain_pb_villages_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pb_walls_01
+		}
+		aub_upgrade_chain_pb_walls_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pearl_fishery_1
+		}
+		aub_upgrade_chain_pearl_fishery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = performance_stage_1
+		}
+		aub_upgrade_chain_performance_stage_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = perfume_street_1
+		}
+		aub_upgrade_chain_perfume_street_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = perfumery_1
+		}
+		aub_upgrade_chain_perfumery_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -839,30 +3097,100 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = plantations_01
+			has_building_or_higher = pilgrimage_office_01
 		}
-		aub_upgrade_chain_plantations_01_effect = yes
+		aub_upgrade_chain_pilgrimage_office_01_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = powder_magazine_01
+			has_building_or_higher = pipe_making_shops_1
 		}
-		aub_upgrade_chain_powder_magazine_01_effect = yes
+		aub_upgrade_chain_pipe_making_shops_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = qanats_01
+			has_building_or_higher = pit_mining_1
 		}
-		aub_upgrade_chain_qanats_01_effect = yes
+		aub_upgrade_chain_pit_mining_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = quarries_01
+			has_building_or_higher = postmasters_office_1
 		}
-		aub_upgrade_chain_quarries_01_effect = yes
+		aub_upgrade_chain_postmasters_office_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = powder_mills_1
+		}
+		aub_upgrade_chain_powder_mills_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = prerogative_chancery_01
+		}
+		aub_upgrade_chain_prerogative_chancery_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = preserved_fruit_workshops_1
+		}
+		aub_upgrade_chain_preserved_fruit_workshops_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = printing_press_1
+		}
+		aub_upgrade_chain_printing_press_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = processions_1
+		}
+		aub_upgrade_chain_processions_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = public_execution_site_1
+		}
+		aub_upgrade_chain_public_execution_site_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = pupae_grinder_1
+		}
+		aub_upgrade_chain_pupae_grinder_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = qanat_system_1
+		}
+		aub_upgrade_chain_qanat_system_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = quarry_port_1
+		}
+		aub_upgrade_chain_quarry_port_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = quilting_workshop_1
+		}
+		aub_upgrade_chain_quilting_workshop_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -881,9 +3209,9 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = ramparts_01
+			has_building_or_higher = ramparts_1
 		}
-		aub_upgrade_chain_ramparts_01_effect = yes
+		aub_upgrade_chain_ramparts_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -895,9 +3223,100 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = regimental_grounds_01
+			has_building_or_higher = reception_rooms_1
 		}
-		aub_upgrade_chain_regimental_grounds_01_effect = yes
+		aub_upgrade_chain_reception_rooms_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = reception_suites_1
+		}
+		aub_upgrade_chain_reception_suites_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = reckoning_school_01
+		}
+		aub_upgrade_chain_reckoning_school_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = regimental_fort_1
+		}
+		aub_upgrade_chain_regimental_fort_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = religious_school_1
+		}
+		aub_upgrade_chain_religious_school_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ribat_1
+		}
+		aub_upgrade_chain_ribat_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = rice_bran_mill_1
+		}
+		aub_upgrade_chain_rice_bran_mill_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = rice_confectionary_1
+		}
+		aub_upgrade_chain_rice_confectionary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = rice_resource_building_1
+		}
+		aub_upgrade_chain_rice_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = rice_straw_weaving_1
+		}
+		aub_upgrade_chain_rice_straw_weaving_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = rice_thatching_1
+		}
+		aub_upgrade_chain_rice_thatching_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = rice_winery_1
+		}
+		aub_upgrade_chain_rice_winery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = roadside_inns_1
+		}
+		aub_upgrade_chain_roadside_inns_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = ropeworks_1
+		}
+		aub_upgrade_chain_ropeworks_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -905,6 +3324,20 @@ aub_upgrade_all_supported_buildings_effect = {
 			has_building_or_higher = royal_armory_01
 		}
 		aub_upgrade_chain_royal_armory_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = royal_chapel_1
+		}
+		aub_upgrade_chain_royal_chapel_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = royal_court_workshops_1
+		}
+		aub_upgrade_chain_royal_court_workshops_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -923,6 +3356,48 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = royal_great_hall_1
+		}
+		aub_upgrade_chain_royal_great_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = royal_inner_court_1
+		}
+		aub_upgrade_chain_royal_inner_court_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = royal_knights_hall_1
+		}
+		aub_upgrade_chain_royal_knights_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = royal_mausoleum_1
+		}
+		aub_upgrade_chain_royal_mausoleum_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = royal_palace_library_1
+		}
+		aub_upgrade_chain_royal_palace_library_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = royal_wardrobe_1
+		}
+		aub_upgrade_chain_royal_wardrobe_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = rudnik_mines_01
 		}
 		aub_upgrade_chain_rudnik_mines_01_effect = yes
@@ -930,9 +3405,65 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = sacred_pool_01
+			has_building_or_higher = rug_weaving_1
 		}
-		aub_upgrade_chain_sacred_pool_01_effect = yes
+		aub_upgrade_chain_rug_weaving_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sack_basket_weavers_1
+		}
+		aub_upgrade_chain_sack_basket_weavers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sacred_elephant_compound_1
+		}
+		aub_upgrade_chain_sacred_elephant_compound_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sacred_forge_1
+		}
+		aub_upgrade_chain_sacred_forge_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sacred_grove_1
+		}
+		aub_upgrade_chain_sacred_grove_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sacred_pool_1
+		}
+		aub_upgrade_chain_sacred_pool_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sacred_steles_1
+		}
+		aub_upgrade_chain_sacred_steles_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sacristy_1
+		}
+		aub_upgrade_chain_sacristy_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = saddlers_1
+		}
+		aub_upgrade_chain_saddlers_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -944,9 +3475,51 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sagely_elders_1
+		}
+		aub_upgrade_chain_sagely_elders_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sailors_taverns_1
+		}
+		aub_upgrade_chain_sailors_taverns_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = salt_collectors_1
+		}
+		aub_upgrade_chain_salt_collectors_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = salt_resource_building_1
+		}
+		aub_upgrade_chain_salt_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = salt_taxation_office_1
+		}
+		aub_upgrade_chain_salt_taxation_office_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = sar_i_sang_mines_01
 		}
 		aub_upgrade_chain_sar_i_sang_mines_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = scholarly_guilds_1
+		}
+		aub_upgrade_chain_scholarly_guilds_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -958,9 +3531,30 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = scriptorium_01
+			has_building_or_higher = scout_camps_1
 		}
-		aub_upgrade_chain_scriptorium_01_effect = yes
+		aub_upgrade_chain_scout_camps_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = scribe_shop_1
+		}
+		aub_upgrade_chain_scribe_shop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = scriptorium_1
+		}
+		aub_upgrade_chain_scriptorium_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = seasonal_labor_shared_1
+		}
+		aub_upgrade_chain_seasonal_labor_shared_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -968,6 +3562,20 @@ aub_upgrade_all_supported_buildings_effect = {
 			has_building_or_higher = shah_i_zinda_01
 		}
 		aub_upgrade_chain_shah_i_zinda_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sheep_pastures_1
+		}
+		aub_upgrade_chain_sheep_pastures_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = shipyards_1
+		}
+		aub_upgrade_chain_shipyards_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -986,16 +3594,93 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = smiths_01
+			has_building_or_higher = siegecraft_academies_1
 		}
-		aub_upgrade_chain_smiths_01_effect = yes
+		aub_upgrade_chain_siegecraft_academies_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = spice_plantation_01
+			has_building_or_higher = silk_resource_building_1
 		}
-		aub_upgrade_chain_spice_plantation_01_effect = yes
+		aub_upgrade_chain_silk_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = silver_freeminers_1
+		}
+		aub_upgrade_chain_silver_freeminers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = small_mining_pit_1
+		}
+		aub_upgrade_chain_small_mining_pit_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = small_rice_paddies_1
+		}
+		aub_upgrade_chain_small_rice_paddies_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = small_sugar_plantations_1
+		}
+		aub_upgrade_chain_small_sugar_plantations_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = small_winery_1
+		}
+		aub_upgrade_chain_small_winery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = smokehouse_1
+		}
+		aub_upgrade_chain_smokehouse_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sorghum_stalk_builder_1
+		}
+		aub_upgrade_chain_sorghum_stalk_builder_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = spice_apothecary_1
+		}
+		aub_upgrade_chain_spice_apothecary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = spice_gardens_1
+		}
+		aub_upgrade_chain_spice_gardens_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = spices_resource_building_1
+		}
+		aub_upgrade_chain_spices_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = spiritual_endowment_1
+		}
+		aub_upgrade_chain_spiritual_endowment_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -1007,16 +3692,93 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = stables_01
+			has_building_or_higher = staple_court_01
 		}
-		aub_upgrade_chain_stables_01_effect = yes
+		aub_upgrade_chain_staple_court_01_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = stilted_granaries_01
+			has_building_or_higher = staple_district_01
 		}
-		aub_upgrade_chain_stilted_granaries_01_effect = yes
+		aub_upgrade_chain_staple_district_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = state_granary_01
+		}
+		aub_upgrade_chain_state_granary_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = stone_cutters_1
+		}
+		aub_upgrade_chain_stone_cutters_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = stone_masons_1
+		}
+		aub_upgrade_chain_stone_masons_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = stone_resource_building_1
+		}
+		aub_upgrade_chain_stone_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = stone_statue_workshop_1
+		}
+		aub_upgrade_chain_stone_statue_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = storehouses_1
+		}
+		aub_upgrade_chain_storehouses_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = straw_weavery_1
+		}
+		aub_upgrade_chain_straw_weavery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = stupefactives_apothecary_1
+		}
+		aub_upgrade_chain_stupefactives_apothecary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = suburb_1
+		}
+		aub_upgrade_chain_suburb_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sugar_distillery_1
+		}
+		aub_upgrade_chain_sugar_distillery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = sugar_resource_building_1
+		}
+		aub_upgrade_chain_sugar_resource_building_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -1035,9 +3797,37 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = survey_office_01
+		}
+		aub_upgrade_chain_survey_office_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = surveyors_hall_1
+		}
+		aub_upgrade_chain_surveyors_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = suvarnadvipa_mines_01
 		}
 		aub_upgrade_chain_suvarnadvipa_mines_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = syrup_boiling_vats_1
+		}
+		aub_upgrade_chain_syrup_boiling_vats_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tabriz_bazaar_01
+		}
+		aub_upgrade_chain_tabriz_bazaar_01_effect = yes
 	}
 	if = {
 		limit = {
@@ -1056,6 +3846,13 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tailor_shops_1
+		}
+		aub_upgrade_chain_tailor_shops_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = takkeda_mines_01
 		}
 		aub_upgrade_chain_takkeda_mines_01_effect = yes
@@ -1063,9 +3860,51 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = tax_assessor_01
+			has_building_or_higher = tallow_rendering_1
 		}
-		aub_upgrade_chain_tax_assessor_01_effect = yes
+		aub_upgrade_chain_tallow_rendering_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tartar_collector_1
+		}
+		aub_upgrade_chain_tartar_collector_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tavern_street_1
+		}
+		aub_upgrade_chain_tavern_street_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tea_charcoal_burners_1
+		}
+		aub_upgrade_chain_tea_charcoal_burners_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tea_gardens_1
+		}
+		aub_upgrade_chain_tea_gardens_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tea_house_1
+		}
+		aub_upgrade_chain_tea_house_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tea_resource_building_1
+		}
+		aub_upgrade_chain_tea_resource_building_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -1077,9 +3916,51 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_archives_1
+		}
+		aub_upgrade_chain_temple_archives_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = temple_citadel_01
 		}
 		aub_upgrade_chain_temple_citadel_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_citadel_outer_wall_1
+		}
+		aub_upgrade_chain_temple_citadel_outer_wall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_citadel_shrine_1
+		}
+		aub_upgrade_chain_temple_citadel_shrine_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_citadel_tithe_collection_1
+		}
+		aub_upgrade_chain_temple_citadel_tithe_collection_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_hospices_1
+		}
+		aub_upgrade_chain_temple_hospices_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_hostels_1
+		}
+		aub_upgrade_chain_temple_hostels_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -1091,9 +3972,282 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_religious_fairs_1
+		}
+		aub_upgrade_chain_temple_religious_fairs_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_reliquary_1
+		}
+		aub_upgrade_chain_temple_reliquary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_sanctuary_1
+		}
+		aub_upgrade_chain_temple_sanctuary_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_school_1
+		}
+		aub_upgrade_chain_temple_school_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_treasuries_1
+		}
+		aub_upgrade_chain_temple_treasuries_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = temple_viharas_1
+		}
+		aub_upgrade_chain_temple_viharas_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = temples_angkor_01
 		}
 		aub_upgrade_chain_temples_angkor_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = terrace_gardens_1
+		}
+		aub_upgrade_chain_terrace_gardens_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = textiles_cotton_building_1
+		}
+		aub_upgrade_chain_textiles_cotton_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = textiles_flax_building_1
+		}
+		aub_upgrade_chain_textiles_flax_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = textiles_silk_building_1
+		}
+		aub_upgrade_chain_textiles_silk_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = textiles_wool_building_1
+		}
+		aub_upgrade_chain_textiles_wool_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = theriac_workshop_1
+		}
+		aub_upgrade_chain_theriac_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tinkerers_shops_1
+		}
+		aub_upgrade_chain_tinkerers_shops_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = toll_gates_1
+		}
+		aub_upgrade_chain_toll_gates_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tool_smith_1
+		}
+		aub_upgrade_chain_tool_smith_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = town_liberties_court_01
+		}
+		aub_upgrade_chain_town_liberties_court_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_apothecary_guild_01
+		}
+		aub_upgrade_chain_trade_apothecary_guild_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_blacksmith_quarter_01
+		}
+		aub_upgrade_chain_trade_blacksmith_quarter_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_cellar_01
+		}
+		aub_upgrade_chain_trade_cellar_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_cloth_hall_01
+		}
+		aub_upgrade_chain_trade_cloth_hall_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_consulate_01
+		}
+		aub_upgrade_chain_trade_consulate_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_counting_house_01
+		}
+		aub_upgrade_chain_trade_counting_house_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_food_depot_01
+		}
+		aub_upgrade_chain_trade_food_depot_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_gem_exchange_01
+		}
+		aub_upgrade_chain_trade_gem_exchange_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_granary_01
+		}
+		aub_upgrade_chain_trade_granary_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_league_arsenal_01
+		}
+		aub_upgrade_chain_trade_league_arsenal_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_league_treasury_01
+		}
+		aub_upgrade_chain_trade_league_treasury_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_lodgings_01
+		}
+		aub_upgrade_chain_trade_lodgings_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_mercenary_office_01
+		}
+		aub_upgrade_chain_trade_mercenary_office_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_recruitment_office_01
+		}
+		aub_upgrade_chain_trade_recruitment_office_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_secure_storeroom_01
+		}
+		aub_upgrade_chain_trade_secure_storeroom_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_shipyard_01
+		}
+		aub_upgrade_chain_trade_shipyard_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_tanners_stables_01
+		}
+		aub_upgrade_chain_trade_tanners_stables_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_treasury_01
+		}
+		aub_upgrade_chain_trade_treasury_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_warehouse_01
+		}
+		aub_upgrade_chain_trade_warehouse_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trade_watchtower_01
+		}
+		aub_upgrade_chain_trade_watchtower_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = traders_meet_1
+		}
+		aub_upgrade_chain_traders_meet_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trappers_1
+		}
+		aub_upgrade_chain_trappers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = travellers_inns_1
+		}
+		aub_upgrade_chain_travellers_inns_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -1112,9 +4266,44 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tribe_craftsmens_lodge_1
+		}
+		aub_upgrade_chain_tribe_craftsmens_lodge_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tribe_sacred_grove_1
+		}
+		aub_upgrade_chain_tribe_sacred_grove_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = tribe_warriors_compound_1
+		}
+		aub_upgrade_chain_tribe_warriors_compound_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = trophy_hall_1
+		}
+		aub_upgrade_chain_trophy_hall_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = tsushima_mines_01
 		}
 		aub_upgrade_chain_tsushima_mines_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = turbary_common_1
+		}
+		aub_upgrade_chain_turbary_common_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -1126,6 +4315,20 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = varnishing_workshop_1
+		}
+		aub_upgrade_chain_varnishing_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = verderers_hall_01
+		}
+		aub_upgrade_chain_verderers_hall_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
 			has_building_or_higher = verespatak_mines_01
 		}
 		aub_upgrade_chain_verespatak_mines_01_effect = yes
@@ -1133,58 +4336,380 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = vihara_halls_01
+			has_building_or_higher = victualing_depots_1
 		}
-		aub_upgrade_chain_vihara_halls_01_effect = yes
+		aub_upgrade_chain_victualing_depots_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = wantilan_01
+			has_building_or_higher = victualing_quarter_1
 		}
-		aub_upgrade_chain_wantilan_01_effect = yes
+		aub_upgrade_chain_victualing_quarter_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = war_camps_01
+			has_building_or_higher = village_butcher_1
 		}
-		aub_upgrade_chain_war_camps_01_effect = yes
+		aub_upgrade_chain_village_butcher_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = warrior_lodges_01
+			has_building_or_higher = village_council_1
 		}
-		aub_upgrade_chain_warrior_lodges_01_effect = yes
+		aub_upgrade_chain_village_council_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = watchtowers_01
+			has_building_or_higher = village_granaries_1
 		}
-		aub_upgrade_chain_watchtowers_01_effect = yes
+		aub_upgrade_chain_village_granaries_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = water_temples_01
+			has_building_or_higher = village_hunter_1
 		}
-		aub_upgrade_chain_water_temples_01_effect = yes
+		aub_upgrade_chain_village_hunter_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = watermills_01
+			has_building_or_higher = village_weaver_1
 		}
-		aub_upgrade_chain_watermills_01_effect = yes
+		aub_upgrade_chain_village_weaver_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = waterworks_01
+			has_building_or_higher = vinegar_stores_1
 		}
-		aub_upgrade_chain_waterworks_01_effect = yes
+		aub_upgrade_chain_vinegar_stores_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wall_wardens_offices_1
+		}
+		aub_upgrade_chain_wall_wardens_offices_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = walled_compound_1
+		}
+		aub_upgrade_chain_walled_compound_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = walrus_hunting_camp_1
+		}
+		aub_upgrade_chain_walrus_hunting_camp_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wantilan_compound_1
+		}
+		aub_upgrade_chain_wantilan_compound_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_amber_barter_1
+		}
+		aub_upgrade_chain_wanua_amber_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_cattle_barter_1
+		}
+		aub_upgrade_chain_wanua_cattle_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_ceramics_barter_1
+		}
+		aub_upgrade_chain_wanua_ceramics_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_cotton_barter_1
+		}
+		aub_upgrade_chain_wanua_cotton_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_dyes_barter_1
+		}
+		aub_upgrade_chain_wanua_dyes_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_fish_barter_1
+		}
+		aub_upgrade_chain_wanua_fish_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_flax_barter_1
+		}
+		aub_upgrade_chain_wanua_flax_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_fruit_barter_1
+		}
+		aub_upgrade_chain_wanua_fruit_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_furs_barter_1
+		}
+		aub_upgrade_chain_wanua_furs_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_grain_barter_1
+		}
+		aub_upgrade_chain_wanua_grain_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_hemp_barter_1
+		}
+		aub_upgrade_chain_wanua_hemp_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_honey_barter_1
+		}
+		aub_upgrade_chain_wanua_honey_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_horses_barter_1
+		}
+		aub_upgrade_chain_wanua_horses_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_incense_barter_1
+		}
+		aub_upgrade_chain_wanua_incense_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_ivory_barter_1
+		}
+		aub_upgrade_chain_wanua_ivory_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_medicaments_barter_1
+		}
+		aub_upgrade_chain_wanua_medicaments_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_millet_barter_1
+		}
+		aub_upgrade_chain_wanua_millet_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_mine_alum_barter_1
+		}
+		aub_upgrade_chain_wanua_mine_alum_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_mine_copper_barter_1
+		}
+		aub_upgrade_chain_wanua_mine_copper_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_mine_gems_barter_1
+		}
+		aub_upgrade_chain_wanua_mine_gems_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_mine_gold_barter_1
+		}
+		aub_upgrade_chain_wanua_mine_gold_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_mine_iron_barter_1
+		}
+		aub_upgrade_chain_wanua_mine_iron_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_mine_jade_barter_1
+		}
+		aub_upgrade_chain_wanua_mine_jade_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_mine_salt_barter_1
+		}
+		aub_upgrade_chain_wanua_mine_salt_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_mine_silver_barter_1
+		}
+		aub_upgrade_chain_wanua_mine_silver_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_oil_barter_1
+		}
+		aub_upgrade_chain_wanua_oil_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_rice_barter_1
+		}
+		aub_upgrade_chain_wanua_rice_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_salt_barter_1
+		}
+		aub_upgrade_chain_wanua_salt_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_silk_barter_1
+		}
+		aub_upgrade_chain_wanua_silk_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_spices_barter_1
+		}
+		aub_upgrade_chain_wanua_spices_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_stone_barter_1
+		}
+		aub_upgrade_chain_wanua_stone_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_sugar_barter_1
+		}
+		aub_upgrade_chain_wanua_sugar_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_tea_barter_1
+		}
+		aub_upgrade_chain_wanua_tea_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_wine_barter_1
+		}
+		aub_upgrade_chain_wanua_wine_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_wood_barter_1
+		}
+		aub_upgrade_chain_wanua_wood_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wanua_wool_barter_1
+		}
+		aub_upgrade_chain_wanua_wool_barter_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = war_storage_1
+		}
+		aub_upgrade_chain_war_storage_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = warhorse_training_1
+		}
+		aub_upgrade_chain_warhorse_training_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = warrior_households_1
+		}
+		aub_upgrade_chain_warrior_households_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = watchtowers_1
+		}
+		aub_upgrade_chain_watchtowers_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = water_management_1
+		}
+		aub_upgrade_chain_water_management_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = water_temples_1
+		}
+		aub_upgrade_chain_water_temples_1_effect = yes
 	}
 	if = {
 		limit = {
@@ -1196,23 +4721,121 @@ aub_upgrade_all_supported_buildings_effect = {
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = wind_furnace_01
+			has_building_or_higher = weapon_armor_smith_1
 		}
-		aub_upgrade_chain_wind_furnace_01_effect = yes
+		aub_upgrade_chain_weapon_armor_smith_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = windmills_01
+			has_building_or_higher = weavers_guild_1
 		}
-		aub_upgrade_chain_windmills_01_effect = yes
+		aub_upgrade_chain_weavers_guild_1_effect = yes
 	}
 	if = {
 		limit = {
 			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
-			has_building_or_higher = workshops_01
+			has_building_or_higher = wharf_1
 		}
-		aub_upgrade_chain_workshops_01_effect = yes
+		aub_upgrade_chain_wharf_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = whetstone_workshop_1
+		}
+		aub_upgrade_chain_whetstone_workshop_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wholesale_market_1
+		}
+		aub_upgrade_chain_wholesale_market_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wickmaker_1
+		}
+		aub_upgrade_chain_wickmaker_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wieliczka_mines_01
+		}
+		aub_upgrade_chain_wieliczka_mines_01_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wind_furnace_1
+		}
+		aub_upgrade_chain_wind_furnace_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wine_cellars_1
+		}
+		aub_upgrade_chain_wine_cellars_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wine_distillery_1
+		}
+		aub_upgrade_chain_wine_distillery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wine_resource_building_1
+		}
+		aub_upgrade_chain_wine_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wool_cheesemaker_1
+		}
+		aub_upgrade_chain_wool_cheesemaker_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wool_oil_finishing_1
+		}
+		aub_upgrade_chain_wool_oil_finishing_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wool_resource_building_1
+		}
+		aub_upgrade_chain_wool_resource_building_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = wool_tannery_1
+		}
+		aub_upgrade_chain_wool_tannery_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = workers_camps_1
+		}
+		aub_upgrade_chain_workers_camps_1_effect = yes
+	}
+	if = {
+		limit = {
+			scope:aub_payer = { var:aub_upgrades_this_scan < 15 }
+			has_building_or_higher = writing_offices_1
+		}
+		aub_upgrade_chain_writing_offices_1_effect = yes
 	}
 	if = {
 		limit = {

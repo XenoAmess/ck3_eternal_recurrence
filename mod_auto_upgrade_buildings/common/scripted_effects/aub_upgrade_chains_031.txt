@@ -1,0 +1,511 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+
+aub_upgrade_chain_luxury_ceramics_workshops_1_effect = {
+	if = {
+		limit = {
+			has_building = luxury_ceramics_workshops_1
+			aub_can_upgrade_to_luxury_ceramics_workshops_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = luxury_ceramics_workshops_1
+		if = {
+			limit = { has_building = luxury_ceramics_workshops_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = luxury_ceramics_workshops_2
+			aub_can_upgrade_to_luxury_ceramics_workshops_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = luxury_ceramics_workshops_2
+		if = {
+			limit = { has_building = luxury_ceramics_workshops_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = luxury_ceramics_workshops_3
+			aub_can_upgrade_to_luxury_ceramics_workshops_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = luxury_ceramics_workshops_3
+		if = {
+			limit = { has_building = luxury_ceramics_workshops_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = luxury_ceramics_workshops_4
+			aub_can_upgrade_to_luxury_ceramics_workshops_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = luxury_ceramics_workshops_4
+		if = {
+			limit = { has_building = luxury_ceramics_workshops_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# mali_mines_01: 3 frozen upgrade edge(s)
+aub_upgrade_chain_mali_mines_01_effect = {
+	if = {
+		limit = {
+			has_building = mali_mines_01
+			aub_can_upgrade_to_mali_mines_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = mali_mines_01
+		if = {
+			limit = { has_building = mali_mines_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = mali_mines_02
+			aub_can_upgrade_to_mali_mines_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = mali_mines_02
+		if = {
+			limit = { has_building = mali_mines_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = mali_mines_03
+			aub_can_upgrade_to_mali_mines_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_6_cost }
+		}
+		upgrade_building_effect = mali_mines_03
+		if = {
+			limit = { has_building = mali_mines_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
+		}
+	}
+}
+
+# manor_buying_agent_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_manor_buying_agent_1_effect = {
+	if = {
+		limit = {
+			has_building = manor_buying_agent_1
+			aub_can_upgrade_to_manor_buying_agent_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = manor_buying_agent_1
+		if = {
+			limit = { has_building = manor_buying_agent_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_buying_agent_2
+			aub_can_upgrade_to_manor_buying_agent_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = manor_buying_agent_2
+		if = {
+			limit = { has_building = manor_buying_agent_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_buying_agent_3
+			aub_can_upgrade_to_manor_buying_agent_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = manor_buying_agent_3
+		if = {
+			limit = { has_building = manor_buying_agent_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_buying_agent_4
+			aub_can_upgrade_to_manor_buying_agent_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = manor_buying_agent_4
+		if = {
+			limit = { has_building = manor_buying_agent_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# manor_chamber_blocks_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_manor_chamber_blocks_1_effect = {
+	if = {
+		limit = {
+			has_building = manor_chamber_blocks_1
+			aub_can_upgrade_to_manor_chamber_blocks_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = manor_chamber_blocks_1
+		if = {
+			limit = { has_building = manor_chamber_blocks_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_chamber_blocks_2
+			aub_can_upgrade_to_manor_chamber_blocks_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = manor_chamber_blocks_2
+		if = {
+			limit = { has_building = manor_chamber_blocks_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_chamber_blocks_3
+			aub_can_upgrade_to_manor_chamber_blocks_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = manor_chamber_blocks_3
+		if = {
+			limit = { has_building = manor_chamber_blocks_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_chamber_blocks_4
+			aub_can_upgrade_to_manor_chamber_blocks_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = manor_chamber_blocks_4
+		if = {
+			limit = { has_building = manor_chamber_blocks_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# manor_hunting_grounds_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_manor_hunting_grounds_1_effect = {
+	if = {
+		limit = {
+			has_building = manor_hunting_grounds_1
+			aub_can_upgrade_to_manor_hunting_grounds_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = manor_hunting_grounds_1
+		if = {
+			limit = { has_building = manor_hunting_grounds_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_hunting_grounds_2
+			aub_can_upgrade_to_manor_hunting_grounds_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = manor_hunting_grounds_2
+		if = {
+			limit = { has_building = manor_hunting_grounds_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_hunting_grounds_3
+			aub_can_upgrade_to_manor_hunting_grounds_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = manor_hunting_grounds_3
+		if = {
+			limit = { has_building = manor_hunting_grounds_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_hunting_grounds_4
+			aub_can_upgrade_to_manor_hunting_grounds_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = manor_hunting_grounds_4
+		if = {
+			limit = { has_building = manor_hunting_grounds_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# manor_kitchens_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_manor_kitchens_1_effect = {
+	if = {
+		limit = {
+			has_building = manor_kitchens_1
+			aub_can_upgrade_to_manor_kitchens_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = manor_kitchens_1
+		if = {
+			limit = { has_building = manor_kitchens_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_kitchens_2
+			aub_can_upgrade_to_manor_kitchens_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = manor_kitchens_2
+		if = {
+			limit = { has_building = manor_kitchens_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_kitchens_3
+			aub_can_upgrade_to_manor_kitchens_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = manor_kitchens_3
+		if = {
+			limit = { has_building = manor_kitchens_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_kitchens_4
+			aub_can_upgrade_to_manor_kitchens_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = manor_kitchens_4
+		if = {
+			limit = { has_building = manor_kitchens_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# manor_parlor_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_manor_parlor_1_effect = {
+	if = {
+		limit = {
+			has_building = manor_parlor_1
+			aub_can_upgrade_to_manor_parlor_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = manor_parlor_1
+		if = {
+			limit = { has_building = manor_parlor_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_parlor_2
+			aub_can_upgrade_to_manor_parlor_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = manor_parlor_2
+		if = {
+			limit = { has_building = manor_parlor_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_parlor_3
+			aub_can_upgrade_to_manor_parlor_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = manor_parlor_3
+		if = {
+			limit = { has_building = manor_parlor_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_parlor_4
+			aub_can_upgrade_to_manor_parlor_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = manor_parlor_4
+		if = {
+			limit = { has_building = manor_parlor_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# manor_reeves_office_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_manor_reeves_office_1_effect = {
+	if = {
+		limit = {
+			has_building = manor_reeves_office_1
+			aub_can_upgrade_to_manor_reeves_office_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = manor_reeves_office_1
+		if = {
+			limit = { has_building = manor_reeves_office_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_reeves_office_2
+			aub_can_upgrade_to_manor_reeves_office_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = manor_reeves_office_2
+		if = {
+			limit = { has_building = manor_reeves_office_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_reeves_office_3
+			aub_can_upgrade_to_manor_reeves_office_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = manor_reeves_office_3
+		if = {
+			limit = { has_building = manor_reeves_office_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_reeves_office_4
+			aub_can_upgrade_to_manor_reeves_office_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = manor_reeves_office_4
+		if = {
+			limit = { has_building = manor_reeves_office_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# manor_study_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_manor_study_1_effect = {
+	if = {
+		limit = {
+			has_building = manor_study_1
+			aub_can_upgrade_to_manor_study_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = manor_study_1
+		if = {
+			limit = { has_building = manor_study_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_study_2
+			aub_can_upgrade_to_manor_study_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = manor_study_2
+		if = {
+			limit = { has_building = manor_study_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_study_3
+			aub_can_upgrade_to_manor_study_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = manor_study_3
+		if = {
+			limit = { has_building = manor_study_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_study_4
+			aub_can_upgrade_to_manor_study_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = manor_study_4
+		if = {
+			limit = { has_building = manor_study_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# manor_tower_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_manor_tower_1_effect = {
+	if = {
+		limit = {
+			has_building = manor_tower_1
+			aub_can_upgrade_to_manor_tower_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = manor_tower_1
+		if = {
+			limit = { has_building = manor_tower_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_tower_2
+			aub_can_upgrade_to_manor_tower_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = manor_tower_2
+		if = {
+			limit = { has_building = manor_tower_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_tower_3
+			aub_can_upgrade_to_manor_tower_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = manor_tower_3
+		if = {
+			limit = { has_building = manor_tower_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = manor_tower_4
+			aub_can_upgrade_to_manor_tower_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = manor_tower_4
+		if = {
+			limit = { has_building = manor_tower_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# manure_piles_1: 4 frozen upgrade edge(s)

@@ -1,0 +1,551 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+
+aub_upgrade_chain_staple_district_01_effect = {
+	if = {
+		limit = {
+			has_building = staple_district_01
+			aub_can_upgrade_to_staple_district_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_2_cost }
+		}
+		upgrade_building_effect = staple_district_01
+		if = {
+			limit = { has_building = staple_district_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = staple_district_02
+			aub_can_upgrade_to_staple_district_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_3_cost }
+		}
+		upgrade_building_effect = staple_district_02
+		if = {
+			limit = { has_building = staple_district_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = staple_district_03
+			aub_can_upgrade_to_staple_district_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = district_tier_4_cost }
+		}
+		upgrade_building_effect = staple_district_03
+		if = {
+			limit = { has_building = staple_district_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = district_tier_4_cost }
+		}
+	}
+}
+
+# state_granary_01: 4 frozen upgrade edge(s)
+aub_upgrade_chain_state_granary_01_effect = {
+	if = {
+		limit = {
+			has_building = state_granary_01
+			aub_can_upgrade_to_state_granary_02_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = state_granary_01
+		if = {
+			limit = { has_building = state_granary_02 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = state_granary_02
+			aub_can_upgrade_to_state_granary_03_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_4_cost }
+		}
+		upgrade_building_effect = state_granary_02
+		if = {
+			limit = { has_building = state_granary_03 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = state_granary_03
+			aub_can_upgrade_to_state_granary_04_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = state_granary_03
+		if = {
+			limit = { has_building = state_granary_04 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = state_granary_04
+			aub_can_upgrade_to_state_granary_05_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = expensive_building_tier_5_cost }
+		}
+		upgrade_building_effect = state_granary_04
+		if = {
+			limit = { has_building = state_granary_05 }
+			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
+		}
+	}
+}
+
+# stone_cutters_1: 2 frozen upgrade edge(s)
+aub_upgrade_chain_stone_cutters_1_effect = {
+	if = {
+		limit = {
+			has_building = stone_cutters_1
+			aub_can_upgrade_to_stone_cutters_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = stone_cutters_1
+		if = {
+			limit = { has_building = stone_cutters_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_cutters_2
+			aub_can_upgrade_to_stone_cutters_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = stone_cutters_2
+		if = {
+			limit = { has_building = stone_cutters_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+}
+
+# stone_masons_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_stone_masons_1_effect = {
+	if = {
+		limit = {
+			has_building = stone_masons_1
+			aub_can_upgrade_to_stone_masons_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = stone_masons_1
+		if = {
+			limit = { has_building = stone_masons_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_masons_2
+			aub_can_upgrade_to_stone_masons_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = stone_masons_2
+		if = {
+			limit = { has_building = stone_masons_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_masons_3
+			aub_can_upgrade_to_stone_masons_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = stone_masons_3
+		if = {
+			limit = { has_building = stone_masons_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_masons_4
+			aub_can_upgrade_to_stone_masons_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = stone_masons_4
+		if = {
+			limit = { has_building = stone_masons_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# stone_resource_building_1: 9 frozen upgrade edge(s)
+aub_upgrade_chain_stone_resource_building_1_effect = {
+	if = {
+		limit = {
+			has_building = stone_resource_building_1
+			aub_can_upgrade_to_stone_resource_building_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = stone_resource_building_1
+		if = {
+			limit = { has_building = stone_resource_building_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_resource_building_2
+			aub_can_upgrade_to_stone_resource_building_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = stone_resource_building_2
+		if = {
+			limit = { has_building = stone_resource_building_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_resource_building_3
+			aub_can_upgrade_to_stone_resource_building_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = stone_resource_building_3
+		if = {
+			limit = { has_building = stone_resource_building_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_resource_building_4
+			aub_can_upgrade_to_stone_resource_building_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = stone_resource_building_4
+		if = {
+			limit = { has_building = stone_resource_building_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_resource_building_5
+			aub_can_upgrade_to_stone_resource_building_6_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_6_cost }
+		}
+		upgrade_building_effect = stone_resource_building_5
+		if = {
+			limit = { has_building = stone_resource_building_6 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_resource_building_6
+			aub_can_upgrade_to_stone_resource_building_7_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_7_cost }
+		}
+		upgrade_building_effect = stone_resource_building_6
+		if = {
+			limit = { has_building = stone_resource_building_7 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_resource_building_7
+			aub_can_upgrade_to_stone_resource_building_8_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_8_cost }
+		}
+		upgrade_building_effect = stone_resource_building_7
+		if = {
+			limit = { has_building = stone_resource_building_8 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_8_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_resource_building_8
+			aub_can_upgrade_to_stone_resource_building_9_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_9_cost }
+		}
+		upgrade_building_effect = stone_resource_building_8
+		if = {
+			limit = { has_building = stone_resource_building_9 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_9_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_resource_building_9
+			aub_can_upgrade_to_stone_resource_building_10_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_10_cost }
+		}
+		upgrade_building_effect = stone_resource_building_9
+		if = {
+			limit = { has_building = stone_resource_building_10 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_10_cost }
+		}
+	}
+}
+
+# stone_statue_workshop_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_stone_statue_workshop_1_effect = {
+	if = {
+		limit = {
+			has_building = stone_statue_workshop_1
+			aub_can_upgrade_to_stone_statue_workshop_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = stone_statue_workshop_1
+		if = {
+			limit = { has_building = stone_statue_workshop_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_statue_workshop_2
+			aub_can_upgrade_to_stone_statue_workshop_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = stone_statue_workshop_2
+		if = {
+			limit = { has_building = stone_statue_workshop_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_statue_workshop_3
+			aub_can_upgrade_to_stone_statue_workshop_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = stone_statue_workshop_3
+		if = {
+			limit = { has_building = stone_statue_workshop_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stone_statue_workshop_4
+			aub_can_upgrade_to_stone_statue_workshop_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = stone_statue_workshop_4
+		if = {
+			limit = { has_building = stone_statue_workshop_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# storehouses_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_storehouses_1_effect = {
+	if = {
+		limit = {
+			has_building = storehouses_1
+			aub_can_upgrade_to_storehouses_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+			scope:aub_payer = { prestige >= tribal_building_prestige_cost_tier_2 }
+		}
+		upgrade_building_effect = storehouses_1
+		if = {
+			limit = { has_building = storehouses_2 }
+			aub_pay_gold_prestige_building_cost_effect = { GOLD = regular_building_cost_tier_2 PRESTIGE = tribal_building_prestige_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = storehouses_2
+			aub_can_upgrade_to_storehouses_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+			scope:aub_payer = { prestige >= tribal_building_prestige_cost_tier_3 }
+		}
+		upgrade_building_effect = storehouses_2
+		if = {
+			limit = { has_building = storehouses_3 }
+			aub_pay_gold_prestige_building_cost_effect = { GOLD = regular_building_cost_tier_3 PRESTIGE = tribal_building_prestige_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = storehouses_3
+			aub_can_upgrade_to_storehouses_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+			scope:aub_payer = { prestige >= tribal_building_prestige_cost_tier_4 }
+		}
+		upgrade_building_effect = storehouses_3
+		if = {
+			limit = { has_building = storehouses_4 }
+			aub_pay_gold_prestige_building_cost_effect = { GOLD = regular_building_cost_tier_4 PRESTIGE = tribal_building_prestige_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = storehouses_4
+			aub_can_upgrade_to_storehouses_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+			scope:aub_payer = { prestige >= tribal_building_prestige_cost_tier_5 }
+		}
+		upgrade_building_effect = storehouses_4
+		if = {
+			limit = { has_building = storehouses_5 }
+			aub_pay_gold_prestige_building_cost_effect = { GOLD = regular_building_cost_tier_5 PRESTIGE = tribal_building_prestige_cost_tier_5 }
+		}
+	}
+}
+
+# straw_weavery_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_straw_weavery_1_effect = {
+	if = {
+		limit = {
+			has_building = straw_weavery_1
+			aub_can_upgrade_to_straw_weavery_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = straw_weavery_1
+		if = {
+			limit = { has_building = straw_weavery_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = straw_weavery_2
+			aub_can_upgrade_to_straw_weavery_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = straw_weavery_2
+		if = {
+			limit = { has_building = straw_weavery_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = straw_weavery_3
+			aub_can_upgrade_to_straw_weavery_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = straw_weavery_3
+		if = {
+			limit = { has_building = straw_weavery_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = straw_weavery_4
+			aub_can_upgrade_to_straw_weavery_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = straw_weavery_4
+		if = {
+			limit = { has_building = straw_weavery_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# stupefactives_apothecary_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_stupefactives_apothecary_1_effect = {
+	if = {
+		limit = {
+			has_building = stupefactives_apothecary_1
+			aub_can_upgrade_to_stupefactives_apothecary_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_2_cost }
+		}
+		upgrade_building_effect = stupefactives_apothecary_1
+		if = {
+			limit = { has_building = stupefactives_apothecary_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stupefactives_apothecary_2
+			aub_can_upgrade_to_stupefactives_apothecary_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_3_cost }
+		}
+		upgrade_building_effect = stupefactives_apothecary_2
+		if = {
+			limit = { has_building = stupefactives_apothecary_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stupefactives_apothecary_3
+			aub_can_upgrade_to_stupefactives_apothecary_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_4_cost }
+		}
+		upgrade_building_effect = stupefactives_apothecary_3
+		if = {
+			limit = { has_building = stupefactives_apothecary_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = stupefactives_apothecary_4
+			aub_can_upgrade_to_stupefactives_apothecary_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = resource_district_normal_tier_5_cost }
+		}
+		upgrade_building_effect = stupefactives_apothecary_4
+		if = {
+			limit = { has_building = stupefactives_apothecary_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = resource_district_normal_tier_5_cost }
+		}
+	}
+}
+
+# suburb_1: 4 frozen upgrade edge(s)
+aub_upgrade_chain_suburb_1_effect = {
+	if = {
+		limit = {
+			has_building = suburb_1
+			aub_can_upgrade_to_suburb_2_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_2 }
+		}
+		upgrade_building_effect = suburb_1
+		if = {
+			limit = { has_building = suburb_2 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_2 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = suburb_2
+			aub_can_upgrade_to_suburb_3_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_3 }
+		}
+		upgrade_building_effect = suburb_2
+		if = {
+			limit = { has_building = suburb_3 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_3 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = suburb_3
+			aub_can_upgrade_to_suburb_4_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_4 }
+		}
+		upgrade_building_effect = suburb_3
+		if = {
+			limit = { has_building = suburb_4 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_4 }
+		}
+	}
+	else_if = {
+		limit = {
+			has_building = suburb_4
+			aub_can_upgrade_to_suburb_5_trigger = yes
+			aub_can_pay_gold_building_cost_trigger = { GOLD = regular_building_cost_tier_5 }
+		}
+		upgrade_building_effect = suburb_4
+		if = {
+			limit = { has_building = suburb_5 }
+			aub_pay_gold_building_cost_effect = { GOLD = regular_building_cost_tier_5 }
+		}
+	}
+}
+
+# sugar_distillery_1: 4 frozen upgrade edge(s)

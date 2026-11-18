@@ -1,0 +1,44 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_21_0.json
+# District scope. The engine checks the full target construction contract,
+# including district level requirements, without checking owner affordability.
+
+aub_can_upgrade_to_manor_tower_5_trigger = {
+	can_start_building_construction_for_owner = manor_tower_5
+}
+
+aub_can_upgrade_to_manure_piles_2_trigger = {
+	can_start_building_construction_for_owner = manure_piles_2
+}
+
+aub_can_upgrade_to_manure_piles_3_trigger = {
+	can_start_building_construction_for_owner = manure_piles_3
+}
+
+aub_can_upgrade_to_manure_piles_4_trigger = {
+	can_start_building_construction_for_owner = manure_piles_4
+}
+
+aub_can_upgrade_to_manure_piles_5_trigger = {
+	can_start_building_construction_for_owner = manure_piles_5
+}
+
+aub_can_upgrade_to_march_02_trigger = {
+	can_start_building_construction_for_owner = march_02
+}
+
+aub_can_upgrade_to_march_03_trigger = {
+	can_start_building_construction_for_owner = march_03
+}
+
+aub_can_upgrade_to_march_04_trigger = {
+	can_start_building_construction_for_owner = march_04
+}
+
+aub_can_upgrade_to_march_05_trigger = {
+	can_start_building_construction_for_owner = march_05
+}
+
+aub_can_upgrade_to_marcher_garrisons_2_trigger = {
+	can_start_building_construction_for_owner = marcher_garrisons_2
+}
