@@ -12,13 +12,24 @@ public final class ModelIndexOracle implements PriceOracle {
     public static final String MILITARY = "index:military";
     public static final String TRADE = "index:trade";
     public static final String SOURCE_ID = "model:xfm-fixed-county-basket-v1";
+    public static final int NEW_INDEX_QUOTE_DIVISOR = 100;
     private final Set<String> basket;
+    private final int quoteDivisor;
     private Map<String, Long> prices = Map.of(GRAIN, 0L, MILITARY, 0L, TRADE, 0L);
     private long observationDay = -1;
     private long lastValidDay = -1;
     private boolean sufficient;
 
+    /** Preserves the face of an existing index whose persisted divisor is absent. */
     public ModelIndexOracle(List<String> countyIds) {
+        this(countyIds, 1);
+    }
+
+    /** Explicit unit identity: 100 for a new index, 1 for an existing legacy index. */
+    public ModelIndexOracle(List<String> countyIds, int quoteDivisor) {
+        if (quoteDivisor != 1 && quoteDivisor != NEW_INDEX_QUOTE_DIVISOR)
+            throw new IllegalArgumentException("supported model quote divisor is 1 or 100");
+        this.quoteDivisor = quoteDivisor;
         Objects.requireNonNull(countyIds, "countyIds");
         Set<String> checked = new HashSet<>();
         if (countyIds.size() > 32) throw new IllegalArgumentException("at most 32 fixed basket counties");
@@ -77,7 +88,9 @@ public final class ModelIndexOracle implements PriceOracle {
                 current ? "disclosed_county_model_index" : "missing_current_basket_observations", lastValidDay, SOURCE_ID);
     }
 
-    private static long bounded(long tenths) {
-        return Math.max(3_000, Math.min(30_000, Math.floorDiv(tenths, 10)));
+    public int quoteDivisor() { return quoteDivisor; }
+
+    private long bounded(long tenths) {
+        return Math.floorDiv(Math.max(3_000, Math.min(30_000, Math.floorDiv(tenths, 10))), quoteDivisor);
     }
 }

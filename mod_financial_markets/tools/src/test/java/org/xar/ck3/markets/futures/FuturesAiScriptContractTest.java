@@ -44,6 +44,7 @@ final class FuturesAiScriptContractTest {
         "scripted_guis/xfm_market_futures_open.txt", "scripted_effects/xfm_futures_ai.txt", "scripted_effects/xfm_futures_ai_funding.txt",
         "scripted_effects/xfm_futures_discovery.txt", "scripted_effects/xfm_futures_orders.txt",
         "scripted_effects/xfm_futures_daily_index.txt",
+        "scripted_effects/xfm_oracle_indexes.txt", "script_values/xfm_oracle_index_values.txt",
         "scripted_effects/xfm_finance_cash.txt", "scripted_effects/xfm_finance_init.txt",
         "scripted_effects/xfm_finance_reserve.txt", "scripted_effects/xfm_finance_schedule.txt", "scripted_triggers/xfm_finance_triggers.txt",
         "scripted_triggers/xfm_futures_triggers.txt", "scripted_triggers/xfm_futures_ai_triggers.txt",
@@ -305,6 +306,79 @@ final class FuturesAiScriptContractTest {
         assertEquals(4, v.exchange.list("xfm_futures_contracts").size());
     }
 
+    @Test void newModelFirstAndRepeatedDailyQuotesUseSmallFaceAndPendingRetainsLastMark() throws IOException {
+        Vm v = vm();
+        Node grain = v.newIndex(1, "xfm_grain_index"), military = v.newIndex(2, "xfm_military_index"), trade = v.newIndex(3, "xfm_trade_index");
+        for (Node index : List.of(grain, military, trade)) {
+            assertEquals(100, index.integer("xfm_model_quote_divisor"));
+            assertEquals(0, index.integer("xfm_index_cents"));
+            assertEquals(0, index.integer("xfm_mark_cents"));
+            assertEquals(0, index.integer("xfm_max_leverage"));
+        }
+        v.counties(8, 0, 100, false);
+        for (int day : List.of(1, 2)) {
+            v.exchange.put("xfm_day", day); v.run("xfm_oracle_index_daily_effect", v.exchange);
+            for (Node index : List.of(grain, military, trade)) {
+                assertEquals(100, index.integer("xfm_index_cents"));
+                assertEquals(100, index.integer("xfm_mark_cents"));
+                assertEquals(5, index.integer("xfm_max_leverage"));
+                assertEquals(day, index.integer("xfm_oracle_last_valid_day"));
+            }
+        }
+        v.exchange.list("xfm_oracle_counties").removeLast(); v.exchange.put("xfm_day", 3);
+        v.run("xfm_oracle_index_daily_effect", v.exchange);
+        assertEquals(100, grain.integer("xfm_mark_cents")); assertEquals(0, grain.integer("xfm_max_leverage"));
+        assertEquals(0, grain.integer("xfm_oracle_quality")); assertEquals(2, grain.integer("xfm_oracle_last_valid_day"));
+        assertEquals(3, grain.integer("xfm_oracle_day"));
+    }
+
+    @Test void mixedLegacyAndNewModelUnitsDoNotRewriteOldPortfolioOrCash() throws IOException {
+        Vm v = vm(); Node grain = v.newIndex(1, "xfm_grain_index"), military = v.newIndex(2, "xfm_military_index"), trade = v.newIndex(3, "xfm_trade_index");
+        grain.vars.remove("xfm_model_quote_divisor"); // Existing SAVE index: no migration or backfill.
+        Node holder = v.node("legacy-holder", ""), account = v.account("legacy-wallet", holder, 4096);
+        account.put("xfm_reserved_cents", 9000);
+        Node contract = v.contract("legacy-series", grain, 0, 30); contract.put("xfm_contract_id", 77);
+        Node position = v.node("legacy-position", "xfm_futures_position"); position.put("xfm_coin", grain);
+        position.put("xfm_contract", contract); position.put("xfm_mark_cents", 10000); position.put("xfm_lots", 2);
+        position.put("xfm_pending_payment", 1); position.put("xfm_pending_amount", 1234);
+        Node debt = v.node("legacy-debt", "xfm_debt_claim"); debt.put("xfm_outstanding_cents", 1234); debt.put("xfm_source", position);
+        Map<String, Datum> oldAccount = Map.copyOf(account.vars), oldContract = Map.copyOf(contract.vars);
+        Map<String, Datum> oldPosition = Map.copyOf(position.vars), oldDebt = Map.copyOf(debt.vars);
+        BigDecimal cash = v.cashStock(); v.counties(8, 100, 100, false);
+        for (int day : List.of(1, 2)) { v.exchange.put("xfm_day", day); v.run("xfm_oracle_index_daily_effect", v.exchange); }
+        assertEquals(5000, grain.integer("xfm_index_cents")); assertEquals(5000, grain.integer("xfm_mark_cents"));
+        assertFalse(grain.vars.containsKey("xfm_model_quote_divisor"));
+        assertEquals(120, military.integer("xfm_index_cents")); assertEquals(180, trade.integer("xfm_index_cents"));
+        assertEquals(oldAccount, account.vars); assertEquals(oldContract, contract.vars);
+        assertEquals(oldPosition, position.vars); assertEquals(oldDebt, debt.vars); assertEquals(cash, v.cashStock());
+    }
+
+    @Test void publishedSmallFaceFeedsActualAiReservationAndUnchangedMarginVariationValues() throws IOException {
+        for (int leverage : List.of(1, 3)) {
+            Vm v = vm(); Node grain = v.newIndex(1, "xfm_grain_index");
+            v.newIndex(2, "xfm_military_index"); v.newIndex(3, "xfm_trade_index"); v.counties(8, 0, 100, false);
+            v.run("xfm_oracle_index_daily_effect", v.exchange);
+            Node actor = v.node("actor", ""); actor.gold = new BigDecimal(leverage == 1 ? "29.20" : "13.20");
+            actor.put("xfm_selected_coin", grain); actor.put("xfm_futures_perpetual", 1); actor.put("xfm_futures_expiry_day", 0);
+            actor.put("xfm_futures_contract", v.contract("new-series", grain, 1, 0)); actor.put("xfm_futures_side", 1);
+            actor.put("xfm_futures_lots", 1); actor.put("xfm_futures_leverage", leverage); actor.put("xfm_futures_limit_cents", grain.integer("xfm_mark_cents"));
+            BigDecimal cash = v.cashStock(); v.run("xfm_futures_submit_effect", actor);
+            assertEquals(1, actor.integer("xfm_futures_result"));
+            assertEquals(leverage == 1 ? 121 : 41, actor.ref("xfm_account").integer("xfm_reserved_cents"));
+            assertEquals(cash, v.cashStock()); assertEquals(1, v.matchCalls); // Explicit matching port: no fill claimed.
+            Node position = v.node("unit-values", "xfm_futures_position"); position.put("xfm_coin", grain);
+            position.put("xfm_mark_cents", 100); position.put("xfm_new_mark_cents", 110); position.put("xfm_lots", 1);
+            position.put("xfm_long_leverage", 5); position.put("xfm_short_leverage", 5);
+            assertEquals(80, v.integerValue("xfm_futures_band_low_value", position));
+            assertEquals(120, v.integerValue("xfm_futures_band_high_value", position));
+            assertEquals(20, v.integerValue("xfm_futures_initial_long_value", position));
+            assertEquals(12, v.integerValue("xfm_futures_maintenance_long_value", position));
+            assertEquals(10, v.integerValue("xfm_futures_variation_value", position));
+            position.put("xfm_mark_cents", 10000); position.put("xfm_new_mark_cents", 11000);
+            assertEquals(1000, v.integerValue("xfm_futures_variation_value", position)); // Legacy positions keep full cents.
+        }
+    }
+
     private static Vm vm() throws IOException {
         Map<String, Block> definitions = new LinkedHashMap<>();
         for (String input : INPUTS) {
@@ -347,11 +421,13 @@ final class FuturesAiScriptContractTest {
     private static final class Vm {
         final Map<String, Block> program; final Map<String, Node> nodes = new LinkedHashMap<>();
         final Map<String, Datum> scopes = new HashMap<>();
+        final Map<String, Datum> globals = new HashMap<>();
         final Map<String, List<Node>> globalLists = new HashMap<>();
         final Node exchange, custodian;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries;
         Vm(Map<String, Block> program) {
             this.program = program; custodian = node("technical-owner", ""); exchange = node("exchange", "xfm_finance_exchange"); exchange.owner = custodian;
+            globals.put("xfm_exchange", exchange);
             exchange.put("xfm_day", 1); exchange.put("xfm_ai_seeded", 1); exchange.put("xfm_next_account_id", 0); exchange.put("xfm_next_reservation_id", 0);
             exchange.put("xfm_next_futures_contract_id", 0); exchange.put("xfm_next_futures_position_id", 0);
             exchange.put("xfm_active_orders_count", 0); exchange.put("xfm_futures_open_positions_count", 0);
@@ -381,6 +457,18 @@ final class FuturesAiScriptContractTest {
             contract.list("xfm_orders").add(o); contract.put("xfm_open_orders_count", contract.integer("xfm_open_orders_count") + 1);
         }
         int created(String type) { return (int) nodes.values().stream().filter(n -> n.id.startsWith("created-") && n.type.equals(type)).count(); }
+        Node newIndex(int id, String key) {
+            execute(substitute(definition("xfm_oracle_create_index_effect"), Map.of("$ID$", Integer.toString(id), "$KEY$", key)), new Frame(exchange, null, exchange));
+            return (Node) globals.get(key);
+        }
+        void counties(int count, int prosperity, int control, boolean war) {
+            for (int i = 0; i < count; i++) {
+                Node holder = node("county-holder-" + i, ""), county = node("county-" + i, "");
+                holder.put("at_war", war ? 1 : 0); county.put("holder", holder);
+                county.put("prosperity_level", prosperity); county.put("county_control", control);
+                exchange.list("xfm_oracle_counties").add(county);
+            }
+        }
         BigDecimal cashStock() {
             BigDecimal sum = BigDecimal.ZERO;
             for (Node n : nodes.values()) {
@@ -399,11 +487,12 @@ final class FuturesAiScriptContractTest {
             int dot = text.indexOf('.');
             if (dot > 0) { Datum base = resolve(text.substring(0, dot), f); return base instanceof Node n ? resolve(text.substring(dot + 1), f.enter(n)) : null; }
             if (text.equals("this")) return f.here(); if (text.equals("prev")) return f.previous(); if (text.equals("root")) return f.root();
-            if (text.equals("global_var:xfm_exchange")) return exchange;
+            if (text.startsWith("global_var:")) return globals.get(text.substring(11));
             if (text.equals("story_owner")) return f.here().owner;
             if (text.startsWith("scope:")) return scopes.get(text.substring(6));
             if (text.startsWith("var:")) return f.here().vars.get(text.substring(4));
             if (text.equals("gold")) return new NumberDatum(f.here().gold);
+            if (Set.of("holder", "prosperity_level", "county_control").contains(text)) return f.here().vars.get(text);
             if (program.containsKey(text)) return new NumberDatum(value(definition(text), f, BigDecimal.ZERO));
             if (Set.of("xfm_config_player_order_capacity_value", "xfm_config_coin_order_capacity_value", "xfm_config_global_order_capacity_value", "xfm_config_futures_position_capacity_value").contains(text)) return new NumberDatum(BigDecimal.valueOf(4096));
             try { return new NumberDatum(new BigDecimal(text)); } catch (NumberFormatException ignored) { return new TextDatum(text); }
@@ -441,6 +530,7 @@ final class FuturesAiScriptContractTest {
             if (k.equals("is_ai")) return f.here().ai == atom(e.value()).equals("yes");
             if (k.equals("is_alive")) return f.here().alive == atom(e.value()).equals("yes");
             if (k.equals("is_adult")) return f.here().adult == atom(e.value()).equals("yes");
+            if (k.equals("is_at_war")) return (f.here().integer("at_war") == 1) == atom(e.value()).equals("yes");
             if (k.equals("story_type")) return f.here().type.equals(atom(e.value()));
             if (k.equals("has_trait")) return f.here().traits.contains(atom(e.value()));
             if (k.equals("xfm_config_futures_open_trigger")) return open;
@@ -477,6 +567,7 @@ final class FuturesAiScriptContractTest {
                 if (k.equals("save_scope_as")) { scopes.put(atom(e.value()), f.here()); continue; }
                 if (k.equals("clear_saved_scope")) { scopes.remove(atom(e.value())); continue; }
                 if (k.equals("remove_variable")) { f.here().vars.remove(atom(e.value())); continue; }
+                if (k.equals("set_global_variable")) { Block a = (Block)e.value(); globals.put(atom(field(a, "name")), evaluate(field(a, "value"), f)); continue; }
                 if (k.equals("set_variable") || k.equals("change_variable")) {
                     Block a = (Block)e.value(); String name = atom(field(a, "name"));
                     if (k.equals("set_variable")) f.here().vars.put(name, evaluate(field(a, "value"), f));
@@ -500,11 +591,11 @@ final class FuturesAiScriptContractTest {
                     List<Node> list = k.equals("add_to_global_variable_list") ? globalLists.computeIfAbsent(name, ignored -> new ArrayList<>()) : f.here().list(name);
                     if (k.equals("remove_list_variable")) list.remove(target); else list.add(target); continue;
                 }
-                if (k.equals("every_in_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {
+                if (k.equals("every_in_list") || k.equals("every_in_global_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {
                     Block a = (Block)e.value(); String name = atom(field(a, "variable"));
-                    List<Node> list = k.equals("random_in_global_list") ? List.copyOf(globalLists.getOrDefault(name, List.of())) : list(f.here(), name);
+                    List<Node> list = k.endsWith("in_global_list") ? List.copyOf(globalLists.getOrDefault(name, List.of())) : list(f.here(), name);
                     for (Node n : list) if (test(a.block("limit"), f.enter(n))) {
-                        execute(without(without(a, "variable"), "limit"), f.enter(n)); if (!k.equals("every_in_list")) break;
+                        execute(without(without(a, "variable"), "limit"), f.enter(n)); if (!k.startsWith("every_")) break;
                     }
                     continue;
                 }
@@ -516,6 +607,11 @@ final class FuturesAiScriptContractTest {
                 execute(definition(k), f);
             }
         }
+    }
+    private static Block substitute(Block block, Map<String, String> arguments) {
+        return new Block(block.entries().stream().map(entry -> new Entry(entry.key(), entry.operator(),
+                entry.value() instanceof Block child ? substitute(child, arguments)
+                : new Atom(arguments.getOrDefault(atom(entry.value()), atom(entry.value()))))).toList());
     }
     private static String atom(Value value) { if (!(value instanceof Atom a)) throw new IllegalArgumentException("atom required"); return a.token(); }
     private static Value field(Block block, String name) { List<Entry> found = block.named(name); if (found.size() != 1) throw new IllegalArgumentException("one field required " + name); return found.getFirst().value(); }

@@ -3,7 +3,7 @@
  xfm_market_futures_book_missing:0 "尚无所选合约盘口，请选择系列后刷新。"
  xfm_market_futures_book_header:0 "合约#[GetPlayer.MakeScope.Var('xfm_ui_futures_book_contract').Var('xfm_contract_id').GetValue|0] · 快照日[GetPlayer.MakeScope.Var('xfm_ui_futures_book_day').GetValue|0]"
  xfm_market_futures_book_spot_reference:0 "现货最近价：[Divide_CFixedPoint(GetPlayer.MakeScope.Var('xfm_selected_coin').Var('xfm_last_price_cents').GetValue,'(CFixedPoint)100')|2]金币/手（非期货成交价）"
- xfm_market_futures_book_model_reference:0 "模组观察指数：无现货交易或实物兑付。"
+ xfm_market_futures_book_model_reference:0 "现金结算的模组指数，无现货或实物兑付。盈亏＝金币报价变动×手数；杠杆只改变保证金。新指数面值为旧版1/100，既有指数单位不变。"
  xfm_market_futures_book_reference:0 "参考指数[Divide_CFixedPoint(GetPlayer.MakeScope.Var('xfm_selected_coin').Var('xfm_index_cents').GetValue,'(CFixedPoint)100')|2] · 结算标记[Divide_CFixedPoint(GetPlayer.MakeScope.Var('xfm_selected_coin').Var('xfm_mark_cents').GetValue,'(CFixedPoint)100')|2]，均非本合约成交。"
  xfm_market_futures_book_execution:0 "最近有成交日[GetPlayer.MakeScope.Var('xfm_ui_futures_execution_day').GetValue|0]：当日均价[Divide_CFixedPoint(GetPlayer.MakeScope.Var('xfm_ui_futures_execution_cents').GetValue,'(CFixedPoint)100')|2]金币/手，合计[GetPlayer.MakeScope.Var('xfm_ui_futures_execution_lots').GetValue|0]手。未存逐笔价、时刻或单笔量。"
  xfm_market_futures_book_no_execution:0 "本合约尚无已记录成交；不以现货、指数或标记价代填。"

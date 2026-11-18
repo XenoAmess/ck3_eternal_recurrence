@@ -62,6 +62,29 @@ final class ModelIndexOracleTest {
                 5, Quality.MODEL_INDEX, true, "zero", 0, "fixture:model"));
     }
 
+    @Test void explicitNewFaceMatchesBoundedModelAndLegacyConstructorKeepsOldUnits() {
+        List<String> basket = IntStream.range(0, 8).mapToObj(i -> "c" + i).toList();
+        ModelIndexOracle legacy = new ModelIndexOracle(basket), small = new ModelIndexOracle(basket, ModelIndexOracle.NEW_INDEX_QUOTE_DIVISOR);
+        assertEquals(1, legacy.quoteDivisor()); assertEquals(100, small.quoteDivisor());
+        assertEquals(0, small.quote(ModelIndexOracle.GRAIN, 0).markCents());
+        for (int day = 0; day < 3; day++) {
+            List<CountyObservation> observations = counties(day == 0 ? 0 : 100, day == 2 ? 0 : 100, day == 2);
+            legacy.observe(day, observations); small.observe(day, observations);
+            for (String asset : List.of(ModelIndexOracle.GRAIN, ModelIndexOracle.MILITARY, ModelIndexOracle.TRADE)) {
+                assertEquals(legacy.quote(asset, day).indexCents() / 100, small.quote(asset, day).indexCents());
+                assertEquals(small.quote(asset, day).indexCents(), small.quote(asset, day).markCents());
+                assertEquals(5, small.quote(asset, day).maxLeverage());
+            }
+        }
+        long prior = small.quote(ModelIndexOracle.GRAIN, 2).markCents();
+        small.observe(3, counties(0, 100, false).subList(0, 7));
+        assertEquals(prior, small.quote(ModelIndexOracle.GRAIN, 3).markCents());
+        assertEquals(0, small.quote(ModelIndexOracle.GRAIN, 3).maxLeverage());
+        assertEquals(2, small.quote(ModelIndexOracle.GRAIN, 3).lastObservationDay());
+        assertThrows(IllegalArgumentException.class, () -> new ModelIndexOracle(basket, 0));
+        assertThrows(IllegalArgumentException.class, () -> new ModelIndexOracle(basket, 10));
+    }
+
     private static ModelIndexOracle oracle() {
         return new ModelIndexOracle(IntStream.range(0, 8).mapToObj(i -> "c" + i).toList());
     }

@@ -4,6 +4,10 @@
 
 ## 当前状态（R0012 收束后）
 
+R0012关闭后补入新建模型指数的小面值：新story持久记录`xfm_model_quote_divisor=100`，首次合格观察及后续每天均从当日原始县域公式换算一次，再以相同分/手赋给index和mark。旧指数缺字段时仍按原单位，不回填、不重算旧仓位、账户及债权；SAVE投影显式保留单位身份，冷比较可发现字段丢失或改变。正常1金币/手模型、上限报价1.20金币时，一手1/3/5倍冻结分别为121/41/25分；AI原5%风险预算及5金币生活预留不变，1/3倍资金资格门槛降为29.20/13.20金币。这是公式门槛，不是实际AI数量或成交深度。[计价合同](oracle-runtime-contract.md)。
+
+候选10叶经Root精确字节采用及独立源码审阅后，正式`mvn verify`于21:49:23Z实际wait0/76.776800秒，252项全部通过、0失败/错误/跳过，包含6个新增正式方法。独立javac/JVM的6项不再叠加计数。原始JUnit及源码指纹保存在`task/software-15-model-denomination01/VERIFY.actual.json`（SHA256 `46d7411234641160e0dbf2e63b4bb9399ededb83098938261370cc521a9d61a4`）；实际操作为`operations/MVN-financial-model-denomination01`。尚未装载该产品版本、取得新金融SAVE或冷载；named审计入口须随新增投影重打包。
+
 第十二场`R0012/a90`实际装载当前`71575e8f`的Q18 DLL，进入已归档1.21基线。首次关联只读请求在8秒期限排队超时并确认撤收，随后在同一owner实际完成新帧后取得`native:2/public3`与`native:3/public4`；角色31254、日期53144328、暂停状态均核实。GUI查询实际执行并在0.207秒返回`gui_global_tree_budget_exhausted`，没有控件或按钮效果。该错误目前还合并了深度、节点数、子指针读取、重复及环等失败，不能仅据名字认定节点数量超限。[本场真实原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0012.json)。
 
 本场首次实测新版公共队列的正常退出链：query取得Core上下文，一次confirm获得真实requested ACK，随后retained process observer独立确认同一PID/出生身份退出码0；managed session亦为Game0、Job0、treegone，Host原wait0。正常退出不代表业务通过：公共run仍为wait2/627.981849秒，case尚未完成且原自动关场报告进程已退出，两项错误保留。显式finish-hold后正常停止keeper，原keeper exit0；21:40:15Z CAS15314→15315释放资源。金融动作、新增日、金融SAVE仍为零，当前继续修控件定位及完整市场业务验收。

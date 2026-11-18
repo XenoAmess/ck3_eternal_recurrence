@@ -23,3 +23,14 @@ xfm_oracle_trade_model_value = {
     add = { value = var:xfm_oracle_average_prosperity multiply = 80 }
     floor = yes min = 3000 max = 30000
 }
+
+# Index scope. New stories persist divisor=100; old stories without it retain their original face.
+# The input is this day's raw bounded county model, never yesterday's already converted quote.
+xfm_oracle_model_quote_value = {
+    value = var:xfm_index_cents
+    if = {
+        limit = { has_variable = xfm_model_quote_divisor var:xfm_model_quote_divisor = 100 }
+        divide = 100
+    }
+    floor = yes min = 1
+}

@@ -42,11 +42,19 @@ These are cash-settled Mod observation indexes, not native floating grain prices
 
 At first initialization the basket records up to 32 distinct capital counties of independent rulers, ordered by primary title tier. The recorded county identities remain fixed. Succession changes the county's actual holder, not the membership. Missing holders are excluded from that day's sample. No global daily replacement scan is performed; fewer than eight observed counties makes the model pending.
 
-Let P be floored mean prosperity, C floored mean control, both bounded to 0..100, and W be floored war share in basis points, 0..10,000. Daily indexes, floored and bounded to 3,000..30,000 cents, are:
+Let P be floored mean prosperity, C floored mean control, both bounded to 0..100, and W be floored war share in basis points, 0..10,000. The raw daily model, floored and bounded to 3,000..30,000 before denomination, is:
 
 - Grain: `10000 + 0.4W + 40(100-C) - 50P`.
 - Military supply: `10000 + 0.8W + 20(100-C) + 20P`.
 - Trade: `10000 - 0.5W - 30(100-C) + 80P`.
+
+Newly created index stories persist `xfm_model_quote_divisor = 100`. On each successful county observation, publication computes `floor(raw_model / 100)` once, before assigning the same cents-per-lot value to both `xfm_index_cents` and `xfm_mark_cents`. Thus the published model range is 30..300 cents (0.30..3.00 gold) per lot. Initial price remains zero/unqualified until the first sufficient observation. An insufficient observation preserves the historical quoted mark but removes current qualification. The raw county formulas and source ID `model:xfm-fixed-county-basket-v1` remain the same; denomination is separately persisted and selected by the SAVE auditor.
+
+An existing index without this field keeps its original 3,000..30,000-cent unit. There is no backfill, rebasing, replacement of permanent asset IDs, or rewrite of existing orders, balances, position marks, settlement journals or claims. All contracts for that legacy asset, including later contracts, continue in its legacy unit. A same-state cold comparison retains the optional divisor field and must detect its loss or change. The Java reference uses explicit divisor 100 for a new index; the original constructor retains legacy divisor 1. This is still a source contract, not proof of actual SAVE encoding or reload.
+
+One index lot is a cash contract at its displayed gold quotation, not 100 physical goods. Variation is `(new mark - prior mark) * lots` in cents; a one-lot move from 1.00 to 1.10 gold transfers 0.10 gold before fees. Leverage changes required collateral, not the cash value of a lot or that variation. The existing UI converts cents to gold once for mark, index, limit and depth; no additional UI division by the story divisor is applied. Coin lots remain 100 coins and their denomination is unchanged.
+
+At model mark 100 cents, the 120-cent upper order band requires 121 cents for one lot at 1x, 41 cents at 3x, or 25 cents at 5x, including the rounded fee reserve. Actual fill collateral follows the real resting execution price. The unchanged AI five-percent budget plus five-gold living reserve therefore requires at least 29.20 gold of legal personal liquidity at 1x or 13.20 gold at 3x. These are calculated eligibility thresholds, not an observed count of funded AI or available counterparties. Fixed real-notional liquidity thresholds for perpetual funding remain unchanged; small contracts do not manufacture qualifying volume or an executable close.
 
 These disclosed formulas intentionally respond differently to war, disrupted control and prosperity. Quality is MODEL_INDEX (3), maximum leverage 5, and the observation must be from the requested day. There is no fabricated last-traded spot price. The model mark does not supply liquidation liquidity; margin/debt rules still apply when a futures order cannot be filled.
 
