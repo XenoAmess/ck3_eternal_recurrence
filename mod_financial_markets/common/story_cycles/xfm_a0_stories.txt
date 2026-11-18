@@ -1,0 +1,24 @@
+﻿# Persistent currency identity is the coin story, not its current character owner.
+xfm_a0_coin = {
+    visible = no
+    on_owner_death = { xfm_a0_coin_owner_death_effect = yes }
+    effect_group = {
+        days = 1
+        triggered_effect = {
+            trigger = { has_variable = xfm_original_issuer }
+            effect = { xfm_a0_daily_effect = yes }
+        }
+    }
+    effect_group = {
+        months = 1
+        triggered_effect = {
+            trigger = { has_variable = xfm_maintenance_escrow }
+            effect = { xfm_a0_maintenance_effect = yes }
+        }
+    }
+}
+
+xfm_a0_position = {
+    visible = no
+    on_owner_death = { xfm_a0_position_owner_death_effect = yes }
+}

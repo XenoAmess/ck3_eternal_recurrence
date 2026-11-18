@@ -1,0 +1,72 @@
+{
+  "schema": "xfm.business-vectors.v1",
+  "status": "EXPECTED_DATA_NOT_EXECUTED_IN_CK3",
+  "adapter_status": "pending_shared_entry_integration",
+  "units": {"cash": "integer gold cents", "coin": "whole coins", "lot": 100},
+  "case": "a0_funded_pool_roundtrip",
+  "preconditions": {
+    "issuer_and_buyer_are_distinct_living_adults": true,
+    "issuer_cash_cents": 10000,
+    "buyer_cash_cents": 3000,
+    "no_existing_coin_or_cooldown": true,
+    "registration_capacity_available": true
+  },
+  "actions": [
+    {
+      "action": "normal_issue_decision",
+      "expected": {
+        "issuer_cash_cents": 9440,
+        "buyer_cash_cents": 3000,
+        "pool_gold_cents": 200,
+        "pool_inventory_coins": 10000,
+        "total_supply_coins": 10000,
+        "maintenance_escrow_cents": 60,
+        "performance_bond_cents": 100,
+        "registration_income_cents": 100,
+        "listing_income_cents": 100,
+        "trading_fee_cash_cents": 0
+      }
+    },
+    {
+      "action": "normal_trade_interaction_then_buy_one_lot",
+      "expected": {
+        "buyer_cash_cents": 2996,
+        "buyer_coin_quantity": 100,
+        "pool_gold_cents": 202,
+        "pool_inventory_coins": 9900,
+        "trading_fee_cash_cents": 2,
+        "actual_trades": 1
+      }
+    },
+    {
+      "action": "refresh_quote_then_sell_one_lot_on_same_day",
+      "expected": {
+        "buyer_cash_cents": 2997,
+        "buyer_coin_quantity": 0,
+        "pool_gold_cents": 199,
+        "pool_inventory_coins": 10000,
+        "trading_fee_cash_cents": 4,
+        "actual_trades": 2
+      }
+    },
+    {
+      "action": "save_and_cold_reload",
+      "expected": {"all_financial_values_and_coin_identity_unchanged": true}
+    }
+  ],
+  "invariants": {
+    "all_cash_including_restricted_and_earned_fees_cents": 13000,
+    "pool_inventory_plus_all_holders_coins": 10000,
+    "no_second_registration_or_issuance_on_reload": true
+  },
+  "negative_cases": [
+    "issuer_with_559_cents_cannot_issue_and_has_no_new_story_or_charge",
+    "buyer_with_3_cents_cannot_execute_initial_4_cent_purchase",
+    "seller_without_100_real_coins_cannot_receive_cash",
+    "quote_from_old_pool_revision_cannot_execute_after_another_trade",
+    "same_revision_on_another_coin_cannot_validate_an_old_event_quote",
+    "failed_creation_with_stale_saved_alias_cannot_reset_existing_coin_or_position",
+    "failed_position_creation_cannot_charge_cash_or_change_inventory",
+    "technical_custodian_of_frozen_estate_cannot_sell_or_inherit_it_as_personal_property"
+  ]
+}

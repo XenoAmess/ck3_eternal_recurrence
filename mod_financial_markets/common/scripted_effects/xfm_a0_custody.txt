@@ -1,0 +1,59 @@
+﻿# 2 effects. Story owner is technical custody, never unrestricted asset ownership.
+xfm_a0_coin_owner_death_effect = {
+    save_scope_as = xfm_custody_story
+    clear_saved_scope = xfm_dead_custodian
+    story_owner = { save_scope_as = xfm_dead_custodian }
+    set_variable = { name = xfm_last_custodian value = scope:xfm_dead_custodian }
+    if = {
+        limit = { exists = scope:xfm_dead_custodian.primary_heir }
+        make_story_owner = scope:xfm_dead_custodian.primary_heir
+    }
+    else = {
+        set_variable = { name = xfm_custody_pending value = scope:xfm_dead_custodian }
+        set_variable = { name = xfm_custody_state value = 2 }
+        clear_saved_scope = xfm_archive_custodian
+        random_ruler = {
+            limit = { is_alive = yes this != scope:xfm_dead_custodian }
+            save_scope_as = xfm_archive_custodian
+        }
+        if = {
+            limit = { exists = scope:xfm_archive_custodian }
+            make_story_owner = scope:xfm_archive_custodian
+        }
+        # No end_story, reserve payout, supply reset or controller gold transfer.
+    }
+}
+
+xfm_a0_position_owner_death_effect = {
+    save_scope_as = xfm_custody_story
+    clear_saved_scope = xfm_dead_holder
+    story_owner = { save_scope_as = xfm_dead_holder }
+    if = {
+        limit = {
+            NOT = { has_variable = xfm_frozen_beneficiary }
+            exists = scope:xfm_dead_holder.primary_heir
+        }
+        set_variable = { name = xfm_previous_holder value = scope:xfm_dead_holder }
+        set_variable = { name = xfm_beneficiary value = scope:xfm_dead_holder.primary_heir }
+        set_variable = { name = xfm_inheritance_state value = 1 }
+        make_story_owner = scope:xfm_dead_holder.primary_heir
+    }
+    else = {
+        if = {
+            limit = { NOT = { has_variable = xfm_frozen_beneficiary } }
+            set_variable = { name = xfm_frozen_beneficiary value = scope:xfm_dead_holder }
+            set_variable = { name = xfm_inheritance_state value = 2 }
+        }
+        # Further technical-custodian deaths must not replace the beneficiary.
+        clear_saved_scope = xfm_position_custodian
+        random_ruler = {
+            limit = { is_alive = yes this != scope:xfm_dead_holder }
+            save_scope_as = xfm_position_custodian
+        }
+        if = {
+            limit = { exists = scope:xfm_position_custodian }
+            make_story_owner = scope:xfm_position_custodian
+        }
+        # Frozen stories cannot enter any trading or portfolio-selection path.
+    }
+}

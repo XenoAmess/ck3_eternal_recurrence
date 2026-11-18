@@ -1,0 +1,41 @@
+﻿namespace = xfm_a0
+
+xfm_a0.100 = {
+    type = character_event
+    title = xfm_a0_market_title
+    desc = xfm_a0_market_desc
+    theme = stewardship
+    immediate = { xfm_a0_refresh_quotes_effect = yes }
+    option = {
+        name = xfm_a0_buy_option
+        trigger = { xfm_a0_can_buy_trigger = yes }
+        xfm_a0_buy_effect = yes
+        trigger_event = xfm_a0.101
+    }
+    option = {
+        name = xfm_a0_sell_option
+        trigger = { xfm_a0_can_sell_trigger = yes }
+        xfm_a0_sell_effect = yes
+        trigger_event = xfm_a0.101
+    }
+    option = {
+        name = xfm_a0_refresh_option
+        trigger_event = xfm_a0.100
+    }
+    option = { name = xfm_a0_close }
+}
+
+xfm_a0.101 = {
+    type = character_event
+    title = xfm_a0_receipt_title
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { var:xfm_last_trade_status = 1 } desc = xfm_a0_receipt_buy }
+            triggered_desc = { trigger = { var:xfm_last_trade_status = 2 } desc = xfm_a0_receipt_sell }
+            desc = xfm_a0_receipt_rejected
+        }
+    }
+    theme = stewardship
+    option = { name = xfm_a0_back trigger_event = xfm_a0.100 }
+    option = { name = xfm_a0_close }
+}

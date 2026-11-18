@@ -1,0 +1,312 @@
+{
+  "schema": "xfm.a0.native-source-index.v1",
+  "machine_id": "4-8e1c2f1861",
+  "read_at": "2026-11-18T08:59:08.675795+00:00",
+  "game_version": "1.21.0 Florin",
+  "steam_build_id": "26622941",
+  "root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "files": [
+    {
+      "path": "common/story_cycles/_story_cycles.info",
+      "sha256": "0425928302aba86630575ee90b092317c0b155ea018461fee29733996e12aa04",
+      "evidence_lines": [
+        15,
+        16,
+        17,
+        18,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_scripted_effects.txt",
+      "sha256": "53aadb834f3f9c666fbb4f69dc9456dbbcf9d9ee01ad6302a8e44a40966723de",
+      "evidence_lines": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84
+      ]
+    },
+    {
+      "path": "common/story_cycles/ep3_story_cycle_restoring_rome.txt",
+      "sha256": "a603e0b00c9422d13e6a5fb6c33e9faef1477e1afb3331a9ebf4e700e3dd4ad9",
+      "evidence_lines": [
+        17,
+        20,
+        21,
+        23,
+        30,
+        37
+      ]
+    },
+    {
+      "path": "common/story_cycles/ep3_story_cycle_frankokratia.txt",
+      "sha256": "333577c6b7f47de46422a5ca2ac0f116829ff7c7c604eb16e9eefb17e6997839",
+      "evidence_lines": [
+        96,
+        97,
+        98,
+        99,
+        100,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_childhood_effects.txt",
+      "sha256": "e555c1145030b4a2e0a6e4d4ce379ad24a6cda6a1b14696285bfd02e5918de61",
+      "evidence_lines": [
+        187,
+        188,
+        189,
+        190,
+        191,
+        192
+      ]
+    },
+    {
+      "path": "common/story_cycles/bp1_story_cycle_doppelganger.txt",
+      "sha256": "616ae74dee1ce5006f595c26805a46c5cd69a7302a9d64ae788019eb2ed3fd51",
+      "evidence_lines": [
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89
+      ]
+    },
+    {
+      "path": "common/scripted_effects/gdp_merchant_scripted_effects.txt",
+      "sha256": "44b987f213985620046f6439bc8471f46cbd9d6bb5f140d898507dcbf8bc0298",
+      "evidence_lines": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        56,
+        57,
+        522,
+        523,
+        524,
+        1596,
+        1597,
+        1598,
+        1599,
+        2661,
+        6294,
+        6295,
+        6296,
+        6297,
+        6298,
+        6299,
+        7447,
+        7448,
+        7449,
+        7460
+      ],
+      "rechecked_at": "2026-11-18T09:04:02.462290+00:00"
+    },
+    {
+      "path": "common/scripted_effects/00_game_rule_effects.txt",
+      "sha256": "ccfbab86ba68e9064908ce5c49410a00a0b9a16fe60b9f57000d3b1f5d2a3d41",
+      "evidence_lines": [
+        1072,
+        1073,
+        1074,
+        1075,
+        1076
+      ]
+    },
+    {
+      "path": "common/story_cycles/story_cycle_infidelity_confrontation.txt",
+      "sha256": "606888396673ee406d8695bc76a01abb96213b277a7e20590a7142f4a9b33838",
+      "evidence_lines": [
+        65,
+        66,
+        67,
+        68,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101
+      ]
+    },
+    {
+      "path": "common/character_interactions/_character_interactions.info",
+      "sha256": "69162c58ac00485d1fbb6d2d71afc5d7d9c7877a3f4bb4cb619eda2c7ff233f2",
+      "evidence_lines": [
+        533,
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        544,
+        545,
+        546,
+        547,
+        548,
+        549,
+        550,
+        551,
+        552,
+        553,
+        554,
+        555,
+        556,
+        557
+      ]
+    },
+    {
+      "path": "common/decisions/_decisions.info",
+      "sha256": "5159b67fd6a72125904f2a0bdc90ff3af499d24deca7bef4a4930b1f531c879a",
+      "evidence_lines": [
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181
+      ]
+    },
+    {
+      "path": "common/script_values/_script_values.info",
+      "sha256": "68f615a899a1690af01cfd233ab73acd096778d93d1f5227a6e8d5b80adf4310",
+      "evidence_lines": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    {
+      "path": "common/script_values/04_ep2_tournament_values.txt",
+      "sha256": "fa0f40318fdcb7e613955c1f655714111dd3c0c3b9c4fe4ad5c3a89b7f4670de",
+      "evidence_lines": [
+        119
+      ]
+    },
+    {
+      "path": "common/scripted_triggers/00_economic_triggers.txt",
+      "sha256": "c4014ba0909237ffa2c562fc56d62d47bfacef53730dc04d3d80cc0c8b785622",
+      "evidence_lines": [
+        8
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_personal_details_effects.txt",
+      "sha256": "259adcc14974d53a2423f1aadcb0f3a8708b7b37913f3157a307639d432fd41a",
+      "evidence_lines": [
+        429
+      ]
+    },
+    {
+      "path": "localization/english/event_localization/story_cycles/story_cycles_l_english.yml",
+      "sha256": "44e373501a7843039468fe749a5122757e297e1696f6e51467a360b8d1232dbe",
+      "evidence_lines": [
+        79
+      ]
+    },
+    {
+      "path": "common/decisions/dlc_decisions/gdp/gdp_merchant_decisions.txt",
+      "sha256": "8dcb655c8b939875b1b2e514461c06741ac2905a66fcbbd210dae40eaaae1350",
+      "evidence_lines": [
+        184,
+        185,
+        186,
+        187
+      ]
+    },
+    {
+      "path": "common/scripted_triggers/gdp_merchant_triggers.txt",
+      "sha256": "c414cd6e8cd21c43b4d9280199c369c4eb0d26606f39c73c76936e95fe49ea09",
+      "evidence_lines": [
+        791,
+        792,
+        793,
+        794
+      ]
+    },
+    {
+      "path": "events/story_cycles/story_cycle_conqueror_events.txt",
+      "sha256": "4b48ef377d7ad8f6670a6abd0d4d05f200d622de1d3ab1ccda0631f09d38ae3d",
+      "evidence_lines": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ]
+    }
+  ],
+  "last_updated_at": "2026-11-18T09:04:02.462290+00:00"
+}

@@ -1,0 +1,42 @@
+﻿# 2 effects. At most one already-indexed adult AI is considered per coin/day.
+xfm_a0_daily_effect = {
+    save_scope_as = xfm_daily_coin
+    change_variable = { name = xfm_daily_ticks add = 1 }
+    random_in_list = {
+        variable = xfm_traders
+        limit = { is_ai = yes xfm_a0_actor_eligible_trigger = yes }
+        # An actual path for low-tier and unlanded candidates; no ruler-only gate.
+        if = {
+            limit = { xfm_a0_can_issue_trigger = yes }
+            random = { chance = 5 xfm_a0_issue_effect = yes }
+        }
+        set_variable = { name = xfm_selected_coin value = scope:xfm_daily_coin }
+        xfm_a0_refresh_quotes_effect = yes
+        random_list = {
+            1 = {
+                if = {
+                    limit = { xfm_a0_can_buy_trigger = yes gold >= 10 }
+                    xfm_a0_buy_effect = yes
+                }
+            }
+            1 = {
+                if = {
+                    limit = { xfm_a0_can_sell_trigger = yes }
+                    xfm_a0_sell_effect = yes
+                }
+            }
+        }
+    }
+}
+
+xfm_a0_maintenance_effect = {
+    if = {
+        limit = { var:xfm_maintenance_escrow >= 0.1 }
+        change_variable = { name = xfm_maintenance_escrow subtract = 0.1 }
+        change_variable = { name = xfm_maintenance_fee_earned add = 0.1 }
+    }
+    else = {
+        change_variable = { name = xfm_maintenance_arrears add = 0.1 }
+    }
+    # Delisting and subsidy collection are not implemented in A0.
+}

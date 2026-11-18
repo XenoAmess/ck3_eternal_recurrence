@@ -1,0 +1,67 @@
+﻿# Actor eligibility intentionally has no landed, tier, government or player gate.
+xfm_a0_actor_eligible_trigger = {
+    is_alive = yes
+    is_adult = yes
+}
+
+xfm_a0_can_issue_trigger = {
+    xfm_a0_actor_eligible_trigger = yes
+    gold >= 5.6
+    NOT = { has_variable = xfm_personal_coin }
+    NOT = { has_variable = xfm_issue_cooldown }
+    OR = {
+        NOT = { has_global_variable = xfm_a0_coin_count }
+        global_var:xfm_a0_coin_count < 32
+    }
+}
+
+xfm_a0_selected_coin_trigger = {
+    exists = var:xfm_selected_coin
+    var:xfm_selected_coin = {
+        story_type = xfm_a0_coin
+        has_variable = xfm_pool_gold
+        var:xfm_pool_gold > 0
+        var:xfm_pool_inventory >= 0
+    }
+}
+
+xfm_a0_quote_current_trigger = {
+    exists = scope:xfm_coin
+    exists = scope:xfm_quote_snapshot_revision
+    exists = scope:xfm_quote_snapshot_buy
+    exists = scope:xfm_quote_snapshot_sell
+    var:xfm_selected_coin = scope:xfm_coin
+    has_variable = xfm_quote_revision
+    var:xfm_quote_revision = scope:xfm_quote_snapshot_revision
+    var:xfm_buy_quote = scope:xfm_quote_snapshot_buy
+    var:xfm_sell_quote = scope:xfm_quote_snapshot_sell
+    var:xfm_selected_coin = {
+        var:xfm_revision = scope:xfm_quote_snapshot_revision
+    }
+}
+
+xfm_a0_can_buy_trigger = {
+    xfm_a0_actor_eligible_trigger = yes
+    xfm_a0_selected_coin_trigger = yes
+    xfm_a0_quote_current_trigger = yes
+    var:xfm_selected_coin = { var:xfm_pool_inventory > 100 }
+    var:xfm_buy_quote > 0
+    var:xfm_buy_pool_net >= 0
+    gold >= var:xfm_buy_quote
+}
+
+xfm_a0_can_sell_trigger = {
+    xfm_a0_actor_eligible_trigger = yes
+    xfm_a0_selected_coin_trigger = yes
+    xfm_a0_quote_current_trigger = yes
+    var:xfm_sell_quote > 0
+    var:xfm_selected_coin = {
+        var:xfm_pool_gold >= scope:xfm_actor.var:xfm_sell_pool_debit
+    }
+    any_owned_story = {
+        story_type = xfm_a0_position
+        NOT = { has_variable = xfm_frozen_beneficiary }
+        var:xfm_coin = scope:xfm_actor.var:xfm_selected_coin
+        var:xfm_quantity >= 100
+    }
+}

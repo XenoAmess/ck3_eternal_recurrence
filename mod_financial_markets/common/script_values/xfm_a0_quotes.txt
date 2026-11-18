@@ -1,0 +1,79 @@
+﻿# A0: actor scope, with xfm_selected_coin pointing at an xfm_a0_coin story.
+# Curve principal rounds up/down to cents; both counterparties pay a separate fee.
+xfm_a0_buy_pool_value = {
+    value = var:xfm_selected_coin.var:xfm_pool_gold
+    multiply = 100
+    divide = {
+        value = var:xfm_selected_coin.var:xfm_pool_inventory
+        subtract = 100
+    }
+    multiply = 100
+    ceiling = yes
+    divide = 100
+}
+
+xfm_a0_buy_fee_value = {
+    value = var:xfm_buy_pool_credit
+    multiply = 0.003
+    multiply = 100
+    ceiling = yes
+    divide = 100
+    min = 0.01
+}
+
+xfm_a0_buy_total_value = {
+    value = var:xfm_buy_pool_credit
+    add = var:xfm_buy_fee
+}
+
+xfm_a0_buy_pool_net_value = {
+    value = var:xfm_buy_pool_credit
+    subtract = var:xfm_buy_fee
+}
+
+xfm_a0_buy_fees_value = {
+    value = var:xfm_buy_fee
+    multiply = 2
+}
+
+xfm_a0_sell_gross_value = {
+    value = var:xfm_selected_coin.var:xfm_pool_gold
+    multiply = 100
+    divide = {
+        value = var:xfm_selected_coin.var:xfm_pool_inventory
+        add = 100
+    }
+    multiply = 100
+    floor = yes
+    divide = 100
+}
+
+xfm_a0_sell_fee_value = {
+    value = var:xfm_sell_gross
+    multiply = 0.003
+    multiply = 100
+    ceiling = yes
+    divide = 100
+    min = 0.01
+}
+
+xfm_a0_sell_total_value = {
+    value = var:xfm_sell_gross
+    subtract = var:xfm_sell_fee
+    min = 0
+}
+
+xfm_a0_sell_pool_debit_value = {
+    value = var:xfm_sell_gross
+    add = var:xfm_sell_fee
+}
+
+xfm_a0_sell_fees_value = {
+    value = var:xfm_sell_fee
+    multiply = 2
+}
+
+xfm_a0_negative_buy_value = {
+    value = var:xfm_buy_quote
+    multiply = -1
+}

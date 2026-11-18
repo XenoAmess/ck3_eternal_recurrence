@@ -1,0 +1,19 @@
+{
+  "schema": "xfm.runtime-files.v1",
+  "files": [
+    "descriptor.mod",
+    "common/character_interactions/xfm_a0_interactions.txt",
+    "common/decisions/xfm_a0_decisions.txt",
+    "common/script_values/xfm_a0_quotes.txt",
+    "common/scripted_effects/xfm_a0_custody.txt",
+    "common/scripted_effects/xfm_a0_daily.txt",
+    "common/scripted_effects/xfm_a0_issuance.txt",
+    "common/scripted_effects/xfm_a0_quotes.txt",
+    "common/scripted_effects/xfm_a0_swaps.txt",
+    "common/scripted_triggers/xfm_a0_triggers.txt",
+    "common/story_cycles/xfm_a0_stories.txt",
+    "events/xfm_a0_events.txt",
+    "localization/english/xfm_a0_l_english.yml",
+    "localization/simp_chinese/xfm_a0_l_simp_chinese.yml"
+  ]
+}

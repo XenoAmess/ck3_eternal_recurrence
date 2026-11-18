@@ -412,7 +412,7 @@ AI 的风险看偿债能力、可变现资产、月净收入、担保、战争�
 
 ## 18 实现结构与一致性
 
-建议独立目录 mod_futures_and_virtual_currency_markets，命名空间 xfm_。生产内容使用 CK3 脚本、GUI、本地化与资源文件；Java、Maven、Quarkus 只承载开发参考计算、构建和验证，不要求玩家运行服务。
+采用一个独立 Mod、一个 Workshop 条目，实际目录 mod_financial_markets，命名空间 xfm_。内部共用金融底座，拆分现货、期货、主体宣传、债务新闻模块；开关只阻止新增风险，不删除既有资产和义务。生产内容使用 CK3 脚本、GUI、本地化与资源文件；Java、Maven、Quarkus 只承载开发参考计算、构建和验证，不要求玩家运行服务。
 
 | 对象 | 关键字段 |
 | --- | --- |
@@ -477,4 +477,4 @@ Usury 教义与原版借贷规则保持独立。新金融债务不能覆盖原�
 - [本次需求纠正记录](../maintenance/2026-11-18-financial-market-design-revision.md)。
 - [项目规则与本产品 AI 例外](../../AGENTS.md)。
 
-本版保留资金、供应和义务的一致性要求，同时以发行、交易、操盘和政治后果组织玩法。具体脚本与界面尚待施工；本次设计修订没有启动游戏或发布 Workshop。
+本版保留资金、供应和义务的一致性要求，同时以发行、交易、操盘和政治后果组织玩法。用户已要求开工，详见[实现计划](../../mod_financial_markets/docs/implementation-plan.md)、[测试验收方案](../../mod_financial_markets/docs/test-and-acceptance-plan.md)和[实际施工状态](../../mod_financial_markets/docs/development-status.md)；初始原型不授完整设计实现、游戏实测或发布通过。

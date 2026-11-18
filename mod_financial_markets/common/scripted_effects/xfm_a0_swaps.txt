@@ -1,0 +1,109 @@
+﻿# 2 effects. Both counterparties pay 0.3%, minimum 0.01 gold each.
+xfm_a0_buy_effect = {
+    save_scope_as = xfm_actor
+    set_variable = { name = xfm_last_trade_status value = 0 }
+    if = {
+        limit = { xfm_a0_can_buy_trigger = yes }
+        clear_saved_scope = xfm_trade_position
+        # Locate/create custody before charging gold or changing pool inventory.
+        if = {
+            limit = {
+                any_owned_story = {
+                    story_type = xfm_a0_position
+                    NOT = { has_variable = xfm_frozen_beneficiary }
+                    var:xfm_coin = scope:xfm_actor.var:xfm_selected_coin
+                }
+            }
+            random_owned_story = {
+                limit = {
+                    story_type = xfm_a0_position
+                    NOT = { has_variable = xfm_frozen_beneficiary }
+                    var:xfm_coin = scope:xfm_actor.var:xfm_selected_coin
+                }
+                save_scope_as = xfm_trade_position
+            }
+        }
+        else = {
+            create_story = { type = xfm_a0_position save_scope_as = xfm_trade_position }
+            if = {
+                limit = {
+                    exists = scope:xfm_trade_position
+                    scope:xfm_trade_position = { story_type = xfm_a0_position story_owner = scope:xfm_actor }
+                }
+                scope:xfm_trade_position = {
+                    set_variable = { name = xfm_coin value = scope:xfm_actor.var:xfm_selected_coin }
+                    set_variable = { name = xfm_quantity value = 0 }
+                    set_variable = { name = xfm_original_holder value = scope:xfm_actor }
+                    set_variable = { name = xfm_beneficiary value = scope:xfm_actor }
+                    set_variable = { name = xfm_inheritance_state value = 0 }
+                }
+            }
+        }
+        if = {
+            limit = {
+                exists = scope:xfm_trade_position
+                scope:xfm_trade_position = {
+                    story_type = xfm_a0_position
+                    story_owner = scope:xfm_actor
+                    NOT = { has_variable = xfm_frozen_beneficiary }
+                    var:xfm_coin = scope:xfm_actor.var:xfm_selected_coin
+                }
+            }
+            add_gold = xfm_a0_negative_buy_value
+            scope:xfm_trade_position = { change_variable = { name = xfm_quantity add = 100 } }
+            var:xfm_selected_coin = {
+                change_variable = { name = xfm_pool_gold add = scope:xfm_actor.var:xfm_buy_pool_net }
+                change_variable = { name = xfm_trading_fee_cash add = scope:xfm_actor.var:xfm_buy_fees }
+                change_variable = { name = xfm_pool_inventory subtract = 100 }
+                change_variable = { name = xfm_outstanding_coins add = 100 }
+                change_variable = { name = xfm_revision add = 1 }
+                change_variable = { name = xfm_actual_trades add = 1 }
+            }
+            xfm_a0_register_trader_effect = yes
+            set_variable = { name = xfm_last_trade_status value = 1 }
+            set_variable = { name = xfm_last_trade_gold value = var:xfm_buy_quote }
+        }
+    }
+}
+
+xfm_a0_sell_effect = {
+    save_scope_as = xfm_actor
+    set_variable = { name = xfm_last_trade_status value = 0 }
+    if = {
+        limit = { xfm_a0_can_sell_trigger = yes }
+        clear_saved_scope = xfm_trade_position
+        random_owned_story = {
+            limit = {
+                story_type = xfm_a0_position
+                NOT = { has_variable = xfm_frozen_beneficiary }
+                var:xfm_coin = scope:xfm_actor.var:xfm_selected_coin
+                var:xfm_quantity >= 100
+            }
+            save_scope_as = xfm_trade_position
+        }
+        if = {
+            limit = {
+                exists = scope:xfm_trade_position
+                scope:xfm_trade_position = {
+                    story_type = xfm_a0_position
+                    story_owner = scope:xfm_actor
+                    NOT = { has_variable = xfm_frozen_beneficiary }
+                    var:xfm_coin = scope:xfm_actor.var:xfm_selected_coin
+                    var:xfm_quantity >= 100
+                }
+            }
+            scope:xfm_trade_position = { change_variable = { name = xfm_quantity subtract = 100 } }
+            var:xfm_selected_coin = {
+                change_variable = { name = xfm_pool_gold subtract = scope:xfm_actor.var:xfm_sell_pool_debit }
+                change_variable = { name = xfm_trading_fee_cash add = scope:xfm_actor.var:xfm_sell_fees }
+                change_variable = { name = xfm_pool_inventory add = 100 }
+                change_variable = { name = xfm_outstanding_coins subtract = 100 }
+                change_variable = { name = xfm_revision add = 1 }
+                change_variable = { name = xfm_actual_trades add = 1 }
+            }
+            add_gold = var:xfm_sell_quote
+            set_variable = { name = xfm_last_trade_status value = 2 }
+            set_variable = { name = xfm_last_trade_gold value = var:xfm_sell_quote }
+        }
+    }
+}

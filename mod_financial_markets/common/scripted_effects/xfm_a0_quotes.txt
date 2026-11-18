@@ -1,0 +1,72 @@
+﻿# 2 effects. Quotes are actor snapshots; a changed pool revision rejects an old button.
+xfm_a0_refresh_quotes_effect = {
+    save_scope_as = xfm_actor
+    clear_saved_scope = xfm_coin
+    set_variable = { name = xfm_buy_quote value = 0 }
+    set_variable = { name = xfm_sell_quote value = 0 }
+    set_variable = { name = xfm_buy_fee value = 0 }
+    set_variable = { name = xfm_sell_fee value = 0 }
+    set_variable = { name = xfm_buy_pool_credit value = 0 }
+    set_variable = { name = xfm_buy_pool_net value = 0 }
+    set_variable = { name = xfm_buy_fees value = 0 }
+    set_variable = { name = xfm_sell_gross value = 0 }
+    set_variable = { name = xfm_sell_pool_debit value = 0 }
+    set_variable = { name = xfm_sell_fees value = 0 }
+    set_variable = { name = xfm_view_quantity value = 0 }
+    if = {
+        limit = { xfm_a0_selected_coin_trigger = yes }
+        var:xfm_selected_coin = {
+            save_scope_as = xfm_coin
+            scope:xfm_actor = {
+                set_variable = { name = xfm_quote_revision value = scope:xfm_coin.var:xfm_revision }
+                set_variable = { name = xfm_view_pool_gold value = scope:xfm_coin.var:xfm_pool_gold }
+                set_variable = { name = xfm_view_inventory value = scope:xfm_coin.var:xfm_pool_inventory }
+                set_variable = { name = xfm_view_issuer value = scope:xfm_coin.var:xfm_original_issuer }
+            }
+        }
+        if = {
+            limit = { var:xfm_selected_coin = { var:xfm_pool_inventory > 100 } }
+            set_variable = { name = xfm_buy_pool_credit value = xfm_a0_buy_pool_value }
+            set_variable = { name = xfm_buy_fee value = xfm_a0_buy_fee_value }
+            set_variable = { name = xfm_buy_quote value = xfm_a0_buy_total_value }
+            set_variable = { name = xfm_buy_pool_net value = xfm_a0_buy_pool_net_value }
+            set_variable = { name = xfm_buy_fees value = xfm_a0_buy_fees_value }
+        }
+        set_variable = { name = xfm_sell_gross value = xfm_a0_sell_gross_value }
+        set_variable = { name = xfm_sell_fee value = xfm_a0_sell_fee_value }
+        set_variable = { name = xfm_sell_quote value = xfm_a0_sell_total_value }
+        set_variable = { name = xfm_sell_pool_debit value = xfm_a0_sell_pool_debit_value }
+        set_variable = { name = xfm_sell_fees value = xfm_a0_sell_fees_value }
+        # Event-chain values are independent of mutable actor UI variables.
+        save_scope_value_as = { name = xfm_quote_snapshot_revision value = var:xfm_quote_revision }
+        save_scope_value_as = { name = xfm_quote_snapshot_buy value = var:xfm_buy_quote }
+        save_scope_value_as = { name = xfm_quote_snapshot_sell value = var:xfm_sell_quote }
+        every_owned_story = {
+            limit = {
+                story_type = xfm_a0_position
+                NOT = { has_variable = xfm_frozen_beneficiary }
+                var:xfm_coin = scope:xfm_actor.var:xfm_selected_coin
+            }
+            scope:xfm_actor = {
+                change_variable = { name = xfm_view_quantity add = prev.var:xfm_quantity }
+            }
+        }
+    }
+}
+
+xfm_a0_register_trader_effect = {
+    save_scope_as = xfm_actor
+    var:xfm_selected_coin = {
+        if = {
+            limit = {
+                NOT = {
+                    any_in_list = {
+                        variable = xfm_traders
+                        this = scope:xfm_actor
+                    }
+                }
+            }
+            add_to_variable_list = { name = xfm_traders target = scope:xfm_actor }
+        }
+    }
+}

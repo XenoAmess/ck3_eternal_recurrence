@@ -1,0 +1,21 @@
+﻿xfm_a0_trade_interaction = {
+    category = interaction_category_friendly
+    common_interaction = yes
+    interface_priority = 90
+    icon = loan_money_interaction
+    desc = xfm_a0_trade_interaction_desc
+    ai_frequency = 0
+    auto_accept = yes
+    is_shown = {
+        scope:actor = { is_ai = no is_adult = yes }
+        scope:recipient = { exists = var:xfm_personal_coin }
+    }
+    is_available = { xfm_a0_actor_eligible_trigger = yes }
+    on_accept = {
+        scope:actor = {
+            set_variable = { name = xfm_selected_coin value = scope:recipient.var:xfm_personal_coin }
+            trigger_event = xfm_a0.100
+        }
+    }
+    ai_will_do = { base = 0 }
+}

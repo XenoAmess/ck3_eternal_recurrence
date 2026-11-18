@@ -1,0 +1,77 @@
+﻿# 3 effects. A0 has 32 live registration slots, not the full design's world capacity.
+xfm_a0_issue_effect = {
+    if = {
+        limit = { xfm_a0_can_issue_trigger = yes }
+        save_scope_as = xfm_issuer
+        clear_saved_scope = xfm_new_coin
+        create_story = { type = xfm_a0_coin save_scope_as = xfm_new_coin }
+        if = {
+            limit = {
+                exists = scope:xfm_new_coin
+                scope:xfm_new_coin = { story_type = xfm_a0_coin story_owner = scope:xfm_issuer }
+            }
+            add_gold = -5.6
+            set_variable = { name = xfm_personal_coin value = scope:xfm_new_coin }
+            set_variable = { name = xfm_selected_coin value = scope:xfm_new_coin }
+            set_variable = { name = xfm_issue_cooldown months = 24 }
+            if = {
+                limit = { NOT = { has_global_variable = xfm_a0_coin_count } }
+                set_global_variable = { name = xfm_a0_coin_count value = 0 }
+            }
+            change_global_variable = { name = xfm_a0_coin_count add = 1 }
+            scope:xfm_new_coin = {
+                set_variable = { name = xfm_original_issuer value = scope:xfm_issuer }
+                set_variable = { name = xfm_pool_gold value = 2 }
+                set_variable = { name = xfm_pool_inventory value = 10000 }
+                set_variable = { name = xfm_total_supply value = 10000 }
+                set_variable = { name = xfm_outstanding_coins value = 0 }
+                set_variable = { name = xfm_registration_fee_paid value = 1 }
+                set_variable = { name = xfm_listing_fee_paid value = 1 }
+                set_variable = { name = xfm_maintenance_escrow value = 0.6 }
+                set_variable = { name = xfm_performance_bond value = 1 }
+                set_variable = { name = xfm_trading_fee_cash value = 0 }
+                set_variable = { name = xfm_maintenance_fee_earned value = 0 }
+                set_variable = { name = xfm_maintenance_arrears value = 0 }
+                set_variable = { name = xfm_revision value = 1 }
+                set_variable = { name = xfm_actual_trades value = 0 }
+                set_variable = { name = xfm_daily_ticks value = 0 }
+            }
+            xfm_a0_seed_traders_effect = yes
+        }
+    }
+}
+
+xfm_a0_seed_traders_effect = {
+    save_scope_as = xfm_issuer
+    set_variable = { name = xfm_seed_count value = 0 }
+    every_close_family_member = {
+        limit = {
+            is_ai = yes
+            xfm_a0_actor_eligible_trigger = yes
+            scope:xfm_issuer.var:xfm_seed_count < 8
+        }
+        xfm_a0_add_seed_trader_effect = yes
+    }
+    every_courtier_or_guest = {
+        limit = {
+            is_ai = yes
+            xfm_a0_actor_eligible_trigger = yes
+            scope:xfm_issuer.var:xfm_seed_count < 16
+        }
+        xfm_a0_add_seed_trader_effect = yes
+    }
+    remove_variable = xfm_seed_count
+}
+
+xfm_a0_add_seed_trader_effect = {
+    save_scope_as = xfm_seed_trader
+    scope:xfm_new_coin = {
+        if = {
+            limit = {
+                NOT = { any_in_list = { variable = xfm_traders this = scope:xfm_seed_trader } }
+            }
+            add_to_variable_list = { name = xfm_traders target = scope:xfm_seed_trader }
+            scope:xfm_issuer = { change_variable = { name = xfm_seed_count add = 1 } }
+        }
+    }
+}
