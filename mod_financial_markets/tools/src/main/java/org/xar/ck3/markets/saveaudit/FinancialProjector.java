@@ -22,7 +22,12 @@ import org.xar.ck3.save.SaveContracts;
 /** Interpretation of the observed save variable envelope, not a second Clausewitz parser. */
 public final class FinancialProjector {
     private FinancialProjector() { }
-    public enum NumberIdentityEncoding { identityRequired, omittedZero }
+    private static final BigInteger TWO_TO_63 = BigInteger.ONE.shiftLeft(63);
+    private static final BigInteger TWO_TO_64 = BigInteger.ONE.shiftLeft(64);
+    public enum NumberIdentityEncoding {
+        identityRequired, omittedZero, unsigned64OmittedZero;
+        boolean requiresObserved121Metadata() { return this == omittedZero || this == unsigned64OmittedZero; }
+    }
     /** Scaling is an explicit hypothesis until verified against a real 1.21 financial physical save. */
     @JsonDeserialize(using = LayoutDeserializer.class)
     public record LayoutHypothesis(String gameVersion, String saveFormat, BigInteger numericScale,
@@ -40,9 +45,9 @@ public final class FinancialProjector {
                     || storyReferenceType == null || storyReferenceType.isBlank()
                     || characterReferenceType == null || characterReferenceType.isBlank() || numberIdentityEncoding == null)
                 throw new IllegalArgumentException("explicit layout hypothesis required");
-            if (numberIdentityEncoding == NumberIdentityEncoding.omittedZero
+            if (numberIdentityEncoding.requiresObserved121Metadata()
                     && !(gameVersion.equals("1.21.0") && saveFormat.equals("19") && numericScale.equals(BigInteger.valueOf(100000))))
-                throw new IllegalArgumentException("omittedZero is observed only for explicit 1.21.0 / format 19 / scale 100000");
+                throw new IllegalArgumentException(numberIdentityEncoding + " is observed only for explicit 1.21.0 / format 19 / scale 100000");
         }
         /** Strict legacy five-field or explicit six-field JSON; no shared mapper guards are relaxed. */
         public static LayoutHypothesis fromJson(JsonNode node) {
@@ -117,8 +122,7 @@ public final class FinancialProjector {
                 try {
                     if (!atom(data, "type").orElse("").equals("value")) throw new IllegalArgumentException("Expected type=value.");
                     String lexical = numericIdentity(data, layout);
-                    if (!lexical.matches("-?(0|[1-9][0-9]*)")) throw new IllegalArgumentException("Canonical integer identity required.");
-                    BigInteger[] division = new BigInteger(lexical).divideAndRemainder(layout.numericScale());
+                    BigInteger[] division = rawNumericValue(lexical, layout.numberIdentityEncoding()).divideAndRemainder(layout.numericScale());
                     if (division[1].signum() != 0) throw new IllegalArgumentException("Fractional cent/unit/day/ID after exact scaling.");
                     numbers.put(field, division[0]);
                 } catch (IllegalArgumentException error) { issues.add(new Issue(Severity.INCOMPLETE, identity, field.wire(), error.getMessage())); }
@@ -150,10 +154,26 @@ public final class FinancialProjector {
     private static String numericIdentity(Clausewitz.Block data, LayoutHypothesis layout) {
         // atom() rejects duplicates, blocks and non-assignment identities before any omission policy is considered.
         Optional<String> identity = atom(data, "identity");
-        if (identity.isPresent()) return identity.get();
-        if (layout.numberIdentityEncoding() == NumberIdentityEncoding.omittedZero && data.entries().size() == 1)
+        if (identity.isPresent()) {
+            if (layout.numberIdentityEncoding() == NumberIdentityEncoding.unsigned64OmittedZero && data.entries().size() != 2)
+                throw new IllegalArgumentException("Unsigned64 numeric data must contain only type and identity.");
+            return identity.get();
+        }
+        if (layout.numberIdentityEncoding().requiresObserved121Metadata() && data.entries().size() == 1)
             return "0"; // Caller already required the sole assigned atom to be type=value.
         throw new IllegalArgumentException("Missing numeric identity; strict encoding or noncanonical omitted-zero data.");
+    }
+
+    private static BigInteger rawNumericValue(String lexical, NumberIdentityEncoding encoding) {
+        if (encoding == NumberIdentityEncoding.unsigned64OmittedZero) {
+            if (!lexical.matches("0|[1-9][0-9]*")) throw new IllegalArgumentException("Canonical unsigned64 numeric identity required.");
+            BigInteger raw = new BigInteger(lexical);
+            if (raw.compareTo(TWO_TO_64) >= 0) throw new IllegalArgumentException("Unsigned64 numeric identity is out of range.");
+            return raw.compareTo(TWO_TO_63) >= 0 ? raw.subtract(TWO_TO_64) : raw;
+        }
+        // Existing identityRequired/omittedZero keep their signed decimal semantics.
+        if (!lexical.matches("-?(0|[1-9][0-9]*)")) throw new IllegalArgumentException("Canonical integer identity required.");
+        return new BigInteger(lexical);
     }
 
     private static void verifyGlobalExchange(FinancialSaveReader.Readback input, LayoutHypothesis layout,

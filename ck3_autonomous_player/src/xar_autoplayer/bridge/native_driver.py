@@ -13955,6 +13955,7 @@ class NativeHeadlessGameplayDriver:
         """Keep the public 1-based number; bind one native 0-based command to actual Full/query evidence."""
         from .event_contract import (
             FLORIN_EVENT_QUERY_STEP, FLORIN_EVENT_QUERY_CAPABILITY,
+            FLORIN_EVENT_SELECT_CAPABILITY,
             florin_event_source, florin_event_fields, normalize_florin_event_result,
         )
         from .timeline_control_ack_v1 import (
@@ -13986,6 +13987,13 @@ class NativeHeadlessGameplayDriver:
             require_florin_control_ready_v1(self._native_driver_state_path(), source.full_source)
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
+        if FLORIN_EVENT_SELECT_CAPABILITY not in set(
+            _string_list(self.capabilities().get("bridge_capabilities"))
+        ):
+            raise UnsupportedStepError(
+                "native DLL does not advertise required capability "
+                f"{FLORIN_EVENT_SELECT_CAPABILITY}"
+            )
         budget = min(120.0, _positive_seconds(self.command_timeout_seconds, "command_timeout_seconds"))
         until = time.monotonic() + budget
         deadline_ms = int(time.time() * 1000) + int(budget * 1000)
@@ -14022,7 +14030,7 @@ class NativeHeadlessGameplayDriver:
         try:
             raw = self._execute_primitive_step(
                 native_step, expected_revision=source.public_revision,
-                required_capability=f"game.command.{native_step}", request_fields=fields,
+                required_capability=FLORIN_EVENT_SELECT_CAPABILITY, request_fields=fields,
                 include_native_command_history=False, protocol_request_id=request_id,
                 protocol_packet_evidence_path=directory / f"{identity}.request.json",
                 protocol_result_evidence_path=directory / f"{identity}.result.json", absolute_deadline=until,

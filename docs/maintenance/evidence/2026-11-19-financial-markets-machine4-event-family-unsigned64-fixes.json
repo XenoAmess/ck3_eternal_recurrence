@@ -1,0 +1,154 @@
+{
+  "schema": "ck3-financial-sdk-event-family-and-unsigned64-fix-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-18T23:29:52.497830+00:00",
+  "scope": "Authorized implementation and software verification; no new Game execution or financial acceptance",
+  "event_family": {
+    "native_capability": "game.command.select-event-option-N",
+    "original_R0014_claim_and_UNKNOWN_preserved": true,
+    "original_select_replayed": false,
+    "fix": "Precheck the advertised family before new claim and use it in the existing primitive dispatch. Preserve existing claim/UNKNOWN guards, Full, deadline, enabled-option, ACK and postcondition protections.",
+    "adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\florin-event-family-capability01.ADOPTED.actual.json",
+      "bytes": 1437,
+      "sha256": "d876c217badbfd1efdb8a4bdc109a93fd4c80779fc47c8fcf5284ad0ca2cead1"
+    },
+    "independent_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\florin-event-family-cap-independent-review01\\REVIEW.actual.json",
+      "bytes": 9868,
+      "sha256": "351ab14627526be458b0bb9b11c0c4c64dd26c5a5eb4323fdd827ce6bd484bec"
+    },
+    "event_module": {
+      "tests": 16,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-event-family01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1056,
+        "sha256": "62d7604401b0a455757f51bebba0bb8b5901bdb304d201eacc262140b3e57403"
+      },
+      "returncode": 0,
+      "started_at_utc": "2026-11-18T23:23:23.188660+00:00",
+      "finished_at_utc": "2026-11-18T23:23:30.057986+00:00",
+      "elapsed_seconds": 6.869336099829525,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-event-family01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-event-family01\\stderr.log",
+        "bytes": 4907,
+        "sha256": "e69a76ba6d16c06a64d4e24f14f668e0dabbd02aaa402d944d008187acfa6deb"
+      }
+    },
+    "contract_module": {
+      "tests": 8,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-event-contract-family01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1054,
+        "sha256": "08d1651dfab87366895a4c108c7146175b519cc898c8ae8bc44613f90afe6584"
+      },
+      "returncode": 0,
+      "started_at_utc": "2026-11-18T23:23:23.223861+00:00",
+      "finished_at_utc": "2026-11-18T23:23:26.483703+00:00",
+      "elapsed_seconds": 3.259850800037384,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-event-contract-family01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-event-contract-family01\\stderr.log",
+        "bytes": 1401,
+        "sha256": "3a50abaef80b5e909588e0f0264624a8e9f42fdcd2d4bcf69282e7c17da341e8"
+      }
+    },
+    "test_limits": "Public entry and generic inner route use real production event writer and primitive capability/request/send checks with inert OS/pipe/poststate boundaries. Generic outer dispatch independently source-reviewed; no actual event selection credit."
+  },
+  "unsigned64_layout": {
+    "mode": "unsigned64OmittedZero",
+    "game_version": "1.21.0",
+    "save_format": "19",
+    "numeric_scale": 100000,
+    "actual_raw_sentinel": "18446744073709451616",
+    "signed_unscaled": -100000,
+    "scaled": -1,
+    "reference_identities_unchanged": true,
+    "range_checked_before_twos_complement": true,
+    "exact_division_required": true,
+    "adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\unsigned64-layout01.ADOPTED.actual.json",
+      "bytes": 3812,
+      "sha256": "22cc4424ad9e11b9267324305bff4fc971f11454a3c6369ab8b218eb208c53f9"
+    },
+    "independent_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-unsigned64-layout-independent-review01\\REVIEW.actual.json",
+      "bytes": 17279,
+      "sha256": "bb5467616f9512034eb0f969e3a56b1a8780ea13219c27308f9dc86f74816ef4"
+    },
+    "full_verify": {
+      "tests": 266,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-unsigned64-layout01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1089,
+        "sha256": "c60e8497c050e57407538910a056d83a70df7808223ca039d1fbd2e837e88175"
+      },
+      "returncode": 0,
+      "started_at_utc": "2026-11-18T23:16:54.757287+00:00",
+      "finished_at_utc": "2026-11-18T23:17:49.829935+00:00",
+      "elapsed_seconds": 55.07266589999199,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-unsigned64-layout01\\stdout.log",
+        "bytes": 10085,
+        "sha256": "22bed4989973240a0e1932b6b45e1ab7b512d56cd1193f28e81d98c00af263d6"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-unsigned64-layout01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "frozen_junit_and_source_evidence": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-18-unsigned64-layout01\\VERIFY.actual.json",
+      "bytes": 50199,
+      "sha256": "eaa24ee10efc37f98e8ad4587d4d8cd8c7c129d06f0385466a9fcbf20a3b2e5d"
+    },
+    "named_app05_package": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-save-audit-package05\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1068,
+        "sha256": "0f1cd5c35a6793e5510a7a1a7785a78d2e7fe8e03e55c5bbc41ae05f6307d322"
+      },
+      "returncode": 0,
+      "started_at_utc": "2026-11-18T23:18:34.094338+00:00",
+      "finished_at_utc": "2026-11-18T23:18:48.720336+00:00",
+      "elapsed_seconds": 14.626020499970764,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-save-audit-package05\\stdout.log",
+        "bytes": 2645,
+        "sha256": "c61c92d236ec4002eb950d4d1c0ba7bf9e85a10a11cac0186227f5b7a082879d"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-save-audit-package05\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "actual_app05_archive_audits_completed": false
+  },
+  "runtime": {
+    "R0014_evidence": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-19-financial-markets-machine4-r0014.json",
+      "bytes": 68117,
+      "sha256": "4397516f04b90105d66e7bd6b1a409bbf0d075b87256ca14055b87124ecd2545"
+    },
+    "business_failure_preserved": true,
+    "next_scene_not_started": true,
+    "successful_coin_issuances": 0,
+    "confirmed_spot_fills": 0,
+    "financialCertified": false,
+    "whole_mod_acceptance_complete": false
+  }
+}

@@ -1,0 +1,1774 @@
+{
+  "schema": "ck3-financial-archived-layout-discovery-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-18T22:32:01.678306+00:00",
+  "request": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0013-zero-wallet-discovery01.request.json",
+    "bytes": 403,
+    "sha256": "ab6dfdbb928977ed740852e59458eec045002f2e38dbba5905b010c8d76b13e1"
+  },
+  "archive_actual": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0013/core14-zero-wallet-save-01/ARCHIVE.actual.json",
+      "bytes": 7515,
+      "sha256": "442487b0ffc23a2d5bd60a319393ba550980df847786538ce66f58bd81e25191"
+    },
+    "date_raw": 53144352,
+    "step_result_pointer": "/steps/15/result",
+    "original_source_pin": {
+      "path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 139822544,
+      "sha256": "a011b34847901f93760813d318e9b797e2393cbd53d4d8d86e92a4af32393c74"
+    },
+    "native_physical_save_confirmed": false,
+    "driver_state_replace_receipt": {
+      "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+      "status": "unconfirmed",
+      "write_replace_returned": true,
+      "save_binding_verified": false,
+      "reason": "save_binding_mismatch",
+      "attempt_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+        "bridge_pid": 17976,
+        "episode_character_id": null,
+        "episode_run_id": null,
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "rogue_one_life",
+          "xar_enabled": "xar_on",
+          "pact_contract": "terminal_settlement_required",
+          "source": "legacy-driver-default",
+          "environment_sha256": null
+        },
+        "campaign_goal": null
+      },
+      "binding_contract": "one_life_episode_identity_v1",
+      "checkpoint_episode_projection": "native_campaign",
+      "missing_checkpoint_binding_fields": [
+        "episode_character_id",
+        "episode_run_id"
+      ],
+      "recorded_session_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+        "bridge_pid": 17976,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "save_history_index": 11,
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 139822544,
+        "sha256": "a011b34847901f93760813d318e9b797e2393cbd53d4d8d86e92a4af32393c74",
+        "date_raw": 53144352,
+        "overwrite_confirmed": true,
+        "strategy": "native-autosave-command-v1",
+        "episode_projection": "native_campaign",
+        "succession_lifecycle": null,
+        "history_index": 11,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "encoded_history_rows": 11,
+      "driver_state_path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\native-session\\driver-state.json"
+    }
+  },
+  "save": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0013\\core14-zero-wallet-save-01\\xar_checkpoint.ck3",
+    "bytes": 139822544,
+    "sha256": "a011b34847901f93760813d318e9b797e2393cbd53d4d8d86e92a4af32393c74"
+  },
+  "input_facts_before": {
+    "device": 11562708564543669174,
+    "inode": 281474980397274,
+    "bytes": 139822544,
+    "mtime_ns": 1795040911156290400,
+    "ctime_ns": 1795040911034008500,
+    "birthtime_ns": 1795040911034008500
+  },
+  "input_facts_after": {
+    "device": 11562708564543669174,
+    "inode": 281474980397274,
+    "bytes": 139822544,
+    "mtime_ns": 1795040911156290400,
+    "ctime_ns": 1795040911034008500,
+    "birthtime_ns": 1795040911034008500
+  },
+  "input_unchanged": true,
+  "complete_passes": 2,
+  "stream": {
+    "container": "PLAIN_TEXT",
+    "complete_stream_bytes": 139822544,
+    "complete_stream_sha256": "a011b34847901f93760813d318e9b797e2393cbd53d4d8d86e92a4af32393c74"
+  },
+  "coverage": {
+    "table_records": 194,
+    "story_type_counts": {
+      "story_cycle_pet_rock": 1,
+      "story_cycle_pet_cat": 1,
+      "story_cycle_violet_poet": 1,
+      "story_adventurer_ai": 23,
+      "story_mandala": 4,
+      "story_tai_migrations": 20,
+      "story_conqueror": 1,
+      "xfma_observer": 1,
+      "xfm_finance_exchange": 1,
+      "xfm_finance_account": 132,
+      "xfm_oracle_index": 3,
+      "xfm_futures_contract": 2,
+      "xfm_futures_order": 1,
+      "xfm_finance_reservation": 1,
+      "story_hasan": 1,
+      "story_el_cid": 1
+    },
+    "selected_records": 140,
+    "selected_canonical_bytes": 112176,
+    "generic_retained_bytes": 58562,
+    "projected_variable_fields": 1604,
+    "metadata_raw": {
+      "save_game_version": "19",
+      "version": "\"1.21.0\"",
+      "meta_date": "1066.9.16"
+    },
+    "global_variables": [
+      {
+        "flag": "xfm_exchange",
+        "type_raw": "story",
+        "identity_present": true,
+        "identity_raw": "52",
+        "other_scalar_tokens": [],
+        "nested_field_names": []
+      },
+      {
+        "flag": "xfm_grain_index",
+        "type_raw": "story",
+        "identity_present": true,
+        "identity_raw": "55",
+        "other_scalar_tokens": [],
+        "nested_field_names": []
+      },
+      {
+        "flag": "xfm_military_index",
+        "type_raw": "story",
+        "identity_present": true,
+        "identity_raw": "56",
+        "other_scalar_tokens": [],
+        "nested_field_names": []
+      },
+      {
+        "flag": "xfm_trade_index",
+        "type_raw": "story",
+        "identity_present": true,
+        "identity_raw": "57",
+        "other_scalar_tokens": [],
+        "nested_field_names": []
+      }
+    ],
+    "financial_variable_flag_counts": {
+      "xfm_result_account": 1,
+      "xfm_futures_daily_tail": 1,
+      "xfm_futures_daily_head": 1,
+      "xfm_next_futures_order_id": 1,
+      "xfm_next_futures_position_id": 1,
+      "xfm_next_futures_contract_id": 1,
+      "xfm_futures_open_positions_count": 1,
+      "xfm_ai_decisions_today": 1,
+      "xfm_attention_work_today": 1,
+      "xfm_ai_work_today": 1,
+      "xfm_attention_count": 1,
+      "xfm_futures_daily_completed_day": 1,
+      "xfm_futures_daily_remaining": 1,
+      "xfm_futures_daily_pass_day": 1,
+      "xfm_futures_daily_index_v1": 1,
+      "xfm_futures_daily_count": 1,
+      "xfm_futures_archive_count": 1,
+      "xfm_default_fund_allocated_cents": 1,
+      "xfm_oracle_trade_value": 1,
+      "xfm_oracle_military_value": 1,
+      "xfm_oracle_grain_value": 1,
+      "xfm_oracle_war_bps": 1,
+      "xfm_oracle_average_control": 1,
+      "xfm_oracle_average_prosperity": 1,
+      "xfm_oracle_war_count": 1,
+      "xfm_oracle_control_sum": 1,
+      "xfm_oracle_prosperity_sum": 1,
+      "xfm_oracle_basket_count": 4,
+      "xfm_oracle_basket_seeded": 1,
+      "xfm_a0_migration_scanned": 1,
+      "xfm_ai_tail": 1,
+      "xfm_ai_head": 1,
+      "xfm_ai_count": 1,
+      "xfm_ai_seeded": 1,
+      "xfm_default_fund_account": 1,
+      "xfm_result": 2,
+      "xfm_new_listings_today": 1,
+      "xfm_archived_orders_count": 1,
+      "xfm_order_stories_count": 1,
+      "xfm_active_orders_count": 1,
+      "xfm_fee_cents": 1,
+      "xfm_active_coin_count": 1,
+      "xfm_pending_coin_count": 1,
+      "xfm_registered_coin_count": 1,
+      "xfm_coin_count": 1,
+      "xfm_next_order_id": 1,
+      "xfm_next_reservation_id": 1,
+      "xfm_next_coin_id": 1,
+      "xfm_next_account_id": 1,
+      "xfm_last_date": 1,
+      "xfm_day": 1,
+      "xfm_open_positions_count": 132,
+      "xfm_open_orders_count": 134,
+      "xfm_holdings_count": 132,
+      "xfm_reserved_cents": 132,
+      "xfm_free_cents": 132,
+      "xfm_inheritance_state": 132,
+      "xfm_account_frozen": 132,
+      "xfm_system_account": 132,
+      "xfm_beneficial_owner": 132,
+      "xfm_holder": 132,
+      "xfm_account_id": 132,
+      "xfm_oracle_day": 3,
+      "xfm_best_ask_cents": 3,
+      "xfm_best_bid_cents": 3,
+      "xfm_last_price_cents": 3,
+      "xfm_oracle_last_valid_day": 3,
+      "xfm_max_leverage": 3,
+      "xfm_mark_cents": 3,
+      "xfm_index_cents": 3,
+      "xfm_oracle_reason": 3,
+      "xfm_oracle_quality": 3,
+      "xfm_oracle_source_id": 3,
+      "xfm_model_quote_divisor": 3,
+      "xfm_oracle_model_index": 3,
+      "xfm_trading_open": 3,
+      "xfm_derivatives_reduce_only": 3,
+      "xfm_asset_kind": 3,
+      "xfm_index_id": 3,
+      "xfm_futures_discovery_count": 2,
+      "xfm_band_high": 2,
+      "xfm_band_low": 2,
+      "xfm_execution_day": 2,
+      "xfm_execution_volume_cents": 2,
+      "xfm_last_daily_day": 2,
+      "xfm_status": 4,
+      "xfm_expiry_day": 2,
+      "xfm_perpetual": 2,
+      "xfm_coin": 2,
+      "xfm_created_day": 2,
+      "xfm_contract_id": 2,
+      "xfm_result_reservation": 1,
+      "xfm_request_cents": 1,
+      "xfm_futures_daily_queued": 1,
+      "xfm_fee_paid_cents": 1,
+      "xfm_filled_gross_cents": 1,
+      "xfm_reserve_price_cents": 1,
+      "xfm_limit_cents": 1,
+      "xfm_remaining_lots": 1,
+      "xfm_leverage": 1,
+      "xfm_side": 1,
+      "xfm_reservation": 1,
+      "xfm_account": 2,
+      "xfm_contract": 1,
+      "xfm_order_id": 1,
+      "xfm_kind": 1,
+      "xfm_remaining_cents": 1,
+      "xfm_reservation_id": 1
+    },
+    "financial_type_token_counts": {
+      "story": 11,
+      "value": 1327,
+      "char": 266
+    },
+    "representative_records": {
+      "xfm_finance_exchange": [
+        {
+          "native_story_id": "52",
+          "record_path": [
+            "stories",
+            "active",
+            "52"
+          ],
+          "canonical_lexical_sha256": "f66e3df6aeddb723dc8c1e3b9e37cd38fdf6ba8d96f0821895d2473b48375709",
+          "canonical_lexical_bytes": 5072,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_finance_exchange"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "2321864283"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_result_account",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "191",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_futures_daily_tail",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "96",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_futures_daily_head",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "96",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_futures_order_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_futures_position_id",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_futures_contract_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_futures_open_positions_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_decisions_today",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "47500000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_attention_work_today",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_work_today",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "51200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_attention_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_futures_daily_completed_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_futures_daily_remaining",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_futures_daily_pass_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_futures_daily_index_v1",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_futures_daily_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_futures_archive_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_default_fund_allocated_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_trade_value",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "1072700000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_military_value",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "1076000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_grain_value",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "960000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_war_bps",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "62500000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_average_control",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "10000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_average_prosperity",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "1300000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_war_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_control_sum",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "320000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_prosperity_sum",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "42200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_basket_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "3200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_basket_seeded",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_a0_migration_scanned",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_tail",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "65872",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_head",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "34339",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "3559000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_seeded",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_default_fund_account",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "53",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_result",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_new_listings_today",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_archived_orders_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_order_stories_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_active_orders_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_fee_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_active_coin_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_pending_coin_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_registered_coin_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_coin_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_order_id",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_reservation_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_coin_id",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_account_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "13200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_last_date",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "38934800000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        }
+      ],
+      "xfm_finance_account": [
+        {
+          "native_story_id": "53",
+          "record_path": [
+            "stories",
+            "active",
+            "53"
+          ],
+          "canonical_lexical_sha256": "e65aea10e1b02c3cf44d7925756c930004db4f66373c5b61644ec8368ed018ef",
+          "canonical_lexical_bytes": 766,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_finance_account"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "2365673041"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_open_positions_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_open_orders_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_holdings_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_reserved_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_free_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_inheritance_state",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account_frozen",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_system_account",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_beneficial_owner",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "31254",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_holder",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "31254",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        },
+        {
+          "native_story_id": "54",
+          "record_path": [
+            "stories",
+            "active",
+            "54"
+          ],
+          "canonical_lexical_sha256": "ba3f8ef224f334f43c97844f7389251b342d47fef967dc8075da4fa87408a5e5",
+          "canonical_lexical_bytes": 748,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_finance_account"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "2409481801"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_open_positions_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_open_orders_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_holdings_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_reserved_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_free_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_inheritance_state",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account_frozen",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_system_account",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_beneficial_owner",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "31254",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_holder",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "31254",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        }
+      ],
+      "xfm_oracle_index": [
+        {
+          "native_story_id": "55",
+          "record_path": [
+            "stories",
+            "active",
+            "55"
+          ],
+          "canonical_lexical_sha256": "bc16059a68d694a9c485ac82b39f91eaffef10dee70ac45444399ad10191b08c",
+          "canonical_lexical_bytes": 1322,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_oracle_index"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "2976124085"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_oracle_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_best_ask_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_best_bid_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_last_price_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_basket_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "3200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_last_valid_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_max_leverage",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "500000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_mark_cents",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "9600000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_index_cents",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "9600000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_reason",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_quality",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "300000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_source_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_model_quote_divisor",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "10000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_model_index",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_trading_open",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_derivatives_reduce_only",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_asset_kind",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_index_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        },
+        {
+          "native_story_id": "56",
+          "record_path": [
+            "stories",
+            "active",
+            "56"
+          ],
+          "canonical_lexical_sha256": "229d9e0a243aee784a7fff7004d5582da68d6fb431ccb1730629b6d6cfd53521",
+          "canonical_lexical_bytes": 1606,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_oracle_index"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "3029269159"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_futures_discovery_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_best_ask_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_best_bid_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_last_price_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_basket_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "3200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_last_valid_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_max_leverage",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "500000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_mark_cents",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "10700000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_index_cents",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "10700000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_reason",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_quality",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "300000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_source_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_model_quote_divisor",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "10000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_oracle_model_index",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_trading_open",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_derivatives_reduce_only",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_asset_kind",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_index_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        }
+      ],
+      "xfm_futures_contract": [
+        {
+          "native_story_id": "75",
+          "record_path": [
+            "stories",
+            "active",
+            "75"
+          ],
+          "canonical_lexical_sha256": "62093dbfe72c7a88ee0ca78c443e758742092ee47adb13e0eb1854800fe53845",
+          "canonical_lexical_bytes": 892,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_futures_contract"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "4039025565"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_band_high",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "12900000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_band_low",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "8500000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_open_orders_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_execution_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "18446744073709451616",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_execution_volume_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_last_daily_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "18446744073709451616",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_status",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_expiry_day",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_perpetual",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_coin",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "57",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_created_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_contract_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        },
+        {
+          "native_story_id": "96",
+          "record_path": [
+            "stories",
+            "active",
+            "96"
+          ],
+          "canonical_lexical_sha256": "48ac6ec31901c3eba3c65a76d5f294de01cb7ab99044484a7fbd583f68b5b9de",
+          "canonical_lexical_bytes": 1078,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_futures_contract"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "860104823"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_futures_daily_queued",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_band_high",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "12900000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_band_low",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "8500000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_open_orders_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_execution_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "18446744073709451616",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_execution_volume_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_last_daily_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "18446744073709451616",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_status",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_expiry_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "3000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_perpetual",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_coin",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "56",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_created_day",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_contract_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        }
+      ],
+      "xfm_futures_order": [
+        {
+          "native_story_id": "97",
+          "record_path": [
+            "stories",
+            "active",
+            "97"
+          ],
+          "canonical_lexical_sha256": "61815f8cc047aa2aaa7162c3afec7c825332cd3c35e5c595bc964513f0bd31ea",
+          "canonical_lexical_bytes": 927,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_futures_order"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "913249897"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_status",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_fee_paid_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_filled_gross_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_reserve_price_cents",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "12900000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_limit_cents",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "10700000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_remaining_lots",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_leverage",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_side",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_reservation",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "98",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "95",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_contract",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "96",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_order_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_kind",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        }
+      ],
+      "xfm_finance_reservation": [
+        {
+          "native_story_id": "98",
+          "record_path": [
+            "stories",
+            "active",
+            "98"
+          ],
+          "canonical_lexical_sha256": "b438db97edddf07fb2457f3e6a1e8e39d8179c6358bd1a21f74d943e1b47ecbe",
+          "canonical_lexical_bytes": 381,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_finance_reservation"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "966394971"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_status",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_remaining_cents",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "13000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "95",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_reservation_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        }
+      ]
+    },
+    "examples_per_story_type_limit": 2,
+    "examples_are_not_a_complete_ledger": true
+  },
+  "existing_bounded_parser": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\bounded_save_parser.py",
+    "bytes": 1998,
+    "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+  },
+  "limits": {
+    "table_records": 200000,
+    "financial_records": 65536,
+    "selected_record_bytes": 524288,
+    "financial_selected_bytes": 67108864,
+    "generic_retained_bytes": 4194304,
+    "report_bytes": 4194304,
+    "complete_gamestate_bytes": 536870912,
+    "projected_fields": 1000000
+  },
+  "status": "OBSERVED_UNQUALIFIED",
+  "numeric_scale": "UNDETERMINED",
+  "story_reference_type": "UNDETERMINED",
+  "character_reference_type": "UNDETERMINED",
+  "character_id_translation_performed": false,
+  "audit_executed": false,
+  "Game_OS_Native_Maven_java_SAVE_executed": false,
+  "source_layout_qualified": false,
+  "financialCertified": false
+}

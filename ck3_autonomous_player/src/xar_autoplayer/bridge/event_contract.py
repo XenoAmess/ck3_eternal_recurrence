@@ -13,6 +13,7 @@ EVENT_OPTION_STEP_PREFIX = "select-event-option-"
 
 FLORIN_EVENT_QUERY_STEP = "query-current-event-options-v1"
 FLORIN_EVENT_QUERY_CAPABILITY = "game.query.current-event-options.v1"
+FLORIN_EVENT_SELECT_CAPABILITY = "game.command.select-event-option-N"
 FLORIN_EVENT_BACKEND = "ck3-1.21.0-native-headless-main-thread"
 
 

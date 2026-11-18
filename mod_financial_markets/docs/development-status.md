@@ -2,7 +2,17 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0013 收束及修正后）
+## 当前状态（R0014 收束后）
+
+第十四场`R0014/a92`已实机验证发行页修复：完整控件树实际出现可见、启用的`xfm_market_issue_micro`（widget950），一次正常激活打开event instance1，原生查询返回两个可用选项。独立快照确认实际预存10金币后255→245；初始零源账册已物理保存并归档140,063,472字节，SHA256 `edcb0848990fd0352b695f923307bfcaedf8a01d0f9e290864a5fd67e9674bbf`。尚未成功注册币、推进日或成交。[本场原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0014.json)。
+
+确认调用暴露共享SDK能力名称不一致：Native实际公告`game.command.select-event-option-N`，Florin消费者却要求具体的`game.command.select-event-option-1`。该检查发生在原attempt claim之后、Native选择派发之前；原claim和保守UNKNOWN均保留，不重放。公共entry按原失败finally执行一次typed退出，实际Game0/Job0/treegone、Host原wait1；公共run原wait2/858.614124秒，`failure_lifecycle_completed=true`、`normal_close_qualified=false`。keeper原wait0，23:16:09Z实际CAS15335→15337释放。共享调用路径现统一使用Native公告的族能力，在新claim前预检、派发时再次核验；已有claim/UNKNOWN优先保护及旧版路径保留。正式事件模块16项和合同模块8项分别实际通过，包含公共入口、通用步骤内部路由及真实primitive能力／请求生产链；这24项软件结果尚不授予新场发行或成交信用。[修复与验证原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-event-family-unsigned64-fixes.json)。
+
+app04实际读取R0013预存后归档，报告`CANDIDATE_INVARIANTS_HOLD`，原wait0/15.181820秒；提现后归档原wait2/15.201580秒，仅两个期货合同的`xfm_last_daily_day`不能精确缩放。实际raw `18446744073709451616`为64位补码中的-100000，对应生产初始化的-1哨兵。已新增显式`unsigned64OmittedZero`模式，保留原两模式及引用身份语义；范围验证后解补码，再精确除100000，不截断或取模。完整正式266项已于23:17:49Z实际通过，原wait0/55.072666秒、0失败/错误/跳过；原件`task/software-18-unsigned64-layout01/VERIFY.actual.json`，SHA256 `eaa24ee10efc37f98e8ad4587d4d8cd8c7c129d06f0385466a9fcbf20a3b2e5d`。app05已经独立打包，实际新模式归档复核继续进行，旧INCOMPLETE报告保留。
+
+前一正式提交`89aed59f`的云端CI44415154002实际共享10项加金融259项，共269项全部通过、0失败/错误/跳过；原件`task/financial-ci-pass-44415154002/PASS.actual.json`。该云场不冒充后续266项版本，也不代替实机交易或完整Mod验收。
+
+## R0013 收束及修正记录
 
 第十三场`R0013/a91`实际装载Q19及小面值模型版本，取得两份递增完整快照后，通过正常市场GUI存入10金币、再取回10金币。独立物理归档分别为140,063,587字节（SHA256 `409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6`）及139,822,544字节（`a011b34847901f93760813d318e9b797e2393cbd53d4d8d86e92a4af32393c74`）；实际两遍发现确认账户54/永久ID2/持有人31254，存入后自由余额1000分，取回后数字零采用缺省identity编码。金币由独立后续快照确认245→255，按钮即时回执中的旧缓存不充当资金变化证明。推进日期53144328→53144352，新增1日；自然生成一笔AI期货委托及其冻结记录，尚无币或已成交期货仓位。[本场原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0013.json)。
 

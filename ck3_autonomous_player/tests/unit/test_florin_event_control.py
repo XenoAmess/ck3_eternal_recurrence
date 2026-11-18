@@ -13,9 +13,9 @@ from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / 'ck3_autonomous_player/src'))
-from xar_autoplayer.bridge.driver import BridgeUnavailableError
+from xar_autoplayer.bridge.driver import BridgeUnavailableError, UnsupportedStepError
 from xar_autoplayer.bridge.event_contract import (
-    FLORIN_EVENT_QUERY_STEP, florin_event_fields, florin_event_source, normalize_florin_event_result,
+    FLORIN_EVENT_QUERY_STEP, FLORIN_EVENT_SELECT_CAPABILITY, florin_event_fields, florin_event_source, normalize_florin_event_result,
 )
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver, NativeProtocolState, _semantic_snapshot_from_frame
 from xar_autoplayer.bridge.service import GameplayBridgeService
@@ -42,12 +42,127 @@ def frame() -> dict[str, object]:
     state.ingest({'type': 'hello', 'protocol_version': 1, 'pid': 42, 'connection_generation': 3,
                   'expected_ck3_version': CK3_1210.game_version, 'expected_ck3_sha256': CK3_1210.executable_sha256,
                   'game_adapter_id': 'ck3-1.21.0-msvc-x64', 'ck3_build_match': True,
-                  'capabilities': ['game.state.snapshot', 'game.query.current-event-options.v1', 'game.command.select-event-option-2']})
+                  'capabilities': ['game.state.snapshot', 'game.query.current-event-options.v1', 'game.command.select-event-option-N']})
     assert state.ingest(json.loads(raw)) == 'state_snapshot'
     return {**state.semantic_snapshot(), 'episode_run_id': 'software-episode'}
 
 
+def event_capabilities(snapshot: dict[str, object]) -> dict[str, object]:
+    # Same HELLO family spelling as retained R0014; no invented per-option capability.
+    return {'bridge_capabilities': list(snapshot['diagnostics']['hello']['capabilities'])}
+
+
+def production_primitive_driver(directory: Path):
+    """Actual event writer AND primitive/capability/request path; only pipe and OS quiet check are inert."""
+    driver = object.__new__(NativeHeadlessGameplayDriver)
+    start = frame(); changed = copy.deepcopy(start); changed['active_event'] = None
+    changed['native_revision'] = 12; changed['snapshot_id'] = 'native:12'
+    driver.command_timeout_seconds = 2.0; driver._request_sequence = 0
+    driver._record_command = Mock()
+    driver.take_snapshot_without_native_command_history = Mock(side_effect=lambda: copy.deepcopy(start))
+    driver.take_internal_semantic_snapshot = Mock(side_effect=lambda: copy.deepcopy(changed))
+    driver._wait_for_life_advance_snapshot = Mock(side_effect=lambda snapshot, predicate, **kwargs: snapshot)
+    driver._native_driver_state_path = Mock(return_value=directory / 'driver.json')
+    caps = event_capabilities(start)
+    driver.capabilities = Mock(return_value=caps)
+    sent = []
+    def send(request, **kwargs):
+        sent.append(copy.deepcopy(request))
+        packet = kwargs.get('packet_evidence_path')
+        if packet is not None:
+            with packet.open('x', encoding='utf-8') as stream:
+                json.dump(request, stream)
+    def result(request_id, timeout):
+        step = sent[-1]['step']
+        raw = cpp('available.json' if step == FLORIN_EVENT_QUERY_STEP else 'submitted.json')
+        return {'type':'command_result', 'protocol_version':1, 'request_id':request_id, 'ok':True, 'result':raw}
+    driver.endpoint = SimpleNamespace(send=send)
+    driver.state = SimpleNamespace(wait_for_command_result=result)
+    return driver, start, sent, caps
+
+
 class FlorinEventControlTests(unittest.TestCase):
+
+    def test_actual_primitive_accepts_hello_family_for_public_and_generic_florin_route(self) -> None:
+        for generic in (False, True):
+            with self.subTest(generic=generic), tempfile.TemporaryDirectory() as temporary:
+                driver, start, sent, _ = production_primitive_driver(Path(temporary))
+                self.assertEqual(FLORIN_EVENT_SELECT_CAPABILITY, 'game.command.select-event-option-N')
+                self.assertNotIn('game.command.select-event-option-2', event_capabilities(start)['bridge_capabilities'])
+                with patch('xar_autoplayer.native_session.require_game_windows_background'):
+                    if generic:
+                        result = driver._execute_event_option_step('select-event-option-2',
+                            option_number=2, expected_revision=start['revision'])
+                    else:
+                        result = driver.select_event_option_v1210(2, event_instance_id=42,
+                            expected_revision=start['revision'])
+                self.assertTrue(result['event_selection']['postcondition_verified'])
+                self.assertEqual([p['step'] for p in sent], [FLORIN_EVENT_QUERY_STEP, 'select-event-option-2'])
+                self.assertEqual(sent[1]['expected_revision'], 11)
+                self.assertEqual(sent[1]['arguments'], {'event_instance_id':42})
+                self.assertEqual(sent[1]['event_option_control'], sent[0]['event_option_control'])
+                self.assertEqual(driver._record_command.call_count, 0 if generic else 1)
+                claims = list((Path(temporary)/'event-option-controls1210').glob('*.claim.json'))
+                self.assertEqual(len(claims), 1)
+                self.assertEqual(json.loads(claims[0].read_bytes())['native_option_index'], 1)
+
+    def test_missing_or_per_option_only_family_refuses_before_query_claim_and_unknown(self) -> None:
+        for announced in ([], ['game.command.select-event-option-2']):
+            with self.subTest(announced=announced), tempfile.TemporaryDirectory() as temporary:
+                driver, start, sent, caps = production_primitive_driver(Path(temporary))
+                caps['bridge_capabilities'] = ['game.state.snapshot', 'game.query.current-event-options.v1', *announced]
+                with patch('xar_autoplayer.native_session.require_game_windows_background'), \
+                        self.assertRaisesRegex(UnsupportedStepError, 'game.command.select-event-option-N'):
+                    driver.select_event_option_v1210(2, event_instance_id=42, expected_revision=start['revision'])
+                self.assertEqual(sent, [])
+                self.assertEqual(list(Path(temporary).rglob('*.claim.json')), [])
+                self.assertFalse((Path(temporary)/'world-control1210').exists())
+                self.assertFalse(driver._record_command.call_args.kwargs['ok'])
+
+    def test_family_loss_after_query_preserves_original_attempt_and_unknown_without_send_retry(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            driver, start, sent, caps = production_primitive_driver(Path(temporary))
+            real_result = driver.state.wait_for_command_result
+            def drop_after_query(request_id, timeout):
+                result = real_result(request_id, timeout)
+                if sent[-1]['step'] == FLORIN_EVENT_QUERY_STEP:
+                    caps['bridge_capabilities'].remove(FLORIN_EVENT_SELECT_CAPABILITY)
+                return result
+            driver.state.wait_for_command_result = drop_after_query
+            with patch('xar_autoplayer.native_session.require_game_windows_background'), \
+                    self.assertRaisesRegex(UnsupportedStepError, 'game.command.select-event-option-N'):
+                driver.select_event_option_v1210(2, event_instance_id=42, expected_revision=start['revision'])
+            self.assertEqual([p['step'] for p in sent], [FLORIN_EVENT_QUERY_STEP])
+            claim = next((Path(temporary)/'event-option-controls1210').glob('*.claim.json'))
+            original = claim.read_bytes()
+            with self.assertRaisesRegex(BridgeUnavailableError, 'never replay'):
+                driver.select_event_option_v1210(2, event_instance_id=42, expected_revision=start['revision'])
+            self.assertEqual(claim.read_bytes(), original)
+            with self.assertRaisesRegex(ValueError, 'UNKNOWN'):
+                require_florin_control_ready_v1(Path(temporary)/'driver.json', florin_full_source(start, None))
+            self.assertEqual([p['step'] for p in sent], [FLORIN_EVENT_QUERY_STEP])
+
+    def test_legacy_event_route_does_not_require_the_new_florin_family(self) -> None:
+        start = frame(); start['diagnostics']['hello']['expected_ck3_version'] = '1.20.0.4'
+        start['active_event']['option_count'] = 2
+        changed = copy.deepcopy(start); changed['active_event'] = None
+        primitive = Mock(return_value={'accepted':True, 'step':'select-event-option-2'})
+        fake = SimpleNamespace(command_timeout_seconds=2.0, _driver_state_lock=threading.RLock(),
+            take_snapshot_without_native_command_history=lambda: start,
+            take_internal_semantic_snapshot=lambda: changed,
+            _wait_for_life_advance_snapshot=lambda snapshot, predicate, **kwargs: snapshot,
+            capabilities=Mock(side_effect=AssertionError('No new Florin capability check on legacy path')),
+            _select_event_option_v1210_unrecorded=Mock(side_effect=AssertionError('No Florin route for legacy')),
+            _execute_primitive_step=primitive)
+        result = NativeHeadlessGameplayDriver._execute_event_option_step(fake, 'select-event-option-2',
+            option_number=2, expected_revision=start['revision'])
+        self.assertTrue(result['event_selection']['postcondition_verified'])
+        primitive.assert_called_once_with('select-event-option-2',
+            include_native_command_history=False, expected_revision=start['revision'])
+        fake.capabilities.assert_not_called()
+        fake._select_event_option_v1210_unrecorded.assert_not_called()
+
+
     def test_actual_cpp_full_reaches_existing_public_state_without_losing_signed_ids(self) -> None:
         actual = frame()
         self.assertEqual(actual['played_character']['character_id'], -2130706431)
@@ -100,7 +215,7 @@ class FlorinEventControlTests(unittest.TestCase):
                 calls.append((step, kwargs))
                 return {**cpp('available.json' if step == FLORIN_EVENT_QUERY_STEP else 'submitted.json'), 'backend_id': 'native-headless'}
             fake = SimpleNamespace(command_timeout_seconds=2.0,
-                _record_command=Mock(),
+                capabilities=lambda: event_capabilities(start), _record_command=Mock(),
                 take_snapshot_without_native_command_history=lambda: start,
                 take_internal_semantic_snapshot=lambda: changed,
                 _wait_for_life_advance_snapshot=lambda snapshot, predicate, **kwargs: snapshot,
@@ -125,6 +240,7 @@ class FlorinEventControlTests(unittest.TestCase):
                 if step == FLORIN_EVENT_QUERY_STEP: return cpp('available.json')
                 raise BridgeUnavailableError('software lost ACK after send')
             fake = SimpleNamespace(command_timeout_seconds=2.0,
+                capabilities=lambda: event_capabilities(start),
                 _record_command=Mock(),
                 take_snapshot_without_native_command_history=lambda: start,
                 _native_driver_state_path=lambda: Path(temporary) / 'driver.json', _execute_primitive_step=primitive)
@@ -133,6 +249,8 @@ class FlorinEventControlTests(unittest.TestCase):
                     NativeHeadlessGameplayDriver.select_event_option_v1210(fake, 2, event_instance_id=42, expected_revision=start['revision'])
                 start['diagnostics']['connection_generation'] = 4
                 start['diagnostics']['hello']['connection_generation'] = 4
+                # Original attempt retains priority even if the new connection lacks the family.
+                start['diagnostics']['hello']['capabilities'].remove(FLORIN_EVENT_SELECT_CAPABILITY)
                 with self.assertRaisesRegex(BridgeUnavailableError, 'never replay'):
                     NativeHeadlessGameplayDriver.select_event_option_v1210(fake, 2, event_instance_id=42, expected_revision=start['revision'])
             self.assertEqual(calls, [FLORIN_EVENT_QUERY_STEP, 'select-event-option-2'])
@@ -160,7 +278,7 @@ class FlorinEventControlTests(unittest.TestCase):
                     elif outcome == 'indeterminate':
                         result.update(status='indeterminate', accepted=False)
                     return result
-                fake = SimpleNamespace(command_timeout_seconds=2.0, _record_command=Mock(),
+                fake = SimpleNamespace(command_timeout_seconds=2.0, capabilities=lambda: event_capabilities(start), _record_command=Mock(),
                     take_snapshot_without_native_command_history=lambda: start,
                     take_internal_semantic_snapshot=lambda: start,
                     _wait_for_life_advance_snapshot=lambda snapshot, predicate, **kwargs: snapshot,
@@ -217,6 +335,7 @@ class FlorinEventPublicQueryTests(unittest.IsolatedAsyncioTestCase):
             actual = frame(); changed = copy.deepcopy(actual); changed['active_event'] = None
             driver = object.__new__(NativeHeadlessGameplayDriver)
             driver.command_timeout_seconds = 2.0
+            driver.capabilities = Mock(side_effect=lambda: event_capabilities(actual))
             driver.take_snapshot = Mock(side_effect=lambda **kwargs: copy.deepcopy(actual))
             driver.take_internal_semantic_snapshot = Mock(return_value=changed)
             driver._wait_for_life_advance_snapshot = Mock(return_value=changed)

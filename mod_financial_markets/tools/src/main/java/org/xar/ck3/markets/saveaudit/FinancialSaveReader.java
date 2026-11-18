@@ -72,7 +72,7 @@ public final class FinancialSaveReader {
      */
     private static Selection selection(FinancialProjector.LayoutHypothesis layout) {
         Selection strict = selection();
-        if (layout.numberIdentityEncoding() != FinancialProjector.NumberIdentityEncoding.omittedZero) return strict;
+        if (!layout.numberIdentityEncoding().requiresObserved121Metadata()) return strict;
         List<ProjectionSelection> projections = new ArrayList<>(strict.projections());
         projections.add(new ProjectionSelection(NUMBER_ENCODING_METADATA, ProjectionKind.OTHER,
                 List.of("meta_data"), 1, 512 * 1024, true));
@@ -121,14 +121,14 @@ public final class FinancialSaveReader {
                 projected.issues, coverage, true, false);
     }
     private static void requireObservedNumberEncoding(Projection projection, FinancialProjector.LayoutHypothesis layout) throws IOException {
-        if (layout.numberIdentityEncoding() != FinancialProjector.NumberIdentityEncoding.omittedZero) return;
+        if (!layout.numberIdentityEncoding().requiresObserved121Metadata()) return;
         List<ProjectionScope> metadata = projection.projections().stream()
                 .filter(scope -> scope.name().equals(NUMBER_ENCODING_METADATA)).toList();
         try {
             if (metadata.size() != 1
                     || !FinancialProjector.atom(metadata.getFirst().ast(), "version").map(FinancialProjector::unquote).orElse("").equals("1.21.0")
                     || !FinancialProjector.atom(metadata.getFirst().ast(), "save_game_version").orElse("").equals("19"))
-                throw new IllegalArgumentException("omittedZero requires observed 1.21.0 / format 19 metadata");
+                throw new IllegalArgumentException(layout.numberIdentityEncoding() + " requires observed 1.21.0 / format 19 metadata");
         } catch (IllegalArgumentException malformed) {
             throw new IOException("actual SAVE metadata does not admit omittedZero", malformed);
         }

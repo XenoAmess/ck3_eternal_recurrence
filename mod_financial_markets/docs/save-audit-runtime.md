@@ -8,7 +8,9 @@
 
 先从真实1.21物理SAVE核版本/格式、数值scale、story与character引用类型、故事表和global exchange。缺变量、未知type与省略identity不得默认为零。币/账户/仓位/债务按永久ID、原生story引用及法律holder核对；技术story_owner不等于产权人。金额分别核现金、冻结、费用和基金，债权不当现金。
 
-布局的可选第六字段为`numberIdentityEncoding`，枚举`identityRequired`或`omittedZero`。旧五字段JSON与旧Java构造/位置CLI仍默认`identityRequired`，不隐式改变历史报告语义；显式null、错类型、未知值和未知字段拒绝。只有明确声明`1.21.0`／格式`19`／scale`100000`，且共享parser第一遍实际metadata也吻合时，才能启用`omittedZero`。该模式只把真实存在的变量中恰好为`data={type=value}`的编码解释为数值零。缺变量、缺data、缺/错type、含额外不明数据、重复或畸形identity仍不完整；story/character/global引用身份缺失始终不推零。所选模式会写入输出`layoutHypothesis`，候选仍不授金融认证。
+布局的可选第六字段为`numberIdentityEncoding`，枚举`identityRequired`、`omittedZero`或`unsigned64OmittedZero`。旧五字段JSON与旧Java构造/位置CLI仍默认`identityRequired`，不隐式改变历史报告语义；显式null、错类型、未知值和未知字段拒绝。后两种模式只允许明确声明`1.21.0`／格式`19`／scale`100000`，且共享parser第一遍完整、有界metadata投影的版本与格式实际吻合；同名块与标量重复也拒绝。在这两种模式中，仅真实存在的变量中恰好为`data={type=value}`的编码可解释为数值零。缺变量、缺data、缺/错type、含额外不明数据、重复或畸形identity仍不完整；story/character/global引用身份缺失始终不推零。所选模式会写入输出`layoutHypothesis`，候选仍不授金融认证。
+
+`unsigned64OmittedZero`另将恰好为`type=value`加一个identity的数值包按64位补码解码：identity必须是规范无符号十进制，范围`0..18446744073709551615`；先验证范围，达到`9223372036854775808`时减`18446744073709551616`，再按`100000`精确整除。负数字面值、越界、前导零、小数、额外不明data字段均不容错，不截断或取模。`identityRequired`与`omittedZero`的有符号十进制原语义保留；story/character/global的原生ID完全沿原引用路径，不按数值scale或补码转换。R0013完成提现后的发现原件`6435749508278093a3e726801b388ecc14dda89c9225216adaee2c0c04707dcb`在native合同75、96的`xfm_last_daily_day`均记录raw`18446744073709451616`，对应原生产`xfm_futures_orders.txt`明确初始化的`-1`哨兵。新软件测试保留此57640字节发现原件及两条记录；重建文本是软件投影，不替代原物理SAVE、实际审计或冷载。
 
 该显式选项依据R0013实际钱包归档：`140063587`字节／SHA256`409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6`，其只读发现原件`2147b527455eb3b9eee2d83b4eb78cc3506c69d54de97e6e8610a5b85819bc15`同时观察到真实正值与省略零。全局exchange指向story52；主账户story54的account_id raw200000对应永久ID2、free raw100000000对应真实预存1000分，holder为char31254；基金story53的account_id/system1均raw100000，而free/reserved及exchange.day等`type=value`省略identity。实际原件与独立本金255→245金币共同支持该确切布局，不把缺变量补成值。软件回归所用JSON是发现原件的逐字副本；从其变量包重建的测试文本明确是软件投影，不冒充原物理SAVE、共享实际审计或冷载。
 
