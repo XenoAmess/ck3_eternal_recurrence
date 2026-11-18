@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -275,10 +276,28 @@ def render() -> str:
 
 
 def generated_outputs() -> dict[Path, bytes]:
-    return {
-        EFFECT_OUTPUT: render_effects().encode("utf-8-sig"),
-        TRIGGER_OUTPUT: render_triggers().encode("utf-8-sig"),
-    }
+    outputs: dict[Path, bytes] = {}
+    for destination, rendered, prefix, family in (
+        (EFFECT_OUTPUT, render_effects(), "aub_upgrade_chain_", "aub_upgrade_chains"),
+        (TRIGGER_OUTPUT, render_triggers(), "aub_can_upgrade_to_", "aub_building_gates"),
+    ):
+        starts = list(re.finditer(r"(?m)^([A-Za-z_][A-Za-z0-9_]*) = \{", rendered))
+        if not starts:
+            raise ValueError("generated runtime has no definitions")
+        header = rendered[:starts[0].start()]
+        common: list[str] = []
+        leaves: list[str] = []
+        for index, match in enumerate(starts):
+            end = starts[index + 1].start() if index + 1 < len(starts) else len(rendered)
+            body = rendered[match.start():end]
+            (leaves if match[1].startswith(prefix) else common).append(body)
+        if not 1 <= len(common) <= 10:
+            raise ValueError("generated lifecycle/payment/dispatch group exceeds its definition budget")
+        outputs[destination] = (header + "".join(common)).encode("utf-8-sig")
+        for offset in range(0, len(leaves), 10):
+            path = destination.with_name(f"{family}_{offset // 10:03}.txt")
+            outputs[path] = (header + "".join(leaves[offset:offset + 10])).encode("utf-8-sig")
+    return outputs
 
 
 def main(argv: list[str] | None = None) -> int:

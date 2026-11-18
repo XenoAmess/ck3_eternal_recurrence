@@ -1,0 +1,312 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_20_0_2.json
+# Every trigger reproduces the target building's four vanilla construction gates.
+
+aub_can_upgrade_to_monastic_schools_04_trigger = {
+	# vanilla can_construct
+	trigger_if = {
+		limit = {
+			scope:holder.rite = {
+				NOT = {
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
+				}
+			}
+		}
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
+	}
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_monasteries
+				}
+			}
+		}
+		culture = {
+			has_innovation = innovation_manorialism
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 02
+		}
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_city_planning
+			has_cultural_parameter = next_level_monasteries
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 01
+		}
+	}
+}
+
+aub_can_upgrade_to_monastic_schools_05_trigger = {
+	# vanilla can_construct
+	trigger_if = {
+		limit = {
+			scope:holder.rite = {
+				NOT = {
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
+				}
+			}
+		}
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
+	}
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_monasteries
+				}
+			}
+		}
+		culture = {
+			has_innovation = innovation_windmills
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 03
+		}
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_city_planning
+			has_cultural_parameter = next_level_monasteries
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 02
+		}
+	}
+}
+
+aub_can_upgrade_to_monastic_schools_06_trigger = {
+	# vanilla can_construct
+	trigger_if = {
+		limit = {
+			scope:holder.rite = {
+				NOT = {
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
+				}
+			}
+		}
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
+	}
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_monasteries
+				}
+			}
+		}
+		culture = {
+			has_innovation = innovation_windmills
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 03
+		}
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_city_planning
+			has_cultural_parameter = next_level_monasteries
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 02
+		}
+	}
+}
+
+aub_can_upgrade_to_monastic_schools_07_trigger = {
+	# vanilla can_construct
+	trigger_if = {
+		limit = {
+			scope:holder.rite = {
+				NOT = {
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
+				}
+			}
+		}
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
+	}
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_monasteries
+				}
+			}
+		}
+		culture = {
+			has_innovation = innovation_cranes
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 04
+		}
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_windmills
+			has_cultural_parameter = next_level_monasteries
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 03
+		}
+	}
+}
+
+aub_can_upgrade_to_monastic_schools_08_trigger = {
+	# vanilla can_construct
+	trigger_if = {
+		limit = {
+			scope:holder.rite = {
+				NOT = {
+					rite_has_parameter = monastic_schools_allowed_in_every_holding_type
+				}
+			}
+		}
+		OR = {
+			has_holding_type = church_holding
+			has_holding_type = temple_citadel_holding
+		}
+	}
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_monasteries
+				}
+			}
+		}
+		culture = {
+			has_innovation = innovation_cranes
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 04
+		}
+	}
+	trigger_else = {
+		culture = {
+			has_innovation = innovation_windmills
+			has_cultural_parameter = next_level_monasteries
+		}
+		building_requirement_castle_city_church_temple_citadel_tribe = {
+			LEVEL = 03
+		}
+	}
+}
+
+aub_can_upgrade_to_mont_st_michel_02_trigger = {
+	# vanilla is_enabled
+	christianity_or_syncretic_with_christianity_trigger = {
+		CHARACTER = scope:holder
+	}
+	# vanilla can_construct
+	custom_description = {
+		text = holy_site_christian_or_holy_site_trigger
+		OR = {
+			christianity_or_syncretic_with_christianity_trigger = {
+				CHARACTER = scope:holder
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
+	}
+	scope:holder = {
+		culture = {
+			has_innovation = innovation_burhs
+		}
+	}
+}
+
+aub_can_upgrade_to_mont_st_michel_03_trigger = {
+	# vanilla is_enabled
+	christianity_or_syncretic_with_christianity_trigger = {
+		CHARACTER = scope:holder
+	}
+	# vanilla can_construct
+	custom_description = {
+		text = holy_site_christian_or_holy_site_trigger
+		OR = {
+			christianity_or_syncretic_with_christianity_trigger = {
+				CHARACTER = scope:holder
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
+	}
+	scope:holder = {
+		culture = {
+			has_innovation = innovation_castle_baileys
+			has_innovation = innovation_guilds
+		}
+	}
+}
+
+aub_can_upgrade_to_mont_st_michel_04_trigger = {
+	# vanilla is_enabled
+	christianity_or_syncretic_with_christianity_trigger = {
+		CHARACTER = scope:holder
+	}
+	# vanilla can_construct
+	custom_description = {
+		text = holy_site_christian_or_holy_site_trigger
+		OR = {
+			christianity_or_syncretic_with_christianity_trigger = {
+				CHARACTER = scope:holder
+			}
+			custom_description = {
+				text = holy_site_building_trigger
+				barony = {
+					is_holy_site_of = scope:holder.faith
+				}
+			}
+		}
+	}
+	scope:holder = {
+		culture = {
+			has_innovation = innovation_cranes
+			has_innovation = innovation_sappers
+			has_innovation = innovation_gunpowder
+		}
+	}
+}
+
+aub_can_upgrade_to_mount_athos_02_trigger = {
+	# vanilla is_enabled
+	scope:holder.rite = {
+		rite_has_doctrine = special_doctrine_is_eastern_christian_faith
+	}
+	# vanilla can_construct
+}
+
+aub_can_upgrade_to_mount_athos_03_trigger = {
+	# vanilla is_enabled
+	scope:holder.rite = {
+		rite_has_doctrine = special_doctrine_is_eastern_christian_faith
+	}
+	# vanilla can_construct
+	scope:holder.culture = {
+		has_innovation = innovation_cranes
+	}
+}
+

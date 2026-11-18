@@ -125,8 +125,9 @@ def localization_entries(value: str) -> dict[str, str]:
     return entries
 
 
-def extract_block(value: str, name: str) -> str | None:
-    match = re.search(rf"(?m)^\s*{re.escape(name)}\s*=\s*\{{", value)
+def extract_block(value: str, name: str, *, top_level: bool = False) -> str | None:
+    indentation = "" if top_level else r"\s*"
+    match = re.search(rf"(?m)^{indentation}{re.escape(name)}\s*=\s*\{{", value)
     if match is None:
         return None
     depth = 0
@@ -197,8 +198,10 @@ def validate(
     decisions = text("common/decisions/build_decision.txt")
     on_actions = text("common/on_action/aub_on_actions.txt")
     events = text("events/auto_build.txt")
-    effects = text("common/scripted_effects/build_scripted_effect.txt")
-    triggers = text("common/scripted_triggers/aub_building_triggers.txt")
+    effects = "\n".join(text(path) for path in sorted(builder.RUNTIME_FILES)
+                        if path.startswith("common/scripted_effects/"))
+    triggers = "\n".join(text(path) for path in sorted(builder.RUNTIME_FILES)
+                         if path.startswith("common/scripted_triggers/"))
     for relative, value in (
         ("common/decisions/build_decision.txt", decisions),
         ("common/on_action/aub_on_actions.txt", on_actions),
@@ -475,7 +478,7 @@ def validate(
     if effects.count("aub_can_pay_gold_building_cost_trigger = {") != len(EDGES):
         errors.append("every generated edge must call the central gold affordability trigger")
     affordability = extract_block(triggers, "aub_can_pay_gold_building_cost_trigger")
-    payment = extract_block(effects, "aub_pay_gold_building_cost_effect")
+    payment = extract_block(effects, "aub_pay_gold_building_cost_effect", top_level=True)
     for block, label in (
         (affordability, "gold affordability trigger"),
         (payment, "gold payment effect"),

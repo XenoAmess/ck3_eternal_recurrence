@@ -1,0 +1,241 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_20_0_2.json
+# Every trigger reproduces the target building's four vanilla construction gates.
+
+aub_can_upgrade_to_warrior_lodges_03_trigger = {
+	# vanilla can_construct_potential
+	building_warrior_lodges_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_burhs
+	}
+	trigger_if = {
+		limit = {
+			scope:holder = {
+				NOT = {
+					government_has_flag = government_is_tribal
+				}
+			}
+		}
+		NOT = {
+			has_holding_type = tribal_holding
+		}
+	}
+}
+
+aub_can_upgrade_to_warrior_lodges_04_trigger = {
+	# vanilla can_construct_potential
+	building_warrior_lodges_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_burhs
+	}
+	trigger_if = {
+		limit = {
+			scope:holder = {
+				NOT = {
+					government_has_flag = government_is_tribal
+				}
+			}
+		}
+		NOT = {
+			has_holding_type = tribal_holding
+		}
+	}
+}
+
+aub_can_upgrade_to_warrior_lodges_05_trigger = {
+	# vanilla can_construct_potential
+	building_warrior_lodges_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_castle_baileys
+	}
+}
+
+aub_can_upgrade_to_warrior_lodges_06_trigger = {
+	# vanilla can_construct_potential
+	building_warrior_lodges_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_royal_armory
+	}
+}
+
+aub_can_upgrade_to_warrior_lodges_07_trigger = {
+	# vanilla can_construct_potential
+	building_warrior_lodges_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_royal_armory
+	}
+}
+
+aub_can_upgrade_to_warrior_lodges_08_trigger = {
+	# vanilla can_construct_potential
+	building_warrior_lodges_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_royal_armory
+	}
+}
+
+aub_can_upgrade_to_watchtowers_02_trigger = {
+	# vanilla can_construct_potential
+	building_watchtowers_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 01
+	}
+	# vanilla can_construct_showing_failures_only
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_fortification
+				}
+			}
+		}
+		scope:holder.culture = {
+			has_innovation = innovation_motte
+		}
+	}
+	trigger_else = {
+		culture = {
+			has_cultural_parameter = next_level_fortification
+		}
+	}
+	building_requirement_tribal = no
+}
+
+aub_can_upgrade_to_watchtowers_03_trigger = {
+	# vanilla can_construct_potential
+	building_watchtowers_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_fortification
+				}
+			}
+		}
+		building_requirement_castle_city_church = {
+			LEVEL = 02
+		}
+		scope:holder.culture = {
+			has_innovation = innovation_battlements
+		}
+	}
+	trigger_else = {
+		building_requirement_castle_city_church = {
+			LEVEL = 01
+		}
+		culture = {
+			has_cultural_parameter = next_level_fortification
+		}
+		scope:holder.culture = {
+			has_innovation = innovation_motte
+		}
+	}
+}
+
+aub_can_upgrade_to_watchtowers_04_trigger = {
+	# vanilla can_construct_potential
+	building_watchtowers_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_fortification
+				}
+			}
+		}
+		building_requirement_castle_city_church = {
+			LEVEL = 02
+		}
+		scope:holder.culture = {
+			has_innovation = innovation_battlements
+		}
+	}
+	trigger_else = {
+		building_requirement_castle_city_church = {
+			LEVEL = 01
+		}
+		culture = {
+			has_cultural_parameter = next_level_fortification
+		}
+		scope:holder.culture = {
+			has_innovation = innovation_motte
+		}
+	}
+}
+
+aub_can_upgrade_to_watchtowers_05_trigger = {
+	# vanilla can_construct_potential
+	building_watchtowers_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_fortification
+				}
+			}
+		}
+		building_requirement_castle_city_church = {
+			LEVEL = 03
+		}
+		scope:holder.culture = {
+			has_innovation = innovation_hoardings
+		}
+	}
+	trigger_else = {
+		building_requirement_castle_city_church = {
+			LEVEL = 02
+		}
+		culture = {
+			has_cultural_parameter = next_level_fortification
+		}
+		scope:holder.culture = {
+			has_innovation = innovation_battlements
+		}
+	}
+}
+

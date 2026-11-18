@@ -1,0 +1,143 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_20_0_2.json
+# Every trigger reproduces the target building's four vanilla construction gates.
+
+aub_can_upgrade_to_orchards_03_trigger = {
+	# vanilla can_construct_potential
+	building_orchards_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_manorialism
+	}
+}
+
+aub_can_upgrade_to_orchards_04_trigger = {
+	# vanilla can_construct_potential
+	building_orchards_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_manorialism
+	}
+}
+
+aub_can_upgrade_to_orchards_05_trigger = {
+	# vanilla can_construct_potential
+	building_orchards_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_guilds
+	}
+}
+
+aub_can_upgrade_to_orchards_06_trigger = {
+	# vanilla can_construct_potential
+	building_orchards_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_guilds
+	}
+}
+
+aub_can_upgrade_to_orchards_07_trigger = {
+	# vanilla can_construct_potential
+	building_orchards_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_cranes
+	}
+}
+
+aub_can_upgrade_to_orchards_08_trigger = {
+	# vanilla can_construct_potential
+	building_orchards_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_cranes
+	}
+}
+
+aub_can_upgrade_to_outposts_02_trigger = {
+	# vanilla can_construct_potential
+	building_outposts_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 01
+	}
+	# vanilla can_construct_showing_failures_only
+	scope:holder.culture = {
+		has_innovation = innovation_barracks
+	}
+	building_requirement_tribal = no
+}
+
+aub_can_upgrade_to_outposts_03_trigger = {
+	# vanilla can_construct_potential
+	building_outposts_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_burhs
+	}
+}
+
+aub_can_upgrade_to_outposts_04_trigger = {
+	# vanilla can_construct_potential
+	building_outposts_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_burhs
+	}
+}
+
+aub_can_upgrade_to_outposts_05_trigger = {
+	# vanilla can_construct_potential
+	building_outposts_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_castle_baileys
+	}
+}
+

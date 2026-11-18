@@ -1,0 +1,127 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_20_0_2.json
+# Every trigger reproduces the target building's four vanilla construction gates.
+
+aub_can_upgrade_to_plantations_07_trigger = {
+	# vanilla can_construct_potential
+	building_plantations_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_cranes
+	}
+}
+
+aub_can_upgrade_to_plantations_08_trigger = {
+	# vanilla can_construct_potential
+	building_plantations_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	scope:holder.culture = {
+		has_innovation = innovation_cranes
+	}
+}
+
+aub_can_upgrade_to_powder_magazine_02_trigger = {
+	# vanilla can_construct_potential
+	building_requirement_castle_city_church = {
+		LEVEL = 01
+	}
+	# vanilla can_construct_showing_failures_only
+	scope:holder.culture = {
+		has_cultural_parameter = unlock_powder_magazines
+	}
+	building_requirement_tribal = no
+}
+
+aub_can_upgrade_to_powder_magazine_03_trigger = {
+	# vanilla can_construct_potential
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	# vanilla can_construct_showing_failures_only
+	scope:holder.culture = {
+		has_cultural_parameter = unlock_powder_magazines
+	}
+	building_requirement_tribal = no
+}
+
+aub_can_upgrade_to_powder_magazine_04_trigger = {
+	# vanilla can_construct_potential
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	# vanilla can_construct_showing_failures_only
+	scope:holder.culture = {
+		has_cultural_parameter = unlock_powder_magazines
+	}
+	building_requirement_tribal = no
+}
+
+aub_can_upgrade_to_powder_magazine_05_trigger = {
+	# vanilla can_construct_potential
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	# vanilla can_construct_showing_failures_only
+	scope:holder.culture = {
+		has_cultural_parameter = unlock_powder_magazines
+	}
+	building_requirement_tribal = no
+}
+
+aub_can_upgrade_to_powder_magazine_06_trigger = {
+	# vanilla can_construct_potential
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	# vanilla can_construct_showing_failures_only
+	scope:holder.culture = {
+		has_cultural_parameter = unlock_powder_magazines
+	}
+	building_requirement_tribal = no
+}
+
+aub_can_upgrade_to_powder_magazine_07_trigger = {
+	# vanilla can_construct_potential
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	# vanilla can_construct_showing_failures_only
+	scope:holder.culture = {
+		has_cultural_parameter = unlock_powder_magazines
+	}
+	building_requirement_tribal = no
+}
+
+aub_can_upgrade_to_powder_magazine_08_trigger = {
+	# vanilla can_construct_potential
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	# vanilla can_construct_showing_failures_only
+	scope:holder.culture = {
+		has_cultural_parameter = unlock_powder_magazines
+	}
+	building_requirement_tribal = no
+}
+
+aub_can_upgrade_to_qanats_02_trigger = {
+	# vanilla can_construct_potential
+	building_qanats_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 01
+	}
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+}
+

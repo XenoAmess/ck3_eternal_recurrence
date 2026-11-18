@@ -1,0 +1,181 @@
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_1_20_0_2.json
+# Every trigger reproduces the target building's four vanilla construction gates.
+
+aub_can_upgrade_to_smiths_08_trigger = {
+	# vanilla can_construct_potential
+	building_smiths_requirement_terrain = yes
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	# vanilla can_construct
+	trigger_if = {
+		limit = {
+			NOT = {
+				culture = {
+					has_cultural_parameter = next_level_smiths
+				}
+			}
+		}
+		scope:holder.culture = {
+			has_innovation = innovation_royal_armory
+		}
+		building_requirement_castle_city_church = {
+			LEVEL = 04
+		}
+	}
+	trigger_else = {
+		culture = {
+			has_cultural_parameter = next_level_smiths
+		}
+		scope:holder.culture = {
+			has_innovation = innovation_castle_baileys
+		}
+		building_requirement_castle_city_church = {
+			LEVEL = 03
+		}
+	}
+}
+
+aub_can_upgrade_to_spice_plantation_02_trigger = {
+	# vanilla is_enabled
+	# vanilla can_construct_potential
+	building_spice_plantation_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 01
+	}
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	county = {
+		NOT = {
+			has_county_modifier = backwater_county_modifier
+		}
+	}
+	# vanilla can_construct
+}
+
+aub_can_upgrade_to_spice_plantation_03_trigger = {
+	# vanilla is_enabled
+	# vanilla can_construct_potential
+	building_spice_plantation_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	county = {
+		NOT = {
+			has_county_modifier = backwater_county_modifier
+		}
+	}
+	# vanilla can_construct
+}
+
+aub_can_upgrade_to_spice_plantation_04_trigger = {
+	# vanilla is_enabled
+	# vanilla can_construct_potential
+	building_spice_plantation_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	county = {
+		NOT = {
+			has_county_modifier = backwater_county_modifier
+		}
+	}
+	# vanilla can_construct
+}
+
+aub_can_upgrade_to_spice_plantation_05_trigger = {
+	# vanilla is_enabled
+	# vanilla can_construct_potential
+	building_spice_plantation_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	county = {
+		NOT = {
+			has_county_modifier = backwater_county_modifier
+		}
+	}
+	# vanilla can_construct
+}
+
+aub_can_upgrade_to_spice_plantation_06_trigger = {
+	# vanilla is_enabled
+	# vanilla can_construct_potential
+	building_spice_plantation_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	county = {
+		NOT = {
+			has_county_modifier = backwater_county_modifier
+		}
+	}
+	# vanilla can_construct
+}
+
+aub_can_upgrade_to_spice_plantation_07_trigger = {
+	# vanilla is_enabled
+	# vanilla can_construct_potential
+	building_spice_plantation_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	county = {
+		NOT = {
+			has_county_modifier = backwater_county_modifier
+		}
+	}
+	# vanilla can_construct
+}
+
+aub_can_upgrade_to_spice_plantation_08_trigger = {
+	# vanilla is_enabled
+	# vanilla can_construct_potential
+	building_spice_plantation_requirement_terrain = yes
+	building_requirement_castle_city_church = {
+		LEVEL = 04
+	}
+	# vanilla can_construct_showing_failures_only
+	building_requirement_tribal = no
+	county = {
+		NOT = {
+			has_county_modifier = backwater_county_modifier
+		}
+	}
+	# vanilla can_construct
+}
+
+aub_can_upgrade_to_srebrenica_mines_02_trigger = {
+	# vanilla can_construct_potential
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 02
+	}
+	culture = {
+		has_innovation = innovation_currency_03
+	}
+}
+
+aub_can_upgrade_to_srebrenica_mines_03_trigger = {
+	# vanilla can_construct_potential
+	building_requirement_tribal = no
+	# vanilla can_construct
+	building_requirement_castle_city_church = {
+		LEVEL = 03
+	}
+	culture = {
+		has_innovation = innovation_cranes
+	}
+}
+

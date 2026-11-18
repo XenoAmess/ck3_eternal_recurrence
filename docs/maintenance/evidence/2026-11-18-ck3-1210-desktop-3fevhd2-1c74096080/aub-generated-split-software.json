@@ -1,0 +1,660 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T13:21:54.429829+00:00",
+  "scope": "Existing1.20 frozen graph partition only. Lifecycle/payment/dispatch grouped separately from upgrade chains and target gates,1–10 definitions/file. Full original605edge assertions and values unchanged; no Florin graph/runtime qualification.",
+  "results": [
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/gen_auto_upgrade_buildings.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\0.stdout",
+        "bytes": 60,
+        "sha256": "3520efb1a9eb6496752e541bceace9c7ca1d3dd701f7155c6b1db1cd7e69fed8"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\0.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_build_auto_upgrade_buildings_release.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\1.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\1.stderr",
+        "bytes": 120,
+        "sha256": "ec5c92755a7a6e974ff2f3bc8100c0a034dcb69bf1c3d3839465d3a2120fa61c"
+      }
+    },
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "tools/gen_auto_upgrade_buildings.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\2.stdout",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\2.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "passed": true,
+  "business_pass": false,
+  "generated_files": [
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\build_scripted_effect.txt",
+      "bytes": 32069,
+      "sha256": "63cf858c88af192baac62477c8be886c8f5b23c1d6fe681be3dd43efcedd08df",
+      "definition_count": 6
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_000.txt",
+      "bytes": 14797,
+      "sha256": "a1565986d93e67e767e3203aa78ac347d1c6dac554fd413179f29616a71205d2",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_001.txt",
+      "bytes": 18202,
+      "sha256": "433e8cf43ad486468224ea5c5c642a31b825b27075f74a8a69b5e7136f5edf3d",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_002.txt",
+      "bytes": 14946,
+      "sha256": "b9ccaf2116324eedede4519ac3c7281c38967a486281468b3b9199537057bdfe",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_003.txt",
+      "bytes": 16371,
+      "sha256": "14ca13132d3c21beda65d18fedbdede5a1cbb4da5f4863da9292ba08a58392eb",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_004.txt",
+      "bytes": 16402,
+      "sha256": "647288901ff3d81f6a69cae15dd8b607345d3203d327b3134a420630d6dd8d37",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_005.txt",
+      "bytes": 21680,
+      "sha256": "5ced9d3e2029c3744492b2cf5b6e8d790f53c928364b481703390f0e775200e8",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_006.txt",
+      "bytes": 15133,
+      "sha256": "84e23910c6cd2e96397fa64287e6718677887522256aeff337e135158eb455fb",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_007.txt",
+      "bytes": 15659,
+      "sha256": "30ed0a5641fd0f4005c6547afe404d57cbaba16fd77556891f8050746a46211e",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_008.txt",
+      "bytes": 15461,
+      "sha256": "84957194546156b6cf037f20ca34dff37c004288ad86d842324f3d8770d4313d",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_009.txt",
+      "bytes": 20121,
+      "sha256": "5be614cf19de9781da46a7e2391d80312b306771aff3a0c047247e1e31769b92",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_010.txt",
+      "bytes": 20476,
+      "sha256": "e91b2fc45391955f48ee3cadb8ddba32b6ffb78623b2724f63ed310105a768a7",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_011.txt",
+      "bytes": 18177,
+      "sha256": "463e47338225202c681e7eaa1a037e09a3e4b900428515a1d8202491b0466780",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_012.txt",
+      "bytes": 19938,
+      "sha256": "f05c2ec27061505e4d8f0807e806b6b4a760325525524a585b8b17b1c007d289",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_013.txt",
+      "bytes": 15439,
+      "sha256": "0f7fb1e663ea8d13965af8983ee05a526cea4ef2f6ba9c752c5ba04a71f541fe",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_014.txt",
+      "bytes": 14469,
+      "sha256": "bc98956999b0699b786a9ee3e6d7a737bee24eb511c07f84c41baf49dce90f78",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_015.txt",
+      "bytes": 20706,
+      "sha256": "6a4bef8198627c3055aedcbb4abc571c77db6db40604f1d521e70b1c2a57a45e",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_effects\\aub_upgrade_chains_016.txt",
+      "bytes": 10096,
+      "sha256": "328ba01de0b9cfab5cb92da39d56068a4cfe0834915440c57bf7d6383044110b",
+      "definition_count": 5
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_triggers.txt",
+      "bytes": 681,
+      "sha256": "95a003c2217079eaf8d5d0f87762d9610d691d2a8f57db9ae86ea4f8dbc04ef9",
+      "definition_count": 1
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_000.txt",
+      "bytes": 2823,
+      "sha256": "3404c63bdbd1c5a48254e1d346e4a511a56eee9989b9d352c52a21b02f4164b7",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_001.txt",
+      "bytes": 5661,
+      "sha256": "fccd9fb7fcca54ec81c083005c7708c7294bcad1c3fba45ff601ac956a86a59f",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_002.txt",
+      "bytes": 3269,
+      "sha256": "e7dda5f0e782a4e89bed5c9b14d7466578863e4090693de0453a0574bc22e83e",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_003.txt",
+      "bytes": 4249,
+      "sha256": "ae877ef3cdb2e96a0958c48e957407a92083e301aab9a441a6b7977fbaf8899a",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_004.txt",
+      "bytes": 4821,
+      "sha256": "bed059dfad6d724bc13b8d82085440bc3c511620602aeea775a188b1e9100ea8",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_005.txt",
+      "bytes": 5252,
+      "sha256": "77764fc2ddf979aa3efadcc360366d89901d7fa56ef7c8009d124e9ab765b3de",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_006.txt",
+      "bytes": 3900,
+      "sha256": "e5b3133e88bdc6b64edd6a367d76aa127f0632037d671fac7a7b699d80fc229e",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_007.txt",
+      "bytes": 3216,
+      "sha256": "fe6e8e72f1ce052028a28562e5a0ff4cf099414f25b89b188acd615b15cc79c5",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_008.txt",
+      "bytes": 5867,
+      "sha256": "8f163d8001312e5338b9ea4803a512c61d7cb653b30933929e3dd6e5327900c0",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_009.txt",
+      "bytes": 6819,
+      "sha256": "ef248a77a40b22bf06adcafd848bac7be128d038d9cc2568862a36155a5a2672",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_010.txt",
+      "bytes": 4112,
+      "sha256": "1f4c1e9e61d1b81adad1265679034ed76f3192d9e2be190587bbe4a7c7e6c7fd",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_011.txt",
+      "bytes": 3372,
+      "sha256": "ab2871bcea37888a8ce76b20145cb6861166d350db87d9f9c27d2454e5cbcc3f",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_012.txt",
+      "bytes": 5087,
+      "sha256": "e64233c73f346acb458f185871965667f068e2c7faff725efbe4c72eddf2937b",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_013.txt",
+      "bytes": 3512,
+      "sha256": "777c0e1f2946d19d23f8cd97f900c0ab3805a95e5911c775ec3efaf5eed312df",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_014.txt",
+      "bytes": 4698,
+      "sha256": "07af5113f312cb8ea41c3d6eb06abd669762eb1ecb532e99e8098b4fde5651b3",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_015.txt",
+      "bytes": 2336,
+      "sha256": "a53dd4465b011ff7319b58818a5dc766e6e6d1be3f938cd5f6e604111f50e6c0",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_016.txt",
+      "bytes": 3122,
+      "sha256": "fa5295c1247c5229d9b2756d61b350dec1be42d01ca5c84c41b5b64d64d13826",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_017.txt",
+      "bytes": 6197,
+      "sha256": "9a530160e81b6f036f6396ce9841242c0ad8dfc67362bd2e8c734e9e8abf9534",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_018.txt",
+      "bytes": 4574,
+      "sha256": "d8e455494af6ed65e7c24a88e4636e6d73e7fdc61f762c66b5495a016e25b1f7",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_019.txt",
+      "bytes": 3504,
+      "sha256": "6a76e66676c508ab51d88d3558dcbf6814960f34a3daf7a7517a632f09df0c5e",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_020.txt",
+      "bytes": 3926,
+      "sha256": "2689c59c196784acc3c4bcb63e44109ce5093c13d8936c78dd2b5ad14dc92309",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_021.txt",
+      "bytes": 4340,
+      "sha256": "ef0df99d5b41e98fb53941922ae54fcb21ce768b1661c8d1e6149c8f7ec0c398",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_022.txt",
+      "bytes": 3162,
+      "sha256": "7e45475c807a6f0bb0ecdf074d97edd2f481e99f4f1bdde6bbcf7f2ea862f4f5",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_023.txt",
+      "bytes": 2733,
+      "sha256": "be8c016d6e5f2a69b9a04630de561f15509769a524c2282fee555d11c6cc8e63",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_024.txt",
+      "bytes": 2794,
+      "sha256": "994852d0641a94e4c2383e5b682ee88fbadbc7f488839876916b1030782e60b4",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_025.txt",
+      "bytes": 2824,
+      "sha256": "4009bab74ae0a4013358ecbb6a17425f050ee56bfe2bdedc920ad595396e9411",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_026.txt",
+      "bytes": 3369,
+      "sha256": "90edec023f9feb9fb193d17899eb52334638dd96ee22c2c6466e0103b819fa3b",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_027.txt",
+      "bytes": 3787,
+      "sha256": "71d23ce3fa173ec72ed87aeeba51a933280116dea8a9603fc7cd18ceba37e121",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_028.txt",
+      "bytes": 5135,
+      "sha256": "0dc1d0913b7178eb453c802dcac7616a93c62e328666bcb03e67f278b8e22049",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_029.txt",
+      "bytes": 6063,
+      "sha256": "2a08e304d6e87e611dffa6093f89fe672f0c2372695a86773144f34af3b0fd2a",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_030.txt",
+      "bytes": 6559,
+      "sha256": "850aef4818cd0ce182a80fdabd2dca6e88d79fade9093bcc3a544db4af6cac46",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_031.txt",
+      "bytes": 3751,
+      "sha256": "abcabab80d5ca388e23784816086d9d11ad8fb124e962c7ad04701f7e6b6cd4b",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_032.txt",
+      "bytes": 1949,
+      "sha256": "8b7533691399ad8b1c78e23b991c244b99153ddbc812627264a98f3ab24f3ae5",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_033.txt",
+      "bytes": 3753,
+      "sha256": "575808812e3ecbc5f570a235bddd0ba599374e5cfc2761d111f1800ed92516c1",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_034.txt",
+      "bytes": 6154,
+      "sha256": "29117eeea0f77ed27e3437463d99ba67aa0b2a2453d906b892c152c588d163b6",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_035.txt",
+      "bytes": 3562,
+      "sha256": "dd7f072984bb46033bd12b5e0a37137d03fcef17b844123ee45b325fe9abeb44",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_036.txt",
+      "bytes": 3729,
+      "sha256": "7cf0c79705cf16fcbffd3ef16f25e6dcfe9dd4faf1f531c6571576ae0bde3cf9",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_037.txt",
+      "bytes": 3297,
+      "sha256": "f0d4508f1035716ad6cf32aab92e90ceef9d2afb11e11e309b224c15bbf98588",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_038.txt",
+      "bytes": 3359,
+      "sha256": "7f6c37fbe40d1f43b381dff6917ed401439f6dd6adfb01a8acc5e52a5155e200",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_039.txt",
+      "bytes": 3332,
+      "sha256": "a8f22a170404492189475f0f445592a56da1a0978eb64f231dbcfbad8c598a7e",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_040.txt",
+      "bytes": 4750,
+      "sha256": "195381cd37bb4f98fe79ad64a3950ff930c27b5afb833b4c479b0ffc45f6566d",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_041.txt",
+      "bytes": 5671,
+      "sha256": "914c46a28a8323e3b1736fd6708dbe5165972e4e95415746dfcb16d3efa38d2d",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_042.txt",
+      "bytes": 3881,
+      "sha256": "45169369dfdd6442449868081b500866dbc292aeb47cc0e87615f54e14b254bd",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_043.txt",
+      "bytes": 4956,
+      "sha256": "12ed4b4a88dd9cc608928faf31cf8cfbf594ae783983bbb83d1648fe61514c29",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_044.txt",
+      "bytes": 3536,
+      "sha256": "6ae303cc8f3d2658a853e370f094740d5a13502ab88dc3043363d8f4c084bd4f",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_045.txt",
+      "bytes": 3170,
+      "sha256": "aeec3f4d811e5a77fb2d86c96314b82e6d7bef60936e9f82f5778abfad75320b",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_046.txt",
+      "bytes": 5347,
+      "sha256": "dd3c1efcd8e5335e993759ffa0545534c0671f06bf2ce94d39be366053648e6d",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_047.txt",
+      "bytes": 4290,
+      "sha256": "491cde3eae83e7dd6d5eae69d1c28fae88dfca117287430ceb848a7fe0768716",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_048.txt",
+      "bytes": 5604,
+      "sha256": "288ee313c5428e8c2ff5472fd7ce63079c0b6389dbc412e176698444efac0f9b",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_049.txt",
+      "bytes": 2709,
+      "sha256": "9d296634d69fc8ce155e5d558d5de6da7e48b4de40b6931e5936b642c536b3df",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_050.txt",
+      "bytes": 4276,
+      "sha256": "a550fdceb9ff68e73a6a05d4138ff9ecd54fe9fc5ff8c0e8a5e30c9aa03ac1a5",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_051.txt",
+      "bytes": 4127,
+      "sha256": "b408e38e5f32ed13a7e338eacc27e13c8b673d43e4a487b12262c58f6d9f762e",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_052.txt",
+      "bytes": 2886,
+      "sha256": "024b1dc7d0b7757872e2cb84b21c6d4488f8c99c85a1f54c6355dc059ae515f2",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_053.txt",
+      "bytes": 3351,
+      "sha256": "7fde5921191bd9ba9622c5f7046ee1723e527987e39047038f4191af8922375f",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_054.txt",
+      "bytes": 5524,
+      "sha256": "e60a6821a846e27bc0a80b5ec1a4cd863321e0539ac1fc84cfc6c88e5e3630d2",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_055.txt",
+      "bytes": 7154,
+      "sha256": "a1164a48b3c1b0ab15233d6de5e34a37bf6fa61fbe028c3b49eb0f51c6ebe898",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_056.txt",
+      "bytes": 5180,
+      "sha256": "737fc9ff73d92e4e9bb6cd7e9f9c38c79b9266050106d78b55487ab4f5a31a5f",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_057.txt",
+      "bytes": 4919,
+      "sha256": "09bd7db22529435cd5f03311b82fd3ed8069563ee853986c70fab483d4fa77ec",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_058.txt",
+      "bytes": 6531,
+      "sha256": "6717830d6c39262bd0972bfcc23b82c715a148f84ded8dab74cea9279e1bb615",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_059.txt",
+      "bytes": 3095,
+      "sha256": "59268662b2cb54684bd475e1d6c4c0dbe8e82113df75d2e8b9a46c8bfd34617f",
+      "definition_count": 10
+    },
+    {
+      "path": "mod_auto_upgrade_buildings\\common\\scripted_triggers\\aub_building_gates_060.txt",
+      "bytes": 1479,
+      "sha256": "8eafed884a463bf72b2531c0e27818046acd8a7e17423e285d94213cdc4e180c",
+      "definition_count": 5
+    }
+  ],
+  "runtime_file_count": 95,
+  "installed_vanilla_validation": {
+    "command": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "tools/validate_auto_upgrade_buildings_static.py",
+      "--release-localization"
+    ],
+    "returncode": 1,
+    "stdout": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\installed-stock.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\installed-stock.stderr",
+      "bytes": 620,
+      "sha256": "0bd42d26f61225ab6469197a31652c1bc1b22d944e095af26bbe31bee905fdc8"
+    },
+    "qualification": "Actual1.21 installed source remains incompatible with existing1.20.0.2 frozen graph; not a1.21 or overall static PASS."
+  },
+  "source_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-source-review\\review.json",
+    "bytes": 1530,
+    "sha256": "b85515609b7618b3d6f5458a9b013e5614c5ff994ead24d9e9427fc3f2d03531"
+  },
+  "old_render_equivalence": {
+    "effects": true,
+    "reference": "Original full render functions remain unchanged; builder regression compares every complete original AST definition exactly once,1–10 per new file."
+  },
+  "final_checks": [
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/validate_auto_upgrade_buildings_static.py",
+        "--release-localization"
+      ],
+      "returncode": 1,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\static-final.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\static-final.stderr",
+        "bytes": 160,
+        "sha256": "4a17d75b6cff590975e14f977aef06659b1f885de70ba690786f9410319ba90c"
+      }
+    },
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "tools/gen_auto_upgrade_buildings.py",
+        "tools/validate_auto_upgrade_buildings_static.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\mypy-final.stdout",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\mypy-final.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "builder16_actual_tool_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-split-software\\builder16-tool-result.json",
+    "bytes": 247,
+    "sha256": "94156224f63fc30b09531839ce90a6bfde6494c4c9d9027a10f30e3f74ff3924"
+  },
+  "earlier_static_failure": "Six real payment-validator failures were caused by lexical first-block lookup selecting an earlier parameterized call after sorting split files. Fixed top-level-only selection; original funding/counter assertions unchanged. Original installed-stock.stdout/stderr retained.",
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\gen_auto_upgrade_buildings.py",
+      "bytes": 12353,
+      "sha256": "24e90504d55ed902c6202721ae7740b6dee04e337e3f1b8ef401d13aafc8800a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\build_auto_upgrade_buildings_release.py",
+      "bytes": 19205,
+      "sha256": "8e104eb3e724ed31ab6cf66414fa4efc1e406959a82c3fc4152e828a289ed5dd"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_auto_upgrade_buildings_static.py",
+      "bytes": 38277,
+      "sha256": "08e4603f3ba353a4560578f530feea657bd134482d002cf26c55b09ee09f5946"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_build_auto_upgrade_buildings_release.py",
+      "bytes": 10979,
+      "sha256": "84c94388372afa72508ff0af16725d45d34fdbccd1cde1ed9cf03253ea979cc8"
+    }
+  ]
+}

@@ -30,8 +30,6 @@ RUNTIME_FILES = frozenset(
     {
         "common/decisions/build_decision.txt",
         "common/on_action/aub_on_actions.txt",
-        "common/scripted_effects/build_scripted_effect.txt",
-        "common/scripted_triggers/aub_building_triggers.txt",
         "descriptor.mod",
         "events/auto_build.txt",
         "gfx/interface/illustrations/decisions/decision_auto_upgrade_buildings.dds",
@@ -46,7 +44,7 @@ RUNTIME_FILES = frozenset(
         "localization/spanish/auto_build_l_spanish.yml",
         "thumbnail.png",
     }
-)
+) | frozenset(path.relative_to(generator.MOD).as_posix() for path in generator.generated_outputs())
 SOURCE_ONLY_FILES = frozenset({"README.md"})
 SEMVER = re.compile(r"\d+\.\d+\.\d+")
 FULL_SHA = re.compile(r"[0-9a-f]{40}")

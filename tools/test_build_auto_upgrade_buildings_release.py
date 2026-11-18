@@ -13,12 +13,42 @@ from pathlib import Path
 
 import build_auto_upgrade_buildings_release as release
 import auto_upgrade_buildings_data as data
+import extract_auto_upgrade_buildings as extractor
+import validate_auto_upgrade_buildings_static as validator
 
 
 REVISION = "a" * 40
 
 
 class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
+    def test_validator_reads_payment_definition_after_earlier_call(self) -> None:
+        effects = "\n".join(raw.decode("utf-8-sig")
+                            for path, raw in sorted(release.generator.generated_outputs().items())
+                            if path.parent.name == "scripted_effects")
+        payment = validator.extract_block(effects, "aub_pay_gold_building_cost_effect", top_level=True)
+        self.assertIsNotNone(payment)
+        self.assertIn("has_character_flag = aub_funding_treasury_only", payment or "")
+        self.assertIn("has_character_flag = aub_funding_personal_only", payment or "")
+        self.assertEqual((payment or "").count("change_variable = { name = aub_upgrades_this_scan add = 1 }"), 1)
+
+    def test_split_runtime_preserves_every_original_definition_once(self) -> None:
+        for directory, original in (
+            ("scripted_effects", release.generator.render_effects()),
+            ("scripted_triggers", release.generator.render_triggers()),
+        ):
+            expected = {entry.key: entry for entry in extractor.parse_clausewitz(original).entries}
+            actual: dict[str, extractor.Entry] = {}
+            for path, raw in release.generator.generated_outputs().items():
+                if path.parent.name != directory:
+                    continue
+                entries = extractor.parse_clausewitz(raw.decode("utf-8-sig")).entries
+                self.assertGreaterEqual(len(entries), 1)
+                self.assertLessEqual(len(entries), 10)
+                for entry in entries:
+                    self.assertNotIn(entry.key, actual)
+                    actual[entry.key] = entry
+            self.assertEqual(actual, expected)
+
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory(prefix="auto-upgrade-builder-test-")
         self.root = Path(self.temp.name)
@@ -60,7 +90,10 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
         self.assertTrue(any("outside allowlist" in error for error in errors))
 
     def test_old_faith_gate_cannot_enter_release(self) -> None:
-        path = self.source / "common/scripted_triggers/aub_building_triggers.txt"
+        path = next(self.source / relative for relative in sorted(release.RUNTIME_FILES)
+                    if relative.startswith("common/scripted_triggers/") and
+                    "rite_has_parameter = sky_burials_active" in
+                    (self.source / relative).read_text(encoding="utf-8-sig"))
         text = path.read_text(encoding="utf-8-sig")
         self.assertIn("rite_has_parameter = sky_burials_active", text)
         path.write_text(
