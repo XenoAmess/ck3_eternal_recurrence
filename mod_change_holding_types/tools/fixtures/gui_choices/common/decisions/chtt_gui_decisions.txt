@@ -10,7 +10,7 @@
     }
     effect = {
         set_variable = { name = chtt_gui_gold_before value = gold }
-        set_variable = { name = chtt_gui_expected_gold value = gold }
+        set_variable = { name = chtt_gui_expected_gold value = var:chtt_gui_gold_before }
         change_variable = { name = chtt_gui_expected_gold subtract = main_building_tier_1_cost }
         add_character_flag = chtt_gui_baseline
         debug_log = "CHTTGUI: PASS baseline_recorded_before_actual_decision"

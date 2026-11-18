@@ -1,0 +1,50 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T07:41:34.223706+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--change-holding-types--R0001",
+  "case": "migration-1210",
+  "candidate_version": "1.0.1",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "classification": "ENGINE_STARTUP_RED",
+  "campaign_started": false,
+  "actual_saved_days": 0,
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ceef47681cd04c6e8354ec6a4d72030c\\profile\\logs\\error.log",
+    "bytes": 1041,
+    "sha256": "9e963a0c8d305a8d74024ce78a8d86517b7a5787e1540c6c01abcfc3aeb7267a"
+  },
+  "error_text": "[15:30:03][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: has_ongoing_construction, near line: 14\" in file: \"events/chtt_events.txt\" near line: 14\n[15:30:29][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: has_ongoing_construction, near line: 9\" in file: \"common/scripted_triggers/00_convert_holdings_scripted_triggers.txt\" near line: 10\n[15:30:29][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: has_ongoing_construction, near line: 9\" in file: \"common/scripted_triggers/00_convert_holdings_scripted_triggers.txt\" near line: 10\n[15:30:34][E][jomini_effect.cpp:1151]: Variable 'chtt_gui_gold_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count\n[15:30:47][E][jomini_effect.cpp:1151]: Variable 'chtt_gui_gold_before' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count\n",
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r1-privacy-accepted-view.png",
+      "bytes": 992565,
+      "sha256": "05a008a091f9a8bbbcceaf79caa975e4cda14bbe0c5e21293c7fd2af59e428db"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r1-quit-desktop.png.json",
+      "bytes": 1447,
+      "sha256": "9cef3d5d6d59c4d7165f400c64776509a801c1fb234953bc7dca6c9ce85e4dd1"
+    }
+  ],
+  "closure": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--change-holding-types--R0001\\game-exit.json",
+      "bytes": 252,
+      "sha256": "1cdac952ce6c36f06ec5d7b8a77c1191f7eeece73349bc0f49a6400538b095df"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--change-holding-types--R0001\\keeper-report.json",
+      "bytes": 335,
+      "sha256": "77667b8e3ef52ccdf20f5063f6e013e4ac8e667f30baec0a12384556da167151"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--change-holding-types--R0001\\screen-release.json",
+      "bytes": 1247,
+      "sha256": "3fdc5544d206ee7e55bd5bebcba3a9083edb81a6664a339c65f325e55f4c8d93"
+    }
+  ],
+  "next": "Use observed Florin has_ongoing_holding_construction trigger; preserve candidate1.0.1 tag, create1.0.2, fresh common run. Never retroactively pass this run."
+}

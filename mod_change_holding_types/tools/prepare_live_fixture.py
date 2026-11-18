@@ -66,7 +66,7 @@ chtt.0001 = {
                 is_ai = no
                 exists = capital_province
                 capital_province.barony.holder = root
-                capital_province = { has_ongoing_construction = no }
+                capital_province = { has_ongoing_holding_construction = no }
             }
             capital_province.barony = { save_scope_as = barony }
             scope:barony.title_province = {

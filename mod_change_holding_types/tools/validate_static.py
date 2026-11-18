@@ -97,15 +97,15 @@ def validate(game_root: Path | None, release_localization: bool = False) -> Stat
     triggers = texts.get("common/scripted_triggers/00_convert_holdings_scripted_triggers.txt", "")
     gui = texts.get("gui/decision_view_widgets/decision_view_widget_ch_convert_holding.gui", "")
     descriptor = texts.get("descriptor.mod", "")
-    if 'supported_version="1.21.0"' not in descriptor or 'version="1.0.1"' not in descriptor:
-        errors.append("descriptor does not match reviewed 1.0.1 / CK3 1.21.0 contract")
+    if 'supported_version="1.21.0"' not in descriptor or 'version="1.0.2"' not in descriptor:
+        errors.append("descriptor does not match reviewed 1.0.2 / CK3 1.21.0 contract")
     selector_methods = sorted(set(re.findall(r"DecisionViewWidget\w+\.\w+", "\n".join(line for line in gui.splitlines() if not line.lstrip().startswith("#")))))
     for old in ["DecisionViewWidgetCreateHolyOrder", "HasCurrentCapital", "GetCurrentCapital", "HasValidBaronies", "barony_valid"]:
         if old in gui or old in decisions:
             errors.append(f"obsolete selector API: {old}")
     try:
         base = block_body(triggers, "cht_barony_is_convertible_trigger")
-        for expected in ["tier = tier_barony", "holder = $CHARACTER$", "$CHARACTER$ = { is_ai = no }", "is_leased_out = no", "has_holding = yes", "has_ongoing_construction = no"]:
+        for expected in ["tier = tier_barony", "holder = $CHARACTER$", "$CHARACTER$ = { is_ai = no }", "is_leased_out = no", "has_holding = yes", "has_ongoing_holding_construction = no"]:
             if expected not in base:
                 errors.append(f"base title predicate lacks {expected}")
         for target in TARGETS:
@@ -155,7 +155,7 @@ def validate(game_root: Path | None, release_localization: bool = False) -> Stat
             errors.append(f"localization key inventories differ: {language}")
     vanilla: list[FileIdentity] = []
     if game_root is not None:
-        native_files = ["common/holdings/00_holdings.txt", "common/decisions/00_holy_order_decisions.txt", "gui/decision_view_widgets/decision_view_widget_create_holy_order.gui", "common/script_values/00_building_values.txt", "common/culture/innovations/00_tribal_innovations.txt", "common/districts/holding_districts.txt"]
+        native_files = ["common/holdings/00_holdings.txt", "common/decisions/00_holy_order_decisions.txt", "gui/decision_view_widgets/decision_view_widget_create_holy_order.gui", "common/script_values/00_building_values.txt", "common/culture/innovations/00_tribal_innovations.txt", "common/districts/holding_districts.txt", "common/trigger_localization/00_building_triggers.txt", "common/character_interactions/00_tribal_interactions.txt"]
         native: dict[str, str] = {}
         for relative in native_files:
             path = game_root / relative
@@ -163,6 +163,10 @@ def validate(game_root: Path | None, release_localization: bool = False) -> Stat
             native[relative] = data.decode("utf-8-sig")
             vanilla.append({"path": relative, "size": len(data), "sha256": hashlib.sha256(data).hexdigest()})
         errors.extend(holding_target_errors(native[native_files[0]], native[native_files[5]]))
+        if "has_ongoing_construction" in triggers:
+            errors.append("removed pre-Florin construction trigger remains in product")
+        if not re.search(r"(?m)^has_ongoing_holding_construction\s*=\s*\{", native[native_files[6]]) or "has_ongoing_holding_construction = no" not in native[native_files[7]]:
+            errors.append("Florin holding construction trigger/source caller absent")
         if "title_valid" not in native[native_files[1]]:
             errors.append("installed holy-order decision no longer uses title_valid")
         if not re.search(r"(?m)^main_building_tier_1_cost\s*=", native[native_files[3]]):

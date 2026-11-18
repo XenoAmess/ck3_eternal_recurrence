@@ -1,8 +1,10 @@
-# 地产类型转换 1.0.1：CK3 1.21.0
+# 地产类型转换 1.0.2：CK3 1.21.0
 
 本机 `machine_id: desktop-3fevhd2-1c74096080`。目标CK3 1.21.0／Florin，build26622941，EXE SHA `2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc`。只更新原维护版工坊3812510834，上游3337428403继续禁止作为发布目标。
 
-当前为1.0.1源码候选，业务、发布与缓存尚未通过。生产六个决议／转换effect／守卫／GUI与九语原字节保留；descriptor声明更新后，静态门同步核1.0.1／1.21.0。已定位新版holding类型、原版holy order selector、费用及innovation文件，不把可解析或改兼容号当实机适配通过。
+当前为1.0.2源码候选，业务、发布与缓存尚未通过。未发表的1.0.1曾保留生产字节并更新声明，但实机启动暴露旧施工trigger已被移除；该tag不移动，保留为失败候选。1.0.2修正生产及原夹具的施工检查，六个转换effect、GUI、金币规则及九语原字节保留。已定位新版holding类型、原版holy order selector、费用及innovation文件，不把可解析或改兼容号当实机适配通过。
+
+2026-11-18T07:34Z，本机1.0.1 R0001仅到主菜单即发现error.log 1041B：生产／夹具旧has_ongoing_construction未知，以及夹具chtt_gui_gold_before未使用。未Start、零业务、零保存，经过真实菜单正常退出，原Popen=0、无WM_CLOSE/STOP、keeper/CAS闭合，保持业务RED。新版原版00_tribal_interactions.txt:55在同样的title_province作用域使用has_ongoing_holding_construction=no，00_building_triggers.txt:11提供该trigger本地化；1.0.2按此同类地产转换入口迁移，不取消施工门禁。夹具期望金币显式从已记录前态计算，修复unused诊断。原1.0.1软件资格只保留其实际范围，不追认为1.0.2或实机GREEN。
 
 沿公共单一GUI runtime，不使用旧Native。原effect矩阵保持完整；外置夹具可选择新GUI模式：只把原矩阵的调度改为零日开局入口、增加隔离1000金币，并提供前态／后态探针。真实生产城市决议、Rossano选择及扣款、保存和载入均必须由实际官方UI执行；探针不替代这些操作。保存重载、六名称与警告、六类effect及负门禁分别记录，不将基础加载case冒充业务通过。
 

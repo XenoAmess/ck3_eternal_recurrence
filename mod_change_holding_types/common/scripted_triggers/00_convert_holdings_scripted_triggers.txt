@@ -6,7 +6,7 @@ cht_barony_is_convertible_trigger = {
     is_leased_out = no
     title_province = {
         has_holding = yes
-        has_ongoing_construction = no
+		has_ongoing_holding_construction = no
     }
 }
 
