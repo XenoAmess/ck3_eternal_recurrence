@@ -33,6 +33,7 @@ CANONICAL_MOD_KEYS = frozenset(
         "celestial-commerce-corruption",
         "dynastic-esotericism",
         "eternal-recurrence",
+        "financial-markets",
         "li-yu-dao",
         "living-artifacts",
         "more-tenets-slots",

@@ -15,7 +15,7 @@ import ck3_live_run_id as live_ids
 
 class LiveRunIdTests(unittest.TestCase):
     def test_java_products_use_canonical_validation_allocation_and_cli(self) -> None:
-        for product in ("dynastic-esotericism", "religious-ritual-fusion"):
+        for product in ("dynastic-esotericism", "religious-ritual-fusion", "financial-markets"):
             with self.subTest(product=product), tempfile.TemporaryDirectory() as temporary:
                 self.assertEqual(live_ids.validate_mod_key(product), product)
                 root = Path(temporary)
