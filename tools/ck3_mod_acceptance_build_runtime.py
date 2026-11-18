@@ -14,7 +14,10 @@ import shlex
 import shutil
 import subprocess
 import sys
-from typing import Literal, TypedDict
+from typing import Literal, TypedDict, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ck3_mod_acceptance import Selection
 
 import build_native_configured_successor as native_successor
 from ck3_mod_acceptance_background_types import (
@@ -606,6 +609,42 @@ def nonindexed_deleted_java_paths(delta_path: Path, indexed_paths: frozenset[str
     require(sorted(actual.stdout.splitlines()) == sorted(candidates),
             "Non-indexed Java absence is not an actual committed Git deletion")
     return frozenset(candidates)
+
+
+def bind_static_saved_inputs(selection: Selection, inputs_path: Path) -> JsonObject | None:
+    """Bind actual saved startup values for static argv validation, before prepare.
+
+    Allocated context is deliberately absent. The original Selection argv
+    builder still validates declared-null latebinding; inventory stays pending
+    until the real profile preparation creates it.
+    """
+    inputs = json_object(read(inputs_path))
+    if "saved_campaign" not in inputs:
+        return None
+    saved = json_object(inputs["saved_campaign"])
+    require(set(saved) == {"save", "bytes", "sha256", "player_id", "date_raw"},
+            "Static saved input requires exactly save/bytes/sha256/player_id/date_raw")
+    save_path = Path(text_field(saved, "save"))
+    require(save_path.is_absolute() and save_path.suffix.casefold() == ".ck3", "Actual external .ck3 input required")
+    actual = _game_identity_pin({"path": str(save_path), "bytes": saved["bytes"], "sha256": saved["sha256"]})
+    for key in ("player_id", "date_raw"):
+        value = saved[key]
+        require(type(value) is int and isinstance(value, int) and 0 < value < 2**31,
+                "Static saved input requires exact positive bounded integer: " + key)
+    state = Path(text_field(inputs, "state_dir"))
+    require(state.is_absolute(), "Actual absolute saved input state directory required")
+    startup = selection.case["startup"]
+    require(startup["mode"] == "saved_campaign", "Saved input does not match selected startup")
+    declared = startup["saved_campaign"]
+    require(all(key in declared and declared[key] is None for key in saved),
+            "Static saved latebinding can only fill declared null fields")
+    require(not save_path.resolve().is_relative_to(state.resolve()), "Immutable saved input must remain outside prepared state")
+    startup["saved_campaign"] = {**declared, **saved}
+    startup["state_dir"] = str(state.resolve())
+    selection.blockers = [value for value in selection.blockers if not value.startswith("Saved campaign input unbound: ")]
+    selection.argv = selection.build_argv()
+    return json_object({"case_inputs": pin(inputs_path), "save": actual, "state_dir": str(state.resolve()),
+                        "prepared": False, "allocated": False})
 
 
 def qualify(chain, path, commit, root, changed_paths, machine, archive_context=None,
@@ -2365,6 +2404,7 @@ def main(argv: list[str] | None = None) -> int:
     write_bounded_metadata(destination, output, limit_bytes=2 * 1024 * 1024,
                            reserve_bytes=32768)
     selection = entry.Selection(destination / "runtime.local.json", args.products, args.product, args.case)
+    static_saved_inputs = bind_static_saved_inputs(selection, args.case_inputs)
     adapter = selection.load_adapter()
     inputs = read(args.case_inputs).get("case_inputs", {}) if args.case_inputs.exists() else {}
     if callable(getattr(adapter, "validate_contract", None)):
@@ -2385,6 +2425,7 @@ def main(argv: list[str] | None = None) -> int:
         stream.write(encoded({"machine_id": machine, "observed_at_utc": now(), "source_commit": args.source_commit,
             "independent_case": args.case, "public_Selection_argv": selection.argv, "wire_evidence_codec": codec,
             "actual_Selection_blockers": selection.blockers, "actual_changed_chain_receipts": qualified,
+            "validated_saved_input_binding": static_saved_inputs,
             "actual_registered_required_MCP_tools": sorted(needed), "registration_scope": "offline factory list_tools only; no game or tool invocation",
             "case_private_host": False, "prepare_executed": False, "game_started": False, "allocated": False,
             "runtime": pin(destination / "runtime.local.json"), "manifest": pin(destination / "manifest.json")}))

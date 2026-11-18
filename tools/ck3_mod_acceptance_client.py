@@ -923,8 +923,9 @@ class CaseClient:
         write_once(self.output / (name + '.actual-results.json'), {'rows': rows, 'business_PASS_inferred': False})
         return rows
 
-    def validate_frame(self, frame, allow_actor_change=False, require_event_free=True, require_paused=True):
-        require(isinstance(frame, dict), 'Actual full native snapshot required')
+    def validate_frame(self, frame: object, allow_actor_change: bool = False,
+                       require_event_free: bool = True, require_paused: bool = True) -> dict[str, object]:
+        frame = obj(frame, 'actual full native snapshot')
         for key, expected in {'source':'injected-dll-named-pipe', 'backend_id':'native-headless',
                               'map_ready':True,
                               'episode_projection':'native_campaign'}.items():
@@ -932,15 +933,38 @@ class CaseClient:
                     'Actual full snapshot guard failed: ' + key)
         require(not require_paused or frame.get('paused') is True, 'Actual full paused snapshot required')
         require(not require_event_free or frame.get('active_event') is None, 'Actual event boundary requires the original case branch')
-        actor = frame['played_character']; diagnostics = frame['diagnostics']; hello = diagnostics['hello']
+        actor = obj(frame.get('played_character'), 'actual native actor')
+        diagnostics = obj(frame.get('diagnostics'), 'actual native diagnostics')
+        hello = obj(diagnostics.get('hello'), 'actual native hello')
         require(actor.get('alive') is True and actor.get('source') == 'native', 'Actual native actor must be alive')
-        binding = (diagnostics['bridge_pid'], diagnostics['connection_generation'], actor['character_id'])
-        require(all(type(value) is int and value > 0 for value in binding), 'Actual native identity missing')
-        game = self.manifest['game']
+        pid = integer(diagnostics.get('bridge_pid'), 'actual native PID')
+        generation = integer(diagnostics.get('connection_generation'), 'actual native connection generation')
+        character = integer(actor.get('character_id'), 'actual native character ID')
+        require(pid > 0 and generation > 0, 'Actual native process identity missing')
+        game = obj(self.manifest['game'], 'shared exact game build')
+        expected_sha = game.get('exe_sha256')
+        if not isinstance(expected_sha, str):
+            raise ValueError('Shared exact game SHA required')
         require(hello.get('expected_ck3_version') == game['version'] and
-                str(hello.get('expected_ck3_sha256', '')).lower() == game['exe_sha256'].lower() and
+                str(hello.get('expected_ck3_sha256', '')).lower() == expected_sha.lower() and
                 hello.get('ck3_build_match') is True, 'Actual native snapshot differs from shared exact build')
-        require(hello.get('pid') == binding[0] and hello.get('connection_generation') == binding[1], 'Actual hello owner differs')
+        if game['version'] == '1.21.0':
+            from xar_autoplayer.bridge.version_identity import CK3_1210, require_exact_native_build
+            require(require_exact_native_build(hello.get('expected_ck3_version'), hello.get('expected_ck3_sha256')) == CK3_1210 and
+                    require_exact_native_build(frame.get('game_version'), frame.get('executable_sha256')) == CK3_1210 and
+                    frame.get('schema') == 'ck3_1210_full_state_v1' and
+                    hello.get('game_adapter_id') == 'ck3-1.21.0-msvc-x64' and
+                    frame.get('adapter_id') == 'ck3-1.21.0-msvc-x64' and
+                    frame.get('backend') == 'ck3-1.21.0-native-headless-main-thread',
+                    'Actual Florin Full source differs from shared exact build')
+            # Full CharacterID contains signed generation bits; it is not a Saved compact ID.
+            require(-(2**31) <= character < 2**31 and character != -1, 'Actual Florin full character ID invalid')
+        else:
+            require(character > 0, 'Actual native character identity missing')
+        binding = (pid, generation, character)
+        hello_pid = integer(hello.get('pid'), 'actual hello PID')
+        hello_generation = integer(hello.get('connection_generation'), 'actual hello connection generation')
+        require(hello_pid == pid and hello_generation == generation, 'Actual hello owner differs')
         if self._binding is not None:
             require(binding[:2] == self._binding[:2] and (allow_actor_change or binding[2] == self._binding[2]),
                     'Actual native owner/actor changed')

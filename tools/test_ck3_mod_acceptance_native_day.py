@@ -2,12 +2,14 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import importlib.util
 import json
 import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import Mock
 
 from ck3_mod_acceptance_client import CaseClient
 from ck3_mod_acceptance_native_day import project_native_day, obj, integer
@@ -87,6 +89,135 @@ class Port:
 
     def checkpoint(self, name: str, value: object) -> Path:
         return CaseClient.checkpoint(self, name, value)
+
+
+class FlorinFrameIdentityTest(unittest.TestCase):
+    """Consume the C++ Full serializer original through the public snapshot cache."""
+
+    def producer_frame(self) -> dict[str, object]:
+        from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+        from xar_autoplayer.bridge.version_identity import CK3_1210
+
+        original = Path(__file__).resolve().parents[1] / 'java/ck3-control/native-transport/src/test/resources/newnative/full1210/full-snapshot-producer-102.json'
+        raw = original.read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),
+                         'a27f2dd30ad69b8927a133509a25be216bf7ce250fdf0a9b325bece78d355ae5')
+        endpoint = Mock()
+        endpoint.transport_error.return_value = None
+        driver = NativeHeadlessGameplayDriver(r'\\.\pipe\software_case_client_florin_test',
+            endpoint=endpoint, episode_projection='native_campaign')
+        self.addCleanup(driver.close)
+        state = driver.state
+        state.ingest({'type': 'hello', 'protocol_version': 1, 'pid': 42, 'connection_generation': 3,
+            'expected_ck3_version': CK3_1210.game_version, 'expected_ck3_sha256': CK3_1210.executable_sha256,
+            'game_adapter_id': 'ck3-1.21.0-msvc-x64', 'ck3_build_match': True,
+            'capabilities': ['game.state.snapshot']})
+        self.assertEqual(state.ingest(obj(json.loads(raw), 'C++ Full original')), 'state_snapshot')
+        result = driver.take_snapshot_without_native_command_history()
+        endpoint.send.assert_not_called()
+        return result
+
+    def client(self, frame: dict[str, object]) -> Port:
+        return Port(Path('.'), {}, frame)
+
+    def test_cpp_full_public_projection_preserves_complete_signed_character_id(self) -> None:
+        frame = self.producer_frame()
+        port = self.client(frame)
+        result = port.validate_frame(frame, require_event_free=False)
+        self.assertEqual(obj(result['played_character'], 'actor')['character_id'], -2130706431)
+        self.assertEqual(port._binding, (42, 3, -2130706431))
+        self.assertEqual(result['native_revision'], 11)
+        self.assertEqual(frame['played_character'], result['played_character'])
+
+    def test_florin_signed32_domain_and_invalid_sentinel_are_exact(self) -> None:
+        for character in (-(2**31), -2130706431, 0, 2**31 - 1):
+            with self.subTest(accepted=character):
+                frame = self.producer_frame()
+                frame['played_character'] = {**obj(frame['played_character'], 'actor'), 'character_id': character}
+                port = self.client(frame)
+                port.validate_frame(frame, require_event_free=False)
+                self.assertEqual(port._binding[2], character)
+        for character in (True, False, -1, -(2**31) - 1, 2**31, -2130706431.0, '-2130706431', None):
+            with self.subTest(rejected=character):
+                frame = self.producer_frame()
+                frame['played_character'] = {**obj(frame['played_character'], 'actor'), 'character_id': character}
+                port = self.client(frame)
+                with self.assertRaises(ValueError):
+                    port.validate_frame(frame, require_event_free=False)
+                self.assertIsNone(port._binding)
+
+    def test_signed_identity_requires_exact_versioned_full_and_hello_source(self) -> None:
+        for field, value in (('schema', 'old-full'), ('schema', None), ('game_version', '1.20.0.4'),
+                             ('executable_sha256', '0' * 64), ('adapter_id', 'old-adapter'),
+                             ('backend', 'old-backend')):
+            with self.subTest(field=field):
+                frame = self.producer_frame()
+                frame[field] = value
+                port = self.client(frame)
+                with self.assertRaises(ValueError):
+                    port.validate_frame(frame, require_event_free=False)
+                self.assertIsNone(port._binding)
+        for field, value in (('expected_ck3_version', '1.20.0.4'), ('expected_ck3_sha256', '0' * 64),
+                             ('game_adapter_id', 'old-adapter'), ('ck3_build_match', False)):
+            with self.subTest(hello=field):
+                frame = self.producer_frame()
+                diagnostics = obj(frame['diagnostics'], 'diagnostics')
+                diagnostics['hello'] = {**obj(diagnostics['hello'], 'hello'), field: value}
+                frame['diagnostics'] = diagnostics
+                with self.assertRaises(ValueError):
+                    self.client(frame).validate_frame(frame, require_event_free=False)
+
+    def test_process_identity_remains_positive_exact_integer(self) -> None:
+        for field in ('bridge_pid', 'connection_generation'):
+            for value in (True, 42.0, 0, -1, '42'):
+                with self.subTest(field=field, value=value):
+                    frame = self.producer_frame()
+                    frame['diagnostics'] = {**obj(frame['diagnostics'], 'diagnostics'), field: value}
+                    with self.assertRaises(ValueError):
+                        self.client(frame).validate_frame(frame, require_event_free=False)
+        for field, value in (('pid', 42.0), ('connection_generation', 3.0), ('pid', True)):
+            with self.subTest(hello=field, value=value):
+                frame = self.producer_frame()
+                diagnostics = obj(frame['diagnostics'], 'diagnostics')
+                diagnostics['hello'] = {**obj(diagnostics['hello'], 'hello'), field: value}
+                if value is True:
+                    diagnostics['bridge_pid'] = 1
+                frame['diagnostics'] = diagnostics
+                with self.assertRaises(ValueError):
+                    self.client(frame).validate_frame(frame, require_event_free=False)
+
+    def test_signed_actor_continuity_is_not_replaced_with_compact_or_unsigned_id(self) -> None:
+        frame = self.producer_frame()
+        port = self.client(frame)
+        port.validate_frame(frame, require_event_free=False)
+        changed = copy.deepcopy(frame)
+        changed['played_character'] = {**obj(changed['played_character'], 'actor'), 'character_id': 1}
+        with self.assertRaisesRegex(ValueError, 'owner/actor changed'):
+            port.validate_frame(changed, require_event_free=False)
+        self.assertEqual(port._binding, (42, 3, -2130706431))
+        port.validate_frame(changed, allow_actor_change=True, require_event_free=False)
+        self.assertEqual(port._binding, (42, 3, 1))
+
+    def test_existing_unpaused_observation_policy_is_preserved(self) -> None:
+        frame = self.producer_frame()
+        frame['paused'] = False
+        port = self.client(frame)
+        with self.assertRaises(ValueError):
+            port.validate_frame(frame, require_event_free=False)
+        port.validate_frame(frame, require_event_free=False, require_paused=False)
+        self.assertEqual(port._binding, (42, 3, -2130706431))
+
+    def test_pre_florin_actor_domain_is_unchanged(self) -> None:
+        for character in (-2130706431, -1, 0, True, 1.0):
+            with self.subTest(rejected=character):
+                frame = example_frame(100, 10)
+                frame['played_character'] = {**obj(frame['played_character'], 'actor'), 'character_id': character}
+                with self.assertRaises(ValueError):
+                    self.client(frame).validate_frame(frame)
+        frame = example_frame(100, 10)
+        port = self.client(frame)
+        port.validate_frame(frame)
+        self.assertEqual(port._binding, (2052, 1, 31254))
 
 
 class NativeDayTest(unittest.TestCase):

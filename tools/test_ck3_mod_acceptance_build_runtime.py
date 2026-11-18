@@ -86,6 +86,61 @@ class GenericDecisionContractClassification(unittest.TestCase):
                     builder.qualify('shared_sdk_delta', receipt, 'a' * 40, root, [relative], MACHINE)
 
 
+class StaticSavedInputBinding(unittest.TestCase):
+    def setUp(self) -> None:
+        from test_ck3_mod_acceptance import SharedEntryTests, entry
+        self.entry = entry
+        self.owned = SharedEntryTests()
+        self.owned.setUp()
+        self.addCleanup(self.owned.doCleanups)
+        self.owned.runtime['repo_root'] = str(HERE.parent)
+        self.owned.write(self.owned.runtime_path, self.owned.runtime)
+        actual = builder.read(HERE / 'ck3_mod_acceptance_products.json')['products']['financial-markets']
+        self.owned.products['products']['financial-markets'] = actual
+        self.owned.write(self.owned.products_path, self.owned.products)
+        self.save = self.owned.root / 'immutable-external.ck3'
+        self.save.write_bytes(b'owned immutable saved campaign; never loaded')
+        self.inputs = self.owned.root / 'case-inputs.json'
+        self.state = self.owned.root / 'not-prepared-state'
+        reference = builder.pin(self.save)
+        self.value = {'state_dir': str(self.state), 'saved_campaign': {
+            'save': reference['path'], 'bytes': reference['bytes'], 'sha256': reference['sha256'],
+            'player_id': 31254, 'date_raw': 53144328}, 'case_inputs': {'unconsumed_business': 'not an allocated context'}}
+
+    def selected(self):
+        return self.entry.Selection(self.owned.runtime_path, self.owned.products_path, 'financial-markets', 'core')
+
+    def test_actual_financial_saved_case_binds_real_input_via_original_argv_without_prepare(self) -> None:
+        self.owned.write(self.inputs, self.value)
+        selected = self.selected()
+        self.assertIn('Saved campaign input unbound: save', selected.blockers)
+        selected.blockers.append('Unrelated blocker remains')
+        result = builder.bind_static_saved_inputs(selected, self.inputs)
+        self.assertEqual(selected.blockers, ['Unrelated blocker remains', 'Saved campaign input unbound: product_inventory'])
+        self.assertEqual(selected.argv[selected.argv.index('--saved-campaign-save') + 1], str(self.save))
+        self.assertEqual(selected.argv[selected.argv.index('--saved-campaign-player-id') + 1], '31254')
+        self.assertEqual(selected.context, {})
+        self.assertEqual(result['save'], builder.pin(self.save))
+        self.assertFalse(result['prepared'])
+        self.assertFalse(self.state.exists())
+
+    def test_missing_unknown_wrong_identity_or_changed_save_input_is_rejected(self) -> None:
+        cases = []
+        for field in ('save', 'bytes', 'sha256', 'player_id', 'date_raw'):
+            value = json.loads(json.dumps(self.value))
+            value['saved_campaign'].pop(field)
+            cases.append(value)
+        for field, invalid in (('unknown', 1), ('player_id', True), ('date_raw', 0), ('sha256', 'a' * 64)):
+            value = json.loads(json.dumps(self.value))
+            value['saved_campaign'][field] = invalid
+            cases.append(value)
+        for value in cases:
+            with self.subTest(value=value):
+                self.owned.write(self.inputs, value)
+                with self.assertRaises(ValueError):
+                    builder.bind_static_saved_inputs(self.selected(), self.inputs)
+
+
 class Core1210CapabilityEvidence(unittest.TestCase):
     def setUp(self) -> None:
         temporary = tempfile.TemporaryDirectory(prefix='owned-core1210-source-')

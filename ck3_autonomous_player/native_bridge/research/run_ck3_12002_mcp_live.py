@@ -2365,6 +2365,125 @@ class PlanClient:
         from xar_autoplayer.bridge.campaign_running_date_publication_v1 import AdvanceRequestV1, advance_frame_date_v1, advance_frame_object_v1
         request = AdvanceRequestV1.parse(row, self.args.command_timeout)
         days, budget = request.days, request.timeout_seconds
+        cached = getattr(self, "snapshot", {})
+        cached_diagnostics = cached.get("diagnostics") if isinstance(cached, dict) else None
+        cached_hello = cached_diagnostics.get("hello") if isinstance(cached_diagnostics, dict) else None
+        if (isinstance(cached, dict) and cached.get("schema") == "ck3_1210_full_state_v1"
+                or isinstance(cached_hello, dict) and cached_hello.get("expected_ck3_version") == "1.21.0"):
+            from xar_autoplayer.bridge.version_identity import florin_full_source, FlorinFullSource
+            from xar_autoplayer.bridge.native_driver import (
+                _normalize_tactical_daily_sentinel_status, _validate_tactical_daily_sentinel_arm,
+                _validate_tactical_daily_sentinel_stop)
+            if days != 1 or request.wait_for_actor_change:
+                raise ValueError("Florin date-only advance requires one day without an actor transition")
+            deadline = time.monotonic() + budget
+
+            def remaining_florin() -> float:
+                done = getattr(self, "managed_done", None)
+                if done is not None and done.is_set():
+                    raise RuntimeError("managed session ended during the original Florin day")
+                seconds = deadline - time.monotonic()
+                if seconds <= 0:
+                    raise TimeoutError("Florin day exhausted its original deadline; no control replay")
+                return seconds
+
+            async def bounded_florin(factory: Callable[[], Awaitable[object]]) -> dict[str, object]:
+                seconds = remaining_florin()
+                value = await asyncio.wait_for(factory(), seconds)
+                remaining_florin()
+                return advance_frame_object_v1(value)
+
+            before = await bounded_florin(self.fresh)
+            source = florin_full_source(before, None)
+            local_player = before.get("local_player_id")
+            if type(local_player) is not int or not -(2**31) <= local_player < 2**31 or local_player == -1:
+                raise ValueError("Florin day lacks its actual signed local player ID")
+            start, target = source.date_raw, source.date_raw + 24
+            if (target >= 2**31 or before.get("active_wars") != [] or before.get("player_armies") != []
+                    or before.get("active_event") is not None or before.get("pending_character_interaction") is not None):
+                raise ValueError("Florin date-only day requires a complete event-free world without armies or wars")
+
+            def same_paused_world(frame: dict[str, object]) -> FlorinFullSource:
+                current_source = florin_full_source(frame, None)
+                if (current_source.game_pid != source.game_pid or current_source.connection_generation != source.connection_generation
+                        or current_source.played_character_id != source.played_character_id or current_source.scope_sha256 != source.scope_sha256
+                        or type(frame.get("local_player_id")) is not int or frame.get("local_player_id") != local_player
+                        or current_source.native_revision < source.native_revision or current_source.public_revision < source.public_revision):
+                    raise ValueError("Florin day crossed its original Full world, connection or actor")
+                return current_source
+
+            def submitted_clock(value: dict[str, object], step: str) -> None:
+                if (value.get("schema") != "ck3_1210_full_clock_control_result_v1" or value.get("step") != step
+                        or value.get("accepted") is not True or value.get("queue_status") != "submitted"
+                        or value.get("effect_attempted") is not True or value.get("full_snapshot_before_verified") is not True
+                        or value.get("physical_save_confirmed") is not False or value.get("complete_snapshot") is not False):
+                    raise RuntimeError("Florin original clock ACK is not a qualified submission; no replay")
+
+            actions: list[dict[str, object]] = []
+            before_resume = before
+            if type(before.get("speed")) is not int:
+                raise ValueError("Florin day lacks the actual Full speed")
+            if before.get("speed") != 1:
+                speed_result = await bounded_florin(lambda: self.invoke("ck3_execute_step",
+                    {"step": "set-speed-1", "expected_revision": source.public_revision}, fresh_revision=False))
+                submitted_clock(speed_result, "set-speed-1")
+                actions.append({"step": "set-speed-1", "result": speed_result})
+                while True:
+                    before_resume = await bounded_florin(self.fresh)
+                    if same_paused_world(before_resume).date_raw != start:
+                        raise ValueError("Florin speed readback changed the original paused date")
+                    if before_resume.get("speed") == 1:
+                        break
+                    await asyncio.sleep(min(self.args.poll_interval, remaining_florin()))
+            armed_source = same_paused_world(before_resume)
+            arm_step = f"research-arm-tactical-daily-sentinel-v1-{start}-to-{target}-speed-1-mode-terminal-a-0"
+            arm_result = await bounded_florin(lambda: self.invoke("ck3_execute_step",
+                {"step": arm_step, "expected_revision": armed_source.public_revision}, fresh_revision=False))
+            arm_status = _normalize_tactical_daily_sentinel_status(arm_result.get("tactical_daily_sentinel"))
+            _validate_tactical_daily_sentinel_arm(arm_result, arm_status, arm_step=arm_step,
+                starting_date_raw=start, target_date_raw=target, speed=1, mode="terminal_or_sentinel",
+                watch_army_ids=(), sentinel_scope="exact_one_day")
+            actions.append({"step": arm_step, "result": arm_result})
+            # The shared Driver independently confirms this ARM's current
+            # generation and consumes its same-run permit before sending resume.
+            ready = await bounded_florin(self.fresh)
+            ready_source = same_paused_world(ready)
+            if ready_source.date_raw != start or ready.get("speed") != 1:
+                raise ValueError("Florin original ARM world changed before its sole resume")
+            resumed = await bounded_florin(lambda: self.invoke("ck3_execute_step",
+                {"step": "resume-map", "expected_revision": ready_source.public_revision}, fresh_revision=False))
+            submitted_clock(resumed, "resume-map")
+            actions.append({"step": "resume-map", "result": resumed})
+            running: dict[str, object] | None = None
+            while True:
+                after = await bounded_florin(self.fresh)
+                date = advance_frame_date_v1(after)
+                if after.get("active_event") is not None or after.get("pending_character_interaction") is not None:
+                    raise RuntimeError("an active event interrupted the original Florin day; no control replay")
+                if date < start or date > target or type(after.get("paused")) is not bool:
+                    raise RuntimeError("Florin original date boundary regressed or overshot")
+                if after.get("paused") is False:
+                    running = after
+                elif date == target:
+                    ending = same_paused_world(after)
+                    if (after.get("speed") != 1 or ending.native_revision <= ready_source.native_revision
+                            or ending.public_revision < ready_source.public_revision):
+                        raise ValueError("Florin target paused Full changed speed or lacks its later native revision")
+                    break
+                await asyncio.sleep(min(self.args.poll_interval, remaining_florin()))
+            status_step = "research-query-tactical-daily-sentinel-v1"
+            stopped = await bounded_florin(lambda: self.invoke("ck3_execute_step",
+                {"step": status_step, "expected_revision": ending.public_revision}, fresh_revision=False))
+            if stopped.get("step") != status_step or stopped.get("accepted") is not True or stopped.get("status") != "available":
+                raise RuntimeError("Florin final Date status is unavailable; no day credit")
+            stop_status = _normalize_tactical_daily_sentinel_status(stopped.get("tactical_daily_sentinel"))
+            _validate_tactical_daily_sentinel_stop(stop_status, arm_status=arm_status,
+                starting_date_raw=start, target_date_raw=target, ending_date_raw=ending.date_raw,
+                elapsed_days=1, speed=1, mode="terminal_or_sentinel", watch_army_ids=())
+            return {"before": before, "running_successor": running, "after": after,
+                "requested_days": 1, "elapsed_hours": 24, "requested_interval_complete": True, "event_boundary": None,
+                "florin_date_sentinel": {"arm": arm_status, "stop": stop_status, "actions": actions,
+                    "physical_save_confirmed": False}}
         await self.invoke("ck3_execute_step", {"step": "pause-map"})
         before = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
         await self.set_campaign_speed_one_presubmission_once(before)
