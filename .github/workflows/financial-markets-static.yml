@@ -5,11 +5,13 @@ on:
     branches: [master]
     paths:
       - 'mod_financial_markets/**'
+      - 'java/ck3-save-core/**'
       - '.github/workflows/financial-markets-static.yml'
       - 'java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java'
   pull_request:
     paths:
       - 'mod_financial_markets/**'
+      - 'java/ck3-save-core/**'
       - '.github/workflows/financial-markets-static.yml'
   workflow_dispatch:
 
@@ -40,6 +42,8 @@ jobs:
         run: java -Xms32m -Xmx128m java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --ensure-default-maven-only --repo-root "%GITHUB_WORKSPACE%" --work-root "%RUNNER_TEMP%\xfm-maven" --python-executable "%pythonLocation%\python.exe" --system-growth-reserve-bytes 2147483648 --max-project-bytes 8589934592
       - name: Verify default Maven observations
         run: java -Xms32m -Xmx128m java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --verify-maven-evidence-root "%RUNNER_TEMP%\xfm-maven"
+      - name: Test and install shared save reader
+        run: mvn --batch-mode --no-transfer-progress -f java/ck3-save-core/pom.xml install
       - name: Test and package development tools
         run: mvn --batch-mode --no-transfer-progress -f mod_financial_markets/tools/pom.xml verify
       - name: Validate production source
@@ -51,6 +55,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: financial-markets-software-tests
-          path: mod_financial_markets/tools/target/surefire-reports
+          path: |
+            java/ck3-save-core/target/surefire-reports
+            mod_financial_markets/tools/target/surefire-reports
 
 # No Steam/game execution on hosted runners. Software PASS grants no CK3 acceptance.
