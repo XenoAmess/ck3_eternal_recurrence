@@ -52,6 +52,18 @@ struct GuiControlIdentityV1 {
   std::vector<GuiControlCallbackV1> callbacks;
   bool operator==(const GuiControlIdentityV1 &) const = default;
 };
+struct GuiControlScriptedRootEntryV1 {
+  std::uintptr_t object=0,vtable=0,context=0,widget=0;
+  std::string runtime_name;
+  bool operator==(const GuiControlScriptedRootEntryV1 &) const = default;
+};
+struct GuiControlScriptedRootWitnessV1 {
+  std::uintptr_t manager=0,data=0;
+  std::int32_t capacity=0,count=0;
+  std::vector<GuiControlScriptedRootEntryV1> entries;
+  std::vector<GuiControlIdentityV1> ancestry;
+  bool operator==(const GuiControlScriptedRootWitnessV1 &) const = default;
+};
 struct GuiControlCaptureV1 {
   std::int32_t played_character_id = -1, date_raw = 0;
   std::uint64_t native_revision = 0, connection_generation = 0;
@@ -62,6 +74,7 @@ struct GuiControlCaptureV1 {
   std::string root_name;
   bool complete = false;
   std::vector<GuiControlIdentityV1> widgets;
+  GuiControlScriptedRootWitnessV1 scripted_root_source;
   bool operator==(const GuiControlCaptureV1 &) const = default;
 };
 struct GuiControlProviderV1 {

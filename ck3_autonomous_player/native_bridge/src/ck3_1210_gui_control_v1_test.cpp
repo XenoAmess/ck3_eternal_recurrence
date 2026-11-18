@@ -2,6 +2,9 @@
 #undef NDEBUG
 #endif
 #include "xar_bridge/ck3_1210_gui_control_v1.hpp"
+#include "xar_bridge/ck3_1210_gui_root_registry_v1.hpp"
+#include <map>
+#include <cstring>
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include <cassert>
 #include <iostream>
@@ -43,9 +46,116 @@ std::string Request() {
 std::string Replace(std::string text,std::string_view from,std::string_view to) {
   const auto at=text.find(from);assert(at!=std::string::npos);text.replace(at,from.size(),to);return text;
 }
+
+struct RootRegistryFixture {
+  static constexpr std::uintptr_t module=0x140000000ULL,context=0x7700,global=0x10000,root=0x10100,parent=0x10200,unrelated=0x10300;
+  static constexpr std::uintptr_t manager=module+kGuiScriptedRootManagerRvaV1,data=0x20000,entry=0x30000;
+  std::map<std::uintptr_t,std::vector<std::byte>> memory;
+  std::map<std::uintptr_t,GuiControlIdentityV1> widgets;
+  std::map<std::uintptr_t,unsigned> widget_reads;
+  std::uintptr_t bad_widget=0;bool change_header=false;unsigned header_reads=0;
+  template<class T> void Put(std::uintptr_t address,T value) {
+    auto &bytes=memory[address];bytes.resize(sizeof(value));std::memcpy(bytes.data(),&value,sizeof(value));
+  }
+  void Array(std::uintptr_t address,std::initializer_list<std::uintptr_t> values) {
+    auto &bytes=memory[address];bytes.resize(values.size()*8);std::size_t i=0;
+    for(const auto value:values) {std::memcpy(bytes.data()+i*8,&value,8);++i;}
+  }
+  void Entry(std::uintptr_t object,std::uintptr_t widget) {
+    Put(object,module+kGuiScriptedRootEntryVtableRvaV1);Put(object+0x60,widget);Put(object+0x68,context);
+  }
+  GuiControlIdentityV1 Widget(std::uintptr_t pointer,std::string name,std::uintptr_t owner,std::uintptr_t children=0,std::int32_t count=0) {
+    GuiControlIdentityV1 w;w.widget=pointer;w.context=context;w.parent=owner;w.children=children;w.child_count=count;
+    w.row.runtime_name=std::move(name);w.row.vtable_rva=0x500;w.row.effective_visible=true;w.row.enabled=true;return w;
+  }
+  RootRegistryFixture() {
+    Put(manager,module+kGuiScriptedRootManagerVtableRvaV1);Put(manager+0x30,data);
+    Put(manager+0x38,std::int32_t{1});Put(manager+0x3C,std::int32_t{1});Array(data,{entry});Entry(entry,root);
+    widgets[root]=Widget(root,"xfma_observer_widget",parent);
+    widgets[parent]=Widget(parent,"container",global,0x21000,1);Array(0x21000,{root});
+    widgets[global]=Widget(global,"global",0,0x22000,2);Array(0x22000,{parent,unrelated});
+    // No readable unrelated branch: the old full-tree search would visit it.
+  }
+  static bool Read(void *opaque,std::uintptr_t address,void *out,std::size_t size) noexcept {
+    auto &f=*static_cast<RootRegistryFixture *>(opaque);
+    if(address==manager && ++f.header_reads>1 && f.change_header) {std::memset(out,0,size);return true;}
+    const auto at=f.memory.find(address);if(at==f.memory.end() || at->second.size()!=size)return false;
+    std::memcpy(out,at->second.data(),size);return true;
+  }
+  static bool ReadWidget(void *opaque,std::uintptr_t pointer,GuiControlIdentityV1 &out) noexcept {
+    try {auto &f=*static_cast<RootRegistryFixture *>(opaque);++f.widget_reads[pointer];
+      const auto at=f.widgets.find(pointer);if(pointer==f.bad_widget || at==f.widgets.end())return false;
+      out=at->second;out.row.effective_visible=(out.flags&0x18)==0;out.row.enabled=(out.flags&0x06)==0;return true;
+    }catch(...) {return false;}
+  }
+  GuiControlRootReaderV1 Reader() {return {this,&Read,&ReadWidget};}
+  bool Resolve(GuiControlRootNodeV1 &node,GuiControlScriptedRootWitnessV1 &source,std::string &reason) {
+    return ResolveGuiScriptedRootV1(Reader(),module,context,global,"xfma_observer_widget",node,source,reason);
+  }
+};
+bool TestScriptedRootRegistry() {
+  unsigned cases=0;
+  const auto reject=[&](RootRegistryFixture &f,std::string_view expected) {
+    GuiControlRootNodeV1 node;GuiControlScriptedRootWitnessV1 source;std::string reason;
+    ++cases;return !f.Resolve(node,source,reason) && reason==expected && node.p==0 && source.entries.empty();
+  };
+  {
+    RootRegistryFixture f;GuiControlRootNodeV1 node;GuiControlScriptedRootWitnessV1 source;std::string reason;
+    if(!f.Resolve(node,source,reason) || node.p!=f.root || node.parent!=f.parent || !node.visible || !node.enabled ||
+        source.entries.size()!=1 || source.ancestry.size()!=3 || f.widget_reads[f.unrelated]!=0)return false;
+    ++cases;
+  }
+  {
+    RootRegistryFixture f;f.widgets[f.parent].flags=0x0A;
+    GuiControlRootNodeV1 node;GuiControlScriptedRootWitnessV1 source;std::string reason;
+    if(!f.Resolve(node,source,reason) || node.visible || node.enabled || source.ancestry[1].flags!=0x0A)return false;
+    ++cases;
+  }
+  {RootRegistryFixture f;f.Put(f.entry+0x60,std::uintptr_t{0});if(!reject(f,"gui_root_not_materialized"))return false;}
+  {RootRegistryFixture f;f.Put(f.manager,std::uintptr_t{0});if(!reject(f,"gui_scripted_registry_unavailable"))return false;}
+  {RootRegistryFixture f;f.Put(f.manager+0x38,std::int32_t{4097});f.Put(f.manager+0x3C,std::int32_t{4097});if(!reject(f,"gui_scripted_registry_entry_budget_exhausted"))return false;}
+  {RootRegistryFixture f;f.Put(f.manager+0x3C,std::int32_t{-1});if(!reject(f,"gui_scripted_registry_vector_invalid"))return false;}
+  {RootRegistryFixture f;f.memory.erase(f.entry+0x60);if(!reject(f,"gui_scripted_registry_entry_invalid"))return false;}
+  {RootRegistryFixture f;f.memory.erase(f.data);if(!reject(f,"gui_scripted_registry_entries_read_failed"))return false;}
+  {RootRegistryFixture f;f.Array(f.data,{0});if(!reject(f,"gui_scripted_registry_null_entry"))return false;}
+  {RootRegistryFixture f;f.Put(f.entry,std::uintptr_t{0});if(!reject(f,"gui_scripted_registry_entry_invalid"))return false;}
+  {RootRegistryFixture f;f.Put(f.entry+0x68,std::uintptr_t{1});if(!reject(f,"gui_scripted_registry_context_mismatch"))return false;}
+  {RootRegistryFixture f;f.widgets[f.root].context=1;if(!reject(f,"gui_scripted_registry_widget_invalid"))return false;}
+  {RootRegistryFixture f;f.widgets[f.parent].context=1;if(!reject(f,"gui_root_parent_invalid"))return false;}
+  {RootRegistryFixture f;f.Array(f.data,{f.entry,f.entry});f.Put(f.manager+0x38,std::int32_t{2});f.Put(f.manager+0x3C,std::int32_t{2});if(!reject(f,"gui_scripted_registry_duplicate_entry"))return false;}
+  {RootRegistryFixture f;f.Entry(f.entry+0x100,f.root);f.Array(f.data,{f.entry,f.entry+0x100});f.Put(f.manager+0x38,std::int32_t{2});f.Put(f.manager+0x3C,std::int32_t{2});if(!reject(f,"gui_scripted_registry_duplicate_root"))return false;}
+  {RootRegistryFixture f;f.Entry(f.entry+0x100,f.unrelated);f.widgets[f.unrelated]=f.Widget(f.unrelated,"xfma_observer_widget",f.global);f.Array(f.data,{f.entry,f.entry+0x100});f.Put(f.manager+0x38,std::int32_t{2});f.Put(f.manager+0x3C,std::int32_t{2});if(!reject(f,"gui_root_ambiguous"))return false;}
+  {RootRegistryFixture f;f.widgets[f.parent].parent=f.root;if(!reject(f,"gui_root_parent_cycle_or_detached"))return false;}
+  {RootRegistryFixture f;f.Array(0x21000,{0});if(!reject(f,"gui_root_parent_child_backref_invalid"))return false;}
+  {RootRegistryFixture f;f.Array(0x21000,{f.root,f.root});f.widgets[f.parent].child_count=2;if(!reject(f,"gui_root_parent_child_backref_invalid"))return false;}
+  {RootRegistryFixture f;f.bad_widget=f.parent;if(!reject(f,"gui_root_parent_invalid"))return false;}
+  {RootRegistryFixture f;f.memory.erase(0x22000);if(!reject(f,"gui_global_parent_children_read_failed"))return false;}
+  {RootRegistryFixture f;f.change_header=true;if(!reject(f,"gui_scripted_registry_changed"))return false;}
+  {
+    RootRegistryFixture f;f.widgets[f.root].parent=0x40000;
+    for(std::uintptr_t i=0;i<66;++i)f.widgets[0x40000+i*0x100]=f.Widget(0x40000+i*0x100,"deep",0x40100+i*0x100);
+    if(!reject(f,"gui_root_parent_depth_budget_exhausted"))return false;
+  }
+  {
+    RootRegistryFixture f;GuiControlIdentityV1 w;w.children=0x50000;w.child_count=1;
+    GuiControlRootNodeV1 n{f.root,0,0,{},true,true};
+    std::vector<GuiControlRootNodeV1> nodes{n};std::unordered_set<std::uintptr_t> seen{n.p};
+    if(AppendGuiControlChildrenV1(f.Reader(),n,w,nodes,seen,1)!=GuiControlChildrenResultV1::node_budget_exhausted)return false;
+    n.depth=64;if(AppendGuiControlChildrenV1(f.Reader(),n,w,nodes,seen,2)!=GuiControlChildrenResultV1::depth_budget_exhausted)return false;
+    n.depth=0;if(AppendGuiControlChildrenV1(f.Reader(),n,w,nodes,seen,2)!=GuiControlChildrenResultV1::child_pointer_read_failed)return false;
+    f.Array(w.children,{f.root});if(AppendGuiControlChildrenV1(f.Reader(),n,w,nodes,seen,2)!=GuiControlChildrenResultV1::duplicate_or_cycle)return false;
+    f.Array(w.children,{f.unrelated});w.row.effective_visible=false;w.row.enabled=false;
+    if(AppendGuiControlChildrenV1(f.Reader(),n,w,nodes,seen,2)!=GuiControlChildrenResultV1::complete ||
+        nodes.size()!=2 || nodes[1].visible || nodes[1].enabled || nodes[1].path!="0")return false;
+    cases+=5;
+  }
+  std::cout<<cases<<" scripted-root registry/ancestry/child failure checks; unrelated global branch never traversed\n";
+  return true;
+}
 } // namespace
 int main(int argc,char **argv) {
   int cases=0;const auto check=[&](bool okay){assert(okay);++cases;};
+  check(TestScriptedRootRegistry());
   GuiControlRequestV1 parsed;const auto wire=Request();
   check(ParseGuiControlRequestV1(wire,parsed) && parsed.root_name=="xfm_market_entry" && parsed.native_revision==7);
   for(const auto &pair:std::initializer_list<std::pair<std::string,std::string>>{
@@ -88,6 +198,25 @@ int main(int argc,char **argv) {
   check(ApplyGuiControlV1(p7,Query(),unknown.Backend(),result));
   check(!ApplyGuiControlV1(p7,Action(p7.query_generation),unknown.Backend(),result) && result.status==GuiControlStatusV1::indeterminate && result.effect_attempted && !p7.valid);
   check(!ApplyGuiControlV1(p7,Action(p7.query_generation),unknown.Backend(),result) && unknown.dispatches==1);
+  Fixture registry_source;GuiControlProviderV1 registry_provider;
+  registry_source.value.scripted_root_source.manager=1;registry_source.value.scripted_root_source.data=2;
+  check(ApplyGuiControlV1(registry_provider,Query(),registry_source.Backend(),result));
+  registry_source.value.scripted_root_source.data=3;
+  check(!ApplyGuiControlV1(registry_provider,Action(registry_provider.query_generation),registry_source.Backend(),result) &&
+      result.status==GuiControlStatusV1::stale_gui && registry_source.dispatches==0);
+  Fixture ancestry_source;GuiControlProviderV1 ancestry_provider;
+  ancestry_source.value.scripted_root_source.ancestry.push_back(Fixture{}.value.widgets[0]);
+  check(ApplyGuiControlV1(ancestry_provider,Query(),ancestry_source.Backend(),result));
+  ancestry_source.value.scripted_root_source.ancestry[0].flags=8;
+  check(!ApplyGuiControlV1(ancestry_provider,Action(ancestry_provider.query_generation),ancestry_source.Backend(),result) &&
+      result.status==GuiControlStatusV1::stale_gui && ancestry_source.dispatches==0);
+  Fixture hidden_ancestor;GuiControlProviderV1 hidden_provider;
+  hidden_ancestor.value.scripted_root_source.ancestry.push_back(Fixture{}.value.widgets[0]);
+  hidden_ancestor.value.scripted_root_source.ancestry[0].flags=8;
+  hidden_ancestor.value.widgets[1].row.effective_visible=false;
+  check(ApplyGuiControlV1(hidden_provider,Query(),hidden_ancestor.Backend(),result));
+  check(!ApplyGuiControlV1(hidden_provider,Action(hidden_provider.query_generation),hidden_ancestor.Backend(),result) &&
+      result.status==GuiControlStatusV1::disabled && hidden_ancestor.dispatches==0);
   Fixture overflow;GuiControlProviderV1 p8;p8.query_generation=(std::numeric_limits<std::uint64_t>::max)();
   check(!ApplyGuiControlV1(p8,Query(),overflow.Backend(),result) && !p8.valid);
   Fixture empty;empty.value.complete=false;GuiControlProviderV1 p9;

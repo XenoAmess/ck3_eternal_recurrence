@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_1210_gui_control_v1.hpp"
+#include "xar_bridge/ck3_1210_gui_root_registry_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #include <windows.h>
 #include <cstring>
@@ -11,7 +12,7 @@ namespace {
 #include "ck3_1210_gui_pins_v1.inc"
 constexpr std::size_t kImageSize=0x6FE4C00;
 constexpr std::uintptr_t kButtonInputRva=0x406D780;
-constexpr std::size_t kMaximumGlobalWidgets=32768,kMaximumChildren=4096,kMaximumDepth=64;
+constexpr std::size_t kMaximumChildren=4096,kMaximumDepth=64;
 bool Bytes(std::uintptr_t address,void *data,std::size_t size) noexcept {
   SIZE_T got=0;
   return address && size && address<=(std::numeric_limits<std::uintptr_t>::max)()-size &&
@@ -33,7 +34,10 @@ bool Pins(const GuiControlBindingsV1 &b) {
       Pin(b,kGuiHostBackrefRvaV1,kGuiHostBackrefPinV1) && Pin(b,kGuiHostStoreRvaV1,kGuiHostStorePinV1) &&
       Pin(b,kGuiShortcutStoreRvaV1,kGuiShortcutStorePinV1) &&
       Pin(b,kGuiCallbackCtorRvaV1,kGuiCallbackCtorPinV1) && Pin(b,kGuiCallbackThunkRvaV1,kGuiCallbackThunkPinV1) &&
-      Pin(b,kGuiExpressionCopyRvaV1,kGuiExpressionCopyPinV1) && Pin(b,kGuiChainCopyRvaV1,kGuiChainCopyPinV1);
+      Pin(b,kGuiExpressionCopyRvaV1,kGuiExpressionCopyPinV1) && Pin(b,kGuiChainCopyRvaV1,kGuiChainCopyPinV1) &&
+      Pin(b,kGuiRegistryGetterRvaV1,kGuiRegistryGetterPinV1) && Pin(b,kGuiRegistryRefreshRvaV1,kGuiRegistryRefreshPinV1) &&
+      Pin(b,kGuiRegistryMaterializeRvaV1,kGuiRegistryMaterializePinV1) && Pin(b,kGuiRegistryWidgetCtorRvaV1,kGuiRegistryWidgetCtorPinV1) &&
+      Pin(b,kGuiRegistryWidgetCreateRvaV1,kGuiRegistryWidgetCreatePinV1) && Pin(b,kGuiRegistryWidgetReleaseRvaV1,kGuiRegistryWidgetReleasePinV1);
 }
 std::uint64_t Wall() noexcept {
   FILETIME f{};GetSystemTimeAsFileTime(&f);
@@ -87,10 +91,7 @@ bool Name(std::uintptr_t p,std::string &out) {
   for(std::size_t i=0;i<size;++i)if(static_cast<unsigned char>(bytes[i])<0x20)return false;
   out.assign(bytes.data(),static_cast<std::size_t>(size));return true;
 }
-struct Node {
-  std::uintptr_t p=0,parent=0;std::size_t depth=0;std::string path;
-  bool visible=true,enabled=true;
-};
+using Node=GuiControlRootNodeV1;
 bool TreeNode(const GuiControlBindingsV1 &b,const Node &n,std::uintptr_t context,GuiControlIdentityV1 &w) {
   w={};w.widget=n.p;std::uintptr_t vt=0;
   if(!Load(n.p,0,vt) || !Image(b,vt,14*8) || !Load(n.p,0xD8,w.context) || w.context!=context ||
@@ -102,15 +103,26 @@ bool TreeNode(const GuiControlBindingsV1 &b,const Node &n,std::uintptr_t context
   w.row.effective_visible=n.visible && (w.flags&0x18)==0;w.row.enabled=n.enabled && (w.flags&0x06)==0;
   return true;
 }
+struct RootReaderContext {const GuiControlBindingsV1 &bindings;std::uintptr_t context;};
+bool RootBytes(void *,std::uintptr_t address,void *output,std::size_t size) noexcept {
+  return Bytes(address,output,size);
+}
+bool RootWidget(void *p,std::uintptr_t widget,GuiControlIdentityV1 &out) noexcept {
+  try {const auto &r=*static_cast<RootReaderContext *>(p);
+    return TreeNode(r.bindings,Node{widget,0,0,{},true,true},r.context,out);
+  }catch(...) {return false;}
+}
 bool Children(const Node &n,const GuiControlIdentityV1 &w,std::vector<Node> &nodes,
-    std::unordered_set<std::uintptr_t> &seen,std::size_t maximum) {
-  if(w.child_count && (n.depth>=kMaximumDepth || nodes.size()+static_cast<std::size_t>(w.child_count)>maximum))return false;
-  for(std::int32_t i=0;i<w.child_count;++i) {
-    std::uintptr_t child=0;if(!Load(w.children,static_cast<std::size_t>(i)*8,child))return false;if(!child)continue;
-    if(!seen.insert(child).second)return false;
-    std::string path=n.path;if(!path.empty())path+='/';path+=std::to_string(i);
-    nodes.push_back({child,n.p,n.depth+1,std::move(path),w.row.effective_visible,w.row.enabled});
-  }return true;
+    std::unordered_set<std::uintptr_t> &seen,std::size_t maximum,
+    const GuiControlRootReaderV1 &reader,std::string &reason) {
+  switch(AppendGuiControlChildrenV1(reader,n,w,nodes,seen,maximum)) {
+  case GuiControlChildrenResultV1::complete:return true;
+  case GuiControlChildrenResultV1::depth_budget_exhausted:reason="gui_selected_child_depth_budget_exhausted";break;
+  case GuiControlChildrenResultV1::node_budget_exhausted:reason="gui_selected_child_node_budget_exhausted";break;
+  case GuiControlChildrenResultV1::child_pointer_read_failed:reason="gui_selected_child_pointer_read_failed";break;
+  case GuiControlChildrenResultV1::duplicate_or_cycle:reason="gui_selected_child_duplicate_or_cycle";break;
+  }
+  return false;
 }
 bool SourceVector(std::uintptr_t object,std::size_t offset,std::size_t stride,
     std::vector<std::byte> &out,bool nested_chain=false) {
@@ -152,12 +164,14 @@ bool CallbackGroup(const GuiControlBindingsV1 &b,std::uintptr_t widget,std::size
     out.push_back(cb);
   }return true;
 }
-bool StrictDescendant(const std::vector<Node> &nodes,std::uintptr_t root,std::uintptr_t target) {
+bool StrictDescendant(const std::vector<GuiControlIdentityV1> &ancestors,const std::vector<Node> &nodes,
+    std::uintptr_t root,std::uintptr_t target) {
   if(root==target)return false;
   for(std::size_t depth=0;depth<kMaximumDepth && target;++depth) {
     std::uintptr_t parent=0;if(!Load(target,0xE8,parent))return false;
     if(parent==root)return true;target=parent;
-    if(std::none_of(nodes.begin(),nodes.end(),[target](const Node &n){return n.p==target;}))return false;
+    if(std::none_of(nodes.begin(),nodes.end(),[target](const Node &n){return n.p==target;}) &&
+        std::none_of(ancestors.begin(),ancestors.end(),[target](const GuiControlIdentityV1 &n){return n.widget==target;}))return false;
   }return false;
 }
 bool Capture(void *p,std::string_view root_name,GuiControlCaptureV1 &out,std::string &reason) noexcept {
@@ -185,18 +199,14 @@ bool Capture(void *p,std::string_view root_name,GuiControlCaptureV1 &out,std::st
       if(!Load(modals,static_cast<std::size_t>(i)*8,modal) || !modal || !Load(modal,0xD0,flags))return fail("gui_modal_receiver_unavailable");
       out.modal_receivers.push_back(modal);out.modal_flags.push_back(flags);
     }
-    // Read-only bounded owner tree search also finds registered scripted widgets
-    // which the engine's direct top-level lookup omits. No focus/restore/input.
-    std::vector<Node> global{{out.global_root,0,0,{},true,true}};
-    std::unordered_set<std::uintptr_t> global_seen{out.global_root};
-    Node selected{};std::size_t matches=0;
-    for(std::size_t i=0;i<global.size();++i) {
-      const auto node=global[i];GuiControlIdentityV1 row{};
-      if(!TreeNode(b,node,out.context,row))return fail("gui_global_tree_invalid");
-      if(row.row.runtime_name==root_name) {selected=node;out.root=node.p;++matches;}
-      if(!Children(node,row,global,global_seen,kMaximumGlobalWidgets))return fail("gui_global_tree_budget_exhausted");
-    }
-    if(matches!=1)return fail(matches?"gui_root_ambiguous":"gui_root_not_materialized");
+    // The exact CJominiScriptedGuiManager indexes all materialized scripted
+    // roots. Read its already-published state; never call its lazy initializer.
+    RootReaderContext root_context{b,out.context};
+    const GuiControlRootReaderV1 root_reader{&root_context,&RootBytes,&RootWidget};
+    Node selected{};
+    if(!ResolveGuiScriptedRootV1(root_reader,b.module_base,out.context,out.global_root,root_name,
+        selected,out.scripted_root_source,reason))return false;
+    out.root=selected.p;
     selected.path.clear();std::vector<Node> nodes{selected};std::unordered_set<std::uintptr_t> seen{selected.p};
     bool any_visible_modal=false;
     for(const auto flag:out.modal_flags)if((flag&8)==0)any_visible_modal=true;
@@ -214,11 +224,11 @@ bool Capture(void *p,std::string_view root_name,GuiControlCaptureV1 &out,std::st
         if(!CallbackGroup(b,w.widget,0x4B8,w.callbacks,callback_source_proven) ||
             !CallbackGroup(b,w.widget,0x3F8,w.callbacks,callback_source_proven))
           return fail("gui_callback_binding_unavailable");
-        const bool modal_admitted=!any_visible_modal || StrictDescendant(global,modal_top,w.widget);
+        const bool modal_admitted=!any_visible_modal || StrictDescendant(out.scripted_root_source.ancestry,nodes,modal_top,w.widget);
         w.row.clickable=w.row.effective_visible && w.row.enabled && !w.callbacks.empty() &&
             modal_admitted && callback_source_proven;
       }
-      if(!Children(node,w,nodes,seen,kGuiControlMaximumRowsV1))return fail("gui_root_subtree_budget_exhausted");
+      if(!Children(node,w,nodes,seen,kGuiControlMaximumRowsV1,root_reader,reason))return false;
       out.widgets.push_back(std::move(w));
     }
     if(!Current(n,reason))return false;out.complete=true;reason.clear();return true;

@@ -8,6 +8,10 @@
 
 `query-scripted-widget-controls-v1` 按带名根查询有界原生树；无重复根、环、截断或预算耗尽后才发布 provider generation。`activate-scripted-widget-control-v1` 只接受该连接已发布的 generation 与 row ID，没有 caller 指针、root scope、actor scope 或任意表达式入口。动作前重新读取两遍实际 tree、父子关系、modal 路由及 callback 源，与 query 原件比较。每个动作句柄只消费一次。
 
+根定位现只读当前`CJominiScriptedGuiManager`已发布的完整登记表（静态对象`0x5D6A9F0`，最多4096项），不调用懒初始化或扫描整个GUI树。逐项核实际类型、GUI context及已物化widget，拒绝重复身份和同名根，再沿目标的双向父子边追到已验证global owner，继承祖先的hidden/disabled状态。登记表及祖先身份均进入私有capture相等比较，激活前重新捕获；目标子树仍最多2048项、深度64。无关窗口的庞大子树不会因此被遍历。来源为同一精确EXE的manager创建、刷新、窗口创建及销毁路径；其他版本保持无资格。
+
+R0012实际GUI查询返回旧`gui_global_tree_budget_exhausted`，该旧错误同时合并了节点／深度预算、指针读取及重复／环，不能单凭错误名确定实际是哪种结构失败。新实现为目标子节点和global父边保留分别可识别的拒绝原因。本次源码修复及软件检查不替代后继实机的窗口定位、按钮效果和金融账目验收；R0012已独立确认正常退出0，而金融业务仍未通过。
+
 1.21 普通表达式 callback 的构造函数 `0x406F680` 分配 `0xF8` 字节，vtable `0x50BF430`，invoke `0x406FC40`；表达式位于 `+0x10`，实际 receiver 位于 `+0xF0`。私有 witness 保存完整 callback、五个 operand vector 和 parameter scope chain，不把 `enabled=true` 单独当作执行许可。尚未识别的 callback class 可以被观察，但保持不可点击；原版特殊决议回调不因此获得新版本资格。
 
 `submitted` 仅表示实际调用了引擎普通 shortcut handler，`native_handled` 只是原生诊断。它不证明业务 effect 已完成，必须用之后的独立 query 和资产／订单／角色观察验收。进入原生调用后异常或结果不明记 `indeterminate`，不重试原句柄。
