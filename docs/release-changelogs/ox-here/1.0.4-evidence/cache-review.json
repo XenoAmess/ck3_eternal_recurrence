@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T06:33:42.164732+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--ox-here--R0003",
+  "case": "workshop_cache",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": true,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-cache-privacy-accepted-view.png",
+      "bytes": 1009292,
+      "sha256": "d326672f03ead28802692c85044ead5231a455b93c568d9726c7e3072e1e674c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-cache-quit-desktop.png.json",
+      "bytes": 1451,
+      "sha256": "5b29b2eec85736fcf8989820a71438a840185fc6ea6647a51517b67bc9e9e8e2"
+    }
+  ],
+  "scope": "Actual menu normal Quit; common producer verifies strict real cached product mount. No campaign/business repetition.",
+  "diagnostics": {
+    "error_log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\ox-workshop-cache-1.0.4\\profile\\logs\\error.log",
+      "bytes": 150,
+      "sha256": "69545675d886aa4f8447cf747a8806632c1153cbdf0fd1cfe92c1b634902c563"
+    },
+    "text": "[14:25:05][E][pdx_persistent_reader.cpp:216]: Error: \"Failed to read key reference: mrm_enabled: mrm_enabled, near line: 3\" in file: \"\" near line: 3\n",
+    "cause": "Ordinary copied rules preset references foreign mod mrm_enabled. Target Ox has no such key and was actually mounted. This cache-only qualification is not a clean-engine-error claim; business R0002 error.log is 0B.",
+    "future_seed_fix": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cache-configuration-seed-a02.json",
+      "bytes": 1924,
+      "sha256": "9f34461959f13e95d65c35a7b4d3ec6b9fc3024672f2fcfb4592e37002d6f727"
+    }
+  }
+}

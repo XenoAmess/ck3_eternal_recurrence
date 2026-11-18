@@ -1,0 +1,58 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T06:33:44.762983+00:00",
+  "expired_old_shaders": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-18T05:56:11.365898+00:00",
+    "deleted_files": 9529,
+    "deleted_logical_bytes": 671233090,
+    "failed": [],
+    "free_before": {
+      "C:/": 50223489024,
+      "D:/": 21436067840
+    },
+    "free_after": {
+      "C:/": 50222129152,
+      "D:/": 22127710208
+    }
+  },
+  "closed_R0001_shaders": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-18T06:20:41.630145+00:00",
+    "deleted_files": 4184,
+    "deleted_logical_bytes": 183656128,
+    "failed": [],
+    "free_before": {
+      "C:/": 52946223104,
+      "D:/": 21775515648
+    },
+    "free_after": {
+      "C:/": 52946067456,
+      "D:/": 21968822272
+    }
+  },
+  "availability": "R0001 generated shaders removed early after R0002 PASS; historical prepared shader pins unavailable. Original failure/logs/GUI/DNA/formal/fixture retained; MRM sole warm input retained. No saves or source deleted in these two operations.",
+  "capacity": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-18T06:21:35.157732+00:00",
+    "owner": "/root",
+    "coordination": "Local root serial admission with current task bus and Game census",
+    "task_bus_snapshot_sha256": "6ef90eb8b6f071df03be9945fe5cc2b453b899614f6e1c2dedccd9f0b907b732",
+    "fresh_running_tasks": [],
+    "free_D": 21968822272,
+    "total_D": 500090007552,
+    "peak_increment_bytes": 268435456,
+    "system_growth_reserve_bytes": 67108864,
+    "other_unspent_reservations_bytes": 0,
+    "reserve_bytes": 21474836480,
+    "scope": "One menu-only strict Workshop cache loading run. No fixture, campaign or save. Actual previous shader footprint 183MB +85MiB for logs/config/review images.",
+    "temporary_quota_override": {
+      "owner": "/root",
+      "reason": "Whole-volume usage bounds historical project footprint",
+      "max_project_bytes": 478389620736,
+      "review_at_utc": "2026-11-25T06:21:35.157732+00:00"
+    },
+    "admitted": true
+  },
+  "current_free_D": 21751865344
+}

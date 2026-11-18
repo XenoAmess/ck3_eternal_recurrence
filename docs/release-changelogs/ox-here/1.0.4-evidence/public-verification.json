@@ -1,0 +1,157 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T06:19:00.096501+00:00",
+  "item_id": "3790635143",
+  "entry_id": "1794982607",
+  "anonymous_full_notes_exact": true,
+  "notes": {
+    "characters": 1372,
+    "lines": 14,
+    "path": "D:\\ck3-state\\upgrade-20261118\\ox-publication\\public-notes-exact.txt",
+    "bytes": 1860,
+    "sha256": "d3cfb5a49f9c5f5d2871fa25fa5f67264e99c3b32454b8b0fca15143d75710ef"
+  },
+  "raw_changelog": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ox-publication\\anonymous-1794982738543539700\\changelog.raw",
+    "bytes": 54179,
+    "sha256": "dd5da1c1777eff99780994c502994de6a2eef5fe2892357af270ac603b06013b"
+  },
+  "raw_metadata": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ox-publication\\anonymous-1794982738543539700\\metadata.raw",
+    "bytes": 7034,
+    "sha256": "c13deb656aa0e706f88f6a56990f9d19f357fb3531da2a8549ebafcac1e59682"
+  },
+  "owner_app_visibility_title_description_tags_exact": true,
+  "native_upload_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ox-publication\\native-publish-receipt.json",
+    "bytes": 647,
+    "sha256": "fb9749a57fd83485705661a2bbc01baf7a44b929ffc2f24160a95961b7867785"
+  },
+  "native_download": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ox-publication\\native-download.json",
+    "bytes": 1988,
+    "sha256": "ac00a3929de83803a3cf820f80eb566e3575ef612b9fa575e2019f8bb34b3e45"
+  },
+  "cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143",
+  "file_count": 22,
+  "cache_strict_exact": true,
+  "descriptor_exception_used": false,
+  "cache_files": {
+    "descriptor.mod": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\descriptor.mod",
+      "bytes": 119,
+      "sha256": "230e4dee2f6fbabd36ec0b1c0a5ba546228b962c74e10f82317a700aab199508"
+    },
+    "thumbnail.png": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\thumbnail.png",
+      "bytes": 686490,
+      "sha256": "330bf1fb1330fd817b46b47ac3345e4e5f32472152b18d4277790c0c0c767b59"
+    },
+    "events/ox_here_events.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\events\\ox_here_events.txt",
+      "bytes": 576,
+      "sha256": "39e3f73691274fc475fdf46ebfbbab3bde412754321b7dacd914cc2df5db6de8"
+    },
+    "gui/ox_here_bridge.gui": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\gui\\ox_here_bridge.gui",
+      "bytes": 632,
+      "sha256": "464a7dc853d2a89c882996e7f71edf8c83dc565c6d3272c23f01a7e1aeb2d9e4"
+    },
+    "localization/english/ox_here_l_english.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\english\\ox_here_l_english.yml",
+      "bytes": 1888,
+      "sha256": "4716745abdb1c09703b0cc5400ff99768fb053d0bf4f7ac6471590c90e04c25f"
+    },
+    "localization/french/ox_here_l_french.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\french\\ox_here_l_french.yml",
+      "bytes": 2252,
+      "sha256": "a2b96e9327de5cade99b96ae29f915cfbbe0384bb1bf80fa4ebc0afff8420976"
+    },
+    "localization/german/ox_here_l_german.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\german\\ox_here_l_german.yml",
+      "bytes": 2149,
+      "sha256": "7bda9a7bf1f1c05c876ba3489ddb4e56030502d58b4e12b222ca28e825b4a264"
+    },
+    "localization/japanese/ox_here_l_japanese.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\japanese\\ox_here_l_japanese.yml",
+      "bytes": 2283,
+      "sha256": "733f73c40a84200c3deee77169596715dc72a311027df2d851052d6432a83db4"
+    },
+    "localization/korean/ox_here_l_korean.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\korean\\ox_here_l_korean.yml",
+      "bytes": 2349,
+      "sha256": "fc79a23db29af3af8ddcca90bf7001b485baceef88ff68729f2ab05f26b90f84"
+    },
+    "localization/polish/ox_here_l_polish.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\polish\\ox_here_l_polish.yml",
+      "bytes": 2226,
+      "sha256": "b2f256b818c908b09373352f6c0344efdf07cafc50506317611a60f089d9f3cc"
+    },
+    "localization/russian/ox_here_l_russian.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\russian\\ox_here_l_russian.yml",
+      "bytes": 2920,
+      "sha256": "df8abf8eba35adf43256ddeb23cf7c3aba9de093670cfd3a8fc2973ef08b914a"
+    },
+    "localization/simp_chinese/ox_here_l_simp_chinese.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\simp_chinese\\ox_here_l_simp_chinese.yml",
+      "bytes": 1861,
+      "sha256": "17425b1b6e28a9fec68c1bbfdb6e5de50c004d677c2cd40fafb3d85542c2c6a6"
+    },
+    "localization/spanish/ox_here_l_spanish.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\localization\\spanish\\ox_here_l_spanish.yml",
+      "bytes": 2025,
+      "sha256": "c6b72d298348a996397a6bb8b1090fb38e8a463d63e49bd7a79a6c6c71a73c8f"
+    },
+    "gui/scripted_widgets/ox_here_scripted_widgets.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\gui\\scripted_widgets\\ox_here_scripted_widgets.txt",
+      "bytes": 50,
+      "sha256": "383e1ba2981eabf5e1c38cf5d54260674ade5e0e5c8a42d292c148df84b0d9b5"
+    },
+    "common/decisions/ox_here_decisions.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\decisions\\ox_here_decisions.txt",
+      "bytes": 3031,
+      "sha256": "8c863123bd4dca6b91a9f7afd7b0155db14d40a5a75771153c9a36864a408d60"
+    },
+    "common/decision_group_types/ox_here_decision_group_types.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\decision_group_types\\ox_here_decision_group_types.txt",
+      "bytes": 62,
+      "sha256": "e2cfc9d676061e2f3db8365ef3904776da444eb8c1654c14fc1afc0c536198da"
+    },
+    "common/ethnicities/ox_here_ethnicities.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\ethnicities\\ox_here_ethnicities.txt",
+      "bytes": 339,
+      "sha256": "194fabe42171837b9d861baec7f69e4379558367983019298be3671a71c43fb0"
+    },
+    "common/scripted_character_templates/ox_here_character_templates.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\scripted_character_templates\\ox_here_character_templates.txt",
+      "bytes": 548,
+      "sha256": "646918007efdf28af4bd9513c6c274d8c59d8266354d9205fd65acff46e183a5"
+    },
+    "common/scripted_effects/ox_here_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\scripted_effects\\ox_here_effects.txt",
+      "bytes": 2677,
+      "sha256": "1f4ee9362e40424d003c4ed61db9ac1d6214d561b6474536cbe462e7dfeaa7ca"
+    },
+    "common/scripted_guis/ox_here_guis.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\scripted_guis\\ox_here_guis.txt",
+      "bytes": 331,
+      "sha256": "9d6ca53950d5ef0f92d935dcafb841cbac2c2ee034a42f81919f723d7d669693"
+    },
+    "common/script_values/ox_here_values.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\script_values\\ox_here_values.txt",
+      "bytes": 1783,
+      "sha256": "361ed80ab6844961b74c7d02343d26b57c51e67b8b81b2296f084d27efd27746"
+    },
+    "common/culture/cultures/ox_here_cultures.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143\\common\\culture\\cultures\\ox_here_cultures.txt",
+      "bytes": 961,
+      "sha256": "ab65766d4e6cfd0271b771d7973d41d10a67335b79a0c3aa11f317c2c609c707"
+    }
+  },
+  "actual_engine_cache_load": "NOT_RUN",
+  "offline_restored": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ox-104-offline-proof.json",
+    "bytes": 1370,
+    "sha256": "69204c82f13d90e29deec32526a2d87f74f13b3848fdeecae488141c00fc8884"
+  }
+}

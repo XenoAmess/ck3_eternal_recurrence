@@ -1,0 +1,73 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T05:54:05.153066+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--ox-here--R0001",
+  "case": "migration-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "classification": "HARNESS_RED",
+  "facts": {
+    "all_production_markers": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ac601a21e6024f5fae7bf72dd0a8a83d\\profile\\logs\\debug.log",
+          "bytes": 1185721,
+          "sha256": "511a1fcd3c99ab2fb56d8704b5e9a405359b5ec0f8d8a65347a38dc8a9435f6a"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ac601a21e6024f5fae7bf72dd0a8a83d\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "markers": [
+        "[04:37:35][D][jomini_effect_impl.cpp:444]: file: common/on_action/oxa120_on_actions.txt line: 7 (oxa120_start): OXA120: TEST BEGIN engine_startup",
+        "[04:37:35][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/oxa_effects.txt line: 13 (oxa_initialize_effect): OXA: TEST BEGIN standalone",
+        "[04:37:35][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/oxa_effects.txt line: 47 (oxa_initialize_effect): OXA: TEST PASS exact_build_ruler_ready",
+        "[04:37:35][D][jomini_effect_impl.cpp:444]: file: events/oxa120_events.txt line: 12 (oxa120.1:immediate): OXA120: TEST READY production_choices",
+        "[04:44:07][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/oxa_effects.txt line: 65 (oxa_verify_decline_effect): OXA: TEST PASS decline_zero_side_effect",
+        "[04:49:39][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/oxa_effects.txt line: 86 (oxa_verify_recruit_body_effect): OXA: TEST PASS exactly_one_delivery",
+        "[04:49:39][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/oxa_effects.txt line: 100 (oxa_verify_recruit_body_effect): OXA: TEST FAIL warrior_identity_and_prowess",
+        "[04:49:39][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/oxa_effects.txt line: 110 (oxa_verify_recruit_body_effect): OXA: TEST PASS knight_and_champion_appointment",
+        "[04:49:39][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/oxa_effects.txt line: 125 (oxa_verify_recruit_body_effect): OXA: TEST PASS affair_and_secret",
+        "[04:49:39][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/oxa_effects.txt line: 138 (oxa_verify_recruit_body_effect): OXA: TEST PASS incompatible_orientation_seduce_scheme",
+        "[04:49:39][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/oxa_effects.txt line: 147 (oxa_verify_recruit_body_effect): OXA: TEST PASS champion_salary_zero",
+        "[04:51:01][D][jomini_effect_impl.cpp:444]: file: events/oxa_events.txt line: 17 (oxa_acceptance.1:option): OXA: TEST DONE standalone"
+      ],
+      "failure": "Original warrior_identity_and_prowess range 46-66 omitted the stock Kanuri ethos_bellicose +2. Actual GUI 60+6+2=68. This run is not retroactively passed."
+    }
+  },
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--ox-here--R0001\\game-exit.json",
+      "bytes": 253,
+      "sha256": "3059c573914f91d5d1d4b41cfb7d3ca5ea579b2ac81640ad84f70f3d105fd2ce"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--ox-here--R0001\\keeper-report.json",
+      "bytes": 309,
+      "sha256": "4d8ad17fe57632739cf90f69d22874fa855d8c078e3c3d001ac496ff3b3e23a8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--ox-here--R0001\\screen-release.json",
+      "bytes": 1221,
+      "sha256": "693fd67b274a94f77ad772fc872103dac92528f00a998bce2ee5547f4df646db"
+    }
+  ],
+  "diagnosis_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ox-prowess-source-diagnosis.json",
+      "bytes": 3794,
+      "sha256": "c22ac5cdbd6c46f4997a31dd1a0b0b0c97b46de4411fdb75c44efe6d11470069"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ox-R0001-dna-readback.json",
+      "bytes": 636,
+      "sha256": "09ef6a30919380cc6d3e93fa470cb5ee7028c9e2babe8ca394932f13d34c6e89"
+    }
+  ],
+  "next": "New independent run with corrected 48-68 fixture; no production runtime change."
+}

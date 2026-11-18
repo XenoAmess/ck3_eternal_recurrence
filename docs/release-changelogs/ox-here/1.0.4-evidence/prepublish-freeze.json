@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T06:15:16.325612+00:00",
+  "payload_sha256": "b491a5f8cbfeea157c6e4d59f4260802ada843f1a030aaf0fb392a693fa16539",
+  "notes": {
+    "schema": "steam-change-notes-frozen-candidate-v1",
+    "product_key": "ox-here",
+    "version": "1.0.4",
+    "previous_version": "1.0.3",
+    "workshop_item_id": "3790635143",
+    "text_file": "workshop/change_notes/ox-here/1.0.4.txt",
+    "bytes": 1860,
+    "characters": 1372,
+    "lines": 14,
+    "sha256": "d3cfb5a49f9c5f5d2871fa25fa5f67264e99c3b32454b8b0fca15143d75710ef",
+    "encoding": "utf-8",
+    "line_endings": "LF",
+    "trailing_newline": false,
+    "status": "BUSINESS_VERIFIED_PENDING_PUBLICATION",
+    "published": false,
+    "release_tag": "ox-here-v1.0.4",
+    "release_commit": "a00fd8c9138d0a85bafde49b0eb11fb1fea8a4e7",
+    "machine_id": "desktop-3fevhd2-1c74096080"
+  },
+  "business_verification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ox-r2-verify.json",
+    "bytes": 3543,
+    "sha256": "16a4030aac0e2ccfaf5c64056f1de0b0fd014e88e7a1885fff4071f65d2c3109"
+  },
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\releases\\ox_here-v1.0.4.manifest.json",
+    "bytes": 4034,
+    "sha256": "1e085514cbbc8695d65d58358257d554d6b1dc4dfe98e750074db1d00566bd42"
+  },
+  "zip": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\releases\\ox_here-v1.0.4.zip",
+    "bytes": 701920,
+    "sha256": "fd6bf6f50bdb34708522abed232616b3e4fefe445ca3aed04f5b73881ff1861e"
+  },
+  "published": false
+}

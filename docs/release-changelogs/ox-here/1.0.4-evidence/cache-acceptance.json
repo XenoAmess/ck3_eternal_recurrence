@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "process_pass": true,
+  "closure_pass": true,
+  "normal_gui_quit": true,
+  "cache_load": {
+    "loaded": true,
+    "exact_cache": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ox-cache-prepare\\workshop-cache-exact-formal.json",
+      "bytes": 6320,
+      "sha256": "a8b08dcfd79ad369d75fc3d1c2739dc277b4bc6a60b68a484944bf6834da5441"
+    },
+    "engine_log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\ox-workshop-cache-1.0.4\\profile\\logs\\debug.log",
+      "bytes": 499956,
+      "sha256": "bc238033c7cd0e8c1b317fb5a57c6ec9d07926bf806086b3ec2f378e101a84e3"
+    },
+    "mounted_log_lines": [
+      {
+        "line": 95,
+        "text": "[14:23:27][D][virtualfilesystem_physfs.cpp:814]: Mounted Data: C:/SteamLibrary/steamapps/workshop/content/1158310/3790635143"
+      }
+    ],
+    "enabled_log_lines": [
+      {
+        "line": 62,
+        "text": "牛来|mod/product.mod|Enabled"
+      }
+    ],
+    "cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3790635143",
+    "file_count": 22,
+    "item_id": "3790635143"
+  },
+  "case_acceptance_pass": true,
+  "cache_acceptance_pass": true,
+  "business_contract_applicable": false,
+  "gui_business_pass": false,
+  "business_pass": false,
+  "product_release_pass": false,
+  "native_capability_pass": false,
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-cache-privacy-accepted-view.png",
+      "bytes": 1009292,
+      "sha256": "d326672f03ead28802692c85044ead5231a455b93c568d9726c7e3072e1e674c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-cache-quit-desktop.png.json",
+      "bytes": 1451,
+      "sha256": "5b29b2eec85736fcf8989820a71438a840185fc6ea6647a51517b67bc9e9e8e2"
+    }
+  ]
+}

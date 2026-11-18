@@ -1,0 +1,20 @@
+{
+  "app_id": 1158310,
+  "created_at": "2026-11-18T06:16:31.446542+00:00",
+  "item_id": "3790635143",
+  "legal_agreement_required": false,
+  "operation": "update",
+  "operation_id": "ox-here-1.0.4-20261118-desktop-3fevhd2-1c74096080",
+  "payload_sha256": "b491a5f8cbfeea157c6e4d59f4260802ada843f1a030aaf0fb392a693fa16539",
+  "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+  "stage": "complete",
+  "steam_result": 1,
+  "submitted_at": "2026-11-18T06:16:44.788030+00:00",
+  "tags": [
+    "Gameplay",
+    "1.21 'Florin'"
+  ],
+  "tags_only": false,
+  "update_scope": "content_and_metadata",
+  "updated_at": "2026-11-18T06:16:44.788068+00:00"
+}

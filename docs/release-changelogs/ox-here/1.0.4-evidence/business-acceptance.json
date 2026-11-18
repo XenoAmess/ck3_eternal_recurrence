@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "process_pass": true,
+  "closure_pass": true,
+  "gui_business_pass": true,
+  "case_acceptance_pass": true,
+  "business_pass": true,
+  "product_release_pass": false,
+  "native_capability_pass": false,
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-decline-selected-view.png",
+      "bytes": 1098024,
+      "sha256": "a86b6d1e58f615df8fc69ffeaec8a7a3e9831c5d931c8f92e191d27d00083a8a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-decline-overview-view.png",
+      "bytes": 1090050,
+      "sha256": "f502fadc40f03a40724af1e3ed9fe9057b20d1420b5686df25de8ae8e101947f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-decline-committed.png.json",
+      "bytes": 1451,
+      "sha256": "179f35d8564a9e5545f809c2c573fb8034d33d38ebc20c3ea165b57dc26cd3e8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-verify-decline-dialog-view.png",
+      "bytes": 1091397,
+      "sha256": "c68d4434a87a8ecbd5bd6976d6562f561ec5f5368332a9f8c6ee7ce0786ab81e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-verify-decline-once.png.json",
+      "bytes": 1459,
+      "sha256": "f9a84e3623eb51c8821cfdc3afd14885ab70ba794c550c493272262d008ae64f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-recruit-selected-view.png",
+      "bytes": 1099906,
+      "sha256": "a630305605e7f1f69f0ce6e6f73ae906d4a96f6251e6401780d549f82247c7d3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-recruit-committed-view.png",
+      "bytes": 1098998,
+      "sha256": "5484afe25274ebf56a8a1b352848728255cf9cb64b5cec6b6d22c63fe3c6d074"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-warrior-readback.png",
+      "bytes": 1170311,
+      "sha256": "21e9f4bfa077e38ad3b273008d1295c4033e8c18613e2917c09ef4f994d38264"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-prowess-tooltip-view.png",
+      "bytes": 1174813,
+      "sha256": "c5e25d6989be3281ed09608af0fa6b657d93b7bfccbd780e8423be0cde43cf56"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-verify-recruit-once-view.png",
+      "bytes": 1099380,
+      "sha256": "fdc88e14d5b98131ce8aaaab919c4a3d7496ff482733721559fcb0830ed90f50"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-summary-done.png.json",
+      "bytes": 1439,
+      "sha256": "81d411657506b0f705c44ecd592be640b69dbe5387c6fd3d1326d1c360d4d530"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-a56d0f479a294584b42da38c8477e5cf\\profile\\logs\\debug.log",
+      "bytes": 1186251,
+      "sha256": "a469fc7943c473e17e0b3a2ed4f60cb2933c8c5d74a45740b83f4f5c38c75ef7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-a56d0f479a294584b42da38c8477e5cf\\profile\\logs\\error.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-exit-dialog-view.png",
+      "bytes": 711987,
+      "sha256": "fc8a8ad9b9ecb849a9d9052e99588939538121cc907deb0e1050feffff37c3f8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\ox-r2-quit-desktop-once.png.json",
+      "bytes": 1445,
+      "sha256": "87c0919cdb7d7885da124cd057fcbc29dbef3f9a7abcc3bb29d4d3fa3f251bf1"
+    }
+  ]
+}
