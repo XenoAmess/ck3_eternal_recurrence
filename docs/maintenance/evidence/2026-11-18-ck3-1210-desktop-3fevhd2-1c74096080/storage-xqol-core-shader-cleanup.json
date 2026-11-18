@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T11:07:35.989073+00:00",
+  "policy_version": "1.0.0",
+  "groups": {
+    "R0003": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-18T11:05:27.066397+00:00",
+      "deleted_files": 4316,
+      "deleted_logical_bytes": 194147397,
+      "failed": [],
+      "free_before": {
+        "C:/": 52378284032,
+        "D:/": 21705080832
+      },
+      "free_after": {
+        "C:/": 52378152960,
+        "D:/": 21909098496
+      }
+    },
+    "R0004": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-18T11:06:17.651888+00:00",
+      "deleted_files": 4316,
+      "deleted_logical_bytes": 193897532,
+      "failed": [],
+      "free_before": {
+        "C:/": 52377128960,
+        "D:/": 21904769024
+      },
+      "free_after": {
+        "C:/": 52387565568,
+        "D:/": 22109069312
+      }
+    }
+  },
+  "reason": "Completed R3 calendar-overrun and passed R4 core have no further shader-cache use; exact build/formal and sole MRM warm input retained. Original business/error logs and screenshots retained. Historical shader pins now unavailable.",
+  "logical_bytes": 388044929,
+  "deleted_files": 8632,
+  "failures": 0
+}
