@@ -15,6 +15,43 @@ if str(TOOLS) not in sys.path:
 import ck3_mod_acceptance_allocate as allocation
 
 
+# The retained recorder protocol uses child/result and START/ORIGINAL-WAIT,
+# rather than the historical p/code intent writer. It is inspected, not run.
+ORIGINAL_OPERATION_SOURCE = '''
+from pathlib import Path
+import ctypes, datetime, hashlib, json, os, subprocess, sys, time
+root = Path(__file__).parent
+name = sys.argv[1]
+args_file = root / 'operations' / (name + '.argv.json')
+argv = json.loads(args_file.read_text(encoding='utf-8'))
+output = root / 'operations' / name
+output.mkdir(exist_ok=False)
+started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+began = time.monotonic()
+with (output/'stdout.log').open('xb') as stdout, (output/'stderr.log').open('xb') as stderr:
+    child = subprocess.Popen(argv, cwd='C:/workspace/ck3_eternal_recurrence', stdin=subprocess.DEVNULL,
+        stdout=stdout, stderr=stderr, creationflags=subprocess.CREATE_NO_WINDOW)
+    class FileTime(ctypes.Structure):
+        _fields_ = [('low', ctypes.c_uint32), ('high', ctypes.c_uint32)]
+    creation, exit_time, kernel, user = FileTime(), FileTime(), FileTime(), FileTime()
+    api = ctypes.WinDLL('kernel32', use_last_error=True)
+    assert api.GetProcessTimes(int(child._handle), ctypes.byref(creation), ctypes.byref(exit_time), ctypes.byref(kernel), ctypes.byref(user))
+    birth = str((creation.high << 32) | creation.low)
+    (output/'START.actual.json').write_text(json.dumps({'machine_id': MACHINE, 'started_at_utc': started,
+        'argv': argv, 'pid': child.pid, 'birth_filetime': birth}), encoding='utf-8')
+    result = child.wait()
+def pin(path):
+    raw = path.read_bytes()
+    return {'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}
+receipt = {'machine_id': MACHINE, 'started_at_utc': started,
+    'finished_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'argv': argv,
+    'pid': child.pid, 'birth_filetime': birth, 'actual_original_popen_wait': True,
+    'returncode': result, 'elapsed_seconds': time.monotonic() - began,
+    'stdout': pin(output/'stdout.log'), 'stderr': pin(output/'stderr.log')}
+(output/'ORIGINAL-WAIT.actual.json').write_text(json.dumps(receipt, indent=2) + '\\n', encoding='utf-8')
+'''
+
+
 class PrelaunchHostFailureTests(unittest.TestCase):
     def setUp(self):
         temp = tempfile.TemporaryDirectory(prefix='prelaunch-host-failure-')
@@ -700,6 +737,100 @@ if __name__ == '__main__':
             self.bundle[key+'_producer'] = allocation.pin(producer)
         self.early_exit_result()
 
+    def original_operation_failure(self) -> None:
+        """The financial R0001 recorder's actual schema and both public CLI forms."""
+        self.inventory_registrar_failure()
+        machine = self.freeze['identity_allocation']['machine_id']
+        producer = self.root/'original_operation.py'
+        producer.write_text(ORIGINAL_OPERATION_SOURCE.replace('MACHINE', repr(machine)), encoding='utf-8')
+        for mode, code in (('run', 2), ('allocate', 0)):
+            key = 'public_' + mode
+            words = json.loads(Path(self.bundle[key+'_intent']['path']).read_bytes())['argv']
+            if mode == 'allocate':
+                words.remove(mode)
+                words.append(mode)
+            directory = self.root/'operations'/('CORE01-run' if mode == 'run' else 'ALLOCATE-core02')
+            directory.mkdir(parents=True)
+            (directory/'stdout.log').write_bytes(b'actual original public output\n')
+            (directory/'stderr.log').write_bytes(b'')
+            common = {'machine_id': machine, 'started_at_utc': '2026-10-24T18:00:42+00:00',
+                'argv': words, 'pid': 4936 if mode == 'run' else 21732,
+                'birth_filetime': '134394778648489933' if mode == 'run' else '134394778272480230'}
+            self.bundle[key+'_protocol'] = 'original-operation-v1'
+            self.bundle[key+'_started'] = self.write(directory/'START.actual.json', common)
+            self.bundle[key] = self.write(directory/'ORIGINAL-WAIT.actual.json', {
+                **common, 'finished_at_utc': '2026-10-24T18:00:49+00:00',
+                'actual_original_popen_wait': True, 'returncode': code, 'elapsed_seconds': 7.125,
+                'stdout': allocation.pin(directory/'stdout.log'), 'stderr': allocation.pin(directory/'stderr.log')})
+            self.bundle[key+'_argv'] = self.write(directory.with_suffix('.argv.json'), words)
+            self.bundle[key+'_producer'] = allocation.pin(producer)
+            del self.bundle[key+'_intent']
+        self.save()
+
+    def test_original_operation_receipts_preserve_exit_and_resources_only(self):
+        self.original_operation_failure()
+        result = self.check()['failure_cleanup']
+        self.assertEqual(result['original_host_exit_code'], 1)
+        self.assertIsNone(result['original_ck3_exit_code'])
+        self.assertIsNone(result['native_cleanup_qualified'])
+        self.assertTrue(result['administrative_resource_admission_only'])
+        self.assertFalse(result['normal_close_qualified'])
+        self.assertFalse(result['business_pass'])
+        for mode in ('run', 'allocate'):
+            receipt = json.loads(Path(self.bundle['public_'+mode]['path']).read_bytes())
+            self.assertEqual(receipt['returncode'], 2 if mode == 'run' else 0)
+            self.assertNotIn('original_wait_returncode', receipt)
+            self.assertEqual(result['original_evidence']['public_'+mode+'_stderr']['bytes'], 0)
+            for suffix in ('started', 'producer', 'argv', 'stdout', 'stderr'):
+                allocation.file_pin(result['original_evidence']['public_'+mode+'_'+suffix])
+
+    def test_original_operation_rejects_bad_types_and_crossed_identity(self):
+        self.original_operation_failure()
+        for key, field, bad in (
+                ('public_run', 'returncode', True), ('public_run', 'returncode', 2.0),
+                ('public_allocate', 'returncode', 2), ('public_run', 'pid', True),
+                ('public_run_started', 'pid', True), ('public_run', 'pid', 21732),
+                ('public_run', 'birth_filetime', 134394778648489933),
+                ('public_run', 'birth_filetime', '0134394778648489933'),
+                ('public_run', 'elapsed_seconds', True), ('public_run', 'actual_original_popen_wait', False),
+                ('public_run', 'machine_id', 'another-machine'),
+                ('public_run', 'finished_at_utc', '2026-10-24T17:00:42+00:00'),
+                ('public_run', 'finished_at_utc', '2026-10-24T18:00:49')):
+            path = Path(self.bundle[key]['path'])
+            original = json.loads(path.read_bytes())
+            self.bundle[key] = self.write(path, {**original, field: bad})
+            self.save()
+            with self.subTest(key=key, field=field, bad=bad), self.assertRaises(ValueError):
+                self.check()
+            self.bundle[key] = self.write(path, original)
+        self.save()
+
+    def test_original_operation_rejects_changed_argv_output_and_false_wait_source(self):
+        self.original_operation_failure()
+        argv_path = Path(self.bundle['public_run_argv']['path'])
+        words = json.loads(argv_path.read_bytes())
+        self.bundle['public_run_argv'] = self.write(argv_path, words + ['unexpected'])
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'argv source'):
+            self.check()
+        self.bundle['public_run_argv'] = self.write(argv_path, words)
+        producer = Path(self.bundle['public_run_producer']['path'])
+        original = producer.read_text()
+        producer.write_text(original.replace('result = child.wait()', 'result = 2'))
+        for mode in ('run', 'allocate'):
+            self.bundle['public_'+mode+'_producer'] = allocation.pin(producer)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'original child/wait/argv'):
+            self.check()
+        producer.write_text(original)
+        for mode in ('run', 'allocate'):
+            self.bundle['public_'+mode+'_producer'] = allocation.pin(producer)
+        output = Path(self.bundle['public_run']['path']).with_name('stdout.log')
+        output.write_bytes(b'changed after actual original wait\n')
+        self.save()
+        with self.assertRaises(ValueError):
+            self.check()
+
     def test_r9_inventory_registrar_reproduces_frozen_verifier_without_game_credit(self):
         self.inventory_registrar_failure()
         result = self.check()['failure_cleanup']
@@ -818,7 +949,7 @@ if __name__ == '__main__':
         from mypy import api
         tree = ast.parse((TOOLS/'ck3_mod_acceptance_allocate.py').read_text(encoding='utf-8-sig'))
         names = {'_SavedInventoryVerifierV2', 'FrozenV2RegistrarRejection', '_saved_inventory_registrar_prelaunch',
-                 '_prelaunch_root_public_wait', '_canonical_source_index_files'}
+                 '_prelaunch_root_public_wait', '_prelaunch_original_operation_wait', '_canonical_source_index_files'}
         nodes = [node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and node.name in names]
         self.assertEqual({node.name for node in nodes}, names)
         prelude = '''from __future__ import annotations

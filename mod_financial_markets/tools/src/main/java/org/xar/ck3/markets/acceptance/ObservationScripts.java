@@ -15,21 +15,6 @@ public final class ObservationScripts {
     public static Map<String, byte[]> render(AcceptanceContracts.Request request) {
         Map<String, String> scripts = new LinkedHashMap<>();
         scripts.put("descriptor.mod", "name=\"Financial market read-only acceptance observer\"\nversion=\"1\"\nsupported_version=\"1.21.*\"\n");
-        scripts.put("common/on_action/xfma_start.txt", """
-                # Observer state uses xfma_ only. The product itself performs all business.
-                on_game_start_after_lobby = { on_actions = { xfma_start } }
-                xfma_start = {
-                    effect = {
-                        every_player = {
-                            if = {
-                                limit = { this = character:${ACTOR} NOT = { has_variable = xfma_armed } }
-                                xfma_arm_observer_effect = yes
-                            }
-                            else = { debug_log = "XFMAT: TEST FAIL wrong_actor_or_repeated_fresh_start" }
-                        }
-                    }
-                }
-                """);
         scripts.put("common/scripted_guis/xfma_observer.txt", """
                 # Ordinary observation-only arming permits a converted SavedGame without inventing after_lobby.
                 xfma_arm_observer_gui = {

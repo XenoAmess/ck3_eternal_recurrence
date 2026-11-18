@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -52,6 +53,40 @@ final class AcceptanceFixtureTest {
                 assertFalse(text.contains("set_global_variable")); assertFalse(text.contains("add_to_global_variable_list"));
             }
         });
+    }
+
+    @Test void savedObserverCanOnlyBeArmedThroughItsOrdinaryGui() {
+        var scripts = ObservationScripts.render(new AcceptanceContracts.Request(1, "1128"));
+        assertFalse(scripts.containsKey("common/on_action/xfma_start.txt"));
+        scripts.forEach((name, bytes) -> {
+            assertFalse(new String(bytes, StandardCharsets.UTF_8).contains("on_game_start_after_lobby"), name);
+        });
+        String gui = new String(scripts.get("common/scripted_guis/xfma_observer.txt"), StandardCharsets.UTF_8);
+        assertTrue(gui.contains("xfma_arm_observer_effect = yes"));
+        assertTrue(gui.contains("NOT = { has_variable = xfma_armed }"));
+        assertTrue(new String(scripts.get("gui/xfma_observer.gui"), StandardCharsets.UTF_8).contains("name = \"xfma_arm_observer\""));
+    }
+
+    @Test void actualJavaEmissionReachesSharedSavedInventoryAndHostCopyConsumer() throws Exception {
+        var emission = FixtureEmitter.emit(repository(), temporary.resolve("saved-observer"),
+                "synthetic-fixture-machine", new AcceptanceContracts.Request(1, "1128"));
+        Path shared = Path.of(System.getProperty("xfm.shared.source", repository().toString())).toAbsolutePath().normalize();
+        Path consumer = repository().resolve("mod_financial_markets/tools/src/test/resources/acceptance/verify_saved_observer_inventory.py");
+        Path scratch = temporary.resolve("shared-saved-consumer");
+        Path log = temporary.resolve("saved-consumer.log");
+        var process = new ProcessBuilder(System.getProperty("xfm.python", "python"), "-B", "-X", "utf8",
+                consumer.toString(), "--repo-root", repository().toString(), "--shared-source", shared.toString(),
+                "--manifest", emission.manifest().path(), "--scratch", scratch.toString())
+                .directory(shared.toFile()).redirectErrorStream(true).redirectOutput(log.toFile()).start();
+        assertTrue(process.waitFor(90, TimeUnit.SECONDS), "Shared Saved inventory consumer did not terminate");
+        String output = Files.readString(log);
+        assertEquals(0, process.exitValue(), output);
+        var result = FixtureEmitter.JSON.readTree(Files.readAllBytes(scratch.resolve("actual-result.json")));
+        assertEquals("case_fixture", result.path("source_role").textValue());
+        assertTrue(result.path("saved_inventory_verified").booleanValue());
+        assertTrue(result.path("host_copy_readback_verified").booleanValue());
+        assertFalse(result.path("game_started").booleanValue());
+        assertFalse(result.path("business_acceptance_proven").booleanValue());
     }
 
     @Test void requestRejectsWrongJsonTypesDuplicateFieldsAndScriptInjection() throws IOException {

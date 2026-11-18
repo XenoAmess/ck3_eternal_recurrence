@@ -2,7 +2,15 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前持续施工（11:07 UTC 更新）
+## 当前状态（12:27 UTC 更新）
+
+共同 Florin 运行包 `runtime-core03` 已实际组装成功；Q05 使用同一 Native 编译缓存，未重编 C++。正式 DLL SHA-256 为 `2716d740cb145eae319cf7776fe4f0a46b5c325b6196026d0541a5eed292836c`。共享单日推进和完整角色 ID 消费修复已提交推送，但仍未取得游戏运行行为信用。
+
+首场 `R0001/a79` 的 prepare、已准备 plan 和 preflight 通过。公共 run 的 Host 在创建 Game 之前，被 Saved inventory 守卫拒绝：观察包仍含 `xfma_start.txt` 新开局钩子。原失败和 profile 保留，keeper/原 allocate 正常退出，CAS 已释放；游戏日和 SAVE 均为零。
+
+最小观察器修复已移除该钩子的输出，继续只通过正常 GUI arm。实际 Java emitter 到公共 Saved inventory 和 Host 复制的新增组合回归通过，受影响 8 项通过；完整金融工具随后 `mvn verify` 130 项通过、0 skip，Quarkus 打包成功。新的实际场次仍待执行。完整事实、路径与时间见[共同验收记录](../../docs/maintenance/2026-11-18-machine4-financial-acceptance-control.md)。
+
+## 截至 11:07 UTC 的施工记录
 
 用户明确要求继续做完完整产品。A0是历史原型，不是本任务的交还终点；下文A0通过与失败保留原范围。当前正在把完整现货、发行主体、期货、价格来源、债务新闻和自定义市场界面接入同一原生账册。共同接口见[运行合同](runtime-contract.md)，没有以Java参考计算替代游戏实现。
 
@@ -70,7 +78,7 @@ mvn -f mod_financial_markets/tools/pom.xml -Dtest=FinancialMarketTest test
 
 ## 后续未完成
 
-1. 完成共同运行包的1.21实际身份迁移和正式Native资格，按公共入口准备首个隔离场次。
+1. 冻结观察包修复与失败释放的公共回执兼容，再按公共入口准备新的隔离场次；复用已完成的 Native 资格。
 2. 实机验证金币精度、正常GUI付费发行、同日现货买卖、AI资金、物理SAVE与冷载，保留真实失败。
 3. 扩大到已实现的发行主体、宣传操盘、认购、期货多空杠杆/债务、退市、继承和20种剧情及全球新闻；六个后继场次当前仅有验收用例，未执行。
 

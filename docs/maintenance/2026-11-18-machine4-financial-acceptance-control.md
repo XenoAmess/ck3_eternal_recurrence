@@ -2,7 +2,7 @@
 
 - `machine_id: 4-8e1c2f1861`；日期：2026-11-18。
 - CK3 精确目标：`1.21.0` / Steam build `26622941`，EXE SHA-256 `2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc`。
-- 本记录的工作没有启动、注入或操作 Game/Steam。实际启动、版本化 DLL 采用、存档装载与业务动作由 Root 独占。软件通过不等于金融业务、原生回调或 SAVE 通过。
+- 下文早期软件记录没有启动或注入 Game。12:17Z 的首次公共启动尝试及其真实失败另记于末节；实际启动、版本化 DLL 采用、存档装载与业务动作由 Root 独占。软件通过不等于金融业务、原生回调或 SAVE 通过。
 
 ## 共同消费者
 
@@ -51,3 +51,21 @@ canonical Host 通过 `make_spec(state_dir, game_dir)` 创建当前环境，默�
 core 的 prepare 输入顶层为 `state_dir`、`saved_campaign`、`case_inputs`。`saved_campaign` 恰含 `save/bytes/sha256/player_id/date_raw`，不要预填 `product_inventory`，该字段由实际 prepare 生成。`case_inputs` 包含实际最终 `product_dir`、Java `prebuilt_fixture_manifest` FilePin、四份 `plain_configuration` FilePin 和齐全 `post_start`；可显式提供实际 `steam_manifest` 路径。即使 Saved，当前共同 adapter 仍需填齐 `government_key/primary_title_tier_key/independent` 三个原 null。
 
 候选旧档元数据 `1066.9.15` 对应既有 fixed365/raw24 日历 `53144328`；`53144352` 是次日，不能沿测试夹具照填。首场实际 Native 日期、玩家与 scope 仍须独立核对，旧档日期换算不冒称新 1.21 运行观察。
+
+## 首次公共启动失败与观察包修复
+
+`machine_id: 4-8e1c2f1861`。共同修复 `0e0efa3143d2813d242d408a2edb44c0fb2a2d1b` 已正常推送：构建器核实际 Saved 输入，Host 的 Florin 单日推进使用原 Date ARM、一次 resume、次日暂停 Full 与同代哨兵结果，CaseClient 保留精确有符号完整角色 ID。分别有 3、31、51 项软件回归，最终 Host/Client 另有 6 项组合回归；旧代码路径、软件夹具与实际游戏行为的证据分开保存。
+
+公共运行包 `C:/workspace/ck3-market-live-20261118/runtime-core03` 于 12:16:11Z 由原进程返回 0。Native Q05 实际复用同一编译缓存，0 个 C++ 重编，19 个有限夹具通过；DLL 为 13,364,224 bytes，SHA-256 `2716d740cb145eae319cf7776fe4f0a46b5c325b6196026d0541a5eed292836c`。这些均没有授予 Game 装载或业务通过。
+
+Root 实际执行 plain plan、prepare、prepared plan、allocate、preflight、run。plain plan 如实列出尚待 prepare 生成的 Saved 参数，返回 2；prepare 和已准备 plan 均返回 0，之后才分配 `4-8e1c2f1861--financial-markets--R0001` / `a79`。12:17:37Z 原生读取 Steam 为离线，公共 preflight 返回 0。
+
+原 Host 于 12:17:56Z 返回 1，公共 run 返回 2。失败发生在 `prepare_saved_campaign → verify_inventory`，报 `fixture/common/on_action/xfma_start.txt` 含 cold-start registrar；尚未创建 managed Game、注入 DLL 或取得 Native report。此前只验证了 fixture 导入，没有验证这个 Saved 消费组合，不能把早期导入通过外推为可启动。原件位于上述 scene 的 `live/...R0001/host-stderr.log`、`host-original-process-exit.json`，以及 `operations/CORE01-run/ORIGINAL-WAIT.actual.json`。
+
+Root 合作停止 keeper，原 allocate 父进程实际 wait 0，keeper 确认 `thread_exited=true`、无 failure。12:20:28Z CAS `15201→15202` 正常释放，任务 done、resources 为空。此为失败资源释放，不是 CK3 正常退出、Native cleanup、游戏日、SAVE 或金融业务通过。失败 profile、运行包与回执保留原字节。
+
+最小产品修复移除 `ObservationScripts` 对 `xfma_start.txt` 的输出，保留普通 `xfma_arm_observer`。新观察包由 11 文件变为 10 文件，重新生成 manifest，不改旧 pin。新增实际 Java emitter → 公共 fixture 导入 → `case_fixture` 角色的 Saved inventory → 原 Host 复制消费回归；仅使用明确标记的软件存档字节，不启动 Game。12:26:14Z 受影响的 `AcceptanceFixtureTest` 8 项通过、0 skip，Maven 实际重编本工具模块的 47 个主源码与 15 个测试源码，复用既有 target 和依赖缓存。后续完整验证与新的实际场次仍须独立记录。
+
+12:27:10Z，随后本金融工具模块的完整 `mvn verify` 返回 0：130 项通过、0 skip，主源码与测试源码均显示无需重编，Quarkus 重新打包成功。原公共命令记录总墙钟 38.156 秒，Maven 自报 33.971 秒；原件 `operations/MVN-core-saved-full01/ORIGINAL-WAIT.actual.json`。该软件通过仍不授予游戏、财务对账或整个 Mod 的业务验收。
+
+12:32:30Z，公共 allocator 对既有 `original_operation.py` 原件协议的兼容修复通过 34 项受影响测试及 strict 检查，总墙钟 7.974 秒。保留原始 START、原 Popen wait、真实返回码与输出 pins，不把失败回执改写成旧格式。12:32:32Z，现行 reducer 实际只读消费 R0001 原件并返回 0；关场仅获得下一次资源准入，不获得正常游戏退出或业务通过。回执位于 `runtime-prep/prelaunch-original-operation-actual03/RUN.actual.json` 与 `runtime-prep/r0001-prelaunch-closure-actual02/CONSUMPTION.actual.json`。

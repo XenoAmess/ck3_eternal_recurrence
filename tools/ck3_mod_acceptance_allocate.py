@@ -853,6 +853,102 @@ def _prelaunch_root_public_wait(wait_value: object, intent_value: object, produc
     return argv
 
 
+def _prelaunch_original_operation_wait(wait_value: object, start_value: object, argv_value: object,
+        producer: str, wait_path: Path, argv_path: Path, producer_path: Path,
+        machine: str, mode: Literal['run', 'allocate']) -> list[str]:
+    """Consume the retained original_operation recorder, without rewriting its receipts."""
+    waited, started = json_object(wait_value), json_object(start_value)
+    common = {'machine_id', 'started_at_utc', 'argv', 'pid', 'birth_filetime'}
+    if (set(started) != common or set(waited) != common | {
+            'finished_at_utc', 'actual_original_popen_wait', 'returncode', 'elapsed_seconds', 'stdout', 'stderr'}
+            or wait_path.name != 'ORIGINAL-WAIT.actual.json'
+            or producer_path.name != 'original_operation.py'
+            or wait_path.parent.parent != producer_path.parent / 'operations'
+            or argv_path != wait_path.parent.parent / (wait_path.parent.name + '.argv.json')):
+        raise ValueError('Original operation retained receipt/source paths or fields differ')
+    elapsed = waited.get('elapsed_seconds')
+    birth, pid = waited.get('birth_filetime'), waited.get('pid')
+    if (any(waited.get(key) != started.get(key) for key in common)
+            or waited.get('machine_id') != machine or type(pid) is not int or not isinstance(pid, int) or pid <= 0
+            or type(started.get('pid')) is not int or not isinstance(birth, str)
+            or re.fullmatch(r'[1-9][0-9]*', birth) is None or int(birth) >= 2**64
+            or waited.get('actual_original_popen_wait') is not True
+            or type(waited.get('returncode')) is not int or waited['returncode'] != (2 if mode == 'run' else 0)
+            or type(elapsed) not in (int, float) or not isinstance(elapsed, (int, float))
+            or not math.isfinite(elapsed) or elapsed <= 0):
+        raise ValueError('Original operation actual wait/process identity differs')
+    begin = datetime.fromisoformat(text_field(waited, 'started_at_utc'))
+    end = datetime.fromisoformat(text_field(waited, 'finished_at_utc'))
+    if any(stamp.tzinfo is None or stamp.utcoffset() is None for stamp in (begin, end)) or end < begin:
+        raise ValueError('Original operation completion chronology differs')
+    argv: list[str] = strings_field(waited, 'argv')
+    if argv_value != argv:
+        raise ValueError('Original operation reviewed argv source differs')
+    entries = [index for index, word in enumerate(argv) if Path(word).name == 'ck3_mod_acceptance.py']
+    if (len(entries) != 1 or argv.count(mode) != 1 or entries[0] + 1 >= len(argv)
+            or not (argv[entries[0] + 1] == mode or argv[-1] == mode)):
+        raise ValueError('Original operation public command mode differs')
+    for name in ('stdout', 'stderr'):
+        reference = file_pin(waited.get(name))
+        if (set(object_field(waited, name)) != {'path', 'bytes', 'sha256'}
+                or Path(reference['path']).resolve() != wait_path.parent / (name + '.log')):
+            raise ValueError('Original operation retained output path differs')
+        check_pin(Path(reference['path']), dict(reference))
+
+    # This is the existing recorder's actual child/result protocol, distinct
+    # from the older p/code intent-wait protocol above. Inspect, never execute.
+    tree = ast.parse(producer)
+    assignments = {node.targets[0].id: node for node in ast.walk(tree)
+        if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)}
+    expected = {
+        'root': 'Path(__file__).parent', 'name': 'sys.argv[1]',
+        'args_file': "root / 'operations' / (name + '.argv.json')",
+        'argv': "json.loads(args_file.read_text(encoding='utf-8'))",
+        'output': "root / 'operations' / name", 'result': 'child.wait()',
+        'birth': 'str((creation.high << 32) | creation.low)',
+    }
+    if any(name not in assignments or ast.dump(assignments[name].value) != ast.dump(ast.parse(expression, mode='eval').body)
+            for name, expression in expected.items()):
+        raise ValueError('Original operation recorder original child/wait/argv source differs')
+    child = assignments.get('child')
+    receipt = assignments.get('receipt')
+    if (child is None or not isinstance(child.value, ast.Call)
+            or ast.dump(child.value.func) != ast.dump(ast.parse('subprocess.Popen', mode='eval').body)
+            or len(child.value.args) != 1 or not isinstance(child.value.args[0], ast.Name)
+            or child.value.args[0].id != 'argv' or receipt is None or not isinstance(receipt.value, ast.Dict)
+            or any(keyword.arg == 'shell' and not (isinstance(keyword.value, ast.Constant)
+                and keyword.value.value is False) for keyword in child.value.keywords)):
+        raise ValueError('Original operation recorder must retain its original Popen')
+    child_keywords = {keyword.arg: keyword.value for keyword in child.value.keywords}
+    if any(name not in child_keywords or ast.dump(child_keywords[name]) != ast.dump(ast.Name(id=name, ctx=ast.Load()))
+            for name in ('stdout', 'stderr')):
+        raise ValueError('Original operation recorder must retain original output streams')
+    receipt_fields = {key.value: value for key, value in zip(receipt.value.keys, receipt.value.values)
+        if isinstance(key, ast.Constant) and isinstance(key.value, str)}
+    for name, expression in {'machine_id': repr(machine), 'returncode': 'result', 'pid': 'child.pid', 'birth_filetime': 'birth',
+            'argv': 'argv', 'started_at_utc': 'started', 'actual_original_popen_wait': 'True',
+            'stdout': "pin(output / 'stdout.log')", 'stderr': "pin(output / 'stderr.log')"}.items():
+        if name not in receipt_fields or ast.dump(receipt_fields[name]) != ast.dump(ast.parse(expression, mode='eval').body):
+            raise ValueError('Original operation recorder retained wait/output fields differ')
+    writes = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute) and node.func.attr == 'write_text'
+        and ast.dump(node.func.value) == ast.dump(ast.parse("output / 'ORIGINAL-WAIT.actual.json'", mode='eval').body)
+        and node.args and ast.dump(node.args[0]) == ast.dump(ast.parse("json.dumps(receipt, indent=2) + '\\n'", mode='eval').body)]
+    starts = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute) and node.func.attr == 'write_text'
+        and ast.dump(node.func.value) == ast.dump(ast.parse("output / 'START.actual.json'", mode='eval').body)
+        and node.args and isinstance(node.args[0], ast.Call) and node.args[0].args
+        and ast.dump(node.args[0].func) == ast.dump(ast.parse('json.dumps', mode='eval').body)
+        and isinstance(node.args[0].args[0], ast.Dict)]
+    generations = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute) and node.func.attr == 'GetProcessTimes'
+        and node.args and ast.dump(node.args[0]) == ast.dump(ast.parse('int(child._handle)', mode='eval').body)]
+    if (len(writes) != 1 or len(starts) != 1 or len(generations) != 1
+            or not child.lineno < generations[0].lineno < starts[0].lineno < assignments['result'].lineno < receipt.lineno < writes[0].lineno):
+        raise ValueError('Original operation recorder must write its original wait after completion')
+    return argv
+
+
 def _prelaunch_background_admission(value: object, machine: object) -> None:
     """Read historical launch provenance only; this grants no current offline admission."""
     from steam_offline_state_contract import parse_result
@@ -1031,12 +1127,14 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             bundle.get('business_pass') is False and bundle.get('normal_close_qualified') is False,
             'Prelaunch host closure crossed run/keeper or claims business credit')
     evidence={}
-    def original(key,path):
+    def original(key,path,*,raw_json=False):
         ref=bundle[key]
         require(Path(ref['path']).resolve()==path.resolve() and
                 type(ref.get('bytes')) is int and 0<ref['bytes']<=1048576,
                 'Prelaunch original path/size differs: '+key)
         check_pin(path,ref);evidence[key]=ref
+        if raw_json:
+            return json.loads(path.read_bytes())
         return read_json(path) if path.suffix=='.json' else path.read_text(errors='replace')
     ready=original('ready_context',previous/'ready-context.json')
     require(ready.get('run_id')==freeze['run_id'] and
@@ -1229,6 +1327,7 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
     def command(key,mode,code):
         row=bundle[key];path=Path(row['path']).resolve()
         check_pin(path,row);evidence[key]=row;value=read_json(path);argv=value.get('argv',[])
+        recorded_operation=False
         if menu_campaign_binding is not None:
             intent_path=Path(bundle[key+'_intent']['path']).resolve()
             started_path=Path(bundle[key+'_started']['path']).resolve()
@@ -1257,13 +1356,24 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                         started.get('at_utc')==value.get('at_utc') and value.get('completed_at_utc'),
                         'Cache original allocation parent completion differs')
         elif inventory_registrar is not None:
-            intent_path=Path(bundle[key+'_intent']['path']).resolve()
             producer_path=Path(bundle[key+'_producer']['path']).resolve()
-            require(intent_path.parent==path.parent and producer_path.parent==path.parent,
-                    'V2 registrar original Root intent/producer crossed execution directory')
-            argv=_prelaunch_root_public_wait(value,original(key+'_intent',intent_path),
-                original(key+'_producer',producer_path),path,freeze['identity_allocation']['machine_id'],
-                mode,freeze['run_id'])
+            if bundle.get(key+'_protocol') == 'original-operation-v1':
+                started_path=path.parent/'START.actual.json'
+                argv_path=Path(bundle[key+'_argv']['path']).resolve()
+                argv=_prelaunch_original_operation_wait(value,original(key+'_started',started_path),
+                    original(key+'_argv',argv_path,raw_json=True),original(key+'_producer',producer_path),path,
+                    argv_path,producer_path,freeze['identity_allocation']['machine_id'],mode)
+                recorded_operation=True
+                for stream in ('stdout','stderr'):
+                    evidence[key+'_'+stream]=file_pin(value[stream])
+            else:
+                require(key+'_protocol' not in bundle, 'Unknown prelaunch public receipt protocol')
+                intent_path=Path(bundle[key+'_intent']['path']).resolve()
+                require(intent_path.parent==path.parent and producer_path.parent==path.parent,
+                        'V2 registrar original Root intent/producer crossed execution directory')
+                argv=_prelaunch_root_public_wait(value,original(key+'_intent',intent_path),
+                    original(key+'_producer',producer_path),path,freeze['identity_allocation']['machine_id'],
+                    mode,freeze['run_id'])
         elif allocated_profile_rejected:
             argv=_profile_replacement_public_completion(value,mode,freeze.get('identity_allocation',{}).get('machine_id'))
         elif readonly_tail_rejected:
@@ -1287,7 +1397,8 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                     'Prelaunch original public '+mode+' completion differs')
         require(isinstance(argv,list) and argv.count('--runtime')==1 and
                 ((argv[-1:]==[mode] and argv.count(mode)==1) if saved_registrar_rejected else
-                    argv[argv.index('--runtime')-1]==mode) and argv.count('--prepared-case')==1 and
+                    (recorded_operation or
+                     argv[argv.index('--runtime')-1]==mode)) and argv.count('--prepared-case')==1 and
                 Path(argv[argv.index('--prepared-case')+1]).resolve()==
                     (prepared_path if saved_profile_rejected or allocated_profile_rejected or menu_campaign_binding is not None else
                      (Path(freeze['state_dir']).parent/'prepared/prepared-case.json').resolve()),
