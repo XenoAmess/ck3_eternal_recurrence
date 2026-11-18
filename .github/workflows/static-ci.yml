@@ -957,6 +957,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_florin_fresh_full_rejection_v1.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_florin_fresh_full_actual_diagnostic_v1.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_saved_campaign_vanilla_profile.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_saved_campaign_profile_inventory_v2.py

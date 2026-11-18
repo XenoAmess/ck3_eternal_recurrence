@@ -1,0 +1,42 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "producer": "Actual Q09 handler stdout after original natural wait0; no fields rewritten.",
+  "native_compile_commit": "4f64450cca85ab22832ef667237b7b0e0e00fd34",
+  "native_diagnostic_operands_modified": false,
+  "packets": [
+    {
+      "file": "producer-raw_read_unavailable.json",
+      "bytes": 555,
+      "sha256": "c72f5ab706f285bf6c2789beece10110b3406b032b487195ac5a7a70ceca6859",
+      "origin_log": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification09\\supplemental-affected01\\handler-default.actual.log",
+        "bytes": 1135,
+        "sha256": "6080a0b5623aa9ec4046eef30946a71388ab0b58bd549eb5df7210cc405261a3"
+      },
+      "origin_line": 1
+    },
+    {
+      "file": "producer-submit_rejected.json",
+      "bytes": 549,
+      "sha256": "54bded0e8d13069add314d8d7487fa3441a6c843ff9ea93335f2f2d38780f403",
+      "origin_log": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification09\\supplemental-affected01\\handler-default.actual.log",
+        "bytes": 1135,
+        "sha256": "6080a0b5623aa9ec4046eef30946a71388ab0b58bd549eb5df7210cc405261a3"
+      },
+      "origin_line": 2
+    }
+  ],
+  "supplement": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification09\\supplemental-affected01\\SUPPLEMENT.actual.json",
+    "bytes": 13461,
+    "sha256": "cb834b444fdb268c1b1d707752ddb32dadcccd72e704767098faf093eff684ca"
+  },
+  "actual_sdk_consumer": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\q07-handler-sdk-actual-20261118T152829902416Z\\SDK.actual.json",
+    "bytes": 12308,
+    "sha256": "414a041ba3b2cb6a6f2214e3b0ee05978f701f072993ad3e0c5653beb0eb67f5"
+  },
+  "game_operations": false,
+  "software_envelope_policy": "Tests only rebind outer request_id; original Native error and complete17-field diagnostic remain byte-derived unchanged."
+}
