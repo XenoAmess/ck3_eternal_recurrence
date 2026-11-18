@@ -20,6 +20,9 @@ namespace api = xar::ck3_11906;
 namespace build = xar::ck3_12002;
 namespace game = xar::game;
 
+// The native hook deliberately pins one mailbox address until process exit.
+api::MainThreadQueryMailboxV1 g_fresh_mailbox{};
+
 #define CHECK(expression) do { if (!(expression)) { \
   std::fprintf(stderr, "semantic fixture line %d: %s\n", __LINE__, #expression); \
   return false; } } while (false)
@@ -359,7 +362,7 @@ bool TestFreshOwnerExecutor(bool florin = false) {
   Store(memory.tls, 0x20, std::uint8_t{1});
   Store(memory.jomini, 0x20, std::uint8_t{1});
   Store(memory.state, 0x08, native.frame.date_raw);
-  api::MainThreadQueryMailboxV1 mailbox;
+  auto &mailbox = g_fresh_mailbox;
   std::array<api::MainThreadQueryExecutorV1, 14> executors{};
   executors[13] = &build::ExecuteSemanticAdapter12002;
   auto environment = florin
@@ -385,7 +388,11 @@ bool TestFreshOwnerExecutor(bool florin = false) {
   environment.memory_protect_override = &FakeProtect;
   environment.system_page_size_override = 4096;
   // No snapshot observer: raw_reads counts only the production fresh executor.
-  if (!api::InstallMainThreadQueryMailboxV1(mailbox, environment)) return false;
+  if (!api::InstallMainThreadQueryMailboxV1(mailbox, environment)) {
+    std::fprintf(stderr, "fresh fixture install failed: stage=rapid-fresh florin=%d failure_flags=%llu\n",
+        florin ? 1 : 0, static_cast<unsigned long long>(mailbox.failure_flags.load()));
+    return false;
+  }
   bool installed = true;
   FreshWorkerProbe probe;
   std::thread worker;
@@ -495,7 +502,7 @@ bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
   Store(memory.tls, 0x20, std::uint8_t{1});
   Store(memory.jomini, 0x20, std::uint8_t{1});
   Store(memory.state, 0x08, native.frame.date_raw);
-  api::MainThreadQueryMailboxV1 mailbox;
+  auto &mailbox = g_fresh_mailbox;
   const std::array<api::MainThreadQueryExecutorV1, 1> executors{
       &build::ExecuteSemanticAdapter12002};
   auto environment = florin
@@ -515,7 +522,11 @@ bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
   environment.memory_query_override = &FakeQuery;
   environment.memory_protect_override = &FakeProtect;
   environment.system_page_size_override = 4096;
-  if (!api::InstallMainThreadQueryMailboxV1(mailbox, environment)) return false;
+  if (!api::InstallMainThreadQueryMailboxV1(mailbox, environment)) {
+    std::fprintf(stderr, "fresh fixture install failed: stage=queued-wake florin=%d failure_flags=%llu\n",
+        florin ? 1 : 0, static_cast<unsigned long long>(mailbox.failure_flags.load()));
+    return false;
+  }
   const auto pump = [&] {
     (void)api::ObserveMainThreadPumpAndDrainV1(mailbox,
         florin ? xar::ck3_1210::kSdlWindowsPumpFirstPeekReturnRva
