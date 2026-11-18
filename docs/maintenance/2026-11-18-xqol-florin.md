@@ -25,3 +25,7 @@
 本次按实际生产xqol_events.txt确认选项完整消费链修正两处fixture入口：draft=50，提交committed=draft，dispatch，清理draft。原全部断言及生产运行27文件不变。回归同时读取真实生成dispatcher、生产Save提交和原矩阵断言，验证字段及顺序闭环，当前stock共9项无跳过通过。a04只重parse修改的event，另21份输入逐项SHA确认后复用；不以源码修正追认R0002通过。
 
 已按策略提前回收R0001/R0002共8616个可重建shader、387047361逻辑字节，零失败；具体问题为fixture输入，shader与该故障无关。原日志、截图、fixture、formal及失败记录保留，已删除shader的历史prepared pins不可读；唯一MRM warm输入和CHT物理保存仍在。新场重新计预算，不重复扣旧unused。
+
+R0003在实际1066-10-07／22自然日已达到完整27/27各一次、FAIL0，原fixture变量错误消失。Root随后为补充角色画面误从菜单恢复模拟，后见1066-11-21／67自然日，超出本case60日上限；记录OPERATOR_CALENDAR_RED，不以较早核心完成点追认整场PASS。10:17:05.727020Z正常退出0、keeper/CAS闭合、零SAVE，原件保留。error.log3150B仅35条weak/positive_value/negative_value格式提示，来源归因尚未闭合，不先称原版或错误日志为空。
+
+后继临时GUI收束在完整原标记各一次／零FAIL且无Script system error时，从已暂停菜单直接正常Exit，不恢复模拟补图。退出前只接受三张已审XQOL同版截图中一致的unchecked-autosave16×16原像素SHA；不匹配则保持菜单，不点退出。该像素核对不是业务信用，仍须原Popen正常终止、keeper/CAS及实际图片审阅。正式27文件、原断言和自然日上限均未改变。

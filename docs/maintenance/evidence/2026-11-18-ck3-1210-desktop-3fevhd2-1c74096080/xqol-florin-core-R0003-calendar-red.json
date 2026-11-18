@@ -1,0 +1,52 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T10:21:27.694831+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0003",
+  "status": "OPERATOR_CALENDAR_RED",
+  "business_pass": false,
+  "process_pass": true,
+  "closure_pass": true,
+  "original_core_markers_each_once": true,
+  "forbidden_counts": {
+    "ZQA: TEST FAIL": 0,
+    "ZQA120: TEST FAIL": 0
+  },
+  "actual_core_done_date": "1066-10-07,22natural days",
+  "later_operator_date": "1066-11-21,67natural days",
+  "maximum_natural_days": 60,
+  "cause": "Root unnecessarily resumed simulation after completed core/menu hold to supplement GUI actor evidence; the later date exceeded the60day case limit. No full case PASS is granted. Future completion immediately selects normal Exit from the held menu without resuming.",
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ca1163d46a32402199ff701a5234cc76\\profile\\logs\\error.log",
+    "bytes": 5494,
+    "sha256": "11b9ea4e629b40d40e9664dc95ad97ada50af4f000f1c3dbadb56e703f7dfeff"
+  },
+  "log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ca1163d46a32402199ff701a5234cc76\\profile\\logs\\debug.log",
+    "bytes": 3760757,
+    "sha256": "1cc1baa4b8c4d47669d72295d5e40efec2a9d0f2e253546c8b690398a3431cc1"
+  },
+  "done_gui": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r3-batch2-before-menu-hold.png",
+    "bytes": 1160983,
+    "sha256": "44d3aeecbc283960c68ab5cafbb8cf8c9b80df48af2da28f94a3754ab878c281"
+  },
+  "later_gui": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r3-core-explicit-pause-view.png",
+    "bytes": 1170054,
+    "sha256": "d1b9f4acdf065fcd0e8f4c426b9daf25581a7c6f635bfc6e9bb044d506fef786"
+  },
+  "normal_exit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r3-quit-dialog-view.png",
+      "bytes": 664840,
+      "sha256": "4629030792155b6bbbc9e762ad7b15bfdee6cf85cc549a8e9a1c3ad38cda223a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r3-quit-desktop.png.json",
+      "bytes": 1444,
+      "sha256": "5a56ab165c47e42471c2ea6522f62a79411f4f4fa5f77c390be43c27fad5e562"
+    }
+  ],
+  "save_count": 0,
+  "retention_review_at_utc": "2026-12-18T10:17:00Z"
+}
