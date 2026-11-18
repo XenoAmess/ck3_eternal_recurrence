@@ -1,0 +1,153 @@
+{
+  "schema": "xar.java.resource-leaf-v2-cpp27-software-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "created_utc": "2026-11-18T15:49:13.633780+00:00",
+  "scope": "C++27 explicit DTO formatter originals -> Java signed resource DATA codec and software held query occurrence; no actual Actor reader/Main/MQ/Source/Full/Root/action/treasury role",
+  "source_base": "9768fe997861ecf6aeaf41be1935398ef9ea41ce",
+  "source_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/SOURCES01.json",
+    "bytes": 5634,
+    "sha256": "41e93c2743832b9596b57ebc5785dbc5916b6f4f2e2f458c2c25911e6fa6aa0a"
+  },
+  "production_TUs": 2,
+  "test_TUs": 3,
+  "actual_jobs": [
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/javac.exe",
+        "-J-XX:ActiveProcessorCount=1",
+        "-J-Xmx768m",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/javac01.args"
+      ],
+      "begin": "2026-11-18T15:48:11.731015+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-RESOURCE-LEAF8M-OFFLINE-PERMIT46.json",
+      "NoGame": true,
+      "selected_methods": 5,
+      "owned_child_pid": 10572,
+      "exit_code": 0,
+      "timed_out": false,
+      "end": "2026-11-18T15:48:14.001960+00:00",
+      "seconds": 2.2709467001259327
+    },
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/java.exe",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/junit01.args"
+      ],
+      "begin": "2026-11-18T15:48:14.002692+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-RESOURCE-LEAF8M-OFFLINE-PERMIT46.json",
+      "NoGame": true,
+      "selected_methods": 5,
+      "owned_child_pid": 107276,
+      "exit_code": 0,
+      "timed_out": false,
+      "end": "2026-11-18T15:48:15.525767+00:00",
+      "seconds": 1.5230796001851559
+    }
+  ],
+  "distinct_methods": [
+    {
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.ActorResourceLeafV2OriginalProducerTest",
+      "method": "exactSourceFrameUnitsAndUnknownCannotBeBroadened()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.ActorResourceLeafV2OriginalProducerTest",
+      "method": "actualOriginalSignedResourceExitPreservesPartialUnknownAndFrame()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.ActorResourceLeafV2DebtZeroOriginalProducerTest",
+      "method": "oneQuantumDebtAndLegalZeroNeverBecomeGovernmentTreasury()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeActorResourceLeafV2ReceivedSourceTest",
+      "method": "realReceiverOccurrenceRetainsOriginalBytesIssuerWindowAndReadonlyRole()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeActorResourceLeafV2ReceivedSourceTest",
+      "method": "capabilityZeroWriteAndAfterWriteUnknownKeepDistinctOriginalEvidence()"
+    }
+  ],
+  "results": {
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "aborted": 0
+  },
+  "input_receipt": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/resource-leaf27/ACTUAL-RESOURCE-FORMATTER-PACKETS27.json",
+    "bytes": 5116,
+    "sha256": "daedc955574b371108e18ee4548696ca4f7bf4e878b7b5c6a877576f6190acef"
+  },
+  "checks": [
+    "Four actual C++ formatter stdout and stderr exact SHA pinned: partial, unavailable, one-quantum debt and zero",
+    "Original signed Q100000 amount units and raw bytes retained, invalid source/frame/unit/unknown variants rejected",
+    "Actor/Core-bound noncash DATA preserves full signed actor; renown/true government treasury remain Unknown",
+    "Private software receiver occurrence verifies identical issuer/session/custody/original outbound+ACK/query window",
+    "Missing capability is zero-write RejectedBeforeDispatch; lost after-write result remains original Unknown",
+    "Read occurrence does not become CoreRead/Full result or refresh accepted Snapshot; no controls or retry",
+    "Exact existing recipe hunks applied to current 9768 NGT; Cash, PreparedCleanup, remote Event/GUI sections preserved"
+  ],
+  "limitations": [
+    "Native27 packets are real formatter output from explicit DTO fixtures, not actual Actor/Main/MQ reader originals",
+    "Reported source/main booleans inside DTO do not prove actual Native custody or live identity",
+    "Only owned in-memory software packet port, no actual pipe/Native call or user process",
+    "No new registry capability, Root product/installer or authority declaration is registered",
+    "No new Full/control/spending/trueTreasury/Root/Installed/wholeSERVICE/Life/live qualification",
+    "No Game/GSV/Steam/window/SDK live/install/settings/mod/active save reads or writes",
+    "Old genuine artifacts and prior suites remain immutable and were not rerun"
+  ],
+  "artifacts": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/RESOURCE-LEAF8M-OFFLINE-REQUEST01.json",
+      "bytes": 7178,
+      "sha256": "46cdc1cbae93393910a2500450d036f6c1331a2a0624129f17cff522e1388f04"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/javac01.args",
+      "bytes": 31455,
+      "sha256": "cafcd402fa8b959e149955ac3bd1efb92eab6e9338ca1f498e800ff6c88092be"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/junit01.args",
+      "bytes": 31882,
+      "sha256": "50203cb0e127bacc3404f841590fe260b6872dd0e3070ca4824c9198b8bb690c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/javac01.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/javac01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/junit01.stdout",
+      "bytes": 1176,
+      "sha256": "751c6a31ae873f8896b60aa374e290ae0f1d6f340b2d511630ca2ffa0a97cc47"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/junit01.stderr",
+      "bytes": 235,
+      "sha256": "3a8bc4e25e0fef1a0051d5fdda2a1214c95548deb52d7b3e36ea212ddd814f9d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/junit-xml01/TEST-junit-jupiter.xml",
+      "bytes": 40764,
+      "sha256": "2f0bf1ebba6b2973cf223f385147963b8f4364453a92cb81d396722ad208fe69"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/junit-xml01/TEST-junit-platform-suite.xml",
+      "bytes": 37839,
+      "sha256": "666e2a33df4bde2ad96c66dabc162bed30e3ee79e8e025460a46dc5d2a10af98"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-resource-leaf20/qualification01/junit-xml01/TEST-junit-vintage.xml",
+      "bytes": 37818,
+      "sha256": "a8e06059f32ecfb84b03903f4f530dc16633efd2cb6b8a0ce9e0e3e20c6b2138"
+    }
+  ]
+}

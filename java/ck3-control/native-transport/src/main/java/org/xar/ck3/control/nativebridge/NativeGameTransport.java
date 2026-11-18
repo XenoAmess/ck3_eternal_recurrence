@@ -32,6 +32,7 @@ import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.ActorFoundationFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.ActorFoundationFramePublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.ActorResourceLeafV2;
 import org.xar.ck3.control.contracts.semantic.NativeSemanticFingerprint;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
@@ -1109,6 +1110,71 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 throw new IOException("standalone actor foundation requires exact Florin identity and its advertised capability");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             return retainReadOutcome(dispatch(id,NativeWire.execute(id,ActorFoundationFrame.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
+        }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
+    }
+    public sealed interface ActorResourceLeafReadV2 permits ActorResourceLeafReceivedV2,ActorResourceLeafReadUnavailableV2 {
+        DispatchOutcome original();
+    }
+    /** A read-only resource occurrence. Its nested Core DATA cannot become a Core control receipt. */
+    public static final class ActorResourceLeafReceivedV2 implements ActorResourceLeafReadV2 {
+        private final NativeGameTransport issuer;
+        private final ActorResourceLeafV2 frame;
+        private final AckReceived original;
+        private final NativeRequestChronology custody;
+        private final Instant validUntil;
+        private ActorResourceLeafReceivedV2(NativeGameTransport issuer,ActorResourceLeafV2 frame,AckReceived original,
+                NativeRequestChronology custody,Instant validUntil) {
+            this.issuer=issuer;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=validUntil;
+        }
+        public ActorResourceLeafV2 frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actualHeld,Instant deadline)throws IOException {
+            Objects.requireNonNull(actualHeld).requireActorResourceLeafOriginalV2(this,deadline);
+        }
+    }
+    public record ActorResourceLeafReadUnavailableV2(DispatchOutcome original,String reason)implements ActorResourceLeafReadV2 {
+        public ActorResourceLeafReadUnavailableV2 {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public synchronized ActorResourceLeafReadV2 readActorResourceLeafFrameReceivedV2(Instant deadline)throws InterruptedException {
+        Instant until=readDeadline(Objects.requireNonNull(deadline));
+        DispatchOutcome original=readActorResourceLeafFrameV2(until);
+        try {
+            ActorResourceLeafV2 frame=ActorResourceLeafV2.decodeOutcome(original);var ack=(AckReceived)original;
+            var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("actual actor-resource-v2 ACK custody unavailable"));
+            var received=new ActorResourceLeafReceivedV2(this,frame,ack,custody,until);
+            requireActorResourceLeafOriginalV2(received,until);return received;
+        }catch(IOException|RuntimeException invalid){return new ActorResourceLeafReadUnavailableV2(original,reason(invalid));}
+    }
+    private void requireActorResourceLeafOriginalV2(ActorResourceLeafReceivedV2 actual,Instant deadline)throws IOException {
+        Objects.requireNonNull(deadline);
+        if(actual.issuer!=this||hello==null||closed||terminalFailure!=null)throw new IOException("actor resource leaf v2 requires its identical live held receiver");
+        Instant now=chronologyClock.instant();
+        if(!now.isBefore(actual.validUntil)||!now.isBefore(deadline)||deadline.isAfter(actual.validUntil)
+                ||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)
+                ||actual.custody.writeEntered().observedAt().isBefore(helloObservedAt))throw new IOException("actor resource leaf v2 escaped its original query window or HELLO chronology");
+        verifyHeld(deadline);
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)
+                ||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())
+            throw new IOException("actor resource leaf v2 crossed its original Game/session/connection/custody");
+        actual.custody.verify(actual.original);
+        var decoded=ActorResourceLeafV2.decodeOutcome(actual.original);
+        var originalHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        if(!decoded.equals(actual.frame)||!ActorResourceLeafV2.BUILD.matches(NativeWire.text(originalHello.get("expected_ck3_version")),hello.gameSha256())
+                ||!hello.adapterId().equals(ActorResourceLeafV2.ADAPTER)||!hello.capabilities().contains(ActorResourceLeafV2.CAPABILITY))throw new IOException("actor resource leaf v2 belongs to another exact executable or original frame");
+    }
+    /** Independent paused resource query only; it does not refresh a full Snapshot or authorize a control. */
+    public synchronized DispatchOutcome readActorResourceLeafFrameV2(Instant deadline)throws InterruptedException {
+        String id="actor-resource-v2-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            awaitHello(deadline);verifyEndpoint();
+            var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+            if(!ExactCk3Build.CK3_1210.matches(NativeWire.text(original.get("expected_ck3_version")),hello.gameSha256())
+                    ||!hello.adapterId().equals(ActorResourceLeafV2.ADAPTER)||!hello.capabilities().contains(ActorResourceLeafV2.CAPABILITY))
+                throw new IOException("standalone actor resource leaf v2 requires exact Florin identity and its advertised capability");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            return retainReadOutcome(dispatch(id,NativeWire.execute(id,ActorResourceLeafV2.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
         }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
     }
     public sealed interface FullClockRead permits FullClockReceived,FullClockReadUnavailable {
