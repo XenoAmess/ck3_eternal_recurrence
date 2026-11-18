@@ -25,6 +25,7 @@ import java.util.UUID;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.contracts.FlorinUnitFullId;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
@@ -1442,10 +1443,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private final AckReceived original;
         private final NativeRequestChronology custody;
         private final RawCashCodec.NormalizedCurrentCash cash;
+        private final PersonalCashVersion version;
         private final Instant validUntil;
         private PersonalCashReceived(NativeGameTransport issuer,FullClockReceived before,AckReceived original,
-                NativeRequestChronology custody,RawCashCodec.NormalizedCurrentCash cash,Instant validUntil){
-            this.issuer=issuer;this.before=before;this.original=original;this.custody=custody;this.cash=cash;this.validUntil=validUntil;
+                NativeRequestChronology custody,RawCashCodec.NormalizedCurrentCash cash,Instant validUntil,PersonalCashVersion version){
+            this.issuer=issuer;this.before=before;this.original=original;this.custody=custody;this.cash=cash;this.validUntil=validUntil;this.version=version;
         }
         @Override public AckReceived original(){return original;}
         public ObservedFrame fullFrame(){return before.frame();}
@@ -1458,10 +1460,21 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     public record PersonalCashReadUnavailable(DispatchOutcome original,String reason)implements PersonalCashRead {
         public PersonalCashReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
     }
-    private static final String PERSONAL_CASH_STEP="query-war-cash-current-resources-v1";
-    private static final String PERSONAL_CASH_CAPABILITY="game.query.war-cash-current-resources.v1";
+    private enum PersonalCashVersion {
+        LEGACY("query-war-cash-current-resources-v1","game.query.war-cash-current-resources.v1",RawCashCodec.SCHEMA),
+        SIGNED_SCOPE("query-war-cash-current-resources-v2","game.query.war-cash-current-resources.v2",RawCashCodec.SIGNED_SCOPE_SCHEMA);
+        final String step,capability,schema;
+        PersonalCashVersion(String step,String capability,String schema){this.step=step;this.capability=capability;this.schema=schema;}
+    }
     /** One read using the standard positive Native revision envelope; it does not refresh its Full source. */
     public synchronized PersonalCashRead readPersonalCashReceived(FullClockReceived before,Instant deadline)throws InterruptedException{
+        return readPersonalCashReceived(before,deadline,PersonalCashVersion.LEGACY);
+    }
+    /** Explicit Native v2 DATA read; the default v1 read retains the qualified legacy cash scope. */
+    public synchronized PersonalCashRead readPersonalCashSignedScopeReceived(FullClockReceived before,Instant deadline)throws InterruptedException{
+        return readPersonalCashReceived(before,deadline,PersonalCashVersion.SIGNED_SCOPE);
+    }
+    private PersonalCashRead readPersonalCashReceived(FullClockReceived before,Instant deadline,PersonalCashVersion version)throws InterruptedException{
         if(before!=null&&before.issuer==this&&before.unresolvedPersonalCashRead!=null)return before.unresolvedPersonalCashRead;
         String id="personal-cash-"+UUID.randomUUID().toString().replace("-","");
         DispatchOutcome original;
@@ -1470,10 +1483,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(applicationExitAttempted||before.writeAttempted||before.personalCashReadAttempted||unresolvedFullClockControl!=null
                     ||unresolvedCoreControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
                 throw new IOException("personal cash requires an unused actual paused Full without active or uncertain controls");
-            if(!hello.capabilities().contains(PERSONAL_CASH_CAPABILITY))throw new IOException("actual personal cash capability unavailable");
+            if(!hello.capabilities().contains(version.capability))throw new IOException("actual personal cash capability unavailable");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             byte[] fields=StrictJson.canonical(StrictJson.object().put("expected_snapshot_revision",before.frame().nativeRevision()));
-            byte[] packet=NativeWire.execute(id,PERSONAL_CASH_STEP,before.frame().nativeRevision(),fields);
+            byte[] packet=NativeWire.execute(id,version.step,before.frame().nativeRevision(),fields);
             original=retainReadOutcome(dispatch(id,packet,deadline,()->{
                 requireBackgroundAtCoreWrite();
                 try{requireFullClockOriginal(before,deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
@@ -1487,8 +1500,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         try{
             if(!(original instanceof AckReceived ack))throw new IOException("personal cash has no actual received acknowledgement");
             var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("actual personal cash custody unavailable"));
-            var cash=decodePersonalCash(ack,before);
-            var actual=new PersonalCashReceived(this,before,ack,custody,cash,deadline);
+            var cash=decodePersonalCash(ack,before,version);
+            var actual=new PersonalCashReceived(this,before,ack,custody,cash,deadline,version);
             requirePersonalCashOriginal(actual,deadline);return actual;
         }catch(IOException|RuntimeException invalid){
             var unavailable=new PersonalCashReadUnavailable(original,reason(invalid));
@@ -1496,26 +1509,41 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return unavailable;
         }
     }
-    private RawCashCodec.NormalizedCurrentCash decodePersonalCash(AckReceived ack,FullClockReceived before)throws IOException{
+    private RawCashCodec.NormalizedCurrentCash decodePersonalCash(AckReceived ack,FullClockReceived before,PersonalCashVersion version)throws IOException{
         if(!ack.nativeOk())throw new IOException("personal cash Native acknowledgement is not accepted");
         var result=NativeWire.object(NativeWire.parse(ack.originalResultToken().orElseThrow(()->new IOException("original personal cash result unavailable")).bytes()));
-        if(!textEquals(result,"step",PERSONAL_CASH_STEP))throw new IOException("personal cash result belongs to another operation");
+        if(!textEquals(result,"step",version.step))throw new IOException("personal cash result belongs to another operation");
         StrictJson.trueValue(result.get("accepted"));StrictJson.trueValue(result.get("private_build"));StrictJson.trueValue(result.get("read_only"));
         if(result.get("advertised")==null||!result.get("advertised").isBoolean()||result.get("advertised").booleanValue())
             throw new IOException("personal cash cannot claim public finance readiness");
         var raw=NativeWire.object(result.get("war_cash_current_resources"));
+        if(!textEquals(raw,"schema",version.schema))throw new IOException("personal cash schema differs from its requested version");
         var projection=PersonalCashFullProjection.snapshotData(before.frame(),hello);
         var normalized=RawCashCodec.normalize(StrictJson.canonical(raw),projection.bytes());
         var state=NativeWire.object(NativeWire.parse(before.frame().state().bytes()));
-        requirePersonalCashScope(state,"active_wars","war_id",normalized.activeWarIds());
-        requirePersonalCashScope(state,"player_armies","army_id",normalized.playerArmyIds());
+        // The native Cash reader requires both Gold samples to equal its retained Full basis.
+        // Absent/null wallet data stays unknown; a known value has no later-sampling exception.
+        var wallet=normalized.metrics().currentTreasury();
+        if(wallet.known()) {
+            var fullWallet=NativeWire.object(state.get("played_character_gold"));
+            var fullRaw=NativeWire.integer(fullWallet.get("raw"),BigInteger.valueOf(Long.MIN_VALUE),BigInteger.valueOf(Long.MAX_VALUE));
+            var scale=BigInteger.valueOf(100000);
+            NativeWire.integer(fullWallet.get("scale"),scale,scale);
+            if(wallet.value().scale()!=100000||!wallet.value().raw().equals(fullRaw))
+                throw new IOException("personal cash wallet differs from its actual Full");
+        }
+        requirePersonalCashScope(state,"active_wars","war_id",normalized.activeWarIds(),false);
+        requirePersonalCashScope(state,"player_armies","army_id",normalized.playerArmyIds(),
+                normalized.playerArmyIdDomain()==RawCashCodec.PlayerArmyIdDomain.FLORIN_SIGNED_FULL);
         return normalized;
     }
-    private static void requirePersonalCashScope(ObjectNode state,String collection,String idField,List<BigInteger> expected)throws IOException{
+    private static void requirePersonalCashScope(ObjectNode state,String collection,String idField,List<BigInteger> expected,boolean signedUnits)throws IOException{
         var rows=state.get(collection);if(rows==null||!rows.isArray())throw new IOException("actual Full cash scope is unavailable: "+collection);
         var ids=new ArrayList<BigInteger>();
         for(var row:rows){
-            var id=NativeWire.integer(NativeWire.object(row).get(idField),BigInteger.ZERO,BigInteger.valueOf(Integer.MAX_VALUE));
+            var raw=NativeWire.object(row).get(idField);
+            var id=signedUnits ? FlorinUnitFullId.fromJson(raw).asBigInteger()
+                    : NativeWire.integer(raw,BigInteger.ZERO,BigInteger.valueOf(Integer.MAX_VALUE));
             if(ids.contains(id))throw new IOException("actual Full cash scope repeats an identity");ids.add(id);
         }
         if(!ids.equals(expected))throw new IOException("personal cash scope differs from its actual Full: "+collection);
@@ -1532,7 +1560,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 ||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())
             throw new IOException("personal cash crossed original Game/session/connection/custody");
         actual.custody.verify(actual.original);
-        if(!Arrays.equals(actual.cash.toJson(),decodePersonalCash(actual.original,actual.before).toJson()))
+        if(!Arrays.equals(actual.cash.toJson(),decodePersonalCash(actual.original,actual.before,actual.version).toJson()))
             throw new IOException("personal cash differs from its original normalized data");
     }
     private Unknown unresolvedFullClockControl;

@@ -1,0 +1,503 @@
+{
+  "status": "CASH_V2_CPP20_21_25_28_13_DISTINCT_SOFTWARE_PASS_OFFLINE",
+  "scope": "3production and4tests on actual Git646bac merged NativeGameTransport, seven inner matched/unknown/overflow cases, original V1 capability gate, seven real C++ outer packets including owner-after-gross, War schema rejection only and six money boundary cases5..10",
+  "base_commit": "646bac3804b1c1e68fe7b481f4ed02cb3a8ba133",
+  "exact_sources": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/FINAL-SOURCES02.json",
+    "bytes": 3955,
+    "sha256": "d3653eb952b3cd2900d09dd806be38ecb5500725a908766a3873cc3ceda19583"
+  },
+  "first_typing": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/javac01.json",
+    "bytes": 543,
+    "sha256": "7001b9469395960854ede2daf640d2df6ab34f74311e66001deba248b9b8927f"
+  },
+  "first_test_result": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/junit01.json",
+    "bytes": 487,
+    "sha256": "a0158184e17a6199401e6e9fc4571c13b0096535a70ca37d410e463e032ddcda"
+  },
+  "first_xml": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/reports01/TEST-junit-jupiter.xml",
+    "bytes": 52785,
+    "sha256": "ab3051cfc58e324473f75d3f068bec34abbc9d5c87797537af7a2061c84bf5b3"
+  },
+  "first_summary": {
+    "passed": 11,
+    "failed": 2,
+    "failures": [
+      "normalized DATA JSON key ordering assertion",
+      "exact original legacy test resources absent from test-JAR CP"
+    ]
+  },
+  "repair": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/repair01/REPAIR01.json",
+    "bytes": 1273,
+    "sha256": "7398ab7a7ef10f020d3c2ec1e4fa20736061b0d252a60320d66ddea998c90f29"
+  },
+  "repair_typing": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/repair01/javac02.json",
+    "bytes": 525,
+    "sha256": "abce7e33b4a17dc911958068946e72ec5bed5658810cdb9fb3ed428b35a08e7f"
+  },
+  "repair_test_result": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/repair01/junit02.json",
+    "bytes": 471,
+    "sha256": "b579bd85689446f05ced818ff443db858b7c43e783310c9bd5b362da7b7cb70a"
+  },
+  "repair_xml": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/repair01/reports02/TEST-junit-jupiter.xml",
+    "bytes": 46178,
+    "sha256": "d2889729c7c994b65c4fd0f94d2059e614753ab52b8855291bb6cd140e55b389"
+  },
+  "final_distinct_count": 13,
+  "final_results": {
+    "org.xar.ck3.control.nativebridge.MoneyActualBoundaryColdReadTest#actualEarlyFullAndLateReadFailureRemainDifferentUnknownInputStates()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativePersonalCashV2MatchedCppTest#anotherReceiverWithTheSameCppFrameCannotAdoptTheOriginalCashReceipt()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativePersonalCashV2MatchedCppTest#crossPairActorAndRevisionMismatchRetainTheExactCppResultAndNeverRetry()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativePersonalCashV2MatchedCppTest#actualProviderWalletDriftInnerDataRemainsUnknownUnderAControlledPositiveAck()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativePersonalCashV2MatchedCppTest#actualPairedCppFullAndCashReachRawCodecAndPrivateReceiptWithIdenticalCompleteArmyScope()": "PASSED",
+    "org.xar.ck3.control.nativebridge.MoneyActualBoundaryColdReadTest#actualSignedOverflowAndMonthlyFailureKeepTheSameOriginalFullWallet()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativePersonalCashV2MatchedCppTest#providerDriftWithControlledNegativeOuterAckKeepsTheOriginalResultWithoutAReceipt()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeCashV2OuterCommandResultTest#actualPostGetterFailuresAreNegativeOuterResultsWithoutInnerCashData()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeCashV2OuterCommandResultTest#actualStandaloneWar21CannotBeACashDocument()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativePersonalCashV2MatchedCppTest#actualCppChangedUnitGenerationJoinsItsOwnFullAndRefusesOriginalFullWithSameActorRevisionAndWallet()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativePersonalCashV2MatchedCppTest#identicalCppBytesAtANewFullOccurrenceCannotRefreshTheOldCashReceipt()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeCashV2OuterCommandResultTest#actualPositiveOuterPartialUnknownAndOverflowPreserveTheFrozenCashContract()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativePersonalCashPortTest#v1CapabilityDoesNotAuthorizeV2AndItsUnusedFullCanStillReadOriginalV1()": "PASSED"
+  },
+  "class_outputs": {
+    "org/xar/ck3/control/contracts/FlorinUnitFullId.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/contracts/FlorinUnitFullId.class",
+      "bytes": 2120,
+      "sha256": "69cae1d8ad0270087bde1bd248523007e94466fc6ba0c52d20a48e7a3875e650"
+    },
+    "org/xar/ck3/control/nativebridge/MoneyActualBoundaryColdReadTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/MoneyActualBoundaryColdReadTest.class",
+      "bytes": 8891,
+      "sha256": "64aa054922a0adda9f02e926df4b1e1a3331bc199e87a919cd5758d4eeb813f7"
+    },
+    "org/xar/ck3/control/nativebridge/NativeCashV2OuterCommandResultTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeCashV2OuterCommandResultTest.class",
+      "bytes": 9072,
+      "sha256": "c7aca4f916fa23863de2b71c470f103c351b54d6d1660b1d011012acdac09003"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$1.class",
+      "bytes": 2552,
+      "sha256": "396efdbd0599e75de1e19c16fc9c43dcf6c912daff0d35804c86293f02993fc8"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$AcceptedSnapshotRevision.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$AcceptedSnapshotRevision.class",
+      "bytes": 3149,
+      "sha256": "8456c98e5588c2e163ce1c3722b33c873861c3a29f708af9124ce8cbf911e627"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationRead.class",
+      "bytes": 843,
+      "sha256": "a32f4f0629cdb38922f6315c76edfe532a613d4992c8ae253200a7d99564aac3"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationReadUnavailable.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationReadUnavailable.class",
+      "bytes": 2348,
+      "sha256": "4647c975639f4d708800bdadad6f8a7858dce2b3e0f8af14a851efe4b22ed49e"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationReceived.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationReceived.class",
+      "bytes": 2412,
+      "sha256": "66a92d37ff9dd9f1d78235b756798c8e1e5abac8792fbc9610686f677cc37f89"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$AfterAcknowledgementSnapshot.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$AfterAcknowledgementSnapshot.class",
+      "bytes": 3208,
+      "sha256": "6f67c8dd3c9dafbc657b0dcb7976887574acb48ffb1587ef39e2012062f4f690"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$CoreRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$CoreRead.class",
+      "bytes": 777,
+      "sha256": "6d592a2617027100c46578577947fb2aa9d5159b8879853a80c35a76e59e4a42"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$CoreReadUnavailable.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$CoreReadUnavailable.class",
+      "bytes": 2271,
+      "sha256": "c7f40e7c9fe17d6b058b09d2916f9ab633616e80f7340a1d4be52c04399b149e"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$CoreReceived.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$CoreReceived.class",
+      "bytes": 2344,
+      "sha256": "341025926f7a923e8e9116a2b9c7c071de7b4eda46cd0dcb3c0d2ba27f4d2107"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$CouncilAssignment.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$CouncilAssignment.class",
+      "bytes": 2279,
+      "sha256": "a803de5d72adca9eb316fc653bb81f4b95e1f6167a2d62fe759b0ee250762e89"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$CouncilRecoveryRole.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$CouncilRecoveryRole.class",
+      "bytes": 3604,
+      "sha256": "e87e68604fa4c7cd7a74816fdaff4422af49d58484adff9d730116a728ff937b"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmRead.class",
+      "bytes": 763,
+      "sha256": "4c9d9d78f410a35d005794fc9343c427f605b1b3a985f721b8f3709873574162"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmReceived.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmReceived.class",
+      "bytes": 2238,
+      "sha256": "407e7a18c9f4e5edad13be808bb3713df054e70eac54e5f26a09730cb4de53d1"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmUnavailable.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmUnavailable.class",
+      "bytes": 2232,
+      "sha256": "84c8df022c78c7e7cee5569e2d25466dd447354790db9e3782fe8156fb0ba958"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$EventOptionsRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$EventOptionsRead.class",
+      "bytes": 817,
+      "sha256": "73d270faafc2d1d82623a38ac5c4b2377e6dbbcd31adca1c50e5606a5d46a2d2"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$EventOptionsReceived.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$EventOptionsReceived.class",
+      "bytes": 3227,
+      "sha256": "458dcf992fec9cee059346f5363f86706decfe4c506def3443c28adf62d378d4"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$EventOptionsUnavailable.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$EventOptionsUnavailable.class",
+      "bytes": 2307,
+      "sha256": "e4ca1126d8cb6b182ebb48fa2a4bfc0a2f002c5fea6366149da7995cb2e7bdb1"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$FreshSnapshotCapture.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$FreshSnapshotCapture.class",
+      "bytes": 1268,
+      "sha256": "382f2f7d08e8ac1c4d911d4ae62e9fc9d78e5875bbebd727e983ce9158fd7d9b"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$FrontendBootstrapAttempt.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$FrontendBootstrapAttempt.class",
+      "bytes": 2639,
+      "sha256": "583059dd6a7ddee32928fa392ff5aa023893965fafca53a1c7b6e7edb841f693"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockRead.class",
+      "bytes": 783,
+      "sha256": "e77b6b1d651a218b5f47d2519f2f857fd94b408fc657f9c67bd5af35a0765120"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReadUnavailable.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReadUnavailable.class",
+      "bytes": 2266,
+      "sha256": "97388369fe6309806affffd94f3877a0cdf147ac4e342f611ddc28a63f2a3aa6"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReceived.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReceived.class",
+      "bytes": 2937,
+      "sha256": "2c3d0dce14c703592032b369a1a9eff528e776e6c7a5bec965c0c069ceea5ef4"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$GuiRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$GuiRead.class",
+      "bytes": 763,
+      "sha256": "00fb5cffb90f8870d2770ec6bed2bc9a4e24bb57cb905be3e4f17c2c66a9d332"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$GuiReceived.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$GuiReceived.class",
+      "bytes": 3250,
+      "sha256": "f9c79204229dddf8f70544da0b9ebee30ea11e00c42d0ab2bd067f7a539cc3b0"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$GuiUnavailable.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$GuiUnavailable.class",
+      "bytes": 2244,
+      "sha256": "84fe8ef576dd7c953943ab8e12ffd6bfb4b509096e63747d4223a11b6db4d9f5"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$HandshakeDiagnostic.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$HandshakeDiagnostic.class",
+      "bytes": 5258,
+      "sha256": "9a2d558dfb851cb22ece45c9627dfeace2d653c3c7e395bb0b6e6c4eb63ec0d3"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$HandshakePong.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$HandshakePong.class",
+      "bytes": 3561,
+      "sha256": "5a0fe68e48d6eff03b06584740c08caaf185e9f7e52926584fa6d8480798bc3e"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxDiagnostics.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxDiagnostics.class",
+      "bytes": 2308,
+      "sha256": "9ecb8dd8ffde044b945f29473713b4f6d32847e61aee2129ae40d58d7666a317"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxReadDeferral.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxReadDeferral.class",
+      "bytes": 3398,
+      "sha256": "c63d5c64f7dc39d68d92d5a5163a1519eee93cb113d163080d6c64448bca024b"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxScope.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxScope.class",
+      "bytes": 14826,
+      "sha256": "d126747bf7e3009d9831dfbc11ffa97078209c94fd418e589377ef62f65fda23"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxWork.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxWork.class",
+      "bytes": 790,
+      "sha256": "b37fe7b12f95d176a3b02b3f5289e6f2acc70bcffb07435c2bd19a601120370b"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashRead.class",
+      "bytes": 825,
+      "sha256": "2be58230daf7f890260eca795d01b25b31c56d6bbfaf83e495c0f0ee880f6e27"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashReadUnavailable.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashReadUnavailable.class",
+      "bytes": 2327,
+      "sha256": "4ef93a9428441cd33121bf43b77fe21eb48d883d0cad4de61dbfdd1c0e398d98"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashReceived.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashReceived.class",
+      "bytes": 3474,
+      "sha256": "dc6ec352b8e0e5a9c6164dec9a405e725ff8341857d66306f6caee1325e55b16"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashVersion.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashVersion.class",
+      "bytes": 2018,
+      "sha256": "cdcfaf774720e93bf3e3aff52f6bc1d20ae5cf4643cd063db0107c4b308e9d4e"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldRead.class",
+      "bytes": 825,
+      "sha256": "a3d073b7033155a757c9f364528b6c3b96f036fb371a2800250cf81d295413d2"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldReadUnavailable.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldReadUnavailable.class",
+      "bytes": 2327,
+      "sha256": "00d9b76c1c23eba70ec6be75922c4263df55a86a99faa2dc9c0b688d9bcdaf89"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldReceived.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldReceived.class",
+      "bytes": 2385,
+      "sha256": "6952d53e966edd084de3f3f0363ded1a6a837d047e39af5538ef1cc37e9ada94"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PingAttempt.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PingAttempt.class",
+      "bytes": 7841,
+      "sha256": "7199f80e8f5cf4c34920dbc155d50f21b56184ecd56236c7acaf2991e0748404"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PingFailure.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PingFailure.class",
+      "bytes": 1782,
+      "sha256": "df1f6670b425700968617d2056febe32f23edb4b95e5598fc934d10d500f2fba"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PingWriteState.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PingWriteState.class",
+      "bytes": 1413,
+      "sha256": "228b4216d374556f63a80ef693479ff2ea290ac7a7feebc4df95c2f6897aeb64"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupDispatch.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupDispatch.class",
+      "bytes": 2305,
+      "sha256": "f8da144624bd438bec4e69c3e03d34d4c9cf3e73472027e67d26cda44b488757"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupLateCapture.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupLateCapture.class",
+      "bytes": 2229,
+      "sha256": "12810d6214b87e4ebab4d70a90381c987c037fa9fce7ab1e23594ea11f166b61"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupPriorAttempt.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupPriorAttempt.class",
+      "bytes": 497,
+      "sha256": "547d646a71c9d6f6374261d228e6fa341f80e41f2a17e8dab7494a5a515783f8"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedHello.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedHello.class",
+      "bytes": 1973,
+      "sha256": "535aaeb5d1e0079ece2ee6f73c9a1c0aea1851475dd395f3e04f323f4ab9c778"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedNotice.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedNotice.class",
+      "bytes": 1983,
+      "sha256": "0da2a7903139f14d7e920e54efa5de92e208eea285a7d0f5cf26ea97812123e3"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedReadEvidence.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedReadEvidence.class",
+      "bytes": 1597,
+      "sha256": "a03d187211c934a08c01a4baf56c6f20a17ecfbbbb5051357464fa4439d439aa"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedResponse.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedResponse.class",
+      "bytes": 2262,
+      "sha256": "cbd3a8068c19a020a0ed617e9bb49df2efc63f6d24c7d994461eb596df2f419b"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedState.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedState.class",
+      "bytes": 1463,
+      "sha256": "4a7b8d41b9c293e183cf97064dd14d9b636ee55771fc2b368bd34bddbdf59dde"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$RecoveredSeatMailbox.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$RecoveredSeatMailbox.class",
+      "bytes": 10428,
+      "sha256": "85d3ff904e0d08cfd9f6e298bc54027c822e673994471c931743c2ef1996d009"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevision.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevision.class",
+      "bytes": 2759,
+      "sha256": "fbfae7487741ed6966dd4f61ed241587505b573d8954bab46123d19f1e5359e7"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevisionKind.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevisionKind.class",
+      "bytes": 1437,
+      "sha256": "a9089760fad5a3f973b768c3dd45de10df1a2b5bbfe1c641b0350bd4119668d2"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$TransportDiagnostics.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$TransportDiagnostics.class",
+      "bytes": 7001,
+      "sha256": "1afba879eba4dc4963247a75a3c8e642eb382211aa710e5bb6a6bf247d5702c2"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport$WrittenRequest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport$WrittenRequest.class",
+      "bytes": 3506,
+      "sha256": "713e1af7b87df9d8fb055bdb5fc08e8bd1a8ee8474d19920ae70e4081f85d50d"
+    },
+    "org/xar/ck3/control/nativebridge/NativeGameTransport.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativeGameTransport.class",
+      "bytes": 193082,
+      "sha256": "a72ba4f87d02c928a5af26363872389fcf6e04cbc12a38fde5e414eead6f99f3"
+    },
+    "org/xar/ck3/control/nativebridge/NativePersonalCashPortTest$Cpp.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativePersonalCashPortTest$Cpp.class",
+      "bytes": 1935,
+      "sha256": "f3d9dd719a3501b5a0e45305c386b4a836f75c28bf106abe4acd4584b1cfed8b"
+    },
+    "org/xar/ck3/control/nativebridge/NativePersonalCashPortTest$Fixture.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativePersonalCashPortTest$Fixture.class",
+      "bytes": 5945,
+      "sha256": "318a8978214a6bb0e383a288ddc04d7f8c8c6b94335d0d9df99e6d8c25df7dbb"
+    },
+    "org/xar/ck3/control/nativebridge/NativePersonalCashPortTest$MutableClock.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativePersonalCashPortTest$MutableClock.class",
+      "bytes": 1179,
+      "sha256": "6754ee271493b40661be213348076d336fe26ecc061379c14b1981203372dea1"
+    },
+    "org/xar/ck3/control/nativebridge/NativePersonalCashPortTest$Replay.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativePersonalCashPortTest$Replay.class",
+      "bytes": 7635,
+      "sha256": "fde3889749d8e66c19534e2800533862ade01bef19d03dd6e798c7ebe68e8a45"
+    },
+    "org/xar/ck3/control/nativebridge/NativePersonalCashPortTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/nativebridge/NativePersonalCashPortTest.class",
+      "bytes": 33800,
+      "sha256": "03f8c800ad7d1c188a0cca0e9bfa27feb0c9201b76476a931ff6760b64660720"
+    },
+    "org/xar/ck3/control/nativebridge/NativePersonalCashV2MatchedCppTest$Fixture.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativePersonalCashV2MatchedCppTest$Fixture.class",
+      "bytes": 5847,
+      "sha256": "62fb0ee1a727e32516d9e582fb765373f7a0bfeb7f926ee356fb590d11b271fc"
+    },
+    "org/xar/ck3/control/nativebridge/NativePersonalCashV2MatchedCppTest$Pair.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativePersonalCashV2MatchedCppTest$Pair.class",
+      "bytes": 1774,
+      "sha256": "5162184b44a432400f64b1d17479ea9f5d95736adc9b178bc32d0b0f8398f900"
+    },
+    "org/xar/ck3/control/nativebridge/NativePersonalCashV2MatchedCppTest$Replay.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativePersonalCashV2MatchedCppTest$Replay.class",
+      "bytes": 6999,
+      "sha256": "3344dff5b24129bb8f4463245cb9cdb0406fdf7912343ae608da08a158f75192"
+    },
+    "org/xar/ck3/control/nativebridge/NativePersonalCashV2MatchedCppTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativePersonalCashV2MatchedCppTest.class",
+      "bytes": 21810,
+      "sha256": "c9037e9b4e8dd85073034642390a8c1eae7f9532e30f24b33caeb22376a162e8"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$BorrowEligibility.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$BorrowEligibility.class",
+      "bytes": 1439,
+      "sha256": "464df166b79591862596fe94a4fdb45e679389a34b3e21501ef658c1f603334f"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Expense.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Expense.class",
+      "bytes": 3489,
+      "sha256": "f86cac5c15b03ddcd2c3498209381d52ae7b74bc6cfabf0beab43ea037563772"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$FixedPoint.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$FixedPoint.class",
+      "bytes": 1573,
+      "sha256": "6daf244aa82b957aba24bac892d3ad409cb24cfa0242cd0d85f7ecf129ab9526"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Frame.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Frame.class",
+      "bytes": 1984,
+      "sha256": "37465f00e10a02923b05af0c4f177573a8e223b92bea1df9848628fe91451b81"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$LoanObservation.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$LoanObservation.class",
+      "bytes": 4647,
+      "sha256": "0a552c64093487fe5623290434834f16891d396130d1c83beb34680a2dc7e5f8"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$LoanStatus.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$LoanStatus.class",
+      "bytes": 1397,
+      "sha256": "77167bcd13949ea16e5982c1efb7d91e6239a6279128b22c7fb5a40aa403cea4"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Metrics.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Metrics.class",
+      "bytes": 5797,
+      "sha256": "71a030717324304f27a05530cb2f977cbf51235ee791cfdff7f9c0ef9145b4a4"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$MonthlySource.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$MonthlySource.class",
+      "bytes": 3546,
+      "sha256": "134d45e5c4535202f7319aec5ad3c4e7fb31fcb68c6707ff9d368f938aec619a"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$NormalizedCurrentCash.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$NormalizedCurrentCash.class",
+      "bytes": 3348,
+      "sha256": "3169f69c0e0716c888de67e6ca59ed9942896b81e6f4e7b245e23a5fcb6e16ef"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$PlayerArmyIdDomain.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$PlayerArmyIdDomain.class",
+      "bytes": 1419,
+      "sha256": "7bfe018b7bd7fe3cc2e5846c14dbbc67b4fd394e60aad6519e2b970d65eb5cdd"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Presence.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Presence.class",
+      "bytes": 1422,
+      "sha256": "608162315533dfbef229d548f07c5d591e5095533ca30555da3b5361238dc676"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Read.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Read.class",
+      "bytes": 2462,
+      "sha256": "eebbec936189f8a36a7133e33ae94cffb6eff4dd9bb686b4623f35c367cc4881"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Readiness.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec$Readiness.class",
+      "bytes": 3806,
+      "sha256": "a3f3cabd92f45f844b88e9a711c6232db308576d118f2da9c0b19f52fda9ac49"
+    },
+    "org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/classes01/org/xar/ck3/control/wave2/finance/rawcash/RawCashCodec.class",
+      "bytes": 32978,
+      "sha256": "af98da14119037041956dcde62bc95ea9d709905109dbe5e4c3e0e9339f29b0c"
+    }
+  },
+  "input_audit": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/concurrency60/slot06/p12-cash-consumer/ACTUAL_INPUT_AUDIT01.json",
+    "bytes": 4547,
+    "sha256": "00f5a58dbabbad85b3915c00790cc3201fb4bf567b771aac7f0d3783ca7f5e50"
+  },
+  "actual_properties": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/concurrency60/slot06/p12-cash-consumer/ACTUAL_INPUTS01.args",
+    "bytes": 6587,
+    "sha256": "1bd7a46f84b9800c459099416e4a07e22890959269795a8dd7690caa08fa05c0"
+  },
+  "qualified_production_changed_after_initial_compile": false,
+  "new_remote_Event_GUI_section_preserved_exact": true,
+  "original_ACK_token_packet_custody_assertions_preserved": true,
+  "actual_outer_false_never_relabelled_inner_success": true,
+  "army_signed_full_ids_preserved": true,
+  "V1_default_preserved": true,
+  "unknown_military_never_zero": true,
+  "War_consumption_qualification": false,
+  "budget_Root_action_qualification": false,
+  "whole_SERVICE": false,
+  "NoGame": true,
+  "no_user_process_window_or_active_save_access": true,
+  "permit": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-CASH-V2-ACTUAL8M-OFFLINE-PERMIT33.json",
+    "bytes": 2678,
+    "sha256": "3c24f479b3299a2e47904ae364ef5cacb28119cd38d6f877b4194a8b49ad18f3"
+  }
+}

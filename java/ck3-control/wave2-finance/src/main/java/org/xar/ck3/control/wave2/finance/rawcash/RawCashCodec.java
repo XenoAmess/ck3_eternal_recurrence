@@ -13,6 +13,7 @@ import java.util.OptionalLong;
 import java.util.Set;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.contracts.FlorinUnitFullId;
 import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.wave2.finance.holyloan.HolyLoanCodec;
@@ -22,6 +23,8 @@ import org.xar.ck3.control.wave2.finance.holyloan.HolyLoanModel.ExpectedFrame;
 /** Pure current-cash normalizer. Native source/frame evidence is checked here, never supplied as caller GREEN. */
 public final class RawCashCodec {
     public static final String SCHEMA = "xar.ck3.war-cash-current-resources.v1";
+    public static final String SIGNED_SCOPE_SCHEMA = "xar.ck3.war-cash-current-resources.v2";
+    public enum PlayerArmyIdDomain { LEGACY_NONNEGATIVE, FLORIN_SIGNED_FULL }
     public static final String LOAN_KEY = "holy_order_loan_observation_v1";
     public static final String LOAN_SCHEMA = "xar.ck3.holy-order-loan-war-cash.v1";
     private static final BigInteger U64 = StrictJson.UINT64_MAX;
@@ -78,17 +81,19 @@ public final class RawCashCodec {
     /** The constructor is private; only normalization of actual native/snapshot inputs creates this value. */
     public static final class NormalizedCurrentCash {
         private final Frame frame;
+        private final PlayerArmyIdDomain playerArmyIdDomain;
         private final List<BigInteger> activeWarIds;
         private final List<BigInteger> playerArmyIds;
         private final Metrics metrics;
         private final Read<LoanObservation> loanObservation;
         private final byte[] wire;
-        private NormalizedCurrentCash(Frame frame, List<BigInteger> activeWarIds, List<BigInteger> playerArmyIds,
+        private NormalizedCurrentCash(Frame frame, PlayerArmyIdDomain playerArmyIdDomain, List<BigInteger> activeWarIds, List<BigInteger> playerArmyIds,
                 Metrics metrics, Read<LoanObservation> loanObservation, byte[] wire) {
-            this.frame = frame; this.activeWarIds = List.copyOf(activeWarIds); this.playerArmyIds = List.copyOf(playerArmyIds);
+            this.frame = frame; this.playerArmyIdDomain = playerArmyIdDomain; this.activeWarIds = List.copyOf(activeWarIds); this.playerArmyIds = List.copyOf(playerArmyIds);
             this.metrics = metrics; this.loanObservation = loanObservation; this.wire = wire.clone();
         }
         public Frame frame() { return frame; }
+        public PlayerArmyIdDomain playerArmyIdDomain() { return playerArmyIdDomain; }
         public List<BigInteger> activeWarIds() { return activeWarIds; }
         public List<BigInteger> playerArmyIds() { return playerArmyIds; }
         public Metrics metrics() { return metrics; }
@@ -105,12 +110,15 @@ public final class RawCashCodec {
         monthlySource(object(StrictJson.parse(currentBytes)));
     }
 
-    private record MonthlySource(Frame frame, List<BigInteger> activeWarIds, List<BigInteger> playerArmyIds,
+    private record MonthlySource(Frame frame, PlayerArmyIdDomain playerArmyIdDomain, List<BigInteger> activeWarIds, List<BigInteger> playerArmyIds,
             Expense currentMilitary, Expense allRaisedMilitary) { }
 
     private static MonthlySource monthlySource(JsonNode current) {
-        require(SCHEMA.equals(text(current.get("schema"))), "war cash native schema malformed");
+        String schema = text(current.get("schema"));
+        boolean signedScope = SIGNED_SCOPE_SCHEMA.equals(schema);
+        require(SCHEMA.equals(schema) || signedScope, "war cash native schema malformed");
         String version = build(current);
+        require(!signedScope || VERSION1210.equals(version), "signed CUnit cash scope requires exact Florin build");
         int played = version.equals(VERSION1210)
                 ? NativeCharacterId.fromJson(current.get("played_character_id")).value()
                 : (int) number(current.get("played_character_id"), 1, Integer.MAX_VALUE);
@@ -119,15 +127,19 @@ public final class RawCashCodec {
         require(flag(current, "read_only", true) && flag(current, "advertised", false)
                 && flag(current, "formal_action_ready", false), "war cash source does not match paused frame");
         require(Set.of("available", "partial", "unavailable").contains(text(current.get("status"))), "war cash status malformed");
-        List<BigInteger> wars = ids(current.get("active_war_ids"), 1), armies = ids(current.get("player_army_ids"), 0);
+        List<BigInteger> wars = ids(current.get("active_war_ids"), 1);
+        require(!signedScope || wars.size() <= 1024 && wars.stream().allMatch(id -> id.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) <= 0), "signed-scope cash wars exceed Native int32 domain or bound");
+        List<BigInteger> armies = signedScope ? florinArmyIds(current.get("player_army_ids")) : ids(current.get("player_army_ids"), 0);
         for (String key : List.of("current_treasury", "player_monthly_net_income")) {
             JsonNode fixed = current.get(key);
-            if (!nil(fixed)) { fixed(fixed, false); }
+            if (!nil(fixed)) { fixed(fixed, version.equals(VERSION1210)); }
         }
         JsonNode expenses = object(current.get("military_expenses"));
         Expense present = expense(expenses.get("current"), current, wars), raised = expense(expenses.get("all_raised"), current, wars);
         validateMonthlyFlow(current);
-        return new MonthlySource(new Frame(version, BUILDS.get(version), played, revision, date), wars, armies, present, raised);
+        return new MonthlySource(new Frame(version, BUILDS.get(version), played, revision, date),
+                signedScope ? PlayerArmyIdDomain.FLORIN_SIGNED_FULL : PlayerArmyIdDomain.LEGACY_NONNEGATIVE,
+                wars, armies, present, raised);
     }
 
     public static NormalizedCurrentCash normalize(byte[] currentBytes, byte[] snapshotBytes) {
@@ -154,7 +166,7 @@ public final class RawCashCodec {
                 readInteger(current.get("queried_revision")), readInteger(current.get("queried_native_revision")));
         Read<LoanObservation> loan = output.has(LOAN_KEY) ? new Read<>(Presence.VALUE, loanModel(output.get(LOAN_KEY)))
                 : new Read<>(Presence.MISSING, null);
-        return new NormalizedCurrentCash(frame, source.activeWarIds(), source.playerArmyIds(), metrics, loan, serialize(output));
+        return new NormalizedCurrentCash(frame, source.playerArmyIdDomain(), source.activeWarIds(), source.playerArmyIds(), metrics, loan, serialize(output));
     }
 
     /** Full original pure monthly-flow validation, including legacy unmarked packets and explicit signed overflow. */
@@ -239,7 +251,9 @@ public final class RawCashCodec {
             require(integerEquals(row.get("gold_raw"), BigInteger.valueOf(vector.get(0)))
                     && integerEquals(row.get("treasury_raw"), BigInteger.valueOf(vector.get(6))), "military expense vector malformed");
         } else {
-            require(nil(row.get("resource_raw_native")) && nil(row.get("gold_raw")) && row.has("unavailable_reason")
+            require(nil(row.get("resource_raw_native")) && nil(row.get("gold_raw"))
+                    && (!VERSION1210.equals(text(current.get("game_version"))) || nil(row.get("treasury_raw")))
+                    && row.has("unavailable_reason")
                     && row.get("unavailable_reason").isTextual(), "unavailable expenses replaced by cost");
         }
         return new Expense(status.equals("available"), readText(row.get("resource_kind")), readInteger(row.get("gold_raw")),
@@ -377,6 +391,16 @@ public final class RawCashCodec {
     private static List<BigInteger> ids(JsonNode node, int minimum) {
         require(node != null && node.isArray(), "ID array required"); List<BigInteger> values = new ArrayList<>(); Set<BigInteger> unique = new HashSet<>();
         for (JsonNode value : node) { BigInteger id = integer(value); require(id.compareTo(BigInteger.valueOf(minimum)) >= 0 && unique.add(id), "duplicate or invalid ID"); values.add(id); }
+        return List.copyOf(values);
+    }
+    /** Only the independently versioned v2 source selects this exact signed CUnit domain. */
+    private static List<BigInteger> florinArmyIds(JsonNode node) {
+        require(node != null && node.isArray() && node.size() <= 4096, "bounded explicit Florin CUnit array required");
+        List<BigInteger> values = new ArrayList<>(); Set<BigInteger> unique = new HashSet<>();
+        for (JsonNode value : node) {
+            BigInteger id = FlorinUnitFullId.fromJson(value).asBigInteger();
+            require(unique.add(id), "duplicate complete Florin CUnit identity"); values.add(id);
+        }
         return List.copyOf(values);
     }
     private static List<Long> vector(JsonNode node) {
