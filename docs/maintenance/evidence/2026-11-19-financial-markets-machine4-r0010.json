@@ -1,0 +1,1576 @@
+{
+  "schema": "ck3-R0010-final-file-only-failed-startup-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0010",
+  "observed_at_utc": "2026-11-18T20:08:03.232899+00:00",
+  "classification": "MANAGED_FAILED_STARTUP_LIFECYCLE_STOP_CLEANUP",
+  "original_host_report": {
+    "path": "C:\\workspace\\ck3-market-live-20261119c\\live\\4-8e1c2f1861--financial-markets--R0010\\native-report.json",
+    "bytes": 665044,
+    "sha256": "40f573cad904e9c4e873152652b3fb75167ba02762cf5b45de931bd547af1e76"
+  },
+  "original_host_error": "RuntimeError: saved campaign observed a native disconnection after an initial binding",
+  "original_native_exit_reason": "stop",
+  "original_native_process_exit_code": null,
+  "actual_ck3_cleanup_exit_code": 1,
+  "actual_cleanup": {
+    "nonce": "7e2f88539dc2469581ee4b6943032166",
+    "ck3_pid": 12848,
+    "ck3_creation_date": "20261118195152.979439+000",
+    "ck3_exit_code": 1,
+    "job_active_processes_before_termination": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 23060,
+    "watchdog_creation_date": "20261118195152.178897+000",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "C:\\workspace\\ck3-market-live-20261119c\\managed-states\\financial-core11\\state\\control\\ck3.json": true,
+      "C:\\workspace\\ck3-market-live-20261119c\\managed-states\\financial-core11\\state\\control\\watchdog-7e2f88539dc2469581ee4b6943032166.ready.json": true,
+      "C:\\workspace\\ck3-market-live-20261119c\\managed-states\\financial-core11\\state\\control\\ck3.watchdog_error": true,
+      "C:\\workspace\\ck3-market-live-20261119c\\managed-states\\financial-core11\\state\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  },
+  "actual_run_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CORE11-run\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1499,
+    "sha256": "3aa19dfc82a114c8cbf0f0d316b5376b91547cca338b7698ef904a85d6bb0a56"
+  },
+  "actual_allocate_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-core11\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1808,
+    "sha256": "56722d0d6d66f310a37dc01e6883c352e1a77523464cb2971f265b510e155e77"
+  },
+  "actual_keeper_report": {
+    "path": "C:\\workspace\\ck3-market-live-20261119c\\keepers\\a88\\report.json",
+    "bytes": 440,
+    "sha256": "777e5c70a02a0d0bfa314e0bca52d0a320c296b9dee00c15ba28578be2337d27"
+  },
+  "actual_keeper_parent_exit": {
+    "path": "C:\\workspace\\ck3-market-live-20261119c\\live\\4-8e1c2f1861--financial-markets--R0010\\keeper-actual-parent-exit.json",
+    "bytes": 599,
+    "sha256": "b2da468b4ca44fc3e6ccbb731ee4ec6c612fcf79f1206c5338d08099c66ffc0f"
+  },
+  "actual_release_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-core11\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1398,
+    "sha256": "6d42973a2c5999b4e7032da43253350de88530989b3f74649446ed731b8576f3"
+  },
+  "actual_release_stdout": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-core11\\stdout.log",
+    "bytes": 1511,
+    "sha256": "ac1cea0310dcf0db3e416c306173dcc34527e77f4b80caca96bd689737ea8fbc"
+  },
+  "actual_release_sequence": 15292,
+  "original_session_stop": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0010-session-stop.actual.json",
+    "bytes": 1889,
+    "sha256": "d5943e48541912089a6280fe8ac7f50692aedda75985455a4297e96035434797"
+  },
+  "original_stop_record": {
+    "started_at_utc": "2026-11-18T20:05:23.560906+00:00",
+    "finished_at_utc": "2026-11-18T20:05:23.612743+00:00",
+    "run_id": "4-8e1c2f1861--financial-markets--R0010",
+    "state": "C:\\workspace\\ck3-market-live-20261119c\\managed-states\\financial-core11\\state",
+    "advertised_lifecycle": {
+      "type": "native_session_ready",
+      "pid": 12848,
+      "mode": "native-headless",
+      "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0010",
+      "lifecycle_queue": {
+        "protocol_version": 1,
+        "bridge_dir": "C:\\workspace\\ck3-market-live-20261119c\\managed-states\\financial-core11\\state\\native-session\\bridge",
+        "inbox_dir": "C:\\workspace\\ck3-market-live-20261119c\\managed-states\\financial-core11\\state\\native-session\\bridge\\inbox",
+        "outbox_dir": "C:\\workspace\\ck3-market-live-20261119c\\managed-states\\financial-core11\\state\\native-session\\bridge\\outbox",
+        "supported_commands": [
+          "status",
+          "stop",
+          "restore-checkpoint",
+          "start-next-episode"
+        ],
+        "action_steps": [
+          "restore-checkpoint",
+          "start-next-episode"
+        ],
+        "request_shape": {
+          "request_id": "<filename stem>",
+          "command": "status | stop | step | <development step>",
+          "step": "required when command=step"
+        }
+      },
+      "cold_start_checkpoint": null
+    },
+    "reply": {
+      "protocol_version": 1,
+      "request_id": "phase2-client-stop-3b7a6900c9ae46c39766dfabe65813e3",
+      "ok": true,
+      "result": {
+        "status": "stopping",
+        "pid": 12848
+      },
+      "error": null
+    },
+    "existing_sender": "tools/resume_zg361_phase2_promotion_source_session.py:134",
+    "reason": "Initial read-only Core request post-execution drift permanently prevents Full observation",
+    "normal_close_qualified": false,
+    "business_pass": false
+  },
+  "original_verify_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CORE11-verify\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1508,
+    "sha256": "94f714a54b2dfe4d1a4814e40e09106b9eca2ed9f813da88b65a961d19bf9935"
+  },
+  "original_verify_exit_code": 2,
+  "first_drift_original": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0010-observer-retry01\\FIRST_DRIFT.actual.json",
+    "bytes": 56073,
+    "sha256": "9f5e6d0a7be8912d15a0eb00e53941800754083c29238f8c0079d6b36e1531f6"
+  },
+  "first_drift_contents": {
+    "schema": "ck3-r0010-first-drift-capture/v1",
+    "machine_id": "4-8e1c2f1861",
+    "source": "C:\\workspace\\ck3-market-live-20261119c\\live\\4-8e1c2f1861--financial-markets--R0010\\native-report.native-wire.jsonl",
+    "streaming_read_upper_bound_exclusive": 13435605,
+    "first_nonzero_failure": {
+      "offset": 2868505,
+      "at": "2026-11-18T19:53:58.092183+00:00",
+      "failure": 1024
+    },
+    "original_non_heartbeat_seen": 5,
+    "selected_rows": [
+      {
+        "offset": 0,
+        "bytes": 1527,
+        "sha256": "647b720a84095f2e239f763f8b8b45a26026928d6ec0d6eb2a19ce625c08d0b6",
+        "envelope": {
+          "at": "2026-11-18T19:51:54.160602+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "hello",
+            "protocol_version": 1,
+            "bridge_version": "0.1.0",
+            "pid": 12848,
+            "session_generation": 0,
+            "connection_generation": 1,
+            "architecture": "x86_64-windows-msvc",
+            "expected_ck3_version": "1.21.0",
+            "expected_ck3_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+            "game_adapter_id": "ck3-1.21.0-msvc-x64",
+            "game_adapter_status": "ready",
+            "ck3_build_match": true,
+            "capabilities": [
+              "bridge.identity",
+              "bridge.heartbeat",
+              "bridge.ping",
+              "game.query.core-frame.v1",
+              "game.state.snapshot",
+              "game.query.fresh-full-state.v1",
+              "game.query.current-event-options.v1",
+              "game.command.select-event-option-N",
+              "game.query.scripted-widget-controls.v1",
+              "game.command.activate-scripted-widget-control.v1",
+              "game.command.query-scripted-widget-controls-v1",
+              "game.command.activate-scripted-widget-control-v1",
+              "game.query.personal-gold-frame.v1",
+              "game.command.core-clock-control.v1",
+              "game.command.full-snapshot-clock-control.v1",
+              "game.guard.date-only-postday.v1",
+              "game.command.research-arm-tactical-daily-sentinel-v1-N",
+              "game.command.research-query-tactical-daily-sentinel-v1",
+              "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+              "game.command.resume-map",
+              "game.command.pause-map",
+              "game.command.set-speed-1",
+              "game.command.set-speed-2",
+              "game.command.set-speed-3",
+              "game.command.set-speed-4",
+              "game.command.set-speed-5",
+              "game.command.save-checkpoint",
+              "game.command.normal-exit-application-v1"
+            ]
+          }
+        }
+      },
+      {
+        "offset": 1527,
+        "bytes": 165,
+        "sha256": "243c300aef809185c4982e8862957de6c153892850abc83d2f755574e408475c",
+        "envelope": {
+          "at": "2026-11-18T19:51:54.175285+00:00",
+          "direction": "python-to-dll",
+          "message": {
+            "type": "ping",
+            "protocol_version": 1,
+            "request_id": "python-1-a7c7ca90fefa"
+          }
+        }
+      },
+      {
+        "offset": 7805,
+        "bytes": 179,
+        "sha256": "275a01bf8683a06faeb66975ac218ff064392df774930bd9561026dd371bca53",
+        "envelope": {
+          "at": "2026-11-18T19:51:54.197764+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "pong",
+            "protocol_version": 1,
+            "request_id": "python-1-a7c7ca90fefa",
+            "pid": 12848
+          }
+        }
+      },
+      {
+        "offset": 2860866,
+        "bytes": 6524,
+        "sha256": "a4e28c3ef57d0aef10bcf6be70bb68c89beb62d6161c7f936f71de115b98cfc7",
+        "envelope": {
+          "at": "2026-11-18T19:53:44.744946+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat",
+            "protocol_version": 1,
+            "sequence": 443,
+            "pid": 12848,
+            "monotonic_ms": 1820452125,
+            "command_entry_trace_v1": {
+              "timeline": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_options": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_terms": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "faction_gift_query": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              }
+            },
+            "army_strength_result_write_v1": null,
+            "startup_failure_containment_enabled": false,
+            "startup_particle2_stage_recorder_enabled": false,
+            "startup_widget_null_flag_call_guard_enabled": false,
+            "startup_rbx_null_call_guard_enabled": false,
+            "cold_map_vfs_observer_enabled": false,
+            "named_path_583_root_observer_enabled": false,
+            "pdx_paths_583_producer_observer_enabled": false,
+            "vfs_mount_lifecycle_observer_enabled": false,
+            "physfs_mounted_data_observer_enabled": false,
+            "g2_truce_preview_entry_observer_enabled": true,
+            "zhongguo_scoreboard_production_candidate_enabled": false,
+            "zhongguo_scoreboard_production_capability_advertised": false,
+            "main_thread_query_mailbox_v1": {
+              "candidate_id": "application_main_thread_war_entry_v1",
+              "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+              "installed": true,
+              "sdl_poll_event_hook_installed": true,
+              "observed_sdl_poll_event_target": 140702497609216,
+              "active_hook_calls": 0,
+              "owner_hook_entries_v1": {
+                "schema": "xar.native.owner-hook-entries/v1",
+                "peek": {
+                  "entered": "4550",
+                  "completed": "4550",
+                  "last_entered_ms": "1820452125",
+                  "last_completed_ms": "1820452125",
+                  "last_return_rva": 74466784,
+                  "last_thread_id": 4236
+                },
+                "poll": {
+                  "entered": "4535",
+                  "completed": "4535",
+                  "last_entered_ms": "1820452125",
+                  "last_completed_ms": "1820452125",
+                  "last_return_rva": 70832686,
+                  "last_thread_id": 4236
+                }
+              },
+              "stop": false,
+              "failure": 0,
+              "executor_exception": {
+                "code": 0,
+                "image": "none",
+                "rva": null
+              },
+              "pump_epochs": 4548,
+              "owner_verified_pump_epochs": 4548,
+              "consecutive_verified": 14,
+              "published_sequence": 0,
+              "completed_sequence": 0,
+              "executor_started_requests": 0,
+              "executor_started_sequence": 0,
+              "executor_started_pump_epoch": 0,
+              "owner_tid": 4236,
+              "current_tid": 4236,
+              "rng_owner_tid": 0,
+              "tls_global": 1,
+              "tls_context": 2169657193912,
+              "tls_marker": 1,
+              "jomini_state": 2175063403024,
+              "game_state": 2175145574048,
+              "date_raw": 43808760,
+              "paused": true,
+              "stamp_read_success": true,
+              "executed_requests": 0,
+              "executor_submission_enabled": true,
+              "application_main_observed": true,
+              "paused_main_thread_observed": true,
+              "ready": true
+            },
+            "coat_of_arms_designer_probe_v1": {
+              "installed": false,
+              "failure": 1,
+              "observed_calls": 0,
+              "executed_requests": 0
+            },
+            "direct_control_owner_wake_v1": {
+              "attempts": 0,
+              "posted": 0,
+              "guard_rejections": 0,
+              "owner_drift": 0,
+              "owner_before": 0,
+              "owner_after": 0,
+              "last_error": 0
+            },
+            "snapshot_observer_12002": {
+              "started_ms": 1820452125,
+              "completed_ms": 1820452125,
+              "last_read_ms": 0,
+              "read_in_progress": false,
+              "last_read_available": false,
+              "snapshot_cached": false
+            },
+            "full_snapshot_1210": {
+              "complete": false,
+              "stage": "ingame",
+              "reason": "full_snapshot_ingame_root_type_mismatch",
+              "completed_passes": 0,
+              "pending_slots_scanned": 0,
+              "unit_slots_scanned": 0,
+              "war_slots_scanned": 0
+            },
+            "date_sentinel_1210": {
+              "generation": 0,
+              "armed": false,
+              "failure_flags": 0,
+              "arm_owner_thread_id": 0,
+              "captured_worker_thread_id": 0,
+              "last_post_thread_id": 0,
+              "last_post_stage": 0,
+              "last_post_date_raw_unqualified": 0,
+              "shutdown_requested": false,
+              "shutdown_safe": true
+            },
+            "startup_particle2_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "suppressed_index_mask": 0,
+              "last_suppressed_index": 4294967295
+            },
+            "startup_particle2_consumer_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "missing_slot_mask": 0
+            },
+            "startup_particle2_stage_recorder_v1": {
+              "installed": false,
+              "patch_mask": 0,
+              "failure": 0,
+              "source_lookup_null_count": 0,
+              "variant_lookup_null_count": 0,
+              "backend_creation_null_count": 0
+            },
+            "startup_dx11_render_context_draw_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_localize_current_root_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "native_miss_count": 0
+            },
+            "startup_widget_null_flag_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_rbx_null_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            }
+          }
+        }
+      },
+      {
+        "offset": 2867390,
+        "bytes": 232,
+        "sha256": "d05d0ed1c798035cd8ed89a1a0e4e789202d3b115b14393037ff52ba596f425d",
+        "envelope": {
+          "at": "2026-11-18T19:53:44.811130+00:00",
+          "direction": "python-to-dll",
+          "message": {
+            "type": "execute_step",
+            "protocol_version": 1,
+            "request_id": "core-frame-2-65fdb43a253b",
+            "step": "query-core-frame-v1",
+            "expected_revision": 0
+          }
+        }
+      },
+      {
+        "offset": 2867622,
+        "bytes": 883,
+        "sha256": "5a9af7a3b8f1564467ff96afe763d3b11a6bed9261049df4f1630c0113c1691e",
+        "envelope": {
+          "at": "2026-11-18T19:53:58.081049+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "command_result",
+            "protocol_version": 1,
+            "request_id": "core-frame-2-65fdb43a253b",
+            "ok": true,
+            "result": {
+              "schema": "ck3_1210_core_frame_v1",
+              "game_version": "1.21.0",
+              "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+              "adapter_id": "ck3-1.21.0-msvc-x64",
+              "backend": "ck3-1.21.0-native-headless-main-thread",
+              "status": "unavailable",
+              "complete_snapshot": false,
+              "core_available": false,
+              "application_main_observed": false,
+              "unavailable_reason": "application_main_executor_unavailable",
+              "date_raw": null,
+              "speed": null,
+              "paused": null,
+              "local_player_id": null,
+              "map_ready": null,
+              "has_played_character": null,
+              "played_character_id": null,
+              "played_character_alive": null,
+              "excluded_snapshot_families": [
+                "treasury",
+                "domain",
+                "military",
+                "campaign"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "offset": 2868505,
+        "bytes": 6527,
+        "sha256": "0c394cdbb4acaef81b93e61f46c91803bd999284433843d846255264e8939310",
+        "envelope": {
+          "at": "2026-11-18T19:53:58.092183+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat",
+            "protocol_version": 1,
+            "sequence": 444,
+            "pid": 12848,
+            "monotonic_ms": 1820465468,
+            "command_entry_trace_v1": {
+              "timeline": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_options": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_terms": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "faction_gift_query": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              }
+            },
+            "army_strength_result_write_v1": null,
+            "startup_failure_containment_enabled": false,
+            "startup_particle2_stage_recorder_enabled": false,
+            "startup_widget_null_flag_call_guard_enabled": false,
+            "startup_rbx_null_call_guard_enabled": false,
+            "cold_map_vfs_observer_enabled": false,
+            "named_path_583_root_observer_enabled": false,
+            "pdx_paths_583_producer_observer_enabled": false,
+            "vfs_mount_lifecycle_observer_enabled": false,
+            "physfs_mounted_data_observer_enabled": false,
+            "g2_truce_preview_entry_observer_enabled": true,
+            "zhongguo_scoreboard_production_candidate_enabled": false,
+            "zhongguo_scoreboard_production_capability_advertised": false,
+            "main_thread_query_mailbox_v1": {
+              "candidate_id": "application_main_thread_war_entry_v1",
+              "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+              "installed": true,
+              "sdl_poll_event_hook_installed": true,
+              "observed_sdl_poll_event_target": 140702497609216,
+              "active_hook_calls": 0,
+              "owner_hook_entries_v1": {
+                "schema": "xar.native.owner-hook-entries/v1",
+                "peek": {
+                  "entered": "4561",
+                  "completed": "4561",
+                  "last_entered_ms": "1820465453",
+                  "last_completed_ms": "1820465453",
+                  "last_return_rva": 74466784,
+                  "last_thread_id": 4236
+                },
+                "poll": {
+                  "entered": "4540",
+                  "completed": "4540",
+                  "last_entered_ms": "1820465453",
+                  "last_completed_ms": "1820465453",
+                  "last_return_rva": 70832686,
+                  "last_thread_id": 4236
+                }
+              },
+              "stop": false,
+              "failure": 1024,
+              "executor_exception": {
+                "code": 0,
+                "image": "none",
+                "rva": null
+              },
+              "pump_epochs": 4560,
+              "owner_verified_pump_epochs": 3,
+              "consecutive_verified": 3,
+              "published_sequence": 1,
+              "completed_sequence": 1,
+              "executor_started_requests": 1,
+              "executor_started_sequence": 1,
+              "executor_started_pump_epoch": 4557,
+              "owner_tid": 4236,
+              "current_tid": 4236,
+              "rng_owner_tid": 0,
+              "tls_global": 1,
+              "tls_context": 2169657193912,
+              "tls_marker": 1,
+              "jomini_state": 2175063403024,
+              "game_state": 2175145574048,
+              "date_raw": 53144328,
+              "paused": true,
+              "stamp_read_success": true,
+              "executed_requests": 1,
+              "executor_submission_enabled": true,
+              "application_main_observed": true,
+              "paused_main_thread_observed": true,
+              "ready": false
+            },
+            "coat_of_arms_designer_probe_v1": {
+              "installed": false,
+              "failure": 1,
+              "observed_calls": 0,
+              "executed_requests": 0
+            },
+            "direct_control_owner_wake_v1": {
+              "attempts": 0,
+              "posted": 0,
+              "guard_rejections": 0,
+              "owner_drift": 0,
+              "owner_before": 0,
+              "owner_after": 0,
+              "last_error": 0
+            },
+            "snapshot_observer_12002": {
+              "started_ms": 1820452203,
+              "completed_ms": 1820452203,
+              "last_read_ms": 0,
+              "read_in_progress": false,
+              "last_read_available": false,
+              "snapshot_cached": false
+            },
+            "full_snapshot_1210": {
+              "complete": false,
+              "stage": "ingame",
+              "reason": "full_snapshot_ingame_root_type_mismatch",
+              "completed_passes": 0,
+              "pending_slots_scanned": 0,
+              "unit_slots_scanned": 0,
+              "war_slots_scanned": 0
+            },
+            "date_sentinel_1210": {
+              "generation": 0,
+              "armed": false,
+              "failure_flags": 0,
+              "arm_owner_thread_id": 0,
+              "captured_worker_thread_id": 0,
+              "last_post_thread_id": 0,
+              "last_post_stage": 0,
+              "last_post_date_raw_unqualified": 0,
+              "shutdown_requested": false,
+              "shutdown_safe": true
+            },
+            "startup_particle2_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "suppressed_index_mask": 0,
+              "last_suppressed_index": 4294967295
+            },
+            "startup_particle2_consumer_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "missing_slot_mask": 0
+            },
+            "startup_particle2_stage_recorder_v1": {
+              "installed": false,
+              "patch_mask": 0,
+              "failure": 0,
+              "source_lookup_null_count": 0,
+              "variant_lookup_null_count": 0,
+              "backend_creation_null_count": 0
+            },
+            "startup_dx11_render_context_draw_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_localize_current_root_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "native_miss_count": 0
+            },
+            "startup_widget_null_flag_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_rbx_null_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            }
+          }
+        }
+      },
+      {
+        "offset": 2875032,
+        "bytes": 6529,
+        "sha256": "d2142a6c4fa079d4d9850e1087cb545a7d5bd9baf6a53eb49f7e55ff158e1b3e",
+        "envelope": {
+          "at": "2026-11-18T19:53:58.340484+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat",
+            "protocol_version": 1,
+            "sequence": 445,
+            "pid": 12848,
+            "monotonic_ms": 1820465718,
+            "command_entry_trace_v1": {
+              "timeline": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_options": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_terms": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "faction_gift_query": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              }
+            },
+            "army_strength_result_write_v1": null,
+            "startup_failure_containment_enabled": false,
+            "startup_particle2_stage_recorder_enabled": false,
+            "startup_widget_null_flag_call_guard_enabled": false,
+            "startup_rbx_null_call_guard_enabled": false,
+            "cold_map_vfs_observer_enabled": false,
+            "named_path_583_root_observer_enabled": false,
+            "pdx_paths_583_producer_observer_enabled": false,
+            "vfs_mount_lifecycle_observer_enabled": false,
+            "physfs_mounted_data_observer_enabled": false,
+            "g2_truce_preview_entry_observer_enabled": true,
+            "zhongguo_scoreboard_production_candidate_enabled": false,
+            "zhongguo_scoreboard_production_capability_advertised": false,
+            "main_thread_query_mailbox_v1": {
+              "candidate_id": "application_main_thread_war_entry_v1",
+              "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+              "installed": true,
+              "sdl_poll_event_hook_installed": true,
+              "observed_sdl_poll_event_target": 140702497609216,
+              "active_hook_calls": 0,
+              "owner_hook_entries_v1": {
+                "schema": "xar.native.owner-hook-entries/v1",
+                "peek": {
+                  "entered": "4591",
+                  "completed": "4591",
+                  "last_entered_ms": "1820465703",
+                  "last_completed_ms": "1820465703",
+                  "last_return_rva": 74466784,
+                  "last_thread_id": 4236
+                },
+                "poll": {
+                  "entered": "4555",
+                  "completed": "4555",
+                  "last_entered_ms": "1820465703",
+                  "last_completed_ms": "1820465703",
+                  "last_return_rva": 70832686,
+                  "last_thread_id": 4236
+                }
+              },
+              "stop": false,
+              "failure": 1024,
+              "executor_exception": {
+                "code": 0,
+                "image": "none",
+                "rva": null
+              },
+              "pump_epochs": 4590,
+              "owner_verified_pump_epochs": 33,
+              "consecutive_verified": 33,
+              "published_sequence": 1,
+              "completed_sequence": 1,
+              "executor_started_requests": 1,
+              "executor_started_sequence": 1,
+              "executor_started_pump_epoch": 4557,
+              "owner_tid": 4236,
+              "current_tid": 4236,
+              "rng_owner_tid": 0,
+              "tls_global": 1,
+              "tls_context": 2169657193912,
+              "tls_marker": 1,
+              "jomini_state": 2175063403024,
+              "game_state": 2175145574048,
+              "date_raw": 53144328,
+              "paused": true,
+              "stamp_read_success": true,
+              "executed_requests": 1,
+              "executor_submission_enabled": true,
+              "application_main_observed": true,
+              "paused_main_thread_observed": true,
+              "ready": false
+            },
+            "coat_of_arms_designer_probe_v1": {
+              "installed": false,
+              "failure": 1,
+              "observed_calls": 0,
+              "executed_requests": 0
+            },
+            "direct_control_owner_wake_v1": {
+              "attempts": 0,
+              "posted": 0,
+              "guard_rejections": 0,
+              "owner_drift": 0,
+              "owner_before": 0,
+              "owner_after": 0,
+              "last_error": 0
+            },
+            "snapshot_observer_12002": {
+              "started_ms": 1820452203,
+              "completed_ms": 1820452203,
+              "last_read_ms": 0,
+              "read_in_progress": false,
+              "last_read_available": false,
+              "snapshot_cached": false
+            },
+            "full_snapshot_1210": {
+              "complete": false,
+              "stage": "ingame",
+              "reason": "full_snapshot_ingame_root_type_mismatch",
+              "completed_passes": 0,
+              "pending_slots_scanned": 0,
+              "unit_slots_scanned": 0,
+              "war_slots_scanned": 0
+            },
+            "date_sentinel_1210": {
+              "generation": 0,
+              "armed": false,
+              "failure_flags": 0,
+              "arm_owner_thread_id": 0,
+              "captured_worker_thread_id": 0,
+              "last_post_thread_id": 0,
+              "last_post_stage": 0,
+              "last_post_date_raw_unqualified": 0,
+              "shutdown_requested": false,
+              "shutdown_safe": true
+            },
+            "startup_particle2_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "suppressed_index_mask": 0,
+              "last_suppressed_index": 4294967295
+            },
+            "startup_particle2_consumer_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "missing_slot_mask": 0
+            },
+            "startup_particle2_stage_recorder_v1": {
+              "installed": false,
+              "patch_mask": 0,
+              "failure": 0,
+              "source_lookup_null_count": 0,
+              "variant_lookup_null_count": 0,
+              "backend_creation_null_count": 0
+            },
+            "startup_dx11_render_context_draw_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_localize_current_root_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "native_miss_count": 0
+            },
+            "startup_widget_null_flag_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_rbx_null_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            }
+          }
+        }
+      },
+      {
+        "offset": 2881561,
+        "bytes": 6529,
+        "sha256": "7f1c830177cdaa4318cd874e2ed46ab558096ed490742315e5478274eead1fe0",
+        "envelope": {
+          "at": "2026-11-18T19:53:58.591440+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat",
+            "protocol_version": 1,
+            "sequence": 446,
+            "pid": 12848,
+            "monotonic_ms": 1820465968,
+            "command_entry_trace_v1": {
+              "timeline": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_options": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_terms": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "faction_gift_query": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              }
+            },
+            "army_strength_result_write_v1": null,
+            "startup_failure_containment_enabled": false,
+            "startup_particle2_stage_recorder_enabled": false,
+            "startup_widget_null_flag_call_guard_enabled": false,
+            "startup_rbx_null_call_guard_enabled": false,
+            "cold_map_vfs_observer_enabled": false,
+            "named_path_583_root_observer_enabled": false,
+            "pdx_paths_583_producer_observer_enabled": false,
+            "vfs_mount_lifecycle_observer_enabled": false,
+            "physfs_mounted_data_observer_enabled": false,
+            "g2_truce_preview_entry_observer_enabled": true,
+            "zhongguo_scoreboard_production_candidate_enabled": false,
+            "zhongguo_scoreboard_production_capability_advertised": false,
+            "main_thread_query_mailbox_v1": {
+              "candidate_id": "application_main_thread_war_entry_v1",
+              "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+              "installed": true,
+              "sdl_poll_event_hook_installed": true,
+              "observed_sdl_poll_event_target": 140702497609216,
+              "active_hook_calls": 0,
+              "owner_hook_entries_v1": {
+                "schema": "xar.native.owner-hook-entries/v1",
+                "peek": {
+                  "entered": "4621",
+                  "completed": "4621",
+                  "last_entered_ms": "1820465953",
+                  "last_completed_ms": "1820465953",
+                  "last_return_rva": 74466784,
+                  "last_thread_id": 4236
+                },
+                "poll": {
+                  "entered": "4570",
+                  "completed": "4570",
+                  "last_entered_ms": "1820465953",
+                  "last_completed_ms": "1820465953",
+                  "last_return_rva": 70832686,
+                  "last_thread_id": 4236
+                }
+              },
+              "stop": false,
+              "failure": 1024,
+              "executor_exception": {
+                "code": 0,
+                "image": "none",
+                "rva": null
+              },
+              "pump_epochs": 4620,
+              "owner_verified_pump_epochs": 63,
+              "consecutive_verified": 63,
+              "published_sequence": 1,
+              "completed_sequence": 1,
+              "executor_started_requests": 1,
+              "executor_started_sequence": 1,
+              "executor_started_pump_epoch": 4557,
+              "owner_tid": 4236,
+              "current_tid": 4236,
+              "rng_owner_tid": 0,
+              "tls_global": 1,
+              "tls_context": 2169657193912,
+              "tls_marker": 1,
+              "jomini_state": 2175063403024,
+              "game_state": 2175145574048,
+              "date_raw": 53144328,
+              "paused": true,
+              "stamp_read_success": true,
+              "executed_requests": 1,
+              "executor_submission_enabled": true,
+              "application_main_observed": true,
+              "paused_main_thread_observed": true,
+              "ready": false
+            },
+            "coat_of_arms_designer_probe_v1": {
+              "installed": false,
+              "failure": 1,
+              "observed_calls": 0,
+              "executed_requests": 0
+            },
+            "direct_control_owner_wake_v1": {
+              "attempts": 0,
+              "posted": 0,
+              "guard_rejections": 0,
+              "owner_drift": 0,
+              "owner_before": 0,
+              "owner_after": 0,
+              "last_error": 0
+            },
+            "snapshot_observer_12002": {
+              "started_ms": 1820452203,
+              "completed_ms": 1820452203,
+              "last_read_ms": 0,
+              "read_in_progress": false,
+              "last_read_available": false,
+              "snapshot_cached": false
+            },
+            "full_snapshot_1210": {
+              "complete": false,
+              "stage": "ingame",
+              "reason": "full_snapshot_ingame_root_type_mismatch",
+              "completed_passes": 0,
+              "pending_slots_scanned": 0,
+              "unit_slots_scanned": 0,
+              "war_slots_scanned": 0
+            },
+            "date_sentinel_1210": {
+              "generation": 0,
+              "armed": false,
+              "failure_flags": 0,
+              "arm_owner_thread_id": 0,
+              "captured_worker_thread_id": 0,
+              "last_post_thread_id": 0,
+              "last_post_stage": 0,
+              "last_post_date_raw_unqualified": 0,
+              "shutdown_requested": false,
+              "shutdown_safe": true
+            },
+            "startup_particle2_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "suppressed_index_mask": 0,
+              "last_suppressed_index": 4294967295
+            },
+            "startup_particle2_consumer_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "missing_slot_mask": 0
+            },
+            "startup_particle2_stage_recorder_v1": {
+              "installed": false,
+              "patch_mask": 0,
+              "failure": 0,
+              "source_lookup_null_count": 0,
+              "variant_lookup_null_count": 0,
+              "backend_creation_null_count": 0
+            },
+            "startup_dx11_render_context_draw_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_localize_current_root_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "native_miss_count": 0
+            },
+            "startup_widget_null_flag_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_rbx_null_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            }
+          }
+        }
+      },
+      {
+        "offset": 2888090,
+        "bytes": 6529,
+        "sha256": "702b602a7716cb085148943a840ab1707d162151dc97a015a6c27b40deccce6b",
+        "envelope": {
+          "at": "2026-11-18T19:53:58.840020+00:00",
+          "direction": "dll-to-python",
+          "message": {
+            "type": "heartbeat",
+            "protocol_version": 1,
+            "sequence": 447,
+            "pid": 12848,
+            "monotonic_ms": 1820466218,
+            "command_entry_trace_v1": {
+              "timeline": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_options": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_terms": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "faction_gift_query": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              }
+            },
+            "army_strength_result_write_v1": null,
+            "startup_failure_containment_enabled": false,
+            "startup_particle2_stage_recorder_enabled": false,
+            "startup_widget_null_flag_call_guard_enabled": false,
+            "startup_rbx_null_call_guard_enabled": false,
+            "cold_map_vfs_observer_enabled": false,
+            "named_path_583_root_observer_enabled": false,
+            "pdx_paths_583_producer_observer_enabled": false,
+            "vfs_mount_lifecycle_observer_enabled": false,
+            "physfs_mounted_data_observer_enabled": false,
+            "g2_truce_preview_entry_observer_enabled": true,
+            "zhongguo_scoreboard_production_candidate_enabled": false,
+            "zhongguo_scoreboard_production_capability_advertised": false,
+            "main_thread_query_mailbox_v1": {
+              "candidate_id": "application_main_thread_war_entry_v1",
+              "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+              "installed": true,
+              "sdl_poll_event_hook_installed": true,
+              "observed_sdl_poll_event_target": 140702497609216,
+              "active_hook_calls": 0,
+              "owner_hook_entries_v1": {
+                "schema": "xar.native.owner-hook-entries/v1",
+                "peek": {
+                  "entered": "4651",
+                  "completed": "4651",
+                  "last_entered_ms": "1820466203",
+                  "last_completed_ms": "1820466203",
+                  "last_return_rva": 74466784,
+                  "last_thread_id": 4236
+                },
+                "poll": {
+                  "entered": "4585",
+                  "completed": "4585",
+                  "last_entered_ms": "1820466203",
+                  "last_completed_ms": "1820466203",
+                  "last_return_rva": 70832686,
+                  "last_thread_id": 4236
+                }
+              },
+              "stop": false,
+              "failure": 1024,
+              "executor_exception": {
+                "code": 0,
+                "image": "none",
+                "rva": null
+              },
+              "pump_epochs": 4650,
+              "owner_verified_pump_epochs": 93,
+              "consecutive_verified": 93,
+              "published_sequence": 1,
+              "completed_sequence": 1,
+              "executor_started_requests": 1,
+              "executor_started_sequence": 1,
+              "executor_started_pump_epoch": 4557,
+              "owner_tid": 4236,
+              "current_tid": 4236,
+              "rng_owner_tid": 0,
+              "tls_global": 1,
+              "tls_context": 2169657193912,
+              "tls_marker": 1,
+              "jomini_state": 2175063403024,
+              "game_state": 2175145574048,
+              "date_raw": 53144328,
+              "paused": true,
+              "stamp_read_success": true,
+              "executed_requests": 1,
+              "executor_submission_enabled": true,
+              "application_main_observed": true,
+              "paused_main_thread_observed": true,
+              "ready": false
+            },
+            "coat_of_arms_designer_probe_v1": {
+              "installed": false,
+              "failure": 1,
+              "observed_calls": 0,
+              "executed_requests": 0
+            },
+            "direct_control_owner_wake_v1": {
+              "attempts": 0,
+              "posted": 0,
+              "guard_rejections": 0,
+              "owner_drift": 0,
+              "owner_before": 0,
+              "owner_after": 0,
+              "last_error": 0
+            },
+            "snapshot_observer_12002": {
+              "started_ms": 1820452203,
+              "completed_ms": 1820452203,
+              "last_read_ms": 0,
+              "read_in_progress": false,
+              "last_read_available": false,
+              "snapshot_cached": false
+            },
+            "full_snapshot_1210": {
+              "complete": false,
+              "stage": "ingame",
+              "reason": "full_snapshot_ingame_root_type_mismatch",
+              "completed_passes": 0,
+              "pending_slots_scanned": 0,
+              "unit_slots_scanned": 0,
+              "war_slots_scanned": 0
+            },
+            "date_sentinel_1210": {
+              "generation": 0,
+              "armed": false,
+              "failure_flags": 0,
+              "arm_owner_thread_id": 0,
+              "captured_worker_thread_id": 0,
+              "last_post_thread_id": 0,
+              "last_post_stage": 0,
+              "last_post_date_raw_unqualified": 0,
+              "shutdown_requested": false,
+              "shutdown_safe": true
+            },
+            "startup_particle2_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "suppressed_index_mask": 0,
+              "last_suppressed_index": 4294967295
+            },
+            "startup_particle2_consumer_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "missing_slot_mask": 0
+            },
+            "startup_particle2_stage_recorder_v1": {
+              "installed": false,
+              "patch_mask": 0,
+              "failure": 0,
+              "source_lookup_null_count": 0,
+              "variant_lookup_null_count": 0,
+              "backend_creation_null_count": 0
+            },
+            "startup_dx11_render_context_draw_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_localize_current_root_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "native_miss_count": 0
+            },
+            "startup_widget_null_flag_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_rbx_null_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            }
+          }
+        }
+      }
+    ],
+    "game_os_native_queried": false,
+    "limits": "First on-disk nonzero heartbeat failure; exact before/after executor stamps were not added by this capture. This only retains original packets, not an atomic memory observation."
+  },
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "new_financial_days_or_SAVE_credited": false,
+  "financial_actions": 0,
+  "new_game_days": 0,
+  "SAVE": 0,
+  "PSS_measured": false,
+  "file_only_evidence": true,
+  "source_stop_or_native_action_sent": false,
+  "OS_Game_Native_queried": false
+}

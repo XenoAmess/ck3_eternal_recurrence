@@ -1244,6 +1244,13 @@ def saved_campaign_cancelled_wait_receipt(error: BaseException) -> dict[str, obj
     return copy.deepcopy(receipt)
 
 
+class SavedCampaignNativeObserverTerminalError(RuntimeError):
+    """Current Native sticky post-execution drift prevents every later Full read."""
+    def __init__(self, marker: dict[str, object]) -> None:
+        self.marker = copy.deepcopy(marker)
+        super().__init__("saved campaign Native observer permanently refused by post_execution_drift (1024); original diagnostic retained")
+
+
 async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object], *,
         report: dict[str, object], write: object, timeout: float,
         managed_done: threading.Event | None, poll_interval: float,
@@ -1267,6 +1274,42 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
     state["fresh_full_read_attempts"] = []
     cancelled_wait_frame = None
     cancelled_wait_retry_used = False
+
+    def fail_if_terminal_native_observer(diagnostic: dict[str, object]) -> None:
+        # Existing startup validation has already bound exact HELLO/PID/generation.
+        # Other flags and transient ready/busy/no-pump states keep the old wait.
+        observed = diagnostic.get("diagnostics")
+        if initial_native_version != "1.21.0" or binding is None or not isinstance(observed, dict):
+            return
+        launch = report.get("saved_campaign_launch")
+        if (not isinstance(launch, dict) or launch.get("status") != "ACTUAL_SINGLE_CLI_RESTORE_LAUNCHED"
+                or launch.get("argv_admitted") is not True or type(launch.get("ck3_pid")) is not int
+                or launch["ck3_pid"] != binding["bridge_pid"]):
+            return
+        heartbeat = observed.get("last_heartbeat")
+        mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
+        failure = mailbox.get("failure") if isinstance(mailbox, dict) else None
+        if (observed.get("connected") is not True
+                or {key: observed.get(key) for key in ("bridge_pid", "connection_generation")} != binding
+                or not isinstance(heartbeat, dict) or heartbeat.get("type") != "heartbeat"
+                or type(heartbeat.get("protocol_version")) is not int or heartbeat["protocol_version"] != 1
+                or type(heartbeat.get("pid")) is not int or heartbeat["pid"] != binding["bridge_pid"]
+                or type(heartbeat.get("sequence")) is not int or not 0 <= heartbeat["sequence"] < 2**64
+                or not isinstance(mailbox, dict) or mailbox.get("ready") is not False
+                or type(failure) is not int or not 0 <= failure < 2**32 or failure & 1024 == 0):
+            return
+        marker = {"schema": "saved-campaign-native-observer-terminal-v1",
+            "failure_bit": 1024, "failure_name": "post_execution_drift", "mailbox_failure": failure,
+            "observed_process_binding": copy.deepcopy(binding), "heartbeat_sequence": str(heartbeat["sequence"]),
+            "original_diagnostic": copy.deepcopy(diagnostic), "observed_at": now(),
+            "original_readiness_deadline_monotonic": deadline, "original_deadline_retained": True,
+            "retry_attempted": False, "product_acceptance_proven": False}
+        state["status"] = "FAILED_PERMANENT_NATIVE_OBSERVER_REFUSAL"
+        state["native_observer_terminal_failure_v1"] = copy.deepcopy(marker)
+        error = SavedCampaignNativeObserverTerminalError(marker)
+        write()
+        client._saved_campaign_native_observer_terminal_error_v1 = error
+        raise error
 
     async def fresh_before_deadline() -> dict[str, object]:
         from xar_autoplayer.bridge.fresh_full_cancelled_read_v1 import (
@@ -1293,6 +1336,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
             observed = diagnostic["diagnostics"]
             if binding != {key: observed.get(key) for key in ("bridge_pid", "connection_generation")}:
                 raise RuntimeError("saved Fresh read recovery crossed its original process/connection")
+            fail_if_terminal_native_observer(diagnostic)
             if observed.get("fresh_full_read_recovery_invalidated_v1") is True:
                 raise RuntimeError("saved Fresh read recovery was invalidated by its driver owner guard")
             raw_gate = observed.get("fresh_full_read_recovery_v1")
@@ -1328,6 +1372,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
                     raise
                 after = await asyncio.wait_for(client.call("ck3_migration_pipe_diagnostics"), timeout=max(0, deadline-time.monotonic()))
                 saved_campaign_initial_snapshot_state(after, report["pipe"])
+                fail_if_terminal_native_observer(after)
                 after_d = after["diagnostics"]
                 raw_gate = after_d.get("fresh_full_read_recovery_v1")
                 gate = FreshCancelledGateV1.parse(raw_gate) if raw_gate is not None else None
@@ -1396,6 +1441,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
                 "semantic_state_available": diagnostic["diagnostics"]["semantic_state_available"],
                 "bridge_pid": diagnostic["diagnostics"].get("bridge_pid"),
                 "connection_generation": diagnostic["diagnostics"].get("connection_generation")})
+            fail_if_terminal_native_observer(diagnostic)
             if (not initial_snapshot_available and observed["connected"]
                     and observed["hello"]["expected_ck3_version"] == "1.21.0"
                     and "core_frame_diagnostic" not in state):
@@ -3358,6 +3404,27 @@ class PlanClient:
 
     async def observe_final(self) -> None:
         """Proved lifecycle completion avoids a dead snapshot without clearing failures."""
+        startup = self.report.get("saved_campaign_restore")
+        terminal = getattr(self, "_saved_campaign_native_observer_terminal_error_v1", None)
+        marker = startup.get("native_observer_terminal_failure_v1") if isinstance(startup, dict) else None
+        original = marker.get("original_diagnostic") if isinstance(marker, dict) else None
+        original_state = original.get("diagnostics") if isinstance(original, dict) else None
+        observations = startup.get("startup_observations") if isinstance(startup, dict) else None
+        if (isinstance(terminal, SavedCampaignNativeObserverTerminalError) and marker == terminal.marker
+                and self.report.get("phase") == "saved-campaign-single-command-line-restore"
+                and isinstance(original_state, dict) and original_state.get("semantic_state_available") is False
+                and isinstance(observations, list) and observations
+                and all(isinstance(row, dict) and row.get("semantic_state_available") is False for row in observations)
+                and startup.get("fresh_full_read_attempts") == [] and self.report.get("steps") == []
+                and self.report.get("readiness") is None and getattr(self, "snapshot", None) is None
+                and self.episode_identity is None):
+            self.report["diagnostics_final"] = copy.deepcopy(original)
+            self.report["final_observation"] = {"status": "not_applicable",
+                "reason": "known_terminal_native_observer_before_any_full_or_business",
+                "failure_preserved": True, "native_failure_bit": 1024,
+                "snapshot_read_attempted": False, "alive_or_business_credit": False,
+                "business_pass": False, "normal_close_qualified": False}
+            return
         failure_marker = self.report.get("post_failure_exit_finish_hold")
         rows = self.report.get("steps", [])
         managed_done = getattr(self, "managed_done", None)

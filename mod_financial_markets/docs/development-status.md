@@ -2,7 +2,19 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（19:42 UTC 更新）
+## 当前状态（20:24 UTC 更新）
+
+第十场`R0010/a88`在初始只读Core请求后触发持久`1024 post_execution_drift`。后续owner回调持续完成，但共同观察器在读取前拒绝，旧`root_type_mismatch`只是未刷新的诊断。原请求为`core-frame-2-65fdb43a253b`；周围心跳日期变化支持载入过渡，但未记录执行器精确before/after stamp，不能认定具体哪一比较项失败。本场没有Fresh请求、金融动作、新增日或SAVE。[完整原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0010.json)。
+
+通过现有session lifecycle队列发送一次stop，原受管流程实际收树：公共run原wait2/833.375284秒，Host1、Game1、Job0/treegone、cleanup通过，keeper原wait0；20:07:10Z实际CAS15291→15292释放。失败退出不计正常Quit或业务通过。
+
+已采用三叶Native窄修：只有精确Florin已登记只读Core回调正常返回、after stamp可读且同pump/线程/TLS稳定时，过期结果仍拒绝、本ticket仍失败并重置连续证明，但不新增永久故障。控制回调、旧版本、执行失败、不可读边界、TLS漂移及已有故障保持原保护；不清旧flag、不重放旧请求。13个边界场景已加入现有mailbox夹具，尚待同缓存Q16实际编译执行。
+
+共同Host同时采用精确永久故障的及时失败分支，先核本场实际single-CLI启动与HELLO/心跳身份，保存原诊断后走原清理；只有从无Full或业务的同一专用异常才跳过不可能的最终读取。两个完整NoGame消费者单次35/35通过、原wait0/10.020023秒；两处旧调用序列断言首次失败原件保留，未改生产调用来迎合测试。
+
+上一轮发布序号修复的Q15已实际构建通过（105.157011秒），受影响两个EXE的三次执行通过（18.474095秒），基线按真实依赖复用；DLL为`59b69fcdf66bdd4e32ff2216798473550a92a7896593a2a2bfdf40cf5606b472`。R0010在更早的启动保护处失败，尚未验证该递增行为的实机结果。下一场继续金融业务验收，不以这些软件结果替代成交、物理保存或整Mod通过。
+
+## 第九场与发布序号修复（19:42 UTC）
 
 第九场`R0009/a87`已实际通过取消恢复路径：原read3在8秒内明确取消、撤收且未执行；随后同一进程、连接、owner及TLS有自然完成进展，Host发出独立read4。19:31:55Z，Native实际写出关联Full并ACK成功，但仍为初始的`native:1/revision1`，SDK正确拒绝非递增发布身份。公共run原wait2/400.159142秒，Host1、Game1、Job0/treegone及keeper原wait0已核，19:37:32Z实际CAS15281→15282释放。零金融动作、零新增日、零SAVE。[原件摘要](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0009.json)。
 

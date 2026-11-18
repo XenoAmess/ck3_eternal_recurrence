@@ -1,5 +1,6 @@
 """Offline candidate tests; transport/owner stimuli are explicitly software data."""
 from __future__ import annotations
+import ast
 import asyncio
 import copy
 import hashlib
@@ -9,6 +10,8 @@ import os
 from pathlib import Path
 import sys
 import tempfile
+import threading
+import types
 import unittest
 from unittest.mock import patch
 
@@ -118,7 +121,10 @@ class FlorinSavedReadinessTests(unittest.IsolatedAsyncioTestCase):
         client=Client();state=report()
         result=await self.wait(client,state=state)
         self.assertEqual(client.frames,2)
-        self.assertEqual([name for name,_ in client.calls],['ck3_migration_pipe_diagnostics','ck3_take_fresh_full_snapshot_v1','ck3_take_fresh_full_snapshot_v1'])
+        self.assertEqual([name for name,_ in client.calls],[
+            'ck3_migration_pipe_diagnostics','ck3_migration_pipe_diagnostics',
+            'ck3_take_fresh_full_snapshot_v1','ck3_migration_pipe_diagnostics',
+            'ck3_take_fresh_full_snapshot_v1'])
         bound=result['binding']
         self.assertEqual(bound['actor_character_id'],1)
         self.assertEqual(bound['native_revision'],11)
@@ -163,9 +169,16 @@ class FlorinSavedReadinessTests(unittest.IsolatedAsyncioTestCase):
         client=Client(wait_polls=3);state=report()
         client.core_error=RuntimeError('actual existing Core consumer requires ready exact 1.20.0.4 adapter')
         result=await self.wait(client,state=state)
-        self.assertEqual(client.polls,4)
+        # Four initial availability polls, then the adopted guard reads diagnostics before each Fresh.
+        self.assertEqual(client.polls,6)
         self.assertEqual(client.frames,2)
         self.assertEqual(client.core_calls,1)
+        self.assertEqual([name for name,_ in client.calls],[
+            'ck3_migration_pipe_diagnostics','ck3_query_core_frame_v1',
+            'ck3_migration_pipe_diagnostics','ck3_migration_pipe_diagnostics',
+            'ck3_migration_pipe_diagnostics','ck3_migration_pipe_diagnostics',
+            'ck3_take_fresh_full_snapshot_v1','ck3_migration_pipe_diagnostics',
+            'ck3_take_fresh_full_snapshot_v1'])
         self.assertEqual(result['core_frame_diagnostic']['status'],'FAILED')
         self.assertFalse(result['core_frame_diagnostic']['admission_credit'])
 
@@ -250,5 +263,146 @@ class FlorinSavedReadinessTests(unittest.IsolatedAsyncioTestCase):
         client=Client();client.state.ingest(copy.deepcopy(client.full));value=await client.fresh()
         with self.assertRaisesRegex(ValueError,'no migrated'):
             HOST.saved_campaign_admission_frame(value,EXPECTED,{'bridge_pid':PID,'connection_generation':GEN},allow_active_event=True)
+
+    def startup_failure_client(self, failure, *, full=False, ready=False, heartbeat_pid=None):
+        """Software flag stimulus through the unchanged actual SDK receiver."""
+        client=Client(wait_polls=0 if full else 999)
+        original=client.call
+        async def call(tool,args=None):
+            value=await original(tool,args)
+            if tool=='ck3_migration_pipe_diagnostics':
+                actual=copy.deepcopy(value['diagnostics']['last_heartbeat'])
+                actual['main_thread_query_mailbox_v1'].update(failure=failure,ready=ready)
+                if failure==0:actual['main_thread_query_mailbox_v1'].update(pump_epochs=0,active_hook_calls=1)
+                if heartbeat_pid is not None:actual['pid']=heartbeat_pid
+                client.state.ingest(actual)
+                value['diagnostics']=client.state.diagnostics()
+            return value
+        client.call=call
+        return client
+
+    async def invoke_actual_host_finally(self, client, state):
+        """Compile the unchanged real run() finally, including stop.set()."""
+        source=Path(HOST.__file__).read_text(encoding='utf-8')
+        tree=ast.parse(source)
+        run=next(node for node in tree.body if isinstance(node,ast.AsyncFunctionDef) and node.name=='run')
+        candidates=[node.finalbody for node in ast.walk(run) if isinstance(node,ast.Try)
+            and any(isinstance(child,ast.Await) and isinstance(child.value,ast.Call)
+                and isinstance(child.value.func,ast.Attribute) and child.value.func.attr=='observe_final'
+                for statement in node.finalbody for child in ast.walk(statement))]
+        self.assertEqual(len(candidates),1)
+        function=ast.AsyncFunctionDef(name='actual_cleanup',args=ast.arguments(posonlyargs=[],args=[],kwonlyargs=[],kw_defaults=[],defaults=[]),
+            body=copy.deepcopy(candidates[0]),decorator_list=[])
+        module=ast.fix_missing_locations(ast.Module(body=[function],type_ignores=[]))
+        stop=threading.Event()
+        class SupervisorSpy:
+            ident=7
+            def __init__(self):self.joins=[]
+            def join(self,timeout):self.joins.append((timeout,stop.is_set()))
+            def is_alive(self):return False
+        supervisor=SupervisorSpy()
+        client.report=state;client.episode_identity=None;client.managed_done=None
+        client.observe_final=types.MethodType(HOST.PlanClient.observe_final,client)
+        namespace={**HOST.__dict__,'client':client,'report':state,'stop':stop,'supervisor':supervisor,'write':lambda:None}
+        exec(compile(module,str(HOST.__file__),'exec'),namespace)
+        await namespace['actual_cleanup']()
+        self.assertTrue(stop.is_set())
+        self.assertEqual(supervisor.joins,[(90,True)])
+        self.assertTrue(state['managed_session_thread_finished'])
+
+    async def test_sticky_1024_before_full_fails_once_and_actual_finally_stops_without_snapshot(self):
+        client=self.startup_failure_client(1024);state=report();state['steps']=[]
+        deadline=HOST.time.monotonic()+1800.0
+        with self.assertRaises(HOST.SavedCampaignNativeObserverTerminalError) as caught:
+            await self.wait(client,state=state,deadline=deadline)
+        marker=state['saved_campaign_restore']['native_observer_terminal_failure_v1']
+        original=copy.deepcopy(marker['original_diagnostic'])
+        self.assertEqual(marker,caught.exception.marker)
+        self.assertEqual(marker['original_readiness_deadline_monotonic'],deadline)
+        self.assertFalse(marker['retry_attempted'])
+        self.assertEqual(client.polls,1);self.assertEqual(client.frames,0);self.assertEqual(client.core_calls,0)
+        self.assertEqual(original['diagnostics']['last_heartbeat']['main_thread_query_mailbox_v1']['failure'],1024)
+        state['error']=str(caught.exception)
+        await self.invoke_actual_host_finally(client,state)
+        self.assertEqual(client.frames,0)
+        self.assertEqual(client.calls,[('ck3_migration_pipe_diagnostics',None)])
+        self.assertEqual(state['diagnostics_final'],original)
+        self.assertEqual(marker['original_diagnostic'],original)
+        self.assertEqual(state['final_observation']['status'],'not_applicable')
+        self.assertFalse(state['final_observation']['snapshot_read_attempted'])
+        self.assertFalse(state['final_observation']['normal_close_qualified'])
+
+    async def test_busy_no_pump_other_flags_and_malformed_flag_do_not_gain_terminal_credit(self):
+        for failure in (0,32,512,2**31,True,'1024',1024.0,-1024,2**32+1024):
+            with self.subTest(failure=failure):
+                client=self.startup_failure_client(failure);state=report();clock=[0.0];original=client.call
+                async def call(tool,args=None):
+                    value=await original(tool,args)
+                    if tool=='ck3_migration_pipe_diagnostics':clock[0]+=.25
+                    return value
+                client.call=call
+                with patch.object(HOST.time,'monotonic',side_effect=lambda:clock[0]):
+                    with self.assertRaisesRegex(TimeoutError,'original readiness deadline'):
+                        await self.wait(client,state=state,deadline=1.0)
+                self.assertEqual(clock[0],1.0)
+                self.assertEqual(client.frames,0)
+                self.assertNotIn('native_observer_terminal_failure_v1',state['saved_campaign_restore'])
+
+    async def test_wrong_heartbeat_pid_or_ready_true_is_not_this_terminal_proof(self):
+        for kwargs in ({'heartbeat_pid':PID+1},{'ready':True}):
+            with self.subTest(kwargs=kwargs):
+                client=self.startup_failure_client(1024,**kwargs);state=report();clock=[0.0];original=client.call
+                async def call(tool,args=None):
+                    value=await original(tool,args)
+                    if tool=='ck3_migration_pipe_diagnostics':clock[0]+=.25
+                    return value
+                client.call=call
+                with patch.object(HOST.time,'monotonic',side_effect=lambda:clock[0]):
+                    with self.assertRaisesRegex(TimeoutError,'original readiness deadline'):
+                        await self.wait(client,state=state,deadline=1.0)
+                self.assertNotIn('native_observer_terminal_failure_v1',state['saved_campaign_restore'])
+
+    async def test_terminal_marker_with_full_or_business_does_not_skip_final_observation(self):
+        for full,business in ((True,False),(False,True)):
+            with self.subTest(full=full,business=business):
+                client=self.startup_failure_client(1024,full=full);state=report();state['steps']=[]
+                with self.assertRaises(HOST.SavedCampaignNativeObserverTerminalError):
+                    await self.wait(client,state=state,deadline=HOST.time.monotonic()+1800.0)
+                if business:state['steps']=[{'id':'software-only-existing-action','ok':False}]
+                await self.invoke_actual_host_finally(client,state)
+                self.assertEqual(client.frames,1)
+                self.assertNotIn('final_observation',state)
+
+    async def test_terminal_marker_write_failure_does_not_authorize_skip(self):
+        client=self.startup_failure_client(1024);state=report();state['steps']=[]
+        def write():
+            if 'native_observer_terminal_failure_v1' in state.get('saved_campaign_restore',{}):
+                raise OSError('software-only report write failure')
+        with self.assertRaisesRegex(OSError,'report write failure'):
+            await HOST.wait_for_saved_campaign(client,EXPECTED,report=state,write=write,
+                timeout=1800,managed_done=None,poll_interval=0,readiness_deadline=HOST.time.monotonic()+1800.0)
+        self.assertFalse(hasattr(client,'_saved_campaign_native_observer_terminal_error_v1'))
+        await self.invoke_actual_host_finally(client,state)
+        self.assertEqual(client.frames,1)
+        self.assertNotIn('final_observation',state)
+
+    async def test_terminal_proof_requires_the_actual_single_cli_launch_pid_and_argv(self):
+        for change in (lambda launch:launch.update(ck3_pid=PID+1),
+                       lambda launch:launch.update(ck3_pid=True),
+                       lambda launch:launch.update(argv_admitted=False),
+                       lambda launch:launch.update(status='LAUNCHING'),
+                       lambda launch:launch.pop('ck3_pid')):
+            with self.subTest(change=change):
+                client=self.startup_failure_client(1024);state=report();clock=[0.0];original=client.call
+                change(state['saved_campaign_launch'])
+                async def call(tool,args=None):
+                    value=await original(tool,args)
+                    if tool=='ck3_migration_pipe_diagnostics':clock[0]+=.25
+                    return value
+                client.call=call
+                with patch.object(HOST.time,'monotonic',side_effect=lambda:clock[0]):
+                    with self.assertRaisesRegex(TimeoutError,'original readiness deadline'):
+                        await self.wait(client,state=state,deadline=1.0)
+                self.assertNotIn('native_observer_terminal_failure_v1',state['saved_campaign_restore'])
 
 if __name__=='__main__':unittest.main()

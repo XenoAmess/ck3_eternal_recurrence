@@ -2165,10 +2165,22 @@ bool ObserveMainThreadPumpAndDrainV1(
     // flag is cleared, and later reads must prove their current pause anew.
     RequestConsecutivePausedPumpProofReset(mailbox);
   }
+  // A reviewed Florin Core read may overlap a loading-world replacement.
+  // Its stale result is still rejected below; only this exact read role,
+  // with a readable after-stamp and unchanged owner/TLS, avoids poisoning
+  // the process-wide mailbox. Never clear an earlier failure or admit a
+  // control callback, unreadable boundary, changed owner or older build.
+  const bool unavailable_florin_core_read = succeeded && after_ready && !same_boundary &&
+      ck3_1210::IsFlorinPollReturnV1(mailbox, mailbox.sdl_poll_event_exact_return_rva) &&
+      IsMainThreadTimelineReadExecutorV1(mailbox, executor) &&
+      before.pump_epoch == after.pump_epoch &&
+      SameOwnerVerifiedPumpIdentity(before, after) &&
+      mailbox.failure_flags.load(std::memory_order_acquire) == 0;
   if (!after_ready || !same_boundary) {
     ResetConsecutivePausedPumpProof(mailbox);
     ResetConsecutiveOwnerPumpProof(mailbox);
-    AddFailure(mailbox, main_thread_query_failure_post_execution_drift);
+    if (!unavailable_florin_core_read)
+      AddFailure(mailbox, main_thread_query_failure_post_execution_drift);
     mailbox.state.store(MainThreadQueryMailboxStateV1::infrastructure_failed,
                         std::memory_order_release);
   } else {

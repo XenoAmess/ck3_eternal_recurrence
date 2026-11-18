@@ -24,6 +24,13 @@ inline bool IsMainThreadTimelineExecutorV1(const MainThreadQueryMailboxV1 &mailb
       (executor==g_timeline_read_v1.load(std::memory_order_acquire) ||
        executor==g_timeline_control_v1.load(std::memory_order_acquire));
 }
+// The read role is distinct from registered clock/control callbacks.
+// No payload or context shape can opt another executor into this role.
+inline bool IsMainThreadTimelineReadExecutorV1(const MainThreadQueryMailboxV1 &mailbox,
+    MainThreadQueryExecutorV1 executor) noexcept {
+  return executor!=nullptr && g_timeline_mailbox_v1.load(std::memory_order_acquire)==&mailbox &&
+      executor==g_timeline_read_v1.load(std::memory_order_acquire);
+}
 inline void UnregisterMainThreadTimelineExecutorsV1(const MainThreadQueryMailboxV1 &mailbox) noexcept {
   auto *expected=&mailbox;
   (void)g_timeline_mailbox_v1.compare_exchange_strong(expected,nullptr,std::memory_order_acq_rel);

@@ -1807,6 +1807,189 @@ bool TestRegisteredTimelineUnpausedOwner() {
       UninstallMainThreadQueryMailboxV1(mailbox,10)==MainThreadQueryUninstallResultV1::uninstalled;
 }
 
+enum class FlorinReadDriftCase {
+  date, pause, roots, control, unregistered, legacy, tls_context,
+  unreadable_after, tls_marker, tls_global, tls_flag_address, existing_failure, callback_failed
+};
+
+const char *FlorinReadDriftName(FlorinReadDriftCase mode) noexcept {
+  switch (mode) {
+  case FlorinReadDriftCase::date: return "florin_read_date_drift";
+  case FlorinReadDriftCase::pause: return "florin_read_pause_drift";
+  case FlorinReadDriftCase::roots: return "florin_read_roots_drift";
+  case FlorinReadDriftCase::control: return "florin_control_drift_sticky";
+  case FlorinReadDriftCase::unregistered: return "florin_unregistered_drift_sticky";
+  case FlorinReadDriftCase::legacy: return "legacy_read_drift_sticky";
+  case FlorinReadDriftCase::tls_context: return "florin_read_tls_context_sticky";
+  case FlorinReadDriftCase::unreadable_after: return "florin_read_after_unreadable_sticky";
+  case FlorinReadDriftCase::tls_marker: return "florin_read_tls_marker_sticky";
+  case FlorinReadDriftCase::tls_global: return "florin_read_tls_global_sticky";
+  case FlorinReadDriftCase::tls_flag_address: return "florin_read_tls_flag_address_sticky";
+  case FlorinReadDriftCase::existing_failure: return "florin_read_existing_failure_preserved";
+  case FlorinReadDriftCase::callback_failed: return "florin_read_callback_failed_sticky";
+  }
+  return "unknown_florin_read_drift_case";
+}
+
+struct FlorinReadDriftContext {
+  FakeRuntime *runtime = nullptr;
+  xar::ck3_11906::MainThreadQueryMailboxV1 *mailbox = nullptr;
+  FlorinReadDriftCase mode = FlorinReadDriftCase::date;
+  bool apply_drift = true;
+  unsigned calls = 0;
+  std::uint8_t alternate_flag = 1;
+  xar::ck3_11906::MainThreadExecutionStampV1 observed{};
+};
+
+bool ExecuteFlorinBootstrapRead(void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto &c = *static_cast<FlorinReadDriftContext *>(opaque);
+  ++c.calls;
+  c.observed = stamp; // A populated context still must not make a stale ticket successful.
+  if (!c.apply_drift) return true;
+  switch (c.mode) {
+  case FlorinReadDriftCase::pause:
+    c.runtime->SetPaused(stamp.paused ? 0 : 1); break;
+  case FlorinReadDriftCase::roots:
+    c.runtime->jomini_state_slot = reinterpret_cast<std::uintptr_t>(c.runtime->alternate_jomini_state.data());
+    c.runtime->game_state_slot = reinterpret_cast<std::uintptr_t>(c.runtime->alternate_game_state.data()); break;
+  case FlorinReadDriftCase::tls_context:
+    g_fake_tls_context = c.runtime->alternate_tls_context.data(); break;
+  case FlorinReadDriftCase::unreadable_after:
+    g_fake_tls_context = nullptr; break;
+  case FlorinReadDriftCase::tls_marker:
+    c.runtime->SetTlsMarker(2); break;
+  case FlorinReadDriftCase::tls_global:
+    c.runtime->tls_initialized = 2; break;
+  case FlorinReadDriftCase::tls_flag_address:
+    c.mailbox->tls_initialized_flag = reinterpret_cast<std::uintptr_t>(&c.alternate_flag); break;
+  case FlorinReadDriftCase::existing_failure:
+    c.mailbox->failure_flags.fetch_or(xar::ck3_11906::main_thread_query_failure_reentry);
+    c.runtime->SetDate(stamp.date_raw + 1); break;
+  default:
+    c.runtime->SetDate(stamp.date_raw + 1); break;
+  }
+  return c.mode != FlorinReadDriftCase::callback_failed;
+}
+
+bool ExecuteFlorinBootstrapControl(void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return ExecuteFlorinBootstrapRead(opaque, stamp);
+}
+
+struct FlorinReadObserverProbe {
+  xar::ck3_11906::MainThreadQueryMailboxV1 *mailbox = nullptr;
+  unsigned eligible_calls = 0;
+};
+
+bool ObserveFlorinReadEligibility(void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &) noexcept {
+  using namespace xar::ck3_11906;
+  auto &p = *static_cast<FlorinReadObserverProbe *>(opaque);
+  // This is an isolated passive eligibility probe, not a fake Full snapshot.
+  if (p.mailbox->failure_flags.load() == 0 &&
+      p.mailbox->owner_verified_pump_epochs.load() >= kMainThreadQueryMinimumOwnerVerifiedPumpEpochs &&
+      p.mailbox->paused_owner_verified_pump_epochs.load() >= kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs)
+    ++p.eligible_calls;
+  return false;
+}
+
+bool TestFlorinReadWorldDriftCase(FlorinReadDriftCase mode) {
+  using namespace xar::ck3_11906;
+  namespace florin = xar::ck3_1210;
+  g_failure_stage = FlorinReadDriftName(mode);
+  const bool recoverable = mode == FlorinReadDriftCase::date ||
+      mode == FlorinReadDriftCase::pause || mode == FlorinReadDriftCase::roots;
+  const auto owner = GetCurrentThreadId();
+  FakeRuntime runtime(owner, 43'808'760);
+  void *iat = reinterpret_cast<void *>(&FakePeekMessage);
+  auto &mailbox = g_test_mailbox;
+  static const MainThreadQueryBuildProfileV1 profile{
+      florin::kSdlWindowsPumpFirstPeekReturnRva, florin::kPeekMessageWIatSlotRva,
+      florin::kGlobalRngWrapperSlotRva, florin::kJominiStateSlotRva,
+      florin::kGameStateSlotRva, florin::kMainThreadTlsInitializedFlagRva,
+      florin::kMainThreadTlsContextGetterRva, +[](std::uintptr_t) noexcept { return false; }};
+  auto env = runtime.Environment(0x140000000ULL, &iat, &FakePeekMessage);
+  if (mode != FlorinReadDriftCase::legacy) env.build_profile = &profile;
+  env.permitted_executor = &Execute;
+  env.permitted_executor_secondary = &ExecuteFlorinBootstrapRead;
+  env.permitted_executor_tertiary = &ExecuteFlorinBootstrapControl;
+  FlorinReadObserverProbe observer{&mailbox};
+  env.snapshot_observer_callback = &ObserveFlorinReadEligibility;
+  env.snapshot_observer_context = &observer;
+  if (!InstallMainThreadQueryMailboxV1(mailbox, env)) return false;
+  const auto cleanup = [&] {
+    UnregisterMainThreadTimelineExecutorsV1(mailbox);
+    return UninstallMainThreadQueryMailboxV1(mailbox, 10) == MainThreadQueryUninstallResultV1::uninstalled;
+  };
+  if (mode != FlorinReadDriftCase::unregistered &&
+      !RegisterMainThreadTimelineExecutorsV1(mailbox, &ExecuteFlorinBootstrapRead, &ExecuteFlorinBootstrapControl)) {
+    (void)cleanup(); return false;
+  }
+  const auto boundary = mode == FlorinReadDriftCase::legacy
+      ? kSdlWindowsPumpFirstPeekReturnRva : florin::kPollEventFirstReturnRvaV1;
+  const auto pump = [&] { return ObserveMainThreadPumpAndDrainV1(mailbox, boundary, owner); };
+  (void)pump(); (void)pump();
+  FlorinReadDriftContext c{&runtime, &mailbox, mode};
+  const auto executor = mode == FlorinReadDriftCase::control
+      ? &ExecuteFlorinBootstrapControl : &ExecuteFlorinBootstrapRead;
+  MainThreadQueryTicketV1 original{};
+  const auto started_before = mailbox.executor_started_requests.load();
+  const auto executed_before = mailbox.executed_requests.load();
+  bool ok = TrySubmitMainThreadQueryV1(mailbox, executor, &c, original) == MainThreadQuerySubmitResultV1::submitted &&
+      pump() && c.calls == 1 && c.observed.pump_epoch != 0 &&
+      mailbox.executor_started_requests.load() == started_before + 1 &&
+      mailbox.executed_requests.load() == executed_before + 1 &&
+      WaitForMainThreadQueryV1(mailbox, original, 0) == MainThreadQueryWaitResultV1::infrastructure_failed &&
+      mailbox.state.load() == MainThreadQueryMailboxStateV1::infrastructure_failed &&
+      mailbox.completed_sequence.load() == original.sequence &&
+      mailbox.owner_verified_pump_epochs.load() == 0 &&
+      mailbox.paused_owner_verified_pump_epochs.load() == 0;
+  const auto failure = mailbox.failure_flags.load();
+  ok = ok && (recoverable ? failure == 0 : (failure & main_thread_query_failure_post_execution_drift) != 0);
+  if (mode == FlorinReadDriftCase::existing_failure)
+    ok = ok && (failure & main_thread_query_failure_reentry) != 0;
+  ok = ok && ReclaimMainThreadQueryV1(mailbox, original) == MainThreadQueryReclaimResultV1::reclaimed;
+  // Restore synthetic memory only; production never repairs TLS or clears flags.
+  g_fake_tls_context = runtime.tls_context.data(); runtime.SetTlsMarker(1); runtime.SetPaused(1);
+  runtime.tls_initialized = 1;
+  mailbox.tls_initialized_flag = reinterpret_cast<std::uintptr_t>(&runtime.tls_initialized);
+  c.apply_drift = false;
+  const auto eligible_before = observer.eligible_calls;
+  if (ok && recoverable) {
+    MainThreadQueryTicketV1 next{};
+    ok = TrySubmitMainThreadQueryV1(mailbox, executor, &c, next) == MainThreadQuerySubmitResultV1::application_main_not_observed;
+    (void)pump(); (void)pump();
+    ok = ok && observer.eligible_calls == eligible_before &&
+        TrySubmitMainThreadQueryV1(mailbox, executor, &c, next) == MainThreadQuerySubmitResultV1::submitted &&
+        next.sequence == original.sequence + 1 && pump() && c.calls == 2 &&
+        observer.eligible_calls > eligible_before && mailbox.failure_flags.load() == 0 &&
+        WaitForMainThreadQueryV1(mailbox, next, 0) == MainThreadQueryWaitResultV1::completed &&
+        ReclaimMainThreadQueryV1(mailbox, next) == MainThreadQueryReclaimResultV1::reclaimed &&
+        ReclaimMainThreadQueryV1(mailbox, original) == MainThreadQueryReclaimResultV1::ticket_mismatch;
+  } else if (ok) {
+    (void)pump(); (void)pump(); (void)pump();
+    MainThreadQueryTicketV1 denied{};
+    ok = mailbox.failure_flags.load() == failure && observer.eligible_calls == eligible_before && c.calls == 1 &&
+        TrySubmitMainThreadQueryV1(mailbox, executor, &c, denied) == MainThreadQuerySubmitResultV1::infrastructure_failed;
+  }
+  const bool uninstalled = cleanup();
+  if (ok && uninstalled) std::printf("%s: stale ticket rejected; transient=%u; no old replay\n",
+      FlorinReadDriftName(mode), recoverable ? 1U : 0U);
+  return ok && uninstalled;
+}
+
+bool TestFlorinReadWorldDriftIsolation() {
+  for (const auto mode : {FlorinReadDriftCase::date, FlorinReadDriftCase::pause,
+      FlorinReadDriftCase::roots, FlorinReadDriftCase::control, FlorinReadDriftCase::unregistered,
+      FlorinReadDriftCase::legacy, FlorinReadDriftCase::tls_context,
+      FlorinReadDriftCase::unreadable_after, FlorinReadDriftCase::tls_marker,
+      FlorinReadDriftCase::tls_global, FlorinReadDriftCase::tls_flag_address,
+      FlorinReadDriftCase::existing_failure, FlorinReadDriftCase::callback_failed})
+    if (!TestFlorinReadWorldDriftCase(mode)) return false;
+  return true;
+}
+
 bool TestPausedQueuePostsInertOwnerWake(bool skip_first_wake = false) {
   using namespace xar::ck3_11906;
   g_failure_stage = "paused_queue_posted_owner_wake";
@@ -2936,7 +3119,7 @@ int main(int argc, char **argv) {
   }
 
   if (argc==2 && std::string_view(argv[1])=="--timeline-only") {
-    if (TestRegisteredTimelineUnpausedOwner()) return 0;
+    if (TestRegisteredTimelineUnpausedOwner() && TestFlorinReadWorldDriftIsolation()) return 0;
     std::fprintf(stderr,"mailbox fixture failed at %s\n",g_failure_stage); return 6;
   }
 
