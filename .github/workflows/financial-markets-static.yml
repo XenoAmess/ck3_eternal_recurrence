@@ -46,25 +46,28 @@ jobs:
         run: |
           if not exist "%RUNNER_TEMP%\xfm-resolver" mkdir "%RUNNER_TEMP%\xfm-resolver"
           if errorlevel 1 exit /b %ERRORLEVEL%
-          echo QUARKUS_LOCAL_REPO=%USERPROFILE%\.m2\repository>>"%GITHUB_ENV%"
+          set "xfm_native_repo=%USERPROFILE%\.m2\repository"
+          echo XFM_MAVEN_LOCAL_REPO=%xfm_native_repo%>>"%GITHUB_ENV%"
+          echo QUARKUS_LOCAL_REPO=file:///%xfm_native_repo:\=/%>>"%GITHUB_ENV%"
       - name: Test and install shared save reader
         run: |
-          call mvn --batch-mode --no-transfer-progress "-Dmaven.repo.local=%QUARKUS_LOCAL_REPO%" -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true -f java/ck3-save-core/pom.xml install > "%RUNNER_TEMP%\xfm-resolver\shared-install.log" 2>&1
+          call mvn --batch-mode --no-transfer-progress "-Dmaven.repo.local=%XFM_MAVEN_LOCAL_REPO%" -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true -f java/ck3-save-core/pom.xml install > "%RUNNER_TEMP%\xfm-resolver\shared-install.log" 2>&1
           set "xfm_shared_exit=%ERRORLEVEL%"
           type "%RUNNER_TEMP%\xfm-resolver\shared-install.log"
           exit /b %xfm_shared_exit%
       - name: Inspect the installed shared GAV in the bound repository
         run: |
+          echo XFM_MAVEN_LOCAL_REPO=%XFM_MAVEN_LOCAL_REPO%
           echo QUARKUS_LOCAL_REPO=%QUARKUS_LOCAL_REPO%
-          if not exist "%QUARKUS_LOCAL_REPO%\org\xar\ck3\ck3-save-core\0.1.0\ck3-save-core-0.1.0.jar" exit /b 1
-          if not exist "%QUARKUS_LOCAL_REPO%\org\xar\ck3\ck3-save-core\0.1.0\ck3-save-core-0.1.0.pom" exit /b 1
-          certutil -hashfile "%QUARKUS_LOCAL_REPO%\org\xar\ck3\ck3-save-core\0.1.0\ck3-save-core-0.1.0.jar" SHA256
+          if not exist "%XFM_MAVEN_LOCAL_REPO%\org\xar\ck3\ck3-save-core\0.1.0\ck3-save-core-0.1.0.jar" exit /b 1
+          if not exist "%XFM_MAVEN_LOCAL_REPO%\org\xar\ck3\ck3-save-core\0.1.0\ck3-save-core-0.1.0.pom" exit /b 1
+          certutil -hashfile "%XFM_MAVEN_LOCAL_REPO%\org\xar\ck3\ck3-save-core\0.1.0\ck3-save-core-0.1.0.jar" SHA256
           if errorlevel 1 exit /b %ERRORLEVEL%
-          certutil -hashfile "%QUARKUS_LOCAL_REPO%\org\xar\ck3\ck3-save-core\0.1.0\ck3-save-core-0.1.0.pom" SHA256
+          certutil -hashfile "%XFM_MAVEN_LOCAL_REPO%\org\xar\ck3\ck3-save-core\0.1.0\ck3-save-core-0.1.0.pom" SHA256
           if errorlevel 1 exit /b %ERRORLEVEL%
       - name: Test and package development tools
         run: |
-          call mvn --batch-mode --no-transfer-progress "-Dmaven.repo.local=%QUARKUS_LOCAL_REPO%" -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true -f mod_financial_markets/tools/pom.xml verify > "%RUNNER_TEMP%\xfm-resolver\financial-verify.log" 2>&1
+          call mvn --batch-mode --no-transfer-progress "-Dmaven.repo.local=%XFM_MAVEN_LOCAL_REPO%" -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true -f mod_financial_markets/tools/pom.xml verify > "%RUNNER_TEMP%\xfm-resolver\financial-verify.log" 2>&1
           set "xfm_financial_exit=%ERRORLEVEL%"
           type "%RUNNER_TEMP%\xfm-resolver\financial-verify.log"
           exit /b %xfm_financial_exit%
