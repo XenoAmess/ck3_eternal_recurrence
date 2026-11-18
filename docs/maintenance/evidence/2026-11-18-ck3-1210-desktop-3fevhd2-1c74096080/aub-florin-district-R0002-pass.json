@@ -1,0 +1,139 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T16:41:39.464224+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0002",
+  "case": "district-probe-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": true,
+  "status": "ENGINE_SCRIPT_PROBE_PASS",
+  "facts": {
+    "original_probe_markers_and_native_error_review": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-7172e03fff194a1f883015db69e29394\\profile\\logs\\debug.log",
+          "bytes": 1184238,
+          "sha256": "57edafa34b215de0c908f2cd443a2fcba8d586f194788ed0a67c6b4b6fadd9f7"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-7172e03fff194a1f883015db69e29394\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    "actual_robert_initial_date_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp02-world.png",
+          "bytes": 1163686,
+          "sha256": "c079a254cc0e8e1b48f755a4c7111082e6e1535d1bf1978f79b54354a9fca79f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp02-quit-now.png",
+          "bytes": 681941,
+          "sha256": "418eb2cfaacb12cc80cafede24774c5fd832de5a956a0b95232666e70281002e"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp02-exit-desktop.png.json",
+          "bytes": 1433,
+          "sha256": "0e7d0216741d2a53ea132d3068395e5df3f6dd28e4c61193f899e534059e6645"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0002\\game-exit.json",
+          "bytes": 252,
+          "sha256": "3c541846ba00855c6d0b93d7f3def49aae85886e6aa8558668a2afbed8fadf90"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBF: TEST BEGIN district_native_probe": 1,
+    "AUBF: TEST PASS controlled_robert_castle": 1,
+    "AUBF: TEST PASS target_province_high_medieval": 1,
+    "AUBF: TEST PASS native_district_eligibility": 1,
+    "AUBF: TEST PASS native_district_upgrade_one_tier": 1,
+    "AUBF: TEST PASS exact_personal_charge_and_count": 1,
+    "AUBF: TEST PASS primary_mutation_no_repeat_before_cap": 1,
+    "AUBF: TEST PASS insufficient_personal_zero_change": 1,
+    "AUBF: TEST DONE district_native_probe": 1
+  },
+  "observed_readbacks": {
+    "capital_holding_after_full_scan": "castle_02",
+    "native_castle03_eligible": true,
+    "success_count": 5,
+    "success_count_below15": true
+  },
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-7172e03fff194a1f883015db69e29394\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "actual_final_date": "1066-09-15",
+  "natural_days": 0,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp02-quit-now.png",
+      "bytes": 681941,
+      "sha256": "418eb2cfaacb12cc80cafede24774c5fd832de5a956a0b95232666e70281002e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp02-exit-desktop.png.json",
+      "bytes": 1433,
+      "sha256": "0e7d0216741d2a53ea132d3068395e5df3f6dd28e4c61193f899e534059e6645"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0002\\game-exit.json",
+      "bytes": 252,
+      "sha256": "3c541846ba00855c6d0b93d7f3def49aae85886e6aa8558668a2afbed8fadf90"
+    }
+  ],
+  "source_head": "a90664d6ada4823844a271c3da1d536af73204d4",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-probe-r2-gui-prepare\\prepared-case.json",
+    "bytes": 1584828,
+    "sha256": "f842ba59907a7f3edd8314f6b8d7b462cc9db0dec6d04d674736407d3ecd84e0"
+  },
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\releases\\aub-probe-4.0.4\\mod_auto_upgrade_buildings.manifest.json",
+    "bytes": 63701,
+    "sha256": "d834bf2b15c6de365b79d6ff1869e9f959f5255faff2dad7fa3da23df3544fd5"
+  },
+  "product_same_as_R1": true,
+  "fixture_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a02\\fixture.manifest.json",
+    "bytes": 557,
+    "sha256": "50260bd5806b3b6fe4bc971323daef36a03486d7ee36e7d4fd03162001d43b3f"
+  },
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-probe-r2-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "302f43aed70ea6b1aeef9843140aae0c0d0b6d276b624b9836e63d539899e745"
+  },
+  "native_injection": false,
+  "native_bridge_abi_qualified": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "coverage": "Engine district eligibility, exact single primary upgrade and personal charge/count, full province scan primary mutation with higher tier actually eligible and cap not reached, no-funds source/count preservation. Controlled fixture advances target province shared culture era; this is not product behavior. Original full business matrix and actual production GUI remain incomplete.",
+  "R1_facts": "R1 original failed composite and missing component observations remain unchanged; this new successful run does not recreate the old missing readbacks.",
+  "guarded_navigation": "Exact static template navigation stopped before Robert selection when its expected pixels differed. Root directly reviewed a new screenshot, selected the original character, and continued. A strict cross-run autosave pixel comparison also refused; direct enlarged and fresh full-image review proved empty checkbox, then one Exit to Desktop action. Neither refused comparison is business credit.",
+  "retention_review_at_utc": "2026-12-18T16:39:30Z",
+  "common_case_verification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-probe-r2-verify.json",
+    "bytes": 2286,
+    "sha256": "4a638882ab5bc7039c0ebf7ea1a22fb7b4c8c1651603be54679f8d089fd796c6",
+    "verified_at_utc": "2026-11-18T16:45:32.756557+00:00",
+    "result": {
+      "status": "PASS",
+      "process_pass": true,
+      "closure_pass": true,
+      "case_acceptance_pass": true,
+      "product_release_pass": false,
+      "native_capability_pass": false
+    }
+  }
+}
