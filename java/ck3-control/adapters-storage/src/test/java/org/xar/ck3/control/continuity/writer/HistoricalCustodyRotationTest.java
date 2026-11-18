@@ -134,6 +134,47 @@ final class HistoricalCustodyRotationTest {
         }
     }
 
+    @Test void entryRetirementThenBytePressureNeverVisitsAClosedPayloadTracker() throws Exception {
+        try (Fixture f = new Fixture(temporary.resolve("rotation-then-bytes"))) {
+            f.writer.locked(session -> {
+                byte[] tiny = {0x11};
+                byte[] retained = new byte[LIMIT]; Arrays.fill(retained, (byte) 0x22);
+                Pin first = f.store.publish(tiny, LIMIT), second = f.store.publish(retained, LIMIT);
+                long firstCharge = Files.size(commit(f, first)) + tiny.length;
+                long secondCharge = Files.size(commit(f, second)) + retained.length;
+                int incomingSize = Math.toIntExact(Math.min(LIMIT / 2L, firstCharge / 2L));
+                assertTrue(incomingSize > 0);
+                byte[] incoming = new byte[incomingSize]; Arrays.fill(incoming, (byte) 0x33);
+                Pin third = f.store.publish(incoming, LIMIT);
+                long incomingCharge = Files.size(commit(f, third)) + incoming.length;
+                // These actual commit sizes force both branches without a fixed metadata-size guess:
+                // C passes the original rotation byte guard, but its whole pair needs the remaining live payload retired.
+                assertTrue(incoming.length <= firstCharge / 2);
+                assertTrue(incomingCharge > firstCharge);
+                assertTrue(incomingCharge <= firstCharge + retained.length);
+                var writesBefore = f.storage.successfulBatches();
+                try (var reads = f.store.beginHistoricalReads(session, 2, firstCharge + secondCharge, 8,
+                        () -> session.requireWriter(f.layout.lock()))) {
+                    reads.requireActive();
+                    assertArrayEquals(tiny, f.store.read(first, LIMIT));
+                    assertArrayEquals(retained, f.store.read(second, LIMIT));
+                    assertPairWriteDenied(f, first); assertPairWriteDenied(f, second);
+                    assertArrayEquals(incoming, f.store.read(third, LIMIT));
+                    // The first pair is actually gone; the second remains under HANDLE custody
+                    // even when its optional payload snapshot is retired to admit the third.
+                    assertPairWriteAllowed(f, first);
+                    assertPairWriteDenied(f, second); assertPairWriteDenied(f, third);
+                    assertArrayEquals(retained, f.store.read(second, LIMIT));
+                    reads.requireActive();
+                }
+                assertPairWriteAllowed(f, first); assertPairWriteAllowed(f, second); assertPairWriteAllowed(f, third);
+                assertEquals(writesBefore, f.storage.successfulBatches());
+                assertFalse(f.storage.hasUnknownWrite()); assertCanonicalUnchanged(f); return null;
+            });
+        }
+    }
+
+
     private static Path commit(Fixture f, Pin pin) {
         return f.archive.resolve(pin.reference().sha256() + ".commit.json");
     }

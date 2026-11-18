@@ -1011,6 +1011,7 @@ public final class ImmutableArtifactStore {
                             oldestLease.close();
                             // Remove from map and adjust accounting only after successful close
                             reads.entries.remove(oldestKey);
+                            reads.payloads.remove(oldestKey);
                             reads.recordDependency(oldestKey, false); // Retired custody cannot support a new prefix cell.
                             reads.bytes -= freedBytes;
                             // Retry admission with updated state

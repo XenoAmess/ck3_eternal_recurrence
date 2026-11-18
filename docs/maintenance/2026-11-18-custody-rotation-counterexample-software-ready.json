@@ -1,0 +1,232 @@
+{
+  "schema": "xar.java.historical-custody-payload-retirement-software-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "created_utc": "2026-11-18T16:08:11.448572+00:00",
+  "source_base": "09835619e886d9d238affb05e8e17f6498f63fdf",
+  "scope": "One-line retired historical payload tracker removal after successful oldest-entry close; one small owned-file mixed entry/byte-pressure regression. Not a performance or quota change.",
+  "source_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/SOURCES01.json",
+    "bytes": 2797,
+    "sha256": "bfabe0d7dc87f05918dfb769aad0c0bcc0f6f072cf872b8593dc3560bd777dfa"
+  },
+  "production_TUs": 1,
+  "test_TUs": 1,
+  "distinct_new_methods": 1,
+  "method": {
+    "name": "entryRetirementThenBytePressureNeverVisitsAClosedPayloadTracker()",
+    "classname": "org.xar.ck3.control.continuity.writer.HistoricalCustodyRotationTest",
+    "time": "2.012"
+  },
+  "result": {
+    "fixed_pass": 1,
+    "fixed_failed": 0,
+    "skipped": 0,
+    "controlled_original_preimage_target_failure": true
+  },
+  "actual_jobs": [
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/javac.exe",
+        "-J-XX:ActiveProcessorCount=1",
+        "-J-Xmx768m",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-javac02.args"
+      ],
+      "begin": "2026-11-18T15:58:25.735597+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-CUSTODY-ROTATION-REQUEST02-EXISTING-TEST-CP-SAME2M-AMEND49.json",
+      "NoGame": true,
+      "selected_method": 1,
+      "expected_exit": 0,
+      "owned_child_pid": 184196,
+      "exit_code": 0,
+      "timed_out": false,
+      "end": "2026-11-18T15:58:27.675959+00:00",
+      "seconds": 1.9403603000100702
+    },
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/java.exe",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-junit03.args"
+      ],
+      "begin": "2026-11-18T16:02:26.965167+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-CUSTODY-ROTATION-REQUEST03-JNA-OWN-SAME2M-AMEND50.json",
+      "NoGame": true,
+      "selected_method": 1,
+      "expected_exit": 1,
+      "owned_child_pid": 221700,
+      "exit_code": 1,
+      "timed_out": false,
+      "end": "2026-11-18T16:02:31.381736+00:00",
+      "seconds": 4.416566899977624
+    },
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/javac.exe",
+        "-J-XX:ActiveProcessorCount=1",
+        "-J-Xmx768m",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/fixed-javac02.args"
+      ],
+      "begin": "2026-11-18T16:02:31.446270+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-CUSTODY-ROTATION-REQUEST03-JNA-OWN-SAME2M-AMEND50.json",
+      "NoGame": true,
+      "selected_method": 1,
+      "expected_exit": 0,
+      "owned_child_pid": 30764,
+      "exit_code": 0,
+      "timed_out": false,
+      "end": "2026-11-18T16:02:34.347392+00:00",
+      "seconds": 2.901163199916482
+    },
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/java.exe",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/fixed-junit03.args"
+      ],
+      "begin": "2026-11-18T16:02:34.349331+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-CUSTODY-ROTATION-REQUEST03-JNA-OWN-SAME2M-AMEND50.json",
+      "NoGame": true,
+      "selected_method": 1,
+      "expected_exit": 0,
+      "owned_child_pid": 87516,
+      "exit_code": 0,
+      "timed_out": false,
+      "end": "2026-11-18T16:02:38.183140+00:00",
+      "seconds": 3.833816400030628
+    }
+  ],
+  "negative_control": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/BASELINE-EXPECTED-CLOSED-LEASE03.json",
+    "bytes": 3021,
+    "sha256": "acd360300bd75e814afa04aae6deadf118b203d6a4807eb1d8005c159306f107"
+  },
+  "checks": [
+    "Exact old production preimage with identical new test reaches read lease is closed through makePayloadRoom/releasePayload/requireOpen",
+    "One production line removes payload tracker only after original oldest lease close succeeds and entries removal",
+    "Same one method passes with original file share denial for remaining two held pairs and permits retired pair reopening",
+    "Own fixture canonical bytes/events/write count/UNKNOWN assertions preserved",
+    "No FIFO/capacity/deadline/LRU/source qualification changes",
+    "No old 230.254-second source qualification repeated; no speedup claim"
+  ],
+  "retained_setup_failure": {
+    "job": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-junit.json",
+      "bytes": 623,
+      "sha256": "1c297c04d33290547243670d1fbe0337fd0c0dcbf4ad24764811c6e7d29c9973"
+    },
+    "reason": "Missing explicit existing -Djna.tmpdir; unrelated fixture setup failure, not the target negative control",
+    "old_XML_preserved": true,
+    "fix": "Only explicit own Q21 jna directory in new argfiles; no production or test source modification"
+  },
+  "existing_test_helper_reuse": "Actual prior normal Maven adapters-storage/test-classes StorageWriteGuardTestSupport plus Frame reused solely as software fixture, not JAR/Root qualification",
+  "resource_correction": {
+    "original_quote_bytes": 2097152,
+    "postjob_4K_guarded_upper_before_Ready": 2109440,
+    "difference": 12288,
+    "actual_Runtime_census_fileallocation": 1850080,
+    "actual_Runtime_fileallocation_plus_dir_guard": 2083552,
+    "not_claimed_actual_physical_excess": true,
+    "normal_samecap_childscope_amend": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-CUSTODY-ROTATION2-TO3M-ACTUAL-CLOSE-AMEND51B.json",
+      "bytes": 2679,
+      "sha256": "6c4f18b8764295bed81aa3896710c833c03ac55fc525c08088dd04922e10c226"
+    },
+    "final_quote_bytes": 3145728,
+    "all_initial_quote_failures_and_originals_retained_no_refund": true
+  },
+  "limitations": [
+    "Owned three tiny payloads plus their original commit records only, not old campaign data or active saved games",
+    "No user Game/GSV/Steam/SDK live/window/process/install/settings/mod/SAVE operations",
+    "No actual Root/Service/Life/native/live qualification or performance result",
+    "Original old-source230.254s P retained unchanged; existing suites not rerun"
+  ],
+  "artifacts": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/CUSTODY-ROTATION2M-OFFLINE-REQUEST01.json",
+      "bytes": 4926,
+      "sha256": "7fc155d90748aab86690e8a9580b3a5b883079079e705f6a06f37c24bd922f07"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/CUSTODY-ROTATION2M-OFFLINE-REQUEST02.json",
+      "bytes": 5936,
+      "sha256": "48a822fd1fa37b0555a8cf8d17c6264e797bd3866c953cdff7c9579347d5890d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/CUSTODY-ROTATION2M-OFFLINE-REQUEST03.json",
+      "bytes": 7228,
+      "sha256": "d44edb6daa5b3a3c164b11ff7770581a2f398d12c13dd0e8351764b1897c50ed"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-javac02.args",
+      "bytes": 30946,
+      "sha256": "9fdbd45e7b8ae163c84d91d1da13dbd9a36f238f16cbcdf0013be8b6c3f21842"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-junit03.args",
+      "bytes": 31065,
+      "sha256": "e65e577b602849c774fa8b49c5563c48ebdadcbf73b005a49513113afea78bc4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/fixed-javac02.args",
+      "bytes": 30941,
+      "sha256": "b4aa1bc1820bccc50438f86d93767ae1447de3ead6f72b7c7f6b683113f9f577"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/fixed-junit03.args",
+      "bytes": 31056,
+      "sha256": "d8ebbe4efc6ad072fefaaa6e568c5330767fdda893219f4a3f4a47b995eb5634"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-junit03.stdout",
+      "bytes": 2435,
+      "sha256": "4e4575cd639b46e46a662b302a0f6536d2d50ade762c0b36463b70a0704a629b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-junit03.stderr",
+      "bytes": 235,
+      "sha256": "43c86b09af878d706575a203b50086571866fa3a8cc98bdcd4dfe284065b8811"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/fixed-junit03.stdout",
+      "bytes": 704,
+      "sha256": "aae61d171d07a5cbffaa70e1104424d2f67bb4f738d804a047655df7b52d376f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/fixed-junit03.stderr",
+      "bytes": 235,
+      "sha256": "1b56f5813a7c78f67ccfbf65305fdc843760b9ee295ff1ad1bd2270abe9014ce"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-xml03/TEST-junit-jupiter.xml",
+      "bytes": 40213,
+      "sha256": "c14686d28222be076a94db10a362bdc09d9e24ac3d8060156115d1f3e12db421"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-xml03/TEST-junit-platform-suite.xml",
+      "bytes": 36828,
+      "sha256": "3297c776869e1e272f644d8a86bcc7cda366626b41bd548b4fb0b870d902b3a9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/baseline-xml03/TEST-junit-vintage.xml",
+      "bytes": 37013,
+      "sha256": "2d65ab9eee82351b4e48820daaea1574291e33f8860d15415d20b28df0f3a104"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/fixed-xml03/TEST-junit-jupiter.xml",
+      "bytes": 37546,
+      "sha256": "0892540e18d7cb734193e8021edb8982c173d362c69f968df5b00bde68570a0f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/fixed-xml03/TEST-junit-platform-suite.xml",
+      "bytes": 36819,
+      "sha256": "df0b3543f782842dfd79c1430b769c0f87c04fcfbd68ba1ea339e15f52c4e9f9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-custody-rotation21/qualification01/fixed-xml03/TEST-junit-vintage.xml",
+      "bytes": 37005,
+      "sha256": "05be1157e9dc07e3e6848093b33f408d441bc444a51f8361faf0c327969fbd43"
+    }
+  ]
+}
