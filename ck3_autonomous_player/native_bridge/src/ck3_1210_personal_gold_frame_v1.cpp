@@ -1,11 +1,21 @@
 #include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1)
+#include "xar_bridge/ck3_1210_personal_cash_frame_v1.hpp"
+#endif
 #include <windows.h>
 namespace xar::ck3_1210 {
 namespace {
 bool Read(PersonalGoldMailboxContextV1 &q,
     const ck3_11906::MainThreadExecutionStampV1 &s) noexcept {
   q.observation={};q.foundation={};q.application_main_observed=false;
+  if(q.kind==ActorObservationKindV1::personal_cash) {
+#if defined(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1)
+    return ExecutePersonalCashOnActorOwnerV1(q,s);
+#else
+    return true; // Default-off build never enters personal CASH native calls.
+#endif
+  }
   if (q.game==nullptr || !q.game->enabled() ||
       !game::IsCk3_1210Descriptor(q.game->descriptor()) ||
       !q.game->supports(q.kind==ActorObservationKindV1::foundation ? kActorFoundationCapabilityV1 : kPersonalGoldCapabilityV1) || q.mailbox==nullptr ||

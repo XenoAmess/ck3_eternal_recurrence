@@ -236,6 +236,16 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
                 require(rootAllocation!=null&&ROOT_BINDING.equals(binding.schema())&&PURPOSE.equals(binding.purpose())&&PURPOSE.equals(capacity.purpose())
                         &&DECLARATION.equals(declaration.schema())&&CENSUS.equals(census.schema())&&!formal,"Root v5 capacity/binding require the original ordinary declaration4/census4 pair");
                 validateRootAllocation();
+            }else if(RUNTIME_CAPACITY.equals(capacity.schema())){
+                require(rootAllocation==null&&RUNTIME_BINDING.equals(binding.schema())
+                        &&PURPOSE.equals(binding.purpose())&&PURPOSE.equals(capacity.purpose())
+                        &&DECLARATION.equals(declaration.schema())&&CENSUS.equals(census.schema())&&!formal,
+                        "Runtime v6 environment capacity/binding require the ordinary declaration4/census4 pair");
+                require(declaration.outputs().size()==1&&declaration.outputs().getFirst().kind()==Kind.PROFILE_ENVIRONMENT
+                        &&"xar-autoplayer-environment.json".equals(declaration.outputs().getFirst().fileName())
+                        &&declaration.outputDirectories().isEmpty()&&declaration.retainedInputs().isEmpty()
+                        &&capacity.retainedAllocations().isEmpty()&&census.retainedAllocatedUpperBytes()==0,
+                        "Runtime v6 admits only one exact profile environment output without retained production or generated directories");
             }else require(rootAllocation==null&&branch(binding.schema(),binding.purpose(),BINDING,FORMAL_BINDING)==declaration.branch()
                     &&branch(capacity.schema(),capacity.purpose(),CAPACITY,FORMAL_CAPACITY)==declaration.branch()
                     &&census.schema().equals(formal?FORMAL_CENSUS:CENSUS),"every issuer-selected original must use the identical explicit bootstrap branch");

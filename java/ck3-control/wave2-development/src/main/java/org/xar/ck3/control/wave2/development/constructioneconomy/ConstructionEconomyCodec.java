@@ -12,6 +12,8 @@ import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.projection.ProjectionDomainRejection;
 import org.xar.ck3.control.wave2.development.ConstructionInputValidation;
 import org.xar.ck3.control.wave2.finance.rawcash.RawCashCodec;
+import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -133,7 +135,9 @@ public final class ConstructionEconomyCodec {
         RawCashCodec.validateMonthlySourceContract(bytes(raw));
         String version = text(raw.get("game_version"), "game_version");
         String sha = text(raw.get("executable_sha256"), "executable_sha256");
-        String expectedSha = version.equals("1.20.0.3") ? SHA3 : version.equals("1.20.0.4") ? SHA4 : "";
+        boolean florin = version.equals(ExactCk3Build.CK3_1210.version());
+        String expectedSha = version.equals("1.20.0.3") ? SHA3 : version.equals("1.20.0.4") ? SHA4
+                : florin ? ExactCk3Build.CK3_1210.executableSha256() : "";
         if (expectedSha.isEmpty() || !sha.equalsIgnoreCase(expectedSha)) throw new ProjectionDomainRejection("native source does not match a frozen exact build");
         JsonNode marker = raw.get("monthly_income_semantics");
         StrictJson.object(marker, Set.of("version", "time_basis", "source_scope", "income_source", "expense_source", "military_expenses_included"));
@@ -175,7 +179,9 @@ public final class ConstructionEconomyCodec {
         }
         JsonNode military = raw.get("military_expenses");
         if (!absent(military)) object(military, "military_expenses");
-        SourceFrame frame = new SourceFrame(version, sha, identity(raw.get("played_character_id"), "played_character_id"),
+        Optional<BigInteger> actor = florin ? Optional.of(NativeCharacterId.fromJson(raw.get("played_character_id")).asBigInteger())
+                : identity(raw.get("played_character_id"), "played_character_id");
+        SourceFrame frame = new SourceFrame(version, sha, actor,
                 revision(raw.get("snapshot_revision"), "snapshot_revision"), date(raw.get("date_raw"), "cash.date_raw"),
                 optionalText(raw.get("queried_snapshot_id"), "queried_snapshot_id"), revision(raw.get("queried_revision"), "queried_revision"),
                 revision(raw.get("queried_native_revision"), "queried_native_revision"));

@@ -27,6 +27,9 @@ public final class RootBootstrapOutputContract {
     public static final String ROOT_ALLOCATION="xar.java-root-bootstrap-root-allocation/v1";
     public static final String ROOT_ISSUER="/root/ck3-resume91-root-20261116-research";
     public static final String ROOT_DELEGATE="/root/runtime_continue";
+    public static final String RUNTIME_CAPACITY="xar.java-root-bootstrap-capacity/v6";
+    public static final String RUNTIME_BINDING="xar.java-root-bootstrap-binding/v6";
+    public static final String RUNTIME_ISSUER="/root/runtime_continue";
     public static final String FORMAL_DECLARATION="xar.java-root-bootstrap-formal-release-declaration/v2";
     public static final String FORMAL_CENSUS="xar.java-root-bootstrap-formal-release-census/v2";
     public static final String FORMAL_CAPACITY="xar.java-root-bootstrap-formal-release-capacity/v2";
@@ -148,12 +151,14 @@ public final class RootBootstrapOutputContract {
             String observedAtUtc,String reviewAtUtc,FileRef policyRef,FileRef declarationRef,FileRef censusRef,
             FileRef originalFinancialHeadRef,long jointMaximumChargedBytes,List<Volume> volumes,List<RetainedAllocation> retainedAllocations) implements Authority {
         public CapacityRelease {
-            boolean root=ROOT_CAPACITY.equals(schema);boolean formal=root?false:branch(schema,purpose,CAPACITY,FORMAL_CAPACITY)==Branch.FORMAL_RELEASE;
-            require((root?ROOT_ISSUER:ISSUER).equals(issuerTask)&&"/root".equals(ownerTask)&&(!root||PURPOSE.equals(purpose)),"sole versioned issuer bootstrap-purpose capacity release required");
+            boolean root=ROOT_CAPACITY.equals(schema),runtime=RUNTIME_CAPACITY.equals(schema);
+            boolean formal=root||runtime?false:branch(schema,purpose,CAPACITY,FORMAL_CAPACITY)==Branch.FORMAL_RELEASE;
+            require((runtime?RUNTIME_ISSUER:root?ROOT_ISSUER:ISSUER).equals(issuerTask)&&"/root".equals(ownerTask)
+                    &&(!(root||runtime)||PURPOSE.equals(purpose)),"sole versioned issuer bootstrap-purpose capacity release required");
             machine(machineId);id(windowId);period(observedAtUtc,reviewAtUtc);
             for(FileRef ref:List.of(policyRef,declarationRef,censusRef,originalFinancialHeadRef))file(ref);
             require(jointMaximumChargedBytes>0&&jointMaximumChargedBytes<=(formal?FORMAL_MAXIMUM_ASSET_BYTES+MAXIMUM_CONTROL_BYTES:2L<<20),"finite allocation must stay inside its explicit bootstrap branch ceiling");
-            retainedAllocations=List.copyOf(retainedAllocations);require(retainedAllocations.size()<=(formal?0:1),"finite explicit retained production accounting required");
+            retainedAllocations=List.copyOf(retainedAllocations);require(retainedAllocations.size()<=(formal||runtime?0:1),"finite explicit retained production accounting required");
             volumes=List.copyOf(volumes);require(!volumes.isEmpty()&&volumes.size()<=16&&volumes.stream().map(Volume::volumeRoot).distinct().count()==volumes.size(),"all actual bootstrap volumes required");
         }
     }
@@ -161,8 +166,10 @@ public final class RootBootstrapOutputContract {
     public record Binding(String schema,String purpose,String machineId,String ownerTask,String issuerTask,String windowId,
             String observedAtUtc,String reviewAtUtc,FileRef declarationRef,FileRef censusRef,FileRef capacityRef) implements Authority {
         public Binding {
-            boolean root=ROOT_BINDING.equals(schema);if(!root)branch(schema,purpose,BINDING,FORMAL_BINDING);
-            require((root?ROOT_ISSUER:ISSUER).equals(issuerTask)&&"/root".equals(ownerTask)&&(!root||PURPOSE.equals(purpose)),"actual versioned immutable bootstrap binding required");
+            boolean root=ROOT_BINDING.equals(schema),runtime=RUNTIME_BINDING.equals(schema);
+            if(!(root||runtime))branch(schema,purpose,BINDING,FORMAL_BINDING);
+            require((runtime?RUNTIME_ISSUER:root?ROOT_ISSUER:ISSUER).equals(issuerTask)&&"/root".equals(ownerTask)
+                    &&(!(root||runtime)||PURPOSE.equals(purpose)),"actual versioned immutable bootstrap binding required");
             machine(machineId);id(windowId);period(observedAtUtc,reviewAtUtc);for(FileRef ref:List.of(declarationRef,censusRef,capacityRef))file(ref);
         }
     }

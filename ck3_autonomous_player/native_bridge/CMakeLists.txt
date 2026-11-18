@@ -1283,11 +1283,15 @@ add_library(xar_ck3_12002_runtime STATIC
     src/ck3_1210_full_snapshot_v1.cpp
     src/ck3_1210_personal_gold_v1.cpp
     src/ck3_1210_personal_gold_frame_v1.cpp
+    src/ck3_1210_monthly_flow_v1.cpp
+    src/ck3_1210_personal_cash_v1.cpp
+    src/ck3_1210_personal_cash_frame_v1.cpp
     src/ck3_1210_application_exit_v1.cpp
     src/ck3_1210_commands.cpp
     src/ck3_1210_core_control_request_v1.cpp
     src/ck3_1210_full_clock_request_v1.cpp
     src/ck3_1210_date_sentinel_v1.cpp
+    src/ck3_1210_date_worker_game_access_v1.cpp
     src/ck3_1210_daily_final_hook_v1.cpp
     src/ck3_1210_core_control_v1.cpp
     src/ck3_12004_abi_profile.cpp
@@ -10359,9 +10363,11 @@ if(BUILD_TESTING)
   add_executable(xar_ck3_1210_date_sentinel_test
     src/ck3_1210_date_sentinel_v1.cpp src/ck3_1210_date_sentinel_v1_test.cpp
     src/ck3_1210_core.cpp src/tactical_daily_sentinel_v1.cpp)
+  add_executable(xar_ck3_1210_date_worker_game_access_test
+    src/ck3_1210_date_worker_game_access_v1.cpp src/ck3_1210_date_worker_game_access_v1_test.cpp)
   add_executable(xar_ck3_1210_date_sentinel_request_test
     src/ck3_1210_full_clock_request_v1.cpp src/ck3_1210_date_sentinel_request_v1_test.cpp)
-  foreach(_florin_date_target IN ITEMS xar_ck3_1210_daily_final_hook_test xar_ck3_1210_date_sentinel_test xar_ck3_1210_date_sentinel_request_test)
+  foreach(_florin_date_target IN ITEMS xar_ck3_1210_daily_final_hook_test xar_ck3_1210_date_sentinel_test xar_ck3_1210_date_sentinel_request_test xar_ck3_1210_date_worker_game_access_test)
     target_include_directories(${_florin_date_target} PRIVATE include)
     target_compile_definitions(${_florin_date_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
     if(MSVC)
@@ -10371,4 +10377,35 @@ if(BUILD_TESTING)
   add_test(NAME xar_ck3_native_bridge_1210_daily_final_hook COMMAND xar_ck3_1210_daily_final_hook_test)
   add_test(NAME xar_ck3_native_bridge_1210_date_sentinel COMMAND xar_ck3_1210_date_sentinel_test)
   add_test(NAME xar_ck3_native_bridge_1210_date_sentinel_request COMMAND xar_ck3_1210_date_sentinel_request_test)
+  add_test(NAME xar_ck3_native_bridge_1210_date_worker_game_access COMMAND xar_ck3_1210_date_worker_game_access_test)
+endif()
+
+option(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1 "Enable paused exact-Full personal CASH scalar observation" OFF)
+if(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1)
+  if(NOT XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1 OR NOT XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1)
+    message(FATAL_ERROR "Florin personal CASH requires exact paused Full and personal Gold")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp src/ck3_1210_personal_gold_frame_v1.cpp
+    APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_monthly_flow_test src/ck3_1210_monthly_flow_v1.cpp src/ck3_1210_monthly_flow_v1_test.cpp src/ck3_1210_core.cpp)
+  add_executable(xar_ck3_1210_personal_cash_test src/ck3_1210_personal_cash_v1.cpp src/ck3_1210_personal_cash_v1_test.cpp src/ck3_1210_monthly_flow_v1.cpp src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_core.cpp)
+  add_executable(xar_ck3_1210_personal_cash_frame_test
+    src/ck3_1210_personal_cash_frame_v1.cpp src/ck3_1210_personal_cash_frame_v1_test.cpp
+    src/ck3_1210_personal_cash_v1.cpp src/ck3_1210_monthly_flow_v1.cpp
+    src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_personal_gold_frame_v1.cpp
+    src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_core.cpp src/ck3_1210_core_frame_v1.cpp
+    src/ck3_1210_adapter.cpp src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
+  target_compile_definitions(xar_ck3_1210_personal_cash_frame_test PRIVATE XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1=1)
+  foreach(_cash_target IN ITEMS xar_ck3_1210_monthly_flow_test xar_ck3_1210_personal_cash_test xar_ck3_1210_personal_cash_frame_test)
+    target_include_directories(${_cash_target} PRIVATE include)
+    target_compile_definitions(${_cash_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+    if(MSVC)
+      target_compile_options(${_cash_target} PRIVATE /W4 /WX /permissive- /EHsc)
+    endif()
+  endforeach()
+  add_test(NAME xar_ck3_native_bridge_1210_monthly_flow COMMAND xar_ck3_1210_monthly_flow_test)
+  add_test(NAME xar_ck3_native_bridge_1210_personal_cash COMMAND xar_ck3_1210_personal_cash_test)
+  add_test(NAME xar_ck3_native_bridge_1210_personal_cash_frame COMMAND xar_ck3_1210_personal_cash_frame_test)
 endif()

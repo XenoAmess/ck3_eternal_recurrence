@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
+#include "xar_bridge/ck3_1210_personal_cash_frame_v1.hpp"
 #include <array>
 #include "xar_bridge/ck3_1210_full_snapshot_v1.hpp"
 #include <mutex>
@@ -204,6 +205,9 @@ const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1)
       ck3_1210::kPersonalGoldCapabilityV1,
+#endif
+#if defined(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1)
+      ck3_1210::kPersonalCashCapabilityV1,
 #endif
 #if defined(XAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1)
       ck3_1210::kActorFoundationCapabilityV1,

@@ -31,9 +31,11 @@
 #include "xar_bridge/ck3_1210_full_clock_request_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_request_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
+#include "xar_bridge/ck3_1210_date_worker_game_access_v1.hpp"
 #include "xar_bridge/ck3_1210_daily_final_hook_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
+#include "xar_bridge/ck3_1210_personal_cash_frame_v1.hpp"
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
@@ -1062,6 +1064,7 @@ static bool ReadPaymentIdentityCoreFrame12004(void *opaque,
 static xar::ck3_11906::TacticalDailySentinelDetourStateV1
     g_tactical_daily_sentinel_v1{};
 static xar::ck3_1210::DateSentinelStateV1 g_date_sentinel_1210_v1{};
+static xar::ck3_1210::DateWorkerGameAccessBindingsV1 g_date_worker_game_access_1210_v1{};
 static xar::ck3_1210::DailyFinalHookStateV1 g_daily_final_hook_1210_v1{};
 bool RequestFlorinDateShutdown1210(bool retain_until_safe) noexcept {
   using namespace xar::ck3_1210;
@@ -1076,6 +1079,7 @@ bool RequestFlorinDateShutdown1210(bool retain_until_safe) noexcept {
   if(phase!=DailyFinalHookPhaseV1::idle && phase!=DailyFinalHookPhaseV1::uninstalled) {
     while(UninstallDailyFinalHookV1(g_daily_final_hook_1210_v1)!=DailyFinalHookResultV1::uninstalled)Sleep(1);
   }
+  while(!ReleaseDateSentinelWorkerV1(g_date_sentinel_1210_v1))Sleep(1);
   return true;
 }
 bool ObserveFlorinFullAndDate1210(void *context,
@@ -2831,6 +2835,21 @@ std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter 
       result += Number(full.war_slots_scanned);
       result += "}";
     }
+  }
+  if(xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+      g_date_sentinel_1210_v1.initialized.load(std::memory_order_acquire)) {
+    // These atomic fields are diagnostics, not a coherent world observation.
+    const auto &d=g_date_sentinel_1210_v1;
+    result+=",\"date_sentinel_1210\":{\"generation\":"+Number(d.generation.load());
+    result+=",\"armed\":";result+=d.armed.load()?"true":"false";
+    result+=",\"failure_flags\":"+Number(d.pending_failure.load());
+    result+=",\"arm_owner_thread_id\":"+Number(d.owner_thread_id.load());
+    result+=",\"captured_worker_thread_id\":"+Number(d.captured_worker_thread_id.load());
+    result+=",\"last_post_thread_id\":"+Number(d.last_post_thread_id.load());
+    result+=",\"last_post_stage\":"+Number(d.last_post_stage.load());
+    result+=",\"last_post_date_raw_unqualified\":"+SignedNumber(d.last_post_date_raw.load());
+    result+=",\"shutdown_requested\":";result+=d.shutdown_requested.load()?"true":"false";
+    result+=",\"shutdown_safe\":";result+=d.shutdown_safe.load()?"true":"false";result+='}';
   }
   result += ",\"startup_particle2_null_guard_v1\":{";
   result += "\"installed\":";
@@ -15435,6 +15454,50 @@ std::string RunPersonalGoldQuery1210(const xar::game::GameAdapter &game,
   return serialize();
 }
 
+std::string RunPersonalCashQuery1210(const xar::game::GameAdapter &game,
+    WorkerState &state,std::string_view id,std::string_view payload) {
+  using namespace xar::ck3_1210;
+  std::uint64_t revision=0,outer_revision=0;
+  if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+      !game.supports(kPersonalCashCapabilityV1) || !game.supports_snapshot() ||
+      !game.supports("game.query.fresh-full-state.v1"))
+    return CommandResultFrame(id,kPersonalCashStepV1,false,"personal_cash_unavailable");
+  if(!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(payload,revision) ||
+      !xar::bridge::JsonUnsignedField(payload,"expected_revision",outer_revision) ||
+      revision==0 || outer_revision!=revision || revision!=state.state_revision ||
+      !state.previous_snapshot || payload.find("\"war_payment_sampling\"")!=std::string_view::npos)
+    return CommandResultFrame(id,kPersonalCashStepV1,false,"personal_cash_revision_or_request_invalid");
+  if(!state.previous_snapshot->paused)
+    return CommandResultFrame(id,kPersonalCashStepV1,false,"requires_paused");
+  PersonalCashMailboxContextV1 cash{};
+  cash.expected_full=*state.previous_snapshot;cash.expected_native_revision=revision;
+  // This single worker does not mutate its published state while synchronously
+  // waiting for the Actor ticket. The owner reads the unwrapped raw adapter.
+  cash.current_published_revision=&state.state_revision;
+  cash.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
+  const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  cash.bindings=BindPersonalCashImageV1(module,game.descriptor().executable_sha256);
+  PersonalGoldMailboxContextV1 actor{};actor.kind=ActorObservationKindV1::personal_cash;
+  actor.cash=&cash;actor.game=&game;actor.mailbox=&g_main_thread_query_mailbox_v1;
+  actor.bindings=BindPersonalGoldImageV1(module,game.descriptor().executable_sha256);
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecutePersonalGoldMailboxV1,&actor,actor.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)
+    return CommandResultFrame(id,kPersonalCashStepV1,false,"paused_application_main_not_ready");
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,8000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,2000);
+  const auto reclaimed=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket);
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      reclaimed!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)
+    return CommandResultFrame(id,kPersonalCashStepV1,false,"personal_cash_result_indeterminate");
+  if(!cash.application_main_observed || !cash.observation.completed || !cash.observation.same_frame_ready)
+    return CommandResultFrame(id,kPersonalCashStepV1,false,cash.observation.unavailable_reason);
+  std::string out="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(out,id);out+=",\"ok\":true,\"result\":";
+  out+=SerializePersonalCashFrameResultV1(cash);out+='}';return out;
+}
+
 std::string RunCoreControl1210(const xar::game::GameAdapter &game,
     std::string_view request_id, std::string_view step, std::string_view payload) {
   using namespace xar::ck3_1210;
@@ -16287,8 +16350,9 @@ void RunConnectedSession(
         // so MSVC does not count their branches toward its nesting limit.
         if (!early_step_dispatched &&
             step == xar::ck3_12003::war_cash_current::kCurrentStepV1) {
-          connected = write_frame(pipe, RunWarCashCurrentResourcesQuery12003(
-              game, state, request_id, step, incoming.payload));
+          connected = write_frame(pipe, xar::game::IsCk3_1210Descriptor(game.descriptor())
+              ?RunPersonalCashQuery1210(game,state,request_id,incoming.payload)
+              :RunWarCashCurrentResourcesQuery12003(game,state,request_id,step,incoming.payload));
           early_step_dispatched = true;
         }
         if (!early_step_dispatched &&
@@ -31082,8 +31146,13 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
       if(!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_PIN,
           reinterpret_cast<LPCWSTR>(reinterpret_cast<std::uintptr_t>(&xar::ck3_1210::XarDailyFinalHook1210V1)),
           &pinned_module))return FALSE;
+      g_date_worker_game_access_1210_v1=xar::ck3_1210::BindDateWorkerGameAccessImageV1(base,sha);
+      if(!g_date_worker_game_access_1210_v1.exact_build_admitted)return FALSE;
+      auto date_bindings=xar::ck3_1210::BindDateSentinelImageV1(base,sha);
+      date_bindings.game_access_context=&g_date_worker_game_access_1210_v1;
+      date_bindings.worker_game_access=&xar::ck3_1210::WithDateWorkerGameAccessV1;
       if(!xar::ck3_1210::InitializeDateSentinelV1(g_date_sentinel_1210_v1,
-          xar::ck3_1210::BindDateSentinelImageV1(base,sha),g_main_thread_query_mailbox_v1))return FALSE;
+          date_bindings,g_main_thread_query_mailbox_v1))return FALSE;
       xar::ck3_1210::DailyFinalHookEnvironmentV1 environment{};
       // This existing export is invoked by InjectLibraryAndPrepareStartup in
       // the public CREATE_SUSPENDED callback, before ResumeThread. No worker,

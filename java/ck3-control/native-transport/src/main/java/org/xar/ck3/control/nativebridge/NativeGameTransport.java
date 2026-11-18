@@ -72,6 +72,7 @@ import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.action.SubmissionPermit;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler;
 import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.wave2.finance.rawcash.RawCashCodec;
 import org.xar.ck3.control.nativebridge.capabilities.frontend_rules.FrontendRulesRequests.Primitive;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 
@@ -1116,6 +1117,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private final NativeFreshSnapshotPort.Received original;
         private final Instant validUntil;
         private boolean writeAttempted;
+        private boolean personalCashReadAttempted;
+        private PersonalCashReadUnavailable unresolvedPersonalCashRead;
         private FullClockReceived(NativeGameTransport issuer,NativeFreshSnapshotPort.Received original,Instant validUntil){
             this.issuer=issuer;this.original=original;this.validUntil=validUntil;
         }
@@ -1174,6 +1177,109 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 NativeWire.object(state.get("played_character")).get("alive")})
             if(entry==null||!entry.isBoolean()||!entry.booleanValue())
                 throw new IOException("Full clock source requires its actual living paused map");
+    }
+    public sealed interface PersonalCashRead permits PersonalCashReceived,PersonalCashReadUnavailable {
+        DispatchOutcome original();
+    }
+    /** A private read occurrence tied to one actual Full and its original query window, without Driver authority. */
+    public static final class PersonalCashReceived implements PersonalCashRead {
+        private final NativeGameTransport issuer;
+        private final FullClockReceived before;
+        private final AckReceived original;
+        private final NativeRequestChronology custody;
+        private final RawCashCodec.NormalizedCurrentCash cash;
+        private final Instant validUntil;
+        private PersonalCashReceived(NativeGameTransport issuer,FullClockReceived before,AckReceived original,
+                NativeRequestChronology custody,RawCashCodec.NormalizedCurrentCash cash,Instant validUntil){
+            this.issuer=issuer;this.before=before;this.original=original;this.custody=custody;this.cash=cash;this.validUntil=validUntil;
+        }
+        @Override public AckReceived original(){return original;}
+        public ObservedFrame fullFrame(){return before.frame();}
+        public RawCashCodec.NormalizedCurrentCash cash(){return cash;}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{
+            Objects.requireNonNull(actual).requirePersonalCashOriginal(this,deadline);
+        }
+    }
+    public record PersonalCashReadUnavailable(DispatchOutcome original,String reason)implements PersonalCashRead {
+        public PersonalCashReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    private static final String PERSONAL_CASH_STEP="query-war-cash-current-resources-v1";
+    private static final String PERSONAL_CASH_CAPABILITY="game.query.war-cash-current-resources.v1";
+    /** One read using the standard positive Native revision envelope; it does not refresh its Full source. */
+    public synchronized PersonalCashRead readPersonalCashReceived(FullClockReceived before,Instant deadline)throws InterruptedException{
+        if(before!=null&&before.issuer==this&&before.unresolvedPersonalCashRead!=null)return before.unresolvedPersonalCashRead;
+        String id="personal-cash-"+UUID.randomUUID().toString().replace("-","");
+        DispatchOutcome original;
+        try{
+            Objects.requireNonNull(before);Objects.requireNonNull(deadline);requireFullClockOriginal(before,deadline);
+            if(applicationExitAttempted||before.writeAttempted||before.personalCashReadAttempted||unresolvedFullClockControl!=null
+                    ||unresolvedCoreControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("personal cash requires an unused actual paused Full without active or uncertain controls");
+            if(!hello.capabilities().contains(PERSONAL_CASH_CAPABILITY))throw new IOException("actual personal cash capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            byte[] fields=StrictJson.canonical(StrictJson.object().put("expected_snapshot_revision",before.frame().nativeRevision()));
+            byte[] packet=NativeWire.execute(id,PERSONAL_CASH_STEP,before.frame().nativeRevision(),fields);
+            original=retainReadOutcome(dispatch(id,packet,deadline,()->{
+                requireBackgroundAtCoreWrite();
+                try{requireFullClockOriginal(before,deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.writeAttempted||before.personalCashReadAttempted)throw new IllegalStateException("personal cash Full source is consumed");
+                before.personalCashReadAttempted=true;
+            }));
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(id))original=new Unknown(id,"personal cash failed after actual query write; retain original: "+reason(invalid),retainedOutbound(id),Optional.empty());
+            else original=zero(id,reason(invalid));
+        }
+        try{
+            if(!(original instanceof AckReceived ack))throw new IOException("personal cash has no actual received acknowledgement");
+            var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("actual personal cash custody unavailable"));
+            var cash=decodePersonalCash(ack,before);
+            var actual=new PersonalCashReceived(this,before,ack,custody,cash,deadline);
+            requirePersonalCashOriginal(actual,deadline);return actual;
+        }catch(IOException|RuntimeException invalid){
+            var unavailable=new PersonalCashReadUnavailable(original,reason(invalid));
+            if(before!=null&&before.issuer==this&&original instanceof Unknown)before.unresolvedPersonalCashRead=unavailable;
+            return unavailable;
+        }
+    }
+    private RawCashCodec.NormalizedCurrentCash decodePersonalCash(AckReceived ack,FullClockReceived before)throws IOException{
+        if(!ack.nativeOk())throw new IOException("personal cash Native acknowledgement is not accepted");
+        var result=NativeWire.object(NativeWire.parse(ack.originalResultToken().orElseThrow(()->new IOException("original personal cash result unavailable")).bytes()));
+        if(!textEquals(result,"step",PERSONAL_CASH_STEP))throw new IOException("personal cash result belongs to another operation");
+        StrictJson.trueValue(result.get("accepted"));StrictJson.trueValue(result.get("private_build"));StrictJson.trueValue(result.get("read_only"));
+        if(result.get("advertised")==null||!result.get("advertised").isBoolean()||result.get("advertised").booleanValue())
+            throw new IOException("personal cash cannot claim public finance readiness");
+        var raw=NativeWire.object(result.get("war_cash_current_resources"));
+        var projection=PersonalCashFullProjection.snapshotData(before.frame(),hello);
+        var normalized=RawCashCodec.normalize(StrictJson.canonical(raw),projection.bytes());
+        var state=NativeWire.object(NativeWire.parse(before.frame().state().bytes()));
+        requirePersonalCashScope(state,"active_wars","war_id",normalized.activeWarIds());
+        requirePersonalCashScope(state,"player_armies","army_id",normalized.playerArmyIds());
+        return normalized;
+    }
+    private static void requirePersonalCashScope(ObjectNode state,String collection,String idField,List<BigInteger> expected)throws IOException{
+        var rows=state.get(collection);if(rows==null||!rows.isArray())throw new IOException("actual Full cash scope is unavailable: "+collection);
+        var ids=new ArrayList<BigInteger>();
+        for(var row:rows){
+            var id=NativeWire.integer(NativeWire.object(row).get(idField),BigInteger.ZERO,BigInteger.valueOf(Integer.MAX_VALUE));
+            if(ids.contains(id))throw new IOException("actual Full cash scope repeats an identity");ids.add(id);
+        }
+        if(!ids.equals(expected))throw new IOException("personal cash scope differs from its actual Full: "+collection);
+    }
+    private void requirePersonalCashOriginal(PersonalCashReceived actual,Instant deadline)throws IOException{
+        Objects.requireNonNull(deadline);
+        if(actual.issuer!=this||closed||terminalFailure!=null||hello==null)throw new IOException("personal cash requires its identical live held receiver");
+        var now=chronologyClock.instant();
+        if(!now.isBefore(deadline)||!now.isBefore(actual.validUntil)||deadline.isAfter(actual.validUntil)
+                ||actual.custody.responseReceived().observedAt().isAfter(now)||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)
+                ||actual.custody.writeEntered().observedAt().isBefore(helloObservedAt))throw new IOException("personal cash escaped its original Full/query window");
+        requireFullClockOriginal(actual.before,deadline);
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)
+                ||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())
+            throw new IOException("personal cash crossed original Game/session/connection/custody");
+        actual.custody.verify(actual.original);
+        if(!Arrays.equals(actual.cash.toJson(),decodePersonalCash(actual.original,actual.before).toJson()))
+            throw new IOException("personal cash differs from its original normalized data");
     }
     private Unknown unresolvedFullClockControl;
     private AckReceived indeterminateFullClockAcknowledgement;

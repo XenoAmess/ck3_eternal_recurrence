@@ -364,7 +364,9 @@ public final class RootProfileBootstrapCommand {
             throw new IOException("issuer binding cannot change release machine, predate release or extend its review");
         boolean formal=RootBootstrapOutputContract.FORMAL_CAPACITY.equals(release.schema());
         var binding=new RootBootstrapOutputContract.Binding(
-                formal?RootBootstrapOutputContract.FORMAL_BINDING:RootBootstrapOutputContract.ROOT_CAPACITY.equals(release.schema())?RootBootstrapOutputContract.ROOT_BINDING:RootBootstrapOutputContract.BINDING,
+                formal?RootBootstrapOutputContract.FORMAL_BINDING
+                        :RootBootstrapOutputContract.RUNTIME_CAPACITY.equals(release.schema())?RootBootstrapOutputContract.RUNTIME_BINDING
+                        :RootBootstrapOutputContract.ROOT_CAPACITY.equals(release.schema())?RootBootstrapOutputContract.ROOT_BINDING:RootBootstrapOutputContract.BINDING,
                 release.purpose(),release.machineId(),release.ownerTask(),release.issuerTask(),release.windowId(),
                 clock.instant().toString(),request.reviewAtUtc(),release.declarationRef(),release.censusRef(),request.capacityRelease());
         var created=writeIssuerMetadata(Path.of(request.target()),binding,Path.of(declaration.controlRoot()),declaration.controlDirectory(),

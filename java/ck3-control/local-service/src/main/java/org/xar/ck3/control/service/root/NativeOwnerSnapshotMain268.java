@@ -81,6 +81,7 @@ public final class NativeOwnerSnapshotMain268 {
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
         boolean personalGold=observationMode==ObservationMode.PERSONAL_GOLD;
         boolean actorFoundation=observationMode==ObservationMode.ACTOR_FOUNDATION;
+        boolean personalCash=observationMode==ObservationMode.PERSONAL_CASH;
         boolean fullClock=observationMode==ObservationMode.FULL_CLOCK;
         boolean dateAdvance=observationMode==ObservationMode.DATE_ADVANCE;
         int maximumStatusPolls=dateAdvance?Math.toIntExact(StrictJson.integer(config.get("maximum_status_polls"),1,128)):0;
@@ -106,7 +107,7 @@ public final class NativeOwnerSnapshotMain268 {
         var plan = owner.configuration().accept();
         if(observationMode==ObservationMode.MENU_CORE) {
             if(!(plan.load() instanceof NativeLaunchPlan.NewGame))throw new IOException("explicit menu core mode requires its actual NewGame owner plan");
-        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!fullClock&&!dateAdvance&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
+        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!personalCash&&!fullClock&&!dateAdvance&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
         Files.createDirectory(output);
         createdOutput = output;
         ObjectNode originals = StrictJson.object();
@@ -136,10 +137,13 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("complete_snapshot",false).put("treasury_observed",false).put("monthly_flow_observed",false);
         if(fullClock)result.put("schema","xar.native-owner-full-clock-control/v1").put("mode","full_snapshot_clock_control")
                 .put("control_step",fullClockStep).put("effect_confirmed",false).put("save_confirmed",false);
+        if(personalCash)result.put("schema","xar.native-owner-personal-cash/v1").put("mode","personal_cash_current")
+                .put("read_calls",2).put("true_treasury_observed",false).put("military_categories_observed",false)
+                .put("formal_finance_ready",false);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,dateAdvance?maximumStatusPolls+6:coreCommand||fullClock?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,dateAdvance?maximumStatusPolls+6:coreCommand||fullClock||personalCash?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
             try (ManagedGameSession game = NativeGameAttachment.attach(request, deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
@@ -150,6 +154,32 @@ public final class NativeOwnerSnapshotMain268 {
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
                 if(dateAdvance){
                     runDateAdvance(transport,owner,plan,output,deadline,maximumStatusPolls,statusPollMillis,result,originals);
+                } else if(personalCash) {
+                    stage="ONE_PERSONAL_CASH_FULL_SOURCE";
+                    var read=transport.readFullClockFrameReceived(deadline);
+                    archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+                    originals.set("full_dispatch",saveDispatch(output,read.original().dispatch()));
+                    if(!(read instanceof NativeGameTransport.FullClockReceived before))
+                        throw new IOException("actual personal cash Full source unavailable; original retained, no retry: "+((NativeGameTransport.FullClockReadUnavailable)read).reason());
+                    var source=before.original().acknowledgement().custody().orElseThrow(()->new IOException("actual cash Full custody unavailable"));
+                    source.verify(before.original().acknowledgement());var actualSession=source.session();
+                    if(!actualSession.game().equals(owner.generation())||!actualSession.machineId().equals(owner.machineId())
+                            ||!actualSession.sessionId().equals(owner.sessionId())||!transport.diagnostics().session().filter(actualSession::equals).isPresent())
+                        throw new IOException("personal cash Full crossed its owner Game/session");
+                    originals.set("full_before_cash",saveFrame(output,before.frame()));
+                    Instant cashDeadline=before.validUntil().isBefore(deadline)?before.validUntil():deadline;
+                    stage="ONE_PERSONAL_CASH_READ";
+                    var cash=transport.readPersonalCashReceived(before,cashDeadline);
+                    Path cashOutput=Files.createDirectory(output.resolve("cash"));
+                    originals.set("cash_dispatch",saveDispatch(cashOutput,cash.original()));
+                    archiveNaturalDiagnostics(cashOutput,originals,transport.diagnostics());
+                    if(!(cash instanceof NativeGameTransport.PersonalCashReceived received))
+                        throw new IOException("actual personal cash unavailable; original retained, no retry: "+((NativeGameTransport.PersonalCashReadUnavailable)cash).reason());
+                    received.requireOriginal(transport,cashDeadline);
+                    result.set("session",session(actualSession));
+                    result.put("full_read_request_id",before.original().acknowledgement().requestId()).put("request_id",received.original().requestId())
+                            .put("snapshot_id",before.frame().snapshotId()).put("native_revision",before.frame().nativeRevision());
+                    result.set("personal_cash",FullJsonTree.parse(received.cash().toJson(),FullJsonTree.MAXIMUM_BYTES));
                 } else if(fullClock) {
                     stage="ONE_FULL_CLOCK_SOURCE_READ";
                     var read=transport.readFullClockFrameReceived(deadline);
@@ -337,7 +367,7 @@ public final class NativeOwnerSnapshotMain268 {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -452,9 +482,15 @@ public final class NativeOwnerSnapshotMain268 {
             if(original.isPresent())originals.set(key,saveDispatch(Files.createDirectory(output.resolve("original-uncertain-ack")),original.orElseThrow()));
         }
     }
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v9")){
+            StrictJson.require(!config.has("core_prefix_only")&&!config.has("control_step")&&!config.has("maximum_status_polls")
+                    &&!config.has("status_poll_interval_ms")&&"personal_cash_current".equals(StrictJson.text(config.get("mode"))),
+                    "explicit read-only personal cash mode required");
+            return ObservationMode.PERSONAL_CASH;
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v8")){
             StrictJson.require(!config.has("core_prefix_only")&&!config.has("control_step")
                     &&"date_sentinel_advance_one_day".equals(StrictJson.text(config.get("mode"))),"explicit Date-only one-day mode required");

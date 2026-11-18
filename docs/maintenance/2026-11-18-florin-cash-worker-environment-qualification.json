@@ -1,0 +1,62 @@
+{
+  "schema": "xar.ck3.florin.cash-worker-environment-coherent-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-11-18T05:01:06.208262+00:00",
+  "cash_parser": {
+    "distinct_passed": 14,
+    "historical_consumer_fixture_absent": 2,
+    "complete_legacy_suite_pass": false,
+    "scope": "Two exact1210 pure consumers retain signed actor and military unknown; current budget may use wallet/NET, all-raised remains unknown. Legacy malformed actor-global golden case explicitly rejects; original golden bytes preserved."
+  },
+  "cash_private": {
+    "passed": 12,
+    "phases": 1,
+    "abi_old_classes": 48,
+    "methods": 271,
+    "fields": 19,
+    "ready": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-personal-cash-receiver01/qualification01/PERSONAL-CASH12-RUNTIME-READY02.json",
+      "bytes": 6778,
+      "sha256": "5123d0705cf1b379d48b741bf7758e5045cbae05f61a46c69f14a88d9dcc2701"
+    },
+    "scope": "Original Full and HELLO DATA, private issuer/session/custody/window, matching positive native revisions and scopes, min-only guard before write, original ACK and sticky UNKNOWN. No public Driver revision or authority invented."
+  },
+  "cash_live": {
+    "result": "PASS",
+    "proof": "docs/maintenance/2026-11-18-personal-cash-readonly-live.json",
+    "wallet_raw": 47986038,
+    "monthly_gross_raw": 124674,
+    "monthly_total_expenses_raw": 177975,
+    "monthly_net_raw": -53301,
+    "scale": 100000,
+    "military_maintenance": "UNKNOWN",
+    "true_treasury": false,
+    "zero_native_side_effects_verified": false,
+    "unwind_cleanup_verified": false,
+    "save_commands": 0,
+    "natural_exit_code": 0
+  },
+  "runtime_env_issuer": {
+    "distinct_passed": 10,
+    "phases": "oldv4 issuer2+oldv5Root4 first pass; new4 policy fixture errors then onlynew4 repair pass",
+    "abi_old_classes": 42,
+    "methods": 374,
+    "fields": 90,
+    "schema": "capacity/binding v6",
+    "issuer": "/root/runtime_continue",
+    "owner": "/root",
+    "scope": "Single fixed PROFILE_ENVIRONMENT only, no directories/retained inputs, real policy/volume/census/current-source custody. Legacy v4/v5/formal remain strict.",
+    "ready": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-env-runtime-issuer01/qualification01/RUNTIME-ENV-ISSUER-V6-10-DISTINCT-READY01.json",
+      "bytes": 4717,
+      "sha256": "de40b3c29f60642b55cb141af1b654309fb3ff8df3d16865e2070518eb0738f1"
+    },
+    "actual_created_env": "docs/maintenance/2026-11-18-formal-saved-vanilla-environment.json"
+  },
+  "native_worker15": {
+    "software_only": true,
+    "actual_single_day_pass": false,
+    "scope": "Native worker duplicate-handle/birth/TLS140 with paired game-access lifetime and hook rundown. R8 FAILED and two unsaved days remain historical evidence; new live qualification is separate."
+  },
+  "limits": "No Root/Driver/OODA adoption, full finance, military cost, construction effect, true Treasury or successful Date15 day is implied by this source package."
+}

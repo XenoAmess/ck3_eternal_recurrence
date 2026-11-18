@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
+import org.xar.ck3.control.contracts.ContractViolationException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +29,30 @@ final class ConstructionEconomyTest {
         assertEquals(9, fixture.path("source_bindings").size());
         for (JsonNode source : fixture.path("source_bindings")) assertTrue(source.path("sha256").asText().matches("[0-9a-f]{64}"));
         assertEquals(25, fixture.path("cases").size());
+        int strictRejections = 0;
+        int matchedOriginalOutcomes = 0;
         for (JsonNode vector : fixture.path("cases")) {
             JsonNode request = vector.get("request");
+            if ("cash_actor_interval_unbound".equals(vector.path("name").asText())) {
+                // Retain the Python capture and its downstream unavailable outcome.
+                // The current typed decoder rejects this inconsistent owner earlier.
+                assertEquals("outcome", vector.path("kind").textValue());
+                assertEquals(29829, request.path("pre_cash_v2").path("played_character_id").intValue());
+                JsonNode postCash = request.path("post_cash_v2");
+                assertEquals(29830, postCash.path("played_character_id").intValue());
+                for (String scope : new String[] {"current", "all_raised"}) {
+                    JsonNode military = postCash.path("military_expenses").path(scope);
+                    assertEquals(29829, military.path("owner_character_id").intValue());
+                    assertEquals("29829", military.path("resource_id").textValue());
+                }
+                assertEquals("cash_interval_actor_or_dates_not_bound", vector.path("expected")
+                        .path("observed_cash_change").path("unavailable_reason").textValue());
+                var rejected = assertThrows(ContractViolationException.class,
+                        () -> ConstructionEconomyCodec.decodeOutcomeRequest(outcomeBytes(request)));
+                assertEquals("military expense lost actor-global semantics", rejected.getMessage());
+                strictRejections++;
+                continue;
+            }
             byte[] actual = switch (vector.path("kind").asText()) {
                 case "outcome" -> ConstructionEconomyCodec.encodeOutcome(ConstructionEconomy.classify(
                         ConstructionEconomyCodec.decodeOutcomeRequest(outcomeBytes(request))));
@@ -54,7 +77,10 @@ final class ConstructionEconomyTest {
                 default -> throw new IllegalArgumentException("unknown golden kind");
             };
             assertEquals(vector.get("expected"), JSON.readTree(actual), vector.path("name").asText());
+            matchedOriginalOutcomes++;
         }
+        assertEquals(1, strictRejections);
+        assertEquals(24, matchedOriginalOutcomes);
     }
 
     @Test void originalFormalAndM5ConsumersUseTheSameTypedCashResults() throws IOException {

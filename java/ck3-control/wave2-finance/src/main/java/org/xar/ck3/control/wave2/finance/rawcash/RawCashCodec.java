@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.Set;
 import org.xar.ck3.control.contracts.ContractViolationException;
+import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.wave2.finance.holyloan.HolyLoanCodec;
 import org.xar.ck3.control.wave2.finance.holyloan.HolyLoanModel;
@@ -24,11 +26,13 @@ public final class RawCashCodec {
     public static final String LOAN_SCHEMA = "xar.ck3.holy-order-loan-war-cash.v1";
     private static final BigInteger U64 = StrictJson.UINT64_MAX;
     private static final BigInteger I64_MIN = BigInteger.valueOf(Long.MIN_VALUE), I64_MAX = BigInteger.valueOf(Long.MAX_VALUE);
+    private static final String VERSION1210 = ExactCk3Build.CK3_1210.version();
     private static final Map<String, String> BUILDS = Map.of(
             "1.19.0.6", "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
             "1.20.0.2", "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
             "1.20.0.3", "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
-            HolyLoanCodec.VERSION, HolyLoanCodec.SHA256);
+            HolyLoanCodec.VERSION, HolyLoanCodec.SHA256,
+            VERSION1210, ExactCk3Build.CK3_1210.executableSha256().toUpperCase(java.util.Locale.ROOT));
     private RawCashCodec() { }
 
     public enum Presence { MISSING, NULL, INVALID, VALUE }
@@ -107,7 +111,9 @@ public final class RawCashCodec {
     private static MonthlySource monthlySource(JsonNode current) {
         require(SCHEMA.equals(text(current.get("schema"))), "war cash native schema malformed");
         String version = build(current);
-        int played = (int) number(current.get("played_character_id"), 1, Integer.MAX_VALUE);
+        int played = version.equals(VERSION1210)
+                ? NativeCharacterId.fromJson(current.get("played_character_id")).value()
+                : (int) number(current.get("played_character_id"), 1, Integer.MAX_VALUE);
         BigInteger revision = unsigned(current.get("snapshot_revision"), 1);
         int date = (int) number(current.get("date_raw"), Integer.MIN_VALUE, Integer.MAX_VALUE);
         require(flag(current, "read_only", true) && flag(current, "advertised", false)
@@ -182,12 +188,16 @@ public final class RawCashCodec {
     }
     private static void validateMonthlyFlow(JsonNode current) {
         JsonNode marker = current.get("monthly_income_semantics");
+        boolean florin = current.has("game_version") && current.get("game_version").isTextual()
+                && VERSION1210.equals(current.get("game_version").textValue());
+        if (florin) { build(current); }
         if (nil(marker)) {
+            require(!florin, "Florin current cash requires its exact monthly semantics marker");
             require(!current.has("player_monthly_gross_income") && !current.has("player_monthly_total_expenses"), "monthly flow lacks semantics marker");
             return;
         }
         String version = text(current.get("game_version"));
-        require((version.equals("1.20.0.3") || version.equals(HolyLoanCodec.VERSION))
+        require((version.equals("1.20.0.3") || version.equals(HolyLoanCodec.VERSION) || florin)
                 && marker.equals(monthlyMarker(version)), "monthly flow lost exact-build semantics");
         JsonNode ready = object(current.get("readiness"));
         List<BigInteger> values = new ArrayList<>();

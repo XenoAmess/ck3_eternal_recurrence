@@ -1,0 +1,51 @@
+{
+  "begin": "2026-11-18T03:35:06.338266+00:00",
+  "live": false,
+  "method": "matching Full002 input values written to actual NoGame RAM and complete fixture before/current Full, genuine reader/serializer, no JSON edits",
+  "driver": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-integration14\\matching-full002-producer15.cpp",
+    "sha256": "3de647d5660a85ebd2b89ae661a7c6eacc6dcf672c87e0d6118016994f1f6d76"
+  },
+  "commands": [
+    {
+      "args": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/O2",
+        "/W4",
+        "/WX",
+        "/permissive-",
+        "/EHsc",
+        "/MD",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/ID:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash14\\source-retained\\include",
+        "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\include",
+        "/FoD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-integration14\\matching-full002/",
+        "/FeD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-integration14\\matching-full002\\producer.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-integration14\\matching-full002-producer15.cpp",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\personal-cash01\\ck3_1210_core.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\personal-cash01\\ck3_1210_monthly_flow_v1.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\personal-cash01\\ck3_1210_personal_cash_v1.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\personal-cash01\\ck3_1210_personal_gold_v1.obj",
+        "/link",
+        "/INCREMENTAL:NO"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-integration14\\matching-full002\\producer.exe"
+      ],
+      "exit": 0
+    }
+  ],
+  "packet": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-integration14\\matching-full002\\actual-cpp-cash-matching-full002.json",
+    "bytes": 3067,
+    "sha256": "2776f9887cbe051e628c55c36dc7d00d6810d4bd4e7abba09c540654e31564b3"
+  },
+  "end": "2026-11-18T03:35:09.950062+00:00",
+  "accepted": true
+}
