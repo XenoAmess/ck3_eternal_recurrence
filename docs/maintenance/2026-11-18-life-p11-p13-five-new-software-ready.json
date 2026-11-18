@@ -1,0 +1,547 @@
+{
+  "status": "P11_P13_9_PRODUCTION_TUS_5_NEW_DISTINCT_SOFTWARE_PASS_OFFLINE",
+  "scope": "archive-aware actual preparedRead consumer and versioned terminal wrappers; initialization zero-write shape and authority-bearing Root/Driver original reopen. No canonical authority or Game is fabricated.",
+  "source_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/FINAL-SOURCES02.json",
+    "bytes": 6026,
+    "sha256": "eba546b1ea34413d6638c5a49d73f71685a03479c6e9a17aae1aca30357936b5"
+  },
+  "typing": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/javac01.json",
+    "bytes": 539,
+    "sha256": "abb59e06673515309543e5474a7ae775769a52ea489ba25885b6d203478384c9"
+  },
+  "initial_test": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/junit01.json",
+    "bytes": 485,
+    "sha256": "20946b9fc66923c47f85f980999d8096f03b2cab3fb26a7738eed19a36f5b544"
+  },
+  "initial_xml": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/reports01/TEST-junit-jupiter.xml",
+    "bytes": 40480,
+    "sha256": "4be4cbc9841f0c5e5a0850be4258d7b983d7b5fecd68f882ee3a4f694043bd16"
+  },
+  "initial_summary": {
+    "passed": 4,
+    "failed": 1,
+    "cause": "duplicate-ref NativeRequest constructor correctly rejected before predicate negative assertion"
+  },
+  "test_only_repair": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/repair01/REPAIR01.json",
+    "bytes": 490,
+    "sha256": "7e59cfe40b4681cb171a52e7d93ef6f3a2358831c5fc4ffed74f0dedd92a5747"
+  },
+  "affected_typing": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/repair01/javac02.json",
+    "bytes": 524,
+    "sha256": "5be358f6e0d4d4bea7ced4c5a840d764f05d2cf1f43a792706560238328c99ee"
+  },
+  "affected_test": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/repair01/junit02.json",
+    "bytes": 469,
+    "sha256": "9ac05842ab7c1b752fde86319c21343c2b9b48fe82196f42343558a3fa237d48"
+  },
+  "affected_xml": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/repair01/reports02/TEST-junit-jupiter.xml",
+    "bytes": 36856,
+    "sha256": "77686af76e921f1dd2810f0858eb2fb930d9446bc74e67eeb5eee4e1a25889da"
+  },
+  "distinct_results": {
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#legacyZeroWriteInitializationStillRequiresItsOriginalEmptyPreparation()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#postResumeCleanupReopensTheActualPreparationInsteadOfDemandingTheEmptyWireProducer()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#zeroWriteInitializationKeepsActualPreflightAndReopensItsOriginals()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#zeroWriteInitializationRejectsEmptyOrChangedWireAndPreservesUnknown()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#terminalProofVersionCannotDowngradeOrTurnTriggeredIntoThePartialDateIdleBoundary()": "PASSED"
+  },
+  "distinct_passes": 5,
+  "class_outputs": {
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$ActionHistoryLink$PreparedPublication.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$ActionHistoryLink$PreparedPublication.class",
+      "bytes": 1152,
+      "sha256": "96f438e9eefb63599e81015f6feea74271f99aabf09e93b78a873c7b56c8df22"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$ActionHistoryLink.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$ActionHistoryLink.class",
+      "bytes": 4607,
+      "sha256": "e9929a6e5d06b3318c228cdd0b4a34f222be765ccb911e4907349d6f9b3985cc"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$ColdRestoration.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$ColdRestoration.class",
+      "bytes": 3507,
+      "sha256": "fcaa60f64b9d486fbeb0f30f5bb3a2eaf1a9433043aad500e06a7f8af510aff8"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$1.class",
+      "bytes": 8523,
+      "sha256": "b9727231b37d2b74716cc977890edcc4f8e0b50c3e336113676d72ba6d87d971"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$1PendingRole.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$1PendingRole.class",
+      "bytes": 2608,
+      "sha256": "45407077997e065efd032ea2857080c54e50341725499ed9d4fe9826ea90cf26"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$2.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$2.class",
+      "bytes": 4229,
+      "sha256": "03ffc04725019887b394688065e7c90dcfebc0b6f15913a09fc6d6a06170de6f"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$3.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$3.class",
+      "bytes": 7815,
+      "sha256": "6c51634890693b7fae9f085c17ad5fb0e82413320d348abeaebad4745d523a56"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$4.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$4.class",
+      "bytes": 4932,
+      "sha256": "f27be7081739cf12d0ecc55fa688de3b4d884002c04109360ab80309e08744bd"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ColdOwner.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ColdOwner.class",
+      "bytes": 3292,
+      "sha256": "46165d47dfb290682133b50fb7dd8fc502ac71867ad9433570641bb1efe2d1cb"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ColdRestoreSource.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ColdRestoreSource.class",
+      "bytes": 14400,
+      "sha256": "441f92d2679f79263f06e73c5de1ee38d8422b7c571dff235a817932c444f29d"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ConfirmedSavedCapture.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ConfirmedSavedCapture.class",
+      "bytes": 2955,
+      "sha256": "0453d3d1d9b40ed64453eca1efd41e06a2bb75037990aea326aa61a395c6f6b5"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ConfirmedSavedDomainProof.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ConfirmedSavedDomainProof.class",
+      "bytes": 4310,
+      "sha256": "aa9361be3808ffbf197b32cfcebb8ceffd59e9c13999b1eea1895b1f8012b16c"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$HistoricalOperatorSource.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$HistoricalOperatorSource.class",
+      "bytes": 7559,
+      "sha256": "054814252c8537bb71f0508e37c208bb6a23220447fae6ac477b8c075f86bb06"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$OriginalAdoption.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$OriginalAdoption.class",
+      "bytes": 2591,
+      "sha256": "7a1ce2b6006c19a712579a42845ac7b89c0c0df58f494d8ec4a2d54ea067978f"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ReservedRetirementScope.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$ReservedRetirementScope.class",
+      "bytes": 14505,
+      "sha256": "bc87e13529985d3d2f300e408ea3781cefa73db3a28623e5673e84600a301efb"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$RestoredSourceMetadata.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$RestoredSourceMetadata.class",
+      "bytes": 2175,
+      "sha256": "ccf52e709c6315a852ac49aacb0c264552998817f14281facff6fa0970f4a897"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$RetainedSavedCapture.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$RetainedSavedCapture.class",
+      "bytes": 1428,
+      "sha256": "67d0bd18a0f9df9421f7b3be5783e2e80b64e65f305053118d9766ed89d1fb8a"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core$SavedLiveToken.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core$SavedLiveToken.class",
+      "bytes": 5351,
+      "sha256": "c6d828f5b75e277bbb94592986ed3f3fce76da5c36add962cc99151adbcbd400"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Core.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Core.class",
+      "bytes": 356002,
+      "sha256": "4f99dbd6071abda9461a4f61e62a4cdb3ca93831d675f150e8ba0af703ee8406"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$EpisodeDomainInitializationProof$Kind.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$EpisodeDomainInitializationProof$Kind.class",
+      "bytes": 1664,
+      "sha256": "a02917b598b2d14dd1822d42802cae148b6bab2cf89df2dfafdf52fe28639182"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$EpisodeDomainInitializationProof.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$EpisodeDomainInitializationProof.class",
+      "bytes": 4158,
+      "sha256": "52c20cfa42f71447a355d27181ebb11dbd58e3612e94cc3e1e1d8a0dd6213d47"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$FreshSessionConfiguration.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$FreshSessionConfiguration.class",
+      "bytes": 3508,
+      "sha256": "e548d1dcfa7d5a18cb546cde30bc54fab396bcd9807b8f719030bd0e8978339e"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$FreshSessionServices.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$FreshSessionServices.class",
+      "bytes": 4599,
+      "sha256": "bbd25ef2c6fb893fe7d67a92721c09041b82190b0791d45a0b8c7cc240adf11c"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$InputLink.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$InputLink.class",
+      "bytes": 3994,
+      "sha256": "105bc764c2ab75751a6c7567190d53ad2b78848045f5137443999d2c5d9d9228"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$InterruptedAssembly.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$InterruptedAssembly.class",
+      "bytes": 614,
+      "sha256": "0dccbaae85b28ba49e3786f8c42be2dc0d4c6f58ac59c798840daf1718b33174"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$NextEpisodeAttempt.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$NextEpisodeAttempt.class",
+      "bytes": 1795,
+      "sha256": "aa213d912588cec4e2f125b309e73c21310f0b377f74dc7e1da417d61de77e68"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$NextEpisodeDomainProof.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$NextEpisodeDomainProof.class",
+      "bytes": 13602,
+      "sha256": "1e49e59b1180df2d165ad674020f25b6b5129233c7395f0ec91277d5b83bbedd"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$NextEpisodeStage.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$NextEpisodeStage.class",
+      "bytes": 7056,
+      "sha256": "d24fe98961e4a91425ceb6ed312d05ec7022135cf74e601ffa34a13da43146e8"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$NextHostCommit.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$NextHostCommit.class",
+      "bytes": 2793,
+      "sha256": "123478678148daffa0503861d187970425dcc862e75264f2753eb9966133c01e"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$OriginActions.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$OriginActions.class",
+      "bytes": 2163,
+      "sha256": "3ef3f5f8914b081e9a0be93d207b111264e91b61225e3e8e6dfa8b685192ff81"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$OriginReads.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$OriginReads.class",
+      "bytes": 5329,
+      "sha256": "8d9aa1f3855170161d01818075110c8899579b9006b02b2db2211c24329e58c0"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$ReconciliationLink.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$ReconciliationLink.class",
+      "bytes": 6694,
+      "sha256": "2c94434a04b0d949d3dba3508dd1c7d6599211ddf40aa4c36d5af8dcb81fcc44"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Restoration.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Restoration.class",
+      "bytes": 2951,
+      "sha256": "a90636f8c740d97a9021d6da2d4f67e834b069ce6b44816ccc21928515b62b6d"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$RestoredFirstEpisodeDomainProof.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$RestoredFirstEpisodeDomainProof.class",
+      "bytes": 15994,
+      "sha256": "86c762fbc6c357712d048160126f20cd87797b549ecc1df7b43826f764ecf1b8"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly$Staged.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly$Staged.class",
+      "bytes": 74506,
+      "sha256": "f8f4a6fce68016e898145858e03bbd991ef7c774a83597d843ddb66fe7d4c110"
+    },
+    "org/xar/ck3/control/service/root/RootApplicationAssembly.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootApplicationAssembly.class",
+      "bytes": 8345,
+      "sha256": "d12dfa9ed177430b259e86cd8182151816067f8ae61e416b90d18b427d635bc4"
+    },
+    "org/xar/ck3/control/service/root/RootDerivedChildAuthority$Installed$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootDerivedChildAuthority$Installed$1.class",
+      "bytes": 12050,
+      "sha256": "e1871d6a23e67cc1ae8838ffff836296d15c17d860b3f75b604250018045abc3"
+    },
+    "org/xar/ck3/control/service/root/RootDerivedChildAuthority$Installed.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootDerivedChildAuthority$Installed.class",
+      "bytes": 42942,
+      "sha256": "357e712b793a44efd5737896f5975bb34667009ba4faf2f9cc7a51754bb70846"
+    },
+    "org/xar/ck3/control/service/root/RootDerivedChildAuthority$Intent.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootDerivedChildAuthority$Intent.class",
+      "bytes": 1759,
+      "sha256": "7e2a9f701abecf4d06226f110fbcb112f2804f79647157b4789fb2b66d946a3e"
+    },
+    "org/xar/ck3/control/service/root/RootDerivedChildAuthority.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootDerivedChildAuthority.class",
+      "bytes": 24289,
+      "sha256": "aa6f28ee7af3d60b188567a33f2812ac8066673ebbe8f694f2a2068fd96e2c60"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$ActualDriverAuthority.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$ActualDriverAuthority.class",
+      "bytes": 740,
+      "sha256": "7cad835ccfc75bc3ed68b54d3ea7683311b3ceef79d07f24251d6a60b2fd6c63"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$CheckedWork.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$CheckedWork.class",
+      "bytes": 744,
+      "sha256": "dd83424d5aaa660ae440897a51d9c9f9b52c1fc64903e1ac43957096ac827cf6"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$Lease.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$Lease.class",
+      "bytes": 2744,
+      "sha256": "b46ba4363964c57dc746203d6d1cecc726e0ac6be471c7cd2b70125bdedba677"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$NegativeFreshRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$NegativeFreshRead.class",
+      "bytes": 3635,
+      "sha256": "e0bb2ba7fb2c8c18fae23e130801258217022666ebdf4734dbfcb424a870b618"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$OriginalArmReadPreparation.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$OriginalArmReadPreparation.class",
+      "bytes": 1045,
+      "sha256": "c752b9f68dca24e5fcf59c30d3aab8d1c5d39269090f7d79b227428f28cd99e4"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$PreparedReadWork.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$PreparedReadWork.class",
+      "bytes": 581,
+      "sha256": "3f1d951291845c8a7ea2807acd1d2ba1934fef722dca22ee294158823d96686c"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$Scope.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$Scope.class",
+      "bytes": 2624,
+      "sha256": "8d970a02dc5ac7d1abfb8679f8895e174ae53d8fc619b78666bdd0fb8eea585e"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$SnapshotLease.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$SnapshotLease.class",
+      "bytes": 7581,
+      "sha256": "2fba6d50693f294c2eb2d24c5aba89f23d5e754e84adf5dff653679c53e101f2"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$SnapshotWork.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$SnapshotWork.class",
+      "bytes": 778,
+      "sha256": "9ee7f8a71a4330a9684091f831f2377f1a996fbc9ca6253ba90d6aefd5e64207"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority$SourcePort.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority$SourcePort.class",
+      "bytes": 1535,
+      "sha256": "31c2e5157fab1d2daf316f737bcac4b0dbb4cd0379ea5619e2b65b4c6f8230d2"
+    },
+    "org/xar/ck3/control/service/root/RootLifecycleAuthority.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifecycleAuthority.class",
+      "bytes": 64887,
+      "sha256": "2ba80c84dd2059a3c9801927d13629672c4da010d632a2dc64de40ba2777ada7"
+    },
+    "org/xar/ck3/control/service/root/RootLifeRuntimeFactory$Installed$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifeRuntimeFactory$Installed$1.class",
+      "bytes": 7883,
+      "sha256": "b5fdbc5c5dae09d237efcb53abfa66809798a82003cc5da7aca2d890d3e5feb0"
+    },
+    "org/xar/ck3/control/service/root/RootLifeRuntimeFactory$Installed.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifeRuntimeFactory$Installed.class",
+      "bytes": 72826,
+      "sha256": "97270b39c33dfcded208751a75f3f708a9b0da6c2984780b2439b56fa5f2c03c"
+    },
+    "org/xar/ck3/control/service/root/RootLifeRuntimeFactory$Prepared.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifeRuntimeFactory$Prepared.class",
+      "bytes": 4644,
+      "sha256": "01dcb7a503d973ce7720e6d3a04b76db1e51ce7adf7310c1446eb27f8a3751b0"
+    },
+    "org/xar/ck3/control/service/root/RootLifeRuntimeFactory$Sources.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifeRuntimeFactory$Sources.class",
+      "bytes": 2671,
+      "sha256": "fe0b01bc8888b8e20fdf1c0750ba4cc335feb8915b90f9de7cd7a64ead6fe57b"
+    },
+    "org/xar/ck3/control/service/root/RootLifeRuntimeFactory.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/service/root/RootLifeRuntimeFactory.class",
+      "bytes": 58077,
+      "sha256": "e99445b5290f474b2b823bd3e80a721e5a8f0d9c0f1ddb06576aa429618e159a"
+    },
+    "org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest$Fixture.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest$Fixture.class",
+      "bytes": 23415,
+      "sha256": "18d8fa407cb2ca70d4954cae859be0c65065bde123a7192ab215131c56f36c04"
+    },
+    "org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest$MemoryArchive.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest$MemoryArchive.class",
+      "bytes": 10151,
+      "sha256": "611254c750bd60e1274e7f98d7027414f61524e4ab8125e889e89f58db8c1635"
+    },
+    "org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest.class",
+      "bytes": 45859,
+      "sha256": "1b70ee2cb3a43e7dc1c81f9dc320a1b7be3dee5b9c5ba8dc1d8125b4e29df2d2"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceComposite$CancellationRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceComposite$CancellationRead.class",
+      "bytes": 4724,
+      "sha256": "da7d5558e1f3519f7a75f9c69debaecf8c2c80754da7f24c2ce79105fb2ae8bd"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceComposite$CancellationReads.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceComposite$CancellationReads.class",
+      "bytes": 1054,
+      "sha256": "4ca71dc40daba1452ef81315c1efa46fa4ffe67b4ce031eac26d7645c3df7a4f"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceComposite$PostResumePauseCancellationReads.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceComposite$PostResumePauseCancellationReads.class",
+      "bytes": 1237,
+      "sha256": "607f1c4043883a220cca3c96ecb0e139e08550c66b44924e082006305dde0fbf"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceComposite$PreparedCleanupReads.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceComposite$PreparedCleanupReads.class",
+      "bytes": 3107,
+      "sha256": "2c70494c26600a7d309bbc719b937812e33572ff5b0ea0ea6170090958d84607"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceComposite.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceComposite.class",
+      "bytes": 96185,
+      "sha256": "799a62ae745b19bb0a5414d96a4cb0261466b366170e27ab035e6a62f9375107"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceEvidence$BoundFrameVerifier.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceEvidence$BoundFrameVerifier.class",
+      "bytes": 1084,
+      "sha256": "ab045bd500b3acd5789ad0a647255fc8b565e3b1921c25b2f764b489807b634b"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceEvidence$EntryFrameReader.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceEvidence$EntryFrameReader.class",
+      "bytes": 1719,
+      "sha256": "4dc469678e411e3d6b7200437502c4afa2aed6d26e9904d445ed4d80c21d206e"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceEvidence$FrameRecord.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceEvidence$FrameRecord.class",
+      "bytes": 3516,
+      "sha256": "1f1ae49355e99f9eedc6907b1e39d36ed527ae1cbffa353d8446e9f5bd61ff2d"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceEvidence$OpportunityJsonValue.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceEvidence$OpportunityJsonValue.class",
+      "bytes": 1319,
+      "sha256": "d7349770ec797527976e35c676b31a3f6d0221a55e7de6d30997c9f7d1f6833c"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceEvidence$OriginalResult.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceEvidence$OriginalResult.class",
+      "bytes": 2478,
+      "sha256": "da34d25c6b353f605c593b7ab9c1c0a9aaf160532c5b001fe171d8f98fd4a2c1"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceEvidence$Recorded.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceEvidence$Recorded.class",
+      "bytes": 3865,
+      "sha256": "777a9b973902eff4d519f808d89de4a8ce4be29269897a02156d90905fc20d31"
+    },
+    "org/xar/ck3/control/application/advance/LifeAdvanceEvidence.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifeAdvanceEvidence.class",
+      "bytes": 42908,
+      "sha256": "695f7de8325729cfcf27b26a6b4ab8c35c0cf13482264cfba61142ef89e52ac4"
+    },
+    "org/xar/ck3/control/application/advance/LifePostResumePauseCleanupEvidence$Authorization.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifePostResumePauseCleanupEvidence$Authorization.class",
+      "bytes": 4459,
+      "sha256": "8d152cb6459b0e24a53b723252a1bca8996a5dcfd529bcc38d78f20bea52c5c4"
+    },
+    "org/xar/ck3/control/application/advance/LifePostResumePauseCleanupEvidence.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifePostResumePauseCleanupEvidence.class",
+      "bytes": 16280,
+      "sha256": "2f077c50d08715730e8d9fe3fb85847dad0104a757c300055f2b1e69da22c179"
+    },
+    "org/xar/ck3/control/application/advance/LifePostResumePauseCleanupProof$Original.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifePostResumePauseCleanupProof$Original.class",
+      "bytes": 3774,
+      "sha256": "1dd11e2e482aa71eea1d59c3eb29fb18c29f4bdf5b03d4be1a1eaba4df113801"
+    },
+    "org/xar/ck3/control/application/advance/LifePostResumePauseCleanupProof.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/advance/LifePostResumePauseCleanupProof.class",
+      "bytes": 42945,
+      "sha256": "c6e4f2cb3e5d4979a98b3a9055f3b61994954e7e57560aefad18a53eb083dc86"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$Adopted.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$Adopted.class",
+      "bytes": 8216,
+      "sha256": "cf55e4bf596fe0079c576c2287df5fa7bf5b009451495fecd08918e1ab053ef7"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$AdoptionKind.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$AdoptionKind.class",
+      "bytes": 1474,
+      "sha256": "d56c1c03a1e5becf99f92a185e8939a680345f40fcbb4a688f2de2483f86f16a"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$AdoptionStatus.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$AdoptionStatus.class",
+      "bytes": 1593,
+      "sha256": "07f610c80ffefdee551a644c6205efd3ecc78c36e14bbc3f30bcc01ec56d5ceb"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$ArchivedActionCoverage.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$ArchivedActionCoverage.class",
+      "bytes": 627,
+      "sha256": "11194f0d7d875c3eaae2389d139aacb6d9c64703b3d461e085534e51a23ce75b"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$ArchivedCanonicalOnly.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$ArchivedCanonicalOnly.class",
+      "bytes": 2251,
+      "sha256": "5f0ee11a088d7b4a41cbe13a474b01c8aa295cd31ede9e59eacefcb61b92717b"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$ArchivedHistoryRow.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$ArchivedHistoryRow.class",
+      "bytes": 2409,
+      "sha256": "3c7731ef267d1f9d84cbc9f8eabbade8c92b223c5559d28e1e03e82c4e27c8d5"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$BorrowedSessionReader.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$BorrowedSessionReader.class",
+      "bytes": 670,
+      "sha256": "3665c1dbd5ac665bc83bcb8cbdc79f90639bb2e4a657e9102364fa337cbbbb11"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$ExactArtifactReader.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$ExactArtifactReader.class",
+      "bytes": 487,
+      "sha256": "18671455a6f2418a39fcd2aff705f64bc0df801d015a889012cfc1d06b7c3029"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$HistoryCoverageReader.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$HistoryCoverageReader.class",
+      "bytes": 1541,
+      "sha256": "182d1318a7d33d1addc5643f049919a3ff77baf682b81e2ff2757061e3999266"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$InterruptedBootstrap.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$InterruptedBootstrap.class",
+      "bytes": 604,
+      "sha256": "6f8d9a11b8264776ec7af133dc630ea7d1220fd811361b298d2dd3abedb837a2"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$NextTransfer.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$NextTransfer.class",
+      "bytes": 2968,
+      "sha256": "189ef0f31065790adb9f3fee964106a6538df5ecd95e320762f071b5940c2817"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$OriginalAdoptionRefused.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$OriginalAdoptionRefused.class",
+      "bytes": 1130,
+      "sha256": "13831c8d22d4d2fc710654ab65da66dc42932e9c68d9e27fe645e3f9a2cd924a"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$OriginalResumeNeed.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$OriginalResumeNeed.class",
+      "bytes": 1628,
+      "sha256": "8a2013f1357a8edcfa8065f65a2ab2b1236aa18a9fc281a9b6a95049197c2d86"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$ReadOnlyLifeRecoveryRole.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$ReadOnlyLifeRecoveryRole.class",
+      "bytes": 1501,
+      "sha256": "62b33b6e957b1a2b959cfcc249a484615cec27a441017b63cadeaf21d525fb3c"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$RecoveryReadWindow.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$RecoveryReadWindow.class",
+      "bytes": 444,
+      "sha256": "e576b084e9359f50b1af6b21935545dcfe2ea5828b1ecdfa02bfaea26f403241"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$SavedNativeBootstrap.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$SavedNativeBootstrap.class",
+      "bytes": 2368,
+      "sha256": "b06eabba03e1ec9ab52df67fff1d5d797b35a318607e3aa0e596785c746066b3"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$SavedStaged.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$SavedStaged.class",
+      "bytes": 5552,
+      "sha256": "36c808d68ce71342094e40eaf5ddd8258351097fea0d912d756cdf3ce305ed91"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$Seed.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$Seed.class",
+      "bytes": 4392,
+      "sha256": "0e3a5c9dc5e9dabe88314452f8b11137f5bd77152839c4c1fe6a366737aa5197"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap$Staged.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap$Staged.class",
+      "bytes": 8843,
+      "sha256": "ca39832d1a9203c67419cb21f71b06a7fc2fa0656c061026af9820cc16935c04"
+    },
+    "org/xar/ck3/control/application/driver/DriverBootstrap.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/classes01/org/xar/ck3/control/application/driver/DriverBootstrap.class",
+      "bytes": 183319,
+      "sha256": "e713ee24025b3a279518948b0fec3b4418f07cc6f5d2fa63a807fbcc6b2ef1dc"
+    }
+  },
+  "prior40_53_13_matrices_not_repeated": true,
+  "production_unchanged_after_first_compile": true,
+  "canonical_head_original_id_body_deadline_UNKNOWN_preserved": true,
+  "PreparedCleanup_special_late_bind_still_unmigrated": true,
+  "complete_Life_qualified": false,
+  "whole_SERVICE": false,
+  "Root_Driver_adoption_qualified": false,
+  "NoGame": true,
+  "permit": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-LIFE-P11-P13-8M-OFFLINE-PERMIT35.json",
+    "bytes": 2931,
+    "sha256": "f936e852920f1266a070f1596ac3651863c1e19e04c91c4be1e52131ec66a9be"
+  }
+}

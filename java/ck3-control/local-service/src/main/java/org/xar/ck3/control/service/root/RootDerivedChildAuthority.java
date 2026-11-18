@@ -35,8 +35,7 @@ public final class RootDerivedChildAuthority {
     static void verifyZeroCancellation(RootRuntimeContext context,
             RootAdvanceInfrastructureFactory.Installed infrastructure, Optional<WriterContracts.Head> proposedHead,
             ActionReceipt child, ActionPorts.OutcomeArchive archive) {
-        require(LifeAdvanceComposite.isZeroWriteInitializationCancellation(child),
-                "actual Root zero cancellation requires the strict original CLOCK/BEFORE_WRITE result");
+        LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(child, archive);
         try {
             context.withSession(same -> {
                 context.writer().requireSession(same);

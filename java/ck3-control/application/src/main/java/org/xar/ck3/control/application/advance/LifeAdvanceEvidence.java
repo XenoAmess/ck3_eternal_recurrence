@@ -137,7 +137,7 @@ public final class LifeAdvanceEvidence {
                 "completed life endpoint lacks the sole complete archived basis");
         Obj body = DriverJson.object(archive.loadMaterial(effect.supportingEvidence().getFirst()).bytes(), RawJson.MAXIMUM_BYTES);
         if(PreparedCleanupParentEvidence.isSchema(body)
-                ||new Text(LifePostResumePauseCleanupEvidence.TERMINAL_SCHEMA).equals(body.get("schema"))) {
+                ||LifePostResumePauseCleanupEvidence.isTerminalSchema(body)) {
             require(sameRootFrames instanceof LifeAdvanceRootReplay,"cleanup endpoint requires its installed full archived replay");
             var verified=((LifeAdvanceRootReplay)sameRootFrames).readRecorded(actualCanonical,archive);
             return restore(actualCanonical.command(),verified.ending(),archive,sameRootFrames);
@@ -182,7 +182,8 @@ public final class LifeAdvanceEvidence {
         ExactRef basisRef = effect.supportingEvidence().getFirst();
         Obj body = DriverJson.object(archive.loadMaterial(basisRef).bytes(), RawJson.MAXIMUM_BYTES);
         Optional<LifePostResumePauseCleanupEvidence.Authorization> postResumeCleanup=Optional.empty();
-        if(new Text(LifePostResumePauseCleanupEvidence.TERMINAL_SCHEMA).equals(body.get("schema"))) {
+        if(LifePostResumePauseCleanupEvidence.isTerminalSchema(body)) {
+            LifePostResumePauseCleanupEvidence.requireTerminalVersion(body,receipt.command().source());
             require(body.members().keySet().equals(Set.of("schema","authorization","basis")),"cleanup terminal wrapper fields differ");
             var authorization=LifePostResumePauseCleanupEvidence.exact(body.get("authorization"));
             var actualBasis=LifePostResumePauseCleanupEvidence.exact(body.get("basis"));

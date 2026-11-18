@@ -409,6 +409,8 @@ public final class RootLifeRuntimeFactory {
                         }).toList();
                     });
                     require(children.equals(proposedChildren), "Life physical Status borrowed another child prefix");
+                    for (var child : children) if (LifeAdvanceComposite.isZeroWriteInitializationCancellation(child))
+                        LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(child, originalArchive);
                     if (children.getLast().command().operation().value().startsWith(ClockStatusRead.CANCEL_PREFIX)
                             &&!LifeAdvanceComposite.isZeroWriteInitializationCancellation(children.getLast()))
                         LifeAdvanceComposite.requireCancelledInitializationPrefix(parent, execution, children);

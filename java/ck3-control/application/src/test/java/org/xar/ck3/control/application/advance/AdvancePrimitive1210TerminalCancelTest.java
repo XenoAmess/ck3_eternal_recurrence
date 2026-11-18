@@ -52,6 +52,40 @@ final class AdvancePrimitive1210TerminalCancelTest {
     private static final Claims CLAIMS = new Claims(Set.of(), Set.of(), Set.of(), Set.of());
     private static final Obj EMPTY = new Obj(Map.of());
 
+    @Test void postResumeCleanupReopensTheActualPreparationInsteadOfDemandingTheEmptyWireProducer() {
+        Fixture f=new Fixture(status(State.TRIGGERED,true),SOURCE);
+        var prepared=f.attempt.preparedRequest();var wire=AdvancePrimitives.prepareRequest(f.command);
+        assertNotEquals(wire,prepared,"the real preflight is immutable metadata, not a change to native wire fields");
+        assertThrows(RuntimeException.class,()->LifePostResumePauseCleanupProof.requirePreparedOriginal(f.command,prepared,Optional.empty()));
+        assertThrows(RuntimeException.class,()->LifePostResumePauseCleanupProof.requirePreparedOriginal(f.command,prepared,Optional.of(f.archive)));
+        f.archive.preserveRequest(prepared);
+        assertDoesNotThrow(()->LifePostResumePauseCleanupProof.requirePreparedOriginal(f.command,prepared,Optional.of(f.archive)));
+        f.archive.preserveRequest(wire);
+        assertThrows(RuntimeException.class,()->LifePostResumePauseCleanupProof.requirePreparedOriginal(f.command,wire,Optional.of(f.archive)));
+        var crossed=new NativeRequest(prepared.step(),prepared.requiredCapability(),raw(new Obj(Map.of("extra",new Text("changed")))),prepared.preparationEvidence());
+        f.archive.preserveRequest(crossed);
+        assertThrows(RuntimeException.class,()->LifePostResumePauseCleanupProof.requirePreparedOriginal(f.command,crossed,Optional.of(f.archive)));
+        f.archive.reads.clear();
+        assertThrows(RuntimeException.class,()->LifePostResumePauseCleanupProof.requirePreparedOriginal(f.command,prepared,Optional.of(f.archive)));
+    }
+
+    @Test void terminalProofVersionCannotDowngradeOrTurnTriggeredIntoThePartialDateIdleBoundary() {
+        var legacy=source("legacy-build");var before=new Fixture(status(State.IDLE,false),legacy);
+        assertDoesNotThrow(()->LifePostResumePauseCleanupProof.requirePreparedOriginal(before.command,before.attempt.preparedRequest(),Optional.empty()));
+        Obj v1=new Obj(Map.of("schema",new Text(LifePostResumePauseCleanupEvidence.TERMINAL_SCHEMA)));
+        Obj v2=new Obj(Map.of("schema",new Text(LifePostResumePauseCleanupEvidence.TERMINAL_1210_SCHEMA)));
+        assertTrue(LifePostResumePauseCleanupEvidence.isTerminalSchema(v1));assertTrue(LifePostResumePauseCleanupEvidence.isTerminalSchema(v2));
+        assertDoesNotThrow(()->LifePostResumePauseCleanupEvidence.requireTerminalVersion(v1,legacy));
+        assertDoesNotThrow(()->LifePostResumePauseCleanupEvidence.requireTerminalVersion(v2,SOURCE));
+        assertThrows(IllegalArgumentException.class,()->LifePostResumePauseCleanupEvidence.requireTerminalVersion(v1,SOURCE));
+        assertThrows(IllegalArgumentException.class,()->LifePostResumePauseCleanupEvidence.requireTerminalVersion(v2,legacy));
+        var plan=new AdvancePlan(BigInteger.valueOf(START),BigInteger.valueOf(END),1,1,"cleanup-idle-boundary",true,AdvancePlan.ClockMode.EXACT_SENTINEL,Optional.empty());
+        var triggered=new Fixture(status(State.TRIGGERED,true),SOURCE);triggered.qualify();
+        assertThrows(IllegalArgumentException.class,()->AdvanceClock.validateCancellation(status(State.ARMED,false),triggered.independentStatus,plan,BigInteger.valueOf(START)));
+        var idle=new Fixture(status(State.IDLE,false),SOURCE);idle.qualify();
+        assertDoesNotThrow(()->AdvanceClock.validateCancellation(status(State.ARMED,false),idle.independentStatus,plan,BigInteger.valueOf(START)));
+    }
+
     @Test void availableAckPreservesIdleTriggeredAndFailedAsTheirActualTerminalStates() {
         for (State state : List.of(State.IDLE, State.TRIGGERED, State.FAILED)) {
             Fixture f = new Fixture(status(state, true), SOURCE);
@@ -281,6 +315,57 @@ final class AdvancePrimitive1210TerminalCancelTest {
         assertThrows(RuntimeException.class, expiredFull::qualify);
     }
 
+    /** Protocol DATA: recognition alone never grants source/Root, dispatch, retry or parent completion authority. */
+    @Test void zeroWriteInitializationKeepsActualPreflightAndReopensItsOriginals() {
+        Fixture f = new Fixture(status(State.IDLE, false), SOURCE);
+        var child = zeroWriteData(f, f.attempt.preparedRequest());
+        assertTrue(LifeAdvanceComposite.isZeroWriteInitializationCancellation(child));
+        assertThrows(RuntimeException.class, () -> LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(child, f.archive),
+                "a matching preparation shape cannot replace the archived request original");
+        f.archive.preserveRequest(f.attempt.preparedRequest());
+        assertDoesNotThrow(() -> LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(child, f.archive));
+        f.archive.outcomes.clear();
+        assertThrows(RuntimeException.class, () -> LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(child, f.archive),
+                "the original zero-write dispatch must still be readable");
+        f.archive.preserve(((ActionState.RejectedBeforeDispatch) child.state()).dispatch());
+        f.archive.reads.clear();
+        assertThrows(RuntimeException.class, () -> LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(child, f.archive),
+                "the exact preflight original must still be readable");
+    }
+
+    @Test void zeroWriteInitializationRejectsEmptyOrChangedWireAndPreservesUnknown() {
+        Fixture f = new Fixture(status(State.IDLE, false), SOURCE);
+        var prepared = f.attempt.preparedRequest();
+        assertFalse(LifeAdvanceComposite.isZeroWriteInitializationCancellation(zeroWriteData(f, AdvancePrimitives.prepareRequest(f.command))));
+        var changed = new NativeRequest(prepared.step(), prepared.requiredCapability(), raw(new Obj(Map.of("extra", new Text("changed")))), prepared.preparationEvidence());
+        assertFalse(LifeAdvanceComposite.isZeroWriteInitializationCancellation(zeroWriteData(f, changed)));
+        assertThrows(IllegalArgumentException.class, () -> new NativeRequest(prepared.step(), prepared.requiredCapability(), prepared.additionalFields(),
+                List.of(prepared.preparationEvidence().getFirst(), prepared.preparationEvidence().getFirst())));
+        var multiple = new NativeRequest(prepared.step(), prepared.requiredCapability(), prepared.additionalFields(),
+                List.of(prepared.preparationEvidence().getFirst(), ref("additional-preflight", 'c')));
+        assertFalse(LifeAdvanceComposite.isZeroWriteInitializationCancellation(zeroWriteData(f, multiple)));
+        var unknown = new ActionReceipt(1, 1, f.command, ActionCodec.bodySha256(f.command),
+                new ActionState.Unknown(Optional.of(f.attempt), Optional.empty(), "original write outcome unknown", List.of()));
+        assertFalse(LifeAdvanceComposite.isZeroWriteInitializationCancellation(unknown));
+        assertThrows(RuntimeException.class, () -> LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(unknown, f.archive));
+    }
+
+    @Test void legacyZeroWriteInitializationStillRequiresItsOriginalEmptyPreparation() {
+        Fixture f = new Fixture(status(State.IDLE, false), source(ExactCk3Build.CK3_12004.executableSha256()));
+        var child = zeroWriteData(f, f.attempt.preparedRequest());
+        assertTrue(LifeAdvanceComposite.isZeroWriteInitializationCancellation(child));
+        assertEquals(AdvancePrimitives.prepareRequest(f.command), f.attempt.preparedRequest());
+        assertDoesNotThrow(() -> LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(child, f.archive));
+    }
+
+    private static ActionReceipt zeroWriteData(Fixture f, NativeRequest prepared) {
+        var attempt = new ActionState.Attempt(f.attempt.requestId(), f.attempt.submittedAt(), f.attempt.guard(), prepared);
+        var zero = new NativeActionPort.RejectedBeforeDispatch(attempt.requestId(), new NativeActionPort.ZeroDispatchProof(
+                NativeActionPort.ZeroDispatchStage.BEFORE_WRITE, 0, "offline zero-write DATA", Optional.empty()));
+        f.archive.preserve(zero);
+        return new ActionReceipt(1, 1, f.command, ActionCodec.bodySha256(f.command), new ActionState.RejectedBeforeDispatch(attempt, zero));
+    }
+
     private static ExactRef ref(String name, char digest) { return new ExactRef("D:/software-fixtures/cancel1210/" + name, 1, String.valueOf(digest).repeat(64)); }
     private static G2Source source(String build) { return new G2Source(MACHINE, T.toString(), build, DEFINITION); }
     private static IntegerValue number(long value) { return new IntegerValue(BigInteger.valueOf(value)); }
@@ -435,6 +520,7 @@ final class AdvancePrimitive1210TerminalCancelTest {
     /** Deliberately local DATA storage; this class does not stand in for the real canonical archive. */
     private static final class MemoryArchive implements ActionPorts.OutcomeArchive {
         private final Map<ExactRef, RawJson> materials = new HashMap<>();
+        private final Map<ExactRef, NativeRequest> requests = new HashMap<>();
         private final Map<ExactRef, NativeActionPort.DispatchOutcome> outcomes = new HashMap<>();
         private final Map<NativeActionPort.DispatchOutcome, ExactRef> outcomeRefs = new HashMap<>();
         private final Map<ExactRef, PlanningReadReceipt> reads = new HashMap<>();
@@ -462,9 +548,13 @@ final class AdvancePrimitive1210TerminalCancelTest {
             if (!value.equals(materials.get(ref))) throw unused(); return ref;
         }
         private static IllegalStateException unused() { return new IllegalStateException("unavailable archive operation in offline cancel fixture"); }
-        @Override public ExactRef preserveRequest(NativeRequest value) { throw unused(); }
-        @Override public NativeRequest loadRequest(ExactRef ref) { throw unused(); }
-        @Override public ExactRef requestReferenceOf(NativeRequest value) { throw unused(); }
+        @Override public ExactRef preserveRequest(NativeRequest value) {
+            var row=StrictJson.object().put("step",value.step()).put("capability",value.requiredCapability().orElse(""));
+            row.set("fields",StrictJson.parse(value.additionalFields().bytes()));var refs=row.putArray("preparation");value.preparationEvidence().forEach(ref->refs.add(ref.toJson()));
+            var ref=preserveMaterial(new RawJson(StrictJson.canonical(row)));requests.put(ref,value);return ref;
+        }
+        @Override public NativeRequest loadRequest(ExactRef ref) { return Optional.ofNullable(requests.get(ref)).orElseThrow(); }
+        @Override public ExactRef requestReferenceOf(NativeRequest value) { return requests.entrySet().stream().filter(entry->entry.getValue().equals(value)).findFirst().orElseThrow().getKey(); }
         @Override public ExactRef preserveRecord(ActionRecord value) { throw unused(); }
         @Override public ActionRecord loadRecord(ExactRef ref) { throw unused(); }
         @Override public ExactRef recordReferenceOf(ActionRecord value) { throw unused(); }

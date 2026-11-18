@@ -1,0 +1,240 @@
+{
+  "status": "NATIVE33_RAM_ROSTER_JAVA4_SOFTWARE_PASS_OFFLINE",
+  "scope": "5production1test strictly parse six actual Core RAM->manager->formatter original rows, exact packet/result/data byte replay and negative owner/generation/model-source boundaries; no actual application-main or Family qualification",
+  "source_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/SOURCES01.json",
+    "bytes": 6087,
+    "sha256": "31a9fe419914f092251c7a962474e95945e87b5c98b889f5f2b3a6dcd3b0cbab"
+  },
+  "typing": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/javac01.json",
+    "bytes": 540,
+    "sha256": "26b3fbb233854fc9db754c5f890d85e3a211fa8a8c05a6e316584ebef66b3def"
+  },
+  "tests": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/junit01.json",
+    "bytes": 484,
+    "sha256": "648cb989532bc02fdf1a2b6cc3879113756f3fa756b1cefbdbb14ae3940fae9b"
+  },
+  "xml": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/reports01/TEST-junit-jupiter.xml",
+    "bytes": 39633,
+    "sha256": "0c42c2a71502b70d385408819f1e91bcb2e11cfd0f457a2f3e5d65c5a29cb339"
+  },
+  "passed_methods": [
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CharacterRosterRead1210CppProducerTest#rawFamilyDataCounterexamplesKeepScoresAndManagerMembershipSeparateWithoutOwnerProof()",
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CharacterRosterRead1210CppProducerTest#reportedOwnerFieldsStillCannotSupplyMissingModelSourceAndStaleFieldsRemainDistinct()",
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CharacterRosterRead1210CppProducerTest#actualReaderToWireRemainsOfflineOrUnqualifiedAndReplaysOriginalPacketAndData()",
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CharacterRosterRead1210CppProducerTest#originalCommandCorrelationAndOuterRoleFlagsCannotBePromoted()"
+  ],
+  "class_outputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/interactions/RawRankedRulerCandidates1210$Counter.class",
+      "bytes": 2053,
+      "sha256": "ad3b31b28ba1653dc79748c90cc0dcd6a5ed5752555c3947417d327c495e2151"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/interactions/RawRankedRulerCandidates1210$Frame.class",
+      "bytes": 3985,
+      "sha256": "f20e5e9f72bafffc37a07227968f7ae2d1d484eb6205d7debf0c1af415471bf5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/interactions/RawRankedRulerCandidates1210$Partial.class",
+      "bytes": 3985,
+      "sha256": "bb28eeb24e7b734ced1151c121bb96eedda125af2a8e5e0e1df678903e01e1d5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/interactions/RawRankedRulerCandidates1210$Request.class",
+      "bytes": 3137,
+      "sha256": "384c102ba1ef8222c8808fadc1ec4fe5f9181f379ebd1b1b335c4f75c1c214a0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/interactions/RawRankedRulerCandidates1210$Result.class",
+      "bytes": 1042,
+      "sha256": "7a9d2e696c2f97881f55db65395addc958fd00e844de806c0b5381649672303e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/interactions/RawRankedRulerCandidates1210$Row.class",
+      "bytes": 1938,
+      "sha256": "b12d2fe44028578bda613f62fc2fdb540ed072246ea26c9fc4214b7ebce1a6bc"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/interactions/RawRankedRulerCandidates1210$Sample.class",
+      "bytes": 3835,
+      "sha256": "019c61fcdc9ce22c3ab33122f18a68b43b09b3c55c5e38b16621eb5d8aefcbea"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/interactions/RawRankedRulerCandidates1210$Unavailable.class",
+      "bytes": 2674,
+      "sha256": "4c12d800256346f9180ee132c49b0e467adfb455c204de433860c42eac924b30"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/interactions/RawRankedRulerCandidates1210.class",
+      "bytes": 11512,
+      "sha256": "cea6b9cda7e17ad34444b2e7a7a2a8eba8a895e91e549ed3e9af718b4426b207"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$CopiedManagerData.class",
+      "bytes": 4138,
+      "sha256": "ac9c925cb36c42fb5a6de01ff24e7997ed232b94685a50f19d3b62b05849d33d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$FrameMismatch.class",
+      "bytes": 2703,
+      "sha256": "89f992fdaff15116136365bbd9fb2d49187595e041226272d95e8609115918af"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$ManagerUnavailable.class",
+      "bytes": 2276,
+      "sha256": "471e6f254dc56c0350ce2086fd55b399d4c9370cc5f36311aea1675f09feebc4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$Member.class",
+      "bytes": 2044,
+      "sha256": "f3d133f6ea6224bff2f7fdbba35bf10c3e3ead622999b6d7ebffa853681b9418"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$MemberAbsent.class",
+      "bytes": 1970,
+      "sha256": "006fc7fdcca818efa03d38c100f51f1253c578b051e27a6eb202c2d17c6fe20b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$MemberLookup.class",
+      "bytes": 934,
+      "sha256": "29ae6b432398b37bcc76de4805b4dee49efeb5cf087347c012a895cb96c691db"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$MemberPresent.class",
+      "bytes": 2224,
+      "sha256": "96c6b35ef7d9b608cff0e7c5ecd286610e72773a9115c4d72f3089ba99416629"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$Observation.class",
+      "bytes": 1580,
+      "sha256": "c291fbadcb843c993793b323343201a668f653c2ee99a6eada076ab5c0717f4e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$Prefix.class",
+      "bytes": 2755,
+      "sha256": "8c668b8022ce0b681d1fa9d4fcb7468167152b86723daa0ea8dea33ac4fd51c8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210$UnavailableManagerData.class",
+      "bytes": 2730,
+      "sha256": "558cb26010bf03146f4a919330b81ee0d4cb1d241a2021319906211e7d367fbd"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerObservation1210.class",
+      "bytes": 10268,
+      "sha256": "190e5a91c12258911c04a43c1fe9b5ac9b0dc8b5be1c73e321a76f051845393b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerRoster1210$Capture.class",
+      "bytes": 1703,
+      "sha256": "90ffe64272996af09eb3fc738501254ee5da6c2dc88c8c779320312f7208a6d4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerRoster1210$PacketIdentity.class",
+      "bytes": 2192,
+      "sha256": "5e915dbfb3c29f0f556a5836b5081e421beaa2f1b23e636d02d40a0966f93733"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerRoster1210$Roster.class",
+      "bytes": 4182,
+      "sha256": "264f0dc89159cce00303cccf99b053666f6f97157e32b64057c1b893af943a69"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerRoster1210$Row.class",
+      "bytes": 3609,
+      "sha256": "cad1baf9b7e2649af6273c57fca3bc17dafa229f44915490119f50a1dee90de1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerRoster1210$Scope.class",
+      "bytes": 1472,
+      "sha256": "95edd6f99af12159bd1e2f9381ab4be3b42139cb200376ec8088be83aaa075d7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterManagerRoster1210.class",
+      "bytes": 5573,
+      "sha256": "dbee82d4ed02816a73c64bb16012302de3e1e675bff0cdbe878b82630e8eb9d5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterRosterRead1210$Capture.class",
+      "bytes": 5927,
+      "sha256": "e6f895f2ff1e3e82f21a88f42b30e3ba2a8599cc1cadfc6655b15cbbb23762b8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterRosterRead1210$ScopedRoster.class",
+      "bytes": 3191,
+      "sha256": "52095e69c38153c316b0435767e9cd92ec129a111f7680c62b6f1bb2d4906333"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterRosterRead1210$SourceKind.class",
+      "bytes": 1586,
+      "sha256": "87a1dd0524d1ee5bfb42526410e1eaa1416b747c9ccb024ab0e62b9f4558946f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterRosterRead1210$SourceProof.class",
+      "bytes": 3437,
+      "sha256": "d773dee75d33b5ed44e1bb5c70f4074486e0c6ee3212e52df548e7cbe0482992"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterRosterRead1210$UnjoinedFamilyData.class",
+      "bytes": 3261,
+      "sha256": "04e951133f945a33bd10c8e409513e6737b7e9b2f65e5e37d1cd152d5a53b0a0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterRosterRead1210.class",
+      "bytes": 10276,
+      "sha256": "4376f0c2cafb3abc553bfcb6174e8a9776d9a8ef1ca19a5bb2390f975893b2b1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterRosterRead1210CppProducerTest$Sample.class",
+      "bytes": 2318,
+      "sha256": "26c55d13f9a5dc92e766c3996a95adc4d4c5d11a188ab23d04b02e0e85c16c48"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/CharacterRosterRead1210CppProducerTest.class",
+      "bytes": 23848,
+      "sha256": "8a645f1c8745424aefb054bb942ea8ba921d4f105c610a9397356543163f6cd6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/FamilyRosterData1210$Audit.class",
+      "bytes": 5174,
+      "sha256": "2b2c524ecd28dedaeb5ce0b3dff34bc28adb5e48a1a0c3744f01580385460705"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/FamilyRosterData1210$UnjoinedReason.class",
+      "bytes": 1801,
+      "sha256": "d04c07e071a926ab7ff06ffe8785fcabe3e1d14089b689ad0cff59dfc4dc2282"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/classes01/org/xar/ck3/control/nativebridge/capabilities/registry/FamilyRosterData1210.class",
+      "bytes": 7395,
+      "sha256": "e5949f6a21e70e7292238071ea9bbf426b257568919ba1c0f4cb4c757120d195"
+    }
+  ],
+  "Native33_ready": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/roster-abi33/NATIVE-1210-ROSTER-CURRENT-ABI-SOFTWARE-READY33.json",
+    "bytes": 3424,
+    "sha256": "c9005ad2a987c540fbe136692f375237e025eda442ff855c093d96ac7a32fd3d"
+  },
+  "actual_input": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/roster-abi33/character-roster-reader-actual33.jsonl",
+    "bytes": 9204,
+    "sha256": "186100e51d5fe394e1c7d086168ebc43c29c59a4b39daaebc362911cec701033"
+  },
+  "prior26_byte_exact_native_fact_only_not_retested": true,
+  "family": false,
+  "main": false,
+  "custody": false,
+  "installed": false,
+  "live": false,
+  "actual_new_Native_or_Game_calls": 0,
+  "NoGame": true,
+  "permit": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-ROSTER33-JAVA8M-OFFLINE-PERMIT37.json",
+    "bytes": 2432,
+    "sha256": "29622dec8f464bd6a159a938cd10872c221159c0ecdd63edefd6fe990bb7a902"
+  }
+}

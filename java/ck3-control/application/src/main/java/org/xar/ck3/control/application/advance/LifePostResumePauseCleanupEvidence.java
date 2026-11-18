@@ -18,6 +18,17 @@ public final class LifePostResumePauseCleanupEvidence {
     public static final String CURSOR_PREFIX="xar.life-post-resume-paused-cancel/v1: ";
     public static final String AUTHORIZATION_SCHEMA="xar.life-post-resume-pause-authorization/v1";
     public static final String TERMINAL_SCHEMA="xar.life-post-resume-pause-cleanup/v1";
+    public static final String TERMINAL_1210_SCHEMA="xar.life-post-resume-pause-cleanup/v2";
+    static String terminalSchema(org.xar.ck3.control.g2.common.G2Source originalSource) {
+        return FullSnapshotSentinelCancellation.exactBuild(originalSource)?TERMINAL_1210_SCHEMA:TERMINAL_SCHEMA;
+    }
+    static boolean isTerminalSchema(Obj body) {
+        return new Text(TERMINAL_SCHEMA).equals(body.get("schema"))||new Text(TERMINAL_1210_SCHEMA).equals(body.get("schema"));
+    }
+    static void requireTerminalVersion(Obj body,org.xar.ck3.control.g2.common.G2Source originalSource) {
+        require(new Text(terminalSchema(originalSource)).equals(body.get("schema")),
+                "post-resume cleanup terminal version differs from its actual source and preparation contract");
+    }
     private static final Set<String> AUTHORIZATION_FIELDS=Set.of("schema","original_parent","original_children",
             "armed_read","before_cancel","issued_at_utc","deadline_utc");
     private LifePostResumePauseCleanupEvidence() { }
@@ -82,7 +93,12 @@ public final class LifePostResumePauseCleanupEvidence {
     public static ExactRef preserveTerminal(ExactRef authorization,ExactRef completeLifeBasis,ActionPorts.OutcomeArchive archive) {
         require(authorization.bytes()>0&&completeLifeBasis.bytes()>0&&!authorization.equals(completeLifeBasis),
                 "cleanup terminal requires its distinct actual authorization and complete Life basis");
-        var body=StrictJson.object();body.put("schema",TERMINAL_SCHEMA);
+        Obj retained=DriverJson.object(archive.loadMaterial(authorization).bytes(),64*1024);
+        require(retained.members().keySet().equals(AUTHORIZATION_FIELDS)&&new Text(AUTHORIZATION_SCHEMA).equals(retained.get("schema")),
+                "cleanup terminal requires its real retained authorization");
+        var parent=archive.loadReceipt(exact(retained.get("original_parent")));
+        require(LifeAdvanceComposite.accepts(parent.command().operation().value()),"cleanup authorization has no original Life parent");
+        var body=StrictJson.object();body.put("schema",terminalSchema(parent.command().source()));
         body.set("authorization",authorization.toJson());body.set("basis",completeLifeBasis.toJson());
         return archive.preserveMaterial(new RawJson(StrictJson.canonical(body)));
     }

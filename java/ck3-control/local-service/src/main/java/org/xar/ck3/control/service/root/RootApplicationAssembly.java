@@ -1968,6 +1968,7 @@ public final class RootApplicationAssembly {
             if(!org.xar.ck3.control.application.advance.LifeAdvanceComposite.isZeroWriteInitializationCancellation(children.getLast()))return false;
             org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireArmedInitializationWithZeroCancellationPrefix(parent.command(),unknown.execution(),children);
             var head=same.head();var originals=archive.withSession(same);
+            org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(children.getLast(),originals);
             StrictJson.require(head.state().sequence()==data.canonicalSequence()&&head.digest().equals(data.canonicalHeadDigest())
                     &&originals.loadRecord(ContinuityActionJournal.recordHead(head.state()).orElseThrow()).receipt().equals(parent),
                     "zero-write cancellation DATA changed its actual Journal predecessor");

@@ -285,6 +285,7 @@ public final class RootLifecycleAuthority {
                         "zero cancellation preparation replaced a complete retained child original");
                 return child;
             }).toList();
+            org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(children.getLast(),bound);
             org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireArmedInitializationWithZeroCancellationPrefix(
                     parent.command(),execution,children);
             require(parent.command().source().equals(source)

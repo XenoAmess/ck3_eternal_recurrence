@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal;
 import org.xar.ck3.control.reconciliation.LateOutcome.State;
@@ -134,6 +135,17 @@ public final class LifePostResumePauseCleanupProof {
     /** Original prefix plus at most its one deterministic reservation/receipt. UNKNOWN is DATA, never terminal or submit authority. */
     public static void requireSuccessorPrefix(Original original,CompositeExecution successor,List<ActionReceipt> canonicalChildren,
             AdvanceObservationPort.Frame beforeCancel,Instant ownDeadline,boolean includesActualCancel) {
+        requireSuccessorPrefix(original,successor,canonicalChildren,beforeCancel,ownDeadline,includesActualCancel,Optional.empty());
+    }
+
+    /** Same exact prefix with access to its already retained preparation originals; no new query or action. */
+    public static void requireSuccessorPrefix(Original original,CompositeExecution successor,List<ActionReceipt> canonicalChildren,
+            AdvanceObservationPort.Frame beforeCancel,Instant ownDeadline,boolean includesActualCancel,ActionPorts.OutcomeArchive archive) {
+        requireSuccessorPrefix(original,successor,canonicalChildren,beforeCancel,ownDeadline,includesActualCancel,Optional.of(Objects.requireNonNull(archive)));
+    }
+
+    private static void requireSuccessorPrefix(Original original,CompositeExecution successor,List<ActionReceipt> canonicalChildren,
+            AdvanceObservationPort.Frame beforeCancel,Instant ownDeadline,boolean includesActualCancel,Optional<ActionPorts.OutcomeArchive> archive) {
         original=checked(original); Objects.requireNonNull(successor);canonicalChildren=List.copyOf(canonicalChildren);
         var execution=((ActionState.CompositeUnknown)original.parent().state()).execution();int count=original.children().size();
         require(successor.handlerId().equals(execution.handlerId())&&successor.startedAt().equals(execution.startedAt())
@@ -158,11 +170,22 @@ public final class LifePostResumePauseCleanupProof {
             ActionTransitions.attempt(cancel.state()).ifPresent(attempt->{
                 require(attempt.guard().observed().equals(command.before())&&attempt.guard().source().equals(command.source())
                         &&attempt.guard().sessionId().equals(command.sessionId())&&attempt.guard().operation().equals(command.operation())
-                        &&command.origin().acceptsGuard(attempt.guard().origin())
-                        &&attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command)),
-                        "cleanup retained attempt changed the exact original command guard or producer");
+                        &&command.origin().acceptsGuard(attempt.guard().origin()),
+                        "cleanup retained attempt changed the exact original command guard");
+                requirePreparedOriginal(command,attempt.preparedRequest(),archive);
             });
         }
+    }
+
+    /** Preparation metadata is not native wire data. Reopen the exact source-owned preflight instead of discarding it. */
+    static void requirePreparedOriginal(ActionCommand command,NativeRequest prepared,Optional<ActionPorts.OutcomeArchive> archive) {
+        if (FullSnapshotSentinelCancellation.supports(command)) {
+            var actual=archive.orElseThrow(()->new IllegalArgumentException("1210 cleanup needs its real archived preflight originals"));
+            FullSnapshotSentinelCancellation.preparedRead(command,prepared,actual);
+            require(actual.loadRequest(actual.requestReferenceOf(prepared)).equals(prepared),
+                    "1210 cleanup prepared request differs from its retained original");
+        } else require(prepared.equals(AdvancePrimitives.prepareRequest(command)),
+                "legacy cleanup prepared primitive changed");
     }
 
     private static NativeRequestChronology reopenPhysical(ActionCommand parent,ClockStatusRead.Observation status,
@@ -225,7 +248,7 @@ public final class LifePostResumePauseCleanupProof {
         require(beforeCancel.provenance().independentOf(armedStatus.receipt().requestId())
                 &&!beforeCancel.originalEvidence().equals(armedStatus.originalEvidence()),
                 "cleanup pre-CANCEL frame is not independent of the fresh ARMED query");
-        requireSuccessorPrefix(original,successor,canonicalChildren,beforeCancel,ownDeadline,true);
+        requireSuccessorPrefix(original,successor,canonicalChildren,beforeCancel,ownDeadline,true,archive);
         var cancel=canonicalChildren.getLast();
         require(cancel.state() instanceof ActionState.Settled settled&&settled.settlement() instanceof ActionState.ControlApplied,
                 "cleanup requires the real canonical CANCEL ControlApplied; UNKNOWN or IDLE alone is insufficient");
@@ -236,8 +259,8 @@ public final class LifePostResumePauseCleanupProof {
         var ack=ActionEffects.controlAcknowledgement(command,attempt,state.dispatch(),control);
         require(ack.nativeOk()&&ack.requestId().equals(attempt.requestId())&&ack.outbound().isPresent()
                 &&ack.originalResultToken().isPresent()&&ack.custody().isPresent(),"cleanup has no actual positive original CANCEL ACK");
-        require(attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command))
-                &&archive.loadRequest(archive.requestReferenceOf(attempt.preparedRequest())).equals(attempt.preparedRequest())
+        requirePreparedOriginal(command,attempt.preparedRequest(),Optional.of(archive));
+        require(archive.loadRequest(archive.requestReferenceOf(attempt.preparedRequest())).equals(attempt.preparedRequest())
                 &&archive.load(archive.referenceOf(state.dispatch())).equals(state.dispatch())
                 &&archive.load(archive.referenceOf(ack)).equals(ack),"cleanup original producer, dispatch or ACK changed");
         require(archive.loadReceipt(archive.receiptReferenceOf(cancel)).equals(cancel),"cleanup complete CANCEL receipt changed");
@@ -249,8 +272,9 @@ public final class LifePostResumePauseCleanupProof {
                 &&!sent.writeEntered().observedAt().isAfter(beforeCancel.observedAt().plus(Duration.ofMinutes(2))),
                 "cleanup original CANCEL was not submitted within its own unchanged deadline");
         var nativeResult=AdvancePrimitives.nativeResult(ack,command.operation().value());
-        require(nativeResult.path("status").isTextual()&&nativeResult.path("status").textValue().equals("canceled"),
-                "cleanup raw CANCEL result does not report canceled");
+        boolean exact1210=FullSnapshotSentinelCancellation.supports(command);
+        if (!exact1210) require(nativeResult.path("status").isTextual()&&nativeResult.path("status").textValue().equals("canceled"),
+                "legacy cleanup raw CANCEL result does not report canceled");
         var actualCancelRead=control.read();
         var canceledStatus=new ClockStatusRead.Observation(ClockStatusRead.decode(actualCancelRead.original()),actualCancelRead,
                 archive.referenceOf(actualCancelRead.original()));
@@ -272,7 +296,10 @@ public final class LifePostResumePauseCleanupProof {
                 "cleanup child Status must retain its actual ordinary or reconciliation clock contract");
         AdvancePrimitiveArchivedReplay.verifyRead(command,actualCancelRead,archive);
         new AdvancePrimitiveArchivedReplay(frames).verify(cancel,archive);
-        require(control.actual().equals(AdvancePrimitives.statusValues(canceledStatus.status())),"cleanup child Status semantic values changed");
+        if (exact1210) FullSnapshotSentinelCancellation.verifyArchived(command,attempt,ack,control,archive,frames);
+        else require(control.actual().equals(AdvancePrimitives.statusValues(canceledStatus.status())),"cleanup child Status semantic values changed");
+        // Even the new available/confirmed proof must establish the original partial-date IDLE boundary below.
+        // TRIGGERED, FAILED, bit15 or a bare terminal ACK cannot complete this distinct Life cleanup.
         AdvanceClock.validateCancellation(original.originalArm(),canceledStatus.status(),original.plan(),beforeCancel.identity().frame().identity().dateRaw());
         require(canceledStatus.status().completedDailyTicks()==armedStatus.status().completedDailyTicks()
                 &&canceledStatus.status().lastObservedDateRaw()==armedStatus.status().lastObservedDateRaw(),

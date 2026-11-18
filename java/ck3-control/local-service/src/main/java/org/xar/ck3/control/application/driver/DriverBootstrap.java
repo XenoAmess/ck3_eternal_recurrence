@@ -1371,7 +1371,12 @@ public final class DriverBootstrap {
                     StrictJson.require(isolatedLife&&!retainedAppliedEventOnly&&operatorRequest.isEmpty()
                             &&new java.util.HashSet<>(lease.snapshot().actions()).equals(new java.util.HashSet<>(data.settledActions())),
                             "zero-write cancellation READ retains the complete actual canonical action set");
-                    requireReadOnlyLifeCancelZeroPrefix(lease.snapshot().actions());
+                    var zeroParent = requireReadOnlyLifeCancelZeroPrefix(lease.snapshot().actions());
+                    var zeroExecution = ((org.xar.ck3.control.application.action.ActionState.CompositeUnknown) zeroParent.state()).execution();
+                    var zeroBinding = zeroExecution.children().getLast();
+                    var zeroChild = lease.snapshot().actions().stream().filter(value -> value.command().actionId().equals(zeroBinding.actionId())
+                            && value.bodySha256().equals(zeroBinding.bodySha256())).findFirst().orElseThrow();
+                    org.xar.ck3.control.application.advance.LifeAdvanceComposite.requireZeroWriteInitializationCancellationOriginal(zeroChild, originals);
                 } else if(readOnlyRole==ReadOnlyLifeRecoveryRole.ARM) {
                     var parent=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyLifeRecoveryRoot(lease.snapshot().actions()).orElseThrow();
                     StrictJson.require(isolatedLife&&!retainedAppliedEventOnly&&operatorRequest.isEmpty()

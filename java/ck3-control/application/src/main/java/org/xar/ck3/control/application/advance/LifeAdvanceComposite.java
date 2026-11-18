@@ -217,6 +217,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         for (var child : retained.children()) {
             ActionReceipt receipt = actions.find(child.actionId()).orElseThrow(() -> new IllegalStateException("retained child receipt missing"));
             require(receipt.bodySha256().equals(child.bodySha256()), "retained child body conflict");
+            if (isZeroWriteInitializationCancellation(receipt)) requireZeroWriteInitializationCancellationOriginal(receipt, archive);
             if (!receipt.settled()) return new ActionPorts.Pending("original durable life child is still unresolved; reconciliation only", List.of(retained.guard().nativeEvidence()));
             children.add(receipt);
         }
@@ -611,7 +612,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         if(cursor.children().size()==token.originalChildren().size()+1)
             actions.find(cursor.children().getLast().actionId()).ifPresent(actual::add);
         LifePostResumePauseCleanupProof.requireSuccessorPrefix(authorization.original(),cursor,actual,token.beforeCancel(),token.deadline(),
-                actual.size()>token.originalChildren().size());
+                actual.size()>token.originalChildren().size(),archive);
     }
     private static ActionCommand postResumePauseCancellationChild(ActionCommand parent,LifePostResumePauseCancellation token,String actionId) {
         var operation=new OperationKey(ClockStatusRead.CANCEL_PREFIX+token.generation());
@@ -639,7 +640,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         require(entryFrames instanceof LifeAdvanceRootReplay,"post-resume cleanup needs its installed full original frame/timeline replay");
         var replay=(LifeAdvanceRootReplay)entryFrames;
         var authorization=LifePostResumePauseCleanupEvidence.loadAuthorization(authorizationReference,archive,replay);
-        LifePostResumePauseCleanupProof.requireSuccessorPrefix(authorization.original(),successor,children,authorization.beforeCancel(),authorization.deadline(),true);
+        LifePostResumePauseCleanupProof.requireSuccessorPrefix(authorization.original(),successor,children,authorization.beforeCancel(),authorization.deadline(),true,archive);
         var fresh=cancellationReads.read(parent,successor,children,readDeadline);
         var terminal=new ClockStatusRead.Observation(fresh.status().value(),fresh.status().receipt(),archive.referenceOf(fresh.status().receipt().original()));
         replay.verifyPostResumePauseCleanup(authorization,successor,children,terminal,fresh.ending(),archive);
@@ -721,6 +722,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         for (var bound : retained.children()) {
             ActionReceipt child = actions.find(bound.actionId()).orElseThrow();
             require(child.bodySha256().equals(bound.bodySha256()), "Life cancellation child body differs from canonical history");
+            if (isZeroWriteInitializationCancellation(child)) requireZeroWriteInitializationCancellationOriginal(child, archive);
             result.add(child);
         }
         return List.copyOf(result);
@@ -853,6 +855,11 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
                 || !(child.command().origin() instanceof CommandOrigin.Gameplay)
                 || !child.command().arguments().members().isEmpty()) return false;
         var command = child.command(); var attempt = rejected.attempt(); var guard = attempt.guard();
+        var prepared = attempt.preparedRequest(); var wire = AdvancePrimitives.prepareRequest(command);
+        boolean preparationShape = FullSnapshotSentinelCancellation.supports(command)
+                ? prepared.step().equals(wire.step()) && prepared.requiredCapability().equals(wire.requiredCapability())
+                    && prepared.additionalFields().equals(wire.additionalFields()) && prepared.preparationEvidence().size() == 1
+                : prepared.equals(wire);
         return child.bodySha256().equals(ActionCodec.bodySha256(command))
                 && command.expected().observerSchema().equals(AdvancePrimitives.CLOCK_OBSERVER)
                 && rejected.dispatch().proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
@@ -862,7 +869,17 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
                 && command.source().equals(guard.source()) && command.sessionId().equals(guard.sessionId())
                 && command.operation().equals(guard.operation())
                 && command.expected().equals(AdvancePrimitives.expected(command.before(), command.source(), command.operation(), command.arguments()))
-                && attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command));
+                && preparationShape;
+    }
+
+    /** Reopens original DATA only; canonical membership, registered source and held writer remain caller obligations. */
+    public static void requireZeroWriteInitializationCancellationOriginal(ActionReceipt child, ActionPorts.OutcomeArchive archive) {
+        require(isZeroWriteInitializationCancellation(child), "original source-bound zero-write cancellation required");
+        var rejected = (ActionState.RejectedBeforeDispatch) child.state();
+        LifePostResumePauseCleanupProof.requirePreparedOriginal(child.command(), rejected.attempt().preparedRequest(),
+                Optional.of(Objects.requireNonNull(archive)));
+        require(archive.load(archive.referenceOf(rejected.dispatch())).equals(rejected.dispatch()),
+                "zero-write cancellation changed its retained original dispatch");
     }
 
     /** Pure canonical DATA proof shared by the source's physical read callback and its archive replay. */
