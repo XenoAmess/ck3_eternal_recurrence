@@ -1,0 +1,123 @@
+﻿# Asset scope. Fixed <=8 entries; expired/closed entries leave discovery but retain permanent stories.
+xfm_futures_prune_discovery_effect = {
+ save_scope_as = xfm_fut_prune_asset
+ if = { limit = { NOT = { has_variable = xfm_futures_discovery_count } } set_variable = { name = xfm_futures_discovery_count value = 0 } }
+ every_in_list = {
+  variable = xfm_futures_discovery_contracts
+  limit = { OR = { NOT = { xfm_futures_discoverable_trigger = yes } var:xfm_coin != scope:xfm_fut_prune_asset } }
+  save_scope_as = xfm_fut_prune_contract
+  scope:xfm_fut_prune_asset = {
+   remove_list_variable = { name = xfm_futures_discovery_contracts target = scope:xfm_fut_prune_contract }
+   change_variable = { name = xfm_futures_discovery_count subtract = 1 }
+  }
+ }
+ clear_saved_scope = xfm_fut_prune_contract
+ clear_saved_scope = xfm_fut_prune_asset
+}
+# Contract scope. New creation, normal daily visitation and explicit existing selection call the same registrar.
+xfm_futures_register_discovery_effect = {
+ if = {
+  limit = { xfm_futures_discoverable_trigger = yes }
+  save_scope_as = xfm_fut_register_contract
+  var:xfm_coin = {
+   xfm_futures_prune_discovery_effect = yes
+   if = {
+    limit = {
+     var:xfm_futures_discovery_count < xfm_futures_discovery_capacity_value
+     NOT = { any_in_list = { variable = xfm_futures_discovery_contracts this = scope:xfm_fut_register_contract } }
+    }
+    add_to_variable_list = { name = xfm_futures_discovery_contracts target = scope:xfm_fut_register_contract }
+    change_variable = { name = xfm_futures_discovery_count add = 1 }
+   }
+  }
+  clear_saved_scope = xfm_fut_register_contract
+ }
+}
+# Character scope. Cycle all existing live dated series by expiry, then wrap. At most two passes over eight.
+xfm_futures_select_next_dated_effect = {
+ set_variable = { name = xfm_futures_result value = 0 }
+ set_variable = { name = xfm_futures_reason value = 1 }
+ clear_saved_scope = xfm_fut_cycle_next
+ save_scope_as = xfm_fut_cycle_actor
+ if = {
+  limit = { exists = var:xfm_selected_coin }
+  set_variable = { name = xfm_futures_cycle_after_day value = -1 }
+  if = {
+   limit = {
+    exists = var:xfm_futures_contract
+    var:xfm_futures_contract = { xfm_futures_discoverable_trigger = yes var:xfm_perpetual = 0 var:xfm_coin = scope:xfm_fut_cycle_actor.var:xfm_selected_coin }
+   }
+   var:xfm_futures_contract = { xfm_futures_register_discovery_effect = yes }
+   set_variable = { name = xfm_futures_cycle_after_day value = var:xfm_futures_contract.var:xfm_expiry_day }
+  }
+  var:xfm_selected_coin = {
+   xfm_futures_prune_discovery_effect = yes
+   every_in_list = {
+    variable = xfm_futures_discovery_contracts
+    limit = { xfm_futures_discoverable_trigger = yes var:xfm_perpetual = 0 var:xfm_coin = scope:xfm_fut_cycle_actor.var:xfm_selected_coin var:xfm_expiry_day > scope:xfm_fut_cycle_actor.var:xfm_futures_cycle_after_day }
+    if = { limit = { OR = { NOT = { exists = scope:xfm_fut_cycle_next } var:xfm_expiry_day < scope:xfm_fut_cycle_next.var:xfm_expiry_day } } save_scope_as = xfm_fut_cycle_next }
+   }
+   if = {
+    limit = { NOT = { exists = scope:xfm_fut_cycle_next } }
+    every_in_list = {
+     variable = xfm_futures_discovery_contracts
+     limit = { xfm_futures_discoverable_trigger = yes var:xfm_perpetual = 0 var:xfm_coin = scope:xfm_fut_cycle_actor.var:xfm_selected_coin }
+     if = { limit = { OR = { NOT = { exists = scope:xfm_fut_cycle_next } var:xfm_expiry_day < scope:xfm_fut_cycle_next.var:xfm_expiry_day } } save_scope_as = xfm_fut_cycle_next }
+    }
+   }
+  }
+  if = {
+   limit = { exists = scope:xfm_fut_cycle_next }
+   set_variable = { name = xfm_futures_contract value = scope:xfm_fut_cycle_next }
+   set_variable = { name = xfm_futures_perpetual value = 0 }
+   set_variable = { name = xfm_futures_expiry_day value = scope:xfm_fut_cycle_next.var:xfm_expiry_day }
+   set_variable = { name = xfm_futures_result value = 1 }
+   set_variable = { name = xfm_futures_reason value = 0 }
+  }
+  else = { remove_variable = xfm_futures_contract }
+ }
+ clear_saved_scope = xfm_fut_cycle_next
+ clear_saved_scope = xfm_fut_cycle_actor
+}
+# Character scope. Prefer a real independently funded order on an existing shared contract.
+xfm_futures_ai_choose_market_effect = {
+ clear_saved_scope = xfm_fut_ai_contract
+ clear_saved_scope = xfm_fut_ai_target_order
+ var:xfm_selected_coin = {
+  xfm_futures_prune_discovery_effect = yes
+  random_in_list = {
+   variable = xfm_futures_discovery_contracts
+   limit = {
+    xfm_futures_discoverable_trigger = yes var:xfm_coin = scope:xfm_fut_ai_actor.var:xfm_selected_coin
+    any_in_list = { variable = xfm_orders xfm_futures_ai_target_order_trigger = yes }
+   }
+   save_scope_as = xfm_fut_ai_contract
+  }
+ }
+ if = {
+  limit = { exists = scope:xfm_fut_ai_contract }
+  scope:xfm_fut_ai_contract = {
+   random_in_list = { variable = xfm_orders limit = { xfm_futures_ai_target_order_trigger = yes var:xfm_contract = scope:xfm_fut_ai_contract } save_scope_as = xfm_fut_ai_target_order }
+  }
+ }
+ if = {
+  limit = { exists = scope:xfm_fut_ai_target_order }
+  set_variable = { name = xfm_futures_contract value = scope:xfm_fut_ai_contract }
+  set_variable = { name = xfm_futures_perpetual value = scope:xfm_fut_ai_contract.var:xfm_perpetual }
+  set_variable = { name = xfm_futures_expiry_day value = scope:xfm_fut_ai_contract.var:xfm_expiry_day }
+  set_variable = { name = xfm_futures_limit_cents value = scope:xfm_fut_ai_target_order.var:xfm_limit_cents }
+  set_variable = { name = xfm_futures_side value = 1 }
+  if = { limit = { scope:xfm_fut_ai_target_order.var:xfm_side = 1 } set_variable = { name = xfm_futures_side value = 2 } }
+ }
+ else = {
+  set_variable = { name = xfm_futures_perpetual value = 0 }
+  set_variable = { name = xfm_futures_expiry_day value = xfm_futures_standard_expiry_day_value }
+  random = { chance = 50 set_variable = { name = xfm_futures_perpetual value = 1 } set_variable = { name = xfm_futures_expiry_day value = 0 } }
+  xfm_futures_ensure_market_effect = yes
+  set_variable = { name = xfm_futures_limit_cents value = var:xfm_selected_coin.var:xfm_mark_cents }
+  set_variable = { name = xfm_futures_side value = 1 }
+  random = { chance = 50 set_variable = { name = xfm_futures_side value = 2 } }
+ }
+ clear_saved_scope = xfm_fut_ai_contract
+ clear_saved_scope = xfm_fut_ai_target_order
+}

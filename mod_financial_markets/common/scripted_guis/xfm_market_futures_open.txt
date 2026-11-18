@@ -2,7 +2,7 @@
     scope = character
 
     is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_selected_coin }
-    effect = { set_variable = { name = xfm_futures_perpetual value = 0 } set_variable = { name = xfm_futures_expiry_day value = var:xfm_exchange.var:xfm_day } change_variable = { name = xfm_futures_expiry_day add = 30 } xfm_futures_ensure_market_effect = yes }
+    effect = { set_variable = { name = xfm_futures_perpetual value = 0 } set_variable = { name = xfm_futures_expiry_day value = xfm_futures_standard_expiry_day_value } xfm_futures_ensure_market_effect = yes }
 }
 xfm_market_contract_perpetual_gui = {
     scope = character
@@ -39,4 +39,15 @@ xfm_market_futures_short_gui = {
 
     is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_contract var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000 var:xfm_futures_lots >= 1 var:xfm_futures_lots <= 10000 }
     effect = { set_variable = { name = xfm_futures_side value = 2 } set_variable = { name = xfm_futures_limit_cents value = var:xfm_order_limit_cents } xfm_futures_submit_effect = yes }
+}
+
+xfm_market_contract_next_dated_gui = {
+ scope = character
+ is_valid = {
+  is_ai = no is_alive = yes is_adult = yes exists = var:xfm_selected_coin
+  var:xfm_selected_coin = {
+   any_in_list = { variable = xfm_futures_discovery_contracts xfm_futures_discoverable_trigger = yes var:xfm_perpetual = 0 var:xfm_coin = root.var:xfm_selected_coin }
+  }
+ }
+ effect = { xfm_futures_select_next_dated_effect = yes }
 }

@@ -1,0 +1,90 @@
+﻿# AI valuation only. These guards do not grant consent or replace public DVP revalidation.
+xfm_otc_ai_common_trigger = {
+    is_ai = yes is_alive = yes is_adult = yes
+    exists = global_var:xfm_exchange global_var:xfm_exchange = { has_variable = xfm_day var:xfm_day >= 0 }
+    exists = scope:xfm_ui_otc_buyer this = scope:xfm_ui_otc_buyer
+    exists = scope:xfm_ui_otc_seller scope:xfm_ui_otc_seller != this
+    exists = scope:xfm_ui_otc_buyer_account exists = scope:xfm_ui_otc_seller_account
+    exists = scope:xfm_ui_otc_coin exists = scope:xfm_ui_otc_nonce exists = scope:xfm_ui_otc_price_version
+    exists = scope:xfm_ui_otc_lots exists = scope:xfm_ui_otc_limit_cents exists = scope:xfm_ui_otc_expiry_day
+    var:xfm_account = scope:xfm_ui_otc_buyer_account
+    global_var:xfm_exchange.var:xfm_day < scope:xfm_ui_otc_expiry_day
+    scope:xfm_ui_otc_lots >= 1
+    scope:xfm_ui_otc_lots >= xfm_otc_ai_lots_floor_value scope:xfm_ui_otc_lots <= xfm_otc_ai_lots_floor_value
+    scope:xfm_ui_otc_limit_cents >= 1
+    scope:xfm_ui_otc_limit_cents >= xfm_otc_ai_price_floor_value scope:xfm_ui_otc_limit_cents <= xfm_otc_ai_price_floor_value
+    xfm_otc_ai_quote_cents_value >= 1 xfm_otc_ai_quote_cents_value <= 100000000
+    xfm_otc_ai_units_value <= 100000000
+    OR = {
+        NOT = { has_variable = xfm_otc_ai_last_buy_day }
+        AND = { has_variable = xfm_otc_ai_last_buy_day global_var:xfm_exchange.var:xfm_day >= xfm_otc_ai_next_buy_day_value }
+    }
+    scope:xfm_ui_otc_buyer_account = {
+        xfm_finance_account_usable_trigger = yes
+        has_variable = xfm_holder has_variable = xfm_beneficial_owner has_variable = xfm_system_account
+        has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents
+        var:xfm_system_account = 0 var:xfm_holder = scope:xfm_ui_otc_buyer var:xfm_beneficial_owner = scope:xfm_ui_otc_buyer
+    }
+    scope:xfm_ui_otc_seller = {
+        is_alive = yes is_adult = yes has_variable = xfm_otc_consent
+        var:xfm_account = scope:xfm_ui_otc_seller_account var:xfm_otc_buyer = scope:xfm_ui_otc_buyer
+        has_variable = xfm_otc_offer_nonce has_variable = xfm_otc_offer_coin has_variable = xfm_otc_offer_lots has_variable = xfm_otc_offer_price_cents
+        has_variable = xfm_otc_offer_expires_day has_variable = xfm_otc_offer_price_version
+        var:xfm_otc_offer_nonce = scope:xfm_ui_otc_nonce var:xfm_otc_offer_coin = scope:xfm_ui_otc_coin
+        var:xfm_otc_offer_lots = scope:xfm_ui_otc_lots var:xfm_otc_offer_price_cents = scope:xfm_ui_otc_limit_cents
+        var:xfm_otc_offer_expires_day = scope:xfm_ui_otc_expiry_day var:xfm_otc_offer_price_version = scope:xfm_ui_otc_price_version
+    }
+    scope:xfm_ui_otc_seller_account = {
+        xfm_finance_account_usable_trigger = yes
+        has_variable = xfm_holder has_variable = xfm_beneficial_owner has_variable = xfm_system_account
+        has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents
+        var:xfm_system_account = 0 var:xfm_holder = scope:xfm_ui_otc_seller var:xfm_beneficial_owner = scope:xfm_ui_otc_seller
+        var:xfm_beneficial_owner != scope:xfm_ui_otc_buyer_account.var:xfm_beneficial_owner
+        any_in_list = {
+            variable = xfm_positions story_type = xfm_finance_position
+            var:xfm_account = scope:xfm_ui_otc_seller_account var:xfm_coin = scope:xfm_ui_otc_coin
+            has_variable = xfm_quantity_units has_variable = xfm_reserved_units
+            var:xfm_reserved_units >= 0 xfm_finance_position_available_value >= xfm_otc_ai_units_value
+        }
+    }
+    scope:xfm_ui_otc_coin = {
+        story_type = xfm_finance_coin has_variable = xfm_listing_state has_variable = xfm_supply_units has_variable = xfm_price_version
+        var:xfm_listing_state >= 1 var:xfm_listing_state <= 8 var:xfm_listing_state != 7
+        var:xfm_supply_units >= xfm_otc_ai_units_value var:xfm_price_version = scope:xfm_ui_otc_price_version
+    }
+}
+
+# Coin scope; current qualified venue evidence is distinct from an old termination certificate.
+xfm_otc_ai_fresh_reference_trigger = {
+    has_variable = xfm_trading_open var:xfm_trading_open = 1
+    OR = { var:xfm_listing_state = 1 var:xfm_listing_state = 2 var:xfm_listing_state = 3 }
+    has_variable = xfm_oracle_reason has_variable = xfm_oracle_quality has_variable = xfm_oracle_day
+    has_variable = xfm_index_cents has_variable = xfm_mark_cents
+    var:xfm_oracle_reason = 0 var:xfm_oracle_quality > 0
+    var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day var:xfm_index_cents > 0 var:xfm_mark_cents > 0
+}
+xfm_otc_ai_fresh_trigger = {
+    xfm_otc_ai_common_trigger = yes
+    scope:xfm_ui_otc_coin = { xfm_otc_ai_fresh_reference_trigger = yes }
+    xfm_otc_ai_quote_cents_value <= xfm_otc_ai_fresh_budget_value
+    scope:xfm_ui_otc_limit_cents <= xfm_otc_ai_fresh_price_cap_value
+}
+xfm_otc_ai_stale_trigger = {
+    xfm_otc_ai_common_trigger = yes
+    scope:xfm_ui_otc_coin = {
+        has_variable = xfm_trading_open var:xfm_trading_open = 0
+        OR = { var:xfm_listing_state = 4 var:xfm_listing_state = 5 var:xfm_listing_state = 6 var:xfm_listing_state = 8 }
+        has_variable = xfm_termination_price_certified var:xfm_termination_price_certified = 1
+        has_variable = xfm_termination_price_cents var:xfm_termination_price_cents > 0
+        has_variable = xfm_termination_samples var:xfm_termination_samples >= 3 var:xfm_termination_samples <= 6
+        has_variable = xfm_termination_price_source_coin var:xfm_termination_price_source_coin = this
+        has_variable = xfm_notice_day has_variable = xfm_termination_source_notice_day var:xfm_termination_source_notice_day = var:xfm_notice_day
+        has_variable = xfm_termination_window_start_day has_variable = xfm_termination_window_end_day
+        var:xfm_termination_window_start_day >= xfm_otc_ai_window_start_value var:xfm_termination_window_start_day <= xfm_otc_ai_window_start_value
+        var:xfm_termination_window_end_day >= xfm_otc_ai_window_end_value var:xfm_termination_window_end_day <= xfm_otc_ai_window_end_value
+    }
+    xfm_otc_ai_certificate_age_value >= 0 xfm_otc_ai_certificate_age_value <= 90
+    xfm_otc_ai_quote_cents_value <= xfm_otc_ai_stale_budget_value
+    scope:xfm_ui_otc_limit_cents <= xfm_otc_ai_stale_price_cap_value
+}
+xfm_otc_ai_eligible_trigger = { OR = { xfm_otc_ai_fresh_trigger = yes xfm_otc_ai_stale_trigger = yes } }

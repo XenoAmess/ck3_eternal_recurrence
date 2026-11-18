@@ -1,0 +1,17 @@
+﻿# Buyer character scope in the immutable xfm_market.120 proposal context.
+# All values are pure; required field/ownership guards live in xfm_otc_ai_common_trigger.
+xfm_otc_ai_quote_cents_value = { value = scope:xfm_ui_otc_lots multiply = scope:xfm_ui_otc_limit_cents }
+xfm_otc_ai_units_value = { value = scope:xfm_ui_otc_lots multiply = 100 }
+xfm_otc_ai_lots_floor_value = { value = scope:xfm_ui_otc_lots floor = yes }
+xfm_otc_ai_price_floor_value = { value = scope:xfm_ui_otc_limit_cents floor = yes }
+xfm_otc_ai_liquid_cents_value = { value = gold multiply = 100 floor = yes add = scope:xfm_ui_otc_buyer_account.var:xfm_free_cents }
+# Preserve 5 gold; exposure caps apply only to actual primary free cash plus personal gold.
+xfm_otc_ai_fresh_budget_value = { value = xfm_otc_ai_liquid_cents_value subtract = 500 min = 0 divide = 10 floor = yes max = 1000 }
+xfm_otc_ai_stale_budget_value = { value = xfm_otc_ai_liquid_cents_value subtract = 500 min = 0 divide = 20 floor = yes max = 200 }
+xfm_otc_ai_fresh_price_cap_value = { value = scope:xfm_ui_otc_coin.var:xfm_index_cents multiply = 9 divide = 10 floor = yes }
+# Certified termination price is HISTORICAL evidence for a speculative bid, not cash redemption.
+xfm_otc_ai_stale_price_cap_value = { value = scope:xfm_ui_otc_coin.var:xfm_termination_price_cents divide = 4 floor = yes }
+xfm_otc_ai_certificate_age_value = { value = global_var:xfm_exchange.var:xfm_day subtract = scope:xfm_ui_otc_coin.var:xfm_termination_window_end_day }
+xfm_otc_ai_window_start_value = { value = scope:xfm_ui_otc_coin.var:xfm_notice_day add = 15 }
+xfm_otc_ai_window_end_value = { value = scope:xfm_ui_otc_coin.var:xfm_notice_day add = 20 }
+xfm_otc_ai_next_buy_day_value = { value = var:xfm_otc_ai_last_buy_day add = 7 }

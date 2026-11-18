@@ -145,20 +145,11 @@ xfm_futures_close_position_effect = {
  }
 }
 
+# Exchange scope. The historical identity directory is read only by one-time migration.
 xfm_futures_daily_effect = {
  xfm_futures_archive_prune_effect = yes
- every_in_list = {
-  variable = xfm_futures_contracts
-  limit = { var:xfm_status = 0 var:xfm_last_daily_day < global_var:xfm_exchange.var:xfm_day }
-  save_scope_as = xfm_fut_daily_contract
-  xfm_futures_maintain_orders_effect = yes
-  every_in_list = {
-   variable = xfm_positions
-   limit = { xfm_futures_position_open_trigger = yes OR = { NOT = { has_variable = xfm_created_day } var:xfm_created_day < global_var:xfm_exchange.var:xfm_day } }
-   xfm_futures_position_daily_effect = yes
-  }
-  set_variable = { name = xfm_last_daily_day value = global_var:xfm_exchange.var:xfm_day }
- }
+ xfm_futures_daily_index_ensure_effect = yes
+ xfm_futures_daily_dispatch_effect = yes
 }
 
 # Coin-scope callback after a D21 window certificate is published, after the ordinary daily mark.

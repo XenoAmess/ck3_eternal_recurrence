@@ -1,0 +1,12 @@
+﻿l_english:
+ xfm_market_otc_panel_title:0 "Bilateral OTC sale"
+ xfm_market_otc_panel_help:0 "Choose an existing private holder of this coin as a potential buyer. This page offers your coins to that person; it does not request a purchase from a seller. Right-click character offers remain available for other buyers."
+ xfm_market_otc_refresh:0 "Refresh holders of this coin"
+ xfm_market_otc_empty:0 "Refresh to list eligible holders. No living adult holder with a usable personal main account is currently listed."
+ xfm_market_otc_page:0 "Page [GetPlayer.MakeScope.Var('xfm_ui_otc_page').GetValue|0]"
+ xfm_market_otc_buyer_row:0 "[Scope.Var('xfm_account').Var('xfm_holder').Char.GetName]\nCurrently holds [Scope.Var('xfm_quantity_units').GetValue|0] coins. This is a coin holding, not spendable cash."
+ xfm_market_otc_selected_buyer:0 "Potential buyer: [GetPlayer.MakeScope.Var('xfm_ui_otc_target_buyer').Char.GetName]"
+ xfm_market_otc_current_ticket:0 "Offer the current ticket: [GetPlayer.MakeScope.Var('xfm_order_lots').GetValue|0] lots of 100 coins at [GetPlayer.MakeScope.Var('xfm_order_limit_cents').GetValue|0] cents per lot. Adjust lots and price above before sending."
+ xfm_market_otc_send:0 "Offer to sell to this person"
+ xfm_market_otc_cancel_offer:0 "Withdraw my outstanding OTC offer"
+ xfm_market_otc_execution_terms:0 "The recipient may accept or decline. Quotes expire after 7 financial days; replacing or withdrawing an offer invalidates the old invitation. Acceptance rechecks ownership, available coins, payment, quote version and both main accounts. No extra OTC fee; no guaranteed buyer or delivery."

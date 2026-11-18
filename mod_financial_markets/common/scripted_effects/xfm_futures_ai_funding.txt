@@ -1,0 +1,33 @@
+﻿# Character scope, after all opening guards and a verified order story. No parallel wallet.
+xfm_futures_ai_prepare_funds_effect = {
+ set_variable = { name = xfm_futures_ai_funded_cents value = 0 }
+ set_variable = { name = xfm_futures_ai_funding_result value = 0 }
+ if = {
+  limit = { xfm_futures_ai_funding_allowed_trigger = yes }
+  set_variable = { name = xfm_futures_ai_before_free value = var:xfm_account.var:xfm_free_cents }
+  var:xfm_account = {
+   set_variable = { name = xfm_request_cents value = scope:xfm_fut_actor.var:xfm_futures_reserve_cents }
+   xfm_finance_ensure_funds_effect = yes
+  }
+  if = {
+   limit = { var:xfm_account.var:xfm_result = 1 }
+   set_variable = { name = xfm_futures_ai_funded_cents value = { value = var:xfm_account.var:xfm_free_cents subtract = var:xfm_futures_ai_before_free floor = yes } }
+   set_variable = { name = xfm_futures_ai_funding_result value = 1 }
+  }
+ }
+}
+# A reservation story can fail after funding. Undo only this attempt's measured deposit.
+# Same paired free->gold operation as ordinary withdrawal, pinned to PRIMARY (never active side account).
+xfm_futures_ai_refund_failed_funding_effect = {
+ if = {
+  limit = {
+   is_ai = yes xfm_futures_ai_primary_account_trigger = yes
+   scope:xfm_fut_account = var:xfm_account
+   var:xfm_futures_ai_funded_cents > 0
+   var:xfm_account.var:xfm_free_cents >= var:xfm_futures_ai_funded_cents
+  }
+  var:xfm_account = { change_variable = { name = xfm_free_cents subtract = scope:xfm_fut_actor.var:xfm_futures_ai_funded_cents } }
+  add_gold = { value = var:xfm_futures_ai_funded_cents divide = 100 }
+  set_variable = { name = xfm_futures_ai_funded_cents value = 0 }
+ }
+}

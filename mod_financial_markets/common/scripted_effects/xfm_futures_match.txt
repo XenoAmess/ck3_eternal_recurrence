@@ -1,6 +1,17 @@
 ﻿# Price/time priority. Maximum 32 fills per entry; residual live orders remain indexed.
 xfm_futures_match_effect = {
  save_scope_as = xfm_fut_incoming
+ # All successful ordinary/reduce/forced-exit callers have already indexed this live order.
+ # Enrolment never runs settlement, and rejects missing/wrong-type contracts.
+ if = {
+  limit = {
+   story_type = xfm_futures_order
+   xfm_futures_order_open_trigger = yes
+   exists = var:xfm_contract
+   var:xfm_contract = { story_type = xfm_futures_contract }
+  }
+  var:xfm_contract = { xfm_futures_daily_enroll_effect = yes }
+ }
  var:xfm_contract = { xfm_futures_maintain_orders_effect = yes }
  set_variable = { name = xfm_match_budget value = 32 }
  set_variable = { name = xfm_match_continue value = 1 }

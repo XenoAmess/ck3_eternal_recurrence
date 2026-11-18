@@ -11,20 +11,20 @@ xfm_market.120 = {
             scope:xfm_ui_otc_seller = { has_variable = xfm_otc_consent var:xfm_otc_offer_nonce = scope:xfm_ui_otc_nonce }
             global_var:xfm_exchange.var:xfm_day < scope:xfm_ui_otc_expiry_day
         }
-        xfm_market_ui_otc_accept_effect = yes
+        if = {
+            limit = { is_ai = yes }
+            # Revalidate the policy at actual acceptance, after the AI weight was evaluated.
+            if = {
+                limit = { xfm_otc_ai_eligible_trigger = yes }
+                xfm_market_ui_otc_accept_effect = yes
+                if = { limit = { var:xfm_issuer_result = 1 } set_variable = { name = xfm_otc_ai_last_buy_day value = global_var:xfm_exchange.var:xfm_day } }
+            }
+        }
+        else = { xfm_market_ui_otc_accept_effect = yes }
         ai_chance = {
             base = 0
-            modifier = {
-                add = 50
-                OR = {
-                    gold >= { value = scope:xfm_ui_otc_lots multiply = scope:xfm_ui_otc_limit_cents divide = 100 }
-                    var:xfm_account.var:xfm_free_cents >= { value = scope:xfm_ui_otc_lots multiply = scope:xfm_ui_otc_limit_cents }
-                }
-                scope:xfm_ui_otc_coin = {
-                    var:xfm_last_price_cents >= scope:xfm_ui_otc_limit_cents
-                    var:xfm_oracle_reason = 0
-                }
-            }
+            modifier = { add = 10 xfm_otc_ai_fresh_trigger = yes }
+            modifier = { add = 5 xfm_otc_ai_stale_trigger = yes }
         }
     }
     option = { name = xfm_market_otc_decline xfm_market_ui_otc_decline_effect = yes ai_chance = { base = 50 } }

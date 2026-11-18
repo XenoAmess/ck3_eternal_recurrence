@@ -1,0 +1,49 @@
+﻿# Character scope. Explicit user refresh/page reads only the selected coin's actual holders.
+xfm_market_ui_otc_targets_effect = {
+    save_scope_as = xfm_ui_otc_picker_actor
+    clear_variable_list = xfm_ui_otc_buyers
+    set_variable = { name = xfm_ui_otc_has_next value = 0 }
+    set_variable = { name = xfm_ui_otc_scan_index value = 0 }
+    if = { limit = { NOT = { has_variable = xfm_ui_otc_offset } } set_variable = { name = xfm_ui_otc_offset value = 0 } }
+    if = { limit = { NOT = { has_variable = xfm_ui_otc_page } } set_variable = { name = xfm_ui_otc_page value = 1 } }
+    if = {
+        limit = {
+            OR = {
+                NOT = { exists = var:xfm_ui_otc_source_coin }
+                var:xfm_ui_otc_source_coin != var:xfm_selected_coin
+            }
+        }
+        set_variable = { name = xfm_ui_otc_offset value = 0 }
+        set_variable = { name = xfm_ui_otc_page value = 1 }
+        remove_variable = xfm_ui_otc_target_position
+        remove_variable = xfm_ui_otc_target_account
+        remove_variable = xfm_ui_otc_target_buyer
+    }
+    set_variable = { name = xfm_ui_otc_source_coin value = var:xfm_selected_coin }
+    var:xfm_selected_coin = {
+        ordered_in_list = {
+            variable = xfm_holders
+            limit = { xfm_market_otc_holder_position_trigger = yes }
+            order_by = { value = 0 subtract = var:xfm_account.var:xfm_account_id }
+            max = scope:xfm_ui_otc_picker_actor.xfm_market_ui_otc_fetch_limit
+            check_range_bounds = no
+            save_scope_as = xfm_ui_otc_picker_position
+            scope:xfm_ui_otc_picker_actor = {
+                change_variable = { name = xfm_ui_otc_scan_index add = 1 }
+                if = {
+                    limit = {
+                        var:xfm_ui_otc_scan_index > var:xfm_ui_otc_offset
+                        var:xfm_ui_otc_scan_index <= xfm_market_ui_otc_page_end
+                    }
+                    add_to_variable_list = { name = xfm_ui_otc_buyers target = scope:xfm_ui_otc_picker_position }
+                }
+                else_if = {
+                    limit = { var:xfm_ui_otc_scan_index > xfm_market_ui_otc_page_end }
+                    set_variable = { name = xfm_ui_otc_has_next value = 1 }
+                }
+            }
+        }
+    }
+    clear_saved_scope = xfm_ui_otc_picker_position
+    clear_saved_scope = xfm_ui_otc_picker_actor
+}

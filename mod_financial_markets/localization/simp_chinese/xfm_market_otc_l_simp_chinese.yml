@@ -1,0 +1,12 @@
+﻿l_simp_chinese:
+ xfm_market_otc_panel_title:0 "双边场外出售"
+ xfm_market_otc_panel_help:0 "从此币的真实私人持有人中选择潜在买方。本页向此人出售你的币，不是向卖方发起买入邀约。仍可通过角色右键向其他买方报价。"
+ xfm_market_otc_refresh:0 "刷新此币持有人"
+ xfm_market_otc_empty:0 "点击刷新列出合资格持有人。当前未列出持有此币、活着成年且私人主账户可用的买方。"
+ xfm_market_otc_page:0 "第 [GetPlayer.MakeScope.Var('xfm_ui_otc_page').GetValue|0] 页"
+ xfm_market_otc_buyer_row:0 "[Scope.Var('xfm_account').Var('xfm_holder').Char.GetName]\n当前持有 [Scope.Var('xfm_quantity_units').GetValue|0] 枚币。这是币持仓，不是可支出现金。"
+ xfm_market_otc_selected_buyer:0 "潜在买方：[GetPlayer.MakeScope.Var('xfm_ui_otc_target_buyer').Char.GetName]"
+ xfm_market_otc_current_ticket:0 "使用上方票据：每手100币，共 [GetPlayer.MakeScope.Var('xfm_order_lots').GetValue|0] 手，每手 [GetPlayer.MakeScope.Var('xfm_order_limit_cents').GetValue|0] 分。发送前可用上方按钮调整数量与价格。"
+ xfm_market_otc_send:0 "向此人出售"
+ xfm_market_otc_cancel_offer:0 "撤回我的未决场外报价"
+ xfm_market_otc_execution_terms:0 "对方可同意或拒绝。报价在7个金融日后到期；替换或撤回后旧邀请失效。同意时重核所有权、可用币、付款、报价版本与双方主账户。场外交易不另收手续费；不保证有人接价或交割成功。"

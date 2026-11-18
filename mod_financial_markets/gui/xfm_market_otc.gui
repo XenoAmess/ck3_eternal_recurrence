@@ -1,0 +1,44 @@
+﻿types FinancialMarketOtc {
+    type xfm_market_otc_panel = vbox {
+        layoutpolicy_horizontal = expanding spacing = 6
+        divider = { layoutpolicy_horizontal = expanding }
+        text_label_left = { text = "xfm_market_otc_panel_title" }
+        text_multi = { text = "xfm_market_otc_panel_help" max_width = 390 autoresize = yes }
+        button_standard = {
+            name = "xfm_market_otc_refresh" size = { 390 32 } text = "xfm_market_otc_refresh"
+            enabled = "[GetScriptedGui( 'xfm_market_otc_refresh_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+            onclick = "[GetScriptedGui( 'xfm_market_otc_refresh_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        }
+        scrollbox = { name = "xfm_market_otc_buyers" size = { 390 220 } blockoverride "scrollbox_content" {
+            vbox = { layoutpolicy_horizontal = expanding spacing = 4
+                datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_otc_buyers' )]"
+                item = { xfm_market_otc_buyer_row = {} }
+            }
+        } }
+        text_multi = { visible = "[IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'xfm_ui_otc_buyers' ) )]" text = "xfm_market_otc_empty" max_width = 390 autoresize = yes }
+        hbox = { spacing = 6
+            button_standard = { name = "xfm_market_otc_previous" size = { 110 30 } text = "xfm_market_previous"
+                enabled = "[GetScriptedGui( 'xfm_market_otc_previous_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+                onclick = "[GetScriptedGui( 'xfm_market_otc_previous_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+            expand = {} text_single = { text = "xfm_market_otc_page" } expand = {}
+            button_standard = { name = "xfm_market_otc_next" size = { 110 30 } text = "xfm_market_next"
+                enabled = "[GetScriptedGui( 'xfm_market_otc_next_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+                onclick = "[GetScriptedGui( 'xfm_market_otc_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+        }
+        text_multi = { visible = "[GetScriptedGui( 'xfm_market_otc_buyer_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_otc_selected_buyer" max_width = 390 autoresize = yes }
+        text_multi = { text = "xfm_market_otc_current_ticket" max_width = 390 autoresize = yes }
+        button_standard = { name = "xfm_market_otc_send" size = { 390 34 } text = "xfm_market_otc_send"
+            enabled = "[GetScriptedGui( 'xfm_market_otc_send_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+            tooltip = "[GetScriptedGui( 'xfm_market_otc_send_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+            onclick = "[GetScriptedGui( 'xfm_market_otc_send_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+        button_standard = { name = "xfm_market_otc_cancel_offer" size = { 390 32 } text = "xfm_market_otc_cancel_offer"
+            enabled = "[GetScriptedGui( 'xfm_market_otc_cancel_offer_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+            onclick = "[GetScriptedGui( 'xfm_market_otc_cancel_offer_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+        text_multi = { text = "xfm_market_otc_execution_terms" max_width = 390 autoresize = yes }
+    }
+    type xfm_market_otc_buyer_row = button_standard_list {
+        name = "xfm_market_otc_buyer_row" size = { 380 58 } text = "xfm_market_otc_buyer_row"
+        enabled = "[GetScriptedGui( 'xfm_market_otc_select_buyer_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+        onclick = "[GetScriptedGui( 'xfm_market_otc_select_buyer_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+    }
+}

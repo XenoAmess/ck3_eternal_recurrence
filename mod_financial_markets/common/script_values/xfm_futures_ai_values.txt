@@ -1,0 +1,21 @@
+﻿# Character scope. Existing private free cash and personal gold only; no reserved/project/inherited cash.
+xfm_futures_ai_liquid_cents_value = {
+ value = gold multiply = 100 floor = yes
+ if = {
+  limit = { xfm_futures_ai_primary_account_trigger = yes }
+  add = var:xfm_account.var:xfm_free_cents
+ }
+ min = 0
+}
+xfm_futures_ai_budget_cents_value = {
+ value = xfm_futures_ai_liquid_cents_value subtract = 500 min = 0 divide = 20 floor = yes
+}
+xfm_futures_ai_gap_cents_value = {
+ value = var:xfm_futures_reserve_cents subtract = var:xfm_account.var:xfm_free_cents min = 0 floor = yes
+}
+# Shared day-0 anchored thirty-day expiry, rolling seven days before expiry.
+# Days 0..23 share day 30; days 24..53 share day 60. No current-day+30 pools.
+xfm_futures_standard_expiry_day_value = {
+ value = global_var:xfm_exchange.var:xfm_day add = 7 divide = 30 ceiling = yes multiply = 30
+}
+xfm_futures_discovery_capacity_value = 8

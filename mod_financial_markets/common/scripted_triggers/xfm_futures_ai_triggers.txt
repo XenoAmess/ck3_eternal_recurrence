@@ -1,0 +1,33 @@
+﻿# Character scope. A PRIMARY reference must be private, usable and legally owned by this actor.
+xfm_futures_ai_primary_account_trigger = {
+ exists = var:xfm_account
+ var:xfm_account = {
+  xfm_finance_account_usable_trigger = yes
+  var:xfm_system_account = 0 var:xfm_holder = prev
+  NOT = { has_variable = xfm_legal_entity }
+ }
+}
+xfm_futures_ai_funding_allowed_trigger = {
+ is_ai = yes is_alive = yes is_adult = yes
+ xfm_futures_ai_primary_account_trigger = yes
+ scope:xfm_fut_account = var:xfm_account
+ var:xfm_futures_reserve_cents > 0 var:xfm_futures_reserve_cents <= 100000000
+ var:xfm_futures_reserve_cents <= xfm_futures_ai_budget_cents_value
+ gold >= { value = xfm_futures_ai_gap_cents_value divide = 100 }
+}
+# Contract scope. This is a discovery index, not a replacement for permanent risk/claim indexes.
+xfm_futures_discoverable_trigger = {
+ story_type = xfm_futures_contract exists = var:xfm_coin var:xfm_status = 0
+ OR = { var:xfm_perpetual = 1 var:xfm_expiry_day > global_var:xfm_exchange.var:xfm_day }
+}
+# Order scope; bounded contract-local open-order index. Full related-cross validation remains in submit.
+xfm_futures_ai_target_order_trigger = {
+ story_type = xfm_futures_order xfm_futures_order_open_trigger = yes
+ exists = var:xfm_account exists = var:xfm_reservation
+ var:xfm_account = {
+  xfm_finance_account_usable_trigger = yes
+  var:xfm_holder != scope:xfm_fut_ai_actor
+  OR = { NOT = { exists = var:xfm_beneficial_owner } var:xfm_beneficial_owner != scope:xfm_fut_ai_actor }
+ }
+ var:xfm_reservation = { xfm_finance_reservation_usable_trigger = yes }
+}

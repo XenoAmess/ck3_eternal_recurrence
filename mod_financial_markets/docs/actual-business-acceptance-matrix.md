@@ -1,6 +1,6 @@
 # 独立业务验收矩阵与只读观察扩展
 
-2026-11-18。六份后续 case 的公共注册与 Java 观察 profile 已采用；AI与SAVE审计接线后的完整金融工具160项通过。第三场实际载入旧档并获得精确1.21 Full，但暂停缓存使原两帧启动验收超时，业务动作/游戏日/SAVE为零。当前仍为`SOURCE_ADOPTED_SOFTWARE_PROFILE_NO_BUSINESS_CREDIT`，新fresh通道尚待下一场实际采用。`core`只覆盖付费发行与现货子场；每个后续case必须生成自己的manifest和严格输入，不能借用core的五个标记。实际准备、场次、资金读回和物理保存分别验收。
+2026-11-18。六份后续 case 的公共注册与 Java 观察 profile 已采用；174文件统一金融版本完整工具200项通过。第五场实际载入后，FreshFull的32次后台唤醒虽发送成功，owner仍未处理，原读取失败；业务动作/游戏日/SAVE为零。当前仍为`SOURCE_ADOPTED_SOFTWARE_PROFILE_NO_BUSINESS_CREDIT`，主线程通道继续修复。`core`只覆盖付费发行与现货子场；每个后续case必须生成自己的manifest和严格输入，不能借用core的五个标记。实际准备、场次、资金读回和物理保存分别验收。
 
 ## 分组与有限预算
 

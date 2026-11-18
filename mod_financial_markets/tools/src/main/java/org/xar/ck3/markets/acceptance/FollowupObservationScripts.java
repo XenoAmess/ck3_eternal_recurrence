@@ -66,6 +66,13 @@ public final class FollowupObservationScripts {
         scripts.put("common/story_cycles/" + prefix + ".txt", "${P}_observer = {\n visible = no\n on_owner_death = {\n"
                 + ownerDeath(request) + "\n }\n effect_group = { days = 1 triggered_effect = { trigger = { exists = story_owner } effect = { ${P}_observe_effect = yes } } }\n}\n");
         scripts.put("common/scripted_triggers/" + prefix + ".txt", "${P}_associations_trigger = {\n" + associations(request) + "\n}\n");
+        if (request.caseId() == Profile.DERIVATIVES || request.caseId() == Profile.NEWS_CRISIS) {
+            scripts.put("common/script_values/" + prefix + ".txt", """
+                    # Debt-story scope. Pure sums preserve exact accounting without equality-to-block dispatch.
+                    ${P}_claim_split_value = { value = var:xfm_winner_unpaid_cents add = var:xfm_fund_recourse_cents }
+                    ${P}_claim_principal_value = { value = var:xfm_outstanding_cents add = var:xfm_repaid_cents add = var:xfm_written_off_cents }
+                    """);
+        }
         scripts.put("common/scripted_effects/" + prefix + "_observe.txt", common(request) + profile(request));
         Map<String, byte[]> result = new LinkedHashMap<>();
         scripts.forEach((name, source) -> result.put(name, ("\ufeff" + source.replace("${P}", prefix)
@@ -273,8 +280,10 @@ public final class FollowupObservationScripts {
                 + """
                 var:xfm_original_cents > 0
                 var:xfm_outstanding_cents >= 0 var:xfm_winner_unpaid_cents >= 0 var:xfm_fund_recourse_cents >= 0
-                var:xfm_outstanding_cents = { value = var:xfm_winner_unpaid_cents add = var:xfm_fund_recourse_cents }
-                var:xfm_original_cents = { value = var:xfm_outstanding_cents add = var:xfm_repaid_cents add = var:xfm_written_off_cents }
+                var:xfm_outstanding_cents >= ${P}_claim_split_value
+                var:xfm_outstanding_cents <= ${P}_claim_split_value
+                var:xfm_original_cents >= ${P}_claim_principal_value
+                var:xfm_original_cents <= ${P}_claim_principal_value
                 exists = var:xfm_debtor_account exists = var:xfm_creditor_account exists = var:xfm_source
                 }
                 """);

@@ -1,0 +1,149 @@
+﻿# Persistent active-obligation ring. Exchange scope for ensure/dispatch/step/finish;
+# contract scope for enroll/visit. Never remove permanent contract identities or claims.
+# Old saves pay one complete identity-directory scan once, before the first daily pass.
+xfm_futures_daily_index_ensure_effect = {
+ if = {
+  limit = { NOT = { has_variable = xfm_futures_daily_count } }
+  set_variable = { name = xfm_futures_daily_count value = 0 }
+ }
+ if = {
+  limit = { NOT = { has_variable = xfm_futures_daily_index_v1 } }
+  # Enrolment is duplicate-safe, including a partly completed legacy migration.
+  every_in_list = {
+   variable = xfm_futures_contracts
+   limit = { story_type = xfm_futures_contract }
+   # Reuse live legacy series before excluding empty contracts from daily obligations.
+   xfm_futures_register_discovery_effect = yes
+   xfm_futures_daily_enroll_effect = yes
+  }
+  set_variable = { name = xfm_futures_daily_index_v1 value = 1 }
+ }
+}
+
+# Expiry/status/oracle quality cannot erase already indexed contractual obligations.
+xfm_futures_daily_enroll_effect = {
+ if = {
+  limit = {
+   story_type = xfm_futures_contract
+   exists = global_var:xfm_exchange
+   NOT = { has_variable = xfm_futures_daily_queued }
+   NOT = { has_variable = xfm_futures_daily_processing }
+   OR = {
+    any_in_list = { variable = xfm_orders xfm_futures_order_open_trigger = yes }
+    any_in_list = {
+     variable = xfm_positions
+     OR = { xfm_futures_position_open_trigger = yes has_variable = xfm_pending_payment }
+    }
+   }
+  }
+  save_scope_as = xfm_fut_daily_enqueue
+  remove_variable = xfm_futures_daily_next
+  set_variable = { name = xfm_futures_daily_queued value = 1 }
+  global_var:xfm_exchange = {
+   if = { limit = { NOT = { has_variable = xfm_futures_daily_count } } set_variable = { name = xfm_futures_daily_count value = 0 } }
+   if = {
+    limit = { exists = var:xfm_futures_daily_tail }
+    var:xfm_futures_daily_tail = { set_variable = { name = xfm_futures_daily_next value = scope:xfm_fut_daily_enqueue } }
+   }
+   else = { set_variable = { name = xfm_futures_daily_head value = scope:xfm_fut_daily_enqueue } }
+   set_variable = { name = xfm_futures_daily_tail value = scope:xfm_fut_daily_enqueue }
+   change_variable = { name = xfm_futures_daily_count add = 1 }
+  }
+  clear_saved_scope = xfm_fut_daily_enqueue
+ }
+}
+
+# Capture the starting ring length once. Callback admissions/requeues never enlarge this pass.
+# Remaining/pass_day survive reload. In-flight recovery runs before a newer day starts a pass.
+xfm_futures_daily_dispatch_effect = {
+ if = {
+  limit = { exists = var:xfm_futures_daily_processing_contract }
+  xfm_futures_daily_step_effect = yes
+ }
+ if = {
+  limit = {
+   OR = { NOT = { has_variable = xfm_futures_daily_completed_day } var:xfm_futures_daily_completed_day < var:xfm_day }
+  }
+  if = {
+   limit = { OR = { NOT = { has_variable = xfm_futures_daily_pass_day } var:xfm_futures_daily_pass_day != var:xfm_day } }
+   set_variable = { name = xfm_futures_daily_pass_day value = var:xfm_day }
+   set_variable = { name = xfm_futures_daily_remaining value = var:xfm_futures_daily_count }
+  }
+  while = {
+   limit = { var:xfm_futures_daily_remaining > 0 exists = var:xfm_futures_daily_head }
+   xfm_futures_daily_step_effect = yes
+  }
+  if = {
+   limit = { NOT = { exists = var:xfm_futures_daily_head } }
+   set_variable = { name = xfm_futures_daily_remaining value = 0 }
+  }
+  if = {
+   limit = { var:xfm_futures_daily_remaining = 0 NOT = { exists = var:xfm_futures_daily_processing_contract } }
+   set_variable = { name = xfm_futures_daily_completed_day value = var:xfm_day }
+  }
+ }
+}
+
+# The processing pointer is durable; the node remains at head while callbacks run.
+# A reload with processing set resumes the same journal, rather than treating it as already done.
+xfm_futures_daily_step_effect = {
+ if = {
+  limit = { NOT = { exists = var:xfm_futures_daily_processing_contract } exists = var:xfm_futures_daily_head }
+  set_variable = { name = xfm_futures_daily_processing_contract value = var:xfm_futures_daily_head }
+ }
+ if = {
+  limit = { exists = var:xfm_futures_daily_processing_contract }
+  var:xfm_futures_daily_processing_contract = {
+   set_variable = { name = xfm_futures_daily_processing value = 1 }
+   xfm_futures_daily_visit_effect = yes
+  }
+  xfm_futures_daily_finish_effect = yes
+  change_variable = { name = xfm_futures_daily_remaining subtract = 1 }
+ }
+}
+
+# No callback is made while unlinking. CK3 executes this effect serially.
+# Keep the persistent processing reference through unlink and optional re-admission.
+xfm_futures_daily_finish_effect = {
+ clear_saved_scope = xfm_fut_daily_next
+ var:xfm_futures_daily_processing_contract = {
+  if = { limit = { exists = var:xfm_futures_daily_next } var:xfm_futures_daily_next = { save_scope_as = xfm_fut_daily_next } }
+  remove_variable = xfm_futures_daily_next
+  remove_variable = xfm_futures_daily_queued
+ }
+ if = { limit = { exists = scope:xfm_fut_daily_next } set_variable = { name = xfm_futures_daily_head value = scope:xfm_fut_daily_next } }
+ else = { remove_variable = xfm_futures_daily_head remove_variable = xfm_futures_daily_tail }
+ change_variable = { name = xfm_futures_daily_count subtract = 1 }
+ var:xfm_futures_daily_processing_contract = {
+  remove_variable = xfm_futures_daily_processing
+  xfm_futures_daily_enroll_effect = yes
+ }
+ remove_variable = xfm_futures_daily_processing_contract
+ clear_saved_scope = xfm_fut_daily_next
+}
+
+# Contract journal is unchanged; pending payments are retried even after expiry/default.
+# Finished debt receipts continue in xfm_debts_active, not this ring.
+xfm_futures_daily_visit_effect = {
+ if = {
+  limit = { OR = { NOT = { has_variable = xfm_last_daily_day } var:xfm_last_daily_day < global_var:xfm_exchange.var:xfm_day } }
+  save_scope_as = xfm_fut_daily_contract
+  xfm_futures_register_discovery_effect = yes
+  xfm_futures_maintain_orders_effect = yes
+  every_in_list = {
+   variable = xfm_positions
+   limit = {
+    OR = {
+     has_variable = xfm_pending_payment
+     AND = {
+      xfm_futures_position_open_trigger = yes
+      OR = { NOT = { has_variable = xfm_created_day } var:xfm_created_day < global_var:xfm_exchange.var:xfm_day }
+     }
+    }
+   }
+   xfm_futures_position_daily_effect = yes
+  }
+  set_variable = { name = xfm_last_daily_day value = global_var:xfm_exchange.var:xfm_day }
+  clear_saved_scope = xfm_fut_daily_contract
+ }
+}

@@ -1,0 +1,65 @@
+﻿xfm_market_otc_refresh_gui = {
+    scope = character
+    is_valid = { is_ai = no exists = var:xfm_selected_coin var:xfm_selected_coin = { story_type = xfm_finance_coin var:xfm_listing_state != 7 } }
+    effect = {
+        set_variable = { name = xfm_ui_otc_offset value = 0 }
+        set_variable = { name = xfm_ui_otc_page value = 1 }
+        xfm_market_ui_otc_targets_effect = yes
+    }
+}
+xfm_market_otc_next_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_otc_has_next = 1 exists = var:xfm_ui_otc_source_coin var:xfm_ui_otc_source_coin = var:xfm_selected_coin }
+    effect = {
+        change_variable = { name = xfm_ui_otc_offset add = 16 }
+        change_variable = { name = xfm_ui_otc_page add = 1 }
+        xfm_market_ui_otc_targets_effect = yes
+    }
+}
+xfm_market_otc_previous_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_otc_offset >= 16 exists = var:xfm_ui_otc_source_coin var:xfm_ui_otc_source_coin = var:xfm_selected_coin }
+    effect = {
+        change_variable = { name = xfm_ui_otc_offset subtract = 16 }
+        change_variable = { name = xfm_ui_otc_page subtract = 1 }
+        xfm_market_ui_otc_targets_effect = yes
+    }
+}
+xfm_market_otc_select_buyer_gui = {
+    scope = character
+    saved_scopes = { xfm_ui_item }
+    is_valid = {
+        is_ai = no
+        exists = scope:xfm_ui_item
+        exists = var:xfm_ui_otc_source_coin
+        var:xfm_ui_otc_source_coin = var:xfm_selected_coin
+        is_target_in_variable_list = { name = xfm_ui_otc_buyers target = scope:xfm_ui_item }
+        scope:xfm_ui_item = { xfm_market_otc_holder_position_trigger = yes }
+    }
+    effect = {
+        set_variable = { name = xfm_ui_otc_target_position value = scope:xfm_ui_item }
+        set_variable = { name = xfm_ui_otc_target_account value = scope:xfm_ui_item.var:xfm_account }
+        set_variable = { name = xfm_ui_otc_target_buyer value = scope:xfm_ui_item.var:xfm_account.var:xfm_holder }
+    }
+}
+xfm_market_otc_buyer_selected_gui = {
+    scope = character
+    is_valid = { exists = var:xfm_ui_otc_target_buyer }
+}
+xfm_market_otc_send_gui = {
+    scope = character
+    is_valid = { xfm_market_otc_ui_target_ready_trigger = yes }
+    effect = {
+        # Same production producer as the original right-click interaction.
+        set_variable = { name = xfm_otc_buyer value = var:xfm_ui_otc_target_buyer }
+        xfm_market_ui_otc_propose_effect = yes
+    }
+}
+xfm_market_otc_cancel_offer_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_otc_consent }
+    effect = {
+        xfm_listing_cancel_otc_effect = yes
+        change_variable = { name = xfm_otc_offer_nonce add = 1 }
+    }
+}

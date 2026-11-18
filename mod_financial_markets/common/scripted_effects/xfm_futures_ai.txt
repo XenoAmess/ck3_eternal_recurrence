@@ -1,4 +1,4 @@
-﻿# Character-scope callback from the bounded common AI ring. One focus asset, one action.
+﻿# Character callback from the existing bounded AI ring. One asset/action; no new population scan.
 xfm_futures_ai_effect = {
  if = {
   limit = {
@@ -15,41 +15,28 @@ xfm_futures_ai_effect = {
   }
   random = {
    chance = 15
-   random_in_global_list = {
-    variable = xfm_index_registry
-    limit = { var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day var:xfm_max_leverage >= 1 }
-    save_scope_as = xfm_fut_ai_asset
-   }
+   random_in_global_list = { variable = xfm_index_registry limit = { var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day var:xfm_max_leverage >= 1 } save_scope_as = xfm_fut_ai_asset }
   }
   if = {
-   limit = { exists = scope:xfm_fut_ai_asset exists = var:xfm_account var:xfm_account = { xfm_finance_account_usable_trigger = yes } }
+   limit = { exists = scope:xfm_fut_ai_asset xfm_futures_ai_budget_cents_value > 0 }
    random = {
     chance = 25
-    set_variable = { name = xfm_selected_coin value = scope:xfm_fut_ai_asset }
-    set_variable = { name = xfm_futures_perpetual value = 1 }
-    set_variable = { name = xfm_futures_expiry_day value = 0 }
-    xfm_futures_ensure_market_effect = yes
-    set_variable = { name = xfm_futures_leverage value = 1 }
+    xfm_finance_ensure_account_effect = yes
     if = {
-     limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 3 OR = { has_trait = greedy has_trait = ambitious } }
-     random = { chance = 50 set_variable = { name = xfm_futures_leverage value = 3 } }
-    }
-    if = {
-     limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 10 has_trait = greedy has_trait = ambitious }
-     random = { chance = 10 set_variable = { name = xfm_futures_leverage value = 10 } }
-    }
-    set_variable = { name = xfm_futures_lots value = 1 }
-    set_variable = { name = xfm_futures_limit_cents value = scope:xfm_fut_ai_asset.var:xfm_mark_cents }
-    set_variable = { name = xfm_futures_side value = 1 }
-    random = { chance = 50 set_variable = { name = xfm_futures_side value = 2 } }
-    if = {
-     limit = {
-      var:xfm_account.var:xfm_free_cents >= {
-       value = var:xfm_futures_limit_cents multiply = 1.2 divide = var:xfm_futures_leverage add = { value = var:xfm_futures_limit_cents multiply = 0.0036 } ceiling = yes
-      }
-      # At most 5% of available cash becomes this AI action's initial risk.
-      var:xfm_account.var:xfm_free_cents >= { value = var:xfm_futures_limit_cents multiply = 24 divide = var:xfm_futures_leverage ceiling = yes }
+     limit = { xfm_futures_ai_primary_account_trigger = yes }
+     set_variable = { name = xfm_selected_coin value = scope:xfm_fut_ai_asset }
+     set_variable = { name = xfm_futures_leverage value = 1 }
+     if = {
+      limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 3 OR = { has_trait = greedy has_trait = ambitious } }
+      random = { chance = 50 set_variable = { name = xfm_futures_leverage value = 3 } }
      }
+     if = {
+      limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 10 has_trait = greedy has_trait = ambitious }
+      random = { chance = 10 set_variable = { name = xfm_futures_leverage value = 10 } }
+     }
+     set_variable = { name = xfm_futures_lots value = 1 }
+     xfm_futures_ai_choose_market_effect = yes
+     # Full submit validates the actual band-high margin + rounded fee against the 5% budget.
      xfm_futures_submit_effect = yes
     }
    }

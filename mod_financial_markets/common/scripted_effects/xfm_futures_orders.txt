@@ -12,11 +12,19 @@ xfm_futures_ensure_market_effect = {
  if = {
   limit = { exists = var:xfm_selected_coin }
   save_scope_as = xfm_fut_actor
+  if = {
+   limit = { exists = var:xfm_futures_contract var:xfm_futures_contract = { xfm_futures_discoverable_trigger = yes var:xfm_coin = scope:xfm_fut_actor.var:xfm_selected_coin } }
+   var:xfm_futures_contract = { xfm_futures_register_discovery_effect = yes }
+  }
+  remove_variable = xfm_futures_contract
   var:xfm_selected_coin = {
    save_scope_as = xfm_fut_coin
+   xfm_futures_prune_discovery_effect = yes
    every_in_list = {
-    variable = xfm_futures_contracts
+    variable = xfm_futures_discovery_contracts
     limit = {
+     xfm_futures_discoverable_trigger = yes
+     var:xfm_coin = scope:xfm_fut_coin
      var:xfm_perpetual = scope:xfm_fut_actor.var:xfm_futures_perpetual
      OR = { var:xfm_perpetual = 1 var:xfm_expiry_day = scope:xfm_fut_actor.var:xfm_futures_expiry_day }
     }
@@ -26,6 +34,7 @@ xfm_futures_ensure_market_effect = {
   if = {
    limit = {
     NOT = { exists = scope:xfm_fut_contract }
+    scope:xfm_fut_coin.var:xfm_futures_discovery_count < xfm_futures_discovery_capacity_value
     OR = {
      var:xfm_futures_perpetual = 1
      var:xfm_futures_expiry_day > global_var:xfm_exchange.var:xfm_day
@@ -49,6 +58,7 @@ xfm_futures_ensure_market_effect = {
     }
     scope:xfm_fut_coin = { add_to_variable_list = { name = xfm_futures_contracts target = scope:xfm_fut_contract } }
     global_var:xfm_exchange = { add_to_variable_list = { name = xfm_futures_contracts target = scope:xfm_fut_contract } }
+    scope:xfm_fut_contract = { xfm_futures_register_discovery_effect = yes }
    }
   }
   if = {
@@ -79,14 +89,15 @@ xfm_futures_submit_effect = {
    var:xfm_futures_limit_cents >= xfm_futures_limit_floor_value
    var:xfm_futures_limit_cents <= xfm_futures_limit_floor_value
    var:xfm_futures_contract = {
-    var:xfm_status = 0 xfm_futures_live_oracle_trigger = yes
+    xfm_futures_discoverable_trigger = yes xfm_futures_live_oracle_trigger = yes
     var:xfm_coin = {
      var:xfm_derivatives_reduce_only = 0
      var:xfm_max_leverage >= scope:xfm_fut_actor.var:xfm_futures_leverage
     }
    }
   }
-  xfm_finance_select_account_effect = yes
+  if = { limit = { is_ai = yes } xfm_finance_ensure_account_effect = yes }
+  else = { xfm_finance_select_account_effect = yes }
   scope:xfm_account = { xfm_finance_refresh_beneficiary_effect = yes save_scope_as = xfm_fut_account }
   var:xfm_futures_contract = { save_scope_as = xfm_fut_contract }
   scope:xfm_fut_contract.var:xfm_coin = { save_scope_as = xfm_fut_coin }
@@ -141,13 +152,24 @@ xfm_futures_submit_effect = {
     set_variable = { name = xfm_futures_fee_reserve value = xfm_futures_ceiling_fee_value }
     set_variable = { name = xfm_futures_reserve_cents value = xfm_futures_order_reserve_value }
     if = {
-     limit = { var:xfm_futures_reserve_cents <= 100000000 scope:xfm_fut_account.var:xfm_free_cents >= var:xfm_futures_reserve_cents }
+     limit = {
+      var:xfm_futures_reserve_cents <= 100000000
+      OR = {
+       AND = { is_ai = no scope:xfm_fut_account.var:xfm_free_cents >= var:xfm_futures_reserve_cents }
+       AND = { is_ai = yes xfm_futures_ai_funding_allowed_trigger = yes }
+      }
+     }
      global_var:xfm_exchange.story_owner = { create_story = { type = xfm_futures_order save_scope_as = xfm_fut_incoming } }
      if = {
       limit = { exists = scope:xfm_fut_incoming scope:xfm_fut_incoming = { story_type = xfm_futures_order } }
-      scope:xfm_fut_account = {
-       set_variable = { name = xfm_request_cents value = scope:xfm_fut_actor.var:xfm_futures_reserve_cents }
-       xfm_finance_reserve_effect = yes
+      if = { limit = { is_ai = yes } xfm_futures_ai_prepare_funds_effect = yes }
+      scope:xfm_fut_account = { set_variable = { name = xfm_result value = 0 } }
+      if = {
+       limit = { OR = { is_ai = no var:xfm_futures_ai_funding_result = 1 } }
+       scope:xfm_fut_account = {
+        set_variable = { name = xfm_request_cents value = scope:xfm_fut_actor.var:xfm_futures_reserve_cents }
+        xfm_finance_reserve_effect = yes
+       }
       }
       if = {
        limit = { scope:xfm_fut_account.var:xfm_result = 1 }
@@ -180,7 +202,7 @@ xfm_futures_submit_effect = {
        set_variable = { name = xfm_futures_result value = 1 }
        set_variable = { name = xfm_futures_reason value = 0 }
       }
-      else = { set_variable = { name = xfm_futures_reason value = 4 } scope:xfm_fut_incoming = { end_story = yes } clear_saved_scope = xfm_fut_incoming }
+      else = { set_variable = { name = xfm_futures_reason value = 4 } xfm_futures_ai_refund_failed_funding_effect = yes scope:xfm_fut_incoming = { end_story = yes } clear_saved_scope = xfm_fut_incoming }
      }
     }
     else = { set_variable = { name = xfm_futures_reason value = 4 } }
