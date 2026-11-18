@@ -1,0 +1,251 @@
+﻿# Position-scope settlement journal. A failed receipt creation retains the unpaid obligation.
+xfm_futures_begin_settlement_effect = {
+ if = {
+  limit = { NOT = { has_variable = xfm_pending_payment } }
+  set_variable = { name = xfm_pending_payment value = 1 }
+  set_variable = { name = xfm_pending_day value = global_var:xfm_exchange.var:xfm_day }
+  set_variable = { name = xfm_pending_kind value = var:xfm_settlement_kind }
+  set_variable = { name = xfm_pending_new_mark value = var:xfm_new_mark_cents }
+  set_variable = { name = xfm_pending_amount value = { value = var:xfm_variation_cents min = { value = var:xfm_variation_cents multiply = -1 } floor = yes } }
+  set_variable = { name = xfm_pending_paid value = 0 }
+  set_variable = { name = xfm_pending_loser value = 1 }
+  if = { limit = { var:xfm_variation_cents > 0 } set_variable = { name = xfm_pending_loser value = 2 } }
+  set_variable = { name = xfm_pending_debtor value = var:xfm_long_account }
+  set_variable = { name = xfm_pending_creditor value = var:xfm_short_account }
+  if = {
+   limit = { var:xfm_pending_loser = 2 }
+   set_variable = { name = xfm_pending_debtor value = var:xfm_short_account }
+   set_variable = { name = xfm_pending_creditor value = var:xfm_long_account }
+  }
+ }
+ xfm_futures_resume_settlement_effect = yes
+}
+
+xfm_futures_resume_settlement_effect = {
+ if = {
+  limit = { has_variable = xfm_pending_payment }
+  save_scope_as = xfm_fut_settlement
+  if = {
+   limit = { var:xfm_pending_loser = 1 }
+   var:xfm_long_reservation = { save_scope_as = xfm_fut_loser_reservation }
+   var:xfm_long_account = { save_scope_as = xfm_fut_debtor }
+   var:xfm_short_account = { save_scope_as = xfm_fut_creditor }
+  }
+  else = {
+   var:xfm_short_reservation = { save_scope_as = xfm_fut_loser_reservation }
+   var:xfm_short_account = { save_scope_as = xfm_fut_debtor }
+   var:xfm_long_account = { save_scope_as = xfm_fut_creditor }
+  }
+  var:xfm_pending_debtor = { save_scope_as = xfm_fut_debtor }
+  var:xfm_pending_creditor = { save_scope_as = xfm_fut_creditor }
+  if = {
+   limit = { NOT = { has_variable = xfm_pending_account_counted } var:xfm_pending_amount > var:xfm_pending_paid }
+   scope:xfm_fut_debtor = {
+    if = { limit = { NOT = { has_variable = xfm_futures_pending_count } } set_variable = { name = xfm_futures_pending_count value = 0 } }
+    change_variable = { name = xfm_futures_pending_count add = 1 }
+   }
+   set_variable = { name = xfm_pending_account_counted value = 1 }
+  }
+  scope:xfm_fut_debtor = { xfm_finance_refresh_beneficiary_effect = yes }
+  scope:xfm_fut_creditor = { xfm_finance_refresh_beneficiary_effect = yes }
+  set_variable = { name = xfm_pay_now value = { value = var:xfm_pending_amount subtract = var:xfm_pending_paid max = scope:xfm_fut_loser_reservation.var:xfm_remaining_cents max = 100000000 floor = yes min = 0 } }
+  if = {
+   limit = { var:xfm_pay_now > 0 }
+   scope:xfm_fut_loser_reservation = {
+    set_variable = { name = xfm_request_target value = scope:xfm_fut_creditor }
+    set_variable = { name = xfm_request_cents value = scope:xfm_fut_settlement.var:xfm_pay_now }
+    xfm_finance_pay_reserved_effect = yes
+   }
+   if = {
+    limit = { scope:xfm_fut_loser_reservation.var:xfm_result = 1 }
+    change_variable = { name = xfm_pending_paid add = var:xfm_pay_now }
+   }
+  }
+  set_variable = { name = xfm_shortfall value = { value = var:xfm_pending_amount subtract = var:xfm_pending_paid floor = yes } }
+  set_variable = { name = xfm_settlement_complete value = 0 }
+  if = { limit = { var:xfm_shortfall = 0 } set_variable = { name = xfm_settlement_complete value = 1 } }
+  else_if = {
+   limit = { scope:xfm_fut_loser_reservation.var:xfm_remaining_cents = 0 }
+   set_variable = { name = xfm_request_debtor value = scope:xfm_fut_debtor }
+   set_variable = { name = xfm_request_creditor value = scope:xfm_fut_creditor }
+   set_variable = { name = xfm_request_cents value = var:xfm_shortfall }
+   set_variable = { name = xfm_request_day value = var:xfm_pending_day }
+   set_variable = { name = xfm_request_kind value = var:xfm_pending_kind }
+   set_variable = { name = xfm_request_fund_eligible value = 1 }
+   if = { limit = { var:xfm_pending_kind = 2 } set_variable = { name = xfm_request_fund_eligible value = 0 } }
+   if = {
+    limit = {
+     OR = {
+      scope:xfm_fut_debtor.var:xfm_holder = scope:xfm_fut_creditor.var:xfm_holder
+      AND = {
+       exists = scope:xfm_fut_debtor.var:xfm_beneficial_owner
+       exists = scope:xfm_fut_creditor.var:xfm_beneficial_owner
+       scope:xfm_fut_debtor.var:xfm_beneficial_owner = scope:xfm_fut_creditor.var:xfm_beneficial_owner
+      }
+     }
+    }
+    set_variable = { name = xfm_request_fund_eligible value = 0 }
+   }
+   xfm_debt_cover_shortfall_effect = yes
+   if = {
+    limit = { var:xfm_result = 1 }
+    set_variable = { name = xfm_settlement_complete value = 1 }
+    set_variable = { name = xfm_defaulted value = 1 }
+   }
+  }
+  if = {
+   limit = { var:xfm_settlement_complete = 1 }
+   if = {
+    limit = { has_variable = xfm_pending_account_counted }
+    scope:xfm_fut_debtor = { change_variable = { name = xfm_futures_pending_count subtract = 1 } }
+    remove_variable = xfm_pending_account_counted
+   }
+   if = {
+    limit = { var:xfm_pending_kind = 2 }
+    set_variable = { name = xfm_last_funding_day value = var:xfm_pending_day }
+   }
+   else = {
+    set_variable = { name = xfm_mark_cents value = var:xfm_pending_new_mark }
+    set_variable = { name = xfm_last_settled_day value = var:xfm_pending_day }
+   }
+   if = {
+    limit = { OR = { has_variable = xfm_defaulted var:xfm_pending_kind = 4 } }
+    xfm_futures_close_position_effect = yes
+   }
+   remove_variable = xfm_pending_payment
+   remove_variable = xfm_pending_paid
+   remove_variable = xfm_pending_amount
+  }
+ }
+}
+
+xfm_futures_close_position_effect = {
+ if = {
+  limit = { var:xfm_status = 0 }
+  if = {
+   limit = { var:xfm_long_reservation.var:xfm_remaining_cents > 0 }
+   var:xfm_long_reservation = {
+    set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
+    xfm_finance_release_effect = yes
+   }
+  }
+  if = {
+   limit = { var:xfm_short_reservation.var:xfm_remaining_cents > 0 }
+   var:xfm_short_reservation = {
+    set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
+    xfm_finance_release_effect = yes
+   }
+  }
+  set_variable = { name = xfm_status value = 2 }
+  if = { limit = { has_variable = xfm_defaulted } set_variable = { name = xfm_status value = 3 } }
+  var:xfm_long_account = { change_variable = { name = xfm_open_positions_count subtract = 1 } }
+  var:xfm_short_account = { change_variable = { name = xfm_open_positions_count subtract = 1 } }
+  xfm_futures_archive_position_effect = yes
+  # Retain indexed archive/claims for inheritance and save migration; terminal entries do not run daily.
+ }
+}
+
+# Exchange scope. The historical identity directory is read only by one-time migration.
+xfm_futures_daily_effect = {
+ xfm_futures_archive_prune_effect = yes
+ xfm_futures_daily_index_ensure_effect = yes
+ xfm_futures_daily_dispatch_effect = yes
+}
+
+# Coin-scope callback after a D21 window certificate is published, after the ordinary daily mark.
+xfm_futures_terminate_market_effect = {
+ every_in_list = {
+  variable = xfm_futures_contracts
+  every_in_list = {
+   variable = xfm_positions
+   limit = { xfm_futures_position_open_trigger = yes }
+   if = { limit = { has_variable = xfm_pending_payment } xfm_futures_resume_settlement_effect = yes }
+   if = {
+    limit = { var:xfm_status = 0 NOT = { has_variable = xfm_pending_payment } xfm_futures_terminal_certificate_trigger = yes }
+    set_variable = { name = xfm_new_mark_cents value = var:xfm_coin.var:xfm_termination_price_cents }
+    set_variable = { name = xfm_settlement_kind value = 4 }
+    set_variable = { name = xfm_variation_cents value = xfm_futures_variation_value }
+    xfm_futures_begin_settlement_effect = yes
+   }
+  }
+ }
+}
+
+xfm_futures_position_daily_effect = {
+ if = { limit = { has_variable = xfm_pending_payment } xfm_futures_resume_settlement_effect = yes }
+ if = {
+  limit = {
+   var:xfm_status = 0 NOT = { has_variable = xfm_pending_payment }
+   var:xfm_last_settled_day < global_var:xfm_exchange.var:xfm_day
+   OR = { xfm_futures_live_oracle_trigger = yes xfm_futures_terminal_certificate_trigger = yes }
+  }
+  set_variable = { name = xfm_new_mark_cents value = var:xfm_coin.var:xfm_mark_cents }
+  set_variable = { name = xfm_settlement_kind value = 1 }
+  if = {
+   limit = {
+    OR = {
+     AND = { var:xfm_contract.var:xfm_perpetual = 0 var:xfm_contract.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day }
+     AND = { var:xfm_coin.var:xfm_termination_requested = 1 var:xfm_coin.var:xfm_termination_price_cents > 0 }
+    }
+   }
+   set_variable = { name = xfm_settlement_kind value = 4 }
+   if = {
+    limit = { var:xfm_coin.var:xfm_termination_requested = 1 var:xfm_coin.var:xfm_termination_price_cents > 0 }
+    set_variable = { name = xfm_new_mark_cents value = var:xfm_coin.var:xfm_termination_price_cents }
+   }
+  }
+  set_variable = { name = xfm_variation_cents value = xfm_futures_variation_value }
+  xfm_futures_begin_settlement_effect = yes
+ }
+ if = {
+  limit = {
+   var:xfm_status = 0 NOT = { has_variable = xfm_pending_payment }
+   var:xfm_last_settled_day = global_var:xfm_exchange.var:xfm_day
+   var:xfm_contract.var:xfm_perpetual = 1
+   OR = { NOT = { has_variable = xfm_last_funding_day } var:xfm_last_funding_day < global_var:xfm_exchange.var:xfm_day }
+   var:xfm_contract.var:xfm_execution_volume_cents >= 10000
+   var:xfm_contract.var:xfm_execution_lots >= 10
+   var:xfm_contract.var:xfm_execution_day >= { value = global_var:xfm_exchange.var:xfm_day subtract = 1 }
+   xfm_futures_live_oracle_trigger = yes
+  }
+  set_variable = { name = xfm_funding_rate value = xfm_futures_funding_rate_value }
+  set_variable = { name = xfm_variation_cents value = xfm_futures_funding_amount_value }
+  # Positive premium means LONG pays SHORT, inverse of positive price variation.
+  if = { limit = { var:xfm_funding_rate > 0 } set_variable = { name = xfm_variation_cents value = { value = var:xfm_variation_cents multiply = -1 } } }
+  set_variable = { name = xfm_settlement_kind value = 2 }
+  set_variable = { name = xfm_new_mark_cents value = var:xfm_mark_cents }
+  xfm_futures_begin_settlement_effect = yes
+ }
+ if = {
+  limit = { var:xfm_status = 0 NOT = { has_variable = xfm_pending_payment } }
+  if = {
+   limit = { var:xfm_long_reservation.var:xfm_remaining_cents < xfm_futures_maintenance_long_value }
+   set_variable = { name = xfm_long_exit_requested value = 1 }
+  }
+  if = {
+   limit = { var:xfm_short_reservation.var:xfm_remaining_cents < xfm_futures_maintenance_short_value }
+   set_variable = { name = xfm_short_exit_requested value = 1 }
+  }
+  if = {
+   limit = {
+    OR = {
+     AND = { var:xfm_long_stop_cents > 0 var:xfm_mark_cents <= var:xfm_long_stop_cents }
+     AND = { var:xfm_long_take_profit_cents > 0 var:xfm_mark_cents >= var:xfm_long_take_profit_cents }
+    }
+   }
+   set_variable = { name = xfm_long_exit_requested value = 1 }
+  }
+  if = {
+   limit = {
+    OR = {
+     AND = { var:xfm_short_stop_cents > 0 var:xfm_mark_cents >= var:xfm_short_stop_cents }
+     AND = { var:xfm_short_take_profit_cents > 0 var:xfm_mark_cents <= var:xfm_short_take_profit_cents }
+    }
+   }
+   set_variable = { name = xfm_short_exit_requested value = 1 }
+  }
+  # Actual exit requires funded replacement depth; flags are not fictitious executions.
+  if = { limit = { var:xfm_long_exit_requested = 1 } xfm_futures_post_exit_effect = { SIDE = long ORDER_SIDE = 2 LONG_EXIT = yes } }
+  if = { limit = { var:xfm_status = 0 var:xfm_short_exit_requested = 1 } xfm_futures_post_exit_effect = { SIDE = short ORDER_SIDE = 1 LONG_EXIT = no } }
+ }
+}

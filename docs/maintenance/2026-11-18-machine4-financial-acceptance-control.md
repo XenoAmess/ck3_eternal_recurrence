@@ -151,3 +151,17 @@ Q09公共资格通过，生产DLL保持13382656bytes/SHA `8dc193488a05fdeb4f0aab
 离线精确PE核对显示：原唤醒实际为 `PostThreadMessageW(owner, WM_NULL)`，不存在选错HWND的实现。WindowsPump受具名 `SDL_WINDOWS_ENABLE_MESSAGELOOP` 控制，但R0005没有采集该值，不能断言它为零。另两个application字段已追溯到退出路径，不当作最小化标志。证据在 `task/R0005-owner-wake-diagnostic01/SDL_DYNAPI_STATIC.actual.json`，SHA `8dd3dfc99ba5fdfd5aced5980f9e8b3caaa149f3ed754584225875db4e8117a6`。
 
 采用窄候选 `task/florin-poll-boundary-candidate01/source-ready.patch`（SHA `41a5fdd9cb94b2d6d2e2b96f8e0ad68eb9fa82d4cd22f64e024656b49346ed51`）：只对精确Florin接入自然SDL PollEvent返回边界；核默认writer、非阻塞REAL入口及两个callsite原字节，实际dispatch slot必须等于本模块已解析原目标才CAS安装，初始解析跳板及override不触碰。复用原owner/TLS/clock/paused证明，不放宽Full reader、改超时或恢复前台。增加只供诊断的hook进入／完成及active计数，不授ready。生产仅3个TU与新窄header，旧高扇出mailbox结构不变；附加测试与编译、实际装载结果另记。
+
+### Q10实际编译与有限资格
+
+干净`c6104387d8d6ac4a6f437cc6d0b207817aab1bdf`在同一`task/native-event-build01`缓存实际构建：16:07:05.407494Z开始、16:08:18.141428Z结束，原wait0/72.733934秒。DLL13387776bytes/SHA `2f7cc91691e9fc80648d166c8a53a65827be01079833f426b6fa8b4287c9c1aa`，792生产TU及v2精确开关不变。构建原件`native-common-qualification10/production-build.actual.json`（SHA `f34c3fafddc24d89f2af441e3012a8d16d753317b91bfe620e2064c42718cacb`）。
+
+19基线实际重跑core-frame、core-control、personal-gold与actor-foundation四项，15项按源码、依赖、EXE及原执行严格复用。公共资格`Q.actual.json`14541bytes/SHA `61c8c369eaeb8f9996a63f8399e8708e006299da864d4d5289ccb1bdb14a0bfe`；公共consumer回执SHA `3fd68506eb4434d953d92bc6a9c000327051de9ef24875a6a2616b7012e5b82e`。附加10/10实际通过，包含新Florin poll四读场景与mailbox三模式；`supplemental-affected01/SUPPLEMENT.actual.json`15592bytes/SHA `398d77cb1d12515bafc726ee82b963594dbf7b203ac0908c4de77d04516caa9e`。这些是软件/Native资格，没有新Game、装载、金融动作、日或SAVE。
+
+### 196文件金融集成首次失败与窄修
+
+四个独立候选按精确补丁采用并显式合并22条runtime路径：退市静止写入、章程目标、期货合约盘口及有限真实资金回兑。16:32:32.716183Z完整verify原wait1/38.5113165秒，239项、2failure/1error/0skip；`operations/MVN-financial-utility-full01` stdout30744bytes/SHA `43e62d3fa94f03783e24935ec5ec9f0ffae9894ee5ca859fa8678298087fa99f`。原JUnit保全`task/software-13-financial-utility-full01-FAILED`。
+
+三个问题只在组合测试集成：新盘口UI刷新未由旧AI VM声明、退市优化基线默认误取已采用当前SOURCE、旧OTC界面对比未包含新增回兑面板。修复明确UI端口、只剥离两处已审阅面板，并从原Git c610创建8份逐字节基线及provenance；原164→5写入断言和3100条冗余bar写入差异保持，未知操作仍拒绝。16:38:43.399491Z受影响24项全通过、0skip，原wait0/19.876317秒，`operations/MVN-financial-utility-fixtures01` stdout3432bytes/SHA `633821ea80e4ec20eb868cfeb6c3b18f77e4ed04e0475388ca80fd1aaa91a9ba`。这不改判前次失败或代替完整后继验证、物理SAVE及实机性能。
+
+外置回兑SAVE审计四叶随后按精确补丁采用（SHA `cd1dae508d6639d0694f5eae00194ef3827761767399a9e1980a2510a1002719`），不改共享parser/POM。原9项外置窄测的失败及后继实际结果保留于`task/redemption-save-audit-candidate01`。Root统一完整verify于16:40:25.147220Z开始、16:41:04.570428Z原wait0，39.423229秒；246项全通过、0skip，默认Quarkus打包成功。`operations/MVN-financial-utility-full02` stdout9460bytes/SHA `f5e68585752e524bf8822071359c407177807f348fb1153b8d6193284c2c1cd9`，原JUnit保全`task/software-14-financial-utility-full02`。新审计核实际reader/JSON和8份来源资源；`financialCertified=false`及真实布局未资格保持，零新增金融Game动作/日/SAVE。

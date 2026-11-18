@@ -1,0 +1,61 @@
+﻿# Character scope. Current market selection/display variables never authorize a charter ticket.
+xfm_charter_valid_trigger = {
+    is_ai = no is_alive = yes is_adult = yes this = scope:xfm_charter_actor
+    exists = scope:xfm_charter_ready scope:xfm_charter_ready = 1
+    exists = scope:xfm_charter_ticket_nonce has_variable = xfm_charter_nonce var:xfm_charter_nonce = scope:xfm_charter_ticket_nonce
+    exists = scope:xfm_charter_coin exists = scope:xfm_charter_payer exists = scope:xfm_charter_controller exists = scope:xfm_charter_issuer_account
+    exists = scope:xfm_charter_coin_id exists = scope:xfm_charter_payer_id
+    var:xfm_account = scope:xfm_charter_payer
+    scope:xfm_charter_payer = {
+        story_type = xfm_finance_account xfm_finance_account_usable_trigger = yes
+        var:xfm_system_account = 0 var:xfm_holder = scope:xfm_charter_actor var:xfm_account_id = scope:xfm_charter_payer_id
+    }
+    scope:xfm_charter_coin = {
+        story_type = xfm_finance_coin has_variable = xfm_coin_id has_variable = xfm_listing_state has_variable = xfm_supply_units
+        var:xfm_coin_id = scope:xfm_charter_coin_id var:xfm_listing_state >= 0 var:xfm_listing_state <= 8 var:xfm_listing_state != 7
+        var:xfm_supply_units > 0 var:xfm_controller = scope:xfm_charter_controller var:xfm_issuer_account = scope:xfm_charter_issuer_account
+    }
+    scope:xfm_charter_controller = { is_alive = yes }
+    scope:xfm_charter_issuer_account = {
+        xfm_finance_account_usable_trigger = yes var:xfm_legal_entity = scope:xfm_charter_coin var:xfm_beneficial_owner = scope:xfm_charter_controller
+    }
+    OR = {
+        AND = { NOT = { exists = scope:xfm_charter_maker_account } scope:xfm_charter_coin = { NOT = { exists = var:xfm_market_maker_account } } }
+        AND = {
+            exists = scope:xfm_charter_maker_account scope:xfm_charter_coin = { var:xfm_market_maker_account = scope:xfm_charter_maker_account }
+            scope:xfm_charter_maker_account = { xfm_finance_account_usable_trigger = yes var:xfm_legal_entity = scope:xfm_charter_coin var:xfm_beneficial_owner = scope:xfm_charter_controller }
+        }
+    }
+}
+xfm_charter_controls_trigger = {
+    xfm_charter_valid_trigger = yes
+    scope:xfm_charter_coin = {
+        var:xfm_controller = scope:xfm_charter_actor
+        trigger_if = { limit = { var:xfm_entity_type = 2 } var:xfm_bound_entity.house_head = scope:xfm_charter_actor }
+        trigger_if = { limit = { var:xfm_entity_type = 3 } var:xfm_bound_entity.dynast = scope:xfm_charter_actor }
+        trigger_if = { limit = { var:xfm_entity_type = 4 } var:xfm_bound_entity.holder = scope:xfm_charter_actor }
+        trigger_if = { limit = { var:xfm_entity_type = 5 } var:xfm_bound_entity.religious_head = scope:xfm_charter_actor }
+    }
+}
+xfm_charter_complete_trigger = {
+    xfm_charter_controls_trigger = yes
+    scope:xfm_charter_coin = {
+        var:xfm_listing_state = 0 NOT = { has_variable = xfm_construction_pending }
+        var:xfm_actual_raised_cents >= var:xfm_minimum_raised_cents var:xfm_external_raised_cents >= xfm_issuer_minimum_external_value var:xfm_offer_units_remaining >= 0
+    }
+    global_var:xfm_exchange = { var:xfm_new_listings_today < xfm_config_listing_daily_budget_value var:xfm_active_coin_count < xfm_config_coin_capacity_value }
+}
+xfm_charter_abort_trigger = { xfm_charter_controls_trigger = yes scope:xfm_charter_coin = { var:xfm_listing_state = 0 NOT = { has_variable = xfm_offer_closing_started } } }
+xfm_charter_promote_trigger = { xfm_charter_valid_trigger = yes scope:xfm_charter_coin = { var:xfm_listing_state <= 3 } NOT = { has_variable = xfm_ad_cooldown } }
+xfm_charter_freeze_trigger = {
+    xfm_charter_controls_trigger = yes
+    scope:xfm_charter_coin = {
+        var:xfm_listing_state >= 1 var:xfm_listing_state <= 2 var:xfm_mint_permitted = 1
+        var:xfm_supply_units = scope:xfm_charter_supply var:xfm_maximum_supply_units = scope:xfm_charter_maximum_supply
+    }
+}
+xfm_charter_cancel_supply_trigger = { xfm_charter_controls_trigger = yes scope:xfm_charter_coin = { var:xfm_listing_state = 6 NOT = { has_variable = xfm_offer_closing_started } } }
+xfm_charter_release_reserves_trigger = { xfm_charter_controls_trigger = yes scope:xfm_charter_coin = { OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 } var:xfm_unresolved_claim_count = 0 var:xfm_promises_due_cents = 0 } }
+xfm_charter_project_cash_trigger = { xfm_charter_controls_trigger = yes scope:xfm_charter_coin = { OR = { AND = { var:xfm_listing_state >= 1 var:xfm_listing_state <= 2 } var:xfm_listing_state = 5 var:xfm_listing_state = 6 } } }
+xfm_charter_restore_bond_trigger = { xfm_charter_controls_trigger = yes scope:xfm_charter_coin = { OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 } } }
+xfm_charter_restart_maker_trigger = { xfm_charter_controls_trigger = yes exists = scope:xfm_charter_maker_account scope:xfm_charter_coin = { OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 } } }

@@ -26,4 +26,5 @@ xfm_market_ui_book_effect = {
             }
         }
     }
+    xfm_market_ui_futures_book_effect = yes
 }

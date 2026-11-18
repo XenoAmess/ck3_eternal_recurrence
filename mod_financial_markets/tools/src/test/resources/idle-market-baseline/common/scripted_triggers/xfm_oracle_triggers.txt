@@ -1,0 +1,18 @@
+﻿# Coin or model-index story scope.
+xfm_oracle_reliable_trigger = {
+    has_variable = xfm_oracle_quality
+    var:xfm_oracle_quality > 0
+    var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day
+    var:xfm_index_cents > 0
+    var:xfm_mark_cents > 0
+}
+xfm_oracle_new_risk_trigger = {
+    xfm_oracle_reliable_trigger = yes
+    var:xfm_max_leverage >= 1
+}
+xfm_oracle_multivenue_trigger = {
+    var:xfm_oracle_quality = 2
+    # No current producer writes quality 2. Model indexes explicitly write 3.
+    has_variable = xfm_oracle_independent_venues
+    var:xfm_oracle_independent_venues >= 3
+}

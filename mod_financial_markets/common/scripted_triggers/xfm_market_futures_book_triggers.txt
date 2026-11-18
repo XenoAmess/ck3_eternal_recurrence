@@ -1,0 +1,39 @@
+﻿# UI entry roots are the viewing character, including the read-only row predicate.
+xfm_market_futures_book_selected_trigger = {
+ exists = var:xfm_selected_coin exists = var:xfm_futures_contract
+ var:xfm_futures_contract = { story_type = xfm_futures_contract exists = var:xfm_coin var:xfm_coin = root.var:xfm_selected_coin }
+}
+# Account scope. Refresh uses the same legal-beneficiary producer as the matcher first.
+xfm_market_futures_book_independent_trigger = {
+ xfm_finance_account_usable_trigger = yes exists = var:xfm_holder
+ var:xfm_holder != root var:xfm_holder = { is_alive = yes }
+ this != root.var:xfm_active_account
+ NOT = { AND = { exists = var:xfm_beneficial_owner exists = root.var:xfm_active_account.var:xfm_beneficial_owner var:xfm_beneficial_owner = root.var:xfm_active_account.var:xfm_beneficial_owner } }
+}
+# Order scope. This is a funded book indication, never a promise that a new order fills.
+xfm_market_futures_book_order_trigger = {
+ story_type = xfm_futures_order xfm_futures_order_open_trigger = yes
+ NOT = { has_variable = xfm_reduce_order } NOT = { exists = var:xfm_close_position }
+ exists = var:xfm_contract var:xfm_contract = root.var:xfm_futures_contract
+ var:xfm_contract = {
+  story_type = xfm_futures_contract var:xfm_status = 0
+  var:xfm_coin = root.var:xfm_selected_coin xfm_futures_live_oracle_trigger = yes
+  OR = { var:xfm_perpetual = 1 var:xfm_expiry_day > global_var:xfm_exchange.var:xfm_day }
+ }
+ OR = { var:xfm_side = 1 var:xfm_side = 2 }
+ var:xfm_limit_cents > 0 var:xfm_reserve_price_cents > 0 var:xfm_leverage > 0
+ exists = var:xfm_account var:xfm_account = { xfm_market_futures_book_independent_trigger = yes }
+ exists = var:xfm_reservation
+ var:xfm_reservation = {
+  xfm_finance_reservation_usable_trigger = yes var:xfm_account = prev.var:xfm_account
+  var:xfm_remaining_cents >= prev.xfm_market_futures_book_required_value
+  var:xfm_account.var:xfm_reserved_cents >= var:xfm_remaining_cents
+ }
+   xfm_config_futures_open_trigger = yes
+   var:xfm_contract.var:xfm_coin.var:xfm_derivatives_reduce_only = 0
+   var:xfm_leverage <= var:xfm_contract.var:xfm_coin.var:xfm_max_leverage
+   var:xfm_limit_cents >= var:xfm_contract.xfm_futures_band_low_value
+   var:xfm_limit_cents <= var:xfm_contract.xfm_futures_band_high_value
+   var:xfm_account.var:xfm_open_positions_count < xfm_futures_account_position_capacity_value
+   global_var:xfm_exchange.var:xfm_futures_open_positions_count < xfm_futures_global_position_capacity_value
+}

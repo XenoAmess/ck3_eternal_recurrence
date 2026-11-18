@@ -72,6 +72,7 @@ public final class FinancialAudit {
         auditOrderBacking(snapshot.stories(), byNative, issues);
         auditReservationExclusivity(snapshot.stories(), issues);
         auditPermanentHighWater(snapshot.stories(), issues);
+        RedemptionAudit.audit(snapshot.stories(), byNative, issues);
         Set<String> settlementKeys = new HashSet<>();
         for (Story debt : of(snapshot.stories(), Type.DEBT)) {
             Optional<Reference> source = debt.reference(ReferenceField.SOURCE);
@@ -233,7 +234,8 @@ public final class FinancialAudit {
         if (exchanges.size() != 1) return;
         Map<Type, NumberField> counters = Map.of(Type.ACCOUNT, NumberField.NEXT_ACCOUNT_ID, Type.RESERVATION, NumberField.NEXT_RESERVATION_ID,
                 Type.COIN, NumberField.NEXT_COIN_ID, Type.SPOT_ORDER, NumberField.NEXT_ORDER_ID, Type.FUTURES_ORDER, NumberField.NEXT_FUTURES_ORDER_ID,
-                Type.FUTURES_CONTRACT, NumberField.NEXT_FUTURES_CONTRACT_ID, Type.FUTURES_POSITION, NumberField.NEXT_FUTURES_POSITION_ID, Type.DEBT, NumberField.DEBT_COUNTER);
+                Type.FUTURES_CONTRACT, NumberField.NEXT_FUTURES_CONTRACT_ID, Type.FUTURES_POSITION, NumberField.NEXT_FUTURES_POSITION_ID, Type.DEBT, NumberField.DEBT_COUNTER,
+                Type.REDEMPTION_WINDOW, NumberField.NEXT_REDEMPTION_WINDOW_ID, Type.REDEMPTION_RECEIPT, NumberField.NEXT_REDEMPTION_RECEIPT_ID);
         Story exchange = exchanges.getFirst();
         for (var entry : counters.entrySet()) {
             List<Story> members = of(stories, entry.getKey());
@@ -275,12 +277,13 @@ public final class FinancialAudit {
                 requireNumbers(s, issues, NumberField.SOURCE_DAY, NumberField.SOURCE_KIND, NumberField.ORIGINAL_CENTS, NumberField.OUTSTANDING_CENTS, NumberField.WINNER_UNPAID_CENTS, NumberField.FUND_PAID_CENTS, NumberField.FUND_RECOURSE_CENTS, NumberField.REPAID_CENTS, NumberField.WRITTEN_OFF_CENTS, NumberField.STATE);
                 requireReferences(s, issues, ReferenceField.DEBTOR_ACCOUNT, ReferenceField.CREDITOR_ACCOUNT, ReferenceField.SOURCE);
             }
+            case REDEMPTION_WINDOW, REDEMPTION_RECEIPT -> RedemptionAudit.required(s, issues);
             case INDEX -> { }
         }
     }
     private static boolean activeObligation(Story s) {
         return switch (s.type()) {
-            case ACCOUNT, COIN, SPOT_POSITION, DEBT, EXCHANGE, FUTURES_CONTRACT -> true;
+            case ACCOUNT, COIN, SPOT_POSITION, DEBT, EXCHANGE, FUTURES_CONTRACT, REDEMPTION_WINDOW, REDEMPTION_RECEIPT -> true;
             case RESERVATION -> s.number(NumberField.REMAINING_CENTS).filter(v -> v.signum() > 0).isPresent();
             case SPOT_ORDER -> is(s, NumberField.STATUS, 1);
             case FUTURES_ORDER -> is(s, NumberField.STATUS, 0) || is(s, NumberField.STATUS, 1);

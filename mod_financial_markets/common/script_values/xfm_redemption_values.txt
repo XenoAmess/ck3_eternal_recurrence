@@ -1,0 +1,13 @@
+﻿# All amounts are integer cents; one lot is 100 units. These are mod service limits.
+xfm_redemption_price_floor_value = { value = var:xfm_redemption_price_cents floor = yes }
+xfm_redemption_budget_floor_value = { value = var:xfm_redemption_budget_cents floor = yes }
+xfm_redemption_expiry_floor_value = { value = var:xfm_redemption_expiry_day floor = yes }
+xfm_redemption_lots_floor_value = { value = var:xfm_redemption_lots floor = yes }
+xfm_redemption_requested_units_value = { value = var:xfm_redemption_lots multiply = 100 floor = yes }
+xfm_redemption_requested_payment_value = { value = var:xfm_redemption_lots multiply = scope:xfm_red_quote_window.var:xfm_price_cents floor = yes }
+xfm_redemption_input_expiry_value = { value = global_var:xfm_exchange.var:xfm_day add = var:xfm_redemption_duration_days }
+xfm_redemption_next_publish_value = { value = var:xfm_expiry_day add = 7 }
+xfm_redemption_ai_alternative_cents_value = { value = var:xfm_best_bid_cents multiply = 0.997 floor = yes min = 0 }
+
+xfm_redemption_quote_whole_units_value = { value = scope:xfm_red_quote_units divide = 100 floor = yes multiply = 100 }
+xfm_redemption_quote_payment_value = { value = scope:xfm_red_quote_units divide = 100 multiply = scope:xfm_red_quote_price floor = yes }

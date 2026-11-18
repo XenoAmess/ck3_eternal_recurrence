@@ -1,0 +1,7 @@
+﻿# Order-scope collateral matches the existing remaining-reserve/fee rules.
+xfm_market_futures_book_notional_value = { value = var:xfm_remaining_lots multiply = var:xfm_reserve_price_cents floor = yes }
+xfm_market_futures_book_fee_value = { value = var:xfm_filled_gross_cents add = xfm_market_futures_book_notional_value multiply = 0.003 ceiling = yes subtract = var:xfm_fee_paid_cents min = 0 }
+xfm_market_futures_book_required_value = {
+ value = xfm_market_futures_book_fee_value
+ if = { limit = { NOT = { has_variable = xfm_reduce_order } } add = { value = xfm_market_futures_book_notional_value divide = var:xfm_leverage ceiling = yes } }
+}

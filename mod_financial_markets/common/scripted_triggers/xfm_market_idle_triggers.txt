@@ -1,0 +1,42 @@
+﻿# Coin scope. These are work-elision proofs, never price/risk authorization.
+xfm_spot_idle_bars_eligible_trigger = {
+ story_type = xfm_finance_coin
+ has_variable = xfm_history_initialized var:xfm_history_initialized = 1
+ has_variable = xfm_listing_state
+ OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 }
+ has_variable = xfm_trading_open var:xfm_trading_open = 0
+ has_variable = xfm_day_volume_units var:xfm_day_volume_units = 0
+ has_variable = xfm_last_price_cents var:xfm_last_price_cents > 0
+}
+xfm_spot_idle_bars_fixed_trigger = {
+ xfm_spot_idle_bars_eligible_trigger = yes
+ has_variable = xfm_idle_bar_close_count var:xfm_idle_bar_close_count >= 30
+ has_variable = xfm_idle_bar_price_cents var:xfm_idle_bar_price_cents = var:xfm_last_price_cents
+}
+
+# State 7 is legally archived, unlike delisted/OTC state 5/6.
+# Every absence below takes the original path; historical old saves gain no implicit proof.
+xfm_oracle_archived_idle_trigger = {
+ story_type = xfm_finance_coin
+ AND = {
+  has_variable = xfm_listing_state var:xfm_listing_state = 7
+  has_variable = xfm_trading_open var:xfm_trading_open = 0
+  has_variable = xfm_supply_units var:xfm_supply_units = 0
+  has_variable = xfm_open_orders_count var:xfm_open_orders_count = 0
+  has_variable = xfm_unresolved_claim_count var:xfm_unresolved_claim_count = 0
+  has_variable = xfm_unpaid_debt_cents var:xfm_unpaid_debt_cents = 0
+  has_variable = xfm_promises_due_cents var:xfm_promises_due_cents = 0
+  has_variable = xfm_maintenance_arrears_cents var:xfm_maintenance_arrears_cents = 0
+ }
+ AND = {
+  has_variable = xfm_settlement_price_pending var:xfm_settlement_price_pending = 0
+  has_variable = xfm_maker_withdrawal_pending var:xfm_maker_withdrawal_pending = 0
+  NOT = { has_variable = xfm_unresolved_claims }
+  NOT = { has_variable = xfm_unclaimed_assets }
+  has_variable = xfm_oracle_initialized var:xfm_oracle_initialized = 1
+  has_variable = xfm_oracle_bucket_samples var:xfm_oracle_bucket_samples = 0
+  has_variable = xfm_oracle_bucket_notional var:xfm_oracle_bucket_notional = 0
+  has_variable = xfm_oracle_bucket_lots var:xfm_oracle_bucket_lots = 0
+  has_variable = xfm_qualified_volume_cents var:xfm_qualified_volume_cents = 0
+ }
+}

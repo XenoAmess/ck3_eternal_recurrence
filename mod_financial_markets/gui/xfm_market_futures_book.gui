@@ -1,0 +1,27 @@
+﻿types FinancialMarketFuturesBook {
+ type xfm_market_futures_book_row = text_multi {
+  name = "xfm_market_futures_book_row" max_width = 390 autoresize = yes
+  visible = "[GetScriptedGui( 'xfm_market_futures_book_row_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+  text = "xfm_market_futures_book_row"
+ }
+ type xfm_market_futures_book_panel = vbox {
+  name = "xfm_market_futures_book_panel" layoutpolicy_horizontal = expanding spacing = 4
+  button_standard = { name = "xfm_market_futures_book_refresh" size = { 390 30 } text = "xfm_market_futures_book_refresh" enabled = "[GetScriptedGui( 'xfm_market_futures_book_refresh_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_futures_book_refresh_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+  text_multi = { visible = "[Not( GetScriptedGui( 'xfm_market_futures_book_ready_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]" text = "xfm_market_futures_book_missing" max_width = 390 autoresize = yes }
+  vbox = { visible = "[GetScriptedGui( 'xfm_market_futures_book_ready_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" layoutpolicy_horizontal = expanding spacing = 4
+   text_multi = { text = "xfm_market_futures_book_header" max_width = 390 autoresize = yes }
+   text_multi = { visible = "[GetScriptedGui( 'xfm_market_coin_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_futures_book_spot_reference" max_width = 390 autoresize = yes }
+   text_multi = { visible = "[GetScriptedGui( 'xfm_market_index_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_futures_book_model_reference" max_width = 390 autoresize = yes }
+   text_multi = { text = "xfm_market_futures_book_reference" max_width = 390 autoresize = yes }
+   text_multi = { visible = "[GetScriptedGui( 'xfm_market_futures_book_execution_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_futures_book_execution" max_width = 390 autoresize = yes }
+   text_multi = { visible = "[Not( GetScriptedGui( 'xfm_market_futures_book_execution_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]" text = "xfm_market_futures_book_no_execution" max_width = 390 autoresize = yes }
+   text_multi = { text = "xfm_market_futures_book_bids" max_width = 390 autoresize = yes }
+   text_multi = { visible = "[IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'xfm_ui_futures_bids' ) )]" text = "xfm_market_futures_book_empty" max_width = 390 autoresize = yes }
+   vbox = { layoutpolicy_horizontal = expanding spacing = 2 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_futures_bids' )]" item = { xfm_market_futures_book_row = {} } }
+   text_multi = { text = "xfm_market_futures_book_asks" max_width = 390 autoresize = yes }
+   text_multi = { visible = "[IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'xfm_ui_futures_asks' ) )]" text = "xfm_market_futures_book_empty" max_width = 390 autoresize = yes }
+   vbox = { layoutpolicy_horizontal = expanding spacing = 2 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_futures_asks' )]" item = { xfm_market_futures_book_row = {} } }
+   text_multi = { text = "xfm_market_futures_book_notice" max_width = 390 autoresize = yes }
+  }
+ }
+}

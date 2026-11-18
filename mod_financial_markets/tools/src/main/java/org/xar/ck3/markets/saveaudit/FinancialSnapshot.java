@@ -27,7 +27,9 @@ public record FinancialSnapshot(String machineId, String saveSha256, String game
         FUTURES_CONTRACT("xfm_futures_contract", NumberField.CONTRACT_ID),
         FUTURES_ORDER("xfm_futures_order", NumberField.ORDER_ID),
         FUTURES_POSITION("xfm_futures_position", NumberField.POSITION_ID),
-        DEBT("xfm_debt_claim", NumberField.DEBT_ID), INDEX("xfm_oracle_index", NumberField.INDEX_ID);
+        DEBT("xfm_debt_claim", NumberField.DEBT_ID),
+        REDEMPTION_WINDOW("xfm_finance_redemption_window", NumberField.WINDOW_ID),
+        REDEMPTION_RECEIPT("xfm_finance_redemption_receipt", NumberField.RECEIPT_ID), INDEX("xfm_oracle_index", NumberField.INDEX_ID);
         private final String wire; private final NumberField permanent;
         Type(String wire, NumberField permanent) { this.wire = wire; this.permanent = permanent; }
         public String wire() { return wire; }
@@ -50,16 +52,23 @@ public record FinancialSnapshot(String machineId, String saveSha256, String game
         NEXT_ACCOUNT_ID, NEXT_RESERVATION_ID, NEXT_COIN_ID, NEXT_ORDER_ID, NEXT_FUTURES_ORDER_ID,
         NEXT_FUTURES_CONTRACT_ID, NEXT_FUTURES_POSITION_ID, DEBT_COUNTER,
         PENDING_PAYMENT, PENDING_AMOUNT, PENDING_PAID, PENDING_DAY, PENDING_KIND, PENDING_NEW_MARK,
-        PENDING_LOSER, LAST_FUNDING_DAY;
+        PENDING_LOSER, LAST_FUNDING_DAY,
+        WINDOW_ID, RECEIPT_ID, PRICE_CENTS, INITIAL_CENTS, PAID_CENTS, PAID_UNITS, RECLAIMED_CENTS,
+        BUDGET_AFTER_CENTS, REDEMPTION_ACCOUNT_ID, ISSUER_ACCOUNT_ID, PAYER_ACCOUNT_ID, PAYEE_ACCOUNT_ID,
+        NEXT_REDEMPTION_WINDOW_ID, NEXT_REDEMPTION_RECEIPT_ID, SYSTEM_ACCOUNT, REDEMPTION_ONLY,
+        REDEMPTION_LIFETIME_PAID_CENTS, REDEMPTION_LIFETIME_UNITS, LAST_RECLAIM_DAY,
+        REDEMPTION_NEXT_PUBLISH_DAY, ACTUAL_UTILITY_CENTS, PROJECT_SPENT_CENTS;
         public String wire() { return "xfm_" + name().toLowerCase(java.util.Locale.ROOT); }
     }
     public enum ReferenceField {
         HOLDER, BENEFICIAL_OWNER, CONTROLLER, ACCOUNT, COIN, CONTRACT, RESERVATION, SELL_POSITION,
         LONG_ACCOUNT, SHORT_ACCOUNT, LONG_RESERVATION, SHORT_RESERVATION,
         DEBTOR_ACCOUNT, CREDITOR_ACCOUNT, FUND_ACCOUNT, SOURCE, DEFAULT_FUND_ACCOUNT,
-        ISSUER_ACCOUNT, PENDING_DEBTOR, PENDING_CREDITOR, CLOSE_POSITION;
+        ISSUER_ACCOUNT, PENDING_DEBTOR, PENDING_CREDITOR, CLOSE_POSITION,
+        REDEMPTION_ACCOUNT, REDEMPTION_WINDOW, WINDOW, PAYER_ACCOUNT, PAYEE_ACCOUNT,
+        PREVIOUS_RECEIPT, REDEMPTION_LAST_RECEIPT, LEGAL_ENTITY, PUBLISHER, MARKET_MAKER_ACCOUNT;
         public String wire() { return "xfm_" + name().toLowerCase(java.util.Locale.ROOT); }
-        public boolean characterReference() { return this == HOLDER || this == BENEFICIAL_OWNER || this == CONTROLLER; }
+        public boolean characterReference() { return this == HOLDER || this == BENEFICIAL_OWNER || this == CONTROLLER || this == PUBLISHER; }
     }
     public record Reference(String serializedType, NativeId nativeId) {
         public Reference { Objects.requireNonNull(serializedType); Objects.requireNonNull(nativeId); }

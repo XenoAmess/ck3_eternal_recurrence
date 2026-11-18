@@ -1,0 +1,91 @@
+﻿# Character root. Explicit normal refresh/series selection only; no trades, cash or fixtures.
+xfm_market_ui_futures_book_effect = {
+ save_scope_as = xfm_ui_futures_actor
+ clear_variable_list = xfm_ui_futures_bids
+ clear_variable_list = xfm_ui_futures_asks
+ clear_variable_list = xfm_ui_futures_candidates
+ set_variable = { name = xfm_ui_futures_bid_lots value = 0 }
+ set_variable = { name = xfm_ui_futures_ask_lots value = 0 }
+ set_variable = { name = xfm_ui_futures_execution_present value = 0 }
+ remove_variable = xfm_ui_futures_execution_cents
+ remove_variable = xfm_ui_futures_execution_day
+ remove_variable = xfm_ui_futures_execution_lots
+ set_variable = { name = xfm_ui_futures_book_ready value = 0 }
+ if = {
+  limit = { xfm_market_futures_book_selected_trigger = yes }
+  if = {
+   limit = { OR = { NOT = { exists = var:xfm_ui_futures_book_contract } var:xfm_ui_futures_book_contract != var:xfm_futures_contract NOT = { has_variable = xfm_futures_limit_cents } } }
+   set_variable = { name = xfm_futures_limit_cents value = { value = var:xfm_selected_coin.var:xfm_mark_cents min = 1 max = 1000000 } }
+  }
+  set_variable = { name = xfm_ui_futures_book_contract value = var:xfm_futures_contract }
+  set_variable = { name = xfm_ui_futures_book_day value = global_var:xfm_exchange.var:xfm_day }
+  set_variable = { name = xfm_ui_futures_book_ready value = 1 }
+  if = { limit = { exists = var:xfm_active_account var:xfm_active_account = { var:xfm_holder = root } } var:xfm_active_account = { xfm_finance_refresh_beneficiary_effect = yes } }
+  var:xfm_futures_contract = {
+   # The actual contract-local open book is capped at 64; never traverse permanent history.
+   ordered_in_list = {
+    variable = xfm_orders order_by = { value = 0 subtract = var:xfm_order_id }
+    max = xfm_config_coin_order_capacity_value check_range_bounds = no
+    limit = { story_type = xfm_futures_order var:xfm_contract = root.var:xfm_futures_contract }
+    if = { limit = { exists = var:xfm_account } var:xfm_account = { xfm_finance_refresh_beneficiary_effect = yes } }
+    if = {
+     limit = { xfm_market_futures_book_order_trigger = yes }
+     save_scope_as = xfm_ui_futures_order
+     scope:xfm_ui_futures_actor = {
+      add_to_variable_list = { name = xfm_ui_futures_candidates target = scope:xfm_ui_futures_order }
+      if = { limit = { scope:xfm_ui_futures_order.var:xfm_side = 1 } change_variable = { name = xfm_ui_futures_bid_lots add = scope:xfm_ui_futures_order.var:xfm_remaining_lots } }
+      else = { change_variable = { name = xfm_ui_futures_ask_lots add = scope:xfm_ui_futures_order.var:xfm_remaining_lots } }
+     }
+    }
+   }
+   if = {
+    limit = { has_variable = xfm_last_execution_cents var:xfm_last_execution_cents > 0 has_variable = xfm_execution_day var:xfm_execution_day >= 0 has_variable = xfm_execution_lots var:xfm_execution_lots > 0 }
+    scope:xfm_ui_futures_actor = {
+     set_variable = { name = xfm_ui_futures_execution_present value = 1 }
+     set_variable = { name = xfm_ui_futures_execution_cents value = prev.var:xfm_last_execution_cents }
+     set_variable = { name = xfm_ui_futures_execution_day value = prev.var:xfm_execution_day }
+     set_variable = { name = xfm_ui_futures_execution_lots value = prev.var:xfm_execution_lots }
+    }
+   }
+  }
+  set_variable = { name = xfm_ui_futures_book_side value = 1 }
+  xfm_market_ui_futures_top_effect = yes
+  set_variable = { name = xfm_ui_futures_book_side value = 2 }
+  xfm_market_ui_futures_top_effect = yes
+ }
+ else = { remove_variable = xfm_ui_futures_book_contract }
+ clear_variable_list = xfm_ui_futures_candidates
+ clear_saved_scope = xfm_ui_futures_order
+ clear_saved_scope = xfm_ui_futures_actor
+}
+# Exact price/FIFO top five. At most ten passes over the same <=64 local UI candidates.
+xfm_market_ui_futures_top_effect = {
+ set_variable = { name = xfm_ui_futures_book_rows value = 0 }
+ set_variable = { name = xfm_ui_futures_book_more value = 1 }
+ while = {
+  limit = { var:xfm_ui_futures_book_rows < 5 var:xfm_ui_futures_book_more = 1 }
+  clear_saved_scope = xfm_ui_futures_best
+  every_in_list = {
+   variable = xfm_ui_futures_candidates
+   limit = { var:xfm_side = root.var:xfm_ui_futures_book_side }
+   if = { limit = { NOT = { exists = scope:xfm_ui_futures_best } } save_scope_as = xfm_ui_futures_best }
+   else_if = {
+    limit = { OR = {
+     AND = { var:xfm_side = 1 var:xfm_limit_cents > scope:xfm_ui_futures_best.var:xfm_limit_cents }
+     AND = { var:xfm_side = 2 var:xfm_limit_cents < scope:xfm_ui_futures_best.var:xfm_limit_cents }
+     AND = { var:xfm_limit_cents = scope:xfm_ui_futures_best.var:xfm_limit_cents var:xfm_order_id < scope:xfm_ui_futures_best.var:xfm_order_id }
+    } }
+    save_scope_as = xfm_ui_futures_best
+   }
+  }
+  if = {
+   limit = { exists = scope:xfm_ui_futures_best }
+   if = { limit = { var:xfm_ui_futures_book_side = 1 } add_to_variable_list = { name = xfm_ui_futures_bids target = scope:xfm_ui_futures_best } }
+   else = { add_to_variable_list = { name = xfm_ui_futures_asks target = scope:xfm_ui_futures_best } }
+   remove_list_variable = { name = xfm_ui_futures_candidates target = scope:xfm_ui_futures_best }
+   change_variable = { name = xfm_ui_futures_book_rows add = 1 }
+  }
+  else = { set_variable = { name = xfm_ui_futures_book_more value = 0 } }
+ }
+ clear_saved_scope = xfm_ui_futures_best
+}

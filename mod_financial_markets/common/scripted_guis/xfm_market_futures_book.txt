@@ -1,0 +1,22 @@
+﻿xfm_market_futures_book_refresh_gui = {
+ scope = character is_valid = { is_ai = no xfm_market_futures_book_selected_trigger = yes }
+ effect = { xfm_market_ui_futures_book_effect = yes }
+}
+xfm_market_futures_book_ready_gui = {
+ scope = character is_valid = { xfm_market_futures_book_selected_trigger = yes var:xfm_ui_futures_book_ready = 1 exists = var:xfm_ui_futures_book_contract var:xfm_ui_futures_book_contract = var:xfm_futures_contract }
+}
+xfm_market_futures_book_execution_gui = {
+ scope = character is_valid = { xfm_market_futures_book_selected_trigger = yes var:xfm_ui_futures_book_contract = var:xfm_futures_contract var:xfm_ui_futures_execution_present = 1 }
+}
+xfm_market_futures_book_row_gui = {
+ scope = character saved_scopes = { xfm_ui_item }
+ is_valid = { xfm_market_futures_book_selected_trigger = yes var:xfm_ui_futures_book_contract = var:xfm_futures_contract exists = scope:xfm_ui_item scope:xfm_ui_item = { xfm_market_futures_book_order_trigger = yes } }
+}
+xfm_market_futures_limit_up_gui = {
+ scope = character is_valid = { is_ai = no xfm_market_futures_book_selected_trigger = yes var:xfm_futures_limit_cents >= 1 var:xfm_futures_limit_cents < 1000000 }
+ effect = { change_variable = { name = xfm_futures_limit_cents add = var:xfm_ui_step } if = { limit = { var:xfm_futures_limit_cents > 1000000 } set_variable = { name = xfm_futures_limit_cents value = 1000000 } } }
+}
+xfm_market_futures_limit_down_gui = {
+ scope = character is_valid = { is_ai = no xfm_market_futures_book_selected_trigger = yes var:xfm_futures_limit_cents > 1 }
+ effect = { change_variable = { name = xfm_futures_limit_cents subtract = var:xfm_ui_step } if = { limit = { var:xfm_futures_limit_cents < 1 } set_variable = { name = xfm_futures_limit_cents value = 1 } } }
+}

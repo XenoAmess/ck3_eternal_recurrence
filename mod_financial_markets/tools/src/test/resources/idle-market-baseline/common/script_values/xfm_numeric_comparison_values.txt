@@ -1,0 +1,11 @@
+﻿# Numeric equality RHS must be a value reference, not a scope/trigger block.
+# These values retain the caller scope, original arithmetic and integer guards.
+xfm_termination_window_start_value = { value = var:xfm_notice_day add = 15 }
+xfm_termination_window_end_value = { value = var:xfm_notice_day add = 20 }
+xfm_previous_exchange_day_value = { value = global_var:xfm_exchange.var:xfm_day subtract = 1 }
+xfm_futures_request_floor_value = { value = var:xfm_futures_request_cents floor = yes }
+xfm_futures_stop_floor_value = { value = var:xfm_futures_stop_cents floor = yes }
+xfm_futures_take_profit_floor_value = { value = var:xfm_futures_take_profit_cents floor = yes }
+xfm_futures_lots_floor_value = { value = var:xfm_futures_lots floor = yes }
+xfm_futures_limit_floor_value = { value = var:xfm_futures_limit_cents floor = yes }
+xfm_futures_reduce_lots_floor_value = { value = var:xfm_futures_reduce_lots floor = yes }

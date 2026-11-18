@@ -2,13 +2,13 @@
     scope = character
 
     is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_selected_coin }
-    effect = { set_variable = { name = xfm_futures_perpetual value = 0 } set_variable = { name = xfm_futures_expiry_day value = xfm_futures_standard_expiry_day_value } xfm_futures_ensure_market_effect = yes }
+    effect = { set_variable = { name = xfm_futures_perpetual value = 0 } set_variable = { name = xfm_futures_expiry_day value = xfm_futures_standard_expiry_day_value } xfm_futures_ensure_market_effect = yes xfm_market_ui_futures_book_effect = yes }
 }
 xfm_market_contract_perpetual_gui = {
     scope = character
 
     is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_selected_coin }
-    effect = { set_variable = { name = xfm_futures_perpetual value = 1 } xfm_futures_ensure_market_effect = yes }
+    effect = { set_variable = { name = xfm_futures_perpetual value = 1 } xfm_futures_ensure_market_effect = yes xfm_market_ui_futures_book_effect = yes }
 }
 xfm_market_futures_leverage_gui = {
     scope = character
@@ -31,14 +31,14 @@ xfm_market_futures_lots_down_gui = {
 xfm_market_futures_long_gui = {
     scope = character
 
-    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_contract var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000 var:xfm_futures_lots >= 1 var:xfm_futures_lots <= 10000 }
-    effect = { set_variable = { name = xfm_futures_side value = 1 } set_variable = { name = xfm_futures_limit_cents value = var:xfm_order_limit_cents } xfm_futures_submit_effect = yes }
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_contract var:xfm_futures_limit_cents >= 1 var:xfm_futures_limit_cents <= 1000000 var:xfm_futures_lots >= 1 var:xfm_futures_lots <= 10000 }
+    effect = { set_variable = { name = xfm_futures_side value = 1 } xfm_futures_submit_effect = yes }
 }
 xfm_market_futures_short_gui = {
     scope = character
 
-    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_contract var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000 var:xfm_futures_lots >= 1 var:xfm_futures_lots <= 10000 }
-    effect = { set_variable = { name = xfm_futures_side value = 2 } set_variable = { name = xfm_futures_limit_cents value = var:xfm_order_limit_cents } xfm_futures_submit_effect = yes }
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_contract var:xfm_futures_limit_cents >= 1 var:xfm_futures_limit_cents <= 1000000 var:xfm_futures_lots >= 1 var:xfm_futures_lots <= 10000 }
+    effect = { set_variable = { name = xfm_futures_side value = 2 } xfm_futures_submit_effect = yes }
 }
 
 xfm_market_contract_next_dated_gui = {
@@ -49,5 +49,5 @@ xfm_market_contract_next_dated_gui = {
    any_in_list = { variable = xfm_futures_discovery_contracts xfm_futures_discoverable_trigger = yes var:xfm_perpetual = 0 var:xfm_coin = root.var:xfm_selected_coin }
   }
  }
- effect = { xfm_futures_select_next_dated_effect = yes }
+ effect = { xfm_futures_select_next_dated_effect = yes xfm_market_ui_futures_book_effect = yes }
 }

@@ -1,0 +1,133 @@
+﻿# 5 character-scope effects. Private event scopes follow the existing confirmation contract.
+# Business APIs still revalidate live rights/assets; nonce is replay protection, never authorization.
+xfm_charter_capture_effect = {
+    xfm_market_ui_capture_coin_effect = yes
+    xfm_market_ui_capture_wallet_effect = yes
+    save_scope_as = xfm_charter_actor
+    if = { limit = { NOT = { has_variable = xfm_charter_nonce } } set_variable = { name = xfm_charter_nonce value = 0 } }
+    change_variable = { name = xfm_charter_nonce add = 1 }
+    save_scope_value_as = { name = xfm_charter_ticket_nonce value = var:xfm_charter_nonce }
+    save_scope_value_as = { name = xfm_charter_ready value = 0 }
+    clear_saved_scope = xfm_charter_coin
+    clear_saved_scope = xfm_charter_payer
+    clear_saved_scope = xfm_charter_controller
+    clear_saved_scope = xfm_charter_issuer_account
+    clear_saved_scope = xfm_charter_maker_account
+    if = {
+        limit = {
+            exists = scope:xfm_ui_confirmation_coin exists = var:xfm_account
+            var:xfm_account = { story_type = xfm_finance_account var:xfm_system_account = 0 var:xfm_holder = scope:xfm_charter_actor }
+        }
+        scope:xfm_ui_confirmation_coin = {
+            save_scope_as = xfm_charter_coin
+            if = { limit = { exists = var:xfm_controller } var:xfm_controller = { save_scope_as = xfm_charter_controller } }
+            if = { limit = { exists = var:xfm_issuer_account } var:xfm_issuer_account = { save_scope_as = xfm_charter_issuer_account } }
+            if = { limit = { exists = var:xfm_market_maker_account } var:xfm_market_maker_account = { save_scope_as = xfm_charter_maker_account } }
+            save_scope_value_as = { name = xfm_charter_coin_id value = var:xfm_coin_id }
+            save_scope_value_as = { name = xfm_charter_supply value = var:xfm_supply_units }
+            save_scope_value_as = { name = xfm_charter_maximum_supply value = var:xfm_maximum_supply_units }
+            save_scope_value_as = { name = xfm_charter_locked value = var:xfm_founder_locked_units }
+            save_scope_value_as = { name = xfm_charter_raised value = { value = var:xfm_actual_raised_cents divide = 100 } }
+            save_scope_value_as = { name = xfm_charter_maintenance value = { value = var:xfm_maintenance_arrears_cents divide = 100 } }
+            save_scope_value_as = { name = xfm_charter_reputation value = var:xfm_issuer_reputation }
+        }
+        # Charter fees/project receipts use PRIMARY, unlike management's optional active wallet.
+        var:xfm_account = { save_scope_as = xfm_charter_payer save_scope_value_as = { name = xfm_charter_payer_id value = var:xfm_account_id } }
+        save_scope_value_as = { name = xfm_charter_lots value = scope:xfm_ui_confirmation_lots }
+        save_scope_value_as = { name = xfm_charter_limit_cents value = scope:xfm_ui_confirmation_limit_cents }
+        save_scope_value_as = { name = xfm_charter_ioc value = scope:xfm_ui_confirmation_ioc }
+        save_scope_value_as = { name = xfm_charter_ready value = 1 }
+    }
+}
+
+xfm_charter_save_selection_effect = {
+    clear_saved_scope = xfm_charter_before_coin
+    clear_saved_scope = xfm_charter_before_account
+    clear_saved_scope = xfm_charter_before_lots
+    clear_saved_scope = xfm_charter_before_limit_cents
+    clear_saved_scope = xfm_charter_before_ioc
+    clear_saved_scope = xfm_charter_other_pending
+    if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { save_scope_as = xfm_charter_before_coin } }
+    if = { limit = { exists = var:xfm_active_account } var:xfm_active_account = { save_scope_as = xfm_charter_before_account } }
+    if = { limit = { has_variable = xfm_order_lots } save_scope_value_as = { name = xfm_charter_before_lots value = var:xfm_order_lots } }
+    if = { limit = { has_variable = xfm_order_limit_cents } save_scope_value_as = { name = xfm_charter_before_limit_cents value = var:xfm_order_limit_cents } }
+    if = { limit = { has_variable = xfm_order_ioc } save_scope_value_as = { name = xfm_charter_before_ioc value = var:xfm_order_ioc } }
+    if = {
+        limit = {
+            exists = var:xfm_pending_offer var:xfm_pending_offer != scope:xfm_charter_coin
+            var:xfm_pending_offer = { story_type = xfm_finance_coin var:xfm_listing_state = 0 var:xfm_controller = scope:xfm_charter_actor }
+        }
+        var:xfm_pending_offer = { save_scope_as = xfm_charter_other_pending }
+    }
+}
+
+xfm_charter_restore_selection_effect = {
+    if = {
+        limit = {
+            exists = scope:xfm_charter_before_coin
+            scope:xfm_charter_before_coin = { OR = { AND = { story_type = xfm_finance_coin var:xfm_listing_state != 7 } story_type = xfm_oracle_index } }
+        }
+        set_variable = { name = xfm_selected_coin value = scope:xfm_charter_before_coin }
+    }
+    else = { remove_variable = xfm_selected_coin }
+    if = {
+        limit = { exists = scope:xfm_charter_before_account scope:xfm_charter_before_account = { xfm_finance_account_usable_trigger = yes var:xfm_system_account = 0 var:xfm_holder = scope:xfm_charter_actor } }
+        set_variable = { name = xfm_active_account value = scope:xfm_charter_before_account }
+    }
+    else = { remove_variable = xfm_active_account }
+    if = { limit = { exists = scope:xfm_charter_before_lots } set_variable = { name = xfm_order_lots value = scope:xfm_charter_before_lots } } else = { remove_variable = xfm_order_lots }
+    if = { limit = { exists = scope:xfm_charter_before_limit_cents } set_variable = { name = xfm_order_limit_cents value = scope:xfm_charter_before_limit_cents } } else = { remove_variable = xfm_order_limit_cents }
+    if = { limit = { exists = scope:xfm_charter_before_ioc } set_variable = { name = xfm_order_ioc value = scope:xfm_charter_before_ioc } } else = { remove_variable = xfm_order_ioc }
+    if = {
+        limit = { exists = scope:xfm_charter_other_pending scope:xfm_charter_other_pending = { story_type = xfm_finance_coin var:xfm_listing_state = 0 var:xfm_controller = scope:xfm_charter_actor } }
+        set_variable = { name = xfm_pending_offer value = scope:xfm_charter_other_pending }
+    }
+    clear_saved_scope = xfm_charter_before_coin
+    clear_saved_scope = xfm_charter_before_account
+    clear_saved_scope = xfm_charter_before_lots
+    clear_saved_scope = xfm_charter_before_limit_cents
+    clear_saved_scope = xfm_charter_before_ioc
+    clear_saved_scope = xfm_charter_other_pending
+}
+
+xfm_charter_execute_effect = {
+    if = {
+        limit = {
+            OR = {
+                AND = { scope:xfm_charter_action = 1 xfm_charter_complete_trigger = yes }
+                AND = { scope:xfm_charter_action = 2 xfm_charter_abort_trigger = yes }
+                AND = { scope:xfm_charter_action = 3 xfm_charter_promote_trigger = yes }
+                AND = { scope:xfm_charter_action = 4 xfm_charter_freeze_trigger = yes }
+                AND = { scope:xfm_charter_action = 5 xfm_charter_cancel_supply_trigger = yes }
+                AND = { scope:xfm_charter_action = 6 xfm_charter_release_reserves_trigger = yes }
+                AND = { scope:xfm_charter_action = 7 xfm_charter_project_cash_trigger = yes }
+                AND = { scope:xfm_charter_action = 8 xfm_charter_restore_bond_trigger = yes }
+                AND = { scope:xfm_charter_action = 9 xfm_charter_restart_maker_trigger = yes }
+            }
+        }
+        # Consume before any business callback; failed business may be retried only from a new charter.
+        change_variable = { name = xfm_charter_nonce add = 1 }
+        xfm_charter_save_selection_effect = yes
+        scope:xfm_charter_coin = { save_scope_as = xfm_ui_confirmation_coin }
+        scope:xfm_charter_payer = { save_scope_as = xfm_ui_confirmation_account }
+        save_scope_value_as = { name = xfm_ui_confirmation_lots value = scope:xfm_charter_lots }
+        save_scope_value_as = { name = xfm_ui_confirmation_limit_cents value = scope:xfm_charter_limit_cents }
+        save_scope_value_as = { name = xfm_ui_confirmation_ioc value = scope:xfm_charter_ioc }
+        xfm_market_ui_restore_coin_effect = yes
+        xfm_market_ui_restore_wallet_effect = yes
+        if = { limit = { scope:xfm_charter_action = 1 } xfm_issuer_complete_offer_effect = yes }
+        else_if = { limit = { scope:xfm_charter_action = 2 } xfm_issuer_abort_offer_effect = yes }
+        else_if = { limit = { scope:xfm_charter_action = 3 } xfm_issuer_promote_effect = yes }
+        else_if = { limit = { scope:xfm_charter_action = 4 } xfm_issuer_freeze_supply_effect = yes }
+        else_if = { limit = { scope:xfm_charter_action = 5 } xfm_issuer_cancel_unallocated_supply_effect = yes }
+        else_if = { limit = { scope:xfm_charter_action = 6 } xfm_listing_release_unused_reserves_effect = yes }
+        else_if = { limit = { scope:xfm_charter_action = 7 } xfm_issuer_release_project_cash_effect = yes }
+        else_if = { limit = { scope:xfm_charter_action = 8 } xfm_listing_restore_bond_effect = yes }
+        else_if = { limit = { scope:xfm_charter_action = 9 } xfm_issuer_restart_liquidity_effect = yes }
+        xfm_charter_restore_selection_effect = yes
+    }
+}
+
+xfm_charter_close_effect = {
+    if = { limit = { exists = scope:xfm_charter_ticket_nonce has_variable = xfm_charter_nonce var:xfm_charter_nonce = scope:xfm_charter_ticket_nonce } change_variable = { name = xfm_charter_nonce add = 1 } }
+}

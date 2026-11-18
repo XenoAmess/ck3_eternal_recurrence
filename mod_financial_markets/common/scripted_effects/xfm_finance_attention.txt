@@ -73,6 +73,7 @@ xfm_finance_ai_decision_effect = {
         global_var:xfm_exchange = { change_variable = { name = xfm_ai_decisions_today add = 1 } }
         xfm_coin_ai_effect = yes
         xfm_spot_ai_effect = yes
+        xfm_redemption_ai_effect = yes
         xfm_futures_ai_effect = yes
     }
 }

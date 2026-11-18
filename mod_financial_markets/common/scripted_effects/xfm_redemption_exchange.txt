@@ -1,0 +1,173 @@
+﻿# Character scope. No cash/coin move while capturing a same-day, exact-budget quote.
+xfm_redemption_prepare_quote_effect = {
+ set_variable = { name = xfm_redemption_result value = 0 }
+ clear_saved_scope = xfm_red_quote_actor
+ clear_saved_scope = xfm_red_quote_coin
+ clear_saved_scope = xfm_red_quote_window
+ clear_saved_scope = xfm_red_quote_account
+ clear_saved_scope = xfm_red_quote_escrow
+ if = {
+  limit = {
+   is_alive = yes is_adult = yes exists = var:xfm_selected_coin
+   var:xfm_selected_coin = { story_type = xfm_finance_coin exists = var:xfm_redemption_window }
+   var:xfm_redemption_lots >= 1 var:xfm_redemption_lots <= 100
+   var:xfm_redemption_lots >= xfm_redemption_lots_floor_value
+   var:xfm_redemption_lots <= xfm_redemption_lots_floor_value
+  }
+  save_scope_as = xfm_red_quote_actor
+  var:xfm_selected_coin = {
+   save_scope_as = xfm_red_quote_coin
+   xfm_redemption_refresh_effect = yes
+   var:xfm_redemption_window = { save_scope_as = xfm_red_quote_window }
+   if = { limit = { exists = var:xfm_redemption_account } var:xfm_redemption_account = { save_scope_as = xfm_red_quote_escrow } }
+  }
+  xfm_finance_select_account_effect = yes
+  if = { limit = { exists = scope:xfm_account } scope:xfm_account = { xfm_finance_refresh_beneficiary_effect = yes save_scope_as = xfm_red_quote_account } }
+  if = {
+   limit = {
+    exists = scope:xfm_red_quote_escrow
+    xfm_redemption_seller_trigger = yes
+    scope:xfm_red_quote_window = { xfm_redemption_window_open_trigger = yes }
+    xfm_redemption_requested_payment_value <= 100000000
+    xfm_redemption_requested_payment_value <= scope:xfm_red_quote_window.var:xfm_remaining_cents
+    scope:xfm_red_quote_coin.var:xfm_redemption_lifetime_paid_cents >= 0
+    scope:xfm_red_quote_coin.var:xfm_redemption_lifetime_units >= 0
+    scope:xfm_red_quote_coin.var:xfm_redemption_lifetime_paid_cents <= { value = 1000000000000 subtract = xfm_redemption_requested_payment_value }
+    scope:xfm_red_quote_coin.var:xfm_redemption_lifetime_units <= { value = 1000000000000 subtract = xfm_redemption_requested_units_value }
+   }
+   scope:xfm_red_quote_account = {
+    set_variable = { name = xfm_request_coin value = scope:xfm_red_quote_coin }
+    xfm_finance_lookup_position_effect = yes
+   }
+   if = {
+    limit = {
+     exists = scope:xfm_position
+     scope:xfm_position = { xfm_finance_position_available_value >= scope:xfm_red_quote_actor.xfm_redemption_requested_units_value }
+    }
+    if = { limit = { NOT = { has_variable = xfm_redemption_quote_nonce } } set_variable = { name = xfm_redemption_quote_nonce value = 0 } }
+    change_variable = { name = xfm_redemption_quote_nonce add = 1 }
+    save_scope_value_as = { name = xfm_red_quote_nonce value = var:xfm_redemption_quote_nonce }
+    save_scope_value_as = { name = xfm_red_quote_coin_id value = scope:xfm_red_quote_coin.var:xfm_coin_id }
+    save_scope_value_as = { name = xfm_red_quote_window_id value = scope:xfm_red_quote_window.var:xfm_window_id }
+    save_scope_value_as = { name = xfm_red_quote_account_id value = scope:xfm_red_quote_account.var:xfm_account_id }
+    save_scope_value_as = { name = xfm_red_quote_escrow_id value = scope:xfm_red_quote_escrow.var:xfm_account_id }
+    save_scope_value_as = { name = xfm_red_quote_price value = scope:xfm_red_quote_window.var:xfm_price_cents }
+    save_scope_value_as = { name = xfm_red_quote_units value = xfm_redemption_requested_units_value }
+    save_scope_value_as = { name = xfm_red_quote_payment value = xfm_redemption_requested_payment_value }
+    save_scope_value_as = { name = xfm_red_quote_remaining value = scope:xfm_red_quote_window.var:xfm_remaining_cents }
+    save_scope_value_as = { name = xfm_red_quote_expiry value = scope:xfm_red_quote_window.var:xfm_expiry_day }
+    save_scope_value_as = { name = xfm_red_quote_valid_until value = { value = global_var:xfm_exchange.var:xfm_day add = 1 } }
+    scope:xfm_red_quote_coin.var:xfm_controller = { save_scope_as = xfm_red_quote_controller }
+    set_variable = { name = xfm_redemption_result value = 1 }
+   }
+  }
+ }
+}
+# Character scope. Context comes only from the same production prepare; UI event captures it independently.
+xfm_redemption_execute_quote_effect = {
+ set_variable = { name = xfm_redemption_result value = 0 }
+ set_variable = { name = xfm_redemption_last_action_result value = 0 }
+ clear_saved_scope = xfm_red_new_receipt
+ if = { limit = { exists = scope:xfm_red_quote_coin } scope:xfm_red_quote_coin = { xfm_redemption_refresh_effect = yes } }
+ if = { limit = { exists = scope:xfm_red_quote_account } scope:xfm_red_quote_account = { xfm_finance_refresh_beneficiary_effect = yes } }
+ if = {
+  limit = {
+   this = scope:xfm_red_quote_actor xfm_redemption_seller_trigger = yes
+   var:xfm_selected_coin = scope:xfm_red_quote_coin
+   var:xfm_redemption_quote_nonce = scope:xfm_red_quote_nonce
+   global_var:xfm_exchange.var:xfm_day < scope:xfm_red_quote_valid_until
+   scope:xfm_red_quote_coin = {
+    var:xfm_coin_id = scope:xfm_red_quote_coin_id
+    var:xfm_controller = scope:xfm_red_quote_controller
+    var:xfm_redemption_window = scope:xfm_red_quote_window
+    var:xfm_redemption_account = scope:xfm_red_quote_escrow
+    var:xfm_redemption_lifetime_paid_cents >= 0 var:xfm_redemption_lifetime_units >= 0
+    var:xfm_redemption_lifetime_paid_cents <= { value = 1000000000000 subtract = scope:xfm_red_quote_payment }
+    var:xfm_redemption_lifetime_units <= { value = 1000000000000 subtract = scope:xfm_red_quote_units }
+   }
+   scope:xfm_red_quote_window = {
+    xfm_redemption_window_open_trigger = yes
+    var:xfm_window_id = scope:xfm_red_quote_window_id
+    var:xfm_price_cents = scope:xfm_red_quote_price
+    var:xfm_expiry_day = scope:xfm_red_quote_expiry
+    var:xfm_remaining_cents = scope:xfm_red_quote_remaining
+    var:xfm_remaining_cents >= scope:xfm_red_quote_payment
+   }
+   scope:xfm_red_quote_account.var:xfm_account_id = scope:xfm_red_quote_account_id
+   scope:xfm_red_quote_escrow.var:xfm_account_id = scope:xfm_red_quote_escrow_id
+   OR = {
+    AND = { exists = var:xfm_active_account var:xfm_active_account = scope:xfm_red_quote_account }
+    AND = { NOT = { exists = var:xfm_active_account } var:xfm_account = scope:xfm_red_quote_account }
+   }
+   scope:xfm_red_quote_price >= 1 scope:xfm_red_quote_price <= 1000000
+   scope:xfm_red_quote_payment >= 1 scope:xfm_red_quote_payment <= 100000000
+   scope:xfm_red_quote_units >= 100 scope:xfm_red_quote_units <= 10000
+   scope:xfm_red_quote_units >= xfm_redemption_quote_whole_units_value
+   scope:xfm_red_quote_units <= xfm_redemption_quote_whole_units_value
+   scope:xfm_red_quote_payment >= xfm_redemption_quote_payment_value
+   scope:xfm_red_quote_payment <= xfm_redemption_quote_payment_value
+  }
+  # Consume the confirmed quote before the atomic call; old confirmations cannot replay.
+  change_variable = { name = xfm_redemption_quote_nonce add = 1 }
+  global_var:xfm_exchange.story_owner = { create_story = { type = xfm_finance_redemption_receipt save_scope_as = xfm_red_new_receipt } }
+  if = {
+   limit = { exists = scope:xfm_red_new_receipt scope:xfm_red_new_receipt = { story_type = xfm_finance_redemption_receipt } }
+   scope:xfm_red_quote_escrow = {
+    set_variable = { name = xfm_request_target value = scope:xfm_red_quote_account }
+    set_variable = { name = xfm_request_coin value = scope:xfm_red_quote_coin }
+    set_variable = { name = xfm_request_units value = scope:xfm_red_quote_units }
+    set_variable = { name = xfm_request_cents value = scope:xfm_red_quote_payment }
+    xfm_finance_otc_effect = yes
+   }
+   if = {
+    limit = { scope:xfm_red_quote_escrow.var:xfm_result = 1 }
+    xfm_redemption_record_receipt_effect = yes
+    set_variable = { name = xfm_redemption_last_success_day value = global_var:xfm_exchange.var:xfm_day }
+    set_variable = { name = xfm_redemption_last_receipt value = scope:xfm_red_new_receipt }
+    set_variable = { name = xfm_redemption_result value = 1 }
+    set_variable = { name = xfm_redemption_last_action_result value = 1 }
+   }
+   else = { scope:xfm_red_new_receipt = { end_story = yes } clear_saved_scope = xfm_red_new_receipt }
+  }
+ }
+}
+# Only called after successful existing atomic OTC. All objects exist before any payment.
+xfm_redemption_record_receipt_effect = {
+ global_var:xfm_exchange = {
+  if = { limit = { NOT = { has_variable = xfm_next_redemption_receipt_id } } set_variable = { name = xfm_next_redemption_receipt_id value = 0 } }
+  change_variable = { name = xfm_next_redemption_receipt_id add = 1 }
+ }
+ scope:xfm_red_quote_window = {
+  change_variable = { name = xfm_remaining_cents subtract = scope:xfm_red_quote_payment }
+  change_variable = { name = xfm_paid_cents add = scope:xfm_red_quote_payment }
+  change_variable = { name = xfm_paid_units add = scope:xfm_red_quote_units }
+  if = { limit = { var:xfm_remaining_cents < var:xfm_price_cents } set_variable = { name = xfm_status value = 2 } }
+ }
+ scope:xfm_red_new_receipt = {
+  set_variable = { name = xfm_receipt_id value = global_var:xfm_exchange.var:xfm_next_redemption_receipt_id }
+  set_variable = { name = xfm_coin value = scope:xfm_red_quote_coin }
+  set_variable = { name = xfm_coin_id value = scope:xfm_red_quote_coin_id }
+  set_variable = { name = xfm_window value = scope:xfm_red_quote_window }
+  set_variable = { name = xfm_window_id value = scope:xfm_red_quote_window_id }
+  set_variable = { name = xfm_payer_account value = scope:xfm_red_quote_escrow }
+  set_variable = { name = xfm_payee_account value = scope:xfm_red_quote_account }
+  set_variable = { name = xfm_payer_account_id value = scope:xfm_red_quote_escrow_id }
+  set_variable = { name = xfm_payee_account_id value = scope:xfm_red_quote_account_id }
+  set_variable = { name = xfm_holder value = scope:xfm_red_quote_actor }
+  set_variable = { name = xfm_controller value = scope:xfm_red_quote_controller }
+  set_variable = { name = xfm_paid_cents value = scope:xfm_red_quote_payment }
+  set_variable = { name = xfm_paid_units value = scope:xfm_red_quote_units }
+  set_variable = { name = xfm_price_cents value = scope:xfm_red_quote_price }
+  set_variable = { name = xfm_budget_after_cents value = scope:xfm_red_quote_window.var:xfm_remaining_cents }
+  set_variable = { name = xfm_day value = global_var:xfm_exchange.var:xfm_day }
+  set_variable = { name = xfm_status value = 1 }
+  if = { limit = { exists = scope:xfm_red_quote_coin.var:xfm_redemption_last_receipt } set_variable = { name = xfm_previous_receipt value = scope:xfm_red_quote_coin.var:xfm_redemption_last_receipt } }
+ }
+ scope:xfm_red_quote_coin = {
+  change_variable = { name = xfm_actual_utility_cents add = scope:xfm_red_quote_payment }
+  change_variable = { name = xfm_redemption_lifetime_paid_cents add = scope:xfm_red_quote_payment }
+  change_variable = { name = xfm_redemption_lifetime_units add = scope:xfm_red_quote_units }
+  change_variable = { name = xfm_project_spent_cents add = scope:xfm_red_quote_payment }
+  set_variable = { name = xfm_redemption_last_receipt value = scope:xfm_red_new_receipt }
+ }
+}

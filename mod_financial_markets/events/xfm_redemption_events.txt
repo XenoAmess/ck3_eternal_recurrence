@@ -1,0 +1,17 @@
+﻿namespace = xfm_redemption
+
+xfm_redemption.1 = {
+ type = character_event title = xfm_redemption_publish_title desc = xfm_redemption_publish_desc theme = stewardship
+ option = { name = xfm_redemption_publish_confirm xfm_redemption_confirm_publish_effect = yes }
+ option = { name = xfm_redemption_cancel }
+}
+xfm_redemption.2 = {
+ type = character_event title = xfm_redemption_redeem_title desc = xfm_redemption_redeem_desc theme = stewardship
+ option = { name = xfm_redemption_redeem_confirm xfm_redemption_execute_quote_effect = yes }
+ option = { name = xfm_redemption_cancel }
+}
+xfm_redemption.3 = {
+ type = character_event title = xfm_redemption_reclaim_title desc = xfm_redemption_reclaim_desc theme = stewardship
+ option = { name = xfm_redemption_reclaim_confirm xfm_redemption_confirm_reclaim_effect = yes }
+ option = { name = xfm_redemption_cancel }
+}

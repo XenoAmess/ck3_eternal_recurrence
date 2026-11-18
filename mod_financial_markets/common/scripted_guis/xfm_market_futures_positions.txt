@@ -6,7 +6,7 @@
         set_variable = { name = xfm_futures_selected_position value = scope:xfm_ui_item }
         set_variable = { name = xfm_futures_contract value = scope:xfm_ui_item.var:xfm_contract }
         set_variable = { name = xfm_selected_coin value = scope:xfm_ui_item.var:xfm_contract.var:xfm_coin }
-        set_variable = { name = xfm_order_limit_cents value = scope:xfm_ui_item.var:xfm_mark_cents }
+        set_variable = { name = xfm_futures_limit_cents value = scope:xfm_ui_item.var:xfm_mark_cents }
         set_variable = { name = xfm_futures_request_cents value = 100 }
         set_variable = { name = xfm_futures_reduce_lots value = 1 }
         if = {
@@ -20,6 +20,7 @@
             set_variable = { name = xfm_futures_stop_cents value = scope:xfm_ui_item.var:xfm_short_stop_cents }
             set_variable = { name = xfm_futures_take_profit_cents value = scope:xfm_ui_item.var:xfm_short_take_profit_cents }
         }
+        xfm_market_ui_futures_book_effect = yes
     }
 }
 xfm_market_cancel_futures_order_gui = {
@@ -55,7 +56,7 @@ xfm_market_futures_withdraw_margin_gui = {
 xfm_market_futures_reduce_gui = {
     scope = character
 
-    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_selected_position var:xfm_futures_reduce_lots > 0 }
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_selected_position var:xfm_futures_reduce_lots > 0 var:xfm_futures_limit_cents >= 1 var:xfm_futures_limit_cents <= 1000000 }
     effect = { xfm_futures_reduce_effect = yes }
 }
 xfm_market_futures_reduce_up_gui = {

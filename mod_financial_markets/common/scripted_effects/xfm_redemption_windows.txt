@@ -1,0 +1,159 @@
+﻿# Coin scope. Refresh legal authority; never transfer technical custodian ownership into law.
+xfm_redemption_refresh_effect = {
+ xfm_issuer_refresh_controller_effect = yes
+ save_scope_as = xfm_red_refresh_coin
+ if = { limit = { exists = var:xfm_issuer_account } var:xfm_issuer_account = { xfm_finance_refresh_beneficiary_effect = yes } }
+ if = { limit = { exists = var:xfm_market_maker_account } var:xfm_market_maker_account = { xfm_finance_refresh_beneficiary_effect = yes } }
+ if = {
+  limit = { exists = var:xfm_redemption_account exists = var:xfm_controller var:xfm_redemption_account = { var:xfm_redemption_only = 1 var:xfm_legal_entity = scope:xfm_red_refresh_coin var:xfm_system_account = 1 } }
+  var:xfm_redemption_account = {
+   xfm_finance_refresh_beneficiary_effect = yes
+   # Generic policy refreshes issuer/maker; this purpose account follows the same current controller explicitly.
+   set_variable = { name = xfm_holder value = scope:xfm_red_refresh_coin.var:xfm_controller }
+   set_variable = { name = xfm_beneficial_owner value = scope:xfm_red_refresh_coin.var:xfm_controller }
+  }
+ }
+ clear_saved_scope = xfm_red_refresh_coin
+}
+# Coin scope. Allocate only a zero-balance account and tag its single purpose.
+xfm_redemption_ensure_account_effect = {
+ set_variable = { name = xfm_redemption_result value = 0 }
+ save_scope_as = xfm_red_account_coin
+ if = {
+  limit = { NOT = { exists = var:xfm_redemption_account } }
+  global_var:xfm_exchange = { xfm_finance_create_account_effect = yes }
+  if = {
+   limit = { exists = scope:xfm_created_account scope:xfm_created_account = { story_type = xfm_finance_account var:xfm_free_cents = 0 var:xfm_reserved_cents = 0 var:xfm_system_account = 1 } }
+   scope:xfm_created_account = {
+    set_variable = { name = xfm_redemption_only value = 1 }
+    set_variable = { name = xfm_legal_entity value = scope:xfm_red_account_coin }
+    set_variable = { name = xfm_holder value = scope:xfm_red_account_coin.var:xfm_controller }
+    set_variable = { name = xfm_beneficial_owner value = scope:xfm_red_account_coin.var:xfm_controller }
+   }
+   set_variable = { name = xfm_redemption_account value = scope:xfm_created_account }
+  }
+ }
+ if = { limit = { xfm_redemption_account_trigger = yes } set_variable = { name = xfm_redemption_result value = 1 } }
+ clear_saved_scope = xfm_red_account_coin
+}
+# Character entry. Every failed preflight is money-free; every funded window has immutable terms.
+xfm_redemption_publish_effect = {
+ set_variable = { name = xfm_redemption_result value = 0 }
+ set_variable = { name = xfm_redemption_last_action_result value = 0 }
+ clear_saved_scope = xfm_red_new_window
+ save_scope_as = xfm_red_publish_actor
+ if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { xfm_redemption_refresh_effect = yes } }
+ if = {
+  limit = {
+   xfm_redemption_controller_trigger = yes
+   var:xfm_selected_coin.var:xfm_listing_state <= 6
+   var:xfm_redemption_price_cents >= 1 var:xfm_redemption_price_cents <= 1000000
+   var:xfm_redemption_price_cents >= xfm_redemption_price_floor_value
+   var:xfm_redemption_price_cents <= xfm_redemption_price_floor_value
+   var:xfm_redemption_budget_cents >= var:xfm_redemption_price_cents var:xfm_redemption_budget_cents <= 100000000
+   var:xfm_redemption_budget_cents >= xfm_redemption_budget_floor_value
+   var:xfm_redemption_budget_cents <= xfm_redemption_budget_floor_value
+   var:xfm_redemption_expiry_day > global_var:xfm_exchange.var:xfm_day
+   var:xfm_redemption_expiry_day <= { value = global_var:xfm_exchange.var:xfm_day add = 90 }
+   var:xfm_redemption_expiry_day >= xfm_redemption_expiry_floor_value
+   var:xfm_redemption_expiry_day <= xfm_redemption_expiry_floor_value
+   var:xfm_selected_coin = {
+    var:xfm_issuer_account.var:xfm_free_cents >= scope:xfm_red_publish_actor.var:xfm_redemption_budget_cents
+    OR = { NOT = { has_variable = xfm_redemption_next_publish_day } var:xfm_redemption_next_publish_day <= global_var:xfm_exchange.var:xfm_day }
+    OR = {
+     NOT = { exists = var:xfm_redemption_window }
+     AND = { var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day var:xfm_redemption_window.var:xfm_remaining_cents = 0 }
+    }
+   }
+  }
+  var:xfm_selected_coin = {
+   save_scope_as = xfm_red_publish_coin
+   xfm_redemption_ensure_account_effect = yes
+   if = {
+    limit = { var:xfm_redemption_result = 1 var:xfm_redemption_account.var:xfm_free_cents = 0 }
+    global_var:xfm_exchange.story_owner = { create_story = { type = xfm_finance_redemption_window save_scope_as = xfm_red_new_window } }
+    if = {
+     limit = { exists = scope:xfm_red_new_window scope:xfm_red_new_window = { story_type = xfm_finance_redemption_window } }
+     var:xfm_issuer_account = {
+      set_variable = { name = xfm_request_cents value = scope:xfm_red_publish_actor.var:xfm_redemption_budget_cents }
+      set_variable = { name = xfm_request_target value = scope:xfm_red_publish_coin.var:xfm_redemption_account }
+      xfm_finance_transfer_effect = yes
+     }
+     if = {
+      limit = { var:xfm_issuer_account.var:xfm_result = 1 }
+      global_var:xfm_exchange = {
+       if = { limit = { NOT = { has_variable = xfm_next_redemption_window_id } } set_variable = { name = xfm_next_redemption_window_id value = 0 } }
+       change_variable = { name = xfm_next_redemption_window_id add = 1 }
+      }
+      scope:xfm_red_new_window = {
+       set_variable = { name = xfm_window_id value = global_var:xfm_exchange.var:xfm_next_redemption_window_id }
+       set_variable = { name = xfm_coin value = scope:xfm_red_publish_coin }
+       set_variable = { name = xfm_coin_id value = scope:xfm_red_publish_coin.var:xfm_coin_id }
+       set_variable = { name = xfm_redemption_account value = scope:xfm_red_publish_coin.var:xfm_redemption_account }
+       set_variable = { name = xfm_issuer_account value = scope:xfm_red_publish_coin.var:xfm_issuer_account }
+       set_variable = { name = xfm_redemption_account_id value = scope:xfm_red_publish_coin.var:xfm_redemption_account.var:xfm_account_id }
+       set_variable = { name = xfm_issuer_account_id value = scope:xfm_red_publish_coin.var:xfm_issuer_account.var:xfm_account_id }
+       set_variable = { name = xfm_publisher value = scope:xfm_red_publish_actor }
+       set_variable = { name = xfm_price_cents value = scope:xfm_red_publish_actor.var:xfm_redemption_price_cents }
+       set_variable = { name = xfm_initial_cents value = scope:xfm_red_publish_actor.var:xfm_redemption_budget_cents }
+       set_variable = { name = xfm_remaining_cents value = var:xfm_initial_cents }
+       set_variable = { name = xfm_paid_cents value = 0 }
+       set_variable = { name = xfm_paid_units value = 0 }
+       set_variable = { name = xfm_reclaimed_cents value = 0 }
+       set_variable = { name = xfm_created_day value = global_var:xfm_exchange.var:xfm_day }
+       set_variable = { name = xfm_expiry_day value = scope:xfm_red_publish_actor.var:xfm_redemption_expiry_day }
+       set_variable = { name = xfm_status value = 1 }
+      }
+      set_variable = { name = xfm_redemption_window value = scope:xfm_red_new_window }
+      set_variable = { name = xfm_redemption_next_publish_day value = scope:xfm_red_new_window.xfm_redemption_next_publish_value }
+      if = { limit = { NOT = { has_variable = xfm_redemption_lifetime_paid_cents } } set_variable = { name = xfm_redemption_lifetime_paid_cents value = 0 } set_variable = { name = xfm_redemption_lifetime_units value = 0 } }
+      scope:xfm_red_publish_actor = { set_variable = { name = xfm_redemption_result value = 1 } set_variable = { name = xfm_redemption_last_action_result value = 1 } }
+     }
+     else = { scope:xfm_red_new_window = { end_story = yes } clear_saved_scope = xfm_red_new_window }
+    }
+   }
+  }
+ }
+}
+# Character entry. Expired unused cash returns to the same coin's issuer account, never to gold.
+xfm_redemption_reclaim_effect = {
+ set_variable = { name = xfm_redemption_result value = 0 }
+ set_variable = { name = xfm_redemption_last_action_result value = 0 }
+ save_scope_as = xfm_red_reclaim_actor
+ if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { xfm_redemption_refresh_effect = yes } }
+ if = {
+  limit = {
+   xfm_redemption_controller_trigger = yes
+   var:xfm_selected_coin = {
+    xfm_redemption_account_trigger = yes exists = var:xfm_redemption_window
+    var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day
+    var:xfm_redemption_account.var:xfm_free_cents = var:xfm_redemption_window.var:xfm_remaining_cents
+   }
+  }
+  var:xfm_selected_coin = {
+   save_scope_as = xfm_red_reclaim_coin
+   if = {
+    limit = { var:xfm_redemption_account.var:xfm_free_cents > 0 }
+    var:xfm_redemption_account = {
+     set_variable = { name = xfm_request_cents value = var:xfm_free_cents }
+     set_variable = { name = xfm_request_target value = scope:xfm_red_reclaim_coin.var:xfm_issuer_account }
+     xfm_finance_transfer_effect = yes
+     if = {
+      limit = { var:xfm_result = 1 }
+      scope:xfm_red_reclaim_coin.var:xfm_redemption_window = {
+       change_variable = { name = xfm_reclaimed_cents add = scope:xfm_red_reclaim_coin.var:xfm_redemption_account.var:xfm_request_cents }
+       set_variable = { name = xfm_remaining_cents value = 0 }
+       set_variable = { name = xfm_status value = 4 }
+       set_variable = { name = xfm_last_reclaim_day value = global_var:xfm_exchange.var:xfm_day }
+      }
+      scope:xfm_red_reclaim_actor = { set_variable = { name = xfm_redemption_result value = 1 } set_variable = { name = xfm_redemption_last_action_result value = 1 } }
+     }
+    }
+   }
+   else = {
+    var:xfm_redemption_window = { set_variable = { name = xfm_status value = 4 } }
+    scope:xfm_red_reclaim_actor = { set_variable = { name = xfm_redemption_result value = 1 } set_variable = { name = xfm_redemption_last_action_result value = 1 } }
+   }
+  }
+ }
+}

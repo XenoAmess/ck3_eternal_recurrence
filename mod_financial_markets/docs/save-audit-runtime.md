@@ -13,3 +13,5 @@
 2026-11-18，machine_id`4-8e1c2f1861`：共享原10项回归及金融完整160项通过，其中两项SAVE JUnit复用52个合成断言；这不是1.21实际编码、命名入口实用或冷载通过。对应原件位于`C:/workspace/ck3-market-live-20261118/operations/MVN-save-core-audit01`与`MVN-financial-ai-save-full01`。
 
 14:21Z后命名入口已单独实际打包至`target/save-audit-app/quarkus-run.jar`，原wait0/20.194778秒；随后公共CLI对明确标记的合成物理文件实际wait0/1.198547秒，得到来源绑定报告且`financialCertified=false`。原件分别在`operations/MVN-financial-save-audit-package01`、`operations/CHECK-save-audit-named-cli01`及外部`save-audit-cli-software01`。这只验证命名入口和合成输入消费，真实1.21金融SAVE、编码scale及冷载仍未通过。
+
+16:41Z完整金融246项通过，其中回兑新增7项与原SAVE两项共同通过。审计显式识别`xfm_finance_redemption_window`及`xfm_finance_redemption_receipt`：逐窗核initial=paid+reclaimed+remaining、每张实付/整手/固定价及预算after、逐币永久收据顺序链/累计与ID高水位、当前窗专用free=remaining且reserved=0、发行及做市账户防冒用、旧窗到期后七日发布限制。历史窗可复用同一专用账户，不能拿其旧余额覆盖当前窗；收据的历史holder/controller不强制等于继承后的当前holder。未知故事、缺失数值或断链保持INCOMPLETE，不推断空集合或零金额。字段与生产者见[回兑身份表](coin-redemption.md)。新源码的命名入口仍须重打包，真实编码资格及金融认证仍为false。

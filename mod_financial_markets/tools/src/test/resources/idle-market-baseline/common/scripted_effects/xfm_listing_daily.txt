@@ -1,0 +1,137 @@
+﻿# Exchange scope. Existing obligations run even when new listings/derivatives are disabled.
+xfm_listing_daily_effect = {
+    every_in_global_list = {
+        variable = xfm_coin_registry
+        limit = { story_type = xfm_finance_coin has_variable = xfm_entity_type var:xfm_listing_state != 7 OR = { NOT = { has_variable = xfm_listing_last_day } var:xfm_listing_last_day < global_var:xfm_exchange.var:xfm_day } }
+        set_variable = { name = xfm_listing_last_day value = global_var:xfm_exchange.var:xfm_day }
+        if = {
+            limit = { var:xfm_listing_state >= 1 var:xfm_listing_state <= 3 }
+            # Oracle already opened day D. Consume only its closed D-1 volume,
+            # once; new-day trades and stale buckets cannot enter this window.
+            if = {
+                limit = {
+                    has_variable = xfm_last_completed_qualified_volume_cents
+                    has_variable = xfm_last_completed_volume_day
+                    var:xfm_last_completed_volume_day >= 0
+                    var:xfm_last_completed_volume_day >= xfm_previous_exchange_day_value
+                    var:xfm_last_completed_volume_day <= xfm_previous_exchange_day_value
+                    OR = {
+                        NOT = { has_variable = xfm_last_listing_volume_day }
+                        var:xfm_last_listing_volume_day < var:xfm_last_completed_volume_day
+                    }
+                }
+                change_variable = { name = xfm_demand_window_volume_cents add = var:xfm_last_completed_qualified_volume_cents }
+                set_variable = { name = xfm_last_listing_volume_day value = var:xfm_last_completed_volume_day }
+            }
+            change_variable = { name = xfm_demand_review_age add = 1 }
+            if = { limit = { var:xfm_demand_review_age >= 30 } xfm_listing_review_demand_effect = yes }
+            change_variable = { name = xfm_maintenance_age add = 1 }
+            if = { limit = { var:xfm_maintenance_age >= 30 } set_variable = { name = xfm_maintenance_age value = 0 } xfm_issuer_charge_maintenance_effect = yes }
+            if = {
+                limit = { has_variable = xfm_maintenance_late_age }
+                change_variable = { name = xfm_maintenance_late_age add = 1 }
+                if = { limit = { var:xfm_maintenance_late_age >= 30 var:xfm_listing_state <= 2 } xfm_listing_announce_effect = yes }
+            }
+        }
+        if = { limit = { var:xfm_listing_state = 3 var:xfm_notice_day < global_var:xfm_exchange.var:xfm_day } xfm_listing_notice_daily_effect = yes }
+        if = {
+            limit = { var:xfm_listing_state = 4 }
+            change_variable = { name = xfm_suspension_age add = 1 }
+            if = {
+                limit = { var:xfm_suspension_age >= var:xfm_next_suspension_review_age }
+                set_variable = { name = xfm_suspension_review_due value = 1 }
+                change_variable = { name = xfm_next_suspension_review_age add = 7 }
+            }
+        }
+        if = {
+            limit = { var:xfm_listing_state = 8 }
+            change_variable = { name = xfm_relisting_age add = 1 }
+            if = {
+                limit = { var:xfm_relisting_age >= 30 global_var:xfm_exchange = { var:xfm_new_listings_today < xfm_config_listing_daily_budget_value var:xfm_active_coin_count < xfm_config_coin_capacity_value } }
+                set_variable = { name = xfm_listing_state value = 2 }
+                set_variable = { name = xfm_trading_open value = 1 }
+                set_variable = { name = xfm_derivatives_reduce_only value = 0 }
+                set_variable = { name = xfm_relisted_day value = global_var:xfm_exchange.var:xfm_day }
+                set_variable = { name = xfm_maintenance_age value = 0 }
+                set_variable = { name = xfm_active_listing_counted value = 1 }
+                global_var:xfm_exchange = { change_variable = { name = xfm_new_listings_today add = 1 } change_variable = { name = xfm_active_coin_count add = 1 } }
+            }
+        }
+    }
+}
+
+xfm_listing_review_demand_effect = {
+    save_scope_as = xfm_offer_review_coin
+    set_variable = { name = xfm_demand_review_age value = 0 }
+    set_variable = { name = xfm_low_demand_signals value = 0 }
+    set_variable = { name = xfm_independent_holder_count value = 0 }
+    clear_variable_list = xfm_reviewed_holder_beneficiaries
+    every_in_list = {
+        variable = xfm_holders
+        limit = { var:xfm_quantity_units > 0 }
+        clear_saved_scope = xfm_offer_holder_beneficiary
+        var:xfm_account = {
+            if = { limit = { exists = var:xfm_beneficial_owner } var:xfm_beneficial_owner = { save_scope_as = xfm_offer_holder_beneficiary } }
+            else_if = { limit = { exists = var:xfm_holder } var:xfm_holder = { save_scope_as = xfm_offer_holder_beneficiary } }
+        }
+        if = {
+            limit = { exists = scope:xfm_offer_holder_beneficiary scope:xfm_offer_holder_beneficiary != scope:xfm_offer_review_coin.var:xfm_controller }
+            scope:xfm_offer_review_coin = {
+                if = {
+                    limit = { NOT = { is_target_in_variable_list = { name = xfm_reviewed_holder_beneficiaries target = scope:xfm_offer_holder_beneficiary } } }
+                    add_to_variable_list = { name = xfm_reviewed_holder_beneficiaries target = scope:xfm_offer_holder_beneficiary }
+                    change_variable = { name = xfm_independent_holder_count add = 1 }
+                }
+            }
+        }
+    }
+    if = { limit = { var:xfm_demand_window_volume_cents < 500 } change_variable = { name = xfm_low_demand_signals add = 1 } }
+    if = { limit = { var:xfm_independent_holder_count < 3 } change_variable = { name = xfm_low_demand_signals add = 1 } }
+    # Depth is executable, funded bids only. Missing depth is not a fabricated price.
+    if = { limit = { has_variable = xfm_bid_depth_cents var:xfm_bid_depth_cents < 200 } change_variable = { name = xfm_low_demand_signals add = 1 } }
+    if = {
+        limit = { var:xfm_asset_age >= 90 var:xfm_low_demand_signals >= 2 var:xfm_actual_utility_cents = 0 }
+        change_variable = { name = xfm_low_demand_days add = 30 }
+        if = { limit = { var:xfm_low_demand_days >= 90 var:xfm_listing_state = 1 } set_variable = { name = xfm_listing_state value = 2 } set_variable = { name = xfm_demand_remediation_age value = 0 } }
+    }
+    else = { set_variable = { name = xfm_low_demand_days value = 0 } }
+    # Low demand yields warning/review, never confiscation or automatic coin deletion.
+    set_variable = { name = xfm_demand_window_volume_cents value = 0 }
+    set_variable = { name = xfm_actual_utility_cents value = 0 }
+    clear_variable_list = xfm_reviewed_holder_beneficiaries
+}
+
+xfm_listing_notice_daily_effect = {
+    change_variable = { name = xfm_delisting_age add = 1 }
+    if = {
+        limit = {
+            var:xfm_delisting_age >= 15 var:xfm_delisting_age <= 20
+            var:xfm_oracle_quality > 0
+            var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day
+            var:xfm_index_cents > 0
+        }
+        change_variable = { name = xfm_termination_price_sum_cents add = var:xfm_index_cents }
+        change_variable = { name = xfm_termination_samples add = 1 }
+    }
+    if = {
+        limit = { var:xfm_delisting_age = 21 }
+        if = {
+            limit = { var:xfm_termination_samples >= 3 }
+            set_variable = { name = xfm_termination_price_cents value = { value = var:xfm_termination_price_sum_cents divide = var:xfm_termination_samples floor = yes } }
+            set_variable = { name = xfm_termination_price_certified value = 1 }
+            set_variable = { name = xfm_termination_requested value = 1 }
+            # Futures already performed today's ordinary mark. Settle only its remaining
+            # delta to this certified window price; no recursive clock or full daily dispatch.
+            xfm_futures_terminate_market_effect = yes
+        }
+        else = { set_variable = { name = xfm_settlement_price_pending value = 1 } }
+    }
+    if = {
+        limit = { var:xfm_delisting_age >= 30 }
+        set_variable = { name = xfm_trading_open value = 0 }
+        xfm_spot_cancel_coin_effect = yes
+        set_variable = { name = xfm_listing_state value = 5 }
+        if = { limit = { var:xfm_active_listing_counted = 1 } set_variable = { name = xfm_active_listing_counted value = 0 } global_var:xfm_exchange = { change_variable = { name = xfm_active_coin_count subtract = 1 } } }
+        # Actual freely owned coins/cash remain; OTC and claims are still available.
+    }
+}

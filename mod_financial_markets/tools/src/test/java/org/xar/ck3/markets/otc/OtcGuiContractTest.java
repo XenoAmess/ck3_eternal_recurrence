@@ -53,7 +53,8 @@ final class OtcGuiContractTest {
         assertEquals(normalize(previousCancel), normalize(currentCancel));
         String previousTicket = baseline("xfm_market_spot_ticket.gui");
         String currentTicket = read(CANDIDATE, "gui/xfm_market_spot_ticket.gui");
-        assertEquals(previousTicket, currentTicket.replace("        xfm_market_otc_panel = {}\n", ""));
+        assertEquals(previousTicket, currentTicket.replace("        xfm_market_otc_panel = {}\n", "")
+                .replace("        xfm_market_redemption_panel = {}\n", "")); // independent redemption contract covers this approved panel extension
         assertFalse(guis.contains("trigger_event"));
         assertFalse(read(CANDIDATE, "common/scripted_effects/xfm_market_ui_otc_targets.txt").contains("every_living_character"));
     }

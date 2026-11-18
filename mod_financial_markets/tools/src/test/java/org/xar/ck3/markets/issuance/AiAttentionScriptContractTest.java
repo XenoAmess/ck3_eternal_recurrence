@@ -413,7 +413,7 @@ final class AiAttentionScriptContractTest {
                     else here.vars.put(name,num(here,name)-(Double)term(field(fields,"subtract"),here,prev)); continue;
                 }
                 if (key.equals("xfm_coin_ai_effect")) { calls.merge(here.id,1,Integer::sum); here.vars.put("xfm_issuer_result",0d); coinCallback.accept(here); continue; }
-                if (List.of("xfm_spot_ai_effect","xfm_futures_ai_effect","xfm_spot_watch_coin_effect").contains(key)) continue; // explicitly authored no-op consumer ports
+                if (List.of("xfm_spot_ai_effect","xfm_futures_ai_effect","xfm_redemption_ai_effect","xfm_spot_watch_coin_effect").contains(key)) continue; // explicitly authored no-op consumer ports
                 if (key.equals("xfm_issuer_subscribe_effect")) { subscriptionAttempts++; continue; } // records attempted normal funding, never grants money
                 if(key.equals("xfm_issuer_complete_offer_effect")) { if(check(new Entry("xfm_issuer_can_complete_trigger","=",new Text("yes")),here,prev)) { ((Node)here.vars.get("xfm_selected_coin")).vars.put("xfm_listing_state",1d); here.vars.remove("xfm_pending_offer"); completions++; } continue; } // actual public success also unconditionally removes pending; engine allocation is outside this subset
                 if(key.equals("xfm_issuer_refund_effect")) { here.vars.put("xfm_listing_state",6d); refunds++; continue; } // explicit refund port, no cash manufactured

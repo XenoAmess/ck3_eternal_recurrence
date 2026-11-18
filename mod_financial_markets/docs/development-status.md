@@ -2,7 +2,17 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（15:51 UTC 更新）
+## 当前状态（16:41 UTC 更新）
+
+新增四包已按独立补丁合并：有限资金回兑、所选期货合约真实盘口、章程确认目标固定及退市静止状态的冗余写入优化。显式运行清单为196文件；各包说明见[回兑](coin-redemption.md)、[期货盘口](futures-selected-contract-book.md)及[章程确认](charter-target-confirmation.md)。回兑只用发行账户真实预存现金，成功交付后记用途和永久收据，不制造现货成交量或价格样本。
+
+16:32:32Z首次统一完整验证实际失败：239项、2 failure、1 error、0skip，原wait1/38.5113165秒。三个集成问题分别为新盘口刷新缺少旧AI测试的显式UI端口、优化测试默认引用当前源码而非旧基线、OTC界面冻结对比未排除新增回兑面板。原JUnit保存在`task/software-13-financial-utility-full01-FAILED`，没有改判。已从Git固定8份原生产源码及来源SHA，保留原严格优化差异断言；另外两处只补明确端口和新面板扩展。16:38:43Z受影响三类24项全部通过、0skip，原wait0/19.876317秒，`operations/MVN-financial-utility-fixtures01`。完整后继验证、回兑SAVE审计接线与实机仍在继续。
+
+共同Native的Q10已实际通过：同缓存生产构建wait0/72.733934秒，19基线中实际重验4个受影响目标、复用15个相同原件，附加10次调用全部通过。自然SDL事件边界修复已编入DLL，尚未取得新场装载或主线程读取成功信用。最终金融提交后仍须按干净源码完成公共资格绑定和运行包，不能用Q10软件结果声称第五场已修复。
+
+16:41:04.570428Z统一完整后继`mvn verify`实际wait0/39.423229秒：246项全部通过、0skip，Quarkus默认入口打包成功；`operations/MVN-financial-utility-full02` stdout9460bytes/SHA `f5e68585752e524bf8822071359c407177807f348fb1153b8d6193284c2c1cd9`，JUnit保全`task/software-14-financial-utility-full02`。其中7项新增回兑SAVE审计与原2项共同通过；两类新实体已进入真实两遍reader/来源资源与JSON输出，核预算、当前余额、历史复用、永久ID/收据链和七日冷却，不把预算重复加成现金。仍保持`financialCertified=false`，没有真实1.21金融SAVE或冷载信用。
+
+## 截至15:51 UTC的准备记录
 
 第五场`R0005/a83`实际收到32次发送成功的后台唤醒，但owner pump仍停在19058，唯一新完整读取在8秒后明确失败。错误及原始诊断已完整经过公共接口保留；本场失败exit1、Job0、tree gone，原Host/keeper退出及CAS释放均已确认。没有金融动作、推进日或SAVE。正在修实际主线程服务边界，不延长旧请求或恢复前台；失败不计整Mod通过。原件见[共同验收记录](../../docs/maintenance/2026-11-18-machine4-financial-acceptance-control.md)。
 

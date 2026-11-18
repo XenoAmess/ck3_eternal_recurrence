@@ -1,0 +1,48 @@
+{
+  "schema": "xfm.idle-baseline.v1",
+  "source_commit": "c6104387d8d6ac4a6f437cc6d0b207817aab1bdf",
+  "boundary": "Original production source before adopted idle-write optimization. Not an engine or SAVE fixture.",
+  "absent_original_path": "common/scripted_triggers/xfm_market_idle_triggers.txt",
+  "files": [
+    {
+      "path": "mod_financial_markets/common/scripted_effects/xfm_spot_history.txt",
+      "bytes": 25294,
+      "sha256": "befe95325de3495c594ac01ae9cbf02490e7032ee74203485ceb5a46adf7200a"
+    },
+    {
+      "path": "mod_financial_markets/common/scripted_effects/xfm_oracle_reference.txt",
+      "bytes": 4456,
+      "sha256": "37d644129b2f5bd5af18e75c6d0ca638deaac837ae050837b0833fb10a86ad40"
+    },
+    {
+      "path": "mod_financial_markets/common/scripted_effects/xfm_oracle_samples.txt",
+      "bytes": 6913,
+      "sha256": "5b6a88d52a3700e3f439dc071bf8dc38f124610368729971682ec59287c2e389"
+    },
+    {
+      "path": "mod_financial_markets/common/scripted_effects/xfm_listing_daily.txt",
+      "bytes": 8561,
+      "sha256": "b64e27c109e7b49ba5c3ac1386b708ac6d024535d5b8aeaabed1d8309e1db0d4"
+    },
+    {
+      "path": "mod_financial_markets/common/scripted_effects/xfm_futures_settlement.txt",
+      "bytes": 11728,
+      "sha256": "70bd3fa63766fcc3060271f9ead418bcb91c1ce2e25c72268ded0d57e2bfd854"
+    },
+    {
+      "path": "mod_financial_markets/common/scripted_triggers/xfm_oracle_triggers.txt",
+      "bytes": 596,
+      "sha256": "26df1e98e8a02c3703c647ef16a391ccd339861d6b2e3f165f9d66664e4af06d"
+    },
+    {
+      "path": "mod_financial_markets/common/script_values/xfm_oracle_values.txt",
+      "bytes": 1022,
+      "sha256": "56aa2a7584229365b3a686350f92145f600db2e912f0df468c0bca9ad0617abc"
+    },
+    {
+      "path": "mod_financial_markets/common/script_values/xfm_numeric_comparison_values.txt",
+      "bytes": 923,
+      "sha256": "a3ede7be8de030036a5c65926a374470358fecef27f06882cac3a27e9119aed1"
+    }
+  ]
+}

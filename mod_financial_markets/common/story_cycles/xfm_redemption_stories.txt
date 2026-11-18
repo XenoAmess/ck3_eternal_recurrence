@@ -1,0 +1,3 @@
+﻿# Permanent financial evidence; story owner is technical custody, never the legal asset holder.
+xfm_finance_redemption_window = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }
+xfm_finance_redemption_receipt = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }

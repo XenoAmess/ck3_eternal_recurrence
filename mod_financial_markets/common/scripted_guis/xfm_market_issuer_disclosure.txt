@@ -1,6 +1,6 @@
 ﻿xfm_market_charter_gui = {
     scope = character
-    is_valid = { is_ai = no exists = var:xfm_selected_coin }
+    is_valid = { is_ai = no is_alive = yes is_adult = yes exists = var:xfm_selected_coin var:xfm_selected_coin = { story_type = xfm_finance_coin } }
     effect = { trigger_event = xfm_issuer.100 }
 }
 xfm_market_restart_liquidity_gui = {

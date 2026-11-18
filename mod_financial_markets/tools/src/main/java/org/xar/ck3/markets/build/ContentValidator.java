@@ -83,7 +83,9 @@ public final class ContentValidator {
                     for (int i = 0; i + 1 < tokens.size(); i++) {
                         String token = tokens.get(i);
                         if (name.startsWith("common/") || name.startsWith("events/")) {
-                            require(!(token.startsWith("var:") && i + 4 < tokens.size()
+                            boolean scopedValue = token.startsWith("var:") || token.startsWith("scope:")
+                                    || token.contains(".var:");
+                            require(!(scopedValue && i + 4 < tokens.size()
                                             && tokens.get(i + 1).equals("=") && tokens.get(i + 2).equals("{")
                                             && tokens.get(i + 3).equals("value") && tokens.get(i + 4).equals("=")),
                                     "numeric variable equality cannot use an arithmetic block: " + name);

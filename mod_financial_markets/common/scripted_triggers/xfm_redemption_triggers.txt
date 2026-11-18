@@ -1,0 +1,59 @@
+﻿# Character scope. Authority is refreshed by each public effect before this predicate.
+xfm_redemption_controller_trigger = {
+ xfm_issuer_controls_selected_trigger = yes
+ var:xfm_selected_coin = {
+  var:xfm_listing_state >= 1 var:xfm_listing_state <= 7
+  exists = var:xfm_issuer_account
+  var:xfm_issuer_account = {
+   xfm_finance_account_usable_trigger = yes var:xfm_system_account = 1
+   var:xfm_legal_entity = prev
+   NOT = { has_variable = xfm_redemption_only }
+  }
+  OR = { NOT = { exists = var:xfm_market_maker_account } var:xfm_issuer_account != var:xfm_market_maker_account }
+ }
+}
+# Coin scope. Dedicated escrow is inaccessible to ordinary private-wallet selection/withdrawal.
+xfm_redemption_account_trigger = {
+ exists = var:xfm_redemption_account
+ var:xfm_redemption_account = {
+  xfm_finance_account_usable_trigger = yes var:xfm_system_account = 1
+  var:xfm_legal_entity = prev var:xfm_redemption_only = 1 var:xfm_reserved_cents = 0
+ }
+ var:xfm_redemption_account != var:xfm_issuer_account
+ OR = { NOT = { exists = var:xfm_market_maker_account } var:xfm_redemption_account != var:xfm_market_maker_account }
+}
+# Window scope. Remaining budget is a limit, reconciled against real escrow cash, never a wallet.
+xfm_redemption_window_open_trigger = {
+ story_type = xfm_finance_redemption_window
+ var:xfm_status = 1 var:xfm_price_cents > 0
+ var:xfm_expiry_day > global_var:xfm_exchange.var:xfm_day
+ var:xfm_remaining_cents >= var:xfm_price_cents
+ exists = var:xfm_coin exists = var:xfm_redemption_account
+ var:xfm_coin.var:xfm_redemption_window = this
+ var:xfm_coin.var:xfm_redemption_account = var:xfm_redemption_account
+ var:xfm_coin = { story_type = xfm_finance_coin var:xfm_listing_state != 7 xfm_redemption_account_trigger = yes }
+ var:xfm_redemption_account = {
+  xfm_finance_account_usable_trigger = yes var:xfm_reserved_cents = 0
+  var:xfm_free_cents = prev.var:xfm_remaining_cents
+ }
+}
+# Character scope with quote scopes already captured. Refresh beneficiary before evaluation.
+xfm_redemption_seller_trigger = {
+ is_alive = yes is_adult = yes
+ exists = scope:xfm_red_quote_account
+ scope:xfm_red_quote_account = {
+  xfm_finance_account_usable_trigger = yes var:xfm_system_account = 0
+  var:xfm_holder = scope:xfm_red_quote_actor
+  NOT = { has_variable = xfm_legal_entity }
+  var:xfm_holder != scope:xfm_red_quote_coin.var:xfm_controller
+  var:xfm_beneficial_owner != scope:xfm_red_quote_coin.var:xfm_controller
+  var:xfm_holder != scope:xfm_red_quote_window.var:xfm_publisher
+  var:xfm_beneficial_owner != scope:xfm_red_quote_coin.var:xfm_issuer_account.var:xfm_beneficial_owner
+  var:xfm_beneficial_owner != scope:xfm_red_quote_escrow.var:xfm_beneficial_owner
+ }
+ OR = {
+  NOT = { exists = scope:xfm_red_quote_coin.var:xfm_market_maker_account }
+  scope:xfm_red_quote_account.var:xfm_beneficial_owner != scope:xfm_red_quote_coin.var:xfm_market_maker_account.var:xfm_beneficial_owner
+ }
+ OR = { NOT = { has_variable = xfm_redemption_last_success_day } var:xfm_redemption_last_success_day < global_var:xfm_exchange.var:xfm_day }
+}

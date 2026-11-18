@@ -510,6 +510,7 @@ final class FuturesAiScriptContractTest {
                 }
                 if (k.equals("random")) { Block a = (Block)e.value(); if (randomEnabled && number(evaluate(field(a, "chance"), f)).signum() > 0) execute(without(a, "chance"), f); continue; }
                 if (k.equals("xfm_finance_refresh_beneficiary_effect")) continue; // explicit engine/controller port; fixtures supply authoritative holders
+                if (k.equals("xfm_market_ui_futures_book_effect")) continue; // UI-only refresh port; the independent book contract executes its production scripts
                 if (k.equals("xfm_futures_match_effect")) { matchCalls++; continue; } // no fictitious fill; reservation remains held
                 if (e.value() instanceof Block child) { Datum scope = resolve(k, f); if (!(scope instanceof Node n)) throw new IllegalArgumentException("missing effect scope " + k); execute(child, f.enter(n)); continue; }
                 execute(definition(k), f);
