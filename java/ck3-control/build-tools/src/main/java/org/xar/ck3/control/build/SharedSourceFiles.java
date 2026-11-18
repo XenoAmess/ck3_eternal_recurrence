@@ -75,6 +75,45 @@ public final class SharedSourceFiles {
         NativeFile entry = nativeEntry(path, true);
         return new DirectoryIdentity(entry.volumeSerialDecimal(), entry.fileIdDecimal(), entry.creationFiletimeDecimal());
     }
+    /** Identity-only observation for mutable scratch directories; never an immutable source witness. */
+    static DirectoryIdentity nativeMutableDirectoryIdentity(Path path) throws IOException {
+        return nativeMutableDirectoryIdentity(path, () -> {});
+    }
+    static DirectoryIdentity nativeMutableDirectoryIdentity(Path path, MetadataReadObserver observer) throws IOException {
+        if (!com.sun.jna.Platform.isWindows() || !path.isAbsolute()) throw new IOException("actual Windows directory identity required");
+        plainAncestors(path);
+        if (!Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) throw new IOException("ordinary mutable directory required: " + path);
+        HANDLE handle = Kernel32.INSTANCE.CreateFile(nativePath(path), 0x80, 7, null, 3, 0x00200000 | 0x02000000, null);
+        if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("mutable directory open Win32=" + Native.getLastError() + " path=" + path);
+        try {
+            DirectoryIdentity before = nativeHeldMutableDirectoryIdentity(handle);
+            java.util.Objects.requireNonNull(observer).afterStandardRead();
+            DirectoryIdentity after = nativeHeldMutableDirectoryIdentity(handle);
+            if (!before.equals(after)) throw new IOException("mutable directory native identity changed: " + path);
+            return after;
+        } finally {
+            if (!Kernel32.INSTANCE.CloseHandle(handle)) throw new IOException("mutable directory close Win32=" + Native.getLastError());
+        }
+    }
+    private static DirectoryIdentity nativeHeldMutableDirectoryIdentity(HANDLE handle) throws IOException {
+        try (Memory id = new Memory(24); Memory basic = new Memory(40); Memory standard = new Memory(24)) {
+            if (!Api.VALUE.GetFileInformationByHandleEx(handle, 18, id, 24))
+                throw new IOException("mutable directory FileIdInfo Win32=" + Native.getLastError());
+            if (!Api.VALUE.GetFileInformationByHandleEx(handle, 0, basic, 40))
+                throw new IOException("mutable directory FileBasicInfo Win32=" + Native.getLastError());
+            if (!Api.VALUE.GetFileInformationByHandleEx(handle, 1, standard, 24))
+                throw new IOException("mutable directory FileStandardInfo Win32=" + Native.getLastError());
+            NativeEntryState state = new NativeEntryState((basic.getInt(32) & 0x400) != 0,
+                    standard.getByte(20) != 0, standard.getByte(21) != 0, true);
+            if (state.rejected()) throw new NativeEntryStateException(state);
+            byte[] big = id.getByteArray(8, 16);
+            for (int left = 0, right = big.length - 1; left < right; left++, right--) {
+                byte value = big[left]; big[left] = big[right]; big[right] = value;
+            }
+            return new DirectoryIdentity(Long.toUnsignedString(id.getLong(0)), new BigInteger(1, big).toString(),
+                    Long.toUnsignedString(basic.getLong(0)));
+        }
+    }
     public static NativeFile nativeFile(Path path) throws IOException { return nativeEntry(path, false); }
     private static NativeFile nativeEntry(Path path, boolean directory) throws IOException {
         if (!com.sun.jna.Platform.isWindows() || !path.isAbsolute()) throw new IOException("actual Windows file metadata required");

@@ -17,6 +17,7 @@ import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
+import java.nio.file.FileSystemException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.DirectoryIteratorException;
 import java.nio.file.DirectoryStream;
@@ -2962,6 +2963,12 @@ public final class ControlBuild {
         default long size(Path path) throws IOException { return Files.size(path); }
         default DirectoryStream<Path> children(Path path) throws IOException { return Files.newDirectoryStream(path); }
         default void walk(Path root, FileVisitor<Path> visitor) throws IOException { Files.walkFileTree(root, visitor); }
+        default Object directoryIdentity(Path path) throws IOException {
+            if (com.sun.jna.Platform.isWindows()) return SharedSourceFiles.nativeMutableDirectoryIdentity(path);
+            BasicFileAttributes value = attributes(path);
+            if (value.fileKey() == null) throw new IOException("Directory identity unavailable: " + path);
+            return Map.entry(value.fileKey(), value.creationTime());
+        }
     }
 
     private static final InventoryIo NIO_INVENTORY = new InventoryIo() {};
@@ -3000,6 +3007,33 @@ public final class ControlBuild {
 
     private static long mutableInventoryBytes(Path root, InventoryObserver observer, InventoryAccess access,
                                                WorkpackageInventoryLimits limits) throws IOException {
+        if (!access.scratch()) return mutableInventoryOnce(root, observer, access, limits);
+        BasicFileAttributes rootIdentity = access.io().attributes(root);
+        Object rootKey = access.io().directoryIdentity(root);
+        Path realRoot = access.io().realPath(root);
+        long deadline = System.nanoTime() + Duration.ofSeconds(120).toNanos();
+        InventoryAccess bounded = new InventoryAccess(true, () -> {
+            access.active().check();
+            if (System.nanoTime() >= deadline) throw new IOException("Scratch census retry time limit: " + root);
+        }, access.io());
+        for (int attempt = 0; attempt < 3; attempt++) {
+            bounded.active().check();
+            verifyScratchRoot(root, realRoot, rootIdentity, rootKey, access.io());
+            try {
+                long total = mutableInventoryOnce(root, observer, bounded, limits);
+                verifyScratchRoot(root, realRoot, rootIdentity, rootKey, access.io());
+                return total;
+            } catch (ScratchEnumerationChanged changed) {
+                // Discard this partial total and all entry counters. A fresh complete
+                // census must succeed; a missing subtree is never a successful zero.
+                if (attempt == 2) throw changed;
+            }
+        }
+        throw new IOException("Scratch census retry limit: " + root);
+    }
+
+    private static long mutableInventoryOnce(Path root, InventoryObserver observer, InventoryAccess access,
+                                             WorkpackageInventoryLimits limits) throws IOException {
         AtomicLong total = new AtomicLong();
         walk(root, false, limits, true, true, observer, (path, active) -> {
             try { total.set(Math.addExact(total.get(), CiBootstrap.rereadScratchMetadata(
@@ -3007,6 +3041,26 @@ public final class ControlBuild {
             catch (NoSuchFileException removedEntry) { /* A concurrent producer removed this output/cache entry. */ }
         }, access);
         return total.get();
+    }
+
+    private static boolean sameScratchDirectory(BasicFileAttributes before, BasicFileAttributes after) {
+        return before != null && after != null && before.isDirectory() && after.isDirectory()
+                && !before.isSymbolicLink() && !after.isSymbolicLink() && !before.isOther() && !after.isOther()
+                && before.creationTime().equals(after.creationTime());
+    }
+
+    private static void verifyScratchRoot(Path root, Path realRoot, BasicFileAttributes original,
+                                          Object originalKey, InventoryIo io) throws IOException {
+        if (originalKey == null || !sameScratchDirectory(original, io.attributes(root))
+                || !originalKey.equals(io.directoryIdentity(root)) || !io.realPath(root).equals(realRoot))
+            throw new IOException("Scratch census root identity changed: " + root);
+    }
+
+    private static final class ScratchEnumerationChanged extends IOException {
+        private static final long serialVersionUID = 1L;
+        ScratchEnumerationChanged(Path path, IOException original) {
+            super("Mutable scratch directory disappeared or independently reached empty enumeration: " + path, original);
+        }
     }
 
     private interface FileAction { void accept(Path path, CiBootstrap.IoGuard active) throws IOException; }
@@ -3199,6 +3253,8 @@ public final class ControlBuild {
         AtomicLong count = new AtomicLong(), regularFiles = new AtomicLong(), directories = new AtomicLong();
         var currentPath = new java.util.concurrent.atomic.AtomicReference<Path>(root);
         Path realRoot = access.io().realPath(root);
+        Map<Path, BasicFileAttributes> directoryIdentities = new HashMap<>();
+        Map<Path, Object> directoryKeys = new HashMap<>();
         CiBootstrap.IoGuard active = () -> {
             if (Thread.currentThread().isInterrupted()) throw new InterruptedIOException("Build inventory interrupted");
             if (System.nanoTime() >= deadline) throw inventoryFailure(detailed, "TIME_MILLIS", currentPath.get(),
@@ -3208,7 +3264,19 @@ public final class ControlBuild {
         access.io().walk(root, new SimpleFileVisitor<>() {
             @Override public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) throws IOException {
                 if (excludeBuildCaches && !directory.equals(root) && EXCLUDED.contains(directory.getFileName().toString())) return FileVisitResult.SKIP_SUBTREE;
-                return check(directory, attributes) ? FileVisitResult.CONTINUE : FileVisitResult.SKIP_SUBTREE;
+                if (!check(directory, attributes)) return FileVisitResult.SKIP_SUBTREE;
+                if (access.scratch()) {
+                    try {
+                        Object key = scratchDirectoryKey(directory);
+                        if (key == null) throw new IOException("Scratch directory identity unavailable: " + directory);
+                        directoryIdentities.put(directory, attributes); directoryKeys.put(directory, key);
+                    } catch (NoSuchFileException independentlyMissing) {
+                        if (scratchDescendant(directory) && confirmedScratchParents(directory, independentlyMissing))
+                            return FileVisitResult.SKIP_SUBTREE;
+                        throw independentlyMissing;
+                    }
+                }
+                return FileVisitResult.CONTINUE;
             }
             @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
                 if (!check(file, attributes)) return FileVisitResult.CONTINUE;
@@ -3241,8 +3309,73 @@ public final class ControlBuild {
             }
             @Override public FileVisitResult postVisitDirectory(Path directory, IOException error) throws IOException {
                 active.check();
-                if (allowVanished && !directory.equals(root) && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
-                return super.postVisitDirectory(directory, error);
+                if (allowVanished && !directory.equals(root) && error instanceof NoSuchFileException) {
+                    directoryIdentities.remove(directory);
+                    directoryKeys.remove(directory);
+                    return FileVisitResult.CONTINUE;
+                }
+                if (allowVanished && scratchDescendant(directory) && confirmedScratchEnumerationEnd(directory, error))
+                    throw new ScratchEnumerationChanged(directory, error);
+                FileVisitResult result = super.postVisitDirectory(directory, error);
+                directoryIdentities.remove(directory);
+                directoryKeys.remove(directory);
+                return result;
+            }
+            private boolean confirmedScratchEnumerationEnd(Path directory, IOException error) throws IOException {
+                // NIO exposes no native error code here. Neither localized error
+                // text nor a generic I/O failure alone grants a retry.
+                if (error == null || error.getClass() != FileSystemException.class) return false;
+                FileSystemException failed = (FileSystemException) error;
+                if (failed.getFile() == null || failed.getOtherFile() != null
+                        || !Path.of(failed.getFile()).toAbsolutePath().normalize().equals(directory.toAbsolutePath().normalize())) return false;
+                BasicFileAttributes original = directoryIdentities.get(directory);
+                Object originalKey = directoryKeys.get(directory);
+                if (original == null || originalKey == null) return false;
+                try {
+                    if (!sameScratchDirectory(original, access.io().attributes(directory))
+                            || !originalKey.equals(scratchDirectoryKey(directory)))
+                        throw new IOException("Scratch enumeration directory identity changed: " + directory, error);
+                    try (var children = access.io().children(directory)) {
+                        active.check();
+                        if (children.iterator().hasNext()) return false;
+                    } catch (DirectoryIteratorException enumerationFailed) {
+                        throw enumerationFailed.getCause();
+                    }
+                    if (!sameScratchDirectory(original, access.io().attributes(directory))
+                            || !originalKey.equals(scratchDirectoryKey(directory)))
+                        throw new IOException("Scratch enumeration directory identity changed: " + directory, error);
+                } catch (NoSuchFileException independentlyMissing) {
+                    // Only this independent metadata/enumeration result proves loss.
+                }
+                return confirmedScratchParents(directory, error);
+            }
+            private Object scratchDirectoryKey(Path directory) throws IOException {
+                try { return access.io().directoryIdentity(directory); }
+                catch (IOException nativeReadFailure) {
+                    // nativeDirectory deliberately rejects non-directories before opening;
+                    // only a separate NIO missing result may classify a deletion race.
+                    try { access.io().attributes(directory); }
+                    catch (NoSuchFileException independentlyMissing) {
+                        independentlyMissing.addSuppressed(nativeReadFailure); throw independentlyMissing;
+                    }
+                    throw nativeReadFailure;
+                }
+            }
+            private boolean confirmedScratchParents(Path directory, IOException error) throws IOException {
+                boolean rootConfirmed = false;
+                for (Path parent = directory.getParent(); parent != null && parent.startsWith(root); parent = parent.getParent()) {
+                    active.check();
+                    try {
+                        if (!sameScratchDirectory(directoryIdentities.get(parent), access.io().attributes(parent))
+                                || directoryKeys.get(parent) == null || !directoryKeys.get(parent).equals(scratchDirectoryKey(parent))
+                                || !access.io().realPath(parent).startsWith(realRoot))
+                            throw new IOException("Scratch enumeration ancestor identity changed: " + parent, error);
+                        if (parent.equals(root)) rootConfirmed = true;
+                    } catch (NoSuchFileException independentlyMissingParent) {
+                        if (parent.equals(root)) throw independentlyMissingParent;
+                    }
+                }
+                return rootConfirmed;
             }
             private boolean check(Path path, BasicFileAttributes attributes) throws IOException {
                 currentPath.set(path); active.check();

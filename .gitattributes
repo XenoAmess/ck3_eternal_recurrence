@@ -1406,3 +1406,5 @@ java/ck3-control/native-transport/src/test/resources/date-arm1210/cancelled-gene
 java/ck3-control/native-transport/src/test/resources/date-arm1210/negative/expired.json -text whitespace=cr-at-eol
 java/ck3-control/native-transport/src/test/resources/date-arm1210/negative/indeterminate.json -text whitespace=cr-at-eol
 java/ck3-control/native-transport/src/test/resources/date-arm1210/negative/attempted-rejected.json -text whitespace=cr-at-eol
+docs/maintenance/2026-11-18-florin-tools-actual-verify.json -text whitespace=cr-at-eol
+docs/maintenance/2026-11-18-florin-tools-scratch-qualification.json -text whitespace=cr-at-eol

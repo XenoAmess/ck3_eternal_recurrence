@@ -1,0 +1,23 @@
+{
+  "schema": "xar.ck3.florin.mutable-scratch-tools-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "actual_completed_build": {
+    "path": "docs/maintenance/2026-11-18-florin-tools-actual-verify.json",
+    "bytes": 229856,
+    "sha256": "bd19e75874488feb7b516e095a1f1ffad0ad17d3a593b1a5861714a4e11f5bc9"
+  },
+  "result": {
+    "passed": 1239,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "controller_seconds": 1424.464534,
+    "maven_exit": 0,
+    "job_active": 0
+  },
+  "source_closure": "All 318 Java source files compared to parent HEAD:314 exact existing blobs, only these2production+2newTest differ. Original complete352-file compiled snapshot and six-file deployment are preserved by the actual build receipt.",
+  "behavior": "Retry only proven concurrent scratch directory enumeration changes, bounded to3 complete censuses within original120seconds. Never accept a partial sum. Windows mutable scratch identity uses the same held native volume/fullFileID/creation/type/reparse/deletePending and deliberately excludes mutable directory time/size/linkcount. Existing immutable source witnesses retain their original strict behavior.",
+  "ci": "Existing default Build Tools VERIFY discovers the two added JUnit classes; no separate skipped selector or manual oracle. Actual local VERIFY used genuine historical software corpus and current full source.",
+  "old_failures": "Both earlier fullVERIFY guard failures and all intermediate focused REDs retained; no result rewritten into PASS. Initial adapter60min request rejected by separate30min bootstrap bound; new20min input prepared separately, no ENV claimed.",
+  "limits": "This qualifies build tools only. No Game permission, ENV creation, Root/Driver adoption, full CI reactor or successful Date12 live credit."
+}
