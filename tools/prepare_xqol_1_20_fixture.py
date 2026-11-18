@@ -94,7 +94,7 @@ def events(governors_only: bool) -> str:
                      zqa_verify_payment_full_effect = yes
                      xqol_bulk_demand_payment_any_effect = yes
                      zqa_verify_payment_any_effect = yes
-                     set_variable = { name = xqol_mass_conversion_threshold value = 50 }
+                     set_variable = { name = xqol_mass_conversion_threshold_draft value = 50 }
                      xqol_bulk_conversion_dispatch_effect = yes
                      set_variable = { name = zqa120_stage value = 5 }''')
     tick = '''        change_variable = { name = zqa120_ticks add = 1 }
@@ -142,7 +142,7 @@ AFTER_DISABLE
         else_if = {
             limit = { var:zqa120_stage = 4 has_character_flag = zqa_await_payment_any }
             zqa_verify_payment_any_effect = yes
-            set_variable = { name = xqol_mass_conversion_threshold value = 50 }
+            set_variable = { name = xqol_mass_conversion_threshold_draft value = 50 }
             xqol_bulk_conversion_dispatch_effect = yes
             set_variable = { name = zqa120_stage value = 5 }
         }

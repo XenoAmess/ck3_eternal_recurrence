@@ -13,3 +13,9 @@
 继续使用公共GUI-only runtime，旧Native不加载。原完整天朝core生产effect／断言与27条marker保留，单独case上限60自然日；继任、移除、死亡、转封门禁及索款／改信／赎囚／释放后果在真实引擎验证。防御战争、生产滑条及官职候选GUI仍须分别取得实际结果，core单场不能授完整产品发布。原始软件结果在D:/ck3-state/upgrade-20261118/xqol-1210-software、xqol-core-a01，源码来源检查与旧失败在xqol-1210-review。原件30日复核，不默认永久保留。
 
 下一场前，已回收已发布Ox缓存及CHT业务／缓存的可重建shader：10624文件、438096209逻辑字节，零失败。实际D卷由22099402752增至22556413952B（包含并发系统变化，不全归因删除）；日志、GUI、产品／夹具、CHT物理保存及唯一MRM warm输入仍在。历史已删shader的prepared pins不可读取。新场仍独立核容量、活跃任务与预算。
+
+2026-11-18T09:07:37.244267Z，R0001原Game正常退出0、无WM_CLOSE/STOP，keeper/CAS闭合，零SAVE。原生产继任／移除／死亡／转封、足额／有钱即收索款、改信筛选、两种赎囚及释放矩阵均达到原标记，但最终accepted-rite与DONE两条未完成；保持HARNESS_RED，不把25/27及零FAIL标记当业务通过。实际error.log91988B：核心驱动仍设committed threshold而dispatcher读draft，造成101路未设变量诊断；另有原版文本formatter回退诊断。最后可见1066-10-01，由普通事件暂停，16自然日。
+
+修复仅改共享fixture producer中两处50门槛初始化为消费者实际读取的draft，不更改正式27文件、原生产effects、原断言、调度顺序和完整marker清单。真实生产generator→fixture入口字段回归加入原CI测试文件，含当前stock的9项实际通过、无跳过。新a03 fixture仅event文件两处字段变化，精确逆替换可还原旧输入；该文件重新parse通过，其余21份原精确输入资格复用。a02生成时误带一处空格的准备校验失败亦保留，没有启动Game。原R0001 common verify因失败review缺少direct_image_review字段返回BLOCKED，保留原回执，不追认任何业务信用；原退出及closure依各自原件独立记录。
+
+本次最早prepare尚在运行时误调用allocate，被缺少prepared-case拒绝，未消费live ID或启动Game；原拒绝留xqol-core-allocate-early-blocked.json。后继分配消费实际prepare退出0。新场wrapper在run前明确拒绝没有run_dir的失败分配结果，不按外层调用成功启动下一步。

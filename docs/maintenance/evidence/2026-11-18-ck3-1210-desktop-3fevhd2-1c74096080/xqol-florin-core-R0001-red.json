@@ -1,0 +1,125 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T09:10:29.234904+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0001",
+  "case": "migration-core-1210",
+  "reviewer": "/root",
+  "passed": false,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-core-r1-quit-dialog-view.png",
+      "bytes": 661182,
+      "sha256": "2ee64582b6b66ec38da9a55b663eec39204575a70d7f877c17fdd6dca6e98957"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-core-r1-quit-desktop.png.json",
+      "bytes": 1462,
+      "sha256": "c2afb1da3c199e4d11a049d4390a619dacba1811115c0c67ef473ef86c40b617"
+    }
+  ],
+  "facts": {
+    "original_celestial_core_markers": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-8bd072ee14e84a77a5315e1e5dae6a0a\\profile\\logs\\debug.log",
+          "bytes": 3797119,
+          "sha256": "258f842b0814b2935f8d62b3aceb80339424e43b419c4b86c2a6d461a20097aa"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-8bd072ee14e84a77a5315e1e5dae6a0a\\profile\\logs\\error.log",
+          "bytes": 91988,
+          "sha256": "dc6c0a33b47fe416d256426578c0a4500bd98da2ecacc12d2d0ee7bd20379ab0"
+        }
+      ]
+    },
+    "original_heir_removal_death_and_transfer_guards": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-8bd072ee14e84a77a5315e1e5dae6a0a\\profile\\logs\\debug.log",
+          "bytes": 3797119,
+          "sha256": "258f842b0814b2935f8d62b3aceb80339424e43b419c4b86c2a6d461a20097aa"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-8bd072ee14e84a77a5315e1e5dae6a0a\\profile\\logs\\error.log",
+          "bytes": 91988,
+          "sha256": "dc6c0a33b47fe416d256426578c0a4500bd98da2ecacc12d2d0ee7bd20379ab0"
+        }
+      ]
+    },
+    "native_hook_payment_conversion_ransom_release_consequences": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-8bd072ee14e84a77a5315e1e5dae6a0a\\profile\\logs\\debug.log",
+          "bytes": 3797119,
+          "sha256": "258f842b0814b2935f8d62b3aceb80339424e43b419c4b86c2a6d461a20097aa"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-8bd072ee14e84a77a5315e1e5dae6a0a\\profile\\logs\\error.log",
+          "bytes": 91988,
+          "sha256": "dc6c0a33b47fe416d256426578c0a4500bd98da2ecacc12d2d0ee7bd20379ab0"
+        }
+      ]
+    },
+    "actual_current_actor_date_and_normal_exit": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-8bd072ee14e84a77a5315e1e5dae6a0a\\profile\\logs\\debug.log",
+          "bytes": 3797119,
+          "sha256": "258f842b0814b2935f8d62b3aceb80339424e43b419c4b86c2a6d461a20097aa"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-8bd072ee14e84a77a5315e1e5dae6a0a\\profile\\logs\\error.log",
+          "bytes": 91988,
+          "sha256": "dc6c0a33b47fe416d256426578c0a4500bd98da2ecacc12d2d0ee7bd20379ab0"
+        }
+      ]
+    }
+  },
+  "classification": "HARNESS_RED: full core driver set committed threshold instead of dispatcher draft. Real unset-variable errors retained; final accepted-rite verification/DONE not reached before normal stop. No full business/product credit.",
+  "required_counts": {
+    "ZQA: TEST BEGIN xqol": 1,
+    "ZQA: TEST PASS exact_build_song_emperor": 1,
+    "ZQA: TEST PASS switched_to_supported_player": 1,
+    "ZQA: TEST PASS product_enable_decisions": 1,
+    "ZQA: TEST PASS transfer_guard_enabled_and_preexisting_preserved": 1,
+    "ZQA: TEST PASS vanilla_baseline_heirs_recorded": 1,
+    "ZQA: TEST PASS enabled_highest_non_player_heir_selected": 1,
+    "ZQA: TEST PASS removal_transferred_to_scored_heir": 1,
+    "ZQA: TEST PASS death_transferred_to_non_player_successor": 1,
+    "ZQA: TEST PASS ready_for_product_disable_decisions": 1,
+    "ZQA: TEST PASS product_disable_decisions": 1,
+    "ZQA: TEST PASS disabled_vanilla_heir_available": 1,
+    "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved": 1,
+    "ZQA: TEST PASS payment_full_only": 1,
+    "ZQA: TEST PASS payment_any_above_one_only": 1,
+    "ZQA: TEST PASS payment_matrix_done": 1,
+    "ZQA: TEST PASS conversion_threshold_50_filtered": 1,
+    "ZQA: TEST PASS ransom_full_only": 1,
+    "ZQA: TEST PASS ransom_any_one_gold": 1,
+    "ZQA: TEST PASS release_priority_matrix": 1,
+    "ZQA: TEST PASS phase2_interaction_matrices_done": 1,
+    "ZQA120: TEST PASS release_conversion_rite_matched": 1,
+    "ZQA120: TEST PASS accepted_conversion_faith_and_rite": 0,
+    "ZQA120: TEST DONE core": 0,
+    "ZQA120: TEST BEGIN engine_startup": 1,
+    "ZQA120: TEST PASS production_enable_effects_invoked": 1,
+    "ZQA120: TEST PASS production_disable_effects_invoked": 1
+  },
+  "forbidden_counts": {
+    "ZQA: TEST FAIL": 0,
+    "ZQA120: TEST FAIL": 0
+  },
+  "last_visible_game_date": "1066-10-01 paused by ordinary event,16natural days",
+  "observed_components": "Actual highest non-player heir, removal/death succession, transfer ownership guards, full/any hook payments, conversion filtering, ransom full/any and release matrix markers each reached. These do not override RED or missing final cell.",
+  "errors": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-8bd072ee14e84a77a5315e1e5dae6a0a\\profile\\logs\\error.log",
+    "bytes": 91988,
+    "sha256": "dc6c0a33b47fe416d256426578c0a4500bd98da2ecacc12d2d0ee7bd20379ab0"
+  },
+  "availability": "Original logs/screens/formal/fixture remain. No SAVE. Existing physical CHT saved pair unrelated and preserved."
+}

@@ -1,10 +1,12 @@
 """R70 regression: stock actor availability must survive pending projection."""
 import unittest
+import re
 from unittest import mock
 
 import gen_xqol_phase2 as generator
 import xqol_conversion_scope_contract as scope_contract
 import xqol_vanilla_contract as vanilla_contract
+import prepare_xqol_1_20_fixture as core_fixture
 from xqol_conversion_scope_contract import pending_conversion_scope_errors
 from xqol_vanilla_contract import GAME, block, native_definition
 
@@ -129,6 +131,21 @@ class FlorinGoldenObligationTests(unittest.TestCase):
                 with mock.patch.object(vanilla_contract, "native_definition", side_effect=lambda _relative, key: values[key]):
                     with self.assertRaisesRegex(ValueError, "quote/payment split changed"):
                         vanilla_contract.native_full_golden_obligation()
+
+
+class CoreConversionEntryTests(unittest.TestCase):
+    def test_both_actual_core_dispatch_entries_initialize_the_consumed_draft(self) -> None:
+        consumer = generator.render_conversion_dispatch()
+        variable = re.search(r"trigger\s*=\s*var:(\w+)", consumer)
+        self.assertIsNotNone(variable)
+        if variable is None:
+            self.fail("Generated dispatcher must have one explicit variable input")
+        producer = core_fixture.events(False)
+        initialized = re.findall(
+            r"set_variable\s*=\s*\{\s*name\s*=\s*(\w+)\s+value\s*=\s*50\s*\}"
+            r"\s*xqol_bulk_conversion_dispatch_effect\s*=\s*yes", producer,
+        )
+        self.assertEqual([variable.group(1)] * 2, initialized)
 
 
 if __name__ == "__main__":
