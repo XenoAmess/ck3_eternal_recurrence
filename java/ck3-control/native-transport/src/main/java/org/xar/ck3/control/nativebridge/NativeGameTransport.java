@@ -36,6 +36,7 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.application.action.PhysicalStatusIdentity;
 import org.xar.ck3.control.application.advance.AdvancePrimitives;
+import org.xar.ck3.control.application.action.FullSnapshotClockControl;
 import org.xar.ck3.control.application.advance.ClockStatusRead;
 import org.xar.ck3.control.application.advance.PreparedCleanupEvidence;
 import org.xar.ck3.control.application.action.PreparedCleanupPermit;
@@ -1104,6 +1105,128 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return retainReadOutcome(dispatch(id,NativeWire.execute(id,ActorFoundationFrame.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
         }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
     }
+    public sealed interface FullClockRead permits FullClockReceived,FullClockReadUnavailable {
+        NativeFreshSnapshotPort.Result original();
+    }
+    /** Native-only Full clock source; never an admitted Driver or a Root writer permit. */
+    public static final class FullClockReceived implements FullClockRead {
+        private final NativeGameTransport issuer;
+        private final NativeFreshSnapshotPort.Received original;
+        private final Instant validUntil;
+        private boolean writeAttempted;
+        private FullClockReceived(NativeGameTransport issuer,NativeFreshSnapshotPort.Received original,Instant validUntil){
+            this.issuer=issuer;this.original=original;this.validUntil=validUntil;
+        }
+        @Override public NativeFreshSnapshotPort.Received original(){return original;}
+        public ObservedFrame frame(){return original.originalFrame();}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{
+            Objects.requireNonNull(actual).requireFullClockOriginal(this,deadline);
+        }
+    }
+    public record FullClockReadUnavailable(NativeFreshSnapshotPort.Result original,String reason)implements FullClockRead {
+        public FullClockReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public synchronized FullClockRead readFullClockFrameReceived(Instant deadline)throws InterruptedException{
+        Instant until=readDeadline(Objects.requireNonNull(deadline));
+        try {awaitHello(until);requireFlorinFullClockSource();}
+        catch(IOException|RuntimeException invalid){
+            var absent=new NativeFreshSnapshotPort.Unavailable(zero("full-clock-source-"+UUID.randomUUID().toString().replace("-",""),reason(invalid)),reason(invalid));
+            return new FullClockReadUnavailable(absent,reason(invalid));
+        }
+        var read=readFreshFullState(until);
+        if(!(read instanceof NativeFreshSnapshotPort.Received received))
+            return new FullClockReadUnavailable(read,((NativeFreshSnapshotPort.Unavailable)read).reason());
+        try {
+            var source=new FullClockReceived(this,received,until);requireFullClockOriginal(source,until);return source;
+        }catch(IOException|RuntimeException invalid){return new FullClockReadUnavailable(read,reason(invalid));}
+    }
+    private void requireFlorinFullClockSource()throws IOException{
+        if(hello==null)throw new IOException("actual Full clock HELLO unavailable");
+        var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        if(!ExactCk3Build.CK3_1210.matches(NativeWire.text(original.get("expected_ck3_version")),hello.gameSha256())
+                ||!hello.adapterId().equals("ck3-1.21.0-msvc-x64")
+                ||!hello.capabilities().contains(NativeFreshSnapshotPort.CAPABILITY)||!hello.capabilities().contains("game.state.snapshot"))
+            throw new IOException("Full clock source requires exact Florin and both advertised full-state capabilities");
+    }
+    private void requireFullClockOriginal(FullClockReceived actual,Instant deadline)throws IOException{
+        Objects.requireNonNull(deadline);
+        if(actual.issuer!=this||closed||terminalFailure!=null||hello==null)throw new IOException("Full clock requires its identical live held receiver");
+        var now=chronologyClock.instant();
+        if(!now.isBefore(deadline)||!now.isBefore(actual.validUntil)||deadline.isAfter(actual.validUntil))
+            throw new IOException("Full clock cannot extend or escape its original full READ window");
+        verifyHeld(deadline);requireFlorinFullClockSource();
+        var frame=actual.frame();var ack=actual.original.acknowledgement();
+        var custody=ack.custody().orElseThrow(()->new IOException("actual Full clock read custody unavailable"));custody.verify(ack);
+        if(heldSnapshotInvalidated||acceptedSnapshotFrame!=frame||!frame.session().equals(session())
+                ||!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)
+                ||!originalRequestChronology(ack.requestId()).filter(custody::equals).isPresent()
+                ||custody.writeEntered().observedAt().isBefore(helloObservedAt)
+                ||custody.responseReceived().observedAt().isAfter(now)||custody.responseReceived().observedAt().isAfter(actual.validUntil))
+            throw new IOException("Full clock source is stale or crossed original Game/session/connection/custody");
+        acceptedSnapshotRevision(frame).requireOriginal(frame);
+        NativeFreshSnapshotPort.verifyOriginal(ack,frame,actual.original.snapshotReceived());
+        requireFullSnapshotBuild((NativeWire.Snapshot)NativeWire.decode(frame.originalPacket()));
+        var state=NativeWire.object(NativeWire.parse(frame.state().bytes()));
+        for(var entry:new com.fasterxml.jackson.databind.JsonNode[]{state.get("paused"),state.get("map_ready"),
+                NativeWire.object(state.get("played_character")).get("alive")})
+            if(entry==null||!entry.isBoolean()||!entry.booleanValue())
+                throw new IOException("Full clock source requires its actual living paused map");
+    }
+    private Unknown unresolvedFullClockControl;
+    private AckReceived indeterminateFullClockAcknowledgement;
+    public synchronized Optional<AckReceived> originalIndeterminateFullClockAcknowledgement(String requestId){
+        Objects.requireNonNull(requestId);
+        return indeterminateFullClockAcknowledgement!=null&&indeterminateFullClockAcknowledgement.requestId().equals(requestId)
+                ?Optional.of(indeterminateFullClockAcknowledgement):Optional.empty();
+    }
+    /** One prepared Native-only action, without inventing a Driver observation or writer authority. */
+    public synchronized DispatchOutcome submitFullClockControl(FullClockReceived before,NativeRequest prepared,Instant deadline)throws InterruptedException{
+        if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        String id="full-clock-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            Objects.requireNonNull(before);Objects.requireNonNull(prepared);Objects.requireNonNull(deadline);requireFullClockOriginal(before,deadline);
+            if(applicationExitAttempted||before.writeAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("Full clock source cannot reuse a write or borrow another active continuation");
+            var expected=FullSnapshotClockControl.request(prepared.step(),before.frame().snapshotId(),before.frame().nativeRevision(),deadline);
+            if(!prepared.equals(expected))throw new IOException("Full clock request differs from its exact canonical source preparation");
+            if(!hello.capabilities().contains(prepared.requiredCapability().orElseThrow()))throw new IOException("actual Full clock command capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            byte[] packet=NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes());
+            var outcome=dispatch(id,packet,deadline,()->{
+                requireBackgroundAtCoreWrite();
+                try {requireFullClockOriginal(before,deadline);}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
+                if(before.writeAttempted)throw new IllegalStateException("original Full clock source already entered a write");
+                before.writeAttempted=true;heldSnapshotInvalidated=true;
+            });
+            return retainFullClockOutcome(outcome,prepared);
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(id)){
+                unresolvedFullClockControl=new Unknown(id,"Full clock failed after actual write entry; never replay: "+reason(invalid),retainedOutbound(id),Optional.empty());
+                return unresolvedFullClockControl;
+            }
+            return zero(id,reason(invalid));
+        }
+    }
+    private static boolean fullClockPrepared(NativeRequest request){return request.additionalFields().objectFieldNames().contains("full_snapshot_clock_control");}
+    private DispatchOutcome retainFullClockOutcome(DispatchOutcome outcome,NativeRequest request){
+        if(outcome instanceof AckReceived ack){
+            String uncertain=null;
+            try {
+                var assessment=FullSnapshotClockControlResult.decode(ack,request.step());
+                if(assessment.disposition()==FullSnapshotClockControlResult.Disposition.UNKNOWN)
+                    uncertain="Native Full clock result is uncertain: "+assessment.queueStatus();
+            }catch(IOException|RuntimeException malformed){uncertain="Native Full clock result failed its typed contract: "+reason(malformed);}
+            if(uncertain!=null){
+                indeterminateFullClockAcknowledgement=ack;
+                unresolvedFullClockControl=new Unknown(ack.requestId(),uncertain+"; preserve original, never replay",ack.outbound().orElseThrow().originalPacket(),Optional.of(ack.originalFrame()));
+                return unresolvedFullClockControl;
+            }
+        }
+        if(outcome instanceof Unknown unknown)unresolvedFullClockControl=unknown;
+        return outcome;
+    }
     private Unknown unresolvedCoreControl;
     private AckReceived indeterminateCoreAcknowledgement;
     /** Passive access to the exact uncertain Native result; no query, resend, deadline or live role is created. */
@@ -1116,6 +1239,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** The private original Core permits one background application-exit request, never an exit receipt. */
     public synchronized DispatchOutcome submitCoreNormalExit(CoreReceived before,Instant deadline)throws InterruptedException {
         if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
         String id="core-exit-"+UUID.randomUUID().toString().replace("-","");
         try {
             Objects.requireNonNull(before);Objects.requireNonNull(deadline);requireCoreOriginal(before,deadline);
@@ -1152,6 +1276,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     public synchronized DispatchOutcome submitCoreClockControl(CoreReceived before,CoreClockControl.Step step,
             Instant deadline)throws InterruptedException {
         if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
         String id="core-control-"+UUID.randomUUID().toString().replace("-","");
         try {
             Objects.requireNonNull(before);Objects.requireNonNull(step);Objects.requireNonNull(deadline);
@@ -1844,6 +1969,12 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             open(deadline); verifyEndpoint();
             if (hello == null) throw new IOException("actual Native hello is required before dispatch");
             if (!request.equals(permit.preparedRequest())) throw new IOException("primitive differs from the coordinator's durable prepared request");
+            boolean fullClock=fullClockPrepared(request);
+            if(fullClock){
+                requireFlorinFullClockSource();
+                if(unresolvedFullClockControl!=null||unresolvedCoreControl!=null)
+                    throw new IOException("an original clock outcome is unresolved; reconcile it without a new write");
+            }
             NativeStepDiscriminator.requireRequest(permit.guard().operation(), Kind.ACTION, request);
             if (permit.origin() instanceof CommandOrigin.LifecycleTerminal
                     && (!request.step().equals("continue-death-succession-modal-v1") || request.requiredCapability().isPresent()))
@@ -1877,6 +2008,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             // For this exact new cleanup only, the actual endpoint deadline stays inside both
             // freshness expiries even when the original beforeFirstWrite callbacks consume time.
             DispatchOutcome original = dispatch(id, packet, actualDeadline, () -> {
+                if(fullClock)requireBackgroundAtCoreWrite();
                 permit.consumeOnce();
                 heldSnapshotInvalidated = true;
             });
@@ -1885,7 +2017,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 // Actual canonical SUBMITTING permit and private source permission were checked above.
                 activeMailbox.assignment = new CouncilAssignment(permit.actionId(), permit.bodySha256(), id, permit.guard(), request);
             }
-            return original;
+            return fullClock?retainFullClockOutcome(original,request):original;
         } catch (IOException | RuntimeException failure) { return zero(id, reason(failure)); }
     }
     /** Registered collector reads use this same endpoint and one exact request ID, without a world-action intent. */

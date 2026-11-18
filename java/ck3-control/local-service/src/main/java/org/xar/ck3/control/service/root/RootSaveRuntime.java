@@ -76,7 +76,15 @@ public final class RootSaveRuntime {
     }
     private NativeRequest prepare(ActionCommand command) {
         actualService();requireCommand(command,true);
-        return new NativeRequest(OPERATION.value(),Optional.of("game.command.save-checkpoint"),new RawJson(new byte[]{'{','}'}));
+        return preparedSaveRequest(command);
+    }
+    /** Request DATA only; the live caller retains its bound service and full same-Root checks above. */
+    static NativeRequest preparedSaveRequest(ActionCommand command) {
+        Objects.requireNonNull(command);
+        StrictJson.require(command.operation().equals(OPERATION)&&command.arguments().members().isEmpty(),
+                "canonical SAVE operation without additional arguments required");
+        return new NativeRequest(OPERATION.value(),Optional.of("game.command.save-checkpoint"),
+                FullSnapshotClockControl.additionalFields(command));
     }
     private ActionPorts.PostconditionResult observe(ActionCommand command,ActionState.Attempt attempt,NativeActionPort.DispatchOutcome dispatch) {
         requireCommand(command,true);

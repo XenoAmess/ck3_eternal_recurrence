@@ -1384,3 +1384,6 @@ docs/ck3-native-ai/evidence/faith-engine-e02-v7-final-steam-20261023.json -text 
 # Preserve the exact native producer provenance manifests checked by fixture SHA.
 java/ck3-control/native-transport/src/test/resources/newnative/actor-foundation1210/ACTOR-FOUNDATION-PRODUCER01.json -text whitespace=cr-at-eol
 java/ck3-control/native-transport/src/test/resources/newnative/full1210/FULL-SNAPSHOT-PRODUCER02.json -text whitespace=cr-at-eol
+java/ck3-control/native-transport/src/test/resources/newnative/full-clock1210/FULL-CLOCK-ACK-PRODUCER01.json -text whitespace=cr-at-eol
+java/ck3-control/native-transport/src/test/resources/newnative/full-clock1210/FULL-SNAPSHOT-PRODUCER02.json -text whitespace=cr-at-eol
+java/ck3-control/native-transport/src/test/resources/org/xar/ck3/control/nativebridge/full-clock1210/FULL-CLOCK-ACK-PRODUCER01.json -text whitespace=cr-at-eol

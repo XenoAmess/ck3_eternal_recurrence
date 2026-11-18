@@ -1,0 +1,25 @@
+{
+  "schema": "xar.ck3.florin.paused-full-clock-software/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "native_ready": "D:/ck3-state/ck3-migration-20261118-native/dll-build01/r2-fullclock11/NATIVE-1210-PAUSED-FULL-CLOCK-DLL-READY11.json",
+  "java_ready": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-full-clock-port01/qualification01/PAUSED-FULL-CLOCK29-RUNTIME-READY01.json",
+    "bytes": 7579,
+    "sha256": "36a813c5d1fc4d25e2150b140d05db2c9d780e38fbed5d85a887477a2442ff1b"
+  },
+  "abi": {
+    "old_classes": 46,
+    "methods": 276,
+    "fields": 20,
+    "pass": true
+  },
+  "tests": {
+    "distinct_passed": 29,
+    "first_phase": "28P0F1E",
+    "affected_negative_fixture_repair": "1P",
+    "single_phase_29_green": false
+  },
+  "scope": "Canonical original full revision/deadline preparation, private actual Native Full source, typed submission result and sticky UNKNOWN. Independent Native-only CLI is not Root writer/Driver admission.",
+  "live": "No new live claim in this source publication. Paused speed/SAVE physical effects require separate Runtime originals; resume capability remains absent.",
+  "history": "Legacy request bodies remain empty; ARM/CANCEL and old full/core paths retain their own contracts. Initial private bool API and fixture constructor errors remain in qualification logs."
+}

@@ -1,0 +1,64 @@
+{
+  "qualification": {
+    "begin": "2026-11-18T00:00:12.090733+00:00",
+    "live": false,
+    "command": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+      "/nologo",
+      "/std:c++20",
+      "/O2",
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/EHsc",
+      "/MD",
+      "/DNOMINMAX",
+      "/DWIN32_LEAN_AND_MEAN",
+      "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\include",
+      "/FoD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-clock-ack-producer01.obj",
+      "/FeD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-clock-ack-producer01.exe",
+      "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\FULL-CLOCK-ACK-PRODUCER01.cpp",
+      "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_application_exit_v1.cpp.obj",
+      "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_commands.cpp.obj",
+      "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_core.cpp.obj",
+      "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_core_control_request_v1.cpp.obj",
+      "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_core_control_v1.cpp.obj",
+      "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_core_frame_v1.cpp.obj",
+      "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_thread_runtime.cpp.obj",
+      "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\game_adapter_capabilities.cpp.obj",
+      "/link",
+      "/INCREMENTAL:NO"
+    ],
+    "method": "qualified NoGame gate fixture with output-only cout injection, complete composite reader qualified separately",
+    "compile_exit": 0,
+    "test_exit": 0,
+    "end": "2026-11-18T00:00:15.979123+00:00"
+  },
+  "packets": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-clock-ack-submitted01.json",
+      "bytes": 531,
+      "sha256": "77f8f6680338ebda5030ed01a53ffcf66d0f942d5e61d4547561f988899209ef"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-clock-ack-save01.json",
+      "bytes": 670,
+      "sha256": "39b71f7ec0baf811e18256cc1cac2fdf4b2e8e6523370b8ef41b77d57485e264"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-clock-ack-expired01.json",
+      "bytes": 553,
+      "sha256": "378077bfec96774029e25ce1e74708de53c7df63b1e8fd3cbd5b763944346e2a"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-clock-ack-indeterminate01.json",
+      "bytes": 533,
+      "sha256": "fc9b6e338c2fb775950830e0a2c8437df6c862c4a9c406635cf9feb595f2ffd0"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-clock-ack-attempted-rejected01.json",
+      "bytes": 529,
+      "sha256": "40b1407689e45d5ba4c18309c83f81382b0d381120545dae66ba75e80adfac71"
+    }
+  ]
+}

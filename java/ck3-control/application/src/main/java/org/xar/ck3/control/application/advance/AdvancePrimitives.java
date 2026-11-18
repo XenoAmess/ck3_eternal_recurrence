@@ -146,7 +146,9 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         if (ARM.matcher(step).matches()) { armSpec(step); capability = ClockStatusRead.ARM_CAP; }
         else if (step.startsWith(ClockStatusRead.CANCEL_PREFIX)) { cancelGeneration(step); capability = ClockStatusRead.CANCEL_CAP; }
         else capability = "game.command." + step;
-        return new NativeRequest(step, capability, new RawJson("{}".getBytes(StandardCharsets.UTF_8)));
+        RawJson fields=FullSnapshotClockControl.supports(command.operation())
+                ?FullSnapshotClockControl.additionalFields(command):new RawJson("{}".getBytes(StandardCharsets.UTF_8));
+        return new NativeRequest(step, capability, fields);
     }
     @Override public ActionPorts.PostconditionResult observe(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome dispatch) {
         if (dispatch instanceof NativeActionPort.Unknown unknown) return new ActionPorts.Pending("original child submission UNKNOWN; no replay: " + unknown.reason(), List.of(attempt.guard().nativeEvidence()));

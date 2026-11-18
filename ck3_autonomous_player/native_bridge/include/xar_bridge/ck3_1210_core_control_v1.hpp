@@ -7,6 +7,8 @@ namespace xar::ck3_1210 {
 inline constexpr char kCoreControlSchemaV1[] = "ck3_1210_core_clock_control_v1";
 inline constexpr char kCoreControlResultSchemaV1[] = "ck3_1210_core_clock_control_result_v1";
 inline constexpr char kCoreControlCapabilityV1[] = "game.command.core-clock-control.v1";
+inline constexpr char kFullClockControlCapabilityV1[] = "game.command.full-snapshot-clock-control.v1";
+inline constexpr char kFullClockControlResultSchemaV1[] = "ck3_1210_full_clock_control_result_v1";
 inline constexpr char kApplicationExitSchemaV1[] = "ck3_1210_application_exit_v1";
 inline constexpr char kApplicationExitResultSchemaV1[] = "ck3_1210_application_exit_result_v1";
 inline constexpr char kApplicationExitCapabilityV1[] = "game.command.normal-exit-application-v1";
@@ -22,11 +24,12 @@ struct CoreControlRequestV1 {
 };
 enum class CoreControlStatusV1 {
   unavailable, expired, stale, requires_map, requires_paused,
-  already_satisfied, rejected, submitted, indeterminate, exit_requested, exit_already_requested, exit_claim_consumed
+  already_satisfied, rejected, submitted, indeterminate, exit_requested, exit_already_requested, exit_claim_consumed, stale_full_snapshot
 };
 struct CoreControlResultV1 {
   CoreControlStatusV1 status = CoreControlStatusV1::unavailable;
   bool effect_attempted = false;
+  bool full_snapshot_before_verified = false;
   CoreSnapshotPrefix observed{};
 };
 using CoreControlClockV1 = std::uint64_t (*)(void *) noexcept;
@@ -40,6 +43,10 @@ struct CoreControlContextV1 {
   ck3_11906::MainThreadQueryMailboxV1 *mailbox = nullptr;
   ck3_11906::MainThreadQueryTicketV1 ticket{};
   CoreControlResultV1 result{};
+  // Internal owner-only full admission. Both pointers are stack-owned by the
+  // standard full-revision bridge handler until the ticket is terminal.
+  const game::GameAdapter *native_full_adapter = nullptr;
+  const game::Snapshot *expected_full_snapshot = nullptr;
   CoreControlClockV1 wall_clock = nullptr, monotonic_clock = nullptr;
   void *clock_context = nullptr;
   std::uint64_t monotonic_deadline_ms = 0;
@@ -53,5 +60,6 @@ void ArmCoreControlDeadlineV1(CoreControlContextV1 &) noexcept;
 bool ExecuteCoreControlMailboxV1(void *,
     const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 std::string SerializeCoreControlCommandResultV1(std::string_view request_id,
-    std::string_view step, const CoreControlResultV1 &result);
+    std::string_view step, const CoreControlResultV1 &result,
+    std::string_view result_schema = {},std::uint64_t checkpoint_sequence = 0);
 } // namespace xar::ck3_1210

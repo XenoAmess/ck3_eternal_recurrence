@@ -28,6 +28,7 @@
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
+#include "xar_bridge/ck3_1210_full_clock_request_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
@@ -15450,6 +15451,56 @@ std::string RunCoreControl1210(const xar::game::GameAdapter &game,
   return SerializeCoreControlCommandResultV1(request_id,step,query.result);
 }
 
+std::string RunFullClockControl1210(const xar::game::GameAdapter &game,
+    WorkerState &state,std::string_view id,std::string_view step,std::string_view payload) {
+  using namespace xar::ck3_1210;
+  CoreControlContextV1 query{};FullClockRequestV1 request{};
+  const auto answer=[&]() {return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1);};
+  if(!ParseFullClockRequestV1(payload,request) || request.step!=step)
+    return CommandResultFrame(id,step,false,"invalid exact full-snapshot clock request");
+  if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+      !game.supports(kFullClockControlCapabilityV1) || !game.supports_step(step) ||
+      !game.supports_snapshot() || !state.previous_snapshot ||
+      state.state_revision==0 || request.native_revision!=state.state_revision) return answer();
+  // Resume remains unavailable until the exact post-day stop provider is qualified.
+  if(request.operation==CoreControlOperationV1::resume) return answer();
+  if(request.operation==CoreControlOperationV1::save &&
+      state.checkpoint_submission.sequence==std::numeric_limits<std::uint64_t>::max()) return answer();
+  const auto expected=*state.previous_snapshot;
+  if(!expected.paused || !expected.map_ready || !expected.has_played_character || !expected.played_character_alive) return answer();
+  query.request.operation=request.operation;query.request.step=request.step;
+  query.request.public_speed=request.public_speed;query.request.deadline_unix_ms=request.deadline_unix_ms;
+  query.request.expected={{expected.date_raw,expected.speed,expected.paused},expected.player_id,
+      expected.map_ready,expected.has_played_character,expected.played_character_id,expected.played_character_alive};
+  query.game=&game;query.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
+  query.expected_full_snapshot=&expected;query.mailbox=&g_main_thread_query_mailbox_v1;
+  const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.core=BindCoreImage(module,game.descriptor().executable_sha256);
+  query.commands=BindCommandImage(module,game.descriptor().executable_sha256);
+  ArmCoreControlDeadlineV1(query);
+  if(query.monotonic_deadline_ms==0) {query.result.status=CoreControlStatusV1::expired;return answer();}
+  xar::game::Snapshot fresh{};
+  if(!xar::ck3_12002::ReadFreshFullSnapshot12002(game,fresh) || fresh!=expected) {
+    query.result.status=CoreControlStatusV1::stale_full_snapshot;return answer();
+  }
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecuteCoreControlMailboxV1,&query,query.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) return answer();
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2000);
+  const auto reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket);
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      reclaim!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    query.result.status=query.result.effect_attempted?CoreControlStatusV1::indeterminate:CoreControlStatusV1::unavailable;
+  }
+  if(request.operation==CoreControlOperationV1::save && query.result.status==CoreControlStatusV1::submitted) {
+    ++state.checkpoint_submission.sequence;state.checkpoint_submission.date_raw=expected.date_raw;
+  }
+  return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1,
+      request.operation==CoreControlOperationV1::save?state.checkpoint_submission.sequence:0);
+}
+
 void RunConnectedSession(
     HANDLE pipe, const xar::game::GameAdapter &game, WorkerState &state,
     WarEntryApplicationMainMailboxWorkerLifetime &mailbox_lifetime) noexcept {
@@ -16071,7 +16122,11 @@ void RunConnectedSession(
             (step=="pause-map" || step=="resume-map" || step=="save-checkpoint" ||
              step==xar::ck3_1210::kApplicationExitStepV1 ||
              (step.size()==11 && step.starts_with("set-speed-") && step[10]>='1' && step[10]<='5'))) {
-          connected=write_frame(pipe,RunCoreControl1210(game,request_id,step,incoming.payload));
+          std::uint64_t full_revision=0;
+          if(step!=xar::ck3_1210::kApplicationExitStepV1 &&
+              xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",full_revision) && full_revision>0)
+            connected=write_frame(pipe,RunFullClockControl1210(game,state,request_id,step,incoming.payload));
+          else connected=write_frame(pipe,RunCoreControl1210(game,request_id,step,incoming.payload));
           early_step_dispatched=true;
         }
         if (!early_step_dispatched && step == "query-fresh-full-state-v1") {

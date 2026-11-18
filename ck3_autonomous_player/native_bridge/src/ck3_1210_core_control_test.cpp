@@ -12,8 +12,8 @@
 namespace {
 using namespace xar::game;
 using namespace xar::ck3_1210;
-constexpr std::array<std::string_view, 11> kCapabilities{kCoreFrameCapabilityV1,
-    kCoreControlCapabilityV1,kApplicationExitCapabilityV1,"game.command.pause-map","game.command.resume-map",
+constexpr std::array<std::string_view, 13> kCapabilities{kCoreFrameCapabilityV1,
+    kCoreControlCapabilityV1,kApplicationExitCapabilityV1,kFullClockControlCapabilityV1,"game.state.snapshot","game.command.pause-map","game.command.resume-map",
     "game.command.set-speed-1","game.command.set-speed-2","game.command.set-speed-3",
     "game.command.set-speed-4","game.command.set-speed-5","game.command.save-checkpoint"};
 const AdapterDescriptor kDescriptor{kAdapterId, kGameVersion,
@@ -26,9 +26,18 @@ public:
   }
   bool enabled() const noexcept override { return true; }
   bool read_snapshot(xar::game::Snapshot &output) const noexcept override {
-    output = {};
-    return false;
+    ++full_reads;
+    if(!full_read_ok) {output={};return false;}
+    if(change_full_on_read!=0 && full_reads==change_full_on_read) ++full_value.played_character_gold.raw;
+    output=full_value;
+    if(after_full_read) after_full_read();
+    return true;
   }
+  mutable Snapshot full_value{};
+  mutable unsigned full_reads=0;
+  bool full_read_ok=false;
+  unsigned change_full_on_read=0;
+  void (*after_full_read)() noexcept=nullptr;
   xar::game::PauseSubmitResult
   submit_pause_map(xar::game::Snapshot *observed_snapshot) const noexcept override {
     if (observed_snapshot != nullptr) {
@@ -200,6 +209,7 @@ namespace {
 struct Clocks { std::uint64_t wall=1000,mono=1000; } clocks;
 std::uint64_t Wall(void *) noexcept { return clocks.wall; }
 std::uint64_t Mono(void *) noexcept { return clocks.mono; }
+void ExpireFullRead() noexcept {clocks.wall=3000;}
 std::size_t clones=0,queues=0,deletes=0,object_size=0;
 bool reject=false,expire_on_clone=false;
 std::array<std::byte,0x40> observed_command{};
@@ -346,6 +356,51 @@ int main() {
   CHECK(observed_command[8]==std::byte{0x20});
   CHECK(std::memcmp(observed_command.data()+0x20,kCheckpointSaveName,sizeof(kCheckpointSaveName))==0);
   CHECK(!BindCommandImage(0x140000000,"old-hash").enabled);
+  // These checks isolate complete-value admission to the already-qualified
+  // queue executor; the genuine composite Full reader has its own RAM fixture.
+  FixtureAdapter full_adapter(kDescriptor);full_adapter.full_read_ok=true;
+  Snapshot full_expected=copy;full_expected.played_character_gold.raw=47986038;
+  const auto full_reset=[&]() {
+    reset();full_adapter.full_value=full_expected;full_adapter.full_reads=0;
+    full_adapter.change_full_on_read=0;full_adapter.after_full_read=nullptr;
+    context.native_full_adapter=&full_adapter;context.expected_full_snapshot=&full_expected;
+  };
+  full_reset();CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::submitted && queues==1 && clones==1 &&
+      context.result.full_snapshot_before_verified && full_adapter.full_reads==2);
+  const auto full_ack=SerializeCoreControlCommandResultV1("full-clock-fixture",context.request.step,context.result,kFullClockControlResultSchemaV1);
+  CHECK(full_ack.find("ck3_1210_full_clock_control_result_v1")!=std::string::npos);
+  CHECK(full_ack.find("full_snapshot_before_verified")!=std::string::npos);
+  full_reset();context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
+  object_size=sizeof(AutoSaveCommand);CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::submitted && queues==1 && context.result.full_snapshot_before_verified);
+  const auto full_save_ack=SerializeCoreControlCommandResultV1("full-save-fixture",context.request.step,context.result,kFullClockControlResultSchemaV1,19);
+  CHECK(full_save_ack.find("\"status\":\"submitted\"")!=std::string::npos);
+  CHECK(full_save_ack.find("\"submission\":{\"sequence\":19")!=std::string::npos);
+  CHECK(full_save_ack.find("\"requested_save_name\":\"xar_checkpoint\"")!=std::string::npos);
+  CHECK(full_save_ack.find("\"date_raw\":123456")!=std::string::npos);
+  CHECK(full_save_ack.find("\"physical_save_confirmed\":false")!=std::string::npos);
+  CoreControlResultV1 zero_queue{};zero_queue.status=CoreControlStatusV1::expired;
+  auto zero_ack=SerializeCoreControlCommandResultV1("full-zero","set-speed-3",zero_queue,kFullClockControlResultSchemaV1);
+  CHECK(zero_ack.find("full_clock_expired")!=std::string::npos);
+  zero_queue.status=CoreControlStatusV1::indeterminate;
+  zero_ack=SerializeCoreControlCommandResultV1("full-unknown","set-speed-3",zero_queue,kFullClockControlResultSchemaV1);
+  CHECK(zero_ack.find("error")==std::string::npos);
+  zero_queue.status=CoreControlStatusV1::rejected;zero_queue.effect_attempted=true;
+  zero_ack=SerializeCoreControlCommandResultV1("full-attempted","set-speed-3",zero_queue,kFullClockControlResultSchemaV1);
+  CHECK(zero_ack.find("error")==std::string::npos);
+  full_reset();++full_adapter.full_value.played_character_gold.raw;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::stale_full_snapshot && queues==0 && clones==0 && !context.result.full_snapshot_before_verified);
+  full_reset();full_adapter.change_full_on_read=2;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::stale_full_snapshot && queues==0 && clones==1 && deletes==1 && !context.result.effect_attempted);
+  full_reset();full_adapter.after_full_read=&ExpireFullRead;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::expired && queues==0 && clones==0);
+  full_reset();context.native_full_adapter=nullptr;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));CHECK(queues==0 && clones==0);
+  reset();
   std::array<unsigned char,0x100> app{};void *app_slot=app.data();
   const std::uintptr_t app_vtable=0x12340;std::memcpy(app.data(),&app_vtable,sizeof(app_vtable));
   ApplicationExitSessionV1 exit_session;

@@ -29,6 +29,9 @@ import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.CoreClockControl;
+import org.xar.ck3.control.application.action.FullSnapshotClockControl;
+import org.xar.ck3.control.application.action.OperationKey;
+import org.xar.ck3.control.nativebridge.FullSnapshotClockControlResult;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFramePublicCodec;
@@ -73,6 +76,8 @@ public final class NativeOwnerSnapshotMain268 {
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
         boolean personalGold=observationMode==ObservationMode.PERSONAL_GOLD;
         boolean actorFoundation=observationMode==ObservationMode.ACTOR_FOUNDATION;
+        boolean fullClock=observationMode==ObservationMode.FULL_CLOCK;
+        String fullClockStep=fullClock?StrictJson.text(config.get("control_step")):null;
         CoreClockControl.Step controlStep=observationMode==ObservationMode.CORE_CONTROL
                 ?CoreClockControl.Step.fromWire(StrictJson.text(config.get("control_step"))):null;
         boolean coreCommand=applicationExit||controlStep!=null;
@@ -93,7 +98,7 @@ public final class NativeOwnerSnapshotMain268 {
         var plan = owner.configuration().accept();
         if(observationMode==ObservationMode.MENU_CORE) {
             if(!(plan.load() instanceof NativeLaunchPlan.NewGame))throw new IOException("explicit menu core mode requires its actual NewGame owner plan");
-        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
+        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!fullClock&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
         Files.createDirectory(output);
         createdOutput = output;
         ObjectNode originals = StrictJson.object();
@@ -121,10 +126,12 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("complete_snapshot",false).put("treasury_observed",false).put("monthly_flow_observed",false);
         if(actorFoundation)result.put("schema","xar.native-owner-actor-foundation/v1").put("mode","actor_foundation_frame")
                 .put("complete_snapshot",false).put("treasury_observed",false).put("monthly_flow_observed",false);
+        if(fullClock)result.put("schema","xar.native-owner-full-clock-control/v1").put("mode","full_snapshot_clock_control")
+                .put("control_step",fullClockStep).put("effect_confirmed",false).put("save_confirmed",false);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames, coreCommand?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames, coreCommand||fullClock?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
             try (ManagedGameSession game = NativeGameAttachment.attach(request, deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
@@ -133,7 +140,45 @@ public final class NativeOwnerSnapshotMain268 {
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(actorFoundation) {
+                if(fullClock) {
+                    stage="ONE_FULL_CLOCK_SOURCE_READ";
+                    var read=transport.readFullClockFrameReceived(deadline);
+                    archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+                    originals.set("dispatch",saveDispatch(output,read.original().dispatch()));
+                    if(!(read instanceof org.xar.ck3.control.nativebridge.NativeGameTransport.FullClockReceived received))
+                        throw new IOException("actual Full clock source unavailable; original retained, no retry: "+((org.xar.ck3.control.nativebridge.NativeGameTransport.FullClockReadUnavailable)read).reason());
+                    var frame=received.frame();var ack=received.original().acknowledgement();
+                    var custody=ack.custody().orElseThrow(()->new IOException("actual Full clock custody unavailable"));custody.verify(ack);
+                    var actualSession=custody.session();
+                    if(!actualSession.game().equals(owner.generation())||!actualSession.machineId().equals(owner.machineId())
+                            ||!actualSession.sessionId().equals(owner.sessionId())||!transport.diagnostics().session().filter(actualSession::equals).isPresent())
+                        throw new IOException("actual Full clock source crossed its owner Game/session");
+                    Instant commandDeadline=deadline.isBefore(received.validUntil())?deadline:received.validUntil();
+                    received.requireOriginal(transport,commandDeadline);
+                    var prepared=FullSnapshotClockControl.request(fullClockStep,frame.snapshotId(),frame.nativeRevision(),commandDeadline);
+                    originals.set("full_clock_before",saveFrame(output,frame));
+                    result.set("session",session(actualSession));
+                    result.put("full_read_request_id",ack.requestId()).put("snapshot_id",frame.snapshotId())
+                            .put("native_revision",frame.nativeRevision()).put("command_deadline_utc",commandDeadline.toString());
+                    result.set("prepared_native_fields",FullJsonTree.parse(prepared.additionalFields().bytes(),FullJsonTree.MAXIMUM_BYTES));
+                    stage="ONE_PREPARED_FULL_CLOCK_SUBMISSION";
+                    var outcome=transport.submitFullClockControl(received,prepared,commandDeadline);
+                    Path control=output.resolve("control");Files.createDirectory(control);
+                    originals.set("full_clock_dispatch",saveDispatch(control,outcome));
+                    if(outcome instanceof NativeActionPort.Unknown unknown){
+                        var retained=transport.originalIndeterminateFullClockAcknowledgement(unknown.requestId());
+                        if(retained.isPresent()){
+                            Path uncertain=control.resolve("indeterminate-native-ack");Files.createDirectory(uncertain);
+                            originals.set("full_clock_original_uncertain_ack",saveDispatch(uncertain,retained.orElseThrow()));
+                        }
+                    } else if(outcome instanceof NativeActionPort.AckReceived commandAck){
+                        var assessment=FullSnapshotClockControlResult.decode(commandAck,prepared.step());
+                        result.put("queue_status",assessment.queueStatus()).put("effect_attempted",assessment.effectAttempted())
+                                .put("full_snapshot_before_verified",assessment.fullBeforeVerified())
+                                .put("submission_disposition",assessment.disposition().name());
+                    }
+                    result.put("request_id",outcome.requestId()).put("control_dispatch_class",outcome.getClass().getSimpleName());
+                } else if(actorFoundation) {
                     stage="ONE_ACTOR_FOUNDATION_FRAME_READ";
                     var read=transport.readActorFoundationFrameReceived(deadline);
                     archiveNaturalDiagnostics(output,originals,transport.diagnostics());
@@ -282,7 +327,7 @@ public final class NativeOwnerSnapshotMain268 {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -299,9 +344,16 @@ public final class NativeOwnerSnapshotMain268 {
         }
         originals.set("natural_transport_diagnostics",write(output,"natural-transport-diagnostics.json",FullJsonTree.encode(natural,SMALL)));
     }
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v7")) {
+            StrictJson.require(!config.has("core_prefix_only")&&"full_snapshot_clock_control".equals(StrictJson.text(config.get("mode"))),
+                    "explicit prepared Full clock mode required");
+            StrictJson.require(FullSnapshotClockControl.supports(new OperationKey(StrictJson.text(config.get("control_step")))),
+                    "only the fixed Full clock step set is accepted");
+            return ObservationMode.FULL_CLOCK;
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v6")) {
             StrictJson.require(!config.has("core_prefix_only")&&!config.has("control_step")
                     &&"actor_foundation_frame".equals(StrictJson.text(config.get("mode"))),"explicit read-only actor-foundation mode required");

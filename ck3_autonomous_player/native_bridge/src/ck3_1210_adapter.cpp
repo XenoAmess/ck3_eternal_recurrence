@@ -12,8 +12,9 @@
 
 namespace xar::game {
 namespace {
-// This version owns only the reviewed core prefix. All other methods stay
-// unavailable; no historical adapter or domain provider is borrowed.
+// Default builds expose only the reviewed Core prefix. Explicit observation
+// features use new exact bindings. Ordinary C++ virtual methods remain closed;
+// versioned wire clock control has its own complete-value admission.
 class FlorinAdapter final : public GameAdapter {
 public:
   explicit FlorinAdapter(ck3_1210::CoreBindings bindings, ck3_1210::FullSnapshotBindingsV1 full={}) noexcept : core_(bindings),full_(full) {}
@@ -213,6 +214,10 @@ const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
       "game.command.pause-map", "game.command.resume-map",
       "game.command.set-speed-1", "game.command.set-speed-2", "game.command.set-speed-3",
       "game.command.set-speed-4", "game.command.set-speed-5", "game.command.save-checkpoint",
+#elif defined(XAR_CK3_ENABLE_1210_FULL_CLOCK_V1)
+      ck3_1210::kFullClockControlCapabilityV1,
+      "game.command.pause-map", "game.command.set-speed-1", "game.command.set-speed-2",
+      "game.command.set-speed-3", "game.command.set-speed-4", "game.command.set-speed-5", "game.command.save-checkpoint",
 #endif
 #if defined(XAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1)
       ck3_1210::kApplicationExitCapabilityV1,

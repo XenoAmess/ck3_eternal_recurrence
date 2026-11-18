@@ -44,6 +44,11 @@ bool Owned(CoreControlContextV1 &c,
       GetCurrentThreadId() != stamp.thread_id || stamp.tls_initialized != 1 ||
       stamp.tls_main_thread_marker != 1 || stamp.tls_context == 0 ||
       stamp.game_state == 0 || stamp.jomini_state == 0) return false;
+  const bool full=c.native_full_adapter!=nullptr || c.expected_full_snapshot!=nullptr;
+  if(full && (c.native_full_adapter==nullptr || c.expected_full_snapshot==nullptr ||
+      !c.game->supports(kFullClockControlCapabilityV1) ||
+      !game::IsCk3_1210Descriptor(c.native_full_adapter->descriptor()) ||
+      !c.native_full_adapter->supports_snapshot())) return false;
   const auto &m = *c.mailbox;
   return ck3_11906::IsMainThreadTimelineExecutorV1(m,&ExecuteCoreControlMailboxV1) &&
       m.owner_verified_pump_epochs.load(std::memory_order_acquire)>=
@@ -60,6 +65,16 @@ bool Owned(CoreControlContextV1 &c,
       reinterpret_cast<std::uintptr_t>(*c.core.game_state_slot) == stamp.game_state &&
       reinterpret_cast<std::uintptr_t>(*c.core.jomini_state_slot) == stamp.jomini_state;
 }
+bool VerifyFullBefore(CoreControlContextV1 &c) noexcept {
+  if(c.native_full_adapter==nullptr && c.expected_full_snapshot==nullptr) return true;
+  c.result.full_snapshot_before_verified=false;
+  game::Snapshot current{};
+  if(c.native_full_adapter==nullptr || c.expected_full_snapshot==nullptr ||
+      !c.native_full_adapter->read_snapshot(current) || current!=*c.expected_full_snapshot) {
+    c.result.status=CoreControlStatusV1::stale_full_snapshot;return false;
+  }
+  c.result.full_snapshot_before_verified=true;return true;
+}
 struct Admission {
   CoreControlContextV1 &context;
   const ck3_11906::MainThreadExecutionStampV1 &stamp;
@@ -73,6 +88,8 @@ bool BeforeQueue(void *opaque) noexcept {
       current.clock.date_raw != a.stamp.date_raw || current.clock.paused != a.stamp.paused) {
     c.result.status=CoreControlStatusV1::stale; return false;
   }
+  if(!VerifyFullBefore(c)) return false;
+  if(!Unexpired(c)) {c.result.status=CoreControlStatusV1::expired;return false;}
   c.result.effect_attempted=true;
   return true;
 }
@@ -99,6 +116,8 @@ bool Execute(CoreControlContextV1 &c,
       (!current.map_ready || current.local_player_id<0)) {
     c.result.status=CoreControlStatusV1::requires_map; return true;
   }
+  if(!VerifyFullBefore(c)) return true;
+  if(!Unexpired(c)) {c.result.status=CoreControlStatusV1::expired;return true;}
   Admission admission{c,stamp};
   CommandSubmitResult submitted=CommandSubmitResult::unavailable;
   switch (c.request.operation) {
@@ -147,7 +166,8 @@ bool Execute(CoreControlContextV1 &c,
   default: return true;
   }
   if (c.result.status==CoreControlStatusV1::expired ||
-      c.result.status==CoreControlStatusV1::stale) return true;
+      c.result.status==CoreControlStatusV1::stale ||
+      c.result.status==CoreControlStatusV1::stale_full_snapshot) return true;
   c.result.status=submitted==CommandSubmitResult::submitted
       ? CoreControlStatusV1::submitted : submitted==CommandSubmitResult::rejected
       ? CoreControlStatusV1::rejected : CoreControlStatusV1::unavailable;
@@ -214,6 +234,7 @@ const char *StatusName(CoreControlStatusV1 status) noexcept {
   case CoreControlStatusV1::exit_already_requested: return "already_requested";
   case CoreControlStatusV1::expired: return "expired";
   case CoreControlStatusV1::stale: return "stale_core_prefix";
+  case CoreControlStatusV1::stale_full_snapshot: return "stale_full_snapshot";
   case CoreControlStatusV1::requires_map: return "requires_map";
   case CoreControlStatusV1::requires_paused: return "requires_paused";
   case CoreControlStatusV1::already_satisfied: return "already_satisfied";
@@ -225,7 +246,8 @@ const char *StatusName(CoreControlStatusV1 status) noexcept {
 }
 } // namespace
 std::string SerializeCoreControlCommandResultV1(std::string_view request_id,
-    std::string_view step, const CoreControlResultV1 &result) {
+    std::string_view step, const CoreControlResultV1 &result,
+    std::string_view result_schema,std::uint64_t checkpoint_sequence) {
   const bool accepted=result.status==CoreControlStatusV1::submitted ||
       result.status==CoreControlStatusV1::already_satisfied ||
       result.status==CoreControlStatusV1::exit_requested || result.status==CoreControlStatusV1::exit_already_requested;
@@ -234,7 +256,8 @@ std::string SerializeCoreControlCommandResultV1(std::string_view request_id,
   output += accepted ? R"(,"ok":true,"result":{"schema":)"
                      : R"(,"ok":false,"result":{"schema":)";
   const bool application_exit=step==kApplicationExitStepV1;
-  AppendString(output,application_exit?kApplicationExitResultSchemaV1:kCoreControlResultSchemaV1);
+  AppendString(output,!result_schema.empty()?result_schema:
+      application_exit?kApplicationExitResultSchemaV1:kCoreControlResultSchemaV1);
   output += R"(,"game_version":)"; AppendString(output,kGameVersion);
   output += R"(,"executable_sha256":)"; AppendString(output,kExecutableSha256);
   output += R"(,"adapter_id":)"; AppendString(output,kAdapterId);
@@ -244,11 +267,29 @@ std::string SerializeCoreControlCommandResultV1(std::string_view request_id,
   output += application_exit?R"(,"dispatch_status":)":R"(,"queue_status":)"; AppendString(output,StatusName(result.status));
   output += result.effect_attempted ? R"(,"effect_attempted":true)"
                                     : R"(,"effect_attempted":false)";
+  if(result_schema==kFullClockControlResultSchemaV1)
+    output += result.full_snapshot_before_verified?R"(,"full_snapshot_before_verified":true)":R"(,"full_snapshot_before_verified":false)";
   output += R"(,"complete_snapshot":false,"physical_save_confirmed":false)";
   if (application_exit) output += R"(,"normal_exit_confirmed":false)";
   if (step=="save-checkpoint") {
     output += R"(,"save_name":)"; AppendString(output,kCheckpointSaveName);
   }
-  output += "}}"; return output;
+  if(result_schema==kFullClockControlResultSchemaV1 && step=="save-checkpoint" &&
+      result.status==CoreControlStatusV1::submitted && checkpoint_sequence>0) {
+    output += ",\"status\":\"submitted\",\"submission\":{\"sequence\":";
+    output += std::to_string(checkpoint_sequence);
+    output += ",\"requested_save_name\":";
+    AppendString(output,kCheckpointSaveName);
+    output += ",\"date_raw\":";
+    output += std::to_string(result.observed.clock.date_raw);
+    output += '}';
+  }
+  output += '}';
+  if(result_schema==kFullClockControlResultSchemaV1 && !accepted &&
+      !result.effect_attempted && result.status!=CoreControlStatusV1::indeterminate) {
+    output += R"(,"error":)";
+    AppendString(output,std::string("full_clock_")+StatusName(result.status));
+  }
+  output += '}'; return output;
 }
 } // namespace xar::ck3_1210
