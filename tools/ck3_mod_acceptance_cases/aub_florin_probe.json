@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "district-probe-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 1,
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": ["--output", "{output}", "--scenario", "florin-probe"],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "original_probe_markers_and_native_error_review",
+    "actual_robert_initial_date_and_normal_exit"
+  ],
+  "required_markers": [
+    "AUBF: TEST BEGIN district_native_probe",
+    "AUBF: TEST PASS controlled_robert_castle",
+    "AUBF: TEST PASS native_district_eligibility",
+    "AUBF: TEST PASS native_district_upgrade_one_tier",
+    "AUBF: TEST PASS exact_personal_charge_and_count",
+    "AUBF: TEST PASS primary_mutation_no_repeat_before_cap",
+    "AUBF: TEST PASS insufficient_personal_zero_change",
+    "AUBF: TEST DONE district_native_probe"
+  ],
+  "forbidden_markers": ["AUBF: TEST FAIL"],
+  "scope": "Minimal native district capability probe. Original funding/domain/quota/tribal/special/Mandala/succession business matrix and production GUI remain mandatory separate qualification; this cell cannot authorize publication.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

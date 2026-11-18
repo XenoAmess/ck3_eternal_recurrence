@@ -17,3 +17,5 @@
 只读Native来源复核发现贸易站可由宿主省份以外的人物持有；候选仅在trade_post_district内严格检查owner，外来或未知owner保存为排除区域，逐省清理旧scope，比较先检查存在。未把仅适用于贸易站的district_owning_title泛用于普通区域。尚未发现entrepot第三方owner的原版路径，不将搜索缺失写成运行期证明。
 
 26项完整合同／构建回归通过，generator、extractor、data loader与static validator完整文件严格mypy通过（follow-imports=skip）；最终安装源比对、344文件严格白名单和构建check通过。期间真实失败包括旧建筑名、神龛实际仅四档及第五档其他建筑只需四级区域的验收假设、旧公开文案版本检查，均保留日志后修正。旧1.19/1.20政策断言明确留在历史快照，新版另验当前链与资格。详见[aub-florin-runtime-software.json](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-runtime-software.json)。本阶段未启动Game、未上线Steam、未发布；旧核心实机fixture尚待迁移，不能把静态fixture检查记作新版业务通过。接着进行最小引擎能力验收与原代表性业务矩阵迁移。
+
+最小district-probe-1210场景沿既有prepare_aub入口单独准备，旧完整fixture在Florin上明确拒绝，避免误跑未迁移的旧建筑名。新场景直接调用当前生产链与省份分派，检查原生区域资格、单级升级、精确个人扣费与计数、主建筑修改时省份遍历不重访（同时确认下一档资格和未触15次上限）、资金不足零变化。固定1066阿普利亚Robert，最多一天、不保存，未覆盖的完整资金／直辖／部落／特殊／曼荼罗／继承及真实生产GUI仍为发布要求。准备器完整文件严格mypy通过；已有CI夹具入口6项通过；实际准备成功，334个生产及夹具脚本以既有Java parser四进程、每进程192MiB完成通用语法解析，零失败，仅语法、不是1.21引擎语义或实机。见[准备记录](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-probe-preparation.json)。

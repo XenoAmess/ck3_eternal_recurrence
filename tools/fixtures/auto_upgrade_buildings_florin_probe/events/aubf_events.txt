@@ -1,0 +1,104 @@
+namespace = aubf
+
+# Capability probe only. This does not replace the original AUB business matrix.
+aubf.1 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		debug_log = "AUBF: TEST BEGIN district_native_probe"
+		if = {
+			limit = {
+				this = character:1128
+				capital_province = { has_holding_type = castle_holding }
+			}
+			debug_log = "AUBF: TEST PASS controlled_robert_castle"
+			remove_character_flag = enable_auto_build
+			remove_character_flag = aub_funding_treasury_only
+			add_character_flag = aub_funding_personal_only
+			save_scope_as = aub_payer
+			save_scope_as = character
+			culture = {
+				add_innovation = innovation_battlements
+				add_innovation = innovation_hoardings
+				add_innovation = innovation_castle_baileys
+			}
+			add_gold = 100000
+			set_variable = { name = aub_upgrades_this_scan value = 0 }
+			set_variable = {
+				name = aubf_expected_gold
+				value = { value = gold subtract = main_building_tier_2_cost }
+			}
+			capital_province = {
+				province_owner = { save_scope_as = holder }
+				county = { save_scope_as = county }
+				holding_district = {
+					if = { limit = { has_building = castle_04 } downgrade_building_effect = castle_04 }
+					if = { limit = { has_building = castle_03 } downgrade_building_effect = castle_03 }
+					if = { limit = { has_building = castle_02 } downgrade_building_effect = castle_02 }
+					if = {
+						limit = { has_building = castle_01 can_start_building_construction_for_owner = castle_02 }
+						debug_log = "AUBF: TEST PASS native_district_eligibility"
+					}
+					else = { debug_log = "AUBF: TEST FAIL native_district_eligibility" }
+					aub_upgrade_chain_castle_01_effect = yes
+					if = {
+						limit = { has_building = castle_02 NOT = { has_building = castle_03 } }
+						debug_log = "AUBF: TEST PASS native_district_upgrade_one_tier"
+					}
+					else = { debug_log = "AUBF: TEST FAIL native_district_upgrade_one_tier" }
+				}
+			}
+			if = {
+				limit = { gold = var:aubf_expected_gold var:aub_upgrades_this_scan = 1 }
+				debug_log = "AUBF: TEST PASS exact_personal_charge_and_count"
+			}
+			else = { debug_log = "AUBF: TEST FAIL exact_personal_charge_and_count" }
+			capital_province = {
+				holding_district = {
+					if = { limit = { has_building = castle_02 } downgrade_building_effect = castle_02 }
+				}
+			}
+			set_variable = { name = aub_upgrades_this_scan value = 0 }
+			capital_province = { aub_upgrade_all_supported_buildings_effect = yes }
+			if = {
+				limit = {
+					capital_province = {
+						holding_district = {
+							has_building = castle_02
+							NOT = { has_building_or_higher = castle_03 }
+							can_start_building_construction_for_owner = castle_03
+						}
+					}
+					var:aub_upgrades_this_scan > 0
+					var:aub_upgrades_this_scan < 15
+				}
+				debug_log = "AUBF: TEST PASS primary_mutation_no_repeat_before_cap"
+			}
+			else = { debug_log = "AUBF: TEST FAIL primary_mutation_no_repeat_before_cap" }
+			capital_province = {
+				holding_district = {
+					if = { limit = { has_building = castle_04 } downgrade_building_effect = castle_04 }
+					if = { limit = { has_building = castle_03 } downgrade_building_effect = castle_03 }
+					if = { limit = { has_building = castle_02 } downgrade_building_effect = castle_02 }
+				}
+			}
+			set_variable = { name = aubf_all_gold value = gold }
+			remove_short_term_gold = var:aubf_all_gold
+			set_variable = { name = aub_upgrades_this_scan value = 0 }
+			capital_province = { holding_district = { aub_upgrade_chain_castle_01_effect = yes } }
+			if = {
+				limit = {
+					gold = 0
+					var:aub_upgrades_this_scan = 0
+					capital_province = {
+						holding_district = { has_building = castle_01 NOT = { has_building = castle_02 } }
+					}
+				}
+				debug_log = "AUBF: TEST PASS insufficient_personal_zero_change"
+			}
+			else = { debug_log = "AUBF: TEST FAIL insufficient_personal_zero_change" }
+		}
+		else = { debug_log = "AUBF: TEST FAIL controlled_robert_castle" }
+		debug_log = "AUBF: TEST DONE district_native_probe"
+	}
+}

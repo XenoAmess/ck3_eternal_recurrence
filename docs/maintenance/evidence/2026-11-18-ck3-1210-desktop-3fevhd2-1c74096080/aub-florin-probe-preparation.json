@@ -1,0 +1,102 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T15:34:54.624726+00:00",
+  "checks": [
+    {
+      "label": "tests",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_fixture_engine_prepare.py"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 0.816765800002031,
+      "tail": "......\r\n----------------------------------------------------------------------\r\nRan 6 tests in 0.353s\r\n\r\nOK\r\n"
+    },
+    {
+      "label": "mypy",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "tools/prepare_aub_1_20_fixture.py"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 0.7826753999979701,
+      "tail": "Success: no issues found in 1 source file\r\n"
+    },
+    {
+      "label": "prepare",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/prepare_aub_1_20_fixture.py",
+        "--scenario",
+        "florin-probe",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a01\\fixture"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 1.5247785999963526,
+      "tail": "{\"prepared_fixture\": \"D:\\\\ck3-state\\\\upgrade-20261118\\\\aub-florin-probe-a01\\\\fixture\", \"runtime_status\": \"NOT_RUN\"}\r\n"
+    }
+  ],
+  "passed": true,
+  "game_started": false,
+  "business_pass": false,
+  "workshop_published": false,
+  "parser": {
+    "jar": {
+      "path": "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+      "bytes": 433166,
+      "sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82"
+    },
+    "scope": "generic syntax only; no1.21 engine semantic or runtime credit",
+    "concurrency": 4,
+    "heap_per_process": "192MiB",
+    "files": 334,
+    "failures": [],
+    "full_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-software-a01\\summary.json",
+      "bytes": 232946,
+      "sha256": "ec4be85d4a82c4a9b9a0395cda4c029feb01df4fea07d8add20b14274b8c874b"
+    },
+    "input_tree_sha256": "79537602eb6096b85866b5b6d62481107b14c85d3eb41c9b8684a05c4af11744"
+  },
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_aub_1_20_fixture.py",
+      "bytes": 6045,
+      "sha256": "9db3e6c77ddca57abf7f3b16e49bcc352b55d9f6a9c3fc4ca26789f08df98b42"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_fixture_engine_prepare.py",
+      "bytes": 7175,
+      "sha256": "08257cafdff4f63d183f1079316cb40fe694e6db59e64f9c0da953f19a2b71eb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_probe.json",
+      "bytes": 1333,
+      "sha256": "4df1521daa612fdd99e9b482c07ca0e9d2fe0543fd7c496d513ed453ed527db0"
+    }
+  ],
+  "fixture_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a01\\fixture.manifest.json",
+    "bytes": 557,
+    "sha256": "66feb4851312f019f02160236ad7e8e0e6b7fbf040a962e56320b45146d3ceee"
+  },
+  "fixture_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a01\\fixture.prepare.json",
+    "bytes": 2237,
+    "sha256": "dac7b65ecc92df1e7b51b1d1c7659459725d9ab809897c6732c955c57f7cc565"
+  },
+  "scope": "New minimal capability probe only; full legacy fixture explicitly refuses Florin until migration. Production code calls are original generated district chain and province dispatcher; no overridden production helpers. Existing CI fixture test entry now runs six actual tests.",
+  "external_review_date": "2026-12-18"
+}

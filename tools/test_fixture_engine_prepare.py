@@ -1,6 +1,7 @@
 """Check exact engine selection and metadata used by disposable fixtures."""
 import importlib.util
 import os
+import json
 from pathlib import Path
 import shutil
 import sys
@@ -9,6 +10,8 @@ import unittest
 from unittest.mock import patch
 
 import fixture_engine_prepare as prep
+import prepare_aub_1_20_fixture as aub
+import extract_auto_upgrade_buildings as parser
 
 
 REPO = Path(__file__).resolve().parents[1]
@@ -95,6 +98,49 @@ class EngineIdentityTests(unittest.TestCase):
                 self.assertEqual(receipt["runtime_status"], "NOT_RUN")
                 self.assertFalse(receipt["native_abi_loaded"])
                 self.assertFalse(receipt["gui_callbacks_mounted"])
+
+
+class AubFlorinProbePreparationTests(unittest.TestCase):
+    def identity(self) -> dict[str, str]:
+        build = next(build for build in native_builds() if build.game_version == "1.21.0")
+        return {"game_version": build.game_version, "steam_build_id": "31415926",
+                "exe_sha256": build.executable_sha256.lower()}
+
+    def test_actual_producer_and_case_keep_probe_scope(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "probe"
+            self.assertEqual(aub.prepare_probe(REPO, output), output)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_probe.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["required_markers"], case["required_markers"])
+            self.assertIs(receipt["full_product_pass_from_cell"], False)
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            script = (output / "events/aubf_events.txt").read_text(encoding="utf-8-sig")
+            self.assertEqual(len(parser.parse_clausewitz(script).entries), 2)
+            for marker in case["required_markers"]:
+                self.assertEqual(script.count('"' + marker + '"'), 1)
+            for path in output.rglob("*.txt"):
+                self.assertTrue(path.read_bytes().startswith(b"\xef\xbb\xbf"))
+
+    def test_legacy_full_matrix_is_rejected_on_florin_before_writes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "legacy"
+            with self.assertRaisesRegex(ValueError, "not migrated"):
+                aub.prepare(REPO, output)
+            self.assertFalse(output.exists())
+
+    def test_probe_is_rejected_on_legacy_before_writes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value={"game_version": "1.20.0.4"}), \
+                patch.object(aub, "engine_identity", return_value={"game_version": "1.20.0.4"}):
+            output = Path(temporary) / "wrong-engine"
+            with self.assertRaisesRegex(ValueError, "requires exact"):
+                aub.prepare_probe(REPO, output)
+            self.assertFalse(output.exists())
 
 
 if __name__ == "__main__":
