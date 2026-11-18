@@ -1,0 +1,57 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_acceptance\\events\\aubt_events.txt",
+  "source_sha256": "297f5e04515ba46145cb8d74ea7b38790062799b97baee66dc967c345fe82f30",
+  "selected_event_groups": [
+    [
+      0,
+      19,
+      1,
+      23,
+      20,
+      24,
+      21,
+      25,
+      22
+    ],
+    [
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  ],
+  "mapping": {
+    "barracks_01..05": "castle_garrison_1..5",
+    "old250_split150_each": "current_tier2_cost /2 +1 each"
+  },
+  "preserved_markers": [
+    "AUBT: TEST PASS native_decision_priority_continue_selection",
+    "AUBT: TEST PASS domain_limit_normalized_zero",
+    "AUBT: TEST PASS treasury_priority_one_tier",
+    "AUBT: TEST PASS domain_limit_zero_builds",
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect",
+    "AUBT: TEST PASS domain_limit_recovery_resumes",
+    "AUBT: TEST PASS over_limit_continue_builds",
+    "AUBT: TEST PASS legacy_no_pause_flag_continues",
+    "AUBT: TEST PASS disabled_zero_side_effect",
+    "AUBT: TEST PASS personal_gold_fallback",
+    "AUBT: TEST PASS reenabled_loop_stopped_cleanly",
+    "AUBT: TEST PASS insufficient_funds_no_change",
+    "AUBT: TEST PASS treasury_only_uses_treasury",
+    "AUBT: TEST PASS treasury_only_no_personal_fallback",
+    "AUBT: TEST PASS personal_only_uses_personal",
+    "AUBT: TEST PASS personal_only_no_treasury_fallback",
+    "AUBT: TEST PASS priority_no_split_payment"
+  ],
+  "changes": [
+    "Remove automatic default enable seeding: actual production UI must already have enabled the default policy.",
+    "Drop obsolete barracks06..08 cleanup; current garrison ends at5.",
+    "Explicit holding-district mutations and original production helper calls.",
+    "At zero-domain baseline, ensure target province culture early_medieval and primary castle level>=2 for garrison2.",
+    "Use full source-declared target gold cost to seed two individually insufficient but jointly sufficient accounts.",
+    "Finish this explicitly partial scene after money/domain; remaining original matrix remains mandatory."
+  ],
+  "observed_at_utc": "2026-11-18T17:07:16.584150+00:00"
+}

@@ -1,0 +1,15 @@
+on_game_start_after_lobby = {
+	on_actions = { aubf_money_ready }
+}
+
+aubf_money_ready = {
+	effect = {
+		random_player = {
+			if = {
+				limit = { this = character:1128 }
+				debug_log = "AUBF: READY money_domain_actual_production_decision"
+			}
+			else = { debug_log = "AUBF: TEST FAIL money_domain_wrong_actor" }
+		}
+	}
+}

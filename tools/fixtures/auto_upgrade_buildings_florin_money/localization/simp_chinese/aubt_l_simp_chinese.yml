@@ -1,0 +1,11 @@
+﻿l_simp_chinese:
+ aubt_acceptance_title:0 "自动升级建筑验收通过"
+ aubt_acceptance_desc:0 "维护版1.19运行时已通过国库优先、个人金钱回退、资金不足、单级升级、禁用与重启检查。"
+ aubt_acceptance_option:0 "关闭"
+ aubt_domain_limit_adjust_down:0 "验收用直辖上限下调"
+ aubt_domain_limit_adjust_up:0 "验收用直辖上限上调"
+ aubt_domain_limit_over_one:0 "验收用超直辖一档"
+ aubf_begin_money_domain:0 "验收：运行资金与直辖矩阵"
+ aubf_begin_money_domain_desc:0 "先通过正式决议启用自动建造，选择优先国库与超直辖继续。本隔离场景随后检验原有资金和直辖规则；其他建筑与继承验收仍需单独完成。"
+ aubf_begin_money_domain_tooltip:0 "开始原资金与直辖验收场景"
+ aubf_begin_money_domain_confirm:0 "开始验收"

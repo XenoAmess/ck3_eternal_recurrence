@@ -21,15 +21,16 @@ aubt120_start = {
 }
 '''
 
-def prepare_probe(repo: Path, output: Path) -> Path:
+def _prepare_florin_scene(repo: Path, output: Path, *, fixture: str, contract: str,
+                          case_id: str, mode: str, entry: str, advance: str) -> Path:
     repo, output = checked_output(repo, output)
     if engine_identity(repo)["game_version"] != "1.21.0":
-        raise ValueError("Florin district probe requires exact CK3 1.21.0")
-    source = repo / "tools/fixtures/auto_upgrade_buildings_florin_probe"
+        raise ValueError("Florin scene requires exact CK3 1.21.0")
+    source = repo / "tools/fixtures" / fixture
     files = sorted(path for path in source.rglob("*") if path.is_file())
-    raw: object = json.loads((repo / "tools/ck3_mod_acceptance_cases/aub_florin_probe.json").read_text(encoding="utf-8"))
-    if not isinstance(raw, dict) or raw.get("product") != "auto-upgrade-buildings" or raw.get("case") != "district-probe-1210":
-        raise ValueError("Florin probe case identity differs")
+    raw: object = json.loads((repo / "tools/ck3_mod_acceptance_cases" / contract).read_text(encoding="utf-8"))
+    if not isinstance(raw, dict) or raw.get("product") != "auto-upgrade-buildings" or raw.get("case") != case_id:
+        raise ValueError("Florin scene case identity differs")
     scope = raw.get("scope")
     raw_markers = raw.get("required_markers")
     if not isinstance(scope, str) or not isinstance(raw_markers, list) or not raw_markers or raw.get("full_product_pass_from_cell") is not False:
@@ -37,29 +38,49 @@ def prepare_probe(repo: Path, output: Path) -> Path:
     markers: list[str] = []
     for marker in raw_markers:
         if not isinstance(marker, str) or not marker:
-            raise ValueError("Florin probe markers must be nonempty strings")
+            raise ValueError("Florin scene markers must be nonempty strings")
         markers.append(marker)
+    if len(markers) != len(set(markers)):
+        raise ValueError("Florin scene markers must be unique")
+    if not files or any(path.suffix not in {".mod", ".txt", ".yml"} for path in files):
+        raise ValueError("Florin fixture must contain only declared text assets")
     for path in files:
         if path.suffix == ".mod":
             copy_files(source, output, [path])
         else:
             write_script(output, path.relative_to(source).as_posix(), path.read_text(encoding="utf-8-sig"))
     receipt: dict[str, object] = {
-        "product": "mod_auto_upgrade_buildings", "mode": "florin-district-native-probe",
+        "product": "mod_auto_upgrade_buildings", "mode": mode,
         "required_markers": markers,
-        "entry": "on_game_start_after_lobby -> random_player -> aubf.1",
+        "entry": entry,
         "rules": "1066 Robert of Apulia, historical character1128, original castle capital; vanilla rules.",
         "scope": scope, "full_product_pass_from_cell": False,
-        "advance_policy": "Zero-day synchronous probe; no manual Save; at most one natural day if required by startup.",
+        "advance_policy": advance,
     }
     finish_receipt(repo, source, output, files, receipt)
     return output
 
 
+def prepare_probe(repo: Path, output: Path) -> Path:
+    return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_probe",
+        contract="aub_florin_probe.json", case_id="district-probe-1210",
+        mode="florin-district-native-probe",
+        entry="on_game_start_after_lobby -> random_player -> aubf.1",
+        advance="Zero-day synchronous probe; no manual Save; at most one natural day if required by startup.")
+
+
+def prepare_money(repo: Path, output: Path) -> Path:
+    return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_money",
+        contract="aub_florin_money.json", case_id="money-domain-1210",
+        mode="florin-original-money-domain-matrix",
+        entry="Actual production enable UI with treasury-first/continue -> isolated fixture start decision -> original aubt.0..6 money/domain events",
+        advance="Keep paused for actual production selection and fixture start; then at most180natural days. Stop on failure, interruption, or exact DONE; no manual Save.")
+
+
 def prepare(repo: Path, output: Path) -> dict[str, object]:
     repo, output = checked_output(repo, output)
     if engine_identity(repo)["game_version"].startswith("1.21."):
-        raise ValueError("Full legacy AUB fixture is not migrated to Florin; florin-probe qualifies capabilities only")
+        raise ValueError("Full legacy AUB fixture is not migrated to Florin; choose an explicit partial Florin scene")
     source = repo / "tools/fixtures/auto_upgrade_buildings_acceptance"
     files = sorted(path for path in source.rglob("*") if path.is_file())
     copy_files(source, output, files)
@@ -92,10 +113,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--scenario", choices=("core", "florin-probe"), default="core")
+    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money"), default="core")
     args = parser.parse_args()
     if args.scenario == "florin-probe":
         output = prepare_probe(args.repo, args.output)
+        print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
+        return
+    if args.scenario == "florin-money":
+        output = prepare_money(args.repo, args.output)
         print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
         return
     receipt = prepare(args.repo, args.output)

@@ -1,0 +1,51 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "money-domain-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 180,
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": [
+      "--output",
+      "{output}",
+      "--scenario",
+      "florin-money"
+    ],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "actual_production_six_choices_and_default_selection",
+    "original_seventeen_money_domain_assertions_and_no_errors",
+    "actual_calendar_and_normal_exit"
+  ],
+  "required_markers": [
+    "AUBF: READY money_domain_actual_production_decision",
+    "AUBT: TEST BEGIN source-live",
+    "AUBT: TEST PASS native_decision_priority_continue_selection",
+    "AUBT: TEST PASS domain_limit_normalized_zero",
+    "AUBT: TEST PASS treasury_priority_one_tier",
+    "AUBT: TEST PASS domain_limit_zero_builds",
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect",
+    "AUBT: TEST PASS domain_limit_recovery_resumes",
+    "AUBT: TEST PASS over_limit_continue_builds",
+    "AUBT: TEST PASS legacy_no_pause_flag_continues",
+    "AUBT: TEST PASS disabled_zero_side_effect",
+    "AUBT: TEST PASS personal_gold_fallback",
+    "AUBT: TEST PASS reenabled_loop_stopped_cleanly",
+    "AUBT: TEST PASS insufficient_funds_no_change",
+    "AUBT: TEST PASS treasury_only_uses_treasury",
+    "AUBT: TEST PASS treasury_only_no_personal_fallback",
+    "AUBT: TEST PASS personal_only_uses_personal",
+    "AUBT: TEST PASS personal_only_no_treasury_fallback",
+    "AUBT: TEST PASS priority_no_split_payment",
+    "AUBF: TEST DONE money_domain"
+  ],
+  "forbidden_markers": [
+    "AUBT: TEST FAIL",
+    "AUBF: TEST FAIL"
+  ],
+  "scope": "The original17 money/domain/default UI assertions with their exact conditions, updated garrison IDs and district mutation scopes. Actual production UI must select treasury-first/continue before the isolated fixture start decision. Original quota/main/special/tribal/Mandala/negative-gate/succession and full disable UI remain mandatory separate coverage. No full product qualification from this cell.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

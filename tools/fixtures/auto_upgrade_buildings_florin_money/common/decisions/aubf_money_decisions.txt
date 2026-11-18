@@ -1,0 +1,23 @@
+aubf_begin_money_domain = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_auto_upgrade_buildings.dds" }
+	decision_group_type = realm
+	ai_check_interval = 0
+	desc = aubf_begin_money_domain_desc
+	selection_tooltip = aubf_begin_money_domain_tooltip
+	confirm_text = aubf_begin_money_domain_confirm
+	is_shown = {
+		is_ai = no
+		this = character:1128
+		has_character_flag = enable_auto_build
+		NOT = { has_character_flag = aubf_money_running }
+	}
+	is_valid = {
+		NOT = { has_character_flag = aub_funding_treasury_only }
+		NOT = { has_character_flag = aub_funding_personal_only }
+		NOT = { has_character_flag = aub_pause_when_over_domain_limit }
+	}
+	effect = {
+		add_character_flag = aubf_money_running
+		trigger_event = { id = aubt.0 }
+	}
+}

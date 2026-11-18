@@ -1,0 +1,530 @@
+﻿namespace = aubt
+
+aubt.2 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_2
+				}
+				NOT = {
+					has_global_variable = aub_auto_build_loop_started
+				}
+			}
+			debug_log = "AUBT: TEST PASS disabled_zero_side_effect"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL disabled_zero_side_effect"
+		}
+		global_var:aubt_player = {
+			set_variable = {
+				name = aubt_reset_treasury
+				value = treasury
+			}
+			if = {
+				limit = {
+					var:aubt_reset_treasury > 0
+				}
+				remove_treasury = var:aubt_reset_treasury
+			}
+			change_government = feudal_government
+			set_variable = {
+				name = aubt_reset_gold
+				value = gold
+			}
+			if = {
+				limit = {
+					var:aubt_reset_gold > 0
+				}
+				remove_short_term_gold = var:aubt_reset_gold
+			}
+			add_gold = 100000
+			set_variable = {
+				name = aubt_gold_before
+				value = gold
+			}
+			capital_province = {
+				holding_district = {
+					remove_building = castle_garrison_2
+				}
+				holding_district = {
+					add_building = castle_garrison_1
+				}
+			}
+			add_character_flag = enable_auto_build
+			aub_start_global_loop_effect = yes
+		}
+		trigger_event = {
+			id = aubt.3
+			days = 3
+		}
+	}
+}
+
+aubt.3 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_province = {
+			if = {
+				limit = {
+					has_building = castle_garrison_2
+				}
+				debug_log = "AUBT: OBSERVED fallback_upgrade castle_garrison_2"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED fallback_upgrade not_castle_garrison_2"
+			}
+		}
+		global_var:aubt_player = {
+			if = {
+				limit = {
+					has_treasury = no
+				}
+				debug_log = "AUBT: OBSERVED fallback_has_treasury no"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED fallback_has_treasury yes"
+			}
+			if = {
+				limit = {
+					treasury = 0
+				}
+				debug_log = "AUBT: OBSERVED fallback_treasury zero"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED fallback_treasury nonzero"
+			}
+			if = {
+				limit = {
+					gold < var:aubt_gold_before
+				}
+				debug_log = "AUBT: OBSERVED fallback_gold decreased"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED fallback_gold not_decreased"
+			}
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_2
+					NOT = {
+						has_building_or_higher = castle_garrison_3
+					}
+				}
+				global_var:aubt_player = {
+					treasury = 0
+					gold < var:aubt_gold_before
+				}
+			}
+			debug_log = "AUBT: TEST PASS personal_gold_fallback"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL personal_gold_fallback"
+		}
+		global_var:aubt_player = {
+			remove_character_flag = enable_auto_build
+		}
+		trigger_event = {
+			id = aubt.4
+			days = 16
+		}
+	}
+}
+
+aubt.4 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_2
+				}
+				NOT = {
+					has_global_variable = aub_auto_build_loop_started
+				}
+			}
+			debug_log = "AUBT: TEST PASS reenabled_loop_stopped_cleanly"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL reenabled_loop_stopped_cleanly"
+		}
+		global_var:aubt_player = {
+			set_variable = {
+				name = aubt_reset_gold
+				value = gold
+			}
+			if = {
+				limit = {
+					var:aubt_reset_gold > 0
+				}
+				remove_short_term_gold = var:aubt_reset_gold
+			}
+			set_variable = {
+				name = aubt_reset_treasury
+				value = treasury
+			}
+			if = {
+				limit = {
+					var:aubt_reset_treasury > 0
+				}
+				remove_treasury = var:aubt_reset_treasury
+			}
+			capital_province = {
+				holding_district = {
+					remove_building = castle_garrison_2
+				}
+				holding_district = {
+					add_building = castle_garrison_1
+				}
+			}
+			add_character_flag = enable_auto_build
+			aub_start_global_loop_effect = yes
+		}
+		trigger_event = {
+			id = aubt.5
+			days = 3
+		}
+	}
+}
+
+aubt.5 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_1
+				}
+				global_var:aubt_player = {
+					gold = 0
+					treasury = 0
+				}
+			}
+			debug_log = "AUBT: TEST PASS insufficient_funds_no_change"
+			global_var:aubt_player = {
+				remove_character_flag = enable_auto_build
+				trigger_event = {
+					id = aubt.6
+					days = 1
+				}
+			}
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL insufficient_funds_no_change"
+		}
+	}
+}
+
+aubt.6 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		save_scope_as = aub_payer
+		save_scope_as = character
+		change_government = celestial_government
+		remove_character_flag = aub_funding_personal_only
+		add_character_flag = aub_funding_treasury_only
+		set_variable = {
+			name = aubt_reset_gold
+			value = gold
+		}
+		if = {
+			limit = {
+				var:aubt_reset_gold > 0
+			}
+			remove_short_term_gold = var:aubt_reset_gold
+		}
+		set_variable = {
+			name = aubt_reset_treasury
+			value = treasury
+		}
+		if = {
+			limit = {
+				var:aubt_reset_treasury > 0
+			}
+			remove_treasury = var:aubt_reset_treasury
+		}
+		add_gold = 100000
+		add_treasury = 100000
+		set_variable = {
+			name = aubt_gold_before
+			value = gold
+		}
+		set_variable = {
+			name = aubt_treasury_before
+			value = treasury
+		}
+		global_var:aubt_province = {
+			if = {
+				limit = {
+					has_building = castle_garrison_2
+				}
+				holding_district = {
+					remove_building = castle_garrison_2
+				}
+			}
+			else_if = {
+				limit = {
+					has_building = castle_garrison_1
+				}
+				holding_district = {
+					remove_building = castle_garrison_1
+				}
+			}
+			holding_district = {
+				add_building = castle_garrison_1
+			}
+			scope:aub_payer = {
+				save_scope_as = holder
+			}
+			scope:aub_payer = {
+				save_scope_as = build_owner
+			}
+			county = {
+				save_scope_as = county
+			}
+			holding_district = {
+				aub_upgrade_chain_castle_garrison_1_effect = yes
+			}
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_2
+				}
+				gold = var:aubt_gold_before
+				treasury < var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS treasury_only_uses_treasury"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL treasury_only_uses_treasury"
+		}
+		set_variable = {
+			name = aubt_reset_treasury
+			value = treasury
+		}
+		if = {
+			limit = {
+				var:aubt_reset_treasury > 0
+			}
+			remove_treasury = var:aubt_reset_treasury
+		}
+		set_variable = {
+			name = aubt_gold_before
+			value = gold
+		}
+		set_variable = {
+			name = aubt_treasury_before
+			value = treasury
+		}
+		global_var:aubt_province = {
+			holding_district = {
+				remove_building = castle_garrison_2
+			}
+			holding_district = {
+				add_building = castle_garrison_1
+			}
+			holding_district = {
+				aub_upgrade_chain_castle_garrison_1_effect = yes
+			}
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_1
+					NOT = {
+						has_building = castle_garrison_2
+					}
+				}
+				gold = var:aubt_gold_before
+				treasury = var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS treasury_only_no_personal_fallback"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL treasury_only_no_personal_fallback"
+		}
+		remove_character_flag = aub_funding_treasury_only
+		add_character_flag = aub_funding_personal_only
+		set_variable = {
+			name = aubt_reset_gold
+			value = gold
+		}
+		if = {
+			limit = {
+				var:aubt_reset_gold > 0
+			}
+			remove_short_term_gold = var:aubt_reset_gold
+		}
+		set_variable = {
+			name = aubt_reset_treasury
+			value = treasury
+		}
+		if = {
+			limit = {
+				var:aubt_reset_treasury > 0
+			}
+			remove_treasury = var:aubt_reset_treasury
+		}
+		add_gold = 100000
+		add_treasury = 100000
+		set_variable = {
+			name = aubt_gold_before
+			value = gold
+		}
+		set_variable = {
+			name = aubt_treasury_before
+			value = treasury
+		}
+		global_var:aubt_province = {
+			holding_district = {
+				remove_building = castle_garrison_1
+			}
+			holding_district = {
+				add_building = castle_garrison_1
+			}
+			holding_district = {
+				aub_upgrade_chain_castle_garrison_1_effect = yes
+			}
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_2
+				}
+				gold < var:aubt_gold_before
+				treasury = var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS personal_only_uses_personal"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL personal_only_uses_personal"
+		}
+		set_variable = {
+			name = aubt_reset_gold
+			value = gold
+		}
+		if = {
+			limit = {
+				var:aubt_reset_gold > 0
+			}
+			remove_short_term_gold = var:aubt_reset_gold
+		}
+		set_variable = {
+			name = aubt_gold_before
+			value = gold
+		}
+		set_variable = {
+			name = aubt_treasury_before
+			value = treasury
+		}
+		global_var:aubt_province = {
+			holding_district = {
+				remove_building = castle_garrison_2
+			}
+			holding_district = {
+				add_building = castle_garrison_1
+			}
+			holding_district = {
+				aub_upgrade_chain_castle_garrison_1_effect = yes
+			}
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_1
+					NOT = {
+						has_building = castle_garrison_2
+					}
+				}
+				gold = var:aubt_gold_before
+				treasury = var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS personal_only_no_treasury_fallback"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL personal_only_no_treasury_fallback"
+		}
+		remove_character_flag = aub_funding_personal_only
+		remove_character_flag = aub_funding_treasury_only
+		set_variable = {
+			name = aubt_reset_gold
+			value = gold
+		}
+		if = {
+			limit = {
+				var:aubt_reset_gold > 0
+			}
+			remove_short_term_gold = var:aubt_reset_gold
+		}
+		set_variable = {
+			name = aubt_reset_treasury
+			value = treasury
+		}
+		if = {
+			limit = {
+				var:aubt_reset_treasury > 0
+			}
+			remove_treasury = var:aubt_reset_treasury
+		}
+		set_variable = {
+			name = aubf_partial_gold
+			value = {
+				value = regular_building_cost_tier_2
+				divide = 2
+				add = 1
+			}
+		}
+		add_gold = var:aubf_partial_gold
+		add_treasury = var:aubf_partial_gold
+		set_variable = {
+			name = aubt_gold_before
+			value = gold
+		}
+		set_variable = {
+			name = aubt_treasury_before
+			value = treasury
+		}
+		global_var:aubt_province = {
+			holding_district = {
+				remove_building = castle_garrison_1
+			}
+			holding_district = {
+				add_building = castle_garrison_1
+			}
+			holding_district = {
+				aub_upgrade_chain_castle_garrison_1_effect = yes
+			}
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_1
+					NOT = {
+						has_building = castle_garrison_2
+					}
+				}
+				gold = var:aubt_gold_before
+				treasury = var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS priority_no_split_payment"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL priority_no_split_payment"
+		}
+		change_government = feudal_government
+		trigger_event = {
+			id = aubt.800
+			days = 1
+		}
+	}
+}
+
+aubt.800 = { type = character_event hidden = yes immediate = { debug_log = "AUBF: TEST DONE money_domain" } }

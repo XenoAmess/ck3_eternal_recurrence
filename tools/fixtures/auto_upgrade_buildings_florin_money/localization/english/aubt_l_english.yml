@@ -1,0 +1,11 @@
+﻿l_english:
+ aubt_acceptance_title:0 "Auto Upgrade Buildings: acceptance passed"
+ aubt_acceptance_desc:0 "The maintained 1.19 runtime completed treasury priority, personal-gold fallback, insufficient-funds, one-tier, disable, and restart checks."
+ aubt_acceptance_option:0 "Close"
+ aubt_domain_limit_adjust_down:0 "Acceptance Domain Limit Down"
+ aubt_domain_limit_adjust_up:0 "Acceptance Domain Limit Up"
+ aubt_domain_limit_over_one:0 "Acceptance One Over Domain Limit"
+ aubf_begin_money_domain:0 "Acceptance: Money and Domain Matrix"
+ aubf_begin_money_domain_desc:0 "First use the production decision with treasury first and continue over the domain limit. This isolated scene then verifies the original money and domain rules. Other buildings and succession still require separate acceptance."
+ aubf_begin_money_domain_tooltip:0 "Start the original money and domain matrix"
+ aubf_begin_money_domain_confirm:0 "Start acceptance"

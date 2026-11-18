@@ -2,6 +2,7 @@
 import importlib.util
 import os
 import json
+import re
 from pathlib import Path
 import shutil
 import sys
@@ -101,6 +102,23 @@ class EngineIdentityTests(unittest.TestCase):
 
 
 class AubFlorinProbePreparationTests(unittest.TestCase):
+    def assertion_limits(self, block: parser.Block) -> dict[str, parser.Block]:
+        found: dict[str, parser.Block] = {}
+        for entry in block.entries:
+            if not isinstance(entry.value, parser.Block):
+                continue
+            if entry.key in {"if", "else_if"}:
+                limits = [item.value for item in entry.value.entries
+                          if item.key == "limit" and isinstance(item.value, parser.Block)]
+                for item in entry.value.entries:
+                    if item.key == "debug_log" and isinstance(item.value, str) and item.value.startswith('"AUBT: TEST PASS '):
+                        self.assertEqual(len(limits), 1)
+                        found[item.value[1:-1]] = limits[0]
+            nested = self.assertion_limits(entry.value)
+            self.assertFalse(set(found) & set(nested))
+            found.update(nested)
+        return found
+
     def identity(self) -> dict[str, str]:
         build = next(build for build in native_builds() if build.game_version == "1.21.0")
         return {"game_version": build.game_version, "steam_build_id": "31415926",
@@ -141,6 +159,38 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "requires exact"):
                 aub.prepare_probe(REPO, output)
             self.assertFalse(output.exists())
+
+    def test_money_scene_keeps_all_seventeen_original_assertion_conditions(self) -> None:
+        old = (REPO / "tools/fixtures/auto_upgrade_buildings_acceptance/events/aubt_events.txt").read_text(encoding="utf-8-sig")
+        folder = REPO / "tools/fixtures/auto_upgrade_buildings_florin_money"
+        modern = "\n".join(p.read_text(encoding="utf-8-sig") for p in sorted((folder / "events").glob("*.txt")))
+        self.assertNotIn("core_only_default_policy_seeded", modern)
+        normalized = re.sub(r"\bcastle_garrison_([1-5])\b", lambda m: f"barracks_{int(m[1]):02}", modern)
+        before = self.assertion_limits(parser.parse_clausewitz(old))
+        after = self.assertion_limits(parser.parse_clausewitz(normalized))
+        review = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_money_review.json").read_text(encoding="utf-8"))
+        self.assertEqual(set(after), set(review["preserved_markers"]))
+        self.assertEqual(len(after), 17)
+        for marker, condition in after.items():
+            self.assertEqual(condition, before[marker], marker)
+
+    def test_actual_money_producer_and_case_keep_incomplete_product_scope(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "money"
+            self.assertEqual(aub.prepare_money(REPO, output), output)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_money.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["required_markers"], case["required_markers"])
+            self.assertIs(receipt["full_product_pass_from_cell"], False)
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            combined = "\n".join(p.read_text(encoding="utf-8-sig") for p in output.rglob("*.txt"))
+            self.assertNotIn("has_ongoing_construction", combined)
+            self.assertNotIn("barracks_", combined)
+            for marker in case["required_markers"]:
+                self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
+            self.assertIn("Original quota/main/special/tribal/Mandala/negative-gate/succession", receipt["scope"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,575 @@
+﻿namespace = aubt
+
+aubt.0 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		debug_log = "AUBT: TEST BEGIN source-live"
+		set_global_variable = {
+			name = aubt_player
+			value = this
+		}
+		if = {
+			limit = {
+				has_character_flag = enable_auto_build
+				NOT = {
+					has_character_flag = aub_funding_treasury_only
+				}
+				NOT = {
+					has_character_flag = aub_funding_personal_only
+				}
+				NOT = {
+					has_character_flag = aub_pause_when_over_domain_limit
+				}
+			}
+			debug_log = "AUBT: TEST PASS native_decision_priority_continue_selection"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL native_decision_priority_continue_selection"
+		}
+		remove_character_flag = enable_auto_build
+		remove_global_variable = aub_auto_build_loop_started
+		change_government = celestial_government
+		set_variable = {
+			name = aubt_domain_adjust_guard
+			value = 0
+		}
+		trigger_event = {
+			id = aubt.19
+			days = 1
+		}
+	}
+}
+
+aubt.19 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_player = {
+			if = {
+				limit = {
+					domain_limit_available > 0
+					var:aubt_domain_adjust_guard < 64
+				}
+				add_character_modifier = {
+					modifier = aubt_domain_limit_adjust_down
+				}
+				change_variable = {
+					name = aubt_domain_adjust_guard
+					add = 1
+				}
+				trigger_event = {
+					id = aubt.19
+					days = 1
+				}
+			}
+			else_if = {
+				limit = {
+					domain_limit_available < 0
+					var:aubt_domain_adjust_guard < 64
+				}
+				add_character_modifier = {
+					modifier = aubt_domain_limit_adjust_up
+				}
+				change_variable = {
+					name = aubt_domain_adjust_guard
+					add = 1
+				}
+				trigger_event = {
+					id = aubt.19
+					days = 1
+				}
+			}
+			else_if = {
+				limit = {
+					domain_limit_available = 0
+				}
+				remove_variable = aubt_domain_adjust_guard
+				debug_log = "AUBT: TEST PASS domain_limit_normalized_zero"
+				set_variable = {
+					name = aubt_reset_gold
+					value = gold
+				}
+				if = {
+					limit = {
+						var:aubt_reset_gold > 0
+					}
+					remove_short_term_gold = var:aubt_reset_gold
+				}
+				set_variable = {
+					name = aubt_reset_treasury
+					value = treasury
+				}
+				if = {
+					limit = {
+						var:aubt_reset_treasury > 0
+					}
+					remove_treasury = var:aubt_reset_treasury
+				}
+				add_gold = 100000
+				add_treasury = 100000
+				set_variable = {
+					name = aubt_gold_before
+					value = gold
+				}
+				set_variable = {
+					name = aubt_treasury_before
+					value = treasury
+				}
+				capital_province = {
+					culture = {
+						if = {
+							limit = {
+								NOT = {
+									has_cultural_era_or_later = culture_era_early_medieval
+								}
+							}
+							join_era = culture_era_early_medieval
+						}
+					}
+					province_owner = {
+						save_scope_as = character
+					}
+					province_owner = {
+						save_scope_as = holder
+					}
+					province_owner = {
+						save_scope_as = build_owner
+					}
+					county = {
+						save_scope_as = county
+					}
+					holding_district = {
+						if = {
+							limit = {
+								has_building = castle_01
+							}
+							upgrade_building_effect = castle_01
+						}
+					}
+					set_global_variable = {
+						name = aubt_province
+						value = this
+					}
+					if = {
+						limit = {
+							has_building_or_higher = castle_garrison_1
+						}
+						if = {
+							limit = {
+								has_building = castle_garrison_5
+							}
+							holding_district = {
+								remove_building = castle_garrison_5
+							}
+						}
+						else_if = {
+							limit = {
+								has_building = castle_garrison_4
+							}
+							holding_district = {
+								remove_building = castle_garrison_4
+							}
+						}
+						else_if = {
+							limit = {
+								has_building = castle_garrison_3
+							}
+							holding_district = {
+								remove_building = castle_garrison_3
+							}
+						}
+						else_if = {
+							limit = {
+								has_building = castle_garrison_2
+							}
+							holding_district = {
+								remove_building = castle_garrison_2
+							}
+						}
+						else = {
+							holding_district = {
+								remove_building = castle_garrison_1
+							}
+						}
+					}
+					holding_district = {
+						add_building = castle_garrison_1
+					}
+				}
+				add_character_flag = aub_pause_when_over_domain_limit
+				add_character_flag = enable_auto_build
+				aub_start_global_loop_effect = yes
+				trigger_event = {
+					id = aubt.1
+					days = 3
+				}
+			}
+			else = {
+				debug_log = "AUBT: TEST FAIL domain_limit_normalized_zero"
+			}
+		}
+	}
+}
+
+aubt.1 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_province = {
+			if = {
+				limit = {
+					has_building = castle_garrison_1
+				}
+				debug_log = "AUBT: OBSERVED target_building castle_garrison_1"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED target_building not_castle_garrison_1"
+			}
+			if = {
+				limit = {
+					has_building = castle_garrison_2
+				}
+				debug_log = "AUBT: OBSERVED target_upgrade castle_garrison_2"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED target_upgrade not_castle_garrison_2"
+			}
+			if = {
+				limit = {
+					has_ongoing_holding_construction = no
+				}
+				debug_log = "AUBT: OBSERVED target_construction none"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED target_construction ongoing"
+			}
+			if = {
+				limit = {
+					OR = {
+						has_holding_type = castle_holding
+						has_holding_type = city_holding
+						has_holding_type = church_holding
+					}
+				}
+				debug_log = "AUBT: OBSERVED target_holding eligible"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED target_holding ineligible"
+			}
+			if = {
+				limit = {
+					barony = {
+						is_leased_out = no
+					}
+				}
+				debug_log = "AUBT: OBSERVED target_lease none"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED target_lease leased"
+			}
+		}
+		global_var:aubt_player = {
+			if = {
+				limit = {
+					has_treasury = yes
+				}
+				debug_log = "AUBT: OBSERVED payer_has_treasury yes"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED payer_has_treasury no"
+			}
+			if = {
+				limit = {
+					culture = {
+						has_innovation = innovation_barracks
+					}
+				}
+				debug_log = "AUBT: OBSERVED payer_innovation barracks"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED payer_innovation missing_barracks"
+			}
+			if = {
+				limit = {
+					treasury < var:aubt_treasury_before
+				}
+				debug_log = "AUBT: OBSERVED payer_treasury decreased"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED payer_treasury not_decreased"
+			}
+			if = {
+				limit = {
+					gold = var:aubt_gold_before
+				}
+				debug_log = "AUBT: OBSERVED payer_gold unchanged"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED payer_gold changed"
+			}
+			if = {
+				limit = {
+					any_directly_owned_province = {
+						has_building = castle_garrison_2
+					}
+				}
+				debug_log = "AUBT: OBSERVED direct_iterator sees_castle_garrison_2"
+			}
+			else = {
+				debug_log = "AUBT: OBSERVED direct_iterator misses_castle_garrison_2"
+			}
+		}
+		if = {
+			limit = {
+				has_global_variable = aub_auto_build_loop_started
+			}
+			debug_log = "AUBT: OBSERVED global_loop active"
+		}
+		else = {
+			debug_log = "AUBT: OBSERVED global_loop inactive"
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_2
+					NOT = {
+						has_building_or_higher = castle_garrison_3
+					}
+				}
+				global_var:aubt_player = {
+					has_treasury = yes
+					treasury < var:aubt_treasury_before
+				}
+				has_global_variable = aub_auto_build_loop_started
+			}
+			debug_log = "AUBT: TEST PASS treasury_priority_one_tier"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL treasury_priority_one_tier"
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_2
+					NOT = {
+						has_building_or_higher = castle_garrison_3
+					}
+				}
+				global_var:aubt_player = {
+					domain_limit_available = 0
+					has_character_flag = aub_pause_when_over_domain_limit
+					treasury < var:aubt_treasury_before
+					gold = var:aubt_gold_before
+				}
+			}
+			debug_log = "AUBT: TEST PASS domain_limit_zero_builds"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL domain_limit_zero_builds"
+		}
+		global_var:aubt_player = {
+			capital_province = {
+				holding_district = {
+					remove_building = castle_garrison_2
+				}
+				holding_district = {
+					add_building = castle_garrison_1
+				}
+			}
+			add_character_modifier = {
+				modifier = aubt_domain_limit_over_one
+			}
+		}
+		trigger_event = {
+			id = aubt.23
+			days = 12
+		}
+	}
+}
+
+aubt.23 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_player = {
+			set_variable = {
+				name = aubt_gold_before
+				value = gold
+			}
+			set_variable = {
+				name = aubt_treasury_before
+				value = treasury
+			}
+		}
+		trigger_event = {
+			id = aubt.20
+			days = 2
+		}
+	}
+}
+
+aubt.20 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_1
+					NOT = {
+						has_building = castle_garrison_2
+					}
+				}
+				global_var:aubt_player = {
+					domain_limit_available = -1
+					has_character_flag = aub_pause_when_over_domain_limit
+					gold = var:aubt_gold_before
+					treasury = var:aubt_treasury_before
+				}
+				has_global_variable = aub_auto_build_loop_started
+			}
+			debug_log = "AUBT: TEST PASS over_limit_pause_zero_side_effect"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL over_limit_pause_zero_side_effect"
+		}
+		global_var:aubt_player = {
+			remove_character_modifier = aubt_domain_limit_over_one
+		}
+		trigger_event = {
+			id = aubt.24
+			days = 13
+		}
+	}
+}
+
+aubt.24 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_player = {
+			set_variable = {
+				name = aubt_gold_before
+				value = gold
+			}
+			set_variable = {
+				name = aubt_treasury_before
+				value = treasury
+			}
+		}
+		trigger_event = {
+			id = aubt.21
+			days = 2
+		}
+	}
+}
+
+aubt.21 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_2
+					NOT = {
+						has_building_or_higher = castle_garrison_3
+					}
+				}
+				global_var:aubt_player = {
+					domain_limit_available = 0
+					has_character_flag = aub_pause_when_over_domain_limit
+					treasury < var:aubt_treasury_before
+					gold = var:aubt_gold_before
+				}
+				has_global_variable = aub_auto_build_loop_started
+			}
+			debug_log = "AUBT: TEST PASS domain_limit_recovery_resumes"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL domain_limit_recovery_resumes"
+		}
+		global_var:aubt_player = {
+			capital_province = {
+				holding_district = {
+					remove_building = castle_garrison_2
+				}
+				holding_district = {
+					add_building = castle_garrison_1
+				}
+			}
+			remove_character_flag = aub_pause_when_over_domain_limit
+			add_character_modifier = {
+				modifier = aubt_domain_limit_over_one
+			}
+		}
+		trigger_event = {
+			id = aubt.25
+			days = 13
+		}
+	}
+}
+
+aubt.25 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_player = {
+			set_variable = {
+				name = aubt_gold_before
+				value = gold
+			}
+			set_variable = {
+				name = aubt_treasury_before
+				value = treasury
+			}
+		}
+		trigger_event = {
+			id = aubt.22
+			days = 2
+		}
+	}
+}
+
+aubt.22 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = castle_garrison_2
+					NOT = {
+						has_building_or_higher = castle_garrison_3
+					}
+				}
+				global_var:aubt_player = {
+					domain_limit_available = -1
+					NOT = {
+						has_character_flag = aub_pause_when_over_domain_limit
+					}
+					treasury < var:aubt_treasury_before
+					gold = var:aubt_gold_before
+				}
+				has_global_variable = aub_auto_build_loop_started
+			}
+			debug_log = "AUBT: TEST PASS over_limit_continue_builds"
+			debug_log = "AUBT: TEST PASS legacy_no_pause_flag_continues"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL over_limit_continue_builds"
+			debug_log = "AUBT: TEST FAIL legacy_no_pause_flag_continues"
+		}
+		global_var:aubt_player = {
+			remove_character_flag = enable_auto_build
+			remove_character_modifier = aubt_domain_limit_over_one
+			remove_character_modifier = aubt_domain_limit_adjust_down
+			remove_character_modifier = aubt_domain_limit_adjust_up
+		}
+		trigger_event = {
+			id = aubt.2
+			days = 16
+		}
+	}
+}

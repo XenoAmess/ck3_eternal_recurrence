@@ -1,0 +1,243 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T17:28:04.556411+00:00",
+  "case": "money-domain-1210",
+  "scope": "17 original business predicate ASTs exactly equal after building ID normalization; old automatic flag seeding removed, actual production enable UI plus explicit isolated start decision required. New vanilla garrison level/cost/era and district mutation setup only. Original full building/quota/Mandala/special/succession and disable UI still pending.",
+  "checks": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-18T17:13:12.952800+00:00",
+    "checks": [
+      {
+        "label": "tests",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/test_fixture_engine_prepare.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.9766987999901175,
+        "tail": "........\r\n----------------------------------------------------------------------\r\nRan 8 tests in 0.496s\r\n\r\nOK\r\n"
+      },
+      {
+        "label": "mypy",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "tools/prepare_aub_1_20_fixture.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.7771919999941019,
+        "tail": "Success: no issues found in 1 source file\r\n"
+      },
+      {
+        "label": "prepare",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/prepare_aub_1_20_fixture.py",
+          "--scenario",
+          "florin-money",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 1.6044206000078702,
+        "tail": "{\"prepared_fixture\": \"D:\\\\ck3-state\\\\upgrade-20261118\\\\aub-florin-money-a03\\\\fixture\", \"runtime_status\": \"NOT_RUN\"}\r\n"
+      }
+    ],
+    "parser": {
+      "jar": {
+        "path": "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "bytes": 433166,
+        "sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82"
+      },
+      "scope": "generic syntax only; no1.21 engine semantic or runtime credit",
+      "concurrency": 4,
+      "heap_per_process": "192MiB",
+      "results": [
+        {
+          "input": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\common\\decisions\\aubf_money_decisions.txt",
+            "bytes": 765,
+            "sha256": "41e94fbf2af3ec00d541020138d84db7b39449d38b18032eb20f12d655068527"
+          },
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\common\\decisions\\aubf_money_decisions.txt"
+          ],
+          "exit": 0
+        },
+        {
+          "input": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\common\\modifiers\\aubt_modifiers.txt",
+            "bytes": 283,
+            "sha256": "8d7ab5e433e986160a9a791654973c360221f7eaf327a499525d389401bed2f0"
+          },
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\common\\modifiers\\aubt_modifiers.txt"
+          ],
+          "exit": 0
+        },
+        {
+          "input": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\common\\on_action\\aubf_money_on_actions.txt",
+            "bytes": 325,
+            "sha256": "1dd8756fff9979abe1c8ada5558da0e25dd6a8933e41138469ce9d08e8e42ed0"
+          },
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\common\\on_action\\aubf_money_on_actions.txt"
+          ],
+          "exit": 0
+        },
+        {
+          "input": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\events\\aubf_money_00.txt",
+            "bytes": 12129,
+            "sha256": "79e287669cfe8d36cd6b80f2cbb2141b0b9e2157bc2d6fe70321b203c2266d55"
+          },
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\events\\aubf_money_00.txt"
+          ],
+          "exit": 0
+        },
+        {
+          "input": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\events\\aubf_money_01.txt",
+            "bytes": 10823,
+            "sha256": "9d15a9d224fd142802687086f7b8dd24b77706c462d1d491f4f4b65e1a5aadcf"
+          },
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a03\\fixture\\events\\aubf_money_01.txt"
+          ],
+          "exit": 0
+        }
+      ]
+    },
+    "passed": true,
+    "game_started": false,
+    "business_pass": false,
+    "workshop_published": false
+  },
+  "current_source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_aub_1_20_fixture.py",
+      "bytes": 7476,
+      "sha256": "f629c72c15e53aa400ffc27366480b0422bdea27d687017c72704cf823d058c1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_fixture_engine_prepare.py",
+      "bytes": 10521,
+      "sha256": "774ee25b713f3f678719ada2f1fbd1923ec8c7bd0b09cc2129c587013b7c4341"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_money.json",
+      "bytes": 2293,
+      "sha256": "b00c28fbd88501f7f757c1ea475210da0566023abfd0f5d641a5ae5d9feb42d8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_money_review.json",
+      "bytes": 2262,
+      "sha256": "c01b24309ed29ee107d7c882a214a8a7ef10d99c625c777e9feb28d6e6e61e1e"
+    }
+  ],
+  "fixture_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a04\\fixture.manifest.json",
+    "bytes": 1446,
+    "sha256": "3159107f8eb0238b25609c681b4db49bfcdd0f9eb340ef09a05d986f7dbe82a6"
+  },
+  "fixture_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-a04\\fixture.prepare.json",
+    "bytes": 4351,
+    "sha256": "b440cc606ec7d77376c4fff6331b8cbcb7bb07626b8efa4f9da534538c4bc640"
+  },
+  "prior_test_collector_failure": {
+    "original": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-money-software-a01\\summary.json",
+      "bytes": 2938,
+      "sha256": "2d60ceaed4c15611c1e4f6ede3ff6a7b50d93a4f9bd67587cc8c0a2f34526278"
+    },
+    "reason": "First predicate collector omitted else_if; domain_limit_normalized_zero lives in else_if. Collector now includes both if/else_if; all17 conditions match. No business condition weakened."
+  },
+  "cleanup": {
+    "R2_generated_shader": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "groups": {
+        "R0002": {
+          "machine_id": "desktop-3fevhd2-1c74096080",
+          "at_utc": "2026-11-18T17:15:08.881223+00:00",
+          "deleted_files": 4196,
+          "deleted_logical_bytes": 184527867,
+          "failed": [],
+          "free_before": {
+            "C:/": 50017751040,
+            "D:/": 21660459008
+          },
+          "free_after": {
+            "C:/": 50009133056,
+            "D:/": 21854662656
+          }
+        }
+      }
+    },
+    "byte_identical_preview_copies": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-18T17:15:35.929526+00:00",
+      "deleted_files": 181,
+      "deleted_logical_bytes": 192492053,
+      "failed": [],
+      "free_before": {
+        "C:/": 49998651392,
+        "D:/": 21854486528
+      },
+      "free_after": {
+        "C:/": 49998585856,
+        "D:/": 22047322112
+      }
+    },
+    "deleted_files": 4377,
+    "deleted_logical_bytes": 377019920,
+    "availability": "Deleted derivative paths are no longer readable. Original screenshots/logs/source/formal/fixture retained; duplicate pixels verified under exclusive retained-file lock. Hardlinks and sole MRM warm baseline protected."
+  },
+  "software_pass": true,
+  "game_started": false,
+  "business_pass": false,
+  "workshop_published": false,
+  "external_review_date": "2026-12-18"
+}
