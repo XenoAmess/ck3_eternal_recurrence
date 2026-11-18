@@ -3,6 +3,13 @@ package org.xar.ck3.control.application.advance;
 import static org.xar.ck3.control.contracts.StrictJson.require;
 import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import java.util.HashSet;
+import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.reconciliation.LateOutcome.Mode;
+import org.xar.ck3.control.reconciliation.LateOutcome.State;
+import org.xar.ck3.control.reconciliation.LateOutcome.Status;
+import org.xar.ck3.control.wave2.runtime.deadlinetransport.SentinelObservation;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.math.BigInteger;
 import java.time.Duration;
@@ -176,6 +183,7 @@ public final class PreparedCleanupEvidence {
         requireSubject(prepared,statusCustody.session());requireRawFrame(prepared,binding.writeFrame());
         requireFreshAfter(read.acknowledgement(),binding.freshSnapshotAck(),binding.writeFrame(),binding.snapshotReceived());
         var original=prepared.aProof().original();var current=read.status();var date=prepared.command().before().frame().identity().dateRaw();
+        requireSupportedCancellationSlot(prepared.command().source().exactBuild(),current);
         var delta=date.subtract(original.plan().startingDateRaw());AdvanceClock.requireSameSlot(original.originalArm(),current);
         require(delta.signum()>0&&delta.mod(AdvancePlan.DAY).signum()==0&&date.compareTo(original.plan().targetDateRaw())<0
                 &&current.state()==org.xar.ck3.control.reconciliation.LateOutcome.State.ARMED&&!current.abnormal()&&!current.terminalObserved()
@@ -191,16 +199,66 @@ public final class PreparedCleanupEvidence {
         var ids=originalIds(prepared);require(!ids.contains(read.acknowledgement().requestId())&&!ids.contains(binding.freshSnapshotAck().requestId())
                 &&!read.acknowledgement().requestId().equals(binding.freshSnapshotAck().requestId()),"late cleanup READ reused an original command/native identity");
     }
+    public static boolean supportsCancellationHello(String adapter,String version,String sha256) {
+        return "ck3-1.19.0.6-msvc-x64".equals(adapter)&&"1.19.0.6".equals(version)
+                    &&"2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86".equalsIgnoreCase(sha256)
+                ||"ck3-1.20.0.4-msvc-x64".equals(adapter)&&ExactCk3Build.CK3_12004.matches(version,sha256)
+                ||"ck3-1.21.0-msvc-x64".equals(adapter)&&ExactCk3Build.CK3_1210.matches(version,sha256);
+    }
+    private static boolean cancellationFlorin(String exactBuild) {
+        return ExactCk3Build.CK3_1210.executableSha256().equalsIgnoreCase(Objects.requireNonNull(exactBuild));
+    }
+    /** The 1210 producer supports only its existing zero-arm terminal/sentinel slot. Legacy slot rules stay with the caller. */
+    public static void requireSupportedCancellationSlot(String exactBuild,Status status) {
+        Objects.requireNonNull(status);
+        if(cancellationFlorin(exactBuild))require(status.armyCount()==0&&status.mode()==Mode.TERMINAL_OR_SENTINEL,
+                "1210 prepared cleanup requires the original zero-arm terminal/sentinel slot");
+    }
+    /** Legacy ACKs have no embedded Status. A 1210 ACK retains all twenty fields for later independent comparison. */
+    public static Optional<Status> acknowledgedCancellation(String exactBuild,NativeActionPort.AckReceived ack,String step) {
+        require(ack.nativeOk()&&ack.originalResultToken().isPresent(),"successful original prepared cleanup ACK required");
+        JsonNode result=StrictJson.parse(ack.originalResultToken().orElseThrow().bytes(),MAXIMUM);
+        require(result.isObject()&&result.path("step").isTextual()&&step.equals(result.path("step").textValue())
+                &&result.path("accepted").isBoolean()&&result.path("accepted").booleanValue(),
+                "prepared cleanup original result step/acceptance differs");
+        if(!cancellationFlorin(exactBuild)) {
+            require(cancellationKeys(result).equals(Set.of("step","accepted","status"))
+                    &&result.path("status").isTextual()&&"canceled".equals(result.path("status").textValue()),
+                    "prepared cleanup ACK is not the original accepted canceled result");
+            return Optional.empty();
+        }
+        require(cancellationKeys(result).equals(Set.of("step","accepted","status","tactical_daily_sentinel"))
+                &&result.path("status").isTextual()&&"available".equals(result.path("status").textValue()),
+                "1210 prepared cleanup requires the exact available cancellation result");
+        JsonNode envelope=StrictJson.parse(ack.originalFrame().bytes(),MAXIMUM);
+        require(envelope.isObject()&&envelope.path("protocol_version").isIntegralNumber()
+                &&envelope.path("protocol_version").bigIntegerValue().equals(BigInteger.ONE)
+                &&envelope.path("type").isTextual()&&"command_result".equals(envelope.path("type").textValue())
+                &&envelope.path("request_id").isTextual()&&ack.requestId().equals(envelope.path("request_id").textValue())
+                &&envelope.path("ok").isBoolean()&&envelope.path("ok").booleanValue()&&result.equals(envelope.get("result")),
+                "1210 prepared cleanup ACK envelope/token identity differs");
+        Status status=SentinelObservation.decode(result.get("tactical_daily_sentinel"));
+        requireSupportedCancellationSlot(exactBuild,status);
+        require(status.state()==State.IDLE&&SentinelObservation.nativeGeneration(status).equals(AdvancePrimitives.cancelGeneration(step)),
+                "1210 prepared cleanup ACK did not cancel its exact original generation to IDLE");
+        return Optional.of(status);
+    }
+    /** The caller must retain both original ordered READs and its separate Full proof. */
+    public static void requireIndependentCancellationStatuses(Optional<Status> acknowledgedCancellation,Status first,Status second) {
+        Objects.requireNonNull(acknowledgedCancellation);Objects.requireNonNull(first);Objects.requireNonNull(second);
+        acknowledgedCancellation.ifPresent(status->require(status.equals(first)&&status.equals(second),
+                "1210 cancellation ACK and both independent IDLE Status originals differ"));
+    }
+    private static Set<String> cancellationKeys(JsonNode value) {
+        var result=new HashSet<String>();value.fieldNames().forEachRemaining(result::add);return result;
+    }
     /** Event-time validation after all volatile originals have been captured; no clock.now is substituted. */
     public static void requirePostAckCaptured(PostAckCaptured captured) {
         var binding=captured.binding();requireLateBinding(binding,binding.boundAt());var prepared=binding.prepared();
         var ack=captured.cancellationAcknowledgement();var control=ack.custody().orElseThrow();control.verify(ack);
         require(ack.nativeOk()&&ack.requestId().equals(prepared.nativeRequestId()),"prepared cleanup has no original successful exact-child ACK");
-        Obj result=DriverJson.object(ack.originalResultToken().orElseThrow().bytes(),MAXIMUM);
-        require(result.members().keySet().equals(Set.of("step","accepted","status"))
-                &&new Text(prepared.command().operation().value()).equals(result.get("step"))
-                &&new Bool(true).equals(result.get("accepted"))&&new Text("canceled").equals(result.get("status")),
-                "prepared cleanup ACK is not the original accepted canceled result");
+        var acknowledged=acknowledgedCancellation(prepared.command().source().exactBuild(),ack,
+                prepared.command().operation().value());
         var late=binding.freshSnapshotAck().custody().orElseThrow();
         require(control.session().equals(late.session())&&control.custodyEpoch().equals(late.custodyEpoch())
                 &&control.writeEntered().order().compareTo(late.responseReceived().order())>0
@@ -211,6 +269,7 @@ public final class PreparedCleanupEvidence {
         requireFreshAfter(idle2.acknowledgement(),captured.freshSnapshotAck(),captured.afterFrame(),captured.snapshotReceived());
         requireRawFrame(prepared,captured.afterFrame());
         var original=prepared.aProof().original();var date=prepared.command().before().frame().identity().dateRaw();
+        requireIndependentCancellationStatuses(acknowledged,idle1.status(),idle2.status());
         AdvanceClock.validateCancellation(original.originalArm(),idle1.status(),original.plan(),date);
         AdvanceClock.validateCancellation(original.originalArm(),idle2.status(),original.plan(),date);
         require(idle1.status().equals(idle2.status())&&idle1.status().completedDailyTicks()==binding.status().status().completedDailyTicks()

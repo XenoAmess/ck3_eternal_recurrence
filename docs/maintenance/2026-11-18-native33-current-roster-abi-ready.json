@@ -1,0 +1,67 @@
+{
+  "schema": "xar.native.roster-current-abi-software-ready33/v1",
+  "scope": "Only current-header roster target fresh compile and real six RAM reader-to-formatter outputs; no production source delta or DLL",
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\roster-abi33\\ACTUAL-ROSTER-CURRENT-ABI33.json",
+    "bytes": 6220,
+    "sha256": "6a16786adf55bfd2f9cf5aff4fb553586b4c25af9896d7ffa35fe24088ccba90"
+  },
+  "input_manifest": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\roster-abi33\\ROSTER-CURRENT-ABI-INPUTS33.json",
+    "bytes": 1401461,
+    "sha256": "57d62d590f311c48a425c5dc22e9e0e1bfb5f6d8228be30edc67346482f60ce6"
+  },
+  "old_gold_context_header": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\include\\xar_bridge\\ck3_1210_personal_gold_frame_v1.hpp",
+    "bytes": 1929,
+    "sha256": "93b863e9578a12f76454150839867b5c105e07ad3446ffb269f9dc4965f91d96"
+  },
+  "current_gold_context_header": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\include\\xar_bridge\\ck3_1210_personal_gold_frame_v1.hpp",
+    "bytes": 2235,
+    "sha256": "c301f61b1c4ea4cf8b20f24535c78f87e82f48043323d6605cafa0a7d6153074"
+  },
+  "necessary_abi_delta": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\roster-abi33\\ACTOR-CONTEXT-ABI-BASIS33.diff",
+    "bytes": 1586,
+    "sha256": "49d04443e714eae97ecf60cb5da2b6cea8c253ce7bec1dfb7f257e6e55666789"
+  },
+  "permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-ROSTER33-SINGLE-TARGET24M-OFFLINE-PERMIT34.json",
+    "bytes": 2690,
+    "sha256": "96d0c809e64caac32ec59e55e6cd239e3533f655633c2ec1ae30de378b167b53"
+  },
+  "test_stdout": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\roster-abi33\\profile-build\\Testing\\Temporary\\LastTest.log",
+    "bytes": 1085,
+    "sha256": "efacbba489a8c50cf52bd05049ebd2ea0647979185a0027135c618b5e57c0bc4"
+  },
+  "new_raw_jsonl": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\roster-abi33\\character-roster-reader-actual33.jsonl",
+    "bytes": 9204,
+    "sha256": "186100e51d5fe394e1c7d086168ebc43c29c59a4b39daaebc362911cec701033"
+  },
+  "same_raw_bytes_as_prior26": true,
+  "old26_originals_preserved": true,
+  "result": {
+    "translation_units_freshly_compiled": 12,
+    "build_link_seconds": 25.2679,
+    "ctest_exit": 0,
+    "emit_exit": 0,
+    "cases": 6,
+    "case0_inner_reader_available": true,
+    "case0_actual_ram_rows": 4,
+    "case1_to5_inner_reader_available": false,
+    "all_outer_roster_available": false,
+    "all_application_main_observed": false,
+    "all_family_join_available": false
+  },
+  "limits": [
+    "No live or application-main custody qualification",
+    "No Family/all-living/interaction candidate completeness",
+    "No new DLL/feature/capability/production source or Git change",
+    "No old matrix or old26 executable rerun",
+    "No Game/Steam/SDK/user process/window/install/settings/mod/save activity"
+  ],
+  "Java_consumer": "New raw file is byte-exact prior26; existing exact-token consumer facts remain attributable to those same bytes. New proof concerns current C++ context ABI only."
+}

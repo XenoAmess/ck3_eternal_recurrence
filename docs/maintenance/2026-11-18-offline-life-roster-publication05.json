@@ -1,0 +1,29 @@
+{
+  "status": "LIFE5_AND_NATIVE33_JAVA4_QUALIFIED_SOURCE_NORMAL_PUSHED_MASTER",
+  "commit": "d6906735b37e4b8e6cd97711bc558bf538b49003",
+  "parent": "36894df8a31ea17470fe5db4b19f9cc711d4e398",
+  "push": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/GIT-PUSH04.json",
+    "bytes": 809,
+    "sha256": "f97c58277aac7db40873e110a659d4d83086743f2d0578344b6e86a974e0b9a1"
+  },
+  "selected18_blobs_exact": true,
+  "original_formal53_WIP_index_and_HEAD_exact": true,
+  "NoGame": true,
+  "complete_Life": false,
+  "whole_SERVICE": false,
+  "actual_Root_OODA": false,
+  "Family_main_custody_Installed_live": false,
+  "software_ready": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-life-consumer17/qualification01/LIFE-P11-P13-5NEW-SOFTWARE-READY02.json",
+      "bytes": 40785,
+      "sha256": "8f54761a4f900b4a95f86f97e8a59bc634869e0532ca237dfd78f3a564173ee4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-roster-actual18/qualification01/NATIVE33-ROSTER-JAVA4-SOFTWARE-READY01.json",
+      "bytes": 15020,
+      "sha256": "7643bb2d1ff39d3062b2ff4ee93d7e7d2b52df3a6cc3b60b90e09d3248b354f5"
+    }
+  ]
+}

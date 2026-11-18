@@ -1,0 +1,65 @@
+{
+  "status": "NORMAL_LINEAR_OFFLINE_SOURCE_COMMIT_PUSHED_MASTER",
+  "utc": "2026-11-18T14:39:29.462523+00:00",
+  "commit": "646bac3804b1c1e68fe7b481f4ed02cb3a8ba133",
+  "parent": "ce5ddada0cd82ec615a131cac2e57efbaa37a5b2",
+  "remote_master": "646bac3804b1c1e68fe7b481f4ed02cb3a8ba133",
+  "normal_non_force_push": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/git-stage-final16/push21.json",
+    "bytes": 804,
+    "sha256": "2f96100f88baa28018367613ec4863cabc1e0eb9c20c07f7dd888cc8997f299b"
+  },
+  "commit_receipt": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/git-stage-final16/commit21.json",
+    "bytes": 13410,
+    "sha256": "1181deb34bbec36a05f36e4ac86df012d93266e5fcdec210bc4603e4269447e1"
+  },
+  "source_union": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/git-stage-final16/FINAL-PUBLICATION-SOURCE-UNION19.json",
+    "bytes": 148508,
+    "sha256": "9dddbc8ca51265575b58566691bf6f3b1a5094adbec30d84657770defe78339e"
+  },
+  "changed_paths": 220,
+  "verified_source_blob_count": 231,
+  "cached_diff_check": 0,
+  "original_formal_head": "94ee9256ce2d2dac76fa51fc2bc0c022038ac3a1",
+  "original_formal_index_exact": true,
+  "original53dirty_paths_exact": true,
+  "original_AGENTS_physical_CRLF_tail_untouched": true,
+  "publication_worktree_no_checkout": "D:/ck3-state/ck3-version-migration-20261118/java-publish-offline16",
+  "normal_parent_remote_preserved": true,
+  "Game_or_user_process_queries": 0,
+  "new_Game_actions": 0,
+  "whole_SERVICE_qualified": false,
+  "complete_Life_qualified": false,
+  "actual_Root_OODA_qualified": false,
+  "server_CI_or_CLA_success_not_claimed": true,
+  "next_offline_work": "Cash v2 real C++20/21/25/28 consumer qualification, then P11/P13 narrow Life consumer work",
+  "software_reports": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-publication-merge15/qualification01/MERGED-JAVA41-SDK10-SOFTWARE-READY01.json",
+      "bytes": 101641,
+      "sha256": "28886879505041132eaa6491fc8408912d5adc8135be16a4f9bf65c29f0dac56"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/ORDINARY-PRIMITIVE40-SOFTWARE-READY03.json",
+      "bytes": 61998,
+      "sha256": "0d60026bc698bb36175428db658ee1c5abd2a9ec8e1d102bff4d1a9a2d41cedf"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/FRESH-LOADED-SAVED-ENTRY6-SOFTWARE-READY01.json",
+      "bytes": 6270,
+      "sha256": "b02849d3c85c0045f1552a8dc4273bab6d5ec277874b80fa331242827334ab3a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/PLAIN-INTERACTION53-SOFTWARE-READY03.json",
+      "bytes": 57350,
+      "sha256": "025194981e3161b3f49fa7aeb7a04404ee14fdb829ed7ab8e4ebfb951e00f3d2"
+    }
+  ],
+  "Native32": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/native-merge32/NATIVE-MERGE-COHERENT-SOURCE-READY32.json",
+    "bytes": 4549,
+    "sha256": "2f684e586672f6241a13040477a6ec41109cff1e2fdcbe82a2eabced2173650b"
+  }
+}

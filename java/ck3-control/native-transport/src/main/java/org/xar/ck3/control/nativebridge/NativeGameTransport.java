@@ -2346,9 +2346,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 NativeFreshSnapshotPort.CAPABILITY,"game.state.snapshot")))throw new IOException("prepared cleanup original HELLO lacks required fixed capabilities");
         var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
         String version=NativeWire.text(original.get("expected_ck3_version"));
-        boolean exactSix=hello.adapterId().equals("ck3-1.19.0.6-msvc-x64")&&hello.gameSha256().equalsIgnoreCase("2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86")&&version.equals("1.19.0.6");
-        boolean exactFour=hello.adapterId().equals("ck3-1.20.0.4-msvc-x64")&&hello.gameSha256().equalsIgnoreCase("98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")&&version.equals("1.20.0.4");
-        if(!(exactSix||exactFour))throw new IOException("prepared cleanup lacks the exact existing .6/.4 full-state READ profile");
+        if(!PreparedCleanupEvidence.supportsCancellationHello(
+                hello.adapterId(),version,hello.gameSha256()))
+            throw new IOException("prepared cleanup lacks an exact qualified full-state READ profile");
     }
     private Instant preparedCleanupReadDeadline(Instant upper) {
         return preparedCleanupMin(upper,preparedCleanupMin(readDeadline(upper),chronologyClock.instant().plus(Duration.ofMinutes(2))));
@@ -2427,10 +2427,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(write.originalFailure().isPresent())return preparedCleanupFailure(permit,original,observations,write.originalFailure().orElseThrow());
             if(!(original instanceof AckReceived ack)||!ack.nativeOk())
                 return preparedCleanupFailure(permit,original,observations,new IOException("prepared cleanup has no positive cancellation ACK; original outcome retained"));
-            var result=NativeWire.object(NativeWire.parse(ack.originalResultToken().orElseThrow().bytes()));
-            if(!preparedCleanupKeys(result).equals(Set.of("step","accepted","status"))||!request.step().equals(NativeWire.text(result.get("step")))
-                    ||!result.path("accepted").isBoolean()||!result.path("accepted").booleanValue()||!"canceled".equals(NativeWire.text(result.get("status"))))
-                throw new IOException("prepared cleanup ACK is not the original accepted canceled result");
+            PreparedCleanupEvidence.acknowledgedCancellation(
+                    permit.command().source().exactBuild(),ack,request.step());
             Instant captureDeadline=preparedCleanupMin(deadline,ack.custody().orElseThrow().responseReceived().observedAt().plus(Duration.ofMinutes(2)));
             var idle1=preparedCleanupStatus("prepared-status-"+permit.nonce()+"-idle1",preparedCleanupReadDeadline(captureDeadline),observations,()->{});
             var idle2=preparedCleanupStatus("prepared-status-"+permit.nonce()+"-idle2",preparedCleanupReadDeadline(captureDeadline),observations,()->{});

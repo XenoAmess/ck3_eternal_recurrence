@@ -1,0 +1,106 @@
+{
+  "schema": "xar.native.armed-cancel-software-ready34/v1",
+  "scope": "One NoGame legal zero-arm ARM to actual CoreControl cancellation branch and IDLE; before/cancel/independent-after original formatter bytes. Not terminal passthrough.",
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\armed-cancel34\\ACTUAL-ARMED-CANCEL-CONTROL34.json",
+    "bytes": 6348,
+    "sha256": "5c591f294fe666ed54e023c61aca4a3641d6cc6430f0884b4a0356ead8fe5624"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\armed-cancel34\\ARMED-CANCEL-INPUTS34.json",
+    "bytes": 471319,
+    "sha256": "ad4cd8e75df916cffa7f704b30c2e5e287755ca6bd0be4bf9337a1d5e4e11df1"
+  },
+  "producer": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\armed-cancel34\\armed_cancel_export34.cpp",
+    "bytes": 7798,
+    "sha256": "039f8fabd3d72bbf4e7f15cf027111a2fbaaaa5b7aeddcecb50183c94088a1c9"
+  },
+  "permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-REAL-ARMED-CANCEL34-SINGLE-TARGET8M-OFFLINE-PERMIT39.json",
+    "bytes": 2663,
+    "sha256": "1db865cc12256a19d9762280e51042497f823667b8f88b3ac4daadcec75ae863"
+  },
+  "native_route_original": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\armed-cancel34\\retained-inputs\\RunDateSentinelCancel1210-original.inc",
+    "bytes": 2770,
+    "sha256": "a0d7a1b62bf1da6c727deaca786ca99f1c8cb2e9aa6c8b4bb0aa626e77ae3749"
+  },
+  "cancel_json": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\armed-cancel34\\outputs\\cancel-result.json",
+    "bytes": 678,
+    "sha256": "c147617dca73235531ea8b4b7b3a1cb448653620a4cbf8842def7b7a28033cb3"
+  },
+  "before_status": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\armed-cancel34\\outputs\\before-status.json",
+    "bytes": 665,
+    "sha256": "20b6f39e7a12fda65aa77a3b974a1236ce660c41db39038454e81f884bb58692"
+  },
+  "independent_after_status": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\armed-cancel34\\outputs\\independent-after-status.json",
+    "bytes": 663,
+    "sha256": "38856f5214326e78642552d0e253c36cb198b5e23c2638471e3d17bbe4b8814c"
+  },
+  "native_actual_result_shape": {
+    "result_keys": [
+      "step",
+      "accepted",
+      "status",
+      "tactical_daily_sentinel"
+    ],
+    "accepted": true,
+    "status": "available",
+    "state": "idle",
+    "generation": 1,
+    "completed_daily_ticks": 0,
+    "mode": "terminal_or_sentinel",
+    "army_count": 0,
+    "abnormal": false,
+    "pause_observed": false
+  },
+  "independent_Core": {
+    "actor_full_id": -2130706431,
+    "date_raw": 24000,
+    "paused": true,
+    "actor_alive": true,
+    "world_reads": 18,
+    "source": "Actual ReadCoreSnapshot RAM observation, not a Full packet"
+  },
+  "trace_layout": {
+    "before/control_cancel/independent_after": [
+      "stage",
+      "generation",
+      "state",
+      "completed_ticks",
+      "terminal_shortcut",
+      "effect_attempted"
+    ],
+    "core_after": [
+      "stage",
+      "actor_full_id",
+      "date_raw",
+      "paused",
+      "actor_alive",
+      "world_reads"
+    ]
+  },
+  "result": {
+    "configure_exit": 0,
+    "build_link_exit": 0,
+    "execute_exit": 0,
+    "compile_new_TUs": 2,
+    "retained_qualified24_objects": 11,
+    "build_link_seconds": 7.0793,
+    "terminal_shortcut_before_cancel": false,
+    "actual_control_effect_attempted": true,
+    "new_command_deadline_minted": false
+  },
+  "old25_idle_export_limitation": "Old idle mode actually called provider cancel before it exported any status; its later cancel frame came from terminal passthrough. Old four-mode originals preserved, not upgraded or rerun.",
+  "pending_or_out_of_scope": [
+    "Actual bridge module+RVA BindCoreImage and pipe/MainMQ transaction",
+    "SDK1210 parser/allowlist and Life prepared-cleanup consumer qualification",
+    "Independent Full packet or Full/Root/live authority",
+    "Positive Army/decision/watch-war modes; existing strict zero-arm gate retained"
+  ],
+  "no_new_DLL_or_shared_source_Git_or_Game_Steam_SDK_user_process_window_install_save_operations": true
+}

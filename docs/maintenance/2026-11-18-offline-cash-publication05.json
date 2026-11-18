@@ -1,0 +1,18 @@
+{
+  "status": "CASH13_QUALIFIED_SOURCE_NORMAL_PUSHED_MASTER",
+  "commit": "36894df8a31ea17470fe5db4b19f9cc711d4e398",
+  "parent": "32c98edf71f006f170536914693fdd083dccad7b",
+  "push": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/GIT-PUSH04.json",
+    "bytes": 785,
+    "sha256": "fc767fb59ad085864cbeda160ab5fd8432fd5ab00551aa21084b597dd224db15"
+  },
+  "selected8_blobs_exact": true,
+  "original_formal53_WIP_and_index_exact": true,
+  "NoGame": true,
+  "software_ready": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-cash-v2-actual16/qualification01/CASH-V2-CPP-ACTUAL13-SOFTWARE-READY02.json",
+    "bytes": 36840,
+    "sha256": "aa2048ca525919a7795d2227748c980fae53492c898273e74c6849dd36d03d4a"
+  }
+}

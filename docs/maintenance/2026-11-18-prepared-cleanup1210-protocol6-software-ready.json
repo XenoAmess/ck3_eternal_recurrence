@@ -1,0 +1,198 @@
+{
+  "schema": "xar.java.prepared-cleanup1210-protocol6-software-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "created_utc": "2026-11-18T15:37:24.495344+00:00",
+  "scope": "Existing PreparedCleanup source leaf shared exact ACK parser -> Native SDK and archived PostAckCaptured validation; strict source/version split, zero-arm terminal slot and both 20-field IDLE comparisons. NoGame protocol DATA and compile only.",
+  "source_base": "d6906735b37e4b8e6cd97711bc558bf538b49003",
+  "source_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/SOURCES03.json",
+    "bytes": 2653,
+    "sha256": "0b2f88bae70f3d51bdc83743e6a94387b66d0af0afd6794143d7975ad7284a6d"
+  },
+  "production_TUs": 2,
+  "test_TUs": 1,
+  "actual_jobs": [
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/javac.exe",
+        "-J-XX:ActiveProcessorCount=1",
+        "-J-Xmx768m",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/javac03.args"
+      ],
+      "begin": "2026-11-18T15:36:17.623871+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-PREPARED-CLEANUP03-TEST-REPAIR-SAME8M-OFFLINE-AMEND44.json",
+      "NoGame": true,
+      "selected_methods": 6,
+      "owned_child_pid": 28964,
+      "exit_code": 0,
+      "timed_out": false,
+      "end": "2026-11-18T15:36:20.005758+00:00",
+      "seconds": 2.381891999859363
+    },
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/java.exe",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/junit01.args"
+      ],
+      "begin": "2026-11-18T15:36:20.006529+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-PREPARED-CLEANUP03-TEST-REPAIR-SAME8M-OFFLINE-AMEND44.json",
+      "NoGame": true,
+      "selected_methods": 6,
+      "owned_child_pid": 3156,
+      "exit_code": 0,
+      "timed_out": false,
+      "end": "2026-11-18T15:36:21.314383+00:00",
+      "seconds": 1.3078630999661982
+    }
+  ],
+  "distinct_methods": [
+    {
+      "class": "org.xar.ck3.control.nativebridge.PreparedCleanupCancellation1210Test",
+      "method": "florinCannotAuthorizePositiveArmyDecisionOrTerminalPassthroughSlots()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.PreparedCleanupCancellation1210Test",
+      "method": "availableAckRejectsAddedMissingNullWrongTypedAndConflictingOriginalFields()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.PreparedCleanupCancellation1210Test",
+      "method": "exactHelloTriplesKeepBothLegacyProfilesAndRejectMixedSources()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.PreparedCleanupCancellation1210Test",
+      "method": "realArmedControlCancellationRetainsAllFieldsAndUnpausedWrapperFlag()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.PreparedCleanupCancellation1210Test",
+      "method": "bothIndependentStatusesMustMatchEveryOneOfTheTwentyAcknowledgedFields()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.PreparedCleanupCancellation1210Test",
+      "method": "legacyCanceledShapeAndFlorinAvailableShapeCannotBeSubstituted()"
+    }
+  ],
+  "results": {
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "aborted": 0
+  },
+  "native_actual": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/armed-cancel34/NATIVE-1210-ARMED-CANCEL-SOFTWARE-READY34.json",
+    "bytes": 4343,
+    "sha256": "2a2f183323026b65debe99c06dba5d0900e81256f47fb41fe354e5ea5a5f2dd9"
+  },
+  "checks": [
+    "Native34 actual before ARMED, real CoreControl cancel branch, raw 3JSON+3LE32 and independent post-Status replay unchanged",
+    "1210 exact HELLO adapter/version/SHA; old 11906/12004 exact tuples retained",
+    "1210 exact four-key available/20-field IDLE ACK with original envelope/token consistency",
+    "old three-key canceled schema remains isolated; missing/null/extra/mixed/wrong typed inputs rejected",
+    "all 20 fields tested against changed first and changed second Status DATA; no pause_observed=true requirement",
+    "1210 positive Army, decision mode and terminal passthrough rejected; late bind zero-arm guard before dispatch",
+    "original 64KiB token/frame maximum remains explicit"
+  ],
+  "preserved_guards": [
+    "same original ARM/progress/slot/partial date",
+    "two independent original ordered IDLE reads plus separate fresh Full",
+    "same session/custody epoch/write and response chronology",
+    "one-shot nonce and canonical original prepared request",
+    "original finite operation/read windows and no deadline refresh",
+    "all original failure/ACK retention and UNKNOWN handling"
+  ],
+  "limitations": [
+    "Native34 has only one actual independent post-Status plus basic Core, not two real READs and no Full packet",
+    "Tests construct public protocol DATA only; no Root/private permit/writer/physical qualification fabricated",
+    "No real PreparedCleanup permit/dispatcher/connection/SDK/Life/Root/Installed/wholeSERVICE or live adoption demonstrated",
+    "No original private late-bind producer preparation equality was relaxed; special PreparedCleanupSuccessor path unchanged",
+    "No Game/GSV/Steam/SDK live/window/process/install/settings/mods/active saves queried or modified",
+    "Old genuine JAR/classpath roots remain immutable; these are source + isolated incremental classes only"
+  ],
+  "retained_initial_failure": {
+    "job": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/javac02.json",
+      "bytes": 805,
+      "sha256": "64ebc852689ef1c74fdcebff82244cbd5091a5fbef78510a7f1ef9d88a087328"
+    },
+    "stderr": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/javac02.stderr",
+      "bytes": 630,
+      "sha256": "d4febda85ec0ce4292d75318c2937ad5170fd179a38ce3f45086113457599dc1"
+    },
+    "cause": "test-only helper missed checked IOException declaration; production bytes unchanged by repair",
+    "repair_manifest": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/SOURCES03.json",
+      "bytes": 2653,
+      "sha256": "0b2f88bae70f3d51bdc83743e6a94387b66d0af0afd6794143d7975ad7284a6d"
+    }
+  },
+  "metadata_erratum": "Original requests/source manifests01/02 legacy machine_id 4-8e1c2f1861 was an incorrect copied template. Actual own jobs and this Ready use Runtime verified xenoamess-full-tower-eb9d2c1186; old declarations kept verbatim.",
+  "artifacts": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/PREPARED-CLEANUP8M-OFFLINE-REQUEST01.json",
+      "bytes": 5360,
+      "sha256": "62be29689e08269ae5b1b431eb28681a332306392f3470ee0d64c628e754923f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/PREPARED-CLEANUP8M-OFFLINE-REQUEST02.json",
+      "bytes": 5414,
+      "sha256": "5678d4fd6daabe7e8b33f3824cf0ca47fccb7f24e3dfb1c1ece7891e9745df96"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/PREPARED-CLEANUP8M-OFFLINE-REPAIR03.json",
+      "bytes": 6110,
+      "sha256": "4c31ebd65cdbdd7ac831cceec6763cd9785ef034ee0c4c0590b51579a50d11d1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/javac02.args",
+      "bytes": 30846,
+      "sha256": "cd0f1b44ff0eb15cdc09cbfb20a86478e8a5faded0c0daac05a63c5dafe958dd"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/javac03.args",
+      "bytes": 30846,
+      "sha256": "13e5aa80724d4328b8ebe4b142ad813974ac06c116971d731cba85242a6275ef"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/junit01.args",
+      "bytes": 30757,
+      "sha256": "d657827cf386961d0d9cb7fbcdfa16b54bd7854c82a2532b66dc26fac4bf1171"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/javac03.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/javac03.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/junit01.stdout",
+      "bytes": 1157,
+      "sha256": "84f0f9ad6ca79202cf0ec32c0602da4f95966a3caf1fae66cf59322392b5e919"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/junit01.stderr",
+      "bytes": 235,
+      "sha256": "49a4a094794da9da886f9d128f01eb9d7711572e408cdcd49054a441799ea8b3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/junit-xml01/TEST-junit-jupiter.xml",
+      "bytes": 39923,
+      "sha256": "cd9787d779f50736e35f4ca0d919694a2beee107c154ae54c39d14bc12b127b6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/junit-xml01/TEST-junit-platform-suite.xml",
+      "bytes": 36597,
+      "sha256": "4cf2871fecfab76a2829e8c40e71c62619aba8446c6e4008cd339dcb93032464"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-prepared-cleanup19/qualification01/junit-xml01/TEST-junit-vintage.xml",
+      "bytes": 36576,
+      "sha256": "a69df37ff719362db228abcc218e2885e547d6d16f5d505e90825cbe1ad45f23"
+    }
+  ]
+}
