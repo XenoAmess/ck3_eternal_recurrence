@@ -1,0 +1,26 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T09:45:19.400899+00:00",
+  "passed": true,
+  "fixture": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-core-a04\\fixture.manifest.json",
+    "bytes": 1684,
+    "sha256": "505cb9b0bec6442e2be566d5dfd80e3947f95a5f208c9bc155d62069806ec38a"
+  },
+  "original_markers_and_production_calls_unchanged": true,
+  "two_entries_match_production_save_sequence": true,
+  "changed_parser": {
+    "command": [
+      "java",
+      "-Xmx192m",
+      "-jar",
+      "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+      "parse",
+      "--file",
+      "D:\\ck3-state\\upgrade-20261118\\xqol-core-a04\\fixture\\events\\zqa120_events.txt"
+    ],
+    "returncode": 0
+  },
+  "exact_hash_reused_inputs": 21,
+  "business_pass": false
+}

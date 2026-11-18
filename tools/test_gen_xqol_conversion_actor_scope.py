@@ -1,6 +1,7 @@
 """R70 regression: stock actor availability must survive pending projection."""
 import unittest
 import re
+from pathlib import Path
 from unittest import mock
 
 import gen_xqol_phase2 as generator
@@ -141,11 +142,26 @@ class CoreConversionEntryTests(unittest.TestCase):
         if variable is None:
             self.fail("Generated dispatcher must have one explicit variable input")
         producer = core_fixture.events(False)
+        product = Path(__file__).resolve().parents[1] / "mod_xenoamess_quality_of_life"
+        actual_save = (product / "events/xqol_events.txt").read_text(encoding="utf-8-sig")
+        saved_field = re.search(
+            r"set_variable\s*=\s*\{\s*name\s*=\s*(\w+)\s+value\s*=\s*var:(\w+)\s*\}"
+            r"\s*xqol_bulk_conversion_dispatch_effect\s*=\s*yes", actual_save,
+        )
+        self.assertIsNotNone(saved_field)
+        if saved_field is None:
+            self.fail("Production Save must commit the draft before dispatch")
+        self.assertEqual(variable.group(1), saved_field.group(2))
         initialized = re.findall(
             r"set_variable\s*=\s*\{\s*name\s*=\s*(\w+)\s+value\s*=\s*50\s*\}"
-            r"\s*xqol_bulk_conversion_dispatch_effect\s*=\s*yes", producer,
+            r"\s*set_variable\s*=\s*\{\s*name\s*=\s*(\w+)\s+value\s*=\s*var:(\w+)\s*\}"
+            r"\s*xqol_bulk_conversion_dispatch_effect\s*=\s*yes"
+            r"\s*remove_variable\s*=\s*(\w+)", producer,
         )
-        self.assertEqual([variable.group(1)] * 2, initialized)
+        draft = variable.group(1)
+        self.assertEqual([(draft, saved_field.group(1), draft, draft)] * 2, initialized)
+        original_assertion = (Path(__file__).parent / "fixtures/xqol_acceptance/common/scripted_effects/zqa_phase2_interaction_effects.txt").read_text(encoding="utf-8-sig")
+        self.assertIn(f"var:{saved_field.group(1)} = 50", original_assertion)
 
 
 if __name__ == "__main__":

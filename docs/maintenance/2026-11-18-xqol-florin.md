@@ -19,3 +19,9 @@
 修复仅改共享fixture producer中两处50门槛初始化为消费者实际读取的draft，不更改正式27文件、原生产effects、原断言、调度顺序和完整marker清单。真实生产generator→fixture入口字段回归加入原CI测试文件，含当前stock的9项实际通过、无跳过。新a03 fixture仅event文件两处字段变化，精确逆替换可还原旧输入；该文件重新parse通过，其余21份原精确输入资格复用。a02生成时误带一处空格的准备校验失败亦保留，没有启动Game。原R0001 common verify因失败review缺少direct_image_review字段返回BLOCKED，保留原回执，不追认任何业务信用；原退出及closure依各自原件独立记录。
 
 本次最早prepare尚在运行时误调用allocate，被缺少prepared-case拒绝，未消费live ID或启动Game；原拒绝留xqol-core-allocate-early-blocked.json。后继分配消费实际prepare退出0。新场wrapper在run前明确拒绝没有run_dir的失败分配结果，不按外层调用成功启动下一步。
+
+2026-11-18T09:42:03.374090Z，R0002原Popen正常退出0，keeper/CAS闭合、零SAVE；最后画面1066-09-29，14自然日。26/27必需marker各一次，唯独原conversion_threshold_50_filtered失败；其断言仍读取已保存门槛，前次仅初始化draft的修正遗漏该状态，error.log4775B含三条未设committed变量诊断及42条原版formatter提示。accepted faith/rite与DONE均已完成，但FAIL1必须保留，整场仍HARNESS_RED。
+
+本次按实际生产xqol_events.txt确认选项完整消费链修正两处fixture入口：draft=50，提交committed=draft，dispatch，清理draft。原全部断言及生产运行27文件不变。回归同时读取真实生成dispatcher、生产Save提交和原矩阵断言，验证字段及顺序闭环，当前stock共9项无跳过通过。a04只重parse修改的event，另21份输入逐项SHA确认后复用；不以源码修正追认R0002通过。
+
+已按策略提前回收R0001/R0002共8616个可重建shader、387047361逻辑字节，零失败；具体问题为fixture输入，shader与该故障无关。原日志、截图、fixture、formal及失败记录保留，已删除shader的历史prepared pins不可读；唯一MRM warm输入和CHT物理保存仍在。新场重新计预算，不重复扣旧unused。

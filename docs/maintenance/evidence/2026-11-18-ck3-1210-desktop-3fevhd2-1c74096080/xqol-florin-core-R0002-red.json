@@ -1,0 +1,87 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T09:45:17.511936+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0002",
+  "status": "HARNESS_RED",
+  "business_pass": false,
+  "process_pass": true,
+  "closure_pass": true,
+  "normal_gui_quit": true,
+  "direct_image_review": true,
+  "classification": "Draft-only correction missed the existing saved-threshold assertion. Required conversion_threshold_50_filtered FAIL; remaining26 markers once including final accepted faith/rite and DONE. Do not weaken original assertion. Fix fixture to execute actual Save-option commit -> dispatch -> draft cleanup order.",
+  "counts": {
+    "ZQA: TEST BEGIN xqol": 1,
+    "ZQA: TEST PASS exact_build_song_emperor": 1,
+    "ZQA: TEST PASS switched_to_supported_player": 1,
+    "ZQA: TEST PASS product_enable_decisions": 1,
+    "ZQA: TEST PASS transfer_guard_enabled_and_preexisting_preserved": 1,
+    "ZQA: TEST PASS vanilla_baseline_heirs_recorded": 1,
+    "ZQA: TEST PASS enabled_highest_non_player_heir_selected": 1,
+    "ZQA: TEST PASS removal_transferred_to_scored_heir": 1,
+    "ZQA: TEST PASS death_transferred_to_non_player_successor": 1,
+    "ZQA: TEST PASS ready_for_product_disable_decisions": 1,
+    "ZQA: TEST PASS product_disable_decisions": 1,
+    "ZQA: TEST PASS disabled_vanilla_heir_available": 1,
+    "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved": 1,
+    "ZQA: TEST PASS payment_full_only": 1,
+    "ZQA: TEST PASS payment_any_above_one_only": 1,
+    "ZQA: TEST PASS payment_matrix_done": 1,
+    "ZQA: TEST PASS conversion_threshold_50_filtered": 0,
+    "ZQA: TEST PASS ransom_full_only": 1,
+    "ZQA: TEST PASS ransom_any_one_gold": 1,
+    "ZQA: TEST PASS release_priority_matrix": 1,
+    "ZQA: TEST PASS phase2_interaction_matrices_done": 1,
+    "ZQA120: TEST PASS release_conversion_rite_matched": 1,
+    "ZQA120: TEST PASS accepted_conversion_faith_and_rite": 1,
+    "ZQA120: TEST DONE core": 1,
+    "ZQA120: TEST BEGIN engine_startup": 1,
+    "ZQA120: TEST PASS production_enable_effects_invoked": 1,
+    "ZQA120: TEST PASS production_disable_effects_invoked": 1
+  },
+  "forbidden": {
+    "ZQA: TEST FAIL": 1,
+    "ZQA120: TEST FAIL": 0
+  },
+  "errors": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-c9dd15b7a85a447eb5367ad40c9a74c6\\profile\\logs\\error.log",
+    "bytes": 4775,
+    "sha256": "b2194dee9f0940f4158012174437743db3ca9fcf978274f0057ed96a61d3a9ee"
+  },
+  "log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-c9dd15b7a85a447eb5367ad40c9a74c6\\profile\\logs\\debug.log",
+    "bytes": 3698859,
+    "sha256": "8b8681c2abd67f9693bd21e8ea1f105bf30a257db9c8f6d11155f2b586d03de0"
+  },
+  "closure": {
+    "game-exit.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0002\\game-exit.json",
+      "bytes": 253,
+      "sha256": "208efa0ae8d427d3a0875d3ed861d73d2ada546d604c59cf2a79a7eaa092fd71"
+    },
+    "keeper-report.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0002\\keeper-report.json",
+      "bytes": 345,
+      "sha256": "db6f4eef00fff88971b145066f7e0a9f5dbe74f824c79ea18a5a9dbd8b73b72d"
+    },
+    "screen-release.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0002\\screen-release.json",
+      "bytes": 1257,
+      "sha256": "c784015a0e2c174cb5579b3333ed6a04a6af112fbc683396fcf0d243680b2917"
+    }
+  },
+  "actual_gui_last_date": "1066-09-29,14natural days; menu hold observed",
+  "normal_exit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r2-quit-dialog-view.png",
+      "bytes": 648722,
+      "sha256": "0b68d622725c3ee824db4f08ef5500dc9bfff1263309f13c30feb9a8f09e1633"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r2-quit-desktop.png.json",
+      "bytes": 1446,
+      "sha256": "f1ea5cc7740ad148a80d7837c82b1ef628310b3616bf442d5c6b7ea37470fe40"
+    }
+  ],
+  "save_count": 0,
+  "native_injection": false
+}
