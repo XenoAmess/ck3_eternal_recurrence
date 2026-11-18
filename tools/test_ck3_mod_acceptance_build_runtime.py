@@ -86,6 +86,77 @@ class GenericDecisionContractClassification(unittest.TestCase):
                     builder.qualify('shared_sdk_delta', receipt, 'a' * 40, root, [relative], MACHINE)
 
 
+class NonindexedJavaDeletion(unittest.TestCase):
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix='actual-git-java-deletion-')
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve()
+        self.relative = 'java/module/src/test/java/RetiredTest.java'
+        self.source = self.root / self.relative
+        self.source.parent.mkdir(parents=True)
+        self.source.write_text('final class RetiredTest {}\n', encoding='utf-8')
+        self.git('init', '-q')
+        self.git('config', 'user.name', 'Owned fixture')
+        self.git('config', 'user.email', 'fixture@example.invalid')
+        self.git('add', '.')
+        self.git('commit', '-qm', 'base')
+        self.base = self.git('rev-parse', 'HEAD')
+        self.source.unlink()
+        self.git('add', '-u')
+        self.git('commit', '-qm', 'delete unselected Java test')
+        self.commit = self.git('rev-parse', 'HEAD')
+        self.delta = self.root / 'source-delta.json'
+        self.value = {'base_source_commit': self.base, 'source_commit': self.commit,
+                      'changes': [{'path': self.relative, 'before': None, 'after': None}]}
+        self.save_delta()
+
+    def git(self, *arguments: str) -> str:
+        return subprocess.run(['git', *arguments], cwd=self.root, check=True,
+                              capture_output=True, text=True).stdout.strip()
+
+    def save_delta(self) -> None:
+        self.delta.write_text(json.dumps(self.value), encoding='utf-8')
+
+    def test_actual_deleted_unindexed_java_reaches_qualification_without_fake_pin(self) -> None:
+        absent = builder.nonindexed_deleted_java_paths(self.delta, frozenset(), self.root, self.commit)
+        self.assertEqual(absent, frozenset({self.relative}))
+        receipt = self.root / 'other-qualification.json'
+        value = {'machine_id': MACHINE, 'source_commit': self.commit, 'result': 'PASS',
+                 'exit_code': 0, 'skipped': 0, 'tests_run': 1, 'covered_chains': ['other_source_delta'],
+                 'source_pins': [], 'unindexed_deleted_java_paths': [self.relative]}
+        receipt.write_text(json.dumps(value), encoding='utf-8')
+        self.assertEqual(builder.qualify('other_source_delta', receipt, self.commit, self.root,
+            [self.relative], MACHINE, nonindexed_java_deletions=absent), builder.pin(receipt))
+        value.pop('unindexed_deleted_java_paths')
+        receipt.write_text(json.dumps(value), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'explicitly bind'):
+            builder.qualify('other_source_delta', receipt, self.commit, self.root,
+                [self.relative], MACHINE, nonindexed_java_deletions=absent)
+
+    def test_indexed_java_and_nonnull_before_are_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, 'Only non-indexed Java'):
+            builder.nonindexed_deleted_java_paths(self.delta, frozenset({self.relative}), self.root, self.commit)
+        self.value['changes'][0]['before'] = {'bytes': 1, 'sha256': 'a' * 64}
+        self.save_delta()
+        with self.assertRaisesRegex(ValueError, 'Only non-indexed Java'):
+            builder.nonindexed_deleted_java_paths(self.delta, frozenset(), self.root, self.commit)
+
+    def test_nonruntime_python_absence_cannot_use_java_exception(self) -> None:
+        self.value['changes'][0]['path'] = 'java/module/original.py'
+        self.save_delta()
+        with self.assertRaisesRegex(ValueError, 'Only non-indexed Java'):
+            builder.nonindexed_deleted_java_paths(self.delta, frozenset(), self.root, self.commit)
+
+    def test_uncommitted_absence_and_recreated_file_are_rejected(self) -> None:
+        self.value['base_source_commit'] = self.commit
+        self.save_delta()
+        with self.assertRaisesRegex(ValueError, 'actual committed Git deletion'):
+            builder.nonindexed_deleted_java_paths(self.delta, frozenset(), self.root, self.commit)
+        self.source.write_text('recreated\n', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'still exists'):
+            builder.nonindexed_deleted_java_paths(self.delta, frozenset(), self.root, self.commit)
+
+
 class QualifiedNativeConsumer(unittest.TestCase):
     """Synthetic owned files exercise real qualification consumer; no EXE or game runs."""
     def setUp(self):
@@ -1165,7 +1236,8 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                                 'approved_root': str(scene), 'observed_at_utc': observed.isoformat(),
                                 'expires_at_utc': (observed + timedelta(minutes=5)).isoformat(), 'required_free_bytes': 0})
             owned.write(diff, {'observed_at_utc': observed.isoformat()})
-            owned.write(delta, {'Root_diff_receipt': builder.pin(diff), 'new_scene_admission': builder.pin(grant)})
+            owned.write(delta, {'source_commit': 'a' * 40, 'changes': [],
+                                'Root_diff_receipt': builder.pin(diff), 'new_scene_admission': builder.pin(grant)})
             owned.write(inputs, {'case_inputs': {}})
             files = {path.relative_to(root).as_posix(): builder.sig(path.read_bytes())
                      for path in (root / 'tools').glob('ck3_mod_acceptance*.py')}

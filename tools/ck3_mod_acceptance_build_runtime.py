@@ -512,7 +512,41 @@ def select_runtime_game_identity(transition_path: Path | None, *, base_runtime: 
         directory, transition_ref)
 
 
-def qualify(chain, path, commit, root, changed_paths, machine, archive_context=None):
+def nonindexed_deleted_java_paths(delta_path: Path, indexed_paths: frozenset[str],
+        root: Path, commit: str) -> frozenset[str]:
+    """Confirm Git deletion of Java files absent from the loaded base index.
+
+    The complete delta is validated by apply_delta first. This only supplies
+    absence evidence for the non-runtime Java source rows that cannot have a
+    current file pin; indexed, Python and Native deletion rules are unchanged.
+    """
+    delta = read(delta_path)
+    require(delta.get("source_commit") == commit, "Deleted-source delta commit differs")
+    candidates = []
+    for row in delta["changes"]:
+        if row["after"] is None and "other_source_delta" in classify(row["path"]):
+            relative = row["path"]
+            require(relative.startswith("java/") and relative.endswith(".java")
+                    and row["before"] is None and relative not in indexed_paths,
+                    "Only non-indexed Java source deletion can use absence evidence")
+            current = root / relative
+            require(not current.exists() and not current.is_symlink(), "Deleted Java source still exists")
+            candidates.append(relative)
+    if not candidates:
+        return frozenset()
+    base = delta.get("base_source_commit")
+    require(isinstance(base, str) and re.fullmatch("[0-9a-f]{40}", base) is not None,
+            "Actual complete-diff base commit required for Java deletion")
+    actual = subprocess.run(["git", "-c", "core.quotepath=false", "diff", "--name-only",
+                             "--no-renames", "--diff-filter=D", base, commit, "--", *candidates],
+                            cwd=root, capture_output=True, text=True, check=True)
+    require(sorted(actual.stdout.splitlines()) == sorted(candidates),
+            "Non-indexed Java absence is not an actual committed Git deletion")
+    return frozenset(candidates)
+
+
+def qualify(chain, path, commit, root, changed_paths, machine, archive_context=None,
+            *, nonindexed_java_deletions: frozenset[str] = frozenset()):
     value = read(path)
     require(value.get("machine_id") == machine and value.get("source_commit") == commit,
             "Actual changed-chain receipt must bind this new Root commit: " + chain)
@@ -541,6 +575,11 @@ def qualify(chain, path, commit, root, changed_paths, machine, archive_context=N
             indexed[path_value.relative_to(root).as_posix()] = row
     retired = archive_context.retired_paths(root, commit) if archive_context else frozenset()
     relevant = [p for p in changed_paths if p not in retired and chain in classify(p)]
+    absent = sorted(set(relevant) & nonindexed_java_deletions)
+    if absent:
+        require(value.get("unindexed_deleted_java_paths") == absent,
+                "Receipt must explicitly bind actual non-indexed Java deletion evidence")
+        relevant = [relative for relative in relevant if relative not in nonindexed_java_deletions]
     if chain == "pilgrimage_wire_seam":
         critical_paths = {SDK_PREFIX + "xar_autoplayer/bridge/" + name for name in CRITICAL_TRANSPORTS}
         require(critical_paths <= set(indexed), "Current SDK seam receipt must pin all eight actual critical SDK files")
@@ -2071,6 +2110,8 @@ def main(argv: list[str] | None = None) -> int:
         archive_context = validate_archive_relocations(args.source_delta, source, root, args.source_commit,
             args.products, args.product, args.case, args.case_inputs, args.input_binder_command)
     files, required, changed_paths = apply_delta(args.source_delta, args.base_runtime, manifest, source, root, args.source_commit, archive_context)
+    java_deletions = nonindexed_deleted_java_paths(args.source_delta,
+        frozenset(source["files"]), root, args.source_commit)
     diff_observed = datetime.fromisoformat(read(delta["Root_diff_receipt"]["path"])["observed_at_utc"].replace("Z", "+00:00"))
     require(datetime.fromisoformat(grant["observed_at_utc"].replace("Z", "+00:00")) <= diff_observed <= current,
             "Root complete-diff observation is outside the fresh next-scene admission")
@@ -2100,7 +2141,8 @@ def main(argv: list[str] | None = None) -> int:
     if native_bundle["execution_wire"]:
         required.add("pilgrimage_wire_seam")
     require(required <= set(receipts), "Missing actual changed-chain qualifications: " + str(sorted(required - set(receipts))))
-    qualified = {chain: qualify(chain, receipts[chain], args.source_commit, root, changed_paths, machine, archive_context) for chain in sorted(required)}
+    qualified = {chain: qualify(chain, receipts[chain], args.source_commit, root, changed_paths, machine,
+                 archive_context, nonindexed_java_deletions=java_deletions) for chain in sorted(required)}
     if native_bundle["execution_wire"]:
         actual_sdk = read(receipts["pilgrimage_wire_seam"])
         require(actual_sdk.get("actual_execution_wire_packets") == native_bundle["execution_wire"]["ref"],
