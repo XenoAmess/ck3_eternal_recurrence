@@ -25,7 +25,7 @@ final class AcceptanceFixtureTest {
         assertEquals("ck3-mod-acceptance-prebuilt-fixture-v1", json.path("schema").textValue());
         assertEquals("financial-markets", json.path("product").textValue());
         assertEquals("core", json.path("case_id").textValue());
-        assertEquals(4, json.path("producer_source_pins").size());
+        assertEquals(6, json.path("producer_source_pins").size());
         assertFalse(json.path("receipt").path("fixture_contains_business_effects").booleanValue());
         assertFalse(emission.gameStarted()); assertEquals("NOT_RUN", emission.businessAcceptance());
         try (var files = Files.walk(Path.of(emission.fixture()))) {
@@ -118,7 +118,7 @@ final class AcceptanceFixtureTest {
         Path fake = temporary.resolve("fake-repo");
         Path source = Path.of("mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance");
         Files.createDirectories(fake.resolve(source));
-        for (String name : List.of("AcceptanceContracts.java", "ObservationScripts.java", "FixtureEmitter.java", "AcceptanceCommand.java")) {
+        for (String name : List.of("AcceptanceContracts.java", "ObservationScripts.java", "FixtureEmitter.java", "AcceptanceCommand.java", "FollowupContracts.java", "FollowupObservationScripts.java")) {
             Files.copy(repository().resolve(source).resolve(name), fake.resolve(source).resolve(name));
         }
         Files.writeString(fake.resolve(source).resolve("ObservationScripts.java"), "// changed producer\n", java.nio.file.StandardOpenOption.APPEND);

@@ -79,6 +79,22 @@ final class BuildContractTest {
         assertEquals("STATIC_ONLY_NOT_ENGINE_OR_BUSINESS_PASS", report.boundary());
     }
 
+    @Test void rejectsObservedArithmeticEqualityAndNegativeGoldLoadErrors() throws Exception {
+        Path source = fixture();
+        bom(source.resolve(FILES.get(1)), "xfm_test_effect = { if = { limit = { "
+                + "var:xfm_amount = { value = var:xfm_amount floor = yes } } } }\n");
+        assertTrue(assertThrows(IOException.class, () -> ContentValidator.validate(source))
+                .getMessage().contains("arithmetic block"));
+        bom(source.resolve(FILES.get(1)), "xfm_test_effect = { add_gold = -5.6 }\n");
+        assertTrue(assertThrows(IOException.class, () -> ContentValidator.validate(source))
+                .getMessage().contains("negative add_gold"));
+        bom(source.resolve(FILES.get(1)), "xfm_test_effect = { remove_short_term_gold = 5.6 "
+                + "if = { limit = { var:xfm_amount >= 1 var:xfm_amount <= 1 } } "
+                + "# add_gold = -5.6 and var:xfm_amount = { value = 1 } are comments\n"
+                + "custom_tooltip = \"add_gold = -5.6\" }\n");
+        assertEquals(1, ContentValidator.validate(source).effects());
+    }
+
     @Test void requiresRealScriptedGuiAndRegisteredCustomWindow() throws Exception {
         Path source = fixture();
         var files = new ArrayList<>(FILES);

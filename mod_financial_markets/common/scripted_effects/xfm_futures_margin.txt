@@ -47,7 +47,8 @@ xfm_futures_add_margin_effect = {
   limit = {
    exists = scope:xfm_fut_margin_account
    var:xfm_futures_request_cents >= 1 var:xfm_futures_request_cents <= 100000000
-   var:xfm_futures_request_cents = { value = var:xfm_futures_request_cents floor = yes }
+   var:xfm_futures_request_cents >= xfm_futures_request_floor_value
+   var:xfm_futures_request_cents <= xfm_futures_request_floor_value
   }
   scope:xfm_fut_margin_account = {
    set_variable = { name = xfm_request_cents value = scope:xfm_fut_actor.var:xfm_futures_request_cents }
@@ -81,7 +82,8 @@ xfm_futures_withdraw_margin_effect = {
    exists = scope:xfm_fut_margin_account
    OR = { scope:xfm_fut_margin_account = { NOT = { has_variable = xfm_futures_pending_count } } scope:xfm_fut_margin_account.var:xfm_futures_pending_count = 0 }
    var:xfm_futures_request_cents >= 1 var:xfm_futures_request_cents <= 100000000
-   var:xfm_futures_request_cents = { value = var:xfm_futures_request_cents floor = yes }
+   var:xfm_futures_request_cents >= xfm_futures_request_floor_value
+   var:xfm_futures_request_cents <= xfm_futures_request_floor_value
    scope:xfm_fut_selected_position = {
     NOT = { has_variable = xfm_pending_payment }
     var:xfm_last_settled_day = global_var:xfm_exchange.var:xfm_day
@@ -115,8 +117,10 @@ xfm_futures_set_stops_effect = {
    exists = scope:xfm_fut_margin_account
    var:xfm_futures_stop_cents >= 0 var:xfm_futures_stop_cents <= 1000000
    var:xfm_futures_take_profit_cents >= 0 var:xfm_futures_take_profit_cents <= 1000000
-   var:xfm_futures_stop_cents = { value = var:xfm_futures_stop_cents floor = yes }
-   var:xfm_futures_take_profit_cents = { value = var:xfm_futures_take_profit_cents floor = yes }
+   var:xfm_futures_stop_cents >= xfm_futures_stop_floor_value
+   var:xfm_futures_stop_cents <= xfm_futures_stop_floor_value
+   var:xfm_futures_take_profit_cents >= xfm_futures_take_profit_floor_value
+   var:xfm_futures_take_profit_cents <= xfm_futures_take_profit_floor_value
   }
   scope:xfm_fut_selected_position = {
    if = {

@@ -2,7 +2,15 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（12:27 UTC 更新）
+## 当前状态（13:19 UTC 更新）
+
+第二场 `R0002/a80` 已实际创建 CK3 并注入 Q05 DLL，连接实际返回精确 Florin HELLO。Saved startup 遗留的 `.4` 守卫立即拒绝新身份；后续 300 秒为 finally 的收尾 snapshot 等待，并非正常启动等待。原受管环境失败清理为 CK3 exit 1、Job 0、tree gone，不能计正常退出。keeper 与原 allocate wait 0 后，CAS `15207→15208` 实际释放；没有业务动作、游戏日或 SAVE 通过。完整因果及原件见[共同验收记录](../../docs/maintenance/2026-11-18-machine4-financial-acceptance-control.md)。
+
+本场加载日志还暴露了真实脚本解析问题。关场后已采用保持原公式的数值比较修复、意见衰减期限修复、正数扣款 API 与无用交互 AI 调度声明修复，尚待新场重载及真实金额对账。Saved 启动按精确版本识别，Florin 等待实际 owner 与两份递增的完整帧，旧版保留原分支；Core 的 partial/unavailable 消费同时按实际 HELLO 绑定，不能跨版本混用。
+
+13:13:58Z，完整金融工具 `mvn verify` 实际返回 0：143 项通过、0 skip，49 个主源码和 16 个测试源码实际编译，Quarkus 打包成功，原进程总墙钟 34.064 秒。包含六个后续验收 profile 的生成、衍生品关联账户/合约/债权、继承观察基线防覆盖及保守容量边界；这些 profile 只生成观察器，不注入生产资金或资产。六场均已接入公共准备入口，尚无对应游戏业务信用。JUnit 原件保全在 `C:/workspace/ck3-market-task-20261118/software-10-financial-full01`，原进程回执见 `operations/MVN-financial-followup-full01/ORIGINAL-WAIT.actual.json`。当前正在完成共同 Host/Core 联合检查并准备新场，未把软件通过当成交易、保存或整个 Mod 通过。
+
+## 截至 12:27 UTC 的准备记录
 
 共同 Florin 运行包 `runtime-core03` 已实际组装成功；Q05 使用同一 Native 编译缓存，未重编 C++。正式 DLL SHA-256 为 `2716d740cb145eae319cf7776fe4f0a46b5c325b6196026d0541a5eed292836c`。共享单日推进和完整角色 ID 消费修复已提交推送，但仍未取得游戏运行行为信用。
 
@@ -78,9 +86,9 @@ mvn -f mod_financial_markets/tools/pom.xml -Dtest=FinancialMarketTest test
 
 ## 后续未完成
 
-1. 冻结观察包修复与失败释放的公共回执兼容，再按公共入口准备新的隔离场次；复用已完成的 Native 资格。
+1. 完成已采用 Saved Florin 身份、owner/Full 消费与脚本解析修复的共同检查，再按公共入口准备新的隔离场次；未变 Native 继续复用原资格。
 2. 实机验证金币精度、正常GUI付费发行、同日现货买卖、AI资金、物理SAVE与冷载，保留真实失败。
-3. 扩大到已实现的发行主体、宣传操盘、认购、期货多空杠杆/债务、退市、继承和20种剧情及全球新闻；六个后继场次当前仅有验收用例，未执行。
+3. 扩大到已实现的发行主体、宣传操盘、认购、期货多空杠杆/债务、退市、继承和20种剧情及全球新闻；六个后继场次已具备软件验证的观察包和公共准备定义，实机尚未执行。
 
 4096/8192尚未压测，不是已支持容量；尚未 Workshop 首发。
 

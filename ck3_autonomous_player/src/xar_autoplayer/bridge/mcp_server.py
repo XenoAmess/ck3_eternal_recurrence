@@ -1746,7 +1746,7 @@ def create_server(
 
     @server.tool(annotations=read_only_tool)
     def ck3_query_core_frame_v1() -> dict[str, object]:
-        """Read the exact .4 app-main player/clock prefix; complete_snapshot stays false."""
+        """Read a supported exact-build app-main Core prefix; complete_snapshot stays false."""
         return service.query_core_frame_v1()
 
     _forbid_unknown_tool_arguments_v1(server, "ck3_query_core_frame_v1")

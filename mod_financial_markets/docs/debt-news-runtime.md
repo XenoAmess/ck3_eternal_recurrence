@@ -54,6 +54,6 @@ AI 每日每账户最多使用500分偿债预算；非继承的个人账户可�
 
 本轮读取 CK3 1.21 安装文件：`common/scripted_effects/20_health_effects.txt` 的 `death = { death_reason = death_suicide }`；`common/deathreasons/00_event_deaths.txt` 的公开 suicide cause；`00_ep3_decision_effects.txt` 的 neutral toast；`00_activity_effects.txt` 的 bad toast；`00_decisions_effects.txt` 等的 `every_player`；`11_dlc_pam_scripted_effects.txt` 的 `remove_list_global_variable`。这些证明所用原版接口存在，不授予新脚本在游戏内的完整资格。
 
-本机 `machine_id: desktop-3fevhd2-1c74096080` 的 1.21 安装文件 `common/script_values/_script_values.info:29–30,79–87` 明确：脚本公式 `max` 是上限，`min` 是下限，按书写顺序执行。例如15经过 `max=10` 得10，负数经过 `min=0` 得0。因此本模块基金、付款、偿债预算采用 `max` 限制实际余额和债权，收入与逾期的非负下限采用 `min=0`。2026-11-18 修正了此前写反的原生公式；Java 的 `Math.min/Math.max` 保持其语言自身语义。本次源码修正尚须实际游戏用余额不足、跨日逾期和重整金额验证，不能由源码检查推定已通过。
+本轮执行机器 `machine_id: 4-8e1c2f1861` 的 1.21 安装文件 `common/script_values/_script_values.info:29–30,79–87` 明确：脚本公式 `max` 是上限，`min` 是下限，按书写顺序执行。例如15经过 `max=10` 得10，负数经过 `min=0` 得0。因此本模块基金、付款、偿债预算采用 `max` 限制实际余额和债权，收入与逾期的非负下限采用 `min=0`。2026-11-18 修正了此前写反的原生公式；Java 的 `Math.min/Math.max` 保持其语言自身语义。本次源码修正尚须实际游戏用余额不足、跨日逾期和重整金额验证，不能由源码检查推定已通过。旧稿的 desktop 机器 ID 来自历史升级摘要中的作者常量，已据实际机器识别纠正；原软件结果及纠正收据分别保留。
 
 验收须覆盖：有限基金不足、资金费不承保、同结算重试/冲突、援助同日阻止旧终局、玩家/儿童/遗产/持资产拒绝、20条件叙事可达、远方人物对多个人类广播、队列限速及保存继承、无暂停/焦点变化和实际场景性能。

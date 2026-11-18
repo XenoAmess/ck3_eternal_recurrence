@@ -10,7 +10,7 @@ xfm_a0_issue_effect = {
                 exists = scope:xfm_new_coin
                 scope:xfm_new_coin = { story_type = xfm_a0_coin story_owner = scope:xfm_issuer }
             }
-            add_gold = -5.6
+            remove_short_term_gold = 5.6
             set_variable = { name = xfm_personal_coin value = scope:xfm_new_coin }
             set_variable = { name = xfm_selected_coin value = scope:xfm_new_coin }
             set_variable = { name = xfm_issue_cooldown months = 24 }

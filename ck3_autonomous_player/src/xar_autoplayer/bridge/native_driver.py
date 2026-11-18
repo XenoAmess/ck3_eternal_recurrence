@@ -3064,7 +3064,7 @@ class NativeHeadlessGameplayDriver:
         if diagnostics.get("connected") is not True:
             raise BridgeUnavailableError("core-frame native DLL is not connected")
         try:
-            require_core_frame_hello_v1(diagnostics.get("hello"))
+            expected_build = require_core_frame_hello_v1(diagnostics.get("hello"))
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
         with self._driver_state_lock:
@@ -3088,7 +3088,7 @@ class NativeHeadlessGameplayDriver:
                 native_request_id=request_id,
             )
         try:
-            return normalize_core_frame_v1(frame.get("result"))
+            return normalize_core_frame_v1(frame.get("result"), expected_build=expected_build)
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
 

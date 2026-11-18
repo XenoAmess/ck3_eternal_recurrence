@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-core1210-producer-fixture-origin-v1",
+  "machine_id": "4-8e1c2f1861",
+  "origin": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification05\\fixture-xar_ck3_1210_core_frame_test.log",
+    "bytes": 2737,
+    "sha256": "11b1a1806a54769af10aea8cfe887926f0fe85f3c2c1a2418de5946565658047"
+  },
+  "source": "ck3_autonomous_player/native_bridge/src/ck3_1210_core_frame_test.cpp",
+  "qualification": "Q05 actual finite C++ producer; software fixture only; no Game code executed",
+  "result_payload_changed": false,
+  "core_values_synthesized": false,
+  "consumer_boundary": "Only outer request_id is rebound to the actual Driver request; original producer result and all prefix values remain unchanged.",
+  "fixtures": {
+    "partial": {
+      "file": "producer-partial.json",
+      "bytes": 698,
+      "sha256": "fdfb7e3848b724dd0a9d635d6931acddfa1e10931c8af5b5313855273d00eb3f"
+    },
+    "unavailable": {
+      "file": "producer-unavailable.json",
+      "bytes": 723,
+      "sha256": "ec1eac81dd27abc6d525f01fa1ce420140eb94c5874c2adfcbed68235cd21231"
+    }
+  }
+}

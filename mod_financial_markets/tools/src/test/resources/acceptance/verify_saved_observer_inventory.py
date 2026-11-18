@@ -32,7 +32,7 @@ def main() -> int:
     runtime = scratch / 'authored-import-runtime.json'
     runtime.write_text(json.dumps({'machine_id': row['machine_id']}), encoding='utf-8')
     fixture, receipt, materialized = materialize_prebuilt_fixture(json_object({
-        'product': 'financial-markets', 'case': 'core', 'repo_root': str(repository),
+        'product': 'financial-markets', 'case': row['case_id'], 'repo_root': str(repository),
         'runtime_manifest': pin(runtime), 'case_inputs': {'prebuilt_fixture_manifest': manifest}}),
         manifest, scratch / 'imported-fixture')
     if receipt['fixture_contains_business_effects'] or materialized['game_started']:

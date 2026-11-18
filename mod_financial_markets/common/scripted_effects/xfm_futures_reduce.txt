@@ -6,9 +6,11 @@ xfm_futures_reduce_effect = {
    exists = scope:xfm_fut_margin_account
    var:xfm_futures_reduce_lots >= 1
    var:xfm_futures_reduce_lots <= scope:xfm_fut_selected_position.var:xfm_lots
-   var:xfm_futures_reduce_lots = { value = var:xfm_futures_reduce_lots floor = yes }
+   var:xfm_futures_reduce_lots >= xfm_futures_reduce_lots_floor_value
+   var:xfm_futures_reduce_lots <= xfm_futures_reduce_lots_floor_value
    var:xfm_futures_limit_cents >= 1 var:xfm_futures_limit_cents <= 1000000
-   var:xfm_futures_limit_cents = { value = var:xfm_futures_limit_cents floor = yes }
+   var:xfm_futures_limit_cents >= xfm_futures_limit_floor_value
+   var:xfm_futures_limit_cents <= xfm_futures_limit_floor_value
    scope:xfm_fut_selected_position = { NOT = { has_variable = xfm_pending_payment } }
   }
   set_variable = { name = xfm_futures_duplicate_close value = 0 }

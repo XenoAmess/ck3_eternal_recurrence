@@ -69,3 +69,29 @@ Root 合作停止 keeper，原 allocate 父进程实际 wait 0，keeper 确认 `
 12:27:10Z，随后本金融工具模块的完整 `mvn verify` 返回 0：130 项通过、0 skip，主源码与测试源码均显示无需重编，Quarkus 重新打包成功。原公共命令记录总墙钟 38.156 秒，Maven 自报 33.971 秒；原件 `operations/MVN-core-saved-full01/ORIGINAL-WAIT.actual.json`。该软件通过仍不授予游戏、财务对账或整个 Mod 的业务验收。
 
 12:32:30Z，公共 allocator 对既有 `original_operation.py` 原件协议的兼容修复通过 34 项受影响测试及 strict 检查，总墙钟 7.974 秒。保留原始 START、原 Popen wait、真实返回码与输出 pins，不把失败回执改写成旧格式。12:32:32Z，现行 reducer 实际只读消费 R0001 原件并返回 0；关场仅获得下一次资源准入，不获得正常游戏退出或业务通过。回执位于 `runtime-prep/prelaunch-original-operation-actual03/RUN.actual.json` 与 `runtime-prep/r0001-prelaunch-closure-actual02/CONSUMPTION.actual.json`。
+
+## 第二场实际启动与版本守卫失败
+
+上述修复以 `7678770068956d508587896f2abb58874ee8ad96` 正常推送。重新发射的 core02 观察包为 10 文件，manifest 3415 bytes、SHA-256 `324562f32c6b9f357a681f976cc4fa393db668931754b5d7b2ecceac8b9156c9`；155 个正式产品投影文件逐一核对现源码相同，旧投影继续保留其真实 `5ceb6d` 来源，不追认新提交。全新 `financial-core02/state` 与 `core02.case-inputs.json` 使用原 immutable SAVE 和四份 plain 配置。
+
+公共 builder 的 `runtime-core04` 实际 wait 0、49.663 秒，复用未变 Native 源码的原 Q05；plain plan 保留六个未绑定 Saved 字段，prepare 和 prepared plan 分别 wait 0。实际分配 `4-8e1c2f1861--financial-markets--R0002` / `a80`，Steam 12:41:51Z 原生读取为离线，preflight 0。12:42:19Z 实际创建 CK3 PID 19372，以 `-loadsave=restored_campaign` 单次载入；injector 原 wait 0、进程树清理通过。Root 没有提交业务动作、UI 激活、推进或 SAVE。
+
+真实 MCP 原件在 12:42:20.707Z 已报告 connected、精确 Florin HELLO、generation 1。Host 的 Saved startup 仍硬编码 `.4` 身份，当场抛出 `saved campaign initial native hello lacks exact .4 identity or snapshot capability`。随后 finally 的 `observe_final → fresh` 才调用一次 snapshot 并等待 300 秒，返回 `native game state is not available yet`。旧 `native-report.json` 的 disconnected 条目是异常写回前的旧观察，不能据此宣称 pipe 或注入没有建立。Native heartbeat 后续已有 owner pump；Full 的聚合拒绝仍为 `full_snapshot_requires_paused_played_map`，现有原件不足以进一步判定哪个前提缺失。没有凭此改 Native 布局或放宽 Full 资格。
+
+实际 public run 返回 2，Host 返回 1。原受管环境执行失败 stop，报告 CK3 shutdown exit 1、Job active 0、tree gone、cleanup proven；这些是失败清理，不能称正常退出或 Native 0。Root 合作停止 keeper，原 allocate wait 0、508.105 秒；keeper thread_exited、failure/entry_error 均为空。12:50:07Z CAS `15207→15208` 释放 a80，done/resources 为空。原失败目录及报告保持；既有 `previous-shared-managed-session` 实际只读消费清理原件通过，下一场不伪造 normal-close 或专用 prelaunch closure。
+
+加载日志还实际暴露 11 个等号右侧算术块的解析错误、三项意见修正的月率/固定期限冲突、A0 静态负 `add_gold` 及四项无目标 AI 调度声明。Root 关场后采用最小修复：具名纯数值与双向比较保留原数学/整分限制，意见按原 3/2/3 年渐退，正数 `remove_short_term_gold` 扣款。正式存款的动态负 `add_gold` 同类风险另按源码修正，但本场没有执行它，不能冒称已复现动态资金问题。下一场仍须实际核对角色 gold 减少额与钱包增加额。
+
+13:02:15Z，受影响构建合同 8 项通过、0 skip，原 Maven wait 0/23.298 秒；47 个主源码和 15 个测试源码实际重编。新 guard 只拦截已暴露的数值变量等号算术块及负 `add_gold` 字面量，并保留正常作用域块、正数扣款、注释和字符串。新增具名值已列入显式运行清单，当前为 156 个文件、209 个 effect。原件 `operations/MVN-load-fixes01/ORIGINAL-WAIT.actual.json`，JUnit 保全在 `software-09-load-contracts01`。该静态组合通过不证明引擎已重载或资金守恒。
+
+## 新场前的源码和软件检查
+
+Saved Florin 最小修复识别实际精确 HELLO，在原总启动期限内等候 semantic/owner 就绪，并要求两份不同 Full、递增 public/native revision 和 owner pump。稳定比较只约束进程、generation、角色、日期、暂停、地图及根身份，不误将变化的 snapshot ID/revision 当作固定身份。旧 `.4` 保留原查询分支，Florin 不伪造尚未迁移的 campaign-root 查询结果。候选最终 41 项软件回归通过，包含真实 R0002 HELLO/heartbeat 输入；先前 39 项候选不足以覆盖递增帧的缺陷如实保留，未授予实际开局通过。
+
+公共 Core 消费改为按实际 HELLO 对精确 `.4` 与 `1.21.0` 各自校验 adapter/schema/backend，保留 partial/unavailable 的拒绝边界。Q05 原 C++ 输出经当前协议、Driver、Service 与注册 MCP 的 12 项软件回归和完整 `core_frame_contract.py` strict 检查通过；没有更改 Native C++、重编 DLL或把软件 packet 当作实机 Full。
+
+13:13:58.459788Z，Root 完整 `mvn verify` 实际 wait 0，总墙钟 34.064242 秒（Maven 31.591 秒），143 项全部通过、0 skip；49 main / 16 test 源实际编译，Quarkus 打包成功。新增六个后继 profile 覆盖衍生品、退市、继承、冷载、新闻危机和容量观察；独立审阅修复保守档 1,024 仓位边界、合约/仓位账户绑定、债权双方与来源绑定及继承观察不可重新 arm 的问题。观察器只写 `xfma_` 数据，不创建真实资产。公共注册的 ready 只代表可准备定义，不授予整产品或六场业务通过。
+
+原进程回执 `C:/workspace/ck3-market-live-20261118/operations/MVN-financial-followup-full01/ORIGINAL-WAIT.actual.json`，stdout 6191 bytes、SHA-256 `bc32e62ad039cbfe50af8a1a9cb75d4a791b0e1de18743b2a6ccf36cf6bbceea`；16 份 JUnit XML 与保全清单位于 `C:/workspace/ck3-market-task-20261118/software-10-financial-full01`。这些软件结果与后续 Game 装载、动作、实际金额、物理 SAVE 分别记录。
+
+随后当前正式 Host/Core 组合的 26 项增量测试实际通过、0 skip，完整 Core 合同 strict 通过；原 Popen 总墙钟 11.719 秒。测试在退出时确认加载 canonical Host，目标源码及七份 fixture 的前后 pins 相同。原件 `runtime-prep/saved-core-root-integration-actual02/RUN.actual.json`，17393 bytes、SHA-256 `dbc4261edd0b5e1ed13eb8c369fd4dddcc6e3a0d2a222f69c25f8f2a06edfb38`。前一轮外置采集器误覆盖依赖导入而中断的软件进程保留实际非零 wait，不计作业务失败或绿；未重复 Native 资格。

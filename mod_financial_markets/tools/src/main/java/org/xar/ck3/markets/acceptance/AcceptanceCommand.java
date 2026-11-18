@@ -22,7 +22,7 @@ public final class AcceptanceCommand implements QuarkusApplication {
             }
             if (!options.keySet().equals(allowed)) throw new IllegalArgumentException("all four fixture options required");
             var result = FixtureEmitter.emit(Path.of(options.get("--repo-root")), Path.of(options.get("--output")),
-                    options.get("--machine-id"), FixtureEmitter.readRequest(Path.of(options.get("--inputs"))));
+                    options.get("--machine-id"), FixtureEmitter.readInput(Path.of(options.get("--inputs"))));
             System.out.println(FixtureEmitter.JSON.writerWithDefaultPrettyPrinter().writeValueAsString(result));
             return 0;
         } catch (IOException | IllegalArgumentException error) {

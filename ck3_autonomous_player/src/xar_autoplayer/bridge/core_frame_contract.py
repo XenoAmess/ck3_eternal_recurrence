@@ -1,9 +1,11 @@
-"""Exact 1.20.0.4 core prefix, independently readable before a full Snapshot."""
+"""Exact .4 and Florin core prefixes, readable before a full Snapshot."""
 from __future__ import annotations
 
 from collections.abc import Mapping
 
-from .version_identity import CK3_12004, require_exact_native_build
+from .version_identity import (
+    CK3_12004, CK3_1210, NativeBuildIdentity, require_exact_native_build,
+)
 
 
 CORE_FRAME_V1_STEP = "query-core-frame-v1"
@@ -11,6 +13,9 @@ CORE_FRAME_V1_CAPABILITY = "game.query.core-frame.v1"
 CORE_FRAME_V1_SCHEMA = "ck3_12004_core_frame_v1"
 CORE_FRAME_V1_ADAPTER_ID = "ck3-1.20.0.4-msvc-x64"
 CORE_FRAME_V1_BACKEND = "ck3-1.20.0.4-native-headless-main-thread"
+CORE_FRAME_1210_V1_SCHEMA = "ck3_1210_core_frame_v1"
+CORE_FRAME_1210_V1_ADAPTER_ID = "ck3-1.21.0-msvc-x64"
+CORE_FRAME_1210_V1_BACKEND = "ck3-1.21.0-native-headless-main-thread"
 CORE_FRAME_V1_EXCLUDED_FAMILIES = ["treasury", "domain", "military", "campaign"]
 _PREFIX_FIELDS = {
     "date_raw", "speed", "paused", "local_player_id", "map_ready",
@@ -23,30 +28,42 @@ _RESULT_FIELDS = _PREFIX_FIELDS | {
 }
 
 
-def require_core_frame_hello_v1(hello: object) -> None:
+def require_core_frame_hello_v1(hello: object) -> NativeBuildIdentity:
     if not isinstance(hello, Mapping):
         raise ValueError("core frame requires the connected native hello")
     build = require_exact_native_build(
         hello.get("expected_ck3_version", hello.get("game_version")),
         hello.get("expected_ck3_sha256", hello.get("executable_sha256")),
     )
-    if build != CK3_12004 or hello.get("game_adapter_status") != "ready":
-        raise ValueError("core frame requires the ready exact 1.20.0.4 adapter")
+    if build not in (CK3_12004, CK3_1210) or hello.get("game_adapter_status") != "ready":
+        raise ValueError("core frame requires a ready exact supported adapter")
+    if build == CK3_1210 and (
+            hello.get("game_adapter_id") != CORE_FRAME_1210_V1_ADAPTER_ID
+            or hello.get("ck3_build_match") is not True):
+        raise ValueError("Florin core frame requires its exact adapter and build match")
+    if build == CK3_1210 and (not isinstance(hello.get("capabilities"), list)
+            or any(type(item) is not str for item in hello["capabilities"])):
+        raise ValueError("Florin core-frame capabilities must be a list of names")
     if CORE_FRAME_V1_CAPABILITY not in hello.get("capabilities", []):
         raise ValueError("native hello does not advertise the core-frame query")
+    return build
 
 
-def normalize_core_frame_v1(value: object) -> dict[str, object]:
+def normalize_core_frame_v1(value: object, *,
+        expected_build: NativeBuildIdentity | None = None) -> dict[str, object]:
     if not isinstance(value, dict) or set(value) != _RESULT_FIELDS:
         raise ValueError("core frame must contain the exact named prefix fields")
-    if value["schema"] != CORE_FRAME_V1_SCHEMA:
-        raise ValueError("core frame schema is not ck3_12004_core_frame_v1")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build != CK3_12004:
-        raise ValueError("core frame does not identify the frozen 1.20.0.4 build")
-    if (value["adapter_id"] != CORE_FRAME_V1_ADAPTER_ID
-            or value["backend"] != CORE_FRAME_V1_BACKEND):
-        raise ValueError("core frame does not identify the .4 app-main reader")
+    if build == CK3_12004:
+        identity = (CORE_FRAME_V1_SCHEMA, CORE_FRAME_V1_ADAPTER_ID, CORE_FRAME_V1_BACKEND)
+    elif build == CK3_1210:
+        identity = (CORE_FRAME_1210_V1_SCHEMA, CORE_FRAME_1210_V1_ADAPTER_ID, CORE_FRAME_1210_V1_BACKEND)
+    else:
+        raise ValueError("core frame does not identify a frozen supported build")
+    if expected_build is not None and build != expected_build:
+        raise ValueError("core frame differs from the actual connected HELLO build")
+    if (value["schema"], value["adapter_id"], value["backend"]) != identity:
+        raise ValueError("core frame schema/adapter/backend differ from its exact build")
     if value["complete_snapshot"] is not False:
         raise ValueError("core frame must remain a partial observation")
     for name in ("core_available", "application_main_observed"):

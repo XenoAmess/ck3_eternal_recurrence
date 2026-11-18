@@ -18,11 +18,27 @@
   "forbidden_startup": ["XFMAT: TEST FAIL"],
   "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
   "observer_profile_contract": {
-    "status": "PROPOSED_NOT_EMITTED",
+    "status": "SOURCE_ADOPTED_SOFTWARE_PROFILE_NO_GAME_CREDIT",
     "profile": "inheritance",
     "manifest_case_id_must_equal": "inheritance",
-    "required_future_observations": ["predeath_legal_graph", "actual_death_and_heir_binding", "stable_inherited_account_and_claims", "separate_heir_private_account", "news_delivery_cursor_preserved"],
-    "core_manifest_is_valid_for_this_case": false
+    "required_future_observations": [
+      "predeath_legal_graph",
+      "actual_death_and_heir_binding",
+      "stable_inherited_account_and_claims",
+      "separate_heir_private_account",
+      "news_delivery_cursor_preserved"
+    ],
+    "core_manifest_is_valid_for_this_case": false,
+    "schema_version": 2,
+    "required_readback_markers": [
+      "XFMAT: TEST PASS inheritance_observation_ready",
+      "XFMAT: TEST PASS inheritance_original_holder_died",
+      "XFMAT: TEST PASS inheritance_account_inherited_or_frozen",
+      "XFMAT: TEST PASS inheritance_original_claim_reference_survives"
+    ],
+    "shared_saved_inventory_and_host_copy_verified": true,
+    "business_acceptance": "NOT_RUN",
+    "readback_markers_replace_gui_native_and_save_reconciliation": false
   },
   "source_save_requirements": [
     "A genuine pre-succession campaign with an aged or naturally endangered legal holder and an actual visible primary heir. Neither fixture nor console may change health, cause death, execute the holder or manufacture an heir.",
@@ -48,7 +64,7 @@
       "actual_physical_save_keeps_successor_identity_accounts_claim_sources_and_original_debt_dates"
     ]}
   ],
-  "source_contracts": ["mod_financial_markets/docs/runtime-contract.md", "mod_financial_markets/docs/debt-news-runtime.md", "mod_financial_markets/docs/actual-business-acceptance-matrix.md"],
+  "source_contracts": ["mod_financial_markets/docs/runtime-contract.md", "mod_financial_markets/docs/debt-news-runtime.md", "mod_financial_markets/docs/actual-business-acceptance-matrix.md", "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java", "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java"],
   "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 5400, "gui_hold_seconds": 1800, "normal_close_timeout_seconds": 180},
   "business_contract_applicable": true,
   "whole_product_release_pass": false,

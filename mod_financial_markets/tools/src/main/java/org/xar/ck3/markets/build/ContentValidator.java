@@ -82,6 +82,15 @@ public final class ContentValidator {
                     }
                     for (int i = 0; i + 1 < tokens.size(); i++) {
                         String token = tokens.get(i);
+                        if (name.startsWith("common/") || name.startsWith("events/")) {
+                            require(!(token.startsWith("var:") && i + 4 < tokens.size()
+                                            && tokens.get(i + 1).equals("=") && tokens.get(i + 2).equals("{")
+                                            && tokens.get(i + 3).equals("value") && tokens.get(i + 4).equals("=")),
+                                    "numeric variable equality cannot use an arithmetic block: " + name);
+                            require(!(token.equals("add_gold") && tokens.get(i + 1).equals("=")
+                                            && i + 2 < tokens.size() && tokens.get(i + 2).matches("-[0-9]+(?:\\.[0-9]+)?")),
+                                    "negative add_gold literal requires a positive debit effect: " + name);
+                        }
                         if (token.startsWith("xfm_") && token.endsWith("_effect") && tokens.get(i + 1).equals("=")) effectCalls.add(token);
                         if (token.startsWith("xfm_") && token.endsWith("_trigger") && tokens.get(i + 1).equals("=")) triggerCalls.add(token);
                         if (token.startsWith("\"")) {

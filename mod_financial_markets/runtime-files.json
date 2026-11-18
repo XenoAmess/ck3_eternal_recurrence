@@ -19,6 +19,7 @@
     "common/script_values/xfm_issuer_values.txt",
     "common/script_values/xfm_market_ui_costs.txt",
     "common/script_values/xfm_market_ui_values.txt",
+    "common/script_values/xfm_numeric_comparison_values.txt",
     "common/script_values/xfm_oracle_index_values.txt",
     "common/script_values/xfm_oracle_values.txt",
     "common/script_values/xfm_spot_values.txt",

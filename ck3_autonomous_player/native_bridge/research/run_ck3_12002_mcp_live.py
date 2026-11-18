@@ -1042,6 +1042,11 @@ def saved_campaign_admission_frame(snapshot: object, expected: dict[str, object]
         frontend_binding: dict[str, object], *, allow_active_event: bool = False) -> dict[str, object] | None:
     if not isinstance(snapshot, dict) or snapshot.get("map_ready") is not True or snapshot.get("paused") is not True:
         return None
+    diagnostics = snapshot.get("diagnostics")
+    hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+    if isinstance(hello, dict) and hello.get("expected_ck3_version") == "1.21.0":
+        return saved_campaign_florin_admission_frame_v1(snapshot, expected, frontend_binding,
+            allow_active_event=allow_active_event)
     event = snapshot.get("active_event")
     if (event is not None and not allow_active_event) or snapshot.get("episode_projection") != "native_campaign":
         return None
@@ -1110,36 +1115,105 @@ def saved_campaign_root_binding(snapshot: dict[str, object], root: object,
         "product_acceptance_proven": False}
 
 
+def saved_campaign_native_build_v1(hello: object, pid: int, generation: int) -> tuple[str, str, str]:
+    from xar_autoplayer.bridge.version_identity import CK3_12004, CK3_1210, require_exact_native_build
+    if not isinstance(hello, dict):
+        raise RuntimeError("saved campaign native HELLO is not an object")
+    try:
+        build = require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+    except ValueError as error:
+        raise RuntimeError("saved campaign native HELLO lacks a supported exact version/EXE tuple") from error
+    capabilities = hello.get("capabilities")
+    if (build not in (CK3_12004, CK3_1210) or type(hello.get("pid")) is not int or hello.get("pid") != pid
+            or type(hello.get("connection_generation")) is not int or hello.get("connection_generation") != generation
+            or hello.get("game_adapter_id") != f"ck3-{build.game_version}-msvc-x64" or hello.get("ck3_build_match") is not True
+            or not isinstance(capabilities, list) or any(type(item) is not str for item in capabilities)
+            or "game.state.snapshot" not in capabilities
+            or build == CK3_1210 and "game.query.fresh-full-state.v1" not in capabilities):
+        raise RuntimeError("saved campaign native HELLO lacks its exact adapter, process, connection or Full capability")
+    return build.game_version, build.executable_sha256, f"ck3-{build.game_version}-msvc-x64"
+
+
 def saved_campaign_initial_snapshot_state(value: object, pipe: str) -> str:
-    """Recognize only the existing transport's finite pre-snapshot startup states."""
+    """Classify a known initial state; never turn a partial Core into Full."""
     if not isinstance(value, dict) or value.get("pipe") != pipe or value.get("transport_error") is not None:
         raise RuntimeError("saved campaign startup diagnostics lacks its exact pipe or has a transport error")
     diagnostics = value.get("diagnostics")
     if (not isinstance(diagnostics, dict) or diagnostics.get("pipe_name") != pipe
-            or diagnostics.get("protocol_version") != 1 or diagnostics.get("transport_fatal_error") is not None
-            or diagnostics.get("last_error") is not None
-            or type(diagnostics.get("connected")) is not bool
-            or type(diagnostics.get("semantic_state_available")) is not bool
+            or type(diagnostics.get("protocol_version")) is not int or diagnostics.get("protocol_version") != 1
+            or diagnostics.get("transport_fatal_error") is not None or diagnostics.get("last_error") is not None
+            or type(diagnostics.get("connected")) is not bool or type(diagnostics.get("semantic_state_available")) is not bool
             or type(diagnostics.get("rejected_state_snapshot_count")) is not int
-            or diagnostics["rejected_state_snapshot_count"] != 0):
+            or diagnostics.get("rejected_state_snapshot_count") != 0):
         raise RuntimeError("saved campaign startup diagnostics is malformed or reports a fatal/rejected native frame")
     if diagnostics["connected"] is False:
         if (diagnostics["semantic_state_available"] is not False or diagnostics.get("hello") is not None
-                or diagnostics.get("bridge_pid") is not None or diagnostics.get("connection_generation") != 0):
+                or diagnostics.get("bridge_pid") is not None or type(diagnostics.get("connection_generation")) is not int
+                or diagnostics.get("connection_generation") != 0):
             raise RuntimeError("saved campaign observed a native disconnection after an initial binding")
         return "WAITING_FOR_INITIAL_NATIVE_CONNECTION"
-    hello = diagnostics.get("hello")
     pid, generation = diagnostics.get("bridge_pid"), diagnostics.get("connection_generation")
-    if (type(pid) is not int or not 1 <= pid <= 2**32-1
-            or type(generation) is not int or not 1 <= generation <= 2**64-1
-            or not isinstance(hello, dict) or any(hello.get(k) != v for k, v in {
-                "pid": pid, "connection_generation": generation, "game_adapter_id": "ck3-1.20.0.4-msvc-x64",
-                "expected_ck3_version": "1.20.0.4", "ck3_build_match": True}.items())
-            or str(hello.get("expected_ck3_sha256")).upper() != "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
-            or not isinstance(hello.get("capabilities"), list) or "game.state.snapshot" not in hello["capabilities"]):
-        raise RuntimeError("saved campaign initial native hello lacks exact .4 identity or snapshot capability")
+    if type(pid) is not int or not 1 <= pid < 2**32 or type(generation) is not int or not 1 <= generation < 2**64:
+        raise RuntimeError("saved campaign initial native process identity is malformed")
+    saved_campaign_native_build_v1(diagnostics.get("hello"), pid, generation)
     return ("INITIAL_NATIVE_SEMANTIC_FRAME_AVAILABLE" if diagnostics["semantic_state_available"]
         else "WAITING_FOR_INITIAL_NATIVE_SEMANTIC_FRAME")
+
+
+def saved_campaign_florin_admission_frame_v1(snapshot: object, expected: dict[str, object],
+        frontend_binding: dict[str, object], *, allow_active_event: bool) -> dict[str, object] | None:
+    from xar_autoplayer.bridge.version_identity import florin_full_source
+    if not isinstance(snapshot, dict):
+        return None
+    source = florin_full_source(snapshot, None)
+    diagnostics, played = snapshot.get("diagnostics"), snapshot.get("played_character")
+    if not isinstance(diagnostics, dict) or not isinstance(played, dict):
+        raise ValueError("Florin saved campaign lacks its actual Full identity children")
+    if (source.game_pid != frontend_binding.get("bridge_pid") or source.connection_generation != frontend_binding.get("connection_generation")
+            or diagnostics.get("connected") is not True):
+        raise ValueError("Florin saved campaign crossed its actual initial process/connection")
+    saved_campaign_native_build_v1(diagnostics.get("hello"), source.game_pid, source.connection_generation)
+    local = snapshot.get("local_player_id")
+    if (type(local) is not int or not -(2**31) <= local < 2**31 or local == -1
+            or played.get("source") != "native" or snapshot.get("episode_projection") != "native_campaign"
+            or snapshot.get("source") != "injected-dll-named-pipe" or snapshot.get("backend_id") != "native-headless"):
+        raise ValueError("Florin saved campaign lacks its received Full local player/source")
+    if source.played_character_id != expected.get("actor_character_id") or source.date_raw != expected.get("date_raw"):
+        return None
+    event = snapshot.get("active_event")
+    if (event is not None and not allow_active_event) or snapshot.get("pending_character_interaction") is not None:
+        return None
+    if allow_active_event:
+        raise ValueError("Florin saved startup event admission has no migrated independent event contract")
+    heartbeat = diagnostics.get("last_heartbeat")
+    mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
+    observer = heartbeat.get("snapshot_observer_12002") if isinstance(heartbeat, dict) else None
+    if (not isinstance(heartbeat, dict) or type(heartbeat.get("pid")) is not int or heartbeat.get("pid") != source.game_pid
+            or not isinstance(mailbox, dict) or not isinstance(observer, dict)):
+        return None
+    epoch, tid = mailbox.get("pump_epochs"), mailbox.get("owner_tid")
+    started, completed = observer.get("started_ms"), observer.get("completed_ms")
+    if (mailbox.get("ready") is not True or mailbox.get("stamp_read_success") is not True
+            or type(epoch) is not int or not 0 < epoch < 2**64
+            or type(mailbox.get("owner_verified_pump_epochs")) is not int or mailbox.get("owner_verified_pump_epochs") != epoch
+            or type(tid) is not int or not 0 < tid < 2**32 or type(mailbox.get("current_tid")) is not int or mailbox.get("current_tid") != tid
+            or type(mailbox.get("date_raw")) is not int or mailbox.get("date_raw") != source.date_raw
+            or observer.get("read_in_progress") is not False
+            or type(started) is not int or type(completed) is not int or completed < started):
+        return None
+    roots: dict[str, str] = {}
+    for key in ("jomini_state", "game_state"):
+        pointer = mailbox.get(key)
+        if type(pointer) is not int or not 0 < pointer < 2**64:
+            return None
+        roots[key] = str(pointer)
+    return {"actor_character_id": source.played_character_id, "date_raw": source.date_raw,
+        "local_player_id": local, "snapshot_id": source.snapshot_id, "revision": source.public_revision,
+        "native_revision": source.native_revision, "bridge_pid": source.game_pid,
+        "connection_generation": source.connection_generation, "owner_tid": tid, "pump_epoch": epoch,
+        "admission_source": "ck3_1210_full_state_v1", "scope_sha256": source.scope_sha256,
+        "map_ready": snapshot["map_ready"], "paused": snapshot["paused"], "played_character_alive": played["alive"],
+        "native_roots": roots}
 
 
 def saved_campaign_cancelled_wait_receipt(error: BaseException) -> dict[str, object] | None:
@@ -1185,6 +1259,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
     deadline = time.monotonic() + timeout if readiness_deadline is None else readiness_deadline
     binding = None
     baseline = None
+    baseline_frame = None
     initial_snapshot_available = False
     state["startup_observations"] = []
     state["campaign_root_query_attempts"] = []
@@ -1209,12 +1284,36 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
                 raise TimeoutError("saved campaign initial native connection/semantic frame was not ready before original readiness deadline")
             diagnostic = await asyncio.wait_for(client.call("ck3_migration_pipe_diagnostics"), timeout=remaining)
             startup_status = saved_campaign_initial_snapshot_state(diagnostic, report["pipe"])
+            observed = diagnostic["diagnostics"]
+            if observed["connected"]:
+                observed_binding = {k: observed[k] for k in ("bridge_pid", "connection_generation")}
+                if binding is not None and binding != observed_binding:
+                    raise RuntimeError("saved campaign startup crossed its observed native process/connection")
+                binding = observed_binding
+                state["observed_process_binding"] = binding
+            elif binding is not None:
+                raise RuntimeError("saved campaign native connection was lost after initial HELLO")
             initial_snapshot_available = startup_status == "INITIAL_NATIVE_SEMANTIC_FRAME_AVAILABLE"
             state["startup_observations"].append({"at": now(), "status": startup_status,
                 "connected": diagnostic["diagnostics"]["connected"],
                 "semantic_state_available": diagnostic["diagnostics"]["semantic_state_available"],
                 "bridge_pid": diagnostic["diagnostics"].get("bridge_pid"),
                 "connection_generation": diagnostic["diagnostics"].get("connection_generation")})
+            if (not initial_snapshot_available and observed["connected"]
+                    and observed["hello"]["expected_ck3_version"] == "1.21.0"
+                    and "core_frame_diagnostic" not in state):
+                heartbeat = observed.get("last_heartbeat")
+                mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
+                if isinstance(mailbox, dict) and mailbox.get("ready") is True:
+                    state["core_frame_diagnostic"] = {"status": "NOT_AVAILABLE", "admission_credit": False}
+                    if "game.query.core-frame.v1" in observed["hello"]["capabilities"] and "ck3_query_core_frame_v1" in client.tools:
+                        try:
+                            from xar_autoplayer.bridge.core_frame_contract import normalize_core_frame_v1
+                            core = await asyncio.wait_for(client.call("ck3_query_core_frame_v1", {}),
+                                timeout=max(0, deadline-time.monotonic()))
+                            state["core_frame_diagnostic"].update(status="OBSERVED", result=normalize_core_frame_v1(core))
+                        except Exception as error:
+                            state["core_frame_diagnostic"].update(status="FAILED", error_type=type(error).__name__, error=str(error))
             write()
             if time.monotonic() >= deadline:
                 raise TimeoutError("saved campaign initial native connection/semantic frame was not ready before original readiness deadline")
@@ -1249,65 +1348,80 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
         frame = saved_campaign_admission_frame(snapshot, expected, binding, allow_active_event=startup_case is not None)
         root, admitted = None, None
         if frame is not None:
-            stable = {k: v for k, v in frame.items() if k != "pump_epoch"}
-            if (baseline is not None and baseline[0] == stable and frame["pump_epoch"] > baseline[1]
+            florin_frame = frame.get("admission_source") == "ck3_1210_full_state_v1"
+            observation_keys = {"pump_epoch", "snapshot_id", "revision", "native_revision"} if florin_frame else {"pump_epoch"}
+            stable = {k: v for k, v in frame.items() if k not in observation_keys}
+            fresh_full = (not florin_frame or baseline_frame is not None
+                and frame["snapshot_id"] != baseline_frame["snapshot_id"]
+                and frame["revision"] > baseline_frame["revision"]
+                and frame["native_revision"] > baseline_frame["native_revision"])
+            if (baseline is not None and baseline[0] == stable and frame["pump_epoch"] > baseline[1] and fresh_full
                     and (cancelled_wait_frame is None or frame["pump_epoch"] > cancelled_wait_frame["pump_epoch"])):
-                if startup_case is not None and "first_startup_query_admission" not in state:
-                    state["first_startup_query_admission"] = {
-                        "previous_frame":{**baseline[0], "pump_epoch":baseline[1]}, "current_frame":copy.deepcopy(frame)}
-                is_retry = cancelled_wait_frame is not None
-                if is_retry:
-                    if cancelled_wait_retry_used or any(frame[key] != cancelled_wait_frame[key] for key in (
-                            "bridge_pid", "connection_generation", "actor_character_id", "date_raw",
-                            "local_player_id", "owner_tid")):
-                        raise RuntimeError("saved campaign cancelled-wait recovery crossed its paused owner identity or retry limit")
-                    cancelled_wait_retry_used = True
-                attempt = {"submitted_frame": copy.deepcopy(frame), "expected_revision": snapshot["revision"],
-                    "started_at": now(), "status": "CALL_PENDING", "retry_after_cancelled_wait": is_retry}
-                state["campaign_root_query_attempts"].append(attempt)
-                write()
-                try:
-                    remaining = deadline - time.monotonic()
-                    if remaining <= 0:
-                        raise TimeoutError("saved campaign root query exceeded original readiness deadline before submission")
-                    root = await asyncio.wait_for(client.call("ck3_query_campaign_root_context_v1",
-                        {"expected_revision": snapshot["revision"]}), timeout=remaining)
-                except Exception as error:
-                    receipt = saved_campaign_cancelled_wait_receipt(error)
-                    attempt.update(status="FAILED", finished_at=now(), error_type=type(error).__name__,
-                        error=str(error), typed_query_failure=receipt)
-                    state["observations"].append({"snapshot": snapshot, "frame": frame,
-                        "campaign_root": None, "binding": None, "campaign_root_query_failed": True})
+                if frame.get("admission_source") == "ck3_1210_full_state_v1":
+                    admitted = {**frame, "actual_current_actor_bound": True, "saved_campaign_identity_proven": True,
+                        "full_state_identity_bound": True, "campaign_root_query_performed": False,
+                        "product_acceptance_proven": False}
+                    state["full_state_owner_frames"] = {"previous": copy.deepcopy(baseline_frame),
+                        "current": copy.deepcopy(frame)}
+                else:
+                    if startup_case is not None and "first_startup_query_admission" not in state:
+                        state["first_startup_query_admission"] = {
+                            "previous_frame":{**baseline[0], "pump_epoch":baseline[1]}, "current_frame":copy.deepcopy(frame)}
+                    is_retry = cancelled_wait_frame is not None
+                    if is_retry:
+                        if cancelled_wait_retry_used or any(frame[key] != cancelled_wait_frame[key] for key in (
+                                "bridge_pid", "connection_generation", "actor_character_id", "date_raw",
+                                "local_player_id", "owner_tid")):
+                            raise RuntimeError("saved campaign cancelled-wait recovery crossed its paused owner identity or retry limit")
+                        cancelled_wait_retry_used = True
+                    attempt = {"submitted_frame": copy.deepcopy(frame), "expected_revision": snapshot["revision"],
+                        "started_at": now(), "status": "CALL_PENDING", "retry_after_cancelled_wait": is_retry}
+                    state["campaign_root_query_attempts"].append(attempt)
                     write()
-                    if receipt is None or is_retry or time.monotonic() >= deadline:
-                        raise
-                    cancelled_wait_frame = copy.deepcopy(attempt["submitted_frame"])
-                    state["cancelled_campaign_wait_recovery"] = {
-                        "status": "WAITING_FOR_FRESH_PAUSED_OWNER_PUMP", "retry_limit": 1,
-                        "failed_submission_frame": copy.deepcopy(cancelled_wait_frame), "product_acceptance_proven": False}
-                    baseline = None
-                    continue
-                attempt.update(status="RETURNED", finished_at=now())
-                after = await fresh_before_deadline()
-                after_frame = saved_campaign_admission_frame(after, expected, binding, allow_active_event=startup_case is not None)
-                if (after_frame is not None and isinstance(root, dict)
-                        and root.get("queried_snapshot_id") == after.get("snapshot_id")
-                        and root.get("queried_revision") == after.get("revision")):
-                    admitted = saved_campaign_root_binding(after, root, after_frame)
-                    if admitted is not None and startup_case is not None:
-                        if {k:v for k,v in after_frame.items() if k != "pump_epoch"} != stable:
-                            raise RuntimeError("saved startup root query crossed its original paused owner/event frame")
-                        after, event_proof = await admit_saved_startup_event(client, after, expected, binding,
-                            startup_case, state=state, write=write, deadline=deadline, managed_done=managed_done)
-                        admitted["startup_event_admission"] = event_proof
-                attempt.update(status="BOUND" if admitted is not None else "NOT_BOUND")
-                if is_retry and admitted is None:
-                    write()
-                    raise RuntimeError("saved campaign cancelled-wait recovery did not bind its exact current native root")
-                snapshot = after
+                    try:
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0:
+                            raise TimeoutError("saved campaign root query exceeded original readiness deadline before submission")
+                        root = await asyncio.wait_for(client.call("ck3_query_campaign_root_context_v1",
+                            {"expected_revision": snapshot["revision"]}), timeout=remaining)
+                    except Exception as error:
+                        receipt = saved_campaign_cancelled_wait_receipt(error)
+                        attempt.update(status="FAILED", finished_at=now(), error_type=type(error).__name__,
+                            error=str(error), typed_query_failure=receipt)
+                        state["observations"].append({"snapshot": snapshot, "frame": frame,
+                            "campaign_root": None, "binding": None, "campaign_root_query_failed": True})
+                        write()
+                        if receipt is None or is_retry or time.monotonic() >= deadline:
+                            raise
+                        cancelled_wait_frame = copy.deepcopy(attempt["submitted_frame"])
+                        state["cancelled_campaign_wait_recovery"] = {
+                            "status": "WAITING_FOR_FRESH_PAUSED_OWNER_PUMP", "retry_limit": 1,
+                            "failed_submission_frame": copy.deepcopy(cancelled_wait_frame), "product_acceptance_proven": False}
+                        baseline = None
+                        continue
+                    attempt.update(status="RETURNED", finished_at=now())
+                    after = await fresh_before_deadline()
+                    after_frame = saved_campaign_admission_frame(after, expected, binding, allow_active_event=startup_case is not None)
+                    if (after_frame is not None and isinstance(root, dict)
+                            and root.get("queried_snapshot_id") == after.get("snapshot_id")
+                            and root.get("queried_revision") == after.get("revision")):
+                        admitted = saved_campaign_root_binding(after, root, after_frame)
+                        if admitted is not None and startup_case is not None:
+                            if {k:v for k,v in after_frame.items() if k != "pump_epoch"} != stable:
+                                raise RuntimeError("saved startup root query crossed its original paused owner/event frame")
+                            after, event_proof = await admit_saved_startup_event(client, after, expected, binding,
+                                startup_case, state=state, write=write, deadline=deadline, managed_done=managed_done)
+                            admitted["startup_event_admission"] = event_proof
+                    attempt.update(status="BOUND" if admitted is not None else "NOT_BOUND")
+                    if is_retry and admitted is None:
+                        write()
+                        raise RuntimeError("saved campaign cancelled-wait recovery did not bind its exact current native root")
+                    snapshot = after
             baseline = (stable, frame["pump_epoch"])
+            baseline_frame = copy.deepcopy(frame)
         else:
             baseline = None
+            baseline_frame = None
         state["observations"].append({"snapshot": snapshot, "frame": frame, "campaign_root": root, "binding": admitted})
         if admitted is not None:
             if time.monotonic() >= deadline:

@@ -6,7 +6,6 @@
     desc = xfm_market_otc_offer_interaction_desc
     auto_accept = yes
     use_diplomatic_range = no
-    ai_frequency = 0
     is_shown = {
         scope:actor = { is_ai = no is_adult = yes exists = var:xfm_selected_coin }
         scope:recipient = { is_alive = yes is_adult = yes }
@@ -38,7 +37,6 @@ xfm_market_otc_cancel_interaction = {
     desc = xfm_market_otc_cancel_interaction_desc
     auto_accept = yes
     use_diplomatic_range = no
-    ai_frequency = 0
     is_shown = {
         scope:actor = { is_ai = no has_variable = xfm_otc_consent var:xfm_otc_buyer = scope:recipient }
     }

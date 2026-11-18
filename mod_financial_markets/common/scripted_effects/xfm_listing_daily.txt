@@ -13,7 +13,8 @@ xfm_listing_daily_effect = {
                     has_variable = xfm_last_completed_qualified_volume_cents
                     has_variable = xfm_last_completed_volume_day
                     var:xfm_last_completed_volume_day >= 0
-                    var:xfm_last_completed_volume_day = { value = global_var:xfm_exchange.var:xfm_day subtract = 1 }
+                    var:xfm_last_completed_volume_day >= xfm_previous_exchange_day_value
+                    var:xfm_last_completed_volume_day <= xfm_previous_exchange_day_value
                     OR = {
                         NOT = { has_variable = xfm_last_listing_volume_day }
                         var:xfm_last_listing_volume_day < var:xfm_last_completed_volume_day

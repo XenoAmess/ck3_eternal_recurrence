@@ -10,7 +10,7 @@ xfm_finance_deposit_effect = {
    exists = scope:xfm_account
    scope:xfm_account = { xfm_finance_account_usable_trigger = yes var:xfm_system_account = 0 var:xfm_holder = scope:xfm_fin_depositor }
   }
-  add_gold = xfm_finance_negative_request_gold
+  remove_short_term_gold = xfm_finance_request_gold
   scope:xfm_account = { change_variable = { name = xfm_free_cents add = scope:xfm_fin_depositor.var:xfm_request_cents } }
   set_variable = { name = xfm_result value = 1 }
  }
@@ -47,11 +47,10 @@ xfm_finance_ensure_funds_effect = {
    limit = { var:xfm_system_account = 0 exists = var:xfm_holder var:xfm_holder = { is_alive = yes is_adult = yes } }
    save_scope_value_as = { name = xfm_fin_gap_cents value = xfm_finance_missing_cents }
    save_scope_value_as = { name = xfm_fin_gap_gold value = { value = scope:xfm_fin_gap_cents divide = 100 } }
-   save_scope_value_as = { name = xfm_fin_gap_negative_gold value = { value = scope:xfm_fin_gap_cents divide = -100 } }
    var:xfm_holder = {
     if = {
      limit = { gold >= scope:xfm_fin_gap_gold }
-     add_gold = scope:xfm_fin_gap_negative_gold
+     remove_short_term_gold = scope:xfm_fin_gap_gold
      scope:xfm_fin_funding_account = {
       change_variable = { name = xfm_free_cents add = scope:xfm_fin_gap_cents }
       set_variable = { name = xfm_result value = 1 }

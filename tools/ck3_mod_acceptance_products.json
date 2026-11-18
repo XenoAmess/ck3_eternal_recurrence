@@ -85,6 +85,306 @@
           "case_scope": "actual_paid_issuance_and_daily_spot_subcase",
           "whole_product_acceptance_credit": false,
           "budget_provenance": "Prospective fixed budgets for real paid issuance and same-day spot orders, with a 14-natural-day cap. All interactions remain minimized and do not activate the foreground. No live deadline extension."
+        },
+        {
+          "id": "derivatives",
+          "status": "ready",
+          "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_derivatives.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 5400,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_funded_long_short_leverage_daily_settlement_liquidation_and_residual_claims",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective 14 natural days. Genuine mature saves supply existing oracle and risk history; only transitions observed in this run gain new business credit. Fixed prospective wall budgets; no live extension. Registration is not business acceptance."
+        },
+        {
+          "id": "lifecycle",
+          "status": "ready",
+          "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_lifecycle.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 10800,
+            "hold_seconds": 3600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_delisting_notice_reduce_only_termination_otc_and_preserved_claims",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective 35 natural days includes the ordinary 30-day notice path. Pre-aged saves only supply their independently evidenced history; unresolved branches are not silently skipped. Fixed prospective wall budgets; no live extension. Registration is not business acceptance."
+        },
+        {
+          "id": "inheritance",
+          "status": "ready",
+          "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_inheritance.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 5400,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_natural_succession_stable_accounts_assets_obligations_and_news_delivery",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective 14 natural days from a genuine pre-succession save. Natural death is not guaranteed; absence yields NOT_OBSERVED, never fixture intervention or reroll credit. Fixed prospective wall budgets; no live extension. Registration is not business acceptance."
+        },
+        {
+          "id": "cold-reload",
+          "status": "ready",
+          "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_cold_reload.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 3600,
+            "hold_seconds": 600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_physical_save_fresh_process_readback_and_same_day_no_duplicate_business",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Zero natural days: all readback and GUI refresh happen paused on the saved native date. This case verifies persistence and no duplicate same-day business, not a new daily settlement. Fixed prospective wall budgets; no live extension. Registration is not business acceptance."
+        },
+        {
+          "id": "news-crisis",
+          "status": "ready",
+          "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_news_crisis.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 5400,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_debt_aid_restructure_crisis_guards_and_remote_news_delivery",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective 14 natural days from genuinely matured debt history. Random death and all 20 contexts remain individually NOT_OBSERVED until real evidence exists. Fixed prospective wall budgets; no live extension. Registration is not business acceptance."
+        },
+        {
+          "id": "ai-capacity",
+          "status": "ready",
+          "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_ai_capacity.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 43200,
+            "hold_seconds": 7200,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_mature_campaign_ai_rotation_market_capacity_daily_obligations_and_measured_performance",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective 395 natural days preserves the existing 30-day warmup plus 365-day measurement requirement. Wall budget is finite; it does not authorize omission or shortening of missing samples. Fixed prospective wall budgets; no live extension. Registration is not business acceptance."
         }
       ]
     },

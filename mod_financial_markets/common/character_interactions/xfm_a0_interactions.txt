@@ -4,7 +4,6 @@
     interface_priority = 90
     icon = loan_money_interaction
     desc = xfm_a0_trade_interaction_desc
-    ai_frequency = 0
     auto_accept = yes
     is_shown = {
         scope:actor = { xfm_a0_actor_eligible_trigger = yes is_ai = no is_adult = yes }

@@ -7,7 +7,6 @@ xfm_market_view_issuer_interaction = {
     desc = xfm_market_view_issuer_interaction_desc
     auto_accept = yes
     use_diplomatic_range = no
-    ai_frequency = 0
     is_shown = { scope:actor = { is_ai = no is_alive = yes } }
     on_accept = {
         scope:actor = {
