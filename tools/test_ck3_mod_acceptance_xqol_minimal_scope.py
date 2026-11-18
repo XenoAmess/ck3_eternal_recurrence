@@ -141,7 +141,13 @@ class FocusedMigration(unittest.TestCase):
         seed = regions[0]
         original, count = re.subn(pattern, '', startup)
         self.assertEqual(count, 1)
-        self.assertEqual((len(original.encode()), hashlib.sha256(original.encode()).hexdigest()),
+        # The actual engine rejects switching again inside the new player's scope.
+        self.assertEqual(startup.count('set_player_character = scope:xqol_startup_actor'), 1)
+        self.assertNotIn('scope:xqol_startup_actor = {\n                set_player_character', startup)
+        historical = original.replace('            scope:xqol_startup_actor = {\n',
+                                      '            scope:xqol_startup_actor = {\n'
+                                      '                set_player_character = scope:xqol_startup_actor\n', 1)
+        self.assertEqual((len(historical.encode()), hashlib.sha256(historical.encode()).hexdigest()),
                          (1579, '4f6591f18068e9891b0e49ec7ddd791d63b3b64b10fcaa84717f0c139b1b7ca5'))
         domains = re.findall(r'every_(\w+) = \{', seed)
         self.assertEqual(domains, ['courtier', 'vassal_or_below', 'tributary'])

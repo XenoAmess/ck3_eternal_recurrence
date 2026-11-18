@@ -44,7 +44,6 @@ zqauitail_start = {
             character:han_8052 = { save_scope_as = xqol_startup_actor }
             set_player_character = scope:xqol_startup_actor
             scope:xqol_startup_actor = {
-                set_player_character = scope:xqol_startup_actor
                 # ZQAUITAIL_RECIPIENT_SEED_BEGIN song-ui-zero-recipient-faith-seed-v1
                 # Fixture-only preparation; the actor's own faith is unchanged.
                 every_courtier = {

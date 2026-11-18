@@ -1,0 +1,120 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T11:23:18.185738+00:00",
+  "failed_run": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-18T11:23:18.185738+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0005",
+    "case": "migration-ui-1210",
+    "reviewer": "/root",
+    "direct_image_review": true,
+    "passed": false,
+    "status": "HARNESS_RED",
+    "cause": "Existing UI producer switched from original player to Song, then redundantly switched to the same already-player Song; engine explicitly rejected the second call. No UI25 credit.",
+    "actual_date": "1066-09-15",
+    "natural_days": 0,
+    "save_count": 0,
+    "error_log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2978d944c51c4c78947d765e790d375b\\profile\\logs\\error.log",
+      "bytes": 403,
+      "sha256": "e40f97060fc2f5c682fc1b8419376b058ef298ad33f5ca718cd71ac6e8d3dd98"
+    },
+    "log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2978d944c51c4c78947d765e790d375b\\profile\\logs\\debug.log",
+      "bytes": 1494743,
+      "sha256": "e885e37e2679d3affcd528e06accdbfc5d2f9c2b4531294d669d632f1b85b7f9"
+    },
+    "normal_gui_quit": true,
+    "normal_quit_evidence": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-red-quit-dialog-view.png",
+        "bytes": 623888,
+        "sha256": "b37e98688bf2845d42a0515243738f016df9b0c3eaabc7872db9e3394f297f7e"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-red-quit-desktop.png.json",
+        "bytes": 1459,
+        "sha256": "bf41375f89c186f8fd56b5a9e04e7ee2f0260905552b0390a0020426546c8f19"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0005\\game-exit.json",
+        "bytes": 253,
+        "sha256": "1acbd8a58c066b9037bd8e71ce6702c2caa5e1e06a324f20e8b725f96d9f677d"
+      }
+    ],
+    "fixture_original": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a01\\fixture.manifest.json",
+      "bytes": 741,
+      "sha256": "5d36c9682190c938b9499db70f9b756fb1f59578bab1a4622115cc313dd013e2"
+    },
+    "retention_review_at_utc": "2026-12-18T11:18:19Z"
+  },
+  "software_results": [
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_xqol_minimal_scope.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a02\\focused.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a02\\focused.stderr",
+        "bytes": 112,
+        "sha256": "1732649ed4cfeb322c86993efdf7e705fcc204bb945325a287eb072125085089"
+      }
+    },
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_xqol_followups.py"
+      ],
+      "returncode": 1,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a02\\1.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a02\\1.stderr",
+        "bytes": 6392,
+        "sha256": "f1af97f2095165f7028b00fd856e0a7abead65d52692853dd11ffefeb33bbdbd"
+      },
+      "scope": "Full existing followups retained RED:5 support-pin errors for the previously migrated xqol_vanilla_contract.py; no skip or GREEN claim."
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx192m",
+        "-jar",
+        "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "parse",
+        "--file",
+        "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a02\\fixture\\common\\on_action\\zqauitail_on_actions.txt"
+      ],
+      "returncode": 0,
+      "scope": "generic syntax only",
+      "jar": {
+        "path": "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "bytes": 433166,
+        "sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82"
+      }
+    }
+  ],
+  "passed": false,
+  "scope": "Fixture only; exact inverse restores previous producer output; formal27 unchanged. No new engine or product pass.",
+  "corrected_fixture": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a02\\fixture.manifest.json",
+    "bytes": 562,
+    "sha256": "e6476b8325cb43b84e21ca95b6ab05469ca4c9f844407d5bd5370b790da22ae4"
+  }
+}

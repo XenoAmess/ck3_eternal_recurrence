@@ -1,0 +1,75 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T11:25:53.889355+00:00",
+  "scope": "Full existing followup entry27 tests and focused UI fixture9 tests; former5 stale support-pin errors retained in xqol-ui-a02/1.stderr. Only3 support references updated, unchanged block() AST, full source inverse and original whole-contract hashes checked. No legacy engine/Native qualification. Duplicate UI player-switch removed; exact fixture inverse and generic parse retained.",
+  "results": [
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_xqol_followups.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a03-software\\test_ck3_mod_acceptance_xqol_followups.py.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a03-software\\test_ck3_mod_acceptance_xqol_followups.py.stderr",
+        "bytes": 131,
+        "sha256": "36525e838f54da09bbc25d6cec9683f42e50135522c0c3ddbbb70eb3b532bbe1"
+      }
+    },
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_xqol_minimal_scope.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a03-software\\test_ck3_mod_acceptance_xqol_minimal_scope.py.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-ui-a03-software\\test_ck3_mod_acceptance_xqol_minimal_scope.py.stderr",
+        "bytes": 112,
+        "sha256": "6e56094a3b5f956d5be443baadddfb930cd8e90aca225f2388450a80e5f95aab"
+      }
+    }
+  ],
+  "passed": true,
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_xqol_ui_fixture.py",
+      "bytes": 4792,
+      "sha256": "260521456c8c90f0e99e56ef5a6049bad122a6cb77771c2cbee6f75b13983b5c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_xqol_minimal_scope.py",
+      "bytes": 21678,
+      "sha256": "f438093d960f3a46bcdd2cd9607852f56cfc01a30812097cbc06d4c004342ee6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_xqol_prepare_compatibility.py",
+      "bytes": 27733,
+      "sha256": "183a9f2d49b77f8c6b6be2e56d7eebb6eb48ade5f700741af7a059f580fe223f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_vanilla_support_florin_review.json",
+      "bytes": 3012,
+      "sha256": "1e48a763d96d665c70769fc57d92480512c42aef053ffb36df054198160fb340"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 132336,
+      "sha256": "a5a34c7019c2eb36e184e8a7891e83a913cd638dedbdfe361b30f97465776146"
+    }
+  ]
+}

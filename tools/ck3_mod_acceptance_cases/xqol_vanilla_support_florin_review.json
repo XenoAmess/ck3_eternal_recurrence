@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-xqol-reviewed-vanilla-support-v1",
+  "before": {
+    "bytes": 4438,
+    "sha256": "be4ebc2f4bc72148329bbb8c419c6dbf52b1dc519a3bf1e08430336a9a26cca9"
+  },
+  "after": {
+    "bytes": 4767,
+    "sha256": "cd8bde16d09700b015fa99148f4de777050a8f50f6e57ea874b25956a5df7b7f"
+  },
+  "inverse_fragments": [
+    {
+      "old": "import json\nimport re",
+      "reviewed_current": "import json\nimport os\nimport re",
+      "review": "Read configured installation path; not used by the followup block parser."
+    },
+    {
+      "old": "GAME = ROOT / \"Crusader Kings III\" / \"game\"\nCONTRACT_PATH = Path(__file__).with_name(\"xqol_vanilla_1_20_0_4.json\")",
+      "reviewed_current": "GAME = Path(os.environ.get(\"XAR_CK3_GAME_DIR\", str(ROOT / \"Crusader Kings III\"))) / \"game\"\nCONTRACT_PATH = Path(__file__).with_name(\"xqol_vanilla_1_21_0.json\")",
+      "review": "Florin exact-source default; original followup consumes only unchanged block()."
+    },
+    {
+      "old": "def native_full_golden_obligation() -> str:\n    \"\"\"Keep the 1.20 native quote, excluding its available-wallet cap.\n\n    The native capped value answers what can be collected now. XQOL's full\n    payment mode instead requires the entire quote before consuming a hook.\n    \"\"\"\n    definition = native_definition(\"common/script_values/00_interaction_values.txt\", \"golden_obligation_value\")\n    if definition.count(\"\\tmax = gold\\n\") != 1:\n        raise ValueError(\"native golden obligation wallet cap changed\")\n    return definition.replace(\"golden_obligation_value =\", \"xqol_full_golden_obligation_value =\", 1).replace(\"\\tmax = gold\\n\", \"\")",
+      "reviewed_current": "def native_full_golden_obligation() -> str:\n    \"\"\"Keep Florin's uncapped quote and its actor-aware strong-hook multiplier.\n\n    The native capped value answers what can be collected now. XQOL's full\n    payment mode instead requires the entire quote before consuming a hook.\n    \"\"\"\n    relative = \"common/script_values/00_interaction_values.txt\"\n    definition = native_definition(relative, \"golden_obligation_value\")\n    capped = native_definition(relative, \"golden_obligation_value_check_current_situation\")\n    if re.sub(r\"\\s+\", \"\", capped) != (\n        \"golden_obligation_value_check_current_situation={\"\n        \"add=goldfloor=yesmax=golden_obligation_value}\"\n    ) or re.search(r\"(?m)^\\s*max\\s*=\\s*gold\\s*$\", definition):\n        raise ValueError(\"Florin golden obligation quote/payment split changed\")\n    return definition.replace(\"golden_obligation_value =\", \"xqol_full_golden_obligation_value =\", 1)",
+      "review": "Golden obligation migration used by current product generator; not called by original followup reward-body parser."
+    }
+  ],
+  "consumer_scope": "xqol_followup_common.stock_reward_projection imports only unchanged block(); no1.20 or1.21 engine/business qualification granted.",
+  "unchanged_block_ast": true
+}

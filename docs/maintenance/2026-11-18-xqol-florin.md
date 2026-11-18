@@ -31,3 +31,7 @@ R0003在实际1066-10-07／22自然日已达到完整27/27各一次、FAIL0，�
 后继临时GUI收束在完整原标记各一次／零FAIL且无Script system error时，从已暂停菜单直接正常Exit，不恢复模拟补图。退出前只接受三张已审XQOL同版截图中一致的unchecked-autosave16×16原像素SHA；不匹配则保持菜单，不点退出。该像素核对不是业务信用，仍须原Popen正常终止、keeper/CAS及实际图片审阅。正式27文件、原断言和自然日上限均未改变。
 
 R0004在实际1066-10-09／24自然日完成原27项各一次、FAIL0、零SAVE，11:02:06.486827Z原Popen正常退出0，无WM_CLOSE，keeper/CAS闭合。直接审阅原场景日期、未勾选退出自动保存及原退出操作；公共verify为PASS，明确product_release_pass=false。途中原版ep3_emperor_yearly.8000暂停，核对定义及四选项后经本场GUI-only路径选第一项并实际消失；不授Native能力资格。error.log1530B仍有未完成归因的formatter提示，未出现Script system error或fixture未设变量错误；不宣称零错误。原件见[xqol-florin-core-R0004-pass.json](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/xqol-florin-core-R0004-pass.json)，复核期限2026-12-18。生产滑条、实际防御调用／反向合同、官职候选界面继续分别验收后才评估发布。
+
+R0005在1066-09-15／零自然日正常退出，原Popen0于11:18:19.213446Z、keeper/CAS闭合、零SAVE。既有UI夹具先从原玩家切到宋帝，随后又在宋帝scope内重复set_player_character，真实引擎明确拒绝“Target character is also a player”；保留HARNESS_RED，不授UI25信用。共享producer仅移除第二次自切换，原宋帝资格、AI三域信仰种子、玩家信仰／头衔／政体及生产27文件不变；精确逆插入还原旧输入，新event通用parse通过。
+
+原9项focused回归通过后，扩展followups实际出现5项错误：本轮较早迁移的xqol_vanilla_contract指纹未同步三个专项支持引用。已逐调用核对：这些旧专项仅调用未改变的block()，不调用新版索款／来源生成路径；三个合同只改该支持pin，完整工具逆变换、block AST不变、旧整份合同哈希及错误pin拒绝均验证。原扩展失败不覆盖；修正后原入口27项与focused9项全部通过，focused入口加入既有CI。以上仅授支持源码资格，不授旧1.20专项在1.21运行资格。证据见[xqol-florin-ui-fixture-and-support-regression.json](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/xqol-florin-ui-fixture-and-support-regression.json)及并列R0005失败记录。

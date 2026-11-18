@@ -117,8 +117,8 @@
       "sha256": "e2203700d6b209da152bafcfb16f608f03b107f3b8aabef8f08df97005f27514"
     },
     "../xqol_vanilla_contract.py": {
-      "bytes": 4438,
-      "sha256": "be4ebc2f4bc72148329bbb8c419c6dbf52b1dc519a3bf1e08430336a9a26cca9"
+      "bytes": 4767,
+      "sha256": "cd8bde16d09700b015fa99148f4de777050a8f50f6e57ea874b25956a5df7b7f"
     },
     "../xqol_vanilla_1_20_0_4.json": {
       "bytes": 5363,

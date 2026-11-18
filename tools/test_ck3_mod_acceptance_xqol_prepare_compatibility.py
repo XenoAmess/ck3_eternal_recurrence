@@ -37,7 +37,8 @@ class InverseFragment(TypedDict):
 ReviewSchema = Literal['ck3-xqol-reviewed-prepare-compatibility-v2',
                        'ck3-xqol-reviewed-prepare-compatibility-v3',
                        'ck3-xqol-reviewed-prepare-compatibility-v4',
-                       'ck3-xqol-reviewed-prepare-compatibility-v5']
+                        'ck3-xqol-reviewed-prepare-compatibility-v5',
+                        'ck3-xqol-reviewed-vanilla-support-v1']
 
 
 @dataclass(frozen=True)
@@ -119,14 +120,26 @@ PREVIOUS_EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_rev
 EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v5.json',
                               'ck3-xqol-reviewed-prepare-compatibility-v5')
 CURRENT_PREPARE = EXTENSION_REVIEW.after
+VANILLA_REVIEW = _read_review(CASES / 'xqol_vanilla_support_florin_review.json',
+                             'ck3-xqol-reviewed-vanilla-support-v1')
+VANILLA_KEY = '../xqol_vanilla_contract.py'
 ORIGINAL_CONTRACTS = {'administrative_appointments': {'bytes': 2823, 'sha256': '803a6649952c323c3f07958b9635977c046deb544be16b723e5a1b45d0d4bccf'}, 'meritocratic_appointments': {'bytes': 6348, 'sha256': '3f7cda3eb863403e37abaa8165fb7aae23cafa585efaa757be785cfb1128ae7f'}, 'prison_payment': {'bytes': 4553, 'sha256': '4cd85a367af0b0fd7ebe4f4a404097c71b073de9a537402504a41b390f7f14ad'}, 'selfpaid_ransom': {'bytes': 3883, 'sha256': '956f01db9012c6704cc505e3a3ae68e31c08e23c4a78040220dfa41bc57c7862'}, 'pam_positive': {'bytes': 5128, 'sha256': '9f92e3f05df036be9b1624f20092988855ff3764b196c140a86693978ed81cbc'}, 'pam_negative': {'bytes': 4995, 'sha256': 'aea73ce9857339e729c6e16de5d43a13bb4cad75b64fffde8c84db626f4eea6b'}, 'liege_shared_ransom': {'bytes': 6620, 'sha256': 'cc69b83f6abd0e69821f0c91dc8a1e68388ec5b5338163c7dd24386d105ea169'}}
 SUPPORT_KEY = '../ck3_mod_acceptance_prepare.py'
 
 PRIOR_CONTRACTS = {'administrative_appointments': {'bytes': 2823, 'sha256': '6afed04a9074137066f6706ed9dc4a9377d35b1fec2d5ad346db8ac9439252d5'}, 'meritocratic_appointments': {'bytes': 6348, 'sha256': '294bd9a0782d080765dfabc967c7a6a3cdf5d009892095590d7dc16b9634fa13'}, 'prison_payment': {'bytes': 4553, 'sha256': '9763a4579e641628841be7251e11622b76888c98974ef69020ac4a412ffd6be9'}, 'selfpaid_ransom': {'bytes': 3883, 'sha256': 'aeaebbd7d76278689a7405a234c8085db46f27419c6cdf54415f2a9e17858fd2'}, 'pam_positive': {'bytes': 5128, 'sha256': '79ec5a4b402f596b9d67dd349aa94230fb0928a3d50b1f71cdb75d6e2bb480d7'}, 'pam_negative': {'bytes': 4995, 'sha256': 'c4cd37a5bc980c22e419dcf31f5d2e0e27bca0d75e6be7c396a164bfb759c76a'}, 'liege_shared_ransom': {'bytes': 6620, 'sha256': '698f55c0c8e97944ccbb967577e2b59c411f9f7e12d2ab40158f03139fb3fde9'}}
 
 
-def restore_prior_prepare_contract(value):
+def restore_prior_vanilla_contract(value):
     restored = copy.deepcopy(value)
+    if VANILLA_KEY in restored['support_files']:
+        if restored['support_files'][VANILLA_KEY] != VANILLA_REVIEW.after:
+            raise ValueError('Reviewed current vanilla support contract required')
+        restored['support_files'][VANILLA_KEY] = copy.deepcopy(VANILLA_REVIEW.before)
+    return restored
+
+
+def restore_prior_prepare_contract(value):
+    restored = restore_prior_vanilla_contract(value)
     if restored['support_files'][SUPPORT_KEY] != CURRENT_PREPARE:
         raise ValueError('Reviewed current prepare contract required')
     restored['support_files'][SUPPORT_KEY] = copy.deepcopy(PREVIOUS_PREPARE)
@@ -138,6 +151,25 @@ def context(name):
     return {'case': name, 'case_contract': contract, 'case_spec': {'budgets': copy.deepcopy(contract['original_budgets'])}}
 
 class ReviewedPrepareCompatibility(unittest.TestCase):
+    def test_florin_support_inverse_preserves_actual_followup_parser(self):
+        raw = (options.support_repo / 'tools/xqol_vanilla_contract.py').read_bytes()
+        old = _restore_reviewed_source(raw, VANILLA_REVIEW)
+        def block_node(source):
+            return next(node for node in ast.parse(source).body
+                        if isinstance(node, ast.FunctionDef) and node.name == 'block')
+        self.assertEqual(ast.dump(block_node(raw), include_attributes=False),
+                         ast.dump(block_node(old), include_attributes=False))
+        self.assertIn('from xqol_vanilla_contract import block',
+                      (CASES / 'xqol_followup_common.py').read_text(encoding='utf-8'))
+        with self.assertRaisesRegex(ValueError, 'Entire current reviewed source pin differs'):
+            _restore_reviewed_source(raw + b'\n', VANILLA_REVIEW)
+        for name in ('pam_positive', 'pam_negative', 'liege_shared_ransom'):
+            ctx = context(name)
+            self.assertEqual(ctx['case_contract']['support_files'][VANILLA_KEY], VANILLA_REVIEW.after)
+            ctx['case_contract']['support_files'][VANILLA_KEY]['sha256'] = '0' * 64
+            with self.assertRaisesRegex(ValueError, 'Original case support changed'):
+                common.validate_contract(ctx)
+
     def test_reviewed_optional_branches_restore_original_prefix_and_added_definition(self) -> None:
         raw = (options.support_repo / 'tools/ck3_mod_acceptance_prepare.py').read_bytes()
         self.assertEqual(_source_content(raw), CURRENT_PREPARE)
@@ -284,7 +316,7 @@ class ReviewedPrepareCompatibility(unittest.TestCase):
                 prior_raw = (json.dumps(prior, ensure_ascii=False, indent=2) + '\n').encode()
                 self.assertEqual((len(prior_raw), hashlib.sha256(prior_raw).hexdigest()),
                                  (PRIOR_CONTRACTS[name]['bytes'], PRIOR_CONTRACTS[name]['sha256']))
-                restored = copy.deepcopy(context(name)['case_contract'])
+                restored = restore_prior_vanilla_contract(context(name)['case_contract'])
                 restored['support_files'][SUPPORT_KEY] = copy.deepcopy(ORIGINAL_PREPARE)
                 raw = (json.dumps(restored, ensure_ascii=False, indent=2) + '\n').encode()
                 self.assertEqual((len(raw), hashlib.sha256(raw).hexdigest()), (expected['bytes'], expected['sha256']))
