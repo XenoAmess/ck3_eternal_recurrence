@@ -36,7 +36,11 @@ bool Fail(FullSnapshotDiagnosticsV1 &d,std::string_view stage,std::string_view w
  d.complete=false;d.stage=stage;d.reason=why;return false;
 }
 bool ReadPass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,
-    xar::game::Snapshot &s,FullSnapshotDiagnosticsV1 &d) {
+    xar::game::Snapshot &s,FullSnapshotDiagnosticsV1 &d,
+    IngameReadyWitnessV1 &witness,const IngameReadyGraphV1 &ingame) {
+  std::string_view ingame_reason;
+  if(!ConfirmIngameReadyV1(b.ingame_ready,witness,ingame,ingame_reason))
+    return Fail(d,"ingame",ingame_reason);
   ActorFoundationObservationV1 f{};
   if(!ReadActorFoundationV1(b.foundation,p,f) || !f.resources_ready || !f.relationships_ready ||
      !f.gold_raw || !f.prestige_raw || !f.piety_raw || !f.stress_points || !f.relationships)
@@ -70,6 +74,8 @@ bool ReadPass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,
     d.unit_slots_scanned=m.unit_slots_scanned;d.war_slots_scanned=m.war_slots_scanned;
   }
   d.pending_slots_scanned=q.slots_scanned;
+  if(!ConfirmIngameReadyV1(b.ingame_ready,witness,ingame,ingame_reason))
+    return Fail(d,"ingame",ingame_reason);
   CoreSnapshotPrefix after{};
   if(!ReadCoreSnapshot(b.core,after) || !SameCore(p,after)) return Fail(d,"core","full_snapshot_core_changed");
   s={};s.date_raw=p.clock.date_raw;s.speed=p.clock.speed;s.paused=p.clock.paused;
@@ -96,6 +102,7 @@ bool ReadPass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,
 FullSnapshotBindingsV1 BindFullSnapshotImageV1(std::uintptr_t base,std::string_view sha) noexcept {
  FullSnapshotBindingsV1 b{};b.core=BindCoreImage(base,sha);
  if(!b.core.enabled) return b;
+ b.ingame_ready=BindIngameReadyImageV1(base,sha);
  b.foundation=BindActorFoundationImageV1(base,sha);b.event=BindCurrentEventSnapshotImageV1(base,sha);
  b.pending=BindPendingSnapshotImageV1(base,sha);b.military=BindMilitaryEmptyImageV1(base,sha);
 #if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
@@ -106,41 +113,49 @@ FullSnapshotBindingsV1 BindFullSnapshotImageV1(std::uintptr_t base,std::string_v
    Copy(reinterpret_cast<void*>(base+kPendingSnapshotPredicateRvaV1),c.data(),c.size()) &&
    Copy(reinterpret_cast<void*>(base+kPendingSnapshotValidatorRvaV1),d.data(),d.size()) &&
    a==kCurrentEventSelectorEntry32V1 && c==kPendingPredicateEntry32V1 && d==kPendingValidatorEntry32V1;
- b.exact_build_admitted=pins && b.core.enabled && b.foundation.exact_build_admitted && b.event.exact_build_admitted &&
+ b.exact_build_admitted=pins && b.core.enabled && b.ingame_ready.exact_build_admitted &&
+   b.foundation.exact_build_admitted && b.event.exact_build_admitted &&
    b.pending.exact_build_admitted && b.military.exact_build_admitted;
  return b;
 }
 bool ReadFullSnapshotV1(const FullSnapshotBindingsV1 &b,xar::game::Snapshot &out,
- FullSnapshotDiagnosticsV1 &d) noexcept {
+ FullSnapshotDiagnosticsV1 &d,IngameReadyWitnessV1 &witness) noexcept {
  out={};d={};
  const auto same=[&](const CoreBindings &c) noexcept {
    return c.enabled && c.game_state_slot==b.core.game_state_slot && c.jomini_state_slot==b.core.jomini_state_slot &&
     c.character_storage_slot==b.core.character_storage_slot && c.get_local_player==b.core.get_local_player;
  };
- if(!b.exact_build_admitted || !b.core.enabled || !b.foundation.exact_build_admitted ||
+ if(!b.exact_build_admitted || !b.core.enabled || !b.ingame_ready.exact_build_admitted ||
+    !same(b.ingame_ready.core) || !b.foundation.exact_build_admitted ||
     !b.event.exact_build_admitted || !b.pending.exact_build_admitted || !b.military.exact_build_admitted ||
-    !same(b.foundation.core) || !same(b.event.core) || !same(b.pending.core) || !same(b.military.core))
-   return Fail(d,"binding","full_snapshot_exact_build_unavailable");
+    !same(b.foundation.core) || !same(b.event.core) || !same(b.pending.core) || !same(b.military.core)) {
+   witness={};return Fail(d,"binding","full_snapshot_exact_build_unavailable");
+ }
 #if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
  if(b.enable_army_base && (!b.army_base.exact_build_admitted || !b.war_identity.exact_build_admitted ||
     !same(b.army_base.player_armies.core) || !same(b.war_identity.core)))
-   return Fail(d,"binding","full_snapshot_army_base_binding_mismatch");
+   {witness={};return Fail(d,"binding","full_snapshot_army_base_binding_mismatch");}
 #endif
  try {
+  IngameReadyObservationV1 ready{};
+  if(!ObserveIngameReadyV1(b.ingame_ready,witness,ready)) return Fail(d,"ingame",ready.unavailable_reason);
   CoreSnapshotPrefix p{};
   if(!ReadCoreSnapshot(b.core,p) || !p.clock.paused || !p.map_ready || !p.has_played_character || !p.played_character_alive)
    return Fail(d,"core","full_snapshot_requires_paused_played_map");
   Anchor before{},after{};
   if(!Capture(b.core,p,before)) return Fail(d,"root","full_snapshot_root_unavailable");
   xar::game::Snapshot first{},second{};
-  if(!ReadPass(b,p,first,d)) return false;
+  if(!ReadPass(b,p,first,d,witness,ready.graph)) return false;
   d.completed_passes=1;
   if(!Capture(b.core,p,after) || before!=after) return Fail(d,"root","full_snapshot_root_changed");
-  if(!ReadPass(b,p,second,d)) return false;
+  std::string_view ingame_reason;
+  if(!ConfirmIngameReadyV1(b.ingame_ready,witness,ready.graph,ingame_reason)) return Fail(d,"ingame",ingame_reason);
+  if(!ReadPass(b,p,second,d,witness,ready.graph)) return false;
   d.completed_passes=2;
   if(!Capture(b.core,p,after) || before!=after) return Fail(d,"root","full_snapshot_root_changed");
+  if(!ConfirmIngameReadyV1(b.ingame_ready,witness,ready.graph,ingame_reason)) return Fail(d,"ingame",ingame_reason);
   if(first!=second) return Fail(d,"coherence","full_snapshot_observations_changed");
   out=std::move(second);d.complete=true;d.stage="complete";d.reason={};return true;
- } catch(...) {out={};return Fail(d,"exception","full_snapshot_read_exception");}
+ } catch(...) {out={};witness={};return Fail(d,"exception","full_snapshot_read_exception");}
 }
 }

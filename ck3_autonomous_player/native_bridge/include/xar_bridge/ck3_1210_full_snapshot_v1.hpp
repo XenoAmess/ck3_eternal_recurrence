@@ -5,11 +5,13 @@
 #include "xar_bridge/ck3_1210_military_empty_v1.hpp"
 #include "xar_bridge/ck3_1210_army_base_v1.hpp"
 #include "xar_bridge/ck3_1210_active_wars_v1.hpp"
+#include "xar_bridge/ck3_1210_ingame_ready_v1.hpp"
 #include "xar_bridge/game_contract.hpp"
 namespace xar::ck3_1210 {
 struct FullSnapshotBindingsV1 {
   bool exact_build_admitted = false;
   CoreBindings core{};
+  IngameReadyBindingsV1 ingame_ready{};
   ActorFoundationBindingsV1 foundation{};
   CurrentEventSnapshotBindingsV1 event{};
   PendingSnapshotBindingsV1 pending{};
@@ -38,5 +40,6 @@ FullSnapshotBindingsV1 BindFullSnapshotImageV1(std::uintptr_t image_base,
 // Explicit army-base builds may observe nonempty armies; positive wars stay unavailable.
 // Optional settlement is unsupported (no capability), event traits omitted.
 bool ReadFullSnapshotV1(const FullSnapshotBindingsV1 &bindings,
-    xar::game::Snapshot &output, FullSnapshotDiagnosticsV1 &diagnostics) noexcept;
+    xar::game::Snapshot &output, FullSnapshotDiagnosticsV1 &diagnostics,
+    IngameReadyWitnessV1 &ingame_ready_witness) noexcept;
 } // namespace xar::ck3_1210

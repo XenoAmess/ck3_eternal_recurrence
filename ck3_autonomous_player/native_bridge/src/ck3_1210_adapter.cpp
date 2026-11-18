@@ -49,8 +49,10 @@ public:
       return finish(false);
     }
     SnapshotOwnerToken owner_before{};
-    if(!ReadCurrentSnapshotOwner(owner_before)) {
-      diagnostics.stage="owner";diagnostics.reason="full_snapshot_application_main_owner_unqualified";
+    std::string_view owner_reason="full_snapshot_application_main_owner_unqualified";
+    if(!ReadCurrentSnapshotOwner(owner_before,&owner_reason)) {
+      diagnostics.stage=owner_reason=="full_snapshot_application_main_owner_unqualified"?"owner":"ingame";
+      diagnostics.reason=owner_reason;
       return finish(false);
     }
 #if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
@@ -62,7 +64,7 @@ public:
       current.army_base.player_armies.integration_native_calls_permitted=true;
     }
 #endif
-    bool result=ck3_1210::ReadFullSnapshotV1(current,output,diagnostics);
+    bool result=ck3_1210::ReadFullSnapshotV1(current,output,diagnostics,ingame_ready_witness_);
     // The owner brackets every Full observation, including zero Army calls
     // and the legacy typed-empty lane. No stale complete diagnostic survives.
     SnapshotOwnerToken owner_after{};
@@ -231,6 +233,12 @@ public:
   }
 private:
 #if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+  struct IngameReadyOwnerIdentity {
+    const ck3_11906::MainThreadQueryMailboxV1 *mailbox=nullptr;
+    std::uint32_t thread_id=0;
+    std::uintptr_t tls=0,state=0,jomini=0;
+    friend bool operator==(const IngameReadyOwnerIdentity&,const IngameReadyOwnerIdentity&)=default;
+  };
   struct SnapshotOwnerToken {
     const ck3_11906::MainThreadQueryMailboxV1 *mailbox=nullptr;
     std::uint64_t pump_epoch=0;
@@ -238,6 +246,7 @@ private:
     std::uintptr_t tls=0,state=0,jomini=0,data=0,characters=0;
     std::int32_t date_raw=0,speed=0,player=-1,actor=-1;
     bool paused=false,map_ready=false,has_actor=false,actor_alive=false;
+    ck3_1210::IngameReadyGraphV1 ingame{};
     bool Matches(const Snapshot &p) const noexcept {
       return p.date_raw==date_raw && p.speed==speed && p.paused==paused && p.player_id==player &&
         p.map_ready==map_ready && p.has_played_character==has_actor && p.played_character_id==actor &&
@@ -245,16 +254,22 @@ private:
     }
     friend bool operator==(const SnapshotOwnerToken&,const SnapshotOwnerToken&)=default;
   };
-  bool ReadCurrentSnapshotOwner(SnapshotOwnerToken &out) const noexcept {
+  bool MarkSnapshotOwnerUnavailable() const noexcept {
+    // A rejected worker never reads the lifecycle graph or mutates its witness.
+    // Only the next qualified owner consumes this request and resets state.
+    ingame_owner_reset_requested_.store(true,std::memory_order_release);return false;
+  }
+  bool ReadCurrentSnapshotOwner(SnapshotOwnerToken &out,std::string_view *reason=nullptr) const noexcept {
     out={};
+    if(reason)*reason="full_snapshot_application_main_owner_unqualified";
     const auto *m=owner_mailbox_.load(std::memory_order_acquire);
-    if(!m || m->offline_fixture || m->stop_requested.load() || m->proof_reset_requested.load())return false;
+    if(!m || m->offline_fixture || m->stop_requested.load() || m->proof_reset_requested.load())return MarkSnapshotOwnerUnavailable();
     __try {
       const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
       if(!base || m->module_base!=base || m->game_state_slot!=reinterpret_cast<std::uintptr_t>(core_.game_state_slot) ||
           m->jomini_state_slot!=reinterpret_cast<std::uintptr_t>(core_.jomini_state_slot) ||
           m->tls_initialized_flag!=base+ck3_1210::kMainThreadTlsInitializedFlagRva ||
-          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)!=base+ck3_1210::kMainThreadTlsContextGetterRva)return false;
+          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)!=base+ck3_1210::kMainThreadTlsContextGetterRva)return MarkSnapshotOwnerUnavailable();
       const auto d=ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*m);
       const auto tid=GetCurrentThreadId();
       if((!d.iat_installed && !d.sdl_poll_event_hook_installed) || d.stop_requested || d.failure_flags ||
@@ -262,12 +277,31 @@ private:
           !d.observed_stamp_read_success || d.observed_tls_initialized!=1 ||
           d.observed_tls_main_thread_marker!=1 || !d.observed_paused || !d.observed_tls_context ||
           d.paused_owner_verified_pump_epochs<ck3_11906::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs ||
-          d.owner_verified_pump_epochs<ck3_11906::kMainThreadQueryMinimumOwnerVerifiedPumpEpochs)return false;
+          d.owner_verified_pump_epochs<ck3_11906::kMainThreadQueryMinimumOwnerVerifiedPumpEpochs)return MarkSnapshotOwnerUnavailable();
       const auto tls=reinterpret_cast<std::uintptr_t>(m->tls_context_getter());
       if(tls!=d.observed_tls_context || *reinterpret_cast<const std::uint8_t *>(m->tls_initialized_flag)!=1 ||
-          *reinterpret_cast<const std::uint8_t *>(tls+0x20)!=1)return false;
+          *reinterpret_cast<const std::uint8_t *>(tls+0x20)!=1)return MarkSnapshotOwnerUnavailable();
+      const auto &ready_core=full_.ingame_ready.core;
+      if(!full_.ingame_ready.exact_build_admitted || ready_core.game_state_slot!=core_.game_state_slot ||
+          ready_core.jomini_state_slot!=core_.jomini_state_slot ||
+          ready_core.character_storage_slot!=core_.character_storage_slot ||
+          ready_core.get_local_player!=core_.get_local_player)return MarkSnapshotOwnerUnavailable();
       void *state=nullptr,*jomini=nullptr;
       std::memcpy(&state,core_.game_state_slot,sizeof(state));std::memcpy(&jomini,core_.jomini_state_slot,sizeof(jomini));
+      const IngameReadyOwnerIdentity identity{m,tid,tls,reinterpret_cast<std::uintptr_t>(state),
+        reinterpret_cast<std::uintptr_t>(jomini)};
+      if(ingame_owner_reset_requested_.exchange(false,std::memory_order_acq_rel) ||
+          identity!=ingame_ready_owner_ || d.pump_epochs<ingame_ready_owner_pump_ ||
+          d.owner_verified_pump_epochs<ingame_ready_owner_verified_)ingame_ready_witness_={};
+      ingame_ready_owner_=identity;ingame_ready_owner_pump_=d.pump_epochs;
+      ingame_ready_owner_verified_=d.owner_verified_pump_epochs;
+      ck3_1210::IngameReadyObservationV1 ingame{};
+      if(!ck3_1210::ObserveIngameReadyV1(full_.ingame_ready,ingame_ready_witness_,ingame)) {
+        if(reason)*reason=ingame.unavailable_reason;
+        // A valid first graph must retain its baseline until a real frame ends.
+        return false;
+      }
+      if(ingame.graph.root!=jomini) {ingame_ready_witness_={};return MarkSnapshotOwnerUnavailable();}
       void *data=nullptr,*characters=nullptr;
       std::memcpy(&data,static_cast<const std::byte *>(state)+ck3_1210::kGameStateDataOffset,sizeof(data));
       if(core_.character_storage_slot)std::memcpy(&characters,core_.character_storage_slot,sizeof(characters));
@@ -288,13 +322,18 @@ private:
           m->pump_epochs.load()==d.pump_epochs && m->owner_thread_id.load()==tid &&
           m->active_hook_calls.load()!=0 && m->failure_flags.load()==0 &&
           !m->stop_requested.load() && !m->proof_reset_requested.load();
-      if(!valid)return false;
+      if(!valid)return MarkSnapshotOwnerUnavailable();
       out={m,d.pump_epochs,tid,tls,d.observed_game_state,d.observed_jomini_state,
         reinterpret_cast<std::uintptr_t>(data),reinterpret_cast<std::uintptr_t>(characters),d.observed_date_raw,
-        p.clock.speed,p.local_player_id,p.played_character_id,p.clock.paused,p.map_ready,p.has_played_character,p.played_character_alive};
+        p.clock.speed,p.local_player_id,p.played_character_id,p.clock.paused,p.map_ready,p.has_played_character,p.played_character_alive,
+        ingame.graph};
       return true;
-    } __except(EXCEPTION_EXECUTE_HANDLER) {return false;}
+    } __except(EXCEPTION_EXECUTE_HANDLER) {return MarkSnapshotOwnerUnavailable();}
   }
+  mutable std::atomic<bool> ingame_owner_reset_requested_{true};
+  mutable ck3_1210::IngameReadyWitnessV1 ingame_ready_witness_{};
+  mutable IngameReadyOwnerIdentity ingame_ready_owner_{};
+  mutable std::uint64_t ingame_ready_owner_pump_=0,ingame_ready_owner_verified_=0;
 #endif
   mutable std::atomic<const ck3_11906::MainThreadQueryMailboxV1 *> owner_mailbox_{nullptr};
   ck3_1210::CoreBindings core_{};

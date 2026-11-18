@@ -75,7 +75,7 @@ bool ArmyCopy(void *,const void *source,void *dest,std::size_t size) noexcept {
 }
 void FullArmyPass(FullArmyFixture &m,bool route_expected) {
   game::Snapshot out{};FullSnapshotDiagnosticsV1 d{};
-  const bool read=ReadFullSnapshotV1(m.full.bindings,out,d);
+  const bool read=ReadFullSnapshotV1(m.full.bindings,out,d,m.full.ingame_witness);
   if(!read)std::cerr<<"FULL_ARMY_DIAG stage="<<d.stage<<" reason="<<d.reason<<" calls="<<d.army_state_calls_attempted<<std::endl;
   Require(read,"real complete Full with nonempty base army");
   Require(d.complete && d.completed_passes==2 && out.active_wars.empty() &&
@@ -100,7 +100,7 @@ int main() {
   {FullArmyFixture m;Put(m.army,0x10,std::int32_t{0});Unavailable(m.full);
     Require(m.state_calls==0,"stale generation rejected before native call");}
   {FullArmyFixture m;m.change_identity=true;auto out=Stale(m.full);FullSnapshotDiagnosticsV1 d{};
-    Require(!ReadFullSnapshotV1(m.full.bindings,out,d) && out==game::Snapshot{} && d.army_state_calls_attempted==1,
+    Require(!ReadFullSnapshotV1(m.full.bindings,out,d,m.full.ingame_witness) && out==game::Snapshot{} && d.army_state_calls_attempted==1,
         "mid-call native dependency drift clears whole Full and retains attempt");}
   {FullArmyFixture m;m.full.WarPresent(true);Put(m.full.war,0,m.full.bindings.war_identity.war_vtable);
     Put(m.full.defender,8,kPeer2);Put(m.full.war,0x290,m.full.actor_id);Put(m.full.war,0x294,kPeer2);

@@ -2,13 +2,15 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（17:44 UTC 更新）
+## 当前状态（18:18 UTC 更新）
 
 云端独立分支真实run [44359949157](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44359949157)已通过：共享存档库10项、金融246项，29个JUnit suite逐例核对，0failure/error/skip；源码validator与候选allowlist均196文件。仓库路径修复已正常接到远端并推送`89e5e07f43b3009dd75c67112baf9f358bb1130b`；金融生产字节及工具与该云场完全相同。前三次云端失败均保留。
 
 第七场`R0007/a85`用于取证，仍在启动FreshFull原8秒期限失败，零业务动作/新增日/SAVE。两次有限OS线程诊断实际成功并释放PSS；第二次前已确认37843ms无新的Peek/Poll进入，RIP在`NtYieldExecution`，原生候选地址涉及Core取玩家与Full观察。只保留owner上下文及有限栈，未clone全内存、未输入或抢焦点。原Game失败exit1/Job0/treegone、原Host和keeper wait已核，17:36:35Z资源释放。[原件摘要](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0007.json)。
 
-正在用精确PE栈展开元数据核实真实阻塞帧。raw栈中的可执行地址不是正式调用链，旧GUI构造地址不能单独证明当前仍在构造；发布的heartbeat可能在observer执行期间保持旧值，`active=0/read_in_progress=false`也不能证明当前没有观察器在运行。暂不据此新增初始化门、getter替换或hook。
+精确PE展开元数据的16帧有限回溯已完成，并逐个核对调用指令及链式展开：该采样在UI初始化任务等待链中。raw栈中的Native候选地址位于游戏函数局部栈区，不能当作当前观察器调用帧。上下文与后续有限栈读取非原子，结论只适用于保留的这次样本；发布的heartbeat也不能独立证明当前是否有观察器在运行。
+
+已采用待编验的窄修复：Full业务读取在既有owner/TLS资格之后，先检查精确UI对象图和应用已完成帧计数。第一次合格对象图只记录基线，同一图实际完成后续帧才允许调用游戏getter；切换、对象缺失、身份变化、计数回退或回绕均重新验证。独立Core读取保持原合同。来源为`ingame-ready-candidate01`冻结补丁及9项精确PE校验，尚未取得C++测试、Q12、实际Fresh成功或金融业务信用。
 
 ## 第六场与前序云端失败
 

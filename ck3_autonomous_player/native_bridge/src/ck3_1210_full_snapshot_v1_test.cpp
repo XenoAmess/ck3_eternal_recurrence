@@ -28,7 +28,7 @@ template <class T> T Get(const void *p, std::size_t offset) {
   T value{}; std::memcpy(&value, static_cast<const std::byte *>(p) + offset, sizeof(value)); return value;
 }
 enum class Mutation { none, core_date, event_within, event_between, pending_within,
-  pending_between, resource_between };
+  pending_between, resource_between, ingame_epoch, ingame_transition };
 struct Fixture;
 Fixture *active = nullptr;
 void *LocalPlayer(void *);
@@ -37,8 +37,10 @@ bool PendingFor(void *, void *);
 bool Validate(void *);
 struct Fixture {
   std::array<std::byte, 0xB0> state{};
-  std::array<std::byte, 0x28> jomini{};
+  std::array<std::byte, 0x48> jomini{};
   std::array<std::byte, 0x200> players{};
+  std::array<std::byte, 0x98> ingame_gfx{};
+  std::array<std::byte, 0x48> ingame_handler{};
   std::array<std::byte, 0x80> player{};
   std::vector<std::byte> data = std::vector<std::byte>(kCurrentEventManagerOffsetV1 + 0x1F28);
   std::array<std::byte, 0xE0> entry{};
@@ -72,12 +74,16 @@ struct Fixture {
   Mutation mutation = Mutation::none;
   bool map_ready = true;
   FullSnapshotBindingsV1 bindings{};
+  IngameReadyWitnessV1 ingame_witness{};
   explicit Fixture(std::int32_t id = kActor) : actor_id(id),
       zero_peer((static_cast<std::uint32_t>(id)&0xFFFFFFU)==0 ? 0x22000001 : 0), selector_character(id) {
     active = this;
     CoreBindings core{true,&state_slot,&jomini_slot,&character_slot,&LocalPlayer};
     constexpr std::uintptr_t fake_base = 0x140000000;
     bindings.exact_build_admitted = true; bindings.core = core;
+    bindings.ingame_ready = {true,core,fake_base+kIngameRootVtableRvaV1,
+      fake_base+kIngameApplicationVtableRvaV1,fake_base+kIngameGfxVtableRvaV1,
+      fake_base+kIngameHandlerVtableRvaV1};
     bindings.foundation = BindActorFoundationImageV1(fake_base,kExecutableSha256);
     bindings.event = BindCurrentEventSnapshotImageV1(fake_base,kExecutableSha256);
     bindings.pending = BindPendingSnapshotImageV1(fake_base,kExecutableSha256);
@@ -88,6 +94,14 @@ struct Fixture {
     bindings.pending.is_pending_for_character = &PendingFor; bindings.pending.validate_reply = &Validate;
     bindings.military.unit_registry_slot = &unit_slot; bindings.military.war_registry_slot = &war_slot;
     Init();
+    // The actual readiness reducer first observes an Enter-era graph at epoch0,
+    // then the RAM producer completes a real-model application frame at epoch1.
+    // This only supplies the underlying ABI model; Full itself is never mocked.
+    IngameReadyObservationV1 first{};
+    Require(!ObserveIngameReadyV1(bindings.ingame_ready,ingame_witness,first) &&
+      first.unavailable_reason=="full_snapshot_ingame_first_completed_frame_required",
+      "first graph cannot borrow a completed-frame witness");
+    Put(players,kIngameCompletedFrameEpochOffsetV1,std::uint64_t{1});
   }
   void InitCharacter(std::array<std::byte,0x1E0> &c, std::int32_t id) {
     Put(c,0x18,id); Put(c,0x1C,std::uint32_t{0x43686172});
@@ -96,6 +110,11 @@ struct Fixture {
   void Init() {
     Put(state,8,std::int32_t{123456}); Put(state,0x70,std::int32_t{4}); Put(state,0xA0,data.data());
     Put(jomini,0x18,players.data()); Put(jomini,0x20,std::uint8_t{1});
+    Put(jomini,0,bindings.ingame_ready.root_vtable); Put(jomini,0x10,ingame_gfx.data());
+    Put(players,0,bindings.ingame_ready.application_vtable); Put(players,0x28,jomini.data());
+    Put(ingame_gfx,0,bindings.ingame_ready.gfx_vtable); Put(ingame_gfx,0x20,jomini.data());
+    Put(ingame_gfx,0x88,ingame_handler.data()); Put(ingame_gfx,0x90,players.data());
+    Put(ingame_handler,0,bindings.ingame_ready.handler_vtable); Put(ingame_handler,0x40,jomini.data());
     Put(players,0x1F0,std::int32_t{7}); Put(player,0x70,std::int32_t{7});
     Put(entry,0xD8,std::int32_t{7}); Put(entry,0xB0,actor_id);
     Put(data,kPlayerCharacterManagerOffset+0x58,entries.data());
@@ -170,6 +189,9 @@ void *Current(void *manager) {
   if((f.mutation==Mutation::event_within && f.selectors==2) ||
      (f.mutation==Mutation::event_between && f.selectors==3)) Put(f.event,0x1C4,std::int32_t{43});
   if(f.mutation==Mutation::resource_between && f.selectors==2) Put(f.living,0x100,f.gold+1);
+  if(f.mutation==Mutation::ingame_epoch && f.selectors==1)
+    Put(f.players,kIngameCompletedFrameEpochOffsetV1,std::uint64_t{2});
+  if(f.mutation==Mutation::ingame_transition && f.selectors==1) Put(f.players,0x30,std::uint8_t{1});
   return f.current;
 }
 bool PendingFor(void *pending, void *actor) {
@@ -196,7 +218,7 @@ game::Snapshot Stale(const Fixture &f) {
 FullSnapshotDiagnosticsV1 Unavailable(Fixture &f) {
   auto out=Stale(f); FullSnapshotDiagnosticsV1 d{};
   d.complete=true;d.completed_passes=99;d.reason="stale";
-  Require(!ReadFullSnapshotV1(f.bindings,out,d),"full read must be unavailable");
+  Require(!ReadFullSnapshotV1(f.bindings,out,d,f.ingame_witness),"full read must be unavailable");
   Require(out==game::Snapshot{},"every output field/vector/optional is cleared on insufficient proof");
   Require(!d.complete && d.completed_passes<=2 && !d.stage.empty() && !d.reason.empty(),
       "failure diagnostics never retain complete proof");
@@ -204,7 +226,7 @@ FullSnapshotDiagnosticsV1 Unavailable(Fixture &f) {
 }
 void Observed(Fixture &f) {
   const auto expected=f.Expected(); auto out=Stale(f); FullSnapshotDiagnosticsV1 d{};
-  Require(ReadFullSnapshotV1(f.bindings,out,d),"two full passes over actual child readers");
+  Require(ReadFullSnapshotV1(f.bindings,out,d,f.ingame_witness),"two full passes over actual child readers");
   Require(out==expected,"Snapshot exactly preserves every Core/resource/family/event/pending/empty-military field");
   Require(d.complete && d.completed_passes==2 && d.stage=="complete" && d.reason.empty() &&
       d.pending_slots_scanned==2,"complete two-pass diagnostics and actual pending scan");

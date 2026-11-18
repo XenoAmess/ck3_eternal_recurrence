@@ -1282,6 +1282,7 @@ add_library(xar_ck3_12002_runtime STATIC
     src/ck3_1210_pending_snapshot_v1.cpp
     src/ck3_1210_military_empty_v1.cpp
     src/ck3_1210_full_snapshot_v1.cpp
+    src/ck3_1210_ingame_ready_v1.cpp
     src/ck3_1210_personal_gold_v1.cpp
     src/ck3_1210_personal_gold_frame_v1.cpp
     src/ck3_1210_monthly_flow_v1.cpp
@@ -10324,6 +10325,7 @@ endif()
 if(BUILD_TESTING)
   add_executable(xar_ck3_1210_full_snapshot_test
     src/ck3_1210_full_snapshot_v1_test.cpp fixtures/ck3_1210_full_snapshot_body_v1.cpp
+    src/ck3_1210_ingame_ready_v1.cpp
     src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_current_event_snapshot_v1.cpp
     src/ck3_1210_pending_snapshot_v1.cpp src/ck3_1210_military_empty_v1.cpp src/ck3_1210_core.cpp)
   target_include_directories(xar_ck3_1210_full_snapshot_test PRIVATE include)
@@ -10332,6 +10334,17 @@ if(BUILD_TESTING)
     target_compile_options(xar_ck3_1210_full_snapshot_test PRIVATE /W4 /WX /permissive- /EHsc)
   endif()
   add_test(NAME xar_ck3_native_bridge_1210_full_snapshot COMMAND xar_ck3_1210_full_snapshot_test)
+  add_executable(xar_ck3_1210_ingame_ready_test
+    src/ck3_1210_ingame_ready_v1_test.cpp fixtures/ck3_1210_full_snapshot_body_v1.cpp
+    src/ck3_1210_ingame_ready_v1.cpp src/ck3_1210_actor_foundation_v1.cpp
+    src/ck3_1210_current_event_snapshot_v1.cpp src/ck3_1210_pending_snapshot_v1.cpp
+    src/ck3_1210_military_empty_v1.cpp src/ck3_1210_core.cpp)
+  target_include_directories(xar_ck3_1210_ingame_ready_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_ingame_ready_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_ingame_ready_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_ingame_ready COMMAND xar_ck3_1210_ingame_ready_test)
 endif()
 
 option(XAR_CK3_ENABLE_1210_FULL_CLOCK_V1 "Enable exact published-full-revision paused clock commands" OFF)
@@ -10475,6 +10488,7 @@ endif()
 if(BUILD_TESTING)
   add_executable(xar_ck3_1210_full_army_snapshot_test
     src/ck3_1210_full_army_snapshot_v1_test.cpp src/ck3_1210_full_snapshot_v1.cpp
+    src/ck3_1210_ingame_ready_v1.cpp
     src/ck3_1210_core.cpp src/ck3_1210_actor_foundation_v1.cpp
     src/ck3_1210_current_event_snapshot_v1.cpp src/ck3_1210_pending_snapshot_v1.cpp
     src/ck3_1210_military_empty_v1.cpp src/ck3_1210_player_armies_v1.cpp
