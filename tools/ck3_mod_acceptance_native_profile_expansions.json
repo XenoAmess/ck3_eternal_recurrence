@@ -11185,7 +11185,7 @@
       },
       "production_TUs": {
         "xar_ck3_bridge": 268,
-        "xar_ck3_12002_runtime": 522,
+        "xar_ck3_12002_runtime": 523,
         "xar_bridge_protocol": 1
       },
       "production_source_lists": {
@@ -11981,7 +11981,8 @@
           "src/ck3_1210_event_option_control_v1.cpp",
           "src/ck3_1210_gui_control_v1.cpp",
           "src/ck3_1210_gui_request_v1.cpp",
-          "src/ck3_1210_gui_control_native_v1.cpp"
+          "src/ck3_1210_gui_control_native_v1.cpp",
+          "src/ck3_1210_actor_resource_leaf_v2.cpp"
         ],
         "xar_bridge_protocol": [
           "src/protocol.cpp"
@@ -12645,6 +12646,35 @@
             "XAR_CK3_ENABLE_1210_GUI_CONTROL_V1",
             "XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1",
             "XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1"
+          ]
+        },
+        {
+          "target": "xar_ck3_12002_runtime",
+          "native_relative": "src/ck3_1210_actor_resource_leaf_v2.cpp",
+          "present": [
+            "XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1",
+            "XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1",
+            "XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1",
+            "XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1",
+            "XAR_ENABLE_PREWAR_FORCE_COALITION_V2=1"
+          ],
+          "absent": [
+            "XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1",
+            "XAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1",
+            "XAR_CK3_ENABLE_1210_ACTOR_RESOURCE_LEAF_V2",
+            "XAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1",
+            "XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1",
+            "XAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1",
+            "XAR_CK3_ENABLE_1210_CORE_CONTROL_V1",
+            "XAR_CK3_ENABLE_1210_DATE_SENTINEL_V1",
+            "XAR_CK3_ENABLE_1210_EVENT_OPTIONS_V1",
+            "XAR_CK3_ENABLE_1210_FULL_CLOCK_V1",
+            "XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1",
+            "XAR_CK3_ENABLE_1210_GUI_CONTROL_V1",
+            "XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1",
+            "XAR_CK3_ENABLE_1210_PERSONAL_CASH_V2",
+            "XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1",
+            "XAR_CK3_ENABLE_1210_RESOURCE_OWNER_SOURCES_V3"
           ]
         }
       ],
@@ -13720,7 +13750,7 @@
           "src/ck3_1210_full_snapshot_v1.cpp"
         ]
       },
-      "scope": "Florin 1.21.0 shared financial-market acceptance profile: exact 180-to-195 flag transition, including 36 retired old opt-ins and 10 enabled Florin leaves; 791 production translation units; 19 finite standalone fixtures. Source/CMake contract only; no dirty build, old 1.20 profile, SHA replacement, finite fixture, or metadata append grants live game qualification."
+      "scope": "Florin 1.21.0 shared financial-market acceptance profile: exact 180-to-200 flag transition, including 36 retired old opt-ins and 10 enabled Florin leaves; 792 production translation units; 19 finite standalone fixtures. Source/CMake contract only; no dirty build, old 1.20 profile, SHA replacement, finite fixture, or metadata append grants live game qualification."
     }
   }
 }

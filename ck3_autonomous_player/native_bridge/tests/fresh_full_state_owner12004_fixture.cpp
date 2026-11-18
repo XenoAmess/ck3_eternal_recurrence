@@ -537,6 +537,9 @@ bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
   (void)PeekMessageW(&message, nullptr, 0, 0, PM_NOREMOVE);
   while (PeekMessageW(&message, nullptr, WM_NULL, WM_NULL, PM_REMOVE)) {}
   const auto before = api::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  // Installation clears publication/completion counters, but sequence IDs live
+  // for the process lifetime. A new ticket advances the actual allocator once.
+  const auto sequence_before = mailbox.next_sequence.load(std::memory_order_acquire);
   FreshWorkerProbe probe;
   std::thread worker([&] { FreshProbeWorker(probe, native, mailbox); });
   const auto start = GetTickCount64();
@@ -561,6 +564,7 @@ bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
   }
   const bool completed = probe.completed.load(std::memory_order_acquire) == 1;
   const auto after = api::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  const auto sequence_after = mailbox.next_sequence.load(std::memory_order_acquire);
   const auto d = completed ? probe.diagnostic : build::FreshFullSnapshotDiagnosticV1{};
   const auto detach = api::UninstallMainThreadQueryMailboxV1(mailbox, 1000);
   probe.stop.store(true, std::memory_order_release);
@@ -571,20 +575,28 @@ bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
     ok = ok && !probe.read_result && native.raw_reads.load() == 0 &&
         d.stage == build::FreshFullSnapshotStageV1::worker_guard_rejected &&
         !d.submit_result && !d.wait_result && !d.reclaim_result && d.query_sequence == 0 &&
-        after.published_sequence == before.published_sequence;
+        after.published_sequence == before.published_sequence &&
+        after.completed_sequence == before.completed_sequence && sequence_after == sequence_before &&
+        after.executor_started_requests == before.executor_started_requests &&
+        after.executed_requests == before.executed_requests;
   } else if (mode == FreshWakeMode::no_pump) {
     ok = ok && !probe.read_result && probe.output == game::Snapshot{} && native.raw_reads.load() == 0 &&
         d.stage == build::FreshFullSnapshotStageV1::wait_terminal &&
         d.wait_result == api::MainThreadQueryWaitResultV1::timeout_cancelled_before_execution &&
         d.reclaim_result == api::MainThreadQueryReclaimResultV1::reclaimed &&
         d.wake.wake_attempts >= 2 && d.elapsed_ms >= 8'000 && d.elapsed_ms < 9'000 &&
-        d.wake.pump_epoch_at_start == d.wake.pump_epoch_at_end && after.executor_started_requests == 0;
+        d.wake.pump_epoch_at_start == d.wake.pump_epoch_at_end &&
+        after.executor_started_requests == before.executor_started_requests &&
+        after.executor_started_sequence == before.executor_started_sequence &&
+        after.executed_requests == before.executed_requests;
   } else {
     ok = ok && probe.read_result && probe.output == native.frame && native.raw_reads.load() == 1 &&
         d.stage == build::FreshFullSnapshotStageV1::complete && d.fresh_available &&
         d.wait_result == api::MainThreadQueryWaitResultV1::completed &&
         d.reclaim_result == api::MainThreadQueryReclaimResultV1::reclaimed &&
-        after.executor_started_requests == 1 && after.executed_requests == 1;
+        after.executor_started_requests == before.executor_started_requests + 1 &&
+        after.executor_started_sequence == d.query_sequence &&
+        after.executed_requests == before.executed_requests + 1;
     if (mode == FreshWakeMode::recover_second_wake)
       ok = ok && null_messages >= 2 && d.wake.wake_attempts >= 2 && d.elapsed_ms < 2'000;
     else
@@ -592,7 +604,8 @@ bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
   }
   if (mode != FreshWakeMode::wrong_build)
     ok = ok && d.submit_result == api::MainThreadQuerySubmitResultV1::submitted &&
-        d.query_sequence == before.published_sequence + 1 && after.published_sequence == d.query_sequence &&
+        d.query_sequence == sequence_before + 1 && sequence_after == d.query_sequence &&
+        after.published_sequence == d.query_sequence &&
         after.completed_sequence == d.query_sequence &&
         d.wake.wake_attempts == d.wake.wake_succeeded + d.wake.wake_failed;
   std::printf("%s\n", build::SerializeFreshFullSnapshotDiagnosticV1(d).c_str());
