@@ -1,0 +1,205 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T12:34:15.835151+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0006",
+  "case": "migration-ui-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "INCOMPLETE_UI_GAPS",
+  "facts": {
+    "actual_song_fixture_qualification": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-95e45f2b77a3449b998e744cf488de9d\\profile\\logs\\debug.log",
+          "bytes": 1496500,
+          "sha256": "275f3fdf9f6ba52dc098d69b6e29e2c9c945891345f91fe16443cf41c8ba23f2"
+        }
+      ]
+    },
+    "production_toggle_decisions_and_governor_UI": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-real-decisions-view.png",
+          "bytes": 1092743,
+          "sha256": "47f246ec35559072dea7f31743aa684ea9608964247fa6f0070385a8aead31f8"
+        }
+      ]
+    },
+    "production_conversion_slider_cancel_commit_restore": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-setting-threshold-view.png",
+          "bytes": 1102377,
+          "sha256": "30cd2b895fa93ca1ceff67b1b00a137129b93167518a62542fab6333aa76270a"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-draft0-exact.png",
+          "bytes": 1011789,
+          "sha256": "d578a936347f24b5e0a6394f57946d6d11c4cbf27614eede5f12b5b72e4491d7"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-reopen0-good-view.png",
+          "bytes": 1103016,
+          "sha256": "7a7a21c066148bf688377cec7a565f1b5d81e9edf486a42f267123e62adf7cbf"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-draft1-no-hover-view.png",
+          "bytes": 1102903,
+          "sha256": "a68bd6333033766df2f34bbcb77201f7b4442f57d132bde4a009932a0e39acba"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-reopen1-held-view.png",
+          "bytes": 1005336,
+          "sha256": "127e7535d0451f9fb6465713a083a3705539ab254500515ff0d116de32a34561"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-draft49-held-view.png",
+          "bytes": 995066,
+          "sha256": "648599ce905a673f4f743336192825444711e0166c635ade1f6304bc253bab0c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-reopen49-actual-view.png",
+          "bytes": 1004712,
+          "sha256": "fb81235c8a7591ca3982efda9c316138d42bf35d770f656b737ce214eb44cf24"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-draft50-view.png",
+          "bytes": 994566,
+          "sha256": "93a9136fc5b380ab9edf8cb2a7938e38e9f3bd60ed1b3e3f5185f98041efd774"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-reopen50-actual-view.png",
+          "bytes": 1004886,
+          "sha256": "05b542ecc53abc5598da2cb9bb5dea5e2109aabf5bc875008edc145cecf21e7b"
+        }
+      ]
+    },
+    "actual_date_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-close-source.png",
+          "bytes": 1023791,
+          "sha256": "d6eebe4b50dc82a119d2b30f18486c6408dfddf8f4617900d7e70f3e35e1686f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-quit-dialog-view.png",
+          "bytes": 650806,
+          "sha256": "45cfee79aa8c2f4c4a9a2f64e89a2dbeba403d01218104ed3bde6d32f06f63e9"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-quit-desktop.png.json",
+          "bytes": 1454,
+          "sha256": "0e9469f0c3a5dc1d60e296e94e3a4d3934e46f5f79f36ef75ddc1f9da0d4cc05"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0006\\game-exit.json",
+          "bytes": 252,
+          "sha256": "b8c7b22f126c7a48922529016bc3c4156bc92b1f39048bb9fed05a91b6affe61"
+        }
+      ]
+    }
+  },
+  "observed_GUI": {
+    "slider-anchor": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-setting-threshold-view.png",
+        "bytes": 1102377,
+        "sha256": "30cd2b895fa93ca1ceff67b1b00a137129b93167518a62542fab6333aa76270a"
+      }
+    ],
+    "cancel0": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-draft0-exact.png",
+        "bytes": 1011789,
+        "sha256": "d578a936347f24b5e0a6394f57946d6d11c4cbf27614eede5f12b5b72e4491d7"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-reopen0-good-view.png",
+        "bytes": 1103016,
+        "sha256": "7a7a21c066148bf688377cec7a565f1b5d81e9edf486a42f267123e62adf7cbf"
+      }
+    ],
+    "cancel1": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-draft1-no-hover-view.png",
+        "bytes": 1102903,
+        "sha256": "a68bd6333033766df2f34bbcb77201f7b4442f57d132bde4a009932a0e39acba"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-reopen1-held-view.png",
+        "bytes": 1005336,
+        "sha256": "127e7535d0451f9fb6465713a083a3705539ab254500515ff0d116de32a34561"
+      }
+    ],
+    "cancel49": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-draft49-held-view.png",
+        "bytes": 995066,
+        "sha256": "648599ce905a673f4f743336192825444711e0166c635ade1f6304bc253bab0c"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-reopen49-actual-view.png",
+        "bytes": 1004712,
+        "sha256": "fb81235c8a7591ca3982efda9c316138d42bf35d770f656b737ce214eb44cf24"
+      }
+    ],
+    "cancel50": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-draft50-view.png",
+        "bytes": 994566,
+        "sha256": "93a9136fc5b380ab9edf8cb2a7938e38e9f3bd60ed1b3e3f5185f98041efd774"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-reopen50-actual-view.png",
+        "bytes": 1004886,
+        "sha256": "05b542ecc53abc5598da2cb9bb5dea5e2109aabf5bc875008edc145cecf21e7b"
+      }
+    ]
+  },
+  "cancel_reopened_value": 50,
+  "draft51_only": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-draft51-fresh.png",
+    "bytes": 998176,
+    "sha256": "b995deb5e42a0f757f0aea3c40d68a7aa38e1d148bb7d46b0d261db11993257e"
+  },
+  "gaps": [
+    "cancel51 not followed by a qualified reopened50",
+    "cancel99/cancel100 not executed",
+    "all seven save boundaries and restore not executed",
+    "governor candidate/score/nomination checks not executed"
+  ],
+  "actual_final_date": "1066-09-15",
+  "natural_days": 0,
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-95e45f2b77a3449b998e744cf488de9d\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-quit-dialog-view.png",
+      "bytes": 650806,
+      "sha256": "45cfee79aa8c2f4c4a9a2f64e89a2dbeba403d01218104ed3bde6d32f06f63e9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-ui-r6-quit-desktop.png.json",
+      "bytes": 1454,
+      "sha256": "0e9469f0c3a5dc1d60e296e94e3a4d3934e46f5f79f36ef75ddc1f9da0d4cc05"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0006\\game-exit.json",
+      "bytes": 252,
+      "sha256": "b8c7b22f126c7a48922529016bc3c4156bc92b1f39048bb9fed05a91b6affe61"
+    }
+  ],
+  "product_release_pass": false,
+  "operator_notes": "Several mapped input ACKs did not change the actual decision detail. Stale-source attempts were refused, and unrelated character panels were opened by attempts that assumed the slider was already present. No numeric or business credit from these ACKs. Exited normally before the original3600s timeout; no deadline extension or forced close.",
+  "retention_review_at_utc": "2026-12-18T12:27:46Z"
+}
