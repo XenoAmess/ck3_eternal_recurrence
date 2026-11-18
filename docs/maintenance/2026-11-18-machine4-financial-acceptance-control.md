@@ -165,3 +165,19 @@ Q09公共资格通过，生产DLL保持13382656bytes/SHA `8dc193488a05fdeb4f0aab
 三个问题只在组合测试集成：新盘口UI刷新未由旧AI VM声明、退市优化基线默认误取已采用当前SOURCE、旧OTC界面对比未包含新增回兑面板。修复明确UI端口、只剥离两处已审阅面板，并从原Git c610创建8份逐字节基线及provenance；原164→5写入断言和3100条冗余bar写入差异保持，未知操作仍拒绝。16:38:43.399491Z受影响24项全通过、0skip，原wait0/19.876317秒，`operations/MVN-financial-utility-fixtures01` stdout3432bytes/SHA `633821ea80e4ec20eb868cfeb6c3b18f77e4ed04e0475388ca80fd1aaa91a9ba`。这不改判前次失败或代替完整后继验证、物理SAVE及实机性能。
 
 外置回兑SAVE审计四叶随后按精确补丁采用（SHA `cd1dae508d6639d0694f5eae00194ef3827761767399a9e1980a2510a1002719`），不改共享parser/POM。原9项外置窄测的失败及后继实际结果保留于`task/redemption-save-audit-candidate01`。Root统一完整verify于16:40:25.147220Z开始、16:41:04.570428Z原wait0，39.423229秒；246项全通过、0skip，默认Quarkus打包成功。`operations/MVN-financial-utility-full02` stdout9460bytes/SHA `f5e68585752e524bf8822071359c407177807f348fb1153b8d6193284c2c1cd9`，原JUnit保全`task/software-14-financial-utility-full02`。新审计核实际reader/JSON和8份来源资源；`financialCertified=false`及真实布局未资格保持，零新增金融Game动作/日/SAVE。
+
+## 最终196包、Q11与第六场
+
+采用源码正常rebase并推送`a79244d1feb6dda1ebbcb8ba250fc9ac7132955b`；原173112477到此金融目录无diff。Q11在干净源码预冻结后同缓存实际增编，原wait0/80.6824193秒，不能称no-work。DLL13387776bytes/SHA `778c4a5c4e357ce90e238f7885467988b0290896cb32eaa27c952af1424ac190`。公共Q11原件14541bytes/SHA `e82622b505e22bae134a6a6c369ec616859860221e995fe9c6543280cef6e681`，附加10次因4个EXE字节均变化而实际重验通过，原件15592bytes/SHA `27240628136946c433f670edea555ef3c0fc051560c4e87e784c100974ac3a24`。
+
+七链首次绑定明确拒绝新Steam探针叶变化；受影响22项纯软件及精确函数strict通过后，公共七链绑定全通过，未重跑旧绿。runtime-core08公共builder实际wait0/48.68281秒并读回通过，manifest64024bytes/SHA `251d0c5e0c961506990dfbab748160b764ede7a654a3a7c6789e141d3495be37`。新196文件core05产品manifest34457bytes/SHA `2fbd0d6fb10e3d3c6844981c2e67bdc23b1ef9b90b51bc6e90515c5a5b72cade`，observer-core04的10输出及6producer逐字节相同，保原pin复用。core07输入新建独立profile并经公共prepare、prepared plan、allocate/preflight；未修改原SAVE或旧场。
+
+`R0006/a84`于16:58:58.645659Z真实核Steam离线，CK3 PID23608于16:59:21.836231Z创建。16:59:40.165006Z原OS只读检查确认主窗口最小化/非置顶/非前台（`operations/READ-os-core07` stdout632bytes/SHA `3ff8285f3d5f234c0dd984ecea179bfe833a56d6bc28a7b7f181edfded76b077`）。原Native heartbeat明确SDL hook installed=true；加载期间自然Peek/Poll和pump曾持续前进，之后出现长间隔。所读error.log金融156块均为静态变量警告，未发现其他金融错误；这不是完整业务或零总日志错误证明。
+
+17:05:40.206522Z普通Full可用，Host提交唯一`fresh-full-3-af76401c8e86`；17:05:48.227748Z真实wait_terminal拒绝，elapsed8000ms、submit0/wait4/reclaim0、sequence2、owner10000、pump19293始终、32wake全成功。对应窗口peek19296/poll12030的entered与completed均固定，active0、executor_started/executed0；owner/TLS旧ready不授新执行。该窗口支持没有新的已记录owner hook进入，不支持observer正在阻塞或读取布局失败，也不凭此证明上层Steam回调一定频繁。
+
+公共run原wait2/410.1301543秒，`operations/CORE07-run` stdout73179bytes/SHA `c7b98f76e6630bb428a592f90c68662bcefe9c8f943de8b1cc5edaf99d1c5312`；原Host wait1，Game失败exit1、Job0/treegone/cleanup_proven。合作STOP后原allocate wait0/471.7563444秒，keeper thread_exited/failure与entry_error为空；17:07:27.845784Z CAS15256→15257释放，`operations/RELEASE-core06` stdout1481bytes/SHA `761409891239b8f0a5c31beb8b904b234a2aecc4e70950c6333be9821d4b120e`。本场零金融动作、零新增日、零SAVE；`core07-query-observer-001.plan.json`从未排队。
+
+新源码命名SAVE审计入口实际重打包wait0/25.422秒（`MVN-financial-save-audit-package02`），合成物理输入经CLI02实际wait0/1.172256秒，源绑定报告`financialCertified=false`。正式云端run44350459844因共享库尚未安装而在测试前失败；独立CI分支e85748f7补安装后，44353909542在金融57main编译后于Quarkus测试生成阶段仍解析依赖失败。原日志均外置保留，根源码在R0006运行期间保持a792及原index不变；云端失败不能由本机246项改判。
+
+17:26Z第三云端44356563069实际失败日志给出仓库分歧：外层shared/financial是`C:\Users\runneradmin\.m2\repository`且真实GAV已存在，TEST解析器却是`D:\Users\runneradmin\.m2\repository`，同时step环境仍明确C盘。完整原log SHA `92786b44ba9463a178eea6256c1a0c28b0e20a077ca6b95aedf45b73c1d2fd1b`保留，后继独立修复。R0006精确SDL静态研究有18个PE片段及11个IAT，但未证明游戏实际等待位置，无新生产hook。runtime-core08的2806共同源与790 Native源逐文件散列仍一致，三份脏记录文档均不在运行索引；不为记录重编旧绿。新core08公共prepare与prepared plan通过，ALLOCATE-core08原wait2/2.219842秒以`Original lease anchor must be clean`拒绝；没有新Game、没有新场或资源占用。先正式记录再新建分配调用，不覆盖这次失败。
