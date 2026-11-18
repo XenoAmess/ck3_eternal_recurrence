@@ -1,0 +1,21 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "meaning": "Unchanged actual R0004 readonly request and Native rejection; tests pair these with independent software Full stimuli and force matching original request ID.",
+  "request": {
+    "type": "execute_step",
+    "protocol_version": 1,
+    "request_id": "fresh-full-3-1b4152dad875",
+    "step": "query-fresh-full-state-v1",
+    "expected_revision": 0
+  },
+  "ack": {
+    "type": "command_result",
+    "protocol_version": 1,
+    "request_id": "fresh-full-3-1b4152dad875",
+    "ok": false,
+    "error": "fresh_full_state_read_failed"
+  },
+  "at_request": "2026-11-18T14:38:04.338952+00:00",
+  "at_ack": "2026-11-18T14:38:12.340810+00:00",
+  "origin_summary_sha256": "b93ff34c9ba9d4110c16ac952391789c7ed13217a9ccfda2e89d6343be2ed30d"
+}

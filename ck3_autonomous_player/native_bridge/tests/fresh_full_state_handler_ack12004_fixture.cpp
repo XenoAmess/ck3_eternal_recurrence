@@ -3,6 +3,7 @@
 #include "xar_bridge/scripted_widget_control12004.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
@@ -335,20 +336,27 @@ bool ReadFreshSuccessPair(HANDLE reader, std::string_view request_id, std::uint6
   auto r3 = xar::bridge::TryReadFrame(reader);
   return r3.status == xar::bridge::ReadStatus::none;
 }
-bool ReadFreshFailureOnly(HANDLE reader, std::string_view request_id, std::string_view expected_error) {
+bool ReadFreshFailureOnly(HANDLE reader, std::string_view request_id, std::string_view expected_error,
+    const build::FreshFullSnapshotDiagnosticV1 *diagnostic = nullptr) {
   auto r1 = xar::bridge::TryReadFrame(reader);
   if (r1.status != xar::bridge::ReadStatus::frame) return false;
   std::string expected_err = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(expected_err, request_id);
   expected_err += ",\"ok\":false,\"error\":";
   AppendJsonString(expected_err, expected_error);
+  if (diagnostic != nullptr) {
+    expected_err += ",\"fresh_full_state_diagnostic\":";
+    expected_err += build::SerializeFreshFullSnapshotDiagnosticV1(*diagnostic);
+  }
   expected_err += "}";
   if (r1.payload != expected_err) return false;
+  if (diagnostic != nullptr) std::printf("%s\n", r1.payload.c_str());
   auto r2 = xar::bridge::TryReadFrame(reader);
   return r2.status == xar::bridge::ReadStatus::none;
 }
 struct FreshAckWorkerProbe {
   std::atomic<build::WorkerAdapter *> proxy{nullptr};
+  build::FreshFullSnapshotDiagnosticV1 diagnostic{};
   std::atomic<std::uint32_t> requested{0};
   std::atomic<std::uint32_t> completed{0};
   std::atomic<bool> stop{false};
@@ -376,6 +384,7 @@ void FreshAckProbeWorker(FreshAckWorkerProbe &probe, const game::GameAdapter &na
         if (proxy == nullptr) break;
         const bool result = RunFreshFullStateQuery12004(
             probe.write_handle, *proxy, state, probe.request_id, probe.payload);
+        probe.diagnostic = build::ReadLastFreshFullSnapshotDiagnosticV1();
         probe.call_result = result;
         probe.state_revision = state.state_revision;
         probe.published_checkpoint_sequence = state.published_checkpoint_sequence;
@@ -788,7 +797,7 @@ bool TestFreshHandlerAck(bool ack_write_failure_only = false) {
     ok = request(4, "req4", "{\"expected_revision\":0}");
     if (ok) {
       ok = probe.call_result == true; // Handler returns true after writing negative ACK
-      ok = ok && ReadFreshFailureOnly(pipes.read, "req4", "fresh_full_state_read_failed");
+      ok = ok && ReadFreshFailureOnly(pipes.read, "req4", "fresh_full_state_read_failed", &probe.diagnostic);
       ok = ok && native.raw_reads.load() == 3;
       ok = ok && probe.state_revision == 1;
       ok = ok && probe.previous_snapshot.has_value() && probe.previous_snapshot->played_character_gold.raw == 111;
@@ -836,7 +845,7 @@ bool TestFreshHandlerAck(bool ack_write_failure_only = false) {
       ok = request(7, "req7", "{\"expected_revision\":0}");
       if (ok) {
         ok = probe.call_result == true; // Handler returns true after writing negative ACK
-        ok = ok && ReadFreshFailureOnly(pipes.read, "req7", "fresh_full_state_read_failed");
+        ok = ok && ReadFreshFailureOnly(pipes.read, "req7", "fresh_full_state_read_failed", &probe.diagnostic);
         ok = ok && native.raw_reads.load() == 5;
         ok = ok && probe.state_revision == 2;
       }

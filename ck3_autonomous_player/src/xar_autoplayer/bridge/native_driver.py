@@ -3138,11 +3138,57 @@ class NativeHeadlessGameplayDriver:
             # Keep this original request latched on timeout, rejection or a
             # mismatched packet. A later call must never silently resubmit it.
             self._florin_fresh_full_read_pending_v1 = request_id
-        self.endpoint.send({"type": "execute_step", "protocol_version": PROTOCOL_VERSION,
-            "request_id": request_id, "step": "query-fresh-full-state-v1", "expected_revision": 0})
+        request: dict[str, object] = {"type": "execute_step", "protocol_version": PROTOCOL_VERSION,
+            "request_id": request_id, "step": "query-fresh-full-state-v1", "expected_revision": 0}
+        self.endpoint.send(request)
         ack = self.state.wait_for_command_result(request_id, self.command_timeout_seconds)
         if ack is None:
             raise BridgeUnavailableError("original fresh Full command_result timed out; no automatic replay")
+        def valid_fresh_diagnostic(value: object) -> bool:
+            if not isinstance(value, dict) or set(value) != {"schema", "stage", "submit_result", "wait_result",
+                    "reclaim_result", "wait_running_timeouts", "query_sequence", "elapsed_ms", "owner_thread_id",
+                    "pump_epoch_at_start", "pump_epoch_at_end", "wake_attempts", "wake_succeeded", "wake_failed",
+                    "last_wake_error", "fresh_available", "queued_wake_interval_ms"}:
+                return False
+            if (value["schema"] != "xar.native.fresh-full-state-diagnostic/v1"
+                    or value["stage"] not in ("not_started", "worker_guard_rejected", "submit_rejected", "wait_terminal",
+                        "reclaim_rejected", "raw_read_unavailable", "complete", "exception")
+                    or type(value["fresh_available"]) is not bool
+                    or type(value["queued_wake_interval_ms"]) is not int or value["queued_wake_interval_ms"] != 250):
+                return False
+            for key, maximum in (("submit_result", 7), ("wait_result", 6), ("reclaim_result", 2)):
+                item = value[key]
+                if item is not None and (type(item) is not int or not 0 <= item <= maximum):
+                    return False
+            for key in ("owner_thread_id", "wait_running_timeouts", "wake_attempts", "wake_succeeded", "wake_failed", "last_wake_error"):
+                item = value[key]
+                if type(item) is not int or not 0 <= item < 2**32:
+                    return False
+            for key in ("query_sequence", "elapsed_ms", "pump_epoch_at_start", "pump_epoch_at_end"):
+                item = value[key]
+                if (not isinstance(item, str) or not item.isascii() or not item.isdecimal()
+                        or len(item) > 20 or len(item) > 1 and item.startswith("0") or int(item) >= 2**64):
+                    return False
+            return True
+
+        native_error = ack.get("error")
+        diagnostic_key = "fresh_full_state_diagnostic"
+        rejection_keys = {"type", "protocol_version", "request_id", "ok", "error"}
+        if diagnostic_key in ack:
+            rejection_keys.add(diagnostic_key)
+        if (set(ack) == rejection_keys
+                and ack.get("type") == "command_result" and type(ack.get("protocol_version")) is int
+                and ack.get("protocol_version") == PROTOCOL_VERSION and ack.get("request_id") == request_id
+                and ack.get("ok") is False and isinstance(native_error, str) and native_error
+                and (diagnostic_key not in ack or native_error == "fresh_full_state_read_failed"
+                    and valid_fresh_diagnostic(ack[diagnostic_key]))):
+            rejection_receipt: dict[str, object] = {"schema": "xar.native.fresh-full-state-read-rejection/v1",
+                "request_id": request_id, "step": "query-fresh-full-state-v1"}
+            if diagnostic_key in ack:
+                rejection_receipt[diagnostic_key] = ack[diagnostic_key]
+            raise _NativeCommandRejectedError(native_error, native_request_id=request_id,
+                native_request_frame=request, native_command_result_frame=ack,
+                native_raw_return_receipt=rejection_receipt)
         if (set(ack) != {"type", "protocol_version", "request_id", "ok", "result"}
                 or ack.get("type") != "command_result" or type(ack.get("protocol_version")) is not int
                 or ack.get("protocol_version") != PROTOCOL_VERSION or ack.get("request_id") != request_id

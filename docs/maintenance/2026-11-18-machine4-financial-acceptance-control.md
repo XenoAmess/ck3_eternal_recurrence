@@ -117,3 +117,11 @@ Saved Florin 最小修复识别实际精确 HELLO，在原总启动期限内等�
 Root采用后实际capability3项通过、0skip/5.497878秒，六个实际源码前后pins相同。新增工具使用Q05既有Full TU及flags资格，金融七case增加明确依赖，其他产品不变。原件`operations/CHECK-fresh-capability03/ORIGINAL-WAIT.actual.json`。
 
 同时采用有界AI关注队列、合法私人本金认购与及时上市；实现/限制见产品AI合同。共享save-core受限流式扩展原10项回归通过，原wait0/15.132198秒；金融完整verify原wait0/34.793263秒，160项/0skip，56main/20test编译，默认Quarkus打包成功。金融stdout7333bytes/SHA`0cb47409fa8968fca347152e2bb13bf8c7ef22d7b2f42bf7e2decd1cffc2275f`。SAVE两项JUnit仅复用52个合成断言，尚无真实1.21金融SAVE与冷载资格。
+
+## 第四场强制读取排队失败
+
+`R0004/a82` 使用干净提交`9ed87ee8189d0090a5aeddf722144245f0ba5f17`、runtime-core06及160文件core03产品。14:32:19Z Steam实际离线；原CK3 PID11844于14:32:41.756046Z创建，窗口实际最小化、非置顶、非前台。14:38:04.329457Z普通Full可用后，Host立即提交唯一只读请求`fresh-full-3-1b4152dad875`；14:38:12.340810Z Native明确返回`fresh_full_state_read_failed`。这8.001858秒内owner pump维持18968，新sequence2未增加executor_started_requests；已定位到未开始执行，主线程为何没有服务仍未查明。不能声称是数据读取或身份布局失败，也不能把重复唤醒方案当成已实机解决。
+
+公共run原wait2/352.956069秒，Host原wait1。受管场实际CK3失败exit1、Job0、tree gone、cleanup proven；keeper合作停止后原allocate wait0/492.094142秒、thread_exited且无failure。14:40:10.198852Z CAS `15230→15231`释放，resources为空。原请求、ACK和有界wire窗口保存在`C:/workspace/ck3-market-task-20261118/R0004-fresh-read-failure01`；原run及释放分别保存在scene的`operations/CORE04-run`和`operations/RELEASE-core04`。释放stdout1403bytes/SHA`da750c91398995111cc95d141409629411b20f571dcecd6861bfa147dcb59c5c`。本场没有金融动作、新游戏日或SAVE。
+
+后继SDK保留匹配的明确拒绝、原请求ID及原始包，严格支持失败专用可选诊断；成功关联和失败后禁止自动重发不变。Root采用后的7项测试实际通过，包含19个畸形子例及未修改的R0004请求/ACK。原进程wait0/5.676004秒，`operations/CHECK-fresh-rejection-root01/ORIGINAL-WAIT.actual.json`，stderr1587bytes/SHA`4a34d572600859cf948a3ee5b2af7e5dd6622f0c53c1374cbb3c8c813b135248`。诊断合同刺激仍属软件数据，实际Native producer与下一场结果另记。

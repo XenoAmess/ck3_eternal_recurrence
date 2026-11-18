@@ -51,6 +51,7 @@ function(xar_add_fresh_full_state12004_tests source_root fixture_root)
     add_library(xar_fresh_core12004 OBJECT
       "${source_root}/src/game_adapter_capabilities.cpp"
       "${source_root}/src/ck3_12004_abi_profile.cpp"
+      "${source_root}/src/ck3_1210_thread_runtime.cpp"
     )
     target_include_directories(xar_fresh_core12004 PRIVATE
       "${source_root}/include"
@@ -157,6 +158,15 @@ function(xar_add_fresh_full_state12004_tests source_root fixture_root)
     target_link_libraries(xar_ck3_fresh_full_state_owner12004_test PRIVATE kernel32 user32)
     add_test(NAME xar_ck3_fresh_full_state_owner12004 COMMAND xar_ck3_fresh_full_state_owner12004_test)
     set_tests_properties(xar_ck3_fresh_full_state_owner12004 PROPERTIES TIMEOUT 10)
+    add_test(NAME xar_ck3_fresh_full_state_queued_cancel12004
+      COMMAND xar_ck3_fresh_full_state_owner12004_test --no-pump-12004)
+    add_test(NAME xar_ck3_fresh_full_state_queued_cancel1210
+      COMMAND xar_ck3_fresh_full_state_owner12004_test --no-pump-1210)
+    add_test(NAME xar_ck3_fresh_full_state_running_context1210
+      COMMAND xar_ck3_fresh_full_state_owner12004_test --running-context-1210)
+    set_tests_properties(xar_ck3_fresh_full_state_queued_cancel12004
+      xar_ck3_fresh_full_state_queued_cancel1210 xar_ck3_fresh_full_state_running_context1210
+      PROPERTIES TIMEOUT 12)
 
     # 2. Publication Test
     add_executable(xar_ck3_fresh_full_state_publication12004_test

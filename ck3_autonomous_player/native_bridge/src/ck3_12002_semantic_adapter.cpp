@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
@@ -14,6 +15,30 @@
 
 namespace xar::ck3_12002 {
 namespace {
+thread_local FreshFullSnapshotDiagnosticV1 g_fresh_full_diagnostic_v1{};
+struct FreshDiagnosticTimerV1 {
+  std::uint64_t started = GetTickCount64();
+  ~FreshDiagnosticTimerV1() noexcept {
+    g_fresh_full_diagnostic_v1.elapsed_ms = GetTickCount64() - started;
+  }
+};
+std::string_view FreshStageNameV1(FreshFullSnapshotStageV1 stage) noexcept {
+  switch (stage) {
+  case FreshFullSnapshotStageV1::not_started: return "not_started";
+  case FreshFullSnapshotStageV1::worker_guard_rejected: return "worker_guard_rejected";
+  case FreshFullSnapshotStageV1::submit_rejected: return "submit_rejected";
+  case FreshFullSnapshotStageV1::wait_terminal: return "wait_terminal";
+  case FreshFullSnapshotStageV1::reclaim_rejected: return "reclaim_rejected";
+  case FreshFullSnapshotStageV1::raw_read_unavailable: return "raw_read_unavailable";
+  case FreshFullSnapshotStageV1::complete: return "complete";
+  case FreshFullSnapshotStageV1::exception: return "exception";
+  }
+  return "exception";
+}
+template <class Enum>
+std::string OptionalFreshEnumV1(const std::optional<Enum> &value) {
+  return value ? std::to_string(static_cast<std::uint32_t>(*value)) : "null";
+}
 bool ReadOwnerSnapshotForPublication(
     const game::GameAdapter &native, game::Snapshot &output) noexcept {
 #if defined(_MSC_VER)
@@ -161,12 +186,43 @@ SnapshotObserverDiagnostics12002 WorkerAdapter::snapshot_observer_diagnostics() 
   return result;
 }
 
+FreshFullSnapshotDiagnosticV1 ReadLastFreshFullSnapshotDiagnosticV1() noexcept {
+  return g_fresh_full_diagnostic_v1;
+}
+
+std::string SerializeFreshFullSnapshotDiagnosticV1(
+    const FreshFullSnapshotDiagnosticV1 &d) {
+  std::string result = "{\"schema\":\"xar.native.fresh-full-state-diagnostic/v1\",\"stage\":\"";
+  result += FreshStageNameV1(d.stage);
+  result += "\",\"submit_result\":" + OptionalFreshEnumV1(d.submit_result);
+  result += ",\"wait_result\":" + OptionalFreshEnumV1(d.wait_result);
+  result += ",\"reclaim_result\":" + OptionalFreshEnumV1(d.reclaim_result);
+  result += ",\"wait_running_timeouts\":" + std::to_string(d.wait_running_timeouts);
+  result += ",\"query_sequence\":\"" + std::to_string(d.query_sequence) + "\"";
+  result += ",\"elapsed_ms\":\"" + std::to_string(d.elapsed_ms) + "\"";
+  result += ",\"owner_thread_id\":" + std::to_string(d.wake.owner_thread_id);
+  result += ",\"pump_epoch_at_start\":\"" + std::to_string(d.wake.pump_epoch_at_start) + "\"";
+  result += ",\"pump_epoch_at_end\":\"" + std::to_string(d.wake.pump_epoch_at_end) + "\"";
+  result += ",\"wake_attempts\":" + std::to_string(d.wake.wake_attempts);
+  result += ",\"wake_succeeded\":" + std::to_string(d.wake.wake_succeeded);
+  result += ",\"wake_failed\":" + std::to_string(d.wake.wake_failed);
+  result += ",\"last_wake_error\":" + std::to_string(d.wake.last_wake_error);
+  result += d.fresh_available ? ",\"fresh_available\":true" : ",\"fresh_available\":false";
+  result += ",\"queued_wake_interval_ms\":250}";
+  return result;
+}
+
 bool WorkerAdapter::read_fresh_snapshot(game::Snapshot &output) const noexcept {
   output = {};
+  g_fresh_full_diagnostic_v1 = {};
+  auto &diagnostic = g_fresh_full_diagnostic_v1;
+  FreshDiagnosticTimerV1 timer{};
   if (native_ == nullptr || mailbox_ == nullptr ||
       GetCurrentThreadId() != worker_thread_id_ || !native_->enabled() ||
-      !SupportsFreshFullOwner(*native_) ||
-      !native_->supports_snapshot()) return false;
+      !SupportsFreshFullOwner(*native_) || !native_->supports_snapshot()) {
+    diagnostic.stage = FreshFullSnapshotStageV1::worker_guard_rejected;
+    return false;
+  }
   try {
     SemanticRequest request{};
     request.operation = SemanticOperation::fresh_full_snapshot;
@@ -175,23 +231,50 @@ bool WorkerAdapter::read_fresh_snapshot(game::Snapshot &output) const noexcept {
     request.envelope.typed_context = &request;
     const auto submit = ck3_11906::TrySubmitMainThreadQueryV1(
         *mailbox_, &ExecuteSemanticAdapter12002,
-        &request.envelope, request.envelope.ticket);
-    if (submit != ck3_11906::MainThreadQuerySubmitResultV1::submitted) return false;
+        &request.envelope, request.envelope.ticket, &diagnostic.wake);
+    diagnostic.submit_result = submit;
+    diagnostic.query_sequence = request.envelope.ticket.sequence;
+    if (submit != ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+      diagnostic.stage = FreshFullSnapshotStageV1::submit_rejected;
+      return false;
+    }
+    // Repost only the existing inert wake for this ticket and original owner.
+    // This preserves the single submit and original eight-second queued limit.
     auto wait = ck3_11906::WaitForMainThreadQueryV1(
-        *mailbox_, request.envelope.ticket, 8'000);
-    // A running owner still holds this stack context. Wait until terminal;
-    // queued timeouts are cancelled by the existing mailbox API.
-    while (wait == ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+        *mailbox_, request.envelope.ticket, 8'000, &diagnostic.wake, 250);
+    // Once executing, the owner still holds the stack context. Never leave it
+    // behind, resubmit it, or renew a cancelled queued request's deadline.
+    while (wait == ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running) {
+      if (diagnostic.wait_running_timeouts != std::numeric_limits<std::uint32_t>::max())
+        ++diagnostic.wait_running_timeouts;
       wait = ck3_11906::WaitForMainThreadQueryV1(
           *mailbox_, request.envelope.ticket, 2'000);
+    }
+    diagnostic.wait_result = wait;
+    diagnostic.wake.pump_epoch_at_end = mailbox_->pump_epochs.load(std::memory_order_acquire);
     const auto reclaim = ck3_11906::ReclaimMainThreadQueryV1(
         *mailbox_, request.envelope.ticket);
-    if (wait != ck3_11906::MainThreadQueryWaitResultV1::completed ||
-        reclaim != ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
-        !request.fresh_available) return false;
+    diagnostic.reclaim_result = reclaim;
+    diagnostic.fresh_available = request.fresh_available;
+    if (reclaim != ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+      diagnostic.stage = FreshFullSnapshotStageV1::reclaim_rejected;
+      return false;
+    }
+    if (wait != ck3_11906::MainThreadQueryWaitResultV1::completed) {
+      diagnostic.stage = FreshFullSnapshotStageV1::wait_terminal;
+      return false;
+    }
+    if (!request.fresh_available) {
+      diagnostic.stage = FreshFullSnapshotStageV1::raw_read_unavailable;
+      return false;
+    }
     output = std::move(request.fresh_snapshot);
+    diagnostic.stage = FreshFullSnapshotStageV1::complete;
     return true;
-  } catch (...) { return false; }
+  } catch (...) {
+    diagnostic.stage = FreshFullSnapshotStageV1::exception;
+    return false;
+  }
 }
 
 bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
@@ -440,8 +523,13 @@ bool ObserveAdapterSnapshot12002(void *opaque,
 bool ReadFreshFullSnapshot12002(const game::GameAdapter &adapter,
     game::Snapshot &output) noexcept {
   output = {};
+  g_fresh_full_diagnostic_v1 = {};
   const auto *worker = dynamic_cast<const WorkerAdapter *>(&adapter);
-  return worker != nullptr && worker->read_fresh_snapshot(output);
+  if (worker == nullptr) {
+    g_fresh_full_diagnostic_v1.stage = FreshFullSnapshotStageV1::worker_guard_rejected;
+    return false;
+  }
+  return worker->read_fresh_snapshot(output);
 }
 
 const game::GameAdapter &NativeAdapter12002(const game::GameAdapter &adapter) noexcept {

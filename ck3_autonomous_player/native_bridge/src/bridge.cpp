@@ -185,6 +185,7 @@
 #endif
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 #include "xar_bridge/ck3_12002_nonwar_router.hpp"
@@ -15336,8 +15337,15 @@ bool RunFreshFullStateQuery12004(HANDLE pipe,
       !game.supports_snapshot() || !game.supports(capability))
     return fail("fresh_full_state_unavailable");
   xar::game::Snapshot observed{};
-  if (!xar::ck3_12002::ReadFreshFullSnapshot12002(game, observed))
-    return fail("fresh_full_state_read_failed");
+  if (!xar::ck3_12002::ReadFreshFullSnapshot12002(game, observed)) {
+    auto response = CommandResultFrame(request_id, step, false, "fresh_full_state_read_failed");
+    response.pop_back();
+    response += ",\"fresh_full_state_diagnostic\":";
+    response += xar::ck3_12002::SerializeFreshFullSnapshotDiagnosticV1(
+        xar::ck3_12002::ReadLastFreshFullSnapshotDiagnosticV1());
+    response += '}';
+    return xar::bridge::WriteFrame(pipe, response);
+  }
   SnapshotPublishDiagnostics diagnostic{};
   if (!PublishSnapshot(pipe, game, state.previous_snapshot, state.state_revision,
           state.checkpoint_submission, state.published_checkpoint_sequence,

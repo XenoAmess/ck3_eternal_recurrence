@@ -3,6 +3,9 @@
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_1210_thread_runtime.hpp"
+#include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
 
 #include <array>
 #include <atomic>
@@ -81,6 +84,9 @@ public:
   bool family_available = true;
   bool patch3 = false;
   bool patch4 = false;
+  bool florin = false;
+  bool wrong_build = false;
+  mutable std::atomic<DWORD> read_delay_ms{0};
 
   FixtureAdapter() {
     frame.date_raw = 123456;
@@ -103,6 +109,18 @@ public:
   }
 
   const game::AdapterDescriptor &descriptor() const noexcept override {
+    static constexpr std::array<std::string_view, 2> florin_capabilities{
+      "game.state.snapshot", "game.query.fresh-full-state.v1"};
+    static const game::AdapterDescriptor florin_value{
+      xar::ck3_1210::kAdapterId, xar::ck3_1210::kGameVersion,
+      xar::ck3_1210::kExecutableSha256, "offline-fresh-fixture",
+      std::span<const std::string_view>{florin_capabilities}};
+    static const game::AdapterDescriptor wrong_value{
+      xar::ck3_1210::kAdapterId, xar::ck3_1210::kGameVersion,
+      xar::ck3_12004::kExecutableSha256, "offline-wrong-build-fixture",
+      std::span<const std::string_view>{florin_capabilities}};
+    if (wrong_build) return wrong_value;
+    if (florin) return florin_value;
     static constexpr std::array<std::string_view, 1> capabilities{
       "game.state.snapshot"};
     static const game::AdapterDescriptor value{
@@ -123,6 +141,8 @@ public:
       output = {};
       return false;
     }
+    const auto delay = read_delay_ms.load(std::memory_order_acquire);
+    if (delay != 0) Sleep(delay);
     output = reader_available ? frame : game::Snapshot{};
     return reader_available;
   }
@@ -293,6 +313,7 @@ struct FreshWorkerProbe {
   std::atomic<bool> failed{false};
   bool read_result = false;
   game::Snapshot output{};
+  build::FreshFullSnapshotDiagnosticV1 diagnostic{};
 };
 void FreshProbeWorker(FreshWorkerProbe &probe, const game::GameAdapter &native,
     api::MainThreadQueryMailboxV1 &mailbox) noexcept;
@@ -314,6 +335,7 @@ void FreshProbeWorker(FreshWorkerProbe &probe, const game::GameAdapter &native, 
     if (req != comp) {
       probe.output = {};
       probe.read_result = build::ReadFreshFullSnapshot12002(*adapter, probe.output);
+      probe.diagnostic = build::ReadLastFreshFullSnapshotDiagnosticV1();
       probe.completed.store(req, std::memory_order_release);
     } else {
       Sleep(1);
@@ -324,8 +346,9 @@ void FreshProbeWorker(FreshWorkerProbe &probe, const game::GameAdapter &native, 
   delete adapter;
 }
 
-bool TestFreshOwnerExecutor() {
+bool TestFreshOwnerExecutor(bool florin = false) {
   FixtureAdapter native;
+  native.florin = florin;
   native.patch4 = true;
   native.frame.paused = true;
   MemoryFixture memory;
@@ -339,8 +362,12 @@ bool TestFreshOwnerExecutor() {
   api::MainThreadQueryMailboxV1 mailbox;
   std::array<api::MainThreadQueryExecutorV1, 14> executors{};
   executors[13] = &build::ExecuteSemanticAdapter12002;
-  auto environment = xar::ck3_12004::BindThreadRuntimeImage(
-      0x140000000ULL, native.descriptor().executable_sha256, executors);
+  auto environment = florin
+      ? xar::ck3_1210::BindThreadRuntimeImage(0x140000000ULL,
+          native.descriptor().executable_sha256,
+          std::span<const api::MainThreadQueryExecutorV1>{executors.data() + 13, 1})
+      : xar::ck3_12004::BindThreadRuntimeImage(
+          0x140000000ULL, native.descriptor().executable_sha256, executors);
   environment.offline_fixture = true;
   environment.peek_message_iat_slot_override = &memory.iat;
   environment.resolved_peek_message_override = &FakePeek;
@@ -370,7 +397,8 @@ bool TestFreshOwnerExecutor() {
   }
   const auto pump = [&] {
     (void)api::ObserveMainThreadPumpAndDrainV1(mailbox,
-        xar::ck3_12004::kSdlWindowsPumpFirstPeekReturnRva, GetCurrentThreadId());
+        florin ? xar::ck3_1210::kSdlWindowsPumpFirstPeekReturnRva
+               : xar::ck3_12004::kSdlWindowsPumpFirstPeekReturnRva, GetCurrentThreadId());
   };
   const auto cleanup = [&] {
     // Detach cancels an actual queued ticket before its stack context can end.
@@ -452,5 +480,127 @@ bool TestFreshOwnerExecutor() {
   return ok;
 }
 
+enum class FreshWakeMode { recover_second_wake, no_pump, running_context, wrong_build };
+
+bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
+  FixtureAdapter native;
+  native.florin = florin;
+  native.frame.paused = true;
+  if (mode == FreshWakeMode::running_context) native.read_delay_ms.store(8'300);
+  MemoryFixture memory;
+  g_memory = &memory;
+  memory.iat = reinterpret_cast<void *>(&FakePeek);
+  memory.jomini_slot = reinterpret_cast<std::uintptr_t>(memory.jomini.data());
+  memory.state_slot = reinterpret_cast<std::uintptr_t>(memory.state.data());
+  Store(memory.tls, 0x20, std::uint8_t{1});
+  Store(memory.jomini, 0x20, std::uint8_t{1});
+  Store(memory.state, 0x08, native.frame.date_raw);
+  api::MainThreadQueryMailboxV1 mailbox;
+  const std::array<api::MainThreadQueryExecutorV1, 1> executors{
+      &build::ExecuteSemanticAdapter12002};
+  auto environment = florin
+      ? xar::ck3_1210::BindThreadRuntimeImage(0x140000000ULL,
+          native.descriptor().executable_sha256, executors)
+      : xar::ck3_12004::BindThreadRuntimeImage(0x140000000ULL,
+          native.descriptor().executable_sha256, executors);
+  environment.offline_fixture = true;
+  environment.peek_message_iat_slot_override = &memory.iat;
+  environment.resolved_peek_message_override = &FakePeek;
+  environment.global_rng_wrapper_slot_override = reinterpret_cast<std::uintptr_t>(&memory.null_rng_slot);
+  environment.jomini_state_slot_override = reinterpret_cast<std::uintptr_t>(&memory.jomini_slot);
+  environment.game_state_slot_override = reinterpret_cast<std::uintptr_t>(&memory.state_slot);
+  environment.tls_initialized_flag_override = reinterpret_cast<std::uintptr_t>(&memory.tls_initialized);
+  environment.tls_context_getter_override = &FakeTls;
+  environment.memory_protection_context = &memory;
+  environment.memory_query_override = &FakeQuery;
+  environment.memory_protect_override = &FakeProtect;
+  environment.system_page_size_override = 4096;
+  if (!api::InstallMainThreadQueryMailboxV1(mailbox, environment)) return false;
+  const auto pump = [&] {
+    (void)api::ObserveMainThreadPumpAndDrainV1(mailbox,
+        florin ? xar::ck3_1210::kSdlWindowsPumpFirstPeekReturnRva
+               : xar::ck3_12004::kSdlWindowsPumpFirstPeekReturnRva, GetCurrentThreadId());
+  };
+  for (int index = 0; index < 4; ++index) pump();
+  MSG message{};
+  (void)PeekMessageW(&message, nullptr, 0, 0, PM_NOREMOVE);
+  while (PeekMessageW(&message, nullptr, WM_NULL, WM_NULL, PM_REMOVE)) {}
+  const auto before = api::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  FreshWorkerProbe probe;
+  std::thread worker([&] { FreshProbeWorker(probe, native, mailbox); });
+  const auto start = GetTickCount64();
+  while (probe.proxy.load(std::memory_order_acquire) == nullptr &&
+         !probe.failed.load(std::memory_order_acquire) && GetTickCount64() - start < 1000) Sleep(1);
+  if (mode == FreshWakeMode::wrong_build) native.wrong_build = true;
+  probe.requested.store(1, std::memory_order_release);
+  std::uint32_t null_messages = 0;
+  bool drained = false;
+  while (probe.completed.load(std::memory_order_acquire) != 1 &&
+         GetTickCount64() - start < 9'500) {
+    while (PeekMessageW(&message, nullptr, WM_NULL, WM_NULL, PM_REMOVE)) {
+      ++null_messages;
+      const bool should_drain = mode == FreshWakeMode::running_context ||
+          (mode == FreshWakeMode::recover_second_wake && null_messages >= 2);
+      if (should_drain && !drained) {
+        drained = true;
+        pump();
+      }
+    }
+    Sleep(1);
+  }
+  const bool completed = probe.completed.load(std::memory_order_acquire) == 1;
+  const auto after = api::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  const auto d = completed ? probe.diagnostic : build::FreshFullSnapshotDiagnosticV1{};
+  const auto detach = api::UninstallMainThreadQueryMailboxV1(mailbox, 1000);
+  probe.stop.store(true, std::memory_order_release);
+  worker.join();
+  bool ok = completed && !probe.failed.load() && before.ready &&
+      detach == api::MainThreadQueryUninstallResultV1::uninstalled && native.wrong_owner.load() == 0;
+  if (mode == FreshWakeMode::wrong_build) {
+    ok = ok && !probe.read_result && native.raw_reads.load() == 0 &&
+        d.stage == build::FreshFullSnapshotStageV1::worker_guard_rejected &&
+        !d.submit_result && !d.wait_result && !d.reclaim_result && d.query_sequence == 0 &&
+        after.published_sequence == before.published_sequence;
+  } else if (mode == FreshWakeMode::no_pump) {
+    ok = ok && !probe.read_result && probe.output == game::Snapshot{} && native.raw_reads.load() == 0 &&
+        d.stage == build::FreshFullSnapshotStageV1::wait_terminal &&
+        d.wait_result == api::MainThreadQueryWaitResultV1::timeout_cancelled_before_execution &&
+        d.reclaim_result == api::MainThreadQueryReclaimResultV1::reclaimed &&
+        d.wake.wake_attempts >= 2 && d.elapsed_ms >= 8'000 && d.elapsed_ms < 9'000 &&
+        d.wake.pump_epoch_at_start == d.wake.pump_epoch_at_end && after.executor_started_requests == 0;
+  } else {
+    ok = ok && probe.read_result && probe.output == native.frame && native.raw_reads.load() == 1 &&
+        d.stage == build::FreshFullSnapshotStageV1::complete && d.fresh_available &&
+        d.wait_result == api::MainThreadQueryWaitResultV1::completed &&
+        d.reclaim_result == api::MainThreadQueryReclaimResultV1::reclaimed &&
+        after.executor_started_requests == 1 && after.executed_requests == 1;
+    if (mode == FreshWakeMode::recover_second_wake)
+      ok = ok && null_messages >= 2 && d.wake.wake_attempts >= 2 && d.elapsed_ms < 2'000;
+    else
+      ok = ok && d.wait_running_timeouts >= 1 && d.elapsed_ms >= 8'300;
+  }
+  if (mode != FreshWakeMode::wrong_build)
+    ok = ok && d.submit_result == api::MainThreadQuerySubmitResultV1::submitted &&
+        d.query_sequence == before.published_sequence + 1 && after.published_sequence == d.query_sequence &&
+        after.completed_sequence == d.query_sequence &&
+        d.wake.wake_attempts == d.wake.wake_succeeded + d.wake.wake_failed;
+  std::printf("%s\n", build::SerializeFreshFullSnapshotDiagnosticV1(d).c_str());
+  if (!ok) std::fprintf(stderr, "fresh wake fixture mode=%d florin=%d messages=%u failed\n",
+      static_cast<int>(mode), florin ? 1 : 0, null_messages);
+  return ok;
+}
+
 } // namespace
-int main() { return TestFreshOwnerExecutor() ? 0 : 1; }
+
+int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--no-pump-12004")
+    return TestFreshOwnerWake(false, FreshWakeMode::no_pump) ? 0 : 1;
+  if (argc == 2 && std::string_view(argv[1]) == "--no-pump-1210")
+    return TestFreshOwnerWake(true, FreshWakeMode::no_pump) ? 0 : 1;
+  if (argc == 2 && std::string_view(argv[1]) == "--running-context-1210")
+    return TestFreshOwnerWake(true, FreshWakeMode::running_context) ? 0 : 1;
+  return argc == 1 && TestFreshOwnerExecutor() && TestFreshOwnerExecutor(true) &&
+      TestFreshOwnerWake(false, FreshWakeMode::recover_second_wake) &&
+      TestFreshOwnerWake(true, FreshWakeMode::recover_second_wake) &&
+      TestFreshOwnerWake(true, FreshWakeMode::wrong_build) ? 0 : 1;
+}
