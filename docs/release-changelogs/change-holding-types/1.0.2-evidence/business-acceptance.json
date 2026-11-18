@@ -1,0 +1,127 @@
+{
+  "status": "PASS",
+  "process_pass": true,
+  "closure_pass": true,
+  "gui_business_pass": true,
+  "case_acceptance_pass": true,
+  "business_pass": true,
+  "product_release_pass": false,
+  "native_capability_pass": false,
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-0ecfd19e6d854014b3100f0b527be9d6\\profile\\logs\\debug.log",
+      "bytes": 1211035,
+      "sha256": "3f4c60f19719cdd34effc1430c27185a8b6d8b963544681e54c3c3b8fed01b56"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-six-names.png",
+      "bytes": 1109076,
+      "sha256": "617aea7f906200806fee26597cf76d6f978b0b2314860b41c0d998d311448f15"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-city-full-warning-and-cost-view.png",
+      "bytes": 1108574,
+      "sha256": "aeb4140e72bc0edff0919e423b681ce14778b5668d7fa1b956fe7287c7b26232"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-r2-localization-diagnostics.json",
+      "bytes": 2178,
+      "sha256": "f1e31f5914dc51e7d21f571050bd4748e036477dd7873ace28ea0e50265d632c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-baseline-recorded.png.json",
+      "bytes": 1450,
+      "sha256": "49db334c811342da104570b2151c28d3bec2a86db7a20d22187b4b3da273933f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-select-barony-view.png",
+      "bytes": 1050659,
+      "sha256": "8209e94adece72c35f903eb3ea0daa362626ec7d14c47399144a42c1ba4212ed"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-Rossano-selected-view.png",
+      "bytes": 1045626,
+      "sha256": "c322128610d84c46f5bd080b75f576421135cf85dfb8b1cda9f667540ee5348a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-production-city-once-view.png",
+      "bytes": 1112427,
+      "sha256": "54b8e00a681ae5e73328e0a51ae93b2d0beee324564e03a4e9ca76624935f040"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-verify-city-once.png.json",
+      "bytes": 1454,
+      "sha256": "f957a3d7d46da5d65bbf90ba3cc4cdd01b946e54ab79f9d79281ec5db580bf69"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-save-dialog-open-view.png",
+      "bytes": 693302,
+      "sha256": "b01cc8d921e9f7458c7b57e13fa6ec95339865a09977f142c43c6b49c2a3f24a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-actual-local-save-once.png.json",
+      "bytes": 1463,
+      "sha256": "a9055ff8cb489299c979775f0a39beb7b0a7c8b480d6252924112b713c2eef32"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-load-same-file-selected-view.png",
+      "bytes": 757081,
+      "sha256": "d01bdf8f95cd784d1f71d8e144c3e923ad305da16184e94ade32bbdcdf868fb3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-actual-load-same-file-once.png.json",
+      "bytes": 1478,
+      "sha256": "cc53e1e1bacb0cf03009e7a40d14a6733cab0ffbfc2b0030aeec7b5a020d4eae"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-load-progress-check.png",
+      "bytes": 1284467,
+      "sha256": "0e25cff94184518b48fdb682f4413eed0aca3147aff407238c56cb993e347791"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-reloaded-right.png",
+      "bytes": 1165695,
+      "sha256": "38162d8a35a77f4dfe64144978c2d07b760033d0026402a9ed09bd8f63cf3c97"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-verify-loaded-once.png.json",
+      "bytes": 1460,
+      "sha256": "f8efa35f4bb521c360afef70038db4d65704c5ae4b1a2442f78f9f9d7a43a301"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-r2-after-save-physical.json",
+      "bytes": 1053,
+      "sha256": "e806b21c76b4574b3d67e42b5844e7b18d47527d0fe12a474578c912c70ce493"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-r2-after-load-physical.json",
+      "bytes": 1053,
+      "sha256": "3a27a2e56c8a847b9c8c751eee00c247448bc40d1ff48375b5c89ae958634b15"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-0ecfd19e6d854014b3100f0b527be9d6\\profile\\logs\\debug.log",
+      "bytes": 1211035,
+      "sha256": "3f4c60f19719cdd34effc1430c27185a8b6d8b963544681e54c3c3b8fed01b56"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-0ecfd19e6d854014b3100f0b527be9d6\\profile\\logs\\error.log",
+      "bytes": 2419,
+      "sha256": "4c6f9d82d035483a678301d68c162e907546c26f3e9cb1d88b119368f3d90b5c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-r2-localization-diagnostics.json",
+      "bytes": 2178,
+      "sha256": "f1e31f5914dc51e7d21f571050bd4748e036477dd7873ace28ea0e50265d632c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-quit-dialog-view.png",
+      "bytes": 684339,
+      "sha256": "ed2f5f69083cbf389b49fa6af440ac81b97609d6fab0c0fabc95fe7cd7850586"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\cht-r2-quit-desktop-once.png.json",
+      "bytes": 1448,
+      "sha256": "5a41d3e2c155847b8f747fb72195cf0845faebc71f37ff865056fcaafcc58970"
+    }
+  ]
+}

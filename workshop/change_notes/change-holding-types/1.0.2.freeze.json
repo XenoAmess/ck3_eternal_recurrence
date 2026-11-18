@@ -12,9 +12,12 @@
   "encoding": "utf-8",
   "line_endings": "LF",
   "trailing_newline": false,
-  "status": "BUSINESS_VERIFIED_PENDING_PUBLICATION",
-  "published": false,
+  "status": "PUBLISHED_PUBLIC_FULLTEXT_VERIFIED",
+  "published": true,
   "release_tag": "change-holding-types-v1.0.2",
   "release_commit": "894489bef2f6636433b40d54cb030193feefc228",
-  "machine_id": "desktop-3fevhd2-1c74096080"
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "entry_id": "1794990562",
+  "public_exact_readback": true,
+  "published_at_utc": "2026-11-18T08:29:17.546291+00:00"
 }

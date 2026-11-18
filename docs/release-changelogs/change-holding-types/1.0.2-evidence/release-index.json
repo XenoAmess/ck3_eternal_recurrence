@@ -1,0 +1,87 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T08:36:48.620114+00:00",
+  "release_tag": "change-holding-types-v1.0.2",
+  "release_commit": "894489bef2f6636433b40d54cb030193feefc228",
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\releases\\cht-1.0.2\\mod_change_holding_types.manifest.json",
+    "bytes": 3404,
+    "sha256": "71a9bca3965698244f5596c5199678511bb746c162677292b8333236a6583532"
+  },
+  "zip": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\releases\\cht-1.0.2\\mod_change_holding_types.zip",
+    "bytes": 49373,
+    "sha256": "b8cb6117e6b56b06ad3a4d3a6cdc9bf33ba2a8f5ce64ce112c0d6e528d45fb25"
+  },
+  "online_orchestration_wall_seconds": 37.805997900002694,
+  "originals": {
+    "business-acceptance.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-r2-verify.json",
+      "bytes": 5290,
+      "sha256": "5fb787e0d95bfde452b81e4a8a1c14885cf08df39e87c7ae60e7e51f81497782"
+    },
+    "business-review.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--change-holding-types--R0002\\business-review.json",
+      "bytes": 9882,
+      "sha256": "2e1d1572ccfb9dd615ef024377b3847565680f610c3a042177473a1c4a92b90d"
+    },
+    "cache-acceptance.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-cache-verify.json",
+      "bytes": 1853,
+      "sha256": "de6874f9fd282ac73c3782e6ef8d4ba4f9589ea81fb5a02428115a601d4c3a04"
+    },
+    "cache-review.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--change-holding-types--R0003\\cache-review.json",
+      "bytes": 1319,
+      "sha256": "b3050e4bea9fcfd5e1d7c326942718e86adc6c79585082fb746c94f0ab7b047b"
+    },
+    "native-publish-receipt.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht102-publication\\native-publish-receipt.json",
+      "bytes": 659,
+      "sha256": "0ba9174be539992892b260abfa097d82fa8cdfaa3c3afb00c4014e9dfcc03e33"
+    },
+    "native-download.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht102-publication\\native-download.json",
+      "bytes": 1986,
+      "sha256": "6cc89420b1f67a331c26359755dbbc78b9d34de6b7064766d5e4b12652078330"
+    },
+    "public-verification.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht102-publication\\verification.json",
+      "bytes": 7318,
+      "sha256": "1a2c59a98e7f411f99a25d960e73f735fe87751bdee01a760d821003c288e261"
+    },
+    "final-offline.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-final-offline.json",
+      "bytes": 1297,
+      "sha256": "53acd66ce2bfe5ecc658629dc366be682feb0982ae1d307b73ee2d7ed4037067"
+    },
+    "offline-request.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-102-offline-request.json",
+      "bytes": 728,
+      "sha256": "c44650d60de3522d892e61fb21240a70513915b63612c190e80175abee6bd926"
+    },
+    "prepublish-freeze.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht102-publication\\prepublish-freeze.json",
+      "bytes": 1813,
+      "sha256": "fefdf5eeae4bf6f4bb8d4012253f4adc1c654adfa7f7a4e59de50b106164705b"
+    },
+    "save-physical.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-r2-after-save-physical.json",
+      "bytes": 1053,
+      "sha256": "e806b21c76b4574b3d67e42b5844e7b18d47527d0fe12a474578c912c70ce493"
+    },
+    "load-physical.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-r2-after-load-physical.json",
+      "bytes": 1053,
+      "sha256": "3a27a2e56c8a847b9c8c751eee00c247448bc40d1ff48375b5c89ae958634b15"
+    },
+    "stock-localization-diagnostics.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cht-r2-localization-diagnostics.json",
+      "bytes": 2178,
+      "sha256": "f1e31f5914dc51e7d21f571050bd4748e036477dd7873ace28ea0e50265d632c"
+    }
+  },
+  "raw_retention_review_at_utc": "2026-12-18T08:35:00Z",
+  "active_save_review_at_utc": "2026-11-25T08:35:00Z",
+  "retention": "Raw logs/screens/API and physical save remain external; physical save remains one current reproducible persistence baseline through review. Deleted historical shader caches cannot be reread; exact clean-up receipts identify availability."
+}

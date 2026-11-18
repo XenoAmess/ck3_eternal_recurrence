@@ -18,3 +18,5 @@ error.log2419B、6条原版trigger localization缺失视角：is_ai first_not来
 
 
 公共GUI实际业务已通过，真实城市决议／个人费用／保存重载与原effect矩阵分别留证。完整中英Notes已冻结，原条目上传及缓存仍待完成；详细原件为 D:/ck3-state/upgrade-20261118/cht-r2-verify.json。
+
+2026-11-18T08:35Z：地产类型转换1.0.2原条目更新、公开全文、17文件新缓存及实际加载／正常退出均已完成，Steam新后台offline=true。当前完整闭合3/17，继续其余14项。[永久发布记录](../release-changelogs/change-holding-types/1.0.2.md)。

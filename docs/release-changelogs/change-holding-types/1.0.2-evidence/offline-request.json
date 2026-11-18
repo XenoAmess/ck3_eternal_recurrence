@@ -1,0 +1,22 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T08:29:33.589612+00:00",
+  "normal_shutdown_confirmed": true,
+  "steam_pids_before": [],
+  "reason": "Immediately restore intentional offline mode after required publication/download; preferences request is not a live state proof",
+  "before_sha256": "85da2d3007c0783ff59bc2164d1ae822d3c46f5d7e6abaab5ecf87cb3664eb7f",
+  "after_sha256": "b86c0aba1317af1d2912ce579032dcc8866aa19315bd03e5ce8e80b2c845c2e9",
+  "changes": [
+    {
+      "field": "WantsOfflineMode",
+      "before": "0",
+      "after": "1"
+    },
+    {
+      "field": "SkipOfflineModeWarning",
+      "before": "1",
+      "after": "1"
+    }
+  ],
+  "offline_confirmed": false
+}

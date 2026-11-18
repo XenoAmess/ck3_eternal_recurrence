@@ -1,6 +1,6 @@
 # 地产类型转换（XenoAmess维护版）
 
-2026-11-18维护候选：**1.0.2 / CK3 1.21.0 (Florin)**，尚未发布。新版原版使用“地产→主城区→主建筑”链，校验已迁移；施工守卫改用新版原版同类地产操作的 `has_ongoing_holding_construction`。六个生产转换、选择器和个人金币费用保留。未发布的1.0.1候选在启动时发现旧施工trigger被移除，原失败与tag保留；公共GUI业务、保存重载及工坊更新待完成，见[本轮迁移](../docs/maintenance/2026-11-18-change-holding-types-1210.md)。
+2026-11-18：**1.0.2 / CK3 1.21.0 (Florin) 已公开更新**，真实六类effect／负门禁、城市决议与200金、同档保存载入、公开完整Notes、17文件严格缓存及实际加载完成，Steam已离线。原版调试提示诊断保留，其他八语仅格式检查；见[永久发布记录](../docs/release-changelogs/change-holding-types/1.0.2.md)。
 
 这是 `Change the holding types` 的独立第三方维护工作目录。上游 Workshop `3337428403` 只用于注明来源；维护版新物品为 `3812510834`；后续更新仅针对维护版。
 

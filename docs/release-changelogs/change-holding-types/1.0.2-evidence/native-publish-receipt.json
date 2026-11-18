@@ -1,0 +1,20 @@
+{
+  "app_id": 1158310,
+  "created_at": "2026-11-18T08:29:10.061286+00:00",
+  "item_id": "3812510834",
+  "legal_agreement_required": false,
+  "operation": "update",
+  "operation_id": "change-holding-types-1.0.2-20261118-desktop-3fevhd2-1c74096080",
+  "payload_sha256": "d3a8cc4fe1cea4e5b24668d28fe96884b218793d6f5dcdf1cdb91c8ac0e38c37",
+  "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+  "stage": "complete",
+  "steam_result": 1,
+  "submitted_at": "2026-11-18T08:29:17.546291+00:00",
+  "tags": [
+    "Balance",
+    "1.21 'Florin'"
+  ],
+  "tags_only": false,
+  "update_scope": "content_and_metadata",
+  "updated_at": "2026-11-18T08:29:17.546316+00:00"
+}

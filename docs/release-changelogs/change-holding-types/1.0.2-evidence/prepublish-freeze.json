@@ -1,0 +1,42 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T08:27:52.973797+00:00",
+  "payload_sha256": "d3a8cc4fe1cea4e5b24668d28fe96884b218793d6f5dcdf1cdb91c8ac0e38c37",
+  "notes": {
+    "schema": "steam-change-notes-frozen-candidate-v1",
+    "product_key": "change-holding-types",
+    "version": "1.0.2",
+    "previous_version": "1.0.0",
+    "workshop_item_id": "3812510834",
+    "text_file": "workshop/change_notes/change-holding-types/1.0.2.txt",
+    "bytes": 2146,
+    "characters": 1548,
+    "lines": 15,
+    "sha256": "23fe5397516d9e3320556ec24e3ae2617bcd835e236f88f5c34cdb01ef61d9e9",
+    "encoding": "utf-8",
+    "line_endings": "LF",
+    "trailing_newline": false,
+    "status": "BUSINESS_VERIFIED_PENDING_PUBLICATION",
+    "published": false,
+    "release_tag": "change-holding-types-v1.0.2",
+    "release_commit": "894489bef2f6636433b40d54cb030193feefc228",
+    "machine_id": "desktop-3fevhd2-1c74096080"
+  },
+  "business_verification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\cht-r2-verify.json",
+    "bytes": 5290,
+    "sha256": "5fb787e0d95bfde452b81e4a8a1c14885cf08df39e87c7ae60e7e51f81497782"
+  },
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\releases\\cht-1.0.2\\mod_change_holding_types.manifest.json",
+    "bytes": 3404,
+    "sha256": "71a9bca3965698244f5596c5199678511bb746c162677292b8333236a6583532"
+  },
+  "zip": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\releases\\cht-1.0.2\\mod_change_holding_types.zip",
+    "bytes": 49373,
+    "sha256": "b8cb6117e6b56b06ad3a4d3a6cdc9bf33ba2a8f5ce64ce112c0d6e528d45fb25"
+  },
+  "published": false,
+  "review_correction": "Caught old400 baseline in two prose sentences before any upload; corrected to actual1.21 vanilla200. Frozen Notes already200, unchanged."
+}

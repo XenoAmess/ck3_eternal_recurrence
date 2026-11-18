@@ -1,0 +1,36 @@
+{
+  "schema": "xar.steam-offline-state-probe/v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-18T08:35:41.691215Z",
+  "nonce": "9711738632afed8dccbd43f79af69342",
+  "reason": "observed",
+  "steam": {
+    "pid": 12784,
+    "birth_filetime": "134394641735908376",
+    "exe": "D:\\Program Files (x86)\\Steam\\steam.exe",
+    "file_version": "11.23.65.88"
+  },
+  "source": {
+    "path": "D:\\Program Files (x86)\\Steam\\steamui\\sp.js",
+    "bytes": 16224005,
+    "sha256": "4b818cd371388e06c66fe8c0bb592b7dfd4a6fb55eb56844d1b360b64aec3046",
+    "file_id": "281474981481883",
+    "mtime_ns": "1794423728000000000"
+  },
+  "endpoint": {
+    "pid": 19644,
+    "birth_filetime": "134394641737574033",
+    "port": 8080,
+    "target_id": "30C8DC282F3D2891D68EECCB71C16443",
+    "target_url": "https://steamloopback.host/index.html?LOCAL_HOSTNAME=DESKTOP-3FEVHD2&LANGUAGE=schinese&COUNTRY=JP&LAUNCHER_TYPE=0&CLIENT_SESSION=1794990573&PACKAGE_CL=1794536281&IN_CLIENT=true&PLATFORM=windows&ARCH=x64&SILENT_STARTUP=true"
+  },
+  "diagnostics": [
+    "native_provider_unavailable=invalid_input",
+    "checked_webhelpers=6",
+    "owned_debugger_candidates=1"
+  ],
+  "observation_method": "cef_app_getters",
+  "native_evidence": null,
+  "status": "offline",
+  "offline_mode": true
+}

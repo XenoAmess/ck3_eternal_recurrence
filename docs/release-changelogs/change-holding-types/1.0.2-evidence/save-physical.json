@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T08:20:54.513641+00:00",
+  "stage": "after-save",
+  "profile_bytes": 210619862,
+  "free_D": 22250426368,
+  "budget_bytes": 943718400,
+  "reserve_bytes": 21474836480,
+  "files": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-0ecfd19e6d854014b3100f0b527be9d6\\profile\\last_save.ck3",
+      "bytes": 12337646,
+      "sha256": "dbc2eb29cd588176e5ed1067b0c0127237ef0277ba85d095cdc293b0dd7238a0",
+      "file_id": "844424930703311",
+      "volume_serial": "882653518",
+      "modified_filetime": "134394636450322199"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-0ecfd19e6d854014b3100f0b527be9d6\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_15.ck3",
+      "bytes": 12337646,
+      "sha256": "dbc2eb29cd588176e5ed1067b0c0127237ef0277ba85d095cdc293b0dd7238a0",
+      "file_id": "1125899907413966",
+      "volume_serial": "882653518",
+      "modified_filetime": "134394636446903067"
+    }
+  ]
+}

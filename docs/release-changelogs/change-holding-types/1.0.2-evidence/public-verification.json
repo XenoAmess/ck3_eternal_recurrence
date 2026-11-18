@@ -1,0 +1,132 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T08:29:51.502806+00:00",
+  "item_id": "3812510834",
+  "entry_id": "1794990562",
+  "anonymous_full_notes_exact": true,
+  "notes": {
+    "characters": 1548,
+    "lines": 15,
+    "path": "D:\\ck3-state\\upgrade-20261118\\cht102-publication\\public-notes-exact.txt",
+    "bytes": 2146,
+    "sha256": "23fe5397516d9e3320556ec24e3ae2617bcd835e236f88f5c34cdb01ef61d9e9"
+  },
+  "raw_changelog": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\cht102-publication\\anonymous-1794990590045292500\\changelog.raw",
+    "bytes": 55267,
+    "sha256": "722bdd83810ee6b0b330c25728351d82699d40c8e31859bd68faf76349be6170"
+  },
+  "raw_metadata": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\cht102-publication\\anonymous-1794990590045292500\\metadata.raw",
+    "bytes": 4233,
+    "sha256": "98ba5693501b1aafe21f236954d63bd9c37cc8da8979bbcb37ae8c2f5055879b"
+  },
+  "owner_app_visibility_title_description_tags_exact": true,
+  "native_upload_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\cht102-publication\\native-publish-receipt.json",
+    "bytes": 659,
+    "sha256": "0ba9174be539992892b260abfa097d82fa8cdfaa3c3afb00c4014e9dfcc03e33"
+  },
+  "native_download": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\cht102-publication\\native-download.json",
+    "bytes": 1986,
+    "sha256": "6cc89420b1f67a331c26359755dbbc78b9d34de6b7064766d5e4b12652078330"
+  },
+  "cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834",
+  "file_count": 17,
+  "cache_strict_exact": true,
+  "descriptor_exception_used": false,
+  "cache_files": {
+    "descriptor.mod": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\descriptor.mod",
+      "bytes": 160,
+      "sha256": "59dbc350d4b57cbd15f6c27287feb32e249d418f11ccd4250e863e4acb38a277"
+    },
+    "thumbnail.png": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\thumbnail.png",
+      "bytes": 34744,
+      "sha256": "26ce48cd711b6a6ca65661c4511f4499da3ed72b80d1bf3b855a49e65d529071"
+    },
+    "localization/english/00_convert_holdings_l_english.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\localization\\english\\00_convert_holdings_l_english.yml",
+      "bytes": 5339,
+      "sha256": "58ce77b1023693ed2dd0c3757c37b105f079a5ec55b2ae324b8980c6b338c461"
+    },
+    "localization/french/00_convert_holdings_l_french.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\localization\\french\\00_convert_holdings_l_french.yml",
+      "bytes": 5577,
+      "sha256": "550b216ab0f55e3e4c49af63efc5d64832b89145ea14916131000c5de37b4dad"
+    },
+    "localization/german/00_convert_holdings_l_german.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\localization\\german\\00_convert_holdings_l_german.yml",
+      "bytes": 5639,
+      "sha256": "be61439a63ec9aa8790dfc39bfb463d1c57ac07606d1b69de48254d495ce0a6e"
+    },
+    "localization/japanese/00_convert_holdings_l_japanese.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\localization\\japanese\\00_convert_holdings_l_japanese.yml",
+      "bytes": 5655,
+      "sha256": "60e460938aa2e54801439af0cc95b3dabeaeecd143bb0ba02296281f6c651222"
+    },
+    "localization/korean/00_convert_holdings_l_korean.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\localization\\korean\\00_convert_holdings_l_korean.yml",
+      "bytes": 6008,
+      "sha256": "7bf7964306bfc8180392cedafb99aab1d4821fdbdfa178ca141d0762e9488e6c"
+    },
+    "localization/polish/00_convert_holdings_l_polish.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\localization\\polish\\00_convert_holdings_l_polish.yml",
+      "bytes": 5550,
+      "sha256": "d08f204d772788e7a0a07387a044a16acd00791a82d17f27d64f60e81dcd1fc5"
+    },
+    "localization/russian/00_convert_holdings_l_russian.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\localization\\russian\\00_convert_holdings_l_russian.yml",
+      "bytes": 7295,
+      "sha256": "c265ea01c4de7114458b343d68aecad9ddb2e8f5e703222abd82aa773fa5e83b"
+    },
+    "localization/simp_chinese/00_convert_holdings_l_simp_chinese.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\localization\\simp_chinese\\00_convert_holdings_l_simp_chinese.yml",
+      "bytes": 4919,
+      "sha256": "87223ea400c45e166c4f127d5b8cc34d57bea6fdddd9b089d583029d1b23ac34"
+    },
+    "localization/spanish/00_convert_holdings_l_spanish.yml": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\localization\\spanish\\00_convert_holdings_l_spanish.yml",
+      "bytes": 5576,
+      "sha256": "5f90075faa751c31901b897a579cfd1d0230d4b64df9ecde751baa73142dbd73"
+    },
+    "gui/decision_view_widgets/decision_view_widget_ch_convert_holding.gui": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\gui\\decision_view_widgets\\decision_view_widget_ch_convert_holding.gui",
+      "bytes": 2856,
+      "sha256": "b496d5997d8a1ef43feb253951673ef8668388b1c36d3056ee47dc45afbe730e"
+    },
+    "common/decisions/00_convert_holdings_decisions.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\common\\decisions\\00_convert_holdings_decisions.txt",
+      "bytes": 8147,
+      "sha256": "35f1a8bbd75cebe1a6da09c0462134f53ca8a1db06340c6c3e031d986531e0c1"
+    },
+    "common/decision_group_types/ch_decision_group_types.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\common\\decision_group_types\\ch_decision_group_types.txt",
+      "bytes": 56,
+      "sha256": "3ef2e04eb222acdd87bfcbff3cff18f9d32b547b62e83e778a9631d7494cadf0"
+    },
+    "common/scripted_effects/cht_conversion_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\common\\scripted_effects\\cht_conversion_effects.txt",
+      "bytes": 1928,
+      "sha256": "2d9b4ce2c97d5d2be26221d466c5150e0b11e416bad63c835f73fce24ce8eb15"
+    },
+    "common/scripted_triggers/00_convert_holdings_scripted_triggers.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\common\\scripted_triggers\\00_convert_holdings_scripted_triggers.txt",
+      "bytes": 1414,
+      "sha256": "24353720080694d161587db8882a4329ba860ceff6b3ad09f2379fcfa075dbfe"
+    },
+    "common/trigger_localization/00_convert_holdings_requirement_triggers.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834\\common\\trigger_localization\\00_convert_holdings_requirement_triggers.txt",
+      "bytes": 699,
+      "sha256": "505d5f52e0770ec74d1724b69830b910b15b88712e1d7b02cdb79df2156ea360"
+    }
+  },
+  "actual_engine_cache_load": "NOT_RUN",
+  "offline_restored": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\cht-102-offline-proof.json",
+    "bytes": 1331,
+    "sha256": "887b657488b036bf323be65b6871d39facedd60f404f52b02a7716511f79ceda"
+  }
+}
