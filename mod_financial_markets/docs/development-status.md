@@ -30,6 +30,8 @@ mvn -f mod_financial_markets/tools/pom.xml -Dtest=FinancialMarketTest test
 
 显式清单见[运行文件清单](../runtime-files.json)，候选工具输出content/与独立manifest.json，排除tools、docs和验收数据。外置候选与实际文件SHA保留在 C:/workspace/ck3-market-task-20261118/candidate-a0-01；这不是已发布包或实机通过凭据。
 
+源码568d763833679612bd493aad20b1a60779c856a4的候选14文件已实际构建成功。首次官方[CI 44272883501](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44272883501)在Windows checkout阶段因历史promo长路径失败，未运行任何测试；失败不改判。后继补齐与既有工作流一致的core.longpaths环境配置，重新触发官方CI，金融代码和14个runtime文件未改动。
+
 ## 实机状态
 
 本机此前已更新到 CK3 1.21.0 / build26622941，见 [本机更新记录](../../docs/maintenance/2026-11-18-machine4-ck3-update-and-market-design.md)。本轮 08:43 UTC 进程只读检查未见 CK3，未启动游戏、注入或恢复旧自动游玩。
