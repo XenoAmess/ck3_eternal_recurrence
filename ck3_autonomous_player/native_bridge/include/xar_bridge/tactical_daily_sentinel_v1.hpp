@@ -220,6 +220,15 @@ bool InitializeTacticalDailySentinelFixtureV1(
     const Bindings &bindings, TacticalSetPausedV1 set_paused,
     TacticalDailyOriginalV1 original = nullptr) noexcept;
 
+// Narrow date-only runtime: no military graph is admitted. Only terminal/a-0
+// arms are accepted. The default fixture and legacy installer retain all slots.
+bool InitializeTacticalDailySentinelDateOnlyV1(
+    const Bindings &, TacticalSetPausedV1) noexcept;
+// Owner/TLS/world safety is the versioned caller's responsibility. This never
+// reports a successful deadline: it commits failed and optionally attempts pause.
+bool AbortTacticalDailySentinelDateOnlyV1(std::uint64_t generation,
+    std::uint32_t failure_flags, bool attempt_pause) noexcept;
+
 extern "C" void __fastcall XarTacticalDailySentinelHookV1() noexcept;
 
 } // namespace xar::ck3_11906

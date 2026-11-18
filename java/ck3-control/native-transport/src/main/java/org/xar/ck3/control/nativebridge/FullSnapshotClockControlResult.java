@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.application.advance.AdvancePrimitives;
 
 /** Full-clock ACK DATA only. Even REJECTED_BEFORE_QUEUE is an actual ACK after a request write, never NoDispatch or retry authority. */
 public final class FullSnapshotClockControlResult {
@@ -39,8 +40,25 @@ public final class FullSnapshotClockControlResult {
 
     /** Packet/metadata correlation only; a caller must independently retain the actual issuer, source, session and original control claim. */
     public static Assessment decode(NativeActionPort.AckReceived original,String expectedStep)throws IOException {
-        Objects.requireNonNull(original);
         require(expectedStep!=null&&STEPS.contains(expectedStep),"one exact fixed full-clock step required");
+        return decodeCommon(original,expectedStep,false);
+    }
+    /** Negative Date ARM DATA only; success still uses the legacy sentinel result codec. */
+    public static Assessment decodeDateArmRejection(NativeActionPort.AckReceived original,String expectedStep)throws IOException {
+        dateArmSpec(expectedStep);
+        return decodeCommon(original,expectedStep,true);
+    }
+    static AdvancePrimitives.ArmSpec dateArmSpec(String step)throws IOException {
+        require(step!=null,"exact Date ARM step required");
+        try {
+            var arm=AdvancePrimitives.armSpec(step);
+            require(step.equals("research-arm-tactical-daily-sentinel-v1-"+arm.startingDateRaw()+"-to-"+arm.targetDateRaw()
+                    +"-speed-"+arm.speed()+"-mode-terminal-a-0"),"exact terminal-a-0 Date ARM step required");
+            return arm;
+        }catch(IllegalArgumentException invalid){throw new IOException("invalid Date ARM step",invalid);}
+    }
+    static NativeWire.CommandResult correlatedAck(NativeActionPort.AckReceived original,String expectedStep)throws IOException {
+        Objects.requireNonNull(original);
         try {
             var outbound=original.outbound().orElseThrow(()->new IOException("full-clock original outbound missing"));
             var custody=original.custody().orElseThrow(()->new IOException("full-clock original request chronology missing"));
@@ -57,16 +75,23 @@ public final class FullSnapshotClockControlResult {
             require(result.result().presence()==NativeWire.Presence.VALUE&&original.originalResultToken().isPresent()
                     &&Arrays.equals(result.result().token().orElseThrow().value(),original.originalResultToken().orElseThrow().bytes()),
                     "full-clock retained result token differs from its original packet");
+            return result;
+        }catch(IllegalArgumentException invalid){throw new IOException("original ACK correlation is invalid",invalid);}
+    }
+    private static Assessment decodeCommon(NativeActionPort.AckReceived original,String expectedStep,boolean dateArm)throws IOException {
+        try {
+            var result=correlatedAck(original,expectedStep);
             var envelope=NativeWire.object(NativeWire.parse(result.payload().value()));
             var row=NativeWire.object(NativeWire.parse(result.result().token().orElseThrow().value()));
             require(SCHEMA.equals(text(row,"schema"))&&ExactCk3Build.CK3_1210.matches(text(row,"game_version"),text(row,"executable_sha256"))
                     &&"ck3-1.21.0-msvc-x64".equals(text(row,"adapter_id"))
                     &&"ck3-1.21.0-native-headless-main-thread".equals(text(row,"backend")),"full-clock exact source tuple or schema differs");
             String step=text(row,"step"),status=text(row,"queue_status");
-            require(expectedStep.equals(step)&&STEPS.contains(step),"full-clock result step differs from the original fixed request");
+            require(expectedStep.equals(step)&&(dateArm||STEPS.contains(step)),"full-clock result step differs from the original fixed request");
             require(STATUSES.contains(status),"unknown full-clock queue status");
             boolean accepted=bool(row,"accepted"),attempted=bool(row,"effect_attempted"),before=bool(row,"full_snapshot_before_verified");
             require(!bool(row,"complete_snapshot")&&!bool(row,"physical_save_confirmed"),"full-clock ACK cannot claim a complete snapshot or physical SAVE confirmation");
+            if(dateArm)require(!accepted&&!original.nativeOk(),"Date ARM negative codec cannot accept a full-clock success");
             require(accepted==original.nativeOk(),"full-clock nativeOk and accepted fields disagree");
             require(accepted==(status.equals("submitted")||status.equals("already_satisfied")),"full-clock acceptance contradicts the native status vocabulary");
             Set<String> fields=new HashSet<>(BASE);

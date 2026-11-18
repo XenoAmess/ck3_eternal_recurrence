@@ -1,6 +1,8 @@
 #include "xar_bridge/ck3_1210_full_clock_request_v1.hpp"
+#include "xar_bridge/ck3_1210_date_sentinel_request_v1.hpp"
 
 #include <charconv>
+#include <cstring>
 
 namespace xar::ck3_1210 {
 namespace {
@@ -84,7 +86,8 @@ bool SnapshotId(Cursor &cursor, std::uint64_t &revision) noexcept {
   return true;
 }
 
-bool Claim(Cursor &cursor, std::uint64_t &revision, std::uint64_t &deadline) noexcept {
+bool Claim(Cursor &cursor, std::uint64_t &revision, std::uint64_t &deadline,
+    std::string_view schema = kFullClockRequestClaimSchemaV1) noexcept {
   if (!cursor.Take('{')) return false;
   std::uint32_t seen = 0;
   std::uint64_t snapshot_revision = 0;
@@ -97,7 +100,7 @@ bool Claim(Cursor &cursor, std::uint64_t &revision, std::uint64_t &deadline) noe
     std::uint32_t bit = 0;
     bool valid = false;
     if (key == "schema") {
-      bit = 1U << 0; valid = EqualString(cursor, kFullClockRequestClaimSchemaV1);
+      bit = 1U << 0; valid = EqualString(cursor, schema);
     } else if (key == "game_version") {
       bit = 1U << 1; valid = EqualString(cursor, kGameVersion);
     } else if (key == "executable_sha256") {
@@ -134,6 +137,46 @@ bool NormalizeStep(FullClockRequestV1 &parsed) noexcept {
     parsed.public_speed = parsed.step[10] - '0';
     parsed.step = steps[parsed.public_speed - 1];
   } else return false;
+  return true;
+}
+
+bool Consume(std::string_view &remaining, std::string_view literal) noexcept {
+  if (!remaining.starts_with(literal)) return false;
+  remaining.remove_prefix(literal.size());
+  return true;
+}
+
+bool PositiveDateToken(std::string_view &remaining, std::int32_t &output) noexcept {
+  std::size_t count = 0;
+  while (count < remaining.size() && remaining[count] >= '0' && remaining[count] <= '9')
+    ++count;
+  if (count == 0 || remaining.front() == '0') return false;
+  std::int32_t value = 0;
+  const auto result = std::from_chars(remaining.data(), remaining.data() + count, value);
+  if (result.ec != std::errc{} || result.ptr != remaining.data() + count || value <= 0)
+    return false;
+  remaining.remove_prefix(count);
+  output = value;
+  return true;
+}
+
+bool DateSentinelStep(std::string_view value, DateSentinelArmRequestV1 &parsed) noexcept {
+  if (value.size() > parsed.step_bytes.size()) return false;
+  auto remaining = value;
+  if (!Consume(remaining, "research-arm-tactical-daily-sentinel-v1-") ||
+      !PositiveDateToken(remaining, parsed.starting_date_raw) ||
+      !Consume(remaining, "-to-") ||
+      !PositiveDateToken(remaining, parsed.target_date_raw) ||
+      !Consume(remaining, "-speed-")) return false;
+  constexpr std::string_view terminal = "-mode-terminal-a-0";
+  if (remaining.size() != terminal.size() + 1 || remaining.front() < '1' ||
+      remaining.front() > '5' || remaining.substr(1) != terminal) return false;
+  parsed.speed = remaining.front() - '0';
+  const auto delta = static_cast<std::int64_t>(parsed.target_date_raw) -
+      static_cast<std::int64_t>(parsed.starting_date_raw);
+  if (delta <= 0 || delta % 24 != 0) return false;
+  std::memcpy(parsed.step_bytes.data(), value.data(), value.size());
+  parsed.step_size = value.size();
   return true;
 }
 } // namespace
@@ -178,6 +221,52 @@ bool ParseFullClockRequestV1(std::string_view payload,
   cursor.Space();
   if (cursor.at != payload.size() || (seen & 63U) != 63U ||
       expected_revision != parsed.native_revision || !NormalizeStep(parsed)) return false;
+  output = parsed;
+  return true;
+}
+
+bool ParseDateSentinelArmRequestV1(std::string_view payload,
+    DateSentinelArmRequestV1 &output) noexcept {
+  output = {};
+  if (payload.size() > 16384) return false;
+  Cursor cursor{payload};
+  DateSentinelArmRequestV1 parsed{};
+  std::string_view step;
+  std::uint64_t expected_revision = 0;
+  std::uint32_t seen = 0;
+  bool first = true;
+  if (!cursor.Take('{')) return false;
+  while (!cursor.Take('}')) {
+    if (!first && !cursor.Take(',')) return false;
+    first = false;
+    std::string_view key, value;
+    if (!cursor.String(key) || !cursor.Take(':')) return false;
+    std::uint32_t bit = 0;
+    std::uint64_t number = 0;
+    bool valid = false;
+    if (key == "type") {
+      bit = 1U << 0; valid = EqualString(cursor, "execute_step");
+    } else if (key == "protocol_version") {
+      bit = 1U << 1; valid = cursor.Unsigned(number) && number == 1;
+    } else if (key == "request_id") {
+      bit = 1U << 2; valid = cursor.String(value) && SafeRequestId(value);
+    } else if (key == "step") {
+      bit = 1U << 3; valid = cursor.String(step);
+    } else if (key == "expected_revision") {
+      bit = 1U << 4; valid = cursor.Unsigned(expected_revision) && expected_revision > 0;
+    } else if (key == "date_sentinel_arm") {
+      bit = 1U << 5;
+      valid = Claim(cursor, parsed.native_revision, parsed.deadline_unix_ms,
+          kDateSentinelArmRequestClaimSchemaV1);
+    } else if (key == "arguments") {
+      bit = 1U << 6; valid = cursor.Take('{') && cursor.Take('}');
+    }
+    if (!valid || bit == 0 || (seen & bit) != 0) return false;
+    seen |= bit;
+  }
+  cursor.Space();
+  if (cursor.at != payload.size() || (seen & 63U) != 63U ||
+      expected_revision != parsed.native_revision || !DateSentinelStep(step, parsed)) return false;
   output = parsed;
   return true;
 }

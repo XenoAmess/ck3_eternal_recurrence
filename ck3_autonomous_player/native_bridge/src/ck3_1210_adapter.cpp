@@ -216,6 +216,13 @@ const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
       "game.command.set-speed-4", "game.command.set-speed-5", "game.command.save-checkpoint",
 #elif defined(XAR_CK3_ENABLE_1210_FULL_CLOCK_V1)
       ck3_1210::kFullClockControlCapabilityV1,
+#if defined(XAR_CK3_ENABLE_1210_DATE_SENTINEL_V1)
+      ck3_1210::kDateSentinelCapabilityV1,
+      "game.command.research-arm-tactical-daily-sentinel-v1-N",
+      "game.command.research-query-tactical-daily-sentinel-v1",
+      "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+      "game.command.resume-map",
+#endif
       "game.command.pause-map", "game.command.set-speed-1", "game.command.set-speed-2",
       "game.command.set-speed-3", "game.command.set-speed-4", "game.command.set-speed-5", "game.command.save-checkpoint",
 #endif

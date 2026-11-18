@@ -1,0 +1,63 @@
+{
+  "begin": "2026-11-18T01:52:48.453017+00:00",
+  "live": false,
+  "scenarios": "independent processes; genuine matching Date provider and unchanged production serializer; terminal cancel preserves triggered, pretarget cancel returns idle",
+  "commands": [
+    {
+      "args": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/O2",
+        "/W4",
+        "/WX",
+        "/permissive-",
+        "/EHsc",
+        "/MD",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\include",
+        "/FoD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-cancel03/",
+        "/FeD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-cancel03\\producer.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-cancel03\\producer.cpp",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets01\\ck3_1210_core.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets01\\ck3_1210_date_sentinel_v1.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets01\\tactical_daily_sentinel_v1.obj",
+        "/link",
+        "/INCREMENTAL:NO"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-cancel03\\producer.exe"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-cancel03\\producer.exe",
+        "cancel-before-target"
+      ],
+      "exit": 0
+    }
+  ],
+  "packets": [
+    {
+      "name": "cancel-terminal-generation1",
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-cancel03\\cancel-terminal-generation1.json",
+      "bytes": 713,
+      "sha256": "b67a15a7b88172fb76894ab393903b7d93543cd93ce9d9f81fff7e38024f8d0c",
+      "state": "triggered"
+    },
+    {
+      "name": "cancel-paused-idle-generation1",
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-cancel03\\cancel-paused-idle-generation1.json",
+      "bytes": 687,
+      "sha256": "4cdad16ea7720d9315c6fe4b3be9994d6a61bf423ee0d32cffd1d4395b8097d4",
+      "state": "idle"
+    }
+  ],
+  "end": "2026-11-18T01:52:51.630287+00:00",
+  "accepted": true
+}

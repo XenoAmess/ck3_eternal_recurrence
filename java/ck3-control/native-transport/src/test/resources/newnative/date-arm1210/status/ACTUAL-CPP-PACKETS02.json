@@ -1,0 +1,74 @@
+{
+  "begin": "2026-11-18T01:50:39.119778+00:00",
+  "live": false,
+  "method": "real Date provider/Core RAM start123456 actor1 local7 speed5, actual post and pause then same-generation cancel; unchanged production bridge serializer",
+  "input_full": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-snapshot-producer-002.json",
+    "sha256": "5eca02fea7c3f5095d675238f59b69b8d166ed17a0bd4c208b0e133700d7e550"
+  },
+  "driver": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets02\\producer.cpp",
+    "sha256": "3f9400b8616d7b18dffe73625408fdcbf207046ba366b8dfdc06a6791cd8f76f"
+  },
+  "commands": [
+    {
+      "args": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/O2",
+        "/W4",
+        "/WX",
+        "/permissive-",
+        "/EHsc",
+        "/MD",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\include",
+        "/FoD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets02/",
+        "/FeD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets02\\producer.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets02\\producer.cpp",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets01\\ck3_1210_core.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets01\\ck3_1210_date_sentinel_v1.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets01\\tactical_daily_sentinel_v1.obj",
+        "/link",
+        "/INCREMENTAL:NO"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets02\\producer.exe"
+      ],
+      "exit": 0
+    }
+  ],
+  "packets": [
+    {
+      "name": "armed-generation1",
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets02\\armed-generation1.json",
+      "bytes": 707,
+      "sha256": "23c6c810b56277788c791944e42dc11b6adc1e577a59cf210b450dac7b2f0744"
+    },
+    {
+      "name": "triggered-generation1",
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets02\\triggered-generation1.json",
+      "bytes": 693,
+      "sha256": "8304a787969ec09951b5bf54af228117741a00c505c5bcc741f51f067010cc4f"
+    },
+    {
+      "name": "armed-generation2",
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets02\\armed-generation2.json",
+      "bytes": 707,
+      "sha256": "3c405f600215efb5ebe61e7a7064fbb259aaaa8ff15fa270d609bf1f059f45b5"
+    },
+    {
+      "name": "cancelled-generation2",
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-status-packets02\\cancelled-generation2.json",
+      "bytes": 682,
+      "sha256": "10e43ec697e2e2e21fa51fd1e685aa22ccb6677044369fe05eb680c967d37ef1"
+    }
+  ],
+  "end": "2026-11-18T01:50:42.079634+00:00",
+  "accepted": true
+}

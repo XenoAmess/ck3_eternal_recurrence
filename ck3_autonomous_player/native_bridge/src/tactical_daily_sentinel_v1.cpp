@@ -109,6 +109,7 @@ std::atomic<TacticalDailyOriginalV1> g_original{nullptr};
 std::atomic<TacticalDailySentinelDetourStateV1 *> g_active_state{nullptr};
 SRWLOCK g_slot_lock = SRWLOCK_INIT;
 std::uint64_t g_runtime_epoch = 0;
+bool g_date_only = false; // Protected by g_slot_lock; default legacy path stays strict.
 
 // Never held while invoking a native callback or evaluating its raw graph.
 struct SlotMutationLockV1 {
@@ -124,14 +125,18 @@ struct ArmedSlotSnapshotV1 {
   TacticalSetPausedV1 set_paused = nullptr;
   std::uint64_t generation = 0;
   std::uint64_t runtime_epoch = 0;
+  bool allow_terminal_abort = false;
 };
 
 // The caller owns g_slot_lock, including through the eventual status commit.
 bool SameArmedSlot(const ArmedSlotSnapshotV1 &slot) noexcept {
-  return g_runtime_epoch == slot.runtime_epoch &&
-         g_status.generation.load(std::memory_order_relaxed) == slot.generation &&
-         g_status.state.load(std::memory_order_relaxed) ==
-             TacticalDailySentinelStateV1::armed;
+  const auto state=g_status.state.load(std::memory_order_relaxed);
+  return g_runtime_epoch==slot.runtime_epoch &&
+      g_status.generation.load(std::memory_order_relaxed)==slot.generation &&
+      (state==TacticalDailySentinelStateV1::armed ||
+       (slot.allow_terminal_abort && g_date_only &&
+        (state==TacticalDailySentinelStateV1::idle || state==TacticalDailySentinelStateV1::triggered ||
+         state==TacticalDailySentinelStateV1::failed)));
 }
 
 bool SnapshotArmedSlot(ArmedSlotSnapshotV1 &output) noexcept {
@@ -353,12 +358,12 @@ bool ParseCanonicalNonNegative(std::string_view token,
 }
 
 bool InitializeRuntime(const Bindings &bindings, TacticalSetPausedV1 set_paused,
-                       TacticalDailyOriginalV1 original) noexcept {
+                       TacticalDailyOriginalV1 original, bool date_only = false) noexcept {
   if (!bindings.enabled || bindings.game_state_slot == nullptr ||
       bindings.jomini_state_slot == nullptr ||
-      bindings.army_storage_slot == nullptr ||
-      bindings.army_internal_storage_slot == nullptr ||
-      bindings.combat_storage_slot == nullptr ||
+      (!date_only && (bindings.army_storage_slot == nullptr ||
+                      bindings.army_internal_storage_slot == nullptr ||
+                      bindings.combat_storage_slot == nullptr)) ||
       bindings.get_local_player == nullptr || set_paused == nullptr) {
     return false;
   }
@@ -366,6 +371,7 @@ bool InitializeRuntime(const Bindings &bindings, TacticalSetPausedV1 set_paused,
   g_runtime_available.store(false, std::memory_order_release);
   ++g_runtime_epoch;
   g_bindings = bindings;
+  g_date_only = date_only;
   g_payload = {};
   g_set_paused.store(set_paused, std::memory_order_release);
   g_original.store(original, std::memory_order_release);
@@ -650,6 +656,7 @@ TacticalDailySentinelArmStatusV1 ArmTacticalDailySentinelV1(
     const TacticalDailySentinelArmRequestV1 &request) noexcept {
   Bindings bindings{};
   std::uint64_t runtime_epoch = 0;
+  bool date_only = false;
   {
     SlotMutationLockV1 lock;
     if (!g_runtime_available.load(std::memory_order_acquire)) {
@@ -657,8 +664,10 @@ TacticalDailySentinelArmStatusV1 ArmTacticalDailySentinelV1(
     }
     bindings = g_bindings;
     runtime_epoch = g_runtime_epoch;
+    date_only = g_date_only;
   }
-  if (request.speed < 1 || request.speed > 5 ||
+  if ((date_only && (request.mode != TacticalDailySentinelModeV1::terminal_or_sentinel ||
+                     request.army_count != 0)) || request.speed < 1 || request.speed > 5 ||
       (request.army_count == 0 &&
        request.mode != TacticalDailySentinelModeV1::terminal_or_sentinel) ||
       request.army_count > kTacticalDailySentinelMaximumArmiesV1 ||
@@ -961,6 +970,44 @@ void ProcessTacticalDailySentinelAfterTickV1() noexcept {
   if (trigger_flags != tactical_daily_trigger_none) {
     PublishTerminalState(slot, observed_date, trigger_flags);
   }
+}
+
+bool InitializeTacticalDailySentinelDateOnlyV1(
+    const Bindings &bindings, TacticalSetPausedV1 pause) noexcept {
+  if(g_active_state.load(std::memory_order_acquire)!=nullptr)return false;
+  return InitializeRuntime(bindings, pause, nullptr, true);
+}
+bool AbortTacticalDailySentinelDateOnlyV1(std::uint64_t generation,
+    std::uint32_t flags, bool attempt_pause) noexcept {
+  ArmedSlotSnapshotV1 slot{};
+  {
+    SlotMutationLockV1 lock;
+    const auto state=g_status.state.load(std::memory_order_relaxed);
+    if(!g_date_only || !g_runtime_available.load(std::memory_order_acquire) ||
+        !generation || generation!=g_status.generation.load(std::memory_order_relaxed) ||
+        (state!=TacticalDailySentinelStateV1::armed && state!=TacticalDailySentinelStateV1::idle &&
+         state!=TacticalDailySentinelStateV1::triggered && state!=TacticalDailySentinelStateV1::failed))return false;
+    slot.bindings=g_bindings;slot.payload=g_payload;
+    slot.set_paused=g_set_paused.load(std::memory_order_acquire);
+    slot.generation=generation;slot.runtime_epoch=g_runtime_epoch;slot.allow_terminal_abort=true;
+  }
+  flags|=tactical_daily_trigger_evaluation_failure;
+  std::int32_t date=0;
+  (void)FaultBoundary([&]() noexcept {
+    date=LoadAt<std::int32_t>(slot.payload.game_state,kGameStateDateRawOffset);return true;
+  });
+  if(attempt_pause) {
+    PublishTerminalState(slot,date,flags);
+    SlotMutationLockV1 lock;
+    return SameArmedSlot(slot) && g_status.state.load(std::memory_order_relaxed)==TacticalDailySentinelStateV1::failed;
+  }
+  SlotMutationLockV1 lock;
+  if(!SameArmedSlot(slot))return false;
+  g_status.trigger_date_raw.store(date,std::memory_order_relaxed);
+  g_status.trigger_flags.store(flags,std::memory_order_relaxed);
+  g_status.pause_observed.store(false,std::memory_order_relaxed);
+  g_status.state.store(TacticalDailySentinelStateV1::failed,std::memory_order_release);
+  return true;
 }
 
 bool InitializeTacticalDailySentinelFixtureV1(

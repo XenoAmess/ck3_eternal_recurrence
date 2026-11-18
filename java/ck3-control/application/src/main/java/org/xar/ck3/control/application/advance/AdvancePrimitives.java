@@ -147,7 +147,9 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         else if (step.startsWith(ClockStatusRead.CANCEL_PREFIX)) { cancelGeneration(step); capability = ClockStatusRead.CANCEL_CAP; }
         else capability = "game.command." + step;
         RawJson fields=FullSnapshotClockControl.supports(command.operation())
-                ?FullSnapshotClockControl.additionalFields(command):new RawJson("{}".getBytes(StandardCharsets.UTF_8));
+                ?FullSnapshotClockControl.additionalFields(command)
+                :step.startsWith(FullSnapshotDateSentinelArm.PREFIX)
+                    ?FullSnapshotDateSentinelArm.additionalFields(command):new RawJson("{}".getBytes(StandardCharsets.UTF_8));
         return new NativeRequest(step, capability, fields);
     }
     @Override public ActionPorts.PostconditionResult observe(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome dispatch) {

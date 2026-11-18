@@ -71,6 +71,8 @@ struct WorldFixture {
     Store(province_b, 0x10, std::int32_t{102});
     Store(unit, 0x10, std::int32_t{1});
     Store(unit, 0x18, std::int32_t{0});
+    Store(unit, 0x20, static_cast<void *>(province_a.data()));
+    Store(second_unit, 0x20, static_cast<void *>(province_a.data()));
     Store(unit, 0x30, static_cast<void *>(province_a.data()));
     Store(unit, 0x170, std::int32_t{0});
     Store(unit, 0x178, std::int32_t{1});

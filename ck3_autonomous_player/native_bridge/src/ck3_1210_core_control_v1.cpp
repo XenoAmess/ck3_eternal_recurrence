@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #include <windows.h>
+#include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 
 namespace xar::ck3_1210 {
@@ -23,6 +24,10 @@ bool Unexpired(const CoreControlContextV1 &c) noexcept {
 }
 const char *RequiredCapability(const CoreControlRequestV1 &r) noexcept {
   if (r.operation==CoreControlOperationV1::application_exit && r.step==kApplicationExitStepV1) return kApplicationExitCapabilityV1;
+  if (r.operation==CoreControlOperationV1::sentinel_cancel && r.step.starts_with(ck3_11906::kTacticalDailySentinelCancelPrefixV1))
+    return ck3_11906::kTacticalDailySentinelCancelCapabilityV1.data();
+  if (r.operation==CoreControlOperationV1::sentinel_arm && r.step.starts_with(ck3_11906::kTacticalDailySentinelArmPrefixV1))
+    return ck3_11906::kTacticalDailySentinelCapabilityV1.data();
   if (r.operation==CoreControlOperationV1::pause && r.step=="pause-map") return "game.command.pause-map";
   if (r.operation==CoreControlOperationV1::resume && r.step=="resume-map") return "game.command.resume-map";
   if (r.operation==CoreControlOperationV1::save && r.step=="save-checkpoint") return "game.command.save-checkpoint";
@@ -75,6 +80,14 @@ bool VerifyFullBefore(CoreControlContextV1 &c) noexcept {
   }
   c.result.full_snapshot_before_verified=true;return true;
 }
+bool VerifyResume(CoreControlContextV1 &c) noexcept {
+ if(c.request.operation!=CoreControlOperationV1::resume || !c.game->supports(kFullClockControlCapabilityV1)) return true;
+ if(c.expected_full_snapshot==nullptr || c.date_sentinel==nullptr ||
+    !DateSentinelAllowsResumeV1(*c.date_sentinel,c.request.expected)) {
+   c.result.status=CoreControlStatusV1::unavailable;return false;
+ }
+ return true;
+}
 struct Admission {
   CoreControlContextV1 &context;
   const ck3_11906::MainThreadExecutionStampV1 &stamp;
@@ -88,7 +101,7 @@ bool BeforeQueue(void *opaque) noexcept {
       current.clock.date_raw != a.stamp.date_raw || current.clock.paused != a.stamp.paused) {
     c.result.status=CoreControlStatusV1::stale; return false;
   }
-  if(!VerifyFullBefore(c)) return false;
+  if(!VerifyFullBefore(c) || !VerifyResume(c)) return false;
   if(!Unexpired(c)) {c.result.status=CoreControlStatusV1::expired;return false;}
   c.result.effect_attempted=true;
   return true;
@@ -105,6 +118,21 @@ bool Execute(CoreControlContextV1 &c,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   c.result={};
   if (!Owned(c,stamp)) return true;
+  if(c.request.operation==CoreControlOperationV1::sentinel_cancel) {
+    // Cancellation is generation-bound paused cleanup. The provider checks
+    // its original ARM deadline; no new now-plus command window is minted.
+    if(c.date_sentinel==nullptr || !c.date_cancel_generation || !c.game->supports(kDateSentinelCapabilityV1))return true;
+    c.result.effect_attempted=true;
+    const auto status=CancelDateSentinelV1(*c.date_sentinel,c.date_cancel_generation);
+    const bool done=status==ck3_11906::TacticalDailySentinelCancelStatusV1::canceled ||
+        status==ck3_11906::TacticalDailySentinelCancelStatusV1::not_armed;
+    c.result.status=done?CoreControlStatusV1::sentinel_canceled:CoreControlStatusV1::rejected;
+    if(status==ck3_11906::TacticalDailySentinelCancelStatusV1::not_armed ||
+       status==ck3_11906::TacticalDailySentinelCancelStatusV1::generation_mismatch ||
+       status==ck3_11906::TacticalDailySentinelCancelStatusV1::invalid_request ||
+       status==ck3_11906::TacticalDailySentinelCancelStatusV1::requires_paused)c.result.effect_attempted=false;
+    return true;
+  }
   if (!Unexpired(c)) { c.result.status=CoreControlStatusV1::expired; return true; }
   if (!ReadCoreSnapshot(c.core,c.result.observed)) return true;
   const auto &current=c.result.observed;
@@ -116,11 +144,20 @@ bool Execute(CoreControlContextV1 &c,
       (!current.map_ready || current.local_player_id<0)) {
     c.result.status=CoreControlStatusV1::requires_map; return true;
   }
-  if(!VerifyFullBefore(c)) return true;
+  if(!VerifyFullBefore(c) || !VerifyResume(c)) return true;
   if(!Unexpired(c)) {c.result.status=CoreControlStatusV1::expired;return true;}
   Admission admission{c,stamp};
   CommandSubmitResult submitted=CommandSubmitResult::unavailable;
   switch (c.request.operation) {
+  case CoreControlOperationV1::sentinel_arm: {
+    if(c.native_full_adapter==nullptr || c.date_sentinel==nullptr || c.date_arm_request==nullptr ||
+        !c.game->supports(kDateSentinelCapabilityV1)) return true;
+    c.result.effect_attempted=true;
+    const auto status=ArmDateSentinelV1(*c.date_sentinel,*c.date_arm_request,c.request.deadline_unix_ms);
+    c.result.status=status==ck3_11906::TacticalDailySentinelArmStatusV1::armed
+        ?CoreControlStatusV1::sentinel_armed:CoreControlStatusV1::rejected;
+    return true;
+  }
   case CoreControlOperationV1::application_exit: {
     if (c.application_exit_session==nullptr) return true;
     const bool previously_claimed=c.application_exit_session->claimed.load(std::memory_order_acquire);
@@ -235,6 +272,8 @@ const char *StatusName(CoreControlStatusV1 status) noexcept {
   case CoreControlStatusV1::expired: return "expired";
   case CoreControlStatusV1::stale: return "stale_core_prefix";
   case CoreControlStatusV1::stale_full_snapshot: return "stale_full_snapshot";
+  case CoreControlStatusV1::sentinel_armed: return "armed";
+  case CoreControlStatusV1::sentinel_canceled: return "canceled";
   case CoreControlStatusV1::requires_map: return "requires_map";
   case CoreControlStatusV1::requires_paused: return "requires_paused";
   case CoreControlStatusV1::already_satisfied: return "already_satisfied";

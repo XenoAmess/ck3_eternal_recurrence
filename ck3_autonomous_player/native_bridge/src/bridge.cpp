@@ -29,6 +29,9 @@
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_full_clock_request_v1.hpp"
+#include "xar_bridge/ck3_1210_date_sentinel_request_v1.hpp"
+#include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
+#include "xar_bridge/ck3_1210_daily_final_hook_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
@@ -1058,6 +1061,29 @@ static bool ReadPaymentIdentityCoreFrame12004(void *opaque,
 
 static xar::ck3_11906::TacticalDailySentinelDetourStateV1
     g_tactical_daily_sentinel_v1{};
+static xar::ck3_1210::DateSentinelStateV1 g_date_sentinel_1210_v1{};
+static xar::ck3_1210::DailyFinalHookStateV1 g_daily_final_hook_1210_v1{};
+bool RequestFlorinDateShutdown1210(bool retain_until_safe) noexcept {
+  using namespace xar::ck3_1210;
+  if(!g_date_sentinel_1210_v1.initialized.load(std::memory_order_acquire))return true;
+  RequestDateSentinelShutdownV1(g_date_sentinel_1210_v1);
+  if(!retain_until_safe)return DateSentinelShutdownSafeV1(g_date_sentinel_1210_v1);
+  // All exits, including fatal pipe/camera returns, keep the stack observer
+  // and owner pump alive until the owner confirms paused/disarmed. If owner
+  // cannot be proven, retain resources; process exit remains independent.
+  while(!DateSentinelShutdownSafeV1(g_date_sentinel_1210_v1))Sleep(1);
+  const auto phase=ReadDailyFinalHookStatusV1(g_daily_final_hook_1210_v1).phase;
+  if(phase!=DailyFinalHookPhaseV1::idle && phase!=DailyFinalHookPhaseV1::uninstalled) {
+    while(UninstallDailyFinalHookV1(g_daily_final_hook_1210_v1)!=DailyFinalHookResultV1::uninstalled)Sleep(1);
+  }
+  return true;
+}
+bool ObserveFlorinFullAndDate1210(void *context,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  (void)xar::ck3_1210::PollDateSentinelOwnerV1(g_date_sentinel_1210_v1,stamp);
+  return xar::ck3_12002::ObserveAdapterSnapshot12002(context,stamp);
+}
+
 static xar::bridge::StartupParticle2NullGuardV1State
     g_startup_particle2_null_guard_v1{};
 static xar::bridge::StartupParticle2ConsumerGuardV1State
@@ -12595,6 +12621,7 @@ public:
   }
 
   ~WarEntryApplicationMainMailboxWorkerLifetime() noexcept {
+    (void)RequestFlorinDateShutdown1210(true);
     if (!installed_) {
       return;
     }
@@ -12635,7 +12662,8 @@ public:
         game_->descriptor().executable_sha256,
         std::span<const xar::ck3_11906::MainThreadQueryExecutorV1>(executors.data(),count));
     if(observer_ != nullptr && game_->supports_snapshot()) {
-      environment.snapshot_observer_callback=&xar::ck3_12002::ObserveAdapterSnapshot12002;
+      environment.snapshot_observer_callback=game_->supports(xar::ck3_1210::kDateSentinelCapabilityV1)
+          ?&ObserveFlorinFullAndDate1210:&xar::ck3_12002::ObserveAdapterSnapshot12002;
       environment.snapshot_observer_context=observer_;
     }
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -15462,8 +15490,8 @@ std::string RunFullClockControl1210(const xar::game::GameAdapter &game,
       !game.supports(kFullClockControlCapabilityV1) || !game.supports_step(step) ||
       !game.supports_snapshot() || !state.previous_snapshot ||
       state.state_revision==0 || request.native_revision!=state.state_revision) return answer();
-  // Resume remains unavailable until the exact post-day stop provider is qualified.
-  if(request.operation==CoreControlOperationV1::resume) return answer();
+  if(request.operation==CoreControlOperationV1::resume &&
+      !game.supports(kDateSentinelCapabilityV1)) return answer();
   if(request.operation==CoreControlOperationV1::save &&
       state.checkpoint_submission.sequence==std::numeric_limits<std::uint64_t>::max()) return answer();
   const auto expected=*state.previous_snapshot;
@@ -15474,6 +15502,7 @@ std::string RunFullClockControl1210(const xar::game::GameAdapter &game,
       expected.map_ready,expected.has_played_character,expected.played_character_id,expected.played_character_alive};
   query.game=&game;query.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
   query.expected_full_snapshot=&expected;query.mailbox=&g_main_thread_query_mailbox_v1;
+  if(game.supports(kDateSentinelCapabilityV1))query.date_sentinel=&g_date_sentinel_1210_v1;
   const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   query.core=BindCoreImage(module,game.descriptor().executable_sha256);
   query.commands=BindCommandImage(module,game.descriptor().executable_sha256);
@@ -15499,6 +15528,91 @@ std::string RunFullClockControl1210(const xar::game::GameAdapter &game,
   }
   return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1,
       request.operation==CoreControlOperationV1::save?state.checkpoint_submission.sequence:0);
+}
+
+std::string RunDateSentinelArm1210(const xar::game::GameAdapter &game,WorkerState &state,
+    std::string_view id,std::string_view step,std::string_view payload) {
+  using namespace xar::ck3_1210;
+  DateSentinelArmRequestV1 parsed{};CoreControlContextV1 query{};
+  const auto answer=[&](){return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1);};
+  if(!ParseDateSentinelArmRequestV1(payload,parsed) || parsed.Step()!=step)
+    return CommandResultFrame(id,step,false,"invalid exact date-only arm request");
+  if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+      !game.supports(kDateSentinelCapabilityV1) || !game.supports(kFullClockControlCapabilityV1) ||
+      !game.supports_step(step) || !game.supports_snapshot() || !state.previous_snapshot ||
+      state.state_revision==0 || parsed.native_revision!=state.state_revision) return answer();
+  const auto expected=*state.previous_snapshot;
+  if(!expected.paused || !expected.map_ready || !expected.has_played_character || !expected.played_character_alive ||
+      expected.date_raw!=parsed.starting_date_raw || expected.speed!=parsed.speed ||
+      !expected.active_wars.empty() || !expected.player_armies.empty())return answer();
+  xar::ck3_11906::TacticalDailySentinelArmRequestV1 request{};
+  request.starting_date_raw=parsed.starting_date_raw;request.target_date_raw=parsed.target_date_raw;
+  request.speed=parsed.speed;request.mode=xar::ck3_11906::TacticalDailySentinelModeV1::terminal_or_sentinel;
+  query.request.operation=CoreControlOperationV1::sentinel_arm;query.request.step=parsed.Step();
+  query.request.deadline_unix_ms=parsed.deadline_unix_ms;
+  query.request.expected={{expected.date_raw,expected.speed,expected.paused},expected.player_id,
+      expected.map_ready,expected.has_played_character,expected.played_character_id,expected.played_character_alive};
+  query.game=&game;query.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
+  query.expected_full_snapshot=&expected;query.mailbox=&g_main_thread_query_mailbox_v1;
+  query.date_sentinel=&g_date_sentinel_1210_v1;query.date_arm_request=&request;
+  const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.core=BindCoreImage(module,game.descriptor().executable_sha256);
+  query.commands=BindCommandImage(module,game.descriptor().executable_sha256);
+  ArmCoreControlDeadlineV1(query);
+  if(!query.monotonic_deadline_ms){query.result.status=CoreControlStatusV1::expired;return answer();}
+  xar::game::Snapshot fresh{};
+  if(!xar::ck3_12002::ReadFreshFullSnapshot12002(game,fresh) || fresh!=expected) {
+    query.result.status=CoreControlStatusV1::stale_full_snapshot;return answer();
+  }
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecuteCoreControlMailboxV1,&query,query.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)return answer();
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2000);
+  const auto reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket);
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      reclaim!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    query.result.status=query.result.effect_attempted?CoreControlStatusV1::indeterminate:CoreControlStatusV1::unavailable;
+    return answer();
+  }
+  if(query.result.status!=CoreControlStatusV1::sentinel_armed)return answer();
+  return TacticalDailySentinelResultFrame(id,step,ReadDateSentinelStatusV1(g_date_sentinel_1210_v1));
+}
+
+std::string RunDateSentinelCancel1210(const xar::game::GameAdapter &game,
+    std::string_view id,std::string_view step) {
+  using namespace xar::ck3_1210;
+  CoreControlContextV1 query{};std::uint64_t generation=0;
+  const auto answer=[&](){return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1);};
+  if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+      !game.supports(kDateSentinelCapabilityV1) || !game.supports_step(step) ||
+      !xar::ck3_11906::ParseTacticalDailySentinelCancelStepV1(step,generation))return answer();
+  const auto current=ReadDateSentinelStatusV1(g_date_sentinel_1210_v1);
+  if(current.generation!=generation || generation==0)return answer();
+  // An already terminal generation needs no owner mutation or new time grant.
+  if(current.state!=xar::ck3_11906::TacticalDailySentinelStateV1::armed)
+    return TacticalDailySentinelResultFrame(id,step,current);
+  query.game=&game;query.mailbox=&g_main_thread_query_mailbox_v1;
+  query.date_sentinel=&g_date_sentinel_1210_v1;query.date_cancel_generation=generation;
+  query.request.operation=CoreControlOperationV1::sentinel_cancel;query.request.step=step;
+  const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.core=BindCoreImage(module,game.descriptor().executable_sha256);
+  query.commands=BindCommandImage(module,game.descriptor().executable_sha256);
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecuteCoreControlMailboxV1,&query,query.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)return answer();
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2000);
+  const auto reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket);
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      reclaim!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    query.result.status=query.result.effect_attempted?CoreControlStatusV1::indeterminate:CoreControlStatusV1::unavailable;
+    return answer();
+  }
+  if(query.result.status!=CoreControlStatusV1::sentinel_canceled)return answer();
+  return TacticalDailySentinelResultFrame(id,step,ReadDateSentinelStatusV1(g_date_sentinel_1210_v1));
 }
 
 void RunConnectedSession(
@@ -16127,6 +16241,23 @@ void RunConnectedSession(
               xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",full_revision) && full_revision>0)
             connected=write_frame(pipe,RunFullClockControl1210(game,state,request_id,step,incoming.payload));
           else connected=write_frame(pipe,RunCoreControl1210(game,request_id,step,incoming.payload));
+          early_step_dispatched=true;
+        }
+        if(!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+            step.starts_with(xar::ck3_11906::kTacticalDailySentinelArmPrefixV1)) {
+          connected=write_frame(pipe,RunDateSentinelArm1210(game,state,request_id,step,incoming.payload));
+          early_step_dispatched=true;
+        }
+        if(!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+            step==xar::ck3_11906::kTacticalDailySentinelStatusStepV1) {
+          connected=write_frame(pipe,game.supports(xar::ck3_1210::kDateSentinelCapabilityV1)
+              ?TacticalDailySentinelResultFrame(request_id,step,xar::ck3_1210::ReadDateSentinelStatusV1(g_date_sentinel_1210_v1))
+              :CommandResultFrame(request_id,step,false,"date-only sentinel unavailable"));
+          early_step_dispatched=true;
+        }
+        if(!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+            step.starts_with(xar::ck3_11906::kTacticalDailySentinelCancelPrefixV1)) {
+          connected=write_frame(pipe,RunDateSentinelCancel1210(game,request_id,step));
           early_step_dispatched=true;
         }
         if (!early_step_dispatched && step == "query-fresh-full-state-v1") {
@@ -30944,7 +31075,26 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     return TRUE;
   }
   if (xar::game::IsCk3_1210Descriptor(game->descriptor())) {
-    return TRUE; // Florin core observation requires no historical startup patch.
+    if(game->supports(xar::ck3_1210::kDateSentinelCapabilityV1)) {
+      const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+      const auto sha=game->descriptor().executable_sha256;
+      HMODULE pinned_module=nullptr;
+      if(!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_PIN,
+          reinterpret_cast<LPCWSTR>(reinterpret_cast<std::uintptr_t>(&xar::ck3_1210::XarDailyFinalHook1210V1)),
+          &pinned_module))return FALSE;
+      if(!xar::ck3_1210::InitializeDateSentinelV1(g_date_sentinel_1210_v1,
+          xar::ck3_1210::BindDateSentinelImageV1(base,sha),g_main_thread_query_mailbox_v1))return FALSE;
+      xar::ck3_1210::DailyFinalHookEnvironmentV1 environment{};
+      // This existing export is invoked by InjectLibraryAndPrepareStartup in
+      // the public CREATE_SUSPENDED callback, before ResumeThread. No worker,
+      // ordinary --pipe injection or late observation infers cold ownership.
+      environment.cold_quiescence_proven=true;
+      if(xar::ck3_1210::InstallDailyFinalHookV1(g_daily_final_hook_1210_v1,
+          xar::ck3_1210::BindDailyFinalHookImageV1(base,sha),environment,
+          &xar::ck3_1210::PostDateSentinelV1,&g_date_sentinel_1210_v1)!=
+          xar::ck3_1210::DailyFinalHookResultV1::installed)return FALSE;
+    }
+    return TRUE;
   }
   if (xar::game::IsCk3_12004Descriptor(game->descriptor())) {
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
@@ -31972,6 +32122,10 @@ XarCk3BridgeStartWithPipe(const wchar_t *pipe_name) noexcept {
 }
 
 extern "C" __declspec(dllexport) void WINAPI XarCk3BridgeStop() noexcept {
+  if(!RequestFlorinDateShutdown1210(false)) {
+    g_lifecycle.store(2); // Pending safe owner abort; do not disable the pump.
+    return;
+  }
   SignalStop();
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
   xar::bridge::StopActivityPilgrimageCostQueriesV1(

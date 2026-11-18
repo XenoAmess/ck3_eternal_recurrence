@@ -1,0 +1,75 @@
+{
+  "begin": "2026-11-18T01:50:42.089693+00:00",
+  "live": false,
+  "method": "typed negative serializer scenarios with canonical matching ARM step, not induced MQ failure/live",
+  "input_full": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-snapshot-producer-002.json",
+    "sha256": "5eca02fea7c3f5095d675238f59b69b8d166ed17a0bd4c208b0e133700d7e550"
+  },
+  "driver": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-negative-packets02\\producer.cpp",
+    "sha256": "5bf97c912936235535cf6371d7045c983060908f202ba4e0a095322e59e9ef94"
+  },
+  "commands": [
+    {
+      "args": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/O2",
+        "/W4",
+        "/WX",
+        "/permissive-",
+        "/EHsc",
+        "/MD",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\include",
+        "/FoD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-negative-packets02/",
+        "/FeD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-negative-packets02\\producer.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-negative-packets02\\producer.cpp",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_application_exit_v1.cpp.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_commands.cpp.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_core.cpp.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_core_control_request_v1.cpp.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_core_control_v1.cpp.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_core_frame_v1.cpp.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_date_sentinel_v1.cpp.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\ck3_1210_thread_runtime.cpp.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\game_adapter_capabilities.cpp.obj",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\CMakeFiles\\xar_ck3_1210_core_control_test.dir\\src\\tactical_daily_sentinel_v1.cpp.obj",
+        "/link",
+        "/INCREMENTAL:NO"
+      ],
+      "exit": 0
+    },
+    {
+      "args": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-negative-packets02\\producer.exe"
+      ],
+      "exit": 0
+    }
+  ],
+  "packets": [
+    {
+      "name": "expired",
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-negative-packets02\\expired.json",
+      "bytes": 630,
+      "sha256": "b5952ed1b5b9a56b41dff00b0fde022be35c69233639826c4e4a54d271cdda90"
+    },
+    {
+      "name": "indeterminate",
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-negative-packets02\\indeterminate.json",
+      "bytes": 611,
+      "sha256": "0d86ad8c4850286e05b384b3d54aa92c0a8470b61629dd50487705783fd19405"
+    },
+    {
+      "name": "attempted-rejected",
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\date-negative-packets02\\attempted-rejected.json",
+      "bytes": 611,
+      "sha256": "07396619e04e667e5a9cc2e98edcb686bc0d9229b97655af377d609d74499768"
+    }
+  ],
+  "end": "2026-11-18T01:50:44.869936+00:00",
+  "accepted": true
+}

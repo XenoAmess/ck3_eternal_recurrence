@@ -30,8 +30,13 @@ import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.CoreClockControl;
 import org.xar.ck3.control.application.action.FullSnapshotClockControl;
+import org.xar.ck3.control.application.action.FullSnapshotDateSentinelArm;
+import org.xar.ck3.control.application.advance.ClockStatusRead;
+import org.xar.ck3.control.application.advance.AdvancePrimitives;
 import org.xar.ck3.control.application.action.OperationKey;
 import org.xar.ck3.control.nativebridge.FullSnapshotClockControlResult;
+import org.xar.ck3.control.nativebridge.DateSentinelArmResult;
+import org.xar.ck3.control.nativebridge.NativeGameTransport;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFramePublicCodec;
@@ -71,12 +76,15 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms"));
         ObservationMode observationMode=observationMode(config);
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
         boolean personalGold=observationMode==ObservationMode.PERSONAL_GOLD;
         boolean actorFoundation=observationMode==ObservationMode.ACTOR_FOUNDATION;
         boolean fullClock=observationMode==ObservationMode.FULL_CLOCK;
+        boolean dateAdvance=observationMode==ObservationMode.DATE_ADVANCE;
+        int maximumStatusPolls=dateAdvance?Math.toIntExact(StrictJson.integer(config.get("maximum_status_polls"),1,128)):0;
+        long statusPollMillis=dateAdvance?StrictJson.integer(config.get("status_poll_interval_ms"),100,5000):0;
         String fullClockStep=fullClock?StrictJson.text(config.get("control_step")):null;
         CoreClockControl.Step controlStep=observationMode==ObservationMode.CORE_CONTROL
                 ?CoreClockControl.Step.fromWire(StrictJson.text(config.get("control_step"))):null;
@@ -98,7 +106,7 @@ public final class NativeOwnerSnapshotMain268 {
         var plan = owner.configuration().accept();
         if(observationMode==ObservationMode.MENU_CORE) {
             if(!(plan.load() instanceof NativeLaunchPlan.NewGame))throw new IOException("explicit menu core mode requires its actual NewGame owner plan");
-        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!fullClock&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
+        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!fullClock&&!dateAdvance&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
         Files.createDirectory(output);
         createdOutput = output;
         ObjectNode originals = StrictJson.object();
@@ -131,7 +139,7 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames, coreCommand||fullClock?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,dateAdvance?maximumStatusPolls+6:coreCommand||fullClock?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
             try (ManagedGameSession game = NativeGameAttachment.attach(request, deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
@@ -140,7 +148,9 @@ public final class NativeOwnerSnapshotMain268 {
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(fullClock) {
+                if(dateAdvance){
+                    runDateAdvance(transport,owner,plan,output,deadline,maximumStatusPolls,statusPollMillis,result,originals);
+                } else if(fullClock) {
                     stage="ONE_FULL_CLOCK_SOURCE_READ";
                     var read=transport.readFullClockFrameReceived(deadline);
                     archiveNaturalDiagnostics(output,originals,transport.diagnostics());
@@ -327,7 +337,7 @@ public final class NativeOwnerSnapshotMain268 {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -344,9 +354,115 @@ public final class NativeOwnerSnapshotMain268 {
         }
         originals.set("natural_transport_diagnostics",write(output,"natural-transport-diagnostics.json",FullJsonTree.encode(natural,SMALL)));
     }
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK }
+    private static void runDateAdvance(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            Path output,Instant deadline,int maximumStatusPolls,long statusPollMillis,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException{
+        result.put("schema","xar.native-owner-date-sentinel-advance/v1").put("mode","date_sentinel_advance_one_day")
+                .put("one_day_observed",false).put("save_confirmed",false).put("driver_adopted",false);
+        Instant parentDeadline=deadline.isBefore(plan.sources().review().expiresAt())?deadline:plan.sources().review().expiresAt();
+        if(!Instant.now().isBefore(parentDeadline))throw new IOException("original Date source window expired before its Full READ");
+        stage="DATE_ORIGINAL_FULL_READ";
+        var read=transport.readDateSentinelArmReceived(parentDeadline);
+        originals.set("dispatch",saveDispatch(output,read.original().dispatch()));
+        archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+        if(!(read instanceof NativeGameTransport.DateArmReceived before))
+            throw new IOException("actual Date Full source unavailable; no retry: "+((NativeGameTransport.DateArmUnavailable)read).reason());
+        var custody=before.original().acknowledgement().custody().orElseThrow(()->new IOException("actual Date Full custody unavailable"));
+        custody.verify(before.original().acknowledgement());
+        if(!custody.session().game().equals(owner.generation())||!custody.session().sessionId().equals(owner.sessionId())
+                ||!custody.session().machineId().equals(owner.machineId())
+                ||transport.diagnostics().session().filter(custody.session()::equals).isEmpty())
+            throw new IOException("Date Full source crossed the actual held owner");
+        var initial=StrictJson.parse(before.frame().state().bytes());
+        int start=Math.toIntExact(StrictJson.integer(initial.get("date_raw"),1,Integer.MAX_VALUE));
+        int target=Math.addExact(start,24);
+        int speed=Math.toIntExact(StrictJson.integer(initial.get("speed"),1,5));
+        String step=ClockStatusRead.ARM_PREFIX+start+"-to-"+target+"-speed-"+speed+"-mode-terminal-a-0";
+        var prepared=FullSnapshotDateSentinelArm.request(step,before.frame().snapshotId(),before.frame().nativeRevision(),before.activeDeadline());
+        originals.set("date_before",saveFrame(output,before.frame()));
+        result.put("starting_date_raw",start).put("target_date_raw",target).put("speed",speed)
+                .put("original_advance_deadline_utc",before.activeDeadline().toString()).put("fresh_full_cutoff_utc",before.validUntil().toString());
+        result.set("prepared_arm_fields",StrictJson.parse(prepared.additionalFields().bytes()));
+        stage="ONE_DATE_ARM";
+        var arm=transport.submitDateSentinelArm(before,prepared,before.validUntil());
+        Path armOutput=Files.createDirectory(output.resolve("arm"));originals.set("arm",saveDispatch(armOutput,arm));
+        archiveUncertainDateAck(transport,armOutput,originals,"arm_uncertain_ack",arm);
+        if(!(arm instanceof NativeActionPort.AckReceived armAck))throw new IOException("Date ARM not confirmed; preserve original, never replay: "+arm.getClass().getSimpleName());
+        var armResult=DateSentinelArmResult.decode(armAck,step);
+        if(armResult.disposition()!=DateSentinelArmResult.Disposition.ARMED)throw new IOException("Date ARM did not prove an active original generation");
+        var armed=armResult.status().orElseThrow();result.put("sentinel_generation",armed.generation().decimal());
+        stage="FRESH_FULL_BEFORE_RESUME";
+        var resumeRead=transport.readFullClockFrameReceived(parentDeadline);
+        Path resumeOutput=Files.createDirectory(output.resolve("resume"));
+        originals.set("resume_full_dispatch",saveDispatch(resumeOutput,resumeRead.original().dispatch()));
+        if(!(resumeRead instanceof NativeGameTransport.FullClockReceived resumeBefore))throw new IOException("fresh paused Full before resume unavailable; no resume dispatched");
+        requireDateFrame(initial,resumeBefore.frame(),start,speed);originals.set("resume_before",saveFrame(resumeOutput,resumeBefore.frame()));
+        Instant resumeDeadline=resumeBefore.validUntil().isBefore(parentDeadline)?resumeBefore.validUntil():parentDeadline;
+        var resumeRequest=FullSnapshotClockControl.request("resume-map",resumeBefore.frame().snapshotId(),resumeBefore.frame().nativeRevision(),resumeDeadline);
+        stage="ONE_MATCHING_GENERATION_RESUME";
+        var resumed=transport.submitFullClockControl(resumeBefore,resumeRequest,resumeDeadline);
+        Path resumeCommand=Files.createDirectory(resumeOutput.resolve("command"));originals.set("resume",saveDispatch(resumeCommand,resumed));
+        archiveUncertainDateAck(transport,resumeCommand,originals,"resume_uncertain_ack",resumed);
+        if(!(resumed instanceof NativeActionPort.AckReceived resumeAck)
+                ||FullSnapshotClockControlResult.decode(resumeAck,"resume-map").disposition()!=FullSnapshotClockControlResult.Disposition.SUBMITTED)
+            throw new IOException("Date resume not confirmed as submitted; no retry or follow-on action");
+        stage="BOUNDED_SAME_GENERATION_DATE_STATUS";
+        org.xar.ck3.control.reconciliation.LateOutcome.Status terminal=null;
+        for(int i=0;i<maximumStatusPolls;i++){
+            if(!Instant.now().isBefore(parentDeadline))throw new IOException("original Date advance deadline expired; no lease refresh");
+            Path pollOutput=Files.createDirectory(output.resolve(String.format(java.util.Locale.ROOT,"status-%03d",i)));
+            var observed=transport.readDateSentinelStatus(before,parentDeadline);originals.set("status_"+i,saveDispatch(pollOutput,observed));
+            if(!(observed instanceof NativeActionPort.AckReceived statusAck))throw new IOException("actual Date status unavailable; original retained, no retry");
+            var status=ClockStatusRead.decode(statusAck);result.put("status_polls",i+1).put("last_sentinel_state",status.state().name());
+            if(status.state()!=org.xar.ck3.control.reconciliation.LateOutcome.State.ARMED){terminal=status;break;}
+            long remaining=Duration.between(Instant.now(),parentDeadline).toMillis();
+            if(remaining<=0)throw new IOException("original Date lease expired while awaiting its actual terminal");
+            Thread.sleep(Math.min(statusPollMillis,remaining));
+        }
+        if(terminal==null||terminal.state()!=org.xar.ck3.control.reconciliation.LateOutcome.State.TRIGGERED
+                ||!terminal.pauseObserved()||terminal.abnormal()||terminal.triggerDateRaw()!=target||terminal.overshootDays()!=0
+                ||!terminal.triggerReasons().contains("date_deadline"))
+            throw new IOException("Date status did not prove the requested paused one-day terminal");
+        stage="INDEPENDENT_PAUSED_FULL_AFTER_DATE";
+        var post=transport.readFullClockFrameReceived(parentDeadline);
+        Path afterOutput=Files.createDirectory(output.resolve("after"));originals.set("after_dispatch",saveDispatch(afterOutput,post.original().dispatch()));
+        if(!(post instanceof NativeGameTransport.FullClockReceived after))throw new IOException("independent paused Full after Date unavailable");
+        requireDateFrame(initial,after.frame(),target,speed);originals.set("date_after",saveFrame(afterOutput,after.frame()));
+        stage="ORIGINAL_GENERATION_PAUSED_CLEANUP";
+        var cleanup=transport.cancelDateSentinel(before,parentDeadline);
+        Path cleanupOutput=Files.createDirectory(output.resolve("cleanup"));originals.set("cleanup",saveDispatch(cleanupOutput,cleanup));
+        archiveUncertainDateAck(transport,cleanupOutput,originals,"cleanup_uncertain_ack",cleanup);
+        if(!(cleanup instanceof NativeActionPort.AckReceived cleanupAck))throw new IOException("Date cleanup not confirmed; original retained, never replay");
+        var idle=AdvancePrimitives.acknowledgedSentinel(cleanupAck,ClockStatusRead.CANCEL_PREFIX+armed.generation().decimal());
+        if(!idle.generation().equals(armed.generation())||!idle.equals(terminal))
+            throw new IOException("Date cleanup crossed or failed its original generation");
+        result.put("one_day_observed",true).put("after_date_raw",target).put("date_sentinel_cleanup_idle",false)
+                .put("terminal_generation_read_only_confirmed",true);
+    }
+    static void requireDateFrame(JsonNode initial,NativeObservationPort.ObservedFrame actual,int date,int speed)throws IOException{
+        var current=StrictJson.parse(actual.state().bytes());
+        if(StrictJson.integer(current.get("date_raw"),1,Integer.MAX_VALUE)!=date||StrictJson.integer(current.get("speed"),1,5)!=speed
+                ||!org.xar.ck3.control.contracts.NativeCharacterId.fromJson(initial.path("played_character").get("character_id"))
+                .equals(org.xar.ck3.control.contracts.NativeCharacterId.fromJson(current.path("played_character").get("character_id"))))
+            throw new IOException("Date Full crossed original actor, requested date or speed");
+        StrictJson.trueValue(current.get("paused"));StrictJson.trueValue(current.get("map_ready"));StrictJson.trueValue(current.path("played_character").get("alive"));
+    }
+    private static void archiveUncertainDateAck(NativeGameTransport transport,Path output,ObjectNode originals,String key,NativeActionPort.DispatchOutcome outcome)throws IOException{
+        if(outcome instanceof NativeActionPort.Unknown unknown){
+            var original=transport.originalIndeterminateFullClockAcknowledgement(unknown.requestId());
+            if(original.isPresent())originals.set(key,saveDispatch(Files.createDirectory(output.resolve("original-uncertain-ack")),original.orElseThrow()));
+        }
+    }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v8")){
+            StrictJson.require(!config.has("core_prefix_only")&&!config.has("control_step")
+                    &&"date_sentinel_advance_one_day".equals(StrictJson.text(config.get("mode"))),"explicit Date-only one-day mode required");
+            StrictJson.integer(config.get("maximum_status_polls"),1,128);
+            StrictJson.integer(config.get("status_poll_interval_ms"),100,5000);
+            return ObservationMode.DATE_ADVANCE;
+        }
+        StrictJson.require(!config.has("maximum_status_polls")&&!config.has("status_poll_interval_ms"),"Date polling fields require their explicit versioned mode");
         if(schema.equals("xar.native-owner-snapshot-config/v7")) {
             StrictJson.require(!config.has("core_prefix_only")&&"full_snapshot_clock_control".equals(StrictJson.text(config.get("mode"))),
                     "explicit prepared Full clock mode required");

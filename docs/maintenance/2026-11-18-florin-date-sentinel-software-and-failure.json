@@ -1,0 +1,45 @@
+{
+  "schema": "xar.ck3.florin.date-sentinel-software-and-failed-live/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-11-18T03:40:39.025108+00:00",
+  "java_ready": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-date-sentinel01/qualification01/DATE-SENTINEL28-RUNTIME-READY01.json",
+    "bytes": 5870,
+    "sha256": "e49f531fd40324e672d5d07571f148e53d82477e2830311592eb4663b6d2e959"
+  },
+  "native_source": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/dll-build01/r2-date12/source-retained/SOURCE-DELTA12.json",
+    "bytes": 6074,
+    "sha256": "7877c0006c5021dd3eaa2f6441f8170a23b04fee7db1013645924788948be75c"
+  },
+  "software": {
+    "production_classes": 58,
+    "old_classes_preserved": 51,
+    "old_methods_preserved": 300,
+    "old_fields_preserved": 27,
+    "distinct_passed": 28,
+    "phases": [
+      21,
+      7
+    ],
+    "single_phase_28_pass": false
+  },
+  "scope": "Canonical original-parent-deadline ARM, fresh Full read window separately bounded, same-generation status and private issuer/custody, sticky UNKNOWN, no replay. Terminal CANCEL is read-only and does not claim IDLE.",
+  "live": {
+    "status": "FAILED",
+    "evaluation_failure": 32768,
+    "independent_full_delta_raw": 48,
+    "unsaved_days_observed": 2,
+    "observed_overshoot_days": 1,
+    "save_commands": 0,
+    "natural_exit_code": 0,
+    "original_saved_pair_unchanged": true,
+    "source": {
+      "bytes": 6573,
+      "sha256": "b51cc9aacbfac013b5a75d22bdb9c5ac683f94450f5b0a33422cd879ced68595",
+      "path": "docs/maintenance/2026-11-18-date12-evaluation-failure.json"
+    }
+  },
+  "limits": "Software regression pass does not qualify a successful live date advance. Failed status overshoot=0 is not a physical no-overshoot observation. Native post-day thread/evaluation fault remains under repair; default build flag is OFF. No Root/Driver adoption, OODA or saved-day credit.",
+  "excluded": "No CASH14, new Tools or unqualified mutable Native follow-up source in this package."
+}

@@ -38,6 +38,8 @@ import org.xar.ck3.control.application.action.PhysicalStatusIdentity;
 import org.xar.ck3.control.application.advance.AdvancePrimitives;
 import org.xar.ck3.control.application.action.FullSnapshotClockControl;
 import org.xar.ck3.control.application.advance.ClockStatusRead;
+import org.xar.ck3.control.application.advance.AdvancePrimitives;
+import org.xar.ck3.control.application.action.FullSnapshotDateSentinelArm;
 import org.xar.ck3.control.application.advance.PreparedCleanupEvidence;
 import org.xar.ck3.control.application.action.PreparedCleanupPermit;
 import org.xar.ck3.control.application.action.PreparedCleanupObservationPermit;
@@ -1227,6 +1229,186 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(outcome instanceof Unknown unknown)unresolvedFullClockControl=unknown;
         return outcome;
     }
+    public sealed interface DateArmRead permits DateArmReceived,DateArmUnavailable {
+        NativeFreshSnapshotPort.Result original();
+    }
+    /** A fresh Full source and the caller's separately frozen original advance deadline. */
+    public static final class DateArmReceived implements DateArmRead {
+        private final NativeGameTransport issuer;
+        private final FullClockReceived full;
+        private final Instant activeDeadline;
+        private String armStep;
+        private org.xar.ck3.control.reconciliation.LateOutcome.Status armed;
+        private org.xar.ck3.control.reconciliation.LateOutcome.Status lastStatus;
+        private boolean cancelAttempted;
+        private DateArmReceived(NativeGameTransport issuer,FullClockReceived full,Instant activeDeadline){
+            this.issuer=issuer;this.full=full;this.activeDeadline=activeDeadline;
+        }
+        @Override public NativeFreshSnapshotPort.Received original(){return full.original();}
+        public ObservedFrame frame(){return full.frame();}
+        public Instant validUntil(){return full.validUntil();}
+        public Instant activeDeadline(){return activeDeadline;}
+    }
+    public record DateArmUnavailable(NativeFreshSnapshotPort.Result original,String reason)implements DateArmRead {
+        public DateArmUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    /** The READ cutoff remains short; the active lease is frozen before that READ, never refreshed by a poll. */
+    public synchronized DateArmRead readDateSentinelArmReceived(Instant originalAdvanceDeadline)throws InterruptedException{
+        Objects.requireNonNull(originalAdvanceDeadline);
+        var read=readFullClockFrameReceived(originalAdvanceDeadline);
+        if(read instanceof FullClockReceived received)
+            return new DateArmReceived(this,received,originalAdvanceDeadline);
+        return new DateArmUnavailable(read.original(),((FullClockReadUnavailable)read).reason());
+    }
+    public synchronized DispatchOutcome submitDateSentinelArm(DateArmReceived before,NativeRequest prepared,Instant acknowledgementDeadline)throws InterruptedException{
+        if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        String id="date-arm-"+UUID.randomUUID().toString().replace("-","");
+        try{
+            Objects.requireNonNull(before);Objects.requireNonNull(prepared);Objects.requireNonNull(acknowledgementDeadline);
+            if(before.issuer!=this||before.armed!=null)throw new IOException("Date ARM requires its original private actual Full source");
+            requireFullClockOriginal(before.full,acknowledgementDeadline);
+            var expected=FullSnapshotDateSentinelArm.request(prepared.step(),before.frame().snapshotId(),before.frame().nativeRevision(),before.activeDeadline);
+            if(!prepared.equals(expected))throw new IOException("Date ARM changed its original parent deadline or canonical Full preparation");
+            var spec=AdvancePrimitives.armSpec(prepared.step());
+            var state=NativeWire.object(NativeWire.parse(before.frame().state().bytes()));
+            if(!state.path("date_raw").isIntegralNumber()||!state.path("date_raw").canConvertToInt()
+                    ||!state.path("speed").isIntegralNumber()||!state.path("speed").canConvertToInt()
+                    ||state.path("date_raw").intValue()!=spec.startingDateRaw()||state.path("speed").intValue()!=spec.speed())
+                throw new IOException("Date ARM start or speed differs from its actual Full source");
+            if(!chronologyClock.instant().isBefore(before.activeDeadline)||acknowledgementDeadline.isAfter(before.activeDeadline))
+                throw new IOException("Date ARM cannot extend the original advance deadline");
+            if(applicationExitAttempted||before.full.writeAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("Date ARM cannot reuse a write or another active continuation");
+            if(!hello.capabilities().containsAll(Set.of(ClockStatusRead.ARM_CAP,ClockStatusRead.STATUS_CAP,ClockStatusRead.CANCEL_CAP,"game.guard.date-only-postday.v1")))
+                throw new IOException("actual Date-only postday capabilities unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            byte[] packet=NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes());
+            var outcome=dispatch(id,packet,acknowledgementDeadline,()->{
+                requireBackgroundAtCoreWrite();
+                try{requireFullClockOriginal(before.full,acknowledgementDeadline);}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
+                if(!chronologyClock.instant().isBefore(before.activeDeadline)||before.full.writeAttempted)throw new IllegalStateException("Date ARM original lease or write is consumed");
+                before.full.writeAttempted=true;heldSnapshotInvalidated=true;
+            });
+            var retained=retainDateArmOutcome(outcome,prepared.step());
+            if(retained instanceof AckReceived ack){
+                var assessment=DateSentinelArmResult.decode(ack,prepared.step());
+                if(assessment.disposition()==DateSentinelArmResult.Disposition.ARMED){
+                    before.armStep=prepared.step();before.armed=assessment.status().orElseThrow();before.lastStatus=before.armed;
+                }
+            }
+            return retained;
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(id)){
+                unresolvedFullClockControl=new Unknown(id,"Date ARM failed after actual write entry; never replay: "+reason(invalid),retainedOutbound(id),Optional.empty());
+                return unresolvedFullClockControl;
+            }
+            return zero(id,reason(invalid));
+        }
+    }
+    private DispatchOutcome retainDateArmOutcome(DispatchOutcome outcome,String step){
+        if(outcome instanceof AckReceived ack){
+            String uncertain=null;
+            try{if(DateSentinelArmResult.decode(ack,step).disposition()==DateSentinelArmResult.Disposition.UNKNOWN)uncertain="uncertain Date ARM result";}
+            catch(IOException|RuntimeException invalid){uncertain="invalid Date ARM result: "+reason(invalid);}
+            if(uncertain!=null){
+                indeterminateFullClockAcknowledgement=ack;
+                unresolvedFullClockControl=new Unknown(ack.requestId(),uncertain+"; preserve original, never replay",ack.outbound().orElseThrow().originalPacket(),Optional.of(ack.originalFrame()));
+                return unresolvedFullClockControl;
+            }
+        }
+        if(outcome instanceof Unknown unknown)unresolvedFullClockControl=unknown;
+        return outcome;
+    }
+    private void requireDateSentinelOwner(DateArmReceived before,Instant deadline)throws IOException{
+        Objects.requireNonNull(before);Objects.requireNonNull(deadline);
+        if(before.issuer!=this||before.armed==null||closed||terminalFailure!=null)throw new IOException("actual original armed Date generation unavailable");
+        verifyHeld(deadline);requireFlorinFullClockSource();
+        var custody=before.original().acknowledgement().custody().orElseThrow(()->new IOException("original Date custody unavailable"));
+        custody.verify(before.original().acknowledgement());
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch))throw new IOException("Date generation crossed original Game/session/connection");
+    }
+    /** Readonly same-generation status remains usable after the active deadline; it never extends that lease. */
+    public synchronized DispatchOutcome readDateSentinelStatus(DateArmReceived before,Instant deadline)throws InterruptedException{
+        String id="date-status-"+UUID.randomUUID().toString().replace("-","");
+        DispatchOutcome dispatched=null;
+        try{
+            requireDateSentinelOwner(before,deadline);
+            if(!hello.capabilities().contains(ClockStatusRead.STATUS_CAP))throw new IOException("Date status capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            var outcome=dispatch(id,NativeWire.execute(id,ClockStatusRead.STEP,before.frame().nativeRevision(),new byte[]{'{','}'}),readDeadline(deadline),()->{});
+            dispatched=outcome;
+            if(outcome instanceof AckReceived ack){
+                var status=ClockStatusRead.decode(ack);
+                if(!status.generation().equals(before.armed.generation()))throw new IOException("Date status crossed the actual armed generation");
+                if(status.state()!=org.xar.ck3.control.reconciliation.LateOutcome.State.IDLE
+                        &&(status.startingDateRaw()!=before.armed.startingDateRaw()||status.targetDateRaw()!=before.armed.targetDateRaw()
+                        ||status.speed()!=before.armed.speed()||status.mode()!=before.armed.mode()||status.armyCount()!=0))
+                    throw new IOException("Date status changed original watch identity");
+                before.lastStatus=status;
+            }
+            return outcome;
+        }catch(IOException|RuntimeException invalid){
+            if(dispatched instanceof AckReceived ack)return new Unknown(id,"Date status rejected after actual request: "+reason(invalid),ack.outbound().orElseThrow().originalPacket(),Optional.of(ack.originalFrame()));
+            if(sentRequestIds.contains(id))return new Unknown(id,"Date status unavailable after actual request: "+reason(invalid),retainedOutbound(id),Optional.empty());
+            return zero(id,"Date status rejected before write: "+reason(invalid));
+        }
+    }
+    /** Pure cleanup only after the same actual generation reports paused; CANCEL never requests a pause. */
+    public synchronized DispatchOutcome cancelDateSentinel(DateArmReceived before,Instant deadline)throws InterruptedException{
+        return cancelDateSentinelChecked(before,null,deadline);
+    }
+    /** An ARMED status does not assert pause_observed; its cleanup requires this independent actual paused Full. */
+    public synchronized DispatchOutcome cancelDateSentinel(DateArmReceived before,FullClockReceived actualPaused,Instant deadline)throws InterruptedException{
+        return cancelDateSentinelChecked(before,Objects.requireNonNull(actualPaused),deadline);
+    }
+    private DispatchOutcome cancelDateSentinelChecked(DateArmReceived before,FullClockReceived actualPaused,Instant deadline)throws InterruptedException{
+        if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        String id="date-cancel-"+UUID.randomUUID().toString().replace("-","");
+        try{
+            requireDateSentinelOwner(before,deadline);
+            if(before.cancelAttempted||before.lastStatus==null)throw new IOException("Date cleanup requires its actual generation and a fresh cleanup attempt");
+            if(actualPaused!=null){
+                requireFullClockOriginal(actualPaused,deadline);
+                var initial=NativeWire.object(NativeWire.parse(before.frame().state().bytes()));
+                var paused=NativeWire.object(NativeWire.parse(actualPaused.frame().state().bytes()));
+                if(!org.xar.ck3.control.contracts.NativeCharacterId.fromJson(initial.path("played_character").get("character_id"))
+                        .equals(org.xar.ck3.control.contracts.NativeCharacterId.fromJson(paused.path("played_character").get("character_id"))))
+                    throw new IOException("Date cleanup Full crossed the original actor");
+            }else if(!before.lastStatus.pauseObserved())throw new IOException("Date cleanup requires an independent paused Full or actual terminal pause observation");
+            if(!hello.capabilities().contains(ClockStatusRead.CANCEL_CAP))throw new IOException("Date cleanup capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            String step=ClockStatusRead.CANCEL_PREFIX+before.armed.generation().decimal();
+            var outcome=dispatch(id,NativeWire.execute(id,step,before.frame().nativeRevision(),new byte[]{'{','}'}),deadline,()->{
+                requireBackgroundAtCoreWrite();
+                if(actualPaused!=null){
+                    try{requireFullClockOriginal(actualPaused,deadline);}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
+                    if(actualPaused.writeAttempted)throw new IllegalStateException("paused cleanup Full source is consumed");
+                    actualPaused.writeAttempted=true;heldSnapshotInvalidated=true;
+                }
+                if(before.cancelAttempted)throw new IllegalStateException("Date cleanup is consumed");before.cancelAttempted=true;
+            });
+            if(outcome instanceof AckReceived ack){
+                var status=AdvancePrimitives.acknowledgedSentinel(ack,step);
+                var result=NativeWire.object(NativeWire.parse(ack.originalResultToken().orElseThrow().bytes()));
+                boolean idle=status.state()==org.xar.ck3.control.reconciliation.LateOutcome.State.IDLE&&textEquals(result,"status","available");
+                boolean terminalUnchanged=(before.lastStatus.state()==org.xar.ck3.control.reconciliation.LateOutcome.State.TRIGGERED
+                        ||before.lastStatus.state()==org.xar.ck3.control.reconciliation.LateOutcome.State.FAILED)
+                        &&status.equals(before.lastStatus)&&textEquals(result,"status","available");
+                if(!status.generation().equals(before.armed.generation())||(!idle&&!terminalUnchanged))
+                    throw new IOException("Date CANCEL neither confirmed idle nor preserved its already terminal generation");
+                before.lastStatus=status;
+            }
+            if(outcome instanceof Unknown unknown)unresolvedFullClockControl=unknown;
+            return outcome;
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(id)){
+                unresolvedFullClockControl=new Unknown(id,"Date cleanup uncertain after write; never replay: "+reason(invalid),retainedOutbound(id),Optional.empty());return unresolvedFullClockControl;
+            }
+            return zero(id,reason(invalid));
+        }
+    }
     private Unknown unresolvedCoreControl;
     private AckReceived indeterminateCoreAcknowledgement;
     /** Passive access to the exact uncertain Native result; no query, resend, deadline or live role is created. */
@@ -1970,7 +2152,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if (hello == null) throw new IOException("actual Native hello is required before dispatch");
             if (!request.equals(permit.preparedRequest())) throw new IOException("primitive differs from the coordinator's durable prepared request");
             boolean fullClock=fullClockPrepared(request);
-            if(fullClock){
+            boolean dateArm=request.additionalFields().objectFieldNames().contains("date_sentinel_arm");
+            if(fullClock||dateArm){
                 requireFlorinFullClockSource();
                 if(unresolvedFullClockControl!=null||unresolvedCoreControl!=null)
                     throw new IOException("an original clock outcome is unresolved; reconcile it without a new write");
@@ -2008,7 +2191,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             // For this exact new cleanup only, the actual endpoint deadline stays inside both
             // freshness expiries even when the original beforeFirstWrite callbacks consume time.
             DispatchOutcome original = dispatch(id, packet, actualDeadline, () -> {
-                if(fullClock)requireBackgroundAtCoreWrite();
+                if(fullClock||dateArm)requireBackgroundAtCoreWrite();
                 permit.consumeOnce();
                 heldSnapshotInvalidated = true;
             });
@@ -2017,7 +2200,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 // Actual canonical SUBMITTING permit and private source permission were checked above.
                 activeMailbox.assignment = new CouncilAssignment(permit.actionId(), permit.bodySha256(), id, permit.guard(), request);
             }
-            return fullClock?retainFullClockOutcome(original,request):original;
+            return dateArm?retainDateArmOutcome(original,request.step()):fullClock?retainFullClockOutcome(original,request):original;
         } catch (IOException | RuntimeException failure) { return zero(id, reason(failure)); }
     }
     /** Registered collector reads use this same endpoint and one exact request ID, without a world-action intent. */

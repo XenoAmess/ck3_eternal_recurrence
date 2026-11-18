@@ -12,12 +12,16 @@
 namespace {
 using namespace xar::game;
 using namespace xar::ck3_1210;
-constexpr std::array<std::string_view, 13> kCapabilities{kCoreFrameCapabilityV1,
-    kCoreControlCapabilityV1,kApplicationExitCapabilityV1,kFullClockControlCapabilityV1,"game.state.snapshot","game.command.pause-map","game.command.resume-map",
+constexpr std::array<std::string_view, 11> kCapabilities{kCoreFrameCapabilityV1,
+    kCoreControlCapabilityV1,kApplicationExitCapabilityV1,"game.command.pause-map","game.command.resume-map",
     "game.command.set-speed-1","game.command.set-speed-2","game.command.set-speed-3",
     "game.command.set-speed-4","game.command.set-speed-5","game.command.save-checkpoint"};
 const AdapterDescriptor kDescriptor{kAdapterId, kGameVersion,
     kExecutableSha256, "xar_checkpoint", kCapabilities};
+constexpr std::array<std::string_view,13> kFullCapabilities{kCoreFrameCapabilityV1,kCoreControlCapabilityV1,
+ kApplicationExitCapabilityV1,kFullClockControlCapabilityV1,"game.state.snapshot","game.command.pause-map","game.command.resume-map",
+ "game.command.set-speed-1","game.command.set-speed-2","game.command.set-speed-3","game.command.set-speed-4","game.command.set-speed-5","game.command.save-checkpoint"};
+const AdapterDescriptor kFullDescriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",kFullCapabilities};
 class FixtureAdapter final : public GameAdapter {
 public:
   explicit FixtureAdapter(const AdapterDescriptor &d) : descriptor_(d) {}
@@ -358,12 +362,12 @@ int main() {
   CHECK(!BindCommandImage(0x140000000,"old-hash").enabled);
   // These checks isolate complete-value admission to the already-qualified
   // queue executor; the genuine composite Full reader has its own RAM fixture.
-  FixtureAdapter full_adapter(kDescriptor);full_adapter.full_read_ok=true;
+  FixtureAdapter full_adapter(kFullDescriptor);full_adapter.full_read_ok=true;
   Snapshot full_expected=copy;full_expected.played_character_gold.raw=47986038;
   const auto full_reset=[&]() {
     reset();full_adapter.full_value=full_expected;full_adapter.full_reads=0;
     full_adapter.change_full_on_read=0;full_adapter.after_full_read=nullptr;
-    context.native_full_adapter=&full_adapter;context.expected_full_snapshot=&full_expected;
+    context.game=&full_adapter;context.native_full_adapter=&full_adapter;context.expected_full_snapshot=&full_expected;
   };
   full_reset();CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
   CHECK(context.result.status==CoreControlStatusV1::submitted && queues==1 && clones==1 &&

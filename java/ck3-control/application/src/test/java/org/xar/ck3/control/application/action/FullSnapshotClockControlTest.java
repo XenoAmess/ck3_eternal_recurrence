@@ -122,7 +122,12 @@ final class FullSnapshotClockControlTest {
             for (String step : List.of(arm, cancel)) {
                 var command = command(step, build, REVISION, "native:" + REVISION, DEADLINE, EMPTY);
                 var request = AdvancePrimitives.prepareRequest(command);
-                assertArrayEquals(new byte[] {'{', '}'}, request.additionalFields().bytes());
+                if (build.equals(SHA) && step.equals(arm)) {
+                    assertArrayEquals(FullSnapshotDateSentinelArm.additionalFields(command).bytes(), request.additionalFields().bytes());
+                    assertEquals(Set.of("date_sentinel_arm"), names(StrictJson.parse(request.additionalFields().bytes())));
+                } else {
+                    assertArrayEquals(new byte[] {'{', '}'}, request.additionalFields().bytes());
+                }
                 assertEquals(step.equals(arm) ? ClockStatusRead.ARM_CAP : ClockStatusRead.CANCEL_CAP,
                         request.requiredCapability().orElseThrow());
                 assertFalse(FullSnapshotClockControl.supports(command.operation()));

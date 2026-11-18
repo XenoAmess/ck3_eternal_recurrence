@@ -1287,6 +1287,8 @@ add_library(xar_ck3_12002_runtime STATIC
     src/ck3_1210_commands.cpp
     src/ck3_1210_core_control_request_v1.cpp
     src/ck3_1210_full_clock_request_v1.cpp
+    src/ck3_1210_date_sentinel_v1.cpp
+    src/ck3_1210_daily_final_hook_v1.cpp
     src/ck3_1210_core_control_v1.cpp
     src/ck3_12004_abi_profile.cpp
     src/ck3_12004_core_frame_v1.cpp
@@ -10230,7 +10232,8 @@ if(BUILD_TESTING)
     src/ck3_1210_commands.cpp src/ck3_1210_core_control_request_v1.cpp
     src/ck3_1210_core_control_v1.cpp src/ck3_1210_core.cpp
     src/ck3_1210_core_frame_v1.cpp src/ck3_1210_thread_runtime.cpp
-    src/game_adapter_capabilities.cpp src/ck3_1210_core_control_test.cpp)
+    src/game_adapter_capabilities.cpp src/ck3_1210_core_control_test.cpp
+    src/ck3_1210_date_sentinel_v1.cpp src/tactical_daily_sentinel_v1.cpp)
   target_include_directories(xar_ck3_1210_core_control_test PRIVATE include)
   target_compile_definitions(xar_ck3_1210_core_control_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
   if(MSVC)
@@ -10341,4 +10344,31 @@ if(BUILD_TESTING)
     target_compile_options(xar_ck3_1210_full_clock_request_test PRIVATE /W4 /WX /permissive- /EHsc)
   endif()
   add_test(NAME xar_ck3_native_bridge_1210_full_clock_request COMMAND xar_ck3_1210_full_clock_request_test)
+endif()
+
+option(XAR_CK3_ENABLE_1210_DATE_SENTINEL_V1 "Enable guarded cold Florin exact post-day date-only sentinel" OFF)
+if(XAR_CK3_ENABLE_1210_DATE_SENTINEL_V1)
+  if(NOT XAR_CK3_ENABLE_1210_FULL_CLOCK_V1)
+    message(FATAL_ERROR "Florin date sentinel requires published Full clock control")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_DATE_SENTINEL_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_daily_final_hook_test
+    src/ck3_1210_daily_final_hook_v1.cpp src/ck3_1210_daily_final_hook_v1_test.cpp)
+  add_executable(xar_ck3_1210_date_sentinel_test
+    src/ck3_1210_date_sentinel_v1.cpp src/ck3_1210_date_sentinel_v1_test.cpp
+    src/ck3_1210_core.cpp src/tactical_daily_sentinel_v1.cpp)
+  add_executable(xar_ck3_1210_date_sentinel_request_test
+    src/ck3_1210_full_clock_request_v1.cpp src/ck3_1210_date_sentinel_request_v1_test.cpp)
+  foreach(_florin_date_target IN ITEMS xar_ck3_1210_daily_final_hook_test xar_ck3_1210_date_sentinel_test xar_ck3_1210_date_sentinel_request_test)
+    target_include_directories(${_florin_date_target} PRIVATE include)
+    target_compile_definitions(${_florin_date_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+    if(MSVC)
+      target_compile_options(${_florin_date_target} PRIVATE /W4 /WX /permissive- /EHsc)
+    endif()
+  endforeach()
+  add_test(NAME xar_ck3_native_bridge_1210_daily_final_hook COMMAND xar_ck3_1210_daily_final_hook_test)
+  add_test(NAME xar_ck3_native_bridge_1210_date_sentinel COMMAND xar_ck3_1210_date_sentinel_test)
+  add_test(NAME xar_ck3_native_bridge_1210_date_sentinel_request COMMAND xar_ck3_1210_date_sentinel_request_test)
 endif()
