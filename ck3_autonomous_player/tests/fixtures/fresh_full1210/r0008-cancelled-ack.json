@@ -1,0 +1,45 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "source": {
+    "path": "C:\\workspace\\ck3-market-live-20261119\\live\\4-8e1c2f1861--financial-markets--R0008\\native-report.native-wire.jsonl",
+    "bytes": 9262764,
+    "sha256": "29b61b60975e235a9928dfab027a8009751f7bf7b02240677a456cc01283b67a",
+    "byte_range": {
+      "offset": "9255550",
+      "length": 708,
+      "sha256": "524617dcc8724715743a8541f64101d9d30b7b2f0d0b6a15bac18efde3bc43bf"
+    }
+  },
+  "actual_wire_entry": {
+    "at": "2026-11-18T18:41:41.835054+00:00",
+    "direction": "dll-to-python",
+    "message": {
+      "type": "command_result",
+      "protocol_version": 1,
+      "request_id": "fresh-full-3-c85b3edf3535",
+      "ok": false,
+      "error": "fresh_full_state_read_failed",
+      "fresh_full_state_diagnostic": {
+        "schema": "xar.native.fresh-full-state-diagnostic/v1",
+        "stage": "wait_terminal",
+        "submit_result": 0,
+        "wait_result": 4,
+        "reclaim_result": 0,
+        "wait_running_timeouts": 0,
+        "query_sequence": "2",
+        "elapsed_ms": "8000",
+        "owner_thread_id": 22792,
+        "pump_epoch_at_start": "18799",
+        "pump_epoch_at_end": "18799",
+        "wake_attempts": 32,
+        "wake_succeeded": 32,
+        "wake_failed": 0,
+        "last_wake_error": 0,
+        "fresh_available": false,
+        "queued_wake_interval_ms": 250
+      }
+    }
+  },
+  "live_qualification": false,
+  "scope": "Retained original failed readonly ACK; software regression input only"
+}

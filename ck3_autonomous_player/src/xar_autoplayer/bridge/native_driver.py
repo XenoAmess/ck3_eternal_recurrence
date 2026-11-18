@@ -107,6 +107,7 @@ from .application_main_pump_readiness import (
 )
 from .session_queue import SESSION_QUEUE_PROTOCOL_VERSION
 from .version_identity import CK3_12004, require_exact_native_build
+from .fresh_full_cancelled_read_v1 import CancelledFreshReadV1, FreshCancelledGateV1, FreshOwnerV1, FreshOwnerDriftV1, FreshReadPreSubmissionWaitV1
 from .player_event_trait_membership_contract import (
     normalize_player_event_trait_membership_v1,
     played_character_event_trait_observation_v1,
@@ -956,6 +957,12 @@ _WAR_TERMINATION_REVISION_RETRY_ERRORS = frozenset(
         "war-termination completion snapshot changed; retry after heartbeat",
     }
 )
+
+
+class _FreshFullReadPreSubmissionWaitErrorV1(BridgeUnavailableError):
+    def __init__(self, proof: FreshReadPreSubmissionWaitV1) -> None:
+        self.proof = proof
+        super().__init__('fresh Full SDK pre-submission wait; original SDK parsed receipt=' + json.dumps(proof.to_json(), sort_keys=True))
 
 
 class _NativeCommandRejectedError(BridgeUnavailableError):
@@ -2237,6 +2244,10 @@ class NativeHeadlessGameplayDriver:
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
         self._florin_fresh_full_read_pending_v1: str | None = None
+        self._florin_fresh_full_cancelled_gate_v1: FreshCancelledGateV1 | None = None
+        self._florin_fresh_full_recovery_invalidated_v1 = False
+        self._florin_fresh_full_presubmit_wait_sequence_v1 = 0
+        self._florin_fresh_full_presubmit_wait_v1: FreshReadPreSubmissionWaitV1 | None = None
         self.endpoint.start(self._ingest, self._mark_bridge_disconnected_v1)
 
     def _invalidate_player_heir_provider_v1(self, reason: str) -> None:
@@ -3054,6 +3065,22 @@ class NativeHeadlessGameplayDriver:
             result["frontend_start_campaign_root_query"] = copy.deepcopy(
                 getattr(self, "_frontend_start_campaign_root_query", None)
             )
+            gate = self._florin_fresh_full_cancelled_gate_v1
+            if gate is not None and not self._florin_fresh_full_recovery_invalidated_v1:
+                try:
+                    owner = gate.observation(result)
+                    if owner is not None:
+                        gate = gate.sample(owner)
+                    self._florin_fresh_full_cancelled_gate_v1 = gate
+                except FreshOwnerDriftV1:
+                    self._florin_fresh_full_recovery_invalidated_v1 = True
+                except ValueError:
+                    pass  # An unqualified heartbeat never advances this read gate.
+            result["fresh_full_read_recovery_v1"] = gate.to_json() if gate is not None else None
+            result["fresh_full_read_recovery_invalidated_v1"] = self._florin_fresh_full_recovery_invalidated_v1
+            waiting = self._florin_fresh_full_presubmit_wait_v1
+            result["fresh_full_read_presubmission_wait_v1"] = waiting.to_json() if waiting is not None else None
+            result["native_request_sequence_v1"] = str(self._request_sequence)
         return result
 
     def query_core_frame_v1(self) -> dict[str, object]:
@@ -3131,6 +3158,33 @@ class NativeHeadlessGameplayDriver:
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
         with self._driver_state_lock:
+            if self._florin_fresh_full_recovery_invalidated_v1:
+                raise BridgeUnavailableError("fresh Full cancelled-read recovery crossed its original owner context")
+            gate = self._florin_fresh_full_cancelled_gate_v1
+            if gate is not None:
+                try:
+                    owner = gate.observation(before.get("diagnostics"))
+                    if baseline.played_character_id != gate.actor_id or baseline.date_raw != gate.source.date_raw:
+                        raise FreshOwnerDriftV1("Fresh cancelled read changed its original actor/date")
+                    if owner is not None:
+                        gate = gate.sample(owner)
+                    self._florin_fresh_full_cancelled_gate_v1 = gate
+                    waiting = None
+                    if owner is None:
+                        waiting = FreshReadPreSubmissionWaitV1(self._florin_fresh_full_presubmit_wait_sequence_v1+1,
+                            self._request_sequence, gate, "owner_temporarily_unqualified")
+                    elif not gate.permits(owner):
+                        waiting = FreshReadPreSubmissionWaitV1(self._florin_fresh_full_presubmit_wait_sequence_v1+1,
+                            self._request_sequence, gate, "awaiting_completed_owner")
+                    if waiting is not None:
+                        self._florin_fresh_full_presubmit_wait_sequence_v1 = waiting.call_sequence
+                        self._florin_fresh_full_presubmit_wait_v1 = waiting
+                        raise _FreshFullReadPreSubmissionWaitErrorV1(waiting)
+                except FreshOwnerDriftV1 as error:
+                    self._florin_fresh_full_recovery_invalidated_v1 = True
+                    raise BridgeUnavailableError(str(error)) from error
+                except ValueError as error:
+                    raise BridgeUnavailableError(str(error)) from error
             if self._florin_fresh_full_read_pending_v1 is not None:
                 raise BridgeUnavailableError("original fresh Full read remains unresolved; no automatic replay")
             self._request_sequence += 1
@@ -3138,6 +3192,8 @@ class NativeHeadlessGameplayDriver:
             # Keep this original request latched on timeout, rejection or a
             # mismatched packet. A later call must never silently resubmit it.
             self._florin_fresh_full_read_pending_v1 = request_id
+            self._florin_fresh_full_cancelled_gate_v1 = None
+            self._florin_fresh_full_presubmit_wait_v1 = None
         request: dict[str, object] = {"type": "execute_step", "protocol_version": PROTOCOL_VERSION,
             "request_id": request_id, "step": "query-fresh-full-state-v1", "expected_revision": 0}
         self.endpoint.send(request)
@@ -3186,6 +3242,24 @@ class NativeHeadlessGameplayDriver:
                 "request_id": request_id, "step": "query-fresh-full-state-v1"}
             if diagnostic_key in ack:
                 rejection_receipt[diagnostic_key] = ack[diagnostic_key]
+            try:
+                cancelled = CancelledFreshReadV1.parse(rejection_receipt)
+                owner = FreshOwnerV1.observe(before.get("diagnostics"))
+                failure_diagnostics = self.state.diagnostics()
+                if (owner.identity() != FreshOwnerV1.context(failure_diagnostics) or owner.pid != baseline.game_pid
+                        or owner.generation != baseline.connection_generation or owner.date_raw != baseline.date_raw
+                        or owner.owner_tid != cancelled.owner_tid or owner.pump > cancelled.pump_start):
+                    raise ValueError("Fresh cancelled read lacks the same original qualified owner")
+                recovered = FreshCancelledGateV1(cancelled, owner, baseline.played_character_id,
+                    FreshOwnerV1.sequence(failure_diagnostics))
+            except ValueError:
+                recovered = None  # All other rejections and ambiguous reads keep the original latch.
+            if recovered is not None:
+                with self._driver_state_lock:
+                    if self._florin_fresh_full_read_pending_v1 != request_id:
+                        raise BridgeUnavailableError("fresh Full original latch changed before exact cancelled reclaim")
+                    self._florin_fresh_full_cancelled_gate_v1 = recovered
+                    self._florin_fresh_full_read_pending_v1 = None
             raise _NativeCommandRejectedError(native_error, native_request_id=request_id,
                 native_request_frame=request, native_command_result_frame=ack,
                 native_raw_return_receipt=rejection_receipt)

@@ -1195,7 +1195,7 @@ def saved_campaign_florin_admission_frame_v1(snapshot: object, expected: dict[st
     started, completed = observer.get("started_ms"), observer.get("completed_ms")
     if (mailbox.get("ready") is not True or mailbox.get("stamp_read_success") is not True
             or type(epoch) is not int or not 0 < epoch < 2**64
-            or type(mailbox.get("owner_verified_pump_epochs")) is not int or mailbox.get("owner_verified_pump_epochs") != epoch
+            or type(mailbox.get("owner_verified_pump_epochs")) is not int or not 2 <= mailbox["owner_verified_pump_epochs"] <= epoch
             or type(tid) is not int or not 0 < tid < 2**32 or type(mailbox.get("current_tid")) is not int or mailbox.get("current_tid") != tid
             or type(mailbox.get("date_raw")) is not int or mailbox.get("date_raw") != source.date_raw
             or observer.get("read_in_progress") is not False
@@ -1264,22 +1264,109 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
     initial_native_version = None
     state["startup_observations"] = []
     state["campaign_root_query_attempts"] = []
+    state["fresh_full_read_attempts"] = []
     cancelled_wait_frame = None
     cancelled_wait_retry_used = False
 
     async def fresh_before_deadline() -> dict[str, object]:
-        remaining = deadline - time.monotonic()
-        if remaining <= 0:
-            raise TimeoutError("saved campaign observation exceeded original readiness deadline")
-        if initial_native_version == "1.21.0":
-            if "ck3_take_fresh_full_snapshot_v1" not in client.tools:
-                raise RuntimeError("Florin saved readiness lacks the public fresh Full tool")
-            value = await asyncio.wait_for(client.call("ck3_take_fresh_full_snapshot_v1", {}), timeout=remaining)
+        from xar_autoplayer.bridge.fresh_full_cancelled_read_v1 import (
+            FreshCancelledGateV1, FreshOwnerV1, cancelled_receipt_from_mcp_error_v1,
+            FreshReadPreSubmissionWaitV1, presubmission_wait_from_mcp_error_v1,
+        )
+        if initial_native_version != "1.21.0":
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("saved campaign observation exceeded original readiness deadline")
+            return await asyncio.wait_for(client.fresh(), timeout=remaining)
+        if "ck3_take_fresh_full_snapshot_v1" not in client.tools:
+            raise RuntimeError("Florin saved readiness lacks the public fresh Full tool")
+        recovery = None
+        seen_cancelled_ids: set[str] = set()
+        while True:
+            if managed_done is not None and managed_done.is_set():
+                raise RuntimeError("managed session ended during saved Fresh read recovery")
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError("saved campaign observation exceeded original readiness deadline")
+            diagnostic = await asyncio.wait_for(client.call("ck3_migration_pipe_diagnostics"), timeout=remaining)
+            saved_campaign_initial_snapshot_state(diagnostic, report["pipe"])
+            observed = diagnostic["diagnostics"]
+            if binding != {key: observed.get(key) for key in ("bridge_pid", "connection_generation")}:
+                raise RuntimeError("saved Fresh read recovery crossed its original process/connection")
+            if observed.get("fresh_full_read_recovery_invalidated_v1") is True:
+                raise RuntimeError("saved Fresh read recovery was invalidated by its driver owner guard")
+            raw_gate = observed.get("fresh_full_read_recovery_v1")
+            before_gate = FreshCancelledGateV1.parse(raw_gate) if raw_gate is not None else None
+            raw_wait = observed.get("fresh_full_read_presubmission_wait_v1")
+            before_wait = FreshReadPreSubmissionWaitV1.parse(raw_wait) if raw_wait is not None else None
+            if recovery is not None:
+                if (before_gate is None or before_gate.receipt != recovery.receipt or before_gate.source != recovery.source
+                        or before_gate.failure_heartbeat_sequence != recovery.failure_heartbeat_sequence):
+                    raise RuntimeError("saved Fresh read recovery lost its exact newly cancelled read proof")
+                owner = before_gate.observation(observed)
+                if owner is None or not before_gate.permits(owner):
+                    await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
+                    continue
+                state["fresh_full_read_recovery"] = {"status": "NEW_COMPLETED_OWNER_FRAME_OBSERVED",
+                    "proof": before_gate.to_json(), "owner": owner.to_json(), "original_deadline_retained": True}
+                write()
+            attempt = {"status": "CALL_PENDING", "started_at": now(), "retry_after_cancelled_read": recovery is not None}
+            state["fresh_full_read_attempts"].append(attempt)
+            write()
+            try:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise TimeoutError("saved campaign observation exceeded original readiness deadline")
+                value = await asyncio.wait_for(client.call("ck3_take_fresh_full_snapshot_v1", {}), timeout=remaining)
+            except Exception as error:
+                receipt = cancelled_receipt_from_mcp_error_v1(error)
+                presubmission = presubmission_wait_from_mcp_error_v1(error)
+                attempt.update(status="FAILED", finished_at=now(), error_type=type(error).__name__, error=str(error),
+                    original_parsed_receipt=receipt.to_json() if receipt is not None else None)
+                write()
+                if receipt is None and presubmission is None or time.monotonic() >= deadline:
+                    raise
+                after = await asyncio.wait_for(client.call("ck3_migration_pipe_diagnostics"), timeout=max(0, deadline-time.monotonic()))
+                saved_campaign_initial_snapshot_state(after, report["pipe"])
+                after_d = after["diagnostics"]
+                raw_gate = after_d.get("fresh_full_read_recovery_v1")
+                gate = FreshCancelledGateV1.parse(raw_gate) if raw_gate is not None else None
+                if presubmission is not None:
+                    raw_wait = after_d.get("fresh_full_read_presubmission_wait_v1")
+                    current_wait = FreshReadPreSubmissionWaitV1.parse(raw_wait) if raw_wait is not None else None
+                    if (recovery is None or gate is None or current_wait != presubmission
+                            or before_wait is not None and presubmission.call_sequence <= before_wait.call_sequence
+                            or presubmission.gate.receipt != recovery.receipt or presubmission.gate.source != recovery.source
+                            or gate.receipt != recovery.receipt or gate.source != recovery.source
+                            or presubmission.gate.actor_id != recovery.actor_id or gate.actor_id != recovery.actor_id
+                            or presubmission.gate.failure_heartbeat_sequence != recovery.failure_heartbeat_sequence
+                            or gate.failure_heartbeat_sequence != recovery.failure_heartbeat_sequence
+                            or after_d.get("native_request_sequence_v1") != str(presubmission.request_sequence_before)
+                            or after_d.get("fresh_full_read_recovery_invalidated_v1") is True):
+                        raise
+                    gate.observation(after_d)  # Hard identity drift is never a passive wait.
+                    attempt["sdk_presubmission_wait"] = presubmission.to_json()
+                    recovery = gate
+                    write()
+                    continue
+                if (gate is None or gate.receipt != receipt or receipt.request_id in seen_cancelled_ids
+                        or before_gate is not None and before_gate.receipt.request_id == receipt.request_id
+                        or after_d.get("fresh_full_read_recovery_invalidated_v1") is True
+                        or gate.source.pid != binding["bridge_pid"] or gate.source.generation != binding["connection_generation"]
+                        or gate.actor_id != expected["actor_character_id"] or gate.source.date_raw != expected["date_raw"]):
+                    raise
+                seen_cancelled_ids.add(receipt.request_id)
+                recovery = gate
+                attempt["driver_cancelled_read_proof"] = gate.to_json()
+                state["fresh_full_read_recovery"] = {"status": "WAITING_FOR_NEW_COMPLETED_SAME_OWNER_FRAME",
+                    "proof": gate.to_json(), "original_deadline_retained": True}
+                write()
+                continue
             if not isinstance(value, dict):
                 raise ValueError("Florin fresh Full tool did not return an actual snapshot object")
+            attempt.update(status="RETURNED", finished_at=now(), snapshot_id=value.get("snapshot_id"), revision=value.get("revision"))
             client.snapshot = value
             return value
-        return await asyncio.wait_for(client.fresh(), timeout=remaining)
 
     while True:
         if managed_done is not None and managed_done.is_set():

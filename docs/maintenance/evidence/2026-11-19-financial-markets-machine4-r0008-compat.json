@@ -1,0 +1,299 @@
+{
+  "schema": "xfm.r0008-nonfinancial-compat-review.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-18T18:55:29.471808+00:00",
+  "scope": "Preserved snapshot only; no Game/Native/OS live query, no SAVE read, no source change/build/test. Installed source identity 1.21.0/build26622941 from prior verified installation, not re-queried here.",
+  "snapshot": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\R0008-financial-errorlog-snapshot01\\error.log.snapshot.original",
+    "bytes": 564391,
+    "sha256": "4cf157a29cb2849d6e1ccff7c0384745974008a85b8feaa11b4ba64d7a9a2522"
+  },
+  "audit": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\R0008-financial-errorlog-snapshot01\\FINANCIAL-ERROR-AUDIT.v2.actual.json",
+    "bytes": 230861,
+    "sha256": "655368000c6ad0d7c43a124d99a90be396c46afb7c95bf7d8672a31f6a716e35"
+  },
+  "engine_records": 3280,
+  "nonfinancial_records": 3124,
+  "classes": {
+    "unknown_saved_building_token": {
+      "count": 812,
+      "samples": [
+        {
+          "line": 157,
+          "start_byte": 36196,
+          "message": "[02:37:17][E][pdx_persistent_reader.cpp:216]: Error: \"Unexpected token: special_building, near line: 4265\" in file: \"\" near line: 4267",
+          "end_line": 157,
+          "end_byte_exclusive": 36332
+        },
+        {
+          "line": 968,
+          "start_byte": 171087,
+          "message": "[02:37:18][E][pdx_persistent_reader.cpp:216]: Error: \"Unexpected token: great_building_type, near line: 252638 (expanded from file:  line: 252639)\" in file: \"\" near line: 252638",
+          "end_line": 968,
+          "end_byte_exclusive": 171266
+        }
+      ]
+    },
+    "unresolved_saved_key": {
+      "count": 1078,
+      "samples": [
+        {
+          "line": 1782,
+          "start_byte": 257064,
+          "message": "[02:37:24][E][pdx_persistent_reader.cpp:216]: Error: \"Failed to read key reference: napata: napata, near line: 4954695\" in file: \"\" near line: 4954695",
+          "end_line": 1782,
+          "end_byte_exclusive": 257216
+        },
+        {
+          "line": 2859,
+          "start_byte": 460350,
+          "message": "[02:37:26][E][pdx_persistent_reader.cpp:216]: Error: \"Failed to read key reference: artifact_domain_tax_same_faith_mult_4_modifier: artifact_domain_tax_same_faith_mult_4_modifier, near line: 6019313\" in file: \"\" near line: 6019313",
+          "end_line": 2859,
+          "end_byte_exclusive": 460582
+        }
+      ]
+    },
+    "invalid_title_template": {
+      "count": 173,
+      "samples": [
+        {
+          "line": 969,
+          "start_byte": 171266,
+          "message": "[02:37:18][E][landed_title.cpp:1373]: b_dassel is not a valid title template. file:  line: 272468",
+          "end_line": 969,
+          "end_byte_exclusive": 171365
+        },
+        {
+          "line": 1141,
+          "start_byte": 189433,
+          "message": "[02:37:18][E][landed_title.cpp:1373]: c_nf_zheng_912d_52 is not a valid title template. file:  line: 609414",
+          "end_line": 1141,
+          "end_byte_exclusive": 189542
+        }
+      ]
+    },
+    "duplicate_title_name": {
+      "count": 172,
+      "samples": [
+        {
+          "line": 1142,
+          "start_byte": 189542,
+          "message": "[02:37:18][E][landed_title_manager.cpp:1218]: Duplicate landed title name:",
+          "end_line": 1142,
+          "end_byte_exclusive": 189619
+        },
+        {
+          "line": 1313,
+          "start_byte": 202709,
+          "message": "[02:37:18][E][landed_title_manager.cpp:1218]: Duplicate landed title name:",
+          "end_line": 1313,
+          "end_byte_exclusive": 202786
+        }
+      ]
+    },
+    "dynasty_name_fallback": {
+      "count": 468,
+      "samples": [
+        {
+          "line": 1314,
+          "start_byte": 202786,
+          "message": "[02:37:19][E][dynasty.cpp:176]: Unknown dynasty template '13048' in save, generating a cultural name instead",
+          "end_line": 1314,
+          "end_byte_exclusive": 202896
+        },
+        {
+          "line": 1781,
+          "start_byte": 256945,
+          "message": "[02:37:19][E][dynasty.cpp:176]: Unknown dynasty template 'zhang_5F35_201' in save, generating a cultural name instead",
+          "end_line": 1781,
+          "end_byte_exclusive": 257064
+        }
+      ]
+    },
+    "culture_czech": {
+      "count": 205,
+      "samples": [
+        {
+          "line": 2861,
+          "start_byte": 460711,
+          "message": "[02:37:28][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Failed to fetch a valid culture 'czech'\n  Script location: file: common/culture/innovations/00_tribal_innovations.txt line: 417 (innovation_table_of_princes:potential)\n",
+          "end_line": 2864,
+          "end_byte_exclusive": 460956
+        },
+        {
+          "line": 4493,
+          "start_byte": 561079,
+          "message": "[02:37:28][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Failed to fetch a valid culture 'czech'\n  Script location: file: common/culture/innovations/00_tribal_innovations.txt line: 417 (innovation_table_of_princes:potential)\n",
+          "end_line": 4496,
+          "end_byte_exclusive": 561324
+        }
+      ]
+    },
+    "culture_slovien": {
+      "count": 205,
+      "samples": [
+        {
+          "line": 2865,
+          "start_byte": 460956,
+          "message": "[02:37:28][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Failed to fetch a valid culture 'slovien'\n  Script location: file: common/culture/innovations/00_tribal_innovations.txt line: 418 (innovation_table_of_princes:potential)\n",
+          "end_line": 2868,
+          "end_byte_exclusive": 461203
+        },
+        {
+          "line": 4497,
+          "start_byte": 561324,
+          "message": "[02:37:28][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Failed to fetch a valid culture 'slovien'\n  Script location: file: common/culture/innovations/00_tribal_innovations.txt line: 418 (innovation_table_of_princes:potential)\n",
+          "end_line": 4500,
+          "end_byte_exclusive": 561571
+        }
+      ]
+    },
+    "invalid_province": {
+      "count": 6,
+      "samples": [
+        {
+          "line": 4501,
+          "start_byte": 561571,
+          "message": "[02:37:31][E][jomini_script_system.cpp:307]: Script system error!\n  Error: has_building_with_flag trigger [ Scoped object of type 'province' is not valid ((no province)\u0015weak （Province-0）\u0015!) ]\n  Script location: file: common/districts/resource_districts.txt line: 858 (mine_district:can_construct_potential)\n",
+          "end_line": 4504,
+          "end_byte_exclusive": 561884
+        },
+        {
+          "line": 4521,
+          "start_byte": 563136,
+          "message": "[02:37:31][E][jomini_script_system.cpp:307]: Script system error!\n  Error: has_building_with_flag trigger [ Scoped object of type 'province' is not valid ((no province)\u0015weak （Province-0）\u0015!) ]\n  Script location: file: common/districts/resource_districts.txt line: 970 (salt_district:can_construct_potential)\n",
+          "end_line": 4524,
+          "end_byte_exclusive": 563449
+        }
+      ]
+    },
+    "vassal_contract_assertion": {
+      "count": 1,
+      "samples": [
+        {
+          "line": 2860,
+          "start_byte": 460582,
+          "message": "[02:37:26][E][pdx_assert.cpp:619]: Assertion failed: Trying to end non-active object [#8585] in the 'vassal_contracts' manager.",
+          "end_line": 2860,
+          "end_byte_exclusive": 460711
+        }
+      ]
+    },
+    "market_capital_fallback": {
+      "count": 4,
+      "samples": [
+        {
+          "line": 4525,
+          "start_byte": 563449,
+          "message": "[02:37:32][E][trade_market_manager.cpp:40]: Market capital 'b_kayal' of '般荼拿柱 (Internal ID: 11524 - Internal Key: d_pandya_nadu)' isn't a barony with a holding in one of its de jure counties; using the capital county's capital.",
+          "end_line": 4525,
+          "end_byte_exclusive": 563686
+        },
+        {
+          "line": 4528,
+          "start_byte": 564165,
+          "message": "[02:37:32][E][trade_market_manager.cpp:40]: Market capital 'b_huang' of '淄青 (Internal ID: 14096 - Internal Key: d_ziqing)' isn't a barony with a holding in one of its de jure counties; using the capital county's capital.",
+          "end_line": 4528,
+          "end_byte_exclusive": 564391
+        }
+      ]
+    }
+  },
+  "unresolved_key_counts": {
+    "napata": 1,
+    "colonea": 1,
+    "armagh": 1,
+    "siffa": 1,
+    "yamama": 1,
+    "qom": 1,
+    "kusinagara": 1,
+    "sagya": 1,
+    "ava": 1,
+    "sittaung": 1,
+    "puri": 1,
+    "badrinath": 1,
+    "shringeri": 1,
+    "prambanan": 1,
+    "preah_vihear": 1,
+    "bumiayu": 1,
+    "lejre": 1,
+    "zeeland": 1,
+    "sparta": 1,
+    "suzhou": 1,
+    "mount_kunyu": 1,
+    "ishizuchi": 1,
+    "haku": 1,
+    "koya": 1,
+    "haguro": 1,
+    "shaolin": 1,
+    "hangzhou": 1,
+    "emei": 1,
+    "jiuhua": 1,
+    "putuo": 1,
+    "shicheng": 1,
+    "jianchang": 1,
+    "bulguksa": 1,
+    "donggang": 1,
+    "danai": 1,
+    "magadha": 1,
+    "tate": 1,
+    "awa": 1,
+    "quanzhou": 1,
+    "turpan": 1,
+    "quzhou": 1,
+    "linzi": 1,
+    "zhuolu": 1,
+    "dongting": 1,
+    "wehale": 1,
+    "cheongju": 1,
+    "goseong": 1,
+    "nanhua": 1,
+    "sarasvati": 1,
+    "mogao": 1,
+    "gaeseong": 1,
+    "hiei": 1,
+    "heiankyo": 1,
+    "innovation_development_02": 268,
+    "innovation_development_03": 244,
+    "innovation_development_04": 244,
+    "innovation_development_01": 253,
+    "artifact_domain_tax_same_faith_mult_2_modifier": 5,
+    "artifact_domain_tax_same_faith_mult_3_modifier": 6,
+    "artifact_domain_tax_same_faith_mult_1_modifier": 3,
+    "artifact_domain_tax_mult_2_modifier": 1,
+    "artifact_domain_tax_same_faith_mult_4_modifier": 1
+  },
+  "source_pins": {
+    "common/culture/cultures/00_west_slavic.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\culture\\cultures\\00_west_slavic.txt",
+      "bytes": 5177,
+      "sha256": "b3e35aee90e506b628e0f67ceb46b2419c17f3ed29fc12d0a8118d2136178a6d"
+    },
+    "common/culture/innovations/00_tribal_innovations.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\culture\\innovations\\00_tribal_innovations.txt",
+      "bytes": 15238,
+      "sha256": "0bae64f85a12df2c2fab192524f01d9ed2341adc91ece350a83559d5e026d57a"
+    },
+    "common/districts/resource_districts.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\districts\\resource_districts.txt",
+      "bytes": 47553,
+      "sha256": "583eada9210a3a244330e393d9ce8614e8d220b5bb7da6e670c413027ce2cd1c"
+    },
+    "common/landed_titles/00_landed_titles.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\landed_titles\\00_landed_titles.txt",
+      "bytes": 1377993,
+      "sha256": "064ffd0bd9bfd33151c7d3cc37f63cc2f2a115bbe0e0f1225be5b54e0b761c94"
+    }
+  },
+  "source_checks": {
+    "culture_definitions": "00_west_slavic.txt:37 czech and :138 slovien exist; innovation potential references them at 00_tribal_innovations.txt:418-419. Their invalid runtime fetch is not proof of missing DLC/files.",
+    "district": "resource_districts.txt:858 mine and :970 salt execute county->any_county_province->has_building_with_flag; log has Province-0, no real county ID.",
+    "market": "00_landed_titles.txt:70836 declares market_capital=b_kayal; b_kayal definition at70871. Log explicitly uses capital fallback.",
+    "bounded_absence": "rg found no innovation_development_ in common/culture/innovations, no b_dassel in common/landed_titles, no artifact_domain_tax in common/modifiers; not a whole-engine/DLC proof."
+  },
+  "conclusion": "Real conversion/data-reference loss is evidenced; not merely cosmetic warnings. No explicit fatal/load-failed/menu-return/GUI-binding or missing-DLC diagnosis is evidenced in this snapshot. Assertion recovery and complete world/UI correctness remain UNKNOWN.",
+  "recommendation": "Preserve original 1.20 and converted lineage; do not patch save tokens or fake missing definitions. Treat cross-version old save as compatibility subject, not clean economic baseline. A separately authorized native 1.21 vanilla baseline comparison can isolate converted-save errors; do not infer current UI cause from this snapshot.",
+  "Root_source_modified": false,
+  "live_queried": false
+}
