@@ -32,6 +32,8 @@ mvn -f mod_financial_markets/tools/pom.xml -Dtest=FinancialMarketTest test
 
 源码568d763833679612bd493aad20b1a60779c856a4的候选14文件已实际构建成功。首次官方[CI 44272883501](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44272883501)在Windows checkout阶段因历史promo长路径失败，未运行任何测试；失败不改判。后继补齐与既有工作流一致的core.longpaths环境配置，重新触发官方CI，金融代码和14个runtime文件未改动。
 
+后续审阅将native本金/费用公式调整为先转分再做除法和费率，减少固定点中间截断风险，数学预期不变。此变更尚无引擎精度信用；新候选使用外置 candidate-a0-02，保留01原输入，不覆盖历史包。最终CI及外置manifest绑定实际后继源码。
+
 ## 实机状态
 
 本机此前已更新到 CK3 1.21.0 / build26622941，见 [本机更新记录](../../docs/maintenance/2026-11-18-machine4-ck3-update-and-market-design.md)。本轮 08:43 UTC 进程只读检查未见 CK3，未启动游戏、注入或恢复旧自动游玩。
