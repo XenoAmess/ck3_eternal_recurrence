@@ -1,0 +1,160 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T11:03:10.587360+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0004",
+  "case": "migration-core-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": true,
+  "facts": {
+    "original_celestial_core_markers": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ecd8f919b27d48f9a599a4b779eea575\\profile\\logs\\debug.log",
+          "bytes": 3719573,
+          "sha256": "930c204af81f8e62a298de65b9c0f1b6c49d19100633cd6252e2471cf5f497f0"
+        }
+      ]
+    },
+    "original_heir_removal_death_and_transfer_guards": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ecd8f919b27d48f9a599a4b779eea575\\profile\\logs\\debug.log",
+          "bytes": 3719573,
+          "sha256": "930c204af81f8e62a298de65b9c0f1b6c49d19100633cd6252e2471cf5f497f0"
+        }
+      ]
+    },
+    "native_hook_payment_conversion_ransom_release_consequences": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ecd8f919b27d48f9a599a4b779eea575\\profile\\logs\\debug.log",
+          "bytes": 3719573,
+          "sha256": "930c204af81f8e62a298de65b9c0f1b6c49d19100633cd6252e2471cf5f497f0"
+        }
+      ]
+    },
+    "actual_current_actor_date_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ecd8f919b27d48f9a599a4b779eea575\\profile\\logs\\debug.log",
+          "bytes": 3719573,
+          "sha256": "930c204af81f8e62a298de65b9c0f1b6c49d19100633cd6252e2471cf5f497f0"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r4-batch4-before-menu-hold.png",
+          "bytes": 1158953,
+          "sha256": "1988b350013c5327bc34736f52f268f96d418551492292f4ebda10113bb2d6d7"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r4-batch4-quit-dialog-view.png",
+          "bytes": 650159,
+          "sha256": "d5b5647c555782e7a1bc8dd9434cbf0e02727fb7fc781f61d8f4a66bdb4931f8"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r4-batch4-quit-desktop.png.json",
+          "bytes": 1465,
+          "sha256": "d8cecf6de9756e743bb6e66db1b49298dab4dd5b40119801834bd29f2083602f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0004\\game-exit.json",
+          "bytes": 252,
+          "sha256": "84e8d05e0624467e08db659f5f9ab7b57e0f59c4625160af649d3a739ebb8baf"
+        }
+      ]
+    }
+  },
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r4-batch4-quit-dialog-view.png",
+      "bytes": 650159,
+      "sha256": "d5b5647c555782e7a1bc8dd9434cbf0e02727fb7fc781f61d8f4a66bdb4931f8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r4-batch4-quit-desktop.png.json",
+      "bytes": 1465,
+      "sha256": "d8cecf6de9756e743bb6e66db1b49298dab4dd5b40119801834bd29f2083602f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--xenoamess-quality-of-life--R0004\\game-exit.json",
+      "bytes": 252,
+      "sha256": "84e8d05e0624467e08db659f5f9ab7b57e0f59c4625160af649d3a739ebb8baf"
+    }
+  ],
+  "actual_final_date": "1066-10-09",
+  "natural_days": 24,
+  "maximum_natural_days": 60,
+  "required_marker_counts": {
+    "ZQA: TEST BEGIN xqol": 1,
+    "ZQA: TEST PASS exact_build_song_emperor": 1,
+    "ZQA: TEST PASS switched_to_supported_player": 1,
+    "ZQA: TEST PASS product_enable_decisions": 1,
+    "ZQA: TEST PASS transfer_guard_enabled_and_preexisting_preserved": 1,
+    "ZQA: TEST PASS vanilla_baseline_heirs_recorded": 1,
+    "ZQA: TEST PASS enabled_highest_non_player_heir_selected": 1,
+    "ZQA: TEST PASS removal_transferred_to_scored_heir": 1,
+    "ZQA: TEST PASS death_transferred_to_non_player_successor": 1,
+    "ZQA: TEST PASS ready_for_product_disable_decisions": 1,
+    "ZQA: TEST PASS product_disable_decisions": 1,
+    "ZQA: TEST PASS disabled_vanilla_heir_available": 1,
+    "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved": 1,
+    "ZQA: TEST PASS payment_full_only": 1,
+    "ZQA: TEST PASS payment_any_above_one_only": 1,
+    "ZQA: TEST PASS payment_matrix_done": 1,
+    "ZQA: TEST PASS conversion_threshold_50_filtered": 1,
+    "ZQA: TEST PASS ransom_full_only": 1,
+    "ZQA: TEST PASS ransom_any_one_gold": 1,
+    "ZQA: TEST PASS release_priority_matrix": 1,
+    "ZQA: TEST PASS phase2_interaction_matrices_done": 1,
+    "ZQA120: TEST PASS release_conversion_rite_matched": 1,
+    "ZQA120: TEST PASS accepted_conversion_faith_and_rite": 1,
+    "ZQA120: TEST DONE core": 1,
+    "ZQA120: TEST BEGIN engine_startup": 1,
+    "ZQA120: TEST PASS production_enable_effects_invoked": 1,
+    "ZQA120: TEST PASS production_disable_effects_invoked": 1
+  },
+  "forbidden_marker_counts": {
+    "ZQA: TEST FAIL": 0,
+    "ZQA120: TEST FAIL": 0
+  },
+  "save_count": 0,
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-ecd8f919b27d48f9a599a4b779eea575\\profile\\logs\\error.log",
+    "bytes": 1530,
+    "sha256": "d50e1b904b6609d05a2549120ae2352f8a24ca87b2dba31de0c8512dc89503c2"
+  },
+  "error_attribution": "Remaining formatter diagnostics have unresolved origin; no zero-error claim. No Script system error or missing fixture variable diagnostic.",
+  "product_release_pass": false,
+  "scope": "Original celestial core only; production slider UI, defensive free call/reverse contracts and governor UI remain separate.",
+  "operator_event": {
+    "definition": "ep3_emperor_yearly.8000",
+    "option": "ep3_emperor_yearly.8000.a",
+    "route": "GUI-only operator selection after original definition and displayed options review; no native capability credit",
+    "before": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r4-event-reviewed-fresh.png",
+      "bytes": 1188478,
+      "sha256": "508710a882b343d1fa84b5c49af13a3d767ce7d60e39afd03bd571be4e0daf99"
+    },
+    "click": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r4-event-first-option.png.json",
+      "bytes": 1461,
+      "sha256": "2ffc6c3fd54954020bce64fc7e5111f952bfefd2f97f99c4b90e9df355deaf63"
+    },
+    "after": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\xqol-r4-event-first-option-view.png",
+      "bytes": 1158096,
+      "sha256": "c7bd94c25e36d4f7f9ab1598b30718c887e0c2fe0ee96d3a59b9a49d73c88ff3"
+    },
+    "source": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\ep3\\ep3_emperor_yearly_8.txt",
+      "bytes": 52391,
+      "sha256": "81a901f1c7ac6013588770310d995df4510439c0862716d95979908c269d5efe"
+    }
+  },
+  "retention_review_at_utc": "2026-12-18T11:02:00Z"
+}

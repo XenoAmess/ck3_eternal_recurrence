@@ -14,13 +14,13 @@
 
 下一场前，已回收已发布Ox缓存及CHT业务／缓存的可重建shader：10624文件、438096209逻辑字节，零失败。实际D卷由22099402752增至22556413952B（包含并发系统变化，不全归因删除）；日志、GUI、产品／夹具、CHT物理保存及唯一MRM warm输入仍在。历史已删shader的prepared pins不可读取。新场仍独立核容量、活跃任务与预算。
 
-2026-11-18T09:07:37.244267Z，R0001原Game正常退出0、无WM_CLOSE/STOP，keeper/CAS闭合，零SAVE。原生产继任／移除／死亡／转封、足额／有钱即收索款、改信筛选、两种赎囚及释放矩阵均达到原标记，但最终accepted-rite与DONE两条未完成；保持HARNESS_RED，不把25/27及零FAIL标记当业务通过。实际error.log91988B：核心驱动仍设committed threshold而dispatcher读draft，造成101路未设变量诊断；另有原版文本formatter回退诊断。最后可见1066-10-01，由普通事件暂停，16自然日。
+2026-11-18T09:07:37.244267Z，R0001原Game正常退出0、无WM_CLOSE/STOP，keeper/CAS闭合，零SAVE。原生产继任／移除／死亡／转封、足额／有钱即收索款、改信筛选、两种赎囚及释放矩阵均达到原标记，但最终accepted-rite与DONE两条未完成；保持HARNESS_RED，不把25/27及零FAIL标记当业务通过。实际error.log91988B：核心驱动仍设committed threshold而dispatcher读draft，造成101路未设变量诊断；另有来源尚未确认的文本formatter回退诊断。最后可见1066-10-01，由普通事件暂停，16自然日。
 
 修复仅改共享fixture producer中两处50门槛初始化为消费者实际读取的draft，不更改正式27文件、原生产effects、原断言、调度顺序和完整marker清单。真实生产generator→fixture入口字段回归加入原CI测试文件，含当前stock的9项实际通过、无跳过。新a03 fixture仅event文件两处字段变化，精确逆替换可还原旧输入；该文件重新parse通过，其余21份原精确输入资格复用。a02生成时误带一处空格的准备校验失败亦保留，没有启动Game。原R0001 common verify因失败review缺少direct_image_review字段返回BLOCKED，保留原回执，不追认任何业务信用；原退出及closure依各自原件独立记录。
 
 本次最早prepare尚在运行时误调用allocate，被缺少prepared-case拒绝，未消费live ID或启动Game；原拒绝留xqol-core-allocate-early-blocked.json。后继分配消费实际prepare退出0。新场wrapper在run前明确拒绝没有run_dir的失败分配结果，不按外层调用成功启动下一步。
 
-2026-11-18T09:42:03.374090Z，R0002原Popen正常退出0，keeper/CAS闭合、零SAVE；最后画面1066-09-29，14自然日。26/27必需marker各一次，唯独原conversion_threshold_50_filtered失败；其断言仍读取已保存门槛，前次仅初始化draft的修正遗漏该状态，error.log4775B含三条未设committed变量诊断及42条原版formatter提示。accepted faith/rite与DONE均已完成，但FAIL1必须保留，整场仍HARNESS_RED。
+2026-11-18T09:42:03.374090Z，R0002原Popen正常退出0，keeper/CAS闭合、零SAVE；最后画面1066-09-29，14自然日。26/27必需marker各一次，唯独原conversion_threshold_50_filtered失败；其断言仍读取已保存门槛，前次仅初始化draft的修正遗漏该状态，error.log4775B含三条未设committed变量诊断及42条来源尚未确认的formatter提示。accepted faith/rite与DONE均已完成，但FAIL1必须保留，整场仍HARNESS_RED。
 
 本次按实际生产xqol_events.txt确认选项完整消费链修正两处fixture入口：draft=50，提交committed=draft，dispatch，清理draft。原全部断言及生产运行27文件不变。回归同时读取真实生成dispatcher、生产Save提交和原矩阵断言，验证字段及顺序闭环，当前stock共9项无跳过通过。a04只重parse修改的event，另21份输入逐项SHA确认后复用；不以源码修正追认R0002通过。
 
@@ -29,3 +29,5 @@
 R0003在实际1066-10-07／22自然日已达到完整27/27各一次、FAIL0，原fixture变量错误消失。Root随后为补充角色画面误从菜单恢复模拟，后见1066-11-21／67自然日，超出本case60日上限；记录OPERATOR_CALENDAR_RED，不以较早核心完成点追认整场PASS。10:17:05.727020Z正常退出0、keeper/CAS闭合、零SAVE，原件保留。error.log3150B仅35条weak/positive_value/negative_value格式提示，来源归因尚未闭合，不先称原版或错误日志为空。
 
 后继临时GUI收束在完整原标记各一次／零FAIL且无Script system error时，从已暂停菜单直接正常Exit，不恢复模拟补图。退出前只接受三张已审XQOL同版截图中一致的unchecked-autosave16×16原像素SHA；不匹配则保持菜单，不点退出。该像素核对不是业务信用，仍须原Popen正常终止、keeper/CAS及实际图片审阅。正式27文件、原断言和自然日上限均未改变。
+
+R0004在实际1066-10-09／24自然日完成原27项各一次、FAIL0、零SAVE，11:02:06.486827Z原Popen正常退出0，无WM_CLOSE，keeper/CAS闭合。直接审阅原场景日期、未勾选退出自动保存及原退出操作；公共verify为PASS，明确product_release_pass=false。途中原版ep3_emperor_yearly.8000暂停，核对定义及四选项后经本场GUI-only路径选第一项并实际消失；不授Native能力资格。error.log1530B仍有未完成归因的formatter提示，未出现Script system error或fixture未设变量错误；不宣称零错误。原件见[xqol-florin-core-R0004-pass.json](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/xqol-florin-core-R0004-pass.json)，复核期限2026-12-18。生产滑条、实际防御调用／反向合同、官职候选界面继续分别验收后才评估发布。
