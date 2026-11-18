@@ -1,0 +1,650 @@
+{
+  "schema": "ck3-financial-archived-layout-discovery-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-18T22:23:38.034053+00:00",
+  "request": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0013-wallet-discovery01.request.json",
+    "bytes": 393,
+    "sha256": "bc95fb26f4b75602d1885aa967af5380ab4a804e6bc4d687357fc16cf079f516"
+  },
+  "archive_actual": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0013/core14-wallet-save-01/ARCHIVE.actual.json",
+      "bytes": 7487,
+      "sha256": "61ebb4811b3e5013ca4285fe963769b0c55e486eb272215df20d26932519e3f6"
+    },
+    "date_raw": 53144328,
+    "step_result_pointer": "/steps/7/result",
+    "original_source_pin": {
+      "path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 140063587,
+      "sha256": "409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6"
+    },
+    "native_physical_save_confirmed": false,
+    "driver_state_replace_receipt": {
+      "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+      "status": "unconfirmed",
+      "write_replace_returned": true,
+      "save_binding_verified": false,
+      "reason": "save_binding_mismatch",
+      "attempt_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+        "bridge_pid": 17976,
+        "episode_character_id": null,
+        "episode_run_id": null,
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "rogue_one_life",
+          "xar_enabled": "xar_on",
+          "pact_contract": "terminal_settlement_required",
+          "source": "legacy-driver-default",
+          "environment_sha256": null
+        },
+        "campaign_goal": null
+      },
+      "binding_contract": "one_life_episode_identity_v1",
+      "checkpoint_episode_projection": "native_campaign",
+      "missing_checkpoint_binding_fields": [
+        "episode_character_id",
+        "episode_run_id"
+      ],
+      "recorded_session_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+        "bridge_pid": 17976,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "save_history_index": 4,
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 140063587,
+        "sha256": "409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6",
+        "date_raw": 53144328,
+        "overwrite_confirmed": false,
+        "strategy": "native-autosave-command-v1",
+        "episode_projection": "native_campaign",
+        "succession_lifecycle": null,
+        "history_index": 4,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "encoded_history_rows": 4,
+      "driver_state_path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\native-session\\driver-state.json"
+    }
+  },
+  "save": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0013\\core14-wallet-save-01\\xar_checkpoint.ck3",
+    "bytes": 140063587,
+    "sha256": "409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6"
+  },
+  "input_facts_before": {
+    "device": 11562708564543669174,
+    "inode": 281474980397018,
+    "bytes": 140063587,
+    "mtime_ns": 1795040410156562800,
+    "ctime_ns": 1795040410013636800,
+    "birthtime_ns": 1795040410013636800
+  },
+  "input_facts_after": {
+    "device": 11562708564543669174,
+    "inode": 281474980397018,
+    "bytes": 140063587,
+    "mtime_ns": 1795040410156562800,
+    "ctime_ns": 1795040410013636800,
+    "birthtime_ns": 1795040410013636800
+  },
+  "input_unchanged": true,
+  "complete_passes": 2,
+  "stream": {
+    "container": "PLAIN_TEXT",
+    "complete_stream_bytes": 140063587,
+    "complete_stream_sha256": "409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6"
+  },
+  "coverage": {
+    "table_records": 55,
+    "story_type_counts": {
+      "story_cycle_pet_rock": 1,
+      "story_cycle_pet_cat": 1,
+      "story_cycle_violet_poet": 1,
+      "story_adventurer_ai": 23,
+      "story_mandala": 4,
+      "story_tai_migrations": 20,
+      "story_conqueror": 1,
+      "xfma_observer": 1,
+      "xfm_finance_exchange": 1,
+      "xfm_finance_account": 2
+    },
+    "selected_records": 3,
+    "selected_canonical_bytes": 3075,
+    "generic_retained_bytes": 53245,
+    "projected_variable_fields": 45,
+    "metadata_raw": {
+      "save_game_version": "19",
+      "version": "\"1.21.0\"",
+      "meta_date": "1066.9.15"
+    },
+    "global_variables": [
+      {
+        "flag": "xfm_exchange",
+        "type_raw": "story",
+        "identity_present": true,
+        "identity_raw": "52",
+        "other_scalar_tokens": [],
+        "nested_field_names": []
+      }
+    ],
+    "financial_variable_flag_counts": {
+      "xfm_result_account": 1,
+      "xfm_a0_migration_scanned": 1,
+      "xfm_ai_tail": 1,
+      "xfm_ai_head": 1,
+      "xfm_ai_count": 1,
+      "xfm_ai_seeded": 1,
+      "xfm_default_fund_account": 1,
+      "xfm_result": 1,
+      "xfm_new_listings_today": 1,
+      "xfm_archived_orders_count": 1,
+      "xfm_order_stories_count": 1,
+      "xfm_active_orders_count": 1,
+      "xfm_fee_cents": 1,
+      "xfm_active_coin_count": 1,
+      "xfm_pending_coin_count": 1,
+      "xfm_registered_coin_count": 1,
+      "xfm_coin_count": 1,
+      "xfm_next_order_id": 1,
+      "xfm_next_reservation_id": 1,
+      "xfm_next_coin_id": 1,
+      "xfm_next_account_id": 1,
+      "xfm_last_date": 1,
+      "xfm_day": 1,
+      "xfm_open_positions_count": 2,
+      "xfm_open_orders_count": 2,
+      "xfm_holdings_count": 2,
+      "xfm_reserved_cents": 2,
+      "xfm_free_cents": 2,
+      "xfm_inheritance_state": 2,
+      "xfm_account_frozen": 2,
+      "xfm_system_account": 2,
+      "xfm_beneficial_owner": 2,
+      "xfm_holder": 2,
+      "xfm_account_id": 2
+    },
+    "financial_type_token_counts": {
+      "story": 2,
+      "value": 37,
+      "char": 6
+    },
+    "representative_records": {
+      "xfm_finance_exchange": [
+        {
+          "native_story_id": "52",
+          "record_path": [
+            "stories",
+            "active",
+            "52"
+          ],
+          "canonical_lexical_sha256": "5429f10c2f67baa47421888511d8007db02208494f458aa5ab449931a8af3113",
+          "canonical_lexical_bytes": 1540,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_finance_exchange"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "2321864281"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_result_account",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "54",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_a0_migration_scanned",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_tail",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "65868",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_head",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "33827",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_count",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "3558600000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_ai_seeded",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_default_fund_account",
+              "type_raw": "story",
+              "identity_present": true,
+              "identity_raw": "53",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_result",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_new_listings_today",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_archived_orders_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_order_stories_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_active_orders_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_fee_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_active_coin_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_pending_coin_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_registered_coin_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_coin_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_order_id",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_reservation_id",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_coin_id",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_next_account_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_last_date",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "38934700000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_day",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        }
+      ],
+      "xfm_finance_account": [
+        {
+          "native_story_id": "53",
+          "record_path": [
+            "stories",
+            "active",
+            "53"
+          ],
+          "canonical_lexical_sha256": "e65aea10e1b02c3cf44d7925756c930004db4f66373c5b61644ec8368ed018ef",
+          "canonical_lexical_bytes": 766,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_finance_account"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "2365673041"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_open_positions_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_open_orders_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_holdings_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_reserved_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_free_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_inheritance_state",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account_frozen",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_system_account",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_beneficial_owner",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "31254",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_holder",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "31254",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        },
+        {
+          "native_story_id": "54",
+          "record_path": [
+            "stories",
+            "active",
+            "54"
+          ],
+          "canonical_lexical_sha256": "5c974b9237eb77b0437523126eceaf107babe78ad0fafbaec782cf1394fa7451",
+          "canonical_lexical_bytes": 769,
+          "direct_scalar_tokens": [
+            {
+              "key": "story_cycle",
+              "raw": "xfm_finance_account"
+            },
+            {
+              "key": "owner",
+              "raw": "31254"
+            },
+            {
+              "key": "seed",
+              "raw": "2409481801"
+            }
+          ],
+          "variables": [
+            {
+              "flag": "xfm_open_positions_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_open_orders_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_holdings_count",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_reserved_cents",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_free_cents",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "100000000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_inheritance_state",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account_frozen",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_system_account",
+              "type_raw": "value",
+              "identity_present": false,
+              "identity_raw": null,
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_beneficial_owner",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "31254",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_holder",
+              "type_raw": "char",
+              "identity_present": true,
+              "identity_raw": "31254",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            },
+            {
+              "flag": "xfm_account_id",
+              "type_raw": "value",
+              "identity_present": true,
+              "identity_raw": "200000",
+              "other_scalar_tokens": [],
+              "nested_field_names": []
+            }
+          ]
+        }
+      ]
+    },
+    "examples_per_story_type_limit": 2,
+    "examples_are_not_a_complete_ledger": true
+  },
+  "existing_bounded_parser": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\bounded_save_parser.py",
+    "bytes": 1998,
+    "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+  },
+  "limits": {
+    "table_records": 200000,
+    "financial_records": 65536,
+    "selected_record_bytes": 524288,
+    "financial_selected_bytes": 67108864,
+    "generic_retained_bytes": 4194304,
+    "report_bytes": 4194304,
+    "complete_gamestate_bytes": 536870912,
+    "projected_fields": 1000000
+  },
+  "status": "OBSERVED_UNQUALIFIED",
+  "numeric_scale": "UNDETERMINED",
+  "story_reference_type": "UNDETERMINED",
+  "character_reference_type": "UNDETERMINED",
+  "character_id_translation_performed": false,
+  "audit_executed": false,
+  "Game_OS_Native_Maven_java_SAVE_executed": false,
+  "source_layout_qualified": false,
+  "financialCertified": false
+}

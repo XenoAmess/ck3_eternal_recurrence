@@ -1493,26 +1493,41 @@ class CaseClient:
         """Observe an original GUI or typed Quit route, retained OS0 and shared native0."""
         import ctypes
         require(self._handle is not None, 'No retained game handle; never manufacture OS exit')
-        require(self._kernel.WaitForSingleObject(self._handle, 0) == 258,
+        entry_wait = self._kernel.WaitForSingleObject(self._handle, 0)
+        require(entry_wait in (0, 258),
                 'Retained CK3 is no longer running; normal GUI Quit unavailable')
-        request=self.checkpoint('normal-quit-awaiting',{'run_id':self.frozen['run_id'],'reviewer':self.normal_quit_reviewer(),
+        typed_route = None
+        if entry_wait == 0:
+            # An external operator may have completed the SAME public route while
+            # the case was waiting. Consume its durable fact/claim/observer-close;
+            # never ask an exited process to run another confirmation.
+            typed_route = self.typed_normal_quit_evidence(
+                self.read_report(allow_error=True), allow_preserved_failure=True)
+            require(typed_route is not None,
+                    'Retained CK3 exited without complete original typed Quit evidence; never replay')
+        request=self.checkpoint('normal-quit-original-typed-result-consumed' if typed_route is not None
+            else 'normal-quit-awaiting',{'run_id':self.frozen['run_id'],'reviewer':self.normal_quit_reviewer(),
             'pid':self._process['pid'],'create_time':self._process['create_time'],
             'original_hold_deadline':self._hold,'disposition':disposition,
             'live':str(self.live.resolve()),'keeper_root':str(self.keeper.resolve()),'screen_task':self.frozen['screen_task'],
-            'action':'Authorized operator normal GUI Quit or public typed normal-exit route; preserve original route and unchecked autosave evidence',
+            'action':('Consume completed original typed normal-exit evidence without another request'
+                if typed_route is not None else
+                'Authorized operator normal GUI Quit or public typed normal-exit route; preserve original route and unchecked autosave evidence'),
+            'original_typed_exit_already_observed':typed_route is not None,
             'host_error_preserved':self.read_report(allow_error=True).get('error')})
         print('CK3_ROOT_CHECKPOINT '+str(request),flush=True)
         response=self.output/'normal-quit-root-result.json'
         config = getattr(self.selection, 'normal_quit_automation', None)
         automation = None
-        typed_route = None
         report=self.read_report(allow_error=True)
         automation_failure = None
-        manual_required = config is None
+        manual_required = config is None and typed_route is None
         helper_finished = False
         from ck3_mod_acceptance import normal_exit_tools_opted_in_v1
         typed_selected = normal_exit_tools_opted_in_v1(self.selection.case.get('required_mcp_tools', []))
-        if typed_selected:
+        if typed_route is not None:
+            manual_required = False
+        elif typed_selected:
             try:
                 typed_route = self.start_typed_normal_quit_automation()
                 manual_required = False
@@ -1587,14 +1602,16 @@ class CaseClient:
         retained={'signaled':signaled,'exit_code':code.value if available else None,'actual_retained_os0':os0,**self._process}
         self.checkpoint('actual-retained-handle-os-exit',retained)
         self._failure_shutdown_retained = retained if (review or automation or typed_route) and os0 else None
-        proof=None
-        failure_proof=None
-        while self.remaining()>0:
+        # Read completed facts even after the original deadline. This adds no
+        # wait or action budget and cannot authorize a new finish_hold.
+        report=self.read_report(allow_error=True)
+        proof=self.native_zero_proof(report)
+        failure_proof=self.native_failure_shutdown_proof(report)
+        while self.remaining()>0 and proof is None and failure_proof is None and not report.get('finished_at'):
+            time.sleep(.1)
             report=self.read_report(allow_error=True)
             proof=self.native_zero_proof(report)
             failure_proof=self.native_failure_shutdown_proof(report)
-            if proof is not None or failure_proof is not None or report.get('finished_at'):break
-            time.sleep(.1)
         finished=None
         if proof is not None and not report.get('finished_at'):
             finished=self.execute_plan([{'id':'acceptance-normal-exit-finish-hold','kind':'finish_hold',

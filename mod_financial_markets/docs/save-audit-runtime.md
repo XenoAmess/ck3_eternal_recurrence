@@ -8,6 +8,10 @@
 
 先从真实1.21物理SAVE核版本/格式、数值scale、story与character引用类型、故事表和global exchange。缺变量、未知type与省略identity不得默认为零。币/账户/仓位/债务按永久ID、原生story引用及法律holder核对；技术story_owner不等于产权人。金额分别核现金、冻结、费用和基金，债权不当现金。
 
+布局的可选第六字段为`numberIdentityEncoding`，枚举`identityRequired`或`omittedZero`。旧五字段JSON与旧Java构造/位置CLI仍默认`identityRequired`，不隐式改变历史报告语义；显式null、错类型、未知值和未知字段拒绝。只有明确声明`1.21.0`／格式`19`／scale`100000`，且共享parser第一遍实际metadata也吻合时，才能启用`omittedZero`。该模式只把真实存在的变量中恰好为`data={type=value}`的编码解释为数值零。缺变量、缺data、缺/错type、含额外不明数据、重复或畸形identity仍不完整；story/character/global引用身份缺失始终不推零。所选模式会写入输出`layoutHypothesis`，候选仍不授金融认证。
+
+该显式选项依据R0013实际钱包归档：`140063587`字节／SHA256`409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6`，其只读发现原件`2147b527455eb3b9eee2d83b4eb78cc3506c69d54de97e6e8610a5b85819bc15`同时观察到真实正值与省略零。全局exchange指向story52；主账户story54的account_id raw200000对应永久ID2、free raw100000000对应真实预存1000分，holder为char31254；基金story53的account_id/system1均raw100000，而free/reserved及exchange.day等`type=value`省略identity。实际原件与独立本金255→245金币共同支持该确切布局，不把缺变量补成值。软件回归所用JSON是发现原件的逐字副本；从其变量包重建的测试文本明确是软件投影，不冒充原物理SAVE、共享实际审计或冷载。
+
 冷比较需要另一个真实进程载入后、同暂停日期的物理SAVE及独立装载证据。同文件复制或对象总数相同不能证明冷载。候选报告始终`financialCertified=false`；exit0只代表已选择字段约束成立，exit2为不完整/冷比较不同，exit3为约束冲突，exit1为输入或处理失败。真正业务认证由实际动作、完整财务读回和运行证据共同判断。
 
 2026-11-18，machine_id`4-8e1c2f1861`：共享原10项回归及金融完整160项通过，其中两项SAVE JUnit复用52个合成断言；这不是1.21实际编码、命名入口实用或冷载通过。对应原件位于`C:/workspace/ck3-market-live-20261118/operations/MVN-save-core-audit01`与`MVN-financial-ai-save-full01`。

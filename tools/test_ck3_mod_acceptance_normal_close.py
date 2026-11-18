@@ -104,18 +104,101 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         client.start_normal_quit_automation = Mock()
         return client
 
-    def test_signaled_retained_process_rejects_before_quit_checkpoint_or_automation(self):
+    def test_signaled_retained_process_without_original_typed_proof_rejects_without_another_quit(self):
         with tempfile.TemporaryDirectory() as directory:
-            for wait_result in (0, 0xFFFFFFFF):
-                with self.subTest(wait_result=wait_result):
-                    client = self.process_poll_client(Path(directory), wait_result)
-                    client.checkpoint = Mock()
-                    with self.assertRaisesRegex(ValueError, 'no longer running; normal GUI Quit unavailable'):
-                        client.normal_close('business_failure_preserved')
-                    client._kernel.WaitForSingleObject.assert_called_once_with(client._handle, 0)
-                    client.checkpoint.assert_not_called()
-                    client.start_normal_quit_automation.assert_not_called()
-                    client.read_report.assert_not_called()
+            client = self.process_poll_client(Path(directory), 0)
+            client.typed_normal_quit_evidence = Mock(return_value=None)
+            client.checkpoint = Mock()
+            with self.assertRaisesRegex(ValueError, 'without complete original typed Quit evidence; never replay'):
+                client.normal_close('business_failure_preserved')
+            client._kernel.WaitForSingleObject.assert_called_once_with(client._handle, 0)
+            client.read_report.assert_called_once_with(allow_error=True)
+            client.typed_normal_quit_evidence.assert_called_once_with(
+                client.read_report.return_value, allow_preserved_failure=True)
+            client.checkpoint.assert_not_called()
+            client.start_normal_quit_automation.assert_not_called()
+
+    def test_failed_retained_wait_rejects_before_checkpoint_or_route_read(self):
+        with tempfile.TemporaryDirectory() as directory:
+            client = self.process_poll_client(Path(directory), 0xFFFFFFFF)
+            client.checkpoint = Mock()
+            with self.assertRaisesRegex(ValueError, 'no longer running; normal GUI Quit unavailable'):
+                client.normal_close('business_failure_preserved')
+            client.read_report.assert_not_called()
+            client.checkpoint.assert_not_called()
+            client.start_normal_quit_automation.assert_not_called()
+
+    def test_original_completed_typed_exit_is_consumed_after_finish_and_deadline_without_replay(self):
+        for core in (False, True):
+            with self.subTest(core=core), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                client, clock, fake_time, report = self.make_client(root, review_at=None, deadline=0)
+                self.typed_route(root, client, report, core=core)
+                report['hold_finished_by_control_plan'] = True
+                client._kernel.WaitForSingleObject = Mock(return_value=0)
+                client.start_typed_normal_quit_automation = Mock(side_effect=AssertionError('No repeated typed confirm'))
+                client.start_normal_quit_automation = Mock(side_effect=AssertionError('No GUI or template fallback'))
+                preserved = root / 'case-error-preserved.json'
+                original = b'{"error":"original missing business markers","business_pass":false}'
+                preserved.write_bytes(original)
+                with patch.object(self.module, 'time', fake_time):
+                    result = client.normal_close('business_failure_preserved')
+                self.assertTrue(result['normal_close_qualified'])
+                self.assertFalse(result['business_pass'])
+                self.assertTrue(result['retained_handle']['actual_retained_os0'])
+                self.assertIsNotNone(result['typed_normal_exit_route'])
+                self.assertIsNotNone(result['native_zero_proof'])
+                self.assertEqual(preserved.read_bytes(), original)
+                self.assertEqual(clock.now, 0)
+                self.assertEqual(client._hold, 0)
+                self.assertIsNone(result['finish_hold_rows'])
+                self.assertFalse((root / 'normal-quit-awaiting.json').exists())
+                self.assertFalse((root / 'manual-quit-awaiting.json').exists())
+                consumed = json.loads((root / 'normal-quit-original-typed-result-consumed.json').read_bytes())
+                self.assertTrue(consumed['original_typed_exit_already_observed'])
+                client.start_typed_normal_quit_automation.assert_not_called()
+                client.start_normal_quit_automation.assert_not_called()
+                client.execute_plan.assert_not_called()
+
+    def test_completed_typed_route_still_rejects_changed_birth_and_durable_claim(self):
+        for defect in ('birth', 'claim'):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                client, _, fake_time, report = self.make_client(root, review_at=None)
+                self.typed_route(root, client, report, core=True)
+                client._kernel.WaitForSingleObject = Mock(return_value=0)
+                client.start_typed_normal_quit_automation = Mock(side_effect=AssertionError('No repeated confirm'))
+                if defect == 'birth':
+                    client._process['creation_filetime_100ns'] = str(int(client._process['creation_filetime_100ns']) + 1)
+                else:
+                    claim = next((client.state / 'native-session/normal-exit-map-requests').glob('*.claim.json'))
+                    value = json.loads(claim.read_bytes()); value['identity']['game_pid'] += 1
+                    claim.write_text(json.dumps(value), encoding='utf-8')
+                with patch.object(self.module, 'time', fake_time), self.assertRaises(ValueError):
+                    client.normal_close('business_failure_preserved')
+                self.assertFalse((root / 'normal-quit-original-typed-result-consumed.json').exists())
+                client.start_typed_normal_quit_automation.assert_not_called()
+                client.execute_plan.assert_not_called()
+
+    def test_original_completed_typed_route_does_not_replace_os_native_or_host_zero(self):
+        for defect in ('os', 'native', 'thread', 'cleanup', 'host'):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                client, _, fake_time, report = self.make_client(root, review_at=None, deadline=0,
+                    os_exit=1 if defect == 'os' else 0, native_exit=1 if defect == 'native' else 0)
+                self.typed_route(root, client, report, core=True)
+                client._kernel.WaitForSingleObject = Mock(return_value=0)
+                client.start_typed_normal_quit_automation = Mock(side_effect=AssertionError('No repeated confirm'))
+                if defect == 'thread': report['managed_session_thread_finished'] = False
+                elif defect == 'cleanup': report['cleanup_ok'] = False
+                elif defect == 'host': report['error'] = 'original host failure'
+                with patch.object(self.module, 'time', fake_time):
+                    result = client.normal_close('business_failure_preserved')
+                self.assertFalse(result['normal_close_qualified'])
+                self.assertFalse(result['business_pass'])
+                self.assertEqual(report.get('error'), 'original host failure' if defect == 'host' else None)
+                client.start_typed_normal_quit_automation.assert_not_called()
+                client.execute_plan.assert_not_called()
 
     def test_running_retained_process_enters_original_quit_checkpoint(self):
         class ReachedOriginalCheckpoint(Exception):

@@ -1,0 +1,228 @@
+{
+  "schema": "xfm.r0013-followup-fixes.v1",
+  "at_utc": "2026-11-18T22:48:36.039300+00:00",
+  "machine_id": "4-8e1c2f1861",
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\issuer-scrollbox-instance-candidate01\\candidate-source-manifest.json",
+      "bytes": 1686,
+      "sha256": "7f6477ec2f1ec007887d22abc7e87d06c3fd3bb15bdea727a000c5e27eb4535b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\issuer-scrollbox-instance-independent-review01\\REVIEW.actual.json",
+      "bytes": 3510,
+      "sha256": "0074c0a4d31e39335fde9dd76c8fda76d9ca12eb8306fdb3ae5405a3d7d9d982"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\issuer-scrollbox-instance-adopted01.actual.json",
+      "bytes": 1348,
+      "sha256": "fc6ca69eb34d7268136d073eac5b39ffd3a7bc33f99685b93ff6ceed9da2dbb7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-omitted-zero-layout-candidate01\\candidate-source-manifest.json",
+      "bytes": 4948,
+      "sha256": "ec0a0defdd252ab02399a4a369e91933708af393e17f18080b23e35214eb8ece"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-16-zero-layout01-FAILED\\VERIFY.actual.json",
+      "bytes": 49030,
+      "sha256": "02d45f3c889110ec5d75f0474bb3b7308f1d1752da635e06de6647c7119628e9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-omitted-zero-layout-candidate02\\candidate-source-manifest.json",
+      "bytes": 4859,
+      "sha256": "39bf50d9d2501aca316dc2c80db3758e64302bfcf5087892a6bcf0a2265ab79c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\reviewed-financial-fixes02.ADOPTED.actual.json",
+      "bytes": 2498,
+      "sha256": "44cea62d96623ff4951ae05c33ee5426ee869e5874e1b65e9c1ca29fd46e6af3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-17-zero-layout02\\VERIFY.actual.json",
+      "bytes": 48820,
+      "sha256": "e19892e6d679cc9480a93bcd4bbb952bac204ddecc6138bc29b1651ccaaa72bb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\normal-close-original-consumer-independent-review01\\REVIEW.actual.json",
+      "bytes": 8531,
+      "sha256": "c1df67bdff11d2a19ea995b9c17c94a0570a9df0bdcfdc00eed05fb7fb022a60"
+    }
+  ],
+  "original_waits": {
+    "MVN-financial-zero-layout01": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-zero-layout01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1076,
+        "sha256": "5e800c1fc7bda5b68c079b7e9753e7027bc7d765f01ad154b724a47a8507a413"
+      },
+      "actual": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-18T22:36:44.261551+00:00",
+        "finished_at_utc": "2026-11-18T22:37:35.627457+00:00",
+        "argv": [
+          "cmd.exe",
+          "/d",
+          "/c",
+          "mvn",
+          "-T1",
+          "-f",
+          "mod_financial_markets/tools/pom.xml",
+          "-Dxfm.shared.source=C:/workspace/ck3_eternal_recurrence",
+          "-Dxfm.python=C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+          "verify"
+        ],
+        "pid": 5748,
+        "birth_filetime": "134395150042628164",
+        "actual_original_popen_wait": true,
+        "returncode": 1,
+        "elapsed_seconds": 51.36592979985289,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-zero-layout01\\stdout.log",
+          "bytes": 17316,
+          "sha256": "6552f1e1b5f705d7894f9414b1a6f0deba8ed1311cf12206f563416b486340ff"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-zero-layout01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "MVN-financial-zero-layout02": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-zero-layout02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1076,
+        "sha256": "2b8f03e73ee725f1607ed46013786ae01ec53bd99d7e30618e2c711f93fc6181"
+      },
+      "actual": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-18T22:45:44.053192+00:00",
+        "finished_at_utc": "2026-11-18T22:46:23.380218+00:00",
+        "argv": [
+          "cmd.exe",
+          "/d",
+          "/c",
+          "mvn",
+          "-T1",
+          "-f",
+          "mod_financial_markets/tools/pom.xml",
+          "-Dxfm.shared.source=C:/workspace/ck3_eternal_recurrence",
+          "-Dxfm.python=C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+          "verify"
+        ],
+        "pid": 15692,
+        "birth_filetime": "134395155440545334",
+        "actual_original_popen_wait": true,
+        "returncode": 0,
+        "elapsed_seconds": 39.32704310002737,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-zero-layout02\\stdout.log",
+          "bytes": 9877,
+          "sha256": "ae98971d731e266b90a9720e2e165f6a480ea145e61128d9139bc3b14debbd2b"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-zero-layout02\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "TEST-normal-close-original-consumer01": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-normal-close-original-consumer01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1066,
+        "sha256": "5b5c0ff6e12d179ea0554ec30e0d4c661b26b93d903dd7ca79dc2033b15fd99a"
+      },
+      "actual": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-18T22:45:44.064894+00:00",
+        "finished_at_utc": "2026-11-18T22:46:07.625608+00:00",
+        "argv": [
+          "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools",
+          "-p",
+          "test_ck3_mod_acceptance_normal_close.py",
+          "-v"
+        ],
+        "pid": 19056,
+        "birth_filetime": "134395155440660606",
+        "actual_original_popen_wait": true,
+        "returncode": 0,
+        "elapsed_seconds": 23.560717599932104,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-normal-close-original-consumer01\\stdout.log",
+          "bytes": 5777,
+          "sha256": "71ecea39cff48d819125e8c4e714ba98b8c76351a4d6cbc2572520c260b217db"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-normal-close-original-consumer01\\stderr.log",
+          "bytes": 6035,
+          "sha256": "5d96878a8f975c9a6c1fb4a23a0c8dc33b2ac84d4ce8739dc9e5c86f24edba0a"
+        }
+      }
+    }
+  },
+  "adopted_source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\gui\\xfm_market_issuer.gui",
+      "bytes": 12323,
+      "sha256": "4185a70edb330bbd1796d3645fe8495138a37b2ffb09f6bd9eb09f431cde2bbf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 109158,
+      "sha256": "0d759d86da73d3dd1a7be877f6237e9c5ff308b7e7bf1c257f2e257d97ad47e7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_normal_close.py",
+      "bytes": 62315,
+      "sha256": "e3f564ea7ca5388639932027f955b18341837011e778cf24b71d2608408b7f94"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialProjector.java",
+      "bytes": 16595,
+      "sha256": "fb98923b9a06dcf16fd2d89145d8b92f93db1cd5b874e18c9012a3edfca36c06"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialSaveReader.java",
+      "bytes": 16055,
+      "sha256": "083ada00ac82882a7ffba52879432173a17a805e6e85da84a21f2a979034e228"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\saveaudit\\OmittedZeroLayoutTest.java",
+      "bytes": 16952,
+      "sha256": "75dc7b9c7340a686d9f7f65138ee2f7b703133db938824fc381240508db41c00"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\resources\\saveaudit\\r0013-wallet-layout-discovery.actual.json",
+      "bytes": 21371,
+      "sha256": "2147b527455eb3b9eee2d83b4eb78cc3506c69d54de97e6e8610a5b85819bc15"
+    }
+  ],
+  "financial_maven": {
+    "failed_original": {
+      "tests": 258,
+      "failures": 0,
+      "errors": 2,
+      "skipped": 0
+    },
+    "corrected": {
+      "tests": 259,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "normal_close_affected_tests": 28,
+  "business_pass": false,
+  "new_GUI_engine_verification": "NOT_RUN",
+  "next": "Actual app04 financial archives readback and fresh independent issuer/market case; preserve R0013 originalCLI2 and all source failures"
+}

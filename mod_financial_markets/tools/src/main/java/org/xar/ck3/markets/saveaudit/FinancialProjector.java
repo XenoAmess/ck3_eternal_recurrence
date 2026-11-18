@@ -1,5 +1,12 @@
 package org.xar.ck3.markets.saveaudit;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -7,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import org.xar.ck3.markets.saveaudit.FinancialSnapshot.*;
 import org.xar.ck3.save.Clausewitz;
 import org.xar.ck3.save.SaveContracts;
@@ -14,15 +22,59 @@ import org.xar.ck3.save.SaveContracts;
 /** Interpretation of the observed save variable envelope, not a second Clausewitz parser. */
 public final class FinancialProjector {
     private FinancialProjector() { }
+    public enum NumberIdentityEncoding { identityRequired, omittedZero }
     /** Scaling is an explicit hypothesis until verified against a real 1.21 financial physical save. */
+    @JsonDeserialize(using = LayoutDeserializer.class)
     public record LayoutHypothesis(String gameVersion, String saveFormat, BigInteger numericScale,
-                                   String storyReferenceType, String characterReferenceType) {
+                                   String storyReferenceType, String characterReferenceType,
+                                   NumberIdentityEncoding numberIdentityEncoding) {
+        /** Existing Java callers and the positional CLI retain strict identity semantics. */
+        public LayoutHypothesis(String gameVersion, String saveFormat, BigInteger numericScale,
+                                String storyReferenceType, String characterReferenceType) {
+            this(gameVersion, saveFormat, numericScale, storyReferenceType, characterReferenceType,
+                    NumberIdentityEncoding.identityRequired);
+        }
         public LayoutHypothesis {
             if (gameVersion == null || gameVersion.isBlank() || saveFormat == null || saveFormat.isBlank()
                     || numericScale == null || numericScale.signum() <= 0
                     || storyReferenceType == null || storyReferenceType.isBlank()
-                    || characterReferenceType == null || characterReferenceType.isBlank())
+                    || characterReferenceType == null || characterReferenceType.isBlank() || numberIdentityEncoding == null)
                 throw new IllegalArgumentException("explicit layout hypothesis required");
+            if (numberIdentityEncoding == NumberIdentityEncoding.omittedZero
+                    && !(gameVersion.equals("1.21.0") && saveFormat.equals("19") && numericScale.equals(BigInteger.valueOf(100000))))
+                throw new IllegalArgumentException("omittedZero is observed only for explicit 1.21.0 / format 19 / scale 100000");
+        }
+        /** Strict legacy five-field or explicit six-field JSON; no shared mapper guards are relaxed. */
+        public static LayoutHypothesis fromJson(JsonNode node) {
+            if (node == null || !node.isObject()) throw new IllegalArgumentException("layout object required");
+            Set<String> allowed = Set.of("gameVersion", "saveFormat", "numericScale", "storyReferenceType",
+                    "characterReferenceType", "numberIdentityEncoding");
+            node.fieldNames().forEachRemaining(name -> {
+                if (!allowed.contains(name)) throw new IllegalArgumentException("unknown layout field: " + name);
+            });
+            JsonNode scale = node.get("numericScale");
+            if (scale == null || !scale.isIntegralNumber()) throw new IllegalArgumentException("numericScale must be an integer");
+            NumberIdentityEncoding encoding = node.has("numberIdentityEncoding")
+                    ? NumberIdentityEncoding.valueOf(text(node, "numberIdentityEncoding")) : NumberIdentityEncoding.identityRequired;
+            return new LayoutHypothesis(text(node, "gameVersion"), text(node, "saveFormat"), scale.bigIntegerValue(),
+                    text(node, "storyReferenceType"), text(node, "characterReferenceType"), encoding);
+        }
+        private static String text(JsonNode node, String name) {
+            JsonNode value = node.get(name);
+            if (value == null || !value.isTextual()) throw new IllegalArgumentException("layout field must be text: " + name);
+            return value.textValue();
+        }
+    }
+    /** Local codec prevents the record's implicit creator from making the optional sixth field mandatory. */
+    public static final class LayoutDeserializer extends StdDeserializer<LayoutHypothesis> {
+        private static final long serialVersionUID = 1L;
+        public LayoutDeserializer() { super(LayoutHypothesis.class); }
+        @Override public LayoutHypothesis deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+            // Read this nested value, not a new root with FAIL_ON_TRAILING_TOKENS.
+            // SaveJson retains the complete request's duplicate/trailing-token guards.
+            JsonNode node = context.readTree(parser);
+            try { return LayoutHypothesis.fromJson(node); }
+            catch (IllegalArgumentException malformed) { throw JsonMappingException.from(parser, malformed.getMessage(), malformed); }
         }
     }
     public static FinancialSnapshot project(FinancialSaveReader.Readback input, LayoutHypothesis layout) {
@@ -64,7 +116,7 @@ public final class FinancialProjector {
                 if (data == null) continue;
                 try {
                     if (!atom(data, "type").orElse("").equals("value")) throw new IllegalArgumentException("Expected type=value.");
-                    String lexical = atom(data, "identity").orElseThrow(() -> new IllegalArgumentException("Missing numeric identity; zero is not inferred."));
+                    String lexical = numericIdentity(data, layout);
                     if (!lexical.matches("-?(0|[1-9][0-9]*)")) throw new IllegalArgumentException("Canonical integer identity required.");
                     BigInteger[] division = new BigInteger(lexical).divideAndRemainder(layout.numericScale());
                     if (division[1].signum() != 0) throw new IllegalArgumentException("Fractional cent/unit/day/ID after exact scaling.");
@@ -93,6 +145,15 @@ public final class FinancialProjector {
                 } else issues.add(new Issue(Severity.INCOMPLETE, identity, "permanent_id", "Missing permanent financial ID."));
             }
             return new RecordProjection(Optional.of(new Story(type.get(), nativeId, permanent, numbers, references)), issues);
+    }
+
+    private static String numericIdentity(Clausewitz.Block data, LayoutHypothesis layout) {
+        // atom() rejects duplicates, blocks and non-assignment identities before any omission policy is considered.
+        Optional<String> identity = atom(data, "identity");
+        if (identity.isPresent()) return identity.get();
+        if (layout.numberIdentityEncoding() == NumberIdentityEncoding.omittedZero && data.entries().size() == 1)
+            return "0"; // Caller already required the sole assigned atom to be type=value.
+        throw new IllegalArgumentException("Missing numeric identity; strict encoding or noncanonical omitted-zero data.");
     }
 
     private static void verifyGlobalExchange(FinancialSaveReader.Readback input, LayoutHypothesis layout,

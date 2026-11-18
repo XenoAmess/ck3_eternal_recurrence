@@ -1,0 +1,4308 @@
+{
+  "schema": "ck3-financial-market-r0013-business-progress-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-18T22:34:59.841220+00:00",
+  "runtime_source_commit": "893d57b9dc2e60f9653907e1d1606cbedf6b84c1",
+  "original_final_host_report": {
+    "path": "C:\\workspace\\ck3-market-live-20261119f\\live\\4-8e1c2f1861--financial-markets--R0013\\native-report.json",
+    "bytes": 3406116,
+    "sha256": "c08b4b7e5f1949fa206f4c1971d1f1078c022fd95ac1f44d2dd0f8334cc45368"
+  },
+  "runtime_manifest": {
+    "path": "C:\\workspace\\ck3-market-live-20261119f\\runtime-core14\\manifest.json",
+    "bytes": 55913,
+    "sha256": "1d5b0ec28feae79fafe131767d85dfeaee9b22e18bed4db7860a803242a392e5"
+  },
+  "loaded_native_qualification": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification19\\Q.actual.json",
+    "bytes": 14543,
+    "sha256": "ec657996a13e207cb3a1350cd92d4fe4ab81ed33fe66e7109bf9f1fa9e83dc05"
+  },
+  "cash_flow": {
+    "initial_gold": {
+      "raw": 25500000,
+      "scale": 100000
+    },
+    "after_deposit_gold": {
+      "raw": 24500000,
+      "scale": 100000
+    },
+    "after_withdraw_gold": {
+      "raw": 25500000,
+      "scale": 100000
+    },
+    "primary_account_native_id": "54",
+    "primary_account_permanent_id": "2",
+    "positive_raw_free": "100000000",
+    "reviewed_numeric_scale": "100000",
+    "deposit_script_cents": "1000",
+    "zero_encoding": "Existing type=value envelope omits identity after the actual full withdrawal; missing envelopes remain distinct."
+  },
+  "new_game_days": 1,
+  "physically_archived_saves": 2,
+  "daily_scope": "140 financial stories after one real day include132 accounts,3 indexes,2 contracts,1 futures order and1 reservation. No filled futures position or issued coin was observed in this census.",
+  "issuer_gui": "The issuer tab became visible, but its derived scrollbox contains only default content. The intended registration control was absent from the complete1074-row query, so no registration activation was submitted.",
+  "independent_gui_candidate_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\issuer-scrollbox-instance-independent-review01\\REVIEW.actual.json",
+    "bytes": 3510,
+    "sha256": "0074c0a4d31e39335fde9dd76c8fda76d9ca12eb8306fdb3ae5405a3d7d9d982"
+  },
+  "gui_candidate_adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\issuer-scrollbox-instance-adopted01.actual.json",
+    "bytes": 1348,
+    "sha256": "fc6ca69eb34d7268136d073eac5b39ffd3a7bc33f99685b93ff6ceed9da2dbb7"
+  },
+  "discoveries": [
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R0013-wallet-discovery01\\DISCOVERY.actual.json",
+        "bytes": 21371,
+        "sha256": "2147b527455eb3b9eee2d83b4eb78cc3506c69d54de97e6e8610a5b85819bc15"
+      },
+      "archive_receipt": {
+        "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0013/core14-wallet-save-01/ARCHIVE.actual.json",
+        "bytes": 7487,
+        "sha256": "61ebb4811b3e5013ca4285fe963769b0c55e486eb272215df20d26932519e3f6"
+      },
+      "save": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0013\\core14-wallet-save-01\\xar_checkpoint.ck3",
+        "bytes": 140063587,
+        "sha256": "409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6"
+      },
+      "metadata": {
+        "save_game_version": "19",
+        "version": "\"1.21.0\"",
+        "meta_date": "1066.9.15"
+      },
+      "story_type_counts": {
+        "story_cycle_pet_rock": 1,
+        "story_cycle_pet_cat": 1,
+        "story_cycle_violet_poet": 1,
+        "story_adventurer_ai": 23,
+        "story_mandala": 4,
+        "story_tai_migrations": 20,
+        "story_conqueror": 1,
+        "xfma_observer": 1,
+        "xfm_finance_exchange": 1,
+        "xfm_finance_account": 2
+      },
+      "raw_examples": {
+        "xfm_finance_exchange": [
+          {
+            "native_story_id": "52",
+            "record_path": [
+              "stories",
+              "active",
+              "52"
+            ],
+            "canonical_lexical_sha256": "5429f10c2f67baa47421888511d8007db02208494f458aa5ab449931a8af3113",
+            "canonical_lexical_bytes": 1540,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_finance_exchange"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "2321864281"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_result_account",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "54",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_a0_migration_scanned",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_tail",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "65868",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_head",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "33827",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "3558600000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_seeded",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_default_fund_account",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "53",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_result",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_new_listings_today",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_archived_orders_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_order_stories_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_active_orders_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_fee_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_active_coin_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_pending_coin_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_registered_coin_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_coin_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_order_id",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_reservation_id",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_coin_id",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_account_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_last_date",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "38934700000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_day",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          }
+        ],
+        "xfm_finance_account": [
+          {
+            "native_story_id": "53",
+            "record_path": [
+              "stories",
+              "active",
+              "53"
+            ],
+            "canonical_lexical_sha256": "e65aea10e1b02c3cf44d7925756c930004db4f66373c5b61644ec8368ed018ef",
+            "canonical_lexical_bytes": 766,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_finance_account"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "2365673041"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_open_positions_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_open_orders_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_holdings_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_reserved_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_free_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_inheritance_state",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account_frozen",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_system_account",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_beneficial_owner",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "31254",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_holder",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "31254",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          },
+          {
+            "native_story_id": "54",
+            "record_path": [
+              "stories",
+              "active",
+              "54"
+            ],
+            "canonical_lexical_sha256": "5c974b9237eb77b0437523126eceaf107babe78ad0fafbaec782cf1394fa7451",
+            "canonical_lexical_bytes": 769,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_finance_account"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "2409481801"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_open_positions_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_open_orders_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_holdings_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_reserved_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_free_cents",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_inheritance_state",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account_frozen",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_system_account",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_beneficial_owner",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "31254",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_holder",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "31254",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          }
+        ]
+      },
+      "source_layout_qualified": false
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R0013-zero-wallet-discovery01\\DISCOVERY.actual.json",
+        "bytes": 57640,
+        "sha256": "6435749508278093a3e726801b388ecc14dda89c9225216adaee2c0c04707dcb"
+      },
+      "archive_receipt": {
+        "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0013/core14-zero-wallet-save-01/ARCHIVE.actual.json",
+        "bytes": 7515,
+        "sha256": "442487b0ffc23a2d5bd60a319393ba550980df847786538ce66f58bd81e25191"
+      },
+      "save": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0013\\core14-zero-wallet-save-01\\xar_checkpoint.ck3",
+        "bytes": 139822544,
+        "sha256": "a011b34847901f93760813d318e9b797e2393cbd53d4d8d86e92a4af32393c74"
+      },
+      "metadata": {
+        "save_game_version": "19",
+        "version": "\"1.21.0\"",
+        "meta_date": "1066.9.16"
+      },
+      "story_type_counts": {
+        "story_cycle_pet_rock": 1,
+        "story_cycle_pet_cat": 1,
+        "story_cycle_violet_poet": 1,
+        "story_adventurer_ai": 23,
+        "story_mandala": 4,
+        "story_tai_migrations": 20,
+        "story_conqueror": 1,
+        "xfma_observer": 1,
+        "xfm_finance_exchange": 1,
+        "xfm_finance_account": 132,
+        "xfm_oracle_index": 3,
+        "xfm_futures_contract": 2,
+        "xfm_futures_order": 1,
+        "xfm_finance_reservation": 1,
+        "story_hasan": 1,
+        "story_el_cid": 1
+      },
+      "raw_examples": {
+        "xfm_finance_exchange": [
+          {
+            "native_story_id": "52",
+            "record_path": [
+              "stories",
+              "active",
+              "52"
+            ],
+            "canonical_lexical_sha256": "f66e3df6aeddb723dc8c1e3b9e37cd38fdf6ba8d96f0821895d2473b48375709",
+            "canonical_lexical_bytes": 5072,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_finance_exchange"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "2321864283"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_result_account",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "191",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_futures_daily_tail",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "96",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_futures_daily_head",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "96",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_futures_order_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_futures_position_id",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_futures_contract_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_futures_open_positions_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_decisions_today",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "47500000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_attention_work_today",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_work_today",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "51200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_attention_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_futures_daily_completed_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_futures_daily_remaining",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_futures_daily_pass_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_futures_daily_index_v1",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_futures_daily_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_futures_archive_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_default_fund_allocated_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_trade_value",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "1072700000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_military_value",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "1076000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_grain_value",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "960000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_war_bps",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "62500000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_average_control",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "10000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_average_prosperity",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "1300000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_war_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_control_sum",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "320000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_prosperity_sum",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "42200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_basket_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "3200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_basket_seeded",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_a0_migration_scanned",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_tail",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "65872",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_head",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "34339",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "3559000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_ai_seeded",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_default_fund_account",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "53",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_result",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_new_listings_today",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_archived_orders_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_order_stories_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_active_orders_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_fee_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_active_coin_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_pending_coin_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_registered_coin_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_coin_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_order_id",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_reservation_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_coin_id",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_next_account_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "13200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_last_date",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "38934800000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          }
+        ],
+        "xfm_finance_account": [
+          {
+            "native_story_id": "53",
+            "record_path": [
+              "stories",
+              "active",
+              "53"
+            ],
+            "canonical_lexical_sha256": "e65aea10e1b02c3cf44d7925756c930004db4f66373c5b61644ec8368ed018ef",
+            "canonical_lexical_bytes": 766,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_finance_account"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "2365673041"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_open_positions_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_open_orders_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_holdings_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_reserved_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_free_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_inheritance_state",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account_frozen",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_system_account",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_beneficial_owner",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "31254",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_holder",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "31254",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          },
+          {
+            "native_story_id": "54",
+            "record_path": [
+              "stories",
+              "active",
+              "54"
+            ],
+            "canonical_lexical_sha256": "ba3f8ef224f334f43c97844f7389251b342d47fef967dc8075da4fa87408a5e5",
+            "canonical_lexical_bytes": 748,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_finance_account"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "2409481801"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_open_positions_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_open_orders_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_holdings_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_reserved_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_free_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_inheritance_state",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account_frozen",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_system_account",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_beneficial_owner",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "31254",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_holder",
+                "type_raw": "char",
+                "identity_present": true,
+                "identity_raw": "31254",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          }
+        ],
+        "xfm_oracle_index": [
+          {
+            "native_story_id": "55",
+            "record_path": [
+              "stories",
+              "active",
+              "55"
+            ],
+            "canonical_lexical_sha256": "bc16059a68d694a9c485ac82b39f91eaffef10dee70ac45444399ad10191b08c",
+            "canonical_lexical_bytes": 1322,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_oracle_index"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "2976124085"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_oracle_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_best_ask_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_best_bid_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_last_price_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_basket_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "3200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_last_valid_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_max_leverage",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "500000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_mark_cents",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "9600000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_index_cents",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "9600000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_reason",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_quality",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "300000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_source_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_model_quote_divisor",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "10000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_model_index",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_trading_open",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_derivatives_reduce_only",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_asset_kind",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_index_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          },
+          {
+            "native_story_id": "56",
+            "record_path": [
+              "stories",
+              "active",
+              "56"
+            ],
+            "canonical_lexical_sha256": "229d9e0a243aee784a7fff7004d5582da68d6fb431ccb1730629b6d6cfd53521",
+            "canonical_lexical_bytes": 1606,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_oracle_index"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "3029269159"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_futures_discovery_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_best_ask_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_best_bid_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_last_price_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_basket_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "3200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_last_valid_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_max_leverage",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "500000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_mark_cents",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "10700000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_index_cents",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "10700000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_reason",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_quality",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "300000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_source_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_model_quote_divisor",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "10000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_oracle_model_index",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_trading_open",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_derivatives_reduce_only",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_asset_kind",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_index_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          }
+        ],
+        "xfm_futures_contract": [
+          {
+            "native_story_id": "75",
+            "record_path": [
+              "stories",
+              "active",
+              "75"
+            ],
+            "canonical_lexical_sha256": "62093dbfe72c7a88ee0ca78c443e758742092ee47adb13e0eb1854800fe53845",
+            "canonical_lexical_bytes": 892,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_futures_contract"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "4039025565"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_band_high",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "12900000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_band_low",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "8500000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_open_orders_count",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_execution_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "18446744073709451616",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_execution_volume_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_last_daily_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "18446744073709451616",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_status",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_expiry_day",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_perpetual",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_coin",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "57",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_created_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_contract_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          },
+          {
+            "native_story_id": "96",
+            "record_path": [
+              "stories",
+              "active",
+              "96"
+            ],
+            "canonical_lexical_sha256": "48ac6ec31901c3eba3c65a76d5f294de01cb7ab99044484a7fbd583f68b5b9de",
+            "canonical_lexical_bytes": 1078,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_futures_contract"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "860104823"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_futures_daily_queued",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_band_high",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "12900000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_band_low",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "8500000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_open_orders_count",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_execution_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "18446744073709451616",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_execution_volume_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_last_daily_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "18446744073709451616",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_status",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_expiry_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "3000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_perpetual",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_coin",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "56",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_created_day",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_contract_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          }
+        ],
+        "xfm_futures_order": [
+          {
+            "native_story_id": "97",
+            "record_path": [
+              "stories",
+              "active",
+              "97"
+            ],
+            "canonical_lexical_sha256": "61815f8cc047aa2aaa7162c3afec7c825332cd3c35e5c595bc964513f0bd31ea",
+            "canonical_lexical_bytes": 927,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_futures_order"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "913249897"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_status",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_fee_paid_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_filled_gross_cents",
+                "type_raw": "value",
+                "identity_present": false,
+                "identity_raw": null,
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_reserve_price_cents",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "12900000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_limit_cents",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "10700000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_remaining_lots",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_leverage",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_side",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_reservation",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "98",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "95",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_contract",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "96",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_order_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_kind",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "200000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          }
+        ],
+        "xfm_finance_reservation": [
+          {
+            "native_story_id": "98",
+            "record_path": [
+              "stories",
+              "active",
+              "98"
+            ],
+            "canonical_lexical_sha256": "b438db97edddf07fb2457f3e6a1e8e39d8179c6358bd1a21f74d943e1b47ecbe",
+            "canonical_lexical_bytes": 381,
+            "direct_scalar_tokens": [
+              {
+                "key": "story_cycle",
+                "raw": "xfm_finance_reservation"
+              },
+              {
+                "key": "owner",
+                "raw": "31254"
+              },
+              {
+                "key": "seed",
+                "raw": "966394971"
+              }
+            ],
+            "variables": [
+              {
+                "flag": "xfm_status",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_remaining_cents",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "13000000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_account",
+                "type_raw": "story",
+                "identity_present": true,
+                "identity_raw": "95",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              },
+              {
+                "flag": "xfm_reservation_id",
+                "type_raw": "value",
+                "identity_present": true,
+                "identity_raw": "100000",
+                "other_scalar_tokens": [],
+                "nested_field_names": []
+              }
+            ]
+          }
+        ]
+      },
+      "source_layout_qualified": false
+    }
+  ],
+  "selected_actual_steps": [
+    {
+      "id": "case-snapshot-0001",
+      "started_at": "2026-11-18T22:18:29.589832+00:00",
+      "finished_at": "2026-11-18T22:18:29.638136+00:00",
+      "plan": {
+        "id": "case-snapshot-0001",
+        "tool": "ck3_take_snapshot",
+        "args": {
+          "include_native_command_history": false
+        },
+        "fresh_revision": true
+      },
+      "ok": true,
+      "result_summary": {
+        "schema": "ck3_1210_full_state_v1",
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "adapter_id": "ck3-1.21.0-msvc-x64",
+        "backend": "ck3-1.21.0-native-headless-main-thread",
+        "date_raw": 53144328,
+        "speed": 3,
+        "paused": true,
+        "local_player_id": 1,
+        "map_ready": true,
+        "played_character": {
+          "character_id": 31254,
+          "alive": true,
+          "source": "native",
+          "stress_points": 0,
+          "betrothed_id": null,
+          "primary_spouse_id": 36311,
+          "spouse_ids": [
+            36311
+          ]
+        },
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 15000000,
+          "scale": 100000
+        },
+        "one_life_settlement": null,
+        "active_event": null,
+        "pending_character_interaction": null,
+        "active_wars": [],
+        "player_armies": [],
+        "last_checkpoint_submission": null,
+        "history": [],
+        "format_version": 1,
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "native_revision": 3,
+        "backend_id": "native-headless",
+        "source": "injected-dll-named-pipe",
+        "diagnostics": {
+          "protocol_version": 1,
+          "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+          "connected": true,
+          "connection_generation": 1,
+          "bridge_pid": 17976,
+          "bridge_version": "0.1.0",
+          "hello": {
+            "type": "hello",
+            "protocol_version": 1,
+            "bridge_version": "0.1.0",
+            "pid": 17976,
+            "session_generation": 0,
+            "connection_generation": 1,
+            "architecture": "x86_64-windows-msvc",
+            "expected_ck3_version": "1.21.0",
+            "expected_ck3_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+            "game_adapter_id": "ck3-1.21.0-msvc-x64",
+            "game_adapter_status": "ready",
+            "ck3_build_match": true,
+            "capabilities": [
+              "bridge.identity",
+              "bridge.heartbeat",
+              "bridge.ping",
+              "game.query.core-frame.v1",
+              "game.state.snapshot",
+              "game.query.fresh-full-state.v1",
+              "game.query.current-event-options.v1",
+              "game.command.select-event-option-N",
+              "game.query.scripted-widget-controls.v1",
+              "game.command.activate-scripted-widget-control.v1",
+              "game.command.query-scripted-widget-controls-v1",
+              "game.command.activate-scripted-widget-control-v1",
+              "game.query.personal-gold-frame.v1",
+              "game.command.core-clock-control.v1",
+              "game.command.full-snapshot-clock-control.v1",
+              "game.guard.date-only-postday.v1",
+              "game.command.research-arm-tactical-daily-sentinel-v1-N",
+              "game.command.research-query-tactical-daily-sentinel-v1",
+              "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+              "game.command.resume-map",
+              "game.command.pause-map",
+              "game.command.set-speed-1",
+              "game.command.set-speed-2",
+              "game.command.set-speed-3",
+              "game.command.set-speed-4",
+              "game.command.set-speed-5",
+              "game.command.save-checkpoint",
+              "game.command.normal-exit-application-v1"
+            ]
+          },
+          "last_heartbeat": {
+            "type": "heartbeat",
+            "protocol_version": 1,
+            "sequence": 1485,
+            "pid": 17976,
+            "monotonic_ms": 1829136875,
+            "command_entry_trace_v1": {
+              "timeline": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_options": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "war_termination_terms": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              },
+              "faction_gift_query": {
+                "request_id": "",
+                "frame_type": "",
+                "parsed_step": "",
+                "adapter_id": "",
+                "typed_query_kind": -1,
+                "stage": "not_received",
+                "parse_kind": "not_parsed",
+                "dispatch_route": "not_reached",
+                "monotonic_ms": 0,
+                "type_parsed": false,
+                "request_id_parsed": false,
+                "step_parsed": false,
+                "handler_entered": false,
+                "submit_result": -1,
+                "call_result": -1,
+                "reply_request_id": "",
+                "reply_type": "",
+                "reply_write_success": false
+              }
+            },
+            "army_strength_result_write_v1": null,
+            "startup_failure_containment_enabled": false,
+            "startup_particle2_stage_recorder_enabled": false,
+            "startup_widget_null_flag_call_guard_enabled": false,
+            "startup_rbx_null_call_guard_enabled": false,
+            "cold_map_vfs_observer_enabled": false,
+            "named_path_583_root_observer_enabled": false,
+            "pdx_paths_583_producer_observer_enabled": false,
+            "vfs_mount_lifecycle_observer_enabled": false,
+            "physfs_mounted_data_observer_enabled": false,
+            "g2_truce_preview_entry_observer_enabled": true,
+            "zhongguo_scoreboard_production_candidate_enabled": false,
+            "zhongguo_scoreboard_production_capability_advertised": false,
+            "main_thread_query_mailbox_v1": {
+              "candidate_id": "application_main_thread_war_entry_v1",
+              "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+              "installed": true,
+              "sdl_poll_event_hook_installed": true,
+              "observed_sdl_poll_event_target": 140702497609216,
+              "active_hook_calls": 0,
+              "owner_hook_entries_v1": {
+                "schema": "xar.native.owner-hook-entries/v1",
+                "peek": {
+                  "entered": "19870",
+                  "completed": "19870",
+                  "last_entered_ms": "1829136859",
+                  "last_completed_ms": "1829136859",
+                  "last_return_rva": 74466784,
+                  "last_thread_id": 5808
+                },
+                "poll": {
+                  "entered": "12367",
+                  "completed": "12367",
+                  "last_entered_ms": "1829136859",
+                  "last_completed_ms": "1829136859",
+                  "last_return_rva": 70832686,
+                  "last_thread_id": 5808
+                }
+              },
+              "stop": false,
+              "failure": 0,
+              "executor_exception": {
+                "code": 0,
+                "image": "none",
+                "rva": null
+              },
+              "pump_epochs": 19833,
+              "owner_verified_pump_epochs": 19833,
+              "consecutive_verified": 372,
+              "published_sequence": 4,
+              "completed_sequence": 4,
+              "executor_started_requests": 3,
+              "executor_started_sequence": 4,
+              "executor_started_pump_epoch": 19502,
+              "owner_tid": 5808,
+              "current_tid": 5808,
+              "rng_owner_tid": 0,
+              "tls_global": 1,
+              "tls_context": 3210069702072,
+              "tls_marker": 1,
+              "jomini_state": 3214503650400,
+              "game_state": 3214453046976,
+              "date_raw": 53144328,
+              "paused": true,
+              "stamp_read_success": true,
+              "executed_requests": 3,
+              "executor_submission_enabled": true,
+              "application_main_observed": true,
+              "paused_main_thread_observed": true,
+              "ready": true
+            },
+            "coat_of_arms_designer_probe_v1": {
+              "installed": false,
+              "failure": 1,
+              "observed_calls": 0,
+              "executed_requests": 0
+            },
+            "direct_control_owner_wake_v1": {
+              "attempts": 0,
+              "posted": 0,
+              "guard_rejections": 0,
+              "owner_drift": 0,
+              "owner_before": 0,
+              "owner_after": 0,
+              "last_error": 0
+            },
+            "snapshot_observer_12002": {
+              "started_ms": 1829136687,
+              "completed_ms": 1829136687,
+              "last_read_ms": 0,
+              "read_in_progress": false,
+              "last_read_available": true,
+              "snapshot_cached": true
+            },
+            "full_snapshot_1210": {
+              "complete": true,
+              "stage": "complete",
+              "reason": "",
+              "completed_passes": 2,
+              "pending_slots_scanned": 1024,
+              "unit_slots_scanned": 1024,
+              "war_slots_scanned": 1024
+            },
+            "date_sentinel_1210": {
+              "generation": 0,
+              "armed": false,
+              "failure_flags": 0,
+              "arm_owner_thread_id": 0,
+              "captured_worker_thread_id": 0,
+              "last_post_thread_id": 0,
+              "last_post_stage": 0,
+              "last_post_date_raw_unqualified": 0,
+              "shutdown_requested": false,
+              "shutdown_safe": true
+            },
+            "startup_particle2_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "suppressed_index_mask": 0,
+              "last_suppressed_index": 4294967295
+            },
+            "startup_particle2_consumer_null_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0,
+              "missing_slot_mask": 0
+            },
+            "startup_particle2_stage_recorder_v1": {
+              "installed": false,
+              "patch_mask": 0,
+              "failure": 0,
+              "source_lookup_null_count": 0,
+              "variant_lookup_null_count": 0,
+              "backend_creation_null_count": 0
+            },
+            "startup_dx11_render_context_draw_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_localize_current_root_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "native_miss_count": 0
+            },
+            "startup_widget_null_flag_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            },
+            "startup_rbx_null_call_guard_v1": {
+              "installed": false,
+              "failure": 0,
+              "suppressed_count": 0
+            }
+          },
+          "private_observers": {},
+          "last_pong": {
+            "type": "pong",
+            "protocol_version": 1,
+            "request_id": "python-1-4c8fc10ec068",
+            "pid": 17976
+          },
+          "last_error": null,
+          "top_exclusive_modal_choice_hint_observation": null,
+          "semantic_state_available": true,
+          "rejected_state_snapshot_count": 0,
+          "last_rejected_state_snapshot": null,
+          "snapshot_publish_diagnostic_count": 0,
+          "last_snapshot_publish_diagnostic": null
+        },
+        "episode_projection": "native_campaign",
+        "army_strengths": [],
+        "army_strengths_status": null,
+        "army_strengths_query_sequence": null,
+        "army_strengths_queried_snapshot_id": null,
+        "army_strengths_queried_revision": null,
+        "army_strengths_profile": null,
+        "army_observed_phase_coverage": null,
+        "prewar_force_coalition_coverage_v2_query": null,
+        "war_declared_overview_v1_observation": null,
+        "war_declared_overview_v1_query_attempt": null,
+        "war_declared_overview_v1_close_pending": null,
+        "war_results_window_v1_observation": null,
+        "war_results_window_v1_query_attempt": null,
+        "war_results_window_v1_close_pending": null,
+        "war_results_window_v1_check_due": true,
+        "war_results_window_v1_next_check_date_raw": 53144328,
+        "managed_campaign_run_binding": {
+          "run_id": "4-8e1c2f1861--financial-markets--R0013",
+          "state_dir": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state",
+          "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+          "host_path": "C:\\workspace\\ck3-market-live-20261119f\\runtime-core14\\shared-host.py",
+          "frozen_argv_sha256": "d63450b29a2391891dd4ec29acadc0f5bdf611ee36bfe9d9b1561f76bfef22a0"
+        },
+        "war_declaration_continuity_v1": null,
+        "native_command_history": [],
+        "native_rollback_war_failure": null,
+        "native_rollback_war_failures": [],
+        "native_command_history_export": {
+          "mode": "omitted",
+          "total_count": 0,
+          "included_count": 0
+        }
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-observer-query-01",
+      "started_at": "2026-11-18T22:18:43.041598+00:00",
+      "finished_at": "2026-11-18T22:18:43.172199+00:00",
+      "plan": {
+        "id": "core14-observer-query-01",
+        "kind": "tool",
+        "tool": "ck3_query_scripted_widget_controls_v1",
+        "args": {
+          "root_name": "xfma_observer_widget"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "3",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144328,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "4",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "query-scripted-widget-controls-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfma_observer_widget",
+        "query_generation": "1",
+        "complete": true,
+        "truncated": false,
+        "read_only": true
+      },
+      "widget_count": 9,
+      "full_after": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-observer-arm-01",
+      "started_at": "2026-11-18T22:18:59.404585+00:00",
+      "finished_at": "2026-11-18T22:18:59.487055+00:00",
+      "plan": {
+        "id": "core14-observer-arm-01",
+        "kind": "tool",
+        "tool": "ck3_activate_scripted_widget_control_v1",
+        "fresh_revision": false,
+        "args": {
+          "query_generation": "1",
+          "widget_id": "2",
+          "expected_revision": "4"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "3",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144328,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "4",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "activate-scripted-widget-control-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfma_observer_widget",
+        "query_generation": "1",
+        "widget_id": "2",
+        "dispatch_attempted": true,
+        "dispatch_invoked": true,
+        "native_handled": true,
+        "verification_pending": true,
+        "postcondition_verified": false,
+        "result_unknown": false
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-open-01-query",
+      "started_at": "2026-11-18T22:19:08.182800+00:00",
+      "finished_at": "2026-11-18T22:19:08.263347+00:00",
+      "plan": {
+        "id": "core14-open-01-query",
+        "kind": "tool",
+        "tool": "ck3_query_scripted_widget_controls_v1",
+        "args": {
+          "root_name": "xfm_market_entry"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "3",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144328,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "4",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "query-scripted-widget-controls-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfm_market_entry",
+        "query_generation": "2",
+        "complete": true,
+        "truncated": false,
+        "read_only": true
+      },
+      "widget_count": 9,
+      "full_after": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-open-01-activate",
+      "started_at": "2026-11-18T22:19:11.438159+00:00",
+      "finished_at": "2026-11-18T22:19:11.512445+00:00",
+      "plan": {
+        "id": "core14-open-01-activate",
+        "kind": "tool",
+        "tool": "ck3_activate_scripted_widget_control_v1",
+        "fresh_revision": false,
+        "args": {
+          "query_generation": "2",
+          "widget_id": "2",
+          "expected_revision": "4"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "3",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144328,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "4",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "activate-scripted-widget-control-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfm_market_entry",
+        "query_generation": "2",
+        "widget_id": "2",
+        "dispatch_attempted": true,
+        "dispatch_invoked": true,
+        "native_handled": true,
+        "verification_pending": true,
+        "postcondition_verified": false,
+        "result_unknown": false
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-deposit-01-query",
+      "started_at": "2026-11-18T22:19:21.009354+00:00",
+      "finished_at": "2026-11-18T22:19:21.224368+00:00",
+      "plan": {
+        "id": "core14-deposit-01-query",
+        "kind": "tool",
+        "tool": "ck3_query_scripted_widget_controls_v1",
+        "args": {
+          "root_name": "xfm_market_window"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "3",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144328,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "4",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "query-scripted-widget-controls-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfm_market_window",
+        "query_generation": "3",
+        "complete": true,
+        "truncated": false,
+        "read_only": true
+      },
+      "widget_count": 1074,
+      "full_after": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-deposit-01-activate",
+      "started_at": "2026-11-18T22:19:24.687287+00:00",
+      "finished_at": "2026-11-18T22:19:24.791148+00:00",
+      "plan": {
+        "id": "core14-deposit-01-activate",
+        "kind": "tool",
+        "tool": "ck3_activate_scripted_widget_control_v1",
+        "fresh_revision": false,
+        "args": {
+          "query_generation": "3",
+          "widget_id": "70",
+          "expected_revision": "4"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "3",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144328,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "4",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "activate-scripted-widget-control-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfm_market_window",
+        "query_generation": "3",
+        "widget_id": "70",
+        "dispatch_attempted": true,
+        "dispatch_invoked": true,
+        "native_handled": true,
+        "verification_pending": true,
+        "postcondition_verified": false,
+        "result_unknown": false
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:3",
+        "revision": 4,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-wallet-save-01",
+      "started_at": "2026-11-18T22:19:47.163550+00:00",
+      "finished_at": "2026-11-18T22:19:51.462566+00:00",
+      "plan": {
+        "id": "core14-wallet-save-01",
+        "kind": "tool",
+        "tool": "ck3_save_checkpoint",
+        "args": {}
+      },
+      "ok": true,
+      "result_summary": {
+        "schema": "ck3_1210_full_clock_control_result_v1",
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "adapter_id": "ck3-1.21.0-msvc-x64",
+        "backend": "ck3-1.21.0-native-headless-main-thread",
+        "step": "save-checkpoint",
+        "accepted": true,
+        "queue_status": "submitted",
+        "effect_attempted": true,
+        "full_snapshot_before_verified": true,
+        "complete_snapshot": false,
+        "physical_save_confirmed": false,
+        "save_name": "xar_checkpoint",
+        "status": "submitted",
+        "submission": {
+          "sequence": 1,
+          "requested_save_name": "xar_checkpoint",
+          "date_raw": 53144328
+        },
+        "backend_id": "native-headless",
+        "checkpoint": {
+          "status": "saved",
+          "path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games\\xar_checkpoint.ck3",
+          "name": "xar_checkpoint.ck3",
+          "size": 140063587,
+          "sha256": "409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6",
+          "date_raw": 53144328,
+          "overwrite_confirmed": false,
+          "strategy": "native-autosave-command-v1",
+          "episode_projection": "native_campaign",
+          "succession_lifecycle": null,
+          "history_index": 4,
+          "episode_character_id": null,
+          "episode_run_id": null
+        },
+        "episode_seed": null,
+        "materialization": {
+          "available": true,
+          "save_dir": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games",
+          "mtime_ns": 1795040390256875700
+        },
+        "driver_state_replace_receipt": {
+          "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+          "status": "unconfirmed",
+          "write_replace_returned": true,
+          "save_binding_verified": false,
+          "reason": "save_binding_mismatch",
+          "attempt_binding": {
+            "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+            "bridge_pid": 17976,
+            "episode_character_id": null,
+            "episode_run_id": null,
+            "succession_lifecycle": {
+              "schema": "xar.ck3.succession-lifecycle-binding/v1",
+              "lifecycle": "rogue_one_life",
+              "xar_enabled": "xar_on",
+              "pact_contract": "terminal_settlement_required",
+              "source": "legacy-driver-default",
+              "environment_sha256": null
+            },
+            "campaign_goal": null
+          },
+          "binding_contract": "one_life_episode_identity_v1",
+          "checkpoint_episode_projection": "native_campaign",
+          "missing_checkpoint_binding_fields": [
+            "episode_character_id",
+            "episode_run_id"
+          ],
+          "recorded_session_binding": {
+            "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+            "bridge_pid": 17976,
+            "episode_character_id": null,
+            "episode_run_id": null
+          },
+          "save_history_index": 4,
+          "checkpoint": {
+            "status": "saved",
+            "path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games\\xar_checkpoint.ck3",
+            "name": "xar_checkpoint.ck3",
+            "size": 140063587,
+            "sha256": "409b15a5d8598d2a6e77f118bf025762dbd2da35013d7ede2e0c287ceec91df6",
+            "date_raw": 53144328,
+            "overwrite_confirmed": false,
+            "strategy": "native-autosave-command-v1",
+            "episode_projection": "native_campaign",
+            "succession_lifecycle": null,
+            "history_index": 4,
+            "episode_character_id": null,
+            "episode_run_id": null
+          },
+          "encoded_history_rows": 4,
+          "driver_state_path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\native-session\\driver-state.json"
+        }
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:5",
+        "revision": 6,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 24500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-issuer-tab-01-activate",
+      "started_at": "2026-11-18T22:21:01.003805+00:00",
+      "finished_at": "2026-11-18T22:21:01.112557+00:00",
+      "plan": {
+        "id": "core14-issuer-tab-01-activate",
+        "kind": "tool",
+        "tool": "ck3_activate_scripted_widget_control_v1",
+        "fresh_revision": false,
+        "args": {
+          "query_generation": "4",
+          "widget_id": "15",
+          "expected_revision": "6"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "5",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144328,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "6",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "activate-scripted-widget-control-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfm_market_window",
+        "query_generation": "4",
+        "widget_id": "15",
+        "dispatch_attempted": true,
+        "dispatch_invoked": true,
+        "native_handled": true,
+        "verification_pending": true,
+        "postcondition_verified": false,
+        "result_unknown": false
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:5",
+        "revision": 6,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 24500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-issue-micro-01-query",
+      "started_at": "2026-11-18T22:21:04.285017+00:00",
+      "finished_at": "2026-11-18T22:21:04.538115+00:00",
+      "plan": {
+        "id": "core14-issue-micro-01-query",
+        "kind": "tool",
+        "tool": "ck3_query_scripted_widget_controls_v1",
+        "args": {
+          "root_name": "xfm_market_window"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "5",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144328,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "6",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "query-scripted-widget-controls-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfm_market_window",
+        "query_generation": "5",
+        "complete": true,
+        "truncated": false,
+        "read_only": true
+      },
+      "widget_count": 1074,
+      "full_after": {
+        "snapshot_id": "native:5",
+        "revision": 6,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 24500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-issuer-query-02",
+      "started_at": "2026-11-18T22:22:32.686543+00:00",
+      "finished_at": "2026-11-18T22:22:32.930253+00:00",
+      "plan": {
+        "id": "core14-issuer-query-02",
+        "kind": "tool",
+        "tool": "ck3_query_scripted_widget_controls_v1",
+        "args": {
+          "root_name": "xfm_market_window"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "5",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144328,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "6",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "query-scripted-widget-controls-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfm_market_window",
+        "query_generation": "6",
+        "complete": true,
+        "truncated": false,
+        "read_only": true
+      },
+      "widget_count": 1074,
+      "full_after": {
+        "snapshot_id": "native:5",
+        "revision": 6,
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 24500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-advance-day-01",
+      "started_at": "2026-11-18T22:23:43.019122+00:00",
+      "finished_at": "2026-11-18T22:23:46.946734+00:00",
+      "plan": {
+        "id": "core14-advance-day-01",
+        "kind": "advance_day",
+        "days": 1
+      },
+      "ok": true,
+      "result_summary": {
+        "running_successor": null,
+        "requested_days": 1,
+        "elapsed_hours": 24,
+        "requested_interval_complete": true,
+        "event_boundary": null,
+        "florin_date_sentinel": {
+          "arm": {
+            "state": "armed",
+            "generation": 1,
+            "starting_date_raw": 53144328,
+            "target_date_raw": 53144352,
+            "last_observed_date_raw": 53144328,
+            "trigger_date_raw": 0,
+            "speed": 1,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stop": {
+            "state": "triggered",
+            "generation": 1,
+            "starting_date_raw": 53144328,
+            "target_date_raw": 53144352,
+            "last_observed_date_raw": 53144352,
+            "trigger_date_raw": 53144352,
+            "speed": 1,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "actions": [
+            {
+              "step": "set-speed-1",
+              "result": {
+                "schema": "ck3_1210_full_clock_control_result_v1",
+                "game_version": "1.21.0",
+                "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+                "adapter_id": "ck3-1.21.0-msvc-x64",
+                "backend": "ck3-1.21.0-native-headless-main-thread",
+                "step": "set-speed-1",
+                "accepted": true,
+                "queue_status": "submitted",
+                "effect_attempted": true,
+                "full_snapshot_before_verified": true,
+                "complete_snapshot": false,
+                "physical_save_confirmed": false,
+                "backend_id": "native-headless"
+              }
+            },
+            {
+              "step": "research-arm-tactical-daily-sentinel-v1-53144328-to-53144352-speed-1-mode-terminal-a-0",
+              "result": {
+                "step": "research-arm-tactical-daily-sentinel-v1-53144328-to-53144352-speed-1-mode-terminal-a-0",
+                "accepted": true,
+                "status": "available",
+                "tactical_daily_sentinel": {
+                  "state": "armed",
+                  "generation": 1,
+                  "starting_date_raw": 53144328,
+                  "target_date_raw": 53144352,
+                  "last_observed_date_raw": 53144328,
+                  "trigger_date_raw": 0,
+                  "speed": 1,
+                  "mode": "terminal_or_sentinel",
+                  "army_count": 0,
+                  "combat_count": 0,
+                  "completed_daily_ticks": 0,
+                  "intermediate_pause_count": 0,
+                  "trigger_flags": 0,
+                  "trigger_reasons": [],
+                  "signed_date_delta_from_target_raw": 0,
+                  "overshoot_days": -1,
+                  "pause_wrapper_called": false,
+                  "pause_observed": false,
+                  "terminal_observed": false,
+                  "abnormal": false
+                },
+                "backend_id": "native-headless"
+              }
+            },
+            {
+              "step": "resume-map",
+              "result": {
+                "schema": "ck3_1210_full_clock_control_result_v1",
+                "game_version": "1.21.0",
+                "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+                "adapter_id": "ck3-1.21.0-msvc-x64",
+                "backend": "ck3-1.21.0-native-headless-main-thread",
+                "step": "resume-map",
+                "accepted": true,
+                "queue_status": "submitted",
+                "effect_attempted": true,
+                "full_snapshot_before_verified": true,
+                "complete_snapshot": false,
+                "physical_save_confirmed": false,
+                "backend_id": "native-headless",
+                "native_request_id": "step-20-a26a5fbcabc0"
+              }
+            }
+          ],
+          "physical_save_confirmed": false
+        }
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:7",
+        "revision": 8,
+        "date_raw": 53144352,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 24500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-withdraw-01-activate",
+      "started_at": "2026-11-18T22:26:35.403719+00:00",
+      "finished_at": "2026-11-18T22:26:35.557776+00:00",
+      "plan": {
+        "id": "core14-withdraw-01-activate",
+        "kind": "tool",
+        "tool": "ck3_activate_scripted_widget_control_v1",
+        "fresh_revision": false,
+        "args": {
+          "query_generation": "7",
+          "widget_id": "71",
+          "expected_revision": "8"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "native_revision": "7",
+        "connection_generation": "1",
+        "game_pid": 17976,
+        "played_character_id": 31254,
+        "date_raw": 53144352,
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "owner_thread_verified": true,
+        "source_abi_pins_verified": true,
+        "frame_verified": true,
+        "binding_source": "verified-full-run-transport",
+        "public_revision": "8",
+        "schema": "ck3_1210_gui_control_result_v1",
+        "step": "activate-scripted-widget-control-v1",
+        "available": true,
+        "unavailable_reason": "",
+        "root_name": "xfm_market_window",
+        "query_generation": "7",
+        "widget_id": "71",
+        "dispatch_attempted": true,
+        "dispatch_invoked": true,
+        "native_handled": true,
+        "verification_pending": true,
+        "postcondition_verified": false,
+        "result_unknown": false
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:7",
+        "revision": 8,
+        "date_raw": 53144352,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 24500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-zero-wallet-save-01",
+      "started_at": "2026-11-18T22:26:45.672151+00:00",
+      "finished_at": "2026-11-18T22:26:50.029698+00:00",
+      "plan": {
+        "id": "core14-zero-wallet-save-01",
+        "kind": "tool",
+        "tool": "ck3_save_checkpoint",
+        "args": {}
+      },
+      "ok": true,
+      "result_summary": {
+        "schema": "ck3_1210_full_clock_control_result_v1",
+        "game_version": "1.21.0",
+        "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+        "adapter_id": "ck3-1.21.0-msvc-x64",
+        "backend": "ck3-1.21.0-native-headless-main-thread",
+        "step": "save-checkpoint",
+        "accepted": true,
+        "queue_status": "submitted",
+        "effect_attempted": true,
+        "full_snapshot_before_verified": true,
+        "complete_snapshot": false,
+        "physical_save_confirmed": false,
+        "save_name": "xar_checkpoint",
+        "status": "submitted",
+        "submission": {
+          "sequence": 2,
+          "requested_save_name": "xar_checkpoint",
+          "date_raw": 53144352
+        },
+        "backend_id": "native-headless",
+        "checkpoint": {
+          "status": "saved",
+          "path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games\\xar_checkpoint.ck3",
+          "name": "xar_checkpoint.ck3",
+          "size": 139822544,
+          "sha256": "a011b34847901f93760813d318e9b797e2393cbd53d4d8d86e92a4af32393c74",
+          "date_raw": 53144352,
+          "overwrite_confirmed": true,
+          "strategy": "native-autosave-command-v1",
+          "episode_projection": "native_campaign",
+          "succession_lifecycle": null,
+          "history_index": 11,
+          "episode_character_id": null,
+          "episode_run_id": null
+        },
+        "episode_seed": null,
+        "materialization": {
+          "available": true,
+          "save_dir": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games",
+          "mtime_ns": 1795040808830547900
+        },
+        "driver_state_replace_receipt": {
+          "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+          "status": "unconfirmed",
+          "write_replace_returned": true,
+          "save_binding_verified": false,
+          "reason": "save_binding_mismatch",
+          "attempt_binding": {
+            "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+            "bridge_pid": 17976,
+            "episode_character_id": null,
+            "episode_run_id": null,
+            "succession_lifecycle": {
+              "schema": "xar.ck3.succession-lifecycle-binding/v1",
+              "lifecycle": "rogue_one_life",
+              "xar_enabled": "xar_on",
+              "pact_contract": "terminal_settlement_required",
+              "source": "legacy-driver-default",
+              "environment_sha256": null
+            },
+            "campaign_goal": null
+          },
+          "binding_contract": "one_life_episode_identity_v1",
+          "checkpoint_episode_projection": "native_campaign",
+          "missing_checkpoint_binding_fields": [
+            "episode_character_id",
+            "episode_run_id"
+          ],
+          "recorded_session_binding": {
+            "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--financial-markets--R0013",
+            "bridge_pid": 17976,
+            "episode_character_id": null,
+            "episode_run_id": null
+          },
+          "save_history_index": 11,
+          "checkpoint": {
+            "status": "saved",
+            "path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\profile\\save games\\xar_checkpoint.ck3",
+            "name": "xar_checkpoint.ck3",
+            "size": 139822544,
+            "sha256": "a011b34847901f93760813d318e9b797e2393cbd53d4d8d86e92a4af32393c74",
+            "date_raw": 53144352,
+            "overwrite_confirmed": true,
+            "strategy": "native-autosave-command-v1",
+            "episode_projection": "native_campaign",
+            "succession_lifecycle": null,
+            "history_index": 11,
+            "episode_character_id": null,
+            "episode_run_id": null
+          },
+          "encoded_history_rows": 11,
+          "driver_state_path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\native-session\\driver-state.json"
+        }
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:9",
+        "revision": 10,
+        "date_raw": 53144352,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-exit-query-01",
+      "started_at": "2026-11-18T22:28:55.224945+00:00",
+      "finished_at": "2026-11-18T22:29:00.133503+00:00",
+      "plan": {
+        "id": "core14-exit-query-01",
+        "kind": "tool",
+        "tool": "ck3_query_normal_exit_context_v1",
+        "args": {}
+      },
+      "ok": true,
+      "result_summary": {
+        "schema": "ck3-normal-exit-context-result-v2",
+        "route": "application_core_1210",
+        "status": "context_observed",
+        "public_revision": "10",
+        "native_observation": {
+          "schema": "ck3-normal-exit-application-observation-v2",
+          "step": "normal-exit-application-v1",
+          "action": "query_context",
+          "status": "context_observed",
+          "native_revision": "9",
+          "connection_generation": "1",
+          "game_pid": 17976,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": "134395135145366903",
+          "exit_context_signature": "38a2439c459d62aeece346f20da3fd60d01a69666ceff9d2606916f0a5450d63",
+          "core_prefix": {
+            "date_raw": 53144352,
+            "speed": 1,
+            "paused": true,
+            "local_player_id": 1,
+            "map_ready": true,
+            "has_played_character": true,
+            "played_character_id": 31254,
+            "played_character_alive": true
+          },
+          "core_ack": null
+        },
+        "exit_context_signature": "38a2439c459d62aeece346f20da3fd60d01a69666ceff9d2606916f0a5450d63",
+        "source_inventory_sha256": "da0f85af1677dfafb1283dbd4781d6cd4689ab2c98b8e4c921630c576a14295c",
+        "process_creation_filetime_100ns": "134395135145366903",
+        "claim_consumed": false,
+        "retry_authorized": false,
+        "orderly_exit_verified": false,
+        "autosave_verified": false
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": "native:9",
+        "revision": 10,
+        "date_raw": 53144352,
+        "paused": true,
+        "played_character_gold": {
+          "raw": 25500000,
+          "scale": 100000
+        }
+      }
+    },
+    {
+      "id": "core14-exit-confirm-01",
+      "started_at": "2026-11-18T22:29:34.975746+00:00",
+      "finished_at": "2026-11-18T22:29:44.829183+00:00",
+      "plan": {
+        "id": "core14-exit-confirm-01",
+        "kind": "tool",
+        "tool": "ck3_request_normal_exit_v1",
+        "fresh_revision": false,
+        "args": {
+          "action": "confirm_desktop",
+          "expected_revision": "10",
+          "expected_exit_context_signature": "38a2439c459d62aeece346f20da3fd60d01a69666ceff9d2606916f0a5450d63"
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "schema": "ck3-normal-exit-request-result-v2",
+        "action": "confirm_desktop",
+        "route": "application_core_1210",
+        "public_revision": "10",
+        "request_id": "normal-exit-core-f005dc2eb15a45288832a6b877fedb57",
+        "claim_path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\native-session\\normal-exit-map-requests\\a753c18411e2c9236f33cd151a7d9b79decc6620061903ccd37812a375325661.claim.json",
+        "source_inventory_sha256": "da0f85af1677dfafb1283dbd4781d6cd4689ab2c98b8e4c921630c576a14295c",
+        "process_creation_filetime_100ns": "134395135145366903",
+        "process_preconfirm_pin": {
+          "pid": 17976,
+          "creation_filetime_100ns": "134395135145366903",
+          "retained_handle_token": "b77de3a09e5d8ca301c0790611e51dcd",
+          "wait_result": 258,
+          "verified_monotonic_ns": "1829807323308200",
+          "observation_clock_domain": "driver_monotonic_v1"
+        },
+        "claim_consumed": true,
+        "retry_authorized": false,
+        "process_exit_observed": false,
+        "exit_code": null,
+        "typed_normal_exit_observed": false,
+        "autosave_verified": false,
+        "status": "dispatch_pending",
+        "native_observation": {
+          "schema": "ck3-normal-exit-application-observation-v2",
+          "step": "normal-exit-application-v1",
+          "action": "confirm_desktop",
+          "status": "dispatch_pending",
+          "native_revision": "9",
+          "connection_generation": "1",
+          "game_pid": 17976,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": "134395135145366903",
+          "exit_context_signature": "38a2439c459d62aeece346f20da3fd60d01a69666ceff9d2606916f0a5450d63",
+          "core_prefix": {
+            "date_raw": 53144352,
+            "speed": 1,
+            "paused": true,
+            "local_player_id": 1,
+            "map_ready": true,
+            "has_played_character": true,
+            "played_character_id": 31254,
+            "played_character_alive": true
+          },
+          "core_ack": {
+            "schema": "ck3_1210_application_exit_result_v1",
+            "game_version": "1.21.0",
+            "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+            "adapter_id": "ck3-1.21.0-msvc-x64",
+            "backend": "ck3-1.21.0-native-headless-main-thread",
+            "step": "normal-exit-application-v1",
+            "accepted": true,
+            "dispatch_status": "requested",
+            "effect_attempted": true,
+            "complete_snapshot": false,
+            "physical_save_confirmed": false,
+            "normal_exit_confirmed": false
+          }
+        },
+        "process_observation": {
+          "pid": 17976,
+          "creation_filetime_100ns": "134395135145366903",
+          "retained_handle_token": "b77de3a09e5d8ca301c0790611e51dcd",
+          "wait_result": 258,
+          "wait_state": "timeout",
+          "exit_code": 259,
+          "process_identity_verified": true,
+          "process_exit_observed": false,
+          "observed_monotonic_ns": "1829812361295800",
+          "timeout_ms": 5000,
+          "observation_deadline_reached": true,
+          "observation_clock_domain": "driver_monotonic_v1",
+          "errors": []
+        },
+        "driver_dispatch_receipt_observed_monotonic_ns": "1829807344833900",
+        "receipt_clock_meaning": "driver received an exact requested Core ApplicationExit ACK; not native callback time",
+        "snapshot_after_required": false,
+        "reason": null,
+        "observer_retained": true,
+        "uses_desktop_input": false,
+        "uses_ocr": false,
+        "native_submission_count": 1
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": null,
+        "revision": null,
+        "date_raw": null,
+        "paused": null,
+        "played_character_gold": null
+      }
+    },
+    {
+      "id": "core14-exit-observe-01",
+      "started_at": "2026-11-18T22:30:20.613843+00:00",
+      "finished_at": "2026-11-18T22:30:20.755068+00:00",
+      "plan": {
+        "id": "core14-exit-observe-01",
+        "kind": "tool",
+        "tool": "ck3_observe_normal_exit_v1",
+        "args": {}
+      },
+      "ok": true,
+      "result_summary": {
+        "schema": "ck3-normal-exit-process-observation-result-v2",
+        "action": "confirm_desktop",
+        "route": "application_core_1210",
+        "public_revision": "10",
+        "request_id": "normal-exit-core-f005dc2eb15a45288832a6b877fedb57",
+        "claim_path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\native-session\\normal-exit-map-requests\\a753c18411e2c9236f33cd151a7d9b79decc6620061903ccd37812a375325661.claim.json",
+        "source_inventory_sha256": "da0f85af1677dfafb1283dbd4781d6cd4689ab2c98b8e4c921630c576a14295c",
+        "process_creation_filetime_100ns": "134395135145366903",
+        "process_preconfirm_pin": {
+          "pid": 17976,
+          "creation_filetime_100ns": "134395135145366903",
+          "retained_handle_token": "b77de3a09e5d8ca301c0790611e51dcd",
+          "wait_result": 258,
+          "verified_monotonic_ns": "1829807323308200",
+          "observation_clock_domain": "driver_monotonic_v1"
+        },
+        "claim_consumed": true,
+        "retry_authorized": false,
+        "process_exit_observed": true,
+        "exit_code": 0,
+        "typed_normal_exit_observed": true,
+        "autosave_verified": false,
+        "status": "process_exit_observed_zero",
+        "native_observation": {
+          "schema": "ck3-normal-exit-application-observation-v2",
+          "step": "normal-exit-application-v1",
+          "action": "confirm_desktop",
+          "status": "dispatch_pending",
+          "native_revision": "9",
+          "connection_generation": "1",
+          "game_pid": 17976,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": "134395135145366903",
+          "exit_context_signature": "38a2439c459d62aeece346f20da3fd60d01a69666ceff9d2606916f0a5450d63",
+          "core_prefix": {
+            "date_raw": 53144352,
+            "speed": 1,
+            "paused": true,
+            "local_player_id": 1,
+            "map_ready": true,
+            "has_played_character": true,
+            "played_character_id": 31254,
+            "played_character_alive": true
+          },
+          "core_ack": {
+            "schema": "ck3_1210_application_exit_result_v1",
+            "game_version": "1.21.0",
+            "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+            "adapter_id": "ck3-1.21.0-msvc-x64",
+            "backend": "ck3-1.21.0-native-headless-main-thread",
+            "step": "normal-exit-application-v1",
+            "accepted": true,
+            "dispatch_status": "requested",
+            "effect_attempted": true,
+            "complete_snapshot": false,
+            "physical_save_confirmed": false,
+            "normal_exit_confirmed": false
+          }
+        },
+        "process_observation": {
+          "pid": 17976,
+          "creation_filetime_100ns": "134395135145366903",
+          "retained_handle_token": "b77de3a09e5d8ca301c0790611e51dcd",
+          "wait_result": 0,
+          "wait_state": "signaled",
+          "exit_code": 0,
+          "process_identity_verified": true,
+          "process_exit_observed": true,
+          "observed_monotonic_ns": "1829848283895800",
+          "timeout_ms": 5000,
+          "observation_deadline_reached": false,
+          "observation_clock_domain": "driver_monotonic_v1",
+          "errors": []
+        },
+        "driver_dispatch_receipt_observed_monotonic_ns": "1829807344833900",
+        "receipt_clock_meaning": "driver observed validated dispatch_invoked response; not native callback time",
+        "observer_retained": false,
+        "snapshot_after_required": false,
+        "native_submission_count": 0,
+        "uses_desktop_input": false,
+        "uses_ocr": false,
+        "receipt_path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\native-session\\normal-exit-map-requests\\d453fc2dd2cb6c60430a.observe-62b8b0487f60423d.json",
+        "observer_close_receipt_path": "C:\\workspace\\ck3-market-live-20261119f\\managed-states\\financial-core14\\state\\native-session\\normal-exit-map-requests\\d453fc2dd2cb6c60430a.observer-close-ccdc8008805a457e.json"
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": null,
+        "revision": null,
+        "date_raw": null,
+        "paused": null,
+        "played_character_gold": null
+      }
+    },
+    {
+      "id": "core14-finish-hold-01",
+      "started_at": "2026-11-18T22:30:46.717097+00:00",
+      "finished_at": "2026-11-18T22:30:46.772446+00:00",
+      "plan": {
+        "id": "core14-finish-hold-01",
+        "kind": "finish_hold",
+        "expect": {
+          "hold_finished": true
+        }
+      },
+      "ok": true,
+      "result_summary": {
+        "hold_finished": true
+      },
+      "widget_count": null,
+      "full_after": {
+        "snapshot_id": null,
+        "revision": null,
+        "date_raw": null,
+        "paused": null,
+        "played_character_gold": null
+      }
+    }
+  ],
+  "original_operation_waits": [
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:10:24.569433+00:00",
+      "finished_at_utc": "2026-11-18T22:10:41.657916+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+        "--base-runtime",
+        "C:\\workspace\\ck3-market-live-20261119e\\runtime-core13\\runtime.local.json",
+        "--source-delta",
+        "C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\complete-core13-to-893d57b9-selected-actual01\\source-delta.json",
+        "--source-commit",
+        "893d57b9dc2e60f9653907e1d1606cbedf6b84c1",
+        "--scene-root",
+        "C:\\workspace\\ck3-market-live-20261119f",
+        "--storage-admission",
+        "C:\\workspace\\ck3-market-task-20261118\\financial-core-scene-admission-08.json",
+        "--products",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "financial-markets",
+        "--case",
+        "core",
+        "--case-inputs",
+        "C:\\workspace\\ck3-market-task-20261118\\core14.case-inputs.json",
+        "--output",
+        "C:\\workspace\\ck3-market-live-20261119f\\runtime-core14",
+        "--qualified-native",
+        "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification19\\Q.actual.json",
+        "--task-prefix",
+        "ck3-financial-market-core-",
+        "--qualification",
+        "other_source_delta=C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\core14-model-chain-893d57b9-actual01\\QUALIFICATION.other_source_delta.actual.json"
+      ],
+      "pid": 19108,
+      "birth_filetime": "134395134245709229",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 17.088492900133133,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-runtime-core14\\stdout.log",
+        "bytes": 513,
+        "sha256": "a1e2371b3da0f36ff422d48c82633e5655b73c50fa412cb2e439ff10ba5a51fe"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-runtime-core14\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-runtime-core14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2224,
+        "sha256": "c756261a2695c1d2f5fdba44f675816ebd454eeda6647412cfb9fffd4e9c05d8"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:10:52.633878+00:00",
+      "finished_at_utc": "2026-11-18T22:10:52.873433+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "--runtime",
+        "C:\\workspace\\ck3-market-live-20261119f\\runtime-core14\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "financial-markets",
+        "--case",
+        "core",
+        "plan"
+      ],
+      "pid": 21428,
+      "birth_filetime": "134395134526355366",
+      "actual_original_popen_wait": true,
+      "returncode": 2,
+      "elapsed_seconds": 0.2395518000703305,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-core14\\stdout.log",
+        "bytes": 4548,
+        "sha256": "3d3eeb063b72c6b8ad3302baaf7d6b4a2e456f4958fce2aad1101b259dc12a24"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-core14\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-core14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1247,
+        "sha256": "66388f22ada8df25ad7facfd0f1b979a02b348caf8bbaf647e39f6209f832f36"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:10:57.143506+00:00",
+      "finished_at_utc": "2026-11-18T22:10:58.806719+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "--runtime",
+        "C:\\workspace\\ck3-market-live-20261119f\\runtime-core14\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "financial-markets",
+        "--case",
+        "core",
+        "--case-inputs",
+        "C:\\workspace\\ck3-market-task-20261118\\core14.case-inputs.json",
+        "--prepare-output",
+        "C:\\workspace\\ck3-market-live-20261119f\\prepared-core14",
+        "prepare"
+      ],
+      "pid": 23548,
+      "birth_filetime": "134395134571448582",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.6632181000895798,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-core14\\stdout.log",
+        "bytes": 85453,
+        "sha256": "59586e54515fcc16564eb745c3aa02e8f9f3ca5e5d03cd27b78fdfa63706127f"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-core14\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-core14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1443,
+        "sha256": "de8cac9fa71c56eae65021c5a04e7b34ed32267541e441866c2f489caa81453c"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:10:59.056983+00:00",
+      "finished_at_utc": "2026-11-18T22:10:59.327803+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "--runtime",
+        "C:\\workspace\\ck3-market-live-20261119f\\runtime-core14\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "financial-markets",
+        "--case",
+        "core",
+        "--prepared-case",
+        "C:\\workspace\\ck3-market-live-20261119f\\prepared-core14\\prepared-case.json",
+        "plan"
+      ],
+      "pid": 11380,
+      "birth_filetime": "134395134590582213",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.27083859988488257,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-prepared-core14\\stdout.log",
+        "bytes": 4812,
+        "sha256": "b704220ff66761306dcae2600a748fc57e72c21101a4e142cf2bb51b382033b6"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-prepared-core14\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-prepared-core14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1376,
+        "sha256": "87c522d7ff5cb8c90c7c4c518c4699e8703c32f530f3ebc0ca380a4a59221b70"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:11:27.221662+00:00",
+      "finished_at_utc": "2026-11-18T22:11:28.657615+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "preflight",
+        "--runtime",
+        "C:\\workspace\\ck3-market-live-20261119f\\runtime-core14\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "financial-markets",
+        "--case",
+        "core",
+        "--run-context",
+        "C:\\workspace\\ck3-market-live-20261119f\\live\\4-8e1c2f1861--financial-markets--R0013\\Root-reviewed-context.json",
+        "--prepared-case",
+        "C:\\workspace\\ck3-market-live-20261119f\\prepared-core14\\prepared-case.json"
+      ],
+      "pid": 18040,
+      "birth_filetime": "134395134872229428",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.4359587000217289,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CORE14-preflight\\stdout.log",
+        "bytes": 68928,
+        "sha256": "18c19b0931a0e17940de2afcfbcc0beeebf1e2f59d75dd75178ff5998c024184"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CORE14-preflight\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CORE14-preflight\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1518,
+        "sha256": "b53a2483dbeff582556117d9760ffd65532fb88eff0499889defd4860ff1ac2b"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:11:31.779866+00:00",
+      "finished_at_utc": "2026-11-18T22:30:47.112414+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "run",
+        "--runtime",
+        "C:\\workspace\\ck3-market-live-20261119f\\runtime-core14\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "financial-markets",
+        "--case",
+        "core",
+        "--run-context",
+        "C:\\workspace\\ck3-market-live-20261119f\\live\\4-8e1c2f1861--financial-markets--R0013\\Root-reviewed-context.json",
+        "--prepared-case",
+        "C:\\workspace\\ck3-market-live-20261119f\\prepared-core14\\prepared-case.json"
+      ],
+      "pid": 21032,
+      "birth_filetime": "134395134917825998",
+      "actual_original_popen_wait": true,
+      "returncode": 2,
+      "elapsed_seconds": 1155.3325362000614,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CORE14-run\\stdout.log",
+        "bytes": 73595,
+        "sha256": "c0bdbec715dcd65a0df89d66619775f424f218f0a8a21bbb219deaa073d2d20f"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CORE14-run\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CORE14-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1500,
+        "sha256": "574aa6b24561b44a09412c032605f4c7cf23ac59f820185377c1853ab95fd01b"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:20:09.183542+00:00",
+      "finished_at_utc": "2026-11-18T22:20:11.829346+00:00",
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/archive_financial_checkpoint01.py",
+        "--request",
+        "C:/workspace/ck3-market-task-20261118/R0013-wallet-save-archive-request01/archive-request.json"
+      ],
+      "pid": 18148,
+      "birth_filetime": "134395140091848770",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 2.645814900053665,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ARCHIVE-core14-wallet-save-01\\stdout.log",
+        "bytes": 234,
+        "sha256": "49f0d900c7ec8cb563f8e2336450a947f620d85337ce04f9ac916ce50bfe3b9d"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ARCHIVE-core14-wallet-save-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ARCHIVE-core14-wallet-save-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1106,
+        "sha256": "4316c803f0a6e1cfbacc66c7a77d23c258ca812705736314ea19a86d2a6e31ae"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:20:25.814087+00:00",
+      "finished_at_utc": "2026-11-18T22:23:38.066570+00:00",
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/financial-save-prepare01/discover_financial_archived_save01.py",
+        "--request",
+        "C:/workspace/ck3-market-task-20261118/R0013-wallet-discovery01.request.json"
+      ],
+      "pid": 23716,
+      "birth_filetime": "134395140258153323",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 192.25248779985122,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DISCOVER-core14-wallet-save-01\\stdout.log",
+        "bytes": 330,
+        "sha256": "dd9c6f7f80f66e33a701556e5f8259318bc9c1bc13539e66e82187d7605f7743"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DISCOVER-core14-wallet-save-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DISCOVER-core14-wallet-save-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1119,
+        "sha256": "e50aece89019a029e4274deb2f227f1cf94b1aefbd54b8b21043e1e6f5537a1a"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:24:53.456197+00:00",
+      "finished_at_utc": "2026-11-18T22:24:54.457595+00:00",
+      "argv": [
+        "java",
+        "-Xms32m",
+        "-Xmx256m",
+        "-jar",
+        "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/target/save-audit-app03/quarkus-run.jar",
+        "audit",
+        "--inputs",
+        "C:/workspace/ck3-market-task-20261118/R0013-wallet-audit01/audit-request.json",
+        "--output",
+        "C:/workspace/ck3-market-task-20261118/R0013-wallet-audit01/audit-report.json"
+      ],
+      "pid": 23436,
+      "birth_filetime": "134395142934584961",
+      "actual_original_popen_wait": true,
+      "returncode": 1,
+      "elapsed_seconds": 1.0014076000079513,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-core14-wallet-save-01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-core14-wallet-save-01\\stderr.log",
+        "bytes": 102,
+        "sha256": "1e19dab4ea808478bdbf73f6d179768c905605c72ad7c7c065735790d70ca148"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-core14-wallet-save-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1182,
+        "sha256": "00abb6734bc4027d09f30493e2012f2567c91da8496815d44d0e8e69694df27f"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:25:37.175312+00:00",
+      "finished_at_utc": "2026-11-18T22:25:54.468657+00:00",
+      "argv": [
+        "java",
+        "-Xms32m",
+        "-Xmx256m",
+        "-jar",
+        "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/target/save-audit-app03/quarkus-run.jar",
+        "audit",
+        "--inputs",
+        "C:/workspace/ck3-market-task-20261118/R0013-wallet-audit02/audit-request.json",
+        "--output",
+        "C:/workspace/ck3-market-task-20261118/R0013-wallet-audit02/audit-report.json"
+      ],
+      "pid": 19024,
+      "birth_filetime": "134395143371772556",
+      "actual_original_popen_wait": true,
+      "returncode": 2,
+      "elapsed_seconds": 17.2933557999786,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-core14-wallet-save-02\\stdout.log",
+        "bytes": 347,
+        "sha256": "b8ef49bf8bc844b98632779f9b18542932f9a5cd1198c8ab81a07b9d3824c9fd"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-core14-wallet-save-02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-core14-wallet-save-02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1180,
+        "sha256": "bc7d25c9fa7da9a5d335f3a239907fb1d86e5e3343601d866d5c708da5c296aa"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:28:30.184347+00:00",
+      "finished_at_utc": "2026-11-18T22:28:32.877985+00:00",
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/archive_financial_checkpoint01.py",
+        "--request",
+        "C:/workspace/ck3-market-task-20261118/R0013-zero-wallet-save-archive-request01/archive-request.json"
+      ],
+      "pid": 21008,
+      "birth_filetime": "134395145101859455",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 2.6936506000347435,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ARCHIVE-core14-zero-wallet-save-01\\stdout.log",
+        "bytes": 239,
+        "sha256": "375764860e2abdb212d0e6d81d7f4111272edb9b7cbfda8ae4a7151c24643c8b"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ARCHIVE-core14-zero-wallet-save-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ARCHIVE-core14-zero-wallet-save-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1122,
+        "sha256": "56bb2757c289fd566b5403cd030e5537f16cbf4ea26b9fe379d0e38a36a2441a"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:29:09.201072+00:00",
+      "finished_at_utc": "2026-11-18T22:32:01.714916+00:00",
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/financial-save-prepare01/discover_financial_archived_save01.py",
+        "--request",
+        "C:/workspace/ck3-market-task-20261118/R0013-zero-wallet-discovery01.request.json"
+      ],
+      "pid": 1116,
+      "birth_filetime": "134395145492036551",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 172.51382829993963,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DISCOVER-core14-zero-wallet-save-01\\stdout.log",
+        "bytes": 337,
+        "sha256": "e3f239624704530c542880300594c288900c2221b7e0be0c02d6cf7432b9900e"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DISCOVER-core14-zero-wallet-save-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DISCOVER-core14-zero-wallet-save-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1133,
+        "sha256": "9566152f4027cca65d49c2c3c80c09d33f2a09a42ffeb7238739e8241ca75596"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:31:56.699770+00:00",
+      "finished_at_utc": "2026-11-18T22:31:56.965967+00:00",
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/close_financial_core14.py",
+        "stop"
+      ],
+      "pid": 21776,
+      "birth_filetime": "134395147167009945",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.26622049999423325,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\STOP-keeper-core14\\stdout.log",
+        "bytes": 213,
+        "sha256": "824ea7c0512eda10bf5d084b7cc9b089a9cac24739be83b537306a83ac37db61"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\STOP-keeper-core14\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\STOP-keeper-core14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 970,
+        "sha256": "f5774bb99c8138b678d8f002cadea4563284b85f79a63d7c188e9c49fff36a5b"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:11:02.970168+00:00",
+      "finished_at_utc": "2026-11-18T22:31:57.147291+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "--runtime",
+        "C:\\workspace\\ck3-market-live-20261119f\\runtime-core14\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "financial-markets",
+        "--case",
+        "core",
+        "--prepared-case",
+        "C:\\workspace\\ck3-market-live-20261119f\\prepared-core14\\prepared-case.json",
+        "--attempt",
+        "a91",
+        "--keeper-output",
+        "C:\\workspace\\ck3-market-live-20261119f\\keepers\\a91",
+        "--previous-live",
+        "C:\\workspace\\ck3-market-live-20261119e\\live\\4-8e1c2f1861--financial-markets--R0012",
+        "--previous-keeper",
+        "C:\\workspace\\ck3-market-live-20261119e\\keepers\\a90",
+        "--previous-release",
+        "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-core13\\stdout.log",
+        "allocate"
+      ],
+      "pid": 8808,
+      "birth_filetime": "134395134629715297",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 1254.1771315000951,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-core14\\stdout.log",
+        "bytes": 4219,
+        "sha256": "ff4161e5ae9a8c6ad7b4e8ac8362cfe2b2f18a5d58a784999f9d7f27635a1fee"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-core14\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-core14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1808,
+        "sha256": "87512964fc9b2e60eae8cbd1fb64ef371bce13d02f8b0fab0f10dce4c6624cb5"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-18T22:32:05.759126+00:00",
+      "finished_at_utc": "2026-11-18T22:32:06.600130+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+        "--expected-cli-sha256",
+        "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F",
+        "release-screen-cas",
+        "--task",
+        "ck3-financial-market-core-a91",
+        "--expected-sequence",
+        "15325",
+        "--summary",
+        "R0013 resources closed: actual Game0 Host0 Job0 keeper0; issuer GUI content failure preserved; actual wallet actions one saved game day and two physical financial saves; full product business acceptance continues"
+      ],
+      "pid": 20748,
+      "birth_filetime": "134395147257603033",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 0.84102479997091,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-core14\\stdout.log",
+        "bytes": 1533,
+        "sha256": "f492a33a386c4fc2528c8eb013d0c1f49328a50d75d3a82de17c534a07db023f"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-core14\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-core14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1417,
+        "sha256": "51cc63c6f1a2f28215a14bee314e38e3aad0a70e4a10ce2b42e0733b098309a1"
+      }
+    }
+  ],
+  "strict_audit_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0013-wallet-audit02\\audit-report.json",
+    "bytes": 13462,
+    "sha256": "540222fc26303306c47b2a7d54744c48bf38dd4544e39b47441d3b957efaeec2"
+  },
+  "audit_limits": "Named03 actual wait2/INCOMPLETE preserves omitted-value identity errors. First invocation wait1 had no request after a slash-spelling metadata mismatch; neither failure is relabelled PASS.",
+  "managed_session_original": {
+    "path": "C:\\workspace\\ck3-market-live-20261119f\\live\\4-8e1c2f1861--financial-markets--R0013\\native-report.session.log",
+    "bytes": 8048,
+    "sha256": "77f9c47a687d051a71c12becfff7f51296b4c2e4d91a96f8158d03cc85f7b567"
+  },
+  "host_original_wait": {
+    "at_utc": "2026-11-18T22:30:47.805224+00:00",
+    "pid": 3356,
+    "returncode": 0,
+    "run_id": "4-8e1c2f1861--financial-markets--R0013",
+    "actual_original_popen_wait": true,
+    "normal_ck3_exit_inferred": false,
+    "business_pass": false
+  },
+  "keeper_original": {
+    "path": "C:\\workspace\\ck3-market-live-20261119f\\keepers\\a91\\report.json",
+    "bytes": 440,
+    "sha256": "faeadb2eec6ad22fac56e07979d0fc859f808e646bfb83c485abfef030cb7d9f"
+  },
+  "release_original": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-core14\\stdout.log",
+    "bytes": 1533,
+    "sha256": "f492a33a386c4fc2528c8eb013d0c1f49328a50d75d3a82de17c534a07db023f"
+  },
+  "normal_exit": "One requested Core exit submission, then independently retained same-process exit0. Game0/Job0/treegone/Host0/keeper0; CAS15325->15326 done/resources[].",
+  "public_case": "Actual run wait2/1155.3325362 seconds, case incomplete and already-exited-session errors preserved separately from normal exit.",
+  "business_pass": false,
+  "whole_product_pass": false,
+  "cold_load_proven": false,
+  "financialCertified": false
+}

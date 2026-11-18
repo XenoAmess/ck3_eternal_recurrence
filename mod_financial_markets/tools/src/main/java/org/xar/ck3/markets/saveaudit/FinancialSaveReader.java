@@ -33,6 +33,7 @@ import org.xar.ck3.save.SaveStream;
 /** Two complete shared-parser passes; only selected per-record ASTs exist transiently. */
 public final class FinancialSaveReader {
     private static final long STREAM_LIMIT = 512L * 1024 * 1024;
+    private static final String NUMBER_ENCODING_METADATA = "number_encoding_metadata";
     private FinancialSaveReader() { }
     public enum Container { PLAIN_TEXT, ZIP_GAMESTATE, SHARED_DECODER }
     public record Budgets(int maxTableRecords, int maxFinancialRecords, int maxRecordBytes,
@@ -66,17 +67,28 @@ public final class FinancialSaveReader {
         return new Selection(List.of(), List.of(new ProjectionSelection("globals", ProjectionKind.GLOBAL_VARIABLES,
                 List.of("variables"), 1, 512 * 1024, true)), true, false, List.of());
     }
+    /** Opt-in header admission needs the full AST, including same-name block entries.
+     * The standard metadata scope exposes direct scalars only. Shared limits stay unchanged.
+     */
+    private static Selection selection(FinancialProjector.LayoutHypothesis layout) {
+        Selection strict = selection();
+        if (layout.numberIdentityEncoding() != FinancialProjector.NumberIdentityEncoding.omittedZero) return strict;
+        List<ProjectionSelection> projections = new ArrayList<>(strict.projections());
+        projections.add(new ProjectionSelection(NUMBER_ENCODING_METADATA, ProjectionKind.OTHER,
+                List.of("meta_data"), 1, 512 * 1024, true));
+        return new Selection(strict.tables(), projections, strict.metadataRequired(), strict.structureCensus(), strict.structureRoots());
+    }
     public static Readback read(Path input, String machineId, FinancialProjector.LayoutHypothesis layout) throws IOException {
         return read(input, machineId, layout, Budgets.standard());
     }
     public static Readback read(Path input, String machineId, FinancialProjector.LayoutHypothesis layout, Budgets budgets) throws IOException {
         Pin pin = FilePins.pin(input);
-        return readTwoPasses(pin, machineId, layout, budgets, (table, sink) -> pass(pin, table, sink));
+        return readTwoPasses(pin, machineId, layout, budgets, (table, sink) -> pass(pin, table, sink, layout));
     }
     public static Readback readDecoded(Pin input, Pin decoder, String machineId, FinancialProjector.LayoutHypothesis layout) throws IOException {
         return readTwoPasses(input, machineId, layout, Budgets.standard(), (table, sink) -> {
             TrackingSink tracking = new TrackingSink(sink);
-            Decoded decoded = SaveDecoder.inspect(input, decoder, selection(), DecoderLimits.standard(), SaveDecoder::launch, table, tracking);
+            Decoded decoded = SaveDecoder.inspect(input, decoder, selection(layout), DecoderLimits.standard(), SaveDecoder::launch, table, tracking);
             return new Pass(decoded.projection(), tracking.observation(), decoded.streamSha256(), Long.parseLong(decoded.streamBytes()), Container.SHARED_DECODER);
         });
     }
@@ -96,6 +108,7 @@ public final class FinancialSaveReader {
         };
         Pass first = reader.read(table(List.of(), budgets), census);
         FilePins.verify(Path.of(pin.path()), pin);
+        requireObservedNumberEncoding(first.projection(), layout);
         ProjectionSink projected = new ProjectionSink(selected, layout, budgets);
         Pass second = reader.read(table(List.copyOf(selected.keySet()), budgets), projected);
         if (first.container() != second.container() || first.bytes() != second.bytes() || !first.sha256().equals(second.sha256())
@@ -106,6 +119,19 @@ public final class FinancialSaveReader {
                 second.observation().selectedRecords(), second.observation().streamedTokenBytes(), projected.fields, budgets);
         return new Readback(machineId, Instant.now().toString(), pin, second.container(), second.projection(), projected.stories,
                 projected.issues, coverage, true, false);
+    }
+    private static void requireObservedNumberEncoding(Projection projection, FinancialProjector.LayoutHypothesis layout) throws IOException {
+        if (layout.numberIdentityEncoding() != FinancialProjector.NumberIdentityEncoding.omittedZero) return;
+        List<ProjectionScope> metadata = projection.projections().stream()
+                .filter(scope -> scope.name().equals(NUMBER_ENCODING_METADATA)).toList();
+        try {
+            if (metadata.size() != 1
+                    || !FinancialProjector.atom(metadata.getFirst().ast(), "version").map(FinancialProjector::unquote).orElse("").equals("1.21.0")
+                    || !FinancialProjector.atom(metadata.getFirst().ast(), "save_game_version").orElse("").equals("19"))
+                throw new IllegalArgumentException("omittedZero requires observed 1.21.0 / format 19 metadata");
+        } catch (IllegalArgumentException malformed) {
+            throw new IOException("actual SAVE metadata does not admit omittedZero", malformed);
+        }
     }
     private static StreamingTable table(List<NativeId> selected, Budgets budgets) {
         return new StreamingTable(List.of("stories", "active"), "story_cycle", selected, budgets.maxTableRecords(),
@@ -142,7 +168,7 @@ public final class FinancialSaveReader {
         try { return FinancialProjector.unquote(raw); }
         catch (IllegalArgumentException malformed) { throw new IOException("unrecognized story discriminator", malformed); }
     }
-    private static Pass pass(Pin pin, StreamingTable table, StreamingTableSink sink) throws IOException {
+    private static Pass pass(Pin pin, StreamingTable table, StreamingTableSink sink, FinancialProjector.LayoutHypothesis layout) throws IOException {
         Path path = Path.of(pin.path());
         byte[] signature;
         try (InputStream input = Files.newInputStream(path)) { signature = input.readNBytes(4); }
@@ -157,7 +183,7 @@ public final class FinancialSaveReader {
                 ZipEntry state = entries.getFirst();
                 if (state.getSize() < 0 || state.getSize() > STREAM_LIMIT || state.getCrc() < 0) throw new IOException("unknown or oversized gamestate entry");
                 try (BoundedStream stream = new BoundedStream(archive.getInputStream(state)); Reader reader = utf8(stream)) {
-                    SaveStream selector = new SaveStream(reader, selection(), table, sink);
+                    SaveStream selector = new SaveStream(reader, selection(layout), table, sink);
                     Projection projection = selector.read();
                     if (stream.count != state.getSize() || stream.crc.getValue() != state.getCrc()) throw new IOException("gamestate size/CRC mismatch");
                     return new Pass(projection, selector.streamingObservation(), stream.sha256(), stream.count, Container.ZIP_GAMESTATE);
@@ -165,7 +191,7 @@ public final class FinancialSaveReader {
             }
         }
         try (BoundedStream stream = new BoundedStream(Files.newInputStream(path)); Reader reader = utf8(stream)) {
-            SaveStream selector = new SaveStream(reader, selection(), table, sink);
+            SaveStream selector = new SaveStream(reader, selection(layout), table, sink);
             Projection projection = selector.read();
             return new Pass(projection, selector.streamingObservation(), stream.sha256(), stream.count, Container.PLAIN_TEXT);
         }
