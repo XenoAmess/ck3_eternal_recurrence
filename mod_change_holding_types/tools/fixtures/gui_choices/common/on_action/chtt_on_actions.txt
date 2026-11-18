@@ -1,0 +1,9 @@
+﻿on_game_start_after_lobby = { on_actions = { chtt_gui_on_start } }
+chtt_gui_on_start = {
+    effect = {
+        every_player = {
+            limit = { this = character:1128 }
+            trigger_event = { id = chtt_gui.1 }
+        }
+    }
+}

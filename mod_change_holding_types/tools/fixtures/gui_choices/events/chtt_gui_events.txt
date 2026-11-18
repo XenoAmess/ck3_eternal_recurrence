@@ -1,0 +1,21 @@
+﻿namespace = chtt_gui
+
+chtt_gui.1 = {
+    type = character_event
+    hidden = yes
+    trigger = { is_ai = no this = character:1128 }
+    immediate = {
+        add_gold = 1000
+        trigger_event = { id = chtt.0001 }
+        if = {
+            limit = {
+                title:b_rossano = { ch_barony_is_valid_for_city_trigger = { CHARACTER = root } }
+                capital_province = { has_holding_type = castle_holding }
+                capital_province.barony = { NOT = { this = title:b_rossano } }
+            }
+            add_character_flag = chtt_gui_ready
+            debug_log = "CHTTGUI: READY actual_city_decision_Rossano"
+        }
+        else = { debug_log = "CHTTGUI: FAIL initial_Rossano_and_capital_conditions" }
+    }
+}

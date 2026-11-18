@@ -9,6 +9,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+from typing import Literal, TypedDict
 
 from product import LANGUAGES, REPO, SOURCE, TARGETS, UPSTREAM_ITEM_ID, runtime_files, spec
 
@@ -16,6 +17,28 @@ sys.path.insert(0, str(REPO / "tools"))
 from ck3_text_projection import blocks, masked
 from independent_mod_release import source_errors
 from translate_localization_minimax import parse_ck3_localization
+
+
+class FileIdentity(TypedDict):
+    path: str
+    size: int
+    sha256: str
+
+
+class StaticReport(TypedDict):
+    schema: str
+    status: Literal["RED", "GREEN"]
+    errors: list[str]
+    git_sha: str
+    runtime_file_count: int
+    source_files: list[FileIdentity]
+    selector_methods: list[str]
+    vanilla_files: list[FileIdentity]
+    game_root: str | None
+    ck3_exe_sha256: str | None
+    release_localization: bool
+    evidence_layer: str
+    ck3_started: bool
 
 
 def block_body(source: str, key: str) -> str:
@@ -27,10 +50,26 @@ def block_body(source: str, key: str) -> str:
     return source[found[0].opening + 1:found[0].end - 1]
 
 
-def validate(game_root: Path | None, release_localization: bool = False) -> dict:
+def holding_target_errors(holdings: str, districts: str) -> list[str]:
+    """Validate each Florin holding -> primary district -> primary building chain."""
+    errors: list[str] = []
+    for target in TARGETS:
+        try:
+            holding = masked(block_body(holdings, target.holding))
+            district = masked(block_body(districts, target.primary_district))
+            if not re.search(r"\bprimary_district\s*=\s*" + re.escape(target.primary_district) + r"\b", holding):
+                errors.append(f"holding primary district mismatch: {target.holding}")
+            if not re.search(r"\bprimary_building\s*=\s*" + re.escape(target.primary_building) + r"\b", district):
+                errors.append(f"district primary building mismatch: {target.primary_district}")
+        except ValueError as error:
+            errors.append(f"target holding/district absent or ambiguous: {target.holding}: {error}")
+    return errors
+
+
+def validate(game_root: Path | None, release_localization: bool = False) -> StaticReport:
     errors: list[str] = source_errors(spec(release_localization))
-    hashes = []
-    texts = {}
+    hashes: list[FileIdentity] = []
+    texts: dict[str, str] = {}
     runtime = runtime_files(release_localization)
     for relative in sorted(runtime):
         path = SOURCE / relative
@@ -58,8 +97,8 @@ def validate(game_root: Path | None, release_localization: bool = False) -> dict
     triggers = texts.get("common/scripted_triggers/00_convert_holdings_scripted_triggers.txt", "")
     gui = texts.get("gui/decision_view_widgets/decision_view_widget_ch_convert_holding.gui", "")
     descriptor = texts.get("descriptor.mod", "")
-    if 'supported_version="1.20.*"' not in descriptor or 'version="1.0.0"' not in descriptor:
-        errors.append("descriptor does not match reviewed 1.0.0 / CK3 1.20 contract")
+    if 'supported_version="1.21.0"' not in descriptor or 'version="1.0.1"' not in descriptor:
+        errors.append("descriptor does not match reviewed 1.0.1 / CK3 1.21.0 contract")
     selector_methods = sorted(set(re.findall(r"DecisionViewWidget\w+\.\w+", "\n".join(line for line in gui.splitlines() if not line.lstrip().startswith("#")))))
     for old in ["DecisionViewWidgetCreateHolyOrder", "HasCurrentCapital", "GetCurrentCapital", "HasValidBaronies", "barony_valid"]:
         if old in gui or old in decisions:
@@ -69,7 +108,8 @@ def validate(game_root: Path | None, release_localization: bool = False) -> dict
         for expected in ["tier = tier_barony", "holder = $CHARACTER$", "$CHARACTER$ = { is_ai = no }", "is_leased_out = no", "has_holding = yes", "has_ongoing_construction = no"]:
             if expected not in base:
                 errors.append(f"base title predicate lacks {expected}")
-        for kind, holding, _ in TARGETS:
+        for target in TARGETS:
+            kind, holding = target.kind, target.holding
             decision = block_body(decisions, f"ch_convert_holding_to_{kind}_decision")
             shown = block_body(decision, "is_shown")
             valid = block_body(decision, "is_valid")
@@ -89,7 +129,7 @@ def validate(game_root: Path | None, release_localization: bool = False) -> dict
                 errors.append(f"{kind}: production effect or guards incorrect")
     except ValueError as error:
         errors.append(str(error))
-    locs = {}
+    locs: dict[str, set[str]] = {}
     for language in (LANGUAGES if release_localization else LANGUAGES[:2]):
         text = texts.get(f"localization/{language}/00_convert_holdings_l_{language}.yml", "")
         if not text.splitlines() or text.splitlines()[0] != f"l_{language}:":
@@ -103,28 +143,26 @@ def validate(game_root: Path | None, release_localization: bool = False) -> dict
         if len(keys) != len(set(keys)):
             errors.append(f"duplicate localization keys: {language}")
         locs[language] = set(keys)
-        for kind, _, _ in TARGETS:
+        for target in TARGETS:
+            kind = target.kind
             for suffix in ["", "_desc", "_tooltip", "_confirm"]:
                 if f"ch_convert_holding_to_{kind}_decision{suffix}" not in keys:
                     errors.append(f"missing {language} decision key for {kind}{suffix}")
         if "CHT_BUILDING_LOSS_WARNING" not in keys:
             errors.append(f"missing building loss warning: {language}")
-    for language, keys in locs.items():
-        if keys != locs.get("english"):
+    for language, key_set in locs.items():
+        if key_set != locs.get("english"):
             errors.append(f"localization key inventories differ: {language}")
-    vanilla = []
+    vanilla: list[FileIdentity] = []
     if game_root is not None:
-        native_files = ["common/holdings/00_holdings.txt", "common/decisions/00_holy_order_decisions.txt", "gui/decision_view_widgets/decision_view_widget_create_holy_order.gui", "common/script_values/00_building_values.txt", "common/culture/innovations/00_tribal_innovations.txt"]
-        native = {}
+        native_files = ["common/holdings/00_holdings.txt", "common/decisions/00_holy_order_decisions.txt", "gui/decision_view_widgets/decision_view_widget_create_holy_order.gui", "common/script_values/00_building_values.txt", "common/culture/innovations/00_tribal_innovations.txt", "common/districts/holding_districts.txt"]
+        native: dict[str, str] = {}
         for relative in native_files:
             path = game_root / relative
             data = path.read_bytes()
             native[relative] = data.decode("utf-8-sig")
             vanilla.append({"path": relative, "size": len(data), "sha256": hashlib.sha256(data).hexdigest()})
-        holdings = masked(native[native_files[0]])
-        for _, holding, main in TARGETS:
-            if not re.search(r"\b" + holding + r"\s*=\s*\{", holdings) or not re.search(r"\bprimary_building\s*=\s*" + main + r"\b", holdings):
-                errors.append(f"target holding absent in installed game: {holding}")
+        errors.extend(holding_target_errors(native[native_files[0]], native[native_files[5]]))
         if "title_valid" not in native[native_files[1]]:
             errors.append("installed holy-order decision no longer uses title_valid")
         if not re.search(r"(?m)^main_building_tier_1_cost\s*=", native[native_files[3]]):

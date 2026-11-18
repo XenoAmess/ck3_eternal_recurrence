@@ -1,6 +1,7 @@
 """Identity and reviewed runtime allowlist for the maintained holding converter."""
 
 from pathlib import Path
+from typing import NamedTuple
 
 SOURCE = Path(__file__).resolve().parents[1]
 REPO = SOURCE.parent
@@ -8,13 +9,20 @@ PRODUCT_ID = "mod_change_holding_types"
 UPSTREAM_ITEM_ID = "3337428403"
 TAG_PREFIX = "change-holding-types-v"
 LANGUAGES = ("english", "simp_chinese", "french", "german", "japanese", "korean", "polish", "russian", "spanish")
-TARGETS = (
-    ("castle", "castle_holding", "castle_01"),
-    ("city", "city_holding", "city_01"),
-    ("temple", "church_holding", "temple_01"),
-    ("nomad", "nomad_holding", "nomadic_camp_01"),
-    ("tribal", "tribal_holding", "tribe_01"),
-    ("temple_citadel", "temple_citadel_holding", "temple_citadel_01"),
+class HoldingTarget(NamedTuple):
+    kind: str
+    holding: str
+    primary_district: str
+    primary_building: str
+
+
+TARGETS: tuple[HoldingTarget, ...] = (
+    HoldingTarget("castle", "castle_holding", "castle_holding_district", "castle_01"),
+    HoldingTarget("city", "city_holding", "city_holding_district", "city_01"),
+    HoldingTarget("temple", "church_holding", "temple_holding_district", "temple_01"),
+    HoldingTarget("nomad", "nomad_holding", "nomad_holding_district", "nomadic_camp_01"),
+    HoldingTarget("tribal", "tribal_holding", "tribal_holding_district", "tribe_01"),
+    HoldingTarget("temple_citadel", "temple_citadel_holding", "temple_citadel_holding_district", "temple_citadel_01"),
 )
 RUNTIME_FILES = frozenset({
     "common/decision_group_types/ch_decision_group_types.txt",

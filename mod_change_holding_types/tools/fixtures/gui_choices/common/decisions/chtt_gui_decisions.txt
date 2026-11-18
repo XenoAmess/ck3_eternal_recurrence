@@ -1,0 +1,78 @@
+﻿chtt_gui_record_baseline_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    decision_group_type = chtt_gui_probe
+    ai_check_interval = 0
+    is_shown = { is_ai = no has_character_flag = chtt_gui_ready NOT = { has_character_flag = chtt_gui_baseline } }
+    is_valid = {
+        is_ai = no
+        title:b_rossano = { ch_barony_is_valid_for_city_trigger = { CHARACTER = root } }
+        gold >= main_building_tier_1_cost
+    }
+    effect = {
+        set_variable = { name = chtt_gui_gold_before value = gold }
+        set_variable = { name = chtt_gui_expected_gold value = gold }
+        change_variable = { name = chtt_gui_expected_gold subtract = main_building_tier_1_cost }
+        add_character_flag = chtt_gui_baseline
+        debug_log = "CHTTGUI: PASS baseline_recorded_before_actual_decision"
+    }
+    ai_potential = { always = no }
+    ai_will_do = { base = 0 }
+}
+
+chtt_gui_verify_city_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    decision_group_type = chtt_gui_probe
+    ai_check_interval = 0
+    is_shown = { is_ai = no has_character_flag = chtt_gui_baseline NOT = { has_character_flag = chtt_gui_conversion_verified } }
+    is_valid = { is_ai = no }
+    effect = {
+        if = {
+            limit = { title:b_rossano = { holder = root title_province = { has_holding_type = city_holding } } }
+            debug_log = "CHTTGUI: PASS actual_selected_Rossano_city_and_owner"
+        }
+        else = { debug_log = "CHTTGUI: FAIL actual_selected_Rossano_city_and_owner" }
+        if = {
+            limit = { capital_province = { has_holding_type = castle_holding } }
+            debug_log = "CHTTGUI: PASS unselected_capital_still_castle"
+        }
+        else = { debug_log = "CHTTGUI: FAIL unselected_capital_still_castle" }
+        if = {
+            limit = { gold >= var:chtt_gui_expected_gold gold <= var:chtt_gui_expected_gold }
+            debug_log = "CHTTGUI: PASS actual_exact_personal_gold_cost"
+        }
+        else = { debug_log = "CHTTGUI: FAIL actual_exact_personal_gold_cost" }
+        if = {
+            limit = { NOT = { title:b_rossano = { ch_barony_is_valid_for_city_trigger = { CHARACTER = root } } } }
+            debug_log = "CHTTGUI: PASS converted_same_type_rejected"
+        }
+        else = { debug_log = "CHTTGUI: FAIL converted_same_type_rejected" }
+        add_character_flag = chtt_gui_conversion_verified
+        debug_log = "CHTTGUI: READY actual_GUI_Save_Load"
+    }
+    ai_potential = { always = no }
+    ai_will_do = { base = 0 }
+}
+
+chtt_gui_verify_reload_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    decision_group_type = chtt_gui_probe
+    ai_check_interval = 0
+    is_shown = { is_ai = no has_character_flag = chtt_gui_conversion_verified NOT = { has_character_flag = chtt_gui_reload_verified } }
+    is_valid = { is_ai = no }
+    effect = {
+        if = {
+            limit = {
+                title:b_rossano = { holder = root title_province = { has_holding_type = city_holding } }
+                capital_province = { has_holding_type = castle_holding }
+                gold >= var:chtt_gui_expected_gold
+                gold <= var:chtt_gui_expected_gold
+            }
+            debug_log = "CHTTGUI: PASS saved_state_Rossano_capital_gold"
+        }
+        else = { debug_log = "CHTTGUI: FAIL saved_state_Rossano_capital_gold" }
+        add_character_flag = chtt_gui_reload_verified
+        debug_log = "CHTTGUI: DONE production_city_and_reload"
+    }
+    ai_potential = { always = no }
+    ai_will_do = { base = 0 }
+}

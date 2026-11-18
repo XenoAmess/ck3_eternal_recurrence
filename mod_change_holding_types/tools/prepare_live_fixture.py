@@ -6,8 +6,36 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import shutil
+from typing import Literal, NotRequired, TypedDict
 
 from product import SOURCE, TARGETS
+
+
+class FileReceipt(TypedDict):
+    path: str
+    size: int
+    sha256: str
+
+
+class FixtureReport(TypedDict):
+    schema: Literal["cht.external-fixture.v1", "cht.external-gui-fixture.v1"]
+    fixture_root: str
+    expected_pass_markers: list[str]
+    required_start: str
+    required_end: str
+    required_auxiliary_markers: list[str]
+    entry_character_history_id: int
+    entry_bookmark_key: str
+    covers: str
+    does_not_cover: list[str]
+    ck3_started: bool
+    files: list[FileReceipt]
+    gui_choices: NotRequired[bool]
+    maximum_natural_days: NotRequired[int]
+    entry: NotRequired[str]
+    preparation: NotRequired[str]
+    expected_gui_steps: NotRequired[list[str]]
 
 
 def test_marker(name: str, condition: str) -> str:
@@ -19,7 +47,9 @@ def test_marker(name: str, condition: str) -> str:
 """
 
 
-def prepare(output: Path) -> dict:
+def prepare(output: Path, *, gui_choices: bool = False) -> FixtureReport:
+    if type(gui_choices) is not bool:
+        raise ValueError("gui_choices must be a strict boolean")
     output = output.resolve()
     if output.exists() or SOURCE == output or SOURCE in output.parents:
         raise ValueError("fixture output must be a new directory outside product source")
@@ -47,10 +77,10 @@ chtt.0001 = {
             }
 """
     order = ["city", "temple", "tribal", "nomad", "temple_citadel", "castle"]
-    by_kind = {kind: (holding, main) for kind, holding, main in TARGETS}
+    by_kind = {target.kind: target.holding for target in TARGETS}
     markers = []
     for kind in order:
-        holding, _ = by_kind[kind]
+        holding = by_kind[kind]
         marker = f"convert-{kind}"
         markers.append(marker)
         event += f"            cht_convert_to_{kind}_effect = yes\n"
@@ -93,8 +123,15 @@ chtt_on_start = {
         path = output / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
+    if gui_choices:
+        fixture = Path(__file__).parent / "fixtures/gui_choices"
+        for source in sorted(fixture.rglob("*")):
+            if source.is_file():
+                target = output / source.relative_to(fixture)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
     markers += ["same-type-rejected", "same-type-unchanged", "ai-effect-blocked", "non-barony-rejected"]
-    report = {
+    report: FixtureReport = {
         "schema": "cht.external-fixture.v1",
         "fixture_root": str(output),
         "expected_pass_markers": markers,
@@ -108,6 +145,17 @@ chtt_on_start = {
         "ck3_started": False,
         "files": [{"path": relative, "size": len(data), "sha256": hashlib.sha256(data).hexdigest()} for relative, data in sorted(payloads.items())],
     }
+    if gui_choices:
+        report.update({
+            "schema": "cht.external-gui-fixture.v1",
+            "gui_choices": True,
+            "maximum_natural_days": 0,
+            "entry": "on_game_start_after_lobby -> chtt_gui.1 -> unchanged chtt.0001 matrix",
+            "preparation": "Add 1000 isolated gold; original production-effect matrix restores capital castle; no production city decision or payment is automated.",
+            "expected_gui_steps": ["record paused baseline", "actual production city decision and Rossano selector", "verify conversion/cost/untouched capital", "actual GUI Save and Load", "verify reloaded state"],
+            "does_not_cover": ["native bridge qualification", "all building preservation", "full mod combinations", "UI business until actual operator execution"],
+            "files": [{"path": p.relative_to(output).as_posix(), "size": p.stat().st_size, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(output.rglob("*")) if p.is_file()],
+        })
     (output.parent / f"{output.name}.fixture.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return report
 
@@ -115,9 +163,10 @@ chtt_on_start = {
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--gui-choices", action="store_true", help="Prepare explicit zero-day production GUI/cost and Save/Load probes")
     args = parser.parse_args()
     try:
-        print(json.dumps(prepare(args.output), ensure_ascii=False, indent=2))
+        print(json.dumps(prepare(args.output, gui_choices=args.gui_choices), ensure_ascii=False, indent=2))
     except (OSError, ValueError) as error:
         parser.exit(1, f"CHT FIXTURE FAILED: {error}\n")
     return 0

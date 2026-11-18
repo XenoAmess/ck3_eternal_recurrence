@@ -1,0 +1,31 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "change-holding-types",
+  "case": "migration-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 0,
+  "fixture_emitter": {
+    "path": "mod_change_holding_types/tools/prepare_live_fixture.py",
+    "arguments": ["--output", "{output}", "--gui-choices"],
+    "receipt_suffix": ".fixture.json"
+  },
+  "entry_bookmark_key": "bookmark_rags_to_riches_duke_robert",
+  "entry_character_history_id": 1128,
+  "required_business_evidence": [
+    "original_six_effects_and_negative_guards",
+    "actual_six_chinese_names_and_full_warnings",
+    "actual_production_selector_Rossano_city_and_exact_cost",
+    "actual_GUI_save_load_and_persistent_state",
+    "all_production_and_GUI_probe_markers"
+  ],
+  "required_startup": [
+    "CHTT: START production-effect-matrix",
+    "CHTT: END production-effect-matrix",
+    "CHTT: AI guard actor reached",
+    "CHTTGUI: READY actual_city_decision_Rossano"
+  ],
+  "forbidden_markers": ["CHTT: FAIL", "CHTTGUI: FAIL"],
+  "actual_target": {"title_key": "b_rossano", "province_id": "2629", "holding": "city_holding"},
+  "scope": "Six original production effect conversions plus actual city decision/payment and actual Save/Load. Probe markers alone do not prove UI execution or physical persistence. Other languages remain format-only; no all-building preservation or full mod-combination claim.",
+  "business_contract_applicable": true
+}
