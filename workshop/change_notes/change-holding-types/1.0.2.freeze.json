@@ -1,0 +1,20 @@
+{
+  "schema": "steam-change-notes-frozen-candidate-v1",
+  "product_key": "change-holding-types",
+  "version": "1.0.2",
+  "previous_version": "1.0.0",
+  "workshop_item_id": "3812510834",
+  "text_file": "workshop/change_notes/change-holding-types/1.0.2.txt",
+  "bytes": 2146,
+  "characters": 1548,
+  "lines": 15,
+  "sha256": "23fe5397516d9e3320556ec24e3ae2617bcd835e236f88f5c34cdb01ef61d9e9",
+  "encoding": "utf-8",
+  "line_endings": "LF",
+  "trailing_newline": false,
+  "status": "BUSINESS_VERIFIED_PENDING_PUBLICATION",
+  "published": false,
+  "release_tag": "change-holding-types-v1.0.2",
+  "release_commit": "894489bef2f6636433b40d54cb030193feefc228",
+  "machine_id": "desktop-3fevhd2-1c74096080"
+}

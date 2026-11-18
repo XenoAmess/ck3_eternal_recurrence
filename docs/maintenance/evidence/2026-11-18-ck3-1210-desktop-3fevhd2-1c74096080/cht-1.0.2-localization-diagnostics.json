@@ -1,0 +1,58 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T08:25:29.007983+00:00",
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-0ecfd19e6d854014b3100f0b527be9d6\\profile\\logs\\error.log",
+    "bytes": 2419,
+    "sha256": "4c6f9d82d035483a678301d68c162e907546c26f3e9cb1d88b119368f3d90b5c"
+  },
+  "count": 6,
+  "classification": "Observed stock trigger-localization missing-perspective diagnostics, not an unknown trigger or failed conversion. NOT error-free; debug tooltips visibly show pink fallback diagnostics. Product decision names and full custom warning separately reviewed. No blanket stock UI localization claim.",
+  "authority": {
+    "00_debug_triggers.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\trigger_localization\\00_debug_triggers.txt",
+      "bytes": 5728,
+      "sha256": "ca77221dffb1d5ece66e160979f68340878a2ae8d2e8cb77eaeaeb343555338e"
+    },
+    "00_province_triggers.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\trigger_localization\\00_province_triggers.txt",
+      "bytes": 2865,
+      "sha256": "b1eab34eb79e181013ee0a47ca491f83930d1485d19896ad719d760d4d696454"
+    }
+  },
+  "stock_excerpts": {
+    "00_debug_triggers.txt": [
+      "ai_diplomacy_stance = {",
+      "\tglobal = ai_diplomacy_stance_trigger",
+      "}",
+      "",
+      "is_ai = {",
+      "\tglobal = is_ai_trigger",
+      "\tthird = is_ai_trigger",
+      "\tthird_not = NOT_is_ai_trigger",
+      "}",
+      "",
+      "ai_honor = {",
+      "\tglobal = ai_honor_trigger",
+      "}",
+      "",
+      "ai_rationality = {"
+    ],
+    "00_province_triggers.txt": [
+      "has_province_owner = {",
+      "\tglobal = has_province_owner_global",
+      "\tthird = has_province_owner_third",
+      "}",
+      "",
+      "is_leased_out = {",
+      "\tglobal = is_leased_out_GLOBAL",
+      "\tglobal_not = is_leased_out_GLOBAL_NOT",
+      "}",
+      "",
+      "is_holy_site_of = {",
+      "\tglobal = is_holy_site_of_GLOBAL",
+      "\tglobal_not = is_holy_site_of_GLOBAL_NOT",
+      "}"
+    ]
+  }
+}

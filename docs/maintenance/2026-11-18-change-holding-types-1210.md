@@ -11,3 +11,10 @@
 已观察的静态RED：新版 `00_holdings.txt` 3790B／SHA `a3e97a3095d1da5058d8040e612634f632c85f9ba0ec6bf50a93aef2af31bd3e` 不再直接定义primary_building，而以primary_district引用 `common/districts/holding_districts.txt` 的主建筑。旧校验因此六类全部误报absent。已改为逐一核定同一holding→对应district→对应building，不能在全文件任意找到主建筑便算匹配；TARGETS改为具名四字段合同并同步所有消费者。真实新版六条链通过，替换holding的district、替换district的building、删除district定义均被拒绝，原失败保留。
 
 离线资格：17文件双构建可复现；九语格式／六组原版来源／选择器方法静态门GREEN。原fixture与GUI fixture的完整production-effect事件逐字相同，GUI producer八文件清单往返／BOM检查通过。Open Kaishek对6份正式脚本／GUI及5份fixture脚本通用parse均退出0，不授1.21语义profile；前5份正式精确输入复用首次成功，首次脚本错误把历史纯文本Notes送入parser的失败保留，随后只校验正式allowlist及fixture。完整两份修改的prepare/validate文件strict mypy通过，显式MYPYPATH解析共享tools、imports skipped，不宣称全依赖图通过。原件位于 `D:/ck3-state/upgrade-20261118/cht-offline-a01/`（旧模型RED）与 `cht-offline-a02/qualification.json`（软件资格）；业务仍NOT_RUN。
+
+2026-11-18T08:23:33.796717Z，1.0.2公共GUI业务R0002完成原Popen正常退出0、keeper与CAS闭合，未用WM_CLOSE/STOP。六类生产effect／负门禁、六个中文名称与完整警告、真实Rossano城市选择、个人金币1139→939（新版原版费用200）及官方Save/Load同一档均通过，22条marker各一次、FAIL0、零自然日。实际本地保存12,337,646B，last_save与命名档同SHA，重载前后文件身份／SHA不变；读取载入过渡及日期／金币画面后执行后态探针，非仅marker推定保存。
+
+error.log2419B、6条原版trigger localization缺失视角：is_ai first_not来自00_debug_triggers.txt，is_leased_out third_not来自00_province_triggers.txt。原版源SHA和完整诊断已保留；这不是未知trigger／转换失败，但debug界面确有粉色回退诊断，不宣称错误日志为空或原版条件全中文。fixture专用分组标题亦有raw key，不进入正式17文件；六个产品名称与自定义完整警告独立通过。业务范围不含全部建筑保留、八语实机、全部旧档与mod组合。
+
+
+公共GUI实际业务已通过，真实城市决议／个人费用／保存重载与原effect矩阵分别留证。完整中英Notes已冻结，原条目上传及缓存仍待完成；详细原件为 D:/ck3-state/upgrade-20261118/cht-r2-verify.json。

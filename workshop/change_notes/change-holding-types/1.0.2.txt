@@ -1,0 +1,15 @@
+地产类型转换（XenoAmess维护版）1.0.2 / Change Holding Types 1.0.2
+CK3 1.21.0 (Florin)
+
+适配 / Compatibility
+- 兼容声明及工坊分类更新为1.21.0 / Florin，沿用原维护版条目3812510834。 / Updated compatibility to 1.21.0 / Florin on the existing maintained item 3812510834.
+- 适配新版主城区结构，并修复已移除旧触发器导致的施工检测错误；施工中的地产仍不可转换，六种转换与个人金币规则保留。 / Adapted to Florin's district structure and fixed construction checks after removal of the old trigger. Holdings under construction remain ineligible; all six conversions and personal-gold rules are retained.
+
+验收 / Validation
+- 隔离简中环境验证六类真实生产effect及同类型／AI／非男爵领负门禁，实际城市决议、罗萨诺选择、200金币扣款及同一存档的保存重载。 / Isolated Simplified Chinese validation covers the six production effects and same-type/AI/non-barony guards, the real city decision and Rossano selector, 200 personal Gold and Save/Load of the same game.
+- 六个中文名称及完整建筑／政府／继承警告已复核；其他八语仅格式检查。 / Checked all six Chinese decision names and the complete building/government/inheritance warning; the other eight languages remain format-only.
+
+范围 / Scope
+- 不兼容的建筑可能丢失，政府与继承限制仍由原版处理；不承诺全部建筑保留或任意模组组合。 / Incompatible buildings may be lost; vanilla government and inheritance rules still apply. This is not a promise to preserve every building or support every mod combination.
+- 推荐备份后在新单人游戏使用；本轮不声称覆盖全部旧版本存档迁移。 / Back up your saves; a new single-player game is recommended. This round does not claim every old-version save migration.
+- 调试模式下原版AI／出租条件提示仍有文本回退诊断，已保留；实测转换、扣款和保存载入通过。 / Debug mode still shows vanilla AI/lease tooltip fallback diagnostics, retained in the record; conversion, payment and Save/Load passed.
