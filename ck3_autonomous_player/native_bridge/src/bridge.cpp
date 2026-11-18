@@ -12685,7 +12685,7 @@ public:
         !game_->supports(xar::ck3_1210::kCoreFrameCapabilityV1)) return;
     attempted_ = true;
     const bool control=game_->supports(xar::ck3_1210::kCoreControlCapabilityV1);
-    std::array<xar::ck3_11906::MainThreadQueryExecutorV1,4> executors{
+    std::array<xar::ck3_11906::MainThreadQueryExecutorV1,6> executors{
         &xar::ck3_1210::ExecuteCoreFrameMailboxV1};
     std::size_t count=1;
     if(control) executors[count++]=&xar::ck3_1210::ExecuteCoreControlMailboxV1;
@@ -12698,6 +12698,10 @@ public:
       executors[count++]=&xar::ck3_1210::ExecutePersonalGoldMailboxV1;
     if(observer_ != nullptr && game_->supports_snapshot())
       executors[count++]=&xar::ck3_12002::ExecuteSemanticAdapter12002;
+    if(game_->supports(xar::ck3_1210::kGuiControlQueryCapabilityV1))
+      executors[count++]=&xar::ck3_1210::ExecuteGuiControlMailboxV1;
+    if(game_->supports(xar::ck3_1210::kEventOptionsQueryCapabilityV1))
+      executors[count++]=&xar::ck3_1210::ExecuteEventOptionControlMailboxV1;
     if(game_->supports_snapshot() && !xar::game::BindCk3_1210SnapshotOwnerMailbox(
         xar::ck3_12002::NativeAdapter12002(*game_),g_main_thread_query_mailbox_v1))return;
     auto environment=xar::ck3_1210::BindThreadRuntimeImage(
@@ -15719,12 +15723,20 @@ std::string RunGuiControl1210(const xar::game::GameAdapter &game,WorkerState &st
   const auto answer=[&](){return SerializeGuiControlCommandResultV1(id,query.request,query.result);};
   if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
       !game.supports(kGuiControlQueryCapabilityV1) ||
-      (query.request.activate && !game.supports(kGuiControlActivateCapabilityV1)) ||
-      !game.supports_snapshot() || !state.previous_snapshot || !state.state_revision ||
-      query.request.native_revision!=state.state_revision || !state.connection_generation) return answer();
+      (query.request.activate && !game.supports(kGuiControlActivateCapabilityV1))) {
+    query.result.unavailable_reason="gui_exact_capability_unavailable";return answer();
+  }
+  if(!game.supports_snapshot() || !state.previous_snapshot || !state.state_revision || !state.connection_generation) {
+    query.result.unavailable_reason="gui_full_binding_unavailable";return answer();
+  }
+  if(query.request.native_revision!=state.state_revision) {
+    query.result.unavailable_reason="gui_native_revision_mismatch";return answer();
+  }
   const auto expected=*state.previous_snapshot;
-  if(!expected.paused || !expected.map_ready || !expected.has_played_character ||
-      !expected.played_character_alive || expected.has_active_event)return answer();
+  if(!expected.paused || !expected.map_ready || !expected.has_played_character || !expected.played_character_alive) {
+    query.result.unavailable_reason="gui_full_not_paused_played_map";return answer();
+  }
+  if(expected.has_active_event) {query.result.unavailable_reason="gui_active_event_pending";return answer();}
   query.game=&game;query.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
   query.expected_full_snapshot=&expected;query.mailbox=&g_main_thread_query_mailbox_v1;
   query.provider=&state.gui_control_provider_1210;query.connection_generation=state.connection_generation;
@@ -15737,7 +15749,11 @@ std::string RunGuiControl1210(const xar::game::GameAdapter &game,WorkerState &st
   }
   const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
       g_main_thread_query_mailbox_v1,&ExecuteGuiControlMailboxV1,&query,query.ticket);
-  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)return answer();
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    query.result.unavailable_reason=submit==xar::ck3_11906::MainThreadQuerySubmitResultV1::invalid_request
+        ?"gui_mailbox_invalid_request":"gui_mailbox_submit_rejected";
+    return answer();
+  }
   auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8000);
   while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
     wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2000);
@@ -15760,12 +15776,19 @@ std::string RunEventOptionControl1210(const xar::game::GameAdapter &game,
   const auto answer=[&]() {return SerializeEventOptionCommandResultV1(id,query.request,query.result);};
   if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
       !game.supports(kEventOptionsQueryCapabilityV1) ||
-      (query.request.select && !game.supports(kEventOptionsSelectCapabilityV1)) ||
-      !game.supports_snapshot() || !state.previous_snapshot || !state.state_revision ||
-      state.state_revision!=query.request.native_revision) return answer();
+      (query.request.select && !game.supports(kEventOptionsSelectCapabilityV1))) {
+    query.result.unavailable_reason="event_exact_capability_unavailable";return answer();
+  }
+  if(!game.supports_snapshot() || !state.previous_snapshot || !state.state_revision) {
+    query.result.unavailable_reason="event_full_binding_unavailable";return answer();
+  }
+  if(state.state_revision!=query.request.native_revision) {
+    query.result.unavailable_reason="event_native_revision_mismatch";return answer();
+  }
   const auto expected=*state.previous_snapshot;
-  if(!expected.paused || !expected.map_ready || !expected.has_played_character || !expected.played_character_alive)
-    return answer();
+  if(!expected.paused || !expected.map_ready || !expected.has_played_character || !expected.played_character_alive) {
+    query.result.unavailable_reason="event_full_not_paused_played_map";return answer();
+  }
   query.game=&game;query.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
   query.expected_full_snapshot=&expected;query.mailbox=&g_main_thread_query_mailbox_v1;
   const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
@@ -15782,7 +15805,11 @@ std::string RunEventOptionControl1210(const xar::game::GameAdapter &game,
   }
   const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
       g_main_thread_query_mailbox_v1,&ExecuteEventOptionControlMailboxV1,&query,query.ticket);
-  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)return answer();
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    query.result.unavailable_reason=submit==xar::ck3_11906::MainThreadQuerySubmitResultV1::invalid_request
+        ?"event_mailbox_invalid_request":"event_mailbox_submit_rejected";
+    return answer();
+  }
   auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8000);
   while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
     wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2000);

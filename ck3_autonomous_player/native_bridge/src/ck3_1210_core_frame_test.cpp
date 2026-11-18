@@ -252,8 +252,18 @@ int wmain(int argc, wchar_t **argv) {
   CHECK(!BindThreadRuntimeImage(0, kExecutableSha256).exact_build_admitted);
   const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 4> allowed{&ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1};
   CHECK(BindThreadRuntimeImage(1,kExecutableSha256,allowed).permitted_executor_quaternary==&ExecuteCoreFrameMailboxV1);
-  const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 5> too_many{&ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1,&ExecuteCoreFrameMailboxV1};
-  CHECK(!BindThreadRuntimeImage(1, kExecutableSha256, too_many).exact_build_admitted);
+  const auto old_four = BindThreadRuntimeImage(1,kExecutableSha256,allowed);
+  CHECK(old_four.permitted_executor == allowed[0] && old_four.permitted_executor_secondary == allowed[1] &&
+      old_four.permitted_executor_tertiary == allowed[2] && old_four.permitted_executor_quaternary == allowed[3] &&
+      old_four.permitted_executor_quinary == nullptr && old_four.permitted_executor_senary == nullptr);
+  const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 6> six{&ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1};
+  const auto all_six = BindThreadRuntimeImage(1,kExecutableSha256,six);
+  CHECK(all_six.exact_build_admitted && all_six.permitted_executor_quinary == six[4] && all_six.permitted_executor_senary == six[5]);
+  CHECK(!BindThreadRuntimeImage(1,"wrong",six).exact_build_admitted && !BindThreadRuntimeImage(0,kExecutableSha256,six).exact_build_admitted);
+  const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 7> too_many{&ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1};
+  const auto denied = BindThreadRuntimeImage(1,kExecutableSha256,too_many);
+  CHECK(!denied.exact_build_admitted && !denied.executor_submission_enabled && denied.permitted_executor == nullptr &&
+      denied.permitted_executor_quinary == nullptr && denied.permitted_executor_senary == nullptr);
   CHECK(!VerifyThreadRuntimeImage(0));
   if (argc == 2) {
     // Resource-only Windows mapping: no entry point, imported function, game

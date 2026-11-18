@@ -624,9 +624,86 @@ bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
   return ok;
 }
 
+
+struct FlorinExecutorSlotProbe {
+  unsigned calls = 0;
+  unsigned slot = 99;
+  api::MainThreadExecutionStampV1 observed{};
+};
+
+template <unsigned Slot>
+bool ExecuteFlorinSlotProbe(void *opaque,
+    const api::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto &probe = *static_cast<FlorinExecutorSlotProbe *>(opaque);
+  ++probe.calls; probe.slot = Slot; probe.observed = stamp;
+  return true;
+}
+
+bool TestFlorinSixExecutorSlots() {
+  MemoryFixture memory;
+  g_memory = &memory;
+  memory.iat = reinterpret_cast<void *>(&FakePeek);
+  memory.jomini_slot = reinterpret_cast<std::uintptr_t>(memory.jomini.data());
+  memory.state_slot = reinterpret_cast<std::uintptr_t>(memory.state.data());
+  Store(memory.tls, 0x20, std::uint8_t{1});
+  Store(memory.jomini, 0x20, std::uint8_t{1});
+  Store(memory.state, 0x08, std::int32_t{53'144'328});
+  const std::array<api::MainThreadQueryExecutorV1, 6> executors{
+      &ExecuteFlorinSlotProbe<0>, &ExecuteFlorinSlotProbe<1>, &ExecuteFlorinSlotProbe<2>,
+      &ExecuteFlorinSlotProbe<3>, &ExecuteFlorinSlotProbe<4>, &ExecuteFlorinSlotProbe<5>};
+  auto environment = xar::ck3_1210::BindThreadRuntimeImage(0x140000000ULL,
+      xar::ck3_1210::kExecutableSha256, executors);
+  CHECK(environment.exact_build_admitted && environment.permitted_executor == executors[0] &&
+      environment.permitted_executor_secondary == executors[1] && environment.permitted_executor_tertiary == executors[2] &&
+      environment.permitted_executor_quaternary == executors[3] && environment.permitted_executor_quinary == executors[4] &&
+      environment.permitted_executor_senary == executors[5]);
+  environment.offline_fixture = true;
+  environment.peek_message_iat_slot_override = &memory.iat;
+  environment.resolved_peek_message_override = &FakePeek;
+  environment.global_rng_wrapper_slot_override = reinterpret_cast<std::uintptr_t>(&memory.null_rng_slot);
+  environment.jomini_state_slot_override = reinterpret_cast<std::uintptr_t>(&memory.jomini_slot);
+  environment.game_state_slot_override = reinterpret_cast<std::uintptr_t>(&memory.state_slot);
+  environment.tls_initialized_flag_override = reinterpret_cast<std::uintptr_t>(&memory.tls_initialized);
+  environment.tls_context_getter_override = &FakeTls;
+  environment.memory_protection_context = &memory;
+  environment.memory_query_override = &FakeQuery;
+  environment.memory_protect_override = &FakeProtect;
+  environment.system_page_size_override = 4096;
+  auto &mailbox = g_fresh_mailbox;
+  CHECK(api::InstallMainThreadQueryMailboxV1(mailbox,environment));
+  const auto owner = GetCurrentThreadId();
+  const auto pump = [&] { return api::ObserveMainThreadPumpAndDrainV1(mailbox,
+      xar::ck3_1210::kSdlWindowsPumpFirstPeekReturnRva, owner); };
+  (void)pump(); (void)pump();
+  const auto initial = api::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  bool ok = initial.ready;
+  for (unsigned slot = 0; ok && slot < executors.size(); ++slot) {
+    FlorinExecutorSlotProbe probe{};
+    api::MainThreadQueryTicketV1 ticket{};
+    ok = api::TrySubmitMainThreadQueryV1(mailbox,executors[slot],&probe,ticket) == api::MainThreadQuerySubmitResultV1::submitted &&
+        pump() && api::WaitForMainThreadQueryV1(mailbox,ticket,0) == api::MainThreadQueryWaitResultV1::completed &&
+        probe.calls == 1 && probe.slot == slot && probe.observed.thread_id == owner &&
+        probe.observed.pump_epoch != 0 && probe.observed.paused && probe.observed.date_raw == 53'144'328 &&
+        api::ReclaimMainThreadQueryV1(mailbox,ticket) == api::MainThreadQueryReclaimResultV1::reclaimed;
+  }
+  const auto completed = api::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  FlorinExecutorSlotProbe denied{}; api::MainThreadQueryTicketV1 denied_ticket{};
+  ok = ok && completed.executed_requests == initial.executed_requests + executors.size() &&
+      completed.executor_started_requests == initial.executor_started_requests + executors.size() &&
+      api::TrySubmitMainThreadQueryV1(mailbox,&ExecuteFlorinSlotProbe<6>,&denied,denied_ticket) == api::MainThreadQuerySubmitResultV1::invalid_request &&
+      denied.calls == 0 && denied_ticket.sequence == 0 && mailbox.failure_flags.load() == 0 &&
+      mailbox.completed_sequence.load() == completed.completed_sequence;
+  const auto detach = api::UninstallMainThreadQueryMailboxV1(mailbox,1000);
+  ok = ok && detach == api::MainThreadQueryUninstallResultV1::uninstalled;
+  if (ok) std::puts("PASS Florin exact six-slot binder -> installed mailbox -> six owner callbacks -> independent counters; seventh denied; no Game");
+  return ok;
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--florin-six-executor-only")
+    return TestFlorinSixExecutorSlots() ? 0 : 1;
   if (argc == 2 && std::string_view(argv[1]) == "--no-pump-12004")
     return TestFreshOwnerWake(false, FreshWakeMode::no_pump) ? 0 : 1;
   if (argc == 2 && std::string_view(argv[1]) == "--no-pump-1210")
@@ -637,5 +714,5 @@ int main(int argc, char **argv) {
       TestFreshOwnerExecutor(true, true) &&
       TestFreshOwnerWake(false, FreshWakeMode::recover_second_wake) &&
       TestFreshOwnerWake(true, FreshWakeMode::recover_second_wake) &&
-      TestFreshOwnerWake(true, FreshWakeMode::wrong_build) ? 0 : 1;
+      TestFreshOwnerWake(true, FreshWakeMode::wrong_build) && TestFlorinSixExecutorSlots() ? 0 : 1;
 }
