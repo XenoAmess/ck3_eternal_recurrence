@@ -61,7 +61,23 @@ PROFILE_1115: Final[NativeOfflineProfile] = NativeOfflineProfile(
      (5908974, bytes.fromhex('8bfa4c8bf13b9154010000')),
      (5909022, bytes.fromhex('4189be54010000'))),
 )
-PROFILES: Final[tuple[NativeOfflineProfile, ...]] = (PROFILE_1096, PROFILE_1112, PROFILE_1115)
+# Exact 11.23 source reviewed on machine 4-8e1c2f1861 on 2026-11-18.
+# The producer emits bIsOfflineMode from object 0x11c9f50 + 0x187;
+# the same byte chooses tray state 4 (public/steam_offline). The tray
+# member moved to +0x160 in this image: old offsets are never inherited.
+PROFILE_1123: Final[NativeOfflineProfile] = NativeOfflineProfile(
+    'steamui-11.23.65.88-2dfb0a5d', '11.23.65.88',
+    '2dfb0a5d50dd90667549cc7d413c7bfb0794c9af4ebaf08bf1cf7d938a11ea93',
+    19675800, 19959808, 0x11CA0D7, 0x11C8328, 0x160, 0x661B0C,
+    bytes.fromhex('440fb605c385b600488d15c5297800488bcbe8dd0a3e00'),
+    ((0x661B0C, bytes.fromhex('440fb605c385b600488d15c5297800488bcbe8dd0a3e00')),
+     (0x619840, bytes.fromhex('40534883ec20488bd9e862ebf1ff488bc8488b10ff92880000008883870100004883c4205bc3')),
+     (0x6D8DAF, bytes.fromhex('488d0d9a11af00e8850af4ff')),
+     (0x660484, bytes.fromhex('803d4c9cb600007419488b0d947eb6004533c0ba04000000e83f0bf6ff')),
+     (0x5C0FFE, bytes.fromhex('8bfa4c8bf13b9160010000')),
+     (0x5C102E, bytes.fromhex('4189be60010000'))),
+)
+PROFILES: Final[tuple[NativeOfflineProfile, ...]] = (PROFILE_1096, PROFILE_1112, PROFILE_1115, PROFILE_1123)
 
 
 def _source_key(image_bytes: int, image_sha256: str) -> tuple[int, str]:

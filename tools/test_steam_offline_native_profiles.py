@@ -8,7 +8,7 @@ from pathlib import Path
 import struct
 import unittest
 from unittest.mock import patch
-from steam_offline_native_profiles import PROFILES, PROFILE_1096, PROFILE_1112, NativeOfflineProfile, select_profile
+from steam_offline_native_profiles import PROFILES, PROFILE_1096, PROFILE_1112, PROFILE_1123, NativeOfflineProfile, select_profile
 from steam_offline_native_provider_v1 import Module, NativeObserved, NativeUnavailable, _probe_bound
 from steam_offline_state_contract import EndpointIdentity, ProbeResult, ProcessIdentity, SourceIdentity
 from ck3_mod_acceptance_steam_gate import validate_observation
@@ -58,6 +58,20 @@ def wire(profile: NativeOfflineProfile) -> tuple[dict[str,object],Reader]:
         diagnostics=[],observation_method='native_current_user_byte',native_evidence=evidence),reader
 
 class ProfilesTest(unittest.TestCase):
+    def test_1123_producer_getter_and_tray_anchors_agree_on_backing_byte(self) -> None:
+        profile = PROFILE_1123
+        producer, getter, caller, tray, compare, store = profile.anchors
+        backing = producer[0] + 8 + struct.unpack_from('<i', producer[1], 4)[0]
+        caller_object = caller[0] + 7 + struct.unpack_from('<i', caller[1], 3)[0]
+        self.assertEqual(backing, profile.value_rva)
+        self.assertEqual(caller_object + struct.unpack_from('<I', getter[1], 28)[0], backing)
+        self.assertEqual(caller[0] + 12 + struct.unpack_from('<i', caller[1], 8)[0], getter[0])
+        self.assertEqual(tray[0] + 7 + struct.unpack_from('<i', tray[1], 2)[0], backing)
+        self.assertEqual(tray[0] + 16 + struct.unpack_from('<i', tray[1], 12)[0], profile.tray_manager_rva)
+        self.assertEqual(struct.unpack_from('<I', compare[1], 7)[0], profile.tray_offset)
+        self.assertEqual(struct.unpack_from('<I', store[1], 3)[0], profile.tray_offset)
+        self.assertEqual(profile.tray_offset, 0x160)
+
     def test_cef_gate_requires_same_fresh_owned_producer_result(self) -> None:
         value, reader = wire(PROFILE_1112)
         reader.steam = replace(reader.steam, file_version='11.23.65.88')
@@ -107,6 +121,16 @@ class ProfilesTest(unittest.TestCase):
             if not isinstance(steam,dict):raise AssertionError('Missing fixture identity')
             value['steam']={**steam,'file_version':b.steam_version}
             with self.assertRaises(ValueError):validate_observation(value,machine_id='synthetic-profile-machine',reader=reader)
+    def test_old_and_1123_tray_offsets_cannot_cross_exact_profile(self) -> None:
+        for profile, wrong in ((PROFILE_1112, PROFILE_1123.tray_offset),
+                               (PROFILE_1123, PROFILE_1112.tray_offset)):
+            value, reader = wire(profile)
+            evidence = value['native_evidence']
+            if not isinstance(evidence, dict):
+                raise AssertionError('Missing actual fixture native evidence')
+            evidence['tray_state_offset'] = str(wrong)
+            with self.assertRaisesRegex(ValueError, 'source/profile'):
+                validate_observation(value, machine_id='synthetic-profile-machine', reader=reader)
     def test_source_digest_size_and_unknown_version_are_exact(self) -> None:
         p=PROFILE_1112
         for version,size,digest in [('future',p.image_bytes,p.image_sha256),(p.steam_version,p.image_bytes+1,p.image_sha256),(p.steam_version,p.image_bytes,'0'*64)]:

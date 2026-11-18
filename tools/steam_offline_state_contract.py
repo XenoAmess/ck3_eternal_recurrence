@@ -305,8 +305,11 @@ def parse_native_evidence(value: object) -> NativeEvidence:
     manager_rva = decimal(item["tray_manager_pointer_rva"])
     manager = decimal(item["tray_manager_address"], maximum=2**64-1)
     tray_offset = decimal(item["tray_state_offset"])
+    # This is wire validation, not source admission. The public gate joins the
+    # exact Steam version, image digest and offset through the same profiles.
+    from steam_offline_native_profiles import PROFILES
     if (not 0 <= int(manager_rva) <= size - 8 or int(manager) == 0 or
-            int(tray_offset) != 340):
+            int(tray_offset) not in {profile.tray_offset for profile in PROFILES}):
         raise ValueError("invalid tray manager/address/state offset")
     tray_raw = item["tray_state_samples"]
     if not isinstance(tray_raw, list) or len(tray_raw) != 2:
