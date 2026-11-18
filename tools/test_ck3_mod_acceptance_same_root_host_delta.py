@@ -9,13 +9,16 @@ import copy
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 from typing import ClassVar
 from uuid import uuid4
 
 import ck3_mod_acceptance_native_source_binding as producer
+import ck3_mod_acceptance_shared_python_host_delta as shared
 import test_ck3_mod_acceptance_native_exact_tree_binding as fixture
 
 
@@ -34,6 +37,83 @@ class WireCase:
             self.host_blob, output, self.data.machine, noncompiled_consumer_delta=self.consumer_delta,
             original_host_test_blob=self.host_test_blob)
         return output
+
+
+class NativeQualificationLowerBoundTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory(prefix='native-build-lower-bound-')
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.path = self.root/'production-build.json'
+        self.build = {'schema':'ck3-native-original-execution-v1','machine_id':'authored-machine',
+            'source_commit':'a'*40,'started_at_utc':'2026-01-01T12:10:20Z',
+            'finished_at_utc':'2026-01-01T12:10:23Z','original_wait_returncode':0,'stopped_reason':None}
+        self.q = {'schema':'ck3-qualified-native-build-v1','machine_id':'authored-machine',
+            'source_commit':'a'*40,'actual_live_business_qualified':False}
+        self.save_build()
+
+    def save_build(self) -> None:
+        self.q['production_build_receipt'] = fixture.write(self.path,self.build)
+
+    def consume(self) -> datetime:
+        return shared.qualified_native_time_lower_bound(self.q,machine='authored-machine',commit='a'*40)
+
+    def test_missing_observation_reads_pinned_original_build_finish_without_mutation(self) -> None:
+        before = copy.deepcopy(self.q), self.path.read_bytes()
+        self.assertEqual(self.consume(),datetime(2026,1,1,12,10,23,tzinfo=timezone.utc))
+        self.assertEqual(before,(self.q,self.path.read_bytes()))
+        self.assertNotIn('observed_at_utc',self.q)
+
+    def test_present_observation_retains_old_protocol_and_bad_present_never_uses_build(self) -> None:
+        self.q['observed_at_utc'] = '2026-01-01T12:11:00Z'
+        self.assertEqual(self.consume(),datetime(2026,1,1,12,11,tzinfo=timezone.utc))
+        for bad in (None,False,1,'','invalid','2026-01-01T12:11:00'):
+            self.q['observed_at_utc'] = bad
+            with self.subTest(bad=bad),self.assertRaises(ValueError):self.consume()
+
+    def test_original_build_pin_and_qualification_identity_are_strict(self) -> None:
+        self.path.write_bytes(self.path.read_bytes()+b'\n')
+        with self.assertRaisesRegex(ValueError,'pin changed'):self.consume()
+        self.save_build()
+        for key,bad in (('machine_id','another-machine'),('source_commit','b'*40),
+                ('schema','another-qualification'),('actual_live_business_qualified',True)):
+            old=self.q[key];self.q[key]=bad
+            with self.subTest(key=key),self.assertRaises(ValueError):self.consume()
+            self.q[key]=old
+
+    def test_original_build_schema_identity_wait_and_stop_are_strict(self) -> None:
+        for key,bad in (('schema','another-receipt'),('machine_id','another-machine'),
+                ('source_commit','b'*40),('original_wait_returncode',True),
+                ('original_wait_returncode',0.0),('original_wait_returncode',1),('stopped_reason','cancelled')):
+            old=self.build[key];self.build[key]=bad;self.save_build()
+            with self.subTest(key=key,bad=bad),self.assertRaises(ValueError):self.consume()
+            self.build[key]=old
+        del self.build['stopped_reason'];self.save_build()
+        with self.assertRaises(ValueError):self.consume()
+
+    def test_original_build_timestamps_require_timezone_and_start_before_finish(self) -> None:
+        for key,bad in (('started_at_utc',None),('finished_at_utc',False),
+                ('finished_at_utc','2026-01-01T12:10:23'),('finished_at_utc','2026-01-01T11:00:00Z')):
+            old=self.build[key];self.build[key]=bad;self.save_build()
+            with self.subTest(key=key,bad=bad),self.assertRaises(ValueError):self.consume()
+            self.build[key]=old
+
+    def test_lower_bound_helper_actual_function_is_strict(self) -> None:
+        import ast
+        from mypy import api
+        tree=ast.parse(Path(shared.__file__).read_text(encoding='utf-8-sig'))
+        function=next(node for node in tree.body if isinstance(node,ast.FunctionDef)
+            and node.name=='qualified_native_time_lower_bound')
+        source='''from __future__ import annotations
+from datetime import datetime, timezone
+from pathlib import Path
+import hashlib, json
+from ck3_mod_acceptance_background_types import JsonObject, FilePin, json_object, file_pin, object_field
+'''+ast.unparse(function)
+        with patch.dict(os.environ,{'MYPYPATH':str(Path(producer.__file__).resolve().parent)}):
+            stdout,stderr,code=api.run(['--strict','--strict-equality','--follow-imports=skip',
+                '--no-incremental','--cache-dir','nul','-c',source])
+        self.assertEqual(code,0,stdout+stderr)
 
 
 class SameRootHost(unittest.TestCase):
@@ -240,6 +320,37 @@ class SameRootHost(unittest.TestCase):
             review_path.write_bytes(review_before)
             qpath.write_bytes(qbefore)
             fixture.write(self.delta_path, self.delta)
+
+    def test_12b_missing_native_observation_uses_original_build_through_public_qualifier(self) -> None:
+        d=self.data
+        original_q=d.qpath.read_bytes()
+        original_delta=self.delta_path.read_bytes()
+        q=copy.deepcopy(d.qualification)
+        q.pop('observed_at_utc')
+        build_ref=fixture.object_fields(q['production_build_receipt'])
+        build=producer.host_read(Path(str(build_ref['path'])))
+        build.update(schema='ck3-native-original-execution-v1',source_commit=d.native_commit,
+            started_at_utc='2026-01-01T00:00:01Z',finished_at_utc='2026-01-01T00:00:03Z',
+            original_wait_returncode=0,stopped_reason=None)
+        q['production_build_receipt']=fixture.write(d.evidence/'original-build-no-observation.json',build)
+        freeze_ref=fixture.object_fields(q['production_freeze'])
+        freeze=producer.host_read(Path(str(freeze_ref['path'])))
+        freeze['build_execution']=q['production_build_receipt']
+        q['production_freeze']=fixture.write(d.evidence/'freeze-no-observation.json',freeze)
+        delivery_ref=fixture.object_fields(q['delivery'])
+        delivery=producer.host_read(Path(str(delivery_ref['path'])))
+        delivery['production_freeze']=q['production_freeze']
+        q['delivery']=fixture.write(d.evidence/'delivery-no-observation.json',delivery)
+        try:
+            qref=fixture.write(d.qpath,q)
+            delta=dict(self.delta,qualified_native=qref,compiled_inputs=shared.compiled_inputs(q,d.snapshot))
+            fixture.write(self.delta_path,delta)
+            result=self.consume(self.produce())
+            self.assertEqual(result['compile_commit'],d.native_commit)
+            self.assertNotIn('observed_at_utc',producer.host_read(d.qpath))
+        finally:
+            d.qpath.write_bytes(original_q)
+            self.delta_path.write_bytes(original_delta)
 
     def fixture_case(self) -> tuple[fixture.AuthoredInputs, Path, Path, Path]:
         scratch = self.data.evidence / ('fixture-' + uuid4().hex)

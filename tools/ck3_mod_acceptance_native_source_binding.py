@@ -487,6 +487,7 @@ class WireConsumerContext(TypedDict):
 
 @runtime_checkable
 class SharedDeltaAPI(Protocol):
+    def qualified_native_time_lower_bound(self, qualification: object, *, machine: str, commit: str) -> datetime: ...
     def compiled_inputs(self, qualification: dict[str, object], snapshot: dict[str, object]) -> object: ...
     def qualify_shared_host_delta(self, path: Path, *, root: Path, native_repo: Path,
         runtime_commit: str, native_commit: str, machine: str, qualified_native_ref: object,
@@ -960,7 +961,8 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
     host_require(host_checked(binding["qualified_native"]) == qref and host_checked(binding["snapshot"]) == sref
             and host_read(Path(qref["path"])) == q and host_read(Path(sref["path"])) == source,
             "Original qualification/snapshot identity differs")
-    host_require(host_timestamp(q.get("observed_at_utc")) <= host_timestamp(binding["observed_at_utc"]) <= datetime.now(timezone.utc),
+    host_require(host_shared_api().qualified_native_time_lower_bound(q, machine=machine, commit=native_commit)
+                 <= host_timestamp(binding["observed_at_utc"]) <= datetime.now(timezone.utc),
             "Same-root binding observation must follow the original qualification")
     host_require(Path(host_string(binding["runtime_repo_root"])).resolve() == root
             == Path(host_string(binding["native_source_repo_root"])).resolve()

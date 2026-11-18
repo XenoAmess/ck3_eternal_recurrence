@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 from typing import Protocol, runtime_checkable
+from ck3_mod_acceptance_background_types import JsonObject, FilePin, json_object, file_pin, object_field
 
 from build_native_configured_successor import NONCOMPILED_CONSUMER_RELATIVE, HOST_TEST_COMPANION_RELATIVE
 
@@ -64,6 +65,48 @@ def checked(ref):
     require(isinstance(ref, dict) and set(ref) == {"path", "bytes", "sha256"}
             and pin(ref["path"]) == ref, "Exact shared-host source/evidence pin changed")
     return ref
+
+
+def qualified_native_time_lower_bound(qualification: object, *, machine: str, commit: str) -> datetime:
+    """Read an observation, or the pinned original build finish when it is absent.
+
+    The latter is only a build-time lower bound, never a reconstructed time of
+    Native qualification. The full Q consumer still validates all fixtures.
+    """
+    row: JsonObject = json_object(qualification)
+
+    def instant(value: object) -> datetime:
+        if not isinstance(value, str) or not value:
+            raise ValueError("Native evidence requires a timestamp string")
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is None or parsed.utcoffset() is None:
+            raise ValueError("Native evidence requires a timezone-aware timestamp")
+        return parsed.astimezone(timezone.utc)
+
+    if "observed_at_utc" in row:
+        return instant(row["observed_at_utc"])
+    if (row.get("schema") != "ck3-qualified-native-build-v1" or row.get("machine_id") != machine
+            or row.get("source_commit") != commit or row.get("actual_live_business_qualified") is not False):
+        raise ValueError("Unobserved Native qualification identity differs")
+    reference: FilePin = file_pin(row.get("production_build_receipt"))
+    path = Path(reference["path"])
+    if (set(object_field(row, "production_build_receipt")) != {"path", "bytes", "sha256"}
+            or not path.is_absolute() or path.is_symlink() or not path.is_file() or not 0 < reference["bytes"] <= 1048576):
+        raise ValueError("Exact bounded original Native build receipt required")
+    with path.open("rb") as stream:
+        raw = stream.read(1048577)
+    if len(raw) != reference["bytes"] or hashlib.sha256(raw).hexdigest() != reference["sha256"]:
+        raise ValueError("Original Native build receipt pin changed")
+    build: JsonObject = json_object(json.loads(raw))
+    if (build.get("schema") != "ck3-native-original-execution-v1" or build.get("machine_id") != machine
+            or build.get("source_commit") != commit or type(build.get("original_wait_returncode")) is not int
+            or build["original_wait_returncode"] != 0 or "stopped_reason" not in build
+            or build["stopped_reason"] is not None):
+        raise ValueError("Original Native build identity or zero wait differs")
+    begin, end = instant(build.get("started_at_utc")), instant(build.get("finished_at_utc"))
+    if end < begin:
+        raise ValueError("Original Native build completion precedes its start")
+    return end
 
 
 def git(repo, *args):
@@ -171,12 +214,9 @@ def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runt
     require(value["canonical_repo_relative"] == HOST_RELATIVE and value["source_classification"] == "shared_host",
             "Only the canonical shared Python host is eligible for this source delta")
     observed = datetime.fromisoformat(value["observed_at_utc"].replace("Z", "+00:00"))
-    qualified_observation = qualification["observed_at_utc"]
-    if not isinstance(qualified_observation, str):
-        raise ValueError("Qualified source observation must be a string")
-    qualified_at = datetime.fromisoformat(qualified_observation.replace("Z", "+00:00"))
-    require(observed.tzinfo is not None and qualified_at.tzinfo is not None
-            and qualified_at <= observed <= datetime.now(timezone.utc), "Actual late shared-host observation required")
+    lower_bound = qualified_native_time_lower_bound(qualification, machine=machine, commit=native_commit)
+    require(observed.tzinfo is not None and lower_bound <= observed <= datetime.now(timezone.utc),
+            "Actual late shared-host observation required")
     for key in ("before", "after"):
         row = value[key]
         require(isinstance(row, dict) and set(row) == {"bytes", "sha256"}

@@ -95,3 +95,9 @@ Saved Florin 最小修复识别实际精确 HELLO，在原总启动期限内等�
 原进程回执 `C:/workspace/ck3-market-live-20261118/operations/MVN-financial-followup-full01/ORIGINAL-WAIT.actual.json`，stdout 6191 bytes、SHA-256 `bc32e62ad039cbfe50af8a1a9cb75d4a791b0e1de18743b2a6ccf36cf6bbceea`；16 份 JUnit XML 与保全清单位于 `C:/workspace/ck3-market-task-20261118/software-10-financial-full01`。这些软件结果与后续 Game 装载、动作、实际金额、物理 SAVE 分别记录。
 
 随后当前正式 Host/Core 组合的 26 项增量测试实际通过、0 skip，完整 Core 合同 strict 通过；原 Popen 总墙钟 11.719 秒。测试在退出时确认加载 canonical Host，目标源码及七份 fixture 的前后 pins 相同。原件 `runtime-prep/saved-core-root-integration-actual02/RUN.actual.json`，17393 bytes、SHA-256 `dbc4261edd0b5e1ed13eb8c369fd4dddcc6e3a0d2a222f69c25f8f2a06edfb38`。前一轮外置采集器误覆盖依赖导入而中断的软件进程保留实际非零 wait，不计作业务失败或绿；未重复 Native 资格。
+
+该批源码以 `72f01667adb9ec2406cee7045b9c9f29ddf39289` 正常推送；远端另有 XQOL 两份记录，已正常 fetch/rebase 保留。156 文件正式候选 core02 和 10 文件观察包 core03 均实际生成并核对源，仍无游戏业务信用。rebase 将 R0002 测试 JSON 的 CRLF 统一为 LF；独立保存 old/new pin 和 JSON 值相等证据，另外十二个联合测试输入逐字节相同，未改原执行报告或重跑已绿测试。
+
+同根 Host 绑定实际暴露旧协议不兼容：两个 reader 假定 Q 含 `observed_at_utc`，而原 `ck3-qualified-native-build-v1` Q05 从未输出此字段。原拒绝保留。最小修复仅在该键缺失时读取 Q 已绑定的原 production-build 回执，核完整 pin、schema、机器/源码、严格原 wait 0、未停止及合法起止，取真实 build finish 作时间下界；不补造 Q 的完成时间。键存在而 null/格式错误仍拒绝，19 个 fixture 等完整 Native 资格保留原消费。
+
+受影响 9 项实际通过、0 skip，6.091 秒，包含缺字段协议的完整 producer→两个 reader→public qualifier 和旧路径；新 typed helper 的 strict 范围单独核对，不外推整个旧模块。原件 `runtime-prep/native-build-time-reader-actual02/RUN.actual.json`，3056 bytes、SHA-256 `1026db6f18047a985433e21fbe2d76700b7486b670d453e0599ef3256fc3f496`。首次 strict 缺 MYPYPATH 的失败保留；修复只指定本仓 tools 导入路径，未改业务断言。此轮无 Native 重编或 Game。

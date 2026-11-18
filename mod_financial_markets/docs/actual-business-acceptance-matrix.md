@@ -1,6 +1,6 @@
 # 独立业务验收矩阵与只读观察扩展
 
-2026-11-18。本文和六份新增 case 是待接线的业务验收输入，状态均为 `PROPOSED_NOT_EMITTED / NOT_RUN`。它们没有启动游戏、制造业务或取得 PASS。已有 `core` 只覆盖付费发行与现货子场；现有 Java 观察 producer 只发 `case_id=core` 及其五个标记，不能把该 manifest 用于以下 case。产品注册、profile 实现及真实场次由对应 owner 接续。
+2026-11-18。六份后续 case 的公共注册与 Java 观察 profile 已采用，完整金融工具 143 项测试通过；当前状态为 `SOURCE_ADOPTED_SOFTWARE_PROFILE_NO_GAME_CREDIT / NOT_RUN`。软件生成与注册不证明任何游戏业务通过。`core` 仍只覆盖付费发行与现货子场；每个后续 case 必须生成自己的 manifest 和严格输入，不能借用 core 的五个标记。实际准备、场次、资金读回和物理保存仍分别验收。
 
 ## 分组与有限预算
 
@@ -15,7 +15,7 @@
 | `news-crisis` / `financial_markets_news_crisis.json` | 真债援助/重整、危机保护条件、远方新闻、普通/死亡双队列、实际随机叙事 | 14 | 5400 / 1800 / 180 | 真债已逾期且有真实压力/评估历史；保护对照角色和真实新闻积压 |
 | `ai-capacity` / `financial_markets_ai_capacity.json` | 低阶/无地AI付费发行买卖、轮转、容量、全部既存义务、逐日性能 | 395 | 43200 / 7200 / 180 | 实际成熟市场；30日预热+365日测量；每档独立真实存档与基线 |
 
-所有墙钟值只是注册建议，`budget_proposal.status=NOT_ALLOCATED`，不会自动改变共享 registry 的实际预算。命令预算300秒、启动 readiness 1800秒也须在正式 allocation 固定。运行循环在这些预算内多次短等并持续报告；不使用一次长时间阻塞等待。超时仍保留数据，记为窗口未完成，不能删慢日或把365日降为100日。
+上述有限预算已写入公共 registry；定义可准备不代表已经 allocation。命令预算300秒、启动 readiness 1800秒及具体场次预算在正式 allocation 冻结。运行循环在预算内多次短等并持续报告；超时保留原件并记窗口未完成，不能删慢日或把365日降为100日。
 
 Saved case 的 `required_startup=[]` 是有意安排：第一阶段 `at_day=0` 读取保存基线并通过正常 `xfma_observer_widget/xfma_arm_observer` 启用观察，之后才消费该 profile 的标记。不能在 Saved 启动门等待一个尚须 GUI arming 才能生成的标记。`cold-reload` 必须在启用观察或打开金融窗口之前取得业务图，以免初始化掩盖未加载字段；它的 profile 必须能在同日按钮检查时完成读回，不能要求跨日才发成功标记。
 
@@ -58,11 +58,11 @@ Saved case 的 `required_startup=[]` 是有意安排：第一阶段 `at_day=0` �
 
 字段清单用于限定新增只读profile，不是要求每日扫描全世界全部历史。前后业务图在有限阶段完整读取；日常观察仅关注事先固定的相关对象及 bounded计数。新增注册/新闻/债权依永久ID增量读取，全部原始样本保存到场次目录。出现新事实最多发一次对应标记，不能每天重复同一 `TEST PASS` 字面量；共享 adapter 会拒绝重复标记。
 
-## 观察 producer 最小扩展建议
+## 当前观察 producer 与验收边界
 
-1. 在现有 `AcceptanceContracts.Request` 增加严格case enum，manifest从该唯一值派生case/profile/marker列表；同步CLI、资源、序列化和实际producer→全部consumer测试。保持共享fixture emitter，不能为每case拷一套生产者。当前core manifest不接受这些case。
-2. 每profile有独立只读观察器和有限目标选择。观察启用使用case+epoch，不以已保存的 `xfma_armed/xfma_complete` 作为下一场完成。只增加自身 `xfma_` 记录，不清理业务字段或历史事实。候选标记名和必需谓词在对应profile实现时固定进manifest，JSON的 `required_future_observations` 目前只是需求名，不是已有PASS。
-3. Saved启用后立即做一次只读检查并留原始值；按实际需要再于每天检查。继承profile跟随实际法律关系转移技术观察owner，不继承core的“actor死即FAIL”策略；改变技术观察owner不能改变业务账户holder。`cold-reload` 不依赖跨日，必须同日检查。
+1. `FixtureEmitter` 继续作为同一个 producer。core 保留 schema 1；六个后续 case 由严格的 `FollowupContracts` schema 2 输入选择 profile、epoch、目标身份与标记，不把新字段塞进旧 core 请求。实际源码闭包为六个 producer 源，manifest 与公共 Saved inventory 共同核对。
+2. 每个 profile 使用有限的实际目标和独立标记，只增加 `xfma_` 观察状态。观察 marker 不等于 JSON 中各项业务要求已通过；相关账户、资产、合约、仓位和债权必须互相绑定，不能以另一对象的历史状态补足。
+3. Saved 启用后按 profile 记录只读基线。继承观察拒绝对已有基线再次 arm，不覆盖原账户与原 holder；观察过程不改变法律资产关系。`cold-reload` 保留同日基线和刷新检查，不要求跨日才产生观察结果。
 4. 观察器不能调用任何 `xfm_*_effect` 获得测试状态。对同一转账、手续费、债权和供应，用读回后的整数数据独立重算。生产trigger分支、源码包含某行、Java领域测试或观察器日志均不能单独授业务通过。
 5. 观察profile只证明其明确谓词。例如“仓位存在”不证明正常GUI下单，“余额非负”不证明守恒，“离世已记日志”不证明全部保护条件，“新闻条目存在”不证明原生气泡实际送达。Root必须消费实际GUI动作、native前后图、日志和物理SAVE，并保留UNKNOWN原动作，不重放。
 
@@ -87,6 +87,6 @@ Saved case 的 `required_startup=[]` 是有意安排：第一阶段 `at_day=0` �
 
 `ai-capacity` 沿现有方案保留30日预热、365个逐日样本。2048/4096/8192分档分别验，不能从128币smoke外推4096币。报告每日日实际active/pending/registered数、热点簿、真实未平仓、独立候选及实际交易数，保留P50/P95/P99/最大值和每个原始样本。512是候选预算，不等于每天512笔真实交易。真实AI因钱、冷却、需求失败也要保留其合法原因；不能为凑吞吐强制下单。
 
-默认目标每日新增处理P95≤100ms/P99≤300ms、详情≤16ms、新增保存状态≤16MiB，仍需合格测量。MCP墙钟包含通信/等待不能直接标成hook耗时；完整存档大小也不能直接标成Mod新增状态。无归因能力只报告可观测量和基线差值。4000既存成对仓位必须每天风险检查；性能降级优先限制新增风险，不丢既存义务或新闻。
+默认目标每日新增处理P95≤100ms/P99≤300ms、详情≤16ms、新增保存状态≤16MiB，仍需合格测量。MCP墙钟包含通信/等待不能直接标成hook耗时；完整存档大小也不能直接标成Mod新增状态。无归因能力只报告可观测量和基线差值。保守档1,024、默认档4,096、扩展档8,192的既存成对仓位上限分别按实际规则检查；全部既存仓位仍须每日处理风险，性能降级优先限制新增风险，不丢旧义务或新闻。
 
 六组补发行/现货后的主要缺口，仍不自动覆盖宗族/政权概念宣发、实际用途/担保、拉抬抛售与披露、每种规则开关组合、版本迁移、所有20种自然叙事及真实多人竞争/重连。它们按主测试计划逐项留状态与后续真实业务证据。每个case `whole_product_release_pass=false`；任何一个或全部数据文件存在，都不构成完整Mod或发布验收通过。
