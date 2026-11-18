@@ -30,7 +30,7 @@ public final class RootInstalledCatalog {
     private final CapabilityFileProbe files;
     private final ArmyRuntimeInstaller army;
     private final PrisonersRuntimeInstaller prisoners;
-    private final GovernanceRuntimeInstaller.Installed nativeGovernance;
+    private final Optional<GovernanceRuntimeInstaller.Installed> availableNativeGovernance;
     private final GovernanceOrdinaryRuntimeInstaller.Installed governance;
     private final GovernanceActivityRuntime activity;
     private final RootFrontendRuntime frontend;
@@ -83,10 +83,25 @@ public final class RootInstalledCatalog {
             RootRuntimeDomainAssembly.Installed remaining,RootAdditionalDomains.Installed additionalDomains,
             RootMilitaryControlStepRuntime.Installed militaryControls,RootArmyStructuralStepRuntime armyStructural,
             RootPublicPauseRuntime.Installed publicPause)throws IOException {
+        this(factory,context,bindings,domains,files,army,prisoners,Optional.of(nativeGovernance),governance,activity,frontend,interactions,
+                offline,crossRun,construction,military,additionalArmy,save,aub,contactScopes,remaining,additionalDomains,militaryControls,armyStructural,publicPause);
+    }
+    RootInstalledCatalog(RootRuntimeCatalogFactory factory,RootRuntimeContext context,RootExecutableBindings bindings,
+            List<RootDomainInstallation> domains,CapabilityFileProbe files,ArmyRuntimeInstaller army,
+            PrisonersRuntimeInstaller prisoners,Optional<GovernanceRuntimeInstaller.Installed> availableNativeGovernance,
+            GovernanceOrdinaryRuntimeInstaller.Installed governance,GovernanceActivityRuntime activity,RootFrontendRuntime frontend,
+            KnownInteractionsRuntimeInstaller interactions,
+            RootIncidentRuntime offline,CrossRunPlanningDomain crossRun,ConstructionRuntimeInstaller construction,
+            OrdinaryMilitaryInstaller military,ArmyAdditionalReadInstaller.Installed additionalArmy,RootSaveRuntime save,RootAubRuntimeFactory.Runtime aub,RootContactRuntime contactScopes,
+            RootRuntimeDomainAssembly.Installed remaining,RootAdditionalDomains.Installed additionalDomains,
+            RootMilitaryControlStepRuntime.Installed militaryControls,RootArmyStructuralStepRuntime armyStructural,
+            RootPublicPauseRuntime.Installed publicPause)throws IOException {
         this.factory=Objects.requireNonNull(factory);this.context=Objects.requireNonNull(context);this.bindings=Objects.requireNonNull(bindings);
         this.domains=List.copyOf(domains);this.files=Objects.requireNonNull(files);this.army=Objects.requireNonNull(army);
-        this.prisoners=Objects.requireNonNull(prisoners);this.nativeGovernance=Objects.requireNonNull(nativeGovernance);
+        this.prisoners=Objects.requireNonNull(prisoners);this.availableNativeGovernance=Objects.requireNonNull(availableNativeGovernance);
         this.governance=Objects.requireNonNull(governance);this.activity=Objects.requireNonNull(activity);
+        StrictJson.require(availableNativeGovernance.isPresent()==governance.nativeQualified()
+                &&availableNativeGovernance.isPresent()==factory.sources().nativeGovernance().nativeQualified(),"installed governance availability differs from its original source-owning producers");
         this.frontend=Objects.requireNonNull(frontend);
         this.interactions=Objects.requireNonNull(interactions);
         this.offline=Objects.requireNonNull(offline);this.crossRun=Objects.requireNonNull(crossRun);
@@ -154,7 +169,11 @@ public final class RootInstalledCatalog {
     public CapabilityFileProbe capabilityFiles() { return files; }
     public ArmyRuntimeInstaller army() { return army; }
     public PrisonersRuntimeInstaller prisoners() { return prisoners; }
-    public GovernanceRuntimeInstaller.Installed nativeGovernance() { return nativeGovernance; }
+    public Optional<GovernanceRuntimeInstaller.Installed> availableNativeGovernance(){return availableNativeGovernance;}
+    public GovernanceRuntimeInstaller.Installed nativeGovernance() { return availableNativeGovernance.orElseThrow(()->new IllegalStateException(GovernanceRuntimeInstaller.UNAVAILABLE_1210)); }
+    public GovernanceRuntimeInstaller.Installed requireNativeGovernance()throws IOException {return availableNativeGovernance.orElseThrow(()->new IOException(GovernanceRuntimeInstaller.UNAVAILABLE_1210));}
+    public void requirePublicGovernance(){if(availableNativeGovernance.isEmpty())throw new org.xar.ck3.control.service.mcp.PublicServiceFailure(
+            org.xar.ck3.control.service.mcp.PublicServiceFailure.Kind.BRIDGE_UNAVAILABLE,GovernanceRuntimeInstaller.UNAVAILABLE_1210,Optional.empty());}
     public GovernanceOrdinaryRuntimeInstaller.Installed governance() { return governance; }
     public GovernanceActivityRuntime activity() { return activity; }
     public RootFrontendRuntime frontend() { return frontend; }
@@ -269,17 +288,20 @@ public final class RootInstalledCatalog {
             try{context.withSession(same->{bindNativeCampaignCapabilitySource(actualCapabilities,actual.authority(),Optional.empty());return null;});}
             catch(IOException failed){throw new UncheckedIOException(failed);}
         }
-        final RootDriverGovernancePublicService governmentInputs;
+        final Optional<RootDriverGovernancePublicService> governmentInputs;
         try {
             var product=additionalDomains.driverRegistry().product(RootDriverRegistryPublicProducts.Kind.GOVERNANCE,
                     RootDriverGovernancePublicSupplier.Installed.class);
-            product.requireContext(context); governmentInputs=product.service();
+            product.requireContext(context); governmentInputs=product.availableService();
+            StrictJson.require(governmentInputs.isPresent()==availableNativeGovernance.isPresent(),"government public product availability differs from its actual Native governance source");
         } catch(IOException failure) { throw new UncheckedIOException("actual same-context government input producer unavailable",failure); }
         kernelInputs=new M7KernelInputs(context.writer(),context.writer()::requireSession,actual.authority());
-        readyPublication=new RootM7ReadyPublication(context.sources(),kernelInputs,governmentInputs::currentM7Government);
-        planning=RootPlanningInputsFactory.create(context,actual,actualCapabilities,
-                new RootPlanningInputsFactory.Products(bindings,crossRun,domainCatalog,governance.openingInputs(),offline.offlineInputs(),
-                        governmentInputs::captureM7Government));
+        readyPublication=availableNativeGovernance.isPresent()?new RootM7ReadyPublication(context.sources(),kernelInputs,governmentInputs.orElseThrow()::currentM7Government)
+                :new RootM7ReadyPublication(context.sources(),kernelInputs);
+        var inputs=availableNativeGovernance.isPresent()
+                ?new RootPlanningInputsFactory.Products(bindings,crossRun,domainCatalog,governance.openingInputs(),offline.offlineInputs(),governmentInputs.orElseThrow()::captureM7Government)
+                :new RootPlanningInputsFactory.Products(bindings,crossRun,domainCatalog,governance.openingInputs(),offline.offlineInputs());
+        planning=RootPlanningInputsFactory.create(context,actual,actualCapabilities,inputs);
         return planning;
     }
     /** Called only after genuine warm publication and before this catalog installs its planning products. */
@@ -437,7 +459,8 @@ public final class RootInstalledCatalog {
     public void afterInitialEntry(ContinuityStorePort.Session same,RootInitialEpisodeProof actual)throws IOException {
         context.writer().requireSession(same);actual.requireCurrent(same);
         StrictJson.require(actual.adopted()==context.adopted(),"fresh domain initialization crossed its actual current Driver");
-        nativeGovernance.initializeContinuation(same,actual);
+        if(availableNativeGovernance.isPresent())availableNativeGovernance.orElseThrow().initializeContinuation(same,actual);
+        else factory.sources().nativeGovernance().initializeContinuation(context,same,actual);
         construction.initializeFresh(same,actual);
         factory.sources().finance().initializeFresh(context,same,actual);
         factory.sources().prisonerConfiguration().definitions().initialize(same,actual);
@@ -457,7 +480,8 @@ public final class RootInstalledCatalog {
     public void afterInitialEntry(ContinuityStorePort.Session same,FreshCampaignContext actual)throws IOException {
         context.writer().requireSession(same);actual.requireCurrent(same);
         if(actual.adopted()!=context.adopted())throw new IOException("Fresh domains crossed the real Driver");
-        nativeGovernance.initializeContinuation(same,actual);
+        if(availableNativeGovernance.isPresent())availableNativeGovernance.orElseThrow().initializeContinuation(same,actual);
+        else factory.sources().nativeGovernance().initializeContinuation(context,same,actual);
         if (requiresFreshImport(same, DomainBodies.Slot.CONSTRUCTION)) construction.initializeFresh(same,actual);
         factory.sources().finance().initializeFresh(context,same,actual);
         factory.sources().prisonerConfiguration().definitions().initialize(same,actual);
@@ -482,7 +506,8 @@ public final class RootInstalledCatalog {
         var frame = actual.frame();
         var campaign = FreshCampaignContext.create(context, same, frame, deadline);
 
-        nativeGovernance.initializeContinuation(same, campaign);
+        if(availableNativeGovernance.isPresent())availableNativeGovernance.orElseThrow().initializeContinuation(same,campaign);
+        else factory.sources().nativeGovernance().initializeContinuation(context,same,campaign);
         if (requiresFreshImport(same, DomainBodies.Slot.CONSTRUCTION)) construction.initializeFresh(same, campaign);
         factory.sources().finance().initializeFresh(context, same, campaign);
         factory.sources().prisonerConfiguration().definitions().initialize(same, campaign);

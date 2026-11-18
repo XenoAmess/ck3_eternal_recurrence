@@ -26,13 +26,16 @@ public final class RootStewardDevelopmentPublicAction {
     /** Construction is pre-Core; qualification resolves the current physical Core/writer at call time. */
     public static Factory factory(RootPublicHandlerProductsFactory.Context context) throws IOException {
         Objects.requireNonNull(context);
+        var build=context.inputs().configuration().governance().build();
+        if(!GovernanceRuntimeInstaller.qualifiedBuild(build.gameVersion(),build.executableSha256()))
+            return new Factory(context,java.util.Optional.empty());
         DevelopmentStewardResults.SourceEvidence originals = originalSources(context);
         context.source(RootStewardDevelopmentPublicAction.class);
         var sources = new DevelopmentStewardRuntime.Sources(context.source(DevelopmentStewardRuntime.class),
                 context.source(RootRuntimeSelectedSources.Module.NATIVE_TRANSPORT, DevelopmentStewardAction.class),
                 context.source(RootRuntimeSelectedSources.Module.NATIVE_TRANSPORT, DevelopmentStewardResults.class),
                 context.source(RootRuntimeSelectedSources.Module.NATIVE_TRANSPORT, DevelopmentStewardService.class), originals);
-        return new Factory(context, sources);
+        return new Factory(context,java.util.Optional.of(sources));
     }
 
     /** Derives exact sibling producers from the existing configured original driver, then reads every actual file. */
@@ -60,16 +63,22 @@ public final class RootStewardDevelopmentPublicAction {
 
     public static final class Factory {
         private final RootPublicHandlerProductsFactory.Context context;
-        private final DevelopmentStewardRuntime.Sources sources;
-        private Factory(RootPublicHandlerProductsFactory.Context context, DevelopmentStewardRuntime.Sources sources) {
-            this.context = context; this.sources = sources;
+        private final java.util.Optional<DevelopmentStewardRuntime.Sources> availableSources;
+        private Factory(RootPublicHandlerProductsFactory.Context context,java.util.Optional<DevelopmentStewardRuntime.Sources> sources) {
+            this.context = context; this.availableSources=Objects.requireNonNull(sources);
         }
 
-        public DevelopmentStewardRuntime.Sources sources() { return sources; }
+        public DevelopmentStewardRuntime.Sources sources() {return availableSources.orElseThrow(()->new IllegalStateException(GovernanceRuntimeInstaller.UNAVAILABLE_1210));}
+        private DevelopmentStewardRuntime.Sources requireAvailable(){
+            var build=context.inputs().configuration().governance().build();
+            GovernanceRuntimeInstaller.requirePublicAvailable(build.gameVersion(),build.executableSha256());
+            return sources();
+        }
 
         /** A real source-bound public service product for the current unsupported headless branch. */
         public RawJson invoke(ChangeRequest request) throws InterruptedException {
             Objects.requireNonNull(request);
+            var sources=requireAvailable();
             Instant deadline = context.clock().instant().plus(context.observationTimeout());
             try {
                 return context.withCurrent(root -> {
@@ -91,7 +100,7 @@ public final class RootStewardDevelopmentPublicAction {
                     return root.withPublicObservation(deadline, (frame, driver, same) -> {
                     var installed = context.installed(root);
                     var runtime = new DevelopmentStewardRuntime(installed.context(),
-                            installed.nativeGovernance().publicReads().development(), sources);
+                            installed.requireNativeGovernance().publicReads().development(), sources);
                     return runtime.invoke(same, request, frame, deadline);
                     });
                 });
@@ -106,12 +115,13 @@ public final class RootStewardDevelopmentPublicAction {
 
         public DevelopmentStewardResults.Preparation qualify(ChangeRequest request) throws InterruptedException {
             Objects.requireNonNull(request);
+            var sources=requireAvailable();
             Instant deadline = context.clock().instant().plus(context.observationTimeout());
             try {
                 return context.withCurrent(root -> root.withPublicObservation(deadline, (frame, driver, same) -> {
                     var installed = context.installed(root);
                     var runtime = new DevelopmentStewardRuntime(installed.context(),
-                            installed.nativeGovernance().publicReads().development(), sources);
+                            installed.requireNativeGovernance().publicReads().development(), sources);
                     return runtime.prepare(same, request, frame, deadline);
                 }));
             } catch (IOException failure) {
@@ -120,6 +130,7 @@ public final class RootStewardDevelopmentPublicAction {
         }
 
         public String nativeQualificationGap() {
+            if(availableSources.isEmpty())return GovernanceRuntimeInstaller.UNAVAILABLE_1210;
             return "The original headless driver has no typed executor and its source-pinned 1.19 command ABI is uncertified; "
                     + "current .4 native material is not action legality. The complete source-bound unsupported service "
                     + "branch grants no mutation permission, ActionBinding or actual postcondition observer.";

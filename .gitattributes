@@ -1414,3 +1414,10 @@ java/ck3-control/wave2-development/src/test/resources/cash1210/producer-overflow
 java/ck3-control/wave2-development/src/test/resources/cash1210/producer-wallet-only-json.json -text whitespace=cr-at-eol
 java/ck3-control/native-transport/src/test/resources/newnative/personal-cash1210/ACTUAL-CPP-CASH-MATCHING-FULL002-15.json -text whitespace=cr-at-eol
 java/ck3-control/native-transport/src/test/resources/newnative/personal-cash1210/actual-cpp-cash-matching-full002.json -text whitespace=cr-at-eol
+java/ck3-control/application/src/test/resources/florinarmy/full-army-producer-0.json -text whitespace=cr-at-eol
+java/ck3-control/application/src/test/resources/florinarmy/full-army-producer-1.json -text whitespace=cr-at-eol
+java/ck3-control/application/src/test/resources/florinarmy/full-army-producer-2.json -text whitespace=cr-at-eol
+java/ck3-control/native-transport/src/test/resources/newnative/full1210/full-snapshot-producer-002.json -text whitespace=cr-at-eol
+docs/maintenance/2026-11-18-exact-one-day-sdk-save-live.json -text whitespace=cr-at-eol
+docs/maintenance/2026-11-18-worker15-scene-closed.json -text whitespace=cr-at-eol
+docs/maintenance/2026-11-18-florin-army-governance-hello-qualification.json -text whitespace=cr-at-eol

@@ -492,11 +492,25 @@ public final class DriverObservationAssembler {
         // Preserve historical military's order and parser; contracts cannot depend on a military/application module.
         Objects.requireNonNull(raw);
         var nativeTree=(com.fasterxml.jackson.databind.node.ObjectNode)DriverJson.parsedNode(raw,DriverJson.MAX_NATIVE_BYTES);
+        boolean florin=org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.selects(nativeTree);
+        if(florin) {
+            // FullArmy17 proves an explicit empty array. Legacy missing/null defaults cannot prove Florin War scope.
+            var rawWars=nativeTree.get("active_wars");
+            StrictJson.require(rawWars!=null && rawWars.isArray() && rawWars.isEmpty(),
+                    "Florin full-state requires an explicitly observed empty active_wars array");
+        }
         var wars=NativeActiveWarsCodec.normalize(nativeTree.get("active_wars"));
-        var armies=ArmyStateProjection.playerArmiesFromState(wars,nativeTree.get("player_armies"));
         Map<String,OpportunityJson.Value> fields=new LinkedHashMap<>(raw.members());
         fields.put("active_wars",DriverJson.fromNode(NativeActiveWarsCodec.encode(wars)));
-        fields.put("player_armies",DriverJson.fromNode(NativeArmiesCodec.encode(armies)));
+        if(florin) {
+            org.xar.ck3.control.contracts.StrictJson.require(wars.isEmpty(),
+                    "Florin owned-army base observation requires the separately observed empty-war scope");
+            // Versioned base observation; it never constructs a legacy army-action identity.
+            fields.put("player_armies",DriverJson.fromNode(org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.normalize(nativeTree)));
+        } else {
+            var armies=ArmyStateProjection.playerArmiesFromState(wars,nativeTree.get("player_armies"));
+            fields.put("player_armies",DriverJson.fromNode(NativeArmiesCodec.encode(armies)));
+        }
         var canonical=NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(nativeTree),
                 original.snapshotId(),original.nativeRevision()).semantic();
         // Untouched original fields retain their lexical JSON tokens; derived fields cross the explicit normalized bridge.

@@ -2786,7 +2786,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private void requireFullSnapshotBuild(NativeWire.Snapshot received)throws IOException {
         ObjectNode raw=NativeWire.object(NativeWire.parse(received.state().value()));
         ObjectNode originalHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
-        boolean florin=ExactCk3Build.CK3_1210.matches(NativeWire.text(originalHello.get("expected_ck3_version")),hello.gameSha256())
+        var expectedVersion=originalHello.get("expected_ck3_version");
+        if(expectedVersion!=null&&!expectedVersion.isTextual())throw new IOException("optional HELLO version must be text when present");
+        boolean florin=expectedVersion!=null&&ExactCk3Build.CK3_1210.matches(NativeWire.text(expectedVersion),hello.gameSha256())
                 &&hello.adapterId().equals("ck3-1.21.0-msvc-x64");
         var actor=raw.get("played_character");
         if(florin) {

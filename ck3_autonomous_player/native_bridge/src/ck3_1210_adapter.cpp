@@ -7,6 +7,9 @@
 #include <array>
 #include "xar_bridge/ck3_1210_full_snapshot_v1.hpp"
 #include <mutex>
+#include <atomic>
+#include <cstring>
+#include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
 #include <windows.h>
 #endif
@@ -23,11 +26,25 @@ public:
     return Ck3_1210AdapterDescriptor();
   }
   bool enabled() const noexcept override { return core_.enabled; }
+  void BindSnapshotOwner(const ck3_11906::MainThreadQueryMailboxV1 &m) const noexcept {owner_mailbox_.store(&m);}
   bool read_snapshot(xar::game::Snapshot &output) const noexcept override {
     output = {};
 #if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
     ck3_1210::FullSnapshotDiagnosticsV1 diagnostics{};
-    const bool result=ck3_1210::ReadFullSnapshotV1(full_,output,diagnostics);
+    auto current=full_;
+#if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+    if(current.enable_army_base) {
+      if(current.army_fixture_access.context || current.army_fixture_access.copy)return false;
+      current.army_base.player_armies.integration_native_calls_permitted=HasCurrentSnapshotOwner();
+    }
+#endif
+    bool result=ck3_1210::ReadFullSnapshotV1(current,output,diagnostics);
+#if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+    if(diagnostics.army_state_calls_attempted && !HasCurrentSnapshotOwner()) {
+      output={};diagnostics.complete=false;diagnostics.stage="owner";
+      diagnostics.reason="army_base_application_main_owner_changed";result=false;
+    }
+#endif
     try {std::lock_guard lock(diagnostic_mutex_);diagnostics_=diagnostics;} catch(...) {}
     return result;
 #else
@@ -189,12 +206,51 @@ public:
     return true;
   }
 private:
+#if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+  bool HasCurrentSnapshotOwner() const noexcept {
+    const auto *m=owner_mailbox_.load(std::memory_order_acquire);
+    if(!m || m->offline_fixture || m->stop_requested.load() || m->proof_reset_requested.load())return false;
+    __try {
+      const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+      if(m->module_base!=base || m->game_state_slot!=reinterpret_cast<std::uintptr_t>(core_.game_state_slot) ||
+          m->jomini_state_slot!=reinterpret_cast<std::uintptr_t>(core_.jomini_state_slot) ||
+          m->tls_initialized_flag!=base+ck3_1210::kMainThreadTlsInitializedFlagRva ||
+          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)!=base+ck3_1210::kMainThreadTlsContextGetterRva)return false;
+      const auto d=ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*m);
+      const auto tid=GetCurrentThreadId();
+      if((!d.iat_installed && !d.sdl_poll_event_hook_installed) || d.stop_requested ||
+          d.owner_thread_id!=tid || d.observed_current_thread_id!=tid || !d.active_hook_calls ||
+          !d.observed_stamp_read_success || d.observed_tls_initialized!=1 ||
+          d.observed_tls_main_thread_marker!=1 || !d.observed_paused || !d.observed_tls_context ||
+          d.paused_owner_verified_pump_epochs<ck3_11906::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs ||
+          d.owner_verified_pump_epochs<ck3_11906::kMainThreadQueryMinimumOwnerVerifiedPumpEpochs)return false;
+      const auto tls=reinterpret_cast<std::uintptr_t>(m->tls_context_getter());
+      if(tls!=d.observed_tls_context || *reinterpret_cast<const std::uint8_t *>(m->tls_initialized_flag)!=1 ||
+          *reinterpret_cast<const std::uint8_t *>(tls+0x20)!=1)return false;
+      void *state=nullptr,*jomini=nullptr;
+      std::memcpy(&state,core_.game_state_slot,sizeof(state));std::memcpy(&jomini,core_.jomini_state_slot,sizeof(jomini));
+      ck3_1210::CoreSnapshotPrefix p{};
+      return ck3_1210::ReadCoreSnapshot(core_,p) && p.clock.paused && p.clock.date_raw==d.observed_date_raw &&
+          reinterpret_cast<std::uintptr_t>(state)==d.observed_game_state &&
+          reinterpret_cast<std::uintptr_t>(jomini)==d.observed_jomini_state &&
+          m->pump_epochs.load()==d.pump_epochs && m->owner_thread_id.load()==tid && !m->stop_requested.load();
+    } __except(EXCEPTION_EXECUTE_HANDLER) {return false;}
+  }
+#endif
+  mutable std::atomic<const ck3_11906::MainThreadQueryMailboxV1 *> owner_mailbox_{nullptr};
   ck3_1210::CoreBindings core_{};
   ck3_1210::FullSnapshotBindingsV1 full_{};
   mutable std::mutex diagnostic_mutex_;
   mutable ck3_1210::FullSnapshotDiagnosticsV1 diagnostics_{};
 };
 } // namespace
+
+bool BindCk3_1210SnapshotOwnerMailbox(const GameAdapter &game,
+    const ck3_11906::MainThreadQueryMailboxV1 &mailbox) noexcept {
+  const auto *florin=dynamic_cast<const FlorinAdapter *>(&game);
+  if(!florin || !florin->enabled() || !IsCk3_1210Descriptor(game.descriptor()))return false;
+  florin->BindSnapshotOwner(mailbox);return true;
+}
 
 const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)

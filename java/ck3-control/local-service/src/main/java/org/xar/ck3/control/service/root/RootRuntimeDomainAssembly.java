@@ -34,17 +34,26 @@ import org.xar.ck3.control.service.sway.SwayRuntimeInstaller;
 public final class RootRuntimeDomainAssembly {
     private RootRuntimeDomainAssembly() { }
 
-    public record Shared(GovernanceRuntimeInstaller.Installed nativeGovernance,
+    public record Shared(Optional<GovernanceRuntimeInstaller.Installed> availableNativeGovernance,
             GovernanceOrdinaryRuntimeInstaller.Installed governance,GovernanceActivityRuntime activity,
             PrisonersRuntimeInstaller prisoners,ArmyRuntimeInstaller army,ConstructionRuntimeInstaller construction,
             OrdinaryMilitaryInstaller military,ArmyAdditionalReadInstaller.Installed additionalArmy,
             KnownInteractionsRuntimeInstaller interactions,RootIncidentRuntime incidents,RootFrontendRuntime frontend) {
         public Shared {
-            Objects.requireNonNull(nativeGovernance);Objects.requireNonNull(governance);Objects.requireNonNull(activity);
+            Objects.requireNonNull(availableNativeGovernance);Objects.requireNonNull(governance);Objects.requireNonNull(activity);
             Objects.requireNonNull(prisoners);Objects.requireNonNull(army);Objects.requireNonNull(construction);
             Objects.requireNonNull(military);Objects.requireNonNull(additionalArmy);Objects.requireNonNull(interactions);
             Objects.requireNonNull(incidents);Objects.requireNonNull(frontend);
+            StrictJson.require(availableNativeGovernance.isPresent()==governance.nativeQualified(),"shared governance availability must retain the same actual Native and ordinary producers");
         }
+        public Shared(GovernanceRuntimeInstaller.Installed nativeGovernance,GovernanceOrdinaryRuntimeInstaller.Installed governance,
+                GovernanceActivityRuntime activity,PrisonersRuntimeInstaller prisoners,ArmyRuntimeInstaller army,ConstructionRuntimeInstaller construction,
+                OrdinaryMilitaryInstaller military,ArmyAdditionalReadInstaller.Installed additionalArmy,KnownInteractionsRuntimeInstaller interactions,
+                RootIncidentRuntime incidents,RootFrontendRuntime frontend) {
+            this(Optional.of(nativeGovernance),governance,activity,prisoners,army,construction,military,additionalArmy,interactions,incidents,frontend);
+        }
+        /** Legacy strict getter; absence never returns a fabricated Installed product. */
+        public GovernanceRuntimeInstaller.Installed nativeGovernance(){return availableNativeGovernance.orElseThrow(()->new IllegalStateException(GovernanceRuntimeInstaller.UNAVAILABLE_1210));}
     }
     public record PolicySources(ExactRef ordinaryCore,ExactRef formalWarExit) {
         public PolicySources {
@@ -295,7 +304,7 @@ public final class RootRuntimeDomainAssembly {
             context.writer().requireSession(context.borrowedSession());
             List<RootReconciliationAuthority.AllowedRead> actual=new ArrayList<>();
             actual.addAll(shared.army().reconciliationReads(original,identity,current,deadline));
-            actual.addAll(shared.nativeGovernance().reconciliationReads().allowed(original,identity,current,deadline));
+            if(shared.availableNativeGovernance().isPresent())actual.addAll(shared.availableNativeGovernance().orElseThrow().reconciliationReads().allowed(original,identity,current,deadline));
             actual.addAll(shared.military().reconciliationReads(original,identity,current,deadline));
             actual.addAll(army.reconciliationReads(original,identity,current,deadline));
             if(original.command().operation().equals(org.xar.ck3.control.application.planning.finance.OrdinaryFinancePolicies.MERCENARY)) {

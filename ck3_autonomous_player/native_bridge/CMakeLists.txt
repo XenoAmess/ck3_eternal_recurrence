@@ -10409,3 +10409,57 @@ if(BUILD_TESTING)
   add_test(NAME xar_ck3_native_bridge_1210_personal_cash COMMAND xar_ck3_1210_personal_cash_test)
   add_test(NAME xar_ck3_native_bridge_1210_personal_cash_frame COMMAND xar_ck3_1210_personal_cash_frame_test)
 endif()
+
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_player_armies_test
+    src/ck3_1210_player_armies_v1.cpp src/ck3_1210_core.cpp src/ck3_1210_player_armies_v1_test.cpp)
+  add_executable(xar_ck3_1210_army_base_test
+    src/ck3_1210_army_base_v1.cpp src/ck3_1210_player_armies_v1.cpp
+    src/ck3_1210_core.cpp src/ck3_1210_army_base_v1_test.cpp)
+  foreach(_florin_army_target IN ITEMS xar_ck3_1210_player_armies_test xar_ck3_1210_army_base_test)
+    target_include_directories(${_florin_army_target} PRIVATE include)
+    target_compile_definitions(${_florin_army_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+    if(MSVC)
+      target_compile_options(${_florin_army_target} PRIVATE /W4 /WX /permissive- /EHsc)
+    endif()
+  endforeach()
+  add_test(NAME xar_ck3_native_bridge_1210_player_armies COMMAND xar_ck3_1210_player_armies_test)
+  add_test(NAME xar_ck3_native_bridge_1210_army_base COMMAND xar_ck3_1210_army_base_test)
+endif()
+
+option(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1 "Enable exact paused nonempty base armies; positive wars unavailable" OFF)
+if(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+  if(NOT XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+    message(FATAL_ERROR "Florin base armies require exact paused Full")
+  endif()
+  target_sources(xar_ck3_12002_runtime PRIVATE
+    src/ck3_1210_player_armies_v1.cpp src/ck3_1210_army_base_v1.cpp src/ck3_1210_active_wars_v1.cpp)
+  set_property(SOURCE src/ck3_1210_full_snapshot_v1.cpp src/ck3_1210_adapter.cpp
+    APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_full_army_snapshot_test
+    src/ck3_1210_full_army_snapshot_v1_test.cpp src/ck3_1210_full_snapshot_v1.cpp
+    src/ck3_1210_core.cpp src/ck3_1210_actor_foundation_v1.cpp
+    src/ck3_1210_current_event_snapshot_v1.cpp src/ck3_1210_pending_snapshot_v1.cpp
+    src/ck3_1210_military_empty_v1.cpp src/ck3_1210_player_armies_v1.cpp
+    src/ck3_1210_army_base_v1.cpp src/ck3_1210_active_wars_v1.cpp)
+  target_include_directories(xar_ck3_1210_full_army_snapshot_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_full_army_snapshot_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1=1)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_full_army_snapshot_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_full_army_snapshot COMMAND xar_ck3_1210_full_army_snapshot_test)
+endif()
+
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_active_wars_test
+    src/ck3_1210_active_wars_v1.cpp src/ck3_1210_core.cpp src/ck3_1210_active_wars_v1_test.cpp)
+  target_include_directories(xar_ck3_1210_active_wars_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_active_wars_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_active_wars_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_active_wars COMMAND xar_ck3_1210_active_wars_test)
+endif()

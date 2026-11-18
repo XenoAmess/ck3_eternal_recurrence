@@ -16,6 +16,7 @@ import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.governance.*;
 import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.governance.council.CouncilActionCodec;
 import org.xar.ck3.control.nativebridge.NativePrivateActionPermission;
@@ -25,6 +26,15 @@ import org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain;
 /** Concrete native governance graph. Ordinary policies and their own pending bodies remain with the ordinary installer. */
 public final class GovernanceRuntimeInstaller {
     private GovernanceRuntimeInstaller() { }
+    static final String UNAVAILABLE_1210="CK3 1.21.0 governance Native contracts are not qualified";
+    static boolean qualifiedBuild(String version,String sha256) {
+        if(ExactCk3Build.CK3_1210.matches(version,sha256))return false;
+        org.xar.ck3.control.governance.council.CouncilCodec.requireBuild(version,sha256);return true;
+    }
+    static void requirePublicAvailable(String version,String sha256) {
+        if(!qualifiedBuild(version,sha256))throw new org.xar.ck3.control.service.mcp.PublicServiceFailure(
+                org.xar.ck3.control.service.mcp.PublicServiceFailure.Kind.BRIDGE_UNAVAILABLE,UNAVAILABLE_1210,Optional.empty());
+    }
     public record Sources(GovernanceActionBindings.Sources nativeProducers, ExactRef planningDecoder,
             ExactRef councilDecoder, ExactRef actionDecoder, ExactRef effectVerifier, ExactRef councilEffectVerifier,
             ExactRef finalTermsNative, ExactRef finalTermsDecoder,
@@ -48,11 +58,14 @@ public final class GovernanceRuntimeInstaller {
     public record Config(String gameVersion, String executableSha256, String authorityId,
             Set<OperationKey> admittedActions, int maximumStatusPolls, int maximumContinuations) {
         public Config {
-            org.xar.ck3.control.governance.council.CouncilCodec.requireBuild(gameVersion, executableSha256); StrictJson.text(authorityId);
+            qualifiedBuild(gameVersion,executableSha256);
+            StrictJson.text(authorityId);
             admittedActions = Set.copyOf(admittedActions);
             for (OperationKey operation : admittedActions) StrictJson.require(GovernanceActionPreparation.OPERATIONS.contains(operation.value()), "unrelated governance operation admitted");
             StrictJson.require(maximumStatusPolls >= 1 && maximumStatusPolls <= 3000 && maximumContinuations >= 3 && maximumContinuations <= 1024, "bounded native Council polling/continuation required");
         }
+        public boolean nativeQualified(){return qualifiedBuild(gameVersion,executableSha256);}
+        public Optional<String> unavailableReason(){return nativeQualified()?Optional.empty():Optional.of(UNAVAILABLE_1210);}
     }
     /** Construct before Core.open so the actual canonical continuation verifier is in the original writer registry. */
     public static Prepared prepare(Path originalWriterLock, Sources sources, Config config, Clock clock,
@@ -70,11 +83,9 @@ public final class GovernanceRuntimeInstaller {
         private final CouncilContinuationPorts.SeedAuthority seed;
         private final CouncilContinuationCoordinator continuation;
         private final DomainBodies.Registration continuationRegistration;
-        private final GovernancePlanningReads planning;
-        private final GovernanceNativeReads publicReads;
-        private final PrivateCouncilReads privateReads;
-        private final NativeGovernanceEffects.Contracts receipts;
-        private final NativeCrownFinalTermsRead finalTerms;
+        private record NativeReads(GovernancePlanningReads planning,GovernanceNativeReads publicReads,
+                PrivateCouncilReads privateReads,NativeGovernanceEffects.Contracts receipts,NativeCrownFinalTermsRead finalTerms) { }
+        private final Optional<NativeReads> nativeReads;
         private RootApplicationAssembly.Core originalCore;
         private RootRuntimeContext current;
         private Installed currentInstalled;
@@ -84,26 +95,77 @@ public final class GovernanceRuntimeInstaller {
             this.config = Objects.requireNonNull(config); this.clock = Objects.requireNonNull(clock); this.seed = Objects.requireNonNull(seed);
             continuation = new CouncilContinuationCoordinator(writerLock, sources.continuationClosure(), clock);
             continuationRegistration = continuation.registration(seed);
-            planning = new GovernancePlanningReads(new GovernancePlanningReads.Sources(sources.nativeProducers().lifestyle(), sources.nativeProducers().crown()), config.gameVersion(), config.executableSha256());
-            publicReads = new GovernanceNativeReads(sources.nativeProducers().council(), config.gameVersion(), config.executableSha256());
-            privateReads = new PrivateCouncilReads(sources.nativeProducers().council());
-            receipts = NativeGovernanceEffects.readContracts(sources.nativeProducers().lifestyle(), sources.nativeProducers().council(), sources.nativeProducers().crown());
-            finalTerms = new NativeCrownFinalTermsRead(sources.finalTermsNative(), config.gameVersion(), config.executableSha256());
+            nativeReads=config.nativeQualified()?Optional.of(new NativeReads(
+                    new GovernancePlanningReads(new GovernancePlanningReads.Sources(sources.nativeProducers().lifestyle(),sources.nativeProducers().crown()),config.gameVersion(),config.executableSha256()),
+                    new GovernanceNativeReads(sources.nativeProducers().council(),config.gameVersion(),config.executableSha256()),
+                    new PrivateCouncilReads(sources.nativeProducers().council()),
+                    NativeGovernanceEffects.readContracts(sources.nativeProducers().lifestyle(),sources.nativeProducers().council(),sources.nativeProducers().crown()),
+                    new NativeCrownFinalTermsRead(sources.finalTermsNative(),config.gameVersion(),config.executableSha256()))):Optional.empty();
         }
+        public boolean nativeQualified(){return nativeReads.isPresent();}
+        public Optional<String> unavailableReason(){return config.unavailableReason();}
+        private NativeReads nativeReads(){return nativeReads.orElseThrow(()->new IllegalStateException(config.unavailableReason().orElseThrow()));}
         /** The identical actual preCore Java source passed to the native preparation producer. */
         public Optional<ExactRef> publicCallerProducer() { return sources.publicCallerProducer(); }
         public List<DomainBodies.Registration> domainRegistrations() { return List.of(continuationRegistration); }
         /** Pass these identical source-qualified permissions to the actual managed transport constructor before its first use. */
         public List<NativePrivateActionPermission> privatePermissions(NativePrivateActionPermission.QualificationVerifier actualQualification) {
+            if(!nativeQualified())return List.of();
             return GovernanceActionBindings.privatePermissions(sources.nativeProducers(), config.admittedActions(), actualQualification);
         }
+        /** Current Native products are absent for a recognized unqualified build. Java history remains source-owned. */
+        public synchronized Optional<Installed> installAvailable(RootRuntimeContext context)throws IOException {
+            if(nativeQualified())return Optional.of(install(context));
+            Objects.requireNonNull(context);context.requireCurrent(clock.instant().plusSeconds(1));
+            StrictJson.require(context.core().configuration().ledger().lock().toAbsolutePath().normalize().equals(writerLock),"governance history belongs to another original writer lock");
+            if(originalCore==null){
+                originalCore=context.core();current=context;
+                if(seed instanceof RootCouncilContinuationSeeds originals){originals.bindCore(originalCore);originals.installContext(context);}
+                // This existing coordinator owns the history registration and archive. Its Native/issue ports deny every invocation.
+                continuation.bind(originalCore.journal(),originalCore.archive(),(same,head,parent,until)->{throw unavailable();},
+                    new CouncilContinuationPorts.NativePort(){
+                        @Override public NativeActionPort.DispatchOutcome submit(CouncilContinuationPermit permit,NativeRequest request,java.time.Instant until)throws IOException {throw unavailable();}
+                        @Override public Optional<NativeActionPort.AckReceived> collectOriginalOutcome(String id,java.time.Instant until)throws IOException {throw unavailable();}
+                    },new CouncilContinuationPorts.Policy(){
+                        @Override public List<ExactRef> prepareEvidence(ContinuityStorePort.Session same,WriterContracts.Head head,ActionReceipt parent,CouncilContinuationModel.Stage stage,List<CouncilContinuationModel.Retained> prior,ActionPorts.OutcomeArchive archive)throws IOException {throw unavailable();}
+                        @Override public void verifyIssue(ContinuityStorePort.Session same,WriterContracts.Head head,ActionReceipt parent,List<CouncilContinuationModel.Retained> prior,CouncilContinuationModel.Request request,ActionPorts.OutcomeArchive archive)throws IOException {throw unavailable();}
+                        @Override public void verifyOutcome(ContinuityStorePort.Session same,WriterContracts.Head head,ActionReceipt parent,List<CouncilContinuationModel.Retained> prior,CouncilContinuationModel.Entry entry,NativeActionPort.DispatchOutcome original,ActionPorts.OutcomeArchive archive)throws IOException {throw unavailable();}
+                    });
+            }else{
+                StrictJson.require(originalCore==context.core()&&current!=context,"governance history requires a new physical context on the identical Core");
+                current=context;if(seed instanceof RootCouncilContinuationSeeds originals)originals.installContext(context);
+            }
+            return Optional.empty();
+        }
+        private IOException unavailable(){return new IOException(config.unavailableReason().orElse(UNAVAILABLE_1210));}
+        synchronized void requireHistoryContext(RootRuntimeContext context)throws IOException {
+            if(originalCore!=context.core()||current!=context)throw new IOException("governance original history belongs to another installed context");
+        }
+        private void requireHistoryContext(RootRuntimeContext context,ContinuityStorePort.Session same)throws IOException {
+            requireHistoryContext(context);context.writer().requireSession(same);same.requireWriter(writerLock);
+        }
+        /** Historical Java seed initialization does not instantiate a Native read, preparation or permission. */
+        public void initializeContinuation(RootRuntimeContext context,ContinuityStorePort.Session same,RootInitialEpisodeProof actual)throws IOException {
+            requireHistoryContext(context,same);actual.requireCurrent(same);
+            StrictJson.require(seed instanceof RootCouncilContinuationSeeds,"the concrete Root original continuation producer is not installed");
+            var originals=(RootCouncilContinuationSeeds)seed;continuation.adoptOriginal(same,originals.preserveFresh(same,actual),seed);
+        }
+        public void initializeContinuation(RootRuntimeContext context,ContinuityStorePort.Session same,FreshCampaignContext actual)throws IOException {
+            requireHistoryContext(context,same);StrictJson.require(actual.context()==context,"fresh continuation belongs to another installed Game");actual.requireCurrent(same);
+            var existing=same.readDomain(DomainBodies.Slot.COUNCIL_CONTINUATION);
+            if(existing instanceof DomainBodies.Available available){CouncilContinuationCodec.decodeState(available.canonicalBody());return;}
+            StrictJson.require(existing instanceof DomainBodies.Unavailable missing&&missing.reason()==DomainBodies.Reason.UNIMPORTED,"fresh continuation may initialize only an unimported slot");
+            StrictJson.require(seed instanceof RootCouncilContinuationSeeds,"the concrete Root original continuation producer is not installed");
+            var originals=(RootCouncilContinuationSeeds)seed;continuation.adoptOriginal(same,originals.preserveFresh(same,actual),seed);
+        }
         public synchronized Installed install(RootRuntimeContext context) throws IOException {
+            if(!nativeQualified())throw new IOException(config.unavailableReason().orElseThrow());
             Objects.requireNonNull(context); context.requireCurrent(clock.instant().plusSeconds(1));
             StrictJson.require(context.core().configuration().ledger().lock().toAbsolutePath().normalize().equals(writerLock), "governance installer belongs to another original writer lock");
             if(seed instanceof RootCouncilContinuationSeeds originals) {originals.bindCore(context.core());originals.installContext(context);}
             if (originalCore == null) {
                 originalCore = context.core(); current = context;
-                policy = new CouncilContinuationPolicy(privateReads, context.frameLoader(), config.gameVersion(), config.executableSha256());
+                policy = new CouncilContinuationPolicy(nativeReads().privateReads(), context.frameLoader(), config.gameVersion(), config.executableSha256());
                 continuation.bind(originalCore.journal(), originalCore.archive(),
                         (same, head, parent, deadline) -> {
                             RootRuntimeContext actual = active();
@@ -160,6 +222,7 @@ public final class GovernanceRuntimeInstaller {
     static GovernanceActionPreparation buildPreparation(Sources sources, Config config,
             GovernanceActionPreparation.CouncilRefreshPort refresh,
             GovernanceActionPreparation.LifestyleRefreshPort lifecycle) {
+        StrictJson.require(config.nativeQualified(),config.unavailableReason().orElse("Native governance unavailable"));
         return new GovernanceActionPreparation(config.gameVersion(), config.executableSha256(), refresh, lifecycle,
                 sources.publicCallerProducer());
     }
@@ -176,13 +239,13 @@ public final class GovernanceRuntimeInstaller {
         private RootGovernanceDomains originalCouncilDomains;
         private Installed(Prepared prepared, RootRuntimeContext context) throws IOException {
             this.prepared = prepared; this.context = context;
-            recoverySeatReplay = new NativeCouncilReadPort.ReplayConfiguration(prepared.privateReads, prepared.config.maximumStatusPolls(),
+            recoverySeatReplay = new NativeCouncilReadPort.ReplayConfiguration(prepared.nativeReads().privateReads(), prepared.config.maximumStatusPolls(),
                     prepared.config.gameVersion(), prepared.config.executableSha256());
-            lifecycle = new NativeLifestyleReadPort(context.reads(), prepared.planning, context.archive());
-            var refresh = new CouncilPreparationRead(context.reads(), prepared.privateReads, context.archive(), prepared.clock,
+            lifecycle = new NativeLifestyleReadPort(context.reads(), prepared.nativeReads().planning(), context.archive());
+            var refresh = new CouncilPreparationRead(context.reads(), prepared.nativeReads().privateReads(), context.archive(), prepared.clock,
                     prepared.config.maximumStatusPolls(), prepared.config.gameVersion(), prepared.config.executableSha256());
             producer = buildPreparation(prepared.sources, prepared.config, refresh, lifecycle);
-            council = new NativeCouncilReadPort(context.reads(), prepared.publicReads, prepared.privateReads, context.transport(),
+            council = new NativeCouncilReadPort(context.reads(), prepared.nativeReads().publicReads(), prepared.nativeReads().privateReads(), context.transport(),
                     new NativeCouncilReadPort.SessionAccess() {
                         @Override public <T> T withSession(PlanningRequest request, NativeCouncilReadPort.SessionWork<T> work) throws IOException, InterruptedException {
                             requireCurrent(request.deadline()); var same = context.borrowedSession(); context.writer().requireSession(same);
@@ -190,11 +253,11 @@ public final class GovernanceRuntimeInstaller {
                         }
                     }, prepared.writerLock, context.archive(), prepared.clock, prepared.config.maximumStatusPolls(), prepared.config.gameVersion(), prepared.config.executableSha256());
             var installedReads = new ArrayList<RootReadContractCatalog.InstalledRead>();
-            for (ReadContract<?> read : prepared.publicReads.registeredContracts()) installedReads.add(new RootReadContractCatalog.InstalledRead(read, prepared.sources.councilDecoder()));
-            for (ReadContract<?> read : prepared.privateReads.registeredContracts()) installedReads.add(new RootReadContractCatalog.InstalledRead(read, prepared.sources.councilDecoder()));
-            for (ReadContract<?> read : prepared.planning.all()) installedReads.add(new RootReadContractCatalog.InstalledRead(read, prepared.sources.planningDecoder()));
-            for (ReadContract<?> read : prepared.receipts.all()) installedReads.add(new RootReadContractCatalog.InstalledRead(read, prepared.sources.effectVerifier()));
-            installedReads.add(new RootReadContractCatalog.InstalledRead(prepared.finalTerms.contract(), prepared.sources.finalTermsDecoder()));
+            for (ReadContract<?> read : prepared.nativeReads().publicReads().registeredContracts()) installedReads.add(new RootReadContractCatalog.InstalledRead(read, prepared.sources.councilDecoder()));
+            for (ReadContract<?> read : prepared.nativeReads().privateReads().registeredContracts()) installedReads.add(new RootReadContractCatalog.InstalledRead(read, prepared.sources.councilDecoder()));
+            for (ReadContract<?> read : prepared.nativeReads().planning().all()) installedReads.add(new RootReadContractCatalog.InstalledRead(read, prepared.sources.planningDecoder()));
+            for (ReadContract<?> read : prepared.nativeReads().receipts().all()) installedReads.add(new RootReadContractCatalog.InstalledRead(read, prepared.sources.effectVerifier()));
+            installedReads.add(new RootReadContractCatalog.InstalledRead(prepared.nativeReads().finalTerms().contract(), prepared.sources.finalTermsDecoder()));
             NativeEffectRegistry.Observer callable = (command, attempt, dispatch) -> effects().observe(command, attempt, dispatch);
             var actions = GovernanceActionBindings.bindings(prepared.sources.nativeProducers(), producer, callable, prepared.config.admittedActions()).stream()
                     .map(binding -> new RootExecutableBindings.ActionBinding(binding, ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,
@@ -203,8 +266,8 @@ public final class GovernanceRuntimeInstaller {
             for (OperationKey operation : prepared.config.admittedActions()) {
                 if (operation.value().equals(CouncilActionCodec.PRIVATE_ASSIGN)) archived.add(NativeCouncilAssignmentEffects.archivedVerifier(prepared.sources.councilEffectVerifier(),
                         prepared.continuation, prepared.policy, RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), this::session, recoverySeatReplay));
-                else archived.add(NativeGovernanceEffects.archivedVerifier(operation, prepared.sources.effectVerifier(), context.frameLoader(), prepared.receipts, lifecycle,
-                        Optional.of(prepared.planning.focusStateReconciliation())));
+                else archived.add(NativeGovernanceEffects.archivedVerifier(operation, prepared.sources.effectVerifier(), context.frameLoader(), prepared.nativeReads().receipts(), lifecycle,
+                        Optional.of(prepared.nativeReads().planning().focusStateReconciliation())));
             }
             var domains = actions.stream().map(binding -> new RootDomainInstallation.FixedDomain(binding,
                     binding.effect().operation().value().equals(GovernanceActionPreparation.FOCUS) || binding.effect().operation().value().equals(GovernanceActionPreparation.PERK) ? Domain.lifestyle : Domain.council)).toList();
@@ -212,16 +275,16 @@ public final class GovernanceRuntimeInstaller {
                     List.of(), archived, List.of(), List.of(), List.of(), List.of(), Set.of(), List.of(), List.of(), domains, List.of(), List.of());
         }
         public RootDomainInstallation installation() { return installation; }
-        public GovernancePlanningReads planningReads() { return prepared.planning; }
-        public GovernanceNativeReads publicReads() { return prepared.publicReads; }
-        public PrivateCouncilReads privateReads() { return prepared.privateReads; }
+        public GovernancePlanningReads planningReads() { return prepared.nativeReads().planning(); }
+        public GovernanceNativeReads publicReads() { return prepared.nativeReads().publicReads(); }
+        public PrivateCouncilReads privateReads() { return prepared.nativeReads().privateReads(); }
         public NativeCouncilReadPort councilReads() { return council; }
-        public NativeCrownFinalTermsRead crownFinalTermsRead() { return prepared.finalTerms; }
+        public NativeCrownFinalTermsRead crownFinalTermsRead() { return prepared.nativeReads().finalTerms(); }
         /** Clock projection of the one complete law read; absence never suppresses the stock law material. */
         public GovernanceCollector.CrownCooldownReadPort crownCooldownReads() {
             return request->{
                 try {
-                    requireCurrent(request.deadline());var same=context.borrowedSession();context.writer().requireSession(same);var contract=prepared.finalTerms.contract();
+                    requireCurrent(request.deadline());var same=context.borrowedSession();context.writer().requireSession(same);var contract=prepared.nativeReads().finalTerms().contract();
                     var result=context.reads().read(same,contract,new PlanningReadRequest(request.before(),request.source(),request.sessionId(),contract.operation(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of()),request.deadline()));
                     if(result instanceof PlanningReadResult.Unavailable<NativeCrownFinalTermsRead.Terms> unavailable)return new GovernanceObservationSupplier.Unavailable<>(unavailable.reason());
                     var known=(PlanningReadResult.Known<NativeCrownFinalTermsRead.Terms>)result;
@@ -242,7 +305,7 @@ public final class GovernanceRuntimeInstaller {
                 }
                 private NativeLifestyleReadPort planning(PlanningRequest request) throws IOException {
                     requireCurrent(request.deadline()); var same = context.borrowedSession(); context.writer().requireSession(same);
-                    return new NativeLifestyleReadPort(context.reads(), prepared.planning, context.archive(), new GovernanceBorrowedSession(same, prepared.writerLock, context.writer()::requireSession));
+                    return new NativeLifestyleReadPort(context.reads(), prepared.nativeReads().planning(), context.archive(), new GovernanceBorrowedSession(same, prepared.writerLock, context.writer()::requireSession));
                 }
             };
         }
@@ -293,7 +356,7 @@ public final class GovernanceRuntimeInstaller {
         public RootReconciliationAuthority.QueryPolicy reconciliationReads(){return (original,identity,current,deadline)->{
             if(!NativeGovernanceEffects.kind(original.command().operation()).filter(NativeGovernanceEffects.Kind.FOCUS::equals).isPresent())
                 return List.of();
-            var same=session();var contract=prepared.planning.focusStateReconciliation();
+            var same=session();var contract=prepared.nativeReads().planning().focusStateReconciliation();
             StrictJson.require(context.readCatalog().containsIdentity(contract)&&current.identity().equals(identity.factual())
                     &&current.source().equals(identity.source())&&current.sessionId().equals(identity.sessionId()),
                     "FOCUS getter must retain its identical installed current factual source");
@@ -322,19 +385,19 @@ public final class GovernanceRuntimeInstaller {
             catch (IOException failure) { throw new UncheckedIOException(failure); }
             if (observer == null) {
                 var snapshots = new NativeEffectSnapshots(context.adopted().observations(), context.archive(), context.frameLoader());
-                var recoverySeats = new org.xar.ck3.control.application.effects.RootCouncilRecoverySeatReader(context, prepared.privateReads, prepared.continuation,
+                var recoverySeats = new org.xar.ck3.control.application.effects.RootCouncilRecoverySeatReader(context, prepared.nativeReads().privateReads(), prepared.continuation,
                         RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), prepared.config.maximumStatusPolls());
                 privateCouncil = new NativeCouncilAssignmentEffects(prepared.continuation, prepared.policy, snapshots, context.archive(), RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()), this::session,
                         prepared.clock, prepared.config.maximumContinuations(), (same, original, observation, deadline) -> {
                             requireCurrent(deadline); return recoverySeats.read(same, original, observation, deadline);
                         }, recoverySeatReplay);
-                observer = new NativeGovernanceEffects(snapshots, context.reads(), prepared.receipts, new NativeGovernanceEffects.SessionPort() {
+                observer = new NativeGovernanceEffects(snapshots, context.reads(), prepared.nativeReads().receipts(), new NativeGovernanceEffects.SessionPort() {
                     @Override public ContinuityStorePort.Session current(ActionCommand command) {
                         if(ActionReconciliationScope.activeFor(command))return session();
                         var same = GovernanceActionScope.current(command).session(command); StrictJson.require(same == session(), "governance effect borrowed another writer Session"); return same;
                     }
                     @Override public List<PlanningReadReceipt> preflight(ActionCommand command) { return GovernanceActionScope.current(command).preflight(command); }
-                }, privateCouncil, lifecycle, Optional.of(prepared.planning.focusStateReconciliation()));
+                }, privateCouncil, lifecycle, Optional.of(prepared.nativeReads().planning().focusStateReconciliation()));
             }
             return observer;
         }

@@ -289,12 +289,18 @@ public final class RootRuntimeCatalogFactory {
             } else sourceAuthority=new RootNativeSourceAuthority(actual.writer(),actual.archive(),game,clock);
             context.bindSources(sourceAuthority);
             var activity=new GovernanceActivityRuntime(context,sources.activityDefinitions());
-            var nativeGovernance=sources.nativeGovernance().install(context);
-            var retry=sources.retryRuntime().install(context,nativeGovernance);
-            var nativeGovernanceDomains=sources.governanceDomains().install(context,nativeGovernance);
+            var nativeGovernance=sources.nativeGovernance().installAvailable(context);
+            var retry=nativeGovernance.isPresent()?java.util.Optional.of(sources.retryRuntime().install(context,nativeGovernance.orElseThrow()))
+                    :java.util.Optional.<RootCrownRetryRuntime.Installed>empty();
+            var nativeGovernanceDomains=nativeGovernance.isPresent()
+                    ?sources.governanceDomains().install(context,nativeGovernance.orElseThrow())
+                    :sources.governanceDomains().installUnavailable(context,sources.nativeGovernance());
             var prisoners=new PrisonersRuntimeInstaller(context,sources.prisoners(),sources.prisonerConfiguration());
             var finance=sources.finance().install(context,activity,List.of(prisoners.pendingContributor()));
-            var governance=sources.governance().install(context,nativeGovernance,activity,sources.activityActions(),sources.governanceState(),retry);
+            var governance=nativeGovernance.isPresent()
+                    ?sources.governance().install(context,nativeGovernance.orElseThrow(),activity,sources.activityActions(),sources.governanceState(),
+                            retry.orElseThrow())
+                    :sources.governance().installUnavailable(context,sources.nativeGovernance(),activity,sources.activityActions(),sources.governanceState());
             var army=sources.army().install(context);
             installedArmy=army;
             var construction=new ConstructionRuntimeInstaller(context,sources.construction());
@@ -323,19 +329,22 @@ public final class RootRuntimeCatalogFactory {
             var militaryControls=sources.military().controls().install(context,additionalDomains.gui(),remaining.life());
             var armyStructural=sources.military().structural().install(context);
             var publicPause=sources.military().publicPause().install(context,remaining.life().infrastructure());
-            List<RootDomainInstallation> domainList=new ArrayList<>(List.of(nativeGovernance.installation(),nativeGovernanceDomains,finance,prisoners.install(),governance.installation(),
+            List<RootDomainInstallation> domainList=new ArrayList<>(List.of(nativeGovernanceDomains,finance,prisoners.install(),governance.installation(),
                     army.products().installation(),constructionInstallation,military.readInstallation(),additionalArmy.installation(),
                     activityInstallation(activity,sources.activityCodec()),frontend.installation(),remaining.knownInteractions(),save.installation(),aub.installation(),contactScopes.readInstallation()));
+            nativeGovernance.ifPresent(actualNative->domainList.add(0,actualNative.installation()));
             domainList.addAll(remaining.installations());domainList.addAll(additionalDomains.installations());
             domainList.add(militaryControls.installation());domainList.add(armyStructural.installation());
             domainList.add(publicPause.installation());var domains=List.copyOf(domainList);
             var readsInstalled=new ArrayList<RootReadContractCatalog.InstalledRead>(
                     domains.stream().flatMap(domain->domain.reads().stream()).toList());
+            if(nativeGovernance.isPresent()){
             ExactRef crownDecoder=publicStepSource(context,RootRuntimeSelectedSources.Module.LOCAL_SERVICE,CrownAuthorityNativeRead.class);
             ExactRef crownDefinition=sources.historicalPackage().isPresent()
                     ?crownDefinition(game.launchPlan().sources().nativeProof().expected().completeSources()):crownDecoder;
             readsInstalled.add(new RootReadContractCatalog.InstalledRead(
                     CrownAuthorityNativeRead.contract(crownDefinition,true,context.archive(),actual.frameLoader()),crownDecoder));
+            }
             var families=domains.stream().flatMap(domain->domain.readFamilies().stream()).toList();
             var readCatalog=new RootReadContractCatalog(readsInstalled,families);
             var bindings=RootExecutableBindings.freeze(domains.stream().flatMap(domain->domain.actions().stream()).toList(),readCatalog,

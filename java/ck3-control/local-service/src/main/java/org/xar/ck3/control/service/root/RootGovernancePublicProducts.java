@@ -38,29 +38,29 @@ public final class RootGovernancePublicProducts {
 
     public CouncilReply query_council_composition_candidates_v1(CouncilRequest input)throws InterruptedException {
         Objects.requireNonNull(input);Instant deadline=context.clock().instant().plus(context.observationTimeout());
-        try {return context.withCurrent(root->root.withPublicObservation(deadline,(frame,driver,same)->{
+        try {return context.withCurrent(root->{context.installed(root).requirePublicGovernance();return root.withPublicObservation(deadline,(frame,driver,same)->{
             var installed=context.installed(root);var runtime=installed.context();runtime.writer().requireSession(same);
-            var contract=installed.nativeGovernance().publicReads().council();
+            var contract=installed.requireNativeGovernance().publicReads().council();
             var request=new PlanningReadRequest(frame.identity(),frame.source(),frame.sessionId(),contract.operation(),new OpportunityJson.Obj(java.util.Map.of()),deadline);
             StrictJson.require(GovernanceNativeReads.frame(request).equals(input.requested()),"public Council request differs from the actual complete current frame");
             var result=known(runtime.reads().read(same,contract,request),contract,request,runtime,same);
             return new CouncilReply(result.value(),result);
-        }));}catch(IOException failure){throw new UncheckedIOException("actual current-Root public Council query unavailable",failure);}
+        });});}catch(IOException failure){throw new UncheckedIOException("actual current-Root public Council query unavailable",failure);}
     }
 
     public DevelopmentReply query_steward_develop_county_candidates_v1(DevelopmentRequest input)throws InterruptedException {
         Objects.requireNonNull(input);Instant deadline=context.clock().instant().plus(context.observationTimeout());
-        try {return context.withCurrent(root->root.withPublicObservation(deadline,(frame,driver,same)->{
+        try {return context.withCurrent(root->{context.installed(root).requirePublicGovernance();return root.withPublicObservation(deadline,(frame,driver,same)->{
             var installed=context.installed(root);var runtime=installed.context();runtime.writer().requireSession(same);
             StrictJson.require(frame.identity().frame().revision().equals(input.expectedRevision()),"public development revision differs from the actual current public revision");
-            var contract=installed.nativeGovernance().publicReads().development();
+            var contract=installed.requireNativeGovernance().publicReads().development();
             var request=new PlanningReadRequest(frame.identity(),frame.source(),frame.sessionId(),contract.operation(),new OpportunityJson.Obj(java.util.Map.of()),deadline);
             var result=known(runtime.reads().read(same,contract,request),contract,request,runtime,same);
             var backend=frame.semantic().get("backend_id");
             StrictJson.require(backend==null||backend==OpportunityJson.Nil.INSTANCE||backend instanceof OpportunityJson.Text,"actual native backend identity is malformed");
             Optional<String> originalBackend=backend instanceof OpportunityJson.Text text?Optional.of(text.value()):Optional.empty();
             return new DevelopmentReply(result.value(),result,originalBackend);
-        }));}catch(IOException failure){throw new UncheckedIOException("actual current-Root public development query unavailable",failure);}
+        });});}catch(IOException failure){throw new UncheckedIOException("actual current-Root public development query unavailable",failure);}
     }
 
     private static <T> PlanningReadResult.Known<T> known(PlanningReadResult<T> result,ReadContract<T> contract,PlanningReadRequest request,

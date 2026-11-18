@@ -12676,6 +12676,8 @@ public:
       executors[count++]=&xar::ck3_1210::ExecutePersonalGoldMailboxV1;
     if(observer_ != nullptr && game_->supports_snapshot())
       executors[count++]=&xar::ck3_12002::ExecuteSemanticAdapter12002;
+    if(game_->supports_snapshot() && !xar::game::BindCk3_1210SnapshotOwnerMailbox(
+        xar::ck3_12002::NativeAdapter12002(*game_),g_main_thread_query_mailbox_v1))return;
     auto environment=xar::ck3_1210::BindThreadRuntimeImage(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         game_->descriptor().executable_sha256,

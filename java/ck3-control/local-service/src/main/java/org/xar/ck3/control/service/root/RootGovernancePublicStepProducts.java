@@ -47,15 +47,11 @@ public final class RootGovernancePublicStepProducts {
     public static List<RootPublicStepExecution.Product> install(RootInstalledCatalog actual)throws IOException {
         Objects.requireNonNull(actual);RootRuntimeContext context=actual.context();
         var root=context.finance().definitions().contract(FinanceReadContracts.Query.ROOT);
-        var council=actual.nativeGovernance().publicReads().council();
-        var development=actual.nativeGovernance().publicReads().development();
         var features=actual.frontend().rules().definitions().loadedFeatures();
         var factions=actual.definitions().finance().factionContracts();
-        StrictJson.require(root.operation().value().equals(ROOT)&&features.operation().value().equals(FEATURES)
-                &&council.operation().value().equals(GovernanceNativeReads.COUNCIL_STEP)
-                &&development.operation().value().equals(GovernanceNativeReads.DEVELOPMENT_STEP),"actual governance READ getter changed its original exact operation");
+        StrictJson.require(root.operation().value().equals(ROOT)&&features.operation().value().equals(FEATURES),"actual governance READ getter changed its original exact operation");
 
-        for(var contract:List.of(root,council,development,features))requireInstalled(context,contract);
+        for(var contract:List.of(root,features))requireInstalled(context,contract);
         var owner=(RootPublicStepExecution.OwnerGuard)identical->{
             if(identical!=context||actual.context()!=context)throw new IOException("original governance READ product crossed its installed physical Root");
         };
@@ -77,6 +73,12 @@ public final class RootGovernancePublicStepProducts {
                 return CampaignRootPublicCodec.executeFromActual(frame,frame.identity().frame().revision(),retained.value());
             },sources(self,wire,root.sourceRef(),actual.publicStepSource(LOCAL_SERVICE,CampaignRootPublicCodec.class),
                 actual.publicStepSource(APPLICATION,FinanceReadContracts.class),actual.publicStepSource(APPLICATION,CampaignRootContextJson.class))));
+        if(actual.availableNativeGovernance().isPresent()){
+            var council=actual.availableNativeGovernance().orElseThrow().publicReads().council();
+            var development=actual.availableNativeGovernance().orElseThrow().publicReads().development();
+            StrictJson.require(council.operation().value().equals(GovernanceNativeReads.COUNCIL_STEP)
+                    &&development.operation().value().equals(GovernanceNativeReads.DEVELOPMENT_STEP),"actual governance READ getter changed its original exact operation");
+            requireInstalled(context,council);requireInstalled(context,development);
         result.add(new RootPublicStepExecution.Read("execute.council-composition.v1",step->step.equals(council.operation()),owner,
             (original,frame,known,same,caller,archive)->{
                 scope(original,frame,known,caller,council.operation().value(),council.requiredCapability().orElseThrow(),"native DLL cannot query council composition candidates");
@@ -95,6 +97,7 @@ public final class RootGovernancePublicStepProducts {
                 actual.publicStepSource(NATIVE_TRANSPORT,GovernancePublicService.class),actual.publicStepSource(NATIVE_TRANSPORT,GovernancePublicWire.class),
                 actual.publicStepSourceAt("governance-policy/src/main/java/org/xar/ck3/control/governance/development/DevelopmentCodec.java",DevelopmentCodec.class),
                 actual.publicStepSourceAt("governance-policy/src/main/java/org/xar/ck3/control/governance/development/DevelopmentModels.java",DevelopmentModels.class))));
+        }
         StrictJson.require(factions.families().size()==1,"one finance-owned faction READ family required");
         var family=factions.families().getFirst();
         StrictJson.require(context.readCatalog().families().stream().anyMatch(registered->registered==family)

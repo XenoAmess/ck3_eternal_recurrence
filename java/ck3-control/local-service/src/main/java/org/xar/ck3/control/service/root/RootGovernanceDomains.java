@@ -60,7 +60,7 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
     private record LiveInitial(ExactRef basis,CurrentInitial current) { }
     private final ThreadLocal<LiveInitial> initializing=new ThreadLocal<>();
     private GovernanceCadenceActions.Publisher actionCadence;
-    private RootApplicationAssembly.Core core;private RootRuntimeContext context;private GovernanceRuntimeInstaller.Installed nativeGovernance;
+    private RootApplicationAssembly.Core core;private RootRuntimeContext context;private Optional<GovernanceRuntimeInstaller.Installed> nativeGovernance=Optional.empty();
     public RootGovernanceDomains(Path originalWriterLock,Sources sources,CrownRetryPublication sameRetryPublisher) {
         writerLock=Objects.requireNonNull(originalWriterLock).toAbsolutePath().normalize();this.sources=Objects.requireNonNull(sources);retry=Objects.requireNonNull(sameRetryPublisher);
         var actual=retry.registration();StrictJson.require(actual.slot()==DomainBodies.Slot.CROWN&&actual.contractSchema().equals(CROWN_SCHEMA),
@@ -82,10 +82,19 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
     }
     public synchronized RootDomainInstallation install(RootRuntimeContext actual,GovernanceRuntimeInstaller.Installed nativeInstalled)throws IOException {
         StrictJson.require(actual.core()==core()&&(context==null||context!=actual),"governance domains install once per actual physical Game on the same Core");
-        context=Objects.requireNonNull(actual);nativeGovernance=Objects.requireNonNull(nativeInstalled);actual.requireCurrent(actual.clock().instant().plusSeconds(1));
+        context=Objects.requireNonNull(actual);nativeGovernance=Optional.of(Objects.requireNonNull(nativeInstalled));actual.requireCurrent(actual.clock().instant().plusSeconds(1));
         nativeInstalled.bindOriginalCouncilDomains(this,actual);
         return new RootDomainInstallation("native-governance-domains",domainRegistrations(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),
                 pendingBindings(),OWNED,List.of(),List.of(this),List.of(),List.of(),List.of());
+    }
+    /** Register/bind original Java body producers without issuing a current Native route. */
+    public synchronized RootDomainInstallation installUnavailable(RootRuntimeContext actual,GovernanceRuntimeInstaller.Prepared nativePrepared)throws IOException {
+        StrictJson.require(!Objects.requireNonNull(nativePrepared).nativeQualified(),"recognized unqualified governance source required");
+        nativePrepared.requireHistoryContext(actual);
+        StrictJson.require(actual.core()==core()&&(context==null||context!=actual),"governance domains install once per actual physical Game on the same Core");
+        actual.requireCurrent(actual.clock().instant().plusSeconds(1));context=actual;nativeGovernance=Optional.empty();
+        return new RootDomainInstallation("native-governance-domains-unavailable",domainRegistrations(),List.of(),List.of(),List.of(),List.of(),List.of(),
+                List.of(),List.of(),List.of(),List.of(),Set.of(),List.of(),List.of(this),List.of(),List.of(),List.of());
     }
     public GovernanceStateSupplier.BodyContract<GovernanceObservationSupplier.DomainState> councilBody() {return GovernanceStateSupplier.legacyCouncil(COUNCIL_SCHEMA,sources.council());}
     public GovernanceStateSupplier.BodyContract<GovernanceObservationSupplier.DomainState> crownBody() {return GovernanceStateSupplier.legacyCrown(CROWN_SCHEMA,sources.crown());}
@@ -620,7 +629,7 @@ public final class RootGovernanceDomains implements OrdinaryPlanCompletion {
     private List<ExactRef> closure(Domain domain) {return domain==Domain.COUNCIL?sources.council():sources.crown();}
     private synchronized RootApplicationAssembly.Core core()throws IOException {if(core==null)throw new IOException("actual original governance Core not bound");return core;}
     private synchronized RootRuntimeContext context()throws IOException {if(context==null)throw new IOException("actual current governance Game not installed");return context;}
-    private synchronized GovernanceRuntimeInstaller.Installed nativeGovernance()throws IOException {if(nativeGovernance==null)throw new IOException("actual native governance product not installed");return nativeGovernance;}
+    private synchronized GovernanceRuntimeInstaller.Installed nativeGovernance()throws IOException {return nativeGovernance.orElseThrow(()->new IOException("actual native governance product not installed"));}
     private void requireSession(ContinuityStorePort.Session same)throws IOException {core().writer().requireSession(same);same.requireWriter(writerLock);}
     private ContinuityStorePort.Session session()throws IOException {var result=core().writer().borrowedSession();requireSession(result);return result;}
     private DomainBodies.Available available(ContinuityStorePort.Session same,Domain domain)throws IOException {requireSession(same);var read=same.readDomain(slot(domain));if(read instanceof DomainBodies.Available actual)return actual;throw new IOException("actual registered original "+domain+" body unavailable; missing/restored evidence is not CLEAR");}

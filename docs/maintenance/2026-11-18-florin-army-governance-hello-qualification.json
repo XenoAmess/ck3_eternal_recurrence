@@ -1,0 +1,72 @@
+{
+  "schema": "xar.ck3.florin-governance-army-hello-coherent-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-11-18T06:00:10.822984+00:00",
+  "governance": {
+    "prod_tu": 10,
+    "distinct_passed": 17,
+    "phases": "17:10P5F2E; 9:3P5F1E; 6:2P4E; onlyaffected4:P. Missing original SDK props and two fixture assumptions fixed; all original diagnostics retained.",
+    "ready": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-governance-unavailable01/qualification01/GOVERNANCE-UNAVAILABLE17-DISTINCT-SOFTWARE-READY01.json",
+      "bytes": 9283,
+      "sha256": "9e4314cada5033cfdac721938d6a63f81230108d75052cf17a400a934426b590"
+    },
+    "abi": "55 named old classes /429 public-protected methods/13 fields retained. Anonymous ordinals remap within entire freshly emitted SourceFile families; raw literal ABI non-P report retained.",
+    "scope": "Exact Florin recognizes unqualified governance, durable held-writer supplier and concrete policies remain; no native governance provider, substitute policy, no-op stage, or Root catalog adoption."
+  },
+  "legacy_hello": {
+    "production_tu": 1,
+    "passed": 3,
+    "ready": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-native-hello-compat01/qualification01/LEGACY-OPTIONAL-HELLO3-SOFTWARE-READY01.json",
+      "bytes": 2634,
+      "sha256": "59dfdd1391924519470a93eafd1b48d1111f1d03b4b28c920618b2e039a28cf0"
+    },
+    "abi_old_classes": 48,
+    "methods": 279,
+    "fields": 10,
+    "scope": "Legacy optional version absent accepted with unmarked state. Present wrong type rejected; Florin exact tuple/both capabilities remain strict."
+  },
+  "army_data": {
+    "distinct_passed": 14,
+    "original10": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-army-consumer01/qualification01/FLORIN-ARMY-CANONICAL10-SOFTWARE-READY01.json",
+      "bytes": 3477,
+      "sha256": "9fdc3f00ce8fb695cd4fc2afc82713f6d76eb8266f0f39951e17626b47ef4674"
+    },
+    "new4": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-army-consumer01/war-scope-repair02/FLORIN-WAR-SCOPE4-SOFTWARE-READY03.json",
+      "bytes": 2823,
+      "sha256": "467d14e3cb63856b9f8c958156260e365beaf734ee3b7e72c956abaa9d3b2eaa"
+    },
+    "affected_phase": "Old five Army methods + new four first 8P1F; new synthetic float negative case serialization repaired then four P. First discovery failure/0 cases retained.",
+    "abi_old_classes": 7,
+    "methods": 37,
+    "fields": 4,
+    "scope": "Explicit exact Florin root only; signed full-generation Unit/owner IDs, base nullable route/siege data. Mandatory active_wars original array must be genuinely empty; unsupported nonempty War rejected. No legacy action-domain widening, positive Army live or army action credit."
+  },
+  "native17": {
+    "ready": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/dll-build01/r2-full-army17/NATIVE-1210-NONEMPTY-ARMY-FULL-DLL-READY17.json",
+      "bytes": 4151,
+      "sha256": "3900be954b7b615bf5a3e784c232f914d9eb2676f5988d15946ec40150a2e478"
+    },
+    "ci_cmake18": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/army-ci18/CMAKE-ONLY-ARMY-CI-AMENDMENT18.json",
+      "bytes": 1279,
+      "sha256": "d95b921196dc5e9db311a97b463edda75e7ccea0118aa598b493f979fafbca2e"
+    },
+    "scope": "Pure ArmyBase/owned player armies Full plus actual empty wars, defaults OFF. Four small CMake targets registered and qualified independently of live R10 Worker15."
+  },
+  "r10_live": {
+    "proof": "docs/maintenance/2026-11-18-exact-one-day-sdk-save-live.json",
+    "scene_closed": "docs/maintenance/2026-11-18-worker15-scene-closed.json",
+    "exact_day": true,
+    "save_commands": 1,
+    "physical_save_files": 3,
+    "bytes_each": 91543446,
+    "natural_exit": 0,
+    "driver_root_ooda_adopted": false
+  },
+  "retained_boundaries": "R8 failed and advanced two unsaved days, old UNKNOWN/head2003/pair/WAL, two forced 125 exits, original C++ bytes and legacy WIP remain. Current SourceReady code does not grant Root/Driver/OODA adoption."
+}

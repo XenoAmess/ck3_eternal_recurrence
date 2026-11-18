@@ -46,10 +46,30 @@ bool ReadPass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,
   if(!ReadCurrentEventSnapshotV1(b.event,p,e)) return Fail(d,"event",e.unavailable_reason);
   PendingSnapshotObservationV1 q{};
   if(!ReadPendingSnapshotV1(b.pending,p,q)) return Fail(d,"pending",q.unavailable_reason);
-  MilitaryEmptyObservationV1 m{};
-  if(!ReadMilitaryEmptyV1(b.military,p,m) || !m.player_armies_empty_proven || !m.active_wars_empty_proven)
-    return Fail(d,"military",m.unavailable_reason);
-  d.pending_slots_scanned=q.slots_scanned;d.unit_slots_scanned=m.unit_slots_scanned;d.war_slots_scanned=m.war_slots_scanned;
+  std::vector<xar::game::ArmySnapshot> armies;
+#if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+  if(b.enable_army_base) {
+    ActiveWarsObservationV1 wars{};
+    if(!ReadActiveWarsV1(b.war_identity,p,wars) || !wars.identity_complete || !wars.active_wars)
+      return Fail(d,"military",wars.unavailable_reason);
+    if(!wars.active_wars->empty())return Fail(d,"military","active_wars_nonempty_rich_observation_unavailable");
+    ArmyBaseObservationV1 m{};
+    const bool read=ReadArmyBaseV1(b.army_base,p,m,b.army_fixture_access);
+    d.army_state_calls_attempted+=m.native_state_calls_attempted;
+    if(!read || !m.available ||
+        !m.same_frame_ready || !m.collection_complete || !m.army_base_qualified || !m.player_armies)
+      return Fail(d,"military",m.unavailable_reason);
+    armies=std::move(*m.player_armies);
+    d.unit_slots_scanned=m.unit_slots_scanned;d.war_slots_scanned=wars.war_slots_scanned;
+  } else
+#endif
+  {
+    MilitaryEmptyObservationV1 m{};
+    if(!ReadMilitaryEmptyV1(b.military,p,m) || !m.player_armies_empty_proven || !m.active_wars_empty_proven)
+      return Fail(d,"military",m.unavailable_reason);
+    d.unit_slots_scanned=m.unit_slots_scanned;d.war_slots_scanned=m.war_slots_scanned;
+  }
+  d.pending_slots_scanned=q.slots_scanned;
   CoreSnapshotPrefix after{};
   if(!ReadCoreSnapshot(b.core,after) || !SameCore(p,after)) return Fail(d,"core","full_snapshot_core_changed");
   s={};s.date_raw=p.clock.date_raw;s.speed=p.clock.speed;s.paused=p.clock.paused;
@@ -67,7 +87,8 @@ bool ReadPass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,
   s.has_pending_character_interaction=q.found;s.pending_character_interaction_id=q.pending_character_interaction_id;
   s.pending_sender_character_id=q.pending_sender_character_id;
   s.pending_auto_accept_notification=q.pending_auto_accept_notification; // Legacy wire alias: native is_notification.
-  // Empty arrays are populated only after complete typed military transcripts.
+  s.player_armies=std::move(armies);
+  // War emptiness and every army row follow complete typed military transcripts.
   // Optional settlement unsupported: no capability. Traits remain omitted.
   return true;
 }
@@ -77,6 +98,9 @@ FullSnapshotBindingsV1 BindFullSnapshotImageV1(std::uintptr_t base,std::string_v
  if(!b.core.enabled) return b;
  b.foundation=BindActorFoundationImageV1(base,sha);b.event=BindCurrentEventSnapshotImageV1(base,sha);
  b.pending=BindPendingSnapshotImageV1(base,sha);b.military=BindMilitaryEmptyImageV1(base,sha);
+#if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+ b.army_base=BindArmyBaseImageV1(base,sha);b.war_identity=BindActiveWarsImageV1(base,sha);b.enable_army_base=true;
+#endif
  std::array<std::uint8_t,32> a{},c{},d{};
  const bool pins=Copy(reinterpret_cast<void*>(base+kCurrentEventSelectorRvaV1),a.data(),a.size()) &&
    Copy(reinterpret_cast<void*>(base+kPendingSnapshotPredicateRvaV1),c.data(),c.size()) &&
@@ -97,6 +121,11 @@ bool ReadFullSnapshotV1(const FullSnapshotBindingsV1 &b,xar::game::Snapshot &out
     !b.event.exact_build_admitted || !b.pending.exact_build_admitted || !b.military.exact_build_admitted ||
     !same(b.foundation.core) || !same(b.event.core) || !same(b.pending.core) || !same(b.military.core))
    return Fail(d,"binding","full_snapshot_exact_build_unavailable");
+#if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+ if(b.enable_army_base && (!b.army_base.exact_build_admitted || !b.war_identity.exact_build_admitted ||
+    !same(b.army_base.player_armies.core) || !same(b.war_identity.core)))
+   return Fail(d,"binding","full_snapshot_army_base_binding_mismatch");
+#endif
  try {
   CoreSnapshotPrefix p{};
   if(!ReadCoreSnapshot(b.core,p) || !p.clock.paused || !p.map_ready || !p.has_played_character || !p.played_character_alive)

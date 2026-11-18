@@ -110,6 +110,15 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             StrictJson.require(current==null || current.context!=context,"ordinary governance installs once per actual Game");
             context.requireCurrent(clock.instant().plusSeconds(1));opening.installContext(context);feast.installContext(context);cadenceActions.installContext(context);var installed=new Installed(this,context,nativeGovernance,activity,activityActions,domains,Objects.requireNonNull(retry));current=installed;return installed;
         }
+        public synchronized Installed installUnavailable(RootRuntimeContext context,GovernanceRuntimeInstaller.Prepared nativePrepared,
+                GovernanceActivityRuntime activity,ActivityActionRoutes actions,StateDomains domains)throws IOException {
+            StrictJson.require(!Objects.requireNonNull(nativePrepared).nativeQualified(),"unavailable ordinary governance requires its recognized unqualified Native source");
+            nativePrepared.requireHistoryContext(context);
+            StrictJson.require(context.core()==core(),"ordinary governance cannot adopt another Core/writer");
+            StrictJson.require(current==null||current.context!=context,"ordinary governance installs once per actual Game");
+            context.requireCurrent(clock.instant().plusSeconds(1));opening.installContext(context);feast.installContext(context);cadenceActions.installContext(context);
+            var installed=new Installed(this,context,Optional.empty(),activity,actions,domains,Optional.empty());current=installed;return installed;
+        }
         public List<WriterContracts.Receipt> afterInitialEntry(ContinuityStorePort.Session borrowed,RootInitialEpisodeProof actual)throws IOException {
             requireSession(borrowed);actual.requireCurrent(borrowed);
             var openingReceipt=opening.initialize(borrowed,actual);var feastReceipt=feast.initialize(borrowed,actual);
@@ -151,13 +160,13 @@ public final class GovernanceOrdinaryRuntimeInstaller {
         /** The owning catalog calls only during its actual private restoration DOMAIN_IMPORT suffix. */
         public RestoredFeastOriginal captureRestoredFeastOriginal(ContinuityStorePort.Session same,
                 RootRestorationOriginalProof.Original original)throws IOException {
-            requireSession(same);var installed=active();
+            requireSession(same);var installed=active();installed.requireNativeAvailable();
             return RestoredFeastOriginal.capture(installed.context,same,original,feast,installed.finalSettlement);
         }
         /** Called only by Core after actual FIRST BASELINE or its privately qualified cold restoration. */
         public List<DomainBodies.BodyRef> initializeNext(RootRuntimeContext context,ContinuityStorePort.Session same,
                 RootApplicationAssembly.EpisodeDomainInitializationProof proof)throws IOException {
-            requireSession(same);var installed=active();StrictJson.require(installed.context==Objects.requireNonNull(context),"NEXT governance must use the actual same installed context");
+            requireSession(same);var installed=active();installed.requireNativeAvailable();StrictJson.require(installed.context==Objects.requireNonNull(context),"NEXT governance must use the actual same installed context");
             return installed.nextInitialization.initializeNext(same,Objects.requireNonNull(proof));
         }
         public GovernanceCadenceActions.Publisher actionCadencePublisher() {return cadenceActions::publish;}
@@ -178,6 +187,16 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             return new DomainBodies.ImportRequest(DomainBodies.Slot.OPTIONAL_CADENCE,CadenceModels.SCHEMA,body,input,actual.evidence(),"cadence-initial-"+ActionCodec.sha256(input));
         }
     }
+    static List<OrdinaryPolicy> ordinaryPolicies(GovernanceObservationSupplier observed,ExactRef source,
+            GovernancePolicies.Council actualCouncil,OrdinaryFeastPolicy actualFeast) {
+        return List.of(new GovernancePolicies.Opening(observed,source),new GovernancePolicies.Lifestyle(observed,source),
+                Objects.requireNonNull(actualCouncil),new GovernancePolicies.Crown(observed,source),Objects.requireNonNull(actualFeast));
+    }
+    static GovernanceCollector unavailableCollector(PlanningReadPort reads,ActionPorts.OutcomeArchive archive,
+            GovernanceCollector.StateSupplier states,GovernanceBorrowedSession scope) {
+        return new GovernanceCollector(reads,archive,states,new GovernanceCollector.Reads(Optional.empty(),Optional.empty(),Optional.empty(),
+                Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty()),scope);
+    }
     public static final class Installed {
         private final Prepared prepared;private final RootRuntimeContext context;
         private final GovernanceActivityRuntime activity;private final GovernanceCadenceReplay replay;
@@ -186,14 +205,20 @@ public final class GovernanceOrdinaryRuntimeInstaller {
         private NativeFeastEffects feastEffects;
         private final FeastFinalSettlement finalSettlement;
         private final GovernanceNextInitialization nextInitialization;
+        private final boolean nativeQualified;
         private Installed(Prepared prepared,RootRuntimeContext context,GovernanceRuntimeInstaller.Installed nativeGovernance,
                 GovernanceActivityRuntime activity,ActivityActionRoutes activityActions,StateDomains domains,RootCrownRetryRuntime.Installed retry) {
+            this(prepared,context,Optional.of(nativeGovernance),activity,activityActions,domains,Optional.of(retry));
+        }
+        private Installed(Prepared prepared,RootRuntimeContext context,Optional<GovernanceRuntimeInstaller.Installed> nativeProducts,
+                GovernanceActivityRuntime activity,ActivityActionRoutes activityActions,StateDomains domains,Optional<RootCrownRetryRuntime.Installed> retryProducts) {
+            nativeQualified=nativeProducts.isPresent();StrictJson.require(nativeQualified==retryProducts.isPresent(),"Native governance and retry products must be available together");
             this.prepared=prepared;this.context=Objects.requireNonNull(context);this.activity=Objects.requireNonNull(activity);
             nextInitialization=new GovernanceNextInitialization(context,activity,prepared.feast,
                     prepared.opening.registration(),prepared.feast.registration(),prepared.cadenceRegistration);
             prepared.opening.bindNextVerifier(nextInitialization);prepared.feast.bindNextVerifier(nextInitialization);
-            try {prepared.opening.transitions().bindNative(Objects.requireNonNull(nativeGovernance));} catch(IOException failure){throw new UncheckedIOException(failure);}
-            Objects.requireNonNull(activityActions);Objects.requireNonNull(domains);Objects.requireNonNull(retry).requireStateDomains(domains);prepared.cadenceActions.bindCivicDomains(domains.civicDomains());finalSettlement=new FeastFinalSettlement(context,activity);prepared.feast.bindFinalSettlement(finalSettlement);
+            if(nativeQualified)try {prepared.opening.transitions().bindNative(nativeProducts.orElseThrow());} catch(IOException failure){throw new UncheckedIOException(failure);}
+            Objects.requireNonNull(activityActions);Objects.requireNonNull(domains);retryProducts.ifPresent(retry->retry.requireStateDomains(domains));prepared.cadenceActions.bindCivicDomains(domains.civicDomains());finalSettlement=new FeastFinalSettlement(context,activity);prepared.feast.bindFinalSettlement(finalSettlement);
             var finance=context.finance();var scope=new GovernanceBorrowedSession(prepared::suppliedSession,prepared.lock,prepared::requireSession);
             replay=new GovernanceCadenceReplay(prepared::suppliedSession,prepared::requireSession,
                     (same,ref)->context.archive().readArtifact(same,ref,1_048_576));
@@ -201,7 +226,11 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             var states=new GovernanceStateSupplier(scope,Optional.of(GovernanceStateSupplier.cadence(prepared.sources.cadenceProducers())),
                     Optional.of(openingInputs.stateContract(context)),Optional.of(domains.council()),Optional.of(domains.crown()),
                     GovernanceStateSupplier.verifiedCrownRetryFrames(scope,domains.retryPublication(),domains.retainedRetryProof(),domains.retryDue()));
-            var definitions=nativeGovernance.planningReads();
+            GovernanceObservationSupplier actualGovernance;
+            GovernanceObservationSupplier observed;
+            if(nativeQualified){
+                var nativeGovernance=nativeProducts.orElseThrow();var retry=retryProducts.orElseThrow();
+                var definitions=nativeGovernance.planningReads();
             var reads=new GovernanceCollector.Reads(Optional.empty(),Optional.of(definitions.formal()),Optional.empty(),Optional.empty(),
                     Optional.of(definitions.crown()),Optional.empty(),Optional.empty());
             collector=new GovernanceCollector(context.reads(),context.archive(),states,reads,scope,nativeGovernance.lifestyleReads(),request->{
@@ -213,32 +242,39 @@ public final class GovernanceOrdinaryRuntimeInstaller {
                     return new Known<>(known.value().result(),List.of(known.originalReceipt()));
                 } catch(IOException failure) {return new Unavailable<>("actual shared finance ROOT read unavailable: "+failure.getMessage());}
             },retry.clockReads());
-            var actualGovernance=new GovernanceCouncilSupplier(collector,nativeGovernance.councilReads());
-            var observed=replay.observe(retry.observe(actualGovernance));
-            // Feast's collector uses the actual delegate. Its outer typed transcript owns nested durable/finance originals once.
-            feastCollector=new FeastObservationCollector(finance.collector(),actualGovernance,context.archive(),activity,scope);
+                actualGovernance=new GovernanceCouncilSupplier(collector,nativeGovernance.councilReads());
+                observed=replay.observe(retry.observe(actualGovernance));
+            }else{
+                collector=unavailableCollector(context.reads(),context.archive(),states,scope);
+                actualGovernance=collector;observed=replay.observe(actualGovernance);
+            }
+            FeastObservationCollector.ActivityReads activityReads=nativeQualified?activity:
+                    (query,request,arguments)->new Unavailable<>(GovernanceRuntimeInstaller.UNAVAILABLE_1210);
+            feastCollector=new FeastObservationCollector(finance.collector(),actualGovernance,context.archive(),activityReads,scope);
             var feast=new OrdinaryFeastPolicy(prepared.sources.feastPolicy(),replay.observe(feastCollector),(operation,request,arguments)->effects().expected(operation,request,arguments));
             prepared.feast.bindPolicy(feast);
             council=new GovernancePolicies.Council(observed,prepared.sources.governancePolicy());
-            List<OrdinaryPolicy> policies=List.of(new GovernancePolicies.Opening(observed,prepared.sources.governancePolicy()),
-                    new GovernancePolicies.Lifestyle(observed,prepared.sources.governancePolicy()),council,new GovernancePolicies.Crown(observed,prepared.sources.governancePolicy()),feast)
+            List<OrdinaryPolicy> policies=ordinaryPolicies(observed,prepared.sources.governancePolicy(),council,feast)
                     .stream().map(replay::record).toList();
-            var completion=retry.completion(new GovernancePlanCompletion(prepared::suppliedSession,prepared::requireSession,prepared.cadence,replay));
-            List<RootExecutableBindings.ActionBinding> actions=OrdinaryFeastPolicy.OWNED.stream().sorted(java.util.Comparator.comparing(OperationKey::value)).map(operation->
+            OrdinaryPlanCompletion completion=new GovernancePlanCompletion(prepared::suppliedSession,prepared::requireSession,prepared.cadence,replay);
+            if(nativeQualified)completion=retryProducts.orElseThrow().completion(completion);
+            List<RootExecutableBindings.ActionBinding> actions=(nativeQualified?OrdinaryFeastPolicy.OWNED:Set.<OperationKey>of()).stream().sorted(java.util.Comparator.comparing(OperationKey::value)).map(operation->
                     new RootExecutableBindings.ActionBinding(new NativeEffectRegistry.Binding(operation,prepared.sources.feastEffects(),activityActions,
                             (command,attempt,dispatch)->effects().observe(command,attempt,dispatch)),ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,
                             Optional.empty(),prepared.sources.activityActionDecoder())).toList();
-            var archived=OrdinaryFeastPolicy.OWNED.stream().sorted(java.util.Comparator.comparing(OperationKey::value)).map(operation->
+            var archived=(nativeQualified?OrdinaryFeastPolicy.OWNED:Set.<OperationKey>of()).stream().sorted(java.util.Comparator.comparing(OperationKey::value)).map(operation->
                     NativeFeastEffects.archivedVerifier(operation,prepared.sources.feastEffects(),context.frameLoader(),activity)).toList();
-            var required=new java.util.HashSet<>(OrdinaryFeastPolicy.OWNED);required.add(GovernancePolicies.FOCUS);
+            var required=new java.util.HashSet<OperationKey>();if(nativeQualified){required.addAll(OrdinaryFeastPolicy.OWNED);required.add(GovernancePolicies.FOCUS);}
             final OpeningTransitions openingTransitions;try{openingTransitions=prepared.opening.transitions();}catch(IOException failure){throw new UncheckedIOException(failure);}
             installation=new RootDomainInstallation("ordinary-governance",prepared.domainRegistrations(),List.of(),List.of(),actions,List.of(),archived,
-                    List.of(),List.of(),List.of(),List.of(prepared.feast.pendingBinding(),openingTransitions.pendingBinding(prepared.sources.openingTransitions())),Set.copyOf(required),policies,List.of(openingTransitions,prepared.feast,prepared.cadenceActions.lifestyleCompletion(),completion),
+                    List.of(),List.of(),List.of(),nativeQualified?List.of(prepared.feast.pendingBinding(),openingTransitions.pendingBinding(prepared.sources.openingTransitions())):List.of(),Set.copyOf(required),policies,List.of(openingTransitions,prepared.feast,prepared.cadenceActions.lifestyleCompletion(),completion),
                     actions.stream().map(binding->new RootDomainInstallation.FixedDomain(binding,Domain.diplomacy)).toList(),List.of(),List.of());
         }
         private void requireCurrent(java.time.Instant deadline)throws IOException {StrictJson.require(prepared.active()==this,"ordinary governance belongs to a retired Game");context.requireCurrent(deadline);}
+        public boolean nativeQualified(){return nativeQualified;}
+        private void requireNativeAvailable()throws IOException {if(!nativeQualified)throw new IOException(GovernanceRuntimeInstaller.UNAVAILABLE_1210);}
         private synchronized NativeFeastEffects effects() {
-            try {requireCurrent(prepared.clock.instant().plusSeconds(1));}catch(IOException failure){throw new UncheckedIOException(failure);}
+            try {requireNativeAvailable();requireCurrent(prepared.clock.instant().plusSeconds(1));}catch(IOException failure){throw new UncheckedIOException(failure);}
             if(feastEffects==null)feastEffects=new NativeFeastEffects(new NativeEffectSnapshots(()->context.adopted().observations(),context.archive(),context.frameLoader()),activity);return feastEffects;
         }
         public RootDomainInstallation installation() {return installation;}

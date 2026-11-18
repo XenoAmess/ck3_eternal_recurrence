@@ -35,23 +35,28 @@ public final class RootDriverGovernancePublicSupplier {
     public static Prepared prepare(RootDriverRegistryPublicProducts.ProductSource source,DriverGovernanceReadDefinitions.Sources reads,RootRuntimeDefinitionModel.GovInputs inputs,ExactRef actualPublicServiceSource) {return new Prepared(source,reads,inputs,java.util.Optional.of(actualPublicServiceSource));}
     public static final class Prepared implements RootDriverRegistryPublicProducts.PreparedProduct {
         private final RootDriverRegistryPublicProducts.ProductSource source;
-        private final DriverGovernanceReadDefinitions definitions;
+        private final java.util.Optional<DriverGovernanceReadDefinitions> definitions;
         private final RootRuntimeDefinitionModel.GovInputs inputs;
         private final java.util.Optional<ExactRef> publicCallerProducer;
         private final IdentityHashMap<RootRuntimeContext,Installed> installed=new IdentityHashMap<>();
         private final IdentityHashMap<RootRuntimeContext,IOException> failedInstalls=new IdentityHashMap<>();
         private RootApplicationAssembly.Core core;
         private Prepared(RootDriverRegistryPublicProducts.ProductSource source,DriverGovernanceReadDefinitions.Sources reads,RootRuntimeDefinitionModel.GovInputs inputs,java.util.Optional<ExactRef> publicCallerProducer) {
-            this.source=Objects.requireNonNull(source);this.definitions=new DriverGovernanceReadDefinitions(reads);this.inputs=Objects.requireNonNull(inputs);this.publicCallerProducer=Objects.requireNonNull(publicCallerProducer);
+            this.source=Objects.requireNonNull(source);this.inputs=Objects.requireNonNull(inputs);this.publicCallerProducer=Objects.requireNonNull(publicCallerProducer);
+            this.definitions=GovernanceRuntimeInstaller.qualifiedBuild(inputs.build().gameVersion(),inputs.build().executableSha256())
+                    ?java.util.Optional.of(new DriverGovernanceReadDefinitions(reads)):java.util.Optional.empty();
             // Source audit gate removed
         }
         private Prepared(RootPublicHandlerProductsFactory.Context context)throws IOException {
             source=new RootDriverRegistryPublicProducts.ProductSource(RootDriverGovernancePublicSupplier.class,TARGET,context.sourceAt(TARGET,RootDriverGovernancePublicSupplier.class));
             for(Class<?> type:List.of(DriverGovernancePublicInput.class,DriverGovernancePublicCodec.class,DriverGovernancePublicProjection.class,RootDriverGovernancePublicService.class))context.source(type);
-            var decoder=context.source(DriverGovernanceReadDefinitions.class);var council=context.inputs().source(RootRuntimeDefinitionModel.SourceRole.NATIVE_GOV_COUNCIL);
-            var path=Path.of(council.path()).toAbsolutePath().normalize().getParent().resolve("government_runtime_adapter_bridge_binder_v1.cpp");
-            var government=SharedSourceFiles.observe(path);SharedSourceFiles.assertUnchanged(government);
-            definitions=new DriverGovernanceReadDefinitions(new DriverGovernanceReadDefinitions.Sources(council,new ExactRef(government.source().path(),government.source().bytes(),government.source().sha256()),decoder));inputs=context.inputs().configuration().governance();publicCallerProducer=java.util.Optional.of(context.source(RootDriverGovernancePublicService.class));
+            inputs=context.inputs().configuration().governance();publicCallerProducer=java.util.Optional.of(context.source(RootDriverGovernancePublicService.class));
+            if(GovernanceRuntimeInstaller.qualifiedBuild(inputs.build().gameVersion(),inputs.build().executableSha256())){
+                var decoder=context.source(DriverGovernanceReadDefinitions.class);var council=context.inputs().source(RootRuntimeDefinitionModel.SourceRole.NATIVE_GOV_COUNCIL);
+                var path=Path.of(council.path()).toAbsolutePath().normalize().getParent().resolve("government_runtime_adapter_bridge_binder_v1.cpp");
+                var government=SharedSourceFiles.observe(path);SharedSourceFiles.assertUnchanged(government);
+                definitions=java.util.Optional.of(new DriverGovernanceReadDefinitions(new DriverGovernanceReadDefinitions.Sources(council,new ExactRef(government.source().path(),government.source().bytes(),government.source().sha256()),decoder)));
+            }else definitions=java.util.Optional.empty();
         }
         @Override public RootDriverRegistryPublicProducts.Kind kind() {return RootDriverRegistryPublicProducts.Kind.GOVERNANCE;}
         @Override public RootDriverRegistryPublicProducts.ProductSource source() {return source;}
@@ -65,13 +70,15 @@ public final class RootDriverGovernancePublicSupplier {
             var retained=installed.get(actual);if(retained!=null)return retained;
             var failed=failedInstalls.get(actual);if(failed!=null)throw failed;
             try {
-                definitions.bind(actual);
-                var installation=new RootDomainInstallation("driver-governance-public",List.of(),definitions.installed(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),Set.of(),List.of(),List.of(),List.of(),List.of(),List.of());
-                var product=new Installed(actual,installation,new RootDriverGovernancePublicService(actual,definitions,inputs.build(),inputs.maximumStatusPolls(),publicCallerProducer));installed.put(actual,product);return product;
+                if(definitions.isPresent())definitions.orElseThrow().bind(actual);
+                var installation=new RootDomainInstallation("driver-governance-public",List.of(),definitions.map(DriverGovernanceReadDefinitions::installed).orElseGet(List::of),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),List.of(),Set.of(),List.of(),List.of(),List.of(),List.of(),List.of());
+                var service=definitions.map(value->new RootDriverGovernancePublicService(actual,value,inputs.build(),inputs.maximumStatusPolls(),publicCallerProducer));
+                var product=new Installed(actual,installation,service);installed.put(actual,product);return product;
             }catch(RuntimeException failure) {
                 var original=new IOException("driver governance product installation failed; same physical attempt is retained without retry",failure);failedInstalls.put(actual,original);throw original;
             }
         }
+        private void requireAvailable(){GovernanceRuntimeInstaller.requirePublicAvailable(inputs.build().gameVersion(),inputs.build().executableSha256());}
         private synchronized RootDriverGovernancePublicService current(RootRuntimeContext actual)throws IOException {
             var product=installed.get(actual);if(product==null)throw new IOException("actual same-Core driver governance product is not installed");product.requireContext(actual);return product.service();
         }
@@ -82,16 +89,19 @@ public final class RootDriverGovernancePublicSupplier {
             return new RootDriverGovernancePublicSupplier(context,this).products();
         }
     }
-    public record Installed(RootRuntimeContext context,RootDomainInstallation installation,RootDriverGovernancePublicService service) implements RootDriverRegistryPublicProducts.Product {
-        public Installed {Objects.requireNonNull(context);Objects.requireNonNull(installation);Objects.requireNonNull(service);}
+    public record Installed(RootRuntimeContext context,RootDomainInstallation installation,java.util.Optional<RootDriverGovernancePublicService> availableService) implements RootDriverRegistryPublicProducts.Product {
+        public Installed {Objects.requireNonNull(context);Objects.requireNonNull(installation);Objects.requireNonNull(availableService);}
+        public Installed(RootRuntimeContext context,RootDomainInstallation installation,RootDriverGovernancePublicService service){this(context,installation,java.util.Optional.of(service));}
+        public RootDriverGovernancePublicService service(){return availableService.orElseThrow(()->new PublicServiceFailure(PublicServiceFailure.Kind.BRIDGE_UNAVAILABLE,GovernanceRuntimeInstaller.UNAVAILABLE_1210,java.util.Optional.empty()));}
         @Override public void requireContext(RootRuntimeContext actual)throws IOException {if(actual!=context)throw new IOException("driver governance product crossed physical runtime");}
     }
     @FunctionalInterface private interface Work {RawJson run(RootDriverGovernancePublicService service,Session same,Complete frame,GovernanceRuntimeInstaller.Installed nativeGovernance,Instant deadline)throws IOException,InterruptedException;}
     private RawJson current(Work work)throws InterruptedException {
+        prepared.requireAvailable();
         Instant deadline=context.clock().instant().plus(context.observationTimeout());
         try {return context.withCurrent(root->root.withPublicObservation(deadline,(frame,driver,same)->{
             var actual=context.installed(root);var service=prepared.current(actual.context());
-            try {return work.run(service,same,frame,actual.nativeGovernance(),deadline);}
+            try {return work.run(service,same,frame,actual.requireNativeGovernance(),deadline);}
             catch(InterruptedException interrupted){Thread.currentThread().interrupt();throw new IOException("public governance observation interrupted",interrupted);}
         }));}catch(IOException failure){throw new UncheckedIOException("actual driver governance product unavailable",failure);}
     }
@@ -104,13 +114,14 @@ public final class RootDriverGovernancePublicSupplier {
         return root.withPublicObservation(deadline,(frame,driver,same)->{
             var actual=context.installed(root);var service=prepared.current(actual.context());
             if(previous.isPresent()&&!previous.orElseThrow().newer(service,same,frame))return new ReadWaiting();
-            try {return new ReadValue(work.run(service,same,frame,actual.nativeGovernance(),deadline));}
+            try {return new ReadValue(work.run(service,same,frame,actual.requireNativeGovernance(),deadline));}
             catch(RootDriverGovernancePublicService.StaleReadRejected rejected) {return new ReadRejected(rejected);}
             catch(InterruptedException interrupted){Thread.currentThread().interrupt();throw new IOException("public governance business READ interrupted",interrupted);}
         });
     }
     /** Only three original query operations use this: at most two business READs; never an action, receipt, pending or UNKNOWN retry. */
     private RawJson retrying(Work initial,Work retry)throws InterruptedException {
+        prepared.requireAvailable();
         Instant deadline=context.clock().instant().plus(context.observationTimeout());
         long started=System.nanoTime(),allowance=context.observationTimeout().toNanos();
         try {return context.withCurrent(root->{
@@ -133,14 +144,15 @@ public final class RootDriverGovernancePublicSupplier {
         RawJson present(RootDriverGovernancePublicService service,Session same,GovernanceRuntimeInstaller.Installed installed,ActionReceipt actual)throws IOException;
     }
     private RawJson action(PreparationWork preparation,ResultWork result)throws InterruptedException {
+        prepared.requireAvailable();
         Instant deadline=context.clock().instant().plus(context.actionTimeout());
         try {return context.withCurrent(root->root.executePublicAction(deadline,(frame,driver,same)->{
             var actual=context.installed(root);var service=prepared.current(actual.context());
-            try {return preparation.prepare(service,same,frame,actual.nativeGovernance(),deadline);}
+            try {return preparation.prepare(service,same,frame,actual.requireNativeGovernance(),deadline);}
             catch(RootDriverGovernancePublicService.StaleReadRejected rejected){throw rejected.unavailable();}
             catch(InterruptedException interrupted){Thread.currentThread().interrupt();throw new IOException("public governance preparation interrupted before submission",interrupted);}
         },(receipt,scoped,same)->{
-            var actual=context.installed(root);return result.present(prepared.current(actual.context()),same,actual.nativeGovernance(),receipt);
+            var actual=context.installed(root);return result.present(prepared.current(actual.context()),same,actual.requireNativeGovernance(),receipt);
         }));}catch(IOException failure){throw new UncheckedIOException("actual public governance action unavailable",failure);}
     }
     public RawJson queryCouncil(CouncilQuery input)throws InterruptedException {return retrying((service,same,frame,nativeGovernance,deadline)->service.council(same,frame,nativeGovernance,input,false,deadline),(service,same,frame,nativeGovernance,deadline)->service.council(same,frame,nativeGovernance,new CouncilQuery(frame.identity().frame().revision(),input.position()),false,deadline));}
