@@ -1,0 +1,14 @@
+Ox Here! / 牛来 1.0.4 — CK3 1.21.0 (Florin)
+
+Compatibility / 兼容性
+- Updated the compatibility declaration and Workshop category to CK3 1.21.0 / Florin. / 兼容声明及工坊分类更新为 CK3 1.21.0 / Florin。
+- Existing gameplay, character generation, AI willingness and exact one-year AI cooldown are retained. / 保留原玩法、人物生成、AI意愿及恰好一年的AI冷却。
+
+Validation and correction / 验收与说明修正
+- Rechecked the real decline and recruit choices, one warrior delivered to court, identity, Knight/Champion appointment, zero salary, lovers/secrets and Seduce without an orientation gate in an isolated 1.21.0 profile. / 在1.21.0隔离环境实测真实拒绝与招募、唯一勇士到庭、人物身份、骑士／勇士任命、零薪、情人与秘密及无取向门槛的勾引阴谋。
+- Corrected the old fixture and description that omitted Kanuri's Bellicose ethos bonus: generated Prowess 40–60, Giant +6 and Bellicose +2 give 48–68 before other modifiers. This changes the check and explanation, not the generated stats. / 修正旧夹具与说明漏算卡努里好战文化+2的问题：基础勇武40–60、巨人+6、好战+2，在其他修正前为48–68。只修正验收与说明，不改变生成属性。
+- Source scripts and nine release languages are unchanged. / 生产脚本及九种发布语言保持不变。
+
+Scope / 范围
+- Zero-day business validation; no claim of a naturally elapsed AI year, old-save migration or a complete mod-combination matrix. / 本轮为零日业务验收，不声称自然流逝一年、旧档迁移或完整模组组合测试。
+- Standalone mod; Royal Court is optional and only affects automatic Champion appointment. A new single-player game is recommended. / 独立模组；皇家宫廷仅影响自动任命勇士，推荐新开单人游戏。

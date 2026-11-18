@@ -1,0 +1,20 @@
+{
+  "schema": "steam-change-notes-frozen-candidate-v1",
+  "product_key": "ox-here",
+  "version": "1.0.4",
+  "previous_version": "1.0.3",
+  "workshop_item_id": "3790635143",
+  "text_file": "workshop/change_notes/ox-here/1.0.4.txt",
+  "bytes": 1860,
+  "characters": 1372,
+  "lines": 14,
+  "sha256": "d3cfb5a49f9c5f5d2871fa25fa5f67264e99c3b32454b8b0fca15143d75710ef",
+  "encoding": "utf-8",
+  "line_endings": "LF",
+  "trailing_newline": false,
+  "status": "BUSINESS_VERIFIED_PENDING_PUBLICATION",
+  "published": false,
+  "release_tag": "ox-here-v1.0.4",
+  "release_commit": "a00fd8c9138d0a85bafde49b0eb11fb1fea8a4e7",
+  "machine_id": "desktop-3fevhd2-1c74096080"
+}
