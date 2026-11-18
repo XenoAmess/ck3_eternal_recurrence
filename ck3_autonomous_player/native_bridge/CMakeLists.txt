@@ -10249,6 +10249,7 @@ endif()
 
 if(BUILD_TESTING)
   add_test(NAME xar_ck3_native_bridge_1210_timeline_mailbox COMMAND xar_ck3_main_thread_query_mailbox_v1_test --timeline-only)
+  add_test(NAME xar_ck3_native_bridge_1210_poll_mailbox COMMAND xar_ck3_main_thread_query_mailbox_v1_test --florin-poll-only)
 endif()
 
 option(XAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1 "Enable native application quit request under held CoreReceived" OFF)

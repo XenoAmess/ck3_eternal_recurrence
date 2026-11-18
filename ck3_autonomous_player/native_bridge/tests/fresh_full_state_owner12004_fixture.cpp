@@ -6,6 +6,7 @@
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
+#include "xar_bridge/florin_event_pump_boundary_v1.hpp"
 
 #include <array>
 #include <atomic>
@@ -34,6 +35,7 @@ void Store(std::array<std::byte, Size> &bytes, std::size_t offset, Value value) 
 
 struct MemoryFixture {
   void *iat = nullptr;
+  void *poll_slot = nullptr;
   DWORD page_protect = PAGE_READONLY;
   std::array<std::byte, 0x28> jomini{};
   std::array<std::byte, 0x18> state{};
@@ -46,6 +48,7 @@ struct MemoryFixture {
 MemoryFixture *g_memory = nullptr;
 
 BOOL WINAPI FakePeek(LPMSG, HWND, UINT, UINT, UINT) { return FALSE; }
+int __cdecl FakePollEvent(void *) { return 0; }
 void *__fastcall FakeTls() noexcept { return g_memory->tls.data(); }
 bool FakeQuery(void *opaque, const void *address,
                MEMORY_BASIC_INFORMATION &output) noexcept {
@@ -349,7 +352,7 @@ void FreshProbeWorker(FreshWorkerProbe &probe, const game::GameAdapter &native, 
   delete adapter;
 }
 
-bool TestFreshOwnerExecutor(bool florin = false) {
+bool TestFreshOwnerExecutor(bool florin = false, bool poll_only = false) {
   FixtureAdapter native;
   native.florin = florin;
   native.patch4 = true;
@@ -387,6 +390,11 @@ bool TestFreshOwnerExecutor(bool florin = false) {
   environment.memory_query_override = &FakeQuery;
   environment.memory_protect_override = &FakeProtect;
   environment.system_page_size_override = 4096;
+  if (poll_only) {
+    memory.poll_slot = reinterpret_cast<void *>(&FakePollEvent);
+    environment.sdl_poll_event_slot_override = &memory.poll_slot;
+    environment.resolved_sdl_poll_event_override = &FakePollEvent;
+  }
   // No snapshot observer: raw_reads counts only the production fresh executor.
   if (!api::InstallMainThreadQueryMailboxV1(mailbox, environment)) {
     std::fprintf(stderr, "fresh fixture install failed: stage=rapid-fresh florin=%d failure_flags=%llu\n",
@@ -404,8 +412,9 @@ bool TestFreshOwnerExecutor(bool florin = false) {
   }
   const auto pump = [&] {
     (void)api::ObserveMainThreadPumpAndDrainV1(mailbox,
-        florin ? xar::ck3_1210::kSdlWindowsPumpFirstPeekReturnRva
-               : xar::ck3_12004::kSdlWindowsPumpFirstPeekReturnRva, GetCurrentThreadId());
+        poll_only ? xar::ck3_1210::kPollEventFirstReturnRvaV1
+                  : (florin ? xar::ck3_1210::kSdlWindowsPumpFirstPeekReturnRva
+                            : xar::ck3_12004::kSdlWindowsPumpFirstPeekReturnRva), GetCurrentThreadId());
   };
   const auto cleanup = [&] {
     // Detach cancels an actual queued ticket before its stack context can end.
@@ -480,9 +489,10 @@ bool TestFreshOwnerExecutor(bool florin = false) {
   cleanup();
   ok = ok && native.wrong_owner.load() == 0 &&
        memory.iat == reinterpret_cast<void *>(&FakePeek) &&
+       (!poll_only || memory.poll_slot == reinterpret_cast<void *>(&FakePollEvent)) &&
        memory.page_protect == PAGE_READONLY;
-  std::printf("fresh-owner: ok=%d pair_ms=%llu raw_reads=%u wrong_owner=%u\n",
-      ok ? 1 : 0, static_cast<unsigned long long>(pair_ms),
+  std::printf("fresh-owner: florin=%d poll_only=%d ok=%d pair_ms=%llu raw_reads=%u wrong_owner=%u\n",
+      florin ? 1 : 0, poll_only ? 1 : 0, ok ? 1 : 0, static_cast<unsigned long long>(pair_ms),
       native.raw_reads.load(), native.wrong_owner.load());
   return ok;
 }
@@ -624,6 +634,7 @@ int main(int argc, char **argv) {
   if (argc == 2 && std::string_view(argv[1]) == "--running-context-1210")
     return TestFreshOwnerWake(true, FreshWakeMode::running_context) ? 0 : 1;
   return argc == 1 && TestFreshOwnerExecutor() && TestFreshOwnerExecutor(true) &&
+      TestFreshOwnerExecutor(true, true) &&
       TestFreshOwnerWake(false, FreshWakeMode::recover_second_wake) &&
       TestFreshOwnerWake(true, FreshWakeMode::recover_second_wake) &&
       TestFreshOwnerWake(true, FreshWakeMode::wrong_build) ? 0 : 1;

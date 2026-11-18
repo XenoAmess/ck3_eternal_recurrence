@@ -1,5 +1,6 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
+#include "xar_bridge/florin_event_pump_boundary_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 
 #if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
@@ -34,6 +35,40 @@ std::atomic<MainThreadQueryExecutorV1> g_idle_presentation_callback{nullptr};
 std::atomic<void *> g_idle_presentation_context{nullptr};
 std::atomic<PeekMessageWFunctionV1> g_original_peek_message{nullptr};
 std::atomic<SdlPollEventFunctionV1> g_original_sdl_poll_event{nullptr};
+struct OwnerHookLaneV1 {
+  std::atomic<std::uint64_t> entered{0}, completed{0}, last_entered_ms{0}, last_completed_ms{0};
+  std::atomic<std::uint32_t> last_return_rva{0}, last_thread_id{0};
+};
+OwnerHookLaneV1 g_owner_peek_entries_v1{}, g_owner_poll_entries_v1{};
+bool RecordOwnerHookEntryV1(OwnerHookLaneV1 &lane,
+    const MainThreadQueryMailboxV1 *mailbox, std::uintptr_t address) noexcept {
+  const DWORD incoming_last_error = GetLastError();
+  const auto tid = GetCurrentThreadId();
+  if (mailbox == nullptr || tid != mailbox->owner_thread_id.load(std::memory_order_acquire)) {
+    SetLastError(incoming_last_error);
+    return false;
+  }
+  lane.entered.fetch_add(1, std::memory_order_relaxed);
+  lane.last_thread_id.store(tid, std::memory_order_relaxed);
+  const auto rva = address >= mailbox->module_base ? address - mailbox->module_base : 0;
+  lane.last_return_rva.store(rva <= 0xFFFFFFFFULL ? static_cast<std::uint32_t>(rva) : 0, std::memory_order_relaxed);
+  lane.last_entered_ms.store(GetTickCount64(), std::memory_order_relaxed);
+  SetLastError(incoming_last_error);
+  return true;
+}
+void RecordOwnerHookCompletionV1(OwnerHookLaneV1 &lane, bool recorded) noexcept {
+  if (!recorded) return;
+  lane.last_completed_ms.store(GetTickCount64(), std::memory_order_relaxed);
+  lane.completed.fetch_add(1, std::memory_order_relaxed);
+}
+std::string OwnerHookLaneJsonV1(const OwnerHookLaneV1 &lane) {
+  return "{\"entered\":\"" + std::to_string(lane.entered.load()) +
+      "\",\"completed\":\"" + std::to_string(lane.completed.load()) +
+      "\",\"last_entered_ms\":\"" + std::to_string(lane.last_entered_ms.load()) +
+      "\",\"last_completed_ms\":\"" + std::to_string(lane.last_completed_ms.load()) +
+      "\",\"last_return_rva\":" + std::to_string(lane.last_return_rva.load()) +
+      ",\"last_thread_id\":" + std::to_string(lane.last_thread_id.load()) + "}";
+}
 
 #if defined(_MSC_VER)
 int CaptureExecutorExceptionV1(MainThreadQueryMailboxV1 &mailbox,
@@ -695,7 +730,8 @@ bool InstallMainThreadQueryMailboxV1(
     AddFailure(mailbox, main_thread_query_failure_pump_anchor);
     return false;
   }
-  if (profile != nullptr) {
+  const bool florin_poll_profile = ck3_1210::IsFlorinEventPumpProfileV1(profile);
+  if (profile != nullptr && !florin_poll_profile) {
     sdl_poll_event_slot = nullptr;
     original_sdl_poll_event = nullptr;
   }
@@ -738,11 +774,11 @@ bool InstallMainThreadQueryMailboxV1(
     SYSTEM_INFO system_information{};
     GetSystemInfo(&system_information);
     system_page_size = system_information.dwPageSize;
-    if (profile == nullptr) {
-      sdl_poll_event_slot = reinterpret_cast<void **>(
-          environment.module_base + kSdlPollEventDispatchSlotRva);
-      original_sdl_poll_event = reinterpret_cast<SdlPollEventFunctionV1>(
-          environment.module_base + kSdlPollEventResolvedTargetRva);
+    if (profile == nullptr || florin_poll_profile) {
+      sdl_poll_event_slot = reinterpret_cast<void **>(environment.module_base +
+          (florin_poll_profile ? ck3_1210::kPollEventDispatchSlotRvaV1 : kSdlPollEventDispatchSlotRva));
+      original_sdl_poll_event = reinterpret_cast<SdlPollEventFunctionV1>(environment.module_base +
+          (florin_poll_profile ? ck3_1210::kPollEventResolvedRvaV1 : kSdlPollEventResolvedTargetRva));
     }
   }
   if (iat_slot == nullptr || original == nullptr || rng_slot == 0 ||
@@ -813,8 +849,9 @@ bool InstallMainThreadQueryMailboxV1(
                                              std::memory_order_release);
   mailbox.module_base = environment.module_base;
   mailbox.pump_exact_return_rva = pump_exact_return_rva;
-  mailbox.sdl_poll_event_exact_return_rva = profile == nullptr
-      ? kHandlePdxEventsSdlPollEventReturnRva : 0;
+  mailbox.sdl_poll_event_exact_return_rva = florin_poll_profile
+      ? ck3_1210::kPollEventFirstReturnRvaV1
+      : (profile == nullptr ? kHandlePdxEventsSdlPollEventReturnRva : 0);
   mailbox.peek_message_iat_slot = iat_slot;
   mailbox.original_peek_message = original;
   mailbox.sdl_poll_event_slot = sdl_poll_event_slot;
@@ -1180,6 +1217,12 @@ bool TryInstallMainThreadFrontendBoundaryHookV1(
   // While CK3 is suspended this is the expected resolver thunk. The worker
   // retries after resume rather than calling SDL or changing the slot early.
   return false;
+}
+
+std::string SerializeOwnerHookEntriesV1() {
+  return "{\"schema\":\"xar.native.owner-hook-entries/v1\",\"peek\":" +
+      OwnerHookLaneJsonV1(g_owner_peek_entries_v1) + ",\"poll\":" +
+      OwnerHookLaneJsonV1(g_owner_poll_entries_v1) + "}";
 }
 
 void SignalMainThreadQueryMailboxProcessDetachV1(
@@ -1854,9 +1897,10 @@ void ConfigureIdlePresentationV1(MainThreadQueryExecutorV1 callback, void *conte
 bool ObserveMainThreadPumpAndDrainV1(
     MainThreadQueryMailboxV1 &mailbox, std::uintptr_t return_rva,
     std::uint32_t current_thread_id) noexcept {
-  if (return_rva != mailbox.pump_exact_return_rva &&
-      (mailbox.sdl_poll_event_exact_return_rva == 0 ||
-       return_rva != mailbox.sdl_poll_event_exact_return_rva)) {
+  const bool poll_boundary = ck3_1210::IsFlorinPollMailboxV1(mailbox)
+      ? ck3_1210::IsFlorinPollReturnV1(mailbox, return_rva)
+      : (mailbox.sdl_poll_event_exact_return_rva != 0 && return_rva == mailbox.sdl_poll_event_exact_return_rva);
+  if (return_rva != mailbox.pump_exact_return_rva && !poll_boundary) {
     return false;
   }
   if (mailbox.stop_requested.load(std::memory_order_acquire)) {
@@ -2256,6 +2300,7 @@ extern "C" BOOL WINAPI XarMainThreadPeekMessageWHookV1(
     mailbox->active_hook_calls.fetch_add(1, std::memory_order_acq_rel);
   }
 
+  const bool owner_hook_recorded = RecordOwnerHookEntryV1(g_owner_peek_entries_v1, mailbox, return_address);
   const BOOL result = original(message, window, minimum_filter,
                                maximum_filter, remove_message);
   const DWORD original_last_error = GetLastError();
@@ -2269,6 +2314,7 @@ extern "C" BOOL WINAPI XarMainThreadPeekMessageWHookV1(
   if (mailbox != nullptr) {
     mailbox->active_hook_calls.fetch_sub(1, std::memory_order_acq_rel);
   }
+  RecordOwnerHookCompletionV1(g_owner_peek_entries_v1, owner_hook_recorded);
   SetLastError(original_last_error);
   return result;
 }
@@ -2289,6 +2335,7 @@ extern "C" int __cdecl XarMainThreadSdlPollEventHookV1(void *event) noexcept {
         mailbox->pump_epochs.load(std::memory_order_acquire);
   }
 
+  const bool owner_hook_recorded = RecordOwnerHookEntryV1(g_owner_poll_entries_v1, mailbox, return_address);
   const int result = original(event);
   const DWORD original_last_error = GetLastError();
   if (mailbox != nullptr &&
@@ -2303,6 +2350,7 @@ extern "C" int __cdecl XarMainThreadSdlPollEventHookV1(void *event) noexcept {
   if (mailbox != nullptr) {
     mailbox->active_hook_calls.fetch_sub(1, std::memory_order_acq_rel);
   }
+  RecordOwnerHookCompletionV1(g_owner_poll_entries_v1, owner_hook_recorded);
   SetLastError(original_last_error);
   return result;
 }

@@ -1,4 +1,5 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/florin_event_pump_boundary_v1.hpp"
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 #include "xar_bridge/date_pause_publication_v1.hpp"
 #include "xar_bridge/war_declared_overview_v1.hpp"
@@ -1933,6 +1934,62 @@ bool TestQueuedWakeStillCancelsWithoutPump() {
          uninstall == MainThreadQueryUninstallResultV1::uninstalled;
 }
 
+
+bool TestFlorinPollOnlyBoundaries() {
+  using namespace xar::ck3_11906;
+  namespace florin = xar::ck3_1210;
+  g_failure_stage = "florin_poll_no_windows_peek";
+  constexpr std::uintptr_t base = 0x140000000ULL;
+  FakeRuntime runtime(GetCurrentThreadId(), 53'175'816);
+  void *iat = reinterpret_cast<void *>(&FakePeekMessage);
+  auto &mailbox = g_test_mailbox;
+  // False verifier makes this profile unusable as a production image proof.
+  static const MainThreadQueryBuildProfileV1 profile{
+      florin::kSdlWindowsPumpFirstPeekReturnRva, florin::kPeekMessageWIatSlotRva,
+      florin::kGlobalRngWrapperSlotRva, florin::kJominiStateSlotRva,
+      florin::kGameStateSlotRva, florin::kMainThreadTlsInitializedFlagRva,
+      florin::kMainThreadTlsContextGetterRva, +[](std::uintptr_t) noexcept { return false; }};
+  auto environment = runtime.Environment(base, &iat, &FakePeekMessage);
+  environment.build_profile = &profile;
+  // The unresolved/wrong pointer must be left untouched, then install only
+  // after the fixture's resolver publishes its exact declared original.
+  void *const unresolved = reinterpret_cast<void *>(std::uintptr_t{1});
+  runtime.sdl_poll_event_slot = unresolved;
+  if (!InstallMainThreadQueryMailboxV1(mailbox, environment) ||
+      mailbox.sdl_poll_event_hook_installed.load() || runtime.sdl_poll_event_slot != unresolved) return false;
+  if (ObserveMainThreadPumpAndDrainV1(mailbox, florin::kPollEventFirstReturnRvaV1, GetCurrentThreadId()) ||
+      mailbox.pump_epochs.load() != 0) return false;
+  runtime.sdl_poll_event_slot = reinterpret_cast<void *>(&FakeSdlPollEvent);
+  if (!TryInstallMainThreadFrontendBoundaryHookV1(mailbox) ||
+      runtime.sdl_poll_event_slot != reinterpret_cast<void *>(&XarMainThreadSdlPollEventHookV1)) return false;
+  const auto original_peek_pumps = mailbox.pump_epochs.load();
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, florin::kPollEventFirstReturnRvaV1, GetCurrentThreadId());
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, florin::kPollEventLoopReturnRvaV1, GetCurrentThreadId());
+  if (!ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).ready ||
+      mailbox.pump_epochs.load() != original_peek_pumps + 2) return false;
+  ExecutorContext context{};
+  context.mailbox = &mailbox;
+  MainThreadQueryTicketV1 ticket{};
+  for (const auto rva : {florin::kPollEventFirstReturnRvaV1, florin::kPollEventLoopReturnRvaV1}) {
+    const auto before_calls = context.calls;
+    if (TrySubmitMainThreadQueryV1(mailbox, &Execute, &context, ticket) != MainThreadQuerySubmitResultV1::submitted ||
+        ObserveMainThreadPumpAndDrainV1(mailbox, rva + 1, GetCurrentThreadId()) || context.calls != before_calls ||
+        !ObserveMainThreadPumpAndDrainV1(mailbox, rva, GetCurrentThreadId()) ||
+        WaitForMainThreadQueryV1(mailbox, ticket, 0) != MainThreadQueryWaitResultV1::completed ||
+        ReclaimMainThreadQueryV1(mailbox, ticket) != MainThreadQueryReclaimResultV1::reclaimed ||
+        context.calls != before_calls + 1 || context.observed.thread_id != GetCurrentThreadId() || !context.observed.paused)
+      return false;
+  }
+  // Non-owner/TLS-missing execution cannot use the new exact return as a bypass.
+  runtime.SetTlsMarker(0);
+  const auto before_calls = context.calls;
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox, florin::kPollEventFirstReturnRvaV1, GetCurrentThreadId());
+  const bool rejected = !ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).ready && context.calls == before_calls;
+  const auto uninstall = UninstallMainThreadQueryMailboxV1(mailbox, 10);
+  return rejected && uninstall == MainThreadQueryUninstallResultV1::uninstalled &&
+      runtime.sdl_poll_event_slot == reinterpret_cast<void *>(&FakeSdlPollEvent) && iat == reinterpret_cast<void *>(&FakePeekMessage);
+}
+
 bool TestSourceContract(int argc, char **argv) {
   if (argc != 8) {
     std::fprintf(stderr, "mailbox source contract argc=%d\n", argc);
@@ -2865,6 +2922,11 @@ static int TestFastDatePausePublicationGuard() {
 }
 
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--florin-poll-only") {
+    if (TestFlorinPollOnlyBoundaries()) return 0;
+    std::fprintf(stderr, "Florin poll fixture failed at %s\n", g_failure_stage);
+    return 8;
+  }
   if (argc==2 && std::string_view(argv[1])=="--state-only") {
     const bool okay=TestMailboxStateMachine() && TestFrontendMailboxWithoutGameplayState() &&
         TestPausedQueuePostsInertOwnerWake() && TestPausedQueuePostsInertOwnerWake(true) &&

@@ -145,3 +145,9 @@ Q09公共资格通过，生产DLL保持13382656bytes/SHA `8dc193488a05fdeb4f0aab
 公共run原wait2/403.929038秒，Host原wait1。受管场实际失败exit1、Job0、tree gone、cleanup proven；keeper合作STOP后原allocate wait0/840.024167秒、thread_exited且failure为空。15:45:33.795224Z CAS `15241→15243`释放，resources为空。原件分别为scene的 `live/4-8e1c2f1861--financial-markets--R0005`、`operations/CORE05-run`、`operations/ALLOCATE-core06` 和 `operations/RELEASE-core05`；释放stdout1443bytes/SHA `51ab68a78a5c4fe8309cdd6ff2a193e15aa592da6c66edd45f184efe8e228148`。本场零金融动作、零新增日、零SAVE。关闭后正常rebase远端 `9768fe997`，三份本地夹具／资格修复保留，不修改旧场证据。
 
 关场后采用五包金融集成，174运行文件，37采用路径；原五包与组合caller窄修来源在 `task/integrated-financial-product-candidate01/candidate-source-manifest.json`，36722bytes/SHA `51ed47dab2a965e1328c56de9d31447d4a0cb0323e4fcbf6ebb6de5a318756ee`。统一完整金融verify原wait0/39.056779秒，200项通过、0skip，Quarkus打包成功，见 `operations/MVN-financial-integrated-full01`。实际C++诊断原包新增CI在Root另2项通过、原wait0/6.436715秒，见 `operations/CHECK-actual-diagnostic-root01`；仅外层请求ID作软件关联，不修改原诊断操作数。不借这两项或200项授予游戏行为信用。
+
+### 后继自然事件边界修复源码
+
+离线精确PE核对显示：原唤醒实际为 `PostThreadMessageW(owner, WM_NULL)`，不存在选错HWND的实现。WindowsPump受具名 `SDL_WINDOWS_ENABLE_MESSAGELOOP` 控制，但R0005没有采集该值，不能断言它为零。另两个application字段已追溯到退出路径，不当作最小化标志。证据在 `task/R0005-owner-wake-diagnostic01/SDL_DYNAPI_STATIC.actual.json`，SHA `8dd3dfc99ba5fdfd5aced5980f9e8b3caaa149f3ed754584225875db4e8117a6`。
+
+采用窄候选 `task/florin-poll-boundary-candidate01/source-ready.patch`（SHA `41a5fdd9cb94b2d6d2e2b96f8e0ad68eb9fa82d4cd22f64e024656b49346ed51`）：只对精确Florin接入自然SDL PollEvent返回边界；核默认writer、非阻塞REAL入口及两个callsite原字节，实际dispatch slot必须等于本模块已解析原目标才CAS安装，初始解析跳板及override不触碰。复用原owner/TLS/clock/paused证明，不放宽Full reader、改超时或恢复前台。增加只供诊断的hook进入／完成及active计数，不授ready。生产仅3个TU与新窄header，旧高扇出mailbox结构不变；附加测试与编译、实际装载结果另记。

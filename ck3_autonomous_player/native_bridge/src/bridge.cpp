@@ -186,6 +186,7 @@
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
+#include "xar_bridge/florin_event_pump_boundary_v1.hpp"
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 #include "xar_bridge/ck3_12002_nonwar_router.hpp"
@@ -2734,6 +2735,10 @@ std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter 
   result += mailbox.sdl_poll_event_hook_installed ? "true" : "false";
   result += ",\"observed_sdl_poll_event_target\":";
   result += Number(mailbox.observed_sdl_poll_event_target);
+  result += ",\"active_hook_calls\":";
+  result += Number(mailbox.active_hook_calls);
+  result += ",\"owner_hook_entries_v1\":";
+  result += xar::ck3_11906::SerializeOwnerHookEntriesV1();
   result += ",\"stop\":";
   result += mailbox.stop_requested ? "true" : "false";
   result += ",\"failure\":";
