@@ -14,4 +14,8 @@
 
 14:21Z后命名入口已单独实际打包至`target/save-audit-app/quarkus-run.jar`，原wait0/20.194778秒；随后公共CLI对明确标记的合成物理文件实际wait0/1.198547秒，得到来源绑定报告且`financialCertified=false`。原件分别在`operations/MVN-financial-save-audit-package01`、`operations/CHECK-save-audit-named-cli01`及外部`save-audit-cli-software01`。这只验证命名入口和合成输入消费，真实1.21金融SAVE、编码scale及冷载仍未通过。
 
-16:41Z完整金融246项通过，其中回兑新增7项与原SAVE两项共同通过。审计显式识别`xfm_finance_redemption_window`及`xfm_finance_redemption_receipt`：逐窗核initial=paid+reclaimed+remaining、每张实付/整手/固定价及预算after、逐币永久收据顺序链/累计与ID高水位、当前窗专用free=remaining且reserved=0、发行及做市账户防冒用、旧窗到期后七日发布限制。历史窗可复用同一专用账户，不能拿其旧余额覆盖当前窗；收据的历史holder/controller不强制等于继承后的当前holder。未知故事、缺失数值或断链保持INCOMPLETE，不推断空集合或零金额。字段与生产者见[回兑身份表](coin-redemption.md)。新源码的命名入口仍须重打包，真实编码资格及金融认证仍为false。
+16:41Z完整金融246项通过，其中回兑新增7项与原SAVE两项共同通过。审计显式识别`xfm_finance_redemption_window`及`xfm_finance_redemption_receipt`：逐窗核initial=paid+reclaimed+remaining、每张实付/整手/固定价及预算after、逐币永久收据顺序链/累计与ID高水位、当前窗专用free=remaining且reserved=0、发行及做市账户防冒用、旧窗到期后七日发布限制。历史窗可复用同一专用账户，不能拿其旧余额覆盖当前窗；收据的历史holder/controller不强制等于继承后的当前holder。未知故事、缺失数值或断链保持INCOMPLETE，不推断空集合或零金额。字段与生产者见[回兑身份表](coin-redemption.md)。
+
+16:43:44Z命名入口已按本轮源码重新打包（`MVN-financial-save-audit-package02`，原wait0/25.422001秒），随后`CHECK-save-audit-named-cli02`实际wait0/1.172256秒消费合成物理文件。当前419628字节app JAR、嵌入源码资源及实际loaded-code pins逐项与当前审计／共享parser相同，包括回兑审计；无需再次打包。两轮合成CLI均不授真实SAVE信用。
+
+R0011于20:47:12Z首次实际保存并于20:49:41Z完成独立外置物理归档：132739080字节／SHA256 `d58e7f82bf607ff1cb2957f19e8d0263dd1f1e852e63de3801e502800a2e4a66`，源与归档身份不同且复制前后大小、属性和SHA一致。真实文本头为1.21.0／格式19／1066.9.15；有界完整字节词法核验仅发现51个原版故事，尚无金融exchange或账户。这是初始化前missing/incomplete基线，不是共享parser失败或金融认证。数值scale及金融引用类型仍未确定，没有套用合成值或制造可执行审计请求；下一次经正常GUI初始化后SAVE，才继续现有named审计。[实际证据](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0011.json)。

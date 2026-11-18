@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import ast
 import copy
+from contextlib import contextmanager
 from collections.abc import Mapping
 from datetime import datetime
 import hashlib
@@ -13,6 +14,8 @@ from pathlib import Path
 import re
 import tempfile
 import time
+from collections.abc import Iterator
+from typing import Protocol, runtime_checkable
 
 from ck3_mod_acceptance_keeper import check_pin, live_lease, pin, read_json, require, utc, write_new
 from ck3_mod_acceptance_launcher import frozen_run
@@ -57,20 +60,19 @@ def native_zero_proof(frozen, report, *, failure_shutdown=False):
 
 
 NORMAL_EXIT_NATIVE_TOOLS = frozenset({"ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1"})
-NORMAL_EXIT_NATIVE_CAPABILITY = "normal-exit-map-v1"
 
 
-def _require_failed_host_exit_plan_v1(steps: object) -> None:
+def _require_failed_host_exit_plan_v1(steps: object, frozen: object) -> None:
     """Use the host's existing exit-only contract; never grant business recovery."""
-    from xar_autoplayer.bridge.normal_exit_host_terminal_v1 import require_failed_host_normal_exit_plan_v1
-    require_failed_host_normal_exit_plan_v1(steps)
+    with _frozen_exit_sdk_v1(frozen) as (_, _, terminal):
+        terminal.require_failed_host_normal_exit_plan_v1(steps)
 
 
-def _normal_exit_plan_v1(steps: object) -> bool:
+def _normal_exit_plan_v1(steps: object, frozen: object) -> bool:
     if (not isinstance(steps, list) or len(steps) != 1 or not isinstance(steps[0], dict)
             or steps[0].get('tool') not in (*NORMAL_EXIT_NATIVE_TOOLS, 'ck3_observe_normal_exit_v1')):
         return False
-    _require_failed_host_exit_plan_v1(steps)
+    _require_failed_host_exit_plan_v1(steps, frozen)
     return True
 
 
@@ -103,11 +105,110 @@ def _native_positive_integer(value: object, label: str) -> int:
     return value
 
 
-def validate_normal_exit_native_capability(tool_name: str, report: object) -> None:
+@runtime_checkable
+class _ExitBuildV1(Protocol):
+    @property
+    def game_version(self) -> str: ...
+
+
+@runtime_checkable
+class _ExitVersionV1(Protocol):
+    CK3_12004: _ExitBuildV1
+    CK3_1210: _ExitBuildV1
+    def require_exact_native_build(self, game_version: object, executable_sha256: object) -> _ExitBuildV1: ...
+
+
+@runtime_checkable
+class _ExitContractV1(Protocol):
+    CORE_EXIT_CAPABILITY: str
+    NORMAL_EXIT_MAP_CAPABILITY: str
+
+
+@runtime_checkable
+class _ExitTerminalV1(Protocol):
+    def require_failed_host_normal_exit_plan_v1(self, value: object) -> None: ...
+
+
+def _exit_sdk_bytes_v1(path: Path, reference: object) -> bytes:
+    """Read exact frozen metadata; no import path or installed-package fallback."""
+    row = _queue_object(reference, "Frozen exit SDK source pin")
+    if set(row) not in ({"bytes", "sha256"}, {"path", "bytes", "sha256"}):
+        raise ValueError("Frozen exit SDK source pin fields differ")
+    if "path" in row and (not isinstance(row["path"], str) or Path(row["path"]).resolve() != path.resolve()):
+        raise ValueError("Frozen exit SDK source pin crossed its exact path")
+    size, digest = row.get("bytes"), row.get("sha256")
+    if (type(size) is not int or size < 1 or size > 2 * 1024 * 1024
+            or not isinstance(digest, str) or re.fullmatch(r"[0-9a-f]{64}", digest) is None
+            or path.is_symlink() or not path.is_file()):
+        raise ValueError("Frozen exit SDK source pin is malformed or unavailable")
+    raw = path.read_bytes()
+    if len(raw) != size or hashlib.sha256(raw).hexdigest() != digest:
+        raise ValueError("Frozen exit SDK source bytes changed: " + str(path))
+    return raw
+
+
+@contextmanager
+def _frozen_exit_sdk_v1(frozen_value: object) -> Iterator[tuple[_ExitVersionV1, _ExitContractV1, _ExitTerminalV1]]:
+    """Consume the original SDK leaves from this allocation's pinned source index."""
+    import secrets
+    import sys
+    import types
+    frozen = _queue_object(frozen_value, "Frozen exit SDK allocation")
+    source = frozen.get("source_root")
+    manifest = _queue_object(frozen.get("runtime_manifest"), "Frozen runtime manifest")
+    manifest_path = manifest.get("path")
+    if not isinstance(source, str) or not source or not isinstance(manifest_path, str) or not manifest_path:
+        raise ValueError("Frozen exit SDK source/runtime paths required")
+    root = Path(source).resolve(strict=True)
+    index_path = Path(manifest_path).resolve(strict=True).with_name("source-index.json")
+    files = _queue_object(frozen.get("files"), "Frozen allocation source pins")
+    index = _queue_object(json.loads(_exit_sdk_bytes_v1(index_path, files.get(str(index_path)))), "Frozen SDK index")
+    if index.get("schema") != "ck3-common-source-index-v1":
+        raise ValueError("Frozen exit SDK requires the canonical source index")
+    rows = _queue_object(index.get("files"), "Frozen SDK index files")
+    names = ("normal_exit_process_observer_v1", "normal_exit_contract_v1", "normal_exit_public_wire_v2",
+        "normal_exit_host_terminal_v1", "version_identity")
+    sources: list[tuple[str, Path, bytes]] = []
+    for name in names:
+        relative = "ck3_autonomous_player/src/xar_autoplayer/bridge/" + name + ".py"
+        path = root / relative
+        if not path.resolve().is_relative_to(root):
+            raise ValueError("Frozen exit SDK leaf crossed its source root")
+        sources.append((name, path, _exit_sdk_bytes_v1(path, rows.get(relative))))
+    namespace = "_queue_exit_sdk_" + secrets.token_hex(16)
+    package = types.ModuleType(namespace)
+    package.__path__ = []
+    if namespace in sys.modules:
+        raise ValueError("Frozen exit SDK private namespace collision")
+    loaded: dict[str, types.ModuleType] = {namespace: package}
+    sys.modules[namespace] = package
+    modules: dict[str, types.ModuleType] = {}
+    try:
+        for name, path, raw in sources:
+            module = types.ModuleType(namespace + "." + name)
+            module.__file__ = str(path)
+            module.__package__ = namespace
+            sys.modules[module.__name__] = module
+            loaded[module.__name__] = module
+            exec(compile(raw, str(path), "exec"), module.__dict__)
+            modules[name] = module
+        version, contract, terminal = (modules["version_identity"], modules["normal_exit_contract_v1"],
+            modules["normal_exit_host_terminal_v1"])
+        if (not isinstance(version, _ExitVersionV1) or not isinstance(contract, _ExitContractV1)
+                or not isinstance(terminal, _ExitTerminalV1)):
+            raise ValueError("Frozen exit SDK source API differs")
+        yield version, contract, terminal
+    finally:
+        for name, module in reversed(tuple(loaded.items())):
+            if sys.modules.get(name) is module:
+                del sys.modules[name]
+
+
+def validate_normal_exit_native_capability(tool_name: str, report: object, frozen: object = None) -> None:
     """Gate only native exit query/request; OS retained-handle observation stays usable.
 
-    The SDK normal_exit_map_driver_v1._prepare tests the exact unprefixed
-    normal-exit-map-v1 capability. MCP registration and action_steps do not prove
+    Select the existing SDK route by the exact native build, never by a
+    plausible capability alias. MCP registration/action_steps alone do not prove
     the selected DLL advertises it. The caller has already bound this report's
     state, source and pipe to the frozen run before any once-only claim.
     """
@@ -134,11 +235,22 @@ def validate_normal_exit_native_capability(tool_name: str, report: object) -> No
     advertised = _native_capability_names(hello.get("capabilities"), "Actual native hello")
     if exported != advertised:
         raise ValueError("Actual native bridge capabilities differ from the bound native hello")
-    if NORMAL_EXIT_NATIVE_CAPABILITY not in advertised:
-        raise ValueError(tool_name + ": actual native normal-exit-map-v1 capability is unavailable (default OFF); rejected before claim/publish")
+    with _frozen_exit_sdk_v1(frozen) as (version, contract, _):
+        build = version.require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+        if (build not in (version.CK3_12004, version.CK3_1210) or hello.get("ck3_build_match") is not True
+                or hello.get("game_adapter_id") != "ck3-" + build.game_version + "-msvc-x64"):
+            raise ValueError("Actual native normal-exit hello lacks its supported exact build/adapter match")
+        required_capability = (contract.CORE_EXIT_CAPABILITY if build == version.CK3_1210
+            else contract.NORMAL_EXIT_MAP_CAPABILITY)
+        # The SDK gives Core ApplicationExit precedence over the legacy route.
+        if build == version.CK3_12004 and contract.CORE_EXIT_CAPABILITY in advertised:
+            raise ValueError("Actual native normal-exit capability belongs to a different exact build")
+        if required_capability not in advertised:
+            raise ValueError(tool_name + ": actual native " + required_capability +
+                " capability is unavailable (default OFF); rejected before claim/publish")
 
 
-def validate_steps(steps: object, report: object) -> list[str]:
+def validate_steps(steps: object, report: object, frozen: object = None) -> list[str]:
     current = _queue_object(report, "Actual host report")
     if not isinstance(steps, list) or not steps:
         raise ValueError("Nonempty original step array required")
@@ -180,7 +292,7 @@ def validate_steps(steps: object, report: object) -> list[str]:
             name, arguments = step.get("tool"), step.get("args", {})
             if not isinstance(name, str) or name not in tools or not isinstance(arguments, dict):
                 raise ValueError("Tool/argument object is absent from actual MCP metadata")
-            validate_normal_exit_native_capability(name, current)
+            validate_normal_exit_native_capability(name, current, frozen)
             require("$" not in json.dumps(arguments), "Queue requires explicit arguments; symbolic host references need a reviewed extension")
             schema = _queue_object(copy.deepcopy(tools[name].get("inputSchema")), "Actual input schema for " + name)
             properties = _queue_object(schema.get("properties", {}), "Actual input schema properties for " + name)
@@ -328,9 +440,9 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
     value = json.loads(raw.decode("utf-8-sig"))
     require(isinstance(value, dict) and set(value) == {"steps"}, "Original {steps: [...]} plan object required")
     steps = value["steps"]
-    ids = validate_steps(steps, report)
+    ids = validate_steps(steps, report, frozen)
     finishing = len(steps) == 1 and steps[0].get("kind") == "finish_hold"
-    typed_exit = _normal_exit_plan_v1(steps)
+    typed_exit = _normal_exit_plan_v1(steps, frozen)
     terminal = terminal_cleanup_evidence(keeper, frozen, report, steps) if terminal_cleanup else None
     hold_deadline = report.get("hold_until_utc_estimated")
     require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing or typed_exit else 90),
@@ -345,7 +457,7 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
                 "Original shared native-zero predicate rejects finish_hold")
     else:
         if report.get("error") and recovery is None:
-            _require_failed_host_exit_plan_v1(steps)
+            _require_failed_host_exit_plan_v1(steps, frozen)
         require(not report.get("cleanup_ok"), "Original host failed or completed cleanup")
     controls = Path(argv[argv.index("--control-plan-dir") + 1]).resolve()
     require(controls == live / "controls" and controls.is_dir(), "Control directory crossed actual allocation")

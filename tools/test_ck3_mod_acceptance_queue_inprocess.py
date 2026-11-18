@@ -40,12 +40,19 @@ class NativeExitFixture(TypedDict):
     hello: dict[str, object]
 
 
-def normal_exit_fixture(tool_name: str) -> NativeExitFixture:
+def normal_exit_fixture(tool_name: str, game_version: str = '1.20.0.4') -> NativeExitFixture:
     """Actual report/SDK field layout; synthetic pipe/PID and no native calls."""
-    advertised = ['bridge.identity', 'normal-exit-map-v1']
+    from xar_autoplayer.bridge.normal_exit_contract_v1 import CORE_EXIT_CAPABILITY, NORMAL_EXIT_MAP_CAPABILITY
+    from xar_autoplayer.bridge.version_identity import CK3_12004, CK3_1210
+    build = CK3_1210 if game_version == '1.21.0' else CK3_12004
+    if game_version != build.game_version:
+        raise ValueError('Fixture requires an explicit supported exact build')
+    advertised = ['bridge.identity', CORE_EXIT_CAPABILITY if build == CK3_1210 else NORMAL_EXIT_MAP_CAPABILITY]
     hello: dict[str, object] = {
         'type': 'hello', 'protocol_version': 1, 'pid': 123,
         'connection_generation': 1, 'capabilities': list(advertised),
+        'expected_ck3_version': build.game_version, 'expected_ck3_sha256': build.executable_sha256,
+        'game_adapter_id': 'ck3-'+build.game_version+'-msvc-x64', 'ck3_build_match': True,
     }
     diagnostics: dict[str, object] = {
         'protocol_version': 1, 'pipe_name': 'pure-pipe', 'connected': True,
@@ -103,8 +110,23 @@ class InprocessQueueTests(unittest.TestCase):
         self.keeper=self.root/'keeper';self.keeper.mkdir()
         self.state=self.root/'state';self.state.mkdir()
         self.source=self.root/'source';self.source.mkdir()
+        self.runtime=self.root/'runtime';self.runtime.mkdir()
+        self.manifest=self.runtime/'manifest.json';self.manifest.write_text('{}',encoding='utf-8')
+        sdk_relative=Path('ck3_autonomous_player/src/xar_autoplayer/bridge')
+        sdk_rows={}
+        for sdk_name in ('normal_exit_process_observer_v1','normal_exit_contract_v1','normal_exit_public_wire_v2',
+                         'normal_exit_host_terminal_v1','version_identity'):
+            relative=sdk_relative/(sdk_name+'.py')
+            selected=self.source/relative;selected.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(CANDIDATE/relative,selected)
+            source_pin=pin(selected)
+            sdk_rows[relative.as_posix()]={key:source_pin[key] for key in ('bytes','sha256')}
+        self.source_index=self.runtime/'source-index.json'
+        self.source_index.write_text(json.dumps({'schema':'ck3-common-source-index-v1','files':sdk_rows}),encoding='utf-8')
+        files[str(self.source_index.resolve())]=pin(self.source_index)
         self.frozen: FixtureFrozen={'files':files,'run_id':'pure-fixture-run','state_dir':str(self.state),'source_root':str(self.source),
-                     'argv':['python','host.py','--agent-source-root',str(self.source),'--bridge-pipe','pure-pipe','--control-plan-dir',str(self.controls)]}
+                     'argv':['python','host.py','--agent-source-root',str(self.source),'--bridge-pipe','pure-pipe','--control-plan-dir',str(self.controls)],
+                     'runtime_manifest':pin(self.manifest)}
         self.report={'state_dir':str(self.state),'agent_source_root':str(self.source),'pipe':'pure-pipe','phase':'hold',
                      'hold_until_utc_estimated':time.time()+1000,'steps':[],
                      'mcp_tools':{'tools':[{'name':'fixture_readonly_query','inputSchema':{'type':'object','properties':{},'additionalProperties':False}}]}}
@@ -469,10 +491,12 @@ class InprocessQueueTests(unittest.TestCase):
                 targets[target_name][field] = invalid
                 with self.assertRaises(ValueError):
                     self.module.validate_steps([{'id': 'bad-native', 'tool': 'ck3_query_normal_exit_context_v1'}],
-                                               fixture['report'])
+                                               fixture['report'],self.frozen)
         for target_name, field in (('report', 'capabilities'), ('capabilities', 'bridge_capabilities'),
                                    ('capabilities', 'diagnostics'), ('diagnostics', 'hello'),
-                                   ('hello', 'capabilities'), ('hello', 'pid'), ('hello', 'connection_generation')):
+                                   ('hello', 'capabilities'), ('hello', 'pid'), ('hello', 'connection_generation'),
+                                   ('hello', 'expected_ck3_version'), ('hello', 'expected_ck3_sha256'),
+                                   ('hello', 'game_adapter_id'), ('hello', 'ck3_build_match')):
             with self.subTest(missing=target_name+'.'+field):
                 fixture = normal_exit_fixture('ck3_query_normal_exit_context_v1')
                 targets = {'report': fixture['report'], 'capabilities': fixture['capabilities'],
@@ -480,19 +504,153 @@ class InprocessQueueTests(unittest.TestCase):
                 targets[target_name].pop(field)
                 with self.assertRaises(ValueError):
                     self.module.validate_steps([{'id': 'missing-native', 'tool': 'ck3_query_normal_exit_context_v1'}],
-                                               fixture['report'])
+                                               fixture['report'],self.frozen)
 
     def test_normal_exit_json_roundtrip_and_exact_unprefixed_capability(self) -> None:
         fixture = normal_exit_fixture('ck3_query_normal_exit_context_v1')
         report = json.loads(json.dumps(fixture['report']))
         steps = [{'id': 'roundtrip-native', 'tool': 'ck3_query_normal_exit_context_v1', 'args': {}}]
-        self.assertEqual(self.module.validate_steps(json.loads(json.dumps(steps)), report), ['roundtrip-native'])
-        # Both mirrors can agree on an alias and still fail: the actual SDK
-        # accepts only normal-exit-map-v1, without a game.command prefix.
+        self.assertEqual(self.module.validate_steps(json.loads(json.dumps(steps)), report,self.frozen), ['roundtrip-native'])
+        # Both mirrors can agree on an alias and still fail: this exact legacy
+        # build requires normal-exit-map-v1, without a game.command prefix.
         fixture['capabilities']['bridge_capabilities'] = ['game.command.normal-exit-map-v1']
         fixture['hello']['capabilities'] = ['game.command.normal-exit-map-v1']
         with self.assertRaisesRegex(ValueError, 'capability is unavailable'):
-            self.module.validate_steps(steps, fixture['report'])
+            self.module.validate_steps(steps, fixture['report'],self.frozen)
+
+    def test_florin_query_and_confirm_use_actual_bound_capability_and_preserve_exact_plan(self) -> None:
+        scenarios = [('ck3_query_normal_exit_context_v1', {}),
+                     ('ck3_request_normal_exit_v1', {'action':'confirm_desktop','expected_exit_context_signature':'c'*64})]
+        for index,(tool_name,arguments) in enumerate(scenarios):
+            fixture=normal_exit_fixture(tool_name,'1.21.0')
+            self.report.update(fixture['report'])
+            (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+            name='florin-normal-exit-'+str(index)
+            steps=[{'id':name,'tool':tool_name,'args':arguments}]
+            with patch.object(self.client_module.subprocess,'run',side_effect=AssertionError('no Game/host or subprocess fallback')):
+                self.client.execute_plan(steps,name)
+            self.assertEqual((self.controls/(name+'.json')).read_bytes(),
+                (self.client.output/('plans/'+name+'.json')).read_bytes())
+            receipt=json.loads((self.client.output/(name+'.stdout.log')).read_bytes())
+            self.assertEqual(receipt['status'],'QUEUED_ONCE_ACK_NOT_BUSINESS_PASS')
+            self.assertFalse(receipt['business_pass'])
+        self.assertEqual(len(self.await_calls),2)
+
+    def test_exact_version_build_adapter_and_foreign_exit_capabilities_reject_before_claim(self) -> None:
+        from xar_autoplayer.bridge.normal_exit_contract_v1 import CORE_EXIT_CAPABILITY, NORMAL_EXIT_MAP_CAPABILITY
+        from xar_autoplayer.bridge.version_identity import CK3_12004, CK3_1210
+        scenarios=[
+            ('1.21.0',{'expected_ck3_version':'1.20.0.4'},None),
+            ('1.21.0',{'expected_ck3_sha256':CK3_12004.executable_sha256},None),
+            ('1.20.0.4',{'expected_ck3_sha256':CK3_1210.executable_sha256},None),
+            ('1.21.0',{'expected_ck3_version':'1.21.1'},None),
+            ('1.21.0',{'expected_ck3_version':True},None),
+            ('1.21.0',{'expected_ck3_sha256':False},None),
+            ('1.21.0',{'game_adapter_id':'ck3-1.20.0.4-msvc-x64'},None),
+            ('1.21.0',{'ck3_build_match':1},None),
+            ('1.21.0',{'ck3_build_match':False},None),
+            ('1.21.0',{},[NORMAL_EXIT_MAP_CAPABILITY]),
+            ('1.21.0',{},['normal-exit-application-v1']),
+            ('1.21.0',{},['game.command.normal-exit-map-v1']),
+            ('1.20.0.4',{},[CORE_EXIT_CAPABILITY]),
+            ('1.20.0.4',{},[NORMAL_EXIT_MAP_CAPABILITY,CORE_EXIT_CAPABILITY]),
+        ]
+        for index,(version,hello_changes,capabilities) in enumerate(scenarios):
+            with self.subTest(version=version,hello=hello_changes,capabilities=capabilities):
+                fixture=normal_exit_fixture('ck3_query_normal_exit_context_v1',version)
+                fixture['hello'].update(hello_changes)
+                if capabilities is not None:
+                    fixture['hello']['capabilities']=list(capabilities)
+                    fixture['capabilities']['bridge_capabilities']=list(capabilities)
+                self.report.update(fixture['report'])
+                (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+                name='wrong-exit-build-'+str(index)
+                with patch.object(self.module,'claim_plan',side_effect=AssertionError('must reject before claim')), \
+                     patch.object(self.module.os,'link',side_effect=AssertionError('must reject before publish')):
+                    with self.assertRaisesRegex(ValueError,'queue failed'):
+                        self.client.execute_plan([{'id':name,'tool':'ck3_query_normal_exit_context_v1','args':{}}],name)
+                receipt=json.loads((self.client.output/(name+'.stdout.log')).read_bytes())
+                self.assertEqual(receipt['status'],'BLOCKED_NEVER_REPLAY')
+        self.assertFalse(list(self.controls.iterdir()))
+        self.assertFalse((self.live/'control-once-ledger').exists())
+        self.assertFalse(self.await_calls)
+
+    def test_florin_missing_exit_capability_stays_default_off(self) -> None:
+        fixture=normal_exit_fixture('ck3_query_normal_exit_context_v1','1.21.0')
+        fixture['hello']['capabilities']=['bridge.identity']
+        fixture['capabilities']['bridge_capabilities']=['bridge.identity']
+        with self.assertRaisesRegex(ValueError,'game.command.normal-exit-application-v1 capability is unavailable'):
+            self.module.validate_steps([{'id':'florin-off','tool':'ck3_query_normal_exit_context_v1','args':{}}],fixture['report'],self.frozen)
+
+    def test_clean_cli_process_uses_frozen_sdk_not_installed_or_injected_package(self) -> None:
+        fixture=normal_exit_fixture('ck3_query_normal_exit_context_v1','1.21.0')
+        self.report.update(fixture['report'])
+        (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+        frozen_path=self.root/'cli-frozen.json';frozen_path.write_text(json.dumps(self.frozen),encoding='utf-8')
+        plan=self.root/'cli-plan.json'
+        plan.write_text(json.dumps({'steps':[{'id':'clean-cli-exit','tool':'ck3_query_normal_exit_context_v1',
+            'args':{'expected_revision':'1'}}]}),encoding='utf-8')
+        script=self.root/'actual_cli_fixture.py'
+        script.write_text('''import importlib.util,json,sys,types
+from pathlib import Path
+helpers,live,frozen_path,plan,keeper=sys.argv[1:]
+# The process has no SDK path. A foreign installed/imported namespace must not win.
+origin=importlib.util.find_spec('xar_autoplayer')
+sys.modules['xar_autoplayer']=types.ModuleType('foreign_unpinned_sdk')
+sys.path.insert(0,helpers)
+import ck3_mod_acceptance_queue as queue
+frozen=json.loads(Path(frozen_path).read_text(encoding='utf-8'))
+queue.frozen_run=lambda *a,**k:(frozen,{'keeper_root':keeper})
+queue.live_lease=lambda *a,**k:{'lease':{'task_id':'isolated-cli-fixture','sequence':1}}
+code=queue.main(['--live',live,'--plan',plan,'--name','clean-cli-exit.json'])
+if any(name.startswith('_queue_exit_sdk_') for name in sys.modules):
+    raise ValueError('private SDK source modules were not released')
+print(json.dumps({'fixture_exit_code':code,'queue_origin':queue.__file__,
+    'ambient_sdk_origin':None if origin is None else origin.origin,'ambient_sdk_ignored':True}))
+raise SystemExit(code)
+''',encoding='utf-8')
+        environment=dict(os.environ);environment.pop('PYTHONPATH',None)
+        environment['PYTHONDONTWRITEBYTECODE']='1'
+        result=subprocess.run([sys.executable,'-B','-X','utf8',str(script),str(self.helpers),str(self.live),
+            str(frozen_path),str(plan),str(self.keeper)],cwd=self.root,env=environment,
+            capture_output=True,text=True,encoding='utf-8',timeout=30)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        last=json.loads(result.stdout.splitlines()[-1])
+        self.assertEqual(last['queue_origin'],str(self.queue))
+        self.assertTrue(last['ambient_sdk_ignored'])
+        print(json.dumps({'clean_CLI_software_fixture_stdout':result.stdout,'stderr':result.stderr}))
+        self.assertEqual((self.controls/'clean-cli-exit.json').read_bytes(),plan.read_bytes())
+
+    def test_frozen_sdk_missing_index_or_changed_leaf_rejects_before_claim(self) -> None:
+        relative='ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py'
+        leaf=self.source/relative
+        original_leaf=leaf.read_bytes();original_index=self.source_index.read_bytes()
+        original_pin=self.frozen['files'][str(self.source_index.resolve())]
+        for mode in ('missing_index_pin','changed_index_bytes','missing_leaf_pin','changed_leaf_bytes','wrong_source_root'):
+            with self.subTest(mode=mode):
+                self.source_index.write_bytes(original_index);leaf.write_bytes(original_leaf)
+                self.frozen['files'][str(self.source_index.resolve())]=original_pin
+                self.frozen['source_root']=str(self.source)
+                if mode=='missing_index_pin':
+                    del self.frozen['files'][str(self.source_index.resolve())]
+                elif mode=='changed_index_bytes': self.source_index.write_bytes(original_index+b' ')
+                elif mode=='missing_leaf_pin':
+                    index=json.loads(original_index);del index['files'][relative]
+                    self.source_index.write_text(json.dumps(index),encoding='utf-8')
+                    self.frozen['files'][str(self.source_index.resolve())]=pin(self.source_index)
+                elif mode=='changed_leaf_bytes': leaf.write_bytes(original_leaf+b'\nraise AssertionError("not executed")\n')
+                else: self.frozen['source_root']=str(self.root/'not-the-source')
+                fixture=normal_exit_fixture('ck3_query_normal_exit_context_v1','1.21.0')
+                self.report.update(fixture['report'])
+                self.report['agent_source_root']=self.frozen['source_root']
+                (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+                with patch.object(self.module,'claim_plan',side_effect=AssertionError('must reject before claim')), \
+                     patch.object(self.module.os,'link',side_effect=AssertionError('must reject before publish')):
+                    with self.assertRaisesRegex(ValueError,'queue failed'):
+                        self.client.execute_plan([{'id':mode,'tool':'ck3_query_normal_exit_context_v1','args':{}}],mode)
+        self.assertFalse(list(self.controls.iterdir()))
+        self.assertFalse((self.live/'control-once-ledger').exists())
+        self.assertFalse(self.await_calls)
 
     def tearDown(self) -> None:
         # Release only this test's selected modules; public/importing peers stay.

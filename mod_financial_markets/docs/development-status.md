@@ -2,7 +2,19 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（20:24 UTC 更新）
+## 当前状态（R0011 收束后）
+
+第十一场`R0011/a89`实际装载Q16后进入原存档，先后取得`native:2/public3`及`native:3/public4`的独立完整状态，日期53144328、角色31254、暂停；持久1024未复现。第一条GUI查询完成了Semantic前置读取，随后因固定许可表没有GUI执行器而返回unavailable，没有执行按钮。实际前后计数为3→4，不能把这一次Semantic完成记作GUI执行。[本场证据](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0011.json)。
+
+20:47:12Z实际保存132,739,080字节，SHA256 `d58e7f82bf607ff1cb2957f19e8d0263dd1f1e852e63de3801e502800a2e4a66`；20:49:41Z外置独立物理归档原wait0，复制前后身份、大小和SHA均核实。保存为1.21.0／格式19／1066.9.15，仅有51个原版故事，尚无金融exchange或账户，保留missing/incomplete而非金融认证。原生回执只证明提交；物理事实由SDK落盘指纹及后续只读归档独立确认。额外one-life身份回执仍为unconfirmed，现行全新profile冷载不消费该旧身份门。
+
+正常退出query又在claim/publish前被公共工具的旧1.20能力门拒绝。未热改冻结场；一次既有session stop于20:53:10Z确认，Game exit1、Job0/treegone及清理均核实。21:00:04Z，Game已清理后采用源码使旧keeper因checkout变化结束，原entry_error及keeper exit1保留，不能借allocation父wait0称keeper通过。公共run原wait2/1677.831873秒；Host按原hold期限结束，原wait0。21:10:22Z实际CAS15305→15307释放资源，过期claim保持waiting/unresolved_red。没有金融动作、新增游戏日或正常Quit信用。
+
+已修复并单独提交Native固定GUI／事件执行器登记，保留原四角色并按既有能力追加两槽，不放宽版本、Full、动作或期限保护。Q17在同一缓存实际构建通过（105.066644秒），补充7次实际执行通过（54.580884秒），不变程序的既有通过另行引用；新六槽回归亦接入原默认CTest链。Q17的DLL为`c3dce988b6caed4f9edb8da6c8de800bc3694ef8eb14c7336d95a7022085667e`，尚未装载后继场。
+
+公共退出队列按精确版本选择既有1.21／1.20能力，并从冻结索引核验、私有加载原SDK五叶。首稿37项通过未覆盖独立CLI缺包，保留为被替代历史；最终完整两模块39/39通过，包含无ambient SDK的真实干净子进程入口、来源破坏拒绝、严格类型检查与编译。后继以已归档的1.21基线准备开市、付费发行和真实交易，整Mod仍未验收完成。
+
+## 第十场与只读漂移修复（20:24 UTC）
 
 第十场`R0010/a88`在初始只读Core请求后触发持久`1024 post_execution_drift`。后续owner回调持续完成，但共同观察器在读取前拒绝，旧`root_type_mismatch`只是未刷新的诊断。原请求为`core-frame-2-65fdb43a253b`；周围心跳日期变化支持载入过渡，但未记录执行器精确before/after stamp，不能认定具体哪一比较项失败。本场没有Fresh请求、金融动作、新增日或SAVE。[完整原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0010.json)。
 
