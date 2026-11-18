@@ -1,0 +1,50 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "groups": {
+    "ox-cache": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-18T08:47:29.341878+00:00",
+      "deleted_files": 4036,
+      "deleted_logical_bytes": 177718652,
+      "failed": [],
+      "free_before": {
+        "C:/": 52766883840,
+        "D:/": 22099402752
+      },
+      "free_after": {
+        "C:/": 52766621696,
+        "D:/": 22285996032
+      }
+    },
+    "cht-business": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-18T08:47:56.439974+00:00",
+      "deleted_files": 4196,
+      "deleted_logical_bytes": 184568788,
+      "failed": [],
+      "free_before": {
+        "C:/": 52766556160,
+        "D:/": 22282584064
+      },
+      "free_after": {
+        "C:/": 52766486528,
+        "D:/": 22476828672
+      }
+    },
+    "cht-cache": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-18T08:48:11.868479+00:00",
+      "deleted_files": 2392,
+      "deleted_logical_bytes": 75808769,
+      "failed": [],
+      "free_before": {
+        "C:/": 52766359552,
+        "D:/": 22474936320
+      },
+      "free_after": {
+        "C:/": 52766294016,
+        "D:/": 22556413952
+      }
+    }
+  }
+}

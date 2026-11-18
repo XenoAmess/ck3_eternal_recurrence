@@ -1,0 +1,59 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "xqol",
+  "case": "migration-core-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 60,
+  "fixture_emitter": {
+    "path": "tools/prepare_xqol_1_20_fixture.py",
+    "arguments": [
+      "--output",
+      "{output}",
+      "--scenario",
+      "celestial"
+    ],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "original_celestial_core_markers",
+    "original_heir_removal_death_and_transfer_guards",
+    "native_hook_payment_conversion_ransom_release_consequences",
+    "actual_current_actor_date_and_normal_exit"
+  ],
+  "required_markers": [
+    "ZQA: TEST BEGIN xqol",
+    "ZQA: TEST PASS exact_build_song_emperor",
+    "ZQA: TEST PASS switched_to_supported_player",
+    "ZQA: TEST PASS product_enable_decisions",
+    "ZQA: TEST PASS transfer_guard_enabled_and_preexisting_preserved",
+    "ZQA: TEST PASS vanilla_baseline_heirs_recorded",
+    "ZQA: TEST PASS enabled_highest_non_player_heir_selected",
+    "ZQA: TEST PASS removal_transferred_to_scored_heir",
+    "ZQA: TEST PASS death_transferred_to_non_player_successor",
+    "ZQA: TEST PASS ready_for_product_disable_decisions",
+    "ZQA: TEST PASS product_disable_decisions",
+    "ZQA: TEST PASS disabled_vanilla_heir_available",
+    "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved",
+    "ZQA: TEST PASS payment_full_only",
+    "ZQA: TEST PASS payment_any_above_one_only",
+    "ZQA: TEST PASS payment_matrix_done",
+    "ZQA: TEST PASS conversion_threshold_50_filtered",
+    "ZQA: TEST PASS ransom_full_only",
+    "ZQA: TEST PASS ransom_any_one_gold",
+    "ZQA: TEST PASS release_priority_matrix",
+    "ZQA: TEST PASS phase2_interaction_matrices_done",
+    "ZQA120: TEST PASS release_conversion_rite_matched",
+    "ZQA120: TEST PASS accepted_conversion_faith_and_rite",
+    "ZQA120: TEST DONE core",
+    "ZQA120: TEST BEGIN engine_startup",
+    "ZQA120: TEST PASS production_enable_effects_invoked",
+    "ZQA120: TEST PASS production_disable_effects_invoked"
+  ],
+  "forbidden_markers": [
+    "ZQA: TEST FAIL",
+    "ZQA120: TEST FAIL"
+  ],
+  "scope": "Original full celestial core fixture only, original production effect calls/assertions retained. Actual governor selection/slider UI and defense-war cases remain distinct requirements; this core alone cannot authorize product publication.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

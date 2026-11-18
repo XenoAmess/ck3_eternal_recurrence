@@ -19,7 +19,7 @@ import xqol_conversion_scope_contract
 
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / "mod_xenoamess_quality_of_life"
-GAME = ROOT / "Crusader Kings III" / "game"
+GAME = xqol_vanilla_contract.GAME
 APPOINTMENT_DIR = "common/succession_appointment"
 APPOINTMENT_FILES = {
     "admin_governor.txt": 1,
@@ -449,10 +449,10 @@ def check_scripts(errors: list[str]) -> None:
 def check_assets_and_descriptor(errors: list[str]) -> None:
     descriptor = read_utf8(MOD / "descriptor.mod")
     for token in (
-        'version="1.1.1"',
+        'version="1.1.2"',
         'name="XenoAmess的体验优化"',
         'picture="thumbnail.png"',
-        'supported_version="1.20.0.4"',
+        'supported_version="1.21.0"',
     ):
         if descriptor.count(token) != 1:
             errors.append(f"descriptor token mismatch: {token}")

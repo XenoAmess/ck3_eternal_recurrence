@@ -5,13 +5,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
-GAME = ROOT / "Crusader Kings III" / "game"
-CONTRACT_PATH = Path(__file__).with_name("xqol_vanilla_1_20_0_4.json")
+GAME = Path(os.environ.get("XAR_CK3_GAME_DIR", str(ROOT / "Crusader Kings III"))) / "game"
+CONTRACT_PATH = Path(__file__).with_name("xqol_vanilla_1_21_0.json")
 CONTRACT = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
 
 
@@ -104,12 +105,17 @@ def native_conversion_acceptance(kind: str) -> str:
 
 
 def native_full_golden_obligation() -> str:
-    """Keep the 1.20 native quote, excluding its available-wallet cap.
+    """Keep Florin's uncapped quote and its actor-aware strong-hook multiplier.
 
     The native capped value answers what can be collected now. XQOL's full
     payment mode instead requires the entire quote before consuming a hook.
     """
-    definition = native_definition("common/script_values/00_interaction_values.txt", "golden_obligation_value")
-    if definition.count("\tmax = gold\n") != 1:
-        raise ValueError("native golden obligation wallet cap changed")
-    return definition.replace("golden_obligation_value =", "xqol_full_golden_obligation_value =", 1).replace("\tmax = gold\n", "")
+    relative = "common/script_values/00_interaction_values.txt"
+    definition = native_definition(relative, "golden_obligation_value")
+    capped = native_definition(relative, "golden_obligation_value_check_current_situation")
+    if re.sub(r"\s+", "", capped) != (
+        "golden_obligation_value_check_current_situation={"
+        "add=goldfloor=yesmax=golden_obligation_value}"
+    ) or re.search(r"(?m)^\s*max\s*=\s*gold\s*$", definition):
+        raise ValueError("Florin golden obligation quote/payment split changed")
+    return definition.replace("golden_obligation_value =", "xqol_full_golden_obligation_value =", 1)

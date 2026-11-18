@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Project the frozen CK3 1.20.0.2 governors with five XQOL score insertions."""
+"""Project the frozen CK3 1.21.0 governors with five XQOL score insertions."""
 
 from __future__ import annotations
 

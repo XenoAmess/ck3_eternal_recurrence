@@ -3,13 +3,13 @@
 xqol_full_golden_obligation_value = {
 	if = {
 		limit = {
-			normal_ransom_cost_value < minor_gold_value 
+			normal_ransom_cost_value < minor_gold_value
 		}
 		value = minor_gold_value
 	}
 	else_if = {
 		limit = { 
-			normal_ransom_cost_value < medium_gold_value 
+			normal_ransom_cost_value < medium_gold_value
 		}
 		value = normal_ransom_cost_value
 	}
@@ -18,8 +18,16 @@ xqol_full_golden_obligation_value = {
 	}
 	if = {
 		limit = {
-			scope:actor ?= {
-				has_strong_hook = prev
+			trigger_if = {
+				limit = { exists = scope:puppet_or_actor }
+				scope:puppet_or_actor ?= {
+					has_strong_hook = prev
+				}
+			}
+			trigger_else = {
+				scope:actor ?= {
+					has_strong_hook = prev
+				}
 			}
 		}
 		multiply = 1.5

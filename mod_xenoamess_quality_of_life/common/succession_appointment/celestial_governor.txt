@@ -124,6 +124,7 @@ celestial_military_governor = {
 
 	candidate_score = {
 		value = {
+
 			add = appointment_score_base
 			add = appointment_score_military
 			add = appointment_score_celestial

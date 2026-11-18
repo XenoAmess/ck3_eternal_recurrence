@@ -4,6 +4,7 @@ from unittest import mock
 
 import gen_xqol_phase2 as generator
 import xqol_conversion_scope_contract as scope_contract
+import xqol_vanilla_contract as vanilla_contract
 from xqol_conversion_scope_contract import pending_conversion_scope_errors
 from xqol_vanilla_contract import GAME, block, native_definition
 
@@ -77,6 +78,57 @@ class ConversionActorScopeTests(unittest.TestCase):
                      "Current-stock regression requires the exact installed CK3 source")
 class CurrentStockConversionActorScopeTests(ConversionActorScopeTests):
     read_definition = staticmethod(native_definition)
+
+
+class FlorinGoldenObligationTests(unittest.TestCase):
+    quote = '''golden_obligation_value = {
+    value = minor_gold_value
+    if = {
+        limit = {
+            trigger_if = {
+                limit = { exists = scope:puppet_or_actor }
+                scope:puppet_or_actor ?= { has_strong_hook = prev }
+            }
+            trigger_else = { scope:actor ?= { has_strong_hook = prev } }
+        }
+        multiply = 1.5
+    }
+}'''
+    payment = '''golden_obligation_value_check_current_situation = {
+    add = gold
+    floor = yes
+    max = golden_obligation_value
+}'''
+
+    def definition(self, relative: str, key: str) -> str:
+        self.assertEqual("common/script_values/00_interaction_values.txt", relative)
+        return {"golden_obligation_value": self.quote,
+                "golden_obligation_value_check_current_situation": self.payment}[key]
+
+    def test_real_generator_accepts_uncapped_florin_quote_and_keeps_strong_hook_actor(self) -> None:
+        with (mock.patch.object(vanilla_contract, "native_definition", side_effect=self.definition),
+              mock.patch.object(generator, "require_sources"),
+              mock.patch.object(generator, "render_release_interactions", return_value="")):
+            emitted = generator.generated_payloads()["common/script_values/xqol_generated_payment_values.txt"]
+        self.assertIn("xqol_full_golden_obligation_value = {", emitted)
+        self.assertIn("scope:puppet_or_actor ?= { has_strong_hook = prev }", emitted)
+        self.assertIn("scope:actor ?= { has_strong_hook = prev }", emitted)
+        self.assertIn("multiply = 1.5", emitted)
+        self.assertNotIn("floor = yes", emitted)
+        self.assertNotIn("max = gold", emitted)
+
+    def test_wallet_capped_quote_and_changed_payment_path_are_rejected(self) -> None:
+        for name, quote, payment in (
+            ("old_cap_reappears", self.quote[:-1] + "\nmax = gold\n}", self.payment),
+            ("wrong_payment_cap", self.quote, self.payment.replace("max = golden_obligation_value", "max = 10")),
+            ("lost_integer_floor", self.quote, self.payment.replace("floor = yes", "floor = no")),
+        ):
+            with self.subTest(name=name):
+                values = {"golden_obligation_value": quote,
+                          "golden_obligation_value_check_current_situation": payment}
+                with mock.patch.object(vanilla_contract, "native_definition", side_effect=lambda _relative, key: values[key]):
+                    with self.assertRaisesRegex(ValueError, "quote/payment split changed"):
+                        vanilla_contract.native_full_golden_obligation()
 
 
 if __name__ == "__main__":

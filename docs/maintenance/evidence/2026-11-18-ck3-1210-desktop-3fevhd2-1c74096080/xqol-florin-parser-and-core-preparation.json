@@ -1,0 +1,412 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T08:50:56.459597+00:00",
+  "engine": {
+    "game_version": "1.21.0",
+    "steam_build_id": "26622941",
+    "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"
+  },
+  "fixture": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture.manifest.json",
+    "bytes": 1900,
+    "sha256": "736e2ea30c482482eed33313cb159d7fa63e615ed7d11ba1e208bdf250c2fa3a"
+  },
+  "source_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture.prepare.json",
+    "bytes": 6881,
+    "sha256": "0dc19a839c7775f605cf279302ce0a40b7d633549e90847ef6abc38711f4403e"
+  },
+  "parser": {
+    "jar": {
+      "path": "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+      "bytes": 433166,
+      "sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82"
+    },
+    "concurrency": 4,
+    "heap_per_process": "192MiB",
+    "scope": "generic syntax only; no1.21 semantic profile credit",
+    "results": [
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\character_interactions\\xqol_generated_release_interactions.txt",
+          "bytes": 14995,
+          "sha256": "75c6132ee9c30dab40e912f294ab2d1953bd2d3f1cc07c6afc2834c3cc1a12eb"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\character_interactions\\xqol_generated_release_interactions.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\decision_group_types\\xqol_decision_group_types.txt",
+          "bytes": 75,
+          "sha256": "dffd6637ff2ab9ec1f0684e6ab720c6d2df5047297fbe755c912f5cc25bbd73d"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\decision_group_types\\xqol_decision_group_types.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\decisions\\xqol_decisions.txt",
+          "bytes": 7717,
+          "sha256": "edb1591f3ef2f327a9bd4eabfd1241abcaf9ff5032316767afe9fb2444d92f99"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\decisions\\xqol_decisions.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\on_action\\xqol_on_actions.txt",
+          "bytes": 1213,
+          "sha256": "f6318a28373cf67069a95e2f475d19e95bef64cdda5cc917dd12fe53642bdce2"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\on_action\\xqol_on_actions.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\script_values\\xqol_generated_payment_values.txt",
+          "bytes": 627,
+          "sha256": "b8d9608375daae964744bc7b3e6ddf580d1f10f5a328d03cb915465e829c5985"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\script_values\\xqol_generated_payment_values.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_effects\\xqol_conversion_effects.txt",
+          "bytes": 8127,
+          "sha256": "608c7e6811b7444274947c82ba63439cabd4887e61bcb978bf196d738fe72d5f"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_effects\\xqol_conversion_effects.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_effects\\xqol_effects.txt",
+          "bytes": 3341,
+          "sha256": "cd371a00e5c03a4720854759ebce3b3b722fde40bd889642d687edc60655c02d"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_effects\\xqol_effects.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_effects\\xqol_generated_conversion_dispatch.txt",
+          "bytes": 7309,
+          "sha256": "a0ba42f3aac220306a753b57e595a94c2f3331a99e403b4532e2e1b6f63a3f71"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_effects\\xqol_generated_conversion_dispatch.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_effects\\xqol_prison_payment_effects.txt",
+          "bytes": 8544,
+          "sha256": "40021f6d89b5d4c68a8a4f911775a24334bc1c13a869342c60ef346dc8935668"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_effects\\xqol_prison_payment_effects.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_guis\\xqol_generated_conversion_threshold_guis.txt",
+          "bytes": 34492,
+          "sha256": "4c041e5977535a120684a35a3e88ee74e18d2eb6797ae1a6d98f66299e387850"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_guis\\xqol_generated_conversion_threshold_guis.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_triggers\\xqol_triggers.txt",
+          "bytes": 5301,
+          "sha256": "b98094da6faeb2d027821f56f9c10de986e0cb119c12789a19fac9e7245265e5"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\scripted_triggers\\xqol_triggers.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\succession_appointment\\admin_governor.txt",
+          "bytes": 1802,
+          "sha256": "052375fa62e37c5aaa12223845cf0187e86ca05a3045a43cbce5357c5aa78061"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\succession_appointment\\admin_governor.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\succession_appointment\\celestial_governor.txt",
+          "bytes": 3111,
+          "sha256": "3dd41ad0b5aec7511fb00f60b69ba792dff62f6b1c148742191d220d83fdc7ae"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\succession_appointment\\celestial_governor.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\succession_appointment\\meritocratic_governor.txt",
+          "bytes": 2766,
+          "sha256": "68691c147830a6090c92ec1b9019a741482c9c0e9c70b9ba25a0f498343f941f"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\common\\succession_appointment\\meritocratic_governor.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\events\\xqol_events.txt",
+          "bytes": 1411,
+          "sha256": "86078170642ed0223e3dfd402ebdfd5b080470e8c93e0524029e169a0520a48a"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\events\\xqol_events.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\gui\\event_window_widgets\\xqol_conversion_threshold_slider.gui",
+          "bytes": 38898,
+          "sha256": "821437c159f6b1dd6b1f99aa865936222ccfea624cd3004bbd3a2366f58ed242"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\gui\\event_window_widgets\\xqol_conversion_threshold_slider.gui"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\on_action\\zqa120_on_actions.txt",
+          "bytes": 232,
+          "sha256": "d331bc5fc0ff919d25df49d8026ed9a036691ef9c40d5f468f2012902c72e3ce"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\on_action\\zqa120_on_actions.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\scripted_effects\\zqa120_production_effects.txt",
+          "bytes": 4816,
+          "sha256": "70007de4371062116e15ad0741c508ae80331685d0c1c929039bfcb64a8f27bb"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\scripted_effects\\zqa120_production_effects.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\scripted_effects\\zqa_effects.txt",
+          "bytes": 18337,
+          "sha256": "c45c73f7a777a2df58faa5ac5656099afc9f4e3fb7bcd552ff8eade64de163dd"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\scripted_effects\\zqa_effects.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+          "bytes": 19399,
+          "sha256": "52dbe584bdd893c4efaecde88521fc711558b2d77b51e6141cb5f19bafe64404"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\scripted_effects\\zqa_phase2_defense_effects.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+          "bytes": 30240,
+          "sha256": "bf63e6906848a73b2dbb95b9ec90d79cc2b4aa35c0c471267c8e756b831caf4c"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "input": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\events\\zqa120_events.txt",
+          "bytes": 5748,
+          "sha256": "5ec3a0c1b65ecff657254a32a64548ae9f191ae6a03933bcb0f0d24271c1bca1"
+        },
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-core-a01\\fixture\\events\\zqa120_events.txt"
+        ],
+        "returncode": 0
+      }
+    ]
+  },
+  "passed": true,
+  "business_pass": false,
+  "case_contract": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_florin_core.json",
+    "bytes": 2527,
+    "sha256": "0e259617e939f460b43fd8fe5d4693076d1e49ff4551e85aa53c11a5df6392c4"
+  }
+}

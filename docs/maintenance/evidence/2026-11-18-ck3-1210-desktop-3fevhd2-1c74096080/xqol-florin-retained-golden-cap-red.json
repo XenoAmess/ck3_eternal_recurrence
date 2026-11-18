@@ -1,0 +1,172 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T08:38:55.335194+00:00",
+  "status": "OFFLINE_REVIEW_NOT_ADOPTED",
+  "sources": {
+    "common/succession_appointment/admin_governor.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\succession_appointment\\admin_governor.txt",
+      "bytes": 1496,
+      "sha256": "b1c56630acf91b72a92661b1b84c6421e50e327c49177a19e993bc6d44394264"
+    },
+    "common/succession_appointment/meritocratic_governor.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\succession_appointment\\meritocratic_governor.txt",
+      "bytes": 2134,
+      "sha256": "35dc79fd631979589861f71aa86a4378188d753e3bdb78af5b67858a7ef17ff7"
+    },
+    "common/succession_appointment/celestial_governor.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\succession_appointment\\celestial_governor.txt",
+      "bytes": 2479,
+      "sha256": "b2b1a81175a883a7709425581b8e578cb1e2ad4b3c950cf84c1a5a7b895b4f74"
+    },
+    "common/character_interactions/00_vassal_interactions.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_vassal_interactions.txt",
+      "bytes": 96518,
+      "sha256": "1ffb76a8adcd24957fda1be080f9375ffce6ac31428c3fd7d998c28ad9eec8f9"
+    },
+    "common/character_interactions/00_alliance.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_alliance.txt",
+      "bytes": 98427,
+      "sha256": "718fcdb26d4f6fdbfb41d4c59245c0c87140e96d161265d30e7a0874b127563d"
+    },
+    "common/character_interactions/00_religious_interactions.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_religious_interactions.txt",
+      "bytes": 290320,
+      "sha256": "9ac329caf86a4c52548dd06c9ee019a0c73c8572544c7836401555b0edd86fea"
+    },
+    "common/character_interactions/00_prison_interactions.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_prison_interactions.txt",
+      "bytes": 229428,
+      "sha256": "7969b909d2437e6e091bc2100f4ed2391a3f77aae6d96b029b998531a694d369"
+    },
+    "common/character_interactions/00_perk_interactions.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_perk_interactions.txt",
+      "bytes": 37605,
+      "sha256": "7fc5901a3074833a791329ca7b344597d2e561cd7fb8c98394937c0aeda4bcf5"
+    },
+    "common/on_action/war_on_actions.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\war_on_actions.txt",
+      "bytes": 68717,
+      "sha256": "d90b0d6d9c63f09a37a0b9eff485d6c0004411d08127eeb2d3833fa2b21db28b"
+    },
+    "common/scripted_effects/00_interaction_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_interaction_effects.txt",
+      "bytes": 153104,
+      "sha256": "26151bd9f91cf66d79297d2fe20d8ae5b919d7e83a5fac81e9c93bbea2388465"
+    },
+    "common/scripted_effects/00_religious_interaction_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_religious_interaction_effects.txt",
+      "bytes": 55245,
+      "sha256": "668977968dd5f36cabcba25517770cb8260b60ceb8d4b21a57b5416e48a1e4ef"
+    },
+    "common/scripted_effects/00_prison_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_prison_effects.txt",
+      "bytes": 75956,
+      "sha256": "3810dcbd335431d4a8551fb03923594160b9a1db64499c8fa311487ba1eb9688"
+    },
+    "common/scripted_effects/pam_effects.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\pam_effects.txt",
+      "bytes": 379760,
+      "sha256": "79f85bcd712cdbcc206f4ef303181ded06e4d4df95787ca0b89f81441f39209a"
+    },
+    "common/scripted_triggers/00_religious_triggers.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+      "bytes": 89485,
+      "sha256": "50fa9d72741acd616b5e26e7238eefbbc1f2989eb608543c83220e539843f5ef"
+    },
+    "common/scripted_modifiers/00_religion_scripted_modifiers.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_modifiers\\00_religion_scripted_modifiers.txt",
+      "bytes": 121544,
+      "sha256": "ee407f928f7de6465ea292774fa2cc1fda98ecc0eb7107ed1c037e860209f180"
+    },
+    "common/script_values/pam_values.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\pam_values.txt",
+      "bytes": 283099,
+      "sha256": "cc8d6b7653762213c0891caa8f8a7c867b0fb92634eaa911c9a24ef7ffaf3cf6"
+    },
+    "common/script_values/07_appointment_values.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\07_appointment_values.txt",
+      "bytes": 38836,
+      "sha256": "f8bb42504be62f5e5b76468a9724679b1bc809fdad102ee42b12f9ecbd9c4346"
+    },
+    "common/governments/00_government_types.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\governments\\00_government_types.txt",
+      "bytes": 40798,
+      "sha256": "bd6e5dc96f04ad3ebf12841af4310a7437f1e032d641f2947e5c22dc354e2acc"
+    },
+    "common/script_values/00_interaction_values.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_interaction_values.txt",
+      "bytes": 23681,
+      "sha256": "397bf8d39de7719f04bfb76ffa7d1d1f43ca7380c54c445cdef5a241d5781cba"
+    }
+  },
+  "same_as_old_pins": [
+    "common/succession_appointment/meritocratic_governor.txt"
+  ],
+  "changed_from_old_pins": [
+    "common/succession_appointment/admin_governor.txt",
+    "common/succession_appointment/celestial_governor.txt",
+    "common/character_interactions/00_vassal_interactions.txt",
+    "common/character_interactions/00_alliance.txt",
+    "common/character_interactions/00_religious_interactions.txt",
+    "common/character_interactions/00_prison_interactions.txt",
+    "common/character_interactions/00_perk_interactions.txt",
+    "common/on_action/war_on_actions.txt",
+    "common/scripted_effects/00_interaction_effects.txt",
+    "common/scripted_effects/00_religious_interaction_effects.txt",
+    "common/scripted_effects/00_prison_effects.txt",
+    "common/scripted_effects/pam_effects.txt",
+    "common/scripted_triggers/00_religious_triggers.txt",
+    "common/scripted_modifiers/00_religion_scripted_modifiers.txt",
+    "common/script_values/pam_values.txt",
+    "common/script_values/07_appointment_values.txt",
+    "common/governments/00_government_types.txt",
+    "common/script_values/00_interaction_values.txt"
+  ],
+  "mapped_game": "D:\\workspace\\ck3_eternal_recurrence\\Crusader Kings III\\game",
+  "projection_diffs": {
+    "common/succession_appointment/admin_governor.txt": {
+      "same_bytes": false,
+      "diff": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-1210-review\\appointments-admin_governor.txt.diff",
+        "bytes": 3966,
+        "sha256": "579204e663fb7083c9f9ee19fc86fbfe3d6f69e451218fb19cabcb0e7054b2dd"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-1210-review\\candidate\\common\\succession_appointment\\admin_governor.txt",
+        "bytes": 1802,
+        "sha256": "052375fa62e37c5aaa12223845cf0187e86ca05a3045a43cbce5357c5aa78061"
+      }
+    },
+    "common/succession_appointment/meritocratic_governor.txt": {
+      "same_bytes": true,
+      "diff": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-1210-review\\appointments-meritocratic_governor.txt.diff",
+        "bytes": 6084,
+        "sha256": "ec2d69b01445c33f55c1a0a5c1b488c2b3d680a3f7d5a10041166ccc7f4055fb"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-1210-review\\candidate\\common\\succession_appointment\\meritocratic_governor.txt",
+        "bytes": 2766,
+        "sha256": "68691c147830a6090c92ec1b9019a741482c9c0e9c70b9ba25a0f498343f941f"
+      }
+    },
+    "common/succession_appointment/celestial_governor.txt": {
+      "same_bytes": false,
+      "diff": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-1210-review\\appointments-celestial_governor.txt.diff",
+        "bytes": 6816,
+        "sha256": "d446a9da4582ae6eb8723dbcde1c39cf2948dc45516eba3366fe4ba7b41ecc8a"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-1210-review\\candidate\\common\\succession_appointment\\celestial_governor.txt",
+        "bytes": 3111,
+        "sha256": "3dd41ad0b5aec7511fb00f60b69ba792dff62f6b1c148742191d220d83fdc7ae"
+      }
+    }
+  },
+  "phase2_failure": {
+    "type": "ValueError",
+    "message": "native golden obligation wallet cap changed",
+    "trace": "Traceback (most recent call last):\n  File \"D:\\ck3-state\\upgrade-20261118\\review_xqol_1210_sources.py\", line 23, in <module>\n    payloads=generator()\n  File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\gen_xqol_phase2.py\", line 393, in generated_payloads\n    \"common/script_values/xqol_generated_payment_values.txt\": \"# GENERATED FILE. Edit tools/gen_xqol_phase2.py, then regenerate.\\n\\n\" + native_full_golden_obligation() + \"\\n\",\n                                                                                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\xqol_vanilla_contract.py\", line 114, in native_full_golden_obligation\n    raise ValueError(\"native golden obligation wallet cap changed\")\nValueError: native golden obligation wallet cap changed\n"
+  }
+}

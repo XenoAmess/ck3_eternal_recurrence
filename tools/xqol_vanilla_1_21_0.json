@@ -1,0 +1,57 @@
+{
+  "game_version": "1.21.0",
+  "steam_build_id": "26622941",
+  "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-18T08:42:59.981540+00:00",
+  "source": "Actual installed public Florin sources. Identity/projection binding only; product business and publication NOT_RUN.",
+  "source_review": {
+    "previous_contract": "xqol_vanilla_1_20_0_4.json",
+    "same_raw": [
+      "common/succession_appointment/meritocratic_governor.txt"
+    ],
+    "changed_raw": [
+      "common/succession_appointment/admin_governor.txt",
+      "common/succession_appointment/celestial_governor.txt",
+      "common/character_interactions/00_vassal_interactions.txt",
+      "common/character_interactions/00_alliance.txt",
+      "common/character_interactions/00_religious_interactions.txt",
+      "common/character_interactions/00_prison_interactions.txt",
+      "common/character_interactions/00_perk_interactions.txt",
+      "common/on_action/war_on_actions.txt",
+      "common/scripted_effects/00_interaction_effects.txt",
+      "common/scripted_effects/00_religious_interaction_effects.txt",
+      "common/scripted_effects/00_prison_effects.txt",
+      "common/scripted_effects/pam_effects.txt",
+      "common/scripted_triggers/00_religious_triggers.txt",
+      "common/scripted_modifiers/00_religion_scripted_modifiers.txt",
+      "common/script_values/pam_values.txt",
+      "common/script_values/07_appointment_values.txt",
+      "common/governments/00_government_types.txt",
+      "common/script_values/00_interaction_values.txt"
+    ],
+    "actual_review": "Governor projections preserve complete current stock with only the original five player score insertions. Golden Obligation now splits uncapped quote from wallet/floor payment; full mode projects the uncapped quote including puppet_or_actor/actor strong-hook selection. Full semantic diff for the other changed historical source bodies is unavailable and is not claimed; existing source/caller guards and real functional cases remain required.",
+    "old_golden_cap_generator_failure_retained": "D:/ck3-state/upgrade-20261118/xqol-1210-review/review-a01-golden-cap-red.json"
+  },
+  "files": {
+    "common/succession_appointment/admin_governor.txt": "b1c56630acf91b72a92661b1b84c6421e50e327c49177a19e993bc6d44394264",
+    "common/succession_appointment/meritocratic_governor.txt": "35dc79fd631979589861f71aa86a4378188d753e3bdb78af5b67858a7ef17ff7",
+    "common/succession_appointment/celestial_governor.txt": "b2b1a81175a883a7709425581b8e578cb1e2ad4b3c950cf84c1a5a7b895b4f74",
+    "common/character_interactions/00_vassal_interactions.txt": "1ffb76a8adcd24957fda1be080f9375ffce6ac31428c3fd7d998c28ad9eec8f9",
+    "common/character_interactions/00_alliance.txt": "718fcdb26d4f6fdbfb41d4c59245c0c87140e96d161265d30e7a0874b127563d",
+    "common/character_interactions/00_religious_interactions.txt": "9ac329caf86a4c52548dd06c9ee019a0c73c8572544c7836401555b0edd86fea",
+    "common/character_interactions/00_prison_interactions.txt": "7969b909d2437e6e091bc2100f4ed2391a3f77aae6d96b029b998531a694d369",
+    "common/character_interactions/00_perk_interactions.txt": "7fc5901a3074833a791329ca7b344597d2e561cd7fb8c98394937c0aeda4bcf5",
+    "common/on_action/war_on_actions.txt": "d90b0d6d9c63f09a37a0b9eff485d6c0004411d08127eeb2d3833fa2b21db28b",
+    "common/scripted_effects/00_interaction_effects.txt": "26151bd9f91cf66d79297d2fe20d8ae5b919d7e83a5fac81e9c93bbea2388465",
+    "common/scripted_effects/00_religious_interaction_effects.txt": "668977968dd5f36cabcba25517770cb8260b60ceb8d4b21a57b5416e48a1e4ef",
+    "common/scripted_effects/00_prison_effects.txt": "3810dcbd335431d4a8551fb03923594160b9a1db64499c8fa311487ba1eb9688",
+    "common/scripted_effects/pam_effects.txt": "79f85bcd712cdbcc206f4ef303181ded06e4d4df95787ca0b89f81441f39209a",
+    "common/scripted_triggers/00_religious_triggers.txt": "50fa9d72741acd616b5e26e7238eefbbc1f2989eb608543c83220e539843f5ef",
+    "common/scripted_modifiers/00_religion_scripted_modifiers.txt": "ee407f928f7de6465ea292774fa2cc1fda98ecc0eb7107ed1c037e860209f180",
+    "common/script_values/pam_values.txt": "cc8d6b7653762213c0891caa8f8a7c867b0fb92634eaa911c9a24ef7ffaf3cf6",
+    "common/script_values/07_appointment_values.txt": "f8bb42504be62f5e5b76468a9724679b1bc809fdad102ee42b12f9ecbd9c4346",
+    "common/governments/00_government_types.txt": "bd6e5dc96f04ad3ebf12841af4310a7437f1e032d641f2947e5c22dc354e2acc",
+    "common/script_values/00_interaction_values.txt": "397bf8d39de7719f04bfb76ffa7d1d1f43ca7380c54c445cdef5a241d5781cba"
+  }
+}
