@@ -1,0 +1,66 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T23:35:05.183188+00:00",
+  "policy_version": "1.0.0",
+  "game_closed": true,
+  "shader": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-18T23:30:00.402332+00:00",
+    "deleted_files": 4184,
+    "deleted_logical_bytes": 183734611,
+    "failed": [],
+    "free_before": {
+      "C:/": 49219272704,
+      "D:/": 21614714880
+    },
+    "free_after": {
+      "C:/": 49071161344,
+      "D:/": 21808103424
+    }
+  },
+  "shader_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-money-R0003\\summary.json",
+    "bytes": 330,
+    "sha256": "47364d67b0d981f0f8ab5df922c0a729d86fdce7ee481bf08d9f8143b4581e05"
+  },
+  "audit": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-18T23:33:57.667842+00:00",
+    "deleted_files": 333,
+    "deleted_logical_bytes": 183904246,
+    "failed": [],
+    "free_before": {
+      "C:/": 51972587520,
+      "D:/": 21772009472
+    },
+    "free_after": {
+      "C:/": 51964723200,
+      "D:/": 21957033984
+    }
+  },
+  "audit_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-lease-archive-R0003\\summary.json",
+    "bytes": 329,
+    "sha256": "ebec4e493c33cdb0304c87d855163fa8bfb6cc0bf82de0d701e0c38f580bbe96"
+  },
+  "archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-R0003-lease-stdout-lossless.zip",
+    "bytes": 29998976,
+    "sha256": "b48d9c13a9df68991b8475c6f7128f91e56c4cdbb64c75979a8bff4fa709f325"
+  },
+  "archive_mapping": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-lease-archive-R0003\\plan-000.json",
+    "bytes": 350510,
+    "sha256": "314dfb0fa79057b24ec163e84e07bd1a8e4907cba47cd0a561bcfcc42dd05b4b"
+  },
+  "availability": "R3 generated shader paths deleted; expanded audit stdout.bin paths deleted after every exact ZIP member SHA256 matched under archive lock. ZIP retains all333 payloads bit-for-bit; original file IDs are not recreated. argv/result receipts, journal, Game evidence and all failure facts remain.",
+  "archive_first_attempt": "Completed 29998976-byte archive exceeded initial16MiB estimate and stopped before any deletion. Existing archive reused, all333 members reverified, then exact deletion succeeded. Actual archive29.999MB is charged; no new archive copy.",
+  "protected": [
+    "Sole MRM warm shader cache",
+    "CHT physical same-save proof until2026-11-25 review",
+    "Remaining old stock source files for future mod comparisons",
+    "All product fixtures, source bundles, logs and original screenshots"
+  ],
+  "retention_review_at_utc": "2026-11-25T23:33:57Z",
+  "detailed_deletion_ledger_review_at_utc": "2026-12-18T23:33:57Z"
+}
