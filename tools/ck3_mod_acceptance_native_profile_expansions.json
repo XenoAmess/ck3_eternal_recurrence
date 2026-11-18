@@ -11185,7 +11185,7 @@
       },
       "production_TUs": {
         "xar_ck3_bridge": 268,
-        "xar_ck3_12002_runtime": 523,
+        "xar_ck3_12002_runtime": 524,
         "xar_bridge_protocol": 1
       },
       "production_source_lists": {
@@ -11615,6 +11615,7 @@
           "src/ck3_1210_pending_snapshot_v1.cpp",
           "src/ck3_1210_military_empty_v1.cpp",
           "src/ck3_1210_full_snapshot_v1.cpp",
+          "src/ck3_1210_ingame_ready_v1.cpp",
           "src/ck3_1210_personal_gold_v1.cpp",
           "src/ck3_1210_personal_gold_frame_v1.cpp",
           "src/ck3_1210_monthly_flow_v1.cpp",
@@ -12971,7 +12972,7 @@
           "dependency_targets": [
             "xar_ck3_1210_full_snapshot_test"
           ],
-          "translation_units": 7,
+          "translation_units": 8,
           "required_defines": [
             "NOMINMAX",
             "WIN32_LEAN_AND_MEAN"
@@ -13363,7 +13364,7 @@
           "dependency_targets": [
             "xar_ck3_1210_full_army_snapshot_test"
           ],
-          "translation_units": 10,
+          "translation_units": 11,
           "required_defines": [
             "NOMINMAX",
             "WIN32_LEAN_AND_MEAN",
@@ -13658,6 +13659,7 @@
         "xar_ck3_1210_full_snapshot_test": [
           "src/ck3_1210_full_snapshot_v1_test.cpp",
           "fixtures/ck3_1210_full_snapshot_body_v1.cpp",
+          "src/ck3_1210_ingame_ready_v1.cpp",
           "src/ck3_1210_actor_foundation_v1.cpp",
           "src/ck3_1210_current_event_snapshot_v1.cpp",
           "src/ck3_1210_pending_snapshot_v1.cpp",
@@ -13700,6 +13702,7 @@
         "xar_ck3_1210_full_army_snapshot_test": [
           "src/ck3_1210_full_army_snapshot_v1_test.cpp",
           "src/ck3_1210_full_snapshot_v1.cpp",
+          "src/ck3_1210_ingame_ready_v1.cpp",
           "src/ck3_1210_core.cpp",
           "src/ck3_1210_actor_foundation_v1.cpp",
           "src/ck3_1210_current_event_snapshot_v1.cpp",
@@ -13750,7 +13753,7 @@
           "src/ck3_1210_full_snapshot_v1.cpp"
         ]
       },
-      "scope": "Florin 1.21.0 shared financial-market acceptance profile: exact 180-to-200 flag transition, including 36 retired old opt-ins and 10 enabled Florin leaves; 792 production translation units; 19 finite standalone fixtures. Source/CMake contract only; no dirty build, old 1.20 profile, SHA replacement, finite fixture, or metadata append grants live game qualification."
+      "scope": "Florin 1.21.0 shared financial-market acceptance profile: exact 180-to-200 flag transition, including 36 retired old opt-ins and 10 enabled Florin leaves; 793 production translation units; 19 finite standalone fixtures. Source/CMake contract only; no dirty build, old 1.20 profile, SHA replacement, finite fixture, or metadata append grants live game qualification."
     }
   }
 }
