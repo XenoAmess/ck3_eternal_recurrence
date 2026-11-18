@@ -135,3 +135,11 @@ Q07附加读取测试的首次owner-default实际wait1：原快速读取的旧�
 Q08真实no-work确认生产DLL及19个原基线EXE未变，完整资格随后在精确TU计数处拒绝。实际File API相对Q05仅新增runtime的`src/ck3_1210_actor_resource_leaf_v2.cpp`，总数为792而非791；v2补齐实际源列表、计数及该TU宏，旧v1保留。对真实Q08全部scope/snapshot/19目标运行原scope校验通过，另3项聚焦回归拒绝错误计数、源、宏和body pin；不改reader或计数守卫。
 
 Q08附加owner-default再次wait1，但新wake已实际成功：序号9、耗时281ms、pump4→5、两次唤醒成功、单次原始读取。剩余失败是测试错误地以安装时清零的published计数推断进程寿命next_sequence；修复改核真实分配器前后值、单次序号分配及执行计数增量，不重置生产序号或放宽验证。该RED仍保留，后六组仍未执行。后继Q09仅重建受影响夹具，基线按原字节等价复用。
+
+## 第五场：真实唤醒成功，暂停主线程仍未处理读取
+
+Q09公共资格通过，生产DLL保持13382656bytes/SHA `8dc193488a05fdeb4f0aab3d3487d800b90a08d77c1c45aab27e066bd2023d44`。19项基线按同缓存、相同EXE及源码字节复用；另7项受影响C++调用实际各通过。两份真实C++失败诊断经Driver→Service→MCP的软件往返通过，未声称游戏执行。runtime-core07于干净 `4f64450cca85ab22832ef667237b7b0e0e00fd34` 构建，原wait0/47.554209秒，七条源链各实际通过；金融产品仍为独立审阅的160文件core03，不改写其旧来源提交。
+
+`R0005/a83` 15:34:54.336163Z实际Steam离线；原CK3 PID15072于15:35:24.938185Z创建。15:35:50.983869Z OS只读核对主窗口最小化、非置顶、非前台。15:41:37.051095Z普通Full可用后，Host提交唯一 `fresh-full-3-c877ea35d7b3`。Native失败诊断原样到达公共调用：elapsed8000ms、submit0/wait4/reclaim0、query_sequence2、owner21776、pump始终19058，32次唤醒全部发送成功，stage为wait_terminal。该结果证明重复投递本身不足，未证明主线程处理或实际读取；不得继续以延长超时或重发同一请求替代修复。
+
+公共run原wait2/403.929038秒，Host原wait1。受管场实际失败exit1、Job0、tree gone、cleanup proven；keeper合作STOP后原allocate wait0/840.024167秒、thread_exited且failure为空。15:45:33.795224Z CAS `15241→15243`释放，resources为空。原件分别为scene的 `live/4-8e1c2f1861--financial-markets--R0005`、`operations/CORE05-run`、`operations/ALLOCATE-core06` 和 `operations/RELEASE-core05`；释放stdout1443bytes/SHA `51ab68a78a5c4fe8309cdd6ff2a193e15aa592da6c66edd45f184efe8e228148`。本场零金融动作、零新增日、零SAVE。关闭后正常rebase远端 `9768fe997`，三份本地夹具／资格修复保留，不修改旧场证据。
