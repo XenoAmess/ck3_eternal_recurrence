@@ -1,0 +1,170 @@
+﻿# 3 effects. Source story plus day plus kind is the immutable clearing identity.
+xfm_debt_cover_shortfall_effect = {
+    set_variable = { name = xfm_result value = 0 }
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange
+            exists = var:xfm_request_debtor
+            exists = var:xfm_request_creditor
+            has_variable = xfm_request_day
+            has_variable = xfm_request_kind
+            xfm_debt_valid_claim_trigger = yes
+            var:xfm_request_day >= 0
+            var:xfm_request_debtor = { story_type = xfm_finance_account }
+            var:xfm_request_creditor = { story_type = xfm_finance_account }
+            var:xfm_request_debtor != var:xfm_request_creditor
+        }
+        save_scope_as = xfm_debt_source
+        var:xfm_request_debtor = { save_scope_as = xfm_debt_debtor }
+        var:xfm_request_creditor = { save_scope_as = xfm_debt_creditor }
+        set_variable = { name = xfm_request_coverage value = 1 }
+        if = {
+            limit = {
+                OR = {
+                    var:xfm_request_kind = 2
+                    AND = { has_variable = xfm_request_fund_eligible var:xfm_request_fund_eligible = 0 }
+                }
+            }
+            set_variable = { name = xfm_request_coverage value = 0 }
+        }
+        clear_saved_scope = xfm_debt_receipt
+        if = {
+            limit = { var:xfm_request_kind = 1 }
+            xfm_debt_cover_kind_effect = { KIND = 1 }
+        }
+        else_if = {
+            limit = { var:xfm_request_kind = 2 }
+            xfm_debt_cover_kind_effect = { KIND = 2 }
+        }
+        else_if = {
+            limit = { var:xfm_request_kind = 3 }
+            xfm_debt_cover_kind_effect = { KIND = 3 }
+        }
+        else_if = {
+            limit = { var:xfm_request_kind = 4 }
+            xfm_debt_cover_kind_effect = { KIND = 4 }
+        }
+    }
+}
+
+xfm_debt_cover_kind_effect = {
+    if = {
+        limit = { has_variable = xfm_debt_day_$KIND$ }
+        if = {
+            limit = { var:xfm_request_day = var:xfm_debt_day_$KIND$ }
+            if = {
+                limit = {
+                    var:xfm_request_cents = var:xfm_debt_amount_$KIND$
+                    var:xfm_debt_receipt_$KIND$.var:xfm_debtor_account = scope:xfm_debt_debtor
+                    var:xfm_debt_receipt_$KIND$.var:xfm_creditor_account = scope:xfm_debt_creditor
+                    var:xfm_debt_receipt_$KIND$.var:xfm_fund_eligible = var:xfm_request_coverage
+                }
+                var:xfm_debt_receipt_$KIND$ = { save_scope_as = xfm_debt_receipt }
+                set_variable = { name = xfm_result value = 1 }
+            }
+            else = { set_variable = { name = xfm_result value = -2 } }
+        }
+        else_if = {
+            limit = { var:xfm_request_day < var:xfm_debt_day_$KIND$ }
+            set_variable = { name = xfm_result value = -3 }
+        }
+        else = { xfm_debt_create_receipt_effect = { KIND = $KIND$ } }
+    }
+    else = { xfm_debt_create_receipt_effect = { KIND = $KIND$ } }
+}
+
+xfm_debt_create_receipt_effect = {
+    if = {
+        limit = { var:xfm_request_day <= global_var:xfm_exchange.var:xfm_day }
+        global_var:xfm_exchange.story_owner = {
+            create_story = { type = xfm_debt_claim save_scope_as = xfm_debt_receipt }
+        }
+    }
+    if = {
+        limit = { exists = scope:xfm_debt_receipt }
+        global_var:xfm_exchange = {
+            if = {
+                limit = { NOT = { has_variable = xfm_debt_counter } }
+                set_variable = { name = xfm_debt_counter value = 0 }
+            }
+            change_variable = { name = xfm_debt_counter add = 1 }
+        }
+        scope:xfm_debt_receipt = {
+            set_variable = { name = xfm_debt_id value = global_var:xfm_exchange.var:xfm_debt_counter }
+            set_variable = { name = xfm_debtor_account value = scope:xfm_debt_debtor }
+            set_variable = { name = xfm_creditor_account value = scope:xfm_debt_creditor }
+            set_variable = { name = xfm_source value = scope:xfm_debt_source }
+            set_variable = { name = xfm_source_day value = scope:xfm_debt_source.var:xfm_request_day }
+            set_variable = { name = xfm_source_kind value = scope:xfm_debt_source.var:xfm_request_kind }
+            set_variable = { name = xfm_fund_eligible value = scope:xfm_debt_source.var:xfm_request_coverage }
+            set_variable = { name = xfm_original_cents value = scope:xfm_debt_source.var:xfm_request_cents }
+            set_variable = { name = xfm_outstanding_cents value = var:xfm_original_cents }
+            set_variable = { name = xfm_winner_unpaid_cents value = var:xfm_original_cents }
+            set_variable = { name = xfm_fund_paid_cents value = 0 }
+            set_variable = { name = xfm_fund_recourse_cents value = 0 }
+            set_variable = { name = xfm_repaid_cents value = 0 }
+            set_variable = { name = xfm_written_off_cents value = 0 }
+            if = {
+                limit = { exists = scope:xfm_debt_source.var:xfm_coin }
+                set_variable = { name = xfm_coin value = scope:xfm_debt_source.var:xfm_coin }
+                set_variable = { name = xfm_coin_claim_open value = 1 }
+                var:xfm_coin = {
+                    add_to_variable_list = { name = xfm_claims target = scope:xfm_debt_receipt }
+                    if = {
+                        limit = { NOT = { has_variable = xfm_unresolved_claim_count } }
+                        set_variable = { name = xfm_unresolved_claim_count value = 0 }
+                    }
+                    change_variable = { name = xfm_unresolved_claim_count add = 1 }
+                }
+            }
+            set_variable = { name = xfm_overdue_days value = 0 }
+            set_variable = { name = xfm_state value = 1 }
+            set_variable = { name = xfm_due_day value = scope:xfm_debt_source.var:xfm_request_day }
+            if = {
+                limit = { exists = global_var:xfm_exchange.var:xfm_default_fund_account }
+                set_variable = { name = xfm_fund_account value = global_var:xfm_exchange.var:xfm_default_fund_account }
+                var:xfm_fund_account = { save_scope_as = xfm_debt_fund }
+                if = {
+                    limit = {
+                        scope:xfm_debt_fund != scope:xfm_debt_debtor
+                        scope:xfm_debt_fund != scope:xfm_debt_creditor
+                        scope:xfm_debt_fund.var:xfm_free_cents > 0
+                        var:xfm_fund_eligible = 1
+                    }
+                    set_variable = { name = xfm_fund_offer_cents value = xfm_debt_fund_payment_value }
+                    scope:xfm_debt_fund = {
+                        set_variable = { name = xfm_request_target value = scope:xfm_debt_creditor }
+                        set_variable = { name = xfm_request_cents value = scope:xfm_debt_receipt.var:xfm_fund_offer_cents }
+                        xfm_finance_transfer_effect = yes
+                    }
+                    if = {
+                        limit = { scope:xfm_debt_fund.var:xfm_result = 1 }
+                        set_variable = { name = xfm_fund_paid_cents value = var:xfm_fund_offer_cents }
+                        set_variable = { name = xfm_fund_recourse_cents value = var:xfm_fund_paid_cents }
+                        change_variable = { name = xfm_winner_unpaid_cents subtract = var:xfm_fund_paid_cents }
+                        scope:xfm_debt_fund = { add_to_variable_list = { name = xfm_claims target = scope:xfm_debt_receipt } }
+                    }
+                    remove_variable = xfm_fund_offer_cents
+                }
+            }
+            add_to_global_variable_list = { name = xfm_debts_active target = this }
+            add_to_global_variable_list = { name = xfm_debts_archive target = this }
+            set_variable = { name = xfm_news_actor value = scope:xfm_debt_debtor.var:xfm_holder }
+            set_variable = { name = xfm_news_kind value = 1 }
+            xfm_news_record_effect = yes
+        }
+        scope:xfm_debt_debtor = {
+            add_to_variable_list = { name = xfm_debts target = scope:xfm_debt_receipt }
+            if = {
+                limit = { NOT = { has_variable = xfm_total_debt_cents } }
+                set_variable = { name = xfm_total_debt_cents value = 0 }
+            }
+            change_variable = { name = xfm_total_debt_cents add = scope:xfm_debt_receipt.var:xfm_original_cents }
+        }
+        scope:xfm_debt_creditor = { add_to_variable_list = { name = xfm_claims target = scope:xfm_debt_receipt } }
+        set_variable = { name = xfm_debt_day_$KIND$ value = var:xfm_request_day }
+        set_variable = { name = xfm_debt_amount_$KIND$ value = var:xfm_request_cents }
+        set_variable = { name = xfm_debt_receipt_$KIND$ value = scope:xfm_debt_receipt }
+        set_variable = { name = xfm_result value = 1 }
+    }
+}

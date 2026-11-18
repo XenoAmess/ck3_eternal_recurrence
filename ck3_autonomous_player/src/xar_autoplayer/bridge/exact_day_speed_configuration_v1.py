@@ -3,6 +3,36 @@ from __future__ import annotations
 
 from .driver import BridgeUnavailableError
 from .version_identity import CK3_12004, require_exact_native_build
+from .version_identity import florin_full_source
+from typing import Protocol
+
+
+class FlorinSpeedObservationDriverV1(Protocol):
+    def take_internal_semantic_snapshot(self) -> dict[str, object]: ...
+
+
+def _florin_same_speed_v1(driver: FlorinSpeedObservationDriverV1, starting: dict[str, object], *,
+        speed: int, actions: list[dict[str, object]]) -> dict[str, object] | None:
+    if starting.get('schema') != 'ck3_1210_full_state_v1' or starting.get('speed') != speed:
+        return None
+    try:
+        source = florin_full_source(starting, None)
+        fresh = driver.take_internal_semantic_snapshot()
+        if (type(speed) is not int or not 1 <= speed <= 5 or type(fresh.get('speed')) is not int
+                or fresh.get('speed') != speed or florin_full_source(fresh, source.public_revision) != source):
+            raise ValueError('Florin exact-day speed or its original Full binding changed')
+    except ValueError as error:
+        raise BridgeUnavailableError(str(error)) from error
+    step = f'set-speed-{speed}'
+    actions.append({'step': step, 'result': {'step': step, 'status': 'already_observed',
+        'submitted': False, 'accepted': None, 'observed_speed': speed,
+        'source_snapshot_id': source.snapshot_id, 'source_native_revision': source.native_revision,
+        'source_date_raw': source.date_raw, 'observation_proof': {
+            'schema': 'xar.ck3.florin.exact-day-speed-observation/v1', 'observation_only': True,
+            'game_pid': source.game_pid, 'connection_generation': source.connection_generation,
+            'played_character_id': source.played_character_id, 'scope_sha256': source.scope_sha256,
+            'public_revision': source.public_revision, 'starting_speed': speed, 'revalidated_speed': speed}}})
+    return fresh
 
 
 def _binding(snapshot):
@@ -47,6 +77,10 @@ def prepare_exact_day_speed_v1(driver, starting, *, speed, actions):
     Missing/foreign/stale bindings retain the original setter/rejection path.
     Native Arm must still validate its independently observed actual speed.
     """
+    if isinstance(starting, dict):
+        observed = _florin_same_speed_v1(driver, starting, speed=speed, actions=actions)
+        if observed is not None:
+            return observed
     binding = _binding(starting)
     if (binding is not None and type(speed) is int and 1 <= speed <= 5
             and type(starting.get("speed")) is int and starting["speed"] == speed):

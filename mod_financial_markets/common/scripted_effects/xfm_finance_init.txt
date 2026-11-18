@@ -1,0 +1,185 @@
+﻿# 5 effects. All newly created ledger balances are zero.
+xfm_finance_bootstrap_effect = {
+ if = {
+  limit = { NOT = { exists = global_var:xfm_exchange } }
+  save_scope_as = xfm_fin_bootstrap_holder
+  clear_saved_scope = xfm_fin_new_exchange
+  create_story = { type = xfm_finance_exchange save_scope_as = xfm_fin_new_exchange }
+  if = {
+   limit = { exists = scope:xfm_fin_new_exchange scope:xfm_fin_new_exchange = { story_type = xfm_finance_exchange } }
+   set_global_variable = { name = xfm_exchange value = scope:xfm_fin_new_exchange }
+   scope:xfm_fin_new_exchange = {
+    set_variable = { name = xfm_day value = 0 }
+    set_variable = { name = xfm_last_date value = current_date }
+    set_variable = { name = xfm_next_account_id value = 0 }
+    set_variable = { name = xfm_next_coin_id value = 0 }
+    set_variable = { name = xfm_next_reservation_id value = 0 }
+    set_variable = { name = xfm_next_order_id value = 0 }
+    set_variable = { name = xfm_coin_count value = 0 }
+    set_variable = { name = xfm_registered_coin_count value = 0 }
+    set_variable = { name = xfm_pending_coin_count value = 0 }
+    set_variable = { name = xfm_active_coin_count value = 0 }
+    set_variable = { name = xfm_fee_cents value = 0 }
+    set_variable = { name = xfm_active_orders_count value = 0 }
+    set_variable = { name = xfm_order_stories_count value = 0 }
+    set_variable = { name = xfm_archived_orders_count value = 0 }
+    set_variable = { name = xfm_new_listings_today value = 0 }
+    xfm_finance_create_account_effect = yes
+    set_variable = { name = xfm_default_fund_account value = scope:xfm_created_account }
+    xfm_finance_seed_ai_effect = yes
+    if = { limit = { has_global_variable = xfm_a0_coin_count } xfm_finance_migrate_a0_effect = yes }
+    else = { set_variable = { name = xfm_a0_migration_scanned value = 1 } }
+   }
+  }
+ }
+}
+xfm_finance_create_account_effect = {
+ set_variable = { name = xfm_result value = 0 }
+ remove_variable = xfm_result_account
+ clear_saved_scope = xfm_created_account
+ if = {
+  limit = { story_type = xfm_finance_exchange exists = story_owner }
+  save_scope_as = xfm_fin_exchange
+  story_owner = { create_story = { type = xfm_finance_account save_scope_as = xfm_created_account } }
+  if = {
+   limit = { exists = scope:xfm_created_account scope:xfm_created_account = { story_type = xfm_finance_account } }
+   change_variable = { name = xfm_next_account_id add = 1 }
+   scope:xfm_created_account = {
+    set_variable = { name = xfm_account_id value = scope:xfm_fin_exchange.var:xfm_next_account_id }
+    set_variable = { name = xfm_holder value = scope:xfm_fin_exchange.story_owner }
+    set_variable = { name = xfm_beneficial_owner value = scope:xfm_fin_exchange.story_owner }
+    set_variable = { name = xfm_system_account value = 1 }
+    set_variable = { name = xfm_account_frozen value = 0 }
+    set_variable = { name = xfm_inheritance_state value = 0 }
+    set_variable = { name = xfm_free_cents value = 0 }
+    set_variable = { name = xfm_reserved_cents value = 0 }
+    set_variable = { name = xfm_holdings_count value = 0 }
+    set_variable = { name = xfm_open_orders_count value = 0 }
+    set_variable = { name = xfm_open_positions_count value = 0 }
+   }
+   add_to_global_variable_list = { name = xfm_account_registry target = scope:xfm_created_account }
+   set_variable = { name = xfm_result_account value = scope:xfm_created_account }
+   set_variable = { name = xfm_result value = 1 }
+  }
+ }
+}
+xfm_finance_ensure_account_effect = {
+ xfm_finance_bootstrap_effect = yes
+ save_scope_as = xfm_fin_actor
+ clear_saved_scope = xfm_account
+ if = {
+  limit = {
+   exists = var:xfm_account
+   NOT = { var:xfm_account = { story_type = xfm_finance_account var:xfm_system_account = 0 var:xfm_holder = scope:xfm_fin_actor } }
+  }
+  remove_variable = xfm_account
+ }
+ if = {
+  limit = { exists = global_var:xfm_exchange }
+  set_variable = { name = xfm_exchange value = global_var:xfm_exchange }
+  if = {
+   limit = { NOT = { exists = var:xfm_account } }
+   global_var:xfm_exchange = { xfm_finance_create_account_effect = yes }
+   if = {
+    limit = { exists = scope:xfm_created_account }
+    scope:xfm_created_account = {
+     set_variable = { name = xfm_holder value = scope:xfm_fin_actor }
+     set_variable = { name = xfm_beneficial_owner value = scope:xfm_fin_actor }
+     set_variable = { name = xfm_system_account value = 0 }
+    }
+    set_variable = { name = xfm_account value = scope:xfm_created_account }
+    add_to_variable_list = { name = xfm_accounts target = scope:xfm_created_account }
+   }
+  }
+  if = {
+   limit = { exists = var:xfm_account }
+   var:xfm_account = { save_scope_as = xfm_account }
+  }
+ }
+}
+xfm_finance_select_account_effect = {
+ clear_saved_scope = xfm_account
+ xfm_finance_ensure_account_effect = yes
+ save_scope_as = xfm_fin_select_actor
+ if = {
+  limit = {
+   exists = var:xfm_active_account
+   var:xfm_active_account = {
+    story_type = xfm_finance_account
+    var:xfm_holder = scope:xfm_fin_select_actor
+    var:xfm_system_account = 0
+   }
+  }
+  var:xfm_active_account = { save_scope_as = xfm_account }
+ }
+ if = {
+  limit = {
+   exists = scope:xfm_account
+   scope:xfm_account = {
+    var:xfm_inheritance_state = 1
+    var:xfm_holder = { is_adult = yes is_alive = yes }
+   }
+  }
+  scope:xfm_account = { set_variable = { name = xfm_account_frozen value = 0 } }
+ }
+}
+xfm_finance_create_coin_effect = {
+ xfm_finance_select_account_effect = yes
+ save_scope_as = xfm_fin_coin_issuer
+ set_variable = { name = xfm_result value = 0 }
+ clear_saved_scope = xfm_coin
+ remove_variable = xfm_result_coin
+ if = {
+  limit = {
+   exists = scope:xfm_account
+   global_var:xfm_exchange = {
+    var:xfm_registered_coin_count < xfm_config_registration_capacity_value
+    var:xfm_pending_coin_count < xfm_config_pending_capacity_value
+   }
+  }
+  global_var:xfm_exchange.story_owner = { create_story = { type = xfm_finance_coin save_scope_as = xfm_coin } }
+  if = {
+   limit = { exists = scope:xfm_coin scope:xfm_coin = { story_type = xfm_finance_coin } }
+   global_var:xfm_exchange = {
+    change_variable = { name = xfm_coin_count add = 1 }
+    change_variable = { name = xfm_registered_coin_count add = 1 }
+    change_variable = { name = xfm_pending_coin_count add = 1 }
+    change_variable = { name = xfm_next_coin_id add = 1 }
+   }
+   scope:xfm_coin = {
+    set_variable = { name = xfm_coin_id value = global_var:xfm_exchange.var:xfm_next_coin_id }
+    set_variable = { name = xfm_controller value = scope:xfm_fin_coin_issuer }
+    set_variable = { name = xfm_entity_type value = 1 }
+    set_variable = { name = xfm_bound_entity value = scope:xfm_fin_coin_issuer }
+    set_variable = { name = xfm_founder_beneficiary value = scope:xfm_fin_coin_issuer }
+    set_variable = { name = xfm_issuer_account value = scope:xfm_account }
+    set_variable = { name = xfm_supply_units value = 0 }
+    set_variable = { name = xfm_listing_state value = 0 }
+    set_variable = { name = xfm_trading_open value = 0 }
+    set_variable = { name = xfm_last_price_cents value = 0 }
+    set_variable = { name = xfm_best_bid_cents value = 0 }
+    set_variable = { name = xfm_best_ask_cents value = 0 }
+    set_variable = { name = xfm_bid_depth_cents value = 0 }
+    set_variable = { name = xfm_price_version value = 0 }
+    set_variable = { name = xfm_qualified_volume_cents value = 0 }
+    set_variable = { name = xfm_day_volume_units value = 0 }
+    set_variable = { name = xfm_day_open_cents value = 0 }
+    set_variable = { name = xfm_day_high_cents value = 0 }
+    set_variable = { name = xfm_day_low_cents value = 0 }
+    set_variable = { name = xfm_day_close_cents value = 0 }
+    set_variable = { name = xfm_last_trade_day value = 0 }
+    set_variable = { name = xfm_candle_cursor value = 0 }
+    set_variable = { name = xfm_actual_trades value = 0 }
+    set_variable = { name = xfm_open_orders_count value = 0 }
+    set_variable = { name = xfm_maker_withdrawn value = 0 }
+    set_variable = { name = xfm_maker_withdrawal_pending value = 0 }
+    set_variable = { name = xfm_maker_reference_cents value = 0 }
+    xfm_oracle_init_coin_effect = yes
+    xfm_spot_init_history_effect = yes
+   }
+   add_to_global_variable_list = { name = xfm_coin_registry target = scope:xfm_coin }
+   set_variable = { name = xfm_result_coin value = scope:xfm_coin }
+   set_variable = { name = xfm_result value = 1 }
+  }
+ }
+}

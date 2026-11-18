@@ -1,0 +1,59 @@
+﻿# Presets are prospective capacity limits, not performance qualification.
+xfm_config_coin_capacity_value = {
+    value = 4096
+    if = {
+        limit = { has_game_rule = xfm_capacity_conservative }
+        value = 2048
+    }
+    else_if = {
+        limit = { has_game_rule = xfm_capacity_extended }
+        value = 8192
+    }
+}
+xfm_config_ai_budget_value = {
+    value = 512
+    if = {
+        limit = { has_game_rule = xfm_ai_light }
+        value = 128
+    }
+    else_if = {
+        limit = { has_game_rule = xfm_ai_dense }
+        value = 1024
+    }
+}
+xfm_config_detailed_book_capacity_value = {
+    value = 64
+    if = {
+        limit = { has_game_rule = xfm_capacity_conservative }
+        value = 32
+    }
+    else_if = {
+        limit = { has_game_rule = xfm_capacity_extended }
+        value = 128
+    }
+}
+xfm_config_listing_daily_budget_value = 8
+xfm_config_registration_capacity_value = {
+    value = xfm_config_coin_capacity_value
+    multiply = 4
+}
+xfm_config_pending_capacity_value = {
+    value = xfm_config_listing_daily_budget_value
+    multiply = 30
+}
+xfm_config_futures_position_capacity_value = {
+    value = 4096
+    if = {
+        limit = { has_game_rule = xfm_capacity_conservative }
+        value = 1024
+    }
+    else_if = {
+        limit = { has_game_rule = xfm_capacity_extended }
+        value = 8192
+    }
+}
+xfm_config_ai_watchlist_capacity_value = 6
+xfm_config_player_order_capacity_value = 32
+xfm_config_coin_order_capacity_value = 64
+xfm_config_global_order_capacity_value = 8192
+xfm_config_issuance_cooldown_days_value = 730

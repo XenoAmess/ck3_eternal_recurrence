@@ -5,6 +5,7 @@ import copy
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -40,6 +41,77 @@ def put(path, content):
 
 
 class NormalExitPublicProfileTests(unittest.TestCase):
+    @unittest.skipUnless(os.environ.get('XAR_CK3_1210_OFFLINE_METADATA_GAME_DIR'),
+        'explicit actual installed 1.21 game root required; no Game is launched')
+    def test_actual_installed_florin_metadata_builder_host_driver_client_chain(self):
+        from xar_autoplayer.bridge.normal_exit_public_wire_v2 import normal_exit_public_result_v2
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+        from xar_autoplayer.bridge.normal_exit_contract_v1 import CORE_EXIT_EXE_SHA256
+        from test_normal_exit_core1210_v1 import CoreDriver
+        from ck3_mod_acceptance import normal_exit_static_binding_v1
+        from ck3_mod_acceptance_client import typed_normal_quit_evidence_v1
+        game=Path(os.environ['XAR_CK3_1210_OFFLINE_METADATA_GAME_DIR']).resolve()
+        executable=public_profile.pin(game/'binaries/ck3.exe')
+        self.assertEqual(executable['sha256'].upper(),CORE_EXIT_EXE_SHA256)
+        with tempfile.TemporaryDirectory(prefix='OFFLINE_ACTUAL_FLORIN_METADATA_') as temporary:
+            root=Path(temporary).resolve();state=root/'state';live=root/'allocated-offline-core-run'
+            live.mkdir();userdir=state/'profile';userdir.mkdir(parents=True)
+            put(userdir/'pdx_settings.txt',b'# authored offline settings; no Game\n')
+            product=REPO/'mod_financial_markets'
+            put(userdir/'mod/product.mod',('name="Actual product static metadata"\npath="'+product.as_posix()+'"\n').encode())
+            put(userdir/'dlc_load.json',b'{"enabled_mods":["mod/product.mod"],"disabled_dlcs":[]}')
+            prep={'schema':'ck3-mod-acceptance-prepared-fixture-v1','state_dir':str(state),
+                'profile_dir':str(userdir),'game_version':'1.21.0','exe_sha256':executable['sha256']}
+            prep_ref=put(root/'prepared/profile-preparation.json',json.dumps(prep).encode())
+            put(state/'preparation.json',json.dumps({'schema':'ck3-mod-acceptance-profile-startup-evidence-v1',
+                'profile_dir':str(userdir),'preparation':prep_ref}).encode())
+            args=SimpleNamespace(state_dir=state,game_dir=game,bridge_dll=root/'software-native.dll',
+                bridge_injector=root/'software-injector.exe',output=live/'native-report.json')
+            runtime={'game_dir':str(game),'paths':{'dll':str(args.bridge_dll),'injector':str(args.bridge_injector)}}
+            manifest={'game':{'version':'1.21.0','exe_sha256':executable['sha256']},
+                'native':{'dll':{'path_key':'dll','sha256':'1'*64},'injector':{'path_key':'injector','sha256':'2'*64}}}
+            manifest_ref=put(root/'manifest.json',json.dumps(manifest).encode())
+            profile_ref=public_profile.create_profile(args,runtime,manifest,manifest_ref,live/'normal-exit-binding',builder)
+            normal_exit_static_binding_v1(profile_ref,state_dir=state,run_dir=live,runtime_manifest=manifest_ref)
+            args.normal_exit_managed_profile=Path(profile_ref['path'])
+            args.normal_exit_managed_profile_sha256=profile_ref['sha256']
+            driver=CoreDriver(state/'native-session');driver.path.mkdir()
+            host_binding()(driver,args)
+            service=GameplayBridgeService(driver)
+            # Keep the allocated immutable settings snapshot, using the actual
+            # running-input verifier used by the common managed host.
+            original_settings=put(live/'input-snapshots/profile/pdx_settings.txt',(userdir/'pdx_settings.txt').read_bytes())
+            frozen={'run_id':live.name,'state_dir':str(state),'identity_allocation':{'machine_id':'4-8e1c2f1861'},
+                'argv':['SOFTWARE_NO_GAME','--normal-exit-managed-profile',profile_ref['path'],
+                    '--normal-exit-managed-profile-sha256',profile_ref['sha256']],
+                'files':{str(userdir/'pdx_settings.txt'):{k:original_settings[k] for k in ('bytes','sha256')},
+                         original_settings['path']:{k:original_settings[k] for k in ('bytes','sha256')}}}
+            frozen_ref=put(live/'frozen-argv.json',json.dumps(frozen).encode())
+            context={'run_id':live.name,'run_dir':str(live),'frozen_argv':frozen_ref,'normal_exit_managed_profile':profile_ref}
+            put(live/'ready-context.json',json.dumps(context).encode())
+            query=service.query_normal_exit_context_v1(expected_revision=72)
+            terminal=service.request_normal_exit_v1('confirm_desktop',expected_revision=72,
+                expected_exit_context_signature=query['exit_context_signature'])
+            self.assertTrue(terminal['typed_normal_exit_observed'])
+            self.assertEqual(len(driver.sent),1)
+            bridge=REPO/'ck3_autonomous_player/src/xar_autoplayer/bridge'
+            index=root/'source-index.json'
+            index_ref=put(index,json.dumps({'schema':'ck3-common-source-index-v1','files':{
+                (bridge/(name+'.py')).relative_to(REPO).as_posix():{k:public_profile.pin(bridge/(name+'.py'))[k]
+                    for k in ('bytes','sha256')} for name in ('normal_exit_process_observer_v1',
+                        'normal_exit_contract_v1','normal_exit_public_wire_v2')}}).encode())
+            report={'error':None,'steps':[{'id':'original-core-exit','ok':True,'finished_at':'software-observed',
+                'plan':{'tool':'ck3_request_normal_exit_v1','args':{'action':'confirm_desktop','expected_revision':'72',
+                    'expected_exit_context_signature':query['exit_context_signature']}},
+                'result':normal_exit_public_result_v2(terminal)}]}
+            evidence=typed_normal_quit_evidence_v1(report,live=live,state=state,
+                retained_value={'pid':43,'creation_filetime_100ns':str(driver.api.creation),
+                    'retained_synchronize_query_handle_acquired':True},context_value=context,frozen_value=frozen,
+                source_root=REPO,source_index=index,source_index_reference=index_ref)
+            self.assertIsNotNone(evidence)
+            self.assertIsNone(evidence['autosave_disabled'])
+            self.assertFalse(evidence['autosave_verified'])
+
     def test_actual_public_projection_builds_and_binds_existing_inventory(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve()

@@ -1,0 +1,69 @@
+﻿# 3 effects. Exact proposal data is copied into the buyer event context.
+xfm_market_ui_otc_propose_effect = {
+    xfm_finance_ensure_account_effect = yes
+    save_scope_as = xfm_ui_otc_seller
+    var:xfm_account = { save_scope_as = xfm_ui_otc_seller_account }
+    var:xfm_otc_buyer = {
+        xfm_finance_ensure_account_effect = yes
+        save_scope_as = xfm_ui_otc_buyer
+        var:xfm_account = { save_scope_as = xfm_ui_otc_buyer_account }
+    }
+    xfm_listing_offer_otc_effect = yes
+    if = {
+        limit = { has_variable = xfm_otc_consent }
+        var:xfm_otc_offer_coin = { save_scope_as = xfm_ui_otc_coin }
+        save_scope_value_as = { name = xfm_ui_otc_nonce value = var:xfm_otc_offer_nonce }
+        save_scope_value_as = { name = xfm_ui_otc_lots value = var:xfm_otc_offer_lots }
+        save_scope_value_as = { name = xfm_ui_otc_limit_cents value = var:xfm_otc_offer_price_cents }
+        save_scope_value_as = { name = xfm_ui_otc_price_version value = var:xfm_otc_offer_price_version }
+        save_scope_value_as = { name = xfm_ui_otc_expiry_day value = var:xfm_otc_offer_expires_day }
+        scope:xfm_ui_otc_buyer = { trigger_event = xfm_market.120 }
+    }
+}
+xfm_market_ui_otc_accept_effect = {
+    set_variable = { name = xfm_issuer_result value = 0 }
+    if = {
+        limit = {
+            this = scope:xfm_ui_otc_buyer
+            is_alive = yes is_adult = yes
+            var:xfm_account = scope:xfm_ui_otc_buyer_account
+            global_var:xfm_exchange.var:xfm_day < scope:xfm_ui_otc_expiry_day
+            scope:xfm_ui_otc_seller = {
+                is_alive = yes is_adult = yes
+                has_variable = xfm_otc_consent
+                var:xfm_account = scope:xfm_ui_otc_seller_account
+                var:xfm_otc_buyer = scope:xfm_ui_otc_buyer
+                var:xfm_otc_offer_nonce = scope:xfm_ui_otc_nonce
+                var:xfm_otc_offer_coin = scope:xfm_ui_otc_coin
+                var:xfm_otc_offer_lots = scope:xfm_ui_otc_lots
+                var:xfm_otc_offer_price_cents = scope:xfm_ui_otc_limit_cents
+            }
+            scope:xfm_ui_otc_coin = {
+                var:xfm_price_version = scope:xfm_ui_otc_price_version
+                var:xfm_listing_state != 7
+            }
+            scope:xfm_ui_otc_seller_account = { var:xfm_holder = scope:xfm_ui_otc_seller xfm_finance_account_usable_trigger = yes }
+            scope:xfm_ui_otc_buyer_account = { var:xfm_holder = scope:xfm_ui_otc_buyer xfm_finance_account_usable_trigger = yes }
+        }
+        set_variable = { name = xfm_otc_seller value = scope:xfm_ui_otc_seller }
+        xfm_listing_accept_otc_effect = yes
+        if = {
+            limit = { var:xfm_issuer_result = 1 }
+            scope:xfm_ui_otc_seller = { change_variable = { name = xfm_otc_offer_nonce add = 1 } }
+        }
+    }
+}
+xfm_market_ui_otc_decline_effect = {
+    if = {
+        limit = {
+            scope:xfm_ui_otc_seller = {
+                var:xfm_otc_buyer = root
+                var:xfm_otc_offer_nonce = scope:xfm_ui_otc_nonce
+            }
+        }
+        scope:xfm_ui_otc_seller = {
+            xfm_listing_cancel_otc_effect = yes
+            change_variable = { name = xfm_otc_offer_nonce add = 1 }
+        }
+    }
+}

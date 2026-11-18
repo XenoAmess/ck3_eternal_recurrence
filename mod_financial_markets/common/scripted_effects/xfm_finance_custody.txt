@@ -1,0 +1,77 @@
+﻿# Legal ownership migrates without reissuing account IDs or deleting obligations.
+xfm_finance_holder_death_effect = {
+ save_scope_as = xfm_fin_dying_holder
+ clear_saved_scope = xfm_fin_legal_heir
+ if = {
+  limit = { exists = primary_heir primary_heir != this }
+  primary_heir = { save_scope_as = xfm_fin_legal_heir }
+ }
+ every_in_list = {
+  variable = xfm_accounts
+  limit = { story_type = xfm_finance_account var:xfm_holder = scope:xfm_fin_dying_holder var:xfm_system_account = 0 }
+  set_variable = { name = xfm_account_frozen value = 1 }
+  set_variable = { name = xfm_previous_holder value = scope:xfm_fin_dying_holder }
+  if = { limit = { NOT = { has_variable = xfm_original_deceased_holder } } set_variable = { name = xfm_original_deceased_holder value = scope:xfm_fin_dying_holder } }
+  save_scope_as = xfm_fin_estate_account
+  every_in_list = {
+   variable = xfm_orders
+   limit = { var:xfm_status = 1 }
+   add_to_temporary_list = xfm_fin_death_cancel_orders
+  }
+  if = {
+   limit = { exists = scope:xfm_fin_legal_heir }
+   set_variable = { name = xfm_holder value = scope:xfm_fin_legal_heir }
+   set_variable = { name = xfm_beneficial_owner value = scope:xfm_fin_legal_heir }
+   set_variable = { name = xfm_inheritance_state value = 1 }
+   if = { limit = { scope:xfm_fin_legal_heir = { is_adult = yes } } set_variable = { name = xfm_account_frozen value = 0 } }
+   scope:xfm_fin_legal_heir = {
+    if = { limit = { NOT = { any_in_list = { variable = xfm_accounts this = scope:xfm_fin_estate_account } } } add_to_variable_list = { name = xfm_accounts target = scope:xfm_fin_estate_account } }
+    if = { limit = { NOT = { any_in_list = { variable = xfm_inherited_accounts this = scope:xfm_fin_estate_account } } } add_to_variable_list = { name = xfm_inherited_accounts target = scope:xfm_fin_estate_account } }
+   }
+  }
+  else = { set_variable = { name = xfm_inheritance_state value = 2 } }
+ }
+ every_in_list = { list = xfm_fin_death_cancel_orders xfm_spot_cancel_order_effect = yes }
+ if = {
+  limit = { exists = scope:xfm_fin_legal_heir is_ai = no }
+  if = {
+   limit = {
+    exists = var:xfm_news_next
+    OR = {
+     NOT = { exists = scope:xfm_fin_legal_heir.var:xfm_news_next }
+     scope:xfm_fin_legal_heir.var:xfm_news_next.var:xfm_news_id > var:xfm_news_next.var:xfm_news_id
+    }
+   }
+   scope:xfm_fin_legal_heir = { set_variable = { name = xfm_news_next value = scope:xfm_fin_dying_holder.var:xfm_news_next } }
+  }
+  if = {
+   limit = {
+    exists = var:xfm_news_urgent_next
+    OR = {
+     NOT = { exists = scope:xfm_fin_legal_heir.var:xfm_news_urgent_next }
+     scope:xfm_fin_legal_heir.var:xfm_news_urgent_next.var:xfm_news_id > var:xfm_news_urgent_next.var:xfm_news_id
+    }
+   }
+   scope:xfm_fin_legal_heir = { set_variable = { name = xfm_news_urgent_next value = scope:xfm_fin_dying_holder.var:xfm_news_urgent_next } }
+  }
+  if = {
+   limit = { has_variable = xfm_news_delivery_day var:xfm_news_delivery_day = global_var:xfm_exchange.var:xfm_day }
+   scope:xfm_fin_legal_heir = {
+    if = {
+     limit = { NOT = { var:xfm_news_delivery_day = global_var:xfm_exchange.var:xfm_day } }
+     set_variable = { name = xfm_news_delivery_day value = scope:xfm_fin_dying_holder.var:xfm_news_delivery_day }
+     set_variable = { name = xfm_news_sent_today value = scope:xfm_fin_dying_holder.var:xfm_news_sent_today }
+    }
+    else_if = {
+     limit = { var:xfm_news_sent_today < scope:xfm_fin_dying_holder.var:xfm_news_sent_today }
+     set_variable = { name = xfm_news_sent_today value = scope:xfm_fin_dying_holder.var:xfm_news_sent_today }
+    }
+   }
+  }
+  if = {
+   limit = { has_variable = xfm_news_cursor NOT = { scope:xfm_fin_legal_heir = { has_variable = xfm_news_cursor } } }
+   scope:xfm_fin_legal_heir = { set_variable = { name = xfm_news_cursor value = scope:xfm_fin_dying_holder.var:xfm_news_cursor } }
+  }
+ }
+ # Preserve xfm_ai_next/queued: the linked discovery queue removes this node on pop.
+}

@@ -1,0 +1,15 @@
+﻿xfm_debt_aid_opinion = {
+    monthly_change = 0.2
+    decaying = yes
+    stacking = no
+}
+xfm_debt_restructure_opinion = {
+    monthly_change = 0.2
+    decaying = yes
+    stacking = no
+}
+xfm_debt_repudiation_opinion = {
+    monthly_change = 0.2
+    decaying = yes
+    stacking = no
+}

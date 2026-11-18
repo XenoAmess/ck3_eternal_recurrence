@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -25,6 +26,9 @@ public final class FinancialMarket {
         Objects.requireNonNull(id, "id");
         Objects.requireNonNull(beneficiaryId, "beneficiaryId");
         nonnegative(openingCashCents, "opening cash");
+        if (id.value().startsWith("xfm.escrow.")) {
+            throw failure(Code.ESCROW_RESTRICTED, "escrows must be created empty by a ledger batch");
+        }
         return mutate(next -> {
             if (next.accounts.containsKey(id)) {
                 throw failure(Code.ACCOUNT_EXISTS, "account already exists");
@@ -51,6 +55,7 @@ public final class FinancialMarket {
                 throw failure(Code.COIN_EXISTS, "coin ID cannot be reused");
             }
             Account issuer = account(next, issuerId);
+            requireOrdinaryAccount(next, issuerId);
             payFee(next, issuer, feeCents);
             CoinView coin = new CoinView(coinId, issuerId, initialSupplyCoins, maxSupplyCoins);
             next.coins.put(coinId, coin);
@@ -91,6 +96,7 @@ public final class FinancialMarket {
         mutate(next -> {
             Account from = account(next, fromId);
             Account to = account(next, toId);
+            requireOrdinaryAccount(next, fromId);
             requireCash(from, cents);
             from.availableCash -= cents;
             to.availableCash = Math.addExact(to.availableCash, cents);
@@ -108,6 +114,8 @@ public final class FinancialMarket {
             coin(next, coinId);
             Account from = account(next, fromId);
             Account to = account(next, toId);
+            requireOrdinaryAccount(next, fromId);
+            requireOrdinaryAccount(next, toId);
             Holding origin = from.holding(coinId);
             if (origin.available < quantityCoins) {
                 throw failure(Code.INSUFFICIENT_COINS, "not enough unreserved coins");
@@ -128,6 +136,7 @@ public final class FinancialMarket {
         positive(limitPriceCentsPerLot, "limit price");
         return mutate(next -> {
             Account owner = account(next, ownerId);
+            requireOrdinaryAccount(next, ownerId);
             coin(next, coinId);
             long quantityCoins = Math.multiplyExact(lots, COINS_PER_LOT);
             long maxGross = Math.multiplyExact(lots, limitPriceCentsPerLot);
@@ -232,6 +241,81 @@ public final class FinancialMarket {
 
     public synchronized MarketSnapshot snapshot() {
         return state.snapshot();
+    }
+
+    /** Execute a typed batch once; an identical retry is a no-op, conflicting reuse is rejected. */
+    public synchronized LedgerBatchReceipt applyBatch(LedgerBatch batch) {
+        Objects.requireNonNull(batch, "batch");
+        LedgerBatch previous = state.batches.get(batch.id());
+        if (previous != null) {
+            if (!previous.equals(batch)) {
+                throw failure(Code.BATCH_CONFLICT, "ledger batch ID reused with different contents");
+            }
+            return new LedgerBatchReceipt(batch.id(), false, batch.transfers().size(), batchFee(batch));
+        }
+        return mutate(next -> {
+            for (LedgerBatch.CoinIssue issue : batch.coinIssues()) {
+                Account issuer = account(next, issue.issuer());
+                requireOrdinaryAccount(next, issue.issuer());
+                if (next.coins.containsKey(issue.coin())) throw failure(Code.COIN_EXISTS, "coin ID cannot be reused");
+                next.coins.put(issue.coin(), new CoinView(issue.coin(), issue.issuer(), issue.initialCoins(), issue.maxSupplyCoins()));
+                issuer.holding(issue.coin()).available = issue.initialCoins();
+            }
+            for (LedgerBatch.CreateEscrow request : batch.escrows()) {
+                Account owner = account(next, request.legalOwner());
+                requireOrdinaryAccount(next, request.legalOwner());
+                if (next.accounts.containsKey(request.id())) {
+                    throw failure(Code.ACCOUNT_EXISTS, "escrow already exists under another batch");
+                }
+                next.accounts.put(request.id(), new Account(request.id(), owner.beneficiary, 0));
+                next.escrowIds.add(request.id());
+            }
+            for (LedgerBatch.Transfer transfer : batch.transfers()) {
+                Account from = account(next, transfer.from());
+                Account to = account(next, transfer.to());
+                requireCash(from, transfer.cents());
+                from.availableCash -= transfer.cents();
+                to.availableCash = Math.addExact(to.availableCash, transfer.cents());
+            }
+            for (LedgerBatch.CoinTransfer transfer : batch.coinTransfers()) {
+                coin(next, transfer.coin());
+                Account from = account(next, transfer.from());
+                Account to = account(next, transfer.to());
+                requireOrdinaryAccount(next, transfer.from());
+                requireOrdinaryAccount(next, transfer.to());
+                Holding origin = from.holding(transfer.coin());
+                if (origin.available < transfer.coins())
+                    throw failure(Code.INSUFFICIENT_COINS, "batch coin delivery is not backed");
+                origin.available -= transfer.coins();
+                Holding destination = to.holding(transfer.coin());
+                destination.available = Math.addExact(destination.available, transfer.coins());
+            }
+            for (LedgerBatch.Fee fee : batch.fees()) {
+                payFee(next, account(next, fee.payer()), fee.cents());
+            }
+            long totalFee = batchFee(batch);
+            next.batches.put(batch.id(), batch);
+            return new LedgerBatchReceipt(batch.id(), true, batch.transfers().size(), totalFee);
+        });
+    }
+
+    public synchronized boolean isEscrow(AccountId id) {
+        account(state, Objects.requireNonNull(id, "id"));
+        return state.escrowIds.contains(id);
+    }
+
+    private static long batchFee(LedgerBatch batch) {
+        long total = 0;
+        for (LedgerBatch.Fee fee : batch.fees()) {
+            total = Math.addExact(total, fee.cents());
+        }
+        return total;
+    }
+
+    private static void requireOrdinaryAccount(State state, AccountId id) {
+        if (state.escrowIds.contains(id)) {
+            throw failure(Code.ESCROW_RESTRICTED, "reserved escrow cannot act as a trading wallet");
+        }
     }
 
     private <T> T mutate(Function<State, T> operation) {
@@ -407,6 +491,8 @@ public final class FinancialMarket {
         private final LinkedHashMap<CoinId, CoinView> coins = new LinkedHashMap<>();
         private final LinkedHashMap<OrderId, Order> orders = new LinkedHashMap<>();
         private final ArrayList<Trade> trades = new ArrayList<>();
+        private final LinkedHashSet<AccountId> escrowIds = new LinkedHashSet<>();
+        private final LinkedHashMap<String, LedgerBatch> batches = new LinkedHashMap<>();
 
         private State() {
         }
@@ -421,6 +507,8 @@ public final class FinancialMarket {
             coins.putAll(source.coins);
             source.orders.forEach((id, order) -> orders.put(id, new Order(order)));
             trades.addAll(source.trades);
+            escrowIds.addAll(source.escrowIds);
+            batches.putAll(source.batches);
         }
 
         private MarketSnapshot snapshot() {

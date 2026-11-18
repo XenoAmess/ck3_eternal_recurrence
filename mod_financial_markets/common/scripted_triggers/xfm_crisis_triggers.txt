@@ -1,0 +1,36 @@
+﻿xfm_crisis_serious_debt_trigger = {
+    story_type = xfm_finance_account
+    var:xfm_system_account = 0
+    var:xfm_inheritance_state = 0
+    var:xfm_account_frozen = 0
+    has_variable = xfm_total_debt_cents
+    var:xfm_total_debt_cents > xfm_debt_income_threshold_value
+    has_variable = xfm_max_overdue_days
+    var:xfm_max_overdue_days >= 30
+    exists = var:xfm_holder
+    var:xfm_holder = { is_alive = yes is_adult = yes is_ai = yes stress_level >= 2 }
+    OR = {
+        NOT = { has_variable = xfm_crisis_relief_until }
+        var:xfm_crisis_relief_until <= global_var:xfm_exchange.var:xfm_day
+    }
+}
+
+xfm_crisis_terminal_review_trigger = {
+    xfm_config_crisis_narratives_trigger = yes
+    xfm_crisis_serious_debt_trigger = yes
+    NOT = { has_variable = xfm_crisis_terminal }
+    has_variable = xfm_aid_opportunity_recorded
+    has_variable = xfm_crisis_reviews
+    var:xfm_crisis_reviews >= 2
+    var:xfm_crisis_started_day <= xfm_crisis_mature_day_value
+    var:xfm_free_cents = 0
+    var:xfm_reserved_cents = 0
+    has_variable = xfm_holdings_count
+    var:xfm_holdings_count = 0
+    has_variable = xfm_open_orders_count
+    var:xfm_open_orders_count = 0
+    has_variable = xfm_open_positions_count
+    var:xfm_open_positions_count = 0
+    var:xfm_crisis_actor = var:xfm_holder
+    var:xfm_holder = { is_alive = yes is_adult = yes is_ai = yes stress_level >= 3 gold <= 0 }
+}

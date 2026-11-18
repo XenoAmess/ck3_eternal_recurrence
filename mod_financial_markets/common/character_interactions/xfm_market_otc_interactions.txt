@@ -1,0 +1,52 @@
+﻿xfm_market_otc_offer_interaction = {
+    category = interaction_category_friendly
+    common_interaction = yes
+    interface_priority = 88
+    icon = loan_money_interaction
+    desc = xfm_market_otc_offer_interaction_desc
+    auto_accept = yes
+    use_diplomatic_range = no
+    ai_frequency = 0
+    is_shown = {
+        scope:actor = { is_ai = no is_adult = yes exists = var:xfm_selected_coin }
+        scope:recipient = { is_alive = yes is_adult = yes }
+        scope:actor != scope:recipient
+    }
+    is_valid_showing_failures_only = {
+        scope:actor = {
+            is_alive = yes
+            var:xfm_order_lots >= 1
+            var:xfm_order_limit_cents >= 1
+            var:xfm_selected_coin = { story_type = xfm_finance_coin var:xfm_listing_state != 7 }
+        }
+    }
+    on_accept = {
+        # Automatic acceptance here only sends a proposal. The buyer decides in
+        # the immutable event context; it does not authorize a transaction.
+        scope:actor = {
+            set_variable = { name = xfm_otc_buyer value = scope:recipient }
+            xfm_market_ui_otc_propose_effect = yes
+        }
+    }
+    ai_will_do = { base = 0 }
+}
+xfm_market_otc_cancel_interaction = {
+    category = interaction_category_friendly
+    common_interaction = yes
+    interface_priority = 87
+    icon = loan_money_interaction
+    desc = xfm_market_otc_cancel_interaction_desc
+    auto_accept = yes
+    use_diplomatic_range = no
+    ai_frequency = 0
+    is_shown = {
+        scope:actor = { is_ai = no has_variable = xfm_otc_consent var:xfm_otc_buyer = scope:recipient }
+    }
+    on_accept = {
+        scope:actor = {
+            xfm_listing_cancel_otc_effect = yes
+            change_variable = { name = xfm_otc_offer_nonce add = 1 }
+        }
+    }
+    ai_will_do = { base = 0 }
+}

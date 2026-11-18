@@ -1,0 +1,54 @@
+﻿namespace = xfm_market
+xfm_market.130 = {
+    type = character_event title = xfm_market_management_title theme = stewardship
+    immediate = {
+        xfm_market_ui_capture_coin_effect = yes
+        xfm_market_ui_capture_wallet_effect = yes
+        save_scope_value_as = { name = xfm_ui_confirmation_action value = var:xfm_ui_management_action }
+    }
+    desc = {
+        first_valid = {
+            triggered_desc = { trigger = { scope:xfm_ui_confirmation_action = 1 } desc = xfm_market_concealed_mint_desc }
+            triggered_desc = { trigger = { scope:xfm_ui_confirmation_action = 2 } desc = xfm_market_accumulate_desc }
+            triggered_desc = { trigger = { scope:xfm_ui_confirmation_action = 3 } desc = xfm_market_dump_desc }
+            triggered_desc = { trigger = { scope:xfm_ui_confirmation_action = 4 } desc = xfm_market_withdraw_liquidity_desc }
+            triggered_desc = { trigger = { scope:xfm_ui_confirmation_action = 5 } desc = xfm_market_freeze_supply_desc }
+            triggered_desc = { trigger = { scope:xfm_ui_confirmation_action = 6 } desc = xfm_market_project_cash_desc }
+            triggered_desc = { trigger = { scope:xfm_ui_confirmation_action = 7 } desc = xfm_market_restart_liquidity_desc }
+            triggered_desc = { trigger = { scope:xfm_ui_confirmation_action = 8 } desc = xfm_market_relist_desc }
+            desc = xfm_market_cancel_failed_supply_desc
+        }
+    }
+    option = {
+        name = xfm_market_management_confirm
+        trigger = {
+            is_alive = yes is_adult = yes
+            scope:xfm_ui_confirmation_ready = 1
+            exists = scope:xfm_ui_confirmation_coin
+            exists = scope:xfm_ui_confirmation_account
+            scope:xfm_ui_confirmation_account = { var:xfm_holder = root var:xfm_system_account = 0 xfm_finance_account_usable_trigger = yes }
+        }
+        xfm_market_ui_restore_coin_effect = yes
+        xfm_market_ui_restore_wallet_effect = yes
+        if = {
+            limit = {
+                scope:xfm_ui_confirmation_action = 1
+                scope:xfm_ui_confirmation_coin = {
+                    var:xfm_supply_units = scope:xfm_ui_confirmation_supply
+                    var:xfm_maximum_supply_units = scope:xfm_ui_confirmation_maximum_supply
+                }
+            }
+            xfm_issuer_concealed_mint_effect = yes
+        }
+        else_if = { limit = { scope:xfm_ui_confirmation_action = 2 } xfm_issuer_accumulate_effect = yes }
+        else_if = { limit = { scope:xfm_ui_confirmation_action = 3 } xfm_issuer_dump_effect = yes }
+        else_if = { limit = { scope:xfm_ui_confirmation_action = 4 } xfm_issuer_withdraw_liquidity_effect = yes }
+        else_if = { limit = { scope:xfm_ui_confirmation_action = 5 } xfm_issuer_freeze_supply_effect = yes }
+        else_if = { limit = { scope:xfm_ui_confirmation_action = 6 } xfm_issuer_release_project_cash_effect = yes }
+        else_if = { limit = { scope:xfm_ui_confirmation_action = 7 } xfm_issuer_restart_liquidity_effect = yes }
+        else_if = { limit = { scope:xfm_ui_confirmation_action = 8 } xfm_listing_request_relist_effect = yes }
+        else_if = { limit = { scope:xfm_ui_confirmation_action = 9 } xfm_issuer_cancel_unallocated_supply_effect = yes }
+        xfm_market_ui_refresh_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}

@@ -1,0 +1,83 @@
+﻿# All adult living characters have the same base access, including unlanded AI.
+xfm_issuer_actor_trigger = { is_alive = yes is_adult = yes }
+
+xfm_issuer_authorized_binding_trigger = {
+    OR = {
+        var:xfm_requested_entity_type = 1
+        AND = { var:xfm_requested_entity_type = 2 is_house_head = yes exists = house }
+        AND = { var:xfm_requested_entity_type = 3 is_dynast = yes exists = dynasty }
+        AND = { var:xfm_requested_entity_type = 4 is_landed = yes exists = primary_title }
+        AND = { var:xfm_requested_entity_type = 5 exists = faith.religious_head faith.religious_head = this }
+        var:xfm_requested_entity_type = 6
+        var:xfm_requested_entity_type = 7
+    }
+}
+
+xfm_issuer_can_register_trigger = {
+    xfm_issuer_actor_trigger = yes
+    xfm_config_spot_open_trigger = yes
+    OR = { is_ai = no xfm_config_ai_issuance_open_trigger = yes }
+    xfm_issuer_authorized_binding_trigger = yes
+    var:xfm_requested_funding = xfm_issuer_requested_funding_floor_value
+    OR = {
+        AND = { var:xfm_requested_tier = 1 var:xfm_requested_funding >= 20 var:xfm_requested_funding <= 50 }
+        AND = { var:xfm_requested_tier = 2 var:xfm_requested_funding >= 200 var:xfm_requested_funding <= 10000 }
+    }
+    NOT = { has_variable = xfm_pending_offer }
+    NOT = { has_variable = xfm_issue_cooldown }
+    OR = { var:xfm_requested_entity_type != 1 AND = { OR = { NOT = { has_variable = xfm_personal_coin } var:xfm_personal_coin = { var:xfm_listing_state = 7 } } OR = { NOT = { has_variable = xfm_inherited_personal_coin } var:xfm_inherited_personal_coin = { var:xfm_listing_state = 7 } } } }
+    trigger_if = { limit = { var:xfm_requested_entity_type = 2 } house = { OR = { NOT = { has_variable = xfm_entity_coin } var:xfm_entity_coin = { var:xfm_listing_state = 7 } } NOT = { has_variable = xfm_issue_cooldown } } }
+    trigger_if = { limit = { var:xfm_requested_entity_type = 3 } dynasty = { OR = { NOT = { has_variable = xfm_entity_coin } var:xfm_entity_coin = { var:xfm_listing_state = 7 } } NOT = { has_variable = xfm_issue_cooldown } } }
+    trigger_if = { limit = { var:xfm_requested_entity_type = 4 } primary_title = { OR = { NOT = { has_variable = xfm_entity_coin } var:xfm_entity_coin = { var:xfm_listing_state = 7 } } NOT = { has_variable = xfm_issue_cooldown } } }
+    trigger_if = { limit = { var:xfm_requested_entity_type = 5 } faith = { OR = { NOT = { has_variable = xfm_entity_coin } var:xfm_entity_coin = { var:xfm_listing_state = 7 } } NOT = { has_variable = xfm_issue_cooldown } } }
+}
+
+xfm_issuer_controls_selected_trigger = {
+    xfm_issuer_actor_trigger = yes
+    exists = var:xfm_selected_coin
+    var:xfm_selected_coin = {
+        story_type = xfm_finance_coin var:xfm_controller = prev
+        trigger_if = { limit = { var:xfm_entity_type = 2 } var:xfm_bound_entity.house_head = prev }
+        trigger_if = { limit = { var:xfm_entity_type = 3 } var:xfm_bound_entity.dynast = prev }
+        trigger_if = { limit = { var:xfm_entity_type = 4 } var:xfm_bound_entity.holder = prev }
+        trigger_if = { limit = { var:xfm_entity_type = 5 } var:xfm_bound_entity.religious_head = prev }
+    }
+}
+
+xfm_issuer_can_complete_trigger = {
+    xfm_issuer_controls_selected_trigger = yes
+    var:xfm_selected_coin = {
+        var:xfm_listing_state = 0
+        NOT = { has_variable = xfm_construction_pending }
+        var:xfm_actual_raised_cents >= var:xfm_minimum_raised_cents
+        var:xfm_external_raised_cents >= xfm_issuer_minimum_external_value
+        var:xfm_offer_units_remaining >= 0
+    }
+    global_var:xfm_exchange = { var:xfm_new_listings_today < xfm_config_listing_daily_budget_value var:xfm_active_coin_count < xfm_config_coin_capacity_value }
+}
+
+xfm_issuer_can_subscribe_trigger = {
+    xfm_issuer_actor_trigger = yes
+    xfm_config_spot_open_trigger = yes
+    exists = var:xfm_selected_coin
+    var:xfm_subscription_gold > 0
+    var:xfm_selected_coin = {
+        story_type = xfm_finance_coin
+        var:xfm_listing_state = 0
+        NOT = { has_variable = xfm_construction_pending }
+        NOT = { has_variable = xfm_offer_closing_started }
+        var:xfm_offer_age < 30
+        var:xfm_offer_units_remaining >= 100
+    }
+}
+
+xfm_issuer_can_mint_trigger = {
+    xfm_issuer_controls_selected_trigger = yes
+    var:xfm_selected_coin = {
+        var:xfm_mint_permitted = 1
+        var:xfm_listing_state >= 1
+        var:xfm_listing_state <= 2
+        var:xfm_supply_units < var:xfm_maximum_supply_units
+        NOT = { has_variable = xfm_mint_cooldown }
+    }
+}

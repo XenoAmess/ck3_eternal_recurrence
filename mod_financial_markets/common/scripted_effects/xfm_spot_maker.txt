@@ -1,0 +1,145 @@
+﻿# 4 effects. Dedicated maker assets never reuse a project or private wallet.
+xfm_spot_maker_effect = {
+ save_scope_as = xfm_spot_maker_coin
+ if = {
+  limit = { var:xfm_trading_open = 1 var:xfm_listing_state < 4 NOT = { var:xfm_maker_withdrawn = 1 } }
+  if = {
+   limit = { NOT = { exists = var:xfm_market_maker_account } exists = var:xfm_maker_reservation }
+   global_var:xfm_exchange = { xfm_finance_create_account_effect = yes }
+   if = {
+    limit = { exists = scope:xfm_created_account }
+    set_variable = { name = xfm_market_maker_account value = scope:xfm_created_account }
+    scope:xfm_created_account = {
+     set_variable = { name = xfm_holder value = scope:xfm_spot_maker_coin.var:xfm_controller }
+     set_variable = { name = xfm_beneficial_owner value = scope:xfm_spot_maker_coin.var:xfm_controller }
+     set_variable = { name = xfm_legal_entity value = scope:xfm_spot_maker_coin }
+    }
+    var:xfm_maker_reservation = {
+     if = {
+      limit = { var:xfm_remaining_cents > 0 }
+      set_variable = { name = xfm_request_target value = scope:xfm_created_account }
+      set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
+      xfm_finance_pay_reserved_effect = yes
+     }
+    }
+    var:xfm_issuer_account = {
+     set_variable = { name = xfm_request_coin value = scope:xfm_spot_maker_coin }
+     xfm_finance_lookup_position_effect = yes
+     if = {
+      limit = { exists = scope:xfm_position scope:xfm_position = { xfm_finance_position_available_value > 0 } }
+      set_variable = { name = xfm_request_units value = { value = scope:xfm_position.xfm_finance_position_available_value max = 2500 } }
+      set_variable = { name = xfm_request_target value = scope:xfm_spot_maker_coin.var:xfm_market_maker_account }
+      xfm_finance_transfer_coin_effect = yes
+     }
+    }
+   }
+  }
+  if = {
+   limit = { exists = var:xfm_market_maker_account }
+   var:xfm_market_maker_account = { xfm_finance_refresh_beneficiary_effect = yes }
+   save_scope_value_as = { name = xfm_spot_maker_reference value = var:xfm_last_price_cents }
+   if = { limit = { scope:xfm_spot_maker_reference <= 0 has_variable = xfm_ipo_price_cents } save_scope_value_as = { name = xfm_spot_maker_reference value = var:xfm_ipo_price_cents } }
+   if = {
+    limit = { scope:xfm_spot_maker_reference > 0 }
+    save_scope_value_as = { name = xfm_spot_maker_bid value = { value = scope:xfm_spot_maker_reference multiply = 0.95 floor = yes min = 1 } }
+    save_scope_value_as = { name = xfm_spot_maker_ask value = { value = scope:xfm_spot_maker_reference multiply = 1.05 ceiling = yes min = 2 } }
+    if = {
+     limit = { NOT = { var:xfm_maker_reference_cents = scope:xfm_spot_maker_reference } }
+     xfm_spot_cancel_maker_effect = yes
+     set_variable = { name = xfm_maker_reference_cents value = scope:xfm_spot_maker_reference }
+    }
+    var:xfm_market_maker_account = {
+     set_variable = { name = xfm_selected_coin value = scope:xfm_spot_maker_coin }
+     set_variable = { name = xfm_order_lots value = 1 }
+     set_variable = { name = xfm_order_ioc value = 0 }
+     if = {
+      limit = { NOT = { any_in_list = { variable = xfm_orders var:xfm_status = 1 var:xfm_side = 1 var:xfm_is_maker_quote = 1 } } }
+      set_variable = { name = xfm_order_side value = 1 }
+      set_variable = { name = xfm_order_limit_cents value = scope:xfm_spot_maker_bid }
+      xfm_spot_submit_account_effect = yes
+      if = { limit = { var:xfm_result = 1 exists = var:xfm_result_order } var:xfm_result_order = { set_variable = { name = xfm_is_maker_quote value = 1 } } }
+     }
+     if = {
+      limit = { NOT = { any_in_list = { variable = xfm_orders var:xfm_status = 1 var:xfm_side = 2 var:xfm_is_maker_quote = 1 } } }
+      set_variable = { name = xfm_order_side value = 2 }
+      set_variable = { name = xfm_order_limit_cents value = scope:xfm_spot_maker_ask }
+      xfm_spot_submit_account_effect = yes
+      if = { limit = { var:xfm_result = 1 exists = var:xfm_result_order } var:xfm_result_order = { set_variable = { name = xfm_is_maker_quote value = 1 } } }
+     }
+    }
+   }
+  }
+ }
+}
+xfm_spot_withdraw_maker_effect = {
+ save_scope_as = xfm_spot_withdraw_coin
+ set_variable = { name = xfm_maker_withdrawn value = 1 }
+ set_variable = { name = xfm_maker_withdrawal_pending value = 1 }
+ xfm_spot_cancel_maker_effect = yes
+ if = {
+  limit = { exists = var:xfm_market_maker_account exists = var:xfm_issuer_account }
+  var:xfm_market_maker_account = {
+   while = {
+    count = 32
+    if = {
+     limit = { var:xfm_free_cents > 0 }
+     set_variable = { name = xfm_request_cents value = { value = var:xfm_free_cents max = 100000000 } }
+     set_variable = { name = xfm_request_target value = scope:xfm_spot_withdraw_coin.var:xfm_issuer_account }
+     xfm_finance_transfer_effect = yes
+    }
+   }
+   set_variable = { name = xfm_request_coin value = scope:xfm_spot_withdraw_coin }
+   xfm_finance_lookup_position_effect = yes
+   while = {
+    count = 32
+    if = {
+     limit = { exists = scope:xfm_position scope:xfm_position = { xfm_finance_position_available_value > 0 } }
+     set_variable = { name = xfm_request_units value = { value = scope:xfm_position.xfm_finance_position_available_value max = 100000000 } }
+     set_variable = { name = xfm_request_target value = scope:xfm_spot_withdraw_coin.var:xfm_issuer_account }
+     xfm_finance_transfer_coin_effect = yes
+     set_variable = { name = xfm_request_coin value = scope:xfm_spot_withdraw_coin }
+     xfm_finance_lookup_position_effect = yes
+    }
+   }
+   if = {
+    limit = {
+     var:xfm_free_cents = 0 var:xfm_reserved_cents = 0
+     OR = { NOT = { exists = scope:xfm_position } scope:xfm_position = { var:xfm_quantity_units = 0 } }
+    }
+    scope:xfm_spot_withdraw_coin = { set_variable = { name = xfm_maker_withdrawal_pending value = 0 } }
+   }
+  }
+ }
+}
+xfm_spot_watch_coin_effect = {
+ save_scope_as = xfm_spot_watch_actor
+ xfm_spot_refresh_watchlist_effect = yes
+ if = {
+  limit = {
+   exists = var:xfm_selected_coin
+   var:xfm_selected_coin = { story_type = xfm_finance_coin var:xfm_listing_state < 7 }
+   var:xfm_watch_count < xfm_config_ai_watchlist_capacity_value
+   NOT = { any_in_list = { variable = xfm_finance_watchlist this = scope:xfm_spot_watch_actor.var:xfm_selected_coin } }
+  }
+  add_to_variable_list = { name = xfm_finance_watchlist target = var:xfm_selected_coin }
+  change_variable = { name = xfm_watch_count add = 1 }
+ }
+}
+xfm_spot_refresh_watchlist_effect = {
+ save_scope_as = xfm_spot_watch_refresh_actor
+ every_in_list = {
+  variable = xfm_finance_watchlist
+  limit = { var:xfm_listing_state >= 7 }
+  add_to_temporary_list = xfm_spot_expired_watches
+ }
+ every_in_list = {
+  list = xfm_spot_expired_watches
+  scope:xfm_spot_watch_refresh_actor = { remove_list_variable = { name = xfm_finance_watchlist target = prev } }
+ }
+ set_variable = { name = xfm_watch_count value = 0 }
+ every_in_list = {
+  variable = xfm_finance_watchlist
+  limit = { story_type = xfm_finance_coin var:xfm_listing_state < 7 }
+  scope:xfm_spot_watch_refresh_actor = { change_variable = { name = xfm_watch_count add = 1 } }
+ }
+}

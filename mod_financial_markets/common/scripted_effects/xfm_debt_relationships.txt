@@ -1,0 +1,68 @@
+﻿# 3 effects. Real cash/consent/refusal first; no repeated one-cent opinion farming.
+xfm_debt_aid_relation_effect = {
+    if = {
+        limit = {
+            var:xfm_payment_actual_cents >= 100
+            scope:xfm_debt_payer.var:xfm_system_account = 0
+            exists = scope:xfm_debt_payer.var:xfm_holder
+            exists = var:xfm_debtor_account.var:xfm_holder
+            scope:xfm_debt_payer.var:xfm_holder = { is_alive = yes }
+            var:xfm_debtor_account.var:xfm_holder = { is_alive = yes }
+            scope:xfm_debt_payer.var:xfm_holder != var:xfm_debtor_account.var:xfm_holder
+        }
+        scope:xfm_debt_payer.var:xfm_holder = { save_scope_as = xfm_debt_relationship_helper }
+        var:xfm_debtor_account = {
+            if = {
+                limit = {
+                    NOT = { any_in_list = { variable = xfm_aid_thanked_helpers this = scope:xfm_debt_relationship_helper } }
+                }
+                add_to_variable_list = { name = xfm_aid_thanked_helpers target = scope:xfm_debt_relationship_helper }
+                var:xfm_holder = {
+                    add_opinion = { target = scope:xfm_debt_relationship_helper modifier = xfm_debt_aid_opinion opinion = 10 years = 3 }
+                }
+            }
+        }
+    }
+}
+
+xfm_debt_restructure_relation_effect = {
+    if = {
+        limit = {
+            var:xfm_creditor_account.var:xfm_system_account = 0
+            exists = var:xfm_creditor_account.var:xfm_holder
+            exists = var:xfm_debtor_account.var:xfm_holder
+            var:xfm_creditor_account.var:xfm_holder = { is_alive = yes }
+            var:xfm_debtor_account.var:xfm_holder = { is_alive = yes }
+            var:xfm_creditor_account.var:xfm_holder != var:xfm_debtor_account.var:xfm_holder
+        }
+        var:xfm_creditor_account.var:xfm_holder = { save_scope_as = xfm_debt_relationship_creditor }
+        var:xfm_debtor_account = {
+            if = {
+                limit = {
+                    NOT = { any_in_list = { variable = xfm_restructure_thanked_creditors this = scope:xfm_debt_relationship_creditor } }
+                }
+                add_to_variable_list = { name = xfm_restructure_thanked_creditors target = scope:xfm_debt_relationship_creditor }
+                var:xfm_holder = {
+                    add_opinion = { target = scope:xfm_debt_relationship_creditor modifier = xfm_debt_restructure_opinion opinion = 8 years = 2 }
+                }
+            }
+        }
+    }
+}
+
+xfm_debt_repudiation_relation_effect = {
+    if = {
+        limit = {
+            var:xfm_creditor_account.var:xfm_system_account = 0
+            exists = var:xfm_creditor_account.var:xfm_holder
+            exists = var:xfm_debtor_account.var:xfm_holder
+            var:xfm_creditor_account.var:xfm_holder = { is_alive = yes }
+            var:xfm_debtor_account.var:xfm_holder = { is_alive = yes }
+            var:xfm_creditor_account.var:xfm_holder != var:xfm_debtor_account.var:xfm_holder
+        }
+        var:xfm_debtor_account.var:xfm_holder = { save_scope_as = xfm_debt_relationship_debtor }
+        var:xfm_creditor_account.var:xfm_holder = {
+            add_opinion = { target = scope:xfm_debt_relationship_debtor modifier = xfm_debt_repudiation_opinion opinion = -15 years = 3 }
+        }
+    }
+}

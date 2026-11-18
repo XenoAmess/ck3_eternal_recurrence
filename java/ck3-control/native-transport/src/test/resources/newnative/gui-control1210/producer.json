@@ -1,0 +1,75 @@
+{
+  "schema": "ck3-1210-gui-cpp-producer-fixtures-v1",
+  "machine_id": "4-8e1c2f1861",
+  "live": false,
+  "qualification": "original C++ serializer software fixtures; no actual GUI callback/Game execution",
+  "sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_gui_control_v1.cpp",
+      "bytes": 4558,
+      "sha256": "32d162163330cbd4104c8f561716dac8e888df48270d51d464094841534b592d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_gui_control_v1_test.cpp",
+      "bytes": 9129,
+      "sha256": "9e4290896a8307803b312e32600dad48d335793fec6b28ecb10f0f6b85ff16d5"
+    }
+  ],
+  "handled_producer_source": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-control1210\\handled-producer.cpp.txt",
+    "bytes": 1915,
+    "sha256": "fc73ccbe06204ff260c3f97b367ce5e36f8c707c9c02dddaa2255fdfa1b798f8"
+  },
+  "packets": [
+    {
+      "file": "query.json",
+      "bytes": 1055,
+      "sha256": "16c00d6cc6aa4a7b804310388fd5467f7c9bdd4ca19b7c89e2d62209ecf547ac",
+      "source": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\fixtures\\gui_control1210_producer_query.json",
+        "bytes": 1055,
+        "sha256": "16c00d6cc6aa4a7b804310388fd5467f7c9bdd4ca19b7c89e2d62209ecf547ac"
+      }
+    },
+    {
+      "file": "submitted.json",
+      "bytes": 770,
+      "sha256": "4a9b8e11bd2b03a1c6aa0de80af95c34723bf42478a31f418e053b796aa5145e",
+      "source": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\fixtures\\gui_control1210_producer_submitted.json",
+        "bytes": 770,
+        "sha256": "4a9b8e11bd2b03a1c6aa0de80af95c34723bf42478a31f418e053b796aa5145e"
+      }
+    },
+    {
+      "file": "submitted-handled.json",
+      "bytes": 772,
+      "sha256": "cfba489c88f80a45d98bd0f6298c86ead0a0bc34c2618033b141a406cdf14cb1",
+      "source": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\fixtures\\gui_control1210_producer_submitted-handled.json",
+        "bytes": 772,
+        "sha256": "cfba489c88f80a45d98bd0f6298c86ead0a0bc34c2618033b141a406cdf14cb1"
+      }
+    },
+    {
+      "file": "indeterminate.json",
+      "bytes": 809,
+      "sha256": "8fa4b9208003b44e16ecb89ab29bc2cecd8a9267a62a8dac989f900f7237c7f6",
+      "source": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\fixtures\\gui_control1210_producer_indeterminate.json",
+        "bytes": 809,
+        "sha256": "8fa4b9208003b44e16ecb89ab29bc2cecd8a9267a62a8dac989f900f7237c7f6"
+      }
+    },
+    {
+      "file": "oversized-widget.json",
+      "bytes": 793,
+      "sha256": "694c0620040b81c0b0be03fe1436c16d82e9b6e99d13108bb0a96140f1cdeace",
+      "source": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\fixtures\\gui_control1210_producer_oversized-widget.json",
+        "bytes": 793,
+        "sha256": "694c0620040b81c0b0be03fe1436c16d82e9b6e99d13108bb0a96140f1cdeace"
+      }
+    }
+  ]
+}

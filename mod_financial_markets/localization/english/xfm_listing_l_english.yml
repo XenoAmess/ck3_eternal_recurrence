@@ -1,0 +1,11 @@
+﻿l_english:
+ xfm_listing_normal:0 "Normally listed"
+ xfm_listing_warning:0 "Warning: daily two-way spot trading continues"
+ xfm_listing_notice:0 "Delisting notice: venue spot trading ends on day 30"
+ xfm_listing_suspended:0 "Suspended: first review in three days, then every seven days"
+ xfm_listing_delisted:0 "Venue delisted: property, debt and unclaimed assets remain"
+ xfm_listing_otc:0 "Residual rights: mutually accepted OTC transfers available"
+ xfm_listing_archived:0 "All rights discharged; permanent ID archived"
+ xfm_listing_relist:0 "Thirty-day relisting review"
+ xfm_listing_notice_details:0 "New leverage stops at notice. Funded two-way spot trades continue. Qualified independent references are sampled on days 15–20 and affected derivatives terminate under their contracts on day 21. Without a reliable price, collateral and claims remain pending; no zero-price write-off is invented. On day 30, cancel venue spot orders and return confirmed free assets. Healthy other venues remain separate."
+ xfm_listing_otc_details:0 "The seller identifies the buyer, coin, lots and price; the buyer may accept within seven days. Payment and coin delivery use real available assets. A reference quote does not guarantee an executable buyer or erase previously registered claims."

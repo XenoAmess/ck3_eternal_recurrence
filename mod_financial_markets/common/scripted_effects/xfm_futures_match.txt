@@ -1,0 +1,233 @@
+﻿# Price/time priority. Maximum 32 fills per entry; residual live orders remain indexed.
+xfm_futures_match_effect = {
+ save_scope_as = xfm_fut_incoming
+ var:xfm_contract = { xfm_futures_maintain_orders_effect = yes }
+ set_variable = { name = xfm_match_budget value = 32 }
+ set_variable = { name = xfm_match_continue value = 1 }
+ while = {
+  limit = { xfm_futures_order_open_trigger = yes var:xfm_match_budget > 0 var:xfm_match_continue = 1 }
+  change_variable = { name = xfm_match_budget subtract = 1 }
+  clear_saved_scope = xfm_fut_resting
+  var:xfm_contract = {
+   every_in_list = {
+    variable = xfm_orders
+    limit = {
+     xfm_futures_order_open_trigger = yes
+     this != scope:xfm_fut_incoming
+     NOT = { var:xfm_side = scope:xfm_fut_incoming.var:xfm_side }
+     OR = {
+      AND = { scope:xfm_fut_incoming.var:xfm_side = 1 var:xfm_limit_cents <= scope:xfm_fut_incoming.var:xfm_limit_cents }
+      AND = { scope:xfm_fut_incoming.var:xfm_side = 2 var:xfm_limit_cents >= scope:xfm_fut_incoming.var:xfm_limit_cents }
+     }
+    }
+    if = { limit = { NOT = { exists = scope:xfm_fut_resting } } save_scope_as = xfm_fut_resting }
+    else_if = {
+     limit = {
+      OR = {
+       AND = { scope:xfm_fut_incoming.var:xfm_side = 1 var:xfm_limit_cents < scope:xfm_fut_resting.var:xfm_limit_cents }
+       AND = { scope:xfm_fut_incoming.var:xfm_side = 2 var:xfm_limit_cents > scope:xfm_fut_resting.var:xfm_limit_cents }
+       AND = { var:xfm_limit_cents = scope:xfm_fut_resting.var:xfm_limit_cents var:xfm_order_id < scope:xfm_fut_resting.var:xfm_order_id }
+      }
+     }
+     save_scope_as = xfm_fut_resting
+    }
+   }
+  }
+  if = {
+   limit = { exists = scope:xfm_fut_resting }
+   var:xfm_account = { xfm_finance_refresh_beneficiary_effect = yes }
+   scope:xfm_fut_resting.var:xfm_account = { xfm_finance_refresh_beneficiary_effect = yes }
+   if = {
+    limit = {
+     scope:xfm_fut_resting.var:xfm_account != var:xfm_account
+     scope:xfm_fut_resting.var:xfm_account.var:xfm_holder != var:xfm_account.var:xfm_holder
+     NOT = {
+      AND = {
+       exists = scope:xfm_fut_resting.var:xfm_account.var:xfm_beneficial_owner
+       exists = var:xfm_account.var:xfm_beneficial_owner
+       scope:xfm_fut_resting.var:xfm_account.var:xfm_beneficial_owner = var:xfm_account.var:xfm_beneficial_owner
+      }
+     }
+    }
+    if = {
+     limit = { var:xfm_side = 1 }
+     save_scope_as = xfm_fut_buy
+     scope:xfm_fut_resting = { save_scope_as = xfm_fut_sell }
+    }
+    else = { save_scope_as = xfm_fut_sell scope:xfm_fut_resting = { save_scope_as = xfm_fut_buy } }
+    scope:xfm_fut_buy = { set_variable = { name = xfm_in_execution value = 1 } }
+    scope:xfm_fut_sell = { set_variable = { name = xfm_in_execution value = 1 } }
+    xfm_futures_execute_pair_effect = yes
+    scope:xfm_fut_buy = { remove_variable = xfm_in_execution }
+    scope:xfm_fut_sell = { remove_variable = xfm_in_execution }
+   }
+   else = { set_variable = { name = xfm_match_continue value = 0 } }
+  }
+  else = { set_variable = { name = xfm_match_continue value = 0 } }
+ }
+ remove_variable = xfm_match_budget
+ remove_variable = xfm_match_continue
+}
+
+xfm_futures_execute_pair_effect = {
+ clear_saved_scope = xfm_fut_fill
+ clear_saved_scope = xfm_fut_long_reserve
+ clear_saved_scope = xfm_fut_short_reserve
+ # Build all storage first. No source balance changes until every story exists.
+ global_var:xfm_exchange.story_owner = {
+  create_story = { type = xfm_futures_position save_scope_as = xfm_fut_fill }
+  create_story = { type = xfm_finance_reservation save_scope_as = xfm_fut_long_reserve }
+  create_story = { type = xfm_finance_reservation save_scope_as = xfm_fut_short_reserve }
+ }
+ if = {
+  limit = {
+   exists = scope:xfm_fut_fill exists = scope:xfm_fut_long_reserve exists = scope:xfm_fut_short_reserve
+   scope:xfm_fut_fill = { story_type = xfm_futures_position }
+   scope:xfm_fut_long_reserve = { story_type = xfm_finance_reservation }
+   scope:xfm_fut_short_reserve = { story_type = xfm_finance_reservation }
+  }
+  scope:xfm_fut_fill = {
+   set_variable = { name = xfm_contract value = scope:xfm_fut_incoming.var:xfm_contract }
+   set_variable = { name = xfm_coin value = var:xfm_contract.var:xfm_coin }
+   set_variable = { name = xfm_lots value = xfm_futures_fill_lots_value }
+   set_variable = { name = xfm_mark_cents value = scope:xfm_fut_resting.var:xfm_limit_cents }
+   set_variable = { name = xfm_fill_gross value = xfm_futures_fill_gross_value }
+   set_variable = { name = xfm_long_margin_cents value = xfm_futures_buy_margin_value }
+   set_variable = { name = xfm_short_margin_cents value = xfm_futures_sell_margin_value }
+  }
+  if = {
+   limit = {
+    scope:xfm_fut_buy.var:xfm_reservation.var:xfm_remaining_cents >= scope:xfm_fut_fill.var:xfm_long_margin_cents
+    scope:xfm_fut_sell.var:xfm_reservation.var:xfm_remaining_cents >= scope:xfm_fut_fill.var:xfm_short_margin_cents
+    NOT = { exists = scope:xfm_fut_buy.var:xfm_close_position }
+    NOT = { exists = scope:xfm_fut_sell.var:xfm_close_position }
+    scope:xfm_fut_buy.var:xfm_account.var:xfm_open_positions_count < xfm_futures_account_position_capacity_value
+    scope:xfm_fut_sell.var:xfm_account.var:xfm_open_positions_count < xfm_futures_account_position_capacity_value
+    global_var:xfm_exchange.var:xfm_futures_open_positions_count < xfm_futures_global_position_capacity_value
+    scope:xfm_fut_incoming.var:xfm_contract = { xfm_futures_live_oracle_trigger = yes }
+   }
+   scope:xfm_fut_fill = {
+    set_variable = { name = xfm_kind value = 2 }
+    set_variable = { name = xfm_contract value = scope:xfm_fut_incoming.var:xfm_contract }
+    xfm_futures_assign_position_id_effect = yes
+    set_variable = { name = xfm_coin value = var:xfm_contract.var:xfm_coin }
+    set_variable = { name = xfm_long_account value = scope:xfm_fut_buy.var:xfm_account }
+    set_variable = { name = xfm_short_account value = scope:xfm_fut_sell.var:xfm_account }
+    set_variable = { name = xfm_long_leverage value = scope:xfm_fut_buy.var:xfm_leverage }
+    set_variable = { name = xfm_short_leverage value = scope:xfm_fut_sell.var:xfm_leverage }
+    set_variable = { name = xfm_long_reservation value = scope:xfm_fut_long_reserve }
+    set_variable = { name = xfm_short_reservation value = scope:xfm_fut_short_reserve }
+    set_variable = { name = xfm_last_settled_day value = global_var:xfm_exchange.var:xfm_day }
+    set_variable = { name = xfm_created_day value = global_var:xfm_exchange.var:xfm_day }
+    set_variable = { name = xfm_status value = 0 }
+    set_variable = { name = xfm_long_stop_cents value = 0 }
+    set_variable = { name = xfm_long_take_profit_cents value = 0 }
+    set_variable = { name = xfm_short_stop_cents value = 0 }
+    set_variable = { name = xfm_short_take_profit_cents value = 0 }
+    set_variable = { name = xfm_long_exit_requested value = 0 }
+    set_variable = { name = xfm_short_exit_requested value = 0 }
+   }
+   # A pair of splits changes only reservation attribution, never account totals.
+   scope:xfm_fut_fill = { xfm_futures_allocate_pair_effect = yes }
+   scope:xfm_fut_buy = { xfm_futures_fill_order_effect = yes }
+   scope:xfm_fut_sell = { xfm_futures_fill_order_effect = yes }
+   scope:xfm_fut_fill.var:xfm_contract = {
+    add_to_variable_list = { name = xfm_positions target = scope:xfm_fut_fill }
+    if = {
+     limit = { var:xfm_execution_day != global_var:xfm_exchange.var:xfm_day }
+     set_variable = { name = xfm_execution_day value = global_var:xfm_exchange.var:xfm_day }
+     set_variable = { name = xfm_execution_volume_cents value = 0 }
+     set_variable = { name = xfm_execution_lots value = 0 }
+    }
+    change_variable = { name = xfm_execution_volume_cents add = scope:xfm_fut_fill.var:xfm_fill_gross }
+    change_variable = { name = xfm_execution_lots add = scope:xfm_fut_fill.var:xfm_lots }
+    set_variable = { name = xfm_last_execution_cents value = { value = var:xfm_execution_volume_cents divide = var:xfm_execution_lots floor = yes } }
+   }
+   scope:xfm_fut_fill.var:xfm_long_account = {
+    add_to_variable_list = { name = xfm_positions target = scope:xfm_fut_fill }
+    change_variable = { name = xfm_open_positions_count add = 1 }
+   }
+   scope:xfm_fut_fill.var:xfm_short_account = {
+    add_to_variable_list = { name = xfm_positions target = scope:xfm_fut_fill }
+    change_variable = { name = xfm_open_positions_count add = 1 }
+   }
+   global_var:xfm_exchange = { change_variable = { name = xfm_futures_open_positions_count add = 1 } }
+  }
+  else = {
+   if = {
+    limit = { OR = { exists = scope:xfm_fut_buy.var:xfm_close_position exists = scope:xfm_fut_sell.var:xfm_close_position } }
+    xfm_futures_execute_reduction_effect = yes
+   }
+   else = { set_variable = { name = xfm_match_continue value = 0 } }
+  }
+ }
+ else = { set_variable = { name = xfm_match_continue value = 0 } }
+ xfm_futures_discard_unallocated_effect = yes
+}
+
+xfm_futures_discard_unallocated_effect = {
+ if = { limit = { exists = scope:xfm_fut_fill scope:xfm_fut_fill = { NOT = { has_variable = xfm_kind } } } scope:xfm_fut_fill = { end_story = yes } clear_saved_scope = xfm_fut_fill }
+ if = { limit = { exists = scope:xfm_fut_long_reserve scope:xfm_fut_long_reserve = { NOT = { has_variable = xfm_account } } } scope:xfm_fut_long_reserve = { end_story = yes } clear_saved_scope = xfm_fut_long_reserve }
+ if = { limit = { exists = scope:xfm_fut_short_reserve scope:xfm_fut_short_reserve = { NOT = { has_variable = xfm_account } } } scope:xfm_fut_short_reserve = { end_story = yes } clear_saved_scope = xfm_fut_short_reserve }
+ # Never end an allocated slice: a future claim can use that story as immutable clearing source.
+ if = { limit = { exists = scope:xfm_fut_buy_slice scope:xfm_fut_buy_slice = { NOT = { has_variable = xfm_kind } } } scope:xfm_fut_buy_slice = { end_story = yes } clear_saved_scope = xfm_fut_buy_slice }
+ if = { limit = { exists = scope:xfm_fut_sell_slice scope:xfm_fut_sell_slice = { NOT = { has_variable = xfm_kind } } } scope:xfm_fut_sell_slice = { end_story = yes } clear_saved_scope = xfm_fut_sell_slice }
+ if = { limit = { exists = scope:xfm_fut_buy_slice_long scope:xfm_fut_buy_slice_long = { NOT = { has_variable = xfm_account } } } scope:xfm_fut_buy_slice_long = { end_story = yes } clear_saved_scope = xfm_fut_buy_slice_long }
+ if = { limit = { exists = scope:xfm_fut_buy_slice_short scope:xfm_fut_buy_slice_short = { NOT = { has_variable = xfm_account } } } scope:xfm_fut_buy_slice_short = { end_story = yes } clear_saved_scope = xfm_fut_buy_slice_short }
+ if = { limit = { exists = scope:xfm_fut_sell_slice_long scope:xfm_fut_sell_slice_long = { NOT = { has_variable = xfm_account } } } scope:xfm_fut_sell_slice_long = { end_story = yes } clear_saved_scope = xfm_fut_sell_slice_long }
+ if = { limit = { exists = scope:xfm_fut_sell_slice_short scope:xfm_fut_sell_slice_short = { NOT = { has_variable = xfm_account } } } scope:xfm_fut_sell_slice_short = { end_story = yes } clear_saved_scope = xfm_fut_sell_slice_short }
+}
+
+xfm_futures_allocate_pair_effect = {
+ global_var:xfm_exchange = { change_variable = { name = xfm_next_reservation_id add = 1 } }
+ scope:xfm_fut_long_reserve = {
+  set_variable = { name = xfm_reservation_id value = global_var:xfm_exchange.var:xfm_next_reservation_id }
+  set_variable = { name = xfm_account value = scope:xfm_fut_fill.var:xfm_long_account }
+  set_variable = { name = xfm_futures_position value = scope:xfm_fut_fill }
+  set_variable = { name = xfm_remaining_cents value = scope:xfm_fut_fill.var:xfm_long_margin_cents }
+  set_variable = { name = xfm_status value = 1 }
+ }
+ global_var:xfm_exchange = { change_variable = { name = xfm_next_reservation_id add = 1 } }
+ scope:xfm_fut_short_reserve = {
+  set_variable = { name = xfm_reservation_id value = global_var:xfm_exchange.var:xfm_next_reservation_id }
+  set_variable = { name = xfm_account value = scope:xfm_fut_fill.var:xfm_short_account }
+  set_variable = { name = xfm_futures_position value = scope:xfm_fut_fill }
+  set_variable = { name = xfm_remaining_cents value = scope:xfm_fut_fill.var:xfm_short_margin_cents }
+  set_variable = { name = xfm_status value = 1 }
+ }
+ scope:xfm_fut_buy.var:xfm_reservation = { change_variable = { name = xfm_remaining_cents subtract = scope:xfm_fut_fill.var:xfm_long_margin_cents } }
+ scope:xfm_fut_sell.var:xfm_reservation = { change_variable = { name = xfm_remaining_cents subtract = scope:xfm_fut_fill.var:xfm_short_margin_cents } }
+ var:xfm_long_account = { add_to_variable_list = { name = xfm_reservations target = scope:xfm_fut_long_reserve } }
+ var:xfm_short_account = { add_to_variable_list = { name = xfm_reservations target = scope:xfm_fut_short_reserve } }
+}
+
+xfm_futures_fill_order_effect = {
+ change_variable = { name = xfm_remaining_lots subtract = scope:xfm_fut_fill.var:xfm_lots }
+ change_variable = { name = xfm_filled_gross_cents add = scope:xfm_fut_fill.var:xfm_fill_gross }
+ set_variable = { name = xfm_fee_total_cents value = xfm_futures_order_cumulative_fee_value }
+ set_variable = { name = xfm_fee_delta_cents value = { value = var:xfm_fee_total_cents subtract = var:xfm_fee_paid_cents } }
+ save_scope_as = xfm_fut_fee_order
+ if = {
+  limit = { var:xfm_fee_delta_cents > 0 }
+  var:xfm_reservation = {
+   set_variable = { name = xfm_request_cents value = scope:xfm_fut_fee_order.var:xfm_fee_delta_cents }
+   xfm_finance_fee_reserved_effect = yes
+  }
+ }
+ set_variable = { name = xfm_fee_paid_cents value = var:xfm_fee_total_cents }
+ set_variable = { name = xfm_remaining_notional value = xfm_futures_remaining_notional_value }
+ set_variable = { name = xfm_remaining_margin value = xfm_futures_remaining_margin_value }
+ if = { limit = { has_variable = xfm_reduce_order } set_variable = { name = xfm_remaining_margin value = 0 } }
+ set_variable = { name = xfm_remaining_fee value = xfm_futures_remaining_fee_value }
+ set_variable = { name = xfm_release_excess value = { value = var:xfm_reservation.var:xfm_remaining_cents subtract = var:xfm_remaining_margin subtract = var:xfm_remaining_fee floor = yes } }
+ if = {
+  limit = { var:xfm_release_excess > 0 }
+  var:xfm_reservation = {
+   set_variable = { name = xfm_request_cents value = scope:xfm_fut_fee_order.var:xfm_release_excess }
+   xfm_finance_release_effect = yes
+  }
+ }
+ set_variable = { name = xfm_status value = 1 }
+ if = { limit = { var:xfm_remaining_lots = 0 } set_variable = { name = xfm_status value = 2 } }
+ if = { limit = { var:xfm_status = 2 } xfm_futures_archive_order_effect = yes }
+}

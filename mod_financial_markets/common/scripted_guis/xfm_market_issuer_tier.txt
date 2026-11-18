@@ -1,0 +1,17 @@
+﻿xfm_market_issuer_tier_gui = {
+    scope = character
+    is_valid = { is_ai = no }
+    effect = {
+        if = {
+            limit = { var:xfm_ui_listing_tier = 1 }
+            set_variable = { name = xfm_ui_listing_tier value = 2 }
+            set_variable = { name = xfm_requested_tier value = 2 }
+            set_variable = { name = xfm_requested_funding value = 200 }
+        }
+        else = {
+            set_variable = { name = xfm_ui_listing_tier value = 1 }
+            set_variable = { name = xfm_requested_tier value = 1 }
+            set_variable = { name = xfm_requested_funding value = 20 }
+        }
+    }
+}

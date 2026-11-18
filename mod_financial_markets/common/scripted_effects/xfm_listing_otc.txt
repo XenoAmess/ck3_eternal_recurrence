@@ -1,0 +1,72 @@
+﻿# Two-party OTC. Seller publishes consent; buyer acceptance moves actual cash and coins.
+xfm_listing_offer_otc_effect = {
+    if = {
+        limit = {
+            xfm_issuer_actor_trigger = yes
+            exists = var:xfm_selected_coin
+            exists = var:xfm_otc_buyer
+            var:xfm_otc_buyer = { is_alive = yes is_adult = yes }
+            var:xfm_otc_buyer != this
+            var:xfm_order_lots >= 1
+            var:xfm_order_lots = xfm_issuer_order_lots_floor_value
+            var:xfm_order_limit_cents >= 1
+            var:xfm_order_limit_cents = xfm_issuer_order_price_floor_value
+        }
+        set_variable = { name = xfm_otc_offer_coin value = var:xfm_selected_coin }
+        set_variable = { name = xfm_otc_offer_lots value = var:xfm_order_lots }
+        set_variable = { name = xfm_otc_offer_price_cents value = var:xfm_order_limit_cents }
+        if = { limit = { NOT = { has_variable = xfm_otc_offer_nonce } } set_variable = { name = xfm_otc_offer_nonce value = 0 } }
+        change_variable = { name = xfm_otc_offer_nonce add = 1 }
+        set_variable = { name = xfm_otc_offer_day value = global_var:xfm_exchange.var:xfm_day }
+        set_variable = { name = xfm_otc_offer_expires_day value = { value = global_var:xfm_exchange.var:xfm_day add = 7 } }
+        set_variable = { name = xfm_otc_offer_price_version value = var:xfm_selected_coin.var:xfm_price_version }
+        set_variable = { name = xfm_otc_consent days = 7 }
+    }
+}
+
+xfm_listing_accept_otc_effect = {
+    set_variable = { name = xfm_issuer_result value = 0 }
+    if = {
+        limit = {
+            xfm_issuer_actor_trigger = yes
+            exists = var:xfm_otc_seller
+            var:xfm_otc_seller != this
+            var:xfm_otc_seller = {
+                is_alive = yes is_adult = yes has_variable = xfm_otc_consent
+                var:xfm_otc_buyer = prev
+                var:xfm_otc_offer_expires_day >= global_var:xfm_exchange.var:xfm_day
+                var:xfm_otc_offer_lots >= 1
+                var:xfm_otc_offer_price_cents >= 1
+                var:xfm_otc_offer_coin = { story_type = xfm_finance_coin var:xfm_listing_state != 7 }
+            }
+        }
+        save_scope_as = xfm_offer_otc_buyer
+        var:xfm_otc_seller = { save_scope_as = xfm_offer_otc_seller xfm_finance_ensure_account_effect = yes }
+        xfm_finance_ensure_account_effect = yes
+        set_variable = { name = xfm_otc_payment_cents value = { value = scope:xfm_offer_otc_seller.var:xfm_otc_offer_lots multiply = scope:xfm_offer_otc_seller.var:xfm_otc_offer_price_cents } }
+        var:xfm_account = {
+            set_variable = { name = xfm_request_cents value = scope:xfm_offer_otc_buyer.var:xfm_otc_payment_cents }
+            xfm_finance_ensure_funds_effect = yes
+        }
+        if = {
+            limit = {
+                var:xfm_account = { xfm_finance_account_usable_trigger = yes xfm_finance_valid_cents_trigger = yes var:xfm_system_account = 0 var:xfm_holder = scope:xfm_offer_otc_buyer var:xfm_free_cents >= scope:xfm_offer_otc_buyer.var:xfm_otc_payment_cents }
+                scope:xfm_offer_otc_seller.var:xfm_account = { xfm_finance_account_usable_trigger = yes var:xfm_system_account = 0 var:xfm_holder = scope:xfm_offer_otc_seller var:xfm_free_cents >= 0 }
+            }
+            var:xfm_account = {
+                set_variable = { name = xfm_request_target value = scope:xfm_offer_otc_seller.var:xfm_account }
+                set_variable = { name = xfm_request_coin value = scope:xfm_offer_otc_seller.var:xfm_otc_offer_coin }
+                set_variable = { name = xfm_request_units value = { value = scope:xfm_offer_otc_seller.var:xfm_otc_offer_lots multiply = 100 floor = yes } }
+                set_variable = { name = xfm_request_cents value = scope:xfm_offer_otc_buyer.var:xfm_otc_payment_cents }
+                xfm_finance_otc_effect = yes
+                if = {
+                    limit = { var:xfm_result = 1 }
+                    scope:xfm_offer_otc_seller = { remove_variable = xfm_otc_consent }
+                    scope:xfm_offer_otc_buyer = { set_variable = { name = xfm_issuer_result value = 1 } }
+                }
+            }
+        }
+    }
+}
+
+xfm_listing_cancel_otc_effect = { remove_variable = xfm_otc_consent }

@@ -1,0 +1,63 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "derivatives",
+  "acceptance_scope": "actual_funded_long_short_leverage_daily_settlement_liquidation_and_residual_claims",
+  "fixture_source": {"kind": "prebuilt_manifest"},
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 14,
+  "failure_prefixes": ["XFMAT:"],
+  "required_startup": [],
+  "forbidden_startup": ["XFMAT: TEST FAIL"],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "observer_profile_contract": {
+    "status": "PROPOSED_NOT_EMITTED",
+    "profile": "derivatives",
+    "manifest_case_id_must_equal": "derivatives",
+    "required_future_observations": ["funded_opposite_positions", "independent_margin_and_fee_reconciliation", "next_day_variation_once", "actual_reduction_or_unfilled_exit", "residual_claim_and_fund_reconciliation"],
+    "core_manifest_is_valid_for_this_case": false
+  },
+  "source_save_requirements": [
+    "A genuine production campaign with funded distinct economic counterparties, actual orders and an oracle-qualified mature coin; retain its physical-save hash and originating business evidence.",
+    "Use an additional genuine pre-risk position in the same campaign for a possible gap/default. Its pending price change must come from real trades or observed model-index inputs. No fixture may set prices, balances, leverage, margin, orders or debt.",
+    "Record at least seven qualifying completed coin days; a 10x test additionally needs the actual 14-day and 30-day listing qualifications. Model indexes support at most 5x; present single-venue coins never authorize 20x.",
+    "A dated contract that actually expires within the allocated 14 days and a perpetual contract with real execution premium are needed for expiry and funding observations. If unavailable, those subcases remain NOT_OBSERVED."
+  ],
+  "gui_phases": [
+    {"id": "bind-saved-baseline-and-arm-observer", "at_day": 0, "requirements": [
+      "actual_minimized_non_topmost_no_foreground_activation_for_entire_run",
+      "actual_saved_campaign_identity_build_source_hash_actor_and_native_date_match_allocation",
+      "actual_case_specific_read_only_observer_armed_once_via_normal_scripted_widget",
+      "actual_before_snapshots_record_both_accounts_reservations_contract_positions_oracle_fees_and_fund"
+    ]},
+    {"id": "funded-long-short-and-leverage", "at_day": 0, "requirements": [
+      "actual_normal_gui_submits_long_and_short_with_distinct_funded_economic_counterparties",
+      "actual_1x_2x_3x_and_qualified_5x_10x_orders_reserve_real_two_sided_margin_or_record_the_exact_qualification_rejection",
+      "actual_same_beneficiary_and_unfunded_or_excess_leverage_requests_reject_without_business_state_change",
+      "actual_partial_fill_cancel_margin_addition_and_safe_withdrawal_reconcile_each_original_reservation_and_cumulative_fee",
+      "actual_stop_or_reduce_order_is_a_real_order_with_funded_replacement_counterparty_or_remains_unfilled_without_promised_execution"
+    ]},
+    {"id": "daily-settlement-default-and-expiry", "at_day": 14, "requirements": [
+      "actual_changed_completed_day_mark_yields_integer_zero_sum_variation_from_loser_margin_to_winner_once",
+      "actual_native_amount_checks_include_absolute_variation_and_ck3_upper_lower_clamp_semantics",
+      "actual_gap_loss_keeps_original_day_parties_amount_and_source_identity_in_pending_and_debt_receipt",
+      "actual_fund_payment_is_bounded_by_real_fund_free_and_100000000_cents_with_no_double_credited_winner_claim",
+      "actual_original_gap_equals_winner_unpaid_plus_fund_recourse_and_actual_fund_payment_equals_new_fund_recourse",
+      "actual_funding_shortfall_creates_real_uninsured_claim_with_zero_fund_payment",
+      "actual_expiry_or_certified_termination_closes_once_or_unreliable_price_keeps_pending_obligations",
+      "actual_refresh_and_physical_save_do_not_repeat_cash_payment_or_create_duplicate_claim",
+      "every_missing_counterparty_gap_funding_or_expiry_observation_remains_not_observed_without_fixture_intervention_or_deadline_extension"
+    ]}
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/runtime-contract.md",
+    "mod_financial_markets/docs/oracle-runtime-contract.md",
+    "mod_financial_markets/docs/debt-news-runtime.md",
+    "mod_financial_markets/docs/actual-business-acceptance-matrix.md"
+  ],
+  "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 5400, "gui_hold_seconds": 1800, "normal_close_timeout_seconds": 180},
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Prospective 14 natural days. Genuine mature saves supply existing oracle and risk history; only transitions observed in this run gain new business credit."
+}

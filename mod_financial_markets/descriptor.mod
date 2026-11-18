@@ -1,4 +1,4 @@
-﻿version="0.0.1-a0"
+﻿version="0.1.0-dev"
 tags={ "Gameplay" "Events" }
-name="期货市场与虚拟货币市场：A0 原型 / Financial Markets A0"
+name="期货市场与虚拟货币市场 / Financial Markets"
 supported_version="1.21.*"

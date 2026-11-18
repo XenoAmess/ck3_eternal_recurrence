@@ -1,0 +1,6 @@
+﻿xfm_finance_request_floor = { value = var:xfm_request_cents floor = yes }
+xfm_finance_units_floor = { value = var:xfm_request_units floor = yes }
+xfm_finance_request_gold = { value = var:xfm_request_cents divide = 100 }
+xfm_finance_negative_request_gold = { value = var:xfm_request_cents divide = -100 }
+xfm_finance_missing_cents = { value = var:xfm_request_cents subtract = var:xfm_free_cents min = 0 }
+xfm_finance_holder_gold_cents = { value = gold multiply = 100 floor = yes }

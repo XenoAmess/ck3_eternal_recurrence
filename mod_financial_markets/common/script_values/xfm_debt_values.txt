@@ -1,0 +1,62 @@
+﻿xfm_debt_fund_payment_value = {
+    value = scope:xfm_debt_source.var:xfm_request_cents
+    max = scope:xfm_debt_fund.var:xfm_free_cents
+    max = 100000000
+    floor = yes
+}
+xfm_debt_payment_value = {
+    value = scope:xfm_debt_record.var:xfm_request_cents
+    max = scope:xfm_debt_record.var:xfm_outstanding_cents
+    max = scope:xfm_debt_payer.var:xfm_free_cents
+    floor = yes
+}
+xfm_debt_requested_payment_value = {
+    value = var:xfm_request_cents
+    max = var:xfm_outstanding_cents
+    floor = yes
+}
+xfm_debt_winner_payment_value = {
+    value = scope:xfm_debt_record.var:xfm_winner_unpaid_cents
+    max = scope:xfm_debt_record.var:xfm_payment_remaining_cents
+    floor = yes
+}
+xfm_debt_fund_repayment_value = {
+    value = scope:xfm_debt_record.var:xfm_fund_recourse_cents
+    max = scope:xfm_debt_record.var:xfm_payment_remaining_cents
+    floor = yes
+}
+xfm_debt_income_threshold_value = {
+    value = var:xfm_holder.monthly_character_income_minus_expenses
+    min = 0
+    multiply = 2400
+    min = 1000
+    floor = yes
+}
+xfm_crisis_mature_day_value = {
+    value = global_var:xfm_exchange.var:xfm_day
+    subtract = 14
+}
+xfm_debt_stress_review_day_value = {
+    value = global_var:xfm_exchange.var:xfm_day
+    subtract = 7
+}
+xfm_debt_haircut_value = {
+    value = var:xfm_winner_unpaid_cents
+    multiply = 0.1
+    floor = yes
+    min = 1
+}
+xfm_debt_operation_floor_value = {
+    value = var:xfm_request_operation
+    floor = yes
+}
+xfm_debt_ai_service_offer_value = {
+    value = var:xfm_free_cents
+    if = {
+        limit = { var:xfm_system_account = 0 var:xfm_inheritance_state = 0 }
+        add = { value = var:xfm_holder.gold multiply = 100 min = 0 floor = yes }
+    }
+    max = scope:xfm_debt_service_record.var:xfm_outstanding_cents
+    max = var:xfm_debt_service_budget_cents
+    floor = yes
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "xar.ck3.1210.gui-source-bindings.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-11-18T10:08:55.548172+00:00",
+  "source_kind": "installed-executable-offline",
+  "game_version": "1.21.0",
+  "steam_build_id": "26622941",
+  "executable_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+  "executable_size_bytes": 114756216,
+  "image_size_bytes": 117328896,
+  "live_game_invocations": 0,
+  "live_pass": false,
+  "windows": [
+    {
+      "name": "FindTop",
+      "rva": "0x4077f00",
+      "size_bytes": 171,
+      "sha256": "cb83279ce805a758a3899498627208855483a82dc86ec35ccbb7cd1af27c6bb4"
+    },
+    {
+      "name": "Shortcut",
+      "rva": "0x4088fd0",
+      "size_bytes": 267,
+      "sha256": "9b6bb258325209f738871d8032d38bfb8770239923c5dea85555946ff0ca9292"
+    },
+    {
+      "name": "ButtonInput",
+      "rva": "0x406d780",
+      "size_bytes": 93,
+      "sha256": "f08afe7e384a77aab5aa76b7ee6e45c726986f95cb9c46303268452af4a470fd"
+    },
+    {
+      "name": "CallbackGroup",
+      "rva": "0x406c490",
+      "size_bytes": 531,
+      "sha256": "92de728fcf4b6f02cc36e27fae064f9d3163d1ea46c2e03785833eb9e6e747d4"
+    },
+    {
+      "name": "ContextChain",
+      "rva": "0x8d128d",
+      "size_bytes": 17,
+      "sha256": "107bae15dc06eddec757512c79e10f3d138e90ebf8f8fb507e32e5a536ebbdb5"
+    },
+    {
+      "name": "HostBackref",
+      "rva": "0x405c82e",
+      "size_bytes": 16,
+      "sha256": "7ccfc47dcd088e9b8f41073165b072fba7872c663cb4e6d84529ca4a7d71e09b"
+    },
+    {
+      "name": "HostStore",
+      "rva": "0x4070557",
+      "size_bytes": 7,
+      "sha256": "7d44da82eeb223ed17106b2a89b2c5351050f8e8d1283bf07ec7d71e988b673f"
+    },
+    {
+      "name": "ShortcutStore",
+      "rva": "0x4070635",
+      "size_bytes": 40,
+      "sha256": "a4b85480e3a87d656eea9634fe3f2879e713bc398c001235e26436a2d2e3876b"
+    },
+    {
+      "name": "CallbackCtor",
+      "rva": "0x406f680",
+      "size_bytes": 110,
+      "sha256": "3f4c1a6701df119ab2819784d0f4e4e12628accfac6a0224331f2b517b1b3ac1"
+    },
+    {
+      "name": "CallbackThunk",
+      "rva": "0x406fc40",
+      "size_bytes": 18,
+      "sha256": "d6613a21b781785c0eedef53c71d1b39b63a208621947578bfcc9735affab952"
+    },
+    {
+      "name": "ExpressionCopy",
+      "rva": "0x3fef1d0",
+      "size_bytes": 240,
+      "sha256": "1cbad882e2dc84ebfeed7cc9dddf640347d3e9fc49ce5c3745f2320b675e79ff"
+    },
+    {
+      "name": "ChainCopy",
+      "rva": "0x3feef50",
+      "size_bytes": 104,
+      "sha256": "4c07440b304d3317db8022315f9f73234b6a1fdec7eea4675bd08e1c6f681520"
+    }
+  ],
+  "layouts": {
+    "jomini_owner_to_application": "0x18",
+    "application_to_gui_host": "0x1b8",
+    "gui_host_to_context": "0x58",
+    "context_to_native_host": "0x3d8",
+    "native_host_to_context_backref": "0x8",
+    "context_root": "0xd0",
+    "context_shortcut_manager": "0x3e8",
+    "context_modal_vector": "0x298",
+    "context_modal_count": "0x2a4",
+    "widget_context": "0xd8",
+    "widget_parent": "0xe8",
+    "widget_children": "0xf0",
+    "widget_child_count": "0xfc",
+    "widget_name": "0x1b8",
+    "button_mode_zero_primary_group": "0x4b8",
+    "button_mode_zero_fallback_group": "0x3f8",
+    "callback_stride": "0x48",
+    "callback_object_in_row": "0x40",
+    "expression_callback_size": "0xf8",
+    "expression_callback_vtable": "0x50bf430",
+    "expression_callback_invoke": "0x406fc40",
+    "expression_offset": "0x10",
+    "native_receiver_offset": "0xf0"
+  }
+}

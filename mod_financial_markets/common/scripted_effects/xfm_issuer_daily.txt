@@ -1,0 +1,70 @@
+﻿# Exchange scope hooks. No AI-by-coin scan: one light pass over registered assets.
+xfm_coin_daily_effect = {
+    every_in_global_list = {
+        variable = xfm_coin_registry
+        limit = { story_type = xfm_finance_coin has_variable = xfm_entity_type var:xfm_listing_state != 7 OR = { NOT = { has_variable = xfm_issuer_last_day } var:xfm_issuer_last_day < global_var:xfm_exchange.var:xfm_day } }
+        set_variable = { name = xfm_issuer_last_day value = global_var:xfm_exchange.var:xfm_day }
+        xfm_issuer_adopt_legacy_defaults_effect = yes
+        change_variable = { name = xfm_asset_age add = 1 }
+        xfm_issuer_refresh_controller_effect = yes
+        xfm_issuer_unlock_founder_effect = yes
+        xfm_issuer_investigate_effect = yes
+        if = {
+            limit = { var:xfm_listing_state = 0 }
+            change_variable = { name = xfm_offer_age add = 1 }
+            if = { limit = { var:xfm_offer_age >= 30 NOT = { has_variable = xfm_offer_closing_started } } xfm_issuer_refund_effect = yes }
+            if = {
+                limit = { has_variable = xfm_offer_closing_started exists = var:xfm_controller var:xfm_controller = { is_alive = yes is_adult = yes } }
+                save_scope_as = xfm_offer_retry_coin
+                var:xfm_controller = {
+                    clear_saved_scope = xfm_offer_retry_previous_coin
+                    if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { save_scope_as = xfm_offer_retry_previous_coin } }
+                    set_variable = { name = xfm_selected_coin value = scope:xfm_offer_retry_coin }
+                    xfm_issuer_complete_offer_effect = yes
+                    if = { limit = { exists = scope:xfm_offer_retry_previous_coin } set_variable = { name = xfm_selected_coin value = scope:xfm_offer_retry_previous_coin } }
+                    else = { remove_variable = xfm_selected_coin }
+                }
+            }
+        }
+    }
+}
+
+xfm_coin_ai_effect = {
+    # Called at most once per scheduler visit. Every rank can apply or subscribe.
+    if = {
+        limit = { is_ai = yes xfm_issuer_actor_trigger = yes }
+        if = {
+            limit = { exists = var:xfm_pending_offer }
+            set_variable = { name = xfm_selected_coin value = var:xfm_pending_offer }
+            if = { limit = { xfm_issuer_can_complete_trigger = yes } xfm_issuer_complete_offer_effect = yes }
+        }
+        else_if = {
+            limit = { xfm_config_ai_issuance_open_trigger = yes NOT = { has_variable = xfm_issue_cooldown } OR = { NOT = { has_variable = xfm_personal_coin } var:xfm_personal_coin = { var:xfm_listing_state = 7 } } OR = { NOT = { has_variable = xfm_inherited_personal_coin } var:xfm_inherited_personal_coin = { var:xfm_listing_state = 7 } } gold >= 8 }
+            random = {
+                chance = 1
+                set_variable = { name = xfm_requested_entity_type value = 1 }
+                random_list = {
+                    6 = { set_variable = { name = xfm_requested_entity_type value = 1 } }
+                    1 = { set_variable = { name = xfm_requested_entity_type value = 6 } }
+                    1 = { set_variable = { name = xfm_requested_entity_type value = 7 } }
+                    1 = { trigger = { is_house_head = yes } set_variable = { name = xfm_requested_entity_type value = 2 } }
+                    1 = { trigger = { is_dynast = yes } set_variable = { name = xfm_requested_entity_type value = 3 } }
+                    1 = { trigger = { is_landed = yes } set_variable = { name = xfm_requested_entity_type value = 4 } }
+                    1 = { trigger = { exists = faith.religious_head faith.religious_head = this } set_variable = { name = xfm_requested_entity_type value = 5 } }
+                }
+                if = { limit = { gold >= 100 } set_variable = { name = xfm_requested_funding value = 200 } xfm_issuer_register_standard_effect = yes }
+                else = { set_variable = { name = xfm_requested_funding value = 20 } xfm_issuer_register_micro_effect = yes }
+                if = { limit = { var:xfm_issuer_result = 1 } xfm_issuer_promote_effect = yes }
+            }
+        }
+        if = {
+            limit = { exists = var:xfm_promoted_coin var:xfm_promoted_coin = { var:xfm_listing_state = 0 } gold >= 2 }
+            random = {
+                chance = 25
+                set_variable = { name = xfm_selected_coin value = var:xfm_promoted_coin }
+                set_variable = { name = xfm_subscription_gold value = 2 }
+                xfm_issuer_subscribe_effect = yes
+            }
+        }
+    }
+}

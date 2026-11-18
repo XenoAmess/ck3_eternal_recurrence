@@ -1,0 +1,46 @@
+﻿# 2 read-only selection effects. A button never changes another character's debt.
+xfm_market_ui_news_effect = {
+    save_scope_as = xfm_ui_news_reader
+    clear_variable_list = xfm_ui_news
+    if = {
+        limit = { var:xfm_ui_news_before_id = 0 }
+        set_variable = { name = xfm_ui_news_anchor_id value = 1 }
+        if = { limit = { global_var:xfm_exchange = { has_variable = xfm_news_counter } } set_variable = { name = xfm_ui_news_anchor_id value = global_var:xfm_exchange.var:xfm_news_counter } change_variable = { name = xfm_ui_news_anchor_id add = 1 } }
+        set_variable = { name = xfm_ui_news_before_id value = var:xfm_ui_news_anchor_id }
+        set_variable = { name = xfm_ui_news_page value = 1 }
+    }
+    set_variable = { name = xfm_ui_news_count value = 0 }
+    set_variable = { name = xfm_ui_news_has_older value = 0 }
+    ordered_in_global_list = {
+        variable = xfm_news_entries
+        limit = { var:xfm_news_id < scope:xfm_ui_news_reader.var:xfm_ui_news_before_id }
+        order_by = var:xfm_news_id
+        max = 17
+        check_range_bounds = no
+        save_scope_as = xfm_ui_news_entry
+        scope:xfm_ui_news_reader = {
+            change_variable = { name = xfm_ui_news_count add = 1 }
+            if = {
+                limit = { var:xfm_ui_news_count <= 16 }
+                add_to_variable_list = { name = xfm_ui_news target = scope:xfm_ui_news_entry }
+                set_variable = { name = xfm_ui_news_last_id value = scope:xfm_ui_news_entry.var:xfm_news_id }
+            }
+            else = { set_variable = { name = xfm_ui_news_has_older value = 1 } }
+        }
+    }
+}
+xfm_market_ui_select_news_debts_effect = {
+    clear_variable_list = xfm_ui_aid_debts
+    save_scope_as = xfm_ui_news_reader
+    if = {
+        limit = { exists = var:xfm_selected_news.var:xfm_news_actor.var:xfm_account }
+        var:xfm_selected_news.var:xfm_news_actor.var:xfm_account = {
+            every_in_list = {
+                variable = xfm_debts
+                limit = { var:xfm_outstanding_cents > 0 }
+                save_scope_as = xfm_ui_aid_debt
+                scope:xfm_ui_news_reader = { add_to_variable_list = { name = xfm_ui_aid_debts target = scope:xfm_ui_aid_debt } }
+            }
+        }
+    }
+}

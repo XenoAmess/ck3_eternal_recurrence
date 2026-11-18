@@ -1,0 +1,114 @@
+﻿# Canonical public venue only. This venue's exit does not erase coin rights or unrelated venues.
+# 0 subscription, 1 normal, 2 warning, 3 30-day notice, 4 suspended,
+# 5 venue delisted, 6 residual OTC, 7 fully archived, 8 relisting review.
+xfm_listing_announce_effect = {
+    if = {
+        limit = { story_type = xfm_finance_coin var:xfm_listing_state >= 1 var:xfm_listing_state <= 4 var:xfm_listing_state != 3 }
+        set_variable = { name = xfm_listing_state value = 3 }
+        set_variable = { name = xfm_delisting_age value = 0 }
+        set_variable = { name = xfm_notice_day value = global_var:xfm_exchange.var:xfm_day }
+        set_variable = { name = xfm_trading_open value = 1 }
+        set_variable = { name = xfm_derivatives_reduce_only value = 1 }
+        set_variable = { name = xfm_termination_samples value = 0 }
+        set_variable = { name = xfm_termination_price_sum_cents value = 0 }
+        set_variable = { name = xfm_termination_venue value = 1 }
+        set_variable = { name = xfm_termination_requested value = 0 }
+        set_variable = { name = xfm_termination_price_certified value = 0 }
+        set_variable = { name = xfm_termination_price_source_coin value = this }
+        set_variable = { name = xfm_termination_source_notice_day value = var:xfm_notice_day }
+        set_variable = { name = xfm_termination_window_start_day value = { value = var:xfm_notice_day add = 15 } }
+        set_variable = { name = xfm_termination_window_end_day value = { value = var:xfm_notice_day add = 20 } }
+        set_variable = { name = xfm_settlement_price_pending value = 0 }
+        xfm_futures_reduce_only_effect = yes
+        set_variable = { name = xfm_news_actor value = var:xfm_controller }
+        set_variable = { name = xfm_news_kind value = 8 }
+        xfm_news_record_effect = yes
+    }
+}
+
+xfm_listing_suspend_effect = {
+    if = {
+        limit = { story_type = xfm_finance_coin OR = { var:xfm_listing_state = 1 var:xfm_listing_state = 2 } }
+        set_variable = { name = xfm_listing_state value = 4 }
+        set_variable = { name = xfm_trading_open value = 0 }
+        set_variable = { name = xfm_derivatives_reduce_only value = 1 }
+        set_variable = { name = xfm_suspension_age value = 0 }
+        set_variable = { name = xfm_next_suspension_review_age value = 3 }
+        xfm_futures_reduce_only_effect = yes
+        xfm_spot_cancel_coin_effect = yes
+    }
+}
+
+xfm_listing_resume_effect = {
+    if = {
+        limit = { story_type = xfm_finance_coin var:xfm_listing_state = 4 NOT = { has_variable = xfm_fraud_established } var:xfm_maintenance_arrears_cents = 0 }
+        set_variable = { name = xfm_listing_state value = 2 }
+        set_variable = { name = xfm_trading_open value = 1 }
+        set_variable = { name = xfm_derivatives_reduce_only value = 0 }
+        remove_variable = xfm_suspension_age
+        remove_variable = xfm_next_suspension_review_age
+    }
+}
+
+xfm_listing_request_relist_effect = {
+    if = {
+        limit = { xfm_issuer_controls_selected_trigger = yes }
+        var:xfm_selected_coin = {
+            if = {
+                limit = {
+                    OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 }
+                    var:xfm_maintenance_arrears_cents = 0
+                    var:xfm_unpaid_debt_cents = 0
+                    var:xfm_settlement_price_pending = 0
+                    NOT = { has_variable = xfm_fraud_established }
+                    exists = var:xfm_maintenance_reservation
+                    var:xfm_maintenance_reservation = { var:xfm_remaining_cents >= prev.var:xfm_initial_maintenance_cents }
+                    exists = var:xfm_bond_reservation
+                    var:xfm_bond_reservation = { var:xfm_remaining_cents >= prev.xfm_issuer_bond_value }
+                    OR = {
+                        AND = { exists = var:xfm_maker_reservation var:xfm_maker_reservation = { var:xfm_remaining_cents >= prev.xfm_issuer_maker_value } }
+                        AND = { var:xfm_maker_withdrawn = 0 exists = var:xfm_market_maker_account var:xfm_market_maker_account = { var:xfm_free_cents >= prev.xfm_issuer_maker_value } }
+                    }
+                }
+                set_variable = { name = xfm_listing_state value = 8 }
+                set_variable = { name = xfm_relisting_age value = 0 }
+                # ID, debt/default history, supply, holders and previous claims remain intact.
+            }
+        }
+    }
+}
+
+xfm_listing_archive_effect = {
+    if = {
+        limit = {
+            story_type = xfm_finance_coin
+            OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 }
+            var:xfm_supply_units = 0
+            var:xfm_unpaid_debt_cents = 0
+            var:xfm_promises_due_cents = 0
+            var:xfm_maintenance_arrears_cents = 0
+            var:xfm_settlement_price_pending = 0
+            NOT = { any_in_list = { variable = xfm_holders OR = { var:xfm_quantity_units > 0 var:xfm_reserved_units > 0 } } }
+            NOT = { any_in_list = { variable = xfm_spot_orders var:xfm_status = 1 } }
+            NOT = { has_variable = xfm_unresolved_claims }
+            var:xfm_unresolved_claim_count = 0
+            NOT = { has_variable = xfm_unclaimed_assets }
+            NOT = {
+                any_in_list = {
+                    variable = xfm_futures_contracts
+                    OR = {
+                        any_in_list = { variable = xfm_positions var:xfm_status = 0 var:xfm_lots > 0 }
+                        any_in_list = { variable = xfm_orders OR = { var:xfm_status = 0 var:xfm_status = 1 } var:xfm_remaining_lots > 0 }
+                    }
+                }
+            }
+            var:xfm_issuer_account = { var:xfm_free_cents = 0 var:xfm_reserved_cents = 0 }
+            trigger_if = { limit = { exists = var:xfm_founder_account } var:xfm_founder_account = { var:xfm_free_cents = 0 var:xfm_reserved_cents = 0 } }
+            trigger_if = { limit = { exists = var:xfm_market_maker_account } var:xfm_market_maker_account = { var:xfm_free_cents = 0 var:xfm_reserved_cents = 0 } }
+        }
+        set_variable = { name = xfm_listing_state value = 7 }
+        set_variable = { name = xfm_trading_open value = 0 }
+        set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day }
+        # Keep permanent identity and defaults. No end_story and no ID reuse.
+    }
+}

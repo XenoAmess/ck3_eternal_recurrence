@@ -1,0 +1,36 @@
+﻿xfm_market_news_report_gui = {
+    scope = character
+    saved_scopes = { xfm_news_actor }
+    is_valid = {
+        exists = var:xfm_selected_news
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 1 } } custom_tooltip = { text = xfm_crisis_scene_1_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 2 } } custom_tooltip = { text = xfm_crisis_scene_2_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 3 } } custom_tooltip = { text = xfm_crisis_scene_3_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 4 } } custom_tooltip = { text = xfm_crisis_scene_4_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 5 } } custom_tooltip = { text = xfm_crisis_scene_5_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 6 } } custom_tooltip = { text = xfm_crisis_scene_6_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 7 } } custom_tooltip = { text = xfm_crisis_scene_7_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 8 } } custom_tooltip = { text = xfm_crisis_scene_8_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 9 } } custom_tooltip = { text = xfm_crisis_scene_9_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 10 } } custom_tooltip = { text = xfm_crisis_scene_10_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 11 } } custom_tooltip = { text = xfm_crisis_scene_11_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 12 } } custom_tooltip = { text = xfm_crisis_scene_12_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 13 } } custom_tooltip = { text = xfm_crisis_scene_13_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 14 } } custom_tooltip = { text = xfm_crisis_scene_14_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 15 } } custom_tooltip = { text = xfm_crisis_scene_15_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 16 } } custom_tooltip = { text = xfm_crisis_scene_16_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 17 } } custom_tooltip = { text = xfm_crisis_scene_17_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 18 } } custom_tooltip = { text = xfm_crisis_scene_18_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 19 } } custom_tooltip = { text = xfm_crisis_scene_19_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news = { var:xfm_news_kind = 5 var:xfm_news_scene = 20 } } custom_tooltip = { text = xfm_crisis_scene_20_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news.var:xfm_news_kind = 1 } custom_tooltip = { text = xfm_news_kind_1_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news.var:xfm_news_kind = 2 } custom_tooltip = { text = xfm_news_kind_2_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news.var:xfm_news_kind = 3 } custom_tooltip = { text = xfm_news_kind_3_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news.var:xfm_news_kind = 4 } custom_tooltip = { text = xfm_news_kind_4_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news.var:xfm_news_kind = 6 } custom_tooltip = { text = xfm_news_kind_6_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news.var:xfm_news_kind = 7 } custom_tooltip = { text = xfm_news_kind_7_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news.var:xfm_news_kind = 8 } custom_tooltip = { text = xfm_news_kind_8_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news.var:xfm_news_kind = 9 } custom_tooltip = { text = xfm_news_kind_9_desc always = yes } }
+        trigger_if = { limit = { var:xfm_selected_news.var:xfm_news_kind = 10 } custom_tooltip = { text = xfm_news_kind_10_desc always = yes } }
+    }
+}

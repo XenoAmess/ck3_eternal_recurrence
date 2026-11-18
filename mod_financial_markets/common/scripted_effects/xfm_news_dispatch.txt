@@ -1,0 +1,32 @@
+﻿# 2 effects. Toasts are nonmodal. Scene text never contains private amounts.
+xfm_news_dispatch_scene_effect = {
+    if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 1 } xfm_news_send_scene_effect = { SCENE = 1 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 2 } xfm_news_send_scene_effect = { SCENE = 2 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 3 } xfm_news_send_scene_effect = { SCENE = 3 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 4 } xfm_news_send_scene_effect = { SCENE = 4 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 5 } xfm_news_send_scene_effect = { SCENE = 5 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 6 } xfm_news_send_scene_effect = { SCENE = 6 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 7 } xfm_news_send_scene_effect = { SCENE = 7 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 8 } xfm_news_send_scene_effect = { SCENE = 8 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 9 } xfm_news_send_scene_effect = { SCENE = 9 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 10 } xfm_news_send_scene_effect = { SCENE = 10 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 11 } xfm_news_send_scene_effect = { SCENE = 11 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 12 } xfm_news_send_scene_effect = { SCENE = 12 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 13 } xfm_news_send_scene_effect = { SCENE = 13 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 14 } xfm_news_send_scene_effect = { SCENE = 14 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 15 } xfm_news_send_scene_effect = { SCENE = 15 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 16 } xfm_news_send_scene_effect = { SCENE = 16 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 17 } xfm_news_send_scene_effect = { SCENE = 17 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 18 } xfm_news_send_scene_effect = { SCENE = 18 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_scene = 19 } xfm_news_send_scene_effect = { SCENE = 19 } }
+    else = { xfm_news_send_scene_effect = { SCENE = 20 } }
+}
+
+xfm_news_send_kind_effect = {
+    send_interface_toast = {
+        type = event_toast_effect_neutral
+        title = xfm_news_kind_$KIND$_title
+        desc = xfm_news_kind_$KIND$_desc
+        left_icon = scope:xfm_news_actor
+    }
+}

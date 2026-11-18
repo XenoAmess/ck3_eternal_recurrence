@@ -1,0 +1,139 @@
+﻿# Active indexes exclude terminal stories; claim source stories remain persistent.
+xfm_futures_archive_order_effect = {
+ if = {
+  limit = { NOT = { has_variable = xfm_archived_day } }
+  save_scope_as = xfm_fut_archived_order
+  set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day }
+  var:xfm_contract = {
+   remove_list_variable = { name = xfm_orders target = scope:xfm_fut_archived_order }
+   change_variable = { name = xfm_open_orders_count subtract = 1 }
+  }
+  var:xfm_account = {
+   remove_list_variable = { name = xfm_orders target = scope:xfm_fut_archived_order }
+   add_to_variable_list = { name = xfm_futures_order_history target = scope:xfm_fut_archived_order }
+   change_variable = { name = xfm_open_orders_count subtract = 1 }
+  }
+  global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count subtract = 1 } }
+  xfm_futures_archive_enqueue_effect = yes
+ }
+}
+xfm_futures_archive_position_effect = {
+ if = {
+  limit = { NOT = { has_variable = xfm_archived_day } }
+  save_scope_as = xfm_fut_archived_position
+  set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day }
+  var:xfm_contract = {
+   every_in_list = {
+    variable = xfm_orders
+    limit = { var:xfm_close_position = scope:xfm_fut_archived_position NOT = { has_variable = xfm_in_execution } }
+    xfm_futures_cancel_order_effect = yes
+   }
+  }
+  var:xfm_contract = { remove_list_variable = { name = xfm_positions target = scope:xfm_fut_archived_position } }
+  var:xfm_long_account = {
+   remove_list_variable = { name = xfm_positions target = scope:xfm_fut_archived_position }
+   add_to_variable_list = { name = xfm_futures_position_history target = scope:xfm_fut_archived_position }
+  }
+  var:xfm_short_account = {
+   remove_list_variable = { name = xfm_positions target = scope:xfm_fut_archived_position }
+   add_to_variable_list = { name = xfm_futures_position_history target = scope:xfm_fut_archived_position }
+  }
+  global_var:xfm_exchange = { change_variable = { name = xfm_futures_open_positions_count subtract = 1 } }
+  xfm_futures_archive_enqueue_effect = yes
+ }
+}
+
+# Recent no-claim history is bounded; debt receipt sources remain permanent.
+xfm_futures_archive_enqueue_effect = {
+ if = {
+  limit = { NOT = { has_variable = xfm_futures_archive_queued } NOT = { has_variable = xfm_futures_archive_retained } }
+  save_scope_as = xfm_fut_archive_item
+  set_variable = { name = xfm_futures_archive_queued value = 1 }
+  global_var:xfm_exchange = {
+   if = { limit = { NOT = { has_variable = xfm_futures_archive_count } } set_variable = { name = xfm_futures_archive_count value = 0 } }
+   if = {
+    limit = { exists = var:xfm_futures_archive_tail }
+    var:xfm_futures_archive_tail = { set_variable = { name = xfm_futures_archive_next value = scope:xfm_fut_archive_item } }
+   }
+   else = { set_variable = { name = xfm_futures_archive_head value = scope:xfm_fut_archive_item } }
+   set_variable = { name = xfm_futures_archive_tail value = scope:xfm_fut_archive_item }
+   change_variable = { name = xfm_futures_archive_count add = 1 }
+   xfm_futures_archive_prune_effect = yes
+  }
+ }
+}
+
+xfm_futures_archive_prune_effect = {
+ if = { limit = { NOT = { has_variable = xfm_futures_archive_count } } set_variable = { name = xfm_futures_archive_count value = 0 } }
+ set_variable = { name = xfm_futures_prune_budget value = 64 }
+ while = {
+  limit = { var:xfm_futures_archive_count > 2048 var:xfm_futures_prune_budget > 0 exists = var:xfm_futures_archive_head }
+  change_variable = { name = xfm_futures_prune_budget subtract = 1 }
+  clear_saved_scope = xfm_fut_prune_item
+  clear_saved_scope = xfm_fut_prune_next
+  var:xfm_futures_archive_head = {
+   save_scope_as = xfm_fut_prune_item
+   if = { limit = { exists = var:xfm_futures_archive_next } var:xfm_futures_archive_next = { save_scope_as = xfm_fut_prune_next } }
+   remove_variable = xfm_futures_archive_next
+   remove_variable = xfm_futures_archive_queued
+  }
+  if = { limit = { exists = scope:xfm_fut_prune_next } set_variable = { name = xfm_futures_archive_head value = scope:xfm_fut_prune_next } }
+  else = { remove_variable = xfm_futures_archive_head remove_variable = xfm_futures_archive_tail }
+  change_variable = { name = xfm_futures_archive_count subtract = 1 }
+  scope:xfm_fut_prune_item = {
+   if = {
+    limit = { OR = { has_variable = xfm_pending_payment exists = var:xfm_debt_receipt_1 exists = var:xfm_debt_receipt_2 exists = var:xfm_debt_receipt_3 exists = var:xfm_debt_receipt_4 } }
+    set_variable = { name = xfm_futures_archive_retained value = 1 }
+   }
+   else_if = {
+    limit = { var:xfm_archived_day >= global_var:xfm_exchange.var:xfm_day }
+    # Never invalidate an object still referenced by this day's in-flight effect chain.
+    save_scope_as = xfm_fut_archive_item
+    set_variable = { name = xfm_futures_archive_queued value = 1 }
+    global_var:xfm_exchange = {
+     if = { limit = { exists = var:xfm_futures_archive_tail } var:xfm_futures_archive_tail = { set_variable = { name = xfm_futures_archive_next value = scope:xfm_fut_archive_item } } }
+     else = { set_variable = { name = xfm_futures_archive_head value = scope:xfm_fut_archive_item } }
+     set_variable = { name = xfm_futures_archive_tail value = scope:xfm_fut_archive_item }
+     change_variable = { name = xfm_futures_archive_count add = 1 }
+    }
+   }
+   else = {
+    if = {
+     limit = { has_variable = xfm_order_id }
+     var:xfm_account = { remove_list_variable = { name = xfm_futures_order_history target = scope:xfm_fut_prune_item } }
+     if = { limit = { exists = var:xfm_reservation } var:xfm_reservation = { xfm_futures_prune_empty_reservation_effect = yes } }
+    }
+    else = {
+     var:xfm_long_account = { remove_list_variable = { name = xfm_futures_position_history target = scope:xfm_fut_prune_item } }
+     var:xfm_short_account = { remove_list_variable = { name = xfm_futures_position_history target = scope:xfm_fut_prune_item } }
+     if = { limit = { exists = var:xfm_long_reservation } var:xfm_long_reservation = { xfm_futures_prune_empty_reservation_effect = yes } }
+     if = { limit = { exists = var:xfm_short_reservation } var:xfm_short_reservation = { xfm_futures_prune_empty_reservation_effect = yes } }
+    }
+    end_story = yes
+   }
+  }
+ }
+ remove_variable = xfm_futures_prune_budget
+}
+
+xfm_futures_prune_empty_reservation_effect = {
+ if = {
+  limit = {
+   var:xfm_remaining_cents = 0
+   OR = {
+    NOT = { exists = var:xfm_futures_position }
+    var:xfm_futures_position = {
+     NOT = { xfm_futures_position_open_trigger = yes }
+     NOT = { has_variable = xfm_pending_payment }
+     NOT = { exists = var:xfm_debt_receipt_1 }
+     NOT = { exists = var:xfm_debt_receipt_2 }
+     NOT = { exists = var:xfm_debt_receipt_3 }
+     NOT = { exists = var:xfm_debt_receipt_4 }
+    }
+   }
+  }
+  save_scope_as = xfm_fut_pruned_reservation
+  var:xfm_account = { remove_list_variable = { name = xfm_reservations target = scope:xfm_fut_pruned_reservation } }
+  end_story = yes
+ }
+}

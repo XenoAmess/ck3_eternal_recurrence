@@ -593,6 +593,7 @@ driver._execute_primitive_step.assert_not_called()
             else:
                 stubs = ast.parse("""class Checked:
     driver: object
+    command_timeout_seconds: float
     def take_snapshot(self) -> dict[str, object]: raise RuntimeError
     def _execute_primitive_step(self, step: str, **arguments: object) -> object: raise RuntimeError
     def _native_driver_state_path(self) -> Path: raise RuntimeError
@@ -606,7 +607,7 @@ from pathlib import Path
 import uuid
 import time
 from xar_autoplayer.bridge.driver import BridgeUnavailableError, UnsupportedStepError, PreSubmissionRevisionMismatchError
-from xar_autoplayer.bridge.native_driver import _validate_revision, _same_paused_native_frame
+from xar_autoplayer.bridge.native_driver import _validate_revision, _same_paused_native_frame, _positive_seconds
 from xar_autoplayer.bridge.gui_window_tree_contract import ScriptedWidgetActionV1, ScriptedWidgetBindingV1, ScriptedWidgetQueryV1, normalize_scripted_widget_action_v1, normalize_scripted_widget_query_v1, scripted_widget_public_result_v1
 from xar_autoplayer.bridge.mcp_server import ScriptedWidgetDecimalV1, ScriptedWidgetRootV1
 from xar_autoplayer.bridge.service import GameplayBridgeService
@@ -620,6 +621,269 @@ service: GameplayBridgeService
             "--python-version=" + str(sys.version_info.major) + "." + str(sys.version_info.minor),
             str(Path(contract.__file__)), str(path)])
         self.assertEqual(status, 0, stdout + stderr)
+
+class FlorinScriptedWidgetTests(unittest.IsolatedAsyncioTestCase):
+    """Actual C++ serializers through the existing Full projection and GUI consumer; no live credit."""
+
+    def setUp(self) -> None:
+        from xar_autoplayer.bridge.native_driver import NativeProtocolState
+        from xar_autoplayer.bridge.version_identity import CK3_1210
+        self.temp = tempfile.TemporaryDirectory(prefix="xar-florin-widget-tests-")
+        self.addCleanup(self.temp.cleanup)
+        root = Path(__file__).resolve().parents[3]
+        original = root / "java/ck3-control/native-transport/src/test/resources/newnative/full1210/full-snapshot-producer-102.json"
+        self.full_original = json.loads(original.read_text(encoding="utf-8"))
+        self.pipe = r"\\.\pipe\florin-gui-software"
+        state = NativeProtocolState(self.pipe)
+        state.ingest({"type": "hello", "protocol_version": 1, "bridge_version": "0.1.0", "pid": 12700,
+                      "session_generation": 0, "connection_generation": 3, "capabilities": ["game.state.snapshot"],
+                      "game_adapter_id": "ck3-1.21.0-msvc-x64", "game_adapter_status": "ready", "ck3_build_match": True,
+                      "expected_ck3_version": CK3_1210.game_version, "expected_ck3_sha256": CK3_1210.executable_sha256})
+        state.ingest(deepcopy(self.full_original))
+        self.frame = state.semantic_snapshot()
+        self.frame.update(episode_projection="native_campaign", episode_run_id=None,
+                          managed_campaign_run_binding={"run_id": "florin-gui-software-run", "state_dir": self.temp.name,
+                              "bridge_pipe": self.pipe, "host_path": str(Path(self.temp.name) / "host.py"), "frozen_argv_sha256": "a" * 64})
+        self.binding = contract.scripted_widget_binding_v1(self.frame)
+        self.query_packet = self.packet("query")
+        self.action_packet = self.packet("submitted-handled")
+        self.driver = object.__new__(NativeHeadlessGameplayDriver)
+        self.driver.command_timeout_seconds = 30.0
+        self.driver.take_snapshot = Mock(side_effect=lambda: deepcopy(self.frame))
+        self.driver._native_driver_state_path = Mock(return_value=Path(self.temp.name) / "driver.json")
+        self.driver._record_command = Mock()
+        self.driver._execute_primitive_step = Mock(side_effect=self.execute)
+        self.quiet = patch("xar_autoplayer.native_session.require_game_windows_background").start()
+        self.addCleanup(patch.stopall)
+
+    def packet(self, kind: str) -> dict[str, object]:
+        path = Path(__file__).resolve().parents[1] / f"fixtures/gui_control1210_producer_{kind}.json"
+        return json.loads(path.read_text(encoding="utf-8"))["result"]
+
+    def execute(self, step: str, **arguments: object) -> dict[str, object]:
+        if step == contract.SCRIPTED_WIDGET_QUERY_STEP:
+            return deepcopy(self.query_packet)
+        if step == contract.SCRIPTED_WIDGET_ACTION_STEP:
+            return deepcopy(self.action_packet)
+        raise AssertionError(step)
+
+    def query(self) -> contract.ScriptedWidgetQueryV1:
+        return self.driver.query_scripted_widget_controls_v1("xfm_market_entry", expected_revision=self.frame["revision"])
+
+    def activate(self) -> contract.ScriptedWidgetActionV1:
+        return self.driver.activate_scripted_widget_control_v1("9007199254740999", "2", expected_revision=self.frame["revision"])
+
+    def test_real_full_signed_actor_and_actual_gui_producer_keep_exact_florin_identity(self) -> None:
+        self.assertEqual(self.binding["played_character_id"], -2130706431)
+        observed = self.query()
+        self.assertEqual(observed["schema"], "ck3_1210_gui_control_result_v1")
+        self.assertEqual(observed["game_version"], "1.21.0")
+        self.assertEqual(observed["native_result"], self.query_packet)
+        self.assertEqual(observed["binding_source"], "verified-full-run-transport")
+        self.assertNotIn("game_pid", observed["native_result"])
+        self.assertEqual(observed["query_generation"], "9007199254740999")
+        self.assertEqual(contract.scripted_widget_public_result_v1(observed)["native_revision"], "11")
+        public = contract.scripted_widget_public_result_v1(observed)
+        self.assertNotIn("native_result", public)
+        self.assertEqual(json.loads(public["native_result_json"]), self.query_packet)
+
+    def test_exact_eleven_field_query_and_observed_action_use_same_primitive_and_background_guard(self) -> None:
+        self.query()
+        result = self.activate()
+        calls = self.driver._execute_primitive_step.call_args_list
+        self.assertEqual(len(calls), 2)
+        query = calls[0].kwargs
+        action = calls[1].kwargs
+        self.assertEqual(query["required_capability"], contract.SCRIPTED_WIDGET_FLORIN_QUERY_CAPABILITY)
+        self.assertEqual(action["required_capability"], contract.SCRIPTED_WIDGET_FLORIN_ACTION_CAPABILITY)
+        for call in (query, action):
+            self.assertEqual(set(call["request_fields"]), {"gui_control_v1", "arguments"})
+            self.assertEqual(call["request_fields"]["arguments"], {})
+            self.assertEqual(len(call["request_fields"]["gui_control_v1"]), 11)
+            self.assertEqual(call["request_fields"]["gui_control_v1"]["snapshot_id"], "native:11")
+            self.assertEqual(call["request_fields"]["gui_control_v1"]["native_revision"], 11)
+        self.assertEqual(query["request_fields"]["gui_control_v1"]["query_generation"], "0")
+        self.assertEqual(action["request_fields"]["gui_control_v1"]["query_generation"], "9007199254740999")
+        self.assertEqual(action["request_fields"]["gui_control_v1"]["widget_id"], "2")
+        self.assertEqual(self.quiet.call_args_list, [unittest.mock.call(12700), unittest.mock.call(12700)])
+        self.assertTrue(result["dispatch_invoked"])
+        self.assertTrue(result["verification_pending"])
+        self.assertFalse(result["postcondition_verified"])
+
+    def test_unknown_real_native_result_stays_nonrepeatable_across_reconnect(self) -> None:
+        self.query()
+        self.action_packet = self.packet("indeterminate")
+        with self.assertRaisesRegex(BridgeUnavailableError, "unknown"):
+            self.activate()
+        self.frame["diagnostics"]["connection_generation"] = 4
+        self.frame["diagnostics"]["hello"]["connection_generation"] = 4
+        self.query()
+        with self.assertRaisesRegex(BridgeUnavailableError, "unknown"):
+            self.activate()
+        actions = [call for call in self.driver._execute_primitive_step.call_args_list if call.args[0] == contract.SCRIPTED_WIDGET_ACTION_STEP]
+        self.assertEqual(len(actions), 1)
+
+    def test_submitted_but_unhandled_is_still_unknown_not_business_success(self) -> None:
+        self.query()
+        self.action_packet = self.packet("submitted")
+        with self.assertRaisesRegex(BridgeUnavailableError, "unknown"):
+            self.activate()
+        self.assertFalse(list((Path(self.temp.name) / "scripted-widget-controls").glob("*.dispatch.json")))
+
+    def test_background_guard_failure_never_sends_or_claims(self) -> None:
+        self.quiet.side_effect = ValueError("actual Game is not minimized")
+        with self.assertRaisesRegex(ValueError, "not minimized"):
+            self.query()
+        self.driver._execute_primitive_step.assert_not_called()
+        self.assertFalse((Path(self.temp.name) / "scripted-widget-controls").exists())
+
+    def test_action_cannot_cross_allocated_run_or_full_identity(self) -> None:
+        self.query()
+        self.frame["managed_campaign_run_binding"]["frozen_argv_sha256"] = "b" * 64
+        with self.assertRaisesRegex(BridgeUnavailableError, "saved query"):
+            self.activate()
+        self.assertEqual(len(self.driver._execute_primitive_step.call_args_list), 1)
+
+    async def test_actual_full_and_gui_producers_reach_public_mcp_without_business_credit(self) -> None:
+        async with Client(mcp_server.create_server(self.driver)) as client:
+            observed = await client.session.call_tool("ck3_query_scripted_widget_controls_v1", {
+                "root_name": "xfm_market_entry", "expected_revision": str(self.frame["revision"])})
+            self.assertFalse(observed.is_error, str(observed))
+            self.assertEqual(observed.structured_content["game_version"], "1.21.0")
+            self.assertEqual(observed.structured_content["query_generation"], "9007199254740999")
+            self.assertNotIn("native_result", observed.structured_content)
+            self.assertEqual(json.loads(observed.structured_content["native_result_json"]), self.query_packet)
+            submitted = await client.session.call_tool("ck3_activate_scripted_widget_control_v1", {
+                "query_generation": "9007199254740999", "widget_id": "2", "expected_revision": str(self.frame["revision"])})
+            self.assertFalse(submitted.is_error, str(submitted))
+            self.assertTrue(submitted.structured_content["verification_pending"])
+            self.assertFalse(submitted.structured_content["postcondition_verified"])
+
+    def test_disabled_unobserved_or_forged_widget_never_dispatches(self) -> None:
+        self.query_packet["widgets"][1]["enabled"] = False
+        self.query()
+        with self.assertRaisesRegex(BridgeUnavailableError, "disabled"):
+            self.activate()
+        with self.assertRaisesRegex(BridgeUnavailableError, "absent"):
+            self.driver.activate_scripted_widget_control_v1("9007199254740999", "9007199254741001", expected_revision=self.frame["revision"])
+        self.assertEqual(len(self.driver._execute_primitive_step.call_args_list), 1)
+
+    def test_numeric_coercions_old_build_and_missing_full_main_abi_are_rejected(self) -> None:
+        for key, bad in (("native_revision", 11.0), ("query_generation", 9007199254740999),
+                         ("application_main_observed", 1), ("full_snapshot_before_verified", False),
+                         ("source_abi_pins_verified", False), ("game_version", "1.20.0.4")):
+            raw = deepcopy(self.query_packet)
+            raw[key] = bad
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                contract.normalize_scripted_widget_query_v1(raw, "xfm_market_entry", self.binding)
+
+    def test_rejected_large_widget_preserves_decimal_echo_and_grants_no_dispatch(self) -> None:
+        raw = self.packet("oversized-widget")
+        result = contract.normalize_scripted_widget_action_v1(raw, "9007199254740999", "9007199254741001", self.binding)
+        self.assertEqual(result["native_result"]["widget_id"], "9007199254741001")
+        self.assertEqual(result["native_result"]["query_generation"], "0")
+        self.assertFalse(result["dispatch_attempted"])
+        self.assertFalse(result["dispatch_invoked"])
+        self.assertFalse(result["postcondition_verified"])
+
+    def test_unresolved_gui_ack_blocks_shared_world_after_driver_rebuild_and_reconnect(self) -> None:
+        from xar_autoplayer.bridge.timeline_control_ack_v1 import require_florin_control_ready_v1
+        from xar_autoplayer.bridge.version_identity import florin_full_source
+        for kind in ("indeterminate", "submitted", "malformed", "lost"):
+            with self.subTest(kind=kind):
+                self.frame["diagnostics"]["connection_generation"] = 3
+                self.frame["diagnostics"]["hello"]["connection_generation"] = 3
+                state_path = Path(self.temp.name) / kind / "driver.json"
+                self.driver._native_driver_state_path = Mock(return_value=state_path)
+                self.driver._execute_primitive_step = Mock(side_effect=self.execute)
+                self.query_packet = self.packet("query")
+                self.query()
+                self.action_packet = self.packet(kind if kind in ("indeterminate", "submitted") else "submitted-handled")
+                if kind == "malformed":
+                    del self.action_packet["source_abi_pins_verified"]
+                if kind == "lost":
+                    self.driver._execute_primitive_step.side_effect = BridgeUnavailableError("ACK was lost after dispatch")
+                with self.assertRaises((BridgeUnavailableError, ValueError)):
+                    self.activate()
+                original = florin_full_source(self.frame, self.frame["revision"])
+                with self.assertRaisesRegex(ValueError, "UNKNOWN"):
+                    require_florin_control_ready_v1(state_path, original)
+                blocked = list((state_path.parent / "world-control1210").glob("*/*.claim.json"))
+                self.assertEqual(len(blocked), 1)
+                self.assertEqual(json.loads(blocked[0].read_text(encoding="utf-8"))["step"], contract.SCRIPTED_WIDGET_ACTION_STEP)
+                # Reconstruct the real consumer over the same durable state and
+                # change both connection and control identity. Only the shared
+                # world guard can block this new, otherwise qualified action.
+                self.driver = object.__new__(NativeHeadlessGameplayDriver)
+                self.driver.command_timeout_seconds = 30.0
+                self.driver.take_snapshot = Mock(side_effect=lambda: deepcopy(self.frame))
+                self.driver._native_driver_state_path = Mock(return_value=state_path)
+                self.driver._record_command = Mock()
+                self.driver._execute_primitive_step = Mock(side_effect=self.execute)
+                self.frame["diagnostics"]["connection_generation"] = 4
+                self.frame["diagnostics"]["hello"]["connection_generation"] = 4
+                self.query_packet["widgets"][1]["runtime_name"] = "different_observed_control"
+                self.query()
+                with self.assertRaisesRegex(BridgeUnavailableError, "UNKNOWN"):
+                    self.activate()
+                self.assertEqual(self.driver._execute_primitive_step.call_count, 1)
+                with self.assertRaisesRegex(ValueError, "UNKNOWN"):
+                    require_florin_control_ready_v1(state_path, florin_full_source(self.frame, self.frame["revision"]))
+
+    def test_event_world_unknown_blocks_gui_action_but_keeps_actual_query_available(self) -> None:
+        from xar_autoplayer.bridge.timeline_control_ack_v1 import mark_florin_control_unknown_v1
+        from xar_autoplayer.bridge.version_identity import florin_full_source
+        source = florin_full_source(self.frame, self.frame["revision"])
+        mark_florin_control_unknown_v1(self.driver._native_driver_state_path(), source,
+            request_id="original-event-option-unknown", step="select-event-option-1", reason="event_ack_invalid")
+        self.query()
+        with self.assertRaisesRegex(BridgeUnavailableError, "UNKNOWN"):
+            self.activate()
+        self.assertEqual(self.driver._execute_primitive_step.call_count, 1)
+        self.assertFalse(list((Path(self.temp.name) / "scripted-widget-controls").glob("*.claim.json")))
+
+    def test_strict_before_effect_rejection_and_primitive_preflight_do_not_create_world_unknown(self) -> None:
+        from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError, UnsupportedStepError
+        from xar_autoplayer.bridge.timeline_control_ack_v1 import require_florin_control_ready_v1
+        from xar_autoplayer.bridge.version_identity import florin_full_source
+        for kind in ("rejected", "revision", "capability", "disabled"):
+            with self.subTest(kind=kind):
+                state_path = Path(self.temp.name) / kind / "driver.json"
+                self.driver._native_driver_state_path = Mock(return_value=state_path)
+                self.driver._execute_primitive_step = Mock(side_effect=self.execute)
+                self.query_packet = self.packet("query")
+                if kind == "disabled":
+                    self.query_packet["widgets"][1]["enabled"] = False
+                self.query()
+                if kind == "rejected":
+                    # A strict native rejection of an observed row; no effect
+                    # was attempted and generation zero grants no new handle.
+                    self.action_packet = self.packet("oversized-widget")
+                    self.action_packet["widget_id"] = "2"
+                    result = self.activate()
+                    self.assertFalse(result["dispatch_attempted"])
+                else:
+                    if kind == "revision":
+                        self.driver._execute_primitive_step.side_effect = PreSubmissionRevisionMismatchError("changed before write")
+                    elif kind == "capability":
+                        self.driver._execute_primitive_step.side_effect = UnsupportedStepError("capability absent before write")
+                    with self.assertRaises((BridgeUnavailableError, PreSubmissionRevisionMismatchError, UnsupportedStepError)):
+                        self.activate()
+                require_florin_control_ready_v1(state_path, florin_full_source(self.frame, self.frame["revision"]))
+                self.assertFalse((state_path.parent / "world-control1210").exists())
+
+    def test_handled_submission_keeps_world_ready_without_claiming_business_completion(self) -> None:
+        from xar_autoplayer.bridge.timeline_control_ack_v1 import require_florin_control_ready_v1
+        from xar_autoplayer.bridge.version_identity import florin_full_source
+        self.query()
+        result = self.activate()
+        require_florin_control_ready_v1(self.driver._native_driver_state_path(),
+            florin_full_source(self.frame, self.frame["revision"]))
+        self.assertTrue(result["dispatch_invoked"])
+        self.assertTrue(result["verification_pending"])
+        self.assertFalse(result["postcondition_verified"])
+        self.assertFalse((Path(self.temp.name) / "world-control1210").exists())
+
 
 class GuiWindowTreeRootTests(unittest.TestCase):
     def test_wrong_actual_root_row_is_rejected(self):

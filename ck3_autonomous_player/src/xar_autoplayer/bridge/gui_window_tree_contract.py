@@ -7,7 +7,7 @@ from pathlib import Path
 import re
 from typing import Literal, NotRequired, TypedDict
 from .frontend_gui_route_contract import normalize_frontend_gui_tree_inspection_v1
-from .version_identity import CK3_12004, require_exact_native_build
+from .version_identity import CK3_12004, CK3_1210, florin_full_source, require_exact_native_build
 
 GUI_WINDOW_TREE_STEP = "inspect-gui-window-tree-v1"
 GUI_WINDOW_TREE_CAPABILITY = "game.command.inspect-gui-window-tree-v1"
@@ -61,6 +61,10 @@ SCRIPTED_WIDGET_QUERY_STEP = "query-scripted-widget-controls-v1"
 SCRIPTED_WIDGET_ACTION_STEP = "activate-scripted-widget-control-v1"
 SCRIPTED_WIDGET_QUERY_CAPABILITY = "game.command." + SCRIPTED_WIDGET_QUERY_STEP
 SCRIPTED_WIDGET_ACTION_CAPABILITY = "game.command." + SCRIPTED_WIDGET_ACTION_STEP
+SCRIPTED_WIDGET_FLORIN_QUERY_CAPABILITY = "game.query.scripted-widget-controls.v1"
+SCRIPTED_WIDGET_FLORIN_ACTION_CAPABILITY = "game.command.activate-scripted-widget-control.v1"
+SCRIPTED_WIDGET_FLORIN_SCHEMA = "ck3_1210_gui_control_result_v1"
+SCRIPTED_WIDGET_FLORIN_BACKEND = "ck3-1.21.0-native-headless-main-thread"
 SCRIPTED_WIDGET_REVISION_TOOLS = frozenset({
     "ck3_query_scripted_widget_controls_v1", "ck3_activate_scripted_widget_control_v1",
 })
@@ -95,6 +99,12 @@ class ScriptedWidgetBindingV1(TypedDict):
     date_raw: int
     episode_run_id: str | None
     scope: ScriptedWidgetScopeV1
+    game_version: NotRequired[str]
+    executable_sha256: NotRequired[str]
+    adapter_id: NotRequired[str]
+    backend: NotRequired[str]
+    snapshot_id: NotRequired[str]
+    scope_sha256: NotRequired[str]
 
 
 class ScriptedWidgetControlV1(TypedDict):
@@ -139,6 +149,9 @@ class ScriptedWidgetFrameV1(TypedDict):
     source_abi_pins_verified: bool
     frame_verified: bool
     public_revision: NotRequired[str]
+    binding_source: NotRequired[str]
+    native_result: NotRequired[dict[str, object]]
+    result_unknown: NotRequired[bool]
 
 
 class ScriptedWidgetQueryV1(ScriptedWidgetFrameV1):
@@ -222,6 +235,8 @@ def scripted_widget_binding_v1(snapshot: object) -> ScriptedWidgetBindingV1:
     diagnostics = scripted_widget_object_v1(frame.get("diagnostics"))
     hello = scripted_widget_object_v1(diagnostics.get("hello"))
     actor = scripted_widget_object_v1(frame.get("played_character"))
+    if require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256")) == CK3_1210:
+        return _scripted_widget_florin_binding(frame, diagnostics, hello, actor)
     if (require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256")) != CK3_12004
             or hello.get("game_adapter_id") != "ck3-1.20.0.4-msvc-x64"
             or hello.get("ck3_build_match") is not True or frame.get("paused") is not True
@@ -308,6 +323,8 @@ def normalize_scripted_widget_query_v1(
 ) -> ScriptedWidgetQueryV1:
     root_name = scripted_widget_root_v1(root_name)
     raw = scripted_widget_object_v1(value)
+    if raw.get("schema") == SCRIPTED_WIDGET_FLORIN_SCHEMA:
+        return _normalize_scripted_widget_florin_query(raw, root_name, binding)
     if raw.get("schema") != "ck3-native-scripted-widget-controls-v1" or raw.get("step") != SCRIPTED_WIDGET_QUERY_STEP:
         raise ValueError("wrong scripted widget query schema/step")
     if raw.get("root_name") != root_name:
@@ -361,6 +378,8 @@ def normalize_scripted_widget_action_v1(
     query_generation = scripted_widget_decimal_v1(query_generation)
     widget_id = scripted_widget_decimal_v1(widget_id)
     raw = scripted_widget_object_v1(value)
+    if raw.get("schema") == SCRIPTED_WIDGET_FLORIN_SCHEMA:
+        return _normalize_scripted_widget_florin_action(raw, query_generation, widget_id, binding)
     if raw.get("schema") != "ck3-native-scripted-widget-control-action-v1" or raw.get("step") != SCRIPTED_WIDGET_ACTION_STEP:
         raise ValueError("wrong scripted widget action schema/step")
     if raw.get("query_generation") != query_generation or raw.get("widget_id") != widget_id:
@@ -392,10 +411,13 @@ def normalize_scripted_widget_action_v1(
 
 
 def scripted_widget_public_result_v1(value: ScriptedWidgetQueryV1 | ScriptedWidgetActionV1) -> dict[str, object]:
-    """Only uint64 frame fields change representation at the public JSON boundary."""
+    """Public uint64 values are decimal text; preserve native JSON inside text, not JS numbers."""
     result: dict[str, object] = {key: item for key, item in value.items()}
     result["native_revision"] = str(value["native_revision"])
     result["connection_generation"] = str(value["connection_generation"])
+    if "native_result" in value:
+        result["native_result_json"] = json.dumps(value["native_result"], ensure_ascii=True, separators=(",", ":"), allow_nan=False)
+        del result["native_result"]
     return result
 
 
@@ -410,3 +432,197 @@ def write_scripted_widget_evidence_v1(path: Path, value: object) -> None:
 def read_scripted_widget_evidence_v1(path: Path) -> dict[str, object]:
     value: object = json.loads(path.read_text(encoding="utf-8"))
     return scripted_widget_object_v1(value)
+
+
+def _scripted_widget_florin_binding(
+    frame: dict[str, object], diagnostics: dict[str, object], hello: dict[str, object], actor: dict[str, object],
+) -> ScriptedWidgetBindingV1:
+    """Bind the actual Full/run/transport; main-thread admission comes from the new native result."""
+    source = florin_full_source(frame, None)
+    native, pid, generation = source.native_revision, source.game_pid, source.connection_generation
+    _widget_integer(pid, "game_pid", maximum=2**32 - 1)
+    if (hello.get("game_adapter_id") != "ck3-1.21.0-msvc-x64" or hello.get("ck3_build_match") is not True
+            or type(hello.get("pid")) is not int or hello.get("pid") != pid
+            or ("connection_generation" in hello and (type(hello["connection_generation"]) is not int or hello["connection_generation"] != generation))
+            or diagnostics.get("connected") is not True or frame.get("paused") is not True
+            or frame.get("map_ready") is not True or actor.get("alive") is not True
+            or actor.get("source") != "native" or frame.get("snapshot_id") != f"native:{native}"
+            or type(frame.get("format_version")) is not int or frame.get("format_version") != 1
+            or frame.get("backend_id") != "native-headless" or frame.get("source") != "injected-dll-named-pipe"):
+        raise ValueError("scripted widget controls require the exact Florin Full and connected native transport")
+    _widget_integer(frame.get("revision"), "public_revision")
+    _widget_integer(frame.get("local_player_id"), "local_player_id", minimum=0, maximum=2**32 - 1)
+    scope: ScriptedWidgetScopeV1
+    episode: str | None
+    if frame.get("episode_projection") == "native_campaign":
+        run = scripted_widget_object_v1(frame.get("managed_campaign_run_binding"))
+        if (frame.get("episode_run_id") is not None
+                or set(run) != {"run_id", "state_dir", "bridge_pipe", "host_path", "frozen_argv_sha256"}):
+            raise ValueError("Florin GUI requires its actual allocated campaign run")
+        run_binding: ScriptedWidgetManagedRunV1 = {
+            "run_id": _widget_text(run.get("run_id"), "run_id"),
+            "state_dir": _widget_text(run.get("state_dir"), "state_dir"),
+            "bridge_pipe": _widget_text(run.get("bridge_pipe"), "bridge_pipe"),
+            "host_path": _widget_text(run.get("host_path"), "host_path"),
+            "frozen_argv_sha256": _widget_text(run.get("frozen_argv_sha256"), "frozen_argv_sha256"),
+        }
+        if (not all(run_binding.values()) or re.fullmatch(r"[0-9a-f]{64}", run_binding["frozen_argv_sha256"]) is None
+                or diagnostics.get("pipe_name") != run_binding["bridge_pipe"]):
+            raise ValueError("Florin GUI allocated run and actual native transport differ")
+        scope = {"kind": "managed_native_campaign", "run_binding": run_binding}
+        episode = None
+    else:
+        if frame.get("managed_campaign_run_binding") is not None:
+            raise ValueError("Florin GUI managed run requires native_campaign projection")
+        episode = _widget_text(frame.get("episode_run_id"), "episode_run_id")
+        if not episode:
+            raise ValueError("Florin GUI episode identity is missing")
+        scope = {"kind": "one_life_episode", "episode_run_id": episode}
+    return {
+        "native_revision": native, "connection_generation": generation, "game_pid": pid,
+        "played_character_id": source.played_character_id,
+        "date_raw": _widget_integer(frame.get("date_raw"), "date_raw", minimum=-(2**31), maximum=2**31 - 1),
+        "episode_run_id": episode, "scope": scope, "snapshot_id": f"native:{native}",
+        "game_version": CK3_1210.game_version, "executable_sha256": CK3_1210.executable_sha256,
+        "adapter_id": "ck3-1.21.0-msvc-x64", "backend": SCRIPTED_WIDGET_FLORIN_BACKEND,
+        "scope_sha256": source.scope_sha256,
+    }
+
+
+def scripted_widget_florin_fields_v1(
+    binding: ScriptedWidgetBindingV1, root_name: str, deadline_unix_ms: int,
+    query_generation: str = "0", widget_id: str = "0",
+) -> dict[str, object]:
+    if (require_exact_native_build(binding.get("game_version"), binding.get("executable_sha256")) != CK3_1210
+            or binding.get("adapter_id") != "ck3-1.21.0-msvc-x64" or binding.get("backend") != SCRIPTED_WIDGET_FLORIN_BACKEND
+            or binding.get("snapshot_id") != f"native:{binding['native_revision']}" or type(deadline_unix_ms) is not int
+            or not 1 <= deadline_unix_ms <= 2**63 - 1):
+        raise ValueError("Florin GUI requires its exact binding and original finite deadline")
+    generation = scripted_widget_decimal_v1(query_generation, allow_zero=True)
+    widget = scripted_widget_decimal_v1(widget_id, allow_zero=True)
+    if (generation == "0") != (widget == "0"):
+        raise ValueError("Florin GUI requires both observed control identifiers or neither")
+    return {"gui_control_v1": {
+        "schema": "ck3_1210_gui_control_v1", "game_version": CK3_1210.game_version,
+        "executable_sha256": CK3_1210.executable_sha256, "adapter_id": "ck3-1.21.0-msvc-x64",
+        "backend": SCRIPTED_WIDGET_FLORIN_BACKEND, "snapshot_id": binding["snapshot_id"],
+        "native_revision": binding["native_revision"], "deadline_unix_ms": deadline_unix_ms,
+        "root_name": scripted_widget_root_v1(root_name), "query_generation": generation, "widget_id": widget,
+    }, "arguments": {}}
+
+
+def _scripted_widget_florin_result(
+    supplied: dict[str, object], step: str, binding: ScriptedWidgetBindingV1 | None,
+) -> tuple[dict[str, object], ScriptedWidgetFrameV1]:
+    raw = scripted_widget_object_v1(supplied["native_result"]) if "native_result" in supplied else supplied
+    fields = {"schema", "step", "game_version", "executable_sha256", "adapter_id", "backend", "status", "accepted",
+              "native_revision", "root_name", "query_generation", "widget_id", "application_main_observed",
+              "full_snapshot_before_verified", "source_abi_pins_verified", "effect_attempted", "native_handled",
+              "verification_pending", "complete", "widgets", "unavailable_reason"}
+    if (set(raw) not in (fields, fields | {"backend_id"}) or raw.get("schema") != SCRIPTED_WIDGET_FLORIN_SCHEMA
+            or raw.get("step") != step or require_exact_native_build(raw.get("game_version"), raw.get("executable_sha256")) != CK3_1210
+            or raw.get("adapter_id") != "ck3-1.21.0-msvc-x64" or raw.get("backend") != SCRIPTED_WIDGET_FLORIN_BACKEND):
+        raise ValueError("closed exact Florin GUI result required")
+    if raw.get("status") not in {"available", "submitted", "expired", "stale_full_snapshot", "stale_gui", "disabled", "unavailable", "indeterminate"}:
+        raise ValueError("unknown Florin GUI result status")
+    for key in ("accepted", "application_main_observed", "full_snapshot_before_verified", "source_abi_pins_verified",
+                "effect_attempted", "native_handled", "verification_pending", "complete"):
+        _widget_boolean(raw.get(key), key)
+    reason = raw.get("unavailable_reason")
+    if reason is not None and (not _widget_text(reason, "unavailable_reason", 4096)):
+        raise ValueError("Florin GUI reason must be null or nonempty bounded text")
+    native = _widget_integer(raw.get("native_revision"), "native_revision")
+    frame_input: dict[str, object] = dict(binding) if binding is not None else supplied
+    if binding is None and ("native_result" not in supplied or supplied.get("binding_source") != "verified-full-run-transport"):
+        raise ValueError("Florin GUI native receipt requires its actual Full/run/transport binding")
+    if binding is not None and (binding.get("game_version") != CK3_1210.game_version or binding["native_revision"] != native):
+        raise ValueError("Florin GUI receipt changed its actual Full binding")
+    frame: ScriptedWidgetFrameV1 = {
+        "native_revision": native,
+        "connection_generation": _widget_integer(frame_input.get("connection_generation"), "connection_generation"),
+        "game_pid": _widget_integer(frame_input.get("game_pid"), "game_pid", maximum=2**32 - 1),
+        "played_character_id": _widget_integer(frame_input.get("played_character_id"), "played_character_id", minimum=-(2**31), maximum=2**31 - 1),
+        "date_raw": _widget_integer(frame_input.get("date_raw"), "date_raw", minimum=-(2**31), maximum=2**31 - 1),
+        "game_version": CK3_1210.game_version, "executable_sha256": CK3_1210.executable_sha256,
+        "owner_thread_verified": raw["application_main_observed"] is True,
+        "source_abi_pins_verified": raw["source_abi_pins_verified"] is True,
+        "frame_verified": raw["full_snapshot_before_verified"] is True,
+        "binding_source": "verified-full-run-transport", "native_result": raw,
+    }
+    if "native_result" in supplied:
+        for key in ("native_revision", "connection_generation", "game_pid", "played_character_id", "date_raw", "game_version", "executable_sha256"):
+            if supplied.get(key) != frame.get(key):
+                raise ValueError("normalized Florin GUI result changed its preserved binding")
+    if frame["played_character_id"] == -1:
+        raise ValueError("Florin GUI frame has an invalid player sentinel")
+    if "public_revision" in supplied:
+        frame["public_revision"] = scripted_widget_decimal_v1(supplied["public_revision"])
+    return raw, frame
+
+
+def _normalize_scripted_widget_florin_query(
+    supplied: dict[str, object], root_name: str, binding: ScriptedWidgetBindingV1 | None,
+) -> ScriptedWidgetQueryV1:
+    raw, frame = _scripted_widget_florin_result(supplied, SCRIPTED_WIDGET_QUERY_STEP, binding)
+    available = raw["accepted"] is True
+    if (raw.get("root_name") != root_name or raw.get("widget_id") != "0"
+            or available != (raw["status"] == "available") or raw["status"] == "submitted"
+            or raw["effect_attempted"] is not False or raw["native_handled"] is not False or raw["verification_pending"] is not False):
+        raise ValueError("Florin GUI query changed its root or observation role")
+    generation = scripted_widget_decimal_v1(raw.get("query_generation"), allow_zero=not available)
+    rows = raw.get("widgets")
+    if not isinstance(rows, list) or len(rows) > 2048:
+        raise ValueError("bounded Florin GUI control rows required")
+    controls: list[ScriptedWidgetControlV1] = []
+    ids: set[str] = set()
+    paths: set[str] = set()
+    for value in rows:
+        row = scripted_widget_object_v1(value)
+        if set(row) != {"widget_id", "runtime_name", "child_path", "vtable_rva", "effective_visible", "enabled", "clickable"}:
+            raise ValueError("closed Florin GUI control row required")
+        widget = scripted_widget_decimal_v1(row.get("widget_id"))
+        path = _widget_text(row.get("child_path"), "child_path", 4096)
+        if (widget in ids or path in paths
+                or (path and re.fullmatch(r"(?:0|[1-9][0-9]*)(?:/(?:0|[1-9][0-9]*))*", path) is None)):
+            raise ValueError("Florin GUI control identity/path is duplicated or noncanonical")
+        ids.add(widget); paths.add(path)
+        controls.append({"widget_id": widget, "runtime_name": _widget_text(row.get("runtime_name"), "runtime_name", 1024),
+                         "child_path": path, "vtable_rva": _widget_integer(row.get("vtable_rva"), "vtable_rva", maximum=2**32 - 1),
+                         "effective_visible": _widget_boolean(row.get("effective_visible"), "effective_visible"),
+                         "enabled": _widget_boolean(row.get("enabled"), "enabled"), "clickable": _widget_boolean(row.get("clickable"), "clickable")})
+    if available:
+        if (not all((frame["owner_thread_verified"], frame["source_abi_pins_verified"], frame["frame_verified"]))
+                or raw["unavailable_reason"] is not None or raw["complete"] is not True
+                or len([row for row in controls if row["child_path"] == "" and row["runtime_name"] == root_name]) != 1):
+            raise ValueError("Florin GUI observation lacks actual root/Main/Full/ABI proof")
+    elif generation != "0" or controls or raw["complete"] is not False:
+        raise ValueError("rejected Florin GUI query cannot supply control observation")
+    reason = "" if available else _widget_text(raw["unavailable_reason"] or raw["status"], "unavailable_reason", 4096)
+    return {**frame, "schema": SCRIPTED_WIDGET_FLORIN_SCHEMA, "step": SCRIPTED_WIDGET_QUERY_STEP,
+            "available": available, "unavailable_reason": reason, "root_name": root_name,
+            "query_generation": generation, "complete": raw["complete"] is True, "truncated": False,
+            "widgets": controls, "read_only": True}
+
+
+def _normalize_scripted_widget_florin_action(
+    supplied: dict[str, object], generation: str, widget: str, binding: ScriptedWidgetBindingV1 | None,
+) -> ScriptedWidgetActionV1:
+    raw, frame = _scripted_widget_florin_result(supplied, SCRIPTED_WIDGET_ACTION_STEP, binding)
+    accepted = raw["accepted"] is True
+    if (raw.get("query_generation") not in (generation, "0") or raw.get("widget_id") != widget
+            or accepted != (raw["status"] == "submitted") or raw["status"] == "available"
+            or raw["complete"] is not False or raw["widgets"] != []):
+        raise ValueError("Florin GUI action changed its observed identity or claimed observation")
+    attempted, handled = raw["effect_attempted"] is True, raw["native_handled"] is True
+    if handled and not attempted:
+        raise ValueError("Florin GUI handling lacks an attempted effect")
+    if accepted and (raw["query_generation"] != generation or not attempted or raw["verification_pending"] is not True
+                     or raw["unavailable_reason"] is not None
+                     or not all((frame["owner_thread_verified"], frame["source_abi_pins_verified"], frame["frame_verified"]))):
+        raise ValueError("submitted Florin GUI action lacks original control/Main/Full/ABI proof")
+    unknown = (attempted and not handled) or raw["status"] == "indeterminate"
+    return {**frame, "schema": SCRIPTED_WIDGET_FLORIN_SCHEMA, "step": SCRIPTED_WIDGET_ACTION_STEP,
+            "available": accepted and handled, "unavailable_reason": "" if accepted and handled else _widget_text(raw["unavailable_reason"] or raw["status"], "unavailable_reason", 4096),
+            "root_name": scripted_widget_root_v1(raw.get("root_name")), "query_generation": generation, "widget_id": widget,
+            "dispatch_attempted": attempted, "dispatch_invoked": attempted and handled, "native_handled": handled,
+            "verification_pending": raw["verification_pending"] is True, "postcondition_verified": False, "result_unknown": unknown}

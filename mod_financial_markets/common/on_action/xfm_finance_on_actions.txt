@@ -1,0 +1,46 @@
+﻿# Append named hooks; never replace a vanilla effect block.
+# Installed 1.21 common/on_action/_on_actions.info:106-116 documents this pattern.
+
+on_game_start_after_lobby = {
+    on_actions = { xfm_finance_after_lobby_on_action }
+}
+
+on_birth_child = {
+    on_actions = { xfm_finance_birth_on_action }
+}
+
+on_character_created = {
+    on_actions = { xfm_finance_created_on_action }
+}
+
+on_death = {
+    on_actions = { xfm_finance_death_on_action }
+}
+
+xfm_finance_after_lobby_on_action = {
+    effect = {
+        every_player = { xfm_finance_ensure_effect = yes }
+    }
+}
+
+xfm_finance_birth_on_action = {
+    effect = {
+        # child_birth_on_actions.txt:855-861 explicitly supplies scope:child.
+        scope:child = { xfm_finance_register_character_effect = yes }
+    }
+}
+
+xfm_finance_created_on_action = {
+    effect = {
+        # character_created_on_actions.txt:1-18: current character is the new non-birth character.
+        xfm_finance_register_character_effect = yes
+    }
+}
+
+xfm_finance_death_on_action = {
+    effect = {
+        # death.txt:1-7: character is ABOUT TO die. Do not guard with is_alive = no.
+        # Keep queued next links until dequeue so the remaining ring stays reachable.
+        xfm_finance_holder_death_effect = yes
+    }
+}

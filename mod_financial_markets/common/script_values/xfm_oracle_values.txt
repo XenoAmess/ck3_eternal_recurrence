@@ -1,0 +1,21 @@
+﻿# Fixed-point prices are integer cents per lot of 100 coins.
+xfm_oracle_sample_lots_value = { value = scope:xfm_trade_lots max = 1000 floor = yes }
+xfm_oracle_sample_notional_value = { value = scope:xfm_trade_price_cents multiply = xfm_oracle_sample_lots_value }
+xfm_oracle_bucket_slot_value = { value = var:xfm_oracle_bucket_day modulo = 14 }
+xfm_oracle_bucket_vwap_value = { value = var:xfm_oracle_bucket_notional divide = var:xfm_oracle_bucket_lots floor = yes }
+xfm_oracle_window_start_value = { value = global_var:xfm_exchange.var:xfm_day subtract = 14 }
+xfm_oracle_reference_value = {
+    value = var:xfm_oracle_sum
+    subtract = var:xfm_oracle_min
+    subtract = var:xfm_oracle_max
+    divide = { value = var:xfm_oracle_valid_days subtract = 2 }
+    floor = yes
+}
+xfm_oracle_reference_age_value = {
+    value = global_var:xfm_exchange.var:xfm_day
+    subtract = var:xfm_oracle_last_valid_day
+}
+xfm_oracle_listing_age_value = {
+    value = global_var:xfm_exchange.var:xfm_day
+    subtract = var:xfm_listed_day
+}

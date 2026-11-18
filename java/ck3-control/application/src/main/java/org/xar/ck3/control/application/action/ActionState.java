@@ -70,12 +70,12 @@ public sealed interface ActionState permits ActionState.IntentDurable, ActionSta
     sealed interface Settlement permits FixtureStarted, FixtureBusinessCompleted, DirectFixedWindowCompleted, PauseConfirmed, ControlSequenceCompleted, Applied, Rejected, ControlApplied, CompositeControlApplied, FrontendApplied, GameplayEntered, LifecycleApplied, NonAppliedTerminal, CompositeRejected, LifecycleControlApplied, SwaySchedulerCompleted, FamilySendConfirmed, NativeSourceCompleted, NormalExitPhaseConfirmed, OperatorRebound, CompositeNoGameplayWrite, LifeControlPrefixInterrupted { }
     record FixtureStarted(FixtureStartObservation observation) implements Settlement {public FixtureStarted {Objects.requireNonNull(observation);}}
     record FixtureBusinessCompleted(FixtureBusinessObservation observation) implements Settlement {public FixtureBusinessCompleted {Objects.requireNonNull(observation);}}
-    /** A real native pause and independent Push prove only the paused control state. */
     /** Finite execution completion; no gameplay, Closed, day or SAVE credit. */
     record DirectFixedWindowCompleted(org.xar.ck3.control.application.effects.NativeDirectFixedWindowObservation.Completion completion) implements Settlement {
         public DirectFixedWindowCompleted { Objects.requireNonNull(completion); }
     }
 
+    /** A real native pause and independent Push prove only the paused control state. */
     record PauseConfirmed(EffectObservation observation) implements Settlement {
         public PauseConfirmed { Objects.requireNonNull(observation); }
     }

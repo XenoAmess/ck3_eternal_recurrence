@@ -24,6 +24,8 @@ public final class ContentValidator {
                          List<String> runtimeFiles) { }
     private static final Set<String> ROOTS = Set.of("common", "events", "gui", "localization", "gfx");
     private static final Pattern LOC_KEY = Pattern.compile("^\\s+([A-Za-z0-9_.-]+):[0-9]*\\s+\".*\"\\s*$");
+    private static final Pattern SCRIPTED_GUI = Pattern.compile("GetScriptedGui\\(\\s*'(?<id>xfm_[A-Za-z0-9_]+)'\\s*\\)");
+    private static final Pattern WIDGET_REGISTRATION = Pattern.compile("(?m)^\\s*(gui/[A-Za-z0-9_./-]+\\.gui)\\s*=\\s*(xfm_[A-Za-z0-9_]+)\\s*$");
     private static final byte[] BOM = {(byte) 0xef, (byte) 0xbb, (byte) 0xbf};
     private ContentValidator() { }
 
@@ -35,6 +37,10 @@ public final class ContentValidator {
         Set<String> files = new HashSet<>();
         Set<String> effectDefinitions = new HashSet<>();
         Set<String> effectCalls = new HashSet<>();
+        Set<String> guiCalls = new HashSet<>();
+        Set<String> triggerCalls = new HashSet<>();
+        Map<String, String> windows = new HashMap<>();
+        Map<String, String> registeredWindows = new HashMap<>();
         Map<String, Set<String>> languages = new LinkedHashMap<>();
         Map<String, Set<String>> definitions = new HashMap<>();
         int effects = 0;
@@ -51,7 +57,10 @@ public final class ContentValidator {
                     require(text.lines().anyMatch(line -> line.strip().equals("l_" + language + ":")), "language header: " + name);
                     for (String line : text.lines().toList()) {
                         var match = LOC_KEY.matcher(line);
-                        if (match.matches()) require(keys.add(match.group(1)), "duplicate localization: " + match.group(1));
+                        if (match.matches()) {
+                            require(keys.add(match.group(1)), "duplicate localization: " + match.group(1));
+                            collectScriptedGuis(line, guiCalls);
+                        }
                         else require(line.isBlank() || line.stripLeading().startsWith("#") || line.strip().equals("l_" + language + ":"), "unsupported/malformed localization line: " + name);
                     }
                 } else {
@@ -74,6 +83,18 @@ public final class ContentValidator {
                     for (int i = 0; i + 1 < tokens.size(); i++) {
                         String token = tokens.get(i);
                         if (token.startsWith("xfm_") && token.endsWith("_effect") && tokens.get(i + 1).equals("=")) effectCalls.add(token);
+                        if (token.startsWith("xfm_") && token.endsWith("_trigger") && tokens.get(i + 1).equals("=")) triggerCalls.add(token);
+                        if (token.startsWith("\"")) {
+                            collectScriptedGuis(token, guiCalls);
+                        }
+                    }
+                    if (name.endsWith(".gui")) findWindows(tokens, name, windows);
+                    if (name.startsWith("gui/scripted_widgets/")) {
+                        var registrations = WIDGET_REGISTRATION.matcher(text);
+                        while (registrations.find()) {
+                            require(registeredWindows.putIfAbsent(registrations.group(2), registrations.group(1)) == null,
+                                    "duplicate widget registration: " + registrations.group(2));
+                        }
                     }
                     if (name.equals("descriptor.mod")) require(!tokens.contains("remote_file_id"), "inner descriptor must not contain Workshop ID");
                 }
@@ -91,6 +112,18 @@ public final class ContentValidator {
             }
         }
         require(effectDefinitions.containsAll(effectCalls), "undefined custom effects: " + difference(effectCalls, effectDefinitions));
+        Set<String> guiDefinitions = definitions.getOrDefault("scripted_guis", Set.of());
+        require(guiDefinitions.containsAll(guiCalls), "undefined scripted GUI: " + difference(guiCalls, guiDefinitions));
+        Set<String> triggerDefinitions = definitions.getOrDefault("scripted_triggers", Set.of());
+        require(triggerDefinitions.containsAll(triggerCalls), "undefined custom triggers: " + difference(triggerCalls, triggerDefinitions));
+        for (var window : windows.entrySet()) {
+            require(window.getValue().equals(registeredWindows.get(window.getKey())),
+                    "unregistered custom window: " + window.getKey());
+        }
+        for (var window : registeredWindows.entrySet()) {
+            require(window.getValue().equals(windows.get(window.getKey())),
+                    "widget registration has no matching window: " + window.getKey());
+        }
         require(languages.containsKey("simp_chinese") && languages.containsKey("english"), "Chinese and English required");
         Set<String> chinese = languages.get("simp_chinese");
         require(!chinese.isEmpty(), "no localization keys");
@@ -131,6 +164,7 @@ public final class ContentValidator {
             if (Character.isWhitespace(c)) { i++; continue; }
             if (c == '#') { while (i < text.length() && text.charAt(i) != '\n') i++; continue; }
             if (c == '"') {
+                int begin = i;
                 i++;
                 boolean closed = false;
                 while (i < text.length()) {
@@ -139,7 +173,7 @@ public final class ContentValidator {
                     else if (q == '"') { closed = true; break; }
                 }
                 require(closed, "unterminated quoted string: " + name);
-                tokens.add("<quoted>");
+                tokens.add(text.substring(begin, i));
             } else if (c == '{' || c == '}') {
                 depth += c == '{' ? 1 : -1;
                 require(depth >= 0, "unmatched close brace: " + name);
@@ -168,6 +202,30 @@ public final class ContentValidator {
             else if (token.equals("}")) depth--;
         }
         return result;
+    }
+
+    private static void findWindows(List<String> tokens, String file, Map<String, String> windows) throws IOException {
+        int depth = 0;
+        boolean window = false;
+        for (int i = 0; i < tokens.size(); i++) {
+            String token = tokens.get(i);
+            if (depth == 0) window = token.equals("window") || (window && !token.equals("}"));
+            if (window && depth == 1 && token.equals("name") && i + 2 < tokens.size()
+                    && tokens.get(i + 1).equals("=")) {
+                String quoted = tokens.get(i + 2);
+                if (quoted.startsWith("\"xfm_") && quoted.endsWith("\"")) {
+                    String id = quoted.substring(1, quoted.length() - 1);
+                    require(windows.putIfAbsent(id, file) == null, "duplicate custom window: " + id);
+                }
+            }
+            if (token.equals("{")) depth++;
+            else if (token.equals("}")) { depth--; if (depth == 0) window = false; }
+        }
+    }
+
+    private static void collectScriptedGuis(String text, Set<String> target) {
+        var references = SCRIPTED_GUI.matcher(text);
+        while (references.find()) target.add(references.group("id"));
     }
 
     private static Set<String> difference(Set<String> left, Set<String> right) {

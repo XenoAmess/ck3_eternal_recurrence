@@ -1,0 +1,5 @@
+﻿xfm_market_coin_selected_gui = { scope = character is_valid = { is_ai = no exists = var:xfm_selected_coin var:xfm_selected_coin = { story_type = xfm_finance_coin } } }
+xfm_market_is_spot_position_gui = { scope = character saved_scopes = { xfm_ui_item } is_valid = { exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_finance_position } } }
+xfm_market_is_futures_position_gui = { scope = character saved_scopes = { xfm_ui_item } is_valid = { exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_futures_position } } }
+xfm_market_is_spot_order_gui = { scope = character saved_scopes = { xfm_ui_item } is_valid = { exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_spot_order } } }
+xfm_market_is_futures_order_gui = { scope = character saved_scopes = { xfm_ui_item } is_valid = { exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_futures_order } } }

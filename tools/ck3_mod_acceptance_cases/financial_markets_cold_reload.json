@@ -1,0 +1,48 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "cold-reload",
+  "acceptance_scope": "actual_physical_save_fresh_process_readback_and_same_day_no_duplicate_business",
+  "fixture_source": {"kind": "prebuilt_manifest"},
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 0,
+  "failure_prefixes": ["XFMAT:"],
+  "required_startup": [],
+  "forbidden_startup": ["XFMAT: TEST FAIL"],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "observer_profile_contract": {
+    "status": "PROPOSED_NOT_EMITTED",
+    "profile": "cold-reload",
+    "manifest_case_id_must_equal": "cold-reload",
+    "required_future_observations": ["physical_source_identity", "loaded_graph_before_business", "same_day_reopen_no_financial_delta", "stable_observation_epoch"],
+    "core_manifest_is_valid_for_this_case": false
+  },
+  "source_save_requirements": [
+    "A physical SAVE_CONFIRMED output from genuine financial-market business with its exact save hash, date, player, formal product build and complete pre-close native graph retained.",
+    "Prior managed game must have normal close with retained OS and native counts both zero; then load the same physical save into a fresh process. A warm menu reload is not cold reload.",
+    "The saved graph should include partial orders, futures reservations, unpaid debt, delisting or pending termination, oracle history and queued ordinary/urgent news. Missing graph kinds remain uncovered.",
+    "Use a new case-specific observation epoch without deleting or rewriting xfm business state or treating old saved xfma completion flags as new evidence."
+  ],
+  "gui_phases": [
+    {"id": "fresh-process-loaded-graph", "at_day": 0, "requirements": [
+      "actual_minimized_non_topmost_no_foreground_activation_for_entire_run",
+      "actual_new_process_exact_exe_dll_product_and_source_save_match_provenance",
+      "actual_native_readback_precedes_financial_gui_open_or_other_business_effect",
+      "actual_account_coin_order_reservation_contract_position_debt_news_and_oracle_graph_matches_preclose_by_permanent_identity",
+      "actual_currency_supply_cash_fees_fund_rights_original_dates_pending_amounts_and_daily_guards_match_preclose",
+      "actual_observer_arming_writes_only_new_xfma_epoch_state_and_no_product_repair_or_bootstrap_masks_missing_loaded_state"
+    ]},
+    {"id": "same-day-refresh-and-close", "at_day": 0, "requirements": [
+      "actual_native_date_remains_exactly_equal_to_source_save_date",
+      "actual_normal_market_open_account_selection_and_refresh_leave_business_balances_trade_counts_settlement_ids_and_claims_unchanged",
+      "actual_news_journal_and_delivery_cursors_are_loaded_without_inventing_new_delivery_or_duplicate_facts",
+      "actual_normal_exit_completes_with_retained_os_zero_and_native_zero_without_force_termination"
+    ]}
+  ],
+  "source_contracts": ["mod_financial_markets/docs/runtime-contract.md", "mod_financial_markets/docs/oracle-runtime-contract.md", "mod_financial_markets/docs/debt-news-runtime.md", "mod_financial_markets/docs/actual-business-acceptance-matrix.md"],
+  "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 3600, "gui_hold_seconds": 600, "normal_close_timeout_seconds": 180},
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Zero natural days: all readback and GUI refresh happen paused on the saved native date. This case verifies persistence and no duplicate same-day business, not a new daily settlement."
+}

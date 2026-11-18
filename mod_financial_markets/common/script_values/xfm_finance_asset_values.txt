@@ -1,0 +1,1 @@
+﻿xfm_finance_position_available_value = { value = var:xfm_quantity_units subtract = var:xfm_reserved_units }

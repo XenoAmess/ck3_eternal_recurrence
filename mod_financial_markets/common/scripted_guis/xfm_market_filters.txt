@@ -1,0 +1,64 @@
+﻿xfm_market_sort_gui = {
+    scope = character
+    is_valid = { is_ai = no }
+    effect = {
+        change_variable = { name = xfm_ui_sort add = 1 }
+        if = { limit = { var:xfm_ui_sort > 2 } set_variable = { name = xfm_ui_sort value = 0 } }
+        xfm_market_ui_first_page_effect = yes
+    }
+}
+xfm_market_type_filter_gui = {
+    scope = character
+    is_valid = { is_ai = no }
+    effect = {
+        change_variable = { name = xfm_ui_type_filter add = 1 }
+        if = { limit = { var:xfm_ui_type_filter > 7 } set_variable = { name = xfm_ui_type_filter value = 0 } }
+        xfm_market_ui_first_page_effect = yes
+    }
+}
+xfm_market_holdings_filter_gui = {
+    scope = character
+    is_valid = { is_ai = no }
+    effect = {
+        if = { limit = { var:xfm_ui_holdings_only = 0 } set_variable = { name = xfm_ui_holdings_only value = 1 } }
+        else = { set_variable = { name = xfm_ui_holdings_only value = 0 } }
+        xfm_market_ui_first_page_effect = yes
+    }
+}
+xfm_market_id_up_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_id_filter < 999999 }
+    effect = { change_variable = { name = xfm_ui_id_filter add = var:xfm_ui_step } xfm_market_ui_first_page_effect = yes }
+}
+xfm_market_id_down_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_id_filter >= var:xfm_ui_step }
+    effect = { change_variable = { name = xfm_ui_id_filter subtract = var:xfm_ui_step } xfm_market_ui_first_page_effect = yes }
+}
+xfm_market_clear_filters_gui = {
+    scope = character
+    is_valid = { is_ai = no }
+    effect = {
+        set_variable = { name = xfm_ui_id_filter value = 0 }
+        set_variable = { name = xfm_ui_name_search value = 0 }
+        clear_variable_list = xfm_ui_search_coins
+        remove_variable = xfm_ui_issuer_filter
+        set_variable = { name = xfm_ui_type_filter value = 0 }
+        set_variable = { name = xfm_ui_holdings_only value = 0 }
+        xfm_market_ui_first_page_effect = yes
+    }
+}
+xfm_market_step_gui = {
+    scope = character
+    is_valid = { is_ai = no }
+    effect = {
+        if = { limit = { var:xfm_ui_step = 1 } set_variable = { name = xfm_ui_step value = 10 } }
+        else_if = { limit = { var:xfm_ui_step = 10 } set_variable = { name = xfm_ui_step value = 100 } }
+        else_if = { limit = { var:xfm_ui_step = 100 } set_variable = { name = xfm_ui_step value = 1000 } }
+        else = { set_variable = { name = xfm_ui_step value = 1 } }
+    }
+}
+xfm_market_issuer_filter_active_gui = {
+    scope = character
+    is_valid = { is_ai = no exists = var:xfm_ui_issuer_filter }
+}

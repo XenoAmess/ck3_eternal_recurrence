@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_1210_full_clock_request_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_request_v1.hpp"
+#include "xar_bridge/ck3_1210_event_option_control_v1.hpp"
 
 #include <charconv>
 #include <cstring>
@@ -223,6 +224,46 @@ bool ParseFullClockRequestV1(std::string_view payload,
       expected_revision != parsed.native_revision || !NormalizeStep(parsed)) return false;
   output = parsed;
   return true;
+}
+
+bool ParseEventOptionRequestV1(std::string_view payload,EventOptionRequestV1 &output) noexcept {
+  output={};if(payload.size()>16384)return false;
+  Cursor cursor{payload};EventOptionRequestV1 parsed{};
+  std::uint64_t revision=0;std::uint32_t seen=0;bool first=true;
+  if(!cursor.Take('{'))return false;
+  while(!cursor.Take('}')) {
+    if(!first && !cursor.Take(','))return false;first=false;
+    std::string_view key,value;std::uint64_t number=0;std::uint32_t bit=0;bool valid=false;
+    if(!cursor.String(key) || !cursor.Take(':'))return false;
+    if(key=="type") {bit=1;valid=EqualString(cursor,"execute_step");}
+    else if(key=="protocol_version") {bit=2;valid=cursor.Unsigned(number)&&number==1;}
+    else if(key=="request_id") {bit=4;valid=cursor.String(value)&&SafeRequestId(value);}
+    else if(key=="step") {bit=8;valid=cursor.String(parsed.step);}
+    else if(key=="expected_revision") {bit=16;valid=cursor.Unsigned(revision)&&revision>0;}
+    else if(key=="event_option_control") {
+      bit=32;valid=Claim(cursor,parsed.native_revision,parsed.deadline_unix_ms,kEventOptionClaimSchemaV1);
+    } else if(key=="arguments") {
+      bit=64;valid=cursor.Take('{')&&cursor.String(value)&&value=="event_instance_id"&&
+          cursor.Take(':')&&cursor.Unsigned(number)&&number>0&&number<=2147483647ULL&&cursor.Take('}');
+      if(valid)parsed.event_instance_id=static_cast<std::int32_t>(number);
+    }
+    if(!valid || !bit || (seen&bit))return false;seen|=bit;
+  }
+  cursor.Space();if(cursor.at!=payload.size() || seen!=127 || revision!=parsed.native_revision)return false;
+  if(parsed.step==kEventOptionsQueryStepV1) {parsed.step=kEventOptionsQueryStepV1;}
+  else {
+    constexpr std::string_view prefix="select-event-option-";
+    if(!parsed.step.starts_with(prefix))return false;
+    const auto suffix=parsed.step.substr(prefix.size());
+    if(suffix.empty() || (suffix.size()>1 && suffix.front()=='0'))return false;
+    std::uint32_t index=0;
+    const auto result=std::from_chars(suffix.data(),suffix.data()+suffix.size(),index);
+    // Preserve the existing public MCP step's one-based authored identity.
+    // Materialized query rows and the actual CK3 command stay zero based.
+    if(result.ec!=std::errc{} || result.ptr!=suffix.data()+suffix.size() || !index || index>kEventOptionsMaxShownV1)return false;
+    parsed.select=true;parsed.native_option_index=static_cast<std::int32_t>(index-1);
+  }
+  output=parsed;return true;
 }
 
 bool ParseDateSentinelArmRequestV1(std::string_view payload,

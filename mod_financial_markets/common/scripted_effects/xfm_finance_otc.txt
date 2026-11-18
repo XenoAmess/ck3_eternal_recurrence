@@ -1,0 +1,44 @@
+﻿# Atomic delivery versus payment for an accepted bilateral quote.
+xfm_finance_otc_effect = {
+ save_scope_as = xfm_fin_otc_buyer
+ set_variable = { name = xfm_result value = 0 }
+ clear_saved_scope = xfm_fin_otc_seller_position
+ clear_saved_scope = xfm_fin_otc_buyer_position
+ if = {
+  limit = {
+   xfm_finance_account_usable_trigger = yes
+   xfm_finance_valid_cents_trigger = yes xfm_finance_valid_units_trigger = yes
+   var:xfm_free_cents >= var:xfm_request_cents
+   exists = var:xfm_request_coin var:xfm_request_coin = { story_type = xfm_finance_coin }
+   exists = var:xfm_request_target var:xfm_request_target != this
+   var:xfm_request_target = { xfm_finance_account_usable_trigger = yes }
+  }
+  var:xfm_request_target = {
+   set_variable = { name = xfm_request_coin value = scope:xfm_fin_otc_buyer.var:xfm_request_coin }
+   xfm_finance_lookup_position_effect = yes
+  }
+  if = {
+   limit = { exists = scope:xfm_position scope:xfm_position = { xfm_finance_position_available_value >= scope:xfm_fin_otc_buyer.var:xfm_request_units } }
+   scope:xfm_position = { save_scope_as = xfm_fin_otc_seller_position }
+   xfm_finance_ensure_position_effect = yes
+   if = {
+    limit = {
+     exists = scope:xfm_position
+     scope:xfm_position = { var:xfm_account = scope:xfm_fin_otc_buyer var:xfm_coin = scope:xfm_fin_otc_buyer.var:xfm_request_coin }
+    }
+    scope:xfm_position = { save_scope_as = xfm_fin_otc_buyer_position }
+    change_variable = { name = xfm_free_cents subtract = var:xfm_request_cents }
+    var:xfm_request_target = { change_variable = { name = xfm_free_cents add = scope:xfm_fin_otc_buyer.var:xfm_request_cents } }
+    scope:xfm_fin_otc_seller_position = {
+     change_variable = { name = xfm_quantity_units subtract = scope:xfm_fin_otc_buyer.var:xfm_request_units }
+     xfm_finance_sync_position_count_effect = yes
+    }
+    scope:xfm_fin_otc_buyer_position = {
+     change_variable = { name = xfm_quantity_units add = scope:xfm_fin_otc_buyer.var:xfm_request_units }
+     xfm_finance_sync_position_count_effect = yes
+    }
+    set_variable = { name = xfm_result value = 1 }
+   }
+  }
+ }
+}

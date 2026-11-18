@@ -1,5 +1,6 @@
 ﻿# Actor eligibility intentionally has no landed, tier, government or player gate.
 xfm_a0_actor_eligible_trigger = {
+    xfm_a0_runtime_active_trigger = yes
     is_alive = yes
     is_adult = yes
 }
@@ -16,6 +17,7 @@ xfm_a0_can_issue_trigger = {
 }
 
 xfm_a0_selected_coin_trigger = {
+    xfm_a0_runtime_active_trigger = yes
     exists = var:xfm_selected_coin
     var:xfm_selected_coin = {
         story_type = xfm_a0_coin
@@ -26,6 +28,7 @@ xfm_a0_selected_coin_trigger = {
 }
 
 xfm_a0_quote_current_trigger = {
+    xfm_a0_runtime_active_trigger = yes
     exists = scope:xfm_coin
     exists = scope:xfm_quote_snapshot_revision
     exists = scope:xfm_quote_snapshot_buy
@@ -64,4 +67,9 @@ xfm_a0_can_sell_trigger = {
         var:xfm_coin = scope:xfm_actor.var:xfm_selected_coin
         var:xfm_quantity >= 100
     }
+}
+
+# Historical story data remains readable by migration; legacy trading is retired.
+xfm_a0_runtime_active_trigger = {
+    always = no
 }

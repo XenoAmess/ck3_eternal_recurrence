@@ -1,0 +1,44 @@
+﻿# Adopt metadata only. A0 real cash, supply, reservations and holders are imported by finance.
+xfm_issuer_adopt_legacy_defaults_effect = {
+    if = {
+        limit = { exists = var:xfm_legacy_source_coin NOT = { has_variable = xfm_issuer_metadata_ready } }
+        set_variable = { name = xfm_issuer_metadata_ready value = 1 }
+        set_variable = { name = xfm_service_tier value = 1 }
+        set_variable = { name = xfm_asset_age value = var:xfm_legacy_source_coin.var:xfm_daily_ticks }
+        set_variable = { name = xfm_offer_age value = 30 }
+        set_variable = { name = xfm_offer_counted value = 0 }
+        set_variable = { name = xfm_active_listing_counted value = 1 }
+        set_variable = { name = xfm_actual_raised_cents value = 0 }
+        set_variable = { name = xfm_external_raised_cents value = 0 }
+        set_variable = { name = xfm_offer_units_remaining value = 0 }
+        set_variable = { name = xfm_mint_permitted value = 0 }
+        set_variable = { name = xfm_maximum_supply_units value = var:xfm_supply_units }
+        set_variable = { name = xfm_founder_locked_units value = 0 }
+        set_variable = { name = xfm_founder_unlock_age value = 0 }
+        set_variable = { name = xfm_undisclosed_mint_units value = 0 }
+        set_variable = { name = xfm_advertising_spent_cents value = 0 }
+        set_variable = { name = xfm_project_spent_cents value = 0 }
+        set_variable = { name = xfm_actual_utility_cents value = 0 }
+        set_variable = { name = xfm_low_demand_days value = 0 }
+        set_variable = { name = xfm_demand_review_age value = 0 }
+        set_variable = { name = xfm_demand_window_volume_cents value = 0 }
+        if = { limit = { NOT = { has_variable = xfm_promises_due_cents } } set_variable = { name = xfm_promises_due_cents value = 0 } }
+        if = { limit = { NOT = { has_variable = xfm_unpaid_debt_cents } } set_variable = { name = xfm_unpaid_debt_cents value = 0 } }
+        if = { limit = { NOT = { has_variable = xfm_unresolved_claim_count } } set_variable = { name = xfm_unresolved_claim_count value = 0 } }
+        set_variable = { name = xfm_eligible_maintenance_credit_cents value = 0 }
+        set_variable = { name = xfm_maintenance_arrears_cents value = { value = var:xfm_legacy_source_coin.var:xfm_maintenance_arrears multiply = 100 round = yes } }
+        set_variable = { name = xfm_maintenance_age value = 0 }
+        set_variable = { name = xfm_listing_last_day value = global_var:xfm_exchange.var:xfm_day }
+        set_variable = { name = xfm_listing_fixed_cents value = 100 }
+        set_variable = { name = xfm_initial_maintenance_cents value = 60 }
+        set_variable = { name = xfm_monthly_maintenance_cents value = 10 }
+        set_variable = { name = xfm_bond_minimum_cents value = 100 }
+        set_variable = { name = xfm_maker_minimum_cents value = 200 }
+        set_variable = { name = xfm_default_history value = 0 }
+        set_variable = { name = xfm_issuer_reputation value = 50 }
+        set_variable = { name = xfm_settlement_price_pending value = 0 }
+        set_variable = { name = xfm_termination_requested value = 0 }
+        set_variable = { name = xfm_derivatives_reduce_only value = 0 }
+        set_variable = { name = xfm_maker_withdrawn value = 0 }
+    }
+}

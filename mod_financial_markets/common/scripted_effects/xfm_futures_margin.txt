@@ -1,0 +1,135 @@
+﻿# Actor-scope entries authorize the current legal holder, including inherited stable accounts.
+xfm_futures_select_position_side_effect = {
+ xfm_finance_select_account_effect = yes
+ save_scope_as = xfm_fut_actor
+ clear_saved_scope = xfm_fut_selected_position
+ clear_saved_scope = xfm_fut_margin_reservation
+ clear_saved_scope = xfm_fut_margin_account
+ clear_saved_scope = xfm_fut_selected_account
+ if = { limit = { exists = scope:xfm_account } scope:xfm_account = { save_scope_as = xfm_fut_selected_account } }
+ set_variable = { name = xfm_futures_result value = 0 }
+ set_variable = { name = xfm_futures_reason value = 2 }
+ if = {
+  limit = { exists = var:xfm_futures_selected_position var:xfm_futures_selected_position = { xfm_futures_position_open_trigger = yes } }
+  var:xfm_futures_selected_position = {
+   save_scope_as = xfm_fut_selected_position
+   if = {
+    limit = { var:xfm_long_account = scope:xfm_fut_selected_account var:xfm_long_account.var:xfm_holder = scope:xfm_fut_actor }
+    var:xfm_long_reservation = { save_scope_as = xfm_fut_margin_reservation }
+    var:xfm_long_account = { save_scope_as = xfm_fut_margin_account }
+    scope:xfm_fut_actor = { set_variable = { name = xfm_futures_holding_side value = 1 } }
+   }
+   else_if = {
+    limit = { var:xfm_short_account = scope:xfm_fut_selected_account var:xfm_short_account.var:xfm_holder = scope:xfm_fut_actor }
+    var:xfm_short_reservation = { save_scope_as = xfm_fut_margin_reservation }
+    var:xfm_short_account = { save_scope_as = xfm_fut_margin_account }
+    scope:xfm_fut_actor = { set_variable = { name = xfm_futures_holding_side value = 2 } }
+   }
+   else_if = {
+    limit = { var:xfm_long_account.var:xfm_holder = scope:xfm_fut_actor var:xfm_short_account.var:xfm_holder != scope:xfm_fut_actor }
+    var:xfm_long_reservation = { save_scope_as = xfm_fut_margin_reservation }
+    var:xfm_long_account = { save_scope_as = xfm_fut_margin_account }
+    scope:xfm_fut_actor = { set_variable = { name = xfm_futures_holding_side value = 1 } }
+   }
+   else_if = {
+    limit = { var:xfm_short_account.var:xfm_holder = scope:xfm_fut_actor var:xfm_long_account.var:xfm_holder != scope:xfm_fut_actor }
+    var:xfm_short_reservation = { save_scope_as = xfm_fut_margin_reservation }
+    var:xfm_short_account = { save_scope_as = xfm_fut_margin_account }
+    scope:xfm_fut_actor = { set_variable = { name = xfm_futures_holding_side value = 2 } }
+   }
+  }
+ }
+}
+
+xfm_futures_add_margin_effect = {
+ xfm_futures_select_position_side_effect = yes
+ if = {
+  limit = {
+   exists = scope:xfm_fut_margin_account
+   var:xfm_futures_request_cents >= 1 var:xfm_futures_request_cents <= 100000000
+   var:xfm_futures_request_cents = { value = var:xfm_futures_request_cents floor = yes }
+  }
+  scope:xfm_fut_margin_account = {
+   set_variable = { name = xfm_request_cents value = scope:xfm_fut_actor.var:xfm_futures_request_cents }
+   xfm_finance_reserve_effect = yes
+  }
+  if = {
+   limit = { scope:xfm_fut_margin_account.var:xfm_result = 1 }
+   # The common wallet already froze these cents. Merge attribution without a second debit.
+   scope:xfm_fut_margin_reservation = {
+    change_variable = { name = xfm_remaining_cents add = scope:xfm_fut_actor.var:xfm_futures_request_cents }
+    set_variable = { name = xfm_status value = 1 }
+   }
+   scope:xfm_fut_margin_account.var:xfm_result_reservation = {
+    set_variable = { name = xfm_remaining_cents value = 0 }
+    set_variable = { name = xfm_status value = 2 }
+   }
+   set_variable = { name = xfm_futures_result value = 1 }
+   set_variable = { name = xfm_futures_reason value = 0 }
+   scope:xfm_fut_selected_position = {
+    if = { limit = { has_variable = xfm_pending_payment } xfm_futures_resume_settlement_effect = yes }
+   }
+  }
+  else = { set_variable = { name = xfm_futures_reason value = 4 } }
+ }
+}
+
+xfm_futures_withdraw_margin_effect = {
+ xfm_futures_select_position_side_effect = yes
+ if = {
+  limit = {
+   exists = scope:xfm_fut_margin_account
+   OR = { scope:xfm_fut_margin_account = { NOT = { has_variable = xfm_futures_pending_count } } scope:xfm_fut_margin_account.var:xfm_futures_pending_count = 0 }
+   var:xfm_futures_request_cents >= 1 var:xfm_futures_request_cents <= 100000000
+   var:xfm_futures_request_cents = { value = var:xfm_futures_request_cents floor = yes }
+   scope:xfm_fut_selected_position = {
+    NOT = { has_variable = xfm_pending_payment }
+    var:xfm_last_settled_day = global_var:xfm_exchange.var:xfm_day
+    xfm_futures_live_oracle_trigger = yes
+   }
+  }
+  scope:xfm_fut_selected_position = {
+   set_variable = { name = xfm_required_initial_cents value = xfm_futures_initial_long_value }
+   if = { limit = { scope:xfm_fut_actor.var:xfm_futures_holding_side = 2 } set_variable = { name = xfm_required_initial_cents value = xfm_futures_initial_short_value } }
+  }
+  if = {
+   limit = {
+    scope:xfm_fut_margin_reservation.var:xfm_remaining_cents >= {
+     value = scope:xfm_fut_selected_position.var:xfm_required_initial_cents add = var:xfm_futures_request_cents
+    }
+   }
+   scope:xfm_fut_margin_reservation = {
+    set_variable = { name = xfm_request_cents value = scope:xfm_fut_actor.var:xfm_futures_request_cents }
+    xfm_finance_release_effect = yes
+   }
+   if = { limit = { scope:xfm_fut_margin_reservation.var:xfm_result = 1 } set_variable = { name = xfm_futures_result value = 1 } set_variable = { name = xfm_futures_reason value = 0 } }
+  }
+  else = { set_variable = { name = xfm_futures_reason value = 4 } }
+ }
+}
+
+xfm_futures_set_stops_effect = {
+ xfm_futures_select_position_side_effect = yes
+ if = {
+  limit = {
+   exists = scope:xfm_fut_margin_account
+   var:xfm_futures_stop_cents >= 0 var:xfm_futures_stop_cents <= 1000000
+   var:xfm_futures_take_profit_cents >= 0 var:xfm_futures_take_profit_cents <= 1000000
+   var:xfm_futures_stop_cents = { value = var:xfm_futures_stop_cents floor = yes }
+   var:xfm_futures_take_profit_cents = { value = var:xfm_futures_take_profit_cents floor = yes }
+  }
+  scope:xfm_fut_selected_position = {
+   if = {
+    limit = { scope:xfm_fut_actor.var:xfm_futures_holding_side = 1 }
+    set_variable = { name = xfm_long_stop_cents value = scope:xfm_fut_actor.var:xfm_futures_stop_cents }
+    set_variable = { name = xfm_long_take_profit_cents value = scope:xfm_fut_actor.var:xfm_futures_take_profit_cents }
+   }
+   else = {
+    set_variable = { name = xfm_short_stop_cents value = scope:xfm_fut_actor.var:xfm_futures_stop_cents }
+    set_variable = { name = xfm_short_take_profit_cents value = scope:xfm_fut_actor.var:xfm_futures_take_profit_cents }
+   }
+  }
+  set_variable = { name = xfm_futures_result value = 1 }
+  set_variable = { name = xfm_futures_reason value = 0 }
+ }
+}

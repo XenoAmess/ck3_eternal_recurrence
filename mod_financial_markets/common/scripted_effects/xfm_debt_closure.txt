@@ -1,0 +1,18 @@
+﻿# 1 effect. Closing removes active work, never the permanent claim or its source identity.
+xfm_debt_close_if_paid_effect = {
+    if = {
+        limit = { var:xfm_outstanding_cents = 0 }
+        set_variable = { name = xfm_state value = 3 }
+        remove_list_global_variable = { name = xfm_debts_active target = this }
+        if = {
+            limit = { exists = var:xfm_coin has_variable = xfm_coin_claim_open var:xfm_coin_claim_open = 1 }
+            var:xfm_coin = {
+                if = {
+                    limit = { has_variable = xfm_unresolved_claim_count var:xfm_unresolved_claim_count > 0 }
+                    change_variable = { name = xfm_unresolved_claim_count subtract = 1 }
+                }
+            }
+            set_variable = { name = xfm_coin_claim_open value = 0 }
+        }
+    }
+}

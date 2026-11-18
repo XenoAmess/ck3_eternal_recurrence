@@ -1,0 +1,9 @@
+﻿# Claims and news never end on a debtor's death. Their owner is technical custody.
+xfm_debt_claim = {
+    visible = no
+    on_owner_death = { xfm_debt_custodian_death_effect = yes }
+}
+xfm_news_entry = {
+    visible = no
+    on_owner_death = { xfm_debt_custodian_death_effect = yes }
+}

@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.HexFormat;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -76,6 +77,33 @@ final class BuildContractTest {
         assertTrue(report.effects() > 0);
         assertTrue(report.localizationKeys() > 0);
         assertEquals("STATIC_ONLY_NOT_ENGINE_OR_BUSINESS_PASS", report.boundary());
+    }
+
+    @Test void requiresRealScriptedGuiAndRegisteredCustomWindow() throws Exception {
+        Path source = fixture();
+        var files = new ArrayList<>(FILES);
+        files.add("gui/xfm_test.gui");
+        files.add("gui/scripted_widgets/xfm_test.txt");
+        files.add("common/scripted_guis/xfm_test.txt");
+        bom(source.resolve("gui/xfm_test.gui"), "window = { name = \"xfm_test_window\"\n"
+                + " onclick = \"[GetScriptedGui( 'xfm_test_action_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\" }\n");
+        bom(source.resolve("gui/scripted_widgets/xfm_test.txt"), "# not yet registered\n");
+        bom(source.resolve("common/scripted_guis/xfm_test.txt"), "xfm_test_action_gui = { scope = character effect = { } }\n");
+        writeManifest(source, files);
+        assertTrue(assertThrows(IOException.class, () -> ContentValidator.validate(source)).getMessage().contains("unregistered"));
+        bom(source.resolve("gui/scripted_widgets/xfm_test.txt"), "gui/xfm_test.gui = xfm_test_window\n");
+        assertEquals(files.size(), ContentValidator.validate(source).files());
+        bom(source.resolve("common/scripted_guis/xfm_test.txt"), "xfm_other_action_gui = { scope = character effect = { } }\n");
+        assertTrue(assertThrows(IOException.class, () -> ContentValidator.validate(source)).getMessage().contains("undefined scripted GUI"));
+    }
+
+    @Test void rejectsMissingTriggersWithoutTreatingCommentsOrQuotesAsCalls() throws Exception {
+        Path source = fixture();
+        bom(source.resolve(FILES.get(1)), "xfm_test_effect = { if = { limit = { xfm_missing_trigger = yes } } }\n");
+        assertTrue(assertThrows(IOException.class, () -> ContentValidator.validate(source)).getMessage().contains("undefined custom triggers"));
+        bom(source.resolve(FILES.get(1)), "xfm_test_effect = { # xfm_missing_trigger = yes\n"
+                + " custom_tooltip = \"xfm_missing_trigger = yes GetScriptedGui( fake )\" }\n");
+        assertEquals(1, ContentValidator.validate(source).effects());
     }
 
     private Path fixture() throws IOException {

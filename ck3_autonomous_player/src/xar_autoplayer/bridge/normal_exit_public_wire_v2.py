@@ -36,6 +36,7 @@ _TOP_FIELDS = frozenset({
     'process_exit_observed', 'typed_normal_exit_observed', 'exit_code',
     'request_id', 'claim_path', 'uses_desktop_input', 'uses_ocr',
     'native_submission_count', 'observer_close_receipt_path',
+    'route',
     'observer_close_receipt_error', 'receipt_path',
 })
 _PIN_FIELDS = frozenset({'pid', 'creation_filetime_100ns', 'retained_handle_token',
@@ -131,22 +132,28 @@ def _transform(value: object, *, encode: bool) -> dict[str, object]:
     native_raw = result.get('native_observation')
     if native_raw is not None:
         native = _object(native_raw, 'native_observation')
-        expected_schema = 'ck3-normal-exit-map-v1' if encode else 'ck3-normal-exit-map-v2'
+        core_route = result.get('route') == 'application_core_1210'
+        expected_schema = (('ck3-normal-exit-application-observation-v1' if encode else
+                           'ck3-normal-exit-application-observation-v2') if core_route else
+                           'ck3-normal-exit-map-v1' if encode else 'ck3-normal-exit-map-v2')
         if native.get('schema') != expected_schema:
             raise ValueError('native observation schema differs from its wire representation')
-        native['schema'] = 'ck3-normal-exit-map-v2' if encode else 'ck3-normal-exit-map-v1'
+        native['schema'] = (('ck3-normal-exit-application-observation-v2' if encode else
+                             'ck3-normal-exit-application-observation-v1') if core_route else
+                             'ck3-normal-exit-map-v2' if encode else 'ck3-normal-exit-map-v1')
         for key in ('native_revision', 'connection_generation', 'process_creation_filetime_100ns'):
             _field(native, key, encode=encode, minimum=1)
-        _field(native, 'pump_epoch', encode=encode)
-        targets = native.get('targets')
-        if not isinstance(targets, list):
-            raise ValueError('native targets must be a list')
-        projected_targets: list[dict[str, object]] = []
-        for target_raw in targets:
-            target = _object(target_raw, 'target')
-            _field(target, 'target_vtable_rva', encode=encode)
-            projected_targets.append(target)
-        native['targets'] = projected_targets
+        if not core_route:
+            _field(native, 'pump_epoch', encode=encode)
+            targets = native.get('targets')
+            if not isinstance(targets, list):
+                raise ValueError('native targets must be a list')
+            projected_targets: list[dict[str, object]] = []
+            for target_raw in targets:
+                target = _object(target_raw, 'target')
+                _field(target, 'target_vtable_rva', encode=encode)
+                projected_targets.append(target)
+            native['targets'] = projected_targets
         result['native_observation'] = native
     if 'driver_dispatch_receipt_observed_monotonic_ns' in result:
         _field(result, 'driver_dispatch_receipt_observed_monotonic_ns', encode=encode, nullable=True)
@@ -184,6 +191,8 @@ def _transform(value: object, *, encode: bool) -> dict[str, object]:
 
 
 def _semantic(result: dict[str, object]) -> ExitAction:
+    if 'route' in result and result['route'] != 'application_core_1210':
+        raise ValueError('unknown normal-exit backend route')
     for flag in ('uses_desktop_input', 'uses_ocr', 'orderly_exit_verified'):
         if flag in result and result[flag] is not False:
             raise ValueError(f'public normal exit cannot assert {flag}')

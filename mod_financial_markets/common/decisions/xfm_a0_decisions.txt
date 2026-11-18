@@ -23,7 +23,7 @@ xfm_a0_own_market_decision = {
     selection_tooltip = xfm_a0_own_market_decision_tooltip
     confirm_text = xfm_a0_open
     ai_check_interval = 0
-    is_shown = { is_ai = no exists = var:xfm_personal_coin }
+    is_shown = { xfm_a0_actor_eligible_trigger = yes is_ai = no exists = var:xfm_personal_coin }
     is_valid = { xfm_a0_actor_eligible_trigger = yes }
     effect = {
         set_variable = { name = xfm_selected_coin value = var:xfm_personal_coin }
@@ -39,6 +39,7 @@ xfm_a0_portfolio_decision = {
     confirm_text = xfm_a0_open
     ai_check_interval = 0
     is_shown = {
+        xfm_a0_actor_eligible_trigger = yes
         is_ai = no
         any_owned_story = {
             story_type = xfm_a0_position

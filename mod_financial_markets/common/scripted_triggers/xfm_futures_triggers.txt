@@ -1,0 +1,34 @@
+﻿xfm_futures_leverage_trigger = {
+ OR = {
+  var:xfm_futures_leverage = 1 var:xfm_futures_leverage = 2
+  var:xfm_futures_leverage = 3 var:xfm_futures_leverage = 5
+  var:xfm_futures_leverage = 10 var:xfm_futures_leverage = 20
+ }
+}
+xfm_futures_live_oracle_trigger = {
+ exists = var:xfm_coin
+ var:xfm_coin = {
+  var:xfm_oracle_quality > 0
+  var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day
+  var:xfm_index_cents > 0 var:xfm_mark_cents > 0
+ }
+}
+xfm_futures_order_open_trigger = {
+ OR = { var:xfm_status = 0 var:xfm_status = 1 }
+ var:xfm_remaining_lots > 0
+}
+xfm_futures_position_open_trigger = { var:xfm_status = 0 var:xfm_lots > 0 }
+xfm_futures_terminal_certificate_trigger = {
+ exists = var:xfm_coin
+ var:xfm_coin = {
+  var:xfm_termination_requested = 1
+  var:xfm_termination_price_certified = 1
+  var:xfm_termination_price_source_coin = this
+  var:xfm_termination_source_notice_day = var:xfm_notice_day
+  var:xfm_termination_window_start_day = { value = var:xfm_notice_day add = 15 }
+  var:xfm_termination_window_end_day = { value = var:xfm_notice_day add = 20 }
+  var:xfm_termination_window_end_day <= global_var:xfm_exchange.var:xfm_day
+  var:xfm_termination_samples >= 3
+  var:xfm_termination_price_cents > 0
+ }
+}

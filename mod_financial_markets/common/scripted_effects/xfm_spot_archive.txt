@@ -1,0 +1,50 @@
+﻿# 2 effects. No archived order with collateral or explicit external references is destroyed.
+xfm_spot_cleanup_archive_once_effect = {
+ if = {
+  limit = { var:xfm_archived_orders_count > 2048 exists = var:xfm_archive_head }
+  clear_saved_scope = xfm_spot_archive_candidate
+  var:xfm_archive_head = { save_scope_as = xfm_spot_archive_candidate }
+  if = {
+   limit = { exists = scope:xfm_spot_archive_candidate.var:xfm_archive_next }
+   set_variable = { name = xfm_archive_head value = scope:xfm_spot_archive_candidate.var:xfm_archive_next }
+  }
+  else = { remove_variable = xfm_archive_head remove_variable = xfm_archive_tail }
+  scope:xfm_spot_archive_candidate = { remove_variable = xfm_archive_next }
+  if = {
+   limit = {
+    scope:xfm_spot_archive_candidate = {
+     var:xfm_finalized = 1 var:xfm_external_refs = 0
+     var:xfm_terminal_day < global_var:xfm_exchange.var:xfm_day
+     OR = { NOT = { exists = var:xfm_reservation } var:xfm_reservation = { var:xfm_remaining_cents = 0 } }
+    }
+   }
+   scope:xfm_spot_archive_candidate.var:xfm_account = { remove_list_variable = { name = xfm_order_history target = scope:xfm_spot_archive_candidate } }
+   if = {
+    limit = {
+     exists = scope:xfm_spot_archive_candidate.var:xfm_reservation
+     scope:xfm_spot_archive_candidate.var:xfm_reservation = {
+      story_type = xfm_finance_reservation var:xfm_remaining_cents = 0
+      var:xfm_source_spot_order = scope:xfm_spot_archive_candidate
+      var:xfm_account = scope:xfm_spot_archive_candidate.var:xfm_account
+     }
+    }
+    scope:xfm_spot_archive_candidate.var:xfm_account = { remove_list_variable = { name = xfm_reservations target = scope:xfm_spot_archive_candidate.var:xfm_reservation } }
+    scope:xfm_spot_archive_candidate.var:xfm_reservation = { end_story = yes }
+   }
+   change_variable = { name = xfm_archived_orders_count subtract = 1 }
+   change_variable = { name = xfm_order_stories_count subtract = 1 }
+   scope:xfm_spot_archive_candidate = { end_story = yes }
+  }
+  else = {
+   if = {
+    limit = { exists = var:xfm_archive_tail }
+    var:xfm_archive_tail = { set_variable = { name = xfm_archive_next value = scope:xfm_spot_archive_candidate } }
+   }
+   else = { set_variable = { name = xfm_archive_head value = scope:xfm_spot_archive_candidate } }
+   set_variable = { name = xfm_archive_tail value = scope:xfm_spot_archive_candidate }
+  }
+ }
+}
+xfm_spot_cleanup_archive_effect = {
+ while = { count = 256 xfm_spot_cleanup_archive_once_effect = yes }
+}

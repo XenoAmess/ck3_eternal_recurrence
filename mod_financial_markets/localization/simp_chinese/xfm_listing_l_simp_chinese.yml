@@ -1,0 +1,11 @@
+﻿l_simp_chinese:
+ xfm_listing_normal:0 "正常挂牌"
+ xfm_listing_warning:0 "风险警示：每日双向交易继续"
+ xfm_listing_notice:0 "退市公告：第三十日停止本场所现货交易"
+ xfm_listing_suspended:0 "临时停牌：三日首次复核，随后每七日更新"
+ xfm_listing_delisted:0 "场所已摘牌：币、债务与未领款继续存在"
+ xfm_listing_otc:0 "残余权利：可经双方同意场外交易"
+ xfm_listing_archived:0 "全部权利义务结束，永久 ID 归档"
+ xfm_listing_relist:0 "三十日重新上市审核"
+ xfm_listing_notice_details:0 "公告日起停止新增杠杆风险，现货仍可双向交易。第十五至二十日采集合格独立参考，第廿一日按合同终结相关衍生品；无可靠价格时保留保证金与索偿等待处置，绝不凭空按零结清。第三十日撤销本场所未成交现货单并返还自由资产。其他健康场所不受本场所摘牌影响。"
+ xfm_listing_otc_details:0 "场外卖方须先明确买家、币、手数和价格，七日内由买家接受。付款和币均来自双方真实可用余额。参考价格不保证存在接盘者；场外成交不抹去已登记的旧债权。"

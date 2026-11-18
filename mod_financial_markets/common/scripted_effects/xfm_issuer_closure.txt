@@ -1,0 +1,54 @@
+﻿# Optional legal cancellation of an unsuccessful offer's still unallocated supply.
+# This is an explicit controller action, never an automatic confiscation at delisting.
+xfm_issuer_cancel_unallocated_supply_effect = {
+    if = {
+        limit = {
+            xfm_issuer_controls_selected_trigger = yes
+            var:xfm_selected_coin = {
+                var:xfm_listing_state = 6
+                NOT = { has_variable = xfm_offer_closing_started }
+                NOT = { has_variable = xfm_unresolved_claims }
+                var:xfm_unresolved_claim_count = 0
+                NOT = { has_variable = xfm_unclaimed_assets }
+                NOT = {
+                    any_in_list = {
+                        variable = xfm_holders
+                        OR = {
+                            var:xfm_reserved_units > 0
+                            AND = { var:xfm_quantity_units > 0 var:xfm_account != prev.var:xfm_issuer_account var:xfm_account != prev.var:xfm_founder_account }
+                        }
+                    }
+                }
+            }
+        }
+        var:xfm_selected_coin = {
+            save_scope_as = xfm_offer_cancelling_coin
+            var:xfm_issuer_account = {
+                set_variable = { name = xfm_request_coin value = scope:xfm_offer_cancelling_coin }
+                xfm_finance_lookup_position_effect = yes
+                if = {
+                    limit = { exists = scope:xfm_position scope:xfm_position = { var:xfm_quantity_units > 0 } }
+                    scope:xfm_offer_cancelling_coin = {
+                        set_variable = { name = xfm_request_target value = var:xfm_issuer_account }
+                        set_variable = { name = xfm_request_units value = scope:xfm_position.var:xfm_quantity_units }
+                        xfm_finance_burn_effect = yes
+                    }
+                }
+            }
+            var:xfm_founder_account = {
+                set_variable = { name = xfm_request_coin value = scope:xfm_offer_cancelling_coin }
+                xfm_finance_lookup_position_effect = yes
+                if = {
+                    limit = { exists = scope:xfm_position scope:xfm_position = { var:xfm_quantity_units > 0 } }
+                    scope:xfm_offer_cancelling_coin = {
+                        set_variable = { name = xfm_request_target value = var:xfm_founder_account }
+                        set_variable = { name = xfm_request_units value = scope:xfm_position.var:xfm_quantity_units }
+                        xfm_finance_burn_effect = yes
+                        if = { limit = { var:xfm_result = 1 } set_variable = { name = xfm_founder_locked_units value = 0 } }
+                    }
+                }
+            }
+            xfm_listing_archive_effect = yes
+        }
+    }
+}

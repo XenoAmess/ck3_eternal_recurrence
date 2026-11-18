@@ -17,7 +17,9 @@ public final class MarketException extends IllegalArgumentException {
         SELF_TRADE,
         ORDER_NOT_OPEN,
         ARITHMETIC_OVERFLOW,
-        DAY_REGRESSION
+        DAY_REGRESSION,
+        ESCROW_RESTRICTED,
+        BATCH_CONFLICT
     }
 
     private final Code code;

@@ -1,0 +1,10 @@
+﻿xfm_market_fund_donate_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes var:xfm_request_cents > 0 }
+    effect = { set_variable = { name = xfm_ui_fund_donation_cents value = var:xfm_request_cents } trigger_event = xfm_market.108 }
+}
+xfm_market_debt_refuse_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes exists = var:xfm_selected_debt var:xfm_selected_debt = { var:xfm_debtor_account.var:xfm_holder = root var:xfm_outstanding_cents > 0 } }
+    effect = { trigger_event = xfm_market.109 }
+}

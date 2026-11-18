@@ -1,0 +1,143 @@
+{
+  "schema": "ck3_1210_event_options_static_abi_v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-11-18T09:58:14.351295+00:00",
+  "game_version": "1.21.0",
+  "steam_build_id": "26622941",
+  "executable_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+  "file_size": 114756216,
+  "image_base": "0x140000000",
+  "evidence_kind": "local_exact_executable_offline_disassembly",
+  "game_process_started": false,
+  "live_qualified": false,
+  "source_spans": [
+    {
+      "name": "jomini_owner_idler_install",
+      "start_rva": "0x8d99a9",
+      "end_rva_exclusive": "0x8d9a41",
+      "sha256": "278d1de7495fc6cdce9d6df94ffcf24814409c387b9c07e6301959b79eaafb3f",
+      "entry_bytes_hex": "b948000000e81d67f3034c8bf0488944246048896808488968104889781866c7"
+    },
+    {
+      "name": "ingame_idler_constructor",
+      "start_rva": "0xb230c0",
+      "end_rva_exclusive": "0xb2329a",
+      "sha256": "2b3791bbc3a40b6cc2bd005db16e103e02c535bb6bc06d3aa60c3f117a74a13a",
+      "entry_bytes_hex": "48895c2418488974242048894c2408574883ec30498bd8488bf9488d05771600"
+    },
+    {
+      "name": "event_window_manager_create",
+      "start_rva": "0xcf2800",
+      "end_rva_exclusive": "0xcf2a46",
+      "sha256": "b4668d15b475b8a2943fae561e39971b0a36d660c89d874402c5e62443c93b0a",
+      "entry_bytes_hex": "48895c241048896c2418488974242057415641574881ec80000000488bea4c8b"
+    },
+    {
+      "name": "event_window_constructor",
+      "start_rva": "0x1b54530",
+      "end_rva_exclusive": "0x1b5491b",
+      "sha256": "9db9b4d37acb3be424fbc859aebd213d952887dedcd40c112b8a87adb9e19ec7",
+      "entry_bytes_hex": "48895c241848894c24085556574154415541564157488dac24f0fcffff4881ec"
+    },
+    {
+      "name": "event_window_data_constructor",
+      "start_rva": "0x1b624b0",
+      "end_rva_exclusive": "0x1b62ae0",
+      "sha256": "2dae6e2786382541dac6977a9007297e62e79c12506db9b64792f6a0f891e739",
+      "entry_bytes_hex": "48895c24204c89442418488954241048894c2408555657415441554156415748"
+    },
+    {
+      "name": "event_option_item_owner",
+      "start_rva": "0x1b6aec0",
+      "end_rva_exclusive": "0x1b6aef0",
+      "sha256": "8c01127a86ba0a536eb065907d905e145b3818864db4f9046fed305eb0bebd29",
+      "entry_bytes_hex": "488d8f30010000e8745200009048899f600100004c89af68010000488d977001"
+    },
+    {
+      "name": "event_option_item_index_enabled",
+      "start_rva": "0x1b6b140",
+      "end_rva_exclusive": "0x1b6b168",
+      "sha256": "f634f0eca02d58b8654ea9446180f12af160220437ebbd28b66e120fcfbc4307",
+      "entry_bytes_hex": "4883e8084883f81f0f8773050000e81d53ca024489bfb00100004488b7b40100"
+    },
+    {
+      "name": "native_option_can_select",
+      "start_rva": "0x1b6c810",
+      "end_rva_exclusive": "0x1b6c846",
+      "sha256": "943c4080882f2b4d07df1d52c5e82efeb46cd7f891f448674b381827a9fde9be",
+      "entry_bytes_hex": "4883ec2880b9b501000000750980b9b4010000007419488b896001000033d2e8"
+    },
+    {
+      "name": "native_custom_widget_validity",
+      "start_rva": "0x1b697a0",
+      "end_rva_exclusive": "0x1b6981d",
+      "sha256": "cce4ae5f80cda4d072b034793f1f93246735f0a7da2bc03e202e734ec4a8f830",
+      "entry_bytes_hex": "48895c24084889742410574883ec20f20f104108488bf2660f2f056172d40476"
+    },
+    {
+      "name": "ordinary_ui_select",
+      "start_rva": "0x1b6a1d0",
+      "end_rva_exclusive": "0x1b6a37c",
+      "sha256": "ac479137cc85e2946aa808db06ce947b33f8324e902b4d7fbeb041e7990bb6f8",
+      "entry_bytes_hex": "48895c240848896c2410488974241857415641574883ec50448bfa4c8bf1488b"
+    },
+    {
+      "name": "select_command_clone",
+      "start_rva": "0x2eb1660",
+      "end_rva_exclusive": "0x2eb16db",
+      "sha256": "dae8e8e6e67e30889a74a55a8078f8a135903fc33628e21db16d3efebd797961",
+      "entry_bytes_hex": "48895c2408574883ec30488bd9488bfab928000000e856ea95014c8bc8488d05"
+    },
+    {
+      "name": "select_command_validate",
+      "start_rva": "0x2eb1370",
+      "end_rva_exclusive": "0x2eb13a8",
+      "sha256": "15e37261ed3a54b66932dced108b10770b124e8cc80466014832f007fb86c490",
+      "entry_bytes_hex": "4883ec288b512085d27e26488b05d609a003488b88a00000004881c1c04b0400"
+    },
+    {
+      "name": "select_command_execute",
+      "start_rva": "0x2eb11c0",
+      "end_rva_exclusive": "0x2eb1369",
+      "sha256": "422024023b02327d9f188e07d25e2bc627b2ac3c6c5824781dab53fc919c2bee",
+      "entry_bytes_hex": "48895c2410574881ec20020000488bf9488b05810ba0034c8b90a00000008b51"
+    }
+  ],
+  "bindings": {
+    "idler_vtable_rva": "0x4b24758",
+    "window_vtable_rva": "0x4c5d430",
+    "select_primary_vtable_rva": "0x4e93728",
+    "select_secondary_vtable_rva": "0x4e936f0",
+    "can_select_rva": "0x1b6c810"
+  },
+  "layout": {
+    "jomini_to_idler": "0x10",
+    "idler_to_manager": "0x28",
+    "manager_windows_pointer": "0x18",
+    "manager_windows_capacity": "0x20",
+    "manager_windows_count": "0x24",
+    "window_to_event_data": "0xb8",
+    "data_instance_id": "0",
+    "data_options_pointer": "0x10",
+    "data_options_capacity": "0x18",
+    "data_options_count": "0x1c",
+    "data_selected": "0x30",
+    "data_custom_selection_handler": "0x7c0",
+    "option_stride": "0x1b8",
+    "option_owner": "0x160",
+    "option_native_index": "0x1b0",
+    "option_raw_enabled": "0x1b4",
+    "option_fallback": "0x1b5",
+    "command_size": "0x28",
+    "command_instance": "0x20",
+    "command_authored_index": "0x24"
+  },
+  "semantics": [
+    "Only materialized GUI item membership proves shown; authored total does not.",
+    "UI CanSelect at 1B6C810 requires (fallback || raw_enabled) and EventWindowData validity at 1B697A0.",
+    "Ordinary selection uses owned cloned command through native manager, channel7, with zero default metadata.",
+    "Custom selection handler at data+7C0 is not this ordinary command path and is explicitly unavailable.",
+    "Application-main paused custody, exact full revision and occurrence are required by owning integration.",
+    "Configured window32 and authored/shown512 bounds are bridge work limits, not engine maxima."
+  ]
+}

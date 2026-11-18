@@ -10194,7 +10194,7 @@ include(cmake/m7_idler_components_v1.cmake)
 # runtime binding. This fixture never opens or invokes a game process.
 if(BUILD_TESTING)
   add_executable(xar_ck3_1210_identity_test
-    src/ck3_1210_adapter.cpp
+    fixtures/ck3_1210_adapter_body_v1.cpp
     src/ck3_1210_core.cpp
     src/game_adapter_capabilities.cpp
     src/ck3_1210_identity_test.cpp)
@@ -10280,7 +10280,7 @@ if(BUILD_TESTING)
     src/ck3_1210_actor_foundation_v1.cpp
     src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_personal_gold_frame_v1.cpp
     src/ck3_1210_personal_gold_v1_test.cpp src/ck3_1210_core.cpp
-    src/ck3_1210_adapter.cpp src/ck3_1210_core_frame_v1.cpp
+    fixtures/ck3_1210_adapter_body_v1.cpp src/ck3_1210_core_frame_v1.cpp
     src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
   target_include_directories(xar_ck3_1210_personal_gold_test PRIVATE include)
   target_compile_definitions(xar_ck3_1210_personal_gold_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN
@@ -10290,7 +10290,7 @@ if(BUILD_TESTING)
     src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_actor_foundation_v1_test.cpp src/ck3_1210_core.cpp
     src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_personal_gold_frame_v1.cpp
     src/ck3_1210_core_frame_v1.cpp src/ck3_1210_thread_runtime.cpp
-    src/ck3_1210_adapter.cpp src/game_adapter_capabilities.cpp)
+    fixtures/ck3_1210_adapter_body_v1.cpp src/game_adapter_capabilities.cpp)
   target_include_directories(xar_ck3_1210_actor_foundation_test PRIVATE include)
   target_compile_definitions(xar_ck3_1210_actor_foundation_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN
     XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1 XAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1=1
@@ -10321,7 +10321,7 @@ endif()
 
 if(BUILD_TESTING)
   add_executable(xar_ck3_1210_full_snapshot_test
-    src/ck3_1210_full_snapshot_v1_test.cpp src/ck3_1210_full_snapshot_v1.cpp
+    src/ck3_1210_full_snapshot_v1_test.cpp fixtures/ck3_1210_full_snapshot_body_v1.cpp
     src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_current_event_snapshot_v1.cpp
     src/ck3_1210_pending_snapshot_v1.cpp src/ck3_1210_military_empty_v1.cpp src/ck3_1210_core.cpp)
   target_include_directories(xar_ck3_1210_full_snapshot_test PRIVATE include)
@@ -10396,7 +10396,7 @@ if(BUILD_TESTING)
     src/ck3_1210_personal_cash_v1.cpp src/ck3_1210_monthly_flow_v1.cpp
     src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_personal_gold_frame_v1.cpp
     src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_core.cpp src/ck3_1210_core_frame_v1.cpp
-    src/ck3_1210_adapter.cpp src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
+    fixtures/ck3_1210_adapter_body_v1.cpp src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
   target_compile_definitions(xar_ck3_1210_personal_cash_frame_test PRIVATE XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1=1)
   foreach(_cash_target IN ITEMS xar_ck3_1210_monthly_flow_test xar_ck3_1210_personal_cash_test xar_ck3_1210_personal_cash_frame_test)
     target_include_directories(${_cash_target} PRIVATE include)
@@ -10462,4 +10462,55 @@ if(BUILD_TESTING)
     target_compile_options(xar_ck3_1210_active_wars_test PRIVATE /W4 /WX /permissive- /EHsc)
   endif()
   add_test(NAME xar_ck3_native_bridge_1210_active_wars COMMAND xar_ck3_1210_active_wars_test)
+endif()
+
+# Exact Florin materialized event choices. Ordinary adapter worker virtuals stay
+# closed: both observation and selection use the paused application-main mailbox.
+target_sources(xar_ck3_12002_runtime PRIVATE
+  src/ck3_1210_event_options_v1.cpp src/ck3_1210_event_option_control_v1.cpp)
+option(XAR_CK3_ENABLE_1210_EVENT_OPTIONS_V1 "Enable exact paused materialized ordinary event option controls" OFF)
+if(XAR_CK3_ENABLE_1210_EVENT_OPTIONS_V1)
+  if(NOT XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+    message(FATAL_ERROR "Florin event options require exact paused Full")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_EVENT_OPTIONS_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_event_options_test
+    src/ck3_1210_event_options_v1.cpp src/ck3_1210_event_options_v1_test.cpp
+    src/ck3_1210_current_event_snapshot_v1.cpp src/ck3_1210_core.cpp)
+  add_executable(xar_ck3_1210_event_option_control_test
+    src/ck3_1210_event_option_control_v1.cpp src/ck3_1210_event_option_control_v1_test.cpp
+    src/ck3_1210_full_clock_request_v1.cpp src/ck3_1210_event_options_v1.cpp
+    src/ck3_1210_current_event_snapshot_v1.cpp src/ck3_1210_commands.cpp
+    src/ck3_1210_core.cpp src/game_adapter_capabilities.cpp)
+  foreach(_florin_event_target IN ITEMS xar_ck3_1210_event_options_test xar_ck3_1210_event_option_control_test)
+    target_include_directories(${_florin_event_target} PRIVATE include)
+    target_compile_definitions(${_florin_event_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+    if(MSVC)
+      target_compile_options(${_florin_event_target} PRIVATE /W4 /WX /permissive- /EHsc)
+    endif()
+  endforeach()
+  add_test(NAME xar_ck3_native_bridge_1210_event_options COMMAND xar_ck3_1210_event_options_test)
+  add_test(NAME xar_ck3_native_bridge_1210_event_option_control COMMAND xar_ck3_1210_event_option_control_test)
+endif()
+
+target_sources(xar_ck3_12002_runtime PRIVATE
+  src/ck3_1210_gui_control_v1.cpp src/ck3_1210_gui_request_v1.cpp src/ck3_1210_gui_control_native_v1.cpp)
+option(XAR_CK3_ENABLE_1210_GUI_CONTROL_V1 "Enable exact paused scripted widget source controls" OFF)
+if(XAR_CK3_ENABLE_1210_GUI_CONTROL_V1)
+  if(NOT XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+    message(FATAL_ERROR "Florin GUI controls require exact paused Full")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_GUI_CONTROL_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_gui_control_test src/ck3_1210_gui_control_v1.cpp
+    src/ck3_1210_gui_request_v1.cpp src/ck3_1210_gui_control_v1_test.cpp)
+  target_include_directories(xar_ck3_1210_gui_control_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_gui_control_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_gui_control_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_gui_control COMMAND xar_ck3_1210_gui_control_test)
 endif()

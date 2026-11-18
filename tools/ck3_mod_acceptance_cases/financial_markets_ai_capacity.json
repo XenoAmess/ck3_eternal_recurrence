@@ -1,0 +1,58 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "ai-capacity",
+  "acceptance_scope": "actual_mature_campaign_ai_rotation_market_capacity_daily_obligations_and_measured_performance",
+  "fixture_source": {"kind": "prebuilt_manifest"},
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 395,
+  "failure_prefixes": ["XFMAT:"],
+  "required_startup": [],
+  "forbidden_startup": ["XFMAT: TEST FAIL"],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "observer_profile_contract": {
+    "status": "PROPOSED_NOT_EMITTED",
+    "profile": "ai-capacity",
+    "manifest_case_id_must_equal": "ai-capacity",
+    "required_future_observations": ["actual_scale_inventory", "bounded_distinct_ai_rotation", "real_ai_paid_issuance_and_trades", "all_live_obligations_checked", "complete_daily_timing_series_and_save_size"],
+    "core_manifest_is_valid_for_this_case": false
+  },
+  "source_save_requirements": [
+    "A genuinely matured production campaign at the declared scale tier, with provenance for real paid issuance, ownership and actual orders/positions. No fixture seeds coins, cash, characters, orders or obligations to reach capacity.",
+    "Declare one tier before allocation: smoke 128 coins; conservative 2048; standard 4096; extended 8192 only as a separate post-standard pressure run. Counts mean actual active listings, not lifetime registrations.",
+    "Standard target includes 64 actual hot books, 512 AI candidate decisions per day and 4000 actual open paired positions. Any smaller achieved scale is reported exactly and cannot grant the larger tier credit.",
+    "At most eight new listings per day means a new world cannot reach 4096 active listings during this measurement case. Use genuine earlier history, including initial capacity and intermediate delistings; do not bypass the limit.",
+    "Include actual low-tier and unlanded adult AI issuance/trading histories and sparse-world rotation evidence; no AI decision or trade is forced by fixture.",
+    "Retain matched source campaign/build/settings and a comparable vanilla baseline. Direct script/UI timings need a qualified read-only profiler; without it mark those metrics UNMEASURED."
+  ],
+  "gui_phases": [
+    {"id": "pin-scale-and-measurement-window", "at_day": 0, "requirements": [
+      "actual_minimized_non_topmost_no_foreground_activation_for_entire_run",
+      "actual_case_specific_observer_pins_scale_tier_settings_actual_inventory_and_external_timing_source",
+      "actual_all_candidate_and_market_identities_are_real_production_entities_and_no_fixture_business_seed_exists",
+      "actual_cold_load_time_initialization_cost_and_observer_overhead_are_retained_separately"
+    ]},
+    {"id": "warmup-complete", "at_day": 30, "requirements": [
+      "actual_30_natural_day_warmup_retained_and_not_counted_as_the_365_day_sample_window",
+      "actual_candidate_rotation_visits_at_most_min_starting_queue_length_and_configured_budget_once_each_per_day",
+      "actual_ai_low_tier_and_unlanded_paid_issuance_or_trades_are_evidenced_or_remain_not_observed",
+      "actual_every_existing_position_and_due_debt_is_serviced_daily_even_when_new_risk_is_budget_limited"
+    ]},
+    {"id": "full-measured-window", "at_day": 395, "requirements": [
+      "actual_365_daily_samples_include_slow_failure_crash_liquidation_delisting_and_news_burst_days_without_sample_deletion",
+      "actual_scale_timeseries_retains_active_registered_pending_archived_coins_hot_books_orders_positions_and_ai_work",
+      "actual_raw_samples_support_p50_p95_p99_max_total_wall_clock_memory_and_matched_baseline_comparison",
+      "actual_standard_daily_mod_increment_p95_100ms_p99_300ms_and_detail_ui_16ms_are_measured_only_by_a_qualified_source",
+      "actual_mod_state_save_growth_target_16mib_is_attributed_to_saved_product_state_not_java_object_estimate_or_total_save_file_alone",
+      "actual_pressure_degrades_new_business_budget_without_skipping_existing_obligations_or_deleting_claims",
+      "actual_physical_save_and_normal_exit_preserve_full_graph_and_retained_os_zero_native_zero",
+      "actual_wall_timeout_before_395_days_reports_incomplete_window_and_never_shortens_the_required_measurement"
+    ]}
+  ],
+  "source_contracts": ["mod_financial_markets/docs/runtime-contract.md", "mod_financial_markets/docs/test-and-acceptance-plan.md", "mod_financial_markets/docs/actual-business-acceptance-matrix.md"],
+  "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 43200, "gui_hold_seconds": 7200, "normal_close_timeout_seconds": 180},
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Prospective 395 natural days preserves the existing 30-day warmup plus 365-day measurement requirement. Wall budget is finite; it does not authorize omission or shortening of missing samples."
+}

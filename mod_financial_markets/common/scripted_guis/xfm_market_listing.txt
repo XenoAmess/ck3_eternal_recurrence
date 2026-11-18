@@ -1,0 +1,42 @@
+﻿xfm_market_announce_delisting_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes }
+    effect = { trigger_event = xfm_market.103 }
+}
+xfm_market_topup_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes }
+    effect = { xfm_listing_topup_effect = yes }
+}
+xfm_market_subscribe_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_can_subscribe_trigger = yes }
+    effect = { xfm_issuer_subscribe_effect = yes }
+}
+xfm_market_subscription_up_gui = {
+    scope = character
+
+    is_valid = { is_ai = no var:xfm_subscription_gold < 100000 }
+    effect = { change_variable = { name = xfm_subscription_gold add = var:xfm_ui_step } }
+}
+xfm_market_subscription_down_gui = {
+    scope = character
+
+    is_valid = { is_ai = no var:xfm_subscription_gold > var:xfm_ui_step }
+    effect = { change_variable = { name = xfm_subscription_gold subtract = var:xfm_ui_step } }
+}
+xfm_market_mint_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_can_mint_trigger = yes }
+    effect = { trigger_event = xfm_market.104 }
+}
+xfm_market_burn_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes }
+    effect = { trigger_event = xfm_market.105 }
+}

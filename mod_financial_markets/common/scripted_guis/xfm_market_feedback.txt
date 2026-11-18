@@ -1,0 +1,6 @@
+﻿xfm_market_receipt_gui = { scope = character is_valid = { has_variable = xfm_result } }
+xfm_market_futures_receipt_gui = { scope = character is_valid = { has_variable = xfm_futures_result } }
+xfm_market_contract_selected_gui = { scope = character is_valid = { exists = var:xfm_futures_contract var:xfm_futures_contract = { story_type = xfm_futures_contract } } }
+xfm_market_futures_position_selected_gui = { scope = character is_valid = { exists = var:xfm_futures_selected_position var:xfm_futures_selected_position = { story_type = xfm_futures_position } } }
+xfm_market_debt_selected_gui = { scope = character is_valid = { exists = var:xfm_selected_debt var:xfm_selected_debt = { story_type = xfm_debt_claim } } }
+xfm_market_news_selected_gui = { scope = character is_valid = { exists = var:xfm_selected_news var:xfm_selected_news = { story_type = xfm_news_entry } } }

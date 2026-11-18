@@ -1,0 +1,7 @@
+﻿# Claims are obligations, not a single cash transfer. Large gaps must remain recorded.
+xfm_debt_valid_claim_trigger = {
+    has_variable = xfm_request_cents
+    var:xfm_request_cents > 0
+    var:xfm_request_cents <= 1000000000000
+    var:xfm_request_cents = xfm_finance_request_floor
+}

@@ -1,0 +1,131 @@
+﻿# 5 effects. A crisis offers actual help before rare terminal review, never a player suicide option.
+xfm_crisis_begin_effect = {
+    set_variable = { name = xfm_crisis_state value = 1 }
+    set_variable = { name = xfm_crisis_actor value = var:xfm_holder }
+    set_variable = { name = xfm_crisis_started_day value = global_var:xfm_exchange.var:xfm_day }
+    set_variable = { name = xfm_next_crisis_review value = global_var:xfm_exchange.var:xfm_day }
+    change_variable = { name = xfm_next_crisis_review add = 7 }
+    set_variable = { name = xfm_crisis_reviews value = 0 }
+    set_variable = { name = xfm_news_actor value = var:xfm_holder }
+    set_variable = { name = xfm_news_kind value = 4 }
+    xfm_news_record_effect = yes
+    clear_saved_scope = xfm_crisis_help_debt
+    ordered_in_list = {
+        variable = xfm_debts
+        limit = { var:xfm_outstanding_cents > 0 }
+        order_by = var:xfm_overdue_days
+        max = 1
+        check_range_bounds = no
+        save_scope_as = xfm_crisis_help_debt
+    }
+    set_variable = { name = xfm_aid_opportunity_recorded value = 1 }
+    if = {
+        limit = { exists = scope:xfm_crisis_help_debt }
+        xfm_crisis_seek_aid_effect = yes
+        scope:xfm_crisis_help_debt = {
+            if = {
+                limit = {
+                    var:xfm_creditor_account.var:xfm_holder = { is_alive = yes is_ai = yes }
+                    NOT = { has_variable = xfm_extension_granted }
+                }
+                random_list = { 60 = { xfm_debt_extend_effect = yes } 40 = { } }
+            }
+        }
+    }
+}
+
+xfm_crisis_seek_aid_effect = {
+    clear_saved_scope = xfm_crisis_helper
+    var:xfm_holder = {
+        random_close_family_member = {
+            limit = {
+                is_alive = yes
+                is_adult = yes
+                is_ai = yes
+                NOT = { has_variable = xfm_financial_aid_cooldown }
+                OR = { gold >= 5 var:xfm_account ?= { var:xfm_free_cents >= 500 } }
+            }
+            save_scope_as = xfm_crisis_helper
+        }
+    }
+    if = {
+        limit = { exists = scope:xfm_crisis_helper }
+        scope:xfm_crisis_helper = {
+            random_list = {
+                70 = {
+                    set_variable = { name = xfm_financial_aid_cooldown months = 6 }
+                    xfm_finance_ensure_account_effect = yes
+                    var:xfm_account = {
+                        set_variable = { name = xfm_request_cents value = 500 }
+                        xfm_finance_ensure_funds_effect = yes
+                        if = {
+                            limit = { var:xfm_free_cents > 0 }
+                            if = {
+                                limit = { NOT = { has_variable = xfm_debt_operation_counter } }
+                                set_variable = { name = xfm_debt_operation_counter value = 0 }
+                            }
+                            change_variable = { name = xfm_debt_operation_counter add = 1 }
+                            save_scope_as = xfm_crisis_helper_account
+                            scope:xfm_crisis_help_debt = {
+                                set_variable = { name = xfm_request_payer value = scope:xfm_crisis_helper_account }
+                                set_variable = { name = xfm_request_cents value = 500 }
+                                set_variable = { name = xfm_request_operation value = scope:xfm_crisis_helper_account.var:xfm_debt_operation_counter }
+                                xfm_debt_repay_effect = yes
+                            }
+                        }
+                    }
+                }
+                30 = { }
+            }
+        }
+    }
+}
+
+xfm_crisis_review_effect = {
+    # This guard is also checked by the final effect after any same-day payment.
+    if = {
+        limit = { var:xfm_next_crisis_review <= global_var:xfm_exchange.var:xfm_day }
+        set_variable = { name = xfm_next_crisis_review value = global_var:xfm_exchange.var:xfm_day }
+        change_variable = { name = xfm_next_crisis_review add = 7 }
+        change_variable = { name = xfm_crisis_reviews add = 1 }
+        if = {
+            limit = { xfm_crisis_terminal_review_trigger = yes }
+            random_list = {
+                1 = { xfm_crisis_terminal_effect = yes }
+                9 = { xfm_crisis_protected_life_effect = yes }
+                190 = { }
+            }
+        }
+    }
+}
+
+xfm_crisis_protected_life_effect = {
+    set_variable = { name = xfm_crisis_state value = 2 }
+    set_variable = { name = xfm_crisis_relief_until value = global_var:xfm_exchange.var:xfm_day }
+    change_variable = { name = xfm_crisis_relief_until add = 180 }
+    var:xfm_holder = { add_stress = -20 }
+    set_variable = { name = xfm_news_actor value = var:xfm_holder }
+    set_variable = { name = xfm_news_kind value = 6 }
+    xfm_news_record_effect = yes
+    # Protection changes risk and support, never cash or the creditors' claims.
+}
+
+xfm_crisis_terminal_effect = {
+    if = {
+        limit = { xfm_crisis_terminal_review_trigger = yes }
+        set_variable = { name = xfm_crisis_terminal value = 1 }
+        set_variable = { name = xfm_crisis_state value = 3 }
+        var:xfm_holder = { save_scope_as = xfm_crisis_actor }
+        xfm_crisis_select_scene_effect = yes
+        set_variable = { name = xfm_news_actor value = scope:xfm_crisis_actor }
+        set_variable = { name = xfm_news_kind value = 5 }
+        # Mark first; on_death may change this account's holder through inheritance.
+        scope:xfm_crisis_actor = { death = { death_reason = death_suicide } }
+        every_in_list = {
+            variable = xfm_debts
+            limit = { var:xfm_outstanding_cents > 0 }
+            set_variable = { name = xfm_state value = 4 }
+        }
+        xfm_news_record_effect = yes
+    }
+}

@@ -9,6 +9,7 @@ from dataclasses import dataclass
 import json
 import re
 import struct
+from typing import Literal, TypedDict
 try:
     from .normal_exit_process_observer_v1 import RetainedProcessIdentity
 except ImportError:
@@ -16,6 +17,111 @@ except ImportError:
 
 NORMAL_EXIT_MAP_CAPABILITY = 'normal-exit-map-v1'
 NORMAL_EXIT_MAP_STEP = 'normal-exit-map-v1'
+CORE_EXIT_ROUTE = 'application_core_1210'
+CORE_EXIT_CAPABILITY = 'game.command.normal-exit-application-v1'
+CORE_EXIT_STEP: Literal['normal-exit-application-v1'] = 'normal-exit-application-v1'
+CORE_EXIT_VERSION = '1.21.0'
+CORE_EXIT_EXE_SHA256 = '2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC'
+CORE_EXIT_BACKEND = 'ck3-1.21.0-native-headless-main-thread'
+CORE_EXIT_OBSERVATION_SCHEMA: Literal['ck3-normal-exit-application-observation-v1'] = 'ck3-normal-exit-application-observation-v1'
+
+
+class CoreExitPrefixV1(TypedDict):
+    date_raw: int
+    speed: int
+    paused: Literal[True]
+    local_player_id: int
+    map_ready: Literal[True]
+    has_played_character: Literal[True]
+    played_character_id: int
+    played_character_alive: Literal[True]
+
+
+class CoreExitObservationV1(TypedDict):
+    schema: Literal['ck3-normal-exit-application-observation-v1']
+    step: Literal['normal-exit-application-v1']
+    action: Literal['query_context', 'confirm_desktop']
+    status: Literal['context_observed', 'dispatch_pending', 'dispatch_unknown_claimed']
+    native_revision: int
+    connection_generation: int
+    game_pid: int
+    played_character_id: int
+    process_creation_filetime_100ns: int
+    exit_context_signature: str
+    core_prefix: CoreExitPrefixV1
+    core_ack: dict[str, object] | None
+
+
+def normalize_core_exit_ack_v1(raw: object) -> dict[str, object]:
+    """The existing exact C++ Core ApplicationExit producer, with no GUI proof."""
+    fields = {'schema', 'game_version', 'executable_sha256', 'adapter_id', 'backend',
+              'step', 'accepted', 'dispatch_status', 'effect_attempted',
+              'complete_snapshot', 'physical_save_confirmed', 'normal_exit_confirmed'}
+    if type(raw) is not dict or set(raw) != fields:
+        raise ValueError('Core ApplicationExit ACK has unknown or missing fields')
+    if (raw['schema'] != 'ck3_1210_application_exit_result_v1' or
+            raw['game_version'] != CORE_EXIT_VERSION or
+            type(raw['executable_sha256']) is not str or raw['executable_sha256'].upper() != CORE_EXIT_EXE_SHA256 or
+            raw['adapter_id'] != 'ck3-1.21.0-msvc-x64' or raw['backend'] != CORE_EXIT_BACKEND or
+            raw['step'] != CORE_EXIT_STEP):
+        raise ValueError('Core ApplicationExit ACK differs from exact Florin backend')
+    for key in ('accepted', 'effect_attempted', 'complete_snapshot', 'physical_save_confirmed', 'normal_exit_confirmed'):
+        if type(raw[key]) is not bool:
+            raise ValueError('Core ApplicationExit ACK flags must be actual booleans')
+    if any(raw[key] for key in ('complete_snapshot', 'physical_save_confirmed', 'normal_exit_confirmed')):
+        raise ValueError('Core ApplicationExit ACK cannot prove Full, save or process termination')
+    if raw['dispatch_status'] not in {'requested', 'already_requested', 'claim_consumed',
+            'unavailable', 'expired', 'stale_core_prefix', 'requires_map', 'requires_paused', 'indeterminate'}:
+        raise ValueError('unknown Core ApplicationExit dispatch status')
+    if raw['accepted'] != (raw['dispatch_status'] in {'requested', 'already_requested'}):
+        raise ValueError('Core ApplicationExit accepted/status mismatch')
+    if raw['dispatch_status'] == 'requested' and raw['effect_attempted'] is not True:
+        raise ValueError('Core ApplicationExit requested lacks actual dispatch attempt')
+    return dict(raw)
+
+
+def normalize_core_exit_observation_v1(raw: object, action: str) -> CoreExitObservationV1:
+    fields = set(CoreExitObservationV1.__annotations__)
+    if (type(raw) is not dict or set(raw) != fields or raw.get('schema') != CORE_EXIT_OBSERVATION_SCHEMA
+            or raw.get('step') != CORE_EXIT_STEP or raw.get('action') != action
+            or action not in {'query_context', 'confirm_desktop'}):
+        raise ValueError('Core exit observation identity or fields differ')
+    native = positive_integer(raw['native_revision'], 'native_revision')
+    generation = positive_integer(raw['connection_generation'], 'connection_generation')
+    pid = positive_integer(raw['game_pid'], 'game_pid', 0xFFFFFFFF)
+    birth = positive_integer(raw['process_creation_filetime_100ns'], 'process birth')
+    actor = raw['played_character_id']
+    if type(actor) is not int or not -(2**31) <= actor < 2**31 or actor == -1:
+        raise ValueError('Core exit actor requires an actual signed full ID')
+    signature = exit_signature(raw['exit_context_signature'])
+    prefix = raw['core_prefix']
+    if (type(prefix) is not dict or set(prefix) != set(CoreExitPrefixV1.__annotations__)
+            or type(prefix['date_raw']) is not int or not 0 <= prefix['date_raw'] < 2**31
+            or type(prefix['speed']) is not int or not 1 <= prefix['speed'] <= 5
+            or type(prefix['local_player_id']) is not int or not -(2**31) <= prefix['local_player_id'] < 2**31
+            or prefix['local_player_id'] == -1 or type(prefix['played_character_id']) is not int
+            or prefix['played_character_id'] != actor
+            or any(prefix[key] is not True for key in ('paused', 'map_ready', 'has_played_character', 'played_character_alive'))):
+        raise ValueError('Core exit prefix differs from its actual paused living player')
+    typed_prefix = CoreExitPrefixV1(date_raw=prefix['date_raw'], speed=prefix['speed'], paused=True,
+        local_player_id=prefix['local_player_id'], map_ready=True, has_played_character=True,
+        played_character_id=actor, played_character_alive=True)
+    ack = None if raw['core_ack'] is None else normalize_core_exit_ack_v1(raw['core_ack'])
+    if action == 'query_context':
+        if raw['status'] != 'context_observed' or ack is not None:
+            raise ValueError('Core exit query must be read-only, without a dispatch ACK')
+        selected_action: Literal['query_context', 'confirm_desktop'] = 'query_context'
+        status: Literal['context_observed', 'dispatch_pending', 'dispatch_unknown_claimed'] = 'context_observed'
+    else:
+        selected_action = 'confirm_desktop'
+        status = ('dispatch_pending' if ack is not None and ack['dispatch_status'] == 'requested'
+                  and ack['accepted'] is True and ack['effect_attempted'] is True else 'dispatch_unknown_claimed')
+        if raw['status'] != status:
+            raise ValueError('Core exit status differs from the actual ACK')
+    return CoreExitObservationV1(schema=CORE_EXIT_OBSERVATION_SCHEMA, step=CORE_EXIT_STEP,
+        action=selected_action, status=status, native_revision=native, connection_generation=generation,
+        game_pid=pid, played_character_id=actor, process_creation_filetime_100ns=birth,
+        exit_context_signature=signature, core_prefix=typed_prefix, core_ack=ack)
 MAP_EXIT_ACTIONS = ('prepare_confirmation', 'continue_preparation', 'disable_exit_autosave', 'confirm_desktop')
 SIGNATURE_PATTERN = r'^[0-9a-f]{64}$'
 QUERY_INPUT_SCHEMA = {
@@ -268,7 +374,7 @@ def classify_terminal_exit_receipt(native: dict | None, process: dict, *,
                                     driver_dispatch_receipt_observed_monotonic_ns: int | None,
                                     expected_process_identity: RetainedProcessIdentity) -> dict:
     """Independent process facts; driver receipt time is never native callback time."""
-    facts = {'claim_consumed': True, 'retry_authorized': False,
+    facts: dict[str, object] = {'claim_consumed': True, 'retry_authorized': False,
              'process_exit_observed': False,
              'exit_code': None, 'typed_normal_exit_observed': False,
              'autosave_verified': False, 'status': 'dispatch_unknown_claimed'}
@@ -285,6 +391,7 @@ def classify_terminal_exit_receipt(native: dict | None, process: dict, *,
     receipt = driver_dispatch_receipt_observed_monotonic_ns
     after = process.get('observed_monotonic_ns')
     qualified = (type(native) is dict and native.get('action') == 'confirm_desktop'
+                 and native.get('schema') == 'ck3-normal-exit-map-v1'
                  and native.get('status') == 'dispatch_pending'
                  and all(native.get(key) is True for key in NATIVE_PROOF_KEYS)
                  and native.get('context_signature_verified') is True
@@ -295,6 +402,13 @@ def classify_terminal_exit_receipt(native: dict | None, process: dict, *,
                  and process.get('observation_clock_domain') == 'driver_monotonic_v1'
                  and process.get('pid') == native.get('game_pid')
                  and process.get('creation_filetime_100ns') == native.get('process_creation_filetime_100ns'))
+    if type(native) is dict and native.get('schema') == CORE_EXIT_OBSERVATION_SCHEMA:
+        core = normalize_core_exit_observation_v1(native, 'confirm_desktop')
+        qualified = (core['status'] == 'dispatch_pending' and type(receipt) is int
+                     and type(after) is int and after >= receipt
+                     and process.get('observation_clock_domain') == 'driver_monotonic_v1'
+                     and process.get('pid') == core['game_pid']
+                     and process.get('creation_filetime_100ns') == core['process_creation_filetime_100ns'])
     code = process.get('exit_code')
     if (process.get('wait_state') == 'signaled' and type(process.get('wait_result')) is int
             and process['wait_result'] == 0 and type(code) is int and 0 <= code <= 0xFFFFFFFF):
@@ -321,6 +435,8 @@ def normalize_public_exit_result(result: object, *, action: str,
     exit_signature(result.get('source_inventory_sha256'))
     positive_integer(result.get('process_creation_filetime_100ns'), 'actual process creation FILETIME')
     native = result.get('native_observation')
+    if result.get('route') == CORE_EXIT_ROUTE:
+        return _normalize_core_public_exit_result_v1(result, action=action)
     if action == 'query_context':
         if (result.get('schema') != 'ck3-normal-exit-context-result-v1'
                 or result.get('claim_consumed') is not False
@@ -380,6 +496,8 @@ def normalize_public_exit_observation_result(result: object) -> dict:
         raise ValueError('backend result is not a typed read-only original-process observation')
     positive_integer(result.get('public_revision'),'original public revision')
     exit_signature(result.get('source_inventory_sha256'))
+    if result.get('route') == CORE_EXIT_ROUTE:
+        return _normalize_core_public_exit_result_v1(result, action='confirm_desktop')
     pin=result.get('process_preconfirm_pin')
     if type(pin) is not dict:
         raise ValueError('original retained preconfirm pin is missing')
@@ -395,4 +513,49 @@ def normalize_public_exit_observation_result(result: object) -> dict:
         expected_process_identity=identity)
     if any(result.get(key)!=value or type(result.get(key)) is not type(value) for key,value in facts.items()):
         raise ValueError('read-only exit result differs from its actual same-handle facts')
+    return result
+
+
+def _normalize_core_public_exit_result_v1(result: dict[str, object], *, action: str) -> dict[str, object]:
+    """Application request route: no menu, checkbox, GUI pins or post-exit Full."""
+    if action not in {'query_context', 'confirm_desktop'}:
+        raise ValueError('Core application exit has no GUI preparation phases')
+    native = result.get('native_observation')
+    if action == 'query_context':
+        observation = normalize_core_exit_observation_v1(native, action)
+        if (result.get('schema') != 'ck3-normal-exit-context-result-v1'
+                or result.get('status') != 'context_observed' or result.get('claim_consumed') is not False
+                or result.get('orderly_exit_verified') is not False
+                or result.get('exit_context_signature') != observation['exit_context_signature']
+                or result.get('process_creation_filetime_100ns') != observation['process_creation_filetime_100ns']):
+            raise ValueError('Core exit query lacks actual context identity')
+        return result
+    pin = result.get('process_preconfirm_pin')
+    if type(pin) is not dict:
+        raise ValueError('Core exit requires the original retained process pin')
+    token = pin.get('retained_handle_token')
+    if type(token) is not str or not token:
+        raise ValueError('Core exit original retained handle token is malformed')
+    identity = RetainedProcessIdentity(positive_integer(pin.get('pid'), 'process pid', 0xFFFFFFFF),
+        positive_integer(pin.get('creation_filetime_100ns'), 'process birth'), token)
+    if (result.get('schema') not in {'ck3-normal-exit-request-result-v1', 'ck3-normal-exit-process-observation-result-v1'}
+            or result.get('action') != action or result.get('claim_consumed') is not True
+            or result.get('snapshot_after_required') is not False
+            or result.get('process_creation_filetime_100ns') != identity.creation_filetime_100ns):
+        raise ValueError('Core terminal result differs from its retained process')
+    native_row: dict[str, object] | None = None
+    if native is not None:
+        observation = normalize_core_exit_observation_v1(native, action)
+        if observation['game_pid'] != identity.pid or observation['process_creation_filetime_100ns'] != identity.creation_filetime_100ns:
+            raise ValueError('Core ACK belongs to another retained process')
+        native_row = {**observation}
+    process = result.get('process_observation')
+    receipt = result.get('driver_dispatch_receipt_observed_monotonic_ns')
+    if type(process) is not dict or receipt is not None and type(receipt) is not int:
+        raise ValueError('Core exit original process observation or receipt clock is malformed')
+    facts = classify_terminal_exit_receipt(native_row, process,
+        driver_dispatch_receipt_observed_monotonic_ns=receipt,
+        expected_process_identity=identity)
+    if any(result.get(key) != value or type(result.get(key)) is not type(value) for key, value in facts.items()):
+        raise ValueError('Core terminal facts differ from the actual same-handle observation')
     return result

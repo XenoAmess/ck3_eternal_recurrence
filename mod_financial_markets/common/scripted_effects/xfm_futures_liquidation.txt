@@ -1,0 +1,89 @@
+﻿# Position-scope automatic exits. The trigger authorizes an order, never a guaranteed trigger-price fill.
+xfm_futures_post_exit_effect = {
+ save_scope_as = xfm_fut_exit_position
+ var:xfm_$SIDE$_account = { save_scope_as = xfm_fut_exit_account }
+ set_variable = { name = xfm_exit_has_order value = 0 }
+ var:xfm_contract = {
+  save_scope_as = xfm_fut_exit_contract
+  every_in_list = {
+   variable = xfm_orders
+   limit = { xfm_futures_order_open_trigger = yes var:xfm_close_position = scope:xfm_fut_exit_position var:xfm_account = scope:xfm_fut_exit_account }
+   xfm_futures_cancel_order_effect = yes
+  }
+ }
+ if = {
+  limit = { var:xfm_exit_has_order = 0 xfm_futures_live_oracle_trigger = yes }
+  set_variable = { name = xfm_exit_limit_cents value = { value = var:xfm_coin.var:xfm_mark_cents multiply = 1.2 ceiling = yes } }
+  if = { limit = { always = $LONG_EXIT$ } set_variable = { name = xfm_exit_limit_cents value = 1 } }
+  set_variable = { name = xfm_exit_reserve_price value = { value = var:xfm_coin.var:xfm_mark_cents multiply = 1.2 ceiling = yes } }
+  var:xfm_contract = {
+   every_in_list = {
+    variable = xfm_orders
+    limit = { xfm_futures_order_open_trigger = yes var:xfm_side = 1 always = $LONG_EXIT$ }
+    save_scope_as = xfm_fut_exit_candidate
+    scope:xfm_fut_exit_position = {
+     set_variable = { name = xfm_exit_reserve_price value = { value = var:xfm_exit_reserve_price min = scope:xfm_fut_exit_candidate.var:xfm_limit_cents } }
+    }
+   }
+  }
+  set_variable = { name = xfm_exit_fee_cents value = { value = var:xfm_exit_reserve_price multiply = var:xfm_lots multiply = 0.003 ceiling = yes } }
+  clear_saved_scope = xfm_fut_exit_order
+  clear_saved_scope = xfm_fut_exit_reservation
+  global_var:xfm_exchange.story_owner = { create_story = { type = xfm_futures_order save_scope_as = xfm_fut_exit_order } }
+  if = {
+   limit = { exists = scope:xfm_fut_exit_order var:xfm_exit_fee_cents <= 100000000 }
+   if = {
+    limit = { scope:xfm_fut_exit_account.var:xfm_free_cents >= var:xfm_exit_fee_cents scope:xfm_fut_exit_account.var:xfm_account_frozen = 0 }
+    scope:xfm_fut_exit_account = {
+     set_variable = { name = xfm_request_cents value = scope:xfm_fut_exit_position.var:xfm_exit_fee_cents }
+     xfm_finance_reserve_effect = yes
+     if = { limit = { var:xfm_result = 1 } var:xfm_result_reservation = { save_scope_as = xfm_fut_exit_reservation } }
+    }
+   }
+   else_if = {
+    limit = { var:xfm_$SIDE$_reservation.var:xfm_remaining_cents >= var:xfm_exit_fee_cents }
+    var:xfm_$SIDE$_reservation = {
+     set_variable = { name = xfm_request_cents value = scope:xfm_fut_exit_position.var:xfm_exit_fee_cents }
+     xfm_finance_split_reservation_effect = yes
+     if = { limit = { var:xfm_result = 1 } var:xfm_result_reservation = { save_scope_as = xfm_fut_exit_reservation } }
+    }
+   }
+   if = {
+    limit = { exists = scope:xfm_fut_exit_reservation }
+    global_var:xfm_exchange = { change_variable = { name = xfm_next_futures_order_id add = 1 } }
+    scope:xfm_fut_exit_order = {
+     set_variable = { name = xfm_kind value = 2 }
+     set_variable = { name = xfm_order_id value = global_var:xfm_exchange.var:xfm_next_futures_order_id }
+     set_variable = { name = xfm_contract value = scope:xfm_fut_exit_contract }
+     set_variable = { name = xfm_account value = scope:xfm_fut_exit_account }
+     set_variable = { name = xfm_reservation value = scope:xfm_fut_exit_reservation }
+     set_variable = { name = xfm_side value = $ORDER_SIDE$ }
+     set_variable = { name = xfm_leverage value = 1 }
+     set_variable = { name = xfm_close_position value = scope:xfm_fut_exit_position }
+     set_variable = { name = xfm_reduce_order value = 1 }
+     set_variable = { name = xfm_forced_exit value = 1 }
+     set_variable = { name = xfm_remaining_lots value = scope:xfm_fut_exit_position.var:xfm_lots }
+     set_variable = { name = xfm_limit_cents value = scope:xfm_fut_exit_position.var:xfm_exit_limit_cents }
+     set_variable = { name = xfm_reserve_price_cents value = scope:xfm_fut_exit_position.var:xfm_exit_reserve_price }
+     set_variable = { name = xfm_filled_gross_cents value = 0 }
+     set_variable = { name = xfm_fee_paid_cents value = 0 }
+     set_variable = { name = xfm_status value = 0 }
+    }
+    scope:xfm_fut_exit_contract = { add_to_variable_list = { name = xfm_orders target = scope:xfm_fut_exit_order } }
+    scope:xfm_fut_exit_account = { add_to_variable_list = { name = xfm_orders target = scope:xfm_fut_exit_order } }
+    scope:xfm_fut_exit_contract = { change_variable = { name = xfm_open_orders_count add = 1 } }
+    scope:xfm_fut_exit_account = { change_variable = { name = xfm_open_orders_count add = 1 } }
+    global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count add = 1 } }
+    scope:xfm_fut_exit_order = { xfm_futures_match_effect = yes }
+    scope:xfm_fut_exit_order = {
+     if = { limit = { xfm_futures_order_open_trigger = yes } xfm_futures_cancel_order_effect = yes }
+    }
+   }
+  }
+  if = {
+   limit = { exists = scope:xfm_fut_exit_order scope:xfm_fut_exit_order = { NOT = { has_variable = xfm_kind } } }
+   scope:xfm_fut_exit_order = { end_story = yes }
+   clear_saved_scope = xfm_fut_exit_order
+  }
+ }
+}

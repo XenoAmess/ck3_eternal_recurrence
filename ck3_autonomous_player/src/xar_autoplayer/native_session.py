@@ -166,6 +166,30 @@ def _process_windows_minimized(pid: int) -> bool | None:
     return all(bool(win32gui.IsIconic(hwnd)) for hwnd in windows)
 
 
+def require_game_windows_background(actual_pid: int) -> None:
+    """Read-only guard for one exact Game: minimized, non-topmost, no foreground ownership."""
+    if type(actual_pid) is not int or actual_pid <= 0:
+        raise ValueError("positive exact Game pid required for background guard")
+    import win32con
+    import win32gui
+    import win32process
+
+    windows = _visible_process_windows(actual_pid)
+    if not windows:
+        raise RuntimeError("actual Game has no observable visible top-level window")
+    foreground = win32gui.GetForegroundWindow()
+    if foreground:
+        _thread_id, foreground_pid = win32process.GetWindowThreadProcessId(foreground)
+        if int(foreground_pid) == actual_pid:
+            raise RuntimeError("actual Game owns the foreground; quiet operation refused")
+    for hwnd in windows:
+        _thread_id, window_pid = win32process.GetWindowThreadProcessId(hwnd)
+        if (int(window_pid) != actual_pid or not win32gui.IsWindowVisible(hwnd)
+                or not win32gui.IsIconic(hwnd)
+                or win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE) & win32con.WS_EX_TOPMOST):
+            raise RuntimeError("actual Game window is not minimized and non-topmost")
+
+
 def _minimize_process_windows(
     pid: int,
     *,
@@ -181,10 +205,19 @@ def _minimize_process_windows(
         windows = _visible_process_windows(pid)
         if windows:
             for hwnd in windows:
+                win32gui.SetWindowPos(
+                    hwnd, win32con.HWND_NOTOPMOST, 0, 0, 0, 0,
+                    win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_NOACTIVATE,
+                )
                 if not win32gui.IsIconic(hwnd):
                     win32gui.ShowWindow(hwnd, win32con.SW_SHOWMINNOACTIVE)
             if all(bool(win32gui.IsIconic(hwnd)) for hwnd in windows):
-                return True
+                try:
+                    require_game_windows_background(pid)
+                except RuntimeError:
+                    pass
+                else:
+                    return True
         now = time.monotonic()
         if now >= deadline:
             return False

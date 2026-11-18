@@ -1,0 +1,35 @@
+﻿xfm_market_asset_selected_gui = { scope = character is_valid = { exists = var:xfm_selected_coin } }
+xfm_market_index_selected_gui = { scope = character is_valid = { exists = var:xfm_selected_coin var:xfm_selected_coin = { story_type = xfm_oracle_index } } }
+xfm_market_index_grain_gui = {
+    scope = character
+    is_valid = { is_ai = no exists = global_var:xfm_grain_index }
+    effect = {
+        set_variable = { name = xfm_selected_coin value = global_var:xfm_grain_index }
+        set_variable = { name = xfm_order_limit_cents value = global_var:xfm_grain_index.var:xfm_mark_cents }
+        remove_variable = xfm_futures_contract
+        remove_variable = xfm_futures_selected_position
+        xfm_market_ui_book_effect = yes
+    }
+}
+xfm_market_index_military_gui = {
+    scope = character
+    is_valid = { is_ai = no exists = global_var:xfm_military_index }
+    effect = {
+        set_variable = { name = xfm_selected_coin value = global_var:xfm_military_index }
+        set_variable = { name = xfm_order_limit_cents value = global_var:xfm_military_index.var:xfm_mark_cents }
+        remove_variable = xfm_futures_contract
+        remove_variable = xfm_futures_selected_position
+        xfm_market_ui_book_effect = yes
+    }
+}
+xfm_market_index_trade_gui = {
+    scope = character
+    is_valid = { is_ai = no exists = global_var:xfm_trade_index }
+    effect = {
+        set_variable = { name = xfm_selected_coin value = global_var:xfm_trade_index }
+        set_variable = { name = xfm_order_limit_cents value = global_var:xfm_trade_index.var:xfm_mark_cents }
+        remove_variable = xfm_futures_contract
+        remove_variable = xfm_futures_selected_position
+        xfm_market_ui_book_effect = yes
+    }
+}

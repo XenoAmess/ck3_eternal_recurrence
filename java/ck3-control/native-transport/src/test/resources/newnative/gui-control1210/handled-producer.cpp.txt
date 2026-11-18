@@ -1,0 +1,27 @@
+#include "xar_bridge/ck3_1210_gui_control_v1.hpp"
+#include <iostream>
+using namespace xar::ck3_1210;
+struct Data {GuiControlCaptureV1 capture;int dispatches=0;};
+bool Capture(void *p,std::string_view,GuiControlCaptureV1 &out,std::string &) noexcept {
+  out=static_cast<Data *>(p)->capture;return true;
+}
+bool Dispatch(void *p,const GuiControlCaptureV1 &,const GuiControlIdentityV1 &,bool &handled,bool &attempted) noexcept {
+  ++static_cast<Data *>(p)->dispatches;handled=true;attempted=true;return true;
+}
+int main() {
+  Data data;auto &c=data.capture;c.played_character_id=42;c.date_raw=50000000;c.native_revision=11;
+  c.connection_generation=3;c.logical_owner=1;c.application=2;c.context=3;c.gui_owner=3;c.global_root=4;
+  c.root=5;c.shortcut_manager=6;c.root_name="xfm_market_entry";c.complete=true;
+  GuiControlIdentityV1 root;root.widget=5;root.context=3;
+  root.row={1,"xfm_market_entry","",1280,true,true,false};c.widgets.push_back(root);
+  GuiControlIdentityV1 button;button.widget=7;button.parent=5;button.context=3;
+  button.row={2,"xfm_market_open","0",1281,true,true,true};button.callbacks.push_back({});c.widgets.push_back(button);
+  GuiControlProviderV1 provider;provider.query_generation=9007199254740998ULL;
+  const GuiControlBackendV1 backend{&data,&Capture,&Dispatch};GuiControlResultV1 out;
+  GuiControlRequestV1 request{false,kGuiControlQueryStepV1,"xfm_market_entry",11,10000,0,0};
+  if(!ApplyGuiControlV1(provider,request,backend,out))return 1;
+  request={true,kGuiControlActivateStepV1,"xfm_market_entry",11,10000,provider.query_generation,2};
+  if(!ApplyGuiControlV1(provider,request,backend,out) || data.dispatches!=1 || !out.native_handled || !out.effect_attempted)return 2;
+  out.application_main_observed=true;out.full_snapshot_before_verified=true;out.source_abi_pins_verified=true;
+  std::cout<<SerializeGuiControlCommandResultV1("software-gui-handled-fixture",request,out)<<'\n';
+}

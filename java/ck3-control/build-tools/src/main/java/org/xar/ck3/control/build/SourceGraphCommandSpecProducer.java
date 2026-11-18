@@ -641,8 +641,8 @@ public final class SourceGraphCommandSpecProducer {
         exactRef.verify(); return value;
     }
 
-    /** Actual outer engine preparation is separate from request acceptance and the Shared child terminal. */
-    /** The original owning launcher retains this across its original WJP; no process or extra wrapper is created here. */
+    /** Actual outer engine preparation is separate from request acceptance and the Shared child terminal.
+     * The original owning launcher retains this across its original WJP; no process or extra wrapper is created here. */
     public static JavaUtf8NativeCustody.Held acquireInvocationCustody(FileRef exactRef) throws Exception {
         var value=readInvocation(exactRef);
         if(value.javaInvocation()==null) throw new IOException("Explicit UTF8 invocation required");

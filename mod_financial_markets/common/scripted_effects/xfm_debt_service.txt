@@ -1,0 +1,83 @@
+﻿# 1 effect. AI services actual due debt from its authorized cash before crisis review.
+xfm_debt_auto_service_effect = {
+    save_scope_as = xfm_debt_service_record
+    var:xfm_debtor_account = {
+        save_scope_as = xfm_debt_service_account
+        if = {
+            limit = {
+                xfm_finance_account_usable_trigger = yes
+                exists = var:xfm_holder
+                var:xfm_holder = { is_alive = yes is_ai = yes is_adult = yes }
+                scope:xfm_debt_service_record.var:xfm_due_day <= global_var:xfm_exchange.var:xfm_day
+            }
+            if = {
+                limit = {
+                    OR = {
+                        NOT = { has_variable = xfm_debt_service_day }
+                        var:xfm_debt_service_day < global_var:xfm_exchange.var:xfm_day
+                    }
+                }
+                set_variable = { name = xfm_debt_service_day value = global_var:xfm_exchange.var:xfm_day }
+                set_variable = { name = xfm_debt_service_budget_cents value = 500 }
+            }
+            if = {
+                limit = { var:xfm_debt_service_budget_cents > 0 }
+                set_variable = {
+                    name = xfm_request_cents
+                    value = xfm_debt_ai_service_offer_value
+                }
+                if = {
+                    limit = { var:xfm_system_account = 0 var:xfm_inheritance_state = 0 }
+                    # Never withdraw the heir's private gold to pay an inherited estate's liability.
+                    xfm_finance_ensure_funds_effect = yes
+                }
+                if = {
+                    limit = { var:xfm_free_cents > 0 }
+                    set_variable = { name = xfm_debt_service_offer_cents value = var:xfm_request_cents }
+                    if = {
+                        limit = { NOT = { has_variable = xfm_debt_operation_counter } }
+                        set_variable = { name = xfm_debt_operation_counter value = 0 }
+                    }
+                    change_variable = { name = xfm_debt_operation_counter add = 1 }
+                    scope:xfm_debt_service_record = {
+                        set_variable = { name = xfm_request_payer value = scope:xfm_debt_service_account }
+                        set_variable = { name = xfm_request_cents value = scope:xfm_debt_service_account.var:xfm_debt_service_offer_cents }
+                        set_variable = { name = xfm_request_operation value = scope:xfm_debt_service_account.var:xfm_debt_operation_counter }
+                        xfm_debt_repay_effect = yes
+                    }
+                    if = {
+                        limit = { scope:xfm_debt_service_record.var:xfm_result = 1 }
+                        change_variable = { name = xfm_debt_service_budget_cents subtract = scope:xfm_debt_service_record.var:xfm_payment_actual_cents }
+                    }
+                    remove_variable = xfm_debt_service_offer_cents
+                }
+            }
+        }
+    }
+}
+
+xfm_debt_stress_effect = {
+    if = {
+        limit = {
+            var:xfm_system_account = 0
+            var:xfm_inheritance_state = 0
+            var:xfm_account_frozen = 0
+            has_variable = xfm_total_debt_cents
+            var:xfm_total_debt_cents > xfm_debt_income_threshold_value
+            has_variable = xfm_max_overdue_days
+            var:xfm_max_overdue_days >= 7
+            exists = var:xfm_holder
+            var:xfm_holder = { is_alive = yes is_ai = yes is_adult = yes }
+            OR = {
+                NOT = { has_variable = xfm_crisis_relief_until }
+                var:xfm_crisis_relief_until <= global_var:xfm_exchange.var:xfm_day
+            }
+            OR = {
+                NOT = { has_variable = xfm_last_debt_stress_day }
+                var:xfm_last_debt_stress_day <= xfm_debt_stress_review_day_value
+            }
+        }
+        set_variable = { name = xfm_last_debt_stress_day value = global_var:xfm_exchange.var:xfm_day }
+        var:xfm_holder = { add_stress = 5 }
+    }
+}

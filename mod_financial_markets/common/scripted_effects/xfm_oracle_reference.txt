@@ -1,0 +1,100 @@
+﻿# Three effects. Fixed 14-slot scans; no trade stories or global account scans.
+xfm_oracle_daily_effect = {
+    xfm_oracle_index_bootstrap_effect = yes
+    every_in_global_list = {
+        variable = xfm_coin_registry
+        xfm_oracle_init_coin_effect = yes
+        xfm_oracle_roll_coin_effect = yes
+        xfm_oracle_recalculate_effect = yes
+    }
+    xfm_oracle_index_daily_effect = yes
+}
+
+xfm_oracle_scan_slot_effect = {
+    if = {
+        limit = {
+            has_variable = xfm_oracle_slot_$SLOT$_day
+            var:xfm_oracle_slot_$SLOT$_day >= xfm_oracle_window_start_value
+            var:xfm_oracle_slot_$SLOT$_day < global_var:xfm_exchange.var:xfm_day
+            var:xfm_oracle_slot_$SLOT$_participants >= 8
+            var:xfm_oracle_slot_$SLOT$_price > 0
+        }
+        change_variable = { name = xfm_oracle_valid_days add = 1 }
+        change_variable = { name = xfm_oracle_window_participants add = var:xfm_oracle_slot_$SLOT$_participants }
+        change_variable = { name = xfm_oracle_sum add = var:xfm_oracle_slot_$SLOT$_price }
+        if = {
+            limit = { var:xfm_oracle_min = 0 }
+            set_variable = { name = xfm_oracle_min value = var:xfm_oracle_slot_$SLOT$_price }
+        }
+        else = {
+            set_variable = {
+                name = xfm_oracle_min
+                value = { value = var:xfm_oracle_min max = var:xfm_oracle_slot_$SLOT$_price }
+            }
+        }
+        set_variable = {
+            name = xfm_oracle_max
+            value = { value = var:xfm_oracle_max min = var:xfm_oracle_slot_$SLOT$_price }
+        }
+        set_variable = {
+            name = xfm_oracle_last_valid_day
+            value = { value = var:xfm_oracle_last_valid_day min = var:xfm_oracle_slot_$SLOT$_day }
+        }
+    }
+}
+
+xfm_oracle_recalculate_effect = {
+    set_variable = { name = xfm_oracle_day value = global_var:xfm_exchange.var:xfm_day }
+    set_variable = { name = xfm_oracle_quality value = 0 }
+    set_variable = { name = xfm_max_leverage value = 0 }
+    set_variable = { name = xfm_oracle_reason value = 1 }
+    set_variable = { name = xfm_oracle_valid_days value = 0 }
+    set_variable = { name = xfm_oracle_window_participants value = 0 }
+    set_variable = { name = xfm_oracle_sum value = 0 }
+    set_variable = { name = xfm_oracle_min value = 0 }
+    set_variable = { name = xfm_oracle_max value = 0 }
+    set_variable = { name = xfm_oracle_last_valid_day value = -1 }
+    if = {
+        limit = { var:xfm_trading_open = 1 NOT = { has_variable = xfm_listed_day } }
+        set_variable = { name = xfm_listed_day value = global_var:xfm_exchange.var:xfm_day }
+    }
+    xfm_oracle_scan_slot_effect = { SLOT = 0 }
+    xfm_oracle_scan_slot_effect = { SLOT = 1 }
+    xfm_oracle_scan_slot_effect = { SLOT = 2 }
+    xfm_oracle_scan_slot_effect = { SLOT = 3 }
+    xfm_oracle_scan_slot_effect = { SLOT = 4 }
+    xfm_oracle_scan_slot_effect = { SLOT = 5 }
+    xfm_oracle_scan_slot_effect = { SLOT = 6 }
+    xfm_oracle_scan_slot_effect = { SLOT = 7 }
+    xfm_oracle_scan_slot_effect = { SLOT = 8 }
+    xfm_oracle_scan_slot_effect = { SLOT = 9 }
+    xfm_oracle_scan_slot_effect = { SLOT = 10 }
+    xfm_oracle_scan_slot_effect = { SLOT = 11 }
+    xfm_oracle_scan_slot_effect = { SLOT = 12 }
+    xfm_oracle_scan_slot_effect = { SLOT = 13 }
+    if = {
+        limit = { var:xfm_oracle_valid_days >= 7 }
+        if = {
+            limit = { xfm_oracle_reference_age_value <= 2 }
+            set_variable = { name = xfm_index_cents value = xfm_oracle_reference_value }
+            set_variable = { name = xfm_mark_cents value = var:xfm_index_cents }
+            set_variable = { name = xfm_oracle_quality value = 1 }
+            set_variable = { name = xfm_max_leverage value = 3 }
+            set_variable = { name = xfm_oracle_reason value = 0 }
+            if = {
+                limit = {
+                    var:xfm_oracle_valid_days = 14
+                    var:xfm_oracle_window_participants >= 112
+                    has_variable = xfm_listed_day
+                    xfm_oracle_listing_age_value >= 30
+                }
+                set_variable = { name = xfm_max_leverage value = 10 }
+            }
+        }
+        else = { set_variable = { name = xfm_oracle_reason value = 2 } }
+    }
+    # When pending, the last reliable index/mark remain historical data, not authorization.
+    remove_variable = xfm_oracle_sum
+    remove_variable = xfm_oracle_min
+    remove_variable = xfm_oracle_max
+}

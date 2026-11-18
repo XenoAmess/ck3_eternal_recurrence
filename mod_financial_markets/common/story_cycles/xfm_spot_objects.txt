@@ -1,0 +1,1 @@
+﻿xfm_spot_order = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }

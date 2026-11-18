@@ -1,0 +1,63 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "core",
+  "acceptance_scope": "actual_paid_issuance_and_daily_spot_subcase",
+  "fixture_source": {"kind": "prebuilt_manifest"},
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 14,
+  "failure_prefixes": ["XFMAT:"],
+  "gui_phases": [
+    {
+      "id": "arm-independent-observer-in-loaded-save",
+      "at_day": 0,
+      "requirements": [
+        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run",
+        "actual_read_only_fixture_root_xfma_observer_widget_and_enabled_button_xfma_arm_observer_observed",
+        "actual_normal_scripted_widget_activation_once_records_only_xfma_baseline_state_and_fixture_ready_marker",
+        "actual_initial_actor_gold_and_date_retained_before_any_production_financial_action",
+        "saved_game_load_must_not_be_reported_as_new_game_after_lobby"
+      ]
+    },
+    {
+      "id": "paid-issuance-real-counterparty-and-same-day-spot",
+      "when_markers": ["XFMAT: TEST PASS fixture_ready"],
+      "requirements": [
+        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run",
+        "actual_formal_product_loaded_and_no_a0_business_entry_remains_spendable",
+        "actual_initial_actor_gold_and_all_relevant_account_balances_recorded_before_any_financial_action",
+        "actual_production_issuance_confirmation_once_with_registration_fee_and_distinct_zero_source_system_accounts",
+        "actual_public_or_private_subscription_debits_real_buyer_cash_and_moves_real_coin_without_credited_projected_fundraising",
+        "actual_spot_orders_reserve_real_assets_and_match_a_distinct_economic_counterparty",
+        "actual_two_or_more_production_buy_and_sell_submissions_within_one_native_calendar_day",
+        "actual_partial_fill_cancel_and_unfunded_order_rejection_preserve_cash_and_coin_obligations",
+        "actual_price_time_priority_and_cumulative_original_order_fee_match_independent_cent_integer_calculation",
+        "actual_issuance_cash_order_reservations_coin_positions_and_exchange_fees_reconcile_across_before_after_snapshots",
+        "actual_native_checkpoint_and_physical_save_retained_for_independent_cold_reload",
+        "actual_unknown_submission_preserved_without_order_or_issuance_replay",
+        "observer_markers_supply_only_readback_credit_no_full_product_or_release_credit"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/runtime-contract.md",
+    "mod_financial_markets/docs/implementation-plan.md",
+    "mod_financial_markets/docs/test-and-acceptance-plan.md",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/AcceptanceContracts.java",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/ObservationScripts.java",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FixtureEmitter.java"
+  ],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "required_startup": [],
+  "forbidden_startup": ["XFMAT: TEST FAIL"],
+  "uncovered_product_business": [
+    "This core case covers paid issuance and the real spot order book only; it is not complete Mod acceptance.",
+    "Leveraged long/short futures, margin liquidation and residual debt require their separate actual business case.",
+    "Delisting, inheritance, cold reload, global notices, AI crises, multiplayer and scale performance remain required by the full product acceptance plan.",
+    "Fixture observations never seed gold, issue a coin, create an order or force an AI trade; Root must retain independent native, ledger and physical-save evidence."
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Prospective 14-natural-day bound for real AI counterparties and independent observer readback; no extension after allocation. Same-day order claims require unchanged observed native date."
+}

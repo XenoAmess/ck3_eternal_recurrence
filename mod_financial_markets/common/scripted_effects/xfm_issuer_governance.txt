@@ -1,0 +1,140 @@
+﻿# Coin scope: legal control follows the bound entity; the story's technical owner is irrelevant.
+xfm_issuer_refresh_controller_effect = {
+    if = { limit = { var:xfm_entity_type = 2 exists = var:xfm_bound_entity.house_head } set_variable = { name = xfm_controller value = var:xfm_bound_entity.house_head } }
+    if = { limit = { var:xfm_entity_type = 3 exists = var:xfm_bound_entity.dynast } set_variable = { name = xfm_controller value = var:xfm_bound_entity.dynast } }
+    if = { limit = { var:xfm_entity_type = 4 exists = var:xfm_bound_entity.holder } set_variable = { name = xfm_controller value = var:xfm_bound_entity.holder } }
+    if = { limit = { var:xfm_entity_type = 5 exists = var:xfm_bound_entity.religious_head } set_variable = { name = xfm_controller value = var:xfm_bound_entity.religious_head } }
+    if = {
+        limit = { var:xfm_entity_type = 1 exists = var:xfm_controller var:xfm_controller = { is_alive = no } exists = var:xfm_controller.primary_heir }
+        set_variable = { name = xfm_previous_controller value = var:xfm_controller }
+        set_variable = { name = xfm_controller value = var:xfm_previous_controller.primary_heir }
+        save_scope_as = xfm_offer_inherited_coin
+        var:xfm_controller = { set_variable = { name = xfm_inherited_personal_coin value = scope:xfm_offer_inherited_coin } }
+    }
+    if = {
+        limit = { var:xfm_entity_type >= 6 exists = var:xfm_controller var:xfm_controller = { is_alive = no } exists = var:xfm_controller.primary_heir }
+        set_variable = { name = xfm_previous_controller value = var:xfm_controller }
+        set_variable = { name = xfm_controller value = var:xfm_previous_controller.primary_heir }
+    }
+    if = {
+        limit = { exists = var:xfm_founder_beneficiary var:xfm_founder_beneficiary = { is_alive = no } exists = var:xfm_founder_beneficiary.primary_heir }
+        set_variable = { name = xfm_previous_founder value = var:xfm_founder_beneficiary }
+        set_variable = { name = xfm_founder_beneficiary value = var:xfm_previous_founder.primary_heir }
+    }
+    # With no legal successor, preserve debt and assets under frozen technical custody.
+    if = {
+        limit = { exists = var:xfm_controller }
+        save_scope_as = xfm_offer_legal_coin
+        if = { limit = { exists = var:xfm_issuer_account } var:xfm_issuer_account = { set_variable = { name = xfm_beneficial_owner value = scope:xfm_offer_legal_coin.var:xfm_controller } } }
+        if = { limit = { exists = var:xfm_founder_account } var:xfm_founder_account = { set_variable = { name = xfm_beneficial_owner value = scope:xfm_offer_legal_coin.var:xfm_founder_beneficiary } } }
+        if = { limit = { exists = var:xfm_market_maker_account } var:xfm_market_maker_account = { set_variable = { name = xfm_beneficial_owner value = scope:xfm_offer_legal_coin.var:xfm_controller } set_variable = { name = xfm_holder value = scope:xfm_offer_legal_coin.var:xfm_controller } } }
+    }
+}
+
+xfm_issuer_mint_effect = {
+    if = {
+        limit = { xfm_issuer_can_mint_trigger = yes var:xfm_order_lots > 0 var:xfm_order_lots = xfm_issuer_order_lots_floor_value }
+        save_scope_as = xfm_offer_mint_actor
+        var:xfm_selected_coin = {
+            if = {
+                limit = { xfm_issuer_requested_supply_value <= var:xfm_maximum_supply_units }
+                set_variable = { name = xfm_request_units value = xfm_issuer_requested_mint_value }
+                set_variable = { name = xfm_request_target value = var:xfm_issuer_account }
+                xfm_finance_mint_effect = yes
+                if = { limit = { var:xfm_result = 1 } set_variable = { name = xfm_mint_cooldown days = 30 } }
+            }
+        }
+    }
+}
+
+xfm_issuer_burn_effect = {
+    if = {
+        limit = { xfm_issuer_controls_selected_trigger = yes var:xfm_order_lots > 0 var:xfm_order_lots = xfm_issuer_order_lots_floor_value }
+        save_scope_as = xfm_offer_mint_actor
+        var:xfm_selected_coin = {
+            set_variable = { name = xfm_request_units value = xfm_issuer_requested_mint_value }
+            set_variable = { name = xfm_request_target value = var:xfm_issuer_account }
+            xfm_finance_burn_effect = yes
+        }
+    }
+}
+
+xfm_issuer_freeze_supply_effect = {
+    if = { limit = { xfm_issuer_controls_selected_trigger = yes } var:xfm_selected_coin = { set_variable = { name = xfm_mint_permitted value = 0 } set_variable = { name = xfm_maximum_supply_units value = var:xfm_supply_units } } }
+}
+
+xfm_issuer_unlock_founder_effect = {
+    if = {
+        limit = { exists = var:xfm_founder_account var:xfm_asset_age >= var:xfm_founder_unlock_age var:xfm_founder_locked_units > 0 exists = var:xfm_founder_beneficiary var:xfm_founder_beneficiary = { is_alive = yes } }
+        save_scope_as = xfm_offer_unlock_coin
+        var:xfm_founder_beneficiary = {
+            xfm_finance_ensure_account_effect = yes
+            save_scope_as = xfm_offer_unlock_beneficiary
+        }
+        var:xfm_founder_account = {
+            set_variable = { name = xfm_request_coin value = scope:xfm_offer_unlock_coin }
+            set_variable = { name = xfm_request_target value = scope:xfm_offer_unlock_beneficiary.var:xfm_account }
+            set_variable = { name = xfm_request_units value = scope:xfm_offer_unlock_coin.var:xfm_founder_locked_units }
+            xfm_finance_transfer_coin_effect = yes
+            if = { limit = { var:xfm_result = 1 } scope:xfm_offer_unlock_coin = { set_variable = { name = xfm_founder_locked_units value = 0 } } }
+        }
+    }
+}
+
+xfm_issuer_disclosed_mint_effect = {
+    if = {
+        limit = { xfm_issuer_can_mint_trigger = yes }
+        var:xfm_selected_coin = {
+            set_variable = { name = xfm_request_units value = xfm_issuer_mint_units_value }
+            set_variable = { name = xfm_request_target value = var:xfm_issuer_account }
+            xfm_finance_mint_effect = yes
+            if = { limit = { var:xfm_result = 1 } set_variable = { name = xfm_mint_cooldown days = 30 } change_variable = { name = xfm_issuer_reputation subtract = 2 } }
+        }
+    }
+}
+
+xfm_issuer_concealed_mint_effect = {
+    if = {
+        limit = { xfm_issuer_can_mint_trigger = yes }
+        var:xfm_selected_coin = {
+            set_variable = { name = xfm_request_units value = xfm_issuer_mint_units_value }
+            set_variable = { name = xfm_request_target value = var:xfm_issuer_account }
+            xfm_finance_mint_effect = yes
+            if = {
+                limit = { var:xfm_result = 1 }
+                change_variable = { name = xfm_undisclosed_mint_units add = var:xfm_request_units }
+                set_variable = { name = xfm_mint_cooldown days = 30 }
+                set_variable = { name = xfm_investigation_pending value = 1 }
+                change_variable = { name = xfm_issuer_reputation subtract = 10 }
+            }
+        }
+    }
+}
+
+xfm_issuer_burn_treasury_effect = {
+    if = {
+        limit = { xfm_issuer_controls_selected_trigger = yes }
+        var:xfm_selected_coin = {
+            set_variable = { name = xfm_request_target value = var:xfm_issuer_account }
+            set_variable = { name = xfm_request_units value = 100 }
+            xfm_finance_burn_effect = yes
+        }
+    }
+}
+
+xfm_issuer_release_project_cash_effect = {
+    if = {
+        limit = { xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { OR = { AND = { var:xfm_listing_state >= 1 var:xfm_listing_state <= 2 } var:xfm_listing_state = 5 var:xfm_listing_state = 6 } } }
+        save_scope_as = xfm_offer_project_controller
+        xfm_finance_ensure_account_effect = yes
+        var:xfm_selected_coin = {
+            save_scope_as = xfm_offer_project_coin
+            var:xfm_issuer_account = {
+                set_variable = { name = xfm_request_target value = scope:xfm_offer_project_controller.var:xfm_account }
+                set_variable = { name = xfm_request_cents value = 100 }
+                xfm_finance_transfer_effect = yes
+                if = { limit = { var:xfm_result = 1 } scope:xfm_offer_project_coin = { change_variable = { name = xfm_project_spent_cents add = 100 } } }
+            }
+        }
+    }
+}

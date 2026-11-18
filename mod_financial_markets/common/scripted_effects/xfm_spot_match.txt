@@ -1,0 +1,168 @@
+﻿# 3 effects. Price first, then smallest original order ID; execution uses resting price.
+xfm_spot_match_effect = {
+ save_scope_as = xfm_spot_incoming
+ set_variable = { name = xfm_match_continue value = 1 }
+ while = {
+  count = xfm_config_coin_order_capacity_value
+  if = {
+   limit = { var:xfm_status = 1 var:xfm_remaining_lots > 0 var:xfm_match_continue = 1 }
+   xfm_spot_select_resting_effect = yes
+   if = {
+    limit = { exists = scope:xfm_spot_resting }
+    xfm_spot_fill_effect = yes
+   }
+   else = { set_variable = { name = xfm_match_continue value = 0 } }
+  }
+ }
+ var:xfm_coin = { xfm_spot_refresh_book_effect = yes }
+}
+xfm_spot_select_resting_effect = {
+ clear_saved_scope = xfm_spot_best_price_order
+ clear_saved_scope = xfm_spot_resting
+ if = {
+  limit = { var:xfm_side = 1 }
+  var:xfm_coin = {
+   ordered_in_list = {
+    variable = xfm_spot_orders
+    limit = {
+     xfm_spot_order_executable_trigger = yes var:xfm_side = 2
+     var:xfm_limit_cents <= scope:xfm_spot_incoming.var:xfm_limit_cents
+     var:xfm_account != scope:xfm_spot_incoming.var:xfm_account
+     var:xfm_account = {
+      xfm_finance_account_usable_trigger = yes
+      var:xfm_beneficial_owner != scope:xfm_spot_incoming.var:xfm_account.var:xfm_beneficial_owner
+     }
+    }
+    order_by = { value = 0 subtract = var:xfm_limit_cents }
+    position = 0 check_range_bounds = no
+    save_scope_as = xfm_spot_best_price_order
+   }
+  }
+ }
+ else = {
+  var:xfm_coin = {
+   ordered_in_list = {
+    variable = xfm_spot_orders
+    limit = {
+     xfm_spot_order_executable_trigger = yes var:xfm_side = 1
+     var:xfm_limit_cents >= scope:xfm_spot_incoming.var:xfm_limit_cents
+     var:xfm_account != scope:xfm_spot_incoming.var:xfm_account
+     var:xfm_account = {
+      xfm_finance_account_usable_trigger = yes
+      var:xfm_beneficial_owner != scope:xfm_spot_incoming.var:xfm_account.var:xfm_beneficial_owner
+     }
+    }
+    order_by = var:xfm_limit_cents
+    position = 0 check_range_bounds = no
+    save_scope_as = xfm_spot_best_price_order
+   }
+  }
+ }
+ if = {
+  limit = { exists = scope:xfm_spot_best_price_order }
+  var:xfm_coin = {
+   ordered_in_list = {
+    variable = xfm_spot_orders
+    limit = {
+     xfm_spot_order_executable_trigger = yes
+     var:xfm_side = scope:xfm_spot_best_price_order.var:xfm_side
+     var:xfm_limit_cents = scope:xfm_spot_best_price_order.var:xfm_limit_cents
+     var:xfm_account != scope:xfm_spot_incoming.var:xfm_account
+     var:xfm_account = {
+      xfm_finance_account_usable_trigger = yes
+      var:xfm_beneficial_owner != scope:xfm_spot_incoming.var:xfm_account.var:xfm_beneficial_owner
+     }
+    }
+    order_by = { value = 0 subtract = var:xfm_order_id }
+    position = 0 check_range_bounds = no
+    save_scope_as = xfm_spot_resting
+   }
+  }
+ }
+}
+xfm_spot_fill_effect = {
+ clear_saved_scope = xfm_spot_buyer
+ clear_saved_scope = xfm_spot_seller
+ clear_saved_scope = xfm_spot_buyer_position
+ if = {
+  limit = { var:xfm_side = 1 }
+  save_scope_as = xfm_spot_buyer
+  scope:xfm_spot_resting = { save_scope_as = xfm_spot_seller }
+ }
+ else = {
+  save_scope_as = xfm_spot_seller
+  scope:xfm_spot_resting = { save_scope_as = xfm_spot_buyer }
+ }
+ save_scope_value_as = { name = xfm_spot_fill_lots value = xfm_spot_fill_lots_value }
+ save_scope_value_as = { name = xfm_spot_fill_price value = scope:xfm_spot_resting.var:xfm_limit_cents }
+ save_scope_value_as = { name = xfm_spot_fill_notional value = xfm_spot_fill_notional_value }
+ save_scope_value_as = { name = xfm_spot_fill_units value = { value = scope:xfm_spot_fill_lots multiply = 100 } }
+ scope:xfm_spot_buyer = { save_scope_value_as = { name = xfm_spot_buy_fee value = xfm_spot_fill_fee_value } }
+ scope:xfm_spot_seller = { save_scope_value_as = { name = xfm_spot_sell_fee value = xfm_spot_fill_fee_value } }
+ save_scope_value_as = { name = xfm_spot_buyer_debit value = { value = scope:xfm_spot_fill_notional add = scope:xfm_spot_buy_fee } }
+ save_scope_value_as = { name = xfm_spot_seller_credit value = { value = scope:xfm_spot_fill_notional subtract = scope:xfm_spot_sell_fee } }
+ scope:xfm_spot_buyer.var:xfm_account = {
+  set_variable = { name = xfm_request_coin value = scope:xfm_spot_incoming.var:xfm_coin }
+  xfm_finance_ensure_position_effect = yes
+ }
+ if = { limit = { exists = scope:xfm_position } scope:xfm_position = { save_scope_as = xfm_spot_buyer_position } }
+ if = {
+  limit = {
+   scope:xfm_spot_fill_lots > 0 scope:xfm_spot_fill_price > 0 scope:xfm_spot_seller_credit >= 0
+   exists = scope:xfm_spot_buyer_position
+   scope:xfm_spot_buyer_position = {
+    var:xfm_account = scope:xfm_spot_buyer.var:xfm_account
+    var:xfm_coin = scope:xfm_spot_incoming.var:xfm_coin
+   }
+   scope:xfm_spot_buyer.var:xfm_reservation = {
+    xfm_finance_reservation_usable_trigger = yes
+    var:xfm_remaining_cents >= scope:xfm_spot_buyer_debit
+    var:xfm_account = scope:xfm_spot_buyer.var:xfm_account
+   }
+   scope:xfm_spot_buyer.var:xfm_account = { xfm_finance_account_usable_trigger = yes var:xfm_reserved_cents >= scope:xfm_spot_buyer_debit }
+   scope:xfm_spot_seller.var:xfm_account = { xfm_finance_account_usable_trigger = yes }
+   scope:xfm_spot_seller.var:xfm_sell_position = {
+    var:xfm_account = scope:xfm_spot_seller.var:xfm_account
+    var:xfm_coin = scope:xfm_spot_incoming.var:xfm_coin
+    var:xfm_quantity_units >= scope:xfm_spot_fill_units
+    var:xfm_reserved_units >= scope:xfm_spot_fill_units
+   }
+  }
+  scope:xfm_spot_buyer.var:xfm_reservation = {
+   change_variable = { name = xfm_remaining_cents subtract = scope:xfm_spot_buyer_debit }
+   if = { limit = { var:xfm_remaining_cents = 0 } set_variable = { name = xfm_status value = 2 } }
+  }
+  scope:xfm_spot_buyer.var:xfm_account = { change_variable = { name = xfm_reserved_cents subtract = scope:xfm_spot_buyer_debit } }
+  scope:xfm_spot_seller.var:xfm_account = { change_variable = { name = xfm_free_cents add = scope:xfm_spot_seller_credit } }
+  global_var:xfm_exchange = {
+   change_variable = { name = xfm_fee_cents add = scope:xfm_spot_buy_fee }
+   change_variable = { name = xfm_fee_cents add = scope:xfm_spot_sell_fee }
+  }
+  scope:xfm_spot_seller.var:xfm_sell_position = {
+   change_variable = { name = xfm_quantity_units subtract = scope:xfm_spot_fill_units }
+   change_variable = { name = xfm_reserved_units subtract = scope:xfm_spot_fill_units }
+   xfm_finance_sync_position_count_effect = yes
+  }
+  scope:xfm_spot_buyer_position = {
+   change_variable = { name = xfm_quantity_units add = scope:xfm_spot_fill_units }
+   xfm_finance_sync_position_count_effect = yes
+  }
+  scope:xfm_spot_buyer = {
+   change_variable = { name = xfm_remaining_lots subtract = scope:xfm_spot_fill_lots }
+   change_variable = { name = xfm_filled_lots add = scope:xfm_spot_fill_lots }
+   change_variable = { name = xfm_filled_notional_cents add = scope:xfm_spot_fill_notional }
+   change_variable = { name = xfm_fee_paid_cents add = scope:xfm_spot_buy_fee }
+   xfm_spot_release_excess_effect = yes
+  }
+  scope:xfm_spot_seller = {
+   change_variable = { name = xfm_remaining_lots subtract = scope:xfm_spot_fill_lots }
+   change_variable = { name = xfm_filled_lots add = scope:xfm_spot_fill_lots }
+   change_variable = { name = xfm_filled_notional_cents add = scope:xfm_spot_fill_notional }
+   change_variable = { name = xfm_fee_paid_cents add = scope:xfm_spot_sell_fee }
+  }
+  xfm_spot_record_trade_effect = yes
+  scope:xfm_spot_buyer = { if = { limit = { var:xfm_remaining_lots = 0 } xfm_spot_finalize_order_effect = yes } }
+  scope:xfm_spot_seller = { if = { limit = { var:xfm_remaining_lots = 0 } xfm_spot_finalize_order_effect = yes } }
+ }
+ else = { set_variable = { name = xfm_match_continue value = 0 } }
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "ck3-1210-event-option-cpp-producer-fixtures-v1",
+  "machine_id": "4-8e1c2f1861",
+  "live": false,
+  "producer": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-event-build01\\xar_ck3_1210_event_option_control_test.exe",
+    "bytes": 81920,
+    "sha256": "f1dd58fcd5fbd7577d6d0d800dcb8a6547cdeceb6653815ce06e5ff06551bba4"
+  },
+  "command": [
+    "--emit-cases"
+  ],
+  "sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_event_option_control_v1.cpp",
+      "bytes": 9872,
+      "sha256": "297d9e32b277bedc04b9d3e6acf8c5c51951806442ce15b633ac2b5261e0042c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_event_option_control_v1_test.cpp",
+      "bytes": 5734,
+      "sha256": "187d320f0e12cb1da442c10dec82e50df6efe59effe4d6b92cac9e74ffaf65ec"
+    }
+  ],
+  "packets": [
+    {
+      "file": "submitted.json",
+      "bytes": 699,
+      "sha256": "f9ebda4eb8788c5a7c36836896aac6784011dbec47624f3c5cbd6bfffb36caec"
+    },
+    {
+      "file": "available.json",
+      "bytes": 712,
+      "sha256": "6857204618bc6df580d017f94e810b7388583a847954e76b542616ec9d26d428"
+    },
+    {
+      "file": "option-disabled.json",
+      "bytes": 639,
+      "sha256": "048796d2e006a51704fed5f498c6322b26eb2ceba1e3b73a3382819cdf4a09fe"
+    }
+  ]
+}

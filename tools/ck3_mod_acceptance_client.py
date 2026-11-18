@@ -30,7 +30,7 @@ class TypedNormalQuitEvidenceV1(TypedDict):
     confirmation_request: FilePin
     observer_close: FilePin
     claim: FilePin
-    autosave_disabled: FilePin
+    autosave_disabled: FilePin | None
     autosave_verified: Literal[False]
 
 
@@ -139,6 +139,15 @@ def _typed_quit_run_v1(codec: NormalQuitCodecV2, invoke: Callable[[str, JsonObje
             'expected_exit_context_signature': context.get('exit_context_signature')})
 
     context = query()
+    if context.get('route') == 'application_core_1210':
+        # The exact native application request has no GUI confirmation or save
+        # checkbox. Its ACK is still separate from retained-handle OS zero.
+        result = request('confirm_desktop', context)
+        while result.get('process_exit_observed') is not True:
+            result = call('ck3_observe_normal_exit_v1', {})
+        if result.get('typed_normal_exit_observed') is not True or result.get('status') != 'process_exit_observed_zero':
+            raise ValueError('Original process exited without exact Core ApplicationExit proof; no replay')
+        return result
     consumed: set[str] = set()
     for _ in range(3):
         action = _typed_quit_preparation_v1(context.get('native_observation'))
@@ -330,6 +339,7 @@ def typed_normal_quit_evidence_v1(report_value: object, *, live: Path, state: Pa
     confirm_plan = json_object(confirm['plan'])
     confirm_args = json_object(confirm_plan.get('args'))
     request_pin, request = original(str(directory / (request_id + '.request.json')))
+    core_route = memory.get('route') == 'application_core_1210'
     expected_request: JsonObject = {'type': 'execute_step', 'protocol_version': 1,
         'request_id': request_id, 'step': 'normal-exit-map-v1', 'action': 'confirm_desktop',
         'expected_revision': native.get('native_revision'),
@@ -338,6 +348,18 @@ def typed_normal_quit_evidence_v1(report_value: object, *, live: Path, state: Pa
         'expected_process_creation_filetime_100ns': int(birth),
         'source_inventory_sha256': memory.get('source_inventory_sha256'),
         'request_nonce': request_id, 'expected_exit_context_signature': native.get('exit_context_signature')}
+    if core_route:
+        from xar_autoplayer.bridge.normal_exit_contract_v1 import (
+            CORE_EXIT_EXE_SHA256, CORE_EXIT_BACKEND, CORE_EXIT_STEP)
+        deadline = request.get('core_control_deadline_unix_ms')
+        if type(deadline) is not int or not 0 < deadline < 2**64:
+            raise ValueError('Core ApplicationExit original deadline is malformed')
+        core_prefix = json_object(native.get('core_prefix'))
+        expected_request = {'type': 'execute_step', 'protocol_version': 1,
+            'request_id': request_id, 'step': CORE_EXIT_STEP, 'expected_revision': 0, 'arguments': {},
+            'core_application_exit': {'schema': 'ck3_1210_application_exit_v1', 'game_version': '1.21.0',
+                'executable_sha256': CORE_EXIT_EXE_SHA256, 'adapter_id': 'ck3-1.21.0-msvc-x64',
+                'backend': CORE_EXIT_BACKEND, **core_prefix}, 'core_control_deadline_unix_ms': deadline}
     # The SDK durably records the actual native request before dispatch. Its
     # native revision differs from the public revision injected by fresh().
     if json.dumps(request, sort_keys=True) != json.dumps(expected_request, sort_keys=True):
@@ -376,6 +398,17 @@ def typed_normal_quit_evidence_v1(report_value: object, *, live: Path, state: Pa
     projection = json.dumps(from_profile, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
     if inventory.get('profile_binding_sha256') != hashlib.sha256(projection).hexdigest():
         raise ValueError('Typed normal Quit source inventory profile projection differs')
+    if core_route:
+        if any(isinstance(r.get('plan'), dict) and json_object(r['plan']).get('tool') == 'ck3_request_normal_exit_v1'
+                and json_object(json_object(r['plan']).get('args')).get('action') != 'confirm_desktop' for r in rows):
+            raise ValueError('Core ApplicationExit evidence cannot claim GUI preparation or an autosave toggle')
+        return TypedNormalQuitEvidenceV1(schema='ck3-mod-acceptance-typed-normal-quit-v1', run_id=live.name,
+            machine_id=text_field(json_object(frozen.get('identity_allocation')), 'machine_id'),
+            observed_at_utc=datetime.now(timezone.utc).isoformat(), terminal_step_id=text_field(row, 'id'),
+            process_creation_filetime_100ns=birth, profile=profile_pin, source_inventory=inventory_pin,
+            source_index=index_pin, source_modules=sdk_pins, terminal_fact=fact_pin,
+            confirmation_request=request_pin, observer_close=close_pin, claim=claim_pin,
+            autosave_disabled=None, autosave_verified=False)
     disabled_rows = [r for r in rows if isinstance(r.get('result'), dict)
                      and json_object(r['result']).get('action') == 'disable_exit_autosave']
     if len(disabled_rows) != 1:

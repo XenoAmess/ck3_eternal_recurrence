@@ -7,7 +7,7 @@
     ai_frequency = 0
     auto_accept = yes
     is_shown = {
-        scope:actor = { is_ai = no is_adult = yes }
+        scope:actor = { xfm_a0_actor_eligible_trigger = yes is_ai = no is_adult = yes }
         scope:recipient = { exists = var:xfm_personal_coin }
     }
     is_available = { xfm_a0_actor_eligible_trigger = yes }

@@ -1,0 +1,128 @@
+﻿# Character entries. Registration and listing are distinct; no projected subscription is cash.
+xfm_issuer_register_micro_effect = {
+    set_variable = { name = xfm_requested_tier value = 1 }
+    if = { limit = { NOT = { has_variable = xfm_requested_funding } } set_variable = { name = xfm_requested_funding value = 20 } }
+    xfm_issuer_register_effect = yes
+}
+xfm_issuer_register_standard_effect = {
+    set_variable = { name = xfm_requested_tier value = 2 }
+    if = { limit = { NOT = { has_variable = xfm_requested_funding } } set_variable = { name = xfm_requested_funding value = 200 } }
+    xfm_issuer_register_effect = yes
+}
+xfm_issuer_register_effect = {
+    set_variable = { name = xfm_issuer_result value = 0 }
+    if = {
+        limit = { xfm_issuer_can_register_trigger = yes }
+        save_scope_as = xfm_offer_applicant
+        xfm_finance_ensure_account_effect = yes
+        var:xfm_account = {
+            set_variable = { name = xfm_request_cents value = 100 }
+            if = { limit = { scope:xfm_offer_applicant.var:xfm_requested_tier = 2 } set_variable = { name = xfm_request_cents value = 500 } }
+            xfm_finance_ensure_funds_effect = yes
+        }
+        if = {
+            limit = { var:xfm_account = { xfm_finance_account_usable_trigger = yes var:xfm_free_cents >= var:xfm_request_cents } }
+            xfm_finance_create_coin_effect = yes
+            if = {
+                limit = { var:xfm_result = 1 exists = scope:xfm_coin }
+                set_variable = { name = xfm_pending_offer value = scope:xfm_coin }
+                set_variable = { name = xfm_selected_coin value = scope:xfm_coin }
+                scope:xfm_coin = { save_scope_as = xfm_offer_new_coin }
+                var:xfm_account = { xfm_finance_fee_effect = yes }
+                global_var:xfm_exchange = {
+                    xfm_finance_create_account_effect = yes
+                    scope:xfm_offer_new_coin = { set_variable = { name = xfm_issuer_account value = scope:xfm_created_account } }
+                    xfm_finance_create_account_effect = yes
+                    scope:xfm_offer_new_coin = { set_variable = { name = xfm_founder_account value = scope:xfm_created_account } }
+                }
+                scope:xfm_offer_new_coin = { xfm_issuer_initialize_effect = yes }
+                if = {
+                    limit = { scope:xfm_offer_new_coin = { var:xfm_supply_units = 15000 } }
+                    xfm_issuer_bind_effect = yes
+                    set_variable = { name = xfm_issue_cooldown days = xfm_config_issuance_cooldown_days_value }
+                    set_variable = { name = xfm_issuer_result value = 1 }
+                }
+                else = { scope:xfm_offer_new_coin = { set_variable = { name = xfm_construction_pending value = 1 } } }
+            }
+        }
+    }
+}
+xfm_issuer_initialize_effect = {
+    set_variable = { name = xfm_controller value = scope:xfm_offer_applicant }
+    set_variable = { name = xfm_original_issuer value = scope:xfm_offer_applicant }
+    set_variable = { name = xfm_founder_beneficiary value = scope:xfm_offer_applicant }
+    set_variable = { name = xfm_entity_type value = scope:xfm_offer_applicant.var:xfm_requested_entity_type }
+    set_variable = { name = xfm_service_tier value = scope:xfm_offer_applicant.var:xfm_requested_tier }
+    var:xfm_issuer_account = { set_variable = { name = xfm_beneficial_owner value = scope:xfm_offer_applicant } set_variable = { name = xfm_legal_entity value = scope:xfm_offer_new_coin } }
+    var:xfm_founder_account = { set_variable = { name = xfm_beneficial_owner value = scope:xfm_offer_applicant } set_variable = { name = xfm_legal_entity value = scope:xfm_offer_new_coin } }
+    set_variable = { name = xfm_listing_state value = 0 }
+    set_variable = { name = xfm_trading_open value = 0 }
+    set_variable = { name = xfm_offer_age value = 0 }
+    set_variable = { name = xfm_offer_counted value = 1 }
+    set_variable = { name = xfm_active_listing_counted value = 0 }
+    set_variable = { name = xfm_settlement_price_pending value = 0 }
+    set_variable = { name = xfm_termination_requested value = 0 }
+    set_variable = { name = xfm_derivatives_reduce_only value = 0 }
+    set_variable = { name = xfm_maker_withdrawn value = 0 }
+    set_variable = { name = xfm_asset_age value = 0 }
+    set_variable = { name = xfm_issuer_last_day value = global_var:xfm_exchange.var:xfm_day }
+    set_variable = { name = xfm_listing_last_day value = global_var:xfm_exchange.var:xfm_day }
+    set_variable = { name = xfm_unresolved_claim_count value = 0 }
+    set_variable = { name = xfm_actual_raised_cents value = 0 }
+    set_variable = { name = xfm_external_raised_cents value = 0 }
+    set_variable = { name = xfm_offer_units_remaining value = 10000 }
+    set_variable = { name = xfm_mint_permitted value = 1 }
+    set_variable = { name = xfm_maximum_supply_units value = 30000 }
+    set_variable = { name = xfm_founder_locked_units value = 2500 }
+    set_variable = { name = xfm_founder_unlock_age value = 365 }
+    set_variable = { name = xfm_undisclosed_mint_units value = 0 }
+    set_variable = { name = xfm_advertising_spent_cents value = 0 }
+    set_variable = { name = xfm_project_spent_cents value = 0 }
+    set_variable = { name = xfm_actual_utility_cents value = 0 }
+    set_variable = { name = xfm_low_demand_days value = 0 }
+    set_variable = { name = xfm_demand_review_age value = 0 }
+    set_variable = { name = xfm_demand_window_volume_cents value = 0 }
+    set_variable = { name = xfm_promises_due_cents value = 0 }
+    set_variable = { name = xfm_unpaid_debt_cents value = 0 }
+    set_variable = { name = xfm_eligible_maintenance_credit_cents value = 0 }
+    set_variable = { name = xfm_maintenance_arrears_cents value = 0 }
+    set_variable = { name = xfm_default_history value = 0 }
+    set_variable = { name = xfm_issuer_metadata_ready value = 1 }
+    set_variable = { name = xfm_issuer_reputation value = 50 }
+    set_variable = { name = xfm_registration_paid_cents value = 100 }
+    set_variable = { name = xfm_minimum_raised_cents value = 2000 }
+    set_variable = { name = xfm_ipo_price_cents value = 20 }
+    set_variable = { name = xfm_listing_fixed_cents value = 100 }
+    set_variable = { name = xfm_initial_maintenance_cents value = 60 }
+    set_variable = { name = xfm_monthly_maintenance_cents value = 10 }
+    set_variable = { name = xfm_bond_minimum_cents value = 100 }
+    set_variable = { name = xfm_maker_minimum_cents value = 200 }
+    if = {
+        limit = { var:xfm_service_tier = 2 }
+        set_variable = { name = xfm_registration_paid_cents value = 500 }
+        set_variable = { name = xfm_minimum_raised_cents value = 20000 }
+        set_variable = { name = xfm_ipo_price_cents value = 200 }
+        set_variable = { name = xfm_listing_fixed_cents value = 1000 }
+        set_variable = { name = xfm_initial_maintenance_cents value = 600 }
+        set_variable = { name = xfm_monthly_maintenance_cents value = 100 }
+        set_variable = { name = xfm_bond_minimum_cents value = 1000 }
+        set_variable = { name = xfm_maker_minimum_cents value = 2000 }
+    }
+    set_variable = { name = xfm_minimum_raised_cents value = xfm_issuer_requested_funding_cents_value }
+    set_variable = { name = xfm_ipo_price_cents value = scope:xfm_offer_applicant.var:xfm_requested_funding }
+    set_variable = { name = xfm_offer_price_cents value = var:xfm_ipo_price_cents }
+    set_variable = { name = xfm_request_target value = var:xfm_issuer_account }
+    set_variable = { name = xfm_request_units value = 12500 }
+    xfm_finance_mint_effect = yes
+    set_variable = { name = xfm_request_target value = var:xfm_founder_account }
+    set_variable = { name = xfm_request_units value = 2500 }
+    xfm_finance_mint_effect = yes
+}
+xfm_issuer_bind_effect = {
+    if = { limit = { var:xfm_requested_entity_type = 1 } set_variable = { name = xfm_personal_coin value = scope:xfm_offer_new_coin } scope:xfm_offer_new_coin = { set_variable = { name = xfm_bound_entity value = scope:xfm_offer_applicant } } }
+    if = { limit = { var:xfm_requested_entity_type = 2 } house = { set_variable = { name = xfm_entity_coin value = scope:xfm_offer_new_coin } set_variable = { name = xfm_issue_cooldown days = xfm_config_issuance_cooldown_days_value } save_scope_as = xfm_offer_bound } scope:xfm_offer_new_coin = { set_variable = { name = xfm_bound_entity value = scope:xfm_offer_bound } } }
+    if = { limit = { var:xfm_requested_entity_type = 3 } dynasty = { set_variable = { name = xfm_entity_coin value = scope:xfm_offer_new_coin } set_variable = { name = xfm_issue_cooldown days = xfm_config_issuance_cooldown_days_value } save_scope_as = xfm_offer_bound } scope:xfm_offer_new_coin = { set_variable = { name = xfm_bound_entity value = scope:xfm_offer_bound } } }
+    if = { limit = { var:xfm_requested_entity_type = 4 } primary_title = { set_variable = { name = xfm_entity_coin value = scope:xfm_offer_new_coin } set_variable = { name = xfm_issue_cooldown days = xfm_config_issuance_cooldown_days_value } save_scope_as = xfm_offer_bound } scope:xfm_offer_new_coin = { set_variable = { name = xfm_bound_entity value = scope:xfm_offer_bound } } }
+    if = { limit = { var:xfm_requested_entity_type = 5 } faith = { set_variable = { name = xfm_entity_coin value = scope:xfm_offer_new_coin } set_variable = { name = xfm_issue_cooldown days = xfm_config_issuance_cooldown_days_value } save_scope_as = xfm_offer_bound } scope:xfm_offer_new_coin = { set_variable = { name = xfm_bound_entity value = scope:xfm_offer_bound } } }
+    if = { limit = { var:xfm_requested_entity_type >= 6 } scope:xfm_offer_new_coin = { set_variable = { name = xfm_bound_entity value = scope:xfm_offer_new_coin } } }
+}

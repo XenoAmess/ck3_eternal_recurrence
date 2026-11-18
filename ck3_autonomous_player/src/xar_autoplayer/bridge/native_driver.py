@@ -8519,19 +8519,32 @@ class NativeHeadlessGameplayDriver:
             SCRIPTED_WIDGET_QUERY_STEP, SCRIPTED_WIDGET_QUERY_CAPABILITY,
             scripted_widget_root_v1, scripted_widget_binding_v1,
             normalize_scripted_widget_query_v1, write_scripted_widget_evidence_v1,
+            SCRIPTED_WIDGET_FLORIN_QUERY_CAPABILITY, scripted_widget_florin_fields_v1,
         )
         root_name = scripted_widget_root_v1(root_name)
         _validate_revision(expected_revision, "expected_revision")
         starting, binding = self._scripted_widget_stable_frame_v1()
         if starting.get("revision") != expected_revision:
             raise PreSubmissionRevisionMismatchError("scripted widget public revision changed")
-        raw = self._execute_primitive_step(
-            SCRIPTED_WIDGET_QUERY_STEP, expected_revision=expected_revision,
-            required_capability=SCRIPTED_WIDGET_QUERY_CAPABILITY,
-            request_fields={"root_name": root_name,
+        florin = binding.get("game_version") == "1.21.0"
+        request_fields: dict[str, object]
+        absolute_deadline: float | None = None
+        if florin:
+            from xar_autoplayer.native_session import require_game_windows_background
+            require_game_windows_background(binding["game_pid"])
+            budget = min(120.0, _positive_seconds(self.command_timeout_seconds, "command_timeout_seconds"))
+            absolute_deadline = time.monotonic() + budget
+            request_fields = scripted_widget_florin_fields_v1(binding, root_name, int(time.time() * 1000) + int(budget * 1000))
+        else:
+            request_fields = {"root_name": root_name,
                 "expected_player_character_id": binding["played_character_id"],
                 "expected_game_pid": binding["game_pid"],
-                "expected_connection_generation": binding["connection_generation"]},
+                "expected_connection_generation": binding["connection_generation"]}
+        raw = self._execute_primitive_step(
+            SCRIPTED_WIDGET_QUERY_STEP, expected_revision=expected_revision,
+            required_capability=SCRIPTED_WIDGET_FLORIN_QUERY_CAPABILITY if florin else SCRIPTED_WIDGET_QUERY_CAPABILITY,
+            request_fields=request_fields,
+            absolute_deadline=absolute_deadline,
         )
         result = normalize_scripted_widget_query_v1(raw, root_name, binding)
         ending, ending_binding = self._scripted_widget_stable_frame_v1()
@@ -8555,6 +8568,11 @@ class NativeHeadlessGameplayDriver:
             normalize_scripted_widget_query_v1, normalize_scripted_widget_action_v1,
             scripted_widget_action_identity_v1,
             read_scripted_widget_evidence_v1, write_scripted_widget_evidence_v1,
+            SCRIPTED_WIDGET_FLORIN_ACTION_CAPABILITY, scripted_widget_florin_fields_v1,
+        )
+        from .version_identity import florin_full_source
+        from .timeline_control_ack_v1 import (
+            require_florin_control_ready_v1, mark_florin_control_unknown_v1,
         )
         query_generation = scripted_widget_decimal_v1(query_generation)
         widget_id = scripted_widget_decimal_v1(widget_id)
@@ -8562,6 +8580,13 @@ class NativeHeadlessGameplayDriver:
         starting, binding = self._scripted_widget_stable_frame_v1()
         if starting.get("revision") != expected_revision:
             raise PreSubmissionRevisionMismatchError("scripted widget public revision changed")
+        florin = binding.get("game_version") == "1.21.0"
+        florin_source = florin_full_source(starting, expected_revision) if florin else None
+        if florin_source is not None:
+            try:
+                require_florin_control_ready_v1(self._native_driver_state_path(), florin_source)
+            except ValueError as error:
+                raise BridgeUnavailableError("scripted widget world control is pending or unknown: " + str(error)) from error
         directory = self._native_driver_state_path().parent / "scripted-widget-controls"
         query_path = directory / f"query-{binding['game_pid']}-{binding['connection_generation']}-{query_generation}.json"
         try:
@@ -8596,10 +8621,23 @@ class NativeHeadlessGameplayDriver:
                 previous_result = normalize_scripted_widget_action_v1(acknowledgement.get("result"), previous_query, previous_widget)
                 if acknowledgement.get("request_id") != previous.get("request_id") or previous_result["root_name"] != root_name:
                     raise ValueError("scripted widget dispatch acknowledgement identity changed")
-                if previous_result["dispatch_attempted"] and not previous_result["dispatch_invoked"]:
+                if (previous_result["dispatch_attempted"] and not previous_result["dispatch_invoked"]) or previous_result.get("result_unknown") is True:
                     raise ValueError("scripted widget previous invocation remains unknown")
             except (OSError, ValueError) as error:
                 raise BridgeUnavailableError("scripted widget action already has an unknown result; no retry") from error
+        request_fields: dict[str, object]
+        absolute_deadline: float | None = None
+        if florin:
+            from xar_autoplayer.native_session import require_game_windows_background
+            require_game_windows_background(binding["game_pid"])
+            budget = min(120.0, _positive_seconds(self.command_timeout_seconds, "command_timeout_seconds"))
+            absolute_deadline = time.monotonic() + budget
+            request_fields = scripted_widget_florin_fields_v1(binding, root_name, int(time.time() * 1000) + int(budget * 1000), query_generation, widget_id)
+        else:
+            request_fields = {"query_generation": query_generation, "widget_id": widget_id,
+                "expected_player_character_id": binding["played_character_id"],
+                "expected_game_pid": binding["game_pid"],
+                "expected_connection_generation": binding["connection_generation"]}
         claim = directory / f"action-{binding['game_pid']}-{binding['connection_generation']}-{query_generation}-{widget_id}.claim.json"
         request_id = "scripted-widget-" + uuid.uuid4().hex
         try:
@@ -8612,14 +8650,13 @@ class NativeHeadlessGameplayDriver:
         except FileExistsError as error:
             raise BridgeUnavailableError("scripted widget query/control was already consumed; no retry") from error
         raw: object = None
+        native_outcome_known = False
         try:
             raw = self._execute_primitive_step(
                 SCRIPTED_WIDGET_ACTION_STEP, expected_revision=expected_revision,
-                required_capability=SCRIPTED_WIDGET_ACTION_CAPABILITY,
-                request_fields={"query_generation": query_generation, "widget_id": widget_id,
-                    "expected_player_character_id": binding["played_character_id"],
-                    "expected_game_pid": binding["game_pid"],
-                    "expected_connection_generation": binding["connection_generation"]},
+                required_capability=SCRIPTED_WIDGET_FLORIN_ACTION_CAPABILITY if florin else SCRIPTED_WIDGET_ACTION_CAPABILITY,
+                request_fields=request_fields,
+                absolute_deadline=absolute_deadline,
                 protocol_request_id=request_id,
             )
             write_scripted_widget_evidence_v1(claim.with_suffix(".result.json"), {"request_id": request_id, "raw": raw})
@@ -8627,10 +8664,20 @@ class NativeHeadlessGameplayDriver:
             result["public_revision"] = str(expected_revision)
             if result["root_name"] != root_name:
                 raise ValueError("scripted widget native action changed its observed root")
-            if result["dispatch_attempted"] and not result["dispatch_invoked"]:
+            native_outcome_known = not ((result["dispatch_attempted"] and not result["dispatch_invoked"])
+                                       or result.get("result_unknown") is True)
+            if not native_outcome_known:
                 raise BridgeUnavailableError("scripted widget native invocation result is unknown; no retry")
             write_scripted_widget_evidence_v1(claim.with_suffix(".dispatch.json"), {"request_id": request_id, "result": result})
         except Exception as error:
+            # Capability/revision exceptions are raised before the primitive can
+            # write. Every unqualified ACK or transport failure after that
+            # boundary retains a world-wide UNKNOWN, alongside the GUI claim.
+            if (florin_source is not None and not native_outcome_known
+                    and not isinstance(error, (PreSubmissionRevisionMismatchError, UnsupportedStepError))):
+                mark_florin_control_unknown_v1(self._native_driver_state_path(), florin_source,
+                    request_id=request_id, step=SCRIPTED_WIDGET_ACTION_STEP,
+                    reason=f"gui_dispatch_unconfirmed:{type(error).__name__}:{error}")
             self._record_command(SCRIPTED_WIDGET_ACTION_STEP, ok=False,
                 result={"raw": raw, "action_claim_path": str(claim)}, error=f"{type(error).__name__}: {error}")
             raise
@@ -13150,6 +13197,66 @@ class NativeHeadlessGameplayDriver:
                 raise ValueError("pause recovery binding is restricted to an internal pause retry")
             if snapshot.get("paused") is not False or not _same_generic_pause_owner(pause_recovery_source, snapshot):
                 raise BridgeUnavailableError("generic pause owner/event binding changed at retry submission")
+        # Florin consumes the actual Full identity. Legacy clock packets cannot
+        # be upgraded by replacing their executable hash or source revision.
+        florin_source = None
+        florin_arm = None
+        florin_claim = None
+        florin_deadline = None
+        if snapshot.get("schema") == "ck3_1210_full_state_v1":
+            from .version_identity import florin_full_source
+            from .timeline_control_ack_v1 import (
+                FLORIN_CLOCK_CAPABILITY, FLORIN_CLOCK_STEPS, FLORIN_DATE_ARM_PREFIX,
+                florin_control_fields_v1, florin_date_arm_spec_v1, require_florin_control_ready_v1)
+            clock_step = step in FLORIN_CLOCK_STEPS
+            date_arm = step.startswith(FLORIN_DATE_ARM_PREFIX)
+            if clock_step or date_arm:
+                try:
+                    florin_source = florin_full_source(snapshot, expected_revision)
+                    require_florin_control_ready_v1(self._native_driver_state_path(), florin_source)
+                    if FLORIN_CLOCK_CAPABILITY not in set(_string_list(capabilities.get("bridge_capabilities"))):
+                        raise ValueError("exact Florin Full-clock capability is unavailable")
+                    if request_fields not in (None, {}, {"arguments": {}}):
+                        raise ValueError("Florin clock controls accept no caller native fields")
+                    if date_arm:
+                        florin_arm = florin_date_arm_spec_v1(step)
+                        if (florin_arm.starting_date_raw != florin_source.date_raw or snapshot.get("speed") != florin_arm.speed
+                                or snapshot.get("active_wars") != [] or snapshot.get("player_armies") != []):
+                            raise ValueError("Florin date-only ARM requires its exact date/speed and an empty war/army set")
+                    if step == "resume-map":
+                        owned_arm = getattr(self, "_florin_date_arm_ready_v1", None)
+                        if (not isinstance(owned_arm, dict) or owned_arm.get("game_pid") != florin_source.game_pid
+                                or owned_arm.get("scope_sha256") != florin_source.scope_sha256
+                                or owned_arm.get("connection_generation") != florin_source.connection_generation
+                                or owned_arm.get("played_character_id") != florin_source.played_character_id
+                                or type(owned_arm.get("native_revision")) is not int
+                                or owned_arm["native_revision"] > florin_source.native_revision
+                                or owned_arm.get("starting_date_raw") != florin_source.date_raw
+                                or owned_arm.get("speed") != snapshot.get("speed")):
+                            raise ValueError("Florin resume requires this run's qualified bounded Date ARM")
+                        actual = self._execute_primitive_step(_TACTICAL_DAILY_SENTINEL_STATUS_STEP,
+                            required_capability=_TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY,
+                            internal_semantic_snapshot=True)
+                        status = _normalize_tactical_daily_sentinel_status(actual.get("tactical_daily_sentinel"))
+                        if (actual.get("accepted") is not True or actual.get("status") != "available"
+                                or status != owned_arm.get("status")):
+                            raise ValueError("Florin resume independent Date status differs from its original ARM")
+                        current = florin_full_source(self.take_internal_semantic_snapshot(), expected_revision)
+                        if current != florin_source:
+                            raise ValueError("Florin resume Full changed during independent ARM confirmation")
+                    budget = self.command_timeout_seconds if timeout_seconds is None else _positive_seconds(timeout_seconds, "timeout_seconds")
+                    florin_deadline = time.monotonic() + budget
+                    if absolute_deadline is not None: florin_deadline = min(florin_deadline, absolute_deadline)
+                    if florin_deadline <= time.monotonic(): raise ValueError("Florin original control deadline expired")
+                    request_fields = {"arguments": {}, **florin_control_fields_v1(florin_source,
+                        deadline_unix_ms=int((time.time()+florin_deadline-time.monotonic())*1000), date_arm=date_arm)}
+                except ValueError as error:
+                    raise BridgeUnavailableError(str(error)) from error
+            elif not step.startswith(("query-", "research-query-")):
+                try:
+                    require_florin_control_ready_v1(self._native_driver_state_path(), florin_full_source(snapshot, expected_revision))
+                except ValueError as error:
+                    raise BridgeUnavailableError(str(error)) from error
         self._request_sequence += 1
         request_id = (
             protocol_request_id
@@ -13177,6 +13284,17 @@ class NativeHeadlessGameplayDriver:
                     "native request_fields attempted to replace protocol fields"
                 )
             request.update(request_fields)
+        if florin_source is not None:
+            from .timeline_control_ack_v1 import claim_florin_control_v1
+            try:
+                florin_claim = claim_florin_control_v1(self._native_driver_state_path(), florin_source,
+                    request_id=request_id, step=step, request=request)
+            except (ValueError, FileExistsError) as error:
+                raise BridgeUnavailableError("Florin original control claim is pending, consumed or UNKNOWN") from error
+            if step == "resume-map":
+                # Consumption precedes the first possible write and survives
+                # every transport/ACK failure through the durable claim.
+                self._florin_date_arm_ready_v1 = None
         if step in {"navigate-ingame-ui-v1", "query-ingame-ui-window-v1"}:
             # A managed UI action must have its create-only evidence location
             # before it can dispatch; missing state_dir must not fail only
@@ -13232,6 +13350,9 @@ class NativeHeadlessGameplayDriver:
                 time.monotonic() + command_timeout_seconds
                 if absolute_deadline is None else absolute_deadline
             )
+            if florin_deadline is not None:
+                command_deadline = florin_deadline
+                command_timeout_seconds = max(0.0, florin_deadline-time.monotonic())
             if absolute_deadline is not None:
                 # The caller owns one map/pump/root budget.  Sending the single
                 # request cannot grant its result a new default 120s window.
@@ -13253,6 +13374,39 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native command_result timed out for gameplay step {step}"
             )
+        if florin_claim is not None and florin_source is not None:
+            from .timeline_control_ack_v1 import (
+                normalize_florin_clock_ack_v1, qualify_florin_control_claim_v1, preserve_florin_control_result_v1)
+            preserve_florin_control_result_v1(florin_claim, frame)
+            try:
+                if florin_arm is not None and isinstance(frame.get("result"), dict) and "schema" not in frame["result"]:
+                    candidate = frame["result"]
+                    if (set(frame) != {"type","protocol_version","request_id","ok","result"}
+                            or frame.get("type") != "command_result" or type(frame.get("protocol_version")) is not int
+                            or frame.get("protocol_version") != 1 or frame.get("request_id") != request_id or frame.get("ok") is not True
+                            or set(candidate) != {"step","accepted","status","tactical_daily_sentinel"}):
+                        raise ValueError("Florin Date ARM original ACK envelope differs")
+                    status = _normalize_tactical_daily_sentinel_status(candidate.get("tactical_daily_sentinel"))
+                    _validate_tactical_daily_sentinel_arm(candidate, status, arm_step=step,
+                        starting_date_raw=florin_arm.starting_date_raw, target_date_raw=florin_arm.target_date_raw,
+                        speed=florin_arm.speed, mode="terminal_or_sentinel", watch_army_ids=(), sentinel_scope="exact_one_day")
+                    self._florin_date_arm_ready_v1 = {"game_pid": florin_source.game_pid,
+                        "scope_sha256": florin_source.scope_sha256, "connection_generation": florin_source.connection_generation,
+                        "played_character_id": florin_source.played_character_id, "native_revision": florin_source.native_revision,
+                        "starting_date_raw": florin_arm.starting_date_raw, "speed": florin_arm.speed, "status": status}
+                else:
+                    assessed = normalize_florin_clock_ack_v1(frame, expected_step=step, expected_request_id=request_id)
+                    if step == "save-checkpoint" and assessed["queue_status"] == "submitted":
+                        submission = assessed["submission"]
+                        if not isinstance(submission, dict) or submission.get("date_raw") != florin_source.date_raw:
+                            raise ValueError("Florin SAVE submission date differs from its original Full")
+                    if (assessed["queue_status"] in {"indeterminate", "already_satisfied"}
+                            or assessed["accepted"] is not True and assessed["effect_attempted"] is True):
+                        raise ValueError("Florin original clock result remains UNKNOWN; replay is forbidden")
+                qualify_florin_control_claim_v1(florin_claim, request_id=request_id, frame=frame)
+            except (ValueError, BridgeUnavailableError) as error:
+                self._florin_date_arm_ready_v1 = None
+                raise BridgeUnavailableError(str(error)) from error
         if protocol_result_evidence_path is not None:
             # Preserve even a native rejection/malformed return before parsing.
             with protocol_result_evidence_path.open("x", encoding="utf-8", newline="\n") as evidence:
@@ -13553,6 +13707,168 @@ class NativeHeadlessGameplayDriver:
             self._episode_seed = dict(seed)
         return seed
 
+    def query_event_options_v1210(self,event_instance_id:int,*,expected_revision:int|None)->dict[str,object]:
+        """The existing event-context endpoint's limited Florin variant, from actual native options."""
+        from .event_contract import (
+            FLORIN_EVENT_QUERY_STEP, FLORIN_EVENT_QUERY_CAPABILITY, florin_event_source,
+            florin_event_fields, project_florin_event_options,
+        )
+        from ..native_session import require_game_windows_background
+        starting=self.take_snapshot_without_native_command_history()
+        try: source=florin_event_source(starting,event_instance_id,expected_revision)
+        except ValueError as invalid: raise BridgeUnavailableError(str(invalid)) from invalid
+        budget=min(120.0,_positive_seconds(self.command_timeout_seconds,"command_timeout_seconds"))
+        until=time.monotonic()+budget
+        fields=florin_event_fields(source,int(time.time()*1000)+int(budget*1000))
+        require_game_windows_background(source.game_pid)
+        raw=self._execute_primitive_step(FLORIN_EVENT_QUERY_STEP,expected_revision=source.public_revision,
+                required_capability=FLORIN_EVENT_QUERY_CAPABILITY,request_fields=fields,
+                include_native_command_history=False,absolute_deadline=until)
+        try:
+            public=project_florin_event_options(raw,source)
+            ending=florin_event_source(self.take_snapshot_without_native_command_history(),event_instance_id,source.public_revision)
+            if ending!=source: raise ValueError("Florin options query crossed its original actual Full")
+            return dict(public)
+        except ValueError as invalid: raise BridgeUnavailableError(str(invalid)) from invalid
+
+    def select_event_option_v1210(
+        self, option_number: int, *, event_instance_id: int | None,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """The existing event writer records this direct typed service route exactly once."""
+        step=event_option_step(option_number)
+        try:
+            result=NativeHeadlessGameplayDriver._select_event_option_v1210_unrecorded(self,option_number,
+                    event_instance_id=event_instance_id,expected_revision=expected_revision)
+        except Exception as error:
+            self._record_command(step,ok=False,error=f"{type(error).__name__}: {error}")
+            raise
+        self._record_command(step,ok=True,result=result)
+        return result
+
+    def _select_event_option_v1210_unrecorded(
+        self, option_number: int, *, event_instance_id: int | None,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Keep the public 1-based number; bind one native 0-based command to actual Full/query evidence."""
+        from .event_contract import (
+            FLORIN_EVENT_QUERY_STEP, FLORIN_EVENT_QUERY_CAPABILITY,
+            florin_event_source, florin_event_fields, normalize_florin_event_result,
+        )
+        from .timeline_control_ack_v1 import (
+            require_florin_control_ready_v1, mark_florin_control_unknown_v1,
+        )
+        from ..native_session import require_game_windows_background
+
+        if type(option_number) is not int or not 1 <= option_number <= 512:
+            raise ValueError("Florin option_number must be an authored 1-based number from 1 to 512")
+        starting = self.take_snapshot_without_native_command_history()
+        active = starting.get("active_event")
+        actual_event = active.get("instance_id") if isinstance(active, dict) else None
+        selected_event = actual_event if event_instance_id is None else event_instance_id
+        if type(selected_event) is not int:
+            raise BridgeUnavailableError("actual Florin event instance is unavailable")
+        try:
+            source = florin_event_source(starting, selected_event, expected_revision)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        native_index = option_number - 1
+        native_step = event_option_step(option_number)
+        directory = self._native_driver_state_path().parent / "event-option-controls1210"
+        directory.mkdir(parents=True, exist_ok=True)
+        identity = f"{source.game_pid}-{source.full_source.scope_sha256}-{source.event_instance_id}"
+        claim_path = directory / f"{identity}.claim.json"
+        if claim_path.exists():
+            raise BridgeUnavailableError("Florin event option has an original attempt; never replay it")
+        try:
+            require_florin_control_ready_v1(self._native_driver_state_path(), source.full_source)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        budget = min(120.0, _positive_seconds(self.command_timeout_seconds, "command_timeout_seconds"))
+        until = time.monotonic() + budget
+        deadline_ms = int(time.time() * 1000) + int(budget * 1000)
+        fields = florin_event_fields(source, deadline_ms)
+        require_game_windows_background(source.game_pid)
+        query = self._execute_primitive_step(
+            FLORIN_EVENT_QUERY_STEP, expected_revision=source.public_revision,
+            required_capability=FLORIN_EVENT_QUERY_CAPABILITY, request_fields=fields,
+            include_native_command_history=False, absolute_deadline=until,
+        )
+        try:
+            observed = normalize_florin_event_result(query, source, FLORIN_EVENT_QUERY_STEP, None)
+            current_source = florin_event_source(self.take_snapshot_without_native_command_history(), source.event_instance_id, source.public_revision)
+            if current_source != source:
+                raise ValueError("Florin event query crossed its actual Full occurrence")
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        if (not observed["accepted"]
+                or not any(row["native_option_index"] == native_index and row["enabled"] for row in observed["options"])):
+            raise BridgeUnavailableError("requested authored Florin option was not observed enabled")
+        if time.monotonic() >= until:
+            raise BridgeUnavailableError("original Florin event query deadline expired before selection")
+        require_game_windows_background(source.game_pid)
+        request_id = "florin-event-" + uuid.uuid4().hex
+        # The create-only original is written before dispatch. A new Full/query cannot erase an UNKNOWN attempt.
+        with claim_path.open("x", encoding="utf-8", newline="\n") as claim:
+            json.dump({"schema": "ck3-florin-event-option-attempt-v1", "request_id": request_id,
+                       "snapshot_id": source.snapshot_id, "native_revision": source.native_revision,
+                       "public_revision": source.public_revision, "game_pid": source.game_pid,
+                       "connection_generation": source.connection_generation, "event_instance_id": source.event_instance_id,
+                       "native_option_index": native_index, "deadline_unix_ms": deadline_ms,
+                       "business_postcondition_confirmed": False}, claim, sort_keys=True)
+            claim.write("\n"); claim.flush(); os.fsync(claim.fileno())
+        try:
+            raw = self._execute_primitive_step(
+                native_step, expected_revision=source.public_revision,
+                required_capability=f"game.command.{native_step}", request_fields=fields,
+                include_native_command_history=False, protocol_request_id=request_id,
+                protocol_packet_evidence_path=directory / f"{identity}.request.json",
+                protocol_result_evidence_path=directory / f"{identity}.result.json", absolute_deadline=until,
+            )
+        except Exception as error:
+            mark_florin_control_unknown_v1(self._native_driver_state_path(), source.full_source,
+                request_id=request_id, step=native_step, reason=f"event_dispatch_unconfirmed:{type(error).__name__}:{error}")
+            raise
+        try:
+            assessment = normalize_florin_event_result(raw, source, native_step, native_index)
+        except ValueError as error:
+            mark_florin_control_unknown_v1(self._native_driver_state_path(), source.full_source,
+                request_id=request_id, step=native_step, reason=f"event_ack_invalid:{error}")
+            raise BridgeUnavailableError("Florin event ACK invalid; retain original attempt and never replay: " + str(error)) from error
+        if not assessment["accepted"]:
+            if assessment["effect_attempted"] or assessment["status"] == "indeterminate":
+                mark_florin_control_unknown_v1(self._native_driver_state_path(), source.full_source,
+                    request_id=request_id, step=native_step, reason="event_selection_" + assessment["status"])
+            raise BridgeUnavailableError("Florin event selection did not submit; original attempt retained: " + assessment["status"])
+        try:
+            changed = self._wait_for_life_advance_snapshot(
+                self.take_internal_semantic_snapshot(), lambda snapshot: _event_instance_id(snapshot) != source.event_instance_id,
+                timeout_seconds=max(0.0, until - time.monotonic()),
+            )
+            diagnostics = changed.get("diagnostics")
+            if (_event_instance_id(changed) == source.event_instance_id or changed.get("paused") is not True
+                    or not isinstance(diagnostics, dict) or diagnostics.get("bridge_pid") != source.game_pid
+                    or diagnostics.get("connection_generation") != source.connection_generation
+                    or changed.get("episode_run_id") != starting.get("episode_run_id")):
+                raise BridgeUnavailableError("Florin event command lacks independent same-session event advancement; never replay")
+            with (directory / f"{identity}.postcondition.json").open("x", encoding="utf-8", newline="\n") as evidence:
+                json.dump({"schema": "ck3-florin-event-option-postcondition-v1", "request_id": request_id,
+                           "old_event_instance_id": source.event_instance_id, "new_event_instance_id": _event_instance_id(changed),
+                           "snapshot_id": changed.get("snapshot_id"), "native_revision": changed.get("native_revision"),
+                           "event_instance_advanced": True, "financial_business_confirmed": False, "save_confirmed": False}, evidence, sort_keys=True)
+                evidence.write("\n"); evidence.flush(); os.fsync(evidence.fileno())
+        except Exception as error:
+            mark_florin_control_unknown_v1(self._native_driver_state_path(), source.full_source,
+                request_id=request_id, step=native_step, reason=f"event_postcondition_unconfirmed:{type(error).__name__}:{error}")
+            raise
+        return {**raw, "native_revision": str(source.native_revision),
+                "native_result_json": json.dumps(raw,sort_keys=True,separators=(",", ":"),allow_nan=False),
+                "step": event_option_step(option_number), "progress_status": "postcondition",
+                "event_instance_id": source.event_instance_id, "option_number": option_number, "option_index": native_index,
+                "event_selection": {"status": "event_instance_advanced", "postcondition_verified": True,
+                                    "old_event_instance_id": source.event_instance_id, "new_event_instance_id": _event_instance_id(changed),
+                                    "selected_option_number": option_number, "selected_native_option_index": native_index}}
+
     def _execute_event_option_step(
         self,
         step: str,
@@ -13563,6 +13879,9 @@ class NativeHeadlessGameplayDriver:
         """Submit one event option and require the old full instance to move."""
 
         starting = self.take_snapshot_without_native_command_history()
+        from .event_contract import is_florin_event_snapshot
+        if is_florin_event_snapshot(starting):
+            return self._select_event_option_v1210_unrecorded(option_number, event_instance_id=None, expected_revision=expected_revision)
         if starting.get("map_ready") is not True:
             raise BridgeUnavailableError(
                 "native event selection requires a map-ready snapshot"
@@ -22047,6 +22366,9 @@ class NativeHeadlessGameplayDriver:
             raise ValueError("event_instance_id must be a positive full int32")
         step = QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
         starting = self.take_snapshot_without_native_command_history()
+        from .event_contract import is_florin_event_snapshot
+        if is_florin_event_snapshot(starting):
+            return self.query_event_options_v1210(event_instance_id,expected_revision=expected_revision)
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native event-window query requires a paused snapshot"
@@ -29187,6 +29509,19 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
     if not isinstance(snapshot_id, str) or not snapshot_id:
         raise ValueError("native state_snapshot lacks snapshot_id")
     _validate_revision(revision, "state_snapshot revision")
+    # Florin publishes complete CCharacter IDs as signed int32. Preserve the original value.
+    florin_ids = False
+    if state.get("schema") == "ck3_1210_full_state_v1":
+        from .version_identity import CK3_1210, require_exact_native_build
+        native_actor = state.get("played_character")
+        if (require_exact_native_build(state.get("game_version"), state.get("executable_sha256")) != CK3_1210
+                or state.get("adapter_id") != "ck3-1.21.0-msvc-x64"
+                or state.get("backend") != "ck3-1.21.0-native-headless-main-thread"
+                or not isinstance(native_actor, dict) or native_actor.get("schema") != "ck3_1210_played_character_v1"
+                or require_exact_native_build(native_actor.get("game_version"), native_actor.get("executable_sha256")) != CK3_1210
+                or native_actor.get("adapter_id") != state.get("adapter_id") or native_actor.get("backend") != state.get("backend")):
+            raise ValueError("Florin Full source build tuple differs")
+        florin_ids = True
     history = state.get("history")
     active_wars = normalize_active_wars(state.get("active_wars"))
     player_armies = player_armies_from_state(
@@ -29217,7 +29552,7 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
         ),
         "played_character": _played_character(
             state.get("played_character"), native_revision=revision,
-            date_raw=state.get("date_raw"),
+            date_raw=state.get("date_raw"), allow_signed_full_ids=florin_ids,
         ),
         "played_character_gold": _played_character_gold(
             state.get("played_character_gold")
@@ -36921,6 +37256,7 @@ def _played_character_piety(value: object) -> dict[str, int] | None:
 
 def _played_character(
     value: object, *, native_revision: object = None, date_raw: object = None,
+    allow_signed_full_ids: bool = False,
 ) -> dict[str, object] | None:
     if value is None:
         return None
@@ -36931,7 +37267,7 @@ def _played_character(
     if (
         isinstance(character_id, bool)
         or not isinstance(character_id, int)
-        or character_id < 0
+        or (not -(2**31) <= character_id < 2**31 or character_id == -1 if allow_signed_full_ids else character_id < 0)
         or not isinstance(alive, bool)
     ):
         raise ValueError("native played_character is malformed")
@@ -36999,7 +37335,7 @@ def _played_character(
             if related_id is not None and (
                 isinstance(related_id, bool)
                 or not isinstance(related_id, int)
-                or related_id < 0
+                or (not -(2**31) <= related_id < 2**31 or related_id == -1 if allow_signed_full_ids else related_id < 0)
             ):
                 raise ValueError(
                     f"native played_character {name} is malformed"
@@ -37007,7 +37343,7 @@ def _played_character(
         if not isinstance(spouse_ids, list) or any(
             isinstance(related_id, bool)
             or not isinstance(related_id, int)
-            or related_id < 0
+            or (not -(2**31) <= related_id < 2**31 or related_id == -1 if allow_signed_full_ids else related_id < 0)
             for related_id in spouse_ids
         ):
             raise ValueError(

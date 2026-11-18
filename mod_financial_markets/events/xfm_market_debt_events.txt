@@ -1,0 +1,65 @@
+﻿namespace = xfm_market
+xfm_market.106 = {
+    type = character_event title = xfm_market_debt_pay_title desc = xfm_market_debt_pay_desc theme = stewardship
+    immediate = {
+        var:xfm_selected_debt = { save_scope_as = xfm_ui_confirmation_debt }
+        save_scope_value_as = { name = xfm_ui_confirmation_debt_id value = var:xfm_selected_debt.var:xfm_debt_id }
+        save_scope_value_as = { name = xfm_ui_confirmation_payment_cents value = var:xfm_ui_debt_pay_cents }
+        xfm_market_ui_capture_wallet_effect = yes
+    }
+    option = {
+        name = xfm_market_debt_pay_confirm
+        trigger = {
+            is_alive = yes is_adult = yes
+            exists = scope:xfm_ui_confirmation_debt exists = scope:xfm_ui_confirmation_account
+            scope:xfm_ui_confirmation_account = { var:xfm_holder = root var:xfm_system_account = 0 xfm_finance_account_usable_trigger = yes }
+        }
+        set_variable = { name = xfm_selected_debt value = scope:xfm_ui_confirmation_debt }
+        set_variable = { name = xfm_ui_debt_pay_cents value = scope:xfm_ui_confirmation_payment_cents }
+        xfm_market_ui_restore_wallet_effect = yes
+        xfm_debt_pay_selected_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}
+xfm_market.107 = {
+    type = character_event title = xfm_market_debt_restructure_title desc = xfm_market_debt_restructure_desc theme = stewardship
+    immediate = { var:xfm_selected_debt = { save_scope_as = xfm_ui_confirmation_debt }
+        save_scope_value_as = { name = xfm_ui_confirmation_debt_id value = var:xfm_selected_debt.var:xfm_debt_id } }
+    option = {
+        name = xfm_market_debt_restructure_confirm
+        trigger = { is_alive = yes is_adult = yes exists = scope:xfm_ui_confirmation_debt scope:xfm_ui_confirmation_debt = { var:xfm_creditor_account.var:xfm_holder = root } }
+        set_variable = { name = xfm_selected_debt value = scope:xfm_ui_confirmation_debt }
+        xfm_debt_restructure_selected_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}
+xfm_market.108 = {
+    type = character_event title = xfm_market_fund_donate_title desc = xfm_market_fund_donate_desc theme = stewardship
+    immediate = {
+        save_scope_value_as = { name = xfm_ui_confirmation_donation_cents value = var:xfm_ui_fund_donation_cents }
+        xfm_market_ui_capture_wallet_effect = yes
+    }
+    option = {
+        name = xfm_market_fund_donate_confirm
+        trigger = {
+            is_alive = yes is_adult = yes exists = scope:xfm_ui_confirmation_account
+            scope:xfm_ui_confirmation_account = { var:xfm_holder = root var:xfm_system_account = 0 xfm_finance_account_usable_trigger = yes }
+        }
+        set_variable = { name = xfm_ui_fund_donation_cents value = scope:xfm_ui_confirmation_donation_cents }
+        xfm_market_ui_restore_wallet_effect = yes
+        xfm_debt_donate_fund_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}
+xfm_market.109 = {
+    type = character_event title = xfm_market_debt_refuse_title desc = xfm_market_debt_refuse_desc theme = stewardship
+    immediate = { var:xfm_selected_debt = { save_scope_as = xfm_ui_confirmation_debt }
+        save_scope_value_as = { name = xfm_ui_confirmation_debt_id value = var:xfm_selected_debt.var:xfm_debt_id } }
+    option = {
+        name = xfm_market_debt_refuse_confirm
+        trigger = { is_alive = yes is_adult = yes exists = scope:xfm_ui_confirmation_debt scope:xfm_ui_confirmation_debt = { var:xfm_debtor_account.var:xfm_holder = root } }
+        set_variable = { name = xfm_selected_debt value = scope:xfm_ui_confirmation_debt }
+        xfm_debt_reject_selected_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}

@@ -19,7 +19,7 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 
-/** Durable action metadata. Native originals are archived once and read with exact byte/SHA identity by OutcomeArchive. */
+// Durable action metadata. Native originals are archived once and read with exact byte/SHA identity by OutcomeArchive.
 
 import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.core.JsonProcessingException;

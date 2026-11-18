@@ -1,0 +1,42 @@
+﻿xfm_market_contract_dated_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_selected_coin }
+    effect = { set_variable = { name = xfm_futures_perpetual value = 0 } set_variable = { name = xfm_futures_expiry_day value = var:xfm_exchange.var:xfm_day } change_variable = { name = xfm_futures_expiry_day add = 30 } xfm_futures_ensure_market_effect = yes }
+}
+xfm_market_contract_perpetual_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_selected_coin }
+    effect = { set_variable = { name = xfm_futures_perpetual value = 1 } xfm_futures_ensure_market_effect = yes }
+}
+xfm_market_futures_leverage_gui = {
+    scope = character
+
+    is_valid = { is_ai = no  }
+    effect = { if = { limit = { var:xfm_futures_leverage = 1 } set_variable = { name = xfm_futures_leverage value = 2 } } else_if = { limit = { var:xfm_futures_leverage = 2 } set_variable = { name = xfm_futures_leverage value = 3 } } else_if = { limit = { var:xfm_futures_leverage = 3 } set_variable = { name = xfm_futures_leverage value = 5 } } else_if = { limit = { var:xfm_futures_leverage = 5 } set_variable = { name = xfm_futures_leverage value = 10 } } else_if = { limit = { var:xfm_futures_leverage = 10 } set_variable = { name = xfm_futures_leverage value = 20 } } else = { set_variable = { name = xfm_futures_leverage value = 1 } } }
+}
+xfm_market_futures_lots_up_gui = {
+    scope = character
+
+    is_valid = { is_ai = no var:xfm_futures_lots < 10000 }
+    effect = { change_variable = { name = xfm_futures_lots add = var:xfm_ui_step } if = { limit = { var:xfm_futures_lots > 10000 } set_variable = { name = xfm_futures_lots value = 10000 } } }
+}
+xfm_market_futures_lots_down_gui = {
+    scope = character
+
+    is_valid = { is_ai = no var:xfm_futures_lots > var:xfm_ui_step }
+    effect = { change_variable = { name = xfm_futures_lots subtract = var:xfm_ui_step } }
+}
+xfm_market_futures_long_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_contract var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000 var:xfm_futures_lots >= 1 var:xfm_futures_lots <= 10000 }
+    effect = { set_variable = { name = xfm_futures_side value = 1 } set_variable = { name = xfm_futures_limit_cents value = var:xfm_order_limit_cents } xfm_futures_submit_effect = yes }
+}
+xfm_market_futures_short_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_contract var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000 var:xfm_futures_lots >= 1 var:xfm_futures_lots <= 10000 }
+    effect = { set_variable = { name = xfm_futures_side value = 2 } set_variable = { name = xfm_futures_limit_cents value = var:xfm_order_limit_cents } xfm_futures_submit_effect = yes }
+}

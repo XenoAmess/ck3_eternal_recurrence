@@ -1,0 +1,206 @@
+﻿# Paid subscription reservations remain buyer property until successful public allocation.
+xfm_issuer_subscribe_effect = {
+    set_variable = { name = xfm_issuer_result value = 0 }
+    if = {
+        limit = { xfm_issuer_can_subscribe_trigger = yes }
+        save_scope_as = xfm_offer_buyer
+        set_variable = { name = xfm_offer_request_cents value = xfm_issuer_subscription_cents_value }
+        set_variable = { name = xfm_offer_request_lots value = xfm_issuer_subscription_lots_value }
+        set_variable = { name = xfm_offer_request_cents value = xfm_issuer_subscription_cost_value }
+        set_variable = { name = xfm_offer_request_units value = xfm_issuer_subscription_units_value }
+        if = {
+            limit = { var:xfm_offer_request_lots >= 1 }
+            xfm_finance_ensure_account_effect = yes
+            var:xfm_account = {
+                set_variable = { name = xfm_request_cents value = scope:xfm_offer_buyer.var:xfm_offer_request_cents }
+                xfm_finance_ensure_funds_effect = yes
+                xfm_finance_reserve_effect = yes
+                if = {
+                    limit = { var:xfm_result = 1 exists = scope:xfm_reservation }
+                    save_scope_as = xfm_offer_buyer_account
+                    scope:xfm_reservation = {
+                        set_variable = { name = xfm_subscription_coin value = scope:xfm_offer_buyer.var:xfm_selected_coin }
+                        set_variable = { name = xfm_subscription_buyer value = scope:xfm_offer_buyer }
+                        set_variable = { name = xfm_subscription_units value = scope:xfm_offer_buyer.var:xfm_offer_request_units }
+                        set_variable = { name = xfm_subscription_paid_cents value = scope:xfm_offer_buyer.var:xfm_offer_request_cents }
+                        set_variable = { name = xfm_subscription_state value = 0 }
+                        save_scope_as = xfm_offer_paid_subscription
+                    }
+                    scope:xfm_offer_buyer.var:xfm_selected_coin = {
+                        add_to_variable_list = { name = xfm_subscriptions target = scope:xfm_offer_paid_subscription }
+                        change_variable = { name = xfm_actual_raised_cents add = scope:xfm_offer_buyer.var:xfm_offer_request_cents }
+                        change_variable = { name = xfm_offer_units_remaining subtract = scope:xfm_offer_buyer.var:xfm_offer_request_units }
+                        if = {
+                            limit = { var:xfm_controller != scope:xfm_offer_buyer }
+                            change_variable = { name = xfm_external_raised_cents add = scope:xfm_offer_buyer.var:xfm_offer_request_cents }
+                        }
+                    }
+                    scope:xfm_offer_buyer = { set_variable = { name = xfm_issuer_result value = 1 } }
+                }
+            }
+        }
+    }
+}
+
+xfm_issuer_complete_offer_effect = {
+    set_variable = { name = xfm_issuer_result value = 0 }
+    if = {
+        limit = { xfm_issuer_can_complete_trigger = yes }
+        save_scope_as = xfm_offer_applicant
+        var:xfm_selected_coin = {
+            save_scope_as = xfm_offer_closing_coin
+            set_variable = { name = xfm_close_cost_cents value = xfm_issuer_close_cost_value }
+            xfm_issuer_preflight_close_effect = yes
+            # Underwriting cannot spend anticipated proceeds or personal collateral.
+            if = {
+                limit = { var:xfm_actual_raised_cents >= var:xfm_close_cost_cents var:xfm_close_preflight = 1 }
+                set_variable = { name = xfm_offer_closing_started value = 1 }
+                every_in_list = {
+                    variable = xfm_subscriptions
+                    limit = { var:xfm_subscription_state = 0 }
+                    set_variable = { name = xfm_request_target value = scope:xfm_offer_closing_coin.var:xfm_issuer_account }
+                    set_variable = { name = xfm_request_cents value = var:xfm_subscription_paid_cents }
+                    xfm_finance_pay_reserved_effect = yes
+                    if = { limit = { var:xfm_result = 1 } set_variable = { name = xfm_subscription_state value = 1 } }
+                }
+                if = {
+                    limit = { NOT = { any_in_list = { variable = xfm_subscriptions var:xfm_subscription_state = 0 } } }
+                    xfm_issuer_allocate_listing_effect = yes
+                    every_in_list = {
+                        variable = xfm_subscriptions
+                        limit = { var:xfm_subscription_state = 1 scope:xfm_offer_closing_coin = { has_variable = xfm_listing_allocated } }
+                        save_scope_as = xfm_offer_settling_subscription
+                        scope:xfm_offer_closing_coin.var:xfm_issuer_account = {
+                            set_variable = { name = xfm_request_coin value = scope:xfm_offer_closing_coin }
+                            set_variable = { name = xfm_request_target value = scope:xfm_offer_settling_subscription.var:xfm_account }
+                            set_variable = { name = xfm_request_units value = scope:xfm_offer_settling_subscription.var:xfm_subscription_units }
+                            xfm_finance_transfer_coin_effect = yes
+                            if = { limit = { var:xfm_result = 1 } scope:xfm_offer_settling_subscription = { set_variable = { name = xfm_subscription_state value = 2 } } }
+                        }
+                    }
+                    if = {
+                        limit = { has_variable = xfm_listing_allocated NOT = { any_in_list = { variable = xfm_subscriptions var:xfm_subscription_state < 2 } } }
+                        set_variable = { name = xfm_listing_state value = 1 }
+                        set_variable = { name = xfm_listed_day value = global_var:xfm_exchange.var:xfm_day }
+                        set_variable = { name = xfm_trading_open value = 1 }
+                        set_variable = { name = xfm_last_price_cents value = var:xfm_ipo_price_cents }
+                        set_variable = { name = xfm_maintenance_age value = 0 }
+                        set_variable = { name = xfm_listing_last_day value = global_var:xfm_exchange.var:xfm_day }
+                        set_variable = { name = xfm_active_listing_counted value = 1 }
+                        if = { limit = { var:xfm_offer_counted = 1 } set_variable = { name = xfm_offer_counted value = 0 } global_var:xfm_exchange = { change_variable = { name = xfm_pending_coin_count subtract = 1 } } }
+                        xfm_spot_maker_effect = yes
+                        scope:xfm_offer_applicant = { remove_variable = xfm_pending_offer set_variable = { name = xfm_issuer_result value = 1 } }
+                        global_var:xfm_exchange = { change_variable = { name = xfm_new_listings_today add = 1 } change_variable = { name = xfm_active_coin_count add = 1 } }
+                        set_variable = { name = xfm_news_actor value = var:xfm_controller }
+                        set_variable = { name = xfm_news_kind value = 7 }
+                        xfm_news_record_effect = yes
+                    }
+                }
+            }
+        }
+    }
+}
+
+xfm_issuer_preflight_close_effect = {
+    set_variable = { name = xfm_close_preflight value = 1 }
+    set_variable = { name = xfm_units_still_owed value = 0 }
+    set_variable = { name = xfm_cents_still_held value = 0 }
+    set_variable = { name = xfm_remaining_close_cost_cents value = 0 }
+    if = { limit = { NOT = { has_variable = xfm_listing_fee_collected } } change_variable = { name = xfm_remaining_close_cost_cents add = xfm_issuer_listing_fee_value } }
+    if = { limit = { NOT = { exists = var:xfm_maintenance_reservation } } change_variable = { name = xfm_remaining_close_cost_cents add = var:xfm_initial_maintenance_cents } }
+    if = { limit = { NOT = { exists = var:xfm_bond_reservation } } change_variable = { name = xfm_remaining_close_cost_cents add = xfm_issuer_bond_value } }
+    if = { limit = { NOT = { exists = var:xfm_maker_reservation } } change_variable = { name = xfm_remaining_close_cost_cents add = xfm_issuer_maker_value } }
+    every_in_list = {
+        variable = xfm_subscriptions
+        limit = { var:xfm_subscription_state < 2 }
+        scope:xfm_offer_closing_coin = { change_variable = { name = xfm_units_still_owed add = prev.var:xfm_subscription_units } }
+        if = {
+            limit = { var:xfm_subscription_state = 0 }
+            if = {
+                limit = { xfm_finance_reservation_usable_trigger = yes var:xfm_remaining_cents = var:xfm_subscription_paid_cents var:xfm_account = { var:xfm_reserved_cents >= prev.var:xfm_subscription_paid_cents } }
+                scope:xfm_offer_closing_coin = { change_variable = { name = xfm_cents_still_held add = prev.var:xfm_subscription_paid_cents } }
+            }
+            else = { scope:xfm_offer_closing_coin = { set_variable = { name = xfm_close_preflight value = 0 } } }
+        }
+    }
+    var:xfm_issuer_account = {
+        set_variable = { name = xfm_request_coin value = scope:xfm_offer_closing_coin }
+        xfm_finance_lookup_position_effect = yes
+        if = {
+            limit = { NOT = { xfm_finance_account_usable_trigger = yes exists = scope:xfm_position scope:xfm_position = { xfm_finance_position_available_value >= scope:xfm_offer_closing_coin.var:xfm_units_still_owed } } }
+            scope:xfm_offer_closing_coin = { set_variable = { name = xfm_close_preflight value = 0 } }
+        }
+        if = {
+            limit = { scope:xfm_offer_closing_coin = { NOT = { has_variable = xfm_listing_allocated } } }
+            if = {
+                limit = { xfm_issuer_available_close_cash_value < scope:xfm_offer_closing_coin.var:xfm_remaining_close_cost_cents }
+                scope:xfm_offer_closing_coin = { set_variable = { name = xfm_close_preflight value = 0 } }
+            }
+        }
+    }
+}
+
+xfm_issuer_allocate_listing_effect = {
+    # Idempotent category separation; registration was paid when service began.
+    if = {
+        limit = { NOT = { has_variable = xfm_listing_allocated } }
+        set_variable = { name = xfm_close_listing_cents value = xfm_issuer_listing_fee_value }
+        set_variable = { name = xfm_close_bond_cents value = xfm_issuer_bond_value }
+        set_variable = { name = xfm_close_maker_cents value = xfm_issuer_maker_value }
+        var:xfm_issuer_account = {
+            if = {
+                limit = { scope:xfm_offer_closing_coin = { NOT = { has_variable = xfm_listing_fee_collected } } }
+                set_variable = { name = xfm_request_cents value = scope:xfm_offer_closing_coin.var:xfm_close_listing_cents }
+                xfm_finance_fee_effect = yes
+                if = { limit = { var:xfm_result = 1 } scope:xfm_offer_closing_coin = { set_variable = { name = xfm_listing_fee_collected value = 1 } } }
+            }
+            if = {
+                limit = { scope:xfm_offer_closing_coin = { NOT = { exists = var:xfm_maintenance_reservation } } }
+                set_variable = { name = xfm_request_cents value = scope:xfm_offer_closing_coin.var:xfm_initial_maintenance_cents }
+                xfm_finance_reserve_effect = yes
+                if = { limit = { var:xfm_result = 1 exists = scope:xfm_reservation } scope:xfm_offer_closing_coin = { set_variable = { name = xfm_maintenance_reservation value = scope:xfm_reservation } } }
+            }
+            if = {
+                limit = { scope:xfm_offer_closing_coin = { NOT = { exists = var:xfm_bond_reservation } } }
+                set_variable = { name = xfm_request_cents value = scope:xfm_offer_closing_coin.var:xfm_close_bond_cents }
+                xfm_finance_reserve_effect = yes
+                if = { limit = { var:xfm_result = 1 exists = scope:xfm_reservation } scope:xfm_offer_closing_coin = { set_variable = { name = xfm_bond_reservation value = scope:xfm_reservation } } }
+            }
+            if = {
+                limit = { scope:xfm_offer_closing_coin = { NOT = { exists = var:xfm_maker_reservation } } }
+                set_variable = { name = xfm_request_cents value = scope:xfm_offer_closing_coin.var:xfm_close_maker_cents }
+                xfm_finance_reserve_effect = yes
+                if = { limit = { var:xfm_result = 1 exists = scope:xfm_reservation } scope:xfm_offer_closing_coin = { set_variable = { name = xfm_maker_reservation value = scope:xfm_reservation } } }
+            }
+        }
+        if = { limit = { has_variable = xfm_listing_fee_collected exists = var:xfm_maintenance_reservation exists = var:xfm_bond_reservation exists = var:xfm_maker_reservation } set_variable = { name = xfm_listing_allocated value = 1 } }
+    }
+}
+
+xfm_issuer_abort_offer_effect = {
+    if = {
+        limit = { xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { var:xfm_listing_state = 0 NOT = { has_variable = xfm_offer_closing_started } } }
+        var:xfm_selected_coin = { xfm_issuer_refund_effect = yes }
+        remove_variable = xfm_pending_offer
+    }
+}
+
+xfm_issuer_refund_effect = {
+    save_scope_as = xfm_offer_refund_coin
+    every_in_list = {
+        variable = xfm_subscriptions
+        limit = { var:xfm_subscription_state = 0 }
+        set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
+        xfm_finance_release_effect = yes
+        if = { limit = { var:xfm_result = 1 } set_variable = { name = xfm_subscription_state value = 3 } }
+    }
+    # No deletion or invented cash. A partially collected closing remains a live claim.
+    if = {
+        limit = { NOT = { any_in_list = { variable = xfm_subscriptions var:xfm_subscription_state < 2 } } }
+        set_variable = { name = xfm_listing_state value = 6 }
+        set_variable = { name = xfm_trading_open value = 0 }
+        if = { limit = { var:xfm_offer_counted = 1 } set_variable = { name = xfm_offer_counted value = 0 } global_var:xfm_exchange = { change_variable = { name = xfm_pending_coin_count subtract = 1 } } }
+        if = { limit = { exists = var:xfm_controller var:xfm_controller = { var:xfm_pending_offer = scope:xfm_offer_refund_coin } } var:xfm_controller = { remove_variable = xfm_pending_offer } }
+        if = { limit = { NOT = { has_variable = xfm_refund_news_recorded } } set_variable = { name = xfm_refund_news_recorded value = 1 } set_variable = { name = xfm_news_actor value = var:xfm_controller } set_variable = { name = xfm_news_kind value = 10 } xfm_news_record_effect = yes }
+    }
+}

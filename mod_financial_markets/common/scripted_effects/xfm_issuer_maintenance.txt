@@ -1,0 +1,88 @@
+﻿# Maintenance is provided monthly; prepaid money is owned escrow until consumed.
+xfm_issuer_charge_maintenance_effect = {
+    save_scope_as = xfm_offer_maintenance_coin
+    set_variable = { name = xfm_credit_used_cents value = xfm_issuer_maintenance_credit_value }
+    change_variable = { name = xfm_eligible_maintenance_credit_cents subtract = var:xfm_credit_used_cents }
+    set_variable = { name = xfm_monthly_due_cents value = xfm_issuer_maintenance_net_value }
+    if = {
+        limit = { var:xfm_monthly_due_cents > 0 exists = var:xfm_maintenance_reservation }
+        var:xfm_maintenance_reservation = {
+            set_variable = { name = xfm_request_cents value = scope:xfm_offer_maintenance_coin.var:xfm_monthly_due_cents }
+            if = {
+                limit = { var:xfm_remaining_cents < var:xfm_request_cents }
+                set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
+            }
+            if = {
+                limit = { var:xfm_request_cents > 0 }
+                xfm_finance_fee_reserved_effect = yes
+                if = { limit = { var:xfm_result = 1 } scope:xfm_offer_maintenance_coin = { change_variable = { name = xfm_monthly_due_cents subtract = prev.var:xfm_request_cents } } }
+            }
+        }
+    }
+    if = {
+        limit = { var:xfm_monthly_due_cents > 0 }
+        change_variable = { name = xfm_maintenance_arrears_cents add = var:xfm_monthly_due_cents }
+        if = { limit = { NOT = { has_variable = xfm_maintenance_late_age } } set_variable = { name = xfm_maintenance_late_age value = 0 } }
+        if = { limit = { var:xfm_listing_state = 1 } set_variable = { name = xfm_listing_state value = 2 } }
+    }
+}
+
+xfm_listing_topup_effect = {
+    # Any solvent adult may sponsor; no authority over the issuer is granted by payment.
+    if = {
+        limit = { xfm_issuer_actor_trigger = yes exists = var:xfm_selected_coin var:xfm_selected_coin = { story_type = xfm_finance_coin } }
+        save_scope_as = xfm_offer_sponsor
+        xfm_finance_ensure_account_effect = yes
+        var:xfm_selected_coin = {
+            save_scope_as = xfm_offer_sponsored_coin
+            set_variable = { name = xfm_topup_cents value = var:xfm_initial_maintenance_cents }
+        }
+        var:xfm_account = {
+            set_variable = { name = xfm_request_target value = scope:xfm_offer_sponsored_coin.var:xfm_issuer_account }
+            set_variable = { name = xfm_request_cents value = scope:xfm_offer_sponsored_coin.var:xfm_topup_cents }
+            xfm_finance_ensure_funds_effect = yes
+            xfm_finance_transfer_effect = yes
+            if = {
+                limit = { var:xfm_result = 1 }
+                scope:xfm_offer_sponsored_coin = {
+                    set_variable = { name = xfm_topup_old_reserved_cents value = 0 }
+                    if = {
+                        limit = { exists = var:xfm_maintenance_reservation }
+                        set_variable = { name = xfm_topup_old_reserved_cents value = var:xfm_maintenance_reservation.var:xfm_remaining_cents }
+                        var:xfm_maintenance_reservation = {
+                            set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
+                            if = { limit = { var:xfm_request_cents > 0 } xfm_finance_release_effect = yes }
+                        }
+                    }
+                    var:xfm_issuer_account = {
+                        set_variable = { name = xfm_request_cents value = { value = scope:xfm_offer_sponsored_coin.var:xfm_topup_cents add = scope:xfm_offer_sponsored_coin.var:xfm_topup_old_reserved_cents } }
+                        xfm_finance_reserve_effect = yes
+                        if = { limit = { var:xfm_result = 1 } scope:xfm_offer_sponsored_coin = { set_variable = { name = xfm_maintenance_reservation value = scope:xfm_reservation } } }
+                    }
+                    xfm_issuer_pay_arrears_effect = yes
+                }
+            }
+        }
+    }
+}
+
+xfm_issuer_pay_arrears_effect = {
+    save_scope_as = xfm_offer_arrears_coin
+    if = {
+        limit = { var:xfm_maintenance_arrears_cents > 0 exists = var:xfm_maintenance_reservation }
+        var:xfm_maintenance_reservation = {
+            set_variable = { name = xfm_request_cents value = scope:xfm_offer_arrears_coin.var:xfm_maintenance_arrears_cents }
+            if = { limit = { var:xfm_remaining_cents < var:xfm_request_cents } set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents } }
+            if = {
+                limit = { var:xfm_request_cents > 0 }
+                xfm_finance_fee_reserved_effect = yes
+                if = { limit = { var:xfm_result = 1 } scope:xfm_offer_arrears_coin = { change_variable = { name = xfm_maintenance_arrears_cents subtract = prev.var:xfm_request_cents } } }
+            }
+        }
+    }
+    if = {
+        limit = { var:xfm_maintenance_arrears_cents = 0 }
+        remove_variable = xfm_maintenance_late_age
+        if = { limit = { var:xfm_listing_state = 2 } set_variable = { name = xfm_listing_state value = 1 } }
+    }
+}

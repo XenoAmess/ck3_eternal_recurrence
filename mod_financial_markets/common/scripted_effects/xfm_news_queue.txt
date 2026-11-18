@@ -1,0 +1,142 @@
+﻿# 5 effects. One immutable fact, one linked queue, independent cursor per human character.
+xfm_news_record_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_news_fact_counter } }
+        set_variable = { name = xfm_news_fact_counter value = 0 }
+    }
+    change_variable = { name = xfm_news_fact_counter add = 1 }
+    xfm_news_enqueue_effect = yes
+}
+
+xfm_news_enqueue_effect = {
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange
+            exists = var:xfm_news_actor
+            has_variable = xfm_news_kind
+            has_variable = xfm_news_fact_counter
+            OR = {
+                NOT = { has_variable = xfm_news_last_fact }
+                var:xfm_news_last_fact < var:xfm_news_fact_counter
+            }
+        }
+        save_scope_as = xfm_news_source
+        clear_saved_scope = xfm_news_new_entry
+        global_var:xfm_exchange.story_owner = { create_story = { type = xfm_news_entry save_scope_as = xfm_news_new_entry } }
+        if = {
+            limit = { exists = scope:xfm_news_new_entry }
+            global_var:xfm_exchange = {
+                if = {
+                    limit = { NOT = { has_variable = xfm_news_counter } }
+                    set_variable = { name = xfm_news_counter value = 0 }
+                }
+                change_variable = { name = xfm_news_counter add = 1 }
+            }
+            scope:xfm_news_new_entry = {
+                set_variable = { name = xfm_news_id value = global_var:xfm_exchange.var:xfm_news_counter }
+                set_variable = { name = xfm_news_source value = scope:xfm_news_source }
+                set_variable = { name = xfm_news_event_id value = scope:xfm_news_source.var:xfm_news_fact_counter }
+                set_variable = { name = xfm_news_actor value = scope:xfm_news_source.var:xfm_news_actor }
+                set_variable = { name = xfm_news_kind value = scope:xfm_news_source.var:xfm_news_kind }
+                set_variable = { name = xfm_news_day value = global_var:xfm_exchange.var:xfm_day }
+                set_variable = { name = xfm_news_scene value = 20 }
+                if = {
+                    limit = { scope:xfm_news_source = { has_variable = xfm_news_scene } }
+                    set_variable = { name = xfm_news_scene value = scope:xfm_news_source.var:xfm_news_scene }
+                }
+                add_to_global_variable_list = { name = xfm_news_entries target = this }
+            }
+            if = {
+                limit = { var:xfm_news_kind = 5 }
+                xfm_news_append_queue_effect = { QUEUE = xfm_news_urgent }
+            }
+            else = { xfm_news_append_queue_effect = { QUEUE = xfm_news } }
+            set_variable = { name = xfm_news_last_fact value = var:xfm_news_fact_counter }
+        }
+    }
+}
+
+xfm_news_daily_effect = {
+    every_player = {
+        save_scope_as = xfm_news_recipient
+        if = {
+            limit = {
+                OR = {
+                    NOT = { has_variable = xfm_news_delivery_day }
+                    var:xfm_news_delivery_day < global_var:xfm_exchange.var:xfm_day
+                }
+            }
+            set_variable = { name = xfm_news_delivery_day value = global_var:xfm_exchange.var:xfm_day }
+            set_variable = { name = xfm_news_sent_today value = 0 }
+        }
+        while = {
+            limit = {
+                OR = { exists = var:xfm_news_urgent_next exists = var:xfm_news_next }
+                var:xfm_news_sent_today < 3
+            }
+            if = {
+                limit = { exists = var:xfm_news_urgent_next }
+                var:xfm_news_urgent_next = { save_scope_as = xfm_news_display_entry }
+                if = {
+                    limit = { exists = scope:xfm_news_display_entry.var:xfm_news_urgent_next }
+                    set_variable = { name = xfm_news_urgent_next value = scope:xfm_news_display_entry.var:xfm_news_urgent_next }
+                }
+                else = { remove_variable = xfm_news_urgent_next }
+            }
+            else = {
+                var:xfm_news_next = { save_scope_as = xfm_news_display_entry }
+                if = {
+                    limit = { exists = scope:xfm_news_display_entry.var:xfm_news_next }
+                    set_variable = { name = xfm_news_next value = scope:xfm_news_display_entry.var:xfm_news_next }
+                }
+                else = { remove_variable = xfm_news_next }
+            }
+            scope:xfm_news_display_entry.var:xfm_news_actor = { save_scope_as = xfm_news_actor }
+            if = {
+                limit = { scope:xfm_news_display_entry.var:xfm_news_kind = 5 }
+                xfm_news_dispatch_scene_effect = yes
+            }
+            else = { xfm_news_send_general_effect = yes }
+            set_variable = { name = xfm_news_cursor value = scope:xfm_news_display_entry.var:xfm_news_id }
+            change_variable = { name = xfm_news_sent_today add = 1 }
+        }
+    }
+}
+
+xfm_news_append_queue_effect = {
+    global_var:xfm_exchange = {
+        if = {
+            limit = { exists = var:$QUEUE$_tail }
+            var:$QUEUE$_tail = { set_variable = { name = $QUEUE$_next value = scope:xfm_news_new_entry } }
+        }
+        else = { set_variable = { name = $QUEUE$_head value = scope:xfm_news_new_entry } }
+        set_variable = { name = $QUEUE$_tail value = scope:xfm_news_new_entry }
+    }
+    every_player = {
+        if = {
+            limit = { NOT = { exists = var:$QUEUE$_next } }
+            set_variable = { name = $QUEUE$_next value = scope:xfm_news_new_entry }
+        }
+    }
+}
+
+xfm_news_send_general_effect = {
+    if = { limit = { scope:xfm_news_display_entry.var:xfm_news_kind = 1 } xfm_news_send_kind_effect = { KIND = 1 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_kind = 2 } xfm_news_send_kind_effect = { KIND = 2 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_kind = 3 } xfm_news_send_kind_effect = { KIND = 3 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_kind = 4 } xfm_news_send_kind_effect = { KIND = 4 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_kind = 6 } xfm_news_send_kind_effect = { KIND = 6 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_kind = 7 } xfm_news_send_kind_effect = { KIND = 7 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_kind = 8 } xfm_news_send_kind_effect = { KIND = 8 } }
+    else_if = { limit = { scope:xfm_news_display_entry.var:xfm_news_kind = 9 } xfm_news_send_kind_effect = { KIND = 9 } }
+    else = { xfm_news_send_kind_effect = { KIND = 10 } }
+}
+
+xfm_news_send_scene_effect = {
+    send_interface_toast = {
+        type = event_toast_effect_bad
+        title = xfm_crisis_scene_$SCENE$_title
+        desc = xfm_crisis_scene_$SCENE$_desc
+        left_icon = scope:xfm_news_actor
+    }
+}

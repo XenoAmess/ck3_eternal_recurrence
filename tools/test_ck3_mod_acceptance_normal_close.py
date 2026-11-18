@@ -403,7 +403,7 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             self.assertFalse((Path(directory) / 'normal-close-result.json').exists())
             client.execute_plan.assert_not_called()
 
-    def typed_route(self, root, client, report, *, observe=True, inventory_defect=None):
+    def typed_route(self, root, client, report, *, observe=True, inventory_defect=None, core=False):
         """Actual inventory producer/SDK encoder -> CaseClient, with inert native facts."""
         from ck3_mod_acceptance import pin
         from build_normal_exit_source_inventory_v1 import (
@@ -430,7 +430,7 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         client.selection.manifest_path_key = lambda ref: {'source_root':REPO, 'source_index':index}.get(ref.get('path_key'), HOST_SOURCE)
         profile = {'schema_version':1, 'guard_profile':str(root/'guard.json'), 'guard_profile_sha256':'a'*64,
             'userdir':str(client.state/'profile'), 'state_directory':str(client.state),
-            'evidence_directory':str(client.live), 'game_version':'1.20.0.4',
+            'evidence_directory':str(client.live), 'game_version':'1.21.0' if core else '1.20.0.4',
             'dll':{'path':str(root/'bridge.dll'), 'sha256':'a'*64},
             'injector':{'path':str(root/'injector.exe'), 'sha256':'b'*64}}
         inventory = client.state/'profile/normal-exit-source-inventory-v1.json'
@@ -486,6 +486,18 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             'dispatches':[{key:i==2 for key in ('claim_latched','dispatch_invoked','native_handled',
                 'post_read_complete','postcondition_observed')} for i in range(3)]}
         request_id = 'normal-exit-confirm_desktop-fixture'
+        if core:
+            from xar_autoplayer.bridge.normal_exit_contract_v1 import (
+                CORE_EXIT_EXE_SHA256, CORE_EXIT_BACKEND, normalize_core_exit_ack_v1)
+            ack = json.loads((REPO / 'java/ck3-control/native-transport/src/test/resources/native1210/application-exit-producer-ack01.json').read_text())
+            native = {'schema':'ck3-normal-exit-application-observation-v1',
+                'step':'normal-exit-application-v1','action':'confirm_desktop','status':'dispatch_pending',
+                'native_revision':6,'connection_generation':1,'game_pid':2468,
+                'played_character_id':-2130706431,'process_creation_filetime_100ns':birth,
+                'exit_context_signature':'c'*64,'core_ack':normalize_core_exit_ack_v1(ack['result']),
+                'core_prefix':{'date_raw':22000000,'speed':5,'paused':True,'local_player_id':-2130706431,
+                    'map_ready':True,'has_played_character':True,'played_character_id':-2130706431,
+                    'played_character_alive':True}}
         (directory/(request_id+'.request.json')).write_text(json.dumps({
             'type':'execute_step','protocol_version':1,'request_id':request_id,
             'step':'normal-exit-map-v1','action':'confirm_desktop',
@@ -494,6 +506,14 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             'expected_process_creation_filetime_100ns':birth,
             'source_inventory_sha256':pin(inventory)['sha256'],'request_nonce':request_id,
             'expected_exit_context_signature':'c'*64}),encoding='utf-8')
+        if core:
+            (directory/(request_id+'.request.json')).write_text(json.dumps({
+                'type':'execute_step','protocol_version':1,'request_id':request_id,
+                'step':'normal-exit-application-v1','expected_revision':0,'arguments':{},
+                'core_control_deadline_unix_ms':1794990000000,
+                'core_application_exit':{'schema':'ck3_1210_application_exit_v1','game_version':'1.21.0',
+                    'executable_sha256':CORE_EXIT_EXE_SHA256,'adapter_id':'ck3-1.21.0-msvc-x64',
+                    'backend':CORE_EXIT_BACKEND,**native['core_prefix']}}),encoding='utf-8')
         identity = {'game_pid':2468,'creation_filetime_100ns':birth,'action':'confirm_desktop'}
         claim_key = hashlib.sha256(json.dumps(identity,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         claim_path = directory/(claim_key+'.claim.json')
@@ -513,6 +533,8 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             'driver_dispatch_receipt_observed_monotonic_ns':30,'snapshot_after_required':False,
             'observer_retained':True,'native_submission_count':1,'uses_desktop_input':False,'uses_ocr':False}
         confirm = copy.deepcopy(terminal)
+        if core:
+            terminal['route'] = confirm['route'] = 'application_core_1210'
         if observe:
             confirm.update(status='dispatch_pending',process_exit_observed=False,typed_normal_exit_observed=False,exit_code=None)
             confirm['process_observation'].update(wait_result=258,wait_state='timeout',exit_code=259,
@@ -528,6 +550,17 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             'close_error':None,'retry_authorized':False}),encoding='utf-8')
         terminal.update(observer_retained=False,observer_close_receipt_path=str(close_path))
         if not observe:confirm=terminal
+        if core:
+            rows=[{'id':'confirm','ok':True,'finished_at':'actual',
+                'plan':{'tool':'ck3_request_normal_exit_v1','args':{'action':'confirm_desktop',
+                    'expected_revision':'7','expected_exit_context_signature':'c'*64}},
+                'result':codec.normal_exit_public_result_v2(confirm)}]
+            if observe:
+                rows.append({'id':'observe','ok':True,'finished_at':'actual',
+                    'plan':{'tool':'ck3_observe_normal_exit_v1','args':{}},
+                    'result':codec.normal_exit_public_result_v2(terminal)})
+            report['steps']=rows
+            return rows
         disabled = copy.deepcopy(terminal)
         disabled = {key:disabled[key] for key in ('public_revision','source_inventory_sha256','process_creation_filetime_100ns')}
         disabled.update(schema='ck3-normal-exit-request-result-v1',action='disable_exit_autosave',status='autosave_disabled',
@@ -550,6 +583,20 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             'plan':{'tool':'ck3_observe_normal_exit_v1','args':{}},'result':codec.normal_exit_public_result_v2(terminal)})
         report['steps']=rows
         return rows
+
+    def test_core_cpp_exit_ack_to_immutable_common_client_evidence(self):
+        for observe in (False, True):
+            with self.subTest(observe=observe), tempfile.TemporaryDirectory() as directory:
+                root=Path(directory)
+                client,_,fake_time,report=self.make_client(root,review_at=None)
+                self.typed_route(root,client,report,observe=observe,core=True)
+                with patch.object(self.module,'time',fake_time):
+                    result=client.normal_close('synthetic-core-exit-immutable-join')
+                self.assertTrue(result['normal_close_qualified'])
+                self.assertIsNone(result['typed_normal_exit_route']['autosave_disabled'])
+                self.assertFalse(result['typed_normal_exit_route']['autosave_verified'])
+                self.assertFalse(result['business_pass'])
+                client.execute_plan.assert_not_called()
 
     def test_typed_terminal_sdk_to_normal_close_without_gui_evidence(self):
         for observe in (False,True):

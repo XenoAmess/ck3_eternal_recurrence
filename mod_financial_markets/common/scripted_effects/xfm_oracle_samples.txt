@@ -1,0 +1,150 @@
+﻿# Four effects. Coin scope. Sample identities are economic owners, not technical custodians.
+xfm_oracle_init_coin_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_oracle_initialized } }
+        set_variable = { name = xfm_oracle_initialized value = 1 }
+        set_variable = { name = xfm_oracle_bucket_day value = global_var:xfm_exchange.var:xfm_day }
+        set_variable = { name = xfm_oracle_bucket_samples value = 0 }
+        set_variable = { name = xfm_oracle_bucket_notional value = 0 }
+        set_variable = { name = xfm_qualified_volume_cents value = 0 }
+        set_variable = { name = xfm_last_completed_qualified_volume_cents value = 0 }
+        set_variable = { name = xfm_last_completed_volume_day value = -1 }
+        set_variable = { name = xfm_oracle_bucket_lots value = 0 }
+        set_variable = { name = xfm_oracle_quality value = 0 }
+        set_variable = { name = xfm_max_leverage value = 0 }
+        set_variable = { name = xfm_index_cents value = 0 }
+        set_variable = { name = xfm_mark_cents value = 0 }
+        set_variable = { name = xfm_oracle_last_valid_day value = -1 }
+        set_variable = { name = xfm_oracle_reason value = 1 }
+        set_variable = { name = xfm_oracle_model_index value = 0 }
+        set_variable = { name = xfm_oracle_source_id value = 1 }
+    }
+}
+
+xfm_oracle_record_trade_effect = {
+    xfm_oracle_init_coin_effect = yes
+    xfm_oracle_roll_coin_effect = yes
+    if = {
+        limit = {
+            scope:xfm_trade_day = global_var:xfm_exchange.var:xfm_day
+            scope:xfm_trade_price_cents > 0
+            scope:xfm_trade_lots > 0
+            scope:xfm_trade_notional_cents >= 100
+            var:xfm_oracle_bucket_samples < 8
+            exists = scope:xfm_trade_buyer_holder
+            exists = scope:xfm_trade_seller_holder
+            scope:xfm_trade_buyer_holder = { NOT = { this = scope:xfm_trade_seller_holder } }
+            NOT = { is_target_in_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_buyer_holder } }
+            NOT = { is_target_in_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_seller_holder } }
+            OR = {
+                NOT = { exists = var:xfm_controller }
+                var:xfm_controller = {
+                    NOT = { this = scope:xfm_trade_buyer_holder }
+                    NOT = { this = scope:xfm_trade_seller_holder }
+                }
+            }
+        }
+        add_to_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_buyer_holder }
+        add_to_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_seller_holder }
+        change_variable = { name = xfm_oracle_bucket_samples add = 1 }
+        change_variable = { name = xfm_oracle_bucket_notional add = xfm_oracle_sample_notional_value }
+        change_variable = { name = xfm_qualified_volume_cents add = xfm_oracle_sample_notional_value }
+        change_variable = { name = xfm_oracle_bucket_lots add = xfm_oracle_sample_lots_value }
+    }
+}
+
+xfm_oracle_roll_coin_effect = {
+    if = {
+        limit = { var:xfm_oracle_bucket_day < global_var:xfm_exchange.var:xfm_day }
+        set_variable = { name = xfm_oracle_slot value = xfm_oracle_bucket_slot_value }
+        if = {
+            limit = { var:xfm_oracle_slot = 0 }
+            xfm_oracle_store_slot_effect = { SLOT = 0 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 1 }
+            xfm_oracle_store_slot_effect = { SLOT = 1 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 2 }
+            xfm_oracle_store_slot_effect = { SLOT = 2 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 3 }
+            xfm_oracle_store_slot_effect = { SLOT = 3 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 4 }
+            xfm_oracle_store_slot_effect = { SLOT = 4 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 5 }
+            xfm_oracle_store_slot_effect = { SLOT = 5 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 6 }
+            xfm_oracle_store_slot_effect = { SLOT = 6 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 7 }
+            xfm_oracle_store_slot_effect = { SLOT = 7 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 8 }
+            xfm_oracle_store_slot_effect = { SLOT = 8 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 9 }
+            xfm_oracle_store_slot_effect = { SLOT = 9 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 10 }
+            xfm_oracle_store_slot_effect = { SLOT = 10 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 11 }
+            xfm_oracle_store_slot_effect = { SLOT = 11 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 12 }
+            xfm_oracle_store_slot_effect = { SLOT = 12 }
+        }
+        else_if = {
+            limit = { var:xfm_oracle_slot = 13 }
+            xfm_oracle_store_slot_effect = { SLOT = 13 }
+        }
+        # Publish the actual closed bucket before clearing the new day's samples.
+        # A missed older bucket retains its real day; consumers must not backdate it.
+        set_variable = { name = xfm_last_completed_qualified_volume_cents value = var:xfm_qualified_volume_cents }
+        set_variable = { name = xfm_last_completed_volume_day value = var:xfm_oracle_bucket_day }
+        set_variable = { name = xfm_oracle_bucket_day value = global_var:xfm_exchange.var:xfm_day }
+        set_variable = { name = xfm_oracle_bucket_samples value = 0 }
+        set_variable = { name = xfm_oracle_bucket_notional value = 0 }
+        set_variable = { name = xfm_qualified_volume_cents value = 0 }
+        set_variable = { name = xfm_oracle_bucket_lots value = 0 }
+        if = {
+            limit = { has_variable_list = xfm_oracle_participants }
+            clear_variable_list = xfm_oracle_participants
+        }
+        remove_variable = xfm_oracle_slot
+    }
+}
+
+xfm_oracle_store_slot_effect = {
+    # Invalid days overwrite their modulo slot with a zero count, never a zero settlement price.
+    set_variable = { name = xfm_oracle_slot_$SLOT$_day value = var:xfm_oracle_bucket_day }
+    set_variable = { name = xfm_oracle_slot_$SLOT$_participants value = 0 }
+    set_variable = { name = xfm_oracle_slot_$SLOT$_price value = 0 }
+    if = {
+        limit = {
+            var:xfm_oracle_bucket_samples >= 4
+            var:xfm_oracle_bucket_notional >= 1000
+            var:xfm_oracle_bucket_lots > 0
+        }
+        set_variable = { name = xfm_oracle_slot_$SLOT$_price value = xfm_oracle_bucket_vwap_value }
+        set_variable = {
+            name = xfm_oracle_slot_$SLOT$_participants
+            value = { value = var:xfm_oracle_bucket_samples multiply = 2 }
+        }
+    }
+}

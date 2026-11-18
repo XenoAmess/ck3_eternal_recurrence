@@ -3,9 +3,173 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from dataclasses import dataclass
+from typing import Literal, TypedDict
+
+from .version_identity import CK3_1210, FlorinFullSource, florin_full_source, require_exact_native_build
 
 
 EVENT_OPTION_STEP_PREFIX = "select-event-option-"
+
+FLORIN_EVENT_QUERY_STEP = "query-current-event-options-v1"
+FLORIN_EVENT_QUERY_CAPABILITY = "game.query.current-event-options.v1"
+FLORIN_EVENT_BACKEND = "ck3-1.21.0-native-headless-main-thread"
+
+
+@dataclass(frozen=True)
+class FlorinEventSource:
+    snapshot_id: str
+    public_revision: int
+    native_revision: int
+    event_instance_id: int
+    date_raw: int
+    game_pid: int
+    connection_generation: int
+    full_source: FlorinFullSource
+
+
+class FlorinEventOption(TypedDict):
+    native_option_index: int
+    enabled: bool
+
+
+class FlorinEventResult(TypedDict):
+    status: str
+    accepted: bool
+    effect_attempted: bool
+    options: list[FlorinEventOption]
+
+
+class FlorinPublicOption(TypedDict):
+    native_option_index: int
+    option_number: int
+    enabled: bool
+
+
+class FlorinPublicEventOptions(TypedDict):
+    schema: Literal["ck3-florin-current-event-options-v1"]
+    read_only: Literal[True]
+    available: bool
+    status: str
+    snapshot_id: str
+    public_revision: str
+    native_revision: str
+    event_instance_id: int
+    game_pid: int
+    connection_generation: str
+    date_raw: int
+    played_character_id: int
+    scope_sha256: str
+    options: list[FlorinPublicOption]
+    event_definition_observed: Literal[False]
+    saved_scopes_observed: Literal[False]
+    effect_indicators_observed: Literal[False]
+    native_result_json: str
+    business_acceptance_credit: Literal[False]
+
+
+def project_florin_event_options(raw: object, source: FlorinEventSource) -> FlorinPublicEventOptions:
+    """Explicit limited public variant; it never impersonates the old event scope/effect context."""
+    import json
+    result = normalize_florin_event_result(raw, source, FLORIN_EVENT_QUERY_STEP, None)
+    return {"schema": "ck3-florin-current-event-options-v1", "read_only": True,
+            "available": result["accepted"], "status": result["status"],
+            "snapshot_id": source.snapshot_id, "public_revision": str(source.public_revision),
+            "native_revision": str(source.native_revision), "event_instance_id": source.event_instance_id,
+            "game_pid": source.game_pid, "connection_generation": str(source.connection_generation),
+            "date_raw": source.date_raw, "played_character_id": source.full_source.played_character_id,
+            "scope_sha256": source.full_source.scope_sha256,
+            "options": [{"native_option_index": row["native_option_index"], "option_number": row["native_option_index"] + 1,
+                         "enabled": row["enabled"]} for row in result["options"]],
+            "event_definition_observed": False, "saved_scopes_observed": False, "effect_indicators_observed": False,
+            "native_result_json": json.dumps(raw, sort_keys=True, separators=(",", ":"), allow_nan=False),
+            "business_acceptance_credit": False}
+
+
+def is_florin_event_snapshot(snapshot: object) -> bool:
+    if not isinstance(snapshot, dict):
+        return False
+    diagnostics = snapshot.get("diagnostics")
+    hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+    return isinstance(hello, dict) and hello.get("expected_ck3_version") == "1.21.0"
+
+
+def florin_event_source(snapshot: object, event_instance_id: int, expected_revision: int | None) -> FlorinEventSource:
+    full = florin_full_source(snapshot, expected_revision)
+    if not isinstance(snapshot, dict):
+        raise ValueError("actual Florin event Full snapshot required")
+    event = snapshot.get("active_event")
+    if (not isinstance(event, dict) or type(event.get("instance_id")) is not int
+            or type(event_instance_id) is not int or event_instance_id <= 0 or event_instance_id > 2**31 - 1
+            or event.get("instance_id") != event_instance_id):
+        raise ValueError("event control requires the actual positive current event instance")
+    return FlorinEventSource(full.snapshot_id, full.public_revision, full.native_revision, event_instance_id,
+                             full.date_raw, full.game_pid, full.connection_generation, full)
+
+
+def florin_event_fields(source: FlorinEventSource, deadline_unix_ms: int) -> dict[str, object]:
+    if type(deadline_unix_ms) is not int or not 1 <= deadline_unix_ms <= 2**63 - 1:
+        raise ValueError("positive finite event deadline required")
+    return {"event_option_control": {
+        "schema": "ck3_1210_event_option_control_v1", "game_version": CK3_1210.game_version,
+        "executable_sha256": CK3_1210.executable_sha256, "adapter_id": "ck3-1.21.0-msvc-x64",
+        "backend": FLORIN_EVENT_BACKEND, "snapshot_id": source.snapshot_id,
+        "native_revision": source.native_revision, "deadline_unix_ms": deadline_unix_ms,
+    }, "arguments": {"event_instance_id": source.event_instance_id}}
+
+
+def normalize_florin_event_result(raw: object, source: FlorinEventSource, step: str, native_index: int | None) -> FlorinEventResult:
+    fields = {"schema", "game_version", "executable_sha256", "adapter_id", "backend", "step", "accepted", "status",
+              "native_revision", "event_instance_id", "native_option_index", "application_main_observed",
+              "full_snapshot_before_verified", "effect_attempted", "options", "unavailable_reason"}
+    if not isinstance(raw, dict) or set(raw) not in (fields, fields | {"backend_id"}):
+        raise ValueError("closed Florin event result fields required")
+    query = step == FLORIN_EVENT_QUERY_STEP
+    if ((query and native_index is not None)
+            or (not query and (type(native_index) is not int or not 0 <= native_index < 512
+                               or step != event_option_step(native_index + 1)))):
+        raise ValueError("event result requires the exact query or authored option step")
+    if (raw.get("schema") != "ck3_1210_event_option_control_result_v1"
+            or require_exact_native_build(raw.get("game_version"), raw.get("executable_sha256")) != CK3_1210
+            or raw.get("adapter_id") != "ck3-1.21.0-msvc-x64" or raw.get("backend") != FLORIN_EVENT_BACKEND
+            or raw.get("step") != step or type(raw.get("native_revision")) is not int
+            or raw.get("native_revision") != source.native_revision or type(raw.get("event_instance_id")) is not int
+            or raw.get("event_instance_id") != source.event_instance_id
+            or (query and raw.get("native_option_index") is not None)
+            or (not query and (type(raw.get("native_option_index")) is not int or raw.get("native_option_index") != native_index))):
+        raise ValueError("Florin event result changed exact producer/Full/event/index")
+    status = raw.get("status")
+    if status not in {"available", "submitted", "unavailable", "expired", "stale_full_snapshot", "no_active_event",
+                      "event_mismatch", "option_missing", "option_disabled", "rejected", "indeterminate"}:
+        raise ValueError("unknown Florin event status")
+    for name in ("accepted", "application_main_observed", "full_snapshot_before_verified", "effect_attempted"):
+        if type(raw.get(name)) is not bool:
+            raise ValueError("exact Florin event result boolean required")
+    if raw["accepted"] != (status == ("available" if query else "submitted")) or (status == "submitted" if query else status == "available"):
+        raise ValueError("Florin event query/select result role mismatch")
+    options = raw.get("options")
+    if not isinstance(options, list) or len(options) > 512:
+        raise ValueError("bounded Florin options required")
+    normalized: list[FlorinEventOption] = []
+    seen: set[int] = set()
+    for option in options:
+        if (not isinstance(option, dict) or set(option) != {"native_option_index", "enabled"}
+                or type(option.get("native_option_index")) is not int or not 0 <= option["native_option_index"] < 512
+                or option["native_option_index"] in seen or type(option.get("enabled")) is not bool):
+            raise ValueError("invalid or repeated authored Florin event option")
+        seen.add(option["native_option_index"])
+        normalized.append({"native_option_index": option["native_option_index"], "enabled": option["enabled"]})
+    reason = raw.get("unavailable_reason")
+    if reason is not None and (not isinstance(reason, str) or not reason or len(reason) > 4096):
+        raise ValueError("bounded nullable Florin event reason required")
+    if raw["accepted"]:
+        if (raw["application_main_observed"] is not True or raw["full_snapshot_before_verified"] is not True
+                or raw["effect_attempted"] == query or reason is not None
+                or (not query and not any(row["native_option_index"] == native_index and row["enabled"] for row in normalized))):
+            raise ValueError("accepted Florin event lacks actual Full/Main/enabled evidence")
+    elif normalized:
+        raise ValueError("rejected Florin event cannot grant option observation")
+    return {"status": status, "accepted": raw["accepted"], "effect_attempted": raw["effect_attempted"], "options": normalized}
 
 
 def event_option_step(option_number: int) -> str:

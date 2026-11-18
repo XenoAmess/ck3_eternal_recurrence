@@ -1,0 +1,42 @@
+﻿xfm_market_select_debt_gui = {
+    scope = character
+    saved_scopes = { xfm_ui_item }
+    is_valid = { is_ai = no exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_debt_claim } }
+    effect = { set_variable = { name = xfm_selected_debt value = scope:xfm_ui_item } set_variable = { name = xfm_ui_debt_pay_cents value = 1000 } }
+}
+xfm_market_debt_pay_up_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_selected_debt var:xfm_ui_debt_pay_cents < 100000000 }
+    effect = { change_variable = { name = xfm_ui_debt_pay_cents add = var:xfm_ui_step } }
+}
+xfm_market_debt_pay_down_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_selected_debt var:xfm_ui_debt_pay_cents > var:xfm_ui_step }
+    effect = { change_variable = { name = xfm_ui_debt_pay_cents subtract = var:xfm_ui_step } }
+}
+xfm_market_debt_pay_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_selected_debt var:xfm_selected_debt = { var:xfm_outstanding_cents > 0 } }
+    effect = { trigger_event = xfm_market.106 }
+}
+xfm_market_debt_restructure_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_selected_debt var:xfm_selected_debt = { var:xfm_creditor_account.var:xfm_holder = root var:xfm_outstanding_cents > 0 } }
+    effect = { trigger_event = xfm_market.107 }
+}
+xfm_market_select_news_gui = {
+    scope = character
+    saved_scopes = { xfm_ui_item }
+    is_valid = { is_ai = no exists = scope:xfm_ui_item }
+    effect = { set_variable = { name = xfm_selected_news value = scope:xfm_ui_item } }
+}
+xfm_market_news_aid_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_selected_news }
+    effect = { xfm_market_ui_select_news_debts_effect = yes }
+}

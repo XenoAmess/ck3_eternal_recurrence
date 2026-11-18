@@ -1,0 +1,120 @@
+﻿# 4 UI effects; no market cash or asset mutation occurs here.
+xfm_market_ui_open_effect = {
+    xfm_finance_ensure_account_effect = yes
+    set_variable = { name = xfm_active_account value = var:xfm_account }
+    set_variable = { name = xfm_ui_offset value = 0 }
+    set_variable = { name = xfm_ui_page value = 1 }
+    set_variable = { name = xfm_ui_sort value = 0 }
+    set_variable = { name = xfm_ui_type_filter value = 0 }
+    set_variable = { name = xfm_ui_holdings_only value = 0 }
+    set_variable = { name = xfm_ui_id_filter value = 0 }
+    remove_variable = xfm_ui_issuer_filter
+    set_variable = { name = xfm_ui_name_search value = 0 }
+    set_variable = { name = xfm_ui_listing_tier value = 1 }
+    set_variable = { name = xfm_requested_tier value = 1 }
+    set_variable = { name = xfm_ui_news_before_id value = 0 }
+    set_variable = { name = xfm_ui_news_page value = 1 }
+    set_variable = { name = xfm_ui_positions_offset value = 0 }
+    set_variable = { name = xfm_ui_orders_offset value = 0 }
+    set_variable = { name = xfm_ui_history_offset value = 0 }
+    set_variable = { name = xfm_ui_debts_offset value = 0 }
+    set_variable = { name = xfm_ui_claims_offset value = 0 }
+    set_variable = { name = xfm_order_lots value = 1 }
+    set_variable = { name = xfm_order_limit_cents value = 100 }
+    set_variable = { name = xfm_ui_step value = 1 }
+    set_variable = { name = xfm_order_ioc value = 0 }
+    set_variable = { name = xfm_request_cents value = 1000 }
+    set_variable = { name = xfm_subscription_gold value = 1 }
+    set_variable = { name = xfm_requested_entity_type value = 1 }
+    set_variable = { name = xfm_requested_funding value = 20 }
+    set_variable = { name = xfm_futures_leverage value = 1 }
+    set_variable = { name = xfm_futures_margin_cents value = 100 }
+    set_variable = { name = xfm_futures_lots value = 1 }
+    set_variable = { name = xfm_futures_side value = 1 }
+    set_variable = { name = xfm_futures_request_cents value = 100 }
+    set_variable = { name = xfm_futures_reduce_lots value = 1 }
+    set_variable = { name = xfm_futures_stop_cents value = 0 }
+    set_variable = { name = xfm_futures_take_profit_cents value = 0 }
+    set_variable = { name = xfm_ui_debt_pay_cents value = 1000 }
+    add_character_flag = xfm_market_open
+    xfm_market_ui_refresh_effect = yes
+    remove_variable = xfm_result
+}
+xfm_market_ui_refresh_effect = {
+    xfm_market_ui_news_effect = yes
+    xfm_market_ui_book_effect = yes
+    save_scope_as = xfm_ui_actor
+    clear_variable_list = xfm_ui_coin_page
+    clear_variable_list = xfm_ui_owned_coins
+    if = {
+        limit = { has_variable = xfm_active_account }
+        var:xfm_active_account = {
+            every_in_list = {
+                variable = xfm_positions
+                limit = { has_variable = xfm_quantity_units var:xfm_quantity_units > 0 }
+                var:xfm_coin = { save_scope_as = xfm_ui_held_coin }
+                scope:xfm_ui_actor = {
+                    add_to_variable_list = { name = xfm_ui_owned_coins target = scope:xfm_ui_held_coin }
+                }
+            }
+        }
+    }
+    set_variable = { name = xfm_ui_scan_index value = 0 }
+    set_variable = { name = xfm_ui_has_next value = 0 }
+    ordered_in_global_list = {
+        variable = xfm_coin_registry
+        limit = {
+            OR = {
+                scope:xfm_ui_actor = { NOT = { exists = var:xfm_ui_issuer_filter } }
+                var:xfm_controller = scope:xfm_ui_actor.var:xfm_ui_issuer_filter
+                var:xfm_original_issuer = scope:xfm_ui_actor.var:xfm_ui_issuer_filter
+            }
+            OR = {
+                scope:xfm_ui_actor = { var:xfm_ui_type_filter = 0 }
+                var:xfm_entity_type = scope:xfm_ui_actor.var:xfm_ui_type_filter
+            }
+            OR = {
+                scope:xfm_ui_actor = { var:xfm_ui_id_filter = 0 }
+                var:xfm_coin_id = scope:xfm_ui_actor.var:xfm_ui_id_filter
+            }
+            OR = {
+                scope:xfm_ui_actor = { var:xfm_ui_holdings_only = 0 }
+                scope:xfm_ui_actor = { is_target_in_variable_list = { name = xfm_ui_owned_coins target = prev } }
+            }
+        }
+        order_by = xfm_market_ui_sort_value
+        max = scope:xfm_ui_actor.xfm_market_ui_fetch_limit
+        check_range_bounds = no
+        save_scope_as = xfm_ui_coin
+        scope:xfm_ui_actor = {
+            change_variable = { name = xfm_ui_scan_index add = 1 }
+            if = {
+                limit = {
+                    var:xfm_ui_scan_index > var:xfm_ui_offset
+                    var:xfm_ui_scan_index <= xfm_market_ui_page_end
+                }
+                add_to_variable_list = { name = xfm_ui_coin_page target = scope:xfm_ui_coin }
+            }
+            else_if = {
+                limit = { var:xfm_ui_scan_index > xfm_market_ui_page_end }
+                set_variable = { name = xfm_ui_has_next value = 1 }
+            }
+        }
+    }
+}
+xfm_market_ui_first_page_effect = {
+    set_variable = { name = xfm_ui_offset value = 0 }
+    set_variable = { name = xfm_ui_page value = 1 }
+    xfm_market_ui_refresh_effect = yes
+}
+xfm_market_ui_select_coin_effect = {
+    set_variable = { name = xfm_selected_coin value = scope:xfm_ui_item }
+    remove_variable = xfm_futures_contract
+    remove_variable = xfm_futures_selected_position
+    set_variable = { name = xfm_order_limit_cents value = scope:xfm_ui_item.var:xfm_last_price_cents }
+    if = {
+        limit = { var:xfm_order_limit_cents < 1 }
+        set_variable = { name = xfm_order_limit_cents value = 1 }
+    }
+    xfm_market_ui_book_effect = yes
+}

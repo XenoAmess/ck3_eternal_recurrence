@@ -1,0 +1,25 @@
+﻿# 1.21 observed county prosperity/control are normalized to 0..100; war share is basis points.
+xfm_oracle_average_prosperity_value = { value = var:xfm_oracle_prosperity_sum divide = var:xfm_oracle_basket_count floor = yes min = 0 max = 100 }
+xfm_oracle_average_control_value = { value = var:xfm_oracle_control_sum divide = var:xfm_oracle_basket_count floor = yes min = 0 max = 100 }
+xfm_oracle_war_basis_points_value = { value = var:xfm_oracle_war_count multiply = 10000 divide = var:xfm_oracle_basket_count floor = yes }
+xfm_oracle_grain_model_value = {
+    value = 10000
+    add = { value = var:xfm_oracle_war_bps multiply = 0.4 }
+    add = { value = 100 subtract = var:xfm_oracle_average_control multiply = 40 }
+    subtract = { value = var:xfm_oracle_average_prosperity multiply = 50 }
+    floor = yes min = 3000 max = 30000
+}
+xfm_oracle_military_model_value = {
+    value = 10000
+    add = { value = var:xfm_oracle_war_bps multiply = 0.8 }
+    add = { value = 100 subtract = var:xfm_oracle_average_control multiply = 20 }
+    add = { value = var:xfm_oracle_average_prosperity multiply = 20 }
+    floor = yes min = 3000 max = 30000
+}
+xfm_oracle_trade_model_value = {
+    value = 10000
+    subtract = { value = var:xfm_oracle_war_bps multiply = 0.5 }
+    subtract = { value = 100 subtract = var:xfm_oracle_average_control multiply = 30 }
+    add = { value = var:xfm_oracle_average_prosperity multiply = 80 }
+    floor = yes min = 3000 max = 30000
+}

@@ -1,0 +1,42 @@
+﻿# All prices are cents per 100 coins, quantities whole lots. These are mod rules.
+# CK3 script-value max is an upper bound; min is a lower bound (not Java Math names).
+xfm_futures_global_position_capacity_value = {
+ value = xfm_config_futures_position_capacity_value
+}
+xfm_futures_account_position_capacity_value = 32
+xfm_futures_order_notional_value = { value = var:xfm_futures_lots multiply = var:xfm_futures_limit_cents floor = yes }
+xfm_futures_ceiling_margin_value = {
+ value = var:xfm_futures_reserve_gross divide = var:xfm_futures_leverage ceiling = yes
+}
+xfm_futures_ceiling_fee_value = { value = var:xfm_futures_fee_gross multiply = 0.003 ceiling = yes }
+xfm_futures_order_reserve_value = {
+ value = var:xfm_futures_initial_margin add = var:xfm_futures_fee_reserve floor = yes
+}
+xfm_futures_band_low_value = { value = var:xfm_coin.var:xfm_mark_cents multiply = 0.8 floor = yes min = 1 }
+xfm_futures_band_high_value = { value = var:xfm_coin.var:xfm_mark_cents multiply = 1.2 ceiling = yes }
+xfm_futures_fill_lots_value = {
+ value = scope:xfm_fut_incoming.var:xfm_remaining_lots max = scope:xfm_fut_resting.var:xfm_remaining_lots floor = yes
+}
+xfm_futures_fill_gross_value = { value = scope:xfm_fut_fill.var:xfm_lots multiply = scope:xfm_fut_fill.var:xfm_mark_cents floor = yes }
+xfm_futures_buy_margin_value = { value = scope:xfm_fut_fill.var:xfm_fill_gross divide = scope:xfm_fut_buy.var:xfm_leverage ceiling = yes }
+xfm_futures_sell_margin_value = { value = scope:xfm_fut_fill.var:xfm_fill_gross divide = scope:xfm_fut_sell.var:xfm_leverage ceiling = yes }
+xfm_futures_order_cumulative_fee_value = { value = var:xfm_filled_gross_cents multiply = 0.003 ceiling = yes }
+xfm_futures_remaining_notional_value = { value = var:xfm_remaining_lots multiply = var:xfm_reserve_price_cents floor = yes }
+xfm_futures_remaining_margin_value = { value = var:xfm_remaining_notional divide = var:xfm_leverage ceiling = yes }
+xfm_futures_remaining_fee_value = {
+ value = var:xfm_filled_gross_cents add = var:xfm_remaining_notional multiply = 0.003 ceiling = yes subtract = var:xfm_fee_paid_cents
+}
+xfm_futures_variation_value = { value = var:xfm_new_mark_cents subtract = var:xfm_mark_cents multiply = var:xfm_lots floor = yes }
+xfm_futures_maintenance_long_value = { value = var:xfm_mark_cents multiply = var:xfm_lots multiply = 0.6 divide = var:xfm_long_leverage ceiling = yes }
+xfm_futures_maintenance_short_value = { value = var:xfm_mark_cents multiply = var:xfm_lots multiply = 0.6 divide = var:xfm_short_leverage ceiling = yes }
+xfm_futures_initial_long_value = { value = var:xfm_mark_cents multiply = var:xfm_lots divide = var:xfm_long_leverage ceiling = yes }
+xfm_futures_initial_short_value = { value = var:xfm_mark_cents multiply = var:xfm_lots divide = var:xfm_short_leverage ceiling = yes }
+xfm_futures_funding_rate_value = {
+ value = var:xfm_contract.var:xfm_last_execution_cents subtract = var:xfm_coin.var:xfm_index_cents
+ divide = var:xfm_coin.var:xfm_index_cents max = 0.001 min = -0.001
+}
+xfm_futures_funding_amount_value = {
+ value = var:xfm_funding_rate
+ if = { limit = { var:xfm_funding_rate < 0 } multiply = -1 }
+ multiply = var:xfm_coin.var:xfm_index_cents multiply = var:xfm_lots floor = yes
+}

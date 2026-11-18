@@ -6426,6 +6426,13 @@ class GameplayBridgeService:
             raise ValueError("event_instance_id must be a positive full int32")
 
         snapshot = self.snapshot(include_native_command_history=False)
+        from .event_contract import is_florin_event_snapshot
+        if is_florin_event_snapshot(snapshot):
+            florin_select = getattr(self.driver, "select_event_option_v1210", None)
+            if not callable(florin_select):
+                raise BridgeUnavailableError("actual Florin event option consumer unavailable")
+            return florin_select(option_number, event_instance_id=event_instance_id,
+                                 expected_revision=expected_revision if expected_revision is not None else int(snapshot["revision"]))
         active_event = normalize_active_event(
             snapshot.get("active_event", snapshot.get("current_event")),
             default_source=str(snapshot.get("source") or "bridge"),
@@ -15988,6 +15995,20 @@ class GameplayBridgeService:
         date_raw = snapshot.get("date_raw")
         snapshot_id = snapshot.get("snapshot_id")
         active_event = snapshot.get("active_event")
+        from .event_contract import is_florin_event_snapshot, florin_event_source, project_florin_event_options
+        if is_florin_event_snapshot(snapshot):
+            try:
+                source=florin_event_source(snapshot,event_instance_id,expected_revision)
+                method=getattr(self.driver,"query_current_event_window_context_v1",None)
+                if not callable(method): raise ValueError("actual Florin event options consumer unavailable")
+                result=method(event_instance_id,expected_revision=expected_revision)
+                if not isinstance(result,dict) or not isinstance(result.get("native_result_json"),str):
+                    raise ValueError("Florin event options lacks its original native result text")
+                public=project_florin_event_options(json.loads(result["native_result_json"]),source)
+                ending=florin_event_source(self.snapshot(include_native_command_history=False),event_instance_id,expected_revision)
+                if result!=public or ending!=source: raise ValueError("Florin event options changed its original Full/public variant")
+                return dict(public)
+            except ValueError as invalid: raise BridgeUnavailableError(str(invalid)) from invalid
         if snapshot.get("paused") is not True:
             raise BridgeUnavailableError(
                 "event-window queries require a paused CK3 snapshot"

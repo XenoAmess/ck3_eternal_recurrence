@@ -37,6 +37,8 @@ import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.application.action.PhysicalStatusIdentity;
 import org.xar.ck3.control.application.advance.AdvancePrimitives;
 import org.xar.ck3.control.application.action.FullSnapshotClockControl;
+import org.xar.ck3.control.application.action.FullSnapshotEventOptionControl;
+import org.xar.ck3.control.application.action.FullSnapshotGuiControl;
 import org.xar.ck3.control.application.advance.ClockStatusRead;
 import org.xar.ck3.control.application.advance.AdvancePrimitives;
 import org.xar.ck3.control.application.action.FullSnapshotDateSentinelArm;
@@ -1119,6 +1121,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private boolean writeAttempted;
         private boolean personalCashReadAttempted;
         private PersonalCashReadUnavailable unresolvedPersonalCashRead;
+        private boolean eventOptionsReadAttempted;
+        private EventOptionsRead eventOptionsRead;
+        private boolean guiReadAttempted;
+        private GuiRead guiRead;
         private FullClockReceived(NativeGameTransport issuer,NativeFreshSnapshotPort.Received original,Instant validUntil){
             this.issuer=issuer;this.original=original;this.validUntil=validUntil;
         }
@@ -1177,6 +1183,254 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 NativeWire.object(state.get("played_character")).get("alive")})
             if(entry==null||!entry.isBoolean()||!entry.booleanValue())
                 throw new IOException("Full clock source requires its actual living paused map");
+    }
+    public sealed interface EventOptionsRead permits EventOptionsReceived, EventOptionsUnavailable {
+        DispatchOutcome original();
+    }
+    /** Private producer occurrence: callers cannot synthesize the enabled option list or borrow another Full. */
+    public static final class EventOptionsReceived implements EventOptionsRead {
+        private final NativeGameTransport issuer;
+        private final FullClockReceived before;
+        private final AckReceived original;
+        private final EventOptionControlResult.Assessment assessment;
+        private final Instant validUntil;
+        private EventOptionsReceived(NativeGameTransport issuer, FullClockReceived before, AckReceived original,
+                EventOptionControlResult.Assessment assessment, Instant validUntil) {
+            this.issuer=issuer;this.before=before;this.original=original;this.assessment=assessment;this.validUntil=validUntil;
+        }
+        @Override public AckReceived original(){return original;}
+        public ObservedFrame fullFrame(){return before.frame();}
+        public int eventInstanceId(){return assessment.eventInstanceId();}
+        public List<EventOptionControlResult.Option> options(){return assessment.options();}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException {
+            Objects.requireNonNull(actual).requireEventOptionsOriginal(this,deadline);
+        }
+    }
+    public record EventOptionsUnavailable(DispatchOutcome original,String reason)implements EventOptionsRead {
+        public EventOptionsUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public synchronized EventOptionsRead readEventOptionsReceived(FullClockReceived before,int eventInstanceId,Instant deadline)throws InterruptedException {
+        if(before!=null&&before.issuer==this&&before.eventOptionsRead!=null) {
+            try {requireFullClockOriginal(before,deadline);requireEventInstance(before,eventInstanceId);
+                if(before.eventOptionsRead instanceof EventOptionsReceived received)requireEventOptionsOriginal(received,deadline);
+                return before.eventOptionsRead;
+            }catch(IOException|RuntimeException invalid){return new EventOptionsUnavailable(zero("event-options-"+UUID.randomUUID(),reason(invalid)),reason(invalid));}
+        }
+        String id="event-options-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome original;
+        try {
+            Objects.requireNonNull(before);requireFullClockOriginal(before,deadline);requireEventInstance(before,eventInstanceId);
+            if(applicationExitAttempted||before.writeAttempted||before.eventOptionsReadAttempted||unresolvedFullClockControl!=null
+                    ||unresolvedCoreControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("event options require an unused actual paused Full without uncertain controls");
+            var prepared=FullSnapshotEventOptionControl.query(before.frame().snapshotId(),before.frame().nativeRevision(),deadline,eventInstanceId);
+            if(!hello.capabilities().contains(prepared.requiredCapability().orElseThrow()))throw new IOException("actual event option query capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            byte[] packet=NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes());
+            original=retainReadOutcome(dispatch(id,packet,deadline,()->{
+                requireBackgroundAtCoreWrite();
+                try {requireFullClockOriginal(before,deadline);requireEventInstance(before,eventInstanceId);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.writeAttempted||before.eventOptionsReadAttempted)throw new IllegalStateException("event option Full source is consumed");
+                before.eventOptionsReadAttempted=true;
+            }));
+        }catch(IOException|RuntimeException invalid){
+            original=sentRequestIds.contains(id)?new Unknown(id,"event query failed after write; retain original: "+reason(invalid),retainedOutbound(id),Optional.empty()):zero(id,reason(invalid));
+        }
+        EventOptionsRead read;
+        try {
+            if(!(original instanceof AckReceived ack))throw new IOException("event query has no actual received ACK");
+            var assessment=EventOptionControlResult.decode(ack,FullSnapshotEventOptionControl.QUERY_STEP,before.frame().nativeRevision(),eventInstanceId);
+            if(assessment.disposition()!=EventOptionControlResult.Disposition.OBSERVED)throw new IOException("event query did not observe options: "+assessment.status());
+            var received=new EventOptionsReceived(this,before,ack,assessment,deadline);requireEventOptionsOriginal(received,deadline);read=received;
+        }catch(IOException|RuntimeException invalid){read=new EventOptionsUnavailable(original,reason(invalid));}
+        if(before!=null&&before.issuer==this&&before.eventOptionsReadAttempted)before.eventOptionsRead=read;
+        return read;
+    }
+    private static void requireEventInstance(FullClockReceived before,int eventInstanceId)throws IOException {
+        var state=NativeWire.object(NativeWire.parse(before.frame().state().bytes()));
+        var active=NativeWire.object(state.get("active_event"));
+        int actual=NativeWire.integer(active.get("instance_id"),BigInteger.ONE,BigInteger.valueOf(Integer.MAX_VALUE)).intValueExact();
+        if(eventInstanceId<=0||actual!=eventInstanceId)throw new IOException("event occurrence differs from actual Full");
+    }
+    private void requireEventOptionsOriginal(EventOptionsReceived actual,Instant deadline)throws IOException {
+        if(actual.issuer!=this||deadline==null||deadline.isAfter(actual.validUntil)||!chronologyClock.instant().isBefore(actual.validUntil))
+            throw new IOException("event option occurrence escaped its receiver or original deadline");
+        requireFullClockOriginal(actual.before,deadline);requireEventInstance(actual.before,actual.eventInstanceId());
+        var custody=actual.original.custody().orElseThrow(()->new IOException("actual event query chronology unavailable"));custody.verify(actual.original);
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)
+                ||!originalRequestChronology(actual.original.requestId()).filter(custody::equals).isPresent()
+                ||custody.responseReceived().observedAt().isAfter(chronologyClock.instant())||custody.responseReceived().observedAt().isAfter(actual.validUntil))
+            throw new IOException("event option occurrence crossed actual Game/session/connection/custody");
+        var again=EventOptionControlResult.decode(actual.original,FullSnapshotEventOptionControl.QUERY_STEP,actual.before.frame().nativeRevision(),actual.eventInstanceId());
+        if(!again.equals(actual.assessment))throw new IOException("event option occurrence changed from original ACK");
+    }
+    /** One standard option command from the actual enabled query. UNKNOWN retains the shared Full-control stop. */
+    public synchronized DispatchOutcome submitEventOption(EventOptionsReceived options,NativeRequest prepared,Instant deadline)throws InterruptedException {
+        if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        String id="event-select-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            Objects.requireNonNull(options);Objects.requireNonNull(prepared);requireEventOptionsOriginal(options,deadline);
+            var before=options.before;
+            if(applicationExitAttempted||before.writeAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("event selection cannot borrow another continuation or reuse a write");
+            int index=FullSnapshotEventOptionControl.selectedIndex(prepared.step());
+            if(options.options().stream().noneMatch(option->option.nativeOptionIndex()==index&&option.enabled()))throw new IOException("requested authored option was not observed enabled");
+            var expected=FullSnapshotEventOptionControl.select(before.frame().snapshotId(),before.frame().nativeRevision(),deadline,options.eventInstanceId(),index);
+            if(!prepared.equals(expected))throw new IOException("event selection differs from exact Full/event/index preparation");
+            if(!hello.capabilities().contains(prepared.requiredCapability().orElseThrow()))throw new IOException("actual event selection capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            var outcome=dispatch(id,NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes()),deadline,()->{
+                requireBackgroundAtCoreWrite();
+                try {requireEventOptionsOriginal(options,deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.writeAttempted)throw new IllegalStateException("original Full already entered a mutation");
+                before.writeAttempted=true;heldSnapshotInvalidated=true;
+            });
+            if(outcome instanceof AckReceived ack) {
+                try {
+                    var assessment=EventOptionControlResult.decode(ack,prepared.step(),before.frame().nativeRevision(),options.eventInstanceId());
+                    if(assessment.disposition()!=EventOptionControlResult.Disposition.UNKNOWN)return ack;
+                    indeterminateFullClockAcknowledgement=ack;
+                    outcome=new Unknown(ack.requestId(),"event selection effect uncertain; retain original and never replay",ack.outbound().orElseThrow().originalPacket(),Optional.of(ack.originalFrame()));
+                }catch(IOException|RuntimeException invalid){
+                    indeterminateFullClockAcknowledgement=ack;
+                    outcome=new Unknown(ack.requestId(),"event selection ACK invalid; retain original and never replay: "+reason(invalid),ack.outbound().orElseThrow().originalPacket(),Optional.of(ack.originalFrame()));
+                }
+            }
+            if(outcome instanceof Unknown unknown)unresolvedFullClockControl=unknown;
+            return outcome;
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(id)) {
+                unresolvedFullClockControl=new Unknown(id,"event selection failed after write; retain original and never replay: "+reason(invalid),retainedOutbound(id),Optional.empty());
+                return unresolvedFullClockControl;
+            }
+            return zero(id,reason(invalid));
+        }
+    }
+    public sealed interface GuiRead permits GuiReceived, GuiUnavailable {
+        DispatchOutcome original();
+    }
+    /** Receiver-owned query occurrence. Equal serialized GUI data cannot replace its actual source. */
+    public static final class GuiReceived implements GuiRead {
+        private final NativeGameTransport issuer;
+        private final FullClockReceived before;
+        private final AckReceived original;
+        private final GuiControlResult.Assessment assessment;
+        private final Instant validUntil;
+        private GuiReceived(NativeGameTransport issuer,FullClockReceived before,AckReceived original,
+                GuiControlResult.Assessment assessment,Instant validUntil) {
+            this.issuer=issuer;this.before=before;this.original=original;this.assessment=assessment;this.validUntil=validUntil;
+        }
+        @Override public AckReceived original(){return original;}
+        public ObservedFrame fullFrame(){return before.frame();}
+        public String rootName(){return assessment.rootName();}
+        public BigInteger queryGeneration(){return assessment.queryGeneration();}
+        public List<GuiControlResult.Control> controls(){return assessment.widgets();}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException {
+            Objects.requireNonNull(actual).requireGuiOriginal(this,deadline);
+        }
+    }
+    public record GuiUnavailable(DispatchOutcome original,String reason)implements GuiRead {
+        public GuiUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public synchronized GuiRead readGuiReceived(FullClockReceived before,String rootName,Instant deadline)throws InterruptedException {
+        if(before!=null&&before.issuer==this&&before.guiRead!=null) {
+            try {requireFullClockOriginal(before,deadline);
+                if(before.guiRead instanceof GuiReceived received) {
+                    requireGuiOriginal(received,deadline);
+                    if(!received.rootName().equals(rootName))throw new IOException("cached GUI occurrence belongs to another root");
+                }
+                return before.guiRead;
+            }catch(IOException|RuntimeException invalid){return new GuiUnavailable(zero("gui-query-"+UUID.randomUUID(),reason(invalid)),reason(invalid));}
+        }
+        String id="gui-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome original;
+        try {
+            Objects.requireNonNull(before);requireFullClockOriginal(before,deadline);
+            if(applicationExitAttempted||before.writeAttempted||before.guiReadAttempted||unresolvedFullClockControl!=null
+                    ||unresolvedCoreControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("GUI query requires an unused actual paused Full without uncertain controls");
+            var prepared=FullSnapshotGuiControl.query(before.frame().snapshotId(),before.frame().nativeRevision(),deadline,rootName);
+            if(!hello.capabilities().contains(prepared.requiredCapability().orElseThrow()))throw new IOException("actual GUI query capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            original=retainReadOutcome(dispatch(id,NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes()),deadline,()->{
+                requireBackgroundAtCoreWrite();
+                try {requireFullClockOriginal(before,deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.writeAttempted||before.guiReadAttempted)throw new IllegalStateException("GUI Full source is consumed");
+                before.guiReadAttempted=true;
+            }));
+        }catch(IOException|RuntimeException invalid) {
+            original=sentRequestIds.contains(id)?new Unknown(id,"GUI query failed after write; retain original: "+reason(invalid),retainedOutbound(id),Optional.empty()):zero(id,reason(invalid));
+        }
+        GuiRead read;
+        try {
+            if(!(original instanceof AckReceived ack))throw new IOException("GUI query has no actual received ACK");
+            var assessment=GuiControlResult.decode(ack,FullSnapshotGuiControl.QUERY_STEP,before.frame().nativeRevision(),rootName,BigInteger.ZERO,BigInteger.ZERO);
+            if(assessment.disposition()!=GuiControlResult.Disposition.OBSERVED)throw new IOException("GUI query did not observe controls: "+assessment.status());
+            var received=new GuiReceived(this,before,ack,assessment,deadline);requireGuiOriginal(received,deadline);read=received;
+        }catch(IOException|RuntimeException invalid){read=new GuiUnavailable(original,reason(invalid));}
+        if(before!=null&&before.issuer==this&&before.guiReadAttempted)before.guiRead=read;
+        return read;
+    }
+    private void requireGuiOriginal(GuiReceived actual,Instant deadline)throws IOException {
+        if(actual.issuer!=this||deadline==null||deadline.isAfter(actual.validUntil)||!chronologyClock.instant().isBefore(actual.validUntil))
+            throw new IOException("GUI occurrence escaped its receiver or original deadline");
+        requireFullClockOriginal(actual.before,deadline);
+        var custody=actual.original.custody().orElseThrow(()->new IOException("actual GUI query chronology unavailable"));custody.verify(actual.original);
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)
+                ||!originalRequestChronology(actual.original.requestId()).filter(custody::equals).isPresent()
+                ||custody.responseReceived().observedAt().isAfter(chronologyClock.instant())||custody.responseReceived().observedAt().isAfter(actual.validUntil))
+            throw new IOException("GUI occurrence crossed actual Game/session/connection/custody");
+        var again=GuiControlResult.decode(actual.original,FullSnapshotGuiControl.QUERY_STEP,actual.before.frame().nativeRevision(),actual.rootName(),BigInteger.ZERO,BigInteger.ZERO);
+        if(!again.equals(actual.assessment))throw new IOException("GUI occurrence changed from original ACK");
+    }
+    /** One ordinary native control invocation from its observed enabled identity. No business completion credit. */
+    public synchronized DispatchOutcome submitGuiControl(GuiReceived controls,NativeRequest prepared,Instant deadline)throws InterruptedException {
+        if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        String id="gui-activate-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            Objects.requireNonNull(controls);Objects.requireNonNull(prepared);requireGuiOriginal(controls,deadline);
+            var before=controls.before;
+            if(applicationExitAttempted||before.writeAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("GUI activation cannot borrow another continuation or reuse a write");
+            var fields=NativeWire.object(NativeWire.parse(prepared.additionalFields().bytes()));
+            var claim=NativeWire.object(fields.get("gui_control_v1"));
+            String requestedId=NativeWire.text(claim.get("widget_id"));
+            if(!requestedId.matches("[1-9][0-9]*"))throw new IOException("GUI activation requires canonical positive widget identity");
+            BigInteger widgetId=new BigInteger(requestedId);
+            if(controls.controls().stream().noneMatch(control->control.widgetId().equals(widgetId)&&control.activatable()))
+                throw new IOException("GUI control was not observed visible, enabled and clickable");
+            var expected=FullSnapshotGuiControl.activate(before.frame().snapshotId(),before.frame().nativeRevision(),deadline,controls.rootName(),controls.queryGeneration(),widgetId);
+            if(!prepared.equals(expected))throw new IOException("GUI activation differs from exact Full/query/control preparation");
+            if(!hello.capabilities().contains(prepared.requiredCapability().orElseThrow()))throw new IOException("actual GUI activation capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            var outcome=dispatch(id,NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes()),deadline,()->{
+                requireBackgroundAtCoreWrite();
+                try {requireGuiOriginal(controls,deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.writeAttempted)throw new IllegalStateException("original Full already entered a mutation");
+                before.writeAttempted=true;heldSnapshotInvalidated=true;
+            });
+            if(outcome instanceof AckReceived ack) {
+                try {
+                    var assessment=GuiControlResult.decode(ack,prepared.step(),before.frame().nativeRevision(),controls.rootName(),controls.queryGeneration(),widgetId);
+                    if(assessment.disposition()!=GuiControlResult.Disposition.UNKNOWN)return ack;
+                    indeterminateFullClockAcknowledgement=ack;
+                    outcome=new Unknown(ack.requestId(),"GUI activation effect uncertain; retain original and never replay",ack.outbound().orElseThrow().originalPacket(),Optional.of(ack.originalFrame()));
+                }catch(IOException|RuntimeException invalid) {
+                    indeterminateFullClockAcknowledgement=ack;
+                    outcome=new Unknown(ack.requestId(),"GUI activation ACK invalid; retain original and never replay: "+reason(invalid),ack.outbound().orElseThrow().originalPacket(),Optional.of(ack.originalFrame()));
+                }
+            }
+            if(outcome instanceof Unknown unknown)unresolvedFullClockControl=unknown;
+            return outcome;
+        }catch(IOException|RuntimeException invalid) {
+            if(sentRequestIds.contains(id)) {
+                unresolvedFullClockControl=new Unknown(id,"GUI activation failed after write; retain original and never replay: "+reason(invalid),retainedOutbound(id),Optional.empty());
+                return unresolvedFullClockControl;
+            }
+            return zero(id,reason(invalid));
+        }
     }
     public sealed interface PersonalCashRead permits PersonalCashReceived,PersonalCashReadUnavailable {
         DispatchOutcome original();

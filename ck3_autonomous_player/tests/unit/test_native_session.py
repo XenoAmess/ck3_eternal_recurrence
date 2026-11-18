@@ -223,6 +223,7 @@ class NativeSessionLifecycleTests(unittest.TestCase):
         )
         windows_constants = SimpleNamespace(
             STARTF_USESHOWWINDOW=1, SW_SHOWMINNOACTIVE=7,
+            HWND_NOTOPMOST=-2, SWP_NOMOVE=2, SWP_NOSIZE=1, SWP_NOACTIVATE=16,
         )
         with mock.patch.dict(sys.modules, {
             "win32process": windows_process, "win32con": windows_constants,
@@ -238,17 +239,22 @@ class NativeSessionLifecycleTests(unittest.TestCase):
 
         windows_gui = SimpleNamespace(
             IsIconic=mock.Mock(side_effect=[False, True]), ShowWindow=mock.Mock(),
+            SetWindowPos=mock.Mock(),
         )
         with mock.patch.dict(sys.modules, {
             "win32gui": windows_gui, "win32con": windows_constants,
         }), mock.patch(
             "xar_autoplayer.native_session._visible_process_windows", return_value=[91],
-        ) as owned_windows:
+        ) as owned_windows, mock.patch(
+            "xar_autoplayer.native_session.require_game_windows_background",
+        ) as background_guard:
             self.assertTrue(session_module._minimize_process_windows(
                 4242, timeout_seconds=0.1, poll_interval_seconds=0.001,
             ))
         owned_windows.assert_called_once_with(4242)
         windows_gui.ShowWindow.assert_called_once_with(91, 7)
+        windows_gui.SetWindowPos.assert_called_once_with(91, -2, 0, 0, 0, 0, 19)
+        background_guard.assert_called_once_with(4242)
 
     def test_frontend_evidence_retries_windows_reader_share_violation(
         self,

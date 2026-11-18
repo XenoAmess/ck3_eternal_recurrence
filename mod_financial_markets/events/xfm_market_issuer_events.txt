@@ -1,0 +1,85 @@
+﻿namespace = xfm_market
+
+xfm_market.100 = {
+    type = character_event
+    title = xfm_market_issue_name_title
+    desc = xfm_market_issue_name_desc
+    theme = stewardship
+    immediate = {
+        save_scope_value_as = { name = xfm_ui_confirmation_tier value = var:xfm_ui_listing_tier }
+        save_scope_value_as = { name = xfm_ui_confirmation_entity_type value = var:xfm_requested_entity_type }
+        save_scope_value_as = { name = xfm_ui_confirmation_funding value = var:xfm_requested_funding }
+        var:xfm_account = { save_scope_as = xfm_ui_confirmation_primary }
+        save_scope_value_as = { name = xfm_ui_confirmation_account_id value = var:xfm_account.var:xfm_account_id }
+        clear_saved_scope = xfm_ui_confirmation_entity
+        if = { limit = { var:xfm_requested_entity_type = 2 exists = house } house = { save_scope_as = xfm_ui_confirmation_entity } }
+        else_if = { limit = { var:xfm_requested_entity_type = 3 exists = dynasty } dynasty = { save_scope_as = xfm_ui_confirmation_entity } }
+        else_if = { limit = { var:xfm_requested_entity_type = 4 exists = primary_title } primary_title = { save_scope_as = xfm_ui_confirmation_entity } }
+        else_if = { limit = { var:xfm_requested_entity_type = 5 exists = faith } faith = { save_scope_as = xfm_ui_confirmation_entity } }
+    }
+    option = {
+        name = xfm_market_issue_confirm
+        trigger = {
+            is_alive = yes is_adult = yes
+            exists = scope:xfm_ui_confirmation_primary var:xfm_account = scope:xfm_ui_confirmation_primary
+            scope:xfm_ui_confirmation_primary = { var:xfm_holder = root var:xfm_system_account = 0 xfm_finance_account_usable_trigger = yes }
+            trigger_if = { limit = { scope:xfm_ui_confirmation_entity_type = 2 } house = scope:xfm_ui_confirmation_entity }
+            trigger_if = { limit = { scope:xfm_ui_confirmation_entity_type = 3 } dynasty = scope:xfm_ui_confirmation_entity }
+            trigger_if = { limit = { scope:xfm_ui_confirmation_entity_type = 4 } primary_title = scope:xfm_ui_confirmation_entity }
+            trigger_if = { limit = { scope:xfm_ui_confirmation_entity_type = 5 } faith = scope:xfm_ui_confirmation_entity }
+        }
+        set_variable = { name = xfm_requested_entity_type value = scope:xfm_ui_confirmation_entity_type }
+        set_variable = { name = xfm_requested_funding value = scope:xfm_ui_confirmation_funding }
+        set_variable = { name = xfm_requested_tier value = scope:xfm_ui_confirmation_tier }
+        if = { limit = { scope:xfm_ui_confirmation_tier = 1 } xfm_issuer_register_micro_effect = yes }
+        else_if = { limit = { scope:xfm_ui_confirmation_tier = 2 } xfm_issuer_register_standard_effect = yes }
+        xfm_market_ui_refresh_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}
+xfm_market.102 = {
+    type = character_event title = xfm_market_abort_title desc = xfm_market_abort_desc theme = stewardship
+    immediate = { xfm_market_ui_capture_coin_effect = yes }
+    option = {
+        name = xfm_market_abort_confirm
+        trigger = { is_alive = yes is_adult = yes scope:xfm_ui_confirmation_ready = 1 exists = scope:xfm_ui_confirmation_coin }
+        xfm_market_ui_restore_coin_effect = yes
+        xfm_issuer_abort_offer_effect = yes
+        xfm_market_ui_refresh_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}
+xfm_market.103 = {
+    type = character_event title = xfm_market_delist_title desc = xfm_market_delist_desc theme = stewardship
+    immediate = { xfm_market_ui_capture_coin_effect = yes }
+    option = {
+        name = xfm_market_delist_confirm
+        trigger = { is_alive = yes is_adult = yes scope:xfm_ui_confirmation_ready = 1 exists = scope:xfm_ui_confirmation_coin }
+        xfm_market_ui_restore_coin_effect = yes
+        if = { limit = { xfm_issuer_controls_selected_trigger = yes } scope:xfm_ui_confirmation_coin = { xfm_listing_announce_effect = yes } }
+        xfm_market_ui_refresh_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}
+xfm_market.104 = {
+    type = character_event title = xfm_market_mint_title desc = xfm_market_mint_desc theme = stewardship
+    immediate = { xfm_market_ui_capture_coin_effect = yes }
+    option = {
+        name = xfm_market_mint_confirm
+        trigger = { is_alive = yes is_adult = yes scope:xfm_ui_confirmation_ready = 1 exists = scope:xfm_ui_confirmation_coin }
+        xfm_market_ui_restore_coin_effect = yes
+        xfm_issuer_mint_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}
+xfm_market.105 = {
+    type = character_event title = xfm_market_burn_title desc = xfm_market_burn_desc theme = stewardship
+    immediate = { xfm_market_ui_capture_coin_effect = yes }
+    option = {
+        name = xfm_market_burn_confirm
+        trigger = { is_alive = yes is_adult = yes scope:xfm_ui_confirmation_ready = 1 exists = scope:xfm_ui_confirmation_coin }
+        xfm_market_ui_restore_coin_effect = yes
+        xfm_issuer_burn_effect = yes
+    }
+    option = { name = xfm_market_cancel }
+}

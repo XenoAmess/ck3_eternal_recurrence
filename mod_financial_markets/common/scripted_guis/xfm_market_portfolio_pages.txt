@@ -1,0 +1,50 @@
+﻿xfm_market_positions_next_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_positions_offset < 1000000 }
+    effect = { change_variable = { name = xfm_ui_positions_offset add = 16 } }
+}
+xfm_market_positions_previous_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_positions_offset >= 16 }
+    effect = { change_variable = { name = xfm_ui_positions_offset subtract = 16 } }
+}
+xfm_market_orders_next_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_orders_offset < 1000000 }
+    effect = { change_variable = { name = xfm_ui_orders_offset add = 16 } }
+}
+xfm_market_orders_previous_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_orders_offset >= 16 }
+    effect = { change_variable = { name = xfm_ui_orders_offset subtract = 16 } }
+}
+xfm_market_history_next_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_history_offset < 1000000 }
+    effect = { change_variable = { name = xfm_ui_history_offset add = 16 } }
+}
+xfm_market_history_previous_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_history_offset >= 16 }
+    effect = { change_variable = { name = xfm_ui_history_offset subtract = 16 } }
+}
+xfm_market_debts_next_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_debts_offset < 1000000 }
+    effect = { change_variable = { name = xfm_ui_debts_offset add = 16 } }
+}
+xfm_market_debts_previous_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_debts_offset >= 16 }
+    effect = { change_variable = { name = xfm_ui_debts_offset subtract = 16 } }
+}
+xfm_market_claims_next_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_claims_offset < 1000000 }
+    effect = { change_variable = { name = xfm_ui_claims_offset add = 16 } }
+}
+xfm_market_claims_previous_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_claims_offset >= 16 }
+    effect = { change_variable = { name = xfm_ui_claims_offset subtract = 16 } }
+}

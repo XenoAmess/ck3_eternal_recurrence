@@ -1,0 +1,5 @@
+﻿# Technical custody only. Legal ownership remains in explicit variables.
+xfm_finance_account = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }
+xfm_finance_reservation = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }
+xfm_finance_coin = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }
+xfm_finance_position = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }

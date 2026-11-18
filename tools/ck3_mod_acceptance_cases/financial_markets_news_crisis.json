@@ -1,0 +1,53 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "news-crisis",
+  "acceptance_scope": "actual_debt_aid_restructure_crisis_guards_and_remote_news_delivery",
+  "fixture_source": {"kind": "prebuilt_manifest"},
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 14,
+  "failure_prefixes": ["XFMAT:"],
+  "required_startup": [],
+  "forbidden_startup": ["XFMAT: TEST FAIL"],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "observer_profile_contract": {
+    "status": "PROPOSED_NOT_EMITTED",
+    "profile": "news-crisis",
+    "manifest_case_id_must_equal": "news-crisis",
+    "required_future_observations": ["real_claim_aid_or_consent", "protected_actor_eligibility", "remote_fact_in_world_journal", "urgent_and_ordinary_delivery_bounded", "debt_and_news_persist_after_actual_death_if_observed"],
+    "core_manifest_is_valid_for_this_case": false
+  },
+  "source_save_requirements": [
+    "A genuine production campaign with real overdue financial claims, adult AI debtors and actual crisis review history. Retain original payment, settlement-day and stress provenance; no fixture creates debt, stress, poverty, aid grace or crisis maturity.",
+    "Include observable protected controls where naturally available: player, child, inherited estate and an adult with real assets. Eligibility evidence is required; mere survival for 14 days does not prove the guard.",
+    "A remote unrelated actor and enough genuine new facts or an existing pending backlog are needed for worldwide ordinary/urgent queue behavior. Historical facts verify backlog only, not newly caused death.",
+    "All-human broadcast requires actual multiple connected human players and per-player readback. A single-player run grants single-player delivery credit only.",
+    "All 20 narrative IDs require separate genuine contextual occurrences or retained real-world evidence. One random terminal event cannot establish all 20; no forced death or save reroll is allowed."
+  ],
+  "gui_phases": [
+    {"id": "bind-debt-guards-and-real-help", "at_day": 0, "requirements": [
+      "actual_minimized_non_topmost_no_foreground_activation_for_entire_run",
+      "actual_case_specific_observer_records_debt_accounts_due_days_crisis_actor_grace_assets_and_rule_state",
+      "actual_normal_gui_aid_or_repayment_debits_real_selected_payer_and_reduces_only_the_corresponding_winner_or_fund_claim",
+      "actual_authorized_creditor_consent_or_debtor_refusal_preserves_other_creditors_rights_and_applies_relationship_effect_once",
+      "actual_paid_aid_or_restructure_sets_protection_and_invalidates_the_old_terminal_eligibility_without_creating_money"
+    ]},
+    {"id": "remote-news-and-crisis-review", "at_day": 14, "requirements": [
+      "actual_remote_unrelated_business_fact_enters_permanent_journal_with_unique_source_revision_actor_kind_and_day",
+      "actual_human_delivery_uses_real_native_toast_queue_without_pause_foreground_activation_or_topmost",
+      "actual_mixed_ordinary_and_death_backlog_delivers_urgent_first_and_at_most_three_total_per_native_day_without_losing_facts",
+      "actual_repeated_gui_reads_and_saved_reload_do_not_recreate_fact_or_repeat_cash_or_death",
+      "actual_player_child_inherited_asset_positive_or_rule_disabled_controls_fail_the_real_terminal_eligibility_predicate",
+      "actual_natural_terminal_event_if_observed_has_adult_ai_still_same_holder_stress_maturity_reviews_no_grace_and_zero_known_assets",
+      "actual_narrative_id_matches_real_context_and_contains_no_graphic_or_implementation_detail",
+      "actual_death_if_observed_keeps_original_debt_claim_account_and_source_identity_for_inheritance",
+      "actual_absence_of_random_terminal_event_is_not_observed_not_a_reason_to_force_death_or_extend_allocation"
+    ]}
+  ],
+  "source_contracts": ["mod_financial_markets/docs/debt-news-runtime.md", "docs/design/futures-and-virtual-currency-debt-events.md", "mod_financial_markets/docs/actual-business-acceptance-matrix.md"],
+  "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 5400, "gui_hold_seconds": 1800, "normal_close_timeout_seconds": 180},
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Prospective 14 natural days from genuinely matured debt history. Random death and all 20 contexts remain individually NOT_OBSERVED until real evidence exists."
+}

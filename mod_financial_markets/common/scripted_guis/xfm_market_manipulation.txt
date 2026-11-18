@@ -1,0 +1,35 @@
+﻿xfm_market_concealed_mint_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_can_mint_trigger = yes }
+    effect = { set_variable = { name = xfm_ui_management_action value = 1 } trigger_event = xfm_market.130 }
+}
+
+xfm_market_accumulate_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes exists = var:xfm_selected_coin }
+    effect = { set_variable = { name = xfm_ui_management_action value = 2 } trigger_event = xfm_market.130 }
+}
+
+xfm_market_dump_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes }
+    effect = { set_variable = { name = xfm_ui_management_action value = 3 } trigger_event = xfm_market.130 }
+}
+
+xfm_market_withdraw_liquidity_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes }
+    effect = { set_variable = { name = xfm_ui_management_action value = 4 } trigger_event = xfm_market.130 }
+}
+
+xfm_market_freeze_supply_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes }
+    effect = { set_variable = { name = xfm_ui_management_action value = 5 } trigger_event = xfm_market.130 }
+}
+
+xfm_market_project_cash_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes }
+    effect = { set_variable = { name = xfm_ui_management_action value = 6 } trigger_event = xfm_market.130 }
+}

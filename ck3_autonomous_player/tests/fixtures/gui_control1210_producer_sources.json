@@ -1,0 +1,38 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "software_only": true,
+  "live_game_credit": false,
+  "producer": "ApplyGuiControlV1 + SerializeGuiControlCommandResultV1 from the production C++ GUI control reducer/serializer",
+  "main_full_abi_proofs": "software backend fixture values, never live observations",
+  "query_generation": "9007199254740999",
+  "native_revision": 11,
+  "submitted_unhandled": "native_handled=false remains UNKNOWN; successful submission uses submitted-handled",
+  "oversized_widget": "requested uint64 string is echoed by a real zero-write stale_gui rejection, never an observed valid control",
+  "fixtures": [
+    {
+      "path": "ck3_autonomous_player/tests/fixtures/gui_control1210_producer_indeterminate.json",
+      "bytes": 809,
+      "sha256": "8fa4b9208003b44e16ecb89ab29bc2cecd8a9267a62a8dac989f900f7237c7f6"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/fixtures/gui_control1210_producer_oversized-widget.json",
+      "bytes": 793,
+      "sha256": "694c0620040b81c0b0be03fe1436c16d82e9b6e99d13108bb0a96140f1cdeace"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/fixtures/gui_control1210_producer_query.json",
+      "bytes": 1055,
+      "sha256": "16c00d6cc6aa4a7b804310388fd5467f7c9bdd4ca19b7c89e2d62209ecf547ac"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/fixtures/gui_control1210_producer_submitted-handled.json",
+      "bytes": 772,
+      "sha256": "cfba489c88f80a45d98bd0f6298c86ead0a0bc34c2618033b141a406cdf14cb1"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/fixtures/gui_control1210_producer_submitted.json",
+      "bytes": 770,
+      "sha256": "4a9b8e11bd2b03a1c6aa0de80af95c34723bf42478a31f418e053b796aa5145e"
+    }
+  ]
+}

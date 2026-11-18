@@ -1,0 +1,15 @@
+﻿# Display values in gold. Registration effects independently recompute actual charges.
+xfm_market_ui_micro_total = {
+    value = var:xfm_requested_funding
+    multiply = 0.02
+    add = 2.6
+    add = { value = var:xfm_requested_funding multiply = 0.05 min = 1 }
+    add = { value = var:xfm_requested_funding multiply = 0.10 min = 2 }
+}
+xfm_market_ui_standard_total = {
+    value = var:xfm_requested_funding
+    multiply = 0.02
+    add = 21
+    add = { value = var:xfm_requested_funding multiply = 0.05 min = 10 }
+    add = { value = var:xfm_requested_funding multiply = 0.10 min = 20 }
+}

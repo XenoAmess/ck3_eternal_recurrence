@@ -1,0 +1,65 @@
+﻿# Release only undisputed, unearned issuer property after the venue exits.
+xfm_listing_release_unused_reserves_effect = {
+    if = {
+        limit = {
+            xfm_issuer_controls_selected_trigger = yes
+            var:xfm_selected_coin = {
+                OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 }
+                var:xfm_unresolved_claim_count = 0
+                var:xfm_unpaid_debt_cents = 0
+                var:xfm_promises_due_cents = 0
+                var:xfm_settlement_price_pending = 0
+                NOT = { has_variable = xfm_unresolved_claims }
+                NOT = { has_variable = xfm_unclaimed_assets }
+            }
+        }
+        var:xfm_selected_coin = {
+            xfm_spot_withdraw_maker_effect = yes
+            if = {
+                limit = { exists = var:xfm_maintenance_reservation }
+                var:xfm_maintenance_reservation = {
+                    set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
+                    if = { limit = { var:xfm_request_cents > 0 } xfm_finance_release_effect = yes }
+                }
+            }
+            if = {
+                limit = { exists = var:xfm_bond_reservation }
+                var:xfm_bond_reservation = {
+                    set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
+                    if = { limit = { var:xfm_request_cents > 0 } xfm_finance_release_effect = yes }
+                }
+            }
+            if = {
+                limit = { exists = var:xfm_maker_reservation }
+                var:xfm_maker_reservation = {
+                    set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
+                    if = { limit = { var:xfm_request_cents > 0 } xfm_finance_release_effect = yes }
+                }
+            }
+        }
+    }
+}
+
+xfm_listing_restore_bond_effect = {
+    if = {
+        limit = { xfm_issuer_controls_selected_trigger = yes }
+        var:xfm_selected_coin = {
+            save_scope_as = xfm_offer_rebond_coin
+            set_variable = { name = xfm_rebond_target_cents value = xfm_issuer_bond_value }
+            set_variable = { name = xfm_rebond_old_cents value = 0 }
+            if = { limit = { exists = var:xfm_bond_reservation } set_variable = { name = xfm_rebond_old_cents value = var:xfm_bond_reservation.var:xfm_remaining_cents } }
+            if = {
+                limit = { var:xfm_rebond_old_cents < var:xfm_rebond_target_cents var:xfm_issuer_account = { xfm_finance_account_usable_trigger = yes xfm_issuer_rebond_available_value >= scope:xfm_offer_rebond_coin.var:xfm_rebond_target_cents } }
+                if = {
+                    limit = { var:xfm_rebond_old_cents > 0 }
+                    var:xfm_bond_reservation = { set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents } xfm_finance_release_effect = yes }
+                }
+                var:xfm_issuer_account = {
+                    set_variable = { name = xfm_request_cents value = scope:xfm_offer_rebond_coin.var:xfm_rebond_target_cents }
+                    xfm_finance_reserve_effect = yes
+                    if = { limit = { var:xfm_result = 1 exists = scope:xfm_reservation } scope:xfm_offer_rebond_coin = { set_variable = { name = xfm_bond_reservation value = scope:xfm_reservation } } }
+                }
+            }
+        }
+    }
+}

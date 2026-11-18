@@ -1,0 +1,20 @@
+﻿# Viewing another character's issued/controlled assets is read only and sends no proposal.
+xfm_market_view_issuer_interaction = {
+    category = interaction_category_friendly
+    common_interaction = yes
+    interface_priority = 89
+    icon = loan_money_interaction
+    desc = xfm_market_view_issuer_interaction_desc
+    auto_accept = yes
+    use_diplomatic_range = no
+    ai_frequency = 0
+    is_shown = { scope:actor = { is_ai = no is_alive = yes } }
+    on_accept = {
+        scope:actor = {
+            xfm_market_ui_open_effect = yes
+            set_variable = { name = xfm_ui_issuer_filter value = scope:recipient }
+            xfm_market_ui_first_page_effect = yes
+        }
+    }
+    ai_will_do = { base = 0 }
+}

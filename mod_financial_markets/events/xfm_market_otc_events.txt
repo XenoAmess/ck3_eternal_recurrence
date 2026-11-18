@@ -1,0 +1,31 @@
+﻿namespace = xfm_market
+xfm_market.120 = {
+    type = character_event
+    title = xfm_market_otc_received_title
+    desc = xfm_market_otc_received_desc
+    theme = stewardship
+    left_portrait = scope:xfm_ui_otc_seller
+    option = {
+        name = xfm_market_otc_accept
+        trigger = {
+            scope:xfm_ui_otc_seller = { has_variable = xfm_otc_consent var:xfm_otc_offer_nonce = scope:xfm_ui_otc_nonce }
+            global_var:xfm_exchange.var:xfm_day < scope:xfm_ui_otc_expiry_day
+        }
+        xfm_market_ui_otc_accept_effect = yes
+        ai_chance = {
+            base = 0
+            modifier = {
+                add = 50
+                OR = {
+                    gold >= { value = scope:xfm_ui_otc_lots multiply = scope:xfm_ui_otc_limit_cents divide = 100 }
+                    var:xfm_account.var:xfm_free_cents >= { value = scope:xfm_ui_otc_lots multiply = scope:xfm_ui_otc_limit_cents }
+                }
+                scope:xfm_ui_otc_coin = {
+                    var:xfm_last_price_cents >= scope:xfm_ui_otc_limit_cents
+                    var:xfm_oracle_reason = 0
+                }
+            }
+        }
+    }
+    option = { name = xfm_market_otc_decline xfm_market_ui_otc_decline_effect = yes ai_chance = { base = 50 } }
+}

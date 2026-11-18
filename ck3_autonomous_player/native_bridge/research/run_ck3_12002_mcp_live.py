@@ -1029,7 +1029,8 @@ def saved_campaign_session(spec: object, config: object, args: argparse.Namespac
         globals_copy[name] = bound
     native = globals_copy["native_session"](spec, native_bridge=config,
         timeout_seconds=args.timeout + args.hold_seconds + 120,
-        cold_start_checkpoint=False, stop_event=stop, input_stream=None, output_stream=output_stream)
+        cold_start_checkpoint=False, stop_event=stop, input_stream=None, output_stream=output_stream,
+        start_minimized=True)
     native["saved_campaign_only"] = True
     native["single_saved_campaign_launch"] = launched
     native["saved_campaign_load_name"] = "restored_campaign"
@@ -1717,7 +1718,7 @@ def fixture_session(spec: object, config: object, args: argparse.Namespace,
     report = session_globals["native_session"](
         spec, native_bridge=config, timeout_seconds=args.timeout + args.hold_seconds + 120,
         cold_start_checkpoint=args.cold_start_checkpoint, stop_event=stop,
-        input_stream=None, output_stream=output_stream,
+        input_stream=None, output_stream=output_stream, start_minimized=True,
     )
     report["fixture_profile"] = True
     return report
@@ -4664,6 +4665,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                             spec, native_bridge=config, timeout_seconds=args.timeout + args.hold_seconds + 120,
                             cold_start_checkpoint=args.cold_start_checkpoint,
                             stop_event=stop, input_stream=None, output_stream=stream,
+                            start_minimized=True,
                         )
             except BaseException as error:
                 session_state["error"] = f"{type(error).__name__}: {error}"

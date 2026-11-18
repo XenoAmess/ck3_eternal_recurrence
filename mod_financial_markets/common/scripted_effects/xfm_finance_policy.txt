@@ -1,0 +1,52 @@
+﻿# 2 effects. Beneficiaries follow legal control; fund capitalization spends earned fees.
+xfm_finance_refresh_beneficiary_effect = {
+ save_scope_as = xfm_fin_beneficiary_account
+ if = {
+  limit = { exists = var:xfm_legal_entity var:xfm_legal_entity = { story_type = xfm_finance_coin exists = var:xfm_controller } }
+  var:xfm_legal_entity = { xfm_issuer_refresh_controller_effect = yes }
+  if = {
+   limit = { exists = var:xfm_legal_entity.var:xfm_founder_account var:xfm_legal_entity.var:xfm_founder_account = this exists = var:xfm_legal_entity.var:xfm_founder_beneficiary }
+   set_variable = { name = xfm_beneficial_owner value = var:xfm_legal_entity.var:xfm_founder_beneficiary }
+   set_variable = { name = xfm_holder value = var:xfm_legal_entity.var:xfm_founder_beneficiary }
+  }
+  else_if = {
+   limit = {
+    OR = {
+     AND = { exists = var:xfm_legal_entity.var:xfm_issuer_account var:xfm_legal_entity.var:xfm_issuer_account = this }
+     AND = { exists = var:xfm_legal_entity.var:xfm_market_maker_account var:xfm_legal_entity.var:xfm_market_maker_account = this }
+    }
+   }
+   set_variable = { name = xfm_beneficial_owner value = var:xfm_legal_entity.var:xfm_controller }
+   set_variable = { name = xfm_holder value = var:xfm_legal_entity.var:xfm_controller }
+  }
+ }
+ else_if = {
+  limit = { var:xfm_system_account = 0 exists = var:xfm_holder }
+  set_variable = { name = xfm_beneficial_owner value = var:xfm_holder }
+ }
+}
+xfm_finance_capitalize_default_fund_effect = {
+ if = { limit = { NOT = { has_variable = xfm_default_fund_allocated_cents } } set_variable = { name = xfm_default_fund_allocated_cents value = 0 } }
+ if = {
+  limit = {
+   exists = var:xfm_default_fund_account
+   var:xfm_default_fund_account = { story_type = xfm_finance_account var:xfm_free_cents >= 0 var:xfm_system_account = 1 }
+   var:xfm_fee_cents > 0
+  }
+  save_scope_value_as = {
+   name = xfm_fin_fund_allocation
+   value = {
+    value = var:xfm_fee_cents add = var:xfm_default_fund_allocated_cents
+    multiply = 0.1 floor = yes subtract = var:xfm_default_fund_allocated_cents
+    min = 0 max = var:xfm_fee_cents
+   }
+  }
+  if = {
+   limit = { scope:xfm_fin_fund_allocation > 0 }
+   save_scope_as = xfm_fin_capitalizing_exchange
+   change_variable = { name = xfm_fee_cents subtract = scope:xfm_fin_fund_allocation }
+   change_variable = { name = xfm_default_fund_allocated_cents add = scope:xfm_fin_fund_allocation }
+   var:xfm_default_fund_account = { change_variable = { name = xfm_free_cents add = scope:xfm_fin_fund_allocation } }
+  }
+ }
+}

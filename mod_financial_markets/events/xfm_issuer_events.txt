@@ -1,0 +1,30 @@
+﻿namespace = xfm_issuer
+
+# Supplement to the market panel: explicit charter and restricted-capital disclosure.
+xfm_issuer.100 = {
+    type = character_event
+    title = xfm_issuer_charter_title
+    desc = xfm_issuer_charter_desc
+    theme = stewardship
+    immediate = {
+        if = {
+            limit = { exists = var:xfm_selected_coin }
+            set_variable = { name = xfm_view_coin_id value = var:xfm_selected_coin.var:xfm_coin_id }
+            set_variable = { name = xfm_view_supply value = var:xfm_selected_coin.var:xfm_supply_units }
+            set_variable = { name = xfm_view_locked value = var:xfm_selected_coin.var:xfm_founder_locked_units }
+            set_variable = { name = xfm_view_raised value = { value = var:xfm_selected_coin.var:xfm_actual_raised_cents divide = 100 } }
+            set_variable = { name = xfm_view_maintenance value = { value = var:xfm_selected_coin.var:xfm_maintenance_arrears_cents divide = 100 } }
+            set_variable = { name = xfm_view_issuer_reputation value = var:xfm_selected_coin.var:xfm_issuer_reputation }
+        }
+    }
+    option = { name = xfm_issuer_complete trigger = { xfm_issuer_can_complete_trigger = yes } xfm_issuer_complete_offer_effect = yes }
+    option = { name = xfm_issuer_abort trigger = { xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { var:xfm_listing_state = 0 } } xfm_issuer_abort_offer_effect = yes }
+    option = { name = xfm_issuer_promote trigger = { xfm_issuer_actor_trigger = yes exists = var:xfm_selected_coin var:xfm_selected_coin = { var:xfm_listing_state <= 3 } NOT = { has_variable = xfm_ad_cooldown } } xfm_issuer_promote_effect = yes }
+    option = { name = xfm_issuer_fix_supply trigger = { xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { var:xfm_listing_state >= 1 var:xfm_listing_state <= 2 var:xfm_mint_permitted = 1 } } xfm_issuer_freeze_supply_effect = yes }
+    option = { name = xfm_issuer_cancel_unused trigger = { xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { var:xfm_listing_state = 6 NOT = { has_variable = xfm_offer_closing_started } } } xfm_issuer_cancel_unallocated_supply_effect = yes }
+    option = { name = xfm_issuer_release_escrow trigger = { xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 } var:xfm_unresolved_claim_count = 0 var:xfm_promises_due_cents = 0 } } xfm_listing_release_unused_reserves_effect = yes }
+    option = { name = xfm_issuer_release_project trigger = { xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { OR = { AND = { var:xfm_listing_state >= 1 var:xfm_listing_state <= 2 } var:xfm_listing_state = 5 var:xfm_listing_state = 6 } } } xfm_issuer_release_project_cash_effect = yes }
+    option = { name = xfm_issuer_restore_bond trigger = { xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 } } } xfm_listing_restore_bond_effect = yes }
+    option = { name = xfm_issuer_restart_maker trigger = { xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 } } exists = var:xfm_selected_coin.var:xfm_market_maker_account } xfm_issuer_restart_liquidity_effect = yes }
+    option = { name = xfm_issuer_close }
+}

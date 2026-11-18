@@ -1,0 +1,190 @@
+﻿# 5 effects. Every reduction follows an actual transfer or the actual creditor's consent.
+xfm_debt_repay_effect = {
+    set_variable = { name = xfm_result value = 0 }
+    if = {
+        limit = {
+            exists = var:xfm_request_payer
+            xfm_finance_valid_cents_trigger = yes
+            has_variable = xfm_request_operation
+            var:xfm_request_operation > 0
+            var:xfm_request_operation = xfm_debt_operation_floor_value
+            var:xfm_outstanding_cents > 0
+            exists = var:xfm_creditor_account
+            var:xfm_creditor_account = { story_type = xfm_finance_account var:xfm_free_cents >= 0 }
+            OR = {
+                var:xfm_fund_recourse_cents = 0
+                AND = {
+                    exists = var:xfm_fund_account
+                    var:xfm_fund_account = { story_type = xfm_finance_account var:xfm_free_cents >= 0 }
+                }
+            }
+        }
+        save_scope_as = xfm_debt_record
+        var:xfm_request_payer = { save_scope_as = xfm_debt_payer }
+        if = {
+            limit = {
+                scope:xfm_debt_payer.var:xfm_free_cents >= xfm_debt_requested_payment_value
+                scope:xfm_debt_payer = {
+                    xfm_finance_account_usable_trigger = yes
+                    OR = {
+                        NOT = { has_variable = xfm_last_debt_payment_operation }
+                        var:xfm_last_debt_payment_operation < scope:xfm_debt_record.var:xfm_request_operation
+                    }
+                }
+            }
+            set_variable = { name = xfm_payment_remaining_cents value = xfm_debt_payment_value }
+            set_variable = { name = xfm_payment_actual_cents value = 0 }
+            set_variable = { name = xfm_payment_planned_winner_cents value = xfm_debt_winner_payment_value }
+            set_variable = {
+                name = xfm_payment_planned_fund_cents
+                value = { value = var:xfm_payment_remaining_cents subtract = var:xfm_payment_planned_winner_cents }
+            }
+            if = {
+                limit = {
+                    NOR = {
+                        AND = { var:xfm_payment_planned_winner_cents > 0 scope:xfm_debt_payer = var:xfm_creditor_account }
+                        AND = { var:xfm_payment_planned_fund_cents > 0 scope:xfm_debt_payer = var:xfm_fund_account }
+                    }
+                }
+                var:xfm_creditor_account = { save_scope_as = xfm_debt_payee }
+                set_variable = { name = xfm_payment_part_cents value = var:xfm_payment_planned_winner_cents }
+                xfm_debt_pay_part_effect = { CLAIM = xfm_winner_unpaid_cents }
+                if = {
+                    limit = { exists = var:xfm_fund_account var:xfm_payment_remaining_cents > 0 }
+                    var:xfm_fund_account = { save_scope_as = xfm_debt_payee }
+                    set_variable = { name = xfm_payment_part_cents value = xfm_debt_fund_repayment_value }
+                    xfm_debt_pay_part_effect = { CLAIM = xfm_fund_recourse_cents }
+                }
+            }
+            if = {
+                limit = { var:xfm_payment_actual_cents > 0 }
+                scope:xfm_debt_payer = {
+                    set_variable = { name = xfm_last_debt_payment_operation value = scope:xfm_debt_record.var:xfm_request_operation }
+                }
+                var:xfm_debtor_account = {
+                    change_variable = { name = xfm_total_debt_cents subtract = scope:xfm_debt_record.var:xfm_payment_actual_cents }
+                    set_variable = { name = xfm_crisis_relief_until value = global_var:xfm_exchange.var:xfm_day }
+                    change_variable = { name = xfm_crisis_relief_until add = 30 }
+                    xfm_debt_account_review_effect = yes
+                }
+                set_variable = { name = xfm_result value = 1 }
+                if = {
+                    limit = { scope:xfm_debt_payer != var:xfm_debtor_account }
+                    set_variable = { name = xfm_news_actor value = var:xfm_debtor_account.var:xfm_holder }
+                    set_variable = { name = xfm_news_kind value = 2 }
+                    xfm_news_record_effect = yes
+                    xfm_debt_aid_relation_effect = yes
+                }
+                xfm_debt_close_if_paid_effect = yes
+            }
+            remove_variable = xfm_payment_remaining_cents
+            remove_variable = xfm_payment_part_cents
+            remove_variable = xfm_payment_planned_winner_cents
+            remove_variable = xfm_payment_planned_fund_cents
+        }
+    }
+}
+
+xfm_debt_pay_part_effect = {
+    if = {
+        limit = {
+            var:xfm_payment_part_cents > 0
+            scope:xfm_debt_payer != scope:xfm_debt_payee
+        }
+        scope:xfm_debt_payer = {
+            set_variable = { name = xfm_request_target value = scope:xfm_debt_payee }
+            set_variable = { name = xfm_request_cents value = scope:xfm_debt_record.var:xfm_payment_part_cents }
+            xfm_finance_transfer_effect = yes
+        }
+        if = {
+            limit = { scope:xfm_debt_payer.var:xfm_result = 1 }
+            change_variable = { name = $CLAIM$ subtract = var:xfm_payment_part_cents }
+            change_variable = { name = xfm_outstanding_cents subtract = var:xfm_payment_part_cents }
+            change_variable = { name = xfm_repaid_cents add = var:xfm_payment_part_cents }
+            change_variable = { name = xfm_payment_remaining_cents subtract = var:xfm_payment_part_cents }
+            change_variable = { name = xfm_payment_actual_cents add = var:xfm_payment_part_cents }
+        }
+    }
+}
+
+xfm_debt_pay_selected_effect = {
+    if = {
+        limit = { is_alive = yes exists = var:xfm_selected_debt }
+        save_scope_as = xfm_debt_ui_actor
+        xfm_finance_select_account_effect = yes
+        if = {
+            limit = { exists = scope:xfm_account }
+            scope:xfm_account = {
+                if = {
+                    limit = { NOT = { has_variable = xfm_debt_operation_counter } }
+                    set_variable = { name = xfm_debt_operation_counter value = 0 }
+                }
+                change_variable = { name = xfm_debt_operation_counter add = 1 }
+            }
+            var:xfm_selected_debt = {
+                set_variable = { name = xfm_request_payer value = scope:xfm_account }
+                set_variable = { name = xfm_request_operation value = scope:xfm_account.var:xfm_debt_operation_counter }
+                set_variable = { name = xfm_request_cents value = 1000 }
+                if = {
+                    limit = { scope:xfm_debt_ui_actor = { has_variable = xfm_ui_debt_pay_cents } }
+                    set_variable = { name = xfm_request_cents value = scope:xfm_debt_ui_actor.var:xfm_ui_debt_pay_cents }
+                }
+                xfm_debt_repay_effect = yes
+            }
+        }
+    }
+}
+
+xfm_debt_restructure_selected_effect = {
+    if = {
+        limit = { is_alive = yes exists = var:xfm_selected_debt }
+        save_scope_as = xfm_debt_ui_actor
+        var:xfm_selected_debt = {
+            if = {
+                limit = {
+                    var:xfm_winner_unpaid_cents > 0
+                    var:xfm_creditor_account.var:xfm_holder = scope:xfm_debt_ui_actor
+                    NOT = { has_variable = xfm_creditor_haircut_done }
+                }
+                set_variable = { name = xfm_creditor_haircut_done value = 1 }
+                set_variable = { name = xfm_haircut_cents value = xfm_debt_haircut_value }
+                change_variable = { name = xfm_winner_unpaid_cents subtract = var:xfm_haircut_cents }
+                change_variable = { name = xfm_outstanding_cents subtract = var:xfm_haircut_cents }
+                change_variable = { name = xfm_written_off_cents add = var:xfm_haircut_cents }
+                var:xfm_debtor_account = {
+                    change_variable = { name = xfm_total_debt_cents subtract = prev.var:xfm_haircut_cents }
+                    set_variable = { name = xfm_crisis_relief_until value = global_var:xfm_exchange.var:xfm_day }
+                    change_variable = { name = xfm_crisis_relief_until add = 30 }
+                    xfm_debt_account_review_effect = yes
+                }
+                xfm_debt_extend_effect = yes
+                xfm_debt_close_if_paid_effect = yes
+                remove_variable = xfm_haircut_cents
+            }
+            else_if = {
+                limit = { var:xfm_creditor_account.var:xfm_holder = scope:xfm_debt_ui_actor }
+                xfm_debt_extend_effect = yes
+            }
+        }
+    }
+}
+
+xfm_debt_extend_effect = {
+    if = {
+        limit = { var:xfm_outstanding_cents > 0 NOT = { has_variable = xfm_extension_granted } }
+        set_variable = { name = xfm_extension_granted value = 1 }
+        set_variable = { name = xfm_state value = 2 }
+        set_variable = { name = xfm_due_day value = global_var:xfm_exchange.var:xfm_day }
+        change_variable = { name = xfm_due_day add = 30 }
+        set_variable = { name = xfm_overdue_days value = 0 }
+        var:xfm_debtor_account = {
+            set_variable = { name = xfm_crisis_relief_until value = global_var:xfm_exchange.var:xfm_day }
+            change_variable = { name = xfm_crisis_relief_until add = 30 }
+            xfm_debt_account_review_effect = yes
+        }
+        set_variable = { name = xfm_news_actor value = var:xfm_debtor_account.var:xfm_holder }
+        set_variable = { name = xfm_news_kind value = 3 }
+        xfm_news_record_effect = yes
+        xfm_debt_restructure_relation_effect = yes
+    }
+}

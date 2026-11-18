@@ -1,0 +1,131 @@
+﻿# 4 effects. Active claims and their sparse debtor index are the only daily traversal.
+xfm_debt_daily_effect = {
+    every_in_global_list = {
+        variable = xfm_debts_active
+        limit = { var:xfm_outstanding_cents > 0 }
+        save_scope_as = xfm_debt_tick_record
+        if = {
+            limit = {
+                OR = {
+                    NOT = { has_variable = xfm_last_tick_day }
+                    var:xfm_last_tick_day < global_var:xfm_exchange.var:xfm_day
+                }
+            }
+            set_variable = { name = xfm_last_tick_day value = global_var:xfm_exchange.var:xfm_day }
+            set_variable = {
+                name = xfm_overdue_days
+                value = {
+                    value = global_var:xfm_exchange.var:xfm_day
+                    subtract = var:xfm_due_day
+                    min = 0
+                }
+            }
+            xfm_debt_auto_service_effect = yes
+            var:xfm_debtor_account = {
+                if = {
+                    limit = { NOT = { is_in_list = xfm_debt_accounts_today } }
+                    add_to_temporary_list = xfm_debt_accounts_today
+                    set_variable = { name = xfm_max_overdue_days value = 0 }
+                }
+                if = {
+                    limit = { scope:xfm_debt_tick_record.var:xfm_outstanding_cents > 0 }
+                    set_variable = {
+                        name = xfm_max_overdue_days
+                        value = { value = var:xfm_max_overdue_days min = scope:xfm_debt_tick_record.var:xfm_overdue_days }
+                    }
+                }
+                if = {
+                    limit = { exists = var:xfm_holder var:xfm_holder = { is_alive = no } }
+                    scope:xfm_debt_tick_record = { set_variable = { name = xfm_state value = 4 } }
+                }
+            }
+        }
+    }
+    every_in_list = { list = xfm_debt_accounts_today xfm_debt_account_review_effect = yes }
+}
+
+xfm_debt_account_review_effect = {
+    xfm_debt_stress_effect = yes
+    if = {
+        limit = {
+            exists = var:xfm_holder
+            NOT = { has_variable = xfm_crisis_terminal }
+        }
+        save_scope_as = xfm_crisis_account
+        if = {
+            limit = { xfm_crisis_serious_debt_trigger = yes }
+            if = {
+                limit = { NOT = { has_variable = xfm_crisis_state } }
+                xfm_crisis_begin_effect = yes
+            }
+            else_if = {
+                limit = { var:xfm_crisis_state = 2 }
+                xfm_crisis_begin_effect = yes
+            }
+            else_if = {
+                limit = {
+                    var:xfm_crisis_state = 1
+                    var:xfm_next_crisis_review <= global_var:xfm_exchange.var:xfm_day
+                }
+                xfm_crisis_review_effect = yes
+            }
+        }
+        else_if = {
+            limit = { has_variable = xfm_crisis_state var:xfm_crisis_state = 1 }
+            set_variable = { name = xfm_crisis_state value = 2 }
+            set_variable = { name = xfm_news_actor value = var:xfm_holder }
+            set_variable = { name = xfm_news_kind value = 6 }
+            xfm_news_record_effect = yes
+        }
+    }
+}
+
+xfm_debt_custodian_death_effect = {
+    clear_saved_scope = xfm_debt_new_custodian
+    story_owner = { save_scope_as = xfm_debt_dead_custodian }
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange.story_owner
+            global_var:xfm_exchange.story_owner != scope:xfm_debt_dead_custodian
+            global_var:xfm_exchange.story_owner = { is_alive = yes }
+        }
+        make_story_owner = global_var:xfm_exchange.story_owner
+    }
+    else_if = {
+        limit = { exists = scope:xfm_debt_dead_custodian.primary_heir scope:xfm_debt_dead_custodian.primary_heir = { is_alive = yes } }
+        make_story_owner = scope:xfm_debt_dead_custodian.primary_heir
+    }
+    else = {
+        random_ruler = {
+            limit = { is_alive = yes this != scope:xfm_debt_dead_custodian }
+            save_scope_as = xfm_debt_new_custodian
+        }
+        if = {
+            limit = { exists = scope:xfm_debt_new_custodian }
+            make_story_owner = scope:xfm_debt_new_custodian
+        }
+    }
+    # No end_story, claim erasure, legal-holder change or gold transfer.
+}
+
+xfm_debt_reject_selected_effect = {
+    if = {
+        limit = { is_alive = yes exists = var:xfm_selected_debt }
+        save_scope_as = xfm_debt_ui_actor
+        var:xfm_selected_debt = {
+            if = {
+                limit = {
+                    var:xfm_debtor_account.var:xfm_holder = scope:xfm_debt_ui_actor
+                    var:xfm_outstanding_cents > 0
+                    NOT = { has_variable = xfm_debtor_repudiation }
+                }
+                set_variable = { name = xfm_debtor_repudiation value = 1 }
+                set_variable = { name = xfm_news_actor value = scope:xfm_debt_ui_actor }
+                set_variable = { name = xfm_news_kind value = 1 }
+                xfm_news_record_effect = yes
+                xfm_debt_repudiation_relation_effect = yes
+                # Repudiation is a recorded refusal, never creditor consent or deletion.
+            }
+        }
+    }
+}

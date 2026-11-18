@@ -1,0 +1,13 @@
+﻿# Exchange dispatch clock. Accounts and asset rights have independent subject variables.
+# Static composition only: daily timing, owner handoff and reload need CK3 acceptance.
+xfm_finance_exchange = {
+    visible = no
+    on_owner_death = { xfm_finance_rehome_story_effect = yes }
+    effect_group = {
+        days = 1
+        triggered_effect = {
+            trigger = { always = yes }
+            effect = { xfm_finance_daily_effect = yes }
+        }
+    }
+}

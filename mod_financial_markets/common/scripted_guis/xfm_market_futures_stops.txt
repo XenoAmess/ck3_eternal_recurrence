@@ -1,0 +1,30 @@
+﻿xfm_market_futures_stop_up_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_futures_selected_position var:xfm_futures_stop_cents < 1000000 }
+    effect = { set_variable = { name = xfm_futures_stop_cents value = { value = var:xfm_futures_stop_cents add = var:xfm_ui_step max = 1000000 } } }
+}
+xfm_market_futures_stop_down_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_futures_selected_position var:xfm_futures_stop_cents >= var:xfm_ui_step }
+    effect = { change_variable = { name = xfm_futures_stop_cents subtract = var:xfm_ui_step } }
+}
+xfm_market_futures_take_profit_up_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_futures_selected_position var:xfm_futures_take_profit_cents < 1000000 }
+    effect = { set_variable = { name = xfm_futures_take_profit_cents value = { value = var:xfm_futures_take_profit_cents add = var:xfm_ui_step max = 1000000 } } }
+}
+xfm_market_futures_take_profit_down_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_futures_selected_position var:xfm_futures_take_profit_cents >= var:xfm_ui_step }
+    effect = { change_variable = { name = xfm_futures_take_profit_cents subtract = var:xfm_ui_step } }
+}
+xfm_market_futures_set_stops_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_selected_position }
+    effect = { xfm_futures_set_stops_effect = yes }
+}

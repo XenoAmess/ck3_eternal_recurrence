@@ -1,0 +1,5 @@
+﻿# Model-index identity has technical custody, not private ownership or minted commodity supply.
+xfm_oracle_index = {
+    visible = no
+    on_owner_death = { xfm_finance_rehome_story_effect = yes }
+}

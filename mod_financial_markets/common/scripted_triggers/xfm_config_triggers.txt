@@ -1,0 +1,13 @@
+﻿# Gates apply to NEW risk only; cancellations, exits, debt and settlement remain active.
+xfm_config_spot_open_trigger = {
+    NOT = { has_game_rule = xfm_spot_disabled }
+}
+xfm_config_futures_open_trigger = {
+    NOT = { has_game_rule = xfm_futures_disabled }
+}
+xfm_config_ai_issuance_open_trigger = {
+    NOT = { has_game_rule = xfm_ai_issuance_disabled }
+}
+xfm_config_crisis_narratives_trigger = {
+    NOT = { has_game_rule = xfm_crisis_disabled }
+}

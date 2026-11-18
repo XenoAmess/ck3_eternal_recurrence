@@ -1,0 +1,134 @@
+﻿# 7 effects. Terminal orders leave every active index immediately.
+xfm_spot_release_excess_effect = {
+ if = {
+  limit = { var:xfm_side = 1 exists = var:xfm_reservation }
+  save_scope_value_as = { name = xfm_spot_required_reserve value = xfm_spot_remaining_reserve_value }
+  var:xfm_reservation = {
+   if = {
+    limit = { var:xfm_remaining_cents > scope:xfm_spot_required_reserve }
+    set_variable = { name = xfm_request_cents value = { value = var:xfm_remaining_cents subtract = scope:xfm_spot_required_reserve } }
+    xfm_finance_release_effect = yes
+   }
+  }
+ }
+}
+xfm_spot_cancel_effect = {
+ save_scope_as = xfm_spot_cancel_actor
+ set_variable = { name = xfm_result value = 0 }
+ if = {
+  limit = {
+   exists = var:xfm_selected_order
+   var:xfm_selected_order = {
+    story_type = xfm_spot_order var:xfm_status = 1
+    var:xfm_account = { var:xfm_holder = scope:xfm_spot_cancel_actor var:xfm_system_account = 0 }
+   }
+  }
+  var:xfm_selected_order = { xfm_spot_cancel_order_effect = yes }
+  set_variable = { name = xfm_result value = 1 }
+ }
+}
+xfm_spot_cancel_order_effect = {
+ if = {
+  limit = { story_type = xfm_spot_order var:xfm_status = 1 }
+  save_scope_as = xfm_spot_cancelling_order
+  if = {
+   limit = { var:xfm_side = 2 exists = var:xfm_sell_position }
+   save_scope_value_as = { name = xfm_spot_cancel_units value = { value = var:xfm_remaining_lots multiply = 100 } }
+   var:xfm_sell_position = { change_variable = { name = xfm_reserved_units subtract = scope:xfm_spot_cancel_units } }
+  }
+  set_variable = { name = xfm_cancelled_lots value = var:xfm_remaining_lots }
+  set_variable = { name = xfm_remaining_lots value = 0 }
+  set_variable = { name = xfm_status value = 3 }
+  xfm_spot_finalize_order_effect = yes
+  var:xfm_coin = { xfm_spot_refresh_book_effect = yes }
+ }
+}
+xfm_spot_finalize_order_effect = {
+ if = {
+  limit = { var:xfm_finalized = 0 }
+  save_scope_as = xfm_spot_final_order
+  if = { limit = { var:xfm_status = 1 var:xfm_remaining_lots = 0 } set_variable = { name = xfm_status value = 2 } }
+  xfm_spot_release_excess_effect = yes
+  set_variable = { name = xfm_finalized value = 1 }
+  set_variable = { name = xfm_terminal_day value = global_var:xfm_exchange.var:xfm_day }
+  var:xfm_account = { add_to_variable_list = { name = xfm_order_history target = scope:xfm_spot_final_order } }
+  if = {
+   limit = { var:xfm_indexed = 1 }
+   var:xfm_account = {
+    remove_list_variable = { name = xfm_orders target = scope:xfm_spot_final_order }
+    change_variable = { name = xfm_open_orders_count subtract = 1 }
+   }
+   var:xfm_coin = {
+    remove_list_variable = { name = xfm_spot_orders target = scope:xfm_spot_final_order }
+    change_variable = { name = xfm_open_orders_count subtract = 1 }
+   }
+   remove_list_global_variable = { name = xfm_spot_open_orders target = scope:xfm_spot_final_order }
+   global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count subtract = 1 } }
+   set_variable = { name = xfm_indexed value = 0 }
+  }
+  global_var:xfm_exchange = {
+   change_variable = { name = xfm_archived_orders_count add = 1 }
+   if = {
+    limit = { exists = var:xfm_archive_tail }
+    var:xfm_archive_tail = { set_variable = { name = xfm_archive_next value = scope:xfm_spot_final_order } }
+   }
+   else = { set_variable = { name = xfm_archive_head value = scope:xfm_spot_final_order } }
+   set_variable = { name = xfm_archive_tail value = scope:xfm_spot_final_order }
+   xfm_spot_cleanup_archive_once_effect = yes
+  }
+ }
+}
+xfm_spot_cancel_coin_effect = {
+ every_in_list = { variable = xfm_spot_orders limit = { var:xfm_status = 1 } add_to_temporary_list = xfm_spot_coin_cancels }
+ every_in_list = { list = xfm_spot_coin_cancels xfm_spot_cancel_order_effect = yes }
+ xfm_spot_refresh_book_effect = yes
+}
+xfm_spot_cancel_maker_effect = {
+ every_in_list = { variable = xfm_spot_orders limit = { var:xfm_status = 1 var:xfm_is_maker_quote = 1 } add_to_temporary_list = xfm_spot_maker_cancels }
+ every_in_list = { list = xfm_spot_maker_cancels xfm_spot_cancel_order_effect = yes }
+ xfm_spot_refresh_book_effect = yes
+}
+xfm_spot_refresh_book_effect = {
+ set_variable = { name = xfm_best_bid_cents value = 0 }
+ set_variable = { name = xfm_best_ask_cents value = 0 }
+ set_variable = { name = xfm_bid_depth_cents value = 0 }
+ save_scope_as = xfm_spot_book_coin
+ # The maintained active list is bounded by the configured per-coin order cap.
+ every_in_list = {
+  variable = xfm_spot_orders
+  limit = { story_type = xfm_spot_order var:xfm_status = 1 exists = var:xfm_account }
+  var:xfm_account = { xfm_finance_refresh_beneficiary_effect = yes }
+  if = {
+   limit = { xfm_spot_order_executable_trigger = yes var:xfm_coin = scope:xfm_spot_book_coin }
+   save_scope_value_as = { name = xfm_spot_book_price value = var:xfm_limit_cents }
+   if = {
+    limit = { var:xfm_side = 1 }
+    scope:xfm_spot_book_coin = {
+     if = { limit = { var:xfm_best_bid_cents < scope:xfm_spot_book_price } set_variable = { name = xfm_best_bid_cents value = scope:xfm_spot_book_price } }
+    }
+    # Listing demand excludes the issuer's own legal entity and current controller,
+    # including maker/private accounts sharing that actual beneficial owner.
+    if = {
+     limit = {
+      exists = scope:xfm_spot_book_coin.var:xfm_controller
+      var:xfm_account = {
+       exists = var:xfm_beneficial_owner
+       var:xfm_beneficial_owner = { is_alive = yes }
+       var:xfm_beneficial_owner != scope:xfm_spot_book_coin.var:xfm_controller
+       NOT = { this = scope:xfm_spot_book_coin.var:xfm_issuer_account }
+       NOT = { exists = scope:xfm_spot_book_coin.var:xfm_market_maker_account this = scope:xfm_spot_book_coin.var:xfm_market_maker_account }
+       NOT = { exists = var:xfm_legal_entity var:xfm_legal_entity = scope:xfm_spot_book_coin }
+      }
+     }
+     save_scope_value_as = { name = xfm_spot_book_depth value = xfm_spot_executable_bid_cents_value }
+     scope:xfm_spot_book_coin = { change_variable = { name = xfm_bid_depth_cents add = scope:xfm_spot_book_depth } }
+    }
+   }
+   else = {
+    scope:xfm_spot_book_coin = {
+     if = { limit = { OR = { var:xfm_best_ask_cents = 0 var:xfm_best_ask_cents > scope:xfm_spot_book_price } } set_variable = { name = xfm_best_ask_cents value = scope:xfm_spot_book_price } }
+    }
+   }
+  }
+ }
+}

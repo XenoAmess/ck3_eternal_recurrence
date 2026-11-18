@@ -1,0 +1,17 @@
+﻿# UI sorting executes only when explicitly opening, refreshing or paging.
+xfm_market_ui_sort_value = {
+    value = 0
+    if = {
+        limit = { scope:xfm_ui_actor = { var:xfm_ui_sort = 1 } }
+        add = var:xfm_last_price_cents
+    }
+    else_if = {
+        limit = { scope:xfm_ui_actor = { var:xfm_ui_sort = 2 } }
+        add = var:xfm_day_volume_units
+    }
+    else = { subtract = var:xfm_coin_id }
+}
+xfm_market_ui_fetch_limit = { value = var:xfm_ui_offset add = 17 }
+xfm_market_ui_page_end = { value = var:xfm_ui_offset add = 16 }
+xfm_market_ui_cash_gold = { value = var:xfm_free_cents divide = 100 }
+xfm_market_ui_reserved_gold = { value = var:xfm_reserved_cents divide = 100 }

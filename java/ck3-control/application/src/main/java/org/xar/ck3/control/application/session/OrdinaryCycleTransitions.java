@@ -2588,8 +2588,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 && text(row, "episode_run_id").equals(frame.frame().episodeRunId()), "initial SEM differs from the actual last-settled canonical binding");
     }
     public static void requireSameIdentity(ObservationIdentity left, ObservationIdentity right) { requireSameOwner(left, right); StrictJson.require(left.frame().identity().equals(right.frame().identity()), "native player/revision/date identity differs"); }
-    /** A real SAVE may publish a newer native/public revision while preserving this one actor/episode/date. */
-    /** Same-date verified proof DATA grants no current action or read-publication authority. */
+    /** A real SAVE may publish a newer native/public revision while preserving this one actor/episode/date.
+     * Same-date verified proof DATA grants no current action or read-publication authority. */
     private void requireProofFrame(ContinuityState actual, CycleState state, VerifiedSemantic verified) {
         requireFrontier(actual, state);
         var frame = verified.frame();

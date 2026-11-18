@@ -1,0 +1,56 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "inheritance",
+  "acceptance_scope": "actual_natural_succession_stable_accounts_assets_obligations_and_news_delivery",
+  "fixture_source": {"kind": "prebuilt_manifest"},
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 14,
+  "allow_actor_change": true,
+  "continue_as_heir_requirements": [
+    "actual_observed_natural_death_modal_and_original_primary_heir_match_pinned_predeath_identity",
+    "actual_background_native_continue_as_heir_uses_current_modal_without_console_or_fixture_role_change",
+    "actual_post_transition_played_character_and_stable_inherited_account_are_read_back_without_foreground_activation"
+  ],
+  "failure_prefixes": ["XFMAT:"],
+  "required_startup": [],
+  "forbidden_startup": ["XFMAT: TEST FAIL"],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "observer_profile_contract": {
+    "status": "PROPOSED_NOT_EMITTED",
+    "profile": "inheritance",
+    "manifest_case_id_must_equal": "inheritance",
+    "required_future_observations": ["predeath_legal_graph", "actual_death_and_heir_binding", "stable_inherited_account_and_claims", "separate_heir_private_account", "news_delivery_cursor_preserved"],
+    "core_manifest_is_valid_for_this_case": false
+  },
+  "source_save_requirements": [
+    "A genuine pre-succession campaign with an aged or naturally endangered legal holder and an actual visible primary heir. Neither fixture nor console may change health, cause death, execute the holder or manufacture an heir.",
+    "The holder needs real coins, funded orders, futures reservations and debt or claims; the heir needs a distinct existing private account for non-merger checks.",
+    "A no-heir holder may be watched as an additional actual world actor. Its death and frozen estate branch gain credit only if naturally observed within the same bound.",
+    "Source save includes ordinary and urgent pending news where available. The observer must continue across natural ownership change rather than use the core actor-death failure."
+  ],
+  "gui_phases": [
+    {"id": "bind-predeath-rights", "at_day": 0, "requirements": [
+      "actual_minimized_non_topmost_no_foreground_activation_for_entire_run",
+      "actual_case_specific_observer_pins_current_player_target_holder_real_primary_heir_and_stable_account_ids",
+      "actual_before_graph_records_original_account_and_heir_private_account_without_business_mutation",
+      "actual_background_continue_as_heir_action_uses_the_observed_native_modal_only_if_natural_player_death_occurs"
+    ]},
+    {"id": "verify-natural-succession", "at_day": 14, "requirements": [
+      "actual_natural_death_and_same_original_primary_heir_are_evidenced_or_branch_is_not_observed",
+      "actual_original_account_id_and_asset_debt_claim_contract_references_survive_with_holder_moved_to_real_heir",
+      "actual_open_spot_orders_cancel_once_and_release_their_remaining_reservations_without_releasing_live_futures_margin",
+      "actual_heir_private_account_and_original_inherited_account_remain_distinct_and_selectable",
+      "actual_no_heir_estate_if_observed_freezes_with_original_deceased_legal_holder_and_preserved_rights",
+      "actual_ordinary_urgent_pending_news_and_same_day_delivery_cap_survive_without_duplicate_delivery",
+      "actual_inherited_debt_neither_disappears_nor_automatically_spends_heir_private_gold",
+      "actual_physical_save_keeps_successor_identity_accounts_claim_sources_and_original_debt_dates"
+    ]}
+  ],
+  "source_contracts": ["mod_financial_markets/docs/runtime-contract.md", "mod_financial_markets/docs/debt-news-runtime.md", "mod_financial_markets/docs/actual-business-acceptance-matrix.md"],
+  "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 5400, "gui_hold_seconds": 1800, "normal_close_timeout_seconds": 180},
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Prospective 14 natural days from a genuine pre-succession save. Natural death is not guaranteed; absence yields NOT_OBSERVED, never fixture intervention or reroll credit."
+}

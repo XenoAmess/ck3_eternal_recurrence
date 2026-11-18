@@ -1,0 +1,12 @@
+﻿xfm_market_open_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    desc = xfm_market_open_decision_desc
+    selection_tooltip = xfm_market_open_decision_tooltip
+    confirm_text = xfm_market_open_decision_confirm
+    is_shown = { is_ai = no }
+    is_valid = { is_alive = yes }
+    effect = { xfm_market_ui_open_effect = yes }
+    ai_check_interval = 0
+    ai_potential = { always = no }
+    ai_will_do = { base = 0 }
+}

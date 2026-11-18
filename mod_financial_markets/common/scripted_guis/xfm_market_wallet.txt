@@ -1,0 +1,20 @@
+﻿xfm_market_cash_up_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_request_cents < 100000000 }
+    effect = { change_variable = { name = xfm_request_cents add = var:xfm_ui_step } if = { limit = { var:xfm_request_cents > 100000000 } set_variable = { name = xfm_request_cents value = 100000000 } } }
+}
+xfm_market_cash_down_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_request_cents > var:xfm_ui_step }
+    effect = { change_variable = { name = xfm_request_cents subtract = var:xfm_ui_step } }
+}
+xfm_market_deposit_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes var:xfm_request_cents > 0 }
+    effect = { xfm_finance_deposit_effect = yes }
+}
+xfm_market_withdraw_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes var:xfm_request_cents > 0 }
+    effect = { xfm_finance_withdraw_effect = yes }
+}

@@ -1,0 +1,20 @@
+﻿xfm_market_charter_gui = {
+    scope = character
+    is_valid = { is_ai = no exists = var:xfm_selected_coin }
+    effect = { trigger_event = xfm_issuer.100 }
+}
+xfm_market_restart_liquidity_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes }
+    effect = { set_variable = { name = xfm_ui_management_action value = 7 } trigger_event = xfm_market.130 }
+}
+xfm_market_relist_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 } } }
+    effect = { set_variable = { name = xfm_ui_management_action value = 8 } trigger_event = xfm_market.130 }
+}
+xfm_market_cancel_failed_supply_gui = {
+    scope = character
+    is_valid = { is_ai = no is_alive = yes is_adult = yes xfm_issuer_controls_selected_trigger = yes var:xfm_selected_coin = { var:xfm_listing_state = 6 } }
+    effect = { set_variable = { name = xfm_ui_management_action value = 9 } trigger_event = xfm_market.130 }
+}

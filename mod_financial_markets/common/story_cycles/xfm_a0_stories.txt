@@ -5,14 +5,20 @@ xfm_a0_coin = {
     effect_group = {
         days = 1
         triggered_effect = {
-            trigger = { has_variable = xfm_original_issuer }
+            trigger = {
+                xfm_a0_runtime_active_trigger = yes
+                has_variable = xfm_original_issuer
+            }
             effect = { xfm_a0_daily_effect = yes }
         }
     }
     effect_group = {
         months = 1
         triggered_effect = {
-            trigger = { has_variable = xfm_maintenance_escrow }
+            trigger = {
+                xfm_a0_runtime_active_trigger = yes
+                has_variable = xfm_maintenance_escrow
+            }
             effect = { xfm_a0_maintenance_effect = yes }
         }
     }

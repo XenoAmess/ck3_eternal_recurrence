@@ -1,0 +1,15 @@
+﻿xfm_market_news_older_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_news_has_older = 1 }
+    effect = { set_variable = { name = xfm_ui_news_before_id value = var:xfm_ui_news_last_id } change_variable = { name = xfm_ui_news_page add = 1 } xfm_market_ui_news_effect = yes }
+}
+xfm_market_news_newer_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_news_page > 1 }
+    effect = { change_variable = { name = xfm_ui_news_before_id add = 16 } change_variable = { name = xfm_ui_news_page subtract = 1 } xfm_market_ui_news_effect = yes }
+}
+xfm_market_news_latest_gui = {
+    scope = character
+    is_valid = { is_ai = no }
+    effect = { set_variable = { name = xfm_ui_news_before_id value = 0 } xfm_market_ui_news_effect = yes }
+}

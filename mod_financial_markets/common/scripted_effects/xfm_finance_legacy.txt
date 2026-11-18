@@ -1,0 +1,211 @@
+﻿# 3 effects. Import marks belong to each original source; old records remain evidence.
+xfm_finance_migrate_a0_effect = {
+ if = {
+  limit = { NOT = { var:xfm_a0_migration_scanned = 1 } }
+  set_variable = { name = xfm_a0_migration_running value = 1 }
+  set_variable = { name = xfm_a0_import_errors value = 0 }
+  if = {
+   limit = { NOT = { has_variable = xfm_a0_sources_discovered } }
+   every_living_character = {
+    every_owned_story = {
+     limit = { story_type = xfm_a0_coin }
+     save_scope_as = xfm_fin_legacy_discovered
+     global_var:xfm_exchange = { add_to_variable_list = { name = xfm_a0_coin_sources target = scope:xfm_fin_legacy_discovered } }
+    }
+   }
+   every_living_character = {
+    every_owned_story = {
+     limit = { story_type = xfm_a0_position }
+     save_scope_as = xfm_fin_legacy_discovered
+     global_var:xfm_exchange = { add_to_variable_list = { name = xfm_a0_position_sources target = scope:xfm_fin_legacy_discovered } }
+    }
+   }
+   set_variable = { name = xfm_a0_sources_discovered value = 1 }
+  }
+  every_in_list = { variable = xfm_a0_coin_sources xfm_finance_import_a0_coin_effect = yes }
+  every_in_list = { variable = xfm_a0_position_sources xfm_finance_import_a0_position_effect = yes }
+  every_in_global_list = {
+   variable = xfm_coin_registry
+   limit = { has_variable = xfm_legacy_source_coin }
+   if = {
+    limit = { var:xfm_legacy_accounted_units != var:xfm_supply_units }
+    set_variable = { name = xfm_trading_open value = 0 }
+    set_variable = { name = xfm_legacy_reconciliation_pending value = 1 }
+    global_var:xfm_exchange = { change_variable = { name = xfm_a0_import_errors add = 1 } }
+   }
+   else_if = {
+    limit = { var:xfm_legacy_reconciliation_pending = 1 has_variable = xfm_legacy_cash_imported has_variable = xfm_legacy_inventory_imported }
+    set_variable = { name = xfm_legacy_reconciliation_pending value = 0 }
+    if = { limit = { var:xfm_listing_state < 4 } set_variable = { name = xfm_trading_open value = 1 } }
+   }
+  }
+  if = { limit = { var:xfm_a0_import_errors = 0 } set_variable = { name = xfm_a0_migration_scanned value = 1 } }
+  set_variable = { name = xfm_a0_migration_running value = 0 }
+ }
+}
+xfm_finance_import_a0_coin_effect = {
+ save_scope_as = xfm_fin_legacy_coin
+ clear_saved_scope = xfm_fin_import_coin
+ if = {
+  limit = { exists = var:xfm_finance_migrated_coin }
+  var:xfm_finance_migrated_coin = { save_scope_as = xfm_fin_import_coin }
+ }
+ else_if = {
+  limit = { exists = var:xfm_original_issuer }
+  var:xfm_original_issuer = { xfm_finance_create_coin_effect = yes }
+  if = {
+   limit = { exists = scope:xfm_coin scope:xfm_coin = { story_type = xfm_finance_coin } }
+   scope:xfm_coin = { save_scope_as = xfm_fin_import_coin }
+   set_variable = { name = xfm_finance_migrated_coin value = scope:xfm_fin_import_coin }
+   var:xfm_original_issuer = {
+    if = {
+     limit = { var:xfm_personal_coin = scope:xfm_fin_legacy_coin }
+     set_variable = { name = xfm_personal_coin value = scope:xfm_fin_import_coin }
+    }
+   }
+   scope:xfm_fin_import_coin = {
+    set_variable = { name = xfm_legacy_source_coin value = scope:xfm_fin_legacy_coin }
+    set_variable = { name = xfm_supply_units value = scope:xfm_fin_legacy_coin.var:xfm_total_supply }
+    set_variable = { name = xfm_legacy_accounted_units value = 0 }
+    set_variable = { name = xfm_legacy_reconciliation_pending value = 0 }
+    set_variable = { name = xfm_listing_state value = 1 }
+    set_variable = { name = xfm_trading_open value = 1 }
+    set_variable = { name = xfm_legacy_registration_paid_cents value = { value = scope:xfm_fin_legacy_coin.var:xfm_registration_fee_paid multiply = 100 round = yes } }
+    set_variable = { name = xfm_legacy_listing_paid_cents value = { value = scope:xfm_fin_legacy_coin.var:xfm_listing_fee_paid multiply = 100 round = yes } }
+    set_variable = { name = xfm_legacy_maintenance_earned_cents value = { value = scope:xfm_fin_legacy_coin.var:xfm_maintenance_fee_earned multiply = 100 round = yes } }
+   }
+   global_var:xfm_exchange = {
+    change_variable = { name = xfm_pending_coin_count subtract = 1 }
+    change_variable = { name = xfm_active_coin_count add = 1 }
+   }
+  }
+ }
+ if = {
+  limit = { exists = scope:xfm_fin_import_coin }
+  scope:xfm_fin_import_coin = {
+   if = {
+    limit = { NOT = { exists = var:xfm_market_maker_account } }
+    global_var:xfm_exchange = { xfm_finance_create_account_effect = yes }
+    if = {
+     limit = { exists = scope:xfm_created_account }
+     set_variable = { name = xfm_market_maker_account value = scope:xfm_created_account }
+     scope:xfm_created_account = {
+      set_variable = { name = xfm_holder value = scope:xfm_fin_import_coin.var:xfm_controller }
+      set_variable = { name = xfm_beneficial_owner value = scope:xfm_fin_import_coin.var:xfm_controller }
+      set_variable = { name = xfm_legal_entity value = scope:xfm_fin_import_coin }
+     }
+    }
+   }
+   if = {
+    limit = { NOT = { has_variable = xfm_legacy_issuer_account_created } }
+    global_var:xfm_exchange = { xfm_finance_create_account_effect = yes }
+    if = {
+     limit = { exists = scope:xfm_created_account }
+     set_variable = { name = xfm_issuer_account value = scope:xfm_created_account }
+     set_variable = { name = xfm_legacy_issuer_account_created value = 1 }
+     scope:xfm_created_account = {
+      set_variable = { name = xfm_holder value = scope:xfm_fin_import_coin.var:xfm_controller }
+      set_variable = { name = xfm_beneficial_owner value = scope:xfm_fin_import_coin.var:xfm_controller }
+      set_variable = { name = xfm_legal_entity value = scope:xfm_fin_import_coin }
+     }
+    }
+   }
+   if = {
+    limit = { NOT = { has_variable = xfm_legacy_cash_imported } exists = var:xfm_market_maker_account has_variable = xfm_legacy_issuer_account_created }
+    var:xfm_market_maker_account = {
+     change_variable = { name = xfm_free_cents add = { value = scope:xfm_fin_legacy_coin.var:xfm_pool_gold multiply = 100 round = yes } }
+    }
+    var:xfm_issuer_account = {
+     change_variable = { name = xfm_free_cents add = { value = scope:xfm_fin_legacy_coin.var:xfm_maintenance_escrow add = scope:xfm_fin_legacy_coin.var:xfm_performance_bond multiply = 100 round = yes } }
+    }
+    global_var:xfm_exchange = {
+     change_variable = { name = xfm_fee_cents add = { value = scope:xfm_fin_legacy_coin.var:xfm_trading_fee_cash multiply = 100 round = yes } }
+    }
+    set_variable = { name = xfm_legacy_cash_imported value = 1 }
+   }
+   if = {
+    limit = { has_variable = xfm_legacy_cash_imported NOT = { exists = var:xfm_maintenance_reservation } scope:xfm_fin_legacy_coin.var:xfm_maintenance_escrow > 0 }
+    var:xfm_issuer_account = {
+     set_variable = { name = xfm_request_cents value = { value = scope:xfm_fin_legacy_coin.var:xfm_maintenance_escrow multiply = 100 round = yes } }
+     xfm_finance_reserve_effect = yes
+    }
+    if = { limit = { exists = scope:xfm_reservation } set_variable = { name = xfm_maintenance_reservation value = scope:xfm_reservation } }
+   }
+   if = {
+    limit = { has_variable = xfm_legacy_cash_imported NOT = { exists = var:xfm_bond_reservation } scope:xfm_fin_legacy_coin.var:xfm_performance_bond > 0 }
+    var:xfm_issuer_account = {
+     set_variable = { name = xfm_request_cents value = { value = scope:xfm_fin_legacy_coin.var:xfm_performance_bond multiply = 100 round = yes } }
+     xfm_finance_reserve_effect = yes
+    }
+    if = { limit = { exists = scope:xfm_reservation } set_variable = { name = xfm_bond_reservation value = scope:xfm_reservation } }
+   }
+   if = {
+    limit = { NOT = { has_variable = xfm_legacy_inventory_imported } exists = var:xfm_market_maker_account }
+    var:xfm_market_maker_account = {
+     set_variable = { name = xfm_request_coin value = scope:xfm_fin_import_coin }
+     xfm_finance_ensure_position_effect = yes
+    }
+    if = {
+     limit = { exists = scope:xfm_position scope:xfm_position = { var:xfm_account = scope:xfm_fin_import_coin.var:xfm_market_maker_account var:xfm_coin = scope:xfm_fin_import_coin } }
+     scope:xfm_position = {
+      change_variable = { name = xfm_quantity_units add = scope:xfm_fin_legacy_coin.var:xfm_pool_inventory }
+      xfm_finance_sync_position_count_effect = yes
+     }
+     change_variable = { name = xfm_legacy_accounted_units add = scope:xfm_fin_legacy_coin.var:xfm_pool_inventory }
+     set_variable = { name = xfm_legacy_inventory_imported value = 1 }
+    }
+   }
+   if = {
+    limit = { var:xfm_last_price_cents = 0 scope:xfm_fin_legacy_coin.var:xfm_pool_inventory > 0 }
+    set_variable = { name = xfm_legacy_reference_cents value = { value = scope:xfm_fin_legacy_coin.var:xfm_pool_gold multiply = 10000 divide = scope:xfm_fin_legacy_coin.var:xfm_pool_inventory ceiling = yes min = 1 } }
+    set_variable = { name = xfm_ipo_price_cents value = var:xfm_legacy_reference_cents }
+   }
+   if = {
+    limit = { has_variable = xfm_legacy_cash_imported has_variable = xfm_legacy_inventory_imported }
+    xfm_issuer_adopt_legacy_defaults_effect = yes
+   }
+   else = {
+    set_variable = { name = xfm_trading_open value = 0 }
+    set_variable = { name = xfm_legacy_reconciliation_pending value = 1 }
+    global_var:xfm_exchange = { change_variable = { name = xfm_a0_import_errors add = 1 } }
+   }
+  }
+ }
+ else = { global_var:xfm_exchange = { change_variable = { name = xfm_a0_import_errors add = 1 } } }
+}
+xfm_finance_import_a0_position_effect = {
+ if = {
+  limit = { NOT = { has_variable = xfm_finance_imported } exists = var:xfm_coin.var:xfm_finance_migrated_coin }
+  save_scope_as = xfm_fin_legacy_position
+  clear_saved_scope = xfm_fin_legacy_beneficiary
+  if = { limit = { exists = var:xfm_frozen_beneficiary } var:xfm_frozen_beneficiary = { save_scope_as = xfm_fin_legacy_beneficiary } }
+  else_if = { limit = { exists = var:xfm_beneficiary } var:xfm_beneficiary = { save_scope_as = xfm_fin_legacy_beneficiary } }
+  if = {
+   limit = { exists = scope:xfm_fin_legacy_beneficiary }
+   scope:xfm_fin_legacy_beneficiary = { xfm_finance_ensure_account_effect = yes }
+   if = {
+    limit = { exists = scope:xfm_account scope:xfm_account = { story_type = xfm_finance_account var:xfm_holder = scope:xfm_fin_legacy_beneficiary } }
+    scope:xfm_account = {
+     if = {
+      limit = { scope:xfm_fin_legacy_position = { has_variable = xfm_frozen_beneficiary } }
+      set_variable = { name = xfm_account_frozen value = 1 }
+      set_variable = { name = xfm_inheritance_state value = 2 }
+     }
+     set_variable = { name = xfm_request_coin value = scope:xfm_fin_legacy_position.var:xfm_coin.var:xfm_finance_migrated_coin }
+     xfm_finance_ensure_position_effect = yes
+    }
+    if = {
+     limit = { exists = scope:xfm_position scope:xfm_position = { var:xfm_coin = scope:xfm_fin_legacy_position.var:xfm_coin.var:xfm_finance_migrated_coin } }
+     scope:xfm_position = {
+      change_variable = { name = xfm_quantity_units add = scope:xfm_fin_legacy_position.var:xfm_quantity }
+      xfm_finance_sync_position_count_effect = yes
+     }
+     var:xfm_coin.var:xfm_finance_migrated_coin = { change_variable = { name = xfm_legacy_accounted_units add = scope:xfm_fin_legacy_position.var:xfm_quantity } }
+     set_variable = { name = xfm_finance_imported value = 1 }
+     set_variable = { name = xfm_finance_migrated_position value = scope:xfm_position }
+    }
+   }
+  }
+  if = { limit = { NOT = { has_variable = xfm_finance_imported } } global_var:xfm_exchange = { change_variable = { name = xfm_a0_import_errors add = 1 } } }
+ }
+}

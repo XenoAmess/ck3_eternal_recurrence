@@ -3959,7 +3959,6 @@ public final class ContinuityBatchJournal implements BatchJournal {
         }).toList();
     }
 
-    /** Exact already-APPLIED Life RETAIN routing DATA; the complete history reader still proves the actual RETAIN edge. */
     /** Initial pending DATA has no completed cycle SEM or capture; all action/history proof remains mandatory below. */
     private static boolean initialCurrentMapPendingFrontier(ContinuityState current,SessionIdentity owner) {
         try {
@@ -4079,7 +4078,6 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return Optional.of(actual);
     }
 
-    /** Historical DATA of the exact positive-ACK Council original completed after its interrupted saved batch. */
     /** Unissued DATA only; production separately replays the actual source-owned reducer. */
     static boolean historicalCompletedEventCycleData(WriterContracts.HistoricalTransition edge,
             WriterContracts.HistoricalTransition previousEdge,

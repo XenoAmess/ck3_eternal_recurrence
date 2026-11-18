@@ -393,8 +393,8 @@ public final class SwayCanonicalDomain {
             borrowed.verifyPin(pin);last=after;
         }
     }
-    /** Verifies the one real stage publication between Running and UNKNOWN; it never executes or erases it. */
-    /** One real ROOT READ then Stage, retaining a different already-settled original's metadata. */
+    /** Verifies the one real stage publication between Running and UNKNOWN; it never executes or erases it.
+     * One real ROOT READ then Stage, retaining a different already-settled original's metadata. */
     private void requireRetainedStageAfterRootRead(ContinuityStorePort.Session borrowed,ActionCommand parent,
             ActionReceipt running,ActionReceipt unknown,ContinuityState beforeUnknown,DomainBodies.BodyRef stagedBody,
             ExactRef runningRecord,ActionPorts.OutcomeArchive originals) throws IOException {

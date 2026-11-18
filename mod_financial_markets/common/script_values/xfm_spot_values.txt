@@ -1,0 +1,48 @@
+﻿xfm_spot_lots_floor_value = { value = var:xfm_order_lots floor = yes }
+xfm_spot_price_floor_value = { value = var:xfm_order_limit_cents floor = yes }
+xfm_spot_input_notional_value = { value = var:xfm_order_lots multiply = var:xfm_order_limit_cents }
+xfm_spot_input_fee_value = { value = xfm_spot_input_notional_value multiply = 0.003 ceiling = yes min = 1 }
+xfm_spot_input_reserve_value = { value = xfm_spot_input_notional_value add = xfm_spot_input_fee_value }
+xfm_spot_input_units_value = { value = var:xfm_order_lots multiply = 100 }
+xfm_spot_fill_lots_value = { value = scope:xfm_spot_incoming.xfm_spot_executable_lots_value max = scope:xfm_spot_resting.xfm_spot_executable_lots_value }
+xfm_spot_fill_notional_value = { value = scope:xfm_spot_fill_lots multiply = scope:xfm_spot_fill_price }
+xfm_spot_fill_fee_value = { value = var:xfm_filled_notional_cents add = scope:xfm_spot_fill_notional multiply = 0.003 ceiling = yes min = 1 subtract = var:xfm_fee_paid_cents }
+xfm_spot_remaining_reserve_value = {
+ value = 0
+ if = {
+  limit = { var:xfm_remaining_lots > 0 }
+  value = var:xfm_remaining_lots
+  multiply = var:xfm_limit_cents
+  add = {
+   value = var:xfm_remaining_lots multiply = var:xfm_limit_cents
+   add = var:xfm_filled_notional_cents multiply = 0.003 ceiling = yes min = 1
+   subtract = var:xfm_fee_paid_cents
+  }
+ }
+}
+
+# Current order. Reserve the whole original-order future fee before counting lots.
+# This deliberately undercounts malformed/partially depleted collateral rather than
+# advertising cash which cannot execute. CK3 max caps; min supplies a lower bound.
+xfm_spot_remaining_fee_value = {
+ value = var:xfm_remaining_lots multiply = var:xfm_limit_cents
+ add = var:xfm_filled_notional_cents multiply = 0.003 ceiling = yes min = 1
+ subtract = var:xfm_fee_paid_cents min = 0
+}
+xfm_spot_executable_lots_value = {
+ value = 0
+ if = {
+  limit = { var:xfm_side = 1 exists = var:xfm_reservation var:xfm_limit_cents > 0 }
+  value = var:xfm_reservation.var:xfm_remaining_cents
+  max = var:xfm_account.var:xfm_reserved_cents
+  subtract = xfm_spot_remaining_fee_value min = 0
+  divide = var:xfm_limit_cents floor = yes max = var:xfm_remaining_lots
+ }
+ else_if = {
+  limit = { var:xfm_side = 2 exists = var:xfm_sell_position }
+  value = var:xfm_sell_position.var:xfm_quantity_units
+  max = var:xfm_sell_position.var:xfm_reserved_units
+  divide = 100 floor = yes min = 0 max = var:xfm_remaining_lots
+ }
+}
+xfm_spot_executable_bid_cents_value = { value = xfm_spot_executable_lots_value multiply = var:xfm_limit_cents }

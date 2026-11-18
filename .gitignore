@@ -18,6 +18,10 @@ ck3_autonomous_player/build/
 ck3_autonomous_player/build-*/
 ck3_autonomous_player/src/*.egg-info/
 
+# Shared Java reactor and build-tools outputs
+/target/
+/java/ck3-control/build-tools/target/
+
 # Local native bridge builds
 ck3_autonomous_player/native_bridge/build*/
 

@@ -1,0 +1,31 @@
+﻿# Actual transfer is complete before an oracle receives its independent source facts.
+xfm_spot_record_trade_effect = {
+ scope:xfm_spot_incoming.var:xfm_coin = { save_scope_as = xfm_trade_coin }
+ scope:xfm_spot_buyer.var:xfm_account = { save_scope_as = xfm_trade_buyer }
+ scope:xfm_spot_seller.var:xfm_account = { save_scope_as = xfm_trade_seller }
+ clear_saved_scope = xfm_trade_buyer_holder
+ clear_saved_scope = xfm_trade_seller_holder
+ scope:xfm_trade_buyer.var:xfm_beneficial_owner = { save_scope_as = xfm_trade_buyer_holder }
+ scope:xfm_trade_seller.var:xfm_beneficial_owner = { save_scope_as = xfm_trade_seller_holder }
+ save_scope_value_as = { name = xfm_trade_price_cents value = scope:xfm_spot_fill_price }
+ save_scope_value_as = { name = xfm_trade_lots value = scope:xfm_spot_fill_lots }
+ save_scope_value_as = { name = xfm_trade_notional_cents value = scope:xfm_spot_fill_notional }
+ save_scope_value_as = { name = xfm_trade_day value = global_var:xfm_exchange.var:xfm_day }
+ scope:xfm_trade_coin = {
+  if = {
+   limit = { var:xfm_day_volume_units = 0 }
+   set_variable = { name = xfm_day_open_cents value = scope:xfm_trade_price_cents }
+   set_variable = { name = xfm_day_high_cents value = scope:xfm_trade_price_cents }
+   set_variable = { name = xfm_day_low_cents value = scope:xfm_trade_price_cents }
+  }
+  if = { limit = { var:xfm_day_high_cents < scope:xfm_trade_price_cents } set_variable = { name = xfm_day_high_cents value = scope:xfm_trade_price_cents } }
+  if = { limit = { var:xfm_day_low_cents > scope:xfm_trade_price_cents } set_variable = { name = xfm_day_low_cents value = scope:xfm_trade_price_cents } }
+  set_variable = { name = xfm_last_price_cents value = scope:xfm_trade_price_cents }
+  set_variable = { name = xfm_day_close_cents value = scope:xfm_trade_price_cents }
+  set_variable = { name = xfm_last_trade_day value = scope:xfm_trade_day }
+  change_variable = { name = xfm_day_volume_units add = scope:xfm_spot_fill_units }
+  change_variable = { name = xfm_actual_trades add = 1 }
+  change_variable = { name = xfm_price_version add = 1 }
+  xfm_oracle_record_trade_effect = yes
+ }
+}

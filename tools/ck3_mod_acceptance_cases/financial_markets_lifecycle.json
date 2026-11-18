@@ -1,0 +1,58 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "lifecycle",
+  "acceptance_scope": "actual_delisting_notice_reduce_only_termination_otc_and_preserved_claims",
+  "fixture_source": {"kind": "prebuilt_manifest"},
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 35,
+  "failure_prefixes": ["XFMAT:"],
+  "required_startup": [],
+  "forbidden_startup": ["XFMAT: TEST FAIL"],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "observer_profile_contract": {
+    "status": "PROPOSED_NOT_EMITTED",
+    "profile": "lifecycle",
+    "manifest_case_id_must_equal": "lifecycle",
+    "required_future_observations": ["notice_identity_and_day", "reduce_only_enforced", "termination_certificate_or_pending", "pair_close_and_spot_release_once", "otc_and_claims_survive_delisting"],
+    "core_manifest_is_valid_for_this_case": false
+  },
+  "source_save_requirements": [
+    "A genuine campaign with a controllable listed coin, external real holders, open funded spot orders, futures positions and at least one unresolved genuine claim.",
+    "Prefer two actual assets: one with a qualifying termination window and one without reliable prices. Existing illiquidity is observed, not created by fixture price or oracle writes.",
+    "Automatic 90-day low-demand or maintenance enforcement needs a genuine pre-aged source save with its earlier timeline retained; a 35-day run does not establish 90 days of history.",
+    "Relisting requires a separate genuine OTC or pre-remediation asset if its ordinary waiting period cannot fit this allocation. No business age or listing state may be fast-forwarded by fixture."
+  ],
+  "gui_phases": [
+    {"id": "observe-real-notice", "at_day": 0, "requirements": [
+      "actual_minimized_non_topmost_no_foreground_activation_for_entire_run",
+      "actual_case_specific_read_only_observer_armed_and_all_coin_account_contract_claim_ids_recorded",
+      "actual_authorized_normal_gui_delisting_confirmation_records_notice_day_and_immediately_restricts_new_derivatives_risk",
+      "actual_unrelated_healthy_market_remains_usable_and_existing_external_holdings_are_preserved"
+    ]},
+    {"id": "exit-window", "at_day": 14, "requirements": [
+      "actual_d0_to_d14_exit_window_preserves_legal_spot_exit_and_genuine_reduce_only_futures",
+      "actual_new_risk_attempt_rejects_and_successful_exit_requires_real_cash_and_counterparty",
+      "actual_notice_identity_and_original_day_do_not_refresh_on_gui_reopen_or_save"
+    ]},
+    {"id": "termination-window", "at_day": 21, "requirements": [
+      "actual_d15_to_d20_samples_and_d21_certificate_reconcile_to_observed_qualified_completed_day_prices",
+      "actual_unreliable_reference_keeps_settlement_pending_without_zero_or_last_trade_fabricated_price",
+      "actual_certified_contract_termination_pays_once_from_margin_fund_or_real_claims_and_does_not_erase_rights"
+    ]},
+    {"id": "otc-and-surviving-rights", "at_day": 30, "requirements": [
+      "actual_d30_venue_close_cancels_ordinary_unfilled_orders_and_releases_only_their_remaining_assets_once",
+      "actual_coin_id_supply_holder_balances_and_open_claim_sources_survive_otc_transition",
+      "actual_otc_offer_and_distinct_buyer_acceptance_transfer_real_cash_and_coin_atomically",
+      "actual_unresolved_claim_count_blocks_complete_archive_until_true_repayment_or_creditor_consent",
+      "actual_relisting_if_observed_keeps_original_identity_and_debt_and_pays_real_costs",
+      "actual_physical_save_preserves_pending_termination_and_all_unresolved_obligations"
+    ]}
+  ],
+  "source_contracts": ["mod_financial_markets/docs/runtime-contract.md", "mod_financial_markets/docs/oracle-runtime-contract.md", "mod_financial_markets/docs/debt-news-runtime.md", "mod_financial_markets/docs/actual-business-acceptance-matrix.md"],
+  "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 10800, "gui_hold_seconds": 3600, "normal_close_timeout_seconds": 180},
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Prospective 35 natural days includes the ordinary 30-day notice path. Pre-aged saves only supply their independently evidenced history; unresolved branches are not silently skipped."
+}

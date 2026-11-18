@@ -1,0 +1,14 @@
+﻿# Current scope is a newly allocated financial position story, including a real split source.
+# These high-water counters are identities, not counts of active objects. Never decrement/reuse.
+xfm_futures_assign_position_id_effect = {
+ if = {
+  limit = { NOT = { has_variable = xfm_position_id } }
+  global_var:xfm_exchange = {
+   if = { limit = { NOT = { has_variable = xfm_next_futures_position_id } } set_variable = { name = xfm_next_futures_position_id value = 0 } }
+   change_variable = { name = xfm_next_futures_position_id add = 1 }
+  }
+  set_variable = { name = xfm_position_id value = global_var:xfm_exchange.var:xfm_next_futures_position_id }
+  set_variable = { name = xfm_contract_id value = var:xfm_contract.var:xfm_contract_id }
+  set_variable = { name = xfm_created_day value = global_var:xfm_exchange.var:xfm_day }
+ }
+}

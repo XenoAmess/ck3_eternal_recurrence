@@ -1,0 +1,29 @@
+﻿# Reservation split never exposes collateral as free cash.
+xfm_finance_split_reservation_effect = {
+ save_scope_as = xfm_fin_split_source
+ set_variable = { name = xfm_result value = 0 }
+ remove_variable = xfm_result_reservation
+ clear_saved_scope = xfm_reservation
+ if = {
+  limit = {
+   xfm_finance_reservation_usable_trigger = yes xfm_finance_valid_cents_trigger = yes
+   var:xfm_remaining_cents >= var:xfm_request_cents
+  }
+  global_var:xfm_exchange.story_owner = { create_story = { type = xfm_finance_reservation save_scope_as = xfm_reservation } }
+  if = {
+   limit = { exists = scope:xfm_reservation scope:xfm_reservation = { story_type = xfm_finance_reservation } }
+   global_var:xfm_exchange = { change_variable = { name = xfm_next_reservation_id add = 1 } }
+   scope:xfm_reservation = {
+    set_variable = { name = xfm_reservation_id value = global_var:xfm_exchange.var:xfm_next_reservation_id }
+    set_variable = { name = xfm_account value = scope:xfm_fin_split_source.var:xfm_account }
+    set_variable = { name = xfm_remaining_cents value = scope:xfm_fin_split_source.var:xfm_request_cents }
+    set_variable = { name = xfm_status value = 1 }
+   }
+   var:xfm_account = { add_to_variable_list = { name = xfm_reservations target = scope:xfm_reservation } }
+   change_variable = { name = xfm_remaining_cents subtract = var:xfm_request_cents }
+   if = { limit = { var:xfm_remaining_cents = 0 } set_variable = { name = xfm_status value = 2 } }
+   set_variable = { name = xfm_result_reservation value = scope:xfm_reservation }
+   set_variable = { name = xfm_result value = 1 }
+  }
+ }
+}

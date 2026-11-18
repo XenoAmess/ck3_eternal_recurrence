@@ -1,0 +1,92 @@
+﻿# 5 effects. A stored gold balance is a claim backed by prior gold removal.
+xfm_finance_deposit_effect = {
+ save_scope_as = xfm_fin_depositor
+ xfm_finance_select_account_effect = yes
+ set_variable = { name = xfm_result value = 0 }
+ if = {
+  limit = {
+   is_alive = yes is_adult = yes xfm_finance_valid_cents_trigger = yes
+   gold >= xfm_finance_request_gold
+   exists = scope:xfm_account
+   scope:xfm_account = { xfm_finance_account_usable_trigger = yes var:xfm_system_account = 0 var:xfm_holder = scope:xfm_fin_depositor }
+  }
+  add_gold = xfm_finance_negative_request_gold
+  scope:xfm_account = { change_variable = { name = xfm_free_cents add = scope:xfm_fin_depositor.var:xfm_request_cents } }
+  set_variable = { name = xfm_result value = 1 }
+ }
+}
+xfm_finance_withdraw_effect = {
+ save_scope_as = xfm_fin_withdrawer
+ xfm_finance_select_account_effect = yes
+ set_variable = { name = xfm_result value = 0 }
+ if = {
+  limit = {
+   is_alive = yes is_adult = yes xfm_finance_valid_cents_trigger = yes
+   exists = scope:xfm_account
+   scope:xfm_account = {
+    xfm_finance_account_usable_trigger = yes var:xfm_system_account = 0
+    var:xfm_holder = scope:xfm_fin_withdrawer
+    var:xfm_free_cents >= scope:xfm_fin_withdrawer.var:xfm_request_cents
+   }
+  }
+  scope:xfm_account = { change_variable = { name = xfm_free_cents subtract = scope:xfm_fin_withdrawer.var:xfm_request_cents } }
+  add_gold = xfm_finance_request_gold
+  set_variable = { name = xfm_result value = 1 }
+ }
+}
+xfm_finance_ensure_funds_effect = {
+ set_variable = { name = xfm_result value = 0 }
+ save_scope_as = xfm_fin_funding_account
+ if = {
+  limit = { xfm_finance_account_usable_trigger = yes xfm_finance_valid_cents_trigger = yes }
+  if = {
+   limit = { var:xfm_free_cents >= var:xfm_request_cents }
+   set_variable = { name = xfm_result value = 1 }
+  }
+  else_if = {
+   limit = { var:xfm_system_account = 0 exists = var:xfm_holder var:xfm_holder = { is_alive = yes is_adult = yes } }
+   save_scope_value_as = { name = xfm_fin_gap_cents value = xfm_finance_missing_cents }
+   save_scope_value_as = { name = xfm_fin_gap_gold value = { value = scope:xfm_fin_gap_cents divide = 100 } }
+   save_scope_value_as = { name = xfm_fin_gap_negative_gold value = { value = scope:xfm_fin_gap_cents divide = -100 } }
+   var:xfm_holder = {
+    if = {
+     limit = { gold >= scope:xfm_fin_gap_gold }
+     add_gold = scope:xfm_fin_gap_negative_gold
+     scope:xfm_fin_funding_account = {
+      change_variable = { name = xfm_free_cents add = scope:xfm_fin_gap_cents }
+      set_variable = { name = xfm_result value = 1 }
+     }
+    }
+   }
+  }
+ }
+}
+xfm_finance_transfer_effect = {
+ set_variable = { name = xfm_result value = 0 }
+ save_scope_as = xfm_fin_payer
+ if = {
+  limit = {
+   xfm_finance_account_usable_trigger = yes xfm_finance_valid_cents_trigger = yes
+   var:xfm_free_cents >= var:xfm_request_cents
+   exists = var:xfm_request_target
+   var:xfm_request_target = { story_type = xfm_finance_account var:xfm_free_cents >= 0 }
+   var:xfm_request_target != this
+  }
+  var:xfm_request_target = { change_variable = { name = xfm_free_cents add = scope:xfm_fin_payer.var:xfm_request_cents } }
+  change_variable = { name = xfm_free_cents subtract = var:xfm_request_cents }
+  set_variable = { name = xfm_result value = 1 }
+ }
+}
+xfm_finance_fee_effect = {
+ set_variable = { name = xfm_result value = 0 }
+ save_scope_as = xfm_fin_fee_payer
+ if = {
+  limit = {
+   xfm_finance_account_usable_trigger = yes xfm_finance_valid_cents_trigger = yes
+   var:xfm_free_cents >= var:xfm_request_cents exists = global_var:xfm_exchange
+  }
+  change_variable = { name = xfm_free_cents subtract = var:xfm_request_cents }
+  global_var:xfm_exchange = { change_variable = { name = xfm_fee_cents add = scope:xfm_fin_fee_payer.var:xfm_request_cents } }
+  set_variable = { name = xfm_result value = 1 }
+ }
+}

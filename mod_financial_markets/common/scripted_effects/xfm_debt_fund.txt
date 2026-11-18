@@ -1,0 +1,31 @@
+﻿# 1 effect. A voluntary player contribution is real cash, never an insurance entitlement.
+xfm_debt_donate_fund_effect = {
+    set_variable = { name = xfm_result value = 0 }
+    if = {
+        limit = { is_alive = yes is_adult = yes exists = global_var:xfm_exchange.var:xfm_default_fund_account }
+        save_scope_as = xfm_fund_donor
+        xfm_finance_select_account_effect = yes
+        if = {
+            limit = {
+                exists = scope:xfm_account
+                scope:xfm_account = { xfm_finance_account_usable_trigger = yes var:xfm_system_account = 0 }
+            }
+            scope:xfm_account = {
+                set_variable = { name = xfm_request_cents value = 1000 }
+                if = {
+                    limit = { scope:xfm_fund_donor = { has_variable = xfm_ui_fund_donation_cents } }
+                    set_variable = { name = xfm_request_cents value = scope:xfm_fund_donor.var:xfm_ui_fund_donation_cents }
+                }
+                set_variable = { name = xfm_request_target value = global_var:xfm_exchange.var:xfm_default_fund_account }
+                xfm_finance_transfer_effect = yes
+                if = {
+                    limit = { var:xfm_result = 1 }
+                    scope:xfm_fund_donor = {
+                        set_variable = { name = xfm_result value = 1 }
+                        set_variable = { name = xfm_last_fund_donation_cents value = scope:xfm_account.var:xfm_request_cents }
+                    }
+                }
+            }
+        }
+    }
+}

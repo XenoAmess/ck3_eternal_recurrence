@@ -85,7 +85,6 @@ public final class JavaRuntimeLaunch {
         return value;
     }
 
-    /** A manifest DTO cannot mint a launch. Both preparation and consumption revalidate its importer. */
     /** DATA only. The shared caller independently owns and admits these paths. */
     public record ManagedCommandPaths(Path stdout,Path stderr,Path temporaryRoot,Path nativeScratchRoot,long memoryLimitBytes) {
         public ManagedCommandPaths {

@@ -1,0 +1,40 @@
+﻿types FinancialMarketDebts {
+    type xfm_market_debts_panel = vbox {
+        layoutpolicy_horizontal = expanding spacing = 8
+        text_multi = { text = "xfm_market_debt_help" max_width = 730 autoresize = yes }
+        text_label_left = { text = "xfm_market_my_debts" }
+        scrollbox = { name = "xfm_market_debts_scroll" size = { 735 150 } blockoverride "scrollbox_content" {
+            vbox = { layoutpolicy_horizontal = expanding spacing = 5 datamodel = "[DataModelSubSpan( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_debts' ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_debts_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_debts' ) ) ), Max_int32( '(int32)0', Min_int32( '(int32)16', Subtract_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_debts' ) ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_debts_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_debts' ) ) ) ) ) ) )]" item = { xfm_market_debt_row = {} } }
+        } }
+        hbox = { spacing = 8
+ button_standard = { name = "xfm_market_debts_previous" size = { 150 30 } text = "xfm_market_previous" enabled = "[GetScriptedGui( 'xfm_market_debts_previous_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_debts_previous_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+ expand = {}
+ button_standard = { name = "xfm_market_debts_next" size = { 150 30 } text = "xfm_market_next" enabled = "[GreaterThan_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_debts' ) ), Add_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_debts_offset' ).GetValue ), '(int32)16' ) )]" onclick = "[GetScriptedGui( 'xfm_market_debts_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+}
+        text_label_left = { text = "xfm_market_my_claims" }
+        scrollbox = { name = "xfm_market_claims_scroll" size = { 735 150 } blockoverride "scrollbox_content" {
+            vbox = { layoutpolicy_horizontal = expanding spacing = 5 datamodel = "[DataModelSubSpan( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_claims' ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_claims_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_claims' ) ) ), Max_int32( '(int32)0', Min_int32( '(int32)16', Subtract_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_claims' ) ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_claims_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_claims' ) ) ) ) ) ) )]" item = { xfm_market_debt_row = {} } }
+        } }
+        hbox = { spacing = 8
+ button_standard = { name = "xfm_market_claims_previous" size = { 150 30 } text = "xfm_market_previous" enabled = "[GetScriptedGui( 'xfm_market_claims_previous_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_claims_previous_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+ expand = {}
+ button_standard = { name = "xfm_market_claims_next" size = { 150 30 } text = "xfm_market_next" enabled = "[GreaterThan_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_claims' ) ), Add_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_claims_offset' ).GetValue ), '(int32)16' ) )]" onclick = "[GetScriptedGui( 'xfm_market_claims_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+}
+        text_multi = { visible = "[GetScriptedGui( 'xfm_market_debt_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_selected_debt" max_width = 730 autoresize = yes }
+        hbox = { spacing = 8
+            button_standard = { name = "xfm_market_debt_pay_down" size = { 40 34 } text = "xfm_market_minus" enabled = "[GetScriptedGui( 'xfm_market_debt_pay_down_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_debt_pay_down_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_debt_pay_down_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+            text_single = { text = "xfm_market_debt_pay_amount" }
+            button_standard = { name = "xfm_market_debt_pay_up" size = { 40 34 } text = "xfm_market_plus" enabled = "[GetScriptedGui( 'xfm_market_debt_pay_up_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_debt_pay_up_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_debt_pay_up_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+            button_standard = { name = "xfm_market_debt_pay" size = { 180 34 } text = "xfm_market_debt_pay" enabled = "[GetScriptedGui( 'xfm_market_debt_pay_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_debt_pay_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_debt_pay_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+            button_standard = { name = "xfm_market_debt_restructure" size = { 180 34 } text = "xfm_market_debt_restructure" enabled = "[GetScriptedGui( 'xfm_market_debt_restructure_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_debt_restructure_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_debt_restructure_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+        }
+        button_standard = { name = "xfm_market_debt_refuse" size = { 720 34 } text = "xfm_market_debt_refuse" enabled = "[GetScriptedGui( 'xfm_market_debt_refuse_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_debt_refuse_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+    }
+    type xfm_market_debt_row = button_standard_list {
+        name = "xfm_market_debt_row"
+        size = { 725 55 }
+        text = "xfm_market_debt_row_text"
+        enabled = "[GetScriptedGui( 'xfm_market_select_debt_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+        onclick = "[GetScriptedGui( 'xfm_market_select_debt_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+    }
+}

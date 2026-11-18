@@ -1,0 +1,39 @@
+﻿# New-risk switches never erase existing assets or settlement obligations.
+xfm_market_capacity = {
+    categories = { game_modes }
+    default = xfm_capacity_standard
+    xfm_capacity_conservative = { }
+    xfm_capacity_standard = { }
+    xfm_capacity_extended = { }
+}
+xfm_market_ai_activity = {
+    categories = { ai }
+    default = xfm_ai_standard
+    xfm_ai_light = { }
+    xfm_ai_standard = { }
+    xfm_ai_dense = { }
+}
+xfm_market_spot = {
+    categories = { game_modes }
+    default = xfm_spot_enabled
+    xfm_spot_enabled = { }
+    xfm_spot_disabled = { }
+}
+xfm_market_futures = {
+    categories = { game_modes }
+    default = xfm_futures_enabled
+    xfm_futures_enabled = { }
+    xfm_futures_disabled = { }
+}
+xfm_market_ai_issuance = {
+    categories = { ai }
+    default = xfm_ai_issuance_enabled
+    xfm_ai_issuance_enabled = { }
+    xfm_ai_issuance_disabled = { }
+}
+xfm_market_crisis = {
+    categories = { health }
+    default = xfm_crisis_enabled
+    xfm_crisis_enabled = { }
+    xfm_crisis_disabled = { }
+}

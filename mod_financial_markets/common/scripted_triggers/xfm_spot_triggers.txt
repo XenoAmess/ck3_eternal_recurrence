@@ -1,0 +1,53 @@
+﻿xfm_spot_input_valid_trigger = {
+ OR = { var:xfm_order_side = 1 var:xfm_order_side = 2 }
+ var:xfm_order_lots >= 1 var:xfm_order_lots <= 10000
+ var:xfm_order_lots = xfm_spot_lots_floor_value
+ var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000
+ var:xfm_order_limit_cents = xfm_spot_price_floor_value
+ xfm_spot_input_notional_value <= 100000000
+ exists = var:xfm_selected_coin
+ var:xfm_selected_coin = { story_type = xfm_finance_coin var:xfm_trading_open = 1 var:xfm_listing_state < 5 }
+ OR = { var:xfm_order_side = 2 xfm_config_spot_open_trigger = yes }
+}
+xfm_spot_capacity_trigger = {
+ global_var:xfm_exchange = {
+  var:xfm_order_stories_count < 24576
+ }
+ OR = {
+  var:xfm_order_ioc = 1
+  AND = {
+   var:xfm_open_orders_count < xfm_config_player_order_capacity_value
+   global_var:xfm_exchange = { var:xfm_active_orders_count < xfm_config_global_order_capacity_value }
+   var:xfm_selected_coin = { var:xfm_open_orders_count < xfm_config_coin_order_capacity_value }
+  }
+ }
+}
+
+# Current order. The same collateral/account guard feeds matching and public quotes.
+xfm_spot_order_executable_trigger = {
+ story_type = xfm_spot_order
+ var:xfm_status = 1 var:xfm_remaining_lots > 0 var:xfm_limit_cents > 0
+ exists = var:xfm_coin
+ var:xfm_coin = { story_type = xfm_finance_coin var:xfm_trading_open = 1 var:xfm_listing_state < 5 }
+ exists = var:xfm_account
+ var:xfm_account = { xfm_finance_account_usable_trigger = yes }
+ OR = {
+  AND = {
+   var:xfm_side = 1 exists = var:xfm_reservation
+   var:xfm_reservation = {
+    xfm_finance_reservation_usable_trigger = yes
+    var:xfm_account = prev.var:xfm_account
+    var:xfm_source_spot_order = prev
+   }
+  }
+  AND = {
+   var:xfm_side = 2 exists = var:xfm_sell_position
+   var:xfm_sell_position = {
+    story_type = xfm_finance_position
+    var:xfm_account = prev.var:xfm_account var:xfm_coin = prev.var:xfm_coin
+    var:xfm_quantity_units > 0 var:xfm_reserved_units > 0
+   }
+  }
+ }
+ xfm_spot_executable_lots_value >= 1
+}

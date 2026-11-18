@@ -1,0 +1,46 @@
+﻿# Coin context. Exact integer cents; cost categories stay separate.
+xfm_issuer_listing_fee_value = {
+    value = var:xfm_actual_raised_cents
+    divide = 50
+    ceiling = yes
+    add = var:xfm_listing_fixed_cents
+}
+xfm_issuer_bond_value = {
+    value = var:xfm_actual_raised_cents
+    divide = 20
+    ceiling = yes
+    min = var:xfm_bond_minimum_cents
+}
+xfm_issuer_maker_value = {
+    value = var:xfm_actual_raised_cents
+    divide = 10
+    ceiling = yes
+    min = var:xfm_maker_minimum_cents
+}
+xfm_issuer_close_cost_value = {
+    value = xfm_issuer_listing_fee_value
+    add = xfm_issuer_bond_value
+    add = xfm_issuer_maker_value
+    add = var:xfm_initial_maintenance_cents
+}
+xfm_issuer_minimum_external_value = { value = var:xfm_minimum_raised_cents divide = 5 ceiling = yes }
+xfm_issuer_subscription_cents_value = { value = var:xfm_subscription_gold multiply = 100 floor = yes }
+xfm_issuer_subscription_lots_value = {
+    value = var:xfm_offer_request_cents
+    divide = var:xfm_selected_coin.var:xfm_ipo_price_cents
+    floor = yes
+    max = { value = var:xfm_selected_coin.var:xfm_offer_units_remaining divide = 100 }
+}
+xfm_issuer_subscription_cost_value = { value = var:xfm_offer_request_lots multiply = var:xfm_selected_coin.var:xfm_ipo_price_cents }
+xfm_issuer_subscription_units_value = { value = var:xfm_offer_request_lots multiply = 100 }
+xfm_issuer_maintenance_credit_value = { value = var:xfm_eligible_maintenance_credit_cents max = var:xfm_monthly_maintenance_cents }
+xfm_issuer_maintenance_net_value = { value = var:xfm_monthly_maintenance_cents subtract = var:xfm_credit_used_cents }
+xfm_issuer_mint_units_value = { value = var:xfm_supply_units divide = 10 floor = yes divide = 100 floor = yes multiply = 100 max = { value = var:xfm_maximum_supply_units subtract = var:xfm_supply_units } }
+xfm_issuer_requested_mint_value = { value = scope:xfm_offer_mint_actor.var:xfm_order_lots floor = yes multiply = 100 }
+xfm_issuer_requested_supply_value = { value = var:xfm_supply_units add = xfm_issuer_requested_mint_value }
+xfm_issuer_order_lots_floor_value = { value = var:xfm_order_lots floor = yes }
+xfm_issuer_order_price_floor_value = { value = var:xfm_order_limit_cents floor = yes }
+xfm_issuer_requested_funding_floor_value = { value = var:xfm_requested_funding floor = yes }
+xfm_issuer_requested_funding_cents_value = { value = scope:xfm_offer_applicant.var:xfm_requested_funding multiply = 100 }
+xfm_issuer_available_close_cash_value = { value = var:xfm_free_cents add = scope:xfm_offer_closing_coin.var:xfm_cents_still_held }
+xfm_issuer_rebond_available_value = { value = var:xfm_free_cents add = scope:xfm_offer_rebond_coin.var:xfm_rebond_old_cents }

@@ -1,0 +1,129 @@
+﻿# Advertising changes awareness and funded order choices, never a price variable.
+xfm_issuer_promote_effect = {
+    if = {
+        limit = { xfm_issuer_actor_trigger = yes exists = var:xfm_selected_coin NOT = { has_variable = xfm_ad_cooldown } }
+        save_scope_as = xfm_offer_promoter
+        xfm_finance_ensure_account_effect = yes
+        var:xfm_account = {
+            set_variable = { name = xfm_request_cents value = 100 }
+            xfm_finance_ensure_funds_effect = yes
+            xfm_finance_fee_effect = yes
+            if = {
+                limit = { var:xfm_result = 1 }
+                scope:xfm_offer_promoter = {
+                    set_variable = { name = xfm_ad_cooldown days = 7 }
+                    set_variable = { name = xfm_ad_reached value = 0 }
+                    var:xfm_selected_coin = { change_variable = { name = xfm_advertising_spent_cents add = 100 } }
+                    every_close_family_member = {
+                        limit = { is_alive = yes is_adult = yes scope:xfm_offer_promoter.var:xfm_ad_reached < 4 }
+                        xfm_issuer_receive_ad_effect = yes
+                    }
+                    every_courtier_or_guest = {
+                        limit = { is_alive = yes is_adult = yes scope:xfm_offer_promoter.var:xfm_ad_reached < 8 }
+                        xfm_issuer_receive_ad_effect = yes
+                    }
+                }
+            }
+        }
+    }
+}
+
+xfm_issuer_receive_ad_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_ad_recent } }
+        set_variable = { name = xfm_promoted_coin value = scope:xfm_offer_promoter.var:xfm_selected_coin }
+        set_variable = { name = xfm_ad_recent days = 7 }
+        set_variable = { name = xfm_promotion_attention_days value = 30 }
+        set_variable = { name = xfm_promotion_end_day value = { value = global_var:xfm_exchange.var:xfm_day add = 30 } }
+        clear_saved_scope = xfm_offer_ad_previous_coin
+        if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { save_scope_as = xfm_offer_ad_previous_coin } }
+        set_variable = { name = xfm_selected_coin value = scope:xfm_offer_promoter.var:xfm_selected_coin }
+        xfm_spot_watch_coin_effect = yes
+        if = { limit = { exists = scope:xfm_offer_ad_previous_coin } set_variable = { name = xfm_selected_coin value = scope:xfm_offer_ad_previous_coin } }
+        else = { remove_variable = xfm_selected_coin }
+        scope:xfm_offer_promoter = { change_variable = { name = xfm_ad_reached add = 1 } }
+    }
+}
+
+xfm_issuer_accumulate_effect = {
+    # A buy order spends the same ordinary wallet used by every other market.
+    if = { limit = { xfm_issuer_actor_trigger = yes exists = var:xfm_selected_coin } set_variable = { name = xfm_order_side value = 1 } xfm_spot_submit_effect = yes }
+}
+xfm_issuer_dump_effect = {
+    if = {
+        limit = { xfm_issuer_controls_selected_trigger = yes }
+        save_scope_as = xfm_offer_dump_controller
+        var:xfm_selected_coin.var:xfm_issuer_account = {
+            set_variable = { name = xfm_selected_coin value = scope:xfm_offer_dump_controller.var:xfm_selected_coin }
+            set_variable = { name = xfm_order_side value = 2 }
+            set_variable = { name = xfm_order_lots value = scope:xfm_offer_dump_controller.var:xfm_order_lots }
+            set_variable = { name = xfm_order_limit_cents value = scope:xfm_offer_dump_controller.var:xfm_order_limit_cents }
+            set_variable = { name = xfm_order_ioc value = scope:xfm_offer_dump_controller.var:xfm_order_ioc }
+            xfm_spot_submit_account_effect = yes
+        }
+    }
+}
+
+xfm_issuer_restart_liquidity_effect = {
+    if = {
+        limit = { xfm_issuer_controls_selected_trigger = yes exists = var:xfm_selected_coin.var:xfm_market_maker_account }
+        var:xfm_selected_coin = {
+            save_scope_as = xfm_offer_restart_coin
+            set_variable = { name = xfm_restart_maker_target_cents value = xfm_issuer_maker_value }
+            set_variable = { name = xfm_restart_maker_gap_cents value = { value = var:xfm_restart_maker_target_cents subtract = var:xfm_market_maker_account.var:xfm_free_cents subtract = var:xfm_market_maker_account.var:xfm_reserved_cents min = 0 } }
+            var:xfm_issuer_account = {
+                set_variable = { name = xfm_result value = 1 }
+                if = {
+                    limit = { scope:xfm_offer_restart_coin.var:xfm_restart_maker_gap_cents > 0 }
+                    set_variable = { name = xfm_request_target value = scope:xfm_offer_restart_coin.var:xfm_market_maker_account }
+                    set_variable = { name = xfm_request_cents value = scope:xfm_offer_restart_coin.var:xfm_restart_maker_gap_cents }
+                    xfm_finance_transfer_effect = yes
+                }
+                if = {
+                    limit = { var:xfm_result = 1 }
+                    scope:xfm_offer_restart_coin.var:xfm_market_maker_account = {
+                        set_variable = { name = xfm_request_coin value = scope:xfm_offer_restart_coin }
+                        xfm_finance_lookup_position_effect = yes
+                    }
+                    if = {
+                        limit = { NOT = { exists = scope:xfm_position scope:xfm_position = { var:xfm_quantity_units >= 100 } } }
+                        set_variable = { name = xfm_request_target value = scope:xfm_offer_restart_coin.var:xfm_market_maker_account }
+                        set_variable = { name = xfm_request_coin value = scope:xfm_offer_restart_coin }
+                        set_variable = { name = xfm_request_units value = 100 }
+                        xfm_finance_transfer_coin_effect = yes
+                    }
+                    if = { limit = { var:xfm_result = 1 } scope:xfm_offer_restart_coin = { set_variable = { name = xfm_maker_withdrawn value = 0 } xfm_spot_maker_effect = yes } }
+                }
+            }
+        }
+    }
+}
+
+xfm_issuer_withdraw_liquidity_effect = {
+    if = {
+        limit = { xfm_issuer_controls_selected_trigger = yes }
+        var:xfm_selected_coin = {
+            # Cancel actual maker orders and return only its confirmed free assets.
+            xfm_spot_withdraw_maker_effect = yes
+            change_variable = { name = xfm_issuer_reputation subtract = 5 }
+        }
+    }
+}
+
+xfm_issuer_investigate_effect = {
+    if = {
+        limit = { has_variable = xfm_investigation_pending }
+        random = {
+            chance = 10
+            remove_variable = xfm_investigation_pending
+            set_variable = { name = xfm_fraud_established value = 1 }
+            change_variable = { name = xfm_default_history add = 1 }
+            change_variable = { name = xfm_issuer_reputation subtract = 20 }
+            if = { limit = { var:xfm_listing_state = 1 } set_variable = { name = xfm_listing_state value = 2 } }
+            if = { limit = { exists = var:xfm_controller var:xfm_controller = { is_alive = yes } } var:xfm_controller = { add_prestige = -100 add_stress = 20 } }
+            set_variable = { name = xfm_news_actor value = var:xfm_controller }
+            set_variable = { name = xfm_news_kind value = 9 }
+            xfm_news_record_effect = yes
+        }
+    }
+}

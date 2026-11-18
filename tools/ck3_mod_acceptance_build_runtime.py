@@ -409,6 +409,109 @@ def load_base(runtime_path):
     return runtime, manifest, refs, source
 
 
+@dataclass(frozen=True)
+class RuntimeGameIdentitySelection:
+    game: JsonObject
+    game_directory: Path | None
+    transition: FilePin | None
+
+
+def _game_identity_pin(value: object) -> FilePin:
+    row = json_object(value)
+    size, digest = row.get("bytes"), text_field(row, "sha256")
+    require(type(size) is int and size > 0 and re.fullmatch("[0-9a-f]{64}", digest),
+            "Exact positive game-identity file pin required")
+    actual = checked(row)
+    return FilePin(path=actual["path"], bytes=actual["bytes"], sha256=actual["sha256"])
+
+
+def _native_identity_literal(source: str, name: str) -> str:
+    values = re.findall(r"inline\s+constexpr\s+char\s+" + re.escape(name)
+                        + r'\[\]\s*=\s*"([^"\r\n]+)"\s*;', source)
+    require(len(values) == 1, "One exact compiled Native identity literal required: " + name)
+    return values[0]
+
+
+def select_runtime_game_identity(transition_path: Path | None, *, base_runtime: Path,
+        manifest: Mapping[str, object], native_bundle: Mapping[str, object],
+        machine: str, commit: str) -> RuntimeGameIdentitySelection:
+    """Bind an explicit installation change to the already qualified Native build.
+
+    Without this option the old scene identity remains unchanged. Identity
+    selection grants neither additional capabilities nor live behavior credit.
+    """
+    previous_game = json_object(manifest["game"])
+    if transition_path is None:
+        return RuntimeGameIdentitySelection(dict(previous_game), None, None)
+    from ck3_installation import installed_game_version
+    from xar_autoplayer.bridge.version_identity import require_exact_native_build
+
+    transition_ref = _game_identity_pin(pin(transition_path))
+    value = json_object(read(transition_path))
+    require(value.get("schema") == "ck3-runtime-game-identity-transition-v1"
+            and value.get("machine_id") == machine and value.get("source_commit") == commit,
+            "Explicit current-machine/current-commit game identity transition required")
+    observed = datetime.fromisoformat(text_field(value, "observed_at_utc").replace("Z", "+00:00"))
+    require(observed.tzinfo is not None and observed <= datetime.now(timezone.utc),
+            "Actual nonfuture installation observation required")
+    require(_game_identity_pin(value["base_runtime"]) == pin(base_runtime)
+            and value.get("previous_game") == previous_game,
+            "Game identity transition belongs to another immutable base")
+    qualified_ref = _game_identity_pin(value["qualified_native"])
+    require(qualified_ref == native_bundle["qualification_ref"],
+            "Game identity transition must use this exact qualified Native production build")
+    directory = Path(text_field(value, "game_dir"))
+    require(directory.is_absolute() and directory.is_dir(), "Actual absolute installed game directory required")
+    directory = directory.resolve()
+    executable = _game_identity_pin(value["executable"])
+    launcher = _game_identity_pin(value["launcher_settings"])
+    require(Path(executable["path"]).resolve() == directory / "binaries/ck3.exe"
+            and Path(launcher["path"]).resolve() == directory / "launcher/launcher-settings.json",
+            "Installation EXE and launcher must belong to the selected actual game directory")
+    version = installed_game_version(Path(executable["path"]))
+    identity = require_exact_native_build(version, executable["sha256"])
+    token = identity.game_version.replace(".", "")
+    native_root = Path(str(native_bundle["snapshot_root"])).resolve()
+    qualification = json_object(read(qualified_ref["path"]))
+    snapshot = json_object(read(_game_identity_pin(qualification["snapshot"])["path"]))
+    require(Path(text_field(snapshot, "snapshot_native_base")).resolve() == native_root,
+            "Qualified Native snapshot root differs from the verified build")
+    rows = snapshot.get("files")
+    require(isinstance(rows, list), "Qualified Native source rows required")
+    header_relative = "include/xar_bridge/ck3_" + token + ".hpp"
+    headers = [json_object(row) for row in rows
+               if isinstance(row, dict) and row.get("native_relative") == header_relative]
+    require(len(headers) == 1, "Qualified Native snapshot lacks the exact game identity header")
+    header = native_root / header_relative
+    actual_header = pin(header)
+    require(all(actual_header[key] == headers[0].get(key) for key in ("bytes", "sha256")),
+            "Qualified Native game identity header changed")
+    text = header.read_text(encoding="utf-8-sig")
+    require(_native_identity_literal(text, "kGameVersion") == identity.game_version
+            and _native_identity_literal(text, "kExecutableSha256").lower() == identity.executable_sha256.lower()
+            and _native_identity_literal(text, "kAdapterId") == "ck3-" + identity.game_version + "-msvc-x64",
+            "Installed EXE/launcher tuple differs from the qualified Native adapter identity")
+    adapter_relative = "src/ck3_" + token + "_adapter.cpp"
+    native_files = native_bundle["native_files"]
+    if not isinstance(native_files, Mapping):
+        raise ValueError("Actual qualified production source map required")
+    adapter = native_root / adapter_relative
+    require(native_files.get(NATIVE_PREFIX + adapter_relative) == sig(adapter.read_bytes()),
+            "Selected game adapter was not an actual qualified production translation unit")
+    descriptor = re.escape("ck3_" + token)
+    require(re.search(descriptor + r"::kAdapterId\s*,\s*" + descriptor
+                      + r"::kGameVersion\s*,\s*" + descriptor + r"::kExecutableSha256",
+                      adapter.read_text(encoding="utf-8-sig")) is not None,
+            "Compiled adapter descriptor does not consume its exact identity tuple")
+    require(_game_identity_pin(value["executable"]) == executable
+            and _game_identity_pin(value["launcher_settings"]) == launcher
+            and pin(transition_path) == transition_ref,
+            "Installation identity changed during migration validation")
+    return RuntimeGameIdentitySelection(
+        {"version": identity.game_version, "exe_sha256": identity.executable_sha256.lower()},
+        directory, transition_ref)
+
+
 def qualify(chain, path, commit, root, changed_paths, machine, archive_context=None):
     value = read(path)
     require(value.get("machine_id") == machine and value.get("source_commit") == commit,
@@ -1911,6 +2014,8 @@ def main(argv: list[str] | None = None) -> int:
     for name in ("base-runtime", "source-delta", "scene-root", "storage-admission", "products", "case-inputs", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--qualified-native", type=Path, required=True, help="exact actual native production-build qualification")
+    parser.add_argument("--game-identity-transition", type=Path,
+                        help="actual installation identity migration bound to this base and qualified Native build")
     parser.add_argument("--native-source-checkout-binding", type=Path,
                         help="explicit actual equivalence receipt for a clean linked Native source worktree")
     parser.add_argument("--native-shared-python-host-delta", type=Path,
@@ -1985,6 +2090,9 @@ def main(argv: list[str] | None = None) -> int:
     native_bundle = qualify_native(args.qualified_native, root, args.source_commit, machine, refs["dll"], manifest,
                                    getattr(args, "native_source_checkout_binding", None),
                                    getattr(args, "native_shared_python_host_delta", None))
+    game_identity = select_runtime_game_identity(getattr(args, "game_identity_transition", None),
+        base_runtime=args.base_runtime, manifest=manifest, native_bundle=native_bundle,
+        machine=machine, commit=args.source_commit)
     if native_bundle.get("shared_host_qualification") is not None:
         require("shared_host" in receipts and pin(receipts["shared_host"]) == native_bundle["shared_host_qualification"],
                 "Shared-host delta must use this selected current source-chain qualification")
@@ -2042,6 +2150,9 @@ def main(argv: list[str] | None = None) -> int:
         "source_root": native_bundle["snapshot_root"],
         "scope": "exact unique production translation-unit source paths from actual CMake File API; test targets excluded"})
     new_manifest = dict(manifest)
+    new_manifest["game"] = game_identity.game
+    if game_identity.transition is not None:
+        new_manifest["game_identity_transition"] = game_identity.transition
     new_manifest["host_features"] = wire_evidence_runtime_features(manifest.get("host_features", {}), codec)
     new_manifest.update(observed_at_utc=now(), source_commit=args.source_commit, capabilities=capabilities,
                         qualification_scope="new exact qualified global production DLL; changed source chains qualified independently; live results pending")
@@ -2066,6 +2177,9 @@ def main(argv: list[str] | None = None) -> int:
     new_runtime.pop("source_relocation", None)
     new_runtime["repo_root"] = str(product_source.repository)
     new_runtime.update(userdir_root=str(scene / "managed-states"), artifacts_root=str(scene / "live"), manifest=manifest_ref)
+    if game_identity.game_directory is not None:
+        new_runtime["game_dir"] = str(game_identity.game_directory)
+        new_runtime["game_identity_transition"] = game_identity.transition
     new_runtime["paths"] = {**runtime["paths"], "host": str(destination / "shared-host.py"), "source_index": source_ref["path"], "native_source_index": native_ref["path"], "dll": native_bundle["dll"]["path"]}
     for key, relative in (("reviewed_launcher", "tools/ck3_mod_acceptance_launcher.py"),
                           ("control_queue", "tools/ck3_mod_acceptance_queue.py")):

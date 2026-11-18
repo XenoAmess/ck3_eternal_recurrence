@@ -1,0 +1,122 @@
+﻿# Four effects. Exchange scope. These model indexes are not physical commodities or redemption promises.
+xfm_oracle_index_bootstrap_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_oracle_basket_seeded } }
+        set_variable = { name = xfm_oracle_basket_seeded value = 1 }
+        save_scope_as = xfm_oracle_exchange
+        story_owner = {
+            ordered_independent_ruler = {
+                limit = { exists = capital_county }
+                order_by = primary_title.tier
+                max = 32
+                capital_county = {
+                    save_scope_as = xfm_oracle_basket_county
+                    scope:xfm_oracle_exchange = {
+                        if = {
+                            limit = { NOT = { is_target_in_variable_list = { name = xfm_oracle_counties target = scope:xfm_oracle_basket_county } } }
+                            add_to_variable_list = { name = xfm_oracle_counties target = scope:xfm_oracle_basket_county }
+                        }
+                    }
+                }
+            }
+        }
+        clear_saved_scope = xfm_oracle_basket_county
+        clear_saved_scope = xfm_oracle_exchange
+    }
+    if = {
+        limit = { NOT = { exists = global_var:xfm_grain_index } }
+        xfm_oracle_create_index_effect = { ID = 1 KEY = xfm_grain_index }
+    }
+    if = {
+        limit = { NOT = { exists = global_var:xfm_military_index } }
+        xfm_oracle_create_index_effect = { ID = 2 KEY = xfm_military_index }
+    }
+    if = {
+        limit = { NOT = { exists = global_var:xfm_trade_index } }
+        xfm_oracle_create_index_effect = { ID = 3 KEY = xfm_trade_index }
+    }
+}
+
+xfm_oracle_create_index_effect = {
+    clear_saved_scope = xfm_oracle_created_index
+    story_owner = { create_story = { type = xfm_oracle_index save_scope_as = xfm_oracle_created_index } }
+    if = {
+        limit = { exists = scope:xfm_oracle_created_index }
+        set_global_variable = { name = $KEY$ value = scope:xfm_oracle_created_index }
+        add_to_global_variable_list = { name = xfm_index_registry target = scope:xfm_oracle_created_index }
+        scope:xfm_oracle_created_index = {
+            set_variable = { name = xfm_index_id value = $ID$ }
+            set_variable = { name = xfm_asset_kind value = 2 }
+            set_variable = { name = xfm_derivatives_reduce_only value = 0 }
+            set_variable = { name = xfm_trading_open value = 1 }
+            set_variable = { name = xfm_oracle_model_index value = 1 }
+            set_variable = { name = xfm_oracle_source_id value = 2 }
+            set_variable = { name = xfm_oracle_quality value = 0 }
+            set_variable = { name = xfm_oracle_reason value = 1 }
+            set_variable = { name = xfm_index_cents value = 0 }
+            set_variable = { name = xfm_mark_cents value = 0 }
+            set_variable = { name = xfm_max_leverage value = 0 }
+            set_variable = { name = xfm_oracle_last_valid_day value = -1 }
+            set_variable = { name = xfm_oracle_basket_count value = 0 }
+            set_variable = { name = xfm_last_price_cents value = 0 }
+            set_variable = { name = xfm_best_bid_cents value = 0 }
+            set_variable = { name = xfm_best_ask_cents value = 0 }
+        }
+    }
+    clear_saved_scope = xfm_oracle_created_index
+}
+
+xfm_oracle_index_daily_effect = {
+    save_scope_as = xfm_oracle_exchange
+    set_variable = { name = xfm_oracle_basket_count value = 0 }
+    set_variable = { name = xfm_oracle_prosperity_sum value = 0 }
+    set_variable = { name = xfm_oracle_control_sum value = 0 }
+    set_variable = { name = xfm_oracle_war_count value = 0 }
+    every_in_list = {
+        variable = xfm_oracle_counties
+        limit = { exists = holder }
+        save_scope_value_as = { name = xfm_oracle_county_prosperity value = { value = prosperity_level min = 0 max = 100 } }
+        save_scope_value_as = { name = xfm_oracle_county_control value = { value = county_control min = 0 max = 100 } }
+        scope:xfm_oracle_exchange = {
+            change_variable = { name = xfm_oracle_basket_count add = 1 }
+            change_variable = { name = xfm_oracle_prosperity_sum add = scope:xfm_oracle_county_prosperity }
+            change_variable = { name = xfm_oracle_control_sum add = scope:xfm_oracle_county_control }
+        }
+        if = {
+            limit = { holder = { is_at_war = yes } }
+            scope:xfm_oracle_exchange = { change_variable = { name = xfm_oracle_war_count add = 1 } }
+        }
+    }
+    if = {
+        limit = { var:xfm_oracle_basket_count >= 8 }
+        set_variable = { name = xfm_oracle_average_prosperity value = xfm_oracle_average_prosperity_value }
+        set_variable = { name = xfm_oracle_average_control value = xfm_oracle_average_control_value }
+        set_variable = { name = xfm_oracle_war_bps value = xfm_oracle_war_basis_points_value }
+        set_variable = { name = xfm_oracle_grain_value value = xfm_oracle_grain_model_value }
+        set_variable = { name = xfm_oracle_military_value value = xfm_oracle_military_model_value }
+        set_variable = { name = xfm_oracle_trade_value value = xfm_oracle_trade_model_value }
+        global_var:xfm_grain_index = { set_variable = { name = xfm_index_cents value = scope:xfm_oracle_exchange.var:xfm_oracle_grain_value } }
+        global_var:xfm_military_index = { set_variable = { name = xfm_index_cents value = scope:xfm_oracle_exchange.var:xfm_oracle_military_value } }
+        global_var:xfm_trade_index = { set_variable = { name = xfm_index_cents value = scope:xfm_oracle_exchange.var:xfm_oracle_trade_value } }
+        every_in_global_list = {
+            variable = xfm_index_registry
+            set_variable = { name = xfm_mark_cents value = var:xfm_index_cents }
+            set_variable = { name = xfm_oracle_quality value = 3 }
+            set_variable = { name = xfm_oracle_reason value = 0 }
+            set_variable = { name = xfm_max_leverage value = 5 }
+            set_variable = { name = xfm_oracle_day value = global_var:xfm_exchange.var:xfm_day }
+            set_variable = { name = xfm_oracle_last_valid_day value = global_var:xfm_exchange.var:xfm_day }
+            set_variable = { name = xfm_oracle_basket_count value = scope:xfm_oracle_exchange.var:xfm_oracle_basket_count }
+        }
+    }
+    else = {
+        every_in_global_list = {
+            variable = xfm_index_registry
+            set_variable = { name = xfm_oracle_quality value = 0 }
+            set_variable = { name = xfm_oracle_reason value = 1 }
+            set_variable = { name = xfm_max_leverage value = 0 }
+            set_variable = { name = xfm_oracle_day value = global_var:xfm_exchange.var:xfm_day }
+        }
+    }
+    clear_saved_scope = xfm_oracle_exchange
+}

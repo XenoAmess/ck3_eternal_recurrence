@@ -1,0 +1,4 @@
+﻿# Financial rights refer to finance accounts. Technical ownership does not grant cash rights.
+xfm_futures_contract = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }
+xfm_futures_order = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }
+xfm_futures_position = { visible = no on_owner_death = { xfm_finance_rehome_story_effect = yes } }

@@ -1,0 +1,78 @@
+﻿# 4 effects. Reservations are unique source-backed claims, usable in partial amounts.
+xfm_finance_reserve_effect = {
+ save_scope_as = xfm_fin_reserving_account
+ set_variable = { name = xfm_result value = 0 }
+ remove_variable = xfm_result_reservation
+ clear_saved_scope = xfm_reservation
+ if = {
+  limit = { xfm_finance_account_usable_trigger = yes xfm_finance_valid_cents_trigger = yes var:xfm_free_cents >= var:xfm_request_cents }
+  global_var:xfm_exchange.story_owner = { create_story = { type = xfm_finance_reservation save_scope_as = xfm_reservation } }
+  if = {
+   limit = { exists = scope:xfm_reservation scope:xfm_reservation = { story_type = xfm_finance_reservation } }
+   global_var:xfm_exchange = { change_variable = { name = xfm_next_reservation_id add = 1 } }
+   scope:xfm_reservation = {
+    set_variable = { name = xfm_reservation_id value = global_var:xfm_exchange.var:xfm_next_reservation_id }
+    set_variable = { name = xfm_account value = scope:xfm_fin_reserving_account }
+    set_variable = { name = xfm_remaining_cents value = scope:xfm_fin_reserving_account.var:xfm_request_cents }
+    set_variable = { name = xfm_status value = 1 }
+   }
+   change_variable = { name = xfm_free_cents subtract = var:xfm_request_cents }
+   change_variable = { name = xfm_reserved_cents add = var:xfm_request_cents }
+   add_to_variable_list = { name = xfm_reservations target = scope:xfm_reservation }
+   set_variable = { name = xfm_result_reservation value = scope:xfm_reservation }
+   set_variable = { name = xfm_result value = 1 }
+  }
+ }
+}
+xfm_finance_release_effect = {
+ save_scope_as = xfm_fin_releasing_reservation
+ set_variable = { name = xfm_result value = 0 }
+ if = {
+  limit = {
+   xfm_finance_reservation_usable_trigger = yes xfm_finance_valid_cents_trigger = yes
+   var:xfm_remaining_cents >= var:xfm_request_cents
+   var:xfm_account = { var:xfm_reserved_cents >= scope:xfm_fin_releasing_reservation.var:xfm_request_cents }
+  }
+  var:xfm_account = {
+   change_variable = { name = xfm_reserved_cents subtract = scope:xfm_fin_releasing_reservation.var:xfm_request_cents }
+   change_variable = { name = xfm_free_cents add = scope:xfm_fin_releasing_reservation.var:xfm_request_cents }
+  }
+  change_variable = { name = xfm_remaining_cents subtract = var:xfm_request_cents }
+  if = { limit = { var:xfm_remaining_cents = 0 } set_variable = { name = xfm_status value = 2 } }
+  set_variable = { name = xfm_result value = 1 }
+ }
+}
+xfm_finance_pay_reserved_effect = {
+ save_scope_as = xfm_fin_paying_reservation
+ set_variable = { name = xfm_result value = 0 }
+ if = {
+  limit = {
+   xfm_finance_reservation_usable_trigger = yes xfm_finance_valid_cents_trigger = yes
+   var:xfm_remaining_cents >= var:xfm_request_cents
+   var:xfm_account = { var:xfm_reserved_cents >= scope:xfm_fin_paying_reservation.var:xfm_request_cents }
+   exists = var:xfm_request_target
+   var:xfm_request_target = { story_type = xfm_finance_account var:xfm_free_cents >= 0 }
+  }
+  var:xfm_account = { change_variable = { name = xfm_reserved_cents subtract = scope:xfm_fin_paying_reservation.var:xfm_request_cents } }
+  var:xfm_request_target = { change_variable = { name = xfm_free_cents add = scope:xfm_fin_paying_reservation.var:xfm_request_cents } }
+  change_variable = { name = xfm_remaining_cents subtract = var:xfm_request_cents }
+  if = { limit = { var:xfm_remaining_cents = 0 } set_variable = { name = xfm_status value = 2 } }
+  set_variable = { name = xfm_result value = 1 }
+ }
+}
+xfm_finance_fee_reserved_effect = {
+ save_scope_as = xfm_fin_fee_reservation
+ set_variable = { name = xfm_result value = 0 }
+ if = {
+  limit = {
+   xfm_finance_reservation_usable_trigger = yes xfm_finance_valid_cents_trigger = yes
+   var:xfm_remaining_cents >= var:xfm_request_cents
+   var:xfm_account = { var:xfm_reserved_cents >= scope:xfm_fin_fee_reservation.var:xfm_request_cents }
+  }
+  var:xfm_account = { change_variable = { name = xfm_reserved_cents subtract = scope:xfm_fin_fee_reservation.var:xfm_request_cents } }
+  global_var:xfm_exchange = { change_variable = { name = xfm_fee_cents add = scope:xfm_fin_fee_reservation.var:xfm_request_cents } }
+  change_variable = { name = xfm_remaining_cents subtract = var:xfm_request_cents }
+  if = { limit = { var:xfm_remaining_cents = 0 } set_variable = { name = xfm_status value = 2 } }
+  set_variable = { name = xfm_result value = 1 }
+ }
+}

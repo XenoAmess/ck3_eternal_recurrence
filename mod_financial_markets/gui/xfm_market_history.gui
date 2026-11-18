@@ -1,0 +1,40 @@
+﻿types FinancialMarketHistory {
+    type xfm_market_history_panel = vbox {
+        layoutpolicy_horizontal = expanding spacing = 6
+        text_multi = { text = "xfm_market_history_header" max_width = 400 autoresize = yes }
+        scrollbox = { name = "xfm_market_daily_history" size = { 400 420 } blockoverride "scrollbox_content" {
+            vbox = { layoutpolicy_horizontal = expanding spacing = 6
+                text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_0_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_0" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_1_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_1" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_2_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_2" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_3_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_3" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_4_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_4" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_5_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_5" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_6_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_6" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_7_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_7" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_8_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_8" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_9_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_9" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_10_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_10" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_11_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_11" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_12_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_12" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_13_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_13" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_14_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_14" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_15_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_15" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_16_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_16" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_17_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_17" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_18_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_18" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_19_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_19" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_20_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_20" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_21_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_21" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_22_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_22" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_23_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_23" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_24_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_24" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_25_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_25" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_26_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_26" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_27_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_27" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_28_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_28" max_width = 390 autoresize = yes }
+text_multi = { visible = "[GreaterThan_CFixedPoint( Scope.Var( 'xfm_candle_29_close_cents' ).GetValue, '(CFixedPoint)0' )]" text = "xfm_market_candle_29" max_width = 390 autoresize = yes }
+            }
+        } }
+    }
+}

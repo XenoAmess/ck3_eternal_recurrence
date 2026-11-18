@@ -1,0 +1,72 @@
+﻿xfm_market_select_futures_position_gui = {
+    scope = character
+    saved_scopes = { xfm_ui_item }
+    is_valid = { is_ai = no exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_futures_position OR = { var:xfm_long_account = root.var:xfm_active_account var:xfm_short_account = root.var:xfm_active_account } } }
+    effect = {
+        set_variable = { name = xfm_futures_selected_position value = scope:xfm_ui_item }
+        set_variable = { name = xfm_futures_contract value = scope:xfm_ui_item.var:xfm_contract }
+        set_variable = { name = xfm_selected_coin value = scope:xfm_ui_item.var:xfm_contract.var:xfm_coin }
+        set_variable = { name = xfm_order_limit_cents value = scope:xfm_ui_item.var:xfm_mark_cents }
+        set_variable = { name = xfm_futures_request_cents value = 100 }
+        set_variable = { name = xfm_futures_reduce_lots value = 1 }
+        if = {
+            limit = { scope:xfm_ui_item.var:xfm_long_account = var:xfm_active_account }
+            set_variable = { name = xfm_futures_holding_side value = 1 }
+            set_variable = { name = xfm_futures_stop_cents value = scope:xfm_ui_item.var:xfm_long_stop_cents }
+            set_variable = { name = xfm_futures_take_profit_cents value = scope:xfm_ui_item.var:xfm_long_take_profit_cents }
+        }
+        else = {
+            set_variable = { name = xfm_futures_holding_side value = 2 }
+            set_variable = { name = xfm_futures_stop_cents value = scope:xfm_ui_item.var:xfm_short_stop_cents }
+            set_variable = { name = xfm_futures_take_profit_cents value = scope:xfm_ui_item.var:xfm_short_take_profit_cents }
+        }
+    }
+}
+xfm_market_cancel_futures_order_gui = {
+    scope = character
+    saved_scopes = { xfm_ui_item }
+    is_valid = { is_ai = no is_alive = yes is_adult = yes exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_futures_order var:xfm_account = root.var:xfm_active_account OR = { var:xfm_status = 0 var:xfm_status = 1 } } }
+    effect = { set_variable = { name = xfm_futures_selected_order value = scope:xfm_ui_item } xfm_futures_cancel_effect = yes }
+}
+xfm_market_futures_margin_up_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_futures_selected_position var:xfm_futures_request_cents < 100000000 }
+    effect = { change_variable = { name = xfm_futures_request_cents add = var:xfm_ui_step } }
+}
+xfm_market_futures_margin_down_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_futures_selected_position var:xfm_futures_request_cents > var:xfm_ui_step }
+    effect = { change_variable = { name = xfm_futures_request_cents subtract = var:xfm_ui_step } }
+}
+xfm_market_futures_add_margin_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_selected_position var:xfm_futures_request_cents > 0 }
+    effect = { xfm_futures_add_margin_effect = yes }
+}
+xfm_market_futures_withdraw_margin_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_selected_position var:xfm_futures_request_cents > 0 }
+    effect = { xfm_futures_withdraw_margin_effect = yes }
+}
+xfm_market_futures_reduce_gui = {
+    scope = character
+
+    is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_selected_position var:xfm_futures_reduce_lots > 0 }
+    effect = { xfm_futures_reduce_effect = yes }
+}
+xfm_market_futures_reduce_up_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_futures_selected_position var:xfm_futures_reduce_lots < 10000 }
+    effect = { change_variable = { name = xfm_futures_reduce_lots add = var:xfm_ui_step } if = { limit = { var:xfm_futures_reduce_lots > 10000 } set_variable = { name = xfm_futures_reduce_lots value = 10000 } } }
+}
+xfm_market_futures_reduce_down_gui = {
+    scope = character
+
+    is_valid = { is_ai = no has_variable = xfm_futures_selected_position var:xfm_futures_reduce_lots > var:xfm_ui_step }
+    effect = { change_variable = { name = xfm_futures_reduce_lots subtract = var:xfm_ui_step } }
+}

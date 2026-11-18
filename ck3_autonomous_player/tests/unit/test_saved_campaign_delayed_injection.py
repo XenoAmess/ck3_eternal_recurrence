@@ -179,7 +179,8 @@ class DelayedInjectionTests(unittest.TestCase):
         exe = self.root / 'binaries/ck3.exe'
         exe.parent.mkdir()
         exe.touch()
-        spec = SimpleNamespace(state_dir=state, profile_dir=self.profile, game_exe=exe)
+        spec = SimpleNamespace(state_dir=state, profile_dir=self.profile, game_exe=exe,
+            manifest_path=state / 'manifest.json')
         job = object()
         created = False
         self.process.image_path = lambda: exe

@@ -1,0 +1,24 @@
+﻿xfm_finance_valid_cents_trigger = {
+ has_variable = xfm_request_cents
+ var:xfm_request_cents > 0
+ var:xfm_request_cents <= 100000000
+ var:xfm_request_cents = xfm_finance_request_floor
+}
+xfm_finance_valid_units_trigger = {
+ has_variable = xfm_request_units
+ var:xfm_request_units > 0
+ var:xfm_request_units <= 100000000
+ var:xfm_request_units = xfm_finance_units_floor
+}
+xfm_finance_account_usable_trigger = {
+ story_type = xfm_finance_account
+ var:xfm_account_frozen = 0
+ var:xfm_free_cents >= 0
+ var:xfm_reserved_cents >= 0
+}
+xfm_finance_reservation_usable_trigger = {
+ story_type = xfm_finance_reservation
+ var:xfm_status = 1
+ var:xfm_remaining_cents > 0
+ exists = var:xfm_account
+}

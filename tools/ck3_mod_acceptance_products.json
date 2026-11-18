@@ -27,6 +27,67 @@
     "menu_mount_evidence_sufficient": true
   },
   "products": {
+    "financial-markets": {
+      "directory": "mod_financial_markets",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/mod_financial_markets/tools/pom.xml",
+      "integration_status": "shared_generic_adapter_java_prebuilt_observer_requires_florin_background_business_qualification",
+      "runtime_mod_key": "financial-markets",
+      "external_mod": false,
+      "cases": [
+        {
+          "id": "core",
+          "status": "ready",
+          "implementation_credit": "Paid issuance and spot subcase definition only; actual background production actions and independent saved-state reconciliation remain mandatory",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_core.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 5400,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_paid_issuance_and_daily_spot_subcase",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective fixed budgets for real paid issuance and same-day spot orders, with a 14-natural-day cap. All interactions remain minimized and do not activate the foreground. No live deadline extension."
+        }
+      ]
+    },
     "religious-ritual-fusion": {
       "directory": "mod_religious_ritual_fusion",
       "workshop_item_id": "3826756673",

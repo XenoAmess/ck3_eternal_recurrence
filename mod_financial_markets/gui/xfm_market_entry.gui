@@ -1,0 +1,16 @@
+﻿window = {
+    name = "xfm_market_entry"
+    parentanchor = top|right
+    position = { -290 85 }
+    size = { 220 40 }
+    layer = middle
+    visible = "[GetPlayer.IsValid]"
+    button_standard = {
+        name = "xfm_market_open"
+        size = { 220 40 }
+        text = "xfm_market_entry_label"
+        tooltip = "xfm_market_open_decision_tooltip"
+        enabled = "[GetScriptedGui( 'xfm_market_open_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        onclick = "[GetScriptedGui( 'xfm_market_open_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}

@@ -134,7 +134,13 @@ jobs:
       - name: Test native verifier evidence scope without CK3
         run: python ck3_autonomous_player/native_bridge/research/test_native_verifier_evidence_scope.py
       - name: Test managed normal-exit profile and terminal host execution without CK3
-        run: python -B -X utf8 tools/test_ck3_mod_acceptance_normal_exit_profile.py
+        env:
+          PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit
+        run: |
+          python -B -X utf8 tools/test_ck3_mod_acceptance_normal_exit_profile.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest tools.test_ck3_mod_acceptance_quiet_sessions ck3_autonomous_player.tests.unit.test_native_session ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection ck3_autonomous_player.tests.unit.test_frontend_fixture_scenario_host -q
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test exact-build normal-exit GUI source generation without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
@@ -325,6 +331,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_build_runtime.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_1210_profile_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest tools.test_ck3_mod_acceptance_game_identity_transition -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_fixture_link_support.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_prelaunch_host_failure.py
@@ -347,6 +357,10 @@ jobs:
           python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_event_window_context_v1_bridge.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_event_numeric_scope_v1.py -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_florin_event_control.py -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m mypy --strict --follow-imports=silent --no-incremental --cache-dir nul ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py ck3_autonomous_player/src/xar_autoplayer/bridge/event_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul ck3_autonomous_player/tests/unit/test_event_saved_character_scope_native_wire.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
@@ -405,7 +419,7 @@ jobs:
         run: |
           python -B -X utf8 -m mypy --strict --strict-equality --explicit-package-bases --follow-imports=silent --no-incremental --cache-dir nul -m xar_autoplayer.bridge.normal_exit_public_wire_v2 -m test_normal_exit_public_wire_v2 -m xar_autoplayer.bridge.runtime_input_contract_v1
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          python -B -X utf8 -m unittest -v test_normal_exit_public_wire_v2 test_normal_exit_integrated_v1
+          python -B -X utf8 -m unittest -v test_normal_exit_public_wire_v2 test_normal_exit_integrated_v1 test_normal_exit_core1210_v1 test_florin_timeline_control_v1
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Check strict cold and owner types and boundary contracts
         env:

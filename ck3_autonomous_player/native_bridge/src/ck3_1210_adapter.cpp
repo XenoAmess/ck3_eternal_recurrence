@@ -10,6 +10,8 @@
 #include <atomic>
 #include <cstring>
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
+#include "xar_bridge/ck3_1210_event_option_control_v1.hpp"
+#include "xar_bridge/ck3_1210_gui_control_v1.hpp"
 #if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
 #include <windows.h>
 #endif
@@ -258,6 +260,13 @@ const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
       ck3_1210::kCoreFrameCapabilityV1,
 #if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
       "game.state.snapshot", "game.query.fresh-full-state.v1",
+#if defined(XAR_CK3_ENABLE_1210_EVENT_OPTIONS_V1)
+      ck3_1210::kEventOptionsQueryCapabilityV1,ck3_1210::kEventOptionsSelectCapabilityV1,
+#endif
+#if defined(XAR_CK3_ENABLE_1210_GUI_CONTROL_V1)
+      ck3_1210::kGuiControlQueryCapabilityV1,ck3_1210::kGuiControlActivateCapabilityV1,
+      "game.command.query-scripted-widget-controls-v1","game.command.activate-scripted-widget-control-v1",
+#endif
 #endif
 #if defined(XAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1)
       ck3_1210::kPersonalGoldCapabilityV1,

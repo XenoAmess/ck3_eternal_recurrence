@@ -1,0 +1,188 @@
+﻿# 6 effects. Source-only scheduler; the composed queue requires CK3 acceptance.
+# Current scope contracts: seed/daily/pop = exchange story; enqueue/register/ensure = character.
+# Scripted effects preserve ROOT. Consumers must use current THIS, not assume a new ROOT.
+# Pointer variables contain character scopes; ownership of financial rights is independent.
+# Death-to-dequeue pointer survival, save/reload and callback composition remain unverified.
+
+xfm_finance_seed_ai_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_ai_seeded } }
+        set_variable = { name = xfm_ai_seeded value = 1 }
+        set_variable = { name = xfm_ai_count value = 0 }
+        # One initial database walk includes children, low-tier and unlanded characters.
+        # They remain in the ring and become eligible without a second global scan.
+        every_living_character = {
+            xfm_finance_enqueue_ai_effect = yes
+        }
+    }
+}
+
+xfm_finance_enqueue_ai_effect = {
+    if = {
+        limit = {
+            is_alive = yes
+            NOT = { has_variable = xfm_ai_queued }
+            exists = global_var:xfm_exchange
+        }
+        clear_saved_scope = xfm_finance_queue_actor
+        save_scope_as = xfm_finance_queue_actor
+        if = {
+            limit = { has_variable = xfm_ai_next }
+            remove_variable = xfm_ai_next
+        }
+        set_variable = { name = xfm_ai_queued value = 1 }
+        global_var:xfm_exchange = {
+            if = {
+                limit = { exists = var:xfm_ai_tail }
+                var:xfm_ai_tail = {
+                    set_variable = {
+                        name = xfm_ai_next
+                        value = scope:xfm_finance_queue_actor
+                    }
+                }
+            }
+            else = {
+                set_variable = {
+                    name = xfm_ai_head
+                    value = scope:xfm_finance_queue_actor
+                }
+            }
+            set_variable = {
+                name = xfm_ai_tail
+                value = scope:xfm_finance_queue_actor
+            }
+            change_variable = { name = xfm_ai_count add = 1 }
+        }
+        clear_saved_scope = xfm_finance_queue_actor
+    }
+}
+
+xfm_finance_register_character_effect = {
+    # Character-creation hooks can fire before the player bootstraps the exchange.
+    # In that case the later initial seed includes the character once.
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange
+            global_var:xfm_exchange = { has_variable = xfm_ai_seeded }
+        }
+        xfm_finance_enqueue_ai_effect = yes
+    }
+}
+
+xfm_finance_pop_ai_effect = {
+    if = {
+        limit = { exists = var:xfm_ai_head }
+        clear_saved_scope = xfm_finance_ai_actor
+        clear_saved_scope = xfm_finance_queue_next
+        var:xfm_ai_head = {
+            save_scope_as = xfm_finance_ai_actor
+            if = {
+                limit = { exists = var:xfm_ai_next }
+                var:xfm_ai_next = { save_scope_as = xfm_finance_queue_next }
+            }
+            if = {
+                limit = { has_variable = xfm_ai_next }
+                remove_variable = xfm_ai_next
+            }
+            if = {
+                limit = { has_variable = xfm_ai_queued }
+                remove_variable = xfm_ai_queued
+            }
+        }
+        if = {
+            limit = { exists = scope:xfm_finance_queue_next }
+            set_variable = {
+                name = xfm_ai_head
+                value = scope:xfm_finance_queue_next
+            }
+        }
+        else = {
+            remove_variable = xfm_ai_head
+            if = {
+                limit = { has_variable = xfm_ai_tail }
+                remove_variable = xfm_ai_tail
+            }
+        }
+        change_variable = { name = xfm_ai_count subtract = 1 }
+        scope:xfm_finance_ai_actor = {
+            if = {
+                limit = { is_alive = yes is_adult = yes is_ai = yes }
+                # Each consumer owns its focus/budget limits. The scheduler never scans coins.
+                xfm_coin_ai_effect = yes
+                xfm_spot_ai_effect = yes
+                xfm_futures_ai_effect = yes
+            }
+            # Recheck life after callbacks. Dead people are dropped, not requeued.
+            if = {
+                limit = { is_alive = yes }
+                xfm_finance_enqueue_ai_effect = yes
+            }
+        }
+        clear_saved_scope = xfm_finance_ai_actor
+        clear_saved_scope = xfm_finance_queue_next
+    }
+}
+
+xfm_finance_daily_effect = {
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange
+            this = global_var:xfm_exchange
+            has_variable = xfm_last_date
+            var:xfm_last_date < current_date
+        }
+        # This is a dispatch clock, not proof that every financial hook completed.
+        # No same-date retry and no retrospective replay of missed dates are performed.
+        set_variable = { name = xfm_last_date value = current_date }
+        change_variable = { name = xfm_day add = 1 }
+        set_variable = { name = xfm_new_listings_today value = 0 }
+        if = { limit = { NOT = { var:xfm_a0_migration_scanned = 1 } } xfm_finance_migrate_a0_effect = yes }
+        # Only this clock increments xfm_day to settlement day D.
+        # Spot closes sample bucket D-1; oracle publishes that sample for settlement D.
+        # Modules consume the clock without incrementing it.
+        xfm_spot_daily_effect = yes
+        xfm_oracle_daily_effect = yes
+        xfm_finance_capitalize_default_fund_effect = yes
+        xfm_futures_daily_effect = yes
+        xfm_coin_daily_effect = yes
+        xfm_listing_daily_effect = yes
+        xfm_debt_daily_effect = yes
+        xfm_news_daily_effect = yes
+        # AI acts last: its new transactions belong to open sample bucket D.
+        set_variable = {
+            name = xfm_ai_remaining
+            value = {
+                value = var:xfm_ai_count
+                min = 0
+                max = xfm_config_ai_budget_value
+            }
+        }
+        # Snapshot the initial size and configured budget (128/512/1024).
+        # A ring shorter than the budget visits each member at most once.
+        # Vanilla while/limit: common/on_action/alliance_on_actions.txt:332-339,359-361.
+        while = {
+            limit = {
+                var:xfm_ai_remaining > 0
+                exists = var:xfm_ai_head
+            }
+            change_variable = { name = xfm_ai_remaining subtract = 1 }
+            xfm_finance_pop_ai_effect = yes
+        }
+        remove_variable = xfm_ai_remaining
+    }
+}
+
+xfm_finance_ensure_effect = {
+    # Public character-scope entry for decisions/interactions when enabling in an old save.
+    # bootstrap owns the exchange singleton and initializes xfm_day/xfm_last_date.
+    if = {
+        limit = { NOT = { exists = global_var:xfm_exchange } }
+        xfm_finance_bootstrap_effect = yes
+    }
+    else_if = {
+        limit = {
+            global_var:xfm_exchange = { NOT = { has_variable = xfm_ai_seeded } }
+        }
+        global_var:xfm_exchange = { xfm_finance_seed_ai_effect = yes }
+    }
+}
