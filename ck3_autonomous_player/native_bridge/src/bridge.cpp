@@ -13012,13 +13012,13 @@ bool PublishSnapshot(HANDLE pipe, const xar::game::GameAdapter &bindings,
   }
   std::uint64_t frame_revision = revision;
   if (forced) {
-    if (!unchanged || frame_revision == 0) {
-      if (frame_revision == std::numeric_limits<std::uint64_t>::max()) {
-        record("revision_overflow", revision, 0);
-        return true;
-      }
-      ++frame_revision;
+    // A correlated owner read is a new publication even when game values are
+    // unchanged. Commit this candidate identity only after the frame is written.
+    if (frame_revision == std::numeric_limits<std::uint64_t>::max()) {
+      record("revision_overflow", revision, 0);
+      return true;
     }
+    ++frame_revision;
   } else {
     // Preserve the ordinary publication path's revision behavior.
     ++revision;

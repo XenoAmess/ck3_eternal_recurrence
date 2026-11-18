@@ -300,13 +300,14 @@ bool TestForcedFreshPublication() {
       marker >= state || old_state == std::string::npos ||
       first.payload.substr(state) != uncorrelated.substr(old_state)) return false;
   if (!publish("unchanged-1") || diagnostic.status != "written" ||
-      revision != 1 || !read_equals("unchanged-1", 1)) return false;
+      revision != 2 || diagnostic.revision != 2 || !read_equals("unchanged-1", 2)) return false;
   observed.played_character_gold.raw = 222;
-  if (!publish("changed-2") || diagnostic.status != "written" ||
-      revision != 2 || !read_equals("changed-2", 2)) return false;
-  if (!publish("unchanged-2") || diagnostic.status != "written" ||
-      revision != 2 || !read_equals("unchanged-2", 2)) return false;
+  if (!publish("changed-3") || diagnostic.status != "written" ||
+      revision != 3 || diagnostic.revision != 3 || !read_equals("changed-3", 3)) return false;
+  if (!publish("unchanged-4") || diagnostic.status != "written" ||
+      revision != 4 || diagnostic.revision != 4 || !read_equals("unchanged-4", 4)) return false;
   if (!publish({}) || diagnostic.status != "deduplicated" ||
+      revision != 4 || diagnostic.revision != 4 ||
       xar::bridge::TryReadFrame(pipe.read).status != xar::bridge::ReadStatus::none)
     return false;
   const auto before = previous;
@@ -331,7 +332,57 @@ bool TestForcedFreshPublication() {
       diagnostic.status != "write_failed" || previous != before ||
       revision != old_revision || checkpoint_sequence != old_checkpoint_sequence)
     return false;
-  std::puts("fresh-publication: unchanged correlation, changed revision, original state, no cache fallback, failed-write no commit");
+  // A distinct new correlated observation after a failed write gets exactly
+  // old+1; the failed candidate did not consume a publication identity.
+  if (!publish("new-read-after-failed-write") || diagnostic.status != "written" ||
+      revision != old_revision + 1 || diagnostic.revision != revision ||
+      checkpoint_sequence != checkpoint.sequence || previous != std::optional{observed} ||
+      !read_equals("new-read-after-failed-write", old_revision + 1)) return false;
+  // Ordinary changed and deduplicated publications keep their prior behavior.
+  observed.played_character_gold.raw = 444;
+  if (!publish({}) || diagnostic.status != "written" || revision != 6 ||
+      !read_equals({}, 6)) return false;
+  if (!publish({}) || diagnostic.status != "deduplicated" || revision != 6 ||
+      xar::bridge::TryReadFrame(pipe.read).status != xar::bridge::ReadStatus::none)
+    return false;
+
+  // Both unchanged and changed correlated publications fail closed at max.
+  revision = (std::numeric_limits<std::uint64_t>::max)();
+  const auto before_overflow = previous;
+  const auto overflow_checkpoint_sequence = checkpoint_sequence;
+  if (!publish("overflow-unchanged") || diagnostic.status != "revision_overflow" ||
+      diagnostic.revision != revision || diagnostic.payload_bytes != 0 ||
+      revision != (std::numeric_limits<std::uint64_t>::max)() ||
+      previous != before_overflow || checkpoint_sequence != overflow_checkpoint_sequence ||
+      xar::bridge::TryReadFrame(pipe.read).status != xar::bridge::ReadStatus::none)
+    return false;
+  observed.played_character_gold.raw = 555;
+  checkpoint.sequence = 8;
+  if (!publish("overflow-changed") || diagnostic.status != "revision_overflow" ||
+      revision != (std::numeric_limits<std::uint64_t>::max)() ||
+      previous != before_overflow || checkpoint_sequence != overflow_checkpoint_sequence ||
+      xar::bridge::TryReadFrame(pipe.read).status != xar::bridge::ReadStatus::none)
+    return false;
+  previous.reset();
+  if (!publish("overflow-no-previous") || diagnostic.status != "revision_overflow" ||
+      revision != (std::numeric_limits<std::uint64_t>::max)() || previous.has_value() ||
+      checkpoint_sequence != overflow_checkpoint_sequence ||
+      xar::bridge::TryReadFrame(pipe.read).status != xar::bridge::ReadStatus::none)
+    return false;
+  revision = (std::numeric_limits<std::uint64_t>::max)() - 1;
+  if (!publish("last-finite-publication") || diagnostic.status != "written" ||
+      revision != (std::numeric_limits<std::uint64_t>::max)() ||
+      !read_equals("last-finite-publication", revision)) return false;
+  if (!publish("overflow-after-last") || diagnostic.status != "revision_overflow" ||
+      revision != (std::numeric_limits<std::uint64_t>::max)() ||
+      xar::bridge::TryReadFrame(pipe.read).status != xar::bridge::ReadStatus::none)
+    return false;
+  if (!publish({}) || diagnostic.status != "deduplicated" ||
+      revision != (std::numeric_limits<std::uint64_t>::max)() ||
+      xar::bridge::TryReadFrame(pipe.read).status != xar::bridge::ReadStatus::none ||
+      native.raw_reads.load() != reads)
+    return false;
+  std::puts("fresh-publication: correlated revisions strictly advance; ordinary dedup preserved; failed-write no commit; uint64 overflow closed; no cache fallback");
   return true;
 }
 } // namespace

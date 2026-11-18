@@ -2,7 +2,13 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（19:15 UTC 更新）
+## 当前状态（19:42 UTC 更新）
+
+第九场`R0009/a87`已实际通过取消恢复路径：原read3在8秒内明确取消、撤收且未执行；随后同一进程、连接、owner及TLS有自然完成进展，Host发出独立read4。19:31:55Z，Native实际写出关联Full并ACK成功，但仍为初始的`native:1/revision1`，SDK正确拒绝非递增发布身份。公共run原wait2/400.159142秒，Host1、Game1、Job0/treegone及keeper原wait0已核，19:37:32Z实际CAS15281→15282释放。零金融动作、零新增日、零SAVE。[原件摘要](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0009.json)。
+
+已采用Native窄修：每次强制关联读取都选择新的发布序号，状态帧成功写入后才提交；普通去重、世界状态及SDK后来版本检查保留。两个现有生产body夹具同步并增加连续相同状态读取、写失败和溢出边界；尚待同缓存Q15实际编译与执行，源码采用不授实机通过。R0009另有一次有限PSS及16帧元数据回溯，样本处于普通界面update任务等待；上下文与后取栈非原子，未取得heap任务身份，不能称死锁或Native/Fresh正在执行。
+
+## 第八场与取消恢复修复（19:15 UTC）
 
 第八场`R0008/a86`已实际装载完成帧就绪修复：先拒绝载入对象，再等待真实完成帧，随后成功完成两遍Full读取。18:41:33Z首份完整快照可用，紧接的唯一Fresh请求仍在8秒原期限内排队超时：submit0/wait4/reclaim0，pump18799未推进，32次wake发送成功。公共run原wait2/403.366303秒；Host1、Game1、Job0/treegone和keeper原wait0均确认，18:43:58Z实际释放资源。零金融动作、零新增日、零SAVE，不能称业务通过。[实际原件摘要](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0008.json)。
 

@@ -739,14 +739,14 @@ bool TestFreshHandlerAck(bool ack_write_failure_only = false) {
       hook_restored = RestoreFreshAckWriteFailHook(write_failure);
       ok = ok && hook_restored && !write_failure.installed.load();
 
-      // Recovery: unchanged frame, new request ID, expect success pair at revision 1
+      // Distinct new read after ACK failure: unchanged frame, new publication revision2.
       if (ok) {
         ok = request(9, "req9", R"({"expected_revision":0})");
         if (ok) {
           ok = probe.call_result == true;
-          ok = ok && ReadFreshSuccessPair(pipes.read, "req9", 1);
+          ok = ok && ReadFreshSuccessPair(pipes.read, "req9", 2);
           ok = ok && native.raw_reads.load() == 2;
-          ok = ok && probe.state_revision == 1;
+          ok = ok && probe.state_revision == 2;
           ok = ok && probe.previous_snapshot.has_value() && probe.previous_snapshot == native.frame;
           ok = ok && probe.published_checkpoint_sequence == 0;
           ok = ok && native.wrong_owner.load() == 0;
@@ -780,19 +780,19 @@ bool TestFreshHandlerAck(bool ack_write_failure_only = false) {
     }
   }
 
-  // Case 3: unchanged gold 111, expected 0, different new id -> success pair revision 1 (correlated resend)
+  // Case 3: unchanged gold111, different new read ID -> a later publication revision2.
   if (ok) {
     ok = request(3, "req3", "{\"expected_revision\":0}");
     if (ok) {
       ok = probe.call_result == true;
-      ok = ok && ReadFreshSuccessPair(pipes.read, "req3", 1);
+      ok = ok && ReadFreshSuccessPair(pipes.read, "req3", 2);
       ok = ok && native.raw_reads.load() == 2;
-      ok = ok && probe.state_revision == 1;
+      ok = ok && probe.state_revision == 2;
       ok = ok && probe.previous_snapshot.has_value() && probe.previous_snapshot->played_character_gold.raw == 111;
     }
   }
 
-  // Case 4: reader_available=false, expected 0 -> error fresh_full_state_read_failed, raw 3, state remains 1
+  // Case 4: reader_available=false -> read failure, raw3, publication remains2.
   if (ok) {
     native.reader_available = false;
     ok = request(4, "req4", "{\"expected_revision\":0}");
@@ -800,26 +800,26 @@ bool TestFreshHandlerAck(bool ack_write_failure_only = false) {
       ok = probe.call_result == true; // Handler returns true after writing negative ACK
       ok = ok && ReadFreshFailureOnly(pipes.read, "req4", "fresh_full_state_read_failed", &probe.diagnostic);
       ok = ok && native.raw_reads.load() == 3;
-      ok = ok && probe.state_revision == 1;
+      ok = ok && probe.state_revision == 2;
       ok = ok && probe.previous_snapshot.has_value() && probe.previous_snapshot->played_character_gold.raw == 111;
     }
   }
 
-  // Case 5: reader_available=true, gold 222, expected 0 -> success pair revision 2
+  // Case 5: reader_available=true, gold222 -> later publication revision3.
   if (ok) {
     native.reader_available = true;
     native.frame.played_character_gold.raw = 222;
     ok = request(5, "req5", "{\"expected_revision\":0}");
     if (ok) {
       ok = probe.call_result == true;
-      ok = ok && ReadFreshSuccessPair(pipes.read, "req5", 2);
+      ok = ok && ReadFreshSuccessPair(pipes.read, "req5", 3);
       ok = ok && native.raw_reads.load() == 4;
-      ok = ok && probe.state_revision == 2;
+      ok = ok && probe.state_revision == 3;
       ok = ok && probe.previous_snapshot.has_value() && probe.previous_snapshot->played_character_gold.raw == 222;
     }
   }
 
-  // Case 6: gold 333, INVALID_HANDLE_VALUE write, expected 0 -> handler returns false, raw 5, state remains 2
+  // Case 6: gold333, failed frame write -> false, raw5, publication remains3.
   if (ok) {
     native.frame.played_character_gold.raw = 333;
     probe.write_handle = INVALID_HANDLE_VALUE;
@@ -827,7 +827,7 @@ bool TestFreshHandlerAck(bool ack_write_failure_only = false) {
     if (ok) {
       ok = probe.call_result == false; // WriteFrame fails on invalid handle
       ok = ok && native.raw_reads.load() == 5;
-      ok = ok && probe.state_revision == 2;
+      ok = ok && probe.state_revision == 3;
       ok = ok && probe.previous_snapshot.has_value() && probe.previous_snapshot->played_character_gold.raw == 222;
       ok = ok && probe.published_checkpoint_sequence == 0;
       // Verify original valid pipe has no new frames
@@ -836,7 +836,7 @@ bool TestFreshHandlerAck(bool ack_write_failure_only = false) {
     }
   }
 
-  // Case 7: Uninstall mailbox, then valid pipe new request expected 0 -> error fresh_full_state_read_failed, no new raw, state 2
+  // Case 7: Uninstalled mailbox -> read failure, no new raw, publication remains3.
   if (ok) {
     const auto terminal = api::UninstallMainThreadQueryMailboxV1(mailbox, 1000);
     installed = false;
@@ -848,7 +848,7 @@ bool TestFreshHandlerAck(bool ack_write_failure_only = false) {
         ok = probe.call_result == true; // Handler returns true after writing negative ACK
         ok = ok && ReadFreshFailureOnly(pipes.read, "req7", "fresh_full_state_read_failed", &probe.diagnostic);
         ok = ok && native.raw_reads.load() == 5;
-        ok = ok && probe.state_revision == 2;
+        ok = ok && probe.state_revision == 3;
       }
     }
   }
