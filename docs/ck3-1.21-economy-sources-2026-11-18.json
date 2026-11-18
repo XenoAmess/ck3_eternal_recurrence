@@ -1,0 +1,1061 @@
+{
+  "schema": "ck3.florin-economy-research-sources/v1",
+  "machine_id": "4-8e1c2f1861",
+  "packaged_at_utc": "2026-11-18T07:12:55.902313+00:00",
+  "installed_identity": {
+    "observed_at_utc": "2026-11-18T07:00:11.716858+00:00",
+    "branch": "public",
+    "numbers": {
+      "StateFlags": 4,
+      "buildid": 26622941,
+      "TargetBuildID": 26622941,
+      "BytesToDownload": 1358446000,
+      "BytesDownloaded": 1358446000,
+      "BytesToStage": 3749093613,
+      "BytesStaged": 3749093613,
+      "UpdateResult": 0,
+      "LastUpdated": 1794985190
+    },
+    "launcher": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+      "raw_version": "1.21.0",
+      "display_version": "1.21.0 (Florin)",
+      "sha256": "9494b94341519fb94dd7d56f48a3aae50ee8a0b418a40de1b4b3a5695f3e83b8"
+    },
+    "executable": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exists": true,
+      "bytes": 114756216,
+      "mtime_ns": 1794985039618356700,
+      "sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"
+    }
+  },
+  "installed_receipt": {
+    "external_path": "C:\\workspace\\ck3-market-task-20261118\\steam-wait-public-04\\result.json",
+    "sha256": "d9c29160c89276917688f97352e4d26476a3706403c569d60193fbe7ec29b096"
+  },
+  "official_sources": {
+    "schema": "ck3.market.research.official-source-index/v1",
+    "research_date": "2026-11-18",
+    "retrieval_machine_id": "4-8e1c2f1861",
+    "machine_id_provenance": "Parent agent actually ran tools/ck3_live_run_id.py machine in this task.",
+    "retrieval_channel": "Public official Steam ISteamNews API and HTTP redirects; no Steam client or Game operations by this researcher.",
+    "source_api": "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1158310&count=100&maxlength=0&format=json",
+    "raw_archive": "C:/workspace/ck3-market-task-20261118/economy-official-raw.json",
+    "raw_archive_in_git": false,
+    "full_release_changelog_obtained": false,
+    "limitations": [
+      "The launch announcement refers readers to an official forum changelog, but its API body does not contain a working direct forum link. Public web search did not yield the full changelog; the forum is blocked by robots in the web tool.",
+      "Developer diaries explicitly describe work in progress. Numeric defaults and exact script APIs require the final installed 1.21 files.",
+      "This index does not verify the target machine's installed version, DLC ownership, runtime interfaces or financial settlement behavior."
+    ],
+    "sources": [
+      {
+        "id": "launch",
+        "title": "Now Available: Silk & Silver and 1.21 Florin Free Update",
+        "published_at_utc": "2026-11-17T17:09:01Z",
+        "steam_news_gid": "1849458702694555",
+        "url": "https://steamcommunity.com/games/1158310/announcements/detail/746069122013463406",
+        "summary": "Release confirms the free economic overhaul, trade goods, building needs, roads and new building system. Paid expansion introduces playable Merchant and Republic governments, merchant specializations, monopolies and republican politics.",
+        "limits": "Feature announcement, not the full release changelog or API reference."
+      },
+      {
+        "id": "dd1",
+        "title": "Silk & Silver Dev Diary #1 - The Vision of Silk & Silver",
+        "published_at_utc": "2026-04-21T11:58:32Z",
+        "steam_news_gid": "1830163047268303",
+        "url": "https://steamcommunity.com/games/1158310/announcements/detail/552395313313219182",
+        "summary": "Explains the free county-economy redesign: districts containing buildings, prosperity separated from settlement size, and control/popular-opinion baselines. Design aims to reduce runaway economic bonuses and strengthen regional specialization.",
+        "limits": "Early vision. Later diaries replace or refine several details."
+      },
+      {
+        "id": "dd2",
+        "title": "Silk & Silver Dev Diary #2 - Trade Vision",
+        "published_at_utc": "2026-05-12T11:58:26Z",
+        "steam_news_gid": "1832065502823661",
+        "url": "https://steamcommunity.com/games/1158310/announcements/detail/690882808486299148",
+        "summary": "Introduces category-based needs and expertise, merchant acumen, competition for route shares, monopolies and roads. Expertise and company progression are separate from spendable gold.",
+        "limits": "Use DD8 for the later route and settlement model."
+      },
+      {
+        "id": "dd3",
+        "title": "Silk & Silver Dev Diary #3 - Merchants Vision",
+        "published_at_utc": "2026-05-26T11:57:33Z",
+        "steam_news_gid": "1833334318579167",
+        "url": "https://steamcommunity.com/games/1158310/announcements/detail/677373278422041850",
+        "summary": "Describes merchant company progression, domicile investment, patron charters and trade opportunities. Wealth, prestige and accumulated business success play different progression roles.",
+        "limits": "Company purposes changed later; War Profiteer should not be presented as an independently confirmed release specialization."
+      },
+      {
+        "id": "dd4",
+        "title": "Silk & Silver Dev Diary #4 - Republics Vision",
+        "published_at_utc": "2026-06-09T12:00:47Z",
+        "steam_news_gid": "1834602721201563",
+        "url": "https://steamcommunity.com/games/1158310/announcements/detail/677374546802640261",
+        "summary": "Separates republican public treasury and Assembly-controlled decrees from the patrician political economy. Discusses public spending on buildings, decrees and title men-at-arms, plus trade posts in foreign lands.",
+        "limits": "Government-specific design; does not prove every ruler has a distinct usable public treasury or specify a release getter."
+      },
+      {
+        "id": "dd5",
+        "title": "Silk & Silver Dev Diary #5 - Iteration",
+        "published_at_utc": "2026-09-01T12:00:55Z",
+        "steam_news_gid": "1842212951313198",
+        "url": "https://steamcommunity.com/games/1158310/announcements/detail/687515256220549926",
+        "summary": "Replaces earlier Acquisition Routes with priority Distribution Routes. Introduces toll income and explains entrepots as relay trade points, including directional-origin constraints intended to prevent circular re-export exploitation.",
+        "limits": "Basic-goods lists and other details changed later. Prefer DD8 and release files."
+      },
+      {
+        "id": "dd6",
+        "title": "Silk & Silver Dev Diary #6 - Merchants, Republics, & the Silk Road",
+        "published_at_utc": "2026-09-15T11:58:43Z",
+        "steam_news_gid": "1843481262704375",
+        "url": "https://steamcommunity.com/games/1158310/announcements/detail/711160422578783399",
+        "summary": "Explains commissioned transport with an upfront fee, creditor loans with hooks and inheritance, religious usury rules, merchant rivalry and republican popular-opinion spending. Silk Road interactions are available with Silk & Silver; Dynastic Cycle consequences also require All Under Heaven.",
+        "limits": "Loan rate examples and commission limits are pre-release values; do not treat as installed defaults."
+      },
+      {
+        "id": "dd8",
+        "title": "Silk & Silver Dev Diary #8 - Trade in Practice",
+        "published_at_utc": "2026-10-27T13:01:00Z",
+        "steam_news_gid": "1847286114048834",
+        "url": "https://steamcommunity.com/games/1158310/announcements/detail/701031128264350037",
+        "summary": "Technical account of production, needs, surplus/deficit pools, route competition, periodic settlement, tolls and roads. Explicitly excludes supply and demand from the price formula; scarcity restricts quantities. Also explains districts, settlement size, food needs, control and specialized taxes.",
+        "limits": "Most detailed retrieved trade source, but it still labels numeric values as provisional. Several formulae are images; this report does not transcribe an unverified exact formula."
+      },
+      {
+        "id": "dd9",
+        "title": "Silk & Silver Dev Diary #9 - 3D Art, Music, Modding",
+        "published_at_utc": "2026-11-03T12:57:11Z",
+        "steam_news_gid": "1847920302251844",
+        "url": "https://steamcommunity.com/games/1158310/announcements/detail/699905862545705792",
+        "summary": "Documents trade and district scopes, data-driven goods/categories/tolls, generated production and price modifiers, trade on_actions, decision pickers and Variable Maps. Lists eleven tax categories and major script renames.",
+        "limits": "Does not prove exact getters for final prices, actual trades, inventories or arbitrary native settlement calls. The illustrative silk definition is not evidence of release basic-good classification."
+      }
+    ]
+  },
+  "installed_static_sources": {
+    "schema": "ck3.market.research.installed-static-sources/v1",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-11-18T07:08:52.7884732+00:00",
+    "game_version": "1.21.0 (Florin)",
+    "steam_branch": "public",
+    "steam_build_id": "26622941",
+    "installation_identity_provenance": "Parent agent verified installation and supplied identity in this task; this researcher performed only static file reads.",
+    "game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+    "runtime_verified": false,
+    "compiled": false,
+    "count_summary": [
+      {
+        "group": "goods",
+        "directory": "common/trade/trade_good_types",
+        "top_level_definitions": 44,
+        "unique_keys": 44,
+        "basic_goods": 16,
+        "need_categories": 0,
+        "counting_method": "Column-zero identifier = { definitions in *.txt, excluding .info; no duplicate keys observed inside each counted group."
+      },
+      {
+        "group": "categories",
+        "directory": "common/trade/trade_good_categories",
+        "top_level_definitions": 41,
+        "unique_keys": 41,
+        "basic_goods": 0,
+        "need_categories": 20,
+        "counting_method": "Column-zero identifier = { definitions in *.txt, excluding .info; no duplicate keys observed inside each counted group."
+      },
+      {
+        "group": "tolls",
+        "directory": "common/trade/trade_market_toll_levels",
+        "top_level_definitions": 6,
+        "unique_keys": 6,
+        "basic_goods": 0,
+        "need_categories": 0,
+        "counting_method": "Column-zero identifier = { definitions in *.txt, excluding .info; no duplicate keys observed inside each counted group."
+      },
+      {
+        "group": "districts",
+        "directory": "common/districts",
+        "top_level_definitions": 352,
+        "unique_keys": 352,
+        "basic_goods": 0,
+        "need_categories": 0,
+        "counting_method": "Column-zero identifier = { definitions in *.txt, excluding .info; no duplicate keys observed inside each counted group."
+      },
+      {
+        "group": "buildings",
+        "directory": "common/buildings",
+        "top_level_definitions": 3548,
+        "unique_keys": 3548,
+        "basic_goods": 0,
+        "need_categories": 0,
+        "counting_method": "Column-zero identifier = { definitions in *.txt, excluding .info; no duplicate keys observed inside each counted group."
+      },
+      {
+        "group": "land_and_sea_roads",
+        "directory": "common/roads/road_types",
+        "top_level_definitions": 4191,
+        "unique_keys": 4191,
+        "basic_goods": 0,
+        "need_categories": 0,
+        "counting_method": "Column-zero identifier = { definitions in *.txt, excluding .info; no duplicate keys observed inside each counted group."
+      },
+      {
+        "group": "road_modifier_sets",
+        "directory": "common/roads/road_modifiers",
+        "top_level_definitions": 1,
+        "unique_keys": 1,
+        "basic_goods": 0,
+        "need_categories": 0,
+        "counting_method": "Column-zero identifier = { definitions in *.txt, excluding .info; no duplicate keys observed inside each counted group."
+      },
+      {
+        "group": "holdings",
+        "directory": "common/holdings",
+        "top_level_definitions": 7,
+        "unique_keys": 7,
+        "basic_goods": 0,
+        "need_categories": 0,
+        "counting_method": "Column-zero identifier = { definitions in *.txt, excluding .info; no duplicate keys observed inside each counted group."
+      }
+    ],
+    "key_findings": [
+      {
+        "file": "common/defines/00_defines.txt",
+        "lines": [
+          2003,
+          2005,
+          2006,
+          2007,
+          2010,
+          2011,
+          2013,
+          2014,
+          2016,
+          2017,
+          2022,
+          2023,
+          2024,
+          2025,
+          2031,
+          2032,
+          2033,
+          2034,
+          2035,
+          2036,
+          2044,
+          2053,
+          2054,
+          2055,
+          2057,
+          2066,
+          2067,
+          2068,
+          2069,
+          2070,
+          2071,
+          2072,
+          2073,
+          2074,
+          2075,
+          2076
+        ],
+        "summary": "Capacity 35; route good base 1/cap 6; buy scalar .95/sell 1; prosperity parameters; toll defaults; NRoad construction array 60/240/480/720/960/0 and decay 48. Values are define data, not measured construction durations."
+      },
+      {
+        "file": "common/religion/doctrine_group_types/00_doctrine_group_types.txt",
+        "lines": [
+          343,
+          347,
+          348
+        ],
+        "summary": "doctrine_usury exists, with has_gdp_dlc_trigger create-availability gate."
+      },
+      {
+        "file": "common/religion/doctrine_types/20_doctrines.txt",
+        "lines": [
+          2586,
+          2626,
+          2665,
+          2705
+        ],
+        "summary": "Four usury doctrine definitions: accepted, discouraged, outsiders_only, forbidden."
+      },
+      {
+        "file": "common/character_interactions/11_gdp_merchant_interactions.txt",
+        "lines": [
+          2678,
+          2803,
+          2835,
+          2864,
+          2882,
+          2906,
+          2913
+        ],
+        "summary": "loan_money_interaction contains open/disguised/interest-free options and calls loan setup/increase effects."
+      },
+      {
+        "file": "common/script_values/gdp_merchant_values.txt",
+        "lines": [
+          1546,
+          1549,
+          1560,
+          1568,
+          1574,
+          1602,
+          1603,
+          1606,
+          1607,
+          1620
+        ],
+        "summary": "Loan amount script values and .25/.15 interest-premium parameters; not annual rates."
+      },
+      {
+        "file": "common/scripted_triggers/gdp_merchant_triggers.txt",
+        "lines": [
+          2150,
+          2167,
+          2229,
+          2243,
+          2252
+        ],
+        "summary": "Usury condemnation, prohibition and voidability trigger chain is present."
+      },
+      {
+        "file": "common/decisions/dlc_decisions/gdp/gdp_merchant_decisions.txt",
+        "lines": [
+          2427,
+          2445,
+          2446,
+          2449,
+          2505
+        ],
+        "summary": "Repudiate-usurious-loan decision exists and calls the repudiation effect; no live availability claim."
+      },
+      {
+        "file": "common/modifiers/00_basic_modifiers.txt",
+        "lines": [
+          885,
+          890,
+          893,
+          994,
+          1001,
+          1005,
+          1006,
+          1009,
+          1016,
+          1019,
+          1020
+        ],
+        "summary": "Settlement-size modifier tiers 0..10 and district-slot/control/opinion consequences are explicit."
+      }
+    ],
+    "files": [
+      {
+        "relative_path": "common/buildings/00_duchy_capital_buildings.txt",
+        "bytes": 115682,
+        "sha256": "cb37a1dd5738ad624de6b7169adbefbeb7885956c350bd15d0548ca8e0f02b4a",
+        "read_at_utc": "2026-11-18T07:08:52.3984662+00:00"
+      },
+      {
+        "relative_path": "common/buildings/01_duchy_office_buildings.txt",
+        "bytes": 135396,
+        "sha256": "8aae3c17cdf0079e00c551a858237b75d696e6d82b2d546bfa8787f583f3f74c",
+        "read_at_utc": "2026-11-18T07:08:52.4064613+00:00"
+      },
+      {
+        "relative_path": "common/buildings/99_ach_buildings.txt",
+        "bytes": 8227,
+        "sha256": "ba76e7ef736d475fc524ebbb984b3eb6549bda314061137e159c6f8e9afbbb0e",
+        "read_at_utc": "2026-11-18T07:08:52.4094599+00:00"
+      },
+      {
+        "relative_path": "common/buildings/99_background_graphics_buildings.txt",
+        "bytes": 19719,
+        "sha256": "caab387efed42ac96680c81f8f482c59209ba7b643447f08486630f575d32a80",
+        "read_at_utc": "2026-11-18T07:08:52.4124582+00:00"
+      },
+      {
+        "relative_path": "common/buildings/entrepot_district_buildings/00_entrepot_district_buildings.txt",
+        "bytes": 61666,
+        "sha256": "50a12285a0b46d11a0dd764413eac38bf45f831a8ee21a3a2eb04acce5f19c7a",
+        "read_at_utc": "2026-11-18T07:08:52.4154563+00:00"
+      },
+      {
+        "relative_path": "common/buildings/great_district_buildings/republic_great_plaza_district_buildings.txt",
+        "bytes": 79629,
+        "sha256": "9fe14cb3186f7fc53930bf2ad9d72026b0f954468e200df9010251869a0d3464",
+        "read_at_utc": "2026-11-18T07:08:52.4184545+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_buildings/00_castle_buildings.txt",
+        "bytes": 200805,
+        "sha256": "ed7656146395cd352dd1d7ce0029cad9e79486a8b1204136d584618738a0d0b4",
+        "read_at_utc": "2026-11-18T07:08:52.4224522+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_buildings/00_city_buildings.txt",
+        "bytes": 189556,
+        "sha256": "798f01013caf8e45b4641ea71fd6bea782af7e3773d8de87a1d2182e171fc720",
+        "read_at_utc": "2026-11-18T07:08:52.4264499+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_buildings/00_nomad_buildings.txt",
+        "bytes": 10002,
+        "sha256": "deebddd4cb7ddd19c53093dc2edf5f54d84e73cd5133fdba8bee157b8caf0034",
+        "read_at_utc": "2026-11-18T07:08:52.4294483+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_buildings/00_temple_buildings.txt",
+        "bytes": 270283,
+        "sha256": "622fce0e41309574c3b896287d3da397b200dd01b7953dcba71cae8fc08fd43b",
+        "read_at_utc": "2026-11-18T07:08:52.4344444+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_buildings/00_tribal_buildings.txt",
+        "bytes": 57755,
+        "sha256": "010131ef24b88e18f3083dcc676e934df72ba85b05cade90e098ec8fe43c3ea7",
+        "read_at_utc": "2026-11-18T07:08:52.4374436+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_buildings/temple_citadel_buildings.txt",
+        "bytes": 250846,
+        "sha256": "f580c1931ff96c4f3d0199268f0a81040431fa2fa0638c1c2200ec5a036b86a2",
+        "read_at_utc": "2026-11-18T07:08:52.4424409+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_district_buildings/00_castle_district_buildings.txt",
+        "bytes": 63618,
+        "sha256": "0ca9f773f728ec328f6c34631b470b7a8e125c138f2672369e3bc520fe5f15d7",
+        "read_at_utc": "2026-11-18T07:08:52.4454390+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_district_buildings/00_city_district_buildings.txt",
+        "bytes": 34890,
+        "sha256": "1963c37f6cfd9722425ac6aa3391f756f901a6f3622c7ec5b77e7eacecd40545",
+        "read_at_utc": "2026-11-18T07:08:52.4484373+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_district_buildings/00_temple_citadel_district_buildings.txt",
+        "bytes": 16011,
+        "sha256": "0110ca8529b0ae67f050e078b178d5ddc50dc1e60d7b0d8dc0a28370dc128490",
+        "read_at_utc": "2026-11-18T07:08:52.4514355+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_district_buildings/00_temple_district_buildings.txt",
+        "bytes": 39818,
+        "sha256": "4207c0bb7bdcbd902f20a755cdc0ee751c1342725e6e1655adb26f61c309f813",
+        "read_at_utc": "2026-11-18T07:08:52.4544337+00:00"
+      },
+      {
+        "relative_path": "common/buildings/holding_district_buildings/00_tribal_district_buildings.txt",
+        "bytes": 8047,
+        "sha256": "5498c210b0b9a4235959c3ccf65e3c971953ad2ddbefbf7cbabf204fd6444a85",
+        "read_at_utc": "2026-11-18T07:08:52.4574323+00:00"
+      },
+      {
+        "relative_path": "common/buildings/pam_buildings.txt",
+        "bytes": 20666,
+        "sha256": "34e2a9f657a3e18c6d28e0682de324d61f7172339e40b9e5c97d56ae7976f209",
+        "read_at_utc": "2026-11-18T07:08:52.4604307+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_border_forts_district_buildings.txt",
+        "bytes": 54082,
+        "sha256": "547a89e1df56b0571395b244bc4fb4e3b6ae1636a1b9f7ed1f8b505d1d3b005a",
+        "read_at_utc": "2026-11-18T07:08:52.4634289+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_bureaucratic_district_buildings.txt",
+        "bytes": 88102,
+        "sha256": "e228d26795ba80c3c524e6ab34d9fdb725713cbe388e4520a3d8cd0c3005f6c5",
+        "read_at_utc": "2026-11-18T07:08:52.4674266+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_entertainment_district_buildings.txt",
+        "bytes": 111348,
+        "sha256": "72fe3b0f4bc44690abe906a9c9d87d6d909010f314bf68b71a24c233c1a7b487",
+        "read_at_utc": "2026-11-18T07:08:52.4714243+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_guild_district_buildings.txt",
+        "bytes": 188467,
+        "sha256": "e371205732ecb47502fe1aa353268e52b26be834f2cf5d57f28766fd96e84b7a",
+        "read_at_utc": "2026-11-18T07:08:52.4754219+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_household_district_buildings.txt",
+        "bytes": 214499,
+        "sha256": "f323a892effd665db7eb0b7a047ebfd665e538113e2025e3a9defad08029f993",
+        "read_at_utc": "2026-11-18T07:08:52.4794197+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_mandala_district_buildings.txt",
+        "bytes": 96111,
+        "sha256": "165b048e523468cf430f9de2147d6c72bfe16580bc28d99d915902c7302ad61d",
+        "read_at_utc": "2026-11-18T07:08:52.4834173+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_manor_houses_district_buildings.txt",
+        "bytes": 68943,
+        "sha256": "8bd0a06254d825261acbe738976538a0fd42eabb5b28b847bf54c00ffbba4a9d",
+        "read_at_utc": "2026-11-18T07:08:52.4864157+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_market_district_buildings.txt",
+        "bytes": 79488,
+        "sha256": "52fc31da1830c175e366dcd479a4281b0c83c42cf81fa14e21b2d2e8d5bbd447",
+        "read_at_utc": "2026-11-18T07:08:52.4904134+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_military_district_buildings.txt",
+        "bytes": 161901,
+        "sha256": "7b0d31838b1e1507801a21d11b0dbf83bc40daec5f7ca71ef74ed3b17e8ad9f3",
+        "read_at_utc": "2026-11-18T07:08:52.4944107+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_patrician_district_buildings.txt",
+        "bytes": 119743,
+        "sha256": "3389b0f2d986d0a60df33f6bae1bf3a47a0ac9aae1699d1bbfdb817dfceb0836",
+        "read_at_utc": "2026-11-18T07:08:52.4984086+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_port_district_buildings.txt",
+        "bytes": 67248,
+        "sha256": "36268c07e80a97a38ab8b00bdb4ed2c626866631fe4b75f089f1d3005a7b4470",
+        "read_at_utc": "2026-11-18T07:08:52.5014071+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_religious_community_district_buildings.txt",
+        "bytes": 119431,
+        "sha256": "92ede71d6dbc9bb9bd2a0da58c60019e6503c9cbe0c133c55f518232aae055f5",
+        "read_at_utc": "2026-11-18T07:08:52.5054047+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_temple_district_buildings.txt",
+        "bytes": 157771,
+        "sha256": "1a08c0c0b39c9e7679907dccbd709b27a9bdf6e3b40c43fdcb41f5f0a9044270",
+        "read_at_utc": "2026-11-18T07:08:52.5096350+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_tribal_economy_and_prestige_district_buildings.txt",
+        "bytes": 82692,
+        "sha256": "c51778416586636411c02526ad5a866c2d51a0b8ec6f1c706da67dd240794998",
+        "read_at_utc": "2026-11-18T07:08:52.5126336+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_tribal_military_district_buildings.txt",
+        "bytes": 70912,
+        "sha256": "1d446eea27464f2bd3dd43f56505ea18a8257d63dc4e6797271984d63ac12ab4",
+        "read_at_utc": "2026-11-18T07:08:52.5166314+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_tribal_wanua_district_buildings.txt",
+        "bytes": 99873,
+        "sha256": "5db445688f15fac76d2397745205d405888616b75346c9cd87e1c4277376e01c",
+        "read_at_utc": "2026-11-18T07:08:52.5206290+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_urban_housing_district_buildings.txt",
+        "bytes": 77058,
+        "sha256": "dee436216c07dece2cdb9f5c23035a563edbe19eb3e0329c9c12fa7c90e8c480",
+        "read_at_utc": "2026-11-18T07:08:52.5236274+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_villages_district_buildings.txt",
+        "bytes": 206185,
+        "sha256": "8de79a1a6f6f9eab01ac799693c2f60e66bbb8653777f9babc6850904cbe316d",
+        "read_at_utc": "2026-11-18T07:08:52.5276248+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_district_buildings/00_walls_district_buildings.txt",
+        "bytes": 81761,
+        "sha256": "0e1986e8a66c619afd5744013e5b7db2760f7482752aa33509b4677263519a41",
+        "read_at_utc": "2026-11-18T07:08:52.5316229+00:00"
+      },
+      {
+        "relative_path": "common/buildings/regular_primary_buildings.txt",
+        "bytes": 208419,
+        "sha256": "0c487a011afadca838241aaad2d3276ce53bbc83951b91246320a15cf8aaeabc",
+        "read_at_utc": "2026-11-18T07:08:52.5356199+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/alum_district_buildings.txt",
+        "bytes": 11756,
+        "sha256": "64c41fbb780da1eb62fd674f6c8b12e4f2c3fae516297871896620dcb4c006db",
+        "read_at_utc": "2026-11-18T07:08:52.5396182+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/amber_district_buildings.txt",
+        "bytes": 40304,
+        "sha256": "d0137042f042d76212f05383151eb14b031f7521adc72c3483521e0a6eebb621",
+        "read_at_utc": "2026-11-18T07:08:52.5426164+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/cattle_district_buildings.txt",
+        "bytes": 74202,
+        "sha256": "e36bc8b2322e5957e746a189380bee7a6b7513fbeafa0443dc865c47f8012a2f",
+        "read_at_utc": "2026-11-18T07:08:52.5456146+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/ceramics_district_buildings.txt",
+        "bytes": 71754,
+        "sha256": "4352716526acefc76d9bfc312763c80b090d8e030f259e8cb561f392f862c49e",
+        "read_at_utc": "2026-11-18T07:08:52.5496124+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/copper_district_buildings.txt",
+        "bytes": 30354,
+        "sha256": "783dbde0330024f627e3cecd18a98f646944f5819af14f88bac0a4666b850ba8",
+        "read_at_utc": "2026-11-18T07:08:52.5526109+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/cotton_district_buildings.txt",
+        "bytes": 62791,
+        "sha256": "402c0a4895d818d512b3f4892060189ee62908426f06db4c3078fa07f039f8a3",
+        "read_at_utc": "2026-11-18T07:08:52.5556086+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/dyes_district_buildings.txt",
+        "bytes": 54897,
+        "sha256": "2905d903a3c52fe57a6057c858bd7d45a501165c1fafd19dbaac7e6665bb9d5c",
+        "read_at_utc": "2026-11-18T07:08:52.5586071+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/fish_district_buildings.txt",
+        "bytes": 73972,
+        "sha256": "1387e709a509551ea4c8ff530596cc7ff6670d85d6c5c9f4b78d12e26a60cbb6",
+        "read_at_utc": "2026-11-18T07:08:52.5626050+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/flax_district_buildings.txt",
+        "bytes": 47332,
+        "sha256": "0eb997e18e1743fa8f4f3fe81196a80a5d3f01d6daeb21ca9d97c8bf74b03be3",
+        "read_at_utc": "2026-11-18T07:08:52.5656031+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/fruit_district_buildings.txt",
+        "bytes": 62592,
+        "sha256": "0d886763c0a56d24718c1c0c775dfc09d82172f0f816b4da51031da26cd3b4ce",
+        "read_at_utc": "2026-11-18T07:08:52.5686014+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/furs_district_buildings.txt",
+        "bytes": 58783,
+        "sha256": "1e564598099a9cb5b02ddb056dccf02b63bb69acddd6acb90556b7fd93cd0403",
+        "read_at_utc": "2026-11-18T07:08:52.5725995+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/gems_district_buildings.txt",
+        "bytes": 3503,
+        "sha256": "fdc49f179ac785ae70b4b81eb38f95b5e90a49117a15c488902da1b571b48d52",
+        "read_at_utc": "2026-11-18T07:08:52.5745981+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/gold_district_buildings.txt",
+        "bytes": 3508,
+        "sha256": "1c315d3c3cccaec9885e4ce23e5767b689c1794751becdd59419c16b77bef88c",
+        "read_at_utc": "2026-11-18T07:08:52.5775964+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/grain_district_buildings.txt",
+        "bytes": 90099,
+        "sha256": "2f96756f2f11568716b1de6f36c3f3e712a57a581500a8844f23b5c93e0dfdc2",
+        "read_at_utc": "2026-11-18T07:08:52.5805944+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/hemp_district_buildings.txt",
+        "bytes": 46438,
+        "sha256": "86961d3d61b7819d20f0949ae2c52485ce6409a59661ad4efc99b2d54268cbf5",
+        "read_at_utc": "2026-11-18T07:08:52.5845928+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/honey_district_buildings.txt",
+        "bytes": 43315,
+        "sha256": "197394ec3e55671d916863a7859ccdb310c780f73a318dc6b7ef0a1ebe52d795",
+        "read_at_utc": "2026-11-18T07:08:52.5875912+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/horse_district_buildings.txt",
+        "bytes": 38544,
+        "sha256": "58e5e5c8616d63248697d89c0dd25d830778b9791cfac8157cda55204e937eef",
+        "read_at_utc": "2026-11-18T07:08:52.5905888+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/incense_district_buildings.txt",
+        "bytes": 49224,
+        "sha256": "4439248a4b1006ef2ea5876ab4d7d15e76e653afd0aefa0f37f75f86adc648c2",
+        "read_at_utc": "2026-11-18T07:08:52.5935870+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/iron_district_buildings.txt",
+        "bytes": 32530,
+        "sha256": "454494e565e01e1fbd699e60069229e8698ab5bf7bb30d4e902d5d82fe5bffcf",
+        "read_at_utc": "2026-11-18T07:08:52.5975849+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/ivory_district_buildings.txt",
+        "bytes": 46352,
+        "sha256": "b9cc1fa8723807fea23a50f179d33a629c1cd320a9fe0b34a7431ffd1de464e9",
+        "read_at_utc": "2026-11-18T07:08:52.6005832+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/jade_district_buildings.txt",
+        "bytes": 3508,
+        "sha256": "9def4742873d1bdd03e098ffbf93e74e53ee1f69391f915d721005cd388680b2",
+        "read_at_utc": "2026-11-18T07:08:52.6035814+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/medicaments_district_buildings.txt",
+        "bytes": 61704,
+        "sha256": "8554a5a03fb19fc9b40b2f4c4262ba2c5ca21d2c8962a8f6f8b638234fe7008c",
+        "read_at_utc": "2026-11-18T07:08:52.6065799+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/millet_district_buildings.txt",
+        "bytes": 67396,
+        "sha256": "92ed14a17bfae91e9edca3c4a5255d70dd893ecb6193b2ab5f41335dccbec24c",
+        "read_at_utc": "2026-11-18T07:08:52.6095781+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/mine_district_buildings.txt",
+        "bytes": 44491,
+        "sha256": "30f4710e4d3d2326ef15b3aeaec3578f4c009c336c8a37797eb4a6ac3578360b",
+        "read_at_utc": "2026-11-18T07:08:52.6125764+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/oil_district_buildings.txt",
+        "bytes": 44757,
+        "sha256": "731a263a73d4a2c77f624123344d493f71cef8381c14f1d114fab2cdd5ecc766",
+        "read_at_utc": "2026-11-18T07:08:52.6155720+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/rice_district_buildings.txt",
+        "bytes": 73335,
+        "sha256": "1fec207cc5544b8f39cca0f2912b55413d142c3d63d40a69ebb9deeb6ac0b306",
+        "read_at_utc": "2026-11-18T07:08:52.6555490+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/salt_district_buildings.txt",
+        "bytes": 43533,
+        "sha256": "738041848907a73d21eff9d4cc02deba1a4ea9a9c1d498008eb4904694eaaaca",
+        "read_at_utc": "2026-11-18T07:08:52.6585473+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/shared_resource_district_buildings.txt",
+        "bytes": 142492,
+        "sha256": "b3abc6ee1320bb6b4efebad962f315c3359bb453e0f5d3f00ad3727696306171",
+        "read_at_utc": "2026-11-18T07:08:52.6615456+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/silk_district_buildings.txt",
+        "bytes": 61685,
+        "sha256": "b6f0782160538c67bf789db635c7883b6846e49ce7835fc45e5620cd30c732c9",
+        "read_at_utc": "2026-11-18T07:08:52.6645440+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/silver_district_buildings.txt",
+        "bytes": 3550,
+        "sha256": "3765676778e92550b29a01d48dbd1c8c8764c2cb1d25f913231b0ce70686a367",
+        "read_at_utc": "2026-11-18T07:08:52.6665429+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/spices_district_buildings.txt",
+        "bytes": 45258,
+        "sha256": "f49593969ce7459d928870973f36ad0163b363eb18494a8ab04e9c5b6c930bcb",
+        "read_at_utc": "2026-11-18T07:08:52.6685417+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/stone_district_buildings.txt",
+        "bytes": 60134,
+        "sha256": "80bbbe1249df684dd38679ea3baf29936e829b262f6723f6c31846d17b9b3fe8",
+        "read_at_utc": "2026-11-18T07:08:52.6715399+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/sugar_district_buildings.txt",
+        "bytes": 35265,
+        "sha256": "bfe32c42c86b1884c18586fa013367e7be5f29082c7b8f90bb095b9297d02959",
+        "read_at_utc": "2026-11-18T07:08:52.6735391+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/tea_district_buildings.txt",
+        "bytes": 42264,
+        "sha256": "ddb9e19b83cf4b1179660352417b87058ef214022fed865b1d683c5474937634",
+        "read_at_utc": "2026-11-18T07:08:52.6765372+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/wanua_resource_district_buildings.txt",
+        "bytes": 231228,
+        "sha256": "d0b54afb527ebda650e3ea541630da9fe56169fbbbd84db63ebb3a4bede21b42",
+        "read_at_utc": "2026-11-18T07:08:52.6795352+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/wine_district_buildings.txt",
+        "bytes": 55401,
+        "sha256": "00428272de477ae246cb9d8c2ec5551127e926e97bb1b99fda313653f7d0f98d",
+        "read_at_utc": "2026-11-18T07:08:52.6825336+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/wood_district_buildings.txt",
+        "bytes": 66886,
+        "sha256": "cf53c2f270d6da4136797726be949461dc7f0e71f599aa307a933c40faba7777",
+        "read_at_utc": "2026-11-18T07:08:52.6855318+00:00"
+      },
+      {
+        "relative_path": "common/buildings/resource_district_buildings/wool_district_buildings.txt",
+        "bytes": 63435,
+        "sha256": "6b7ece8095941ca13ea9edf506ffe29355569dded7931ea53105e7005c87b65b",
+        "read_at_utc": "2026-11-18T07:08:52.6875307+00:00"
+      },
+      {
+        "relative_path": "common/buildings/special_buildings/00_legendary_buildings.txt",
+        "bytes": 8552,
+        "sha256": "7638057554eed64a1a6b8c046e1071b5224623ce8046247fe1514acc20b24bd6",
+        "read_at_utc": "2026-11-18T07:08:52.6905294+00:00"
+      },
+      {
+        "relative_path": "common/buildings/special_buildings/00_special_buildings.txt",
+        "bytes": 367448,
+        "sha256": "8d20f9ca207df6670a9ae12c9ac5178a51b320281271dbee22411f2b03bf8ace",
+        "read_at_utc": "2026-11-18T07:08:52.6945265+00:00"
+      },
+      {
+        "relative_path": "common/buildings/special_buildings/00_special_mines.txt",
+        "bytes": 322920,
+        "sha256": "b36b1afbd72286d3bca6a69f10ea278ee9763373aa74bdb6331b70a14a806abc",
+        "read_at_utc": "2026-11-18T07:08:52.6985313+00:00"
+      },
+      {
+        "relative_path": "common/buildings/special_buildings/ccp3_special_buildings.txt",
+        "bytes": 50356,
+        "sha256": "9e46668c8e95d2aedec6cecd81ae9ad19ea2dbf5995f790e32b194ca8fedf135",
+        "read_at_utc": "2026-11-18T07:08:52.7005234+00:00"
+      },
+      {
+        "relative_path": "common/buildings/special_buildings/cp6_special_buildings.txt",
+        "bytes": 29933,
+        "sha256": "d13a8c63c847972159a13762b5c49b4a8e075673f23b0a16c4d4459134975de8",
+        "read_at_utc": "2026-11-18T07:08:52.7035216+00:00"
+      },
+      {
+        "relative_path": "common/buildings/special_buildings/cp8_special_buildings.txt",
+        "bytes": 37283,
+        "sha256": "bbe0fd914fe6833333c8c845736cd61de0eec00fcd1806bcc73be57a40c9ba20",
+        "read_at_utc": "2026-11-18T07:08:52.7055205+00:00"
+      },
+      {
+        "relative_path": "common/buildings/tgp_great_project_buildings.txt",
+        "bytes": 34176,
+        "sha256": "c91034e1b96debced1487e92f586227a770153337b915654d861ee04c59592a7",
+        "read_at_utc": "2026-11-18T07:08:52.7085188+00:00"
+      },
+      {
+        "relative_path": "common/buildings/trade_post_buildings/basic_trade_post_buildings.txt",
+        "bytes": 152329,
+        "sha256": "c100405ef818be6b53c44ff1d503375d5fd5a6b27ace5305fc1a5a605d28e6d1",
+        "read_at_utc": "2026-11-18T07:08:52.7115170+00:00"
+      },
+      {
+        "relative_path": "common/buildings/trade_post_buildings/hanseatic_kontor_buildings.txt",
+        "bytes": 2904,
+        "sha256": "cb5145b15eb417489e6e85edfa0c13be5f73dcbecc88808fa4a045fe5111b883",
+        "read_at_utc": "2026-11-18T07:08:52.7135162+00:00"
+      },
+      {
+        "relative_path": "common/character_interactions/11_gdp_merchant_interactions.txt",
+        "bytes": 256277,
+        "sha256": "d654ea7cb156c82634a0e4843a561e9107a569b34cbcc4e69ef9ac0a94760b87",
+        "read_at_utc": "2026-11-18T07:08:52.7175132+00:00"
+      },
+      {
+        "relative_path": "common/decisions/dlc_decisions/gdp/gdp_merchant_decisions.txt",
+        "bytes": 70480,
+        "sha256": "8dcb655c8b939875b1b2e514461c06741ac2905a66fcbbd210dae40eaaae1350",
+        "read_at_utc": "2026-11-18T07:08:52.7205118+00:00"
+      },
+      {
+        "relative_path": "common/defines/00_defines.txt",
+        "bytes": 137145,
+        "sha256": "a28c9eccaa3990691190f3073eac7a272679995062739fb90de2b156ec2af753",
+        "read_at_utc": "2026-11-18T07:08:52.7235106+00:00"
+      },
+      {
+        "relative_path": "common/districts/duchy_capital_districts.txt",
+        "bytes": 7708,
+        "sha256": "da55b3bb9522ebe2a83830c5f596b91f6133b67285a04444e6c84048ee784f5e",
+        "read_at_utc": "2026-11-18T07:08:52.7255088+00:00"
+      },
+      {
+        "relative_path": "common/districts/entrepot_districts.txt",
+        "bytes": 589,
+        "sha256": "e9a9521d5aab01e7efb0a1c843cb50908fe7aeafaafd69054e8e3b64003b9aed",
+        "read_at_utc": "2026-11-18T07:08:52.7275079+00:00"
+      },
+      {
+        "relative_path": "common/districts/great_districts.txt",
+        "bytes": 2805,
+        "sha256": "83aa5f65057c7e02f83a683a0a9c39d5f840ffb9cc2d6df5323ed8c75d1e5f21",
+        "read_at_utc": "2026-11-18T07:08:52.7295071+00:00"
+      },
+      {
+        "relative_path": "common/districts/holding_districts.txt",
+        "bytes": 7033,
+        "sha256": "e3e88e2052f3abef1f7e39048eeb66aa94bdd710add88692c1329f0c8fb93d1f",
+        "read_at_utc": "2026-11-18T07:08:52.7325054+00:00"
+      },
+      {
+        "relative_path": "common/districts/legendary_districts.txt",
+        "bytes": 3028,
+        "sha256": "3f997bf5133a0a1faec644cc572bcf5e6eb3257e3024eada1fd2fafc1a5d90ab",
+        "read_at_utc": "2026-11-18T07:08:52.7345039+00:00"
+      },
+      {
+        "relative_path": "common/districts/other_special_districts.txt",
+        "bytes": 4214,
+        "sha256": "6f7779ca157dcd1981f0fc6bd2bd29bbbe7a5b2469e3675622304d14a08d538e",
+        "read_at_utc": "2026-11-18T07:08:52.7365030+00:00"
+      },
+      {
+        "relative_path": "common/districts/regular_districts.txt",
+        "bytes": 33738,
+        "sha256": "8f944cf247a50ea29f21c6e536d0947de19d75cee1bfbc6b7fe6b9fcd533cb9e",
+        "read_at_utc": "2026-11-18T07:08:52.7395009+00:00"
+      },
+      {
+        "relative_path": "common/districts/resource_districts.txt",
+        "bytes": 47553,
+        "sha256": "583eada9210a3a244330e393d9ce8614e8d220b5bb7da6e670c413027ce2cd1c",
+        "read_at_utc": "2026-11-18T07:08:52.7414999+00:00"
+      },
+      {
+        "relative_path": "common/districts/special_districts.txt",
+        "bytes": 43787,
+        "sha256": "d6cbc118f2dec7af4900a6b767472229d6c776be7bc77208bd3f2fa69a0fa102",
+        "read_at_utc": "2026-11-18T07:08:52.7444980+00:00"
+      },
+      {
+        "relative_path": "common/districts/special_mines_districts.txt",
+        "bytes": 11077,
+        "sha256": "f1508e5ecd8845a07284aa77baf7e37d0456fdd5f36deb404696a16b57e1cebd",
+        "read_at_utc": "2026-11-18T07:08:52.7464970+00:00"
+      },
+      {
+        "relative_path": "common/districts/trade_post_districts.txt",
+        "bytes": 1106,
+        "sha256": "2c93f85550a6a4c708d01915efa50e9d526091f86b5ede329f1d73fb977e6198",
+        "read_at_utc": "2026-11-18T07:08:52.7484961+00:00"
+      },
+      {
+        "relative_path": "common/holdings/00_holdings.txt",
+        "bytes": 3790,
+        "sha256": "a3e97a3095d1da5058d8040e612634f632c85f9ba0ec6bf50a93aef2af31bd3e",
+        "read_at_utc": "2026-11-18T07:08:52.7514944+00:00"
+      },
+      {
+        "relative_path": "common/modifiers/00_basic_modifiers.txt",
+        "bytes": 29615,
+        "sha256": "08046a4c38342ba7a82b047ae5e7269e387bec5d5c99496af6fbdb8983244bd4",
+        "read_at_utc": "2026-11-18T07:08:52.7534931+00:00"
+      },
+      {
+        "relative_path": "common/religion/doctrine_group_types/00_doctrine_group_types.txt",
+        "bytes": 5765,
+        "sha256": "cc2279e7e56ad9e1ca2f587a35b89c78bd5d2e9081a08a3345a9de8e0cdd7033",
+        "read_at_utc": "2026-11-18T07:08:52.7564916+00:00"
+      },
+      {
+        "relative_path": "common/religion/doctrine_types/20_doctrines.txt",
+        "bytes": 64147,
+        "sha256": "64c47777d2f71c121c232da47cacaeee7e4863f559a646bd4cafb447cc00e1c3",
+        "read_at_utc": "2026-11-18T07:08:52.7584902+00:00"
+      },
+      {
+        "relative_path": "common/roads/road_modifiers/00_road_modifiers.txt",
+        "bytes": 2490,
+        "sha256": "6952d30888c75ab849e13a83a4191468a5d565e73a76a7d22dde9c20073f30a7",
+        "read_at_utc": "2026-11-18T07:08:52.7614888+00:00"
+      },
+      {
+        "relative_path": "common/roads/road_types/00_base_roads.txt",
+        "bytes": 332239,
+        "sha256": "432927cff64d4a49fe1b463b4ad3cbef57991755b9b1259a5035c0989d1a5473",
+        "read_at_utc": "2026-11-18T07:08:52.7654862+00:00"
+      },
+      {
+        "relative_path": "common/roads/road_types/02_sea_roads.txt",
+        "bytes": 494859,
+        "sha256": "b35b6955af387362dd104244a220c6d90b65ce0b1a6a5eefb639fa1ed1c9b650",
+        "read_at_utc": "2026-11-18T07:08:52.7704858+00:00"
+      },
+      {
+        "relative_path": "common/script_values/gdp_merchant_values.txt",
+        "bytes": 41666,
+        "sha256": "c622da1eab1cf772d7f66b76f466dd8ed537b13bbcd27eb530cf23f261e62847",
+        "read_at_utc": "2026-11-18T07:08:52.7724823+00:00"
+      },
+      {
+        "relative_path": "common/scripted_effects/gdp_merchant_scripted_effects.txt",
+        "bytes": 234720,
+        "sha256": "44b987f213985620046f6439bc8471f46cbd9d6bb5f140d898507dcbf8bc0298",
+        "read_at_utc": "2026-11-18T07:08:52.7764794+00:00"
+      },
+      {
+        "relative_path": "common/scripted_triggers/gdp_merchant_triggers.txt",
+        "bytes": 88133,
+        "sha256": "c414cd6e8cd21c43b4d9280199c369c4eb0d26606f39c73c76936e95fe49ea09",
+        "read_at_utc": "2026-11-18T07:08:52.7794781+00:00"
+      },
+      {
+        "relative_path": "common/trade/trade_good_categories/00_trade_good_categories.txt",
+        "bytes": 9016,
+        "sha256": "6da9d8a83e32fab0209b12eb1b937fef6eae1a498136faacd1c77a1b0d1e8063",
+        "read_at_utc": "2026-11-18T07:08:52.7814772+00:00"
+      },
+      {
+        "relative_path": "common/trade/trade_good_categories/01_need_type_trade_good_categories.txt",
+        "bytes": 31043,
+        "sha256": "83d2d3c8c95ad8dcf0e724b164967e410ddea72adaf7606078453af8920a148e",
+        "read_at_utc": "2026-11-18T07:08:52.7844756+00:00"
+      },
+      {
+        "relative_path": "common/trade/trade_good_types/basic_trade_goods.txt",
+        "bytes": 3672,
+        "sha256": "c6f21120415c303bfb6e16675d35010ec3fd26d1216ef64ba52a9b93c779a9ed",
+        "read_at_utc": "2026-11-18T07:08:52.7864742+00:00"
+      },
+      {
+        "relative_path": "common/trade/trade_market_toll_levels/00_toll_levels.txt",
+        "bytes": 969,
+        "sha256": "137a75161a899c00502ef7a7edfa6b785fefddf3226bcf92bad0cf1ec2962a13",
+        "read_at_utc": "2026-11-18T07:08:52.7884732+00:00"
+      }
+    ],
+    "limitations": [
+      "Static installed text only; does not establish actual DLC ownership, loaded data, scripting accessor usability, hardcoded implementation, financial action behavior or runtime market count.",
+      "Road values are reported under exact define names; no measured time-to-build or in-engine timer semantics claimed.",
+      "A first top-level inventory attempt was stopped after a temporary PowerShell variable collision; the persisted inventory is the completed corrected pass, with unique-key counts recorded."
+    ],
+    "execution_policy_deviation": {
+      "occurred": true,
+      "description": "The researcher incorrectly used powershell.exe for earlier static reads, counting, hashing and external JSON creation. This violated the project command policy. The parent was informed; remaining verification used Python stdlib under cmd.exe with login:false.",
+      "scope": "Installed files read only; writes only inside this external task directory. No Steam/Game/UI/process actions, compilation, model HTTP, repository source mutation or commit.",
+      "does_not_establish_runtime_validation": true
+    },
+    "independent_cmd_python_recheck": {
+      "machine_id": "4-8e1c2f1861",
+      "at_utc": "2026-11-18T07:12:55.902287+00:00",
+      "hashes_verified": 113,
+      "definition_groups_recounted": [
+        "common/trade/trade_good_types",
+        "common/trade/trade_good_categories",
+        "common/trade/trade_market_toll_levels",
+        "common/districts",
+        "common/buildings",
+        "common/roads/road_types",
+        "common/roads/road_modifiers",
+        "common/holdings"
+      ],
+      "runtime_verified": false
+    }
+  },
+  "scope": "Public source index and factual script metadata only; no full original texts. No CK3 launch, script runtime or financial implementation validation."
+}
