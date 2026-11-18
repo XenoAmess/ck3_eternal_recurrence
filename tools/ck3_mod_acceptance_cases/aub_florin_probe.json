@@ -16,6 +16,7 @@
   "required_markers": [
     "AUBF: TEST BEGIN district_native_probe",
     "AUBF: TEST PASS controlled_robert_castle",
+    "AUBF: TEST PASS target_province_high_medieval",
     "AUBF: TEST PASS native_district_eligibility",
     "AUBF: TEST PASS native_district_upgrade_one_tier",
     "AUBF: TEST PASS exact_personal_charge_and_count",

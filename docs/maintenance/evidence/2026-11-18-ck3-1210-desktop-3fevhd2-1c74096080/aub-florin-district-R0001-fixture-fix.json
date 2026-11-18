@@ -1,0 +1,184 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T16:14:22.274751+00:00",
+  "prior_run": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0001",
+  "prior_verification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-probe-a02-verify.json",
+    "bytes": 202,
+    "sha256": "de3a3f47751afe92229ad95fb52713bcee2d421c53cd6704b843c5f49efa408c"
+  },
+  "software_checks": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-18T16:08:24.478348+00:00",
+    "checks": [
+      {
+        "label": "tests",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/test_fixture_engine_prepare.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.8599437999946531,
+        "tail": "......\r\n----------------------------------------------------------------------\r\nRan 6 tests in 0.384s\r\n\r\nOK\r\n"
+      },
+      {
+        "label": "mypy",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "tools/prepare_aub_1_20_fixture.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.7811445999977877,
+        "tail": "Success: no issues found in 1 source file\r\n"
+      },
+      {
+        "label": "prepare",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/prepare_aub_1_20_fixture.py",
+          "--scenario",
+          "florin-probe",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a02\\fixture"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 1.517436900001485,
+        "tail": "{\"prepared_fixture\": \"D:\\\\ck3-state\\\\upgrade-20261118\\\\aub-florin-probe-a02\\\\fixture\", \"runtime_status\": \"NOT_RUN\"}\r\n"
+      }
+    ],
+    "parser": {
+      "jar": {
+        "path": "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "bytes": 433166,
+        "sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82"
+      },
+      "scope": "generic syntax only; no1.21 engine semantic or runtime credit",
+      "concurrency": 4,
+      "heap_per_process": "192MiB",
+      "results": [
+        {
+          "input": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a02\\fixture\\common\\on_action\\aubf_on_actions.txt",
+            "bytes": 151,
+            "sha256": "1e4cc5dad1fc2df858598e96c10e788fa96b41ad79e5e9423d87bdb3f7b90198"
+          },
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a02\\fixture\\common\\on_action\\aubf_on_actions.txt"
+          ],
+          "exit": 0
+        },
+        {
+          "input": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a02\\fixture\\events\\aubf_events.txt",
+            "bytes": 6862,
+            "sha256": "4b10d5c85af91ba44b24d95ff8f4ea3546c07b3b72eeb8fa70ade98d7c628ccf"
+          },
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a02\\fixture\\events\\aubf_events.txt"
+          ],
+          "exit": 0
+        }
+      ]
+    },
+    "passed": true,
+    "game_started": false,
+    "business_pass": false,
+    "workshop_published": false
+  },
+  "fixture_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-probe-a02\\fixture.manifest.json",
+    "bytes": 557,
+    "sha256": "50260bd5806b3b6fe4bc971323daef36a03486d7ee36e7d4fd03162001d43b3f"
+  },
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_probe\\events\\aubf_events.txt",
+      "bytes": 6859,
+      "sha256": "a1151df5ed266d8402641eec80d2aae1e254fc66a8ffe615c612e2cfd10ebf94"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_probe.json",
+      "bytes": 1386,
+      "sha256": "83ee953164812b9eb2eb446690ac7db6c82bc61c11b77b0ae6ec9bd59ede3862"
+    }
+  ],
+  "source_rule_review": {
+    "reviewer": "/root/aub_florin_review",
+    "facts": [
+      "Florin holding primary eligibility uses province culture era, not payer culture innovations. Native construction-for-owner also supplies its actual owner context.",
+      "castle03 requires nontribal holder, province culture high_medieval era and conditional Japan policy. First fixture innovation grants did not establish that era precondition.",
+      "join_era is a script effect, documented in current EXE at file offsets83302928/83302985; it joins all eras through the requested era and affects the shared culture as a whole. Only the isolated fixture uses it."
+    ],
+    "sources": [
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_building_requirement_triggers.txt",
+        "bytes": 22766,
+        "sha256": "791ebaf4f8a633f650d0667579d549110dcc89dcba11c7446d53188f0f618d86"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\10_tgp_japan_triggers.txt",
+        "bytes": 22639,
+        "sha256": "650dac69aa64f58fa7820fe9ef78685af32f610ab2100989764b8fe1d1615d28"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\holding_buildings\\00_castle_buildings.txt",
+        "bytes": 200805,
+        "sha256": "ed7656146395cd352dd1d7ce0029cad9e79486a8b1204136d584618738a0d0b4"
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\culture\\eras\\00_culture_eras.txt",
+        "bytes": 2514,
+        "sha256": "d3408af95e3519515fc714d9082c187bbd66cf4d5238b7090608bad8542acf0d"
+      }
+    ],
+    "runtime_limit": "The exact R1 failed conjunct was not observed. Source review identifies an unestablished fixture prerequisite, not a retrospective assertion about R1 actual era or a proven iterator bug."
+  },
+  "change": "Remove irrelevant unguarded innovation grants. Advance target province culture to high_medieval only if needed, then require actual era readback. Add independent tier, native next-tier eligibility and exact0..15 count observation. Original no-repeat composite remains unchanged.",
+  "cleanup": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "groups": {
+      "R0001": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-18T16:10:53.215051+00:00",
+        "deleted_files": 4184,
+        "deleted_logical_bytes": 183645204,
+        "failed": [],
+        "free_before": {
+          "C:/": 50549710848,
+          "D:/": 21728444416
+        },
+        "free_after": {
+          "C:/": 50549555200,
+          "D:/": 21921746944
+        }
+      }
+    }
+  },
+  "deleted_availability": "R1 generated shader outputs no longer readable; original logs, all screenshots, source, fixture and bundle retained; sole MRM warm cache protected. Rebuildable generated outputs expired early after original Popen/keeper/CAS closure.",
+  "business_pass": false,
+  "workshop_published": false,
+  "external_review_date": "2026-12-18"
+}

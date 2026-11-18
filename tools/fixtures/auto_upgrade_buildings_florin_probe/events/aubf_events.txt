@@ -17,10 +17,21 @@ aubf.1 = {
 			add_character_flag = aub_funding_personal_only
 			save_scope_as = aub_payer
 			save_scope_as = character
-			culture = {
-				add_innovation = innovation_battlements
-				add_innovation = innovation_hoardings
-				add_innovation = innovation_castle_baileys
+			# Florin holding primaries use the province culture's era, not
+			# the payer culture's innovations. This isolated fixture advances
+			# that shared culture only to make the next-next tier eligible.
+			capital_province = {
+				culture = {
+					if = {
+						limit = { NOT = { has_cultural_era_or_later = culture_era_high_medieval } }
+						join_era = culture_era_high_medieval
+					}
+				}
+				if = {
+					limit = { culture = { has_cultural_era_or_later = culture_era_high_medieval } }
+					debug_log = "AUBF: TEST PASS target_province_high_medieval"
+				}
+				else = { debug_log = "AUBF: TEST FAIL target_province_high_medieval" }
 			}
 			add_gold = 100000
 			set_variable = { name = aub_upgrades_this_scan value = 0 }
@@ -60,6 +71,36 @@ aubf.1 = {
 			}
 			set_variable = { name = aub_upgrades_this_scan value = 0 }
 			capital_province = { aub_upgrade_all_supported_buildings_effect = yes }
+			capital_province = {
+				holding_district = {
+					if = { limit = { has_building = castle_01 } debug_log = "AUBF: OBSERVE full_scan_castle01" }
+					if = { limit = { has_building = castle_02 } debug_log = "AUBF: OBSERVE full_scan_castle02" }
+					if = { limit = { has_building = castle_03 } debug_log = "AUBF: OBSERVE full_scan_castle03" }
+					if = { limit = { has_building = castle_04 } debug_log = "AUBF: OBSERVE full_scan_castle04" }
+					if = {
+						limit = { can_start_building_construction_for_owner = castle_03 }
+						debug_log = "AUBF: OBSERVE full_scan_castle03_eligible"
+					}
+					else = { debug_log = "AUBF: OBSERVE full_scan_castle03_blocked" }
+				}
+			}
+			if = { limit = { var:aub_upgrades_this_scan = 0 } debug_log = "AUBF: OBSERVE full_scan_count00" }
+			if = { limit = { var:aub_upgrades_this_scan = 1 } debug_log = "AUBF: OBSERVE full_scan_count01" }
+			if = { limit = { var:aub_upgrades_this_scan = 2 } debug_log = "AUBF: OBSERVE full_scan_count02" }
+			if = { limit = { var:aub_upgrades_this_scan = 3 } debug_log = "AUBF: OBSERVE full_scan_count03" }
+			if = { limit = { var:aub_upgrades_this_scan = 4 } debug_log = "AUBF: OBSERVE full_scan_count04" }
+			if = { limit = { var:aub_upgrades_this_scan = 5 } debug_log = "AUBF: OBSERVE full_scan_count05" }
+			if = { limit = { var:aub_upgrades_this_scan = 6 } debug_log = "AUBF: OBSERVE full_scan_count06" }
+			if = { limit = { var:aub_upgrades_this_scan = 7 } debug_log = "AUBF: OBSERVE full_scan_count07" }
+			if = { limit = { var:aub_upgrades_this_scan = 8 } debug_log = "AUBF: OBSERVE full_scan_count08" }
+			if = { limit = { var:aub_upgrades_this_scan = 9 } debug_log = "AUBF: OBSERVE full_scan_count09" }
+			if = { limit = { var:aub_upgrades_this_scan = 10 } debug_log = "AUBF: OBSERVE full_scan_count10" }
+			if = { limit = { var:aub_upgrades_this_scan = 11 } debug_log = "AUBF: OBSERVE full_scan_count11" }
+			if = { limit = { var:aub_upgrades_this_scan = 12 } debug_log = "AUBF: OBSERVE full_scan_count12" }
+			if = { limit = { var:aub_upgrades_this_scan = 13 } debug_log = "AUBF: OBSERVE full_scan_count13" }
+			if = { limit = { var:aub_upgrades_this_scan = 14 } debug_log = "AUBF: OBSERVE full_scan_count14" }
+			if = { limit = { var:aub_upgrades_this_scan = 15 } debug_log = "AUBF: OBSERVE full_scan_count15" }
+			if = { limit = { var:aub_upgrades_this_scan > 15 } debug_log = "AUBF: TEST FAIL count_above_cap" }
 			if = {
 				limit = {
 					capital_province = {

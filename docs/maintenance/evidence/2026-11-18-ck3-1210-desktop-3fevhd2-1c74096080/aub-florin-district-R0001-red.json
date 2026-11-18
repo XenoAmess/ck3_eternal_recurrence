@@ -1,0 +1,129 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T16:01:23.785241+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0001",
+  "case": "district-probe-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "ENGINE_PROBE_RED_WITH_HARNESS_ERROR",
+  "facts": {
+    "original_probe_markers_and_native_error_review": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-bcea1b19904a480f9d7b0f6bf6f6663b\\profile\\logs\\debug.log",
+          "bytes": 1184468,
+          "sha256": "8fcd9cc02d7c4a1c20561046983fcee420372432c816a8a9389c9e3279ce3cff"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-bcea1b19904a480f9d7b0f6bf6f6663b\\profile\\logs\\error.log",
+          "bytes": 445,
+          "sha256": "81996ddc95908e09ebdfdf75a6242ee5f5561c7219d60c43ba07b12b4d1781f5"
+        }
+      ]
+    },
+    "actual_robert_initial_date_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp01-world.png",
+          "bytes": 1163088,
+          "sha256": "13702d31880d9deea2422d122ffb62f5d9c5d7934e7ca231c9fcb235f6b42057"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp01-quitdialog-view.png",
+          "bytes": 684984,
+          "sha256": "564a425767c0bae07bb6c094ada6b30d453eae377ec0ae15abc19b834700e84a"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp01-exit-desktop.png.json",
+          "bytes": 1440,
+          "sha256": "83bb4c63959746963e44ce535fbd1c80ee0d35160e4ace1c8e0c277de52e9d70"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0001\\game-exit.json",
+          "bytes": 253,
+          "sha256": "46b3c3bd4b33356f88a1ff3e78213482862b2167846016bfaca4c7a77b0c54da"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBF: TEST BEGIN district_native_probe": 1,
+    "AUBF: TEST PASS controlled_robert_castle": 1,
+    "AUBF: TEST PASS native_district_eligibility": 1,
+    "AUBF: TEST PASS native_district_upgrade_one_tier": 1,
+    "AUBF: TEST PASS exact_personal_charge_and_count": 1,
+    "AUBF: TEST PASS primary_mutation_no_repeat_before_cap": 0,
+    "AUBF: TEST PASS insufficient_personal_zero_change": 1,
+    "AUBF: TEST DONE district_native_probe": 1
+  },
+  "failure_lines": [
+    "[23:51:16][D][jomini_effect_impl.cpp:444]: file: events/aubf_events.txt line: 77 (aubf.1:immediate): AUBF: TEST FAIL primary_mutation_no_repeat_before_cap"
+  ],
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-bcea1b19904a480f9d7b0f6bf6f6663b\\profile\\logs\\error.log",
+    "bytes": 445,
+    "sha256": "81996ddc95908e09ebdfdf75a6242ee5f5561c7219d60c43ba07b12b4d1781f5"
+  },
+  "error_text": "[23:51:16][E][jomini_script_system.cpp:307]: Script system error!\n  Error: add_innovation effect [ Culture '诺曼' already has innovation '城垛' ]\n  Script location: file: events/aubf_events.txt line: 20 (aubf.1:immediate)\n    file: common/on_action/aubf_on_actions.txt line: 7 (aubf_start)\n    file: common/on_action/aubf_on_actions.txt line: 5 (aubf_start)\n    file: common/on_action/game_start.txt line: 2806 (on_game_start_after_lobby)\n\n",
+  "observed_passes": [
+    "actual controlled Robert character1128/castle capital",
+    "native district target construction eligibility",
+    "same-district primary castle01->02 with no03",
+    "exact personal charge and successful-upgrade count1",
+    "zero personal balance rejects upgrade, preserves castle01 and count0"
+  ],
+  "unresolved": "Composite primary_mutation_no_repeat_before_cap failed. Individual castle tier, next-tier eligibility and count were not logged before subsequent fixture normalization overwrote them. Which conjunct failed remains UNKNOWN; no primary-iterator repeat bug is asserted.",
+  "harness_error": "Fixture unconditionally granted an already known battlements innovation. Future probe will guard grants and record independent tier/eligibility/count predicates.",
+  "actual_final_date": "1066-09-15",
+  "natural_days": 0,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp01-quitdialog-view.png",
+      "bytes": 684984,
+      "sha256": "564a425767c0bae07bb6c094ada6b30d453eae377ec0ae15abc19b834700e84a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubp01-exit-desktop.png.json",
+      "bytes": 1440,
+      "sha256": "83bb4c63959746963e44ce535fbd1c80ee0d35160e4ace1c8e0c277de52e9d70"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0001\\game-exit.json",
+      "bytes": 253,
+      "sha256": "46b3c3bd4b33356f88a1ff3e78213482862b2167846016bfaca4c7a77b0c54da"
+    }
+  ],
+  "source_head": "7380b3c89c058390b5507361bc3f348b0eb74b3d",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-probe-gui-prepare\\prepared-case.json",
+    "bytes": 1584825,
+    "sha256": "e0dba6a85ebb0871eb5ff2ea49fe70e3a56e75fe6f90ff87e1a56eb002359610"
+  },
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\releases\\aub-probe-4.0.4\\mod_auto_upgrade_buildings.manifest.json",
+    "bytes": 63701,
+    "sha256": "d834bf2b15c6de365b79d6ff1869e9f959f5255faff2dad7fa3da23df3544fd5"
+  },
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-probe-a02-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "1bfe361486a28498e5d4af7c2bd02b6d1a4696c70f012574c09226afdab65862"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "pre_identity_allocation_failure": {
+    "source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-probe-allocate.stderr",
+      "bytes": 1464,
+      "sha256": "74606473f2058a170bec123f9c13173f1b3cc0b1bfe1dccd631ebd57854fb1f4"
+    },
+    "reason": "Private products config incorrectly marked this built-in mod external. Validator rejected it before identity namespace/counter/custody writes; corrected to canonical built-in false, common preflight READY, same unused prepared profile then allocated once."
+  },
+  "retention_review_at_utc": "2026-12-18T15:58:39Z"
+}
