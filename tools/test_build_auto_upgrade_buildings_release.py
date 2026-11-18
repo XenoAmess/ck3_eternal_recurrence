@@ -5,11 +5,14 @@ from __future__ import annotations
 
 import json
 import copy
+import contextlib
+import io
 import shutil
 import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+from unittest.mock import patch
 
 import build_auto_upgrade_buildings_release as release
 import auto_upgrade_buildings_data as data
@@ -171,6 +174,90 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
         descriptor.write_bytes(descriptor.read_bytes() + b'\nremote_file_id="4000000001"')
         with self.assertRaisesRegex(ValueError, "descriptor.mod"):
             release.verify_manifest(cache, manifest_path, workshop_cache=True)
+
+
+class FlorinBuildingExtractionTests(unittest.TestCase):
+    def game(self, root: Path) -> Path:
+        files = {
+            "common/buildings/holding_buildings/castles.txt":
+                "castle_01 = { next_building = castle_02 }\n"
+                "castle_02 = { cost_gold = 200 district_level_requirement = 2 can_construct = { always = yes } }\n",
+            "common/buildings/projects/projects.txt":
+                "project_01 = { next_building = project_02 great_project_type = project_kind }\n"
+                "project_02 = { next_building = project_03 }\nproject_03 = { }\n",
+            "common/buildings/_buildings.info": "test schema\n",
+            "common/holdings/holdings.txt": "castle_holding = { primary_district = castle_district }\n",
+            "common/districts/holdings.txt": "castle_district = { primary_building = castle_01 type = holding }\n",
+        }
+        for name, body in files.items():
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(body, encoding="utf-8")
+        return root
+
+    def test_recursive_graph_district_primary_and_entire_project_exclusion(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            game = self.game(Path(temporary))
+            snapshot = extractor.build_snapshot(game, game_version="1.21.0")
+            self.assertEqual(snapshot["building_definition_count"], 5)
+            self.assertEqual(snapshot["included_edge_count"], 1)
+            self.assertEqual(snapshot["excluded_edge_count"], 2)
+            self.assertEqual(snapshot["primary_building_roots"], {"castle_01": "castle_holding"})
+            self.assertIn("common/districts/holdings.txt", snapshot["input_sha256"])
+            self.assertEqual(snapshot["included_edges"][0]["resources"], {"gold": "200"})
+            self.assertEqual(snapshot["included_edges"][0]["gates"], {"can_construct": "always = yes"})
+            self.assertEqual(snapshot["included_edges"][0]["district_level_requirement"], {"kind": "scalar", "value": "2"})
+
+    def test_missing_or_ambiguous_primary_district_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            game = self.game(Path(temporary))
+            path = game / "common/holdings/holdings.txt"
+            path.write_text("castle_holding = { primary_district = missing }", encoding="utf-8")
+            with self.assertRaisesRegex(extractor.ExtractionError, "unknown primary district"):
+                extractor.read_primary_buildings(game)
+            path.write_text("castle_holding = { primary_district = castle_district primary_building = castle_01 }", encoding="utf-8")
+            with self.assertRaisesRegex(extractor.ExtractionError, "both primary building and district"):
+                extractor.read_primary_buildings(game)
+
+    def test_duplicate_definition_in_subdirectory_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            game = self.game(Path(temporary))
+            (game / "common/buildings/duplicate.txt").write_text("castle_01 = { }", encoding="utf-8")
+            with self.assertRaisesRegex(extractor.ExtractionError, "duplicate vanilla building definition"):
+                extractor.read_buildings(game)
+
+    def test_legacy_direct_primary_building_remains_supported(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            game = self.game(Path(temporary))
+            (game / "common/holdings/holdings.txt").write_text("castle_holding = { primary_building = castle_01 }", encoding="utf-8")
+            roots, _ = extractor.read_primary_buildings(game)
+            self.assertEqual(roots, {"castle_01": "castle_holding"})
+
+    def test_florin_sources_cannot_be_mislabeled_as_legacy(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            game = self.game(Path(temporary))
+            with self.assertRaisesRegex(extractor.ExtractionError, "explicitly selected game version"):
+                extractor.build_snapshot(game)
+
+    def test_district_requirement_preserves_complete_script_value(self) -> None:
+        parsed = extractor.parse_clausewitz('district_level_requirement = { value = 2 if = { limit = { always = yes } add = 1 } }')
+        projected = extractor.script_value_projection(parsed, "district_level_requirement")
+        self.assertIsNotNone(projected)
+        self.assertEqual(projected["kind"], "block")
+        self.assertEqual(extractor.parse_clausewitz(projected["body"]), parsed.entries[0].value)
+        with self.assertRaisesRegex(extractor.ExtractionError, "must be one script value"):
+            extractor.script_value_projection(extractor.parse_clausewitz('level = 1 level = 2'), 'level')
+
+    def test_florin_cli_cannot_overwrite_the_historical_snapshot(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            game = self.game(Path(temporary))
+            historical = game / "historical.json"
+            historical.write_bytes(b"historical content")
+            args = ["--game-root", str(game), "--game-version", "1.21.0"]
+            with patch.object(extractor, "OUTPUT", historical), contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(extractor.main(args), 1)
+                self.assertEqual(extractor.main([*args, "--output", str(historical)]), 1)
+            self.assertEqual(historical.read_bytes(), b"historical content")
 
 
 class BuildingSnapshotContractTests(unittest.TestCase):

@@ -7,3 +7,7 @@
 首次合并静态检查发现支付校验依赖旧文件顺序：排序后的升级分片先出现参数化调用，旧提取器把它当作函数定义，产生六项真实失败。校验现在明确读取顶层支付定义，新增真实排序后输入的回归，原资金分支和成功计数断言保留。原失败日志不覆盖。
 
 实际结果：生成器check通过，构建器16项通过（含逐定义不变、无重复、每文件上限、费用篡改拒绝、严格缓存和可复现构建）；generator与static validator两个完整文件严格mypy通过，follow-imports=skip。最终实际安装源静态检查仍为RED，唯余上述新版建筑提取失败；源码拆分通过不等于Florin兼容、实机业务或发布。证据见[aub-generated-split-software.json](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-generated-split-software.json)。本次没有改产品版本或Steam发布，下一步继续递归新版建筑／区域数据、费用与升级作用域迁移，然后跑原代表性业务矩阵及生产GUI。外置原件2026-12-18复核。
+
+2026-11-18T14:24:21Z，递归提取器在本机完整安装源通过：3,548个建筑定义、2,644条原版升级边，其中大工程整链排除61条，普通升级2,583条／677条链；七种地产的primary_district→primary_building解析完成。大工程识别采用新版great_project_type并兼容旧标记，不再按普通金币建筑误收。首轮实际提取发现district_level_requirement还有脚本值块，已保留完整块而非强转标量；原失败日志保留。23项既有入口回归、完整提取器严格mypy和实际完整提取通过，版本／目录布局及历史快照覆盖拒绝均有回归。旧冻结数据未覆盖，新图仅在外置目录待采用；生产生成器、运行作用域、费用／配额／回滚业务与GUI尚未取得Florin资格，不改版本、不发布。证据见[aub-florin-recursive-extractor.json](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-recursive-extractor.json)。
+
+本机已闭场XQOL R5/R6的重建型shader及160份字节一致的全尺寸预览副本已按存储策略回收；原截图、日志、正式包、fixture及当前CHT物理保存仍在，唯一MRM暖缓存未动。删除路径不可再读取，保留原图可复核相同像素。共8,620文件／541,102,740逻辑字节，详细时间、容量及保留用途见[清理回执](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/storage-closed-xqol-ui-and-previews-cleanup.json)。

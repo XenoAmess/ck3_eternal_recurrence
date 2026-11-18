@@ -1,0 +1,85 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-18T14:32:57.392622+00:00",
+  "source_pins": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ui-red-xqol-shader-cleanup-summary.json",
+      "bytes": 472,
+      "sha256": "2b16114aeb022a463544f2e1e3315d68d2923712274a0a73dc93b1323fc3ec66"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ui-partial-xqol-shader-cleanup-summary.json",
+      "bytes": 472,
+      "sha256": "eb5b8d87e11f239af73c2c5f7e8c7c3ad50437c49b44592e302d7341a4be628f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-duplicate-previews-a01\\summary.json",
+      "bytes": 329,
+      "sha256": "8e15f3b2f9ba0615d2d20200859af7689659647f85dad4868b453b454d295d08"
+    }
+  ],
+  "actual_results": [
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "groups": {
+        "R0005": {
+          "machine_id": "desktop-3fevhd2-1c74096080",
+          "at_utc": "2026-11-18T11:26:21.931188+00:00",
+          "deleted_files": 4212,
+          "deleted_logical_bytes": 185348008,
+          "failed": [],
+          "free_before": {
+            "C:/": 52364603392,
+            "D:/": 21826850816
+          },
+          "free_after": {
+            "C:/": 52364472320,
+            "D:/": 22021906432
+          }
+        }
+      }
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "groups": {
+        "R0006": {
+          "machine_id": "desktop-3fevhd2-1c74096080",
+          "at_utc": "2026-11-18T13:55:15.951302+00:00",
+          "deleted_files": 4248,
+          "deleted_logical_bytes": 187804713,
+          "failed": [],
+          "free_before": {
+            "C:/": 51225694208,
+            "D:/": 21645217792
+          },
+          "free_after": {
+            "C:/": 51224506368,
+            "D:/": 21842792448
+          }
+        }
+      }
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-18T13:55:32.222063+00:00",
+      "deleted_files": 160,
+      "deleted_logical_bytes": 167950019,
+      "failed": [],
+      "free_before": {
+        "C:/": 51224436736,
+        "D:/": 21842628608
+      },
+      "free_after": {
+        "C:/": 51224436736,
+        "D:/": 22010863616
+      }
+    }
+  ],
+  "total_deleted_files": 8620,
+  "total_deleted_logical_bytes": 541102740,
+  "scope": "Closed XQOL R5/R6 rebuildable shader outputs and byte-identical full-size preview PNG copies. Exact bounded cleanup with source identity checks; no recursive blind removal.",
+  "availability": "Deleted shader outputs and duplicate preview paths are no longer readable. All original screenshots, source, logs, fixtures, release bundles and current physical CHT Save are retained. Preview originals were compared byte-for-byte and SHA-256 before removal.",
+  "retained": "The sole MRM warm shader input and the CHT physical save remain protected for their current documented use. Hardlinked previews were not selected.",
+  "free_space_attribution": "Volume free-space deltas also reflect other writers and filesystem allocation; only logical deleted bytes are summed here.",
+  "external_review_date": "2026-12-18"
+}

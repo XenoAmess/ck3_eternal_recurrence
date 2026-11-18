@@ -15,6 +15,7 @@ import json
 from pathlib import Path
 import re
 import sys
+from typing import Literal, TypedDict
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +58,28 @@ class Building:
     name: str
     relative_path: str
     body: Block
+
+
+class ScalarScriptValue(TypedDict):
+    kind: Literal["scalar"]
+    value: str
+
+
+class BlockScriptValue(TypedDict):
+    kind: Literal["block"]
+    body: str
+
+
+def script_value_projection(block: Block, key: str) -> ScalarScriptValue | BlockScriptValue | None:
+    matches = direct_entries(block, key)
+    if not matches:
+        return None
+    if len(matches) != 1 or matches[0].operator != "=" or matches[0].value is None:
+        raise ExtractionError(f"{key} must be one script value")
+    value = matches[0].value
+    if isinstance(value, Block):
+        return BlockScriptValue(kind="block", body=render_block_body(value))
+    return ScalarScriptValue(kind="scalar", value=value)
 
 
 def tokenize_clausewitz(value: str) -> list[str]:
@@ -210,7 +233,7 @@ def sha256_file(path: Path) -> str:
 
 def read_buildings(game_root: Path) -> tuple[dict[str, Building], dict[str, str]]:
     directory = game_root / "common" / "buildings"
-    paths = sorted(directory.glob("*.txt"))
+    paths = sorted(directory.rglob("*.txt"))
     if not paths:
         raise ExtractionError(f"vanilla building directory is missing or empty: {directory}")
     result: dict[str, Building] = {}
@@ -239,6 +262,18 @@ def read_primary_buildings(game_root: Path) -> tuple[dict[str, str], dict[str, s
         raise ExtractionError(f"vanilla holding directory is missing or empty: {directory}")
     roots: dict[str, str] = {}
     hashes: dict[str, str] = {}
+    district_primary: dict[str, str] = {}
+    for path in sorted((game_root / "common" / "districts").glob("*.txt")):
+        hashes[path.relative_to(game_root).as_posix()] = sha256_file(path)
+        parsed = parse_clausewitz(path.read_text(encoding="utf-8-sig", errors="strict"))
+        for entry in parsed.entries:
+            if entry.operator != "=" or not isinstance(entry.value, Block):
+                continue
+            primary = one_scalar(entry.value, "primary_building")
+            if primary is not None:
+                if entry.key in district_primary:
+                    raise ExtractionError(f"duplicate district primary building: {entry.key}")
+                district_primary[entry.key] = primary
     for path in paths:
         relative = path.relative_to(game_root).as_posix()
         hashes[relative] = sha256_file(path)
@@ -247,7 +282,16 @@ def read_primary_buildings(game_root: Path) -> tuple[dict[str, str], dict[str, s
             if entry.operator != "=" or not isinstance(entry.value, Block):
                 continue
             primary = one_scalar(entry.value, "primary_building")
+            district = one_scalar(entry.value, "primary_district")
+            if district is not None:
+                if primary is not None:
+                    raise ExtractionError(f"holding has both primary building and district: {entry.key}")
+                if district not in district_primary:
+                    raise ExtractionError(f"unknown primary district: {entry.key} -> {district}")
+                primary = district_primary[district]
             if primary is not None:
+                if primary in roots:
+                    raise ExtractionError(f"primary building belongs to multiple holdings: {primary}")
                 roots[primary] = entry.key
     return roots, hashes
 
@@ -325,6 +369,9 @@ def graph_chains(edges: dict[str, str]) -> tuple[list[list[str]], dict[str, str]
 
 def build_snapshot(game_root: Path, game_version: str = EXPECTED_GAME_VERSION) -> dict[str, object]:
     game_root = game_root.resolve()
+    florin = game_version == "1.21.0"
+    if (game_root / "common" / "districts").is_dir() != florin:
+        raise ExtractionError("building layout differs from the explicitly selected game version")
     buildings, building_hashes = read_buildings(game_root)
     primary_roots, holding_hashes = read_primary_buildings(game_root)
     vanilla_edges: dict[str, str] = {}
@@ -336,6 +383,15 @@ def build_snapshot(game_root: Path, game_version: str = EXPECTED_GAME_VERSION) -
             raise ExtractionError(f"unknown next_building target: {building.name} -> {target}")
         vanilla_edges[building.name] = target
     all_chains, root_for_source = graph_chains(vanilla_edges)
+    great_project_roots = {
+        root_for_source[source]
+        for source, target in vanilla_edges.items()
+        if any(
+            one_scalar(buildings[key].body, "great_project_type") is not None
+            or one_scalar(buildings[key].body, "type") == "great_building"
+            for key in (source, target)
+        )
+    }
     included: list[dict[str, object]] = []
     excluded: list[dict[str, object]] = []
     for source, target in sorted(vanilla_edges.items()):
@@ -350,7 +406,8 @@ def build_snapshot(game_root: Path, game_version: str = EXPECTED_GAME_VERSION) -
             "target_file": target_building.relative_path,
             "target_type": target_type,
         }
-        if target_type == "great_building":
+        if root_for_source[source] in great_project_roots:
+            record["target_type"] = "great_building"
             record["reason"] = "great_project"
             excluded.append(record)
             continue
@@ -364,6 +421,8 @@ def build_snapshot(game_root: Path, game_version: str = EXPECTED_GAME_VERSION) -
                 "primary_holding_type": primary_roots.get(root_for_source[source]),
             }
         )
+        if florin:
+            record["district_level_requirement"] = script_value_projection(target_building.body, "district_level_requirement")
         included.append(record)
     included_sources = {str(edge["source"]): str(edge["target"]) for edge in included}
     included_chains, _ = graph_chains(included_sources)
@@ -371,7 +430,7 @@ def build_snapshot(game_root: Path, game_version: str = EXPECTED_GAME_VERSION) -
     if not schema_path.is_file():
         raise ExtractionError(f"building schema is missing: {schema_path}")
     payload: dict[str, object] = {
-        "schema_version": 1,
+        "schema_version": 2 if florin else 1,
         "game_version": game_version,
         "source": "CK3 installed vanilla province-building definitions",
         "building_definition_count": len(buildings),
@@ -402,25 +461,32 @@ def render_snapshot(payload: dict[str, object]) -> bytes:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--game-root", type=Path, default=DEFAULT_GAME_ROOT)
+    parser.add_argument("--game-version", choices=(EXPECTED_GAME_VERSION, "1.21.0"), default=EXPECTED_GAME_VERSION)
+    parser.add_argument("--output", type=Path)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
     try:
-        expected = render_snapshot(build_snapshot(args.game_root))
+        if args.game_version == "1.21.0" and args.output is None:
+            raise ExtractionError("Florin extraction requires an explicit output; never overwrite the historical snapshot")
+        output = args.output if args.output is not None else OUTPUT
+        if args.game_version == "1.21.0" and output.resolve() == OUTPUT.resolve():
+            raise ExtractionError("Florin extraction cannot overwrite the historical snapshot")
+        expected = render_snapshot(build_snapshot(args.game_root, args.game_version))
     except (OSError, UnicodeError, ExtractionError) as error:
         print(f"AUTO UPGRADE BUILDINGS EXTRACTION FAILED: {error}", file=sys.stderr)
         return 1
     if args.check:
-        if not OUTPUT.is_file() or OUTPUT.read_bytes() != expected:
-            print(f"STALE BUILDING SNAPSHOT: {OUTPUT}", file=sys.stderr)
+        if not output.is_file() or output.read_bytes() != expected:
+            print(f"STALE BUILDING SNAPSHOT: {output}", file=sys.stderr)
             return 1
         print("AUTO UPGRADE BUILDINGS SNAPSHOT OK")
         return 0
-    OUTPUT.write_bytes(expected)
+    output.write_bytes(expected)
     payload = json.loads(expected)
     print(
         f"Extracted {payload['building_definition_count']} buildings, "
         f"{payload['included_edge_count']} included edges, "
-        f"{payload['excluded_edge_count']} excluded edges -> {OUTPUT}"
+        f"{payload['excluded_edge_count']} excluded edges -> {output}"
     )
     return 0
 

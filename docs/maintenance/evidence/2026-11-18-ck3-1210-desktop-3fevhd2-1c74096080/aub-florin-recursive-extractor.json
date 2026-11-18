@@ -1,0 +1,127 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T14:24:21.403313+00:00",
+  "scope": "Recursive extraction and holdings->district primary mapping, whole Great Project chain exclusion, explicit version/output historical overwrite guard. Unadopted graph retains per-target district_level_requirement. Existing production data still1.20.0.2; no1.21 generator/runtime or business qualification.",
+  "checks": [
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_build_auto_upgrade_buildings_release.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-extractor-software-a02\\0.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-extractor-software-a02\\0.stderr",
+        "bytes": 128,
+        "sha256": "52cb6f356854435beb623a5d7ca9182eeaf828057f7fcc96098c3b217cc3f4f2"
+      }
+    },
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "tools/extract_auto_upgrade_buildings.py"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-extractor-software-a02\\1.stdout",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-extractor-software-a02\\1.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/extract_auto_upgrade_buildings.py",
+        "--game-root",
+        "C:/SteamLibrary/steamapps/common/Crusader Kings III/game",
+        "--game-version",
+        "1.21.0",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\aub-florin-extractor-software-a02\\unadopted-frozen-graph.json"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-extractor-software-a02\\2.stdout",
+        "bytes": 161,
+        "sha256": "f517dbdcc1ef78e2a7a95171fa8614c73061d30785b5b70e7fe897be45bbe758"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-extractor-software-a02\\2.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "passed": true,
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\extract_auto_upgrade_buildings.py",
+      "bytes": 19405,
+      "sha256": "439608c3b9b30bd16a093e31d866e10e823928b4bed1d999ab0ee6bef2f6bf95"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_build_auto_upgrade_buildings_release.py",
+      "bytes": 16491,
+      "sha256": "11d44656122b76eef83aa95999757cfd00114c4a7fdd995875743e7f796de3e6"
+    }
+  ],
+  "business_pass": false,
+  "unadopted_graph": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-extractor-software-a02\\unadopted-frozen-graph.json",
+    "bytes": 2255413,
+    "sha256": "3e56398586b81ae702751f23b4d991f3525bd16f7d3ec01dd77a080bc2ce3c46"
+  },
+  "counts": {
+    "schema_version": 2,
+    "game_version": "1.21.0",
+    "building_definition_count": 3548,
+    "vanilla_edge_count": 2644,
+    "included_edge_count": 2583,
+    "excluded_edge_count": 61,
+    "chain_count": 677,
+    "primary_building_roots": {
+      "castle_01": "castle_holding",
+      "city_01": "city_holding",
+      "herder_camp_01": "herder_holding",
+      "nomadic_camp_01": "nomad_holding",
+      "temple_01": "church_holding",
+      "temple_citadel_01": "temple_citadel_holding",
+      "tribe_01": "tribal_holding"
+    }
+  },
+  "test_count": 23,
+  "prior_failure": {
+    "reason": "First installed-source extraction rejected a nonscalar district_level_requirement; full block script values are now retained with a discriminated scalar/block contract.",
+    "original": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-extractor-software\\2.stderr",
+      "bytes": 94,
+      "sha256": "01f56a09066127321fc0f4c9900890128bd973d1eb643107ad22c5f6db1b4460"
+    }
+  },
+  "limitations": [
+    "Unadopted extracted graph only. Production frozen graph, generated upgrade logic and current descriptor remain historical until their own migration.",
+    "No native bridge, district-building runtime operation, full gameplay matrix, GUI or Workshop publication qualification.",
+    "Legacy direct-primary mapping has synthetic regression coverage; an entire legacy installation was not revalidated on this machine."
+  ],
+  "external_review_date": "2026-12-18"
+}
