@@ -86,6 +86,53 @@ class GenericDecisionContractClassification(unittest.TestCase):
                     builder.qualify('shared_sdk_delta', receipt, 'a' * 40, root, [relative], MACHINE)
 
 
+class Core1210CapabilityEvidence(unittest.TestCase):
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix='owned-core1210-source-')
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve()
+        self.native = self.root / 'qualified-native'
+        self.native_files: dict[str, object] = {}
+        self.sdk_files: dict[str, object] = {}
+        self.flags: dict[str, object] = {}
+        for rule in builder.CORE_1210_CAPABILITIES.values():
+            for relative in rule.native_sources:
+                path = self.native / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('// owned compiled source boundary\n', encoding='utf-8')
+                self.native_files[builder.NATIVE_PREFIX + relative] = builder.sig(path.read_bytes())
+            for name in rule.sdk_sources:
+                relative = builder.SDK_PREFIX + 'xar_autoplayer/bridge/' + name
+                path = self.root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('# owned SDK source boundary\n', encoding='utf-8')
+                self.sdk_files[relative] = builder.sig(path.read_bytes())
+            self.flags.update({flag: 'ON' for flag in rule.required_flags})
+
+    def test_selected_core_providers_require_real_flags_including_new_application_exit(self) -> None:
+        for tool, rule in builder.CORE_1210_CAPABILITIES.items():
+            with self.subTest(tool=tool):
+                evidence = builder.core_1210_source_evidence(tool, self.root, self.native,
+                    self.native_files, self.sdk_files, self.flags)
+                self.assertIn(builder.NATIVE_PREFIX + 'src/ck3_1210_adapter.cpp', evidence)
+                flags = dict(self.flags)
+                flags[rule.required_flags[-1]] = 'OFF'
+                with self.assertRaisesRegex(ValueError, '1.21 Core profile lacks required flag'):
+                    builder.core_1210_source_evidence(tool, self.root, self.native,
+                        self.native_files, self.sdk_files, flags)
+
+    def test_flags_alone_do_not_qualify_uncompiled_native_or_unindexed_sdk(self) -> None:
+        tool = 'ck3_request_normal_exit_v1'
+        native = dict(self.native_files)
+        native.pop(builder.NATIVE_PREFIX + 'src/ck3_1210_application_exit_v1.cpp')
+        with self.assertRaisesRegex(ValueError, 'exact qualified production TU'):
+            builder.core_1210_source_evidence(tool, self.root, self.native, native, self.sdk_files, self.flags)
+        sdk = dict(self.sdk_files)
+        sdk.pop(builder.SDK_PREFIX + 'xar_autoplayer/bridge/normal_exit_map_driver_v1.py')
+        with self.assertRaisesRegex(ValueError, 'outside the exact source index'):
+            builder.core_1210_source_evidence(tool, self.root, self.native, self.native_files, sdk, self.flags)
+
+
 class NonindexedJavaDeletion(unittest.TestCase):
     def setUp(self) -> None:
         temporary = tempfile.TemporaryDirectory(prefix='actual-git-java-deletion-')
@@ -973,6 +1020,24 @@ class CompleteMetadataBudget(unittest.TestCase):
 
 
 class WireEvidenceRuntimeProducer(unittest.TestCase):
+    def test_disabled_or_unreviewed_unselected_inherited_capabilities_are_inactive(self) -> None:
+        inherited = ('ck3_query_frontend_gui_route_v1', 'ck3_open_character_window_v1',
+                     'ck3_unreviewed_legacy_query')
+        self.assert_formal_runtime_producer(None, inherited_capabilities=inherited,
+            profile_flags={'XAR_ENABLE_RELIGION_UI12004_PRESENTATION': 'OFF'}, expected_inactive=inherited)
+
+    def test_required_inherited_capability_with_disabled_flag_still_fails(self) -> None:
+        tool = 'ck3_open_character_window_v1'
+        self.assert_formal_runtime_producer(None, extra_tools=(tool,), inherited_capabilities=(tool,),
+            profile_flags={'XAR_ENABLE_RELIGION_UI12004_PRESENTATION': 'OFF'},
+            expected_error='Qualified profile lacks required flag')
+
+    def test_required_inherited_stock_capability_with_disabled_flag_still_fails(self) -> None:
+        tool = 'ck3_query_frontend_gui_route_v1'
+        self.assert_formal_runtime_producer(None, workshop_cache=True,
+            inherited_capabilities=(tool,), profile_flags={},
+            expected_error='Qualified profile lacks required stock query flag')
+
     """Actual metadata writer/Selection/adapter/factory; upstream Native qualification is owned fixture data."""
 
     def test_feature_json_round_trip_preserves_boolean_features_and_one_codec(self) -> None:
@@ -1155,6 +1220,7 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
         generic_rrf: bool = False, invalid_validator_contract: bool = False,
         expected_partial_output: bool = False,
         workshop_cache: bool = False, missing_stock_source: str | None = None,
+        inherited_capabilities: tuple[str, ...] = (), expected_inactive: tuple[str, ...] = (),
     ) -> None:
         # Real metadata writer and complete downstream consumers; upstream Native input is owned fixture data.
         from test_ck3_mod_acceptance import SharedEntryTests, entry
@@ -1226,6 +1292,8 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                 self.assertNotIn(case_id, [row['id'] for row in products['products'][product_key]['cases']])
                 tools = list(products['workshop_cache_case']['required_mcp_tools'])
                 owned.manifest['capabilities'] = {}
+            owned.manifest['capabilities'].update({tool: {'source_build_ready': True, 'actual_live_qualified': False}
+                                                  for tool in inherited_capabilities})
             owned.write(owned.products_path, products)
             owned.write(owned.manifest_path, owned.manifest)
             owned.runtime['manifest'] = entry.pin(owned.manifest_path)
@@ -1294,6 +1362,11 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             selected_codec = 'plain' if codec is None else codec
             manifest = builder.read(destination / 'manifest.json')
             self.assertEqual(manifest['host_features']['wire_evidence_codec'], selected_codec)
+            for tool in expected_inactive:
+                self.assertNotIn(tool, manifest['capabilities'])
+                self.assertTrue(manifest['inactive_inherited_capabilities'][tool])
+                self.assertEqual(builder.read(destination / 'SOURCE-BINDINGS.actual.json')['inactive_inherited_capabilities'][tool],
+                                 manifest['inactive_inherited_capabilities'][tool])
             for tool in tools if workshop_cache else extra_tools:
                 self.assertIs(manifest['capabilities'][tool]['actual_live_qualified'], False)
                 self.assertIs(manifest['capabilities'][tool]['source_build_ready'], True)

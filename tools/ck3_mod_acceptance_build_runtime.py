@@ -98,6 +98,46 @@ STOCK_READ_ONLY_CAPABILITIES: dict[str, StockReadOnlyCapabilityRule] = {
     "ck3_query_engine_log_literals_v1": StockReadOnlyCapabilityRule(
         (), ("xar_autoplayer/bridge/mcp_server.py", "xar_autoplayer/ck3_runtime_diagnostics.py")),
 }
+
+
+@dataclass(frozen=True)
+class Core1210CapabilityRule:
+    native_sources: tuple[str, ...]
+    sdk_sources: tuple[str, ...]
+    required_flags: tuple[str, ...]
+
+
+_CORE_1210_FULL_FLAGS = ("XAR_CK3_ENABLE_1210_CORE_FRAME_V1", "XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1")
+_CORE_1210_NATIVE = ("src/bridge.cpp", "src/ck3_1210_adapter.cpp", "src/ck3_1210_core.cpp")
+_CORE_1210_SDK = ("native_driver.py", "mcp_server.py", "service.py", "version_identity.py")
+_CORE_1210_CONTROL = ("src/ck3_1210_core_control_request_v1.cpp", "src/ck3_1210_core_control_v1.cpp", "src/ck3_1210_commands.cpp")
+_CORE_1210_CLOCK_RULE = Core1210CapabilityRule(
+    _CORE_1210_NATIVE + _CORE_1210_CONTROL + ("src/ck3_1210_full_clock_request_v1.cpp",), _CORE_1210_SDK,
+    _CORE_1210_FULL_FLAGS + ("XAR_CK3_ENABLE_1210_CORE_CONTROL_V1", "XAR_CK3_ENABLE_1210_FULL_CLOCK_V1"))
+_CORE_1210_EVENT_RULE = Core1210CapabilityRule(
+    _CORE_1210_NATIVE + ("src/ck3_1210_event_options_v1.cpp", "src/ck3_1210_event_option_control_v1.cpp", "src/ck3_1210_current_event_snapshot_v1.cpp"),
+    _CORE_1210_SDK + ("event_contract.py",), _CORE_1210_FULL_FLAGS + ("XAR_CK3_ENABLE_1210_EVENT_OPTIONS_V1",))
+_CORE_1210_GUI_RULE = Core1210CapabilityRule(
+    _CORE_1210_NATIVE + ("src/ck3_1210_gui_request_v1.cpp", "src/ck3_1210_gui_control_v1.cpp", "src/ck3_1210_gui_control_native_v1.cpp"),
+    _CORE_1210_SDK + ("gui_window_tree_contract.py",), _CORE_1210_FULL_FLAGS + ("XAR_CK3_ENABLE_1210_GUI_CONTROL_V1",))
+_CORE_1210_EXIT_RULE = Core1210CapabilityRule(
+    _CORE_1210_NATIVE + _CORE_1210_CONTROL + ("src/ck3_1210_application_exit_v1.cpp",),
+    _CORE_1210_SDK + ("normal_exit_map_driver_v1.py", "normal_exit_contract_v1.py", "normal_exit_pending_observer_v1.py", "normal_exit_process_observer_v1.py"),
+    _CORE_1210_FULL_FLAGS + ("XAR_CK3_ENABLE_1210_CORE_CONTROL_V1", "XAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1"))
+CORE_1210_CAPABILITIES: dict[str, Core1210CapabilityRule] = {
+    "ck3_take_snapshot": Core1210CapabilityRule(
+        _CORE_1210_NATIVE + ("src/ck3_1210_core_frame_v1.cpp", "src/ck3_1210_full_snapshot_v1.cpp", "src/ck3_1210_current_event_snapshot_v1.cpp"),
+        _CORE_1210_SDK, _CORE_1210_FULL_FLAGS),
+    "ck3_execute_step": _CORE_1210_CLOCK_RULE,
+    "ck3_save_checkpoint": _CORE_1210_CLOCK_RULE,
+    "ck3_query_current_event_window_context_v1": _CORE_1210_EVENT_RULE,
+    "ck3_select_event_option": _CORE_1210_EVENT_RULE,
+    "ck3_query_scripted_widget_controls_v1": _CORE_1210_GUI_RULE,
+    "ck3_activate_scripted_widget_control_v1": _CORE_1210_GUI_RULE,
+    "ck3_query_normal_exit_context_v1": _CORE_1210_EXIT_RULE,
+    "ck3_request_normal_exit_v1": _CORE_1210_EXIT_RULE,
+    "ck3_observe_normal_exit_v1": _CORE_1210_EXIT_RULE,
+}
 CRITICAL_TRANSPORTS = frozenset({
     "player_pilgrimage_planner_private_transport.py", "player_pilgrimage_activities_private_transport.py",
     "native_driver.py", "mcp_server.py", "nonwar_private_build.py", "version_identity.py",
@@ -256,6 +296,29 @@ def stock_read_only_source_evidence(tool: str, root: Path, snapshot: Path,
         require(source_files.get(HOST_RELATIVE) == sig(path.read_bytes()),
                 "Stock pipe diagnostics host is outside the exact source index")
         evidence[HOST_RELATIVE] = pin(path)
+    return evidence
+
+
+def core_1210_source_evidence(tool: str, root: Path, snapshot: Path,
+        native_files: Mapping[str, object], source_files: Mapping[str, object],
+        profile_flags: Mapping[str, object]) -> dict[str, FilePin]:
+    """Bind the selected Florin Core providers; never inherit old map/GUI ABI."""
+    rule = CORE_1210_CAPABILITIES[tool]
+    for flag in rule.required_flags:
+        require(profile_flags.get(flag) == "ON", "Qualified 1.21 Core profile lacks required flag: " + flag)
+    evidence: dict[str, FilePin] = {}
+    for relative in rule.native_sources:
+        path = snapshot / relative
+        key = NATIVE_PREFIX + relative
+        require(path.is_file() and native_files.get(key) == sig(path.read_bytes()),
+                "1.21 Core provider is not an exact qualified production TU: " + key)
+        evidence[key] = pin(path)
+    for name in rule.sdk_sources:
+        key = SDK_PREFIX + "xar_autoplayer/bridge/" + name
+        path = root / key
+        require(path.is_file() and source_files.get(key) == sig(path.read_bytes()),
+                "1.21 Core SDK provider is outside the exact source index: " + key)
+        evidence[key] = pin(path)
     return evidence
 
 
@@ -2155,13 +2218,38 @@ def main(argv: list[str] | None = None) -> int:
     old_profile = native_bundle["old_profile"]
     native_profile = native_bundle["profile"]
     capabilities = {}
+    inactive_inherited_capabilities: dict[str, str] = {}
     for tool in sorted(set(manifest.get("capabilities", {})) | needed):
         stock_evidence = None
+        rule = STOCK_READ_ONLY_CAPABILITIES.get(tool)
+        core_rule = CORE_1210_CAPABILITIES.get(tool) if game_identity.game["version"] == "1.21.0" else None
+        if game_identity.game["version"] == "1.21.0" and core_rule is None and (rule is None or rule.required_flags):
+            reason = "No reviewed 1.21 Core or version-independent stock provider for this inherited capability"
+            require(tool not in needed, reason + ": " + tool)
+            inactive_inherited_capabilities[tool] = reason
+            continue
+        required_flags = core_rule.required_flags if core_rule is not None else (rule.required_flags if rule is not None else EXTRA_CAPABILITIES.get(tool, []))
+        unavailable = [flag for flag in required_flags if native_profile["flags"].get(flag) != "ON"]
+        if unavailable:
+            reason = ("Qualified profile lacks required stock query flag: " if rule is not None
+                      else "Qualified profile lacks required flag: ") + ", ".join(unavailable)
+            require(tool not in needed, reason)
+            inactive_inherited_capabilities[tool] = reason
+            continue
+        if tool not in needed and core_rule is None and rule is None and tool not in EXTRA_CAPABILITIES:
+            inactive_inherited_capabilities[tool] = "Unselected inherited capability has no current reviewed source/profile rule"
+            continue
         if tool in STOCK_READ_ONLY_CAPABILITIES:
-            stock_evidence = stock_read_only_source_evidence(tool, root, Path(native_bundle["snapshot_root"]),
-                                                            native_bundle["native_files"], files, native_profile["flags"])
+            try:
+                stock_evidence = stock_read_only_source_evidence(tool, root, Path(native_bundle["snapshot_root"]),
+                                                                native_bundle["native_files"], files, native_profile["flags"])
+            except ValueError as exc:
+                if tool in needed:
+                    raise
+                inactive_inherited_capabilities[tool] = str(exc)
+                continue
         if tool not in manifest.get("capabilities", {}):
-            require(tool in EXTRA_CAPABILITIES or stock_evidence is not None, "Unreviewed global capability rule: " + tool)
+            require(core_rule is not None or tool in EXTRA_CAPABILITIES or stock_evidence is not None, "Unreviewed global capability rule: " + tool)
             for flag in EXTRA_CAPABILITIES.get(tool, []):
                 require(native_profile["flags"].get(flag) == "ON", "Qualified profile lacks required flag: " + flag)
         capabilities[tool] = {"source_build_ready": True, "actual_live_qualified": False,
@@ -2172,6 +2260,9 @@ def main(argv: list[str] | None = None) -> int:
             "scope": "exact shared production build and finite native fixtures; no live business credit"}
         if stock_evidence is not None:
             capabilities[tool]["stock_read_only_source_evidence"] = stock_evidence
+        if core_rule is not None:
+            capabilities[tool]["core_1210_source_evidence"] = core_1210_source_evidence(tool, root,
+                Path(native_bundle["snapshot_root"]), native_bundle["native_files"], files, native_profile["flags"])
     output = {}
 
     def add(name, value):
@@ -2193,6 +2284,7 @@ def main(argv: list[str] | None = None) -> int:
         "scope": "exact unique production translation-unit source paths from actual CMake File API; test targets excluded"})
     new_manifest = dict(manifest)
     new_manifest["game"] = game_identity.game
+    new_manifest["inactive_inherited_capabilities"] = inactive_inherited_capabilities
     if game_identity.transition is not None:
         new_manifest["game_identity_transition"] = game_identity.transition
     new_manifest["host_features"] = wire_evidence_runtime_features(manifest.get("host_features", {}), codec)
@@ -2264,6 +2356,7 @@ def main(argv: list[str] | None = None) -> int:
         "explicit_product_repository": product_source.explicitly_selected,
         "shared_repository": str(root),
         "actual_global_native_profile": native_bundle["profile_ref"],
+        "inactive_inherited_capabilities": inactive_inherited_capabilities,
         "native_recompiled_by_this_metadata_builder": False, "unchanged_SDK_body_rehashed": False, "case_private_host": False,
         "game_started": False, "allocated": False, "public_prepare_executed": False,
         "generation_authority": "fresh Root scene grant and actual next commit; this source package did not generate any candidate when authored"})
