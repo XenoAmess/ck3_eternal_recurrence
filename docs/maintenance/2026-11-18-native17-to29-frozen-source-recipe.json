@@ -1,0 +1,1495 @@
+{
+  "schema": "xar.native1210.frozen-source-publication-recipe/v1",
+  "utc": "2026-11-18T13:39:27.408862+00:00",
+  "scope": "offline metadata/index only, no source copying/build/Git mutation/CK3/Steam/SDK/OS inspection",
+  "formal_native_root": "ck3_autonomous_player/native_bridge",
+  "baseline_git_commit": "94ee9256ce2d2dac76fa51fc2bc0c022038ac3a1",
+  "baseline": "Native17 + CMake-only18 already formal in commit94ee; do not replay17 CMake over18",
+  "baseline_native17_manifest": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-army17\\source-retained\\SOURCE-DELTA17.json",
+    "bytes": 5567,
+    "sha256": "d0e0b7d413627fb0ceb8ae9289d89c47436982f1ce2a8a94ad597f7b2150db21"
+  },
+  "baseline_CMake18_manifest": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\army-ci18\\CMAKE-ONLY-ARMY-CI-AMENDMENT18.json",
+    "bytes": 1279,
+    "sha256": "d95b921196dc5e9db311a97b463edda75e7ccea0118aa598b493f979fafbca2e"
+  },
+  "ordered_overlay": [
+    {
+      "stage": "21",
+      "manifest": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\SOURCE-DELTA21.json",
+        "bytes": 7074,
+        "sha256": "2ed13ef2369bca92effa9aa8a5646aad434f4f9084ddd8bddb0fd3d876df112a"
+      },
+      "source_files": 20,
+      "CMakeLists": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\CMakeLists.txt",
+        "bytes": 492088,
+        "sha256": "4c7fd301f8cae9f2e3aea266f7313bc834770a9952d1a19d6b98534b0de19c51"
+      }
+    },
+    {
+      "stage": "23",
+      "manifest": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\SOURCE-DELTA23.json",
+        "bytes": 6892,
+        "sha256": "43a082a0b9643a3685d59577a64a5d2e6bc5d29b5ecc7538e137e80b149c8731"
+      },
+      "source_files": 17,
+      "CMakeLists": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\CMakeLists.txt",
+        "bytes": 492138,
+        "sha256": "244dfa96b16644f63ab23826b3ed0fb1d7efbad3300f4a91734edcfa66890ef4"
+      }
+    },
+    {
+      "stage": "24",
+      "manifest": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-worker-commit24\\source-retained\\SOURCE-DELTA24.json",
+        "bytes": 3379,
+        "sha256": "32d6f7a42821874ec0a68b5c1925ab2449065634edbb2f26453d1da2eff15904"
+      },
+      "source_files": 9,
+      "CMakeLists": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-worker-commit24\\source-retained\\CMakeLists.txt",
+        "bytes": 494136,
+        "sha256": "2ef608e492edc9ae2dd4127b916e33230739d6886f044c203717af58f0667390"
+      }
+    },
+    {
+      "stage": "25_source_only_DLL_withdrawn",
+      "manifest": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\SOURCE-DELTA25.json",
+        "bytes": 3669,
+        "sha256": "96e02d6b10836d814858227967dafe05a28bdd14e3fc778127fa117ed7048350"
+      },
+      "source_files": 10,
+      "CMakeLists": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\CMakeLists.txt",
+        "bytes": 494280,
+        "sha256": "cec4d86fb8443380bfd75ecf1fd32936c96acc6df639cfb016db67c4b4a558d3"
+      }
+    },
+    {
+      "stage": "26",
+      "manifest": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\SOURCE-DELTA26.json",
+        "bytes": 8634,
+        "sha256": "d3a7b23687eb047aba1addf4af1e65a6f98744d9a71a8a14a674c092fd278d67"
+      },
+      "source_files": 20,
+      "CMakeLists": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\CMakeLists.txt",
+        "bytes": 494326,
+        "sha256": "2f1aa3f8de40fdf2d8f8ced67d2f5d3c4ea7e2c7eb4889dccaf031940d8c4c65"
+      }
+    },
+    {
+      "stage": "27",
+      "manifest": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\SOURCE-DELTA27.json",
+        "bytes": 8604,
+        "sha256": "440aa6fb6d9e7fd71d8048efde6370274ff42db76461c82d3ab20173fa6d2781"
+      },
+      "source_files": 21,
+      "CMakeLists": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\CMakeLists.txt",
+        "bytes": 483873,
+        "sha256": "be209613249ed8ba1a3d7841cac8e491362dad5d24bd26000be6c236c1827d23"
+      }
+    },
+    {
+      "stage": "29",
+      "manifest": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\SOURCE-DELTA29.json",
+        "bytes": 4605,
+        "sha256": "f72671aa73ff4a3bc9c8750c445b6ffd96fab6a723c47f7dced2156e1a649595"
+      },
+      "source_files": 3,
+      "CMakeLists": null
+    }
+  ],
+  "apply_rule": "Only each manifest.files, last relative path wins. No deletions. Copy final selected frozen raw bytes or the recorded exact CRLF->LF normalized blobs; do not copy mutable Source or replay candidate patches.",
+  "final_overlay_count": 74,
+  "final_overlay_files": [
+    {
+      "relative": "CMakeLists.txt",
+      "git_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\CMakeLists.txt",
+        "bytes": 483873,
+        "sha256": "be209613249ed8ba1a3d7841cac8e491362dad5d24bd26000be6c236c1827d23"
+      },
+      "lf_blob_bytes": 483873,
+      "lf_blob_sha256": "be209613249ed8ba1a3d7841cac8e491362dad5d24bd26000be6c236c1827d23",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "23",
+        "24",
+        "25_source_only_DLL_withdrawn",
+        "26",
+        "27"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "cmake/actor_resource_leaf27.cmake",
+      "git_path": "ck3_autonomous_player/native_bridge/cmake/actor_resource_leaf27.cmake",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\cmake\\actor_resource_leaf27.cmake",
+        "bytes": 5222,
+        "sha256": "6e729029bff33326b8da085fc6dbacb13b203e401c792684ed0ccbcf5b28463b"
+      },
+      "lf_blob_bytes": 5222,
+      "lf_blob_sha256": "6e729029bff33326b8da085fc6dbacb13b203e401c792684ed0ccbcf5b28463b",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "cmake/character_roster_1210.cmake",
+      "git_path": "ck3_autonomous_player/native_bridge/cmake/character_roster_1210.cmake",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\cmake\\character_roster_1210.cmake",
+        "bytes": 3239,
+        "sha256": "cf446474ecd86be2bfded28effcba9632b95b7ad4a21d26a923c599aeb200916"
+      },
+      "lf_blob_bytes": 3190,
+      "lf_blob_sha256": "16b9f34cdd616586d835100fa1c9161516769978ca365e3810bcb6e8edeb013e",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "cmake/florin_internal_readers23.cmake",
+      "git_path": "ck3_autonomous_player/native_bridge/cmake/florin_internal_readers23.cmake",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\cmake\\florin_internal_readers23.cmake",
+        "bytes": 2294,
+        "sha256": "8a5d9077f394d01c384bc2d980546bb4df54a3c3ad0541ef66e3d36cdf50a3ee"
+      },
+      "lf_blob_bytes": 2263,
+      "lf_blob_sha256": "cd9cedec08d3e592e77c76ac384d6afb338f4c21c13d9fc01c70ebf2ef39085a",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "cmake/fresh_full_state12004_extract.cmake",
+      "git_path": "ck3_autonomous_player/native_bridge/cmake/fresh_full_state12004_extract.cmake",
+      "origin_stage": "25_source_only_DLL_withdrawn",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\cmake\\fresh_full_state12004_extract.cmake",
+        "bytes": 5453,
+        "sha256": "eebbc4411346bd8dba79ebe3de5c70682157eb193ca5440a0d85277b68c36e4b"
+      },
+      "lf_blob_bytes": 5363,
+      "lf_blob_sha256": "c25616a77ff14e200359c422ebe16ebccd0d8653770f1fb8a1515ebf067a74df",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "25_source_only_DLL_withdrawn"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "include/xar_bridge/ck3_12002_semantic_adapter.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_semantic_adapter.hpp",
+      "origin_stage": "29",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\include\\xar_bridge\\ck3_12002_semantic_adapter.hpp",
+        "bytes": 8425,
+        "sha256": "fe9bb8d65a8de35583ecbff5f4ddf8a0ebb940bcbaceb3ec53c0af99687c90de"
+      },
+      "lf_blob_bytes": 8292,
+      "lf_blob_sha256": "d649b25f856262181219e46fc9a5e21afbfe71563a8568b8aac38272dfe21601",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "29"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_active_wars_frame_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_active_wars_frame_v1.hpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\include\\xar_bridge\\ck3_1210_active_wars_frame_v1.hpp",
+        "bytes": 1470,
+        "sha256": "9e690f08f542faf80efb476281f4e17eba182e042d1af90ad5111cd19270725c"
+      },
+      "lf_blob_bytes": 1444,
+      "lf_blob_sha256": "1f12c081a3a77e48007f2f8c7fdf8a2fffc915b508b53a41b4c94816dda471e7",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_active_wars_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_active_wars_v1.hpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\include\\xar_bridge\\ck3_1210_active_wars_v1.hpp",
+        "bytes": 4756,
+        "sha256": "aa35c8ce9bdac5fb66a934e9c11abccfbae02da21e9e940c37fb98427d09ca5c"
+      },
+      "lf_blob_bytes": 4656,
+      "lf_blob_sha256": "be60053fbf59c8e6cad04c593fab134e075d05a243f2544371a6dabd961344b0",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_actor_readonly_request_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_actor_readonly_request_v1.hpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\include\\xar_bridge\\ck3_1210_actor_readonly_request_v1.hpp",
+        "bytes": 5085,
+        "sha256": "e86c0140c8c1ee779db658dc59ae5e3b3d46cb231ac40da8d893d4c93db91a39"
+      },
+      "lf_blob_bytes": 4988,
+      "lf_blob_sha256": "918a0a031df2ad90549cafecb6db3735b30576b989701b0df0b6ab56e5cd4270",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_actor_resource_leaf_v2.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_actor_resource_leaf_v2.hpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\include\\xar_bridge\\ck3_1210_actor_resource_leaf_v2.hpp",
+        "bytes": 2853,
+        "sha256": "f7d14e6a65df4d5f18e763f62919fb4bd9709d1a650006ad572d3c61170251b5"
+      },
+      "lf_blob_bytes": 2801,
+      "lf_blob_sha256": "dc8ba80628c326e2758232b2f98ab2b9beac6a86e372650d13c2b32a520a61b4",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_battle_candidate_serializer_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_battle_candidate_serializer_v1.hpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\include\\xar_bridge\\ck3_1210_battle_candidate_serializer_v1.hpp",
+        "bytes": 6426,
+        "sha256": "69e75649a4d899d0ddec29d119f3ce0a48518fcaa26e8279dd8834220e6aedec"
+      },
+      "lf_blob_bytes": 6311,
+      "lf_blob_sha256": "64bffe9191d7921a26dc6194c053f2d65b0d4a39f696c315760c432aa22921a7",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_battle_candidate_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_battle_candidate_v1.hpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\include\\xar_bridge\\ck3_1210_battle_candidate_v1.hpp",
+        "bytes": 7312,
+        "sha256": "b1a8dd379073764e9474fca864ea380d8d659d3d0505a11bd7f40967042905ec"
+      },
+      "lf_blob_bytes": 7175,
+      "lf_blob_sha256": "2debafdb7ebc412e0fabfd72b169dd4aa02d543e774573ef06ff9d7ea21d47b8",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_battle_scoped_source_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_battle_scoped_source_v1.hpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\include\\xar_bridge\\ck3_1210_battle_scoped_source_v1.hpp",
+        "bytes": 2455,
+        "sha256": "9e01727b71a238014b45dafe0b72e8a45cb6fa96dcbb8b9caaa920a2ab02aaf0"
+      },
+      "lf_blob_bytes": 2406,
+      "lf_blob_sha256": "90378b117ffd3d67e91030d21bea5dd1cd962cc065979b424dfd0bcfb8eeadc1",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_character_manager_candidate_data_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_character_manager_candidate_data_v1.hpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\include\\xar_bridge\\ck3_1210_character_manager_candidate_data_v1.hpp",
+        "bytes": 2953,
+        "sha256": "a3c4592ff3d8ab86210c1dd4449e65f29b5a4efb37c97f8765c2bc41d9a104d2"
+      },
+      "lf_blob_bytes": 2904,
+      "lf_blob_sha256": "71fc7dfe69586b5d1657f9aecad3e3ef65f3cc902f05bd3f20008f6be4e7dc88",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_character_manager_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_character_manager_v1.hpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\include\\xar_bridge\\ck3_1210_character_manager_v1.hpp",
+        "bytes": 2521,
+        "sha256": "5093df4e6c8a7fc25634d5e4063afbcc441c26c562979bc4335685f6f0eefeef"
+      },
+      "lf_blob_bytes": 2465,
+      "lf_blob_sha256": "7bf41d4282772126fb4c9764a296e0b8d1772f6f5e2f86b27601c6097e1ab1b2",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_character_roster_frame_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_character_roster_frame_v1.hpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\include\\xar_bridge\\ck3_1210_character_roster_frame_v1.hpp",
+        "bytes": 2065,
+        "sha256": "d38d14d539056925d9509b8f485958f2cf9bd8ea606d1cbc259ea25b0c73dcb7"
+      },
+      "lf_blob_bytes": 2029,
+      "lf_blob_sha256": "7680d4e234de254a7eee8303c73e61e34cb16dd43789be2e9f7b7a195a24d8da",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_character_roster_request_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_character_roster_request_v1.hpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\include\\xar_bridge\\ck3_1210_character_roster_request_v1.hpp",
+        "bytes": 479,
+        "sha256": "2ec9fbb8985617e8fe4c17deacee90abb3def472b493900cadd6c4b0d1ef0cc1"
+      },
+      "lf_blob_bytes": 470,
+      "lf_blob_sha256": "d7b5058514fff33fa938cbc9e3cca66af0c85f520944d6fb6728efda52307ace",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_date_sentinel_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_date_sentinel_v1.hpp",
+      "origin_stage": "24",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-worker-commit24\\source-retained\\include\\xar_bridge\\ck3_1210_date_sentinel_v1.hpp",
+        "bytes": 9042,
+        "sha256": "6d5088c0895d3852ce96160dbc0e9b838cc621946cb8fe5a6840b4863a837e62"
+      },
+      "lf_blob_bytes": 8883,
+      "lf_blob_sha256": "70f21ec2ef36efb2a7134aa923d1f178c066c7ace8d61ff79aeaadd8df58f004",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "24"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_date_worker_game_access_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_date_worker_game_access_v1.hpp",
+      "origin_stage": "24",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-worker-commit24\\source-retained\\include\\xar_bridge\\ck3_1210_date_worker_game_access_v1.hpp",
+        "bytes": 2916,
+        "sha256": "1542caae9477741cfd49f5457ead932d88de1f537cccd9f01826231d08bc70b9"
+      },
+      "lf_blob_bytes": 2856,
+      "lf_blob_sha256": "03332d12771743644940db60d858a32321c60e7e41bf2dff5c32ddd2a3bd80e8",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "24"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_decision_candidates_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_decision_candidates_v1.hpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\include\\xar_bridge\\ck3_1210_decision_candidates_v1.hpp",
+        "bytes": 5268,
+        "sha256": "0b2c50766750c15571f50e0632402d2aef7e8fa16475e02fc00d2997f05e65f7"
+      },
+      "lf_blob_bytes": 5166,
+      "lf_blob_sha256": "e3bf421701045d44533360a42fb5e8951682e019cdbef36584a502a6d733c0d0",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_monthly_flow_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_monthly_flow_v1.hpp",
+      "origin_stage": "25_source_only_DLL_withdrawn",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\include\\xar_bridge\\ck3_1210_monthly_flow_v1.hpp",
+        "bytes": 4829,
+        "sha256": "86ab14c829659859e1665496bada13b790899a6ced35289dd07ee7983aa10c01"
+      },
+      "lf_blob_bytes": 4727,
+      "lf_blob_sha256": "25b66f5a3e53da9a3662e90429cabf5a6e84bfa58bf23d888e3fcb8645e4e17a",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "25_source_only_DLL_withdrawn"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_non_cash_decoder_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_non_cash_decoder_v1.hpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\include\\xar_bridge\\ck3_1210_non_cash_decoder_v1.hpp",
+        "bytes": 2560,
+        "sha256": "c825cc0e11c5e4c34e768442f992aa706c3dae9923cb1548ca84f7f68af313be"
+      },
+      "lf_blob_bytes": 2506,
+      "lf_blob_sha256": "f6927178f601d78e1bf4f8859149555d487519195306146d38a5ee4ba6e5574e",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_non_cash_owner_sources_v3.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_non_cash_owner_sources_v3.hpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\include\\xar_bridge\\ck3_1210_non_cash_owner_sources_v3.hpp",
+        "bytes": 961,
+        "sha256": "21f7ec1754e927dbf191feffe58b697c015bc025cb964fca58497f0a9368dd48"
+      },
+      "lf_blob_bytes": 961,
+      "lf_blob_sha256": "21f7ec1754e927dbf191feffe58b697c015bc025cb964fca58497f0a9368dd48",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_personal_cash_frame_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_personal_cash_frame_v1.hpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\include\\xar_bridge\\ck3_1210_personal_cash_frame_v1.hpp",
+        "bytes": 2228,
+        "sha256": "3d40ba1d05658e879c0d564b7fea01b1747aeacb45b314c180cea0192d090434"
+      },
+      "lf_blob_bytes": 2183,
+      "lf_blob_sha256": "d7abafc257dfb22ed388bd53de2feac4a77097766d5583a2871b03e8c009d798",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_personal_cash_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_personal_cash_v1.hpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\include\\xar_bridge\\ck3_1210_personal_cash_v1.hpp",
+        "bytes": 5550,
+        "sha256": "c2ab92c5709f1ef18dabe4bb191653c7fcb8bdced1eaa321e8d45272f93cf734"
+      },
+      "lf_blob_bytes": 5434,
+      "lf_blob_sha256": "160150d996411898cfa034bd2ddfe3b3a9fff142df818fdce9a32ebf9a7d66b8",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_personal_gold_frame_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_personal_gold_frame_v1.hpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\include\\xar_bridge\\ck3_1210_personal_gold_frame_v1.hpp",
+        "bytes": 2235,
+        "sha256": "c301f61b1c4ea4cf8b20f24535c78f87e82f48043323d6605cafa0a7d6153074"
+      },
+      "lf_blob_bytes": 2235,
+      "lf_blob_sha256": "c301f61b1c4ea4cf8b20f24535c78f87e82f48043323d6605cafa0a7d6153074",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "26",
+        "27"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_read_wire_registry_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_read_wire_registry_v1.hpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\include\\xar_bridge\\ck3_1210_read_wire_registry_v1.hpp",
+        "bytes": 3127,
+        "sha256": "442d03359ce100f89208a80be555a772839c0e243d05e4cc4ac6da12b48ca23f"
+      },
+      "lf_blob_bytes": 3071,
+      "lf_blob_sha256": "ca0057fc898ba619ce512a3986ae683a1ea38573a82342869d868a416571649f",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "26",
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_scoped_image_roots_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_scoped_image_roots_v1.hpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\include\\xar_bridge\\ck3_1210_scoped_image_roots_v1.hpp",
+        "bytes": 8613,
+        "sha256": "a814a5028c5c8924549672017d88a1be1d9bf8f49a1ec66700cf5a2c94db77d8"
+      },
+      "lf_blob_bytes": 8447,
+      "lf_blob_sha256": "cf1396ecb6a04fe525386e47a2accd4417aca82d1759344387d0d48ec7051862",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_siege_read_only_partial_v1.hpp",
+      "git_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_siege_read_only_partial_v1.hpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\include\\xar_bridge\\ck3_1210_siege_read_only_partial_v1.hpp",
+        "bytes": 3679,
+        "sha256": "94583ebb045414b97d1c1fa99d10b7201546d49bad9d9ff2c17e40f5979e7fab"
+      },
+      "lf_blob_bytes": 3598,
+      "lf_blob_sha256": "4137b0433563c0fd47b3b722e93742b3f4e874d1afbc4978bea7ff6a37f5f7b1",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/bridge.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\bridge.cpp",
+        "bytes": 1690270,
+        "sha256": "039123a555514366f20650d5f88e8418c839a63ab9432c1895b2bbf783eafe70"
+      },
+      "lf_blob_bytes": 1690270,
+      "lf_blob_sha256": "039123a555514366f20650d5f88e8418c839a63ab9432c1895b2bbf783eafe70",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "24",
+        "25_source_only_DLL_withdrawn",
+        "26",
+        "27"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_12002_semantic_adapter.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_semantic_adapter.cpp",
+      "origin_stage": "29",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\src\\ck3_12002_semantic_adapter.cpp",
+        "bytes": 53596,
+        "sha256": "0355952b1f19c3371e908eebce772c6f13acba8e3b72a5eb658ea0fed8dd605b"
+      },
+      "lf_blob_bytes": 52654,
+      "lf_blob_sha256": "fca6bdc36754551842fb7ac400834ec1778f348bbd9be2798cf2303a7779e053",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "29"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_active_wars_frame_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_active_wars_frame_v1.cpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\src\\ck3_1210_active_wars_frame_v1.cpp",
+        "bytes": 5638,
+        "sha256": "0a12f3ffd0a952ac57dcf1ce4975e65843380f920e7be24263e464d0b0dbf378"
+      },
+      "lf_blob_bytes": 5541,
+      "lf_blob_sha256": "e625feae3f3856ed252d8b4d172ab0738067346c4bf2cea7d0878afe99bb1579",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_active_wars_frame_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_active_wars_frame_v1_test.cpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\src\\ck3_1210_active_wars_frame_v1_test.cpp",
+        "bytes": 13905,
+        "sha256": "a1ad9d1a7aeb6e983428dd3df9cc90266d9b4a1f3a9ea62204ff327c894be759"
+      },
+      "lf_blob_bytes": 13626,
+      "lf_blob_sha256": "cbce9cfb0703ccdd4c2418d71ddc4a5f653f9bc77bc1271ff8af90bddff2759d",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_active_wars_serialize_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_active_wars_serialize_v1.cpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\src\\ck3_1210_active_wars_serialize_v1.cpp",
+        "bytes": 8347,
+        "sha256": "5a77c15f96b91d5a8a3a89d5b0d70d9475a708419388c1bcec90e926d9a3882e"
+      },
+      "lf_blob_bytes": 8221,
+      "lf_blob_sha256": "62bee1c9a930ae803645cc9eeb565f88d53a075a0528281e496ca9590746e604",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_active_wars_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_active_wars_v1.cpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\src\\ck3_1210_active_wars_v1.cpp",
+        "bytes": 19719,
+        "sha256": "acb97628a6a5c66a51e7538c6921a03cb17b2e920631cb8f2ecf41d398a252af"
+      },
+      "lf_blob_bytes": 19352,
+      "lf_blob_sha256": "faf0957ac883623df257c0980a2ae1b00d148f238a3288c6184c368746746429",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_actor_foundation_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_actor_foundation_v1_test.cpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\src\\ck3_1210_actor_foundation_v1_test.cpp",
+        "bytes": 24536,
+        "sha256": "5096dd3bb27a518d7cd159504ae572fae40a47736a20f312332fcad563ed36fe"
+      },
+      "lf_blob_bytes": 24097,
+      "lf_blob_sha256": "c0e847dc58c8dfa0173161d3585dd252668dd01fc22dd17867222930ea2c93a4",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_actor_resource_leaf_v2.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_actor_resource_leaf_v2.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\ck3_1210_actor_resource_leaf_v2.cpp",
+        "bytes": 9842,
+        "sha256": "1701e73c0577a8e1952932c2e034e1fcef534f4047e3ea1a7d99bd984c8695ab"
+      },
+      "lf_blob_bytes": 9842,
+      "lf_blob_sha256": "1701e73c0577a8e1952932c2e034e1fcef534f4047e3ea1a7d99bd984c8695ab",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_actor_resource_leaf_v2_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_actor_resource_leaf_v2_test.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\ck3_1210_actor_resource_leaf_v2_test.cpp",
+        "bytes": 5545,
+        "sha256": "473a1f58c8a50b40458d34044246b5b3ca2263030af67465b6367c8658bc3b65"
+      },
+      "lf_blob_bytes": 5545,
+      "lf_blob_sha256": "473a1f58c8a50b40458d34044246b5b3ca2263030af67465b6367c8658bc3b65",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_adapter.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp",
+      "origin_stage": "29",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\src\\ck3_1210_adapter.cpp",
+        "bytes": 18983,
+        "sha256": "881fd6f00f529731c6dc269351a27e73f982d52cc3af3b43a5bb8711eb22cde3"
+      },
+      "lf_blob_bytes": 18983,
+      "lf_blob_sha256": "881fd6f00f529731c6dc269351a27e73f982d52cc3af3b43a5bb8711eb22cde3",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "26",
+        "27",
+        "29"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_character_manager_candidate_data_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_character_manager_candidate_data_v1.cpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\src\\ck3_1210_character_manager_candidate_data_v1.cpp",
+        "bytes": 9166,
+        "sha256": "da6bf3c252c1f7620428cdd19bbe93da8eceb85a44247d48477cfb04789bc51f"
+      },
+      "lf_blob_bytes": 9005,
+      "lf_blob_sha256": "23e2247f451ca74b4af8f02d12bb5c6d3baf65f3ff8bb22a2dc6777a5514a889",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_character_manager_candidate_data_v1_focused_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_character_manager_candidate_data_v1_focused_test.cpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\src\\ck3_1210_character_manager_candidate_data_v1_focused_test.cpp",
+        "bytes": 9366,
+        "sha256": "758aed0e5eb9b69606c052a945d120aec7ced1bb1571defebe64eda10d22ca2d"
+      },
+      "lf_blob_bytes": 9224,
+      "lf_blob_sha256": "da13bed5749293a89d83e2b58cd456b7a0321cb1a1c0f15f1f5c64b023762746",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_character_manager_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_character_manager_v1.cpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\src\\ck3_1210_character_manager_v1.cpp",
+        "bytes": 11754,
+        "sha256": "366230f7f8c9aef0e6ee3661e60aab1f2ab6a304310e2a1025c03439d4c78997"
+      },
+      "lf_blob_bytes": 11525,
+      "lf_blob_sha256": "8396b7f1fd0d15fcdf90ca919ce9987ed935aab9b1c315aac6bc03e1b4967ad8",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23",
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_character_manager_v1_focused_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_character_manager_v1_focused_test.cpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\src\\ck3_1210_character_manager_v1_focused_test.cpp",
+        "bytes": 10770,
+        "sha256": "9f26ea1834b76012fdc82d396d609d13ab5575184a0c355e0c3a2346ab42d05b"
+      },
+      "lf_blob_bytes": 10770,
+      "lf_blob_sha256": "9f26ea1834b76012fdc82d396d609d13ab5575184a0c355e0c3a2346ab42d05b",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23",
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_character_roster_frame_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_character_roster_frame_v1.cpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\src\\ck3_1210_character_roster_frame_v1.cpp",
+        "bytes": 6805,
+        "sha256": "9a2b4d24a6d5c71b8c0bd30a54596fe67587576bfb3e70f40b737d5999a83003"
+      },
+      "lf_blob_bytes": 6805,
+      "lf_blob_sha256": "9a2b4d24a6d5c71b8c0bd30a54596fe67587576bfb3e70f40b737d5999a83003",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_character_roster_frame_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_character_roster_frame_v1_test.cpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\src\\ck3_1210_character_roster_frame_v1_test.cpp",
+        "bytes": 6456,
+        "sha256": "5d83110f7602ca3ab0c037fce744d927ab9dbec7cc9bd10897011bc9e8dcaba7"
+      },
+      "lf_blob_bytes": 6456,
+      "lf_blob_sha256": "5d83110f7602ca3ab0c037fce744d927ab9dbec7cc9bd10897011bc9e8dcaba7",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_character_roster_serialize_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_character_roster_serialize_v1.cpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\src\\ck3_1210_character_roster_serialize_v1.cpp",
+        "bytes": 3884,
+        "sha256": "cf1dfcee9b9885e1a828063d0137848521b6c1e75e9d05312fdc2bdff82533e3"
+      },
+      "lf_blob_bytes": 3821,
+      "lf_blob_sha256": "cfccf237df039cd09308073ba817f788a3823dd117b2267db0f7d4a10d2d3cb1",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_core_control_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_core_control_test.cpp",
+      "origin_stage": "24",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-worker-commit24\\source-retained\\src\\ck3_1210_core_control_test.cpp",
+        "bytes": 33553,
+        "sha256": "bfc1394b36ca6fc384cfa6c77235d606260cac310af0c7a5d7780183afc38c26"
+      },
+      "lf_blob_bytes": 32989,
+      "lf_blob_sha256": "ca76fccf3685aafebd441b5bb8c133e2bd4663fbabb12a7f43af9f537b21e246",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "24"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_core_control_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_core_control_v1.cpp",
+      "origin_stage": "24",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-worker-commit24\\source-retained\\src\\ck3_1210_core_control_v1.cpp",
+        "bytes": 18993,
+        "sha256": "a92144e61263376b02cccb0a237ad36ede4a7df4eb87cd6aafd946ed65ffbb4e"
+      },
+      "lf_blob_bytes": 18648,
+      "lf_blob_sha256": "5c033db65619e7af79a9d78da5b21ed2b28ea815e7b81383bf21dab09d781ae6",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "24"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_date_sentinel_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_date_sentinel_v1.cpp",
+      "origin_stage": "24",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-worker-commit24\\source-retained\\src\\ck3_1210_date_sentinel_v1.cpp",
+        "bytes": 44557,
+        "sha256": "adef5e89ffc1539ea2652ca1ee5c560aba470e0d75e017ee4b26d947a799a868"
+      },
+      "lf_blob_bytes": 43855,
+      "lf_blob_sha256": "9043a9ae6f9751d9d79d0de3351efe4241559c93af8e7375a804c0e82332959d",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "24"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_date_worker_game_access_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_date_worker_game_access_v1.cpp",
+      "origin_stage": "24",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-worker-commit24\\source-retained\\src\\ck3_1210_date_worker_game_access_v1.cpp",
+        "bytes": 6469,
+        "sha256": "cc6eef138b5cafcf3eef9a4d4e4f4428f2b8a7d674c83466c9b98c02daf14c1d"
+      },
+      "lf_blob_bytes": 6342,
+      "lf_blob_sha256": "9ddd448e3fa36d1e942c526505592a3709ef28c84107bee950c29534d9759e17",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "24"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_date_worker_game_access_v2_failure_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_date_worker_game_access_v2_failure_test.cpp",
+      "origin_stage": "24",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-worker-commit24\\source-retained\\src\\ck3_1210_date_worker_game_access_v2_failure_test.cpp",
+        "bytes": 23380,
+        "sha256": "a7d71e6d90f75f291503536002f8e8258e837a0dc77714014936e0548e277705"
+      },
+      "lf_blob_bytes": 23002,
+      "lf_blob_sha256": "a373e3ce32eeef7958d1cf81ad8e4efdf8096bbf914de6bc9e286dd64724cea5",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "24"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_decision_candidates_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_decision_candidates_v1.cpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\src\\ck3_1210_decision_candidates_v1.cpp",
+        "bytes": 19898,
+        "sha256": "84aa22d913d7d5c97aa84ed7e7d3f19bea6d29f5cc96ce4e9f3922360fad40ae"
+      },
+      "lf_blob_bytes": 19575,
+      "lf_blob_sha256": "b9af179fbcc1734b56a6c58d75ee9b206708cb86a2d07e2f2eaa0d95d9dd1a82",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_decision_candidates_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_decision_candidates_v1_test.cpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\src\\ck3_1210_decision_candidates_v1_test.cpp",
+        "bytes": 17643,
+        "sha256": "4846342a0329e193fb7d43f48080e83828e5ad33b3c306abd256bfa6dc9257b8"
+      },
+      "lf_blob_bytes": 17418,
+      "lf_blob_sha256": "f1192150bdcf8a47c862dde5c5cbf419e3e9a9c5de5f9ad21f131b1bda27d8d8",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_monthly_flow_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_monthly_flow_v1.cpp",
+      "origin_stage": "25_source_only_DLL_withdrawn",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\src\\ck3_1210_monthly_flow_v1.cpp",
+        "bytes": 13665,
+        "sha256": "1bbe1ce7430060e246764f26845eadd2f9a4fd759e777b17bba1ad62365b2402"
+      },
+      "lf_blob_bytes": 13364,
+      "lf_blob_sha256": "dc5c951f78bdd5eded20e19075af9e97953f7efe3fac9ef1bf1001cf0c565e9b",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "25_source_only_DLL_withdrawn"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_monthly_flow_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_monthly_flow_v1_test.cpp",
+      "origin_stage": "25_source_only_DLL_withdrawn",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\src\\ck3_1210_monthly_flow_v1_test.cpp",
+        "bytes": 24489,
+        "sha256": "780dcd0213deb29279e0c2edefe0788acb17a8317a1d13e8db4852595ae45562"
+      },
+      "lf_blob_bytes": 24042,
+      "lf_blob_sha256": "66452ecabf9ca7b950009c76c6efeadf8758843bd686d4047f4ce48b1d281548",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "25_source_only_DLL_withdrawn"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_non_cash_decoder_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_non_cash_decoder_v1.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\ck3_1210_non_cash_decoder_v1.cpp",
+        "bytes": 7557,
+        "sha256": "d7f842bf246671a45c8e7580efd5875a6b9b557c414f6abda1f3c6ab600c6e01"
+      },
+      "lf_blob_bytes": 7410,
+      "lf_blob_sha256": "b417cee19008400d5f79f312e45f991ecc4de407bca89fb3b9a592f597a6e404",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_non_cash_owner_sources_v3.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_non_cash_owner_sources_v3.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\ck3_1210_non_cash_owner_sources_v3.cpp",
+        "bytes": 3972,
+        "sha256": "56aa9966f1154840dade021e8f6f5cf33dd3115e1770dabcc8bef9ee4bffbc96"
+      },
+      "lf_blob_bytes": 3972,
+      "lf_blob_sha256": "56aa9966f1154840dade021e8f6f5cf33dd3115e1770dabcc8bef9ee4bffbc96",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_personal_cash_frame_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_personal_cash_frame_v1.cpp",
+      "origin_stage": "25_source_only_DLL_withdrawn",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\src\\ck3_1210_personal_cash_frame_v1.cpp",
+        "bytes": 13495,
+        "sha256": "b9cd226fb354765346e2a27752ab25bffd1f342197a0782bde75df4c0a590b21"
+      },
+      "lf_blob_bytes": 13245,
+      "lf_blob_sha256": "9b296bc9038ea75d9ef987e54390983582f71413ac2974a2a53931b52fea5582",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "25_source_only_DLL_withdrawn"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_personal_cash_frame_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_personal_cash_frame_v1_test.cpp",
+      "origin_stage": "25_source_only_DLL_withdrawn",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\src\\ck3_1210_personal_cash_frame_v1_test.cpp",
+        "bytes": 36182,
+        "sha256": "6797fab48b0f78bdfb9ec1db9e3ed273745ebd6ff705db6b626a54062e5829a7"
+      },
+      "lf_blob_bytes": 35530,
+      "lf_blob_sha256": "351009f0e1933476fcd7749c99d3ba7da920ba9aab80f5407e71dcc6b5f4fa84",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "25_source_only_DLL_withdrawn"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_personal_cash_signed_scope_v2_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_personal_cash_signed_scope_v2_test.cpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\src\\ck3_1210_personal_cash_signed_scope_v2_test.cpp",
+        "bytes": 8226,
+        "sha256": "fea0a1a456f2647901be577761a8e6536b5b48ec3c296ef9b3331e97194f6bd2"
+      },
+      "lf_blob_bytes": 8075,
+      "lf_blob_sha256": "875115280a147f87a62cd03b2e0858bc332b4f9e0a6f81188a1caaff3d2e4647",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_personal_cash_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_personal_cash_v1.cpp",
+      "origin_stage": "25_source_only_DLL_withdrawn",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\src\\ck3_1210_personal_cash_v1.cpp",
+        "bytes": 18705,
+        "sha256": "ab6d8d599b8ad4867bb39178dbe9225bce26e78aff608db3e640cecefaaf6aa3"
+      },
+      "lf_blob_bytes": 18356,
+      "lf_blob_sha256": "e1f46681f85dfbbe6a386f69240b341bdabd46a4bdb72d33a6a85dfd7e638306",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "25_source_only_DLL_withdrawn"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_personal_cash_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_personal_cash_v1_test.cpp",
+      "origin_stage": "25_source_only_DLL_withdrawn",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-owner25\\source-retained\\src\\ck3_1210_personal_cash_v1_test.cpp",
+        "bytes": 31098,
+        "sha256": "762277758e18893e02a47459455a730989ccc6f64f85552d7eb4b7a3cd5e017e"
+      },
+      "lf_blob_bytes": 30551,
+      "lf_blob_sha256": "e334ca07636f83df27d6e6607f7f9b0c5ed8145af29d8f2ff71fa3c5994ef13a",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "25_source_only_DLL_withdrawn"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_personal_gold_frame_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_personal_gold_frame_v1.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\ck3_1210_personal_gold_frame_v1.cpp",
+        "bytes": 21634,
+        "sha256": "2d50c6ec3cfed5836ce51418e42f720aeb898ede693ff2eb60813fa0894f6162"
+      },
+      "lf_blob_bytes": 21634,
+      "lf_blob_sha256": "2d50c6ec3cfed5836ce51418e42f720aeb898ede693ff2eb60813fa0894f6162",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "26",
+        "27"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_personal_gold_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_personal_gold_v1_test.cpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\src\\ck3_1210_personal_gold_v1_test.cpp",
+        "bytes": 18303,
+        "sha256": "bcb96b6fa0ce30c8952d3308477d625199e98b6070c203d4f27ddd23bea91729"
+      },
+      "lf_blob_bytes": 17925,
+      "lf_blob_sha256": "72dba6a15b987bc861c245ded6be4f5165e8c75f274348956378258c154aae5c",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/ck3_1210_resource_module_drift_v3_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_resource_module_drift_v3_test.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\ck3_1210_resource_module_drift_v3_test.cpp",
+        "bytes": 2000,
+        "sha256": "36caf917a45a3abf71ea2eeb1fab3b7d31b5e2c6fcfc9128369e1831c2e05a87"
+      },
+      "lf_blob_bytes": 2000,
+      "lf_blob_sha256": "36caf917a45a3abf71ea2eeb1fab3b7d31b5e2c6fcfc9128369e1831c2e05a87",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_resource_precore_counterexample.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_resource_precore_counterexample.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\ck3_1210_resource_precore_counterexample.cpp",
+        "bytes": 2752,
+        "sha256": "9dd6a779f2cf0740640feb8e4307a71c9a5d93ffc003e871e36a553787f9d1b9"
+      },
+      "lf_blob_bytes": 2752,
+      "lf_blob_sha256": "9dd6a779f2cf0740640feb8e4307a71c9a5d93ffc003e871e36a553787f9d1b9",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/ck3_1210_siege_read_only_partial_v1.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/ck3_1210_siege_read_only_partial_v1.cpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\src\\ck3_1210_siege_read_only_partial_v1.cpp",
+        "bytes": 10182,
+        "sha256": "71e5e7d965fdf617b52eb13ba72b44eaac4ead631d0c9653ad77c0b8acb4b8dc"
+      },
+      "lf_blob_bytes": 10008,
+      "lf_blob_sha256": "bf089bf3aec10a078a6e64dc199cebb4901a28b974d604a30bd868cf84cf5098",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "src/game_adapter.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "origin_stage": "21",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-cash-war21\\source-retained\\src\\game_adapter.cpp",
+        "bytes": 37182,
+        "sha256": "cd4d7b093cd9d778b62d3843a83bb4b78733e87e19aa2e795be90c2ab38d125a"
+      },
+      "lf_blob_bytes": 36380,
+      "lf_blob_sha256": "224b7587442becedba0871a7a71a23d6357ab919f57110c37bf00d17f144301e",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/game_adapter_capabilities.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/game_adapter_capabilities.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\game_adapter_capabilities.cpp",
+        "bytes": 1082,
+        "sha256": "010854cf70dd5ca5427ec845c4f9de43a1780797d5af28ce094f51ae7a505a6b"
+      },
+      "lf_blob_bytes": 1051,
+      "lf_blob_sha256": "4cff54c6c79b7ded3e546486fea9292aaf2d75c7c36a11bcea58c416e09f5801",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26",
+        "27"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "src/game_adapter_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/src/game_adapter_test.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\src\\game_adapter_test.cpp",
+        "bytes": 78885,
+        "sha256": "28fff2945e7c3c399e1000cacb583d6c0e6dc51941eb7b46ab4af509c6f5c40e"
+      },
+      "lf_blob_bytes": 77347,
+      "lf_blob_sha256": "9ddc489977baee6f7d1f972850e6546ad733d7c52f1d0ebd199c8a570b6cb83e",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "21",
+        "26",
+        "27"
+      ],
+      "exists_in_baseline_commit": true
+    },
+    {
+      "relative": "tests/ck3_1210_actor_readonly_request_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/tests/ck3_1210_actor_readonly_request_v1_test.cpp",
+      "origin_stage": "26",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\source-retained\\tests\\ck3_1210_actor_readonly_request_v1_test.cpp",
+        "bytes": 4907,
+        "sha256": "99676b88392cf4084a2a8ed511c27e40b2bca3c267b5595b067bb4a6b94a2244"
+      },
+      "lf_blob_bytes": 4907,
+      "lf_blob_sha256": "99676b88392cf4084a2a8ed511c27e40b2bca3c267b5595b067bb4a6b94a2244",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "26"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "tests/ck3_1210_battle_candidate_serializer_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/tests/ck3_1210_battle_candidate_serializer_v1_test.cpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\tests\\ck3_1210_battle_candidate_serializer_v1_test.cpp",
+        "bytes": 11583,
+        "sha256": "5fac1ed379df4e70e44e479ac267fb4e7fe7eadd63c249193c85f8ee9a332596"
+      },
+      "lf_blob_bytes": 11389,
+      "lf_blob_sha256": "b18aaf55fcea1c541f20d0b37dbd0fb1d7efa8f6bee98ed72d7774f90b3220ec",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "tests/ck3_1210_siege_read_only_partial_v1_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/tests/ck3_1210_siege_read_only_partial_v1_test.cpp",
+      "origin_stage": "23",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\readonly-producers23\\source-retained\\tests\\ck3_1210_siege_read_only_partial_v1_test.cpp",
+        "bytes": 12257,
+        "sha256": "b09b2003d96c6ee4dfcc2669e46d5fa7053e85f001207f22157dcb6355b5b619"
+      },
+      "lf_blob_bytes": 12059,
+      "lf_blob_sha256": "ef287be2870c9540134c7c88018b402a5e0f704fc6231370167f8f1b761cd761",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "23"
+      ],
+      "exists_in_baseline_commit": false
+    },
+    {
+      "relative": "tests/scoped1210_image_roots_test.cpp",
+      "git_path": "ck3_autonomous_player/native_bridge/tests/scoped1210_image_roots_test.cpp",
+      "origin_stage": "27",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\tests\\scoped1210_image_roots_test.cpp",
+        "bytes": 13166,
+        "sha256": "071635d6f341529586e022e3ba1ca47621dd5958f2e449dccae37344c365429b"
+      },
+      "lf_blob_bytes": 12954,
+      "lf_blob_sha256": "19c70d3ef2090f58e1157c04387732a5195cdb1ba8bddbe1ead9e83d7cc77bc6",
+      "permitted_transform": "CRLF->LF only; no semantic edit",
+      "override_stages": [
+        "27"
+      ],
+      "exists_in_baseline_commit": false
+    }
+  ],
+  "final_CMakeLists": {
+    "relative": "CMakeLists.txt",
+    "git_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+    "origin_stage": "27",
+    "frozen_source": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\CMakeLists.txt",
+      "bytes": 483873,
+      "sha256": "be209613249ed8ba1a3d7841cac8e491362dad5d24bd26000be6c236c1827d23"
+    },
+    "lf_blob_bytes": 483873,
+    "lf_blob_sha256": "be209613249ed8ba1a3d7841cac8e491362dad5d24bd26000be6c236c1827d23",
+    "permitted_transform": "CRLF->LF only; no semantic edit",
+    "override_stages": [
+      "21",
+      "23",
+      "24",
+      "25_source_only_DLL_withdrawn",
+      "26",
+      "27"
+    ],
+    "exists_in_baseline_commit": true
+  },
+  "CMake23_override": "Use readonly-producers23/source-retained/CMakeLists.txt492138/244dfa96..., exact Native21 immutable CMake plus single internal-reader module include. Do not take mutable Date45-era CMake; later24/25/26/27 qualified CMake overlays supersede it in order.",
+  "focused_test_support29": [
+    {
+      "logical_relative_in_capture": "focused-tests29/actual_adapter_owner_fixture.cpp",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\focused-tests29\\actual_adapter_owner_fixture.cpp",
+        "bytes": 14106,
+        "sha256": "4f0f55f8ea4295fc0d75e2fb9b56407fb3676fe978e7a9213d4698eb454a4c09"
+      },
+      "publication": "proof reference only; do not copy into formal native source root",
+      "git_target": null
+    },
+    {
+      "logical_relative_in_capture": "focused-tests29/actual_owner_fixture_support.hpp",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\focused-tests29\\actual_owner_fixture_support.hpp",
+        "bytes": 9331,
+        "sha256": "aefebd85159702a41edf7e916418a64fd56f6b92c00b84f4e5b72df8378069c9"
+      },
+      "publication": "proof reference only; do not copy into formal native source root",
+      "git_target": null
+    },
+    {
+      "logical_relative_in_capture": "focused-tests29/actual_worker_cache_owner_fixture.cpp",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\focused-tests29\\actual_worker_cache_owner_fixture.cpp",
+        "bytes": 6124,
+        "sha256": "0944cd45857786476c46840a5ccf87fe0fe471bb5d779dd76b198325c00b6910"
+      },
+      "publication": "proof reference only; do not copy into formal native source root",
+      "git_target": null
+    },
+    {
+      "logical_relative_in_capture": "focused-tests29/adapter_binding_preflight_case.inc",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\focused-tests29\\adapter_binding_preflight_case.inc",
+        "bytes": 894,
+        "sha256": "5d8ac27884273ec801b1768d85c31a2a45c7257df1cd333d3eed71cdeaa31d4d"
+      },
+      "publication": "proof reference only; do not copy into formal native source root",
+      "git_target": null
+    },
+    {
+      "logical_relative_in_capture": "focused-tests29/worker_heartbeat_owner_cases.inc",
+      "frozen_source": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\focused-tests29\\worker_heartbeat_owner_cases.inc",
+        "bytes": 3519,
+        "sha256": "4158fe362228557375387c75a5c44ddb321b88d735f1eae3e6871e1fdf793215"
+      },
+      "publication": "proof reference only; do not copy into formal native source root",
+      "git_target": null
+    }
+  ],
+  "focused_support_policy": "No new repository source target chosen: original focused-tests29 relative strings are capture logical paths/manual source material, not DefaultCMakeCI targets. Retain their immutable refs as software evidence; do not synthesize default CI integration or move/rename include paths during this publication.",
+  "all_frozen_files_bytes_sha_verified": true,
+  "no_source17_unchanged_file_recopy_required": true,
+  "no_source28_or30_production_delta": "28 is standalone money oracle/packets only;30 is source-custody reseal only. Neither adds a Native source overlay.",
+  "old25_DLL": "withdrawn/unavailable. Source25 and its historical software/packet facts preserved; never include25 DLL as usable.",
+  "withdrawal_evidence": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\roster-source26\\P0-OLD25-OUTPUT-DIRECTORY-COLLISION26.json",
+      "bytes": 969,
+      "sha256": "690ab2ce2baf111a55fe3d9c03d9593ef28f7bfdb34fb2b687024a4f405d525c"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-owner-cache29\\P0-COLLISION-ARTIFACT-LOCATION-FOLLOWUP29.json",
+      "bytes": 1008,
+      "sha256": "70c0cb2fa7c50f7f6f598864390a40396b017b19dbe7a0cc0691cc105cff88a0"
+    }
+  ],
+  "no_live_adoption_permission": true
+}

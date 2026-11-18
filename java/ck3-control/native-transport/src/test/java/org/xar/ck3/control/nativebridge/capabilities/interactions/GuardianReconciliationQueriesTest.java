@@ -33,7 +33,7 @@ final class GuardianReconciliationQueriesTest {
         return new ObservationIdentity(SOURCE.machineId(),game,image,1);
     }
     private static OrdinaryInitiationIntent intent(long child) {
-        return new OrdinaryInitiationIntent("educate_child_interaction",17,Optional.of(new OrdinaryInitiationIntent.Education(child,18,List.of("selected_option"))),Optional.empty());
+        return new OrdinaryInitiationIntent("educate_child_interaction",child,Optional.of(new OrdinaryInitiationIntent.Education(child,18,List.of("selected_option"))),Optional.empty());
     }
     private static ActionCommand command(long child) {
         var before=frame(53,55,100);var intent=intent(child);
@@ -50,7 +50,7 @@ final class GuardianReconciliationQueriesTest {
     }
     private static ReconciliationIdentity identity(ActionCommand original,int revision,int publicRevision,int date,String requestId) {
         var pending=new ReconciliationIdentity.Pending(original.actionId(),ActionCodec.bodySha256(original),requestId,original.before(),ref("original-receipt",4),ref("original-driver",5));
-        var evidence=new ReconciliationIdentity.Evidence(ref("current-native",6),ref("hello",3),ref("heartbeat",7),ref("current-driver",8),ref("current-observation",9),ref("current-source",10));
+        var evidence=new ReconciliationIdentity.Evidence(ref("current-native",6),ref("hello",3),ref("heartbeat",7),ref("current-observation",9),ref("original-driver",5),ref("current-source",10));
         return new ReconciliationIdentity(frame(revision,publicRevision,date),SOURCE,original.sessionId(),BigInteger.TWO,pending,evidence,NOW);
     }
     private static PlanningReadRequest request(ActionCommand original,ReconciliationIdentity identity) {
@@ -110,14 +110,15 @@ final class GuardianReconciliationQueriesTest {
     }
     @Test void anotherOriginalPairBodyOrRequestCannotBorrowGuardianReadPermission() {
         var c=command(17);var request=request();
-        assertThrows(IllegalArgumentException.class,()->GuardianReconciliationQueries.requireOriginalRequest(request,command(18),attempt(command(18))));
+        assertThrows(IllegalArgumentException.class,()->GuardianReconciliationQueries.requireOriginalRequest(request,command(19),attempt(command(19))));
         var wrong=request(c,identity(c,53,55,100,"another-original"));
         assertThrows(IllegalArgumentException.class,()->GuardianReconciliationQueries.requireOriginalRequest(wrong,c,attempt(c)));
     }
     @Test void sameSemDataIsAllowedButAnotherDayOrRegressedNativeFrameIsNotAnOriginalSend() {
         var c=command(17);GuardianReconciliationQueries.requireOriginalRequest(request(),c,attempt(c));
-        for(var identity:List.of(identity(c,53,55,101,"guardian-attempt-1"),identity(c,52,55,100,"guardian-attempt-1"),identity(c,53,54,100,"guardian-attempt-1")))
-            assertThrows(IllegalArgumentException.class,()->GuardianReconciliationQueries.requireOriginalRequest(request(c,identity),c,attempt(c)));
+        for(int[] changed:List.of(new int[]{53,55,101},new int[]{52,55,100},new int[]{53,54,100}))
+            assertThrows(IllegalArgumentException.class,()->GuardianReconciliationQueries.requireOriginalRequest(
+                    request(c,identity(c,changed[0],changed[1],changed[2],"guardian-attempt-1")),c,attempt(c)));
     }
     @Test void unknownArgumentsAliasesAndScalarTypesAreRefusedBeforeCurrentAdmission()throws Exception {
         var calls=new AtomicInteger();var factory=new GuardianReconciliationQueries(ordinary(),Build.CROZIER4,profile(),admission(calls,new AtomicInteger()));
@@ -147,5 +148,37 @@ final class GuardianReconciliationQueriesTest {
             assertThrows(IllegalArgumentException.class,()->new GuardianReconciliationQueries(wrong,Build.CROZIER4,source,admission));
         assertThrows(IllegalArgumentException.class,()->new GuardianReconciliationQueries(ordinary(),Build.CROZIER3,source,admission));
     }
+    @Test void explicitHistoricalFactoryRetainsTheSameOriginalContractAndDisablesCurrentPreparation()throws Exception {
+        var current=new AtomicInteger();var replay=new AtomicInteger();var ordinary=ordinary();
+        var archived=GuardianReconciliationQueries.historicalCrozier4(ordinary,profile(),admission(current,replay));
+        assertFalse(archived.liveReadsEnabled());assertTrue(archived.contract().hasPureReplay());
+        assertSame(ordinary.sourceRef(),archived.contract().sourceRef());archived.requireOrdinary(ordinary);
+        assertEquals(GuardianReconciliationQueries.CONTRACT_ID,archived.contract().contractId());
+        assertEquals(ordinary.requiredCapability(),archived.contract().requiredCapability());
+        var failure=assertThrows(IllegalStateException.class,()->archived.contract().prepare(request(),"archive-must-not-send"));
+        assertEquals(GuardianReconciliationQueries.HISTORICAL_ONLY_REASON,failure.getMessage());
+        assertEquals(0,current.get());assertEquals(0,replay.get());
+    }
+    @Test void historicalFactoryCannotIssueAQueryEvenWithMissingCurrentData()throws Exception {
+        var archived=GuardianReconciliationQueries.historicalCrozier4(ordinary(),profile(),admission(new AtomicInteger(),new AtomicInteger()));
+        var failure=assertThrows(IllegalStateException.class,()->archived.issue(null,null,null,null,null));
+        assertEquals(GuardianReconciliationQueries.HISTORICAL_ONLY_REASON,failure.getMessage());
+        var live=new GuardianReconciliationQueries(ordinary(),Build.CROZIER4,profile(),admission(new AtomicInteger(),new AtomicInteger()));
+        assertTrue(live.liveReadsEnabled());assertDoesNotThrow(live::requireLiveReads);
+    }
+    @Test void historicalReplayRetainsOriginalCustodyGuardBeforeAdmission()throws Exception {
+        var current=new AtomicInteger();var replay=new AtomicInteger();
+        var archived=GuardianReconciliationQueries.historicalCrozier4(ordinary(),profile(),admission(current,replay));
+        var request=request();var identity=request.origin().requireReconciliation();
+        var binding=new GuardEvidence(request.origin(),request.source(),request.sessionId(),identity.connectionGeneration(),
+                request.operation(),identity.nativeEvidence(),identity.capabilityEvidence(),"synthetic-authority",NOW,NOW.plusSeconds(30),List.of(ref("support",12)));
+        var guard=new PlanningReadGuard(binding,new PlanningReadGuard.Reconciliation(),identity.bindingSha256());
+        var ack=new NativeActionPort.AckReceived("synthetic-archived-query",true,Optional.empty(),new RawJson(new byte[]{'{','}'}),new byte[]{1});
+        var receipt=new PlanningReadReceipt(request,GuardianReconciliationQueries.CONTRACT_ID,ack.requestId(),guard,guard,ack);
+        var failure=assertThrows(IllegalArgumentException.class,()->archived.contract().replay(receipt));
+        assertEquals("guardian query has no original held-wire custody",failure.getMessage());
+        assertEquals(0,current.get());assertEquals(0,replay.get());
+    }
+
 }
 

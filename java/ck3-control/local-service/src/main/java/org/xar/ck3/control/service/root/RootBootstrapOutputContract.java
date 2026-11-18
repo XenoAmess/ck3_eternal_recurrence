@@ -29,6 +29,8 @@ public final class RootBootstrapOutputContract {
     public static final String ROOT_DELEGATE="/root/runtime_continue";
     public static final String RUNTIME_CAPACITY="xar.java-root-bootstrap-capacity/v6";
     public static final String RUNTIME_BINDING="xar.java-root-bootstrap-binding/v6";
+    public static final String RUNTIME_POLICY_CAPACITY="xar.java-root-bootstrap-capacity/v7";
+    public static final String RUNTIME_POLICY_BINDING="xar.java-root-bootstrap-binding/v7";
     public static final String RUNTIME_ISSUER="/root/runtime_continue";
     public static final String FORMAL_DECLARATION="xar.java-root-bootstrap-formal-release-declaration/v2";
     public static final String FORMAL_CENSUS="xar.java-root-bootstrap-formal-release-census/v2";
@@ -151,7 +153,7 @@ public final class RootBootstrapOutputContract {
             String observedAtUtc,String reviewAtUtc,FileRef policyRef,FileRef declarationRef,FileRef censusRef,
             FileRef originalFinancialHeadRef,long jointMaximumChargedBytes,List<Volume> volumes,List<RetainedAllocation> retainedAllocations) implements Authority {
         public CapacityRelease {
-            boolean root=ROOT_CAPACITY.equals(schema),runtime=RUNTIME_CAPACITY.equals(schema);
+            boolean root=ROOT_CAPACITY.equals(schema),runtime=RUNTIME_CAPACITY.equals(schema)||RUNTIME_POLICY_CAPACITY.equals(schema);
             boolean formal=root||runtime?false:branch(schema,purpose,CAPACITY,FORMAL_CAPACITY)==Branch.FORMAL_RELEASE;
             require((runtime?RUNTIME_ISSUER:root?ROOT_ISSUER:ISSUER).equals(issuerTask)&&"/root".equals(ownerTask)
                     &&(!(root||runtime)||PURPOSE.equals(purpose)),"sole versioned issuer bootstrap-purpose capacity release required");
@@ -166,7 +168,7 @@ public final class RootBootstrapOutputContract {
     public record Binding(String schema,String purpose,String machineId,String ownerTask,String issuerTask,String windowId,
             String observedAtUtc,String reviewAtUtc,FileRef declarationRef,FileRef censusRef,FileRef capacityRef) implements Authority {
         public Binding {
-            boolean root=ROOT_BINDING.equals(schema),runtime=RUNTIME_BINDING.equals(schema);
+            boolean root=ROOT_BINDING.equals(schema),runtime=RUNTIME_BINDING.equals(schema)||RUNTIME_POLICY_BINDING.equals(schema);
             if(!(root||runtime))branch(schema,purpose,BINDING,FORMAL_BINDING);
             require((runtime?RUNTIME_ISSUER:root?ROOT_ISSUER:ISSUER).equals(issuerTask)&&"/root".equals(ownerTask)
                     &&(!(root||runtime)||PURPOSE.equals(purpose)),"actual versioned immutable bootstrap binding required");

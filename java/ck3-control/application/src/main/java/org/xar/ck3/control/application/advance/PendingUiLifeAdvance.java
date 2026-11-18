@@ -7,6 +7,7 @@ import java.io.UncheckedIOException;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.driver.DriverSnapshotFacts;
@@ -109,6 +110,9 @@ public final class PendingUiLifeAdvance {
                         });
                     } catch (IOException failure) { held.captured = null; throw new UncheckedIOException("actual pending date current unavailable", failure); }
                     catch (RuntimeException | Error failure) { held.captured = null; throw failure; }
+                }
+                @Override public Optional<ClockStatusRead.Observation> retainedCancellationPreflight(ActionCommand command, Instant deadline) {
+                    return actualOrdinary.retainedCancellationPreflight(command, deadline);
                 }
                 @Override public <T> T withClockControlBasis(ActionCommand command, Instant deadline,
                         java.util.function.Function<Frame,T> work) {

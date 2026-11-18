@@ -22,6 +22,7 @@ public final class RootBootstrapProtocol {
         PROFILE(List.of("PROFILE_PRODUCTION_INVENTORY","PROFILE_ASSETS","PROFILE_ENVIRONMENT"),8L<<20,196611),
         FORMAL_RELEASE(List.of("FORMAL_RELEASE_PAYLOAD_AND_MANIFEST"),4L<<20,65537),
         ORIGINAL_DRIVER_RUN_PROFILE(List.of("ORIGINAL_DRIVER_RUN_PROFILE"),4L<<20,65537),
+        INITIAL_SAVED_MATERIALIZED_POLICY(List.of("INITIAL_SAVED_MATERIALIZED_POLICY"),4L<<20,65537),
         NORMAL_EXIT(List.of("ORIGINAL_SETTINGS_SNAPSHOT","NORMAL_EXIT_TARGET_BINDING","NORMAL_EXIT_INVENTORY_AND_PROJECTION","NORMAL_EXIT_MANAGED_PROFILE"),12L<<20,262148);
         private final List<String> phases; private final long received,sent;
         Mode(List<String> phases,long received,long sent){this.phases=phases;this.received=received;this.sent=sent;}
@@ -112,7 +113,7 @@ public final class RootBootstrapProtocol {
             case PROFILE->Mode.PROFILE.phases();case FORMAL_RELEASE->Mode.FORMAL_RELEASE.phases();
             case ORIGINAL_DRIVER_RUN_PROFILE->Mode.ORIGINAL_DRIVER_RUN_PROFILE.phases();case NORMAL_EXIT->Mode.NORMAL_EXIT.phases();
             case EXPLICIT_SAVED_PROFILE,EXPLICIT_FIXTURE_PROFILE->List.of(mode.name()+"_ENVIRONMENT");
-            case INITIAL_POLICY,INITIAL_FIXTURE_POLICY,INITIAL_SAVED_NATIVE_POLICY->List.of(mode.name());
+            case INITIAL_POLICY,INITIAL_FIXTURE_POLICY,INITIAL_SAVED_NATIVE_POLICY,INITIAL_SAVED_MATERIALIZED_POLICY->List.of(mode.name());
             default->throw new IllegalArgumentException("issuer/census command cannot consume a binding reply channel");
         };
     }

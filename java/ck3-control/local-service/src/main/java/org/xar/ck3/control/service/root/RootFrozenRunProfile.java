@@ -177,7 +177,7 @@ public final class RootFrozenRunProfile {
         public void requireExplicitNativeCampaign()throws IOException {
             if(request.lifecycle()!=LifecycleMode.NATIVE_CAMPAIGN||binding.isPresent())throw new IOException("explicit native_campaign private projection required");
             if(request.legacyImport() instanceof DisabledFreshFixture)initialPolicy.requireFixtureProjection(fixture.orElseThrow());
-            else if(request.legacyImport() instanceof EnabledNativeCampaign)initialPolicy.requireSavedProjection(plan);
+            else if(request.legacyImport() instanceof EnabledNativeCampaign)initialPolicy.requireSavedHistory(plan);
             else throw new IOException("null lifecycle is not an explicit native_campaign projection");
         }
         public ImportMode importMode(){return request.legacyImport();}
@@ -288,7 +288,7 @@ public final class RootFrozenRunProfile {
             require(sameActualPolicy.environment().equals(request.environmentManifest()),"existing InitialEpisodePolicy belongs to another exact current environment");
             Optional<SuccessionLifecycleBinding> normalized;
             if(request.legacyImport() instanceof EnabledNativeCampaign) {
-                sameActualPolicy.requireSavedProjection(identicalPlan);normalized=Optional.empty();
+                sameActualPolicy.requireSavedHistory(identicalPlan);normalized=Optional.empty();
             } else if(request.legacyImport() instanceof DisabledFreshFixture) {
                 require(sameActualPolicy.kind()==InitialEpisodePolicy.Lifecycle.NATIVE_CAMPAIGN_FIXTURE&&java.util.Arrays.equals(sameActualPolicy.lifecycle().bytes(),new byte[]{'n','u','l','l'}),"native_campaign must preserve null lifecycle provenance");
                 normalized=Optional.empty();

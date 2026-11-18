@@ -1,0 +1,52 @@
+{
+  "schema": "xar.native1210.full-worker-safety-dll-ready/v1",
+  "utc": "2026-11-18T11:01:33.179904+00:00",
+  "dll": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\xar_ck3_bridge.dll",
+    "bytes": 13392896,
+    "sha256": "2f61edc8a124873e1244e57b4bf0581197906d884918204d6d4e006f55e29e90"
+  },
+  "source_delta": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\source-retained\\SOURCE-DELTA29.json",
+    "bytes": 4605,
+    "sha256": "f72671aa73ff4a3bc9c8750c445b6ffd96fab6a723c47f7dced2156e1a649595"
+  },
+  "base27": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\NATIVE-1210-RESOURCE-READONLY-DLL-READY27.json",
+    "bytes": 3293,
+    "sha256": "08431f16fa7afedbd1b92cb5d1a9383f4180b85047de0694b912e3f4a82315f5"
+  },
+  "build": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-full-worker-safe29\\BUILD-RESULT29.json",
+    "bytes": 1882,
+    "sha256": "cd95cae2bcb0be02601982ee8ee0528e8e9ee2ede84087f5d9c9f508668f10b0"
+  },
+  "software": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-owner-cache29\\NATIVE-1210-FULL-WORKER-SOFTWARE-READY29.json",
+    "bytes": 2720,
+    "sha256": "b5e63e50cf8011420bfe1de2166cf8e26dc6e2f5187372123c0ef0335a2dfd25"
+  },
+  "scope": "Full complete Core-frame/source consistency and Worker cached-source safety for genuine Full/ordinary Advance path; no new protocol/capability/fields",
+  "three_actual_programs_pass": true,
+  "two_weaker_controls_expected_negative": true,
+  "new_family_model_war_or_action_authority": false,
+  "inherits27_resource_roster_and24_status_save_safety": true,
+  "live_qualified": false,
+  "positive_army_live_qualified": false,
+  "native_unwind_cleanup_verified": false,
+  "zero_native_side_effects_verified": false,
+  "root_driver_role": false,
+  "requires_new_cold_no_hot_replacement": true,
+  "minimized_background_only": true,
+  "old25_DLL_still_withdrawn": true,
+  "P0_preserved_first26_location_correction": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\full-owner-cache29\\P0-COLLISION-ARTIFACT-LOCATION-FOLLOWUP29.json",
+    "bytes": 1008,
+    "sha256": "70c0cb2fa7c50f7f6f598864390a40396b017b19dbe7a0cc0691cc105cff88a0"
+  },
+  "resource_permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-NATIVE29-CAP1152M-FINITE-AMEND-PERMIT03.json",
+    "bytes": 2972,
+    "sha256": "24d9ecef7b9a94243fe6aaa18e91a81575a1a4674fcf8fbdbd628ec4e8bad547"
+  }
+}

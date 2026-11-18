@@ -58,6 +58,17 @@ void *Resolve(const CoreBindings &bindings, std::int32_t id) noexcept {
 
 // Thin SEH functions have no C++ objects needing unwinding. Let MSVC C++
 // exceptions continue to the enclosing C++ catch; do not swallow their unwind.
+bool AdmissionCall(MonthlyFlowNativeCallAdmissionV1 function, void *context) noexcept {
+#if defined(_MSC_VER)
+  __try {
+#endif
+    return function(context);
+#if defined(_MSC_VER)
+  } __except (GetExceptionCode() == 0xE06D7363UL ?
+      EXCEPTION_CONTINUE_SEARCH : EXCEPTION_EXECUTE_HANDLER) { return false; }
+#endif
+}
+
 bool ContextSeh(MonthlyFlowContextV1 function, void *actor, void *&output) {
 #if defined(_MSC_VER)
   __try {
@@ -147,6 +158,12 @@ bool Fail(MonthlyFlowObservationV1 &output, std::string_view reason) noexcept {
   return false;
 }
 
+bool OwnerAdmissionFailed(MonthlyFlowObservationV1 &output) noexcept {
+  Fail(output, "monthly_flow_owner_changed");
+  output.native_owner_admission_failed = true;
+  return false;
+}
+
 std::string_view Guard(const CoreBindings &core, const CoreSnapshotPrefix &expected,
     const void *actor, const Identity &actor_identity, const void *context,
     const Identity &context_identity) noexcept {
@@ -199,6 +216,15 @@ bool ReadMonthlyFlowV1(const MonthlyFlowBindingsV1 &bindings,
       core.character_storage_slot == nullptr || core.get_local_player == nullptr ||
       bindings.context == nullptr || bindings.gross == nullptr || bindings.expenses == nullptr)
     return Fail(output, "monthly_flow_binding_unavailable");
+  const auto admission = bindings.native_call_admission;
+  void *const admission_context = bindings.native_call_admission_context;
+  const auto admitted = [&]() noexcept {
+    if (bindings.native_call_admission != admission ||
+        bindings.native_call_admission_context != admission_context) return false;
+    const bool accepted = admission == nullptr || AdmissionCall(admission, admission_context);
+    return accepted && bindings.native_call_admission == admission &&
+        bindings.native_call_admission_context == admission_context;
+  };
   if (!expected.clock.paused) return Fail(output, "requires_paused");
   if (!expected.map_ready) return Fail(output, "map_not_ready");
   if (expected.local_player_id < 0 || !expected.has_played_character ||
@@ -213,9 +239,11 @@ bool ReadMonthlyFlowV1(const MonthlyFlowBindingsV1 &bindings,
   if (!Capture(core, actor, actor_identity) || actor_identity.id != expected.played_character_id ||
       actor_identity.death != nullptr) return Fail(output, "player_identity_unavailable");
   void *context = nullptr;
+  if (!admitted()) return OwnerAdmissionFailed(output);
   ++output.context_call_attempts;
-  if (!ContextCall(bindings.context, actor, context))
-    return Fail(output, "native_context_call_failed");
+  const bool context_read = ContextCall(bindings.context, actor, context);
+  if (!admitted()) return OwnerAdmissionFailed(output);
+  if (!context_read) return Fail(output, "native_context_call_failed");
   if (!Capture(core, context, context_identity))
     return Fail(output, "expense_context_identity_unavailable");
   auto reason = Guard(core, expected, actor, actor_identity, context, context_identity);
@@ -224,22 +252,28 @@ bool ReadMonthlyFlowV1(const MonthlyFlowBindingsV1 &bindings,
   // Exactly three native scalar slots. No constructed context/row/GUI object.
   std::int64_t gross = 0, secondary = 0, total = 0;
   std::int64_t *returned = nullptr;
+  if (!admitted()) return OwnerAdmissionFailed(output);
   output.gross_call_attempted = true;
-  if (!GrossCall(bindings.gross, actor, gross, secondary, returned))
-    return Fail(output, "native_gross_call_failed");
+  const bool gross_read = GrossCall(bindings.gross, actor, gross, secondary, returned);
+  if (!admitted()) return OwnerAdmissionFailed(output);
+  if (!gross_read) return Fail(output, "native_gross_call_failed");
   if (returned != &gross) return Fail(output, "native_gross_output_mismatch");
   reason = Guard(core, expected, actor, actor_identity, context, context_identity);
   if (!reason.empty()) return Fail(output, reason);
+  if (!admitted()) return OwnerAdmissionFailed(output);
   output.expenses_call_attempted = true;
-  if (!ExpensesCall(bindings.expenses, actor, context, secondary, total, returned))
-    return Fail(output, "native_expenses_call_failed");
+  const bool expenses_read = ExpensesCall(bindings.expenses, actor, context, secondary, total, returned);
+  if (!admitted()) return OwnerAdmissionFailed(output);
+  if (!expenses_read) return Fail(output, "native_expenses_call_failed");
   if (returned != &total) return Fail(output, "native_expenses_output_mismatch");
   reason = Guard(core, expected, actor, actor_identity, context, context_identity);
   if (!reason.empty()) return Fail(output, reason);
   void *confirmed_context = nullptr;
+  if (!admitted()) return OwnerAdmissionFailed(output);
   ++output.context_call_attempts;
-  if (!ContextCall(bindings.context, actor, confirmed_context))
-    return Fail(output, "native_context_call_failed");
+  const bool confirmed_read = ContextCall(bindings.context, actor, confirmed_context);
+  if (!admitted()) return OwnerAdmissionFailed(output);
+  if (!confirmed_read) return Fail(output, "native_context_call_failed");
   if (confirmed_context != context) return Fail(output, "expense_context_changed");
   reason = Guard(core, expected, actor, actor_identity, context, context_identity);
   if (!reason.empty()) return Fail(output, reason);

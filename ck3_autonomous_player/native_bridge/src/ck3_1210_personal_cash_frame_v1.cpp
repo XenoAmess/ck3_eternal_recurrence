@@ -39,10 +39,13 @@ bool ProductionTargets(const PersonalGoldMailboxContextV1 &parent,
       std::memcmp(reinterpret_cast<const void *>(base+0x30F1870),expenses.data(),expenses.size())==0;
 }
 
-bool Capabilities(const game::GameAdapter *adapter) noexcept {
-  return adapter != nullptr && adapter->enabled() &&
+bool Capabilities(const game::GameAdapter *adapter, PersonalCashScopeVersion version) noexcept {
+  const bool v1 = version == PersonalCashScopeVersion::legacy_nonnegative_v1;
+  const bool v2 = version == PersonalCashScopeVersion::florin_unit_full_id_v2;
+  return (v1 || v2) && adapter != nullptr && adapter->enabled() &&
       game::IsCk3_1210Descriptor(adapter->descriptor()) &&
-      adapter->supports(kPersonalCashCapabilityV1) && adapter->supports_snapshot() &&
+      adapter->supports(v2 ? kPersonalCashCapabilityV2 : kPersonalCashCapabilityV1) &&
+      adapter->supports_snapshot() &&
       adapter->supports("game.query.fresh-full-state.v1");
 }
 
@@ -50,7 +53,8 @@ bool Owner(const PersonalGoldMailboxContextV1 &parent,
     const PersonalCashMailboxContextV1 &cash,
     const ck3_11906::MainThreadExecutionStampV1 &s) noexcept {
   if (parent.kind != ActorObservationKindV1::personal_cash || parent.cash != &cash ||
-      !Capabilities(parent.game) || !Capabilities(cash.native_full_adapter) ||
+      !Capabilities(parent.game, cash.scope_version) ||
+      !Capabilities(cash.native_full_adapter, cash.scope_version) ||
       parent.mailbox == nullptr || parent.ticket.sequence == 0 ||
       !parent.bindings.exact_build_admitted || !cash.bindings.exact_build_admitted ||
       !cash.bindings.gold.exact_build_admitted || !cash.bindings.monthly.exact_build_admitted ||
@@ -64,7 +68,8 @@ bool Owner(const PersonalGoldMailboxContextV1 &parent,
       s.tls_initialized != 1 || s.tls_main_thread_marker != 1 || s.tls_context == 0 ||
       !s.paused || s.game_state == 0 || s.jomini_state == 0 ||
       !m.iat_hook_installed.load() || m.owner_thread_id.load() != s.thread_id ||
-      m.failure_flags.load() != 0 || m.stop_requested.load() ||
+      m.failure_flags.load() != 0 || m.stop_requested.load() || m.proof_reset_requested.load() ||
+      m.active_hook_calls.load() == 0 || m.pump_epochs.load() != s.pump_epoch ||
       m.paused_owner_verified_pump_epochs.load() <
           ck3_11906::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs ||
       m.state.load() != ck3_11906::MainThreadQueryMailboxStateV1::executing ||
@@ -97,22 +102,41 @@ struct FullReadContext {
   PersonalCashMailboxContextV1 *cash = nullptr;
   ck3_11906::MainThreadExecutionStampV1 stamp{};
   std::uint64_t expected_revision = 0;
+  PersonalCashScopeVersion scope_version = PersonalCashScopeVersion::legacy_nonnegative_v1;
+  const game::GameAdapter *native_full_adapter = nullptr;
+  const std::uint64_t *current_published_revision = nullptr;
 };
+
+bool SameFullSources(const FullReadContext &call) noexcept {
+  const auto &cash = *call.cash;
+  return call.native_full_adapter != nullptr && call.current_published_revision != nullptr &&
+      cash.native_full_adapter == call.native_full_adapter &&
+      cash.current_published_revision == call.current_published_revision;
+}
+
+bool AdmitMonthlyOnCashOwner(void *opaque) noexcept {
+  const auto &call = *static_cast<const FullReadContext *>(opaque);
+  const auto &cash = *call.cash;
+  return SameFullSources(call) && cash.scope_version == call.scope_version &&
+      cash.expected_native_revision == call.expected_revision &&
+      *call.current_published_revision == call.expected_revision &&
+      Owner(*call.parent, cash, call.stamp);
+}
 
 bool ReadCurrentFull(void *opaque, game::Snapshot &snapshot,
     std::uint64_t &revision) {
   revision = 0;
   auto &call = *static_cast<FullReadContext *>(opaque);
   auto &cash = *call.cash;
-  if (cash.expected_native_revision != call.expected_revision ||
-      !Owner(*call.parent, cash, call.stamp) ||
-      *cash.current_published_revision != call.expected_revision) return false;
+  if (!SameFullSources(call) || cash.expected_native_revision != call.expected_revision ||
+      cash.scope_version != call.scope_version || !Owner(*call.parent, cash, call.stamp) ||
+      *call.current_published_revision != call.expected_revision) return false;
   // This is the actual native adapter virtual read, never expected_full or
   // a WorkerAdapter read. Full fields are compared by the existing provider.
-  if (!cash.native_full_adapter->read_snapshot(snapshot)) return false;
-  if (cash.expected_native_revision != call.expected_revision ||
-      *cash.current_published_revision != call.expected_revision ||
-      !Owner(*call.parent, cash, call.stamp)) return false;
+  if (!call.native_full_adapter->read_snapshot(snapshot)) return false;
+  if (!SameFullSources(call) || cash.expected_native_revision != call.expected_revision ||
+      *call.current_published_revision != call.expected_revision ||
+      cash.scope_version != call.scope_version || !Owner(*call.parent, cash, call.stamp)) return false;
   revision = call.expected_revision;
   return true;
 }
@@ -132,7 +156,8 @@ bool Read(PersonalGoldMailboxContextV1 &parent,
   parent.application_main_observed = false;
   if (parent.cash == nullptr) return true;
   auto &cash = *parent.cash;
-  cash.observation = {}; cash.application_main_observed = false;
+  cash.observation = {}; cash.observation.scope_version = cash.scope_version;
+  cash.application_main_observed = false;
   try {
     if (!Owner(parent, cash, stamp)) {
       ClearAmounts(cash, "personal_cash_actor_owner_unqualified"); return true;
@@ -148,7 +173,10 @@ bool Read(PersonalGoldMailboxContextV1 &parent,
     auto local = cash.bindings;
     local.integration_native_calls_permitted = true;
     local.monthly.integration_native_calls_permitted = true;
-    FullReadContext call{&parent, &cash, stamp, cash.expected_native_revision};
+    FullReadContext call{&parent, &cash, stamp, cash.expected_native_revision, cash.scope_version,
+        cash.native_full_adapter, cash.current_published_revision};
+    local.monthly.native_call_admission = &AdmitMonthlyOnCashOwner;
+    local.monthly.native_call_admission_context = &call;
     PersonalCashReadContextV1 request{};
     request.paused_application_main_owner_admitted = true;
     request.published_native_revision = call.expected_revision;
@@ -156,8 +184,13 @@ bool Read(PersonalGoldMailboxContextV1 &parent,
     request.published_full = &cash.expected_full;
     request.read_current_full = &ReadCurrentFull;
     request.read_current_full_context = &call;
-    (void)ReadPersonalCashV1(local, request, cash.observation);
-    if (!Owner(parent, cash, stamp) || cash.expected_native_revision != call.expected_revision)
+    if (call.scope_version == PersonalCashScopeVersion::florin_unit_full_id_v2)
+      (void)ReadPersonalCashV2(local, request, cash.observation);
+    else
+      (void)ReadPersonalCashV1(local, request, cash.observation);
+    if (!SameFullSources(call) || !Owner(parent, cash, stamp) ||
+        cash.expected_native_revision != call.expected_revision ||
+        cash.scope_version != call.scope_version)
       ClearAmounts(cash, "personal_cash_actor_owner_changed");
     return true;
   } catch (...) {
@@ -185,8 +218,12 @@ bool ExecutePersonalCashOnActorOwnerV1(PersonalGoldMailboxContextV1 &parent,
 #endif
 }
 
-std::string SerializePersonalCashFrameResultV1(const PersonalCashMailboxContextV1 &cash) {
-  if (!cash.application_main_observed) {
+namespace {
+std::string SerializePersonalCashFrameResult(const PersonalCashMailboxContextV1 &cash,
+    PersonalCashScopeVersion version) {
+  const auto serialize = version == PersonalCashScopeVersion::florin_unit_full_id_v2 ?
+      &SerializePersonalCashV2 : &SerializePersonalCashV1;
+  if (!cash.application_main_observed || cash.scope_version != version) {
     // An observation copied without this frame's main-owner receipt must not
     // revive known amounts. True still relies on the full owner checks above.
     auto unqualified = cash.observation;
@@ -197,9 +234,17 @@ std::string SerializePersonalCashFrameResultV1(const PersonalCashMailboxContextV
     unqualified.monthly_net_income_raw.reset();
     unqualified.unavailable_reason = unqualified.monthly_unavailable_reason =
         unqualified.net_unavailable_reason = "personal_cash_actor_owner_unqualified";
-    return SerializePersonalCashV1(unqualified);
+    return serialize(unqualified);
   }
-  return SerializePersonalCashV1(cash.observation);
+  return serialize(cash.observation);
+}
+} // namespace
+
+std::string SerializePersonalCashFrameResultV1(const PersonalCashMailboxContextV1 &cash) {
+  return SerializePersonalCashFrameResult(cash, PersonalCashScopeVersion::legacy_nonnegative_v1);
+}
+std::string SerializePersonalCashFrameResultV2(const PersonalCashMailboxContextV1 &cash) {
+  return SerializePersonalCashFrameResult(cash, PersonalCashScopeVersion::florin_unit_full_id_v2);
 }
 
 } // namespace xar::ck3_1210

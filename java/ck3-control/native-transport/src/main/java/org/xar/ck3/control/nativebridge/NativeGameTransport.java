@@ -1536,6 +1536,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             throw new IOException("personal cash differs from its original normalized data");
     }
     private Unknown unresolvedFullClockControl;
+    // A real Date Status evaluation_failure is known failure DATA, not a fabricated world-dispatch UNKNOWN.
+    private AckReceived failedDateEvaluation;
     private AckReceived indeterminateFullClockAcknowledgement;
     public synchronized Optional<AckReceived> originalIndeterminateFullClockAcknowledgement(String requestId){
         Objects.requireNonNull(requestId);
@@ -1706,6 +1708,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                         ||status.speed()!=before.armed.speed()||status.mode()!=before.armed.mode()||status.armyCount()!=0))
                     throw new IOException("Date status changed original watch identity");
                 before.lastStatus=status;
+                retainDateEvaluationFailure(status,ack);
             }
             return outcome;
         }catch(IOException|RuntimeException invalid){
@@ -1726,8 +1729,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
         if(unresolvedCoreControl!=null)return unresolvedCoreControl;
         String id="date-cancel-"+UUID.randomUUID().toString().replace("-","");
+        DispatchOutcome dispatched=null;
         try{
             requireDateSentinelOwner(before,deadline);
+            requireDateEvaluationAvailable();
             if(before.cancelAttempted||before.lastStatus==null)throw new IOException("Date cleanup requires its actual generation and a fresh cleanup attempt");
             if(actualPaused!=null){
                 requireFullClockOriginal(actualPaused,deadline);
@@ -1749,8 +1754,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 }
                 if(before.cancelAttempted)throw new IllegalStateException("Date cleanup is consumed");before.cancelAttempted=true;
             });
+            dispatched=outcome;
             if(outcome instanceof AckReceived ack){
                 var status=AdvancePrimitives.acknowledgedSentinel(ack,step);
+                retainDateEvaluationFailure(status,ack);
+                requireDateEvaluationAvailable();
                 var result=NativeWire.object(NativeWire.parse(ack.originalResultToken().orElseThrow().bytes()));
                 boolean idle=status.state()==org.xar.ck3.control.reconciliation.LateOutcome.State.IDLE&&textEquals(result,"status","available");
                 boolean terminalUnchanged=(before.lastStatus.state()==org.xar.ck3.control.reconciliation.LateOutcome.State.TRIGGERED
@@ -1764,7 +1772,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return outcome;
         }catch(IOException|RuntimeException invalid){
             if(sentRequestIds.contains(id)){
-                unresolvedFullClockControl=new Unknown(id,"Date cleanup uncertain after write; never replay: "+reason(invalid),retainedOutbound(id),Optional.empty());return unresolvedFullClockControl;
+                Optional<RawJson> original=Optional.empty();
+                if(dispatched instanceof AckReceived ack){indeterminateFullClockAcknowledgement=ack;original=Optional.of(ack.originalFrame());}
+                unresolvedFullClockControl=new Unknown(id,"Date cleanup uncertain after write; never replay: "+reason(invalid),retainedOutbound(id),original);return unresolvedFullClockControl;
             }
             return zero(id,reason(invalid));
         }
@@ -1855,7 +1865,15 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return zero(id,reason(failure));
         }
     }
+    private void retainDateEvaluationFailure(org.xar.ck3.control.reconciliation.LateOutcome.Status status,AckReceived original) {
+        if((status.triggerFlags()&(1L<<15))!=0&&failedDateEvaluation==null)failedDateEvaluation=original;
+    }
+    private void requireDateEvaluationAvailable() {
+        if(failedDateEvaluation!=null)throw new IllegalStateException("Date evaluation_failure observed in original request "
+                +failedDateEvaluation.requestId()+"; preserve its result and withhold clock writes");
+    }
     private void requireBackgroundAtCoreWrite() {
+        requireDateEvaluationAvailable();
         try {endpoint.verifyCoreControlWindowPolicy();}
         catch(IOException failure){throw new java.io.UncheckedIOException(failure);}
     }

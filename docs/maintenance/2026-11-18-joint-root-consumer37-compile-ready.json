@@ -1,0 +1,1445 @@
+{
+  "status": "37_DISTINCT_COMBINED_PRODUCTION_TUS_COMPILE_PASS_OFFLINE_NO_GAME",
+  "scope": "actual combined source compilation of 12 ordinary-primitive production TUs,21 interaction bridge TUs,freshMain250 and3 unchanged real Root callers; no actual private Context/Game install",
+  "typing": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/javac06.json",
+    "bytes": 612,
+    "sha256": "b002e1d2a96efffd1cf19539cf39f67bdcb1c1249bf3f8344bb8717f2859f9cd"
+  },
+  "exact_args": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/javac06.args",
+    "bytes": 37746,
+    "sha256": "9f730323f7e8d6f277e4211212e66ad243eb76d1d5894801c8bf8a187d639c05"
+  },
+  "source_inputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy.java",
+      "bytes": 31857,
+      "sha256": "e70edca574a456bd46e27f2889cbde576848ac28c6c3851bc003030107dba300"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller.java",
+      "bytes": 37926,
+      "sha256": "e7f44e13edaa10fa7a77c23202003c535fe58abd8163710c2d98594f694a0622"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyHeirLegalityRead.java",
+      "bytes": 3312,
+      "sha256": "237166180b79662e6dc31c9b4c64b0baf85aa2f814745533f13896135792be26"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyRulerChoicesRead.java",
+      "bytes": 2989,
+      "sha256": "28082f73a594134979dd78b71e6861460018a25e6cfb3c78041f0f7bc5384b7d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyRootBoundRead.java",
+      "bytes": 4342,
+      "sha256": "4e51aa1556142dca140a93c1bdfa1dbff79e9d0dc52d0301db1ad692c9f08293"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyMarriageProjectionRead.java",
+      "bytes": 3832,
+      "sha256": "bb570047dff99b66d05393cb1fbc96e178f48641313caf0fbb3014f061e20b21"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyChildRead.java",
+      "bytes": 4191,
+      "sha256": "db717776eaa99b855a25558510a2a529617c91a40c633937df7182cc7a9eacce"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyDomainRead.java",
+      "bytes": 4703,
+      "sha256": "b50b87d0636d572484619f17f152864f78290c5534dd2173ac11432e95657e33"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyResultRead.java",
+      "bytes": 6568,
+      "sha256": "211a5f369180343d33471bcab35b5c08871b02bd883512b70904620f8b0afaa1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyInteractionContext.java",
+      "bytes": 6478,
+      "sha256": "7aaf28bcc916e55db8672bd888ecf1cdc8eae9c56259693682c8d83e0e0c0258"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts.java",
+      "bytes": 19057,
+      "sha256": "6c528e7deb9d34b21b4c2343b593f9ea3a3f62d726934d376a1a256750ee4fd8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyReadProducts.java",
+      "bytes": 7067,
+      "sha256": "344ed23c59eebe72fc267cceeede34ab21c4747fd342f61c5f56941cc3f2fc9f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory.java",
+      "bytes": 13347,
+      "sha256": "4469ab70b46b6b59429e69db3600902fe36a56c8b6b54abc09bd7558c0598f93"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/interactions/FamilyEducationNativeProjection.java",
+      "bytes": 5081,
+      "sha256": "548f140ec7212590332be14f76d3efa206b6eca0fe26dc02f093a9633c234418"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootFamilyEducationRead.java",
+      "bytes": 4271,
+      "sha256": "91c655fc908d523ddc83bc70e510776670561bf8d36a9f5319e3a7b103dc3553"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation.java",
+      "bytes": 32468,
+      "sha256": "032f2c0ce80e704e3690e84ce0c3c9d414c401ceb2aaf42959fd7747400a00ff"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingEffects.java",
+      "bytes": 29834,
+      "sha256": "9baaa1809b824cc7bebd778e44b01d0dcbc02521778a15f810258e43c9efdbdc"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingInstaller.java",
+      "bytes": 5609,
+      "sha256": "4e57a4727d2a47a966bf8d8f63722ecc3437465747b1f0be7a126e766699640c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries.java",
+      "bytes": 15215,
+      "sha256": "d09ef1680dc665b5e9e1ba90df96cef9241242ff0444fc9077082f3da911fe23"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootGuardianReconciliationReads.java",
+      "bytes": 13529,
+      "sha256": "6ba2d652e705bf23bb69cc616051b0d94e4b51b7df3c965a6b5da26a6f3fb506"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory.java",
+      "bytes": 12111,
+      "sha256": "0e9dd186d393452769c39308ae06ca793f7eabb8bbe2d619a54d1e04099ef7b3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/AdvancePrimitives.java",
+      "bytes": 25510,
+      "sha256": "2fc5976660c6cc9045b058ee9db0b983f1d4a30fe57ae407ceb8179ee396137d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay.java",
+      "bytes": 24807,
+      "sha256": "b61c50a0ffeb4eac0831ab9031c86f481d4d9ed805fd6f942154f4e31e5a0074"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/FullSnapshotSentinelCancellation.java",
+      "bytes": 27548,
+      "sha256": "8c63607f0d2575a8d93d417bf7bc2d68bce02f855b275a1e7c15dfff0a51e7de"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/action/ActionEffects.java",
+      "bytes": 47004,
+      "sha256": "7fd41731c01c731f23c6dd13973cb63b9b118ef493a2ee35b04d52a6b4bca058"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/source/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive.java",
+      "bytes": 183297,
+      "sha256": "dccc5cf7f49ea689b660de19523720b72f4a1c04f943e5e69a8f965552b1543f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootReconciliationAuthority.java",
+      "bytes": 78820,
+      "sha256": "0ac6b5734fbbc605049cf7ef2a9278487ae10db14827c562e9d61c4186bdd9a2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory.java",
+      "bytes": 105487,
+      "sha256": "38f396e169ad80798e737e4b9c0df35aaee338b2bb7f78cd5d16279ca920e914"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootOrdinaryPlainProducts.java",
+      "bytes": 39925,
+      "sha256": "06eda7d56503c3f61d51809ad072b74447c88926f6d092211c4f167be88a34f5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootRuntimeSourceProducts.java",
+      "bytes": 46451,
+      "sha256": "77189aefa1b2c8a20daefc8281d5fa5dc7683005293ba160c15789fd865dff85"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/AdvanceObservationPort.java",
+      "bytes": 5186,
+      "sha256": "e18eba0224438bf10b2716786296c0b84f017431be5c1e591853e2d54f78e266"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/source/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/PendingUiLifeAdvance.java",
+      "bytes": 16724,
+      "sha256": "84b3921b968889e9f537486388fcd29cc31a09635d31d7456075f102b7a081c3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "bytes": 247995,
+      "sha256": "37f9c86445663390ba84915e7a63171307a601210925cd379a1259439125c8c9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootLoadedSavedResumeMain250.java",
+      "bytes": 23488,
+      "sha256": "78da4fc636c91aad37f00f39dbaacf0a5b1c712f331a0985b08bd7330fd0d623"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/source/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootRuntimeCatalogFactory.java",
+      "bytes": 36283,
+      "sha256": "e1ca848bb1ef2d1e77d1a06ce83b84e87f487f2460677d31e43c56b57316a1c8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/source/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly.java",
+      "bytes": 34553,
+      "sha256": "b394f7529c6a3aa3d8e394d17797027cb23dca8c4d5a4c1b338093b2450f5fb2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/source/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly.java",
+      "bytes": 126601,
+      "sha256": "28e3b46c891d804667c7f9539f68dbf5da4404a4d830a9efced4e7d8ea64f2be"
+    }
+  ],
+  "class_outputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/action/ActionEffects.class",
+      "bytes": 45328,
+      "sha256": "34f3d73435627b28c8550c81a7a3064734a050e419f57f0414ce04135656f7c0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/AdvanceObservationPort$Frame.class",
+      "bytes": 7727,
+      "sha256": "f5cb54efc3020d97f6ad02daf386e27b7ed08c68359da058097c0a97954f9569"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/AdvanceObservationPort.class",
+      "bytes": 2326,
+      "sha256": "15760b1256262dd91a650e71155e593d0e97e5b89065e345d653493c7d128049"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay$CleanupNoEffectVerifier.class",
+      "bytes": 727,
+      "sha256": "231dc262aabbee0c5af45687043553ad4a044ddefbc8c423186f8a67893988d5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay$PreparedCleanupVerifier.class",
+      "bytes": 1114,
+      "sha256": "a39610085299b1be20aeea38e6f3152a0d3dc9fed168320a2c842d859ef8fba4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay$ZeroCancellationVerifier.class",
+      "bytes": 1116,
+      "sha256": "98a9eca4f2de70c25def28e3ab9fedb482e05b77a23e9e80f5b39f63ba6730f6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay.class",
+      "bytes": 40381,
+      "sha256": "58b8e0c9f8645f94d4ecd2d9d4a9ddcc580bfa00fd5c254a7f676a582e886759"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/AdvancePrimitives$ArmSpec.class",
+      "bytes": 2436,
+      "sha256": "c9d903bc133a69efc9b3147e562720bbe377767c6f7c9b324c44af46caca3e1c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/AdvancePrimitives.class",
+      "bytes": 35930,
+      "sha256": "6879f292294af2c41c7c5cbc5fdef833ca4e58920ade8a9457451a8916560cfa"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/FullSnapshotSentinelCancellation.class",
+      "bytes": 38616,
+      "sha256": "7a11bf79790d1712c7fc2c18a1b1151b860fe3a17009eaca7b761cfbb460bab4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Current.class",
+      "bytes": 9216,
+      "sha256": "a2abe7b19c03dac469bd30f7c899b51c7863e28a44b0765fff5ffe902059faad"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Scope$1.class",
+      "bytes": 8332,
+      "sha256": "82a7e3c910d16c28c115048804a3ae65a7d3239f66af0d0ea18fb62de2b67abb"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Scope$Held.class",
+      "bytes": 1483,
+      "sha256": "1192b4528d65fdfe89e684459f7c2286a6017dc8c40402e1db03225b019f30a9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Scope.class",
+      "bytes": 12958,
+      "sha256": "5ab68e1cfdc82bdc8f9f568597cab6268fb8c19404cec531aad6f4bda5ad32c7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$SessionAccess.class",
+      "bytes": 671,
+      "sha256": "93c71acbb1f83af398fc85d865a4602499b248e995963d4b3bf37a16bd40ddfe"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Source.class",
+      "bytes": 2168,
+      "sha256": "1f7d821be53f3eacc0780c3da16b499c44635042487caf6abf4c95c2f2607656"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Work.class",
+      "bytes": 759,
+      "sha256": "ac7e2f42a732d9b0d18910fd1babb5728c5fdab3353890859353018e9d8ae8d2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Work0.class",
+      "bytes": 529,
+      "sha256": "6f0aa3348c1c648b8e95e55d03771d4d941f8747e508c155b2083a84267ddf72"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance.class",
+      "bytes": 4875,
+      "sha256": "dbffe2762374e63b30fe92e1dd22ebbaefe547cd0c887f8a84822fb908bd7afa"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$1.class",
+      "bytes": 1156,
+      "sha256": "02a6373259423344e18ef56c7853d47a4119492c89bc1020fb496b95caa324fe"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$HistoryBindings.class",
+      "bytes": 1184,
+      "sha256": "94eb31058302d472ea2a8a3da3ea977025f8b30b552425465bebabf96055c678"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$HistoryEpoch.class",
+      "bytes": 1977,
+      "sha256": "b9e9cb5628ae1eb11405f9162974b444516cdc443b5369181b1799f3745f6a1d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$HistoryRegistration.class",
+      "bytes": 2117,
+      "sha256": "a62d94217edc703b41560df3938307fcccc0d33c931e9d01515e51fcddbc7fe5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$IoWork.class",
+      "bytes": 527,
+      "sha256": "3126adccf8fb513a4ca025a2ec4f4e74f534e1043ca4ce4e626657d9c2340ce3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ParsedMaterialCache$Cached.class",
+      "bytes": 1857,
+      "sha256": "a73c17141f76fabc0aeaf434f618b4edfed841b64939864580b37710ef754222"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ParsedMaterialCache$Key.class",
+      "bytes": 2152,
+      "sha256": "0a0f95d5667acacac54bb9f53f540f0e1d164bee5d69316c349fa3f88639fe3b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ParsedMaterialCache.class",
+      "bytes": 6031,
+      "sha256": "21597e41ffcf8c1188ed8ab3c804c31c2779eb987db411e5188e979e632373ae"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ParseProfile.class",
+      "bytes": 1398,
+      "sha256": "70cb2bba102e495085edcb2cca09852ed3e33af7aed2c09d0fc49f50ef5f31f7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$PersistentPrefixAccess.class",
+      "bytes": 4786,
+      "sha256": "a2e91c1205d65b408200b11667d7c6755fc8e0df97e2a37305e8d525b820f35d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$PhysicalStatusOriginals.class",
+      "bytes": 1996,
+      "sha256": "e285c01040d5aa90eff4eb89ab215cf5e2b363fe4742e2eea3f8b2556b6d3c5c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$Publication.class",
+      "bytes": 1397,
+      "sha256": "0c900eea899451958d5b74451821bd8ef8a7766fc835e77c7a769d8edee23dee"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ReadOriginalCapture.class",
+      "bytes": 1677,
+      "sha256": "ee05f35f7a1e03ee60cf980299d8003fcc27a27253a4926be3df5e8fd57ebce4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ReadOriginalsLimitExceeded.class",
+      "bytes": 585,
+      "sha256": "d00e1f958030784ec1a83f426b4c06d99bf878ecb09bc8a8945f231d105a39bc"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$RetainedDataAccess.class",
+      "bytes": 6778,
+      "sha256": "ddcc9fdbc1a29382ea16b2a068b5f3b07df158d45f30ca326d1985e9dddfa990"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$RetainedDataCapture.class",
+      "bytes": 1345,
+      "sha256": "0153d221e6682a006eb2bf75c804ba95db0ae55d11c0167916e8003fc887e77b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$RootDataHistoryTier.class",
+      "bytes": 1668,
+      "sha256": "191f366b67051c3dcbc9996c906f34cad709486f9088163fe61fe7197cf2e741"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$SavedPreReadCapture$External.class",
+      "bytes": 2413,
+      "sha256": "d62af6d2af9813fbcf34ee1328c39d1a3d3df41e65b207e84741b73521048344"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$SavedPreReadCapture$Provider.class",
+      "bytes": 2323,
+      "sha256": "423915f703d7d64b957256db40a7a5715d418f90506b14dac174a6b1aa4c1384"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$SavedPreReadCapture.class",
+      "bytes": 13889,
+      "sha256": "740d206328234059430495a830d5ee913aef237dbe47d379607264e5a45c47c1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$SavedPreReadReadSet.class",
+      "bytes": 1603,
+      "sha256": "9bd09f4fe6cca54e14f7ce0d54442ade664ad53a169a6247bcfd58f5e743aca7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$TransientOwnedCASLeaseScope.class",
+      "bytes": 11850,
+      "sha256": "6a29d9cbe694fb6974542e18b9c473f4ab54cb10dde2377fb7530524091d1c65"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive.class",
+      "bytes": 160220,
+      "sha256": "6cc190357be2dd3829ababd964afbc79eee847891f56e47f2fc41462dace71f7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/FamilyEducationNativeProjection.class",
+      "bytes": 12221,
+      "sha256": "f5007668234038a3f20d75972ebb723710c984c789d18393a2efa20c2199a2fe"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingEffects$Preparation.class",
+      "bytes": 4365,
+      "sha256": "08efb2220f3f9277b26a1df060592b990a49c1c50ebcb39d9fa21d9bbec5a368"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingEffects.class",
+      "bytes": 54218,
+      "sha256": "54953c96eaac971df0325ef94ec1caf66207870a814f7584b506ed569aed5d1b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingInstaller.class",
+      "bytes": 15342,
+      "sha256": "30f37774b0d6d1ae462be17223b80f645ce4ca64e9069cb0f0756bcae332e34b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries$CanonicalAdmission.class",
+      "bytes": 563,
+      "sha256": "ee0dea7ffec58dfca3a4c43231d6c256c7f98a8fca17ccb9c0da5ae1a0325283"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries$Issued.class",
+      "bytes": 3567,
+      "sha256": "3290adc88cadb1b2b61d25cfcdb4983bee3496dfa6df4dfe39d4c25408a9052c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries.class",
+      "bytes": 29293,
+      "sha256": "31e8719431f18aef3937eb2f91e41f9c4f911ea668eb7dc3ff7b9b973e78f8f5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Available.class",
+      "bytes": 2260,
+      "sha256": "d68bc79a17f697127e6fe8a3bda1d100ef22c1e208d3663cf88595f738806b63"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Collected.class",
+      "bytes": 2403,
+      "sha256": "5cd71e4095eb13d9bc621a91a91b8f63edb85ec6365b737fef6ebb8a38a08831"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ContextPort.class",
+      "bytes": 799,
+      "sha256": "07805194d62589a4283b375d880e3e0b22f11e53268b5c6dd88f254a0022f343"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ContextRead.class",
+      "bytes": 654,
+      "sha256": "f8371768341f50f2eb7b122cae92d270548d558bb3e9c3fa0697161862a0b92f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ContextReadPort.class",
+      "bytes": 761,
+      "sha256": "06ea64a9efedd1c9e1e2015418352fbf085193829ee256bd59533a5a05f1a822"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Publication.class",
+      "bytes": 1172,
+      "sha256": "3a7cffbbc21aaf4f38faa0d80787a0612c1427fc9c3ff02677b0b85dbfa192c4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadArguments.class",
+      "bytes": 731,
+      "sha256": "ff68cc4341484b13bb789fdef35d978d3dac6fba8fe293d2422a564c4bfa9e95"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadCatalog.class",
+      "bytes": 863,
+      "sha256": "ec8fdf05ee2674569aba5e63d0121de62c6a9448045ee2105f0d82c58f7da67c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadPublication.class",
+      "bytes": 2595,
+      "sha256": "b59c1a728aa4f81f2ecff6a00c92f1a328d59a9e2a5d0a64f5e5556e9f2db118"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadRoute.class",
+      "bytes": 7963,
+      "sha256": "157ccc0905fa3b3787862b5fe4daf4dc0246223e01cde3b58ad29075d774a7b6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Unavailable.class",
+      "bytes": 1690,
+      "sha256": "01b62304cd565dce4346d236c34f5638fc6734fad579ce2fb95952278ae226e9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy.class",
+      "bytes": 50510,
+      "sha256": "b1398893596ea061a7bbc2132e17ba015c73beb67c58e7c5cf5767b3f45c99e1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$1.class",
+      "bytes": 7751,
+      "sha256": "368f9d91500f9fc42dcc91036f8fc13e59ab37515d2ebc4893f2dd1eade06453"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$2.class",
+      "bytes": 5461,
+      "sha256": "8258421286c45023d34fa0c806460b86bb0fc8898b7f6524be40ce37ab3599b3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$3.class",
+      "bytes": 6306,
+      "sha256": "ec07a19b2f5d6c49b2c6c59542c86e8623abbd88dfd10c8dfef0061b191f4936"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$ActualFrame.class",
+      "bytes": 2810,
+      "sha256": "d52c3ff05a7cce8cbeda19e93057a519acfcc74dcb2c3983e65614d08f6f883c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$AvailableFrame.class",
+      "bytes": 2581,
+      "sha256": "69bb6681141593caa8faeb5e8ddd75abe55aa93d886d40715efd96e373957c43"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$ContextObservation.class",
+      "bytes": 4061,
+      "sha256": "0c269fc98603dbaffaa4fe8ca8d7d48fdbc230e866358e887d400bb197b718d0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$ContextUnavailableException.class",
+      "bytes": 1956,
+      "sha256": "3a816f483f3a39d79223316a0951e26bed805c8f9c18e06e6ca9e61f83f5addc"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$FrameRead.class",
+      "bytes": 938,
+      "sha256": "c1e080431c06f906ff3b32b95fc5d58cd41a7bddd0540422c40e02509d5ac695"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$Frames.class",
+      "bytes": 3147,
+      "sha256": "f0c3cdbe4f82435f513795aefc7e46ba8a359eb0b5eb78624239c31f85577d24"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$LiveContextReads.class",
+      "bytes": 1385,
+      "sha256": "74eebbf1e009902090d142d4fec77505065ac7e2f61d614cf7a9291d0527361c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$SourceBoundProjection.class",
+      "bytes": 1026,
+      "sha256": "482e3114099bb2759bd9005e06b59bff4e09baf8925da5da787aa2ef4643e67f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$UnavailableFrame.class",
+      "bytes": 3574,
+      "sha256": "bce5efcee691c44bccdb95e444c9f80845e504548706bfca55261381a26e41d7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation.class",
+      "bytes": 46210,
+      "sha256": "0e4b6cdfc89a30d21c2ff147929ad1249af3122919662b4cafecfa59b3588e0e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$1.class",
+      "bytes": 2552,
+      "sha256": "82c51b3ebe62fff6d78d1808cec31a0190d60533803b21c5e6a077049acb222d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$AcceptedSnapshotRevision.class",
+      "bytes": 3149,
+      "sha256": "b12d0c3365686778424ba874ff2ae7bfda86eae3347512987d4e1464726ead32"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationRead.class",
+      "bytes": 843,
+      "sha256": "a32f4f0629cdb38922f6315c76edfe532a613d4992c8ae253200a7d99564aac3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationReadUnavailable.class",
+      "bytes": 2348,
+      "sha256": "cd8d8b65e9af9620a732748150917f10123d1709d3e5d70eee9df33c4d522084"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationReceived.class",
+      "bytes": 2412,
+      "sha256": "36291dd8d407276a38f56763eda0d3d10fccfda3e9cf295f9f6cdad9a0ff6e44"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$AfterAcknowledgementSnapshot.class",
+      "bytes": 3208,
+      "sha256": "d3894c2193c395e23488301943bacb5abd84a51941ecafcee475308960b7fc05"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CoreRead.class",
+      "bytes": 777,
+      "sha256": "6d592a2617027100c46578577947fb2aa9d5159b8879853a80c35a76e59e4a42"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CoreReadUnavailable.class",
+      "bytes": 2271,
+      "sha256": "55a2bcaad3ee48164ae8cd425ce456ba557061734ede0518fa0ff69c3caedec2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CoreReceived.class",
+      "bytes": 2344,
+      "sha256": "059f4034863a1029cf0550a8be142c81c8bd880bf101a18ef77cd951485a6f76"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CouncilAssignment.class",
+      "bytes": 2279,
+      "sha256": "abd506092960b4045b0ef63685cb5786d50924bbc11af7dc50fc4cfe5ff2f1da"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CouncilRecoveryRole.class",
+      "bytes": 3604,
+      "sha256": "92e6345e0301dbcea293ae5ce19c8a230bfe2b6e27be7d488e91f71c44619c7d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmRead.class",
+      "bytes": 763,
+      "sha256": "4c9d9d78f410a35d005794fc9343c427f605b1b3a985f721b8f3709873574162"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmReceived.class",
+      "bytes": 2238,
+      "sha256": "2d31bd8e2c428e511c5aa6b01be4eaead57b62d136abbe6faabee4264dbd0028"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmUnavailable.class",
+      "bytes": 2232,
+      "sha256": "3fa8411422f943d18b5269b57dc44ed0dae90a9f4d833479eeaee585ffab453a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FreshSnapshotCapture.class",
+      "bytes": 1268,
+      "sha256": "6f0cfe408d374f63314e80e7bca6f6b9f88a25e8bbd3e564a09bb64ba7315d89"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FrontendBootstrapAttempt.class",
+      "bytes": 2639,
+      "sha256": "addec95bcb263e20247c2a0e25ee725ca1f685a5b19d83a5656b27ca720654e5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockRead.class",
+      "bytes": 783,
+      "sha256": "e77b6b1d651a218b5f47d2519f2f857fd94b408fc657f9c67bd5af35a0765120"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReadUnavailable.class",
+      "bytes": 2266,
+      "sha256": "40b54b75b67889ae3d3ff37b033d6105298de84fe560ff66d26f7a3060b655c4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReceived.class",
+      "bytes": 2504,
+      "sha256": "0a95bfaf4a9f8b43bcce57c7fa6343f0f0301dd2f4d3ebfc0662e9e967d73ecd"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$HandshakeDiagnostic.class",
+      "bytes": 5258,
+      "sha256": "a05d1ed4fa54808439e8326a1cca8462c812b959273d3a2590d8f213ba858429"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$HandshakePong.class",
+      "bytes": 3561,
+      "sha256": "b28651f2b84c30e2951ddba12bff9919ce5b6e8e59044f75401995860905cd3d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxDiagnostics.class",
+      "bytes": 2308,
+      "sha256": "798a40f091f586b8db06d8489cf9135ce0d91625ad930e4d61d071c94d77600d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxReadDeferral.class",
+      "bytes": 3398,
+      "sha256": "48f6842acae98b24fe9a20e47c43de21a7207a833bddd11afc9bf6bdbc6c800a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxScope.class",
+      "bytes": 14826,
+      "sha256": "2cd58b73698e95df4d1b09fefb7c3a77bae135e68847824cc5a58cd87204d2e7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxWork.class",
+      "bytes": 790,
+      "sha256": "b37fe7b12f95d176a3b02b3f5289e6f2acc70bcffb07435c2bd19a601120370b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashRead.class",
+      "bytes": 825,
+      "sha256": "2be58230daf7f890260eca795d01b25b31c56d6bbfaf83e495c0f0ee880f6e27"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashReadUnavailable.class",
+      "bytes": 2327,
+      "sha256": "241a6560ceeff1a58e31da9d58adfc284a0717716c550d8695b38b9f9559dfb3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashReceived.class",
+      "bytes": 3181,
+      "sha256": "84b2c8de2ea2b92e426b11662d66ce06328e67d2f45ad8a54eaac030c53d71d7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldRead.class",
+      "bytes": 825,
+      "sha256": "a3d073b7033155a757c9f364528b6c3b96f036fb371a2800250cf81d295413d2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldReadUnavailable.class",
+      "bytes": 2327,
+      "sha256": "c1a85d49fb5c4ec5badaa9c6a2498a6a1ffe1b48aec1e74fe0ed4b4b3c3c4a3f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldReceived.class",
+      "bytes": 2385,
+      "sha256": "10e6c33e35cb5d377d39ed89a4e2bc17fb09e551190e646a3a16eeec484af064"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PingAttempt.class",
+      "bytes": 7841,
+      "sha256": "00893b7a3f3eb634368c8c373e0005f079dfdcd4a60721de8ac68d3da9532924"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PingFailure.class",
+      "bytes": 1782,
+      "sha256": "494d7c016a6f23e5c9203056a631d9505f19105533dade160bb8232ebebaa718"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PingWriteState.class",
+      "bytes": 1413,
+      "sha256": "0b45dc371c83a955d70a7c605c43714a82320373fe39466e19956f0cdde73466"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupDispatch.class",
+      "bytes": 2305,
+      "sha256": "ebaf0f23144913fabe75da5557e20340b7031f74356fe4c3526b82a36261abac"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupLateCapture.class",
+      "bytes": 2229,
+      "sha256": "8e8899445470ee60d81f2920f8db7a3abd36c072980d893c00a863fea5abbbd6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupPriorAttempt.class",
+      "bytes": 497,
+      "sha256": "f2556e11e9b733cb3ab48fe3a8efe29c620838bcb4bfb5a6f66bb566b238250c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedHello.class",
+      "bytes": 1973,
+      "sha256": "2e7bf422989374f5f33cdb2e42dd00981ccb4ce6afe0fed0540e503be575d536"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedNotice.class",
+      "bytes": 1983,
+      "sha256": "845bfbad023f8f1a844449779e1cfcacb645767216b45fb52e9290bc61e1c3a7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedReadEvidence.class",
+      "bytes": 1597,
+      "sha256": "4e8d3ced45a061ff056de95a82b5a53bd0ff3b7186f8597e8d6e1fa0cf5e5ce0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedResponse.class",
+      "bytes": 2262,
+      "sha256": "6a302e2094137bc0dacbe207e409d970eaec3862239267d31e36ebe256ce7d3a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedState.class",
+      "bytes": 1463,
+      "sha256": "6e48372afc15f2442a7a169366dacf4d5bb3434d0f44df8e220367ee1d81d250"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$RecoveredSeatMailbox.class",
+      "bytes": 10428,
+      "sha256": "8f2794e994428908c8addf06244d76420d96a06dded1dcc26da1c5cd382590e4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevision.class",
+      "bytes": 2759,
+      "sha256": "4086ca265601b7959a1816ecc357dd6594e2c58f92f17f86be2a723d7276755e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevisionKind.class",
+      "bytes": 1437,
+      "sha256": "ccb32b642f22109db0afa470d8b49364d58f52135655fd601203ab2a4e3d202e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$TransportDiagnostics.class",
+      "bytes": 7001,
+      "sha256": "9ce28d3958698357c5db846028afce3b065b579b66d0aa2d19b3d376e18d9ce1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$WrittenRequest.class",
+      "bytes": 3506,
+      "sha256": "121d19e2fb786a2229d4d6194b65cefd16cf3bc94c01f4f517dd4bed5aafc00b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/nativebridge/NativeGameTransport.class",
+      "bytes": 175393,
+      "sha256": "5b748a65f41691eff4f6f3860de17b38fa6e7273a48e86da2b747bcd7868eeb8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$ConfiguredBuild.class",
+      "bytes": 4250,
+      "sha256": "123da612825f119b0d530e3243f7a95fd047832d31ff1348eba9973fc3b61a16"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$CurrentActions.class",
+      "bytes": 1725,
+      "sha256": "727045c452dd64dc5c82e5a53855224917db6eedf0cf8c3eb548e6d9d40c75e0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$NewOrdinary.class",
+      "bytes": 1878,
+      "sha256": "08edca5dfa72639d063436bdcea4fe562fa721b362c0323694168a79c028db8e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$NewPending.class",
+      "bytes": 3092,
+      "sha256": "15f165e262f60ac9108922d7aa0dd11bfa9296484c8337b959b9de76e6a85597"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$PublicOrdinaryDecision.class",
+      "bytes": 606,
+      "sha256": "4698d64601f5c88648f79067312e5f67ef58af7eb12f313293bc417e93c82ad4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$PublicPendingDecision.class",
+      "bytes": 1251,
+      "sha256": "c13af529b4227750cd52948ff61a906c79632689e20b236ada10efd931f7dbca"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$RetainedOrdinary.class",
+      "bytes": 2194,
+      "sha256": "96c3ad2c1797bed63a70791dbc8027e64b84303fb9d1f19aa480d85d9de05c9a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$RetainedPending.class",
+      "bytes": 3416,
+      "sha256": "b8c9482963cdc034a8361add4557a10ea35f188101404b57f6c5825da81d936e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$Sources.class",
+      "bytes": 5445,
+      "sha256": "fc5cb1ff4024db4c88e76f6cec0cf48750d8c7ceba7e43174cba05b38cf162fa"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller.class",
+      "bytes": 72459,
+      "sha256": "30a08724eb435588ad6cc77aefca020fdc9bfbf6fdc00fcb467f55935f4b074f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$1.class",
+      "bytes": 2654,
+      "sha256": "b09da9c08a4a9e661ece37ee3fb2f6714d469af7cbd32be90e1ab07ef1483009"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$ActualObservations.class",
+      "bytes": 55917,
+      "sha256": "72d88f35c1309d5b059102c1c2b941bb43d20d615e6c871d4da4be443590a316"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Arm.class",
+      "bytes": 2046,
+      "sha256": "c14dab86cd6921862d8be42246ab0306b0017b065bfc1f59d5f6b93e6e39f907"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Cancel.class",
+      "bytes": 1936,
+      "sha256": "7aa43b923f66cd480d5eb7e637975369e987cdf2011de5c8219ee1d310666c8d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Installed.class",
+      "bytes": 52397,
+      "sha256": "281061936569508086ac9789e83881c7a10140ea0a15574c90a89ad82f350c8b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Prepared.class",
+      "bytes": 6070,
+      "sha256": "094888e3f713b903fdaa2058182657c24848eebd27b3b260a2f8ea2a68cd792d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Sources.class",
+      "bytes": 4871,
+      "sha256": "93a25905b111678042ad382f5102732c5197b25b5c9e7edfee7e732afa94ff29"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Timings.class",
+      "bytes": 6879,
+      "sha256": "52dfc00c286c3befd7217b585411797ad54c1c9666f6f6538ac819011b38cd22"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory.class",
+      "bytes": 42062,
+      "sha256": "5b1cb8f321ececf0ce1b3f50b242607d817a58f5be289b16ffee30c1f12b12e3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyChildRead$1.class",
+      "bytes": 2624,
+      "sha256": "2a4ec3d0a2aeb7b3542a2d96ecb4408016cb3b7d36a21bb80a283817d8e6a86a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyChildRead.class",
+      "bytes": 11355,
+      "sha256": "1a4ef6f489c9e18e9053934e2a34e5a1684abc1df4883f3b135bb9c67a45c89e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyDomainRead$Arguments.class",
+      "bytes": 926,
+      "sha256": "bddfb0feffbfa01441c350aa0bb587b303ea1e59eeec94984f351b1c40144fe8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyDomainRead.class",
+      "bytes": 15354,
+      "sha256": "f7214605b758d9326f81cc392fa656d410d5373b710abb086e92bcf2daf2bda0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyEducationRead$OrdinaryRead.class",
+      "bytes": 1479,
+      "sha256": "32ad3b361dd96c730c6f791d2584377e0d04e3086c48734be974294ec6f828f5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyEducationRead.class",
+      "bytes": 11654,
+      "sha256": "ff2c71999c037c4cc2194b5136c8cb35c18340e28000b89cbf0ae788e97be229"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyHeirLegalityRead.class",
+      "bytes": 11944,
+      "sha256": "a1ec121ccfd003e1b79089c538f818f57c12ca446163777c1f6fdbe1736dfa6d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Projected.class",
+      "bytes": 970,
+      "sha256": "88c0d7e27075bf5eb53029e81014b8e3349472c0589722c4f550c5458fbfef22"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Qualified.class",
+      "bytes": 1825,
+      "sha256": "e48adce85a6284ab2c8666621ec3562e2e07a1717da33d18ae09d9a09b5acdd7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Query.class",
+      "bytes": 1004,
+      "sha256": "475a47d8490a43bf222d57092e0b54627f474acaae874b8270d1babe873049e6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Source.class",
+      "bytes": 533,
+      "sha256": "e36985f1cf5976f8877cb7f98eef34b6bbfe56ca208ff2ada58870aebbb85f85"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Unmigrated.class",
+      "bytes": 2644,
+      "sha256": "62308399e2ab41b23e32361fa7f266b59deee84cc408fe3157b61c18f0ab0137"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext.class",
+      "bytes": 9998,
+      "sha256": "e37d2cf28bf035948ae7456ad80749c217e7041f7daffec5c32a7ce745b83659"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyMarriageProjectionRead$1.class",
+      "bytes": 2682,
+      "sha256": "c4a11c5b03b1210ea6dffbc284964b7d77c2655a336ea38e3eda8d76418edeb0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyMarriageProjectionRead.class",
+      "bytes": 11573,
+      "sha256": "58eaf8a09d91d99b971771825301557b68763a4f02538532e9c9025c54e9d93f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$1.class",
+      "bytes": 1637,
+      "sha256": "3eeab27427d3488c7e54932fb8383fffcc78f6f715a650b880670dd5bd673ab2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$2.class",
+      "bytes": 4253,
+      "sha256": "2439f45b78d775e0da5f274ac639de6d84678ca9c599798cc86f56ac27bef945"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$3.class",
+      "bytes": 1157,
+      "sha256": "0b033bcbca534c282e595e312ba08cb2b991b814d94da027c8fd4ba85372c533"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$Source.class",
+      "bytes": 2124,
+      "sha256": "e4df6b5adc524ac4c6756c5071529bfb10eeedaaa4a361550571ec054218b906"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$Sources.class",
+      "bytes": 3815,
+      "sha256": "8bea03864189d81867595d29579c2693aa47ce804985cf163916393a326255bb"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts.class",
+      "bytes": 36629,
+      "sha256": "0cefbcc371f2bbaede76a0984ccbf43a409c739b0bea6b6c62b58e220350f498"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyReadProducts$Sources.class",
+      "bytes": 2608,
+      "sha256": "4cdff744f3fcc78ab419d5148851865deca02beff67bee06cdda3f6416600985"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyReadProducts.class",
+      "bytes": 18398,
+      "sha256": "786f661dd45f154c2dce8ef8b8e1213bad218e5ae71dfb1b4dd52be6e5d7a5f0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyResultRead$1.class",
+      "bytes": 1049,
+      "sha256": "8a5f8e1bebf66ed2d7de1fa3f0952e0e39ffa4cec37e4792907ae81e8a1f8479"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyResultRead.class",
+      "bytes": 19019,
+      "sha256": "872a884d319e9838c4c9445714954bfa455284fd464fe856947c4bbe1d2a6e30"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRootBoundRead$Arguments.class",
+      "bytes": 935,
+      "sha256": "5308bddb49d8d1b29ae699754522128639f3916385c0b73ace35aaf91e87b5ab"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRootBoundRead.class",
+      "bytes": 15121,
+      "sha256": "7ca5f19e2a494503addcac5272b0a12386fa25df821bf0426353cc5d78a9682d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRulerChoicesRead.class",
+      "bytes": 9924,
+      "sha256": "7853fab2228e86a34847d95ebe00957139f07195ce196dc59a8d2b14d51f3693"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Installed.class",
+      "bytes": 9396,
+      "sha256": "4a5a33f1f65dc65cf1927a2d40935ebdea34f08df32e8228af5c89ac33fc7f34"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$OrdinaryConfiguration.class",
+      "bytes": 2403,
+      "sha256": "d1a10fec35832e372516cd42679a80c1e6da56451c2e57a07517818f012c30d3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Prepared$Attempt.class",
+      "bytes": 2498,
+      "sha256": "5086d1bb3923a2d5d730223fbebece9d0e9501ffc1f1c9b80120a83fd0b54280"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Prepared.class",
+      "bytes": 16214,
+      "sha256": "d408e91341540317dfb99b73fac29e98803cef704be734055db393b72c7bf13e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Shared.class",
+      "bytes": 5169,
+      "sha256": "4175230a7b8248d5770894031f4dbd3e7d8c6721954f0b055828968f1535715f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Sources.class",
+      "bytes": 7020,
+      "sha256": "5ed6f45ab864ddfccf608540fff4c90af1c88a896d6ade2e75a27eaa3e3e3a0f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory.class",
+      "bytes": 1441,
+      "sha256": "8a0fe5eb1a6473342c0ca4b648e7b34717af8b4252e222f1ba822bcd18c79367"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootGuardianReconciliationReads.class",
+      "bytes": 30850,
+      "sha256": "cf4419963900618514670a98cb9b65c7dc525ba4cc37279cc4a742b0e2d2c0ce"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Attempt.class",
+      "bytes": 828,
+      "sha256": "b5dd4aa0990d1bbe1a2913d0bd0f81746f9789f8d5c84ecc20ab7655247fdc07"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Installed.class",
+      "bytes": 5843,
+      "sha256": "bdc76579eacddd2ba697e1e9f14ea7fc18384e5b528b656fe2f2c9ba7553262a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$OrdinaryConfiguration.class",
+      "bytes": 1743,
+      "sha256": "ca9f558f55b34d0b2ea46f8cd195d861b968fe9dfe892292aa757e94d3bfa4e8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$OrdinarySources.class",
+      "bytes": 3802,
+      "sha256": "982a06fdf0ea7f06018d0a937be599d31a81cf85fbbf3ae338818a0371c429f6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Prepared.class",
+      "bytes": 17950,
+      "sha256": "fdaf9e0f4cc8d46b5be7ede27d7554853e13abb350dd01aee4f8a57ea2bbc113"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Sources.class",
+      "bytes": 4827,
+      "sha256": "eece2b262509f83ebee978de2d233c45afd8117aff72a87486782d5bbc9ad0c9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory.class",
+      "bytes": 2947,
+      "sha256": "4d98f59974f71f22d4c853a88f0517d3d2d4367dee93d26d39d15a108469592b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootLoadedSavedResumeMain250$1.class",
+      "bytes": 1886,
+      "sha256": "7688fbb237b10a41dc79a75dc7dd7404981b3a084cb6d960267268317380a007"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootLoadedSavedResumeMain250.class",
+      "bytes": 35275,
+      "sha256": "0c6c41a953bbb3516a0c09419fabe6ad6c42ef11bc5c524464978f24126eba86"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryPlainProducts$Builder.class",
+      "bytes": 61660,
+      "sha256": "ce0c5058e251de98deece92a635470326a03ecc88befdb86dfb6a9654bda2b01"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryPlainProducts.class",
+      "bytes": 1611,
+      "sha256": "aaa3faa2c628ffd8b62f3215b8867c43f80c409c7cf98b2fbeb6013eb4241ee1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$1.class",
+      "bytes": 2435,
+      "sha256": "2e384d948dfb4f84eaaa02d8b29939527e67b69251e4565aaac31fa129fce5ca"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$BusinessRelease.class",
+      "bytes": 460,
+      "sha256": "683dc88bc77feec9e09e1db39f8b6f8e2a2865fc6d8a8e62c298ff15911f4a49"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$Opened.class",
+      "bytes": 30857,
+      "sha256": "8acb47b2e9d7d20254989e893241814b6cf30b138d2958f252cde235d4caa392"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$OperationPhase.class",
+      "bytes": 630,
+      "sha256": "bc4bdc2119e52b23769e23eb13295c2f3211b02e94b413ed0847e947bbb44080"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$OwnerWait.class",
+      "bytes": 486,
+      "sha256": "6d289afd4de87e126c08c7b5e080f92779220bc83d08a5c3845eac9eb365d75d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$Prepared$1.class",
+      "bytes": 2337,
+      "sha256": "b2de4d9a57fd4e69d940147364ed2ad49021816df946dd235563fa2e7ed4386a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$Prepared$1RetainedAdoption.class",
+      "bytes": 3112,
+      "sha256": "93050d65c35f3b2da326d82fe8229847e4228aaddb91f7ec03d2d6d71b3a5f09"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$Prepared.class",
+      "bytes": 109519,
+      "sha256": "285e649c638f68a2c937f8589133ce20e50440145d4af65bc709b79d123a6530"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$PreparedCleanupResult.class",
+      "bytes": 2386,
+      "sha256": "a924f1d917b2db0cec2e779a72e681c162a31a3feec40cdd167c582ebe961626"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly$Running.class",
+      "bytes": 1751,
+      "sha256": "06881300bd31154e8c65c9d59d2310ed470512069d1ad1bcda91dbf9f4b00620"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootOrdinaryRuntimeAssembly.class",
+      "bytes": 35540,
+      "sha256": "ebffb5dd825d208d8bcdb51b3e590ad6ce8881e786d95cf748868d20bddd0e6d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$AllowedRead.class",
+      "bytes": 8559,
+      "sha256": "32132af69275b858a745d0721ab15b62a1a869ea33730c3033750fe214b73e8d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$BasisRole.class",
+      "bytes": 1403,
+      "sha256": "f09e37bf5d79e6ecfe7a98433369f19241cd20f1e1940b544249816771756f78"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$Lease.class",
+      "bytes": 6285,
+      "sha256": "ac03530d98af5cd83934ed349c53a225fda1fdb4a4208ce3ca91474cb47fa755"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$LeaseWork.class",
+      "bytes": 770,
+      "sha256": "733ee68a4745a1d9c6ab3db33214bcaafa9c73d2e922d000a18c169b79674c9e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$PublicWindowSnapshot.class",
+      "bytes": 2468,
+      "sha256": "a64c7a97d89c36f4f42b20e1c4d55d5a678fc1ff97dc0c42ade3bd3c5c5a730d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$PublicWindowWork.class",
+      "bytes": 844,
+      "sha256": "5c1f865395d82f0bdae22d1585eff17ccfc2ab62fd18c95dfca7aface6325575"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$QueryKind.class",
+      "bytes": 2050,
+      "sha256": "2b75bd68f93db6a8cc2867daeba7722698a9f9c811ff9da9cb1547042456426a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$QueryPolicy.class",
+      "bytes": 1282,
+      "sha256": "37bd2c1a2304988a553a9c1edd2a5a7b5a9bcfb65e7efa4e4a464ee4e8b7eb22"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$RawUnavailable.class",
+      "bytes": 781,
+      "sha256": "d46f12f479a9fca96f3d6324710f7ea270c32187624cc501dfde20017cf49d66"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$Scope.class",
+      "bytes": 2763,
+      "sha256": "8654b2b0ab7b803a791e4e665936f8d9b0982f08e632293f3be4b98372ef63c7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority.class",
+      "bytes": 87066,
+      "sha256": "cbdd55929379f1c22df994d4d856c3fd38fc462335aa5dd059af5ae4ca2a2ccd"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeCatalogFactory$Attempt.class",
+      "bytes": 679,
+      "sha256": "e0bc1173798f5612976cfacb5dc92b48a0f62de79940474019c23617071dafd1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeCatalogFactory$HistoricalPackage.class",
+      "bytes": 2322,
+      "sha256": "cbeeb02be41f6cb6c4f744e10cec19fa915b3c9c5b25d0ad3edcae32e17abeda"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeCatalogFactory$MilitarySources.class",
+      "bytes": 5850,
+      "sha256": "3ee4459a9cb91b3eed7a6615128be2c08b4eb5ea1aed744cae391f2dbf28ff38"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeCatalogFactory$Sources.class",
+      "bytes": 22129,
+      "sha256": "46fea2beaf20ab417fcba18914091a622897bf84cd2d3a815965d73ce9558e5f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeCatalogFactory.class",
+      "bytes": 53772,
+      "sha256": "198fef814b95bbe244eb117dcd61a8d8bf255b4dbee366bb0638138ec326e441"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$Attempt.class",
+      "bytes": 903,
+      "sha256": "10c8d2711d5d7d57c51d9516882cff70544426839e139639c5423d82e9bffb72"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$Installed.class",
+      "bytes": 30243,
+      "sha256": "dbd39c4418e00b075fb94b89cfd31071a4bedfce0934898e6157f6510baf4633"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$OrdinaryFamilyConfiguration.class",
+      "bytes": 3597,
+      "sha256": "220203cb8da3fd05187961c3fe8292ae3324b3a94598c879f2a03475aa87aff4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$OrdinaryFamilyProducts.class",
+      "bytes": 3351,
+      "sha256": "d3edbfe2f6be4f9283d9b8fbcbb8f92e1e3fa720d53dd70924c1ab62df2d778e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$OrdinaryFamilySources.class",
+      "bytes": 3411,
+      "sha256": "0c738dc27a6e6ae1cdcb60e2fe51370b21db035d1978ac26e88ba23b6128505f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$PlannerLink.class",
+      "bytes": 3154,
+      "sha256": "83d6d00fdde92d47aef8742b5621195bfd787f6e305df483224ef32212d35f71"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$PolicySources.class",
+      "bytes": 2308,
+      "sha256": "08396ad7777f3aa0759d1d8fd4a3866c94215c88d8dd530b12ace683a2216616"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$Prepared.class",
+      "bytes": 38385,
+      "sha256": "d9ae3feda4854521a6202acef14e31defc550f43d17f3722a4448efd1e5081ee"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$Shared.class",
+      "bytes": 8702,
+      "sha256": "48891df96dcab73841c44c9890021bc4d12d9518105088ab93dc9d8ba538a7e2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$SwayFresh.class",
+      "bytes": 1417,
+      "sha256": "8e7e224953b62d4650f42b6484ad6254b75b4d4e8a0ca73480bb6b6fc85bf06a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$SwayInitialization.class",
+      "bytes": 548,
+      "sha256": "f277f5ec84604557ba3e7af1fb3cc21fc8fdcfc7cf3d4295d3fd56d706cdfd3a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly$SwayOriginals.class",
+      "bytes": 2787,
+      "sha256": "4a2a9b23a713a887faf593611f5b0a51fe39b3fff41ce7df2c777b28f0a1ac14"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeDomainAssembly.class",
+      "bytes": 6289,
+      "sha256": "64bc0591de1d9fb003f6b144a0b185c49593443884f0df21110c516217f49487"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$ActivityConfiguration.class",
+      "bytes": 4920,
+      "sha256": "bb6c16a29211239d23605bee6386d5769b345663cd3a7c592f69f5c66f60cf06"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$ArmyConfiguration.class",
+      "bytes": 3756,
+      "sha256": "4a18692936411ad7bd93fec426b6072fb73db1a7b971180a774e840e94e62a97"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$FrontendConfiguration.class",
+      "bytes": 5405,
+      "sha256": "5563739dfa66e980f325881a777734df6e3a2c6a91b6701bc1491c3377728d0d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$GovernanceConfiguration.class",
+      "bytes": 4004,
+      "sha256": "74afe7259379f92d1876be254087ea5e8920f9957bae5bde835e3765512e9959"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryConfiguration.class",
+      "bytes": 12944,
+      "sha256": "02b8328eb63797af2172128a5f724061de597c088cee5e80f61e75d38b45d39f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryDomainConfiguration.class",
+      "bytes": 13619,
+      "sha256": "34e6c3dbd86b2f98ad4b24486ae1926489ae3cbb7611a7d0ac4335cee82c3d6e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryDomainProducts.class",
+      "bytes": 3334,
+      "sha256": "d6dfe0f6324464383b79adfa22763329d78fc28f3f96274dc21b1f12e5eb2f41"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryPrepared.class",
+      "bytes": 2611,
+      "sha256": "9a5755ca1c3321501af6e850b57cddbf758d7a69637405800cb2ce078b92ed9e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryRuntimePorts.class",
+      "bytes": 4033,
+      "sha256": "772940f5b1a6ee5b572b24680f012e44ade63979cd981c5342bc552728d6cadf"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$PlainConfiguration.class",
+      "bytes": 13680,
+      "sha256": "fa73595f5544cb4694b19818552d8f63a6ebf791efd381f0557a5f748a8aa0aa"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$PlainPrepared.class",
+      "bytes": 5230,
+      "sha256": "eac0bbaea4021e51bb8313c2eeeac9042779b8e8b054204254cc759f6c8c65da"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$Prepared.class",
+      "bytes": 3903,
+      "sha256": "ae6963969a3c1ce483751db19b09c3f4af72c66e784361d0c2b85d8dfbfb8d00"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$RequiredSource.class",
+      "bytes": 2815,
+      "sha256": "592e9ba10da37421714fc3b24f7f009f6789076c8a8512d99ae7e856686b1116"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts.class",
+      "bytes": 86213,
+      "sha256": "9e94093744e9508f0d19400952eaae674b1a768c1b14ea6729e0cfbba52760fc"
+    }
+  ],
+  "initial_argument_failure": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/javac05.json",
+    "bytes": 631,
+    "sha256": "96fb23c722deed07cfb4a56d76b98ed88de9292a0a4d9a0b94dbb5374f1e7030"
+  },
+  "argument_repair": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/joint-consumer04/ARGUMENT-REPAIR01.json",
+    "bytes": 773,
+    "sha256": "fedb1206465baf5fb4bdb13f422a9c66ac307902f304e5b03d336be713ff1433"
+  },
+  "winner": "RootOrdinaryPlainProducts from Q12 qualified candidate; eight interaction patches never edit it; removed only the unchanged older duplicate consumer source",
+  "tests_repeated": false,
+  "scoped_tests": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/ORDINARY-PRIMITIVE40-SOFTWARE-READY03.json",
+      "bytes": 61998,
+      "sha256": "0d60026bc698bb36175428db658ee1c5abd2a9ec8e1d102bff4d1a9a2d41cedf"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/FRESH-LOADED-SAVED-ENTRY6-SOFTWARE-READY01.json",
+      "bytes": 6270,
+      "sha256": "b02849d3c85c0045f1552a8dc4273bab6d5ec277874b80fa331242827334ab3a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/PLAIN-INTERACTION53-SOFTWARE-READY03.json",
+      "bytes": 57350,
+      "sha256": "025194981e3161b3f49fa7aeb7a04404ee14fdb829ed7ab8e4ebfb951e00f3d2"
+    }
+  ],
+  "actual_Root_ready": false,
+  "whole_SERVICE": false,
+  "latest_user_offline_only": true
+}

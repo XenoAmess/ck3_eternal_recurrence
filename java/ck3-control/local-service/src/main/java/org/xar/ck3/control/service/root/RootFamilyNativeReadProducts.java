@@ -35,7 +35,7 @@ public final class RootFamilyNativeReadProducts {
     private final RootFamilyFreshRootAdmission rootAdmission;
     private final InteractionCapabilities interactions;
     private final InteractionCapabilities.Installation interactionInstallation;
-    private final RootInteractionContextProjection projection;
+    private final RootFamilyInteractionContext projection;
     private final FamilyCurrentRelationQueries relation;
     private final FamilyMarriageProjectionQueries heirValues;
     private final FamilyChildMarriageQueries children;
@@ -49,6 +49,10 @@ public final class RootFamilyNativeReadProducts {
 
     public RootFamilyNativeReadProducts(RootRuntimeContext context,Sources sources,InteractionCapabilities sameInteractions,InteractionCapabilities.Installation sameInstallation,
             RootInteractionContextProjection sameProjection,RootFamilyCampaignRead sameRoot,Path actualOwnedExportRoot)throws IOException {
+        this(context,sources,sameInteractions,sameInstallation,RootFamilyInteractionContext.qualified(sameProjection),sameRoot,actualOwnedExportRoot);
+    }
+    public RootFamilyNativeReadProducts(RootRuntimeContext context,Sources sources,InteractionCapabilities sameInteractions,InteractionCapabilities.Installation sameInstallation,
+            RootFamilyInteractionContext sameProjection,RootFamilyCampaignRead sameRoot,Path actualOwnedExportRoot)throws IOException {
         this.context=Objects.requireNonNull(context);Objects.requireNonNull(sources);
         interactions=Objects.requireNonNull(sameInteractions);projection=Objects.requireNonNull(sameProjection);root=Objects.requireNonNull(sameRoot);rootAdmission=new RootFamilyFreshRootAdmission(root);
         interactionInstallation=Objects.requireNonNull(sameInstallation);interactions.requireInstallation(interactionInstallation);
@@ -101,7 +105,8 @@ public final class RootFamilyNativeReadProducts {
         actual.requireInstallation(same);
     }
     public InteractionCapabilities interactions(){return interactions;}
-    public RootInteractionContextProjection contextProjection(){return projection;}
+    public RootInteractionContextProjection contextProjection(){return projection.requireProjection();}
+    public RootFamilyInteractionContext contextReads(){return projection;}
     public RootFamilyDomainReadAuthority domainAuthority(){return domains;}
     public void requireContext(RootRuntimeContext actual) {StrictJson.require(context==actual,"native family products crossed physical Game context");}
     public void requireOwner(RootApplicationSession actual) {
@@ -116,7 +121,7 @@ public final class RootFamilyNativeReadProducts {
                 &&context.readCatalog().containsIdentity(interactionInstallation.marriageChoices()),
                 "public family choices require this actual Game/source and identical installed marriage contract");
         interactions.requireInstallation(interactionInstallation);
-        return interactions.queryArrangeMarriageChoices(projection.project(actual,deadline));
+        return projection.query(actual,deadline,interactions::queryArrangeMarriageChoices);
     }
 
     public synchronized void requireComplete(RootFamilyReadProducts actual) {StrictJson.require(complete==actual,"fresh preparation must consume this identical complete family read product");}
@@ -127,7 +132,7 @@ public final class RootFamilyNativeReadProducts {
         StrictJson.require(lease.frame().identity().equals(command.before())&&lease.frame().source().equals(command.source())
                 &&lease.frame().sessionId().equals(command.sessionId())&&context.readCatalog().containsIdentity(interactionInstallation.marriageChoices()),
                 "public ruler preparation lost its actual held gameplay source or identical native contract");
-        var actual=projection.project(lease.frame(),command.deadline());var result=interactions.queryArrangeMarriageChoices(actual);
+        var result=projection.query(lease.frame(),command.deadline(),interactions::queryArrangeMarriageChoices);
         if(!(result instanceof PlanningReadResult.Known<InteractionModels.MarriageChoices> known))throw new IOException("actual fresh public ruler choices unavailable");
         var projected=FamilyMarriageChoicesProjection.project(known);return new FamilyPorts.ObservedRead(projected.value(),projected.receipt(),projected.originalReceipt());
     }

@@ -25,9 +25,29 @@ public final class GuardianOutgoingInstaller {
             OrdinaryClaimDomain actualClaims,ActionPorts.OutcomeArchive sameArchive,NativeEffectEvidence.FrameLoader actualFrames,
             Supplier<ContinuityStorePort.Session> actualSession,ExactRef actualEffectsSource,ExactRef actualDecoderSource,
             GuardianReconciliationQueries actualReconciliation) {
+        this(actualCurrentTransport,soleReads,actualRegisteredQuery,actualClaims,sameArchive,actualFrames,actualSession,
+                actualEffectsSource,actualDecoderSource,actualReconciliation,
+                OrdinaryInitiationPreparation.heldFrames(actualCurrentHeld,new RootInteractionContextProjection(actualQualifiedBuild),sameArchive,actualFrames));
+    }
+    /** Separate real live context reads from the original historical projection; no current Build is invented. */
+    public static GuardianOutgoingInstaller withLiveContextReads(Supplier<NativeGameTransport> actualCurrentTransport,
+            Supplier<HeldDriverObservationPort> actualCurrentHeld,OrdinaryInitiationPreparation.LiveContextReads actualLiveReads,
+            OrdinaryInitiationPreparation.SourceBoundProjection originalProjection,
+            PlanningReadPort soleReads,ReadContract<OrdinaryContext> actualRegisteredQuery,
+            OrdinaryClaimDomain actualClaims,ActionPorts.OutcomeArchive sameArchive,NativeEffectEvidence.FrameLoader actualFrames,
+            Supplier<ContinuityStorePort.Session> actualSession,ExactRef actualEffectsSource,ExactRef actualDecoderSource,
+            GuardianReconciliationQueries actualReconciliation) {
+        return new GuardianOutgoingInstaller(actualCurrentTransport,soleReads,actualRegisteredQuery,actualClaims,sameArchive,
+                actualFrames,actualSession,actualEffectsSource,actualDecoderSource,actualReconciliation,
+                OrdinaryInitiationPreparation.heldFramesWithContextReads(actualCurrentHeld,actualLiveReads,originalProjection,
+                        sameArchive,actualFrames));
+    }
+    private GuardianOutgoingInstaller(Supplier<NativeGameTransport> actualCurrentTransport,
+            PlanningReadPort soleReads,ReadContract<OrdinaryContext> actualRegisteredQuery,OrdinaryClaimDomain actualClaims,
+            ActionPorts.OutcomeArchive sameArchive,NativeEffectEvidence.FrameLoader actualFrames,
+            Supplier<ContinuityStorePort.Session> actualSession,ExactRef actualEffectsSource,ExactRef actualDecoderSource,
+            GuardianReconciliationQueries actualReconciliation,OrdinaryInitiationPreparation.Frames frames) {
         Objects.requireNonNull(actualSession); Objects.requireNonNull(actualEffectsSource); Objects.requireNonNull(actualDecoderSource);
-        var projection=new RootInteractionContextProjection(actualQualifiedBuild);
-        var frames=OrdinaryInitiationPreparation.heldFrames(actualCurrentHeld,projection,sameArchive,actualFrames);
         reconciliation=Objects.requireNonNull(actualReconciliation);reconciliation.requireOrdinary(actualRegisteredQuery);
         effects=new GuardianOutgoingEffects(soleReads,actualRegisteredQuery,actualClaims,actualFrames,reconciliation);
         preparation=new OrdinaryInitiationPreparation(actualCurrentTransport,soleReads,actualRegisteredQuery,frames,actualClaims,sameArchive,effects);

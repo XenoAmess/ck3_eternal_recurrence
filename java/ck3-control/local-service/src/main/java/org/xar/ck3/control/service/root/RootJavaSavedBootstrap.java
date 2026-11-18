@@ -4,6 +4,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.time.Clock;
+import java.math.BigInteger;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import org.xar.ck3.control.build.SharedSourceFiles;
+import org.xar.ck3.control.contracts.FileStatIdentity;
+import org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,27 +60,28 @@ public final class RootJavaSavedBootstrap {
         Objects.requireNonNull(sourceCore);Objects.requireNonNull(actualFiles);Objects.requireNonNull(pair);
         StrictJson.text(originalPipeName);
         var writer=sourceCore.writer();
+        var sourceFiles=new PreReadCheckpointFiles(actualFiles);
         var snapshots=new DriverCheckpointStore.SnapshotSupplier() {
             @Override public <T>T withFrozen(DriverCheckpointStore.SnapshotWork<T> unused)throws IOException {
                 throw new IOException("confirmed historical source factory cannot publish a Driver or submit SAVE");
             }
         };
-        var drivers=new DriverCheckpointStore(actualFiles,Path.of(pair.driver().reference().path()),originalPipeName,snapshots);
-        var saves=new CanonicalSaveReceiptVerifier(writer,sourceCore.actions(),sourceCore.archive(),actualFiles,drivers);
-        var verifier=new CheckpointCommitVerifier(actualFiles,drivers,
+        var drivers=new DriverCheckpointStore(sourceFiles,Path.of(pair.driver().reference().path()),originalPipeName,snapshots);
+        var saves=new CanonicalSaveReceiptVerifier(writer,sourceCore.actions(),sourceCore.archive(),sourceFiles,drivers);
+        var verifier=new CheckpointCommitVerifier(sourceFiles,drivers,
                 (same,owner,semantic)->sourceCore.semanticVerifier().verify(same,owner,semantic).materialDigest(),
                 writer.originalLockPath(),writer::requireSession,saves);
         long target=writer.locked(same->same.head().state().origin().targetDays());
         var cycles=new OrdinaryCycleTransitions(sourceCore.archive(),sourceCore.semanticVerifier()::verify,
                 verifier::verify,new OriginalWindowReducer.Policy(target),writer::requireSession);
         cycles.bindTerminalFrameLoader(sourceCore.frameLoader());
-        var store=new SavedAttachmentSourceStore(actualFiles,drivers,verifier,writer::borrowedSession,materialRoot,
+        var store=new SavedAttachmentSourceStore(sourceFiles,drivers,verifier,writer::borrowedSession,materialRoot,
                 cycles::verifyCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);
-        var firstVerifier=new org.xar.ck3.control.application.checkpoint.FirstCheckpointVerifier(actualFiles,drivers,
+        var firstVerifier=new org.xar.ck3.control.application.checkpoint.FirstCheckpointVerifier(sourceFiles,drivers,
                 (same,owner,semantic)->sourceCore.semanticVerifier().verify(same,owner,semantic).materialDigest(),
                 writer.originalLockPath(),writer::requireSession,saves);
         var firstStore=new org.xar.ck3.control.application.checkpoint.SavedFirstCheckpointMaterialStore(
-                actualFiles,firstVerifier,writer::borrowedSession,materialRoot.resolve("first"));
+                sourceFiles,firstVerifier,writer::borrowedSession,materialRoot.resolve("first"));
         var materials=new org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore(store,firstStore);
         return writer.locked(same->{
             writer.requireSession(same);
@@ -84,7 +92,7 @@ public final class RootJavaSavedBootstrap {
                     StrictJson.require(action.settled(),"confirmed saved source cannot erase an unresolved canonical action");
                 var actual=store.requalifyConfirmed(same,confirmation,pair);
                 var material=actual.requireCurrent(same);
-                return new ConfirmedSource(writer,store,actual,material,sourceCore.archive(),drivers,materials);
+                return new ConfirmedSource(writer,store,actual,material,sourceCore.archive(),drivers,materials,sourceFiles);
             });
         });
     }
@@ -99,14 +107,16 @@ public final class RootJavaSavedBootstrap {
         private final NativeOutcomeArchive sourceArchive;
         private final DriverCheckpointStore drivers;
         private final org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore materials;
+        private final PreReadCheckpointFiles sourceFiles;
         private ConfirmedSource(ContinuityWriter writer,SavedAttachmentSourceStore store,
                 SavedAttachmentSourceStore.RequalifiedConfirmed qualified,SavedAttachmentSourceStore.SavedMaterial material,
                 NativeOutcomeArchive sourceArchive,DriverCheckpointStore drivers,
-                org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore materials) {
+                org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore materials,PreReadCheckpointFiles sourceFiles) {
             this.writer=writer;this.store=store;this.qualified=qualified;this.material=material;
             this.savedDriverCanonical=material.savedDriver().encode();
             this.sourceArchive=Objects.requireNonNull(sourceArchive);
             this.drivers=Objects.requireNonNull(drivers);this.materials=Objects.requireNonNull(materials);
+            this.sourceFiles=Objects.requireNonNull(sourceFiles);
             StrictJson.require(sourceArchive.writer()==writer,"confirmed source archive must belong to the actual source writer");
         }
         public CheckpointPair pair(){return material.pair();}
@@ -168,11 +178,264 @@ public final class RootJavaSavedBootstrap {
                 });
             });
         }
+        /** The full unchanged source proof completes before any new native READ begins. */
+        private SourcePreReadProof preparePreRead(Clock clock,Instant expiry)throws IOException {
+            var checkpoints=sourceFiles.capture(clock,expiry);
+            SourcePreReadProof prepared=null;boolean detached=false;
+            try{
+                prepared=writer.locked(same->{
+                    writer.requireSession(same);ExactRef canonical=same.persistedHead();
+                    NativeOutcomeArchive.SavedPreReadReadSet<SavedAttachmentSourceStore.SavedMaterial> sealed=null;
+                    try{
+                        sealed=sourceArchive.sealSavedPreReadHistory(same,
+                                new ActionPorts.HistoricalReadLimits(8192,256L*1024*1024,16384),clock,expiry,
+                                ignored->org.xar.ck3.control.nativebridge.capabilities.army.ArmyQueryHistoryReference.inReplayReadScope(
+                                        new org.xar.ck3.control.nativebridge.capabilities.army.ArmyQueryHistoryReference.ReplayReadLimits(256,256L*1024*1024),
+                                        clock,expiry,original->sourceArchive.retainSavedPreReadArmyOriginal(same,original),()->{
+                            var current=qualified.requireCurrent(same);
+                            StrictJson.require(current.session().equals(material.session())&&current.pair().equals(material.pair())
+                                    &&current.witness().equals(material.witness())
+                                    &&Arrays.equals(current.savedDriver().encode(),savedDriverCanonical),
+                                    "Saved preRead changed its exact source-qualified Driver, pair or material witness");
+                            sourceFiles.verify(material.witness());sourceFiles.verify(pair());
+                            return current;
+                        }));
+                        return new SourcePreReadProof(this,sealed,checkpoints,canonical);
+                    }catch(IOException|RuntimeException|Error failure){closeAfterFailure(sealed,failure);throw failure;}
+                });
+                checkpoints.seal();sourceFiles.detach(checkpoints);detached=true;
+                prepared.requireCurrent();return prepared;
+            }catch(IOException|RuntimeException|Error failure){
+                if(!detached)try{sourceFiles.detach(checkpoints);}catch(IOException cleanup){failure.addSuppressed(cleanup);}
+                closeAfterFailure(prepared,failure);closeAfterFailure(checkpoints,failure);throw failure;
+            }
+        }
+
+    }
+
+
+    /** Exact raw-byte SHA-256 DATA; no checkpoint issuer or eligibility is created. */
+    private static String checkpointSha256(byte[] raw) {
+        try {
+            return java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(raw));
+        } catch (java.security.NoSuchAlgorithmException impossible) {
+            throw new IllegalStateException(impossible);
+        }
+    }
+
+    private static void rethrowCloseFailure(Throwable failure)throws IOException {
+        if(failure instanceof IOException problem)throw problem;
+        if(failure instanceof RuntimeException problem)throw problem;
+        if(failure instanceof Error problem)throw problem;
+        if(failure!=null)throw new IOException("Saved custody cleanup failed",failure);
+    }
+
+    private static void closeAfterFailure(AutoCloseable custody,Throwable primary) {
+        if(custody!=null)try{custody.close();}catch(Exception|Error cleanup){if(cleanup!=primary)primary.addSuppressed(cleanup);}
+    }
+
+    /** Captures every real checkpoint read while the unchanged historical proof runs. */
+    private static final class PreReadCheckpointFiles implements CheckpointFiles {
+        private final CheckpointFiles actual;
+        private final ThreadLocal<CheckpointReadSet> active=new ThreadLocal<>();
+        private PreReadCheckpointFiles(CheckpointFiles actual){this.actual=Objects.requireNonNull(actual);}
+        private CheckpointReadSet capture(Clock clock,Instant expiry)throws IOException {
+            if(active.get()!=null)throw new IOException("Saved checkpoint capture cannot nest");
+            var captured=new CheckpointReadSet(this,clock,expiry);active.set(captured);return captured;
+        }
+        private void detach(CheckpointReadSet captured)throws IOException {
+            if(active.get()!=captured)throw new IOException("Saved checkpoint capture lost its exact issuer");
+            active.remove();
+        }
+        private void failed(Throwable failure) {
+            var captured=active.get();if(captured!=null)captured.recordFailure(failure);
+        }
+        private void retain(CheckpointPair.FileWitness witness)throws IOException {
+            var captured=active.get();if(captured!=null)captured.retain(witness);
+        }
+        @Override public java.util.Optional<CheckpointPair.FileWitness> observe(Path path)throws IOException {
+            try{
+                var result=actual.observe(path);var captured=active.get();
+                if(captured!=null){
+                    if(result.isEmpty())throw captured.fail(new IOException("Saved preRead has an unheld absent checkpoint dependency"));
+                    captured.retain(result.orElseThrow());
+                }
+                return result;
+            }catch(IOException|RuntimeException|Error failure){failed(failure);throw failure;}
+        }
+        @Override public byte[] read(CheckpointPair.FileWitness expected,int maximum)throws IOException {
+            try{
+                retain(expected);byte[] raw=actual.read(expected,maximum);
+                if(raw.length!=expected.reference().bytes()
+                        ||!checkpointSha256(raw).equals(expected.reference().sha256()))
+                    throw new IOException("Saved preRead checkpoint producer returned different original bytes");
+                return raw;
+            }catch(IOException|RuntimeException|Error failure){failed(failure);throw failure;}
+        }
+        @Override public void verify(CheckpointPair.FileWitness expected)throws IOException {
+            try{retain(expected);actual.verify(expected);}
+            catch(IOException|RuntimeException|Error failure){failed(failure);throw failure;}
+        }
+        @Override public void verify(CheckpointPair pair)throws IOException {verify(pair.save());verify(pair.driver());}
+        private void requireNoCaptureWrites()throws IOException {
+            var captured=active.get();
+            if(captured!=null)throw captured.fail(new IOException("Saved historical preRead cannot publish checkpoint material"));
+        }
+        @Override public CheckpointPair.FileWitness replace(Path target,byte[] bytes)throws IOException {
+            requireNoCaptureWrites();return actual.replace(target,bytes);
+        }
+        @Override public CheckpointPair.FileWitness createNew(Path target,byte[] bytes)throws IOException {
+            requireNoCaptureWrites();return actual.createNew(target,bytes);
+        }
+        @Override public CheckpointPair.FileWitness copyNew(CheckpointPair.FileWitness source,Path target)throws IOException {
+            requireNoCaptureWrites();return actual.copyNew(source,target);
+        }
+        // The transparent adapter deliberately routes every proof read through this actual capture.
+        @Override public Verification beginVerification(CheckpointPair pair)throws IOException {
+            return CheckpointFiles.super.beginVerification(pair);
+        }
+    }
+
+    /** Independent OS handles survive the old Session, never its mutable scope or a byte-only cache. */
+    private static final class CheckpointReadSet implements AutoCloseable {
+        private static final int MAXIMUM_FILES=256;
+        private static final long MAXIMUM_BYTES=256L<<20;
+        private static final BigInteger UNIX_EPOCH_FILETIME=new BigInteger("116444736000000000");
+        private final PreReadCheckpointFiles issuer;
+        private final Thread thread=Thread.currentThread();
+        private final Clock clock;
+        private final Instant expiry;
+        private final Map<ExactRef,HeldCheckpoint> held=new LinkedHashMap<>();
+        private long bytes;
+        private boolean sealed;
+        private volatile boolean closed;
+        private volatile Throwable firstFailure;
+        private Throwable closeFailure;
+        private synchronized void recordFailure(Throwable failure){if(firstFailure==null)firstFailure=failure;}
+        private CheckpointReadSet(PreReadCheckpointFiles issuer,Clock clock,Instant expiry)throws IOException {
+            this.issuer=issuer;this.clock=Objects.requireNonNull(clock);this.expiry=Objects.requireNonNull(expiry);live();
+        }
+        private IOException fail(IOException failure){recordFailure(failure);return failure;}
+        private void live()throws IOException {
+            if(Thread.currentThread()!=thread||closed||firstFailure!=null||!clock.instant().isBefore(expiry))
+                throw fail(new IOException("Saved checkpoint readset lost its original thread, lifetime or finite expiry",firstFailure));
+        }
+        private void retain(CheckpointPair.FileWitness witness)throws IOException {
+            try{
+                live();if(sealed||issuer.active.get()!=this)throw new IOException("Saved checkpoint dependency arrived after sealing");
+                var prior=held.get(witness.reference());
+                if(prior!=null){prior.requireCurrent(witness);return;}
+                long size=witness.reference().bytes();
+                if(size<1||size>MAXIMUM_BYTES-bytes||held.size()>=MAXIMUM_FILES)
+                    throw new IOException("Saved checkpoint readset exceeds its finite physical custody bounds");
+                var lease=IdentityBearingFileAttributes.leaseBoundedWindows(Path.of(witness.reference().path()),Math.toIntExact(size));
+                boolean kept=false;Throwable failure=null;
+                try{
+                    var original=lease.originalRead();
+                    String sha=checkpointSha256(original.bytes());
+                    var captured=new HeldCheckpoint(witness,lease,sha);captured.requireCurrent(witness);
+                    lease.releaseOriginalBytes();held.put(witness.reference(),captured);bytes=Math.addExact(bytes,size);kept=true;
+                }catch(IOException|RuntimeException|Error problem){failure=problem;throw problem;}
+                finally{if(!kept)try{lease.close();}catch(IOException|RuntimeException|Error cleanup){
+                    if(failure!=null)failure.addSuppressed(cleanup);else throw cleanup;}}
+            }catch(IOException failure){throw fail(failure);}
+            catch(RuntimeException|Error failure){recordFailure(failure);throw failure;}
+        }
+        private void seal()throws IOException {
+            live();if(sealed||issuer.active.get()!=this||held.isEmpty())throw fail(new IOException("Saved checkpoint readset was not actually captured"));
+            requireCurrent(false);sealed=true;
+        }
+        private void requireCurrent()throws IOException {requireCurrent(true);}
+        private void requireCurrent(boolean requireSealed)throws IOException {
+            try{
+                live();if(requireSealed&&!sealed)throw new IOException("Saved checkpoint readset is not sealed");
+                for(var entry:held.values())entry.requireCurrent(entry.expected);
+                live();
+            }catch(IOException failure){throw fail(failure);}
+            catch(RuntimeException|Error failure){recordFailure(failure);throw failure;}
+        }
+        @Override public void close()throws IOException {
+            if(closed){if(closeFailure!=null)throw new IOException("Saved custody cleanup remains unconfirmed",closeFailure);return;}
+            if(Thread.currentThread()!=thread)throw fail(new IOException("Saved checkpoint readset close crossed its owner thread"));
+            Throwable failure=null;
+            for(var entry:new ArrayList<>(held.values()).reversed())try{entry.lease.close();}
+            catch(IOException|RuntimeException|Error cleanup){if(failure==null)failure=cleanup;else if(cleanup!=failure)failure.addSuppressed(cleanup);}
+            held.clear();closeFailure=failure;if(failure!=null)recordFailure(failure);closed=true;
+            rethrowCloseFailure(closeFailure);
+        }
+        private static final class HeldCheckpoint {
+            private final CheckpointPair.FileWitness expected;
+            private final IdentityBearingFileAttributes.ReadOnlyLease lease;
+            private final String sha;
+            private HeldCheckpoint(CheckpointPair.FileWitness expected,IdentityBearingFileAttributes.ReadOnlyLease lease,String sha){
+                this.expected=expected;this.lease=lease;this.sha=sha;
+            }
+            private void requireCurrent(CheckpointPair.FileWitness supplied)throws IOException {
+                if(!expected.equals(supplied))throw new IOException("Saved checkpoint dependency changed its original witness");
+                Path path=Path.of(expected.reference().path());SharedSourceFiles.plainAncestors(path);
+                SharedSourceFiles.NativeFile current=SharedSourceFiles.nativeFile(path);lease.verifyCurrent();
+                String nanos=new BigInteger(current.lastWriteFiletimeDecimal()).subtract(UNIX_EPOCH_FILETIME)
+                        .multiply(BigInteger.valueOf(100)).toString();
+                var projected=new CheckpointPair.FileWitness(new ExactRef(expected.reference().path(),current.logicalBytes(),sha),
+                        new FileStatIdentity(BigInteger.valueOf(current.logicalBytes()),current.fileIdDecimal(),nanos));
+                if(!projected.equals(expected))throw new IOException("Saved checkpoint HANDLE/path/identity or original hash changed");
+            }
+        }
+    }
+
+    /** Private source issuer plus independently held archive and checkpoint closures, with no old Session retained. */
+    private static final class SourcePreReadProof implements AutoCloseable {
+        private final ConfirmedSource source;
+        private final NativeOutcomeArchive.SavedPreReadReadSet<SavedAttachmentSourceStore.SavedMaterial> archive;
+        private final CheckpointReadSet checkpoints;
+        private final ExactRef canonicalHead;
+        private final Thread thread=Thread.currentThread();
+        private volatile boolean closed;
+        private volatile Throwable firstFailure;
+        private Throwable closeFailure;
+        private synchronized void recordFailure(Throwable failure){if(firstFailure==null)firstFailure=failure;}
+        private SourcePreReadProof(ConfirmedSource source,
+                NativeOutcomeArchive.SavedPreReadReadSet<SavedAttachmentSourceStore.SavedMaterial> archive,
+                CheckpointReadSet checkpoints,ExactRef canonicalHead){
+            this.source=source;this.archive=archive;this.checkpoints=checkpoints;this.canonicalHead=canonicalHead;
+        }
+        private void requireSourceSession(ContinuityStorePort.Session same)throws IOException {
+            if(closed||firstFailure!=null)throw new IOException("Saved source preRead custody is closed or already failed",firstFailure);
+            source.writer.requireSession(same);
+            StrictJson.require(canonicalHead.equals(same.persistedHead()),"Saved preRead source canonical head changed");
+            archive.requireCurrent(source.sourceArchive,same);checkpoints.requireCurrent();
+            StrictJson.require(canonicalHead.equals(same.persistedHead()),"Saved source changed during retained physical revalidation");
+        }
+        private void requireCurrent()throws IOException {
+            try{source.writer.locked(same->{requireSourceSession(same);return null;});}
+            catch(IOException|RuntimeException|Error failure){recordFailure(failure);throw failure;}
+        }
+        private void requireCurrent(ContinuityStorePort.Session newSame)throws IOException {
+            try{source.writer.readOnlyFrom(newSame,same->{requireSourceSession(same);return null;});}
+            catch(IOException|RuntimeException|Error failure){recordFailure(failure);throw failure;}
+        }
+        @Override public void close()throws IOException {
+            if(closed){if(closeFailure!=null)throw new IOException("Saved custody cleanup remains unconfirmed",closeFailure);return;}
+            if(Thread.currentThread()!=thread){
+                var failure=new IOException("Saved source custody close crossed its owner thread");
+                recordFailure(failure);throw failure;
+            }
+            Throwable failure=null;
+            try{archive.close();}catch(IOException|RuntimeException|Error problem){failure=problem;}
+            try{checkpoints.close();}catch(IOException|RuntimeException|Error problem){if(failure==null)failure=problem;else if(failure!=problem)failure.addSuppressed(problem);}
+            closeFailure=failure;if(failure!=null)recordFailure(failure);closed=true;
+            rethrowCloseFailure(closeFailure);
+        }
     }
 
     /** The new managed creator, two genuine independent READs and the exact new writer are all required. */
     public static Admission admit(ConfirmedSource source,RootRuntimeContext context,JavaGameLifecycle creator,
             JavaGameLifecycle.Started started,Instant deadline)throws IOException,InterruptedException {
+        return admit(source,context,creator,started,deadline,null);
+    }
+    /** Explicit mapped path binds policy to the actual retained Native source/clone custody. */
+    public static Admission admit(ConfirmedSource source,RootRuntimeContext context,JavaGameLifecycle creator,
+            JavaGameLifecycle.Started started,Instant deadline,org.xar.ck3.control.application.driver.InitialEpisodePolicy policy)throws IOException,InterruptedException {
         Objects.requireNonNull(source);Objects.requireNonNull(context);Objects.requireNonNull(creator);
         Objects.requireNonNull(started);Objects.requireNonNull(deadline);
         var game=context.game();
@@ -187,13 +450,20 @@ public final class RootJavaSavedBootstrap {
         source.requireCurrent();game.verify();
         Path evidence=game.launchPlan().evidenceRoot().resolve("java-confirmed-saved-"+UUID.randomUUID());
         RootProcessAttach.Custody actual=RootProcessAttach.retain(creator,started,source.pair(),evidence,deadline);
+        if(policy!=null)try{policy.requireInitialSavedProjection(game.launchPlan(),source.pair().save(),actual.savedClone());}
+        catch(IOException|RuntimeException|Error problem){try{actual.close();}catch(IOException closing){problem.addSuppressed(closing);}throw problem;}
         return completeAdmission(source,context,proof(actual),deadline);
     }
 
     public static Admission admitLoaded(ConfirmedSource source,RootRuntimeContext context,RootProcessAttach.LoadedCustody actual,
             Instant deadline)throws IOException,InterruptedException {
+        return admitLoaded(source,context,actual,deadline,null);
+    }
+    public static Admission admitLoaded(ConfirmedSource source,RootRuntimeContext context,RootProcessAttach.LoadedCustody actual,
+            Instant deadline,org.xar.ck3.control.application.driver.InitialEpisodePolicy policy)throws IOException,InterruptedException {
         Objects.requireNonNull(source);Objects.requireNonNull(context);Objects.requireNonNull(actual);Objects.requireNonNull(deadline);
         var game=context.game();
+        if(policy!=null)policy.requireInitialSavedProjection(game.launchPlan(),source.pair().save(),actual.savedClone());
         StrictJson.require(game==actual.game()&&game.mode()==ManagedGameSession.Mode.ATTACHED
                 &&actual.pair().equals(source.pair())&&source.writer!=context.writer()
                 &&!source.writer.originalLockPath().equals(context.writer().originalLockPath())
@@ -207,13 +477,20 @@ public final class RootJavaSavedBootstrap {
     private interface PhysicalProof extends AutoCloseable {
         void requireCurrent()throws IOException;
         void requireEvidence()throws IOException;
+        void requireInitialClone()throws IOException;
         void releasePreparation()throws IOException;
         @Override void close()throws IOException;
+    }
+    /** Pre-live physical DATA only; never reopens owner preparation or extends a Game deadline. */
+    private static void requireInitialClone(NativeLaunchPlan same,CheckpointPair.FileWitness original,
+            org.xar.ck3.control.platform.NativeSavedGameClone.Observation actual)throws IOException {
+        Objects.requireNonNull(actual).requireCurrent(same,original);
     }
     private static PhysicalProof proof(RootProcessAttach.Custody actual) {
         return new PhysicalProof() {
             public void requireCurrent()throws IOException{actual.requireCurrent();}
             public void requireEvidence()throws IOException{actual.requireEvidence();}
+            public void requireInitialClone()throws IOException{RootJavaSavedBootstrap.requireInitialClone(actual.game().launchPlan(),actual.pair().save(),actual.savedClone());}
             public void releasePreparation()throws IOException{actual.releasePreparation();}
             public void close()throws IOException{actual.close();}
         };
@@ -222,13 +499,16 @@ public final class RootJavaSavedBootstrap {
         return new PhysicalProof() {
             public void requireCurrent()throws IOException{actual.requireCurrent();}
             public void requireEvidence()throws IOException{actual.requireEvidence();}
+            public void requireInitialClone()throws IOException{RootJavaSavedBootstrap.requireInitialClone(actual.game().launchPlan(),actual.pair().save(),actual.savedClone());}
             public void releasePreparation()throws IOException{actual.releasePreparation();}
             public void close()throws IOException{actual.close();}
         };
     }
     private static Admission completeAdmission(ConfirmedSource source,RootRuntimeContext context,PhysicalProof physical,
             Instant deadline)throws IOException,InterruptedException {
+        SourcePreReadProof preRead=null;
         try {
+            preRead=source.preparePreRead(context.clock(),deadline);var sourceProof=preRead;
             var first=fresh(context,deadline);var second=fresh(context,deadline);
             NativeFreshSnapshotPort.verifyAfter(first.acknowledgement(),second);
             requireRaw(source,context,first);requireRaw(source,context,second);
@@ -254,7 +534,7 @@ public final class RootJavaSavedBootstrap {
                         + "; first_native_revision=" + first.originalFrame().nativeRevision()
                         + "; second_native_revision=" + second.originalFrame().nativeRevision(), failure);
             }
-            source.requireCurrent();physical.requireCurrent();
+            sourceProof.requireCurrent();physical.requireCurrent();
             return context.withSession(same->{
                 context.writer().requireSession(same);var head=same.head();
                 StrictJson.require(head.state().status()==ContinuityState.Status.AWAITING_INITIAL_ENTRY,
@@ -270,18 +550,19 @@ public final class RootJavaSavedBootstrap {
                 var pins=new ArrayList<WriterContracts.Pin>();
                 for(var ref:refs){var pin=same.capturePin(ref,Math.toIntExact(ref.bytes()));same.verifyPin(pin);pins.add(pin);}
                 StrictJson.require(head.digest().equals(same.head().digest()),"saved admission preparation changed the new writer head");
-                return new Admission(source,context,physical,first,second,qualification,head,savedState,sourceHead,List.copyOf(pins),deadline);
+                return new Admission(source,context,physical,sourceProof,first,second,qualification,head,savedState,sourceHead,List.copyOf(pins),deadline);
             });
         }catch(IOException|RuntimeException|Error|InterruptedException failure) {
-            try{physical.close();}catch(IOException cleanup){failure.addSuppressed(cleanup);}throw failure;
+            closeAfterFailure(preRead,failure);closeAfterFailure(physical,failure);throw failure;
         }
     }
 
     /** Private new-daemon capability, with separate precommit and retained actual-entry phases. */
-    public static final class Admission {
+    public static final class Admission implements AutoCloseable {
         private final ConfirmedSource source;
         private final RootRuntimeContext context;
         private final PhysicalProof physical;
+        private final SourcePreReadProof sourceProof;
         private final NativeFreshSnapshotPort.Received first,second;
         private final NativeReadinessCollector.SourceQualification qualification;
         private final WriterContracts.Head before;
@@ -290,11 +571,11 @@ public final class RootJavaSavedBootstrap {
         private final Instant deadline;
         private WriterContracts.Prepared prepared;
         private WriterContracts.Receipt receipt;
-        private Admission(ConfirmedSource source,RootRuntimeContext context,PhysicalProof physical,
+        private Admission(ConfirmedSource source,RootRuntimeContext context,PhysicalProof physical,SourcePreReadProof sourceProof,
                 NativeFreshSnapshotPort.Received first,NativeFreshSnapshotPort.Received second,
                 NativeReadinessCollector.SourceQualification qualification,WriterContracts.Head before,
                 ExactRef savedState,ExactRef sourceHead,List<WriterContracts.Pin> originals,Instant deadline) {
-            this.source=source;this.context=context;this.physical=physical;this.first=first;this.second=second;
+            this.source=source;this.context=context;this.physical=physical;this.sourceProof=sourceProof;this.first=first;this.second=second;
             this.qualification=qualification;this.before=before;this.savedState=savedState;this.sourceHead=sourceHead;
             this.originals=originals;this.deadline=deadline;
         }
@@ -326,7 +607,7 @@ public final class RootJavaSavedBootstrap {
                     &&source.pair().equals(CheckpointPairCodec.decode(ContinuityJson.canonical(row.get("checkpoint_pair"))))
                     &&session().equals(OrdinaryCycleTransitions.sessionFromJson(row.get("session"))),
                     "saved admission actual transaction differs from its private source snapshots/pair/owner");
-            requireOriginals(same);source.requireCurrent(same);physical.requireCurrent();
+            requireOriginals(same);sourceProof.requireCurrent(same);physical.requireCurrent();
             physical.releasePreparation();prepared=actual;receipt=committed;
         }
         public synchronized void requireRetained(ContinuityStorePort.Session same,WriterContracts.Receipt committed)throws IOException {
@@ -334,6 +615,22 @@ public final class RootJavaSavedBootstrap {
             StrictJson.require(receipt!=null&&committed==receipt&&prepared!=null,"saved admission lacks its exact actual committed entry");
             same.requireCommitted(prepared,receipt);game().verify();physical.requireEvidence();requireOriginals(same);source.requireRetained(same);
         }
+        /** Closed projection custody never falls back to the legacy full-history methods. */
+        public synchronized void requireProjectionCurrent(ContinuityStorePort.Session same,WriterContracts.Receipt expected)throws IOException {
+            context.writer().requireSession(same);
+            if(expected==null) {
+                StrictJson.require(receipt==null&&before.digest().equals(same.head().digest())
+                        &&context.clock().instant().isBefore(deadline),"Saved projection escaped its exact unconsumed precommit point");
+                physical.requireCurrent();qualification.assertCurrent(same);requireOriginals(same);
+            } else {
+                StrictJson.require(receipt!=null&&expected==receipt&&prepared!=null,"Saved projection lacks its exact actual committed entry");
+                same.requireCommitted(prepared,receipt);game().verify();physical.requireEvidence();physical.requireInitialClone();requireOriginals(same);
+            }
+            sourceProof.requireCurrent(same);
+        }
+        /** Destruction only; callable after writer failure and never grants retained/live eligibility. */
+        public void closeProjectionCustody()throws IOException {sourceProof.close();}
+        @Override public void close()throws IOException {closeProjectionCustody();}
         private void requireOriginals(ContinuityStorePort.Session same)throws IOException {
             for(var pin:originals)same.verifyPin(pin);
             NativeFreshSnapshotPort.verifyOriginal(first.acknowledgement(),first.originalFrame(),first.snapshotReceived());
@@ -360,8 +657,9 @@ public final class RootJavaSavedBootstrap {
                 "retained saved entry requires exact attached custody and independent writer");
         source.requireCurrent();actual.requireCurrent();
         Instant bounded=deadline.isBefore(actual.deadline())?deadline:actual.deadline();
-        var physical=proof(actual);
+        var physical=proof(actual);SourcePreReadProof preRead=null;
         try {
+            preRead=source.preparePreRead(context.clock(),bounded);var sourceProof=preRead;
             var entry=context.withSession(same->{
                 context.writer().requireSession(same);var head=same.head();
                 var marker=head.state().toJson().get(org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD);
@@ -399,7 +697,7 @@ public final class RootJavaSavedBootstrap {
             });
             try {RestoreCheckpointService.requireStableReadProgression(first.originalFrame(),second.originalFrame());}
             catch(RuntimeException failure) {throw new IOException("retained saved READ progression failed: originals="+originals,failure);}
-            source.requireCurrent();physical.requireCurrent();
+            sourceProof.requireCurrent();physical.requireCurrent();
             return context.withSession(same->{
                 context.writer().requireSession(same);var head=same.head();
                 var row=requireSavedHistorical(source,context,same,entry,true);
@@ -423,13 +721,13 @@ public final class RootJavaSavedBootstrap {
                 }
                 StrictJson.require(head.digest().equals(same.head().digest()),"retained qualification changed current writer");
                 var suffix=requireReadOnlySavedContinuation(same,entry);pins.addAll(suffix.originalPins());
-                var retained=new RetainedSaved(source,context,physical,first,second,qualification,entry,List.copyOf(pins),bounded,
+                var retained=new RetainedSaved(source,context,physical,sourceProof,first,second,qualification,entry,List.copyOf(pins),bounded,
                         suffix.reads(),head.state().status()==ContinuityState.Status.REPAIR_REQUIRED
                                 ?List.of(StrictJson.text(ContinuityJson.object(head.state().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)).get("batch_id"))):List.of());
-                retained.requireCurrent(same);physical.releasePreparation();return retained;
+                retained.requirePreparedProjectionCurrent(same);physical.releasePreparation();return retained;
             });
         }catch(IOException|RuntimeException|Error|InterruptedException failure) {
-            try{physical.close();}catch(IOException cleanup){failure.addSuppressed(cleanup);}throw failure;
+            closeAfterFailure(preRead,failure);closeAfterFailure(physical,failure);throw failure;
         }
     }
 
@@ -652,10 +950,11 @@ public final class RootJavaSavedBootstrap {
     }
 
     /** A new private read qualification for an actual previously committed saved entry. */
-    public static final class RetainedSaved implements org.xar.ck3.control.application.session.ContinuityBatchJournal.SavedReadOnlyRecoverySource {
+    public static final class RetainedSaved implements org.xar.ck3.control.application.session.ContinuityBatchJournal.SavedReadOnlyRecoverySource,AutoCloseable {
         private final ConfirmedSource source;
         private final RootRuntimeContext context;
         private final PhysicalProof physical;
+        private final SourcePreReadProof sourceProof;
         private final NativeFreshSnapshotPort.Received first,second;
         private final NativeReadinessCollector.SourceQualification qualification;
         private final WriterContracts.HistoricalTransition entry;
@@ -664,11 +963,11 @@ public final class RootJavaSavedBootstrap {
         private final ObjectNode row;
         private final List<WriterContracts.HistoricalTransition> readHistorySuffix;
         private final List<String> consumedBatchIds;
-        private RetainedSaved(ConfirmedSource source,RootRuntimeContext context,PhysicalProof physical,
+        private RetainedSaved(ConfirmedSource source,RootRuntimeContext context,PhysicalProof physical,SourcePreReadProof sourceProof,
                 NativeFreshSnapshotPort.Received first,NativeFreshSnapshotPort.Received second,
                 NativeReadinessCollector.SourceQualification qualification,WriterContracts.HistoricalTransition entry,
                 List<WriterContracts.Pin> originals,Instant deadline,List<WriterContracts.HistoricalTransition> readHistorySuffix,List<String> consumedBatchIds) {
-            this.source=source;this.context=context;this.physical=physical;this.first=first;this.second=second;
+            this.source=source;this.context=context;this.physical=physical;this.sourceProof=sourceProof;this.first=first;this.second=second;
             this.qualification=qualification;this.entry=entry;this.originals=originals;this.deadline=deadline;
             this.row=ContinuityJson.parseObject(entry.details(),StrictJson.INPUT_MAX_BYTES);
             this.readHistorySuffix=List.copyOf(readHistorySuffix);this.consumedBatchIds=List.copyOf(consumedBatchIds);
@@ -710,6 +1009,34 @@ public final class RootJavaSavedBootstrap {
             context.writer().requireSession(same);game().verify();physical.requireEvidence();
             requireOriginals(same);requireSavedHistorical(source,context,same,entry,false);source.requireRetained(same);
         }
+        public void requireProjectionCurrent(ContinuityStorePort.Session same)throws IOException {
+            context.writer().requireSession(same);game().verify();physical.requireEvidence();physical.requireInitialClone();
+            requireOriginals(same);requireSavedHistorical(source,context,same,entry,false);sourceProof.requireCurrent(same);
+        }
+        /** Preserve the original deadline and unconsumed READ-suffix publication cut before adoption. */
+        public void requirePreparedProjectionCurrent(ContinuityStorePort.Session same)throws IOException {
+            context.writer().requireSession(same);
+            StrictJson.require(context.clock().instant().isBefore(deadline),"retained Saved projection preparation deadline expired");
+            game().verify();physical.requireEvidence();physical.requireInitialClone();qualification.assertCurrent(same);
+            requireOriginals(same);requireSavedHistorical(source,context,same,entry,true);sourceProof.requireCurrent(same);
+            var publication=same.head().state().toJson().get(WriterContracts.DRIVER_READ_HISTORY_FIELD);
+            StrictJson.require(readHistorySuffix.isEmpty()?publication==null||publication.isNull()
+                    :ContinuityJson.same(publication,ContinuityJson.parseObject(readHistorySuffix.getLast().details(),ContinuityJson.LEDGER_MAX_BYTES)),
+                    "retained projection acquired another Driver READ after actual capture");
+        }
+        /** Journal recovery consumes this retained object's actual preRead custody, never a synthetic source. */
+        public org.xar.ck3.control.application.session.ContinuityBatchJournal.SavedReadOnlyRecoverySource projectionRecoverySource() {
+            return new org.xar.ck3.control.application.session.ContinuityBatchJournal.SavedReadOnlyRecoverySource() {
+                @Override public void requireCurrent(ContinuityStorePort.Session same)throws IOException {
+                    requirePreparedProjectionCurrent(same);
+                }
+                @Override public WriterContracts.HistoricalTransition originalEntry(){return RetainedSaved.this.originalEntry();}
+                @Override public List<WriterContracts.HistoricalTransition> readHistorySuffix(){return RetainedSaved.this.readHistorySuffix();}
+                @Override public List<String> consumedBatchIds(){return RetainedSaved.this.consumedBatchIds();}
+            };
+        }
+        public void closeProjectionCustody()throws IOException {sourceProof.close();}
+        @Override public void close()throws IOException {closeProjectionCustody();}
         private void requireOriginals(ContinuityStorePort.Session same)throws IOException {
             for(var pin:originals)same.verifyPin(pin);
             for(var edge:readHistorySuffix) {

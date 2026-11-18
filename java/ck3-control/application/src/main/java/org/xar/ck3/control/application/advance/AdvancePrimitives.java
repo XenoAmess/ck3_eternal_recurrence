@@ -103,7 +103,8 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
             ArmSpec arm = armSpec(step); require(actualBefore.frame().identity().dateRaw().equals(BigInteger.valueOf(arm.startingDateRaw())), "native arm must bind actual current date");
             values = armExpected(arm); schema = CLOCK_OBSERVER;
         } else if (step.startsWith(ClockStatusRead.CANCEL_PREFIX)) {
-            values = List.of(new ExpectedText(new FieldKey("sentinel.state"), "idle"), new ExpectedText(new FieldKey("sentinel.generation"), cancelGeneration(step).toString())); schema = CLOCK_OBSERVER;
+            values = FullSnapshotSentinelCancellation.exactBuild(source) ? FullSnapshotSentinelCancellation.expected(step)
+                    : List.of(new ExpectedText(new FieldKey("sentinel.state"), "idle"), new ExpectedText(new FieldKey("sentinel.generation"), cancelGeneration(step).toString())); schema = CLOCK_OBSERVER;
         } else {
             ExpectedValue value = step.startsWith("set-speed-") ? new ExpectedInteger(new FieldKey("speed"), BigInteger.valueOf(Integer.parseInt(step.substring(10))))
                     : step.equals("pause-map") ? new ExpectedBoolean(new FieldKey("paused"), true)
@@ -123,13 +124,27 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
     @Override public NativeRequest prepare(ActionCommand command) {
         require(pendingDate.isEmpty() || !pendingDate.orElseThrow().active() || !command.operation().value().equals("resume-map"),
                 "actual pending date resume requires its original canonical writer session and preclock originals");
-        return prepareRequest(command);
+        return prepareCancellation(command);
+    }
+    private NativeRequest prepareCancellation(ActionCommand command) {
+        NativeRequest base = prepareRequest(command);
+        if (!FullSnapshotSentinelCancellation.supports(command)) return base;
+        require(observationClock.instant().isBefore(command.deadline()), "original CANCEL preparation deadline expired");
+        var retained = observations.retainedCancellationPreflight(command, command.deadline());
+        if (retained.isPresent()) return FullSnapshotSentinelCancellation.prepare(command, base, retained.orElseThrow(), clockStatus.archive());
+        return observations.withClockControlBasis(command, command.deadline(), basis -> {
+            require(basis.identity().equals(command.before()) && basis.source().equals(command.source())
+                    && basis.sessionId().equals(command.sessionId()), "pre-CANCEL basis changed the selected original command frame");
+            var before = clockStatus.observe(command, basis, command.deadline());
+            require(observationClock.instant().isBefore(command.deadline()), "original CANCEL preflight exceeded its deadline");
+            return FullSnapshotSentinelCancellation.prepare(command, base, before, clockStatus.archive());
+        });
     }
     /** Central preparation runs before INTENT under the original writer; only the source-owned scope can add originals. */
     @Override public NativeRequest prepare(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
             ActionCommand command,String requestId) {
         Objects.requireNonNull(same);
-        NativeRequest base=prepareRequest(command);
+        NativeRequest base=prepareCancellation(command);
         if(pendingDate.isEmpty())return base;
         try {
             NativeRequest actual=pendingDate.orElseThrow().prepare(same,command,requestId,base);
@@ -201,6 +216,13 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
                 }
                 var read = clockStatus.observe(command, basis, statusWindow);
                 Status actual = read.status();
+                if (FullSnapshotSentinelCancellation.supports(command)) {
+                    require(observationClock.instant().isBefore(statusWindow), "original CANCEL observation window expired");
+                    var full = observations.current(command, statusWindow);
+                    require(observationClock.instant().isBefore(statusWindow), "original CANCEL Full observation exceeded its finite window");
+                    var confirmed = FullSnapshotSentinelCancellation.observe(command, attempt, ack, read.receipt(), full, clockStatus.archive());
+                    return new ActionPorts.ControlObserved(new ActionState.ControlApplied(read.receipt(), CLOCK_OBSERVER, confirmed));
+                }
                 BigInteger generation = cancelGeneration(controlStep);
                 JsonNode result = nativeResult(ack, controlStep);
                 require(result.path("status").isTextual() && result.path("status").textValue().equals("canceled")
@@ -237,6 +259,9 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
                 require(actual.equals(original) && actual.generation().decimal().matches("[1-9][0-9]*"), "independent status did not observe the exact original arm generation/content");
                 values = statusValues(actual);
                 require(values.containsAll(armExpected(arm)), "actual independent arm status differs from requested arm");
+            } else if (FullSnapshotSentinelCancellation.supports(command)) {
+                require(observationClock.instant().isBefore(window), "actual CANCEL reconciliation observation window expired");
+                values = FullSnapshotSentinelCancellation.observe(command, attempt, ack, actualRead, current, clockStatus.archive());
             } else {
                 BigInteger generation = cancelGeneration(step);
                 JsonNode result = nativeResult(ack, step);

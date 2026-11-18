@@ -39,6 +39,8 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.service.root.RootOnlineDecisionSelector;
+import org.xar.ck3.control.service.root.CodexSessionDecisionFiles;
+import org.xar.ck3.control.service.root.CodexSessionDecisionMain;
 import org.xar.ck3.control.service.root.RootOrdinaryRuntimeConfiguration;
 
 /** Real local file exchange and existing selector, without any HTTP, Native or action submission. */
@@ -54,7 +56,7 @@ final class CodexFileDecisionSelectorTest {
         var http = RootOnlineDecisionSelector.class.getDeclaredField("http"); http.setAccessible(true);
         assertNull(http.get(selector), "explicit file transport must not instantiate an HTTP client");
         byte[] command = ActionCodec.encodeCommand(input.proposal().command());
-        CompletableFuture<Path> responder = respond(queue, Set.of(), request -> { }, "SELECT_PROPOSAL");
+        CompletableFuture<Path> responder = respondPublic(queue);
         var selection = selector.select(input.request(), input.proposal());
         Path requestPath = responder.get(5, TimeUnit.SECONDS);
         assertEquals(OrdinaryDecisionSelector.Choice.ACCEPT, selection.choice(), selection.reason());
@@ -74,6 +76,10 @@ final class CodexFileDecisionSelectorTest {
         JsonNode attempt = tree(Path.of(receipt.path("attempts").get(0).path("path").textValue()));
         assertEquals("xar.ordinary-codex-file-attempt/v1", attempt.path("schema").textValue());
         assertFalse(attempt.has("status"), "file completion is never reported as an HTTP status");
+        assertEquals(CodexSessionDecisionFiles.REQUEST_SCHEMA, request.path("schema").textValue());
+        assertArrayEquals(command, read(Path.of(request.path("original_command").path("path").textValue())));
+        assertArrayEquals(read(requestPath), java.util.Base64.getDecoder().decode(attempt.path("request_wire_base64").textValue()),
+                "durable attempt must retain the exact queue request even after queue reclamation");
     }
 
     @Test @Timeout(20)
@@ -129,6 +135,206 @@ final class CodexFileDecisionSelectorTest {
         assertEquals(OrdinaryDecisionSelector.Choice.ACCEPT, next.choice(), next.reason());
         assertFalse(Files.exists(firstRequest), "only the response already committed to the material archive releases a slot");
         try (var paths = Files.list(queue)) { assertEquals(32, paths.filter(Files::isDirectory).count()); }
+    }
+
+    @Test @Timeout(20)
+    void heldQueueEnvelopeDeniesRewriteAndPinsTheActualResponseBeforeArchival() throws Exception {
+        Input input = input("original request custody"); Path queue = directory.resolve("mutated-envelope");
+        var selector = selector(queue, Duration.ofSeconds(5));
+        var running = CompletableFuture.supplyAsync(() -> selector.select(input.request(), input.proposal()));
+        Path file = awaitRequest(queue); byte[] original = read(file);
+        assertThrows(java.io.IOException.class, () -> Files.write(file, (new String(original, StandardCharsets.UTF_8) + " ").getBytes(StandardCharsets.UTF_8)));
+        writeResponse(file, response(FullJsonTree.parse(original, 16384), original, "SELECT_PROPOSAL"));
+        var selection = running.get(5, TimeUnit.SECONDS);
+        assertEquals(OrdinaryDecisionSelector.Choice.ACCEPT, selection.choice(), selection.reason());
+        JsonNode receipt = tree(Path.of(selection.evidence().orElseThrow().path()));
+        JsonNode attempt = tree(Path.of(receipt.path("attempts").get(0).path("path").textValue()));
+        assertArrayEquals(original, java.util.Base64.getDecoder().decode(attempt.path("request_wire_base64").textValue()));
+        assertEquals("", attempt.path("failure").textValue());
+        var requestPin = org.xar.ck3.control.continuity.writer.WriterContracts.Pin.fromJson(attempt.get("request_pin"));
+        var responsePin = org.xar.ck3.control.continuity.writer.WriterContracts.Pin.fromJson(attempt.get("response_pin"));
+        assertEquals(ActionCodec.sha256(original), requestPin.reference().sha256());
+        assertEquals(ActionCodec.sha256(java.util.Base64.getDecoder().decode(attempt.path("wire_base64").textValue())), responsePin.reference().sha256());
+        assertFalse(requestPin.identity().fileIdDecimal().isEmpty());
+        assertFalse(responsePin.identity().fileIdDecimal().isEmpty());
+        // Archive completion releases the actual request/response handles, allowing ordinary cleanup.
+        Files.move(file, file.resolveSibling("closed-request.json"));
+    }
+
+    @Test @Timeout(20)
+    void publicConsumerRevalidatesCustodyAndNeverOverwritesAnOriginalResponse() throws Exception {
+        Input input = input("exact custody context"); Path queue = directory.resolve("public-custody");
+        var selector = selector(queue, Duration.ofSeconds(5));
+        var running = CompletableFuture.supplyAsync(() -> selector.select(input.request(), input.proposal()));
+        Path file = awaitRequest(queue); byte[] originalRequest = read(file);
+        String sha = ActionCodec.sha256(originalRequest); Path materials = directory.resolve("materials");
+        var pending = CodexSessionDecisionFiles.read(file, sha, materials, Clock.systemUTC());
+        assertArrayEquals(ActionCodec.encodeCommand(input.proposal().command()), pending.originalCommandBytes());
+        assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.read(file, "0".repeat(64), materials, Clock.systemUTC()));
+        Path wrongRoot = Files.createDirectory(directory.resolve("different-custody"));
+        assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.read(file, sha, wrongRoot, Clock.systemUTC()));
+        JsonNode envelope = tree(file);
+        assertThrows(java.io.IOException.class, () -> Files.write(file, new byte[] {1}));
+        for (Path changed : List.of(Path.of(envelope.path("payload").path("path").textValue()),
+                Path.of(envelope.path("original_command").path("path").textValue()))) {
+            byte[] original = read(changed);
+            var modified = Files.getLastModifiedTime(changed);
+            Files.write(changed, java.util.Arrays.copyOf(original, original.length + 1));
+            assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.respond(pending,
+                    pending.selection(CodexSessionDecisionFiles.Decision.SELECT_PROPOSAL, "reviewed original")));
+            assertFalse(Files.exists(file.getParent().resolve("response.json")));
+            Files.write(changed, original); Files.setLastModifiedTime(changed, modified);
+        }
+        assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.respond(pending,
+                new CodexSessionDecisionFiles.Selection(CodexSessionDecisionFiles.Decision.SELECT_PROPOSAL,
+                        "another-action", ActionCodec.bodySha256(input.proposal().command()), "wrong original")));
+        var response = CodexSessionDecisionFiles.respond(pending,
+                pending.selection(CodexSessionDecisionFiles.Decision.WAIT, "reviewed and wait"));
+        byte[] originalResponse = read(Path.of(response.path()));
+        assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.respond(pending,
+                pending.selection(CodexSessionDecisionFiles.Decision.SELECT_PROPOSAL, "must not replace")));
+        assertArrayEquals(originalResponse, read(Path.of(response.path())));
+        assertEquals(OrdinaryDecisionSelector.Choice.WAIT, running.get(5, TimeUnit.SECONDS).choice());
+        assertArrayEquals(originalRequest, read(file));
+    }
+
+    @Test @Timeout(20)
+    void publicConsumerCannotReplyAfterOriginalWallOrMonotonicDeadline() throws Exception {
+        for (boolean rollback : List.of(false, true)) {
+            Input input = input("expiry context"); Path queue = directory.resolve("public-expiry-" + rollback);
+            var selector = selector(queue, Duration.ofMillis(1200));
+            var running = CompletableFuture.supplyAsync(() -> selector.select(input.request(), input.proposal()));
+            Path file = awaitRequest(queue); byte[] bytes = read(file);
+            var clock = new java.util.concurrent.atomic.AtomicReference<>(Instant.now());
+            Clock mutable = new Clock() {
+                @Override public java.time.ZoneId getZone() { return java.time.ZoneOffset.UTC; }
+                @Override public Clock withZone(java.time.ZoneId zone) { return this; }
+                @Override public Instant instant() { return clock.get(); }
+            };
+            var pending = CodexSessionDecisionFiles.read(file, ActionCodec.sha256(bytes), directory.resolve("materials"), mutable);
+            if (rollback) {
+                clock.set(clock.get().minusSeconds(30));
+                Thread.sleep(1300); // Original monotonic interval expires despite wall-clock rollback.
+            } else clock.set(pending.deadline());
+            assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.respond(pending,
+                    pending.selection(CodexSessionDecisionFiles.Decision.SELECT_PROPOSAL, "too late")));
+            assertFalse(Files.exists(file.getParent().resolve("response.json")));
+            assertEquals(OrdinaryDecisionSelector.Choice.WAIT, running.get(5, TimeUnit.SECONDS).choice());
+        }
+    }
+
+    @Test @Timeout(20)
+    void sameBytesWithANewNativeFileIdCannotReplacePreviouslyReviewedMaterial() throws Exception {
+        Input input = input("same bytes physical custody"); Path queue = directory.resolve("physical-custody");
+        var selector = selector(queue, Duration.ofSeconds(5));
+        var running = CompletableFuture.supplyAsync(() -> selector.select(input.request(), input.proposal()));
+        Path file = awaitRequest(queue); byte[] original = read(file); String sha = ActionCodec.sha256(original);
+        Path materials = directory.resolve("materials");
+        var pending = CodexSessionDecisionFiles.read(file, sha, materials, Clock.systemUTC());
+        var envelope = tree(file); Path payload = Path.of(envelope.path("payload").path("path").textValue());
+        Path retained = payload.resolveSibling("retained-review.json");
+        Files.move(payload, retained); Files.copy(retained, payload, java.nio.file.StandardCopyOption.COPY_ATTRIBUTES);
+        assertArrayEquals(read(retained), read(payload));
+        var changed = CodexSessionDecisionFiles.read(file, sha, materials, Clock.systemUTC());
+        assertThrows(RuntimeException.class, () -> changed.requireCustody(pending.custody()));
+        assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.respond(pending,
+                pending.selection(CodexSessionDecisionFiles.Decision.SELECT_PROPOSAL, "same bytes cannot replace original")));
+        assertFalse(Files.exists(file.getParent().resolve("response.json")));
+        Files.delete(payload); Files.move(retained, payload);
+        CodexSessionDecisionFiles.respond(pending, pending.selection(CodexSessionDecisionFiles.Decision.WAIT, "original restored, wait"));
+        assertEquals(OrdinaryDecisionSelector.Choice.WAIT, running.get(5, TimeUnit.SECONDS).choice());
+    }
+
+    @Test @Timeout(20)
+    void legacyV1RequiresTheActualArchivedOriginalAndKeepsItsExistingDeadline() throws Exception {
+        Input input = input("legacy source-bound review"); Path queue = directory.resolve("legacy-producer");
+        var selector = selector(queue, Duration.ofSeconds(5));
+        var running = CompletableFuture.supplyAsync(() -> selector.select(input.request(), input.proposal()));
+        Path original = awaitRequest(queue); ObjectNode envelope = (ObjectNode) tree(original);
+        var originalRef = ExactRef.fromJson(envelope.get("original_command"));
+        Path legacy = directory.resolve("legacy-fixture").resolve(original.getParent().getFileName()); Files.createDirectories(legacy);
+        Path legacyRequest = legacy.resolve("request.json");
+        envelope.put("schema", CodexSessionDecisionFiles.LEGACY_REQUEST_SCHEMA); envelope.remove("original_command");
+        envelope.put("response_file", legacy.resolve("response.json").toString());
+        byte[] bytes = FullJsonTree.encode(envelope, 16384); Files.write(legacyRequest, bytes);
+        String sha = ActionCodec.sha256(bytes); Path materials = directory.resolve("materials");
+        assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.read(legacyRequest, sha, materials, Clock.systemUTC()));
+        var legacyRead = CodexSessionDecisionFiles.readWithOriginalCommand(legacyRequest, sha, materials, originalRef, Clock.systemUTC());
+        assertEquals(Instant.parse(envelope.path("deadline_utc").textValue()), legacyRead.deadline());
+        assertArrayEquals(ActionCodec.encodeCommand(input.proposal().command()), legacyRead.originalCommandBytes());
+        CodexSessionDecisionFiles.respond(legacyRead, legacyRead.selection(CodexSessionDecisionFiles.Decision.WAIT, "legacy reviewed, wait"));
+        // Only the real original selector is settled; the detached legacy fixture grants no action authority.
+        var actual = CodexSessionDecisionFiles.read(original, ActionCodec.sha256(read(original)), materials, Clock.systemUTC());
+        CodexSessionDecisionFiles.respond(actual, actual.selection(CodexSessionDecisionFiles.Decision.WAIT, "original reviewed, wait"));
+        assertEquals(OrdinaryDecisionSelector.Choice.WAIT, running.get(5, TimeUnit.SECONDS).choice());
+    }
+
+    @Test @Timeout(20)
+    void lateOrOversizedResponsesWithoutAnArchivedPhysicalPinAreNeverReclaimed() throws Exception {
+        for (boolean oversized : List.of(false, true)) {
+            Input input = input("unarchived response custody"); Path queue = directory.resolve("unarchived-response-" + oversized);
+            var firstSelector = selector(queue, Duration.ofMillis(500));
+            var first = CompletableFuture.supplyAsync(() -> firstSelector.select(input.request(), input.proposal()));
+            Path request = awaitRequest(queue); Path responseFile = request.getParent().resolve("response.json");
+            if (oversized) Files.write(responseFile, new byte[262145]);
+            assertEquals(OrdinaryDecisionSelector.Choice.WAIT, first.get(5, TimeUnit.SECONDS).choice());
+            if (!oversized) writeResponse(request, response(tree(request), read(request), "SELECT_PROPOSAL"));
+            String original = ActionCodec.sha256(read(responseFile));
+            for (int n = 0; n < 31; n++) Files.createDirectory(queue.resolve("codex-" + UUID.randomUUID()));
+            var next = selector(queue, Duration.ofSeconds(2)).select(input.request(), input.proposal());
+            assertEquals(OrdinaryDecisionSelector.Choice.WAIT, next.choice());
+            if (oversized) {
+                assertTrue(Files.isRegularFile(request));
+                assertEquals(original, ActionCodec.sha256(read(responseFile)), "unarchivable oversized response remains untouched");
+            } else {
+                assertFalse(Files.exists(request), "complete expired response evidence releases a slot after archival");
+                try (var materials = Files.list(directory.resolve("materials"))) {
+                    var evidence = materials.map(CodexFileDecisionSelectorTest::read)
+                            .map(bytes -> FullJsonTree.parse(bytes, FullJsonTree.MAXIMUM_BYTES))
+                            .filter(row -> "xar.ordinary-codex-expired-file-material/v1".equals(row.path("schema").asText()))
+                            .filter(row -> request.getParent().getFileName().toString().equals(row.path("request_id").asText())).findFirst().orElseThrow();
+                    assertEquals("WAIT", evidence.path("effective_decision").textValue());
+                    assertEquals(original, ActionCodec.sha256(java.util.Base64.getDecoder().decode(evidence.path("response_wire_base64").textValue())));
+                }
+            }
+        }
+    }
+
+    private CompletableFuture<Path> respondPublic(Path queue) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Path file = awaitRequest(queue); byte[] original = read(file); String sha = ActionCodec.sha256(original);
+                Path materials = directory.resolve("materials");
+                var inspected = CodexSessionDecisionMain.execute(Clock.systemUTC(), "inspect", file.toString(), sha, materials.toString());
+                assertEquals("xar.ordinary-codex-session-inspection/v1", inspected.path("schema").textValue());
+                assertEquals(sha, inspected.path("request").path("sha256").textValue());
+                var pending = CodexSessionDecisionFiles.read(file, sha, materials, Clock.systemUTC());
+                byte[] payload = pending.payloadBytes(); payload[0] = 0;
+                assertNotEquals(0, pending.payloadBytes()[0], "review bytes must be immutable");
+                Path selection = directory.resolve("session-selection.json");
+                Files.write(selection, FullJsonTree.encode(pending.selection(CodexSessionDecisionFiles.Decision.SELECT_PROPOSAL,
+                        "reviewed original proposal").toJson(), 262144));
+                Path inspection = directory.resolve("session-inspection.json");
+                Files.write(inspection, FullJsonTree.encode(inspected, 262144));
+                var published = CodexSessionDecisionMain.execute(Clock.systemUTC(), "respond", file.toString(), sha,
+                        materials.toString(), selection.toString(), inspection.toString());
+                assertEquals("xar.ordinary-codex-session-response-published/v1", published.path("schema").textValue());
+                return file;
+            } catch (Exception failure) { throw new java.util.concurrent.CompletionException(failure); }
+        });
+    }
+
+    private static Path awaitRequest(Path queue) throws Exception {
+        long until = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+        while (System.nanoTime() < until) {
+            if (Files.isDirectory(queue)) try (var paths = Files.list(queue)) {
+                var found = paths.filter(Files::isDirectory).map(path -> path.resolve("request.json"))
+                        .filter(Files::isRegularFile).findFirst();
+                if (found.isPresent() && Files.isRegularFile(found.orElseThrow().getParent().resolve("ready.json"))) return found.orElseThrow();
+            }
+            Thread.sleep(5);
+        }
+        throw new IllegalStateException("original file request was not published");
     }
 
     private RootOnlineDecisionSelector selector(Path queue, Duration timeout) {

@@ -14,11 +14,15 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj;
 /** Actual held Driver -> one canonical child contract -> central read coordinator, with pure archive replay. */
 public final class RootFamilyChildRead implements FamilyPorts.ProjectedSource {
     private final RootRuntimeContext context;
-    private final RootInteractionContextProjection projection;
+    private final RootFamilyInteractionContext projection;
     private final FamilyChildMarriageQueries queries;
     private final FamilyPorts.Query query;
     private final ReadContract<Obj> contract;
     public RootFamilyChildRead(RootRuntimeContext actualContext,RootInteractionContextProjection actualProjection,
+            FamilyChildMarriageQueries actualQueries,FamilyPorts.Query childQuery){
+        this(actualContext,RootFamilyInteractionContext.qualified(actualProjection),actualQueries,childQuery);
+    }
+    public RootFamilyChildRead(RootRuntimeContext actualContext,RootFamilyInteractionContext actualProjection,
             FamilyChildMarriageQueries actualQueries,FamilyPorts.Query childQuery){
         context=Objects.requireNonNull(actualContext);projection=Objects.requireNonNull(actualProjection);queries=Objects.requireNonNull(actualQueries);query=Objects.requireNonNull(childQuery);
         StrictJson.require(query==FamilyPorts.Query.CHILD_SUBJECT||query==FamilyPorts.Query.CHILD_VALUE,"child adapter requires exact child route");
@@ -29,10 +33,11 @@ public final class RootFamilyChildRead implements FamilyPorts.ProjectedSource {
             context.requireCurrent(request.deadline());var same=context.borrowedSession();context.writer().requireSession(same);
             return context.collector().currentPlanning(same,request,request.deadline(),(original,lease)->{
                 StrictJson.require(context.readCatalog().containsIdentity(contract),"child query is not the identical installed Root read");
-                var actual=projection.project(lease.frame(),request.deadline());
+                return projection.projected(request,lease.frame(),flat,actual->{
                 Obj canonical=query==FamilyPorts.Query.CHILD_SUBJECT?FamilyChildMarriageQueries.canonicalSubject(actual,flat):queries.canonicalValue(actual,flat);
                 var read=new PlanningReadRequest(actual.before(),actual.source(),actual.sessionId(),contract.operation(),canonical,actual.deadline());
                 var result=context.reads().read(same,contract,read);context.writer().requireSession(same);return new FamilyPorts.ProjectedRead(canonical,result);
+                });
             });
         }catch(IOException failure){throw new UncheckedIOException("actual child marriage read unavailable",failure);}
     }

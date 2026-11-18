@@ -22,6 +22,12 @@ public interface AdvanceObservationPort {
         return current(proposed, deadline);
     }
 
+    /** An actual source-owned continuation may expose its unchanged pre-CANCEL Status originals.
+     * Empty keeps the ordinary real query path; a DATA constructor supplies no continuation authority. */
+    default java.util.Optional<ClockStatusRead.Observation> retainedCancellationPreflight(ActionCommand command, Instant deadline) {
+        return java.util.Optional.empty();
+    }
+
     /** Conservative default for clock control basis: delegates to current observation. */
     default <T> T withClockControlBasis(ActionCommand command, Instant deadline, java.util.function.Function<Frame, T> work) {
         Objects.requireNonNull(work);

@@ -259,6 +259,75 @@ public final class IdentityBearingFileAttributes {
             catch (IOException closing) { if (failure != null) failure.addSuppressed(closing); else throw closing; }
         }
     }
+    /** Real ordinary-directory handle. SHARE_READ denies directory writes/delete while this handle exists. */
+    public static final class DirectoryReadOnlyLease implements AutoCloseable {
+        private final Thread thread=Thread.currentThread();
+        private final Path path;
+        private final HANDLE handle;
+        private final WindowsStamp stamp;
+        private final BasicFileAttributes initial;
+        private boolean closed,failed;
+        private DirectoryReadOnlyLease(Path path,HANDLE handle,WindowsStamp stamp,BasicFileAttributes initial) {
+            this.path=path;this.handle=handle;this.stamp=stamp;this.initial=initial;
+        }
+        private void requireOpen()throws IOException {
+            if(Thread.currentThread()!=thread)throw new IOException("directory read lease crossed its owner thread");
+            if(closed||failed)throw new IOException("directory read lease is closed or failed");
+        }
+        public BasicFileAttributes verifyCurrent()throws IOException {
+            requireOpen();
+            try{return qualifyDirectoryLeasePath(path,stamp,initial);}
+            catch(IOException|RuntimeException|Error problem){failed=true;throw problem;}
+        }
+        @Override public void close()throws IOException {
+            if(Thread.currentThread()!=thread)throw new IOException("directory read lease close crossed its owner thread");
+            if(closed)return;closed=true;closeLeaseHandle(handle,"directory read lease close");
+        }
+    }
+    /** No fallback without a handle. This observes no Game and creates no content or directories. */
+    public static DirectoryReadOnlyLease leaseDirectoryWindows(Path supplied)throws IOException {
+        if(!Platform.isWindows())throw new IOException("native Windows directory read lease required");
+        Path path=Objects.requireNonNull(supplied).toAbsolutePath().normalize();
+        BasicFileAttributes before=Files.readAttributes(path,BasicFileAttributes.class,LinkOption.NOFOLLOW_LINKS);
+        requireOrdinaryDirectory(before);HANDLE handle=null;Throwable failure=null;
+        try {
+            ordinaryAttributes(path);
+            handle=Kernel32.INSTANCE.CreateFile(nativePath(path.toString()),0x80000080,1,null,3,0x02200000,null);
+            if(WinBase.INVALID_HANDLE_VALUE.equals(handle)){handle=null;throw new IOException("directory read lease open Win32="+Native.getLastError());}
+            WindowsStamp first=windowsStamp(handle,false);
+            if(!first.directory())throw new IOException("ordinary directory handle required");
+            BasicFileAttributes original=validated(path,before,before,first,first);
+            BasicFileAttributes actual=qualifyDirectoryLeasePath(path,first,original);
+            DirectoryReadOnlyLease result=new DirectoryReadOnlyLease(path,handle,first,actual);handle=null;return result;
+        }catch(LinkageError unavailable){IOException problem=new IOException("Windows directory lease provider unavailable",unavailable);failure=problem;throw problem;}
+        catch(IOException|RuntimeException|Error problem){failure=problem;throw problem;}
+        finally {
+            if(handle!=null)try{closeLeaseHandle(handle,"partial directory lease close");}
+            catch(IOException closing){if(failure!=null)failure.addSuppressed(closing);else throw closing;}
+        }
+    }
+    private static BasicFileAttributes qualifyDirectoryLeasePath(Path path,WindowsStamp original,BasicFileAttributes initial)throws IOException {
+        try {
+            BasicFileAttributes current=Files.readAttributes(path,BasicFileAttributes.class,LinkOption.NOFOLLOW_LINKS);
+            requireOrdinaryDirectory(current);ordinaryAttributes(path);
+            HANDLE handle=Kernel32.INSTANCE.CreateFile(nativePath(path.toString()),0x80000080,1,null,3,0x02200000,null);
+            if(WinBase.INVALID_HANDLE_VALUE.equals(handle))throw new IOException("current directory lease read open Win32="+Native.getLastError());
+            Throwable failure=null;
+            try {
+                WindowsStamp actual=windowsStamp(handle,false);
+                if(!actual.directory()||!original.equals(actual))throw new IOException("directory lease full identity/metadata drift");
+                return validated(path,initial,current,original,actual);
+            }catch(IOException|RuntimeException|Error problem){failure=problem;throw problem;}
+            finally {
+                try{closeLeaseHandle(handle,"current directory lease read close");}
+                catch(IOException closing){if(failure!=null)failure.addSuppressed(closing);else throw closing;}
+            }
+        }catch(LinkageError unavailable){throw new IOException("Windows directory lease provider unavailable",unavailable);}
+    }
+    private static void requireOrdinaryDirectory(BasicFileAttributes value)throws IOException {
+        if(!value.isDirectory()||value.isSymbolicLink())throw new IOException("ordinary identity-bearing directory required");
+    }
+
     private static void closeLeaseHandle(HANDLE handle, String context) throws IOException {
         try {
             if (!Kernel32.INSTANCE.CloseHandle(handle)) throw new IOException(context + " Win32=" + Native.getLastError());

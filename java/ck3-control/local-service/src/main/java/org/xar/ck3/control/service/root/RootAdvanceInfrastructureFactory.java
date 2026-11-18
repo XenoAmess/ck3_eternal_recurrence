@@ -126,10 +126,15 @@ public final class RootAdvanceInfrastructureFactory {
     }
 
     public record Sources(ExactRef primitiveProducer,ExactRef primitiveDecoder,ExactRef primitiveVerifier,
-            ExactRef statusDefinition,ExactRef statusDecoder,ExactRef unknownStatusDecoder) {
+            ExactRef statusDefinition,ExactRef statusDecoder,ExactRef unknownStatusDecoder,Optional<ExactRef> cancellationDefinition) {
         public Sources {
             for(ExactRef ref:List.of(primitiveProducer,primitiveDecoder,primitiveVerifier,statusDefinition,statusDecoder,unknownStatusDecoder))
                 require(ref.bytes()>0,"actual native clock producer/decoder/verifier/Status definition sources required");
+            Objects.requireNonNull(cancellationDefinition).ifPresent(ref -> require(ref.bytes()>0,"actual 1210 cancellation source required"));
+        }
+        /** Legacy construction records missing new-build source explicitly; it grants no 1210 cancellation installation. */
+        public Sources(ExactRef producer,ExactRef decoder,ExactRef verifier,ExactRef status,ExactRef statusDecoder,ExactRef unknownDecoder) {
+            this(producer,decoder,verifier,status,statusDecoder,unknownDecoder,Optional.empty());
         }
     }
     /** Real source-bound settings are parsed before installation; integer configuration never accepts booleans/floats. */
@@ -215,8 +220,9 @@ public final class RootAdvanceInfrastructureFactory {
         public Sources sources(){return sources;}
         public Timings timings(){return timings;}
         public List<ExactRef> requiredSources() {
-            return java.util.stream.Stream.of(sources.primitiveProducer(),sources.primitiveDecoder(),sources.primitiveVerifier(),
-                    sources.statusDefinition(),sources.statusDecoder(),sources.unknownStatusDecoder(),timings.original()).distinct().toList();
+            return java.util.stream.Stream.concat(java.util.stream.Stream.of(sources.primitiveProducer(),sources.primitiveDecoder(),sources.primitiveVerifier(),
+                    sources.statusDefinition(),sources.statusDecoder(),sources.unknownStatusDecoder(),timings.original()),
+                    sources.cancellationDefinition().stream()).distinct().toList();
         }
         /** Pure construction occurs before the physical Driver is adopted. Reusing a context retains every actual instance. */
         public synchronized Installed install(RootRuntimeContext context,AdvanceReadiness.Port sameReadiness,
@@ -253,6 +259,8 @@ public final class RootAdvanceInfrastructureFactory {
                 Timings timings,ReadContract<Status> exactInstalledStatus,ReadContract<Status> exactUnknownStatus,
                 ReadContract<Status> exactTerminalStatus,ReadContract<Status> exactPhysicalStatus) {
             context=actualContext;this.sources=sources;this.timings=timings;readiness=sameReadiness;pendingDate=samePendingDate;
+            require(!org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.exactBuild(context.source())
+                    ||sources.cancellationDefinition().isPresent(), "ordinary 1210 cancellation installation lacks its actual guard source original");
             observations=pendingDate.observations(new ActualObservations(context,timings));
             statuses=new ClockStatusRead(context.reads(),exactInstalledStatus,exactUnknownStatus,context.archive(),this::observeRetainedParentStatus);
             unknownStatus=Objects.requireNonNull(exactUnknownStatus);terminalStatus=Objects.requireNonNull(exactTerminalStatus);physicalStatus=Objects.requireNonNull(exactPhysicalStatus);
@@ -558,9 +566,10 @@ public final class RootAdvanceInfrastructureFactory {
                         .filter(originalReceipt::equals).isPresent();
                 var eventPending=org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyEventRecoveryRoot(List.of(originalReceipt))
                         .filter(originalReceipt::equals).isPresent();
+                var cancellationPending=org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.isPositiveAckCancellation(originalReceipt,archive);
                 require((command.origin() instanceof CommandOrigin.Gameplay && command.operation().value().equals("resume-map")
-                        && command.arguments().members().isEmpty()) || knownPending || councilPending || eventPending,
-                        "cold original requires exact resume-map, known-pending or original positive-ACK Council/EVENT recovery primitive");
+                        && command.arguments().members().isEmpty()) || knownPending || councilPending || eventPending || cancellationPending,
+                        "cold original requires exact resume/known-pending or positive-ACK Council/EVENT/CANCEL with real preparation");
                 requireFrameBinding(command,complete);
                 var attempt=ActionTransitions.attempt(originalReceipt.state()).orElseThrow();
                 var dispatch=ActionTransitions.dispatch(originalReceipt.state()).orElseThrow();
@@ -927,6 +936,54 @@ public final class RootAdvanceInfrastructureFactory {
                 throw new IOException("actual fresh next frame did not advance its native revision within the original finite budget");
             });}catch(IOException failure){throw new UncheckedIOException("actual fresh next observation unavailable",failure);}
         }
+        /** Preparation precedes INTENT/ACK. Borrow only the actual private continuation's unchanged originals. */
+        @Override public Optional<ClockStatusRead.Observation> retainedCancellationPreflight(ActionCommand child, Instant deadline) {
+            actual(child,deadline);
+            if (!org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.supports(child)) return Optional.empty();
+            try { return context.withSession(same -> {
+                var head=same.head();var archive=context.archive().withSession(same);
+                var reserved=ActionChildPlanningScope.reservedParent(same,head,child);
+                if(reserved.isEmpty())return Optional.empty();
+                var parent=ContinuityActionJournal.lookup(head.state(),reserved.orElseThrow().actionId(),archive).orElseThrow();
+                var current=ActionChildPlanningScope.continuationToken(same,head,parent.command(),child);
+                if(current.isEmpty())return Optional.empty();
+                PlanningReadReceipt read;Frame boundary;java.math.BigInteger generation;Instant ownDeadline;
+                if(current.orElseThrow() instanceof LifeSentinelCancellation token) {
+                    read=token.armedRead();boundary=token.beforeCancel();generation=token.generation();ownDeadline=token.deadline();
+                } else if(current.orElseThrow() instanceof LifePostResumePauseCancellation token) {
+                    read=token.armedRead();boundary=token.beforeCancel();generation=token.generation();ownDeadline=token.deadline();
+                } else return Optional.empty();
+                require(parent.state() instanceof ActionState.CompositeUnknown unknown
+                        &&unknown.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                        &&current.orElseThrow().originalParent().equals(parent.command())
+                        &&child.before().equals(boundary.identity())&&child.source().equals(boundary.source())
+                        &&child.sessionId().equals(boundary.sessionId())&&child.claims().equals(parent.command().claims())
+                        &&deadline.equals(child.deadline())&&deadline.equals(ownDeadline)
+                        &&child.operation().value().equals(ClockStatusRead.CANCEL_PREFIX+generation)
+                        &&child.arguments().members().isEmpty()&&child.expected().equals(AdvancePrimitives.expected(
+                            child.before(),child.source(),child.operation(),child.arguments()))
+                        &&ContinuityActionJournal.lookup(head.state(),child.actionId(),archive).isEmpty(),
+                        "retained pre-CANCEL Status requires its exact actual reserved continuation before INTENT");
+                require(read.equals(archive.loadRead(archive.readReferenceOf(read))), "retained pre-CANCEL read original changed");
+                var observation=new ClockStatusRead.Observation(ClockStatusRead.decode(read.original()),read,archive.referenceOf(read.original()));
+                var physical=observation.physicalIdentity().orElseThrow();
+                var sampled=read.original().custody().orElseThrow();sampled.verify(read);
+                Instant now=context.clock().instant();
+                require(physical.transport().equals(context.adopted().session())
+                        &&observation.status().state()==org.xar.ck3.control.reconciliation.LateOutcome.State.ARMED
+                        &&observation.status().generation().decimal().equals(generation.toString())
+                        &&!boundary.observedAt().isBefore(sampled.responseReceived().observedAt())
+                        &&!now.isBefore(boundary.observedAt())&&now.isBefore(deadline)
+                        &&!now.isAfter(boundary.observedAt().plus(Duration.ofMinutes(2)))
+                        &&!now.isAfter(sampled.responseReceived().observedAt().plus(Duration.ofMinutes(2)))
+                        &&boundary.provenance().independentOf(read.requestId())
+                        &&!boundary.originalEvidence().equals(observation.originalEvidence())
+                        &&same.head().digest().equals(head.digest()),
+                        "retained pre-CANCEL originals lost current source/connection/time/before-frame custody");
+                return Optional.of(observation);
+            }); } catch(IOException unavailable) {throw new UncheckedIOException("actual retained cancellation preparation unavailable",unavailable);}
+        }
+
         /** The actual held packet is only a read/control basis; STATUS still supplies its independent original. */
         @Override public <T> T withClockControlBasis(ActionCommand parent, Instant deadline,
                 java.util.function.Function<Frame,T> work) {

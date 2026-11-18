@@ -1,0 +1,689 @@
+{
+  "schema": "xar.java.mapped-saved-policy-qualification-progress/v1",
+  "status": "PARTIAL_SOFTWARE_VERIFIED_GENUINE_INPUTS_PENDING",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "production_translation_units": 37,
+  "compiled_initial": 34,
+  "compiled_affected_repair": 10,
+  "distinct_tests": 136,
+  "passed": 126,
+  "failed": 10,
+  "skipped": 0,
+  "final_sources": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/FINAL-SOURCE-INPUTS06.json",
+    "bytes": 33199,
+    "sha256": "e4cbd35c1875284bbca543074e199843e9e7ebbc2bf2902259e41f5748c4f8a6"
+  },
+  "effective_class_outputs": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/EFFECTIVE-CLASS-OUTPUTS06.json",
+    "bytes": 125818,
+    "sha256": "e7886f645e650a88d1afd08f8461256a551cbffb900380d17a15d6de15e7434a"
+  },
+  "xml": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/reports118-01/TEST-junit-jupiter.xml",
+      "bytes": 143893,
+      "sha256": "7c394e425f40c1a59924510a944fcd7f2e57b89ad88e3a2109347149019d2539"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/reports118-01/TEST-junit-platform-suite.xml",
+      "bytes": 56468,
+      "sha256": "1868bb9c4130b6624d7c055e8ab5764dd5386410dd7b412750c9275d29b7c88e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/reports118-01/TEST-junit-vintage.xml",
+      "bytes": 56738,
+      "sha256": "9b90867d446080f62b0c9c8c77eb652fa9b844d45d5c9675b1bedec9046b9804"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/reports-affected40-05/TEST-junit-jupiter.xml",
+      "bytes": 64576,
+      "sha256": "9fcdc71a4fcf021e82de440e7716be008ccc86dc53597a69aec4f6ca1cb1fd2a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/reports-affected40-05/TEST-junit-platform-suite.xml",
+      "bytes": 44958,
+      "sha256": "2a4f7ef779af79a68c465136a50b716595eb17ee21a14f05ae8723cb45599d58"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/reports-affected40-05/TEST-junit-vintage.xml",
+      "bytes": 45143,
+      "sha256": "d274260cf8df5ea92f79fdc02d3b3383b3793d707d92b7f9843505f792affe37"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/reports-single-eof06/TEST-junit-jupiter.xml",
+      "bytes": 40884,
+      "sha256": "5a111e972ca3659ed6a59d7fa57e9773b27c6de295916481f9516430ae72f1ff"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/reports-single-eof06/TEST-junit-platform-suite.xml",
+      "bytes": 40124,
+      "sha256": "a280eab73d916635439274e03e0928999668f7c47ec75bd7ef41e39821a4c82e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/reports-single-eof06/TEST-junit-vintage.xml",
+      "bytes": 40308,
+      "sha256": "ee25eebde331e7232c9a7add62754324eb6a57f5ef7bd958fbdab47c6b1a2c7e"
+    }
+  ],
+  "test_outcomes": {
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#actualOwnedPipeRelaysThreeDistinctIssuerLinesOnceInOrder()": {
+      "status": "FAILED",
+      "failure_first_line": "java.nio.file.NoSuchFileException: D:\\ck3-state\\ck3-version-migration-20261118\\java-mapped-saved-policy08\\qualification01\\maven-archiver\\pom.properties"
+    },
+    "org.xar.ck3.control.service.root.WorkerBatchLogBoundContractTest#exactWholeFileLimitAndProductionEightMiBBoundRejectBeforePhysicalWrite()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.continuity.writer.SavedArmyReadsetHandoff1210Test#authenticatedArmyLeafStaysHeldAfterProducerScopeAndOldSessionBothEnd()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.application.driver.MappedSavedNativeIdentityTest#fullUnsignedDomainsAndValuesAboveBinary64PrecisionRemainDecimalStrings()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#actualEofAfterIssuerSendLatchesUnknownBoundaryAndCannotReplay()": {
+      "status": "FAILED",
+      "failure_first_line": "java.nio.file.NoSuchFileException: D:\\ck3-state\\ck3-version-migration-20261118\\java-mapped-saved-policy08\\qualification01\\maven-archiver\\pom.properties"
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameCloneTest#externalHardLinkCannotBeAnIndependentIsolatedClone()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#actualNormalExitFourPhasesRetainZeroByteSettingsAndOriginalEngineCustody()": {
+      "status": "FAILED",
+      "failure_first_line": "java.nio.file.NoSuchFileException: D:\\ck3-state\\ck3-version-migration-20261118\\java-mapped-saved-policy08\\qualification01\\maven-archiver\\pom.properties"
+    },
+    "org.xar.ck3.control.service.root.SavedInitialClonePhaseTest#changedSourceFileIdCannotRefreshTheOriginalPairWitness()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#actualDefaultSourceRosterIncludesConfigurationReaderAndBothSavedPublicConsumers()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootSavedOwnerTerminalResultTest#failedOwnerCannotBecomeASuccessfulMainWhenBusinessReturnedZero()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#v1InPlaceProducerAndReaderRetainTheirOldWireAndPhysicalContract()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#ordinarySdkStyleSaveCanChangeCloneWhileHistoricalPolicyAndImmutableClosureRemainCurrent()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameCloneTest#absentOrDifferentActualCloneCannotBeQualifiedFromTheOriginalSourceAlone()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#requestV2IsStrictAndV1SchemaAndSevenFieldsRemainSeparate()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameCloneTest#legacySourceAlreadyAtActualLoadPathKeepsItsOriginalIdentity()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.army.ArmyReplayReadsetHandoff54Test#onePrivateAuthenticatedObjectPerEntryAndItsPinIncludesArtifactLfExactly()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.army.ArmyReplayReadsetHandoff54Test#failedConsumerRetentionRejectsTheSourceProofAndClosesProducerPeerImmediately()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#actualV2ProducerReaderAndQuoteKeepSourceAndCloneSeparateAndCloseInvalidatesQuote()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.QualifiedCloneCustodyTest#legacyInPlaceModeUsesOneRealFileHoldAndReleasesItBeforeSave()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGamePreparationTest#existingOnlyMissingTargetNeverFallsBackToPreparingACopy()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.army.ArmyReplayReadsetHandoff54Test#postScopeAuthenticatedOriginalCannotCrossTheOriginalOwnerThread()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.WorkerBatchLogBoundContractTest#oversizedCurrentBodyIsExposedWholeBeforeAnySinkOrLineAllocation()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.QualifiedCloneCustodyTest#closedScopeNeverQuotesAgainAndItsDetachedJsonRemainsDataOnly()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.application.driver.ExactPolicyCapturedBytesTest#exactCaptureDoesNotAcceptUnboundedOrEmptyPolicySources()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameFilesTest#existingIdenticalTargetIsPreserved()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameFilesTest#changedSourceCannotPublishTheExpectedSavedOriginal()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedSessionBoundaryTest#mappedProducerInputsRejectWindowMismatchBeforeReadingUnqualifiedPlanData()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGamePreparationTest#storageRefusalLeavesNoTargetAndNeverFallsBackToRawCopy()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootExitedOwnerResultConsumerTest#nonzeroResultIsVisibleAfterTheActualCleanupSequence()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.SavedInitialClonePhaseTest#changedCloneContentRejectsPreliveProjectionWithoutRebasingOriginalSource()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootSavedOwnerTerminalResultTest#successfulOwnerLeavesTheIndependentBusinessOutcomeUntouched()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#missingCloneNeverCreatesAnImplicitCopyOrAQuote()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#actualWrongPhaseRejectsBeforeAnyIssuerLine()": {
+      "status": "FAILED",
+      "failure_first_line": "java.nio.file.NoSuchFileException: D:\\ck3-state\\ck3-version-migration-20261118\\java-mapped-saved-policy08\\qualification01\\maven-archiver\\pom.properties"
+    },
+    "org.xar.ck3.control.platform.NativeSavedGamePreparationTest#missingSaveDirectoryRequiresTheActualOwnerToPrepareIt()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.application.driver.ExactPolicyCapturedBytesTest#completeCapturedByteCountAndDigestAreBothRequired()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#transportPhaseAndDeploymentClosureIncludeActualMappedProducerAndRealCustodyNests()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedBootstrapNestClosureTest#exactMappedClassRosterIsStableDistinctAndImmutable()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedSessionBoundaryTest#mappedSessionRejectsWrongRoleOrTargetAtTheActualQuoteConsumer()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.QualifiedCloneCustodyTest#nativeCloseFailureCannotBecomeSuccessfulOnRepeatedCleanupOrCreateHandoff()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.SavedInitialClonePhaseTest#currentPhysicalCloneCanBeRecheckedAfterPreparationHandlesAreReleased()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGamePreparationTest#exactOriginalDeadlineRejectsBeforeTheCopyCallback()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.army.ArmyReplayReadsetHandoff54Test#actualNoArmyPathDoesNotCreateAnExternalDependencyOrAcquireAHandle()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#wrongWireTypesMissingBindingAndOversizedLineReject()": {
+      "status": "FAILED",
+      "failure_first_line": "java.nio.file.NoSuchFileException: D:\\ck3-state\\ck3-version-migration-20261118\\java-mapped-saved-policy08\\qualification01\\maven-archiver\\pom.properties"
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameCloneTest#actualProfileCloneKeepsTheOriginalSourceWitnessAndBothNativeIdentities()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootDefaultProfileSourcesTest#actualExportedRestoreRolesFeedDefaultProducerCodecAndSameConsumer()": {
+      "status": "FAILED",
+      "failure_first_line": "java.io.IOException: actual Driver source fixture previously failed"
+    },
+    "org.xar.ck3.control.service.root.MappedBootstrapNestClosureTest#mappedRequiredNamesIncludeAllActualDeclaredNativeNestsIncludingPrivatePhaseAndWin32ApiProviders()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGamePreparationTest#conflictingTargetAndUnrelatedSourceCannotTriggerCopyOrReplacement()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.WorkerBatchLogBoundContractTest#realGuardedReplacementRetainsEveryOldByteAndActualHintReader()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameCloneTest#identicalPlanIdentityCannotBeReplacedByAnEqualDecodedPlan()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedSessionBoundaryTest#actualMappedPhaseEofProducesNoStageAndLexicalOwnerReleasesItsRealCloneCustody()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGamePreparationTest#existingExactTargetStillRevalidatesTheOriginalBeforeReturningMapping()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootExitedOwnerResultConsumerTest#successfulOwnerResultCompletesAfterBusinessAndTransportExactlyOnce()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.WorkerBatchLogBoundContractTest#oversizedHistoricalFileRejectsBeforeTheNativeFilePortHashesIt()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.army.ArmyReplayReadsetHandoff54Test#realIndependentConsumerLeaseCoversTheWholeGapAfterProducerScopeExit()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedSessionBoundaryTest#actualMappedFinalConsumerAcceptsOnlyItsExactCreatedAndNewStatus()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedSessionBoundaryTest#actualCapturedMappedLfReachesPublicDeclarationAndColdQuoteReadback()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapOutputGuardTest#existingCloneIsCurrentInputAndDoesNotBecomePolicyOutputGrowth()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameFilesTest#conflictingTargetIsNotOverwritten()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.QualifiedCloneCustodyTest#expiredOrOversizedPreparationCannotAcquireOrLeaveLocks()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.QualifiedCloneCustodyTest#partialCloneAcquisitionFailureReleasesEveryEarlierSourceAndDirectoryHandle()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.continuity.writer.SavedPreReadReadsetLifetime1210Test#samePhysicalLockPathDoesNotPermitAForeignSourceWriterSession()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.continuity.writer.SavedArmyReadsetHandoff1210Test#peerHandleIsQuotedBeforeAcquiringAnAdditionalConsumerHandle()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#currentConfigurationRejectsCrossedOwnerPlanAndChangedExactSourceWithoutWritingFallback()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.contracts.source.DirectoryReadOnlyLeaseTest#actualDirectoryHandleDeniesWriteAndDeleteThenCloseRestoresBoth()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#tamperedHistoricalMappingTypesUnknownFieldsAndRoleSwapsAreRejected()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameCloneTest#sameBytesAndMtimeAtOriginalPathCannotRefreshTheOriginalPairWitness()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#equalContentCloneReplacementDoesNotRefreshPersistedFileIdentity()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.application.driver.ExactPolicyCapturedBytesTest#restoredOriginalPathCannotBlessOtherSameLengthCapturedBytes()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.SavedVanillaCheckpointReadSet1210Test#nativeCloseFailureStaysUnknownAcrossRepeatedCloseAndKeepsOriginalHandleHeld()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootDefaultProfileSourcesTest#actualExportedIndexFeedsDefaultProfileClosuresCodecAndOriginalConsumer()": {
+      "status": "FAILED",
+      "failure_first_line": "java.io.IOException: required real Driver source fixture property missing: xar.root.runtime.definitions.path"
+    },
+    "org.xar.ck3.control.service.root.RootDefaultProfileSourcesTest#driverBootstrapRoleResolvesOnlyItsLocalServiceOriginal()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.continuity.writer.SavedArmyReadsetHandoff1210Test#caughtWrongSourceSessionHandoffCannotReturnASealedCandidate()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameFilesTest#externalSavedOriginalIsMaterializedAtTheActualLoadsaveArgumentTarget()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.QualifiedCloneCustodyTest#wrongThreadCannotUseOrReleaseTheOwnersRealHandleScope()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameCloneTest#sameBytesAndMtimeAtActualPathCannotReplaceAnObservedCloneFileId()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#environmentReadbackValidatesExistingAssetsWithoutClaimingTheyWereRecreated()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameFilesTest#identicalExistingTargetCannotStandInForMissingSelectedSource()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGamePreparationTest#existingOnlyCensusCannotSurviveEqualBytesAtAnotherNativeFileId()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameFilesTest#sourceAlreadyAtConfiguredTargetIsPreserved()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.WorkerBatchLogBoundContractTest#realAllocationFailureKeepsItsCauseAndSuppressedOutputFailureWithoutRetry()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGamePreparationTest#existingOnlyCensusHasPhysicalCustodyAndZeroNewOutputGrowth()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.QualifiedCloneCustodyTest#trueSourceCloneAndDirectoryHandlesBlockWritesDeleteRenameUntilCloseThenSdkTargetIsWritable()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#sameDecodedPlanCannotReplaceTheBoundPlanObject()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#mappedV2CannotUseAnInPlaceSourceThatOrdinarySaveWouldOverwrite()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapOutputGuardTest#existingCloneRequiresALaterReleaseAndExactPhysicalAllocation()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGamePreparationTest#precreateCopyUsesTheSuppliedAdapterAndKeepsOriginalPlanAndPair()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapOutputGuardTest#existingCloneCannotBeHiddenByAnIssuerUsageUpperBelowItsActualAllocation()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#oldActualNulStdinRouteExitsTwoWithoutStageCompletion()": {
+      "status": "FAILED",
+      "failure_first_line": "java.nio.file.NoSuchFileException: D:\\ck3-state\\ck3-version-migration-20261118\\java-mapped-saved-policy08\\qualification01\\maven-archiver\\pom.properties"
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#normalExitInventoryReadbackCountsOnlyItsTwoNewOutputsAndStillChecksRetainedProfile()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.application.driver.MappedSavedNativeIdentityTest#outOfDomainNoncanonicalAndNumericAliasesRemainRejected()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameFilesTest#identicalExistingTargetCannotHideChangedSelectedSource()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#actualMappedPreparedQuoteFeedsOnlyTheTypedV2IssuerPreflight()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#originalEqualContentReplacementCannotBecomeHistoricalSource()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.continuity.writer.SavedPreReadReadsetLifetime1210Test#actualExternalCloseFailureRemainsUnknownOnEveryLaterClose()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.QualifiedCloneCustodyTest#expiryDuringQuoteCannotBeRenewedByResettingTheClockAndOwnerCloseStillReleases()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.application.checkpoint.NativeCheckpointCloneCustodyTest#retainedOriginalPairProtectsItsOwnFilesWhileCloneSaveObservationStaysFresh()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.WorkerBatchLogBoundContractTest#realAllocationCapAndForeignFilePortRejectBeforeNativeReplacement()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#legacyInPlaceConfigurationKeepsItsExistingLoadedRouteSet()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootSavedOwnerTerminalResultTest#physicalTerminalFailureDoesNotReplaceTheOriginalBusinessCause()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.army.ArmyReplayReadsetHandoff54Test#callbackBodyOrCleanupFailureInvalidatesEveryAlreadyIssuedAuthenticatedOriginal()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#closedRealCustodyCannotProduceNewPolicyBytes()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.contracts.source.DirectoryReadOnlyLeaseTest#regularFileIsRejectedWithoutLeavingAnUnexpectedReadLock()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#exactCurrentConfigurationRetainsActualOwnerPlanWhileSourceReadStaysHistoricalAfterCloneSave()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.SavedVanillaCheckpointReadSet1210Test#successfulReleaseAllowsForeignDestroyButNeverRevivesCurrentEligibility()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedBootstrapNestClosureTest#legacyModesKeepTheirExistingTopLevelRosterAndDoNotImplicitlyEnterMappedNativeClosure()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootExitedOwnerResultConsumerTest#businessFailureRemainsPrimaryAndTerminalFailureFollowsTransportFailure()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.WorkerBatchLogBoundContractTest#completeCurrentReportAndOldHistoryRemainExactThroughTheSharedPublisher()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.application.driver.MappedSavedNativeIdentityTest#actualR11ProducerVolumeIsUnsigned64AndCannotBeTruncatedToLegacyVolume32()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.continuity.writer.SavedPreReadReadsetLifetime1210Test#actualCommitCloseFailureRemainsUnknownInBothArchiveAndCasHolders()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#actualMappedEofKeepsRetirementRefusedAndClosesUnqualifiedNativeHolds()": {
+      "status": "FAILED",
+      "failure_first_line": "java.nio.file.NoSuchFileException: D:\\ck3-state\\ck3-version-migration-20261118\\java-mapped-saved-policy08\\qualification01\\maven-archiver\\pom.properties"
+    },
+    "org.xar.ck3.control.continuity.writer.SavedArmyReadsetHandoff1210Test#failedAuthenticatedDomainGuardInvalidatesTheActualConsumerReadset()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapDuplexTest#actualRetainedSourceDriftAfterFirstSendPreventsAnySecondIssuer()": {
+      "status": "FAILED",
+      "failure_first_line": "java.nio.file.NoSuchFileException: D:\\ck3-state\\ck3-version-migration-20261118\\java-mapped-saved-policy08\\qualification01\\maven-archiver\\pom.properties"
+    },
+    "org.xar.ck3.control.platform.NativeSavedGameFilesTest#changedSourceAlreadyAtTargetCannotBeAcceptedAsTheSelectedOriginal()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.continuity.writer.SavedPreReadReadsetLifetime1210Test#unsigned64BitFileIdDifferenceCannotCollapseIntoAnAdmittedSourcePin()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.army.ArmyReplayReadsetHandoff54Test#postScopeClockExpiryAndMetadataFailureRemainStickyEvenWhenLaterRestored()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.contracts.source.DirectoryReadOnlyLeaseTest#directoryMetadataDriftFailsPermanentlyWithoutPreventingOwnerCleanup()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.WorkerBatchLogBoundContractTest#boundedSinkFailureStillExposesCompleteBatchReportWithoutChangingRetainedHistory()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.SavedInitialClonePhaseTest#equalBytesAndMtimeWithNewCloneFileIdFailsThePrelivePhysicalCheck()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootSavedCreatorOwnerResultTest#actualFailuresUnknownAndUnclosedResourcesAllRemainVisibleWithoutMintingAnyTerminalProof()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.application.driver.MappedSavedProfileKindTest#mappedVanillaRequiresTheSameExactTypedEnvironmentDomain()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootOriginalOwnerCleanupConsumerTest#actualTerminalDataDoesNotEraseUnknownUnclosedOrNonzeroFailures()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.CapturedOwnerDescriptorDataTest#capturedDescriptorKeepsItsBoundAndActualControlSiblingContract()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.nativebridge.NativeTransportDiagnosticsTest#actualReceiverHonorsTheLifecycleSelectedOneFrameSpecBeforeTheQueuedSnapshot()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootSavedCreatorOwnerResultTest#originalSuccessfulCleanupPreservesTheIndependentBusinessResultAndExplicitStopExitCode()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.nativebridge.NativeFreshFullStateReadTest#actualReceiverStopsAtTheLifecycleSelectedSubmissionSpecBeforeAnySecondWrite()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.GameLaunchContractTest#invalidTransportSpecIsRejectedBeforeAnyNativeEndpointOrGameExists()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.CapturedOwnerDescriptorDataTest#exactCapturedOwnerDataRoundTripsWithoutRereadingAnUnboundPath()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootOriginalOwnerCleanupConsumerTest#existingPrimaryKeepsFatalCleanupAndAllLaterReleases()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootOriginalOwnerCleanupConsumerTest#originalOwnerFailureCannotSkipRemainingReleases()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootSavedCreatorOwnerResultTest#naturalNonzeroCannotInheritSuccessAndKeepsAnExistingBusinessPrimary()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#integerNodeRoundTripPreservesExactMappingButNeverMasksFileIdOrWrongNumericType()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootOriginalOwnerCleanupConsumerTest#completedOwnerPrecedesAllIndependentReleases()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.CapturedOwnerDescriptorDataTest#restoredOwnerARejectsOtherSameLengthCapturedGameIdentityB()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.application.driver.MappedSavedProfileKindTest#otherTypedDomainsAndUnknownCannotBecomeMappedVanilla()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.platform.GameLaunchContractTest#explicitTransportSpecKeepsOldDefaultsAndSelectedColdCountsWithoutCreatingAGame()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    },
+    "org.xar.ck3.control.service.root.RootOriginalOwnerCleanupConsumerTest#interruptionRemainsVisibleAfterBothReleases()": {
+      "status": "PASSED",
+      "failure_first_line": null
+    }
+  },
+  "execution_records": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/javac-prod01.json",
+      "bytes": 422,
+      "sha256": "a7fb39b11a20cea853abe2cbe6dc69892ea4dabc02032a67e0223b4b847aa9a8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/javac-prod04.json",
+      "bytes": 512,
+      "sha256": "d07eaf9c3719f67ee3abf4cd3d53ade092f99c958c5fe67a5ee0fe5efafac59e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/javac-test01.json",
+      "bytes": 423,
+      "sha256": "8da425167949feb3e5ff1b2a3fa43be09b6166fb6d5fcf938ae32302331f4948"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/javac-test02.json",
+      "bytes": 511,
+      "sha256": "b9f1bfc19887d66f926ea696acc3956f994e0d38c3a697e42dbdc139d6487872"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/javac-test03.json",
+      "bytes": 512,
+      "sha256": "aeb47bf641e8a9dabba68aeeca0997af119f27dd1577192387454e3d1d1bf6af"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/javac-test05.json",
+      "bytes": 510,
+      "sha256": "881e5a36b6e1191c75d64788549b7bfeb335401020b5f8d5bcedcd2adba8f3b5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/javac-test06.json",
+      "bytes": 483,
+      "sha256": "a0901643ce41368e72f6f97ab24996b6219012e9ea50ea91a4a10386e4f98cfe"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/junit-affected40-05.json",
+      "bytes": 363,
+      "sha256": "0e2d479cb3f1fb146579aebe76ff49c36888af5c596c6091f66ca6b138e2a604"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/junit-single-eof06.json",
+      "bytes": 343,
+      "sha256": "1b2f0849f2a359b297c6101e2b67854232678d4e01d8bd7607120d76d6f65bfb"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/logs/junit118-01.json",
+      "bytes": 366,
+      "sha256": "f8915ac218f3abe28c79325d465501721a667b6fb854dfd32495b70c52d24601"
+    }
+  ],
+  "sources_shared_adopted": false,
+  "pending_inputs": [
+    {
+      "tests": 8,
+      "kind": "RootBootstrapDuplexTest",
+      "requirement": "complete genuine current Maven MAIN/TEST artifacts and full classpath; incremental class roots correctly rejected"
+    },
+    {
+      "tests": 2,
+      "kind": "RootDefaultProfileSourcesTest",
+      "requirement": "actual Root definitions original exact reference and real producer configuration; no synthetic source-index replacement"
+    }
+  ],
+  "material_fix": "compare exact source_clone JSON in its strict canonical integer domain; LongNode vs BigIntegerNode is a serialization representation difference, all exact physical/source/clone/plan checks retained",
+  "limits_fix": "actual configured frames/submissions now pass from both cold lifecycle constructors to NativeGameTransport; old constructors retain defaults",
+  "limitations": [
+    "No Runtime/SERVICE qualification, policy output issuance, Root installation, FrameSource or Driver authority, Game start or live query",
+    "136 distinct includes retained initial failures; 126 passed is a union of executed methods, not a wholly green136 suite",
+    "37 source files compiled incrementally against explicitly recorded prior artifacts; no claim of full reactor compile or genuine packaged output",
+    "Existing P08 and v7 qualifications retain their own exact bounds; no automatic extension to this pending group",
+    "No fake pom.properties/JAR, untyped driver inputs, skipped mandatory test or widened permission gate used"
+  ]
+}

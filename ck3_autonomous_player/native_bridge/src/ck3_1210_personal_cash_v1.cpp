@@ -71,6 +71,25 @@ bool CurrentCore(const CoreBindings &b, const CoreSnapshotPrefix &expected) noex
   return ReadCoreSnapshot(b, actual) && SameCore(actual, expected);
 }
 
+bool ScopeVersion(PersonalCashScopeVersion version) noexcept {
+  return version == PersonalCashScopeVersion::legacy_nonnegative_v1 ||
+      version == PersonalCashScopeVersion::florin_unit_full_id_v2;
+}
+bool ArmyId(std::int32_t id, PersonalCashScopeVersion version) noexcept {
+  return version == PersonalCashScopeVersion::legacy_nonnegative_v1 ? id >= 0 :
+      version == PersonalCashScopeVersion::florin_unit_full_id_v2 && id != -1;
+}
+bool ScopeIds(const PersonalCashObservationV1 &out,
+    PersonalCashScopeVersion version) noexcept {
+  if (!ScopeVersion(version) || out.scope_version != version ||
+      out.active_war_ids.size() > 1024 || out.player_army_ids.size() > 4096) return false;
+  for (auto at = out.active_war_ids.begin(); at != out.active_war_ids.end(); ++at)
+    if (*at <= 0 || std::find(out.active_war_ids.begin(), at, *at) != at) return false;
+  for (auto at = out.player_army_ids.begin(); at != out.player_army_ids.end(); ++at)
+    if (!ArmyId(*at, version) || std::find(out.player_army_ids.begin(), at, *at) != at) return false;
+  return true;
+}
+
 bool Scope(const xar::game::Snapshot &basis, PersonalCashObservationV1 &out) {
   // Preserve actual order. These bounds are availability bounds, not claims
   // about engine limits or proof that a nonempty Full family is qualified.
@@ -81,7 +100,7 @@ bool Scope(const xar::game::Snapshot &basis, PersonalCashObservationV1 &out) {
     out.active_war_ids.push_back(war.war_id);
   }
   for (const auto &army : basis.player_armies) {
-    if (army.army_id < 0 || std::find(out.player_army_ids.begin(),
+    if (!ArmyId(army.army_id, out.scope_version) || std::find(out.player_army_ids.begin(),
         out.player_army_ids.end(), army.army_id) != out.player_army_ids.end()) return false;
     out.player_army_ids.push_back(army.army_id);
   }
@@ -141,10 +160,14 @@ PersonalCashBindingsV1 BindPersonalCashImageV1(std::uintptr_t base,
   return b;
 }
 
-bool ReadPersonalCashV1(const PersonalCashBindingsV1 &b,
-    const PersonalCashReadContextV1 &context, PersonalCashObservationV1 &out) noexcept {
+namespace {
+bool ReadPersonalCash(const PersonalCashBindingsV1 &b,
+    const PersonalCashReadContextV1 &context, PersonalCashObservationV1 &out,
+    PersonalCashScopeVersion version) noexcept {
   out = {};
+  out.scope_version = version;
   try {
+    if (!ScopeVersion(version)) return Fail(out, "personal_cash_scope_version_invalid");
     const auto c = context;
     if (!b.exact_build_admitted || !b.gold.exact_build_admitted ||
         !b.monthly.exact_build_admitted || !SameBindings(b.gold.core, b.monthly.core))
@@ -179,6 +202,8 @@ bool ReadPersonalCashV1(const PersonalCashBindingsV1 &b,
     out.context_call_attempts = monthly.context_call_attempts;
     out.gross_call_attempted = monthly.gross_call_attempted;
     out.expenses_call_attempted = monthly.expenses_call_attempted;
+    if (monthly.native_owner_admission_failed)
+      return Fail(out, "personal_cash_actor_owner_changed");
     const bool flow_ready = monthly_ok && monthly.available && monthly.same_frame_ready &&
         monthly.gross_ready && monthly.total_expenses_ready &&
         monthly.monthly_gross_income_raw && monthly.monthly_total_expenses_raw;
@@ -230,7 +255,9 @@ bool ReadPersonalCashV1(const PersonalCashBindingsV1 &b,
   }
 }
 
-std::string SerializePersonalCashV1(const PersonalCashObservationV1 &o) {
+std::string SerializePersonalCash(const PersonalCashObservationV1 &o,
+    PersonalCashScopeVersion version) {
+  const bool scope_ready = ScopeIds(o, version);
   std::int64_t checked = 0;
   const bool pair = o.monthly_gross_income_raw && o.monthly_total_expenses_raw;
   const bool fits = pair && CheckedMonthlyNetV1(*o.monthly_gross_income_raw,
@@ -242,28 +269,31 @@ std::string SerializePersonalCashV1(const PersonalCashObservationV1 &o) {
   const bool emit = o.completed && o.same_frame_ready && o.native_revision != 0 &&
       o.frame.clock.paused && o.frame.map_ready && o.frame.has_played_character &&
       o.frame.played_character_alive && o.frame.played_character_id != -1 &&
-      o.personal_gold_raw && arithmetic;
+      o.personal_gold_raw && arithmetic && scope_ready;
   const bool flow = emit && pair;
   const bool net = flow && fits;
   const auto actor = o.frame.played_character_id;
-  const auto wars = Ids(o.active_war_ids);
-  const auto reason = o.completed && !emit ?
+  const auto wars = scope_ready ? Ids(o.active_war_ids) : "[]";
+  const auto armies = scope_ready ? Ids(o.player_army_ids) : "[]";
+  const auto reason = !scope_ready ? std::string_view{"personal_cash_scope_version_or_ids_invalid"} :
+      o.completed && !emit ?
       std::string_view{"personal_cash_observation_inconsistent"} : o.unavailable_reason;
   const auto flow_reason = emit && !flow ? o.monthly_unavailable_reason : reason;
   const auto net_reason = flow && !fits ?
       std::string_view{"war_cash_monthly_net_income_overflow"} :
       emit && !flow ? o.net_unavailable_reason : reason;
-  std::string out = "{\"step\":" + Quote(kPersonalCashStepV1) +
+  const bool v2 = version == PersonalCashScopeVersion::florin_unit_full_id_v2;
+  std::string out = "{\"step\":" + Quote(v2 ? kPersonalCashStepV2 : kPersonalCashStepV1) +
       ",\"accepted\":true,\"private_build\":true,\"read_only\":true,"
       "\"advertised\":false,\"war_cash_current_resources\":{\"schema\":" +
-      Quote(kPersonalCashSchemaV1) + ",\"game_version\":" + Quote(kGameVersion) +
+      Quote(v2 ? kPersonalCashSchemaV2 : kPersonalCashSchemaV1) + ",\"game_version\":" + Quote(kGameVersion) +
       ",\"executable_sha256\":" + Quote(kExecutableSha256) +
       ",\"status\":" + Quote(emit ? "partial" : "unavailable") +
       ",\"read_only\":true,\"advertised\":false,\"formal_action_ready\":false,"
       "\"played_character_id\":" + std::to_string(actor) +
       ",\"snapshot_revision\":" + std::to_string(o.native_revision) +
       ",\"date_raw\":" + std::to_string(o.frame.clock.date_raw) +
-      ",\"active_war_ids\":" + wars + ",\"player_army_ids\":" + Ids(o.player_army_ids) +
+      ",\"active_war_ids\":" + wars + ",\"player_army_ids\":" + armies +
       ",\"current_treasury\":" + Fixed(o.personal_gold_raw, emit) +
       ",\"player_monthly_gross_income\":" + Fixed(o.monthly_gross_income_raw, flow) +
       ",\"player_monthly_total_expenses\":" + Fixed(o.monthly_total_expenses_raw, flow) +
@@ -297,6 +327,23 @@ std::string SerializePersonalCashV1(const PersonalCashObservationV1 &o) {
       "\"future_risk_budget_raw\",\"policy_minimum_gold_reserve_raw\",\"horizon_days\","
       "\"future_bound_assumptions\"],\"unavailable_reason\":" + Reason(false, reason) + "}}";
   return out;
+}
+
+} // namespace
+
+bool ReadPersonalCashV1(const PersonalCashBindingsV1 &b,
+    const PersonalCashReadContextV1 &c, PersonalCashObservationV1 &out) noexcept {
+  return ReadPersonalCash(b, c, out, PersonalCashScopeVersion::legacy_nonnegative_v1);
+}
+bool ReadPersonalCashV2(const PersonalCashBindingsV1 &b,
+    const PersonalCashReadContextV1 &c, PersonalCashObservationV1 &out) noexcept {
+  return ReadPersonalCash(b, c, out, PersonalCashScopeVersion::florin_unit_full_id_v2);
+}
+std::string SerializePersonalCashV1(const PersonalCashObservationV1 &o) {
+  return SerializePersonalCash(o, PersonalCashScopeVersion::legacy_nonnegative_v1);
+}
+std::string SerializePersonalCashV2(const PersonalCashObservationV1 &o) {
+  return SerializePersonalCash(o, PersonalCashScopeVersion::florin_unit_full_id_v2);
 }
 
 } // namespace xar::ck3_1210

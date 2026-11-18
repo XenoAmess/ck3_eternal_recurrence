@@ -28,6 +28,12 @@ public final class RootFamilyReadProducts {
             RootInteractionContextProjection actualProjection,RootFamilyCampaignRead actualRoot,
             Map<FamilyPorts.Query,ReadContract<Obj>> otherActualContracts,Map<FamilyPorts.Query,FamilyPorts.ProjectedSource> otherActualProjections,
             List<RootReadContractCatalog.InstalledRead> otherInstalledReads) {
+        this(context,sources,actualInteractions,RootFamilyInteractionContext.qualified(actualProjection),actualRoot,otherActualContracts,otherActualProjections,otherInstalledReads);
+    }
+    public RootFamilyReadProducts(RootRuntimeContext context,Sources sources,InteractionCapabilities actualInteractions,
+            RootFamilyInteractionContext actualProjection,RootFamilyCampaignRead actualRoot,
+            Map<FamilyPorts.Query,ReadContract<Obj>> otherActualContracts,Map<FamilyPorts.Query,FamilyPorts.ProjectedSource> otherActualProjections,
+            List<RootReadContractCatalog.InstalledRead> otherInstalledReads) {
         this.context=Objects.requireNonNull(context);Objects.requireNonNull(sources);
         var contracts=new EnumMap<FamilyPorts.Query,ReadContract<Obj>>(FamilyPorts.Query.class);
         contracts.put(FamilyPorts.Query.CHILD_HOUSE_PREVIEW,FamilyObligationsQueries.contract(sources.obligationsNative(),(request,args)->admit(request)));

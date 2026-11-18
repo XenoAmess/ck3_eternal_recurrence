@@ -238,6 +238,18 @@ MonthlyFlowObservationV1 Success(Fixture &f) {
       out.frame.played_character_alive, "complete expected Core prefix retained");
   Scope(out); Attempts(f, out); return out;
 }
+struct NativeOwnerAdmissionTrace {
+  unsigned calls = 0, deny_at = 0;
+  bool fault_at_denial = false;
+};
+bool AdmitMonthlyTestOwner(void *opaque) noexcept {
+  auto &trace = *static_cast<NativeOwnerAdmissionTrace *>(opaque);
+  if (++trace.calls != trace.deny_at) return true;
+#if defined(_MSC_VER)
+  if (trace.fault_at_denial) RaiseException(EXCEPTION_ACCESS_VIOLATION, 0, 0, nullptr);
+#endif
+  return false;
+}
 } // namespace
 
 int main() {
@@ -392,6 +404,43 @@ int main() {
       .exact_build_admitted, "old .4 identity rejected");
   Require(!BindMonthlyFlowImageV1((std::numeric_limits<std::uintptr_t>::max)(),
       kExecutableSha256).exact_build_admitted, "base overflow rejected");
+  for (unsigned deny_at = 1; deny_at != 9; ++deny_at) {
+    Fixture f; NativeOwnerAdmissionTrace trace{0, deny_at, false};
+    f.bindings.native_call_admission = &AdmitMonthlyTestOwner;
+    f.bindings.native_call_admission_context = &trace;
+    MonthlyFlowObservationV1 observed{};
+    Require(!ReadMonthlyFlowV1(f.bindings, f.Expected(), observed) &&
+        observed.native_owner_admission_failed && !observed.available &&
+        !observed.monthly_gross_income_raw && !observed.monthly_total_expenses_raw &&
+        !observed.monthly_net_income_raw && trace.calls == deny_at &&
+        observed.unavailable_reason == "monthly_flow_owner_changed",
+        "every native monetary call brackets current owner and latches failed admission");
+    const unsigned contexts = (deny_at >= 2 ? 1U : 0U) + (deny_at >= 8 ? 1U : 0U);
+    Require(f.context_calls == contexts && f.gross_calls == (deny_at >= 4 ? 1U : 0U) &&
+        f.expense_calls == (deny_at >= 6 ? 1U : 0U), "no later native getter after lost owner");
+    Attempts(f, observed); Scope(observed);
+  }
+  {
+    Fixture f; NativeOwnerAdmissionTrace trace{};
+    f.bindings.native_call_admission = &AdmitMonthlyTestOwner;
+    f.bindings.native_call_admission_context = &trace;
+    const auto observed = Success(f);
+    Require(trace.calls == 8 && !observed.native_owner_admission_failed,
+        "current owner survives all four native calls without changing scalar semantics");
+  }
+#if defined(_MSC_VER)
+  {
+    Fixture f; NativeOwnerAdmissionTrace trace{0, 4, true};
+    f.bindings.native_call_admission = &AdmitMonthlyTestOwner;
+    f.bindings.native_call_admission_context = &trace;
+    MonthlyFlowObservationV1 observed{};
+    Require(!ReadMonthlyFlowV1(f.bindings, f.Expected(), observed) &&
+        observed.native_owner_admission_failed && f.context_calls == 1 &&
+        f.gross_calls == 1 && f.expense_calls == 0,
+        "SEH during owner recheck retains completed native attempts and blocks expense");
+    Attempts(f, observed);
+  }
+#endif
   std::cout << "PASS fake monthly ABI/borrowed lifetime/default gate/full generation/"
       "overflow/frame/throw/fault guards; no native Game entry executed\n";
   return 0;

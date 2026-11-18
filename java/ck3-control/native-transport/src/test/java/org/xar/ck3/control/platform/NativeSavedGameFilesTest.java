@@ -54,6 +54,36 @@ final class NativeSavedGameFilesTest {
         assertOnlyTarget(target);
     }
 
+    @Test void identicalExistingTargetCannotHideChangedSelectedSource() throws Exception {
+        var load=external("changed-original",new byte[]{3,1,4,1,5});
+        Path source=Path.of(load.save().path()),profile=temporary.resolve("profile");
+        Path target=profile.resolve("save games/changed-original.ck3");
+        Files.createDirectories(target.getParent());Files.copy(source,target);
+        var selectedTarget=ControlBuild.FileRef.measure(target);
+        FileTime targetTime=Files.getLastModifiedTime(target);
+        byte[] changed={3,1,4,1,6};Files.write(source,changed);
+
+        assertThrows(IOException.class,()->NativeSavedGameFiles.materialize(profile,load));
+
+        assertEquals(selectedTarget,ControlBuild.FileRef.measure(target));
+        assertEquals(targetTime,Files.getLastModifiedTime(target));
+        assertArrayEquals(changed,Files.readAllBytes(source));assertOnlyTarget(target);
+    }
+
+    @Test void identicalExistingTargetCannotStandInForMissingSelectedSource() throws Exception {
+        var load=external("missing-original",new byte[]{7,8,9});
+        Path source=Path.of(load.save().path()),profile=temporary.resolve("profile");
+        Path target=profile.resolve("save games/missing-original.ck3");
+        Files.createDirectories(target.getParent());Files.copy(source,target);
+        var selectedTarget=ControlBuild.FileRef.measure(target);
+        FileTime targetTime=Files.getLastModifiedTime(target);Files.delete(source);
+
+        assertThrows(IOException.class,()->NativeSavedGameFiles.materialize(profile,load));
+
+        assertFalse(Files.exists(source));assertEquals(selectedTarget,ControlBuild.FileRef.measure(target));
+        assertEquals(targetTime,Files.getLastModifiedTime(target));assertOnlyTarget(target);
+    }
+
     @Test void conflictingTargetIsNotOverwritten() throws Exception {
         var load=external("conflict",new byte[]{7,8,9});
         Path profile=temporary.resolve("profile");

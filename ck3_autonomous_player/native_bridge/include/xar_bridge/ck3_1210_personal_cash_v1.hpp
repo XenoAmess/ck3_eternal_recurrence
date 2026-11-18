@@ -14,6 +14,14 @@ namespace xar::ck3_1210 {
 
 inline constexpr char kPersonalCashStepV1[] = "query-war-cash-current-resources-v1";
 inline constexpr char kPersonalCashSchemaV1[] = "xar.ck3.war-cash-current-resources.v1";
+// V1 retains qualified nonnegative army IDs. V2 explicitly carries signed
+// UnitFullId: int32 except -1, no duplicate complete IDs.
+inline constexpr char kPersonalCashStepV2[] = "query-war-cash-current-resources-v2";
+inline constexpr char kPersonalCashSchemaV2[] = "xar.ck3.war-cash-current-resources.v2";
+enum class PersonalCashScopeVersion : std::uint8_t {
+  legacy_nonnegative_v1 = 1,
+  florin_unit_full_id_v2 = 2,
+};
 inline constexpr char kPersonalCashMilitaryUnknownV1[] =
     "ck3_1210_military_maintenance_not_qualified";
 
@@ -44,6 +52,8 @@ struct PersonalCashReadContextV1 {
 };
 
 struct PersonalCashObservationV1 {
+  // Internal provenance: never infer a scope domain from an ID sign/build.
+  PersonalCashScopeVersion scope_version = PersonalCashScopeVersion::legacy_nonnegative_v1;
   // Completed means coherent personal scalar data; military remains unknown.
   bool completed = false;
   bool same_frame_ready = false;
@@ -87,11 +97,20 @@ bool ReadPersonalCashV1(const PersonalCashBindingsV1 &bindings,
     const PersonalCashReadContextV1 &context,
     PersonalCashObservationV1 &output) noexcept;
 
+// Identical exact binding/owner/Full/wallet/monthly guards, explicitly V2.
+// Only army IDs change domain; preserve order and the 4096 availability bound.
+// Wars remain positive unique int32 with the 1024 availability bound.
+bool ReadPersonalCashV2(const PersonalCashBindingsV1 &bindings,
+    const PersonalCashReadContextV1 &context,
+    PersonalCashObservationV1 &output) noexcept;
+
 // Pure legacy result object (not a command_result transport envelope).
 // current_treasury means personal Gold. Both military rows are unavailable.
 // A failed/inconsistent DTO emits only null amounts and false readiness.
 // queried_* references still belong to the real Java receipt projection.
 // This function grants no query permission, Full/Root role or capability.
 std::string SerializePersonalCashV1(const PersonalCashObservationV1 &observation);
+// A mismatched scope version cannot revive amounts via either serializer.
+std::string SerializePersonalCashV2(const PersonalCashObservationV1 &observation);
 
 } // namespace xar::ck3_1210

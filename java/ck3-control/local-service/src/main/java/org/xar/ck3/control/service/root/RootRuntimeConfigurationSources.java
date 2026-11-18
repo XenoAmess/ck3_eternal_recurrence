@@ -36,6 +36,7 @@ public final class RootRuntimeConfigurationSources {
         // Loaded nested classes retain their actual nest host's source; loaded-class checks still use the original Class.
         for(Class<?> type:RootColdReboundRuntime.requiredSourceTypes())startup.add(requireClass(winners,type.getNestHost().getName()));
         for(Class<?> type:requiredProfileSourceTypes())startup.add(requireClass(winners,type.getNestHost().getName()));
+        for(Class<?> type:requiredSavedEntrySourceTypes())startup.add(requireClass(winners,type.getNestHost().getName()));
         for(Class<?> type:org.xar.ck3.control.build.runtime.JavaRuntimeLaunch.requiredInvocationSources()) {
             String target="build-tools/src/main/java/"+type.getNestHost().getName().replace('.','/')+".java";
             startup.add(requireTarget(winners,target));
@@ -79,6 +80,12 @@ public final class RootRuntimeConfigurationSources {
         return List.copyOf(types);
     }
 
+    /** Saved entry code belongs to the actual default source cut; source membership grants no saved admission. */
+    public static List<Class<?>> requiredSavedEntrySourceTypes() {
+        return List.of(RootSavedRuntimeConfigurationInputs.class,RootOrdinaryRuntimeConfiguration.class,
+                RootJavaSavedBootstrapMain249.class,RootLoadedSavedResumeMain250.class,
+                org.xar.ck3.control.application.driver.InitialEpisodePolicy.class);
+    }
     private static SelectedSource requireClass(List<SelectedSource> winners,String className)throws IOException {
         String suffix="/src/main/java/"+className.replace('.','/')+".java";
         List<SelectedSource> selected=winners.stream().filter(row->row.targetRelative().endsWith(suffix)).toList();

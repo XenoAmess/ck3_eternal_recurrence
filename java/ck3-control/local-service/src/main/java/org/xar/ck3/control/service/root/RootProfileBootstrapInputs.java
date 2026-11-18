@@ -39,15 +39,34 @@ public final class RootProfileBootstrapInputs {
     public static final class Prepared {
         private final Path root;private final List<Body> writes;private final List<Output> allOutputs;
         private final List<String> directories;private final List<RetainedInput> retained;private final Current current,beforeWrite,afterReadback;
+        private final org.xar.ck3.control.platform.NativeSavedGamePreparation.Existing existingAllocatedInput;
         private Prepared(Path root,List<Body> writes,List<Output> existing,List<String> directories,List<RetainedInput> retained,Current current){
             this(root,writes,existing,directories,retained,current,current,current);
         }
         private Prepared(Path root,List<Body> writes,List<Output> existing,List<String> directories,List<RetainedInput> retained,Current current,Current beforeWrite,Current afterReadback){
+            this(root,writes,existing,directories,retained,current,beforeWrite,afterReadback,null);
+        }
+        private Prepared(Path root,List<Body> writes,List<Output> existing,List<String> directories,List<RetainedInput> retained,
+                Current current,Current beforeWrite,Current afterReadback,
+                org.xar.ck3.control.platform.NativeSavedGamePreparation.Existing existingAllocatedInput){
+            this.existingAllocatedInput=existingAllocatedInput;
             this.root=root;this.writes=List.copyOf(writes);this.directories=List.copyOf(directories);this.retained=List.copyOf(retained);
             this.current=current;this.beforeWrite=beforeWrite;this.afterReadback=afterReadback;
             var outputs=new ArrayList<>(existing);for(var write:writes)outputs.add(write.output(root));allOutputs=List.copyOf(outputs);
         }
-        public Path assetRoot(){return root;}public List<Output> quote(){return allOutputs;}
+        /** Add current existing file custody before quote; never add the clone to output growth. */
+        public Prepared withExistingAllocatedInput(org.xar.ck3.control.platform.NativeSavedGamePreparation.Existing input)throws IOException {
+            Objects.requireNonNull(input);input.requireCurrent();
+            if(existingAllocatedInput!=null||allOutputs.size()!=1||allOutputs.getFirst().kind()!=Kind.INITIAL_POLICY
+                    ||!directories.isEmpty()||!retained.isEmpty())throw new IOException("one existing clone belongs only to a single policy preparation");
+            return new Prepared(root,writes,allOutputs.subList(0,allOutputs.size()-writes.size()),directories,retained,
+                    current,beforeWrite,afterReadback,input);
+        }
+        private void requireExistingAllocation(RootBootstrapOutputGuard authority)throws IOException {
+            if(existingAllocatedInput!=null){existingAllocatedInput.requireCurrent();var census=existingAllocatedInput.census();
+                authority.requireExistingAllocatedInput(census.actualSave(),census.existingAllocatedUpperBytes(),census.observedAt());}
+        }
+        public Path assetRoot(){return root;}public List<Output> quote(){try{current.verify();}catch(IOException failure){throw new java.io.UncheckedIOException(failure);}return allOutputs;}
         public List<String> outputDirectories(){return directories;}public List<RetainedInput> retainedInputs(){return retained;}
         public Branch branch(){return allOutputs.stream().anyMatch(output->output.kind()==Kind.FORMAL_RELEASE_PAYLOAD)?Branch.FORMAL_RELEASE:Branch.IMMUTABLE_INPUTS;}
         public FormalReleaseProducer.Layout formalLayout()throws IOException {
@@ -63,6 +82,7 @@ public final class RootProfileBootstrapInputs {
         }
         public List<Created> createNew(RootBootstrapOutputGuard authority)throws IOException {
             Objects.requireNonNull(authority);current.verify();authority.requirePlan(root,allOutputs,directories,retained);beforeWrite.verify();
+            requireExistingAllocation(authority);
             authority.createOutputDirectories();authority.requireTargets(writes.stream().map(Body::target).toList());
             var files=authority.files();var result=new ArrayList<Created>();
             for(var body:writes){current.verify();FileWitness written=files.createNew(body.target(),body.bytes());files.verify(written);
@@ -73,7 +93,7 @@ public final class RootProfileBootstrapInputs {
             }
             current.verify();authority.requireTargets(writes.stream().map(Body::target).toList());
             if(authority.files()!=files)throw new IOException("staged bootstrap changed its one actual file producer");
-            afterReadback.verify();current.verify();return List.copyOf(result);
+            afterReadback.verify();requireExistingAllocation(authority);current.verify();return List.copyOf(result);
         }
     }
     /** The private pure release preparation supplies every body; the existing Guard owns all physical writes. */
@@ -226,6 +246,23 @@ public final class RootProfileBootstrapInputs {
     /** The real CLI also pins the exact plan original used by its sole Saved reader. */
     public static Prepared initialSavedNativePolicy(FileRef actualEnvironment,FileRef actualSave,ExactRef actualNativePlan,Path target)throws IOException {
         return savedPolicy(actualEnvironment,actualSave,List.of(file(Objects.requireNonNull(actualNativePlan))),target);
+    }
+    /** The caller owns and closes real custody across quote, issuer wait, CREATE_NEW and readback. */
+    public static Prepared initialSavedMaterializedPolicy(FileRef actualEnvironment,NativeLaunchPlan plan,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair pair,ExactRef actualNativePlan,ExactRef actualPair,
+            org.xar.ck3.control.platform.QualifiedCloneCustody custody,Path target)throws IOException {
+        Objects.requireNonNull(pair);Objects.requireNonNull(custody);custody.requireCurrent(plan,pair.save());
+        var held=pins(List.of(actualEnvironment,file(actualNativePlan),file(actualPair),file(pair.save().reference())));
+        if(!org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.decode(RootRuntimeDefinitions.read(file(actualPair),65536)).equals(pair))
+            throw new IOException("mapped Saved policy requires the exact unchanged Pair metadata");
+        byte[] bytes=org.xar.ck3.control.application.driver.InitialEpisodePolicy.produceSavedMaterialized(actualEnvironment,plan,pair.save(),custody).bytes();
+        Current current=()->{
+            held.verify();custody.requireCurrent(plan,pair.save());
+            if(!Arrays.equals(bytes,org.xar.ck3.control.application.driver.InitialEpisodePolicy.produceSavedMaterialized(actualEnvironment,plan,pair.save(),custody).bytes()))
+                throw new IOException("mapped Saved policy producer changed before immutable publication");
+            custody.requireCurrent(plan,pair.save());held.verify();
+        };
+        current.verify();return flat(Kind.INITIAL_POLICY,target,bytes,current);
     }
     private static Prepared savedPolicy(FileRef actualEnvironment,FileRef actualSave,List<FileRef> actualPlanOriginals,Path target)throws IOException {
         Objects.requireNonNull(actualEnvironment);Objects.requireNonNull(actualSave);

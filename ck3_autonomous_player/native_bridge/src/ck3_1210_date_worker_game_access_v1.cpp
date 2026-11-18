@@ -50,32 +50,55 @@ void Destroy(const DateWorkerGameAccessBindingsV1 &b,void *descriptor) {
   if(Model(b))b.fixture.destroy(b.fixture.context,descriptor);
   else reinterpret_cast<void (*)(void *)>(b.module_base+kDestroy)(descriptor);
 }
-// Trivial storage permits SEH finally to pair the real resource on body faults.
-bool Run(const DateWorkerGameAccessBindingsV1 &b,DateWorkerGameBodyV1 body,void *context) {
-  if(!body || (!Model(b) && !Production(b)))return false;
+// Trivial storage permits SEH finally to preserve the resource outcome even
+// when acquire/body/destructor faults. No unknown native operation is retried.
+void RunV2(const DateWorkerGameAccessBindingsV1 &b,DateWorkerGameBodyV1 body,
+    void *context,DateWorkerGameAccessResultV2 &outcome) {
+  if(!body || (!Model(b) && !Production(b)))return;
   DateWorkerGameAccessSampleV1 before{},now{};
   if(!Sample(b,before) || !before.tls_block || !before.application ||
-      before.command_scope!=1 || before.native_access>1)return false;
+      before.command_scope!=1 || before.native_access>1)return;
   alignas(16) unsigned char descriptor[0x48]{};
-  bool attempted=false,result=false;
+  bool attempted=false;
+  if(before.native_access==1) {
+    outcome.acquisition=DateWorkerAcquisitionV2::borrowed;
+    outcome.release=DateWorkerReleaseV2::unknown;
+  }
   __try {
     if(before.native_access==0) {
       attempted=true;
+      // A fault can occur between native lock operations and the TLS commit;
+      // observing access=0 afterwards alone does not prove no acquisition.
+      outcome.acquisition=DateWorkerAcquisitionV2::unknown;
+      outcome.release=DateWorkerReleaseV2::unknown;
       Acquire(b);
       if(!Sample(b,now) || !Same(now,before,1))__leave;
-      descriptor[0]=1; // Only after this caller's genuine native acquisition.
+      descriptor[0]=1;
+      outcome.acquisition=DateWorkerAcquisitionV2::owned;
     }
     if(!Sample(b,now) || !Same(now,before,1))__leave;
-    result=body(context);
-    if(!Sample(b,now) || !Same(now,before,1))result=false;
+    outcome.body=DateWorkerBodyV2::failed; // Also retained on a body SEH.
+    if(body(context))outcome.body=DateWorkerBodyV2::succeeded;
+    outcome.scope_verified=Sample(b,now) && Same(now,before,1);
   } __finally {
-    // Acquire's final trace call may fault after committing native access.
-    // Inspect the real scope before pairing; never fabricate a held TLS byte.
-    if(!descriptor[0] && attempted && Sample(b,now) && Same(now,before,1))descriptor[0]=1;
-    if(descriptor[0])Destroy(b,descriptor);
+    // A committed native acquisition may be established after a trace fault,
+    // but a changed/unreadable epoch never fabricates the owned descriptor.
+    if(!descriptor[0] && attempted && Sample(b,now) && Same(now,before,1)) {
+      descriptor[0]=1;
+      outcome.acquisition=DateWorkerAcquisitionV2::owned;
+    }
+    if(descriptor[0]) {
+      // Keep UNKNOWN through the destructor call itself. A pre-release SEH
+      // must not be mistaken for one completed release or retried blindly.
+      outcome.release=DateWorkerReleaseV2::unknown;
+      Destroy(b,descriptor);
+      if(Sample(b,now) && Same(now,before,0))
+        outcome.release=DateWorkerReleaseV2::owned_released;
+    } else if(outcome.acquisition==DateWorkerAcquisitionV2::borrowed) {
+      if(Sample(b,now) && Same(now,before,1))
+        outcome.release=DateWorkerReleaseV2::borrowed_preserved;
+    }
   }
-  if(!Sample(b,now) || !Same(now,before,before.native_access))return false;
-  return result;
 }
 } // namespace
 DateWorkerGameAccessBindingsV1 BindDateWorkerGameAccessImageV1(
@@ -90,9 +113,15 @@ DateWorkerGameAccessBindingsV1 BindDateWorkerGameAccessImageV1(
   }
   return b;
 }
+DateWorkerGameAccessResultV2 WithDateWorkerGameAccessV2(
+    void *opaque,DateWorkerGameBodyV1 body,void *context) noexcept {
+  DateWorkerGameAccessResultV2 outcome{};
+  if(!opaque)return outcome;
+  __try {RunV2(*static_cast<const DateWorkerGameAccessBindingsV1 *>(opaque),body,context,outcome);}
+  __except(EXCEPTION_EXECUTE_HANDLER) {outcome.scope_verified=false;}
+  return outcome;
+}
 bool WithDateWorkerGameAccessV1(void *opaque,DateWorkerGameBodyV1 body,void *context) noexcept {
-  if(!opaque)return false;
-  __try {return Run(*static_cast<const DateWorkerGameAccessBindingsV1 *>(opaque),body,context);}
-  __except(EXCEPTION_EXECUTE_HANDLER) {return false;}
+  return WithDateWorkerGameAccessV2(opaque,body,context).Succeeded();
 }
 } // namespace xar::ck3_1210

@@ -1,0 +1,115 @@
+{
+  "schema": "xar.genuine-saved-plain-caller-codex-file-software-inputs-ready/v1",
+  "status": "READY_FOR_FRESH_FINITE_SOURCE_AND_ACTUAL_BOUNDED_STARTUP_ATTEMPT_NOT_INSTALLED_ROOT",
+  "at_utc": "2026-11-18T12:21:46.909518+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "normal_maven_modules": 34,
+  "normal_main_test_jars": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-root-codex-file11/qualification01/GENUINE-MAVEN-JARS18.json",
+    "bytes": 10690,
+    "sha256": "4deb024784d199ca679e478e70c0e73d7ff80c93fe505f58973a7b1e5c8f08c9"
+  },
+  "normal_build": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-root-codex-file11/qualification01/logs/maven-package18.json",
+    "bytes": 1834,
+    "sha256": "5b59a4908a0dd011bbcbfb73b8df1c7eee2a9159634662a1e134ff58d6867e59"
+  },
+  "compiler_or_seed_lineage": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-root-codex-file11/qualification01/COMPILER-OR-SEEDED-INPUT-LISTS18.json",
+    "bytes": 2617896,
+    "sha256": "d5ffebdf8ea36401b754736e1db71abe72bb2fb8a54690d8639a9b32617a246a"
+  },
+  "actual_genuine_tests": {
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0,
+    "execution": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-root-codex-file11/qualification01/logs/junit-codex-command20-19.json",
+      "bytes": 654,
+      "sha256": "2e2d726713973ab2ba195b6b0e3ae64bb0f7895429c9f0c94942e510a20ed787"
+    },
+    "xml": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-root-codex-file11/qualification01/reports-codex-command20-19/TEST-junit-jupiter.xml",
+      "bytes": 47640,
+      "sha256": "9967a7a5c65a56fc2a17cece468d1eaa849623a940cfd1a016eec0c07d390d86"
+    }
+  },
+  "actual_config_reader": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-root-codex-file11/qualification01/caller-inputs20/java20.json",
+    "bytes": 494,
+    "sha256": "171f0a04edfd960cd2ada8ad38117ed22a03cc6c69da26e5115ff18b693fee59"
+  },
+  "actual_config_inputs_and420_class_origins": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-root-codex-file11/qualification01/caller-inputs20/ACTUAL-PLAIN-CODEX-CALLER-INPUTS20.json",
+    "bytes": 161978,
+    "sha256": "93875bd963c961eb9d1cd8a40c345f521f934668b31ca9fc9fad003a4f29ccd4"
+  },
+  "actual_runtime_classpath": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-root-codex-file11/qualification01/DIRECT-PUBLIC-RUNTIME-CLASSPATH18.txt",
+    "bytes": 28638,
+    "sha256": "cd282128252288d2be6ab1b9bfb3ca4030ae3d998814018ae8cb80f9cf27795c"
+  },
+  "actual_runtime157_jars": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-root-codex-file11/qualification01/DIRECT-PUBLIC-RUNTIME-CLASSPATH18.txt.origins.json",
+    "bytes": 49119,
+    "sha256": "37165bee696c46b58872ccda668f7f73e37343e19919ea934dbda52b110f0279"
+  },
+  "actual_Main_CLI_archive": [
+    {
+      "class": "org.xar.ck3.control.service.root.CodexSessionDecisionMain",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-root-codex-file11\\genuine-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 9890719,
+        "sha256": "1a5be076d75c6ea26b94b9c21b103530f0480820dbd62e59184b643a86605c04"
+      }
+    },
+    {
+      "class": "org.xar.ck3.control.service.root.RootLoadedSavedResumeMain250",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-root-codex-file11\\genuine-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 9890719,
+        "sha256": "1a5be076d75c6ea26b94b9c21b103530f0480820dbd62e59184b643a86605c04"
+      }
+    }
+  ],
+  "main_entry": "org.xar.ck3.control.service.root.RootLoadedSavedResumeMain250",
+  "main_arg_shape": "ownerDescriptor exact3 + actualResumeRequest exact3",
+  "request_schema": "xar.java-loaded-saved-preentry-request/v1",
+  "exact_request_fields": [
+    "schema",
+    "machineId",
+    "sourceRuntimeConfiguration",
+    "newRuntimeConfiguration",
+    "sourceConfirmation",
+    "checkpointPair",
+    "ownerDirectory"
+  ],
+  "public_response_entry": "org.xar.ck3.control.service.root.CodexSessionDecisionMain",
+  "response_shape": "respond REQUEST_FILE REQUEST_SHA ACTUAL_BUSINESS_CONTINUITY_ARTIFACT_ROOT SELECTION_JSON_FILE ORIGINAL_INSPECTION_JSON_FILE",
+  "actual_selected_protocol": "xar.ordinary-codex-file-request/v2 with native FileID custody; selection WAIT",
+  "first_actual_responder": "/root/java_continue only; explicit handoff required for another responder",
+  "static_caller_recipe": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-direct-saved-policy10/qualification01/LOADED-SAVED-PREENTRY-EXISTING-CALLER-STATIC17.md",
+    "bytes": 3798,
+    "sha256": "adf6f461f3094a152ef8444f1d19467f1ffa33cfc23d8b853d369c621226e112"
+  },
+  "actual_file_recipe": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-direct-saved-policy10/qualification01/p10-codex-file17/FIRST-ACTUAL-ROOT-CODEX-WAIT-CLI17.md",
+    "bytes": 2642,
+    "sha256": "5d20d6676dc6fd73bbf81f1a7e296cbfe62c2926a0c3155f5640426d2409e958"
+  },
+  "source07_policy_only_retained": true,
+  "fresh08_requirements": "Actual Runtime fresh45m source/plan and independently issued policy plus replacement exact configuration. Real same-plan GSV owner and loaded custody precede Main250 private admission. No old source/UNKNOWN rewrite.",
+  "not_claimed": {
+    "whole_SERVICE_FAST_JAR": true,
+    "genuine_full12domain_definitions": true,
+    "actual_old_source_qualification": true,
+    "actual_GSV_created": true,
+    "actual_loaded_custody": true,
+    "actual_Root_installed": true,
+    "actual_Codex_OODA": true,
+    "ordinary_Advance_qualified": true,
+    "Game_started": true
+  },
+  "first_attempt_scope": "bounded actual Root observation plus actual one WAIT file decision; dispatch no unqualified ordinary Advance"
+}

@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_1210_date_worker_game_access_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/tactical_daily_sentinel_v1.hpp"
 #include <atomic>
@@ -24,6 +25,7 @@ using DateSentinelGameBodyV1=bool (*)(void *) noexcept;
 // and release on every path. Default production binding is deliberately empty
 // until that exact RAII implementation is supplied; identity alone grants no write.
 using DateSentinelGameAccessV1=bool (*)(void *,DateSentinelGameBodyV1,void *) noexcept;
+using DateSentinelGameAccessV2=DateWorkerGameAccessV2;
 // Explicit NoGame model only. Production rejects every nonempty seam, and an
 // offline model has module_base=0; model handles are never passed to Win32.
 struct DateSentinelWorkerFixtureV1 {
@@ -33,7 +35,8 @@ struct DateSentinelWorkerFixtureV1 {
   bool (*probe)(void *,std::uintptr_t,std::uint32_t &,std::uint64_t &,bool &,bool &) noexcept=nullptr;
   bool (*scope)(void *,std::uint32_t &,std::uint8_t &,std::uint32_t &,std::uint8_t &) noexcept=nullptr;
   bool (*close)(void *,std::uintptr_t) noexcept=nullptr;
-  DateSentinelGameAccessV1 with_game_access=nullptr;
+  DateSentinelGameAccessV1 with_game_access=nullptr; // Legacy explicit NoGame seam.
+  DateSentinelGameAccessV2 with_game_access_v2=nullptr;
 };
 struct DateSentinelBindingsV1 {
   bool exact_build_admitted=false;
@@ -47,7 +50,8 @@ struct DateSentinelBindingsV1 {
   std::uintptr_t command_manager=0,worker_function=0;
   DateSentinelWorkerFixtureV1 worker_fixture{};
   void *game_access_context=nullptr;
-  DateSentinelGameAccessV1 worker_game_access=nullptr;
+  DateSentinelGameAccessV1 worker_game_access=nullptr; // Source-compatible V1 field.
+  DateSentinelGameAccessV2 worker_game_access_v2=nullptr; // Preferred full cleanup outcome.
 };
 enum DateSentinelFailureV1 : std::uint32_t {
   date_sentinel_failure_none=0,
@@ -62,6 +66,7 @@ enum DateSentinelFailureV1 : std::uint32_t {
   date_sentinel_failure_runtime=1U<<8,
   date_sentinel_failure_unexpected_pause=1U<<9,
   date_sentinel_failure_shutdown=1U<<10,
+  date_sentinel_failure_access_cleanup_unknown=1U<<11,
 };
 struct DateSentinelObservationV1 {
   CoreSnapshotPrefix core{};
@@ -75,6 +80,8 @@ struct DateSentinelObservationV1 {
 struct DateSentinelStateV1 {
   std::atomic<bool> initialized{false},armed{false};
   std::atomic<bool> shutdown_requested{false},shutdown_safe{true};
+  // Sticky after an ambiguous native release; no in-process reset or retry.
+  std::atomic<bool> access_cleanup_unknown{false};
   std::atomic<std::uint32_t> pending_failure{0},owner_thread_id{0};
   DateSentinelBindingsV1 bindings{};
   ck3_11906::MainThreadQueryMailboxV1 *mailbox=nullptr;
@@ -89,15 +96,17 @@ struct DateSentinelStateV1 {
   std::atomic<std::int32_t> last_post_date_raw{0};
   mutable SRWLOCK worker_lifetime_lock=SRWLOCK_INIT;
   std::atomic<std::uint32_t> post_callbacks{0};
+  // Diagnostic Read API acquisition window only; never a capability or gate.
+  mutable std::atomic<std::uint32_t> status_readers_waiting{0};
   std::atomic<std::uint32_t> captured_worker_thread_id{0};
   DateSentinelWorkerEpochV1 worker{};
 };
 struct DateSentinelDiagnosticsV1 {
   bool initialized=false,armed=false,fixture_only=false;
   bool capability_granted=false;
-  bool shutdown_requested=false,shutdown_safe=true;
+  bool shutdown_requested=false,shutdown_safe=true,access_cleanup_unknown=false;
   std::uint32_t failure_flags=0;
-  std::uint32_t captured_worker_thread_id=0,post_callbacks=0;
+  std::uint32_t captured_worker_thread_id=0,post_callbacks=0,status_readers_waiting=0;
   std::uint64_t generation=0,original_deadline_unix_ms=0,monotonic_deadline_ms=0;
 };
 // Address calculation only. Initialize checks actual mapped consumer/pause/
@@ -125,16 +134,23 @@ bool PollDateSentinelOwnerV1(DateSentinelStateV1 &,
     const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 ck3_11906::TacticalDailySentinelCancelStatusV1 CancelDateSentinelV1(
     DateSentinelStateV1 &,std::uint64_t generation) noexcept;
+// Bridge pipe reader only: waits for the admitted Post body, native resource
+// outcome and rundown. Never invoke from Post or while holding the same gate.
+// Internal owner/post paths use the legacy status reader under their lease.
 ck3_11906::TacticalDailySentinelStatusV1 ReadDateSentinelStatusV1(
     const DateSentinelStateV1 &) noexcept;
+bool ReadDateSentinelTerminalForCancelV1(const DateSentinelStateV1 &,
+    std::uint64_t generation,ck3_11906::TacticalDailySentinelStatusV1 &) noexcept;
 // Any thread: two atomic publications only, no TLS/world/clock/native calls.
 // Sticky for this state lifetime. An unarmed state remains initially safe.
 void RequestDateSentinelShutdownV1(DateSentinelStateV1 &) noexcept;
 // Atomic-only acknowledgement. False retains owner/hook/context resources until
 // a later proven owner confirms actual paused + same-generation disarmed.
+// Unknown native access cleanup cannot be acknowledged by any later pause.
 bool DateSentinelShutdownSafeV1(const DateSentinelStateV1 &) noexcept;
 // Close only our duplicate, under the lifetime gate, after safe acknowledgement
-// and zero callbacks. Never closes/joins/frees the engine's native holder.
+// and zero callbacks, with no unknown native access cleanup. Never closes,
+// joins or frees the engine's native holder; UNKNOWN remains retained.
 // False retains resources; final process teardown may honestly retain them.
 bool ReleaseDateSentinelWorkerV1(DateSentinelStateV1 &) noexcept;
 // Owner-only diagnostics; no capability or live qualification is granted.

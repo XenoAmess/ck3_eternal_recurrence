@@ -30,7 +30,7 @@ import org.xar.ck3.control.service.root.RootProfileBootstrapInputs.Prepared;
  * Each following quote uses only actual completed originals. This process never signs capacity or launches a Game. */
 public final class RootProfileBootstrapCommand {
     private RootProfileBootstrapCommand(){ }
-    public enum Mode { PROFILE,EXPLICIT_SAVED_PROFILE,EXPLICIT_FIXTURE_PROFILE,FORMAL_RELEASE,ORIGINAL_DRIVER_RUN_PROFILE,NORMAL_EXIT,INITIAL_POLICY,INITIAL_FIXTURE_POLICY,INITIAL_SAVED_NATIVE_POLICY,ISSUER_DECLARE,ISSUER_CENSUS,ISSUER_BINDING,ISSUER_FILE_REPLY,RUNTIME_CENSUS }
+    public enum Mode { PROFILE,EXPLICIT_SAVED_PROFILE,EXPLICIT_FIXTURE_PROFILE,FORMAL_RELEASE,ORIGINAL_DRIVER_RUN_PROFILE,NORMAL_EXIT,INITIAL_POLICY,INITIAL_FIXTURE_POLICY,INITIAL_SAVED_NATIVE_POLICY,INITIAL_SAVED_MATERIALIZED_POLICY,ISSUER_DECLARE,ISSUER_CENSUS,ISSUER_BINDING,ISSUER_FILE_REPLY,RUNTIME_CENSUS }
     /** Issuer metadata only. Limits are explicit Root choices; this request grants no capacity. */
     public record IssuerDeclarationRequest(String schema,String machineId,String reviewAtUtc,String windowId,
             FileRef actualPhaseQuote,String controlRoot,String target,long assetMaximumChargedBytes,
@@ -150,6 +150,16 @@ public final class RootProfileBootstrapCommand {
                     "exact Saved original and bounded actual Native plan required");
         }
     }
+    public record SavedMaterializedPolicyRequest(String schema,String machineId,String reviewAtUtc,FileRef actualEnvironment,
+            FileRef actualSave,ExactRef nativeLaunchPlan,String target,ExactRef sourcePair) {
+        public SavedMaterializedPolicyRequest {
+            common(schema,"xar.java-root-initial-saved-native-policy-bootstrap/v2",machineId,reviewAtUtc);
+            Objects.requireNonNull(actualEnvironment);Objects.requireNonNull(actualSave);Objects.requireNonNull(nativeLaunchPlan);Objects.requireNonNull(sourcePair);
+            for(String path:List.of(actualEnvironment.path(),actualSave.path(),nativeLaunchPlan.path(),target,sourcePair.path()))absolute(path);
+            StrictJson.require(actualSave.path().endsWith(".ck3")&&nativeLaunchPlan.bytes()>0&&nativeLaunchPlan.bytes()<=1<<20
+                    &&sourcePair.bytes()>0&&sourcePair.bytes()<=65536,"bounded original Pair/plan and original Saved source required");
+        }
+    }
     public static void main(String[] args){
         try{
             if(args.length!=4&&args.length!=8)throw new IOException("MODE REQUEST_PATH BYTES SHA [FILE_REPLY CHANNEL_PATH BYTES SHA]");
@@ -261,6 +271,31 @@ public final class RootProfileBootstrapCommand {
                     Created policy=phase(replies,"INITIAL_FIXTURE_POLICY",RootProfileBootstrapInputs.initialFixturePolicy(request.actualEnvironment(),fixture,Path.of(request.target())),request.reviewAtUtc(),clock,requestOriginal).getFirst();
                     var accepted=InitialEpisodePolicy.readExactFixture(policy.exact(),request.actualEnvironment(),fixture);accepted.verify();
                     emit("INITIAL_FIXTURE_POLICY_CREATED_NO_GAME_ADMISSION",ControlBuild.strictMapper().valueToTree(policy));}
+                case INITIAL_SAVED_MATERIALIZED_POLICY->{
+                    var request=read(original,SavedMaterializedPolicyRequest.class);current(request.machineId(),request.reviewAtUtc(),clock,requestOriginal);
+                    var plan=readMappedSavedPlan(request.nativeLaunchPlan());
+                    var pairOriginal=SharedSourceFiles.observe(Path.of(request.sourcePair().path()));
+                    var pair=org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.decode(RootRuntimeDefinitions.read(
+                            new FileRef(request.sourcePair().path(),request.sourcePair().bytes(),request.sourcePair().sha256()),65536));
+                    if(!(plan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame saved)
+                            ||!saved.save().equals(request.actualSave())||!pair.save().reference().equals(new ExactRef(saved.save().path(),saved.save().bytes(),saved.save().sha256()))
+                            ||!plan.preparedProfile().environmentManifest().equals(request.actualEnvironment())
+                            ||!plan.sources().review().machineId().equals(request.machineId())||Instant.parse(request.reviewAtUtc()).isAfter(plan.deadline()))
+                        throw new IOException("mapped Saved request differs from original Pair/source, actual ENV, machine or deadline");
+                    plan.sources().verify();plan.preparedProfile().verify(plan);
+                    var existing=org.xar.ck3.control.platform.NativeSavedGamePreparation.requirePrepared(plan,pair.save(),clock);
+                    Created policy;
+                    // Any earlier copy requires separate storage admission; missing clone fails qualification.
+                    try(var custody=org.xar.ck3.control.platform.NativeSavedGameClone.qualify(plan,pair.save())) {
+                        var prepared=RootProfileBootstrapInputs.initialSavedMaterializedPolicy(request.actualEnvironment(),plan,pair,
+                                request.nativeLaunchPlan(),request.sourcePair(),custody,Path.of(request.target())).withExistingAllocatedInput(existing);
+                        policy=phase(replies,"INITIAL_SAVED_MATERIALIZED_POLICY",prepared,request.reviewAtUtc(),clock,requestOriginal,pairOriginal).getFirst();
+                        var accepted=InitialEpisodePolicy.readExactSaved(policy.exact(),plan);accepted.requireInitialSavedProjection(plan,pair.save());
+                        custody.requireCurrent(plan,pair.save());SharedSourceFiles.assertUnchanged(pairOriginal);
+                        plan.sources().verify();plan.preparedProfile().verify(plan);
+                    }
+                    emit("INITIAL_SAVED_MATERIALIZED_POLICY_CREATED_NO_GAME_ADMISSION",ControlBuild.strictMapper().valueToTree(policy));
+                }
                 case INITIAL_SAVED_NATIVE_POLICY->{var request=read(original,SavedNativePolicyRequest.class);current(request.machineId(),request.reviewAtUtc(),clock,requestOriginal);
                     var plan=org.xar.ck3.control.platform.NativeLaunchPlan.readExact(request.nativeLaunchPlan(),new org.xar.ck3.control.platform.NativeBridgeLaunchEvidence());
                     if(!(plan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame saved)
@@ -365,6 +400,7 @@ public final class RootProfileBootstrapCommand {
         boolean formal=RootBootstrapOutputContract.FORMAL_CAPACITY.equals(release.schema());
         var binding=new RootBootstrapOutputContract.Binding(
                 formal?RootBootstrapOutputContract.FORMAL_BINDING
+                        :RootBootstrapOutputContract.RUNTIME_POLICY_CAPACITY.equals(release.schema())?RootBootstrapOutputContract.RUNTIME_POLICY_BINDING
                         :RootBootstrapOutputContract.RUNTIME_CAPACITY.equals(release.schema())?RootBootstrapOutputContract.RUNTIME_BINDING
                         :RootBootstrapOutputContract.ROOT_CAPACITY.equals(release.schema())?RootBootstrapOutputContract.ROOT_BINDING:RootBootstrapOutputContract.BINDING,
                 release.purpose(),release.machineId(),release.ownerTask(),release.issuerTask(),release.windowId(),
@@ -517,6 +553,17 @@ public final class RootProfileBootstrapCommand {
         try{return StandardCharsets.UTF_8.newDecoder().onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
                 .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT).decode(java.nio.ByteBuffer.wrap(bytes.toByteArray())).toString();}
         catch(java.nio.charset.CharacterCodingException invalid){throw new IOException("actual issuer binding must be strict UTF8",invalid);}
+    }
+    /** Decode the one exact bounded capture; later original pins cannot repair an earlier path-only decode. */
+    static org.xar.ck3.control.platform.NativeLaunchPlan readMappedSavedPlan(ExactRef original)throws IOException {
+        Objects.requireNonNull(original);
+        int maximum=org.xar.ck3.control.platform.NativeLaunchPlanCodec.MAXIMUM_BYTES;
+        try {
+            byte[] raw=RootRuntimeDefinitions.read(new FileRef(original.path(),original.bytes(),original.sha256()),maximum);
+            return org.xar.ck3.control.platform.NativeLaunchPlanCodec.fromJson(StrictJson.parse(raw,maximum)).accept();
+        }catch(IllegalArgumentException|java.time.DateTimeException invalid){
+            throw new IOException("Invalid exact mapped Saved launch configuration",invalid);
+        }
     }
     private static <T>T read(FileRef original,Class<T> type)throws IOException {
         var before=SharedSourceFiles.observe(Path.of(original.path()));byte[] bytes=RootRuntimeDefinitions.read(original,65536);

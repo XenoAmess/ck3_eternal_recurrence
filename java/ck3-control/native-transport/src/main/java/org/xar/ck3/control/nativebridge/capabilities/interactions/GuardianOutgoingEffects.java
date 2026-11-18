@@ -89,15 +89,21 @@ public final class GuardianOutgoingEffects {
     public NativeEffectRegistry.Projected observe(ContinuityStorePort.Session same,ActionCommand command,ActionState.Attempt attempt,
             NativeActionPort.DispatchOutcome dispatch,OrdinaryInitiationPreparation.ActualFrame before,
             OrdinaryInitiationPreparation.ActualFrame after,ActionPorts.OutcomeArchive archive) {
-        if(!accepts(command)) return NativeEffectRegistry.Projected.pending("ordinary interaction lacks this specific independent guardian observer",List.of(after.actual().originalEvidence()));
-        if(attempt.preparedRequest().preparationEvidence().isEmpty()) return NativeEffectRegistry.Projected.pending("historical ordinary preparation has no retained original query",List.of(after.actual().originalEvidence()));
-        if(!ActionReconciliationScope.activeFor(command)) return NativeEffectRegistry.Projected.pending("typed guardian send requires its canonical pending reconciliation scope",List.of(after.actual().originalEvidence()));
+        return observeContextResult(same,command,attempt,dispatch,before,after,archive).projected();
+    }
+    public OrdinaryInitiationPreparation.ContextObservation observeContextResult(ContinuityStorePort.Session same,
+            ActionCommand command,ActionState.Attempt attempt,NativeActionPort.DispatchOutcome dispatch,
+            OrdinaryInitiationPreparation.ActualFrame before,OrdinaryInitiationPreparation.ActualFrame after,
+            ActionPorts.OutcomeArchive archive) {
+        if(!accepts(command)) return new OrdinaryInitiationPreparation.ContextObservation(NativeEffectRegistry.Projected.pending("ordinary interaction lacks this specific independent guardian observer",List.of(after.actual().originalEvidence())),Optional.empty());
+        if(attempt.preparedRequest().preparationEvidence().isEmpty()) return new OrdinaryInitiationPreparation.ContextObservation(NativeEffectRegistry.Projected.pending("historical ordinary preparation has no retained original query",List.of(after.actual().originalEvidence())),Optional.empty());
+        if(!ActionReconciliationScope.activeFor(command)) return new OrdinaryInitiationPreparation.ContextObservation(NativeEffectRegistry.Projected.pending("typed guardian send requires its canonical pending reconciliation scope",List.of(after.actual().originalEvidence())),Optional.empty());
         if(!(dispatch instanceof NativeActionPort.AckReceived ack) || !ack.nativeOk() || ack.custody().isEmpty())
-            return NativeEffectRegistry.Projected.pending("family-send v1 retains UNKNOWN until actual response custody is available",List.of(after.actual().originalEvidence()));
+            return new OrdinaryInitiationPreparation.ContextObservation(NativeEffectRegistry.Projected.pending("family-send v1 retains UNKNOWN until actual response custody is available",List.of(after.actual().originalEvidence())),Optional.empty());
         var pair=new OriginalFrames(before.actual(),after.actual());
         Preparation prepared=loadPreparation(same,command,attempt.requestId(),attempt.preparedRequest(),pair.before(),archive);
         need(!prepared.read().before().binding().observedAt().isAfter(attempt.submittedAt()),"guardian original before query was observed after submission");
-        if(!outbound(command,attempt,dispatch,before.interaction(),prepared.context())) return NativeEffectRegistry.Projected.pending("original guardian submit packet is unavailable or contradicts queued submission",List.of(after.actual().originalEvidence()));
+        if(!outbound(command,attempt,dispatch,before.interaction(),prepared.context())) return new OrdinaryInitiationPreparation.ContextObservation(NativeEffectRegistry.Projected.pending("original guardian submit packet is unavailable or contradicts queued submission",List.of(after.actual().originalEvidence())),Optional.empty());
         GuardianReconciliationQueries.Issued<OrdinaryContext> issued;
         try {
             issued=reconciliation.orElseThrow(()->new IllegalStateException("actual guardian reconciliation query factory is not installed"))
@@ -106,10 +112,13 @@ public final class GuardianOutgoingEffects {
         ReadContract<OrdinaryContext> actualQuery=issued.contract();
         PlanningReadRequest actualRequest=issued.request();
         var observed=reads.read(same,actualQuery,actualRequest);
-        if(!(observed instanceof PlanningReadResult.Known<OrdinaryContext> known)) return NativeEffectRegistry.Projected.pending("independent complete guardian outgoing query unavailable",List.of(after.actual().originalEvidence()));
+        if(observed instanceof PlanningReadResult.Unavailable<OrdinaryContext> unavailable)
+            return OrdinaryInitiationPreparation.unavailableObservation(unavailable,List.of(after.actual().originalEvidence()),archive);
+        var known=(PlanningReadResult.Known<OrdinaryContext>)observed;
         verifyReadFrame(known.receipt(),pair.after(),archive,frames);
         NativeEffectSnapshots.requireAfterRead(command,attempt,pair.after(),known.receipt(),query.operation());
-        return project(command,attempt,dispatch,pair,prepared,known.receipt(),sameHead(same),archive);
+        return new OrdinaryInitiationPreparation.ContextObservation(
+                project(command,attempt,dispatch,pair,prepared,known.receipt(),sameHead(same),archive),Optional.empty());
     }
     public Preparation loadPreparation(ContinuityStorePort.Session same,ActionCommand command,String requestId,NativeRequest originalPrepared,org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete actualBefore,ActionPorts.OutcomeArchive archive) {
         need(accepts(command),"this preparation projector requires the exact education action and expected observer");

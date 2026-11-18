@@ -79,6 +79,7 @@ public final class RootOrdinaryRuntimeConfiguration {
     private final Path formalWarModel;
     private final FrontendRulesData.Build configuredBuild;
     private final InitialEpisodePolicy initialPolicy;
+    private final java.util.Optional<org.xar.ck3.control.platform.NativeLaunchPlan> boundSavedPlan;
     private final String authorityId;
     private final int retainedFrames;
     private final int retainedOrigins;
@@ -97,13 +98,28 @@ public final class RootOrdinaryRuntimeConfiguration {
 
     public static RootOrdinaryRuntimeConfiguration read(Path configPath) throws IOException {
         try {
-            return decode(configPath);
+            return decode(configPath,java.util.Optional.empty());
         } catch (IllegalArgumentException invalid) {
             throw new IOException("Invalid ordinary runtime configuration: " + configPath, invalid);
         }
     }
 
-    private static RootOrdinaryRuntimeConfiguration decode(Path configPath) throws IOException {
+    /** Explicit Saved entry retains the same actual plan; generic ordinary configuration remains strict. */
+    public static RootOrdinaryRuntimeConfiguration readSaved(Path configPath,org.xar.ck3.control.platform.NativeLaunchPlan identicalPlan)throws IOException {
+        java.util.Objects.requireNonNull(identicalPlan);
+        if(!(identicalPlan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame))throw new IOException("explicit Saved configuration requires Saved plan");
+        try{return decode(configPath,java.util.Optional.of(identicalPlan));}
+        catch(IllegalArgumentException invalid){throw new IOException("invalid explicit Saved runtime configuration",invalid);}
+    }
+    org.xar.ck3.control.platform.NativeLaunchPlan retainBoundLaunchPlan(org.xar.ck3.control.platform.NativeLaunchPlan decoded)throws IOException {
+        if(boundSavedPlan.isEmpty())return decoded;
+        var actual=boundSavedPlan.orElseThrow();
+        if(!org.xar.ck3.control.platform.NativeLaunchPlanCodec.describe(actual).equals(org.xar.ck3.control.platform.NativeLaunchPlanCodec.describe(decoded)))
+            throw new IOException("Saved runtime configuration changed its exact bound plan");
+        initialPolicy.requireSavedHistory(actual);return actual;
+    }
+    private static RootOrdinaryRuntimeConfiguration decode(Path configPath,
+            java.util.Optional<org.xar.ck3.control.platform.NativeLaunchPlan> boundSavedPlan) throws IOException {
         Path absoluteConfigPath = configPath.toAbsolutePath().normalize();
         Path configParent = absoluteConfigPath.getParent();
 
@@ -187,7 +203,11 @@ public final class RootOrdinaryRuntimeConfiguration {
         );
 
         Path initialPolicyFile = resolvePath(root.get("initial_policy_file"), configParent);
-        InitialEpisodePolicy initialPolicy = readInitialPolicy(initialPolicyFile);
+        InitialEpisodePolicy initialPolicy;
+        if(boundSavedPlan.isPresent()) {
+            var original=org.xar.ck3.control.build.ControlBuild.FileRef.measure(initialPolicyFile);
+            initialPolicy=InitialEpisodePolicy.readExactSaved(new org.xar.ck3.control.contracts.ExactRef(original.path(),original.bytes(),original.sha256()),boundSavedPlan.orElseThrow());
+        } else initialPolicy=readInitialPolicy(initialPolicyFile);
 
         java.util.Optional<DecisionProvider> decisionProvider = java.util.Optional.empty();
         if (root.has("decision_provider")) {
@@ -225,7 +245,7 @@ public final class RootOrdinaryRuntimeConfiguration {
             maximumSubmissions,
             maximumStorageBytes,
             loopConfig, decisionProvider, m5JointPeacetimeEnabled, firstHeirMarriageEnabled, newMarriageProposalsEnabled,
-            root.has("operator_quarantine") ? java.util.Optional.of(org.xar.ck3.control.contracts.ExactRef.fromJson(root.get("operator_quarantine"))) : java.util.Optional.empty()
+            root.has("operator_quarantine") ? java.util.Optional.of(org.xar.ck3.control.contracts.ExactRef.fromJson(root.get("operator_quarantine"))) : java.util.Optional.empty(),boundSavedPlan
         );
     }
 
@@ -310,7 +330,8 @@ public final class RootOrdinaryRuntimeConfiguration {
         boolean m5JointPeacetimeEnabled,
         boolean firstHeirMarriageEnabled,
         boolean newMarriageProposalsEnabled,
-        java.util.Optional<org.xar.ck3.control.contracts.ExactRef> operatorQuarantine
+        java.util.Optional<org.xar.ck3.control.contracts.ExactRef> operatorQuarantine,
+        java.util.Optional<org.xar.ck3.control.platform.NativeLaunchPlan> boundSavedPlan
     ) {
         this.configurationFile = configurationFile;
         this.machineId = machineId;
@@ -323,7 +344,7 @@ public final class RootOrdinaryRuntimeConfiguration {
         this.formalWarBudget = formalWarBudget;
         this.formalWarModel = formalWarModel;
         this.configuredBuild = configuredBuild;
-        this.initialPolicy = initialPolicy;
+        this.initialPolicy = initialPolicy;this.boundSavedPlan=java.util.Objects.requireNonNull(boundSavedPlan);
         this.authorityId = authorityId;
         this.retainedFrames = retainedFrames;
         this.retainedOrigins = retainedOrigins;

@@ -235,6 +235,8 @@ public final class WindowsJobProcess implements AutoCloseable {
     private final long started = System.nanoTime();
     private ProcessIdentity identity;
     private boolean closed;
+    private IOException emptyExitCloseFailure;
+    private boolean emptyExitCloseAttempted,emptyExitCloseCompleted;
     private final List<WindowsPreloadCustody.Lease> preloadLeases = new ArrayList<>();
 
     @FunctionalInterface public interface PreResumeHook {
@@ -1182,6 +1184,52 @@ public final class WindowsJobProcess implements AutoCloseable {
     }
     private static void checkDword(Long value) {
         if (value != null && (value < 0 || value > 0xffff_ffffL)) throw new IllegalArgumentException("Unsigned DWORD diagnostic value required");
+    }
+
+    /** Read-only original terminal, independent of expired launch/source windows. Never waits live or terminates. */
+    public synchronized CommandResult observeOriginalExitedJob()throws IOException {
+        ensureOpen();
+        try{
+            if(nativeApi.WaitForSingleObject(process.hProcess,0)!=0||accounting().activeProcesses()!=0)
+                throw new IOException("original root signal and Job0 required for terminal consumption");
+            IntByReference exit=new IntByReference();require(nativeApi.GetExitCodeProcess(process.hProcess,exit));
+            Accounting actual=accounting();
+            if(nativeApi.WaitForSingleObject(process.hProcess,0)!=0||actual.activeProcesses()!=0)
+                throw new IOException("original Job terminal changed during readback");
+            String reason=actual.peakJobMemoryBytes()>actual.memoryLimitBytes()?"observed_job_peak_exceeded_limit":null;
+            return new CommandResult(identity(),exit.getValue(),(System.nanoTime()-started)/1_000_000_000.0,actual,reason);
+        }catch(RuntimeException|LinkageError unavailable){throw new IOException("original Job terminal unavailable",unavailable);}
+    }
+    /** Close only this original Job after exact root signal and Job0; never requests termination. */
+    public synchronized void closeAfterObservedEmptyExit()throws IOException {
+        if(closed){
+            if(emptyExitCloseFailure!=null)throw emptyExitCloseFailure;
+            if(emptyExitCloseAttempted&&!emptyExitCloseCompleted)throw new IOException("previous original empty-Job close incomplete");
+            return;
+        }
+        try{
+            if(nativeApi.WaitForSingleObject(process.hProcess,0)!=0||accounting().activeProcesses()!=0)
+                throw new IOException("original root signal and empty Job required before non-terminating close");
+        }catch(RuntimeException|LinkageError unavailable){throw new IOException("original Job terminal observation unavailable",unavailable);}
+        // No live member can be created by this completed root/empty Job. Retain every close failure.
+        IOException failure=null;emptyExitCloseAttempted=true;closed=true;
+        var handles=new ArrayList<HANDLE>();
+        if(process.hThread!=null)handles.add(process.hThread);
+        if(process.hProcess!=null)handles.add(process.hProcess);
+        handles.addAll(streams);handles.add(job);
+        for(HANDLE handle:handles)try{
+            if(!nativeApi.CloseHandle(handle))throw new IOException("original Job resource close Win32="+Native.getLastError());
+        }catch(IOException|RuntimeException|Error problem){
+            IOException observed=problem instanceof IOException io?io:new IOException("original Job close failed",problem);
+            if(failure==null)failure=observed;else if(failure!=observed)failure.addSuppressed(observed);
+        }
+        for(WindowsPreloadCustody.Lease lease:preloadLeases)try{lease.close();}
+        catch(IOException|RuntimeException|Error problem){
+            IOException observed=problem instanceof IOException io?io:new IOException("original preload close failed",problem);
+            if(failure==null)failure=observed;else if(failure!=observed)failure.addSuppressed(observed);
+        }
+        emptyExitCloseCompleted=true;
+        if(failure!=null){emptyExitCloseFailure=failure;throw failure;}
     }
 
     @Override public void close() {

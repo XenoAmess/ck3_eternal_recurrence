@@ -138,7 +138,7 @@ public final class RootProfileBootstrapSession {
                 duplex.exchange(new RootBootstrapDuplex.Handler(){
                     @Override public FileRef authorize(String phase,WindowsJobProcess.Arrival frame,Quote quote)throws Exception {
                         verifyQuote(request,phase,quote);int index=progress.size();
-                        Path quotePath=root.resolve("phase-"+index+"-quote.json");writeNew(quotePath,trim(frame.rawBytes()),guard,request);
+                        Path quotePath=root.resolve("phase-"+index+"-quote.json");writeNew(quotePath,issuerQuoteOriginal(request.mode(),frame.rawBytes()),guard,request);
                         FileRef quoteRef=FileRef.measure(quotePath);progress.add(new Progress(phase,PhaseState.AWAITING_ISSUER,quoteRef,null,List.of()));
                         IssuerQuote envelope=new IssuerQuote("xar.java-root-bootstrap-issuer-quote/v1",request.mode(),phase,original,quoteRef,
                                 io.identity(),io.sessionNonce(),frame.sequence(),request.deadline());
@@ -176,6 +176,14 @@ public final class RootProfileBootstrapSession {
                 if(exit==null)status=Status.UNKNOWN;
             }
         }catch(Exception invalid){failure=invalid.toString();status=attempted||identity!=null?Status.UNKNOWN:Status.REJECTED_BEFORE_SEND;}
+        // A failed OwnedStdio intentionally cannot issue retirement/source continuity. Close
+        // its real holds without allowing the expected unqualified-close error to mask UNKNOWN.
+        if(status!=Status.COMPLETE_NO_GAME_ADMISSION)try{launch.close();}
+        catch(IOException unqualified){
+            failure=(failure==null?"":failure+"; ")+"native_source_cleanup_unqualified="+unqualified;
+            if(unqualified.getSuppressed().length>0)failure+="; suppressed="+java.util.Arrays.toString(unqualified.getSuppressed());
+            status=Status.UNKNOWN;
+        }
         var evidence=new ArrayList<PhaseEvidence>();
         for(int i=0;i<progress.size();i++){
             var phase=progress.get(i);Path path=root.resolve("phase-"+i+"-created.json");FileRef created=null;
@@ -241,9 +249,27 @@ public final class RootProfileBootstrapSession {
             catch(java.util.concurrent.TimeoutException pending){/* Keep original resource guards live while the issuer works. */}
         }}finally{future.cancel(true);}
     }
+    /** Public mapped issuer declaration consumes the exact canonical LF frame; legacy snapshots stay byte compatible. */
+    static byte[] issuerQuoteOriginal(Mode mode,byte[] frame)throws IOException {
+        if(mode!=Mode.INITIAL_SAVED_MATERIALIZED_POLICY)return trim(frame);
+        Quote quote=line(frame,Quote.class);
+        if(!java.util.Arrays.equals(frame,RootBootstrapProtocol.quoteLine(quote)))
+            throw new IOException("mapped issuer requires its actual complete canonical LF quote original");
+        return frame.clone();
+    }
     static void verifyQuote(Request request,String phase,Quote quote)throws IOException {
         if(!quote.phase().equals(phase)||!quote.machineId().equals(request.machineId())||Instant.parse(quote.reviewAtUtc()).isAfter(Instant.parse(request.deadline()))
                 ||(request.mode()==Mode.FORMAL_RELEASE)!=quote.schema().equals("xar.java-root-bootstrap-formal-release-phase-quote/v2"))throw new IOException("child phase quote differs from fixed mode/order/window");
+        if(request.mode()==Mode.INITIAL_SAVED_MATERIALIZED_POLICY){
+            var bootstrap=read(request.bootstrapRequest(),65536,RootProfileBootstrapCommand.SavedMaterializedPolicyRequest.class);
+            bootstrapWindow(request,bootstrap.machineId(),bootstrap.reviewAtUtc());Path target=Path.of(bootstrap.target());
+            if(!"INITIAL_SAVED_MATERIALIZED_POLICY".equals(phase)||target.getParent()==null||quote.outputs().size()!=1
+                    ||quote.outputs().getFirst().kind()!=RootBootstrapOutputContract.Kind.INITIAL_POLICY
+                    ||!quote.outputDirectories().isEmpty()||!quote.retainedInputs().isEmpty()
+                    ||!target.getParent().equals(Path.of(quote.assetRoot()))
+                    ||!target.getFileName().toString().equals(quote.outputs().getFirst().fileName()))
+                throw new IOException("mapped Saved quote differs from the exact single policy producer target/role");
+        }
         Path asset=Path.of(quote.assetRoot()),controls=Path.of(request.controlRoot()).getParent(),replies=Path.of(request.issuerReplyRoot());
         if(overlap(asset,controls)||overlap(asset,replies)||overlap(controls,replies))throw new IOException("assets, original Shared controls and independent replies must be disjoint");
     }
@@ -271,6 +297,7 @@ public final class RootProfileBootstrapSession {
             case FORMAL_RELEASE->"FORMAL_RELEASE_STAGING_CREATED_NO_UPLOAD_OR_GAME_ADMISSION";
             case ORIGINAL_DRIVER_RUN_PROFILE->"ORIGINAL_DRIVER_RUN_PROFILE_CREATED_NO_GAME_ADMISSION";
             case NORMAL_EXIT->"NORMAL_EXIT_ORIGINALS_CREATED_NO_MANAGED_ADMISSION";
+            case INITIAL_SAVED_MATERIALIZED_POLICY->"INITIAL_SAVED_MATERIALIZED_POLICY_CREATED_NO_GAME_ADMISSION";
         };
         if(!node.path("status").isTextual()||!node.path("status").textValue().equals(expected)
                 ||!node.path("machine_id").asText().equals(request.machineId()))throw new IOException("original writer final status differs");
@@ -306,9 +333,29 @@ public final class RootProfileBootstrapSession {
             case FORMAL_RELEASE->read(request.bootstrapRequest(),65536,RootProfileBootstrapCommand.FormalReleaseRequest.class).producerRequest();
             case ORIGINAL_DRIVER_RUN_PROFILE->read(request.bootstrapRequest(),65536,RootProfileBootstrapCommand.OriginalDriverRequest.class).producerRequest();
             case NORMAL_EXIT->{var source=read(request.bootstrapRequest(),65536,RootProfileBootstrapCommand.NormalExitRequest.class).nativePlan();yield new FileRef(source.path(),source.bytes(),source.sha256());}
+            case INITIAL_SAVED_MATERIALIZED_POLICY->{var source=read(request.bootstrapRequest(),65536,RootProfileBootstrapCommand.SavedMaterializedPolicyRequest.class).nativeLaunchPlan();yield new FileRef(source.path(),source.bytes(),source.sha256());}
         };
     }
-    private static List<FileRef> producerInputs(Request request)throws IOException {
+    static List<FileRef> producerInputs(Request request)throws IOException {
+        if(request.mode()==Mode.INITIAL_SAVED_MATERIALIZED_POLICY){
+            var bootstrap=read(request.bootstrapRequest(),65536,RootProfileBootstrapCommand.SavedMaterializedPolicyRequest.class);
+            bootstrapWindow(request,bootstrap.machineId(),bootstrap.reviewAtUtc());
+            var plan=org.xar.ck3.control.platform.NativeLaunchPlan.readExact(bootstrap.nativeLaunchPlan(),new org.xar.ck3.control.platform.NativeBridgeLaunchEvidence());
+            FileRef pairRef=new FileRef(bootstrap.sourcePair().path(),bootstrap.sourcePair().bytes(),bootstrap.sourcePair().sha256());
+            var pair=org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.decode(RootRuntimeDefinitions.read(pairRef,65536));
+            if(!(plan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame saved)
+                    ||!saved.save().equals(bootstrap.actualSave())
+                    ||!pair.save().reference().equals(new org.xar.ck3.control.contracts.ExactRef(saved.save().path(),saved.save().bytes(),saved.save().sha256()))
+                    ||!plan.preparedProfile().environmentManifest().equals(bootstrap.actualEnvironment())
+                    ||!plan.sources().review().machineId().equals(request.machineId())||plan.deadline().isBefore(Instant.parse(request.deadline())))
+                throw new IOException("mapped Saved producer differs from the Session original source, ENV, machine or finite window");
+            var existing=org.xar.ck3.control.platform.NativeSavedGamePreparation.requirePrepared(plan,pair.save(),java.time.Clock.systemUTC());
+            var actual=existing.census().actualSave().reference();
+            var pins=new java.util.LinkedHashSet<FileRef>();pins.add(producerRequest(request));pins.add(pairRef);
+            pins.add(bootstrap.actualEnvironment());pins.add(bootstrap.actualSave());
+            pins.add(new FileRef(actual.path(),actual.bytes(),actual.sha256()));pins.addAll(plan.preparedProfile().preparedInputs());
+            return List.copyOf(pins);
+        }
         if(request.mode()==Mode.NORMAL_EXIT){
             var bootstrap=read(request.bootstrapRequest(),65536,RootProfileBootstrapCommand.NormalExitRequest.class);
             bootstrapWindow(request,bootstrap.machineId(),bootstrap.reviewAtUtc());

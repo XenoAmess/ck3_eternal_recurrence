@@ -1618,10 +1618,22 @@ public final class DriverBootstrap {
     public static Adopted adoptRetainedSaved(org.xar.ck3.control.service.root.RootJavaSavedBootstrap.RetainedSaved actual,
             ContinuityStorePort.Session same,org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive,
             ActionSnapshotReader actions,G2Source source,int retainedFrames,Instant deadline) throws IOException {
+        try {
+            return adoptRetainedSavedCurrent(actual,same,archive,actions,source,retainedFrames,deadline);
+        } catch(IOException|RuntimeException|Error failure) {
+            if(actual!=null)try {actual.closeProjectionCustody();}
+            catch(IOException|RuntimeException|Error cleanup) {if(cleanup!=failure)failure.addSuppressed(cleanup);}
+            throw failure;
+        }
+    }
+
+    private static Adopted adoptRetainedSavedCurrent(org.xar.ck3.control.service.root.RootJavaSavedBootstrap.RetainedSaved actual,
+            ContinuityStorePort.Session same,org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive,
+            ActionSnapshotReader actions,G2Source source,int retainedFrames,Instant deadline) throws IOException {
         Objects.requireNonNull(actual);Objects.requireNonNull(same);Objects.requireNonNull(archive);
         Objects.requireNonNull(actions);Objects.requireNonNull(source);Objects.requireNonNull(deadline);
         StrictJson.require(Instant.now().isBefore(deadline),"retained saved adoption deadline expired");
-        actual.requireCurrent(same);
+        actual.requirePreparedProjectionCurrent(same);
         var game=actual.game();var transport=game.nativeTransport();
         StrictJson.require(source.machineId().equals(game.machineId())&&transport.diagnostics().session().filter(actual.secondRead().originalFrame().session()::equals).isPresent(),
                 "retained saved adoption crossed its actual new Game/source/transport");
@@ -1727,7 +1739,7 @@ public final class DriverBootstrap {
         var seed=new Seed(currentDriverReference,known.originalHistoryBasis(),known.stamp().driverVersion(),known.stamp().episodeEpoch(),
                 raw.session(),known.auxiliary(),known.loop());
         var adopted=new Adopted(seed,source,currentDriverReference,repository,authority,producer,held,first,AdoptionStatus.QUALIFICATION_REQUIRED,List.of());
-        actual.requireRetained(same);
+        actual.requireProjectionCurrent(same);
         return adopted;
     }
 
@@ -1777,10 +1789,23 @@ public final class DriverBootstrap {
             org.xar.ck3.control.service.root.RootJavaSavedBootstrap.Admission actual,
             ContinuityStorePort.Session same,org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive,
             ActionSnapshotReader actions,G2Source source,int retainedFrames,Instant deadline)throws IOException {
+        try {
+            return stageConfirmedSavedCurrent(actual,same,archive,actions,source,retainedFrames,deadline);
+        } catch(IOException|RuntimeException|Error failure) {
+            if(actual!=null)try {actual.closeProjectionCustody();}
+            catch(IOException|RuntimeException|Error cleanup) {if(cleanup!=failure)failure.addSuppressed(cleanup);}
+            throw failure;
+        }
+    }
+
+    private static SavedStaged stageConfirmedSavedCurrent(
+            org.xar.ck3.control.service.root.RootJavaSavedBootstrap.Admission actual,
+            ContinuityStorePort.Session same,org.xar.ck3.control.continuity.writer.NativeOutcomeArchive archive,
+            ActionSnapshotReader actions,G2Source source,int retainedFrames,Instant deadline)throws IOException {
         Objects.requireNonNull(actual);Objects.requireNonNull(same);Objects.requireNonNull(archive);
         Objects.requireNonNull(actions);Objects.requireNonNull(source);Objects.requireNonNull(deadline);
         StrictJson.require(Instant.now().isBefore(deadline),"saved Driver staging deadline expired");
-        archive.writer().requireSession(same);actual.requireCurrent(same);
+        archive.writer().requireSession(same);actual.requireProjectionCurrent(same,null);
         var opening=same.head();
         var game=actual.game();var transport=game.nativeTransport();
         var received=actual.secondRead();var raw=received.originalFrame();var session=raw.session();
@@ -1867,7 +1892,7 @@ public final class DriverBootstrap {
             repository.replaceObservation(stamp,facts);return null;
         });
         var seed=new Seed(full,full,0,0,session,auxiliary,Optional.empty());
-        actual.requireCurrent(same);archive.writer().requireSession(same);
+        actual.requireProjectionCurrent(same,null);archive.writer().requireSession(same);
         StrictJson.require(Instant.now().isBefore(deadline)&&same.head().state().sequence()==opening.state().sequence()
                 &&same.head().digest().equals(opening.digest()),"saved Driver staging changed its canonical predecessor/deadline");
         return new SavedStaged(actual,archive,seed,known,repository,producer,authority,held,first,source,
@@ -1877,13 +1902,24 @@ public final class DriverBootstrap {
     /** Admits only the identical staged owner after Core recorded its actual saved-bootstrap commit. */
     public static Adopted adoptConfirmedSaved(SavedStaged stage,ContinuityStorePort.Session same,
             WriterContracts.Prepared prepared,WriterContracts.Receipt receipt)throws IOException {
+        try {
+            return adoptConfirmedSavedCurrent(stage,same,prepared,receipt);
+        } catch(IOException|RuntimeException|Error failure) {
+            if(stage!=null)try {stage.admission.closeProjectionCustody();}
+            catch(IOException|RuntimeException|Error cleanup) {if(cleanup!=failure)failure.addSuppressed(cleanup);}
+            throw failure;
+        }
+    }
+
+    private static Adopted adoptConfirmedSavedCurrent(SavedStaged stage,ContinuityStorePort.Session same,
+            WriterContracts.Prepared prepared,WriterContracts.Receipt receipt)throws IOException {
         Objects.requireNonNull(stage);Objects.requireNonNull(same);Objects.requireNonNull(prepared);Objects.requireNonNull(receipt);
         synchronized(stage) {
             stage.archive.writer().requireSession(same);
             StrictJson.require(prepared.predecessor().state().sequence()==stage.originalSequence
                     &&prepared.predecessor().digest().equals(stage.originalDigest),
                     "saved Driver adoption prepared a different staged writer predecessor");
-            same.requireCommitted(prepared,receipt);stage.admission.requireRetained(same,receipt);
+            same.requireCommitted(prepared,receipt);
             var current=stage.facts();var seed=stage.seed;
             StrictJson.require(current.stamp().equals(stage.predecessor.stamp())
                     &&Arrays.equals(current.driver().encode(),stage.predecessor.driver().encode())
@@ -1894,10 +1930,12 @@ public final class DriverBootstrap {
                     &&current.observation().orElseThrow().transport().equals(seed.expectedSession()),
                     "saved Driver adoption changed its exact staged Driver/history/observation owner");
             if(stage.adopted!=null) {
+                stage.admission.requireRetained(same,receipt);
                 StrictJson.require(stage.committedPrepared==prepared&&stage.committedReceipt==receipt,
                         "saved Driver adoption cannot replace its original prepared/receipt objects");
                 return stage.adopted;
             }
+            stage.admission.requireProjectionCurrent(same,receipt);
             stage.producer.promoteConfirmedSaved(stage.admission,same,prepared,receipt);
             stage.producer.recordAdoptionObserved(seed.expectedSession(),stage.source);
             var adopted=new Adopted(seed,stage.source,seed.fullDriver(),stage.repository,stage.authority,stage.producer,

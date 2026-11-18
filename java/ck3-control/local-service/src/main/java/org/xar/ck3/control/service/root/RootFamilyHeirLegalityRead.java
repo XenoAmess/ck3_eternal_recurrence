@@ -15,9 +15,13 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 /** Family view of the identical typed heir-legality producer, including its original root receipt. */
 public final class RootFamilyHeirLegalityRead implements FamilyPorts.ProjectedSource {
     private final RootRuntimeContext context;private final InteractionCapabilities interactions;
-    private final RootInteractionContextProjection projection;private final RootFamilyCampaignRead root;
+    private final RootFamilyInteractionContext projection;private final RootFamilyCampaignRead root;
     public RootFamilyHeirLegalityRead(RootRuntimeContext context,InteractionCapabilities actualInteractions,
             RootInteractionContextProjection actualProjection,RootFamilyCampaignRead actualRoot) {
+        this(context,actualInteractions,RootFamilyInteractionContext.qualified(actualProjection),actualRoot);
+    }
+    public RootFamilyHeirLegalityRead(RootRuntimeContext context,InteractionCapabilities actualInteractions,
+            RootFamilyInteractionContext actualProjection,RootFamilyCampaignRead actualRoot) {
         this.context=Objects.requireNonNull(context);interactions=Objects.requireNonNull(actualInteractions);
         projection=Objects.requireNonNull(actualProjection);root=Objects.requireNonNull(actualRoot);
     }
@@ -26,11 +30,12 @@ public final class RootFamilyHeirLegalityRead implements FamilyPorts.ProjectedSo
                 && new IntegerValue(request.before().frame().identity().nativeRevision()).equals(flat.get("expected_native_revision")),"family legality expected native revision differs");
         try {
             var same=context.borrowedSession();return context.collector().currentPlanning(same,request,request.deadline(),(original,lease)->{
-                var actual=projection.project(lease.frame(),request.deadline());var result=interactions.queryObservedFirstHeirMarriageLegalityV1(same,actual);
+                return projection.projected(request,lease.frame(),flat,actual->{var result=interactions.queryObservedFirstHeirMarriageLegalityV1(same,actual);
                 if(result instanceof PlanningReadResult.Known<InteractionModels.HeirMarriageLegality> known)
                     return new FamilyPorts.ProjectedRead(known.receipt().request().arguments(),FamilyHeirNativeProjection.project(known,root.originals()));
                 var unavailable=(PlanningReadResult.Unavailable<InteractionModels.HeirMarriageLegality>)result;
                 return new FamilyPorts.ProjectedRead(new Obj(Map.of()),new PlanningReadResult.Unavailable<>(unavailable.reason(),unavailable.original()));
+                });
             });
         } catch(IOException failure) {throw new UncheckedIOException("actual typed heir legality unavailable",failure);}
     }

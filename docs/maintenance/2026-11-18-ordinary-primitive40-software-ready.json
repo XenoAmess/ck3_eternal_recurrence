@@ -1,0 +1,919 @@
+{
+  "status": "SCOPED_ORDINARY_PRIMITIVE_40_DISTINCT_SOFTWARE_PASS_NO_GAME",
+  "scope": "isolated source overlay, actual Native65pin formatter/export originals, software transport/guard/archive/replay; not complete Life or Root/actual CK3 action",
+  "first_typing_failure_retained": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/javac01.stderr",
+    "bytes": 903,
+    "sha256": "789adce7e769ab031c20852974a421dd3e4199bc88d3f136dce3f94456afe036"
+  },
+  "first_typing_result": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/javac01.json",
+    "bytes": 544,
+    "sha256": "2dacc6ec9d7d4e270e7025c3ebcda96b02ea34913977b575abbaa5c502f35354"
+  },
+  "repair_typing_result": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/javac02.json",
+    "bytes": 555,
+    "sha256": "e6ee5934de0c71f1ff5de2787d4408ac82a2c746bae446aede2de00c9d85bce6"
+  },
+  "first_test_result": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/junit02.json",
+    "bytes": 478,
+    "sha256": "61ae4fe7f8faad6486fbbad777a516b859fac51755ca1642d123b5f58de51131"
+  },
+  "first_test_xml": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/reports02/TEST-junit-jupiter.xml",
+    "bytes": 67081,
+    "sha256": "ec55b4e24327af92bd37726a3b2d0944751bab059e342b3a8f4c6bc51cd6684d"
+  },
+  "first_test_summary": {
+    "passed": 31,
+    "failed": 9,
+    "failure": "exact C++ Date fixture resources absent from genuine tests JAR classpath"
+  },
+  "affected9_test_result": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/junit03.json",
+    "bytes": 578,
+    "sha256": "0d80380b0a29320dd08c3c327503c8a8227225c66a6051b4910fa251379b373f"
+  },
+  "affected9_test_xml": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/reports03/TEST-junit-jupiter.xml",
+    "bytes": 41497,
+    "sha256": "259f4ecd45b0016b4a9e68014077db42b237b2d6b687a54e73b21a8c61cb50bd"
+  },
+  "distinct_final_count": 40,
+  "distinct_final_results": {
+    "org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactoryTest#dynamicClockFamiliesRequireTheirActualCanonicalTypedOperation()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#aTerminalAckCannotInventAnAbsentOriginalPreflight()": "PASSED",
+    "org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactoryTest#timingProducerAndDirectConstructorRejectPrecisionLossAndInvalidLimits()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeDateSentinelArmPortTest#pausedIdleCleanupRequiresAnExplicitCurrentPrivateFullFromTheSameIssuer()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#pausedIndependentFullCannotBeReplacedByRunningMapUnavailableOrAckEvidence()": "PASSED",
+    "org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactoryTest#actualTimingJsonRetainsItsExactOriginalAndRejectsWrongTypesMissingAndAliases()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#availableAckAloneAndAnArmedOrUnobservedPauseNeverConfirmCancellation()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeDateSentinelArmPortTest#observedEvaluationFailureBlocksCleanupAndClockWritesWithoutRelabellingTheReadAsAWorldUnknown()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvanceClockCancellationTest#impossibleTicksChangedCallbackDateAndDeadlineCancellationAreRefused()": "PASSED",
+    "org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactoryTest#actualTypedTimingProducerRoundTripsItsOwnRetainedBytesAtBothBounds()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvanceClockCancellationTest#cancelAckCannotSubstituteForIdleOrAuthorizeAnotherGeneration()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#legacyCanceledIdleKeepsTheOriginalContractAndDoesNotAcquireAvailableSemantics()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeDateSentinelArmPortTest#foreignSupersededExpiredReadAndChangedParentOrStartRefuseBeforeArmWrite()": "PASSED",
+    "org.xar.ck3.control.continuity.writer.NativeOutcomeArchivePhysicalContractsTest#sourceCompletionArchiveReadsSourceAsRawAndOnlyThreeRolesAsJson()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#acceptedStepStatusAndOriginalSuccessfulAckAreAllRequired()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitiveNegativeReplayTest#anActualPositiveAckCannotBeRelabelledAsANativePauseRejection()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeOutcomeArchiveReconciledControlTest#missingActualUnknownPreparedCandidateAndReadOriginalsAreNeverRecreated()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#aMatchingForeignGenerationOrNonTerminalWatchTupleIsNotOurRequestedCancel()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#retainedPhysicalPreflightKeepsItsOriginalProfileAndCannotBeInventedFromATerminalSlot()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#evaluationFailureCannotRelabelNativeAccessCleanupUnknownAsConfirmedCancellation()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeOutcomeArchiveReconciledControlTest#actualOriginalsUseStrictV6SerdeAndOldVersionsCannotAcceptTheSidecar()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#coldReadClassificationNeedsTheRealOriginalPreflightAndPositiveAck()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeDateSentinelArmPortTest#crossGenerationStatusKeepsItsAfterWriteUnknownAndCannotAuthorizeCleanup()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeDateSentinelArmPortTest#parentSixHundredSecondsIsIndependentOfTheSixtySecondFullReadWindowAndAckCutoff()": "PASSED",
+    "org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactoryTest#preparedStatusObjectIsTheExactEarlyInstalledCatalogObjectWithoutAdoptingAStubDriver()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitiveNegativeReplayTest#archivedNegativeDataWithoutActualRequestCustodyCannotEnterThePrimitiveReplay()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvanceRegressionTest#unknownDurableArmStopsBeforeAnyResumePauseOrCancel()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeDateSentinelArmPortTest#nativeExpiredIsDeterminateWhileIndeterminateAndAttemptedRejectionKeepStickyOriginalUnknown()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#originalAckAndStatusCustodyCannotBeMissingCrossedOrPreAck()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeOutcomeArchiveReconciledControlTest#actualLateAckCannotHideChangedDurablePreparedFieldsInProducerOrColdReader()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeDateSentinelArmPortTest#sameGenerationTerminalCancelPreservesTriggeredStatusWithoutPauseOrLeaseRefresh()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeDateSentinelArmPortTest#anUncertainCancelKeepsItsActualOriginalAckAndNeverWritesAnotherRequest()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#independentFullRetainsExactSourceSessionGamePlayerEpisodeAndStableDate()": "PASSED",
+    "org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactoryTest#cancellationSourceOriginalIsExplicitAndFlowsThroughTheRequiredSourceConsumer()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeDateSentinelArmPortTest#failedBackgroundPolicyDoesNotConsumeTheOriginalDateFullRead()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvanceClockCancellationTest#zeroDayIdleOfOriginalGenerationIsAControlBoundaryWithoutDayCredit()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#availableAckPreservesIdleTriggeredAndFailedAsTheirActualTerminalStates()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitive1210TerminalCancelTest#everyRetainedStatusFieldMustMatchTheIndependentOriginalRatherThanJustGeneration()": "PASSED",
+    "org.xar.ck3.control.application.advance.AdvancePrimitiveNegativeReplayTest#actualCanonicalZeroWriteRetainsItsOriginalStateAndColdReplayDoesNotWriteOrResend()": "PASSED",
+    "org.xar.ck3.control.nativebridge.NativeFinalizedStatusExportTest#actualAcceptedOwnerReceiptAndEveryFinalizedPacketAreMandatory()": "PASSED"
+  },
+  "production_repairs": "missing Optional import + shadowed loop binding only; exact pre/post SHA retained in actual source files",
+  "source_inputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/action/ActionEffects.java",
+      "bytes": 47004,
+      "sha256": "7fd41731c01c731f23c6dd13973cb63b9b118ef493a2ee35b04d52a6b4bca058"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/AdvanceObservationPort.java",
+      "bytes": 5186,
+      "sha256": "e18eba0224438bf10b2716786296c0b84f017431be5c1e591853e2d54f78e266"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay.java",
+      "bytes": 24807,
+      "sha256": "b61c50a0ffeb4eac0831ab9031c86f481d4d9ed805fd6f942154f4e31e5a0074"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/AdvancePrimitives.java",
+      "bytes": 25510,
+      "sha256": "2fc5976660c6cc9045b058ee9db0b983f1d4a30fe57ae407ceb8179ee396137d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/FullSnapshotSentinelCancellation.java",
+      "bytes": 27548,
+      "sha256": "8c63607f0d2575a8d93d417bf7bc2d68bce02f855b275a1e7c15dfff0a51e7de"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/PendingUiLifeAdvance.java",
+      "bytes": 16697,
+      "sha256": "cf6c600f2a374557bbd39a74fe41c96fe86db11c42a56703e0253c04c1de4596"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/application/src/test/java/org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest.java",
+      "bytes": 36690,
+      "sha256": "6b8c56331db43618521be2813454f26957bd5371c3ba97cf0b4ddd5afa61a062"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive.java",
+      "bytes": 183273,
+      "sha256": "0df8035bbf89cd8cc8f895c2b0f20275dc0ee371d99d9b638a5b8349b4186d7e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory.java",
+      "bytes": 105487,
+      "sha256": "38f396e169ad80798e737e4b9c0df35aaee338b2bb7f78cd5d16279ca920e914"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootOrdinaryPlainProducts.java",
+      "bytes": 39925,
+      "sha256": "06eda7d56503c3f61d51809ad072b74447c88926f6d092211c4f167be88a34f5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootReconciliationAuthority.java",
+      "bytes": 78820,
+      "sha256": "0ac6b5734fbbc605049cf7ef2a9278487ae10db14827c562e9d61c4186bdd9a2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootRuntimeSourceProducts.java",
+      "bytes": 46451,
+      "sha256": "77189aefa1b2c8a20daefc8281d5fa5dc7683005293ba160c15789fd865dff85"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactoryTest.java",
+      "bytes": 9910,
+      "sha256": "3a2e37a3063425967279437071030b59d9c9ef7787c362d0a0140c38d149b8e1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "bytes": 247995,
+      "sha256": "37f9c86445663390ba84915e7a63171307a601210925cd379a1259439125c8c9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeDateSentinelArmPortTest.java",
+      "bytes": 32203,
+      "sha256": "6fdfb98b6916f258e9ce59e66055158431a19ded1599e03c142c8101bcde9c8a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/source-retained/java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeFinalizedStatusExportTest.java",
+      "bytes": 19935,
+      "sha256": "68276a8978b1b3607fb94038f404ac9fb92373556906c3d31df52021abadfca3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/source/java/ck3-control/application/src/main/java/org/xar/ck3/control/application/advance/PendingUiLifeAdvance.java",
+      "bytes": 16724,
+      "sha256": "84b3921b968889e9f537486388fcd29cc31a09635d31d7456075f102b7a081c3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/source/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive.java",
+      "bytes": 183297,
+      "sha256": "dccc5cf7f49ea689b660de19523720b72f4a1c04f943e5e69a8f965552b1543f"
+    }
+  ],
+  "class_outputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/action/ActionEffects.class",
+      "bytes": 45328,
+      "sha256": "34f3d73435627b28c8550c81a7a3064734a050e419f57f0414ce04135656f7c0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvanceObservationPort$Frame.class",
+      "bytes": 7727,
+      "sha256": "f5cb54efc3020d97f6ad02daf386e27b7ed08c68359da058097c0a97954f9569"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvanceObservationPort.class",
+      "bytes": 2326,
+      "sha256": "15760b1256262dd91a650e71155e593d0e97e5b89065e345d653493c7d128049"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest$Fixture.class",
+      "bytes": 23415,
+      "sha256": "fe13e400e1dc6883390b78bf6fb816489e4b806cbf6881bbcaf7ea35e324453b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest$MemoryArchive.class",
+      "bytes": 7350,
+      "sha256": "0488958fed6811a3b51fde4e9a0791efa1b3a436c9acd17047e9092be3f827f2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitive1210TerminalCancelTest.class",
+      "bytes": 34596,
+      "sha256": "4334ae6a7f37543769a5d1c0831146bbdf24e00d7db18d3168b9bee2451280ab"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay$CleanupNoEffectVerifier.class",
+      "bytes": 727,
+      "sha256": "231dc262aabbee0c5af45687043553ad4a044ddefbc8c423186f8a67893988d5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay$PreparedCleanupVerifier.class",
+      "bytes": 1114,
+      "sha256": "a39610085299b1be20aeea38e6f3152a0d3dc9fed168320a2c842d859ef8fba4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay$ZeroCancellationVerifier.class",
+      "bytes": 1116,
+      "sha256": "98a9eca4f2de70c25def28e3ab9fedb482e05b77a23e9e80f5b39f63ba6730f6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitiveArchivedReplay.class",
+      "bytes": 40381,
+      "sha256": "58b8e0c9f8645f94d4ecd2d9d4a9ddcc580bfa00fd5c254a7f676a582e886759"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitives$ArmSpec.class",
+      "bytes": 2436,
+      "sha256": "c9d903bc133a69efc9b3147e562720bbe377767c6f7c9b324c44af46caca3e1c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/AdvancePrimitives.class",
+      "bytes": 35930,
+      "sha256": "6879f292294af2c41c7c5cbc5fdef833ca4e58920ade8a9457451a8916560cfa"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/FullSnapshotSentinelCancellation.class",
+      "bytes": 38616,
+      "sha256": "7a11bf79790d1712c7fc2c18a1b1151b860fe3a17009eaca7b761cfbb460bab4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Current.class",
+      "bytes": 9216,
+      "sha256": "a2abe7b19c03dac469bd30f7c899b51c7863e28a44b0765fff5ffe902059faad"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Scope$1.class",
+      "bytes": 8332,
+      "sha256": "82a7e3c910d16c28c115048804a3ae65a7d3239f66af0d0ea18fb62de2b67abb"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Scope$Held.class",
+      "bytes": 1483,
+      "sha256": "1192b4528d65fdfe89e684459f7c2286a6017dc8c40402e1db03225b019f30a9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Scope.class",
+      "bytes": 12958,
+      "sha256": "5ab68e1cfdc82bdc8f9f568597cab6268fb8c19404cec531aad6f4bda5ad32c7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$SessionAccess.class",
+      "bytes": 671,
+      "sha256": "93c71acbb1f83af398fc85d865a4602499b248e995963d4b3bf37a16bd40ddfe"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Source.class",
+      "bytes": 2168,
+      "sha256": "1f7d821be53f3eacc0780c3da16b499c44635042487caf6abf4c95c2f2607656"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Work.class",
+      "bytes": 759,
+      "sha256": "ac7e2f42a732d9b0d18910fd1babb5728c5fdab3353890859353018e9d8ae8d2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance$Work0.class",
+      "bytes": 529,
+      "sha256": "6f0aa3348c1c648b8e95e55d03771d4d941f8747e508c155b2083a84267ddf72"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/application/advance/PendingUiLifeAdvance.class",
+      "bytes": 4875,
+      "sha256": "dbffe2762374e63b30fe92e1dd22ebbaefe547cd0c887f8a84822fb908bd7afa"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$1.class",
+      "bytes": 1156,
+      "sha256": "02a6373259423344e18ef56c7853d47a4119492c89bc1020fb496b95caa324fe"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$HistoryBindings.class",
+      "bytes": 1184,
+      "sha256": "94eb31058302d472ea2a8a3da3ea977025f8b30b552425465bebabf96055c678"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$HistoryEpoch.class",
+      "bytes": 1977,
+      "sha256": "b9e9cb5628ae1eb11405f9162974b444516cdc443b5369181b1799f3745f6a1d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$HistoryRegistration.class",
+      "bytes": 2117,
+      "sha256": "a62d94217edc703b41560df3938307fcccc0d33c931e9d01515e51fcddbc7fe5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$IoWork.class",
+      "bytes": 527,
+      "sha256": "3126adccf8fb513a4ca025a2ec4f4e74f534e1043ca4ce4e626657d9c2340ce3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ParsedMaterialCache$Cached.class",
+      "bytes": 1857,
+      "sha256": "a73c17141f76fabc0aeaf434f618b4edfed841b64939864580b37710ef754222"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ParsedMaterialCache$Key.class",
+      "bytes": 2152,
+      "sha256": "0a0f95d5667acacac54bb9f53f540f0e1d164bee5d69316c349fa3f88639fe3b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ParsedMaterialCache.class",
+      "bytes": 6031,
+      "sha256": "21597e41ffcf8c1188ed8ab3c804c31c2779eb987db411e5188e979e632373ae"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ParseProfile.class",
+      "bytes": 1398,
+      "sha256": "70cb2bba102e495085edcb2cca09852ed3e33af7aed2c09d0fc49f50ef5f31f7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$PersistentPrefixAccess.class",
+      "bytes": 4786,
+      "sha256": "a2e91c1205d65b408200b11667d7c6755fc8e0df97e2a37305e8d525b820f35d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$PhysicalStatusOriginals.class",
+      "bytes": 1996,
+      "sha256": "e285c01040d5aa90eff4eb89ab215cf5e2b363fe4742e2eea3f8b2556b6d3c5c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$Publication.class",
+      "bytes": 1397,
+      "sha256": "0c900eea899451958d5b74451821bd8ef8a7766fc835e77c7a769d8edee23dee"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ReadOriginalCapture.class",
+      "bytes": 1677,
+      "sha256": "ee05f35f7a1e03ee60cf980299d8003fcc27a27253a4926be3df5e8fd57ebce4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$ReadOriginalsLimitExceeded.class",
+      "bytes": 585,
+      "sha256": "d00e1f958030784ec1a83f426b4c06d99bf878ecb09bc8a8945f231d105a39bc"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$RetainedDataAccess.class",
+      "bytes": 6778,
+      "sha256": "ddcc9fdbc1a29382ea16b2a068b5f3b07df158d45f30ca326d1985e9dddfa990"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$RetainedDataCapture.class",
+      "bytes": 1345,
+      "sha256": "0153d221e6682a006eb2bf75c804ba95db0ae55d11c0167916e8003fc887e77b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$RootDataHistoryTier.class",
+      "bytes": 1668,
+      "sha256": "191f366b67051c3dcbc9996c906f34cad709486f9088163fe61fe7197cf2e741"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$SavedPreReadCapture$External.class",
+      "bytes": 2413,
+      "sha256": "d62af6d2af9813fbcf34ee1328c39d1a3d3df41e65b207e84741b73521048344"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$SavedPreReadCapture$Provider.class",
+      "bytes": 2323,
+      "sha256": "423915f703d7d64b957256db40a7a5715d418f90506b14dac174a6b1aa4c1384"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$SavedPreReadCapture.class",
+      "bytes": 13889,
+      "sha256": "740d206328234059430495a830d5ee913aef237dbe47d379607264e5a45c47c1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$SavedPreReadReadSet.class",
+      "bytes": 1603,
+      "sha256": "9bd09f4fe6cca54e14f7ce0d54442ade664ad53a169a6247bcfd58f5e743aca7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive$TransientOwnedCASLeaseScope.class",
+      "bytes": 11850,
+      "sha256": "6a29d9cbe694fb6974542e18b9c473f4ab54cb10dde2377fb7530524091d1c65"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/continuity/writer/NativeOutcomeArchive.class",
+      "bytes": 160220,
+      "sha256": "6cc190357be2dd3829ababd964afbc79eee847891f56e47f2fc41462dace71f7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeDateSentinelArmPortTest$Ack.class",
+      "bytes": 1773,
+      "sha256": "5502521748f0783c712d06b09fbd52619df00cbd8eedb473be05ceb449d2929c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeDateSentinelArmPortTest$Fixture.class",
+      "bytes": 6752,
+      "sha256": "29903de98fb7fe8e4c79eae1aedd49d20863579b114a98256093bef2bf76159f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeDateSentinelArmPortTest$Input.class",
+      "bytes": 1688,
+      "sha256": "fb6cd241b83e9ab762916dbb30e0735b5c5dfbc641495eb322f15f6b0ff8c8c8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeDateSentinelArmPortTest$MutableClock.class",
+      "bytes": 1187,
+      "sha256": "13c4423e254661685de78ff4befb825d3760ad0432985c378bdcccfccb2570ec"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeDateSentinelArmPortTest$Replay.class",
+      "bytes": 9247,
+      "sha256": "e3da13beb0983b597778b7a96f9af85bea73200d048db6dc9abbf840e2a4c3ed"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeDateSentinelArmPortTest$SnapshotCpp.class",
+      "bytes": 1888,
+      "sha256": "71a2c3405d0c6c7609fb179b2a30bd635a5d509a56534de7cf7c2fc504a97400"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeDateSentinelArmPortTest.class",
+      "bytes": 26648,
+      "sha256": "0df12fafea062e8f08c63bfdbab8ebeff67539afa62f43c36d3227169c309fd2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeFinalizedStatusExportTest$Decoded.class",
+      "bytes": 2454,
+      "sha256": "9eafed6f10b5bd4913a921781f8a72b77513764a8f8144092f652205f75631a5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeFinalizedStatusExportTest$ExportFrame.class",
+      "bytes": 2317,
+      "sha256": "835a491ed28df5dc382463ffe97b79d32a6dc2346f71aa79a426da6022a3cce7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeFinalizedStatusExportTest$Pin.class",
+      "bytes": 1747,
+      "sha256": "9dbdb9a066a494bceaa0a1bd6e64e17f68389b04dcd2886564a5fe7ace8cd77c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeFinalizedStatusExportTest.class",
+      "bytes": 22084,
+      "sha256": "f41f9ea2570ff46568145e85f5afd6b493e0123a15dfa0a86ceb70a9efb7d6a2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$1.class",
+      "bytes": 2552,
+      "sha256": "82c51b3ebe62fff6d78d1808cec31a0190d60533803b21c5e6a077049acb222d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$AcceptedSnapshotRevision.class",
+      "bytes": 3149,
+      "sha256": "b12d0c3365686778424ba874ff2ae7bfda86eae3347512987d4e1464726ead32"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationRead.class",
+      "bytes": 843,
+      "sha256": "a32f4f0629cdb38922f6315c76edfe532a613d4992c8ae253200a7d99564aac3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationReadUnavailable.class",
+      "bytes": 2348,
+      "sha256": "cd8d8b65e9af9620a732748150917f10123d1709d3e5d70eee9df33c4d522084"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationReceived.class",
+      "bytes": 2412,
+      "sha256": "36291dd8d407276a38f56763eda0d3d10fccfda3e9cf295f9f6cdad9a0ff6e44"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$AfterAcknowledgementSnapshot.class",
+      "bytes": 3208,
+      "sha256": "d3894c2193c395e23488301943bacb5abd84a51941ecafcee475308960b7fc05"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CoreRead.class",
+      "bytes": 777,
+      "sha256": "6d592a2617027100c46578577947fb2aa9d5159b8879853a80c35a76e59e4a42"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CoreReadUnavailable.class",
+      "bytes": 2271,
+      "sha256": "55a2bcaad3ee48164ae8cd425ce456ba557061734ede0518fa0ff69c3caedec2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CoreReceived.class",
+      "bytes": 2344,
+      "sha256": "059f4034863a1029cf0550a8be142c81c8bd880bf101a18ef77cd951485a6f76"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CouncilAssignment.class",
+      "bytes": 2279,
+      "sha256": "abd506092960b4045b0ef63685cb5786d50924bbc11af7dc50fc4cfe5ff2f1da"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$CouncilRecoveryRole.class",
+      "bytes": 3604,
+      "sha256": "92e6345e0301dbcea293ae5ce19c8a230bfe2b6e27be7d488e91f71c44619c7d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmRead.class",
+      "bytes": 763,
+      "sha256": "4c9d9d78f410a35d005794fc9343c427f605b1b3a985f721b8f3709873574162"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmReceived.class",
+      "bytes": 2238,
+      "sha256": "2d31bd8e2c428e511c5aa6b01be4eaead57b62d136abbe6faabee4264dbd0028"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmUnavailable.class",
+      "bytes": 2232,
+      "sha256": "3fa8411422f943d18b5269b57dc44ed0dae90a9f4d833479eeaee585ffab453a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FreshSnapshotCapture.class",
+      "bytes": 1268,
+      "sha256": "6f0cfe408d374f63314e80e7bca6f6b9f88a25e8bbd3e564a09bb64ba7315d89"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FrontendBootstrapAttempt.class",
+      "bytes": 2639,
+      "sha256": "addec95bcb263e20247c2a0e25ee725ca1f685a5b19d83a5656b27ca720654e5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockRead.class",
+      "bytes": 783,
+      "sha256": "e77b6b1d651a218b5f47d2519f2f857fd94b408fc657f9c67bd5af35a0765120"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReadUnavailable.class",
+      "bytes": 2266,
+      "sha256": "40b54b75b67889ae3d3ff37b033d6105298de84fe560ff66d26f7a3060b655c4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReceived.class",
+      "bytes": 2504,
+      "sha256": "0a95bfaf4a9f8b43bcce57c7fa6343f0f0301dd2f4d3ebfc0662e9e967d73ecd"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$HandshakeDiagnostic.class",
+      "bytes": 5258,
+      "sha256": "a05d1ed4fa54808439e8326a1cca8462c812b959273d3a2590d8f213ba858429"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$HandshakePong.class",
+      "bytes": 3561,
+      "sha256": "b28651f2b84c30e2951ddba12bff9919ce5b6e8e59044f75401995860905cd3d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxDiagnostics.class",
+      "bytes": 2308,
+      "sha256": "798a40f091f586b8db06d8489cf9135ce0d91625ad930e4d61d071c94d77600d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxReadDeferral.class",
+      "bytes": 3398,
+      "sha256": "48f6842acae98b24fe9a20e47c43de21a7207a833bddd11afc9bf6bdbc6c800a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxScope.class",
+      "bytes": 14826,
+      "sha256": "2cd58b73698e95df4d1b09fefb7c3a77bae135e68847824cc5a58cd87204d2e7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$MailboxWork.class",
+      "bytes": 790,
+      "sha256": "b37fe7b12f95d176a3b02b3f5289e6f2acc70bcffb07435c2bd19a601120370b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashRead.class",
+      "bytes": 825,
+      "sha256": "2be58230daf7f890260eca795d01b25b31c56d6bbfaf83e495c0f0ee880f6e27"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashReadUnavailable.class",
+      "bytes": 2327,
+      "sha256": "241a6560ceeff1a58e31da9d58adfc284a0717716c550d8695b38b9f9559dfb3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashReceived.class",
+      "bytes": 3181,
+      "sha256": "84b2c8de2ea2b92e426b11662d66ce06328e67d2f45ad8a54eaac030c53d71d7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldRead.class",
+      "bytes": 825,
+      "sha256": "a3d073b7033155a757c9f364528b6c3b96f036fb371a2800250cf81d295413d2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldReadUnavailable.class",
+      "bytes": 2327,
+      "sha256": "c1a85d49fb5c4ec5badaa9c6a2498a6a1ffe1b48aec1e74fe0ed4b4b3c3c4a3f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldReceived.class",
+      "bytes": 2385,
+      "sha256": "10e6c33e35cb5d377d39ed89a4e2bc17fb09e551190e646a3a16eeec484af064"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PingAttempt.class",
+      "bytes": 7841,
+      "sha256": "00893b7a3f3eb634368c8c373e0005f079dfdcd4a60721de8ac68d3da9532924"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PingFailure.class",
+      "bytes": 1782,
+      "sha256": "494d7c016a6f23e5c9203056a631d9505f19105533dade160bb8232ebebaa718"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PingWriteState.class",
+      "bytes": 1413,
+      "sha256": "0b45dc371c83a955d70a7c605c43714a82320373fe39466e19956f0cdde73466"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupDispatch.class",
+      "bytes": 2305,
+      "sha256": "ebaf0f23144913fabe75da5557e20340b7031f74356fe4c3526b82a36261abac"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupLateCapture.class",
+      "bytes": 2229,
+      "sha256": "8e8899445470ee60d81f2920f8db7a3abd36c072980d893c00a863fea5abbbd6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupPriorAttempt.class",
+      "bytes": 497,
+      "sha256": "f2556e11e9b733cb3ab48fe3a8efe29c620838bcb4bfb5a6f66bb566b238250c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedHello.class",
+      "bytes": 1973,
+      "sha256": "2e7bf422989374f5f33cdb2e42dd00981ccb4ce6afe0fed0540e503be575d536"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedNotice.class",
+      "bytes": 1983,
+      "sha256": "845bfbad023f8f1a844449779e1cfcacb645767216b45fb52e9290bc61e1c3a7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedReadEvidence.class",
+      "bytes": 1597,
+      "sha256": "4e8d3ced45a061ff056de95a82b5a53bd0ff3b7186f8597e8d6e1fa0cf5e5ce0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedResponse.class",
+      "bytes": 2262,
+      "sha256": "6a302e2094137bc0dacbe207e409d970eaec3862239267d31e36ebe256ce7d3a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedState.class",
+      "bytes": 1463,
+      "sha256": "6e48372afc15f2442a7a169366dacf4d5bb3434d0f44df8e220367ee1d81d250"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$RecoveredSeatMailbox.class",
+      "bytes": 10428,
+      "sha256": "8f2794e994428908c8addf06244d76420d96a06dded1dcc26da1c5cd382590e4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevision.class",
+      "bytes": 2759,
+      "sha256": "4086ca265601b7959a1816ecc357dd6594e2c58f92f17f86be2a723d7276755e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevisionKind.class",
+      "bytes": 1437,
+      "sha256": "ccb32b642f22109db0afa470d8b49364d58f52135655fd601203ab2a4e3d202e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$TransportDiagnostics.class",
+      "bytes": 7001,
+      "sha256": "9ce28d3958698357c5db846028afce3b065b579b66d0aa2d19b3d376e18d9ce1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport$WrittenRequest.class",
+      "bytes": 3506,
+      "sha256": "121d19e2fb786a2229d4d6194b65cefd16cf3bc94c01f4f517dd4bed5aafc00b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/NativeGameTransport.class",
+      "bytes": 175393,
+      "sha256": "5b748a65f41691eff4f6f3860de17b38fa6e7273a48e86da2b747bcd7868eeb8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$1.class",
+      "bytes": 2654,
+      "sha256": "b09da9c08a4a9e661ece37ee3fb2f6714d469af7cbd32be90e1ab07ef1483009"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$ActualObservations.class",
+      "bytes": 55917,
+      "sha256": "72d88f35c1309d5b059102c1c2b941bb43d20d615e6c871d4da4be443590a316"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Arm.class",
+      "bytes": 2046,
+      "sha256": "c14dab86cd6921862d8be42246ab0306b0017b065bfc1f59d5f6b93e6e39f907"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Cancel.class",
+      "bytes": 1936,
+      "sha256": "7aa43b923f66cd480d5eb7e637975369e987cdf2011de5c8219ee1d310666c8d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Installed.class",
+      "bytes": 52397,
+      "sha256": "281061936569508086ac9789e83881c7a10140ea0a15574c90a89ad82f350c8b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Prepared.class",
+      "bytes": 6070,
+      "sha256": "094888e3f713b903fdaa2058182657c24848eebd27b3b260a2f8ea2a68cd792d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Sources.class",
+      "bytes": 4871,
+      "sha256": "93a25905b111678042ad382f5102732c5197b25b5c9e7edfee7e732afa94ff29"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory$Timings.class",
+      "bytes": 6879,
+      "sha256": "52dfc00c286c3befd7217b585411797ad54c1c9666f6f6538ac819011b38cd22"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactory.class",
+      "bytes": 42062,
+      "sha256": "5b1cb8f321ececf0ce1b3f50b242607d817a58f5be289b16ffee30c1f12b12e3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootAdvanceInfrastructureFactoryTest.class",
+      "bytes": 15225,
+      "sha256": "2d7a45136791fa56c1f958d6e7e17ae3036df4609032390152939c9de1475fbc"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootOrdinaryPlainProducts$Builder.class",
+      "bytes": 61660,
+      "sha256": "ce0c5058e251de98deece92a635470326a03ecc88befdb86dfb6a9654bda2b01"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootOrdinaryPlainProducts.class",
+      "bytes": 1611,
+      "sha256": "aaa3faa2c628ffd8b62f3215b8867c43f80c409c7cf98b2fbeb6013eb4241ee1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$AllowedRead.class",
+      "bytes": 8559,
+      "sha256": "32132af69275b858a745d0721ab15b62a1a869ea33730c3033750fe214b73e8d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$BasisRole.class",
+      "bytes": 1403,
+      "sha256": "f09e37bf5d79e6ecfe7a98433369f19241cd20f1e1940b544249816771756f78"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$Lease.class",
+      "bytes": 6285,
+      "sha256": "ac03530d98af5cd83934ed349c53a225fda1fdb4a4208ce3ca91474cb47fa755"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$LeaseWork.class",
+      "bytes": 770,
+      "sha256": "733ee68a4745a1d9c6ab3db33214bcaafa9c73d2e922d000a18c169b79674c9e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$PublicWindowSnapshot.class",
+      "bytes": 2468,
+      "sha256": "a64c7a97d89c36f4f42b20e1c4d55d5a678fc1ff97dc0c42ade3bd3c5c5a730d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$PublicWindowWork.class",
+      "bytes": 844,
+      "sha256": "5c1f865395d82f0bdae22d1585eff17ccfc2ab62fd18c95dfca7aface6325575"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$QueryKind.class",
+      "bytes": 2050,
+      "sha256": "2b75bd68f93db6a8cc2867daeba7722698a9f9c811ff9da9cb1547042456426a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$QueryPolicy.class",
+      "bytes": 1282,
+      "sha256": "37bd2c1a2304988a553a9c1edd2a5a7b5a9bcfb65e7efa4e4a464ee4e8b7eb22"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$RawUnavailable.class",
+      "bytes": 781,
+      "sha256": "d46f12f479a9fca96f3d6324710f7ea270c32187624cc501dfde20017cf49d66"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority$Scope.class",
+      "bytes": 2763,
+      "sha256": "8654b2b0ab7b803a791e4e665936f8d9b0982f08e632293f3be4b98372ef63c7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootReconciliationAuthority.class",
+      "bytes": 87066,
+      "sha256": "cbdd55929379f1c22df994d4d856c3fd38fc462335aa5dd059af5ae4ca2a2ccd"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$ActivityConfiguration.class",
+      "bytes": 4920,
+      "sha256": "bb6c16a29211239d23605bee6386d5769b345663cd3a7c592f69f5c66f60cf06"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$ArmyConfiguration.class",
+      "bytes": 3756,
+      "sha256": "4a18692936411ad7bd93fec426b6072fb73db1a7b971180a774e840e94e62a97"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$FrontendConfiguration.class",
+      "bytes": 5405,
+      "sha256": "5563739dfa66e980f325881a777734df6e3a2c6a91b6701bc1491c3377728d0d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$GovernanceConfiguration.class",
+      "bytes": 4004,
+      "sha256": "74afe7259379f92d1876be254087ea5e8920f9957bae5bde835e3765512e9959"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryConfiguration.class",
+      "bytes": 12944,
+      "sha256": "02b8328eb63797af2172128a5f724061de597c088cee5e80f61e75d38b45d39f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryDomainConfiguration.class",
+      "bytes": 13619,
+      "sha256": "34e6c3dbd86b2f98ad4b24486ae1926489ae3cbb7611a7d0ac4335cee82c3d6e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryDomainProducts.class",
+      "bytes": 3334,
+      "sha256": "d6dfe0f6324464383b79adfa22763329d78fc28f3f96274dc21b1f12e5eb2f41"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryPrepared.class",
+      "bytes": 2611,
+      "sha256": "9a5755ca1c3321501af6e850b57cddbf758d7a69637405800cb2ce078b92ed9e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$OrdinaryRuntimePorts.class",
+      "bytes": 4033,
+      "sha256": "772940f5b1a6ee5b572b24680f012e44ade63979cd981c5342bc552728d6cadf"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$PlainConfiguration.class",
+      "bytes": 13680,
+      "sha256": "fa73595f5544cb4694b19818552d8f63a6ebf791efd381f0557a5f748a8aa0aa"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$PlainPrepared.class",
+      "bytes": 5230,
+      "sha256": "eac0bbaea4021e51bb8313c2eeeac9042779b8e8b054204254cc759f6c8c65da"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$Prepared.class",
+      "bytes": 3903,
+      "sha256": "ae6963969a3c1ce483751db19b09c3f4af72c66e784361d0c2b85d8dfbfb8d00"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts$RequiredSource.class",
+      "bytes": 2815,
+      "sha256": "592e9ba10da37421714fc3b24f7f009f6789076c8a8512d99ae7e856686b1116"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootRuntimeSourceProducts.class",
+      "bytes": 86213,
+      "sha256": "9e94093744e9508f0d19400952eaae674b1a768c1b14ea6729e0cfbba52760fc"
+    }
+  ],
+  "native_status_receipt": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/status-source-custody30/ACTUAL-STATUS-TERMINAL-CANCEL-EXPORT25-SOURCE-CUSTODY30.json",
+    "bytes": 30871,
+    "sha256": "5fbe79691258d6b0bc045daa83b4bafaf2274c200fd46bbeb7e0a5723b0782b2"
+  },
+  "date_fixture_root": "D:/ck3-state/ck3-version-migration-20261118/java-date-arm-port-test01/source/native-transport/src/test/resources/newnative/date-arm1210",
+  "actual_args": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/javac02.args",
+      "bytes": 33205,
+      "sha256": "6c01e3200314d71f320dc7548b1a5f1c7b7ab0ebdcb101621346c89ee1d85852"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/junit02.args",
+      "bytes": 31445,
+      "sha256": "22311c2c02a9ec35667c81124695d5a92c77acbf7359c8b1c3d20890e2dcfa6a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ordinary-advance12/qualification01/repair01/junit03.args",
+      "bytes": 30736,
+      "sha256": "212a34b4330e2c2db06c71305f1983288ca125b2f3ef11fac0a54b4e6bad1ab2"
+    }
+  ],
+  "permit": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-ORDINARY-PRIMITIVE32M-NOGAME-PERMIT23.json",
+    "bytes": 2299,
+    "sha256": "c86f48d66fe9024c346ace1a4607ca5fd95d6370922b37a35e0afb8b5176c35b"
+  },
+  "latest_user_offline_only": true,
+  "actual_Game": false,
+  "complete_Life_qualification": false,
+  "whole_SERVICE": false
+}

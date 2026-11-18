@@ -95,6 +95,21 @@ final class NativeTransportDiagnosticsTest {
         var large=new NativeTransportDiagnostics.Production(captured.custodyEpoch(),captured.session(),BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),exact,Optional.empty(),captured.adoption());
         assertEquals(exact,large.snapshotPublishDiagnosticCount());assertThrows(IllegalArgumentException.class,()->new NativeTransportDiagnostics.Production(captured.custodyEpoch(),captured.session(),BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),NativeWire.UINT64_MAX.add(BigInteger.ONE),Optional.empty(),captured.adoption()));
     }
+    @Test void actualReceiverHonorsTheLifecycleSelectedOneFrameSpecBeforeTheQueuedSnapshot()throws Exception {
+        var limits=new org.xar.ck3.control.platform.JavaGameLifecycle(List.of(),java.time.Duration.ofSeconds(2),1,256).transportLimits();
+        var replay=new Replay();replay.add(hello());replay.add(publish("budget","begin"));replay.add(snapshot("not-read",7,STATE));
+        String slash=Character.toString(92);
+        var config=new NativePipeEndpoint.Config(slash+slash+"."+slash+"pipe"+slash+"lifecycle-frame-spec",
+                "fixture-machine",new GameGeneration(12700,new PythonOnlyUInt64(BigInteger.ONE)),"diagnostic-session","fixture-bridge",SHA,"fixture-adapter");
+        try(var actual=new NativeGameTransport(replay,config,limits.maximumFramesPerOperation(),limits.maximumSubmissions())) {
+            actual.awaitHello(deadline());
+            var refused=assertThrows(UncheckedIOException.class,()->actual.observe(deadline()));
+            assertTrue(refused.getCause().getMessage().contains("frame budget exhausted"));
+            assertEquals(2,replay.reads.get());assertEquals(0,replay.writes.get());
+            assertEquals(BigInteger.ZERO,production(actual).receivedSnapshotCount());
+            assertEquals(BigInteger.ONE,production(actual).snapshotPublishDiagnosticCount());
+        }
+    }
     private static NativeTransportDiagnostics.Production production(NativeGameTransport transport){return transport.diagnostics().production().orElseThrow();}
     private static Instant deadline(){return Instant.now().plusSeconds(20);}
     private static NativeGameTransport transport(Replay replay,int frames){return new NativeGameTransport(replay,new NativePipeEndpoint.Config("\\\\.\\pipe\\diagnostic-fixture","fixture-machine",new GameGeneration(12700,new PythonOnlyUInt64(BigInteger.ONE)),"diagnostic-session","fixture-bridge",SHA,"fixture-adapter"),frames,16);}

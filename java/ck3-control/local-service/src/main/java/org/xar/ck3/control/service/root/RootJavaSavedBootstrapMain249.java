@@ -45,8 +45,10 @@ public final class RootJavaSavedBootstrapMain249 {
         ExactRef confirmationRef = ExactRef.fromJson(request.get("sourceConfirmation"));
         ExactRef pairRef = ExactRef.fromJson(request.get("checkpointPair"));
         byte[] oldConfigRaw = read(oldConfigRef), newConfigRaw = read(newConfigRef);
-        var oldConfig = RootOrdinaryRuntimeConfiguration.read(Path.of(oldConfigRef.path()));
-        var newConfig = RootOrdinaryRuntimeConfiguration.read(Path.of(newConfigRef.path()));
+        var oldConfig = RootSavedRuntimeConfigurationInputs.readSource(oldConfigRef);
+        var ownerPlan = NativeLaunchPlanCodec.fromJson(StrictJson.parse(ownerPlanRaw,NativeLaunchPlanCodec.MAXIMUM_BYTES)).accept();
+        StrictJson.require(Arrays.equals(ownerPlanRaw,read(ownerPlanRef)),"owner plan changed while decoded");
+        var newConfig = RootSavedRuntimeConfigurationInputs.readLoaded(newConfigRef,ownerPlan);
         StrictJson.require(Arrays.equals(oldConfigRaw, read(oldConfigRef)) && Arrays.equals(newConfigRaw, read(newConfigRef)), "cold runtime configuration changed while decoded");
         StrictJson.require(machine.equals(oldConfig.machineId()) && machine.equals(newConfig.machineId()), "cold source/new runtime machine differs");
         Path oldRoot = oldConfig.stateDirectory().getParent().toAbsolutePath().normalize();
@@ -60,18 +62,18 @@ public final class RootJavaSavedBootstrapMain249 {
                 && Files.isRegularFile(oldRoot.resolve("continuity/genesis-anchor.json"))
                 && Files.isDirectory(oldRoot.resolve("continuity/ROOT-CONTINUITY-WINDOW-EVENTS")), "existing old canonical source required; no fresh fallback");
         StrictJson.require(newConfig.launchPlanFile().toAbsolutePath().normalize().equals(Path.of(ownerPlanRef.path()).toAbsolutePath().normalize()), "new runtime must consume the exact owner plan");
-        var ownerPlan = NativeLaunchPlanCodec.read(Path.of(ownerPlanRef.path()));
         StrictJson.require(Arrays.equals(ownerPlanRaw, read(ownerPlanRef)), "owner plan changed while decoded");
         var pair = CheckpointPairCodec.decode(read(pairRef));
         read(confirmationRef);
         RootOrdinaryRuntimeAssembly.Prepared oldPrepared = null, newPrepared = null;
         RootOrdinaryRuntimeAssembly.Running running = null;
         SavedGameOwnerLifetime249.Retained lifetime = null;
+        org.xar.ck3.control.platform.ManagedGameSession.CreatorOwnership originalOwnership = null;
         JavaGameLifecycle.Started originalStarted = null;
         Exception failure = null;
         int result = 1;
         try {
-            oldPrepared = RootOrdinaryRuntimeAssembly.prepare(oldConfig, clock);
+            oldPrepared = RootOrdinaryRuntimeAssembly.prepareReadOnlySavedSource(oldConfig, clock);
             var oldCore = oldPrepared.openSavedSourceCore();
             var confirmation = oldCore.writer().locked(same -> {
                 var head = same.head();
@@ -96,9 +98,21 @@ public final class RootJavaSavedBootstrapMain249 {
                     && new ExactRef(saved.save().path(), saved.save().bytes(), saved.save().sha256()).equals(pair.save().reference()), "actual Saved plan must load the confirmed exact SAVE");
             read(ownerPlanRef); read(requestRef); read(oldConfigRef); read(newConfigRef); read(pairRef); read(confirmationRef);
             var creator = newPrepared.lifecycle();
-            var launched = creator.launchSaved(newPrepared.plan());
+            JavaGameLifecycle.LaunchResult launched;
+            if(newPrepared.initialPolicy().isMaterializedSaved()) {
+                final var prepared=newPrepared;final var plan=prepared.plan();
+                try(var custody=org.xar.ck3.control.platform.NativeSavedGameClone.qualify(plan,pair.save())) {
+                    prepared.initialPolicy().requireInitialSavedProjection(plan,pair.save());
+                    launched=creator.launchSaved(plan,()->{
+                        custody.requireCurrent(plan,pair.save());
+                        prepared.initialPolicy().requireInitialSavedProjection(plan,pair.save());
+                        custody.releaseBeforeCreate(plan,pair.save());
+                    });
+                }
+            } else launched=creator.launchSaved(newPrepared.plan());
             if (!(launched instanceof JavaGameLifecycle.Started started)) throw new IOException("actual Saved launch was not Started: " + launched);
             originalStarted = started;
+            originalOwnership = creator.captureStartedOwner(started);
             lifetime = SavedGameOwnerLifetime249.retain(creator, started, ownerDirectory);
             running = newPrepared.openConfirmedSaved(started, source, clock.instant().plus(Duration.ofMinutes(10)));
             ObjectNode initial = event(clock, "ORDINARY_WORKER_LOOP_START");
@@ -108,9 +122,10 @@ public final class RootJavaSavedBootstrapMain249 {
             var bounds = newConfig.loop();
             var loopConfig = new RootOrdinaryWorkerLoop.Configuration(running.batchPrefix(), bounds.maximumTurns(), bounds.wallTime(),
                     bounds.readinessTimeout(), bounds.pollInterval(), bounds.checkpointEveryEligibleAdvances());
+            var batchOutput = newPrepared;
             var control = new RootOrdinaryWorkerLoop.Control() {
                 @Override public boolean stopRequested() { return Files.exists(newConfig.stopPath()); }
-                @Override public void onBatchCompleted(BatchReport actual, long next) throws IOException { recordBatch(newConfig, clock, actual, next); }
+                @Override public void onBatchCompleted(BatchReport actual, long next) throws IOException { recordBatch(batchOutput, clock, actual, next); }
             };
             var terminal = new RootOrdinaryWorkerLoop(loopConfig, control).run(running.core().sessionAccess(), running.nextBatchSequence());
             result = RootOrdinaryWorkerMain.classifyFailureStop(terminal) ? 4 : 0;
@@ -126,17 +141,30 @@ public final class RootJavaSavedBootstrapMain249 {
             try { emit(failed); } catch (IOException output) { actual.addSuppressed(output); }
         } finally {
             // Release only the ended business endpoint; retain the original Game Job until its owner exits.
-            if (lifetime != null) {
-                boolean endpointReleased = false;
-                try { Objects.requireNonNull(originalStarted).session().nativeTransport().close(); endpointReleased = true; }
-                catch (Exception release) { failure = merge(failure, release); }
+            if (originalOwnership != null) {
                 try {
-                    emit(event(clock, "SAVED_DAEMON_ENDPOINT_RELEASE")
-                            .put("endpoint_release", endpointReleased ? "RELEASED" : "FAILED")
-                            .put("game_stop_requested", false));
-                } catch (IOException output) { failure = merge(failure, output); }
-                try { lifetime.awaitExit(); }
-                catch (Exception awaiting) { failure = merge(failure, awaiting); }
+                    // Business has ended; draining it must not wait for the independently retained Game owner.
+                    try { Objects.requireNonNull(newPrepared).closeBusinessResourcesOnly(); }
+                    catch (Exception|Error businessRelease) {
+                        var recorded=businessRelease instanceof Exception cause?cause:
+                                new IOException("Saved business resource release failed before owner wait",businessRelease);
+                        failure = merge(failure, recorded);
+                    }
+                    boolean endpointReleased = false;
+                    try { Objects.requireNonNull(originalStarted).session().nativeTransport().close(); endpointReleased = true; }
+                    catch (Exception release) { failure = merge(failure, release); }
+                    try {
+                        emit(event(clock, "SAVED_DAEMON_ENDPOINT_RELEASE")
+                                .put("endpoint_release", endpointReleased ? "RELEASED" : "FAILED")
+                                .put("game_stop_requested", false));
+                    } catch (IOException output) { failure = merge(failure, output); }
+                    if (lifetime != null) try { failure = ownerTerminalResult(failure,lifetime.awaitExit()); }
+                    catch (Exception awaiting) { failure = merge(failure, awaiting); }
+                } finally {
+                    var actualOwner = originalOwnership.awaitOriginalExit();
+                    failure = creatorOwnerResult(failure,actualOwner.terminal().exitCode(),actualOwner.kind(),
+                            actualOwner.resourcesClosed(),actualOwner.failures());
+                }
             }
             failure = close(running, failure);
             failure = close(newPrepared, failure);
@@ -162,13 +190,11 @@ public final class RootJavaSavedBootstrapMain249 {
                 || !Objects.equals(before.fileKey(), after.fileKey()) || !DriverJson.sha256(raw).equals(ref.sha256())) throw new IOException("cold source bytes/hash/identity changed");
         return raw;
     }
-    private static void recordBatch(RootOrdinaryRuntimeConfiguration config, Clock clock, BatchReport actual, long next) throws IOException {
+    private static void recordBatch(RootOrdinaryRuntimeAssembly.Prepared output, Clock clock, BatchReport actual, long next) throws IOException {
         ObjectNode row = OrdinarySessionResource.report(actual);
         row.put("observed_at_utc", clock.instant().toString()); row.put("next_sequence", Long.toString(next));
-        byte[] raw = FullJsonTree.encode(row, FullJsonTree.MAXIMUM_BYTES), line = Arrays.copyOf(raw, raw.length + 1);
-        line[raw.length] = 10;
-        Files.write(config.stateDirectory().resolve("worker-batches.jsonl"), line, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
-        emit(raw);
+        byte[] raw = FullJsonTree.encode(row, FullJsonTree.MAXIMUM_BYTES);
+        RootWorkerBatchLog.publish(raw, output::appendWorkerBatchLog, RootJavaSavedBootstrapMain249::emit);
     }
     private static ObjectNode event(Clock clock, String status) {
         return StrictJson.object().put("schema", "xar.java-confirmed-saved-daemon-result/v1").put("observed_at_utc", clock.instant().toString()).put("status", status);
@@ -180,6 +206,26 @@ public final class RootJavaSavedBootstrapMain249 {
     }
     private static Exception close(AutoCloseable resource, Exception primary) {
         if (resource != null) try { resource.close(); } catch (Exception cleanup) { return merge(primary, cleanup); }
+        return primary;
+    }
+    /** Consume the real owner result; a failed physical terminal cannot inherit a successful business result. */
+    static Exception ownerTerminalResult(Exception primary,int actualExit) {
+        return actualExit==0?primary:merge(primary,new IOException("original Saved owner terminal returned failure "+actualExit));
+    }
+    /** Consume only DATA returned by the original creator's opaque ownership token. */
+    static Exception creatorOwnerResult(Exception primary,int actualExit,
+            org.xar.ck3.control.contracts.GameLifecycle.TerminalKind kind,boolean resourcesClosed,
+            java.util.List<Throwable> failures) {
+        for(Throwable original:failures) {
+            Exception recorded=original instanceof Exception cause?cause:
+                    new IOException("original creator owner resource failure",original);
+            primary=merge(primary,recorded);
+        }
+        if(kind==org.xar.ck3.control.contracts.GameLifecycle.TerminalKind.UNKNOWN)
+            primary=merge(primary,new IOException("original creator owner terminal remains UNKNOWN"));
+        if(!resourcesClosed)primary=merge(primary,new IOException("original creator owner resources remain unclosed"));
+        if(kind==org.xar.ck3.control.contracts.GameLifecycle.TerminalKind.NATURAL_EXIT)
+            primary=ownerTerminalResult(primary,actualExit);
         return primary;
     }
     private static Exception merge(Exception primary, Exception next) {

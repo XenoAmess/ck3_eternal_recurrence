@@ -28,24 +28,53 @@ template<class T> T At(const void *p,std::size_t n) noexcept {
 }
 constexpr std::uintptr_t kManagerRva=0x69DA8A0,kWorkerRva=0x3E1CD90;
 struct WorkerMutationLock {
-  DateSentinelStateV1 &s;
-  explicit WorkerMutationLock(DateSentinelStateV1 &v) noexcept:s(v){AcquireSRWLockExclusive(&s.worker_lifetime_lock);}
-  ~WorkerMutationLock(){ReleaseSRWLockExclusive(&s.worker_lifetime_lock);}
+  DateSentinelStateV1 &s;bool acquired=false;
+  explicit WorkerMutationLock(DateSentinelStateV1 &v) noexcept:s(v),
+      acquired(TryAcquireSRWLockExclusive(&s.worker_lifetime_lock)!=FALSE){}
+  ~WorkerMutationLock(){if(acquired)ReleaseSRWLockExclusive(&s.worker_lifetime_lock);}
 };
-struct PostCallbackScope {
-  DateSentinelStateV1 &s;
-  explicit PostCallbackScope(DateSentinelStateV1 &v) noexcept:s(v) {
-    AcquireSRWLockShared(&s.worker_lifetime_lock);
-    s.post_callbacks.fetch_add(1,std::memory_order_acq_rel);
-    ReleaseSRWLockShared(&s.worker_lifetime_lock);
+void AcquireWorkerStatusLock(const DateSentinelStateV1 &s) noexcept {
+  // Diagnostic API-entry window, not a kernel waiter count or permission.
+  s.status_readers_waiting.fetch_add(1,std::memory_order_acq_rel);
+#if defined(_MSC_VER)
+  __try {AcquireSRWLockExclusive(&s.worker_lifetime_lock);}
+  __finally {s.status_readers_waiting.fetch_sub(1,std::memory_order_acq_rel);}
+#else
+  AcquireSRWLockExclusive(&s.worker_lifetime_lock);
+  s.status_readers_waiting.fetch_sub(1,std::memory_order_acq_rel);
+#endif
+}
+struct WorkerStatusLock {
+  const DateSentinelStateV1 &s;
+  explicit WorkerStatusLock(const DateSentinelStateV1 &v) noexcept:s(v) {
+    AcquireWorkerStatusLock(s);
   }
-  ~PostCallbackScope(){s.post_callbacks.fetch_sub(1,std::memory_order_acq_rel);}
+  ~WorkerStatusLock(){ReleaseSRWLockExclusive(&s.worker_lifetime_lock);}
 };
+bool EnterPostCallback(DateSentinelStateV1 &s) noexcept {
+  // A real overlapping/nested post is unsupported. In particular it must not
+  // recursively acquire SRW shared while a status writer is waiting.
+  if(s.post_callbacks.load(std::memory_order_acquire)!=0) {
+    s.pending_failure.fetch_or(date_sentinel_failure_sequence,std::memory_order_acq_rel);return false;
+  }
+  AcquireSRWLockShared(&s.worker_lifetime_lock);
+  // No engine/native setter is called between acquiring the gate and CAS.
+  std::uint32_t empty=0;
+  if(!s.post_callbacks.compare_exchange_strong(empty,1,std::memory_order_acq_rel,std::memory_order_acquire)) {
+    ReleaseSRWLockShared(&s.worker_lifetime_lock);
+    s.pending_failure.fetch_or(date_sentinel_failure_sequence,std::memory_order_acq_rel);return false;
+  }
+  return true;
+}
+void LeavePostCallback(DateSentinelStateV1 &s) noexcept {
+  s.post_callbacks.fetch_sub(1,std::memory_order_acq_rel);
+  ReleaseSRWLockShared(&s.worker_lifetime_lock);
+}
 bool AnyFixture(const DateSentinelWorkerFixtureV1 &f) noexcept {
-  return f.context || f.snapshot || f.duplicate || f.probe || f.scope || f.close || f.with_game_access;
+  return f.context || f.snapshot || f.duplicate || f.probe || f.scope || f.close || f.with_game_access || f.with_game_access_v2;
 }
 bool CompleteFixture(const DateSentinelWorkerFixtureV1 &f) noexcept {
-  return f.context && f.snapshot && f.duplicate && f.probe && f.scope && f.close && f.with_game_access;
+  return f.context && f.snapshot && f.duplicate && f.probe && f.scope && f.close && (f.with_game_access || f.with_game_access_v2);
 }
 bool NativeWorker(const DateSentinelStateV1 &s,DateSentinelWorkerNativeV1 &n) noexcept {
   n={};const auto &b=s.bindings;
@@ -92,6 +121,7 @@ bool CloseThread(const DateSentinelStateV1 &s,std::uintptr_t owned) noexcept {
   return CloseHandle(reinterpret_cast<HANDLE>(owned))!=FALSE;
 }
 bool CloseWorker(DateSentinelStateV1 &s) noexcept {
+  if(s.access_cleanup_unknown.load(std::memory_order_seq_cst))return false;
   if(!s.shutdown_safe.load(std::memory_order_seq_cst) || s.post_callbacks.load(std::memory_order_acquire))return false;
   if(s.worker.owned_handle==s.worker.native.native_handle && s.worker.owned_handle)return false;
   if(!CloseThread(s,s.worker.owned_handle))return false;
@@ -150,32 +180,50 @@ std::uint32_t WorkerOwnerUnlocked(const DateSentinelStateV1 &s,bool require_comm
       !HandleMatches(s,e.owned_handle,e.native.thread_id,e.creation_time))return date_sentinel_failure_owner;
   return 0;
 }
-std::uint32_t WorkerOwner(const DateSentinelStateV1 &s,bool require_command_scope=true) noexcept {
-  auto &gate=s.worker_lifetime_lock;
-  AcquireSRWLockShared(&gate);const auto result=WorkerOwnerUnlocked(s,require_command_scope);
-  ReleaseSRWLockShared(&gate);return result;
-}
+
 bool WorkerAccessConfigured(const DateSentinelStateV1 &s) noexcept {
-  return s.fixture_only?s.bindings.worker_fixture.with_game_access!=nullptr:s.bindings.worker_game_access!=nullptr;
+  return s.fixture_only?(s.bindings.worker_fixture.with_game_access_v2 ||
+      s.bindings.worker_fixture.with_game_access):(s.bindings.worker_game_access_v2 || s.bindings.worker_game_access);
 }
 struct GuardedWorkerCall {
   DateSentinelStateV1 &s;DateSentinelGameBodyV1 body;void *context;bool called=false,result=false;
 };
 bool InvokeGuardedWorkerBody(void *opaque) noexcept {
   auto &c=*static_cast<GuardedWorkerCall *>(opaque);if(c.called)return false;c.called=true;
-  if(WorkerOwner(c.s))return false;
+  if(WorkerOwnerUnlocked(c.s))return false;
   std::uint32_t id=0,scope=0;std::uint8_t initialized=0,access=0;
   if(!CommandScope(c.s,id,initialized,scope,access) || id!=GetCurrentThreadId() ||
       initialized!=1 || scope!=1 || access!=1)return false;
   c.result=c.body(c.context);return c.result;
 }
-bool WithWorkerAccess(DateSentinelStateV1 &s,DateSentinelGameBodyV1 body,void *context) noexcept {
-  if(!WorkerAccessConfigured(s))return false;
-  GuardedWorkerCall call{s,body,context};
-  const auto run=s.fixture_only?s.bindings.worker_fixture.with_game_access:s.bindings.worker_game_access;
-  const auto ctx=s.fixture_only?s.bindings.worker_fixture.context:s.bindings.game_access_context;
-  return run(ctx,&InvokeGuardedWorkerBody,&call) && call.called && call.result;
+void RetainUnknownWorkerAccess(DateSentinelStateV1 &s) noexcept {
+  s.access_cleanup_unknown.store(true,std::memory_order_seq_cst);
+  s.shutdown_safe.store(false,std::memory_order_seq_cst);
+  s.pending_failure.fetch_or(date_sentinel_failure_runtime|
+      date_sentinel_failure_access_cleanup_unknown,std::memory_order_acq_rel);
 }
+bool WithWorkerAccess(DateSentinelStateV1 &s,DateSentinelGameBodyV1 body,void *context) noexcept {
+  if(s.access_cleanup_unknown.load(std::memory_order_seq_cst) || !WorkerAccessConfigured(s))return false;
+  GuardedWorkerCall call{s,body,context};
+  const auto ctx=s.fixture_only?s.bindings.worker_fixture.context:s.bindings.game_access_context;
+  const auto run=s.fixture_only?s.bindings.worker_fixture.with_game_access_v2:s.bindings.worker_game_access_v2;
+  if(run) {
+    const auto result=run(ctx,&InvokeGuardedWorkerBody,&call);
+    if(!result.CleanupKnown()) {
+      RetainUnknownWorkerAccess(s);
+      return false;
+    }
+    return !s.access_cleanup_unknown.load(std::memory_order_seq_cst) &&
+        result.Succeeded() && call.called && call.result;
+  }
+  // Retain V1 callers. A production bool failure has no release outcome, so
+  // conservatively retain it as UNKNOWN; explicit NoGame V1 seams stay models.
+  const auto legacy=s.fixture_only?s.bindings.worker_fixture.with_game_access:s.bindings.worker_game_access;
+  const bool result=legacy && legacy(ctx,&InvokeGuardedWorkerBody,&call);
+  if(!result && !s.fixture_only) {RetainUnknownWorkerAccess(s);return false;}
+  return !s.access_cleanup_unknown.load(std::memory_order_seq_cst) && result && call.called && call.result;
+}
+
 template<std::size_t N> constexpr auto Bytes(const char (&text)[N]) noexcept {
   static_assert(N%2==1);std::array<unsigned char,(N-1)/2> bytes{};
   auto nibble=[](char c) constexpr {return c<='9'?c-'0':c-'a'+10;};
@@ -291,14 +339,16 @@ bool PauseWorld(const DateSentinelStateV1 &s,const DateSentinelObservationV1 &o)
     o.players==i.players && o.player==i.player && o.core.local_player_id==i.core.local_player_id;
 }
 bool ConfirmPausedDisarmed(DateSentinelStateV1 &s,bool failure_pause_world=false,bool worker_role=false) noexcept {
+  if(s.access_cleanup_unknown.load(std::memory_order_seq_cst))return false;
   std::uintptr_t tls=0;DateSentinelObservationV1 o{};
-  const auto role=[&]() noexcept {return worker_role?WorkerOwner(s):Owner(s,tls);};
+  const auto role=[&]() noexcept {return worker_role?WorkerOwnerUnlocked(s):Owner(s,tls);};
   if(role() || !Stable(s,o,failure_pause_world) || !PauseWorld(s,o) || !o.core.clock.paused)return false;
   const auto status=old::ReadTacticalDailySentinelStatusV1();
   if(status.generation!=s.generation.load(std::memory_order_acquire) ||
       status.state==Phase::armed || status.state==Phase::unavailable || role())return false;
   s.armed.store(false,std::memory_order_release);
-  s.shutdown_safe.store(true,std::memory_order_seq_cst);return true;
+  s.shutdown_safe.store(true,std::memory_order_seq_cst);
+  return !s.access_cleanup_unknown.load(std::memory_order_seq_cst);
 }
 bool Expired(const DateSentinelStateV1 &s) noexcept {
   const auto wall=Wall(s),mono=Clock(s);
@@ -339,13 +389,14 @@ bool AbortWorkerBody(void *opaque) noexcept {
   const auto all=s.pending_failure.load(std::memory_order_acquire);
   if(all&(date_sentinel_failure_world|date_sentinel_failure_actor))legacy_flags|=old::tactical_daily_trigger_world_identity_changed;
   if(all&date_sentinel_failure_sequence)legacy_flags|=old::tactical_daily_trigger_date_sequence_failure;
-  if(WorkerOwner(s))return false;
+  if(WorkerOwnerUnlocked(s))return false;
   if(!old::AbortTacticalDailySentinelDateOnlyV1(s.generation.load(std::memory_order_acquire),legacy_flags,can_pause))return false;
   s.armed.store(false,std::memory_order_release);return true;
 }
 void AbortOnWorker(DateSentinelStateV1 &s,std::uint32_t flags) noexcept {
   Fail(s,flags);
-  if(const auto role=WorkerOwner(s)){Fail(s,role);return;}
+  if(s.access_cleanup_unknown.load(std::memory_order_seq_cst))return;
+  if(const auto role=WorkerOwnerUnlocked(s)){Fail(s,role);return;}
   WorkerAbortCall call{s};
   if(!WithWorkerAccess(s,&AbortWorkerBody,&call)){Fail(s,date_sentinel_failure_runtime);return;}
   if(!ConfirmPausedDisarmed(s,true,true))Fail(s,date_sentinel_failure_observation);
@@ -356,7 +407,7 @@ bool EvaluateWorkerBody(void *opaque) noexcept {
   DateSentinelObservationV1 current{};
   if(Expired(s) || s.shutdown_requested.load(std::memory_order_seq_cst) ||
       s.pending_failure.load(std::memory_order_acquire) || !Stable(s,current) ||
-      !Same(current,call.expected) || Identity(s,current) || WorkerOwner(s))return false;
+      !Same(current,call.expected) || Identity(s,current) || WorkerOwnerUnlocked(s))return false;
   const auto status=old::ReadTacticalDailySentinelStatusV1();
   if(status.state!=Phase::armed || status.generation!=s.generation.load(std::memory_order_acquire))return false;
   // Sole evaluator call; InvokeGuardedWorkerBody already required real6E0=1.
@@ -376,7 +427,7 @@ bool InitializeDateSentinelV1(DateSentinelStateV1 &s,const DateSentinelBindingsV
       !b.core.enabled || !b.core.game_state_slot || !b.core.jomini_state_slot ||
       !b.core.character_storage_slot || !b.core.get_local_player || !b.set_paused ||
       !b.command_manager || !b.worker_function ||
-      (b.offline_fixture && (b.module_base!=0 || !CompleteFixture(b.worker_fixture) || b.worker_game_access || b.game_access_context)) ||
+      (b.offline_fixture && (b.module_base!=0 || !CompleteFixture(b.worker_fixture) || b.worker_game_access || b.worker_game_access_v2 || b.game_access_context)) ||
       (!b.offline_fixture && !ProductionGuard(b)))return false;
   DateSentinelStateV1 *empty=nullptr;
   if(!g_runtime.compare_exchange_strong(empty,&s,std::memory_order_acq_rel))return false;
@@ -389,9 +440,11 @@ bool InitializeDateSentinelV1(DateSentinelStateV1 &s,const DateSentinelBindingsV
 Arm ArmDateSentinelV1(DateSentinelStateV1 &s,const old::TacticalDailySentinelArmRequestV1 &r,
     std::uint64_t deadline) noexcept {
   if(!s.initialized.load(std::memory_order_acquire) || g_runtime.load(std::memory_order_acquire)!=&s)return Arm::unavailable;
-  if(s.shutdown_requested.load(std::memory_order_seq_cst) || !WorkerAccessConfigured(s))return Arm::unavailable;
+  if(s.access_cleanup_unknown.load(std::memory_order_seq_cst) ||
+      s.shutdown_requested.load(std::memory_order_seq_cst) || !WorkerAccessConfigured(s))return Arm::unavailable;
   std::uintptr_t tls=0;if(Owner(s,tls))return Arm::unavailable;
   WorkerMutationLock lifetime(s);
+  if(!lifetime.acquired)return Arm::unavailable;
   if(s.post_callbacks.load(std::memory_order_acquire))return Arm::unavailable;
   if(s.armed.load(std::memory_order_acquire))return Arm::already_armed;
   if(!s.shutdown_safe.load(std::memory_order_seq_cst))return Arm::unavailable;
@@ -448,12 +501,15 @@ Arm ArmDateSentinelV1(DateSentinelStateV1 &s,const old::TacticalDailySentinelArm
   return s.pending_failure.load(std::memory_order_acquire)?Arm::unavailable:Arm::armed;
 }
 bool DateSentinelAllowsResumeV1(DateSentinelStateV1 &s,const CoreSnapshotPrefix &expected) noexcept {
-  if(s.shutdown_requested.load(std::memory_order_seq_cst) || !WorkerAccessConfigured(s) ||
+  if(s.access_cleanup_unknown.load(std::memory_order_seq_cst) ||
+      s.shutdown_requested.load(std::memory_order_seq_cst) || !WorkerAccessConfigured(s) ||
       !s.armed.load(std::memory_order_acquire) || s.pending_failure.load(std::memory_order_acquire))return false;
+  WorkerMutationLock lifetime(s);
+  if(!lifetime.acquired || s.post_callbacks.load(std::memory_order_acquire))return false;
   std::uintptr_t tls=0;const auto owner=Owner(s,tls);
   if(owner){Fail(s,owner);return false;}
   if(Expired(s)){Fail(s,date_sentinel_failure_expired);return false;}
-  if(const auto worker=WorkerOwner(s,false)){Fail(s,worker);return false;}
+  if(const auto worker=WorkerOwnerUnlocked(s,false)){Fail(s,worker);return false;}
   DateSentinelObservationV1 o{};
   if(!Stable(s,o)){Fail(s,date_sentinel_failure_observation);return false;}
   const auto legacy=old::ReadTacticalDailySentinelStatusV1();
@@ -464,16 +520,15 @@ bool DateSentinelAllowsResumeV1(DateSentinelStateV1 &s,const CoreSnapshotPrefix 
   if(identity){Fail(s,identity);return false;}
   if(Expired(s)){Fail(s,date_sentinel_failure_expired);return false;}
   if(const auto again=Owner(s,tls)){Fail(s,again);return false;}
-  return !s.shutdown_requested.load(std::memory_order_seq_cst) &&
-    !s.pending_failure.load(std::memory_order_acquire) && o.core.clock.paused && Same(o,s.initial) && Equal(o.core,expected);
+  return !s.access_cleanup_unknown.load(std::memory_order_seq_cst) &&
+    !s.shutdown_requested.load(std::memory_order_seq_cst) && !s.pending_failure.load(std::memory_order_acquire) && o.core.clock.paused && Same(o,s.initial) && Equal(o.core,expected);
 }
-void PostDateSentinelV1(void *opaque) noexcept {
-  if(!opaque)return;auto &s=*static_cast<DateSentinelStateV1 *>(opaque);
-  PostCallbackScope callback(s);
+static void RunPostDateSentinelV1(DateSentinelStateV1 &s) noexcept {
+  if(s.access_cleanup_unknown.load(std::memory_order_seq_cst))return;
   if(!s.armed.load(std::memory_order_acquire) && s.shutdown_safe.load(std::memory_order_seq_cst))return;
   s.last_post_thread_id.store(GetCurrentThreadId(),std::memory_order_relaxed);
   s.last_post_stage.store(1,std::memory_order_relaxed);
-  if(const auto role=WorkerOwner(s)){Fail(s,role);return;}
+  if(const auto role=WorkerOwnerUnlocked(s)){Fail(s,role);return;}
   s.last_post_stage.store(2,std::memory_order_relaxed);
   if(s.shutdown_requested.load(std::memory_order_seq_cst)){AbortOnWorker(s,date_sentinel_failure_shutdown);return;}
   if(Expired(s)){AbortOnWorker(s,date_sentinel_failure_expired);return;}
@@ -498,7 +553,7 @@ void PostDateSentinelV1(void *opaque) noexcept {
     AbortOnWorker(s,date_sentinel_failure_unexpected_pause);return;
   }
   if(Expired(s)){AbortOnWorker(s,date_sentinel_failure_expired);return;}
-  if(const auto role=WorkerOwner(s)){Fail(s,role);return;}
+  if(const auto role=WorkerOwnerUnlocked(s)){Fail(s,role);return;}
   if(s.shutdown_requested.load(std::memory_order_seq_cst)){AbortOnWorker(s,date_sentinel_failure_shutdown);return;}
   // Sole evaluator call: original final already returned on the captured actual
   // native worker, with its own live creation epoch and command TLS scope.
@@ -513,7 +568,7 @@ void PostDateSentinelV1(void *opaque) noexcept {
     AbortOnWorker(s,date_sentinel_failure_observation);return;
   }
   if(Expired(s)){AbortOnWorker(s,date_sentinel_failure_expired);return;}
-  if(const auto role=WorkerOwner(s)){Fail(s,role);return;}
+  if(const auto role=WorkerOwnerUnlocked(s)){Fail(s,role);return;}
   s.last_post_stage.store(9,std::memory_order_relaxed);
   if(s.shutdown_requested.load(std::memory_order_seq_cst)){AbortOnWorker(s,date_sentinel_failure_shutdown);return;}
   if(s.pending_failure.load(std::memory_order_acquire)){AbortOnWorker(s,0);return;}
@@ -529,7 +584,24 @@ void PostDateSentinelV1(void *opaque) noexcept {
   if(!ConfirmPausedDisarmed(s,false,true))AbortOnWorker(s,date_sentinel_failure_observation);
   else s.last_post_stage.store(10,std::memory_order_relaxed);
 }
+void PostDateSentinelV1(void *opaque) noexcept {
+  if(!opaque)return;auto &s=*static_cast<DateSentinelStateV1 *>(opaque);
+  if(!EnterPostCallback(s))return;
+#if defined(_MSC_VER)
+  // Trivial wrapper: SEH cannot strand the owned counter/shared lease.
+  __try {RunPostDateSentinelV1(s);}
+  __finally {
+    if(AbnormalTermination())RetainUnknownWorkerAccess(s);
+    LeavePostCallback(s);
+  }
+#else
+  struct Leave {DateSentinelStateV1 &s;~Leave(){LeavePostCallback(s);}} leave{s};
+  RunPostDateSentinelV1(s);
+#endif
+}
+
 bool PollDateSentinelOwnerV1(DateSentinelStateV1 &s,const old::MainThreadExecutionStampV1 &stamp) noexcept {
+  if(s.access_cleanup_unknown.load(std::memory_order_seq_cst))return false;
   // A failed native pause may already have disarmed the shared evaluator.
   // Unsafe is a separate lifetime obligation and remains pump-retry eligible.
   if(!s.armed.load(std::memory_order_acquire) && s.shutdown_safe.load(std::memory_order_seq_cst))return false;
@@ -568,12 +640,15 @@ bool PollDateSentinelOwnerV1(DateSentinelStateV1 &s,const old::MainThreadExecuti
   return true;
 }
 Cancel CancelDateSentinelV1(DateSentinelStateV1 &s,std::uint64_t generation) noexcept {
+  WorkerMutationLock lifetime(s);
+  if(!lifetime.acquired || s.post_callbacks.load(std::memory_order_acquire))return Cancel::unavailable;
+  if(s.access_cleanup_unknown.load(std::memory_order_seq_cst))return Cancel::unavailable;
   if(!s.initialized.load(std::memory_order_acquire))return Cancel::unavailable;
   std::uintptr_t tls=0;if(Owner(s,tls))return Cancel::unavailable;
   if(!generation)return Cancel::invalid_request;
   if(generation!=s.generation.load(std::memory_order_acquire))return Cancel::generation_mismatch;
   if(!s.armed.load(std::memory_order_acquire))return Cancel::not_armed;
-  if(const auto worker=WorkerOwner(s,false)){Fail(s,worker);return Cancel::unavailable;}
+  if(const auto worker=WorkerOwnerUnlocked(s,false)){Fail(s,worker);return Cancel::unavailable;}
   if(Expired(s)){Fail(s,date_sentinel_failure_expired);return Cancel::unavailable;}
   if(s.pending_failure.load(std::memory_order_acquire))return Cancel::unavailable;
   DateSentinelObservationV1 current{};
@@ -587,6 +662,7 @@ Cancel CancelDateSentinelV1(DateSentinelStateV1 &s,std::uint64_t generation) noe
 }
 old::TacticalDailySentinelStatusV1 ReadDateSentinelStatusV1(const DateSentinelStateV1 &s) noexcept {
   if(!s.initialized.load(std::memory_order_acquire))return {};
+  WorkerStatusLock lifetime(s); // Pipe readers wait for the complete Post lease.
   auto result=old::ReadTacticalDailySentinelStatusV1();
   if(result.generation!=s.generation.load(std::memory_order_acquire))return {};
   if(s.pending_failure.load(std::memory_order_acquire)) {
@@ -594,23 +670,33 @@ old::TacticalDailySentinelStatusV1 ReadDateSentinelStatusV1(const DateSentinelSt
   }
   return result;
 }
+bool ReadDateSentinelTerminalForCancelV1(const DateSentinelStateV1 &s,
+    std::uint64_t generation,old::TacticalDailySentinelStatusV1 &status) noexcept {
+  status=ReadDateSentinelStatusV1(s); // Never invoked while already holding the gate.
+  return !s.access_cleanup_unknown.load(std::memory_order_seq_cst) &&
+      generation && status.generation==generation &&
+      (status.state==Phase::idle || status.state==Phase::triggered || status.state==Phase::failed);
+}
 void RequestDateSentinelShutdownV1(DateSentinelStateV1 &s) noexcept {
   s.shutdown_requested.store(true,std::memory_order_seq_cst);
   s.pending_failure.fetch_or(date_sentinel_failure_shutdown,std::memory_order_acq_rel);
 }
 bool DateSentinelShutdownSafeV1(const DateSentinelStateV1 &s) noexcept {
-  return s.shutdown_safe.load(std::memory_order_seq_cst);
+  return s.shutdown_safe.load(std::memory_order_seq_cst) &&
+      !s.access_cleanup_unknown.load(std::memory_order_seq_cst);
 }
 bool ReleaseDateSentinelWorkerV1(DateSentinelStateV1 &s) noexcept {
-  WorkerMutationLock lifetime(s);return CloseWorker(s);
+  WorkerMutationLock lifetime(s);return lifetime.acquired && CloseWorker(s);
 }
 DateSentinelDiagnosticsV1 ReadDateSentinelDiagnosticsV1(const DateSentinelStateV1 &s) noexcept {
   DateSentinelDiagnosticsV1 d{};d.initialized=s.initialized.load(std::memory_order_acquire);
   d.armed=s.armed.load(std::memory_order_acquire);d.fixture_only=s.fixture_only;
   d.shutdown_requested=s.shutdown_requested.load(std::memory_order_seq_cst);
-  d.shutdown_safe=s.shutdown_safe.load(std::memory_order_seq_cst);
+  d.shutdown_safe=DateSentinelShutdownSafeV1(s);
+  d.access_cleanup_unknown=s.access_cleanup_unknown.load(std::memory_order_seq_cst);
   d.failure_flags=s.pending_failure.load(std::memory_order_acquire);d.generation=s.generation.load(std::memory_order_acquire);
   d.captured_worker_thread_id=s.captured_worker_thread_id.load(std::memory_order_acquire);d.post_callbacks=s.post_callbacks.load(std::memory_order_acquire);
+  d.status_readers_waiting=s.status_readers_waiting.load(std::memory_order_acquire);
   d.original_deadline_unix_ms=s.original_deadline_unix_ms;d.monotonic_deadline_ms=s.monotonic_deadline_ms;return d;
 }
 } // namespace xar::ck3_1210

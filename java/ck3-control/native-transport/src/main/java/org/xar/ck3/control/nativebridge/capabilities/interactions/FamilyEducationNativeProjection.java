@@ -48,6 +48,16 @@ public final class FamilyEducationNativeProjection {
                 .put("ordinary_interaction_context_ready",text(value,"status").equals("available"));
         return InteractionArguments.app(value);
     }
+    /** Preserve typed unavailability before any legacy Context/Build or guardian-profile decoding.
+     * A recognized new build with no getter remains unavailable; this method grants no Native installation. */
+    public static PlanningReadResult<OpportunityJson.Obj> projectResult(PlanningReadResult<OrdinaryContext> actual) {
+        java.util.Objects.requireNonNull(actual);
+        return switch (actual) {
+            case PlanningReadResult.Known<OrdinaryContext> known -> project(known);
+            case PlanningReadResult.Unavailable<OrdinaryContext> unavailable -> new PlanningReadResult.Unavailable<>(
+                    unavailable.reason(), unavailable.original(), unavailable.decodeFailure(), unavailable.observedFailure());
+        };
+    }
     public static PlanningReadResult.Known<OpportunityJson.Obj> project(PlanningReadResult.Known<OrdinaryContext> actual) {
         var receipt=actual.receipt(); var request=receipt.request();
         Context context=InteractionArguments.context(request);

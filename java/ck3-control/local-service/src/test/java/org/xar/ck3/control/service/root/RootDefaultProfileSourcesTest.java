@@ -52,7 +52,7 @@ final class RootDefaultProfileSourcesTest {
         if(restoration)for(var row:RootRestoreRuntimeSources.requiredSources()) {
             String target=row.module().directory()+"/src/main/java/"+row.type().getNestHost().getName().replace('.','/')+".java";
             required.add(winners.stream().filter(source->source.targetRelative().equals(target)).findFirst().orElseThrow());
-        } else for(var type:RootRuntimeConfigurationSources.requiredProfileSourceTypes().stream().map(type->type.getNestHost()).distinct().toList()) {
+        } else for(var type:java.util.stream.Stream.concat(RootRuntimeConfigurationSources.requiredProfileSourceTypes().stream(),RootRuntimeConfigurationSources.requiredSavedEntrySourceTypes().stream()).map(type->type.getNestHost()).distinct().toList()) {
             String suffix="/src/main/java/"+type.getName().replace('.','/')+".java";
             required.add(winners.stream().filter(row->row.targetRelative().endsWith(suffix)).findFirst().orElseThrow());
         }

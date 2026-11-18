@@ -111,8 +111,10 @@ public final class AdvancePrimitiveArchivedReplay {
         require(AdvancePrimitives.supports(command.operation()) && command.arguments().members().isEmpty(), "unsupported timeline primitive");
         require(command.origin().acceptsGuard(attempt.guard().origin()) && command.source().equals(attempt.guard().source())
                 && command.sessionId().equals(attempt.guard().sessionId()) && command.operation().equals(attempt.guard().operation()), "primitive original attempt binding changed");
-        require(attempt.preparedRequest().equals(archive.loadRequest(archive.requestReferenceOf(attempt.preparedRequest())))
-                && attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command)), "original prepared primitive changed or differs from the shared producer");
+        require(attempt.preparedRequest().equals(archive.loadRequest(archive.requestReferenceOf(attempt.preparedRequest()))), "original prepared primitive archive changed");
+        if (FullSnapshotSentinelCancellation.supports(command))
+            FullSnapshotSentinelCancellation.preparedRead(command, attempt.preparedRequest(), archive);
+        else require(attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command)), "original prepared primitive differs from the shared producer");
         require(dispatch.equals(archive.load(archive.referenceOf(dispatch))), "original primitive native dispatch changed");
         var before = RootGuardEvidence.loadFrame(attempt.guard(), archive, frames);
         require(before.identity().equals(command.before()), "primitive original before identity changed");
@@ -167,6 +169,11 @@ public final class AdvancePrimitiveArchivedReplay {
             require(control.supportingReads().isEmpty(), "timeline clock control has no unaccounted supporting query receipts");
             verifyIndependentRead(command, control.read(), archive);
             var actual = ClockStatusRead.decode(control.read().original());
+            if (FullSnapshotSentinelCancellation.supports(command)) {
+                FullSnapshotSentinelCancellation.verifyArchived(command, attempt, ack, control, archive, frames);
+                require(control.actual().containsAll(command.expected().values()), "1210 CANCEL did not prove the actual cancel_confirmed expectation");
+                return;
+            }
             require(control.actual().equals(AdvancePrimitives.statusValues(actual)) && control.actual().containsAll(command.expected().values()), "clock control did not rederive actual original values");
             if (step.startsWith(ClockStatusRead.ARM_PREFIX)) {
                 require(original.path("status").isTextual() && original.path("status").textValue().equals("available")

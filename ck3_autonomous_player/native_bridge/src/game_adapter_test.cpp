@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_1210_read_wire_registry_v1.hpp"
 #include "xar_bridge/ingame_military_opener_12004.hpp"
 #include "xar_bridge/military_reinforcement_action_12004.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
@@ -518,7 +519,202 @@ int TestMilitaryReinforcementProductionAdmission() {
   return 0;
 }
 
+// Software catalog admission only; no query, snapshot, mailbox or submit call.
+int TestFlorinSentinelCatalogAdmission() {
+  constexpr std::array<std::string_view, 3> caps{
+      "game.command.research-arm-tactical-daily-sentinel-v1-N",
+      "game.command.research-query-tactical-daily-sentinel-v1",
+      "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N"};
+  // Exact production identity with synthetic capabilities exercises the ON
+  // grammar even in OFF builds. This is not a loaded DLL/registration proof.
+  auto descriptor = xar::game::Ck3_1210AdapterDescriptor();
+  descriptor.capabilities = caps;
+  StubAdapter florin(descriptor, true), disabled(descriptor, false);
+  StubAdapter legacy(xar::game::Ck3_12004AdapterDescriptor(), true);
+  std::size_t checks = 0;
+  for (const auto valid : {
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177016-speed-1-mode-terminal-a-0",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177040-speed-3-mode-terminal-a-0",
+      "research-arm-tactical-daily-sentinel-v1-2147483623-to-2147483647-speed-5-mode-terminal-a-0"}) {
+    if (!florin.supports_step(valid) || disabled.supports_step(valid) || !legacy.supports_step(valid))
+      return Fail("date-only terminal arm lost capability/enablement/legacy admission");
+    checks += 3;
+  }
+  // Four valid legacy requests whose watch semantics are not migrated.
+  for (const auto inherited : {
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177016-speed-3-a-1-0",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177016-speed-3-mode-decision-a-1-0",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177016-speed-3-mode-terminal-a-1-0",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177016-speed-3-mode-terminal-a-2-0-1"}) {
+    if (florin.supports_step(inherited) || !legacy.supports_step(inherited))
+      return Fail("Florin inherited legacy watches or legacy grammar changed");
+    checks += 2;
+  }
+  for (const auto invalid : {
+      "research-arm-tactical-daily-sentinel-v1-053176992-to-53177016-speed-3-mode-terminal-a-0",
+      "research-arm-tactical-daily-sentinel-v1-0-to-24-speed-3-mode-terminal-a-0",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53176992-speed-3-mode-terminal-a-0",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177015-speed-3-mode-terminal-a-0",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177016-speed-0-mode-terminal-a-0",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177016-speed-6-mode-terminal-a-0",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177016-speed-3-mode-terminal-a-00",
+      "research-arm-tactical-daily-sentinel-v1-53176992-to-53177016-speed-3-mode-terminal-a-0-extra",
+      "research-arm-tactical-daily-sentinel-v1-2147483648-to-2147483672-speed-3-mode-terminal-a-0"}) {
+    if (florin.supports_step(invalid)) return Fail("noncanonical Florin arm admitted");
+    ++checks;
+  }
+  for (const auto step : {"research-query-tactical-daily-sentinel-v1",
+      "research-cancel-tactical-daily-sentinel-v1-generation-1",
+      "research-cancel-tactical-daily-sentinel-v1-generation-18446744073709551615"}) {
+    if (!florin.supports_step(step) || disabled.supports_step(step))
+      return Fail("unchanged exact status/cancel admission regressed");
+    checks += 2;
+  }
+  for (const auto step : {"research-query-tactical-daily-sentinel-v1-extra",
+      "research-cancel-tactical-daily-sentinel-v1-generation-0",
+      "research-cancel-tactical-daily-sentinel-v1-generation-01",
+      "research-cancel-tactical-daily-sentinel-v1-generation-18446744073709551616"}) {
+    if (florin.supports_step(step)) return Fail("noncanonical status/cancel admitted");
+    ++checks;
+  }
+  // Use the real compiled adapter for all absence assertions. Core enabled
+  // here is only a software descriptor fixture; no address is bound/read.
+  xar::ck3_1210::CoreBindings core{}; core.enabled = true;
+  auto actual = xar::game::CreateCk3_1210AdapterFromBindings(core);
+  if (!actual || &actual->descriptor() != &xar::game::Ck3_1210AdapterDescriptor())
+    return Fail("actual Florin descriptor not retained");
+  for (const auto step : {"select-event-option-1", "raise-troops-default",
+      "move-army-0-to-1", "preview-move-army-0-to-1", "halt-army-0",
+      "split-army-half-0", "merge-armies-0-with-1", "start-assault-1",
+      "declare-war-1-1-0", "arrange-marriage-1-2", "enforce-demands-1",
+      "surrender-war-1", "offer-white-peace-1", "query-army-strengths-v1",
+      "query-province-local-siege-v1-1", "query-war-termination-options-1",
+      "accept-pending-character-interaction", "unsupported-step"}) {
+    if (actual->supports_step(step)) return Fail("real Florin inherited unported gameplay admission");
+    ++checks;
+  }
+  std::cout << "PASS: Florin catalog admission checks=" << checks
+            << "; software metadata only; no game action or live qualification\n";
+  return 0;
+}
+
+// Table matching is contract metadata; public support still requires the
+// actual exact adapter capability, independently of internal result status.
+int TestFlorinReadWireIdentity() {
+  using namespace xar::ck3_1210;
+  using Match = ReadWireIdentityMatchV1;
+  const auto &exact = xar::game::Ck3_1210AdapterDescriptor();
+  const ReadWireBuildIdentityV1 build{exact.adapter_id, exact.game_version, exact.executable_sha256};
+  constexpr std::array<std::string_view, 7> caps{
+      "game.query.war-cash-current-resources.v2", "game.query.active-wars-identity.v1",
+      "game.query.decision-candidates-readonly.1210.v1", "game.query.character-manager-roster.v1",
+      "game.query.siege-target-partial.v1", "game.query.council-holder-frame.v1",
+      "game.query.actor-resource-leaf.v2"};
+  auto fixture_descriptor = exact; fixture_descriptor.capabilities = caps;
+  StubAdapter enabled(fixture_descriptor, true), disabled(fixture_descriptor, false);
+  xar::ck3_1210::CoreBindings core{}; core.enabled = true;
+  auto actual = xar::game::CreateCk3_1210AdapterFromBindings(core);
+  if (!actual) return Fail("actual read-wire descriptor missing");
+  for (const auto &contract : kReadWireContractsV1) {
+    const auto described = FindReadWireContractV1(build, contract.step);
+    if (!described || described->capability != contract.capability ||
+        MatchReadWireResultIdentityV1(build, contract.step, contract.schema) != Match::exact_contract)
+      return Fail("new read step lost its exact independent result identity");
+    if (!enabled.supports_step(contract.step) || disabled.supports_step(contract.step) ||
+        actual->supports_step(contract.step) != actual->supports(contract.capability))
+      return Fail("read-step admission differs from exact enabled descriptor capability");
+    for (const auto wrong_schema : {"", "ck3_1210_full_state_v1", "unregistered-schema"})
+      if (MatchReadWireResultIdentityV1(build, contract.step, wrong_schema) != Match::wrong_schema)
+        return Fail("WrongSchema accepted by an exact new step");
+    const auto unknown_step = std::string(contract.step) + "-extra";
+    if (enabled.supports_step(unknown_step) ||
+        MatchReadWireResultIdentityV1(build, unknown_step, contract.schema) != Match::unknown_command)
+      return Fail("UnknownCommand inherited a capability through step prefix");
+    for (unsigned field = 0; field < 3; ++field) {
+      auto wrong = fixture_descriptor;
+      if (field == 0) wrong.adapter_id = "ck3-1.20.0.4-msvc-x64";
+      else if (field == 1) wrong.game_version = "1.21.0.0";
+      else wrong.executable_sha256 = "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518";
+      StubAdapter wrong_adapter(wrong, true);
+      const ReadWireBuildIdentityV1 wrong_build{wrong.adapter_id, wrong.game_version, wrong.executable_sha256};
+      if (wrong_adapter.supports_step(contract.step) ||
+          MatchReadWireResultIdentityV1(wrong_build, contract.step, contract.schema) != Match::unknown_command)
+        return Fail("new read identity crossed an exact build tuple");
+    }
+  }
+  if (MatchReadWireResultIdentityV1(build, kReadWireContractsV1[0].step,
+          "xar.ck3.war-cash-current-resources.v1") != Match::wrong_schema ||
+      MatchReadWireResultIdentityV1(build, kReadWireContractsV1[1].step,
+          kReadWireContractsV1[0].schema) != Match::wrong_schema)
+    return Fail("version/cross-domain serializer accepted as another new read result");
+  const auto decision = FindReadWireContractV1(build, "query-decision-candidates-readonly-1210-v1");
+  if (!decision || decision->step_location != ReadWireStepLocationV1::original_outbound ||
+      !decision->schema_member.empty())
+    return Fail("readonly Decision DATA required a fabricated result.step layer");
+  const auto roster = FindReadWireContractV1(build, "query-character-manager-roster-v1");
+  if (!roster || roster->step_location != ReadWireStepLocationV1::result_field ||
+      !roster->schema_member.empty())
+    return Fail("roster wrapper lost its actual result step/schema location");
+  if (FindReadWireContractV1(build, "query-primary-title-identity-v1"))
+    return Fail("private primary-title query acquired an advertised read contract");
+  if (enabled.supports_snapshot()) return Fail("partial read caps granted Full snapshot");
+  for (const auto action : {"move-army-0-to-1", "select-event-option-1",
+      "assign-councillor-v1", "enforce-demands-1"})
+    if (enabled.supports_step(action)) return Fail("partial read caps granted unsupported action");
+  // Guessed legacy names remain unknown; only the explicit readonly protocol
+  // is defined. A matching DATA schema never registers arbitrary commands.
+  for (const auto unregistered : {"query-decision-candidates-v1", "query-decision-candidates-data-v1"})
+    if (MatchReadWireResultIdentityV1(build, unregistered,
+            "ck3_1210_decision_candidates_data_v1") != Match::unknown_command ||
+        enabled.supports_step(unregistered))
+      return Fail("Decision DATA schema invented a public command");
+  std::cout << "PASS: exact read step/cap/schema identities; WrongSchema/UnknownCommand rejected; no capability enabled\n";
+  return 0;
+}
+
+// Direct capability admission gap, independent of step/schema identity tests.
+// Synthetic spans are metadata fixtures, never actual registrations.
+int TestFlorinReadCapabilityTuple() {
+  constexpr std::array<std::string_view, 7> capabilities{
+      "game.query.war-cash-current-resources.v2", "game.query.active-wars-identity.v1",
+      "game.query.siege-target-partial.v1", "game.query.council-holder-frame.v1",
+      "game.query.actor-resource-leaf.v2", "game.query.decision-candidates-readonly.1210.v1",
+      "game.query.character-manager-roster.v1"};
+  const auto &exact = xar::game::Ck3_1210AdapterDescriptor();
+  for (const auto capability : capabilities) {
+    const std::array<std::string_view, 1> span{capability};
+    auto fixture = exact; fixture.capabilities = span;
+    StubAdapter disabled(fixture, false);
+    if (disabled.supports(capability)) return Fail("disabled adapter advertised an exact-build read");
+    for (unsigned component = 0; component < 3; ++component) {
+      auto wrong = fixture;
+      if (component == 0) wrong.adapter_id = "ck3-1.20.0.4-msvc-x64";
+      else if (component == 1) wrong.game_version = "1.21.0.0";
+      else wrong.executable_sha256 = "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518";
+      StubAdapter foreign(wrong, true);
+      if (foreign.supports(capability))
+        return Fail("copied capability string qualified a foreign descriptor tuple");
+    }
+  }
+  // The gate is scoped to the new reviewed Florin-only protocols. The shared
+  // legacy vocabulary cannot accidentally become Florin-exclusive.
+  constexpr std::array<std::string_view, 3> shared{
+      "game.state.snapshot", "game.command.pause-map", "game.query.core-frame.v1"};
+  auto old = xar::game::Ck3_12004AdapterDescriptor(); old.capabilities = shared;
+  StubAdapter prior(old, true);
+  for (const auto cap : shared)
+    if (!prior.supports(cap)) return Fail("shared legacy capability acquired a Florin-only gate");
+  std::cout << "PASS: direct read-capability tuple admission; no capabilities added\n";
+  return 0;
+}
+
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--florin-read-capability-tuple-only")
+    return TestFlorinReadCapabilityTuple();
+  if (argc == 2 && std::string_view(argv[1]) == "--florin-read-wire-only")
+    return TestFlorinReadWireIdentity();
+  if (argc == 2 && std::string_view(argv[1]) == "--florin-sentinel-catalog-only")
+    return TestFlorinSentinelCatalogAdmission();
   if (argc == 2 && std::string_view(argv[1]) == "--military-reinforcement-admission-only")
     return TestMilitaryReinforcementProductionAdmission();
   if (argc == 2 && std::string_view(argv[1]) == "--ordinary-interaction-capabilities-only")
@@ -530,6 +726,9 @@ int main(int argc, char **argv) {
     return TestCrozierFrontendPrivateCapabilities();
   }
   if (argc != 1) return Fail("unknown focused adapter test argument");
+  if (const int result = TestFlorinReadCapabilityTuple(); result != 0) return result;
+  if (const int result = TestFlorinReadWireIdentity(); result != 0) return result;
+  if (const int result = TestFlorinSentinelCatalogAdmission(); result != 0) return result;
   const auto &known = xar::game::Ck3_11906AdapterDescriptor();
 #if defined(XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1)
   if (!Contains(known.capabilities,

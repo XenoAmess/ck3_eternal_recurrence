@@ -1277,6 +1277,7 @@ add_library(xar_ck3_12002_runtime STATIC
     src/ck3_1210_thread_runtime.cpp
     src/ck3_1210_core_frame_v1.cpp
     src/ck3_1210_actor_foundation_v1.cpp
+    src/ck3_1210_actor_resource_leaf_v2.cpp
     src/ck3_1210_current_event_snapshot_v1.cpp
     src/ck3_1210_pending_snapshot_v1.cpp
     src/ck3_1210_military_empty_v1.cpp
@@ -10365,9 +10366,13 @@ if(BUILD_TESTING)
     src/ck3_1210_core.cpp src/tactical_daily_sentinel_v1.cpp)
   add_executable(xar_ck3_1210_date_worker_game_access_test
     src/ck3_1210_date_worker_game_access_v1.cpp src/ck3_1210_date_worker_game_access_v1_test.cpp)
+  add_executable(xar_ck3_1210_date_worker_game_access_v2_failure_test
+    src/ck3_1210_date_worker_game_access_v1.cpp src/ck3_1210_date_sentinel_v1.cpp
+    src/ck3_1210_date_worker_game_access_v2_failure_test.cpp
+    src/ck3_1210_core.cpp src/tactical_daily_sentinel_v1.cpp)
   add_executable(xar_ck3_1210_date_sentinel_request_test
     src/ck3_1210_full_clock_request_v1.cpp src/ck3_1210_date_sentinel_request_v1_test.cpp)
-  foreach(_florin_date_target IN ITEMS xar_ck3_1210_daily_final_hook_test xar_ck3_1210_date_sentinel_test xar_ck3_1210_date_sentinel_request_test xar_ck3_1210_date_worker_game_access_test)
+  foreach(_florin_date_target IN ITEMS xar_ck3_1210_daily_final_hook_test xar_ck3_1210_date_sentinel_test xar_ck3_1210_date_sentinel_request_test xar_ck3_1210_date_worker_game_access_test xar_ck3_1210_date_worker_game_access_v2_failure_test)
     target_include_directories(${_florin_date_target} PRIVATE include)
     target_compile_definitions(${_florin_date_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
     if(MSVC)
@@ -10378,6 +10383,20 @@ if(BUILD_TESTING)
   add_test(NAME xar_ck3_native_bridge_1210_date_sentinel COMMAND xar_ck3_1210_date_sentinel_test)
   add_test(NAME xar_ck3_native_bridge_1210_date_sentinel_request COMMAND xar_ck3_1210_date_sentinel_request_test)
   add_test(NAME xar_ck3_native_bridge_1210_date_worker_game_access COMMAND xar_ck3_1210_date_worker_game_access_test)
+  add_test(NAME xar_ck3_native_bridge_1210_date_worker_game_access_v2_failure COMMAND xar_ck3_1210_date_worker_game_access_v2_failure_test)
+  add_test(NAME xar_ck3_native_bridge_1210_date_worker_game_access_v2_application_drift COMMAND xar_ck3_1210_date_worker_game_access_v2_failure_test application-drift)
+  add_test(NAME xar_ck3_native_bridge_1210_date_worker_game_access_v2_destroy_after COMMAND xar_ck3_1210_date_worker_game_access_v2_failure_test destroy-after)
+  add_test(NAME xar_ck3_native_bridge_1210_date_worker_game_access_v2_barrier_success COMMAND xar_ck3_1210_date_worker_game_access_v2_failure_test barrier-success)
+  add_test(NAME xar_ck3_native_bridge_1210_date_worker_game_access_v2_barrier_unknown COMMAND xar_ck3_1210_date_worker_game_access_v2_failure_test barrier-unknown)
+  add_test(NAME xar_ck3_native_bridge_1210_date_worker_game_access_v2_barrier_nested COMMAND xar_ck3_1210_date_worker_game_access_v2_failure_test barrier-nested)
+  add_test(NAME xar_ck3_native_bridge_1210_date_worker_game_access_v2_post_seh COMMAND xar_ck3_1210_date_worker_game_access_v2_failure_test post-seh)
+  set_tests_properties(xar_ck3_native_bridge_1210_date_worker_game_access_v2_failure
+    xar_ck3_native_bridge_1210_date_worker_game_access_v2_application_drift
+    xar_ck3_native_bridge_1210_date_worker_game_access_v2_destroy_after
+    xar_ck3_native_bridge_1210_date_worker_game_access_v2_barrier_success
+    xar_ck3_native_bridge_1210_date_worker_game_access_v2_barrier_unknown
+    xar_ck3_native_bridge_1210_date_worker_game_access_v2_barrier_nested
+    xar_ck3_native_bridge_1210_date_worker_game_access_v2_post_seh PROPERTIES TIMEOUT 15)
 endif()
 
 option(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1 "Enable paused exact-Full personal CASH scalar observation" OFF)
@@ -10388,7 +10407,19 @@ if(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1)
   set_property(SOURCE src/ck3_1210_adapter.cpp src/ck3_1210_personal_gold_frame_v1.cpp
     APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1=1)
 endif()
+# Explicit capability opt-in; legacy CASH v1 remains independently available.
+option(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V2 "Enable exact Florin signed UnitFullId CASH scope v2" OFF)
+if(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V2)
+  if(NOT XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1)
+    message(FATAL_ERROR "Florin CASH scope v2 requires the qualified CASH v1 owner/provider")
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp
+    APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_PERSONAL_CASH_V2=1)
+endif()
 if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_personal_cash_signed_scope_v2_test
+    src/ck3_1210_personal_cash_v1.cpp src/ck3_1210_personal_cash_signed_scope_v2_test.cpp
+    src/ck3_1210_monthly_flow_v1.cpp src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_core.cpp)
   add_executable(xar_ck3_1210_monthly_flow_test src/ck3_1210_monthly_flow_v1.cpp src/ck3_1210_monthly_flow_v1_test.cpp src/ck3_1210_core.cpp)
   add_executable(xar_ck3_1210_personal_cash_test src/ck3_1210_personal_cash_v1.cpp src/ck3_1210_personal_cash_v1_test.cpp src/ck3_1210_monthly_flow_v1.cpp src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_core.cpp)
   add_executable(xar_ck3_1210_personal_cash_frame_test
@@ -10398,7 +10429,9 @@ if(BUILD_TESTING)
     src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_core.cpp src/ck3_1210_core_frame_v1.cpp
     fixtures/ck3_1210_adapter_body_v1.cpp src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
   target_compile_definitions(xar_ck3_1210_personal_cash_frame_test PRIVATE XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1=1)
-  foreach(_cash_target IN ITEMS xar_ck3_1210_monthly_flow_test xar_ck3_1210_personal_cash_test xar_ck3_1210_personal_cash_frame_test)
+  target_include_directories(xar_ck3_1210_personal_cash_frame_test PRIVATE
+    "${CMAKE_CURRENT_BINARY_DIR}/fresh_full_state12004_generated")
+  foreach(_cash_target IN ITEMS xar_ck3_1210_monthly_flow_test xar_ck3_1210_personal_cash_test xar_ck3_1210_personal_cash_frame_test xar_ck3_1210_personal_cash_signed_scope_v2_test)
     target_include_directories(${_cash_target} PRIVATE include)
     target_compile_definitions(${_cash_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
     if(MSVC)
@@ -10408,6 +10441,7 @@ if(BUILD_TESTING)
   add_test(NAME xar_ck3_native_bridge_1210_monthly_flow COMMAND xar_ck3_1210_monthly_flow_test)
   add_test(NAME xar_ck3_native_bridge_1210_personal_cash COMMAND xar_ck3_1210_personal_cash_test)
   add_test(NAME xar_ck3_native_bridge_1210_personal_cash_frame COMMAND xar_ck3_1210_personal_cash_frame_test)
+  add_test(NAME xar_ck3_native_bridge_1210_personal_cash_signed_scope_v2 COMMAND xar_ck3_1210_personal_cash_signed_scope_v2_test)
 endif()
 
 if(BUILD_TESTING)
@@ -10514,3 +10548,48 @@ if(BUILD_TESTING)
   endif()
   add_test(NAME xar_ck3_native_bridge_1210_gui_control COMMAND xar_ck3_1210_gui_control_test)
 endif()
+
+# Independent scoped War DATA; rich Full/legacy military contracts stay closed.
+option(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1 "Enable exact paused Actor MQ War identity/guarded score partial DATA" OFF)
+if(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1)
+  if(NOT XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+    message(FATAL_ERROR "Florin War identity DATA requires exact Core")
+  endif()
+  target_sources(xar_ck3_12002_runtime PRIVATE
+    src/ck3_1210_active_wars_frame_v1.cpp src/ck3_1210_active_wars_serialize_v1.cpp)
+  if(NOT XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+    target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_1210_active_wars_v1.cpp)
+  endif()
+  set_property(SOURCE src/ck3_1210_adapter.cpp src/ck3_1210_personal_gold_frame_v1.cpp src/bridge.cpp
+    APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1=1)
+  # The Actor dispatcher source is also compiled by these existing fixtures.
+  foreach(_actor_target IN ITEMS xar_ck3_1210_personal_gold_test xar_ck3_1210_actor_foundation_test xar_ck3_1210_personal_cash_frame_test)
+    if(TARGET ${_actor_target})
+      target_sources(${_actor_target} PRIVATE src/ck3_1210_active_wars_frame_v1.cpp
+        src/ck3_1210_active_wars_serialize_v1.cpp src/ck3_1210_active_wars_v1.cpp)
+    endif()
+  endforeach()
+endif()
+
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_active_wars_frame_test
+    src/ck3_1210_active_wars_frame_v1_test.cpp src/ck3_1210_active_wars_frame_v1.cpp
+    src/ck3_1210_active_wars_serialize_v1.cpp src/ck3_1210_active_wars_v1.cpp
+    src/ck3_1210_core.cpp src/ck3_1210_personal_gold_v1.cpp src/ck3_1210_personal_gold_frame_v1.cpp
+    src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_core_frame_v1.cpp
+    src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
+  target_include_directories(xar_ck3_1210_active_wars_frame_test PRIVATE include src)
+  target_compile_features(xar_ck3_1210_active_wars_frame_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_1210_active_wars_frame_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1=1)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_active_wars_frame_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_active_wars_frame COMMAND xar_ck3_1210_active_wars_frame_test)
+endif()
+
+include(cmake/florin_internal_readers23.cmake)
+
+include(cmake/actor_resource_leaf27.cmake)
+
+include(cmake/character_roster_1210.cmake)

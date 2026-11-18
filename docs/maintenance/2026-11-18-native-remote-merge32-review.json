@@ -1,0 +1,199 @@
+{
+  "schema": "xar.native.offline-merge-review32/v1",
+  "scope": "Static three-file merge review; no compiler, DLL, CK3, Steam, process, window, SDK, or installed files",
+  "base": "94ee9256ce2d2dac76fa51fc2bc0c022038ac3a1",
+  "remote": "58bdc933acda6648b179621af344cf8ec13d4ea6",
+  "frozen_source_recipe31": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\frozen-source-publication-index31\\FROZEN-NATIVE17-TO29-SOURCE-RECIPE31.json",
+    "bytes": 71308,
+    "sha256": "7e922a41af789f498487c68fdde01407e56e8ce82b5b34bb06dfca5a1679a19f"
+  },
+  "threeway_inputs": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\1-base",
+      "bytes": 478310,
+      "sha256": "60564097d994ac563635863c409083deae1fc1ae745ad39b47aac9890d1a6a44"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\1-ours",
+      "bytes": 483873,
+      "sha256": "be209613249ed8ba1a3d7841cac8e491362dad5d24bd26000be6c236c1827d23"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\1-theirs",
+      "bytes": 481384,
+      "sha256": "52fdb65d4b9ee80d70aa0b96b9f53fcaaacd75df52bd8fb0675c9ed92355df9d"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\1-merged",
+      "bytes": 487019,
+      "sha256": "de3a22591e005e65996348da9f1a98e580989da4ae2a7b5d89bb9345b4817d68"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\2-base",
+      "bytes": 1679201,
+      "sha256": "d2168066e72fcf4113c43a0fe4e2487c537302317ae54327bcd511f3dabc80b7"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\2-ours",
+      "bytes": 1690270,
+      "sha256": "039123a555514366f20650d5f88e8418c839a63ab9432c1895b2bbf783eafe70"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\2-theirs",
+      "bytes": 1686222,
+      "sha256": "4096133e396021009a160c413e5b9fac231ada72f5412f2e4c2dfcac65dde38d"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\2-merged",
+      "bytes": 1697291,
+      "sha256": "5dbc88c66278005b7741c284865895a71e4628d18565ec6b54b00b0587d5f6a0"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\3-base",
+      "bytes": 15111,
+      "sha256": "3525bc7d728677fcf37f97c8fa5dde43661ff11c2c325fd57fa6b12547e01e27"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\3-ours",
+      "bytes": 18983,
+      "sha256": "881fd6f00f529731c6dc269351a27e73f982d52cc3af3b43a5bb8711eb22cde3"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\3-theirs",
+      "bytes": 15617,
+      "sha256": "f68abae2e985e1b92448fc30c81310c962b3328457d34c295808cee9664cd03e"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\3-merged",
+      "bytes": 19489,
+      "sha256": "cc46d15ec37eb39a1d50cbc2cf4362d37de3f173d6b4da2231390115d92e4d14"
+    }
+  ],
+  "git_object_checks": [
+    {
+      "object": "94ee9256ce2d2dac76fa51fc2bc0c022038ac3a1:ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "oid": "1818ffe8ac553ff8b6a7081d9634cfb2971c7df6",
+      "bytes": 478310,
+      "sha256": "60564097d994ac563635863c409083deae1fc1ae745ad39b47aac9890d1a6a44",
+      "threeway_input_exact_lf": true
+    },
+    {
+      "object": "58bdc933acda6648b179621af344cf8ec13d4ea6:ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "oid": "7514df01a6729c5ab5318961b0351a4b3e14a522",
+      "bytes": 481384,
+      "sha256": "52fdb65d4b9ee80d70aa0b96b9f53fcaaacd75df52bd8fb0675c9ed92355df9d",
+      "threeway_input_exact_lf": true
+    },
+    {
+      "object": "94ee9256ce2d2dac76fa51fc2bc0c022038ac3a1:ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "oid": "dcf872089ec1ef1a59b617320c666357ac0276f7",
+      "bytes": 1679201,
+      "sha256": "d2168066e72fcf4113c43a0fe4e2487c537302317ae54327bcd511f3dabc80b7",
+      "threeway_input_exact_lf": true
+    },
+    {
+      "object": "58bdc933acda6648b179621af344cf8ec13d4ea6:ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "oid": "8dc83e7a7a587f23e790c47ed55c611ebf9d371f",
+      "bytes": 1686222,
+      "sha256": "4096133e396021009a160c413e5b9fac231ada72f5412f2e4c2dfcac65dde38d",
+      "threeway_input_exact_lf": true
+    },
+    {
+      "object": "94ee9256ce2d2dac76fa51fc2bc0c022038ac3a1:ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp",
+      "oid": "86ced0b859affa1715833c8ba83d668ca78f8619",
+      "bytes": 15111,
+      "sha256": "3525bc7d728677fcf37f97c8fa5dde43661ff11c2c325fd57fa6b12547e01e27",
+      "threeway_input_exact_lf": true
+    },
+    {
+      "object": "58bdc933acda6648b179621af344cf8ec13d4ea6:ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp",
+      "oid": "b19b8bced369f5b170cf9530247a7b8d4a61a5f4",
+      "bytes": 15617,
+      "sha256": "f68abae2e985e1b92448fc30c81310c962b3328457d34c295808cee9664cd03e",
+      "threeway_input_exact_lf": true
+    },
+    {
+      "object": "58bdc933acda6648b179621af344cf8ec13d4ea6:ck3_autonomous_player/native_bridge/fixtures/ck3_1210_adapter_body_v1.cpp",
+      "oid": "38904bde2b0a5785feebbac495a5551be5e0b279",
+      "bytes": 198,
+      "sha256": "9dc408f3042c37febd26c8fe5da848734709ecacc9c38448ee322f4f3350c032",
+      "threeway_input_exact_lf": null
+    },
+    {
+      "object": "58bdc933acda6648b179621af344cf8ec13d4ea6:ck3_autonomous_player/native_bridge/fixtures/ck3_1210_full_snapshot_body_v1.cpp",
+      "oid": "b1821f5021a8fe6d7bcd66024b3e2e54183d589f",
+      "bytes": 188,
+      "sha256": "99f33f571d749c4da62416b43482890380654849bd3da7c097ce4bc4d81c8f21",
+      "threeway_input_exact_lf": null
+    }
+  ],
+  "CMake_resolution": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\CMakeLists.merged32.txt",
+    "bytes": 486947,
+    "sha256": "92cae02c1b8b505d5741a6db8cd1beb48c0b585c95bc05c55e2c61690917ea3c"
+  },
+  "resolution": "Both end additions retained unchanged, remote Event/GUI first, qualified War and three module includes last. Five remote fixture source substitutions retained.",
+  "bridge_auto_merge": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\2-merged",
+    "bytes": 1697291,
+    "sha256": "5dbc88c66278005b7741c284865895a71e4628d18565ec6b54b00b0587d5f6a0"
+  },
+  "adapter_auto_merge": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\3-merged",
+    "bytes": 19489,
+    "sha256": "cc46d15ec37eb39a1d50cbc2cf4362d37de3f173d6b4da2231390115d92e4d14"
+  },
+  "source_review": {
+    "bridge": "Remote includes, Gui provider state, RunGuiControl/RunEventOptionControl, reset and early routes retained; Cash/War/Roster/Resource, writer V2 and cleanup-UNKNOWN guards retained.",
+    "adapter": "Remote Event/GUI guarded descriptor entries retained inside Full guard; frozen29 owner preflight/token/post-Core-root/output equality retained; no new factory or changed reader ABI.",
+    "five_wrappers": "Thin includes of actual production sources, not copied readers or fake snapshots. Explicit fixture target definitions keep their original finite profiles.",
+    "monthly_abi": "Cash frame target compiles Cash, Monthly, Gold, Frame, tests against the same selected headers; no old20 object reuse.",
+    "resource_source_property_gap": "The added resource_precorerequisite target still used raw Adapter/GoldFrame TUs. Production Full/Cash/War SOURCE definitions can reach these unrelated fixture TUs and introduce unlinked delegate/Full dependencies.",
+    "minimal_resource_fix": "Use existing remote adapter wrapper, plus one equivalent new GoldFrame wrapper, only in resource_precore_counterexample. Retain its Core/Gold/Foundation/Resource target definitions. No production source, descriptor, permission or ABI edits."
+  },
+  "resource_fix_module_basis": {
+    "relative": "cmake/actor_resource_leaf27.cmake",
+    "git_path": "ck3_autonomous_player/native_bridge/cmake/actor_resource_leaf27.cmake",
+    "origin_stage": "27",
+    "frozen_source": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\cmake\\actor_resource_leaf27.cmake",
+      "bytes": 5222,
+      "sha256": "6e729029bff33326b8da085fc6dbacb13b203e401c792684ed0ccbcf5b28463b"
+    },
+    "lf_blob_bytes": 5222,
+    "lf_blob_sha256": "6e729029bff33326b8da085fc6dbacb13b203e401c792684ed0ccbcf5b28463b",
+    "permitted_transform": "CRLF->LF only; no semantic edit",
+    "override_stages": [
+      "27"
+    ],
+    "exists_in_baseline_commit": false
+  },
+  "resource_fix_module": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\actor_resource_leaf27.merged32.cmake",
+    "bytes": 5245,
+    "sha256": "78ef96d7dda29fbaaa3f3dfd724c34bb7010deeead5c8a9d62b5a524100a8a32"
+  },
+  "resource_fix_wrapper": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\ck3_1210_personal_gold_frame_body_v1.cpp",
+    "bytes": 198,
+    "sha256": "033a9231c1bcd8f0b100e4c3c04789b78d13f181f161e64299ca265f2b87f49b"
+  },
+  "resource_fix_patch": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\RESOURCE-FIXTURE-PROFILE32.patch",
+    "bytes": 1237,
+    "sha256": "7b35d2e6f6aab568bd59b902eb3087bef42a49da9bbec10eeefef841f655413a"
+  },
+  "qualification": "NOT_RUN combined merge. Prior29 and remote historical qualifications remain separate.",
+  "planned_minimal_target": "xar_ck3_1210_resource_precore_counterexample",
+  "five_wrapper_followup_targets_if_required": [
+    "xar_ck3_1210_identity_test",
+    "xar_ck3_1210_personal_gold_test",
+    "xar_ck3_1210_actor_foundation_test",
+    "xar_ck3_1210_full_snapshot_test",
+    "xar_ck3_1210_personal_cash_frame_test"
+  ],
+  "no_formal_git_or_mutable_source_written": true,
+  "no_default_CI_qualification_for_focused_tests29": true,
+  "withdrawn_DLL25_stays_withdrawn": true
+}

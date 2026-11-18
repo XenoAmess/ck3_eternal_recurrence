@@ -24,6 +24,7 @@ inline constexpr std::array<std::uint8_t,32> kActiveWarsScoreEntry32V1{
     0x48,0x83,0xEC,0x40,0x48,0x8B,0xF2,0x48,0x8B,0xE9,0x4C,0x8B,0xCA,0x45,0x33,0xC0};
 
 using ActiveWarsNativeScoreGetterV1 = std::int32_t (*)(const void *war, void *tooltip);
+using ActiveWarsNativeCallAdmissionV1 = bool (*)(void *context) noexcept;
 struct ActiveWarsBindingsV1 {
   bool exact_build_admitted = false;
   // Only the outer paused application-main owner may opt in. Identity reads
@@ -35,6 +36,10 @@ struct ActiveWarsBindingsV1 {
   std::uintptr_t war_manager_vtable = 0;
   std::uintptr_t war_vtable = 0;
   ActiveWarsNativeScoreGetterV1 get_attacker_war_score = nullptr;
+  // Optional owner-local custody recheck. New Actor DATA supplies this before
+  // and after each score call; no callback/context is deserialized from wire.
+  ActiveWarsNativeCallAdmissionV1 native_call_admission = nullptr;
+  void *native_call_admission_context = nullptr;
 };
 using ActiveWarsCopyV1 = bool (*)(void *context, const void *source,
     void *destination, std::size_t size) noexcept;

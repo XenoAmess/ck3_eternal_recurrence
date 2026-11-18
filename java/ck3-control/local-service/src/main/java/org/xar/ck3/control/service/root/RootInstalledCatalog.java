@@ -381,8 +381,12 @@ public final class RootInstalledCatalog {
             } else {
                 frozen.requireCurrent(context.game().launchPlan(),context.clock());
                 if(stage.isPresent())stage.orElseThrow().requireNativeCampaignObservationOwner(same,context.game(),context.source());
-                else {frozen.initialPolicy().requireSavedProjection(context.game().launchPlan());
-                    StrictJson.require(context.adopted().authority()==authority,"Saved private constructor lost its actual adopted Driver");}
+                else {
+                    StrictJson.require(context.adopted().authority()==authority,"Saved private constructor lost its actual adopted Driver");
+                    if(frozen.initialPolicy().isMaterializedSaved())
+                        context.adopted().producer().requireNativeCampaignProjectionOrigin(frozen);
+                    else frozen.initialPolicy().requireSavedProjection(context.game().launchPlan());
+                }
             }
             for(Class<?> type:List.of(RootInstalledCatalog.class,RootFrozenRunProfile.class,InitialEpisodePolicy.class,NativeCampaignCapabilitySource.class))
                 context.game().launchPlan().sources().requireLoadedClass(type);

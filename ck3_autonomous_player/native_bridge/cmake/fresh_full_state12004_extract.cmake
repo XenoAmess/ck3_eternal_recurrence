@@ -58,6 +58,10 @@ function(xar_generate_fresh_full_state12004_sources bridge_source output_dir)
   _xar_extract_fresh_definition12004("${_bridge_source}" "std::string CommandResultFrame(" "\n}" _fn_cmd_result)
   _xar_extract_fresh_definition12004("${_bridge_source}" "bool RunFreshFullStateQuery12004(" "\n}" _fn_handler)
 
+  _xar_extract_fresh_definition12004("${_bridge_source}"
+    "std::string PersonalCashCommandResult1210(" "
+}" _fn_cash_result1210)
+
   # Write outputs only when current source content changes.
   file(MAKE_DIRECTORY "${output_dir}")
   file(CONFIGURE OUTPUT "${output_dir}/fresh_bridge_snapshot_support.inc" CONTENT
@@ -74,6 +78,13 @@ function(xar_generate_fresh_full_state12004_sources bridge_source output_dir)
 
   file(CONFIGURE OUTPUT "${output_dir}/fresh_bridge_handler.inc" CONTENT
     "${_fn_handler}\n" @ONLY NEWLINE_STYLE LF)
+
+  # Exact production post-mailbox Cash wrapper plus its actual JSON helpers.
+  file(CONFIGURE OUTPUT "${output_dir}/fresh_bridge_personal_cash_result1210.inc" CONTENT
+    "${_fn_append_json}
+${_fn_cmd_result}
+${_fn_cash_result1210}
+" @ONLY NEWLINE_STYLE LF)
 
   set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${bridge_source}")
 endfunction()

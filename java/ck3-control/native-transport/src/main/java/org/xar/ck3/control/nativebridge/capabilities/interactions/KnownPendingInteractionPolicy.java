@@ -31,6 +31,8 @@ import org.xar.ck3.control.application.planning.military.WarCorePlanner;
 import org.xar.ck3.control.application.planning.warexit.WarExitEvidence;
 import org.xar.ck3.control.application.planning.warexit.WarExitInboundProvider;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Claims;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
@@ -38,6 +40,48 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 public final class KnownPendingInteractionPolicy {
     public static final String CANDIDATE="prepared_pending_interaction_candidate";
     @FunctionalInterface public interface ContextPort { Context current(PlanningRequest request); }
+    /** Availability is separate from Known: projecting the current frame does not manufacture a READ receipt. */
+    @FunctionalInterface public interface ContextReadPort { ContextRead current(PlanningRequest request); }
+    public sealed interface ContextRead permits Available,Unavailable { }
+    public record Available(Context context) implements ContextRead {
+        public Available { Objects.requireNonNull(context); }
+    }
+    /** Only the exact configured unmigrated tuple may create this source-level negative result. */
+    public static final class Unavailable implements ContextRead {
+        private final PlanningReadResult.Unavailable<Context> result;
+        private Unavailable() {
+            result=new PlanningReadResult.Unavailable<>("interaction_native_contract_unmigrated",Optional.empty());
+        }
+        public PlanningReadResult.Unavailable<Context> result() { return result; }
+    }
+    /** Configured identity DATA only; this grants no Native capability, Installed status or live provenance. */
+    public static ContextReadPort typedUnavailable(String configuredVersion,String configuredExecutableSha256) {
+        need(ExactCk3Build.CK3_1210.matches(configuredVersion,configuredExecutableSha256),
+                "typed unavailable interaction context requires the exact configured 1.21.0 tuple");
+        var unavailable=new Unavailable();
+        return request->{requireUnavailableSource(Objects.requireNonNull(request));return unavailable;};
+    }
+    /** Exact source DATA for an already held frame; no synthetic PlanningRequest or READ original is created. */
+    public static Unavailable unavailableForSource(String configuredVersion,String configuredExecutableSha256,G2Source actualSource) {
+        need(ExactCk3Build.CK3_1210.matches(configuredVersion,configuredExecutableSha256),
+                "typed unavailable interaction context requires the exact configured 1.21.0 tuple");
+        requireUnavailableSource(Objects.requireNonNull(actualSource));
+        return new Unavailable();
+    }
+    private static void requireUnavailableSource(PlanningRequest request) {
+        requireUnavailableSource(request.source());
+    }
+    private static void requireUnavailableSource(G2Source actualSource) {
+        var build=ExactCk3Build.CK3_1210;
+        String retained=Objects.requireNonNull(actualSource).exactBuild();
+        // Root loadedExecutionSource retains its original raw SHA; qualified planning fixtures retain version@SHA.
+        need(retained.equalsIgnoreCase(build.executableSha256())
+                ||retained.equalsIgnoreCase(build.version()+"@sha256:"+build.executableSha256()),
+                "unmigrated interaction context crossed its exact configured planning source");
+    }
+    private static ContextReadPort available(ContextPort original) {
+        Objects.requireNonNull(original);return request->new Available(original.current(request));
+    }
     public record ReadPublication(OpportunityJson.Obj result,Optional<OpportunityJson.Obj> snapshot) {
         public ReadPublication { Objects.requireNonNull(result);Objects.requireNonNull(snapshot); }
     }
@@ -74,7 +118,7 @@ public final class KnownPendingInteractionPolicy {
                 known->new ReadPublication(InteractionReadPublications.publish(known.receipt()),Optional.empty()));
     }
     private final ExactRef implementationSource;
-    private final ContextPort contexts;
+    private final ContextReadPort contexts;
     private final PlanningReadPort reads;
     private org.xar.ck3.control.application.planning.events.EventIncidentCapturePort incidentCapture;
     public synchronized void bindIncidentCapture(org.xar.ck3.control.application.planning.events.EventIncidentCapturePort actual) {
@@ -96,7 +140,23 @@ public final class KnownPendingInteractionPolicy {
         this(implementationSource,actualContexts,actualReads,actualPendingContract,supplemental,
                 Optional.of(new KnownPendingInteractionContinuation(actualSameCore)));
     }
+    /** Named factories preserve both original constructor descriptors and avoid ambiguous lambda overloads. */
+    public static KnownPendingInteractionPolicy withContextReads(ExactRef implementationSource,ContextReadPort actualContexts,
+            PlanningReadPort actualReads,ReadContract<PendingContext> actualPendingContract,ReadCatalog supplemental) {
+        return new KnownPendingInteractionPolicy(implementationSource,actualContexts,actualReads,actualPendingContract,supplemental,Optional.empty());
+    }
+    public static KnownPendingInteractionPolicy withContextReads(ExactRef implementationSource,ContextReadPort actualContexts,
+            PlanningReadPort actualReads,ReadContract<PendingContext> actualPendingContract,ReadCatalog supplemental,
+            KnownPendingInteractionContinuation.Core actualSameCore) {
+        return new KnownPendingInteractionPolicy(implementationSource,actualContexts,actualReads,actualPendingContract,supplemental,
+                Optional.of(new KnownPendingInteractionContinuation(actualSameCore)));
+    }
     private KnownPendingInteractionPolicy(ExactRef implementationSource,ContextPort actualContexts,
+            PlanningReadPort actualReads,ReadContract<PendingContext> actualPendingContract,ReadCatalog supplemental,
+            Optional<KnownPendingInteractionContinuation> continuation) {
+        this(implementationSource,available(actualContexts),actualReads,actualPendingContract,supplemental,continuation);
+    }
+    private KnownPendingInteractionPolicy(ExactRef implementationSource,ContextReadPort actualContexts,
             PlanningReadPort actualReads,ReadContract<PendingContext> actualPendingContract,ReadCatalog supplemental,
             Optional<KnownPendingInteractionContinuation> continuation) {
         this.implementationSource=Objects.requireNonNull(implementationSource);
@@ -120,7 +180,13 @@ public final class KnownPendingInteractionPolicy {
         return new WarCorePlanner.Leaf(WarCorePlanner.Boundary.PENDING_WAR_INTERACTION_PRELUDE,source,
                 (request,current)-> {
                     if(deferred(request))return new MilitaryPlanningDecision.Keep(InteractionArguments.app(F.objectNode()));
-                    Context held=context(request); PendingSummary pending=held.controls().pending();
+                    ContextRead read=contextRead(request);
+                    if(read instanceof Unavailable) {
+                        if(!pendingInSnapshot(request)||request.observations().warInProgress())
+                            return new MilitaryPlanningDecision.Keep(InteractionArguments.app(F.objectNode()));
+                        return new MilitaryPlanningDecision.ApplicationDecision(blockedMissingContext(request,current));
+                    }
+                    Context held=((Available)read).context(); PendingSummary pending=held.controls().pending();
                     if(pending==null)return new MilitaryPlanningDecision.Keep(InteractionArguments.app(F.objectNode()));
                     if(pending.autoAcceptNotification() || !request.observations().warInProgress())
                         return new MilitaryPlanningDecision.ApplicationDecision(evaluateCore(request,current));
@@ -141,15 +207,25 @@ public final class KnownPendingInteractionPolicy {
     public List<WarCorePlanner.Leaf> leaves(ExactRef source) {
         WarCorePlanner.Leaf prepare=leaf(source);
         WarCorePlanner.Leaf consume=new WarCorePlanner.Leaf(WarCorePlanner.Boundary.PENDING_WAR_INTERACTION_CONSUMPTION,source,
-                (request,current)->deferred(request)||context(request).controls().pending()==null
-                        ?new MilitaryPlanningDecision.Keep(InteractionArguments.app(F.objectNode()))
-                        :new MilitaryPlanningDecision.ApplicationDecision(consumeCore(request,current)));
+                (request,current)->{
+                    if(deferred(request))return new MilitaryPlanningDecision.Keep(InteractionArguments.app(F.objectNode()));
+                    ContextRead read=contextRead(request);
+                    if(read instanceof Unavailable)
+                        return pendingInSnapshot(request)
+                                ?new MilitaryPlanningDecision.ApplicationDecision(blockedMissingContext(request,current))
+                                :new MilitaryPlanningDecision.Keep(InteractionArguments.app(F.objectNode()));
+                    return ((Available)read).context().controls().pending()==null
+                            ?new MilitaryPlanningDecision.Keep(InteractionArguments.app(F.objectNode()))
+                            :new MilitaryPlanningDecision.ApplicationDecision(consumeCore(request,current));
+                });
         return List.of(prepare,consume);
     }
 
     /** Install only at strategy.py:9855, AFTER the genuine battle and latched-assault guards. */
     public OrdinaryPolicy.Decision consumeCore(PlanningRequest request,OrdinaryPolicy.Draft current) {
-        Context held=context(request);
+        ContextRead read=contextRead(request);
+        if(read instanceof Unavailable)return unavailableDecision(request,current);
+        Context held=((Available)read).context();
         if(held.controls().pending()==null)return new OrdinaryPolicy.NotApplicable("the actual current pending queue is empty");
         if(request.observations().warInProgress()) {
             JsonNode candidate=InteractionArguments.parseApp(current.detail()).get(CANDIDATE);
@@ -170,7 +246,9 @@ public final class KnownPendingInteractionPolicy {
         if(deferred(request))return new OrdinaryPolicy.NotApplicable("the exact blocked marriage is deferred within this same-core call");
         PlanningRequest current=request; Set<String> attempted=new HashSet<>();
         for(int count=0;count<4;count++) {
-            Context held=context(current); PendingSummary pending=held.controls().pending();
+            ContextRead contextRead=contextRead(current);
+            if(contextRead instanceof Unavailable)return unavailableDecision(current,previous);
+            Context held=((Available)contextRead).context(); PendingSummary pending=held.controls().pending();
             if(pending==null)return new OrdinaryPolicy.NotApplicable("the actual pending queue is empty");
             Set<String> steps=current.observations().actionSteps().stream().map(OperationKey::value).collect(java.util.stream.Collectors.toUnmodifiableSet());
             if(pending.autoAcceptNotification()) {
@@ -184,12 +262,12 @@ public final class KnownPendingInteractionPolicy {
             Optional<KnownPendingInteractionEvidence.Current> captured=KnownPendingInteractionEvidence.pending(current,held);
             if(captured.isEmpty()) {
                 if(!steps.contains(PendingContextCodec.STEP)||!attempted.add(PendingContextCodec.STEP))
-                    return blockedMissingContext(current,held,previous);
+                    return blockedMissingContext(current,previous);
                 ObjectNode args=InteractionArguments.body(held).put("pending_id",pending.instance().value());
                 PlanningReadResult<PendingContext> read=incidents().read(reads,pendingContract,new PlanningReadRequest(current.before(),current.source(),
                         current.sessionId(),pendingContract.operation(),InteractionArguments.app(args),current.deadline()),current);
                 if(!(read instanceof PlanningReadResult.Known<PendingContext> known))
-                    return blockedMissingContext(current,held,previous);
+                    return blockedMissingContext(current,previous);
                 InteractionReadPublications.sameRequest(known.receipt(),current);
                 current=append(current,InteractionReadPublications.pending(known),Optional.empty(),known.originalReceipt());
                 continue;
@@ -224,8 +302,10 @@ public final class KnownPendingInteractionPolicy {
         return new OrdinaryPolicy.Wait("bounded exact pending read collection completed without an executable reply");
     }
 
-    private Context context(PlanningRequest request) {
-        Context held=Objects.requireNonNull(contexts.current(request));
+    private ContextRead contextRead(PlanningRequest request) {
+        ContextRead selected=Objects.requireNonNull(contexts.current(request));
+        if(selected instanceof Unavailable) { requireUnavailableSource(request);return selected; }
+        Context held=((Available)selected).context();
         need(held.before().equals(request.before())&&held.source().equals(request.source())
                 &&held.sessionId().equals(request.sessionId())&&held.deadline().equals(request.deadline()),
                 "actual interaction context crossed the current planning frame/source/session");
@@ -243,7 +323,17 @@ public final class KnownPendingInteractionPolicy {
         need(diagnostics!=null&&diagnostics.isObject(),"actual native diagnostics required");
         eq(diagnostics,"connection_generation",held.connectionGeneration());
         eq(diagnostics,"bridge_pid",java.math.BigInteger.valueOf(request.before().game().pid()));
-        return held;
+        return selected;
+    }
+    private static boolean pendingInSnapshot(PlanningRequest request) {
+        JsonNode pending=WarExitEvidence.snapshot(request).get("pending_character_interaction");
+        need(pending!=null&&(pending.isNull()||pending.isObject()),
+                "explicit current pending object or null required for unavailable interaction context");
+        return !pending.isNull();
+    }
+    private OrdinaryPolicy.Decision unavailableDecision(PlanningRequest request,OrdinaryPolicy.Draft previous) {
+        return pendingInSnapshot(request)?blockedMissingContext(request,previous)
+                :new OrdinaryPolicy.NotApplicable("the actual current pending queue is empty");
     }
 
     private OrdinaryPolicy.Decision propose(PlanningRequest request,Context held,Plan plan,
@@ -274,7 +364,7 @@ public final class KnownPendingInteractionPolicy {
                 "the native typed policy selected one legal executable reply");
     }
     private boolean deferred(PlanningRequest request) { return continuation.map(value->value.defers(request)).orElse(false); }
-    private OrdinaryPolicy.Decision blockedMissingContext(PlanningRequest request,Context held,OrdinaryPolicy.Draft previous) {
+    private OrdinaryPolicy.Decision blockedMissingContext(PlanningRequest request,OrdinaryPolicy.Draft previous) {
         ObjectNode detail=F.objectNode().put("policy","one-life-turn-v1")
                 .put("phase","pending_character_interaction_evidence_required").putNull("selected_step")
                 .put("required_step",PendingContextCodec.STEP).put("reason","no same-frame strict pending context is available")

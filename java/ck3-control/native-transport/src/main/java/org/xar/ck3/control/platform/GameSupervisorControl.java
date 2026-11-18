@@ -64,8 +64,20 @@ public final class GameSupervisorControl {
     private GameSupervisorControl() { }
 
     public static Descriptor readDescriptor(Path source) throws IOException {
+        return decodeDescriptor(source,readBounded(source,MAXIMUM_DESCRIPTOR_BYTES));
+    }
+    /** Exact captured descriptor DATA only; actual owner/Game/attachment qualification remains separate. */
+    public static Descriptor readCapturedDescriptor(ExactRef source,byte[] captured)throws IOException {
+        Objects.requireNonNull(source);Objects.requireNonNull(captured);
+        if(source.bytes()<1||source.bytes()>MAXIMUM_DESCRIPTOR_BYTES||captured.length!=source.bytes()
+                ||!org.xar.ck3.control.build.NativeRunProfileRules.sha(captured).equals(source.sha256()))
+            throw new IOException("captured owner descriptor differs from its exact original reference");
+        return decodeDescriptor(Path.of(source.path()),captured);
+    }
+    private static Descriptor decodeDescriptor(Path source,byte[] captured)throws IOException {
         try {
-            ObjectNode row = StrictJson.object(StrictJson.parse(readBounded(source, MAXIMUM_DESCRIPTOR_BYTES),
+            if(captured==null||captured.length<1||captured.length>MAXIMUM_DESCRIPTOR_BYTES)throw new IOException("bounded owner descriptor DATA required");
+            ObjectNode row = StrictJson.object(StrictJson.parse(captured,
                     MAXIMUM_DESCRIPTOR_BYTES), Set.of("schema", "machine_id", "session_id", "supervisor", "game",
                     "configuration", "native_hello", "launch_evidence", "stop_request_path", "terminal_path"));
             schema(row, "xar.java-game-supervisor-owner/v1");

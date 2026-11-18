@@ -37,9 +37,28 @@ public final class GuardianReconciliationQueries {
     private final RootInteractionContextProjection projection;
     private final ReadContract<OrdinaryContext> ordinary;
     private final ReadContract<OrdinaryContext> contract;
+    private final boolean archiveOnly;
+    public static final String HISTORICAL_ONLY_REASON="guardian_crozier4_profile_is_archive_only";
+    /** Historical format selection is independent of the currently connected executable.
+     * Every replay still validates the exact original CROZIER4 context, packet, custody and Root admission. */
+    public static GuardianReconciliationQueries historicalCrozier4(ReadContract<OrdinaryContext> actualOrdinaryQuery,
+            ExactRef actualProfileSource,CanonicalAdmission actualAdmission) {
+        return new GuardianReconciliationQueries(actualOrdinaryQuery,Build.CROZIER4,actualProfileSource,actualAdmission,true);
+    }
+    public boolean liveReadsEnabled(){return !archiveOnly;}
+    public void requireLiveReads(){
+        if(archiveOnly)throw new IllegalStateException(HISTORICAL_ONLY_REASON);
+    }
+    /** For original() only. Projecting a non-CROZIER4 frame fails the exact original HELLO check. */
+    public OrdinaryInitiationPreparation.SourceBoundProjection historicalProjection(){return projection;}
     /** The profile witness is this exact selected Java factory; sourceRef remains the actual ordinary native producer. */
     public GuardianReconciliationQueries(ReadContract<OrdinaryContext> actualOrdinaryQuery,Build actualQualifiedBuild,
             ExactRef actualProfileSource,CanonicalAdmission actualAdmission) {
+        this(actualOrdinaryQuery,actualQualifiedBuild,actualProfileSource,actualAdmission,false);
+    }
+    private GuardianReconciliationQueries(ReadContract<OrdinaryContext> actualOrdinaryQuery,Build actualQualifiedBuild,
+            ExactRef actualProfileSource,CanonicalAdmission actualAdmission,boolean archiveOnly) {
+        this.archiveOnly=archiveOnly;
         ordinary=Objects.requireNonNull(actualOrdinaryQuery);Objects.requireNonNull(actualProfileSource);
         Objects.requireNonNull(actualAdmission);need(actualQualifiedBuild==Build.CROZIER4,"guardian storage requires actual source-qualified current4");
         need(ordinary.contractId().equals("interactions:ordinary-query")
@@ -60,6 +79,7 @@ public final class GuardianReconciliationQueries {
         contract=new ReadContract<>(CONTRACT_ID,ordinary.operation(),ordinary.requiredCapability(),ordinary.permissionKey(),
                 ordinary.permissionMode(),ordinary.wireProfile(),ReadContract.GuardMode.RECONCILIATION_OBSERVATION,ordinary.sourceRef(),
                 (request,id)->withProfile(actualProfileSource,()->{
+                    requireLiveReads();
                     OrdinaryRequest intent=typedArguments(request);actualAdmission.verifyCurrent(request);
                     return new NativeRequest(ordinary.operation().value(),ordinary.requiredCapability(),
                             OrdinaryInteractionCodec.request(InteractionArguments.context(request),intent,false));
@@ -110,6 +130,7 @@ public final class GuardianReconciliationQueries {
     }
     public Issued<OrdinaryContext> issue(ReconciliationIdentity identity,ActionCommand original,ActionState.Attempt attempt,
             Complete actual,Instant deadline) {
+        requireLiveReads();
         Objects.requireNonNull(identity);Objects.requireNonNull(actual);Objects.requireNonNull(deadline);
         need(actual.identity().equals(identity.factual())&&actual.source().equals(identity.source())&&actual.sessionId().equals(identity.sessionId())
                 &&actual.connectionGeneration().equals(identity.connectionGeneration())&&actual.originalEvidence().equals(identity.nativeEvidence())

@@ -1,9 +1,15 @@
+#if defined(XAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1)
+#include "xar_bridge/ck3_1210_character_roster_frame_v1.hpp"
+#endif
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_personal_cash_frame_v1.hpp"
+#if defined(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1)
+#include "xar_bridge/ck3_1210_active_wars_frame_v1.hpp"
+#endif
 #include <array>
 #include "xar_bridge/ck3_1210_full_snapshot_v1.hpp"
 #include <mutex>
@@ -33,22 +39,38 @@ public:
     output = {};
 #if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
     ck3_1210::FullSnapshotDiagnosticsV1 diagnostics{};
+    const auto finish=[&](bool result) noexcept {
+      try {std::lock_guard lock(diagnostic_mutex_);diagnostics_=diagnostics;} catch(...) {}
+      return result;
+    };
     auto current=full_;
+    if(!current.exact_build_admitted || !current.core.enabled) {
+      diagnostics.stage="binding";diagnostics.reason="full_snapshot_exact_build_unavailable";
+      return finish(false);
+    }
+    SnapshotOwnerToken owner_before{};
+    if(!ReadCurrentSnapshotOwner(owner_before)) {
+      diagnostics.stage="owner";diagnostics.reason="full_snapshot_application_main_owner_unqualified";
+      return finish(false);
+    }
 #if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
     if(current.enable_army_base) {
-      if(current.army_fixture_access.context || current.army_fixture_access.copy)return false;
-      current.army_base.player_armies.integration_native_calls_permitted=HasCurrentSnapshotOwner();
+      if(current.army_fixture_access.context || current.army_fixture_access.copy) {
+        diagnostics.stage="binding";diagnostics.reason="full_snapshot_live_fixture_access_rejected";
+        return finish(false);
+      }
+      current.army_base.player_armies.integration_native_calls_permitted=true;
     }
 #endif
     bool result=ck3_1210::ReadFullSnapshotV1(current,output,diagnostics);
-#if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
-    if(diagnostics.army_state_calls_attempted && !HasCurrentSnapshotOwner()) {
+    // The owner brackets every Full observation, including zero Army calls
+    // and the legacy typed-empty lane. No stale complete diagnostic survives.
+    SnapshotOwnerToken owner_after{};
+    if(!ReadCurrentSnapshotOwner(owner_after) || owner_before!=owner_after || (result && !owner_after.Matches(output))) {
       output={};diagnostics.complete=false;diagnostics.stage="owner";
-      diagnostics.reason="army_base_application_main_owner_changed";result=false;
+      diagnostics.reason="full_snapshot_application_main_owner_changed";result=false;
     }
-#endif
-    try {std::lock_guard lock(diagnostic_mutex_);diagnostics_=diagnostics;} catch(...) {}
-    return result;
+    return finish(result);
 #else
     return false;
 #endif
@@ -208,19 +230,34 @@ public:
     return true;
   }
 private:
-#if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
-  bool HasCurrentSnapshotOwner() const noexcept {
+#if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+  struct SnapshotOwnerToken {
+    const ck3_11906::MainThreadQueryMailboxV1 *mailbox=nullptr;
+    std::uint64_t pump_epoch=0;
+    std::uint32_t thread_id=0;
+    std::uintptr_t tls=0,state=0,jomini=0,data=0,characters=0;
+    std::int32_t date_raw=0,speed=0,player=-1,actor=-1;
+    bool paused=false,map_ready=false,has_actor=false,actor_alive=false;
+    bool Matches(const Snapshot &p) const noexcept {
+      return p.date_raw==date_raw && p.speed==speed && p.paused==paused && p.player_id==player &&
+        p.map_ready==map_ready && p.has_played_character==has_actor && p.played_character_id==actor &&
+        p.played_character_alive==actor_alive;
+    }
+    friend bool operator==(const SnapshotOwnerToken&,const SnapshotOwnerToken&)=default;
+  };
+  bool ReadCurrentSnapshotOwner(SnapshotOwnerToken &out) const noexcept {
+    out={};
     const auto *m=owner_mailbox_.load(std::memory_order_acquire);
     if(!m || m->offline_fixture || m->stop_requested.load() || m->proof_reset_requested.load())return false;
     __try {
       const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-      if(m->module_base!=base || m->game_state_slot!=reinterpret_cast<std::uintptr_t>(core_.game_state_slot) ||
+      if(!base || m->module_base!=base || m->game_state_slot!=reinterpret_cast<std::uintptr_t>(core_.game_state_slot) ||
           m->jomini_state_slot!=reinterpret_cast<std::uintptr_t>(core_.jomini_state_slot) ||
           m->tls_initialized_flag!=base+ck3_1210::kMainThreadTlsInitializedFlagRva ||
           reinterpret_cast<std::uintptr_t>(m->tls_context_getter)!=base+ck3_1210::kMainThreadTlsContextGetterRva)return false;
       const auto d=ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*m);
       const auto tid=GetCurrentThreadId();
-      if((!d.iat_installed && !d.sdl_poll_event_hook_installed) || d.stop_requested ||
+      if((!d.iat_installed && !d.sdl_poll_event_hook_installed) || d.stop_requested || d.failure_flags ||
           d.owner_thread_id!=tid || d.observed_current_thread_id!=tid || !d.active_hook_calls ||
           !d.observed_stamp_read_success || d.observed_tls_initialized!=1 ||
           d.observed_tls_main_thread_marker!=1 || !d.observed_paused || !d.observed_tls_context ||
@@ -231,11 +268,31 @@ private:
           *reinterpret_cast<const std::uint8_t *>(tls+0x20)!=1)return false;
       void *state=nullptr,*jomini=nullptr;
       std::memcpy(&state,core_.game_state_slot,sizeof(state));std::memcpy(&jomini,core_.jomini_state_slot,sizeof(jomini));
+      void *data=nullptr,*characters=nullptr;
+      std::memcpy(&data,static_cast<const std::byte *>(state)+ck3_1210::kGameStateDataOffset,sizeof(data));
+      if(core_.character_storage_slot)std::memcpy(&characters,core_.character_storage_slot,sizeof(characters));
       ck3_1210::CoreSnapshotPrefix p{};
-      return ck3_1210::ReadCoreSnapshot(core_,p) && p.clock.paused && p.clock.date_raw==d.observed_date_raw &&
+      const bool valid=ck3_1210::ReadCoreSnapshot(core_,p) && p.clock.paused && p.clock.date_raw==d.observed_date_raw &&
           reinterpret_cast<std::uintptr_t>(state)==d.observed_game_state &&
           reinterpret_cast<std::uintptr_t>(jomini)==d.observed_jomini_state &&
-          m->pump_epochs.load()==d.pump_epochs && m->owner_thread_id.load()==tid && !m->stop_requested.load();
+          *core_.game_state_slot==state && *core_.jomini_state_slot==jomini &&
+          *reinterpret_cast<void *const *>(static_cast<const std::byte *>(state)+ck3_1210::kGameStateDataOffset)==data &&
+          (!core_.character_storage_slot || *core_.character_storage_slot==characters) &&
+          m->module_base==base &&
+          m->tls_initialized_flag==base+ck3_1210::kMainThreadTlsInitializedFlagRva &&
+          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)==base+ck3_1210::kMainThreadTlsContextGetterRva &&
+          *reinterpret_cast<const std::uint8_t *>(m->tls_initialized_flag)==1 &&
+          reinterpret_cast<std::uintptr_t>(m->tls_context_getter())==tls &&
+          *reinterpret_cast<const std::uint8_t *>(tls+0x20)==1 &&
+          owner_mailbox_.load(std::memory_order_acquire)==m &&
+          m->pump_epochs.load()==d.pump_epochs && m->owner_thread_id.load()==tid &&
+          m->active_hook_calls.load()!=0 && m->failure_flags.load()==0 &&
+          !m->stop_requested.load() && !m->proof_reset_requested.load();
+      if(!valid)return false;
+      out={m,d.pump_epochs,tid,tls,d.observed_game_state,d.observed_jomini_state,
+        reinterpret_cast<std::uintptr_t>(data),reinterpret_cast<std::uintptr_t>(characters),d.observed_date_raw,
+        p.clock.speed,p.local_player_id,p.played_character_id,p.clock.paused,p.map_ready,p.has_played_character,p.played_character_alive};
+      return true;
     } __except(EXCEPTION_EXECUTE_HANDLER) {return false;}
   }
 #endif
@@ -258,6 +315,12 @@ const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
   static constexpr std::string_view capabilities[]{
       ck3_1210::kCoreFrameCapabilityV1,
+#if defined(XAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1)
+      ck3_1210::kCharacterRosterCapabilityV1,
+#endif
+#if defined(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1)
+      ck3_1210::kActiveWarsIdentityCapabilityV1,
+#endif
 #if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
       "game.state.snapshot", "game.query.fresh-full-state.v1",
 #if defined(XAR_CK3_ENABLE_1210_EVENT_OPTIONS_V1)
@@ -273,9 +336,15 @@ const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V1)
       ck3_1210::kPersonalCashCapabilityV1,
+#if defined(XAR_CK3_ENABLE_1210_PERSONAL_CASH_V2)
+      ck3_1210::kPersonalCashCapabilityV2,
+#endif
 #endif
 #if defined(XAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1)
       ck3_1210::kActorFoundationCapabilityV1,
+#endif
+#if defined(XAR_CK3_ENABLE_1210_ACTOR_RESOURCE_LEAF_V2)
+      ck3_1210::kActorResourceLeafCapabilityV2,
 #endif
 #if defined(XAR_CK3_ENABLE_1210_CORE_CONTROL_V1)
       ck3_1210::kCoreControlCapabilityV1,

@@ -21,6 +21,8 @@ using MonthlyFlowExpensesV1 = std::int64_t *(*)(std::int64_t *output,
     void *character, void *borrowed_context, std::int64_t secondary_income,
     bool exclude_military, void *optional_breakdown);
 
+using MonthlyFlowNativeCallAdmissionV1 = bool (*)(void *context) noexcept;
+
 struct MonthlyFlowBindingsV1 {
   bool exact_build_admitted = false;
   // Default closed, including after exact address binding. Only the outer
@@ -31,6 +33,10 @@ struct MonthlyFlowBindingsV1 {
   MonthlyFlowContextV1 context = nullptr;
   MonthlyFlowGrossV1 gross = nullptr;
   MonthlyFlowExpensesV1 expenses = nullptr;
+  // Optional owner-local proof, never wire data. Cash Actor supplies it for
+  // every native context/gross/expenses call; legacy null keeps its contract.
+  MonthlyFlowNativeCallAdmissionV1 native_call_admission = nullptr;
+  void *native_call_admission_context = nullptr;
 };
 
 struct MonthlyFlowObservationV1 {
@@ -56,6 +62,9 @@ struct MonthlyFlowObservationV1 {
   // cleanup. Catching a failed invocation does not undo its native effects.
   bool zero_native_side_effects_verified = false;
   bool native_unwind_cleanup_verified = false;
+  // Latched on a failed owner check, even if a later predicate could pass.
+  // Cash must invalidate the whole read; this is not ordinary monthly unknown.
+  bool native_owner_admission_failed = false;
   CoreSnapshotPrefix frame{};
   std::optional<std::int32_t> context_full_id;
   std::uintptr_t actor_identity = 0;

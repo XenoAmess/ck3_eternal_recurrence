@@ -251,8 +251,16 @@ struct Pass {
     if (before.roots != roots || before_war != war || !before_linked || !SameIdentity(before_row, row)) {
       reason = "active_wars_score_identity_changed"; return false;
     }
+    if (bindings.native_call_admission != nullptr &&
+        !bindings.native_call_admission(bindings.native_call_admission_context)) {
+      reason = "active_wars_score_owner_changed"; return false;
+    }
     std::int32_t raw = 0; ++calls;
     const bool read_score = NativeScore(bindings.get_attacker_war_score, war, raw);
+    if (bindings.native_call_admission != nullptr &&
+        !bindings.native_call_admission(bindings.native_call_admission_context)) {
+      reason = "active_wars_score_owner_changed"; return false;
+    }
     if (!Core(bindings.core, after_core) || !SameCore(after_core, expected)) {
       reason = "active_wars_score_core_changed"; return false;
     }

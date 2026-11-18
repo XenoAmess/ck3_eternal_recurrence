@@ -14,10 +14,14 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj;
 /** Concrete held-session adapter of the identical five-candidate contract. No second native producer. */
 public final class RootFamilyMarriageProjectionRead implements FamilyPorts.ProjectedSource {
     private final RootRuntimeContext context;
-    private final RootInteractionContextProjection projection;
+    private final RootFamilyInteractionContext projection;
     private final FamilyMarriageProjectionQueries queries;
     private final RootFamilyCampaignRead root;
     public RootFamilyMarriageProjectionRead(RootRuntimeContext actualContext,RootInteractionContextProjection actualProjection,
+            FamilyMarriageProjectionQueries actualQueries,RootFamilyCampaignRead sameRoot) {
+        this(actualContext,RootFamilyInteractionContext.qualified(actualProjection),actualQueries,sameRoot);
+    }
+    public RootFamilyMarriageProjectionRead(RootRuntimeContext actualContext,RootFamilyInteractionContext actualProjection,
             FamilyMarriageProjectionQueries actualQueries,RootFamilyCampaignRead sameRoot) {
         context=Objects.requireNonNull(actualContext);projection=Objects.requireNonNull(actualProjection);queries=Objects.requireNonNull(actualQueries);root=Objects.requireNonNull(sameRoot);root.requireContext(context);
     }
@@ -26,9 +30,10 @@ public final class RootFamilyMarriageProjectionRead implements FamilyPorts.Proje
             var same=context.borrowedSession();context.writer().requireSession(same);
             StrictJson.require(context.readCatalog().containsIdentity(queries.contract()),"five-candidate read is not its identical Root-installed contract");
             return context.collector().currentPlanning(same,request,request.deadline(),(original,lease)->{
-                var actual=projection.project(lease.frame(),request.deadline());Obj canonical=queries.canonicalArguments(actual,flat);
+                return projection.projected(request,lease.frame(),flat,actual->{Obj canonical=queries.canonicalArguments(actual,flat);
                 var read=new PlanningReadRequest(request.before(),request.source(),request.sessionId(),queries.contract().operation(),canonical,request.deadline());
                 return new FamilyPorts.ProjectedRead(canonical,context.reads().read(same,queries.contract(),read));
+                });
             });
         } catch(IOException failure) {throw new UncheckedIOException("actual native marriage projection unavailable",failure);}
     }

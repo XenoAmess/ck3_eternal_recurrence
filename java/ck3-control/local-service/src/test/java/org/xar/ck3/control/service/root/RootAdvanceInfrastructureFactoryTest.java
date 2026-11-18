@@ -94,6 +94,18 @@ final class RootAdvanceInfrastructureFactoryTest {
         assertEquals(ref,actual.sourceRef());assertTrue(actual.hasPureReplay());
         assertEquals(ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,actual.guardMode());
     }
+    @Test void cancellationSourceOriginalIsExplicitAndFlowsThroughTheRequiredSourceConsumer() {
+        RawJson body=valid();ExactRef old=original(body);
+        ExactRef cancellation=new ExactRef("fixture/FullSnapshotSentinelCancellation.java",1,"a".repeat(64));
+        var legacy=new RootAdvanceInfrastructureFactory.Sources(old,old,old,old,old,old);
+        assertTrue(legacy.cancellationDefinition().isEmpty(),"legacy metadata must not impersonate the new guard source");
+        var actual=new RootAdvanceInfrastructureFactory.Sources(old,old,old,old,old,old,java.util.Optional.of(cancellation));
+        var prepared=new RootAdvanceInfrastructureFactory.Prepared(actual,RootAdvanceInfrastructureFactory.Timings.decode(old,body));
+        assertEquals(java.util.Optional.of(cancellation),actual.cancellationDefinition());
+        assertTrue(prepared.requiredSources().contains(cancellation),"the exact new guard original must reach the installed source verifier closure");
+        assertEquals(2,prepared.requiredSources().size());
+    }
+
     @Test void dynamicClockFamiliesRequireTheirActualCanonicalTypedOperation() {
         var arm=new OperationKey(ClockStatusRead.ARM_PREFIX+"100-to-124-speed-2-mode-terminal-a-2-11-22");
         assertEquals(arm,new RootAdvanceInfrastructureFactory.Arm(arm).operation());

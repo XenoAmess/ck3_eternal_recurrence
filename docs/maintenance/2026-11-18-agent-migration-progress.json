@@ -1,0 +1,129 @@
+{
+  "schema": "ck3.agent-migration.progress-estimate/v1",
+  "recorded_utc": "2026-11-18T10:05:57.669887+00:00",
+  "as_of_utc": "2026-11-18T10:03:01Z",
+  "timezone": "Asia/Shanghai",
+  "scope": "CK3 gameplay agent and Java/Native/MCP suites to1.21.0; excludes mod migration",
+  "estimate_kind": "Engineering estimate from accepted chain milestones, not source-line, agent-count, or test pass ratio; weights introduced for progress tracking, not a preexisting measured denominator",
+  "overall_percent_reported": 60,
+  "weighted_estimate_percent": 60.25,
+  "overall_uncertainty_percentage_points": 10,
+  "components": [
+    {
+      "area": "environment_exact_build_and_background_lifecycle",
+      "weight_percent": 15,
+      "engineering_completion_percent": 90,
+      "remaining": "Current coherent package/background cold adoption; first SDL visibility remains unproven"
+    },
+    {
+      "area": "native_sdk_observations_clock_save_safety",
+      "weight_percent": 25,
+      "engineering_completion_percent": 75,
+      "remaining": "New domain readers actual Java consumption and live qualification; Native25 DLL withdrawn, no substitution"
+    },
+    {
+      "area": "java_saved_restore_policy_service_package",
+      "weight_percent": 25,
+      "engineering_completion_percent": 65,
+      "remaining": "Genuine complete Maven MAIN/TEST JARs, actual definitions, loaded SERVICE and Saved Root integration"
+    },
+    {
+      "area": "root_decision_gameplay_mcp_domains",
+      "weight_percent": 25,
+      "engineering_completion_percent": 35,
+      "remaining": "First actual resumed Root observation/decision/execution cycle; domain and action migration beyond SourceReady"
+    },
+    {
+      "area": "end_to_end_regression_and_final_publication",
+      "weight_percent": 10,
+      "engineering_completion_percent": 30,
+      "remaining": "Coherent integrated regression, normal commit/push and final handoff"
+    }
+  ],
+  "measured_java_p09": {
+    "production_translation_units_compiled": 37,
+    "distinct_tests": 136,
+    "passed": 126,
+    "still_failed": 10,
+    "pass_percent": 92.6,
+    "remaining_failures": {
+      "requires_complete_genuine_maven_artifacts": 8,
+      "requires_actual_root_definitions_exactrefs": 2
+    },
+    "runtime_adopted": false
+  },
+  "live_closed_milestones": [
+    "R10 exact one day advance, one SDK physical save, normal exit0",
+    "R11 one canonical Full DATA read with explicit empty armies/wars, normal exit0"
+  ],
+  "actual_root_ooda_qualified": false,
+  "new_formal_saved_pair_qualified": false,
+  "targets_beijing_time": [
+    {
+      "milestone": "Genuine Java package plus remaining focused software validation",
+      "start": "2026-11-18T19:00:00+08:00",
+      "end": "2026-11-18T20:00:00+08:00",
+      "confidence": "medium; Java owner estimate45-120 minutes from resumed work"
+    },
+    {
+      "milestone": "First Saved Root observation/decision/controlled execution live cycle",
+      "start": "2026-11-18T21:00:00+08:00",
+      "end": "2026-11-18T23:00:00+08:00",
+      "confidence": "medium-low; conditional on genuine service closure and fresh Runtime scene"
+    },
+    {
+      "milestone": "Core chain regression and normal commit/push",
+      "start": "2026-11-19T02:00:00+08:00",
+      "end": "2026-11-19T06:00:00+08:00",
+      "confidence": "medium-low; first actual integration failures can extend"
+    },
+    {
+      "milestone": "Whole domain/MCP migration acceptance",
+      "remaining_hours_range": [
+        24,
+        72
+      ],
+      "confidence": "low; re-estimate after first actual Root cycle"
+    }
+  ],
+  "current_next_actions": {
+    "runtime": "Actual volume and finite M1 amendment to1.5GiB; preserve original192MiB Maven cache unknown reserve, no Game/source yet",
+    "java": "After actual permit, complete normal Maven -am package with384MiB output upper; then exact10 failed methods and real Saved/Service chain",
+    "native": "Finish already-started small Cash28 original outputs then Java-dependent consumers; no fixed headcount"
+  },
+  "native25_integrity": "Old DLL output overwritten by26 build, quarantined and old25 DLL path withdrawn. Source/Ready and failure retained; Native27 is separate actual artifact, not a replacement at old path.",
+  "minimized_silent_required": true,
+  "fixed60_required": false,
+  "evidence": {
+    "java_p09": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/MAPPED-SAVED-POLICY37-126-PARTIAL06.json",
+      "bytes": 37162,
+      "sha256": "c5b65388c5057f60138d5952c45fc866a147510a5a509d3c2c359d198f098d71"
+    },
+    "java_build_proposal": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mapped-saved-policy08/qualification01/PROPOSED-GENUINE-MAVEN-OUTPUTS-REQUEST01.json",
+      "bytes": 2857,
+      "sha256": "8fb3543151a9d381255231d5d679e6b2b6529aade6c230e07d2880485a9b2805"
+    },
+    "native27": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/dll-build01/r2-resource-leaf27/NATIVE-1210-RESOURCE-READONLY-DLL-READY27.json",
+      "bytes": 3293,
+      "sha256": "08431f16fa7afedbd1b92cb5d1a9383f4180b85047de0694b912e3f4a82315f5"
+    },
+    "status_export25": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/status-export25/outputs/ACTUAL-STATUS-TERMINAL-CANCEL-EXPORT25.json",
+      "bytes": 28570,
+      "sha256": "07a188364af0c3a8b2cd751ec473f9eb36d3b7e8ff61e4ba6a9695c39b2613b8"
+    },
+    "r10": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/R10-TRUE-ENV-EXACT-ONE-DAY-SINGLE-SAVE-NATURAL-CLOSE-PASS01.json",
+      "bytes": 6566,
+      "sha256": "857eea7f097814842420e7275fa9bc4fef9b7d0979c4137cbc0b381eec20cb9b"
+    },
+    "r11": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/R11-NATIVE17-FULL-CANONICAL-DATA-READONLY-NATURAL-CLOSE-PASS01.json",
+      "bytes": 5871,
+      "sha256": "8932b26bd1f5ce1216595507c8c7268783c3c7931cdd1f7a77af302dffa4bbb3"
+    }
+  }
+}

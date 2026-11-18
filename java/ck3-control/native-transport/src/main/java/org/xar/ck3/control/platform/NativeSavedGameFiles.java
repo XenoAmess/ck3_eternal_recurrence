@@ -38,6 +38,8 @@ final class NativeSavedGameFiles {
                 throw new IOException("Conflicting save target exists with different bytes: " + target);
             }
             
+            // A matching profile clone cannot replace the selected original source.
+            load.save().verify();
             return targetRef;
         }
         

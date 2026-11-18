@@ -223,6 +223,22 @@ final class NativeFreshFullStateReadTest {
         if(ok)row.putObject("result").put("schema",NativeFreshSnapshotPort.RESULT_SCHEMA).put("request_id",id).put("snapshot_id","native:6").put("revision",6);
         else row.put("error","actual explicit native refusal");return row;
     }
+    @Test void actualReceiverStopsAtTheLifecycleSelectedSubmissionSpecBeforeAnySecondWrite()throws Exception {
+        var limits=new org.xar.ck3.control.platform.JavaGameLifecycle(List.of(),java.time.Duration.ofSeconds(2),16,1).transportLimits();
+        var replay=exactFourReplay();String slash=Character.toString(92);
+        var config=new NativePipeEndpoint.Config(slash+slash+"."+slash+"pipe"+slash+"lifecycle-submission-spec",
+                "source-test-machine",new GameGeneration(42,new PythonOnlyUInt64(BigInteger.ONE)),"actual-held-session","source-test",FOUR_SHA,FOUR_ADAPTER);
+        try(var actual=new NativeGameTransport(replay,config,limits.maximumFramesPerOperation(),limits.maximumSubmissions())) {
+            actual.observe(deadline());
+            var first=assertInstanceOf(NativeFreshSnapshotPort.Received.class,actual.readFreshFullState(deadline()));
+            assertEquals(1,replay.writes);int reads=replay.reads;
+            var second=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
+            var rejected=assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class,second.dispatch());
+            assertTrue(rejected.proof().reason().contains("retention limit"));
+            assertEquals(1,replay.writes);assertEquals(reads,replay.reads);
+            assertNotEquals(first.acknowledgement().requestId(),rejected.requestId());
+        }
+    }
     private static NativeGameTransport transport(Replay replay)throws IOException {
         return transport(replay,SHA,ADAPTER);
     }

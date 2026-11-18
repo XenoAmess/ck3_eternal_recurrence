@@ -458,7 +458,8 @@ public final class RootRuntimeSourceProducts {
         var infrastructure=new RootAdvanceInfrastructureFactory.Prepared(new RootAdvanceInfrastructureFactory.Sources(primitive,primitive,
                 selected.javaSource(APPLICATION,AdvancePrimitiveArchivedReplay.class),
                 originals.source(RootRuntimeNativeOriginals.Role.CLOCK_STATUS_DEFINITION),selected.javaSource(APPLICATION,ClockStatusRead.class),
-                selected.javaSource(LOCAL_SERVICE,RootUnknownSentinelReadProfile.class)),timings);
+                selected.javaSource(LOCAL_SERVICE,RootUnknownSentinelReadProfile.class),
+                Optional.of(selected.javaSource(APPLICATION,FullSnapshotSentinelCancellation.class))),timings);
         var actual=RootAdvanceRuntimeFacts.Settings.decode(exact(inputs.data(LIFE_SETTINGS)),
                 new RawJson(RootRuntimeDefinitions.readData(new RootRuntimeDefinitionModel.DataPin(LIFE_SETTINGS,inputs.data(LIFE_SETTINGS)))));
         return new RootLifeRuntimeFactory.Prepared(new RootLifeRuntimeFactory.Sources(selected.javaSource(APPLICATION,LifeAdvanceComposite.class),

@@ -237,4 +237,49 @@ class RootBootstrapOutputGuardTest {
                 RootRuntimeDefinitions.read(written.original(),4096))));assertEquals(input.bytes(),written.original().bytes());
     }
     private static FileRef write(Path path,byte[] bytes)throws IOException{Files.write(path,bytes);return FileRef.measure(path);}
+
+    @Test void existingCloneIsCurrentInputAndDoesNotBecomePolicyOutputGrowth()throws Exception {
+        Fixture fixture=fixture(Kind.INITIAL_POLICY,new byte[]{'{','}'});
+        Path clone=root.resolve("existing-clone.ck3");Files.writeString(clone,"tiny actual pre-existing SAVE fixture");
+        var raw=new org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles();var witness=raw.observe(clone).orElseThrow();
+        var nativeFile=SharedSourceFiles.nativeFile(clone);long upper=Math.max(nativeFile.logicalBytes(),nativeFile.allocatedBytes());
+        try(var guard=fixture.open()) {
+            var before=guard.accounting();guard.requireExistingAllocatedInput(witness,upper,NOW.minusSeconds(1));
+            assertEquals(before,guard.accounting());assertEquals(0,guard.accounting().completedOutputs());
+            var policy=guard.files().createNew(fixture.asset().resolve("admission.json"),fixture.body());guard.files().verify(policy);
+            guard.requireExistingAllocatedInput(witness,upper,NOW.minusSeconds(1));
+            assertEquals(1,guard.accounting().completedOutputs());assertEquals(0,guard.accounting().retainedAllocatedUpperBytes());
+            raw.verify(witness);
+        }
+    }
+    @Test void existingCloneRequiresALaterReleaseAndExactPhysicalAllocation()throws Exception {
+        Fixture fixture=fixture(Kind.INITIAL_POLICY,new byte[]{'{','}'});
+        Path clone=root.resolve("existing-clone.ck3");Files.writeString(clone,"tiny actual pre-existing SAVE fixture");
+        var raw=new org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles();var witness=raw.observe(clone).orElseThrow();
+        var actual=SharedSourceFiles.nativeFile(clone);long upper=Math.max(actual.logicalBytes(),actual.allocatedBytes());
+        try(var guard=RootBootstrapOutputGuard.readExact(fixture.binding(),Clock.fixed(NOW.plusSeconds(5),ZoneOffset.UTC))) {
+            assertThrows(IOException.class,()->guard.requireExistingAllocatedInput(witness,upper,NOW.plusSeconds(1)));
+            assertThrows(IOException.class,()->guard.requireExistingAllocatedInput(witness,upper+1,NOW.minusSeconds(1)));
+            Files.writeString(clone,"changed physical clone after census");
+            assertThrows(IOException.class,()->guard.requireExistingAllocatedInput(witness,upper,NOW.minusSeconds(1)));
+            assertEquals(0,guard.accounting().completedOutputs());assertFalse(Files.exists(fixture.asset().resolve("admission.json")));
+        }
+    }
+    @Test void existingCloneCannotBeHiddenByAnIssuerUsageUpperBelowItsActualAllocation()throws Exception {
+        Fixture fixture=fixture(Kind.INITIAL_POLICY,new byte[]{'{','}'});
+        Path clone=root.resolve("existing-clone.ck3");Files.writeString(clone,"tiny actual pre-existing SAVE fixture");
+        var raw=new org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles();var witness=raw.observe(clone).orElseThrow();
+        var actual=SharedSourceFiles.nativeFile(clone);long upper=Math.max(actual.logicalBytes(),actual.allocatedBytes());
+        var mapper=ControlBuild.strictMapper();var capacity=(com.fasterxml.jackson.databind.node.ObjectNode)mapper.readTree(Files.readAllBytes(Path.of(fixture.capacity().path())));
+        var usage=(com.fasterxml.jackson.databind.node.ObjectNode)capacity.path("volumes").get(0).path("existing_usage");usage.put("conservative_upper_bytes",1);
+        FileRef narrow=write(fixture.control().resolve("underpriced-capacity.json"),mapper.writeValueAsBytes(capacity));
+        var selected=decode(Files.readAllBytes(Path.of(fixture.binding().path())),Binding.class);
+        var binding=new Binding(selected.schema(),selected.purpose(),selected.machineId(),selected.ownerTask(),selected.issuerTask(),selected.windowId(),
+                selected.observedAtUtc(),selected.reviewAtUtc(),selected.declarationRef(),selected.censusRef(),narrow);
+        FileRef bound=write(fixture.control().resolve("underpriced-binding.json"),encode(binding));
+        try(var guard=RootBootstrapOutputGuard.readExact(bound,fixture.clock())) {
+            assertThrows(IOException.class,()->guard.requireExistingAllocatedInput(witness,upper,NOW.minusSeconds(1)));
+            assertEquals(0,guard.accounting().completedOutputs());assertFalse(Files.exists(fixture.asset().resolve("admission.json")));
+        }
+    }
 }

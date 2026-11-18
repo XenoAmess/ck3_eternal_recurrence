@@ -174,6 +174,25 @@ class RootBootstrapDuplexTest {
             assertFalse(io.awaitExit(root.resolve("job.json")).commandResult().passed());
         }
     }
+    @Test void actualMappedEofKeepsRetirementRefusedAndClosesUnqualifiedNativeHolds()throws Exception {
+        var mode=Mode.INITIAL_SAVED_MATERIALIZED_POLICY;Fixture f=fixture(Behavior.EOF_AFTER_SEND,mode);
+        var authorized=new AtomicInteger();var created=new AtomicInteger();
+        try(var io=WindowsJobProcess.startOwnedStdio(f.stdio())){
+            f.launch().attach(io);var exchange=new RootBootstrapDuplex(mode,io,()->{},0);
+            var handler=handler(f,authorized,created);
+            assertThrows(IOException.class,()->exchange.exchange(handler));assertTrue(exchange.sendAttempted());
+            assertEquals(1,authorized.get());assertEquals(0,created.get());
+            assertThrows(IOException.class,()->exchange.exchange(handler));
+            var terminal=io.awaitExit(root.resolve("job.json"));assertFalse(terminal.commandResult().passed());
+            assertEquals(0,terminal.commandResult().accounting().activeProcesses());
+            IOException noProof=assertThrows(IOException.class,()->f.launch().completed(io,terminal));
+            assertTrue(noProof.getMessage().contains("closed or failed"));
+        }
+        IOException cleanup=assertThrows(IOException.class,f.launch()::close);
+        assertTrue(cleanup.getMessage().contains("without consuming original Job0"));
+        assertEquals(0,cleanup.getSuppressed().length,"all original native handles must still close");
+        assertThrows(IOException.class,f.launch()::requireCurrent);
+    }
     @Test void actualNormalExitFourPhasesRetainZeroByteSettingsAndOriginalEngineCustody()throws Exception {
         Fixture f=fixture(Behavior.NORMAL,Mode.NORMAL_EXIT);var authorized=new AtomicInteger();var created=new AtomicInteger();
         try(var io=WindowsJobProcess.startOwnedStdio(f.stdio())){

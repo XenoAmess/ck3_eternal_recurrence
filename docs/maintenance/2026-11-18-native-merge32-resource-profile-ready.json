@@ -1,0 +1,97 @@
+{
+  "schema": "xar.native.merged-source-ready32/v1",
+  "scope": "Offline source integration and one affected NoGame CMake-module target; not DLL/live/full CI qualification",
+  "static_review": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\NATIVE-MERGE-REVIEW32.json",
+    "bytes": 10515,
+    "sha256": "662b671ebadce9b6bb4eec1aec0bf0a603c10c915da774b69b632fa0a72dbbae"
+  },
+  "resolution_files": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\RESOLUTION-FILES32.json",
+    "bytes": 1501,
+    "sha256": "1dcd21efef7ada628300c5f49647e6839419a8897d438f357508bc612c343324"
+  },
+  "top_CMake": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\CMakeLists.merged32.txt",
+    "bytes": 486947,
+    "sha256": "92cae02c1b8b505d5741a6db8cd1beb48c0b585c95bc05c55e2c61690917ea3c"
+  },
+  "bridge": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\2-merged",
+    "bytes": 1697291,
+    "sha256": "5dbc88c66278005b7741c284865895a71e4628d18565ec6b54b00b0587d5f6a0"
+  },
+  "adapter": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\git-stage-final16\\threeway17\\3-merged",
+    "bytes": 19489,
+    "sha256": "cc46d15ec37eb39a1d50cbc2cf4362d37de3f173d6b4da2231390115d92e4d14"
+  },
+  "resource_module": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\actor_resource_leaf27.merged32.cmake",
+    "bytes": 5245,
+    "sha256": "78ef96d7dda29fbaaa3f3dfd724c34bb7010deeead5c8a9d62b5a524100a8a32"
+  },
+  "gold_frame_wrapper": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\ck3_1210_personal_gold_frame_body_v1.cpp",
+    "bytes": 198,
+    "sha256": "033a9231c1bcd8f0b100e4c3c04789b78d13f181f161e64299ca265f2b87f49b"
+  },
+  "resource_patch": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\RESOURCE-FIXTURE-PROFILE32.patch",
+    "bytes": 1237,
+    "sha256": "7b35d2e6f6aab568bd59b902eb3087bef42a49da9bbec10eeefef841f655413a"
+  },
+  "actual_qualification": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\ACTUAL-RESOURCE-FIXTURE-PROFILE32B.json",
+    "bytes": 4429,
+    "sha256": "71aae734d320d280d0186beee20f90a420d76259b0a917c20e04edce9247e097"
+  },
+  "actual_test_output": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\profile-build\\Testing\\Temporary\\LastTest.log",
+    "bytes": 1178,
+    "sha256": "23c6efc61e94798f9c5c723f7859da7fa39d2693a0a31f72811a7069d0708c26"
+  },
+  "first_red_retained": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-merge32\\FIRST-RED-INPUT-REPAIR32B.json",
+    "bytes": 1436,
+    "sha256": "d2379b0bdfe2c7cf957971bdd2405c8d81d0a2b04d6be37ae6fd4ba9ba14cfd5"
+  },
+  "permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-NATIVE-MERGE32-SINGLE-TARGET-OFFLINE-PERMIT31.json",
+    "bytes": 2567,
+    "sha256": "52fd220b77b99d646e4b5465d700965072b8f173f48618d78a8cf8ac733da282"
+  },
+  "result": {
+    "configure": 0,
+    "compile_link": 0,
+    "ctest": 0,
+    "distinct_test_programs": 1,
+    "translation_units": 10,
+    "compile_seconds": 17.508,
+    "zero_forbidden_getter_calls_proven_by_actual_counterexample": true,
+    "wrapper_compiler_profiles": [
+      "CORE",
+      "GOLD",
+      "FOUNDATION",
+      "RESOURCE"
+    ],
+    "unrelated_SOURCE_defines_absent": [
+      "FULL",
+      "CASH_V1",
+      "CASH_V2",
+      "WAR",
+      "EVENT",
+      "GUI"
+    ]
+  },
+  "limits": [
+    "Merged bridge reviewed statically, not recompiled",
+    "Full top-level CMake graph not configured or rebuilt",
+    "Five remote finite fixture substitutions statically reviewed, not rerun",
+    "No new DLL or consumer role qualification",
+    "Original frozen31 and Native29 proof facts remain independent",
+    "Withdrawn25 DLL remains unavailable",
+    "No user Game/Steam/process/window/SDK/install/settings/mod/save inspection or changes"
+  ],
+  "publication_rule": "Java owns formal Git. Preserve remote58 all unrelated changes, use these reviewed three Native merge outputs, plus test-only resource module/wrapper delta. focused-tests29 stays proof-only manual support."
+}

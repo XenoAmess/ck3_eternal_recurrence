@@ -88,6 +88,15 @@ bool VerifyResume(CoreControlContextV1 &c) noexcept {
  }
  return true;
 }
+bool SaveCleanupKnown(CoreControlContextV1 &c) noexcept {
+  // Only SAVE is blocked by sticky native access cleanup uncertainty.
+  // Application exit remains independent; unrelated Date failures retain their contracts.
+  if(c.request.operation==CoreControlOperationV1::save && c.date_sentinel!=nullptr &&
+      c.date_sentinel->access_cleanup_unknown.load(std::memory_order_seq_cst)) {
+    c.result.status=CoreControlStatusV1::unavailable;return false;
+  }
+  return true;
+}
 struct Admission {
   CoreControlContextV1 &context;
   const ck3_11906::MainThreadExecutionStampV1 &stamp;
@@ -103,6 +112,7 @@ bool BeforeQueue(void *opaque) noexcept {
   }
   if(!VerifyFullBefore(c) || !VerifyResume(c)) return false;
   if(!Unexpired(c)) {c.result.status=CoreControlStatusV1::expired;return false;}
+  if(!SaveCleanupKnown(c))return false;
   c.result.effect_attempted=true;
   return true;
 }
@@ -118,6 +128,7 @@ bool Execute(CoreControlContextV1 &c,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   c.result={};
   if (!Owned(c,stamp)) return true;
+  if(!SaveCleanupKnown(c))return true;
   if(c.request.operation==CoreControlOperationV1::sentinel_cancel) {
     // Cancellation is generation-bound paused cleanup. The provider checks
     // its original ARM deadline; no new now-plus command window is minted.

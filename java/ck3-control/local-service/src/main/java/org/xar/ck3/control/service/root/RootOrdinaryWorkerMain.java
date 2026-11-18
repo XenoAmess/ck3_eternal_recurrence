@@ -57,7 +57,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         org.xar.ck3.control.platform.RootProcessAttach.LoadedCustody loadedCustody=null;
         org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loadedRole=null;
         RootOrdinaryWorkerLoop.Result result = null;
-        Exception primary = null;
+        Throwable primary = null;
         try {
             prepared = loaded?RootOrdinaryRuntimeAssembly.prepareLoadedReplacement(config,clock):RootOrdinaryRuntimeAssembly.prepare(config, clock);
             prepared.bindOrdinaryHost(ordinaryHost);
@@ -150,13 +150,14 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             var actualLoop = new RootOrdinaryWorkerLoop.Configuration(running.batchPrefix(), bounds.maximumTurns(),
                     bounds.wallTime(), bounds.readinessTimeout(), bounds.pollInterval(), bounds.checkpointEveryEligibleAdvances());
             var warmRunning = running;
+            var workerOutput = prepared;
             var control = new RootOrdinaryWorkerLoop.Control() {
                 @Override public boolean stopRequested() { return Files.exists(config.stopPath()); }
                 @Override public boolean allowPostCycleBudgetRenewal() { return true; }
                 @Override public void onBatchCompleted(BatchReport actual, long nextSequence) throws IOException {
                     var hint = org.xar.ck3.control.application.session.SessionController.retainLifeBudgetHint(actual, schedulingHints.get());
                     schedulingHints.set(hint);
-                    recordBatch(config, clock, actual, nextSequence, hint);
+                    recordBatch(workerOutput, clock, actual, nextSequence, hint);
                 }
                 @Override public boolean captureCleanPlanningWall(BatchReport actual,long nextSequence)
                         throws IOException,InterruptedException {
@@ -271,7 +272,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             completed.put("game_stop_requested", false);
             emit(completed);
             return result.stopReason() == RootOrdinaryWorkerLoop.StopReason.OPERATOR_STOP ? 0 : 4;
-        } catch (Exception failed) {
+        } catch (Exception|Error failed) {
             primary = failed;
             if (failed instanceof InterruptedException) Thread.currentThread().interrupt();
             ObjectNode diagnostic = event(clock, "WORKER_FAILED");
@@ -292,22 +293,31 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         } finally {
             // The existing Saved supervisor loop retains an actual OWNED replacement across business completion.
             // Closing Prepared first would terminate its Job and erase the separately retained Game lifetime.
-            if(prepared!=null) {
-                try {prepared.awaitExitedReplacementOwner();}
-                catch(Exception awaiting){if(primary!=null)primary.addSuppressed(awaiting);else throw awaiting;}
-            }
-            Exception closing=primary;
-            try {closeResources(primary, running, opened, prepared, attached);}
-            catch(Exception failure){closing=failure;throw failure;}
-            finally {
-                try {
-                    if(loadedRole!=null)loadedRole.close();
-                    else if(loadedCustody!=null)loadedCustody.close();
-                } catch(Exception failure){if(closing!=null)closing.addSuppressed(failure);else throw failure;}
-            }
+            final var cleanupPrepared=prepared;final var cleanupRunning=running;final var cleanupOpened=opened;
+            final var cleanupAttached=attached;final var cleanupLoadedRole=loadedRole;final var cleanupLoadedCustody=loadedCustody;
+            finishOwnerCleanup(primary,
+                    ()->{if(cleanupPrepared!=null)cleanupPrepared.awaitExitedReplacementOwner();},
+                    ()->closeResources(null,cleanupRunning,cleanupOpened,cleanupPrepared,cleanupAttached),
+                    ()->{if(cleanupLoadedRole!=null)cleanupLoadedRole.close();else if(cleanupLoadedCustody!=null)cleanupLoadedCustody.close();});
         }
     }
 
+    @FunctionalInterface interface CleanupPhase {void run()throws Exception;}
+    /** Real owner wait runs first. Its diagnostic failure cannot skip independent remaining releases. */
+    static void finishOwnerCleanup(Throwable primary,CleanupPhase owner,CleanupPhase resources,CleanupPhase loaded)throws Exception {
+        Throwable failure=primary;
+        for(var phase:java.util.List.of(owner,resources,loaded)) {
+            try{phase.run();}
+            catch(Exception|Error current){
+                if(current instanceof InterruptedException)Thread.currentThread().interrupt();
+                if(failure==null)failure=current;else if(failure!=current)failure.addSuppressed(current);
+            }
+        }
+        if(primary==null&&failure!=null) {
+            if(failure instanceof Error fatal)throw fatal;
+            throw (Exception)failure;
+        }
+    }
     @FunctionalInterface interface RestartCapture {
         CleanRestartTicket capture() throws IOException, InterruptedException;
     }
@@ -475,19 +485,14 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         long nanos = Long.parseLong(text); StrictJson.require(nanos <= java.time.Duration.ofDays(1).toNanos(), "bounded scheduling telemetry required"); return nanos;
     }
 
-    private static void recordBatch(RootOrdinaryRuntimeConfiguration config, Clock clock,
+    private static void recordBatch(Prepared output, Clock clock,
             BatchReport actual, long nextSequence, Optional<org.xar.ck3.control.application.action.RawJson> lifeHint) throws IOException {
         ObjectNode row = OrdinarySessionResource.report(actual);
         lifeHint.ifPresent(hint -> row.set("life_budget_hint", StrictJson.parse(hint.bytes(), 16_384)));
         row.put("observed_at_utc", clock.instant().toString());
         row.put("next_sequence", Long.toString(nextSequence));
         byte[] body = FullJsonTree.encode(row, FullJsonTree.MAXIMUM_BYTES);
-        byte[] line = java.util.Arrays.copyOf(body, body.length + 1);
-        line[body.length] = 10;
-        Files.createDirectories(config.stateDirectory());
-        Files.write(config.stateDirectory().resolve("worker-batches.jsonl"), line,
-                StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
-        emit(body);
+        RootWorkerBatchLog.publish(body, output::appendWorkerBatchLog, RootOrdinaryWorkerMain::emit);
     }
 
     private static ObjectNode event(Clock clock, String status) {
@@ -507,7 +512,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         if (System.out.checkError()) throw new IOException("Ordinary worker result stdout failed");
     }
 
-    /** All sessions supplied here came from NativeGameAttachment; closing them releases only pipe/observer custody. */
+    /** Attached sessions release observer custody; an OWNED replacement has already awaited its original creator. */
     private static void closeResources(Exception primary, Running running, Opened opened,
             Prepared prepared, ManagedGameSession attached) throws IOException {
         IOException failure = null;
@@ -526,7 +531,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
     private static IOException closeOne(AutoCloseable resource, IOException previous) {
         if (resource == null) return previous;
         try { resource.close(); }
-        catch (Exception failed) {
+        catch (Exception|Error failed) {
             IOException actual = failed instanceof IOException io ? io
                     : new IOException("Ordinary worker resource close failed: " + resource.getClass().getName(), failed);
             if (previous == null) return actual;

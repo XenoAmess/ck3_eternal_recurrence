@@ -320,9 +320,8 @@ public final class RootOrdinaryPlainProducts {
             var definitions=new InteractionCapabilities.Sources(nativeDll,nativeDll,nativeDll,nativeDll,nativeDll,
                     nativeDll,nativeDll,nativeDll,nativeDll,nativeDll);
             var readPlan=new InteractionCapabilities.ReadPlan(List.of(),List.of(),List.of());
-            var build=Arrays.stream(InteractionModels.Build.values()).filter(row->row.version().equals(config.configuredBuild().version())
-                    &&row.sha256().equalsIgnoreCase(config.configuredBuild().sha256())).findFirst()
-                    .orElseThrow(()->new IllegalArgumentException("unsupported configured interaction build"));
+            var build=KnownInteractionsRuntimeInstaller.ConfiguredBuild.select(
+                    config.configuredBuild().version(),config.configuredBuild().sha256());
             return new KnownInteractionsRuntimeInstaller.Sources(definitions,readPlan,build,m(InteractionModels.class),
                     m(KnownPendingInteractionPolicy.class),m(KnownPendingInteractionEffects.class),m(KnownPendingInteractionEffects.class));
         }
@@ -360,7 +359,8 @@ public final class RootOrdinaryPlainProducts {
                 m(AdvancePrimitiveArchivedReplay.class),
                 nativeDll,
                 m(ClockStatusRead.class),
-                m(RootUnknownSentinelReadProfile.class)
+                m(RootUnknownSentinelReadProfile.class),
+                Optional.of(m(org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.class))
             );
         
             // 2. Strengths

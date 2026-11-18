@@ -42,6 +42,9 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
     private Shutdown shutdown;
     private WindowsJobProcess.CommandResult naturalExit;
     private boolean stopping,closed;
+    private CreatorOwnership creatorOwnership;
+    private Throwable creatorStopFailure;
+    private WindowsJobProcess.CommandResult creatorObservedExit;
     private final Mode mode;
     private final WindowsJobProcess.ReadOnlyProcessHandle attachedHandle;
 
@@ -75,6 +78,126 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         this.generation=Objects.requireNonNull(generation);this.transport=Objects.requireNonNull(transport);this.evidence=Objects.requireNonNull(evidence);
         this.process=null;this.custody=null;this.offline=null;this.currentSteam=null;this.owner=null;
         this.physicalSource=new NativePhysicalSourceAccess(this,Objects.requireNonNull(actualConfig),Objects.requireNonNull(actualGuard));
+    }
+
+    /** Opaque custody of this session's original creator/Job, captured without a new native open. */
+    public static final class CreatorOwnership {
+        private final ManagedGameSession session;
+        private final Object waitGate=new Object();
+        private CreatorExit completed;
+        private CreatorOwnership(ManagedGameSession session){this.session=session;}
+        public ManagedGameSession session(){return session;}
+        public GameGeneration generation(){return session.generation;}
+        public String requestId(){return session.plan.requestId();}
+        /** Keeps the calling JVM alive on the original Job. Observation failure/interrupt never requests STOP. */
+        public CreatorExit awaitOriginalExit(){return session.awaitCreatorExit(this);}
+    }
+    /** Actual original terminal DATA; construction requires the retained original creator path below. */
+    public static final class CreatorExit {
+        private final GameGeneration generation;
+        private final WindowsJobProcess.CommandResult terminal;
+        private final GameLifecycle.TerminalKind kind;
+        private final boolean resourcesClosed,interruptObserved;
+        private final long observationFailures;
+        private final List<Throwable> failures;
+        private CreatorExit(GameGeneration generation,WindowsJobProcess.CommandResult terminal,
+                GameLifecycle.TerminalKind kind,boolean resourcesClosed,CreatorWaitFailures observed,List<Throwable> failures){
+            this.generation=generation;this.terminal=terminal;this.kind=kind;this.resourcesClosed=resourcesClosed;
+            this.interruptObserved=observed.interrupted;this.observationFailures=observed.count;this.failures=List.copyOf(failures);
+        }
+        public GameGeneration generation(){return generation;}
+        public WindowsJobProcess.CommandResult terminal(){return terminal;}
+        public GameLifecycle.TerminalKind kind(){return kind;}
+        public boolean resourcesClosed(){return resourcesClosed;}
+        public boolean interruptObserved(){return interruptObserved;}
+        public long observationFailures(){return observationFailures;}
+        public List<Throwable> failures(){return failures;}
+    }
+    // This package-only loop seam carries no session, Started, Job authority or publication permit.
+    interface OriginalJobWait {
+        boolean ready()throws IOException;
+        WindowsJobProcess.CommandResult consume()throws IOException,InterruptedException;
+        void pause()throws InterruptedException;
+    }
+    static final class CreatorWaitFailures {
+        long count;boolean interrupted;
+        Throwable first,last;
+        void record(Throwable problem){if(count<Long.MAX_VALUE)count++;if(first==null)first=problem;last=problem;}
+        void appendTo(java.util.List<Throwable> target){if(first!=null)target.add(first);if(last!=null&&last!=first)target.add(last);}
+    }
+    static WindowsJobProcess.CommandResult awaitOriginalJob(OriginalJobWait original,CreatorWaitFailures failures){
+        failures.interrupted|=Thread.interrupted();
+        for(;;){
+            try{if(original.ready())return Objects.requireNonNull(original.consume());}
+            catch(InterruptedException interrupted){failures.interrupted=true;failures.record(interrupted);}
+            catch(IOException|RuntimeException|Error unavailable){failures.record(unavailable);}
+            try{original.pause();}
+            catch(InterruptedException interrupted){failures.interrupted=true;failures.record(interrupted);}
+            catch(RuntimeException|Error unavailable){failures.record(unavailable);}
+        }
+    }
+    /** Pure references/identity only. No verify, filesystem, clock or process lookup occurs here. */
+    synchronized CreatorOwnership captureOriginalCreator(JavaGameLifecycle expected)throws IOException {
+        if(mode!=Mode.OWNED||owner!=expected||process==null||custody==null||transport==null)
+            throw new IOException("exact original creator-owned session required");
+        if(creatorOwnership==null){
+            if(closed&&shutdown==null)throw new IOException("original creator already closed without a known terminal");
+            creatorOwnership=new CreatorOwnership(this);
+        }
+        return creatorOwnership;
+    }
+    synchronized java.util.Optional<CreatorOwnership> existingCreatorOwnership(JavaGameLifecycle expected)throws IOException {
+        if(mode!=Mode.OWNED||owner!=expected)throw new IOException("same original creator required");
+        return java.util.Optional.ofNullable(creatorOwnership);
+    }
+    private CreatorExit awaitCreatorExit(CreatorOwnership original){
+        synchronized(original.waitGate){
+            if(original.completed!=null)return original.completed;
+            var observed=new CreatorWaitFailures();
+            try{
+                WindowsJobProcess.CommandResult terminal=awaitOriginalJob(new OriginalJobWait(){
+                    @Override public boolean ready()throws IOException {
+                        synchronized(ManagedGameSession.this){
+                            if(original!=creatorOwnership)throw new IOException("original creator token changed");
+                            if(shutdown!=null||creatorObservedExit!=null||naturalExit!=null)return true;
+                            if(closed)throw new IOException("original Job closed without a proved terminal; no PID fallback");
+                            return !process.isRunning()&&process.accounting().activeProcesses()==0;
+                        }
+                    }
+                    @Override public WindowsJobProcess.CommandResult consume()throws IOException,InterruptedException {
+                        synchronized(ManagedGameSession.this){
+                            if(shutdown!=null)return shutdown.terminal();
+                            if(creatorObservedExit!=null)return creatorObservedExit;
+                            if(naturalExit==null)naturalExit=process.observeOriginalExitedJob();
+                            return naturalExit;
+                        }
+                    }
+                    @Override public void pause()throws InterruptedException{Thread.sleep(100);}
+                },observed);
+                observed.interrupted|=Thread.interrupted();
+                synchronized(this){
+                    creatorObservedExit=terminal; // retain actual Job0 before any fallible cleanup/publication
+                    var failures=new java.util.ArrayList<Throwable>();observed.appendTo(failures);
+                    if(creatorStopFailure!=null)failures.add(creatorStopFailure);
+                    if(terminal.stopReason()!=null)failures.add(new IOException("original terminal: "+terminal.stopReason()));
+                    if(shutdown!=null){
+                        original.completed=new CreatorExit(generation,shutdown.terminal(),shutdown.kind(),shutdown.cleanupProven(),observed,failures);
+                        return original.completed;
+                    }
+                    boolean resourcesClosed=creatorStopFailure==null;
+                    try{transport.close();}catch(IOException|RuntimeException|Error failure){failures.add(failure);resourcesClosed=false;}
+                    try{custody.close();}catch(IOException|RuntimeException|Error failure){failures.add(failure);resourcesClosed=false;}
+                    try{closeSteamAdmission();}catch(IOException|RuntimeException|Error failure){failures.add(failure);resourcesClosed=false;}
+                    try{process.closeAfterObservedEmptyExit();}catch(IOException|RuntimeException|Error failure){failures.add(failure);resourcesClosed=false;}
+                    closed=true;if(watchdog!=null)watchdog.cancel();
+                    if(resourcesClosed)try{owner.clearTrackingAfterProvenExit(this);}
+                    catch(IOException|RuntimeException failure){failures.add(failure);}
+                    GameLifecycle.TerminalKind kind=stopping?GameLifecycle.TerminalKind.UNKNOWN:GameLifecycle.TerminalKind.NATURAL_EXIT;
+                    original.completed=new CreatorExit(generation,terminal,kind,resourcesClosed,observed,failures);
+                    return original.completed;
+                }
+            }finally{if(observed.interrupted)Thread.currentThread().interrupt();}
+        }
     }
 
     public Mode mode(){return mode;}
@@ -193,23 +316,28 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         WindowsJobProcess.CommandResult actual=process.await(Duration.ofSeconds(20),deadline,()->{});
         ExactRef terminalProof=evidence.write(LifecycleEvidence.Event.STOPPED,process.identity(),actual.accounting(),actual,kind,"Original root wait/exit and Job accounting consumed before cleanup");
         if(!cleanupProven(process,actual))throw new IOException("Original Job cleanup is not proved: "+actual);
+        if(creatorOwnership!=null)creatorObservedExit=actual;
         Win32Host.ProcessInventory observedInventory=Win32Host.processInventory("ck3.exe",deadline);
         evidence.writeInventory("AFTER_STOP",observedInventory);
         List<WindowsJobProcess.ProcessIdentity> finalInventory=observedInventory.qualifiedRunning().stream().map(Win32Host.ProcessRow::identity).toList();
         if(!finalInventory.isEmpty())throw new IOException("Global CK3 inventory is not empty; unsafe marker retained");
-        if(trackingFailure!=null){process.close();closed=true;throw new IOException("Original Job0 proved but tracking changed; unsafe marker retained",trackingFailure);}
+        if(trackingFailure!=null){
+            if(creatorOwnership==null){process.close();closed=true;}
+            throw new IOException("Original Job0 proved but tracking changed; unsafe marker retained",trackingFailure);
+        }
         IOException cleanup=null;
         try{transport.close();}catch(IOException failure){cleanup=failure;}
         try{custody.close();}catch(IOException failure){if(cleanup==null)cleanup=failure;else cleanup.addSuppressed(failure);}
         try{closeSteamAdmission();}catch(IOException failure){if(cleanup==null)cleanup=failure;else cleanup.addSuppressed(failure);}
         if(cleanup!=null)throw cleanup;
-        process.close();closed=true;
+        if(creatorOwnership==null)process.close();else process.closeAfterObservedEmptyExit();closed=true;
         owner.clearTrackingAfterProvenExit(this);
         shutdown=new Shutdown(generation,actual,before,finalInventory,wasRunning,true,kind,terminalProof);
         if(watchdog!=null)watchdog.cancel();
         return shutdown;
         }catch(IOException|InterruptedException|RuntimeException failure){
             if(finalGateRejected)throw failure;
+            if(creatorOwnership!=null){creatorStopFailure=failure;throw failure;}
             // Cleanup requests on the original held Job are permitted after an unknown stop; no ACK becomes proof.
             try{process.close();}catch(RuntimeException cleanup){failure.addSuppressed(cleanup);}closed=true;
             try{transport.close();}catch(IOException|RuntimeException cleanup){failure.addSuppressed(cleanup);}
@@ -249,7 +377,7 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
     synchronized GameLifecycle.TerminalKind watchdogCheck()throws IOException{
         if(mode!=Mode.OWNED)return null;
         if(shutdown!=null||closed||stopping)return null;
-        if(!process.isRunning())return GameLifecycle.TerminalKind.NATURAL_EXIT;
+        if(!process.isRunning())return creatorOwnership==null?GameLifecycle.TerminalKind.NATURAL_EXIT:null;
         verify();
         if(plan.windowPolicy()==NativeLaunchPlan.WindowPolicy.MINIMIZED_NO_ACTIVATE)
             BackgroundGameWindowPolicy.enforce(generation,expected->{
@@ -268,6 +396,18 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
             try{transport.close();}catch(IOException|RuntimeException failure){cleanup=(failure instanceof IOException)?(IOException)failure:new IOException("Transport close failed",failure);}
             try{attachedHandle.close();}catch(RuntimeException failure){if(cleanup==null)cleanup=new IOException("Handle close failed",failure);else cleanup.addSuppressed(new IOException("Handle close failed",failure));}
             if(cleanup!=null)throw cleanup;
+            return;
+        }
+        CreatorOwnership held;
+        synchronized(this){held=creatorOwnership;}
+        if(held!=null){
+            CreatorExit actual=held.awaitOriginalExit();
+            if(!actual.resourcesClosed()||!actual.failures().isEmpty()||actual.kind()==GameLifecycle.TerminalKind.UNKNOWN
+                    ||actual.kind()==GameLifecycle.TerminalKind.NATURAL_EXIT&&actual.terminal().exitCode()!=0){
+                IOException failure=new IOException("original creator terminal or resource cleanup failed");
+                for(Throwable problem:actual.failures())failure.addSuppressed(problem);
+                throw failure;
+            }
             return;
         }
         try{stopTracked(generation,Instant.now().plusSeconds(25),false);}

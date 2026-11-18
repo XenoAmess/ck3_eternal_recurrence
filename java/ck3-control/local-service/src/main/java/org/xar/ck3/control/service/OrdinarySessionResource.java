@@ -32,11 +32,14 @@ public final class OrdinarySessionResource {
 
     @GET @Path("/status") public Response status() {
         ObjectNode row = envelope("xar.ordinary-session-status/v1");
-        if (host.current().isEmpty()) {
-            row.put("status", "UNAVAILABLE"); row.put("detail", "Root has not installed the complete qualified ordinary production graph");
+        SessionController controller;
+        try {controller=host.currentForStatus().orElse(null);}
+        catch(java.io.IOException unavailable){controller=null;}
+        if (controller==null) {
+            row.put("status", "UNAVAILABLE"); row.put("detail", "Root has not completed publication of the qualified ordinary production graph");
             return json(503, row);
         }
-        SessionController controller = host.current().orElseThrow(); row.put("status", controller.isRetired() ? "RETIRED" : controller.isRunning() ? "RUNNING_BATCH"
+        row.put("status", controller.isRetired() ? "RETIRED" : controller.isRunning() ? "RUNNING_BATCH"
                 : controller.isQuarantined() ? "RECONCILIATION_REQUIRED" : "IDLE");
         row.set("session", identity(controller));
         var lastReport = controller.lastReport();

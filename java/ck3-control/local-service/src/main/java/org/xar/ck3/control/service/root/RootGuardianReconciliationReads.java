@@ -20,12 +20,64 @@ public final class RootGuardianReconciliationReads implements GuardianReconcilia
     private final ReadContract<OrdinaryContext> ordinary;
     private final GuardianReconciliationQueries queries;
     private final ExactRef decoder;
+    private final KnownInteractionsRuntimeInstaller currentInteractions;
     private GuardianOutgoingInstaller installer;
     RootGuardianReconciliationReads(RootRuntimeContext actual,ReadContract<OrdinaryContext> sameOrdinary,Build actualBuild,
             ExactRef actualProfileSource,ExactRef actualDecoderSource) {
         context=Objects.requireNonNull(actual);ordinary=Objects.requireNonNull(sameOrdinary);decoder=Objects.requireNonNull(actualDecoderSource);
         StrictJson.require(decoder.bytes()>0,"actual guardian decoder source required");
+        currentInteractions=null;
         queries=new GuardianReconciliationQueries(ordinary,actualBuild,actualProfileSource,this);
+    }
+    RootGuardianReconciliationReads(RootRuntimeContext actual,ReadContract<OrdinaryContext> sameOrdinary,
+            KnownInteractionsRuntimeInstaller sameInteractions,ExactRef actualProfileSource,ExactRef actualDecoderSource) {
+        context=Objects.requireNonNull(actual);ordinary=Objects.requireNonNull(sameOrdinary);decoder=Objects.requireNonNull(actualDecoderSource);
+        StrictJson.require(decoder.bytes()>0,"actual guardian decoder source required");
+        currentInteractions=Objects.requireNonNull(sameInteractions);currentInteractions.requireContext(context);
+        StrictJson.require(ordinary==currentInteractions.definitions().ordinaryQuery(),"guardian must retain its identical Known ordinary query");
+        queries=createQueries(ordinary,currentInteractions.sources().configuredBuild(),actualProfileSource,this);
+    }
+    static GuardianReconciliationQueries createQueries(ReadContract<OrdinaryContext> sameOrdinary,
+            KnownInteractionsRuntimeInstaller.ConfiguredBuild configuredBuild,ExactRef profile,
+            GuardianReconciliationQueries.CanonicalAdmission admission) {
+        Objects.requireNonNull(configuredBuild);
+        return configuredBuild.qualified()
+                ?new GuardianReconciliationQueries(sameOrdinary,configuredBuild.requireQualified(),profile,admission)
+                :GuardianReconciliationQueries.historicalCrozier4(sameOrdinary,profile,admission);
+    }
+    /** Current projection and genuine ordinary READ are distinct stages; no Known receipt is manufactured. */
+    PlanningReadResult<OrdinaryContext> liveContextRead(Complete actual,ActionCommand command,Instant deadline) {
+        try{return liveContextReadChecked(actual,command,deadline);}
+        catch(IOException failure){throw new UncheckedIOException("actual guardian current context unavailable",failure);}
+    }
+    private PlanningReadResult<OrdinaryContext> liveContextReadChecked(Complete actual,ActionCommand command,Instant deadline)throws IOException {
+        Objects.requireNonNull(actual);Objects.requireNonNull(command);Objects.requireNonNull(deadline);
+        StrictJson.require(currentInteractions!=null,"guardian current context source is not bound");
+        context.requireCurrent(deadline);var same=context.borrowedSession();context.writer().requireSession(same);
+        StrictJson.require(actual.identity().machineId().equals(command.before().machineId())
+                &&actual.identity().game().equals(command.before().game())
+                &&actual.identity().frame().episodeRunId().equals(command.before().frame().episodeRunId())
+                &&actual.source().equals(command.source())&&actual.sessionId().equals(command.sessionId()),
+                "guardian current context crossed its actual command Game/source/session/episode");
+        var result=currentInteractions.readCurrentFrame(actual,deadline);
+        return currentResult(result,frame->{
+            var intent=org.xar.ck3.control.application.action.ordinary.OrdinaryInitiationIntent.fromJson(command.arguments());
+            var education=intent.education().map(value->new EducationIntent(
+                    java.util.Optional.of(new CharacterId(value.childId())),java.util.Optional.of(new CharacterId(value.guardianId())),
+                    java.util.Optional.of(value.optionKeys().stream().map(InteractionKey::new).toList())));
+            return currentInteractions.capabilities().queryCharacterInteractionOrdinaryV1(frame,
+                    new OrdinaryRequest(new InteractionKey(intent.interactionKey()),new CharacterId(intent.recipientId()),education));
+        });
+    }
+    static PlanningReadResult<OrdinaryContext> currentResult(KnownPendingInteractionPolicy.ContextRead actual,
+            java.util.function.Function<Context,PlanningReadResult<OrdinaryContext>> realOrdinaryRead) {
+        Objects.requireNonNull(actual);Objects.requireNonNull(realOrdinaryRead);
+        if(actual instanceof KnownPendingInteractionPolicy.Unavailable missing)return unavailable(missing.result());
+        return Objects.requireNonNull(realOrdinaryRead.apply(((KnownPendingInteractionPolicy.Available)actual).context()));
+    }
+    static PlanningReadResult.Unavailable<OrdinaryContext> unavailable(PlanningReadResult.Unavailable<Context> actual) {
+        Objects.requireNonNull(actual);
+        return new PlanningReadResult.Unavailable<>(actual.reason(),actual.original(),actual.decodeFailure(),actual.observedFailure());
     }
     synchronized void bind(GuardianOutgoingInstaller actual) {
         Objects.requireNonNull(actual);
@@ -47,6 +99,14 @@ public final class RootGuardianReconciliationReads implements GuardianReconcilia
             Complete actual,Instant deadline)throws IOException {
         if(!GuardianOutgoingEffects.accepts(original.command()))return List.of();
         var same=context.borrowedSession();context.writer().requireSession(same);requireInstalled();
+        if(!queries.liveReadsEnabled()) {
+            // The archive profile remains installed, but cannot issue a current native query.
+            // Resolve the actual current typed negative result; unresolved originals stay pending.
+            var current=currentInteractions.readCurrentFrame(actual,deadline);
+            StrictJson.require(current instanceof KnownPendingInteractionPolicy.Unavailable,
+                    "archive-only guardian profile cannot acquire a live context");
+            return List.of();
+        }
         var archive=context.archive().withSession(same);
         ActionReceipt retained=original(identity,archive);
         StrictJson.require(retained.equals(original),"guardian query policy changed the exact retained canonical original");

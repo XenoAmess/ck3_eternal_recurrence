@@ -17,11 +17,16 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 
 /** Cold results collect their real ROOT/child-subject proof under the same held lease before the native result query. */
 public final class RootFamilyResultRead implements FamilyPorts.ProjectedSource {
-    private final RootRuntimeContext context;private final RootInteractionContextProjection projection;
+    private final RootRuntimeContext context;private final RootFamilyInteractionContext projection;
     private final FamilyDomainReadBinding.Authority domains;private final FamilyMarriageResultQueries results;
     private final RootFamilyCampaignRead root;private final FamilyChildMarriageQueries children;
     private final FamilyPorts.Query query;private final FamilyMarriageResults.Route route;private final ReadContract<Obj> contract;
     public RootFamilyResultRead(RootRuntimeContext context,RootInteractionContextProjection sameProjection,
+            FamilyDomainReadBinding.Authority sameDomains,FamilyMarriageResultQueries sameResults,RootFamilyCampaignRead sameRoot,
+            FamilyChildMarriageQueries sameChildren,FamilyPorts.Query query) {
+        this(context,RootFamilyInteractionContext.qualified(sameProjection),sameDomains,sameResults,sameRoot,sameChildren,query);
+    }
+    public RootFamilyResultRead(RootRuntimeContext context,RootFamilyInteractionContext sameProjection,
             FamilyDomainReadBinding.Authority sameDomains,FamilyMarriageResultQueries sameResults,RootFamilyCampaignRead sameRoot,
             FamilyChildMarriageQueries sameChildren,FamilyPorts.Query query) {
         this.context=Objects.requireNonNull(context);projection=Objects.requireNonNull(sameProjection);domains=Objects.requireNonNull(sameDomains);
@@ -38,7 +43,7 @@ public final class RootFamilyResultRead implements FamilyPorts.ProjectedSource {
         try {
             var same=context.borrowedSession();return context.collector().currentPlanning(same,original,original.deadline(),(request,lease)->{
                 StrictJson.require(context.readCatalog().containsIdentity(contract),"result uses a different installed native contract");
-                var actual=projection.project(lease.frame(),original.deadline());var binding=domains.current(same,RootFamilyDomainReadAuthority.slot(query),Selection.PENDING,pending);
+                return projection.projected(original,lease.frame(),flat,actual->{var binding=domains.current(same,RootFamilyDomainReadAuthority.slot(query),Selection.PENDING,pending);
                 Obj domainBound=flat.with("original_domain",binding.toJson());Optional<ExactRef> proof=Optional.empty();
                 if(cold) {
                     PlanningReadResult<Obj> observed;
@@ -59,6 +64,7 @@ public final class RootFamilyResultRead implements FamilyPorts.ProjectedSource {
                 domains.verifyCurrent(read,binding,Selection.PENDING,pending);
                 var result=context.reads().read(same,contract,read);context.writer().requireSession(same);
                 return new FamilyPorts.ProjectedRead(canonical,result);
+                });
             });
         } catch(IOException failure){throw new UncheckedIOException("actual held cold relationship proof or result unavailable",failure);}
     }

@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
+#include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
 #include <array>
 #include <cstring>
 #include <iostream>
@@ -211,11 +212,40 @@ bool ReadPrefix(const GameAdapter &, Snapshot &snapshot) noexcept {
 
 namespace {
 struct Clocks { std::uint64_t wall=1000,mono=1000; } clocks;
-std::uint64_t Wall(void *) noexcept { return clocks.wall; }
+unsigned wall_reads=0,expire_on_wall_read=0;
+std::uint64_t Wall(void *) noexcept {
+  ++wall_reads;
+  if(expire_on_wall_read!=0 && wall_reads==expire_on_wall_read) clocks.wall=3000;
+  return clocks.wall;
+}
 std::uint64_t Mono(void *) noexcept { return clocks.mono; }
 void ExpireFullRead() noexcept {clocks.wall=3000;}
 std::size_t clones=0,queues=0,deletes=0,object_size=0;
 bool reject=false,expire_on_clone=false;
+bool retain_rejected_clone=false,clone_fails_after_allocation=false;
+void (*after_clone)() noexcept=nullptr;
+DateSentinelStateV1 *cleanup_after_clone=nullptr;
+enum class OwnerFault { stop, failure, sequence, thread, context, registration, tls, pump };
+void InvalidateOwner(CoreControlContextV1 &c,
+    xar::ck3_11906::MainThreadExecutionStampV1 &stamp,OwnerFault fault) noexcept {
+  auto &m=*c.mailbox;
+  switch(fault) {
+  case OwnerFault::stop: m.stop_requested.store(true);break;
+  case OwnerFault::failure: m.failure_flags.store(1);break;
+  case OwnerFault::sequence: m.published_sequence.store(c.ticket.sequence+1);break;
+  case OwnerFault::thread: m.owner_thread_id.store(0);break;
+  case OwnerFault::context: m.executor_context=nullptr;break;
+  case OwnerFault::registration: xar::ck3_11906::UnregisterMainThreadTimelineExecutorsV1(m);break;
+  case OwnerFault::tls: stamp.tls_main_thread_marker=0;break;
+  case OwnerFault::pump: m.owner_verified_pump_epochs.store(0);break;
+  }
+}
+CoreControlContextV1 *clone_context=nullptr;
+xar::ck3_11906::MainThreadExecutionStampV1 *clone_stamp=nullptr;
+OwnerFault clone_owner_fault=OwnerFault::stop;
+void RevokeOwnerAfterClone() noexcept {
+  InvalidateOwner(*clone_context,*clone_stamp,clone_owner_fault);
+}
 std::array<std::byte,0x40> observed_command{};
 void *Destroy(void *p,std::uint32_t flags) {
   if (flags!=1) std::abort(); ++deletes; delete[] static_cast<std::byte *>(p); return nullptr;
@@ -224,12 +254,17 @@ void **Clone(const void *source,void **out) {
   ++clones; auto *copy=new std::byte[object_size];
   std::memcpy(copy,source,object_size); *out=copy;
   if (expire_on_clone) clocks.wall=3000;
+  if (after_clone) after_clone();
+  if (cleanup_after_clone) cleanup_after_clone->access_cleanup_unknown.store(true,std::memory_order_seq_cst);
+  if (clone_fails_after_allocation) return nullptr;
   return out;
 }
 bool Queue(void *,void **owned,std::uint32_t flags) {
   if (flags!=7 || owned==nullptr || *owned==nullptr) std::abort();
   ++queues; std::memcpy(observed_command.data(),*owned,object_size);
-  Destroy(*owned,1); *owned=nullptr; return !reject;
+  // A rejecting manager may leave the cloned command with the caller.
+  if (!(reject && retain_rejected_clone)) { Destroy(*owned,1); *owned=nullptr; }
+  return !reject;
 }
 unsigned exit_calls=0;
 void NativeApplicationQuit(void *app) { ++exit_calls; static_cast<unsigned char *>(app)[0x89]=1; }
@@ -309,8 +344,12 @@ int main() {
   std::int32_t speed_count=5;
   CommandBindings commands{true,&queues,&Queue,vtable,1,vtable,1,vtable,1,&speed_count};
   CoreControlContextV1 context{};
+  const auto valid_stamp=stamp;
   const auto reset=[&]() {
-    context={}; clocks={}; clones=queues=deletes=0; reject=expire_on_clone=false;
+    context={}; stamp=valid_stamp; clocks={}; clones=queues=deletes=0; reject=expire_on_clone=false;
+    retain_rejected_clone=clone_fails_after_allocation=false;after_clone=nullptr;
+    wall_reads=expire_on_wall_read=0;
+    clone_context=nullptr;clone_stamp=nullptr;cleanup_after_clone=nullptr;
     object_size=sizeof(TimeCommand);
     context.game=&adapter; context.core=gBindings; context.commands=commands;
     context.request=parsed; context.mailbox=&mailbox; context.ticket.sequence=1;
@@ -360,6 +399,19 @@ int main() {
   CHECK(observed_command[8]==std::byte{0x20});
   CHECK(std::memcmp(observed_command.data()+0x20,kCheckpointSaveName,sizeof(kCheckpointSaveName))==0);
   CHECK(!BindCommandImage(0x140000000,"old-hash").enabled);
+  reset();context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
+  object_size=sizeof(AutoSaveCommand);reject=retain_rejected_clone=true;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::rejected && context.result.effect_attempted &&
+      clones==1 && queues==1 && deletes==1);
+  const auto retained_ack=SerializeCoreControlCommandResultV1("save-rejected-retained",context.request.step,context.result,kFullClockControlResultSchemaV1,19);
+  CHECK(retained_ack.find("\"physical_save_confirmed\":false")!=std::string::npos);
+  CHECK(retained_ack.find("\"submission\"")==std::string::npos);
+  reset();context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
+  object_size=sizeof(AutoSaveCommand);clone_fails_after_allocation=true;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::unavailable && !context.result.effect_attempted &&
+      clones==1 && queues==0 && deletes==1);
   // These checks isolate complete-value admission to the already-qualified
   // queue executor; the genuine composite Full reader has its own RAM fixture.
   FixtureAdapter full_adapter(kFullDescriptor);full_adapter.full_read_ok=true;
@@ -384,6 +436,37 @@ int main() {
   CHECK(full_save_ack.find("\"requested_save_name\":\"xar_checkpoint\"")!=std::string::npos);
   CHECK(full_save_ack.find("\"date_raw\":123456")!=std::string::npos);
   CHECK(full_save_ack.find("\"physical_save_confirmed\":false")!=std::string::npos);
+  // Sticky worker cleanup uncertainty blocks both SAVE routes before cloning.
+  DateSentinelStateV1 cleanup_state;
+  cleanup_state.access_cleanup_unknown.store(true,std::memory_order_seq_cst);
+  for(const bool full : {false,true}) {
+    if(full)full_reset();else reset();
+    context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
+    context.date_sentinel=&cleanup_state;object_size=sizeof(AutoSaveCommand);
+    CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+    CHECK(context.result.status==CoreControlStatusV1::unavailable && !context.result.effect_attempted &&
+        clones==0 && queues==0 && deletes==0 && cleanup_state.access_cleanup_unknown.load());
+    const auto blocked=SerializeCoreControlCommandResultV1(full?"cleanup-unknown-save-full":"cleanup-unknown-save-core",context.request.step,
+        context.result,full?kFullClockControlResultSchemaV1:kCoreControlResultSchemaV1,19);
+    // Exact NoGame producer output for the Java ACK-DATA consumer; never a live custody claim.
+    std::cout<<blocked<<std::endl;
+    CHECK(blocked.find("\"accepted\":false")!=std::string::npos && blocked.find("\"effect_attempted\":false")!=std::string::npos);
+    CHECK(blocked.find("\"physical_save_confirmed\":false")!=std::string::npos && blocked.find("\"submission\"")==std::string::npos);
+    if(full)CHECK(blocked.find("full_clock_unavailable")!=std::string::npos);
+  }
+  // A clone callback can discover UNKNOWN after outer admission but before queue.
+  full_reset();cleanup_state.access_cleanup_unknown.store(false);
+  context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
+  context.date_sentinel=&cleanup_state;object_size=sizeof(AutoSaveCommand);cleanup_after_clone=&cleanup_state;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::unavailable && !context.result.effect_attempted &&
+      clones==1 && queues==0 && deletes==1 && cleanup_state.access_cleanup_unknown.load());
+  // Ordinary Date failure flags do not expand this resource-only SAVE gate.
+  full_reset();cleanup_state.access_cleanup_unknown.store(false);cleanup_state.pending_failure.store(date_sentinel_failure_expired);
+  context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
+  context.date_sentinel=&cleanup_state;object_size=sizeof(AutoSaveCommand);
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::submitted && clones==1 && queues==1 && deletes==1);
   CoreControlResultV1 zero_queue{};zero_queue.status=CoreControlStatusV1::expired;
   auto zero_ack=SerializeCoreControlCommandResultV1("full-zero","set-speed-3",zero_queue,kFullClockControlResultSchemaV1);
   CHECK(zero_ack.find("full_clock_expired")!=std::string::npos);
@@ -412,10 +495,47 @@ int main() {
     context.request=exit_request;
     context.application_exit={true,&app_slot,&NativeApplicationQuit,app_vtable,app_vtable+8};
     context.application_exit_session=&exit_session;
+    // A sticky worker-resource UNKNOWN never authorizes cleanup, and does not block app quit.
+    context.date_sentinel=&cleanup_state;cleanup_state.access_cleanup_unknown.store(true);
   };
+  // Exercise the real production Owned/BeforeQueue branches for both commands.
+  // These deterministic callback fixtures do not assert a live race occurred.
+  constexpr std::array<OwnerFault,8> owner_faults{OwnerFault::stop,OwnerFault::failure,
+      OwnerFault::sequence,OwnerFault::thread,OwnerFault::context,OwnerFault::registration,
+      OwnerFault::tls,OwnerFault::pump};
+  for(const bool is_exit : {false,true}) {
+    for(const auto fault : owner_faults) {
+      ApplicationExitSessionV1 unclaimed;
+      reset();
+      if(is_exit) {arm_exit();context.application_exit_session=&unclaimed;}
+      else {context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";}
+      object_size=sizeof(AutoSaveCommand);
+      InvalidateOwner(context,stamp,fault);
+      CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+      CHECK(context.result.status==CoreControlStatusV1::unavailable && !context.result.effect_attempted &&
+          clones==0 && queues==0 && deletes==0 && exit_calls==0 && !unclaimed.claimed.load());
+    }
+  }
+  for(const auto fault : owner_faults) {
+    reset();context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
+    object_size=sizeof(AutoSaveCommand);clone_context=&context;clone_stamp=&stamp;
+    clone_owner_fault=fault;after_clone=&RevokeOwnerAfterClone;
+    CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+    CHECK(context.result.status==CoreControlStatusV1::stale && !context.result.effect_attempted &&
+        clones==1 && queues==0 && deletes==1 && exit_calls==0);
+  }
+  // After the two outer deadline checks, expire at BeforeApplicationExit's
+  // first check. No lifetime claim or native quit may precede this admission.
+  ApplicationExitSessionV1 late_exit_session;
+  reset();arm_exit();context.application_exit_session=&late_exit_session;
+  expire_on_wall_read=wall_reads+3;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::expired && !context.result.effect_attempted &&
+      !late_exit_session.claimed.load() && wall_reads==expire_on_wall_read && exit_calls==0 && clones==0 && queues==0);
   reset();arm_exit();CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
   CHECK(context.result.status==CoreControlStatusV1::exit_requested && exit_calls==1 &&
       context.result.effect_attempted && queues==0 && clones==0);
+  CHECK(cleanup_state.access_cleanup_unknown.load() && !DateSentinelShutdownSafeV1(cleanup_state));
   CoreControlResultV1 consumed{};consumed.status=CoreControlStatusV1::exit_claim_consumed;
   const auto consumed_ack=SerializeCoreControlCommandResultV1("exit-consumed",kApplicationExitStepV1,consumed);
   CHECK(consumed_ack.find("accepted\":false")!=std::string::npos);

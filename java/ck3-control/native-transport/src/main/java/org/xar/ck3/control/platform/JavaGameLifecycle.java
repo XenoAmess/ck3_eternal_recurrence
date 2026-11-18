@@ -75,19 +75,38 @@ public final class JavaGameLifecycle {
 
     /** The composition root supplies the entire immutable permission set before any physical Game exists. */
     private final Optional<Duration> operationTimeout;
+    /** Immutable DATA selected before any physical Game or Native endpoint exists. */
+    public record TransportLimits(int maximumFramesPerOperation,int maximumSubmissions) {
+        public TransportLimits {
+            if(maximumFramesPerOperation<1||maximumFramesPerOperation>65_536
+                    ||maximumSubmissions<1||maximumSubmissions>1_000_000)
+                throw new IllegalArgumentException("explicit finite frame/submission bounds required");
+        }
+    }
+    private static final TransportLimits DEFAULT_TRANSPORT_LIMITS=new TransportLimits(65_536,1_000_000);
+    private final TransportLimits transportLimits;
+    public TransportLimits transportLimits(){return transportLimits;}
     public JavaGameLifecycle(List<NativePrivateActionPermission> actualPrivateActions) {
-        this(actualPrivateActions,Optional.empty());
+        this(actualPrivateActions,Optional.empty(),DEFAULT_TRANSPORT_LIMITS);
     }
     public JavaGameLifecycle(List<NativePrivateActionPermission> actualPrivateActions,Duration readOperationTimeout) {
-        this(actualPrivateActions,validateTimeout(readOperationTimeout));
+        this(actualPrivateActions,validateTimeout(readOperationTimeout),DEFAULT_TRANSPORT_LIMITS);
     }
-    private JavaGameLifecycle(List<NativePrivateActionPermission> actualPrivateActions,Optional<Duration> timeout) {
+    public JavaGameLifecycle(List<NativePrivateActionPermission> actualPrivateActions,
+            int maximumFramesPerOperation,int maximumSubmissions) {
+        this(actualPrivateActions,Optional.empty(),new TransportLimits(maximumFramesPerOperation,maximumSubmissions));
+    }
+    public JavaGameLifecycle(List<NativePrivateActionPermission> actualPrivateActions,Duration readOperationTimeout,
+            int maximumFramesPerOperation,int maximumSubmissions) {
+        this(actualPrivateActions,validateTimeout(readOperationTimeout),new TransportLimits(maximumFramesPerOperation,maximumSubmissions));
+    }
+    private JavaGameLifecycle(List<NativePrivateActionPermission> actualPrivateActions,Optional<Duration> timeout,TransportLimits limits) {
         privateActions=List.copyOf(actualPrivateActions);
         java.util.Set<String> operations=new java.util.HashSet<>();
         for(NativePrivateActionPermission permission:privateActions)
             if(!operations.add(permission.operation().value()))
                 throw new IllegalArgumentException("one actual private permission per operation required");
-        operationTimeout=timeout;
+        operationTimeout=timeout;transportLimits=Objects.requireNonNull(limits);
     }
     private static Optional<Duration> validateTimeout(Duration readOperationTimeout) {
         Objects.requireNonNull(readOperationTimeout);
@@ -105,6 +124,13 @@ public final class JavaGameLifecycle {
     public synchronized LaunchResult launchSaved(NativeLaunchPlan plan)throws IOException,InterruptedException{
         if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))return new Rejected("launchSaved requires an exact physical save");
         return launch(plan);
+    }
+    @FunctionalInterface public interface SavedCreateHandoff { void verifyAndRelease()throws IOException; }
+    /** Preparation owner verifies the persisted mapping and closes all handles before original CREATE. */
+    public synchronized LaunchResult launchSaved(NativeLaunchPlan plan,SavedCreateHandoff handoff)throws IOException,InterruptedException {
+        Objects.requireNonNull(handoff);
+        if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))return new Rejected("mapped Saved launch requires exact SavedGame");
+        return launch(plan,null,handoff);
     }
     /** Explicit user-authorized Saved launch in unchanged current Steam mode; no offline claim. */
     public synchronized LaunchResult launchSavedCurrentMode(NativeLaunchPlan plan,Path authorization)throws IOException,InterruptedException{
@@ -193,6 +219,23 @@ public final class JavaGameLifecycle {
             throw new IOException("Cannot replace a different current session");
         currentSession = actual;
     }
+    /** Pure in-memory capture of an exact already-formed original Started, before descriptor publication. */
+    public synchronized ManagedGameSession.CreatorOwnership captureStartedOwner(Started actual)throws IOException {
+        if(actual==null||actual.session()==null||actual.nativeHello()==null||actual.launchEvidence()==null)
+            throw new IOException("complete actual original Started required");
+        ManagedGameSession session=actual.session();
+        if(results.get(session.launchPlan().requestId())!=actual||currentSession!=session)
+            throw new IOException("Started does not belong to this exact current creator result");
+        return session.captureOriginalCreator(this);
+    }
+    /** A replacement may retain Started before its later parent-record publication fails. No IO or PID lookup. */
+    public synchronized Optional<ManagedGameSession.CreatorOwnership> startedOwner(String originalRequestId)throws IOException {
+        if(originalRequestId==null)throw new IOException("original request identity required");
+        LaunchResult retained=results.get(originalRequestId);
+        if(!(retained instanceof Started actual))return Optional.empty();
+        return actual.session().existingCreatorOwnership(this);
+    }
+
     /** A cold consumer must retain this new daemon's genuine original creator result, never a parsed row. */
     void requireColdStarted(Started actual,Instant deadline)throws IOException{
         Objects.requireNonNull(actual);Win32Host.deadline(deadline);
@@ -258,6 +301,7 @@ public final class JavaGameLifecycle {
                     replacements.put(id,new ReplacementUnknown(id,"exited original retained; Saved child not proven: "+result));
                     return queryReplacement(id);
                 }
+                captureStartedOwner(started); // before any post-Started replacement publication
                 if(started.session().generation().equals(actual.generation()))throw new IOException("exited replacement did not create a different measured Game birth");
                 var accepted=new ReplacementControl("xar.java-game-replacement/v1",id,"EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED",
                         actual.generation().pid(),actual.generation().creationFiletime().value().toString(),save.save(),actual.evidence(),started.launchEvidence());
@@ -300,6 +344,7 @@ public final class JavaGameLifecycle {
                     ReplacementUnknown unknown=new ReplacementUnknown(id,"Old Job stopped; Saved child not proven: "+result);
                     replacements.put(id,unknown);return unknown;
                 }
+                captureStartedOwner(started); // before any post-Started replacement publication
                 if(started.session().generation().equals(request.expectedOld()))throw new IOException("Replacement did not create a different measured generation");
                 atomic(claim,new ReplacementControl("xar.java-game-replacement/v1",id,"NATIVE_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED",request.expectedOld().pid(),request.expectedOld().creationFiletime().value().toString(),save.save(),stopped.evidence(),started.launchEvidence()),false);
                 Replaced replaced=new Replaced(request.expectedOld(),started,LifecycleEvidence.exact(ControlBuild.FileRef.measure(claim)));replacements.put(id,replaced);return replaced;
@@ -310,6 +355,9 @@ public final class JavaGameLifecycle {
         return launch(plan,null);
     }
     private LaunchResult launch(NativeLaunchPlan plan,ControlBuild.FileRef currentAuthorization)throws IOException,InterruptedException{
+        return launch(plan,currentAuthorization,null);
+    }
+    private LaunchResult launch(NativeLaunchPlan plan,ControlBuild.FileRef currentAuthorization,SavedCreateHandoff handoff)throws IOException,InterruptedException{
         Objects.requireNonNull(plan);
         NativeLaunchPlanCodec.Configuration body=NativeLaunchPlanCodec.describe(plan),previous=launchRequests.get(plan.requestId());
         if(previous!=null){
@@ -351,6 +399,7 @@ public final class JavaGameLifecycle {
             if (plan.load() instanceof NativeLaunchPlan.SavedGame saved) {
                 NativeSavedGameFiles.materialize(plan.profileDirectory(), saved);
             }
+            if(handoff!=null)handoff.verifyAndRelease();
             writeMarker(plan,nonce,null);
             writeClaim(plan,nonce,ClaimState.CREATE_ENTERED,null,false);
             entered=true; // Every failure after entering original CREATE remains UNKNOWN and is never replayed.
@@ -380,7 +429,9 @@ public final class JavaGameLifecycle {
             WindowsPreloadCustody.Lease held=lease.get();
             if(held==null||endpoint.get()==null||endpointConfig.get()==null||endpointGuard.get()==null)
                 throw new IOException("Original Game did not retain pre-resume resources and endpoint inputs");
-            transport=operationTimeout.isPresent()?new NativeGameTransport(endpoint.get(),65536,1000000,privateActions,operationTimeout.get()):new NativeGameTransport(endpoint.get(),65536,1000000,privateActions);
+            transport=operationTimeout.isPresent()
+                    ?new NativeGameTransport(endpoint.get(),transportLimits.maximumFramesPerOperation(),transportLimits.maximumSubmissions(),privateActions,operationTimeout.get())
+                    :new NativeGameTransport(endpoint.get(),transportLimits.maximumFramesPerOperation(),transportLimits.maximumSubmissions(),privateActions);
             Instant helloDeadline=min(plan.deadline(),Instant.now().plus(plan.startupTimeout()));
             transport.awaitHello(helloDeadline);held.observeLoaded();
             Path hello=plan.evidenceRoot().resolve("native-hello.packet");Files.write(hello,transport.lastOriginalPacket(),StandardOpenOption.CREATE_NEW);
@@ -393,8 +444,11 @@ public final class JavaGameLifecycle {
             Path track=control.resolve("java-game.json");atomic(track,record,false);
             tracking.put(session,new TrackingState(plan,nonce,key,track));
             writeClaim(plan,nonce,ClaimState.STARTED,process.identity(),false);
-            Started started=new Started(session,LifecycleEvidence.exact(ControlBuild.FileRef.measure(hello)),last);results.put(plan.requestId(),started);
-            currentSession=session;session.activateRuntime();return started;
+            ExactRef actualHello=LifecycleEvidence.exact(ControlBuild.FileRef.measure(hello));
+            // Activation failure is still CREATE_UNKNOWN, never an already returned Started.
+            currentSession=session;session.activateRuntime();
+            Started started=new Started(session,actualHello,last);results.put(plan.requestId(),started);
+            return started;
         }catch(IOException|RuntimeException failure){
             if(!entered){
                 if(offline!=null)try{offline.close();}catch(IOException cleanup){failure.addSuppressed(cleanup);}

@@ -310,6 +310,25 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
       return unavailable(FailureStage::worker_snapshot_date_mismatch);
     if (snapshot_->paused != diagnostics.observed_paused)
       return unavailable(FailureStage::worker_snapshot_pause_mismatch);
+    // Florin cached Full is still derived from one qualified owner source.
+    // Consumers do not read live TLS/Game memory on the worker thread.
+    if (game::IsCk3_1210Descriptor(descriptor()) &&
+        (mailbox_->offline_fixture || diagnostics.stop_requested || diagnostics.failure_flags != 0 ||
+         mailbox_->stop_requested.load(std::memory_order_acquire) ||
+         mailbox_->proof_reset_requested.load(std::memory_order_acquire) ||
+         mailbox_->failure_flags.load(std::memory_order_acquire) != 0 ||
+         (!diagnostics.iat_installed && !diagnostics.sdl_poll_event_hook_installed) ||
+         diagnostics.owner_verified_pump_epochs < ck3_11906::kMainThreadQueryMinimumOwnerVerifiedPumpEpochs ||
+         diagnostics.paused_owner_verified_pump_epochs < ck3_11906::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs ||
+         diagnostics.owner_thread_id == 0 || diagnostics.owner_thread_id != diagnostics.observed_current_thread_id ||
+         snapshot_source_stamp_.thread_id != diagnostics.owner_thread_id ||
+         snapshot_source_stamp_.tls_context != diagnostics.observed_tls_context ||
+         snapshot_source_stamp_.game_state != diagnostics.observed_game_state ||
+         snapshot_source_stamp_.jomini_state != diagnostics.observed_jomini_state ||
+         mailbox_->owner_thread_id.load(std::memory_order_acquire) != diagnostics.owner_thread_id ||
+         diagnostics.pump_epochs != snapshot_epoch_ ||
+         mailbox_->pump_epochs.load(std::memory_order_acquire) != snapshot_epoch_))
+      return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
     output = *snapshot_;
     return true;
   } catch (...) {
@@ -326,6 +345,25 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
         stamp.pump_epoch == 0 || stamp.thread_id == 0 ||
         GetCurrentThreadId() != stamp.thread_id || stamp.tls_initialized != 1 ||
         stamp.tls_main_thread_marker != 1) return false;
+    // A cached heartbeat is also an owner publication; do not retag it
+    // under a stale/spoofed stamp or a proof that the native Full would reject.
+    if (game::IsCk3_1210Descriptor(descriptor())) {
+      if (!mailbox_ || mailbox_->offline_fixture || stamp.tls_context == 0 ||
+          stamp.game_state == 0 || stamp.jomini_state == 0) return false;
+      const auto &m=*mailbox_;
+      if (m.stop_requested.load() || m.proof_reset_requested.load() || m.failure_flags.load() != 0 ||
+          (!m.iat_hook_installed.load() && !m.sdl_poll_event_hook_installed.load()) ||
+          m.active_hook_calls.load() == 0 || m.owner_thread_id.load() != stamp.thread_id ||
+          m.observed_current_thread_id.load() != stamp.thread_id || m.pump_epochs.load() != stamp.pump_epoch ||
+          !m.observed_stamp_read_success.load() || m.observed_tls_initialized.load() != 1 ||
+          m.observed_tls_main_thread_marker.load() != 1 || !m.observed_paused.load() ||
+          m.observed_tls_context.load() != stamp.tls_context ||
+          m.observed_game_state.load() != stamp.game_state || m.observed_jomini_state.load() != stamp.jomini_state ||
+          m.observed_date_raw.load() != stamp.date_raw ||
+          m.owner_verified_pump_epochs.load() < ck3_11906::kMainThreadQueryMinimumOwnerVerifiedPumpEpochs ||
+          m.paused_owner_verified_pump_epochs.load() < ck3_11906::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs)
+        return false;
+    }
     {
       std::lock_guard guard(snapshot_mutex_);
       if (snapshot_pending_generation_ != 0) return false;
@@ -333,6 +371,11 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
       // immediately; typed requests still read a fresh raw frame on owner.
       if (snapshot_.has_value() && snapshot_epoch_ != 0 &&
           snapshot_->date_raw == stamp.date_raw && snapshot_->paused == stamp.paused &&
+          (!game::IsCk3_1210Descriptor(descriptor()) ||
+           (snapshot_source_stamp_.thread_id == stamp.thread_id &&
+            snapshot_source_stamp_.tls_context == stamp.tls_context &&
+            snapshot_source_stamp_.game_state == stamp.game_state &&
+            snapshot_source_stamp_.jomini_state == stamp.jomini_state)) &&
           GetTickCount64() < next_snapshot_sample_ms_) {
         snapshot_epoch_ = stamp.pump_epoch;
         return true;
@@ -357,6 +400,7 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
     std::lock_guard guard(snapshot_mutex_);
     if (!available) {
       snapshot_.reset();
+      snapshot_source_stamp_ = {};
       snapshot_pending_generation_ = 0;
       snapshot_changed_.notify_all();
       return false;
@@ -364,6 +408,7 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
     if (!snapshot_.has_value() || *snapshot_ != observed) ++snapshot_revision_;
     snapshot_ = std::move(observed);
     snapshot_epoch_ = stamp.pump_epoch;
+    snapshot_source_stamp_ = stamp;
     next_snapshot_sample_ms_ = GetTickCount64() + 250;
     snapshot_published_generation_ = generation;
     snapshot_pending_generation_ = 0;
@@ -376,6 +421,7 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
       std::lock_guard guard(snapshot_mutex_);
       if (snapshot_pending_generation_ == generation) {
         snapshot_.reset();
+        snapshot_source_stamp_ = {};
         snapshot_epoch_ = 0;
         snapshot_pending_generation_ = 0;
         snapshot_changed_.notify_all();

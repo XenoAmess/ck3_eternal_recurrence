@@ -142,6 +142,7 @@ public final class RootApplicationAssembly {
             private final RootJavaSavedBootstrap.RetainedSaved retained;
             private volatile boolean installed;
             private volatile boolean promoted;
+            private volatile boolean activationPublished;
             private volatile boolean revoked;
 
             private SavedLiveToken(Core owner,RootApplicationSession session,DriverBootstrap.Adopted adopted,
@@ -196,20 +197,35 @@ public final class RootApplicationAssembly {
         void promoteSavedLive(RootApplicationSession actual)throws IOException {
             var token=savedLiveToken.get();
             if(token==null)throw new IOException("Saved graph never completed its private live assembly");
-            writer.locked(same->{
-                writer.requireSession(same);
-                token.requirePromotable(actual);
+            boolean[] began={false};
+            try {
+                writer.locked(same->{
+                    writer.requireSession(same);
+                    token.requirePromotable(actual);
+                    synchronized(this) {
+                        if(resourcesClosed||requestsClosed||savedLiveToken.get()!=token||activeSession!=actual
+                                ||token.revoked||token.promoted||!token.installed)
+                            throw new IOException("closed Saved graph cannot promote or revive");
+                        token.promoted=true;began[0]=true;
+                    }
+                    // The producer validates and releases custody without holding the Core monitor.
+                    token.producer.activateSavedLive(token);
+                    token.requireCurrent(token.producer,token.confirmed,token.retained);
+                    return null;
+                });
+                // Public access follows producer activation AND complete writer-scope exit.
                 synchronized(this) {
                     if(resourcesClosed||requestsClosed||savedLiveToken.get()!=token||activeSession!=actual
-                            ||token.revoked||token.promoted||!token.installed)
-                        throw new IOException("closed Saved graph cannot promote or revive");
-                    token.promoted=true;
+                            ||token.revoked||token.activationPublished)
+                        throw new IOException("Saved activation lost its exact open publication owner");
+                    token.requireCurrent(token.producer,token.confirmed,token.retained);
+                    token.activationPublished=true;
                 }
-                // Do not hold the Core monitor while acquiring the Producer monitor.
-                try {token.producer.activateSavedLive(token);token.requireCurrent(token.producer,token.confirmed,token.retained);}
-                catch(IOException|RuntimeException|Error failure){token.revoked=true;savedLiveToken.compareAndSet(token,null);throw failure;}
-                return null;
-            });
+            }catch(IOException|RuntimeException|Error failure) {
+                // A rejected duplicate which never owned promotion cannot revoke its actual successful peer.
+                if(began[0]){token.revoked=true;savedLiveToken.compareAndSet(token,null);}
+                throw failure;
+            }
         }
         void revokeSavedLive(RootApplicationSession actual) {
             var token=savedLiveToken.get();
@@ -226,7 +242,7 @@ public final class RootApplicationAssembly {
             @Override public String revalidate(WriterContracts.Head predecessor,WriterContracts.Request request)throws IOException {
                 var same=writer.borrowedSession();writer.requireSession(same);
                 var actual=Objects.requireNonNull(confirmedSavedEntry,"actual private saved entry is unavailable");
-                actual.admission.requireCurrent(same);
+                actual.admission.requireProjectionCurrent(same,null);
                 StrictJson.require(predecessor.digest().equals(same.head().digest())
                         &&predecessor.digest().equals(actual.predecessorDigest)
                         &&request.kind().equals(org.xar.ck3.control.continuity.SavedContinuityBootstrap.KIND)
@@ -348,38 +364,45 @@ public final class RootApplicationAssembly {
 
         public synchronized DriverBootstrap.Adopted adoptConfirmedSaved(RootJavaSavedBootstrap.Admission actual,
                 G2Source source,int retainedFrames,Instant deadline)throws IOException {
-            Objects.requireNonNull(actual);Objects.requireNonNull(source);Objects.requireNonNull(deadline);
-            StrictJson.require(!staged&&!finished&&adopted.isEmpty()&&confirmedSavedEntry==null,
-                    "confirmed saved Driver binds once to this unused Core");
-            if(menu!=null)StrictJson.require(menu.game==actual.game()&&menu.source.equals(source),
-                    "saved entry crossed an existing actual menu Game/source");
-            return writer.locked(same->{
-                writer.requireSession(same);actual.requireCurrent(same);
-                var predecessor=same.head();
-                var original=DriverBootstrap.stageConfirmedSaved(actual,same,archive,actions,source,retainedFrames,deadline);
-                var bound=archive.withSession(same);
-                var driverFacts=bound.preserveMaterial(DriverSnapshotFacts.encodeKnownOriginal(original.facts()));
-                var input=new org.xar.ck3.control.continuity.SavedContinuityBootstrap.Input(
-                        actual.source().savedState(),actual.savedStateReference(),actual.source().confirmation().eventPin().reference(),
-                        actual.source().sourceHead(),actual.sourceHeadReference(),CheckpointPairCodec.encode(actual.source().pair()),
-                        org.xar.ck3.control.continuity.ContinuityJson.canonical(OrdinaryCycleTransitions.sessionToJson(actual.session())),
-                        org.xar.ck3.control.continuity.ContinuityJson.canonical(
-                                org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.observation(original.first().identity())),
-                        original.seed().fullDriver(),driverFacts,original.seed().driverVersion(),original.seed().episodeEpoch());
-                var sourceNode=StrictJson.object();sourceNode.put("machine_id",source.machineId());
-                sourceNode.put("observed_at_utc",source.observedAtUtc());sourceNode.put("exact_build",source.exactBuild());
-                sourceNode.set("source_ref",source.sourceRef().toJson());
-                String evidenceId="saved-bootstrap-"+actual.source().confirmation().eventIdentity()+"-"+actual.session().sessionId();
-                var capture=new ConfirmedSavedCapture(actual,original,input,evidenceId,predecessor.digest(),sourceNode,source);
-                confirmedSavedEntry=capture;
-                capture.prepared=same.preview(capture.request);
-                var recorded=same.queryCommitted(capture.prepared);
-                capture.receipt=recorded.isPresent()?recorded.orElseThrow():same.commit(capture.prepared);
-                same.requireCommitted(capture.prepared,capture.receipt);
-                actual.recordCommitted(same,capture.prepared,capture.receipt);
-                capture.driver=DriverBootstrap.adoptConfirmedSaved(original,same,capture.prepared,capture.receipt);
-                adopted.add(capture.driver);return capture.driver;
-            });
+            Objects.requireNonNull(actual);
+            try {
+                Objects.requireNonNull(source);Objects.requireNonNull(deadline);
+                StrictJson.require(!staged&&!finished&&adopted.isEmpty()&&confirmedSavedEntry==null,
+                        "confirmed saved Driver binds once to this unused Core");
+                if(menu!=null)StrictJson.require(menu.game==actual.game()&&menu.source.equals(source),
+                        "saved entry crossed an existing actual menu Game/source");
+                return writer.locked(same->{
+                    writer.requireSession(same);actual.requireProjectionCurrent(same,null);
+                    var predecessor=same.head();
+                    var original=DriverBootstrap.stageConfirmedSaved(actual,same,archive,actions,source,retainedFrames,deadline);
+                    var bound=archive.withSession(same);
+                    var driverFacts=bound.preserveMaterial(DriverSnapshotFacts.encodeKnownOriginal(original.facts()));
+                    var input=new org.xar.ck3.control.continuity.SavedContinuityBootstrap.Input(
+                            actual.source().savedState(),actual.savedStateReference(),actual.source().confirmation().eventPin().reference(),
+                            actual.source().sourceHead(),actual.sourceHeadReference(),CheckpointPairCodec.encode(actual.source().pair()),
+                            org.xar.ck3.control.continuity.ContinuityJson.canonical(OrdinaryCycleTransitions.sessionToJson(actual.session())),
+                            org.xar.ck3.control.continuity.ContinuityJson.canonical(
+                                    org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.observation(original.first().identity())),
+                            original.seed().fullDriver(),driverFacts,original.seed().driverVersion(),original.seed().episodeEpoch());
+                    var sourceNode=StrictJson.object();sourceNode.put("machine_id",source.machineId());
+                    sourceNode.put("observed_at_utc",source.observedAtUtc());sourceNode.put("exact_build",source.exactBuild());
+                    sourceNode.set("source_ref",source.sourceRef().toJson());
+                    String evidenceId="saved-bootstrap-"+actual.source().confirmation().eventIdentity()+"-"+actual.session().sessionId();
+                    var capture=new ConfirmedSavedCapture(actual,original,input,evidenceId,predecessor.digest(),sourceNode,source);
+                    confirmedSavedEntry=capture;
+                    capture.prepared=same.preview(capture.request);
+                    var recorded=same.queryCommitted(capture.prepared);
+                    capture.receipt=recorded.isPresent()?recorded.orElseThrow():same.commit(capture.prepared);
+                    same.requireCommitted(capture.prepared,capture.receipt);
+                    actual.recordCommitted(same,capture.prepared,capture.receipt);
+                    capture.driver=DriverBootstrap.adoptConfirmedSaved(original,same,capture.prepared,capture.receipt);
+                    adopted.add(capture.driver);return capture.driver;
+                });
+            }catch(IOException|RuntimeException|Error failure) {
+                try{actual.closeProjectionCustody();}
+                catch(IOException|RuntimeException|Error cleanup){if(cleanup!=failure)failure.addSuppressed(cleanup);}
+                throw failure;
+            }
         }
         private static final class RetainedSavedCapture {
             final RootJavaSavedBootstrap.RetainedSaved actual;
@@ -471,19 +494,26 @@ public final class RootApplicationAssembly {
 
         public synchronized DriverBootstrap.Adopted adoptRetainedSaved(RootJavaSavedBootstrap.RetainedSaved actual,
                 G2Source source,int retainedFrames,Instant deadline)throws IOException {
-            Objects.requireNonNull(actual);Objects.requireNonNull(source);Objects.requireNonNull(deadline);
-            StrictJson.require(!staged&&!finished&&adopted.isEmpty()&&confirmedSavedEntry==null&&retainedSavedEntry==null,
-                    "retained saved Driver binds once to this unused Core");
-            if(menu!=null)StrictJson.require(menu.game==actual.game()&&menu.source.equals(source),
-                    "retained saved entry crossed an existing actual menu Game/source");
-            return writer.locked(same->{
-                writer.requireSession(same);actual.requireCurrent(same);
-                var driver=DriverBootstrap.adoptRetainedSaved(actual,same,archive,actions,source,retainedFrames,deadline);
-                StrictJson.require(driver.source().equals(source),"retained saved Driver source changed during adoption");
-                actual.requireRetained(same);
-                retainedSavedEntry=new RetainedSavedCapture(actual,driver,source);
-                adopted.add(driver);return driver;
-            });
+            Objects.requireNonNull(actual);
+            try {
+                Objects.requireNonNull(source);Objects.requireNonNull(deadline);
+                StrictJson.require(!staged&&!finished&&adopted.isEmpty()&&confirmedSavedEntry==null&&retainedSavedEntry==null,
+                        "retained saved Driver binds once to this unused Core");
+                if(menu!=null)StrictJson.require(menu.game==actual.game()&&menu.source.equals(source),
+                        "retained saved entry crossed an existing actual menu Game/source");
+                return writer.locked(same->{
+                    writer.requireSession(same);actual.requirePreparedProjectionCurrent(same);
+                    var driver=DriverBootstrap.adoptRetainedSaved(actual,same,archive,actions,source,retainedFrames,deadline);
+                    StrictJson.require(driver.source().equals(source),"retained saved Driver source changed during adoption");
+                    actual.requireProjectionCurrent(same);
+                    retainedSavedEntry=new RetainedSavedCapture(actual,driver,source);
+                    adopted.add(driver);return driver;
+                });
+            }catch(IOException|RuntimeException|Error failure) {
+                try{actual.closeProjectionCustody();}
+                catch(IOException|RuntimeException|Error cleanup){if(cleanup!=failure)failure.addSuppressed(cleanup);}
+                throw failure;
+            }
         }
 
         public static final class ConfirmedSavedDomainProof {
@@ -504,7 +534,7 @@ public final class RootApplicationAssembly {
                         &&context.game()==owner.confirmedSavedGame()&&context.source().equals(driver.source())
                         &&driver.first().source().equals(context.source()),
                         "confirmed saved domain proof crossed its actual Core, context or adopted Driver");
-                owner.requireConfirmedSaved(same,driver);
+                owner.requireConfirmedSavedProjection(same,driver);
             }
             public RootRuntimeContext context(){return context;}
             public DriverBootstrap.Adopted adopted(){return driver;}
@@ -526,10 +556,58 @@ public final class RootApplicationAssembly {
 
         public RootApplicationSession finishConfirmedSaved(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,
                 FreshSessionConfiguration configuration,FreshSessionServices services)throws IOException,InterruptedException {
-            writer.locked(same->{requireConfirmedSaved(same,driver);return null;});
-            StrictJson.require(installed.context().core()==this&&installed.context().game()==confirmedSavedGame()
-                    &&installed.context().source().equals(confirmedSavedSource()),"saved finish crossed the actual installed Game/source");
-            return finishObserved(installed,driver,configuration,services,Optional.empty());
+            try {
+                writer.locked(same->{requireConfirmedSavedProjection(same,driver);return null;});
+                StrictJson.require(installed.context().core()==this&&installed.context().game()==confirmedSavedGame()
+                        &&installed.context().source().equals(confirmedSavedSource()),"saved finish crossed the actual installed Game/source");
+                return finishObserved(installed,driver,configuration,services,Optional.empty());
+            }catch(IOException|InterruptedException|RuntimeException|Error failure) {
+                try{closeSavedProjectionCustody();}
+                catch(IOException|RuntimeException|Error cleanup){if(cleanup!=failure)failure.addSuppressed(cleanup);}
+                throw failure;
+            }
+        }
+        /** Destruction only, on the original admit thread; never an Entry, replay or live capability. */
+        public void closeSavedProjectionCustody()throws IOException {
+            RootJavaSavedBootstrap.Admission confirmed;
+            RootJavaSavedBootstrap.RetainedSaved retained;
+            synchronized(this){
+                confirmed=confirmedSavedEntry==null?null:confirmedSavedEntry.admission;
+                retained=retainedSavedEntry==null?null:retainedSavedEntry.actual;
+            }
+            Throwable failure=null;
+            if(confirmed!=null)try{confirmed.closeProjectionCustody();}
+            catch(IOException|RuntimeException|Error cause){failure=mergeCloseFailure(failure,cause);}
+            if(retained!=null)try{retained.closeProjectionCustody();}
+            catch(IOException|RuntimeException|Error cause){failure=mergeCloseFailure(failure,cause);}
+            if(failure instanceof IOException cause)throw cause;
+            if(failure instanceof RuntimeException cause)throw cause;
+            if(failure instanceof Error cause)throw cause;
+        }
+        /** First assembly uses held custody; only an actually promoted live owner may replace it. */
+        private void requireConfirmedSavedProjection(ContinuityStorePort.Session same,DriverBootstrap.Adopted driver)throws IOException {
+            writer.requireSession(same);
+            if(retainedSavedEntry!=null) {
+                var retained=retainedSavedEntry;
+                StrictJson.require(confirmedSavedEntry==null&&retained.driver==driver&&adopted.contains(driver)
+                        &&driver.source().equals(retained.source),
+                        "retained saved runtime requires this Core's exact privately adopted Driver");
+                var token=savedLiveToken.get();
+                if(token!=null&&token.installed&&token.promoted){
+                    token.requireCurrent(driver.producer(),null,retained.actual);return;
+                }
+                retained.actual.requireProjectionCurrent(same);return;
+            }
+            writer.requireSession(same);var actual=confirmedSavedEntry;
+            StrictJson.require(actual!=null&&actual.driver==driver&&actual.receipt!=null&&actual.prepared!=null&&adopted.contains(driver)
+                    &&driver.authority()==actual.stage.authority()&&driver.producer()==actual.stage.producer()
+                    &&driver.first()==actual.stage.first()&&driver.source().equals(actual.source),
+                    "saved runtime requires this Core's exact committed and adopted Driver");
+            var token=savedLiveToken.get();
+            if(token!=null&&token.installed&&token.promoted){
+                token.requireCurrent(driver.producer(),actual.admission,null);return;
+            }
+            actual.admission.requireProjectionCurrent(same,actual.receipt);
         }
         private void requireConfirmedSaved(ContinuityStorePort.Session same,DriverBootstrap.Adopted driver)throws IOException {
             writer.requireSession(same);
@@ -1255,8 +1333,21 @@ public final class RootApplicationAssembly {
             if (same == null) throw new IOException("no actual Root journal planning scope is active");
             writer.requireSession(same); return same;
         }
+        /** Public calls enter this initial Saved Driver only after the real live promotion completed. */
+        private void requireSavedPublicPromotion(RootApplicationSession actual)throws IOException {
+            var confirmed=confirmedSavedEntry!=null&&confirmedSavedEntry.driver==actual.driver()
+                    ?confirmedSavedEntry.admission:null;
+            var retained=retainedSavedEntry!=null&&retainedSavedEntry.driver==actual.driver()
+                    ?retainedSavedEntry.actual:null;
+            // A later restore/NEXT Driver has its own publication contract; the initial captures remain history.
+            if(confirmed==null&&retained==null)return;
+            var token=savedLiveToken.get();
+            if(token==null||!token.activationPublished)throw new IOException("initial Saved public entry awaits its completed live activation publication");
+            token.requireCurrent(actual.driver().producer(),confirmed,retained);
+        }
         synchronized RootApplicationSession currentForAccess() throws IOException {
             if (resourcesClosed || requestsClosed || activeSession == null || !activeSession.hasInstalledHost()) throw new IOException("actual current Root session is not admitted or is awaiting restored publication");
+            requireSavedPublicPromotion(activeSession);
             return activeSession;
         }
 
@@ -1293,6 +1384,7 @@ public final class RootApplicationAssembly {
             if(resourcesClosed||requestsClosed||runtime==null||runtime!=publicRestore||activeSession!=original||!original.ownedBy(this)
                     ||(original.isRetired()?!runtime.ownsPending(original):!original.hasInstalledHost()))
                 throw new IOException("public restore must retain its exact current Root or its privately entered pending replacement");
+            if(!original.isRetired())requireSavedPublicPromotion(original);
         }
         /** Binds the concrete runtime carrying the identical original startup resources, never a replacement factory. */
         public synchronized void bindPublicRestoreRuntime(RootPublicRestoreRuntime actual)throws IOException {
@@ -2118,6 +2210,7 @@ public final class RootApplicationAssembly {
             writer.requireSession(same);Objects.requireNonNull(actual);
             if(resourcesClosed||requestsClosed||activeSession!=actual||!actual.ownedBy(this)||actual.isRetired()||!actual.hasInstalledHost())
                 throw new IOException("the previously resolved Root is not this exact current admitted session");
+            requireSavedPublicPromotion(actual);
         }
         /** Only checkpoint DATA resolvers may join a privately staged current Driver before Host publication. */
         public Optional<RootRuntimeContext> privateCheckpointRuntime(SessionIdentity expected)throws IOException {
@@ -2204,12 +2297,23 @@ public final class RootApplicationAssembly {
         /** Stop new calls, then retain the actual accepted worker drain; each per-Game retirement leaves the pool open. */
         @Override public void close() {
             RootStartupNextResources.Prepared actual;
+            boolean alreadyClosed;
             synchronized(this){
-                if(resourcesClosed){propagateCloseFailure(closeFailure);return;}
-                revokeSavedLive();resourcesClosed=true;actual=nextResources;
+                alreadyClosed=resourcesClosed;
+                if(alreadyClosed)actual=null;
+                else {revokeSavedLive();resourcesClosed=true;actual=nextResources;}
             }
             Throwable failure=null;
-            try {stopPublicRequests();}catch(RuntimeException|Error cause){failure=cause;}
+            try {closeSavedProjectionCustody();}
+            catch(IOException|RuntimeException|Error cause){failure=cause;}
+            if(alreadyClosed){
+                synchronized(this){
+                    closeFailure=mergeCloseFailure(closeFailure,failure);
+                    propagateCloseFailure(closeFailure);
+                }
+                return;
+            }
+            try {stopPublicRequests();}catch(RuntimeException|Error cause){failure=mergeCloseFailure(failure,cause);}
             try {failure=mergeCloseFailure(failure,closeRetainedCatalogResources());}
             catch(RuntimeException|Error cause){failure=mergeCloseFailure(failure,cause);}
             try {decisionDisplay.close();}
@@ -2223,7 +2327,7 @@ public final class RootApplicationAssembly {
                 failure=mergeCloseFailure(failure,cause);drained=java.util.concurrent.CompletableFuture.failedFuture(cause);
             }
             final Throwable recorded=failure;
-            synchronized(this){closeFailure=recorded;}
+            synchronized(this){closeFailure=mergeCloseFailure(closeFailure,recorded);}
             drained=drained.handle((ignored,drainFailure)->{
                 Throwable retained;
                 synchronized(this){
@@ -2628,7 +2732,7 @@ public final class RootApplicationAssembly {
                     // Restore the existing per-graph reader without capture/publication or canonical head changes.
                     runtime.capabilities().restoreRetainedPlanning(same);
                 } else if(confirmedSavedEntry!=null||retainedSavedEntry!=null) {
-                    requireConfirmedSaved(same,driver);
+                    requireConfirmedSavedProjection(same,driver);
                     if(retainedSavedEntry!=null&&!retainedSavedEntry.actual.consumedBatchIds().isEmpty()) {
                         var retained=retainedSavedEntry.actual;
                         var current=initialRecoverySemantic(same,driver,retained.session());

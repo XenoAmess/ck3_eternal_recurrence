@@ -30,6 +30,14 @@ public final class OrdinaryInitiationPreparation implements ActionPorts.Preparat
     /** Root joins its original Driver observation and source-bound interaction projection in one borrowed session. */
     public interface Frames {
         ActualFrame observe(ContinuityStorePort.Session same, ActionCommand command);
+        /** Legacy adapters retain their identical projection; typed adapters may carry an actual read failure. */
+        default FrameRead current(ContinuityStorePort.Session same, ActionCommand command) {
+            return new AvailableFrame(observe(same,command));
+        }
+        /** Empty means the legacy adapter keeps original-before / actual-after evaluation order. */
+        default Optional<FrameRead> currentAfter(ContinuityStorePort.Session same, ActionCommand command, ActionState.Attempt attempt) {
+            return Optional.empty();
+        }
         ActualFrame original(ContinuityStorePort.Session same, ActionCommand command, ActionState.Attempt attempt);
         default ActualFrame after(ContinuityStorePort.Session same, ActionCommand command, ActionState.Attempt attempt) {
             need(!ActionReconciliationScope.activeFor(command),"this legacy frame adapter has no original pending observation scope");
@@ -37,6 +45,102 @@ public final class OrdinaryInitiationPreparation implements ActionPorts.Preparat
         }
     }
     @FunctionalInterface public interface SourceBoundProjection { Context project(DriverObservationAssembler.Complete actual, java.time.Instant deadline); }
+    /** Input is the actual context read, never configured identity or advertised capability DATA. */
+    @FunctionalInterface public interface LiveContextReads {
+        PlanningReadResult<OrdinaryContext> read(DriverObservationAssembler.Complete actual,
+                ActionCommand command, java.time.Instant deadline);
+    }
+    public sealed interface FrameRead permits AvailableFrame,UnavailableFrame {
+        DriverObservationAssembler.Complete actual();
+    }
+    public record AvailableFrame(ActualFrame frame) implements FrameRead {
+        public AvailableFrame { Objects.requireNonNull(frame); }
+        @Override public DriverObservationAssembler.Complete actual() { return frame.actual(); }
+    }
+    public record UnavailableFrame(DriverObservationAssembler.Complete actual,
+            PlanningReadResult.Unavailable<OrdinaryContext> result) implements FrameRead {
+        public UnavailableFrame { Objects.requireNonNull(actual);Objects.requireNonNull(result); }
+    }
+    /** PreparationPort cannot return an unavailable NativeRequest. The exact negative remains inspectable. */
+    public static final class ContextUnavailableException extends IllegalStateException {
+        private static final long serialVersionUID=1L;
+        private final transient PlanningReadResult.Unavailable<OrdinaryContext> result;
+        ContextUnavailableException(PlanningReadResult.Unavailable<OrdinaryContext> result) {
+            super(Objects.requireNonNull(result).reason());this.result=result;
+        }
+        public PlanningReadResult.Unavailable<OrdinaryContext> result() { return result; }
+    }
+    /** Typed DATA accompanies pending only; it grants no compatible history result or settlement. */
+    public record ContextObservation(NativeEffectRegistry.Projected projected,
+            Optional<PlanningReadResult.Unavailable<OrdinaryContext>> unavailable) {
+        public ContextObservation {
+            Objects.requireNonNull(projected);unavailable=Objects.requireNonNull(unavailable);
+            need(unavailable.isEmpty() || projected.result() instanceof ActionPorts.Pending
+                    && projected.compatibleResult().isEmpty(),"unavailable context cannot qualify an effect");
+        }
+    }
+    public static FrameRead fromContextRead(DriverObservationAssembler.Complete actual,
+            PlanningReadResult<OrdinaryContext> read) {
+        Objects.requireNonNull(actual);Objects.requireNonNull(read);
+        if(read instanceof PlanningReadResult.Unavailable<OrdinaryContext> unavailable)
+            return new UnavailableFrame(actual,unavailable);
+        var known=(PlanningReadResult.Known<OrdinaryContext>)read;
+        var request=known.receipt().request();
+        need(request.operation().value().equals(OrdinaryInteractionCodec.QUERY_STEP)
+                && request.source().equals(actual.source()) && request.sessionId().equals(actual.sessionId())
+                && (request.origin() instanceof CommandOrigin.Reconciliation?request.reconciliationBefore():request.before()).equals(actual.identity()),
+                "live Guardian context read crossed its actual full source/session/frame");
+        Context context=InteractionArguments.context(request);
+        need(known.value().frame().build()==context.build()
+                && known.value().frame().revision().equals(context.revision())
+                && known.value().frame().date().equals(context.date())
+                && known.value().frame().actor().equals(context.actor()),"live Guardian context value differs from its original read");
+        return new AvailableFrame(new ActualFrame(actual,context));
+    }
+    static ActualFrame requireAvailable(FrameRead read) {
+        if(read instanceof UnavailableFrame unavailable)throw new ContextUnavailableException(unavailable.result());
+        return ((AvailableFrame)read).frame();
+    }
+    static ContextObservation unavailableObservation(PlanningReadResult.Unavailable<OrdinaryContext> unavailable,
+            List<ExactRef> actualEvidence,ActionPorts.OutcomeArchive archive) {
+        var evidence=new ArrayList<>(actualEvidence);
+        unavailable.original().ifPresent(original->evidence.add(archive.referenceOf(original)));
+        return new ContextObservation(NativeEffectRegistry.Projected.pending(unavailable.reason(),List.copyOf(evidence)),
+                Optional.of(unavailable));
+    }
+    /** Current reads come from the actual provider; historical projection stays on its original retained source. */
+    public static Frames heldFramesWithContextReads(java.util.function.Supplier<HeldDriverObservationPort> currentHeld,
+            LiveContextReads currentReads,SourceBoundProjection originalProjection,
+            ActionPorts.OutcomeArchive archive,NativeEffectEvidence.FrameLoader originalFrames) {
+        Objects.requireNonNull(currentReads);
+        Frames historical=heldFrames(currentHeld,originalProjection,archive,originalFrames);
+        return new Frames() {
+            private FrameRead project(DriverObservationAssembler.Complete actual,ActionCommand command) {
+                requireOrigin(command,actual);
+                var deadline=ActionObservationWindow.deadline(command);
+                need(deadline.isAfter(actual.observedAt()),"live Guardian context deadline predates actual publication");
+                return fromContextRead(actual,currentReads.read(actual,command,deadline));
+            }
+            @Override public FrameRead current(ContinuityStorePort.Session same,ActionCommand command) {
+                try { return project(Objects.requireNonNull(currentHeld.get()).observe(ActionObservationWindow.deadline(command)),command); }
+                catch(InterruptedException interrupted) {Thread.currentThread().interrupt();throw new IllegalStateException("actual Guardian context read interrupted",interrupted);}
+            }
+            @Override public ActualFrame observe(ContinuityStorePort.Session same,ActionCommand command) {
+                return requireAvailable(current(same,command));
+            }
+            @Override public ActualFrame original(ContinuityStorePort.Session same,ActionCommand command,ActionState.Attempt attempt) {
+                return historical.original(same,command,attempt);
+            }
+            @Override public Optional<FrameRead> currentAfter(ContinuityStorePort.Session same,ActionCommand command,ActionState.Attempt attempt) {
+                if(!ActionReconciliationScope.activeFor(command))return Optional.of(current(same,command));
+                try {return Optional.of(project(ActionReconciliationScope.requireFrame(command,attempt),command));}
+                catch(IOException failure){throw new UncheckedIOException("actual Guardian pending context unavailable",failure);}
+            }
+            @Override public ActualFrame after(ContinuityStorePort.Session same,ActionCommand command,ActionState.Attempt attempt) {
+                return requireAvailable(currentAfter(same,command,attempt).orElseThrow());
+            }
+        };
+    }
     /** Real held observation producer; original reconciliation refuses an evicted/unavailable before image. */
     public static Frames heldFrames(HeldDriverObservationPort sameHeld, SourceBoundProjection actualProjection) {
         Objects.requireNonNull(sameHeld); Objects.requireNonNull(actualProjection);
@@ -127,15 +231,20 @@ public final class OrdinaryInitiationPreparation implements ActionPorts.Preparat
     }
     private NativeRequest prepareBound(ContinuityStorePort.Session same, ActionCommand command, String requestId, ActionPorts.OutcomeArchive scoped) {
         OrdinaryInitiationIntent intent = OrdinaryInitiationIntent.fromJson(command.arguments());
-        ActualFrame before = frames.observe(same, command); requireOrigin(command, before.actual());
-        need(before.actual().identity().equals(command.before()), "ordinary command origin is stale");
+        FrameRead beforeRead=Objects.requireNonNull(frames.current(same,command));
+        requireOrigin(command,beforeRead.actual());
+        need(beforeRead.actual().identity().equals(command.before()), "ordinary command origin is stale");
+        ActualFrame before=requireAvailable(beforeRead);
         requireInitiationCapability(before.interaction());
         OrdinaryRequest request = nativeIntent(intent); ObjectNode queryArgs = InteractionArguments.body(before.interaction()); InteractionArguments.ordinary(queryArgs, request);
         var read = reads.read(same, ordinaryQuery, new PlanningReadRequest(command.before(), command.source(), command.sessionId(), ordinaryQuery.operation(), InteractionArguments.app(queryArgs), command.deadline()));
-        if (!(read instanceof PlanningReadResult.Known<OrdinaryContext> known)) throw new IllegalStateException("actual ordinary final terms unavailable");
+        if(read instanceof PlanningReadResult.Unavailable<OrdinaryContext> unavailable)throw new ContextUnavailableException(unavailable);
+        var known=(PlanningReadResult.Known<OrdinaryContext>)read;
         need(known.value().readyToInitiate() && known.receipt().request().before().equals(before.actual().identity())
                 && known.receipt().contractId().equals(ordinaryQuery.contractId()), "actual fresh ordinary preflight is not ready or changed contract");
-        ActualFrame current = frames.observe(same, command); requireOrigin(command, current.actual());
+        FrameRead currentRead=Objects.requireNonNull(frames.current(same,command));
+        requireOrigin(command,currentRead.actual());
+        ActualFrame current=requireAvailable(currentRead);
         need(current.actual().identity().equals(before.actual().identity())
                 && current.actual().fullBindingSha256().equals(before.actual().fullBindingSha256())
                 && current.interaction().connectionGeneration().equals(before.interaction().connectionGeneration()), "ordinary preflight crossed its actual frame");
@@ -171,12 +280,30 @@ public final class OrdinaryInitiationPreparation implements ActionPorts.Preparat
         return observeProjected(same,command,attempt,outcome).result();
     }
     public NativeEffectRegistry.Projected observeProjected(ContinuityStorePort.Session same, ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome outcome) {
+        return observeContextResult(same,command,attempt,outcome).projected();
+    }
+    public ContextObservation observeContextResult(ContinuityStorePort.Session same,ActionCommand command,
+            ActionState.Attempt attempt,NativeActionPort.DispatchOutcome outcome) {
         return archive.inSession(same, scoped -> {
             need(command.operation().value().equals(OrdinaryInteractionCodec.INITIATE_STEP) && attempt.requestId().equals(outcome.requestId()), "ordinary receipt request identity");
             OrdinaryInitiationIntent intent = OrdinaryInitiationIntent.fromJson(command.arguments());
+            Optional<FrameRead> liveAfter=Objects.requireNonNull(frames.currentAfter(same,command,attempt));
+            if(liveAfter.isPresent()) {
+                FrameRead read=liveAfter.orElseThrow();requireOrigin(command,read.actual());
+                var expected=command.before().frame();var actual=read.actual().identity().frame();
+                need(read.actual().connectionGeneration().equals(attempt.guard().connectionGeneration())
+                        && actual.identity().player().equals(expected.identity().player())
+                        && actual.identity().dateRaw().equals(expected.identity().dateRaw())
+                        && actual.revision().compareTo(expected.revision())>=0
+                        && actual.identity().nativeRevision().compareTo(expected.identity().nativeRevision())>=0,
+                        "live Guardian context crossed original player/day/revision/connection");
+                if(read instanceof UnavailableFrame unavailable)
+                    return unavailableObservation(unavailable.result(),List.of(read.actual().originalEvidence(),scoped.referenceOf(outcome)),scoped);
+            }
             ActualFrame original = frames.original(same, command, attempt); requireOrigin(command, original.actual());
             need(original.actual().identity().equals(command.before()),"original ordinary before image differs from its durable action");
-            ActualFrame after = frames.after(same, command, attempt); requireOrigin(command, after.actual());
+            ActualFrame after=liveAfter.map(OrdinaryInitiationPreparation::requireAvailable)
+                    .orElseGet(()->frames.after(same,command,attempt));requireOrigin(command,after.actual());
             requireAfterControl(original,after);
             List<ExactRef> evidence = new ArrayList<>(List.of(after.actual().originalEvidence(), scoped.referenceOf(outcome)));
             if (outcome instanceof NativeActionPort.AckReceived ack) {
@@ -193,8 +320,8 @@ public final class OrdinaryInitiationPreparation implements ActionPorts.Preparat
                 evidence.add(publicRef);
             }
             if(guardian.isPresent() && GuardianOutgoingEffects.accepts(command))
-                return guardian.orElseThrow().observe(same,command,attempt,outcome,original,after,scoped);
-            return NativeEffectRegistry.Projected.pending("ordinary original request remains pending; independent event/save/outgoing-request effect required", evidence);
+                return guardian.orElseThrow().observeContextResult(same,command,attempt,outcome,original,after,scoped);
+            return new ContextObservation(NativeEffectRegistry.Projected.pending("ordinary original request remains pending; independent event/save/outgoing-request effect required", evidence),Optional.empty());
         });
     }
     static void requireAfterControl(ActualFrame original,ActualFrame after) {

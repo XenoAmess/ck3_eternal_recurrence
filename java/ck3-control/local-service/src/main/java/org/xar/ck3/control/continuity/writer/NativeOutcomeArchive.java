@@ -197,6 +197,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         owner = this; borrowed = null; publication=Publication.DURABLE; current = new ThreadLocal<>(); historyBindings = new HistoryBindings();
         readOriginalCapture = new ThreadLocal<>();
         transientCasLeases = new ThreadLocal<>();
+        savedPreReadCapture = new ThreadLocal<>();
         parsedMaterialCache = new ThreadLocal<>();
         physicalStatusOriginals = new LinkedHashMap<>();
         if (!artifacts.originalWriterLock().equals(sameWriter.originalLockPath())
@@ -221,6 +222,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         this.publication=Objects.requireNonNull(publication);
         readOriginalCapture = owner.readOriginalCapture;
         transientCasLeases = owner.transientCasLeases;
+        savedPreReadCapture = owner.savedPreReadCapture;
         parsedMaterialCache = owner.parsedMaterialCache;
         completeDriverDecoder = owner.completeDriverDecoder;
         physicalStatusOriginals = owner.physicalStatusOriginals;
@@ -343,6 +345,15 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             } catch (RuntimeException | Error problem) {
                 reads.recordFailure(problem); failure = problem; throw problem;
             } finally {
+                // Close any lexical holder before historical finish releases its HANDLE trace.
+                var unfinished = transientCasLeases.get();
+                if (unfinished != null && unfinished.reads == reads) {
+                    try { unfinished.close(); }
+                    catch (IOException | RuntimeException | Error closing) {
+                        reads.recordFailure(closing);
+                        if (failure != null && failure != closing) failure.addSuppressed(closing);
+                    }
+                }
                 if (commandCache != null) commandCache.clearCommands();
                 boolean finishSucceeded = false;
                 try { reads.finish(failure); finishSucceeded = true; }
@@ -591,6 +602,256 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         }
     }
 
+    private final ThreadLocal<SavedPreReadCapture> savedPreReadCapture;
+
+    /** Holds complete old-source DATA while Root acquires fresh new-Game evidence.
+     * This object grants no admission, replay, source, current Game or writer authority. */
+    public static final class SavedPreReadReadSet<T> implements AutoCloseable {
+        private final T value;
+        private final SavedPreReadCapture originals;
+        private SavedPreReadReadSet(T value, SavedPreReadCapture originals) { this.value = value; this.originals = originals; }
+        public T value() { return value; }
+        /** Every held original is freshly checked. The Session is a new actual source-only borrow. */
+        public void requireCurrent(NativeOutcomeArchive expectedArchive, ContinuityStorePort.Session same) throws IOException {
+            originals.verify(expectedArchive, same);
+        }
+        @Override public void close() throws IOException { originals.close(); }
+    }
+
+    /** Complete historical proof happens before READ. A bound/unknown provider refuses the
+     * optimization with a typed exception; it cannot silently become partial custody. */
+    public <T> SavedPreReadReadSet<T> sealSavedPreReadHistory(ContinuityStorePort.Session same,
+            ActionPorts.HistoricalReadLimits limits, java.time.Clock clock, java.time.Instant expiry,
+            ActionPorts.CheckedArchiveRead<T> fullProof) throws IOException {
+        Objects.requireNonNull(limits); Objects.requireNonNull(clock); Objects.requireNonNull(expiry); Objects.requireNonNull(fullProof);
+        requireSession(same);
+        if (this != owner || borrowed != null)
+            throw new IOException("saved DATA must be sealed by its exact unborrowed archive owner");
+        if (savedPreReadCapture.get() != null || transientCasLeases.get() != null || readOriginalCapture.get() != null)
+            throw new IOException("saved DATA capture cannot replace an existing lexical capture");
+        var candidate = new AtomicReference<SavedPreReadReadSet<T>>();
+        try {
+            return inHistoricalReadScope(same, limits, facade -> {
+                var budget = new ImmutableArtifactStore.SavedReadsetBudget(limits.maximumPublications(),
+                        limits.maximumRetainedBytes(), limits.maximumHandles());
+                var cas = artifacts.beginSavedReadsetCapture(same, budget, clock, expiry);
+                SavedPreReadCapture capture = null; boolean transferred = false; Throwable primary = null;
+                try {
+                    capture = new SavedPreReadCapture(same, cas, budget, clock, expiry, limits.maximumPublications());
+                    savedPreReadCapture.set(capture); capture.initialize(same);
+                    T value = fullProof.read(facade);
+                    capture.verify(owner, same); cas.seal(same);
+                    var result = new SavedPreReadReadSet<T>(value, capture);
+                    candidate.set(result); transferred = true; return result;
+                } catch (IOException | RuntimeException | Error failure) { primary = failure; throw failure; }
+                finally {
+                    savedPreReadCapture.remove();
+                    if (!transferred) try { if (capture != null) capture.close(); else cas.close(); }
+                    catch (IOException | RuntimeException | Error closing) {
+                        if (primary != null) primary.addSuppressed(closing); else throw closing;
+                    }
+                }
+            });
+        } catch (IOException | RuntimeException | Error failure) {
+            // Historical finish can still fail after the callback produced its candidate.
+            var escaped = candidate.get();
+            if (escaped != null) try { escaped.close(); }
+            catch (IOException | RuntimeException | Error closing) { if (failure != closing) failure.addSuppressed(closing); }
+            throw failure;
+        }
+    }
+
+    /** A recognized Army reader may add only an actual authenticated external original while
+     * this exact owner's old-source proof is still collecting. DATA alone cannot enter a seal. */
+    public void retainSavedPreReadArmyOriginal(ContinuityStorePort.Session same,
+            org.xar.ck3.control.nativebridge.capabilities.army.ArmyQueryHistoryReference.AuthenticatedReplayOriginal original)
+            throws IOException {
+        SavedPreReadCapture capture = savedPreReadCapture.get();
+        try {
+            requireSession(same);
+            if (this != owner || borrowed != null || current.get() != same || capture == null)
+                throw new IOException("authenticated Army handoff requires its actual collecting archive/source Session");
+            Objects.requireNonNull(original).requireCurrent();
+            Pin physical = original.pin();
+            capture.army(original);
+            capture.retain(physical, Math.toIntExact(physical.reference().bytes()));
+            original.requireCurrent();
+        } catch (IOException | RuntimeException | Error failure) {
+            if (capture != null) capture.fail(failure);
+            artifacts.recordHistoricalFailure(failure); throw failure;
+        }
+    }
+
+
+    private final class SavedPreReadCapture implements AutoCloseable {
+        private record External(Pin expected, LedgerFiles.HistoricalDocument lease) { }
+        private record Provider(PhysicalStatusOriginals installed,
+                org.xar.ck3.control.application.readiness.PhysicalStatusReadAuthority actual) { }
+        private final NativeOutcomeArchive issuer = owner;
+        private final Thread thread = Thread.currentThread();
+        private final ImmutableArtifactStore.SavedReadsetCapture cas;
+        private final ImmutableArtifactStore.SavedReadsetBudget budget;
+        private final java.time.Clock clock;
+        private final java.time.Instant expiry;
+        private final int maximumEntries;
+        private ExactRef canonicalHead;
+        private List<Pin> documents = List.of();
+        private List<java.nio.file.Path> absent = List.of();
+        private final Map<java.nio.file.Path, External> external = new LinkedHashMap<>();
+        private final Map<GuardEvidence, Provider> providers = new LinkedHashMap<>();
+        private final Set<org.xar.ck3.control.nativebridge.capabilities.army.ArmyQueryHistoryReference.AuthenticatedReplayOriginal>
+                armyOriginals = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+        private volatile Throwable failure;
+        private IOException cleanupFailure;
+        private boolean closed;
+        private SavedPreReadCapture(ContinuityStorePort.Session same, ImmutableArtifactStore.SavedReadsetCapture cas,
+                ImmutableArtifactStore.SavedReadsetBudget budget, java.time.Clock clock, java.time.Instant expiry,
+                int maximumEntries) throws IOException {
+            this.cas = cas; this.budget = budget; this.clock = clock; this.expiry = expiry; this.maximumEntries = maximumEntries;
+        }
+        private synchronized void fail(Throwable problem) { if (failure == null) failure = problem; cas.fail(problem); }
+        private void live() throws IOException {
+            if (closed || Thread.currentThread() != thread || !clock.instant().isBefore(expiry))
+                throw new IOException("saved DATA readset crossed its actual thread/lifetime/expiry");
+            if (failure != null) throw new IOException("saved DATA readset already failed", failure);
+        }
+        private void initialize(ContinuityStorePort.Session same) throws IOException {
+            // The collector is already installed before even the first canonical Head read.
+            var head = same.head(); documents = head.documents(); absent = head.absent(); canonicalHead = same.persistedHead();
+            // Capture all canonical ancestry, including direct Session readers that bypass CAS.
+            for (Pin pin : documents) retain(pin, Math.toIntExact(pin.reference().bytes()));
+            var persistedHeadDocument = LedgerFiles.exact(canonicalHead, ContinuityJson.LEDGER_MAX_BYTES);
+            retain(persistedHeadDocument.pin(), ContinuityJson.LEDGER_MAX_BYTES);
+            for (Pin pin : same.captureSources()) retain(pin, Math.toIntExact(pin.reference().bytes()));
+            verify(issuer, same);
+        }
+        private void retain(Pin expected, int maximum) throws IOException {
+            try {
+                live();
+                if (savedPreReadCapture.get() != this)
+                    throw new IOException("saved external source appeared outside its actual collecting scope");
+                var ref = expected.reference();
+                if (ref.bytes() < 1 || ref.bytes() > maximum || ref.bytes() > WriterContracts.MAX_PIN_BYTES)
+                    throw new ImmutableArtifactStore.SavedReadsetUnavailable(ImmutableArtifactStore.SavedReadsetFailure.BYTE_BOUND);
+                var path = java.nio.file.Path.of(ref.path()).toAbsolutePath().normalize();
+                External previous = external.get(path);
+                if (previous != null) {
+                    if (!previous.expected().equals(expected) || !previous.lease().verifyCurrent().equals(expected))
+                        throw new IOException("saved external source changed its complete original Pin");
+                    return;
+                }
+                budget.reserve(ref.bytes(), 1);
+                LedgerFiles.HistoricalDocument acquired = null; boolean kept = false; Throwable primary = null;
+                try {
+                    acquired = LedgerFiles.leaseHistorical(ref, maximum);
+                    if (!acquired.verifyCurrent().equals(expected)) throw new IOException("saved source lease differs from original full Pin");
+                    acquired.releasePayload(); external.put(path, new External(expected, acquired)); kept = true;
+                } catch (IOException | RuntimeException | Error problem) { primary = problem; throw problem; }
+                finally {
+                    if (!kept && acquired != null) try { acquired.close(); }
+                    catch (IOException | RuntimeException | Error closing) {
+                        if (primary != null) primary.addSuppressed(closing); else throw closing;
+                    }
+                }
+            } catch (IOException | RuntimeException | Error problem) { fail(problem); throw problem; }
+        }
+        private void physical(GuardEvidence guard, PhysicalStatusOriginals installed) throws IOException {
+            try {
+                live();
+                var identity = guard.origin().requirePhysicalStatusOnly();
+                var actual = installed == null ? null : installed.bindings().requirePhysicalStatusAuthority(identity);
+                // This final implementation's archived verifier is pure retained DATA. Unknown
+                // plugin callbacks cannot silently contribute untracked mutable dependencies.
+                if (actual != null && !(actual instanceof org.xar.ck3.control.service.root.RootPhysicalStatusReadAuthority))
+                    throw new ImmutableArtifactStore.SavedReadsetUnavailable(ImmutableArtifactStore.SavedReadsetFailure.UNKNOWN_EXTERNAL_PROVIDER);
+                Provider previous = providers.get(guard);
+                if (previous != null && (previous.installed() != installed || previous.actual() != actual))
+                    throw new IOException("saved archived provider changed during complete proof");
+                if (previous == null) {
+                    if (providers.size() >= maximumEntries)
+                        throw new ImmutableArtifactStore.SavedReadsetUnavailable(ImmutableArtifactStore.SavedReadsetFailure.ENTRY_BOUND);
+                    providers.put(guard, new Provider(installed, actual));
+                }
+            } catch (IOException | RuntimeException | Error problem) { fail(problem); throw problem; }
+        }
+        private void army(
+                org.xar.ck3.control.nativebridge.capabilities.army.ArmyQueryHistoryReference.AuthenticatedReplayOriginal original)
+                throws IOException {
+            try {
+                live();
+                if (savedPreReadCapture.get() != this)
+                    throw new IOException("Army original appeared after the saved DATA readset was sealed");
+                original.requireCurrent();
+                if (!armyOriginals.contains(original)) {
+                    // The already retained external leaf accounts for our HANDLE. Quote the
+                    // producer's peer HANDLE separately until its lexical scope has finished.
+                    budget.reserve(0, 1); armyOriginals.add(original);
+                }
+            } catch (IOException | RuntimeException | Error problem) { fail(problem); throw problem; }
+        }
+
+        private void requireProvidersCurrent() throws IOException {
+            synchronized (physicalStatusOriginals) {
+                for (var entry : providers.entrySet()) {
+                    var identity = entry.getKey().origin().requirePhysicalStatusOnly();
+                    var previous = entry.getValue();
+                    if (physicalStatusOriginals.get(identity.game()) != previous.installed()
+                            || (previous.installed() != null
+                                && previous.installed().bindings().requirePhysicalStatusAuthority(identity) != previous.actual()))
+                        throw new IOException("saved archived DATA provider issuer was replaced");
+                }
+            }
+        }
+        private void verify(NativeOutcomeArchive expectedArchive, ContinuityStorePort.Session same) throws IOException {
+            try {
+                live(); Objects.requireNonNull(expectedArchive);
+                if (expectedArchive.owner != issuer || expectedArchive.artifacts != artifacts || expectedArchive.sameWriter != sameWriter)
+                    throw new IOException("saved DATA readset belongs to another exact archive/store/writer issuer");
+                issuer.requireSession(same);
+                if (!canonicalHead.equals(same.persistedHead())) throw new IOException("saved DATA source canonical cut changed");
+                for (External source : external.values())
+                    if (!source.lease().verifyCurrent().equals(source.expected())) throw new IOException("saved DATA source full Pin changed");
+                for (var path : absent) LedgerFiles.requireAbsent(path);
+                requireProvidersCurrent();
+                for (var original : armyOriginals) original.requireCurrent();
+                cas.verify(same);
+                // A metadata-only domain guard cannot replace current GENERIC_READ. Recheck
+                // the external permission/identity and canonical absence/provider cut after CAS.
+                for (External source : external.values())
+                    if (!source.lease().verifyCurrent().equals(source.expected())) throw new IOException("saved DATA source full Pin changed after CAS qualification");
+                for (var path : absent) LedgerFiles.requireAbsent(path);
+                requireProvidersCurrent();
+                for (var original : armyOriginals) original.requireCurrent();
+                if (!canonicalHead.equals(same.persistedHead())) throw new IOException("saved DATA source canonical cut changed during qualification");
+                issuer.requireSession(same); live();
+            } catch (IOException | RuntimeException | Error problem) { fail(problem); throw problem; }
+        }
+        @Override public void close() throws IOException {
+            if (Thread.currentThread() != thread) {
+                var problem = new IOException("saved DATA close crossed its owner thread"); fail(problem); throw problem;
+            }
+            if (closed) {
+                if (cleanupFailure != null) throw new IOException("saved DATA native cleanup remains unproven", cleanupFailure);
+                return;
+            }
+            closed = true; IOException cleanup = null;
+            try {
+                for (External source : external.values()) try { source.lease().close(); }
+                catch (IOException | RuntimeException | Error problem) {
+                    IOException next = problem instanceof IOException io ? io : new IOException("saved DATA source cleanup failed", problem);
+                    if (cleanup == null) cleanup = next; else cleanup.addSuppressed(next);
+                }
+                try { cas.close(); }
+                catch (IOException | RuntimeException | Error problem) {
+                    IOException next = problem instanceof IOException io ? io : new IOException("saved CAS cleanup failed", problem);
+                    if (cleanup == null) cleanup = next; else cleanup.addSuppressed(next);
+                }
+            } finally { external.clear(); providers.clear(); armyOriginals.clear(); }
+            if (cleanup != null) { cleanupFailure = cleanup; fail(cleanup); throw cleanup; }
+        }
+    }
+
+
     /** Lexical custody only. It never becomes a persistent-prefix cell or a World capability. */
     public TransientOwnedCASLeaseScope openTransientOwnedCASLeaseScope(ActionPorts.OutcomeArchive facade,
             ContinuityStorePort.Session session)throws IOException {
@@ -598,7 +859,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         if(cache==null||cache.commandReads==null||readOriginalCapture.get()!=null||current.get()!=session
                 ||!(facade instanceof NativeOutcomeArchive actual)||actual.owner!=owner||actual.artifacts!=artifacts
                 ||actual.sameWriter!=sameWriter||actual.borrowed!=session||actual.current!=current
-                ||actual.parsedMaterialCache!=parsedMaterialCache||transientCasLeases.get()!=null)
+                ||actual.parsedMaterialCache!=parsedMaterialCache||transientCasLeases.get()!=null||savedPreReadCapture.get()!=null)
             throw new IOException("transient custody requires its exact owned archive/session/read scope");
         var trace=cache.commandReads.traceTransientLeases();
         var scope=new TransientOwnedCASLeaseScope(session,cache,cache.commandReads,trace);
@@ -621,10 +882,12 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             this.session=session;this.cache=cache;this.reads=reads;this.trace=trace;
         }
         private void live()throws IOException {
+            try {
             if(closed||Thread.currentThread()!=thread||transientCasLeases.get()!=this||current.get()!=session
                     ||parsedMaterialCache.get()!=cache||cache.commandReads!=reads||readOriginalCapture.get()!=null)
                 throw new IOException("transient custody escaped actual owner/session/thread/active-read lifetime");
             requireSession(session);reads.requireActive();
+            }catch(IOException|RuntimeException|Error failure){reads.recordFailure(failure);throw failure;}
         }
         private <K>void begin(Map<K,Integer> pending,K key)throws IOException {
             live();pending.merge(key,1,Integer::sum);
@@ -644,24 +907,33 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             if(previous!=null&&!previous.equals(pin))throw new IOException("transient qualified source Pin changed");
         }
         public void retainQualifiedSource(ExactRef ref,int maximum)throws IOException {
+            try {
             live();reads.disqualifyPersistentDependenciesOnly();
             var actual=LedgerFiles.exact(ref,maximum);session.verifyPin(actual.pin());source(ref,actual.pin(),maximum);
+            }catch(IOException|RuntimeException|Error failure){reads.recordFailure(failure);throw failure;}
         }
         public void retainQualifiedSource(Pin pin,int maximum)throws IOException {
+            try {
             live();session.verifyPin(pin);retainQualifiedSource(pin.reference(),maximum);
             if(!pin.equals(sourcePins.get(pin.reference())))throw new IOException("transient configured source identity changed");
+            }catch(IOException|RuntimeException|Error failure){reads.recordFailure(failure);throw failure;}
         }
         private void completeQualifications()throws IOException {
             live();if(!pendingPhysical.isEmpty()||!pendingSource.isEmpty())throw new IOException("transient original qualification did not complete");
         }
         public void requirePreparedCustody()throws IOException {
+            try {
             completeQualifications();if(admitted)throw new IOException("transient custody cannot be reminted");
             var dependencies=trace.retainedDependencies().orElseThrow(()->new IOException("transient CAS/source originals were not all held or had unknown external dependencies"));
             if(!reads.verifyRetainedDependencies(dependencies))throw new IOException("transient CAS custody is incomplete before late observation");
             trace.verifySources();admittedCAS=Set.copyOf(dependencies);admittedSources=Set.copyOf(sourcePins.keySet());trace.sealAdmission();admitted=true;
+            }catch(IOException|RuntimeException|Error failure){reads.recordFailure(failure);throw failure;}
         }
         /** Bounded final callback: no dependency walk, source hashing or semantic replay. */
-        public void requireActive()throws IOException {live();trace.requireEligible();if(!admitted)throw new IOException("actual transient custody has not been admitted");}
+        public void requireActive()throws IOException {
+            try {live();trace.requireEligible();if(!admitted)throw new IOException("actual transient custody has not been admitted");
+            }catch(IOException|RuntimeException|Error failure){reads.recordFailure(failure);throw failure;}
+        }
         public void verifyAndClose()throws IOException {
             Throwable primary=null;
             try{
@@ -681,19 +953,24 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                     throw new IOException("transient original dependency closure changed after late observation");
                 if(!reads.verifyRetainedDependencies(admittedCAS))throw new IOException("transient CAS originals lost custody before close");
                 trace.verifySources();verified=true;
-            }catch(IOException|RuntimeException|Error failure){primary=failure;throw failure;}
+            }catch(IOException|RuntimeException|Error failure){reads.recordFailure(failure);primary=failure;throw failure;}
             finally{
                 try{release();}catch(IOException|RuntimeException|Error closing){if(primary!=null){if(closing!=primary)primary.addSuppressed(closing);}else throw closing;}
             }
         }
         private void release()throws IOException {
+            try {
             if(closed)return;
             if(Thread.currentThread()!=thread||transientCasLeases.get()!=this)throw new IOException("transient source close crossed its actual lifetime");
             try{trace.close();}finally{closed=true;transientCasLeases.remove();}
+            }catch(IOException|RuntimeException|Error failure){reads.recordFailure(failure);throw failure;}
         }
         @Override public void close()throws IOException {
             if(closed)return;boolean missing=admitted&&!verified;release();
-            if(missing)throw new IOException("transient admitted custody was closed without final original qualification");
+            if(missing){
+                var failure=new IOException("transient admitted custody was closed without final original qualification");
+                reads.recordFailure(failure);throw failure;
+            }
         }
     }
     private TransientOwnedCASLeaseScope knownTransient()throws IOException {
@@ -1646,6 +1923,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         session.requireWriter(artifacts.originalWriterLock());
         byte[] bytes = result.bytes();
         session.verifyPin(pin);
+        var savedCapture=savedPreReadCapture.get();if(savedCapture!=null)savedCapture.retain(pin,maximum);
         rememberReadOriginal(session, pin);
         if(transientScope!=null){transientScope.source(original,pin,maximum);transientScope.end(transientScope.pendingSource,original);}
         return bytes;
@@ -1753,6 +2031,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                 ? org.xar.ck3.control.service.root.RootPhysicalStatusReadAuthority.verifyArchivedData(original,same,this::readArtifact)
                 : installed.bindings().requirePhysicalStatusAuthority(identity).verifyArchived(original,this,same,installed.originals());
         if (!identity.equals(verified)) throw new IOException("physical Status original verifier returned another complete identity");
+        var savedCapture=savedPreReadCapture.get();if(savedCapture!=null)savedCapture.physical(original,installed);
         if(transientScope!=null)transientScope.verifiedPhysical(original,installed);
     }
     private void verifyReconciliationOriginals(ReconciliationIdentity original) throws IOException {
@@ -2020,6 +2299,8 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                 verifyReconciledControlOriginal(control);
                 verifyReadOriginals(control.read());
                 for (PlanningReadReceipt read : control.supportingReads()) verifyReadOriginals(read);
+                for (ExactRef cancellationOriginal : org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.references(control))
+                    verifyRetainedSourceOriginal(cancellationOriginal);
             }
             case ActionState.CompositeControlApplied control -> {
                 verifyReadOriginals(control.observation().terminalStatus());

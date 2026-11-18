@@ -180,6 +180,8 @@ struct Fixture {
   unsigned core_calls = 0, full_calls = 0, context_calls = 0, gross_calls = 0, expense_calls = 0;
   std::uint64_t revision = kRevision;
   Mode mode = Mode::normal;
+  void (*gross_before_return)(void *) noexcept = nullptr;
+  void *gross_hook_context = nullptr;
 
   Fixture() {
     active = this;
@@ -257,6 +259,7 @@ std::int64_t *Gross(std::int64_t *out, void *actor, std::int64_t *secondary, voi
   if (f.mode == Mode::wallet_after) Store(f.living, 0x100, f.wallet + 1);
   if (f.mode == Mode::published_basis_after) ++f.published.played_character_gold.raw;
   if (f.mode == Mode::request_revision_after) --f.request.published_native_revision;
+  if (f.gross_before_return != nullptr) f.gross_before_return(f.gross_hook_context);
   return f.mode == Mode::wrong_output ? &f.other_output : out;
 }
 std::int64_t *Expenses(std::int64_t *out, void *actor, void *context,
@@ -385,6 +388,11 @@ void WalletOnly(Fixture &f) {
         "monthly group null with explicit reasons/readiness, never invented zeros");
   }
   UnknownScope(out, cash);
+}
+struct CashAdmissionTrace { unsigned calls = 0, deny_at = 0; };
+bool AdmitCashMonthlyTestOwner(void *opaque) noexcept {
+  auto &trace = *static_cast<CashAdmissionTrace *>(opaque);
+  return ++trace.calls != trace.deny_at;
 }
 } // namespace
 
@@ -515,6 +523,24 @@ int main(int argc, char **argv) {
     const auto cash = Cash(out);
     Require(cash.At("unavailable_reason").Text() == out.unavailable_reason,
         "pure serializer escapes reasons into valid JSON");
+  }
+  for (const unsigned deny_at : {1U, 4U, 8U}) {
+    Fixture f; CashAdmissionTrace trace{0, deny_at};
+    f.bindings.monthly.native_call_admission = &AdmitCashMonthlyTestOwner;
+    f.bindings.monthly.native_call_admission_context = &trace;
+    PersonalCashObservationV1 observed{};
+    Require(!ReadPersonalCashV1(f.bindings, f.request, observed) && !observed.completed &&
+        !observed.same_frame_ready && !observed.personal_gold_raw && !observed.monthly_gross_income_raw &&
+        !observed.monthly_total_expenses_raw && !observed.monthly_net_income_raw &&
+        observed.unavailable_reason == "personal_cash_actor_owner_changed" &&
+        observed.current_full_call_attempts == 1 && f.full_calls == 1 && trace.calls == deny_at,
+        "failed native owner admission cannot revive a wallet partial using later valid-looking Full");
+    Require(f.context_calls == (deny_at == 1 ? 0U : deny_at == 4 ? 1U : 2U) &&
+        f.gross_calls == (deny_at == 1 ? 0U : 1U) && f.expense_calls == (deny_at == 8 ? 1U : 0U),
+        "whole Cash failure retains exact already attempted monthly calls");
+    Attempts(f, observed); const auto cash = Cash(observed);
+    Require(cash.At("status").Text() == "unavailable" && cash.At("current_treasury").IsNull(),
+        "owner loss is distinct from an ordinary stable-wallet monthly unknown");
   }
   std::cout << "ck3_1210_personal_cash_v1 NoGame fixture PASS\n";
   return 0;

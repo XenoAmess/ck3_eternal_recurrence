@@ -293,16 +293,22 @@ public final class NativeRunProfileProducer {
     public static PreparedExplicit prepareFixture(ExplicitRequest request,Clock clock)throws IOException{
         if(!(request.source() instanceof FixtureSource))throw new IOException("explicit frontend fixture source request required");return prepareExplicit(request,clock);
     }
-    private static List<FileRef> qualifiedRuntime(FileRef build,String machine)throws IOException{
+    /** Completed producer record is historical provenance; it does not select the current consumer VM. */
+    private static List<FileRef> recordedQualifiedRuntime(FileRef build,String machine)throws IOException{
         var receipt=ControlBuild.verifiedCompletedReceipt(build);
         if(receipt.targetKind()!=ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME||!receipt.machineId().equals(machine)
-                ||!receipt.completeDeployment().equals(ControlBuild.producerClosure())
                 ||receipt.compiledSourcePins().stream().filter(ref->Path.of(ref.path()).getFileName().toString().equals("NativeRunProfileProducer.java")).count()!=1)
+            throw new IOException("actual complete source-bound profile producer runtime required");
+        return receipt.completeDeployment();
+    }
+    private static List<FileRef> qualifiedRuntime(FileRef build,String machine)throws IOException{
+        var runtime=recordedQualifiedRuntime(build,machine);
+        if(!runtime.equals(ControlBuild.producerClosure()))
             throw new IOException("actual complete source-bound profile producer runtime required");
         if(NativeRunProfileProducer.class.getProtectionDomain().getCodeSource()==null||ControlBuild.class.getProtectionDomain().getCodeSource()==null
                 ||!NativeRunProfileProducer.class.getProtectionDomain().getCodeSource().getLocation().equals(ControlBuild.class.getProtectionDomain().getCodeSource().getLocation()))
             throw new IOException("profile and completed-build producer are not in the same actual runtime");
-        return receipt.completeDeployment();
+        return runtime;
     }
     private static QualifiedComposition qualifyComposition(FileRef original,String machine,Clock clock)throws IOException{
         var witnesses=new ArrayList<SharedSourceFiles.Witness>();
@@ -574,6 +580,28 @@ public final class NativeRunProfileProducer {
         var derived=composition==null?deriveExplicit(actual.request(),runtime):deriveExplicit(actual.request(),runtime,composition);verifyExplicitSources(derived);
         var expected=sealExplicit(body(derived,Clock.fixed(Instant.parse(actual.observedAtUtc()),java.time.ZoneOffset.UTC)));
         if(!Arrays.equals(encodeEnvironment(actual),encodeEnvironment(expected)))throw new IOException("explicit profile is not the exact physical source-bound producer output");
+        return actual;
+    }
+    /**
+     * A qualified new consumer may recheck the physical inputs of a retained Saved ENV.
+     * The completed original producer and its six-file runtime stay exact. They need not
+     * be the current consumer's CodeSource. The ENV/request bytes and original review
+     * are not rewritten; the caller's new request/plan owns its current finite window.
+     * This reader neither creates an ENV nor grants a launch, storage or Game permission.
+     */
+    public static ExplicitManifest readSavedEnvironmentInputsVerified(FileRef original)throws IOException{
+        ProfileEnvironment environment=readEnvironmentOriginal(original);
+        if(!(environment instanceof ExplicitManifest actual)||!(actual.request().source() instanceof SavedSource))
+            throw new IOException("retained explicit Saved environment required");
+        // Keep the original composed-runtime qualification and lifetime contract intact.
+        if(COMPOSED_SAVED_SCHEMA.equals(actual.schema()))return (ExplicitManifest)readEnvironmentVerified(original);
+        if(!actual.machineId().equals(WindowsJobProcess.currentMachineId()))throw new IOException("explicit profile belongs to another machine");
+        var recorded=recordedQualifiedRuntime(actual.producerToolsBuild(),actual.machineId());
+        if(!recorded.equals(actual.producerRuntime()))throw new IOException("explicit producer historical complete runtime changed");
+        var derived=deriveExplicit(actual.request(),recorded);verifyExplicitSources(derived);
+        var expected=sealExplicit(body(derived,Clock.fixed(Instant.parse(actual.observedAtUtc()),java.time.ZoneOffset.UTC)));
+        if(!Arrays.equals(encodeEnvironment(actual),encodeEnvironment(expected)))
+            throw new IOException("retained Saved environment physical inputs differ from its exact original");
         return actual;
     }
     private static void verifyExplicitSources(PreparedExplicit value)throws IOException{

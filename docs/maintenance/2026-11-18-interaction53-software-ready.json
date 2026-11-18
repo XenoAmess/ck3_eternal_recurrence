@@ -1,0 +1,672 @@
+{
+  "status": "EXACT1210_INTERACTION_TYPED_BRIDGE_53_DISTINCT_SOFTWARE_PASS_OFFLINE_ONLY",
+  "scope": "8 frozen patches+2 ported public-capability visibility/identity semantic hunks; 21 production TUs, 8 changed tests; real pure selectors/TypedUnavailable paths, no fabricated RuntimeContext or Installed product",
+  "final_source_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/FINAL-SOURCES03.json",
+    "bytes": 18737,
+    "sha256": "e5b731f1aea5cd8fa2ef6692b1d90bdb0ec77be8c5316a76af1fa197c4481f8e"
+  },
+  "ordered_input_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/PATCH-REPLAY01.json",
+    "bytes": 8907,
+    "sha256": "e06552c0f21e1a18c8f075663d4ad85bd03fe0a809e0588332d316eded4ce6cb"
+  },
+  "visibility_amend": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/visibility-port02.patch",
+    "bytes": 2152,
+    "sha256": "2add7adee2e5d671b7b9a95a693793abdb210eee14e4e8795072e8fc394012ac"
+  },
+  "actual_native_test_helpers": "normal genuine18 native-transport/test-classes used only as software test helper CodeSource; not production qualification or fabricated test JAR",
+  "first_typing_failure": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/javac01.json",
+    "bytes": 546,
+    "sha256": "0aab89ee93574527cded55890d014cc556f908e9699cef22a35afe686b99a3f3"
+  },
+  "first_stderr": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/javac01.stderr",
+    "bytes": 20320,
+    "sha256": "21f3cbe3e2b4564425004b355eb2f53efbcafe573e4b7782151afdc6d396b3d0"
+  },
+  "typing_pass": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/javac02.json",
+    "bytes": 556,
+    "sha256": "addf151d1e71824c087e9c0624418612f944b795842d19bec6d08af011809d45"
+  },
+  "tests": [
+    {
+      "xml": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/reports02/TEST-junit-jupiter.xml",
+        "bytes": 81636,
+        "sha256": "68b362295f8eb2e2ed7c91f205f58460da709674a43e0d8f2899f532003b59ae"
+      },
+      "process": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/junit02.json",
+        "bytes": 498,
+        "sha256": "ce9256ac186cfc6299582102bb39eb257960dd3f7c94831539fe5193708bd122"
+      },
+      "passed": 41,
+      "failed": 12
+    },
+    {
+      "xml": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair02/reports03/TEST-junit-jupiter.xml",
+        "bytes": 46483,
+        "sha256": "04b4fd2f66a7823a3cc622e3d94048b7660b2ec4b195455aa46dbcc13a789dba"
+      },
+      "process": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair02/junit03.json",
+        "bytes": 502,
+        "sha256": "b51be3fc4c6daacd203ff9ff7d6362b0d40777a369bb1221d849da71cc20cf6b"
+      },
+      "passed": 11,
+      "failed": 1
+    },
+    {
+      "xml": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair03/reports04/TEST-junit-jupiter.xml",
+        "bytes": 37016,
+        "sha256": "e4034d5360c2d63c78fd314a5a0a0b6cafae8eb8a12318ee66ed9b1752c96ef2"
+      },
+      "process": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair03/junit04.json",
+        "bytes": 500,
+        "sha256": "36df14d9873e3e79cfdca006211144aed7780acde16dbc024b443a538d1147a9"
+      },
+      "passed": 1,
+      "failed": 0
+    }
+  ],
+  "distinct_final_count": 53,
+  "distinct_results": {
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#historicalReplayRetainsOriginalCustodyGuardBeforeAdmission()": "PASSED",
+    "org.xar.ck3.control.service.root.RootGuardianCurrentArchiveSplitTest#realAvailableReadResultAndItsReceiptPassThroughWithoutReplacement()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.FamilyEducationUnavailableProjectionTest#zeroDispatchRefusalDoesNotAcquireAnAfterObservationOrKnownValue()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionTypedAvailabilityTest#legacyConstructorsAndTypedAvailableSelectTheSameOriginalReplyAndRejectCrossedBindings()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionTypedAvailabilityTest#missingAndWrongTypePendingAreNeverCreditedAsAnEmptyQueue()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#actualCanonicalPreparationUsesOnlyItsCurrentCallbackAndOriginalNativeFieldProducer()": "PASSED",
+    "org.xar.ck3.control.service.root.FamilyEducationTypedEntryTest#legacyConfiguredSelectorKeepsItsRealProjectionAndRejectsUnknownTuples()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#foreignQueryProfilePermissionOrWireCannotBeInstalledAsGuardianSource()": "PASSED",
+    "org.xar.ck3.control.service.root.RootGuardianCurrentArchiveSplitTest#sourceOwnedDecodeFailureIdentityAlsoSurvivesTheTypeAdapter()": "PASSED",
+    "org.xar.ck3.control.service.root.RootFamilyInteractionContextTest#qualifiedSourceNeverTakesTheUnmigratedOrWrongBuildPath()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#changedProfileWitnessRefusesBeforeAnyCurrentOrArchiveCallback()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionTypedAvailabilityTest#unavailableCannotBeCachedAndReusedAcrossPlanningBuildSources()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionTypedAvailabilityTest#activeWarPreludeDoesNotPrepareAReplyAndOnlyConsumptionSelectsReadOnly()": "PASSED",
+    "org.xar.ck3.control.service.root.RootFamilyInteractionContextTest#allThirteenDependentViewsReturnTrueUnavailableWithoutCallingAnyKnownRead()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionTypedAvailabilityTest#reviewedExecutionRawShaSourceIsRetainedWithoutInventingAnotherProvenance()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#canonicalProfileKeepsTheSameNativeProducerAndAdvertisedPurePermission()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianLiveContextUnavailableTest#unavailableEffectStillRejectsAForeignConnectionBeforeRetainingEvidence()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionTypedAvailabilityTest#explicitEmptyQueueIsInapplicableAndBothOriginalWarLeavesRemainInstalled()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingUnavailableSourceTest#missingWrongOrVersionOnlySourceCannotAcquireTheExactNegativeContract()": "PASSED",
+    "org.xar.ck3.control.service.root.RootGuardianCurrentArchiveSplitTest#historicalProjectionAcceptsOriginalFourAndRejectsTheRealFlorinTuple()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianLiveContextUnavailableTest#unavailableLiveEffectRetainsUnknownAndAckWithoutLoadingHistoricalProof()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.FamilyEducationUnavailableProjectionTest#florinMissingGetterRemainsTypedUnavailableWithoutCreatingALegacyContext()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianLiveContextUnavailableTest#unavailableEffectPreservesActualContextReadAckReferenceAndDecodeFailure()": "PASSED",
+    "org.xar.ck3.control.service.root.RootFamilyInteractionContextTest#qualifiedProducerFailuresAndUnavailableReasonsArePreservedWithoutRetyping()": "PASSED",
+    "org.xar.ck3.control.service.root.RootGuardianCurrentArchiveSplitTest#unavailableCannotCallTheNativeReadAndRetainsTheActualNegativeResultFields()": "PASSED",
+    "org.xar.ck3.control.service.root.RootFamilyInteractionContextTest#publicQueryHasNoManufacturedPlanningRequestContextOrReadOriginal()": "PASSED",
+    "org.xar.ck3.control.service.root.FamilyEducationTypedEntryTest#staleDeadlineAndDifferentHeldSessionFailBeforeEitherAvailabilityBranch()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.FamilyEducationUnavailableProjectionTest#returnedUnknownKeepsItsOriginalAfterObservationAndDeadline()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#ordinaryGameplayCannotAcquireCanonicalGuardianReadPermission()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionTypedAvailabilityTest#pendingAndNotificationBothRemainReadOnlyEvenWhenAnOldReplyHistoryIsPresent()": "PASSED",
+    "org.xar.ck3.control.service.root.RootFamilyInteractionContextTest#qualifiedContextAndKnownReadObjectsPassThroughExactlyOnceWithOriginalProjection()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#explicitHistoricalFactoryRetainsTheSameOriginalContractAndDisablesCurrentPreparation()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#closedArgumentAndCommandSerializationPreserveTheOriginalEducationIntent()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#historicalFactoryCannotIssueAQueryEvenWithMissingCurrentData()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#sameSemDataIsAllowedButAnotherDayOrRegressedNativeFrameIsNotAnOriginalSend()": "PASSED",
+    "org.xar.ck3.control.service.root.RootGuardianCurrentArchiveSplitTest#exact1210SelectsActualArchiveProductWithoutQualifyingTheCurrentBuild()": "PASSED",
+    "org.xar.ck3.control.service.root.RootFamilyInteractionContextTest#negativeGateRetainsExactHeldSourceSessionAndPublicationDeadlineGuards()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingUnavailableSourceTest#configuredTupleStillRequiresExactFlorinAndCannotUseOldBuildAsUnavailableAlias()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianLiveContextUnavailableTest#legacyFrameDefaultsKeepExactAvailableIdentityAndOriginalAfterOrder()": "PASSED",
+    "org.xar.ck3.control.service.root.RootGuardianCurrentArchiveSplitTest#originalCurrentFourRemainsLiveAndOtherLegacyProfilesRemainRejected()": "PASSED",
+    "org.xar.ck3.control.service.root.RootFamilyInteractionContextTest#rawReviewedExecutionShaKeepsItsActualSourceForProjectedAndPublicNegativeReads()": "PASSED",
+    "org.xar.ck3.control.service.root.FamilyEducationTypedEntryTest#configuredFlorinConstructorSelectorDoesNotRequireOrManufactureALegacyBuild()": "PASSED",
+    "org.xar.ck3.control.service.root.FamilyEducationTypedEntryTest#bothExistingExactSourceSpellingsUseTheSameUnavailableEntry()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingUnavailableSourceTest#heldFrameFactoryRetainsBothExistingExactSourceSpellingsWithoutInventingARequest()": "PASSED",
+    "org.xar.ck3.control.service.root.RootGuardianCurrentArchiveSplitTest#originalUnknownAndObservedFailedReadRemainAttachedToTheTypedNegative()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianLiveContextUnavailableTest#actualFlorinReadFailureCarriesItsExactDataWithoutConstructingALegacyContext()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.FamilyEducationUnavailableProjectionTest#sourceOwnedDecoderCustodySurvivesTheActualGuardianProjection()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianLiveContextUnavailableTest#unavailableLivePreparationNeverTouchesTransportClaimsNativeQueryOrOriginalProjection()": "PASSED",
+    "org.xar.ck3.control.service.root.FamilyEducationTypedEntryTest#wrongExactSourceCannotBorrowTheConfiguredNegativeContract()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#anotherOriginalPairBodyOrRequestCannotBorrowGuardianReadPermission()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionTypedAvailabilityTest#realWarCoreStopsAtItsLifecycleGuardBeforeConsumingUnavailablePending()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.GuardianReconciliationQueriesTest#unknownArgumentsAliasesAndScalarTypesAreRefusedBeforeCurrentAdmission()": "PASSED",
+    "org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionTypedAvailabilityTest#exactConfiguredNegativeResultHasNoInventedOriginalAndRejectsAllOtherTuples()": "PASSED"
+  },
+  "class_outputs": {
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/FamilyEducationNativeProjection.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/FamilyEducationNativeProjection.class",
+      "bytes": 12221,
+      "sha256": "f5007668234038a3f20d75972ebb723710c984c789d18393a2efa20c2199a2fe"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/FamilyEducationUnavailableProjectionTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/FamilyEducationUnavailableProjectionTest.class",
+      "bytes": 12035,
+      "sha256": "eaef0f9a2d1a8f9c06c7bf20e4c78af3d20833157bd7605aa410ce2306e550bc"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$1.class",
+      "bytes": 2552,
+      "sha256": "81754b3c74b26c413657cff2ba9e3ccc662ba74b4f90cd0a472439232cefd614"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$2.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$2.class",
+      "bytes": 4546,
+      "sha256": "317c2776e2b7c47c1ab630c0f0b724e64a67d5705b4a12e5302bbd5bb1719e60"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$3.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$3.class",
+      "bytes": 1803,
+      "sha256": "67f7d7cba3b08a543a88c2761f5b216268c02c397d7f6048295170854701fab5"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$4.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$4.class",
+      "bytes": 1862,
+      "sha256": "a0064f7a7d9a1a9852aa3c3df078220a28eebdcfea8997ac7ddaf29e0b0cc5a9"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$5.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$5.class",
+      "bytes": 2631,
+      "sha256": "96fcdb804e7c1be06431b1fb320d8bdcd6629027e6ecbb241b302f201bbd66b3"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$NoWritesArchive.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest$NoWritesArchive.class",
+      "bytes": 4493,
+      "sha256": "1b71f2e8fcca1077eef7328792caf51fd1cdee9366d5b919c6d450bd340ecaf8"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianLiveContextUnavailableTest.class",
+      "bytes": 28036,
+      "sha256": "f26cf0c720aca8f7d6c8fbae86edcaafdd7461f2684fe68edd098f8fb39b46dc"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingEffects$Preparation.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingEffects$Preparation.class",
+      "bytes": 4365,
+      "sha256": "08efb2220f3f9277b26a1df060592b990a49c1c50ebcb39d9fa21d9bbec5a368"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingEffects.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingEffects.class",
+      "bytes": 54218,
+      "sha256": "54953c96eaac971df0325ef94ec1caf66207870a814f7584b506ed569aed5d1b"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingInstaller.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianOutgoingInstaller.class",
+      "bytes": 15342,
+      "sha256": "30f37774b0d6d1ae462be17223b80f645ce4ca64e9069cb0f0756bcae332e34b"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries$CanonicalAdmission.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries$CanonicalAdmission.class",
+      "bytes": 563,
+      "sha256": "ee0dea7ffec58dfca3a4c43231d6c256c7f98a8fca17ccb9c0da5ae1a0325283"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries$Issued.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries$Issued.class",
+      "bytes": 3567,
+      "sha256": "3290adc88cadb1b2b61d25cfcdb4983bee3496dfa6df4dfe39d4c25408a9052c"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueries.class",
+      "bytes": 29293,
+      "sha256": "31e8719431f18aef3937eb2f91e41f9c4f911ea668eb7dc3ff7b9b973e78f8f5"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueriesTest$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair03/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueriesTest$1.class",
+      "bytes": 2402,
+      "sha256": "45fd9617f8fb34794ad3d1cf325fd1f9489b994290d1676127720d8ddb942c5e"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueriesTest$2.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair03/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueriesTest$2.class",
+      "bytes": 2238,
+      "sha256": "a886cb58868bf991aa46d6837570c2520e937293928349fbe0a510a8b84da880"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueriesTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair03/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/GuardianReconciliationQueriesTest.class",
+      "bytes": 35191,
+      "sha256": "b53c408c48e1c9039e53707a00d0c9e6b5ff94654a055518d3dd677ac29553b3"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Available.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Available.class",
+      "bytes": 2260,
+      "sha256": "d68bc79a17f697127e6fe8a3bda1d100ef22c1e208d3663cf88595f738806b63"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Collected.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Collected.class",
+      "bytes": 2403,
+      "sha256": "5cd71e4095eb13d9bc621a91a91b8f63edb85ec6365b737fef6ebb8a38a08831"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ContextPort.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ContextPort.class",
+      "bytes": 799,
+      "sha256": "07805194d62589a4283b375d880e3e0b22f11e53268b5c6dd88f254a0022f343"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ContextRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ContextRead.class",
+      "bytes": 654,
+      "sha256": "f8371768341f50f2eb7b122cae92d270548d558bb3e9c3fa0697161862a0b92f"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ContextReadPort.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ContextReadPort.class",
+      "bytes": 761,
+      "sha256": "06ea64a9efedd1c9e1e2015418352fbf085193829ee256bd59533a5a05f1a822"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Publication.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Publication.class",
+      "bytes": 1172,
+      "sha256": "3a7cffbbc21aaf4f38faa0d80787a0612c1427fc9c3ff02677b0b85dbfa192c4"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadArguments.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadArguments.class",
+      "bytes": 731,
+      "sha256": "ff68cc4341484b13bb789fdef35d978d3dac6fba8fe293d2422a564c4bfa9e95"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadCatalog.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadCatalog.class",
+      "bytes": 863,
+      "sha256": "ec8fdf05ee2674569aba5e63d0121de62c6a9448045ee2105f0d82c58f7da67c"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadPublication.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadPublication.class",
+      "bytes": 2595,
+      "sha256": "b59c1a728aa4f81f2ecff6a00c92f1a328d59a9e2a5d0a64f5e5556e9f2db118"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadRoute.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$ReadRoute.class",
+      "bytes": 7963,
+      "sha256": "157ccc0905fa3b3787862b5fe4daf4dc0246223e01cde3b58ad29075d774a7b6"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Unavailable.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy$Unavailable.class",
+      "bytes": 1690,
+      "sha256": "01b62304cd565dce4346d236c34f5638fc6734fad579ce2fb95952278ae226e9"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy.class",
+      "bytes": 50510,
+      "sha256": "b1398893596ea061a7bbc2132e17ba015c73beb67c58e7c5cf5767b3f45c99e1"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionTypedAvailabilityTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionTypedAvailabilityTest.class",
+      "bytes": 35743,
+      "sha256": "395dab9a5276ab3890ae1aa8390fe7418ce50ed6462e9e7322bb98c1bc7ed8fd"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingUnavailableSourceTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingUnavailableSourceTest.class",
+      "bytes": 5898,
+      "sha256": "4b0977373448ce843d398911f31b766aba0badfa7278b900f21fd6c99558914e"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$1.class",
+      "bytes": 7751,
+      "sha256": "368f9d91500f9fc42dcc91036f8fc13e59ab37515d2ebc4893f2dd1eade06453"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$2.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$2.class",
+      "bytes": 5461,
+      "sha256": "8258421286c45023d34fa0c806460b86bb0fc8898b7f6524be40ce37ab3599b3"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$3.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$3.class",
+      "bytes": 6306,
+      "sha256": "ec07a19b2f5d6c49b2c6c59542c86e8623abbd88dfd10c8dfef0061b191f4936"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$ActualFrame.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$ActualFrame.class",
+      "bytes": 2810,
+      "sha256": "d52c3ff05a7cce8cbeda19e93057a519acfcc74dcb2c3983e65614d08f6f883c"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$AvailableFrame.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$AvailableFrame.class",
+      "bytes": 2581,
+      "sha256": "69bb6681141593caa8faeb5e8ddd75abe55aa93d886d40715efd96e373957c43"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$ContextObservation.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$ContextObservation.class",
+      "bytes": 4061,
+      "sha256": "0c269fc98603dbaffaa4fe8ca8d7d48fdbc230e866358e887d400bb197b718d0"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$ContextUnavailableException.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$ContextUnavailableException.class",
+      "bytes": 1956,
+      "sha256": "3a816f483f3a39d79223316a0951e26bed805c8f9c18e06e6ca9e61f83f5addc"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$FrameRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$FrameRead.class",
+      "bytes": 938,
+      "sha256": "c1e080431c06f906ff3b32b95fc5d58cd41a7bddd0540422c40e02509d5ac695"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$Frames.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$Frames.class",
+      "bytes": 3147,
+      "sha256": "f0c3cdbe4f82435f513795aefc7e46ba8a359eb0b5eb78624239c31f85577d24"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$LiveContextReads.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$LiveContextReads.class",
+      "bytes": 1385,
+      "sha256": "74eebbf1e009902090d142d4fec77505065ac7e2f61d614cf7a9291d0527361c"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$SourceBoundProjection.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$SourceBoundProjection.class",
+      "bytes": 1026,
+      "sha256": "482e3114099bb2759bd9005e06b59bff4e09baf8925da5da787aa2ef4643e67f"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$UnavailableFrame.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation$UnavailableFrame.class",
+      "bytes": 3574,
+      "sha256": "bce5efcee691c44bccdb95e444c9f80845e504548706bfca55261381a26e41d7"
+    },
+    "org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/nativebridge/capabilities/interactions/OrdinaryInitiationPreparation.class",
+      "bytes": 46210,
+      "sha256": "0e4b6cdfc89a30d21c2ff147929ad1249af3122919662b4cafecfa59b3588e0e"
+    },
+    "org/xar/ck3/control/service/root/FamilyEducationTypedEntryTest$Scene.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair02/classes/org/xar/ck3/control/service/root/FamilyEducationTypedEntryTest$Scene.class",
+      "bytes": 2120,
+      "sha256": "075e29ec9bed93f1d28ef68740105ee863ccea8e88997a403f4a576f909ab27f"
+    },
+    "org/xar/ck3/control/service/root/FamilyEducationTypedEntryTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair02/classes/org/xar/ck3/control/service/root/FamilyEducationTypedEntryTest.class",
+      "bytes": 17099,
+      "sha256": "0c4649fd6b7da48cc3083c686aabd82975eb1e91a8001db19bc5ed1bb638cdda"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$ConfiguredBuild.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$ConfiguredBuild.class",
+      "bytes": 4250,
+      "sha256": "123da612825f119b0d530e3243f7a95fd047832d31ff1348eba9973fc3b61a16"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$CurrentActions.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$CurrentActions.class",
+      "bytes": 1725,
+      "sha256": "727045c452dd64dc5c82e5a53855224917db6eedf0cf8c3eb548e6d9d40c75e0"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$NewOrdinary.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$NewOrdinary.class",
+      "bytes": 1878,
+      "sha256": "08edca5dfa72639d063436bdcea4fe562fa721b362c0323694168a79c028db8e"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$NewPending.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$NewPending.class",
+      "bytes": 3092,
+      "sha256": "15f165e262f60ac9108922d7aa0dd11bfa9296484c8337b959b9de76e6a85597"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$PublicOrdinaryDecision.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$PublicOrdinaryDecision.class",
+      "bytes": 606,
+      "sha256": "4698d64601f5c88648f79067312e5f67ef58af7eb12f313293bc417e93c82ad4"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$PublicPendingDecision.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$PublicPendingDecision.class",
+      "bytes": 1251,
+      "sha256": "c13af529b4227750cd52948ff61a906c79632689e20b236ada10efd931f7dbca"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$RetainedOrdinary.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$RetainedOrdinary.class",
+      "bytes": 2194,
+      "sha256": "96c3ad2c1797bed63a70791dbc8027e64b84303fb9d1f19aa480d85d9de05c9a"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$RetainedPending.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$RetainedPending.class",
+      "bytes": 3416,
+      "sha256": "b8c9482963cdc034a8361add4557a10ea35f188101404b57f6c5825da81d936e"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$Sources.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller$Sources.class",
+      "bytes": 5445,
+      "sha256": "fc5cb1ff4024db4c88e76f6cec0cf48750d8c7ceba7e43174cba05b38cf162fa"
+    },
+    "org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller.class",
+      "bytes": 72459,
+      "sha256": "30a08724eb435588ad6cc77aefca020fdc9bfbf6fdc00fcb467f55935f4b074f"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyChildRead$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyChildRead$1.class",
+      "bytes": 2624,
+      "sha256": "2a4ec3d0a2aeb7b3542a2d96ecb4408016cb3b7d36a21bb80a283817d8e6a86a"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyChildRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyChildRead.class",
+      "bytes": 11355,
+      "sha256": "1a4ef6f489c9e18e9053934e2a34e5a1684abc1df4883f3b135bb9c67a45c89e"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyDomainRead$Arguments.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyDomainRead$Arguments.class",
+      "bytes": 926,
+      "sha256": "bddfb0feffbfa01441c350aa0bb587b303ea1e59eeec94984f351b1c40144fe8"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyDomainRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyDomainRead.class",
+      "bytes": 15354,
+      "sha256": "f7214605b758d9326f81cc392fa656d410d5373b710abb086e92bcf2daf2bda0"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyEducationRead$OrdinaryRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyEducationRead$OrdinaryRead.class",
+      "bytes": 1479,
+      "sha256": "32ad3b361dd96c730c6f791d2584377e0d04e3086c48734be974294ec6f828f5"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyEducationRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyEducationRead.class",
+      "bytes": 11654,
+      "sha256": "ff2c71999c037c4cc2194b5136c8cb35c18340e28000b89cbf0ae788e97be229"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyHeirLegalityRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyHeirLegalityRead.class",
+      "bytes": 11944,
+      "sha256": "a1ec121ccfd003e1b79089c538f818f57c12ca446163777c1f6fdbe1736dfa6d"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyInteractionContext$Projected.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Projected.class",
+      "bytes": 970,
+      "sha256": "88c0d7e27075bf5eb53029e81014b8e3349472c0589722c4f550c5458fbfef22"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyInteractionContext$Qualified.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Qualified.class",
+      "bytes": 1825,
+      "sha256": "e48adce85a6284ab2c8666621ec3562e2e07a1717da33d18ae09d9a09b5acdd7"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyInteractionContext$Query.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Query.class",
+      "bytes": 1004,
+      "sha256": "475a47d8490a43bf222d57092e0b54627f474acaae874b8270d1babe873049e6"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyInteractionContext$Source.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Source.class",
+      "bytes": 533,
+      "sha256": "e36985f1cf5976f8877cb7f98eef34b6bbfe56ca208ff2ada58870aebbb85f85"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyInteractionContext$Unmigrated.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext$Unmigrated.class",
+      "bytes": 2644,
+      "sha256": "62308399e2ab41b23e32361fa7f266b59deee84cc408fe3157b61c18f0ab0137"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyInteractionContext.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContext.class",
+      "bytes": 9998,
+      "sha256": "e37d2cf28bf035948ae7456ad80749c217e7041f7daffec5c32a7ce745b83659"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyInteractionContextTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyInteractionContextTest.class",
+      "bytes": 28759,
+      "sha256": "4908e8d67fa0d20df9d695e2cbf6312c457a6c2e4c8e5a1669f9be58893cb01f"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyMarriageProjectionRead$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyMarriageProjectionRead$1.class",
+      "bytes": 2682,
+      "sha256": "c4a11c5b03b1210ea6dffbc284964b7d77c2655a336ea38e3eda8d76418edeb0"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyMarriageProjectionRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyMarriageProjectionRead.class",
+      "bytes": 11573,
+      "sha256": "58eaf8a09d91d99b971771825301557b68763a4f02538532e9c9025c54e9d93f"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$1.class",
+      "bytes": 1637,
+      "sha256": "3eeab27427d3488c7e54932fb8383fffcc78f6f715a650b880670dd5bd673ab2"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$2.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$2.class",
+      "bytes": 4253,
+      "sha256": "2439f45b78d775e0da5f274ac639de6d84678ca9c599798cc86f56ac27bef945"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$3.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$3.class",
+      "bytes": 1157,
+      "sha256": "0b033bcbca534c282e595e312ba08cb2b991b814d94da027c8fd4ba85372c533"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$Source.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$Source.class",
+      "bytes": 2124,
+      "sha256": "e4df6b5adc524ac4c6756c5071529bfb10eeedaaa4a361550571ec054218b906"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$Sources.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts$Sources.class",
+      "bytes": 3815,
+      "sha256": "8bea03864189d81867595d29579c2693aa47ce804985cf163916393a326255bb"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyNativeReadProducts.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyNativeReadProducts.class",
+      "bytes": 36629,
+      "sha256": "0cefbcc371f2bbaede76a0984ccbf43a409c739b0bea6b6c62b58e220350f498"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyReadProducts$Sources.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyReadProducts$Sources.class",
+      "bytes": 2608,
+      "sha256": "4cdff744f3fcc78ab419d5148851865deca02beff67bee06cdda3f6416600985"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyReadProducts.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyReadProducts.class",
+      "bytes": 18398,
+      "sha256": "786f661dd45f154c2dce8ef8b8e1213bad218e5ae71dfb1b4dd52be6e5d7a5f0"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyResultRead$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyResultRead$1.class",
+      "bytes": 1049,
+      "sha256": "8a5f8e1bebf66ed2d7de1fa3f0952e0e39ffa4cec37e4792907ae81e8a1f8479"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyResultRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyResultRead.class",
+      "bytes": 19019,
+      "sha256": "872a884d319e9838c4c9445714954bfa455284fd464fe856947c4bbe1d2a6e30"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRootBoundRead$Arguments.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRootBoundRead$Arguments.class",
+      "bytes": 935,
+      "sha256": "5308bddb49d8d1b29ae699754522128639f3916385c0b73ace35aaf91e87b5ab"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRootBoundRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRootBoundRead.class",
+      "bytes": 15121,
+      "sha256": "7ca5f19e2a494503addcac5272b0a12386fa25df821bf0426353cc5d78a9682d"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRulerChoicesRead.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRulerChoicesRead.class",
+      "bytes": 9924,
+      "sha256": "7853fab2228e86a34847d95ebe00957139f07195ce196dc59a8d2b14d51f3693"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Installed.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Installed.class",
+      "bytes": 9396,
+      "sha256": "4a5a33f1f65dc65cf1927a2d40935ebdea34f08df32e8228af5c89ac33fc7f34"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$OrdinaryConfiguration.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$OrdinaryConfiguration.class",
+      "bytes": 2403,
+      "sha256": "d1a10fec35832e372516cd42679a80c1e6da56451c2e57a07517818f012c30d3"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Prepared$Attempt.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Prepared$Attempt.class",
+      "bytes": 2498,
+      "sha256": "5086d1bb3923a2d5d730223fbebece9d0e9501ffc1f1c9b80120a83fd0b54280"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Prepared.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Prepared.class",
+      "bytes": 16214,
+      "sha256": "d408e91341540317dfb99b73fac29e98803cef704be734055db393b72c7bf13e"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Shared.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Shared.class",
+      "bytes": 5169,
+      "sha256": "4175230a7b8248d5770894031f4dbd3e7d8c6721954f0b055828968f1535715f"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Sources.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory$Sources.class",
+      "bytes": 7020,
+      "sha256": "5ed6f45ab864ddfccf608540fff4c90af1c88a896d6ade2e75a27eaa3e3e3a0f"
+    },
+    "org/xar/ck3/control/service/root/RootFamilyRuntimeFactory.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootFamilyRuntimeFactory.class",
+      "bytes": 1441,
+      "sha256": "8a0fe5eb1a6473342c0ca4b648e7b34717af8b4252e222f1ba822bcd18c79367"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianCurrentArchiveSplitTest$1.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianCurrentArchiveSplitTest$1.class",
+      "bytes": 1222,
+      "sha256": "6787a95951d62d9e41f0ef385078f76b1e4a03927a9e4c9757f50afb31c01f64"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianCurrentArchiveSplitTest.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianCurrentArchiveSplitTest.class",
+      "bytes": 28545,
+      "sha256": "b6ecf626671e357409a3e6e83abe87ec96fca428528e1772abc3e179f8224b7d"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianReconciliationReads.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianReconciliationReads.class",
+      "bytes": 30850,
+      "sha256": "cf4419963900618514670a98cb9b65c7dc525ba4cc37279cc4a742b0e2d2c0ce"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Attempt.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Attempt.class",
+      "bytes": 828,
+      "sha256": "b5dd4aa0990d1bbe1a2913d0bd0f81746f9789f8d5c84ecc20ab7655247fdc07"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Installed.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Installed.class",
+      "bytes": 5843,
+      "sha256": "bdc76579eacddd2ba697e1e9f14ea7fc18384e5b528b656fe2f2c9ba7553262a"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$OrdinaryConfiguration.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$OrdinaryConfiguration.class",
+      "bytes": 1743,
+      "sha256": "ca9f558f55b34d0b2ea46f8cd195d861b968fe9dfe892292aa757e94d3bfa4e8"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$OrdinarySources.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$OrdinarySources.class",
+      "bytes": 3802,
+      "sha256": "982a06fdf0ea7f06018d0a937be599d31a81cf85fbbf3ae338818a0371c429f6"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Prepared.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Prepared.class",
+      "bytes": 17950,
+      "sha256": "fdaf9e0f4cc8d46b5be7ede27d7554853e13abb350dd01aee4f8a57ea2bbc113"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Sources.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory$Sources.class",
+      "bytes": 4827,
+      "sha256": "eece2b262509f83ebee978de2d233c45afd8117aff72a87486782d5bbc9ad0c9"
+    },
+    "org/xar/ck3/control/service/root/RootGuardianRuntimeFactory.class": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-plain-interaction14/qualification01/repair01/classes/org/xar/ck3/control/service/root/RootGuardianRuntimeFactory.class",
+      "bytes": 2947,
+      "sha256": "4d98f59974f71f22d4c853a88f0517d3d2d4367dee93d26d39d15a108469592b"
+    }
+  },
+  "production_unchanged_after_first_successful_typing": true,
+  "fixture_repairs": [
+    "existing OpportunityJson parse(canonical) API",
+    "complete PlanningObservation boolean/array inputs",
+    "education recipient equals child and negative pair itself valid",
+    "EXACT evidence currentOriginalDriver equals originalBeforeDriver with distinct other roles",
+    "invalid regression DATA constructor evaluated within expected exception"
+  ],
+  "no_passed_method_repeated_in_repairs": true,
+  "permit": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-PLAIN-INTERACTION16M-OFFLINE-PERMIT25.json",
+    "bytes": 2967,
+    "sha256": "e8a2300e8e7c15de2f147fa60aee2982a8aec201e32282684de0ccecb3ce27f2"
+  },
+  "latest_user_offline_only": true,
+  "Game_queries_actions": 0,
+  "actual_catalog_install": false,
+  "actual_Root_ready": false,
+  "whole_SERVICE": false,
+  "full_Definitions_fixture_required": false
+}

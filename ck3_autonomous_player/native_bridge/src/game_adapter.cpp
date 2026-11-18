@@ -3,6 +3,7 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_1210_read_wire_registry_v1.hpp"
 #include "xar_bridge/ordinary_interaction_request_v1.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
@@ -317,6 +318,11 @@ bool ParseCombatSimulationInputsV3Step(
 }
 
 bool GameAdapter::supports_step(std::string_view step) const noexcept {
+  const auto &actual = descriptor();
+  const ck3_1210::ReadWireBuildIdentityV1 build{
+      actual.adapter_id, actual.game_version, actual.executable_sha256};
+  if (const auto read = ck3_1210::FindReadWireContractV1(build, step))
+    return supports(read->capability);
   std::string_view capability;
   if (step == "query-core-frame-v1") {
     capability = "game.query.core-frame.v1";
@@ -662,6 +668,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     ck3_11906::TacticalDailySentinelArmRequestV1 request{};
     std::uint64_t cancel_generation = 0;
     if (ck3_11906::ParseTacticalDailySentinelArmStepV1(step, request)) {
+      // Florin publishes only date-only terminal arms. The legacy grammar
+      // also accepts decision/army watches which its wire producer rejects.
+      if (IsCk3_1210Descriptor(descriptor()) &&
+          (request.mode != ck3_11906::TacticalDailySentinelModeV1::terminal_or_sentinel ||
+           request.army_count != 0)) return false;
       capability = ck3_11906::kTacticalDailySentinelCapabilityV1;
     } else if (ck3_11906::ParseTacticalDailySentinelCancelStepV1(
                    step, cancel_generation)) {

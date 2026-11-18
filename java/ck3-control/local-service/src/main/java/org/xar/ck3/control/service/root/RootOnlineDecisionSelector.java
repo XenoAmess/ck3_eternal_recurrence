@@ -146,6 +146,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         String reason = "model_decision_unavailable";
         String modelChoice = "unavailable";
         try {
+            if (codexFiles != null) codexFiles.archiveExpired(machineId, materials, wallEnd, nanoEnd);
             byte[] payload = requestPayload(request, proposal, sha);
             requestRef = materials.preserve(RawJson.fullMaterial(payload));
             if(eventOperation(proposal.command())) {
@@ -174,17 +175,25 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 Exchange exchange;
                 if (codexFiles == null) exchange = call(payload, wallEnd, nanoEnd);
                 else {
-                    JsonNode command = FullJsonTree.parse(ActionCodec.encodeCommand(proposal.command()), ActionCodec.MAX_COMMAND_BYTES);
-                    fileReply = codexFiles.exchange(requestRef, machineId, identity, sha, command.get("before"), wallEnd, nanoEnd);
+                    byte[] originalCommand = ActionCodec.encodeCommand(proposal.command());
+                    ExactRef originalCommandRef = materials.preserve(RawJson.fullMaterial(originalCommand));
+                    JsonNode command = FullJsonTree.parse(originalCommand, ActionCodec.MAX_COMMAND_BYTES);
+                    fileReply = codexFiles.exchange(requestRef, originalCommandRef, machineId, identity, sha, command.get("before"), wallEnd, nanoEnd);
                     exchange = new Exchange(0, fileReply.raw(), fileReply.content(), -1, null,
                             fileReply.totalMs(), fileReply.failure(), false, fileReply.complete(), new Usage(null,null,null,null));
                 }
+                try (RootCodexFileDecisionExchange.Reply heldReply = fileReply) {
+                if (heldReply != null) heldReply.verifyHeld();
                 endProgress(machineId, identity, attempt, attemptStartedAt, wallEnd, payload.length, exchange);
                 ObjectNode raw = object();
                 raw.put("schema", codexFiles == null ? "xar.ordinary-model-http-attempt/v1" : "xar.ordinary-codex-file-attempt/v1"); raw.put("attempt", attempt);
                 raw.put("machine_id", machineId); raw.put("observed_at_utc", clock.instant().toString());
                 if (codexFiles == null) raw.put("status", exchange.status());
-                else { raw.put("transport", "codex-file"); raw.put("provider", config.model()); }
+                else {
+                    raw.put("transport", "codex-file"); raw.put("provider", config.model());
+                    raw.put("request_wire_base64", Base64.getEncoder().encodeToString(fileReply.requestRaw()));
+                    raw.set("request_pin", fileReply.requestPin()); raw.set("response_pin", fileReply.responsePin());
+                }
                 raw.put("wire_base64", Base64.getEncoder().encodeToString(exchange.raw()));
                 if (exchange.headersMs() < 0) raw.putNull("headers_ms"); else raw.put("headers_ms", exchange.headersMs());
                 if (exchange.ttftMs() == null) raw.putNull("ttft_ms"); else raw.put("ttft_ms", exchange.ttftMs());
@@ -216,6 +225,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 long remainingBudget = remaining(wallEnd, nanoEnd);
                 if (remainingBudget <= 0) break;
                 TimeUnit.NANOSECONDS.sleep(Math.min(delay, remainingBudget));
+                }
             }
             if (remaining(wallEnd, nanoEnd) <= 0) { choice = Choice.WAIT; reason = "model_decision_deadline_exhausted"; }
             ExactRef receipt = receipt(machineId, requestRef, attempts, identity, sha, modelChoice, choice, reason);

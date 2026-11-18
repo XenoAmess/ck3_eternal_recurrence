@@ -107,14 +107,28 @@ public final class RootGuardianRuntimeFactory {
                 var claimRuntime=sources.claims().install(context);claimRuntime.requireContext(context);
                 var ordinary=actualKnown.definitions().ordinaryQuery();
 
-                var queryReads=new RootGuardianReconciliationReads(context,ordinary,actualKnown.sources().qualifiedBuild(),
+                var queryReads=new RootGuardianReconciliationReads(context,ordinary,actualKnown,
                         sources.reconciliationProfile(),sources.decoder());
-                var products=new GuardianOutgoingInstaller(()->{
+                java.util.function.Supplier<org.xar.ck3.control.nativebridge.NativeGameTransport> transport=()->{
                     try{return context.transport();}catch(IOException failure){throw new UncheckedIOException(failure);}
-                },()->context.adopted().observations(),actualKnown.sources().qualifiedBuild(),context.reads(),ordinary,claimRuntime.claims(),
-                        context.archive(),context.frameLoader(),()->{
+                };
+                java.util.function.Supplier<Session> session=()->{
                     try{return context.borrowedSession();}catch(IOException failure){throw new UncheckedIOException(failure);}
-                },sources.effects(),sources.decoder(),queryReads.queries());
+                };
+                GuardianOutgoingInstaller products;
+                if(actualKnown.sources().configuredBuild().qualified()) {
+                    // Preserve the original qualified live preparation/observation order and wire contract.
+                    products=new GuardianOutgoingInstaller(transport,()->context.adopted().observations(),
+                            actualKnown.sources().qualifiedBuild(),context.reads(),ordinary,claimRuntime.claims(),
+                            context.archive(),context.frameLoader(),session,sources.effects(),sources.decoder(),queryReads.queries());
+                } else {
+                    // This genuine current negative gate does not borrow a legacy Build. The explicit
+                    // CROZIER4 projection is only for rebuilding retained historical originals.
+                    products=GuardianOutgoingInstaller.withLiveContextReads(transport,()->context.adopted().observations(),
+                            queryReads::liveContextRead,queryReads.queries().historicalProjection(),context.reads(),ordinary,
+                            claimRuntime.claims(),context.archive(),context.frameLoader(),session,
+                            sources.effects(),sources.decoder(),queryReads.queries());
+                }
                 queryReads.bind(products);
                 var installed=new RootDomainInstallation("guardian-original-ordinary-send/v1",List.of(),queryReads.installedReads(),List.of(),
                         products.actions(),List.of(),products.archivedVerifiers(),List.of(),List.of(),List.of(),List.of(),java.util.Set.of(),
@@ -131,6 +145,9 @@ public final class RootGuardianRuntimeFactory {
             Objects.requireNonNull(context);Objects.requireNonNull(interactions);Objects.requireNonNull(claims);Objects.requireNonNull(products);Objects.requireNonNull(reads);Objects.requireNonNull(installation);
             claims.requireContext(context);reads.requireContext(context);
         }
+        public PlanningReadResult<InteractionModels.OrdinaryContext> currentContextRead(
+                org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete actual,
+                ActionCommand command,Instant deadline)throws IOException{return reads.liveContextRead(actual,command,deadline);}
         public OrdinaryInitiationPreparation preparation(){return products.preparation();}
         public GuardianOutgoingEffects effects(){return products.effects();}
         public RootReconciliationAuthority.QueryPolicy reconciliationReads(){return reads.reconciliationReads();}

@@ -36,10 +36,41 @@ public final class RootBootstrapRuntime {
         if(mode==Mode.FORMAL_RELEASE)for(String name:FORMAL)names.add("org.xar.ck3.control.build."+name);
         if(mode==Mode.ORIGINAL_DRIVER_RUN_PROFILE){names.add("org.xar.ck3.control.service.root.RootOriginalDriverRunProfileProducer");names.add("org.xar.ck3.control.service.root.RootFrozenRunProfile");}
         if(mode==Mode.NORMAL_EXIT){names.add("org.xar.ck3.control.platform.NormalExitSourceInventory");names.add("org.xar.ck3.control.platform.NativeLaunchPlan");names.add("org.xar.ck3.control.platform.NativeBridgeLaunchEvidence");}
+        if(mode==Mode.INITIAL_SAVED_MATERIALIZED_POLICY) {
+            names.add("org.xar.ck3.control.application.driver.InitialEpisodePolicy");
+            names.add("org.xar.ck3.control.application.action.RawJson");
+            names.add("org.xar.ck3.control.application.checkpoint.CheckpointPair");
+            names.add("org.xar.ck3.control.application.checkpoint.CheckpointPairCodec");
+            for(String name:List.of("NativeLaunchPlan","NativeBridgeLaunchEvidence","LaunchSourceBinding",
+                    "NativeSavedGameClone","NativeSavedGameClone$Observation","QualifiedCloneCustody",
+                    "NativeSavedGamePreparation","NativeSavedGamePreparation$Existing","NativeSavedGamePreparation$ExistingCensus"))
+                names.add("org.xar.ck3.control.platform."+name);
+            for(String name:List.of("IdentityBearingFileAttributes","IdentityBearingFileAttributes$ReadOnlyLease","IdentityBearingFileAttributes$DirectoryReadOnlyLease"))
+                names.add("org.xar.ck3.control.contracts.source."+name);
+        }
         for(String name:LOCAL)names.add("org.xar.ck3.control.service.root."+name);
         names.add("org.xar.ck3.control.build.RootBootstrapSessionScope");
         names.add("org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles");
-        names.add("org.xar.ck3.control.contracts.StrictJson");return List.copyOf(names);
+        names.add("org.xar.ck3.control.contracts.StrictJson");
+        return mode==Mode.INITIAL_SAVED_MATERIALIZED_POLICY?mappedDeclaredNests(names):List.copyOf(names);
+    }
+    /** Every declared nest class gets its own provider observation; top-level source pins alone do not prove nested origins. */
+    private static List<String> mappedDeclaredNests(List<String> roots) {
+        var result=new LinkedHashSet<String>(roots);var additional=new java.util.TreeSet<String>();
+        try {
+            ClassLoader loader=RootBootstrapRuntime.class.getClassLoader();
+            for(String name:roots) {
+                Class<?> root=Class.forName(name,false,loader).getNestHost();
+                for(Class<?> member:root.getNestMembers()) {
+                    if(member.getNestHost()!=root||member.getClassLoader()!=root.getClassLoader())
+                        throw new IllegalStateException("mapped classfile nest escaped its actual declaring host");
+                    additional.add(member.getName());
+                }
+            }
+        }catch(ClassNotFoundException|LinkageError|SecurityException unavailable) {
+            throw new IllegalStateException("mapped declared-nest classfile roster is unavailable",unavailable);
+        }
+        result.addAll(additional);return List.copyOf(result);
     }
     public static List<FileRef> verify(Request request,Mode mode)throws IOException {
         var tools=ControlBuild.verifiedCompletedReceipt(request.toolsBuild());
@@ -57,7 +88,9 @@ public final class RootBootstrapRuntime {
             boolean toolClass=TOOLS.stream().anyMatch(n->binding.className().equals("org.xar.ck3.control.build."+n));
             Role expected=mode==Mode.PROFILE&&toolClass?Role.TOOLS:Role.SERVICE;
             var receipt=expected==Role.TOOLS?tools:service;
-            String sourceName=binding.className().replace('.','/')+".java";
+            int nest=binding.className().indexOf('$');
+            String sourceClass=nest<0?binding.className():binding.className().substring(0,nest);
+            String sourceName=sourceClass.replace('.','/')+".java";
             if(binding.role()!=expected||!binding.compiledSource().path().replace('\\','/').endsWith("/"+sourceName)
                     ||!receipt.compiledSourcePins().contains(binding.compiledSource()))throw new IOException("actual compiled source is not a member of its genuine owner receipt: "+binding.className());
             binding.compiledSource().verify();

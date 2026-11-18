@@ -211,6 +211,8 @@ public final class ActionEffects {
     }
     /** Original physical material to be re-decoded by the exact registered archived verifier. */
     public static java.util.List<org.xar.ck3.control.contracts.ExactRef> supportingEvidence(ActionState.Settlement settlement) {
+        if (settlement instanceof ActionState.ControlApplied control)
+            return org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.references(control);
         if(settlement instanceof ActionState.FixtureStarted started)return started.observation().references();
         if(settlement instanceof ActionState.FixtureBusinessCompleted completed)return completed.observation().references();
         if (settlement instanceof ActionState.LifeControlPrefixInterrupted interrupted) {

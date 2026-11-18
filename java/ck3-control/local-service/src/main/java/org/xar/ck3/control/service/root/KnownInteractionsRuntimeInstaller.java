@@ -26,20 +26,62 @@ import org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain;
 
 /** One real InteractionCapabilities instance shared by known pending, Family, guardian and public consumers. */
 public final class KnownInteractionsRuntimeInstaller {
+    /** Configured source identity DATA only. Recognition never grants Native interaction or runtime admission. */
+    public static final class ConfiguredBuild {
+        public static final String UNMIGRATED_REASON="interaction_native_contract_unmigrated";
+        private final String version,executableSha256;
+        private final InteractionModels.Build legacy;
+        private ConfiguredBuild(String version,String executableSha256,InteractionModels.Build legacy) {
+            this.version=version;this.executableSha256=executableSha256;this.legacy=legacy;
+        }
+        private static ConfiguredBuild legacy(InteractionModels.Build build) {
+            Objects.requireNonNull(build);
+            return new ConfiguredBuild(build.version(),build.sha256().toLowerCase(java.util.Locale.ROOT),build);
+        }
+        public static ConfiguredBuild select(String version,String executableSha256) {
+            for(var build:InteractionModels.Build.values())
+                if(build.version().equals(version)&&build.sha256().equalsIgnoreCase(executableSha256))return legacy(build);
+            var florin=ExactCk3Build.CK3_1210;
+            if(florin.matches(version,executableSha256))return new ConfiguredBuild(florin.version(),florin.executableSha256(),null);
+            throw new IllegalArgumentException("unsupported configured interaction build");
+        }
+        public String version(){return version;}
+        public String executableSha256(){return executableSha256;}
+        public boolean qualified(){return legacy!=null;}
+        public Optional<String> unavailableReason(){return qualified()?Optional.empty():Optional.of(UNMIGRATED_REASON);}
+        public InteractionModels.Build requireQualified() {
+            if(legacy==null)throw new IllegalStateException(UNMIGRATED_REASON+": "+version+"/"+executableSha256);
+            return legacy;
+        }
+        @Override public boolean equals(Object other) {
+            return other instanceof ConfiguredBuild value&&legacy==value.legacy&&version.equals(value.version)
+                    &&executableSha256.equals(value.executableSha256);
+        }
+        // The original Build component's hash remains unchanged for all four legacy Sources values.
+        @Override public int hashCode(){return legacy!=null?legacy.hashCode():Objects.hash(version,executableSha256);}
+        @Override public String toString(){return version+"/"+executableSha256+"/"+(qualified()?"legacy_contract":UNMIGRATED_REASON);}
+    }
     public record Sources(InteractionCapabilities.Sources nativeDefinitions,InteractionCapabilities.ReadPlan readPlan,
-            InteractionModels.Build qualifiedBuild,ExactRef readDecoder,ExactRef policy,ExactRef effects,
+            ConfiguredBuild configuredBuild,ExactRef readDecoder,ExactRef policy,ExactRef effects,
             ExactRef effectsDecoder) {
         public Sources {
-            Objects.requireNonNull(nativeDefinitions);Objects.requireNonNull(readPlan);Objects.requireNonNull(qualifiedBuild);
+            Objects.requireNonNull(nativeDefinitions);Objects.requireNonNull(readPlan);Objects.requireNonNull(configuredBuild);
             for(var ref:List.of(readDecoder,policy,effects,effectsDecoder))StrictJson.require(ref.bytes()>0,"actual selected interaction producer/consumer sources required");
         }
+        /** Original constructor descriptor; these static contracts still require every existing runtime source gate. */
+        public Sources(InteractionCapabilities.Sources nativeDefinitions,InteractionCapabilities.ReadPlan readPlan,
+                InteractionModels.Build qualifiedBuild,ExactRef readDecoder,ExactRef policy,ExactRef effects,ExactRef effectsDecoder) {
+            this(nativeDefinitions,readPlan,ConfiguredBuild.legacy(qualifiedBuild),readDecoder,policy,effects,effectsDecoder);
+        }
+        /** Original getter descriptor. An unmigrated source cannot become a Native Build or installed provider. */
+        public InteractionModels.Build qualifiedBuild(){return configuredBuild.requireQualified();}
     }
     private final RootRuntimeContext context;
     private final PrisonersRuntimeInstaller actualPrisoners;
     private final RootTurnBundleReadSource actualTurnBundle;
     private final PrisonerPlanningPorts.TurnBundlePort turnBundle;
     private final Sources sources;
-    private final RootInteractionContextProjection projection;
+    private final Optional<RootInteractionContextProjection> projection;
     private final RootFamilyCampaignRead campaign;
     private final RootFamilyHeirSource heir;
     private final InteractionCapabilities.Installation definitions;
@@ -54,7 +96,7 @@ public final class KnownInteractionsRuntimeInstaller {
         this.actualPrisoners=Objects.requireNonNull(actualPrisoners);actualPrisoners.requireContext(context);
         actualTurnBundle=new RootTurnBundleReadSource(context);
         turnBundle=this::readCurrentTurnBundle;
-        projection=new RootInteractionContextProjection(sources.qualifiedBuild());
+        projection=configuredProjection(sources.configuredBuild());
         campaign=new RootFamilyCampaignRead(context);heir=new RootFamilyHeirSource(context,campaign);
         definitions=new InteractionCapabilities.Installation(sources.nativeDefinitions(),sources.readPlan(),heir);
         capabilities=new InteractionCapabilities(definitions,context.reads(),new CurrentActions(context));
@@ -70,7 +112,7 @@ public final class KnownInteractionsRuntimeInstaller {
             if(operation.equals(marriage.operation()))return Optional.of(marriage);
             return Optional.empty();
         };
-        policy=new KnownPendingInteractionPolicy(sources.policy(),this::current,context.finance().readPort(),definitions.pendingQuery(),supplemental,this::chooseSameCore);
+        policy=KnownPendingInteractionPolicy.withContextReads(sources.policy(),this::readCurrent,context.finance().readPort(),definitions.pendingQuery(),supplemental,this::chooseSameCore);
         var actions=effects.bindings(sources.effects()).stream().map(binding->new RootExecutableBindings.ActionBinding(binding,
                 ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,Optional.of("game.command."+binding.operation().value()),sources.effectsDecoder())).toList();
         installation=new RootDomainInstallation("shared-known-interactions",List.of(),
@@ -140,7 +182,16 @@ public final class KnownInteractionsRuntimeInstaller {
     }
     public InteractionCapabilities.Installation definitions() { return definitions; }
     public InteractionCapabilities capabilities() { requireLiveBinding();return capabilities; }
-    public RootInteractionContextProjection projection() { return projection; }
+    /** Configured source selection only. Absence never becomes a fabricated legacy Build. */
+    public static Optional<RootInteractionContextProjection> configuredProjection(ConfiguredBuild build) {
+        Objects.requireNonNull(build);
+        return build.qualified()?Optional.of(new RootInteractionContextProjection(build.requireQualified())):Optional.empty();
+    }
+    /** Historical getter remains strict; typed live readers use readCurrent/their configured context gate. */
+    public RootInteractionContextProjection projection() {
+        sources.qualifiedBuild();
+        return projection.orElseThrow(()->new IllegalStateException(ConfiguredBuild.UNMIGRATED_REASON));
+    }
     public RootFamilyCampaignRead campaign() { return campaign; }
     public RootFamilyHeirSource heir() { return heir; }
     public KnownPendingInteractionPolicy policy() { requireLiveBinding();return policy; }
@@ -177,12 +228,51 @@ public final class KnownInteractionsRuntimeInstaller {
         OrdinaryCorePolicy selected;synchronized(this){selected=core;}
         StrictJson.require(selected!=null,"actual shared ordinary core has not been installed");return selected.evaluate(actual,previous);
     }
+    /** Typed live availability; neither branch manufactures a READ receipt or an interaction Build. */
+    public KnownPendingInteractionPolicy.ContextRead readCurrent(PlanningRequest original) {
+        Objects.requireNonNull(original);
+        if(sources.configuredBuild().qualified())
+            return new KnownPendingInteractionPolicy.Available(current(original));
+        requireLiveBinding();
+        try {
+            context.requireCurrent(original.deadline());
+            var same=context.borrowedSession();context.writer().requireSession(same);
+            return context.collector().currentPlanning(same,original,original.deadline(),(retained,lease)->{
+                var frame=lease.frame();
+                StrictJson.require(frame.identity().equals(retained.before())&&frame.source().equals(context.source())
+                        &&frame.sessionId().equals(context.game().sessionId())
+                        &&frame.identity().game().equals(context.game().generation()),
+                        "unavailable interactions crossed the actual held Root frame/source/session");
+                return KnownPendingInteractionPolicy.typedUnavailable(sources.configuredBuild().version(),
+                        sources.configuredBuild().executableSha256()).current(retained);
+            });
+        } catch(IOException failure) {throw new UncheckedIOException("actual unavailable interaction source binding failed",failure);}
+    }
+    /** Current held-frame availability for Family/Guardian/public consumers; no fabricated PlanningRequest or READ receipt. */
+    public KnownPendingInteractionPolicy.ContextRead readCurrentFrame(Complete held,Instant deadline)throws IOException {
+        requireLiveBinding();Objects.requireNonNull(held);Objects.requireNonNull(deadline);context.requireCurrent(deadline);
+        var same=context.borrowedSession();context.writer().requireSession(same);context.collector().requireHeldFrame(same,held);
+        StrictJson.require(held.source().equals(context.source())&&held.sessionId().equals(context.game().sessionId())
+                &&held.identity().game().equals(context.game().generation())&&deadline.isAfter(held.observedAt()),
+                "interaction availability crossed the actual held Root source/session/Game/deadline");
+        if(sources.configuredBuild().qualified())
+            return new KnownPendingInteractionPolicy.Available(projection().project(held,deadline));
+        return KnownPendingInteractionPolicy.unavailableForSource(sources.configuredBuild().version(),
+                sources.configuredBuild().executableSha256(),held.source());
+    }
+    /** Legacy value-returning public descriptors remain strict, but reject through the actual typed availability first. */
+    private InteractionModels.Context requireAvailableCurrentFrame(Complete held,Instant deadline)throws IOException {
+        var available=readCurrentFrame(held,deadline);
+        if(available instanceof KnownPendingInteractionPolicy.Available known)return known.context();
+        var unavailable=(KnownPendingInteractionPolicy.Unavailable)available;
+        throw new IOException(unavailable.result().reason());
+    }
     public InteractionModels.Context current(PlanningRequest original) {
         requireLiveBinding();
         try {
             var same=context.borrowedSession();context.writer().requireSession(same);
             return context.collector().currentPlanning(same,original,original.deadline(),
-                    (retained,lease)->projection.project(lease.frame(),retained.deadline()));
+                    (retained,lease)->requireAvailableCurrentFrame(lease.frame(),retained.deadline()));
         } catch(IOException failure) {throw new UncheckedIOException("actual interaction full Driver/readiness projection unavailable",failure);}
     }
     /** Installation-time identity guard before a Root application session is bound. */
@@ -212,7 +302,7 @@ public final class KnownInteractionsRuntimeInstaller {
         StrictJson.require(frame.identity().game().equals(context.game().generation())&&frame.source().equals(context.source())
                 &&frame.sessionId().equals(context.game().sessionId()),"pending public preparation crossed physical Game/source/session");
         request.expectedRevision().optional().ifPresent(expected->StrictJson.require(expected.equals(frame.identity().frame().revision()),"pending public expected revision is stale"));
-        InteractionModels.Context current=projection.project(frame,deadline);var pending=current.controls().pending();
+        InteractionModels.Context current=requireAvailableCurrentFrame(frame,deadline);var pending=current.controls().pending();
         StrictJson.require(pending!=null,"CK3 has no actual pending character interaction");
         request.requestedInstance().ifPresent(instance->StrictJson.require(instance.equals(pending.instance()),"pending public instance differs from actual current instance"));
         StrictJson.require(pending.autoAcceptNotification()==(request.action()==KnownPendingInteractionRules.Action.ACKNOWLEDGE),"ordinary reply and auto-accept acknowledgement are distinct actual native channels");
@@ -269,7 +359,7 @@ public final class KnownInteractionsRuntimeInstaller {
         StrictJson.require(frame.identity().game().equals(context.game().generation())&&frame.source().equals(context.source())
                 &&frame.sessionId().equals(context.game().sessionId()),"interaction public request crossed its actual physical source/session");
         StrictJson.require(frame.identity().frame().revision().equals(expected),"interaction public expected revision is stale");
-        return projection.project(frame,deadline);
+        return requireAvailableCurrentFrame(frame,deadline);
     }
     public InteractionDirectPublicCodec.Reply queryPublicPending(ContinuityStorePort.Session same,Complete frame,
             InteractionDirectPublicCodec.PendingQuery request,Instant deadline)throws IOException {

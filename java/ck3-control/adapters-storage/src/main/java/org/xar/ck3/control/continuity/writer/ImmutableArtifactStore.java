@@ -493,6 +493,159 @@ public final class ImmutableArtifactStore {
         }
         @Override public void close() throws IOException { finish(null); }
     }
+    /** Typed refusal to replace a complete historical replay with partial byte custody. */
+    public enum SavedReadsetFailure { ENTRY_BOUND, BYTE_BOUND, HANDLE_BOUND, UNKNOWN_EXTERNAL_PROVIDER }
+    public static final class SavedReadsetUnavailable extends IOException {
+        private static final long serialVersionUID = 1L;
+        private final SavedReadsetFailure reason;
+        SavedReadsetUnavailable(SavedReadsetFailure reason) {
+            super("complete saved DATA readset is unavailable: " + reason); this.reason = reason;
+        }
+        public SavedReadsetFailure reason() { return reason; }
+    }
+    /** One conservative budget covers archive pairs and the caller's canonical/source files. */
+    static final class SavedReadsetBudget {
+        private final int maximumEntries, maximumHandles;
+        private final long maximumBytes;
+        private int entries, handles;
+        private long bytes;
+        SavedReadsetBudget(int maximumEntries, long maximumBytes, int maximumHandles) {
+            this.maximumEntries = maximumEntries; this.maximumBytes = maximumBytes; this.maximumHandles = maximumHandles;
+        }
+        void reserve(long payloadBytes, int retainedHandles) throws IOException {
+            if (entries >= maximumEntries) throw new SavedReadsetUnavailable(SavedReadsetFailure.ENTRY_BOUND);
+            // Two fresh qualification handles remain available while retained handles stay open.
+            if (retainedHandles > maximumHandles - 2L - handles)
+                throw new SavedReadsetUnavailable(SavedReadsetFailure.HANDLE_BOUND);
+            if (payloadBytes < 0 || payloadBytes > maximumBytes - bytes)
+                throw new SavedReadsetUnavailable(SavedReadsetFailure.BYTE_BOUND);
+            entries++; handles += retainedHandles; bytes += payloadBytes;
+        }
+        void releaseBytes(long released) { bytes -= released; }
+    }
+    private final ThreadLocal<SavedReadsetCapture> savedReadsets = new ThreadLocal<>();
+    /** Physical custody only. The Root's private source issuer owns the historical meaning. */
+    final class SavedReadsetCapture implements AutoCloseable {
+        private final Thread thread = Thread.currentThread();
+        private final SavedReadsetBudget budget;
+        private final java.time.Clock clock;
+        private final java.time.Instant expiry;
+        private final java.util.Map<ExactRef, PublicationLease> held = new java.util.LinkedHashMap<>();
+        private final java.util.Set<ExactRef> reserved = new java.util.LinkedHashSet<>();
+        private ContinuityStorePort.Session collectingSession;
+        private volatile Throwable failure;
+        private IOException cleanupFailure;
+        private boolean sealed, closed;
+        private SavedReadsetCapture(ContinuityStorePort.Session same, SavedReadsetBudget budget,
+                java.time.Clock clock, java.time.Instant expiry) {
+            collectingSession = same; this.budget = budget; this.clock = clock; this.expiry = expiry;
+        }
+        synchronized void fail(Throwable problem) { if (failure == null) failure = problem; }
+        private void live() throws IOException {
+            if (Thread.currentThread() != thread || closed || !clock.instant().isBefore(expiry))
+                throw new IOException("saved CAS readset crossed its actual thread/lifetime/expiry");
+            if (failure != null) throw new IOException("saved CAS readset already failed", failure);
+            checkRoot();
+        }
+        private void beforeRead(ExactRef reference) throws IOException {
+            try {
+                live();
+                if (sealed || savedReadsets.get() != this || collectingSession == null)
+                    throw new IOException("saved CAS readset is outside its actual collecting scope");
+                collectingSession.requireWriter(config.originalWriterLock());
+                if (!reserved.contains(reference)) {
+                    // Include the original historical pair and our independently surviving
+                    // pair in the same handle quote, before either acquisition begins.
+                    budget.reserve(Math.addExact(reference.bytes(), 2L * COMMIT_LIMIT), 4);
+                    reserved.add(reference);
+                }
+            } catch (IOException | RuntimeException | Error problem) {
+                fail(problem); recordHistoricalFailure(problem); throw problem;
+            }
+        }
+        private void retain(ExactRef reference, int maximum, Published observed) throws IOException {
+            try {
+                live();
+                if (sealed || savedReadsets.get() != this || collectingSession == null)
+                    throw new IOException("saved CAS capture is not the actual collecting scope");
+                collectingSession.requireWriter(config.originalWriterLock());
+                PublicationLease prior = held.get(reference);
+                if (prior != null) { requirePin(verifyLeasedPublication(prior, reference, maximum), observed.data().pin()); return; }
+                if (!reserved.contains(reference)) throw new IOException("saved CAS readset lacks its prior bounded handle quote");
+                LedgerFiles.LeasedDocument metadata = null; LedgerFiles.HistoricalDocument data = null;
+                boolean kept = false; Throwable primary = null;
+                try {
+                    metadata = LedgerFiles.lease(commit(reference.sha256()), COMMIT_LIMIT);
+                    requirePin(metadata.original().pin(), observed.metadata().pin());
+                    Commit bound = decode(metadata.original());
+                    requirePin(bound.payload(), observed.data().pin());
+                    data = LedgerFiles.leaseHistorical(reference, maximum);
+                    PublicationLease acquired = new PublicationLease(metadata, data, bound);
+                    requirePin(verifyLeasedPublication(acquired, reference, maximum), observed.data().pin());
+                    data.releasePayload(); // Keep both HANDLEs; detached complete bytes are not a permit.
+                    held.put(reference, acquired); kept = true;
+                    budget.releaseBytes(2L * (COMMIT_LIMIT - metadata.retainedBytes()));
+                } catch (IOException | RuntimeException | Error problem) { primary = problem; throw problem; }
+                finally {
+                    if (!kept) try { closePair(data, metadata); }
+                    catch (IOException closing) { if (primary != null) primary.addSuppressed(closing); else throw closing; }
+                }
+            } catch (IOException | RuntimeException | Error problem) {
+                fail(problem); recordHistoricalFailure(problem); throw problem;
+            }
+        }
+        void seal(ContinuityStorePort.Session same) throws IOException {
+            try {
+                if (same != collectingSession || savedReadsets.get() != this)
+                    throw new IOException("saved CAS seal changed its actual source Session");
+                verify(same);
+                savedReadsets.remove(); collectingSession = null; sealed = true;
+            } catch (IOException | RuntimeException | Error problem) { fail(problem); throw problem; }
+        }
+        /** Fresh full native identity/path checks for every held commit/payload, without semantic replay. */
+        void verify(ContinuityStorePort.Session same) throws IOException {
+            try {
+                live(); same.requireWriter(config.originalWriterLock());
+                if (!sealed && (same != collectingSession || savedReadsets.get() != this))
+                    throw new IOException("saved CAS verification changed its collecting source Session");
+                for (var entry : held.entrySet()) verifyLeasedPublication(entry.getValue(), entry.getKey(), MAXIMUM_ARTIFACT_BYTES);
+                live(); same.requireWriter(config.originalWriterLock());
+            } catch (IOException | RuntimeException | Error problem) { fail(problem); throw problem; }
+        }
+        @Override public void close() throws IOException {
+            if (Thread.currentThread() != thread) {
+                var problem = new IOException("saved CAS close crossed its owner thread"); fail(problem); throw problem;
+            }
+            if (closed) {
+                if (cleanupFailure != null) throw new IOException("saved CAS native cleanup remains unproven", cleanupFailure);
+                return;
+            }
+            closed = true; collectingSession = null;
+            if (savedReadsets.get() == this) savedReadsets.remove();
+            IOException cleanup = null;
+            try {
+                for (PublicationLease lease : held.values()) try { lease.close(); }
+                catch (IOException | RuntimeException | Error problem) {
+                    IOException next = closeFailure(problem);
+                    if (cleanup == null) cleanup = next; else cleanup.addSuppressed(next);
+                }
+            } finally { held.clear(); reserved.clear(); }
+            if (cleanup != null) { cleanupFailure = cleanup; fail(cleanup); throw cleanup; }
+        }
+    }
+    SavedReadsetCapture beginSavedReadsetCapture(ContinuityStorePort.Session same, SavedReadsetBudget budget,
+            java.time.Clock clock, java.time.Instant expiry) throws IOException {
+        Objects.requireNonNull(same); Objects.requireNonNull(budget); Objects.requireNonNull(clock); Objects.requireNonNull(expiry);
+        same.requireWriter(config.originalWriterLock());
+        if (savedReadsets.get() != null) throw new IOException("saved CAS readset capture cannot nest");
+        HistoricalReads actual = currentHistoricalReadsFor(same);
+        if (actual == null) throw new IOException("saved CAS readset requires its actual owned historical scope");
+        actual.requireActive();
+        SavedReadsetCapture capture = new SavedReadsetCapture(same, budget, clock, expiry);
+        savedReadsets.set(capture); return capture;
+    }
+
+
     private static final class PublicationLease implements AutoCloseable {
         private final LedgerFiles.LeasedDocument metadata;
         private final LedgerFiles.HistoricalDocument data;
@@ -609,6 +762,9 @@ public final class ImmutableArtifactStore {
     ImmutableArtifactStore(Config config, StorageWriteGuard storage, FaultProbe faults) throws IOException {
         this(config, storage, faults, false);
     }
+    // This optional resource owns only the initialization lock lifetime; null borrows the already-held lock.
+    // The body checks the original lock identity for both branches.
+    @SuppressWarnings("try")
     private ImmutableArtifactStore(Config config, StorageWriteGuard storage, FaultProbe faults, boolean readonlyMode) throws IOException {
         this.config = Objects.requireNonNull(config); this.storage = Objects.requireNonNull(storage);
         this.faults = Objects.requireNonNull(faults);
@@ -821,7 +977,9 @@ public final class ImmutableArtifactStore {
     }
     private LedgerFiles.Document readCommitted(ExactRef expected,int maximum)throws IOException {return readPublication(expected,maximum).data();}
     private Published readPublication(ExactRef expected,int maximum)throws IOException {
-        return historicalRead(() -> {
+        SavedReadsetCapture capture = savedReadsets.get();
+        if (capture != null) capture.beforeRead(expected);
+        Published observed = historicalRead(() -> {
             requireReference(expected,maximum);
             HistoricalReads reads = historicalReads.get();
             if (reads != null) {
@@ -872,6 +1030,8 @@ public final class ImmutableArtifactStore {
             if (reads != null) reads.recordDependency(expected, false);
             return actual;
         });
+        if (capture != null) capture.retain(expected, maximum, observed);
+        return observed;
     }
     private LedgerFiles.Document verifyRaw(Pin pin, int maximum) throws IOException {
         // Same fresh read and validation order as LedgerFiles.exact/read, with one final payload copy.

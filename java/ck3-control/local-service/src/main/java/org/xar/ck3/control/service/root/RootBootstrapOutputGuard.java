@@ -125,6 +125,27 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
             assertCurrent();
         }catch(IOException|RuntimeException failure){status=Status.UNKNOWN_WRITE;throw failure;}
     }
+    /** Existing physical SAVE input only; it is never a new output or a source of write allowance. */
+    public synchronized void requireExistingAllocatedInput(FileWitness existingClone,long allocatedUpper,
+            java.time.Instant observedAt)throws IOException {
+        assertCurrent();Objects.requireNonNull(existingClone);Objects.requireNonNull(observedAt);
+        if(declaration.outputs().size()!=1||declaration.outputs().getFirst().kind()!=Kind.INITIAL_POLICY
+                ||!declaration.outputDirectories().isEmpty()||!declaration.retainedInputs().isEmpty())
+            throw new IOException("existing clone input can accompany only the unchanged single policy output");
+        Path input=Path.of(existingClone.reference().path());SharedSourceFiles.plainAncestors(input);raw.verify(existingClone);
+        var actual=SharedSourceFiles.nativeFile(input);
+        if(allocatedUpper!=Math.max(actual.logicalBytes(),actual.allocatedBytes())
+                ||input.startsWith(Path.of(declaration.assetRoot())))
+            throw new IOException("actual existing clone allocation differs or was placed in policy output root");
+        if(observedAt.isAfter(clock.instant())||java.time.Instant.parse(capacity.observedAtUtc()).isBefore(observedAt))
+            throw new IOException("policy release must follow the actual existing clone census");
+        var matching=capacity.volumes().stream().filter(volume->input.startsWith(Path.of(volume.volumeRoot()))).toList();
+        if(matching.size()!=1||matching.getFirst().existingUsage().conservativeUpperBytes()<allocatedUpper)
+            throw new IOException("issuer existing-usage upper omitted the actual clone allocation");
+        // The original Guard validates the full volume/policy/census/release. Do not add this
+        // already allocated input to either prospective growth or the 2 MiB policy output cap.
+        raw.verify(existingClone);assertCurrent();
+    }
     public synchronized void requirePlan(Path root,List<Output> exactOutputs,List<String> exactDirectories,List<RetainedInput> exactRetained)throws IOException {
         assertCurrent();if(!Path.of(declaration.assetRoot()).equals(root)||!declaration.outputs().equals(exactOutputs)
                 ||!declaration.outputDirectories().equals(exactDirectories)||!declaration.retainedInputs().equals(exactRetained))
@@ -246,6 +267,15 @@ public final class RootBootstrapOutputGuard implements RootBootstrapInputFiles,A
                         &&declaration.outputDirectories().isEmpty()&&declaration.retainedInputs().isEmpty()
                         &&capacity.retainedAllocations().isEmpty()&&census.retainedAllocatedUpperBytes()==0,
                         "Runtime v6 admits only one exact profile environment output without retained production or generated directories");
+            }else if(RUNTIME_POLICY_CAPACITY.equals(capacity.schema())){
+                require(rootAllocation==null&&RUNTIME_POLICY_BINDING.equals(binding.schema())
+                        &&PURPOSE.equals(binding.purpose())&&PURPOSE.equals(capacity.purpose())
+                        &&DECLARATION.equals(declaration.schema())&&CENSUS.equals(census.schema())&&!formal,
+                        "Runtime v7 policy capacity/binding require the ordinary declaration4/census4 pair");
+                require(declaration.outputs().size()==1&&declaration.outputs().getFirst().kind()==Kind.INITIAL_POLICY
+                        &&declaration.outputDirectories().isEmpty()&&declaration.retainedInputs().isEmpty()
+                        &&capacity.retainedAllocations().isEmpty()&&census.retainedAllocatedUpperBytes()==0,
+                        "Runtime v7 admits only one exact initial policy output without retained production or generated directories");
             }else require(rootAllocation==null&&branch(binding.schema(),binding.purpose(),BINDING,FORMAL_BINDING)==declaration.branch()
                     &&branch(capacity.schema(),capacity.purpose(),CAPACITY,FORMAL_CAPACITY)==declaration.branch()
                     &&census.schema().equals(formal?FORMAL_CENSUS:CENSUS),"every issuer-selected original must use the identical explicit bootstrap branch");

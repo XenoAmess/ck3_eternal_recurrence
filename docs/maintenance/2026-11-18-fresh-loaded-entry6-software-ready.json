@@ -1,0 +1,109 @@
+{
+  "status": "FRESH_LOADED_SAVED_ROUTE_6_FOCUSED_SOFTWARE_PASS_NO_GAME",
+  "actual_observed_bug": {
+    "scene": "Source08",
+    "after": "SOURCE_QUALIFIED head2003 confirmation1235 savedcycles51 date53176992 zero new saved-day",
+    "failure": "Main250 preentry/v1 selected existing-store factory while new business root was absent",
+    "retained_Runtime_proof": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE08-FULL-P-MAIN250-FRESH-FACTORY-RED-NATURAL0-FINAL01.json",
+      "bytes": 8148,
+      "sha256": "afe204b8829cce013048eda81f75982234dc91a9ee3a7943efea9e3726f40d77"
+    }
+  },
+  "change": "new explicit fresh-entry/v1 mode4 selects existing public prepareFreshLoadedSaved then original openLoadedSaved, typed v2 allowed only initial routes; old mode1 requires existing store and is never inferred from absence",
+  "schema": "xar.java-loaded-saved-fresh-entry-request/v1",
+  "request_fields": [
+    "schema",
+    "machineId",
+    "sourceRuntimeConfiguration",
+    "newRuntimeConfiguration",
+    "sourceConfirmation",
+    "checkpointPair",
+    "ownerDirectory"
+  ],
+  "factory": "RootOrdinaryRuntimeAssembly.prepareFreshLoadedSaved(config,clock,source)",
+  "source_guards_unchanged": [
+    "real ConfirmedSource",
+    "same machine/origin planned window and target",
+    "absent root before writes",
+    "real FreshContinuityGenesis.initializeFresh",
+    "Core exact empty preentry/genesis bytes and pins",
+    "actual attached Game/plan/private LoadedCustody",
+    "actual private admitLoaded"
+  ],
+  "source_delta_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/SOURCES01.json",
+    "bytes": 724,
+    "sha256": "68d5ca3241cb6e96b6ea47c887a9fc8e204541a199633ecaf21f2314ebff1e54"
+  },
+  "new_test": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/source-retained/java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/FreshLoadedSavedEntryRouteTest.java",
+    "bytes": 4515,
+    "sha256": "073eccc06e84373e8bbac0ae9f756179ee40152e70d342a313672216cff65f5d"
+  },
+  "production_source": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/source-retained/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootLoadedSavedResumeMain250.java",
+    "bytes": 23488,
+    "sha256": "78da4fc636c91aad37f00f39dbaacf0a5b1c712f331a0985b08bd7330fd0d623"
+  },
+  "typing": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/javac01.json",
+    "bytes": 539,
+    "sha256": "4322510f401ef4e62033b598c14d9be90519d33b34864c8890995f784cfdaa51"
+  },
+  "test": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/junit01.json",
+    "bytes": 481,
+    "sha256": "d7166d905371b3783b951ccf219f3e8bcce17fccdf7dffbe5f5be13f420764bb"
+  },
+  "xml": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/reports01/TEST-junit-jupiter.xml",
+    "bytes": 39744,
+    "sha256": "9363e422990f57595d1cbd777a84e088ff503e9e0f08417c99cebe12f3d7d7f9"
+  },
+  "results": {
+    "org.xar.ck3.control.service.root.FreshLoadedSavedEntryRouteTest#absentFreshRootCannotBeInferredFromTheExistingPreentryRequest()": "PASSED",
+    "org.xar.ck3.control.service.root.LoadedSavedEntryRoute94Test#exactSchemasPreserveRetainedAndSelectPreentryWithoutMarkerInference()": "PASSED",
+    "org.xar.ck3.control.service.root.FreshLoadedSavedEntryRouteTest#freshEntryRequiresItsExplicitSchemaAndKeepsExistingRoutes()": "PASSED",
+    "org.xar.ck3.control.service.root.FreshLoadedSavedEntryRouteTest#aCompleteExistingPreentryStoreCannotBeOverwrittenByFreshEntry()": "PASSED",
+    "org.xar.ck3.control.service.root.OriginalSavedRecoveryRoute101Test#originalRecoveryUsesOnlyItsExactSchemaAndPreservesTheThreeExistingModes()": "PASSED",
+    "org.xar.ck3.control.service.root.MappedSavedPolicyTest#exactCurrentConfigurationRetainsActualOwnerPlanWhileSourceReadStaysHistoricalAfterCloneSave()": "PASSED"
+  },
+  "class_outputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/classes01/org/xar/ck3/control/service/root/FreshLoadedSavedEntryRouteTest.class",
+      "bytes": 7311,
+      "sha256": "089c6bf38c412c37d30ee96f5cd7247c0ec0b401ba0534a1baa9880058012e45"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/classes01/org/xar/ck3/control/service/root/MappedSavedPolicyTest$Fixture.class",
+      "bytes": 2670,
+      "sha256": "3265ee7fc8414d2bb613bb795208356e390e8e386bb6616f25eb96314f10b1b5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/classes01/org/xar/ck3/control/service/root/MappedSavedPolicyTest.class",
+      "bytes": 43819,
+      "sha256": "05a34a1ce143e43c18639d0e715d0430485478a34449296de84f97bc2d2ce6de"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/classes01/org/xar/ck3/control/service/root/RootLoadedSavedResumeMain250$1.class",
+      "bytes": 1886,
+      "sha256": "7688fbb237b10a41dc79a75dc7dd7404981b3a084cb6d960267268317380a007"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-fresh-loaded-entry13/qualification01/classes01/org/xar/ck3/control/service/root/RootLoadedSavedResumeMain250.class",
+      "bytes": 35275,
+      "sha256": "0c6c41a953bbb3516a0c09419fabe6ad6c42ef11bc5c524464978f24126eba86"
+    }
+  ],
+  "permit": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-FRESH-LOADED-ENTRY8M-NOGAME-PERMIT24.json",
+    "bytes": 2453,
+    "sha256": "37ef58daa342aff5af9ae6270b0b73ef853a8e48a4a91c55ccf14e2e88a241a0"
+  },
+  "scope": "request headers, real small FS eligibility and typed mapped policy consumer only; actual fresh factory/Context/admission/Root not executed",
+  "whole_SERVICE": false,
+  "actual_Root_ready": false,
+  "latest_user_offline_only": true,
+  "future_scene_cancelled": true
+}

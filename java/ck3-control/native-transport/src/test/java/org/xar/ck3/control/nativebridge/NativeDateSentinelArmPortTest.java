@@ -173,6 +173,55 @@ final class NativeDateSentinelArmPortTest {
         }
     }
 
+    @Test void observedEvaluationFailureBlocksCleanupAndClockWritesWithoutRelabellingTheReadAsAWorldUnknown() throws Exception {
+        try(var f=new Fixture(ARMED,true)) {
+            var before=f.received();Instant originalLease=before.validUntil();var until=f.clock.instant().plusSeconds(30);
+            assertInstanceOf(NativeActionPort.AckReceived.class,f.actual.submitDateSentinelArm(before,prepared(before,ARM),until));
+            // Explicit negative derivative of the SHA-checked C++ TRIGGERED packet. This is not a new producer oracle.
+            f.source.status=evaluationFailure(packet(TRIGGERED));
+            var failed=assertInstanceOf(NativeActionPort.AckReceived.class,f.actual.readDateSentinelStatus(before,until));
+            original(failed,f.source.status,f.source.statusAck,f.source.statusRequests.getLast());
+            assertEquals(LateOutcome.State.FAILED,ClockStatusRead.decode(failed).state());
+            assertTrue(ClockStatusRead.decode(failed).abnormal());
+            zero(f.actual.cancelDateSentinel(before,until));counts(f,1,1,1,0);
+            var full=assertInstanceOf(NativeGameTransport.FullClockReceived.class,f.actual.readFullClockFrameReceived(until));
+            zero(f.actual.cancelDateSentinel(before,full,until));counts(f,2,1,1,0);
+            var speed=FullSnapshotClockControl.request("set-speed-3",full.frame().snapshotId(),full.frame().nativeRevision(),until);
+            zero(f.actual.submitFullClockControl(full,speed,until));counts(f,2,1,1,0);
+            // A contradictory later peer read cannot erase the already retained failure or grant another control write.
+            f.source.status=packet(TRIGGERED);
+            assertInstanceOf(NativeActionPort.AckReceived.class,f.actual.readDateSentinelStatus(before,until));
+            zero(f.actual.cancelDateSentinel(before,until));counts(f,2,1,2,0);
+            assertEquals(originalLease,before.validUntil());assertEquals(f.parent,before.activeDeadline());
+        }
+    }
+
+    @Test void anUncertainCancelKeepsItsActualOriginalAckAndNeverWritesAnotherRequest() throws Exception {
+        try(var f=new Fixture(ARMED,true)) {
+            var before=f.received();var until=f.clock.instant().plusSeconds(30);
+            assertInstanceOf(NativeActionPort.AckReceived.class,f.actual.submitDateSentinelArm(before,prepared(before,ARM),until));
+            assertInstanceOf(NativeActionPort.AckReceived.class,f.actual.readDateSentinelStatus(before,until));
+            // Explicit conflicting-generation derivative; only the existing positive packet is the C++ oracle.
+            ObjectNode wrong=NativeWire.object(NativeWire.parse(f.source.cancel.envelope())).deepCopy();
+            ((ObjectNode)wrong.path("result").path("tactical_daily_sentinel")).put("generation",2);
+            f.source.cancel=ack(StrictJson.canonical(wrong));
+            var unknown=assertInstanceOf(NativeActionPort.Unknown.class,f.actual.cancelDateSentinel(before,until));
+            var actual=f.actual.originalIndeterminateFullClockAcknowledgement(unknown.requestId()).orElseThrow();
+            original(actual,f.source.cancel,f.source.cancelAck,f.source.cancels.getLast());
+            assertArrayEquals(actual.originalFrame().bytes(),unknown.rawReturn().orElseThrow().bytes());
+            assertArrayEquals(actual.outbound().orElseThrow().originalPacket(),unknown.originalRequestPacket());
+            assertEquals(unknown,f.actual.cancelDateSentinel(before,until));counts(f,1,1,1,1);
+            assertEquals(f.parent,before.activeDeadline());
+        }
+    }
+    private static Ack evaluationFailure(Ack positive) throws IOException {
+        ObjectNode frame=NativeWire.object(NativeWire.parse(positive.envelope())).deepCopy();
+        var status=(ObjectNode)frame.path("result").path("tactical_daily_sentinel");
+        status.put("state","failed").put("abnormal",true).put("trigger_flags",status.path("trigger_flags").longValue()|(1L<<15));
+        ((com.fasterxml.jackson.databind.node.ArrayNode)status.path("trigger_reasons")).add("evaluation_failure");
+        return ack(StrictJson.canonical(frame));
+    }
+
     @Test void pausedIdleCleanupRequiresAnExplicitCurrentPrivateFullFromTheSameIssuer() throws Exception {
         try(var f=new Fixture(ARMED,true);var foreign=new Fixture(ARMED,true)) {
             var before=f.received();var until=f.clock.instant().plusSeconds(30);

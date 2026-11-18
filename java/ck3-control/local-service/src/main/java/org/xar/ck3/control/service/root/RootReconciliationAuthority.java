@@ -316,11 +316,15 @@ public final class RootReconciliationAuthority {
         ExactRef oldDriver=originalDriver(same,oldBasis);
         ExactRef originalReceipt=bound.receiptReferenceOf(original);
 
+        if (org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.supports(original.command()))
+            require(org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.isPositiveAckCancellation(original, bound),
+                    "ordinary 1210 CANCEL cold observation requires its real original preflight and exact positive ACK");
         boolean freshRead = (original.command().operation().value().equals("save-checkpoint")
                 || original.command().operation().value().equals("resume-map")
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(original)
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyEventRecovery(original)
-                || isPositiveAckClockArm(original))
+                || isPositiveAckClockArm(original)
+                || org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.isPositiveAckCancellation(original, bound))
                 && original.ack().isPresent() && original.ack().orElseThrow().nativeOk();
 
         final Instant observationDeadline;
@@ -397,8 +401,9 @@ public final class RootReconciliationAuthority {
                 || original.command().operation().value().equals("resume-map")
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(original)
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyEventRecovery(original)
-                || isPositiveAckClockArm(original)) && !original.settled(),
-                "cold after-ACK observation requires its exact unresolved SAVE, resume-map, known pending, EVENT or positive-ACK CLOCK ARM primitive");
+                || isPositiveAckClockArm(original)
+                || org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.isPositiveAckCancellation(original, bound)) && !original.settled(),
+                "cold after-ACK observation requires its exact unresolved SAVE/resume/known pending/EVENT/positive-ACK CLOCK original with retained preparation");
         var fresh=captured.freshSnapshot().orElseThrow(()->new IOException("fresh SAVE reconciliation requires actual independent READ custody"));
         var frame=fresh.originalFrame();var physical=captured.fullSnapshot().actual();
         require(frame.session().equals(physical.session()) && frame.snapshotId().equals(physical.snapshotId())
@@ -514,11 +519,11 @@ public final class RootReconciliationAuthority {
             if(negative.getSuppressed().length!=0 || negative.getCause()!=null) throw negative;
             store.requireSession(same);
             require(active.get()==null && publicWindowSnapshot.get()==null
-                    && original.command().operation().value().equals("resume-map")
-                    && original.state() instanceof ActionState.Unknown
+                    && (original.command().operation().value().equals("resume-map") && original.state() instanceof ActionState.Unknown
+                        || org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.isPositiveAckCancellation(original, archive.withSession(same)))
                     && original.ack().isPresent() && original.ack().orElseThrow().nativeOk()
                     && original.ack().orElseThrow().outbound().isPresent() && negative.matches(original.command()),
-                    "negative fresh READ does not bind this original acknowledged resume reconciliation");
+                    "negative fresh READ does not bind this exact original acknowledged control reconciliation");
             pending.requirePending(same,original);
             return new ActionPorts.Pending("postcondition unavailable:"+negative.getMessage(),
                     List.of(negative.acknowledgement(),negative.outbound()));

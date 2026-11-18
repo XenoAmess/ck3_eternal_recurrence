@@ -20,6 +20,22 @@ public class OrdinarySessionHost {
             throw new IllegalStateException("ordinary Game/session authority is already installed; no replacement or repeated launch");
     }
     public synchronized Optional<SessionController> current() { return Optional.ofNullable(installed.get()); }
+    /** Diagnostic publication view. A staged controller is not a completed public Root.
+     * Retired controllers remain readable as historical status; this method grants no work authority. */
+    public Optional<SessionController> currentForStatus() throws IOException {
+        SessionController selected;
+        org.xar.ck3.control.service.root.RootSessionAccess access;
+        synchronized(this){selected=installed.get();access=root;}
+        if(selected==null||selected.isRetired())return Optional.ofNullable(selected);
+        if(access==null)return Optional.empty();
+        // Never acquire Core while holding Host: publication orders Core before Host.
+        var actual=access.current();
+        if(!actual.identity().equals(selected.identity()))
+            throw new IOException("public status crossed the actual published Root session");
+        synchronized(this){
+            return installed.get()==selected&&root==access?Optional.of(selected):Optional.empty();
+        }
+    }
     /** Root holds this exact controller; no HTTP unbind, null reset or later installation is permitted. */
     public synchronized void retire(SessionController expected) {
         if (installed.get() != Objects.requireNonNull(expected)) throw new IllegalArgumentException("retirement requires the original installed controller");

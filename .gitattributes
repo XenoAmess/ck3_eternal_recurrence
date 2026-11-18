@@ -1421,3 +1421,7 @@ java/ck3-control/native-transport/src/test/resources/newnative/full1210/full-sna
 docs/maintenance/2026-11-18-exact-one-day-sdk-save-live.json -text whitespace=cr-at-eol
 docs/maintenance/2026-11-18-worker15-scene-closed.json -text whitespace=cr-at-eol
 docs/maintenance/2026-11-18-florin-army-governance-hello-qualification.json -text whitespace=cr-at-eol
+
+# Preserve SHA-bound offline CK3 migration originals, including native CRLF.
+java/ck3-control/native-transport/src/test/resources/newnative/date-arm1210/** -text whitespace=cr-at-eol
+docs/maintenance/2026-11-18-*.json -text whitespace=cr-at-eol

@@ -34,6 +34,21 @@ final class GameLaunchContractTest {
         assertEquals(WindowsJobProcess.ConsoleMode.DETACHED,WindowsJobProcess.ConsoleMode.valueOf("DETACHED"));
         assertNotEquals(WindowsJobProcess.ConsoleMode.GUI_MINIMIZED_NO_ACTIVATE,WindowsJobProcess.ConsoleMode.GUI_SHOWN_NO_ACTIVATE);
     }
+    @Test void explicitTransportSpecKeepsOldDefaultsAndSelectedColdCountsWithoutCreatingAGame() {
+        var legacy=new JavaGameLifecycle.TransportLimits(65_536,1_000_000);
+        assertEquals(legacy,new JavaGameLifecycle(List.of()).transportLimits());
+        assertEquals(legacy,new JavaGameLifecycle(List.of(),java.time.Duration.ofSeconds(2)).transportLimits());
+        var configured=new JavaGameLifecycle(List.of(),java.time.Duration.ofSeconds(2),3,256);
+        assertEquals(new JavaGameLifecycle.TransportLimits(3,256),configured.transportLimits());
+        assertEquals(new JavaGameLifecycle.TransportLimits(7,1),new JavaGameLifecycle(List.of(),7,1).transportLimits());
+        assertTrue(configured.currentSession().isEmpty());assertTrue(configured.privateActions().isEmpty());
+    }
+    @Test void invalidTransportSpecIsRejectedBeforeAnyNativeEndpointOrGameExists() {
+        for(int[] limits:new int[][]{{0,256},{65_537,256},{1,0},{1,1_000_001}}) {
+            assertThrows(IllegalArgumentException.class,()->new JavaGameLifecycle(List.of(),limits[0],limits[1]));
+            assertThrows(IllegalArgumentException.class,()->new JavaGameLifecycle(List.of(),java.time.Duration.ofSeconds(2),limits[0],limits[1]));
+        }
+    }
     @Test void actualCreatorRetainsAnImmutableUniquePermissionSetBeforeAnyGameExists(){
         var permission=new NativePrivateActionPermission(new OperationKey("controlled-private-action"),"controlled-permission",
                 new ExactRef("controlled-source",1,"a".repeat(64)),request->{},

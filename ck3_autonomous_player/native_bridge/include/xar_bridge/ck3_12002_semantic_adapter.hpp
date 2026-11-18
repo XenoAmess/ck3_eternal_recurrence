@@ -109,6 +109,7 @@ private:
   mutable std::condition_variable snapshot_changed_;
   std::optional<game::Snapshot> snapshot_;
   std::uint64_t snapshot_epoch_ = 0;
+  ck3_11906::MainThreadExecutionStampV1 snapshot_source_stamp_{};
   std::uint64_t snapshot_revision_ = 0;
   std::uint64_t next_snapshot_sample_ms_ = 0;
   // These tokens describe one in-flight raw read, not bridge/native revision.

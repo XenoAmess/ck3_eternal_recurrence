@@ -1,0 +1,64 @@
+{
+  "schema": "xar.native1210.resource-readonly-dll-ready/v1",
+  "utc": "2026-11-18T09:53:45.072233+00:00",
+  "dll": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\xar_ck3_bridge.dll",
+    "bytes": 13390336,
+    "sha256": "e14878071feb1e7758f1bc4117ef94a2ec85b1b713fbb3439bbb682c6cd2b677"
+  },
+  "source_delta": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\source-retained\\SOURCE-DELTA27.json",
+    "bytes": 8604,
+    "sha256": "440aa6fb6d9e7fd71d8048efde6370274ff42db76461c82d3ab20173fa6d2781"
+  },
+  "base26": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-roster-source26\\NATIVE-1210-ROSTER-SOURCE-DLL-READY26.json",
+    "bytes": 3567,
+    "sha256": "cdd189421f1a4f39abd3df4d09cc9ed0fd0f1c37929ffa9d4f5f2dba85afd6b2"
+  },
+  "build": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-resource-leaf27\\BUILD-RESULT27.json",
+    "bytes": 1648,
+    "sha256": "9fa3108ada57653fb45c44addbdc8340407d844b1f775549bf695139584931cd"
+  },
+  "software": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\resource-leaf27\\NATIVE-1210-RESOURCE-SOFTWARE-READY27.json",
+    "bytes": 2416,
+    "sha256": "a3ba11aa7781984fdeaddb06f62432d30adec41f770eb8de5c7d3735e6afaadb"
+  },
+  "actual_packets": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\resource-leaf27\\ACTUAL-RESOURCE-FORMATTER-PACKETS27.json",
+    "bytes": 5116,
+    "sha256": "daedc955574b371108e18ee4548696ca4f7bf4e878b7b5c6a877576f6190acef"
+  },
+  "step": "query-actor-resource-leaf-v2",
+  "capability": "game.query.actor-resource-leaf.v2",
+  "wire_schema": "ck3_1210_actor_resource_leaf_v2",
+  "source_flag_default": false,
+  "candidate_V2_flag": true,
+  "internal_V3_flag": false,
+  "native_owner_guard": "actual module and complete Core before first getter, actual fixed Actor/TLS/ticket/start/pump/hook/reset/roots; before/after resource source interval",
+  "scope": "personal wallet interval + prestige/piety signed int64 Q100000 only",
+  "renown_and_true_treasury": "unavailable/null in V2",
+  "actual_test_passes": 8,
+  "registry_program_functions_passed": 2,
+  "new_executor_slots": 0,
+  "new_root_action_family_or_spending_authority": false,
+  "inherits26_roster_24_status_save_safety_25_cash_source": true,
+  "live_qualified": false,
+  "positive_actor_reader_packet_qualified": false,
+  "native_unwind_cleanup_verified": false,
+  "zero_native_side_effects_verified": false,
+  "requires_new_cold_no_hot_replacement": true,
+  "minimized_background_only": true,
+  "old25_DLL_withdrawal_preserved": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\roster-source26\\P0-OLD25-OUTPUT-DIRECTORY-COLLISION26.json",
+    "bytes": 969,
+    "sha256": "690ab2ce2baf111a55fe3d9c03d9593ef28f7bfdb34fb2b687024a4f405d525c"
+  },
+  "resource_guard": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\resource-leaf27\\M2-RETAINED-UPPER27.json",
+    "bytes": 212,
+    "sha256": "8b8cc3dfc5b56ca48f727d0fdbda3df92e4fca1337192ce1288c2ee9af380fa5"
+  }
+}

@@ -41,7 +41,7 @@ public final class RootLoadedSavedResumeMain250 {
         byte[] ownerDescriptorRaw = read(ownerDescriptorRef), requestRaw = read(requestRef);
         var requestData=StrictJson.parse(requestRaw,MAX);
         int mode=requestMode(requestData);
-        boolean passive=mode==2,preentry=mode==1||passive,originalRecovery=mode==3;
+        boolean passive=mode==2,fresh=mode==4,preentry=mode==1||passive||fresh,originalRecovery=mode==3;
         ObjectNode request=(ObjectNode)requestData;
         String machine = StrictJson.text(request.get("machineId"));
         ExactRef oldConfigRef = ExactRef.fromJson(request.get("sourceRuntimeConfiguration"));
@@ -50,16 +50,20 @@ public final class RootLoadedSavedResumeMain250 {
         ExactRef pairRef = ExactRef.fromJson(request.get("checkpointPair"));
         Path ownerDirectory = Path.of(StrictJson.text(request.get("ownerDirectory")));
         byte[] oldConfigRaw = read(oldConfigRef), newConfigRaw = read(newConfigRef);
-        var oldConfig = RootOrdinaryRuntimeConfiguration.read(Path.of(oldConfigRef.path()));
-        var newConfig = RootOrdinaryRuntimeConfiguration.read(Path.of(newConfigRef.path()));
+        var ownerDescriptor = GameSupervisorControl.readCapturedDescriptor(ownerDescriptorRef,ownerDescriptorRaw);
+        StrictJson.require(Arrays.equals(ownerDescriptorRaw,read(ownerDescriptorRef)),"owner descriptor changed while decoded");
+        var ownerPlan=ownerDescriptor.configuration().accept();
+        var oldConfig = RootSavedRuntimeConfigurationInputs.readSource(oldConfigRef);
+        var newConfig = RootSavedRuntimeConfigurationInputs.readLoaded(newConfigRef,ownerPlan);
+        requirePolicyRoute(newConfig.initialPolicy(),mode);
         StrictJson.require(Arrays.equals(oldConfigRaw, read(oldConfigRef)) && Arrays.equals(newConfigRaw, read(newConfigRef)), "cold runtime configuration changed while decoded");
         StrictJson.require(machine.equals(oldConfig.machineId()) && machine.equals(newConfig.machineId()), "cold source/new runtime machine differs");
         Path oldRoot = oldConfig.stateDirectory().getParent().toAbsolutePath().normalize();
         Path newRoot = newConfig.stateDirectory().getParent().toAbsolutePath().normalize();
         StrictJson.require(!newRoot.startsWith(oldRoot) && !oldRoot.startsWith(newRoot), "distinct independent old/new writer roots required");
+        requireBusinessRoot(mode,newRoot);
         StrictJson.require(ownerDirectory.isAbsolute() && ownerDirectory.normalize().equals(ownerDirectory) && Files.isDirectory(ownerDirectory), "existing owner directory required");
         StrictJson.require(Files.isRegularFile(oldRoot.resolve("continuity/continuity.json")) && Files.isRegularFile(oldRoot.resolve("continuity/genesis-anchor.json")) && Files.isDirectory(oldRoot.resolve("continuity/ROOT-CONTINUITY-WINDOW-EVENTS")), "existing old canonical source required");
-        var ownerDescriptor = GameSupervisorControl.readDescriptor(Path.of(ownerDescriptorRef.path()));
         StrictJson.require(Arrays.equals(ownerDescriptorRaw, read(ownerDescriptorRef)), "owner descriptor changed while decoded");
         StrictJson.require(ownerDirectory.equals(Path.of(ownerDescriptorRef.path()).toAbsolutePath().normalize().getParent())
                 && machine.equals(ownerDescriptor.machineId()), "resume owner directory or actual machine differs");
@@ -85,7 +89,8 @@ public final class RootLoadedSavedResumeMain250 {
             });
             var source = RootJavaSavedBootstrap.qualify(oldCore, new NativeCheckpointFiles(), oldConfig.stateDirectory().resolve("checkpoints/attachments"), oldSourcePrepared.plan().pipeName(), pair, confirmation);
             emit(event(clock, "SOURCE_QUALIFIED").put("source_head_sequence", source.sourceHead().sequence()).put("confirmation_sequence", source.confirmation().sequence()).put("saved_date_raw", source.savedState().settledDateRaw()).put("saved_cycles", source.savedState().settledCycles()).put("new_saved_day_credit", 0));
-            newPrepared = originalRecovery?RootOrdinaryRuntimeAssembly.prepareExistingLoadedSavedRecovery(newConfig,clock,source)
+            newPrepared = fresh?RootOrdinaryRuntimeAssembly.prepareFreshLoadedSaved(newConfig,clock,source)
+                    :originalRecovery?RootOrdinaryRuntimeAssembly.prepareExistingLoadedSavedRecovery(newConfig,clock,source)
                     :preentry?RootOrdinaryRuntimeAssembly.prepareLoadedSaved(newConfig,clock,source)
                     :RootOrdinaryRuntimeAssembly.prepareRetainedLoadedSaved(newConfig, clock, source);
             StrictJson.require(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(newPrepared.plan())).equals(NativeLaunchPlanCodec.toJson(ownerDescriptor.configuration())), "actual Prepared plan differs from exact owner descriptor");
@@ -119,9 +124,10 @@ public final class RootLoadedSavedResumeMain250 {
             initial.put("ordinary_batch_started", false); emit(initial);
             var bounds = newConfig.loop();
             var loopConfig = new RootOrdinaryWorkerLoop.Configuration(running.batchPrefix(), bounds.maximumTurns(), bounds.wallTime(), bounds.readinessTimeout(), bounds.pollInterval(), bounds.checkpointEveryEligibleAdvances());
+            var batchOutput = newPrepared;
             var control = new RootOrdinaryWorkerLoop.Control() {
                 @Override public boolean stopRequested() { return Files.exists(newConfig.stopPath()); }
-                @Override public void onBatchCompleted(BatchReport actual, long next) throws IOException { recordBatch(newConfig, clock, actual, next); }
+                @Override public void onBatchCompleted(BatchReport actual, long next) throws IOException { recordBatch(batchOutput, clock, actual, next); }
             };
             var terminal = new RootOrdinaryWorkerLoop(loopConfig, control).run(running.core().sessionAccess(), running.nextBatchSequence());
             result = RootOrdinaryWorkerMain.classifyFailureStop(terminal) ? 4 : 0;
@@ -164,8 +170,26 @@ public final class RootLoadedSavedResumeMain250 {
         if("xar.java-loaded-saved-resume-request/v1".equals(schema))return 0;
         if("xar.java-loaded-saved-preentry-request/v1".equals(schema))return 1;
         if("xar.java-loaded-saved-original-recovery-request/v1".equals(schema))return 3;
+        if("xar.java-loaded-saved-fresh-entry-request/v1".equals(schema))return 4;
         StrictJson.require("xar.java-loaded-saved-passive-observer-request/v1".equals(schema),"resume request schema required");
         return 2;
+    }
+    /** The explicit fresh route cannot infer a resume or overwrite any retained business store. */
+    static void requireBusinessRoot(int mode,Path root)throws IOException {
+        Objects.requireNonNull(root);
+        if(mode==4&&!Files.notExists(root,java.nio.file.LinkOption.NOFOLLOW_LINKS))
+            throw new IOException("fresh loaded Saved entry requires an absent business root");
+        if(mode==1&&(!Files.isRegularFile(root.resolve("continuity/continuity.json"),java.nio.file.LinkOption.NOFOLLOW_LINKS)
+                ||!Files.isRegularFile(root.resolve("continuity/genesis-anchor.json"),java.nio.file.LinkOption.NOFOLLOW_LINKS)
+                ||!Files.isDirectory(root.resolve("continuity/ROOT-CONTINUITY-WINDOW-EVENTS"),java.nio.file.LinkOption.NOFOLLOW_LINKS)))
+            throw new IOException("loaded Saved preentry requires its existing complete store; use the explicit fresh entry request for an absent root");
+    }
+    /** A v2 policy cannot convert canonical3/read-only or generic recovery into a mapped native4 admission. */
+    static void requirePolicyRoute(org.xar.ck3.control.application.driver.InitialEpisodePolicy policy,int mode)throws IOException {
+        Objects.requireNonNull(policy);
+        if(mode<0||mode>4)throw new IOException("unknown loaded Saved route");
+        if(policy.isMaterializedSaved()&&mode!=1&&mode!=2&&mode!=4)
+            throw new IOException("mapped Saved v2 requires its explicit initial admission; retained/gameplay recovery needs a distinct current-pair lineage proof");
     }
     static boolean preentryRequest(com.fasterxml.jackson.databind.JsonNode value) {
         int mode=requestMode(value);
@@ -227,13 +251,11 @@ public final class RootLoadedSavedResumeMain250 {
         if (raw.length != ref.bytes() || before.size() != after.size() || !before.lastModifiedTime().equals(after.lastModifiedTime()) || !Objects.equals(before.fileKey(), after.fileKey()) || !DriverJson.sha256(raw).equals(ref.sha256())) throw new IOException("cold source bytes/hash/identity changed");
         return raw;
     }
-    private static void recordBatch(RootOrdinaryRuntimeConfiguration config, Clock clock, BatchReport actual, long next) throws IOException {
+    private static void recordBatch(RootOrdinaryRuntimeAssembly.Prepared output, Clock clock, BatchReport actual, long next) throws IOException {
         ObjectNode row = OrdinarySessionResource.report(actual);
         row.put("observed_at_utc", clock.instant().toString()); row.put("next_sequence", Long.toString(next));
-        byte[] raw = FullJsonTree.encode(row, FullJsonTree.MAXIMUM_BYTES), line = Arrays.copyOf(raw, raw.length + 1);
-        line[raw.length] = 10;
-        Files.write(config.stateDirectory().resolve("worker-batches.jsonl"), line, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
-        emit(raw);
+        byte[] raw = FullJsonTree.encode(row, FullJsonTree.MAXIMUM_BYTES);
+        RootWorkerBatchLog.publish(raw, output::appendWorkerBatchLog, RootLoadedSavedResumeMain250::emit);
     }
     private static ObjectNode event(Clock clock, String status) {
         return StrictJson.object().put("schema", "xar.java-loaded-saved-resume-result/v1").put("observed_at_utc", clock.instant().toString()).put("status", status);

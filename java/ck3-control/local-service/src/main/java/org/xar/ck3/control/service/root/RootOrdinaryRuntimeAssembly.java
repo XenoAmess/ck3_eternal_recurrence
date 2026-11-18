@@ -31,6 +31,7 @@ import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.continuity.writer.StorageWriteGuard;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.NativePrivateActionPermission;
@@ -45,6 +46,41 @@ import org.xar.ck3.control.service.OrdinarySessionHost;
 /** Ordinary worker composition. The supervisor retains ownership of the living Game. */
 public final class RootOrdinaryRuntimeAssembly {
     private RootOrdinaryRuntimeAssembly() { }
+
+    static final int MAX_WORKER_BATCH_LOG_BYTES=8*1024*1024;
+
+    /** Complete history is retained byte-for-byte. Capacity failure never enters the file producer. */
+    static void appendWorkerBatchLog(org.xar.ck3.control.continuity.writer.ContinuityWriter writer,
+            RootRuntimeStorageGuard storage,CheckpointFiles files,Path stateDirectory,byte[] completeLine,int maximumBytes)throws IOException {
+        Objects.requireNonNull(writer);Objects.requireNonNull(storage);Objects.requireNonNull(files);
+        Objects.requireNonNull(stateDirectory);byte[] line=Objects.requireNonNull(completeLine).clone();
+        if(!stateDirectory.isAbsolute()||!stateDirectory.normalize().equals(stateDirectory)
+                ||maximumBytes<=0||maximumBytes>MAX_WORKER_BATCH_LOG_BYTES
+                ||line.length==0||line[line.length-1]!=10||line.length>maximumBytes)
+            throw new IOException("complete worker batch log exceeds its finite byte budget or has no complete line");
+        Path target=stateDirectory.resolve("worker-batches.jsonl");
+        writer.locked(same->{
+            storage.requireReadScope(same,files);
+            // Refuse an already oversized legacy log before the Native observer hashes its whole content.
+            try {
+                var attributes=Files.readAttributes(target,java.nio.file.attribute.BasicFileAttributes.class,
+                        java.nio.file.LinkOption.NOFOLLOW_LINKS);
+                if(!attributes.isRegularFile()||attributes.size()>maximumBytes)
+                    throw new IOException("retained worker batch log exceeds its finite byte budget or is not a regular file");
+            } catch(java.nio.file.NoSuchFileException absent) { /* The same guarded producer creates the first bounded file. */ }
+            var previous=files.observe(target);
+            long retained=previous.isPresent()?previous.orElseThrow().reference().bytes():0;
+            if(retained>maximumBytes||line.length>maximumBytes-retained)
+                throw new IOException("complete worker batch log exceeds its finite byte budget; retained history is unchanged");
+            byte[] before=previous.isPresent()?files.read(previous.orElseThrow(),maximumBytes):new byte[0];
+            byte[] joined=java.util.Arrays.copyOf(before,Math.addExact(before.length,line.length));
+            System.arraycopy(line,0,joined,before.length,line.length);
+            if(previous.isPresent())files.verify(previous.orElseThrow());
+            storage.requireReadScope(same,files);
+            var published=files.replace(target,joined);files.verify(published);
+            return null;
+        });
+    }
 
     /** DATA spelling only; the caller retains all actual loaded-custody and executable qualification checks. */
     static G2Source loadedExecutionSource(String machineId,Instant observedAt,
@@ -91,7 +127,7 @@ public final class RootOrdinaryRuntimeAssembly {
         if(raw.length>NativeLaunchPlanCodec.MAXIMUM_BYTES)throw new IOException("launch configuration exceeds its codec limit");
         var planDocument=org.xar.ck3.control.contracts.StrictJson.parse(raw,NativeLaunchPlanCodec.MAXIMUM_BYTES);
         var planConfiguration=planDocument.has("configuration")?planDocument.get("configuration"):planDocument;
-        NativeLaunchPlan plan=NativeLaunchPlanCodec.fromJson(planConfiguration).accept();
+        NativeLaunchPlan plan=config.retainBoundLaunchPlan(NativeLaunchPlanCodec.fromJson(planConfiguration).accept());
         var paths=new WriterContracts.InitialLayout(root.resolve("continuity/continuity.json"),
                 root.resolve("continuity/genesis-anchor.json"),config.machineId());
         Path archiveRoot=root.resolve("continuity/artifacts");
@@ -120,7 +156,7 @@ public final class RootOrdinaryRuntimeAssembly {
             var products=RootOrdinaryPlainProducts.prepare(config,app,runtimePorts,config.initialPolicy(),plan);
             var catalogs=products.runtime().catalogs();
             List<NativePrivateActionPermission> permissions=List.of();
-            var lifecycle=new JavaGameLifecycle(permissions,config.operationTimeout());
+            var lifecycle=new JavaGameLifecycle(permissions,config.operationTimeout(),config.maximumFramesPerOperation(),config.maximumSubmissions());
             return new Prepared(config,clock,plan,metadata,app,ports,storage,files,products,catalogs,permissions,lifecycle,noWrites);
         }catch(IOException|RuntimeException|Error failure) {
             try{noWrites.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
@@ -168,7 +204,7 @@ public final class RootOrdinaryRuntimeAssembly {
         if(raw.length>NativeLaunchPlanCodec.MAXIMUM_BYTES)throw new IOException("launch configuration exceeds its codec limit");
         var planDocument=org.xar.ck3.control.contracts.StrictJson.parse(raw,NativeLaunchPlanCodec.MAXIMUM_BYTES);
         var planConfiguration=planDocument.has("configuration")?planDocument.get("configuration"):planDocument;
-        NativeLaunchPlan plan=NativeLaunchPlanCodec.fromJson(planConfiguration).accept();
+        NativeLaunchPlan plan=config.retainBoundLaunchPlan(NativeLaunchPlanCodec.fromJson(planConfiguration).accept());
         var paths=new WriterContracts.InitialLayout(root.resolve("continuity/continuity.json"),
                 root.resolve("continuity/genesis-anchor.json"),config.machineId());
         Path archiveRoot=root.resolve("continuity/artifacts");
@@ -213,7 +249,7 @@ public final class RootOrdinaryRuntimeAssembly {
             var catalogs=products.runtime().catalogs();
             var permissions=new ArrayList<NativePrivateActionPermission>(catalogs.privatePermissions(ports::qualifyPrivate));
             permissions.add(RootPreparedCleanupScope.permission(metadata.implementation(RootPreparedCleanupScope.class)));
-            var lifecycle=new JavaGameLifecycle(permissions,config.operationTimeout());
+            var lifecycle=new JavaGameLifecycle(permissions,config.operationTimeout(),config.maximumFramesPerOperation(),config.maximumSubmissions());
             return new Prepared(config,clock,plan,metadata,app,ports,storage,files,products,catalogs,permissions,lifecycle);
         }catch(IOException|RuntimeException|Error failure) {
             try {storage.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
@@ -425,6 +461,8 @@ public final class RootOrdinaryRuntimeAssembly {
         private org.xar.ck3.control.platform.SavedGameOwnerLifetime249.Retained exitedOwnerLifetime;
         private JavaGameLifecycle.Started exitedOwnerStart;
         private Path exitedOwnerDirectory;
+        private String exitedOwnerParentRequest;
+        private ManagedGameSession.CreatorOwnership exitedOriginalOwnership;
 
         private Prepared(RootOrdinaryRuntimeConfiguration config,Clock clock,NativeLaunchPlan plan,
                 RootOrdinaryImplementationMetadata metadata,RootApplicationConfiguration app,RootCoreBoundPorts ports,
@@ -452,6 +490,12 @@ public final class RootOrdinaryRuntimeAssembly {
             externalOrdinaryHostBound = true;
         }
         public RootOrdinaryRuntimeConfiguration configuration(){return config;}
+        /** Uses this runtime's identical allocation owner and physical file producer. */
+        public synchronized void appendWorkerBatchLog(byte[] completeLine)throws IOException {
+            if(closed||sourceOnly||core==null)throw new IOException("worker batch log requires its open actual runtime writer");
+            RootOrdinaryRuntimeAssembly.appendWorkerBatchLog(core.writer(),storage,files,config.stateDirectory(),
+                    completeLine,MAX_WORKER_BATCH_LOG_BYTES);
+        }
         public InitialEpisodePolicy initialPolicy(){return config.initialPolicy();}
         public NativeLaunchPlan plan(){return plan;}
         public List<NativePrivateActionPermission> privatePermissions(){
@@ -546,7 +590,8 @@ public final class RootOrdinaryRuntimeAssembly {
                     catalogs.install(core,actualAttached,sourceG2,core.planningReads(),clock,until));
             opened.installed=installed;
             var driver=runOperationPhase(clock,Duration.ofMinutes(10),until->{
-                var admission=RootJavaSavedBootstrap.admitLoaded(source,installed.context(),custody,until);
+                config.initialPolicy().requireInitialSavedProjection(plan,source.pair().save());
+                var admission=RootJavaSavedBootstrap.admitLoaded(source,installed.context(),custody,until,config.initialPolicy());
                 return core.adoptConfirmedSaved(admission,sourceG2,config.retainedFrames(),until);
             });
             return opened.finishConfirmedSaved(driver,deadline);
@@ -582,6 +627,8 @@ public final class RootOrdinaryRuntimeAssembly {
             opened.installed=installed;
             record RetainedAdoption(RootJavaSavedBootstrap.RetainedSaved source,DriverBootstrap.Adopted driver) { }
             var adoption=runOperationPhase(clock,Duration.ofMinutes(10),until->{
+                config.initialPolicy().requireInitialSavedProjection(plan,source.pair().save());
+                config.initialPolicy().requireInitialSavedProjection(plan,source.pair().save(),custody.savedClone());
                 var retained=RootJavaSavedBootstrap.reopenLoaded(source,installed.context(),custody,until);
                 return new RetainedAdoption(retained,core.adoptRetainedSaved(retained,sourceG2,config.retainedFrames(),until));
             });
@@ -616,7 +663,8 @@ public final class RootOrdinaryRuntimeAssembly {
                     catalogs.install(core,actual,source,core.planningReads(),clock,until));
             opened.installed=installed;
             var driver=runOperationPhase(clock,Duration.ofMinutes(10),until->{
-                var admission=RootJavaSavedBootstrap.admit(confirmed,installed.context(),lifecycle,started,until);
+                config.initialPolicy().requireInitialSavedProjection(plan,confirmed.pair().save());
+                var admission=RootJavaSavedBootstrap.admit(confirmed,installed.context(),lifecycle,started,until,config.initialPolicy());
                 return core.adoptConfirmedSaved(admission,source,config.retainedFrames(),until);
             });
             return opened.finishConfirmedSaved(driver,deadline);
@@ -681,9 +729,11 @@ public final class RootOrdinaryRuntimeAssembly {
             var replacement=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LifecyclePort() {
                 @Override public org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LaunchResult replaceOnce(
                         org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Request actual)throws IOException,InterruptedException {
+                    rememberExitedReplacement(actual.requestId());
                     var result=physical.replaceOnce(actual);retainExitedReplacement(actual.requestId());return result;
                 }
                 @Override public org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LaunchResult query(String id,Instant until)throws IOException,InterruptedException {
+                    rememberExitedReplacement(id);
                     var result=physical.query(id,until);retainExitedReplacement(id);return result;
                 }
             };
@@ -805,15 +855,40 @@ public final class RootOrdinaryRuntimeAssembly {
         }
 
 
+        /** Retain the exact durable parent before replacement IO can return UNKNOWN after creating its child. */
+        private synchronized void rememberExitedReplacement(String parent)throws IOException {
+            StrictJson.text(parent);
+            if(exitedOwnerParentRequest!=null&&!exitedOwnerParentRequest.equals(parent))
+                throw new IOException("exited replacement cannot replace its original owner parent identity");
+            exitedOwnerParentRequest=parent;
+        }
+        /** Original creator registry only; no PID open, lookup fallback, Stop or new capture. */
+        private synchronized ManagedGameSession.CreatorOwnership exitedOriginalOwnership()throws IOException {
+            if(exitedOriginalOwnership!=null)return exitedOriginalOwnership;
+            if(exitedOwnerParentRequest==null)return null;
+            String child=JavaGameLifecycle.replacementRequestId(exitedOwnerParentRequest);
+            var original=lifecycle.startedOwner(child);
+            if(original.isPresent()) {
+                var actual=original.orElseThrow();
+                StrictJson.require(actual.requestId().equals(child),"exited creator registry returned another child identity");
+                exitedOriginalOwnership=actual;
+            }
+            return exitedOriginalOwnership;
+        }
         private synchronized void retainExitedReplacement(String requestId)throws IOException {
             if(exitedOwnerLifetime!=null)return;
+            rememberExitedReplacement(requestId);
             var result=lifecycle.queryReplacement(requestId);
             if(!(result instanceof JavaGameLifecycle.Replaced replaced))return;
             var started=replaced.replacement();
+            var actual=lifecycle.captureStartedOwner(started);
+            if(exitedOriginalOwnership!=null&&exitedOriginalOwnership!=actual)
+                throw new IOException("exited replacement changed its exact original creator custody");
+            exitedOriginalOwnership=actual;exitedOwnerStart=started;
             Path directory=config.stateDirectory().resolve("restored-owner-"+org.xar.ck3.control.application.action.ActionCodec.sha256(
                     requestId.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
             exitedOwnerLifetime=org.xar.ck3.control.platform.SavedGameOwnerLifetime249.retain(lifecycle,started,directory);
-            exitedOwnerStart=started;exitedOwnerDirectory=directory;
+            exitedOwnerDirectory=directory;
         }
         public synchronized ManagedGameSession exitedReplacementGame()throws IOException {
             if(exitedOwnerStart==null)throw new IOException("exited restoration has no retained original replacement");
@@ -826,9 +901,28 @@ public final class RootOrdinaryRuntimeAssembly {
         }
         /** Reuse the existing Saved owner loop before the ordinary business finally may close its OWNED Game. */
         public void awaitExitedReplacementOwner()throws IOException,InterruptedException {
-            var lifetime=exitedOwnerLifetime;if(lifetime==null)return;
+            var original=exitedOriginalOwnership();
+            if(original==null) {
+                if(exitedOwnerLifetime!=null)throw new IOException("published exited owner lost its original creator custody");
+                return;
+            }
+            var lifetime=exitedOwnerLifetime;
             awaitOwnerAfterBusinessRelease(()->closeBusinessResources(core,storage),
-                    ()->Objects.requireNonNull(exitedOwnerStart).session().nativeTransport().close(),lifetime::awaitExit);
+                    ()->original.session().nativeTransport().close(),()->{
+                        Throwable failure=null;
+                        try {if(lifetime!=null)requireOwnerTerminalSuccess(lifetime.awaitExit());}
+                        catch(IOException|InterruptedException|RuntimeException|Error awaiting){failure=awaiting;}
+                        finally {
+                            // Publication/observer failures cannot bypass the actual original Job root+empty proof.
+                            var terminal=original.awaitOriginalExit();
+                            try {
+                                StrictJson.require(terminal.generation().equals(original.generation()),"creator terminal crossed original Game generation");
+                                requireCreatorOwnerResult(terminal.terminal().exitCode(),terminal.kind(),terminal.resourcesClosed(),terminal.failures());
+                            }catch(IOException|RuntimeException|Error cleanup){failure=merge(failure,cleanup);}
+                        }
+                        if(failure instanceof InterruptedException interrupted)throw interrupted;
+                        if(failure!=null)throwClose(failure);
+                    });
         }
 
         /** Opens only this configured old writer and source graph; it creates no Game or live authority. */
@@ -1139,6 +1233,8 @@ private Running openSameGameBootstrapOpened(Opened opened, ManagedGameSession ac
                     RootPostAdoptionCollector.ordinary(core,ports,catalogs,readiness,config.freshness(),clock));
         }
 
+        /** Drain only Core/catalog/offline/storage custody before a retained Saved owner wait. */
+        void closeBusinessResourcesOnly()throws IOException {closeBusinessResources(core,storage);}
         public void closeResourcesOnly()throws IOException {close();}
         @Override public synchronized void close()throws IOException {
             if(closed)return;closed=true;Throwable failure=closeBusinessResourcesFailure(core,storage);
@@ -1220,41 +1316,51 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
         }
         private Running finishConfirmedSaved(DriverBootstrap.Adopted driver,Optional<RootJavaSavedBootstrap.RetainedSaved> retained,
                 Instant deadline)throws IOException,InterruptedException {
-            if(consumed||installed==null)throw new IOException("actual saved graph installation is unavailable or consumed");
-            long next=0L;
-            if(retained.isPresent()) {
-                var actual=retained.orElseThrow();
-                owner.core.writer().locked(same->{actual.requireRetained(same);return null;});
-                String prefix=owner.config.loop().batchIdPrefix();long previous=-1L;
-                for(String id:actual.consumedBatchIds()) {
-                    if(!id.startsWith(prefix+"-"))throw new IOException("retained Saved batch prefix differs from actual loop configuration");
-                    String ordinal=id.substring(prefix.length()+1);
-                    if(!ordinal.matches("0|[1-9][0-9]*"))throw new IOException("retained Saved batch ordinal is not canonical");
-                    long value=new java.math.BigInteger(ordinal).longValueExact();
-                    if(value<=previous)throw new IOException("retained Saved batch IDs are not strictly ordered and unique");
-                    previous=value;
+            try {
+                if(consumed||installed==null)throw new IOException("actual saved graph installation is unavailable or consumed");
+                long next=0L;
+                if(retained.isPresent()) {
+                    var actual=retained.orElseThrow();
+                    owner.core.writer().locked(same->{actual.requireProjectionCurrent(same);return null;});
+                    String prefix=owner.config.loop().batchIdPrefix();long previous=-1L;
+                    for(String id:actual.consumedBatchIds()) {
+                        if(!id.startsWith(prefix+"-"))throw new IOException("retained Saved batch prefix differs from actual loop configuration");
+                        String ordinal=id.substring(prefix.length()+1);
+                        if(!ordinal.matches("0|[1-9][0-9]*"))throw new IOException("retained Saved batch ordinal is not canonical");
+                        long value=new java.math.BigInteger(ordinal).longValueExact();
+                        if(value<=previous)throw new IOException("retained Saved batch IDs are not strictly ordered and unique");
+                        previous=value;
+                    }
+                    next=actual.nextSequence();
+                    if(next!=(previous<0?0L:Math.addExact(previous,1L)))
+                        throw new IOException("retained Saved next batch sequence differs from its actual consumed IDs");
                 }
-                next=actual.nextSequence();
-                if(next!=(previous<0?0L:Math.addExact(previous,1L)))
-                    throw new IOException("retained Saved next batch sequence differs from its actual consumed IDs");
-            }
-            consumed=true;
-            if(owner.config.decisionProvider().isPresent()) {
-                var selector=new RootOnlineDecisionSelector(owner.config.decisionProvider().orElseThrow(),owner.clock,raw->{
-                    var writer=owner.core.writer();var active=writer.activeSession();
-                    if(active.isPresent())return owner.core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
-                    return writer.locked(same->owner.core.archive().withSession(same).preserveMaterial(raw));
+                consumed=true;
+                if(owner.config.decisionProvider().isPresent()) {
+                    var selector=new RootOnlineDecisionSelector(owner.config.decisionProvider().orElseThrow(),owner.clock,raw->{
+                        var writer=owner.core.writer();var active=writer.activeSession();
+                        if(active.isPresent())return owner.core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                        return writer.locked(same->owner.core.archive().withSession(same).preserveMaterial(raw));
+                    });
+                    owner.core.bindDecisionSelector(selector);
+                }
+                var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
+                var session=owner.core.finishConfirmedSaved(installed,driver,configuration,owner.services(source));
+                runOperationPhase(owner.clock,owner.config.operationTimeout(),until->{
+                    session.install(owner.ordinaryHost,until);return null;
                 });
-                owner.core.bindDecisionSelector(selector);
+                if(retained.isPresent())owner.core.writer().locked(same->{retained.orElseThrow().requireProjectionCurrent(same);return null;});
+                owner.core.promoteSavedLive(session);
+                return new Running(owner,session,owner.config.loop().batchIdPrefix(),next);
+            }catch(IOException|InterruptedException|RuntimeException|Error failure) {
+                // Admission, phase work and release share the original source-custody owner thread.
+                // Successful promotion releases through activateSavedLive; an early failure owns this cleanup.
+                try {owner.core.closeSavedProjectionCustody();}
+                catch(IOException|RuntimeException|Error cleanup) {
+                    if(cleanup!=failure)failure.addSuppressed(cleanup);
+                }
+                throw failure;
             }
-            var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
-            var session=owner.core.finishConfirmedSaved(installed,driver,configuration,owner.services(source));
-            runOperationPhase(owner.clock,owner.config.operationTimeout(),until->{
-                session.install(owner.ordinaryHost,until);return null;
-            });
-            if(retained.isPresent())owner.core.writer().locked(same->{retained.orElseThrow().requireRetained(same);return null;});
-            owner.core.promoteSavedLive(session);
-            return new Running(owner,session,owner.config.loop().batchIdPrefix(),next);
         }
 
         private Running finishSettledSameGame(DriverBootstrap.Adopted driver,
@@ -1427,6 +1533,24 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
 
     @FunctionalInterface interface BusinessRelease {void run()throws IOException;}
     @FunctionalInterface interface OwnerWait {void run()throws IOException,InterruptedException;}
+
+    /** Consumes only the DATA returned by the original opaque creator wait; it issues no exit proof. */
+    static void requireCreatorOwnerResult(int exitCode,org.xar.ck3.control.contracts.GameLifecycle.TerminalKind kind,
+            boolean resourcesClosed,List<Throwable> failures)throws IOException {
+        Objects.requireNonNull(kind);
+        Throwable failure=null;
+        for(Throwable original:List.copyOf(failures))failure=merge(failure,original);
+        if(kind==org.xar.ck3.control.contracts.GameLifecycle.TerminalKind.UNKNOWN)
+            failure=merge(failure,new IOException("original creator owner terminal remains UNKNOWN"));
+        if(!resourcesClosed)failure=merge(failure,new IOException("original creator owner resources remain unclosed"));
+        if(kind==org.xar.ck3.control.contracts.GameLifecycle.TerminalKind.NATURAL_EXIT&&exitCode!=0)
+            failure=merge(failure,new IOException("original creator owner natural exit returned failure "+exitCode));
+        if(failure!=null)throwClose(failure);
+    }
+    /** Preserve a failed original Saved owner result through the void cleanup callback. */
+    static void requireOwnerTerminalSuccess(int actualExit)throws IOException {
+        if(actualExit!=0)throw new IOException("original Saved owner terminal returned failure "+actualExit);
+    }
 
     /** Business-only drain. No Game/session/lifetime object or shutdown authority enters this method. */
     static void closeBusinessResources(RootApplicationAssembly.Core core,RootRuntimeStorageGuard storage)throws IOException {

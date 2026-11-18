@@ -24,6 +24,7 @@ public final class InitialEpisodePolicy {
     public static final String FIXTURE_SCHEMA="xar.java.initial-episode-fixture-projection/v1";
     private final java.util.Optional<org.xar.ck3.control.nativebridge.capabilities.frontendfixture.PreparedFixture> fixture;
     private final java.util.Optional<org.xar.ck3.control.platform.NativeLaunchPlan> savedPlan;
+    private final java.util.Optional<RawJson> materializedSaved;
     private final java.util.Optional<ExactRef> source;
     private final java.util.Optional<ExactRef> environment;
     private final RawJson lifecycle;
@@ -43,8 +44,13 @@ public final class InitialEpisodePolicy {
     private InitialEpisodePolicy(java.util.Optional<ExactRef> source,java.util.Optional<ExactRef> environment,RawJson lifecycle,Lifecycle kind,
             java.util.Optional<org.xar.ck3.control.nativebridge.capabilities.frontendfixture.PreparedFixture> fixture,
             java.util.Optional<org.xar.ck3.control.platform.NativeLaunchPlan> savedPlan) {
+        this(source,environment,lifecycle,kind,fixture,savedPlan,java.util.Optional.empty());
+    }
+    private InitialEpisodePolicy(java.util.Optional<ExactRef> source,java.util.Optional<ExactRef> environment,RawJson lifecycle,Lifecycle kind,
+            java.util.Optional<org.xar.ck3.control.nativebridge.capabilities.frontendfixture.PreparedFixture> fixture,
+            java.util.Optional<org.xar.ck3.control.platform.NativeLaunchPlan> savedPlan,java.util.Optional<RawJson> materializedSaved) {
         Objects.requireNonNull(source);Objects.requireNonNull(environment);Objects.requireNonNull(lifecycle);Objects.requireNonNull(kind);Objects.requireNonNull(fixture);Objects.requireNonNull(savedPlan);
-        this.source=source;this.environment=environment;this.lifecycle=lifecycle;this.kind=kind;this.fixture=fixture;this.savedPlan=savedPlan;
+        this.source=source;this.environment=environment;this.lifecycle=lifecycle;this.kind=kind;this.fixture=fixture;this.savedPlan=savedPlan;this.materializedSaved=Objects.requireNonNull(materializedSaved);
     }
     public ExactRef source() { return source.orElseThrow(() -> new IllegalStateException("source provenance absent")); }
     public ExactRef environment() { return environment.orElseThrow(() -> new IllegalStateException("environment provenance absent")); }
@@ -77,15 +83,20 @@ public final class InitialEpisodePolicy {
         ExactRef environment=environment();
         file(source).verify(); file(environment).verify();
         ObjectNode actual=environment(environment);
+        if(materializedSaved.isPresent()) {
+            byte[] expected=materializedSaved.orElseThrow().bytes();
+            StrictJson.require(java.util.Arrays.equals(expected,readExactBytes(source)),"mapped Saved policy original changed");
+            validateMaterializedSaved(ContinuityJson.parseObject(expected,1<<20),savedPlan.orElseThrow());return;
+        }
         if(savedPlan.isPresent()) {
             var plan=savedPlan.orElseThrow();
             StrictJson.require(plan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame,"saved projection lost its exact Saved plan");
             var saved=(org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame)plan.load();
-            StrictJson.require(java.util.Arrays.equals(savedProjection(file(environment),saved.save(),EnvironmentRead.RETAINED_ORIGINAL).bytes(),Files.readAllBytes(Path.of(source.path()))),"actual Saved projection original changed");return;
+            StrictJson.require(java.util.Arrays.equals(savedProjection(file(environment),saved.save(),EnvironmentRead.RETAINED_ORIGINAL).bytes(),readExactBytes(source)),"actual Saved projection original changed");return;
         }
         if(fixture.isPresent()) {
             byte[] expected=fixtureProjection(file(environment),fixture.orElseThrow(),EnvironmentRead.RETAINED_ORIGINAL).bytes();
-            StrictJson.require(java.util.Arrays.equals(expected,Files.readAllBytes(Path.of(source.path()))),"actual fixture projection original changed");return;
+            StrictJson.require(java.util.Arrays.equals(expected,readExactBytes(source)),"actual fixture projection original changed");return;
         }
         StrictJson.require(java.util.Arrays.equals(lifecycle.bytes(),StrictJson.canonical(binding(actual,kind))),"actual frozen lifecycle inputs changed");
     }
@@ -152,7 +163,7 @@ public final class InitialEpisodePolicy {
         StrictJson.require(actualPreparedEnvironment.bytes()>0 && actualPreparedEnvironment.bytes()<=1<<20,"bounded actual prepared environment required");
         actualPreparedEnvironment.verify();
         var held=SharedSourceFiles.observe(Path.of(source.path()));
-        byte[] bytes=Files.readAllBytes(Path.of(source.path()));
+        byte[] bytes=readExactBytes(source);
         StrictJson.require(bytes.length==source.bytes(), "actual initial episode policy size changed");
         ObjectNode root=StrictJson.object(ContinuityJson.parseObject(bytes, 1<<20),Set.of("schema","environment_manifest","succession_lifecycle"));
         StrictJson.require(SCHEMA.equals(StrictJson.text(root.get("schema"))),"exact initial episode policy schema required");
@@ -174,7 +185,7 @@ public final class InitialEpisodePolicy {
         boolean verifiedAbsence=kind==Lifecycle.ORDINARY_CAMPAIGN_SUCCESSION && binding.get("xar_enabled").isNull()
                 && "absent_by_verified_xar_mod_not_loaded".equals(pact) && origin.equals(pact);
         StrictJson.require(normal || verifiedAbsence,"frozen lifecycle support profile is inconsistent");
-        ObjectNode actual=ContinuityJson.parseObject(Files.readAllBytes(Path.of(environment.path())),1<<20);
+        ObjectNode actual=environment(environment);
         var environmentDigest=binding.get("environment_sha256");
         StrictJson.require(environmentDigest!=null && environmentDigest.isTextual() && environmentDigest.textValue().matches("[0-9a-f]{64}")
                 && environmentDigest.equals(actual.get("environment_sha256")),"new lifecycle must bind the actual prepared environment digest");
@@ -184,6 +195,102 @@ public final class InitialEpisodePolicy {
         return new InitialEpisodePolicy(source,environment,new RawJson(StrictJson.canonical(binding)),kind);
     }
     public static final String SAVED_SCHEMA="xar.java.initial-episode-saved-native-projection/v1";
+    public static final String MATERIALIZED_SAVED_SCHEMA="xar.java.initial-episode-saved-native-projection/v2";
+    /** Version classification is DATA only; it cannot activate an admission or live phase. */
+    public boolean isMaterializedSaved(){return materializedSaved.isPresent();}
+    /** Pure bytes from an already existing clone under the caller's real preparation-only handles. */
+    public static RawJson produceSavedMaterialized(ControlBuild.FileRef actualEnvironment,
+            org.xar.ck3.control.platform.NativeLaunchPlan plan,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness original,
+            org.xar.ck3.control.platform.QualifiedCloneCustody custody)throws IOException {
+        Objects.requireNonNull(custody);custody.requireCurrent(plan,original);
+        StrictJson.require(plan.preparedProfile().environmentManifest().equals(actualEnvironment),"mapped policy crossed its actual ENV");
+        actualEnvironment.verify();var envHeld=SharedSourceFiles.observe(Path.of(actualEnvironment.path()));
+        ObjectNode manifest=environment(new ExactRef(actualEnvironment.path(),actualEnvironment.bytes(),actualEnvironment.sha256()));
+        if(org.xar.ck3.control.build.NativeRunProfileManifest.isCurrentVersion(manifest))
+            requireMappedSavedProfileKind(org.xar.ck3.control.build.NativeRunProfileProducer.readSavedEnvironmentInputsVerified(actualEnvironment).kind());
+        var observation=custody.observation();
+        ObjectNode row=StrictJson.object().put("schema",MATERIALIZED_SAVED_SCHEMA);
+        row.set("environment_manifest",new ExactRef(actualEnvironment.path(),actualEnvironment.bytes(),actualEnvironment.sha256()).toJson());
+        row.put("episode_projection","native_campaign");row.putNull("succession_lifecycle");
+        row.set("saved_game",observation.actualSave().reference().toJson());
+        row.set("source_saved_game",original.reference().toJson());row.set("source_clone",observation.toJson());
+        validateMaterializedSaved(row,plan);custody.requireCurrent(plan,original);SharedSourceFiles.assertUnchanged(envHeld);
+        return new RawJson(StrictJson.canonical(row,1<<20));
+    }
+    /** Immutable historical provenance. It deliberately performs no read of the mutable clone. */
+    private static void validateMaterializedSaved(ObjectNode value,org.xar.ck3.control.platform.NativeLaunchPlan plan)throws IOException {
+        ObjectNode row=StrictJson.object(value,Set.of("schema","environment_manifest","episode_projection","succession_lifecycle","saved_game","source_saved_game","source_clone"));
+        StrictJson.require(MATERIALIZED_SAVED_SCHEMA.equals(StrictJson.text(row.get("schema")))
+                &&"native_campaign".equals(StrictJson.text(row.get("episode_projection")))&&row.get("succession_lifecycle").isNull(),"strict mapped Saved native/null provenance required");
+        StrictJson.require(plan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame
+                &&plan.preparedProfile().declaration() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.PreparedProfile.ExplicitEnvironment explicit
+                &&explicit.kind()==org.xar.ck3.control.build.NativeRunProfileManifest.ProfileKind.SAVED_VANILLA,"mapped Saved policy requires explicit SavedVanilla plan");
+        var saved=(org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame)plan.load();
+        ExactRef original=ExactRef.fromJson(row.get("source_saved_game")),actual=ExactRef.fromJson(row.get("saved_game"));
+        var env=plan.preparedProfile().environmentManifest();
+        StrictJson.require(ExactRef.fromJson(row.get("environment_manifest")).equals(new ExactRef(env.path(),env.bytes(),env.sha256()))
+                &&original.equals(new ExactRef(saved.save().path(),saved.save().bytes(),saved.save().sha256()))
+                &&actual.path().equals(org.xar.ck3.control.platform.NativeSavedGameClone.actualPath(plan).toString())
+                &&actual.bytes()==original.bytes()&&actual.sha256().equals(original.sha256()),"mapped policy source/actual path/content/ENV differs from its exact plan");
+        ObjectNode mapping=StrictJson.object(row.get("source_clone"),Set.of("schema","request_id","session_id","profile_directory","profile_identity","save_directory_identity","original_save","actual_save","original_native_identity","actual_native_identity","in_place"));
+        var sourceWitness=org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.fileWitnessFromJson(mapping.get("original_save"));
+        var actualWitness=org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.fileWitnessFromJson(mapping.get("actual_save"));
+        StrictJson.require(org.xar.ck3.control.platform.NativeSavedGameClone.SCHEMA.equals(StrictJson.text(mapping.get("schema")))
+                &&plan.requestId().equals(StrictJson.text(mapping.get("request_id")))&&plan.sessionId().equals(StrictJson.text(mapping.get("session_id")))
+                &&plan.profileDirectory().toString().equals(StrictJson.text(mapping.get("profile_directory")))
+                &&sourceWitness.reference().equals(original)&&actualWitness.reference().equals(actual),"mapped policy crossed its original plan/file witnesses");
+        for(String field:java.util.List.of("profile_identity","save_directory_identity","original_native_identity","actual_native_identity"))
+            mappedNativeIdentity(mapping.get(field));
+        var inPlace=mapping.get("in_place");StrictJson.require(inPlace.isBoolean()&&inPlace.booleanValue()==original.path().equals(actual.path()),"explicit in-place mapping differs from its paths");
+        StrictJson.require(!inPlace.booleanValue(),"mapped Saved v2 requires an independent clone; legacy in-place remains v1");
+        ObjectNode sourceIdentity=(ObjectNode)mapping.get("original_native_identity"),actualIdentity=(ObjectNode)mapping.get("actual_native_identity");
+        boolean sameFile=sourceIdentity.get("volume_serial_decimal").equals(actualIdentity.get("volume_serial_decimal"))&&sourceIdentity.get("file_id_decimal").equals(actualIdentity.get("file_id_decimal"));
+        StrictJson.require(inPlace.booleanValue()?sourceWitness.equals(actualWitness)&&sourceIdentity.equals(actualIdentity):!sameFile,"external source/clone cannot be aliases");
+        new org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles().verify(sourceWitness);
+        ObjectNode manifest=environment(new ExactRef(env.path(),env.bytes(),env.sha256()));
+        StrictJson.require(Path.of(StrictJson.text(manifest.get("profile_dir"))).equals(plan.profileDirectory())
+                &&Path.of(StrictJson.text(manifest.get("state_dir"))).equals(plan.stateDirectory()),"mapped policy ENV profile/state crossed its plan");
+        if(org.xar.ck3.control.build.NativeRunProfileManifest.isCurrentVersion(manifest))
+            requireMappedSavedProfileKind(currentEnvironment(env,EnvironmentRead.RETAINED_ORIGINAL).kind());
+    }
+    /** V2 SavedVanilla cannot relabel a different typed Saved environment as vanilla. */
+    static void requireMappedSavedProfileKind(org.xar.ck3.control.build.NativeRunProfileManifest.ProfileKind kind) {
+        StrictJson.require(kind==org.xar.ck3.control.build.NativeRunProfileManifest.ProfileKind.SAVED_VANILLA,
+                "mapped Saved v2 requires the exact typed SavedVanilla environment domain");
+    }
+    /** Pure shared native-identity DATA decoder; no physical file or current permission is issued. */
+    static SharedSourceFiles.DirectoryIdentity mappedNativeIdentity(com.fasterxml.jackson.databind.JsonNode value) {
+        ObjectNode identity=StrictJson.object(value,Set.of("volume_serial_decimal","file_id_decimal","creation_filetime_decimal"));
+        return new SharedSourceFiles.DirectoryIdentity(StrictJson.text(identity.get("volume_serial_decimal")),
+                StrictJson.text(identity.get("file_id_decimal")),StrictJson.text(identity.get("creation_filetime_decimal")));
+    }
+    /** Historical DATA; entry/adoption requires a separate actual private admission. */
+    public void requireSavedHistory(org.xar.ck3.control.platform.NativeLaunchPlan identical)throws IOException {
+        StrictJson.require(kind==Lifecycle.NATIVE_CAMPAIGN_SAVED&&savedPlan.orElseThrow()==identical&&fixture.isEmpty(),"Saved history crossed its identical plan");verify();
+    }
+    /** Compare all persisted mapping fields; a new equal-content FileID cannot refresh initial provenance. */
+    public void requireInitialSavedProjection(org.xar.ck3.control.platform.NativeLaunchPlan identical,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness original)throws IOException {
+        requireSavedHistory(identical);
+        if(materializedSaved.isEmpty()){requireSavedProjection(identical);return;}
+        ObjectNode row=ContinuityJson.parseObject(materializedSaved.orElseThrow().bytes(),1<<20);
+        var expected=org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.fileWitnessFromJson(row.get("source_clone").get("original_save"));
+        StrictJson.require(expected.equals(original),"initial Saved mapping requires the unchanged original Pair SAVE witness");
+        var current=org.xar.ck3.control.platform.NativeSavedGameClone.observe(identical,original);
+        requireInitialSavedProjection(identical,original,current);
+    }
+    /** Binds the exact retained Native custody observation, never a replacement observation with equal bytes. */
+    public void requireInitialSavedProjection(org.xar.ck3.control.platform.NativeLaunchPlan identical,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness original,
+            org.xar.ck3.control.platform.NativeSavedGameClone.Observation current)throws IOException {
+        requireSavedHistory(identical);Objects.requireNonNull(current);current.requireCurrent(identical,original);
+        if(materializedSaved.isEmpty()){requireSavedProjection(identical);return;}
+        ObjectNode row=ContinuityJson.parseObject(materializedSaved.orElseThrow().bytes(),1<<20);
+        var expected=org.xar.ck3.control.application.checkpoint.CheckpointPairCodec.fileWitnessFromJson(row.get("source_clone").get("original_save"));
+        StrictJson.require(expected.equals(original)&&java.util.Arrays.equals(StrictJson.canonical(row.get("source_clone"),1<<20),StrictJson.canonical(current.toJson(),1<<20)),"initial Saved clone physical mapping changed");
+        current.requireCurrent(identical,original);verify();
+    }
     /** Explicit Saved projection is source data; the physical reader binds the original Saved plan. */
     public static RawJson produceSaved(ControlBuild.FileRef actualEnvironment,ControlBuild.FileRef actualSave)throws IOException {
         return savedProjection(actualEnvironment,actualSave,EnvironmentRead.PRELAUNCH_PHYSICAL);
@@ -208,8 +315,14 @@ public final class InitialEpisodePolicy {
         Objects.requireNonNull(samePlan);sourceBound(source);
         StrictJson.require(samePlan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame,"explicit Saved plan required for native_campaign");
         var saved=(org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame)samePlan.load();var env=samePlan.preparedProfile().environmentManifest();
-        var held=SharedSourceFiles.observe(Path.of(source.path()));byte[] bytes=Files.readAllBytes(Path.of(source.path()));
-        ObjectNode row=StrictJson.object(ContinuityJson.parseObject(bytes,1<<20),Set.of("schema","environment_manifest","episode_projection","succession_lifecycle","saved_game"));
+        var held=SharedSourceFiles.observe(Path.of(source.path()));byte[] bytes=readExactBytes(source);
+        ObjectNode decoded=ContinuityJson.parseObject(bytes,1<<20);
+        if(MATERIALIZED_SAVED_SCHEMA.equals(StrictJson.text(decoded.get("schema")))) {
+            validateMaterializedSaved(decoded,samePlan);SharedSourceFiles.assertUnchanged(held);sourceBound(source);
+            return new InitialEpisodePolicy(java.util.Optional.of(source),java.util.Optional.of(new ExactRef(env.path(),env.bytes(),env.sha256())),
+                    new RawJson(new byte[]{'n','u','l','l'}),Lifecycle.NATIVE_CAMPAIGN_SAVED,java.util.Optional.empty(),java.util.Optional.of(samePlan),java.util.Optional.of(new RawJson(bytes)));
+        }
+        ObjectNode row=StrictJson.object(decoded,Set.of("schema","environment_manifest","episode_projection","succession_lifecycle","saved_game"));
         StrictJson.require(SAVED_SCHEMA.equals(StrictJson.text(row.get("schema")))&&row.get("succession_lifecycle").isNull(),"strict Saved native projection/null provenance required");
         StrictJson.require(java.util.Arrays.equals(bytes,savedProjection(env,saved.save(),EnvironmentRead.RETAINED_ORIGINAL).bytes()),"Saved projection differs from its sole actual producer");
         SharedSourceFiles.assertUnchanged(held);sourceBound(source);
@@ -217,6 +330,7 @@ public final class InitialEpisodePolicy {
         policy.requireSavedProjection(samePlan);return policy;
     }
     public void requireSavedProjection(org.xar.ck3.control.platform.NativeLaunchPlan identical)throws IOException {
+        StrictJson.require(materializedSaved.isEmpty(),"mapped Saved v2 requires its explicit first-admission path; legacy projection is unsupported");
         StrictJson.require(kind==Lifecycle.NATIVE_CAMPAIGN_SAVED&&savedPlan.orElseThrow()==identical&&fixture.isEmpty(),"Saved native projection crossed the original plan");verify();
     }
     /** Explicit native_campaign preserves the original null lifecycle. This makes no XAR-rule or pact claim. */
@@ -243,7 +357,7 @@ public final class InitialEpisodePolicy {
     public static InitialEpisodePolicy readExactFixture(ExactRef source,ControlBuild.FileRef actualEnvironment,
             org.xar.ck3.control.nativebridge.capabilities.frontendfixture.PreparedFixture same)throws IOException {
         Objects.requireNonNull(source);Objects.requireNonNull(actualEnvironment);Objects.requireNonNull(same);sourceBound(source);
-        var held=SharedSourceFiles.observe(Path.of(source.path()));byte[] actual=Files.readAllBytes(Path.of(source.path()));
+        var held=SharedSourceFiles.observe(Path.of(source.path()));byte[] actual=readExactBytes(source);
         ObjectNode value=StrictJson.object(ContinuityJson.parseObject(actual,1<<20),Set.of("schema","environment_manifest","episode_projection","succession_lifecycle","fixture_policy","input_closure","mounted_relative_paths"));
         StrictJson.require(FIXTURE_SCHEMA.equals(StrictJson.text(value.get("schema")))&&value.get("succession_lifecycle").isNull()
                 &&"native_campaign".equals(StrictJson.text(value.get("episode_projection"))),"explicit fixture projection with null lifecycle provenance required");
@@ -297,6 +411,22 @@ public final class InitialEpisodePolicy {
     public static void requireFixtureProfileDomain(org.xar.ck3.control.build.NativeRunProfileManifest.ProfileEnvironment actual,
             org.xar.ck3.control.nativebridge.capabilities.frontendfixture.PreparedFixture same)throws IOException {
         Objects.requireNonNull(actual);Objects.requireNonNull(same);same.requireEnvironment(actual);
+    }
+    /** Bind the bytes actually decoded to the exact source, even if a pathname is later restored. */
+    private static byte[] readExactBytes(ExactRef source)throws IOException {
+        Objects.requireNonNull(source);
+        if(source.bytes()<1||source.bytes()>1<<20)throw new IOException("bounded exact policy capture required");
+        try(var lease=org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes.leaseBoundedWindows(Path.of(source.path()),1<<20)) {
+            byte[] captured=lease.originalRead().bytes();
+            requireCapturedExact(source,captured);lease.verifyCurrent();return captured;
+        }
+    }
+    /** Exact captured DATA check only; this function grants no ongoing file, policy or admission authority. */
+    static void requireCapturedExact(ExactRef source,byte[] captured)throws IOException {
+        Objects.requireNonNull(source);Objects.requireNonNull(captured);
+        if(source.bytes()<1||source.bytes()>1<<20||captured.length!=source.bytes()
+                ||!org.xar.ck3.control.build.NativeRunProfileRules.sha(captured).equals(source.sha256()))
+            throw new IOException("captured policy bytes differ from their exact original reference");
     }
     private static void sourceBound(ExactRef source) throws IOException {
         StrictJson.require(source.bytes()>0 && source.bytes()<=1<<20,"bounded actual initial policy required"); file(source).verify();

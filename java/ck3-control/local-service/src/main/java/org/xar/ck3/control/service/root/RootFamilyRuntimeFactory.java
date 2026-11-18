@@ -49,11 +49,18 @@ public final class RootFamilyRuntimeFactory {
     }
     /** Shared products already belong to this physical Root; no callback creates missing native leaves. */
     public record Shared(InteractionCapabilities interactions,InteractionCapabilities.Installation interactionInstallation,
-            RootInteractionContextProjection projection,RootFamilyCampaignRead campaignRoot,FamilyPorts.Commands dateAdvance) {
-        public Shared {Objects.requireNonNull(interactions);Objects.requireNonNull(interactionInstallation);Objects.requireNonNull(projection);
+            RootFamilyInteractionContext contextReads,RootFamilyCampaignRead campaignRoot,FamilyPorts.Commands dateAdvance) {
+        public Shared {Objects.requireNonNull(interactions);Objects.requireNonNull(interactionInstallation);Objects.requireNonNull(contextReads);
             Objects.requireNonNull(campaignRoot);Objects.requireNonNull(dateAdvance);interactions.requireInstallation(interactionInstallation);}
+        /** Original constructor/getter descriptors keep the actual qualified projection unchanged. */
+        public Shared(InteractionCapabilities interactions,InteractionCapabilities.Installation installation,
+                RootInteractionContextProjection projection,RootFamilyCampaignRead campaignRoot,FamilyPorts.Commands dateAdvance) {
+            this(interactions,installation,RootFamilyInteractionContext.qualified(projection),campaignRoot,dateAdvance);
+        }
+        public RootInteractionContextProjection projection(){return contextReads.requireProjection();}
         public static Shared from(KnownInteractionsRuntimeInstaller actualKnown,FamilyPorts.Commands actualDateAdvance) {
-            Objects.requireNonNull(actualKnown);return new Shared(actualKnown.capabilities(),actualKnown.definitions(),actualKnown.projection(),actualKnown.campaign(),actualDateAdvance);
+            Objects.requireNonNull(actualKnown);return new Shared(actualKnown.capabilities(),actualKnown.definitions(),
+                    RootFamilyInteractionContext.from(actualKnown),actualKnown.campaign(),actualDateAdvance);
         }
     }
     public static final class Prepared {
@@ -112,7 +119,7 @@ public final class RootFamilyRuntimeFactory {
             if(core.storageGuard() instanceof RootRuntimeStorageGuard storage)storage.createManagedDirectories(relationExportRoot);
             var bridge=new RootFamilyBridge(context);var planningOriginals=new RootFamilyPlanningOriginals(context);
             var nativeReads=new RootFamilyNativeReadProducts(context,sources.nativeReads(),shared.interactions(),shared.interactionInstallation(),
-                    shared.projection(),shared.campaignRoot(),relationExportRoot);
+                    shared.contextReads(),shared.campaignRoot(),relationExportRoot);
             var reads=nativeReads.complete(sources.ordinary().reads());
             var fresh=new RootFamilyMarriageFreshPreparation(context,bridge,nativeReads,reads,planningOriginals,sources.marriage().freshPreparation());
             var marriages=new RootFamilyMarriageSendRuntime(context,bridge,fresh,sources.marriage());

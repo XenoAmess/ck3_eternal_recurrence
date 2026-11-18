@@ -2,6 +2,7 @@
 #if defined(XAR_CK3_PERSONAL_GOLD_FRAME_TEST)
 #include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include <windows.h>
 #endif
 
@@ -36,6 +37,9 @@ enum class Mutation {
 };
 struct Fixture;
 Fixture *active = nullptr;
+#if defined(XAR_CK3_PERSONAL_GOLD_FRAME_TEST)
+xar::ck3_11906::MainThreadQueryMailboxV1 *owner_reset_on_first_core=nullptr;
+#endif
 void *LocalPlayer(void *);
 
 // Complete independent buffers needed by the real 1.21 Core reader. All
@@ -113,6 +117,9 @@ struct Fixture {
 void *LocalPlayer(void *) {
   auto &f = *active;
   ++f.reads;
+#if defined(XAR_CK3_PERSONAL_GOLD_FRAME_TEST)
+  if(owner_reset_on_first_core && f.reads==1)owner_reset_on_first_core->proof_reset_requested.store(true);
+#endif
   if (f.reads == 1 && f.mutation == Mutation::date_first)
     Store(f.state, 8, std::int32_t{123457});
   if (f.reads == 1 && f.mutation == Mutation::paused_first)
@@ -303,6 +310,51 @@ int main() {
     mailbox.iat_hook_installed.store(true);
     mailbox.paused_owner_verified_pump_epochs.store(2);mailbox.published_sequence.store(7);
     mailbox.executor.store(&ExecutePersonalGoldMailboxV1);mailbox.executor_context=&q;
+    mailbox.offline_fixture=true; // Explicit NoGame RAM, not physical image qualification.
+    mailbox.pump_epochs.store(stamp.pump_epoch);mailbox.active_hook_calls.store(1);
+    mailbox.executor_started_sequence.store(q.ticket.sequence);mailbox.executor_started_pump_epoch.store(stamp.pump_epoch);
+    // This used to be accepted by the actual Actor prefix despite lacking a
+    // physical module witness. Only explicit offline RAM may use these slots.
+    mailbox.offline_fixture=false;f.reads=0;
+    Require(ExecutePersonalGoldMailboxV1(&q,stamp) && f.reads==0 && !q.application_main_observed &&
+        !q.observation.available && !q.observation.personal_gold_raw,"production Actor rejects RAM Core/getter before calling it");
+    const auto original_bindings=q.bindings;
+    const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    mailbox.module_base=module;
+    mailbox.game_state_slot=module+xar::ck3_1210::kGameStateSlotRva;
+    mailbox.jomini_state_slot=module+xar::ck3_1210::kJominiStateSlotRva;
+    mailbox.tls_initialized_flag=module+xar::ck3_1210::kMainThreadTlsInitializedFlagRva;
+    mailbox.tls_context_getter=reinterpret_cast<MainThreadTlsContextGetterV1>(
+        module+xar::ck3_1210::kMainThreadTlsContextGetterRva);
+    stamp.tls_initialized_flag_address=mailbox.tls_initialized_flag;
+    for(int field=0;field<5;++field) {
+      q.bindings=BindPersonalGoldImageV1(module,xar::ck3_1210::kExecutableSha256);
+      if(field==0)q.bindings.core.get_local_player=&LocalPlayer;
+      if(field==1)q.bindings.core.character_storage_slot=nullptr;
+      if(field==2)q.bindings.core.jomini_state_slot=nullptr;
+      if(field==3)q.bindings.core.game_state_slot=nullptr;
+      if(field==4)q.bindings=BindPersonalGoldImageV1(module+0x1000,xar::ck3_1210::kExecutableSha256);
+      f.reads=0;
+      Require(ExecutePersonalGoldMailboxV1(&q,stamp) && f.reads==0 && !q.observation.available && !q.observation.personal_gold_raw,
+          "each crossed Core field or foreign complete bundle rejects before getter/TLS source access");
+    }
+    q.bindings=original_bindings;mailbox.offline_fixture=true;
+    mailbox.module_base=0;mailbox.game_state_slot=0;mailbox.jomini_state_slot=0;
+    mailbox.tls_initialized_flag=0;mailbox.tls_context_getter=nullptr;stamp.tls_initialized_flag_address=0;
+    for(int event=0;event<3;++event) {
+      mailbox.proof_reset_requested.store(event==0);
+      mailbox.pump_epochs.store(stamp.pump_epoch+(event==1?1:0));
+      mailbox.active_hook_calls.store(event==2?0:1);f.reads=0;
+      Require(ExecutePersonalGoldMailboxV1(&q,stamp) && f.reads==0 && !q.observation.available && !q.observation.personal_gold_raw,
+          "ordinary Actor rejects reset/current epoch/hook loss before any Core getter");
+    }
+    mailbox.proof_reset_requested.store(false);mailbox.pump_epochs.store(stamp.pump_epoch);
+    mailbox.active_hook_calls.store(1);f.reads=0;
+    owner_reset_on_first_core=&mailbox;
+    Require(ExecutePersonalGoldMailboxV1(&q,stamp) && f.reads==1 && !q.observation.available && !q.observation.personal_gold_raw &&
+        q.application_main_observed,"first Core getter revocation closes leaf reads but retains observed owner fact");
+    owner_reset_on_first_core=nullptr;mailbox.proof_reset_requested.store(false);f.reads=0;
+
     Require(ExecutePersonalGoldMailboxV1(&q,stamp) && q.observation.available,"own paused mailbox reads actual wallet model");
     std::cout<<SerializePersonalGoldCommandResultV1("gold-partial-fixture",q)<<std::endl;
     Store(f.living,0x100,(std::numeric_limits<std::int64_t>::min)());

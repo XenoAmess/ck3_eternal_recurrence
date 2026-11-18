@@ -14,9 +14,13 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 /** The current first-heir relation reads one genuine ROOT then binds that exact original to its one native leaf. */
 public final class RootFamilyRootBoundRead implements FamilyPorts.ProjectedSource {
     @FunctionalInterface public interface Arguments {Obj canonical(InteractionModels.Context actual,Obj rootBoundFlat);}
-    private final RootRuntimeContext context;private final RootInteractionContextProjection projection;private final RootFamilyCampaignRead root;
+    private final RootRuntimeContext context;private final RootFamilyInteractionContext projection;private final RootFamilyCampaignRead root;
     private final ReadContract<Obj> contract;private final Arguments arguments;
     public RootFamilyRootBoundRead(RootRuntimeContext actual,RootInteractionContextProjection sameProjection,RootFamilyCampaignRead sameRoot,
+            ReadContract<Obj> identicalRelationContract,Arguments actualCanonicalProducer) {
+        this(actual,RootFamilyInteractionContext.qualified(sameProjection),sameRoot,identicalRelationContract,actualCanonicalProducer);
+    }
+    public RootFamilyRootBoundRead(RootRuntimeContext actual,RootFamilyInteractionContext sameProjection,RootFamilyCampaignRead sameRoot,
             ReadContract<Obj> identicalRelationContract,Arguments actualCanonicalProducer) {
         context=Objects.requireNonNull(actual);projection=Objects.requireNonNull(sameProjection);root=Objects.requireNonNull(sameRoot);
         contract=Objects.requireNonNull(identicalRelationContract);arguments=Objects.requireNonNull(actualCanonicalProducer);
@@ -28,7 +32,7 @@ public final class RootFamilyRootBoundRead implements FamilyPorts.ProjectedSourc
         try {
             var same=context.borrowedSession();return context.collector().currentPlanning(same,original,original.deadline(),(request,lease)->{
                 StrictJson.require(context.readCatalog().containsIdentity(contract),"relation leaf is not the identical installed native read");
-                var actual=projection.project(lease.frame(),original.deadline());
+                return projection.projected(original,lease.frame(),flat,actual->{
                 var rootResult=root.current(same,new PlanningReadRequest(original.before(),original.source(),original.sessionId(),contract.operation(),flat,original.deadline()));
                 if(rootResult instanceof PlanningReadResult.Known<Obj> known) {
                     var basis=root.bind(known,actual);Obj canonical=arguments.canonical(actual,FamilyRootBinding.arguments(basis,flat));
@@ -37,6 +41,7 @@ public final class RootFamilyRootBoundRead implements FamilyPorts.ProjectedSourc
                 }
                 var unavailable=(PlanningReadResult.Unavailable<Obj>)rootResult;
                 return new FamilyPorts.ProjectedRead(new Obj(Map.of()),new PlanningReadResult.Unavailable<>(unavailable.reason(),unavailable.original()));
+                });
             });
         } catch(IOException failure) {throw new UncheckedIOException("actual ROOT-bound current relation unavailable",failure);}
     }

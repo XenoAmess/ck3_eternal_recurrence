@@ -7,10 +7,13 @@ namespace xar::ck3_1210 {
 
 inline constexpr char kPersonalCashCapabilityV1[] =
     "game.query.war-cash-current-resources.v1";
+inline constexpr char kPersonalCashCapabilityV2[] =
+    "game.query.war-cash-current-resources.v2";
 
 // Owned by the synchronous bridge query until its existing Actor MQ ticket
 // reaches a terminal state and is reclaimed. No address here is wire input.
 struct PersonalCashMailboxContextV1 {
+  PersonalCashScopeVersion scope_version = PersonalCashScopeVersion::legacy_nonnegative_v1;
   PersonalCashBindingsV1 bindings{};
   // The unwrapped native adapter, never the WorkerAdapter (which would queue
   // another MQ operation). The trusted bridge supplies this adapter identity.
@@ -35,6 +38,8 @@ bool ExecutePersonalCashOnActorOwnerV1(PersonalGoldMailboxContextV1 &parent,
 // Inner legacy result only. Bridge owns transport/request wrapping and the
 // Java receipt owns queried_* metadata. No roles/capabilities are granted.
 std::string SerializePersonalCashFrameResultV1(
+    const PersonalCashMailboxContextV1 &context);
+std::string SerializePersonalCashFrameResultV2(
     const PersonalCashMailboxContextV1 &context);
 
 } // namespace xar::ck3_1210

@@ -1,0 +1,31 @@
+# Internal bounded NoGame readers and strict DATA formatters only.
+# None of these targets installs a live producer or advertises a capability.
+if(NOT BUILD_TESTING)
+  return()
+endif()
+add_executable(xar_ck3_1210_battle_candidate_serializer_test
+  tests/ck3_1210_battle_candidate_serializer_v1_test.cpp src/ck3_1210_core.cpp)
+add_executable(xar_ck3_1210_siege_read_only_partial_test
+  src/ck3_1210_siege_read_only_partial_v1.cpp tests/ck3_1210_siege_read_only_partial_v1_test.cpp src/ck3_1210_core.cpp)
+add_executable(xar_ck3_1210_decision_candidates_test
+  src/ck3_1210_decision_candidates_v1.cpp src/ck3_1210_decision_candidates_v1_test.cpp src/ck3_1210_core.cpp)
+add_executable(xar_ck3_1210_character_manager_test
+  src/ck3_1210_character_manager_v1.cpp src/ck3_1210_character_manager_v1_focused_test.cpp src/ck3_1210_core.cpp)
+add_executable(xar_ck3_1210_character_manager_candidate_data_test
+  src/ck3_1210_character_manager_v1.cpp src/ck3_1210_character_manager_candidate_data_v1.cpp
+  src/ck3_1210_character_manager_candidate_data_v1_focused_test.cpp src/ck3_1210_core.cpp)
+foreach(_internal_target IN ITEMS xar_ck3_1210_battle_candidate_serializer_test
+    xar_ck3_1210_siege_read_only_partial_test xar_ck3_1210_decision_candidates_test
+    xar_ck3_1210_character_manager_test xar_ck3_1210_character_manager_candidate_data_test)
+  target_include_directories(${_internal_target} PRIVATE include src)
+  target_compile_features(${_internal_target} PRIVATE cxx_std_20)
+  target_compile_definitions(${_internal_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(${_internal_target} PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+endforeach()
+add_test(NAME xar_ck3_native_bridge_1210_battle_candidate_serializer COMMAND xar_ck3_1210_battle_candidate_serializer_test)
+add_test(NAME xar_ck3_native_bridge_1210_siege_read_only_partial COMMAND xar_ck3_1210_siege_read_only_partial_test)
+add_test(NAME xar_ck3_native_bridge_1210_decision_candidates COMMAND xar_ck3_1210_decision_candidates_test)
+add_test(NAME xar_ck3_native_bridge_1210_character_manager COMMAND xar_ck3_1210_character_manager_test)
+add_test(NAME xar_ck3_native_bridge_1210_character_manager_candidate_data COMMAND xar_ck3_1210_character_manager_candidate_data_test)
