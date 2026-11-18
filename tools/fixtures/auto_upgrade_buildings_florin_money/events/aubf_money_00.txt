@@ -1,6 +1,6 @@
 ﻿namespace = aubt
 
-aubt.0 = {
+aubt.900 = {
 	type = character_event
 	hidden = yes
 	immediate = {

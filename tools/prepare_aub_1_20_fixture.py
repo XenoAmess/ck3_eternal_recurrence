@@ -2,7 +2,9 @@
 from __future__ import annotations
 import argparse
 import json
+import re
 from pathlib import Path
+from extract_auto_upgrade_buildings import Block, parse_clausewitz
 from fixture_engine_prepare import checked_output, copy_files, engine_identity, finish_receipt, replace_once, required_markers, write_script
 
 OLD_MARKER = "AUBT: TEST PASS native_decision_priority_continue_selection"
@@ -20,6 +22,39 @@ aubt120_start = {
     }
 }
 '''
+
+def _validate_florin_event_ids(source: Path) -> None:
+    """Reject IDs that the current engine refuses before materializing a scene."""
+    pattern = re.compile(r"([A-Za-z_][A-Za-z_0-9]*)\.([0-9]+)")
+    definitions: set[str] = set()
+
+    def check_reference(block: Block) -> None:
+        for entry in block.entries:
+            if isinstance(entry.value, Block):
+                check_reference(entry.value)
+            elif entry.key == "id":
+                match = pattern.fullmatch(entry.value)
+                if match is not None and not 1 <= int(match[2]) < 10000:
+                    raise ValueError(f"Invalid Florin event ID: {entry.value}")
+
+    for path in sorted(source.rglob("*.txt")):
+        block = parse_clausewitz(path.read_text(encoding="utf-8-sig"))
+        check_reference(block)
+        if path.parent != source / "events":
+            continue
+        namespaces = [entry.value for entry in block.entries if entry.key == "namespace"]
+        if len(namespaces) != 1 or not isinstance(namespaces[0], str):
+            raise ValueError(f"Exactly one event namespace required: {path}")
+        for entry in block.entries:
+            if entry.key == "namespace":
+                continue
+            match = pattern.fullmatch(entry.key)
+            if match is None or match[1] != namespaces[0] or not 1 <= int(match[2]) < 10000:
+                raise ValueError(f"Invalid Florin event ID: {entry.key}")
+            if entry.key in definitions:
+                raise ValueError(f"Duplicate Florin event ID: {entry.key}")
+            definitions.add(entry.key)
+
 
 def _prepare_florin_scene(repo: Path, output: Path, *, fixture: str, contract: str,
                           case_id: str, mode: str, entry: str, advance: str) -> Path:
@@ -44,6 +79,7 @@ def _prepare_florin_scene(repo: Path, output: Path, *, fixture: str, contract: s
         raise ValueError("Florin scene markers must be unique")
     if not files or any(path.suffix not in {".mod", ".txt", ".yml"} for path in files):
         raise ValueError("Florin fixture must contain only declared text assets")
+    _validate_florin_event_ids(source)
     for path in files:
         if path.suffix == ".mod":
             copy_files(source, output, [path])
@@ -73,7 +109,7 @@ def prepare_money(repo: Path, output: Path) -> Path:
     return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_money",
         contract="aub_florin_money.json", case_id="money-domain-1210",
         mode="florin-original-money-domain-matrix",
-        entry="Actual production enable UI with treasury-first/continue -> isolated fixture start decision -> original aubt.0..6 money/domain events",
+        entry="Actual production enable UI with treasury-first/continue -> isolated fixture start decision -> aubt.900 (original aubt.0) -> original aubt.1..6 money/domain events",
         advance="Keep paused for actual production selection and fixture start; then at most180natural days. Stop on failure, interruption, or exact DONE; no manual Save.")
 
 

@@ -18,6 +18,6 @@ aubf_begin_money_domain = {
 	}
 	effect = {
 		add_character_flag = aubf_money_running
-		trigger_event = { id = aubt.0 }
+		trigger_event = { id = aubt.900 }
 	}
 }

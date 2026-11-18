@@ -192,6 +192,27 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
                 self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
             self.assertIn("Original quota/main/special/tribal/Mandala/negative-gate/succession", receipt["scope"])
 
+    def test_florin_money_rejects_invalid_event_ids_before_writes(self) -> None:
+        for invalid in ("aubt.0", "aubt.10000"):
+            for target in ("events/aubf_money_00.txt", "common/decisions/aubf_money_decisions.txt"):
+                with self.subTest(invalid=invalid, target=target), tempfile.TemporaryDirectory() as temporary, \
+                        patch.object(prep, "engine_identity", return_value=self.identity()), \
+                        patch.object(aub, "engine_identity", return_value=self.identity()):
+                    base = Path(temporary)
+                    repo = base / "repo"
+                    relative = Path("tools/fixtures/auto_upgrade_buildings_florin_money")
+                    shutil.copytree(REPO / relative, repo / relative)
+                    contracts = repo / "tools/ck3_mod_acceptance_cases"
+                    contracts.mkdir(parents=True)
+                    shutil.copyfile(REPO / "tools/ck3_mod_acceptance_cases/aub_florin_money.json", contracts / "aub_florin_money.json")
+                    path = repo / relative / target
+                    path.write_text(path.read_text(encoding="utf-8-sig").replace("aubt.900", invalid), encoding="utf-8-sig")
+                    output = base / "output"
+                    with self.assertRaisesRegex(ValueError, "Invalid Florin event ID"):
+                        aub.prepare_money(repo, output)
+                    self.assertFalse(output.exists())
+                    self.assertFalse(output.with_suffix(".prepare.json").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

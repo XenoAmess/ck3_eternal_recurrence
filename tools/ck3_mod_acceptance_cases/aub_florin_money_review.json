@@ -24,7 +24,8 @@
   ],
   "mapping": {
     "barracks_01..05": "castle_garrison_1..5",
-    "old250_split150_each": "current_tier2_cost /2 +1 each"
+    "old250_split150_each": "current_tier2_cost /2 +1 each",
+    "aubt.0": "aubt.900 (Florin rejects numeric event ID zero)"
   },
   "preserved_markers": [
     "AUBT: TEST PASS native_decision_priority_continue_selection",

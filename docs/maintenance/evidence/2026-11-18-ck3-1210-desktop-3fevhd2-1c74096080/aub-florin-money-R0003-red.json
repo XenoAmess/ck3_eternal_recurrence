@@ -1,0 +1,173 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-18T23:27:13.577157+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0003",
+  "case": "money-domain-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "RED_INVALID_FIXTURE_EVENT_ZERO_AND_TIMEOUT",
+  "source_head": "49fbbd373ec0c27ca74f315f8138ec13bf84a830",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-gui-prepare\\prepared-case.json",
+    "bytes": 1587782,
+    "sha256": "33a62bc6de4dd031275acc14597b5947c3ca32c9b8febf5ef809b509e548d127"
+  },
+  "facts": {
+    "actual_production_six_choices_and_default_selection": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-3eb88e1074b4474fa395c2e544c7a7d6\\profile\\logs\\debug.log",
+          "bytes": 1182558,
+          "sha256": "7f7ced696e1f3b2054033c7c0b9657cd66d8c03d58267cf8c2431d2b4732fffd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-3eb88e1074b4474fa395c2e544c7a7d6\\profile\\logs\\error.log",
+          "bytes": 170,
+          "sha256": "c7586a348f1769e1d1cd6f6be0d55583ff421f0113d58f280e9b0a389f4d8fd5"
+        }
+      ]
+    },
+    "original_seventeen_money_domain_assertions_and_no_errors": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-3eb88e1074b4474fa395c2e544c7a7d6\\profile\\logs\\debug.log",
+          "bytes": 1182558,
+          "sha256": "7f7ced696e1f3b2054033c7c0b9657cd66d8c03d58267cf8c2431d2b4732fffd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-3eb88e1074b4474fa395c2e544c7a7d6\\profile\\logs\\error.log",
+          "bytes": 170,
+          "sha256": "c7586a348f1769e1d1cd6f6be0d55583ff421f0113d58f280e9b0a389f4d8fd5"
+        }
+      ]
+    },
+    "actual_calendar_and_normal_exit": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-3eb88e1074b4474fa395c2e544c7a7d6\\profile\\logs\\debug.log",
+          "bytes": 1182558,
+          "sha256": "7f7ced696e1f3b2054033c7c0b9657cd66d8c03d58267cf8c2431d2b4732fffd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-3eb88e1074b4474fa395c2e544c7a7d6\\profile\\logs\\error.log",
+          "bytes": 170,
+          "sha256": "c7586a348f1769e1d1cd6f6be0d55583ff421f0113d58f280e9b0a389f4d8fd5"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBF: READY money_domain_actual_production_decision": 1,
+    "AUBT: TEST BEGIN source-live": 0,
+    "AUBT: TEST PASS native_decision_priority_continue_selection": 0,
+    "AUBT: TEST PASS domain_limit_normalized_zero": 0,
+    "AUBT: TEST PASS treasury_priority_one_tier": 0,
+    "AUBT: TEST PASS domain_limit_zero_builds": 0,
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect": 0,
+    "AUBT: TEST PASS domain_limit_recovery_resumes": 0,
+    "AUBT: TEST PASS over_limit_continue_builds": 0,
+    "AUBT: TEST PASS legacy_no_pause_flag_continues": 0,
+    "AUBT: TEST PASS disabled_zero_side_effect": 0,
+    "AUBT: TEST PASS personal_gold_fallback": 0,
+    "AUBT: TEST PASS reenabled_loop_stopped_cleanly": 0,
+    "AUBT: TEST PASS insufficient_funds_no_change": 0,
+    "AUBT: TEST PASS treasury_only_uses_treasury": 0,
+    "AUBT: TEST PASS treasury_only_no_personal_fallback": 0,
+    "AUBT: TEST PASS personal_only_uses_personal": 0,
+    "AUBT: TEST PASS personal_only_no_treasury_fallback": 0,
+    "AUBT: TEST PASS priority_no_split_payment": 0,
+    "AUBF: TEST DONE money_domain": 0
+  },
+  "error_text": "[01:41:20][E][jomini_eventmanager.cpp:134]: '0' is not a valid event ID, can't be 0\n[01:41:49][E][jomini_eventmanager.cpp:134]: '0' is not a valid event ID, can't be 0\n",
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm01-close-owned-run.png",
+      "bytes": 938243,
+      "sha256": "0d1f3dd28f761e53a76130ab2a15280e463556f337e60289c8e62b7179f807b4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm01-quit-desktop.png.json",
+      "bytes": 1438,
+      "sha256": "7f7255e062e74debdf3032a3120f7817adb028e598baf3c1c8a6c76bc78dd1dc"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0003\\game-exit.json",
+      "bytes": 252,
+      "sha256": "267445df440b672cc40e39cecb573effaebadc091d39e9b84d73976b1f4222d5"
+    }
+  ],
+  "process_pass": false,
+  "game_exit": {
+    "at_utc": "2026-11-18T23:24:50.691836+00:00",
+    "pid": 8892,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": true,
+    "error": null,
+    "process_pass": false,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "window_close_request": {
+    "at_utc": "2026-11-18T18:40:51.381954+00:00",
+    "reason": "timeout",
+    "windows": [
+      459366
+    ],
+    "normal_gui_quit": false,
+    "business_pass": false
+  },
+  "actual_final_date": "1066-09-15",
+  "natural_days": 0,
+  "save_count": 0,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0003\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "3da6ae8055eb011acf13278199188482e57b30cde4480b17dbedea5e01ed9228"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0003\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "59defd5c7c2bca6c257b9ba5118ccb44008eb0ddbaf07d6d5f1fd012911b3a95"
+    }
+  ],
+  "failure_diagnosis": "Florin rejects numeric event ID zero: fixture defines and calls aubt.0. EXE Jomini diagnostic string at file offset84465608 supports exact observed error; definition/call to the two lines is an inference. Per-file namespace reuse and scope=none are supported by stock _events.info and current stock events. Production money branches were not entered.",
+  "timeout_fact": "Original runner requested title-bar close at2026-11-18T18:40:51.381954Z; operator later directly reviewed the actual unchecked autosave dialog and chose Exit to Desktop. Popen0 at2026-11-18T23:24:50.691836Z does not reverse the original process failure.",
+  "future_fix": {
+    "old_event": "aubt.0",
+    "new_event": "aubt.900",
+    "definition_and_decision_updated": true,
+    "original_seventeen_pass_conditions_unchanged": true,
+    "producer_validation": "Reject numeric0 or>=10000 in definitions and references before output writes; reject duplicate definition IDs and invalid per-file namespace.",
+    "software": [
+      {
+        "command": "tools/.venv/Scripts/python.exe -X utf8 -m unittest discover -s tools -p test_fixture_engine_prepare.py -v",
+        "returncode": 0,
+        "tests": 9,
+        "elapsed_seconds": 1.8192669
+      },
+      {
+        "command": "tools/.venv/Scripts/python.exe -X utf8 -m mypy --strict --follow-imports=skip tools/prepare_aub_1_20_fixture.py",
+        "returncode": 0,
+        "complete_source_files": 1,
+        "elapsed_seconds": 1.5914808
+      }
+    ],
+    "runtime_status": "NOT_RUN"
+  },
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "0e052968c4896d770c7480f858c6383dc3d5473730d6de81772f0df87008a252"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "retention_review_at_utc": "2026-12-18T23:24:50Z"
+}
