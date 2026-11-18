@@ -2,7 +2,15 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0011 收束后）
+## 当前状态（R0012 收束后）
+
+第十二场`R0012/a90`实际装载当前`71575e8f`的Q18 DLL，进入已归档1.21基线。首次关联只读请求在8秒期限排队超时并确认撤收，随后在同一owner实际完成新帧后取得`native:2/public3`与`native:3/public4`；角色31254、日期53144328、暂停状态均核实。GUI查询实际执行并在0.207秒返回`gui_global_tree_budget_exhausted`，没有控件或按钮效果。该错误目前还合并了深度、节点数、子指针读取、重复及环等失败，不能仅据名字认定节点数量超限。[本场真实原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0012.json)。
+
+本场首次实测新版公共队列的正常退出链：query取得Core上下文，一次confirm获得真实requested ACK，随后retained process observer独立确认同一PID/出生身份退出码0；managed session亦为Game0、Job0、treegone，Host原wait0。正常退出不代表业务通过：公共run仍为wait2/627.981849秒，case尚未完成且原自动关场报告进程已退出，两项错误保留。显式finish-hold后正常停止keeper，原keeper exit0；21:40:15Z CAS15314→15315释放资源。金融动作、新增日、金融SAVE仍为零，当前继续修控件定位及完整市场业务验收。
+
+同步远端后Q18在同一Native缓存实际重建受影响目标并通过，耗时100.631971秒；新DLL SHA256为`4892f522b6f5db9ad26c9ca992230b1f0e64d15a2e7b33976ba5a5c9bf78ada4`。受影响EXE的7次补充执行通过，耗时54.691909秒；相同字节的旧程序按原件另行复用。远端GUI磁盘身份改动涉及的9项检查及新helper完整strict通过，旧队列39项未重复执行；公共链消费绑定当前源码。原Q17与重放前提交身份保留历史，不将其重标为本场实际产物。
+
+## R0011 收束记录
 
 第十一场`R0011/a89`实际装载Q16后进入原存档，先后取得`native:2/public3`及`native:3/public4`的独立完整状态，日期53144328、角色31254、暂停；持久1024未复现。第一条GUI查询完成了Semantic前置读取，随后因固定许可表没有GUI执行器而返回unavailable，没有执行按钮。实际前后计数为3→4，不能把这一次Semantic完成记作GUI执行。[本场证据](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-r0011.json)。
 
