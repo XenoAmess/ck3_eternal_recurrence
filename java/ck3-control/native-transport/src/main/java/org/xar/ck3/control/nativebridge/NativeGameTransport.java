@@ -1177,6 +1177,38 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return retainReadOutcome(dispatch(id,NativeWire.execute(id,ActorResourceLeafV2.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
         }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
     }
+    /** Standalone War identity/score READ projected as partial Full DATA; no rich Full or world-control role is granted. */
+    public synchronized org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityPublicCodec.ProjectedRead
+            readActiveWarsIdentityProjection(Instant deadline)throws InterruptedException {
+        String id="war-identity-"+UUID.randomUUID().toString().replace("-","");
+        Instant until=readDeadline(Objects.requireNonNull(deadline));
+        DispatchOutcome original;
+        try {
+            awaitHello(until);verifyEndpoint();
+            var source=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+            if(!ExactCk3Build.CK3_1210.matches(NativeWire.text(source.get("expected_ck3_version")),hello.gameSha256())
+                    ||!hello.adapterId().equals(org.xar.ck3.control.contracts.semantic.FlorinWarIdentityCodec.ADAPTER)
+                    ||!hello.capabilities().contains(org.xar.ck3.control.contracts.semantic.FlorinWarIdentityCodec.CAPABILITY))
+                throw new IOException("standalone War identity requires exact Florin source and its advertised capability");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            original=retainReadOutcome(dispatch(id,NativeWire.execute(id,
+                    org.xar.ck3.control.contracts.semantic.FlorinWarIdentityCodec.STEP,BigInteger.ZERO,new byte[]{'{','}'}),until,()->{}));
+        }catch(IOException|RuntimeException invalid){
+            original=retainReadOutcome(zero(id,reason(invalid)));
+        }
+        if(original instanceof AckReceived ack)try {
+            var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("actual War identity ACK custody unavailable"));
+            custody.verify(ack);
+            if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)
+                    ||custody.writeEntered().observedAt().isBefore(helloObservedAt)
+                    ||custody.responseReceived().observedAt().isAfter(until))
+                throw new IOException("War identity crossed its original HELLO/session/connection/deadline");
+        }catch(IOException|RuntimeException invalid){
+            return new org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityPublicCodec.UnavailableRead(original,reason(invalid));
+        }
+        return org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityPublicCodec.projectPartialFull(original);
+    }
+
     public sealed interface FullClockRead permits FullClockReceived,FullClockReadUnavailable {
         NativeFreshSnapshotPort.Result original();
     }

@@ -1,0 +1,166 @@
+{
+  "schema": "xar.java.florin-war21-partial-data8-software-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "created_utc": "2026-11-18T16:21:44.253361+00:00",
+  "source_base": "555059db6890149325b0a75014015fab17aa13a9",
+  "scope": "Separate Florin signed32 WarFullId / Character identity and partial score DATA; preserve legacy War/Full/Cash positive domains; C++21 originals are not current ABI/Root/Full/action qualification",
+  "source_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/SOURCES01.json",
+    "bytes": 5848,
+    "sha256": "a7fbd525a51bb8ef2b13e7130c43776c4a512b431e305cb51afbde9c2bc3c9bc"
+  },
+  "production_TUs": 4,
+  "test_TUs": 2,
+  "actual_jobs": [
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/javac.exe",
+        "-J-XX:ActiveProcessorCount=1",
+        "-J-Xmx768m",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/javac01.args"
+      ],
+      "begin": "2026-11-18T16:20:34.664023+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-WAR-IDENTITY4M-OFFLINE-PERMIT53.json",
+      "NoGame": true,
+      "selected_methods": 8,
+      "owned_child_pid": 174192,
+      "exit_code": 0,
+      "timed_out": false,
+      "end": "2026-11-18T16:20:43.867911+00:00",
+      "seconds": 9.203887399984524
+    },
+    {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "argv": [
+        "C:/jdk-21/bin/java.exe",
+        "@D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/junit01.args"
+      ],
+      "begin": "2026-11-18T16:20:43.870018+00:00",
+      "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-WAR-IDENTITY4M-OFFLINE-PERMIT53.json",
+      "NoGame": true,
+      "selected_methods": 8,
+      "owned_child_pid": 166628,
+      "exit_code": 0,
+      "timed_out": false,
+      "end": "2026-11-18T16:20:45.529845+00:00",
+      "seconds": 1.6598384000826627
+    }
+  ],
+  "distinct_methods": [
+    {
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityDataTest",
+      "method": "sameActorSidePrimaryScoreAndEachRichGapAreMandatory()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityDataTest",
+      "method": "exactOriginalEnvelopeOutboundAndResultFeedOnlyThePartialFullDataEntry()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityDataTest",
+      "method": "identityTokensAndSourceTuplesRejectCoercionsAndReadNeverRepairsInput()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityDataTest",
+      "method": "actualCppReaderSerializerPacketsReachTheSameStrictPartialFullEntry()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.FlorinWarIdentityReceivedSourceTest",
+      "method": "missingCapabilityIsZeroDispatchAndLostAfterWriteReplyStaysUnknown()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityDataTest",
+      "method": "signedFullIdsOrderedDuplicatesObservedZeroAndCheckedDefenderSignRoundTrip()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.FlorinWarIdentityReceivedSourceTest",
+      "method": "allNineOriginalResultsPassThroughTheHeldReceiverWithoutBecomingFullOrControl()"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityDataTest",
+      "method": "unavailableScoresAndIdentityRetainOriginalNullValuesAndReasons()"
+    }
+  ],
+  "result": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "aborted": 0
+  },
+  "cpp21_manifest": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/war-frame21/ACTUAL-WAR-FRAME-PACKETS21.json",
+    "bytes": 2569,
+    "sha256": "3f19df6c1aeebc706fdc85650c98698502f1a1c92fc3891e8a21bf79fd1d94ce"
+  },
+  "checks": [
+    "All nine actual C++21 original packet bytes/SHA pinned and passed strict War identity/optional score decoder",
+    "New schema WarFullId retains complete signed32 values including -2080374784 and zero, only -1 absent; no alias to legacy positive domains",
+    "NativeCharacterId remains full signed32 and participant lists keep original order and duplicates",
+    "Observed zero score distinct from unknown; defender INT_MIN raw retained with unknown relative score and original overflow reason",
+    "All six rich domains remain named Unavailable; no targets/strength/budget/world-action facts invented",
+    "SDK software receiver preserves original C++ result token bytes, actual software outbound/ACK/custody/session/zero-revision profile",
+    "Missing cap remains zero-dispatch and after-write lost reply remains original Unknown, no retry",
+    "Current Cash/PreparedCleanup/Resource/Event/GUI NGT regions identical outside the added War read method"
+  ],
+  "scope_limits": [
+    "CPP21 old actual reader/serializer outputs do not qualify current C++ shared Context ABI or real live Game",
+    "New receiver correlates only its owned software ACK request_id; never asserts an actual Native21 outbound/IPC exchange",
+    "PartialFullData always completeSnapshot=false and completeActiveWarsQualified=false; no Core/Full or action role conversion",
+    "No Root installer, planner-receipt family, ordinary military actions, spending, current Source/Actor/Main/MQ or wholeSERVICE acceptance",
+    "LegacyWar/old Full/Cash positive ID domains untouched; no narrowing/full-id conversion",
+    "No Native targets or old qualified suites rerun, no genuine artifact copy/build",
+    "No user Game/GSV/Steam/window/process/SDK live/install/settings/mod/active-save operations"
+  ],
+  "artifacts": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/WAR-IDENTITY4M-OFFLINE-REQUEST01.json",
+      "bytes": 7125,
+      "sha256": "c19798ab70621058be145249ddf4a68c04ee5765694407f1e3535c6dd5d4b12f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/javac01.args",
+      "bytes": 31685,
+      "sha256": "a8934012b46ab9f418ef8ff84b6f18b2440a23a69ed542ff522775ef96ccd6d9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/junit01.args",
+      "bytes": 31122,
+      "sha256": "69c7df68619e3f131f59351e0b80bc38baf893f43d8fe0ce8a6af333ab76f789"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/javac01.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/javac01.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/junit01.stdout",
+      "bytes": 1392,
+      "sha256": "ea742d45fbeafb238608daa5c53cfb9b64c47c0d6674082450e3262175fd7f2e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/junit01.stderr",
+      "bytes": 235,
+      "sha256": "a09072dbe8451326590343215596068caff54e00cda8c10416065432897a5dee"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/junit-xml01/TEST-junit-jupiter.xml",
+      "bytes": 41505,
+      "sha256": "2aeec8b6f26cb3fe44aa739abf6a83fce91ff7daacd194408988b219dccd79c4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/junit-xml01/TEST-junit-platform-suite.xml",
+      "bytes": 36974,
+      "sha256": "a6a261f090a276375053b5dc7e912418ab685109d8e84622a8890371527f8b70"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-war-identity22/qualification01/junit-xml01/TEST-junit-vintage.xml",
+      "bytes": 36953,
+      "sha256": "0750cc6303257f55966b62f6c5bafcc79fbae777237ad276295d9b2bb9b438ca"
+    }
+  ]
+}
