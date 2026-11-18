@@ -13,6 +13,9 @@ xfm_issuer_promote_effect = {
                 scope:xfm_offer_promoter = {
                     set_variable = { name = xfm_ad_cooldown days = 7 }
                     set_variable = { name = xfm_ad_reached value = 0 }
+                    # Paid attention also lets the issuer revisit ordinary completion before offer expiry.
+                    set_variable = { name = xfm_attention_until_day value = { value = global_var:xfm_exchange.var:xfm_day add = 30 } }
+                    xfm_finance_enqueue_attention_effect = yes
                     var:xfm_selected_coin = { change_variable = { name = xfm_advertising_spent_cents add = 100 } }
                     every_close_family_member = {
                         limit = { is_alive = yes is_adult = yes scope:xfm_offer_promoter.var:xfm_ad_reached < 4 }
@@ -35,6 +38,8 @@ xfm_issuer_receive_ad_effect = {
         set_variable = { name = xfm_ad_recent days = 7 }
         set_variable = { name = xfm_promotion_attention_days value = 30 }
         set_variable = { name = xfm_promotion_end_day value = { value = global_var:xfm_exchange.var:xfm_day add = 30 } }
+        set_variable = { name = xfm_attention_until_day value = var:xfm_promotion_end_day }
+        xfm_finance_enqueue_attention_effect = yes
         clear_saved_scope = xfm_offer_ad_previous_coin
         if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { save_scope_as = xfm_offer_ad_previous_coin } }
         set_variable = { name = xfm_selected_coin value = scope:xfm_offer_promoter.var:xfm_selected_coin }

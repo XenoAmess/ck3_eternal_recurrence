@@ -1443,6 +1443,16 @@ class GameplayBridgeService:
                 return finite_reader()
         return self.driver.take_snapshot()
 
+    def take_fresh_full_snapshot_v1(self) -> dict[str, object]:
+        """Obtain one correlated paused Florin Full, without changing cached snapshot reads."""
+        read = getattr(self.driver, "take_fresh_full_snapshot_v1", None)
+        if not callable(read):
+            raise UnsupportedStepError("bridge driver does not implement fresh Full reads")
+        value = read()
+        if not isinstance(value, dict) or any(type(key) is not str for key in value):
+            raise ValueError("fresh Full reader must return a snapshot object with named fields")
+        return value
+
     def query_core_frame_v1(self) -> dict[str, object]:
         """Read a named partial core frame without refreshing world observation."""
         query = getattr(self.driver, "query_core_frame_v1", None)

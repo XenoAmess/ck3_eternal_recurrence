@@ -1,0 +1,5 @@
+﻿# CK3 max is an upper cap, min is a lower floor; operations apply in order.
+xfm_finance_attention_quota_value = { value = xfm_config_ai_budget_value divide = 4 floor = yes max = 64 }
+# Light: 640/32 = 20 days; default/dense: 1024/64 = 16 days, below the 30-day TTL.
+# Capacity applies to new admissions; changing presets does not reset/reseed saved queues.
+xfm_finance_attention_capacity_value = { value = xfm_finance_attention_quota_value multiply = 20 max = 1024 }

@@ -131,6 +131,9 @@ CORE_1210_CAPABILITIES: dict[str, Core1210CapabilityRule] = {
     "ck3_take_snapshot": Core1210CapabilityRule(
         _CORE_1210_NATIVE + ("src/ck3_1210_core_frame_v1.cpp", "src/ck3_1210_full_snapshot_v1.cpp", "src/ck3_1210_current_event_snapshot_v1.cpp"),
         _CORE_1210_SDK, _CORE_1210_FULL_FLAGS),
+    "ck3_take_fresh_full_snapshot_v1": Core1210CapabilityRule(
+        _CORE_1210_NATIVE + ("src/ck3_1210_core_frame_v1.cpp", "src/ck3_1210_full_snapshot_v1.cpp", "src/ck3_1210_current_event_snapshot_v1.cpp"),
+        _CORE_1210_SDK, _CORE_1210_FULL_FLAGS),
     "ck3_execute_step": _CORE_1210_CLOCK_RULE,
     "ck3_save_checkpoint": _CORE_1210_CLOCK_RULE,
     "ck3_query_current_event_window_context_v1": _CORE_1210_EVENT_RULE,

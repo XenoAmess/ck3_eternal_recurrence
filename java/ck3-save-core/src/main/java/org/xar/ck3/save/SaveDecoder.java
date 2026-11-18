@@ -34,6 +34,11 @@ public final class SaveDecoder {
         return inspect(save, decoder, selection, DecoderLimits.standard(), SaveDecoder::launch);
     }
     public static Decoded inspect(Pin savePin, Pin decoderPin, Selection selection, DecoderLimits limits, Launcher launcher) throws IOException {
+        return inspect(savePin, decoderPin, selection, limits, launcher, null, null);
+    }
+    public static Decoded inspect(Pin savePin, Pin decoderPin, Selection selection, DecoderLimits limits, Launcher launcher,
+                                  StreamingTable streaming, StreamingTableSink sink) throws IOException {
+        if ((streaming == null) != (sink == null)) throw new IllegalArgumentException("streaming table and sink must be supplied together");
         Objects.requireNonNull(selection); Objects.requireNonNull(limits); Objects.requireNonNull(launcher);
         Path save = Path.of(savePin.path()).toRealPath(); Path decoder = Path.of(decoderPin.path()).toRealPath();
         FilePins.verify(decoder, decoderPin);
@@ -52,7 +57,7 @@ public final class SaveDecoder {
             MessageDigest digest = FilePins.digest();
             try (LimitedInput bytes = new LimitedInput(new DigestInputStream(process.getInputStream(), digest), limits.maxStreamBytes())) {
                 SaveContracts.Projection projection = new SaveStream(new InputStreamReader(bytes,
-                        StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT)), selection).read();
+                        StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT)), selection, streaming, sink).read();
                 int code = process.waitFor(); drain.join(10000);
                 if (timedOut.get() || drain.isAlive() || drainFailure.get() != null || overflow.get()) throw new IOException("decoder timeout or incomplete stderr");
                 String stderr = diagnostic.toString(StandardCharsets.UTF_8);

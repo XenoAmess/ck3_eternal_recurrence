@@ -1261,6 +1261,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
     baseline = None
     baseline_frame = None
     initial_snapshot_available = False
+    initial_native_version = None
     state["startup_observations"] = []
     state["campaign_root_query_attempts"] = []
     cancelled_wait_frame = None
@@ -1270,6 +1271,14 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
         remaining = deadline - time.monotonic()
         if remaining <= 0:
             raise TimeoutError("saved campaign observation exceeded original readiness deadline")
+        if initial_native_version == "1.21.0":
+            if "ck3_take_fresh_full_snapshot_v1" not in client.tools:
+                raise RuntimeError("Florin saved readiness lacks the public fresh Full tool")
+            value = await asyncio.wait_for(client.call("ck3_take_fresh_full_snapshot_v1", {}), timeout=remaining)
+            if not isinstance(value, dict):
+                raise ValueError("Florin fresh Full tool did not return an actual snapshot object")
+            client.snapshot = value
+            return value
         return await asyncio.wait_for(client.fresh(), timeout=remaining)
 
     while True:
@@ -1290,6 +1299,7 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
                 if binding is not None and binding != observed_binding:
                     raise RuntimeError("saved campaign startup crossed its observed native process/connection")
                 binding = observed_binding
+                initial_native_version = observed["hello"]["expected_ck3_version"]
                 state["observed_process_binding"] = binding
             elif binding is not None:
                 raise RuntimeError("saved campaign native connection was lost after initial HELLO")

@@ -3014,6 +3014,13 @@ def create_server(
             expected_snapshot_id,
         )
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_take_fresh_full_snapshot_v1() -> dict[str, object]:
+        """Read one correlated paused Florin Full; an unresolved query is never replayed."""
+        return service.take_fresh_full_snapshot_v1()
+
+    _forbid_unknown_tool_arguments_v1(server, "ck3_take_fresh_full_snapshot_v1")
+
     @server.tool()
     def ck3_take_snapshot(
         include_native_command_history: bool = False,

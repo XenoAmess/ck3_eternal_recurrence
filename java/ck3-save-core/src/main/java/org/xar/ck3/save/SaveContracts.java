@@ -48,6 +48,39 @@ public final class SaveContracts {
             path = checkedPath(path);
         }
     }
+    /** Provisional streaming callbacks; callers publish only after full read/physical-pin validation succeeds. */
+    public interface StreamingTableSink {
+        void discriminator(NativeId id, String value) throws java.io.IOException;
+        void record(StreamedRecord record) throws java.io.IOException;
+    }
+    /** Separate streamed-work budget; existing retained-record/projection limits are unchanged. */
+    public record StreamingTable(List<String> path, String discriminatorField, List<NativeId> selectedIds,
+                                 int maxTableRecords, int maxRecordBytes, long maxStreamedBytes, boolean required) {
+        public StreamingTable {
+            path = checkedPath(path); selectedIds = List.copyOf(selectedIds);
+            if (discriminatorField == null || !discriminatorField.matches("[A-Za-z_][A-Za-z0-9_]{0,127}")
+                    || maxTableRecords < 1 || maxTableRecords > 200000 || selectedIds.size() > maxTableRecords
+                    || new HashSet<>(selectedIds).size() != selectedIds.size()
+                    || maxRecordBytes < 11 || maxRecordBytes > 512 * 1024
+                    || maxStreamedBytes < 11 || maxStreamedBytes > 64L * 1024 * 1024)
+                throw new IllegalArgumentException("explicit bounded streaming table required");
+        }
+    }
+    public record StreamedRecord(NativeId id, String discriminator, String canonicalTokenSha256,
+                                 int canonicalTokenBytes, Clausewitz.Block ast) {
+        public StreamedRecord {
+            Objects.requireNonNull(id); Objects.requireNonNull(discriminator); digest(canonicalTokenSha256);
+            Objects.requireNonNull(ast); if (canonicalTokenBytes < 11 || canonicalTokenBytes > 512 * 1024) throw new IllegalArgumentException("bounded record bytes required");
+        }
+    }
+    public record StreamingObservation(boolean tableSeen, int records, int selectedRecords, long streamedTokenBytes) {
+        public StreamingObservation {
+            if (records < 0 || records > 200000 || selectedRecords < 0 || selectedRecords > records
+                    || streamedTokenBytes < 0 || streamedTokenBytes > 64L * 1024 * 1024
+                    || !tableSeen && (records != 0 || selectedRecords != 0 || streamedTokenBytes != 0))
+                throw new IllegalArgumentException("bounded streaming observation required");
+        }
+    }
     public record Selection(List<TableSelection> tables, List<ProjectionSelection> projections, boolean metadataRequired,
                             boolean structureCensus, List<List<String>> structureRoots) {
         public Selection {

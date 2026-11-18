@@ -12,19 +12,10 @@ xfm_coin_daily_effect = {
         if = {
             limit = { var:xfm_listing_state = 0 }
             change_variable = { name = xfm_offer_age add = 1 }
-            if = { limit = { var:xfm_offer_age >= 30 NOT = { has_variable = xfm_offer_closing_started } } xfm_issuer_refund_effect = yes }
-            if = {
-                limit = { has_variable = xfm_offer_closing_started exists = var:xfm_controller var:xfm_controller = { is_alive = yes is_adult = yes } }
-                save_scope_as = xfm_offer_retry_coin
-                var:xfm_controller = {
-                    clear_saved_scope = xfm_offer_retry_previous_coin
-                    if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { save_scope_as = xfm_offer_retry_previous_coin } }
-                    set_variable = { name = xfm_selected_coin value = scope:xfm_offer_retry_coin }
-                    xfm_issuer_complete_offer_effect = yes
-                    if = { limit = { exists = scope:xfm_offer_retry_previous_coin } set_variable = { name = xfm_selected_coin value = scope:xfm_offer_retry_previous_coin } }
-                    else = { remove_variable = xfm_selected_coin }
-                }
-            }
+            # An AI's fully paid offer must not expire while its controller waits for the long ring.
+            # Reuse ordinary eligibility/closing; incomplete offers and players keep their original choices.
+            xfm_issuer_revisit_offer_effect = yes
+            if = { limit = { var:xfm_listing_state = 0 var:xfm_offer_age >= 30 NOT = { has_variable = xfm_offer_closing_started } } xfm_issuer_refund_effect = yes }
         }
     }
 }
@@ -39,7 +30,7 @@ xfm_coin_ai_effect = {
             if = { limit = { xfm_issuer_can_complete_trigger = yes } xfm_issuer_complete_offer_effect = yes }
         }
         else_if = {
-            limit = { xfm_config_ai_issuance_open_trigger = yes NOT = { has_variable = xfm_issue_cooldown } OR = { NOT = { has_variable = xfm_personal_coin } var:xfm_personal_coin = { var:xfm_listing_state = 7 } } OR = { NOT = { has_variable = xfm_inherited_personal_coin } var:xfm_inherited_personal_coin = { var:xfm_listing_state = 7 } } gold >= 8 }
+            limit = { xfm_config_ai_issuance_open_trigger = yes NOT = { has_variable = xfm_issue_cooldown } OR = { NOT = { has_variable = xfm_personal_coin } var:xfm_personal_coin = { var:xfm_listing_state = 7 } } OR = { NOT = { has_variable = xfm_inherited_personal_coin } var:xfm_inherited_personal_coin = { var:xfm_listing_state = 7 } } xfm_issuer_ai_liquid_cents_value >= 800 }
             random = {
                 chance = 1
                 set_variable = { name = xfm_requested_entity_type value = 1 }
@@ -52,18 +43,22 @@ xfm_coin_ai_effect = {
                     1 = { trigger = { is_landed = yes } set_variable = { name = xfm_requested_entity_type value = 4 } }
                     1 = { trigger = { exists = faith.religious_head faith.religious_head = this } set_variable = { name = xfm_requested_entity_type value = 5 } }
                 }
-                if = { limit = { gold >= 100 } set_variable = { name = xfm_requested_funding value = 200 } xfm_issuer_register_standard_effect = yes }
+                if = { limit = { xfm_issuer_ai_liquid_cents_value >= 17100 } set_variable = { name = xfm_requested_funding value = 200 } xfm_issuer_register_standard_effect = yes }
                 else = { set_variable = { name = xfm_requested_funding value = 20 } xfm_issuer_register_micro_effect = yes }
-                if = { limit = { var:xfm_issuer_result = 1 } xfm_issuer_promote_effect = yes }
+                if = {
+                    limit = { var:xfm_issuer_result = 1 }
+                    # Registration succeeded; self-funding may fail without cancelling paid promotion.
+                    xfm_issuer_ai_self_subscribe_effect = yes
+                    xfm_issuer_promote_effect = yes
+                }
             }
         }
         if = {
-            limit = { exists = var:xfm_promoted_coin var:xfm_promoted_coin = { var:xfm_listing_state = 0 } gold >= 2 }
+            limit = { exists = var:xfm_promoted_coin var:xfm_promoted_coin = { var:xfm_listing_state = 0 } has_variable = xfm_promotion_end_day var:xfm_promotion_end_day > global_var:xfm_exchange.var:xfm_day xfm_issuer_ai_liquid_cents_value > 500 }
             random = {
                 chance = 25
                 set_variable = { name = xfm_selected_coin value = var:xfm_promoted_coin }
-                set_variable = { name = xfm_subscription_gold value = 2 }
-                xfm_issuer_subscribe_effect = yes
+                xfm_issuer_ai_ad_subscribe_effect = yes
             }
         }
     }

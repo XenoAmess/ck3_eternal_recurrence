@@ -1,0 +1,192 @@
+package org.xar.ck3.markets.saveaudit;
+
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HexFormat;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.zip.CRC32;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import org.xar.ck3.markets.saveaudit.FinancialSnapshot.Issue;
+import org.xar.ck3.markets.saveaudit.FinancialSnapshot.Story;
+import org.xar.ck3.markets.saveaudit.FinancialSnapshot.Type;
+import org.xar.ck3.save.FilePins;
+import org.xar.ck3.save.SaveContracts;
+import org.xar.ck3.save.SaveContracts.*;
+import org.xar.ck3.save.SaveDecoder;
+import org.xar.ck3.save.SaveStream;
+
+/** Two complete shared-parser passes; only selected per-record ASTs exist transiently. */
+public final class FinancialSaveReader {
+    private static final long STREAM_LIMIT = 512L * 1024 * 1024;
+    private FinancialSaveReader() { }
+    public enum Container { PLAIN_TEXT, ZIP_GAMESTATE, SHARED_DECODER }
+    public record Budgets(int maxTableRecords, int maxFinancialRecords, int maxRecordBytes,
+                          long maxStreamedBytes, int maxProjectedFields) {
+        public Budgets {
+            if (maxTableRecords < 1 || maxTableRecords > 200000 || maxFinancialRecords < 1 || maxFinancialRecords > 65536
+                    || maxFinancialRecords > maxTableRecords || maxRecordBytes < 11 || maxRecordBytes > 512 * 1024
+                    || maxStreamedBytes < 11 || maxStreamedBytes > 64L * 1024 * 1024
+                    || maxProjectedFields < 1 || maxProjectedFields > 1000000) throw new IllegalArgumentException("bounded financial streaming budgets required");
+        }
+        public static Budgets standard() { return new Budgets(200000, 65536, 512 * 1024, 64L * 1024 * 1024, 1000000); }
+    }
+    public record StreamingCoverage(int passes, String completeStreamSha256, String completeStreamBytes,
+                                    int tableRecords, int selectedFinancialRecords, long streamedFinancialTokenBytes,
+                                    int projectedFields, Budgets budgets) { }
+    public record Readback(String machineId, String observedAtUtc, Pin save, Container container,
+                           Projection projection, List<Story> financialStories, List<Issue> financialIssues,
+                           StreamingCoverage coverage, boolean inputUnchanged, boolean sourceLayoutQualified) {
+        public Readback {
+            if (machineId == null || !machineId.matches("[a-z0-9][a-z0-9-]{2,95}")) throw new IllegalArgumentException("explicit machine identity required");
+            Instant.parse(observedAtUtc); Objects.requireNonNull(save); Objects.requireNonNull(container);
+            Objects.requireNonNull(projection); Objects.requireNonNull(coverage);
+            financialStories = List.copyOf(financialStories); financialIssues = List.copyOf(financialIssues);
+            if (!inputUnchanged || sourceLayoutQualified) throw new IllegalArgumentException("candidate is unchanged-input readback, never layout qualification");
+        }
+    }
+    private record Pass(Projection projection, StreamingObservation observation, String sha256, long bytes, Container container) { }
+
+    /** Retained metadata/globals keep original shared limits; stories are not a whole-block projection. */
+    public static Selection selection() {
+        return new Selection(List.of(), List.of(new ProjectionSelection("globals", ProjectionKind.GLOBAL_VARIABLES,
+                List.of("variables"), 1, 512 * 1024, true)), true, false, List.of());
+    }
+    public static Readback read(Path input, String machineId, FinancialProjector.LayoutHypothesis layout) throws IOException {
+        return read(input, machineId, layout, Budgets.standard());
+    }
+    public static Readback read(Path input, String machineId, FinancialProjector.LayoutHypothesis layout, Budgets budgets) throws IOException {
+        Pin pin = FilePins.pin(input);
+        return readTwoPasses(pin, machineId, layout, budgets, (table, sink) -> pass(pin, table, sink));
+    }
+    public static Readback readDecoded(Pin input, Pin decoder, String machineId, FinancialProjector.LayoutHypothesis layout) throws IOException {
+        return readTwoPasses(input, machineId, layout, Budgets.standard(), (table, sink) -> {
+            TrackingSink tracking = new TrackingSink(sink);
+            Decoded decoded = SaveDecoder.inspect(input, decoder, selection(), DecoderLimits.standard(), SaveDecoder::launch, table, tracking);
+            return new Pass(decoded.projection(), tracking.observation(), decoded.streamSha256(), Long.parseLong(decoded.streamBytes()), Container.SHARED_DECODER);
+        });
+    }
+    @FunctionalInterface private interface PassReader { Pass read(StreamingTable table, StreamingTableSink sink) throws IOException; }
+    private static Readback readTwoPasses(Pin pin, String machineId, FinancialProjector.LayoutHypothesis layout,
+                                          Budgets budgets, PassReader reader) throws IOException {
+        Map<NativeId, String> selected = new LinkedHashMap<>();
+        StreamingTableSink census = new StreamingTableSink() {
+            @Override public void discriminator(NativeId id, String rawType) throws IOException {
+                String type = normalizedType(rawType);
+                if (isFinancial(type)) {
+                    if (selected.size() >= budgets.maxFinancialRecords()) throw new IOException("financial record count budget exceeded");
+                    selected.put(id, type);
+                }
+            }
+            @Override public void record(StreamedRecord ignored) throws IOException { throw new IOException("census pass must not retain records"); }
+        };
+        Pass first = reader.read(table(List.of(), budgets), census);
+        FilePins.verify(Path.of(pin.path()), pin);
+        ProjectionSink projected = new ProjectionSink(selected, layout, budgets);
+        Pass second = reader.read(table(List.copyOf(selected.keySet()), budgets), projected);
+        if (first.container() != second.container() || first.bytes() != second.bytes() || !first.sha256().equals(second.sha256())
+                || first.observation().records() != second.observation().records()
+                || second.observation().selectedRecords() != selected.size()) throw new IOException("save stream/selection changed between complete passes");
+        FilePins.verify(Path.of(pin.path()), pin);
+        StreamingCoverage coverage = new StreamingCoverage(2, second.sha256(), Long.toString(second.bytes()), second.observation().records(),
+                second.observation().selectedRecords(), second.observation().streamedTokenBytes(), projected.fields, budgets);
+        return new Readback(machineId, Instant.now().toString(), pin, second.container(), second.projection(), projected.stories,
+                projected.issues, coverage, true, false);
+    }
+    private static StreamingTable table(List<NativeId> selected, Budgets budgets) {
+        return new StreamingTable(List.of("stories", "active"), "story_cycle", selected, budgets.maxTableRecords(),
+                budgets.maxRecordBytes(), budgets.maxStreamedBytes(), true);
+    }
+    private static final class ProjectionSink implements StreamingTableSink {
+        private final Map<NativeId, String> selected;
+        private final FinancialProjector.LayoutHypothesis layout;
+        private final Budgets budgets;
+        private final List<Story> stories = new ArrayList<>();
+        private final List<Issue> issues = new ArrayList<>();
+        private int fields;
+        ProjectionSink(Map<NativeId, String> selected, FinancialProjector.LayoutHypothesis layout, Budgets budgets) {
+            this.selected = Map.copyOf(selected); this.layout = layout; this.budgets = budgets;
+        }
+        @Override public void discriminator(NativeId id, String rawType) throws IOException {
+            String actual = normalizedType(rawType), expected = selected.get(id);
+            if (expected != null ? !expected.equals(actual) : isFinancial(actual)) throw new IOException("financial discriminator changed between passes");
+        }
+        @Override public void record(StreamedRecord record) throws IOException {
+            if (!Objects.equals(selected.get(record.id()), normalizedType(record.discriminator()))) throw new IOException("unexpected selected financial record");
+            FinancialProjector.RecordProjection projected;
+            try { projected = FinancialProjector.projectRecord(record.id(), record.ast(), layout); }
+            catch (IllegalArgumentException malformed) { throw new IOException("unrecognized financial record " + record.id().value(), malformed); }
+            fields = Math.addExact(fields, projected.issues().size() + projected.story().map(s -> s.numbers().size() + s.references().size() + 3).orElse(0));
+            if (fields > budgets.maxProjectedFields()) throw new IOException("projected financial field/issue budget exceeded");
+            projected.story().ifPresent(stories::add); issues.addAll(projected.issues());
+        }
+    }
+    private static boolean isFinancial(String type) {
+        return Type.fromWire(type).isPresent() || type.startsWith("xfm_finance_") || type.startsWith("xfm_futures_") || type.startsWith("xfm_debt_claim");
+    }
+    private static String normalizedType(String raw) throws IOException {
+        try { return FinancialProjector.unquote(raw); }
+        catch (IllegalArgumentException malformed) { throw new IOException("unrecognized story discriminator", malformed); }
+    }
+    private static Pass pass(Pin pin, StreamingTable table, StreamingTableSink sink) throws IOException {
+        Path path = Path.of(pin.path());
+        byte[] signature;
+        try (InputStream input = Files.newInputStream(path)) { signature = input.readNBytes(4); }
+        boolean zipSignature = signature.length == 4 && signature[0] == 'P' && signature[1] == 'K';
+        ZipFile opened = null;
+        try { opened = new ZipFile(path.toFile(), StandardCharsets.UTF_8); }
+        catch (ZipException notZip) { if (zipSignature) throw new IOException("malformed ZIP container", notZip); }
+        if (opened != null) {
+            try (ZipFile archive = opened) {
+                List<? extends ZipEntry> entries = archive.stream().filter(e -> e.getName().equals("gamestate")).toList();
+                if (entries.size() != 1 || entries.getFirst().isDirectory()) throw new IOException("exactly one gamestate entry required");
+                ZipEntry state = entries.getFirst();
+                if (state.getSize() < 0 || state.getSize() > STREAM_LIMIT || state.getCrc() < 0) throw new IOException("unknown or oversized gamestate entry");
+                try (BoundedStream stream = new BoundedStream(archive.getInputStream(state)); Reader reader = utf8(stream)) {
+                    SaveStream selector = new SaveStream(reader, selection(), table, sink);
+                    Projection projection = selector.read();
+                    if (stream.count != state.getSize() || stream.crc.getValue() != state.getCrc()) throw new IOException("gamestate size/CRC mismatch");
+                    return new Pass(projection, selector.streamingObservation(), stream.sha256(), stream.count, Container.ZIP_GAMESTATE);
+                }
+            }
+        }
+        try (BoundedStream stream = new BoundedStream(Files.newInputStream(path)); Reader reader = utf8(stream)) {
+            SaveStream selector = new SaveStream(reader, selection(), table, sink);
+            Projection projection = selector.read();
+            return new Pass(projection, selector.streamingObservation(), stream.sha256(), stream.count, Container.PLAIN_TEXT);
+        }
+    }
+    private static Reader utf8(InputStream stream) {
+        return new InputStreamReader(stream, StandardCharsets.UTF_8.newDecoder()
+                .onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT));
+    }
+    private static final class TrackingSink implements StreamingTableSink {
+        private final StreamingTableSink delegate; private int records; private int selected; private long bytes;
+        TrackingSink(StreamingTableSink delegate) { this.delegate = delegate; }
+        @Override public void discriminator(NativeId id, String value) throws IOException { records++; delegate.discriminator(id, value); }
+        @Override public void record(StreamedRecord record) throws IOException { selected++; bytes += record.canonicalTokenBytes(); delegate.record(record); }
+        StreamingObservation observation() { return new StreamingObservation(true, records, selected, bytes); }
+    }
+    private static final class BoundedStream extends FilterInputStream {
+        private long count; private final CRC32 crc = new CRC32(); private final MessageDigest digest = FilePins.digest();
+        BoundedStream(InputStream stream) { super(stream); }
+        @Override public int read() throws IOException { int value = in.read(); if (value >= 0) { add(1); crc.update(value); digest.update((byte) value); } return value; }
+        @Override public int read(byte[] bytes, int offset, int length) throws IOException { int read = in.read(bytes, offset, length); if (read > 0) { add(read); crc.update(bytes, offset, read); digest.update(bytes, offset, read); } return read; }
+        private void add(int length) throws IOException { count = Math.addExact(count, length); if (count > STREAM_LIMIT) throw new IOException("gamestate decompression/output limit exceeded"); }
+        String sha256() { return HexFormat.of().formatHex(digest.digest()); }
+    }
+}

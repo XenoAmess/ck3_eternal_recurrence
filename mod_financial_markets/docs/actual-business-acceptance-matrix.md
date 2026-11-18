@@ -1,6 +1,6 @@
 # 独立业务验收矩阵与只读观察扩展
 
-2026-11-18。六份后续 case 的公共注册与 Java 观察 profile 已采用，完整金融工具 143 项测试通过；当前状态为 `SOURCE_ADOPTED_SOFTWARE_PROFILE_NO_GAME_CREDIT / NOT_RUN`。软件生成与注册不证明任何游戏业务通过。`core` 仍只覆盖付费发行与现货子场；每个后续 case 必须生成自己的 manifest 和严格输入，不能借用 core 的五个标记。实际准备、场次、资金读回和物理保存仍分别验收。
+2026-11-18。六份后续 case 的公共注册与 Java 观察 profile 已采用；AI与SAVE审计接线后的完整金融工具160项通过。第三场实际载入旧档并获得精确1.21 Full，但暂停缓存使原两帧启动验收超时，业务动作/游戏日/SAVE为零。当前仍为`SOURCE_ADOPTED_SOFTWARE_PROFILE_NO_BUSINESS_CREDIT`，新fresh通道尚待下一场实际采用。`core`只覆盖付费发行与现货子场；每个后续case必须生成自己的manifest和严格输入，不能借用core的五个标记。实际准备、场次、资金读回和物理保存分别验收。
 
 ## 分组与有限预算
 
@@ -66,7 +66,7 @@ Saved case 的 `required_startup=[]` 是有意安排：第一阶段 `at_day=0` �
 4. 观察器不能调用任何 `xfm_*_effect` 获得测试状态。对同一转账、手续费、债权和供应，用读回后的整数数据独立重算。生产trigger分支、源码包含某行、Java领域测试或观察器日志均不能单独授业务通过。
 5. 观察profile只证明其明确谓词。例如“仓位存在”不证明正常GUI下单，“余额非负”不证明守恒，“离世已记日志”不证明全部保护条件，“新闻条目存在”不证明原生气泡实际送达。Root必须消费实际GUI动作、native前后图、日志和物理SAVE，并保留UNKNOWN原动作，不重放。
 
-纯脚本观察目前不能可靠测出每日生产hook的净耗时，也不能从一天后剩余队列头证明当日每个候选只处理一次。若需这些结论，接入合格只读Native/profiler的实际callback与对象访问追踪，记录时间/角色/顺序，不改变生产决策。无该能力时保留 `UNMEASURED`，不要发明 `xfm_*processed_count` 或拿源码预算当实测。
+生产调度新增`xfm_ai_work_today/xfm_attention_work_today/xfm_ai_decisions_today`，分别累计两环实际出队尝试、关注尝试和进入三个消费者的角色数；还需实际存档读回确认。关注环的head/tail/count及角色next/queued/until_day、last_decision_day须冷载核对；计数不能单独证明每个角色的调用次序或资金效果。纯脚本不能可靠测出每日hook净耗时；需要合格只读Native/profiler的实际callback追踪，无能力时保留`UNMEASURED`，不把源码预算当实测。
 
 ## 原生算术必须有实际数值例
 

@@ -2,7 +2,17 @@
 
 2026-11-18，machine_id: 4-8e1c2f1861。
 
-## 当前状态（13:37 UTC 更新）
+## 当前状态（14:22 UTC 更新）
+
+第三场 `R0003/a81` 实际载入原存档，13:50:32Z 获得精确 1.21 Full：玩家31254、存活、地图就绪、暂停、日期53144328、金币255。暂停且语义不变时，普通 snapshot 持续返回同一 `native:1`，原启动守卫要求两份递增 Full，遂在原1800秒期限失败。公共 run 原 wait2/1805.433秒，Host原wait1；受管失败清理为CK3 exit1、Job0、tree gone，不能称正常退出。keeper原wait0后，14:16:03Z CAS `15224→15225` 释放。本场没有业务动作、游戏日或SAVE。
+
+已采用独立 `ck3_take_fresh_full_snapshot_v1`：复用原DLL的关联只读查询，核实际ACK、read_request_id、完整原包、递增revision及相同PID/连接。普通snapshot与运行中的推进观察不变。新10项组合含12种异常刺激通过，受影响Saved14及旧版2项另行通过；实际capability3项通过。金融七个saved case均声明此工具，未重编Native或伪造新帧。
+
+AI付费宣传关注队列和真实本金认购修复已采用，受同一个总日预算约束；满额AI发行在原注册币遍历及时完成，保留玩家手动完成及不同继承项目的pending。详见[AI运行合同](ai-attention-runtime.md)。原生产品现在有160个运行文件；真实自然募集、队列保存和交易仍待新场验证。
+
+14:20:42Z，采用共享流式SAVE审计及AI修复后的完整金融工具`mvn verify`实际wait0/34.793秒：160项通过、0skip，56个主源码和20个测试源码实际编译，Quarkus默认入口打包成功。此前共享save-core的10项通过并install。本轮SAVE两项JUnit复用52个合成断言，不能当真实存档认证；命名审计入口、真实1.21编码与冷载仍须实测。原件见`operations/MVN-save-core-audit01`及`operations/MVN-financial-ai-save-full01`。
+
+## 截至13:37 UTC的准备记录
 
 第二场 `R0002/a80` 已实际创建 CK3 并注入 Q05 DLL，连接实际返回精确 Florin HELLO。Saved startup 遗留的 `.4` 守卫立即拒绝新身份；后续 300 秒为 finally 的收尾 snapshot 等待，并非正常启动等待。原受管环境失败清理为 CK3 exit 1、Job 0、tree gone，不能计正常退出。keeper 与原 allocate wait 0 后，CAS `15207→15208` 实际释放；没有业务动作、游戏日或 SAVE 通过。完整因果及原件见[共同验收记录](../../docs/maintenance/2026-11-18-machine4-financial-acceptance-control.md)。
 

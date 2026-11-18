@@ -64,7 +64,7 @@ class Client:
             # Authored event-free software variant, preserving producer's signed actor.
             self.full['state'].update(active_event=None,pending_character_interaction=None)
         self.calls=[];self.frames=0;self.polls=0;self.wait_polls=wait_polls
-        self.tools={'ck3_query_core_frame_v1':{}}
+        self.tools={'ck3_query_core_frame_v1':{},'ck3_take_fresh_full_snapshot_v1':{}}
         self.core_error=None;self.full_error=None;self.change=None;self.core_calls=0
         self.republish=True
 
@@ -85,6 +85,7 @@ class Client:
 
     async def call(self,tool,args=None):
         self.calls.append((tool,copy.deepcopy(args)))
+        if tool=='ck3_take_fresh_full_snapshot_v1':return await self.fresh()
         if tool=='ck3_migration_pipe_diagnostics':
             self.polls+=1
             self.state.ingest(heartbeat(20271+self.polls))
@@ -117,7 +118,7 @@ class FlorinSavedReadinessTests(unittest.IsolatedAsyncioTestCase):
         client=Client();state=report()
         result=await self.wait(client,state=state)
         self.assertEqual(client.frames,2)
-        self.assertEqual([name for name,_ in client.calls],['ck3_migration_pipe_diagnostics'])
+        self.assertEqual([name for name,_ in client.calls],['ck3_migration_pipe_diagnostics','ck3_take_fresh_full_snapshot_v1','ck3_take_fresh_full_snapshot_v1'])
         bound=result['binding']
         self.assertEqual(bound['actor_character_id'],1)
         self.assertEqual(bound['native_revision'],11)

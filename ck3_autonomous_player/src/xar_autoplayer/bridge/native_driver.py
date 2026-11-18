@@ -2236,6 +2236,7 @@ class NativeHeadlessGameplayDriver:
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
+        self._florin_fresh_full_read_pending_v1: str | None = None
         self.endpoint.start(self._ingest, self._mark_bridge_disconnected_v1)
 
     def _invalidate_player_heir_provider_v1(self, reason: str) -> None:
@@ -3101,6 +3102,87 @@ class NativeHeadlessGameplayDriver:
             internal_semantic_snapshot=True,
             include_native_command_history=False,
         )
+
+    def take_fresh_full_snapshot_v1(self) -> dict[str, object]:
+        """Read one correlated paused Florin Full through the existing native pipe."""
+        from .version_identity import FlorinFullSource, florin_full_source
+
+        transport_error = self._transport_error()
+        if transport_error is not None:
+            raise BridgeUnavailableError(transport_error)
+
+        def source_of(snapshot: dict[str, object]) -> FlorinFullSource:
+            source = florin_full_source(snapshot, None)
+            diagnostics = snapshot.get("diagnostics")
+            hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+            if (not isinstance(diagnostics, dict) or diagnostics.get("connected") is not True
+                    or not isinstance(hello, dict) or type(hello.get("connection_generation")) is not int
+                    or hello.get("connection_generation") != source.connection_generation
+                    or not isinstance(hello.get("capabilities"), list)
+                    or "game.query.fresh-full-state.v1" not in hello["capabilities"]):
+                raise BridgeUnavailableError("fresh Full requires the same connected exact Florin HELLO and capability")
+            return source
+
+        # A cold connection must first receive an ordinary complete semantic
+        # frame. A Core observation never grants permission for this query.
+        before = self.state.semantic_snapshot(timeout_seconds=self.command_timeout_seconds)
+        try:
+            baseline = source_of(before)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        with self._driver_state_lock:
+            if self._florin_fresh_full_read_pending_v1 is not None:
+                raise BridgeUnavailableError("original fresh Full read remains unresolved; no automatic replay")
+            self._request_sequence += 1
+            request_id = f"fresh-full-{self._request_sequence}-{uuid.uuid4().hex[:12]}"
+            # Keep this original request latched on timeout, rejection or a
+            # mismatched packet. A later call must never silently resubmit it.
+            self._florin_fresh_full_read_pending_v1 = request_id
+        self.endpoint.send({"type": "execute_step", "protocol_version": PROTOCOL_VERSION,
+            "request_id": request_id, "step": "query-fresh-full-state-v1", "expected_revision": 0})
+        ack = self.state.wait_for_command_result(request_id, self.command_timeout_seconds)
+        if ack is None:
+            raise BridgeUnavailableError("original fresh Full command_result timed out; no automatic replay")
+        if (set(ack) != {"type", "protocol_version", "request_id", "ok", "result"}
+                or ack.get("type") != "command_result" or type(ack.get("protocol_version")) is not int
+                or ack.get("protocol_version") != PROTOCOL_VERSION or ack.get("request_id") != request_id
+                or ack.get("ok") is not True):
+            raise BridgeUnavailableError("native fresh Full did not return its exact successful ACK")
+        result = ack.get("result")
+        if (not isinstance(result, dict) or set(result) != {"schema", "request_id", "snapshot_id", "revision"}
+                or result.get("schema") != "xar.native.fresh-full-state-read/v1"
+                or result.get("request_id") != request_id or type(result.get("revision")) is not int
+                or not baseline.native_revision < result["revision"] < 2**64
+                or result.get("snapshot_id") != f"native:{result['revision']}"):
+            raise BridgeUnavailableError("native fresh Full ACK does not identify a later original publication")
+        raw = self.state.raw_transport_snapshot()
+        packet = raw.get("native_packet")
+        if (raw.get("semantic_packet_accepted") is not True or not isinstance(packet, dict)
+                or packet.get("type") != "state_snapshot" or type(packet.get("protocol_version")) is not int
+                or packet.get("protocol_version") != PROTOCOL_VERSION or packet.get("read_request_id") != request_id
+                or type(packet.get("revision")) is not int or packet.get("revision") != result["revision"]
+                or packet.get("snapshot_id") != result["snapshot_id"]):
+            raise BridgeUnavailableError("fresh Full ACK has no matching accepted original state_snapshot")
+        observed = self.state.semantic_snapshot()
+        try:
+            actual = source_of(observed)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        if (actual.game_pid != baseline.game_pid or actual.connection_generation != baseline.connection_generation
+                or actual.native_revision != result["revision"] or actual.snapshot_id != result["snapshot_id"]
+                or actual.public_revision <= baseline.public_revision
+                or type(raw.get("public_revision")) is not int or raw.get("public_revision") != actual.public_revision):
+            raise BridgeUnavailableError("fresh Full publication crossed its original connection or semantic observation")
+        snapshot = self._with_one_life_episode(observed)
+        self._observe_arrange_marriage_outcome(snapshot)
+        from .war_declaration_continuity_v1 import observe_declaration_attempt_v1, KEY
+        snapshot[KEY] = observe_declaration_attempt_v1(self, snapshot)
+        with self._driver_state_lock:
+            if self._florin_fresh_full_read_pending_v1 != request_id:
+                raise BridgeUnavailableError("fresh Full original request latch changed before completion")
+            self._florin_fresh_full_read_pending_v1 = None
+        return snapshot
+
 
     def take_internal_semantic_snapshot(self) -> dict[str, object]:
         """Read a runner-internal semantic frame without transcript evidence."""

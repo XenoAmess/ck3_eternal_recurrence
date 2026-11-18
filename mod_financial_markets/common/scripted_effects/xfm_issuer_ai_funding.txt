@@ -1,0 +1,68 @@
+﻿# Character scope. These are normal refundable paid subscriptions, never underwriting credits.
+xfm_issuer_ai_self_subscribe_effect = {
+    if = {
+        limit = { is_ai = yes xfm_issuer_controls_selected_trigger = yes exists = var:xfm_pending_offer var:xfm_selected_coin = var:xfm_pending_offer }
+        set_variable = { name = xfm_subscription_gold value = xfm_issuer_ai_self_gold_value }
+        xfm_issuer_subscribe_effect = yes
+    }
+}
+xfm_issuer_ai_ad_subscribe_effect = {
+    if = {
+        limit = {
+            is_ai = yes exists = var:xfm_promoted_coin var:xfm_selected_coin = var:xfm_promoted_coin
+            has_variable = xfm_promotion_end_day var:xfm_promotion_end_day > global_var:xfm_exchange.var:xfm_day
+            # Issuers use the explicit capped self-subscription once at registration.
+            var:xfm_selected_coin = { var:xfm_controller != prev }
+        }
+        set_variable = { name = xfm_subscription_gold value = xfm_issuer_ai_ad_gold_value }
+        xfm_issuer_subscribe_effect = yes
+    }
+}
+
+# Coin scope. Existing one-pass service handles real funded AI offers and prior partial closings.
+# This never makes an investment. Player offers still require their own initial completion action.
+xfm_issuer_revisit_offer_effect = {
+    if = {
+        limit = {
+            var:xfm_listing_state = 0 exists = var:xfm_controller
+            var:xfm_controller = { is_alive = yes is_adult = yes }
+            OR = {
+                has_variable = xfm_offer_closing_started
+                AND = {
+                    var:xfm_controller = { is_ai = yes }
+                    var:xfm_actual_raised_cents >= var:xfm_minimum_raised_cents
+                    var:xfm_external_raised_cents >= xfm_issuer_minimum_external_value
+                }
+            }
+        }
+        save_scope_as = xfm_offer_retry_coin
+        var:xfm_controller = {
+            clear_saved_scope = xfm_offer_retry_previous_coin
+            clear_saved_scope = xfm_offer_retry_previous_pending
+            if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { save_scope_as = xfm_offer_retry_previous_coin } }
+            # A controller may also have its own separate offer after inheriting this project.
+            # Public completion clears pending_offer; preserve only a different, still-owned live offer.
+            if = {
+                limit = {
+                    exists = var:xfm_pending_offer var:xfm_pending_offer != scope:xfm_offer_retry_coin
+                    var:xfm_pending_offer = { story_type = xfm_finance_coin var:xfm_listing_state = 0 var:xfm_controller = prev }
+                }
+                var:xfm_pending_offer = { save_scope_as = xfm_offer_retry_previous_pending }
+            }
+            set_variable = { name = xfm_selected_coin value = scope:xfm_offer_retry_coin }
+            if = { limit = { xfm_issuer_can_complete_trigger = yes } xfm_issuer_complete_offer_effect = yes }
+            if = {
+                limit = {
+                    exists = scope:xfm_offer_retry_previous_pending
+                    scope:xfm_offer_retry_previous_pending = { story_type = xfm_finance_coin var:xfm_listing_state = 0 var:xfm_controller = prev }
+                }
+                set_variable = { name = xfm_pending_offer value = scope:xfm_offer_retry_previous_pending }
+            }
+            if = { limit = { exists = scope:xfm_offer_retry_previous_coin } set_variable = { name = xfm_selected_coin value = scope:xfm_offer_retry_previous_coin } }
+            else = { remove_variable = xfm_selected_coin }
+            clear_saved_scope = xfm_offer_retry_previous_coin
+            clear_saved_scope = xfm_offer_retry_previous_pending
+        }
+        clear_saved_scope = xfm_offer_retry_coin
+    }
+}

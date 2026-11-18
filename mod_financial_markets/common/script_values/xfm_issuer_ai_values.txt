@@ -1,0 +1,31 @@
+﻿# Character scope. Only personal gold and usable legally owned PRIMARY private free cash count.
+# Reserved money, project/issuer accounts and inherited secondary accounts never count as funding.
+xfm_issuer_ai_liquid_cents_value = {
+    value = gold
+    multiply = 100
+    floor = yes
+    if = {
+        limit = {
+            exists = var:xfm_account
+            var:xfm_account = { xfm_finance_account_usable_trigger = yes var:xfm_system_account = 0 var:xfm_holder = prev }
+        }
+        add = var:xfm_account.var:xfm_free_cents
+    }
+    min = 0
+}
+xfm_issuer_ai_self_gold_value = {
+    value = xfm_issuer_ai_liquid_cents_value
+    subtract = 600 # 5 gold living reserve plus the 1 gold paid promotion fee.
+    min = 0
+    max = { value = var:xfm_selected_coin.var:xfm_minimum_raised_cents multiply = 4 divide = 5 floor = yes }
+    floor = yes
+    divide = 100
+}
+xfm_issuer_ai_ad_gold_value = {
+    value = xfm_issuer_ai_liquid_cents_value
+    subtract = 500 # Subscription decisions retain 5 gold of liquid personal assets.
+    min = 0
+    max = { value = var:xfm_selected_coin.var:xfm_minimum_raised_cents divide = 10 floor = yes }
+    floor = yes
+    divide = 100
+}

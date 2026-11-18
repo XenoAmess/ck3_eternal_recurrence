@@ -177,15 +177,18 @@ class Core1210CapabilityEvidence(unittest.TestCase):
                         self.native_files, self.sdk_files, flags)
 
     def test_flags_alone_do_not_qualify_uncompiled_native_or_unindexed_sdk(self) -> None:
-        tool = 'ck3_request_normal_exit_v1'
-        native = dict(self.native_files)
-        native.pop(builder.NATIVE_PREFIX + 'src/ck3_1210_application_exit_v1.cpp')
-        with self.assertRaisesRegex(ValueError, 'exact qualified production TU'):
-            builder.core_1210_source_evidence(tool, self.root, self.native, native, self.sdk_files, self.flags)
-        sdk = dict(self.sdk_files)
-        sdk.pop(builder.SDK_PREFIX + 'xar_autoplayer/bridge/normal_exit_map_driver_v1.py')
-        with self.assertRaisesRegex(ValueError, 'outside the exact source index'):
-            builder.core_1210_source_evidence(tool, self.root, self.native, self.native_files, sdk, self.flags)
+        for tool, native_leaf, sdk_leaf in (
+                ('ck3_request_normal_exit_v1', 'src/ck3_1210_application_exit_v1.cpp', 'normal_exit_map_driver_v1.py'),
+                ('ck3_take_fresh_full_snapshot_v1', 'src/ck3_1210_full_snapshot_v1.cpp', 'service.py')):
+            with self.subTest(tool=tool):
+                native = dict(self.native_files)
+                native.pop(builder.NATIVE_PREFIX + native_leaf)
+                with self.assertRaisesRegex(ValueError, 'exact qualified production TU'):
+                    builder.core_1210_source_evidence(tool, self.root, self.native, native, self.sdk_files, self.flags)
+                sdk = dict(self.sdk_files)
+                sdk.pop(builder.SDK_PREFIX + 'xar_autoplayer/bridge/' + sdk_leaf)
+                with self.assertRaisesRegex(ValueError, 'outside the exact source index'):
+                    builder.core_1210_source_evidence(tool, self.root, self.native, self.native_files, sdk, self.flags)
 
 
 class NonindexedJavaDeletion(unittest.TestCase):
@@ -945,6 +948,17 @@ class CapabilityRegistrationConsumer(unittest.TestCase):
         async def names():
             return {row.name for row in await create_server(builder.registration_driver(case)).list_tools()}
         return asyncio.run(names())
+
+    def test_financial_saved_cases_require_and_register_fresh_full_read(self) -> None:
+        catalog = json.loads((HERE / 'ck3_mod_acceptance_products.json').read_text(encoding='utf-8'))
+        cases = catalog['products']['financial-markets']['cases']
+        self.assertEqual([case['id'] for case in cases], ['core', 'derivatives', 'lifecycle', 'inheritance', 'cold-reload', 'news-crisis', 'ai-capacity'])
+        for case in cases:
+            with self.subTest(case=case['id']):
+                self.assertEqual(case['startup']['mode'], 'saved_campaign')
+                self.assertEqual(case['required_mcp_tools'].count('ck3_take_fresh_full_snapshot_v1'), 1)
+        required = set().union(*(set(case['required_mcp_tools']) for case in cases))
+        self.assertLessEqual(required, self.registered(cases[0]))
 
     def test_actual_factory_lists_all_first_four_32_tools(self):
         self.assertEqual(len(self.FIRST_FOUR['required_mcp_tools']), 32)

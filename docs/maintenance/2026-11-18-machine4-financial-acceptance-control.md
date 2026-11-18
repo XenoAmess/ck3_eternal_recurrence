@@ -101,3 +101,19 @@ Saved Florin 最小修复识别实际精确 HELLO，在原总启动期限内等�
 同根 Host 绑定实际暴露旧协议不兼容：两个 reader 假定 Q 含 `observed_at_utc`，而原 `ck3-qualified-native-build-v1` Q05 从未输出此字段。原拒绝保留。最小修复仅在该键缺失时读取 Q 已绑定的原 production-build 回执，核完整 pin、schema、机器/源码、严格原 wait 0、未停止及合法起止，取真实 build finish 作时间下界；不补造 Q 的完成时间。键存在而 null/格式错误仍拒绝，19 个 fixture 等完整 Native 资格保留原消费。
 
 受影响 9 项实际通过、0 skip，6.091 秒，包含缺字段协议的完整 producer→两个 reader→public qualifier 和旧路径；新 typed helper 的 strict 范围单独核对，不外推整个旧模块。原件 `runtime-prep/native-build-time-reader-actual02/RUN.actual.json`，3056 bytes、SHA-256 `1026db6f18047a985433e21fbe2d76700b7486b670d453e0599ef3256fc3f496`。首次 strict 缺 MYPYPATH 的失败保留；修复只指定本仓 tools 导入路径，未改业务断言。此轮无 Native 重编或 Game。
+
+## 第三场载入成功、暂停缓存等待失败与修复
+
+`R0003/a81` 使用实际干净`58bdc933acda6648b179621af344cf8ec13d4ea6`、runtime-core05、156文件core02产品和10文件core03观察包。13:44:31Z实际Steam离线。单次命令行载入创建CK3 PID1140（13:45:02.393100Z），窗口实际最小化、非置顶、非前台。13:47:13Z Core尚处启动过渡：map=false/local_player=0；不能把默认alive=false当角色死亡。13:50:32.475190Z实际Full已报告玩家31254、alive/map_ready/paused均true、日期53144328、gold原始25500000/scale100000，即255金；旧档确实载入，但尚无转换后的物理SAVE。
+
+随后原暂停状态无语义变化，`PlanClient.fresh → ck3_take_snapshot`持续返回同一`native:1`/public2/native1。原启动两帧守卫因此等到原期限，不是玩家/getter布局失效。Root另作一次有界OS只读诊断，前后根/clock/容器一致，实际localplayer1和manager条目31254吻合；它不算Full或业务证据，未写内存、调用Game函数或开第二个pipe。
+
+公共run在14:14:47.596431Z实际wait2/1805.432962秒，原Host于14:15:04.750938Z wait1。原受管session实际CK3失败exit1、Job0、tree gone、cleanup proven，非正常退出。keeper合作STOP后原allocate wait0/1906.549826秒，thread_exited且failure/entry_error为空；14:16:03.727870Z CAS `15224→15225`释放。原件保留在`C:/workspace/ck3-market-live-20261118/live/4-8e1c2f1861--financial-markets--R0003`、`operations/CORE03-run/ORIGINAL-WAIT.actual.json`及`operations/RELEASE-core03/stdout.log`（1413bytes/SHA`543be35f94e32493af7b2c6fd6fdbec908af99effdeac1001ffcf4a2aecce78a`）。没有交易、推进日或SAVE。
+
+关场后采用公共只读`ck3_take_fresh_full_snapshot_v1`，Saved Florin启动仅在实际semantic Full可用后调用，仍受原期限及两份递增Full/owner约束。原C++已广告`game.query.fresh-full-state.v1`并支持`query-fresh-full-state-v1/expected_revision0`，无需改地址或重编Q05。Driver将成功ACK与已接受原Full的read_request_id、snapshot_id、native/public revision及同PID/generation关联；失败不回退缓存或自动重发。普通snapshot、PlanClient.fresh和advance未改。
+
+新10项组合（含12种异常子例）与两方法strict实际通过；原件`fresh-full-public-actual-20261118T141121231245Z/RUN.actual.json`，14723bytes/SHA`ac20d121796c08a7bab2564f9744efb4c5b7cf3bd160cdf4980f70cedfbb9dcf`。受影响Saved14与旧版2项另行16/16通过，独立原件`fresh-full-affected-legacy-actual-20261118T141457156646Z/RUN.actual.json`，不改旧26/41计数。ACK及后继publication相关字段是明确的软件刺激，Full语义来自原C++producer，并非新实机读取。
+
+Root采用后实际capability3项通过、0skip/5.497878秒，六个实际源码前后pins相同。新增工具使用Q05既有Full TU及flags资格，金融七case增加明确依赖，其他产品不变。原件`operations/CHECK-fresh-capability03/ORIGINAL-WAIT.actual.json`。
+
+同时采用有界AI关注队列、合法私人本金认购与及时上市；实现/限制见产品AI合同。共享save-core受限流式扩展原10项回归通过，原wait0/15.132198秒；金融完整verify原wait0/34.793263秒，160项/0skip，56main/20test编译，默认Quarkus打包成功。金融stdout7333bytes/SHA`0cb47409fa8968fca347152e2bb13bf8c7ef22d7b2f42bf7e2decd1cffc2275f`。SAVE两项JUnit仅复用52个合成断言，尚无真实1.21金融SAVE与冷载资格。

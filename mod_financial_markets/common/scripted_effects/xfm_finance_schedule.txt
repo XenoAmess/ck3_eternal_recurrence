@@ -1,4 +1,4 @@
-﻿# 6 effects. Source-only scheduler; the composed queue requires CK3 acceptance.
+﻿# 6 effects. Ordinary and attention work share one total AI budget. Source-only scheduler; the composed queue requires CK3 acceptance.
 # Current scope contracts: seed/daily/pop = exchange story; enqueue/register/ensure = character.
 # Scripted effects preserve ROOT. Consumers must use current THIS, not assume a new ROOT.
 # Pointer variables contain character scopes; ownership of financial rights is independent.
@@ -105,13 +105,7 @@ xfm_finance_pop_ai_effect = {
         }
         change_variable = { name = xfm_ai_count subtract = 1 }
         scope:xfm_finance_ai_actor = {
-            if = {
-                limit = { is_alive = yes is_adult = yes is_ai = yes }
-                # Each consumer owns its focus/budget limits. The scheduler never scans coins.
-                xfm_coin_ai_effect = yes
-                xfm_spot_ai_effect = yes
-                xfm_futures_ai_effect = yes
-            }
+            xfm_finance_ai_decision_effect = yes
             # Recheck life after callbacks. Dead people are dropped, not requeued.
             if = {
                 limit = { is_alive = yes }
@@ -149,26 +143,7 @@ xfm_finance_daily_effect = {
         xfm_debt_daily_effect = yes
         xfm_news_daily_effect = yes
         # AI acts last: its new transactions belong to open sample bucket D.
-        set_variable = {
-            name = xfm_ai_remaining
-            value = {
-                value = var:xfm_ai_count
-                min = 0
-                max = xfm_config_ai_budget_value
-            }
-        }
-        # Snapshot the initial size and configured budget (128/512/1024).
-        # A ring shorter than the budget visits each member at most once.
-        # Vanilla while/limit: common/on_action/alliance_on_actions.txt:332-339,359-361.
-        while = {
-            limit = {
-                var:xfm_ai_remaining > 0
-                exists = var:xfm_ai_head
-            }
-            change_variable = { name = xfm_ai_remaining subtract = 1 }
-            xfm_finance_pop_ai_effect = yes
-        }
-        remove_variable = xfm_ai_remaining
+        xfm_finance_run_ai_budget_effect = yes
     }
 }
 
