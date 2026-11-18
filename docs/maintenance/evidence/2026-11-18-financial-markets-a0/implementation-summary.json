@@ -1,0 +1,96 @@
+{
+  "schema": "xfm.implementation-increment-evidence.v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-18T09:22:04.478851+00:00",
+  "source_commit": "b021c196d62a4b1c4eca844229bbe94542fc2dbd",
+  "scope": "implementation/test plans and first A0 source increment",
+  "local_software_tests": [
+    {
+      "name": "org.xar.ck3.markets.build.BuildContractTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.833"
+    },
+    {
+      "name": "org.xar.ck3.markets.core.FinancialMarketTest",
+      "tests": "26",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.426"
+    },
+    {
+      "name": "org.xar.ck3.markets.listing.ListingFundingTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.088"
+    },
+    {
+      "name": "org.xar.ck3.markets.pool.PoolQuoteTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.02"
+    }
+  ],
+  "local_unique_cases": 40,
+  "official_software_tests": [
+    {
+      "name": "org.xar.ck3.markets.build.BuildContractTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.601"
+    },
+    {
+      "name": "org.xar.ck3.markets.core.FinancialMarketTest",
+      "tests": "26",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.444"
+    },
+    {
+      "name": "org.xar.ck3.markets.listing.ListingFundingTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.017"
+    },
+    {
+      "name": "org.xar.ck3.markets.pool.PoolQuoteTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.01"
+    }
+  ],
+  "official_unique_cases": 40,
+  "official_ci": {
+    "database_id": 44273780360,
+    "attempt": 2,
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44273780360",
+    "conclusion": "success",
+    "software_pass": true
+  },
+  "candidate_manifest": "C:\\workspace\\ck3-market-task-20261118\\candidate-a0-02\\manifest.json",
+  "candidate_and_source_exact": true,
+  "runtime_files": 14,
+  "game_started": false,
+  "game_business_pass": false,
+  "whole_product_pass": false,
+  "game_status": "NOT_RUN",
+  "precondition_blocker": {
+    "steam_probe_status": "unavailable",
+    "reason": "cdp_not_enabled"
+  },
+  "retention_review_at_utc": "2026-11-20T09:07:04.825283+00:00"
+}
