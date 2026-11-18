@@ -1,5 +1,14 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-19用户最新：手玩结束，恢复CK3智能体静默实机迁移
+
+用户明确：“我玩完了。你现在开始可以使用环境的ck3了。继续执行任务吧。”本次真实指令覆盖下方手玩期间的offline-only限制，恢复必要Game/GSV、后台Native/Java/MCP实机与正常交付。继续最小化、静默、无topmost、不激活前台、不用截图/GUI抢焦点；Runtime独占现场，Java独占正式Java/Git，Native独占C++集成，Root协调。独立工作并行，不恢复固定60人数，不设逐项Root ACK，不等待本地模型HTTP。
+
+恢复时实际CK3 launcher仍1.21.0，但新EXE114761336B / SHA bb3fef106240e95ecdb6f1532982e89e9432c92a99d33db623521572f06e6f79 / Steam26757580；旧2F2B/26622941/Native29仅历史，不授新构建资格。先逐能力精核新ABI/布局并生成新exact产物，不能只换SHA或统一delta；未复核能力保持Unavailable。Steam也为11.23.65.88，Runtime新后台probe已P离线；旧snapshot的UNKNOWN失败不改写，Java/GSV另据新profile实际验证。
+
+Runtime重新核当前进程/归属与机器、使用独立profile和原受保护savedPair，准备新ENV/source窗口及明确freshLoaded mode4；不复用08 PID、旧期限或原未知动作，不粗杀/注入未确认用户会话，不覆盖用户手玩存档。原head2003/WAL/UNKNOWN/命令ID-body-deadline及全部失败保持。正常有限资源估算修订不需新Root确认；预算原件保真。最新阶段见docs/ck3-1.21.0-migration-2026-11-18.md。
+
+
 ## 2026-11-18 用户最新：手玩优先，仅继续离线分析与修复
 
 用户最新明确：“你先执行不需要ck3的离线分析、修复，我要自己玩ck3了。你可以读取文件，但是不要干扰ck3正常游玩。我要自己玩了。”当前仅继续离线源码分析、修复、独立构建、NoGame测试、已有文件读取和正常Git发表；测试只使用本组自有fixture与隐藏JVM，不能连接实际CK3。

@@ -1,0 +1,53 @@
+{
+  "scope": "Read-only exact Native21 NoGame original domain interpretation; no source/Git/Game/OS mutation or Java test",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-attacker.json",
+    "bytes": 2466,
+    "sha256": "9c406c3776427c4cbf23c9d971e4959a172968edc7c48b3768e81f40df10d0b8"
+  },
+  "producer_manifest": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\ACTUAL-WAR-FRAME-PACKETS21.json",
+    "bytes": 2569,
+    "sha256": "3f19df6c1aeebc706fdc85650c98698502f1a1c92fc3891e8a21bf79fd1d94ce"
+  },
+  "new_schema": "ck3_1210_active_wars_identity_v1",
+  "new_WarFullId": "Independent signed int32 full identity; only -1 denotes absent, preserve generation and sign; zero is not implicitly absent",
+  "actual_war_id": -2080374784,
+  "actual_actor_id": -2130706431,
+  "actual_known_score_fields": {
+    "native_attacker_score_raw": 17,
+    "player_relative_war_score": 17,
+    "score_complete": true
+  },
+  "actual_rich_fields": {
+    "targeted_title_ids": {
+      "status": "unavailable",
+      "unavailable_reason": "active_wars_rich_fields_not_observed"
+    },
+    "war_objective_province_ids": {
+      "status": "unavailable",
+      "unavailable_reason": "active_wars_rich_fields_not_observed"
+    },
+    "objective_province_states": {
+      "status": "unavailable",
+      "unavailable_reason": "active_wars_rich_fields_not_observed"
+    },
+    "enemy_primary_default_raise_province_id": {
+      "status": "unavailable",
+      "unavailable_reason": "active_wars_rich_fields_not_observed"
+    },
+    "allied_armies": {
+      "status": "unavailable",
+      "unavailable_reason": "active_wars_rich_fields_not_observed"
+    },
+    "enemy_armies": {
+      "status": "unavailable",
+      "unavailable_reason": "active_wars_rich_fields_not_observed"
+    }
+  },
+  "complete_active_wars_qualified": false,
+  "full_snapshot_available": false,
+  "legacy_boundary": "LegacyWarId/old Full/Cash existing positive-int32 contracts remain. Never convert or mask a new WarFullId into a legacy ID or implicit action authority.",
+  "root_correction": "Root previously generalized the legacy positive War domain to the new schema. Actual Native21 negative ID and Source07 SECOND WarFullId refute that generalization; the new decoder must preserve -2080374784 unchanged.",
+  "qualification_limit": "Original Native21 protocol bytes do not establish current C++ context ABI, actual pipe/outbound, Root/Driver/OODA or military action eligibility. Known fields remain known DATA; unavailable rich fields stay unavailable, not zero."
+}

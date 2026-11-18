@@ -1,0 +1,14 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "commit": "555059db6890149325b0a75014015fab17aa13a9",
+  "parent": "2fafef1ea76be4087725112760df8605c6816f89",
+  "targets": 3,
+  "normal_push_exit": 0,
+  "cached_check_exit": 0,
+  "all_blobs_exact": true,
+  "original_formal_HEAD_index_53WIP_exact": true,
+  "time": "2026-11-18T16:10:14.421979+00:00",
+  "remote_preserved_paths": 49,
+  "selected_overlap": 0,
+  "scope": "One-line closed payload tracker fix; one owned-file regression with actual original-preimage expected failure and fixed pass, no performance or live qualification"
+}

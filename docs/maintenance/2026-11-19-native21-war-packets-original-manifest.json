@@ -1,0 +1,52 @@
+{
+  "utc": "2026-11-18T06:32:38.364188+00:00",
+  "exit": 0,
+  "scope": "NoGame actual Actor reader and serializer; no live qualification or rich War Full",
+  "files": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-attacker.json",
+      "bytes": 2466,
+      "sha256": "9c406c3776427c4cbf23c9d971e4959a172968edc7c48b3768e81f40df10d0b8"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-defender.json",
+      "bytes": 2467,
+      "sha256": "8fd3c38aa77c5011b0ecaf4ba542384db7f740b2acfb7323c0fd1c538d919ee8"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-empty.json",
+      "bytes": 1370,
+      "sha256": "530c7ba6451edd2fd51975ffbb527348badff41e373ebfd2151294e3e2df758e"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-owner-changed.json",
+      "bytes": 1461,
+      "sha256": "ea9fc82a02766a8ad1b84e3954ea34af0bb3edb9f84d3d98cc2d6f5bb23dcce0"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-owner-unavailable.json",
+      "bytes": 1473,
+      "sha256": "c81f95ff389e36598ef7f450c8bec4a6a443990ab903f4db2a75492f085aacfd"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-score-changed.json",
+      "bytes": 2499,
+      "sha256": "7a5d38ddcf1b20903a728eeec12dd25b38a1dc3bd80841341e7cf0c041fc938c"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-score-guard.json",
+      "bytes": 2507,
+      "sha256": "43269f0a8e2739ae52ff85cd58464c22fcfdf940093cc3c8ce077b290fe96c34"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-score-overflow.json",
+      "bytes": 2517,
+      "sha256": "8e15ebbb6206807888ac76d135656bbdacf2d20dcbff09440dfacad6c0ef40a9"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\war-frame21\\packets21\\war-zero-duplicates.json",
+      "bytes": 2475,
+      "sha256": "c5d5bf124b6d84ae549eee776d79f4a52810328f84415b1271e1d64edf4d1d22"
+    }
+  ]
+}

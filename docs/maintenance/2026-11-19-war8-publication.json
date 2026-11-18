@@ -1,0 +1,14 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "commit": "423031914c02da71c9c1225da1f5bdbf9fa5bcc0",
+  "parent": "a90664d6ada4823844a271c3da1d536af73204d4",
+  "targets": 7,
+  "normal_push_exit": 0,
+  "cached_check_exit": 0,
+  "all_blobs_exact": true,
+  "original_formal_HEAD_index_53WIP_exact": true,
+  "time": "2026-11-18T16:24:38.723106+00:00",
+  "remote_preserved_paths": 5,
+  "selected_overlap": 0,
+  "scope": "Eight NoGame War partial DATA codec/receiver methods, full signed new IDs isolated from legacy domains; no Root/Full/action/current ABI or actual IPC qualification"
+}

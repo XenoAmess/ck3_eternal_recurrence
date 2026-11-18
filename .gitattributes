@@ -1425,3 +1425,15 @@ docs/maintenance/2026-11-18-florin-army-governance-hello-qualification.json -tex
 # Preserve SHA-bound offline CK3 migration originals, including native CRLF.
 java/ck3-control/native-transport/src/test/resources/newnative/date-arm1210/** -text whitespace=cr-at-eol
 docs/maintenance/2026-11-18-*.json -text whitespace=cr-at-eol
+
+# Preserve exact migration proof bytes and their published raw SHA256 pins.
+docs/maintenance/2026-11-19-steam1123-java5-normal-main-software.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-resource5-publication.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-custody1-publication.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-war8-publication.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-native21-war-attacker-original.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-native21-war-packets-original-manifest.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-war-fullid-domain-evidence.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-post-play-binary-baseline-summary.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-post-play-ownership-original.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-steam1123-actual-offline-original.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

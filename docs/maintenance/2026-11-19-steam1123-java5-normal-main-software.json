@@ -1,0 +1,111 @@
+{
+  "schema": "xar.steam1123-java-profile-software-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-11-18T17:45:20.484293+00:00",
+  "base": "423031914c02da71c9c1225da1f5bdbf9fa5bcc0",
+  "sources": [
+    {
+      "target": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/SteamOfflineProfiles.java",
+      "source": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/steam-candidate/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/SteamOfflineProfiles.java",
+        "bytes": 3579,
+        "sha256": "ad5c45ec2ada4236a44231f0b68ffaeed54498112ea85c343830a79327f9789f"
+      },
+      "preimage_bytes": 2730,
+      "preimage_sha256": "7bca87608ff16419690d061764d4a10b69851fa4c50d9ff7460817e7420e1e7d"
+    },
+    {
+      "target": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/SteamOfflineProbe.java",
+      "source": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/steam-candidate/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/SteamOfflineProbe.java",
+        "bytes": 21685,
+        "sha256": "96c0a6032c841d10fa16dae074fb27be17b34a53f6458db2cb24b30efdbe1e35"
+      },
+      "preimage_bytes": 21608,
+      "preimage_sha256": "0bed87dd43fd6e0a8051cb210b515a8448671db9e72485f956e3369133827b20"
+    },
+    {
+      "target": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/SteamOfflineObservation.java",
+      "source": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/steam-candidate/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/SteamOfflineObservation.java",
+        "bytes": 9183,
+        "sha256": "e17da3a1fa22094fd43e328c8c5afd708e5cf89e056f5d1623b6372619285105"
+      },
+      "preimage_bytes": 9027,
+      "preimage_sha256": "894ff468e6202293357443ab7c86d8bb87b7c85e9f5fed221a7bb81072fdf6ca"
+    },
+    {
+      "target": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/platform/SteamOfflineContractTest.java",
+      "source": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/steam-candidate/java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/platform/SteamOfflineContractTest.java",
+        "bytes": 3454,
+        "sha256": "e49d8f305e365ba1fdd1230c503ab6dfdec7658153d6a9da8f7e0e8ed5a5e816"
+      },
+      "preimage_bytes": 3452,
+      "preimage_sha256": "cdb4b63020570da10d13bc93d5740e078dca78c16207de9b94399d0df39af291"
+    },
+    {
+      "target": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/platform/SteamOffline1123ProfileTest.java",
+      "source": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/steam-candidate/java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/platform/SteamOffline1123ProfileTest.java",
+        "bytes": 5008,
+        "sha256": "7ffc844e04401e2af3dbc32ef9dca1ee93f8b8691715f0a607f9165e16f21f43"
+      },
+      "preimage_bytes": 0,
+      "preimage_sha256": null
+    }
+  ],
+  "compile": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/steam-javac01.END.json",
+    "bytes": 1769,
+    "sha256": "e094db9b321d1172eb61968e762557c235761a4bbf89e5aca76faf8c9db1216a"
+  },
+  "tests": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/steam-junit01.END.json",
+    "bytes": 1719,
+    "sha256": "85d42469f1f3e90b1675ce825aefc05aa3ee312a70fcbe4c8587f7b3d7e589f6"
+  },
+  "test_xml": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/steam-reports01/TEST-junit-jupiter.xml",
+    "bytes": 38371,
+    "sha256": "46b8f724ab7d322c77f40c7c8e3178f8c069f8096a83411e3a4f25c098772a3a"
+  },
+  "passed_methods": [
+    {
+      "class": "org.xar.ck3.control.platform.SteamOffline1123ProfileTest",
+      "name": "originalPackageProfileConstructorKeepsItsLegacyTrayOffset()"
+    },
+    {
+      "class": "org.xar.ck3.control.platform.SteamOfflineContractTest",
+      "name": "allOriginalAnd1123ProfilesBindVersionSizeAndShaTogether()"
+    },
+    {
+      "class": "org.xar.ck3.control.platform.SteamOffline1123ProfileTest",
+      "name": "allProfileInstructionDisplacementsAgreeWithDeclaredByteAndTrayLayout()"
+    },
+    {
+      "class": "org.xar.ck3.control.platform.SteamOffline1123ProfileTest",
+      "name": "positiveNativeWireRoundTripsOnlyTheOffsetOfItsExactProfile()"
+    },
+    {
+      "class": "org.xar.ck3.control.platform.SteamOffline1123ProfileTest",
+      "name": "exact1123SelectorDoesNotInheritAnotherSourceOrLayout()"
+    }
+  ],
+  "normal_MAIN_build": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/maven-package-main01.END.json",
+    "bytes": 2231,
+    "sha256": "abd6696effc0b218b1262ebf6101693e5c8abefe2a959ea5ca66d0007a720328"
+  },
+  "normal_33_MAIN_JARs": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/NORMAL-MAIN-JARS24-01.json",
+    "bytes": 13328,
+    "sha256": "6108d34c47e1f2e68d438c105a0ecad9dd0d80aca9034d6a6e00a93d30120767"
+  },
+  "pure_profile_scope": "Exact1123 UI tuple selects352; prior profiles retain340 and old ctor. Reject crossed profile/offset. No native mode or process query performed by this test.",
+  "TEST_artifact_qualification": false,
+  "wholeSERVICE": false,
+  "CK3_hotfix_qualification": false,
+  "Game_or_window_operations": 0,
+  "no_published_qualification_for_staged_bb3_candidate": true
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "xar.steam-offline-state-probe/v2",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-11-18T17:05:51.426303+00:00",
+  "nonce": "aea84198b94d70d4b06dcd16cf07d1f0",
+  "reason": "observed",
+  "steam": {
+    "pid": 183316,
+    "birth_filetime": "134394824091850072",
+    "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+    "file_version": "11.23.65.88"
+  },
+  "source": {
+    "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+    "bytes": 19675800,
+    "sha256": "2dfb0a5d50dd90667549cc7d413c7bfb0794c9af4ebaf08bf1cf7d938a11ea93",
+    "file_id": "11540474047436827",
+    "mtime_ns": "1794535550000000000"
+  },
+  "endpoint": null,
+  "diagnostics": [],
+  "observation_method": "native_current_user_byte",
+  "native_evidence": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-18T17:05:51.426303+00:00",
+    "nonce": "aea84198b94d70d4b06dcd16cf07d1f0",
+    "module_base": "140710030868480",
+    "module_size": 19959808,
+    "value_rva": "18653399",
+    "value_address": "140710049521879",
+    "producer_rva": "6691596",
+    "producer_anchor_hex": "440fb605c385b600488d15c5297800488bcbe8dd0a3e00",
+    "producer_anchor_sha256": "e2ee13da1019c3cb41a999d4fda37bde192574390690cb2328c903de7fdd54c2",
+    "raw_samples": [
+      1,
+      1
+    ],
+    "steam_before": {
+      "pid": 183316,
+      "birth_filetime": "134394824091850072",
+      "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "file_version": "11.23.65.88"
+    },
+    "steam_after": {
+      "pid": 183316,
+      "birth_filetime": "134394824091850072",
+      "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "file_version": "11.23.65.88"
+    },
+    "source_before": {
+      "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+      "bytes": 19675800,
+      "sha256": "2dfb0a5d50dd90667549cc7d413c7bfb0794c9af4ebaf08bf1cf7d938a11ea93",
+      "file_id": "11540474047436827",
+      "mtime_ns": "1794535550000000000"
+    },
+    "source_after": {
+      "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+      "bytes": 19675800,
+      "sha256": "2dfb0a5d50dd90667549cc7d413c7bfb0794c9af4ebaf08bf1cf7d938a11ea93",
+      "file_id": "11540474047436827",
+      "mtime_ns": "1794535550000000000"
+    },
+    "tray_manager_pointer_rva": "18645800",
+    "tray_manager_address": "2337936449024",
+    "tray_state_offset": "352",
+    "tray_state_samples": [
+      4,
+      4
+    ]
+  },
+  "status": "offline",
+  "offline_mode": true
+}

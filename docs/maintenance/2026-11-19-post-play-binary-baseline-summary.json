@@ -1,0 +1,19 @@
+{
+  "schema": "xar.ck3-post-user-play-baseline-summary/v1",
+  "original": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\POST-USER-PLAY-INSTALLED-STATIC-BASELINE01.json",
+    "bytes": 7758,
+    "sha256": "18a7b87761503bad5db6d578641261986d9ba8c2ebe13663c3a49dde9c67ca29"
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-11-18T16:45:59.044396+00:00",
+  "version": "1.21.0",
+  "PE_version": "1.0.0.0 isnot CK3 version",
+  "steam_build_id": "26757580",
+  "exe_bytes": 114761336,
+  "exe_sha256": "bb3fef106240e95ecdb6f1532982e89e9432c92a99d33db623521572f06e6f79",
+  "appmanifest_state_flags": 4,
+  "update_result": 0,
+  "old_tuple_retained": "2F2B/114756216/build26622941",
+  "qualification": "Static installed file facts only; no newDLL/live/Root authority"
+}

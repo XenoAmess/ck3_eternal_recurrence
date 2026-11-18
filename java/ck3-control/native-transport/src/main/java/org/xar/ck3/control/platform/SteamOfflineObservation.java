@@ -61,12 +61,13 @@ public final class SteamOfflineObservation {
             rawSamples = List.copyOf(rawSamples); trayStateSamples = List.copyOf(trayStateSamples);
             Objects.requireNonNull(steamBefore); Objects.requireNonNull(steamAfter);
             Objects.requireNonNull(sourceBefore); Objects.requireNonNull(sourceAfter);
+            var profile=SteamOfflineProfiles.select(steamBefore.fileVersion(),sourceBefore.bytes(),sourceBefore.sha256());
             if (moduleSize < 1 || moduleSize > 0xffff_ffffL || base.signum() == 0
                     || value.compareTo(BigInteger.valueOf(moduleSize)) >= 0
                     || producer.compareTo(BigInteger.valueOf(moduleSize)) >= 0
                     || !base.add(value).equals(address) || moduleSize < 8
                     || managerRva.compareTo(BigInteger.valueOf(moduleSize - 8)) > 0 || manager.signum() == 0
-                    || !trayStateOffset.equals("340") || !steamBefore.equals(steamAfter)
+                    || !trayStateOffset.equals(Integer.toString(profile.trayOffset())) || !steamBefore.equals(steamAfter)
                     || !sourceBefore.equals(sourceAfter) || !rawSamples.equals(List.of(1, 1))
                     || !trayStateSamples.equals(List.of(4, 4)) || producerAnchorHex == null
                     || !producerAnchorHex.matches("(?:[0-9a-f]{2}){1,256}")

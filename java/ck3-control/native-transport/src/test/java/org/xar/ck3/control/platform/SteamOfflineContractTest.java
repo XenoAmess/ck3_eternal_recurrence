@@ -16,8 +16,8 @@ final class SteamOfflineContractTest {
         SteamOfflineProbe.requirePositive(1,4);
         for(int[] invalid:new int[][]{{0,4},{1,0},{1,3},{2,4},{1,7}})assertThrows(IOException.class,()->SteamOfflineProbe.requirePositive(invalid[0],invalid[1]));
     }
-    @Test void allThreeOriginalProfilesBindVersionSizeAndShaTogether(){
-        assertEquals(3,SteamOfflineProfiles.ALL.size());
+    @Test void allOriginalAnd1123ProfilesBindVersionSizeAndShaTogether(){
+        assertEquals(4,SteamOfflineProfiles.ALL.size());
         for(var profile:SteamOfflineProfiles.ALL){
             assertSame(profile,SteamOfflineProfiles.select(profile.version(),profile.bytes(),profile.sha256()));
             assertThrows(IllegalArgumentException.class,()->SteamOfflineProfiles.select("0.0.0.0",profile.bytes(),profile.sha256()));

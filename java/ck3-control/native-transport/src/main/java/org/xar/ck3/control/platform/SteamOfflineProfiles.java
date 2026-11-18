@@ -6,8 +6,11 @@ import java.util.List;
 /** Exact profiles migrated from the existing shared native Steam provider; version alone grants nothing. */
 final class SteamOfflineProfiles {
     record Anchor(int rva,String hex) { byte[] bytes(){return HexFormat.of().parseHex(hex);} }
-    record Profile(String version,long bytes,String sha256,int imageSize,int valueRva,int managerRva,List<Anchor> anchors) {
+    record Profile(String version,long bytes,String sha256,int imageSize,int valueRva,int managerRva,int trayOffset,List<Anchor> anchors) {
         Profile { anchors=List.copyOf(anchors); }
+        Profile(String version,long bytes,String sha256,int imageSize,int valueRva,int managerRva,List<Anchor> anchors) {
+            this(version,bytes,sha256,imageSize,valueRva,managerRva,0x154,anchors);
+        }
     }
     static final List<Profile> ALL=List.of(
         new Profile("10.96.30.42",18962584,"cb387adefbbac64a3c1490d4275d00daf3a1e0219b4580726ef7681db7429278",19238912,0x1123627,0x1121AA0,List.of(
@@ -27,7 +30,14 @@ final class SteamOfflineProfiles {
             new Anchor(6258192,"40534883ec20488bd9e8b280f2ff488bc8488b10ff92880000008883870100004883c4205bc3"),
             new Anchor(7024927,"488d0d1a1cae00e8e54cf4ff"),
             new Anchor(6542916,"803d7c78b500007419488b0d8c5cb5004533c0ba04000000e86f53f6ff"),
-            new Anchor(5908974,"8bfa4c8bf13b9154010000"),new Anchor(5909022,"4189be54010000")))
+            new Anchor(5908974,"8bfa4c8bf13b9154010000"),new Anchor(5909022,"4189be54010000"))),
+        new Profile("11.23.65.88",19675800,"2dfb0a5d50dd90667549cc7d413c7bfb0794c9af4ebaf08bf1cf7d938a11ea93",19959808,0x11ca0d7,0x11c8328,0x160,List.of(
+            new Anchor(0x661b0c,"440fb605c385b600488d15c5297800488bcbe8dd0a3e00"),
+            new Anchor(0x619840,"40534883ec20488bd9e862ebf1ff488bc8488b10ff92880000008883870100004883c4205bc3"),
+            new Anchor(0x6d8daf,"488d0d9a11af00e8850af4ff"),
+            new Anchor(0x660484,"803d4c9cb600007419488b0d947eb6004533c0ba04000000e83f0bf6ff"),
+            new Anchor(0x5c0ffe,"8bfa4c8bf13b9160010000"),
+            new Anchor(0x5c102e,"4189be60010000")))
     );
     private SteamOfflineProfiles(){ }
     static Profile select(String version,long bytes,String sha) {

@@ -179,7 +179,7 @@ public final class SteamOfflineProbe {
             var nativeValue=new SteamOfflineObservation.NativeEvidence(plan.machineId(),observed,nonce,Long.toUnsignedString(module.base()),module.size(),
                     Integer.toString(profile.valueRva()),Long.toUnsignedString(module.base()+profile.valueRva()),Integer.toString(producer.rva()),producer.hex(),
                     SteamOfflineObservation.hash(producer.bytes()),List.of(actual.raw(),actual.raw()),steam,steam,sourceBefore,sourceAfter,
-                    Integer.toString(profile.managerRva()),Long.toUnsignedString(actual.manager()),"340",List.of(actual.tray(),actual.tray()));
+                    Integer.toString(profile.managerRva()),Long.toUnsignedString(actual.manager()),Integer.toString(profile.trayOffset()),List.of(actual.tray(),actual.tray()));
             var common=new SteamOfflineObservation.Common(plan.machineId(),observed,nonce,Optional.of(steam),Optional.of(sourceAfter),Optional.empty(),List.of());
             var value=new SteamOfflineObservation.Offline(common,SteamOfflineObservation.Method.NATIVE_CURRENT_USER_BYTE,Optional.of(nativeValue));
             ControlBuild.FileRef ref=publish(newEvidenceFile,value);
@@ -193,9 +193,9 @@ public final class SteamOfflineProbe {
     }
     private static State sample(Win32Host.ReadProcess process,Win32Host.Module module,SteamOfflineProfiles.Profile profile,Instant deadline)throws IOException{
         long manager=ByteBuffer.wrap(process.read(module.base()+profile.managerRva(),8,deadline)).order(ByteOrder.LITTLE_ENDIAN).getLong();
-        if(manager<0x10000||manager>0x7fff_ffff_ffffL-0x158||(manager&7)!=0)throw new IOException("Invalid current Steam tray manager");
+        if(manager<0x10000||manager>0x7fff_ffff_ffffL-profile.trayOffset()-Integer.BYTES||(manager&7)!=0)throw new IOException("Invalid current Steam tray manager");
         int raw=Byte.toUnsignedInt(process.read(module.base()+profile.valueRva(),1,deadline)[0]);
-        int tray=ByteBuffer.wrap(process.read(manager+0x154,4,deadline)).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        int tray=ByteBuffer.wrap(process.read(manager+profile.trayOffset(),4,deadline)).order(ByteOrder.LITTLE_ENDIAN).getInt();
         requirePositive(raw,tray);return new State(manager,raw,tray);
     }
     static void requirePositive(int raw,int tray)throws IOException{
