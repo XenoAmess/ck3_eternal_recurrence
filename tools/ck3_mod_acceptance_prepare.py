@@ -418,8 +418,14 @@ def _engine(context):
     path=Path(context['shared_source_root'])/'tools/fixture_engine_prepare.py'
     spec=importlib.util.spec_from_file_location('_selected_fixture_engine_prepare',path)
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
-    identity=module.engine_identity(Path(context['shared_source_root']),game_dir=Path(context['game_dir']),
-                                   steam_manifest=Path(context['case_inputs']['steam_manifest']) if context['case_inputs'].get('steam_manifest') else None)
+    manifest=Path(context['case_inputs']['steam_manifest']) if context['case_inputs'].get('steam_manifest') else None
+    if context.get('execution_mode') == 'gui_only':
+        from ck3_gui_game_identity import identify_gui_game
+        identity=identify_gui_game(Path(context['shared_source_root']),Path(context['game_dir']),
+                                   context['shared_game'],steam_manifest=manifest)
+    else:
+        identity=module.engine_identity(Path(context['shared_source_root']),game_dir=Path(context['game_dir']),
+                                       steam_manifest=manifest)
     game=context['shared_game']
     require(identity['game_version']==game['version'] and identity['exe_sha256'].lower()==game['exe_sha256'].lower(),
             'Preparation game differs from the one selected shared runtime')

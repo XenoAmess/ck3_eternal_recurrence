@@ -250,7 +250,7 @@ def workshop_cache_context(selection, output, state, inputs):
     root = selection.paths['repo_root']
     canonical = selection.products.get('product_inventory', str(root / 'workshop/products.json'))
     canonical = Path(canonical.replace('{repo_root}', str(root))).resolve()
-    return {'repo_root': str(root), 'shared_source_root': str(root),
+    return {'repo_root': str(root), 'shared_source_root': str(root), 'execution_mode': 'gui_only',
             'game_dir': str(selection.paths['game_dir']), 'shared_game': selection.manifest['game'],
             'output': str(output), 'state_dir': str(state),
             'product': selection.args.product, 'case': 'workshop_cache',
