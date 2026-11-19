@@ -22,6 +22,8 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.nativebridge.capabilities.activity.ActivityActionRoutes;
 import org.xar.ck3.control.nativebridge.capabilities.governance.GovernancePlanningReads;
+import org.xar.ck3.control.nativebridge.capabilities.governance.GovernancePlanningReads.OpeningReadProfile;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.planning.optionalcadence.CadenceJson;
 import org.xar.ck3.control.planning.optionalcadence.CadenceModels;
 import org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain;
@@ -193,6 +195,79 @@ public final class GovernanceOrdinaryRuntimeInstaller {
         return List.of(new GovernancePolicies.Opening(observed,source),new GovernancePolicies.Lifestyle(observed,source),
                 Objects.requireNonNull(actualCouncil),new GovernancePolicies.Crown(observed,source),Objects.requireNonNull(actualFeast));
     }
+    /** Keep an unavailable optional observer distinct from a completed review or technical read failure. */
+    static OrdinaryPolicy selectedOptionalSource(OrdinaryPolicy original,GovernanceObservationSupplier observed,
+            boolean privateSourceInstalled,Optional<OpeningReadProfile.Bindings> readonlyDefinitions) {
+        Objects.requireNonNull(original);Objects.requireNonNull(observed);Objects.requireNonNull(readonlyDefinitions);
+        if(privateSourceInstalled||readonlyDefinitions.isEmpty()
+                ||original.stage()!=PlanningStage.COUNCIL&&original.stage()!=PlanningStage.CROWN_AUTHORITY)return original;
+        var definitions=readonlyDefinitions.orElseThrow();
+        var profile=OpeningReadProfile.selectQualified(OpeningReadProfile.VERSION,OpeningReadProfile.EXECUTABLE,
+                definitions.current().sourceRef()).orElseThrow();
+        return new OrdinaryPolicy() {
+            @Override public PlanningStage stage(){return original.stage();}
+            @Override public ExactRef implementationSource(){return original.implementationSource();}
+            @Override public Decision evaluate(PlanningRequest request,Draft previous) {
+                if(previous.command().filter(command->command.operation().value().equals("life-advance")).isEmpty()
+                        ||!request.observations().paused()||!request.observations().mapReady()||request.observations().foregroundPresent())
+                    return original.evaluate(request,previous);
+                var read=observed.durable(request);
+                if(!(read instanceof Known<Durable> known))return original.evaluate(request,previous);
+                var durable=known.value();durable.bind(request);
+                var domain=stage()==PlanningStage.COUNCIL?durable.council():durable.crown();
+                if(durable.cadence().isEmpty()||domain.isEmpty()||domain.orElseThrow().status()!=DomainStatus.KNOWN_CLEAR
+                        ||domain.orElseThrow().latest().isPresent()||domain.orElseThrow().legacyPending().isPresent())
+                    return original.evaluate(request,previous);
+                var kind=stage()==PlanningStage.COUNCIL?CadenceModels.Domain.COUNCIL:CadenceModels.Domain.CROWN;
+                var frame=request.before().frame();
+                if(org.xar.ck3.control.planning.optionalcadence.OptionalCheckCadence.deferred(durable.cadence().orElseThrow(),kind,
+                        new CadenceModels.Frame(frame.episodeRunId(),frame.identity().dateRaw(),frame.identity().nativeRevision())).isPresent()
+                        ||!actualReadonlyZeroProgress(profile,request,previous))return original.evaluate(request,previous);
+                var detail=previous.detail().with(stage()==PlanningStage.COUNCIL?"council_selected_private_source":"crown_selected_private_source",
+                        new OpportunityJson.Obj(java.util.Map.of("status",new OpportunityJson.Text("unavailable"),
+                                "private_source_installed",new OpportunityJson.Bool(false),"query_performed",new OpportunityJson.Bool(false),
+                                "review_complete",new OpportunityJson.Bool(false),"cadence_published",new OpportunityJson.Bool(false),
+                                "action_authority",new OpportunityJson.Bool(false))));
+                return new Replace(new Draft(previous.policy(),previous.phase(),previous.reason(),previous.kind(),previous.command(),
+                        previous.purpose(),previous.domain(),detail),"selected optional Java private source unavailable; retain the original plan without a completed review");
+            }
+        };
+    }
+    private static boolean actualReadonlyZeroProgress(OpeningReadProfile profile,PlanningRequest request,OrdinaryPolicy.Draft previous) {
+        if(!(previous.detail().get("lifestyle_readonly_progress") instanceof OpportunityJson.Obj query))return false;
+        var row=org.xar.ck3.control.application.driver.DriverJson.toNode(query);
+        if(!row.path("opening_read_profile").asText().equals(OpeningReadProfile.Kind.CURRENT.profile())
+                ||!row.path("status").asText().equals("available")||!row.hasNonNull("opening_native_current"))return false;
+        try {
+            var current=request.before().frame();var identity=current.identity();
+            var expected=new OpeningReadProfile.Frame(identity.nativeRevision(),identity.dateRaw(),identity.player());
+            var data=profile.decodeData(OpeningReadProfile.Kind.CURRENT,new RawJson(StrictJson.canonical(row.get("opening_native_current"))),expected);
+            OpeningTransitions.requireReadOnlyExistingData(data,expected);
+            var progress=data.progress().orElseThrow();
+            if(progress.unspentPerkPoints().orElseThrow().signum()!=0)return false;
+            var source=row.path("source_frame");var snapshot=row.path("snapshot");
+            if(!source.path("snapshot_id").asText().equals(current.snapshotId())||!observedNumber(source,"revision",current.revision())
+                    ||!observedNumber(source,"native_revision",identity.nativeRevision())||!observedNumber(source,"date_raw",identity.dateRaw())
+                    ||!snapshot.path("snapshot_id").asText().equals(current.snapshotId())||!snapshot.path("episode_run_id").asText().equals(current.episodeRunId())
+                    ||!observedNumber(snapshot,"public_revision",current.revision())||!observedNumber(snapshot,"native_revision",identity.nativeRevision())
+                    ||!observedNumber(snapshot,"date_raw",identity.dateRaw())||!observedNumber(snapshot,"player_character_id",identity.player()))return false;
+            var focus=snapshot.path("current_focus");var projected=snapshot.path("current_lifestyle_progress");var readiness=snapshot.path("readiness");
+            return focus.path("presence").asText().equals("present")&&projected.path("presence").asText().equals("present")
+                    &&focus.path("key").asText().equals(progress.focusKey().orElseThrow())&&focus.path("lifestyle_key").asText().equals(progress.lifestyleKey().orElseThrow())
+                    &&projected.path("lifestyle_key").asText().equals(progress.lifestyleKey().orElseThrow())
+                    &&observedNumber(projected,"xp_total_raw",progress.xpTotalRaw().orElseThrow())
+                    &&observedNumber(projected,"xp_within_level_raw",progress.xpWithinLevelRaw().orElseThrow())
+                    &&observedNumber(projected,"xp_per_level",progress.xpPerLevel().orElseThrow())
+                    &&observedNumber(projected,"unspent_perk_points",progress.unspentPerkPoints().orElseThrow())
+                    &&observedNumber(projected,"used_perk_points",progress.usedPerkPoints().orElseThrow())
+                    &&readiness.path("same_frame_ready").equals(com.fasterxml.jackson.databind.node.BooleanNode.TRUE)
+                    &&readiness.path("current_focus_ready").equals(com.fasterxml.jackson.databind.node.BooleanNode.TRUE)
+                    &&readiness.path("lifestyle_progress_ready").equals(com.fasterxml.jackson.databind.node.BooleanNode.TRUE);
+        }catch(IllegalArgumentException|java.util.NoSuchElementException invalid){return false;}
+    }
+    private static boolean observedNumber(com.fasterxml.jackson.databind.JsonNode row,String key,java.math.BigInteger expected) {
+        var value=row.get(key);return value!=null&&value.isIntegralNumber()&&value.bigIntegerValue().equals(expected);
+    }
     static GovernanceCollector unavailableCollector(PlanningReadPort reads,ActionPorts.OutcomeArchive archive,
             GovernanceCollector.StateSupplier states,GovernanceBorrowedSession scope) {
         return new GovernanceCollector(reads,archive,states,new GovernanceCollector.Reads(Optional.empty(),Optional.empty(),Optional.empty(),
@@ -262,8 +337,12 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             var feast=new OrdinaryFeastPolicy(prepared.sources.feastPolicy(),replay.observe(feastCollector),(operation,request,arguments)->effects().expected(operation,request,arguments));
             prepared.feast.bindPolicy(feast);
             council=new GovernancePolicies.Council(observed,prepared.sources.governancePolicy());
-            List<OrdinaryPolicy> policies=ordinaryPolicies(observed,prepared.sources.governancePolicy(),council,feast)
-                    .stream().map(replay::record).toList();
+            var selectedPolicies=ordinaryPolicies(observed,prepared.sources.governancePolicy(),council,feast);
+            // Actual absent private products are distinct from the two installed readonly definitions.
+            var readonlyDefinitions=openingReadOnly.map(GovernanceRuntimeInstaller.Prepared.OpeningReadOnly::definitions);
+            List<OrdinaryPolicy> policies=selectedPolicies.stream()
+                    .map(policy->selectedOptionalSource(policy,observed,nativeProducts.isPresent()||retryProducts.isPresent(),readonlyDefinitions))
+                    .map(replay::record).toList();
             OrdinaryPlanCompletion completion=new GovernancePlanCompletion(prepared::suppliedSession,prepared::requireSession,prepared.cadence,replay);
             if(nativeQualified)completion=retryProducts.orElseThrow().completion(completion);
             List<RootExecutableBindings.ActionBinding> actions=(nativeQualified?OrdinaryFeastPolicy.OWNED:Set.<OperationKey>of()).stream().sorted(java.util.Comparator.comparing(OperationKey::value)).map(operation->

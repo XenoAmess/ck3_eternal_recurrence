@@ -1484,3 +1484,10 @@ docs/maintenance/2026-11-19-saved-entry21-evidence25.json -text
 /docs/maintenance/2026-11-19-opening-current-holywar-software-ready109.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /docs/maintenance/2026-11-19-native-opening-merged-software-final57.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /docs/maintenance/2026-11-19-java-opening-current-holywar-runtime-ready112.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+/docs/maintenance/2026-11-19-opening-complete-source23-final.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-opening-complete-source23-gate.json -text
+/docs/maintenance/2026-11-19-opening-complete-evidence28.json -text
+/docs/maintenance/2026-11-19-current-progress-software-ready116.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-optional-private-source-software-ready119.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-current-optional-runtime-ready122.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

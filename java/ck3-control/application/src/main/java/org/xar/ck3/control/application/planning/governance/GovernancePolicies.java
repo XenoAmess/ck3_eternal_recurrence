@@ -102,6 +102,8 @@ public final class GovernancePolicies {
             if (read instanceof Unavailable<Life> unavailable) return missing(unavailable.reason());
             Life life = ((Known<Life>) read).value(); var history = LifestyleHistory.select(life.history());
             if (history.status() != LifestyleHistory.Status.CLEAR) return new Wait("the sole lifestyle history reducer retains an original pending or uncertain receipt");
+            var readOnlyProgress = readOnlyCurrentProgress(request, previous, life);
+            if (readOnlyProgress.isPresent()) return readOnlyProgress.orElseThrow();
             LifestyleConsumer.Outcome outcome = LifestyleConsumer.consumeWithHistory(life.input(), originalHistory);
             Obj detail = annotation(previous, "lifestyle_original_query", life.originalQuery());
             if (outcome.recommendation() != null) detail = detail.with("lifestyle_decision", parse(LifestyleMinCodec.encode(outcome.recommendation())));
@@ -115,6 +117,23 @@ public final class GovernancePolicies {
                         : new Wait("LIFE action lacks complete source-bound final legality");
             };
         }
+    }
+
+    /** The independent current-focus profile never qualifies the legacy perk/minimum consumer. */
+    static Optional<Decision> readOnlyCurrentProgress(PlanningRequest request, Draft previous, Life life) {
+        Obj query = life.originalQuery();
+        if (!new Text("ck3-26757580-lifestyle-current-v1").equals(query.get("opening_read_profile"))) return Optional.empty();
+        StrictJson.require(new Text("available").equals(query.get("status")), "readonly current progress must be available");
+        GovernanceCollector.bindLife(request, query);
+        StrictJson.require(existingFocus(query), "readonly progress needs an actually present focus and matching current progress");
+        Obj snapshot = object(query.get("snapshot"), "readonly current snapshot");
+        Obj readiness = object(snapshot.get("readiness"), "readonly current readiness");
+        StrictJson.require(bool(readiness.get("same_frame_ready"), "same frame ready"), "readonly current progress crossed its frame");
+        Obj progress = object(snapshot.get("current_lifestyle_progress"), "readonly current progress");
+        if (integer(progress.get("unspent_perk_points"), "observed unspent points").signum() > 0)
+            return Optional.of(Policy.missing("readonly current progress requires independently qualified owned perks and final perk legality"));
+        return Optional.of(Policy.annotated(previous, Policy.annotation(previous, "lifestyle_readonly_progress", query),
+                "actual current focus has zero unspent perk points; retain the original plan without a perk-minimum or cadence conclusion"));
     }
 
     public static final class Opening extends Policy {

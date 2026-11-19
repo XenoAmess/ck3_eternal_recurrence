@@ -1,0 +1,35 @@
+{
+  "schema": "ck3.selected-optional-private-source1ls-pure3-software-ready/v1",
+  "results": {
+    "type": {
+      "begin_utc": "2026-11-19T08:29:12.301029+00:00",
+      "end_utc": "2026-11-19T08:29:13.828469+00:00",
+      "seconds": 1.5274607001338154,
+      "exit": 0,
+      "scope": "One isolated LS selected-private-source wrapper; three pure port/closed23 DATA regressions. Source-present identical original object/error; source-absent only typed unavailable annotation after actual zero marker, durable/pending/latest/history/cadence guard; no private query, action, complete review, technical failure or cadence credit. No Root/writer/Native/Game/normalMAIN or old P repetition."
+    },
+    "pure": {
+      "begin_utc": "2026-11-19T08:29:23.258303+00:00",
+      "end_utc": "2026-11-19T08:29:24.480292+00:00",
+      "seconds": 1.222010999917984,
+      "exit": 0,
+      "scope": "One isolated LS selected-private-source wrapper; three pure port/closed23 DATA regressions. Source-present identical original object/error; source-absent only typed unavailable annotation after actual zero marker, durable/pending/latest/history/cadence guard; no private query, action, complete review, technical failure or cadence credit. No Root/writer/Native/Game/normalMAIN or old P repetition."
+    }
+  },
+  "distinct_new_methods": 3,
+  "tests_skipped": 0,
+  "source": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/optional-governance119/GovernanceOrdinaryRuntimeInstaller.java",
+    "bytes": 38169,
+    "sha256": "c2352b38c5459884b3e74fc71169b50f48f966168185648fc0c02bc82a0a527c"
+  },
+  "test": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/optional-governance119/OptionalGovernancePrivateSourceTest.java",
+    "bytes": 11242,
+    "sha256": "7e1d2cb8b4f32f01853eca02e1a22387272497404aa6ba71f8916472bfe24b42"
+  },
+  "source_present_returns_identical_original_and_error": true,
+  "typed_unavailable_not_review_technical_failure_cadence_candidates_or_actions": true,
+  "no_Root_writer_Native_Game": true,
+  "R38_Native56_unchanged": true
+}

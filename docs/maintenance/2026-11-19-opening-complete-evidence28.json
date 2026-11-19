@@ -1,0 +1,139 @@
+{
+  "schema": "ck3.root.opening-complete23-evidence28/v1",
+  "cut_utc": "2026-11-19T08:07:02.231200Z",
+  "scope": "Historical actualSource23 only. No subsequent116/MAIN38/Scene24 outcome qualified here.",
+  "actual_final": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc28-opening-complete23/actual-final23.json",
+    "bytes": 7240,
+    "sha256": "ddef7e7d772fd41ab7e8850130b6b9fc9a0a1e3e61afd2bb9af11f7d9b2df70d"
+  },
+  "actual_gate": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc28-opening-complete23/actual-gate23.json",
+    "bytes": 5728,
+    "sha256": "34e393ed13d177be84f8b93e50fc60fac2390455a21d23086c4be42bba8ce701"
+  },
+  "Opening": {
+    "stage": "COMPLETE",
+    "existing_observed": {
+      "frame": {
+        "date_raw": "53176992",
+        "episode_run_id": "resume91_offline04_20261111T071454Z",
+        "native_revision": "7",
+        "played_character_id": "31254",
+        "revision": "6",
+        "snapshot_id": "native:7"
+      },
+      "game": {
+        "creation_filetime": "134395471948850324",
+        "pid": 207820
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observation_version": 3
+    },
+    "no_action_checkpoint_command": true,
+    "originals_exact_count": 15,
+    "gate": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root23\\continuity\\artifacts\\34e393ed13d177be84f8b93e50fc60fac2390455a21d23086c4be42bba8ce701.bin",
+      "bytes": 5728,
+      "sha256": "34e393ed13d177be84f8b93e50fc60fac2390455a21d23086c4be42bba8ce701"
+    },
+    "final_head": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix23-work\\ACTUAL-OPENING-COMPLETE-FINAL-HEAD23-COLD.json",
+      "bytes": 36541,
+      "sha256": "98a48b55fcaf3f49f67024a91549e3e4805daa7141f33255556db78b9843e1ee"
+    },
+    "head_sequence": 24,
+    "strict_watcher": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix23-work\\OWN-STOP23-PROOF.json",
+      "bytes": 2336,
+      "sha256": "d8272630ce32011956a93117d87c8476515b3bffc5deebb33c338b5be4b7cce9"
+    },
+    "original_own_stop_time": "2026-11-19T07:41:36.351389Z",
+    "source22_AWAIT_and_source23_initial_AWAIT_preserved": true
+  },
+  "actual_first_failure": {
+    "stage": "LIFESTYLE",
+    "terminal": "PLANNER_STOPPED",
+    "detail": "INCOMPLETE_PRODUCTION_CHAIN: the exact Java governance query producer is not installed",
+    "began": "2026-11-19T07:40:14.535404600Z",
+    "ended": "2026-11-19T07:41:39.729430800Z",
+    "batch": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix23-work\\ACTUAL-BATCH23-RESULT.json",
+      "bytes": 19513,
+      "sha256": "95066fc9a0c95898df7abf2dbf850cba579d04eb9fe8cd13a9f6ada65b1c8cca"
+    }
+  },
+  "metrics": {
+    "attempted_turns": 0,
+    "applied_turns": 0,
+    "ordinary_action_positive_ack_count": 0,
+    "committed_saved_days": 0,
+    "eligible_advances_since_save": 0
+  },
+  "model_WAIT": 0,
+  "Codex_queue_absent": true,
+  "GSV_terminal": {
+    "actual_terminal": {
+      "accounting": {
+        "active_processes": 0,
+        "limit_flags": 8704,
+        "memory_limit_bytes": 34359738368,
+        "peak_job_memory_bytes": 12729241600
+      },
+      "elapsed_seconds_decimal": "675.3808016",
+      "exit_code": 0,
+      "identity": {
+        "creation_filetime_decimal": "134395471948850324",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 207820
+      },
+      "stop_reason": null
+    },
+    "cleanup_proven": true,
+    "evidence": {
+      "bytes": 1040,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-opening56-23\\event-000007.json",
+      "sha256": "6a3d8d2df2bb04e03bb283622d1082e760f95b5a749a25af20b3b3c64f8c58c6"
+    },
+    "game": {
+      "creation_filetime": "134395471948850324",
+      "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 207820
+    },
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-19T07:44:30.402494100Z",
+    "schema": "xar.java-game-supervisor-result/v1",
+    "session_id": "session-migration1210-hotfix26757580-firstroot23",
+    "status": "GAME_EXITED",
+    "stop_request_id": "",
+    "terminal_kind": "NATURAL_EXIT"
+  },
+  "post_originals": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE23-POSTEXIT-ORIGINALS-PDX-AND-SILENT01.json",
+    "bytes": 3186,
+    "sha256": "38c5a387886b750c49bd66b1ae35d53a3d2df21f2614ffb681400cb98308551e"
+  },
+  "cold_current157JAR_and_DLL_equal": true,
+  "all_originals_Pair_WAL_UNKNOWN_and_source_windows_retained": true,
+  "normal_exit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit23-01\\summary.json",
+    "bytes": 14304,
+    "sha256": "fd6ce82eddd4db1831daf74d590f51d96ee6d74488e51b18e4eb7bd79d416787"
+  },
+  "actual_observation_errata": "Momentary head22/native6 AWAIT was superseded by real native7/COMPLETE. A later manual stop-preflight assertion saw stage changed and wrote nothing; only original strict watcher created own stop. Watch prior head24 exactSha is historical; finalHead raw copy and immutable COMPLETE gate remain held. No snapshot or lifecycle guard relaxed.",
+  "lifecycle_order": "Controller813-817 planningreadPublication/831 completionPublished replan withinbatch;857 ReadOnlyWait pausecontinue/1511clockwait does notincrementcompletedCount. Ownwatch onlyactualboundv2Complete+stablehead; internalWait!=CodexWait.",
+  "new_blocker": "NormalLIFESTYLE policy101 callsproducer(...false); Collector133 newreadonlyportonlyforopeningtrue; falsefallsoldroot/emptyReads. NotOldHolyWar norOpeningTransitions101.",
+  "consumer_boundary": "FrozenoldLifestyleMinimum requiresowned readiness+set thenlegal readiness+set beforezero point branch. Neverfillfalseemptysets/ready orclaimNO_LEGAL_MINIMUM/cadence fromcurrentonly.",
+  "successor_direction_only": "TwoApp leaves: explicitread-onlycurrentport forfalse; afterhistory/cadence guard strictactualpresentzero→annotationpreservingdraft; positive/absence/unknown stillcompleteproducer/finallegal. No successorpass inferred.",
+  "root_credit": "ActualOpening durablecompletion only, notcompleteordinaryRoot/fullGov/actions/finance/Codex/day/SAVE.",
+  "next_environment_reason": "Realpdxstamp134395472133289084 afternormalexit→newrealENV sibling; no oldwindowrenewal",
+  "last_publication": {
+    "commit": "9c59f9b6f97415a3e02c56d8eddcec7a5d4b4740",
+    "receipt": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication104/NORMAL-GIT44-PUBLICATION115.json",
+      "bytes": 737,
+      "sha256": "29e9f077c4431d16f7265b97ec741badea0d65a80c53d5b7ed82163c5c5fa213"
+    },
+    "scope": "Prior44qualifiedtargets preserved31newremote paths; Doc28separatefutureappend notscopecreep"
+  }
+}

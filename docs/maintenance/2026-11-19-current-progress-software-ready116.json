@@ -1,0 +1,45 @@
+{
+  "schema": "ck3.current-progress2app-pure3-software-ready/v1",
+  "at": "2026-11-19T08:06:53.710889+00:00",
+  "source_refs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/current-progress116/GovernanceCollector.java",
+      "bytes": 34225,
+      "sha256": "83505cccff1e7501a8ea1fc9a5cf83921c580d442c7afabc07104b0345a7dfb7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/current-progress116/GovernancePolicies.java",
+      "bytes": 42757,
+      "sha256": "3ef8706b94311ce88dfbc6bbef9ee4c946110fd221a8931f621fb923497c238b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/current-progress116/ReadOnlyLifestyleProgressTest.java",
+      "bytes": 11477,
+      "sha256": "59550ade6d079ab2c9d8f4568204230242408badb6ed2f3d7c92480ede17209b"
+    }
+  ],
+  "results": {
+    "type": {
+      "begin_utc": "2026-11-19T08:04:29.015499+00:00",
+      "end_utc": "2026-11-19T08:04:31.364302+00:00",
+      "seconds": 2.3488481999374926,
+      "exit": 0,
+      "scope": "Two Application leaves and one software-port test; actual closed23 Current receipt pure replay, ordinary false source selection, zero-point plan preservation, positive-point/final-legal stop, unavailable/absent/frame rejection. No Root, writer, Native/Game, actions, cadence authority or live qualification."
+    },
+    "pure": {
+      "begin_utc": "2026-11-19T08:04:39.715606+00:00",
+      "end_utc": "2026-11-19T08:04:41.365413+00:00",
+      "seconds": 1.6498338000383228,
+      "exit": 0,
+      "scope": "Two Application leaves and one software-port test; actual closed23 Current receipt pure replay, ordinary false source selection, zero-point plan preservation, positive-point/final-legal stop, unavailable/absent/frame rejection. No Root, writer, Native/Game, actions, cadence authority or live qualification."
+    }
+  },
+  "distinct_methods": 3,
+  "tests_skipped": 0,
+  "actual_closed23_current_pure_replay": true,
+  "software_domain_port_not_live_scope": true,
+  "zero_points_only_preserves_original_plan": true,
+  "no_owned_legal_minimum_cadence_or_action_authority": true,
+  "positive_absent_unavailable_frame_mismatch_strict": true,
+  "R37_Native56_unmodified": true
+}

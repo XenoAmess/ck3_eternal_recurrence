@@ -131,7 +131,9 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
     }
 
     @Override public Read<Life> lifestyle(PlanningRequest request, String preferredFocus, boolean opening) {
-        if(opening&&lifestyleReads.isPresent()) {
+        // The explicit source-exact readonly profile can also observe ordinary current progress.
+        // It still supplies no legacy ROOT, owned perks, or final action legality.
+        if(lifestyleReads.isPresent()) {
             var selected=lifestyleReads.orElseThrow().openingReadOnly(request);
             if(selected.isPresent()) {
                 if(selected.orElseThrow() instanceof Unavailable<ReadOnlyOpening> unavailable)return new Unavailable<>(unavailable.reason());
@@ -144,7 +146,7 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
                 Obj wrapper=new Obj(Map.of()).with("schema",new Text(LifestyleConsumerCodec.SCHEMA))
                         .with("baseline_plan",new Obj(Map.of()).with("selected_step",new Text("life-advance")))
                         .with("scope",data.scope()).with("query",data.query()).with("preferred_focus_target_key",new Text(preferredFocus))
-                        .with("allow_wartime_initial_focus",new Bool(true));
+                        .with("allow_wartime_initial_focus",new Bool(opening));
                 return new Known<>(new Life(LifestyleConsumerCodec.decode(encode(wrapper)),lifecycleHistory(request),data.query()),actual.originals());
             }
         }

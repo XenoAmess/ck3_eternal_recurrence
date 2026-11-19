@@ -1,0 +1,104 @@
+{
+  "schema": "ck3.normal-main39-readonly-current-optional-private-source-ENV23-runtime-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at": "2026-11-19T08:43:02.170488+00:00",
+  "normal_four_MAIN38": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-lifestyle-progress-main38/qualification/maven-package117.END.json",
+    "bytes": 1018,
+    "sha256": "748e0fbf8955ba08a195ded93a707fe676ba2eadb2390f3d2e089810ffbfdb0f"
+  },
+  "normal_sole_local_MAIN39": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-optional-governance-main39/qualification/maven-package120.END.json",
+    "bytes": 945,
+    "sha256": "ff5b53ac19b1bf92f9aa71c08abb70247cd16065f156dc0c162e33027d353c9a"
+  },
+  "new_existing_production_leaves": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-lifestyle-progress-main38/source/application/src/main/java/org/xar/ck3/control/application/planning/governance/GovernanceCollector.java",
+      "bytes": 34225,
+      "sha256": "83505cccff1e7501a8ea1fc9a5cf83921c580d442c7afabc07104b0345a7dfb7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-lifestyle-progress-main38/source/application/src/main/java/org/xar/ck3/control/application/planning/governance/GovernancePolicies.java",
+      "bytes": 42757,
+      "sha256": "3ef8706b94311ce88dfbc6bbef9ee4c946110fd221a8931f621fb923497c238b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-optional-governance-main39/source/local-service/src/main/java/org/xar/ck3/control/service/root/GovernanceOrdinaryRuntimeInstaller.java",
+      "bytes": 38169,
+      "sha256": "c2352b38c5459884b3e74fc71169b50f48f966168185648fc0c02bc82a0a527c"
+    }
+  ],
+  "software_qualifications": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/current-progress116/LIFESTYLE-CURRENT-PROGRESS-SOFTWARE-READY116.json",
+      "bytes": 2435,
+      "sha256": "c7752d604e59d4c39468885381dfca3ef2c5db2e212b1570bd48e71d0e6746dc"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/optional-governance119/OPTIONAL-GOVERNANCE-PRIVATE-SOURCE-SOFTWARE-READY119.json",
+      "bytes": 2216,
+      "sha256": "f3543f7023917ee027e5dd3f965db91640014bcd45feb720fe7f0577ee339338"
+    }
+  ],
+  "distinct_new_software_methods": 6,
+  "genuine_App38_one": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-lifestyle-progress-main38/qualification/genuine118.END.json",
+    "bytes": 405,
+    "sha256": "e1a4d57d20e23ec5ed84dc62b060842ac0c1d5a056c243385c2e9f19b9edc248"
+  },
+  "genuine_local39_one": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-optional-governance-main39/qualification/genuine121.END.json",
+    "bytes": 411,
+    "sha256": "4935148334725138e6b6946f7f1c9a92f6e25145694d0240bb69cc7d5efa0d44"
+  },
+  "runtime_archives": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-optional-governance-main39/qualification/MAIN39-FROZEN-RUNTIME-ARCHIVES121.json",
+    "bytes": 92816,
+    "sha256": "bb3887398f57c344c8e26d0b7b60ebca6f52cd045d3b26caa2a3c46873ef75dd"
+  },
+  "public_environment_origins": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-optional-governance-main39/qualification/ACTUAL-ENV23-NEWMAIN39-ORIGINS121.json",
+    "bytes": 143756,
+    "sha256": "e44d34ccb7b9cc202cc32c09d8e0377df45b0bf1e964d8110d39a8c04f96f9fe"
+  },
+  "environment": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/env23/xar-autoplayer-environment.json",
+    "bytes": 36866,
+    "sha256": "76a8867bdb93c53fb05a4b9ac5a18eec35a9f7d47dd2f91e7cfc5fd1b8f853ed"
+  },
+  "entry_prefixes": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-optional-governance-main39/qualification/NORMAL-MAIN39-ENTRY-PREFIXES122.json",
+    "bytes": 1626,
+    "sha256": "1e9c2888c707d093da4e6248dae20d9665968be32ce5b0d3b706de3d2f03b943"
+  },
+  "same_plan_checker": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-optional-governance-main39/qualification/ACTUAL-CALLER39-INPUTS122.json",
+    "bytes": 737,
+    "sha256": "8bfc455dc3b1f04fe2c1de427a2e084e0ebf17209e8cdf25f5fe1c8115fddb38"
+  },
+  "unique_WAIT_response24": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-optional-governance-main39/qualification/first-codex-response24.py",
+    "bytes": 3063,
+    "sha256": "1d3ad020b9494a053253ecbd21a29f4c50b9ad51b46fc3061695773c7111bdd0"
+  },
+  "actual_native56_two_query_positive_scope": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE22-NATIVE56-ACTUAL-MAIN-TICKET-OPENING-ORIGINALS01.json",
+    "bytes": 24259,
+    "sha256": "0d1abde59c03f3f9f8443a76eea2c8512a955680a7ebf764b300910e2c4da949"
+  },
+  "actual_Opening_complete23_and_lifestyle_RED": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE23-OPENING-COMPLETE-LIFESTYLE-PRODUCER-RED-NATURAL0-FINAL01.json",
+    "bytes": 7240,
+    "sha256": "ddef7e7d772fd41ab7e8850130b6b9fc9a0a1e3e61afd2bb9af11f7d9b2df70d"
+  },
+  "native_current_DLL": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/build-01/frozen/xar_ck3_bridge.dll",
+    "bytes": 13443584,
+    "sha256": "6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3"
+  },
+  "Council_Crown_complete_sources_migrated": false,
+  "full_governance_action_cadence_authority_from_partial_profile": false,
+  "scene24_stop": "only actual REQUEST_READY with SHA\u2192Runtime ownstop\u2192unique original120s WAIT or real MainEND/stop_before; do not stop on already qualified Opening COMPLETE",
+  "qualification": "Normal four MAIN R38 + sole local R39, old51/55 jars strong exact; 6 new software methods, 2 separate genuine whole archive checks, ENV23 public consumer and413 whole archive origins PASS. Current readonly zero points only retains prior draft. Actually missing selected optional private Council/Crown sources annotate unavailable with0query/no completed review/technical failure/cadence/action; installed legacy source/pending/UNKNOWN/latest/deferred/invalid marker retain strict original paths. New ordinary runtime behavior awaits fresh24; prior22 two Native readonly queries and23 Opening COMPLETE are actual separate facts. No Native/fullSaved/old tests repeated. R39 current157/JAR/source/JNA frozen for next scene; no fullGov/Finance/Save/day/modelWAIT credit."
+}

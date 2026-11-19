@@ -1,0 +1,159 @@
+{
+  "schema": "ck3.actual.Source23-OpeningComplete-LifestyleProducerUnavailable-natural0/v1",
+  "at_utc": "2026-11-19T07:47:48.523477+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\HOTFIX56-SOURCE23-ORIGINAL-FIXED45M.json",
+    "bytes": 5625,
+    "sha256": "bf6a4e85e6c1e1d83a480277439f0d45d47d54e128553fdb1486284913a2d13e"
+  },
+  "frozen_Java_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-opening-continuity-main37\\qualification\\NORMAL-MAIN37-CURRENT-HOLYWAR-ENV22-RUNTIME-READY112.json",
+    "bytes": 4540,
+    "sha256": "6c71143b02dee6a2e97e013bb47dfcf953f35f519200039f3603f521425be2c8"
+  },
+  "Native56_DLL": "13443584/6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3",
+  "actual_owner": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-opening56-23\\owner.json",
+    "bytes": 5139,
+    "sha256": "8eff851c16fbb90b97d8df34984467e18ae0889ed575d108488e8b2fa51e0737"
+  },
+  "Game": {
+    "creation_filetime": "134395471948850324",
+    "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "pid": 207820
+  },
+  "actual_Saved_entry": {
+    "actual_head_digest": "a2276e543b63ca2bb6852b3060f701f344a1c993ff6093c5a37e4728862ad9d9",
+    "actual_head_sequence": 20,
+    "game": {
+      "creation_filetime": "134395471948850324",
+      "pid": 207820
+    },
+    "next_sequence": "0",
+    "observed_at_utc": "2026-11-19T07:40:14.527762300Z",
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "SAVED_ENTRY_ADOPTED"
+  },
+  "Opening": {
+    "stage": "COMPLETE",
+    "existing_observed": {
+      "frame": {
+        "date_raw": "53176992",
+        "episode_run_id": "resume91_offline04_20261111T071454Z",
+        "native_revision": "7",
+        "played_character_id": "31254",
+        "revision": "6",
+        "snapshot_id": "native:7"
+      },
+      "game": {
+        "creation_filetime": "134395471948850324",
+        "pid": 207820
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observation_version": 3
+    },
+    "no_action_checkpoint_command": true,
+    "originals_exact_count": 15,
+    "gate": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root23\\continuity\\artifacts\\34e393ed13d177be84f8b93e50fc60fac2390455a21d23086c4be42bba8ce701.bin",
+      "bytes": 5728,
+      "sha256": "34e393ed13d177be84f8b93e50fc60fac2390455a21d23086c4be42bba8ce701"
+    },
+    "final_head": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix23-work\\ACTUAL-OPENING-COMPLETE-FINAL-HEAD23-COLD.json",
+      "bytes": 36541,
+      "sha256": "98a48b55fcaf3f49f67024a91549e3e4805daa7141f33255556db78b9843e1ee"
+    },
+    "head_sequence": 24,
+    "strict_watcher": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix23-work\\OWN-STOP23-PROOF.json",
+      "bytes": 2336,
+      "sha256": "d8272630ce32011956a93117d87c8476515b3bffc5deebb33c338b5be4b7cce9"
+    },
+    "original_own_stop_time": "2026-11-19T07:41:36.351389Z",
+    "source22_AWAIT_and_source23_initial_AWAIT_preserved": true
+  },
+  "actual_first_failure": {
+    "stage": "LIFESTYLE",
+    "terminal": "PLANNER_STOPPED",
+    "detail": "INCOMPLETE_PRODUCTION_CHAIN: the exact Java governance query producer is not installed",
+    "began": "2026-11-19T07:40:14.535404600Z",
+    "ended": "2026-11-19T07:41:39.729430800Z",
+    "batch": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix23-work\\ACTUAL-BATCH23-RESULT.json",
+      "bytes": 19513,
+      "sha256": "95066fc9a0c95898df7abf2dbf850cba579d04eb9fe8cd13a9f6ada65b1c8cca"
+    }
+  },
+  "Main_exit": 4,
+  "GSV_terminal": {
+    "actual_terminal": {
+      "accounting": {
+        "active_processes": 0,
+        "limit_flags": 8704,
+        "memory_limit_bytes": 34359738368,
+        "peak_job_memory_bytes": 12729241600
+      },
+      "elapsed_seconds_decimal": "675.3808016",
+      "exit_code": 0,
+      "identity": {
+        "creation_filetime_decimal": "134395471948850324",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 207820
+      },
+      "stop_reason": null
+    },
+    "cleanup_proven": true,
+    "evidence": {
+      "bytes": 1040,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-opening56-23\\event-000007.json",
+      "sha256": "6a3d8d2df2bb04e03bb283622d1082e760f95b5a749a25af20b3b3c64f8c58c6"
+    },
+    "game": {
+      "creation_filetime": "134395471948850324",
+      "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 207820
+    },
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-19T07:44:30.402494100Z",
+    "schema": "xar.java-game-supervisor-result/v1",
+    "session_id": "session-migration1210-hotfix26757580-firstroot23",
+    "status": "GAME_EXITED",
+    "stop_request_id": "",
+    "terminal_kind": "NATURAL_EXIT"
+  },
+  "GSV_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix23-work\\GSV-SOURCE23-END.json",
+    "bytes": 85,
+    "sha256": "61ca69d15a218c4c7d48c1107592f691d1e9780ed8a1b7f6cfd09f4d96c16c7c"
+  },
+  "Main_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix23-work\\MAIN25023-END.json",
+    "bytes": 86,
+    "sha256": "d6cc7be0d8802f0cb5ee584f89f5cbb764e701ab9a3f34068d237da4bdc88149"
+  },
+  "normal_exit_single_Core_AppExit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit23-01\\summary.json",
+    "bytes": 14304,
+    "sha256": "fd6ce82eddd4db1831daf74d590f51d96ee6d74488e51b18e4eb7bd79d416787"
+  },
+  "post_originals": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE23-POSTEXIT-ORIGINALS-PDX-AND-SILENT01.json",
+    "bytes": 3186,
+    "sha256": "38c5a387886b750c49bd66b1ae35d53a3d2df21f2614ffb681400cb98308551e"
+  },
+  "runtime157_and_DLL_coldSHA_after_all_equal": true,
+  "metrics": {
+    "attempted_turns": 0,
+    "applied_turns": 0,
+    "ordinary_action_positive_ack_count": 0,
+    "committed_saved_days": 0,
+    "eligible_advances_since_save": 0
+  },
+  "model_WAIT": 0,
+  "Codex_queue_absent": true,
+  "response_script": "NOT_STARTED",
+  "errata": "Momentary head22/native6 AWAIT was superseded by real native7/COMPLETE. A later manual stop-preflight assertion saw stage changed and wrote nothing; only original strict watcher created own stop. Watch prior head24 exactSha is historical; finalHead raw copy and immutable COMPLETE gate remain held. No snapshot or lifecycle guard relaxed.",
+  "old_source_windows_partial_roots_UNKNOWN_Pair_WAL_all_retained": true,
+  "Root_complete_fullGov_actions_Save_or_newday_credit": false
+}
