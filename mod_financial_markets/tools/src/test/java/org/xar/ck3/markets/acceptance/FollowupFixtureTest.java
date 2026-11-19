@@ -319,9 +319,9 @@ final class FollowupFixtureTest {
         assertTrue(scripts.contains("var:xfm_fee_paid_cents <= xfma_spot_e102_spot_expected_fee_value"));
     }
 
-    @Test void generatedStoryCatalogKeepsCoreAndPublishedEpochOneTypesWithOnlyCurrentCaseActive() {
+    @Test void generatedStoryCatalogKeepsCoreAndEpochOneAndTwoTypesWithOnlyCurrentCaseActive() {
         for (Profile profile : Profile.values()) {
-            for (int epoch : List.of(1, 2, 1_000_000_000)) {
+            for (int epoch : List.of(1, 2, 3, 1_000_000_000)) {
                 Request input = request(profile, epoch);
                 Map<String, byte[]> scripts = FollowupObservationScripts.render(input);
                 assertCompatibilityCatalog(parse(new String(scripts.get("common/story_cycles/" + input.prefix() + ".txt"),
@@ -360,10 +360,57 @@ final class FollowupFixtureTest {
         }
     }
 
+    @Test void spotEpochThreeArmKeepsOlderStateAndNeverResetsItsCurrentBaseline() {
+        Request input = request(Profile.SPOT, 3);
+        var scripts = FollowupObservationScripts.render(input);
+        Block arm = parse(new String(scripts.get("common/scripted_guis/" + input.prefix() + ".txt"), StandardCharsets.UTF_8))
+                .block(input.prefix() + "_arm_gui").block("is_valid");
+        Node actor = new Node("character").number("is_ai", 0).number("is_alive", 1).number("xfma_armed", 1)
+                .number("xfma_spot_e1_armed", 1).reference("xfma_spot_e1_story", new Node("xfma_spot_e1_observer"))
+                .number("xfma_spot_e2_armed", 1).reference("xfma_spot_e2_story", new Node("xfma_spot_e2_observer"));
+        Map<String, Datum> older = Map.copyOf(actor.variables);
+        assertTrue(matches(arm, actor, actor, null), "saved core/e1/e2 state cannot supply or block the new e3 baseline");
+        assertEquals(older, actor.variables, "reading readiness cannot rewrite retained epochs");
+        actor.number("xfma_spot_e3_armed", 1);
+        assertFalse(matches(arm, actor, actor, null), "this epoch cannot be armed twice");
+        actor.variables.remove("xfma_spot_e3_armed");
+        actor.reference("xfma_spot_e3_story", new Node("xfma_spot_e3_observer"));
+        assertFalse(matches(arm, actor, actor, null), "a retained current story prevents rearming even without its flag");
+        assertCompatibilityCatalog(parse(new String(scripts.get("common/story_cycles/" + input.prefix() + ".txt"), StandardCharsets.UTF_8)), input);
+    }
+
+    @Test void spotEpochThreeEmissionRetainsEpochTwoThroughExistingSavedInventoryConsumer() throws Exception {
+        Request input = request(Profile.SPOT, 3);
+        var emission = FixtureEmitter.emit(repository(), temporary.resolve("saved-spot-e3"), "synthetic-fixture-machine", input);
+        Path fixture = Path.of(emission.fixture());
+        assertCompatibilityCatalog(parse(Files.readString(fixture.resolve("common/story_cycles/" + input.prefix() + ".txt"))), input);
+        var manifest = FixtureEmitter.JSON.readTree(Files.readAllBytes(Path.of(emission.manifest().path())));
+        assertEquals(6, manifest.path("producer_source_pins").size());
+        assertEquals(11, manifest.path("files").size());
+        assertEquals(input, FixtureEmitter.readInput(fixture.resolve("_xfma_request.json")));
+        Path shared = Path.of(System.getProperty("xfm.shared.source", repository().toString())).toAbsolutePath().normalize();
+        Path consumer = repository().resolve("mod_financial_markets/tools/src/test/resources/acceptance/verify_saved_observer_inventory.py");
+        Path scratch = temporary.resolve("consumer-spot-e3"), log = temporary.resolve("consumer-spot-e3.log");
+        var process = new ProcessBuilder(System.getProperty("xfm.python", "python"), "-B", "-X", "utf8", consumer.toString(),
+                "--repo-root", repository().toString(), "--shared-source", shared.toString(),
+                "--manifest", emission.manifest().path(), "--scratch", scratch.toString())
+                .directory(shared.toFile()).redirectErrorStream(true).redirectOutput(log.toFile()).start();
+        assertTrue(process.waitFor(90, TimeUnit.SECONDS), "current public Saved consumer timed out");
+        assertEquals(0, process.exitValue(), Files.readString(log));
+        var result = FixtureEmitter.JSON.readTree(Files.readAllBytes(scratch.resolve("actual-result.json")));
+        assertTrue(result.path("saved_inventory_verified").booleanValue());
+        assertTrue(result.path("host_copy_readback_verified").booleanValue());
+        assertFalse(result.path("game_started").booleanValue());
+        assertFalse(result.path("business_acceptance_proven").booleanValue());
+    }
+
     private static void assertCompatibilityCatalog(Block catalog, Request input) {
         Set<String> expected = new HashSet<>(Set.of("xfma_observer", "xfma_spot_e1_observer", "xfma_derivatives_e1_observer",
                 "xfma_lifecycle_e1_observer", "xfma_inheritance_e1_observer", "xfma_cold_reload_e1_observer",
-                "xfma_news_crisis_e1_observer", "xfma_ai_capacity_e1_observer"));
+                "xfma_news_crisis_e1_observer", "xfma_ai_capacity_e1_observer",
+                "xfma_spot_e2_observer", "xfma_derivatives_e2_observer", "xfma_lifecycle_e2_observer",
+                "xfma_inheritance_e2_observer", "xfma_cold_reload_e2_observer",
+                "xfma_news_crisis_e2_observer", "xfma_ai_capacity_e2_observer"));
         String active = input.prefix() + "_observer";
         expected.add(active);
         Set<String> actual = new HashSet<>();

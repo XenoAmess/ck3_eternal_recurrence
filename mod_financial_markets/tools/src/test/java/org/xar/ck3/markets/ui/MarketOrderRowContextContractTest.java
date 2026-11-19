@@ -8,11 +8,10 @@ import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/** Source contracts only. No GUI engine evaluation, financial mutation, or live-success claim. */
+/** R18 Scope.Self parsing regression contracts. Direct Scope is the existing model value; no live-success claim. */
 final class MarketOrderRowContextContractTest {
     private static final Path SOURCE = Path.of(System.getProperty("xfm.source", ".."));
     private static String quoted(String text) { return Character.toString(34) + text + Character.toString(34); }
-    private static final String CONTEXT = "datacontext = " + quoted("[Scope.Self]");
     private static String source(String relative) throws IOException { return Files.readString(SOURCE.resolve(relative)); }
     private static String body(String text, String header) {
         int start = text.indexOf(header);
@@ -52,13 +51,13 @@ final class MarketOrderRowContextContractTest {
         assertFalse(item.contains("xfm_market_order_row ="), "the concrete item must own its context");
         return body(item, "vbox = {");
     }
-    @Test void bothConcreteOrderItemsPreserveTheEntireOriginalTemplateAndBindTheirOwnScope() throws IOException {
+    @Test void bothConcreteOrderItemsPreserveTheSharedTemplateWithNativeModelContext() throws IOException {
         String window = source("gui/xfm_market_window.gui");
         String original = body(source("gui/xfm_market_rows.gui"), "type xfm_market_order_row = vbox {");
         for (String name : List.of("xfm_market_orders_scroll", "xfm_market_history_scroll")) {
             String row = row(list(window, name));
-            assertTrue(row.stripLeading().startsWith(CONTEXT));
-            assertEquals(compact(original), compact(row.replace(CONTEXT, "")), name);
+            assertFalse(row.contains("datacontext ="), "the model item already supplies its Scope value");
+            assertEquals(compact(original), compact(row), name);
         }
     }
     @Test void bothListsKeepTheSameAccountDataAndSixteenRowPagination() throws IOException {
@@ -78,8 +77,26 @@ final class MarketOrderRowContextContractTest {
                 String selected = body(row, "button_standard = { name = " + quoted(button));
                 String gui = button.equals("xfm_market_cancel") ? "xfm_market_cancel_gui" : "xfm_market_cancel_futures_order_gui";
                 for (String operation : List.of("IsValid", "IsValidTooltip", "Execute"))
-                    assertTrue(selected.contains("GetScriptedGui( '" + gui + "' )." + operation + "( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )"));
+                    assertTrue(selected.contains("GetScriptedGui( '" + gui + "' )." + operation + "( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope ).End )"));
             }
+        }
+    }
+    @Test void everyAffectedModelRowRejectsUnsupportedSelfAndPassesTheDirectScopeValue() throws IOException {
+        for (String file : List.of("xfm_market_window", "xfm_market_rows", "xfm_market_debts",
+                "xfm_market_news", "xfm_market_otc", "xfm_market_futures_book")) {
+            String gui = source("gui/" + file + ".gui");
+            assertFalse(gui.contains("Scope.Self"), file);
+            assertFalse(gui.contains("datacontext = " + quoted("[Scope]")), "no new Scope self-binding is introduced");
+            int expected = switch (file) {
+                case "xfm_market_window" -> 16;
+                case "xfm_market_rows" -> 20;
+                case "xfm_market_futures_book" -> 1;
+                default -> 2;
+            };
+            String argument = ".AddScope( 'xfm_ui_item', Scope )";
+            int found = 0, offset = 0;
+            while ((offset = gui.indexOf(argument, offset)) >= 0) { found++; offset += argument.length(); }
+            assertEquals(expected, found, file);
         }
     }
     @Test void sourceTypeAndLegalAccountGuardsRemainWithTheOriginalCancellationHandlers() throws IOException {

@@ -1,0 +1,325 @@
+{
+  "schema": "ck3-financial-machine4-r0018-and-scope-source-fix-v1",
+  "at_utc": "2026-11-19T03:50:28.719857+00:00",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0018",
+  "source_head_run": "43d06c5f4a70e193cc2e465d396dc5f9eabe3bc6",
+  "business_pass": false,
+  "normal_original_closure": {
+    "schema": "ck3-financial-original-scene-closure-v1",
+    "at_utc": "2026-11-19T03:46:20.692593+00:00",
+    "run_id": "4-8e1c2f1861--financial-markets--R0018",
+    "host": {
+      "path": "C:\\workspace\\ck3-market-live-20261119k\\live\\4-8e1c2f1861--financial-markets--R0018\\host-original-process-exit.json",
+      "bytes": 240,
+      "sha256": "6647a1807f07f6bf4290c9ab87fa18f31a6ca414ba95cd39ad3710224000cbe4"
+    },
+    "session": {
+      "path": "C:\\workspace\\ck3-market-live-20261119k\\live\\4-8e1c2f1861--financial-markets--R0018\\native-report.session.log",
+      "bytes": 8034,
+      "sha256": "0f70ed0e9ef25ef8ee32cfd260c49e05a6f02c43f8b9e250ffa3cde70c94c973"
+    },
+    "run": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT20-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1499,
+      "sha256": "17b751d6d33df5decd478b67b32a764cebc9756b6d21799d954a283d915bdccb"
+    },
+    "business_pass": false,
+    "reason": "Actual Scope.Self GUI parser failure retained; spot phase not executed or accepted. Independent normal futures long matched real AI and latest physical SAVE retained. Normal original Game0/Host0/Job0 closure. Continue GUI repair and full acceptance from latest actual R18 save.",
+    "new_game_days": 0,
+    "physical_saves": 3,
+    "normal_game_exit": true,
+    "latest_physical_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0018\\spot20-after-futures-long01\\ARCHIVE.actual.json",
+      "bytes": 7514,
+      "sha256": "b04498274d0faf13a4233c967ee76c33b6368a812e2c6d7354e585705ce54bb1"
+    },
+    "keeper": {
+      "path": "C:\\workspace\\ck3-market-live-20261119k\\keepers\\a96\\report.json",
+      "bytes": 440,
+      "sha256": "17e12405e1b2616a4827f4c25484e70c43005dbbb23b6d6b87addc3678f46a93"
+    },
+    "allocate": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-spot20\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1939,
+      "sha256": "79beb783eb7b9353f139c9ef7503f9ab97f85ede48fec78907d86969b37c7239"
+    }
+  },
+  "release": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "43d06c5f4a70e193cc2e465d396dc5f9eabe3bc6"
+      },
+      "last_sequence": 15403,
+      "next_step": "",
+      "pid": 16804,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "R0018 Game0 Host0 Job0 keeper0 actual normal closure; GUI parser failure preserved; actual player futures LONG6 saved; continue full product from latest actual R18 save",
+      "task_id": "ck3-financial-market-core-a96",
+      "updated_at_utc": "2026-11-19T03:46:21.756673+00:00"
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 15403,
+      "event_id": "d6d675a3ed4741ae9243b1b7c2df4917",
+      "timestamp_utc": "2026-11-19T03:46:21.757670+00:00",
+      "kind": "completed",
+      "task_id": "ck3-financial-market-core-a96",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R0018 Game0 Host0 Job0 keeper0 actual normal closure; GUI parser failure preserved; actual player futures LONG6 saved; continue full product from latest actual R18 save",
+      "next_step": "",
+      "resources": [],
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "43d06c5f4a70e193cc2e465d396dc5f9eabe3bc6"
+      }
+    }
+  },
+  "cold_exact_financial_records": 1066,
+  "futures_real_trade": {
+    "matching": {
+      "incoming_order_permanent": "12",
+      "incoming_order_native": "1123",
+      "resting_order_permanent": "11",
+      "resting_order_native": "1102",
+      "execution_cents_per_lot": 107,
+      "lots": 1,
+      "actual_position_permanent": "6",
+      "actual_position_native": "1125",
+      "contract_permanent": "3",
+      "contract_native": "205",
+      "index_permanent": "3",
+      "index_native": "63",
+      "index_quote_divisor": 100,
+      "eligible_resting_order_count": 1,
+      "FIFO_scope": "The unique eligible resting sell order was consumed; price/time selection is consistent. This instance has no competing equal-price orders and does not independently prove multi-order FIFO."
+    },
+    "independent_cash_equations_cents": {
+      "private": {
+        "before_free": 6071,
+        "before_reserved": 0,
+        "after_free": 5963,
+        "after_reserved": 107,
+        "net_total_change": -1,
+        "margin107_fee1_release22_from_temporary130": true
+      },
+      "maker": {
+        "before_free": 0,
+        "before_reserved": 130,
+        "after_free": 22,
+        "after_reserved": 107,
+        "net_total_change": -1
+      },
+      "all_accounts_cash_before": 15525,
+      "all_accounts_cash_after": 15523,
+      "exchange_fees_before": 456,
+      "exchange_fees_after": 458,
+      "all_accounts_plus_fee_before": 15981,
+      "all_accounts_plus_fee_after": 15981
+    },
+    "existing_native_and_permanent_identities_preserved": true,
+    "changed_existing_native_ids": [
+      "52",
+      "54",
+      "1101",
+      "1102",
+      "1103"
+    ],
+    "new_native_ids": [
+      "1123",
+      "1124",
+      "1125",
+      "1126",
+      "1127"
+    ],
+    "unchanged_existing_financial_projection_count": 1061,
+    "limitations": [
+      "Only completed report/PIPELINE/ARCHIVE/raw metadata were read; SAVE contents were not reopened or independently rehashed by this reconciler. Archive/source independence and full-stream hashes are checked as recorded original evidence.",
+      "All existing projected financial records and fields were compared; this does not assert every nonprojected game field is unchanged.",
+      "App06 remains source-bound candidate with explicit unqualified1.21 layout; original financialCertified=false and raw playedActorBindingClaimed=false are preserved.",
+      "Real position, filled orders, margin reservations and cash deltas support this observed trade; handled/ACK alone is not used as success proof.",
+      "No new game day, settlement, liquidation, redemption or general FIFO stress qualification is inferred.",
+      "The historical untyped native51 remains explicit retired-XFMA evidence, never silently treated as a typed financial record."
+    ]
+  },
+  "gui_parser_failure": {
+    "schema": "financial-r0018-bounded-parser-error-evidence-v1",
+    "captured_at": "2026-11-19T03:37:22.493752+00:00",
+    "source": "C:\\workspace\\ck3-market-live-20261119k\\managed-states\\financial-spot20\\state\\profile\\logs\\error.log",
+    "source_size_before": 463733,
+    "source_size_after": 463733,
+    "source_mtime_ns_before": 1795059442025871900,
+    "source_mtime_ns_after": 1795059442025871900,
+    "prefix": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0018-gui-parser-prefix01\\error.prefix.original.log",
+      "bytes": 262144,
+      "sha256": "82a55302121b722bad2163e486821cb2468b8b33e2c79f7935fe3f945d04b0bf"
+    },
+    "matches": [
+      {
+        "line": 91,
+        "text": "[11:24:49][E][pdx_data_factory.cpp:1371]: Could not find promote for 'Self' in 'Scope.Self'.",
+        "previous": [
+          "[11:24:16][E][jomini_effect.cpp:1151]: Variable 'xfm_source_day' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+        ],
+        "following": [
+          "[11:24:49][E][pdx_data_factory.cpp:1052]: Failed converting statement for 'Scope.Self'"
+        ]
+      },
+      {
+        "line": 92,
+        "text": "[11:24:49][E][pdx_data_factory.cpp:1052]: Failed converting statement for 'Scope.Self'",
+        "previous": [
+          "[11:24:49][E][pdx_data_factory.cpp:1371]: Could not find promote for 'Self' in 'Scope.Self'."
+        ],
+        "following": [
+          "[11:24:49][E][pdx_gui_factory.cpp:947]: gui/xfm_market_window.gui:73 - Failed converting property 'datacontext'(897)"
+        ]
+      },
+      {
+        "line": 93,
+        "text": "[11:24:49][E][pdx_gui_factory.cpp:947]: gui/xfm_market_window.gui:73 - Failed converting property 'datacontext'(897)",
+        "previous": [
+          "[11:24:49][E][pdx_data_factory.cpp:1052]: Failed converting statement for 'Scope.Self'"
+        ],
+        "following": [
+          ""
+        ]
+      },
+      {
+        "line": 95,
+        "text": "[11:24:49][E][pdx_data_factory.cpp:1371]: Could not find promote for 'Self' in 'Scope.Self'.",
+        "previous": [
+          ""
+        ],
+        "following": [
+          "[11:24:49][E][pdx_data_factory.cpp:1052]: Failed converting statement for 'Scope.Self'"
+        ]
+      },
+      {
+        "line": 96,
+        "text": "[11:24:49][E][pdx_data_factory.cpp:1052]: Failed converting statement for 'Scope.Self'",
+        "previous": [
+          "[11:24:49][E][pdx_data_factory.cpp:1371]: Could not find promote for 'Self' in 'Scope.Self'."
+        ],
+        "following": [
+          "[11:24:49][E][pdx_gui_factory.cpp:947]: gui/xfm_market_window.gui:97 - Failed converting property 'datacontext'(897)"
+        ]
+      },
+      {
+        "line": 97,
+        "text": "[11:24:49][E][pdx_gui_factory.cpp:947]: gui/xfm_market_window.gui:97 - Failed converting property 'datacontext'(897)",
+        "previous": [
+          "[11:24:49][E][pdx_data_factory.cpp:1052]: Failed converting statement for 'Scope.Self'"
+        ],
+        "following": [
+          ""
+        ]
+      }
+    ],
+    "full_log_snapshot_claimed": false,
+    "native_or_game_action": false
+  },
+  "source_fix": {
+    "AddScope_parameter_Scope_Self_to_native_Scope": 43,
+    "invalid_datacontexts_removed": 2,
+    "runtime_gui_files": 6,
+    "financial_effects_or_guards_changed": false,
+    "source_contract_tests": 5,
+    "source_contract_wait": {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-19T03:47:22.237536+00:00",
+      "finished_at_utc": "2026-11-19T03:47:52.394424+00:00",
+      "argv": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "mvn",
+        "-f",
+        "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\pom.xml",
+        "-Dtest=MarketOrderRowContextContractTest",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Dxfm.source=C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets",
+        "test"
+      ],
+      "pid": 23720,
+      "birth_filetime": "134395336422389524",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 30.15691200015135,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-scope-value02\\stdout.log",
+        "bytes": 3120,
+        "sha256": "4d86b7e2aa59a8e5a4379ae53253492e5cc1b79fe086ba030015de781b3a227a"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-scope-value02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "independent_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\scope-model-value-independent-review01\\REVIEW.actual.json",
+      "bytes": 15177,
+      "sha256": "00601cc23a69c6d065d6f6a2e881256c7ed6b681235c5afcfb5827af6245b125"
+    },
+    "manifest": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\scope-model-value-candidate01\\candidate-source-manifest.json",
+      "bytes": 13847,
+      "sha256": "eafd0db9eaa3314f44d477781866870afa09468db8438924e038045f4343e1af"
+    },
+    "engine_validation": "pending new scene"
+  },
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0018-futures-long-reconciliation01\\EVIDENCE.actual.json",
+      "bytes": 31080,
+      "sha256": "4a8d038bd2e54f2f98e8f31cc7d6962fd7daf7b2dfc34609d731d652724380f1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot20-baseline-save01-PIPELINE.actual.json",
+      "bytes": 1157,
+      "sha256": "6c1e6304dbb7bec01585b4de9fd812dc3b0bb3d6e961ff5831f909c9821f0d43"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot20-before-futures01-PIPELINE.actual.json",
+      "bytes": 1162,
+      "sha256": "195c64b0b586269dfa934f0762fe618d79e43bb44dc3edc7d39335733e68a4ee"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot20-after-futures-long01-PIPELINE.actual.json",
+      "bytes": 1182,
+      "sha256": "28ee9d24110f8b5df02579222902ea77df9bbff245eb49fdc177435151b5aba9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT20-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1499,
+      "sha256": "17b751d6d33df5decd478b67b32a764cebc9756b6d21799d954a283d915bdccb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-spot20\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1939,
+      "sha256": "79beb783eb7b9353f139c9ef7503f9ab97f85ede48fec78907d86969b37c7239"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot20\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1365,
+      "sha256": "a0692ce501b7f067c65897c554406052a9e3255351a20cc9e8a4bc4146bd0721"
+    }
+  ],
+  "test_launch01": "CreateProcess failed before child PID because bare mvn is a Windows cmd entry; no test dispatched; preserved operation01 directory. Operation02 used cmd.exe /d /c and actual wait0.",
+  "financialCertified": false,
+  "next": "New normal scene from latest actual R18 physical save; new observer epoch; GUI parse/cancel and player position management remain unaccepted."
+}

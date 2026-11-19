@@ -87,7 +87,7 @@ public final class FollowupObservationScripts {
     }
 
     /**
-     * Retain the core and published schema-two epoch-one story identities when another fixture is loaded.
+     * Retain core and the finite schema-two epoch-one/epoch-two story identities when another fixture is loaded.
      * Passive declarations deliberately have no callbacks, markers, writes, or end_story operation.
      * This finite compatibility catalog does not claim to cover arbitrary historical epochs.
      */
@@ -95,8 +95,10 @@ public final class FollowupObservationScripts {
         StringBuilder source = new StringBuilder("# Passive compatibility: preserve old observation data without running an old case.\n"
                 + "xfma_observer = { visible = no }\n");
         for (Profile profile : Profile.values()) {
-            String type = "xfma_" + profile.scriptKey() + "_e1_observer";
-            if (!type.equals(activeType)) source.append(type).append(" = { visible = no }\n");
+            for (int epoch : List.of(1, 2)) {
+                String type = "xfma_" + profile.scriptKey() + "_e" + epoch + "_observer";
+                if (!type.equals(activeType)) source.append(type).append(" = { visible = no }\n");
+            }
         }
         return source.toString();
     }

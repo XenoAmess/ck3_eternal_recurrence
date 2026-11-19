@@ -38,7 +38,7 @@
     }
     type xfm_market_otc_buyer_row = button_standard_list {
         name = "xfm_market_otc_buyer_row" size = { 380 58 } text = "xfm_market_otc_buyer_row"
-        enabled = "[GetScriptedGui( 'xfm_market_otc_select_buyer_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
-        onclick = "[GetScriptedGui( 'xfm_market_otc_select_buyer_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+        enabled = "[GetScriptedGui( 'xfm_market_otc_select_buyer_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope ).End )]"
+        onclick = "[GetScriptedGui( 'xfm_market_otc_select_buyer_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope ).End )]"
     }
 }

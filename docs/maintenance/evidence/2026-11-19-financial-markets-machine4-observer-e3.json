@@ -1,0 +1,147 @@
+{
+  "schema": "financial-observer-epoch-three-forward-compatibility-v1",
+  "machine_id": "4-8e1c2f1861",
+  "actual_observer_manifest": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\observer-spot21.fixture.json",
+    "bytes": 4230,
+    "sha256": "f1ca726091c04c5ac7431e6541d9e0c5914811ad36aa572a77b890489c389c77"
+  },
+  "source_candidate": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\observer-epoch2-compat-candidate01\\candidate-source-manifest.json",
+    "bytes": 5159,
+    "sha256": "a9333ff25440f68fccbee38168ad1957d7509fd8622846730cd2f5cb3fc7108f"
+  },
+  "compatibility": "Core plus exact seven Profile e1/e2 types have passive visible=no declarations; current active type deduplicated. No callback, mutation or old case execution. Actual R18 only proves saved spot e2; other finite declarations do not assert live occurrence.",
+  "tests": {
+    "methods": [
+      "spotEpochThreeEmissionRetainsEpochTwoThroughExistingSavedInventoryConsumer",
+      "spotEpochThreeArmKeepsOlderStateAndNeverResetsItsCurrentBaseline",
+      "allFollowupProfilesRoundTripThroughActualEmitterAndExistingManifestContract",
+      "everyGeneratedMutationIsObservationOnlyAndEveryArtifactHasBomAndBalancedSyntax",
+      "generatedStoryCatalogKeepsCoreAndEpochOneAndTwoTypesWithOnlyCurrentCaseActive"
+    ],
+    "count": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "original_junit": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.FollowupFixtureTest.xml",
+      "bytes": 21118,
+      "sha256": "0e598bdf91bb0440961325f358d3c7ebcfaf161f3d8eb30d2dd17d56298933ff"
+    }
+  },
+  "actual_original_waits": [
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-19T03:52:12.928128+00:00",
+      "finished_at_utc": "2026-11-19T03:52:32.939129+00:00",
+      "argv": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "mvn",
+        "-T1",
+        "-f",
+        "mod_financial_markets/tools/pom.xml",
+        "-Dtest=FollowupFixtureTest#allFollowupProfilesRoundTripThroughActualEmitterAndExistingManifestContract+everyGeneratedMutationIsObservationOnlyAndEveryArtifactHasBomAndBalancedSyntax+generatedStoryCatalogKeepsCoreAndEpochOneAndTwoTypesWithOnlyCurrentCaseActive+spotEpochThreeArmKeepsOlderStateAndNeverResetsItsCurrentBaseline+spotEpochThreeEmissionRetainsEpochTwoThroughExistingSavedInventoryConsumer",
+        "-Dxfm.shared.source=C:/workspace/ck3_eternal_recurrence",
+        "-Dxfm.python=C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "test"
+      ],
+      "pid": 19644,
+      "birth_filetime": "134395339329294900",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 20.011022899998352,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-observer-e3-02\\stdout.log",
+        "bytes": 3105,
+        "sha256": "1c3af5059bc4351b61efdd3159e1d5ab9e0d733e767a031bb71d8d2d5248cb90"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-observer-e3-02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-19T03:52:48.221428+00:00",
+      "finished_at_utc": "2026-11-19T03:53:02.780494+00:00",
+      "argv": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "mvn",
+        "-T1",
+        "-f",
+        "mod_financial_markets/tools/pom.xml",
+        "-DskipTests",
+        "-Dquarkus.package.main-class=acceptance",
+        "-Dquarkus.package.output-directory=acceptance-app-spot21",
+        "package"
+      ],
+      "pid": 15852,
+      "birth_filetime": "134395339682227660",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 14.55907310009934,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-financial-acceptance-spot21-01\\stdout.log",
+        "bytes": 2781,
+        "sha256": "78d68d6187ef6cbe115b997f6193a4bbff709ef5a6d15a0fcebaeef4ff99cea5"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-financial-acceptance-spot21-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-19T03:53:47.407017+00:00",
+      "finished_at_utc": "2026-11-19T03:53:48.411538+00:00",
+      "argv": [
+        "java",
+        "-Xms32m",
+        "-Xmx128m",
+        "-jar",
+        "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/target/acceptance-app-spot21/quarkus-run.jar",
+        "emit",
+        "--repo-root",
+        "C:/workspace/ck3_eternal_recurrence",
+        "--output",
+        "C:\\workspace\\ck3-market-task-20261118\\observer-spot21",
+        "--machine-id",
+        "4-8e1c2f1861",
+        "--inputs",
+        "C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\spot21-observer-e3.request.SOURCE.json"
+      ],
+      "pid": 13928,
+      "birth_filetime": "134395340274088603",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 1.0045386001002043,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EMIT-observer-spot21\\stdout.log",
+        "bytes": 360,
+        "sha256": "9bb34c45d9c84d92d06d2a5c216065f9dfb881f93e9840bdac86b0f397f23416"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EMIT-observer-spot21\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "first_adoption_orchestration_failure": "Root metadata adapter first expected changes instead of files and refused before any source write. A dependent test was inadvertently invoked against old source and ran only two old methods, exit0; that original e3-01 is retained and is NOT counted as new coverage. After correcting the adapter, both before/after source pins matched and actual e3-02 ran all five named methods.",
+  "first_old_source_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-observer-e3-01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1487,
+    "sha256": "3de8d26b7503c4da69291e58761c888eaa84297192007b0081c304e8424bf3ef"
+  },
+  "fresh_arm_live": "NOT_RUN",
+  "game_started_by_these_operations": false,
+  "business_pass": false,
+  "financialCertified": false
+}

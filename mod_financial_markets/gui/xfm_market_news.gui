@@ -19,7 +19,7 @@
         name = "xfm_market_news_row"
         size = { 725 55 }
         text = "xfm_market_news_row_text"
-        enabled = "[GetScriptedGui( 'xfm_market_select_news_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
-        onclick = "[GetScriptedGui( 'xfm_market_select_news_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+        enabled = "[GetScriptedGui( 'xfm_market_select_news_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope ).End )]"
+        onclick = "[GetScriptedGui( 'xfm_market_select_news_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope ).End )]"
     }
 }
