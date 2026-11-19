@@ -1,0 +1,67 @@
+{
+  "schema": "ck3.saved-custody-cash42-evidence23/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "cut_utc": "2026-11-19T01:26:47.306695Z",
+  "publication80": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-gui-optional-main28/qualification/publication-docs50/PUBLICATION80-59.json",
+    "bytes": 1037,
+    "sha256": "31047c553bd15ce54c744d5bdab5aea644ef26b6e58ffe1d1ce00110301a8455"
+  },
+  "commit": "edf8302c6bb0f8711afce1ae92051daac73e3fe1",
+  "actual_source15_final": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE15-FULLP-FRONTEND-LEASE-PASSED-SAVED-READSET-HANDLE-RED-NATURAL0-FINAL01.json",
+    "bytes": 3959,
+    "sha256": "5339b178b1e40c2ca7dcda99179576e572d84fa8fe9546497d91020fb776aca4"
+  },
+  "actual_baseline54": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-readset-offline54/qualification/ACTUAL-BASELINE-SAVED-READSET54.json",
+    "bytes": 1202,
+    "sha256": "41c93e27fa0ba9f30fe16a426ecb09b59c1d609cf11033a3a8b3e1f107a0b235"
+  },
+  "baseline": {
+    "seconds": 140.472,
+    "exit": 3,
+    "typed_reason": "HANDLE_BOUND",
+    "source_sequence": 2003,
+    "initial_head_documents": 4008,
+    "initial_capture_sources": 1,
+    "initial_external_path_union": 4009,
+    "final_C_E_A": "NOT_MEASURED",
+    "originals_unchanged": true,
+    "Game_NativeBridge_RootContext_WriterAppend": 0
+  },
+  "readset_role_evidence": {
+    "historical_handle_bound": 0,
+    "actual_cas_cost_handles": 4,
+    "external_or_army_cost_handles": 1,
+    "failed_prefix_CAS3092_not_total": true,
+    "no_pair_retirement_or_refundable_handles_proved": true,
+    "candidate_3production_4unit": "PASS_ONLY_COMPONENT_SCOPE",
+    "normal_package": "Three modules actualBEGIN, storage→NT→localService; not yet PASS",
+    "old39_JARs_unchanged": true,
+    "old_R24_classes_recompiled_fact_retained": true,
+    "source16": "NOT_SIGNED"
+  },
+  "native42_ready_original": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/cash-production42/build-01/repair-03/NATIVE-CASH-PRODUCTION-CANDIDATE-READY42-03.json",
+    "bytes": 4986,
+    "sha256": "ab1b079902624599567f642e518bde163f6e5fb0ae87bd279d61ea8e127b3a82"
+  },
+  "native42": {
+    "DLL_bytes": 13402624,
+    "DLL_sha256": "89e3383097b9e37db6612adb1e156e02ae041840d17587c92d582e5a8ab00f4e",
+    "ON_OFF_each_modes": 8,
+    "actual_packets": 64,
+    "actual_compiled_TU": 14,
+    "scope": "Production NoGame parser/RAM/Actor/serializer + separate candidate DLL; no Java/current MQ/module/TLS/main/getterbody/live authority",
+    "Treasury_allRaised_budget": "UNKNOWN",
+    "Native36_40_41_unchanged": true
+  },
+  "no_new_saved_days_SAVE_WAIT_credit": true,
+  "no_active_owner_endpoint_profile_settings_payloads": true,
+  "resource_registration": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC23-64K-FINITE-METADATA-REGISTRATION132.json",
+    "bytes": 951,
+    "sha256": "6226b732cdc7af1d3a70ffdb72434f7a6c84a13abebb2f9fafa98e09d27fa754"
+  }
+}

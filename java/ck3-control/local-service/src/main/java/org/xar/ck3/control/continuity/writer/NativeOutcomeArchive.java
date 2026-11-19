@@ -620,9 +620,31 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
 
     /** Complete historical proof happens before READ. A bound/unknown provider refuses the
      * optimization with a typed exception; it cannot silently become partial custody. */
+    /** Explicit physical capture components. Resource DATA, never Root/Game/read authority. */
+    public record SavedDataReadsetLimits(ActionPorts.HistoricalReadLimits historical,int maximumCasPublications,
+            int maximumExternalOriginals,long maximumAggregateBytes) {
+        public SavedDataReadsetLimits {
+            Objects.requireNonNull(historical);
+            if(maximumCasPublications<1||maximumCasPublications>16384||maximumExternalOriginals<1||maximumExternalOriginals>8192
+                    ||maximumAggregateBytes<1||maximumAggregateBytes>256L*1024*1024)
+                throw new IllegalArgumentException("finite complete Saved DATA custody components required");
+        }
+        public int maximumAggregateHandles(){return Math.addExact(Math.multiplyExact(4,maximumCasPublications),Math.addExact(maximumExternalOriginals,2));}
+    }
     public <T> SavedPreReadReadSet<T> sealSavedPreReadHistory(ContinuityStorePort.Session same,
             ActionPorts.HistoricalReadLimits limits, java.time.Clock clock, java.time.Instant expiry,
             ActionPorts.CheckedArchiveRead<T> fullProof) throws IOException {
+        return sealSavedPreReadHistory(same,limits,null,clock,expiry,fullProof);
+    }
+    public <T> SavedPreReadReadSet<T> sealSavedPreReadHistoryWithComponents(ContinuityStorePort.Session same,
+            SavedDataReadsetLimits limits, java.time.Clock clock, java.time.Instant expiry,
+            ActionPorts.CheckedArchiveRead<T> fullProof) throws IOException {
+        Objects.requireNonNull(limits);
+        return sealSavedPreReadHistory(same,limits.historical(),limits,clock,expiry,fullProof);
+    }
+    private <T> SavedPreReadReadSet<T> sealSavedPreReadHistory(ContinuityStorePort.Session same,
+            ActionPorts.HistoricalReadLimits limits,SavedDataReadsetLimits custody,
+            java.time.Clock clock,java.time.Instant expiry,ActionPorts.CheckedArchiveRead<T> fullProof)throws IOException {
         Objects.requireNonNull(limits); Objects.requireNonNull(clock); Objects.requireNonNull(expiry); Objects.requireNonNull(fullProof);
         requireSession(same);
         if (this != owner || borrowed != null)
@@ -632,12 +654,13 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         var candidate = new AtomicReference<SavedPreReadReadSet<T>>();
         try {
             return inHistoricalReadScope(same, limits, facade -> {
-                var budget = new ImmutableArtifactStore.SavedReadsetBudget(limits.maximumPublications(),
-                        limits.maximumRetainedBytes(), limits.maximumHandles());
+                var budget = custody==null?new ImmutableArtifactStore.SavedReadsetBudget(limits.maximumPublications(),
+                        limits.maximumRetainedBytes(), limits.maximumHandles()):ImmutableArtifactStore.SavedReadsetBudget.componentBounded(
+                        custody.maximumCasPublications(),custody.maximumExternalOriginals(),custody.maximumAggregateBytes());
                 var cas = artifacts.beginSavedReadsetCapture(same, budget, clock, expiry);
                 SavedPreReadCapture capture = null; boolean transferred = false; Throwable primary = null;
                 try {
-                    capture = new SavedPreReadCapture(same, cas, budget, clock, expiry, limits.maximumPublications());
+                    capture = new SavedPreReadCapture(same, cas, budget, clock, expiry, custody==null?limits.maximumPublications():custody.maximumExternalOriginals());
                     savedPreReadCapture.set(capture); capture.initialize(same);
                     T value = fullProof.read(facade);
                     capture.verify(owner, same); cas.seal(same);
@@ -740,7 +763,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                         throw new IOException("saved external source changed its complete original Pin");
                     return;
                 }
-                budget.reserve(ref.bytes(), 1);
+                budget.reserveExternal(ref.bytes());
                 LedgerFiles.HistoricalDocument acquired = null; boolean kept = false; Throwable primary = null;
                 try {
                     acquired = LedgerFiles.leaseHistorical(ref, maximum);
@@ -785,7 +808,7 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                 if (!armyOriginals.contains(original)) {
                     // The already retained external leaf accounts for our HANDLE. Quote the
                     // producer's peer HANDLE separately until its lexical scope has finished.
-                    budget.reserve(0, 1); armyOriginals.add(original);
+                    budget.reserveExternal(0); armyOriginals.add(original);
                 }
             } catch (IOException | RuntimeException | Error problem) { fail(problem); throw problem; }
         }

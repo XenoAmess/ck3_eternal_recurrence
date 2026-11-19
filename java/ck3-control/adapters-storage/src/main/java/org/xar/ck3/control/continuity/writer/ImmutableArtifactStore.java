@@ -509,8 +509,30 @@ public final class ImmutableArtifactStore {
         private final long maximumBytes;
         private int entries, handles;
         private long bytes;
+        private final int maximumCasPublications, maximumExternalOriginals;
+        private int casPublications, externalOriginals;
         SavedReadsetBudget(int maximumEntries, long maximumBytes, int maximumHandles) {
-            this.maximumEntries = maximumEntries; this.maximumBytes = maximumBytes; this.maximumHandles = maximumHandles;
+            this(maximumEntries,maximumBytes,maximumHandles,maximumEntries,maximumEntries);
+        }
+        private SavedReadsetBudget(int maximumEntries,long maximumBytes,int maximumHandles,
+                int maximumCasPublications,int maximumExternalOriginals) {
+            this.maximumEntries=maximumEntries;this.maximumBytes=maximumBytes;this.maximumHandles=maximumHandles;
+            this.maximumCasPublications=maximumCasPublications;this.maximumExternalOriginals=maximumExternalOriginals;
+        }
+        static SavedReadsetBudget componentBounded(int maximumCasPublications,int maximumExternalOriginals,long maximumBytes) {
+            if(maximumCasPublications<1||maximumCasPublications>16384||maximumExternalOriginals<1||maximumExternalOriginals>8192
+                    ||maximumBytes<1||maximumBytes>256L*1024*1024)throw new IllegalArgumentException("finite Saved DATA custody components required");
+            return new SavedReadsetBudget(Math.addExact(maximumCasPublications,maximumExternalOriginals),maximumBytes,
+                    Math.addExact(Math.multiplyExact(4,maximumCasPublications),Math.addExact(maximumExternalOriginals,2)),
+                    maximumCasPublications,maximumExternalOriginals);
+        }
+        void reserveCas(long payloadBytes)throws IOException {
+            if(casPublications>=maximumCasPublications)throw new SavedReadsetUnavailable(SavedReadsetFailure.ENTRY_BOUND);
+            reserve(payloadBytes,4);casPublications++;
+        }
+        void reserveExternal(long payloadBytes)throws IOException {
+            if(externalOriginals>=maximumExternalOriginals)throw new SavedReadsetUnavailable(SavedReadsetFailure.ENTRY_BOUND);
+            reserve(payloadBytes,1);externalOriginals++;
         }
         void reserve(long payloadBytes, int retainedHandles) throws IOException {
             if (entries >= maximumEntries) throw new SavedReadsetUnavailable(SavedReadsetFailure.ENTRY_BOUND);
@@ -556,7 +578,7 @@ public final class ImmutableArtifactStore {
                 if (!reserved.contains(reference)) {
                     // Include the original historical pair and our independently surviving
                     // pair in the same handle quote, before either acquisition begins.
-                    budget.reserve(Math.addExact(reference.bytes(), 2L * COMMIT_LIMIT), 4);
+                    budget.reserveCas(Math.addExact(reference.bytes(), 2L * COMMIT_LIMIT));
                     reserved.add(reference);
                 }
             } catch (IOException | RuntimeException | Error problem) {

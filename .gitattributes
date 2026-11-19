@@ -1452,3 +1452,9 @@ docs/maintenance/2026-11-19-native-hotfix26757580-military-ready39.json -text wh
 docs/maintenance/2026-11-19-native-hotfix26757580-monthly-ready38.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/maintenance/2026-11-19-native36-remote32-final41-ready.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/maintenance/2026-11-19-native-remote53-source-ready.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve original Saved DATA custody and candidate receipt bytes.
+docs/maintenance/2026-11-19-native-cash-production-ready42.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-saved-custody-cash42-evidence23.json -text
+docs/maintenance/2026-11-19-saved-readset-full-capture59.json -text
+docs/maintenance/2026-11-19-java-saved-readset-main31-ready62.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

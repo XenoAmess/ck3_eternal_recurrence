@@ -187,8 +187,8 @@ public final class RootJavaSavedBootstrap {
                     writer.requireSession(same);ExactRef canonical=same.persistedHead();
                     NativeOutcomeArchive.SavedPreReadReadSet<SavedAttachmentSourceStore.SavedMaterial> sealed=null;
                     try{
-                        sealed=sourceArchive.sealSavedPreReadHistory(same,
-                                new ActionPorts.HistoricalReadLimits(8192,256L*1024*1024,16384),clock,expiry,
+                        sealed=sourceArchive.sealSavedPreReadHistoryWithComponents(same,
+                                new NativeOutcomeArchive.SavedDataReadsetLimits(new ActionPorts.HistoricalReadLimits(8192,256L*1024*1024,16384),16384,8192,256L*1024*1024),clock,expiry,
                                 ignored->org.xar.ck3.control.nativebridge.capabilities.army.ArmyQueryHistoryReference.inReplayReadScope(
                                         new org.xar.ck3.control.nativebridge.capabilities.army.ArmyQueryHistoryReference.ReplayReadLimits(256,256L*1024*1024),
                                         clock,expiry,original->sourceArchive.retainSavedPreReadArmyOriginal(same,original),()->{

@@ -1,0 +1,89 @@
+{
+  "schema": "xar.native.cash42.production-candidate-ready/v1",
+  "sealed_at_utc": "2026-11-19T01:08:35.957154+00:00",
+  "qualification": "PASS_ON_OFF_NOGAME_REQUEST_RAM_READERS_ACTOR_PRODUCTION_SERIALIZERS_AND_SEPARATE_CANDIDATE_DLL_LINK_ONLY",
+  "tuple": {
+    "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+    "game_version": "1.21.0",
+    "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79"
+  },
+  "new_readcap": "game.query.war-cash-current-resources.v2",
+  "step": "query-war-cash-current-resources-v2",
+  "default_off_option": "XAR_CK3_ENABLE_1210_HOTFIX_26757580_PERSONAL_CASH_V2",
+  "candidate_compiled_ON": true,
+  "source_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\SOURCE-OVERLAY42-FINAL.json",
+    "bytes": 9903,
+    "sha256": "54e78ecd87942a37e7498d0655256589f1524c89b07c86827d6d7e17a304f1e7"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\INPUTS42.json",
+    "bytes": 612804,
+    "sha256": "e211d755b12e666d483508a3fb3b5b68a262a0eff423ea3d7aa1e3981b069990"
+  },
+  "build_plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\PLAN42.json",
+    "bytes": 103518,
+    "sha256": "849e06d5a38776227d3fc910c8e3e02d9244df46247b2ba4efb1641afd98928d"
+  },
+  "actual_compilation_and_first_link_red": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\build-01\\ACTUAL42.json",
+    "bytes": 14876,
+    "sha256": "f5024380e36d0dd20d6a50b0a685c34d7aaa659d87e48c39224e019af99074e3"
+  },
+  "second_link_red": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\build-01\\repair-02\\ACTUAL42-02.json",
+    "bytes": 1031,
+    "sha256": "725af8db5946e23f73f279bc85aa21e5a419c6a60ed0c6b0aadc80ab0c1037e2"
+  },
+  "actual_ON_OFF_P_then_DLL_link": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\build-01\\repair-03\\ACTUAL42-03.json",
+    "bytes": 5136,
+    "sha256": "056a297a06f2e14b495052a5c450743c1e64a4a70e158c9445d754a2c9361bd0"
+  },
+  "original_packets": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\build-01\\repair-03\\ORIGINAL-PACKETS42-03.json",
+    "bytes": 18737,
+    "sha256": "67b1cfd4007fbc8dc1444ba1c37077672fe629ea5059a984eda36ca0d606b830"
+  },
+  "packet_predicates": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\build-01\\repair-03\\PACKET-PREDICATES42-03.json",
+    "bytes": 6784,
+    "sha256": "6093ab127a1a2b99fa0fe9b98e1e4be1550bec890b5053ffa9979244f3576722"
+  },
+  "actual_link_member_proof": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\build-01\\repair-03\\LINK-MEMBER-PROOF42-03.json",
+    "bytes": 98359,
+    "sha256": "440ad5aa20f6530071aeff869b6c18ebbadcd58973dbb449609f0beeb682dc8c"
+  },
+  "candidate_dll": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\build-01\\repair-03\\frozen\\xar_ck3_bridge.dll",
+    "bytes": 13402624,
+    "sha256": "89e3383097b9e37db6612adb1e156e02ae041840d17587c92d582e5a8ab00f4e"
+  },
+  "NoGame_programs": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\build-01\\repair-03\\cash_route42_OFF.exe",
+      "bytes": 1044480,
+      "sha256": "f601162206df1f6b76dca6cd79e4e61bf496c08d8d93cb9d23b10289fe59155e"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-production42\\build-01\\repair-03\\cash_route42_ON.exe",
+      "bytes": 1044480,
+      "sha256": "e5afa11eb6615c5baceed2c8254976a139a5a59a96c5fb576d9d1e8fa4511fef"
+    }
+  ],
+  "mode_count_each": 8,
+  "original_formatter_files": 64,
+  "Native36_S34_DLL_Cash40_41_guards_before_after_exact": true,
+  "historical_facts": "Initial36 parser/factory unresolveds and follow-on2 runtime-to-direct Council unresolveds retained; no old obj/program/log overwritten. All14 TUs compiled once. MAP proof requirement absence correctly stopped the initial seal after successful actual DLL link, then real MAP ownership sealed without another link.",
+  "not_qualified": [
+    "real module/TLS/application-main custody/MQ ticket in live process",
+    "actual Native monthly bodies/lifetime/unwind",
+    "Java current public CashV2 consumer/cap admission",
+    "Runtime adoption/live",
+    "trueTreasury/current/allRaised maintenance/budget/spending",
+    "nonempty military Full",
+    "any other new profile capability"
+  ]
+}

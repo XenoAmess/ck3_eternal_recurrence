@@ -1,0 +1,74 @@
+{
+  "schema": "ck3.migration.normal-main31-complete-saved-data-ENV15-runtime-ready/v1",
+  "normal_MAIN_package": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\maven-package58.END.json",
+    "bytes": 909,
+    "sha256": "c1dffa70820bc5599ec9c3cbc2f5c2604a0416f73edf4cff9de1399b501b3880"
+  },
+  "actual_genuine157CP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\MAIN31-FROZEN-RUNTIME-ARCHIVES59.json",
+    "bytes": 92840,
+    "sha256": "7e9f48588e562b5616a84b6d04c8261b4d363b5980bea0b39840db00133d5693"
+  },
+  "classpath": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\DIRECT-RUNTIME-MAIN31-CLASSPATH62.txt",
+    "bytes": 27054,
+    "sha256": "939277cbb8196aa4dec08490f11df4e0097fbd583463d181775d709918a1dff5"
+  },
+  "entry_prefixes": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\NORMAL-MAIN31-ENTRY-PREFIXES62.json",
+    "bytes": 1516,
+    "sha256": "3cf251a7bd70731563a2ddd3a085412fb3ec96d6c8f99794e44bd3ee1ef720ca"
+  },
+  "actual_sameplan_checker": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\ACTUAL-CALLER31-INPUTS62.json",
+    "bytes": 735,
+    "sha256": "f5c2d3d1fbb31b6bba9880372b94068553fb36726c1d8e85196ea072979e5db3"
+  },
+  "complete_real_NoGame_Saved_readset": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\ACTUAL-FIXED-SAVED-READSET59.json",
+    "bytes": 1329,
+    "sha256": "bdf4cf674ffd35dd049d22aeddbeea5b6fdd92570477d8da55fedff0d0b1a82f"
+  },
+  "full_readset_job": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\fixed59.END.json",
+    "bytes": 1372,
+    "sha256": "29405778419a490f36ba32745973fe446f380acfcd9571175ffbc4da0d9575fe"
+  },
+  "actual_C_E_A": {
+    "CAS": 4592,
+    "external_paths": 4012,
+    "Army_authenticated": 0,
+    "budget_entries": 8604,
+    "quote_handles_excluding_fresh2": 22380,
+    "surviving_handles": 13196,
+    "budget_bytes": 252305281
+  },
+  "original_canonical_head_anchor_WAL_and157JAR_unchanged": true,
+  "genuine_ENV15_publicreader_413origins": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\ACTUAL-ENV15-NEWMAIN31-ORIGINS61.json",
+    "bytes": 143065,
+    "sha256": "5b573ddff510ee7c625023db60acfe9c29af291ce89fad2283f629c0bb257139"
+  },
+  "ENV15_reader_job": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\env15-origins61.END.json",
+    "bytes": 361,
+    "sha256": "0211ae6bf3e8b7feaa65a9e941bfc47dc2995e9251c95e0ad3d98e0383f12c3d"
+  },
+  "old_baseline_target_HANDLE_BOUND": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-offline54\\qualification\\ACTUAL-BASELINE-SAVED-READSET54.json",
+    "bytes": 1202,
+    "sha256": "41c93e27fa0ba9f30fe16a426ecb09b59c1d609cf11033a3a8b3e1f107a0b235"
+  },
+  "old4unit_P": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-offline54\\qualification\\test55.END.json",
+    "bytes": 390,
+    "sha256": "d492359db48e4a21a190b57fa144d8a82be2514350eee0e9f1fa5d19274f3c90"
+  },
+  "source3_candidate_manifest": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\saved-readset53\\SAVED-READSET-COMPONENT-PILOT-SOURCE53B.json",
+    "bytes": 2246,
+    "sha256": "11f4f30a57972b9018487f2614822e7be6b8b943949f76dd8fad2ace38eac3f6"
+  },
+  "scope": "Complete historical DATA capture/current/custody/close proven NoGame on real protected head2003; not admission/Root/WAIT/live. Generic historical bounds8192/256MiB/16384 unchanged; separate finite Saved CAS/external/Army resource profile, no partial/UNKNOWN promotion. Actual driver/private authority and Native36 caps unchanged. R31 JAR/JNA now frozen; 56 oldNT class-output recompile and deny-write Jar failure retained; all old39 JARs unchanged."
+}
