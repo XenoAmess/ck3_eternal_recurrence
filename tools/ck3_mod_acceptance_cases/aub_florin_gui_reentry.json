@@ -1,0 +1,49 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "production-decision-reentry-121003",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 1,
+  "required_business_natural_days": 0,
+  "must_not_reach_production_day1": true,
+  "allow_calendar_advance": false,
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": ["--output", "{output}", "--scenario", "florin-gui-reentry"],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "actual_fresh_robert1128_alive_human_day0_disabled_and_resources",
+    "actual_decision_cooldown_readback",
+    "actual_first_Enable_then_Disable_with_independent_four_flag_readbacks",
+    "actual_same_paused_day_immediate_Enable_availability_and_second_Enable_then_Disable",
+    "actual_unchanged_money_resources_date_pause_each_step_final_disabled_and_normal_exit"
+  ],
+  "gui_phases": [
+    {
+      "id": "production-upgrade-reentry",
+      "requirements": ["actual_decision_cooldown_readback"],
+      "at_day": 0
+    }
+  ],
+  "cooldown_readback_contract": {
+    "legacy_requirement_key_preserved": "actual_decision_cooldown_readback",
+    "production_explicit_cooldown_field": false,
+    "numeric_native_getter_claim": false,
+    "required_actual_observation": "Actual first Disable completes, actual Enable immediately reappears available and is executed on the same paused date; an independent enabled observation and actual final Disable confirm it.",
+    "boundary": "Observed same-day absence of a blocking cooldown; no numeric getter, internal queue count or marker-only GUI credit."
+  },
+  "required_markers": [
+    "AUBGUI: TEST BEGIN production_decision_surfaces_1210",
+    "AUBGUI: READY actual_robert1128_disabled_day0_baseline",
+    "AUBGUI: OBSERVE first_enabled_default_policy_same_day_resources",
+    "AUBGUI: OBSERVE first_disabled_all_four_flags_clear_same_day_resources",
+    "AUBGUI: OBSERVE reenabled_default_policy_same_day_resources",
+    "AUBGUI: OBSERVE final_disabled_all_four_flags_clear_same_day_resources",
+    "AUBGUI: TEST DONE production_decision_surfaces_1210"
+  ],
+  "forbidden_markers": ["AUBGUI: PREP FAIL", "AUBGUI: TEST FAIL"],
+  "scope": "Fresh CK3 1.21.0.3 Robert1128, alive/human, initially disabled. Reuse the original read-only seven-marker fixture unchanged and execute two actual default Enable/Disable cycles without calendar advancement. All four production flags, exact date, pause and resources require independent GUI observations at every stage; actual immediate same-day Enable availability and execution after first Disable are mandatory. Only observer-owned variables may be written by the fixture. Each real Enable retains its legitimate queued day1 seed until normal close; never resume to day1, clean seeds, dispatch production, force actor/government/title or invent queue/getter proof. Policy hovers and representative previews are outside this case and require separately identified product evidence. Earlier partial cases retain their own outcome and are not promoted by this run. Unknown stock windows stop operator flow without automatic selection. Normal close is mandatory; money/domain/succession and whole-product acceptance remain separate.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

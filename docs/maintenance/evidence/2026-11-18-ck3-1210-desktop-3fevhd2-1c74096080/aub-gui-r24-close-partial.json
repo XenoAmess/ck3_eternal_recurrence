@@ -1,0 +1,75 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T18:49:52.957710+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024",
+  "status": "CLOSED_PARTIAL_NO_GAME",
+  "process": {
+    "at_utc": "2026-11-19T18:36:18.287551+00:00",
+    "pid": 22164,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "keeper": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "u1210-desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024",
+    "last_sequence": 10703,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024\\lease-journal.jsonl"
+  },
+  "screen_release": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024\\screen-release.json",
+    "bytes": 1251,
+    "sha256": "f74e89e35860aa9af84948796ed876f2f0ae7d377bcf4dc2573c4abe254e3408",
+    "file_id": "2533274793953065"
+  },
+  "screen_release_ok": true,
+  "shared_verify": {
+    "status": "BLOCKED",
+    "error": "Missing or failed business evidence: actual_decision_cooldown_readback",
+    "runtime_status": "NOT_RUN",
+    "business_acceptance": "NOT_ASSESSED"
+  },
+  "shared_verify_exit_code": 2,
+  "shared_verify_generic_runtime_status_boundary": "NOT_RUN is failure-envelope default; actual retained original Game/Popen0 evidence is separate, not erased.",
+  "business_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024\\business-review.json",
+    "bytes": 22657,
+    "sha256": "e4451a7b34a6a9b80519833d5d9a729ff7fc86ccd35bf972e22f65b57dd5d394",
+    "file_id": "5066549581414769"
+  },
+  "resource_actual_corrected": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-R0024-resource-actual-a02.json",
+    "bytes": 46206,
+    "sha256": "da0a12aa29df5c4bb0d035b62490b0e7895786a73208b82d2d2bc9922d92007e",
+    "file_id": "4503599627993456"
+  },
+  "consent_seed_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-R0024-consent-seed-readonly-a01.json",
+    "bytes": 2957,
+    "sha256": "93e4515b60b9c24677a45423631420cc32228829b5ec9c33b657c1f87927e8a4",
+    "file_id": "3940649674573048"
+  },
+  "shader_cleanup": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-gui-R0024\\summary.json",
+    "bytes": 330,
+    "sha256": "d4dd0cdc6b55680acb8a652ebbbb54c83c6caa1f0d193a36e4e59618f59cca8a",
+    "file_id": "5066549581414601"
+  },
+  "shader_deletion_files": 4420,
+  "shader_failed_files": 0,
+  "shader_guard_first_attempt": "Rejected old gui-state ancestry before any plan/deletion. Original failed executor retained; fresha02 only permits actual gui-state-26785313-compressed exact current profile, preserving exact target/protected/noGame/handle guards.",
+  "source_field_measurement_typo": "Originalbefore-shader resource field2012MiB retained as report-only text substitution error; a02 records actual200->208MiB admissions and measured categories. No actual2012MiB budget.",
+  "free_D": 22141693952,
+  "runtime208MiB_future_reservation": 0,
+  "postclose12MiB_future_reservation": 0,
+  "repo_Steam_SCREEN_Game_leases_released": true,
+  "repo_mutations": 0,
+  "new_Game_permitted_by_this_close_record": false,
+  "remaining": "Reentry/cooldown and second cycle NOT_RUN; parent to create separate new case; oldR24 remainsPARTIAL."
+}

@@ -1,0 +1,436 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T18:47:48.051828+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024",
+  "case": "production-decision-gui-1210",
+  "reviewer": "/root/aub_florin_review",
+  "direct_image_review": true,
+  "Root_direct_image_review_claim": false,
+  "passed": false,
+  "status": "PARTIAL_FIRST_CYCLE_4_OF_7_MARKERS_SECOND_REENTRY_NOT_RUN",
+  "facts": {
+    "actual_fresh_robert1128_alive_human_day0_disabled_and_resources": {
+      "passed": true,
+      "scope": "Real fresh1066 Robert1128 human/alive and disabled baseline passed actual fixture predicates; displayed142 gold/2200 prestige/150 piety are rounded UI observations, not exact numeric Native queries.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-compressed\\gui-2ac0c7dd9ee444e880cfaa4de5db8f91\\profile\\logs\\debug.log",
+          "bytes": 1184863,
+          "sha256": "d3f5913d55f6c590cf5339afc8a7eecdaef14345653f601050edb3a9ead204ae",
+          "file_id": "1407374887097764"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-robert-start-button.png",
+          "bytes": 1154139,
+          "sha256": "e558c668804637f6fd7858dfc0f94f7561e835327b76eb0655d389720d73dba1",
+          "file_id": "844424933688038"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-world-hud-check.png",
+          "bytes": 1175155,
+          "sha256": "f246d4e39558a8bd92312e0f30077de785b6211021231df903b2aa0bde8f9564",
+          "file_id": "2533274793952349"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-baseline-closed-view.png",
+          "bytes": 1165371,
+          "sha256": "cd5ef91d6ae7cbbb7b955b5944412925b3e831367f168a523ed4e0584cd42203",
+          "file_id": "844424933688426"
+        }
+      ]
+    },
+    "actual_enable_disable_decision_surface": {
+      "passed": true,
+      "scope": "Actual original Enable choice surface and actual original Disable confirmation were opened and reviewed.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-compressed\\gui-2ac0c7dd9ee444e880cfaa4de5db8f91\\profile\\logs\\debug.log",
+          "bytes": 1184863,
+          "sha256": "d3f5913d55f6c590cf5339afc8a7eecdaef14345653f601050edb3a9ead204ae",
+          "file_id": "1407374887097764"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-enable-policy-open-view.png",
+          "bytes": 1160869,
+          "sha256": "636c577b5c35b747962f6ce0fd53e127b619df371a4e475dee68d1064d24d2ad",
+          "file_id": "1407374887109908"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-disable-open-a02.png",
+          "bytes": 1128405,
+          "sha256": "3bd9e17edb9a153c0df7f9df2cb452597c5d81deeb251ba81e90a7d33ba3a187",
+          "file_id": "1970324840531687"
+        }
+      ]
+    },
+    "actual_decision_cooldown_readback": {
+      "passed": false,
+      "scope": "After actual first Disable, Enable immediately reappeared on the same paused date. Actual second Enable execution and its independent readback were NOT_RUN, so the required cooldown/reentry contract is incomplete. No numeric cooldown getter or queue-cardinality claim.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-compressed\\gui-2ac0c7dd9ee444e880cfaa4de5db8f91\\profile\\logs\\debug.log",
+          "bytes": 1184863,
+          "sha256": "d3f5913d55f6c590cf5339afc8a7eecdaef14345653f601050edb3a9ead204ae",
+          "file_id": "1407374887097764"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-disabled-actual.png",
+          "bytes": 1122273,
+          "sha256": "5273e092ddd768e1174bc365852227e8e65c65ac3020022ab95190ff3274744c",
+          "file_id": "3940649677506289"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-disabled-observed.png",
+          "bytes": 1140736,
+          "sha256": "d859c4e01a257d4a127957fc644e10af93ebe43ab34ef36fd2381b21d3784180",
+          "file_id": "1688849863819926"
+        }
+      ]
+    },
+    "actual_all_six_localized_policy_labels_hovers_no_raw_tokens": {
+      "passed": true,
+      "scope": "All six complete localized labels and all six actual hover explanations reviewed directly, with no raw localization tokens in those surfaces.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-compressed\\gui-2ac0c7dd9ee444e880cfaa4de5db8f91\\profile\\logs\\debug.log",
+          "bytes": 1184863,
+          "sha256": "d3f5913d55f6c590cf5339afc8a7eecdaef14345653f601050edb3a9ead204ae",
+          "file_id": "1407374887097764"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-hover-treasury-pause-view.png",
+          "bytes": 1158303,
+          "sha256": "1751899fe03e4ddd38f193b593ff9eacb70feea37264cf661d2e46d8589d64a8",
+          "file_id": "8444249304214427"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-hover-treasury-continue-view.png",
+          "bytes": 1158746,
+          "sha256": "7f5ff8c907c69f024ef6c1428b24b2959ee9ae4fd1c29560f270f18c8a6979ae",
+          "file_id": "844424933688743"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-hover-personal-pause-view.png",
+          "bytes": 1158493,
+          "sha256": "f7faa01ec25896695f4c40279ebbc8e53294f3cbc7b1b5d9dee45c6ad60ed406",
+          "file_id": "1688849863820775"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-hover-personal-continue-view.png",
+          "bytes": 1157679,
+          "sha256": "8497ab6b44b9134fdb307b7c441f9e2a55ea50dd4b8071d44a1341e254881801",
+          "file_id": "562949956978217"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-hover-treasury-first-pause-view.png",
+          "bytes": 1158392,
+          "sha256": "0896fa195c4b49702918d71e4926c59ea5f6f88ed5baa29738a34819d34a0220",
+          "file_id": "562949956978226"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-hover-treasury-first-continue-view.png",
+          "bytes": 1158133,
+          "sha256": "0b7c412c3e8d9a1b64aa3e965219ea33db9ff72796d7e50465f15f890bd10e2d",
+          "file_id": "562949956978238"
+        }
+      ]
+    },
+    "actual_default_selection_and_three_original_preview_selections_then_only_default_confirmation": {
+      "passed": true,
+      "scope": "Initial/default treasury-first/continue selection and three actual effects-confirmation previews reviewed: treasury-only/pause, personal-only/continue, treasury-first/continue. Back returned without execution; only default was actually confirmed once. File first-enable-confirm is a choice-to-preview transition, not the actual production confirmation.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-compressed\\gui-2ac0c7dd9ee444e880cfaa4de5db8f91\\profile\\logs\\debug.log",
+          "bytes": 1184863,
+          "sha256": "d3f5913d55f6c590cf5339afc8a7eecdaef14345653f601050edb3a9ead204ae",
+          "file_id": "1407374887097764"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-enable-policy-open-view.png",
+          "bytes": 1160869,
+          "sha256": "636c577b5c35b747962f6ce0fd53e127b619df371a4e475dee68d1064d24d2ad",
+          "file_id": "1407374887109908"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-preview-effect-treasury-pause.png",
+          "bytes": 1128931,
+          "sha256": "ec8beff2a998d3ef287a50d7be0a2922ed9f8150930afe4f1dff34587bba5905",
+          "file_id": "1688849863820932"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-preview-effect-personal-continue.png",
+          "bytes": 1127604,
+          "sha256": "57c0d39b0d05b4e815b18ccfc39b4604ae69c2a9deef4b2ac46ccd0444e7f8ab",
+          "file_id": "562949956978331"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-preview-effect-default-continue.png",
+          "bytes": 1129051,
+          "sha256": "58a3f8794aa0fa637b8a9ba0974f48d42b86d495328fcad26cc25e43763534fc",
+          "file_id": "1407374887110307"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-enabled-actual.png",
+          "bytes": 1121355,
+          "sha256": "0c040166d6a0ad11d3ddb863736482015b0a9b4138a4e29f47a6ebfd0e137c38",
+          "file_id": "3096224747374258"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-enabled-actual.png.json",
+          "bytes": 1477,
+          "sha256": "57c66e01c8bde45eb6fa0c6fb02fe9f50360cc14d242cbd115123012a91e8c1c",
+          "file_id": "562949956978356"
+        }
+      ]
+    },
+    "actual_first_Enable_then_Disable_with_independent_four_flag_readbacks": {
+      "passed": true,
+      "scope": "First real production Enable/default, independent .810 readback, real Disable, independent .820 all-four-flags-clear readback passed; no production flag/resource repair or queued-seed cleanup.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-compressed\\gui-2ac0c7dd9ee444e880cfaa4de5db8f91\\profile\\logs\\debug.log",
+          "bytes": 1184863,
+          "sha256": "d3f5913d55f6c590cf5339afc8a7eecdaef14345653f601050edb3a9ead204ae",
+          "file_id": "1407374887097764"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-enabled-actual.png",
+          "bytes": 1121355,
+          "sha256": "0c040166d6a0ad11d3ddb863736482015b0a9b4138a4e29f47a6ebfd0e137c38",
+          "file_id": "3096224747374258"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-enabled-observed.png",
+          "bytes": 1137960,
+          "sha256": "277fc175f221fafc60c3e3571ec688278f687c37ccec933ff72feb937cdee337",
+          "file_id": "7036874421323404"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-disabled-actual.png",
+          "bytes": 1122273,
+          "sha256": "5273e092ddd768e1174bc365852227e8e65c65ac3020022ab95190ff3274744c",
+          "file_id": "3940649677506289"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-disabled-observed.png",
+          "bytes": 1140736,
+          "sha256": "d859c4e01a257d4a127957fc644e10af93ebe43ab34ef36fd2381b21d3784180",
+          "file_id": "1688849863819926"
+        }
+      ]
+    },
+    "actual_same_paused_day_immediate_Enable_availability_and_second_Enable_then_Disable": {
+      "passed": false,
+      "scope": "Second actual Enable/Disable cycle was not started before the required exit window; original4/7 marker count is retained. Actual same-day availability was visible, but not equivalent to executing the second cycle.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-compressed\\gui-2ac0c7dd9ee444e880cfaa4de5db8f91\\profile\\logs\\debug.log",
+          "bytes": 1184863,
+          "sha256": "d3f5913d55f6c590cf5339afc8a7eecdaef14345653f601050edb3a9ead204ae",
+          "file_id": "1407374887097764"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-disabled-observed.png",
+          "bytes": 1140736,
+          "sha256": "d859c4e01a257d4a127957fc644e10af93ebe43ab34ef36fd2381b21d3784180",
+          "file_id": "1688849863819926"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-second-round-fresh.png",
+          "bytes": 1129721,
+          "sha256": "d50e1d38a59032277f83586d7f3aba390747115f7b757f4d901d9b5032c68685",
+          "file_id": "562949956978503"
+        }
+      ]
+    },
+    "actual_unchanged_money_resources_date_pause_each_step_final_disabled_and_normal_exit": {
+      "passed": false,
+      "scope": "Date1066-09-15/manual pause and exact fixture resource equalities passed through both first-cycle observers; actual final state after that first cycle was disabled, and normal unchecked Quit/Popen0 succeeded. The complete two-cycle requirement remains incomplete, including its final observer. Absent treasury is guarded with has_treasury=no, not reported as a numeric0.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-compressed\\gui-2ac0c7dd9ee444e880cfaa4de5db8f91\\profile\\logs\\debug.log",
+          "bytes": 1184863,
+          "sha256": "d3f5913d55f6c590cf5339afc8a7eecdaef14345653f601050edb3a9ead204ae",
+          "file_id": "1407374887097764"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-enabled-observed.png",
+          "bytes": 1137960,
+          "sha256": "277fc175f221fafc60c3e3571ec688278f687c37ccec933ff72feb937cdee337",
+          "file_id": "7036874421323404"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-first-disabled-observed.png",
+          "bytes": 1140736,
+          "sha256": "d859c4e01a257d4a127957fc644e10af93ebe43ab34ef36fd2381b21d3784180",
+          "file_id": "1688849863819926"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-normal-quit-dialog.png",
+          "bytes": 685690,
+          "sha256": "10d080acc4b34ade68d37159ca127bc55edff0b274288cdec2482c7d57b7ce34",
+          "file_id": "3940649677506378"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-normal-exit-desktop.png.json",
+          "bytes": 1461,
+          "sha256": "0aef7a80f95b2b4fa84a376e21a96294ac9f7e3c5b16ab091d448783ca0f5621",
+          "file_id": "562949956978589"
+        }
+      ]
+    }
+  },
+  "source_head": "1055dd1a4ab30c4b30f10e24ca7393730d03c169",
+  "original_case": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_gui.json",
+    "bytes": 3981,
+    "sha256": "eafef008cca160e49572992e53ea70aa0a16f5f9fd5681bc54a81cb5e507e655",
+    "file_id": "5910974511521156"
+  },
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-gui-r24-a03-gui-prepare\\prepared-case.json",
+    "bytes": 1682672,
+    "sha256": "34469aab050ef7d711d0c2e23ff202d41947018df8bffc674aa3ffa5a79f91d6"
+  },
+  "engine": {
+    "version": "1.21.0.3",
+    "build_id": "26785313",
+    "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "marker_counts": {
+    "AUBGUI: TEST BEGIN production_decision_surfaces_1210": 1,
+    "AUBGUI: READY actual_robert1128_disabled_day0_baseline": 1,
+    "AUBGUI: OBSERVE first_enabled_default_policy_same_day_resources": 1,
+    "AUBGUI: OBSERVE first_disabled_all_four_flags_clear_same_day_resources": 1,
+    "AUBGUI: OBSERVE reenabled_default_policy_same_day_resources": 0,
+    "AUBGUI: OBSERVE final_disabled_all_four_flags_clear_same_day_resources": 0,
+    "AUBGUI: TEST DONE production_decision_surfaces_1210": 0
+  },
+  "actual_initial_date": "1066-09-15",
+  "actual_final_date": "1066-09-15",
+  "observed_natural_days": 0,
+  "save_count": 0,
+  "physical_save_search_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-normal-menu-readable.png",
+      "bytes": 883995,
+      "sha256": "30bcfa24ba21a79674eaf90f0c32d6a58833d5f8f6d8bedcae86b437fb3f610f",
+      "file_id": "1407374887110541"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-normal-quit-dialog.png",
+      "bytes": 685690,
+      "sha256": "10d080acc4b34ade68d37159ca127bc55edff0b274288cdec2482c7d57b7ce34",
+      "file_id": "3940649677506378"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg01-normal-exit-desktop.png.json",
+      "bytes": 1461,
+      "sha256": "0aef7a80f95b2b4fa84a376e21a96294ac9f7e3c5b16ab091d448783ca0f5621",
+      "file_id": "562949956978589"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024\\game-exit.json",
+      "bytes": 253,
+      "sha256": "de70272addc54243707360120a730268d0011e643de24c4760519ead8f96e8b0",
+      "file_id": "4503599630927765"
+    }
+  ],
+  "actual_original_popen_wait": true,
+  "process_pass": true,
+  "window_close_requested": false,
+  "timeout_requested": false,
+  "closure": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "dd169306ad81dac295d3cfb02fe6773ba46e301935728fd3f4951581071673ca",
+      "file_id": "562949956978594"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "f74e89e35860aa9af84948796ed876f2f0ae7d377bcf4dc2573c4abe254e3408",
+      "file_id": "2533274793953065"
+    }
+  ],
+  "wall_seconds_original_Game": 1604.574821,
+  "soft_exit_limit_seconds": 1500,
+  "first_close_action_at_utc": "2026-11-19T18:34:38.293608+00:00",
+  "first_close_action_seconds_after_start": 1504.580878,
+  "soft_exit_start_pass": false,
+  "soft_exit_note": "First close action was4.581s late. No second-cycle action was dispatched after recognizing the remaining window. Original hard1800s was not exceeded; no WM_CLOSE or timeout was requested.",
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-compressed\\gui-2ac0c7dd9ee444e880cfaa4de5db8f91\\profile\\logs\\error.log",
+    "bytes": 1005,
+    "sha256": "4faf2fb385b2861804f56c96588329ddbd8ca628bd5319f3da5652f8c7f03af4",
+    "file_id": "1125899910387140"
+  },
+  "raw_error_log_clean": false,
+  "script_system_error_count": 0,
+  "raw_error_scope": "1005B stock generated-map count11/found8 near17 diagnostic preceded world/business. Root current stock/depot observations are separate source evidence; no raw filter, baseline exemption or full causal stack claim.",
+  "raw_error_lines": [
+    "[02:10:07][E][pdx_persistent_reader.cpp:216]: Error: \"Reading Generated Map Objects Error: Expected 11 instances, but found 8 in file: 6337.863770 0.000000 2697.582764 0.000000 -0.889999 0.000000 -0.455963 1.000000 1.000000 1.000000",
+    "6367.402832 0.000000 2861.276367 0.000000 0.719258 0.000000 0.694743 1.000000 1.000000 1.000000",
+    "6428.056641 0.000000 2939.153809 0.000000 -0.995631 0.000000 -0.093374 1.000000 1.000000 1.000000",
+    "6307.837891 0.000000 2602.131592 0.000000 0.999597 0.000000 0.028373 1.000000 1.000000 1.000000",
+    "6427.649902 0.000000 2680.736084 0.000000 0.908257 0.000000 0.418413 1.000000 1.000000 1.000000",
+    "6546.896484 0.000000 2840.080811 0.000000 -0.774070 0.000000 -0.633100 1.000000 1.000000 1.000000",
+    "6696.914062 0.000000 2977.509766 0.000000 -0.912371 0.000000 -0.409364 1.000000 1.000000 1.000000",
+    "6776.745605 0.000000 3035.063232 0.000000 -0.998742 0.000000 0.050145 1.000000 1.000000 1.000000",
+    ", near line: 17\" in file: \"gfx/map/map_object_data/great_wall_china_gate.txt\" near line: 17"
+  ],
+  "input_refusals": [
+    "Initial known-EULA pixel anchor rejected mean0.2765284024654339/max6 vs0.2/4 before click; actual EULA/privacy reviewed directly and manually accepted. Original failed image retained.",
+    "Original64MiB PNG guard refused .810Close and one incorrectly scheduled dependent disable-open before source/dispatch; both0clicks. The dependent invocation was an operator orchestration error; subsequent calls consume actual0 before continuation.",
+    "Original64MiB guard later refused .820Close, again0clicks. Specific prospective208MiB redistribution changed only new private aubg01 helper limit64->80; no old guard/history rewritten.",
+    "F9 and Esc key calls returned0 but expected interface changes were NOT_OBSERVED. Real buttons, actual tooltip, current pan and guarded clicks were used; no shortcut success is claimed."
+  ],
+  "helper_old": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui_control.py",
+    "bytes": 10684,
+    "sha256": "29bc631479c47bd4497d6268e6b9c4c4b918063d60e506ac31fa4b59d4dc2e49",
+    "file_id": "1688849863163451"
+  },
+  "helper_new": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui_control_aubg01_80.py",
+    "bytes": 10698,
+    "sha256": "12faac2fea676dac713a338f7e87230f8a5a0ce9ea6ebb9ce918a58e083ad11a",
+    "file_id": "12103424002115391"
+  },
+  "prospective_budget_amendments": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-r24-a03-game-admission-amendment-a01.json",
+      "bytes": 949,
+      "sha256": "e2290fb1c3491f0f100d7fef07fc7472f36a942be55a041db4f1cc4aa9591d60",
+      "file_id": "1688849863158771"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-r24-a03-budget-helper-amendment-a02.json",
+      "bytes": 2033,
+      "sha256": "6c30b4b47969793725def009b6af9e8db60dd4f772e7aa4ad50025b6f1cde7d5",
+      "file_id": "562949956978501"
+    }
+  ],
+  "resource_actual": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-R0024-resource-actual-a02.json",
+    "bytes": 46206,
+    "sha256": "da0a12aa29df5c4bb0d035b62490b0e7895786a73208b82d2d2bc9922d92007e",
+    "file_id": "4503599627993456"
+  },
+  "artwork_fidelity": "Decision illustration was visible; no offline pixel comparison or artwork-fidelity assertion was performed.",
+  "native_injection": false,
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-gui-r24-a03-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "daa137b102bfeaaac32467563b293f5d33e4ebf511e82eaf839e14d965691cdd",
+    "file_id": "2251799817213914"
+  },
+  "normal_exit_autosave": "Actual quit dialog checkbox was already empty; not toggled and no SAVE selected.",
+  "full_product_pass_from_cell": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "review_at_utc": "2026-12-19T18:36:18.287551+00:00"
+}

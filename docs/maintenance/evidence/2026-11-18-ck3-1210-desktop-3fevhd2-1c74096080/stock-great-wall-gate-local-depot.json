@@ -1,0 +1,34 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T18:20:26.403605+00:00",
+  "engine": "1.21.0.3/build26785313",
+  "acf_sha256": "7986a212a318d297a1820d9d879d18850fef15de4016a0487eca8014e5046ebf",
+  "installed_depot_id": "1158311",
+  "installed_manifest_id": "7584914003502786044",
+  "manifest_path": "D:\\Program Files (x86)\\Steam\\depotcache\\1158311_7584914003502786044.manifest",
+  "manifest_bytes": 10199711,
+  "manifest_sha256": "d11d48754db0eb55b2e517a0ac4935f02292e158e91cc189868897a0d675032c",
+  "manifest_file_id": "5066549581391973",
+  "manifest_mtime_ns": "1795106512576703200",
+  "file_mappings": 59392,
+  "clear_crc32": "558498590",
+  "clear_crc32_matches_metadata": true,
+  "manifest_filename_encrypted": false,
+  "matched_file": {
+    "path": "gfx/map/map_object_data/great_wall_china_gate.txt",
+    "depot_path": "game/gfx/map/map_object_data/great_wall_china_gate.txt",
+    "bytes": 967,
+    "sha1": "e9f6764f7ba959f02f5dcae97d2b2cedc6101520",
+    "sha256": "e5431bba7d5fe4456b924799e6a112c43a55f0cb676a4f1bd458c42a8dcf328b",
+    "file_id": "281474977746482",
+    "mtime_ns": "1788625122151010000",
+    "declared_size_and_sha1_match": true
+  },
+  "parser_primary_sources": [
+    "https://raw.githubusercontent.com/SteamRE/SteamKit/master/SteamKit2/SteamKit2/Types/DepotManifest.cs",
+    "https://github.com/ValvePython/steam/blob/master/protobufs/content_manifest.proto"
+  ],
+  "limit": "Local installed-depot cache binding and exact byte consistency, not cryptographic Valve signature or new CDN/server verification. This rules out a size/content mismatch relative to that local current manifest; no Steam process/API/network/GUI, credentials/decryption or installed-file write. Count11/eight-transform source defect remains; no product/business PASS.",
+  "initial_parser_diagnostic": "Initial file lookup omitted the depot game/ prefix and rejected0 matches before any installation write; explicit actual depot path corrected.",
+  "review_at_utc": "2026-11-26T18:20:26.443164+00:00"
+}

@@ -140,8 +140,17 @@ def _validate_florin_gui_observer(source: Path) -> None:
         inspect(parse_clausewitz(path.read_text(encoding="utf-8-sig")))
 
 
-def prepare_gui(repo: Path, output: Path) -> Path:
+def prepare_gui(repo: Path, output: Path, *, reentry: bool = False) -> Path:
     _validate_florin_gui_observer(repo / "tools/fixtures/auto_upgrade_buildings_florin_gui")
+    if reentry:
+        if engine_identity(repo)["game_version"] != "1.21.0.3":
+            raise ValueError("Florin GUI reentry requires reviewed CK3 1.21.0.3")
+        return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_gui",
+            contract="aub_florin_gui_reentry.json", case_id="production-decision-reentry-121003",
+            mode="florin-paused-production-gui-reentry-observer-only",
+            entry="Fresh disabled Robert1128 -> known800 -> actual default Enable/observer810 -> actual Disable/observer820 -> immediate same-day actual default Enable/observer830 -> actual final Disable/observer840; failedreadback -> known900",
+            advance="Zero natural days. Never resume to scheduled production day1. Every observer requires exact baseline date/resources. No manual SAVE or automatic unknown event choice.",
+            rules="Fresh1066 Robert1128 alive/human with all four production flags initially absent. Use the original seven-marker read-only observer unchanged. Actual GUI performs two default Enable/Disable cycles on the same paused day, including independent four-flag, date, pause and resource readbacks. Original actual_decision_cooldown_readback requires actual immediate Enable availability and execution after the first Disable. This case does not repeat or credit policy hovers or representative previews; separately identified earlier evidence can support product coverage without promoting its original partial case. Only aubgu-owned observer variables may change; no production/resource/queue mutation, day1, invented getter or full-product credit. Finish disabled and close normally.")
     return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_gui",
         contract="aub_florin_gui.json", case_id="production-decision-gui-1210",
         mode="florin-paused-production-gui-observer-only",
@@ -257,10 +266,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--scenario", choices=("core", "florin-gui", "florin-probe", "florin-money", "florin-ordinary", "florin-mandala", "florin-holdings", "florin-special", "florin-duchy", "florin-succession"), default="core")
+    parser.add_argument("--scenario", choices=("core", "florin-gui", "florin-gui-reentry", "florin-probe", "florin-money", "florin-ordinary", "florin-mandala", "florin-holdings", "florin-special", "florin-duchy", "florin-succession"), default="core")
     args = parser.parse_args()
     if args.scenario == "florin-gui":
         output = prepare_gui(args.repo, args.output)
+        print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
+        return
+    if args.scenario == "florin-gui-reentry":
+        output = prepare_gui(args.repo, args.output, reentry=True)
         print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
         return
     if args.scenario == "florin-succession":

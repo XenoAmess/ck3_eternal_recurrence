@@ -1,0 +1,116 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T18:59:50.812030+00:00",
+  "command": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/prepare_aub_1_20_fixture.py",
+    "--scenario",
+    "florin-gui-reentry",
+    "--output",
+    "D:\\ck3-state\\upgrade-20261118\\aub-gui-reentry-software-a01\\actual-CLI-a02\\fixture"
+  ],
+  "actual_machine_mapping": {
+    "XAR_CK3_GAME_DIR": "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+    "XAR_CK3_STEAM_MANIFEST": "C:/SteamLibrary/steamapps/appmanifest_1158310.acf"
+  },
+  "exit": 0,
+  "elapsed_seconds": 2.034505399991758,
+  "tail": "{\"prepared_fixture\": \"D:\\\\ck3-state\\\\upgrade-20261118\\\\aub-gui-reentry-software-a01\\\\actual-CLI-a02\\\\fixture\", \"runtime_status\": \"NOT_RUN\"}\r\n",
+  "reused_passed_checks": [
+    {
+      "name": "affected-fixture-module",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "test_fixture_engine_prepare"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence\\tools",
+      "exit": 0,
+      "elapsed_seconds": 2.6533158000092953,
+      "tail": "..........................\r\n----------------------------------------------------------------------\r\nRan 26 tests in 2.171s\r\n\r\nOK\r\n"
+    },
+    {
+      "name": "strict-producer",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "tools/prepare_aub_1_20_fixture.py"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+      "exit": 0,
+      "elapsed_seconds": 2.069743700005347,
+      "tail": "Success: no issues found in 1 source file\r\n"
+    }
+  ],
+  "previous_failure": "Initial CLI lacked explicit local game mapping; failed before output creation. Source unchanged.",
+  "source_sha256": {
+    "tools/prepare_aub_1_20_fixture.py": "6480f373b7e2b03ee7fa0e438976a25bf14827b40dfb9120bba770c39d6e0703",
+    "tools/test_fixture_engine_prepare.py": "cfc476d47ff90aac6023687d74e8f19675c8c0a66a249a14df45cddf74c30dc4",
+    "tools/ck3_mod_acceptance_cases/aub_florin_gui_reentry.json": "29c3f47dfd6c561bd2fb8566216c8237fbde1d14f67cc7b4ea1dc710e8196bcc"
+  },
+  "remaining_software_reservation_bytes": 0,
+  "free_D": 22141546496,
+  "actual_receipt": {
+    "product": "mod_auto_upgrade_buildings",
+    "mode": "florin-paused-production-gui-reentry-observer-only",
+    "required_markers": [
+      "AUBGUI: TEST BEGIN production_decision_surfaces_1210",
+      "AUBGUI: READY actual_robert1128_disabled_day0_baseline",
+      "AUBGUI: OBSERVE first_enabled_default_policy_same_day_resources",
+      "AUBGUI: OBSERVE first_disabled_all_four_flags_clear_same_day_resources",
+      "AUBGUI: OBSERVE reenabled_default_policy_same_day_resources",
+      "AUBGUI: OBSERVE final_disabled_all_four_flags_clear_same_day_resources",
+      "AUBGUI: TEST DONE production_decision_surfaces_1210"
+    ],
+    "entry": "Fresh disabled Robert1128 -> known800 -> actual default Enable/observer810 -> actual Disable/observer820 -> immediate same-day actual default Enable/observer830 -> actual final Disable/observer840; failedreadback -> known900",
+    "rules": "Fresh1066 Robert1128 alive/human with all four production flags initially absent. Use the original seven-marker read-only observer unchanged. Actual GUI performs two default Enable/Disable cycles on the same paused day, including independent four-flag, date, pause and resource readbacks. Original actual_decision_cooldown_readback requires actual immediate Enable availability and execution after the first Disable. This case does not repeat or credit policy hovers or representative previews; separately identified earlier evidence can support product coverage without promoting its original partial case. Only aubgu-owned observer variables may change; no production/resource/queue mutation, day1, invented getter or full-product credit. Finish disabled and close normally.",
+    "scope": "Fresh CK3 1.21.0.3 Robert1128, alive/human, initially disabled. Reuse the original read-only seven-marker fixture unchanged and execute two actual default Enable/Disable cycles without calendar advancement. All four production flags, exact date, pause and resources require independent GUI observations at every stage; actual immediate same-day Enable availability and execution after first Disable are mandatory. Only observer-owned variables may be written by the fixture. Each real Enable retains its legitimate queued day1 seed until normal close; never resume to day1, clean seeds, dispatch production, force actor/government/title or invent queue/getter proof. Policy hovers and representative previews are outside this case and require separately identified product evidence. Earlier partial cases retain their own outcome and are not promoted by this run. Unknown stock windows stop operator flow without automatic selection. Normal close is mandatory; money/domain/succession and whole-product acceptance remain separate.",
+    "full_product_pass_from_cell": false,
+    "advance_policy": "Zero natural days. Never resume to scheduled production day1. Every observer requires exact baseline date/resources. No manual SAVE or automatic unknown event choice.",
+    "game_version": "1.21.0.3",
+    "steam_build_id": "26785313",
+    "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+    "source_fixture": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_gui",
+    "prepared_fixture": "D:\\ck3-state\\upgrade-20261118\\aub-gui-reentry-software-a01\\actual-CLI-a02\\fixture",
+    "runtime_status": "NOT_RUN",
+    "native_abi_loaded": false,
+    "gui_callbacks_mounted": false,
+    "source_file_sha256": {
+      "common/decisions/aubgu_decisions.txt": "0d61c28fd6616cfcb312ea923948a4abd0776ee219b3fa0bdfcf06ef57bb2231",
+      "common/on_action/aubgu_on_actions.txt": "7e74ac7bd8052ef9fd5611465c1cba90f0d865243afcb6e6cfc57ca61357793e",
+      "common/scripted_effects/aubgu_effects.txt": "ef214b073769d7c0530e11480ae59cbf860bf0c701d6e62d8e4a0b36541e7b8d",
+      "common/scripted_triggers/aubgu_triggers.txt": "8c1b8929d3fa79fa590be934a3832237c0e9d5f36ce9b3deae478485ed783cf3",
+      "descriptor.mod": "49b72469e5491fd82d57a198442dad35392060b5dcb4ea05455c6bf425452fc0",
+      "events/aubgu_events.txt": "3c1f26f5a43ab3573bb2d28b9c42d9d16dfefc69da31f175c83c2ce5a1db988a",
+      "localization/english/aubgu_l_english.yml": "192da61bfadced7775bc25ea739cdc6cdf640720436a68c505d271788297dc2d",
+      "localization/simp_chinese/aubgu_l_simp_chinese.yml": "cac7b4bdb08486744c931d8fd3b87703965d360bdc39b51088e8b3c088eaf250"
+    },
+    "prepared_file_sha256": {
+      "common/decisions/aubgu_decisions.txt": "0d61c28fd6616cfcb312ea923948a4abd0776ee219b3fa0bdfcf06ef57bb2231",
+      "common/on_action/aubgu_on_actions.txt": "7e74ac7bd8052ef9fd5611465c1cba90f0d865243afcb6e6cfc57ca61357793e",
+      "common/scripted_effects/aubgu_effects.txt": "ef214b073769d7c0530e11480ae59cbf860bf0c701d6e62d8e4a0b36541e7b8d",
+      "common/scripted_triggers/aubgu_triggers.txt": "8c1b8929d3fa79fa590be934a3832237c0e9d5f36ce9b3deae478485ed783cf3",
+      "descriptor.mod": "49b72469e5491fd82d57a198442dad35392060b5dcb4ea05455c6bf425452fc0",
+      "events/aubgu_events.txt": "3c1f26f5a43ab3573bb2d28b9c42d9d16dfefc69da31f175c83c2ce5a1db988a",
+      "localization/english/aubgu_l_english.yml": "192da61bfadced7775bc25ea739cdc6cdf640720436a68c505d271788297dc2d",
+      "localization/simp_chinese/aubgu_l_simp_chinese.yml": "cac7b4bdb08486744c931d8fd3b87703965d360bdc39b51088e8b3c088eaf250"
+    }
+  },
+  "passed": true
+}

@@ -568,6 +568,46 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
             self.assertIs(receipt["native_abi_loaded"], False)
             self.assertIs(receipt["gui_callbacks_mounted"], False)
 
+    def test_hotfix_gui_reentry_uses_original_observers_without_surface_credit(self) -> None:
+        build = next(build for build in native_builds() if build.game_version == "1.21.0.3")
+        identity = {"game_version": build.game_version, "steam_build_id": "26785313",
+                    "exe_sha256": build.executable_sha256.lower()}
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=identity), \
+                patch.object(aub, "engine_identity", return_value=identity):
+            original = Path(temporary) / "original"
+            output = Path(temporary) / "reentry"
+            aub.prepare_gui(REPO, original)
+            aub.prepare_gui(REPO, output, reentry=True)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_gui_reentry.json").read_text(encoding="utf-8"))
+            original_case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_gui.json").read_text(encoding="utf-8"))
+            self.assertEqual(case["required_markers"], original_case["required_markers"])
+            self.assertEqual(receipt["required_markers"], case["required_markers"])
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            self.assertEqual(receipt["game_version"], "1.21.0.3")
+            self.assertIs(receipt["native_abi_loaded"], False)
+            self.assertIs(case["full_product_pass_from_cell"], False)
+            self.assertFalse(case["allow_calendar_advance"])
+            self.assertEqual(case["required_business_natural_days"], 0)
+            self.assertEqual(case["gui_phases"][0]["requirements"], ["actual_decision_cooldown_readback"])
+            self.assertNotIn("actual_all_six_localized_policy_labels_hovers_no_raw_tokens",
+                             case["required_business_evidence"])
+            paths = {p.relative_to(original) for p in original.rglob("*") if p.is_file()}
+            self.assertEqual(paths, {p.relative_to(output) for p in output.rglob("*") if p.is_file()})
+            for relative in paths:
+                self.assertEqual((original / relative).read_bytes(), (output / relative).read_bytes())
+            aub._validate_florin_gui_observer(output)
+
+    def test_gui_reentry_rejects_old_engine_before_any_output(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "reentry"
+            with self.assertRaisesRegex(ValueError, "requires reviewed CK3 1.21.0.3"):
+                aub.prepare_gui(REPO, output, reentry=True)
+            self.assertFalse(output.exists())
+            self.assertFalse(output.with_suffix(".prepare.json").exists())
+
     def test_gui_observer_guard_rejects_business_writes_and_foreign_delays(self) -> None:
         bad_effects = (
             "add_character_flag = enable_auto_build",

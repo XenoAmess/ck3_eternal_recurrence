@@ -1,0 +1,28 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T18:15:06.479426+00:00",
+  "engine": "1.21.0.3/build26785313/EXE859f0d…",
+  "source_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gfx\\map\\map_object_data\\great_wall_china_gate.txt",
+  "source_bytes": 967,
+  "source_sha256": "e5431bba7d5fe4456b924799e6a112c43a55f0cb676a4f1bd458c42a8dcf328b",
+  "source_file_id": "281474977746482",
+  "source_mtime_ns": "1788625122151010000",
+  "declared_count": 11,
+  "transform_rows": 8,
+  "row_scalar_counts": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+  ],
+  "observed_source_mismatch": true,
+  "source_text": "object={\n\tname=\"great_wall_china_gate\"\n\trender_pass=Map\n\tclamp_to_water_level=no\n\tgenerated_content=no\n\tlayer=\"temp_layer\"\n\tpdxmesh=\"tgp_great_wall_gate_01_mesh\"\n\tcount=11\n\ttransform=\"6337.863770 0.000000 2697.582764 0.000000 -0.889999 0.000000 -0.455963 1.000000 1.000000 1.000000\n6367.402832 0.000000 2861.276367 0.000000 0.719258 0.000000 0.694743 1.000000 1.000000 1.000000\n6428.056641 0.000000 2939.153809 0.000000 -0.995631 0.000000 -0.093374 1.000000 1.000000 1.000000\n6307.837891 0.000000 2602.131592 0.000000 0.999597 0.000000 0.028373 1.000000 1.000000 1.000000\n6427.649902 0.000000 2680.736084 0.000000 0.908257 0.000000 0.418413 1.000000 1.000000 1.000000\n6546.896484 0.000000 2840.080811 0.000000 -0.774070 0.000000 -0.633100 1.000000 1.000000 1.000000\n6696.914062 0.000000 2977.509766 0.000000 -0.912371 0.000000 -0.409364 1.000000 1.000000 1.000000\n6776.745605 0.000000 3035.063232 0.000000 -0.998742 0.000000 0.050145 1.000000 1.000000 1.000000\n\"}\n",
+  "actual_Game_error": "Runtime independently reported1005B main-menu pre-world log: pdx_persistent_reader.cpp216 Reading Generated Map Objects Error Expected11 instances but found8, near17 of this path. Original log and Game custody belong to Runtime; Root did not read live log/SCREEN/Native memory.",
+  "scope": "Current raw stock has count11 but eight rows of ten numeric transform components; matches reported expected/found source shape. Exact engine semantic/official depot byte verification and previous266 source are not proved here. No source or installation edit, log filtering, workaround, or product/business PASS.",
+  "archive": "Small raw source bytes retained directly in this JSON for current unresolved source diagnosis.",
+  "review_at_utc": "2026-11-26T18:15:06.479484+00:00"
+}
