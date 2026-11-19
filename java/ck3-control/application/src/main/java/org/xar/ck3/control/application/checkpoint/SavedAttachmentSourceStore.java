@@ -235,12 +235,14 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         var edge=same.readHistoricalTransition(confirmation);
         StrictJson.require(edge.eventPin().equals(confirmation)&&edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
                 &&edge.before().status()==ContinuityState.Status.RUNNING,"present qualification requires the actual running Java SAVE confirmation");
-        var detail=StrictJson.object(ContinuityJson.parseObject(edge.details(),MAX_METADATA),Set.of("evidence_id","source","session","batch_id","boundary","checkpoint_pair","completed_cycle_proof"));
+        var detail=confirmedSourceDetails(edge.details());
         StrictJson.require("SAVE_CONFIRMED".equals(StrictJson.text(detail.get("boundary")))
-                &&"java-ordinary-session/v1".equals(StrictJson.text(detail.get("source")))
+                &&( "java-ordinary-session/v1".equals(StrictJson.text(detail.get("source")))
+                    ||"java-ordinary-session/v2".equals(StrictJson.text(detail.get("source"))))
                 &&pair.equals(CheckpointPairCodec.decode(ContinuityJson.canonical(detail.get("checkpoint_pair")))),
                 "present qualification changed the canonical SAVE pair or producer");
         var source=OrdinaryCycleTransitions.sessionFromJson(detail.get("session"));
+        var sourceMaterial=confirmedSourceMaterial(detail,pair,source);
         var completed=OrdinaryCycleTransitions.proofFromJson(detail.get("completed_cycle_proof"));
         var before=edge.before().toJson();var cycle=before.get(WriterContracts.ORDINARY_CYCLE_FIELD);
         var oldBoundary=before.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
@@ -248,12 +250,17 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
                 &&cycle.has("pending_receipt")&&cycle.get("pending_receipt").isNull()
                 &&OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(source)
                 &&OrdinaryCycleTransitions.sessionFromJson(oldBoundary.get("session")).equals(source)
-                &&"BATCH_STARTED".equals(StrictJson.text(oldBoundary.get("boundary")))
-                &&StrictJson.text(detail.get("batch_id")).equals(StrictJson.text(oldBoundary.get("batch_id")))
                 &&ContinuityJson.digest(cycle).equals(completed.cycleStateDigest())
                 &&StrictJson.integer(cycle.get("completed_cycles"),1,StrictJson.MAX_SAFE_INTEGER)==completed.completedCycles()
                 &&source.machineId().equals(pair.frame().machineId())&&source.game().equals(pair.frame().game()),
                 "present qualification lost the original completed same-owner SAVE branch");
+        var originalPublicSave=java.util.Optional.<org.xar.ck3.control.application.action.ActionCommand>empty();
+        boolean inline="BATCH_STARTED".equals(StrictJson.text(oldBoundary.get("boundary")))
+                &&StrictJson.text(detail.get("batch_id")).equals(StrictJson.text(oldBoundary.get("batch_id")));
+        if(!inline&&sourceMaterial.isPresent()&&"BATCH_FINISHED".equals(StrictJson.text(oldBoundary.get("boundary"))))
+            originalPublicSave=java.util.Optional.of(verifier.sourceSaveCommand(same,source,pair,completed));
+        requireConfirmedSourceBoundary(detail,(ObjectNode)oldBoundary,pair,source,originalPublicSave);
+
         var materialPath=materialPath(pair);
         FileWitness present=files.observe(materialPath).orElseThrow(()->new IOException("confirmed material file is unavailable"));
         files.verify(present);
@@ -261,6 +268,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         StrictJson.require(material.session().equals(source)&&sameProof(material.proof(),completed)
                 &&ContinuityJson.same(material.originalHead().toJson(),before),
                 "present confirmed material differs from its actual pre-confirmation source");
+        sourceMaterial.ifPresent(value->value.requireMaterial(material));
         var transition=StrictJson.object();transition.put("evidence_id",StrictJson.text(detail.get("evidence_id")));
         transition.set("source",detail.get("source"));transition.put("machine_id",source.machineId());
         transition.put("date_raw",pair.frame().frame().identity().dateRaw().longValueExact());
@@ -276,6 +284,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
                 new org.xar.ck3.control.continuity.OriginalWindowReducer.Policy(edge.before().origin().targetDays()));
         var saved=StrictJson.object();saved.set("pair",StrictJson.parse(CheckpointPairCodec.encode(pair)));saved.set("state",cycle.deepCopy());
         expected.set(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD,saved);
+        if(sourceMaterial.isPresent())expected.set(SavedCheckpointMaterialEvidence.FIELD,detail.get(SavedCheckpointMaterialEvidence.FIELD).deepCopy());
         var boundary=StrictJson.object();boundary.set("evidence_id",detail.get("evidence_id"));boundary.set("session",detail.get("session"));
         boundary.set("batch_id",detail.get("batch_id"));boundary.set("boundary",detail.get("boundary"));
         expected.set(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD,boundary);
@@ -287,6 +296,45 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         StrictJson.require(sessions.current()==same&&head.digest().equals(same.head().digest()),
                 "present qualification changed the old writer Session or head");
         return new RequalifiedConfirmed(this,head.state(),head.digest(),edge,material,present);
+    }
+
+    /** Exact historical SAVE lanes; parsing alone grants no current material or restoration. */
+    static ObjectNode confirmedSourceDetails(byte[] original) {
+        var detail=ContinuityJson.parseObject(original,MAX_METADATA);
+        String producer=StrictJson.text(detail.get("source"));
+        var fields=new java.util.HashSet<>(Set.of("evidence_id","source","session","batch_id","boundary","checkpoint_pair","completed_cycle_proof"));
+        if("java-ordinary-session/v2".equals(producer))fields.add(SavedCheckpointMaterialEvidence.FIELD);
+        StrictJson.object(detail,fields);
+        StrictJson.require("SAVE_CONFIRMED".equals(StrictJson.text(detail.get("boundary")))
+                &&Set.of("java-ordinary-session/v1","java-ordinary-session/v2").contains(producer),
+                "present qualification requires its exact ordinary SAVE details lane");
+        return detail;
+    }
+    /** DATA-only binding, followed by requireMaterial against the independently reopened physical original. */
+    static java.util.Optional<SavedCheckpointMaterialEvidence> confirmedSourceMaterial(ObjectNode detail,
+            CheckpointPair pair,org.xar.ck3.control.application.session.SessionPorts.SessionIdentity source) {
+        if(!"java-ordinary-session/v2".equals(StrictJson.text(detail.get("source"))))return java.util.Optional.empty();
+        var evidence=SavedCheckpointMaterialEvidence.decode(detail.get(SavedCheckpointMaterialEvidence.FIELD));
+        evidence.requireSavedBranch(pair,source);
+        return java.util.Optional.of(evidence);
+    }
+
+    /** Exact inline lane or a completed batch's canonical original public SAVE; no prefix grants authority. */
+    static void requireConfirmedSourceBoundary(ObjectNode detail,ObjectNode prior,CheckpointPair pair,
+            SessionIdentity source,java.util.Optional<org.xar.ck3.control.application.action.ActionCommand> verifiedOriginal) {
+        boolean inline="BATCH_STARTED".equals(StrictJson.text(prior.get("boundary")))
+                &&StrictJson.text(detail.get("batch_id")).equals(StrictJson.text(prior.get("batch_id")));
+        boolean publicSave=verifiedOriginal.filter(command->
+                "java-ordinary-session/v2".equals(StrictJson.text(detail.get("source")))
+                &&"BATCH_FINISHED".equals(StrictJson.text(prior.get("boundary")))
+                &&command.operation().equals(new org.xar.ck3.control.application.action.OperationKey("save-checkpoint"))
+                &&command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
+                &&command.actionId().equals(pair.saveActionId())&&command.sessionId().equals(source.sessionId())
+                &&command.before().machineId().equals(source.machineId())&&command.before().game().equals(source.game())
+                &&StrictJson.text(detail.get("batch_id")).equals("public-save-"+org.xar.ck3.control.application.action.ActionCodec.bodySha256(command))
+                &&StrictJson.text(detail.get("evidence_id")).equals(StrictJson.text(detail.get("batch_id"))+":SAVE_CONFIRMED:"+pair.saveActionId()))
+                .isPresent();
+        StrictJson.require(inline||publicSave,"present source lost its exact inline or canonical public SAVE boundary");
     }
 
     /** Immediate retained DATA for this call, not a source qualification or current permit. */

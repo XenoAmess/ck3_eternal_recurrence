@@ -1518,3 +1518,11 @@ docs/maintenance/2026-11-19-agent-same-root-checkpoint29.json -text
 docs/maintenance/2026-11-19-agent-seven-days-save-evidence31.json -text
 docs/maintenance/2026-11-20-agent-midnight-evidence32.json -text
 docs/maintenance/2026-11-20-native-formal69-software-ready.json -text
+
+docs/maintenance/2026-11-20-saved-public-v2-runtime-ready180.json -text
+docs/maintenance/2026-11-20-new-saved29-full-readset170.json -text
+docs/maintenance/2026-11-20-saved-public-v2-evidence181.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-20-agent-cold-restore-source30-final.json -text
+docs/maintenance/2026-11-20-root-short-selection-writer34-qualified.json -text
+docs/maintenance/2026-11-20-agent-cold-restore30-evidence35.json -text
+docs/maintenance/2026-11-20-native-save-provider-ci72-ready.json -text

@@ -1,0 +1,151 @@
+{
+  "schema": "ck3.normal-App45-saved29-public-fullreadset-env30-runtime-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-11-19T17:46:33.568774+00:00",
+  "normal_App_only": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/maven-package175.END.json",
+    "bytes": 922,
+    "sha256": "89081914c8bb1873c952de4eb0e14c62f8a437daed6faf77407fdc06695cc761"
+  },
+  "current_App_actual_sources": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/normal-public-source175/APP-ACTUAL-SOURCES175.json",
+    "bytes": 639012,
+    "sha256": "8c4586236536fb8aedec57a0a1843b697bc493d93e41795e2c2a4efe936b0046"
+  },
+  "source_software_actual_full_public": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/saved-public-branch174/TWOAPP-ACTUAL-FULL-PUBLIC-SOFTWARE-READY174.json",
+    "bytes": 1832,
+    "sha256": "4a452d440f55905f434c17b9cad6ec205efd2440a2812528381e8f3642f60578"
+  },
+  "runtime_archives": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/MAIN45-FROZEN-RUNTIME-ARCHIVES178.json",
+    "bytes": 91840,
+    "sha256": "a6a79b3c4d25b0084bce7f9da69b851b77f8c2e819c01fef18b025d7d6105035"
+  },
+  "genuine_public_source": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/ACTUAL-NEW-SAVED29-GENUINE45-PUBLIC-SOURCE178.json",
+    "bytes": 1076,
+    "sha256": "1ca7a97f21c6aeb2d3bc312741409ecdcbc360363db356e1fb108f0a4fc44cd0"
+  },
+  "genuine_public_END": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/public178.END.json",
+    "bytes": 445,
+    "sha256": "dcb30b6bfe91a2b56c8a107624996ee2b99dd3f5441944b4cebe3e93d3d81010"
+  },
+  "genuine_App_Jar_owners": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/APP45-ACTUAL-JAR-OWNERS178.json",
+    "bytes": 1674,
+    "sha256": "916ba048a04e71140003671cb3d0ba27be15d19b505708b73c7ede11ff2a5a49"
+  },
+  "public_environment_origins": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-material-v2-main44/qualification/ACTUAL-ENV30-GENUINE44-ORIGINS171.json",
+    "bytes": 143546,
+    "sha256": "3337ff50a8dd98a4888e7ea6da03aae62bec21641a3234b0b1d269e4e48cd2a2"
+  },
+  "environment": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/env30/xar-autoplayer-environment.json",
+    "bytes": 36996,
+    "sha256": "5d287fa83314a8c4d8402707d00a21eaa56c3818d4e0408e993b1d6418833cca"
+  },
+  "environment_producer_proof": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/ACTUAL-INDEPENDENT-PROFILE30-ENV30-CREATED-PROOF01.json",
+    "bytes": 5703,
+    "sha256": "16b1d924028d46f57b18d91f54baa33a8fd52fb3887d65adfbfb651c2bb3d5dd"
+  },
+  "single_environment_consumer_END": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/env178.END.json",
+    "bytes": 446,
+    "sha256": "fb05e7389678d350ff84b66870d1ee5e5abb65b154542cedb6372c53311a1c46"
+  },
+  "complete_newgraph_readset": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/ACTUAL-NEW-SAVED29-GENUINE45-COMPLETE-READSET170.json",
+    "bytes": 1421,
+    "sha256": "151e52d08bbfb0cbc23f3503550c4068b0fe16bb690f38315ff3519c9a30340a"
+  },
+  "complete_newgraph_actual_END": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/full170.END.json",
+    "bytes": 316,
+    "sha256": "bb08c89c13479e27aad098fe885fb0e31c0cca2c375c58f632d037d5d1a010d1"
+  },
+  "entry_prefixes": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/NORMAL-MAIN45-ENTRY-PREFIXES180.json",
+    "bytes": 1733,
+    "sha256": "80e9cc5ea65c6a808ccbd64929525cbcf3499db37c4bb5b9baefc477ddc9f3bd"
+  },
+  "same_plan_checker": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/ACTUAL-CALLER45-INPUTS180.json",
+    "bytes": 723,
+    "sha256": "4e83781cbb91960c9249356afd29647458b3eba3f0c2496c1cd6531ec52f3080"
+  },
+  "current_cli_prefix": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/CODEX-SESSION-CLI45-PREFIX180.args",
+    "bytes": 27141,
+    "sha256": "b47f67a9db2c1b32fe91d2c0629717b120985232e70dda528d8463d38ee26857"
+  },
+  "manual_review_checkpoint_live_contract": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/ROOT-SELECTION-MANUAL139-ENV30-SOURCE30-CONTRACT180.json",
+    "bytes": 3943,
+    "sha256": "027cd5585ab8f9bc631ec9d9d6ddec03aaeb30462779fff630f14b8653217486"
+  },
+  "manual_review_watcher": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/review-watch139/single_review_watcher139.py",
+    "bytes": 14752,
+    "sha256": "896472df84acc01bb748cd666f80598e36c22dc7c7d838472db609667b501fe5"
+  },
+  "manual_review_four_modes": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/review-watch139/MANUAL-REVIEW-WATCHER-SOFTWARE-READY149.json",
+    "bytes": 11039,
+    "sha256": "09a4987fc6488c7181a109fb833e7deea23e4c144c25875118c32d71faf110f7"
+  },
+  "prior_qualified_same_Runtime43": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-save61-main43/qualification/SAME-MAIN43-NATIVE61-ENV28-ROOT-SELECTION-SOURCE29-READY166.json",
+    "bytes": 8858,
+    "sha256": "c0b37833493a1b47815f56ff73e53d57b86cf0355323ee5c39c853ae7402cedd"
+  },
+  "prior_coherent_eight_roles_SAVE_checkpoint_Sentinel_qualification": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-bb3-sentinel-main42/qualification/NORMAL-MAIN42-SAVE61-SENTINEL-MANUAL-REVIEW-ENV25-RUNTIME-READY155.json",
+    "bytes": 6294,
+    "sha256": "86f61e58cb25ec392ff36f8c30bfb4fbd2c2bf84bc9dad4a7319d1e6d5270618"
+  },
+  "native61_opening_exact_reuse": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/opening61-reuse66/OPENING56-TO-61-EXACT-REUSE66.json",
+    "bytes": 7522,
+    "sha256": "a340608342a1ba0b4982df195814af691dfc7f617ae6858e72c6c2f15373951c"
+  },
+  "actual29_final": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE29-ROOT-SELECT-SEVEN-DAYS-CANONICAL-SAVE-NATURAL0-JOB0-FINAL01.json",
+    "bytes": 10082,
+    "sha256": "5f617be25291b1b460da9de37f1897393f6117ec6144664d9c755af017d352a8"
+  },
+  "actual29_release": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/R43-LIVE-LEASE-SOURCE29-RELEASED01.json",
+    "bytes": 667,
+    "sha256": "5886eedcd9b7a521cee3b6ad7e97f56a60539788e29c45bf78be15e272de9099"
+  },
+  "selection_file_author": "/root",
+  "cli_publisher_owner": "/root/java_continue",
+  "new_config": {
+    "batch_wall_ms": 600000,
+    "pre_intent_LIFE_reserve_nanos": 150000000000,
+    "file_request_timeout_ms": 120000,
+    "target_profile": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/profile-next30"
+  },
+  "source_triple": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/HOTFIX61-ENV28-POLICY29-PLAIN-CONFIG29.json",
+      "bytes": 2213,
+      "sha256": "22f3d12d39967f2a2502600a16ec14d6184659cfbc2dbdbe1944eba6aca922d1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/business-root29/state/checkpoints/evidence/save-2bdf3f5b-1728-49cd-97ff-1e9c8013d75b-pair.json",
+      "bytes": 1654,
+      "sha256": "97a8bd8b5207c89363395ad00019be1331ba2586f5cc17d98dcab2fc1c90751a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/business-root29/continuity/ROOT-CONTINUITY-WINDOW-EVENTS/00000048.json",
+      "bytes": 51141,
+      "sha256": "118f095fd8e3a01beb82257618df507bf1455f5d56679acdb56721361b42282e"
+    }
+  ],
+  "qualification": "NormalApp45 only47.741s/old71Jar protected; actualpublic7.699s, genuine2AppJar owners/ENV30+4132.338s, NEW91M graph10.481s preparePreRead/current/close P withC90/E99/A0/entries189/handles459/bytes24687351. Sourcehead48/date53177160/cycle52/cumulative380; newday/livecredit0. No old87M fullproof reuse or globalcap change. All source/canonical/157Jar originals unchanged; 43/44/61/139 frozen, new30 source/Main/checker/watch still required. ENV origins report legacylocator44qualification is exact178current157 result, no oldJar/source writes."
+}

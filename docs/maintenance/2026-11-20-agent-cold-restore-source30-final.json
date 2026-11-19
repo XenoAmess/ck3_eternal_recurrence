@@ -1,0 +1,135 @@
+{
+  "schema": "ck3.runtime.Source30-genuine45-new91M-recovered-no-action-final/v1",
+  "at": "2026-11-19T18:32:55.148234+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\HOTFIX61-SOURCE30-ORIGINAL-FIXED45M-NEW91M-ROOT-SELECTION.json",
+    "bytes": 7535,
+    "sha256": "1920408026c93b47a5c5c2e9640886a0d6f1897e3717a41e6d1612a0ef2839f4"
+  },
+  "actual_Game": {
+    "pid": 56116,
+    "creation_filetime": "134395843937515712"
+  },
+  "actual_GSV_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix30-work\\GSV-SOURCE30-END.json",
+    "bytes": 108,
+    "sha256": "3fde4eb93a55d669e65690a8f1134b23f456c277ec82acf697deb6a36a4bf305"
+  },
+  "actual_GSV_terminal": {
+    "actual_terminal": {
+      "accounting": {
+        "active_processes": 0,
+        "limit_flags": 8704,
+        "memory_limit_bytes": 34359738368,
+        "peak_job_memory_bytes": 12474122240
+      },
+      "elapsed_seconds_decimal": "1855.4882547",
+      "exit_code": 0,
+      "identity": {
+        "creation_filetime_decimal": "134395843937515712",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 56116
+      },
+      "stop_reason": null
+    },
+    "cleanup_proven": true,
+    "evidence": {
+      "bytes": 1036,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-save61-30\\event-000007.json",
+      "sha256": "f88a35b8cec494165e9f1cde81331be3571fd371e3b12189b0451a4e5af5262b"
+    },
+    "game": {
+      "creation_filetime": "134395843937515712",
+      "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 56116
+    },
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-19T18:24:09.397828700Z",
+    "schema": "xar.java-game-supervisor-result/v1",
+    "session_id": "session-migration1210-hotfix26757580-firstroot30",
+    "status": "GAME_EXITED",
+    "stop_request_id": "",
+    "terminal_kind": "NATURAL_EXIT"
+  },
+  "actual_Main01_preentry_path_spelling_F": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix30-work\\MAIN25030-END.json",
+    "bytes": 106,
+    "sha256": "f6d68e465609fda91221d3d68d20d357da81630d90bd1fa1651f3522e4c82d1d"
+  },
+  "preentry_sameGame_only_metadata_correction": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix30-work\\SOURCE30-INPUT-PATH-SPELLING-PREENTRY-REPAIR02.json",
+    "bytes": 3595,
+    "sha256": "04c006fdf2b8a56961c0aeb4132263dd0495a8d933a278f3c8ef1ef7b741c9d9"
+  },
+  "actual_Main02_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix30-work\\MAIN25030-02-END.json",
+    "bytes": 107,
+    "sha256": "c8d142fb52b879cbf66ef6a7e7e44b8b468954a213b11c09065a9a9219e5dfac"
+  },
+  "actual_Main02_stdout": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix30-work\\MAIN25030-02.stdout",
+    "bytes": 45543,
+    "sha256": "b70aadd48aefa32c3797416bf965ea3a16be45111e59c98b38f39d5389ea08fa"
+  },
+  "actual_Main02_stderr": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix30-work\\MAIN25030-02.stderr",
+    "bytes": 1707,
+    "sha256": "26a39bed014213a6f96e0b6ab9c218f8b21c1f4d28036019fb003e032f796ef8"
+  },
+  "actual_loaded_FullP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-post-load30-02\\summary.json",
+    "bytes": 11646,
+    "sha256": "114b35c498776302e70417e61ab2d13542302e510dc35d2c9da3864dd8c85883"
+  },
+  "original_premature_FullF": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix30-work\\SDK-FULL-WARM30-01-END.json",
+    "bytes": 108,
+    "sha256": "9f69c0d8c47f1cf9ba840713c5adcecc413c15d507b495bb3cb0412190ff378e"
+  },
+  "original_CoreUnavailable_not_map_false": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-core-load-observation30-01\\summary.json",
+    "bytes": 9949,
+    "sha256": "cbd6664cd5937d9e78d0d73c07afc7dba5173186c0b45ac187ed88648627e332"
+  },
+  "once_RPM_diagnostic_256B_no_admission": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix30-work\\CORE-PLAYER-BOUNDED-RPM-DIAGNOSTIC30-01.json",
+    "bytes": 7386,
+    "sha256": "4ceaa5fdf892a30171eb726e53814d8ae3adaeb6a36b3df28b1eca46c7a1449b"
+  },
+  "actual_watch_expiry": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp30\\codex\\response30-02\\WATCHER.END.json",
+    "bytes": 186,
+    "sha256": "4a8dcf1ca41d43f7ea3c65497eb26c6291eb31d1d34491c32c43bf9fe5af3e88"
+  },
+  "actual_ownwatch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix30-work\\OWN-WATCH30-02-END.json",
+    "bytes": 330,
+    "sha256": "28ceb058ca422fe8105fea1725a6a581f278f94f345b3717cae48730cc72031b"
+  },
+  "actual_SDK_freshCore_AppExit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit30-01\\summary.json",
+    "bytes": 14320,
+    "sha256": "812744c9c87d6540ce0aaf64ea9c924664a22ba517f32b53ebb41f1521acf114"
+  },
+  "actual_independent_post": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE30-INDEPENDENT-NEW91M-SOURCE-AND-PROFILE30-PRESERVATION01.json",
+    "bytes": 6299,
+    "sha256": "78d841950a699dd0404ef351cfa9da7fc7eca81cf414eb1e95986815016923c5"
+  },
+  "source_qualified_loaded_custody_saved_entry_adopted_ordinaryloop_and_new_request": true,
+  "restored_source_head": 48,
+  "restored_saved_date": 53177160,
+  "restored_saved_cycle": 52,
+  "batch": {
+    "terminal": "OPERATOR_STOP",
+    "attempted": 0,
+    "applied": 0,
+    "positive_ACK": 0,
+    "new_saved_day_credit": 0,
+    "new_SAVE": 0,
+    "source29_pair_remains_only_source": true
+  },
+  "Root_selection_delivery_failure_not_Native_or_Java_failure": true,
+  "old_ID_deadline_and_frozen45_61_139_unchanged": true,
+  "SDK_AppExit0_GSV_END0_NATURAL0_Job0_Main02_END0": true
+}

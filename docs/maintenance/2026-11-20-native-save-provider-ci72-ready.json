@@ -1,0 +1,160 @@
+{
+  "schema": "xar.ci72.actual-two-target-provider-repair-ready/v3",
+  "begin_utc": "2026-11-19T18:55:56.354064+00:00",
+  "end_utc": "2026-11-19T18:56:38.751733+00:00",
+  "repair_seconds": 42.39768990012817,
+  "repair_inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\repair03\\INPUTS72-REPAIR03.json",
+    "bytes": 13070,
+    "sha256": "e188bbc9491c4bc01ca019e7ac5b3bc2086203a80a2edfcbbb860dbaf5e08d87"
+  },
+  "repair_driver": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\repair03\\resume72.py",
+    "bytes": 5308,
+    "sha256": "356c7a9dcec4cd722de355be9cd3298d60695f52084425df7d3c5756eaaa8e49"
+  },
+  "retained12": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\repair02\\RETAINED-CORE12.json",
+    "bytes": 4611,
+    "sha256": "f27d91926fa477c0ad35670d52672075fa5650cfa80a804c87493c7aa702d56d"
+  },
+  "retained12_unchanged": true,
+  "production_source": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\candidate\\cmake\\save_mapped61.cmake",
+    "bytes": 1051,
+    "sha256": "687b6cf0df6d2ed183df93de9c206abea4cd83de562a4fc60f2c459bf5e65efc"
+  },
+  "production_patch": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\SAVE-PROVIDER72.patch",
+    "bytes": 1219,
+    "sha256": "16925683cfa990dc9a465ed6cf97a59834cd2f14359d37807d7811ba77baa02d"
+  },
+  "source_resolution": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\SOURCE-RESOLUTION72.json",
+    "bytes": 13897,
+    "sha256": "ca1b43ccf6e03977e6f77690c62e9e96edb6e5ff75b68c9f7714da81478232ba"
+  },
+  "prior_harness_failures": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\build-two-actual-targets.log",
+      "bytes": 3541,
+      "sha256": "e377eb114a10815bf26dbab1f010509b220289f503e997c683c21fea4dbecf4a"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\repair02\\incremental-two-targets.log",
+      "bytes": 1881,
+      "sha256": "17980a43c2915c72f58182304e9202c94df2114f2e211d55d32f008713d482bb"
+    }
+  ],
+  "steps": [
+    {
+      "name": "configure-actual-generator",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "-S",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\project",
+        "-B",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake"
+      ],
+      "begin_utc": "2026-11-19T18:55:57.973634+00:00",
+      "exit": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\repair03\\configure-actual-generator.log",
+        "bytes": 197,
+        "sha256": "cda87bc05158c54ba02c320b811e3db15b6ae247bf47933900056d345875ad92"
+      }
+    },
+    {
+      "name": "incremental-two-target-links",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "--build",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake",
+        "--parallel",
+        "1",
+        "--target",
+        "xar_ck3_1210_core_control_test",
+        "xar_ck3_1210_hotfix26757580_basic_test"
+      ],
+      "begin_utc": "2026-11-19T18:55:58.421700+00:00",
+      "exit": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\repair03\\incremental-two-target-links.log",
+        "bytes": 3559,
+        "sha256": "7f50b53c84a8ae83d7a496d70ed12e6b1feb31ea1f3cbdcd5496fc2f34c20e8e"
+      }
+    },
+    {
+      "name": "ctest-core",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "--test-dir",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake",
+        "-R",
+        "^xar_ck3_native_bridge_1210_core_control$",
+        "--no-tests=error",
+        "--output-on-failure"
+      ],
+      "begin_utc": "2026-11-19T18:56:38.096460+00:00",
+      "exit": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\repair03\\ctest-core.log",
+        "bytes": 332,
+        "sha256": "3f91ab47b7673200b5610ca282b4e826cb4a56174203ddef0a89612d5ad50824"
+      }
+    }
+  ],
+  "target_executables": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake\\xar_ck3_1210_core_control_test.exe",
+      "bytes": 215040,
+      "sha256": "b88d3df082e3f53b304c1b6cb3893b144fa6dfe16afe31244ea3aee2297e068e"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake\\xar_ck3_1210_hotfix26757580_basic_test.exe",
+      "bytes": 211968,
+      "sha256": "8cec0862cc7eca893a67a31a4c122d5e320d0e6c8974ba40069a27d374db8842"
+    }
+  ],
+  "generated_actual_Bridge_sources": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake\\fresh_full_state12004_generated\\fresh_bridge_command_result.inc",
+      "bytes": 688,
+      "sha256": "9d001a06cf45f22b6697ef697b2b05d1f32cea37fec8111c683e580153528f55"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake\\fresh_full_state12004_generated\\fresh_bridge_handler.inc",
+      "bytes": 2316,
+      "sha256": "f11dbc8b3c3031ebca2dbbd24ad57b623817217d4f6e42c9fafbf1fe0714d2bf"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake\\fresh_full_state12004_generated\\fresh_bridge_personal_cash_result1210.inc",
+      "bytes": 2293,
+      "sha256": "f6db26653bfdf55d8065cddac13868ef9b5b24927bb39dcead712f5b403104c2"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake\\fresh_full_state12004_generated\\fresh_bridge_publish.inc",
+      "bytes": 5745,
+      "sha256": "6eba1b3feb74a57c8161d5a26d26751cd64e2954e147701b7dbf5e58a1e10c22"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake\\fresh_full_state12004_generated\\fresh_bridge_snapshot_support.inc",
+      "bytes": 18156,
+      "sha256": "b1d5ee98b09223b8aceb6448370c624fbed57d29f31e1768f5920f44ee7d7f25"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-cmake-save72\\build-01\\cmake\\fresh_full_state12004_generated\\fresh_bridge_worker_state.inc",
+      "bytes": 9944,
+      "sha256": "199a4064d86d36ebb0a4e79ca5406a2c2bc73158636dd756b7d58b4562529dfe"
+    }
+  ],
+  "core_actual_ctest": "PASS",
+  "basic_actual_target_link": "PASS",
+  "basic_main_program": "NOT_RUN: needs EXE and outdir and repeats already qualified PE checks; not required to verify provider linkage.",
+  "whole_official_CMake_CI": "NOT_RUN",
+  "new_DLL": false,
+  "new_PE_reads": false,
+  "output_upper_before_ready": 8167424,
+  "output_budget": 33554432,
+  "scope": "Two exact official CMake target definitions source-path relocated with actual generator prerequisite and patched provider module. Runtime option remains default OFF. Only Core CTest executes; basic target compiles/links but main does not run. No runtime DLL/SAVE/Game/MainTLS qualification."
+}

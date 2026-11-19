@@ -1,0 +1,51 @@
+{
+  "schema": "ck3.actual-public-save-v2-cold-source-fix-evidence/v1",
+  "at_utc": "2026-11-19T18:30:28.838856+00:00",
+  "cause": "publicSAVE producer emits V2 material evidence and afterBATCH_FINISHED boundary bound to canonical originalSAVE body; old consumer accepted V1 exact7+same inlineBATCH_STARTED only",
+  "change": "PreserveV1 exact7 and inline guard; accept V2 exact8 only with same physicalmaterial/currentpair/fullcanonicalafter and actual bound canonical first-SAVE verifier/commandbody/PublicSaveID/evidenceID. No public signature or permission change.",
+  "source_ready": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/saved-public-branch174/TWOAPP-ACTUAL-FULL-PUBLIC-SOFTWARE-READY174.json",
+    "bytes": 1832,
+    "sha256": "4a452d440f55905f434c17b9cad6ec205efd2440a2812528381e8f3642f60578"
+  },
+  "V2_closedfield_legacy_negatives": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/saved-material-v2168/SAVED-V2-ONE-APP-SOFTWARE-READY168.json",
+    "bytes": 1693,
+    "sha256": "6ba0cf3e4c3004c6c5c71b47d8bc438521e1cf80fe0db5e5abedc34d6ead6aa9"
+  },
+  "actual_normal_APP": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/maven-package175.END.json",
+    "bytes": 922,
+    "sha256": "89081914c8bb1873c952de4eb0e14c62f8a437daed6faf77407fdc06695cc761"
+  },
+  "actual_public": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/public178.END.json",
+    "bytes": 445,
+    "sha256": "dcb30b6bfe91a2b56c8a107624996ee2b99dd3f5441944b4cebe3e93d3d81010"
+  },
+  "actual_environment30": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/env178.END.json",
+    "bytes": 446,
+    "sha256": "fb05e7389678d350ff84b66870d1ee5e5abb65b154542cedb6372c53311a1c46"
+  },
+  "Ready": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/NORMAL-MAIN45-PUBLIC-SAVED29-ENV30-FULLREADSET-RUNTIME-READY180.json",
+    "bytes": 8778,
+    "sha256": "90d717bfa343c4f8e4ee8f5e2eb65497c357bccdb137a9897f8c485638c553d6"
+  },
+  "complete_newgraph": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/ACTUAL-NEW-SAVED29-GENUINE45-COMPLETE-READSET170.json",
+    "bytes": 1421,
+    "sha256": "151e52d08bbfb0cbc23f3503550c4068b0fe16bb690f38315ff3519c9a30340a"
+  },
+  "newgraph_C_E_A": {
+    "C": 90,
+    "E": 99,
+    "A": 0,
+    "entries": 189,
+    "reserved_handles": 459,
+    "retained_bytes": 24687351
+  },
+  "new_live_or_day_credit_from_NoGame": 0,
+  "physicalsource": "Scene29 original91MB/currentpair/head48/date53177160/cycle52 unchanged; no old87MB graph credit used. Native61/139 unchanged; Root sole semanticselection/Java solepublisher. Actual laterScene30 observedSavedadoption but separatefinal records, not inferred fromNoGame."
+}

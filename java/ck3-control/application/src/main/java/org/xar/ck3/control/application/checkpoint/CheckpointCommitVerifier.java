@@ -88,6 +88,18 @@ public final class CheckpointCommitVerifier {
         StrictJson.require(head.equals(borrowed.head().digest()),"original writer head changed during SAVE validation");
         requireLease(borrowed); return new VerifiedCheckpoint(this,session,pair,proof,original.state(),head,binding);
     }
+    /** Same-package source DATA only, obtained from this already bound actual canonical verifier. */
+    org.xar.ck3.control.application.action.ActionCommand sourceSaveCommand(ContinuityStorePort.Session same,
+            SessionIdentity source,CheckpointPair pair,CompletedCycleProof completed)throws IOException {
+        requireLease(same);String head=same.head().digest();
+        if(!(saves instanceof FirstSaveReceiptVerifier original))
+            throw new IOException("canonical original SAVE body verifier is unavailable for this source lane");
+        var actual=original.verifyFirst(same,source,pair,completed.frame(),true);
+        StrictJson.require(actual.receipt().command().actionId().equals(pair.saveActionId())
+                &&head.equals(same.head().digest()),"canonical public SAVE source body or writer head changed");
+        requireLease(same);return actual.receipt().command();
+    }
+
     /** Revalidate the original archived proof under today's same writer lease; grants no new credit or live readiness. */
     public String verifyHistorical(ContinuityStorePort.Session borrowed, SessionIdentity sourceSession, CheckpointPair pair,
             CompletedCycleProof proof, String originalHeadDigest, String expectedDigest) throws IOException {
