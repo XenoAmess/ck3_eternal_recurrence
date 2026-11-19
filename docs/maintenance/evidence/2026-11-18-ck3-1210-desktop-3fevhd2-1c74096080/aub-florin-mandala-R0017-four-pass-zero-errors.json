@@ -1,0 +1,224 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T11:26:27.532426+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0017",
+  "case": "mandala-matrix-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": true,
+  "status": "PASS_FOUR_MANDALA_EDGES_EXACT_CHARGE_EXCLUSIONS",
+  "source_head": "91988744f75fcc1f1e17906fac0d162fc552649b",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-r17-gui-prepare\\prepared-case.json",
+    "bytes": 1587765,
+    "sha256": "4cf7190c11231a6cd0a442e933d9bdd62bf78dd288451a7c99dd5d34d9d06522"
+  },
+  "facts": {
+    "four_actual_mandala_production_edges_and_exact_personal_charge": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-cfce6a47ca4144cdaf24520a76aa657b\\profile\\logs\\debug.log",
+          "bytes": 1201645,
+          "sha256": "f52a7682edb17697c6960e769316e15aed27de8fa7d651782e5edd933db54cd0"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-cfce6a47ca4144cdaf24520a76aa657b\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "assertions_passed": 4,
+      "assertions_required": 4
+    },
+    "actual_player_two_direct_provinces_one_scan_eligible_pagan_calendar_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq05-two-days-before-menu-hold.png",
+          "bytes": 1148948,
+          "sha256": "1bc8556ef28429098e4d0339e1ba770e7a5d3ec7fab28da166370a25f774095c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq05-two-days-quit-dialog-view.png",
+          "bytes": 694525,
+          "sha256": "566016c57b156b00c478a8754f81b10aca2689eb87aa7470c72ec60ac72f2c73"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq05-normal-quit.png.json",
+          "bytes": 1450,
+          "sha256": "0d641fcf4bcb8bc4c5a53a9fcf7c14484e3ebf4b96d819548c617c8f6fb0e069"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0017\\game-exit.json",
+          "bytes": 252,
+          "sha256": "e90199b76cf7de1db3210c017dc57abbf16a68f0a9fcd3cc22a3ef1df662b9fe"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBMA: TEST BEGIN mandala_matrix": 1,
+    "AUBMA: READY actual_player_owned_pagan_native_primaries": 1,
+    "AUBMA: READY exact_six_buildings_three_primaries_four_native_targets": 1,
+    "AUBMA: READY initialized_great02_excluded_from_product": 1,
+    "AUBMA: READY two_actual_direct_one_scan_eligible_pagan": 1,
+    "AUBT: TEST PASS main_temple_citadel": 1,
+    "AUBMA: OBSERVE main03_to04_terminal_edge_only": 1,
+    "AUBT: TEST PASS mandala_citadel_shrine": 1,
+    "AUBT: TEST PASS mandala_sacred_pool": 1,
+    "AUBT: TEST PASS mandala_vihara_halls": 1,
+    "AUBMA: OBSERVE viharas2_to3_different_source_tier": 1,
+    "AUBMA: TEST PASS exact_four_charges_count_and_primaries": 1,
+    "AUBMA: TEST PASS excluded_great02_unchanged": 1,
+    "AUBMA: TEST PASS excluded_popa_herder_unchanged": 1,
+    "AUBMA: TEST DONE mandala_matrix": 1
+  },
+  "failure_lines": [],
+  "preparation_observations": [
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: events/aubma_events.txt line: 59 (aubma.1:immediate): AUBMA: OBSERVE immediate_owned_domain_begin",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 13 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_province9550_barony_pagan",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 14 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_province9551_barony_popa",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 95 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_count2",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 97 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE only_pagan_matches_production_filter",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 100 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE initialized_count19_primary8",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 108 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_title_holder_payer",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 110 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_title_holder_payer",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 114 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE province9550_is_barony_pagan",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 116 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_province_owner_payer",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 118 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_unleased",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 120 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_no_holding_construction",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 124 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE province9551_is_barony_popa",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 126 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_province_owner_payer",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 130 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_leased",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 131 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_no_holding_construction",
+    "[19:22:54][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 133 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_native_herder01_excluded_holding",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: events/aubma_events.txt line: 77 (aubma.2:immediate): AUBMA: OBSERVE granted_source_inventory_begin",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 13 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_province9550_barony_pagan",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 14 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_province9551_barony_popa",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 95 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_count2",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 97 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE only_pagan_matches_production_filter",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 100 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE initialized_count19_primary8",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 108 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_title_holder_payer",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 110 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_title_holder_payer",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 114 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE province9550_is_barony_pagan",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 116 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_province_owner_payer",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 118 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_unleased",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 120 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_no_holding_construction",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 124 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE province9551_is_barony_popa",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 126 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_province_owner_payer",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 130 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_leased",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 131 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_no_holding_construction",
+    "[19:23:45][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 133 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_native_herder01_excluded_holding",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: events/aubma_events.txt line: 151 (aubma.3:immediate): AUBMA: OBSERVE prepared_inventory_begin",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 13 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_province9550_barony_pagan",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 14 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_province9551_barony_popa",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 95 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_count2",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 97 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE only_pagan_matches_production_filter",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 101 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE province_count6_primary3",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 102 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE target_districts_count5_primary2",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 108 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_title_holder_payer",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 110 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_title_holder_payer",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 114 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE province9550_is_barony_pagan",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 116 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_province_owner_payer",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 118 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_unleased",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 120 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_no_holding_construction",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 124 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE province9551_is_barony_popa",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 126 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_province_owner_payer",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 130 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_leased",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 131 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_no_holding_construction",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 133 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_native_herder01_excluded_holding",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 144 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE payer_player_and_government_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 149 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE personal_resources_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 175 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE two_direct_single_eligible_pagan_and_excluded_popa_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 188 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE province_culture_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 200 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE six_objects_and_original_great02_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 206 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE holding_source_keys_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 208 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE native_main04_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 210 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE native_shrine2_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 218 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE mandala_source_keys_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 220 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE native_pool2_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 222 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE native_viharas3_ready",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 224 (aubma_observe_prepared_conditions_effect): AUBMA: OBSERVE native_mandala04_blocked",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: events/aubma_events.txt line: 238 (aubma.3:immediate): AUBMA: OBSERVE production_result_inventory_begin",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 13 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_province9550_barony_pagan",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 14 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_province9551_barony_popa",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 95 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE direct_count2",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 97 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE only_pagan_matches_production_filter",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 101 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE province_count6_primary3",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 102 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE target_districts_count5_primary2",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 108 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_title_holder_payer",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 110 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_title_holder_payer",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 114 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE province9550_is_barony_pagan",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 116 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_province_owner_payer",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 118 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_unleased",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 120 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE pagan_no_holding_construction",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 124 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE province9551_is_barony_popa",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 126 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_province_owner_payer",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 130 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_leased",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 131 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_no_holding_construction",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 133 (aubma_observe_scan_domain_effect): AUBMA: OBSERVE popa_native_herder01_excluded_holding",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: events/aubma_events.txt line: 247 (aubma.3:immediate): AUBMA: OBSERVE main03_to04_terminal_edge_only",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: events/aubma_events.txt line: 281 (aubma.3:immediate): AUBMA: OBSERVE viharas2_to3_different_source_tier",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: events/aubma_events.txt line: 351 (aubma.3:immediate): AUBMA: OBSERVE next_shrine3_native_eligible",
+    "[19:23:46][D][jomini_effect_impl.cpp:444]: file: events/aubma_events.txt line: 355 (aubma.3:immediate): AUBMA: OBSERVE next_pool3_native_eligible"
+  ],
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-cfce6a47ca4144cdaf24520a76aa657b\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "error_bytes": 0,
+  "actual_date": "1066-09-17",
+  "observed_natural_days": 2,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq05-two-days-quit-dialog-view.png",
+      "bytes": 694525,
+      "sha256": "566016c57b156b00c478a8754f81b10aca2689eb87aa7470c72ec60ac72f2c73"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq05-normal-quit.png.json",
+      "bytes": 1450,
+      "sha256": "0d641fcf4bcb8bc4c5a53a9fcf7c14484e3ebf4b96d819548c617c8f6fb0e069"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0017\\game-exit.json",
+      "bytes": 252,
+      "sha256": "e90199b76cf7de1db3210c017dc57abbf16a68f0a9fcd3cc22a3ef1df662b9fe"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0017\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "10e3cb1060542d30054428a255252513ff6a70fc2e171f55e5e7b9a1f8c2910e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0017\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "f5cc3057b7efea0c9a5891b39f5a563de15ccafdb6104a9be6c0335006a4e119"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-r17-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "1dfe471a2b956745a9445f4b11f438568165e7a1eec7e0caa778fde51fecee05"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "control_guard_holds": [
+    "Watchdog exited1 after the conservative per-action PNG headroom blocked its final Quit click before dispatch. Root transferred2MiB from metadata to PNG inside unchanged268MiB peak and reviewed actual unchecked dialog; guarded normal desktop Quit then succeeded."
+  ],
+  "image_budget_reallocation": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-r17-image-budget-reallocation.json",
+    "bytes": 756,
+    "sha256": "fa96457a53e4667f2d99fd209e185d02ddd682ae02731fc667182e8a4cc882b5"
+  },
+  "diagnosis_scope": "Actual SawLu burman002 with two direct9550Pagan/9551Popa, complete production predicate eligible onlyPagan; Popa native herder and lease excluded. Pagan initialized great02 retained, native03 target exists but great_project excluded from ordinary dispatcher. Exact6objects/3primaries acrossPagan and5objects/2primaries in target districts; four native target gates true. One real production0004 upgraded main03->04/shrine1->2/pool1->2/viharas2->3, exact main_tier4+2regular_tier2+regular_tier3 personal gold charge/count4. Great02 and excluded Popa herder inventory unchanged. MainIV terminal and viharasIV blocked earn no legal-next-tier credit; shrine3/pool3 eligibility separately observed. Known DONE paused09-17 within2days, error0, noSAVE. Prior R13/R15 failures retained. Remaining4 duchy/succession cells, complete product GUI and stock funds-diagnostic qualification separate; partial cell cannot publish.",
+  "retention_review_at_utc": "2026-12-19T11:24:56.509328+00:00"
+}
