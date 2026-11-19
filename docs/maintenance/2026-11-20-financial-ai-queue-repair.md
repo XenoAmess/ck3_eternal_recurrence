@@ -40,3 +40,9 @@ v6 仍为 803 个生产 TU、208 flags、22 个 reviewed fixtures；其中 CoreC
 最终 `MVN-financial-current15-verify02` 于20:49:01.566127–20:51:16.900998Z执行，原 wait 0／135.3348752秒，416项全部通过，无失败、错误或跳过，完成 Quarkus 构建。独立的共享模块 `MVN-financial-shared-current15-install01` 原 wait 0／14.9276248秒、23项通过；其完整源码和 POM 未变，沿原执行窗口复用，不宣称在金融最终窗口重新运行。`software-continuation15-actual02/SOFTWARE.actual.json` 为177794B／`68aceb75ffc437d58ce247a9ae709e7884e731ca471143020d059a118869bcd2`，绑定353个真实源码、220个运行文件、两个真实执行窗口及439个不同方法。
 
 R31 的 D26 保存日期映射为1066.12.7／日序389430，与 `xfm_last_date` 和 `xfm_daily_attempt_script_date` 一致。D14→D26 的12自然日实际增加12次尝试和收盘；累计少1不足以认定持续漏日。原 D14 GAP保留，新 rawprobe 将观察实际调用阶段，不补历史日、不修改已失败断言。以上结果均未授实际新上市、气泡送达或完整产品通过。
+
+## 公共部署的非索引数据删除
+
+完整553路径差异包含真实已删除的 `tools/auto_upgrade_buildings_1_21_0.json`。它不在旧 runtime 索引中，差异行的 before／after 均为空；旧 Java 缺失验证误将它作为 Java 删除而拒绝，Host 资格尚未开始。公共工具现将这类非索引 tools JSON 数据交独立入口核对实际 Git 删除、当前缺失、旧索引缺失及显式回执字段；Python、Native、已索引数据和 case／control 配置没有获得该例外。Java 原合同保留。
+
+`TEST-public-nonindexed-data-deletion01` 于21:04:10.676713–21:04:16.201048Z实际执行，原 wait 0／5.5243381秒，原Java4项与新数据4项共8项全部通过、无跳过。包含真实临时 Git 混合删除至公共 qualify 的正例，以及缺少显式声明、非真实删除、重建文件、已索引和非选择类型的拒绝。它修复部署工具的元数据接线，不授金融业务或新Game运行通过。

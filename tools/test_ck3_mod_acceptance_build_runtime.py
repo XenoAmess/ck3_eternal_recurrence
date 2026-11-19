@@ -262,6 +262,88 @@ class NonindexedJavaDeletion(unittest.TestCase):
             builder.nonindexed_deleted_java_paths(self.delta, frozenset(), self.root, self.commit)
 
 
+class NonindexedDataDeletion(unittest.TestCase):
+    """Real Git mixed deletion feeds the existing public qualifier."""
+    git = NonindexedJavaDeletion.git
+    save_delta = NonindexedJavaDeletion.save_delta
+
+    def setUp(self) -> None:
+        NonindexedJavaDeletion.setUp(self)
+        self.java = self.relative
+        self.relative = 'tools/auto_upgrade_buildings_1_21_0.json'
+        for relative, body in ((self.java, 'class RetiredTest {}'), (self.relative, '{}')):
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(body, encoding='utf-8')
+        self.git('add', '.')
+        self.git('commit', '-qm', 'mixed actual base')
+        self.base = self.git('rev-parse', 'HEAD')
+        for relative in (self.java, self.relative):
+            (self.root / relative).unlink()
+        self.git('add', '-u')
+        self.git('commit', '-qm', 'actual mixed deletion')
+        self.commit = self.git('rev-parse', 'HEAD')
+        self.value = {'base_source_commit': self.base, 'source_commit': self.commit,
+            'changes': [{'path': p, 'before': None, 'after': None} for p in (self.relative, self.java)]}
+        self.save_delta()
+
+    def test_mixed_actual_deletions_reach_public_qualifier_without_fake_pins(self) -> None:
+        java = builder.nonindexed_deleted_java_paths(self.delta, frozenset(), self.root, self.commit)
+        data = builder.nonindexed_deleted_data_paths(self.delta, frozenset(), self.root, self.commit)
+        self.assertEqual(java, frozenset({self.java}))
+        self.assertEqual(data, frozenset({self.relative}))
+        receipt = self.root / 'qualified.json'
+        value = {'machine_id': MACHINE, 'source_commit': self.commit, 'result': 'PASS', 'exit_code': 0,
+            'skipped': 0, 'tests_run': 1, 'covered_chains': ['other_source_delta'], 'source_pins': [],
+            'unindexed_deleted_java_paths': [self.java], 'unindexed_deleted_data_paths': [self.relative]}
+        receipt.write_text(json.dumps(value), encoding='utf-8')
+        self.assertEqual(builder.qualify('other_source_delta', receipt, self.commit, self.root,
+            [self.relative, self.java], MACHINE, nonindexed_java_deletions=java,
+            nonindexed_data_deletions=data), builder.pin(receipt))
+        value.pop('unindexed_deleted_data_paths')
+        receipt.write_text(json.dumps(value), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'explicitly bind actual non-indexed data'):
+            builder.qualify('other_source_delta', receipt, self.commit, self.root,
+                [self.relative, self.java], MACHINE, nonindexed_java_deletions=java,
+                nonindexed_data_deletions=data)
+
+    def test_indexed_nonnull_before_and_recreated_data_are_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, 'Only non-indexed tools JSON'):
+            builder.nonindexed_deleted_data_paths(self.delta, frozenset({self.relative}), self.root, self.commit)
+        self.value['changes'][0]['before'] = {'bytes': 2, 'sha256': 'a' * 64}
+        self.save_delta()
+        with self.assertRaisesRegex(ValueError, 'Only non-indexed tools JSON'):
+            builder.nonindexed_deleted_data_paths(self.delta, frozenset(), self.root, self.commit)
+        self.value['changes'][0]['before'] = None
+        self.save_delta()
+        (self.root / self.relative).write_text('{}', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'still exists'):
+            builder.nonindexed_deleted_data_paths(self.delta, frozenset(), self.root, self.commit)
+
+    def test_uncommitted_absence_is_not_a_real_data_deletion(self) -> None:
+        self.value['base_source_commit'] = self.commit
+        self.save_delta()
+        with self.assertRaisesRegex(ValueError, 'actual committed Git deletion'):
+            builder.nonindexed_deleted_data_paths(self.delta, frozenset(), self.root, self.commit)
+
+    def test_python_native_and_case_control_json_gain_no_data_deletion_credit(self) -> None:
+        for relative in ('tools/retired.py', builder.NATIVE_PREFIX + 'retired.cpp',
+                         'tools/ck3_mod_acceptance_cases/retired.json',
+                         'tools/ck3_mod_acceptance_native_profile_expansions.json'):
+            with self.subTest(relative=relative):
+                self.value['changes'] = [{'path': relative, 'before': None, 'after': None}]
+                self.save_delta()
+                self.assertEqual(builder.nonindexed_deleted_data_paths(
+                    self.delta, frozenset(), self.root, self.commit), frozenset())
+                chain = next(iter(builder.classify(relative)))
+                receipt = self.root / 'unqualified.json'
+                receipt.write_text(json.dumps({'machine_id': MACHINE, 'source_commit': self.commit,
+                    'result': 'PASS', 'exit_code': 0, 'skipped': 0, 'tests_run': 1,
+                    'covered_chains': [chain], 'source_pins': []}), encoding='utf-8')
+                with self.assertRaisesRegex(ValueError, 'missing a changed-chain source pin'):
+                    builder.qualify(chain, receipt, self.commit, self.root, [relative], MACHINE)
+
+
 class QualifiedNativeConsumer(unittest.TestCase):
     """Synthetic owned files exercise real qualification consumer; no EXE or game runs."""
     def setUp(self):
