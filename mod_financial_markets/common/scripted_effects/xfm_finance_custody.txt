@@ -73,5 +73,5 @@ xfm_finance_holder_death_effect = {
    scope:xfm_fin_legal_heir = { set_variable = { name = xfm_news_cursor value = scope:xfm_fin_dying_holder.var:xfm_news_cursor } }
   }
  }
- # Preserve xfm_ai_next/queued: the linked discovery queue removes this node on pop.
+ # The on_death hook detaches discovery links before this financial-rights handler.
 }

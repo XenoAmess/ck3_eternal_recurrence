@@ -16,9 +16,13 @@
 
 先按当日初始关注人数处理最多 Q 个节点，其余预算交普通环。两环所有出队尝试（包括死亡、过期、同日已决策的节点）均消耗同一个 B。普通环有足够节点时保留至少 3B/4 次工作；关注环未用完的额度回普通环。短环每天每名初始成员至多出队一次。不会新增每日全角色或 AI×币扫描。
 
-角色的 `xfm_ai_last_decision_day` 在三个普通业务消费者之前写入；关注和普通环重叠时，同一金融日只调用一次发行／现货／期货决策。业务失败不阻止普通环重新入队。两环使用独立指针与私有 saved scope，嵌套宣传不覆盖外层正在处理的角色。死亡角色在各自出队时移除，原普通金融账户和继承规则保持生效。
+角色的 `xfm_ai_last_decision_day` 在发行／现货／兑付／期货四个业务消费者之前写入；关注和普通环重叠时，同一金融日只调用一次决策。业务失败不阻止普通环重新入队。两环使用独立指针与私有 saved scope，嵌套宣传不覆盖外层正在处理的角色。死亡钩子在角色作用域仍有效时，先以 O(1) 从两环摘链，再走原金融账户和继承规则。
 
-关注持久字段：exchange 的 `xfm_attention_head/tail/count`，角色的 `xfm_attention_next/queued/until_day`。旧存档缺 count 时仅初始化为 0，不重新扫描或重播历史宣传。角色指针、截止日和 last-decision 随原生变量保存；这仍需 CK3 真正保存／重载验收，Java 的 authored graph round trip 不能替代。
+两环采用 schema 2 双向链接。关注持久字段为 exchange 的 `xfm_attention_head/tail/count`，角色的 `xfm_attention_next/prev/queued/queue_member_schema/until_day`；普通发现环使用独立的 `xfm_ai_*` 字段。局部互反关系、头尾或计数失效时，该环记 dirty 并停止消费，健康的另一环仍使用原预算。
+
+旧存档在首次真实 AI 预算回调进行一次 living census，同时重建两环。保留钱、币、义务、冷却、已付关注截止日和同日决策记录，不补历史宣传或交易。后续只有真实 dirty 且距上次修复至少 30 个脚本自然日，才允许下一次共享 census；健康日不扫描人口。未入满额关注环的角色仍可通过普通发现轮转。角色指针、截止日和 last-decision 的真实保存／重载仍需 CK3 验收，Java 自建图往返不能替代。
+
+修复诊断保留两环各自的 `queue_schema/queue_dirty/queue_last_fault_code/queue_last_fault_date`，以及共享 `xfm_ai_queue_repair_count/queue_last_repair_date/queue_next_repair_date`。约 36,810 角色的首次 O(N) 结构迁移与未来修复成本须按实际游戏测量；30 日冷却期间坏环暂停，不宣称无损或零成本。
 
 只读观察字段：exchange 的 `xfm_ai_work_today`（两环总尝试）、`xfm_attention_work_today`（关注尝试）、`xfm_ai_decisions_today`（实际消费者调用角色数）。它们是最近一次日调度的计数，不是累计交易、投资成功或性能资格。
 
@@ -43,3 +47,5 @@
 `AiAttentionScriptContractTest` 在测试代码中解析本次实际 CK3 文件并执行明确限定的语句子集，覆盖预算、资格、金额、指针及顺序；未知操作失败。发行／交易消费者、认购、完成、退款、真实收费等外部 API 使用明确的测试 port，不执行游戏。原认购公式的 lot、成本和份额取整直接读取原生产脚本，检查本金／80%／10%上限。snapshot 是测试自建图的二进制往返，并非 CK3 save。
 
 后续实机需在正常后台通道验证：付费广告实扣及入环；两环单日 B 上限；合资格 AI 自认购对应真实 reservation；外部筹款及份额；D29→D30 完成／不足退款；死亡中间节点；保存退出重载后指针和同日去重。不得为验收强制 AI、发钱、构造订单、改币价或强制死亡。
+
+2026-11-20 本机 `4-8e1c2f1861` 实际执行 `MVN-financial-ai-queue-attention02`：原 wait 0，18.8408863 秒，23 项测试全部通过、无跳过；包含 36,810 角色迁移、死亡头／中／尾、失效引用、修复限频、双环独立 dirty 及同日去重。此前 ordinary-only 的 21 项通过单列保留，两次不累计为 44 项不同测试。这些是生产脚本 AST 的软件结果，不授实机发行、上市或性能通过。R31 实际正 count 缺头尾说明普通发现已损坏；付费关注环同类风险修复仍需新存档窗口验证。IPO 公开曝光是独立玩法工作，不以发现环恢复声称市场已形成很多币。

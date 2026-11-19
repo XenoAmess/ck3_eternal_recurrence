@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
@@ -23,6 +24,10 @@ constexpr std::array<std::string_view,13> kFullCapabilities{kCoreFrameCapability
  kApplicationExitCapabilityV1,kFullClockControlCapabilityV1,"game.state.snapshot","game.command.pause-map","game.command.resume-map",
  "game.command.set-speed-1","game.command.set-speed-2","game.command.set-speed-3","game.command.set-speed-4","game.command.set-speed-5","game.command.save-checkpoint"};
 const AdapterDescriptor kFullDescriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",kFullCapabilities};
+#if !defined(XAR_CK3_ENABLE_26757580_SAVE_MAPPED61)
+const AdapterDescriptor kHotfixOffDescriptor{hotfix26757580::kAdapterId,kGameVersion,
+    hotfix26757580::kExecutableSha256,"xar_checkpoint",kCapabilities};
+#endif
 class FixtureAdapter final : public GameAdapter {
 public:
   explicit FixtureAdapter(const AdapterDescriptor &d) : descriptor_(d) {}
@@ -399,6 +404,32 @@ int main() {
   CHECK(observed_command[8]==std::byte{0x20});
   CHECK(std::memcmp(observed_command.data()+0x20,kCheckpointSaveName,sizeof(kCheckpointSaveName))==0);
   CHECK(!BindCommandImage(0x140000000,"old-hash").enabled);
+#if !defined(XAR_CK3_ENABLE_26757580_SAVE_MAPPED61)
+  // An enabled exact hotfix descriptor reaches the shared owner executor.
+  // First submit a non-SAVE in this SAME context, then change only its
+  // operation/step. The OFF SAVE rejection must not be an earlier bad binding.
+  FixtureAdapter hotfix_off_adapter(kHotfixOffDescriptor);
+  reset();context.game=&hotfix_off_adapter;context.core.image_build=ImageBuildV1::hotfix26757580;
+  CHECK(context.game->enabled() && context.core.enabled && context.commands.enabled &&
+      context.game->supports(kCoreControlCapabilityV1) && context.game->supports("game.command.save-checkpoint"));
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::submitted && context.result.effect_attempted &&
+      clones==1 && queues==1 && deletes==1);
+  const auto before_off_clones=clones,before_off_queues=queues,before_off_deletes=deletes;
+  context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
+  object_size=sizeof(AutoSaveCommand);
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::unavailable && !context.result.effect_attempted &&
+      clones==before_off_clones && queues==before_off_queues && deletes==before_off_deletes);
+  const auto off_save_ack=SerializeCoreControlCommandResultV1("save61-off-hotfix",context.request.step,
+      context.result,kFullClockControlResultSchemaV1,19,ImageBuildV1::hotfix26757580);
+  CHECK(off_save_ack.find("\"queue_status\":\"unavailable\"")!=std::string::npos);
+  CHECK(off_save_ack.find("\"effect_attempted\":false")!=std::string::npos &&
+      off_save_ack.find("\"physical_save_confirmed\":false")!=std::string::npos);
+  CHECK(off_save_ack.find("\"error\":\"full_clock_unavailable\"")!=std::string::npos &&
+      off_save_ack.find("\"submission\"")==std::string::npos);
+  std::cout<<"Save61 OFF: hotfix SAVE refused after the same owner context submitted a non-SAVE; zero additional clone/queue\n";
+#endif
   reset();context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
   object_size=sizeof(AutoSaveCommand);reject=retain_rejected_clone=true;
   CHECK(ExecuteCoreControlMailboxV1(&context,stamp));

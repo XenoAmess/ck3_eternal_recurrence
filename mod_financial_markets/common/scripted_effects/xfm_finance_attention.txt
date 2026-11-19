@@ -1,65 +1,12 @@
 ﻿# 4 effects. Attention is a paid, bounded decision opportunity, never a trade instruction.
-# Character pointers and expiry/day variables persist normally in the save; no second seed scan.
+# Pointers and paid expiry persist; explicit schema/dirty repair shares one bounded census.
 # enqueue/decision = character; pop/run_budget = exchange. All aliases are private to this queue.
 xfm_finance_enqueue_attention_effect = {
-    if = {
-        limit = {
-            exists = global_var:xfm_exchange is_alive = yes is_adult = yes is_ai = yes
-            has_variable = xfm_attention_until_day
-            var:xfm_attention_until_day > global_var:xfm_exchange.var:xfm_day
-            NOT = { has_variable = xfm_attention_queued }
-        }
-        global_var:xfm_exchange = {
-            if = { limit = { NOT = { has_variable = xfm_attention_count } } set_variable = { name = xfm_attention_count value = 0 } }
-        }
-        if = {
-            limit = { global_var:xfm_exchange = { var:xfm_attention_count < xfm_finance_attention_capacity_value } }
-            save_scope_as = xfm_attention_enqueue_actor
-            if = { limit = { has_variable = xfm_attention_next } remove_variable = xfm_attention_next }
-            set_variable = { name = xfm_attention_queued value = 1 }
-            global_var:xfm_exchange = {
-                if = {
-                    limit = { exists = var:xfm_attention_tail }
-                    var:xfm_attention_tail = { set_variable = { name = xfm_attention_next value = scope:xfm_attention_enqueue_actor } }
-                }
-                else = { set_variable = { name = xfm_attention_head value = scope:xfm_attention_enqueue_actor } }
-                set_variable = { name = xfm_attention_tail value = scope:xfm_attention_enqueue_actor }
-                change_variable = { name = xfm_attention_count add = 1 }
-            }
-            clear_saved_scope = xfm_attention_enqueue_actor
-        }
-    }
+    xfm_finance_attention_queue_push_effect = yes
 }
 
 xfm_finance_pop_attention_effect = {
-    if = {
-        limit = { exists = var:xfm_attention_head }
-        clear_saved_scope = xfm_attention_active_actor
-        clear_saved_scope = xfm_attention_pop_next
-        var:xfm_attention_head = {
-            save_scope_as = xfm_attention_active_actor
-            if = { limit = { exists = var:xfm_attention_next } var:xfm_attention_next = { save_scope_as = xfm_attention_pop_next } }
-            if = { limit = { has_variable = xfm_attention_next } remove_variable = xfm_attention_next }
-            remove_variable = xfm_attention_queued
-        }
-        if = { limit = { exists = scope:xfm_attention_pop_next } set_variable = { name = xfm_attention_head value = scope:xfm_attention_pop_next } }
-        else = {
-            remove_variable = xfm_attention_head
-            if = { limit = { has_variable = xfm_attention_tail } remove_variable = xfm_attention_tail }
-        }
-        change_variable = { name = xfm_attention_count subtract = 1 }
-        scope:xfm_attention_active_actor = {
-            if = {
-                limit = { has_variable = xfm_attention_until_day var:xfm_attention_until_day > global_var:xfm_exchange.var:xfm_day }
-                xfm_finance_ai_decision_effect = yes
-                # Recheck life/expiry and membership after all nested business callbacks.
-                xfm_finance_enqueue_attention_effect = yes
-            }
-            else = { if = { limit = { has_variable = xfm_attention_until_day } remove_variable = xfm_attention_until_day } }
-        }
-        clear_saved_scope = xfm_attention_active_actor
-        clear_saved_scope = xfm_attention_pop_next
-    }
+    xfm_finance_attention_queue_pop_effect = yes
 }
 
 xfm_finance_ai_decision_effect = {
@@ -79,6 +26,7 @@ xfm_finance_ai_decision_effect = {
 }
 
 xfm_finance_run_ai_budget_effect = {
+    xfm_finance_ai_queue_ensure_effect = yes
     if = { limit = { NOT = { has_variable = xfm_attention_count } } set_variable = { name = xfm_attention_count value = 0 } }
     set_variable = { name = xfm_ai_work_today value = 0 }
     set_variable = { name = xfm_attention_work_today value = 0 }
@@ -87,7 +35,7 @@ xfm_finance_run_ai_budget_effect = {
     # Snapshot ring size: a small attention ring visits each member at most once today.
     set_variable = { name = xfm_attention_remaining value = { value = var:xfm_attention_count min = 0 max = xfm_finance_attention_quota_value } }
     while = {
-        limit = { var:xfm_ai_remaining > 0 var:xfm_attention_remaining > 0 exists = var:xfm_attention_head }
+        limit = { var:xfm_ai_remaining > 0 var:xfm_attention_remaining > 0 var:xfm_attention_queue_dirty = 0 exists = var:xfm_attention_head }
         change_variable = { name = xfm_ai_remaining subtract = 1 }
         change_variable = { name = xfm_attention_remaining subtract = 1 }
         change_variable = { name = xfm_ai_work_today add = 1 }
@@ -97,7 +45,7 @@ xfm_finance_run_ai_budget_effect = {
     # Unused priority slots return to normal discovery. Stale/dead nodes still consume work budget.
     set_variable = { name = xfm_ai_remaining value = { value = var:xfm_ai_remaining max = var:xfm_ai_count min = 0 } }
     while = {
-        limit = { var:xfm_ai_remaining > 0 exists = var:xfm_ai_head }
+        limit = { var:xfm_ai_remaining > 0 var:xfm_ai_queue_dirty = 0 exists = var:xfm_ai_head }
         change_variable = { name = xfm_ai_remaining subtract = 1 }
         change_variable = { name = xfm_ai_work_today add = 1 }
         xfm_finance_pop_ai_effect = yes

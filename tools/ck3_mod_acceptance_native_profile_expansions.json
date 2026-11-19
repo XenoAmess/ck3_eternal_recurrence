@@ -25850,7 +25850,7 @@
           "dependency_targets": [
             "xar_ck3_1210_core_control_test"
           ],
-          "translation_units": 11,
+          "translation_units": 12,
           "required_defines": [
             "NOMINMAX",
             "WIN32_LEAN_AND_MEAN"
@@ -27323,7 +27323,8 @@
           "src/game_adapter_capabilities.cpp",
           "src/ck3_1210_core_control_test.cpp",
           "src/ck3_1210_date_sentinel_v1.cpp",
-          "src/tactical_daily_sentinel_v1.cpp"
+          "src/tactical_daily_sentinel_v1.cpp",
+          "src/ck3_26757580_save_mapped61.cpp"
         ],
         "xar_ck3_1210_application_exit_test": [
           "src/ck3_1210_application_exit_v1.cpp",
@@ -27471,7 +27472,7 @@
           "tests/toast_owned_fixture_v1.hpp"
         ]
       },
-      "scope": "Financial-markets Native Q24 source profile based on the actual Q23 profile: the original 202 flags remain unchanged and six previously absent options are explicitly OFF, giving 208 flags. The actual postconfigure File API adds exactly four runtime translation units (src/ck3_26757580_save_mapped61.cpp, src/council_observation65.cpp, src/ck3_26757580_council_frame67.cpp, src/ck3_26757580_council_serialize67.cpp): runtime 534 + bridge 268 + protocol 1 = 803 production translation units. The existing 22 reviewed fixtures are retained. The original Q23 qualification remains the historical 799-unit/202-flag fact; it does not qualify this new 803-unit graph. All six new permissions remain closed; this source contract grants no actual live-business credit."
+      "scope": "Financial-markets Native Q24 source profile based on the actual Q23 profile: the original 202 flags remain unchanged and six previously absent options are explicitly OFF, giving 208 flags. The actual postconfigure File API adds exactly four runtime translation units (src/ck3_26757580_save_mapped61.cpp, src/council_observation65.cpp, src/ck3_26757580_council_frame67.cpp, src/ck3_26757580_council_serialize67.cpp): runtime 534 + bridge 268 + protocol 1 = 803 production translation units. The existing 22 reviewed fixtures are retained. The original Q23 qualification remains the historical 799-unit/202-flag fact; it does not qualify this new 803-unit graph. All six new permissions remain closed; this source contract grants no actual live-business credit. The reviewed core_control fixture appends the existing SaveMapped provider for symbol closure (11 to 12 TUs); its feature permission remains absent. The hotfix26757580_basic target also receives that provider in CMake but is outside these 22 reviewed fixtures. Actual new File API and finite execution qualification remain pending."
     }
   }
 }

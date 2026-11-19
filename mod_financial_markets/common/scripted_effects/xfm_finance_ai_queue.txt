@@ -1,0 +1,425 @@
+﻿# 15 effects. Canonical exchange owns the queue; character death detaches before scope loss.
+# Schema migration does one living census. Later proven corruption permits at most one
+# census per 30 script-calendar days, never one per daily callback or per candidate.
+xfm_finance_ai_queue_ensure_effect = {
+    if = {
+        limit = { exists = global_var:xfm_exchange this = global_var:xfm_exchange story_type = xfm_finance_exchange }
+        if = { limit = { NOT = { AND = { var:xfm_ai_queue_schema = 2 var:xfm_attention_queue_schema = 2 } } } xfm_finance_ai_queue_rebuild_effect = yes }
+        else = {
+            xfm_finance_ai_queue_check_effect = yes
+            xfm_finance_attention_queue_check_effect = yes
+            if = {
+                limit = {
+                    OR = { var:xfm_ai_queue_dirty = 1 var:xfm_attention_queue_dirty = 1 }
+                    OR = { NOT = { has_variable = xfm_ai_queue_next_repair_date } var:xfm_ai_queue_next_repair_date <= current_date }
+                }
+                xfm_finance_ai_queue_rebuild_effect = yes
+            }
+        }
+    }
+}
+
+xfm_finance_ai_queue_fault_effect = {
+    # Never erase the last observed fault when a repair or a later valid visit succeeds.
+    set_variable = { name = xfm_ai_queue_dirty value = 1 }
+    set_variable = { name = xfm_ai_queue_last_fault_date value = current_date }
+}
+
+xfm_finance_ai_queue_check_effect = {
+    if = {
+        limit = {
+            OR = {
+                NOT = { has_variable = xfm_ai_count }
+                var:xfm_ai_count < 0
+                AND = { var:xfm_ai_count = 0 OR = { has_variable = xfm_ai_head has_variable = xfm_ai_tail } }
+                AND = {
+                    var:xfm_ai_count > 0
+                    NOT = {
+                        AND = {
+                            exists = var:xfm_ai_head exists = var:xfm_ai_tail
+                            var:xfm_ai_head = { has_variable = xfm_ai_queued var:xfm_ai_queue_member_schema = 2 NOT = { has_variable = xfm_ai_prev } }
+                            var:xfm_ai_tail = { has_variable = xfm_ai_queued var:xfm_ai_queue_member_schema = 2 NOT = { has_variable = xfm_ai_next } }
+                        }
+                    }
+                }
+                AND = { var:xfm_ai_count = 1 var:xfm_ai_head != var:xfm_ai_tail }
+                AND = { var:xfm_ai_count > 1 var:xfm_ai_head = var:xfm_ai_tail }
+                AND = {
+                    var:xfm_ai_count > 1
+                    NOT = { AND = { var:xfm_ai_head = { exists = var:xfm_ai_next } var:xfm_ai_tail = { exists = var:xfm_ai_prev } } }
+                }
+            }
+        }
+        set_variable = { name = xfm_ai_queue_last_fault_code value = 1 }
+        xfm_finance_ai_queue_fault_effect = yes
+    }
+}
+
+xfm_finance_ai_queue_rebuild_effect = {
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange this = global_var:xfm_exchange story_type = xfm_finance_exchange
+            NOT = { has_variable = xfm_ai_queue_rebuilding }
+        }
+        set_variable = { name = xfm_ai_queue_rebuilding value = 1 }
+        set_variable = { name = xfm_ai_seeded value = 1 }
+        set_variable = { name = xfm_ai_queue_schema value = 2 }
+        set_variable = { name = xfm_ai_queue_dirty value = 0 }
+        set_variable = { name = xfm_attention_queue_schema value = 2 }
+        set_variable = { name = xfm_attention_queue_dirty value = 0 }
+        set_variable = { name = xfm_attention_count value = 0 }
+        remove_variable = xfm_attention_head
+        remove_variable = xfm_attention_tail
+        set_variable = { name = xfm_ai_count value = 0 }
+        remove_variable = xfm_ai_head
+        remove_variable = xfm_ai_tail
+        # An expired date does not schedule a census: a real dirty invariant is also required.
+        set_variable = { name = xfm_ai_queue_next_repair_date value = { value = current_date add = 30 } }
+        set_variable = { name = xfm_ai_queue_last_repair_date value = current_date }
+        if = { limit = { NOT = { has_variable = xfm_ai_queue_repair_count } } set_variable = { name = xfm_ai_queue_repair_count value = 0 } }
+        if = { limit = { var:xfm_ai_queue_repair_count < 1000000000 } change_variable = { name = xfm_ai_queue_repair_count add = 1 } }
+        else = { set_variable = { name = xfm_ai_queue_repair_count_saturated value = 1 } }
+        every_living_character = {
+            remove_variable = xfm_ai_queued
+            remove_variable = xfm_ai_next
+            remove_variable = xfm_ai_prev
+            remove_variable = xfm_ai_queue_member_schema
+            xfm_finance_enqueue_ai_effect = yes
+            remove_variable = xfm_attention_queued
+            remove_variable = xfm_attention_next
+            remove_variable = xfm_attention_prev
+            remove_variable = xfm_attention_queue_member_schema
+            xfm_finance_enqueue_attention_effect = yes
+        }
+        remove_variable = xfm_ai_queue_rebuilding
+    }
+}
+
+xfm_finance_ai_queue_push_effect = {
+    if = {
+        limit = { is_alive = yes exists = global_var:xfm_exchange global_var:xfm_exchange = { story_type = xfm_finance_exchange } }
+        if = {
+            limit = { global_var:xfm_exchange = { var:xfm_ai_queue_schema = 2 } }
+            if = {
+                limit = { NOT = { has_variable = xfm_ai_queued } }
+                global_var:xfm_exchange = { xfm_finance_ai_queue_check_effect = yes }
+                if = {
+                    limit = { global_var:xfm_exchange = { var:xfm_ai_queue_dirty = 0 } }
+                    clear_saved_scope = xfm_aiq_push_actor
+                    clear_saved_scope = xfm_aiq_push_tail
+                    save_scope_as = xfm_aiq_push_actor
+                    remove_variable = xfm_ai_next
+                    remove_variable = xfm_ai_prev
+                    global_var:xfm_exchange = {
+                        if = {
+                            limit = { exists = var:xfm_ai_tail }
+                            var:xfm_ai_tail = {
+                                save_scope_as = xfm_aiq_push_tail
+                                set_variable = { name = xfm_ai_next value = scope:xfm_aiq_push_actor }
+                            }
+                        }
+                        else = { set_variable = { name = xfm_ai_head value = scope:xfm_aiq_push_actor } }
+                        set_variable = { name = xfm_ai_tail value = scope:xfm_aiq_push_actor }
+                        change_variable = { name = xfm_ai_count add = 1 }
+                    }
+                    if = { limit = { exists = scope:xfm_aiq_push_tail } set_variable = { name = xfm_ai_prev value = scope:xfm_aiq_push_tail } }
+                    set_variable = { name = xfm_ai_queued value = 1 }
+                    set_variable = { name = xfm_ai_queue_member_schema value = 2 }
+                    clear_saved_scope = xfm_aiq_push_actor
+                    clear_saved_scope = xfm_aiq_push_tail
+                }
+            }
+            else_if = {
+                limit = { NOT = { var:xfm_ai_queue_member_schema = 2 } }
+                global_var:xfm_exchange = { set_variable = { name = xfm_ai_queue_last_fault_code value = 2 } xfm_finance_ai_queue_fault_effect = yes }
+            }
+        }
+        else = { global_var:xfm_exchange = { set_variable = { name = xfm_ai_queue_last_fault_code value = 3 } xfm_finance_ai_queue_fault_effect = yes } }
+    }
+}
+
+xfm_finance_ai_queue_detach_effect = {
+    # Character scope. Success exports only this private alias; caller must clear it.
+    clear_saved_scope = xfm_aiq_detached_actor
+    clear_saved_scope = xfm_aiq_detach_actor
+    clear_saved_scope = xfm_aiq_detach_prev
+    clear_saved_scope = xfm_aiq_detach_next
+    if = {
+        limit = {
+            has_variable = xfm_ai_queued var:xfm_ai_queue_member_schema = 2
+            exists = global_var:xfm_exchange global_var:xfm_exchange = { story_type = xfm_finance_exchange var:xfm_ai_queue_schema = 2 var:xfm_ai_queue_dirty = 0 }
+        }
+        save_scope_as = xfm_aiq_detach_actor
+        if = { limit = { exists = var:xfm_ai_prev } var:xfm_ai_prev = { save_scope_as = xfm_aiq_detach_prev } }
+        if = { limit = { exists = var:xfm_ai_next } var:xfm_ai_next = { save_scope_as = xfm_aiq_detach_next } }
+        if = {
+            limit = {
+                global_var:xfm_exchange = { var:xfm_ai_count > 0 }
+                OR = {
+                    AND = { NOT = { has_variable = xfm_ai_prev } global_var:xfm_exchange = { var:xfm_ai_head = scope:xfm_aiq_detach_actor } }
+                    AND = { exists = scope:xfm_aiq_detach_prev scope:xfm_aiq_detach_prev != this scope:xfm_aiq_detach_prev = { var:xfm_ai_next = scope:xfm_aiq_detach_actor has_variable = xfm_ai_queued var:xfm_ai_queue_member_schema = 2 } }
+                }
+                OR = {
+                    AND = { NOT = { has_variable = xfm_ai_next } global_var:xfm_exchange = { var:xfm_ai_tail = scope:xfm_aiq_detach_actor } }
+                    AND = { exists = scope:xfm_aiq_detach_next scope:xfm_aiq_detach_next != this scope:xfm_aiq_detach_next = { var:xfm_ai_prev = scope:xfm_aiq_detach_actor has_variable = xfm_ai_queued var:xfm_ai_queue_member_schema = 2 } }
+                }
+                OR = { NOT = { exists = scope:xfm_aiq_detach_prev } NOT = { exists = scope:xfm_aiq_detach_next } scope:xfm_aiq_detach_prev != scope:xfm_aiq_detach_next }
+            }
+            xfm_finance_ai_queue_splice_effect = yes
+            save_scope_as = xfm_aiq_detached_actor
+        }
+        else = { global_var:xfm_exchange = { set_variable = { name = xfm_ai_queue_last_fault_code value = 4 } xfm_finance_ai_queue_fault_effect = yes } }
+    }
+    clear_saved_scope = xfm_aiq_detach_actor
+    clear_saved_scope = xfm_aiq_detach_prev
+    clear_saved_scope = xfm_aiq_detach_next
+}
+
+xfm_finance_ai_queue_splice_effect = {
+    if = {
+        limit = { exists = scope:xfm_aiq_detach_prev }
+        scope:xfm_aiq_detach_prev = {
+            if = { limit = { exists = scope:xfm_aiq_detach_next } set_variable = { name = xfm_ai_next value = scope:xfm_aiq_detach_next } }
+            else = { remove_variable = xfm_ai_next }
+        }
+    }
+    else = {
+        global_var:xfm_exchange = {
+            if = { limit = { exists = scope:xfm_aiq_detach_next } set_variable = { name = xfm_ai_head value = scope:xfm_aiq_detach_next } }
+            else = { remove_variable = xfm_ai_head }
+        }
+    }
+    if = {
+        limit = { exists = scope:xfm_aiq_detach_next }
+        scope:xfm_aiq_detach_next = {
+            if = { limit = { exists = scope:xfm_aiq_detach_prev } set_variable = { name = xfm_ai_prev value = scope:xfm_aiq_detach_prev } }
+            else = { remove_variable = xfm_ai_prev }
+        }
+    }
+    else = {
+        global_var:xfm_exchange = {
+            if = { limit = { exists = scope:xfm_aiq_detach_prev } set_variable = { name = xfm_ai_tail value = scope:xfm_aiq_detach_prev } }
+            else = { remove_variable = xfm_ai_tail }
+        }
+    }
+    global_var:xfm_exchange = { change_variable = { name = xfm_ai_count subtract = 1 } }
+    remove_variable = xfm_ai_queued
+    remove_variable = xfm_ai_queue_member_schema
+    remove_variable = xfm_ai_prev
+    remove_variable = xfm_ai_next
+}
+
+xfm_finance_ai_queue_pop_effect = {
+    if = {
+        limit = { exists = global_var:xfm_exchange this = global_var:xfm_exchange story_type = xfm_finance_exchange }
+        xfm_finance_ai_queue_check_effect = yes
+        if = {
+            limit = { var:xfm_ai_queue_dirty = 0 exists = var:xfm_ai_head }
+            clear_saved_scope = xfm_aiq_pop_actor
+            var:xfm_ai_head = { save_scope_as = xfm_aiq_pop_actor xfm_finance_ai_queue_detach_effect = yes }
+            if = {
+                limit = { exists = scope:xfm_aiq_detached_actor scope:xfm_aiq_detached_actor = scope:xfm_aiq_pop_actor }
+                scope:xfm_aiq_pop_actor = {
+                    xfm_finance_ai_decision_effect = yes
+                    if = { limit = { is_alive = yes } xfm_finance_enqueue_ai_effect = yes }
+                }
+            }
+            clear_saved_scope = xfm_aiq_detached_actor
+            clear_saved_scope = xfm_aiq_pop_actor
+        }
+    }
+}
+
+xfm_finance_ai_remove_dying_effect = {
+    # on_death is before actual death; do not require is_alive = no or erase financial rights.
+    if = {
+        limit = { exists = global_var:xfm_exchange global_var:xfm_exchange = { story_type = xfm_finance_exchange var:xfm_ai_queue_schema = 2 } }
+        global_var:xfm_exchange = { xfm_finance_ai_queue_check_effect = yes xfm_finance_attention_queue_check_effect = yes }
+    }
+    xfm_finance_ai_queue_detach_effect = yes
+    clear_saved_scope = xfm_aiq_detached_actor
+    xfm_finance_attention_queue_detach_effect = yes
+    clear_saved_scope = xfm_attentionq_detached_actor
+}
+
+# The bounded paid-attention queue shares the same single repair census.
+xfm_finance_attention_queue_fault_effect = {
+    # Never erase the last observed fault when a repair or a later valid visit succeeds.
+    set_variable = { name = xfm_attention_queue_dirty value = 1 }
+    set_variable = { name = xfm_attention_queue_last_fault_date value = current_date }
+}
+
+
+xfm_finance_attention_queue_check_effect = {
+    if = {
+        limit = {
+            OR = {
+                NOT = { has_variable = xfm_attention_count }
+                var:xfm_attention_count < 0
+                AND = { var:xfm_attention_count = 0 OR = { has_variable = xfm_attention_head has_variable = xfm_attention_tail } }
+                AND = {
+                    var:xfm_attention_count > 0
+                    NOT = {
+                        AND = {
+                            exists = var:xfm_attention_head exists = var:xfm_attention_tail
+                            var:xfm_attention_head = { has_variable = xfm_attention_queued var:xfm_attention_queue_member_schema = 2 NOT = { has_variable = xfm_attention_prev } }
+                            var:xfm_attention_tail = { has_variable = xfm_attention_queued var:xfm_attention_queue_member_schema = 2 NOT = { has_variable = xfm_attention_next } }
+                        }
+                    }
+                }
+                AND = { var:xfm_attention_count = 1 var:xfm_attention_head != var:xfm_attention_tail }
+                AND = { var:xfm_attention_count > 1 var:xfm_attention_head = var:xfm_attention_tail }
+                AND = {
+                    var:xfm_attention_count > 1
+                    NOT = { AND = { var:xfm_attention_head = { exists = var:xfm_attention_next } var:xfm_attention_tail = { exists = var:xfm_attention_prev } } }
+                }
+            }
+        }
+        set_variable = { name = xfm_attention_queue_last_fault_code value = 1 }
+        xfm_finance_attention_queue_fault_effect = yes
+    }
+}
+
+
+xfm_finance_attention_queue_push_effect = {
+    if = {
+        limit = { is_alive = yes is_adult = yes is_ai = yes exists = global_var:xfm_exchange global_var:xfm_exchange = { story_type = xfm_finance_exchange } has_variable = xfm_attention_until_day var:xfm_attention_until_day > global_var:xfm_exchange.var:xfm_day }
+        if = {
+            limit = { global_var:xfm_exchange = { var:xfm_attention_queue_schema = 2 } }
+            if = {
+                limit = { NOT = { has_variable = xfm_attention_queued } }
+                global_var:xfm_exchange = { xfm_finance_attention_queue_check_effect = yes }
+                if = {
+                    limit = { global_var:xfm_exchange = { var:xfm_attention_queue_dirty = 0 var:xfm_attention_count < xfm_finance_attention_capacity_value } }
+                    clear_saved_scope = xfm_attentionq_push_actor
+                    clear_saved_scope = xfm_attentionq_push_tail
+                    save_scope_as = xfm_attentionq_push_actor
+                    remove_variable = xfm_attention_next
+                    remove_variable = xfm_attention_prev
+                    global_var:xfm_exchange = {
+                        if = {
+                            limit = { exists = var:xfm_attention_tail }
+                            var:xfm_attention_tail = {
+                                save_scope_as = xfm_attentionq_push_tail
+                                set_variable = { name = xfm_attention_next value = scope:xfm_attentionq_push_actor }
+                            }
+                        }
+                        else = { set_variable = { name = xfm_attention_head value = scope:xfm_attentionq_push_actor } }
+                        set_variable = { name = xfm_attention_tail value = scope:xfm_attentionq_push_actor }
+                        change_variable = { name = xfm_attention_count add = 1 }
+                    }
+                    if = { limit = { exists = scope:xfm_attentionq_push_tail } set_variable = { name = xfm_attention_prev value = scope:xfm_attentionq_push_tail } }
+                    set_variable = { name = xfm_attention_queued value = 1 }
+                    set_variable = { name = xfm_attention_queue_member_schema value = 2 }
+                    clear_saved_scope = xfm_attentionq_push_actor
+                    clear_saved_scope = xfm_attentionq_push_tail
+                }
+            }
+            else_if = {
+                limit = { NOT = { var:xfm_attention_queue_member_schema = 2 } }
+                global_var:xfm_exchange = { set_variable = { name = xfm_attention_queue_last_fault_code value = 2 } xfm_finance_attention_queue_fault_effect = yes }
+            }
+        }
+        else = { global_var:xfm_exchange = { set_variable = { name = xfm_attention_queue_last_fault_code value = 3 } xfm_finance_attention_queue_fault_effect = yes } }
+    }
+}
+
+
+xfm_finance_attention_queue_detach_effect = {
+    # Character scope. Success exports only this private alias; caller must clear it.
+    clear_saved_scope = xfm_attentionq_detached_actor
+    clear_saved_scope = xfm_attentionq_detach_actor
+    clear_saved_scope = xfm_attentionq_detach_prev
+    clear_saved_scope = xfm_attentionq_detach_next
+    if = {
+        limit = {
+            has_variable = xfm_attention_queued var:xfm_attention_queue_member_schema = 2
+            exists = global_var:xfm_exchange global_var:xfm_exchange = { story_type = xfm_finance_exchange var:xfm_attention_queue_schema = 2 var:xfm_attention_queue_dirty = 0 }
+        }
+        save_scope_as = xfm_attentionq_detach_actor
+        if = { limit = { exists = var:xfm_attention_prev } var:xfm_attention_prev = { save_scope_as = xfm_attentionq_detach_prev } }
+        if = { limit = { exists = var:xfm_attention_next } var:xfm_attention_next = { save_scope_as = xfm_attentionq_detach_next } }
+        if = {
+            limit = {
+                global_var:xfm_exchange = { var:xfm_attention_count > 0 }
+                OR = {
+                    AND = { NOT = { has_variable = xfm_attention_prev } global_var:xfm_exchange = { var:xfm_attention_head = scope:xfm_attentionq_detach_actor } }
+                    AND = { exists = scope:xfm_attentionq_detach_prev scope:xfm_attentionq_detach_prev != this scope:xfm_attentionq_detach_prev = { var:xfm_attention_next = scope:xfm_attentionq_detach_actor has_variable = xfm_attention_queued var:xfm_attention_queue_member_schema = 2 } }
+                }
+                OR = {
+                    AND = { NOT = { has_variable = xfm_attention_next } global_var:xfm_exchange = { var:xfm_attention_tail = scope:xfm_attentionq_detach_actor } }
+                    AND = { exists = scope:xfm_attentionq_detach_next scope:xfm_attentionq_detach_next != this scope:xfm_attentionq_detach_next = { var:xfm_attention_prev = scope:xfm_attentionq_detach_actor has_variable = xfm_attention_queued var:xfm_attention_queue_member_schema = 2 } }
+                }
+                OR = { NOT = { exists = scope:xfm_attentionq_detach_prev } NOT = { exists = scope:xfm_attentionq_detach_next } scope:xfm_attentionq_detach_prev != scope:xfm_attentionq_detach_next }
+            }
+            xfm_finance_attention_queue_splice_effect = yes
+            save_scope_as = xfm_attentionq_detached_actor
+        }
+        else = { global_var:xfm_exchange = { set_variable = { name = xfm_attention_queue_last_fault_code value = 4 } xfm_finance_attention_queue_fault_effect = yes } }
+    }
+    clear_saved_scope = xfm_attentionq_detach_actor
+    clear_saved_scope = xfm_attentionq_detach_prev
+    clear_saved_scope = xfm_attentionq_detach_next
+}
+
+
+xfm_finance_attention_queue_splice_effect = {
+    if = {
+        limit = { exists = scope:xfm_attentionq_detach_prev }
+        scope:xfm_attentionq_detach_prev = {
+            if = { limit = { exists = scope:xfm_attentionq_detach_next } set_variable = { name = xfm_attention_next value = scope:xfm_attentionq_detach_next } }
+            else = { remove_variable = xfm_attention_next }
+        }
+    }
+    else = {
+        global_var:xfm_exchange = {
+            if = { limit = { exists = scope:xfm_attentionq_detach_next } set_variable = { name = xfm_attention_head value = scope:xfm_attentionq_detach_next } }
+            else = { remove_variable = xfm_attention_head }
+        }
+    }
+    if = {
+        limit = { exists = scope:xfm_attentionq_detach_next }
+        scope:xfm_attentionq_detach_next = {
+            if = { limit = { exists = scope:xfm_attentionq_detach_prev } set_variable = { name = xfm_attention_prev value = scope:xfm_attentionq_detach_prev } }
+            else = { remove_variable = xfm_attention_prev }
+        }
+    }
+    else = {
+        global_var:xfm_exchange = {
+            if = { limit = { exists = scope:xfm_attentionq_detach_prev } set_variable = { name = xfm_attention_tail value = scope:xfm_attentionq_detach_prev } }
+            else = { remove_variable = xfm_attention_tail }
+        }
+    }
+    global_var:xfm_exchange = { change_variable = { name = xfm_attention_count subtract = 1 } }
+    remove_variable = xfm_attention_queued
+    remove_variable = xfm_attention_queue_member_schema
+    remove_variable = xfm_attention_prev
+    remove_variable = xfm_attention_next
+}
+
+
+xfm_finance_attention_queue_pop_effect = {
+    if = {
+        limit = { exists = global_var:xfm_exchange this = global_var:xfm_exchange story_type = xfm_finance_exchange }
+        xfm_finance_attention_queue_check_effect = yes
+        if = {
+            limit = { var:xfm_attention_queue_dirty = 0 exists = var:xfm_attention_head }
+            clear_saved_scope = xfm_attentionq_pop_actor
+            var:xfm_attention_head = { save_scope_as = xfm_attentionq_pop_actor xfm_finance_attention_queue_detach_effect = yes }
+            if = {
+                limit = { exists = scope:xfm_attentionq_detached_actor scope:xfm_attentionq_detached_actor = scope:xfm_attentionq_pop_actor }
+                scope:xfm_attentionq_pop_actor = {
+                    if = {
+                        limit = { has_variable = xfm_attention_until_day var:xfm_attention_until_day > global_var:xfm_exchange.var:xfm_day }
+                        xfm_finance_ai_decision_effect = yes
+                        xfm_finance_enqueue_attention_effect = yes
+                    }
+                    else = { if = { limit = { has_variable = xfm_attention_until_day } remove_variable = xfm_attention_until_day } }
+                }
+            }
+            clear_saved_scope = xfm_attentionq_detached_actor
+            clear_saved_scope = xfm_attentionq_pop_actor
+        }
+    }
+}
+

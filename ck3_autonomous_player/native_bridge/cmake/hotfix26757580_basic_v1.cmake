@@ -28,6 +28,10 @@ if(BUILD_TESTING)
     src/ck3_1210_ingame_ready_v1.cpp
     src/ck3_1210_actor_foundation_v1.cpp src/ck3_1210_current_event_snapshot_v1.cpp
     src/ck3_1210_pending_snapshot_v1.cpp src/ck3_1210_military_empty_v1.cpp
+    # Full carries the shared ARMY_BASE_FULL source definition when that
+    # profile is enabled; this standalone target needs its real providers.
+    src/ck3_1210_player_armies_v1.cpp src/ck3_1210_army_base_v1.cpp
+    src/ck3_1210_active_wars_v1.cpp
     src/ck3_1210_core_frame_v1.cpp src/ck3_1210_thread_runtime.cpp
     src/ck3_1210_commands.cpp src/ck3_1210_core_control_v1.cpp
     src/ck3_1210_core_control_request_v1.cpp src/ck3_1210_full_clock_request_v1.cpp

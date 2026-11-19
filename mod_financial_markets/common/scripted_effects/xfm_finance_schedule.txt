@@ -5,56 +5,11 @@
 # Death-to-dequeue pointer survival, save/reload and callback composition remain unverified.
 
 xfm_finance_seed_ai_effect = {
-    if = {
-        limit = { NOT = { has_variable = xfm_ai_seeded } }
-        set_variable = { name = xfm_ai_seeded value = 1 }
-        set_variable = { name = xfm_ai_count value = 0 }
-        # One initial database walk includes children, low-tier and unlanded characters.
-        # They remain in the ring and become eligible without a second global scan.
-        every_living_character = {
-            xfm_finance_enqueue_ai_effect = yes
-        }
-    }
+    xfm_finance_ai_queue_ensure_effect = yes
 }
 
 xfm_finance_enqueue_ai_effect = {
-    if = {
-        limit = {
-            is_alive = yes
-            NOT = { has_variable = xfm_ai_queued }
-            exists = global_var:xfm_exchange
-        }
-        clear_saved_scope = xfm_finance_queue_actor
-        save_scope_as = xfm_finance_queue_actor
-        if = {
-            limit = { has_variable = xfm_ai_next }
-            remove_variable = xfm_ai_next
-        }
-        set_variable = { name = xfm_ai_queued value = 1 }
-        global_var:xfm_exchange = {
-            if = {
-                limit = { exists = var:xfm_ai_tail }
-                var:xfm_ai_tail = {
-                    set_variable = {
-                        name = xfm_ai_next
-                        value = scope:xfm_finance_queue_actor
-                    }
-                }
-            }
-            else = {
-                set_variable = {
-                    name = xfm_ai_head
-                    value = scope:xfm_finance_queue_actor
-                }
-            }
-            set_variable = {
-                name = xfm_ai_tail
-                value = scope:xfm_finance_queue_actor
-            }
-            change_variable = { name = xfm_ai_count add = 1 }
-        }
-        clear_saved_scope = xfm_finance_queue_actor
-    }
+    xfm_finance_ai_queue_push_effect = yes
 }
 
 xfm_finance_register_character_effect = {
@@ -70,51 +25,7 @@ xfm_finance_register_character_effect = {
 }
 
 xfm_finance_pop_ai_effect = {
-    if = {
-        limit = { exists = var:xfm_ai_head }
-        clear_saved_scope = xfm_finance_ai_actor
-        clear_saved_scope = xfm_finance_queue_next
-        var:xfm_ai_head = {
-            save_scope_as = xfm_finance_ai_actor
-            if = {
-                limit = { exists = var:xfm_ai_next }
-                var:xfm_ai_next = { save_scope_as = xfm_finance_queue_next }
-            }
-            if = {
-                limit = { has_variable = xfm_ai_next }
-                remove_variable = xfm_ai_next
-            }
-            if = {
-                limit = { has_variable = xfm_ai_queued }
-                remove_variable = xfm_ai_queued
-            }
-        }
-        if = {
-            limit = { exists = scope:xfm_finance_queue_next }
-            set_variable = {
-                name = xfm_ai_head
-                value = scope:xfm_finance_queue_next
-            }
-        }
-        else = {
-            remove_variable = xfm_ai_head
-            if = {
-                limit = { has_variable = xfm_ai_tail }
-                remove_variable = xfm_ai_tail
-            }
-        }
-        change_variable = { name = xfm_ai_count subtract = 1 }
-        scope:xfm_finance_ai_actor = {
-            xfm_finance_ai_decision_effect = yes
-            # Recheck life after callbacks. Dead people are dropped, not requeued.
-            if = {
-                limit = { is_alive = yes }
-                xfm_finance_enqueue_ai_effect = yes
-            }
-        }
-        clear_saved_scope = xfm_finance_ai_actor
-        clear_saved_scope = xfm_finance_queue_next
-    }
+    xfm_finance_ai_queue_pop_effect = yes
 }
 
 xfm_finance_daily_effect = {

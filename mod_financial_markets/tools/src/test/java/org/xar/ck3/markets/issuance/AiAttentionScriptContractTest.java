@@ -26,6 +26,7 @@ final class AiAttentionScriptContractTest {
     private static final Path SOURCE = Path.of(System.getProperty("xfm.source", ".."));
     private static final List<String> INPUTS = List.of(
         "scripted_effects/xfm_finance_attention.txt", "scripted_effects/xfm_finance_schedule.txt",
+        "scripted_effects/xfm_finance_ai_queue.txt",
         "scripted_effects/xfm_issuer_ai_funding.txt", "scripted_effects/xfm_issuer_daily.txt",
         "scripted_effects/xfm_issuer_influence.txt", "script_values/xfm_finance_attention_values.txt",
         "script_values/xfm_issuer_ai_values.txt", "script_values/xfm_config_values.txt",
@@ -221,18 +222,20 @@ final class AiAttentionScriptContractTest {
         assertEquals(200,v.number("xfm_issuer_subscription_cost_value",a,null));
     }
 
-    @Test void sourceCompositionRetainsChanceNormalFundingAndNoSecondGlobalScan() throws IOException {
+    @Test void sourceCompositionRetainsChanceNormalFundingAndNoUnconditionalDailyCensus() throws IOException {
         Vm v = vm();
         Block purchase = findBlockWith(v.program.get("xfm_coin_ai_effect"), "xfm_issuer_ai_ad_subscribe_effect");
         assertTrue(purchase.entries().contains(new Entry("chance", "=", new Text("25"))));
         Block registration = findBlockWith(v.program.get("xfm_coin_ai_effect"), "xfm_issuer_ai_self_subscribe_effect");
         assertTrue(index(registration, "xfm_issuer_ai_self_subscribe_effect") < index(registration, "xfm_issuer_promote_effect"));
         assertEquals(1, count(v.program.get("xfm_finance_daily_effect"), "xfm_finance_run_ai_budget_effect"));
-        assertEquals(1, count(v.program.get("xfm_finance_pop_ai_effect"), "xfm_finance_ai_decision_effect"));
+        assertEquals(1, count(v.program.get("xfm_finance_ai_queue_pop_effect"), "xfm_finance_ai_decision_effect"));
         for (String name : List.of("xfm_finance_run_ai_budget_effect", "xfm_finance_enqueue_attention_effect", "xfm_finance_pop_attention_effect")) {
             assertEquals(0, count(v.program.get(name), "every_living_character"));
             assertEquals(0, count(v.program.get(name), "random_in_global_list"));
         }
+        assertEquals(1, count(v.program.get("xfm_finance_ai_queue_rebuild_effect"), "every_living_character"));
+        assertEquals(0, count(v.program.get("xfm_finance_ai_queue_pop_effect"), "every_living_character"));
         // Original production subscriber still calls real funding and reserve; never a direct balance addition.
         String subscriber = Files.readString(dependency("scripted_effects/xfm_issuer_subscriptions.txt"));
         assertTrue(subscriber.contains("xfm_finance_ensure_funds_effect = yes"));
@@ -291,6 +294,157 @@ final class AiAttentionScriptContractTest {
         assertEquals(1,same.completions); assertFalse(a.vars.containsKey("xfm_pending_offer"));
     }
 
+    @Test void schemaMigrationRepairsMissingEndpointsWithoutChangingMoneyOrOldCoinIdentity() throws IOException {
+        Vm v = vm(); List<Node> people = population(v, 8);
+        Node wallet = v.node("old-wallet"); wallet.vars.put("account_id", 12d); wallet.vars.put("free", 1600d); wallet.vars.put("reserved", 400d);
+        Node coin = v.node("old-coin-2"); coin.vars.put("coin_id", 2d); coin.vars.put("issuer", people.get(2)); coin.vars.put("supply", 15000d);
+        for (Node n : people) { n.gold = 23; n.vars.put("xfm_ai_last_decision_day", 1d); }
+        Map<String,Object> money = new LinkedHashMap<>(wallet.vars), asset = new LinkedHashMap<>(coin.vars);
+        v.exchange.vars.put("xfm_ai_queue_schema", 1d); v.exchange.vars.put("xfm_ai_count", 36605d);
+        v.exchange.vars.remove("xfm_ai_head"); v.exchange.vars.remove("xfm_ai_tail");
+        v.run("xfm_finance_ai_queue_ensure_effect", v.exchange);
+        assertEquals(1, v.censusPasses); assertQueue(v, people); assertTrue(v.calls.isEmpty());
+        assertEquals(money, wallet.vars); assertEquals(asset, coin.vars);
+        assertTrue(people.stream().allMatch(n -> n.gold == 23 && v.num(n,"xfm_ai_last_decision_day") == 1));
+        v.run("xfm_finance_ai_queue_ensure_effect", v.exchange);
+        v.run("xfm_finance_run_ai_budget_effect", v.exchange);
+        assertEquals(1, v.censusPasses); assertTrue(v.calls.isEmpty()); assertQueue(v, people);
+    }
+
+    @Test void legacyShortRingIsRecountedFromLivingRosterRatherThanTrustedStaleCount() throws IOException {
+        Vm v = vm(); List<Node> people = population(v, 12);
+        v.exchange.vars.put("xfm_ai_queue_schema", 1d); v.exchange.vars.put("xfm_ai_count", 36810d);
+        v.exchange.vars.put("xfm_ai_head", people.get(10)); v.exchange.vars.put("xfm_ai_tail", people.get(11));
+        people.get(10).vars.remove("xfm_ai_prev"); people.get(11).vars.remove("xfm_ai_next");
+        v.run("xfm_finance_ai_queue_ensure_effect", v.exchange);
+        assertQueue(v, people); assertEquals(1, v.censusPasses);
+        v.run("xfm_finance_run_ai_budget_effect", v.exchange);
+        assertEquals(12, v.calls.size()); assertTrue(v.calls.values().stream().allMatch(n -> n == 1));
+        assertEquals(12, v.num(v.exchange,"xfm_ai_count")); assertEquals(1, v.censusPasses);
+    }
+
+    @Test void deathUnlinksHeadMiddleTailAndSingletonBeforeScopeDisappears() throws IOException {
+        for (int victim : List.of(0, 2, 4)) {
+            Vm v = vm(); List<Node> people = population(v, 5); Node dying = people.get(victim);
+            v.run("xfm_finance_ai_remove_dying_effect", dying); // on_death is before actual death
+            assertFalse(dying.vars.containsKey("xfm_ai_queued"));
+            assertFalse(dying.vars.containsKey("xfm_ai_prev")); assertFalse(dying.vars.containsKey("xfm_ai_next"));
+            dying.alive = false; dying.scopeExists = false;
+            List<Node> survivors = people.stream().filter(n -> n != dying).toList(); assertQueue(v, survivors);
+            v.run("xfm_finance_run_ai_budget_effect", v.exchange);
+            assertEquals(4, v.calls.size()); assertFalse(v.calls.containsKey(dying.id)); assertEquals(0, v.censusPasses);
+            assertQueue(v, survivors);
+        }
+        Vm one = vm(); Node dying = population(one,1).getFirst(); one.run("xfm_finance_ai_remove_dying_effect",dying);
+        assertQueue(one,List.of()); dying.alive = false; dying.scopeExists = false;
+        Node born = one.node("new-child"); born.adult = false; one.censusCharacters.add(born);
+        one.run("xfm_finance_enqueue_ai_effect",born); one.run("xfm_finance_enqueue_ai_effect",born);
+        assertQueue(one,List.of(born)); assertEquals(0,one.censusPasses);
+        String hook = Files.readString(SOURCE.resolve("common/on_action/xfm_finance_on_actions.txt"));
+        assertTrue(hook.indexOf("xfm_finance_ai_remove_dying_effect = yes") < hook.indexOf("xfm_finance_holder_death_effect = yes"));
+    }
+
+    @Test void invalidNextLatchesCorruptionBeforeDroppingBacklogAndRepairIsNotDailyScan() throws IOException {
+        Vm v = vm(); List<Node> people = population(v,4);
+        v.run("xfm_finance_ai_queue_rebuild_effect",v.exchange); assertEquals(1,v.censusPasses);
+        Node unavailable = people.get(1); unavailable.alive = false; unavailable.scopeExists = false;
+        v.run("xfm_finance_pop_ai_effect",v.exchange);
+        assertEquals(1,v.num(v.exchange,"xfm_ai_queue_dirty")); assertEquals(4,v.num(v.exchange,"xfm_ai_count"));
+        assertSame(people.getFirst(),v.exchange.vars.get("xfm_ai_head")); assertSame(people.getLast(),v.exchange.vars.get("xfm_ai_tail"));
+        assertTrue(v.calls.isEmpty());
+        v.run("xfm_finance_ai_queue_ensure_effect",v.exchange); v.currentDate = 129;
+        v.run("xfm_finance_ai_queue_ensure_effect",v.exchange); assertEquals(1,v.censusPasses);
+        v.currentDate = 130; v.run("xfm_finance_ai_queue_ensure_effect",v.exchange);
+        assertEquals(2,v.censusPasses); assertQueue(v,List.of(people.get(0),people.get(2),people.get(3)));
+        assertEquals(0,v.num(v.exchange,"xfm_ai_queue_dirty")); assertEquals(1,v.num(v.exchange,"xfm_ai_queue_last_fault_code"));
+        assertEquals(1,v.num(v.exchange,"xfm_day")); v.currentDate = 160;
+        v.run("xfm_finance_ai_queue_ensure_effect",v.exchange); assertEquals(2,v.censusPasses);
+    }
+
+    @Test void nestedBirthAndDeathCallbacksCannotReplacePoppedActorOrRepeatSameDayDecision() throws IOException {
+        Vm v = vm(); List<Node> people = population(v,8);
+        v.coinCallback = actor -> {
+            if (actor != people.getFirst()) return;
+            Node born = v.node("nested-born"); v.censusCharacters.add(born); v.run("xfm_finance_enqueue_ai_effect",born);
+            Node dying = people.get(4); v.run("xfm_finance_ai_remove_dying_effect",dying); dying.alive = false; dying.scopeExists = false;
+        };
+        v.run("xfm_finance_run_ai_budget_effect",v.exchange);
+        assertEquals(8,v.calls.size()); assertTrue(v.calls.values().stream().allMatch(n -> n == 1));
+        assertFalse(v.calls.containsKey(people.get(4).id)); assertEquals(8,v.num(v.exchange,"xfm_ai_count"));
+        assertEquals(0,v.censusPasses); assertTrue(v.scopes.keySet().stream().noneMatch(k -> k.startsWith("xfm_aiq_")));
+        List<Node> survivors = new ArrayList<>(people.stream().filter(n -> n != people.get(4)).toList()); survivors.add(v.nodes.get("nested-born"));
+        assertQueueMembers(v,survivors);
+    }
+
+    @Test void one36810CharacterMigrationKeepsDailyBudgetBoundAndIncludesChildrenAndPlayers() throws IOException {
+        Vm v = vm(); List<Node> people = population(v,36810); people.get(0).adult = false; people.get(1).ai = false;
+        v.exchange.vars.put("xfm_ai_queue_schema",1d); v.exchange.vars.remove("xfm_ai_head"); v.exchange.vars.remove("xfm_ai_tail");
+        v.run("xfm_finance_ai_queue_ensure_effect",v.exchange); assertEquals(1,v.censusPasses); assertQueue(v,people);
+        v.run("xfm_finance_run_ai_budget_effect",v.exchange);
+        assertEquals(512,v.ordinaryPops); assertEquals(512,v.num(v.exchange,"xfm_ai_work_today"));
+        assertEquals(510,v.calls.size()); assertEquals(36810,v.num(v.exchange,"xfm_ai_count")); assertEquals(1,v.censusPasses);
+        assertFalse(v.calls.containsKey(people.get(0).id)); assertFalse(v.calls.containsKey(people.get(1).id));
+    }
+
+    @Test void oneMigrationRestoresBothQueuesWithoutChangingPaidAttentionDeadlinesOrMoney() throws IOException {
+        Vm v = vm(); List<Node> people = population(v,8);
+        for (Node n : people) { n.gold=25; attention(v,n,31); }
+        people.get(1).vars.put("xfm_attention_until_day",1d); // expired, retained as an expired value
+        people.get(2).adult=false; people.get(3).ai=false; people.get(4).alive=false;
+        v.exchange.vars.put("xfm_ai_queue_schema",1d); v.exchange.vars.put("xfm_attention_queue_schema",1d);
+        v.exchange.vars.put("xfm_ai_count",36605d); v.exchange.vars.put("xfm_attention_count",1000d);
+        for(String key:List.of("xfm_ai_head","xfm_ai_tail","xfm_attention_head","xfm_attention_tail")) v.exchange.vars.remove(key);
+        v.run("xfm_finance_ai_queue_ensure_effect",v.exchange);
+        assertEquals(1,v.censusPasses); assertQueue(v,people.stream().filter(n -> n.alive).toList());
+        assertAttentionQueue(v,List.of(people.get(0),people.get(5),people.get(6),people.get(7)));
+        assertEquals(1,v.num(people.get(1),"xfm_attention_until_day"));
+        for(int i:List.of(0,2,3,4,5,6,7)) assertEquals(31,v.num(people.get(i),"xfm_attention_until_day"));
+        assertTrue(people.stream().allMatch(n -> n.gold==25)); assertEquals(0,v.fees); assertEquals(0,v.subscriptionAttempts); assertTrue(v.calls.isEmpty());
+        v.run("xfm_finance_ai_queue_ensure_effect",v.exchange); assertEquals(1,v.censusPasses);
+    }
+
+    @Test void attentionDeathAndInvalidNextPreserveOtherMembersAndShareBoundedRepairCensus() throws IOException {
+        Vm v = vm(); List<Node> people = population(v,8); for(Node n:people) attention(v,n,31);
+        Node middle=people.get(3); v.run("xfm_finance_ai_remove_dying_effect",middle); middle.alive=false; middle.scopeExists=false;
+        List<Node> alive=people.stream().filter(n -> n!=middle).toList(); assertQueue(v,alive); assertAttentionQueue(v,alive);
+        assertEquals(0,v.censusPasses); assertTrue(v.scopes.keySet().stream().noneMatch(k -> k.startsWith("xfm_attentionq_")));
+        v.run("xfm_finance_ai_queue_rebuild_effect",v.exchange); assertEquals(1,v.censusPasses);
+        // A priority-only lost link must not discard the other paid nodes or stop the healthy ordinary queue.
+        people.getFirst().vars.remove("xfm_attention_next");
+        v.run("xfm_finance_ai_queue_ensure_effect",v.exchange);
+        assertEquals(1,v.num(v.exchange,"xfm_attention_queue_dirty")); assertEquals(0,v.num(v.exchange,"xfm_ai_queue_dirty"));
+        assertEquals(7,v.num(v.exchange,"xfm_attention_count")); assertSame(people.getFirst(),v.exchange.vars.get("xfm_attention_head"));
+        v.run("xfm_finance_run_ai_budget_effect",v.exchange);
+        assertEquals(0,v.num(v.exchange,"xfm_attention_work_today")); assertEquals(7,v.calls.size()); assertEquals(1,v.censusPasses);
+        v.currentDate=130; v.run("xfm_finance_ai_queue_ensure_effect",v.exchange);
+        assertEquals(2,v.censusPasses); assertQueue(v,alive); assertAttentionQueue(v,alive);
+        assertEquals(0,v.num(v.exchange,"xfm_attention_queue_dirty")); assertEquals(1,v.num(v.exchange,"xfm_attention_queue_last_fault_code"));
+    }
+
+    private static void assertQueue(Vm v,List<Node> expected) {
+        assertQueueMembers(v,expected);
+        Node at = (Node)v.exchange.vars.get("xfm_ai_head");
+        for (Node n : expected) { assertSame(n,at); at = (Node)at.vars.get("xfm_ai_next"); }
+        assertNull(at);
+    }
+    private static void assertQueueMembers(Vm v,List<Node> expected) {
+        assertEquals(expected.size(),v.num(v.exchange,"xfm_ai_count"));
+        var remaining = new java.util.HashSet<>(expected); Node prior = null, at = (Node)v.exchange.vars.get("xfm_ai_head");
+        for (int i=0; i<expected.size(); i++) {
+            assertNotNull(at); assertTrue(remaining.remove(at),"repeated or foreign queue node"); assertSame(prior,at.vars.get("xfm_ai_prev"));
+            assertEquals(2,v.num(at,"xfm_ai_queue_member_schema")); assertTrue(at.vars.containsKey("xfm_ai_queued"));
+            prior=at; at=(Node)at.vars.get("xfm_ai_next");
+        }
+        assertNull(at); assertTrue(remaining.isEmpty()); assertSame(prior,v.exchange.vars.get("xfm_ai_tail"));
+    }
+    private static void assertAttentionQueue(Vm v,List<Node> expected) {
+        assertEquals(expected.size(),v.num(v.exchange,"xfm_attention_count"));
+        Node prior=null,at=(Node)v.exchange.vars.get("xfm_attention_head");
+        for(Node n:expected) { assertSame(n,at); assertSame(prior,at.vars.get("xfm_attention_prev"));
+            assertEquals(2,v.num(at,"xfm_attention_queue_member_schema")); assertTrue(at.vars.containsKey("xfm_attention_queued")); prior=at; at=(Node)at.vars.get("xfm_attention_next"); }
+        assertNull(at); assertSame(prior,v.exchange.vars.get("xfm_attention_tail"));
+    }
+
     private static Node offering(Vm v,Node a) { Node coin=v.node("offering"); coin.vars.put("xfm_controller",a); coin.vars.put("xfm_listing_state",0d); coin.vars.put("xfm_minimum_raised_cents",20000d); coin.vars.put("xfm_actual_raised_cents",0d); coin.vars.put("xfm_external_raised_cents",0d); coin.vars.put("xfm_offer_units_remaining",2000d); return coin; }
 
     private static int index(Block b, String key) { for (int i = 0; i < b.entries().size(); i++) if (b.entries().get(i).key().equals(key)) return i; return -1; }
@@ -309,7 +463,7 @@ final class AiAttentionScriptContractTest {
         }
         return new Vm(defs);
     }
-    private static List<Node> population(Vm v, int n) { List<Node> a = new ArrayList<>(); for (int i = 0; i < n; i++) { Node node = v.node("a" + i); a.add(node); v.run("xfm_finance_enqueue_ai_effect", node); } return a; }
+    private static List<Node> population(Vm v, int n) { List<Node> a = new ArrayList<>(); for (int i = 0; i < n; i++) { Node node = v.node("a" + i); a.add(node); v.censusCharacters.add(node); v.run("xfm_finance_enqueue_ai_effect", node); } return a; }
     private static void attention(Vm v, Node n, int until) { n.vars.put("xfm_attention_until_day", (double) until); v.run("xfm_finance_enqueue_attention_effect", n); }
 
     private sealed interface Term permits Text, Block {}
@@ -332,15 +486,16 @@ final class AiAttentionScriptContractTest {
     }
 
     private static final class Node {
-        final String id; final Map<String,Object> vars = new LinkedHashMap<>(); boolean alive = true, adult = true, ai = true, usable = true; double gold; String storyType="";
+        final String id; final Map<String,Object> vars = new LinkedHashMap<>(); boolean alive = true, adult = true, ai = true, usable = true, scopeExists = true; double gold; String storyType="";
         Node(String id) { this.id = id; }
     }
     private static final class Vm {
         final Map<String,Block> program; final Map<String,Node> nodes = new LinkedHashMap<>(); final Map<String,Node> scopes = new HashMap<>();
         final Map<String,Integer> calls = new LinkedHashMap<>(); final Node exchange; String rule = "default"; int ordinaryPops, subscriptionAttempts; double fees;
-        int completions,refunds;
+        int completions,refunds,censusPasses; double currentDate=100;
+        final List<Node> censusCharacters = new ArrayList<>();
         Consumer<Node> coinCallback = actor -> {};
-        Vm(Map<String,Block> program) { this.program = program; exchange = node("exchange"); exchange.vars.put("xfm_day", 1d); exchange.vars.put("xfm_ai_count", 0d); exchange.vars.put("xfm_new_listings_today",0d); exchange.vars.put("xfm_active_coin_count",0d); }
+        Vm(Map<String,Block> program) { this.program = program; exchange = node("exchange"); exchange.storyType="xfm_finance_exchange"; exchange.vars.put("xfm_day", 1d); exchange.vars.put("xfm_ai_count", 0d); exchange.vars.put("xfm_ai_queue_schema",2d); exchange.vars.put("xfm_ai_queue_dirty",0d); exchange.vars.put("xfm_attention_count",0d); exchange.vars.put("xfm_attention_queue_schema",2d); exchange.vars.put("xfm_attention_queue_dirty",0d); exchange.vars.put("xfm_new_listings_today",0d); exchange.vars.put("xfm_active_coin_count",0d); }
         Node node(String id) { return nodes.computeIfAbsent(id, Node::new); }
         double num(Node node, String key) { Object v = node.vars.get(key); return v == null ? 0 : (Double) v; }
         Object resolve(String text, Node here, Node prev) {
@@ -349,12 +504,14 @@ final class AiAttentionScriptContractTest {
             if (text.startsWith("global_var:xfm_exchange.")) return resolve(text.substring(24), exchange, here);
             int dot = text.indexOf('.');
             if (dot > 0) { Object base = resolve(text.substring(0,dot),here,prev); return base instanceof Node n ? resolve(text.substring(dot+1),n,here) : null; }
-            if (text.startsWith("scope:")) return scopes.get(text.substring(6));
-            if (text.startsWith("var:")) return here.vars.get(text.substring(4));
+            if (text.startsWith("scope:")) return available(scopes.get(text.substring(6)));
+            if (text.startsWith("var:")) return available(here.vars.get(text.substring(4)));
+            if (text.equals("current_date")) return currentDate;
             if (text.equals("gold")) return here.gold;
             if (program.containsKey(text)) return value(program.get(text),here,prev);
             try { return Double.valueOf(text); } catch (NumberFormatException ignored) { return text; }
         }
+        private static Object available(Object value) { return value instanceof Node n && !n.scopeExists ? null : value; }
         double number(String text, Node here, Node prev) { Object value = resolve(text,here,prev); if (!(value instanceof Double n)) throw new IllegalArgumentException("not number: " + text); return n; }
         private String text(Term term) { if (!(term instanceof Text t)) throw new IllegalArgumentException("not atom"); return t.text(); }
         private Object term(Term term, Node here, Node prev) { return term instanceof Block b ? value(b,here,prev) : resolve(text(term),here,prev); }
@@ -406,6 +563,7 @@ final class AiAttentionScriptContractTest {
                 if (key.equals("while")) { Block child = (Block)e.term(); int loops = 0; while (test(child(child,"limit"),here,prev)) { if (++loops > 10000) throw new IllegalArgumentException("unbounded loop"); execute(without(child,"limit"),here,prev); } continue; }
                 if (key.equals("save_scope_as")) { scopes.put(text(e.term()),here); continue; }
                 if (key.equals("clear_saved_scope")) { scopes.remove(text(e.term())); continue; }
+                if (key.equals("every_living_character")) { censusPasses++; for(Node n:List.copyOf(censusCharacters)) if(n.scopeExists && n.alive) execute((Block)e.term(),n,here); continue; }
                 if (key.equals("remove_variable")) { here.vars.remove(text(e.term())); continue; }
                 if (key.equals("set_variable") || key.equals("change_variable")) { Block fields = (Block)e.term(); String name = text(field(fields,"name"));
                     if (key.equals("set_variable")) { Term t = optional(fields,"value"); if (t == null) t = field(fields,"days"); here.vars.put(name,term(t,here,prev)); }

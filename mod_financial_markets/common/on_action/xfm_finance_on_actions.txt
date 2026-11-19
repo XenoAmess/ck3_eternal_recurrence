@@ -44,7 +44,8 @@ xfm_finance_created_on_action = {
 xfm_finance_death_on_action = {
     effect = {
         # death.txt:1-7: character is ABOUT TO die. Do not guard with is_alive = no.
-        # Keep queued next links until dequeue so the remaining ring stays reachable.
+        # Detach the discovery node while its character scope and neighbours are still valid.
+        xfm_finance_ai_remove_dying_effect = yes
         xfm_finance_holder_death_effect = yes
     }
 }

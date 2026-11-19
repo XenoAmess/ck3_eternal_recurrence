@@ -551,7 +551,11 @@ class FlorinSixClosedOptionsProfileConsumer(unittest.TestCase):
             self.assertEqual(self.contract["production_source_lists"][target],
                              paths + list(self.NEW_RUNTIME_SOURCES) if target == "xar_ck3_12002_runtime" else paths)
         for field in ("fixture_sources", "fixture_included_bodies"):
-            self.assertEqual(self.contract[field], prior[field])
+            expected = copy.deepcopy(prior[field])
+            if field == "fixture_sources":
+                expected["xar_ck3_1210_core_control_test"].append("src/ck3_26757580_save_mapped61.cpp")
+            self.assertEqual(self.contract[field], expected)
+        self.assertNotIn("xar_ck3_1210_hotfix26757580_basic_test", self.contract["fixture_sources"])
         self.assertEqual(len(self.fixtures), 22)
         self.assertNotIn(self.UNREVIEWED_RUNTIME_BODY,
                          self.contract["production_source_lists"]["xar_ck3_12002_runtime"])
@@ -560,7 +564,11 @@ class FlorinSixClosedOptionsProfileConsumer(unittest.TestCase):
             restored = copy.deepcopy(current)
             self.assertEqual(restored["forbidden_defines"][-18:], additions)
             del restored["forbidden_defines"][-18:]
-            self.assertEqual(restored, previous)
+            expected = copy.deepcopy(previous)
+            if current["target"] == "xar_ck3_1210_core_control_test":
+                self.assertEqual(expected["translation_units"], 11)
+                expected["translation_units"] = 12
+            self.assertEqual(restored, expected)
         old_rows = prior["production_macro_contracts"]
         self.assertEqual(len(self.contract["production_macro_contracts"]), len(old_rows) + 4)
         for current, old in zip(self.contract["production_macro_contracts"][:len(old_rows)], old_rows, strict=True):
@@ -573,6 +581,34 @@ class FlorinSixClosedOptionsProfileConsumer(unittest.TestCase):
                                        "present": ["XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1"],
                                        "absent": list(self.NEW_FLAGS)})
         self.consume()
+
+    def test_core_control_provider_is_required_once_and_keeps_save_permission_absent(self) -> None:
+        name, relative = "xar_ck3_1210_core_control_test", "src/ck3_26757580_save_mapped61.cpp"
+        row = next(row for row in self.contract["fixture_contracts"] if row["target"] == name)
+        self.assertEqual(row["translation_units"], 12)
+        sources = self.targets[name]["sources"]
+        original = copy.deepcopy(sources)
+        self.assertEqual(sum(source["path"] == relative for source in sources), 1)
+        for mode in ("missing", "duplicate"):
+            with self.subTest(mode=mode):
+                if mode == "missing":
+                    sources[:] = [source for source in original if source["path"] != relative]
+                else:
+                    sources.append(copy.deepcopy(next(source for source in original if source["path"] == relative)))
+                try:
+                    with self.assertRaisesRegex(ValueError, "fixture source bodies differ"):
+                        self.consume()
+                finally:
+                    sources[:] = copy.deepcopy(original)
+        definitions = self.source_defines(name, relative)
+        flag = "XAR_CK3_ENABLE_26757580_SAVE_MAPPED61"
+        for spelling in (flag, flag + "=0", flag + "=1"):
+            definitions.append({"define": spelling})
+            try:
+                with self.subTest(define=spelling), self.assertRaisesRegex(ValueError, "fixture compile definitions differ"):
+                    self.consume()
+            finally:
+                definitions.pop()
 
     def test_same_count_four_body_substitution_or_missing_actual_new_unit_is_rejected(self) -> None:
         # Give the substituted real body its actual pin so this case reaches
