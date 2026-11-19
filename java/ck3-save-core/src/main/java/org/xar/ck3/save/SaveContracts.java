@@ -67,6 +67,8 @@ public final class SaveContracts {
     public interface StreamingTableSink {
         void discriminator(NativeId id, String value) throws java.io.IOException;
         void record(StreamedRecord record) throws java.io.IOException;
+        /** A canonical native slot tombstone has no record AST/discriminator or financial rights. */
+        default void tombstone(NativeTombstone slot) throws java.io.IOException { }
         /** Explicit opt-in callback is provisional until complete EOF and physical-pin validation. */
         default void missingDiscriminator(UntypedRecord record) throws java.io.IOException {
             throw new java.io.IOException("untyped streaming record has no accepting sink: " + record.id().value());
@@ -106,11 +108,29 @@ public final class SaveContracts {
             Objects.requireNonNull(ast); if (canonicalTokenBytes < 11 || canonicalTokenBytes > 512 * 1024) throw new IllegalArgumentException("bounded record bytes required");
         }
     }
-    public record StreamingObservation(boolean tableSeen, int records, int selectedRecords, long streamedTokenBytes) {
+    /** The exact unquoted <canonical-native-id> = none storage form; never a financial record. */
+    public record NativeTombstone(NativeId id, String canonicalTokenSha256, int canonicalTokenBytes, long valueToken) {
+        public NativeTombstone {
+            Objects.requireNonNull(id); digest(canonicalTokenSha256);
+            byte[] canonical = (id.value() + " = none").getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            if (canonicalTokenBytes != canonical.length || valueToken < 3
+                    || !canonicalTokenSha256.equals(FilePins.sha256(canonical)))
+                throw new IllegalArgumentException("exact canonical native tombstone evidence required");
+        }
+    }
+    public record StreamingObservation(boolean tableSeen, int records, int selectedRecords, long streamedTokenBytes,
+                                       List<NativeTombstone> tombstones) {
+        public StreamingObservation(boolean tableSeen, int records, int selectedRecords, long streamedTokenBytes) {
+            this(tableSeen, records, selectedRecords, streamedTokenBytes, List.of());
+        }
+        public int observedSlots() { return records + tombstones.size(); }
         public StreamingObservation {
+            tombstones = List.copyOf(tombstones);
+            if (tombstones.stream().map(NativeTombstone::id).distinct().count() != tombstones.size()
+                    || (long) records + tombstones.size() > 200000) throw new IllegalArgumentException("unique bounded observed native slots required");
             if (records < 0 || records > 200000 || selectedRecords < 0 || selectedRecords > records
                     || streamedTokenBytes < 0 || streamedTokenBytes > 64L * 1024 * 1024
-                    || !tableSeen && (records != 0 || selectedRecords != 0 || streamedTokenBytes != 0))
+                    || !tableSeen && (records != 0 || selectedRecords != 0 || streamedTokenBytes != 0 || !tombstones.isEmpty()))
                 throw new IllegalArgumentException("bounded streaming observation required");
         }
     }

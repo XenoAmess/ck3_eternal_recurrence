@@ -22,6 +22,7 @@ public final class SaveStream {
     private final StreamingTableSink streamingSink;
     private final Set<String> streamingSelected = new LinkedHashSet<>();
     private final Set<String> streamingIds = new LinkedHashSet<>();
+    private final Map<String, NativeTombstone> streamingTombstones = new LinkedHashMap<>();
     private boolean streamingTableSeen;
     private int streamedRecords;
     private long streamedBytes;
@@ -96,7 +97,7 @@ public final class SaveStream {
     }
     public StreamingObservation streamingObservation() {
         if (!complete || streaming == null) throw new IllegalStateException("completed streaming read required");
-        return new StreamingObservation(streamingTableSeen, streamingIds.size(), streamedRecords, streamedBytes);
+        return new StreamingObservation(streamingTableSeen, streamingIds.size(), streamedRecords, streamedBytes, List.copyOf(streamingTombstones.values()));
     }
     private void block(List<String> path, boolean braced) throws IOException {
         if (path.size() > 128) throw failure("nesting cap exceeded");
@@ -111,7 +112,9 @@ public final class SaveStream {
             if ("=".equals(lexer.peek())) {
                 next(); String value = next();
                 if (value == null || value.equals("}") || value.equals("=")) throw failure("missing assigned value");
-                if (streaming != null && path.equals(streaming.path()) && !value.equals("{")) throw failure("streaming table record must be a block");
+                if (streaming != null && path.equals(streaming.path()) && !value.equals("{")) {
+                    observeTombstone(key, value); continue;
+                }
                 if (streamingContext != null && path.equals(streamingContext.path) && key.equals(streaming.discriminatorField()) && value.equals("{")) throw failure("streaming discriminator must be an atom");
                 if (path.isEmpty() && !key.matches("[0-9]+") && !rootKeys.contains(key)) {
                     diagnostic(key); rootKeys.add(key); if (rootKeys.size() > 512) throw failure("root-key cap exceeded");
@@ -148,8 +151,8 @@ public final class SaveStream {
             } else if (path.size() == streaming.path().size() + 1 && path.subList(0, path.size() - 1).equals(streaming.path())) {
                 String id = path.getLast();
                 try { new NativeId(id); } catch (IllegalArgumentException invalid) { throw failure("invalid streaming native ID at " + path); }
-                if (!streamingIds.add(id)) throw failure("duplicate streaming native ID at " + path);
-                if (streamingIds.size() > streaming.maxTableRecords()) throw failure("streaming table identity cap exceeded");
+                if (streamingTombstones.containsKey(id) || !streamingIds.add(id)) throw failure("duplicate streaming native ID at " + path);
+                if ((long) streamingIds.size() + streamingTombstones.size() > streaming.maxTableRecords()) throw failure("streaming table identity cap exceeded");
                 streamingContext = new RecordContext(new NativeId(id), path);
                 if (streamingSelected.contains(id)) { streamedRecords++; start(new Capture(path, new NativeId(id))); }
                 else if (streaming.missingDiscriminatorPolicy() == MissingDiscriminatorPolicy.CAPTURE_MISSING_BOUNDED) {
@@ -229,6 +232,19 @@ public final class SaveStream {
             if (selectedBytes > MAX_SELECTED_BYTES) throw failure("total selected record cap exceeded");
         }
         return value;
+    }
+    private void observeTombstone(String key, String value) throws IOException {
+        if (!value.equals("none")) throw failure("streaming table record must be a block or exact native none tombstone");
+        NativeId id;
+        try { id = new NativeId(key); }
+        catch (IllegalArgumentException invalid) { throw failure("invalid streaming tombstone native ID"); }
+        if (streamingIds.contains(key) || streamingTombstones.containsKey(key)) throw failure("duplicate streaming native ID at " + child(streaming.path(), key));
+        if ((long) streamingIds.size() + streamingTombstones.size() >= streaming.maxTableRecords()) throw failure("streaming table identity cap exceeded");
+        byte[] canonical = (key + " = none").getBytes(StandardCharsets.UTF_8);
+        NativeTombstone tombstone = new NativeTombstone(id, FilePins.sha256(canonical), canonical.length, lexer.tokens());
+        addStreamedBytes(canonical.length);
+        streamingTombstones.put(key, tombstone);
+        streamingSink.tombstone(tombstone);
     }
     private void observeDiscriminator(List<String> path, String key, String value) throws IOException {
         if (streamingContext == null || !streamingContext.path.equals(path) || !key.equals(streaming.discriminatorField())) return;

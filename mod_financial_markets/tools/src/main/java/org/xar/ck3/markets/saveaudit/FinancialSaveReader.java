@@ -52,7 +52,13 @@ public final class FinancialSaveReader {
     }
     public record StreamingCoverage(int passes, String completeStreamSha256, String completeStreamBytes,
                                     int tableRecords, int selectedFinancialRecords, long streamedFinancialTokenBytes,
-                                    int projectedFields, Budgets budgets) { }
+                                    int projectedFields, Budgets budgets, int tableSlots, List<NativeTombstone> tombstones) {
+        public StreamingCoverage {
+            tombstones = List.copyOf(tombstones);
+            if (tableSlots != tableRecords + tombstones.size() || tableSlots > budgets.maxTableRecords())
+                throw new IllegalArgumentException("complete live-record plus native-tombstone coverage required");
+        }
+    }
     public record Readback(String machineId, String observedAtUtc, Pin save, Container container,
                            Projection projection, List<Story> financialStories, List<Issue> financialIssues,
                            StreamingCoverage coverage, boolean inputUnchanged, boolean sourceLayoutQualified) {
@@ -210,10 +216,14 @@ public final class FinancialSaveReader {
         Pass second = reader.read(table(List.copyOf(selected.keySet()), budgets, allowRetired), projected);
         if (first.container() != second.container() || first.bytes() != second.bytes() || !first.sha256().equals(second.sha256())
                 || first.observation().records() != second.observation().records()
+                || !first.observation().tombstones().equals(second.observation().tombstones())
                 || second.observation().selectedRecords() != selected.size() || !firstUntyped.equals(projected.untyped.stream().map(FinancialSaveReader::identity).toList())) throw new IOException("save stream/selection changed between complete passes");
         FilePins.verify(Path.of(pin.path()), pin);
         StreamingCoverage coverage = new StreamingCoverage(2, second.sha256(), Long.toString(second.bytes()), second.observation().records(),
-                second.observation().selectedRecords(), second.observation().streamedTokenBytes() - projected.untyped.stream().mapToLong(RetiredObserverEvidence::canonicalTokenBytes).sum(), projected.fields, budgets);
+                second.observation().selectedRecords(), second.observation().streamedTokenBytes()
+                - projected.untyped.stream().mapToLong(RetiredObserverEvidence::canonicalTokenBytes).sum()
+                - second.observation().tombstones().stream().mapToLong(NativeTombstone::canonicalTokenBytes).sum(),
+                projected.fields, budgets, second.observation().observedSlots(), second.observation().tombstones());
         return new RetiredObserverReadback(new Readback(machineId, Instant.now().toString(), pin, second.container(), second.projection(), projected.stories,
                 projected.issues, coverage, true, false), projected.untyped);
     }
@@ -309,11 +319,13 @@ public final class FinancialSaveReader {
     }
     private static final class TrackingSink implements StreamingTableSink {
         private final StreamingTableSink delegate; private int records; private int selected; private long bytes;
+        private final List<NativeTombstone> tombstones = new ArrayList<>();
         TrackingSink(StreamingTableSink delegate) { this.delegate = delegate; }
         @Override public void discriminator(NativeId id, String value) throws IOException { records++; delegate.discriminator(id, value); }
         @Override public void record(StreamedRecord record) throws IOException { selected++; bytes += record.canonicalTokenBytes(); delegate.record(record); }
         @Override public void missingDiscriminator(UntypedRecord record) throws IOException { records++; bytes += record.canonicalTokenBytes(); delegate.missingDiscriminator(record); }
-        StreamingObservation observation() { return new StreamingObservation(true, records, selected, bytes); }
+        @Override public void tombstone(NativeTombstone slot) throws IOException { tombstones.add(slot); bytes += slot.canonicalTokenBytes(); delegate.tombstone(slot); }
+        StreamingObservation observation() { return new StreamingObservation(true, records, selected, bytes, tombstones); }
     }
     private static final class BoundedStream extends FilterInputStream {
         private long count; private final CRC32 crc = new CRC32(); private final MessageDigest digest = FilePins.digest();
