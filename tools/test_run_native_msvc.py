@@ -5,6 +5,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -14,7 +15,6 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 HELPER = ROOT / "tools/run_native_msvc.py"
-OUTPUT = Path(r"Z:\ck3_mod_rewrite\artifacts\offline-nonwar-2026-10-01\native-msvc-wrapper-tests")
 
 
 def load_helper():
@@ -27,10 +27,14 @@ def load_helper():
 
 
 class NativeMsvcBuildTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory(prefix="native-msvc-wrapper-")
+        self.addCleanup(self.temporary.cleanup)
+        self.output = Path(self.temporary.name)
+
     def test_temporary_environment_is_process_local(self) -> None:
         helper = load_helper()
-        OUTPUT.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(dir=OUTPUT, prefix="environment-") as temporary:
+        with tempfile.TemporaryDirectory(dir=self.output, prefix="environment-") as temporary:
             with mock.patch.dict(os.environ, {"TEMP": "existing-parent-temp", "TMP": "existing-parent-tmp"}):
                 child = helper.child_environment(Path(temporary))
                 self.assertEqual(os.environ["TEMP"], "existing-parent-temp")
@@ -40,8 +44,23 @@ class NativeMsvcBuildTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == "nt", "MSVC integration requires Windows")
     def test_spaced_arguments_and_incremental_header_dependencies(self) -> None:
-        source = OUTPUT / "tiny source"
-        build = OUTPUT / "tiny build"
+        # Run unchanged CLI bytes from an isolated test project, whose default
+        # Git opt-in is absent. A tiny test EXE must never alter real AV settings.
+        carrier = self.output / "isolated wrapper project"
+        relative_inputs = ("tools/run_native_msvc.py", "tools/register_project_exe_exclusions.py",
+                           "tools/ck3_live_run_id.py", "ck3_autonomous_player/native_bridge/tools/build_fresh.py")
+        for relative in relative_inputs:
+            target = carrier / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / relative, target)
+            self.assertEqual(target.read_bytes(), (ROOT / relative).read_bytes())
+        subprocess.run(["git", "init", "--quiet", str(carrier)], check=True, capture_output=True)
+        opt_in = subprocess.run(["git", "-C", str(carrier), "config", "--local", "--get",
+                                 "xar.defenderProjectExeExclusions"], capture_output=True, check=False)
+        self.assertEqual(opt_in.returncode, 1)
+        helper = carrier / "tools/run_native_msvc.py"
+        source = self.output / "tiny source"
+        build = self.output / "tiny build"
         source.mkdir(parents=True, exist_ok=True)
         source.joinpath("CMakeLists.txt").write_text(
             "cmake_minimum_required(VERSION 3.25)\n"
@@ -56,11 +75,11 @@ class NativeMsvcBuildTests(unittest.TestCase):
         )
         header = source / "value.hpp"
         header.write_text("inline constexpr int fixture_value = 7;\n", encoding="utf-8")
-        base = [sys.executable, str(HELPER), "--source-dir", str(source), "--build-dir", str(build),
+        base = [sys.executable, str(helper), "--source-dir", str(source), "--build-dir", str(build),
                 "--jobs", "1", "--target", "tiny_fixture"]
         initial = subprocess.run(base + ["--cmake-define", "FIXTURE_LABEL=label with spaces"],
                                  capture_output=True, check=False)
-        initial_log = OUTPUT / "initial.log"
+        initial_log = self.output / "initial.log"
         initial_log.write_bytes(initial.stdout + initial.stderr)
         self.assertEqual(initial.returncode, 0, initial_log.read_text(encoding="utf-8", errors="replace"))
         program = build / "tiny_fixture.exe"
@@ -70,10 +89,11 @@ class NativeMsvcBuildTests(unittest.TestCase):
         report = json.loads((build / "native-msvc-result.json").read_text(encoding="utf-8"))
         self.assertEqual(report["targets"], ["tiny_fixture"])
         self.assertFalse(report["local_ck3_contacted"])
+        self.assertEqual(report["defender_exclusions"]["status"], "disabled")
 
         header.write_text("inline constexpr int fixture_value = 8;\n", encoding="utf-8")
         incremental = subprocess.run(base + ["--build"], capture_output=True, check=False)
-        incremental_log = OUTPUT / "incremental.log"
+        incremental_log = self.output / "incremental.log"
         incremental_log.write_bytes(incremental.stdout + incremental.stderr)
         self.assertEqual(incremental.returncode, 0,
                          incremental_log.read_text(encoding="utf-8", errors="replace"))
@@ -81,7 +101,7 @@ class NativeMsvcBuildTests(unittest.TestCase):
         report = json.loads((build / "native-msvc-result.json").read_text(encoding="utf-8"))
         self.assertFalse(report["configured"])
         self.assertTrue(report["built"])
-        OUTPUT.joinpath("assessment.json").write_text(json.dumps({
+        self.output.joinpath("assessment.json").write_text(json.dumps({
             "status": "GREEN", "local_ck3_contacted": False,
             "spaced_source_and_build_paths": True, "spaced_define_value_preserved": True,
             "initial_fixture_output": "7", "incremental_header_rebuild_output": "8",

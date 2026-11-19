@@ -253,6 +253,166 @@ class ExtraProvenanceTest(unittest.TestCase):
         receipt=json.loads(Path(result['receipt']).read_text())
         self.assertEqual(receipt['calls'],[]);self.assertIsNone(receipt['before'])
 
+class ObjectTargetHookTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name); self.repo = self.root / 'repo'
+        self.source = self.repo / 'ck3_autonomous_player/native_bridge'; self.source.mkdir(parents=True)
+        (self.source / 'CMakeLists.txt').write_text('project(object_fixture)', encoding='utf-8')
+        self.build = self.root / 'build'; self.reply = self.build / '.cmake/api/v1/reply'; self.reply.mkdir(parents=True)
+        self.cpp = self.source / 'sample.cpp'; self.cpp.write_text('int sample() { return 1; }', encoding='utf-8')
+        self.requested = 'CMakeFiles/library.dir/sample.cpp.obj'
+        self.output = self.build / self.requested; self.output.parent.mkdir(parents=True)
+        self.output.write_bytes(b'offline object fixture, never executable')
+        self.exe = self.build / 'fixture.exe'; self.exe.write_bytes(b'MZ old unrelated executable')
+        self.index = {'objects': [{'kind': 'codemodel', 'version': {'major': 2}, 'jsonFile': 'model.json'}]}
+        self.model = {'paths': {'source': str(self.source), 'build': str(self.build)}, 'configurations': [
+            {'name': 'Release', 'targets': [{'id': 'lib', 'name': 'library', 'jsonFile': 'library.json'},
+                                          {'id': 'exe', 'name': 'fixture', 'jsonFile': 'fixture.json'}]}]}
+        self.library = {'id': 'lib', 'name': 'library', 'type': 'STATIC_LIBRARY', 'paths': {'source': '.'},
+                        'sources': [{'path': 'sample.cpp'}], 'dependencies': [], 'artifacts': []}
+        self.executable = {'id': 'exe', 'name': 'fixture', 'type': 'EXECUTABLE', 'paths': {'source': '.'},
+                           'artifacts': [{'path': 'fixture.exe'}]}
+        self.commands = [{'directory': str(self.build), 'file': str(self.cpp), 'output': str(self.output),
+                          'command': 'C:/offline/cl.exe /nologo /c sample.cpp /Fo' + self.requested}]
+        self.write_metadata()
+
+    def write_metadata(self) -> None:
+        for path, value in ((self.reply / 'index-test.json', self.index), (self.reply / 'model.json', self.model),
+                            (self.reply / 'library.json', self.library), (self.reply / 'fixture.json', self.executable),
+                            (self.build / 'compile_commands.json', self.commands)):
+            path.write_text(json.dumps(value), encoding='utf-8')
+
+    def collect(self, targets: list[str] | None = None) -> dict[str, object]:
+        return m.collect_manifest(self.repo, self.source, self.build, 'Release',
+                                  targets if targets is not None else [self.requested])
+
+    def test_actual_collector_to_hook_returns_not_applicable_without_settings_dispatch(self) -> None:
+        original = self.output.read_bytes()
+        with patch.object(m, 'opted_in', return_value=True), patch.object(m, 'register_manifest',
+                side_effect=AssertionError('object target must never dispatch settings')), patch.object(
+                m, 'DefenderWmi', side_effect=AssertionError('no WMI')):
+            result = m.after_successful_build(self.repo, self.source, self.build, 'Release', [self.requested])
+        self.assertEqual(result['status'], 'not_applicable')
+        receipt = json.loads(Path(result['receipt']).read_bytes())
+        manifest = json.loads(Path(result['manifest']).read_bytes())
+        self.assertEqual(manifest['files'], [])
+        self.assertEqual(manifest['schema'], 'xar.cmake-library-object-build.v1')
+        self.assertEqual(manifest['object_provenance'][0]['output']['path'], str(self.output.resolve()))
+        self.assertEqual(manifest['object_provenance'][0]['source']['path'], str(self.cpp.resolve()))
+        self.assertEqual([r['target'] for r in manifest['target_provenance']], ['library'])
+        self.assertFalse(receipt['broker_called']); self.assertFalse(receipt['wmi_called'])
+        self.assertEqual(self.output.read_bytes(), original)
+        self.assertEqual(self.exe.read_bytes(), b'MZ old unrelated executable')
+
+    def test_named_executable_target_keeps_existing_manifest(self) -> None:
+        result = self.collect(['fixture'])
+        self.assertEqual(result['schema'], m.SCHEMA)
+        self.assertEqual(result['files'][0]['path'], str(self.exe.resolve()))
+        self.assertNotIn('object_provenance', result)
+
+    def test_unknown_mixed_duplicate_and_noncanonical_requests_reject(self) -> None:
+        for request in ([self.requested, self.requested], ['fixture', self.requested], ['missing'],
+                        [str(self.output)], ['../' + self.requested], [self.requested.replace('/', '\\')],
+                        [self.requested.replace('sample.cpp.obj', 'sample.exe')]):
+            with self.subTest(request=request), self.assertRaises((ValueError, OSError)):
+                self.collect(request)
+
+    def test_output_must_exist_and_be_regular(self) -> None:
+        self.output.unlink()
+        with self.assertRaises((ValueError, OSError)):
+            self.collect()
+        self.output.mkdir()
+        with self.assertRaises((ValueError, OSError)):
+            self.collect()
+
+    def test_relative_explicit_output_and_shared_library_owner_use_the_same_checked_path(self) -> None:
+        self.commands[0]['output'] = self.requested
+        self.library['type'] = 'SHARED_LIBRARY'; self.write_metadata()
+        result = self.collect()
+        self.assertEqual(result['files'], [])
+        self.assertEqual(result['object_provenance'][0]['output']['path'], str(self.output.resolve()))
+
+    def test_reparse_output_boundary_is_rejected_without_following_it(self) -> None:
+        original_lstat = Path.lstat
+        def reparse_for_output(path: Path, *args: object, **kwargs: object) -> object:
+            value = original_lstat(path)
+            if path == self.output:
+                return SimpleNamespace(st_mode=value.st_mode, st_file_attributes=0x400)
+            return value
+        with patch.object(Path, 'lstat', new=reparse_for_output), self.assertRaises(ValueError):
+            self.collect()
+
+    def test_ambiguous_owner_identity_or_escaping_reply_is_rejected(self) -> None:
+        self.model['configurations'][0]['targets'].append({'id':'lib2','name':'library','jsonFile':'library.json'})
+        self.write_metadata()
+        with self.assertRaises(ValueError):
+            self.collect()
+        self.model['configurations'][0]['targets'].pop()
+        self.model['configurations'][0]['targets'][0]['jsonFile'] = '../outside.json'
+        self.write_metadata()
+        with self.assertRaises(ValueError):
+            self.collect()
+
+    def test_compile_output_ambiguity_missing_output_wrong_directory_and_link_command_reject(self) -> None:
+        original = copy.deepcopy(self.commands)
+        variants = [[*original, *copy.deepcopy(original)], [{k:v for k,v in original[0].items() if k != 'output'}],
+                    [{**original[0], 'output': True}], [{**original[0], 'directory': str(self.root)}],
+                    [{**original[0], 'command': 'C:/offline/cl.exe sample.cpp /Fe:fixture.exe'}],
+                    [{**original[0], 'command': 'C:/offline/link.exe /c sample.cpp'}]]
+        for commands in variants:
+            self.commands = commands; self.write_metadata()
+            with self.subTest(commands=commands), self.assertRaises((ValueError, OSError)):
+                self.collect()
+
+    def test_foreign_or_unowned_or_generated_compile_source_rejects(self) -> None:
+        foreign = self.root / 'foreign.cpp'; foreign.write_bytes(b'foreign')
+        original = copy.deepcopy(self.commands)
+        for sources, commands in (([], original), ([{'path': 'sample.cpp'}, {'path': 'sample.cpp'}], original),
+                                  ([{'path': 'sample.cpp', 'isGenerated': True}], original),
+                                  ([{'path': 'sample.cpp'}], [{**original[0], 'file': str(foreign)}])):
+            self.library['sources'] = sources; self.commands = commands; self.write_metadata()
+            with self.subTest(sources=sources, commands=commands), self.assertRaises((ValueError, OSError)):
+                self.collect()
+
+    def test_library_closure_rejects_executable_imported_foreign_and_unknown_dependencies(self) -> None:
+        original = copy.deepcopy(self.library)
+        for updates in ({'type': 'EXECUTABLE'}, {'imported': True}, {'isGeneratorProvided': True},
+                        {'dependencies': [{'id': 'exe'}]}, {'dependencies': [{'id': 'missing'}]},
+                        {'paths': {'source': '../../foreign'}}):
+            self.library = {**original, **updates}; self.write_metadata()
+            with self.subTest(updates=updates), self.assertRaises(ValueError):
+                self.collect()
+
+    def test_object_failure_receipt_remains_failed_without_settings_dispatch(self) -> None:
+        self.commands[0].pop('output'); self.write_metadata()
+        with patch.object(m, 'opted_in', return_value=True), patch.object(m, 'register_manifest',
+                side_effect=AssertionError('must not call settings')):
+            result = m.after_successful_build(self.repo, self.source, self.build, 'Release', [self.requested])
+        self.assertEqual(result['status'], 'settings_failed')
+        receipt = json.loads(Path(result['receipt']).read_bytes())
+        self.assertEqual(receipt['files'], []); self.assertEqual(receipt['calls'], [])
+
+    def test_object_helpers_are_strictly_typed_as_a_complete_extracted_scope(self) -> None:
+        module = ast.parse(Path(m.__file__).read_text(encoding='utf-8-sig'))
+        names = {'CmakeMetadataPin', 'CmakeObjectFilePin', 'CmakeObjectProvenance', 'CmakeLibraryProvenance',
+                 'CmakeObjectManifest', '_cmake_objects', '_cmake_regular_pin', '_cmake_pinned_object',
+                 '_collect_object_only_manifest', '_declared_object', '_declared_text', '_command_argv',
+                 'FailedCommandBuildReceipt', 'BrokerDispatchOptions'}
+        selected = [node for node in module.body if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and node.name in names]
+        self.assertEqual(len(selected), len(names))
+        imports = [node for node in module.body if isinstance(node, (ast.Import, ast.ImportFrom))]
+        constants = [node for node in module.body if isinstance(node, ast.Assign) and
+                     any(isinstance(target, ast.Name) and target.id == 'SCHEMA' for target in node.targets)]
+        checked = self.root / 'object_hook_types.py'
+        checked.write_text(ast.unparse(ast.Module(body=imports+constants+selected, type_ignores=[])), encoding='utf-8')
+        env = dict(os.environ, MYPYPATH=str(Path(m.__file__).resolve().parent))
+        result = subprocess.run([sys.executable, '-B', '-m', 'mypy', '--strict', '--follow-imports=skip',
+            '--no-incremental', '--no-sqlite-cache', '--cache-dir=nul', str(checked)], env=env,
+            capture_output=True, text=True, check=False)
+        self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+
+
 class CommandTest(unittest.TestCase):
     write_metadata=RegistrationTest.write_metadata
     collect=RegistrationTest.collect
@@ -268,6 +428,12 @@ class CommandTest(unittest.TestCase):
     def test_failed_command_or_undeclared_output_rejected(self):
         with self.assertRaises(ValueError):m.collect_command_manifest(self.repo,self.source,self.build,self.argv,[self.exe],return_code=2)
         with self.assertRaises(ValueError):m.collect_command_manifest(self.repo,self.source,self.build,self.argv,[self.build/'unrelated.exe'])
+    def test_prior_compile_command_rejects_non_json_argv_shapes(self) -> None:
+        link=[str(self.root/'link.exe'),'/OUT:'+str(self.exe)]
+        for argv in (None, True, 'cl.exe', (str(self.root/'cl.exe'),), [str(self.root/'cl.exe'), True]):
+            with self.subTest(argv=argv), self.assertRaises(ValueError):
+                m.collect_command_manifest(self.repo,self.source,self.build,link,[self.exe],
+                    source_commands=[{'argv':argv,'return_code':0}])
     def test_source_changed_rejects_frozen_command(self):
         self.cpp.write_text('changed after manifest');w=FakeWmi();result=self.register(w,self.command_manifest)
         self.assertEqual(result['status'],'settings_failed');self.assertEqual(w.calls,[])

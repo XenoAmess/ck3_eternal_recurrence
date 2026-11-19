@@ -9,8 +9,9 @@ import hashlib
 import json
 import ntpath
 import os
+import re
 import stat
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import subprocess
 import uuid
 from collections.abc import Iterable, Mapping, Sequence
@@ -74,8 +75,209 @@ def _json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+class CmakeMetadataPin(TypedDict):
+    path: str
+    sha256: str
+
+
+class CmakeObjectFilePin(CmakeMetadataPin):
+    size: int
+
+
+class CmakeObjectProvenance(TypedDict):
+    requested_target: str
+    owner: str
+    owner_id: str
+    source: CmakeObjectFilePin
+    output: CmakeObjectFilePin
+    compile_entry_sha256: str
+
+
+class CmakeLibraryProvenance(CmakeMetadataPin):
+    target: str
+    target_id: str
+    source: str
+
+
+class CmakeObjectManifest(TypedDict):
+    schema: Literal['xar.cmake-library-object-build.v1']
+    repo: str
+    source_dir: str
+    build_dir: str
+    configuration: str
+    requested_targets: list[str]
+    external_candidate: str | None
+    cmake_index: CmakeMetadataPin
+    cmake_codemodel: CmakeMetadataPin
+    compile_commands: CmakeMetadataPin
+    target_provenance: list[CmakeLibraryProvenance]
+    object_provenance: list[CmakeObjectProvenance]
+    files: list[Never]
+
+
+def _cmake_objects(value: object) -> list[dict[str, object]]:
+    if not isinstance(value, list):
+        raise ValueError("CMake object metadata must be an array")
+    return [_declared_object(item) for item in value]
+
+
+def _cmake_regular_pin(path: Path, root: Path) -> CmakeObjectFilePin:
+    resolved = path.resolve()
+    if not resolved.is_relative_to(root) or path.is_symlink():
+        raise ValueError("CMake object provenance escaped its named root")
+    for parent in (path, *path.parents):
+        info = parent.lstat()
+        if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400:
+            raise ValueError("CMake object provenance cannot use reparse points")
+        if parent == root:
+            break
+    before = path.stat()
+    if not stat.S_ISREG(before.st_mode):
+        raise ValueError("CMake object provenance requires an existing regular file")
+    raw = path.read_bytes()
+    after = path.stat()
+    if (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns) != (
+            after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns):
+        raise ValueError("CMake object provenance changed while reading")
+    return {'path': str(resolved), 'size': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}
+
+
+def _cmake_pinned_object(path: Path, root: Path) -> tuple[dict[str, object], CmakeMetadataPin]:
+    before = _cmake_regular_pin(path, root)
+    value: object = json.loads(path.read_bytes())
+    after = _cmake_regular_pin(path, root)
+    if before != after:
+        raise ValueError("CMake metadata changed while parsing")
+    return _declared_object(value), {'path': before['path'], 'sha256': before['sha256']}
+
+
+def _collect_object_only_manifest(
+    repo: Path, source: Path, build: Path, configuration: str, targets: list[str],
+    external_candidate: str | None, index_path: Path, model_path: Path,
+) -> CmakeObjectManifest:
+    """Accept only proven library compile outputs; no executable registration."""
+    if not targets or any(not isinstance(target, str) for target in targets) or len(targets) != len(set(targets)):
+        raise ValueError("Object-only targets must be nonempty and unique")
+    reply = model_path.parent.resolve()
+    index, index_pin = _cmake_pinned_object(index_path, reply)
+    models = [row for row in _cmake_objects(index.get('objects'))
+              if row.get('kind') == 'codemodel' and
+              type(_declared_object(row.get('version')).get('major')) is int and
+              _declared_object(row.get('version')).get('major') == 2]
+    if len(models) != 1 or (reply / _declared_text(models[0].get('jsonFile'))).resolve() != model_path:
+        raise ValueError("Object-only CMake index/codemodel identity differs")
+    model, model_pin = _cmake_pinned_object(model_path, reply)
+    paths = _declared_object(model.get('paths'))
+    if Path(_declared_text(paths.get('source'))).resolve() != source or Path(_declared_text(paths.get('build'))).resolve() != build:
+        raise ValueError("Object-only CMake source/build identity differs")
+    configs = [row for row in _cmake_objects(model.get('configurations'))
+               if row.get('name') in (configuration, '')]
+    if len(configs) != 1:
+        raise ValueError("Requested CMake configuration not unique")
+    by_name: dict[str, tuple[str, Path]] = {}
+    by_id: dict[str, str] = {}
+    for row in _cmake_objects(configs[0].get('targets')):
+        name, identity = _declared_text(row.get('name')), _declared_text(row.get('id'))
+        target_path = reply / _declared_text(row.get('jsonFile'))
+        if name in by_name or identity in by_id or not target_path.resolve().is_relative_to(reply):
+            raise ValueError("Ambiguous or escaped CMake target identity")
+        by_name[name] = identity, target_path
+        by_id[identity] = name
+    commands_path = build / 'compile_commands.json'
+    commands_pin = _cmake_regular_pin(commands_path, build)
+    commands_value: object = json.loads(commands_path.read_bytes())
+    commands = _cmake_objects(commands_value)
+    if _cmake_regular_pin(commands_path, build) != commands_pin:
+        raise ValueError("Compile commands changed while parsing")
+    provenance: dict[str, CmakeLibraryProvenance] = {}
+    target_objects: dict[str, dict[str, object]] = {}
+
+    def library(name: str) -> dict[str, object]:
+        if name in target_objects:
+            return target_objects[name]
+        if name not in by_name:
+            raise ValueError("Object owner or dependency absent from CMake codemodel")
+        identity, path = by_name[name]
+        target, ref = _cmake_pinned_object(path, reply)
+        target_paths = _declared_object(target.get('paths'))
+        target_source = (source / _declared_text(target_paths.get('source'))).resolve()
+        if (target.get('id') != identity or target.get('name') != name or
+                target.get('type') not in ('STATIC_LIBRARY', 'SHARED_LIBRARY', 'OBJECT_LIBRARY') or
+                target.get('imported', False) is not False or target.get('isGeneratorProvided', False) is not False or
+                not target_source.is_relative_to(source)):
+            raise ValueError("Object-only closure requires nonimported project libraries without executables")
+        target_objects[name] = target
+        provenance[name] = {**ref, 'target': name, 'target_id': identity, 'source': str(target_source)}
+        for dependency in _cmake_objects(target.get('dependencies', [])):
+            dependency_id = _declared_text(dependency.get('id'))
+            if dependency_id not in by_id:
+                raise ValueError("Object-only dependency closure is incomplete")
+            library(by_id[dependency_id])
+        return target
+
+    outputs: list[CmakeObjectProvenance] = []
+    seen_outputs: set[str] = set()
+    for requested in targets:
+        if not isinstance(requested, str):
+            raise ValueError("Object target must be a string")
+        relative = PurePosixPath(requested)
+        if (relative.as_posix() != requested or relative.is_absolute() or ':' in requested or '\\' in requested or
+                any(part in ('.', '..') for part in relative.parts) or len(relative.parts) < 3 or
+                relative.parts[0] != 'CMakeFiles' or not relative.parts[1].endswith('.dir') or
+                relative.suffix.lower() != '.obj'):
+            raise ValueError("Requested target absent from CMake codemodel or unsupported mixed/object target")
+        owner = relative.parts[1][:-4]
+        target = library(owner)
+        output_path = build / requested
+        output_pin = _cmake_regular_pin(output_path, build)
+        output_key = ntpath.normcase(output_pin['path'])
+        if output_key in seen_outputs:
+            raise ValueError("Object target aliases a previously requested output")
+        seen_outputs.add(output_key)
+        matches: list[dict[str, object]] = []
+        for row in commands:
+            output_value = row.get('output')
+            if not isinstance(output_value, str) or not output_value:
+                continue
+            directory = Path(_declared_text(row.get('directory')))
+            output = Path(output_value)
+            output = output if output.is_absolute() else directory / output
+            if ntpath.normcase(os.path.normpath(str(output))) != ntpath.normcase(os.path.normpath(str(output_path))):
+                continue
+            directory = directory.resolve()
+            output = output.resolve()
+            if output == output_path.resolve():
+                if directory != build:
+                    raise ValueError("Object compile command belongs to another build directory")
+                matches.append(row)
+        if len(matches) != 1:
+            raise ValueError("Requested object must have exactly one explicit compile_commands output")
+        row = matches[0]
+        file = Path(_declared_text(row.get('file')))
+        file = file if file.is_absolute() else build / file
+        source_pin = _cmake_regular_pin(file, source)
+        file = file.resolve()
+        sources = _cmake_objects(target.get('sources'))
+        owned = [entry for entry in sources if (source / _declared_text(entry.get('path'))).resolve() == file]
+        if len(owned) != 1 or owned[0].get('isGenerated', False) is not False:
+            raise ValueError("Compile source is not one ungenerated source of its declared CMake owner")
+        command = _declared_text(row.get('command'))
+        compiler = re.match(r'^\s*(?:"([^"]+)"|(\S+))(?=\s)', command)
+        if (compiler is None or ntpath.basename(compiler.group(1) or compiler.group(2)).lower() != 'cl.exe' or
+                re.search(r'(?:^|\s)[/-]c(?:\s|$)', command, flags=re.IGNORECASE) is None):
+            raise ValueError("Object-only provenance requires an actual MSVC compile-only command")
+        outputs.append({'requested_target': requested, 'owner': owner, 'owner_id': by_name[owner][0],
+            'source': source_pin, 'output': output_pin,
+            'compile_entry_sha256': hashlib.sha256(json.dumps(row, sort_keys=True, separators=(',', ':')).encode('utf-8')).hexdigest()})
+    return {'schema': 'xar.cmake-library-object-build.v1', 'repo': str(repo.resolve()), 'source_dir': str(source), 'build_dir': str(build),
+            'configuration': configuration, 'requested_targets': targets, 'external_candidate': external_candidate,
+            'cmake_index': index_pin, 'cmake_codemodel': model_pin,
+            'compile_commands': {'path': commands_pin['path'], 'sha256': commands_pin['sha256']},
+            'target_provenance': list(provenance.values()), 'object_provenance': outputs, 'files': []}
+
+
 def collect_manifest(repo: Path, source: Path, build: Path, configuration: str,
-                     targets: list[str], external_candidate: str | None = None) -> dict:
+                     targets: list[str], external_candidate: str | None = None) -> dict[str, object]:
     source, build = source.resolve(), build.resolve()
     validate_source(repo, source, external_candidate)
     reply = build / ".cmake/api/v1/reply"
@@ -107,7 +309,8 @@ def collect_manifest(repo: Path, source: Path, build: Path, configuration: str,
         pending = list(by_id)
     else:
         if any(name not in by_name for name in targets):
-            raise ValueError("Requested target absent from CMake codemodel")
+            return dict(_collect_object_only_manifest(repo, source, build, configuration,
+                                                     targets, external_candidate, index_path, model_path))
         pending = [by_name[name] for name in targets]
     visited, files, provenance = set(), [], []
     while pending:
@@ -143,6 +346,17 @@ def collect_manifest(repo: Path, source: Path, build: Path, configuration: str,
             "cmake_index": {"path": str(index_path), "sha256": hashlib.sha256(index_path.read_bytes()).hexdigest()},
             "cmake_codemodel": {"path": str(model_path), "sha256": hashlib.sha256(model_path.read_bytes()).hexdigest()},
             "target_provenance": provenance, "files": sorted(unique.values(), key=lambda r: r["path"])}
+
+
+def _command_argv(value: object) -> list[str]:
+    if not isinstance(value, list):
+        raise ValueError("Source command argv must be a string array")
+    result: list[str] = []
+    for item in value:
+        if not isinstance(item, str):
+            raise ValueError("Source command argv must contain only strings")
+        result.append(item)
+    return result
 
 
 def collect_command_manifest(repo: Path, source: Path, build: Path, compiler_argv: list[str],
@@ -185,7 +399,7 @@ def collect_command_manifest(repo: Path, source: Path, build: Path, compiler_arg
     if not commands:
         raise ValueError("Actual link.exe requires prior successful CL/c source command provenance")
     for command in commands:
-        argv = command["argv"]
+        argv = _command_argv(command["argv"])
         if type(command.get("return_code")) is not int or command["return_code"] != 0 or not argv or Path(argv[0]).name.lower() != "cl.exe":
             raise ValueError("Prior source command must be the caller actual successful cl.exe argv")
         for arg in argv[1:]:
@@ -230,6 +444,24 @@ def collect_command_manifest(repo: Path, source: Path, build: Path, compiler_arg
             "files": files}
 
 
+class FailedCommandBuildReceipt(TypedDict):
+    schema: str
+    status: Literal['settings_failed']
+    error: str
+    error_type: str
+    method: str
+    before: None
+    after: None
+    calls: list[Never]
+    files: list[Never]
+    settings_success_is_runtime_trust: Literal[False]
+
+
+class BrokerDispatchOptions(TypedDict):
+    proof_dir: Path
+    manifest_bytes: NotRequired[bytes]
+
+
 def after_successful_command_build(repo: Path, source: Path, build: Path,
                                    compiler_argv: list[str], exe_paths: list[Path],
                                    external_candidate: str | None = None,
@@ -241,7 +473,7 @@ def after_successful_command_build(repo: Path, source: Path, build: Path,
     try:
         manifest = collect_command_manifest(repo, source, build, compiler_argv, exe_paths, external_candidate, return_code, source_commands)
     except Exception as error:
-        failed = {"schema": SCHEMA, "status": "settings_failed", "error": str(error),
+        failed: FailedCommandBuildReceipt = {"schema": SCHEMA, "status": "settings_failed", "error": str(error),
                   "error_type": type(error).__name__, "method": "not-called; invalid explicit command provenance",
                   "before": None, "after": None, "calls": [], "files": [], "settings_success_is_runtime_trust": False}
         _write_receipt(attempt / "receipt.json", failed)
@@ -617,7 +849,7 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
                 if dispatch is None:
                     from project_exe_exclusion_broker_client import dispatch_manifest
                     dispatch = dispatch_manifest
-                dispatch_kwargs = {"proof_dir": receipt_path.parent / ("broker-proof-" + uuid.uuid4().hex)}
+                dispatch_kwargs: BrokerDispatchOptions = {"proof_dir": receipt_path.parent / ("broker-proof-" + uuid.uuid4().hex)}
                 if manifest_bytes is not None:
                     dispatch_kwargs["manifest_bytes"] = manifest_bytes
                 broker_receipt = dispatch(manifest, **dispatch_kwargs)
@@ -696,7 +928,7 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
     except Exception as error:
         receipt.update(status="settings_failed", error=str(error), error_type=type(error).__name__, error_stage=stage)
         if stage == "broker-dispatch" and getattr(error, "proof", None) is not None:
-            receipt["broker_failure_proof"] = error.proof
+            receipt["broker_failure_proof"] = getattr(error, "proof")
         if client is not None and admin and receipt["before"] is not None:
             try:
                 fulfilled = record_readback(client.read_paths())

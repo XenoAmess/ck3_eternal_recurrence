@@ -1,0 +1,168 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T22:53:13.720031+00:00",
+  "passed": true,
+  "target_pins": {
+    "tools/register_project_exe_exclusions.py": "c31e32b27a384ed3901b44b25aee3e60893586a59614ddd6e10c8f5e0617bc33",
+    "tools/test_register_project_exe_exclusions.py": "cc80325e472e62c2545eac334891ad3fdf5916689e7a0c27015942509d72fba2",
+    "tools/test_run_native_msvc.py": "add73286da13219f24c8c108ccf1a1a3f2941d24cdb1179ce186367c8793d112"
+  },
+  "candidate_manifest_sha256": "b7a1d48c0d7ab51c907a2c6cd008e5f6fcf286e88b842250d3e4ca9db4e69d0c",
+  "source_inputs_and_4objects_unchanged": {
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_readonly26785313_v1.cpp.obj": {
+      "bytes": 38858,
+      "sha256": "76087c198a0bdf063654bfcbca9e11c8a0a69f387e9c01abd4164f0be0de2989",
+      "file_id_decimal": "281474981487758",
+      "mtime_ns_decimal": "1795126243999648300"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_core_route26785313_v1.cpp.obj": {
+      "bytes": 7627,
+      "sha256": "ca089f134e5011f8a14c3b7540cb744a8c635571c98899b2e6475c744503a3da",
+      "file_id_decimal": "281474981487787",
+      "mtime_ns_decimal": "1795126251573120600"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_adapter.cpp.obj": {
+      "bytes": 3313254,
+      "sha256": "fe81f2024a818713508782e973146455cc377d36a869dca1c643e2d5f5ec9fb0",
+      "file_id_decimal": "281474981487711",
+      "mtime_ns_decimal": "1795126234155586300"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_core_frame_v1.cpp.obj": {
+      "bytes": 171921,
+      "sha256": "af27213fb2423d256e7a306d37b71e8a7d2125e0bb26fa2bd79ee38a43b84d5e",
+      "file_id_decimal": "281474981487749",
+      "mtime_ns_decimal": "1795126242325719400"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_121003_readonly26785313_v1.cpp": {
+      "bytes": 10921,
+      "sha256": "6d2e6b93b5f339e83f80586d33930f9cfaa3e97ebad818f28e5d769ab0e49816",
+      "file_id_decimal": "844424934903952",
+      "mtime_ns_decimal": "1795125372822239700"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_121003_core_route26785313_v1.cpp": {
+      "bytes": 1507,
+      "sha256": "b5839efd99b4b3f066a3402e2f6c198b0903a77879bb2faaeba9b40f23929c35",
+      "file_id_decimal": "844424934903950",
+      "mtime_ns_decimal": "1795125372801251300"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_1210_adapter.cpp": {
+      "bytes": 27768,
+      "sha256": "f1b6c38417bc36cf14a2c7a463a772d8083a469afbf4fe85eef4a75afda66cd4",
+      "file_id_decimal": "844424934903963",
+      "mtime_ns_decimal": "1795125372943169400"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_1210_core_frame_v1.cpp": {
+      "bytes": 6669,
+      "sha256": "cdda55ff246819fcd78b7d6fdd7ea9b38088f5a0851558a400cc0ae460979d01",
+      "file_id_decimal": "844424934903982",
+      "mtime_ns_decimal": "1795125373136956800"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeCache.txt": {
+      "bytes": 48518,
+      "sha256": "e9b20d01fa99280039d873ed7b33a83b957a4307837d7f175e397a4a87fb1ff6",
+      "file_id_decimal": "281474981484455",
+      "mtime_ns_decimal": "1795125419017203400"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\compile_commands.json": {
+      "bytes": 3910620,
+      "sha256": "534495e9d4c41a63c5918e9854a210fd242277f18af502da13998df7e81ec2c7",
+      "file_id_decimal": "281474981484474",
+      "mtime_ns_decimal": "1795125428582696600"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\build.ninja": {
+      "bytes": 6555382,
+      "sha256": "9df9cfc4f096b885812d1c7d93a0f041c646603aded3827b24651be23e4f8a8a",
+      "file_id_decimal": "281474981484457",
+      "mtime_ns_decimal": "1795125428585694900"
+    }
+  },
+  "actual_pure_manifest_schema": "xar.cmake-library-object-build.v1",
+  "actual_existing_hook": {
+    "status": "not_applicable",
+    "manifest": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261119T225311Z-74c03bab\\manifest.json",
+    "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261119T225311Z-74c03bab\\receipt.json",
+    "receipt_sha256": "72b8b635f2c66de4dd8c78c898cde8faa8e59c338574c59c7abe54a7b5d49ce5",
+    "error": null
+  },
+  "actual_optin_before_and_after": true,
+  "wmi_and_broker_calls": 0,
+  "candidate_software": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "sealed_at_utc": "2026-11-19T22:43:45.643265+00:00",
+    "tests": {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "-v",
+        "test_register_project_exe_exclusions",
+        "test_run_native_msvc",
+        "test_run_native_msvc_evidence_dir"
+      ],
+      "exit": 0,
+      "elapsed": 24.15363419998903,
+      "sampled_rounded_logical_total_peak_lower_bound": 11411456,
+      "not_actual_NTFS_or_continuous_peak": true,
+      "cap_exceeded": false,
+      "timeout": false
+    },
+    "test_count": 76,
+    "skips": 0,
+    "production_file_mypy": {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "tools/register_project_exe_exclusions.py"
+      ],
+      "exit": 0,
+      "elapsed": 2.211066599993501,
+      "sampled_rounded_logical_total_peak_lower_bound": 446464,
+      "not_actual_NTFS_or_continuous_peak": true,
+      "cap_exceeded": false,
+      "timeout": false
+    },
+    "baseline_production_file_mypy": {
+      "exit": 1,
+      "actual_error_count": 7,
+      "evidence": "baseline-mypy-a04.stdout"
+    },
+    "new_helper_strict": {
+      "exit": 0,
+      "scope": "Complete AST-extracted new typed helpers and required boundary models/parsers",
+      "evidence": "test_object_helpers_are_strictly_typed_as_a_complete_extracted_scope"
+    },
+    "actual_metadata_only": {
+      "result": {
+        "status": "not_applicable",
+        "manifest": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261119T223943Z-cb62a26d\\manifest.json",
+        "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261119T223943Z-cb62a26d\\receipt.json",
+        "receipt_sha256": "708cfb51530c01d482669ad40dba43c9e9ce6addd5413a9fd85bd19a3db06e67",
+        "error": null
+      },
+      "elapsed_seconds": 3.730026600009296,
+      "producer_sha256": "c31e32b27a384ed3901b44b25aee3e60893586a59614ddd6e10c8f5e0617bc33",
+      "original_wrapper_exit": 1,
+      "wmi_calls": 0,
+      "broker_calls": 0,
+      "evidence": "actual-real-metadata-qualification-final.json"
+    }
+  },
+  "original_production_wrapper_exit": 1,
+  "original_compile_pass": true,
+  "recompile_or_reconfigure": false,
+  "scope": "Actual integrated producer->existing metadata-only noEXE hook; no AV settings or runtime qualification. Four originals remain compiled but originalwrapper1 is not rewritten; fullDLL/SDK/Game NOT_RUN.",
+  "future_reserved_bytes": 41943040,
+  "free_D": 21751492608
+}

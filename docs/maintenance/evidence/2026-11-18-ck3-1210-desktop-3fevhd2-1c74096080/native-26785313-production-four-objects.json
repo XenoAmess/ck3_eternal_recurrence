@@ -1,0 +1,162 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T22:10:56.973780+00:00",
+  "source_commit": "81dfcb729495ef8d6efb855caf665d74631305c1",
+  "command": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-u",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+    "--source-dir",
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production",
+    "--build-dir",
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production",
+    "--evidence-dir",
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-four-objects-a01",
+    "--configuration",
+    "Release",
+    "--jobs",
+    "1",
+    "--target",
+    "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_121003_readonly26785313_v1.cpp.obj",
+    "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_121003_core_route26785313_v1.cpp.obj",
+    "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_adapter.cpp.obj",
+    "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_core_frame_v1.cpp.obj",
+    "--defender-external-candidate",
+    "ck3-26785313-production-four-objects",
+    "--build"
+  ],
+  "actual_original_wrapper_exit": 1,
+  "actual_shared_build_report": {
+    "schema": "xar.native.msvc-build.v1",
+    "source_dir": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production",
+    "build_dir": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production",
+    "configuration": "Release",
+    "jobs": 1,
+    "targets": [
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_121003_readonly26785313_v1.cpp.obj",
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_121003_core_route26785313_v1.cpp.obj",
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_adapter.cpp.obj",
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_core_frame_v1.cpp.obj"
+    ],
+    "tools": {
+      "vcvars64": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+      "cmake": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+      "ninja": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+      "cl": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe"
+    },
+    "local_ck3_contacted": false,
+    "temporary_dir": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.msvc-temp",
+    "python_cache": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.python-cache",
+    "configured": false,
+    "built": true,
+    "status": "built_defender_registration_failed",
+    "build_succeeded": true,
+    "defender_exclusions": {
+      "status": "settings_failed",
+      "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261119T221051Z-587c8be3\\receipt.json",
+      "receipt_sha256": "97e490afd869e951e6411b05cafda318e660888db3aa2cf459c0dfaa844ad588",
+      "error": "Requested target absent from CMake codemodel"
+    }
+  },
+  "objects": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_readonly26785313_v1.cpp.obj",
+      "bytes": 38858,
+      "sha256": "76087c198a0bdf063654bfcbca9e11c8a0a69f387e9c01abd4164f0be0de2989",
+      "file_id": "281474981487758",
+      "mtime_ns": "1795126243999648300",
+      "actual_allocation": null,
+      "source": "D:/ck3-state/upgrade-20261118/native-26785313-build-a01/dev-production/src/ck3_121003_readonly26785313_v1.cpp",
+      "source_sha256": "6d2e6b93b5f339e83f80586d33930f9cfaa3e97ebad818f28e5d769ab0e49816"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_core_route26785313_v1.cpp.obj",
+      "bytes": 7627,
+      "sha256": "ca089f134e5011f8a14c3b7540cb744a8c635571c98899b2e6475c744503a3da",
+      "file_id": "281474981487787",
+      "mtime_ns": "1795126251573120600",
+      "actual_allocation": null,
+      "source": "D:/ck3-state/upgrade-20261118/native-26785313-build-a01/dev-production/src/ck3_121003_core_route26785313_v1.cpp",
+      "source_sha256": "b5839efd99b4b3f066a3402e2f6c198b0903a77879bb2faaeba9b40f23929c35"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_adapter.cpp.obj",
+      "bytes": 3313254,
+      "sha256": "fe81f2024a818713508782e973146455cc377d36a869dca1c643e2d5f5ec9fb0",
+      "file_id": "281474981487711",
+      "mtime_ns": "1795126234155586300",
+      "actual_allocation": null,
+      "source": "D:/ck3-state/upgrade-20261118/native-26785313-build-a01/dev-production/src/ck3_1210_adapter.cpp",
+      "source_sha256": "f1b6c38417bc36cf14a2c7a463a772d8083a469afbf4fe85eef4a75afda66cd4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_core_frame_v1.cpp.obj",
+      "bytes": 171921,
+      "sha256": "af27213fb2423d256e7a306d37b71e8a7d2125e0bb26fa2bd79ee38a43b84d5e",
+      "file_id": "281474981487749",
+      "mtime_ns": "1795126242325719400",
+      "actual_allocation": null,
+      "source": "D:/ck3-state/upgrade-20261118/native-26785313-build-a01/dev-production/src/ck3_1210_core_frame_v1.cpp",
+      "source_sha256": "cdda55ff246819fcd78b7d6fdd7ea9b38088f5a0851558a400cc0ae460979d01"
+    }
+  ],
+  "ninja_completed_edges": [
+    {
+      "start_ms": 1167,
+      "end_ms": 15492,
+      "elapsed_ms": 14325,
+      "mtime_decimal": "8168294198896062",
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_adapter.cpp.obj",
+      "command_hash": "705e7ad515c53123"
+    },
+    {
+      "start_ms": 15499,
+      "end_ms": 23637,
+      "elapsed_ms": 8138,
+      "mtime_decimal": "8168294342204795",
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_core_frame_v1.cpp.obj",
+      "command_hash": "ad995098d7e9fba7"
+    },
+    {
+      "start_ms": 23638,
+      "end_ms": 25302,
+      "elapsed_ms": 1664,
+      "mtime_decimal": "8168294423603575",
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_121003_readonly26785313_v1.cpp.obj",
+      "command_hash": "e2ca26160aed4fe1"
+    },
+    {
+      "start_ms": 25302,
+      "end_ms": 32874,
+      "elapsed_ms": 7572,
+      "mtime_decimal": "8168294440236343",
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_121003_core_route26785313_v1.cpp.obj",
+      "command_hash": "5d7d83d08265ca0a"
+    }
+  ],
+  "all_four_production_objects_present": true,
+  "production_CMake_build_succeeded": true,
+  "posthook_status": {
+    "status": "settings_failed",
+    "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261119T221051Z-587c8be3\\receipt.json",
+    "receipt_sha256": "97e490afd869e951e6411b05cafda318e660888db3aa2cf459c0dfaa844ad588",
+    "error": "Requested target absent from CMake codemodel"
+  },
+  "wrapper_pass": false,
+  "elapsed_seconds": 41.31048010001541,
+  "cap_exceeded": false,
+  "timed_out": false,
+  "new_actual_allocated_after": 3577448,
+  "sampled_additional_allocation_peak_lower_bound": 3577448,
+  "sampled_RSS_peak_lower_bound": 512434176,
+  "sampling_not_continuous_peak": true,
+  "actual_configured_graph_bytes_changed": [],
+  "source_drift": [],
+  "actual_production_target": "All4 are xar_ck3_12002_runtime; no bridge-target object in this batch",
+  "scope": "Actual production CMake objects only. No configure/sourcecopy/manualcl/oldobject reuse/fullarchive/DLL link/SDK/Game/Steam/SCREEN. Original wrapper failure cannot be promoted by four compiler outputs.",
+  "future_reserved_bytes": 0,
+  "free_D": 21845942272
+}

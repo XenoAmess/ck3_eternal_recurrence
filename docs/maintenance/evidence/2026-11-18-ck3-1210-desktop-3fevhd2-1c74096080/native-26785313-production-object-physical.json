@@ -1,0 +1,167 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-19T22:21:30.507841+00:00",
+  "source_commit": "81dfcb729495ef8d6efb855caf665d74631305c1",
+  "original_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-four-objects-a01\\summary.json",
+    "sha256": "51cd68df312736aee0813be6914c0cbbee55d07234ab11d0701c458d3d185625"
+  },
+  "actual_original_wrapper_exit": 1,
+  "production_compilation_succeeded": true,
+  "configured": false,
+  "actual_recompiled_production_objects": 4,
+  "actual_objects_all_runtime": true,
+  "objects": [
+    {
+      "logical_bytes": 38858,
+      "actual_allocation_bytes": 40960,
+      "file_id_decimal": "281474981487758",
+      "volume_serial_decimal": "7220568048185129294",
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_readonly26785313_v1.cpp.obj",
+      "sha256": "76087c198a0bdf063654bfcbca9e11c8a0a69f387e9c01abd4164f0be0de2989",
+      "mtime_ns": "1795126243999648300",
+      "attributes": 32,
+      "source": "D:/ck3-state/upgrade-20261118/native-26785313-build-a01/dev-production/src/ck3_121003_readonly26785313_v1.cpp",
+      "source_sha256": "6d2e6b93b5f339e83f80586d33930f9cfaa3e97ebad818f28e5d769ab0e49816",
+      "exact_compile_command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1 -D_UNICODE -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_readonly26785313_v1.cpp.obj /FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb /FS -c D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_121003_readonly26785313_v1.cpp",
+      "Ninja_dependencies": {
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+          "-C",
+          "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production",
+          "-t",
+          "deps",
+          "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_121003_readonly26785313_v1.cpp.obj"
+        ],
+        "exit": 0,
+        "actual_dependency_count": 4,
+        "source_listed_in_implicit_header_deps": false,
+        "source_is_explicit_compile_input": true,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-four-objects-a01\\production-dependencies-00.stdout",
+        "stdout_sha256": "622d61ada7ff721d8ad68c7b119b248b0d3109dd6b48170535338b9400252fdd"
+      }
+    },
+    {
+      "logical_bytes": 7627,
+      "actual_allocation_bytes": 8192,
+      "file_id_decimal": "281474981487787",
+      "volume_serial_decimal": "7220568048185129294",
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_core_route26785313_v1.cpp.obj",
+      "sha256": "ca089f134e5011f8a14c3b7540cb744a8c635571c98899b2e6475c744503a3da",
+      "mtime_ns": "1795126251573120600",
+      "attributes": 32,
+      "source": "D:/ck3-state/upgrade-20261118/native-26785313-build-a01/dev-production/src/ck3_121003_core_route26785313_v1.cpp",
+      "source_sha256": "b5839efd99b4b3f066a3402e2f6c198b0903a77879bb2faaeba9b40f23929c35",
+      "exact_compile_command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1 -D_UNICODE -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_core_route26785313_v1.cpp.obj /FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb /FS -c D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_121003_core_route26785313_v1.cpp",
+      "Ninja_dependencies": {
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+          "-C",
+          "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production",
+          "-t",
+          "deps",
+          "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_121003_core_route26785313_v1.cpp.obj"
+        ],
+        "exit": 0,
+        "actual_dependency_count": 136,
+        "source_listed_in_implicit_header_deps": false,
+        "source_is_explicit_compile_input": true,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-four-objects-a01\\production-dependencies-01.stdout",
+        "stdout_sha256": "d97df3b6d980345225fe2dfc2c0db0d87e689769a3420c52150ecd7f5bfff31b"
+      }
+    },
+    {
+      "logical_bytes": 3313254,
+      "actual_allocation_bytes": 3313664,
+      "file_id_decimal": "281474981487711",
+      "volume_serial_decimal": "7220568048185129294",
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_adapter.cpp.obj",
+      "sha256": "fe81f2024a818713508782e973146455cc377d36a869dca1c643e2d5f5ec9fb0",
+      "mtime_ns": "1795126234155586300",
+      "attributes": 32,
+      "source": "D:/ck3-state/upgrade-20261118/native-26785313-build-a01/dev-production/src/ck3_1210_adapter.cpp",
+      "source_sha256": "f1b6c38417bc36cf14a2c7a463a772d8083a469afbf4fe85eef4a75afda66cd4",
+      "exact_compile_command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1 -D_UNICODE -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_adapter.cpp.obj /FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb /FS -c D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_1210_adapter.cpp",
+      "Ninja_dependencies": {
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+          "-C",
+          "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production",
+          "-t",
+          "deps",
+          "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_adapter.cpp.obj"
+        ],
+        "exit": 0,
+        "actual_dependency_count": 169,
+        "source_listed_in_implicit_header_deps": false,
+        "source_is_explicit_compile_input": true,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-four-objects-a01\\production-dependencies-02.stdout",
+        "stdout_sha256": "8a3f856703d22104ecfaf49224b624f2afa20433642575d45fc3ddcde32d96ec"
+      }
+    },
+    {
+      "logical_bytes": 171921,
+      "actual_allocation_bytes": 172032,
+      "file_id_decimal": "281474981487749",
+      "volume_serial_decimal": "7220568048185129294",
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_core_frame_v1.cpp.obj",
+      "sha256": "af27213fb2423d256e7a306d37b71e8a7d2125e0bb26fa2bd79ee38a43b84d5e",
+      "mtime_ns": "1795126242325719400",
+      "attributes": 32,
+      "source": "D:/ck3-state/upgrade-20261118/native-26785313-build-a01/dev-production/src/ck3_1210_core_frame_v1.cpp",
+      "source_sha256": "cdda55ff246819fcd78b7d6fdd7ea9b38088f5a0851558a400cc0ae460979d01",
+      "exact_compile_command": "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe  /nologo /TP -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1 -D_UNICODE -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src -ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc /FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_core_frame_v1.cpp.obj /FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb /FS -c D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_1210_core_frame_v1.cpp",
+      "Ninja_dependencies": {
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+          "-C",
+          "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production",
+          "-t",
+          "deps",
+          "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_core_frame_v1.cpp.obj"
+        ],
+        "exit": 0,
+        "actual_dependency_count": 148,
+        "source_listed_in_implicit_header_deps": false,
+        "source_is_explicit_compile_input": true,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-four-objects-a01\\production-dependencies-03.stdout",
+        "stdout_sha256": "0ec3f56771c7e8442f943e0d64eed69feb29352915d77c7f7de4c27f9f9413f7"
+      }
+    }
+  ],
+  "total_object_logical_bytes": 3531660,
+  "total_object_actual_allocation_bytes": 3534848,
+  "elapsed_seconds": 41.31048010001541,
+  "source_and_config_graph_unchanged": true,
+  "sampled_additional_allocation_peak_lower_bound": 3577448,
+  "sampled_RSS_peak_lower_bound": 512434176,
+  "sampling_not_continuous_peak": true,
+  "original_posthook": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261119T221051Z-587c8be3\\receipt.json",
+    "sha256": "97e490afd869e951e6411b05cafda318e660888db3aa2cf459c0dfaa844ad588",
+    "status": "settings_failed",
+    "error": "Requested target absent from CMake codemodel",
+    "method": "not-called; invalid CMake provenance",
+    "calls": [],
+    "settings_changed": false
+  },
+  "metadata_close_admission": {
+    "peak": 262144,
+    "free_D": 21641576448,
+    "Game_balance": "D:\\ck3-state\\upgrade-20261118\\ops\\djc-kingdom-r02-live-remaining-a01.json",
+    "Game_balance_sha256": "04c9dd5e91ab25a740ba54c7349b43a3cb9573c303e1bd9cbbfc4696c54074ee",
+    "Game_remaining_upper": 54226608,
+    "other_Root_future": 19005440,
+    "prior_guard_failures": "full260 doublecharge and unlaunchedr01 profile rejected before object report writes; actual started r02 full-category balance supplied by Runtime coordinator; old shader-only balance superseded before writes"
+  },
+  "wrapper_pass": false,
+  "full_DLL_archive_SDK_Game": "NOT_RUN",
+  "future_reserved_bytes": 0,
+  "retention": {
+    "category": "build",
+    "expires_at_utc": "2026-12-03T22:21:30.507841+00:00",
+    "protected_until_utc": "2026-11-26T22:21:30.507841+00:00",
+    "reason": "Actual current production objects and original metadata-hook failure are inputs to next incremental DLL and standalone hook repair. No source/object recompile required for metadata repair; no automatic retention renewal."
+  },
+  "free_D": 21639344128
+}

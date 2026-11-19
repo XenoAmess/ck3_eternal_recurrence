@@ -1,0 +1,167 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T22:00:05.861180+00:00",
+  "source_commit": "81dfcb729495ef8d6efb855caf665d74631305c1",
+  "native_source_root": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production",
+  "persistent_build_root": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production",
+  "total_configured_compile_commands": 3148,
+  "production_compile_commands": 782,
+  "targets": [
+    {
+      "name": "xar_ck3_bridge",
+      "codemodel_target": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-e3027a64718ba47d3448.json",
+      "codemodel_sha256": "f234e8ffbc92597425355b2414d7a5d3dd111e350991306729ae5bf3717c39a0",
+      "actual_compile_commands": 263,
+      "configured_sources": 263,
+      "dependencies": [
+        "xar_bridge_protocol",
+        "xar_ck3_12002_runtime"
+      ],
+      "artifacts": [
+        {
+          "path": "xar_ck3_bridge.dll"
+        },
+        {
+          "path": "xar_ck3_bridge.lib"
+        },
+        {
+          "path": "xar_ck3_bridge.pdb"
+        }
+      ],
+      "compile_fragments": [
+        "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc"
+      ],
+      "compile_definitions": [
+        "NOMINMAX",
+        "UNICODE",
+        "WIN32_LEAN_AND_MEAN",
+        "XAR_BRIDGE_VERSION=\"0.1.0\"",
+        "XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1=0",
+        "_UNICODE",
+        "xar_ck3_bridge_EXPORTS"
+      ],
+      "link": {
+        "commandFragments": [
+          {
+            "fragment": "/machine:x64 /INCREMENTAL:NO",
+            "role": "flags"
+          },
+          {
+            "backtrace": 2,
+            "fragment": "xar_bridge_protocol.lib",
+            "role": "libraries"
+          },
+          {
+            "backtrace": 2,
+            "fragment": "xar_ck3_12002_runtime.lib",
+            "role": "libraries"
+          },
+          {
+            "backtrace": 2,
+            "fragment": "bcrypt.lib",
+            "role": "libraries"
+          },
+          {
+            "fragment": "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+            "role": "libraries"
+          }
+        ],
+        "language": "CXX"
+      }
+    },
+    {
+      "name": "xar_ck3_12002_runtime",
+      "codemodel_target": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.cmake\\api\\v1\\reply\\target-xar_ck3_12002_runtime-Release-59d7085533cea9d60f4a.json",
+      "codemodel_sha256": "c0c494edb0ee06fa3b5041a873e775dd3030d525b685d473aeb9e92123e08b7c",
+      "actual_compile_commands": 518,
+      "configured_sources": 518,
+      "dependencies": [],
+      "artifacts": [
+        {
+          "path": "xar_ck3_12002_runtime.lib"
+        }
+      ],
+      "compile_fragments": [
+        "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc"
+      ],
+      "compile_definitions": [
+        "NOMINMAX",
+        "UNICODE",
+        "WIN32_LEAN_AND_MEAN",
+        "XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "_UNICODE"
+      ],
+      "link": null
+    },
+    {
+      "name": "xar_bridge_protocol",
+      "codemodel_target": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.cmake\\api\\v1\\reply\\target-xar_bridge_protocol-Release-6d4aa8cc5e41e4d4fc35.json",
+      "codemodel_sha256": "af4cd5a36dcaa1ee1d2bea9369a8c3155e88a40a33010ab7379296cc446703b6",
+      "actual_compile_commands": 1,
+      "configured_sources": 1,
+      "dependencies": [],
+      "artifacts": [
+        {
+          "path": "xar_bridge_protocol.lib"
+        }
+      ],
+      "compile_fragments": [
+        "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc"
+      ],
+      "compile_definitions": [
+        "NOMINMAX",
+        "UNICODE",
+        "WIN32_LEAN_AND_MEAN",
+        "_UNICODE"
+      ],
+      "link": null
+    }
+  ],
+  "current_production_objects_present": [],
+  "full_Dll_build_link": "NOT_RUN",
+  "shared_libraries_downloaded": "No FetchContent/third-party find_package in production target; configured MSVC/Windows SDK only",
+  "provenance": {
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeCache.txt": {
+      "bytes": 48518,
+      "sha256": "e9b20d01fa99280039d873ed7b33a83b957a4307837d7f175e397a4a87fb1ff6"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\compile_commands.json": {
+      "bytes": 3910620,
+      "sha256": "534495e9d4c41a63c5918e9854a210fd242277f18af502da13998df7e81ec2c7"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\build.ninja": {
+      "bytes": 6555382,
+      "sha256": "9df9cfc4f096b885812d1c7d93a0f041c646603aded3827b24651be23e4f8a8a"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.cmake\\api\\v1\\reply\\index-2026-11-19T21-57-17-0772.json": {
+      "bytes": 1265,
+      "sha256": "b3433a40de43a95d3087485f8edfe0f69e01d552fae34b528012c6743cff5fd7"
+    }
+  },
+  "metadata_parser_failure_preserved": "a01 assumed top-level reply/codemodel-v2; actual client-namespaced query uses standard index.objects codemodel. No configure rerun or source changes.",
+  "warnings": [
+    "Legacy unbuilt xar_ck3_domain_construction_runtime_callsite_observer_v1_suspended_injection_test object path exceeds CMake250 recommendation; production target paths separately inspectable",
+    "Standard run_native_msvc passes CMAKE_C_COMPILER to CXX-only project; unused variable warning retained"
+  ],
+  "future_full_build_estimate": {
+    "type": "prospective_not_measured",
+    "original_total576MiB_bytes": 603979776,
+    "already_retained_new_source_config_allocation_bytes": 76953712,
+    "additional_future_if_total576_retained": 527026064,
+    "basis": "Historical a37 actual aggregate peak396,772,801B for old graph254bridge+465runtime; current actual graph recorded above, current manual realbridge object17MiB. Initial576MiB whole source/config/object/archive/DLL/finite-test/TEMP envelope remains an estimate; after configuration source/config76,953,712B are retained in fresh free and must not be charged again as future. Same build root cached; compile only production targets, not all configured tests. Startjobs1 with actual4GiB process-tree RAM estimate and real monitor; compiler-probe sample134,770,688B is not fullbuild RAM proof. No old profile objects borrowed."
+  },
+  "analysis_metadata_peak_bytes": 262144,
+  "analysis_other_future_bytes": 54657024,
+  "future_reserved_bytes": 0,
+  "free_D": 21883236352
+}
