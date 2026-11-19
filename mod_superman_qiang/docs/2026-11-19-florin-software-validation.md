@@ -72,3 +72,12 @@ generation, changed-test-file mypy, all 33 production output parity checks
 and one changed-event generic parse exited 0. Only fixture presentation changed.
 The actual completion pause and physical before/after SAVE checks remain NOT_RUN.
 See the [source-pinned follow-up evidence](../../docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/superman-florin-health-done-software.json).
+
+The log verifier truncated the two existing floor case IDs containing underscores.
+It now preserves those complete IDs and returns a typed log report. An actual
+producer-manifest-to-verifier CLI regression reproduced the failure before the
+fix, then passed together with the existing health producer regression; duplicate
+PASS, FAIL, missing and unexpected markers remain rejected. The two modified
+files passed their existing mypy scope. Producer and all 20 case-data bytes stayed
+unchanged. These synthetic-log software checks grant no Game or SAVE credit.
+See the [regression receipt](../../docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/superman-florin-health-log-parser-regression.json).

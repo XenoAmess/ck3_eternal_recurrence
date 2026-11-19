@@ -299,6 +299,77 @@ class SupermanNotificationFixtureTests(unittest.TestCase):
 class SupermanHealthFixtureTests(unittest.TestCase):
     """Exercise the CLI producer; a terminal close must never replay health actions."""
 
+    def test_real_health_manifest_log_cli_preserves_full_markers_and_rejects_corruption(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="sxad-health-log-cli-") as temporary:
+            root = Path(temporary)
+            fixture = root / "health"
+            subprocess.run(
+                [sys.executable, "-B", "-X", "utf8", str(SOURCE / "tools/prepare_health_fixture.py"),
+                 "--output", str(fixture)], check=True, capture_output=True, text=True, encoding="utf-8",
+            )
+            manifest_path = root / "health.fixture.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            markers: list[str] = manifest["expected_pass_markers"]
+            self.assertEqual(len(markers), 20)
+            self.assertEqual(len(set(markers)), 20)
+            floor_below = "SXAT: PASS health-floor-below-3_00074"
+            floor_at = "SXAT: PASS health-floor-at-3_00075"
+            self.assertIn(floor_below, markers)
+            self.assertIn(floor_at, markers)
+            complete = [manifest["required_start"], "SXAT: BASELINE_READY health-1.1.0",
+                        *markers, manifest["required_end"]]
+            failed = "SXAT: FAIL health-floor-at-3_00075"
+            unexpected = "SXAT: PASS health_unknown_case"
+            variants: tuple[tuple[str, list[str], bool], ...] = (
+                ("complete", complete, True),
+                ("duplicate-pass", complete + [floor_below], False),
+                ("failure", complete + [failed], False),
+                ("missing-pass", [line for line in complete if line != floor_at], False),
+                ("unexpected-pass", complete + [unexpected], False),
+                ("duplicate-start", complete + [manifest["required_start"]], False),
+                ("missing-end", complete[:-1], False),
+            )
+            for name, lines, accepted in variants:
+                with self.subTest(variant=name):
+                    log = root / (name + ".log")
+                    log.write_text("".join("[synthetic CLI regression] " + line + "\n" for line in lines),
+                                   encoding="utf-8")
+                    report_path = root / (name + ".json")
+                    result = subprocess.run(
+                        [sys.executable, "-B", "-X", "utf8", str(SOURCE / "tools/verify_fixture_log.py"),
+                         "--fixture-manifest", str(manifest_path), "--log", str(log),
+                         "--output", str(report_path)],
+                        check=False, capture_output=True, text=True, encoding="utf-8",
+                    )
+                    self.assertEqual(result.returncode, 0 if accepted else 1,
+                                     result.stdout + result.stderr)
+                    report = json.loads(report_path.read_text(encoding="utf-8"))
+                    self.assertIs(report["ok"], accepted)
+                    self.assertEqual(report["expected_case_count"], 20)
+                    self.assertEqual(report["fixture_manifest_sha256"],
+                                     hashlib.sha256(manifest_path.read_bytes()).hexdigest())
+                    self.assertEqual(report["log_sha256"], hashlib.sha256(log.read_bytes()).hexdigest())
+                    if name == "complete":
+                        self.assertEqual(report["pass_count"], 20)
+                        for field in ("missing_or_duplicate", "failures", "unexpected_markers"):
+                            self.assertEqual(report[field], [])
+                        self.assertEqual((report["start_count"], report["end_count"]), (1, 1))
+                    elif name == "duplicate-pass":
+                        self.assertEqual(report["missing_or_duplicate"], [floor_below])
+                        self.assertEqual(report["pass_count"], 19)
+                    elif name == "failure":
+                        self.assertEqual(report["failures"], [failed])
+                        self.assertEqual(report["pass_count"], 20)
+                    elif name == "missing-pass":
+                        self.assertEqual(report["missing_or_duplicate"], [floor_at])
+                        self.assertEqual(report["pass_count"], 19)
+                    elif name == "unexpected-pass":
+                        self.assertEqual(report["unexpected_markers"], [unexpected])
+                    elif name == "duplicate-start":
+                        self.assertEqual(report["start_count"], 2)
+                    else:
+                        self.assertEqual(report["end_count"], 0)
+
     def test_real_emitter_preserves_twenty_checks_and_has_safe_visible_done(self) -> None:
         expected_cases = (
             "player-native-health-75", "health-flat-75", "health-floor-below-3_00074",

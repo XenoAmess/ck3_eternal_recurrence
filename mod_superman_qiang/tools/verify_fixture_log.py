@@ -12,16 +12,32 @@ import json
 from pathlib import Path
 import re
 from decimal import Decimal
+from typing import Literal, TypedDict
 
 SKILLS=('diplomacy','martial','stewardship','intrigue','learning','prowess')
 
 
-def verify(manifest: Path, log: Path) -> dict:
+class FixtureLogReport(TypedDict):
+    schema: Literal['sxad.fixture-log-gate.v1']
+    ok: bool
+    scope: str
+    fixture_manifest_sha256: str
+    log_sha256: str
+    expected_case_count: int
+    pass_count: int
+    missing_or_duplicate: list[str]
+    failures: list[str]
+    unexpected_markers: list[str]
+    start_count: int
+    end_count: int
+
+
+def verify(manifest: Path, log: Path) -> FixtureLogReport:
     source = manifest.read_bytes()
     expected = json.loads(source)
     raw = log.read_bytes()
     content = raw.decode('utf-8', errors='replace')
-    observed = re.findall(r'SXAT: (?:PASS|FAIL) [a-z0-9-]+', content)
+    observed = re.findall(r'SXAT: (?:PASS|FAIL) [a-z0-9_-]+', content)
     counts = Counter(observed)
     required = expected['expected_pass_markers']
     missing = [x for x in required if counts[x] != 1]
@@ -110,10 +126,13 @@ def main() -> int:
     parser.add_argument('--output', type=Path)
     parser.add_argument('--save-readback',type=Path)
     args = parser.parse_args()
-    result = verify(args.fixture_manifest, args.log)
+    log_result = verify(args.fixture_manifest, args.log)
+    # The CLI alone adds the retained optional save report to the JSON envelope.
+    result: dict[str, object] = dict(log_result)
     if args.save_readback:
-        result['independent_save_gate']=verify_save(args.fixture_manifest,args.save_readback)
-        result['ok']=result['ok'] and result['independent_save_gate']['ok']
+        save_result = verify_save(args.fixture_manifest, args.save_readback)
+        result['independent_save_gate'] = save_result
+        result['ok'] = log_result['ok'] and save_result['ok']
     text = json.dumps(result, ensure_ascii=False, indent=2) + '\n'
     if args.output:
         with args.output.open('x', encoding='utf-8') as stream:

@@ -101,4 +101,8 @@ R0015在同机、HEAD `ec4ee16a4eb3cc0958b115b51b525ce99392cd4a`复验，仍因�
 
 R15闭场精确回收4192个自有重复shader/184324556逻辑字节。24份完成清理计划、39份闭场展开stdout、8份旧prepared-case已无损压缩并逐成员核验，展开路径不可直接读、可恢复完整字节，旧FileID不会恢复；当前R15 prepared输入保留。另提前回收42个失去用途的普通准备图路径/29839609唯一载荷字节，实际业务/失败/日历/退出与公开/anchor图排除。所有删除零失败；10:05:16Z D可用21862133760字节，冷存不重置原raw期限，不能复跑已完成删除计划。
 
+R0016在同机、HEAD `7324f96f717906986e416e34b53ed296950551c4`完成直持特殊建筑：真实Roger获京兆县及必要盩厔男爵领，跨日读回独立/实际owner/未出租10148、原生CastleII+、市场I与currency02，完整NativeII门通过。调用正确holder/build_owner/county/payer上下文中的生产special District链，实际I→II、gold准确减800、其他三资源不变、count1；四必需标记各一次，零FAIL/error.log零字节。已知DONE实际暂停09-16，1自然日在合同内、零SAVE。自动复用的checkbox像素守卫拒绝而未点击；随后旧手工来源过期也未派发，刷新实际未勾选退出框后正常退出。10:35:46Z原Popen0、无关窗请求，keeper/CAS闭合，公共verify PASS；控制层两次保守拒绝保持原范围，不算产品故障或伪造退出。[R16实机原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-special-R0016-owned-upgrade-pass.json)。原19建筑代表已有11项实机通过，其余8项及完整GUI/资金诊断继续；完整产品/Native ABI/发布仍false。
+
+R16闭场精确回收4184个自有重复shader/183656136逻辑字节；18份闭场展开stdout/10051348字节无损归档到`closed-gui-lease-stdout-lossless-a10.zip`（1637635字节，SHA `9bfce9a7cfc4ebf2b3b0d538cb58c01bf0b87218420a857390ea30041db21b96`）。11份完成计划/4920225字节无损归档到`closed-cleanup-plans-lossless-a06.zip`（321666字节，SHA `01a1774c26a788f465369b791509f743d71d0a0b1faa84fefb2e714b0f22fc6f`）；这些展开路径不可直读，完整字节可恢复，旧期限不重置且不得复跑旧计划。另退休23个普通法律/书签/选人图别名、16226306唯一载荷字节，所有业务/失败/日历/退出/公开/有效anchor图排除。每项零失败，10:46:39Z D可用21826625536字节；唯一暖缓存与CHT物理保存对未动。
+
 R11可重建shader精确回收4,192文件／184,324,556B，零失败。另将此前closed-cache选择器未覆盖的已闭shader/build/duplicate/export清理计划一并无损归档：126展开文件／60,329,373B→3,040,770B ZIP，逐成员锁定校验后精确删除，零失败；原小型summary／actual回执仍直接可读，展开计划旧路径不可读取、旧FileID不复用、旧删除计划不因此可重跑，保留原期限而不从压缩日重新计期。

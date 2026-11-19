@@ -1,0 +1,122 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T10:37:09.680346+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0016",
+  "case": "special-owned-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": true,
+  "status": "PASS_OWNED_SPECIAL_EXACT_GOLD800",
+  "source_head": "7324f96f717906986e416e34b53ed296950551c4",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-special-r16-gui-prepare\\prepared-case.json",
+    "bytes": 1586537,
+    "sha256": "1f2ed0594fd249cc98c37383f03a4ffdcdc879b9c849b90cefb07261ffd5779d"
+  },
+  "facts": {
+    "actual_owned_special_building_and_exact_gold_charge": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-e1db87da6a6d45dea4aed956170b5d8b\\profile\\logs\\debug.log",
+          "bytes": 1183816,
+          "sha256": "8c7c6c62990be52794f1e2f227750cf4189569b7b94a2d7104c41eaffd2929c0"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-e1db87da6a6d45dea4aed956170b5d8b\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "assertions_passed": 1,
+      "assertions_required": 1
+    },
+    "actual_preparation_calendar_completion_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubsp1-one-day-before-menu-hold.png",
+          "bytes": 1163451,
+          "sha256": "dfcfbbaf4da83911d7ed0fb3dd3fd27399064e3b881a763c6f97471906a53469"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubsp1-exit-final.png",
+          "bytes": 725038,
+          "sha256": "f7cfd33271588f962487662ae9beadfa3b3df1809b53a0a843dd22b7ea1f95f8"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubsp1-exit-now.png.json",
+          "bytes": 1432,
+          "sha256": "64c804586a5833db1c8af2524121b2b64c2a532f10dcd44d1b47d05ce328e818"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0016\\game-exit.json",
+          "bytes": 253,
+          "sha256": "90c5d60b9fb8f4ded5e70ba1674d62899416deca7908fe539c9d414c48224e8d"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBSP: TEST BEGIN owned_special": 1,
+    "AUBSP: READY actual_owned_market_source_native_target": 1,
+    "AUBT: TEST PASS special_gold": 1,
+    "AUBSP: TEST DONE owned_special": 1
+  },
+  "failure_lines": [],
+  "preparation_observations": [],
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-e1db87da6a6d45dea4aed956170b5d8b\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "error_bytes": 0,
+  "actual_date": "1066-09-16",
+  "observed_natural_days": 1,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubsp1-exit-final.png",
+      "bytes": 725038,
+      "sha256": "f7cfd33271588f962487662ae9beadfa3b3df1809b53a0a843dd22b7ea1f95f8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubsp1-exit-now.png.json",
+      "bytes": 1432,
+      "sha256": "64c804586a5833db1c8af2524121b2b64c2a532f10dcd44d1b47d05ce328e818"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0016\\game-exit.json",
+      "bytes": 253,
+      "sha256": "90c5d60b9fb8f4ded5e70ba1674d62899416deca7908fe539c9d414c48224e8d"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0016\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "d45324325ac88390473f3727819bf5be3f15302a58777b393b6c699cc1c08bf7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0016\\screen-release.json",
+      "bytes": 1250,
+      "sha256": "c9032603c59b897452290482b195766ce3f9eaa94a7e8d0ce54a089433bd3d0c"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-special-r16-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "6c780bd29281d641b4f25b7ac9cef3c9711d944198902b2d6f1df68563ae55cd"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "diagnosis_scope": "Actual playerRoger1132 received c_jingzhao and b_zhouzhi through official grants, actual top-liege/owner/unleased10148 CastleII and existing native marketI read back after a real day. Province currency02 and complete native targetII gate true, correct holder/build_owner/county/payer contexts supplied. Existing production special District chain upgradedI->II, exact personal gold800/count1, prestige/piety/treasury unchanged. Four markers unique/error0, actual known DONE paused09-16 within1day, zeroSAVE. Automatic checkbox-pixel guard stopped without clicking; first manual source expired without dispatch, then fresh actual unchecked-dialog review and guarded normal desktop Quit succeeded. These control holds remain failures at their original scope, not product errors or synthetic natural exit. Remaining8 Mandala/duchy/succession cells, fullGUI and funds stock diagnostics still separate.",
+  "retention_review_at_utc": "2026-12-19T10:35:46.042399+00:00",
+  "control_guard_holds": [
+    "automatic unchecked-checkbox exact-pixel mismatch, no exit click",
+    "expired manual source rejected before dispatch; fresh reviewed source then succeeded"
+  ]
+}

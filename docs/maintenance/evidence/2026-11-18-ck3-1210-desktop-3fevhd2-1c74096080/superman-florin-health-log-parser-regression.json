@@ -1,0 +1,86 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "closed_at_utc": "2026-11-19T10:46:14.394064+00:00",
+  "source_root": "D:\\workspace\\ck3_eternal_recurrence",
+  "sources": {
+    "mod_superman_qiang/tools/verify_fixture_log.py": {
+      "bytes": 7448,
+      "sha256": "154838b5837604cdefdbce30ebc829a2bbaa60d44833cec8d9b0f6e3472cf574"
+    },
+    "mod_superman_qiang/tools/test_build_release.py": {
+      "bytes": 32013,
+      "sha256": "6c1d18aa2118635678951d327a219cb15747378cbf39424f4586202f025c4f0d"
+    },
+    "mod_superman_qiang/tools/prepare_health_fixture.py": {
+      "bytes": 12367,
+      "sha256": "366426afd39c00d9e166cce3d04b8d7230cf6eb4ac6c6dc2ac7675eb4b5b9931"
+    },
+    "mod_superman_qiang/tools/health_fixture_data.py": {
+      "bytes": 4552,
+      "sha256": "3cb17e1942a607bfb28f4f4da34baec19ae66c54e598c416b297acf43769d436"
+    }
+  },
+  "steps": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "test_build_release.SupermanHealthFixtureTests.test_real_health_manifest_log_cli_preserves_full_markers_and_rejects_corruption",
+        "-v"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools",
+      "returncode": 1,
+      "elapsed_seconds": 3.1050262000062503,
+      "expected_red_exit_code": 1
+    },
+    {
+      "name": "regression-green",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "test_build_release.SupermanHealthFixtureTests",
+        "-v"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools",
+      "returncode": 0,
+      "elapsed_seconds": 3.5273760000127368
+    },
+    {
+      "name": "mypy",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--cache-dir",
+        "nul",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "mod_superman_qiang/tools/verify_fixture_log.py",
+        "mod_superman_qiang/tools/test_build_release.py"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+      "returncode": 0,
+      "elapsed_seconds": 3.950931999977911
+    }
+  ],
+  "temp_bytes": 0,
+  "retained_logical_bytes_before_this_receipt": 10564,
+  "D_free_bytes": 21797584896,
+  "budget_bytes": 8388608,
+  "reservation_ready_for_root_release": true,
+  "own_test_subprocesses_completed": true,
+  "producer_and_twenty_case_data_unchanged": true,
+  "scope": "Log marker parsing only; generated manifest and actual CLI regression with synthetic logs. No actual Game/Steam/UI/Git or Native capability credit. No78-case rerun or31 parse generation.",
+  "harness_note": "One initial base64 command wrapper failed before Python execution and before creating the evidence root; corrected wrapper then performed the preserved real RED and GREEN."
+}
