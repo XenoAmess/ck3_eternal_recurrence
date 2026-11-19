@@ -1,0 +1,114 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T19:48:07.249399+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0025",
+  "source_head": "75c0d078a3b0faf6e5b221e80fad1fdf945e4075",
+  "status": "CLOSED_PARTIAL_5_OF_7_NO_GAME",
+  "reviewer": "/root/aub_florin_review",
+  "process": {
+    "at_utc": "2026-11-19T19:43:19.996957+00:00",
+    "pid": 21184,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "original_exec_session_67526_consumed_returncode": 0,
+  "normal_gui_quit": true,
+  "autosave_exit_observed_unchecked": true,
+  "keeper": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "u1210-desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0025",
+    "last_sequence": 10716,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0025\\lease-journal.jsonl"
+  },
+  "screen_release": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0025\\screen-release.json",
+    "bytes": 1250,
+    "sha256": "ea8d05b50d541e9431759f3556c802a52ffee266ee3408da59285e9d1ecacb91",
+    "file_id": "1688849864176490"
+  },
+  "screen_release_ok": true,
+  "screen_CAS_sequence": 10717,
+  "shared_verify": {
+    "status": "BLOCKED",
+    "error": "Missing or failed business evidence: actual_decision_cooldown_readback",
+    "runtime_status": "NOT_RUN",
+    "business_acceptance": "NOT_ASSESSED"
+  },
+  "shared_verify_exit_code": 2,
+  "generic_runtime_status_NOT_RUN_boundary": "Failure-envelope default does not erase retained actual Game/Popen0/no timeout evidence. Full business contract remains incomplete.",
+  "business_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0025\\business-review.json",
+    "bytes": 16795,
+    "sha256": "cd60820461abd26c3d9d61e3c2102b06fb4ec11cd97473543bd146f665e5605c",
+    "file_id": "562949957348596"
+  },
+  "resource_actual": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-R0025-resource-actual-a01.json",
+    "bytes": 12581,
+    "sha256": "2366192dff6b0afda2008253cbb1297ba7e32764cecb005cd54aa95e1b942a4e",
+    "file_id": "562949957348594"
+  },
+  "five_unique_original_markers": true,
+  "last_observed_business_state": "Actual second default Enable and independent .830 passed. Final Disable/.840/DONE NOT_RUN; world remains ENABLED, manual pause1066-09-15, zero days, zero physical SAVE.",
+  "raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-723b6c4b40aa40e89e7f9a66d3c529b1\\profile\\logs\\error.log",
+    "bytes": 1005,
+    "sha256": "4c4f7bb86c61504e70ee88bbf37a0571b5e3e1331efc07ee9470601395b21e3e",
+    "file_id": "1970324840491380"
+  },
+  "raw_error_not_filtered_waived_or_zero": true,
+  "stale_source_guard_rejected_zero_input_receipt": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg02-enabled2-observed.png.json",
+        "bytes": 1258,
+        "sha256": "d243943331e2eaac03f19ddc10ace5b1a93b6965f39bd749ed2fe980e8cee4ee",
+        "file_id": "29273397581352375"
+      },
+      "input_performed": false,
+      "click_completed": false,
+      "reason": "source_image_expired",
+      "source_image": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg02-observe-enabled2.png",
+      "age_seconds": 393.9199821949005
+    }
+  ],
+  "soft_start_lateness_seconds": 6.897873,
+  "hard_timeout_reached": false,
+  "shader_cleanup": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-gui-R0025\\summary.json",
+    "bytes": 330,
+    "sha256": "241b94416ccd5b6a1fe353de54da32a70d07e3b964265f251864e73611042f81",
+    "file_id": "4222124654104391"
+  },
+  "shader_deleted_files": 4168,
+  "shader_failed_files": 0,
+  "shader_deleted_logical_bytes": 182735295,
+  "shader_predelete_unique_allocated_bytes": 192101776,
+  "whole_volume_free_delta_during_delete": 192208896,
+  "difference_not_assigned_to_shader_writer": 107120,
+  "historical_shader_paths_now_unavailable": true,
+  "source_bundle_fixture_logs_all_business_failure_exit_images_retained": true,
+  "PNG_current_unique_allocated_bytes": 39866368,
+  "PNG_historical_unique_allocated_equals_current_no_deletion_this_run": true,
+  "original_Game340MiB_future_reservation": 0,
+  "postclose12MiB_future_reservation": 0,
+  "repo_Steam_SCREEN_Game_leases_released": true,
+  "repo_mutations": 0,
+  "new_Game_permitted_by_this_close_record": false,
+  "free_D": 21972807680,
+  "retention": {
+    "owner": "/root/aub_florin_review",
+    "policy": "1.0.0",
+    "raw_evidence_purpose": "Minimal actual first cycle and same-day reentry observations plus unresolved missing final cycle, raw stock diagnostic and exit/source-age refusal evidence for parent product integration; no duplicate profile shader protection.",
+    "raw_default_30day_review_not_automatic_permanent": true,
+    "next_review_at_utc": "2026-11-26T19:48:07.251630+00:00",
+    "record_180day_review": true
+  }
+}
