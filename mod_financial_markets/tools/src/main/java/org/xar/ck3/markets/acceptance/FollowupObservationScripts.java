@@ -18,12 +18,12 @@ public final class FollowupObservationScripts {
         scripts.put("common/scripted_guis/" + prefix + ".txt", """
                 ${P}_arm_gui = {
                     scope = character
-                    is_valid = { is_ai = no is_alive = yes ${ACTOR} NOT = { has_variable = ${P}_armed } NOT = { exists = var:${P}_story } }
+                    is_valid = { is_ai = no is_alive = yes ${ACTOR} NOT = { has_variable = ${P}_armed } NOT = { exists = var:${P}_story } ${OBSERVATION_CLOCK_READY} }
                     effect = { ${P}_arm_effect = yes }
                 }
                 ${P}_refresh_gui = {
                     scope = character
-                    is_valid = { is_ai = no is_alive = yes exists = var:${P}_story }
+                    is_valid = { is_ai = no is_alive = yes exists = var:${P}_story ${OBSERVATION_CLOCK_READY} }
                     effect = { var:${P}_story = { ${P}_observe_effect = yes } }
                 }
                 """ + spotScopeProbeGuis(request));
@@ -68,9 +68,32 @@ public final class FollowupObservationScripts {
                  xfma_scope_probe_positive_label:0 "只读 ID > 0"
                  xfma_scope_probe_negative_label:0 "只读 ID < 0"
                 """);
+        String periodicObservation = request.caseId() == Profile.MARKET_EVOLUTION ? ""
+                : " effect_group = { days = 1 triggered_effect = { trigger = { exists = story_owner } effect = { ${P}_observe_effect = yes } } }\n";
         scripts.put("common/story_cycles/" + prefix + ".txt", "${P}_observer = {\n visible = no\n on_owner_death = {\n"
-                + ownerDeath(request) + "\n }\n effect_group = { days = 1 triggered_effect = { trigger = { exists = story_owner } effect = { ${P}_observe_effect = yes } } }\n}\n"
+                + ownerDeath(request) + "\n }\n" + periodicObservation + "}\n"
                 + passiveCompatibilityStories(request.prefix() + "_observer"));
+        if (request.caseId() == Profile.MARKET_EVOLUTION)
+            scripts.put("common/on_action/" + prefix + ".txt", """
+                    # The financial clock fires this only after its daily modules and AI have returned.
+                    # Its root is a technical custodian; the watched observer belongs to the real player.
+                    xfm_finance_daily_observation_on_action = {
+                        on_actions = { ${P}_after_finance_daily_on_action }
+                    }
+                    ${P}_after_finance_daily_on_action = {
+                        effect = {
+                            every_player = {
+                                limit = { is_alive = yes exists = var:${P}_story }
+                                var:${P}_story = {
+                                    if = {
+                                        limit = { story_type = ${P}_observer story_owner = prev }
+                                        ${P}_observe_effect = yes
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    """);
         scripts.put("common/scripted_triggers/" + prefix + ".txt", "${P}_associations_trigger = {\n" + associations(request) + "\n}\n");
         if (request.caseId() == Profile.DERIVATIVES || request.caseId() == Profile.NEWS_CRISIS) {
             scripts.put("common/script_values/" + prefix + ".txt", """
@@ -93,6 +116,7 @@ public final class FollowupObservationScripts {
         Map<String, byte[]> result = new LinkedHashMap<>();
         scripts.forEach((name, source) -> result.put(name, ("\ufeff" + source.replace("${P}", prefix)
                 .replace("${ACTOR}", actorCondition(request))
+                .replace("${OBSERVATION_CLOCK_READY}", observationClockReady(request))
                 .replace("${SCOPE_PROBE_HEIGHT}", request.caseId() == Profile.SPOT ? "560" : "82")
                 .replace("${SCOPE_VALUE_PROBE}", spotScopeProbeWidget(request).replace("${P}", prefix))
                 .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT || request.caseId() == Profile.MARKET_EVOLUTION || request.caseId() == Profile.DELISTING_GUI
@@ -152,7 +176,7 @@ public final class FollowupObservationScripts {
     }
 
     /**
-     * Retain core and finite schema-two epochs: evolution one through four, spot one through three, others one/two.
+     * Retain core and finite schema-two epochs: evolution one through five, spot one through three, others one/two.
      * Passive declarations deliberately have no callbacks, markers, writes, or end_story operation.
      * This finite compatibility catalog does not claim to cover arbitrary historical epochs.
      */
@@ -160,7 +184,7 @@ public final class FollowupObservationScripts {
         StringBuilder source = new StringBuilder("# Passive compatibility: preserve old observation data without running an old case.\n"
                 + "xfma_observer = { visible = no }\n");
         for (Profile profile : Profile.values()) {
-            List<Integer> retainedEpochs = profile == Profile.MARKET_EVOLUTION ? List.of(1, 2, 3, 4)
+            List<Integer> retainedEpochs = profile == Profile.MARKET_EVOLUTION ? List.of(1, 2, 3, 4, 5)
                     : profile == Profile.SPOT ? List.of(1, 2, 3) : List.of(1, 2);
             for (int epoch : retainedEpochs) {
                 String type = "xfma_" + profile.scriptKey() + "_e" + epoch + "_observer";
@@ -169,6 +193,14 @@ public final class FollowupObservationScripts {
         }
         for (String type : marketEvolutionRecordTypes()) source.append(type).append(" = { visible = no }\n");
         return source.toString();
+    }
+
+    private static String observationClockReady(Request request) {
+        if (request.caseId() != Profile.MARKET_EVOLUTION) return "";
+        // Refuse a new-date/manual read until the exchange has dispatched that actual date.
+        // Never backfill, infer, or rewrite native dates from a financial-day counter.
+        return "exists = global_var:xfm_exchange global_var:xfm_exchange = { has_variable = xfm_last_date "
+                + "var:xfm_last_date >= current_date var:xfm_last_date <= current_date }";
     }
 
     static List<String> marketEvolutionRecordTypes() {
@@ -207,7 +239,7 @@ public final class FollowupObservationScripts {
                 # Only xfma_ observation state is written. No product effect is invoked.
                 ${P}_arm_effect = {
                     if = {
-                        limit = { is_ai = no is_alive = yes ${ACTOR} NOT = { has_variable = ${P}_armed } NOT = { exists = var:${P}_story } exists = global_var:xfm_exchange }
+                        limit = { is_ai = no is_alive = yes ${ACTOR} NOT = { has_variable = ${P}_armed } NOT = { exists = var:${P}_story } exists = global_var:xfm_exchange ${OBSERVATION_CLOCK_READY} }
                         save_scope_as = xfma_operator
                         clear_saved_scope = xfma_context
                         create_story = { type = ${P}_observer save_scope_as = xfma_context }
@@ -242,7 +274,7 @@ public final class FollowupObservationScripts {
                 ${P}_observe_effect = {
                     save_scope_as = xfma_context
                     if = {
-                        limit = { var:xfma_ready = 1 exists = global_var:xfm_exchange }
+                        limit = { var:xfma_ready = 1 exists = global_var:xfm_exchange ${OBSERVATION_CLOCK_READY} }
                         ${P}_bind_effect = yes
                         change_variable = { name = xfma_refreshes add = 1 }
                         if = {

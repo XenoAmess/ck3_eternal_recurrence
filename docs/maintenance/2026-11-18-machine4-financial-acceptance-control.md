@@ -211,3 +211,9 @@ R0026实际冷载R0024基线，原E1被动、新E2正常Arm一次；唯一物理
 machine_id: `4-8e1c2f1861`。真实冷载R0026最新物理档后，E1=1444／E2=1449保留，新E3=1454只Arm一次；真实新基线SAVE、归档和独立完整读取成功，DAY1455、actor31254、raw53144520，选定金融图冷载0差异。PIPELINE／READCHAIN／REVIEW原返回均0，分别59.7932866／22.34611／0.688937秒；Root接受基线，不代表后续业务通过。
 
 第一步`case-natural-day-0003`在ARM前被`ValueError: managed camera identity requires an existing campaign startup mode`拒绝；Root定位真实saved-load CLI与内部server flag的启动身份接线错误，Host新候选另行修复。新增观察0日／新增保存0日，物理新SAVE仅同日基线。EVOLUTION06-run原2／700.6582203秒、Host1保留；Game21208／birth134395703550826468实际0、Job0、treegone／finally cleanup、keeper a105原0，CAS15522→15523释放，normal_close仍false。406／验证04旧软件绿不授新Host候选；后继06／E4未启动，不授35日、无地AI新发、气泡、债务危机、全产品或发布。原件见[R0027证据](evidence/2026-11-19-financial-markets-r0027-baseline-and-admission-failure.json)。
+
+## R0028十四日SAVE与采样断言失败（2026-11-19）
+
+machine_id: `4-8e1c2f1861`。实际自然日期raw53144520→53144856、financial8→22，新增observed14日／saved14日；基线、D14、refresh-check三份物理SAVE原件保留，后继continuation必须使用最新`evolution28-day14-refresh-check01`归档（SHA `a6a10eff8d87248c76e0b12515fe4b7361b6b898f712bb8fe1ce982f66d81e35`）。原D14 facts有18项违例，同日正常刷新后仍14项日期违例；Root拒绝连贯日采样断言，不修历史记录、不重放。
+
+EVOLUTION07-run原2／1419.6043655秒反映采样断言失败；Host0、normal_close_qualified=true、Game19592／birth134395738011961874实际0、Job0／treegone／cleanup，keeper a106原ALLOCATE0及RELEASE0／CAS15539→15540另记为正常关场和资源释放。真实保存14日不等于35日或整案通过。币和账户仍3／695；基线已有AI币不能充新发行，本窗新AI上市／失败退款、expiry30结算、债务危机、气泡均未得到通过信用。post-finance hook／E5后续已采用且软件通过，实机首日仍待验；不授容量、完整产品或发布。[原件与采样诊断](evidence/2026-11-19-financial-markets-r0028-fourteen-saved-days-and-sampling-failure.json)。

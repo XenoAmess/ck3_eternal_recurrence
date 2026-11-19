@@ -99,6 +99,76 @@ final class MarketEvolutionScriptContractTest {
         assertEquals(1, o.n("xfma_evolution_day_records"));
     }
 
+    @Test void staleCalendarReadCannotArmOrRewriteThePreviousFinancialDay() {
+        Vm beforeArm = new Vm(request(null, null)); beforeArm.nativeDate += 24;
+        String untouched = beforeArm.productState(); beforeArm.arm();
+        assertFalse(beforeArm.player.vars.containsKey(beforeArm.input.prefix() + "_story"));
+        assertEquals(untouched, beforeArm.productState());
+
+        Vm v = new Vm(request(null, null)); v.arm(); Node o = v.observer();
+        Node baseline = o.nodes("xfma_evolution_days").getFirst();
+        Map<String, Value> originalDay = Map.copyOf(baseline.vars);
+        long refreshes = o.n("xfma_refreshes"); v.nativeDate += 24;
+        String product = v.productState(); v.observe();
+        assertEquals(originalDay, baseline.vars, "a pre-clock refresh must not relabel yesterday with today's date");
+        assertEquals(refreshes, o.n("xfma_refreshes"));
+        assertEquals(0, o.n("xfma_daily_samples")); assertEquals(1, o.n("xfma_evolution_day_records"));
+        assertEquals(product, v.productState());
+    }
+
+    @Test void realAfterFinanceTailSamplesFourteenDaysBeforeAnyGuiRefreshOrSave() throws IOException {
+        Vm v = new Vm(request(null, null)); v.arm(); Node o = v.observer();
+        long baselineDate = v.nativeDate;
+        for (int financialDay = 7; financialDay <= 20; financialDay++) {
+            v.nativeDate += 24;
+            // The original failure order: an observation callback arrives before the exchange clock.
+            long previousSamples = o.n("xfma_daily_samples"); v.observe();
+            assertEquals(previousSamples, o.n("xfma_daily_samples"));
+            v.exchange.put("xfm_day", financialDay).put("xfm_last_date", v.nativeDate)
+                    .put("xfm_fee_cents", financialDay);
+            String product = v.productState(); v.afterFinanceTail();
+            assertEquals(product, v.productState(), "the genuine tail subscription has no financial writer");
+            assertEquals(financialDay - 6, o.n("xfma_daily_samples"));
+            assertEquals(financialDay - 5, o.n("xfma_evolution_day_records"));
+            Node latest = o.nodes("xfma_evolution_days").getLast();
+            assertEquals(financialDay, latest.n("xfma_financial_day"));
+            assertEquals(v.nativeDate, latest.n("xfma_first_native_date"));
+            assertEquals(v.nativeDate, latest.n("xfma_latest_native_date"));
+            assertEquals(financialDay, latest.n("xfma_fee_cents"));
+            v.observe(); v.afterFinanceTail();
+            assertEquals(financialDay - 6, o.n("xfma_daily_samples"), "same-day GUI and duplicate dispatch stay idempotent");
+        }
+        assertEquals(14, o.n("xfma_daily_samples")); assertEquals(15, o.n("xfma_evolution_day_records"));
+        assertEquals(20, o.n("xfma_last_sample_day")); assertFalse(o.vars.containsKey("xfma_sample_gap"));
+        for (int offset = 0; offset <= 14; offset++) {
+            Node day = o.nodes("xfma_evolution_days").get(offset);
+            assertEquals(6 + offset, day.n("xfma_financial_day"));
+            assertEquals(baselineDate + offset * 24L, day.n("xfma_first_native_date"));
+            assertEquals(baselineDate + offset * 24L, day.n("xfma_latest_native_date"));
+        }
+    }
+
+    @Test void technicalCustodianHandoffUsesTheArmedPlayerReferenceAndLeavesRetiredEpochsUntouched() throws IOException {
+        Request input = new Request(2, Profile.MARKET_EVOLUTION, 5,
+                new ActorBinding(ActorMode.CURRENT_PLAYER, null), new Targets("2", "1", null, null, null, null), null, null);
+        Vm v = new Vm(input); v.arm(); Node armed = v.observer();
+        Node old = v.node("retired-e4", "xfma_market_evolution_e4_observer", false).put("xfma_daily_samples", 13);
+        v.player.ref("xfma_market_evolution_e4_story", old);
+        Map<String, Value> retiredBefore = Map.copyOf(old.vars);
+        Node otherPlayer = v.character("unarmed-other-player", false); v.players.add(otherPlayer);
+        Node custodian = v.character("technical-custodian", true); v.exchange.owner = custodian;
+        v.day(7); v.afterFinanceTail();
+        assertSame(v.player, armed.owner); assertSame(armed, v.observer());
+        assertFalse(custodian.vars.containsKey(input.prefix() + "_story"));
+        assertFalse(otherPlayer.vars.containsKey(input.prefix() + "_story"));
+        assertEquals(1, armed.n("xfma_daily_samples")); assertEquals(retiredBefore, old.vars);
+        // A stale/foreign pointer is not an authorization to read someone else's observer.
+        otherPlayer.ref(input.prefix() + "_story", armed);
+        v.exchange.owner = v.character("successor-custodian", true); v.day(8); v.afterFinanceTail();
+        assertEquals(2, armed.n("xfma_daily_samples")); assertSame(v.player, armed.owner);
+        assertEquals(retiredBefore, old.vars);
+    }
+
     @Test void unrelatedOrSystemAccountAndPerpetualTargetCannotBeArmedAsADatedPrivateBaseline() {
         Vm system = new Vm(request(null, null)); system.privateAccount.put("xfm_system_account", 1); system.arm();
         assertFalse(system.observer().vars.containsKey("xfma_ready"));
@@ -318,9 +388,9 @@ final class MarketEvolutionScriptContractTest {
     }
     /** No product effects, implicit missing=zero, random business decisions or financial ports exist. */
     private static final class Vm {
-        final Request input; final Map<String, Block> program = new HashMap<>();
+        final Request input; final Map<String, Block> program = new HashMap<>(), onActions = new HashMap<>();
         final Map<String, Node> aliases = new HashMap<>(); final Map<String, List<Node>> globals = new HashMap<>();
-        final List<Node> nodes = new ArrayList<>(); final List<String> logs = new ArrayList<>();
+        final List<Node> nodes = new ArrayList<>(), players = new ArrayList<>(); final List<String> logs = new ArrayList<>();
         final Node exchange, player, privateAccount; long nativeDate = 53144448; boolean failRecordCreation;
         Vm(Request input) {
             this.input = input;
@@ -328,12 +398,16 @@ final class MarketEvolutionScriptContractTest {
                 if (name.startsWith("common/scripted_effects/") || name.startsWith("common/scripted_triggers/") || name.startsWith("common/script_values/"))
                     for (Entry e : parse(new String(bytes, StandardCharsets.UTF_8)).entries())
                         assertNull(program.put(e.key(), (Block)e.value()), e.key());
+                if (name.startsWith("common/on_action/"))
+                    for (Entry e : parse(new String(bytes, StandardCharsets.UTF_8)).entries())
+                        assertNull(onActions.put(e.key(), (Block)e.value()), e.key());
             });
-            player = character("player", false); exchange = node("exchange", "xfm_finance_exchange", true); exchange.owner = player;
+            player = character("player", false); players.add(player);
+            exchange = node("exchange", "xfm_finance_exchange", true); exchange.owner = player;
             exchange.put("xfm_day", 6).put("xfm_next_coin_id", 1).put("xfm_registered_coin_count", 1)
                     .put("xfm_pending_coin_count", 0).put("xfm_active_coin_count", 1).put("xfm_new_listings_today", 0)
                     .put("xfm_fee_cents", 0).put("xfm_ai_work_today", 512).put("xfm_ai_decisions_today", 500)
-                    .put("xfm_ai_count", 35000).put("xfm_futures_open_positions_count", 0);
+                    .put("xfm_ai_count", 35000).put("xfm_futures_open_positions_count", 0).put("xfm_last_date", nativeDate);
             privateAccount = account("private", 2, player, 6000); privateAccount.put("xfm_system_account", 0); player.ref("xfm_account", privateAccount);
             global("xfm_account_registry").add(privateAccount);
             global("xfm_coin_registry").add(coin("baseline-coin", 1, player, 1));
@@ -359,7 +433,32 @@ final class MarketEvolutionScriptContractTest {
         void observe() { run(input.prefix() + "_observe_effect", observer(), null); }
         Node observer() { return player.node(input.prefix() + "_story"); }
         Node coinRecord(long id) { return observer().nodes("xfma_evolution_coins").stream().filter(n -> n.n("xfma_first_coin_id") == id).findFirst().orElseThrow(); }
-        void day(long day) { nativeDate += Math.multiplyExact(day - exchange.n("xfm_day"), 24); exchange.put("xfm_day", day); }
+        void day(long day) { nativeDate += Math.multiplyExact(day - exchange.n("xfm_day"), 24); exchange.put("xfm_day", day).put("xfm_last_date", nativeDate); }
+        void afterFinanceTail() throws IOException {
+            Path source = Path.of(System.getProperty("xfm.source"));
+            Block daily = parse(Files.readString(source.resolve("common/scripted_effects/xfm_finance_schedule.txt")))
+                    .block("xfm_finance_daily_effect").block("if");
+            List<Entry> steps = daily.entries();
+            assertEquals("xfm_finance_run_ai_budget_effect", steps.get(steps.size() - 2).key(),
+                    "the observation hook follows the real last AI step, not a competing daily timer");
+            Entry tail = steps.getLast(); assertEquals("if", tail.key());
+            Block base = parse(Files.readString(source.resolve("common/on_action/xfm_finance_on_actions.txt")))
+                    .block("xfm_finance_daily_observation_on_action");
+            assertTrue(base.entries().isEmpty(), "the ordinary product has no observer or extra business action");
+            // Execute the actual production tail and actual emitted on_action, not a stand-in observation call.
+            execute(new Block(List.of(tail)), exchange, null);
+        }
+        void fireOnAction(String name, Node here, Node prev) {
+            Block action = java.util.Objects.requireNonNull(onActions.get(name), name);
+            for (Entry entry : action.entries()) {
+                if (entry.key().equals("effect")) execute((Block)entry.value(), here, prev);
+                else if (entry.key().equals("on_actions")) {
+                    for (Entry child : ((Block)entry.value()).entries()) {
+                        assertEquals("$literal", child.key()); fireOnAction(atom(child.value()), here, prev);
+                    }
+                } else throw new AssertionError("unsupported observation on_action " + entry.key());
+            }
+        }
         String productState() {
             StringBuilder s = new StringBuilder();
             for (Node n : nodes) if (n.product) {
@@ -413,6 +512,17 @@ final class MarketEvolutionScriptContractTest {
                     aliases.put(atom(child.blockOrAtom("save_scope_as")), created); continue;
                 }
                 if (key.equals("debug_log")) { logs.add(unquote(atom(e.value()))); continue; }
+                if (key.equals("trigger_event")) {
+                    Block child = (Block)e.value(); assertEquals(1, child.entries().size());
+                    fireOnAction(atom(child.blockOrAtom("on_action")), here, prev); continue;
+                }
+                if (key.equals("every_player")) {
+                    Block child = (Block)e.value(), predicate = optionalBlock(child, "limit");
+                    for (Node actualPlayer : List.copyOf(players))
+                        if (predicate == null || matches(predicate, actualPlayer, here))
+                            execute(without(child, "limit"), actualPlayer, here);
+                    continue;
+                }
                 if (key.equals("every_in_list") || key.equals("every_in_global_list") || key.equals("ordered_in_list") || key.equals("ordered_in_global_list")) {
                     Block child = (Block)e.value(); String list = atom(child.blockOrAtom("variable"));
                     List<Node> selected = new ArrayList<>(key.contains("global") ? global(list) : here.lists.getOrDefault(list, List.of()));

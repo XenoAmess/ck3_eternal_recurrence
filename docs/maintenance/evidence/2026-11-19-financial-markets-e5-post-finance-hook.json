@@ -1,0 +1,69 @@
+{
+  "schema": "ck3-financial-post-finance-observation-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T15:39:39.291655+00:00",
+  "scope": "Actual post-finance observer and E5 finite compatibility software qualification; CK3 runtime timing remains unverified.",
+  "originals": {
+    "software": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-e5-actual02\\SOFTWARE.actual.json",
+      "bytes": 168572,
+      "sha256": "689f60a395d931f9536d7823be7c756b0e31062f96e5d7d191b7d3d9dc22f927"
+    },
+    "original_failure": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-e5-first-failure01\\FAILURE.actual.json",
+      "bytes": 25250,
+      "sha256": "2f4ae75f4dc74cec62597655f7e6e6f6ddc0449f1c0b6e049d71fbd65a37165b"
+    },
+    "production_adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\e5-post-finance-adoption01.actual.json",
+      "bytes": 5000,
+      "sha256": "650844a577619b3797e17fe0d874ff0cee1e7d2b1379b14bd1f3edfa9fb8c09d"
+    },
+    "test_fixture_followup_adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\e5-post-finance-fixture-adoption02.actual.json",
+      "bytes": 1113,
+      "sha256": "725466d55891c280210cfc9431d39199b74fb554c90b30cd6594852f5671cdcd"
+    },
+    "independent_source_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\market-evolution-post-finance-observer-review01\\REVIEW.actual.json",
+      "bytes": 11466,
+      "sha256": "4d07cfbfaa6e9f6cc35634e5c2b9d5d408b33201c809586ea1695993b63381f6"
+    },
+    "source_window_before": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-e5-before02.actual.json",
+      "bytes": 69943,
+      "sha256": "cdc37d7c8149668619132766ece444db231782c09a6e308e73865fffbe42e49c"
+    }
+  },
+  "actual_financial_methods": 386,
+  "unchanged_shared_methods_reused": 23,
+  "distinct_methods_covered": 409,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "new_methods": [
+    "staleCalendarReadCannotArmOrRewriteThePreviousFinancialDay",
+    "realAfterFinanceTailSamplesFourteenDaysBeforeAnyGuiRefreshOrSave",
+    "technicalCustodianHandoffUsesTheArmedPlayerReferenceAndLeavesRetiredEpochsUntouched"
+  ],
+  "historical_methods_renamed": false,
+  "first_verify": {
+    "returncode": 1,
+    "financial_methods": 386,
+    "failures": 2,
+    "reason": "Old expected output count omitted the new on_action; old namespace fixture lacked explicit current-date and exchange clock. Original red XML and wait are retained."
+  },
+  "final_verify": {
+    "operation": "MVN-financial-e5-post-finance-verify02",
+    "returncode": 0,
+    "elapsed_seconds": 141.30359579995275,
+    "source_window_count": 347,
+    "xml_files": 42
+  },
+  "implementation": "Production daily tail dispatches an empty extensible on_action after final AI business. Optional fixture follows each actual player own exact E5 reference and legal story owner, refuses pre-clock reads, and has no independent evolution timer. E1\u2013E4 remain passive; no old timestamps are repaired.",
+  "runtime_limit": "Installed on_action syntax and a synchronous test VM do not prove CK3 runtime ordering. The first real E5 natural day requires an independent physical SAVE before any manual refresh.",
+  "Host_SDK_Native_reexecuted": false,
+  "live_pass": false,
+  "whole_product_release_pass": false,
+  "published": false
+}

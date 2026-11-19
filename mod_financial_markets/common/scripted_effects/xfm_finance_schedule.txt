@@ -144,6 +144,12 @@ xfm_finance_daily_effect = {
         xfm_news_daily_effect = yes
         # AI acts last: its new transactions belong to open sample bucket D.
         xfm_finance_run_ai_budget_effect = yes
+        # Read-only observers subscribe here, after the real daily business has returned.
+        # The technical story owner supplies the event root, not a player/account identity.
+        if = {
+            limit = { exists = story_owner }
+            story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } }
+        }
     }
 }
 

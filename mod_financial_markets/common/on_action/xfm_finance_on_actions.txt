@@ -1,6 +1,10 @@
 ﻿# Append named hooks; never replace a vanilla effect block.
 # Installed 1.21 common/on_action/_on_actions.info:106-116 documents this pattern.
 
+# No business action or observer exists in the normal product subscription.
+# Optional read-only fixtures append their own named on_actions, never an effect override.
+xfm_finance_daily_observation_on_action = { }
+
 on_game_start_after_lobby = {
     on_actions = { xfm_finance_after_lobby_on_action }
 }

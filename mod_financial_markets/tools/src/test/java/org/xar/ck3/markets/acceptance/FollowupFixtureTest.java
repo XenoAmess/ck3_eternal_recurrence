@@ -350,15 +350,22 @@ final class FollowupFixtureTest {
             String foreignPrefix = request(foreign, 1).prefix();
             Node actor = new Node("character").number("is_ai", 0).number("is_alive", 1).number("xfma_armed", 1)
                     .number(foreignPrefix + "_armed", 1).reference(foreignPrefix + "_story", new Node(foreignPrefix + "_observer"));
+            actor.number("current_date", 53144856); // Explicit fixture calendar; never an implicit missing-value default.
+            Node exchange = new Node("exchange").number("xfm_last_date", 53144856);
             Map<String, Datum> oldCore = Map.copyOf(core.variables), oldActor = Map.copyOf(actor.variables);
-            assertTrue(matches(arm, actor, actor, null), "a different saved case does not block a fresh namespace");
+            assertTrue(matches(arm, actor, actor, exchange), "a different saved case does not block a fresh namespace");
+            if (profile == Profile.MARKET_EVOLUTION) {
+                exchange.number("xfm_last_date", 53144832);
+                assertFalse(matches(arm, actor, actor, exchange), "a real but prior-date exchange cannot initialize today's baseline");
+                exchange.number("xfm_last_date", 53144856);
+            }
             assertFalse(matches(observationGate, core, core, new Node("exchange")), "old xfma_complete is not this case's ready state");
             assertEquals(oldCore, core.variables); assertEquals(oldActor, actor.variables);
             actor.number(input.prefix() + "_armed", 1);
-            assertFalse(matches(arm, actor, actor, null), "the current baseline cannot be reset");
+            assertFalse(matches(arm, actor, actor, exchange), "the current baseline cannot be reset");
             actor.variables.remove(input.prefix() + "_armed");
             actor.reference(input.prefix() + "_story", new Node(input.prefix() + "_observer"));
-            assertFalse(matches(arm, actor, actor, null), "a current carried story still prevents rearm without its flag");
+            assertFalse(matches(arm, actor, actor, exchange), "a current carried story still prevents rearm without its flag");
         }
     }
 
@@ -411,7 +418,7 @@ final class FollowupFixtureTest {
     }
 
     @Test void evolutionEpochThreeAndFourEmissionRetainsOnlyTheFiniteKnownEvolutionHistory() throws IOException {
-        for (int activeEpoch : List.of(3, 4)) {
+        for (int activeEpoch : List.of(3, 4, 5)) {
             Request input = request(Profile.MARKET_EVOLUTION, activeEpoch);
             var emission = FixtureEmitter.emit(repository(), temporary.resolve("saved-evolution-e" + activeEpoch), "synthetic-fixture-machine", input);
             Path fixture = Path.of(emission.fixture());
@@ -423,11 +430,15 @@ final class FollowupFixtureTest {
             assertEquals("NOT_RUN", emission.businessAcceptance());
             Block cycles = parse(Files.readString(fixture.resolve("common/story_cycles/" + input.prefix() + ".txt")));
             assertCompatibilityCatalog(cycles, input);
-            for (int epoch : List.of(1, 2, 3, 4))
+            for (int epoch : List.of(1, 2, 3, 4, 5))
                 if (epoch != activeEpoch)
                     assertEquals(parse("visible = no"), cycles.block("xfma_market_evolution_e" + epoch + "_observer"));
-            assertNotNull(cycles.block(input.prefix() + "_observer").block("effect_group"));
-            assertFalse(cycles.entries().stream().anyMatch(e -> e.key().equals("xfma_market_evolution_e5_observer")),
+            assertTrue(cycles.block(input.prefix() + "_observer").entries().stream().noneMatch(e -> e.key().equals("effect_group")),
+                    "evolution samples only the explicit after-finance hook, never a racing daily story");
+            Block hooks = parse(Files.readString(fixture.resolve("common/on_action/" + input.prefix() + ".txt")));
+            assertNotNull(hooks.block("xfm_finance_daily_observation_on_action"));
+            assertNotNull(hooks.block(input.prefix() + "_after_finance_daily_on_action"));
+            assertFalse(cycles.entries().stream().anyMatch(e -> e.key().equals("xfma_market_evolution_e6_observer")),
                     "the active request range does not imply an unbounded historical catalog");
         }
     }
@@ -682,7 +693,7 @@ final class FollowupFixtureTest {
                 "xfma_spot_e2_observer", "xfma_derivatives_e2_observer", "xfma_lifecycle_e2_observer",
                 "xfma_inheritance_e2_observer", "xfma_cold_reload_e2_observer",
                 "xfma_news_crisis_e2_observer", "xfma_ai_capacity_e2_observer",
-                "xfma_market_evolution_e1_observer", "xfma_market_evolution_e2_observer", "xfma_market_evolution_e3_observer", "xfma_market_evolution_e4_observer", "xfma_spot_e3_observer",
+                "xfma_market_evolution_e1_observer", "xfma_market_evolution_e2_observer", "xfma_market_evolution_e3_observer", "xfma_market_evolution_e4_observer", "xfma_market_evolution_e5_observer", "xfma_spot_e3_observer",
                 "xfma_delisting_gui_e1_observer", "xfma_delisting_gui_e2_observer"));
         expected.addAll(FollowupObservationScripts.marketEvolutionRecordTypes());
         String active = input.prefix() + "_observer";
@@ -695,7 +706,9 @@ final class FollowupFixtureTest {
             assertInstanceOf(Block.class, entry.value);
             Block body = (Block)entry.value;
             if (entry.key.equals(active)) {
-                assertNotNull(body.block("effect_group"));
+                if (input.caseId() == Profile.MARKET_EVOLUTION)
+                    assertTrue(body.entries().stream().noneMatch(e -> e.key().equals("effect_group")));
+                else assertNotNull(body.block("effect_group"));
                 assertNotNull(body.block("on_owner_death"));
             } else {
                 assertEquals(passive, body, "retired types have no callbacks, logs, writes, create/end, or business authority");
@@ -784,6 +797,7 @@ final class FollowupFixtureTest {
         if (path == null) return null;
         if (path.matches("-?[0-9]+")) return new NumberValue(Long.parseLong(path));
         if (path.equals("yes") || path.equals("no")) return new NumberValue(path.equals("yes") ? 1 : 0);
+        if (path.equals("current_date")) return context.variables.get("current_date");
         String[] parts = path.split("\\.var:");
         Datum value = switch (parts[0]) {
             case "scope:xfma_context" -> new NodeValue(context);

@@ -50,3 +50,7 @@ machine_id: `4-8e1c2f1861`。产品目标保持不变。R0026已在真实冷载�
 ## R0027后继实机边界（2026-11-19）
 
 machine_id: `4-8e1c2f1861`。R0027真实冷载后产生新基线SAVE，保留E1=1444／E2=1449、新E3=1454／DAY1455，actor31254／raw53144520；独立金融冷载比较0差异、Root基线accepted。首日日进因启动身份接线错误在ARM前拒绝，新增观察0日、保存0日，原run2／Host1与失败生命周期释放均保留。406项及验证04旧软件通过不授新Host候选；后继06／E4尚未启动，35日、无地AI新发、债务危机、气泡、容量和完整产品仍待实际验收，未发布。此前R0026历史与case隔离约束不变，详见[R0027原件摘要](evidence/2026-11-19-financial-markets-r0027-baseline-and-admission-failure.json)。
+
+## R0028后继实机边界（2026-11-19）
+
+machine_id: `4-8e1c2f1861`。R0028真实自然推进并保存14日（raw53144520→53144856／financial8→22），三份物理SAVE保留；最新refresh-check归档才是后继continuation。原D14／刷新诊断分别18／14项日期违例，Root采样断言false、公共run2保留；Host0与normal_close_qualified=true、Game0／Job0及释放同时成立，不能混作业务通过。既有AI币不是本窗新发行，expiry30未到；35日、无地付费发行新分支、气泡、债务危机、容量和全产品仍未通过。post-finance hook／E5后续已采用并软件验证409项覆盖（实际金融386、复用不变共享23），实机首日待验，未发布。R0027／R0026／R0022历史信用及case隔离不变。[R0028原件摘要](evidence/2026-11-19-financial-markets-r0028-fourteen-saved-days-and-sampling-failure.json)。
