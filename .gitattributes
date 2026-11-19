@@ -1458,3 +1458,6 @@ docs/maintenance/2026-11-19-native-cash-production-ready42.json -text whitespace
 docs/maintenance/2026-11-19-saved-custody-cash42-evidence23.json -text
 docs/maintenance/2026-11-19-saved-readset-full-capture59.json -text
 docs/maintenance/2026-11-19-java-saved-readset-main31-ready62.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve the actual action-history producer/genuine carrier receipt.
+docs/maintenance/2026-11-19-java-action-history-main32-ready71.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

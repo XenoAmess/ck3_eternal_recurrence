@@ -140,6 +140,16 @@ public final class RootActionHistoryMaterialSourceFactory {
         public boolean isOrdinary(){return recordingPolicy.isOrdinary();}
         public List<ExactRef> originals(){var refs=new LinkedHashSet<>(List.of(implementation,codec,publisher));refs.addAll(recordingPolicy.originals());refs.addAll(materialReaders);return List.copyOf(refs);}
     }
+    /** A single physical archive may supply several unchanged implementation roles. */
+    static List<ExactRef> publisherClosure(Sources selected) {
+        Objects.requireNonNull(selected);
+        var byPath=new java.util.LinkedHashMap<String,ExactRef>();
+        for(var source:List.of(selected.implementation(),selected.codec(),selected.publisher())) {
+            nonempty(source);var prior=byPath.putIfAbsent(source.path(),source);
+            require(prior==null||prior.equals(source),"publisher source roles disagree about the same actual path");
+        }
+        return List.copyOf(byPath.values());
+    }
     public record Products(DriverActionHistoryPublisher.MaterialSource materials,List<ExactRef> publisherSources) {
         public Products {Objects.requireNonNull(materials);publisherSources=List.copyOf(publisherSources);require(!publisherSources.isEmpty(),"actual publisher implementation sources required");}
     }
@@ -179,7 +189,7 @@ public final class RootActionHistoryMaterialSourceFactory {
         private final Products products;
         private Installed(RootRuntimeContext context,RootInstalledCatalog catalog,Sources sources,DriverStateAssembler actualAuthority){
             this.context=context;this.catalog=catalog;selected=sources;authority=Objects.requireNonNull(actualAuthority);journal=context.core().journal();archive=context.archive();
-            products=new Products(this,List.of(sources.implementation(),sources.codec(),sources.publisher()));
+            products=new Products(this,publisherClosure(sources));
         }
         @Override public void requireOwner(DriverStateAssembler same,ActionJournal sameJournal,ActionPorts.OutcomeArchive sameArchive){
             require(authority==same&&journal==sameJournal&&archive==sameArchive

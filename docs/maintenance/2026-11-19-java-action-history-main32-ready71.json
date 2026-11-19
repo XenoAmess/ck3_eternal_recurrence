@@ -1,0 +1,69 @@
+{
+  "schema": "ck3.migration.normal-main32-action-history-ENV17-runtime-ready/v1",
+  "normal_MAIN_package": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\maven-package69.END.json",
+    "bytes": 907,
+    "sha256": "e9625c43900c698cee6d8f135240ee5549df2cce1183f1c7e0e82de5bfd543ae"
+  },
+  "genuine157CP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\MAIN32-FROZEN-RUNTIME-ARCHIVES70.json",
+    "bytes": 92804,
+    "sha256": "0d0fed59779bf1f59dd44dadf3b0c326d709e1d3310e05177c1c80826052676d"
+  },
+  "classpath": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\DIRECT-RUNTIME-MAIN32-CLASSPATH71.txt",
+    "bytes": 27055,
+    "sha256": "b532e609d8939d3586cf5506ef3056932e6d04198d0f0791c825b6b92a2000d6"
+  },
+  "entry_prefixes": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\NORMAL-MAIN32-ENTRY-PREFIXES71.json",
+    "bytes": 1520,
+    "sha256": "0118215e4395e006fc4b34c5d73a22d2a3385aecc77d0e99072b74e58e3d251c"
+  },
+  "actual_sameplan_checker": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\ACTUAL-CALLER32-INPUTS71.json",
+    "bytes": 723,
+    "sha256": "8d9ef157384c854f9c80996c64fc6e0435b34b0eb2505b9f34412ecfd94a1f6c"
+  },
+  "publisher_producer_source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\action-publisher68\\ACTION-HISTORY-PUBLISHER-SOURCE68.json",
+    "bytes": 1220,
+    "sha256": "6ef17c7e752de026de4ca1f7b9413c833c7b1e06192dda43940d0cccd3f18456"
+  },
+  "three_pure_NoGame": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\action-publisher68\\ACTION-HISTORY-CLOSURE-3-PURE-READY68.json",
+    "bytes": 1486,
+    "sha256": "b8758f1bb564b6d8e3d26a6777d7dc51d554a50441663cb6db856016bbe96144"
+  },
+  "genuine_wholeJar_test": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\genuine70.END.json",
+    "bytes": 380,
+    "sha256": "16e4a7a248dc7a0144977949c44212e4dd51d052e140b416209a5447fd68d2da"
+  },
+  "genuine_JUnit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\genuine-reports70\\TEST-junit-jupiter.xml",
+    "bytes": 34276,
+    "sha256": "46805656075b5fe2cb9ff9ec49a598d9712ea2324ec0ea882ca8b5d08b1ac7cd"
+  },
+  "ENV17_actual_consumer": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\ACTUAL-ENV17-NEWMAIN32-ORIGINS70.json",
+    "bytes": 143160,
+    "sha256": "449e9761838452923e4900fcec55e0e6e0bac064fdc78ab21df58faca4811cbd"
+  },
+  "ENV17_reader_job": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\env70.END.json",
+    "bytes": 382,
+    "sha256": "434614954b2c1d57498dcb69befeec1216e47b52ca2d724caf4682122addfaa2"
+  },
+  "prior_complete_saved_DATA_NoGame_unchanged_algorithm": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-readset-main31\\qualification\\ACTUAL-FIXED-SAVED-READSET59.json",
+    "bytes": 1329,
+    "sha256": "bdf4cf674ffd35dd049d22aeddbeea5b6fdd92570477d8da55fedff0d0b1a82f"
+  },
+  "sole_WAIT18_script_NOT_STARTED": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\first-codex-response18.py",
+    "bytes": 3058,
+    "sha256": "32851b9dff3c523666ce9cdfd221b2f252dee9eadc125116ff5c89967e5c5baa"
+  },
+  "scope": "Only actual publisher implementation closure producer changed, original3 role refs kept and same immutable ordered physical list stored in Products/publisher; samepath conflictingpins reject; differingpath samepayload retained. Generic publisher finite64/unique/material1024/owner/current unchanged. No TEST/wholeSERVICE/Root/WAIT/newday/SAVE/live credit. Old42 JARs exact hash/FileID/mtime preserved. Native54/source31 originals unchanged; R32 current JAR/source/JNA now frozen."
+}
