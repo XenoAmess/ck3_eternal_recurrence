@@ -1,0 +1,172 @@
+{
+  "schema": "ck3-financial-florin-event-fix-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T11:52:14.395841+00:00",
+  "adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\florin-event-boundary-Root-adoption02.actual.json",
+    "bytes": 7737,
+    "sha256": "4cf504b0a211059820ac924a9718b861d3a6b5d5d297619387f7f6056e3880df"
+  },
+  "independent_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\florin-campaign-event-boundary-independent-review02\\REVIEW.actual.json",
+    "bytes": 7932,
+    "sha256": "5ba4293e3e5c1a005ba6f4355221d7ba33604580bd34aff7a10cf7bfd6ca9178"
+  },
+  "source_before": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\florin-event-software-source-before02.actual.json",
+    "bytes": 5045,
+    "sha256": "0fbd25334b79ca720801d7f571d2e8a3c85eb3fe7fdbfb301ed8376d77fb8664"
+  },
+  "source_after": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\florin-event-software-source-after02.actual.json",
+    "bytes": 5313,
+    "sha256": "b60e30b204db8948f82d4b7eb07672560e9b4df97d7fea0fff46e825d37bf994"
+  },
+  "software_groups": [
+    {
+      "name": "TEST-florin-event-options-producer02",
+      "distinct_methods": 17,
+      "operation": {
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-event-options-producer02\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1076,
+          "sha256": "6b5da8c2cddef175864fa6d924181da5b835dc3bd6429481c969158f27533a0d"
+        },
+        "returncode": 0,
+        "started_at_utc": "2026-11-19T11:43:42.793393+00:00",
+        "finished_at_utc": "2026-11-19T11:43:50.152179+00:00",
+        "elapsed_seconds": 7.358795800013468,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-event-options-producer02\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-event-options-producer02\\stderr.log",
+          "bytes": 5836,
+          "sha256": "54facd7049d21d7bba78a1445037aea42456a09a1c0bd712061b44669adf5ee2"
+        }
+      }
+    },
+    {
+      "name": "TEST-florin-event-day-host02",
+      "distinct_methods": 14,
+      "operation": {
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-event-day-host02\\ORIGINAL-WAIT.actual.json",
+          "bytes": 971,
+          "sha256": "2d3b9fb41e2ef9a02135da4fbbbbcac33692da765e2507e47fe2844bb881f675"
+        },
+        "returncode": 0,
+        "started_at_utc": "2026-11-19T11:43:42.794306+00:00",
+        "finished_at_utc": "2026-11-19T11:43:48.136270+00:00",
+        "elapsed_seconds": 5.341977600008249,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-event-day-host02\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-event-day-host02\\stderr.log",
+          "bytes": 4945,
+          "sha256": "137f81e6dc5d682179326110a61d060d67f6154e476df950cbba2840efa17b98"
+        }
+      }
+    },
+    {
+      "name": "TEST-florin-timeline-regression03",
+      "distinct_methods": 11,
+      "operation": {
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-timeline-regression03\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1205,
+          "sha256": "07d10c5dfee5baad9992b67f5ff61e8fc7dadb8c6797e760008648dc0f7f4026"
+        },
+        "returncode": 0,
+        "started_at_utc": "2026-11-19T11:44:42.127686+00:00",
+        "finished_at_utc": "2026-11-19T11:44:51.698037+00:00",
+        "elapsed_seconds": 9.570376799907535,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-timeline-regression03\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-timeline-regression03\\stderr.log",
+          "bytes": 2275,
+          "sha256": "ebffe80f83974971fc34c522e706586502cdd1f121956ba07476572975b95588"
+        }
+      }
+    }
+  ],
+  "distinct_focused_methods": 42,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "critical_seam": {
+    "operation": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-current-sdk-critical-seam-r25-04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1030,
+        "sha256": "6d856342393cf35b75099a44b755b475cae4f23b28b958f982357ab8a40056bb"
+      },
+      "returncode": 0,
+      "started_at_utc": "2026-11-19T11:45:26.464899+00:00",
+      "finished_at_utc": "2026-11-19T11:46:16.576951+00:00",
+      "elapsed_seconds": 50.11205510003492,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-current-sdk-critical-seam-r25-04\\stdout.log",
+        "bytes": 1223,
+        "sha256": "fd8f01c69e383257e53026972b04ee24a9e4ab24e60cba8f0bf00e8191530233"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-current-sdk-critical-seam-r25-04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "observation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\pilgrimage-current-consumers-r25-actual04\\observation.json",
+      "bytes": 6585,
+      "sha256": "e0dfcafbfbba280a8248a06a2c3243bad70798ae5201e500cd72de36c8e6f8c0"
+    },
+    "group_counts": [
+      98,
+      11,
+      6
+    ],
+    "execution_count": 115,
+    "distinct_total_claimed": false,
+    "repeated_activity_methods": 6
+  },
+  "preserved_loader_failure": {
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-timeline-regression02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1077,
+      "sha256": "e2e5e30a97d921547b1a8c5dba7240aaebdb973913f020bdb333012e8d52bdf4"
+    },
+    "returncode": 1,
+    "started_at_utc": "2026-11-19T11:43:42.838727+00:00",
+    "finished_at_utc": "2026-11-19T11:43:43.196033+00:00",
+    "elapsed_seconds": 0.35731220012530684,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-timeline-regression02\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-timeline-regression02\\stderr.log",
+      "bytes": 1205,
+      "sha256": "c5ff07951fb12f2f360db4b34788a2cd72317d22bce9409ea1f3935d9dde1990"
+    }
+  },
+  "source_changes": [
+    "Limited event-options capability requires exact received FlorinFull plus bridge and HELLO support.",
+    "Host uses the existing same-run bounded Date ARM, independent status and unique resume route; generation/status/final event checks remain strict.",
+    "Event early stop does not receive full-day credit; no action, event selection or SAVE replay."
+  ],
+  "actual_live_business_qualified": false,
+  "Native_CPP_rebuilt": false,
+  "whole_product_complete": false,
+  "next_action": "Qualify the exact committed Host/SDK sources using public consumers; continue from the R0024 real baseline SAVE with fresh E2."
+}

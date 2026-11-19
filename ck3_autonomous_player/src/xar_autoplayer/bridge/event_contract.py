@@ -87,6 +87,25 @@ def project_florin_event_options(raw: object, source: FlorinEventSource) -> Flor
             "business_acceptance_credit": False}
 
 
+def florin_event_options_query_supported(snapshot: object, bridge_capabilities: object) -> bool:
+    """Advertise only the limited options route backed by this exact received Full/HELLO."""
+    if (not isinstance(bridge_capabilities, (list, tuple, set, frozenset))
+            or any(type(value) is not str for value in bridge_capabilities)
+            or FLORIN_EVENT_QUERY_CAPABILITY not in bridge_capabilities):
+        return False
+    try:
+        florin_full_source(snapshot, None)
+    except ValueError:
+        return False
+    if not isinstance(snapshot, dict):
+        return False
+    diagnostics = snapshot.get("diagnostics")
+    hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+    advertised = hello.get("capabilities") if isinstance(hello, dict) else None
+    return (isinstance(advertised, list) and all(type(value) is str for value in advertised)
+            and FLORIN_EVENT_QUERY_CAPABILITY in advertised)
+
+
 def is_florin_event_snapshot(snapshot: object) -> bool:
     if not isinstance(snapshot, dict):
         return False

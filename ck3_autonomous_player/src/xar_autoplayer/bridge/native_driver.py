@@ -2335,6 +2335,7 @@ class NativeHeadlessGameplayDriver:
             })
 
     def capabilities(self) -> dict[str, object]:
+        from .event_contract import florin_event_options_query_supported
         result = self.state.capabilities()
         diagnostics = dict(result["diagnostics"])
         transport_error = self._transport_error()
@@ -2986,6 +2987,9 @@ class NativeHeadlessGameplayDriver:
             "current_event_window_context_v1_query_supported": (
                 QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
                 in bridge_capabilities
+            ),
+            "current_event_options_v1210_query_supported": florin_event_options_query_supported(
+                current_snapshot, bridge_capabilities,
             ),
             "active_combat_retreat_v1_composition_supported": (
                 active_retreat_composition_supported

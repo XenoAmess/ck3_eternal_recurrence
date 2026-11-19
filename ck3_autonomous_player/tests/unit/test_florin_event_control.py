@@ -83,6 +83,35 @@ def production_primitive_driver(directory: Path):
 
 class FlorinEventControlTests(unittest.TestCase):
 
+    def test_actual_capability_producer_reports_limited_florin_options_without_full_context(self) -> None:
+        from xar_autoplayer.bridge.event_contract import florin_event_options_query_supported
+        driver = NativeHeadlessGameplayDriver(endpoint=SimpleNamespace(start=lambda *_: None), episode_projection='native_campaign')
+        actual = frame()
+        hello = copy.deepcopy(actual['diagnostics']['hello'])
+        driver.state.ingest(hello)
+        packet = json.loads((FIXTURES / 'full1210/full-snapshot-producer-102.json').read_bytes())
+        driver.state.ingest(packet)
+        caps = driver.capabilities()
+        self.assertIs(caps['current_event_options_v1210_query_supported'], True)
+        self.assertIs(caps['current_event_window_context_v1_query_supported'], False)
+        self.assertNotIn('game.command.query-current-event-window-context-v1', caps['bridge_capabilities'])
+        self.assertTrue(florin_event_options_query_supported(actual, caps['bridge_capabilities']))
+        for changed in ('capability', 'hello_capability', 'sha', 'schema', 'adapter', 'paused', 'full_sha'):
+            candidate = copy.deepcopy(actual); announced = list(caps['bridge_capabilities'])
+            if changed == 'capability': announced.remove('game.query.current-event-options.v1')
+            elif changed == 'hello_capability': candidate['diagnostics']['hello']['capabilities'].remove('game.query.current-event-options.v1')
+            elif changed == 'sha': candidate['diagnostics']['hello']['expected_ck3_sha256'] = '0' * 64
+            elif changed == 'schema': candidate['schema'] = 'ck3_12004_full_state_v1'
+            elif changed == 'adapter': candidate['adapter_id'] = 'ck3-1.20.0.4-msvc-x64'
+            elif changed == 'paused': candidate['paused'] = False
+            else: candidate['executable_sha256'] = '0' * 64
+            with self.subTest(changed=changed):
+                self.assertFalse(florin_event_options_query_supported(candidate, announced))
+        driver.state.ingest({**hello, 'capabilities': ['game.state.snapshot']})
+        driver.state.ingest(packet)
+        self.assertIs(driver.capabilities()['current_event_options_v1210_query_supported'], False)
+
+
     def test_actual_primitive_accepts_hello_family_for_public_and_generic_florin_route(self) -> None:
         for generic in (False, True):
             with self.subTest(generic=generic), tempfile.TemporaryDirectory() as temporary:

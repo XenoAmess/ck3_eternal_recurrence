@@ -2633,6 +2633,11 @@ class PlanClient:
                 _validate_tactical_daily_sentinel_stop)
             if days != 1 or request.wait_for_actor_change:
                 raise ValueError("Florin date-only advance requires one day without an actor transition")
+            event_mode = row.get("allow_event_boundary", False)
+            if type(event_mode) is not bool:
+                raise ValueError("Florin event-boundary observation requires a literal boolean")
+            if event_mode and row.get("allow_actor_change", False) is not False:
+                raise ValueError("Florin bounded event day preserves its original actual player")
             deadline = time.monotonic() + budget
 
             def remaining_florin() -> float:
@@ -2652,6 +2657,30 @@ class PlanClient:
 
             before = await bounded_florin(self.fresh)
             source = florin_full_source(before, None)
+            if event_mode:
+                from xar_autoplayer.bridge.event_contract import florin_event_options_query_supported
+                required = {"ck3_get_capabilities", "ck3_take_snapshot", "ck3_execute_step",
+                            "ck3_query_current_event_window_context_v1"}
+                if not required <= set(self.tools):
+                    raise ValueError("campaign event-boundary advance lacks actual MCP tools")
+                capabilities = await bounded_florin(lambda: self.call("ck3_get_capabilities"))
+                capability_owner = capabilities.get("diagnostics")
+                capability_hello = capability_owner.get("hello") if isinstance(capability_owner, dict) else None
+                primitives = {"pause-map", "resume-map", "set-speed-1"}
+                sentinel_caps = {"game.command.research-arm-tactical-daily-sentinel-v1-N",
+                    "game.command.research-query-tactical-daily-sentinel-v1",
+                    "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N"}
+                if (capabilities.get("snapshot") is not True
+                        or not isinstance(capability_owner, dict) or not isinstance(capability_hello, dict)
+                        or capability_owner.get("bridge_pid") != source.game_pid
+                        or capability_owner.get("connection_generation") != source.connection_generation
+                        or any(capability_hello.get(key) != before["diagnostics"]["hello"].get(key) for key in
+                            ("pid", "expected_ck3_version", "expected_ck3_sha256", "game_adapter_id", "ck3_build_match"))
+                        or not primitives <= set(capabilities.get("action_steps", []))
+                        or capabilities.get("current_event_options_v1210_query_supported") is not True
+                        or not sentinel_caps <= set(capabilities.get("bridge_capabilities", []))
+                        or not florin_event_options_query_supported(before, capabilities.get("bridge_capabilities"))):
+                    raise ValueError("campaign event-boundary advance lacks actual primitives or typed event observer")
             local_player = before.get("local_player_id")
             if type(local_player) is not int or not -(2**31) <= local_player < 2**31 or local_player == -1:
                 raise ValueError("Florin day lacks its actual signed local player ID")
@@ -2712,16 +2741,44 @@ class PlanClient:
             submitted_clock(resumed, "resume-map")
             actions.append({"step": "resume-map", "result": resumed})
             running: dict[str, object] | None = None
+            boundary: dict[str, object] | None = None
+            event_id: int | None = None
             while True:
                 after = await bounded_florin(self.fresh)
                 date = advance_frame_date_v1(after)
-                if after.get("active_event") is not None or after.get("pending_character_interaction") is not None:
+                event = after.get("active_event")
+                if after.get("pending_character_interaction") is not None or (event is not None and not event_mode):
                     raise RuntimeError("an active event interrupted the original Florin day; no control replay")
+                if event_mode:
+                    diagnostics = after.get("diagnostics")
+                    hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+                    player = after.get("played_character")
+                    if (not isinstance(diagnostics, dict) or not isinstance(hello, dict) or not isinstance(player, dict)
+                            or any(after.get(key) != before.get(key) for key in
+                                ("schema", "game_version", "executable_sha256", "adapter_id", "backend", "local_player_id",
+                                 "episode_run_id", "managed_campaign_run_binding"))
+                            or any(hello.get(key) != before["diagnostics"]["hello"].get(key) for key in
+                                ("pid", "expected_ck3_version", "expected_ck3_sha256", "game_adapter_id", "ck3_build_match"))
+                            or diagnostics.get("bridge_pid") != source.game_pid
+                            or diagnostics.get("connection_generation") != source.connection_generation
+                            or player.get("character_id") != source.played_character_id or player.get("alive") is not True
+                            or after.get("map_ready") is not True or after.get("active_wars") != [] or after.get("player_armies") != []
+                            or after.get("speed") != 1):
+                        raise ValueError("Florin event day changed its original complete world/player source")
+                    if event is not None:
+                        if (not isinstance(event, dict) or type(event.get("instance_id")) is not int
+                                or not 1 <= event["instance_id"] <= 2**31 - 1
+                                or event_id is not None and event["instance_id"] != event_id):
+                            raise ValueError("Florin event day lost its actual event instance")
+                        if event_id is None:
+                            event_id, boundary = event["instance_id"], after
+                    elif event_id is not None:
+                        raise ValueError("Florin event day lost its actual event instance")
                 if date < start or date > target or type(after.get("paused")) is not bool:
                     raise RuntimeError("Florin original date boundary regressed or overshot")
                 if after.get("paused") is False:
                     running = after
-                elif date == target:
+                elif date == target or (event_mode and event_id is not None):
                     ending = same_paused_world(after)
                     if (after.get("speed") != 1 or ending.native_revision <= ready_source.native_revision
                             or ending.public_revision < ready_source.public_revision):
@@ -2734,13 +2791,66 @@ class PlanClient:
             if stopped.get("step") != status_step or stopped.get("accepted") is not True or stopped.get("status") != "available":
                 raise RuntimeError("Florin final Date status is unavailable; no day credit")
             stop_status = _normalize_tactical_daily_sentinel_status(stopped.get("tactical_daily_sentinel"))
+            cancellation: dict[str, object] | None = None
+            if event_mode and boundary is not None:
+                if stop_status.get("state") == "armed":
+                    if stop_status != arm_status:
+                        raise RuntimeError("Florin event Date ARM changed before its sole cancellation")
+                    cancel_step = f"research-cancel-tactical-daily-sentinel-v1-generation-{arm_status['generation']}"
+                    cancellation = await bounded_florin(lambda: self.invoke("ck3_execute_step",
+                        {"step": cancel_step, "expected_revision": ending.public_revision}, fresh_revision=False))
+                    if (cancellation.get("step") != cancel_step or cancellation.get("accepted") is not True
+                            or cancellation.get("status") != "available"):
+                        raise RuntimeError("Florin event Date cancel lacks its original typed status")
+                    canceled_status = _normalize_tactical_daily_sentinel_status(cancellation.get("tactical_daily_sentinel"))
+                    if canceled_status != {**arm_status, "state": "idle"}:
+                        raise RuntimeError("Florin event Date cancel did not retain its original idle generation")
+                    stopped = await bounded_florin(lambda: self.invoke("ck3_execute_step",
+                        {"step": status_step, "expected_revision": ending.public_revision}, fresh_revision=False))
+                    if (stopped.get("step") != status_step or stopped.get("accepted") is not True or stopped.get("status") != "available"
+                            or _normalize_tactical_daily_sentinel_status(stopped.get("tactical_daily_sentinel")) != canceled_status):
+                        raise RuntimeError("Florin event Date cancel lacks independent idle confirmation")
+                    stop_status = canceled_status
+                elif ending.date_raw == target:
+                    _validate_tactical_daily_sentinel_stop(stop_status, arm_status=arm_status,
+                        starting_date_raw=start, target_date_raw=target, ending_date_raw=ending.date_raw,
+                        elapsed_days=1, speed=1, mode="terminal_or_sentinel", watch_army_ids=())
+                else:
+                    expected_stop = {**arm_status, "state": "triggered", "last_observed_date_raw": ending.date_raw,
+                        "trigger_date_raw": ending.date_raw, "intermediate_pause_count": 1,
+                        "trigger_flags": 1 << 13, "trigger_reasons": ["native_pause"],
+                        "signed_date_delta_from_target_raw": ending.date_raw - target,
+                        "overshoot_days": 0, "pause_observed": True}
+                    if stop_status != expected_stop:
+                        raise RuntimeError("Florin early event lacks its exact generation-bound native pause")
+                final = await bounded_florin(self.fresh)
+                final_source = same_paused_world(final)
+                final_event = final.get("active_event")
+                if (not isinstance(final_event, dict) or type(final_event.get("instance_id")) is not int
+                        or final_event["instance_id"] != event_id or final_source.date_raw != ending.date_raw
+                        or final_source.native_revision < ending.native_revision):
+                    raise RuntimeError("Florin event boundary changed during Date terminal confirmation")
+                after = final
+                observed = advance_frame_date_v1(boundary)
+                complete = observed == target and stop_status.get("state") == "triggered"
+                return {"before": before, "running_successor": running, "event_boundary": boundary, "after": after,
+                    "requested_days": 1, "target_date_raw": target, "elapsed_hours": after["date_raw"] - start,
+                    "progress_status": "event_before_target" if observed < target else "event_at_target",
+                    "requested_interval_complete": complete, "event_resolution": "typed_query_required", "selected_event_options": 0,
+                    "preflight": {"native_primitives": sorted(primitives), "typed_event_query_supported": True,
+                        "typed_event_query_variant": "florin-current-event-options-v1"},
+                    "florin_date_sentinel": {"arm": arm_status, "stop": stop_status, "cancel": cancellation,
+                        "actions": actions, "physical_save_confirmed": False}}
             _validate_tactical_daily_sentinel_stop(stop_status, arm_status=arm_status,
                 starting_date_raw=start, target_date_raw=target, ending_date_raw=ending.date_raw,
                 elapsed_days=1, speed=1, mode="terminal_or_sentinel", watch_army_ids=())
             return {"before": before, "running_successor": running, "after": after,
                 "requested_days": 1, "elapsed_hours": 24, "requested_interval_complete": True, "event_boundary": None,
                 "florin_date_sentinel": {"arm": arm_status, "stop": stop_status, "actions": actions,
-                    "physical_save_confirmed": False}}
+                    "physical_save_confirmed": False},
+                **({"event_resolution": "none", "selected_event_options": 0,
+                    "preflight": {"native_primitives": sorted(primitives), "typed_event_query_supported": True,
+                        "typed_event_query_variant": "florin-current-event-options-v1"}} if event_mode else {})}
         await self.invoke("ck3_execute_step", {"step": "pause-map"})
         before = await self.wait_snapshot({"paused": True}, self.args.command_timeout)
         await self.set_campaign_speed_one_presubmission_once(before)
@@ -2896,6 +3006,11 @@ class PlanClient:
         if type(step.get("allow_actor_change", False)) is not bool:
             raise ValueError("campaign actor-change observation requires a literal boolean")
         allow_actor_change = step.get("allow_actor_change") is True
+        from xar_autoplayer.bridge.event_contract import is_florin_event_snapshot
+        if is_florin_event_snapshot(self.snapshot):
+            # The exact Florin bounded branch returns before legacy dispatch;
+            # it owns the sole Date ARM/status/permit/resume and original budget.
+            return await self.advance(step)
         budget = step.get("timeout", self.args.command_timeout)
         if type(budget) not in (int, float) or not 0 < budget <= self.args.command_timeout:
             raise ValueError("campaign event-boundary timeout exceeds the original command budget")

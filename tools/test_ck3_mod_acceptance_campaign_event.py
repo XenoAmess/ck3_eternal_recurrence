@@ -204,5 +204,184 @@ class CampaignEventTests(unittest.IsolatedAsyncioTestCase):
             value.binding(campaign_frame(124, paused=True, event={"instance_id": 7}))
 
 
+
+
+class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
+    @classmethod
+    def setUpClass(cls):
+        unit = ROOT / 'ck3_autonomous_player/tests/unit'
+        if str(unit) not in sys.path: sys.path.insert(0, str(unit))
+        tree = ast.parse(HOST.read_text(encoding='utf-8-sig'))
+        client = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'PlanClient')
+        cls.definitions = [n for n in client.body if isinstance(n, ast.AsyncFunctionDef)
+            and n.name in {'advance', 'advance_event_boundary', 'advance_campaign_event_boundary'}]
+
+    def client(self, directory, *, event=None, terminal='triggered', wrong_generation=False, drop_arm=False, missing=None):
+        from test_florin_timeline_control_v1 import ClockDriver, RESOURCES, STATUS
+        from test_florin_event_control import frame as actual_cpp_full, FIXTURES
+        from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+        class Transport(ClockDriver):
+            def __init__(self):
+                super().__init__(directory)
+                self.command_timeout_seconds = 5
+                self.snapshot.update(speed=1, active_event=None, pending_character_interaction=None, episode_projection='native_campaign')
+                self.resumed = False; self.canceled = False
+                self.snapshot['diagnostics'].update(bridge_pid=42, connection_generation=3)
+                self.snapshot['diagnostics']['hello'].update(pid=42, connection_generation=3)
+                self.snapshot['diagnostics']['hello']['capabilities'] = [
+                    'game.state.snapshot', 'game.query.current-event-options.v1', 'game.command.full-snapshot-clock-control.v1',
+                    'game.command.pause-map', 'game.command.resume-map', 'game.command.set-speed-1',
+                    'game.command.research-arm-tactical-daily-sentinel-v1-N',
+                    'game.command.research-query-tactical-daily-sentinel-v1',
+                    'game.command.research-cancel-tactical-daily-sentinel-v1-generation-N']
+                producer = NativeHeadlessGameplayDriver(endpoint=SimpleNamespace(start=lambda *_: None), episode_projection='native_campaign')
+                hello = copy.deepcopy(actual_cpp_full()['diagnostics']['hello'])
+                hello['capabilities'] = list(self.snapshot['diagnostics']['hello']['capabilities'])
+                producer.state.ingest(hello)
+                producer.state.ingest(json.loads((FIXTURES / 'full1210/full-snapshot-producer-102.json').read_bytes()))
+                self.actual_caps = producer.capabilities()
+
+            def capabilities(self): return copy.deepcopy(self.actual_caps)
+
+            def status(self):
+                row = json.loads((RESOURCES / 'date-arm1210/armed-generation1.json').read_text())
+                status = row['result']['tactical_daily_sentinel']; status['speed'] = 1
+                if wrong_generation and not self.resumed: status['generation'] = 2
+                if self.resumed:
+                    ending = 24012 if event is not None else 24024
+                    if self.canceled: status['state'] = 'idle'
+                    elif event is None or terminal == 'triggered':
+                        status.update(state='triggered', last_observed_date_raw=ending, trigger_date_raw=ending,
+                            completed_daily_ticks=0 if event is not None else 1, overshoot_days=0, pause_observed=True,
+                            intermediate_pause_count=1 if event is not None else 0,
+                            trigger_flags=(1 << 13) if event is not None else 1,
+                            trigger_reasons=['native_pause'] if event is not None else ['date_deadline'],
+                            signed_date_delta_from_target_raw=ending-24024, pause_wrapper_called=event is None)
+                return status
+
+            def wait_for_command_result(self, request_id, timeout):
+                step = self.sent[-1]['step']
+                if step.startswith('research-arm-'):
+                    row = json.loads((RESOURCES / 'date-arm1210/armed-generation1.json').read_text())
+                    row['result']['tactical_daily_sentinel']['speed'] = 1
+                elif step == STATUS or step.startswith('research-cancel-'):
+                    if step.startswith('research-cancel-'): self.canceled = True
+                    row = {'type':'command_result','protocol_version':1,'request_id':request_id,'ok':True,
+                        'result':{'step':step,'accepted':True,'status':'available','tactical_daily_sentinel':self.status()}}
+                else:
+                    row = json.loads((RESOURCES / 'newnative/full-clock1210/full-clock-ack-submitted01.json').read_text())
+                    if step == 'resume-map': self.resumed = True
+                row['request_id'] = request_id; row['result']['step'] = step
+                return row
+
+        driver = Transport()
+        if missing == 'query': driver.actual_caps['bridge_capabilities'].remove('game.query.current-event-options.v1')
+        elif missing == 'flag': driver.actual_caps['current_event_options_v1210_query_supported'] = False
+        elif missing == 'flag_int': driver.actual_caps['current_event_options_v1210_query_supported'] = 1
+        elif missing in ('pause-map', 'resume-map', 'set-speed-1'): driver.actual_caps['action_steps'].remove(missing)
+        elif missing == 'cancel': driver.actual_caps['bridge_capabilities'].remove('game.command.research-cancel-tactical-daily-sentinel-v1-generation-N')
+        elif missing == 'cap_pid': driver.actual_caps['diagnostics']['bridge_pid'] = 43
+        elif missing == 'cap_generation': driver.actual_caps['diagnostics']['connection_generation'] = 4
+        elif missing == 'sha': driver.snapshot['diagnostics']['hello']['expected_ck3_sha256'] = '0'*64
+        class Client:
+            def __init__(self):
+                self.args = SimpleNamespace(command_timeout=5, poll_interval=0)
+                self.tools = {name:{} for name in ('ck3_get_capabilities','ck3_take_snapshot','ck3_execute_step','ck3_query_current_event_window_context_v1')}
+                self.report = {}; self.snapshot = driver.take_snapshot(); self.episode_identity = None
+                self.managed_done = threading.Event(); self.driver = driver
+
+            async def fresh(self):
+                if driver.resumed:
+                    driver.snapshot.update(date_raw=24012 if event is not None else 24024,
+                        revision=73, native_revision=12, snapshot_id='native:12', active_event=copy.deepcopy(event), paused=True)
+                self.snapshot = driver.take_snapshot()
+                return self.snapshot
+
+            async def call(self, name): return driver.capabilities()
+
+            async def invoke(self, name, arguments, *, fresh_revision=True):
+                step = arguments['step']
+                if drop_arm and step.startswith('research-arm-'):
+                    # Deliberate inert transport that reports an ARM without
+                    # invoking the real primitive must NOT grant resume.
+                    return {'step':step,'accepted':True,'status':'available','tactical_daily_sentinel':driver.status()}
+                required = ('game.command.research-arm-tactical-daily-sentinel-v1-N' if step.startswith('research-arm-') else
+                    'game.command.research-cancel-tactical-daily-sentinel-v1-generation-N' if step.startswith('research-cancel-') else None)
+                return driver._execute_primitive_step(step, expected_revision=arguments.get('expected_revision'),
+                    required_capability=required, internal_semantic_snapshot=True)
+
+        value = Client()
+        namespace = {'asyncio':asyncio, 'time':__import__('time')}
+        exec(compile(ast.fix_missing_locations(ast.Module(body=self.definitions, type_ignores=[])), str(HOST), 'exec'), namespace)
+        for name in ('advance','advance_event_boundary','advance_campaign_event_boundary'):
+            setattr(value, name, lambda *args,_name=name,**kwargs: namespace[_name](value,*args,**kwargs))
+        return value
+
+    @staticmethod
+    def step(): return {'days':1,'timeout':5,'allow_event_boundary':True}
+
+    async def test_actual_sdk_arm_status_permit_resume_and_completed_day_are_used(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp))
+            result = await value.advance_event_boundary(self.step())
+            steps = [row['step'] for row in value.driver.sent]
+            self.assertEqual(steps, ['research-arm-tactical-daily-sentinel-v1-24000-to-24024-speed-1-mode-terminal-a-0',
+                'research-query-tactical-daily-sentinel-v1','resume-map','research-query-tactical-daily-sentinel-v1'])
+            self.assertTrue(result['requested_interval_complete']); self.assertEqual(result['elapsed_hours'],24)
+            self.assertEqual(result['selected_event_options'],0)
+            self.assertIsNone(value.driver._florin_date_arm_ready_v1)
+            self.assertFalse(result['florin_date_sentinel']['physical_save_confirmed'])
+
+    async def test_early_actual_event_preserved_and_generation_cancel_has_independent_idle_read(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp), event={'instance_id':42}, terminal='armed')
+            result = await value.advance_event_boundary(self.step())
+            self.assertFalse(result['requested_interval_complete']); self.assertEqual(result['elapsed_hours'],12)
+            self.assertEqual(result['after']['active_event'], {'instance_id':42})
+            self.assertEqual(result['event_resolution'],'typed_query_required'); self.assertEqual(result['selected_event_options'],0)
+            steps = [row['step'] for row in value.driver.sent]
+            self.assertEqual(steps.count('resume-map'),1)
+            self.assertEqual(steps[-2:], ['research-cancel-tactical-daily-sentinel-v1-generation-1','research-query-tactical-daily-sentinel-v1'])
+            self.assertEqual(result['florin_date_sentinel']['stop']['state'],'idle')
+
+    async def test_early_native_pause_terminal_is_not_canceled_or_credited_as_a_day(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp), event={'instance_id':42})
+            result = await value.advance_event_boundary(self.step())
+            self.assertFalse(result['requested_interval_complete']); self.assertEqual(result['elapsed_hours'],12)
+            self.assertIsNone(result['florin_date_sentinel']['cancel'])
+            self.assertFalse(any(row['step'].startswith('research-cancel-') for row in value.driver.sent))
+
+    async def test_missing_actual_capabilities_or_exact_source_refuses_before_any_clock_send(self):
+        import tempfile
+        for missing in ('query','flag','flag_int','pause-map','resume-map','set-speed-1','cancel','sha','cap_pid','cap_generation'):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as temp:
+                value = self.client(Path(temp), missing=missing)
+                with self.assertRaises(ValueError): await value.advance_event_boundary(self.step())
+                self.assertEqual(value.driver.sent,[])
+
+    async def test_forged_host_arm_ack_does_not_create_actual_sdk_resume_permission(self):
+        import tempfile
+        from xar_autoplayer.bridge.driver import BridgeUnavailableError
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp), drop_arm=True)
+            with self.assertRaisesRegex(BridgeUnavailableError, 'qualified bounded Date ARM'):
+                await value.advance_event_boundary(self.step())
+            self.assertEqual(value.driver.sent,[])
+
+    async def test_generation_drift_rejects_before_resume_and_preserves_original_arm(self):
+        import tempfile
+        from xar_autoplayer.bridge.driver import BridgeUnavailableError
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp), wrong_generation=True)
+            with self.assertRaisesRegex(BridgeUnavailableError, 'independent Date status differs'):
+                await value.advance_event_boundary(self.step())
+            self.assertEqual([row['step'] for row in value.driver.sent],
+                ['research-arm-tactical-daily-sentinel-v1-24000-to-24024-speed-1-mode-terminal-a-0','research-query-tactical-daily-sentinel-v1'])
+
+
 if __name__ == "__main__":
     unittest.main()
