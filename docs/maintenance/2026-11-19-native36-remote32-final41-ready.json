@@ -1,0 +1,192 @@
+{
+  "schema": "xar.native36-remote32.final-delivery41/v1",
+  "qualification": "PASS_FIVE_FINITE_NOGAME_PROGRAMS_PLUS_TWO_COMPILE_ONLY_INTERFACES",
+  "publication_overlay": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\PUBLICATION-OVERLAY41.json",
+    "bytes": 21205,
+    "sha256": "8a0511a3362afd34abcc0a092037c8a685802acff3443194af94d5f7da5d256b"
+  },
+  "source_resolution": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\SOURCE-RESOLUTION41-FINAL.json",
+    "bytes": 22228,
+    "sha256": "fa976b5016b239a2567cadfee10064c89472465e7432ae9851f465c48845f82b"
+  },
+  "final_qualification": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\NATIVE36-REMOTE32-MERGED-SOFTWARE-FINAL41.json",
+    "bytes": 2107,
+    "sha256": "f31bcc711dad49ee26f2f40d2b75fb457ae799b0e0f0e2983656ea5d1463063d"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\VALIDATION-INPUTS41-FINAL.json",
+    "bytes": 420221,
+    "sha256": "c2ef81f7ebf2fc994391625fcffe61a101d27043c68e51b19171caddaaf91c3c"
+  },
+  "current_qualified_programs": [
+    {
+      "program": "xar_ck3_1210_resource_precore_counterexample.exe",
+      "qualified_actual": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\ACTUAL-OWNER-ORDER41-04.json",
+        "bytes": 1536,
+        "sha256": "c046e70ec6954ed5904e501f0d8a313d1d9061bd2cccbe1910aa44e1dd271946"
+      },
+      "original_execution_file_current": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\qual-build\\xar_ck3_1210_resource_precore_counterexample.exe",
+        "bytes": 128512,
+        "sha256": "2499b42c3e5f8108b4ff7247ed3efdac48f73e0d3ee6279b406681956b978962"
+      },
+      "retained_same_raw_file": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\retained-programs\\xar_ck3_1210_resource_precore_counterexample.exe",
+        "bytes": 128512,
+        "sha256": "2499b42c3e5f8108b4ff7247ed3efdac48f73e0d3ee6279b406681956b978962"
+      },
+      "qualification_phase": "04_final_affected_program"
+    },
+    {
+      "program": "xar_ck3_1210_hotfix26757580_basic_test.exe",
+      "qualified_actual": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\ACTUAL-MERGE41-03.json",
+        "bytes": 5510,
+        "sha256": "245cd39723657062cc236922f1eed3aab10a9ab5fd2849edffb8ee4cf6c8731e"
+      },
+      "original_execution_file_current": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\qual-build\\xar_ck3_1210_hotfix26757580_basic_test.exe",
+        "bytes": 205312,
+        "sha256": "d1c4ade558e974c0d0e1448a02b2d885745a6094a338e340403a4e1a2617e39b"
+      },
+      "retained_same_raw_file": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\retained-programs\\xar_ck3_1210_hotfix26757580_basic_test.exe",
+        "bytes": 205312,
+        "sha256": "d1c4ade558e974c0d0e1448a02b2d885745a6094a338e340403a4e1a2617e39b"
+      },
+      "qualification_phase": "03_unaffected_exact_program"
+    },
+    {
+      "program": "xar_ck3_1210_ingame_ready_test.exe",
+      "qualified_actual": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\ACTUAL-MERGE41-03.json",
+        "bytes": 5510,
+        "sha256": "245cd39723657062cc236922f1eed3aab10a9ab5fd2849edffb8ee4cf6c8731e"
+      },
+      "original_execution_file_current": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\qual-build\\xar_ck3_1210_ingame_ready_test.exe",
+        "bytes": 102400,
+        "sha256": "2c2a9b836252d9417abefc892fa6de4abe0b85e1db6d2d34aa3c9faef55f13da"
+      },
+      "retained_same_raw_file": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\retained-programs\\xar_ck3_1210_ingame_ready_test.exe",
+        "bytes": 102400,
+        "sha256": "2c2a9b836252d9417abefc892fa6de4abe0b85e1db6d2d34aa3c9faef55f13da"
+      },
+      "qualification_phase": "03_unaffected_exact_program"
+    },
+    {
+      "program": "xar_ck3_1210_full_clock_request_test.exe",
+      "qualified_actual": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\ACTUAL-MERGE41-03.json",
+        "bytes": 5510,
+        "sha256": "245cd39723657062cc236922f1eed3aab10a9ab5fd2849edffb8ee4cf6c8731e"
+      },
+      "original_execution_file_current": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\qual-build\\xar_ck3_1210_full_clock_request_test.exe",
+        "bytes": 67584,
+        "sha256": "814225c7f64739f94269adbe099cf9a462858389b1e7e987abec216d02787581"
+      },
+      "retained_same_raw_file": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\retained-programs\\xar_ck3_1210_full_clock_request_test.exe",
+        "bytes": 67584,
+        "sha256": "814225c7f64739f94269adbe099cf9a462858389b1e7e987abec216d02787581"
+      },
+      "qualification_phase": "03_unaffected_exact_program"
+    },
+    {
+      "program": "xar_ck3_1210_event_option_control_test.exe",
+      "qualified_actual": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\ACTUAL-MERGE41-03.json",
+        "bytes": 5510,
+        "sha256": "245cd39723657062cc236922f1eed3aab10a9ab5fd2849edffb8ee4cf6c8731e"
+      },
+      "original_execution_file_current": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\qual-build\\xar_ck3_1210_event_option_control_test.exe",
+        "bytes": 83968,
+        "sha256": "cd548c7f4f1088423be65ccbf1e47aa3f6c9645ab0cb3e7387c7064cd964e4f6"
+      },
+      "retained_same_raw_file": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\retained-programs\\xar_ck3_1210_event_option_control_test.exe",
+        "bytes": 83968,
+        "sha256": "cd548c7f4f1088423be65ccbf1e47aa3f6c9645ab0cb3e7387c7064cd964e4f6"
+      },
+      "qualification_phase": "03_unaffected_exact_program"
+    }
+  ],
+  "current_compile_only_objects": [
+    {
+      "target": "merged_adapter_prod41",
+      "original_current_object": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\qual-build\\CMakeFiles\\merged_adapter_prod41.dir\\fixtures\\merged_adapter_prod41.cpp.obj",
+        "bytes": 3331286,
+        "sha256": "44d1144fe80b54ade494350c9927d08535278e83e1b2be9b139c7f19feb82577"
+      },
+      "retained_same_raw_object": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\retained-objects\\merged_adapter_prod41.obj",
+        "bytes": 3331286,
+        "sha256": "44d1144fe80b54ade494350c9927d08535278e83e1b2be9b139c7f19feb82577"
+      },
+      "scope": "compile only; no DLL/link/live credit"
+    },
+    {
+      "target": "merged_worker_prod41",
+      "original_current_object": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\qual-build\\CMakeFiles\\merged_worker_prod41.dir\\src\\ck3_12002_semantic_adapter.cpp.obj",
+        "bytes": 4018009,
+        "sha256": "c3603fde0a82ea422af321722a64d58b72356af6180e49f2a625585f802b854c"
+      },
+      "retained_same_raw_object": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\retained-objects\\merged_worker_prod41.obj",
+        "bytes": 4018009,
+        "sha256": "c3603fde0a82ea422af321722a64d58b72356af6180e49f2a625585f802b854c"
+      },
+      "scope": "compile only; no DLL/link/live credit"
+    }
+  ],
+  "four_new_actual_formatter_outputs_all_raw_equal_to_frozen36": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\ACTUAL-FORMATTER-OUTPUTS41.json",
+    "bytes": 2701,
+    "sha256": "662c2d243cc68c370a97812c8a9450f28ac96f4046da941bbe6753e2d50009ff"
+  },
+  "historical_binary_not_held": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\HISTORICAL-BINARY-NOT-HELD41.json",
+    "bytes": 1335,
+    "sha256": "ca6cb136bf9e3130607504d29da5e3f0481a120014e9f66c2281454ad662d6aa"
+  },
+  "retained_actual_failures": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\ACTUAL-MERGE41-01.json",
+      "bytes": 2026,
+      "sha256": "360fbbf5ec363ef11fd4d74587e882397846b52b5db084686e858f93a71e16e9"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\ACTUAL-MERGE41-02.json",
+      "bytes": 2027,
+      "sha256": "c4fbb1d4b34ca9e02f5bfd9e8063c40cd7e74a593b364c78dca3c80f95282660"
+    }
+  ],
+  "actual03_unaffected_programs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\ACTUAL-MERGE41-03.json",
+    "bytes": 5510,
+    "sha256": "245cd39723657062cc236922f1eed3aab10a9ab5fd2849edffb8ee4cf6c8731e"
+  },
+  "actual04_affected_program": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-hotfix-merge41\\final\\ACTUAL-OWNER-ORDER41-04.json",
+    "bytes": 1536,
+    "sha256": "c046e70ec6954ed5904e501f0d8a313d1d9061bd2cccbe1910aa44e1dd271946"
+  },
+  "current_36_source_DLL_Cash40_guards_exact": true,
+  "no_new_DLL_or_live_qualification": true,
+  "scope_limits": [
+    "Old2F2B GUI/Event/IngameReady remain exact old profile only",
+    "BB3 keeps basic36 empty Full/Core/clock/exit; never fills old lifecycle witness",
+    "No Cash40 or later static source package included",
+    "Source/metadata overage, two scaffold REDs, historical helper-binary loss remain explicit",
+    "No whole matrix/DLL rebuild, process/window/SDK/Game/Steam/install/SAVE mutation"
+  ]
+}

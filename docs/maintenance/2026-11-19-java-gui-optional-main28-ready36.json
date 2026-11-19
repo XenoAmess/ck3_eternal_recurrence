@@ -1,0 +1,76 @@
+{
+  "schema": "ck3.migration.normal-main28-gui-optional-env12-runtime-ready/v1",
+  "normal_main_package": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\maven-package35.END.json",
+    "bytes": 907,
+    "sha256": "f1d8acb363b91d48e5531253cb087ce5aa57ec7742eed676af61bbf776b226ad"
+  },
+  "quarkus_TEST_workspace_prior_failures_retained": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\maven-package33.END.json",
+      "bytes": 907,
+      "sha256": "72bf650175d22a402ba35a6641a503223300f2c7340759af711d1895c3c8218d"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\maven-package34.END.json",
+      "bytes": 908,
+      "sha256": "bb01cc19041b4586efdd096c9849afdad5e35aba3409e5d31c2dd179d58972ea"
+    }
+  ],
+  "derived_MAIN_only_POM_no_TEST_codegen": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-incident-carrier-main27\\qualification\\gui-source32\\local-service-pom35.xml",
+    "bytes": 8723,
+    "sha256": "786939cfa6b73ef7e27df571973eff3f19d462bad27d327ad8c26a75f86e4054"
+  },
+  "actual33MAIN_and157CP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\MAIN28-FROZEN-RUNTIME-ARCHIVES34.json",
+    "bytes": 74123,
+    "sha256": "2453c51e0165498c12d2727b6c7e24a78e71fb22cb6f9026317f6b56302b1073"
+  },
+  "actual_current_JAR": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-gui-optional-main28/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9612912,
+    "sha256": "13a0672629521add7148a8b80f9ca7ec997d78dbf05bcd0f37add3ac96cecfad"
+  },
+  "runtime_prefixes": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\NORMAL-MAIN28-ENTRY-PREFIXES34.json",
+    "bytes": 1492,
+    "sha256": "3f82fa397f20f32ca372a82b38bd0f458a2fc6e023eeb4da0539467bcf85f85d"
+  },
+  "actual_sameplan_caller": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\ACTUAL-CALLER28-INPUTS36.json",
+    "bytes": 758,
+    "sha256": "711eed9639d4779fd4361b43984729b970be26bbddb05c2b093d1e402d8eac19"
+  },
+  "pure3_nogame": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-incident-carrier-main27\\qualification\\gui-source32\\GUI-OPTIONAL-CAMERA-3-NOGAME-READY32.json",
+    "bytes": 1759,
+    "sha256": "6944c511ea6ee0b197f7804c1886bd7cfd28b769b96c3803001f3f25d5116347"
+  },
+  "genuine_positive1": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\genuine-camera35.END.json",
+    "bytes": 397,
+    "sha256": "e8d89d4dc6988a13136f35e483facefb9b25b7aa86e01f572b905a508eabb262"
+  },
+  "genuine_junit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\genuine-camera-reports35\\TEST-junit-jupiter.xml",
+    "bytes": 34150,
+    "sha256": "ac4f7d5d816ff8712e1a79828d6d216c8aac8ab98bccccd8e997e1c1723dffa1"
+  },
+  "actual_ENV12_413origins": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\ACTUAL-ENV12-NEWMAIN28-ORIGINS35.json",
+    "bytes": 143010,
+    "sha256": "2dce47ab8835e48395084b00eca388f527d9b802c33d02cf50630b3a01b3877e"
+  },
+  "ENV12_consumer": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\env12-origins35.END.json",
+    "bytes": 391,
+    "sha256": "25917a44ecf6cb14c52ea53e98b10464fd4ff71749c79066f075c3f23f9db747"
+  },
+  "source13_response_script_NOT_STARTED": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\first-codex-response13.py",
+    "bytes": 3020,
+    "sha256": "9c669c4d0cf7c523b8edc3e305d833d71ee97d3d726603925f0b379fe74b459b"
+  },
+  "scope": "GUI observer optional only: unreviewed bb3 has no NativeCameraObserver factory call; unchanged old .4 exact guard/failure kept. Current33 genuine MAIN/413 origins/ENV public reader only; no TEST/wholeSERVICE/Root/WAIT/GUI dispatch or real camera authority. Old36 JAR denyWRITE_DELETE/hash/ID/mtime unchanged."
+}

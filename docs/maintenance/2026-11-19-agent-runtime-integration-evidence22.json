@@ -1,0 +1,190 @@
+{
+  "schema": "ck3.agent.runtime-integration-evidence22/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "cut_utc": "2026-11-18T23:54:00Z",
+  "target": {
+    "ck3": "1.21.0",
+    "steam_build": 26757580,
+    "exe_sha256": "bb3fef106240e95ecdb6f1532982e89e9432c92a99d33db623521572f06e6f79"
+  },
+  "software": [
+    {
+      "ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/NORMAL-MAIN25-SAVED-ENV09-RUNTIME-READY19.json",
+        "bytes": 3330,
+        "sha256": "038d8f116b9b4cf1873596142e4c365c9b4a3117749cc259c159230e275d03f4"
+      },
+      "actual_main_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/maven-package17.END.json",
+        "bytes": 897,
+        "sha256": "878421f6eb1ebc10183b4b7c73947daf848042a0449351b2aa82d2632b3a0ae7"
+      },
+      "actual_main_seconds": 73.36529350001365,
+      "distinct_source_nogame_methods": 3,
+      "scope": "MAIN + dedicated genuine/current ENV consumer only; no TEST/wholeSERVICE/liveRoot"
+    },
+    {
+      "ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/qualification/NORMAL-MAIN26-PRISON-ENV10-RUNTIME-READY25.json",
+        "bytes": 2953,
+        "sha256": "d93c88ee149170dde0650286c6f52a5a4138ea5ee775373d9abd22dca73a3753"
+      },
+      "actual_main_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/qualification/maven-package22.END.json",
+        "bytes": 909,
+        "sha256": "6f0b7e485ee5aa793a1777f5406789f77c1d4d99785776735eb8b0399d8df4c7"
+      },
+      "actual_main_seconds": 53.24130530003458,
+      "distinct_source_nogame_methods": 4,
+      "scope": "MAIN + dedicated genuine/current ENV consumer only; no TEST/wholeSERVICE/liveRoot"
+    },
+    {
+      "ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/qualification/NORMAL-MAIN27-INCIDENT-ENV11-RUNTIME-READY31.json",
+        "bytes": 3216,
+        "sha256": "4445d5d1994da6605af5c22a4008427e38db0a73bccfaa8a665294393c196182"
+      },
+      "actual_main_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/qualification/maven-package28.END.json",
+        "bytes": 911,
+        "sha256": "04014ddaa390011688732a06ae540e830695ce365dae79860d17a765c55496bc"
+      },
+      "actual_main_seconds": 50.42314780014567,
+      "distinct_source_nogame_methods": 5,
+      "scope": "MAIN + dedicated genuine/current ENV consumer only; no TEST/wholeSERVICE/liveRoot"
+    },
+    {
+      "ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-gui-optional-main28/qualification/NORMAL-MAIN28-GUI-ENV12-RUNTIME-READY36.json",
+        "bytes": 4336,
+        "sha256": "15a67c4a16c7aaac49aeef632144bb3d0fa00122b8206143d02ffede60ed8796"
+      },
+      "actual_main_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-gui-optional-main28/qualification/maven-package35.END.json",
+        "bytes": 907,
+        "sha256": "f1d8acb363b91d48e5531253cb087ce5aa57ec7742eed676af61bbf776b226ad"
+      },
+      "actual_main_seconds": 32.18120920006186,
+      "distinct_source_nogame_methods": 3,
+      "scope": "MAIN + dedicated genuine/current ENV consumer only; no TEST/wholeSERVICE/liveRoot"
+    },
+    {
+      "ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-grant-closure-main29/qualification/NORMAL-MAIN29-GRANT-ENV13-RUNTIME-READY45.json",
+        "bytes": 3494,
+        "sha256": "daf0ca26fb9a19e2e4d971b0346f2e4111a2d916c5f728906183bdf096855f31"
+      },
+      "actual_main_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-grant-closure-main29/qualification/maven-package40.END.json",
+        "bytes": 908,
+        "sha256": "33423e93f7af0b00ff99ffdac0b717f002faf318f69ebfe46e82afb4f4022fa7"
+      },
+      "actual_main_seconds": 53.02236850000918,
+      "distinct_source_nogame_methods": 3,
+      "scope": "MAIN + dedicated genuine/current ENV consumer only; no TEST/wholeSERVICE/liveRoot"
+    }
+  ],
+  "actual_scenes": [
+    {
+      "scene": 10,
+      "final": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE10-FULLP-LOADED-CUSTODY-P-INSTALL-PRISON-SOURCE-RED-NATURAL0-FINAL01.json",
+        "bytes": 3822,
+        "sha256": "e878ae8bc8d158ec7f2922ebfc2c2e77642aa128242905ae1b07a9205cff4f87"
+      },
+      "Main_exit": 1,
+      "GSV_exit": 0,
+      "Job_active": 0,
+      "new_days": 0,
+      "SAVE_calls": 0,
+      "Root_Driver_OODA_WAIT": "NOT_HELD"
+    },
+    {
+      "scene": 11,
+      "final": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE11-FULLP-PRISON-PASSED-INCIDENT-METADATA-RED-NATURAL0-FINAL01.json",
+        "bytes": 4197,
+        "sha256": "18ab2a922ecc08846a7f5cba7a1722d0acd59ec86718f91222f0c269433a1fb6"
+      },
+      "Main_exit": 1,
+      "GSV_exit": 0,
+      "Job_active": 0,
+      "new_days": 0,
+      "SAVE_calls": 0,
+      "Root_Driver_OODA_WAIT": "NOT_HELD"
+    },
+    {
+      "scene": 12,
+      "final": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE12-FULLP-INCIDENT-PASSED-CAMERA-CTOR-RED-NATURAL0-FINAL01.json",
+        "bytes": 4252,
+        "sha256": "433bb8990a959d477635a6c426328c42c1e20a13008a3a23af351eb3a08923ca"
+      },
+      "Main_exit": 1,
+      "GSV_exit": 0,
+      "Job_active": 0,
+      "new_days": 0,
+      "SAVE_calls": 0,
+      "Root_Driver_OODA_WAIT": "NOT_HELD"
+    },
+    {
+      "scene": 13,
+      "final": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE13-FULLP-GUI-PASSED-GRANT-SCOPE-RED-NATURAL0-FINAL01.json",
+        "bytes": 4313,
+        "sha256": "bc5369703558b547d68666270bbf50fd15e4d5a6b5f582e7f7f0bb0869b7c391"
+      },
+      "Main_exit": 1,
+      "GSV_exit": 0,
+      "Job_active": 0,
+      "new_days": 0,
+      "SAVE_calls": 0,
+      "Root_Driver_OODA_WAIT": "NOT_HELD"
+    },
+    {
+      "scene": 14,
+      "final": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE14-FULLP-GRANT-PASSED-FRONTEND-LEASE-RED-NATURAL0-FINAL01.json",
+        "bytes": 3783,
+        "sha256": "6d575c3639e4c2a49cf4c42586f26e7c5873dd4b69d45747eae8173db7acaf21"
+      },
+      "Main_exit": 1,
+      "GSV_exit": 0,
+      "Job_active": 0,
+      "new_days": 0,
+      "SAVE_calls": 0,
+      "Root_Driver_OODA_WAIT": "NOT_HELD"
+    }
+  ],
+  "source14_silent_comparator_erratum": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE14-SILENT-FOREGROUND-SAME-SCENE-COMPARATOR-ERRATUM02.json",
+    "bytes": 1852,
+    "sha256": "40efe4389baa862a20d787e2f50da1674b6630375dda17a4d685d4c3256d0097"
+  },
+  "native41_final": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/native-hotfix-merge41/final/NATIVE36-REMOTE32-MERGED-SOFTWARE-FINAL41.json",
+    "bytes": 2107,
+    "sha256": "f31bcc711dad49ee26f2f40d2b75fb457ae799b0e0f0e2983656ea5d1463063d"
+  },
+  "native41_scope": "5 necessary NoGame programs + 2 objects; affected04 delta plus4 unchanged03 executables; historical03 Resource binary not held; no DLL/live qualification",
+  "remaining": "Source14 actual frontend callbackTTL 60s exceeds30s; minimal role-specific Java repair pending; no decision request or new days/SAVE",
+  "source14_role_input_from_java_owner": {
+    "freshness_ms": 60000,
+    "heartbeat_maximum_age_ms": 60000,
+    "frontend_callback_maximum_ms": 30000
+  },
+  "old_pair_head2003_UNKNOWN_preserved": true,
+  "excluded": [
+    "active owner/HELLO",
+    "endpoint/config",
+    "profile/settings payloads",
+    "secrets",
+    "production source",
+    "formal Git index"
+  ],
+  "resource_registration": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC22-128K-FINITE-METADATA-REGISTRATION112.json",
+    "bytes": 866,
+    "sha256": "0fcba467476f411835cc2f26f3d5d9bc7871249fb0f4f5d1e90680b33f56155c"
+  }
+}

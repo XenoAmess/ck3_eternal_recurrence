@@ -57,7 +57,24 @@ public final class NativeSemanticNormalizer {
     private static boolean florinState(ObjectNode raw) {
         JsonNode marker=raw.get("schema");
         if(marker!=null&&marker.isTextual()&&FLORIN_SCHEMA.equals(marker.textValue())) {
-            NativePlayedCharacter.requireFlorinIdentity(raw,FLORIN_SCHEMA);return true;
+            NativePlayedCharacter.requireFlorinIdentity(raw,FLORIN_SCHEMA);
+            JsonNode played=raw.get("played_character");
+            if(played!=null&&!played.isNull()) {
+                NativePlayedCharacter.requireFlorinIdentity(played,NativePlayedCharacter.FLORIN_SCHEMA);
+                for(String field:java.util.List.of("game_version","adapter_id","backend"))
+                    StrictJson.require(raw.path(field).textValue().equals(played.path(field).textValue()),"Florin actor/root profile mismatch");
+                StrictJson.require(raw.path("executable_sha256").textValue().equalsIgnoreCase(played.path("executable_sha256").textValue()),
+                        "Florin actor/root executable mismatch");
+            }
+            if(org.xar.ck3.control.contracts.ExactCk3Build.CK3_1210_STEAM_26757580.matches(
+                    raw.path("game_version").textValue(),raw.path("executable_sha256").textValue())) {
+                StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
+                        "hotfix initial Full profile requires an explicit null active_event");
+                for(String field:java.util.List.of("active_wars","player_armies"))
+                    StrictJson.require(raw.path(field).isArray()&&raw.path(field).isEmpty(),
+                            "hotfix initial Full profile requires explicit empty "+field);
+            }
+            return true;
         }
         // Historical unknown root metadata remains transparent. A Florin actor cannot escape its explicit root branch.
         JsonNode actor=raw.path("played_character"),actorMarker=actor.path("schema");

@@ -65,7 +65,8 @@ public final class RootFrontendRuntime {
                 int retainedFrames,int retainedOrigins,String authorityId) {
             Objects.requireNonNull(initialPolicy);
             StrictJson.require(initialPolicy.kind()==InitialEpisodePolicy.Lifecycle.ROGUE_ONE_LIFE
-                    ||initialPolicy.kind()==InitialEpisodePolicy.Lifecycle.ORDINARY_CAMPAIGN_SUCCESSION,"ordinary frontend requires an explicit business lifecycle");
+                    ||initialPolicy.kind()==InitialEpisodePolicy.Lifecycle.ORDINARY_CAMPAIGN_SUCCESSION
+                    ||initialPolicy.kind()==InitialEpisodePolicy.Lifecycle.NATIVE_CAMPAIGN_SAVED,"ordinary frontend requires an explicit business or Saved lifecycle");
             return new Sources(exactBuild,originalNativeDriver,rulesEffects,rulesDecoder,Optional.empty(),initialPolicy,
                     capabilityConfiguration,capabilitySession,freshness,heartbeatMaximumAge,retainedFrames,retainedOrigins,authorityId);
         }
@@ -244,11 +245,17 @@ public final class RootFrontendRuntime {
         sources.fixtureSources().orElseThrow().requireCurrent(context.game().launchPlan());fixtureCatalog();
         return workflow.orElseThrow().submit(sameMenu,actual,deadline);
     }
+    static Duration frontendLeaseTtl(Duration sourceFreshness) {
+        Objects.requireNonNull(sourceFreshness);
+        StrictJson.require(!sourceFreshness.isZero()&&!sourceFreshness.isNegative(),"positive frontend source freshness required");
+        Duration callbackMaximum=Duration.ofSeconds(30);
+        return sourceFreshness.compareTo(callbackMaximum)>0?callbackMaximum:sourceFreshness;
+    }
     synchronized void bindInventory(List<FrontendRouteAdmission> allOriginalAdmissions)throws IOException {
         StrictJson.require(sequence==null,"one frontend observation sequence owns the entire menu and adopted runtime");
         sequence=new FrontendObservationSequence(context.transport(),context.archive(),context.source(),context.bindings(),
                 List.copyOf(allOriginalAdmissions),context::optionalDriverProducer,context.sources()::verifyFrontend,context.clock(),
-                sources.freshness(),sources.heartbeatMaximumAge(),sources.retainedOrigins());
+                frontendLeaseTtl(sources.freshness()),sources.heartbeatMaximumAge(),sources.retainedOrigins());
         authority=new NativeFrontendAuthority(sequence);
     }
     public synchronized NativeFrontendAuthority authority() {

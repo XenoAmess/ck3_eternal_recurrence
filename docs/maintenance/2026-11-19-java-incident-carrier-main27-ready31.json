@@ -1,0 +1,54 @@
+{
+  "schema": "ck3.migration.incident-carrier-normal-main-and-env11-runtime-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "production_change": "separate implementation carrier role from incident JSON; >1MiB only exact loaded journal whole archive <=64MiB; original JSON/basis/read1MiB unchanged",
+  "normal_MAIN_package": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/qualification/maven-package28.END.json",
+    "bytes": 911,
+    "sha256": "04014ddaa390011688732a06ae540e830695ce365dae79860d17a765c55496bc"
+  },
+  "genuine_implementation_role_positive": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/qualification/genuine-incident30.END.json",
+    "bytes": 405,
+    "sha256": "3ff84fe1648b09c3fd688fe46d65c77c83b1cd9cabac52e4e36100360107b0cb"
+  },
+  "actual_ENV11_public_reader_413_whole_origins": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/qualification/ACTUAL-ENV11-NEWMAIN27-ORIGINS30.json",
+    "bytes": 143390,
+    "sha256": "40f57dd1ee64bfb8b859652d76bb5d93628887d46c298eabf02b33e52b3c7599"
+  },
+  "classpath": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/qualification/DIRECT-RUNTIME-MAIN27-CLASSPATH29.txt",
+    "bytes": 27063,
+    "sha256": "b783289d1cd73ce328fa65f7d73d7ed862a829a16657f61020ead44c4797e940"
+  },
+  "frozen157_archives": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/qualification/MAIN27-FROZEN-RUNTIME-ARCHIVES29.json",
+    "bytes": 74136,
+    "sha256": "bcd443bce6e37f97271a63224fa7b5f1d1df484db983d0e39cef56972e7c6cff"
+  },
+  "entry_prefixes": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/qualification/NORMAL-MAIN27-ENTRY-PREFIXES29.json",
+    "bytes": 1508,
+    "sha256": "19d8e521812e336875c45a7ceed37802279c68458a1dc5d1d600b4476253a983"
+  },
+  "actual_caller_prefix_metadata": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/qualification/ACTUAL-CALLER27-INPUTS31.json",
+    "bytes": 766,
+    "sha256": "7fa558147fea78cc2d7fb33b789cc4d9549155e154f75192366360bd9273ba35"
+  },
+  "genuine_new_local_MAIN": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-incident-carrier-main27/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9612014,
+    "sha256": "37b99f978356e34d0be3d2f75a8460714712b0a86375986e57518bbb5640058e"
+  },
+  "five_distinct_NoGame_source_tests": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/qualification/incident-source27/INCIDENT-IMPLEMENTATION-ROLE-5-NOGAME-READY27.json",
+    "bytes": 1280,
+    "sha256": "d07bd73e02885aad45c14c8b44d78971fbee6adddc16853f6be5c0f0c34f8699"
+  },
+  "old13_25_26_all35_JARs_exact_unchanged": true,
+  "no_TEST_wholeSERVICE_or_liveRoot_credit": true,
+  "next": "Runtime late Source12/ENV11 sameplan/v7policy + actualconfigchecker -> GSV/Native36 -> Main250fresh4/newroot12. No reuse partialroot11.",
+  "unique_Codex_responder": "/root/java_continue WAIT only"
+}

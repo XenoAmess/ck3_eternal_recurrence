@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include <charconv>
 #include <limits>
@@ -45,19 +46,19 @@ struct Cursor {
     return false;
   }
 };
-bool hash_matches(std::string_view value) noexcept {
+bool hash_matches(std::string_view value, std::string_view expected) noexcept {
   if (value.size() != 64) return false;
   for (std::size_t i = 0; i < value.size(); ++i) {
     char ch = value[i]; if (ch >= 'a' && ch <= 'f') ch = static_cast<char>(ch - 'a' + 'A');
-    if (ch != kExecutableSha256[i]) return false;
+    if (ch != expected[i]) return false;
   }
   return true;
 }
 bool identity(Cursor &c, std::string_view expected, bool hash = false) noexcept {
   std::string_view value;
-  return c.string(value) && (hash ? hash_matches(value) : value == expected);
+  return c.string(value) && (hash ? hash_matches(value,expected) : value == expected);
 }
-bool claim(Cursor &c, CoreSnapshotPrefix &expected,bool exit_claim) noexcept {
+bool claim(Cursor &c, CoreSnapshotPrefix &expected,bool exit_claim,ImageBuildV1 build) noexcept {
   if (!c.take('{')) return false;
   std::uint32_t seen = 0; bool first = true;
   while (!c.take('}')) {
@@ -68,8 +69,8 @@ bool claim(Cursor &c, CoreSnapshotPrefix &expected,bool exit_claim) noexcept {
     std::uint32_t bit = 0; bool valid = false;
     if (key == "schema") { bit=1U<<0; valid=identity(c,exit_claim?kApplicationExitSchemaV1:kCoreControlSchemaV1); }
     else if (key == "game_version") { bit=1U<<1; valid=identity(c,kGameVersion); }
-    else if (key == "executable_sha256") { bit=1U<<2; valid=identity(c,kExecutableSha256,true); }
-    else if (key == "adapter_id") { bit=1U<<3; valid=identity(c,kAdapterId); }
+    else if (key == "executable_sha256") { bit=1U<<2; valid=identity(c,ExecutableShaForBuild(build),true); }
+    else if (key == "adapter_id") { bit=1U<<3; valid=identity(c,AdapterIdForBuild(build)); }
     else if (key == "backend") { bit=1U<<4; valid=identity(c,kCoreBackendV1); }
     else if (key == "date_raw") { bit=1U<<5; valid=c.number(expected.clock.date_raw); }
     else if (key == "speed") { bit=1U<<6; valid=c.number(expected.clock.speed); }
@@ -97,9 +98,9 @@ bool request_id(std::string_view value) noexcept {
 } // namespace
 
 bool ParseCoreControlRequestV1(std::string_view payload,
-    CoreControlRequestV1 &output) noexcept {
+    CoreControlRequestV1 &output,ImageBuildV1 build) noexcept {
   output = {};
-  if (payload.size() > 16384) return false;
+  if (build==ImageBuildV1::unknown || payload.size() > 16384) return false;
   Cursor c{payload}; CoreControlRequestV1 parsed{};
   std::uint32_t seen = 0; bool first = true; bool exit_claim=false;
   if (!c.take('{')) return false;
@@ -113,8 +114,8 @@ bool ParseCoreControlRequestV1(std::string_view payload,
     else if (key == "request_id") { bit=1U<<2; valid=c.string(value) && request_id(value); }
     else if (key == "step") { bit=1U<<3; valid=c.string(parsed.step); }
     else if (key == "expected_revision") { bit=1U<<4; valid=c.number(number) && number==0; }
-    else if (key == "core_clock_control") { bit=1U<<5; valid=claim(c,parsed.expected,false); }
-    else if (key == "core_application_exit") { bit=1U<<5; exit_claim=true; valid=claim(c,parsed.expected,true); }
+    else if (key == "core_clock_control") { bit=1U<<5; valid=claim(c,parsed.expected,false,build); }
+    else if (key == "core_application_exit") { bit=1U<<5; exit_claim=true; valid=claim(c,parsed.expected,true,build); }
     else if (key == "core_control_deadline_unix_ms") {
       bit=1U<<6; valid=c.number(parsed.deadline_unix_ms) && parsed.deadline_unix_ms>0;
     } else if (key == "arguments") { bit=1U<<7; valid=c.take('{') && c.take('}'); }

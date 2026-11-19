@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210.hpp"
 
 #include <windows.h>
@@ -31,13 +32,15 @@ void *ResolveCharacter(void *storage, std::int32_t id) noexcept {
 CoreBindings BindCoreImage(std::uintptr_t image_base,
                            std::string_view executable_sha256) noexcept {
   CoreBindings result{};
-  if (image_base == 0 || executable_sha256 != kExecutableSha256) return result;
+  const auto build=ImageBuildForSha(executable_sha256);
+  if (image_base == 0 || build==ImageBuildV1::unknown) return result;
+  result.image_build=build;
   result.enabled = true;
-  result.game_state_slot = reinterpret_cast<void **>(image_base + kGameStateSlotRva);
-  result.jomini_state_slot = reinterpret_cast<void **>(image_base + kJominiStateSlotRva);
-  result.character_storage_slot = reinterpret_cast<void **>(image_base + kCharacterStorageSlotRva);
+  result.game_state_slot = reinterpret_cast<void **>(image_base + ImageRva(build,kGameStateSlotRva,hotfix26757580::kGameStateSlotRva));
+  result.jomini_state_slot = reinterpret_cast<void **>(image_base + ImageRva(build,kJominiStateSlotRva,hotfix26757580::kJominiStateSlotRva));
+  result.character_storage_slot = reinterpret_cast<void **>(image_base + ImageRva(build,kCharacterStorageSlotRva,hotfix26757580::kCharacterStorageSlotRva));
   result.get_local_player = reinterpret_cast<GetLocalPlayer>(
-      image_base + kGetLocalPlayerRva);
+      image_base + ImageRva(build,kGetLocalPlayerRva,hotfix26757580::kGetLocalPlayerRva));
   return result;
 }
 

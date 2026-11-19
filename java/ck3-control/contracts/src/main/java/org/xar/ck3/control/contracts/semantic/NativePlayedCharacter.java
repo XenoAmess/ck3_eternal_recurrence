@@ -63,9 +63,11 @@ public final class NativePlayedCharacter {
     static void requireFlorinIdentity(JsonNode original,String schema) {
         need(original!=null&&original.isObject(),"explicit Florin object required");
         for(String field:FLORIN_IDENTITY)need(original.path(field).isTextual(),"exact Florin identity field required: "+field);
+        var build=ExactCk3Build.florinCoreFullBuild(original.path("game_version").textValue(),
+                original.path("executable_sha256").textValue());
         need(schema.equals(original.path("schema").textValue())
-                &&ExactCk3Build.CK3_1210.matches(original.path("game_version").textValue(),original.path("executable_sha256").textValue())
-                &&FLORIN_ADAPTER.equals(original.path("adapter_id").textValue())&&FLORIN_BACKEND.equals(original.path("backend").textValue()),
+                &&build.isPresent()
+                &&build.orElseThrow().coreFullAdapterId().equals(original.path("adapter_id").textValue())&&FLORIN_BACKEND.equals(original.path("backend").textValue()),
                 "explicit Florin marker and exact source tuple differ");
     }
     private static JsonNode normalizeActor(JsonNode original,BigInteger nativeRevision,JsonNode dateRaw,boolean florin) {

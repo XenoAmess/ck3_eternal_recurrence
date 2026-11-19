@@ -1,0 +1,59 @@
+{
+  "schema": "ck3.migration.normal-main30-frontend-callback-env14-runtime-ready/v1",
+  "normal_MAIN_package": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\maven-package47.END.json",
+    "bytes": 912,
+    "sha256": "42bb4de7c3689a030a57d0f3e3ee1069b638c116058693417f65eb478978d2e1"
+  },
+  "actual33MAIN157CP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\MAIN30-FROZEN-RUNTIME-ARCHIVES48.json",
+    "bytes": 74149,
+    "sha256": "4d6bb30312efc78e5431bcd834812e61edc462d0600644bda7861d2391bb8e0e"
+  },
+  "new_current_JAR": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-frontend-callback-main30/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9613516,
+    "sha256": "aa99788a2fa77d2063514a097c0c9be6a9ef8d0f5da32f6300c029e4ebb34563"
+  },
+  "entry_prefixes": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\NORMAL-MAIN30-ENTRY-PREFIXES48.json",
+    "bytes": 1512,
+    "sha256": "b76e36f61e333401fce9491cf3e01eea0e884601a67480072675ef0005bb9a07"
+  },
+  "actual_sameplan_caller": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\ACTUAL-CALLER30-INPUTS50.json",
+    "bytes": 768,
+    "sha256": "db135e5914cd2bfcdfd3587aafed8abdc10212515c01bb1a58f4f36b944eb33d"
+  },
+  "pure3_nogame": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\frontend-lease46\\FRONTEND-CALLBACK-LEASE-3-NOGAME-READY46.json",
+    "bytes": 1713,
+    "sha256": "87bb0ec77e7414bfbff59892c47ed6d44b6f721448c9d199d607cadae650e0f7"
+  },
+  "genuine_positive1": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\genuine-frontend49.END.json",
+    "bytes": 406,
+    "sha256": "38e2365d0fa05da5a6798e79ec0a65844e9c6d36cdb62f9915e238b6ae6535f7"
+  },
+  "genuine_junit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\genuine-frontend-reports49\\TEST-junit-jupiter.xml",
+    "bytes": 35248,
+    "sha256": "8ca1e9b39a68d0030dd525147988cfb6249f4964b396771e74c2548b04e20f25"
+  },
+  "actual_ENV14_413origins": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\ACTUAL-ENV14-NEWMAIN30-ORIGINS49.json",
+    "bytes": 143485,
+    "sha256": "4cff6fbc83ac79c5f6ef1ec2485754f82e5dab9131ab5489fb09c15bf39c7e15"
+  },
+  "ENV14_consumer": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\env14-origins49.END.json",
+    "bytes": 399,
+    "sha256": "3945f3e3cd11d9a04a418c79eb8212f90833a06367db463ec0f443444c585197"
+  },
+  "response15_script_NOT_STARTED": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-frontend-callback-main30\\qualification\\first-codex-response15.py",
+    "bytes": 3025,
+    "sha256": "3028113f53d8cbf516dbdb4e193b21b91409f666485b7660c175fc19a7d99212"
+  },
+  "scope": "Frontend callback TTL is independently bounded30s, source/Driver freshness and heartbeat60 unchanged. Sequence original bounds preserved. No TEST/wholeSERVICE/Root/WAIT/GUI or world action credit. Old38 MAIN strong protected unchanged."
+}

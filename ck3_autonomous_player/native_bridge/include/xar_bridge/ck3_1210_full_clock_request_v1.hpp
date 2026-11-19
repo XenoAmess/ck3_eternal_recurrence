@@ -30,6 +30,6 @@ struct FullClockRequestV1 {
 // Clears the DTO on every failure. No Full/Core/queue calls, time reads,
 // authority, freshness, permission or published-Snapshot qualification.
 bool ParseFullClockRequestV1(std::string_view payload,
-    FullClockRequestV1 &output) noexcept;
+    FullClockRequestV1 &output,ImageBuildV1 build=ImageBuildV1::original26622941) noexcept;
 
 } // namespace xar::ck3_1210

@@ -1,4 +1,6 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_current_event_snapshot_v1.hpp"
+#include "xar_bridge/ck3_1210_current_event_hotfix26757580_v1.hpp"
 #include <cstring>
 #include <limits>
 #if defined(_MSC_VER)
@@ -138,6 +140,10 @@ bool ReadImpl(const CurrentEventSnapshotBindingsV1 &b, const CoreSnapshotPrefix 
   if (!ReadActor(b.core, expected, actor)) return Fail(out, "player_identity_unavailable");
   Queue queue{};
   if (!ReadQueue(roots, queue)) return Fail(out, "event_queue_read_failed");
+  // This first hotfix lane admits the actual empty queue only; selector
+  // type2/Jomini virtual transitive branches remain separately unqualified.
+  if (IsHotfix(b.core.image_build) && roots.queued!=0)
+    return Fail(out,"hotfix_nonempty_event_selector_unqualified");
   Event first{};
   const auto first_pointer = b.get_current_event(roots.manager);
   if (!Owned(roots, queue, first_pointer)) return Fail(out, "current_event_not_owned");
@@ -183,15 +189,15 @@ bool ReadImpl(const CurrentEventSnapshotBindingsV1 &b, const CoreSnapshotPrefix 
 CurrentEventSnapshotBindingsV1 BindCurrentEventSnapshotImageV1(std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept {
   CurrentEventSnapshotBindingsV1 b{};
-  if (!image_base || executable_sha256 != kExecutableSha256 ||
+  if (!image_base || ImageBuildForSha(executable_sha256)==ImageBuildV1::unknown ||
       image_base > (std::numeric_limits<std::uintptr_t>::max)() - kJominiStateSlotRva - (sizeof(void *) - 1))
     return b;
   b.core = BindCoreImage(image_base, executable_sha256);
   if (!b.core.enabled) return {};
   b.exact_build_admitted = true;
-  b.get_current_event = reinterpret_cast<CurrentEventSelectorV1>(image_base + kCurrentEventSelectorRvaV1);
-  b.selector_character_id_slot = reinterpret_cast<std::int32_t *>(image_base + kCurrentEventCharacterSlotRvaV1);
-  b.definition_vtable = image_base + kCurrentEventDefinitionVtableRvaV1;
+  b.get_current_event = reinterpret_cast<CurrentEventSelectorV1>(image_base + ImageRva(b.core.image_build,kCurrentEventSelectorRvaV1,bb3_current_event_profile36::kCurrentEventSelectorRvaV1));
+  b.selector_character_id_slot = reinterpret_cast<std::int32_t *>(image_base + ImageRva(b.core.image_build,kCurrentEventCharacterSlotRvaV1,bb3_current_event_profile36::kCurrentEventCharacterSlotRvaV1));
+  b.definition_vtable = image_base + ImageRva(b.core.image_build,kCurrentEventDefinitionVtableRvaV1,bb3_current_event_profile36::kCurrentEventDefinitionVtableRvaV1);
   return b;
 }
 bool ReadCurrentEventSnapshotV1(const CurrentEventSnapshotBindingsV1 &b,

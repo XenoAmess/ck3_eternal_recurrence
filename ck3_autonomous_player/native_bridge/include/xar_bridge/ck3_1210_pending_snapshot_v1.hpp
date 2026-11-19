@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_1210_pending_hotfix26757580_v1.hpp"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -58,6 +59,9 @@ struct PendingSnapshotBindingsV1 {
   std::uintptr_t pending_vtable = 0;
   std::uintptr_t reply_primary_vtable = 0;
   std::uintptr_t reply_secondary_vtable = 0;
+  // bb3 only: typed current GameStateData owner must hold this same registry.
+  std::uintptr_t owner_manager_vtable = 0;
+  std::size_t owner_manager_data_offset = 0;
 };
 struct PendingSnapshotObservationV1 {
   std::string_view schema = kPendingSnapshotSchemaV1;

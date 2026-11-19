@@ -83,8 +83,9 @@ public final class FullSnapshotClockControlResult {
             var result=correlatedAck(original,expectedStep);
             var envelope=NativeWire.object(NativeWire.parse(result.payload().value()));
             var row=NativeWire.object(NativeWire.parse(result.result().token().orElseThrow().value()));
-            require(SCHEMA.equals(text(row,"schema"))&&ExactCk3Build.CK3_1210.matches(text(row,"game_version"),text(row,"executable_sha256"))
-                    &&"ck3-1.21.0-msvc-x64".equals(text(row,"adapter_id"))
+            var profile=ExactCk3Build.florinCoreFullBuild(text(row,"game_version"),text(row,"executable_sha256"));
+            require(SCHEMA.equals(text(row,"schema"))&&profile.isPresent()
+                    &&profile.orElseThrow().coreFullAdapterId().equals(text(row,"adapter_id"))
                     &&"ck3-1.21.0-native-headless-main-thread".equals(text(row,"backend")),"full-clock exact source tuple or schema differs");
             String step=text(row,"step"),status=text(row,"queue_status");
             require(expectedStep.equals(step)&&(dateArm||STEPS.contains(step)),"full-clock result step differs from the original fixed request");

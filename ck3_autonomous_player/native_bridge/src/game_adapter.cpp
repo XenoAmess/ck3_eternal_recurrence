@@ -670,7 +670,7 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     if (ck3_11906::ParseTacticalDailySentinelArmStepV1(step, request)) {
       // Florin publishes only date-only terminal arms. The legacy grammar
       // also accepts decision/army watches which its wire producer rejects.
-      if (IsCk3_1210Descriptor(descriptor()) &&
+      if (IsCk3_1210BasicDescriptor(descriptor()) &&
           (request.mode != ck3_11906::TacticalDailySentinelModeV1::terminal_or_sentinel ||
            request.army_count != 0)) return false;
       capability = ck3_11906::kTacticalDailySentinelCapabilityV1;

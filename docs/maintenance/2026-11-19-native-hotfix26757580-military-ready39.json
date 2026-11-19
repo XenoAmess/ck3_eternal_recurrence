@@ -1,0 +1,57 @@
+{
+  "schema": "xar.nonempty-military.hotfix26757580.software-ready39/v1",
+  "qualification": "PASS_ISOLATED_NOGAME_INTERNAL_READERS_ONLY",
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\military-hotfix39\\ACTUAL-MILITARY39-01.json",
+    "bytes": 3424,
+    "sha256": "d2d54373c97da7d5d04df92d1ff5e5bde7be58ca02ce609df1a909cd4ca4b939"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\military-hotfix39\\INPUTS39.json",
+    "bytes": 62857,
+    "sha256": "2b9e946effc7a9a7ef6c8bbcc431c0cb5501b628c5fa14750616ed0030477a89"
+  },
+  "programs": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\military-hotfix39\\build\\military_hotfix39.exe",
+      "bytes": 98304,
+      "sha256": "58474822b2f812fb36ccd010a723586fe5eefa2f1bbf5599798249d98ed73470"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\military-hotfix39\\build\\army_legacy39.exe",
+      "bytes": 74752,
+      "sha256": "2bc998c5cd9f7c4669b4ac429b40beebd8553dac8bc4e0b8ee9acfa41cf78aa2"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\military-hotfix39\\build\\war_legacy39.exe",
+      "bytes": 70656,
+      "sha256": "1a4d380a014c0e0a40a9bed4ac79574369e4872787cbcb5237795b2cc75933a6"
+    }
+  ],
+  "old_ArmyBase_and_War_fixture_each_run_once": true,
+  "hotfix_cases": [
+    "exact old/new binder split and unknown/overflow rejection",
+    "default Army getter gate closed",
+    "real RAM typed Unit/CArmy route projection",
+    "old state guard rejected with zero attempts",
+    "verified no-CArmy default regular and stale generation rejected",
+    "nonempty War identity with score defaultOFF",
+    "raw zero score, receiver/null-tooltip ABI",
+    "defender sign including beyond ordinary clamp",
+    "INT_MIN raw preserved/relative unknown",
+    "bad score pin zero calls",
+    "complete WarID0 valid"
+  ],
+  "Native_execution": "State and score callback bodies are ABI fakes. RAM object graph/copy guards and actual C++ readers are real; static PE source report separate.",
+  "Ready36_source_DLL_guards_before_after_all_exact": true,
+  "scope_exclusions": [
+    "Full/nonempty Full opt-in",
+    "actual module/main-thread/TLS/per-call production custody",
+    "Actor MQ/query route",
+    "production serializer/wire/Java",
+    "rich War objectives/targets/ally/enemy army joins",
+    "actions/Root/Driver role",
+    "actual Game getter calls",
+    "live/deployment/new DLL"
+  ]
+}

@@ -29,8 +29,15 @@ public final class FullSnapshotClockControl {
             BigInteger actualNativeRevision, Instant originalDeadline) {
         StrictJson.require(STEPS.contains(Objects.requireNonNull(step)),
                 "fixed full snapshot clock control step required");
-        return new NativeRequest(step, "game.command." + step,
-                fields(actualSnapshotId, actualNativeRevision, originalDeadline));
+        return request(ExactCk3Build.CK3_1210,step,actualSnapshotId,actualNativeRevision,originalDeadline);
+    }
+
+    /** Exact selected clock profile DATA; all actual received-frame and capability guards remain in the transport. */
+    public static NativeRequest request(ExactCk3Build build,String step,String actualSnapshotId,
+            BigInteger actualNativeRevision,Instant originalDeadline) {
+        requireClockProfile(build,step);
+        StrictJson.require(STEPS.contains(Objects.requireNonNull(step)),"fixed full snapshot clock control step required");
+        return new NativeRequest(step,"game.command."+step,fields(build,actualSnapshotId,actualNativeRevision,originalDeadline));
     }
 
     /** Keeps legacy/unknown source spellings unchanged. Only the exact current raw executable SHA selects new DATA. */
@@ -38,16 +45,24 @@ public final class FullSnapshotClockControl {
         Objects.requireNonNull(command);
         StrictJson.require(supports(command.operation()) && command.arguments().members().isEmpty(),
                 "fixed argument-free full snapshot clock control required");
-        var build = ExactCk3Build.CK3_1210;
-        if (!build.executableSha256().equalsIgnoreCase(command.source().exactBuild()))
-            return new RawJson(new byte[] {'{', '}'});
+        ExactCk3Build build=null;
+        for(var candidate:java.util.List.of(ExactCk3Build.CK3_1210,ExactCk3Build.CK3_1210_STEAM_26757580))
+            if(candidate.executableSha256().equalsIgnoreCase(command.source().exactBuild()))build=candidate;
+        if(build==null)return new RawJson(new byte[] {'{', '}'});
+        requireClockProfile(build,command.operation().value());
         if (!(command.origin() instanceof CommandOrigin.Gameplay gameplay))
             throw new IllegalArgumentException("full snapshot clock control requires a gameplay command origin");
         var before = gameplay.before().frame();
-        return fields(before.snapshotId(), before.identity().nativeRevision(), command.deadline());
+        return fields(build,before.snapshotId(), before.identity().nativeRevision(), command.deadline());
     }
 
-    private static RawJson fields(String snapshotId, BigInteger revision, Instant originalDeadline) {
+    private static void requireClockProfile(ExactCk3Build build,String step) {
+        StrictJson.require(build==ExactCk3Build.CK3_1210||build==ExactCk3Build.CK3_1210_STEAM_26757580,
+                "an explicit exact Florin clock profile is required");
+        StrictJson.require(build!=ExactCk3Build.CK3_1210_STEAM_26757580||!"save-checkpoint".equals(step),
+                "this hotfix Full clock profile does not qualify SAVE");
+    }
+    private static RawJson fields(ExactCk3Build build,String snapshotId, BigInteger revision, Instant originalDeadline) {
         Objects.requireNonNull(snapshotId); Objects.requireNonNull(revision); Objects.requireNonNull(originalDeadline);
         StrictJson.require(revision.signum() > 0 && revision.bitLength() <= 64
                 && snapshotId.equals("native:" + revision),
@@ -58,12 +73,11 @@ public final class FullSnapshotClockControl {
             throw new IllegalArgumentException("full snapshot clock control requires a finite epoch-millisecond deadline", overflow);
         }
         StrictJson.require(deadline > 0, "full snapshot clock control requires the original positive command deadline");
-        var build = ExactCk3Build.CK3_1210;
         var claim = StrictJson.object();
         claim.put("schema", SCHEMA);
         claim.put("game_version", build.version());
         claim.put("executable_sha256", build.executableSha256().toUpperCase(Locale.ROOT));
-        claim.put("adapter_id", "ck3-" + build.version() + "-msvc-x64");
+        claim.put("adapter_id", build.coreFullAdapterId());
         claim.put("backend", "ck3-" + build.version() + "-native-headless-main-thread");
         claim.put("snapshot_id", snapshotId);
         claim.put("native_revision", revision);

@@ -28,7 +28,7 @@ public final class GovernanceRuntimeInstaller {
     private GovernanceRuntimeInstaller() { }
     static final String UNAVAILABLE_1210="CK3 1.21.0 governance Native contracts are not qualified";
     static boolean qualifiedBuild(String version,String sha256) {
-        if(ExactCk3Build.CK3_1210.matches(version,sha256))return false;
+        if(ExactCk3Build.florinCoreFullBuild(version,sha256).isPresent())return false;
         org.xar.ck3.control.governance.council.CouncilCodec.requireBuild(version,sha256);return true;
     }
     static void requirePublicAvailable(String version,String sha256) {

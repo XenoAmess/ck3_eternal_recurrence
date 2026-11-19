@@ -1,0 +1,25 @@
+{
+  "schema": "xar.native.publication53.binder-ready/v1",
+  "qualification": "PASS_FRESH_2TU_METADATA_BINDER_NOGAME_ONLY",
+  "resolution": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-publication53\\RESOLUTION53.json",
+    "bytes": 5749,
+    "sha256": "b95524102293fc6d88b1c8ff4324a4d14ad2537fd60ddc8f94208cceacb929d7"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-publication53\\INPUTS53.json",
+    "bytes": 2426,
+    "sha256": "d259884753f582958b86b3ca8d05427e9852fda19aa93661002de969298ae88b"
+  },
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-publication53\\ACTUAL53.json",
+    "bytes": 2227,
+    "sha256": "d468db09e6fd7dc2ad89c71d54b945c624b46de6ea91f41a48de8e92350bf47e"
+  },
+  "program": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-publication53\\build\\binder53.exe",
+    "bytes": 20992,
+    "sha256": "b6d0269e0c5e1d698d137262aaa969754b2092069447a3832b1cb32c28a31822"
+  },
+  "limits": "No inherited41/36 DLL/live or MQ/forced-publish behavior qualification. Preserve all remote72 changes and41 branches; only old6/new4 binder metadata freshly executed. No new capability/other source candidate changes."
+}

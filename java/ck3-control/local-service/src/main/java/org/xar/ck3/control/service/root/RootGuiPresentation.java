@@ -61,14 +61,20 @@ public final class RootGuiPresentation implements GuiService.PresentationPlane,A
  }
  private final RootRuntimeContext context;private final List<ExactRef> sources;
  private final org.xar.ck3.control.platform.ManagedGameSession.NativePhysicalSourceAccess access;
- private final NativeCameraObserver observer;private NativePresentationTransport transport;
+ private final Optional<NativeCameraObserver> observer;private NativePresentationTransport transport;
  private final Map<String,PresentationRequest> prepared=new LinkedHashMap<>();
  private final RootAutoCamera autoCamera;
  private Optional<GuiRealmCameraStatus.Submission> submission=Optional.empty();private boolean closed;
  public RootGuiPresentation(RootRuntimeContext context,List<ExactRef> sources)throws IOException{
   this.context=Objects.requireNonNull(context);this.sources=List.copyOf(sources);require(!this.sources.isEmpty(),"actual physical source inventory required");
   context.game().launchPlan().sources().requireLoadedClass(RootGuiPresentation.class);context.game().launchPlan().sources().requireLoadedClass(NativeCameraObserver.class);access=context.game().presentationAccess();access.requireOwner(context.game());
-  observer=new NativeCameraObserver(access.actualConfig(),access.actualGuard());autoCamera=new RootAutoCamera(context,this);
+  observer=observerForProfile(access.actualConfig().expectedGameSha256(),()->new NativeCameraObserver(access.actualConfig(),access.actualGuard()));autoCamera=new RootAutoCamera(context,this);
+ }
+ @FunctionalInterface interface CameraFactory<T>{T create()throws IOException;}
+ static <T> Optional<T> observerForProfile(String executableSha256,CameraFactory<T> factory)throws IOException{
+  Objects.requireNonNull(executableSha256);Objects.requireNonNull(factory);
+  if(!executableSha256.equalsIgnoreCase(GuiModels.Build.CROZIER4.sha256()))return Optional.empty();
+  return Optional.of(factory.create());
  }
  public boolean owns(ActionCommand command){return command.origin() instanceof CommandOrigin.Gameplay&&command.operation().equals(OPERATION)
   &&command.before().game().equals(context.game().generation())&&command.source().equals(context.source())&&command.sessionId().equals(context.game().sessionId());}
@@ -250,14 +256,14 @@ public final class RootGuiPresentation implements GuiService.PresentationPlane,A
   out.put("canonical_receipt",archive.receiptReferenceOf(receipt).path());return new GuiContract.NativeReply(new RawJson(StrictJson.canonical(out)));
  }
  @Override public synchronized Optional<GuiRealmCameraStatus.Submission> originalSubmission(){return submission;}
- @Override public Optional<NativeCameraObserver> actualObserver(){return Optional.of(observer);}
+ @Override public Optional<NativeCameraObserver> actualObserver(){return observer;}
  @Override public GuiRealmCameraStatus.Owner currentOwner()throws IOException{
   return context.withSession(same->context.adopted().authority().withFrozenFacts(same,frozen->{
    require(frozen.state() instanceof org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known,"actual Driver owner unavailable");var driver=((org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known)frozen.state()).driver().session();var hello=context.transport().originalHello();
    return new GuiRealmCameraStatus.Owner(driver.actorId().intValueExact(),driver.episodeRunId(),context.game().generation().pid(),hello.connectionGeneration());
   }));
  }
- @Override public synchronized void close()throws IOException{if(closed)return;closed=true;autoCamera.close();IOException failure=null;try{observer.close();}catch(IOException e){failure=e;}if(transport!=null)try{transport.close();}catch(IOException e){if(failure==null)failure=e;else failure.addSuppressed(e);}if(failure!=null)throw failure;}
+ @Override public synchronized void close()throws IOException{if(closed)return;closed=true;autoCamera.close();IOException failure=null;try{if(observer.isPresent())observer.orElseThrow().close();}catch(IOException e){failure=e;}if(transport!=null)try{transport.close();}catch(IOException e){if(failure==null)failure=e;else failure.addSuppressed(e);}if(failure!=null)throw failure;}
 
  public RootAutoCamera automaticCamera(){return autoCamera;}
  boolean ownsGame(ActionCommand command){return command.origin() instanceof CommandOrigin.Gameplay&&command.origin().game().equals(context.game().generation())

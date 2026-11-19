@@ -1437,3 +1437,18 @@ docs/maintenance/2026-11-19-war-fullid-domain-evidence.json -text whitespace=bla
 docs/maintenance/2026-11-19-post-play-binary-baseline-summary.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/maintenance/2026-11-19-post-play-ownership-original.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/maintenance/2026-11-19-steam1123-actual-offline-original.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Exact migration receipts: keep original bytes/SHA.
+docs/maintenance/2026-11-19-agent-runtime-integration-evidence22.json -text
+docs/maintenance/2026-11-19-java-frontend-callback-main30-ready51.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-java-grant-closure-main29-ready45.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-java-gui-optional-main28-ready36.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-java-hotfix26757580-main-ready14.json -text
+docs/maintenance/2026-11-19-java-incident-carrier-main27-ready31.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-java-prison-catalog-main26-ready25.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-java-saved-frontend-main25-ready19.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-native-hotfix26757580-basic-ready36.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-native-hotfix26757580-military-ready39.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-native-hotfix26757580-monthly-ready38.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-native36-remote32-final41-ready.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-native-remote53-source-ready.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

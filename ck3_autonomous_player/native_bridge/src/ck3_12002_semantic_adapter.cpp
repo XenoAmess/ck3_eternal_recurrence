@@ -92,7 +92,7 @@ std::string SerializeInboxFixture(ConsoleFixtureResult result) {
 }
 bool SupportsFreshFullOwner(const game::GameAdapter &game) noexcept {
  return game::IsCk3_12004Descriptor(game.descriptor()) ||
-   (game::IsCk3_1210Descriptor(game.descriptor()) && game.supports_snapshot() &&
+   (game::IsCk3_1210BasicDescriptor(game.descriptor()) && game.supports_snapshot() &&
     game.supports("game.query.fresh-full-state.v1"));
 }
 bool OwnsFreshSnapshotSlot(const QueryMailboxEnvelope &query,
@@ -105,7 +105,7 @@ bool OwnsFreshSnapshotSlot(const QueryMailboxEnvelope &query,
       stamp.tls_initialized != 1 || stamp.tls_main_thread_marker != 1 ||
       stamp.tls_context == 0 || stamp.jomini_state == 0 ||
       stamp.game_state == 0) return false;
-  if(game::IsCk3_1210Descriptor(query.game->descriptor()) && !stamp.paused) return false;
+  if(game::IsCk3_1210BasicDescriptor(query.game->descriptor()) && !stamp.paused) return false;
   const auto &mailbox = *query.mailbox;
   return mailbox.state.load(std::memory_order_acquire) ==
              ck3_11906::MainThreadQueryMailboxStateV1::executing &&
@@ -395,7 +395,7 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
       return unavailable(FailureStage::worker_snapshot_pause_mismatch);
     // Florin cached Full is still derived from one qualified owner source.
     // Consumers do not read live TLS/Game memory on the worker thread.
-    if (game::IsCk3_1210Descriptor(descriptor()) &&
+    if (game::IsCk3_1210BasicDescriptor(descriptor()) &&
         (mailbox_->offline_fixture || diagnostics.stop_requested || diagnostics.failure_flags != 0 ||
          mailbox_->stop_requested.load(std::memory_order_acquire) ||
          mailbox_->proof_reset_requested.load(std::memory_order_acquire) ||
@@ -423,14 +423,14 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
   std::uint64_t generation = 0;
   try {
     const bool actual4 = SupportsFreshFullOwner(*native_) && supports_snapshot();
-    if (!enabled() || (game::IsCk3_1210Descriptor(descriptor()) && !stamp.paused) ||
+    if (!enabled() || (game::IsCk3_1210BasicDescriptor(descriptor()) && !stamp.paused) ||
         (!game::IsReviewedCrozierAdapter(*this) && !actual4) ||
         stamp.pump_epoch == 0 || stamp.thread_id == 0 ||
         GetCurrentThreadId() != stamp.thread_id || stamp.tls_initialized != 1 ||
         stamp.tls_main_thread_marker != 1) return false;
     // A cached heartbeat is also an owner publication; do not retag it
     // under a stale/spoofed stamp or a proof that the native Full would reject.
-    if (game::IsCk3_1210Descriptor(descriptor())) {
+    if (game::IsCk3_1210BasicDescriptor(descriptor())) {
       if (!mailbox_ || mailbox_->offline_fixture || stamp.tls_context == 0 ||
           stamp.game_state == 0 || stamp.jomini_state == 0) return false;
       const auto &m=*mailbox_;
@@ -454,7 +454,7 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
       // immediately; typed requests still read a fresh raw frame on owner.
       if (snapshot_.has_value() && snapshot_epoch_ != 0 &&
           snapshot_->date_raw == stamp.date_raw && snapshot_->paused == stamp.paused &&
-          (!game::IsCk3_1210Descriptor(descriptor()) ||
+          (!game::IsCk3_1210BasicDescriptor(descriptor()) ||
            (snapshot_source_stamp_.thread_id == stamp.thread_id &&
             snapshot_source_stamp_.tls_context == stamp.tls_context &&
             snapshot_source_stamp_.game_state == stamp.game_state &&

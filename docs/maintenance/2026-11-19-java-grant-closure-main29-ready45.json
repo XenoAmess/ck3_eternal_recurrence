@@ -1,0 +1,59 @@
+{
+  "schema": "ck3.migration.normal-main29-grant-closure-env13-runtime-ready/v1",
+  "normal_MAIN_package": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\maven-package40.END.json",
+    "bytes": 908,
+    "sha256": "33423e93f7af0b00ff99ffdac0b717f002faf318f69ebfe46e82afb4f4022fa7"
+  },
+  "actual33MAIN157CP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\MAIN29-FROZEN-RUNTIME-ARCHIVES41.json",
+    "bytes": 74130,
+    "sha256": "223a979c4c138f286586fab5d7ae8cc53a6f4d85e0203964878cc82114a9bb5d"
+  },
+  "new_current_JAR": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-grant-closure-main29/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9613253,
+    "sha256": "cb945141a070058679e6585718b19b3d6ed51f9e097732e21dfcbcc1f953da16"
+  },
+  "entry_prefixes": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\NORMAL-MAIN29-ENTRY-PREFIXES41.json",
+    "bytes": 1496,
+    "sha256": "04f53950c13de300eb9ab76bbd474e35c9a813a2b066a8bc1ac71da334a13dc4"
+  },
+  "actual_sameplan_caller": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\ACTUAL-CALLER29-INPUTS43.json",
+    "bytes": 760,
+    "sha256": "025a203dd4af5f8a5154c1bc214aa82962444fe19e1f8023d4a45659b16a6155"
+  },
+  "pure3_nogame": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-gui-optional-main28\\qualification\\grant-source39\\GRANT-IMPLEMENTATION-CLOSURE-3-NOGAME-READY39.json",
+    "bytes": 1651,
+    "sha256": "cb647cd551f43ba08d4c820482ad8b120dfe36622bd3bd51106833ee6ce721b9"
+  },
+  "genuine_positive1": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\genuine-grant42.END.json",
+    "bytes": 396,
+    "sha256": "0ad6fcebf9df3506043ae091e2eefddde68e3abd6a453f36f05e7bbff88c9a76"
+  },
+  "genuine_junit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\genuine-grant-reports42\\TEST-junit-jupiter.xml",
+    "bytes": 34227,
+    "sha256": "ce43fb53ccf3a0499d1eb86546b868e3851386cd1174d38427b22fbdf3cb211f"
+  },
+  "actual_ENV13_413origins": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\ACTUAL-ENV13-NEWMAIN29-ORIGINS43.json",
+    "bytes": 143105,
+    "sha256": "4b61fe785e756f066aae5bd9247a3907a879f124cc57b9d1602f4af769f4a9f9"
+  },
+  "ENV13_consumer": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\env13-origins43.END.json",
+    "bytes": 395,
+    "sha256": "7b00cfa654710ce3f7ffaa311b758ab4c6667274dc8c4ab2c0c5f620a8b2f86c"
+  },
+  "response14_script_NOT_STARTED": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-grant-closure-main29\\qualification\\first-codex-response14.py",
+    "bytes": 3021,
+    "sha256": "668f828e5490406ef3b132c7406ef6ab5aed6c2d39022c2bea2e283f48aa7a43"
+  },
+  "scope": "Grant role binding preserves all business roles; identical whole-JAR ExactRefs collapse once in producer, same unique ordered list for bind/claims/capture/decode. checkedSources original guard unchanged. Current MAIN and public ENV only, no TEST/wholeSERVICE/Root/Grant action/Game credit. Old37 MAIN strong protected unchanged."
+}

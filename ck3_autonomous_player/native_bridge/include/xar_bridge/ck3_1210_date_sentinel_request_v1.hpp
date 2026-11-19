@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xar_bridge/ck3_1210.hpp"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -37,6 +38,6 @@ struct DateSentinelArmRequestV1 {
 // numeric aliases. Failure clears all owned bytes and scalar fields.
 // Pure parser: no legacy parser, Native API, clock, queue or authority call.
 bool ParseDateSentinelArmRequestV1(std::string_view payload,
-    DateSentinelArmRequestV1 &output) noexcept;
+    DateSentinelArmRequestV1 &output,ImageBuildV1 build=ImageBuildV1::original26622941) noexcept;
 
 } // namespace xar::ck3_1210

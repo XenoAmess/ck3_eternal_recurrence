@@ -1,0 +1,61 @@
+{
+  "schema": "xar.hotfix26757580-normal-main-producer-and-runtime-inputs-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-11-18T19:26:07.392287+00:00",
+  "normal_MAIN_maven": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/clock13-main-package10.END.json",
+    "bytes": 2160,
+    "sha256": "509687a14eabbe4175a0d474f9729c2737dbe0fc42500659d7705d844ca17ae6"
+  },
+  "runtime_classpath": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/DIRECT-RUNTIME-MAIN24-CLASSPATH13.txt",
+    "bytes": 27062,
+    "sha256": "bef04677039c18c9db02e273fab09e202eb682d5c1d48d6f852312628a2988de"
+  },
+  "runtime_freeze": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/MAIN13-FROZEN-RUNTIME-ARCHIVES14.json",
+    "bytes": 74108,
+    "sha256": "4fab40a781e561fb63d1feb52e62fd948f4f73254d325b4bbfe7a544b30baa31"
+  },
+  "actual_environment_public_consumer": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/env08-public-origins13.END.json",
+    "bytes": 1321,
+    "sha256": "2da80f74911ae8c8c82af25e4e1b690be13633f5c2bf6af56d91b5e7103042d2"
+  },
+  "actual_environment_and_mapped_origins_report": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/ACTUAL-ENV08-MAPPED-PUBLIC-ORIGINS13.json",
+    "bytes": 143295,
+    "sha256": "14b1e1955dc2082592dabd87ce4d13dae8a1500581422cedb6d3fa7ca11adf7d"
+  },
+  "actual_software_distinct_methods": 13,
+  "native_basic_ready": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/hotfix36/NATIVE-HOTFIX26757580-BASIC-DLL-READY36.json",
+    "bytes": 3570,
+    "sha256": "471133366ba6cae6e66105942b47a389598de8ed51bdd60903e26c63d34a6a1d"
+  },
+  "environment08": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/env08/xar-autoplayer-environment.json",
+    "bytes": 36866,
+    "sha256": "c42096d3801fe941a2fa4c9506a7666b03a0cd96b97e837267d3a91865889cb7"
+  },
+  "main_entry": "org.xar.ck3.control.service.root.RootLoadedSavedResumeMain250",
+  "Main_arg_shape": "ownerDescriptor exact3 + freshRequest exact3",
+  "request_schema": "xar.java-loaded-saved-fresh-entry-request/v1",
+  "request_fields": [
+    "schema",
+    "machineId",
+    "sourceRuntimeConfiguration",
+    "newRuntimeConfiguration",
+    "sourceConfirmation",
+    "checkpointPair",
+    "ownerDirectory"
+  ],
+  "codex_entry": "org.xar.ck3.control.service.root.CodexSessionDecisionMain",
+  "codex_inspect_args": "inspect REQUEST_FILE REQUEST_SHA ACTUAL_BUSINESS_ROOT/continuity/artifacts",
+  "codex_respond_args": "respond REQUEST_FILE REQUEST_SHA ACTUAL_BUSINESS_ROOT/continuity/artifacts SELECTION_JSON INSPECTION_JSON",
+  "first_responder": "/root/java_continue unique; WAIT only",
+  "next_actual_steps": "Runtime publicplan DATA+lateSource45/v7policy09 then actual sameplan/config publicconsumer+sameMain250 schema4; not a wholeSERVICE/Root/scene result",
+  "no_Save_Cash_War_Resource_Roster_Frontend_new_hotfix_grant": true,
+  "clock_DTO_already_satisfied_remains_UNKNOWN_not_effect": true,
+  "Root_or_Game_started_by_Java": false
+}

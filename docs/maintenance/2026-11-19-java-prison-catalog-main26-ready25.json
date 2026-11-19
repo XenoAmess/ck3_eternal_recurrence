@@ -1,0 +1,49 @@
+{
+  "schema": "ck3.migration.prison-unavailable-normal-main-and-env10-runtime-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "production": "PrisonersRuntimeInstaller uses Optional legacy stock catalog only for its actual exact .4 profile; all other profiles unavailable; original pin/admit/UNKNOWN unchanged",
+  "normal_MAIN_package": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/qualification/maven-package22.END.json",
+    "bytes": 909,
+    "sha256": "6f0b7e485ee5aa793a1777f5406789f77c1d4d99785776735eb8b0399d8df4c7"
+  },
+  "actual_genuine_prison_policy_one_method": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/qualification/genuine-prison24.END.json",
+    "bytes": 399,
+    "sha256": "d11d4abec58571b1a3eb8e60e4726fe997e4c3e318fd61f7b476dfeb8f14fe5b"
+  },
+  "actual_ENV10_public_reader_413_whole_origins": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/qualification/ACTUAL-ENV10-NEWMAIN26-ORIGINS24.json",
+    "bytes": 143200,
+    "sha256": "897e0addacc1dd317a514a6471dd4d62319446863afd26eb73ecdd0fc79b6dde"
+  },
+  "classpath": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/qualification/DIRECT-RUNTIME-MAIN26-CLASSPATH23.txt",
+    "bytes": 27061,
+    "sha256": "748c1074c577e101b5ec0718ccb8906f35aef82448a18ec1c5a9eacc82872572"
+  },
+  "frozen157_archives": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/qualification/MAIN26-FROZEN-RUNTIME-ARCHIVES23.json",
+    "bytes": 73789,
+    "sha256": "b64a5505fc72cdf038193ebb99acb370f0a75a113663e017d9a7660237fc9db0"
+  },
+  "entry_prefixes": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/qualification/NORMAL-MAIN26-ENTRY-PREFIXES23.json",
+    "bytes": 1507,
+    "sha256": "ed6352518ee45aa25419e7c361080e4d6b28e846b5086e4258cf5ca427bcfb3b"
+  },
+  "genuine_new_local_MAIN": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-prison-catalog-main26/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9611172,
+    "sha256": "5115b803af530e54ac3224f88b1fb62826903b82ce05d108778a31627a875457"
+  },
+  "four_distinct_NoGame_source_methods": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/prison-stock20/PRISON-CATALOG-4-NOGAME-READY20.json",
+    "bytes": 1199,
+    "sha256": "04f551aa0baf163cfaaf32e452eec23a811462ef05f245881068ebf53320d3d4"
+  },
+  "old13_plus25_all34_JARs_unchanged": true,
+  "no_new_prison_capability_or_TEST_wholeSERVICE_liveRoot_credit": true,
+  "next": "Runtime late newSource11/ENV10 sameplan/v7policy and realconfig checker -> GSV/Native36 -> Main250 fresh4/newroot11; never repeat partialroot10",
+  "unique_first_Codex_responder": "/root/java_continue WAIT only"
+}

@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_daily_final_hook_v1.hpp"
 #include <array>
 #include <bit>
@@ -56,33 +57,36 @@ template<class T> bool Read(const DailyFinalHookMemoryV1 &m,std::uintptr_t at,T 
 constexpr std::array<unsigned char,32> kEntry{
   0x40,0x53,0x48,0x83,0xec,0x20,0x48,0x8d,0x4c,0x24,0x38,0xe8,0x00,0xc1,0xd0,0xfd,
   0x48,0x8b,0x05,0xa1,0xaa,0xa3,0x03,0x48,0x8b,0x88,0xa0,0x00,0x00,0x00,0x48,0x81};
+constexpr std::array<unsigned char,32> kHotfixEntry{0x40,0x53,0x48,0x83,0xEC,0x20,0x48,0x8D,0x4C,0x24,0x38,0xE8,0x90,0xB8,0xD0,0xFD,0x48,0x8B,0x05,0x59,0xB4,0xA3,0x03,0x48,0x8B,0x88,0xA0,0x00,0x00,0x00,0x48,0x81};
 struct Col {std::uint32_t signature,offset,cd,type,hierarchy,self;};
 bool ImageGuard(const DailyFinalHookBindingsV1 &b,const DailyFinalHookMemoryV1 &m) noexcept {
   constexpr char type_name[]=".?AVCDailyTickCommand@@";
   constexpr auto max=(std::numeric_limits<std::uintptr_t>::max)();
   const auto base=b.module_base;
-  if(!base || base>max-0x6FE5000 ||
-      b.slot!=reinterpret_cast<DailyFinalOriginalV1 *>(base+kDailyFinalSlotRvaV1) ||
-      Bits(b.expected_original)!=base+kDailyFinalFunctionRvaV1)return false;
+  const bool hotfix=Bits(b.expected_original)==base+hotfix26757580::kDailyFinal;
+  const auto build=hotfix?ImageBuildV1::hotfix26757580:ImageBuildV1::original26622941;
+  if(!base || base>max-ImageSize(build) ||
+      b.slot!=reinterpret_cast<DailyFinalOriginalV1 *>(base+ImageRva(build,kDailyFinalSlotRvaV1,0x4B3E9B8)) ||
+      Bits(b.expected_original)!=base+ImageRva(build,kDailyFinalFunctionRvaV1,0x2E77B60))return false;
   std::array<unsigned char,32> entry{};char name[sizeof(type_name)]{};
   Col primary{},secondary{};std::uintptr_t pc=0,sc=0,pre=0,execute=0,post=0,bridge=0;
-  if(!m.copy(m.context,reinterpret_cast<void *>(base+kDailyFinalFunctionRvaV1),entry.data(),entry.size()) || entry!=kEntry ||
-      !m.copy(m.context,reinterpret_cast<void *>(base+kDailyFinalTypeDescriptorRvaV1+16),name,sizeof(name)) ||
+  if(!m.copy(m.context,reinterpret_cast<void *>(base+ImageRva(build,kDailyFinalFunctionRvaV1,0x2E77B60)),entry.data(),entry.size()) || entry!=(hotfix?kHotfixEntry:kEntry) ||
+      !m.copy(m.context,reinterpret_cast<void *>(base+ImageRva(build,kDailyFinalTypeDescriptorRvaV1,0x60B2268)+16),name,sizeof(name)) ||
       std::memcmp(name,type_name,sizeof(name))!=0)return false;
-  if(!Read(m,base+kDailyFinalPrimaryColRvaV1,primary) || !Read(m,base+kDailyFinalSecondaryColRvaV1,secondary) ||
-      primary.signature!=1 || primary.offset!=0 || primary.type!=kDailyFinalTypeDescriptorRvaV1 ||
-      primary.self!=kDailyFinalPrimaryColRvaV1 || primary.cd!=0 || secondary.cd!=0 ||
-      primary.hierarchy!=0x51BE070 || secondary.signature!=1 || secondary.offset!=0x18 ||
-      secondary.type!=kDailyFinalTypeDescriptorRvaV1 || secondary.self!=kDailyFinalSecondaryColRvaV1 ||
+  if(!Read(m,base+ImageRva(build,kDailyFinalPrimaryColRvaV1,0x51C17F0),primary) || !Read(m,base+ImageRva(build,kDailyFinalSecondaryColRvaV1,0x51C1818),secondary) ||
+      primary.signature!=1 || primary.offset!=0 || primary.type!=ImageRva(build,kDailyFinalTypeDescriptorRvaV1,0x60B2268) ||
+      primary.self!=ImageRva(build,kDailyFinalPrimaryColRvaV1,0x51C17F0) || primary.cd!=0 || secondary.cd!=0 ||
+      primary.hierarchy!=ImageRva(build,0x51BE070,0x51BF3F0) || secondary.signature!=1 || secondary.offset!=0x18 ||
+      secondary.type!=ImageRva(build,kDailyFinalTypeDescriptorRvaV1,0x60B2268) || secondary.self!=ImageRva(build,kDailyFinalSecondaryColRvaV1,0x51C1818) ||
       primary.hierarchy!=secondary.hierarchy)return false;
   std::array<std::uint32_t,4> hierarchy{};
-  if(!Read(m,base+0x51BE070,hierarchy) || hierarchy!=std::array<std::uint32_t,4>{0,1,7,0x51B8AC8})return false;
-  return Read(m,base+kDailyFinalPrimaryVtableRvaV1-8,pc) && pc==base+kDailyFinalPrimaryColRvaV1 &&
-      Read(m,base+kDailyFinalSecondaryVtableRvaV1-8,sc) && sc==base+kDailyFinalSecondaryColRvaV1 &&
-      Read(m,base+kDailyFinalPrimaryVtableRvaV1+0x38,bridge) && bridge==base+0x8B27B0 &&
-      Read(m,base+kDailyFinalSecondaryVtableRvaV1+8,execute) && execute==base+0x2E765F0 &&
-      Read(m,base+kDailyFinalSecondaryVtableRvaV1+0x10,pre) && pre==base+0x2E766C0 &&
-      Read(m,base+kDailyFinalSlotRvaV1,post) && post==base+kDailyFinalFunctionRvaV1;
+  if(!Read(m,base+ImageRva(build,0x51BE070,0x51BF3F0),hierarchy) || hierarchy!=std::array<std::uint32_t,4>{0,1,7,static_cast<std::uint32_t>(ImageRva(build,0x51B8AC8,0x51B9EC0))})return false;
+  return Read(m,base+ImageRva(build,kDailyFinalPrimaryVtableRvaV1,0x4B3E9D8)-8,pc) && pc==base+ImageRva(build,kDailyFinalPrimaryColRvaV1,0x51C17F0) &&
+      Read(m,base+ImageRva(build,kDailyFinalSecondaryVtableRvaV1,0x4B3E9A0)-8,sc) && sc==base+ImageRva(build,kDailyFinalSecondaryColRvaV1,0x51C1818) &&
+      Read(m,base+ImageRva(build,kDailyFinalPrimaryVtableRvaV1,0x4B3E9D8)+0x38,bridge) && bridge==base+ImageRva(build,0x8B27B0,0x8B2830) &&
+      Read(m,base+ImageRva(build,kDailyFinalSecondaryVtableRvaV1,0x4B3E9A0)+8,execute) && execute==base+ImageRva(build,0x2E765F0,0x2E76EB0) &&
+      Read(m,base+ImageRva(build,kDailyFinalSecondaryVtableRvaV1,0x4B3E9A0)+0x10,pre) && pre==base+ImageRva(build,0x2E766C0,0x2E76F80) &&
+      Read(m,base+ImageRva(build,kDailyFinalSlotRvaV1,0x4B3E9B8),post) && post==base+ImageRva(build,kDailyFinalFunctionRvaV1,0x2E77B60);
 }
 DailyFinalHookResultV1 Result(DailyFinalHookStateV1 &s,DailyFinalHookResultV1 r) noexcept {
   s.last_result.store(r,std::memory_order_release);return r;
@@ -155,11 +159,12 @@ void Invoke(const Entry &entry) {
 } // namespace
 
 DailyFinalHookBindingsV1 BindDailyFinalHookImageV1(std::uintptr_t base,std::string_view sha) noexcept {
-  if(!base || sha!=kExecutableSha256 ||
-      base>(std::numeric_limits<std::uintptr_t>::max)()-0x6FE5000)return {};
+  const auto build=ImageBuildForSha(sha);
+  if(!base || build==ImageBuildV1::unknown ||
+      base>(std::numeric_limits<std::uintptr_t>::max)()-ImageSize(build))return {};
   return {DailyFinalBindingKindV1::exact_image,base,
-      reinterpret_cast<DailyFinalOriginalV1 *>(base+kDailyFinalSlotRvaV1),
-      Function(base+kDailyFinalFunctionRvaV1)};
+      reinterpret_cast<DailyFinalOriginalV1 *>(base+ImageRva(build,kDailyFinalSlotRvaV1,0x4B3E9B8)),
+      Function(base+ImageRva(build,kDailyFinalFunctionRvaV1,0x2E77B60))};
 }
 DailyFinalHookBindingsV1 DailyFinalHookFixtureBindingsV1(DailyFinalOriginalV1 *slot,
     DailyFinalOriginalV1 original) noexcept {

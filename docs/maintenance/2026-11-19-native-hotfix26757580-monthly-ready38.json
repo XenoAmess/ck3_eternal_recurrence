@@ -1,0 +1,47 @@
+{
+  "schema": "xar.monthly-hotfix26757580.software-ready38/v1",
+  "qualification": "PASS_ISOLATED_NOGAME_READER_ABI_FIXTURE_ONLY",
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\monthly-hotfix38\\ACTUAL-MONTHLY38-01.json",
+    "bytes": 2214,
+    "sha256": "2d7a8945c125a7c1282b98bc187ec74ede7c711e191f3ca5f973fa360024b313"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\monthly-hotfix38\\INPUTS38.json",
+    "bytes": 18432,
+    "sha256": "e27cf1a8f2b9e3486406a06559dbaffb9af41a0ce1ad2871892044972891e2cb"
+  },
+  "program": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\monthly-hotfix38\\build\\monthly_hotfix38.exe",
+    "bytes": 52224,
+    "sha256": "a6b922f736421445376c7d32e9129deea28371ce97585ca64e5129c92ceb6667"
+  },
+  "old_profile_fixture_run_once": true,
+  "hotfix_cases": [
+    "default gate closed before Core/Native calls",
+    "new exact binder and three source-use RVAs",
+    "real reader scalar success",
+    "null borrowed context",
+    "wrong output buffer",
+    "date change during gross",
+    "context full generation change",
+    "C++ throw / SEH during expense",
+    "NET overflow keeps components/null NET",
+    "owner loss after gross clears all and skips expense"
+  ],
+  "three_scalar_ABI": "Borrowed context; gross/secondary/total caller-owned signed64 buffers; false/null expenses arguments; scale100000.",
+  "Ready36_source_DLL_guards_before_after_all_exact": true,
+  "source_and_shared_integration": "Candidate two leaves only in isolated directory, no S/runtime/DLL/scene change; invocation gate defaultOFF.",
+  "not_qualified": [
+    "actual Game Native entries",
+    "actual main-owner/TLS/per-call production custody",
+    "standalone wallet",
+    "Cash/Full pairing",
+    "production serializer or wire",
+    "Java consumer",
+    "military category totals/allRaised semantics",
+    "Treasury stock/payment",
+    "Root/Driver role",
+    "live/deployment"
+  ]
+}

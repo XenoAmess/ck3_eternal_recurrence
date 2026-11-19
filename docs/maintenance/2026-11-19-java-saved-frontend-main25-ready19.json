@@ -1,0 +1,55 @@
+{
+  "schema": "ck3.migration.saved-frontend-normal-main-and-current-consumers-runtime-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "production_change": "explicitly admit opaque Saved policy lifecycle in ordinary Sources; no menu Start or new frontend layout capabilities",
+  "actual_normal_MAIN_package": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/maven-package17.END.json",
+    "bytes": 897,
+    "sha256": "878421f6eb1ebc10183b4b7c73947daf848042a0449351b2aa82d2632b3a0ae7"
+  },
+  "actual_public_saved_consumer_on_new_MAIN": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/genuine-test18.END.json",
+    "bytes": 395,
+    "sha256": "227588e353b3b53dbe43ec8cf85263b03ae58dd01b0907fc21e91be06bba1c09"
+  },
+  "actual_plain_readonly_public_prepare": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/ACTUAL-SAVED-PLAIN-READONLY18.json",
+    "bytes": 268,
+    "sha256": "b8f0964562702c586b06ac14546392f23f9c574bff985c617bc001fbcd7bf9db"
+  },
+  "actual_ENV09_public_reader_and_413_origins": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/ACTUAL-ENV09-NEWMAIN25-ORIGINS18.json",
+    "bytes": 143200,
+    "sha256": "808513b086262a763e43e23a880f8018f2b82a770d4ae36cf72e38fedccc4f0b"
+  },
+  "runtime_classpath": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/DIRECT-RUNTIME-MAIN25-CLASSPATH18.txt",
+    "bytes": 27061,
+    "sha256": "07f16b3fa4904a2ccf085e9dab723c0ac63927eb76cc1c00150e1455d9ba1a7e"
+  },
+  "runtime_frozen_archives": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/MAIN25-FROZEN-RUNTIME-ARCHIVES18.json",
+    "bytes": 73441,
+    "sha256": "b783c49ddc4714b6e411b6d5f77e372817e8a1bfa5d16e07eb22cac435cf5d40"
+  },
+  "actual_entry_prefixes": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/qualification/NORMAL-MAIN25-ENTRY-PREFIXES18.json",
+    "bytes": 1514,
+    "sha256": "2cec8bd987e8f4c1c3baabadff0dba40c7a476ebd865f16ebae2e27144458658"
+  },
+  "genuine_new_local_MAIN": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-frontend-main25/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9611025,
+    "sha256": "89e030e196ea12c249730948262f81b5e6b45c3115bff3bcdcb42ff8e2084243"
+  },
+  "source_regression_3distinct": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-main-runtime24/qualification01/saved-lifecycle15/SAVED-FRONTEND-3-DISTINCT-NOGAME-READY16.json",
+    "bytes": 2092,
+    "sha256": "2aed3a09e2b5994d73983813abe677782b24c6f3a69e45395a62b39bd487b011"
+  },
+  "no_mutation_of_old13": true,
+  "no_TEST_wholeSERVICE_or_live_Root_credit": true,
+  "selected_Main250_schema": "xar.java-loaded-saved-fresh-entry-request/v1",
+  "first_actual_Codex_responder": "/root/java_continue unique WAIT only",
+  "next": "Runtime late Source10/actualplan+v7policy+fresh config; actual current sameplan checker; GSV/Native36 -> warmFull -> fresh mode4. Never reuse partial business-root09 or extend Source09."
+}

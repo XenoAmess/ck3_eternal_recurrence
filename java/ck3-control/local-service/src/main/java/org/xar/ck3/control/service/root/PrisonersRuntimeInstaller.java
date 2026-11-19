@@ -75,7 +75,7 @@ public final class PrisonersRuntimeInstaller {
         preparation=new PrisonerActionBinding12004(context.archive(),queries);
         configuration.definitions().attachCurrent(context,preparation,nativeQueries.contract(0));
         var ledgers=new PrisonerDomainBodyReader12004(slot -> context.borrowedSession().readDomain(slot),context.game().machineId());
-        ordinary=new PrisonerPlanningPorts.Bindings(context.reads(),queries,Optional.of(catalog()),ledgers,preparation,
+        ordinary=new PrisonerPlanningPorts.Bindings(context.reads(),queries,catalog(),ledgers,preparation,
                 (request,value)->new PrisonerPlanningPorts.RecordUnavailable("actual native succession producer/record port must be supplied by the sole M3 owner"));
         var originals=new PrisonerLegacyBinding12004(context.writer(),context.archive(),context.core().actions(),preparation);
         pending=new PrisonerPendingContributor12004(context,originals,configuration.definitions());
@@ -237,13 +237,19 @@ public final class PrisonersRuntimeInstaller {
                     return original;
                 });
     }
-    private PrisonerVanillaResearch.Catalog catalog()throws IOException {
-        var ref=sources.stockInteractions();var witness=SharedSourceFiles.observe(Path.of(ref.path()));
+    private Optional<PrisonerVanillaResearch.Catalog> catalog()throws IOException {
+        return stockCatalog(context.source().exactBuild(),sources.stockInteractions(),context.game().machineId(),context.clock().instant());
+    }
+    /** DATA-only stock selection; unsupported Native profiles retain an unavailable catalog, never a borrowed .4 source. */
+    static Optional<PrisonerVanillaResearch.Catalog> stockCatalog(String exactBuild,ExactRef ref,String machineId,java.time.Instant observedAt)throws IOException {
+        Objects.requireNonNull(exactBuild);Objects.requireNonNull(ref);Objects.requireNonNull(machineId);Objects.requireNonNull(observedAt);
+        if(!exactBuild.equals("1.20.0.4@sha256:"+PrisonerVanillaResearch.EXE_SHA256))return Optional.empty();
+        var witness=SharedSourceFiles.observe(Path.of(ref.path()));
         StrictJson.require(witness.source().bytes()==ref.bytes() && witness.source().sha256().equals(ref.sha256())
                 && ref.bytes()==PrisonerVanillaResearch.STOCK_BYTES && ref.sha256().equals(PrisonerVanillaResearch.STOCK_SHA256),"actual pinned stock prison interaction source required");
         byte[] bytes=Files.readAllBytes(Path.of(ref.path()));SharedSourceFiles.assertUnchanged(witness);
-        var source=new PrisonerVanillaResearch.Source(new G2Source(context.game().machineId(),context.clock().instant().toString(),"1.20.0.4",ref),PrisonerVanillaResearch.EXE_SHA256);
-        return PrisonerVanillaResearch.inspect(bytes,source);
+        var source=new PrisonerVanillaResearch.Source(new G2Source(machineId,observedAt.toString(),"1.20.0.4",ref),PrisonerVanillaResearch.EXE_SHA256);
+        return Optional.of(PrisonerVanillaResearch.inspect(bytes,source));
     }
     /** Supply these actual permissions to the managed transport before creating this per-Game installer. */
     public static List<NativePrivateActionPermission> privatePermissions(Sources sources,NativePrivateActionPermission.QualificationVerifier actualQualification) {

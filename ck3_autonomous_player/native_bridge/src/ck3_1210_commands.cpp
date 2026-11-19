@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_commands.hpp"
 #include <cstring>
 
@@ -29,21 +30,22 @@ TimeCommand MakePauseCommand(const CommandBindings &bindings,
 CommandBindings BindCommandImage(std::uintptr_t image_base,
                                  std::string_view executable_sha256) noexcept {
   CommandBindings bindings{};
-  if (image_base == 0 || executable_sha256 != kExecutableSha256) {
+  const auto build=ImageBuildForSha(executable_sha256);
+  if (image_base == 0 || build==ImageBuildV1::unknown) {
     return bindings;
   }
   bindings.command_manager =
-      reinterpret_cast<void *>(image_base + kCommandManagerRva);
+      reinterpret_cast<void *>(image_base + ImageRva(build,kCommandManagerRva,0x69DBAE0));
   bindings.queue_owned_command = reinterpret_cast<QueueOwnedCommand>(
-      image_base + kQueueOwnedCommandRva);
-  bindings.pause_primary_vtable = image_base + kPausePrimaryVtableRva;
-  bindings.pause_secondary_vtable = image_base + kPauseSecondaryVtableRva;
-  bindings.set_speed_primary_vtable = image_base + kSetSpeedPrimaryVtableRva;
-  bindings.set_speed_secondary_vtable = image_base + kSetSpeedSecondaryVtableRva;
-  bindings.auto_save_primary_vtable = image_base + kAutoSavePrimaryVtableRva;
-  bindings.auto_save_secondary_vtable = image_base + kAutoSaveSecondaryVtableRva;
+      image_base + ImageRva(build,kQueueOwnedCommandRva,0x3E184D0));
+  bindings.pause_primary_vtable = image_base + ImageRva(build,kPausePrimaryVtableRva,0x4E8C908);
+  bindings.pause_secondary_vtable = image_base + ImageRva(build,kPauseSecondaryVtableRva,0x4E8C8D0);
+  bindings.set_speed_primary_vtable = image_base + ImageRva(build,kSetSpeedPrimaryVtableRva,0x4E8C838);
+  bindings.set_speed_secondary_vtable = image_base + ImageRva(build,kSetSpeedSecondaryVtableRva,0x4E8CA38);
+  bindings.auto_save_primary_vtable = image_base + ImageRva(build,kAutoSavePrimaryVtableRva,0x4B3EAA8);
+  bindings.auto_save_secondary_vtable = image_base + ImageRva(build,kAutoSaveSecondaryVtableRva,0x4B3EA70);
   bindings.game_speed_count = reinterpret_cast<const std::int32_t *>(
-      image_base + kGameSpeedCountRva);
+      image_base + ImageRva(build,kGameSpeedCountRva,0x5D3F3EC));
   bindings.enabled = true;
   return bindings;
 }
@@ -88,7 +90,7 @@ CommandSubmitResult SubmitCommandCopy(const CommandBindings &bindings,
     DestroyOwnedCommand(clone_storage);
     return CommandSubmitResult::unavailable;
   }
-  // Match Florin A46420..A46498: move ownership out of the clone's return
+  // Match original Florin A46420..A46498 / hotfix A464A0..A46518: move ownership out of the clone's return
   // storage before invoking the manager. No bridge allocator participates.
   void *queued_command = *returned_storage;
   *returned_storage = nullptr;

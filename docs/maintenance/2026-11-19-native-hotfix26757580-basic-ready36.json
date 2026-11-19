@@ -1,0 +1,78 @@
+{
+  "schema": "xar.native.hotfix26757580.basic-dll-ready36/v1",
+  "created_utc": "2026-11-18T18:19:48.982774+00:00",
+  "qualification": "SOURCE_AND_NOGAME_SOFTWARE_PASS; IMMUTABLE_DLL_CANDIDATE; NO_NEW_LIVE",
+  "exact_build": {
+    "game_version": "1.21.0",
+    "steam_build_id": "26757580",
+    "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+    "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+    "executable_bytes": 114761336,
+    "pe_timestamp": 1795002872,
+    "size_of_image": 117334016
+  },
+  "backend": "ck3-1.21.0-native-headless-main-thread",
+  "protocol_version": 1,
+  "schemas": [
+    "ck3_1210_core_frame_v1",
+    "ck3_1210_full_state_v1",
+    "ck3_1210_played_character_v1",
+    "ck3_1210_core_clock_control_result_v1",
+    "ck3_1210_full_clock_control_result_v1",
+    "ck3_1210_application_exit_result_v1"
+  ],
+  "basic_scope": [
+    "Core prefix",
+    "Full requires paused alive actor; actual empty event queue and typed-empty owned armies/active wars",
+    "existing main-owner/worker/cache gates",
+    "pause/speed; zero-arm terminal date protocol; guarded resume",
+    "normal application exit"
+  ],
+  "not_admitted": [
+    "SAVE",
+    "Cash",
+    "nonempty War/Army/ArmyBase",
+    "Resource standalone",
+    "Roster",
+    "Foundation standalone",
+    "event options/eligibility/actions",
+    "Frontend/loaded feature"
+  ],
+  "dll": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\dll-build01\\r2-hotfix26757580-basic36\\xar_ck3_bridge.dll",
+    "bytes": 13399040,
+    "sha256": "88bf396dc5f5304e0f88e4ee8f0055adf23804a7014781c039ef701ba390656d"
+  },
+  "software": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\hotfix36\\NATIVE-HOTFIX26757580-SOFTWARE-READY36.json",
+    "bytes": 3934,
+    "sha256": "9dd6ca1439bbaf81a5dfa967570e0492cb9cb25bc7b70c782fc99a757f9bea14"
+  },
+  "source_delta": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\hotfix36\\SOURCE-DELTA-HOTFIX36.json",
+    "bytes": 24503,
+    "sha256": "c6a0140a4805cfeb49e20a1bec9e68cdf4b836e21dbae6ad4e66d693af6168d3"
+  },
+  "actual_dll_build": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\hotfix36\\ACTUAL-DLL36-04.json",
+    "bytes": 1664,
+    "sha256": "fcf1944dda29734959ffc393ba15f6d9ca60d3b33dc64e17eb615a382bec8d38"
+  },
+  "frozen_DLL_guards": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\hotfix36\\FROZEN-DLL36.json",
+    "bytes": 2037,
+    "sha256": "4e1e23a5b4d00f15e07a4ca4be30b6820ddb79e47f2c91176c81ecfe61ed1a0f"
+  },
+  "permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-HOTFIXBB36-320M-NOGAME-THEN-DLL-PERMIT63.json",
+    "bytes": 2997,
+    "sha256": "2a4245e6e513301fa5454dd242ed59635f2e8aa33c50173338a0dfb74bd5826e"
+  },
+  "installed_static_identity": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\POST-USER-PLAY-INSTALLED-STATIC-BASELINE01.json",
+    "bytes": 7758,
+    "sha256": "18a7b87761503bad5db6d578641261986d9ba8c2ebe13663c3a49dde9c67ca29"
+  },
+  "preserved_history": "Old2F2B profile and frozen17/21/24/26/27/29 bytes preserved. DLL25 remains withdrawn and absent. 32merge/33ABI/34armed-cancel remain source/NoGame only.",
+  "adoption": "Runtime alone may late-check executable/DLL identity, cold adopt and perform any Game/SDK/live qualification. None performed here."
+}

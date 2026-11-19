@@ -36,7 +36,7 @@ public sealed interface CoreFrame permits CoreFrame.Partial, CoreFrame.Unavailab
     static String schema(ExactCk3Build build) {
         return switch (build) {
             case CK3_12004 -> "ck3_12004_core_frame_v1";
-            case CK3_1210 -> "ck3_1210_core_frame_v1";
+            case CK3_1210, CK3_1210_STEAM_26757580 -> "ck3_1210_core_frame_v1";
         };
     }
     static CoreFrame decode(RawJson original) {
@@ -49,10 +49,11 @@ public sealed interface CoreFrame permits CoreFrame.Partial, CoreFrame.Unavailab
         String sha256 = RegistryJson.text(row.get("executable_sha256"));
         ExactCk3Build build;
         if (ExactCk3Build.CK3_12004.matches(version, sha256)) build = ExactCk3Build.CK3_12004;
-        else if (ExactCk3Build.CK3_1210.matches(version, sha256)) build = ExactCk3Build.CK3_1210;
+        else if (ExactCk3Build.florinCoreFullBuild(version, sha256).isPresent())
+            build = ExactCk3Build.florinCoreFullBuild(version, sha256).orElseThrow();
         else throw new IllegalArgumentException("core frame exact source mismatch");
         RegistryJson.require(schema(build).equals(RegistryJson.text(row.get("schema")))
-                && ("ck3-" + build.version() + "-msvc-x64").equals(RegistryJson.text(row.get("adapter_id")))
+                && build.coreFullAdapterId().equals(RegistryJson.text(row.get("adapter_id")))
                 && ("ck3-" + build.version() + "-native-headless-main-thread").equals(RegistryJson.text(row.get("backend"))), "core frame exact source mismatch");
         RegistryJson.require(!RegistryJson.bool(row.get("complete_snapshot")), "core frame must remain partial");
         List<String> excluded = RegistryJson.array(row.get("excluded_snapshot_families")).stream().map(RegistryJson::text).toList();

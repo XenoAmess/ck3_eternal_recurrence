@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_actor_foundation_v1.hpp"
 
 #include <array>
@@ -239,7 +240,7 @@ bool ReadImpl(const ActorFoundationBindingsV1 &bindings,
 ActorFoundationBindingsV1 BindActorFoundationImageV1(std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept {
   ActorFoundationBindingsV1 result{};
-  if (image_base == 0 || executable_sha256 != kExecutableSha256 ||
+  if (image_base == 0 || ImageBuildForSha(executable_sha256)==ImageBuildV1::unknown ||
       image_base > (std::numeric_limits<std::uintptr_t>::max)() -
           kJominiStateSlotRva - (sizeof(void *) - 1)) return result;
   result.core = BindCoreImage(image_base, executable_sha256);

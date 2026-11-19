@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
@@ -45,7 +46,7 @@ bool ExecuteCoreFrameMailboxV1(void *opaque,
     return true;
   }
   if (context->game == nullptr || !context->game->enabled() ||
-      !game::IsCk3_1210Descriptor(context->game->descriptor()) ||
+      !game::IsCk3_1210BasicDescriptor(context->game->descriptor()) ||
       !context->game->supports(kCoreFrameCapabilityV1) || context->read_core == nullptr) {
     output.unavailable_reason = "exact_core_reader_unavailable";
     return true;
@@ -79,15 +80,15 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreFrameMailboxEnvironmentV1
   return BindThreadRuntimeImage(module_base, executable_sha256, executors);
 }
 
-std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation) {
+std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation,ImageBuildV1 build) {
   std::string result = "{\"schema\":";
   AppendString(result, kCoreFrameSchemaV1);
   result += ",\"game_version\":";
   AppendString(result, kGameVersion);
   result += ",\"executable_sha256\":";
-  AppendString(result, kExecutableSha256);
+  AppendString(result, ExecutableShaForBuild(build));
   result += ",\"adapter_id\":";
-  AppendString(result, kAdapterId);
+  AppendString(result, AdapterIdForBuild(build));
   result += ",\"backend\":\"ck3-1.21.0-native-headless-main-thread\",\"status\":";
   AppendString(result, observation.core_available ? "partial" : "unavailable");
   result += ",\"complete_snapshot\":false,\"core_available\":";
@@ -120,11 +121,11 @@ std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation) {
 }
 
 std::string SerializeCoreFrameCommandResultV1(std::string_view request_id,
-    const CoreFrameObservationV1 &observation) {
+    const CoreFrameObservationV1 &observation,ImageBuildV1 build) {
   std::string result = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendString(result, request_id);
   result += ",\"ok\":true,\"result\":";
-  result += SerializeCoreFrameV1(observation);
+  result += SerializeCoreFrameV1(observation,build);
   result += '}';
   return result;
 }

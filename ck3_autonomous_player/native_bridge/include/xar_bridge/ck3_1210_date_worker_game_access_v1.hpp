@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/ck3_1210.hpp"
 #include <cstdint>
 #include <string_view>
 
@@ -20,6 +21,7 @@ struct DateWorkerGameAccessBindingsV1 {
   bool exact_build_admitted=false,offline_fixture=false;
   std::uintptr_t module_base=0;
   DateWorkerGameAccessFixtureV1 fixture{};
+  ImageBuildV1 image_build=ImageBuildV1::original26622941;
 };
 DateWorkerGameAccessBindingsV1 BindDateWorkerGameAccessImageV1(
     std::uintptr_t,std::string_view) noexcept;

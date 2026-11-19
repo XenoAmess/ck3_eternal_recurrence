@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_military_empty_v1.hpp"
 
 #include <cstring>
@@ -320,16 +321,16 @@ MilitaryEmptyBindingsV1 BindMilitaryEmptyImageV1(std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept {
   MilitaryEmptyBindingsV1 result{};
   constexpr auto top = kMilitaryUnitRegistryRvaV1 + sizeof(void *) - 1;
-  if (image_base == 0 || executable_sha256 != kExecutableSha256 ||
+  if (image_base == 0 || ImageBuildForSha(executable_sha256)==ImageBuildV1::unknown ||
       image_base > (std::numeric_limits<std::uintptr_t>::max)() - top) return result;
   result.core = BindCoreImage(image_base, executable_sha256);
   if (!result.core.enabled) return {};
-  result.unit_registry_slot = reinterpret_cast<void **>(image_base + kMilitaryUnitRegistryRvaV1);
-  result.war_registry_slot = reinterpret_cast<void **>(image_base + kMilitaryWarRegistryRvaV1);
-  result.unit_registry_vtable = image_base + kMilitaryUnitRegistryVtableRvaV1;
-  result.war_registry_vtable = image_base + kMilitaryWarRegistryVtableRvaV1;
-  result.unit_manager_vtable = image_base + kMilitaryUnitManagerVtableRvaV1;
-  result.war_manager_vtable = image_base + kMilitaryWarManagerVtableRvaV1;
+  result.unit_registry_slot = reinterpret_cast<void **>(image_base + ImageRva(ImageBuildForSha(executable_sha256),kMilitaryUnitRegistryRvaV1,0x6A679E0));
+  result.war_registry_slot = reinterpret_cast<void **>(image_base + ImageRva(ImageBuildForSha(executable_sha256),kMilitaryWarRegistryRvaV1,0x6A67910));
+  result.unit_registry_vtable = image_base + ImageRva(ImageBuildForSha(executable_sha256),kMilitaryUnitRegistryVtableRvaV1,0x4EA5198);
+  result.war_registry_vtable = image_base + ImageRva(ImageBuildForSha(executable_sha256),kMilitaryWarRegistryVtableRvaV1,0x4E9D308);
+  result.unit_manager_vtable = image_base + ImageRva(ImageBuildForSha(executable_sha256),kMilitaryUnitManagerVtableRvaV1,0x4EA51D0);
+  result.war_manager_vtable = image_base + ImageRva(ImageBuildForSha(executable_sha256),kMilitaryWarManagerVtableRvaV1,0x4E9D4B8);
   result.exact_build_admitted = true;
   return result;
 }

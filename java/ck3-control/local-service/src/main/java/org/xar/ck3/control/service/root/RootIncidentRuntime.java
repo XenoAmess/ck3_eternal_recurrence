@@ -54,6 +54,7 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         ActionPorts.IntentPreparationPort, NativeEventEffects.ObservedAfter, EventIncidentCapturePort, RetainedIncidentBatchSource {
     private static final String BASIS_SCHEMA = "xar.java.incident-observation-original/v1";
     private static final int MAX_BASIS = 1 << 20;
+    private static final int MAX_IMPLEMENTATION_SOURCE = 64 << 20;
     private static final int MAX_EPISODES = RetainedIncidentBatchSource.MAX_BATCHES;
 
     /** Fixed configured roles only: no previous ManagedGame, writer Session, journal or runtime closure. */
@@ -68,7 +69,7 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
             baseConfiguration.trustedInteractions().orElseThrow().verifyCurrentRoots();
             StrictJson.require(baseConfiguration.trustedInteractions().orElseThrow().machineId().equals(actualContext.game().machineId()),
                     "Configured incident sources belong to another machine");
-            verify(implementationSource, MAX_BASIS);
+            verifyImplementationSource(implementationSource);
             return new RootIncidentRuntime(this, actualContext);
         }
     }
@@ -782,6 +783,21 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
                 && java.util.Arrays.equals(DriverJson.encode(expected.semantic()), DriverJson.encode(rebuilt.semantic())), "Actual incident full-frame replay differs");
     }
     private static void unchanged(Session same, String head) throws IOException { StrictJson.require(head.equals(same.head().digest()), "Incident side evidence changed the authoritative ledger head"); }
+    /** Implementation carriers are not incident JSON; large carriers must be the identical actually loaded journal archive. */
+    static void verifyImplementationSource(ExactRef ref) throws IOException {
+        Objects.requireNonNull(ref);
+        if(ref.bytes()<=MAX_BASIS){verify(ref,MAX_BASIS);return;}
+        StrictJson.require(ref.bytes()<=MAX_IMPLEMENTATION_SOURCE,"Bounded incident implementation source required");
+        var resource=EpisodeIncidentJournal.class.getResource("/"+EpisodeIncidentJournal.class.getName().replace('.','/')+".class");
+        StrictJson.require(resource!=null&&"jar".equals(resource.getProtocol()),"Large incident implementation requires its actually loaded journal archive");
+        var connection=(java.net.JarURLConnection)resource.openConnection();connection.setUseCaches(false);
+        Path actual;
+        try{actual=Path.of(connection.getJarFileURL().toURI()).toAbsolutePath().normalize();}
+        catch(java.net.URISyntaxException|IllegalArgumentException invalid){throw new IOException("Invalid loaded journal archive",invalid);}
+        StrictJson.require(actual.toString().equals(ref.path())&&EpisodeIncidentJournal.measure(actual).equals(ref),
+                "Incident implementation differs from its actually loaded journal archive");
+        verify(ref,MAX_IMPLEMENTATION_SOURCE);
+    }
     private static ObjectNode read(ExactRef ref, int maximum) throws IOException { verify(ref, maximum); JsonNode node = StrictJson.parse(Files.readAllBytes(Path.of(ref.path())), maximum); StrictJson.require(node instanceof ObjectNode, "Original incident object required"); return (ObjectNode)node; }
     private static void verify(ExactRef ref, int maximum) throws IOException {
         StrictJson.require(ref.bytes() > 0 && ref.bytes() <= maximum, "Bounded original incident metadata required");

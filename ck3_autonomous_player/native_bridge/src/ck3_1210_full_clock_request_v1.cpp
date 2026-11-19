@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_full_clock_request_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_request_v1.hpp"
 #include "xar_bridge/ck3_1210_event_option_control_v1.hpp"
@@ -54,13 +55,13 @@ bool EqualString(Cursor &cursor, std::string_view expected) noexcept {
   return cursor.String(value) && value == expected;
 }
 
-bool ExactHash(Cursor &cursor) noexcept {
+bool ExactHash(Cursor &cursor,ImageBuildV1 build) noexcept {
   std::string_view value;
   if (!cursor.String(value) || value.size() != 64) return false;
   for (std::size_t i = 0; i < value.size(); ++i) {
     char ch = value[i];
     if (ch >= 'a' && ch <= 'f') ch = static_cast<char>(ch - 'a' + 'A');
-    if (ch != kExecutableSha256[i]) return false;
+    if (ch != ExecutableShaForBuild(build)[i]) return false;
   }
   return true;
 }
@@ -88,7 +89,7 @@ bool SnapshotId(Cursor &cursor, std::uint64_t &revision) noexcept {
 }
 
 bool Claim(Cursor &cursor, std::uint64_t &revision, std::uint64_t &deadline,
-    std::string_view schema = kFullClockRequestClaimSchemaV1) noexcept {
+    ImageBuildV1 build,std::string_view schema = kFullClockRequestClaimSchemaV1) noexcept {
   if (!cursor.Take('{')) return false;
   std::uint32_t seen = 0;
   std::uint64_t snapshot_revision = 0;
@@ -105,9 +106,9 @@ bool Claim(Cursor &cursor, std::uint64_t &revision, std::uint64_t &deadline,
     } else if (key == "game_version") {
       bit = 1U << 1; valid = EqualString(cursor, kGameVersion);
     } else if (key == "executable_sha256") {
-      bit = 1U << 2; valid = ExactHash(cursor);
+      bit = 1U << 2; valid = ExactHash(cursor,build);
     } else if (key == "adapter_id") {
-      bit = 1U << 3; valid = EqualString(cursor, kAdapterId);
+      bit = 1U << 3; valid = EqualString(cursor, AdapterIdForBuild(build));
     } else if (key == "backend") {
       bit = 1U << 4; valid = EqualString(cursor, kCoreBackendV1);
     } else if (key == "snapshot_id") {
@@ -183,9 +184,9 @@ bool DateSentinelStep(std::string_view value, DateSentinelArmRequestV1 &parsed) 
 } // namespace
 
 bool ParseFullClockRequestV1(std::string_view payload,
-    FullClockRequestV1 &output) noexcept {
+    FullClockRequestV1 &output,ImageBuildV1 build) noexcept {
   output = {};
-  if (payload.size() > 16384) return false;
+  if (build==ImageBuildV1::unknown || payload.size() > 16384) return false;
   Cursor cursor{payload};
   FullClockRequestV1 parsed{};
   std::uint64_t expected_revision = 0;
@@ -212,7 +213,7 @@ bool ParseFullClockRequestV1(std::string_view payload,
       bit = 1U << 4; valid = cursor.Unsigned(expected_revision) && expected_revision > 0;
     } else if (key == "full_snapshot_clock_control") {
       bit = 1U << 5;
-      valid = Claim(cursor, parsed.native_revision, parsed.deadline_unix_ms);
+      valid = Claim(cursor, parsed.native_revision, parsed.deadline_unix_ms,build);
     } else if (key == "arguments") {
       bit = 1U << 6; valid = cursor.Take('{') && cursor.Take('}');
     }
@@ -241,7 +242,7 @@ bool ParseEventOptionRequestV1(std::string_view payload,EventOptionRequestV1 &ou
     else if(key=="step") {bit=8;valid=cursor.String(parsed.step);}
     else if(key=="expected_revision") {bit=16;valid=cursor.Unsigned(revision)&&revision>0;}
     else if(key=="event_option_control") {
-      bit=32;valid=Claim(cursor,parsed.native_revision,parsed.deadline_unix_ms,kEventOptionClaimSchemaV1);
+      bit=32;valid=Claim(cursor,parsed.native_revision,parsed.deadline_unix_ms,ImageBuildV1::original26622941,kEventOptionClaimSchemaV1);
     } else if(key=="arguments") {
       bit=64;valid=cursor.Take('{')&&cursor.String(value)&&value=="event_instance_id"&&
           cursor.Take(':')&&cursor.Unsigned(number)&&number>0&&number<=2147483647ULL&&cursor.Take('}');
@@ -267,9 +268,9 @@ bool ParseEventOptionRequestV1(std::string_view payload,EventOptionRequestV1 &ou
 }
 
 bool ParseDateSentinelArmRequestV1(std::string_view payload,
-    DateSentinelArmRequestV1 &output) noexcept {
+    DateSentinelArmRequestV1 &output,ImageBuildV1 build) noexcept {
   output = {};
-  if (payload.size() > 16384) return false;
+  if (build==ImageBuildV1::unknown || payload.size() > 16384) return false;
   Cursor cursor{payload};
   DateSentinelArmRequestV1 parsed{};
   std::string_view step;
@@ -297,7 +298,7 @@ bool ParseDateSentinelArmRequestV1(std::string_view payload,
       bit = 1U << 4; valid = cursor.Unsigned(expected_revision) && expected_revision > 0;
     } else if (key == "date_sentinel_arm") {
       bit = 1U << 5;
-      valid = Claim(cursor, parsed.native_revision, parsed.deadline_unix_ms,
+      valid = Claim(cursor, parsed.native_revision, parsed.deadline_unix_ms,build,
           kDateSentinelArmRequestClaimSchemaV1);
     } else if (key == "arguments") {
       bit = 1U << 6; valid = cursor.Take('{') && cursor.Take('}');

@@ -8,6 +8,7 @@
 // Installation identity supplied by Runtime M0. No address or layout is
 // admitted by these constants; Florin gameplay bindings remain unported.
 namespace xar::ck3_1210 {
+enum class ImageBuildV1 { original26622941, hotfix26757580, unknown };
 inline constexpr char kGameVersion[] = "1.21.0";
 inline constexpr char kAdapterId[] = "ck3-1.21.0-msvc-x64";
 inline constexpr char kSteamBuildId[] = "26622941";
@@ -51,6 +52,7 @@ struct CoreBindings {
   void **jomini_state_slot = nullptr;
   void **character_storage_slot = nullptr;
   GetLocalPlayer get_local_player = nullptr;
+  ImageBuildV1 image_build = ImageBuildV1::original26622941;
 };
 struct CoreSnapshotPrefix {
   ClockPrefix clock{};

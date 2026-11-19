@@ -31,7 +31,7 @@ class FlorinAdapter final : public GameAdapter {
 public:
   explicit FlorinAdapter(ck3_1210::CoreBindings bindings, ck3_1210::FullSnapshotBindingsV1 full={}) noexcept : core_(bindings),full_(full) {}
   const AdapterDescriptor &descriptor() const noexcept override {
-    return Ck3_1210AdapterDescriptor();
+    return ck3_1210::IsHotfix(core_.image_build)?Ck3_1210Hotfix26757580AdapterDescriptor():Ck3_1210AdapterDescriptor();
   }
   bool enabled() const noexcept override { return core_.enabled; }
   void BindSnapshotOwner(const ck3_11906::MainThreadQueryMailboxV1 &m) const noexcept {owner_mailbox_.store(&m);}
@@ -268,8 +268,8 @@ private:
       const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
       if(!base || m->module_base!=base || m->game_state_slot!=reinterpret_cast<std::uintptr_t>(core_.game_state_slot) ||
           m->jomini_state_slot!=reinterpret_cast<std::uintptr_t>(core_.jomini_state_slot) ||
-          m->tls_initialized_flag!=base+ck3_1210::kMainThreadTlsInitializedFlagRva ||
-          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)!=base+ck3_1210::kMainThreadTlsContextGetterRva)return MarkSnapshotOwnerUnavailable();
+          m->tls_initialized_flag!=base+ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsInitializedFlagRva,ck3_1210::hotfix26757580::kTlsFlag) ||
+          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)!=base+ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsContextGetterRva,ck3_1210::hotfix26757580::kTlsGetter))return MarkSnapshotOwnerUnavailable();
       const auto d=ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*m);
       const auto tid=GetCurrentThreadId();
       if((!d.iat_installed && !d.sdl_poll_event_hook_installed) || d.stop_requested || d.failure_flags ||
@@ -281,12 +281,14 @@ private:
       const auto tls=reinterpret_cast<std::uintptr_t>(m->tls_context_getter());
       if(tls!=d.observed_tls_context || *reinterpret_cast<const std::uint8_t *>(m->tls_initialized_flag)!=1 ||
           *reinterpret_cast<const std::uint8_t *>(tls+0x20)!=1)return MarkSnapshotOwnerUnavailable();
+      void *state=nullptr,*jomini=nullptr;
+      ck3_1210::IngameReadyObservationV1 ingame{};
+      if(!ck3_1210::IsHotfix(core_.image_build)) {
       const auto &ready_core=full_.ingame_ready.core;
       if(!full_.ingame_ready.exact_build_admitted || ready_core.game_state_slot!=core_.game_state_slot ||
           ready_core.jomini_state_slot!=core_.jomini_state_slot ||
           ready_core.character_storage_slot!=core_.character_storage_slot ||
           ready_core.get_local_player!=core_.get_local_player)return MarkSnapshotOwnerUnavailable();
-      void *state=nullptr,*jomini=nullptr;
       std::memcpy(&state,core_.game_state_slot,sizeof(state));std::memcpy(&jomini,core_.jomini_state_slot,sizeof(jomini));
       const IngameReadyOwnerIdentity identity{m,tid,tls,reinterpret_cast<std::uintptr_t>(state),
         reinterpret_cast<std::uintptr_t>(jomini)};
@@ -295,13 +297,17 @@ private:
           d.owner_verified_pump_epochs<ingame_ready_owner_verified_)ingame_ready_witness_={};
       ingame_ready_owner_=identity;ingame_ready_owner_pump_=d.pump_epochs;
       ingame_ready_owner_verified_=d.owner_verified_pump_epochs;
-      ck3_1210::IngameReadyObservationV1 ingame{};
       if(!ck3_1210::ObserveIngameReadyV1(full_.ingame_ready,ingame_ready_witness_,ingame)) {
         if(reason)*reason=ingame.unavailable_reason;
         // A valid first graph must retain its baseline until a real frame ends.
         return false;
       }
       if(ingame.graph.root!=jomini) {ingame_ready_witness_={};return MarkSnapshotOwnerUnavailable();}
+      } else {
+      std::memcpy(&state,core_.game_state_slot,sizeof(state));std::memcpy(&jomini,core_.jomini_state_slot,sizeof(jomini));
+        // BB3 basic Full does not claim the original-image lifecycle witness.
+        ingame_ready_witness_={};
+      }
       void *data=nullptr,*characters=nullptr;
       std::memcpy(&data,static_cast<const std::byte *>(state)+ck3_1210::kGameStateDataOffset,sizeof(data));
       if(core_.character_storage_slot)std::memcpy(&characters,core_.character_storage_slot,sizeof(characters));
@@ -313,8 +319,8 @@ private:
           *reinterpret_cast<void *const *>(static_cast<const std::byte *>(state)+ck3_1210::kGameStateDataOffset)==data &&
           (!core_.character_storage_slot || *core_.character_storage_slot==characters) &&
           m->module_base==base &&
-          m->tls_initialized_flag==base+ck3_1210::kMainThreadTlsInitializedFlagRva &&
-          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)==base+ck3_1210::kMainThreadTlsContextGetterRva &&
+          m->tls_initialized_flag==base+ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsInitializedFlagRva,ck3_1210::hotfix26757580::kTlsFlag) &&
+          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)==base+ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsContextGetterRva,ck3_1210::hotfix26757580::kTlsGetter) &&
           *reinterpret_cast<const std::uint8_t *>(m->tls_initialized_flag)==1 &&
           reinterpret_cast<std::uintptr_t>(m->tls_context_getter())==tls &&
           *reinterpret_cast<const std::uint8_t *>(tls+0x20)==1 &&
@@ -346,7 +352,7 @@ private:
 bool BindCk3_1210SnapshotOwnerMailbox(const GameAdapter &game,
     const ck3_11906::MainThreadQueryMailboxV1 &mailbox) noexcept {
   const auto *florin=dynamic_cast<const FlorinAdapter *>(&game);
-  if(!florin || !florin->enabled() || !IsCk3_1210Descriptor(game.descriptor()))return false;
+  if(!florin || !florin->enabled() || !IsCk3_1210BasicDescriptor(game.descriptor()))return false;
   florin->BindSnapshotOwner(mailbox);return true;
 }
 
@@ -417,6 +423,27 @@ const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
   return descriptor;
 }
 
+const AdapterDescriptor &Ck3_1210Hotfix26757580AdapterDescriptor() noexcept {
+#if defined(XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1)
+  static constexpr std::string_view caps[]{
+    ck3_1210::kCoreFrameCapabilityV1,"game.state.snapshot","game.query.fresh-full-state.v1",
+    ck3_1210::kCoreControlCapabilityV1,ck3_1210::kFullClockControlCapabilityV1,
+    ck3_1210::kDateSentinelCapabilityV1,
+    "game.command.pause-map","game.command.resume-map",
+    "game.command.set-speed-1","game.command.set-speed-2","game.command.set-speed-3",
+    "game.command.set-speed-4","game.command.set-speed-5",
+    "game.command.research-arm-tactical-daily-sentinel-v1-N",
+    "game.command.research-query-tactical-daily-sentinel-v1",
+    "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+    ck3_1210::kApplicationExitCapabilityV1};
+#else
+  static constexpr std::array<std::string_view,0> caps{};
+#endif
+  static const AdapterDescriptor d{ck3_1210::hotfix26757580::kAdapterId,ck3_1210::kGameVersion,
+    ck3_1210::hotfix26757580::kExecutableSha256,"xar_checkpoint",caps};
+  return d;
+}
+
 std::unique_ptr<GameAdapter> CreateCk3_1210AdapterFromBindings(
     ck3_1210::CoreBindings bindings) noexcept {
   return std::make_unique<FlorinAdapter>(bindings);
@@ -436,6 +463,12 @@ bool ReadCk3_1210TimelineCoreSnapshot(const GameAdapter &adapter,
 std::unique_ptr<GameAdapter> CreateCk3_1210Adapter(
     std::string_view executable_sha256) noexcept {
   ck3_1210::CoreBindings core{};
+#if !defined(XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1)
+  if(executable_sha256==ck3_1210::hotfix26757580::kExecutableSha256) {
+    core.image_build=ck3_1210::ImageBuildV1::hotfix26757580;
+    return CreateCk3_1210AdapterFromBindings(core);
+  }
+#endif
 #if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
   core = ck3_1210::BindCoreImage(
       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), executable_sha256);

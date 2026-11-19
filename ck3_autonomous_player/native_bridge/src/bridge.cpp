@@ -2835,7 +2835,7 @@ std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter 
     result += ",\"snapshot_cached\":";
     result += observer.snapshot_cached ? "true" : "false";
     result += '}';
-    if(xar::game::IsCk3_1210Descriptor(game.descriptor()) && game.supports_snapshot()) {
+    if(xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) && game.supports_snapshot()) {
       const auto full=xar::game::ReadCk3_1210FullSnapshotDiagnostics(worker->native_adapter());
       result += ",\"full_snapshot_1210\":{\"complete\":";
       result += full.complete?"true":"false";
@@ -2854,7 +2854,7 @@ std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter 
       result += "}";
     }
   }
-  if(xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+  if(xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) &&
       g_date_sentinel_1210_v1.initialized.load(std::memory_order_acquire)) {
     // These atomic fields are diagnostics, not a coherent world observation.
     const auto &d=g_date_sentinel_1210_v1;
@@ -6012,9 +6012,7 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
                                const xar::game::AdapterDescriptor *descriptor = nullptr) {
   std::string result = "{\"type\":\"state_snapshot\",\"protocol_version\":1,"
                        "\"snapshot_id\":\"native:";
-  const bool florin = descriptor != nullptr && descriptor->game_version=="1.21.0" &&
-    descriptor->executable_sha256=="2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC" &&
-    descriptor->adapter_id=="ck3-1.21.0-msvc-x64";
+  const bool florin = descriptor != nullptr && xar::game::IsCk3_1210BasicDescriptor(*descriptor);
   const auto append_build = [&](std::string_view schema) {
     result += "\"schema\":"; AppendJsonString(result,schema);
     result += ",\"game_version\":"; AppendJsonString(result,descriptor->game_version);
@@ -12387,7 +12385,7 @@ public:
   }
 
   void MaybeInstallFrontend() noexcept {
-    if (game_ != nullptr && xar::game::IsCk3_1210Descriptor(game_->descriptor())) {
+    if (game_ != nullptr && xar::game::IsCk3_1210BasicDescriptor(game_->descriptor())) {
       InstallCoreFrame1210();
       return;
     }
@@ -15342,7 +15340,7 @@ bool RunFreshFullStateQuery12004(HANDLE pipe,
   if (!xar::bridge::JsonUnsignedField(payload, "expected_revision", expected_revision) ||
       expected_revision != 0) return fail("fresh_read_requires_revision_zero");
   if (!game.enabled() ||
-      (!xar::game::IsCk3_12004Descriptor(game.descriptor()) && !xar::game::IsCk3_1210Descriptor(game.descriptor())) ||
+      (!xar::game::IsCk3_12004Descriptor(game.descriptor()) && !xar::game::IsCk3_1210BasicDescriptor(game.descriptor())) ||
       !game.supports_snapshot() || !game.supports(capability))
     return fail("fresh_full_state_unavailable");
   xar::game::Snapshot observed{};
@@ -15424,7 +15422,7 @@ std::string RunCoreFrameQuery1210(const xar::game::GameAdapter &game,
     return CommandResultFrame(request_id, step, false,
         "core-frame query requires standalone expected_revision zero");
   }
-  if (!xar::game::IsCk3_1210Descriptor(game.descriptor()) || !game.supports_step(step)) {
+  if (!xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) || !game.supports_step(step)) {
     return CommandResultFrame(request_id, step, false,
         "exact core-frame query is unavailable");
   }
@@ -15437,7 +15435,7 @@ std::string RunCoreFrameQuery1210(const xar::game::GameAdapter &game,
       &query, ticket);
   if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
     query.observation.unavailable_reason = "application_main_not_ready";
-    return xar::ck3_1210::SerializeCoreFrameCommandResultV1(request_id, query.observation);
+    return xar::ck3_1210::SerializeCoreFrameCommandResultV1(request_id, query.observation,xar::game::Ck3_1210BasicBuild(game.descriptor()));
   }
   auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
       g_main_thread_query_mailbox_v1, ticket, 8'000);
@@ -15454,7 +15452,7 @@ std::string RunCoreFrameQuery1210(const xar::game::GameAdapter &game,
     query.observation = {};
     query.observation.unavailable_reason = "application_main_result_not_reclaimable";
   }
-  return xar::ck3_1210::SerializeCoreFrameCommandResultV1(request_id, query.observation);
+  return xar::ck3_1210::SerializeCoreFrameCommandResultV1(request_id, query.observation,xar::game::Ck3_1210BasicBuild(game.descriptor()));
 }
 
 #if defined(XAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1)
@@ -15669,14 +15667,15 @@ std::string RunPersonalCashQuery1210(const xar::game::GameAdapter &game,
 std::string RunCoreControl1210(const xar::game::GameAdapter &game,
     std::string_view request_id, std::string_view step, std::string_view payload) {
   using namespace xar::ck3_1210;
+  const auto image_build=xar::game::Ck3_1210BasicBuild(game.descriptor());
   CoreControlContextV1 query{};
-  if (!ParseCoreControlRequestV1(payload,query.request) || query.request.step!=step) {
+  if (!ParseCoreControlRequestV1(payload,query.request,image_build) || query.request.step!=step) {
     return CommandResultFrame(request_id,step,false,"invalid exact held-core clock control request");
   }
-  if (!xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+  if (!xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) ||
       !game.enabled() || !game.supports(kCoreControlCapabilityV1) ||
       (step==kApplicationExitStepV1 ? !game.supports(kApplicationExitCapabilityV1) : !game.supports_step(step))) {
-    return SerializeCoreControlCommandResultV1(request_id,step,query.result);
+    return SerializeCoreControlCommandResultV1(request_id,step,query.result,{},0,image_build);
   }
   const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   query.game=&game;
@@ -15694,7 +15693,7 @@ std::string RunCoreControl1210(const xar::game::GameAdapter &game,
   const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(
       g_main_thread_query_mailbox_v1,&ExecuteCoreControlMailboxV1,&query,query.ticket);
   if (submitted!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
-    return SerializeCoreControlCommandResultV1(request_id,step,query.result);
+    return SerializeCoreControlCommandResultV1(request_id,step,query.result,{},0,image_build);
   }
   auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(
       g_main_thread_query_mailbox_v1,query.ticket,8'000);
@@ -15711,7 +15710,7 @@ std::string RunCoreControl1210(const xar::game::GameAdapter &game,
     query.result.status=query.result.effect_attempted
         ? CoreControlStatusV1::indeterminate : CoreControlStatusV1::unavailable;
   }
-  return SerializeCoreControlCommandResultV1(request_id,step,query.result);
+  return SerializeCoreControlCommandResultV1(request_id,step,query.result,{},0,image_build);
 }
 
 std::string RunGuiControl1210(const xar::game::GameAdapter &game,WorkerState &state,
@@ -15825,11 +15824,12 @@ std::string RunEventOptionControl1210(const xar::game::GameAdapter &game,
 std::string RunFullClockControl1210(const xar::game::GameAdapter &game,
     WorkerState &state,std::string_view id,std::string_view step,std::string_view payload) {
   using namespace xar::ck3_1210;
+  const auto image_build=xar::game::Ck3_1210BasicBuild(game.descriptor());
   CoreControlContextV1 query{};FullClockRequestV1 request{};
-  const auto answer=[&]() {return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1);};
-  if(!ParseFullClockRequestV1(payload,request) || request.step!=step)
+  const auto answer=[&]() {return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1,0,image_build);};
+  if(!ParseFullClockRequestV1(payload,request,image_build) || request.step!=step)
     return CommandResultFrame(id,step,false,"invalid exact full-snapshot clock request");
-  if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+  if(!game.enabled() || !xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) ||
       !game.supports(kFullClockControlCapabilityV1) || !game.supports_step(step) ||
       !game.supports_snapshot() || !state.previous_snapshot ||
       state.state_revision==0 || request.native_revision!=state.state_revision) return answer();
@@ -15870,17 +15870,18 @@ std::string RunFullClockControl1210(const xar::game::GameAdapter &game,
     ++state.checkpoint_submission.sequence;state.checkpoint_submission.date_raw=expected.date_raw;
   }
   return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1,
-      request.operation==CoreControlOperationV1::save?state.checkpoint_submission.sequence:0);
+      request.operation==CoreControlOperationV1::save?state.checkpoint_submission.sequence:0,image_build);
 }
 
 std::string RunDateSentinelArm1210(const xar::game::GameAdapter &game,WorkerState &state,
     std::string_view id,std::string_view step,std::string_view payload) {
   using namespace xar::ck3_1210;
+  const auto image_build=xar::game::Ck3_1210BasicBuild(game.descriptor());
   DateSentinelArmRequestV1 parsed{};CoreControlContextV1 query{};
-  const auto answer=[&](){return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1);};
-  if(!ParseDateSentinelArmRequestV1(payload,parsed) || parsed.Step()!=step)
+  const auto answer=[&](){return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1,0,image_build);};
+  if(!ParseDateSentinelArmRequestV1(payload,parsed,image_build) || parsed.Step()!=step)
     return CommandResultFrame(id,step,false,"invalid exact date-only arm request");
-  if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+  if(!game.enabled() || !xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) ||
       !game.supports(kDateSentinelCapabilityV1) || !game.supports(kFullClockControlCapabilityV1) ||
       !game.supports_step(step) || !game.supports_snapshot() || !state.previous_snapshot ||
       state.state_revision==0 || parsed.native_revision!=state.state_revision) return answer();
@@ -15926,9 +15927,10 @@ std::string RunDateSentinelArm1210(const xar::game::GameAdapter &game,WorkerStat
 std::string RunDateSentinelCancel1210(const xar::game::GameAdapter &game,
     std::string_view id,std::string_view step) {
   using namespace xar::ck3_1210;
+  const auto image_build=xar::game::Ck3_1210BasicBuild(game.descriptor());
   CoreControlContextV1 query{};std::uint64_t generation=0;
-  const auto answer=[&](){return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1);};
-  if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+  const auto answer=[&](){return SerializeCoreControlCommandResultV1(id,step,query.result,kFullClockControlResultSchemaV1,0,image_build);};
+  if(!game.enabled() || !xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) ||
       !game.supports(kDateSentinelCapabilityV1) || !game.supports_step(step) ||
       !xar::ck3_11906::ParseTacticalDailySentinelCancelStepV1(step,generation))return answer();
   xar::ck3_11906::TacticalDailySentinelStatusV1 current{};
@@ -16564,7 +16566,7 @@ void RunConnectedSession(
 #endif
         if (!early_step_dispatched && step == xar::ck3_12004::kCoreFrameStepV1) {
           connected = write_frame(pipe,
-              xar::game::IsCk3_1210Descriptor(game.descriptor())
+              xar::game::IsCk3_1210BasicDescriptor(game.descriptor())
                   ? RunCoreFrameQuery1210(game, request_id, incoming.payload)
                   : RunCoreFrameQuery12004(game, request_id, incoming.payload));
           early_step_dispatched = true;
@@ -16610,7 +16612,7 @@ void RunConnectedSession(
           connected=write_frame(pipe,RunEventOptionControl1210(game,state,request_id,step,incoming.payload));
           early_step_dispatched=true;
         }
-        if (!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+        if (!early_step_dispatched && xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) &&
             (step=="pause-map" || step=="resume-map" || step=="save-checkpoint" ||
              step==xar::ck3_1210::kApplicationExitStepV1 ||
              (step.size()==11 && step.starts_with("set-speed-") && step[10]>='1' && step[10]<='5'))) {
@@ -16621,19 +16623,19 @@ void RunConnectedSession(
           else connected=write_frame(pipe,RunCoreControl1210(game,request_id,step,incoming.payload));
           early_step_dispatched=true;
         }
-        if(!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+        if(!early_step_dispatched && xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) &&
             step.starts_with(xar::ck3_11906::kTacticalDailySentinelArmPrefixV1)) {
           connected=write_frame(pipe,RunDateSentinelArm1210(game,state,request_id,step,incoming.payload));
           early_step_dispatched=true;
         }
-        if(!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+        if(!early_step_dispatched && xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) &&
             step==xar::ck3_11906::kTacticalDailySentinelStatusStepV1) {
           connected=write_frame(pipe,game.supports(xar::ck3_1210::kDateSentinelCapabilityV1)
               ?TacticalDailySentinelResultFrame(request_id,step,xar::ck3_1210::ReadDateSentinelStatusV1(g_date_sentinel_1210_v1))
               :CommandResultFrame(request_id,step,false,"date-only sentinel unavailable"));
           early_step_dispatched=true;
         }
-        if(!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+        if(!early_step_dispatched && xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) &&
             step.starts_with(xar::ck3_11906::kTacticalDailySentinelCancelPrefixV1)) {
           connected=write_frame(pipe,RunDateSentinelCancel1210(game,request_id,step));
           early_step_dispatched=true;
@@ -31323,7 +31325,7 @@ DWORD WINAPI WorkerMain(void *) noexcept {
   const bool new_build = game->enabled() &&
       (xar::game::IsReviewedCrozierAdapter(*game) ||
        ((xar::game::IsCk3_12004Descriptor(game->descriptor()) ||
-         xar::game::IsCk3_1210Descriptor(game->descriptor())) && game->supports_snapshot()));
+         xar::game::IsCk3_1210BasicDescriptor(game->descriptor())) && game->supports_snapshot()));
   const xar::game::GameAdapter &session_game = new_build
       ? static_cast<const xar::game::GameAdapter &>(new_worker_adapter) : *game;
   WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(
@@ -31458,7 +31460,7 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   if (!game->enabled()) {
     return TRUE;
   }
-  if (xar::game::IsCk3_1210Descriptor(game->descriptor())) {
+  if (xar::game::IsCk3_1210BasicDescriptor(game->descriptor())) {
     if(game->supports(xar::ck3_1210::kDateSentinelCapabilityV1)) {
       const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
       const auto sha=game->descriptor().executable_sha256;

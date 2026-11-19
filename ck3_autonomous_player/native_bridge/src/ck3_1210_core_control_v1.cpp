@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #include <windows.h>
@@ -42,9 +43,9 @@ bool Owned(CoreControlContextV1 &c,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   const char *required=RequiredCapability(c.request);
   if (required==nullptr || c.game == nullptr || !c.game->enabled() || !c.game->supports(required) ||
-      !game::IsCk3_1210Descriptor(c.game->descriptor()) ||
+      !game::IsCk3_1210BasicDescriptor(c.game->descriptor()) ||
       !c.game->supports(kCoreControlCapabilityV1) || c.mailbox == nullptr ||
-      !c.core.enabled || (c.request.operation!=CoreControlOperationV1::application_exit && !c.commands.enabled) || c.ticket.sequence == 0 ||
+      !c.core.enabled || c.core.image_build!=game::Ck3_1210BasicBuild(c.game->descriptor()) || (c.request.operation!=CoreControlOperationV1::application_exit && !c.commands.enabled) || c.ticket.sequence == 0 ||
       stamp.pump_epoch == 0 || stamp.thread_id == 0 ||
       GetCurrentThreadId() != stamp.thread_id || stamp.tls_initialized != 1 ||
       stamp.tls_main_thread_marker != 1 || stamp.tls_context == 0 ||
@@ -52,8 +53,9 @@ bool Owned(CoreControlContextV1 &c,
   const bool full=c.native_full_adapter!=nullptr || c.expected_full_snapshot!=nullptr;
   if(full && (c.native_full_adapter==nullptr || c.expected_full_snapshot==nullptr ||
       !c.game->supports(kFullClockControlCapabilityV1) ||
-      !game::IsCk3_1210Descriptor(c.native_full_adapter->descriptor()) ||
-      !c.native_full_adapter->supports_snapshot())) return false;
+      !game::IsCk3_1210BasicDescriptor(c.native_full_adapter->descriptor()) ||
+      !c.native_full_adapter->supports_snapshot() ||
+      game::Ck3_1210BasicBuild(c.native_full_adapter->descriptor())!=c.core.image_build)) return false;
   const auto &m = *c.mailbox;
   return ck3_11906::IsMainThreadTimelineExecutorV1(m,&ExecuteCoreControlMailboxV1) &&
       m.owner_verified_pump_epochs.load(std::memory_order_acquire)>=
@@ -297,7 +299,7 @@ const char *StatusName(CoreControlStatusV1 status) noexcept {
 } // namespace
 std::string SerializeCoreControlCommandResultV1(std::string_view request_id,
     std::string_view step, const CoreControlResultV1 &result,
-    std::string_view result_schema,std::uint64_t checkpoint_sequence) {
+    std::string_view result_schema,std::uint64_t checkpoint_sequence,ImageBuildV1 build) {
   const bool accepted=result.status==CoreControlStatusV1::submitted ||
       result.status==CoreControlStatusV1::already_satisfied ||
       result.status==CoreControlStatusV1::exit_requested || result.status==CoreControlStatusV1::exit_already_requested;
@@ -309,8 +311,8 @@ std::string SerializeCoreControlCommandResultV1(std::string_view request_id,
   AppendString(output,!result_schema.empty()?result_schema:
       application_exit?kApplicationExitResultSchemaV1:kCoreControlResultSchemaV1);
   output += R"(,"game_version":)"; AppendString(output,kGameVersion);
-  output += R"(,"executable_sha256":)"; AppendString(output,kExecutableSha256);
-  output += R"(,"adapter_id":)"; AppendString(output,kAdapterId);
+  output += R"(,"executable_sha256":)"; AppendString(output,ExecutableShaForBuild(build));
+  output += R"(,"adapter_id":)"; AppendString(output,AdapterIdForBuild(build));
   output += R"(,"backend":)"; AppendString(output,kCoreBackendV1);
   output += R"(,"step":)"; AppendString(output,step);
   output += accepted ? R"(,"accepted":true)" : R"(,"accepted":false)";

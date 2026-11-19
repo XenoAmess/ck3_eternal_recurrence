@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
 #include <array>
 #include <cstring>
@@ -151,7 +152,7 @@ bool CommandScope(const DateSentinelStateV1 &s,std::uint32_t &id,std::uint8_t &i
   if(s.fixture_only)return s.bindings.worker_fixture.scope(s.bindings.worker_fixture.context,id,initialized,scope,access);
 #if defined(_MSC_VER) && defined(_M_X64)
   return Fault([&]() noexcept {
-    initialized=*reinterpret_cast<const std::uint8_t *>(s.bindings.module_base+kTlsFlagRva);
+    initialized=*reinterpret_cast<const std::uint8_t *>(s.bindings.module_base+ImageRva(s.bindings.core.image_build,kTlsFlagRva,hotfix26757580::kTlsFlag));
     const auto vector=__readgsqword(0x58);if(!vector)return false;
     const auto block=At<std::uintptr_t>(reinterpret_cast<const void *>(vector),0);
     if(!block || block>(std::numeric_limits<std::uintptr_t>::max)()-0x6E1)return false;
@@ -317,8 +318,8 @@ std::uint32_t Owner(const DateSentinelStateV1 &s,std::uintptr_t &context,
       phase==old::MainThreadQueryMailboxStateV1::detached || phase==old::MainThreadQueryMailboxStateV1::detaching ||
       phase==old::MainThreadQueryMailboxStateV1::infrastructure_failed)return date_sentinel_failure_owner;
   if(!s.fixture_only && (m.offline_fixture || m.module_base!=s.bindings.module_base ||
-      m.tls_initialized_flag!=s.bindings.module_base+kTlsFlagRva ||
-      reinterpret_cast<std::uintptr_t>(m.tls_context_getter)!=s.bindings.module_base+kTlsGetterRva ||
+      m.tls_initialized_flag!=s.bindings.module_base+ImageRva(s.bindings.core.image_build,kTlsFlagRva,hotfix26757580::kTlsFlag) ||
+      reinterpret_cast<std::uintptr_t>(m.tls_context_getter)!=s.bindings.module_base+ImageRva(s.bindings.core.image_build,kTlsGetterRva,hotfix26757580::kTlsGetter) ||
       m.game_state_slot!=reinterpret_cast<std::uintptr_t>(s.bindings.core.game_state_slot) ||
       m.jomini_state_slot!=reinterpret_cast<std::uintptr_t>(s.bindings.core.jomini_state_slot)))return date_sentinel_failure_owner;
   if(!m.tls_initialized_flag || !m.tls_context_getter || !Fault([&]() noexcept {
@@ -364,20 +365,20 @@ old::Bindings Legacy(const CoreBindings &c) noexcept {
   b.jomini_state_slot=c.jomini_state_slot;b.get_local_player=c.get_local_player;return b;
 }
 bool ProductionGuard(const DateSentinelBindingsV1 &b) noexcept {
-  if(!b.module_base || b.module_base>(std::numeric_limits<std::uintptr_t>::max)()-0x6FE5000)return false;
-  const auto core=BindCoreImage(b.module_base,kExecutableSha256);
+  if(!b.module_base || b.module_base>(std::numeric_limits<std::uintptr_t>::max)()-ImageSize(b.core.image_build))return false;
+  const auto core=BindCoreImage(b.module_base,ExecutableShaForBuild(b.core.image_build));
   if(b.core.enabled!=core.enabled || b.core.game_state_slot!=core.game_state_slot ||
       b.core.jomini_state_slot!=core.jomini_state_slot || b.core.character_storage_slot!=core.character_storage_slot ||
       b.core.get_local_player!=core.get_local_player ||
-      reinterpret_cast<std::uintptr_t>(b.set_paused)!=b.module_base+kPauseRva ||
+      reinterpret_cast<std::uintptr_t>(b.set_paused)!=b.module_base+ImageRva(b.core.image_build,kPauseRva,hotfix26757580::kPause) ||
       b.utc_now || b.monotonic_now || b.clock_context || AnyFixture(b.worker_fixture) ||
-      b.command_manager!=b.module_base+kManagerRva || b.worker_function!=b.module_base+kWorkerRva)return false;
+      b.command_manager!=b.module_base+ImageRva(b.core.image_build,kManagerRva,hotfix26757580::kManager) || b.worker_function!=b.module_base+ImageRva(b.core.image_build,kWorkerRva,hotfix26757580::kWorker))return false;
   return Fault([&]() noexcept {
-    return std::memcmp(reinterpret_cast<const void *>(b.module_base+kPauseRva),kPauseEntry.data(),kPauseEntry.size())==0 &&
-      std::memcmp(reinterpret_cast<const void *>(b.module_base+kWorkerRva),kConsumerEntry.data(),kConsumerEntry.size())==0 &&
-      std::memcmp(reinterpret_cast<const void *>(b.module_base+0x3E1D180),kRunnerEntry.data(),kRunnerEntry.size())==0 &&
-      std::memcmp(reinterpret_cast<const void *>(b.module_base+0x3E1D194),kScopeBegin.data(),kScopeBegin.size())==0 &&
-      std::memcmp(reinterpret_cast<const void *>(b.module_base+0x3E1D286),kScopeEnd.data(),kScopeEnd.size())==0;
+    return std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,kPauseRva,hotfix26757580::kPause)),kPauseEntry.data(),kPauseEntry.size())==0 &&
+      std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,kWorkerRva,hotfix26757580::kWorker)),kConsumerEntry.data(),kConsumerEntry.size())==0 &&
+      std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,0x3E1D180,hotfix26757580::kRunner)),kRunnerEntry.data(),kRunnerEntry.size())==0 &&
+      std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,0x3E1D194,hotfix26757580::kScopeBegin)),kScopeBegin.data(),kScopeBegin.size())==0 &&
+      std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,0x3E1D286,hotfix26757580::kScopeEnd)),kScopeEnd.data(),kScopeEnd.size())==0;
   });
 }
 struct WorkerAbortCall {DateSentinelStateV1 &s;};
@@ -416,10 +417,11 @@ bool EvaluateWorkerBody(void *opaque) noexcept {
 } // namespace
 DateSentinelBindingsV1 BindDateSentinelImageV1(std::uintptr_t base,std::string_view sha) noexcept {
   DateSentinelBindingsV1 b{};
-  if(!base || sha!=kExecutableSha256 || base>(std::numeric_limits<std::uintptr_t>::max)()-0x6FE5000)return b;
+  b.core.image_build=ImageBuildForSha(sha);
+  if(!base || b.core.image_build==ImageBuildV1::unknown || base>(std::numeric_limits<std::uintptr_t>::max)()-ImageSize(b.core.image_build))return b;
   b.exact_build_admitted=true;b.module_base=base;b.core=BindCoreImage(base,sha);
-  b.set_paused=reinterpret_cast<old::TacticalSetPausedV1>(base+kPauseRva);
-  b.command_manager=base+kManagerRva;b.worker_function=base+kWorkerRva;return b;
+  b.set_paused=reinterpret_cast<old::TacticalSetPausedV1>(base+ImageRva(b.core.image_build,kPauseRva,hotfix26757580::kPause));
+  b.command_manager=base+ImageRva(b.core.image_build,kManagerRva,hotfix26757580::kManager);b.worker_function=base+ImageRva(b.core.image_build,kWorkerRva,hotfix26757580::kWorker);return b;
 }
 bool InitializeDateSentinelV1(DateSentinelStateV1 &s,const DateSentinelBindingsV1 &b,
     old::MainThreadQueryMailboxV1 &m) noexcept {

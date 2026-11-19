@@ -45,7 +45,13 @@ public final class RootGrantLegacyClaims {
     private RootGrantLegacyClaims(RootRuntimeContext context,OriginalRuntimeHandoffProof.Provider provider,RootManagedSessionScope javaSession,List<ExactRef> sources){this.context=java.util.Objects.requireNonNull(context);this.provider=java.util.Objects.requireNonNull(provider);this.javaSession=javaSession;this.implementationSources=List.copyOf(sources);}
     static RootGrantLegacyClaims forJavaSession(RootRuntimeContext context,OriginalRuntimeHandoffProof.Provider legacyProvider,
             KnownInteractionsRuntimeInstaller sameKnown,List<ExactRef> implementationSources)throws IOException {
-        sameKnown.requireContext(context);return new RootGrantLegacyClaims(context,legacyProvider,RootManagedSessionScope.bind(context,implementationSources),implementationSources);
+        sameKnown.requireContext(context);var actualSources=implementationClosure(implementationSources);
+        return new RootGrantLegacyClaims(context,legacyProvider,RootManagedSessionScope.bind(context,actualSources),actualSources);
+    }
+    static List<ExactRef> implementationClosure(List<ExactRef> roleSources) {
+        var actual=List.copyOf(List.copyOf(roleSources).stream().distinct().toList());
+        need(actual.stream().map(ExactRef::path).distinct().count()==actual.size(),"Conflicting actual implementation source pins");
+        return actual;
     }
     private Path store(){return context.game().launchPlan().stateDirectory().resolve("native-session").resolve("grant-title-picker-actions").toAbsolutePath().normalize();}
     void requireSourceFrame(org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete actual)throws IOException {

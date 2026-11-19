@@ -1251,13 +1251,14 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var source=new FullClockReceived(this,received,until);requireFullClockOriginal(source,until);return source;
         }catch(IOException|RuntimeException invalid){return new FullClockReadUnavailable(read,reason(invalid));}
     }
-    private void requireFlorinFullClockSource()throws IOException{
+    private ExactCk3Build requireFlorinFullClockSource()throws IOException{
         if(hello==null)throw new IOException("actual Full clock HELLO unavailable");
         var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
-        if(!ExactCk3Build.CK3_1210.matches(NativeWire.text(original.get("expected_ck3_version")),hello.gameSha256())
-                ||!hello.adapterId().equals("ck3-1.21.0-msvc-x64")
+        var profile=ExactCk3Build.florinCoreFullBuild(NativeWire.text(original.get("expected_ck3_version")),hello.gameSha256());
+        if(profile.filter(build->hello.adapterId().equals(build.coreFullAdapterId())).isEmpty()
                 ||!hello.capabilities().contains(NativeFreshSnapshotPort.CAPABILITY)||!hello.capabilities().contains("game.state.snapshot"))
             throw new IOException("Full clock source requires exact Florin and both advertised full-state capabilities");
+        return profile.orElseThrow();
     }
     private void requireFullClockOriginal(FullClockReceived actual,Instant deadline)throws IOException{
         Objects.requireNonNull(deadline);
@@ -1677,9 +1678,12 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         String id="full-clock-"+UUID.randomUUID().toString().replace("-","");
         try {
             Objects.requireNonNull(before);Objects.requireNonNull(prepared);Objects.requireNonNull(deadline);requireFullClockOriginal(before,deadline);
+            if(ExactCk3Build.CK3_1210_STEAM_26757580.executableSha256().equalsIgnoreCase(hello.gameSha256())
+                    &&prepared.step().equals("save-checkpoint"))
+                throw new IOException("this hotfix Full clock profile does not qualify SAVE");
             if(applicationExitAttempted||before.writeAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
                 throw new IOException("Full clock source cannot reuse a write or borrow another active continuation");
-            var expected=FullSnapshotClockControl.request(prepared.step(),before.frame().snapshotId(),before.frame().nativeRevision(),deadline);
+            var expected=FullSnapshotClockControl.request(requireFlorinFullClockSource(),prepared.step(),before.frame().snapshotId(),before.frame().nativeRevision(),deadline);
             if(!prepared.equals(expected))throw new IOException("Full clock request differs from its exact canonical source preparation");
             if(!hello.capabilities().contains(prepared.requiredCapability().orElseThrow()))throw new IOException("actual Full clock command capability unavailable");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
@@ -1704,6 +1708,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(outcome instanceof AckReceived ack){
             String uncertain=null;
             try {
+                requireFlorinFullClockSource();
+                var profile=ExactCk3Build.florinCoreFullBuild(
+                        NativeWire.text(NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length))).get("expected_ck3_version")),hello.gameSha256()).orElseThrow();
+                requireFlorinFullTuple(NativeWire.object(NativeWire.parse(ack.originalResultToken().orElseThrow().bytes())),
+                        FullSnapshotClockControlResult.SCHEMA,profile);
                 var assessment=FullSnapshotClockControlResult.decode(ack,request.step());
                 if(assessment.disposition()==FullSnapshotClockControlResult.Disposition.UNKNOWN)
                     uncertain="Native Full clock result is uncertain: "+assessment.queueStatus();
@@ -2052,7 +2061,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         ObjectNode rawHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
         String version=NativeWire.text(rawHello.get("expected_ck3_version"));
         if(!decoded.equals(actual.frame)||!decoded.build().matches(version,hello.gameSha256())
-                ||!hello.adapterId().equals("ck3-"+decoded.build().version()+"-msvc-x64"))
+                ||!hello.adapterId().equals(decoded.build().coreFullAdapterId()))
             throw new IOException("core result belongs to another exact executable or original received frame");
     }
     /** The fixed standalone partial-prefix read. It cannot carry a caller-selected step or mutation. */
@@ -2064,8 +2073,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             String version=NativeWire.text(original.get("expected_ck3_version"));
             boolean exactFour=ExactCk3Build.CK3_12004.matches(version,hello.gameSha256())
                     &&hello.adapterId().equals("ck3-1.20.0.4-msvc-x64");
-            boolean exactFlorin=ExactCk3Build.CK3_1210.matches(version,hello.gameSha256())
-                    &&hello.adapterId().equals("ck3-1.21.0-msvc-x64");
+            boolean exactFlorin=ExactCk3Build.florinCoreFullBuild(version,hello.gameSha256())
+                    .filter(build->hello.adapterId().equals(build.coreFullAdapterId())).isPresent();
             if (!hello.capabilities().contains("game.query.core-frame.v1")||!(exactFour||exactFlorin))
                 throw new IOException("standalone core prefix requires the original ready exact core build and advertised capability");
             if (sentRequestIds.size() >= maximumSubmissions) throw new IOException("Native request identity retention limit reached");
@@ -2086,8 +2095,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             boolean exactFour=hello.adapterId().equals("ck3-1.20.0.4-msvc-x64")
                     &&hello.gameSha256().equalsIgnoreCase("98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518")
                     &&version.equals("1.20.0.4");
-            boolean exactFlorin=ExactCk3Build.CK3_1210.matches(version,hello.gameSha256())
-                    &&hello.adapterId().equals("ck3-1.21.0-msvc-x64");
+            boolean exactFlorin=ExactCk3Build.florinCoreFullBuild(version,hello.gameSha256())
+                    .filter(build->hello.adapterId().equals(build.coreFullAdapterId())).isPresent();
             if(!hello.capabilities().contains(NativeFreshSnapshotPort.CAPABILITY)||!hello.capabilities().contains("game.state.snapshot")||!(exactSix||exactFour||exactFlorin))
                 throw new IOException("fresh full-state READ requires an exact supported HELLO and both independent full-state capabilities");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
@@ -3184,24 +3193,32 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         ObjectNode originalHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
         var expectedVersion=originalHello.get("expected_ck3_version");
         if(expectedVersion!=null&&!expectedVersion.isTextual())throw new IOException("optional HELLO version must be text when present");
-        boolean florin=expectedVersion!=null&&ExactCk3Build.CK3_1210.matches(NativeWire.text(expectedVersion),hello.gameSha256())
-                &&hello.adapterId().equals("ck3-1.21.0-msvc-x64");
+        var profile=expectedVersion==null?Optional.<ExactCk3Build>empty()
+                :ExactCk3Build.florinCoreFullBuild(NativeWire.text(expectedVersion),hello.gameSha256());
+        boolean florin=profile.filter(build->hello.adapterId().equals(build.coreFullAdapterId())).isPresent();
         var actor=raw.get("played_character");
         if(florin) {
             StrictJson.require(hello.capabilities().contains(NativeFreshSnapshotPort.CAPABILITY)
                     &&hello.capabilities().contains("game.state.snapshot"),"Florin full state requires both advertised full-state capabilities");
-            requireFlorinFullTuple(raw,"ck3_1210_full_state_v1");
-            if(actor!=null&&!actor.isNull())requireFlorinFullTuple(NativeWire.object(actor),"ck3_1210_played_character_v1");
+            requireFlorinFullTuple(raw,"ck3_1210_full_state_v1",profile.orElseThrow());
+            if(actor!=null&&!actor.isNull())requireFlorinFullTuple(NativeWire.object(actor),"ck3_1210_played_character_v1",profile.orElseThrow());
+            if(profile.orElseThrow()==ExactCk3Build.CK3_1210_STEAM_26757580) {
+                StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
+                        "hotfix initial Full profile requires an explicit null active_event");
+                for(String field:List.of("active_wars","player_armies"))
+                    StrictJson.require(raw.path(field).isArray()&&raw.path(field).isEmpty(),
+                            "hotfix initial Full profile requires explicit empty "+field);
+            }
         } else {
             StrictJson.require(!raw.path("schema").asText().equals("ck3_1210_full_state_v1")
                     &&(actor==null||!actor.path("schema").asText().equals("ck3_1210_played_character_v1")),
                     "Florin full-state semantics cannot borrow a legacy HELLO");
         }
     }
-    private static void requireFlorinFullTuple(ObjectNode value,String schema)throws IOException {
+    private static void requireFlorinFullTuple(ObjectNode value,String schema,ExactCk3Build expected)throws IOException {
         StrictJson.require(schema.equals(NativeWire.text(value.get("schema")))
-                &&ExactCk3Build.CK3_1210.matches(NativeWire.text(value.get("game_version")),NativeWire.text(value.get("executable_sha256")))
-                &&"ck3-1.21.0-msvc-x64".equals(NativeWire.text(value.get("adapter_id")))
+                &&expected.matches(NativeWire.text(value.get("game_version")),NativeWire.text(value.get("executable_sha256")))
+                &&expected.coreFullAdapterId().equals(NativeWire.text(value.get("adapter_id")))
                 &&"ck3-1.21.0-native-headless-main-thread".equals(NativeWire.text(value.get("backend"))),
                 "Florin full-state schema/executable/adapter/backend tuple mismatch");
     }

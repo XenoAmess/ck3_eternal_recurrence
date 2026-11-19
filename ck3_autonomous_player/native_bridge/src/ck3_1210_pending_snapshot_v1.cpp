@@ -76,15 +76,29 @@ struct Header {
   void *object = nullptr, *slots = nullptr;
   std::uintptr_t vtable = 0;
   std::int32_t capacity = 0;
+  std::uintptr_t manager_vtable = 0;
+  void *manager_database = nullptr;
   bool operator==(const Header &) const = default;
 };
-bool ReadHeader(const PendingSnapshotBindingsV1 &b, Header &h,
+bool ReadHeader(const PendingSnapshotBindingsV1 &b, const Roots &roots, Header &h,
     std::string_view &reason) noexcept {
   reason = "pending_header_unreadable";
   if (!Load(b.pending_storage_slot, 0, h.object) || h.object == nullptr) return false;
   if (!Load(h.object, 0, h.vtable) || !Load(h.object, 0x20, h.slots) ||
       !Load(h.object, 0x2C, h.capacity)) return false;
   if (h.vtable != b.database_vtable) { reason = "pending_database_type_mismatch"; return false; }
+  if (b.owner_manager_vtable) {
+    const auto offset = b.owner_manager_data_offset;
+    if (offset > (std::numeric_limits<std::size_t>::max)() - 0x50 ||
+        !Load(roots.data, offset, h.manager_vtable) ||
+        h.manager_vtable != b.owner_manager_vtable) {
+      reason = "pending_manager_type_mismatch"; return false;
+    }
+    if (!Load(roots.data, offset + 0x50, h.manager_database) ||
+        h.manager_database != h.object) {
+      reason = "pending_manager_registry_mismatch"; return false;
+    }
+  }
   if (h.capacity < 0) { reason = "pending_capacity_invalid"; return false; }
   if (static_cast<std::size_t>(h.capacity) > kPendingSnapshotMaxSlotsV1) {
     reason = "pending_capacity_bound"; return false;
@@ -118,6 +132,8 @@ bool ReadImpl(const PendingSnapshotBindingsV1 &b, const CoreSnapshotPrefix &expe
   if (!b.pending_storage_slot || !b.is_pending_for_character || !b.validate_reply ||
       !b.database_vtable || !b.pending_vtable || !b.reply_primary_vtable ||
       !b.reply_secondary_vtable) return Fail(output, "pending_binding_unavailable");
+  if ((b.owner_manager_vtable == 0) != (b.owner_manager_data_offset == 0))
+    return Fail(output, "pending_binding_unavailable");
   if (!expected.clock.paused) return Fail(output, "requires_paused");
   if (!expected.map_ready) return Fail(output, "map_not_ready");
   if (expected.local_player_id < 0 || !expected.has_played_character ||
@@ -134,7 +150,7 @@ bool ReadImpl(const PendingSnapshotBindingsV1 &b, const CoreSnapshotPrefix &expe
   if (!ReadActor(b.core, expected, actor)) return Fail(output, "player_identity_unavailable");
   Header header{};
   std::string_view reason;
-  if (!ReadHeader(b, header, reason)) return Fail(output, reason);
+  if (!ReadHeader(b, roots, header, reason)) return Fail(output, reason);
 
   // Trivial, bounded stack storage: no allocation or SEH-unwind heap ownership.
   std::array<Sample, kPendingSnapshotMaxSlotsV1> first{};
@@ -178,7 +194,7 @@ bool ReadImpl(const PendingSnapshotBindingsV1 &b, const CoreSnapshotPrefix &expe
   if (!ReadActor(b.core, expected, confirmed_actor) || !(confirmed_actor == actor))
     return Fail(output, "player_identity_changed");
   Header confirmed_header{};
-  if (!ReadHeader(b, confirmed_header, reason) || !(confirmed_header == header))
+  if (!ReadHeader(b, confirmed_roots, confirmed_header, reason) || !(confirmed_header == header))
     return Fail(output, "pending_header_changed");
   // Includes every null/occupied row, not just the selected interaction. No
   // native callback is invoked during confirmation, so a late callback cannot
@@ -191,7 +207,7 @@ bool ReadImpl(const PendingSnapshotBindingsV1 &b, const CoreSnapshotPrefix &expe
   Header tail_header{};
   Actor tail_actor{};
   Roots tail_roots{};
-  if (!ReadHeader(b, tail_header, reason) || !(tail_header == header))
+  if (!ReadHeader(b, roots, tail_header, reason) || !(tail_header == header))
     return Fail(output, "pending_header_changed");
   if (!ReadActor(b.core, expected, tail_actor) || !(tail_actor == actor))
     return Fail(output, "player_identity_changed");
@@ -221,20 +237,30 @@ bool ReadImpl(const PendingSnapshotBindingsV1 &b, const CoreSnapshotPrefix &expe
 PendingSnapshotBindingsV1 BindPendingSnapshotImageV1(std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept {
   PendingSnapshotBindingsV1 b{};
+  const bool hotfix = executable_sha256 == pending_hotfix26757580::kExecutableSha256;
+  const bool historical = executable_sha256 ==
+      "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC";
+  const auto slot = hotfix ? pending_hotfix26757580::kStorageSlotRva : kPendingSnapshotStorageSlotRvaV1;
   constexpr auto max = (std::numeric_limits<std::uintptr_t>::max)();
-  if (image_base == 0 || executable_sha256 != kExecutableSha256 ||
-      image_base > max - kPendingSnapshotStorageSlotRvaV1 - (sizeof(void *) - 1))
+  if (image_base == 0 || (!hotfix && !historical) || image_base > max - slot - (sizeof(void *) - 1))
     return b;
+  // Central exact Core selection remains the unique Native owner's dependency.
   b.core = BindCoreImage(image_base, executable_sha256);
   if (!b.core.enabled) return {};
   b.exact_build_admitted = true;
-  b.pending_storage_slot = reinterpret_cast<void **>(image_base + kPendingSnapshotStorageSlotRvaV1);
-  b.is_pending_for_character = reinterpret_cast<PendingForCharacterV1>(image_base + kPendingSnapshotPredicateRvaV1);
-  b.validate_reply = reinterpret_cast<PendingReplyValidatorV1>(image_base + kPendingSnapshotValidatorRvaV1);
-  b.database_vtable = image_base + kPendingSnapshotDatabaseVtableRvaV1;
-  b.pending_vtable = image_base + kPendingSnapshotObjectVtableRvaV1;
-  b.reply_primary_vtable = image_base + kPendingSnapshotReplyPrimaryRvaV1;
-  b.reply_secondary_vtable = image_base + kPendingSnapshotReplySecondaryRvaV1;
+  b.pending_storage_slot = reinterpret_cast<void **>(image_base + slot);
+  b.is_pending_for_character = reinterpret_cast<PendingForCharacterV1>(image_base +
+      (hotfix ? pending_hotfix26757580::kPredicateRva : kPendingSnapshotPredicateRvaV1));
+  b.validate_reply = reinterpret_cast<PendingReplyValidatorV1>(image_base +
+      (hotfix ? pending_hotfix26757580::kValidatorRva : kPendingSnapshotValidatorRvaV1));
+  b.database_vtable = image_base + (hotfix ? pending_hotfix26757580::kDatabaseVtableRva : kPendingSnapshotDatabaseVtableRvaV1);
+  b.pending_vtable = image_base + (hotfix ? pending_hotfix26757580::kObjectVtableRva : kPendingSnapshotObjectVtableRvaV1);
+  b.reply_primary_vtable = image_base + (hotfix ? pending_hotfix26757580::kReplyPrimaryRva : kPendingSnapshotReplyPrimaryRvaV1);
+  b.reply_secondary_vtable = image_base + (hotfix ? pending_hotfix26757580::kReplySecondaryRva : kPendingSnapshotReplySecondaryRvaV1);
+  if (hotfix) {
+    b.owner_manager_vtable = image_base + pending_hotfix26757580::kOwnerManagerVtableRva;
+    b.owner_manager_data_offset = pending_hotfix26757580::kOwnerManagerDataOffset;
+  }
   return b;
 }
 bool ReadPendingSnapshotV1(const PendingSnapshotBindingsV1 &bindings,

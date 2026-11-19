@@ -41,8 +41,8 @@ public final class KnownInteractionsRuntimeInstaller {
         public static ConfiguredBuild select(String version,String executableSha256) {
             for(var build:InteractionModels.Build.values())
                 if(build.version().equals(version)&&build.sha256().equalsIgnoreCase(executableSha256))return legacy(build);
-            var florin=ExactCk3Build.CK3_1210;
-            if(florin.matches(version,executableSha256))return new ConfiguredBuild(florin.version(),florin.executableSha256(),null);
+            var florin=ExactCk3Build.florinCoreFullBuild(version,executableSha256);
+            if(florin.isPresent())return new ConfiguredBuild(florin.orElseThrow().version(),florin.orElseThrow().executableSha256(),null);
             throw new IllegalArgumentException("unsupported configured interaction build");
         }
         public String version(){return version;}

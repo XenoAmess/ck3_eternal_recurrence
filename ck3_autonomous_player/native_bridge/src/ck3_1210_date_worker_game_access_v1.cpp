@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_date_worker_game_access_v1.hpp"
 #include "xar_bridge/ck3_1210.hpp"
 #include <Windows.h>
@@ -15,6 +16,7 @@ constexpr std::array<unsigned char,32> kAcquireEntry{
 constexpr std::array<unsigned char,32> kDestroyEntry{
   0x48,0x83,0xEC,0x28,0x80,0x79,0x20,0x00,0x4C,0x8B,0xC1,0x74,0x16,0x48,0x8B,0x41,
   0x08,0x0F,0x10,0x41,0x10,0x0F,0x10,0x08,0x0F,0x11,0x00,0x0F,0x11,0x49,0x10,0xC6};
+constexpr std::array<unsigned char,32> kHotfixAcquireEntry{0x40,0x53,0x48,0x83,0xEC,0x20,0x48,0x8D,0x0D,0x83,0xE1,0xED,0x01,0xFF,0x15,0x8D,0x41,0xB7,0x00,0x48,0x8D,0x0D,0x86,0xE1,0xED,0x01,0xFF,0x15,0x80,0x41,0xB7,0x00};
 bool Model(const DateWorkerGameAccessBindingsV1 &b) noexcept {
   return b.offline_fixture && b.module_base==0 && b.fixture.sample &&
       b.fixture.acquire && b.fixture.destroy;
@@ -22,10 +24,10 @@ bool Model(const DateWorkerGameAccessBindingsV1 &b) noexcept {
 bool Production(const DateWorkerGameAccessBindingsV1 &b) noexcept {
   return !b.offline_fixture && b.exact_build_admitted && b.module_base!=0 &&
       !b.fixture.context && !b.fixture.sample && !b.fixture.acquire && !b.fixture.destroy &&
-      b.module_base<=std::numeric_limits<std::uintptr_t>::max()-kApplication &&
+      b.module_base<=std::numeric_limits<std::uintptr_t>::max()-ImageRva(b.image_build,kApplication,hotfix26757580::kApplication) &&
       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr))==b.module_base &&
-      std::memcmp(reinterpret_cast<const void *>(b.module_base+kAcquire),kAcquireEntry.data(),32)==0 &&
-      std::memcmp(reinterpret_cast<const void *>(b.module_base+kDestroy),kDestroyEntry.data(),32)==0;
+      std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.image_build,kAcquire,hotfix26757580::kAcquire)),(IsHotfix(b.image_build)?kHotfixAcquireEntry:kAcquireEntry).data(),32)==0 &&
+      std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.image_build,kDestroy,hotfix26757580::kDestroy)),kDestroyEntry.data(),32)==0;
 }
 bool Sample(const DateWorkerGameAccessBindingsV1 &b,DateWorkerGameAccessSampleV1 &s) {
   if(Model(b))return b.fixture.sample(b.fixture.context,s);
@@ -34,7 +36,7 @@ bool Sample(const DateWorkerGameAccessBindingsV1 &b,DateWorkerGameAccessSampleV1
   s.tls_block=vector;
   std::memcpy(&s.command_scope,reinterpret_cast<const void *>(vector+0x140),4);
   std::memcpy(&s.native_access,reinterpret_cast<const void *>(vector+0x6E0),1);
-  std::memcpy(&s.application,reinterpret_cast<const void *>(b.module_base+kApplication),8);
+  std::memcpy(&s.application,reinterpret_cast<const void *>(b.module_base+ImageRva(b.image_build,kApplication,hotfix26757580::kApplication)),8);
   return s.application!=0;
 }
 bool Same(const DateWorkerGameAccessSampleV1 &s,const DateWorkerGameAccessSampleV1 &a,
@@ -44,11 +46,11 @@ bool Same(const DateWorkerGameAccessSampleV1 &s,const DateWorkerGameAccessSample
 }
 void Acquire(const DateWorkerGameAccessBindingsV1 &b) {
   if(Model(b))b.fixture.acquire(b.fixture.context);
-  else reinterpret_cast<void (*)()>(b.module_base+kAcquire)();
+  else reinterpret_cast<void (*)()>(b.module_base+ImageRva(b.image_build,kAcquire,hotfix26757580::kAcquire))();
 }
 void Destroy(const DateWorkerGameAccessBindingsV1 &b,void *descriptor) {
   if(Model(b))b.fixture.destroy(b.fixture.context,descriptor);
-  else reinterpret_cast<void (*)(void *)>(b.module_base+kDestroy)(descriptor);
+  else reinterpret_cast<void (*)(void *)>(b.module_base+ImageRva(b.image_build,kDestroy,hotfix26757580::kDestroy))(descriptor);
 }
 // Trivial storage permits SEH finally to preserve the resource outcome even
 // when acquire/body/destructor faults. No unknown native operation is retried.
@@ -104,7 +106,8 @@ void RunV2(const DateWorkerGameAccessBindingsV1 &b,DateWorkerGameBodyV1 body,
 DateWorkerGameAccessBindingsV1 BindDateWorkerGameAccessImageV1(
     std::uintptr_t base,std::string_view sha) noexcept {
   DateWorkerGameAccessBindingsV1 b{};
-  if(base && base<=std::numeric_limits<std::uintptr_t>::max()-kApplication && sha==kExecutableSha256) {
+  b.image_build=ImageBuildForSha(sha);
+  if(base && b.image_build!=ImageBuildV1::unknown && base<=std::numeric_limits<std::uintptr_t>::max()-ImageRva(b.image_build,kApplication,hotfix26757580::kApplication)) {
     b.module_base=base;b.exact_build_admitted=true;
     // Cold preparation reads code only, never native manager/TLS/world state.
     // Reject before ARM if this process does not contain the paired entries.

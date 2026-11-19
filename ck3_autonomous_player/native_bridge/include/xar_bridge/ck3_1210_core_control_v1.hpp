@@ -60,12 +60,13 @@ struct CoreControlContextV1 {
 // Strict version-specific scalar object grammar. No full Snapshot/Permit,
 // connection authority, lease, or observation timestamp is fabricated here.
 bool ParseCoreControlRequestV1(std::string_view payload,
-    CoreControlRequestV1 &output) noexcept;
+    CoreControlRequestV1 &output,ImageBuildV1 build=ImageBuildV1::original26622941) noexcept;
 bool EqualCorePrefixV1(const CoreSnapshotPrefix &, const CoreSnapshotPrefix &) noexcept;
 void ArmCoreControlDeadlineV1(CoreControlContextV1 &) noexcept;
 bool ExecuteCoreControlMailboxV1(void *,
     const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 std::string SerializeCoreControlCommandResultV1(std::string_view request_id,
     std::string_view step, const CoreControlResultV1 &result,
-    std::string_view result_schema = {},std::uint64_t checkpoint_sequence = 0);
+    std::string_view result_schema = {},std::uint64_t checkpoint_sequence = 0,
+    ImageBuildV1 build=ImageBuildV1::original26622941);
 } // namespace xar::ck3_1210

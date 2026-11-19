@@ -14,13 +14,14 @@ public final class FrontendRulesData {
         CK3_12002("1.20.0.2", "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D"),
         CK3_12003("1.20.0.3", "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"),
         CK3_12004("1.20.0.4", "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"),
-        CK3_1210("1.21.0", "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC");
+        CK3_1210("1.21.0", "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC"),
+        CK3_1210_STEAM_26757580("1.21.0", "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79");
         private final String version;
         private final String sha256;
         Build(String version, String sha256) { this.version = version; this.sha256 = sha256; }
         public String version() { return version; }
         public String sha256() { return sha256; }
-        public String adapterId() { return "ck3-" + version + "-msvc-x64"; }
+        public String adapterId() { return this==CK3_1210_STEAM_26757580?"ck3-1.21.0-26757580-msvc-x64":"ck3-" + version + "-msvc-x64"; }
         public String backendId(String suffix) { return "ck3-" + version + "-native-" + suffix; }
         public static Build require(String version, String sha256) {
             for (Build value : values()) if (value.version.equals(version) && value.sha256.equalsIgnoreCase(sha256)) return value;

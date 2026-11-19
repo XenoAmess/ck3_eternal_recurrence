@@ -44,6 +44,9 @@ public final class CoreClockControl {
 
     public static NativeRequest request(Step step, CoreFrame.Partial frame) {
         Objects.requireNonNull(step, "step");
+        Objects.requireNonNull(frame, "frame");
+        StrictJson.require(frame.build()!=ExactCk3Build.CK3_1210_STEAM_26757580||step!=Step.SAVE_CHECKPOINT,
+                "this hotfix Core clock profile does not qualify SAVE");
         var fields = StrictJson.object();
         fields.set("core_clock_control", claim(frame));
         return new NativeRequest(step.wire(), step.requiredCapability(),
@@ -52,14 +55,14 @@ public final class CoreClockControl {
 
     static ObjectNode claim(CoreFrame.Partial frame) {
         Objects.requireNonNull(frame, "frame");
-        StrictJson.require(frame.build() == ExactCk3Build.CK3_1210,
+        StrictJson.require(ExactCk3Build.florinCoreFullBuild(frame.build().version(),frame.build().executableSha256()).isPresent(),
                 "core clock control requires the exact CK3 1.21.0 build");
         var prefix = frame.prefix();
         var control = StrictJson.object();
         control.put("schema", SCHEMA);
         control.put("game_version", frame.build().version());
         control.put("executable_sha256", frame.build().executableSha256());
-        control.put("adapter_id", "ck3-" + frame.build().version() + "-msvc-x64");
+        control.put("adapter_id", frame.build().coreFullAdapterId());
         control.put("backend", BACKEND);
         control.put("date_raw", prefix.dateRaw());
         control.put("speed", prefix.speed());

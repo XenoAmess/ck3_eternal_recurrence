@@ -49,32 +49,33 @@ public final class KnownPendingInteractionPolicy {
     /** Only the exact configured unmigrated tuple may create this source-level negative result. */
     public static final class Unavailable implements ContextRead {
         private final PlanningReadResult.Unavailable<Context> result;
-        private Unavailable() {
+        private final ExactCk3Build configuredBuild;
+        private Unavailable(ExactCk3Build configuredBuild) {
+            this.configuredBuild=Objects.requireNonNull(configuredBuild);
             result=new PlanningReadResult.Unavailable<>("interaction_native_contract_unmigrated",Optional.empty());
         }
         public PlanningReadResult.Unavailable<Context> result() { return result; }
     }
     /** Configured identity DATA only; this grants no Native capability, Installed status or live provenance. */
     public static ContextReadPort typedUnavailable(String configuredVersion,String configuredExecutableSha256) {
-        need(ExactCk3Build.CK3_1210.matches(configuredVersion,configuredExecutableSha256),
-                "typed unavailable interaction context requires the exact configured 1.21.0 tuple");
-        var unavailable=new Unavailable();
-        return request->{requireUnavailableSource(Objects.requireNonNull(request));return unavailable;};
+        var build=unavailableBuild(configuredVersion,configuredExecutableSha256);
+        var unavailable=new Unavailable(build);
+        return request->{requireUnavailableSource(Objects.requireNonNull(request).source(),build);return unavailable;};
     }
     /** Exact source DATA for an already held frame; no synthetic PlanningRequest or READ original is created. */
     public static Unavailable unavailableForSource(String configuredVersion,String configuredExecutableSha256,G2Source actualSource) {
-        need(ExactCk3Build.CK3_1210.matches(configuredVersion,configuredExecutableSha256),
-                "typed unavailable interaction context requires the exact configured 1.21.0 tuple");
-        requireUnavailableSource(Objects.requireNonNull(actualSource));
-        return new Unavailable();
+        var build=unavailableBuild(configuredVersion,configuredExecutableSha256);
+        requireUnavailableSource(Objects.requireNonNull(actualSource),build);
+        return new Unavailable(build);
     }
-    private static void requireUnavailableSource(PlanningRequest request) {
-        requireUnavailableSource(request.source());
+    private static ExactCk3Build unavailableBuild(String version,String sha256) {
+        var build=ExactCk3Build.florinCoreFullBuild(version,sha256);
+        need(build.isPresent(),"typed unavailable interaction context requires the exact configured 1.21.0 tuple");
+        return build.orElseThrow();
     }
-    private static void requireUnavailableSource(G2Source actualSource) {
-        var build=ExactCk3Build.CK3_1210;
+    private static void requireUnavailableSource(G2Source actualSource,ExactCk3Build build) {
         String retained=Objects.requireNonNull(actualSource).exactBuild();
-        // Root loadedExecutionSource retains its original raw SHA; qualified planning fixtures retain version@SHA.
+        // Compare with this selected profile, never either profile interchangeably.
         need(retained.equalsIgnoreCase(build.executableSha256())
                 ||retained.equalsIgnoreCase(build.version()+"@sha256:"+build.executableSha256()),
                 "unmigrated interaction context crossed its exact configured planning source");
@@ -304,7 +305,7 @@ public final class KnownPendingInteractionPolicy {
 
     private ContextRead contextRead(PlanningRequest request) {
         ContextRead selected=Objects.requireNonNull(contexts.current(request));
-        if(selected instanceof Unavailable) { requireUnavailableSource(request);return selected; }
+        if(selected instanceof Unavailable missing) { requireUnavailableSource(request.source(),missing.configuredBuild);return selected; }
         Context held=((Available)selected).context();
         need(held.before().equals(request.before())&&held.source().equals(request.source())
                 &&held.sessionId().equals(request.sessionId())&&held.deadline().equals(request.deadline()),
