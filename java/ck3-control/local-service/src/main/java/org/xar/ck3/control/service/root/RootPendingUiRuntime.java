@@ -503,7 +503,14 @@ public final class RootPendingUiRuntime implements RootDriverRegistryPublicProdu
     /** The actual Root installs this once after its Journal and session exist. */
     public void installTransportContinuity(ContinuityStorePort.Session same)throws IOException {
         requireDriverContext();context.writer().requireSession(same);var root=context.core().sessionAccess().current();
-        context.core().requireCurrentForAccess(same,root);require(root.driver()==context.adopted(),"transport port belongs to another Root Driver");
+        context.core().requireCurrentForAccess(same,root);bindTransportContinuity(same,root);
+    }
+    void installTransportContinuity(ContinuityStorePort.Session same,RootApplicationSession.SavedTransportInstallation installation)throws IOException {
+        requireDriverContext();context.writer().requireSession(same);
+        bindTransportContinuity(same,Objects.requireNonNull(installation).require(context,same));
+    }
+    private void bindTransportContinuity(ContinuityStorePort.Session same,RootApplicationSession root)throws IOException {
+        context.writer().requireSession(same);require(root.driver()==context.adopted(),"transport port belongs to another Root Driver");
         var journal=root.batchJournal();if(transportJournal!=null){require(transportJournal==journal,"transport port cannot replace its actual Journal");return;}
         journal.bindTransportRebindPort(new SameGameTransportContinuity.Port(){
             @Override public <T>T withCurrent(ContinuityStorePort.Session borrowed,SessionPorts.SessionIdentity beforeOwner,
@@ -628,9 +635,19 @@ public final class RootPendingUiRuntime implements RootDriverRegistryPublicProdu
     }
     /** Bootstrap runs this before starting the Controller; an active turn may only consume the returned private ticket. */
     public Optional<ContinuityBatchJournal.ReboundTransport> rebindPendingTransport(ContinuityStorePort.Session same,SessionPorts.SessionIdentity owner,Instant deadline)throws IOException,InterruptedException {
+        return rebindPendingTransport(same,owner,deadline,Optional.empty());
+    }
+    Optional<ContinuityBatchJournal.ReboundTransport> rebindPendingTransport(ContinuityStorePort.Session same,SessionPorts.SessionIdentity owner,
+            Instant deadline,RootApplicationSession.SavedTransportInstallation installation)throws IOException,InterruptedException {
+        Objects.requireNonNull(installation).require(context,same);
+        return rebindPendingTransport(same,owner,deadline,Optional.of(installation));
+    }
+    private Optional<ContinuityBatchJournal.ReboundTransport> rebindPendingTransport(ContinuityStorePort.Session same,SessionPorts.SessionIdentity owner,
+            Instant deadline,Optional<RootApplicationSession.SavedTransportInstallation> installation)throws IOException,InterruptedException {
         require(owner.equals(new SessionPorts.SessionIdentity(context.game().machineId(),context.game().generation(),context.game().sessionId())),"pending transport bootstrap crossed its actual owner");
         if(retireRestoredFinalized(same,deadline))return Optional.empty();
-        installTransportContinuity(same);if(completedByCanonicalLifecycle)return Optional.empty();
+        if(installation.isPresent())installTransportContinuity(same,installation.orElseThrow());else installTransportContinuity(same);
+        if(completedByCanonicalLifecycle)return Optional.empty();
         var retained=assembler().withFrozenFacts(same,frozen->{
             if(!(frozen.state() instanceof Known known))return Optional.<SuccessorUiObligation>empty();
             var value=known.auxiliary().members().get(SuccessorUiObligation.AUXILIARY_KEY);
@@ -641,7 +658,7 @@ public final class RootPendingUiRuntime implements RootDriverRegistryPublicProdu
         if(packet.isEmpty())return Optional.empty();var physical=packet.orElseThrow().session();
         if(physical.sessionId().equals(original.sessionId())&&physical.connectionGeneration().equals(original.connectionGeneration()))return Optional.empty();
         var parent=find(same,state.binding().parentActionId());
-        if(state.phase()==Phase.FINALIZED&&hasControllerAdoption(same,owner,parent)){completedByCanonicalLifecycle=true;return Optional.empty();}
+        if(state.phase()==Phase.FINALIZED&&hasControllerAdoption(same,owner,parent,installation)){completedByCanonicalLifecycle=true;return Optional.empty();}
         if(transported!=null&&transported.owner().equals(owner)&&physical.sessionId().equals(owner.sessionId())&&physical.connectionGeneration().equals(bootstrappedConnection)
                 &&Arrays.equals(ActionCodec.encodeCommand(transported.parent()),ActionCodec.encodeCommand(parent.command()))){
             transportJournal.requireHistoricalTransport(same,transported);return Optional.empty();
@@ -649,7 +666,8 @@ public final class RootPendingUiRuntime implements RootDriverRegistryPublicProdu
         if(state.phase()!=Phase.FINALIZED){var pending=current(same,deadline);if(pending.isEmpty())return Optional.empty();
             if(pending.orElseThrow().state.rebind().isEmpty())return Optional.empty();}
         var ticket=transportJournal.rebindTransport(same,owner,parent.command(),deadline);transported=ticket;bootstrappedConnection=physical.connectionGeneration();
-        context.core().sessionAccess().current().controllerForPublication().adoptTransportRebound(same,ticket);return Optional.of(ticket);
+        var root=installation.isPresent()?installation.orElseThrow().require(context,same):context.core().sessionAccess().current();
+        root.controllerForPublication().adoptTransportRebound(same,ticket);return Optional.of(ticket);
     }
     public Optional<SessionPorts.PendingSuccessorUi> pendingTransportedSuccessorUi(ContinuityStorePort.Session same,SessionPorts.SessionIdentity owner,
             ContinuityBatchJournal.ReboundTransport ticket,Instant deadline)throws IOException {
@@ -946,7 +964,13 @@ public final class RootPendingUiRuntime implements RootDriverRegistryPublicProdu
         return actual.map(SessionPorts.PendingSuccessorUi::new);
     }
     private boolean hasControllerAdoption(ContinuityStorePort.Session same,SessionPorts.SessionIdentity expected,ActionReceipt parent)throws IOException {
-        var root=context.core().sessionAccess().current();context.core().requireCurrentForAccess(same,root);
+        return hasControllerAdoption(same,expected,parent,Optional.empty());
+    }
+    private boolean hasControllerAdoption(ContinuityStorePort.Session same,SessionPorts.SessionIdentity expected,ActionReceipt parent,
+            Optional<RootApplicationSession.SavedTransportInstallation> installation)throws IOException {
+        RootApplicationSession root;
+        if(installation.isPresent())root=installation.orElseThrow().require(context,same);
+        else {root=context.core().sessionAccess().current();context.core().requireCurrentForAccess(same,root);}
         require(root.driver()==context.adopted(),"natural adoption receipt belongs to another actual Root Driver owner");
         var accepted=root.controllerForPublication().naturalEpisodeAdoption(parent);if(accepted.isEmpty())return false;
         var actual=accepted.orElseThrow();require(parent.state() instanceof ActionState.CompositeSettled parentState&&parentState.settlement() instanceof ActionState.LifecycleApplied,

@@ -1,0 +1,69 @@
+{
+  "schema": "ck3.migration.normal-main35-private-Saved-installation-ENV20-runtime-ready/v1",
+  "normal_MAIN": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\maven-package89.END.json",
+    "bytes": 910,
+    "sha256": "ef50c964548e5fcbd25d9556f8468ce4eb6ec0a90ede682336e5f8e53be5f74a"
+  },
+  "genuine157CP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\MAIN35-FROZEN-RUNTIME-ARCHIVES90.json",
+    "bytes": 92806,
+    "sha256": "a56f1e26e1437f6d429f6ea710f7cbb3d17d31b9e8ead5cbe86251f4ebb26659"
+  },
+  "classpath": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\DIRECT-RUNTIME-MAIN35-CLASSPATH91.txt",
+    "bytes": 27058,
+    "sha256": "eb7201b8bdba43bea9915db4d3a4a7661255ff5e75e2aeaefa9e6cb5d1750a91"
+  },
+  "entry_prefixes": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\NORMAL-MAIN35-ENTRY-PREFIXES91.json",
+    "bytes": 1524,
+    "sha256": "ac2559390706c6cff22b68d1a5c14e78e4607e9ab7c3f0c87bede5598e0a55ee"
+  },
+  "sameplan_checker": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\ACTUAL-CALLER35-INPUTS91.json",
+    "bytes": 727,
+    "sha256": "1e2e89a9b19452bdf7e507b7018c32c62c42879be9bb9c86d2e1d3fa5390baa3"
+  },
+  "four_production_candidates": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\saved-transport88\\SOURCE-CANDIDATES88.json",
+    "bytes": 3189,
+    "sha256": "e8f9dfa045060f1c90e01fc0ad4bdcf200219980401d203eadf13792e066ff8d"
+  },
+  "joint_typing_actual": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\saved-transport88\\type88.END.json",
+    "bytes": 351,
+    "sha256": "78172f4b5d7767712d021665678e04ce377b9e662f32c8e482f62faff1dda44e"
+  },
+  "API_surface_only_actual": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\saved-transport88\\api88.END.json",
+    "bytes": 350,
+    "sha256": "5548be2d52dcb5cb3350a308e5134864ffdc44ec8d6fa8d95c4921461ffaa064"
+  },
+  "genuine_four_changed_class_wholeJar_owners_and_API": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\genuine90.END.json",
+    "bytes": 381,
+    "sha256": "8f87b7870cf2c99355d0696fba18ba8e48e3649febfb29738a9e3a251cc15315"
+  },
+  "genuine_JUnit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\genuine-reports90\\TEST-junit-jupiter.xml",
+    "bytes": 34473,
+    "sha256": "17ea10a93258644e03b3d4dd3feed66ce4a4a06d14422f0119f28a8efd4cc365"
+  },
+  "ENV20_actual_reader_origins": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\ACTUAL-ENV20-NEWMAIN35-ORIGINS90.json",
+    "bytes": 143255,
+    "sha256": "249156457aefad52130d5f844640b6a4ab3fd73174e39664a7890ee2f45b431a"
+  },
+  "ENV20_reader_job": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\env90.END.json",
+    "bytes": 383,
+    "sha256": "f0f93f55f7a4f8609169a8f28825556bfd9417cca48cd092b7c22a374bf524b7"
+  },
+  "sole_WAIT21_script_NOT_STARTED": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\first-codex-response21.py",
+    "bytes": 3023,
+    "sha256": "f4e85f979d5b6cc37e0bf2fce32bc34618197ab349a39db8584600a8b5e7eeca"
+  },
+  "scope": "Lexical private initial Saved installation receives actual this through four existing production leaves; exact existing SavedLiveToken identity only before installed/promoted/published, same call-lock/thread/borrowed writer/context/Core/Driver/archive/Host/deadline, closed at scope exit. Public promotion/current and running withTransportCurrent source unchanged; no early mark or activation. NoGame and genuine tests check API surface and four real whole-JAR owners only, not positive Core/initial Saved or full pending transport authority. Real pending callbacks retain original public qualifications. Normal MAIN old45JARs protected; ENV20+413archive origins passed. All prior failures/frozen34/Native54 retained. Current35 cut now frozen; actual initial/no-pending installation requires fresh Scene21. No Root/WAIT/newday/SAVE/TEST/wholeSERVICE/live credit."
+}

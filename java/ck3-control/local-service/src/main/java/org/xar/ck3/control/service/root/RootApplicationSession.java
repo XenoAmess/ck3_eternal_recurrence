@@ -731,7 +731,8 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
             host.install(controller);
             installedHost = host;
             host.bindRoot(owner.sessionAccess());
-            prepareTransportContinuity(deadline);
+            if(heldSavedLiveToken!=null)prepareInitialSavedTransportContinuity(deadline);
+            else prepareTransportContinuity(deadline);
             if (heldSavedLiveToken != null) heldSavedLiveToken.markInstalled(this);
         } finally {
             calls.unlock();
@@ -779,6 +780,44 @@ public final class RootApplicationSession implements ActionCoordinatorPort {
                 prepareTransportContinuity(deadline);
             } finally { calls.unlock(); }
         } finally { previous.calls.unlock(); }
+    }
+    /** Lexical private installation access; never a public-current or running-transport authority. */
+    static final class SavedTransportInstallation implements AutoCloseable {
+        private final RootApplicationSession actual;
+        private final org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same;
+        private final Thread thread=Thread.currentThread();
+        private final Instant deadline;
+        private boolean closed;
+        private SavedTransportInstallation(RootApplicationSession actual,
+                org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,Instant deadline)throws IOException {
+            this.actual=Objects.requireNonNull(actual);this.same=Objects.requireNonNull(same);this.deadline=Objects.requireNonNull(deadline);
+            require(actual.resourceCatalog.context(),same);
+        }
+        RootApplicationSession require(RootRuntimeContext context,
+                org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session borrowed)throws IOException {
+            if(closed||Thread.currentThread()!=thread||borrowed!=same||!actual.calls.isHeldByCurrentThread()
+                    ||actual.writer.borrowedSession()!=same||actual.controller.isRunning()||actual.controller.isRetired()
+                    ||context!=actual.resourceCatalog.context()||context.core()!=actual.owner
+                    ||context.writer()!=actual.writer||context.archive()!=actual.archive||context.adopted()!=actual.driver
+                    ||context.game()!=actual.game||!context.source().equals(actual.driver.source()))
+                throw new IOException("Saved transport installation escaped its exact lexical owner/Driver/writer scope");
+            actual.requireInstalled();actual.requireDeadline(deadline);
+            actual.owner.requireSavedTransportInstallation(same,actual);return actual;
+        }
+        @Override public void close(){closed=true;}
+    }
+    private void prepareInitialSavedTransportContinuity(Instant deadline)throws IOException,InterruptedException {
+        requireInstalled();requireDeadline(deadline);
+        StrictJson.require(!controller.isRunning()&&!controller.isRetired(),"Saved transport installation requires the actual idle Controller");
+        owner.withBorrowed(()->{
+            var same=owner.activeBorrowedSession();writer.requireSession(same);
+            try(var installation=new SavedTransportInstallation(this,same,deadline)) {
+                var actual=resourceCatalog.remainingDomains().lifecycle();
+                actual.installTransportContinuity(same,installation);
+                actual.rebindPendingTransport(same,identity(),deadline,installation);
+            }
+            return null;
+        });
     }
     /** Metadata continuity is installed only after actual Host publication and before a Controller turn. */
     private void prepareTransportContinuity(Instant deadline)throws IOException,InterruptedException {

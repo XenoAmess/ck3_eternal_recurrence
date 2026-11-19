@@ -279,6 +279,14 @@ public final class RootLifecycleRuntimeFactory {
         public RootLifeRuntimeFactory.Installed life()throws IOException {requireContext(context);return owner.attempts.get(identity(context)).life;}
         public Optional<SessionPorts.PendingSuccessorUi> pendingSuccessorUi(ContinuityStorePort.Session same,SessionIdentity expected,Instant deadline)throws IOException{return natural.pendingRuntime().pendingSuccessorUi(same,expected,deadline);}
         public void installTransportContinuity(ContinuityStorePort.Session same)throws IOException{natural.pendingRuntime().installTransportContinuity(same);}
+        void installTransportContinuity(ContinuityStorePort.Session same,RootApplicationSession.SavedTransportInstallation installation)throws IOException {
+            natural.pendingRuntime().installTransportContinuity(same,installation);
+        }
+        Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.ReboundTransport> rebindPendingTransport(
+                ContinuityStorePort.Session same,SessionIdentity owner,Instant deadline,RootApplicationSession.SavedTransportInstallation installation)
+                throws IOException,InterruptedException {
+            return natural.pendingRuntime().rebindPendingTransport(same,owner,deadline,installation);
+        }
         public Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.ReboundTransport> rebindPendingTransport(ContinuityStorePort.Session same,SessionIdentity owner,Instant deadline)throws IOException,InterruptedException{return natural.pendingRuntime().rebindPendingTransport(same,owner,deadline);}
         public Optional<SessionPorts.PendingSuccessorUi> pendingTransportedSuccessorUi(ContinuityStorePort.Session same,SessionIdentity owner,org.xar.ck3.control.application.session.ContinuityBatchJournal.ReboundTransport transport,Instant deadline)throws IOException{return natural.pendingRuntime().pendingTransportedSuccessorUi(same,owner,transport,deadline);}
         public Optional<org.xar.ck3.control.application.lifecycle.LifecycleEpisodeInputs.CurrentAdoptionBinding> admittedCurrent(ContinuityStorePort.Session same,ActionReceipt exactParent,Instant deadline)throws IOException{return natural.pendingRuntime().admittedCurrent(same,exactParent,deadline);}

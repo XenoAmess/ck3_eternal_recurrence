@@ -1,0 +1,121 @@
+{
+  "schema": "ck3.runtime17-20-evidence24/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "cut_utc": "2026-11-19T04:15:56.419204Z",
+  "actual_final_scenes": [
+    {
+      "scene": 17,
+      "final": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE17-FULLP-STABLE-READS-P-INSTALL-ACTION-HISTORY-SOURCE-RED-NATURAL0-FINAL01.json",
+        "bytes": 5083,
+        "sha256": "7c7ca8960e10e2f4975b9a84b91be24eb575a796ea90ba2b48baa9e11b969025"
+      },
+      "Main_exit": 1,
+      "GSV_exit": 0,
+      "Job_active": 0,
+      "new_days": 0,
+      "SAVE_WAIT": 0
+    },
+    {
+      "scene": 18,
+      "final": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE18-FULLP-PUBLISHER-P-SAVED-MENU-START-READINESS-RED-NATURAL0-FINAL01.json",
+        "bytes": 4894,
+        "sha256": "1bb4fe16cd232ff2bf1c1ded757c2d7225b99eb1b67ae1b6fbc24ea4842c353b"
+      },
+      "Main_exit": 1,
+      "GSV_exit": 0,
+      "Job_active": 0,
+      "new_days": 0,
+      "SAVE_WAIT": 0
+    },
+    {
+      "scene": 19,
+      "final": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE19-FULLP-MENU-READINESS-P-CONSTRUCTION-REDUCER-RED-NATURAL0-FINAL01.json",
+        "bytes": 4936,
+        "sha256": "8f5527b81cac93dc710c47f3623ecebfc0bdeb3b50fa83c1e8b8efb4747c47ce"
+      },
+      "Main_exit": 1,
+      "GSV_exit": 0,
+      "Job_active": 0,
+      "new_days": 0,
+      "SAVE_WAIT": 0
+    },
+    {
+      "scene": 20,
+      "final": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE20-FULLP-CONSTRUCTION-P-SAVED-PUBLIC-ACTIVATION-ORDER-RED-NATURAL0-FINAL01.json",
+        "bytes": 4986,
+        "sha256": "19b626cdb5293330e4b2cb3db53f58e96171831463ecddfd3d5e29106f8d9088"
+      },
+      "Main_exit": 1,
+      "GSV_exit": 0,
+      "Job_active": 0,
+      "new_days": 0,
+      "SAVE_WAIT": 0
+    }
+  ],
+  "actual_Native54_4to5_same1048B_raw": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE17-NATIVE54-ACTUAL-READ4-TO5-SAME-RAW-STATE-SUPPLEMENT01.json",
+    "bytes": 2838,
+    "sha256": "df93f3b3b6b872b47c80b64c66d2da073772393ffef52e0292c2dc2d6b250015"
+  },
+  "Java_current_ready_scope": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-action-history-main32/qualification/NORMAL-MAIN32-PUBLISHER-ENV17-RUNTIME-READY71.json",
+      "bytes": 4214,
+      "sha256": "d49bebfad0ab8113dd2474e4fc2c25e600c18a995c8c1198904975fa48da30e1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-planning-main33/qualification/NORMAL-MAIN33-SAVED-PLANNING-ENV18-RUNTIME-READY79.json",
+      "bytes": 4139,
+      "sha256": "df2d67eced08e0102861e5869131de314b53fcce2fc51f70979a695172beb2e3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-construction-canonical-main34/qualification/NORMAL-MAIN34-CONSTRUCTION-CANONICAL-ENV19-RUNTIME-READY85.json",
+      "bytes": 4808,
+      "sha256": "175247e6fd4baa97f3b0b65b52bd8821ec71faf3183edb40d73c7e7364134cbc"
+    }
+  ],
+  "native54_original_ready": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/native-fresh-publication54/build-01/NATIVE-FRESH-PUBLICATION-CANDIDATE-READY54.json",
+    "bytes": 2900,
+    "sha256": "ef064500abe976b908e99d102fbd01e7d655ac7b635597d325991f8f47ef0a34"
+  },
+  "native55_original_ready": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/cash-fresh-publication55/build-01/repair02/NATIVE-CASH-FRESH-COMBINED-CANDIDATE-READY55-02.json",
+    "bytes": 3159,
+    "sha256": "fe064014cdb355f39acb66ca2d84df689503c5bf596f104aad3b528ff48290dd"
+  },
+  "native55_scope": "CombinedtrueRAM/Full/publisher/LE32 andCashON-OFF originalpipelineNoGame+oneDLL only; noJava genuineMAIN/MQ/owner/TLS/live/Treasury/allRaised/budget authority",
+  "published_commits": [
+    "f8beb813824cb878941c66d1d9a602ae79dacb15",
+    "e777204bb141c49ba34dcacd434608c66a4d76ff",
+    "8f3a769d62b49720ab56b55caaaa9e9683835d43"
+  ],
+  "current_private_install88": {
+    "production_leaves": 4,
+    "type_4prod_1test_seconds": 2.715,
+    "type_exit": 0,
+    "API_private_constructor_surface_1method_seconds": 1.273,
+    "API_exit": 0,
+    "end_utc": "2026-11-19T04:14:41.020Z",
+    "scope": "Onlycompilation/API surface; noRoot/fullpendingpositive",
+    "public_promotion_current_withTransportCurrent_source_exact_unchanged": true,
+    "mark_install_promote_order_unchanged": true,
+    "normalR35": "Request89 pending actualBEGIN atcut; noGame/Source21 notsigned"
+  },
+  "old53_worktree_index_oldSavedPair_head2003_UNKNOWN_unchanged": true,
+  "excluded": [
+    "active owner/HELLO payload",
+    "endpoint/config/profile/settings payload",
+    "secret",
+    "wholeDLL binaries"
+  ],
+  "resource_registration": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC24-RUNTIME17-20-64K-REGISTRATION162.json",
+    "bytes": 701,
+    "sha256": "9a5f1b8bd0d6003d4dec8b78cb1a9cc79b249842cbdd1a9ae13be7e431dfe8ce"
+  }
+}

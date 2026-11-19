@@ -174,6 +174,11 @@ public final class RootApplicationAssembly {
                 if(actual!=session||installed||promoted)throw new IOException("Saved installation cannot be forged or repeated");
                 requireIdentity(producer,confirmed,retained);installed=true;
             }
+            private void requireInstalling(RootApplicationSession actual)throws IOException {
+                if(actual!=session||installed||promoted||activationPublished)
+                    throw new IOException("Saved transport installation requires its exact unfinished installation phase");
+                requireIdentity(producer,confirmed,retained);
+            }
             private void requirePromotable(RootApplicationSession actual)throws IOException {
                 if(actual!=session||!installed||promoted)throw new IOException("Saved live promotion requires its one completed installation");
                 requireIdentity(producer,confirmed,retained);
@@ -193,6 +198,13 @@ public final class RootApplicationAssembly {
                 try {actual.bindSavedLiveToken(token);}
                 catch(RuntimeException|Error failure){token.revoked=true;savedLiveToken.compareAndSet(token,null);throw failure;}
             }
+        }
+        void requireSavedTransportInstallation(ContinuityStorePort.Session same,RootApplicationSession actual)throws IOException {
+            writer.requireSession(same);Objects.requireNonNull(actual);
+            var token=savedLiveToken.get();
+            if(resourcesClosed||requestsClosed||token==null||!actual.hasInstalledHost())
+                throw new IOException("Saved transport installation lost its exact open installed Host/Core");
+            token.requireInstalling(actual);
         }
         void promoteSavedLive(RootApplicationSession actual)throws IOException {
             var token=savedLiveToken.get();

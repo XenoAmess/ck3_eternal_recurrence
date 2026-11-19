@@ -1,0 +1,51 @@
+{
+  "schema": "xar.native.fresh-publication54.candidate-ready/v1",
+  "qualification": "PASS_ACTUAL_OLD_NEW_PUBLISHER_RAM_FULL_REAL_PROTOCOL_NOGAME_AND_ONE_BRIDGE_CANDIDATE_DLL_ONLY",
+  "source_preparation": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-fresh-publication54\\PREPARATION54.json",
+    "bytes": 5455,
+    "sha256": "66ba282b48f17a2f9777b6b7173d5ed4255193c2ac703c3dfa8b1da45dcde915"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-fresh-publication54\\INPUTS54.json",
+    "bytes": 319871,
+    "sha256": "79e84370581da1d038467d780d2a9e29ca71d5c1ba8f17319b80e55ca19c23d5"
+  },
+  "plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-fresh-publication54\\PLAN54.json",
+    "bytes": 47546,
+    "sha256": "73564be6b65ab6abeb6ba4dc24095168d09fe76dd2c24787974a6aac53cbd5a0"
+  },
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-fresh-publication54\\build-01\\ACTUAL54.json",
+    "bytes": 5509,
+    "sha256": "b0e264c3f8f9e044ff1938617427b5dc080201ec8529be448b0f3dcc5d67bd93"
+  },
+  "original_packets": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-fresh-publication54\\build-01\\ORIGINAL-PACKETS54.json",
+    "bytes": 1644,
+    "sha256": "71ba5b0db9c6d56990a595a3e7a24c1c579c3ea8d412704984ac27ab2c8547e8"
+  },
+  "final_link_inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-fresh-publication54\\build-01\\FINAL-LINK-INPUTS54.json",
+    "bytes": 79165,
+    "sha256": "5dc153c9d31e4305f9d3f8a958c7802b001f75f65bce2cd210f23a140146db01"
+  },
+  "candidate_dll": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-fresh-publication54\\build-01\\frozen\\xar_ck3_bridge.dll",
+    "bytes": 13398528,
+    "sha256": "48d12c96ad8ee448897876fed6ff16030db7481985e4fa018c026f6cb424b4ad"
+  },
+  "source_patch": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-fresh-publication54\\forced-publication54.patch",
+    "bytes": 805,
+    "sha256": "0407a743654820b7bc115d7b3acb67f25b5df3d50324f826df4a698cceb0cd6f"
+  },
+  "scope": "Native36 caps/profile/raw Full unchanged; every correlated fresh read gets a new publication revision only committed after successful write. Ordinary unchanged dedup retained. No Cash42 or remote53 unrelated features.",
+  "not_qualified": [
+    "new actual Game scene/MQ/native owner/TLS execution",
+    "Java Saved admission under new DLL",
+    "same root16 retry or expired command renewal"
+  ],
+  "all_immutable_36_42_53_Java_scene_guards_exact": true
+}

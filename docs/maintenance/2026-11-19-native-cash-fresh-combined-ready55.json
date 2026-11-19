@@ -1,0 +1,61 @@
+{
+  "first_actual_RED": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-fresh-publication55\\build-01\\ACTUAL55.json",
+    "bytes": 2024,
+    "sha256": "df35a4ceeac20608971fff4e926dcbbeb1d1f3d7b1151c4d0f95fe5a3e01dc49"
+  },
+  "original_inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-fresh-publication55\\INPUTS55.json",
+    "bytes": 552603,
+    "sha256": "3c29b66026543b9be239313b9a1b52a5c7eda8824f5ef9a63c7aaf6f59a7ad2e"
+  },
+  "schema": "xar.native55.cash42-plus-publisher54.candidate-ready/v1",
+  "qualification": "PASS_FRESH_PUBLICATION_AND_LATEST_CASH_COMBINED_ON_OFF_NOGAME_AND_SEPARATE_DLL_LINK_ONLY",
+  "preparation": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-fresh-publication55\\PREPARATION55.json",
+    "bytes": 2748,
+    "sha256": "489fdae92cff93d332d44a91f9155539421a18793ebcc3ffbb4fb222f51a5308"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-fresh-publication55\\REPAIR-INPUTS55-02.json",
+    "bytes": 554230,
+    "sha256": "a9fb1aabb9c1aeb3387eced09a9433853471ed7afd1b1ae6281698f98dedfa2d"
+  },
+  "plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-fresh-publication55\\REPAIR-PLAN55-02.json",
+    "bytes": 70131,
+    "sha256": "757831168128df959820b43297ed4c2671761092bf2907f7efcec0c9aac77235"
+  },
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-fresh-publication55\\build-01\\repair02\\ACTUAL55.json",
+    "bytes": 7305,
+    "sha256": "ed0e520efb7f3481550044d010bbff7c6261561d2cfe8b6aa96c2886964d7958"
+  },
+  "packets": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-fresh-publication55\\build-01\\repair02\\ORIGINAL-PACKETS55.json",
+    "bytes": 38905,
+    "sha256": "0570736d9ddd991ad24648a26204be9519b534401607a30bc8c7adb6e9e5bc78"
+  },
+  "link_inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-fresh-publication55\\build-01\\repair02\\FINAL-LINK-INPUTS55.json",
+    "bytes": 78036,
+    "sha256": "2657357b9750fd1e96eeec804d991790afca4b5244682335b55c88896f989c3f"
+  },
+  "candidate_dll": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-fresh-publication55\\build-01\\repair02\\frozen\\xar_ck3_bridge.dll",
+    "bytes": 13402624,
+    "sha256": "7334dc1904a60d4505e151bcb28f40f9b8b4cafa4825f243b612d88ba8311074"
+  },
+  "case_count_each_ON_OFF": 8,
+  "original_files": 128,
+  "tuple_caps_Cash_schema_same42": true,
+  "forced_publication_same54": true,
+  "all_36_42_53_54_and_source_guards_exact": true,
+  "not_qualified": [
+    "Game/SDK/Runtimeadoption/newliveowner",
+    "actualNative monthly body/lifetime/unwind",
+    "Java live Cash receiver",
+    "trueTreasury/current/allRaised military/budget/spending",
+    "newSource19 changes"
+  ]
+}
