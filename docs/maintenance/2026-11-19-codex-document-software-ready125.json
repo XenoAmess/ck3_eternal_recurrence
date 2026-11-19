@@ -1,0 +1,40 @@
+{
+  "schema": "ck3.codex-large-document1ls-four-case-software-ready/v1",
+  "source": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/codex-document124/CodexSessionDecisionFiles.java",
+    "bytes": 19448,
+    "sha256": "5f4af1a8160ea803220fd47b3eb24b383ec5356c101b0b955fbf9586be17e4a5"
+  },
+  "test": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/codex-document124/CodexLargeReviewDocumentTest.java",
+    "bytes": 13811,
+    "sha256": "2a8b2e57d2b8c7f4d56fe633698d7c99e33bc2be8b4229c57e4fd2158289a86e"
+  },
+  "baseline_original_expected_F": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-nogame124/baseline.END.json",
+    "bytes": 662,
+    "sha256": "dcc18b7d145cdbe95bc3c760ce1e88b07c6c8abff526246803430150744a2eeb"
+  },
+  "baseline_exact_error_classification": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/codex-document124/BASELINE-TARGET-CLASSIFICATION125.json",
+    "bytes": 1580,
+    "sha256": "1e531783463f0f6619a3d0de5e9d25067e41a6bdef2183ef736f94ec0f0918c6"
+  },
+  "fixed_type": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-nogame124/fixed-type125.END.json",
+    "bytes": 666,
+    "sha256": "90bc8cbd24d5155b714c2100f2fec23007a604dd58b0722bc1c322f538848073"
+  },
+  "fixed_four_methods": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-nogame124/fixed125.END.json",
+    "bytes": 660,
+    "sha256": "6acf03626b0a459a00016a44c62a33119a8fe2f4a070d07be2bd9188e72a118c"
+  },
+  "distinct_fixed_methods": 4,
+  "skip_count": 0,
+  "new_fresh_large_payload_public_inspect_WAIT_once": true,
+  "actual24_payload_only_pure_DATA": true,
+  "actual24_request_queue_not_written_or_renewed": true,
+  "unchanged_32768_16K_256K_64M_roles_Unicode_custody_ID_deadlines": true,
+  "new_prestarted_watcher_not_yet_qualified": true
+}

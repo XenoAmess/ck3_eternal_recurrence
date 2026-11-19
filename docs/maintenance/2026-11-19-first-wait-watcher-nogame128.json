@@ -1,0 +1,63 @@
+{
+  "schema": "ck3.single-prestarted-first-WAIT-watcher-nogame/v1",
+  "begin_utc": "2026-11-19T09:42:38.371689+00:00",
+  "end_utc": "2026-11-19T09:42:42.850356+00:00",
+  "seconds": 4.478686999995261,
+  "results": [
+    {
+      "mode": "positive",
+      "real_watcher_pid": 21824,
+      "creation_filetime": "134395549583795641",
+      "watcher_ready_before_Main": true,
+      "public_inspect_begin_delay_seconds": 0.262914,
+      "producer_exit": 0,
+      "watcher_exit": 0,
+      "result": {
+        "schema": "ck3.single-first-WAIT-watcher-result/v1",
+        "at_utc": "2026-11-19T09:42:40.493601+00:00",
+        "status": "ONE_ORIGINAL_WAIT_PUBLISHED",
+        "pid": 21824,
+        "request": "D:\\ck3-state\\ck3-version-migration-20261118\\java-codex-document-nogame124\\watch128-positive\\fixture\\queue\\codex-fdd64b8f-9266-4820-bf4c-760adf11dd47\\request.json",
+        "request_sha256": "4ff2577cfca473bbe185ba1ef74e2aba5c993cee59b2504e98bd5b7f25fee6ee",
+        "response": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-codex-document-nogame124\\watch128-positive\\fixture\\queue\\codex-fdd64b8f-9266-4820-bf4c-760adf11dd47\\response.json",
+          "bytes": 425,
+          "sha256": "3cd7331a40692af9e06c44e751ac1142c30057bbabf02cf1646b732405a85748"
+        },
+        "original_deadline_utc": "2026-11-19T09:42:46.895494600Z",
+        "source_deadline_unchanged": true
+      }
+    },
+    {
+      "mode": "main-ended",
+      "real_watcher_pid": 71864,
+      "creation_filetime": "134395549605674654",
+      "watcher_ready_before_Main": true,
+      "watcher_exit": 0,
+      "result": {
+        "schema": "ck3.single-first-WAIT-watcher-result/v1",
+        "at_utc": "2026-11-19T09:42:40.704989+00:00",
+        "status": "MAIN_ENDED_WITHOUT_RESPONSE",
+        "pid": 71864
+      }
+    },
+    {
+      "mode": "source-window",
+      "real_watcher_pid": 23112,
+      "creation_filetime": "134395549608198142",
+      "watcher_ready_before_Main": true,
+      "watcher_exit": 0,
+      "result": {
+        "schema": "ck3.single-first-WAIT-watcher-result/v1",
+        "at_utc": "2026-11-19T09:42:42.824922+00:00",
+        "status": "ORIGINAL_SOURCE_WINDOW_ENDED_WITHOUT_RESPONSE",
+        "pid": 23112
+      }
+    }
+  ],
+  "output_4K_plus_dirs": 7208960,
+  "files": 108,
+  "directories": 65,
+  "no_actual24_queue_deadline_or_original_changes": true,
+  "no_Game_Core_writers_HTTP_or_user_process_enumeration": true
+}

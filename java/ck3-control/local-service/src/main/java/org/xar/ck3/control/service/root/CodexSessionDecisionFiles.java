@@ -173,13 +173,30 @@ public final class CodexSessionDecisionFiles {
         for (var message : wire.get("messages")) {
             if ("user".equals(StrictJson.text(message.get("role")))) {
                 StrictJson.require(task == null, "one original review task required");
-                task = FullJsonTree.parse(StrictJson.text(message.get("content")).getBytes(java.nio.charset.StandardCharsets.UTF_8), FullJsonTree.MAXIMUM_BYTES);
+                task = reviewTask(message.get("content"));
             }
         }
         StrictJson.require(task != null && command.actionId().equals(StrictJson.text(task.get("proposal_id")))
                 && ActionCodec.sha256(commandBytes).equals(StrictJson.text(task.get("body_sha256"))), "review payload crossed original proposal");
         requireRemaining(clock, deadline, nanoEnd);
         return new PendingRequest(file, materials, expectedRequestSha256, envelope, payload, commandBytes, clock, deadline, nanoEnd, requestDocument.pin(), payloadDocument.pin(), commandDocument.pin());
+    }
+
+    /** Full archived review document, distinct from receipt identifiers and their smaller text bound. */
+    static JsonNode reviewTask(JsonNode content) {
+        StrictJson.require(content!=null&&content.isTextual()&&!content.textValue().isEmpty()
+                &&content.textValue().length()<=FullJsonTree.MAXIMUM_BYTES,"bounded complete review document required");
+        try {
+            var encoded=java.nio.charset.StandardCharsets.UTF_8.newEncoder()
+                    .onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT)
+                    .encode(java.nio.CharBuffer.wrap(content.textValue()));
+            StrictJson.require(encoded.remaining()<=FullJsonTree.MAXIMUM_BYTES,"complete review document exceeds its explicit byte bound");
+            byte[] bytes=new byte[encoded.remaining()];encoded.get(bytes);
+            return FullJsonTree.parse(bytes,FullJsonTree.MAXIMUM_BYTES);
+        }catch(java.nio.charset.CharacterCodingException invalid) {
+            throw new IllegalArgumentException("invalid Unicode in complete review document",invalid);
+        }
     }
 
     /** Revalidates all read material and the original deadline; one complete response is published without overwrite. */

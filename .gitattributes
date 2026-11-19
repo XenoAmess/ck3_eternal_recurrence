@@ -1491,3 +1491,12 @@ docs/maintenance/2026-11-19-saved-entry21-evidence25.json -text
 /docs/maintenance/2026-11-19-current-progress-software-ready116.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /docs/maintenance/2026-11-19-optional-private-source-software-ready119.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /docs/maintenance/2026-11-19-current-optional-runtime-ready122.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Exact raw migration evidence; receipt defaults remain unchanged.
+/docs/maintenance/2026-11-19-first-codex-source24-request.json -text
+/docs/maintenance/2026-11-19-first-codex-source24-final.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-first-codex-evidence29.json -text
+/docs/maintenance/2026-11-19-codex-document-software-ready125.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-first-wait-watcher-nogame128.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-codex-document-runtime-ready132.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/tools/g2_saved_campaign/single_first_wait_diagnostic.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

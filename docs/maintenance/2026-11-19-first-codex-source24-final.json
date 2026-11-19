@@ -1,0 +1,242 @@
+{
+  "schema": "ck3.actual.Source24-first-CodexREADY-inspect-document-bound-RED-natural0/v1",
+  "at_utc": "2026-11-19T09:13:15.118431+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\HOTFIX56-SOURCE24-ORIGINAL-FIXED45M.json",
+    "bytes": 5729,
+    "sha256": "31fb80fa678dce6d3cb1683b6fb2a7e37446298add112d05edb4e89ab9679a75"
+  },
+  "actual_ready39": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-optional-governance-main39\\qualification\\NORMAL-MAIN39-CURRENT-OPTIONAL-ENV23-RUNTIME-READY122.json",
+    "bytes": 6620,
+    "sha256": "86ba8482867adbf75bcf22462cab9f2302a521c13dd2e040f0b32a2b9b84377e"
+  },
+  "native56_current_frozen": "13443584/6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3",
+  "actual_Saved_entry": {
+    "actual_head_digest": "f99696f75e48a877b22fed950f7cacc4afbd0551cc564b30ce45dd2f29870a25",
+    "actual_head_sequence": 20,
+    "game": {
+      "creation_filetime": "134395518025689570",
+      "pid": 132224
+    },
+    "next_sequence": "0",
+    "observed_at_utc": "2026-11-19T09:00:33.682894800Z",
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "SAVED_ENTRY_ADOPTED"
+  },
+  "Opening_COMPLETE": {
+    "gate": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root24\\continuity\\artifacts\\dd1bd41dd313a3c304160a10a977300b0d6ea9e7a35bc7f6d71c3e14c441e050.bin",
+      "bytes": 5729,
+      "sha256": "dd1bd41dd313a3c304160a10a977300b0d6ea9e7a35bc7f6d71c3e14c441e050"
+    },
+    "final_head": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix24-work\\ACTUAL-FINAL-HEAD24-COLD.json",
+      "bytes": 36127,
+      "sha256": "617991eee8c7d54a3dd0d1adf6a0a200aae0da37518ce0213b251de4f9ba9ea0"
+    },
+    "head_sequence": 24
+  },
+  "first_true_request": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue24\\codex-21e9fb03-1082-428d-84b8-8fc237d699ed\\request.json",
+    "bytes": 1731,
+    "sha256": "df6377e471370c12847c21601381c3050f7cd9575bb7235b2f1511a6b1176168"
+  },
+  "actual_request_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue24\\codex-21e9fb03-1082-428d-84b8-8fc237d699ed\\ready.json",
+    "bytes": 1024,
+    "sha256": "22a6b8f37f2ae0bdc671640f3e3eb803e196f881388b9999acfaab8e9ffe6ca0"
+  },
+  "actual_payload": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root24\\continuity\\artifacts\\03c5ecd2280bf9ddaf7091ffdd032d1f3f652489e982823ceccd1c465a375646.bin",
+    "bytes": 1930748,
+    "sha256": "03c5ecd2280bf9ddaf7091ffdd032d1f3f652489e982823ceccd1c465a375646"
+  },
+  "actual_original_command": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root24\\continuity\\artifacts\\78d3c4326486fcec3d2b824254af200003491f674c2c4f51b884a51500147718.bin",
+    "bytes": 3348,
+    "sha256": "78d3c4326486fcec3d2b824254af200003491f674c2c4f51b884a51500147718"
+  },
+  "original_command_deadline": "2026-11-19T09:05:33.692381100Z",
+  "original_file_deadline": "2026-11-19T09:04:00.181846500Z",
+  "request_ready_ownstop": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix24-work\\REQUEST-READY24-AND-OWN-STOP.json",
+    "bytes": 1159,
+    "sha256": "3197b79eb1984e3e2b56dd730a2e69c850edca8a7d8f4a282ae235c85292f334"
+  },
+  "unique_Java_inspect": {
+    "BEGIN": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp24\\codex\\response24\\inspect.BEGIN.json",
+      "bytes": 1147,
+      "sha256": "dd65807803f2e6ae0517442bd31dfe724e449eba76caf5d78b5b70e5b5efdf1d"
+    },
+    "END": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp24\\codex\\response24\\inspect.END.json",
+      "bytes": 123,
+      "sha256": "cfc94cc6a86603c9dcdcc227aeb0b103b77d445124c9b1f001e422aeca719357"
+    },
+    "stderr": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp24\\codex\\response24\\inspect.stderr",
+      "bytes": 667,
+      "sha256": "4d23fb028af8241b825fb0b18c134ca3108c17d83b99d97ee022bd1d9bd0a8ae"
+    },
+    "actual_exit": 1,
+    "seconds": 0.695056099910289,
+    "diagnosis_from_actual_consumer_owner": "Full nonempty1930748B review task user.content incorrectly consumed by scalar StrictJson.text max32768codepoints atCodexSessionDecisionFiles176; only document-role repair proposed, no global scalar guard change."
+  },
+  "response_file_absent": true,
+  "WAIT_sent": 0,
+  "WAIT_accepted": 0,
+  "file_progress_actual": [
+    {
+      "attempt": 1,
+      "deadline_utc": "2026-11-19T09:04:00.181846500Z",
+      "endpoint": "file:///D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/codex-queue24",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "model": "codex-session",
+      "payload_bytes": 1930748,
+      "proposal_id": "action-cfeb59ad6caad8fbd337aeade71b5adc7681e57632e68390f55dd88d17af309a",
+      "schema": "xar.ordinary-codex-file-progress/v1",
+      "started_at_utc": "2026-11-19T09:02:00.605696400Z",
+      "status": "ORDINARY_CODEX_FILE_BEGIN"
+    },
+    {
+      "schema": "xar.ordinary-codex-file-progress/v1",
+      "status": "ORDINARY_CODEX_REQUEST_READY",
+      "request_id": "codex-21e9fb03-1082-428d-84b8-8fc237d699ed",
+      "request_sha256": "df6377e471370c12847c21601381c3050f7cd9575bb7235b2f1511a6b1176168",
+      "proposal_id": "action-cfeb59ad6caad8fbd337aeade71b5adc7681e57632e68390f55dd88d17af309a",
+      "request_pin": {
+        "ref": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue24\\codex-21e9fb03-1082-428d-84b8-8fc237d699ed\\request.json",
+          "bytes": 1731,
+          "sha256": "df6377e471370c12847c21601381c3050f7cd9575bb7235b2f1511a6b1176168"
+        },
+        "identity": {
+          "volume_serial_decimal": "6505083400996699863",
+          "file_id_decimal": "281474995045259",
+          "creation_filetime_decimal": "134395525207986089",
+          "modified_instant": "2026-11-19T09:02:00.798608900Z",
+          "bytes": 1731
+        }
+      },
+      "request_file": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue24\\codex-21e9fb03-1082-428d-84b8-8fc237d699ed\\request.json",
+      "deadline_utc": "2026-11-19T09:04:00.181846500Z"
+    },
+    {
+      "attempt": 1,
+      "cached_prompt_tokens_if_reported": null,
+      "complete": false,
+      "completion_tokens": null,
+      "deadline_utc": "2026-11-19T09:04:00.181846500Z",
+      "endpoint": "file:///D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/codex-queue24",
+      "headers_ms": null,
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "model": "codex-session",
+      "payload_bytes": 1930748,
+      "prompt_tokens": null,
+      "proposal_id": "action-cfeb59ad6caad8fbd337aeade71b5adc7681e57632e68390f55dd88d17af309a",
+      "response_wire_bytes": 0,
+      "schema": "xar.ordinary-codex-file-progress/v1",
+      "started_at_utc": "2026-11-19T09:02:00.605696400Z",
+      "status": "ORDINARY_CODEX_FILE_END",
+      "total_ms": 119385,
+      "total_tokens": null,
+      "transient_failure": false,
+      "transport": "codex-file",
+      "ttft_ms": null
+    },
+    {
+      "attempt": 1,
+      "attempt_ref": {
+        "bytes": 3343,
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root24\\continuity\\artifacts\\71705c67aa0d2dcd021477d9083a0f9611f7c84014f8225f97db08a739ab606e.bin",
+        "sha256": "71705c67aa0d2dcd021477d9083a0f9611f7c84014f8225f97db08a739ab606e"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-19T09:04:00.404116500Z",
+      "proposal_id": "action-cfeb59ad6caad8fbd337aeade71b5adc7681e57632e68390f55dd88d17af309a",
+      "request_ref": {
+        "bytes": 1930748,
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root24\\continuity\\artifacts\\03c5ecd2280bf9ddaf7091ffdd032d1f3f652489e982823ceccd1c465a375646.bin",
+        "sha256": "03c5ecd2280bf9ddaf7091ffdd032d1f3f652489e982823ceccd1c465a375646"
+      },
+      "schema": "xar.ordinary-codex-file-progress/v1",
+      "status": "ORDINARY_CODEX_FILE_ARCHIVED"
+    }
+  ],
+  "actual_batch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix24-work\\ACTUAL-BATCH24-RESULT.json",
+    "bytes": 40862,
+    "sha256": "a6ed1eb7c5a48fc42529645d7ba42ddb53baf0ea4c940f1ee624fc238e4d01ed"
+  },
+  "metrics": {
+    "attempted_turns": 0,
+    "applied_turns": 0,
+    "ordinary_action_positive_ack_count": 0,
+    "committed_saved_days": 0,
+    "eligible_advances_since_save": 0
+  },
+  "Main_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix24-work\\MAIN25024-END.json",
+    "bytes": 85,
+    "sha256": "078de6fb10d80eff114092a365123869f8feb9b8f898eb9e9aef984ccd00e2e3"
+  },
+  "Main_terminal": "OPERATOR_STOP/endpointRELEASED",
+  "unique_normal_Core_AppExit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit24-01\\summary.json",
+    "bytes": 14304,
+    "sha256": "1af35fc4405be00bf3d78298dfa58e49c2307473276ec45edae0ce04dccf638f"
+  },
+  "GSV_actual_terminal": {
+    "actual_terminal": {
+      "accounting": {
+        "active_processes": 0,
+        "limit_flags": 8704,
+        "memory_limit_bytes": 34359738368,
+        "peak_job_memory_bytes": 12606803968
+      },
+      "elapsed_seconds_decimal": "970.7601656",
+      "exit_code": 0,
+      "identity": {
+        "creation_filetime_decimal": "134395518025689570",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 132224
+      },
+      "stop_reason": null
+    },
+    "cleanup_proven": true,
+    "evidence": {
+      "bytes": 1040,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-opening56-24\\event-000007.json",
+      "sha256": "219cd764283e2629f00ac40cbee1b59fbdbad2639e1246f2c1a279056a37df9b"
+    },
+    "game": {
+      "creation_filetime": "134395518025689570",
+      "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 132224
+    },
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-19T09:06:13.460733600Z",
+    "schema": "xar.java-game-supervisor-result/v1",
+    "session_id": "session-migration1210-hotfix26757580-firstroot24",
+    "status": "GAME_EXITED",
+    "stop_request_id": "",
+    "terminal_kind": "NATURAL_EXIT"
+  },
+  "GSV_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix24-work\\GSV-SOURCE24-END.json",
+    "bytes": 85,
+    "sha256": "c53935b2fa9077d0af0d387b928ae5f8b6224809f806c0c6dc1105c825a9f39b"
+  },
+  "post_originals": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE24-POSTEXIT-ORIGINALS-PDX-AND-SILENT01.json",
+    "bytes": 3186,
+    "sha256": "42e85d48e4e599c09ef07dc5839902cf74551e513ca17c6e8abdb81048e3dea0"
+  },
+  "frozen157_JAR_and_DLL56_coldSHA_all_equal": true,
+  "all_original_windows_partialroots_oldUNKNOWN_and_expired24request_preserved": true,
+  "no_retry_extension_or_fabricatedinspection_response": true,
+  "timeout_fallback_is_not_Codex_WAIT": true,
+  "scope_credit": "Saved installation/promotion/ordinary production planning/current-progress/crown-council typedunavailable and firstrealfile request producer reached; no successful modelWAIT/fullgovernance/actions/cadence/SAVE/day credit."
+}

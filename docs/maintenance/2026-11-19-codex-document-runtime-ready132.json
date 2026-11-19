@@ -1,0 +1,81 @@
+{
+  "schema": "ck3.normal-main40-full-document-prestarted-first-WAIT-ENV24-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at": "2026-11-19T09:59:33.935125+00:00",
+  "normal_sole_local": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/maven-package127.END.json",
+    "bytes": 940,
+    "sha256": "28dd71624e9d5051b37fac71a74719f2b936a8a9155934e6b7187b94ed54de45"
+  },
+  "changed_existing_leaf": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/source/local-service/src/main/java/org/xar/ck3/control/service/root/CodexSessionDecisionFiles.java",
+    "bytes": 19448,
+    "sha256": "5f4af1a8160ea803220fd47b3eb24b383ec5356c101b0b955fbf9586be17e4a5"
+  },
+  "document_lane_software": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/codex-document124/CODEX-LARGE-DOCUMENT-1LS-SOFTWARE-READY125.json",
+    "bytes": 2079,
+    "sha256": "04c15b3df1c4cabc01d4f3d2f8970f534aa15cf625fa1171bd57b97dbec19d0c"
+  },
+  "old_materialize_KeyError_retained": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/local-codex127/NORMAL40-ORIGINAL-LEASE-FIELD-PREFLIGHT-F129.json",
+    "bytes": 977,
+    "sha256": "2ff0bf306bbb3cec8506cb126fabc1e09bb6b69e32a7809183a0f841c41a4183"
+  },
+  "watcher_script": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/first_wait_watcher128.py",
+    "bytes": 13054,
+    "sha256": "b07b56faad96ea7772c557b293f449941eabcfec5a352bd6bad94073cf1821d2"
+  },
+  "watcher_NoGame_three_modes": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-nogame124/WATCHER-NOGAME128.json",
+    "bytes": 2508,
+    "sha256": "374396a3133e43654e4a0a3256824203d4e3605cc4b04e1ea69cdc5337551acd"
+  },
+  "watcher_launch_contract": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/FIRST-WAIT25-WATCHER-CONTRACT132.json",
+    "bytes": 3493,
+    "sha256": "d9564ab9cc1a6f4f5003f24ca1df7968c090749696f3fdbc49082d5686d785c9"
+  },
+  "runtime_archives": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/MAIN40-FROZEN-RUNTIME-ARCHIVES131.json",
+    "bytes": 92806,
+    "sha256": "bfffb47d2482e926aab74ae4e6e1e5855980cef784066a05412630d5e5b92cdd"
+  },
+  "genuine_whole_local_public_large_inspect_WAIT": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/genuine131.END.json",
+    "bytes": 407,
+    "sha256": "25bc38b34a4849bc576f7fdbca027600c64b1cddc42565debad77d2a9782bcfe"
+  },
+  "public_ENV24_origins": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/ACTUAL-ENV24-NEWMAIN40-ORIGINS131.json",
+    "bytes": 143281,
+    "sha256": "e58a14eab2e575a2ef847ea42348e22491c545086a8dd4214d7e95a2ef94abf4"
+  },
+  "environment": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/env24/xar-autoplayer-environment.json",
+    "bytes": 36869,
+    "sha256": "e144adc63d706a478dd5e698c363ff57d918a68c4fbdd5784108453a125f6508"
+  },
+  "entry_prefixes": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/NORMAL-MAIN40-ENTRY-PREFIXES132.json",
+    "bytes": 1543,
+    "sha256": "9b578ea61df30ea09f88f21a71adcc554117095aa1650d48cd09ee63633d6f75"
+  },
+  "same_plan_checker": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/ACTUAL-CALLER40-INPUTS132.json",
+    "bytes": 732,
+    "sha256": "54153d50b4d5553fa98b15e808c4d1dc2c40c8b22507e5d0c7de73d8096c6d8e"
+  },
+  "actual_expired24_failure_scope": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE24-FIRST-CODEX-READY-INSPECT-DOCUMENT-BOUND-RED-NATURAL0-FINAL01.json",
+    "bytes": 12288,
+    "sha256": "091a5ac764aba2ba91f85e44ab3dc10201517ec42bc94bad2ebe67ecd0cdbf91"
+  },
+  "current_native_DLL": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/build-01/frozen/xar_ck3_bridge.dll",
+    "bytes": 13443584,
+    "sha256": "6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3"
+  },
+  "qualification": "Normal40 local MAIN54.384sP+56oldJARstrong exact; 4fresh document-role cases P, genuine normalJar public1.9M file inspect/oneWAIT P, ENV24/413origins P. Original8.943s targetF and wrong classifier metadata/first materializeKeyError retained. No old24 request reply/renewal and no Native/fullSaved repeated. NoGame firstwatcher actually prestarted (PID/birth), inspectdelay.262914s/oneWAIT plus MainEND/sourcewindow exit; this is software qualification only. Source25 watcher not yet running: Runtime must actualBEGIN and marker verify before Main. Single diagnosticWAIT only, originalearliest deadlines/IDs/custody/onewrite remain. FullGov/Council/Crown/actions/day/SAVE/overallgoal not complete. 40JAR/source/157CP/JNA/script now frozen."
+}
