@@ -1,0 +1,34 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "holding-types-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 1,
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": ["--output", "{output}", "--scenario", "florin-holdings"],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "four_original_holding_type_assertions",
+    "actual_initial_calendar_completion_popup_and_normal_exit"
+  ],
+  "required_markers": [
+    "AUBE: TEST BEGIN holding_types",
+    "AUBE: READY actual_tribal_source_and_native_target",
+    "AUBT: TEST PASS main_tribal_mixed_cost",
+    "AUBE: READY actual_tribal_lodge_source_and_native_target",
+    "AUBT: TEST PASS regular_tribal",
+    "AUBE: READY actual_unleased_lay_clergy_temple",
+    "AUBT: TEST PASS main_church",
+    "AUBE: READY all_actual_direct_nomad_holdings",
+    "AUBE: OBSERVE nomad_production_scan_zero_write",
+    "AUBE: READY all_actual_direct_herder_holdings",
+    "AUBT: TEST PASS nomad_herder_na",
+    "AUBE: TEST DONE holding_types"
+  ],
+  "forbidden_markers": ["AUBT: TEST FAIL", "AUBE: TEST FAIL"],
+  "scope": "Four partial original holding cells. Normal Robert1128 selection and official switch/independence to Roger1132. Explicit disposable actual tribal government/holding conversion; retain auto-created tribe01, native02 qualification and exact gold/prestige production-chain charge. Current ordinary tribal representative tribe_craftsmens_lodge1->2 replaces removed old longhouses01->02; actual source/native target, exact two resources/count1. Actual Adamite faith/rite and lay clergy under feudal government, county faith/rite, direct owned/unleased church conversion sourceTempleI/nativeII, production chainII/notIII/III native eligible, exact personal cost/count1. No primary add/remove/downgrade. Nomad/N/A uses real character auto_build.0004, after converting every actual directly-owned province to the native excluded holding type and reading actual nonempty owner/unleased/no-construction/auto-created primary inventory; each production scan must leave resources, primary/type and count0 unchanged. Herder sample uses actual nomad government, allowed by current herder holding definition, and the same actual direct count. All conversions are disposable preparation and have no business credit; no full product, native ABI, GUI policy or publication credit. Duchy/special/Mandala/succession and other common requirements remain mandatory.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

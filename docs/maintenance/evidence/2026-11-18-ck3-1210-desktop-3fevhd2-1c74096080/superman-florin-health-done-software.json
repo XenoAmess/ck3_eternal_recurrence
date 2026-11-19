@@ -1,0 +1,93 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T08:23:30.621639+00:00",
+  "contract": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T08:20:30.400558+00:00",
+    "verify_body_byte_identical": true,
+    "verify_body_utf8_bytes": 52362,
+    "verify_body_sha256": "c14b6e9a9e67a5f5467b91b2dc86f28cc12827b095a97bcee9741b6cd1dee1b9",
+    "other_event_definitions_identical": [
+      "sxat.1",
+      "sxat.2",
+      "sxat.3"
+    ],
+    "protected_manifest_contract_equal": true,
+    "changed_fixture_files": [
+      "events/sxat_health_events.txt",
+      "localization/simp_chinese/sxat_health_l_simp_chinese.yml"
+    ],
+    "parser": {
+      "argv": [
+        "java",
+        "-Xmx192m",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\tmp",
+        "-jar",
+        "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "parse",
+        "--file",
+        "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.408395800011931,
+      "jar_sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82",
+      "stdout_bytes": 99,
+      "stdout_sha256": "3f4dbc9244f3985507ad89b8fc79aeac43586d300bf827e8a39174bd96091d65",
+      "scope": "Generic Clausewitz syntax only; no engine/runtime credit"
+    },
+    "fixture_files": [
+      {
+        "path": "common/modifiers/sxat_health_modifiers.txt",
+        "bytes": 514,
+        "sha256": "f3414aa7a4289014b0091681d2c3d1f1317fe19616b4d0e77ca4e4881883ba33"
+      },
+      {
+        "path": "common/on_action/sxat_on_actions.txt",
+        "bytes": 167,
+        "sha256": "4efdd698eab89023e9b03fcb0a0b38e71fb45d8e4c227e9f51d7daff138fea4c"
+      },
+      {
+        "path": "common/script_values/sxat_health_values.txt",
+        "bytes": 442,
+        "sha256": "3f619cbd9af94ecb3b45ab68dd42b6d652c2a671c275c9549a7a11a6c50e9da5"
+      },
+      {
+        "path": "descriptor.mod",
+        "bytes": 83,
+        "sha256": "6088003d0466ae8320638ae7653856a134ab3825c5ec9dccf728e05a0971b366"
+      },
+      {
+        "path": "events/sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      {
+        "path": "localization/simp_chinese/sxat_health_l_simp_chinese.yml",
+        "bytes": 609,
+        "sha256": "79458c8665eeaf0d36721f869e90ab0331eb15c191e33563b0a3c53d492d5cfd"
+      }
+    ],
+    "source_files": [
+      {
+        "path": "mod_superman_qiang/tools/prepare_health_fixture.py",
+        "bytes": 12367,
+        "sha256": "366426afd39c00d9e166cce3d04b8d7230cf6eb4ac6c6dc2ac7675eb4b5b9931"
+      },
+      {
+        "path": "mod_superman_qiang/tools/test_build_release.py",
+        "bytes": 27467,
+        "sha256": "61424b835f2827a5825be6c9c0d6e476590e94b29986fc44f44e4fcd158262f1"
+      }
+    ]
+  },
+  "receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\contract-and-parser.json",
+    "bytes": 2732,
+    "sha256": "292df527f27ba82e4b58462493a8a7963ba0f3bfae09768dd5cd235824c91a4c"
+  },
+  "scope": "Only existing health fixture DONE display and actual producer regression. Full52362B verify string, other three events,20case contract and schedule preserved. Actual targeted CLI regression RED before/GREEN after, producer generation, changed-test mypy,33 production generated-file parity and generic syntax parser0. Earlier78product tests retained at their original candidate scope; not re-run or re-attributed to this display change. New actual autopause/SAVE readback still NOT_RUN.",
+  "runtime_status": "NOT_RUN",
+  "business_pass": false,
+  "product_release_pass": false,
+  "remaining_write_reservation_bytes": 0
+}

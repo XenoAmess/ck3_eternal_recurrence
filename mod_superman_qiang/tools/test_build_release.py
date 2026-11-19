@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -293,6 +294,66 @@ class SupermanNotificationFixtureTests(unittest.TestCase):
         self.replace_case_field("case_index", 2)
         with self.assertRaisesRegex(ValueError, "invalid notification cell index"):
             self.prepare(self.root / "duplicate-index")
+
+
+class SupermanHealthFixtureTests(unittest.TestCase):
+    """Exercise the CLI producer; a terminal close must never replay health actions."""
+
+    def test_real_emitter_preserves_twenty_checks_and_has_safe_visible_done(self) -> None:
+        expected_cases = (
+            "player-native-health-75", "health-flat-75", "health-floor-below-3_00074",
+            "health-floor-at-3_00075", "health-floor-same-day-repeat", "health-penalty-mitigation",
+            "health-rebuild-idempotent", "health-ledger-growth", "health-ledger-to-zero",
+            "health-upper-balance-block", "health-upper-balance-last", "health-lower-balance-block",
+            "health-lower-balance-last", "six-skill-diplomacy-regression", "six-skill-prowess-regression",
+            "equal-experience-health-no-transfer", "only-health-eligible-dispatch",
+            "health-zero-receiver", "health-negative-receiver", "health-reverse-capacity-boundaries",
+        )
+        with tempfile.TemporaryDirectory(prefix="sxad-health-producer-") as temporary:
+            output = Path(temporary) / "health"
+            subprocess.run(
+                [sys.executable, "-B", "-X", "utf8", str(SOURCE / "tools/prepare_health_fixture.py"),
+                 "--output", str(output)], check=True, capture_output=True, text=True, encoding="utf-8",
+            )
+            manifest = json.loads(output.with_name("health.fixture.json").read_text(encoding="utf-8"))
+            self.assertEqual(manifest["case_count"], 20)
+            self.assertEqual(manifest["total_calendar_days_to_result"], 3)
+            self.assertEqual(tuple(row["case"] for row in manifest["base_skill_contract"]), expected_cases)
+            self.assertEqual(manifest["expected_pass_markers"], ["SXAT: PASS " + name for name in expected_cases])
+            source = (output / "events/sxat_health_events.txt").read_text(encoding="utf-8-sig")
+            nodes = validate_static.effect_assignments(re.sub(r'debug_log\s*=\s*"[^"\n]*"', "", source))
+            block = SupermanNotificationFixtureTests.statement_block
+            done = block(nodes, "sxat.4")
+            self.assertNotIn("hidden", [node.key for node in done])
+            self.assertIn(validate_static.EffectAssignment("theme", "realm"), done)
+            self.assertEqual(block(done, "option"),
+                             (validate_static.EffectAssignment("name", "sxat_health_done_close"),))
+            checks = block(block(done, "immediate"), "hidden_effect")
+            successful = [node.value for node in checks if node.key == "if" and isinstance(node.value, tuple)]
+            rejected = [node.value for node in checks if node.key == "else" and isinstance(node.value, tuple)]
+            self.assertEqual(len(successful), 20)
+            self.assertEqual(len(rejected), 20)
+            for branches, value in ((successful, "1"), (rejected, "0")):
+                actual = [dict((field.key, field.value) for field in block(branch, "set_variable"))
+                          for branch in branches]
+                self.assertEqual(actual, [{"name": "sxat_case_" + name.replace("-", "_"), "value": value}
+                                          for name in expected_cases])
+            for branch in successful:
+                self.assertTrue(block(branch, "limit"))
+            for event, destination in (("sxat.1", "sxat.2"), ("sxat.3", "sxat.4")):
+                scheduled = block(block(block(nodes, event), "immediate"), "trigger_event")
+                self.assertEqual(dict((field.key, field.value) for field in scheduled),
+                                 {"id": destination, "days": "1"})
+            begin = block(block(nodes, "sxat.2"), "option")
+            self.assertEqual(dict((field.key, field.value) for field in block(begin, "trigger_event")),
+                             {"id": "sxat.3"})
+            on_actions = (output / "common/on_action/sxat_on_actions.txt").read_text(encoding="utf-8-sig")
+            startup = block(validate_static.effect_assignments(on_actions), "sxat_health_start")
+            first = block(block(block(startup, "effect"), "every_player"), "trigger_event")
+            self.assertEqual(dict((field.key, field.value) for field in first), {"id": "sxat.1", "days": "1"})
+            localization = (output / "localization/simp_chinese/sxat_health_l_simp_chinese.yml").read_text(encoding="utf-8-sig")
+            for key in ("sxat_health_done_title", "sxat_health_done_desc", "sxat_health_done_close"):
+                self.assertEqual(len(re.findall(r"(?m)^ " + key + r":0 ", localization)), 1)
 
 
 class SupermanPublicationTests(unittest.TestCase):

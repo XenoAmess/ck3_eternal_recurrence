@@ -113,14 +113,14 @@ events='namespace = sxat\n'
 events+='sxat.1 = { type = character_event hidden = yes immediate = {\n'+setup+'} }\n'
 events+='sxat.2 = { type = character_event theme = realm title = sxat_health_baseline_title desc = sxat_health_baseline_desc immediate = { set_variable = { name = sxat_health_baseline_ready value = 1 } debug_log = "SXAT: BASELINE_READY health-1.1.0" } option = { name = sxat_health_begin trigger_event = { id = sxat.3 } } }\n'
 events+='sxat.3 = { type = character_event hidden = yes immediate = {\n'+action+'} }\n'
-events+='sxat.4 = { type = character_event hidden = yes immediate = {\n'+verify+'} }\n'
+events+='sxat.4 = { type = character_event theme = realm title = sxat_health_done_title desc = sxat_health_done_desc immediate = { hidden_effect = {\n'+verify+'} } option = { name = sxat_health_done_close } }\n'
 payload={
  'descriptor.mod':'name="SXAD external health1.1.0 fixture"\nversion="0"\nsupported_version="1.21.*"\n',
  'common/on_action/sxat_on_actions.txt':'on_game_start_after_lobby = { on_actions = { sxat_health_start } }\nsxat_health_start = { effect = { every_player = { trigger_event = { id = sxat.1 days = 1 } } } }\n',
  'common/modifiers/sxat_health_modifiers.txt':'sxat_fixture_health_gain_modifier = { health = 1 scale = { value = sxat_fixture_health_gain_scale } }\nsxat_fixture_health_loss_modifier = { health = -1 scale = { value = sxat_fixture_health_loss_scale } }\nsxat_fixture_health_action_loss_modifier = { health = -1 scale = { value = sxat_fixture_action_loss_scale } }\nsxat_health_penalty_mitigation_modifier = { negate_health_penalty_add = 0.1 }\nsxat_health_capacity_buffer_modifier = { health = 1000001 }\nsxat_exhaust_prowess_negation_modifier = { prowess = -5 }\n',
  'common/script_values/sxat_health_values.txt':'sxat_fixture_health_gain_scale = { value = 0 if = { limit = { has_variable = sxat_fixture_health_fix } add = var:sxat_fixture_health_fix } }\nsxat_fixture_health_loss_scale = { value = 0 if = { limit = { has_variable = sxat_fixture_health_fix } add = var:sxat_fixture_health_fix } }\nsxat_fixture_action_loss_scale = { value = 0 if = { limit = { has_variable = sxat_fixture_action_health_loss } add = var:sxat_fixture_action_health_loss } }\n',
  'events/sxat_health_events.txt':events,
- 'localization/simp_chinese/sxat_health_l_simp_chinese.yml':'l_simp_chinese:\n sxat_health_baseline_title:0 "测试夹具：健康基线已就绪"\n sxat_health_baseline_desc:0 "此窗口只属于外置验收夹具，不可用于宣传。请先保存独立基线存档并读取原生健康值，再开始20项测试。"\n sxat_health_begin:0 "开始本轮验收测试"\n',
+ 'localization/simp_chinese/sxat_health_l_simp_chinese.yml':'l_simp_chinese:\n sxat_health_baseline_title:0 "测试夹具：健康基线已就绪"\n sxat_health_baseline_desc:0 "此窗口只属于外置验收夹具，不可用于宣传。请先保存独立基线存档并读取原生健康值，再开始20项测试。"\n sxat_health_begin:0 "开始本轮验收测试"\n sxat_health_done_title:0 "测试夹具：健康20项检查已结算"\n sxat_health_done_desc:0 "检查已经执行，不代表全部通过。请保持暂停，另存后态并独立核对日志、角色引用、基础健康和账本。"\n sxat_health_done_close:0 "关闭本测试窗口（不重跑）"\n',
 }
 OUT.mkdir(exist_ok=False)
 files=[]

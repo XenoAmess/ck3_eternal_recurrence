@@ -1,0 +1,314 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T08:23:30.618721+00:00",
+  "software_pass": true,
+  "records": [
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-19T08:17:29.328577+00:00",
+      "output": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-software-1795076243575213300",
+      "results": [
+        {
+          "name": "unit",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tools",
+            "-p",
+            "test_fixture_engine_prepare.py",
+            "-v"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 2.160876800000551
+        },
+        {
+          "name": "producer-mypy",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-m",
+            "mypy",
+            "--strict",
+            "--follow-imports=silent",
+            "--no-incremental",
+            "--cache-dir=nul",
+            "tools/prepare_aub_1_20_fixture.py"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 1.9753766000067117
+        },
+        {
+          "name": "actual-producer-cli",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "tools/prepare_aub_1_20_fixture.py",
+            "--repo",
+            "D:\\workspace\\ck3_eternal_recurrence",
+            "--output",
+            "D:\\ck3-state\\upgrade-20261118\\aub-mandala-software-1795076243575213300\\prepared-fixture",
+            "--scenario",
+            "florin-mandala"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 1.5697126000013668
+        },
+        {
+          "name": "syntax-1",
+          "command": [
+            "java",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_mandala\\common\\on_action\\aubma_on_actions.txt"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.3559990999929141,
+          "evidence_reused_from": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-software-1795076177359836900\\summary.json"
+        },
+        {
+          "name": "syntax-2",
+          "command": [
+            "java",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_mandala\\common\\scripted_effects\\aubma_inventory_effects.txt"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.24383710000256542,
+          "evidence_reused_from": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-software-1795076177359836900\\summary.json"
+        },
+        {
+          "name": "syntax-3",
+          "command": [
+            "java",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_mandala\\events\\aubma_events.txt"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.2754923000029521,
+          "evidence_reused_from": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-software-1795076177359836900\\summary.json"
+        }
+      ],
+      "source_pins": [
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_mandala\\common\\on_action\\aubma_on_actions.txt",
+          "bytes": 169,
+          "sha256": "3334435d615d5128b81f50981bf9eb564a4ca9a86df9068a1510c8e3c244ea0d"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_mandala\\common\\scripted_effects\\aubma_inventory_effects.txt",
+          "bytes": 2227,
+          "sha256": "b165aced829a5b88e1aac8191afecdbabf7e4c3846b9c0c9a78c73c8e6436a1c"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_mandala\\descriptor.mod",
+          "bytes": 88,
+          "sha256": "708ea308efbe1a7a6297d17af06d1b9fefd5d5aedd733459501d55a04b579fb6"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_mandala\\events\\aubma_events.txt",
+          "bytes": 10776,
+          "sha256": "baf46800095a2783b9e60e8b4c4168dc0d6907604ea13f85ba01ec0f03d5e114"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_mandala\\localization\\english\\aubma_l_english.yml",
+          "bytes": 351,
+          "sha256": "72e660bcbb6d4eeb213ccabb9f0beca97968e90e36bdbc04e2e26089bd96b0e1"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_mandala\\localization\\simp_chinese\\aubma_l_simp_chinese.yml",
+          "bytes": 308,
+          "sha256": "993ed65a0850b19ee60ff3d1e3e037b63010eec11dc5131e64891779c65a67f3"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_aub_1_20_fixture.py",
+          "bytes": 13175,
+          "sha256": "0a433c7ae772311cfcd8dc2265dced1cd35683a5c2420a5999aafeca716395b3"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_fixture_engine_prepare.py",
+          "bytes": 20415,
+          "sha256": "9ee7c192e3f524901261d9f4b836cc295c482ce636ceff7aa35144bf52e04d06"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_mandala.json",
+          "bytes": 2654,
+          "sha256": "656881c8d4db46932e19ea1bf2008bce981d4717a1a95d8bbaf4e020329038bc"
+        }
+      ],
+      "jar_path": "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+      "jar_sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82",
+      "syntax_scope": "Generic parse only; no current1.21 semantic profile or JAR source-build provenance inferred.",
+      "artifact_bytes_before_summary": 23408,
+      "peak_bytes": 8388608,
+      "passed": true,
+      "runtime_status": "NOT_RUN",
+      "business_pass": false,
+      "game_started": false,
+      "steam_changed": false,
+      "git_committed": false,
+      "reservation_released_bytes": 8388608,
+      "remaining_write_reservation_bytes": 0,
+      "free_D_at_close": 21859201024
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-19T08:20:26.789769+00:00",
+      "results": [
+        {
+          "name": "unit",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tools",
+            "-p",
+            "test_fixture_engine_prepare.py",
+            "-v"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 2.2172406999889063
+        },
+        {
+          "name": "producer-mypy",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-m",
+            "mypy",
+            "--strict",
+            "--follow-imports=silent",
+            "--no-incremental",
+            "--cache-dir=nul",
+            "tools/prepare_aub_1_20_fixture.py"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 2.008710699999938
+        },
+        {
+          "name": "actual-producer",
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "tools/prepare_aub_1_20_fixture.py",
+            "--scenario",
+            "florin-holdings",
+            "--output",
+            "D:\\ck3-state\\upgrade-20261118\\aub-holdings-software-a01\\fixture"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 1.593914400000358
+        },
+        {
+          "name": "syntax-0",
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-jar",
+            "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-holdings-software-a01\\fixture\\common\\on_action\\aube_on_actions.txt"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.2188151000009384
+        },
+        {
+          "name": "syntax-1",
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-jar",
+            "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-holdings-software-a01\\fixture\\events\\aube_events.txt"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.22203499999886844
+        }
+      ],
+      "source_pins": [
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_aub_1_20_fixture.py",
+          "bytes": 14391,
+          "sha256": "84de1f59602498689b0a77da992737beb42f45eed275c9f232739f280dd65d85"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_fixture_engine_prepare.py",
+          "bytes": 22145,
+          "sha256": "4ddb4505f35677d3399f039a696a5ebda7392d571b5861ad63d938e34ed9b73e"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_holdings.json",
+          "bytes": 2628,
+          "sha256": "a4ae109bac7202dd89f39f172c41e22eb74ff4a4c203012e5db9e0a296b3db91"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_holdings\\common\\on_action\\aube_on_actions.txt",
+          "bytes": 1381,
+          "sha256": "fa77bbfd5797b6ea69b56400200fd89c2f048d447fb7e4e8eca982cacd834106"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_holdings\\descriptor.mod",
+          "bytes": 94,
+          "sha256": "1c9da05cd53a543c3e1a386e06687cc96a5cf9391c725d98622c0e666e133ff6"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_holdings\\events\\aube_events.txt",
+          "bytes": 11980,
+          "sha256": "afe1b9bdaf0f9a17dc159102d6c70682ac95f7717925808e152033d90046831a"
+        },
+        {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_holdings\\localization\\simp_chinese\\aube_l_simp_chinese.yml",
+          "bytes": 293,
+          "sha256": "0faebe9f8fa00cd6978ab0bb7d619dc266f806ed5221c637499ad30ad7f80b8d"
+        }
+      ],
+      "passed": true,
+      "runtime_status": "NOT_RUN",
+      "business_pass": false,
+      "syntax_scope": "Generic syntax only, no engine symbol/eligibility or business qualification",
+      "peak_budget_bytes": 8388608,
+      "retained_output_bytes": 21388,
+      "remaining_write_reservation_bytes": 0
+    }
+  ],
+  "source_receipts": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-software-1795076243575213300\\summary.json",
+      "bytes": 6323,
+      "sha256": "a2d45a34bf509c2fce74fd076a581d900f5d64ee1c782a88fc222f2a03d8d36b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-holdings-software-a01\\summary.json",
+      "bytes": 4363,
+      "sha256": "152709ae8a6c6f7c184d3f19f6d687be5bad3332c77bf449a306c83a1301f499"
+    }
+  ],
+  "scope": "Mandala source/syntax unchanged after its recorded pass. Root subsequently added independent holdings producer and actual producer regression, then re-ran full16tests/strict producer mypy/actual holdings CLI/two generic parses, all0. Generic parser is syntax only. No real Game business or full product credit. Native target conditions and exact fees/count are retained in each case.",
+  "runtime_status": "NOT_RUN",
+  "business_pass": false,
+  "product_release_pass": false,
+  "remaining_write_reservation_bytes": 0
+}

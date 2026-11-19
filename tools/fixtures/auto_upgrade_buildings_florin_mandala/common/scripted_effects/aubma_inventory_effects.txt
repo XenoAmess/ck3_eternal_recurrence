@@ -1,0 +1,41 @@
+﻿# Observation only: enumerate real directly-owned provinces and built buildings.
+# Primary buildings identify their actual districts; no guessed district link.
+aubma_read_pagan_inventory_effect = {
+    save_scope_as = aubma_payer
+    if = { limit = { exists = scope:aubma_holding } clear_saved_scope = aubma_holding }
+    if = { limit = { exists = scope:aubma_mandala } clear_saved_scope = aubma_mandala }
+    set_variable = { name = aubma_direct_count value = 0 }
+    every_directly_owned_province = {
+        scope:aubma_payer = { change_variable = { name = aubma_direct_count add = 1 } }
+        debug_log = "AUBMA: OBSERVE directly_owned_province"
+        debug_log_scopes = yes
+    }
+    set_variable = { name = aubma_built_count value = 0 }
+    set_variable = { name = aubma_primary_count value = 0 }
+    province:9550 = {
+        every_built_buildings = {
+            scope:aubma_payer = { change_variable = { name = aubma_built_count add = 1 } }
+            debug_log = "AUBMA: OBSERVE built_building"
+            debug_log_scopes = yes
+            if = {
+                limit = { is_primary_building = yes }
+                scope:aubma_payer = { change_variable = { name = aubma_primary_count add = 1 } }
+                building_district = {
+                    if = {
+                        limit = { has_building_or_higher = temple_citadel_01 }
+                        save_scope_as = aubma_holding
+                    }
+                    else_if = {
+                        limit = { has_building_or_higher = pb_mandala_01 }
+                        save_scope_as = aubma_mandala
+                    }
+                }
+            }
+        }
+    }
+    if = { limit = { var:aubma_direct_count = 0 } debug_log = "AUBMA: OBSERVE direct_count0" }
+    if = { limit = { var:aubma_direct_count = 1 } debug_log = "AUBMA: OBSERVE direct_count1" }
+    if = { limit = { var:aubma_direct_count > 1 } debug_log = "AUBMA: OBSERVE direct_count_above1" }
+    if = { limit = { var:aubma_built_count = 18 var:aubma_primary_count = 7 } debug_log = "AUBMA: OBSERVE stock_count18_primary7" }
+    if = { limit = { var:aubma_built_count = 5 var:aubma_primary_count = 2 } debug_log = "AUBMA: OBSERVE prepared_count5_primary2" }
+}

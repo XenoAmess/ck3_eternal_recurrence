@@ -62,3 +62,13 @@ repeated-notification issue. Earlier CK3 1.20 live results are historical.
 The legacy six-skill random matrix and 1.20 Native launcher are not qualified.
 Real paired/anonymous entry, seven-attribute behavior, monthly callback,
 ordinary UI and independent cold-save checks remain for the current engine.
+
+At 2026-11-19T08:20:30Z on the same machine, the existing health fixture's
+`sxat.4` gained a visible realm completion window and an empty close option.
+The complete 52362-byte verify body remains byte-identical, as do the other
+three events, 20-case contract and schedule. An actual CLI producer regression
+reproduced the old hidden completion failure and passed after the change;
+generation, changed-test-file mypy, all 33 production output parity checks
+and one changed-event generic parse exited 0. Only fixture presentation changed.
+The actual completion pause and physical before/after SAVE checks remain NOT_RUN.
+See the [source-pinned follow-up evidence](../../docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/superman-florin-health-done-software.json).

@@ -1,5 +1,6 @@
 """Check exact engine selection and metadata used by disposable fixtures."""
 import importlib.util
+import hashlib
 import os
 import json
 import re
@@ -252,6 +253,107 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
             self.assertTrue(set(passes).issubset(original))
             for marker in case["required_markers"]:
                 self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
+
+    def test_actual_mandala_producer_emits_exact_sources_and_partial_contract(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "mandala"
+            self.assertEqual(aub.prepare_mandala(REPO, output), output)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_mandala.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["required_markers"], case["required_markers"])
+            self.assertEqual(receipt["mode"], "florin-four-mandala-production-edges")
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            self.assertIs(receipt["full_product_pass_from_cell"], False)
+            self.assertIs(receipt["native_abi_loaded"], False)
+            self.assertIs(receipt["gui_callbacks_mounted"], False)
+            self.assertEqual(case["maximum_natural_days"], 2)
+            source = REPO / "tools/fixtures/auto_upgrade_buildings_florin_mandala"
+            relative_files = {p.relative_to(source).as_posix() for p in source.rglob("*") if p.is_file()}
+            self.assertEqual(set(receipt["source_file_sha256"]), relative_files)
+            self.assertEqual(set(receipt["prepared_file_sha256"]), relative_files)
+            for relative in relative_files:
+                self.assertEqual((output / relative).read_bytes(), (source / relative).read_bytes())
+                if Path(relative).suffix in {".txt", ".yml"}:
+                    self.assertTrue((output / relative).read_bytes().startswith(b"\xef\xbb\xbf"))
+            self.assertFalse((output / "descriptor.mod").read_bytes().startswith(b"\xef\xbb\xbf"))
+            combined = "\n".join(p.read_text(encoding="utf-8-sig") for p in output.rglob("*.txt"))
+            for marker in case["required_markers"]:
+                self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
+            historical = self.assertion_limits(parser.parse_clausewitz((REPO / "tools/fixtures/auto_upgrade_buildings_acceptance/events/aubt_events.txt").read_text(encoding="utf-8-sig")))
+            representatives = {m for m in case["required_markers"] if m.startswith("AUBT: TEST PASS ")}
+            self.assertEqual(len(representatives), 4)
+            self.assertTrue(representatives.issubset(historical))
+            self.assertIn("terminal-edge representative", receipt["rules"])
+            self.assertIn("different-tier representatives", case["scope"])
+
+    def test_actual_holdings_producer_and_case_keep_four_partial_cells(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "holdings"
+            self.assertEqual(aub.prepare_holdings(REPO, output), output)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_holdings.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["required_markers"], case["required_markers"])
+            self.assertIs(receipt["full_product_pass_from_cell"], False)
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            combined = "\n".join(p.read_text(encoding="utf-8-sig") for p in output.rglob("*.txt"))
+            representatives = {m for m in case["required_markers"] if m.startswith("AUBT: TEST PASS ")}
+            historical = self.assertion_limits(parser.parse_clausewitz((REPO / "tools/fixtures/auto_upgrade_buildings_acceptance/events/aubt_events.txt").read_text(encoding="utf-8-sig")))
+            self.assertEqual(len(representatives), 4)
+            self.assertTrue(representatives.issubset(historical))
+            for marker in case["required_markers"]:
+                self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
+            for relative, expected in receipt["prepared_file_sha256"].items():
+                self.assertEqual(hashlib.sha256((output / relative).read_bytes()).hexdigest(), expected)
+
+    def test_mandala_rejects_legacy_engine_before_writing(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value={"game_version": "1.20.0.4"}), \
+                patch.object(aub, "engine_identity", return_value={"game_version": "1.20.0.4"}):
+            output = Path(temporary) / "mandala"
+            with self.assertRaisesRegex(ValueError, "requires exact"):
+                aub.prepare_mandala(REPO, output)
+            self.assertFalse(output.exists())
+            self.assertFalse(output.with_suffix(".prepare.json").exists())
+
+    def test_florin_reference_rejects_missing_scalar_event_id(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary)
+            actions = source / "common/on_action"
+            actions.mkdir(parents=True)
+            (actions / "missing.txt").write_text(
+                "on_game_start_after_lobby = { effect = { trigger_event = { id } } }",
+                encoding="utf-8-sig")
+            with self.assertRaisesRegex(ValueError, "event ID: missing scalar"):
+                aub._validate_florin_event_ids(source)
+
+    def test_mandala_rejects_mismatched_or_ambiguous_case_before_writing(self) -> None:
+        for defect in ("wrong-product", "duplicate-marker"):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as temporary, \
+                    patch.object(prep, "engine_identity", return_value=self.identity()), \
+                    patch.object(aub, "engine_identity", return_value=self.identity()):
+                base = Path(temporary)
+                repo = base / "repo"
+                relative = Path("tools/fixtures/auto_upgrade_buildings_florin_mandala")
+                shutil.copytree(REPO / relative, repo / relative)
+                contracts = repo / "tools/ck3_mod_acceptance_cases"
+                contracts.mkdir(parents=True)
+                case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_mandala.json").read_text(encoding="utf-8"))
+                if defect == "wrong-product":
+                    case["product"] = "other-product"
+                    message = "case identity differs"
+                else:
+                    case["required_markers"].append(case["required_markers"][0])
+                    message = "markers must be unique"
+                (contracts / "aub_florin_mandala.json").write_text(json.dumps(case), encoding="utf-8")
+                output = base / "output"
+                with self.assertRaisesRegex(ValueError, message):
+                    aub.prepare_mandala(repo, output)
+                self.assertFalse(output.exists())
+                self.assertFalse(output.with_suffix(".prepare.json").exists())
 
 
 if __name__ == "__main__":

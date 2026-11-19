@@ -33,6 +33,8 @@ def _validate_florin_event_ids(source: Path) -> None:
             if isinstance(entry.value, Block):
                 check_reference(entry.value)
             elif entry.key == "id":
+                if entry.value is None:
+                    raise ValueError("Invalid Florin event ID: missing scalar")
                 match = pattern.fullmatch(entry.value)
                 if match is not None and not 1 <= int(match[2]) < 10000:
                     raise ValueError(f"Invalid Florin event ID: {entry.value}")
@@ -130,6 +132,24 @@ def prepare_ordinary(repo: Path, output: Path) -> Path:
         rules="1066 normal Robert1128 selection; official switch/independence to landed Roger1132 before any day. Explicit fixture personal-only baseline, then native-qualified District main/quota/negative/oath/city matrix. Production GUI is separate coverage; no credited preparation effects.")
 
 
+def prepare_mandala(repo: Path, output: Path) -> Path:
+    return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_mandala",
+        contract="aub_florin_mandala.json", case_id="mandala-matrix-1210",
+        mode="florin-four-mandala-production-edges",
+        entry="on_game_start_after_lobby -> normal Robert1128 -> granted c_pagan to burman002 -> actual player switch -> aubma.2 day1 -> aubma.3 day2 -> one real auto_build.0004 -> aubma.800",
+        advance="At most2natural days for title/government and district preparation readback; stop on exact DONE or failure. No manual Save or prepared effects credited as upgrades.",
+        rules="1066 normal Robert1128 selection. Official granted title transaction gives existing Pagan county/province9550 to originally unlanded adult burman002, then set_player_character and explicit Mandala government. Actual player, owner and sole direct province are required after an event boundary. Preserve native holding03 and Mandala03; remove five declared unrelated districts through vanilla remove_district_type, add ordinary shrine1 only, and join province culture high-medieval. Actual five-building/two-primary inventory and all four native target gates must read back before one production0004. Exact personal charge and count4; main03->04 is a terminal-edge representative, viharas2->3 differs from historical01->02. No primary downgrade/add/remove, direct chain call, terminal no-cascade credit or full product/publication credit.")
+
+
+def prepare_holdings(repo: Path, output: Path) -> Path:
+    return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_holdings",
+        contract="aub_florin_holdings.json", case_id="holding-types-1210",
+        mode="florin-four-holding-type-cells",
+        entry="on_game_start_after_lobby -> actual Roger1132 and independence -> aube.1 -> known visible aube.800",
+        advance="Synchronous paused startup; at most1natural day if required by startup. No manual Save.",
+        rules="1066 normal Robert1128 selection and official switch/independence to Roger1132. Actual converted native primary sources, true government/faith/rite/ownership/native target readbacks and exact production-chain payments required. Current lodge1->2 replaces legacy longhouses. Every actual direct province is converted and read before real character0004 nomad/herder exclusion scans. No primary forcing, credited preparation, GUI policy, Native ABI or full product acceptance.")
+
+
 def prepare(repo: Path, output: Path) -> dict[str, object]:
     repo, output = checked_output(repo, output)
     if engine_identity(repo)["game_version"].startswith("1.21."):
@@ -166,8 +186,16 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money", "florin-ordinary"), default="core")
+    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money", "florin-ordinary", "florin-mandala", "florin-holdings"), default="core")
     args = parser.parse_args()
+    if args.scenario == "florin-holdings":
+        output = prepare_holdings(args.repo, args.output)
+        print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
+        return
+    if args.scenario == "florin-mandala":
+        output = prepare_mandala(args.repo, args.output)
+        print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
+        return
     if args.scenario == "florin-ordinary":
         output = prepare_ordinary(args.repo, args.output)
         print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))

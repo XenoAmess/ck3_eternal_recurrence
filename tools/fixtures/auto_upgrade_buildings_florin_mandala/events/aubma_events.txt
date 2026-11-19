@@ -1,0 +1,241 @@
+﻿namespace = aubma
+
+# This partial scene is fixture preparation, never product behavior or GUI credit.
+aubma.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "AUBMA: TEST BEGIN mandala_matrix"
+        if = {
+            limit = {
+                this = character:1128
+                is_ai = no
+                character:burman002 = { is_alive = yes is_adult = yes is_landed = no }
+                title:c_pagan = { holder = character:burman001 }
+            }
+            remove_character_flag = enable_auto_build
+            remove_global_variable = aub_auto_build_loop_started
+            character:burman002 = { save_scope_as = aubma_recipient }
+            # Stock granted title transaction, then switch from the old player.
+            create_title_and_vassal_change = {
+                type = granted
+                save_scope_as = aubma_title_change
+            }
+            title:c_pagan = {
+                change_title_holder = {
+                    holder = scope:aubma_recipient
+                    change = scope:aubma_title_change
+                }
+            }
+            resolve_title_and_vassal_change = scope:aubma_title_change
+            set_player_character = scope:aubma_recipient
+            scope:aubma_recipient = {
+                remove_character_flag = enable_auto_build
+                change_government = mandala_government
+                trigger_event = { id = aubma.2 days = 1 }
+            }
+        }
+        else = { debug_log = "AUBMA: TEST FAIL original_actor_or_recipient" }
+    }
+}
+
+# Read actual recipient ownership and intact original primaries after a day.
+aubma.2 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "AUBMA: OBSERVE granted_source_inventory_begin"
+        aubma_read_pagan_inventory_effect = yes
+        if = {
+            limit = {
+                this = character:burman002
+                is_ai = no
+                government_has_flag = government_is_mandala
+                var:aubma_direct_count = 1
+                any_directly_owned_province = { this = province:9550 }
+                province:9550 = {
+                    province_owner = { this = scope:aubma_payer }
+                    is_county_capital = yes
+                    has_holding_type = temple_citadel_holding
+                    barony = { is_leased_out = no }
+                    has_ongoing_holding_construction = no
+                }
+                exists = scope:aubma_holding
+                exists = scope:aubma_mandala
+                scope:aubma_holding = { has_building = temple_citadel_03 }
+                scope:aubma_mandala = {
+                    has_building = pb_mandala_03
+                    has_building = sacred_pool_1
+                    has_building = temple_viharas_2
+                }
+            }
+            debug_log = "AUBMA: READY actual_player_owned_pagan_native_primaries"
+            province:9550 = {
+                # Province culture, not payer culture. No late innovations.
+                culture = {
+                    if = {
+                        limit = { NOT = { has_cultural_era_or_later = culture_era_high_medieval } }
+                        join_era = culture_era_high_medieval
+                    }
+                }
+                # Stock remove_district_type, preserving holding and Mandala.
+                remove_district_type = ceramics_district
+                remove_district_type = walls_district
+                remove_district_type = urban_housing_district
+                remove_district_type = temple_district
+                remove_district_type = patrician_district
+            }
+            scope:aubma_holding = { add_building = temple_citadel_shrine_1 }
+            trigger_event = { id = aubma.3 days = 1 }
+        }
+        else = { debug_log = "AUBMA: TEST FAIL granted_owner_or_native_source" }
+    }
+}
+
+# Re-read preparation before the only real production character-event scan.
+aubma.3 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "AUBMA: OBSERVE prepared_inventory_begin"
+        aubma_read_pagan_inventory_effect = yes
+        if = {
+            limit = {
+                this = character:burman002
+                is_ai = no
+                government_has_flag = government_is_mandala
+                var:aubma_direct_count = 1
+                any_directly_owned_province = { this = province:9550 }
+                var:aubma_built_count = 5
+                var:aubma_primary_count = 2
+                exists = scope:aubma_holding
+                exists = scope:aubma_mandala
+                province:9550 = {
+                    province_owner = { this = scope:aubma_payer }
+                    has_holding_type = temple_citadel_holding
+                    is_county_capital = yes
+                    barony = { is_leased_out = no }
+                    has_ongoing_holding_construction = no
+                    culture = {
+                        has_cultural_era_or_later = culture_era_high_medieval
+                        has_cultural_parameter = temple_next_level
+                        has_cultural_parameter = hydraulic_builders_sacred_pool
+                    }
+                }
+                scope:aubma_holding = {
+                    has_building = temple_citadel_03
+                    has_building = temple_citadel_shrine_1
+                    can_start_building_construction_for_owner = temple_citadel_04
+                    can_start_building_construction_for_owner = temple_citadel_shrine_2
+                }
+                scope:aubma_mandala = {
+                    has_building = pb_mandala_03
+                    has_building = sacred_pool_1
+                    has_building = temple_viharas_2
+                    can_start_building_construction_for_owner = sacred_pool_2
+                    can_start_building_construction_for_owner = temple_viharas_3
+                    NOT = { can_start_building_construction_for_owner = pb_mandala_04 }
+                }
+            }
+            debug_log = "AUBMA: READY exact_five_buildings_four_native_targets"
+            remove_character_flag = aub_funding_treasury_only
+            remove_character_flag = aub_pause_when_over_domain_limit
+            add_character_flag = aub_funding_personal_only
+            add_gold = 100000
+            set_variable = {
+                name = aubma_expected_gold
+                value = {
+                    value = gold
+                    subtract = main_building_tier_4_cost
+                    subtract = { value = regular_building_cost_tier_2 multiply = 2 }
+                    subtract = regular_building_cost_tier_3
+                }
+            }
+            add_character_flag = enable_auto_build
+            trigger_event = auto_build.0004
+            remove_character_flag = enable_auto_build
+
+            debug_log = "AUBMA: OBSERVE production_result_inventory_begin"
+            aubma_read_pagan_inventory_effect = yes
+            if = {
+                limit = {
+                    exists = scope:aubma_holding
+                    scope:aubma_holding = { has_building = temple_citadel_04 }
+                }
+                debug_log = "AUBT: TEST PASS main_temple_citadel"
+                debug_log = "AUBMA: OBSERVE main03_to04_terminal_edge_only"
+            }
+            else = { debug_log = "AUBT: TEST FAIL main_temple_citadel" }
+            if = {
+                limit = {
+                    exists = scope:aubma_holding
+                    scope:aubma_holding = {
+                        has_building = temple_citadel_shrine_2
+                        NOT = { has_building_or_higher = temple_citadel_shrine_3 }
+                    }
+                }
+                debug_log = "AUBT: TEST PASS mandala_citadel_shrine"
+            }
+            else = { debug_log = "AUBT: TEST FAIL mandala_citadel_shrine" }
+            if = {
+                limit = {
+                    exists = scope:aubma_mandala
+                    scope:aubma_mandala = {
+                        has_building = sacred_pool_2
+                        NOT = { has_building_or_higher = sacred_pool_3 }
+                    }
+                }
+                debug_log = "AUBT: TEST PASS mandala_sacred_pool"
+            }
+            else = { debug_log = "AUBT: TEST FAIL mandala_sacred_pool" }
+            if = {
+                limit = {
+                    exists = scope:aubma_mandala
+                    scope:aubma_mandala = {
+                        has_building = temple_viharas_3
+                        NOT = { has_building_or_higher = temple_viharas_4 }
+                    }
+                }
+                debug_log = "AUBT: TEST PASS mandala_vihara_halls"
+                debug_log = "AUBMA: OBSERVE viharas2_to3_different_source_tier"
+            }
+            else = { debug_log = "AUBT: TEST FAIL mandala_vihara_halls" }
+            if = {
+                limit = {
+                    var:aubma_direct_count = 1
+                    var:aubma_built_count = 5
+                    var:aubma_primary_count = 2
+                    var:aub_upgrades_this_scan = 4
+                    gold = var:aubma_expected_gold
+                    exists = scope:aubma_holding
+                    exists = scope:aubma_mandala
+                    scope:aubma_holding = { has_building = temple_citadel_04 }
+                    scope:aubma_mandala = { has_building = pb_mandala_03 NOT = { has_building = pb_mandala_04 } }
+                }
+                debug_log = "AUBMA: TEST PASS exact_four_charges_count_and_primaries"
+            }
+            else = { debug_log = "AUBMA: TEST FAIL exact_four_charges_count_and_primaries" }
+            # Read only: no second scan, no repeated action to produce credit.
+            scope:aubma_holding = {
+                if = { limit = { can_start_building_construction_for_owner = temple_citadel_shrine_3 } debug_log = "AUBMA: OBSERVE next_shrine3_native_eligible" }
+                else = { debug_log = "AUBMA: OBSERVE next_shrine3_native_refused" }
+            }
+            scope:aubma_mandala = {
+                if = { limit = { can_start_building_construction_for_owner = sacred_pool_3 } debug_log = "AUBMA: OBSERVE next_pool3_native_eligible" }
+                else = { debug_log = "AUBMA: OBSERVE next_pool3_native_refused" }
+            }
+            trigger_event = aubma.800
+        }
+        else = { debug_log = "AUBMA: TEST FAIL prepared_inventory_or_native_targets" }
+    }
+}
+
+# A completion notification is not a PASS assertion; inspect exact log markers.
+aubma.800 = {
+    type = character_event
+    theme = realm
+    title = aubma_done_title
+    desc = aubma_done_desc
+    immediate = { debug_log = "AUBMA: TEST DONE mandala_matrix" }
+    option = { name = aubma_done_confirm }
+}

@@ -1,0 +1,9 @@
+﻿on_game_start_after_lobby = {
+    on_actions = { aubma_start }
+}
+
+aubma_start = {
+    effect = {
+        random_player = { trigger_event = { id = aubma.1 } }
+    }
+}

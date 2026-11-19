@@ -1,0 +1,33 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "mandala-matrix-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 2,
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": ["--output", "{output}", "--scenario", "florin-mandala"],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "four_actual_mandala_production_edges_and_exact_personal_charge",
+    "actual_player_single_county_preparation_calendar_and_normal_exit"
+  ],
+  "required_markers": [
+    "AUBMA: TEST BEGIN mandala_matrix",
+    "AUBMA: READY actual_player_owned_pagan_native_primaries",
+    "AUBMA: READY exact_five_buildings_four_native_targets",
+    "AUBT: TEST PASS main_temple_citadel",
+    "AUBMA: OBSERVE main03_to04_terminal_edge_only",
+    "AUBT: TEST PASS mandala_citadel_shrine",
+    "AUBT: TEST PASS mandala_sacred_pool",
+    "AUBT: TEST PASS mandala_vihara_halls",
+    "AUBMA: OBSERVE viharas2_to3_different_source_tier",
+    "AUBMA: TEST PASS exact_four_charges_count_and_primaries",
+    "AUBMA: TEST DONE mandala_matrix"
+  ],
+  "forbidden_markers": ["AUBT: TEST FAIL", "AUBMA: TEST FAIL"],
+  "scope": "Partial four-edge Mandala scene through one real production auto_build.0004, never direct upgrade-chain calls. Normal1066 Robert1128 start, official granted c_pagan transaction to originally unlanded adult burman002 and actual player switch; title/government and preparation read back over at most2days. Actual sole direct province9550; intact native TempleCitadelIII and MandalaIII. Fixture removes five unrelated districts using the stock remove_district_type effect and adds ordinary shrine1, never primary downgrade/add/remove. Province-culture high era, temple_next_level and hydraulic parameter; exact two-primary/three-ordinary inventory plus four Native construction-for-owner gates and blocked MandalaIV before dispatch. Expected edges main03->04, shrine1->2, pool1->2, viharas2->3; exact personal charge main_tier4+2*regular_tier2+regular_tier3 and count4; two primary districts preserved, MandalaIII unchanged. Main03->04 and viharas2->3 are explicit different-tier representatives of historical01->02 cells, not identical old literal conditions. Terminal mainIV and blocked viharasIV do not earn legal-next-tier no-cascade credit. Shrine/pool next gates are read separately without dispatch. Actual GUI, other original business cells, complete original matrix and Workshop closure remain separate; this cell cannot authorize publication.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

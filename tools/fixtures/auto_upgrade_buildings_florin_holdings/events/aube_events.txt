@@ -1,0 +1,170 @@
+﻿namespace = aube
+
+aube.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "AUBE: TEST BEGIN holding_types"
+        if = {
+            limit = { this = character:1132 this = top_liege is_ai = no is_alive = yes capital_province = { province_owner = { this = root } } }
+            remove_character_flag = enable_auto_build
+            remove_character_flag = aub_funding_treasury_only
+            remove_character_flag = aub_pause_when_over_domain_limit
+            add_character_flag = aub_funding_personal_only
+            save_scope_as = aub_payer
+            save_scope_as = character
+            add_gold = 100000
+            add_prestige = 100000
+            add_piety = 100000
+            capital_province = { set_global_variable = { name = aube_province value = this } }
+            change_government = tribal_government
+            culture = {
+                if = { limit = { NOT = { has_innovation = innovation_plenary_assemblies } } add_innovation = innovation_plenary_assemblies }
+            }
+            global_var:aube_province = {
+                culture = { if = { limit = { NOT = { has_cultural_era_or_later = culture_era_high_medieval } } join_era = culture_era_high_medieval } }
+                set_holding_type = tribal_holding
+                province_owner = { save_scope_as = holder save_scope_as = build_owner }
+                county = { save_scope_as = county }
+            }
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            set_variable = { name = aube_expected_gold value = { value = gold subtract = expensive_building_tier_1_cost } }
+            set_variable = { name = aube_expected_prestige value = { value = prestige subtract = expensive_building_tier_3_cost } }
+            set_variable = { name = aube_piety_before value = piety }
+            set_variable = { name = aube_treasury_before value = treasury }
+            global_var:aube_province = {
+                if = {
+                    limit = {
+                        has_holding_type = tribal_holding province_owner = { this = scope:aub_payer has_government = tribal_government culture = { has_innovation = innovation_plenary_assemblies } }
+                        barony = { is_leased_out = no } has_ongoing_holding_construction = no
+                        holding_district = { has_building = tribe_01 can_start_building_construction_for_owner = tribe_02 }
+                    }
+                    debug_log = "AUBE: READY actual_tribal_source_and_native_target"
+                    holding_district = { aub_upgrade_chain_tribe_01_effect = yes }
+                    if = {
+                        limit = { holding_district = { has_building = tribe_02 } scope:aub_payer = { gold = var:aube_expected_gold prestige = var:aube_expected_prestige piety = var:aube_piety_before treasury = var:aube_treasury_before var:aub_upgrades_this_scan = 1 } }
+                        debug_log = "AUBT: TEST PASS main_tribal_mixed_cost"
+                    }
+                    else = { debug_log = "AUBT: TEST FAIL main_tribal_mixed_cost" }
+                    holding_district = {
+                        if = { limit = { can_start_building_construction_for_owner = tribe_craftsmens_lodge_1 } add_building = tribe_craftsmens_lodge_1 }
+                    }
+                }
+                else = { debug_log = "AUBE: TEST FAIL tribal_source_owner_government_or_native_target" }
+            }
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            set_variable = { name = aube_expected_gold value = { value = gold subtract = regular_building_cost_tier_2 } }
+            set_variable = { name = aube_expected_prestige value = { value = prestige subtract = tribal_building_prestige_cost_tier_2 } }
+            set_variable = { name = aube_piety_before value = piety }
+            set_variable = { name = aube_treasury_before value = treasury }
+            global_var:aube_province = {
+                holding_district = {
+                    if = {
+                        limit = { has_building = tribe_02 has_building = tribe_craftsmens_lodge_1 can_start_building_construction_for_owner = tribe_craftsmens_lodge_2 }
+                        debug_log = "AUBE: READY actual_tribal_lodge_source_and_native_target"
+                        aub_upgrade_chain_tribe_craftsmens_lodge_1_effect = yes
+                        if = {
+                            limit = { has_building = tribe_craftsmens_lodge_2 scope:aub_payer = { gold = var:aube_expected_gold prestige = var:aube_expected_prestige piety = var:aube_piety_before treasury = var:aube_treasury_before var:aub_upgrades_this_scan = 1 } }
+                            debug_log = "AUBT: TEST PASS regular_tribal"
+                        }
+                        else = { debug_log = "AUBT: TEST FAIL regular_tribal" }
+                    }
+                    else = { debug_log = "AUBE: TEST FAIL tribal_lodge_source_or_native_target" }
+                }
+            }
+            # Explicit lay-clergy preparation keeps this Temple directly owned.
+            change_government = feudal_government
+            set_character_faith = faith:adamites
+            set_character_rite = rite:adamites
+            global_var:aube_province = {
+                county = { set_county_faith = faith:adamites set_county_rite = rite:adamites }
+                set_holding_type = church_holding
+                province_owner = { save_scope_as = holder save_scope_as = build_owner }
+                county = { save_scope_as = county }
+            }
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            set_variable = { name = aube_expected_gold value = { value = gold subtract = main_building_tier_2_cost } }
+            set_variable = { name = aube_prestige_before value = prestige }
+            set_variable = { name = aube_piety_before value = piety }
+            set_variable = { name = aube_treasury_before value = treasury }
+            global_var:aube_province = {
+                if = {
+                    limit = {
+                        has_holding_type = church_holding province_owner = { this = scope:aub_payer is_ai = no has_government = feudal_government faith = faith:adamites rite = rite:adamites }
+                        faith = faith:adamites rite = rite:adamites barony = { is_leased_out = no } has_ongoing_holding_construction = no
+                        holding_district = { has_building = temple_01 can_start_building_construction_for_owner = temple_02 }
+                    }
+                    debug_log = "AUBE: READY actual_unleased_lay_clergy_temple"
+                    holding_district = { aub_upgrade_chain_temple_01_effect = yes }
+                    if = {
+                        limit = { holding_district = { has_building = temple_02 NOT = { has_building_or_higher = temple_03 } can_start_building_construction_for_owner = temple_03 } scope:aub_payer = { gold = var:aube_expected_gold prestige = var:aube_prestige_before piety = var:aube_piety_before treasury = var:aube_treasury_before var:aub_upgrades_this_scan = 1 } }
+                        debug_log = "AUBT: TEST PASS main_church"
+                    }
+                    else = { debug_log = "AUBT: TEST FAIL main_church" }
+                }
+                else = { debug_log = "AUBE: TEST FAIL temple_owner_rite_source_or_native_target" }
+            }
+            # All actual direct provinces must be excluded, so unrelated holdings
+            # cannot spend on this character's real production scan.
+            change_government = nomad_government
+            every_directly_owned_province = { set_holding_type = nomad_holding }
+            set_variable = { name = aube_direct_count value = 0 }
+            every_directly_owned_province = { scope:aub_payer = { change_variable = { name = aube_direct_count add = 1 } } }
+            if = {
+                limit = {
+                    var:aube_direct_count > 0 is_ai = no is_alive = yes has_government = nomad_government
+                    NOT = { any_directly_owned_province = { OR = { NOT = { has_holding_type = nomad_holding } NOT = { holding_district = { has_building = nomadic_camp_01 } } NOT = { province_owner = { this = scope:aub_payer } } barony = { is_leased_out = yes } has_ongoing_holding_construction = yes } } }
+                }
+                debug_log = "AUBE: READY all_actual_direct_nomad_holdings"
+                set_variable = { name = aube_gold_before value = gold }
+                set_variable = { name = aube_prestige_before value = prestige }
+                set_variable = { name = aube_piety_before value = piety }
+            set_variable = { name = aube_treasury_before value = treasury }
+                add_character_flag = enable_auto_build
+                trigger_event = auto_build.0004
+                remove_character_flag = enable_auto_build
+                if = {
+                    limit = { gold = var:aube_gold_before prestige = var:aube_prestige_before piety = var:aube_piety_before treasury = var:aube_treasury_before var:aub_upgrades_this_scan = 0 NOT = { any_directly_owned_province = { OR = { NOT = { has_holding_type = nomad_holding } NOT = { holding_district = { has_building = nomadic_camp_01 } } } } } }
+                    set_variable = { name = aube_nomad_zero_write value = 1 }
+                    debug_log = "AUBE: OBSERVE nomad_production_scan_zero_write"
+                }
+                else = { debug_log = "AUBE: TEST FAIL nomad_production_scan" }
+            }
+            else = { debug_log = "AUBE: TEST FAIL nomad_actual_domain_or_primary" }
+            every_directly_owned_province = { set_holding_type = herder_holding }
+            if = {
+                limit = {
+                    var:aube_direct_count > 0 is_ai = no is_alive = yes has_government = nomad_government
+                    NOT = { any_directly_owned_province = { OR = { NOT = { has_holding_type = herder_holding } NOT = { holding_district = { has_building = herder_camp_01 } } NOT = { province_owner = { this = scope:aub_payer } } barony = { is_leased_out = yes } has_ongoing_holding_construction = yes } } }
+                }
+                debug_log = "AUBE: READY all_actual_direct_herder_holdings"
+                set_variable = { name = aube_gold_before value = gold }
+                set_variable = { name = aube_prestige_before value = prestige }
+                set_variable = { name = aube_piety_before value = piety }
+            set_variable = { name = aube_treasury_before value = treasury }
+                set_variable = { name = aube_herder_count value = 0 }
+                every_directly_owned_province = { scope:aub_payer = { change_variable = { name = aube_herder_count add = 1 } } }
+                add_character_flag = enable_auto_build
+                trigger_event = auto_build.0004
+                remove_character_flag = enable_auto_build
+                if = {
+                    limit = { has_variable = aube_nomad_zero_write var:aube_herder_count = var:aube_direct_count gold = var:aube_gold_before prestige = var:aube_prestige_before piety = var:aube_piety_before treasury = var:aube_treasury_before var:aub_upgrades_this_scan = 0 NOT = { any_directly_owned_province = { OR = { NOT = { has_holding_type = herder_holding } NOT = { holding_district = { has_building = herder_camp_01 } } } } } }
+                    debug_log = "AUBT: TEST PASS nomad_herder_na"
+                }
+                else = { debug_log = "AUBT: TEST FAIL nomad_herder_na" }
+            }
+            else = { debug_log = "AUBE: TEST FAIL herder_actual_domain_or_primary" }
+        }
+        else = { debug_log = "AUBE: TEST FAIL actor_owner_or_independence" }
+        trigger_event = aube.800
+    }
+}
+
+aube.800 = {
+    type = character_event
+    theme = realm
+    title = aube_done_title
+    desc = aube_done_desc
+    immediate = { debug_log = "AUBE: TEST DONE holding_types" }
+    option = { name = aube_done_confirm }
+}
