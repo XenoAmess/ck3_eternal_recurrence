@@ -1,0 +1,130 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T08:04:02.181258+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0012",
+  "case": "ordinary-matrix-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": true,
+  "status": "PASS_SIX_OF_SIX_NO_ENGINE_ERRORS",
+  "source_head": "430265199ed4825ae41876c7ea95ee6e47158e68",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-ordinary-r12-gui-prepare\\prepared-case.json",
+    "bytes": 1587131,
+    "sha256": "b6fbf33b60c77460b3d62c360be4cb77ec2874354705df8765c8fba3c624adc2"
+  },
+  "facts": {
+    "six_original_ordinary_building_and_quota_assertions": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-c15eee47352f4af5b0cde08062fe6544\\profile\\logs\\debug.log",
+          "bytes": 1185318,
+          "sha256": "5264eab260351f0de0caffbe04079b343a558dca16940a71b39d6450757bb068"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-c15eee47352f4af5b0cde08062fe6544\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "assertions_passed": 6,
+      "assertions_required": 6
+    },
+    "actual_initial_calendar_completion_popup_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq03-world-rendered.png",
+          "bytes": 1118896,
+          "sha256": "8c3af65cf3afc63769e4fe8c0fcde8d64077dc19f3c05a74ad45eee8856cbe74"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq03-quit-dialog-view.png",
+          "bytes": 691641,
+          "sha256": "b99cdb36b411b1536aed31f8d4aeea89563e36b8cf2a6ab783a89dac09290703"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq03-quit-desktop.png.json",
+          "bytes": 1443,
+          "sha256": "3ffa029745ac5a317c242d542904acac7a71fc97c83cf6fbc6f7610996dfe0cc"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0012\\game-exit.json",
+          "bytes": 253,
+          "sha256": "20c7425b1c28ec93507ce47666d1523f43cdf1eeee182de76ce7d5405359bf67"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBQ: TEST BEGIN ordinary_matrix": 1,
+    "AUBQ: READY independent_owned_treasury_payer": 1,
+    "AUBT: TEST PASS main_castle": 1,
+    "AUBT: TEST PASS fifteen_upgrade_quota": 1,
+    "AUBT: TEST PASS next_scan_quota_reset": 1,
+    "AUBQ: READY intact_castle_late_era_negative": 1,
+    "AUBT: TEST PASS vanilla_gate_rejection": 1,
+    "AUBQ: READY oath_sources_and_targets": 1,
+    "AUBT: TEST PASS scripted_cost_resources": 1,
+    "AUBT: TEST PASS main_city": 1,
+    "AUBQ: TEST DONE ordinary_matrix": 1
+  },
+  "failure_lines": [],
+  "source_query_observations": [
+    "[16:01:10][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 37 (aubq.1:immediate): AUBQ: OBSERVE initial_castle02",
+    "[16:01:10][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 142 (aubq.1:immediate): AUBQ: OBSERVE oath_owner_variables_and_faith",
+    "[16:01:10][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 182 (aubq.1:immediate): AUBQ: OBSERVE poor_native_source01_refused",
+    "[16:01:10][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 189 (aubq.1:immediate): AUBQ: OBSERVE faithful_native_source01_refused"
+  ],
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-c15eee47352f4af5b0cde08062fe6544\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "error_bytes": 0,
+  "actual_date": "1066-09-15",
+  "observed_natural_days": 0,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq03-quit-dialog-view.png",
+      "bytes": 691641,
+      "sha256": "b99cdb36b411b1536aed31f8d4aeea89563e36b8cf2a6ab783a89dac09290703"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq03-quit-desktop.png.json",
+      "bytes": 1443,
+      "sha256": "3ffa029745ac5a317c242d542904acac7a71fc97c83cf6fbc6f7610996dfe0cc"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0012\\game-exit.json",
+      "bytes": 253,
+      "sha256": "20c7425b1c28ec93507ce47666d1523f43cdf1eeee182de76ce7d5405359bf67"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0012\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "a8e13d8ee2d41cfe8c3c28a76a7a7edbaf78c1a92b10bdbbb6e9fd5d2f305b63"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0012\\screen-release.json",
+      "bytes": 1250,
+      "sha256": "731ea37d47506e8ae5b678b3c43305d4d97a9cc3ecb2ac47bd0a95f51a2c4d10"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-ordinary-r12-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "d2eb1211bb6d847314bb3710a102a5e5d04606a8c005031d16042eeba2eeda66"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "diagnosis_scope": "Exact CastleII-to-I preparation and actual source/native target read back. Both oath01 sources were prepared by the real add effect independently of first-tier native query; actual roots and both native02 eligibility read back before production upgrade/cost assertions. All six original business assertions passed with zero errors. Remaining thirteen original matrix cells and production UI acceptance remain open. No Native ABI qualification.",
+  "retention_review_at_utc": "2026-12-19T08:03:17Z"
+}
