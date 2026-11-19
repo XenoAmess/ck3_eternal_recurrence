@@ -28,10 +28,9 @@ aubd_locate_built_military_district_effect = {
     }
 }
 
-# Character scope. Callers log PREP FAIL, PREP PARTIAL or TEST FAIL first.
-# Finite read-only observations for the actual day1 composite guard.
-# Each reported boolean is the existing condition, not a replacement gate.
-aubd_observe_preconstruction_gate_effect = {
+# Finite read-only day1 observations. Stock GUI, not a script construction
+# effect, supplies the first district. These do not attest the GUI selection.
+aubd_observe_gui_construction_effect = {
     if = { limit = { var:aubd_phase = 1 } debug_log = "AUBD: PRECOND phase1_yes" }
     else = { debug_log = "AUBD: PRECOND phase1_no" }
     if = { limit = { aubd_actual_duchy_owner_trigger = yes } debug_log = "AUBD: PRECOND actual_owner_yes" }
@@ -40,8 +39,8 @@ aubd_observe_preconstruction_gate_effect = {
     else = { debug_log = "AUBD: PRECOND preparation_modifier_no" }
     if = { limit = { has_character_flag = enable_auto_build } debug_log = "AUBD: PRECOND auto_enabled_unexpected" }
     else = { debug_log = "AUBD: PRECOND auto_disabled_yes" }
-    if = { limit = { gold >= 50 } debug_log = "AUBD: PRECOND gold_at_least50_yes" }
-    else = { debug_log = "AUBD: PRECOND gold_at_least50_no" }
+    if = { limit = { gold >= 100 } debug_log = "AUBD: PRECOND product_gold_at_least100_yes" }
+    else = { debug_log = "AUBD: PRECOND product_gold_at_least100_no" }
     province:2619 = {
         if = { limit = { aubd_preparation_inputs_trigger = yes } debug_log = "AUBD: PRECOND province_inputs_yes" }
         else = { debug_log = "AUBD: PRECOND province_inputs_no" }
@@ -57,15 +56,9 @@ aubd_observe_preconstruction_gate_effect = {
         else = { debug_log = "AUBD: PRECOND province_construction_absent" }
         if = { limit = { has_building_or_higher = military_duchy_building_01 } debug_log = "AUBD: PRECOND primary01_already_present" }
         else = { debug_log = "AUBD: PRECOND primary01_absent" }
-        if = { limit = { free_building_slots > 0 } debug_log = "AUBD: PRECOND ordinary_free_slot_positive" }
-        else = { debug_log = "AUBD: PRECOND ordinary_free_slot_not_positive" }
-        if = { limit = { can_start_building_construction_for_owner = military_duchy_building_01 } debug_log = "AUBD: PRECOND native_province_primary01_yes" }
-        else = { debug_log = "AUBD: PRECOND native_province_primary01_no" }
         holding_district = {
             if = { limit = { has_building_or_higher = castle_02 } debug_log = "AUBD: PRECOND holdingII_yes" }
             else = { debug_log = "AUBD: PRECOND holdingII_no" }
-            if = { limit = { can_start_building_construction_for_owner = military_duchy_building_01 } debug_log = "AUBD: PRECOND native_holding_primary01_yes" }
-            else = { debug_log = "AUBD: PRECOND native_holding_primary01_no" }
         }
     }
 }

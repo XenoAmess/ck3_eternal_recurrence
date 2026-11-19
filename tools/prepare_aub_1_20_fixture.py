@@ -162,10 +162,10 @@ def prepare_special(repo: Path, output: Path) -> Path:
 def prepare_duchy(repo: Path, output: Path) -> Path:
     return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_duchy",
         contract="aub_florin_duchy.json", case_id="duchy-primary-1210",
-        mode="florin-timed-duchy-primary",
-        entry="on_game_start_after_lobby -> aubd.1 -> own start -> aubd.10 day1 -> aubd.20 -> own started -> aubd.30 daily<=14 -> aubd.100 -> own READY -> aubd.110 -> aubd.800; failure/partial -> aubd.900",
-        advance="At most15 natural days: one setup day and at most14 real construction polls. Actual minimum unqualified. Stop on known DONE/failure/partial or unknown stock event; no manual SAVE or credited preparation.",
-        rules="Fresh1066 Robert1128; actual owned/unleased Trani2619, c_apulia+d_apulia, independence and native holdingII required. Explicit province Burhs/castle_baileys and character district_build_speed preparation; only native timed military primary01 start and actual completion qualify the district. Single existing primary01->02 production chain and exact personal gold100/count1; ordinary archery, full province scan and other cells remain separate.")
+        mode="florin-gui-timed-duchy-primary",
+        entry="on_game_start_after_lobby -> aubd.1 -> known start closes at paused day0 -> actual Alt+S Trani duchy slot, military district selection and enabled stock Construct/Queue -> aubd.10 observes active/no-primary day1 -> aubd.20 -> own started -> aubd.30 daily<=14 -> aubd.100 -> own READY -> aubd.110 -> aubd.800; failure/partial -> aubd.900",
+        advance="Keep day0 paused after the known start option; retain actual GUI military district/CanConstruct/Queue/active progress before resuming. At most15 natural days including day1 observation and14 completion polls. Actual minimum unqualified. Stop on known DONE/failure/partial or unknown stock event; no manual SAVE or credited preparation.",
+        rules="Fresh1066 Robert1128; actual owned/unleased Trani2619, c_apulia+d_apulia, independence and native holdingII required. Day0 province Burhs/castle_baileys, funds and character district_build_speed preparation precede actual stock-GUI military_duchy_capital_district first construction. No script first-tier can_start/start, ordinary/resource clearing or forced primary. Day1 only observes actual active construction without primary01; true timed completion and its actual District still require Native02. Freeze resources after all preparation, then one existing primary01->02 production chain with exact personal gold100/count1 and unchanged other resources. R19/R20 script-first-tier refusals remain distinct historical failures; no archery/full-scan or whole-product credit.")
 
 
 def prepare_succession(repo: Path, output: Path) -> Path:

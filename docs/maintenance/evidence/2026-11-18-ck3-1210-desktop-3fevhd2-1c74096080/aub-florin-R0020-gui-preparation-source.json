@@ -1,0 +1,340 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T13:53:24.512606+00:00",
+  "records": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\closing.json",
+        "bytes": 3288,
+        "sha256": "ea74e5e8d9d0bb7b4e9001964dc24d9eea54d67c1d4af9e28db40718e33c3958"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "source_root": "D:\\workspace\\ck3_eternal_recurrence",
+        "completed_at_utc": "2026-11-19T13:33:30.265204+00:00",
+        "status": "SOFTWARE_PASS_RUNTIME_NOT_RUN",
+        "source_files": [
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/events/aubd_events.txt",
+            "bytes": 13327,
+            "sha256": "eab10d16521d3244705bc4b5beafc1149a336253b97fc4a1fb74e0895807ad39"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/common/scripted_effects/aubd_preparation_effects.txt",
+            "bytes": 3914,
+            "sha256": "4257a968dab1083da997d7053a2000f4cfb82fab6ad32017149447f75bd0d1f8"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/descriptor.mod",
+            "bytes": 98,
+            "sha256": "7d85db12d0967ce74645faa3e3a7b55bb7587a6ec2590db1a23955577b06f08a"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/localization/english/aubd_l_english.yml",
+            "bytes": 2780,
+            "sha256": "efb0320705e06e2f40d406147b54a089ae9c32c1894b6d249928d5a43e7089d2"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/localization/simp_chinese/aubd_l_simp_chinese.yml",
+            "bytes": 2532,
+            "sha256": "97a1308c1f18dcc59cb3e0096f8abab6caf51097903cf6008454cba62abb6de0"
+          },
+          {
+            "path": "tools/ck3_mod_acceptance_cases/aub_florin_duchy.json",
+            "bytes": 4683,
+            "sha256": "fceaae78003451a5642c74ab79474a1beaeb936d743feef37e53804f813f22f2"
+          },
+          {
+            "path": "tools/prepare_aub_1_20_fixture.py",
+            "bytes": 20355,
+            "sha256": "01cfd0ae65cc17f36587f79116f14e49256b4f199422b840aa7981a44daced3c"
+          }
+        ],
+        "software_runs": "software-runs.json",
+        "generated_fixture": "generated-fixture",
+        "generated_receipt": "generated-fixture.prepare.json",
+        "retained_bytes_before_this_closing": 38307,
+        "temporary_files_remaining": 0,
+        "own_increment_budget_bytes": 2097152,
+        "peak_disk_bytes": "NOT_SAMPLED; bounded tiny fixtures only; no build tree or full save export",
+        "free_d_bytes_at_closing": 21743620096,
+        "runtime_required": [
+          "Root committed cleanHEAD and explicit R21 authorization before any Game operation",
+          "actual paused day0 known start then Alt+S actual Trani2619 holding view",
+          "separate duchy-capital slot: exact military_duchy_capital_district; actual enabled CanConstruct/Construct->Queue and actual active day0 construction screenshots",
+          "day1 known active-construction/no-primary readback; own aubd.20 option; at most14 real daily completion polls; total15 days",
+          "true completed primary01 in actual District; preparation modifier removed; Native02 remains mandatory",
+          "own READY option; single existing chain, exact personal gold100/count1, unchanged other resources; known DONE; normal Quit/original Popen exit/keeper-CAS closure"
+        ],
+        "preserved_failures": "R19/R20 first-tier Province/Holding script native-query refusals stay failures; new GUI markers never confer Native01 script pass",
+        "not_performed": [
+          "Git",
+          "Steam",
+          "Game",
+          "SCREEN/UI",
+          "live Native",
+          "all-product qualification"
+        ],
+        "source_scope": "Only seven claimed paths; shared test file untouched; production AUB logic untouched; no new runner/module"
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\software-runs.json",
+        "bytes": 5698,
+        "sha256": "985372ce0c3a426b51a30045cfee821b6e369126a659b5674e89d07fb429d01c"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-11-19T13:31:31.458502+00:00",
+        "source_root": "D:\\workspace\\ck3_eternal_recurrence",
+        "free_bytes_at_admission": 21743673344,
+        "floor_plus_growth_and_root_and_self": 21552431104,
+        "own_budget_bytes": 2097152,
+        "runtime_status": "NOT_RUN",
+        "runs": [
+          {
+            "label": "duchy-existing-unittest",
+            "arguments": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-u",
+              "-X",
+              "utf8",
+              "-m",
+              "unittest",
+              "test_fixture_engine_prepare.AubFlorinProbePreparationTests.test_actual_duchy_producer_keeps_timed_partial_scope"
+            ],
+            "cwd": "D:\\workspace\\ck3_eternal_recurrence\\tools",
+            "exit_code": 0,
+            "elapsed_seconds": 0.628869,
+            "log_bytes": 103
+          },
+          {
+            "label": "actual-producer-cli",
+            "arguments": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-u",
+              "-X",
+              "utf8",
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_aub_1_20_fixture.py",
+              "--repo",
+              "D:\\workspace\\ck3_eternal_recurrence",
+              "--output",
+              "D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\generated-fixture",
+              "--scenario",
+              "florin-duchy"
+            ],
+            "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+            "exit_code": 0,
+            "elapsed_seconds": 1.497327,
+            "log_bytes": 133
+          },
+          {
+            "label": "mypy-changed-entry",
+            "arguments": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-u",
+              "-X",
+              "utf8",
+              "-m",
+              "mypy",
+              "--cache-dir",
+              "nul",
+              "--follow-imports=silent",
+              "--ignore-missing-imports",
+              "tools/prepare_aub_1_20_fixture.py"
+            ],
+            "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+            "exit_code": 0,
+            "elapsed_seconds": 2.00061,
+            "log_bytes": 43
+          },
+          {
+            "label": "parse-aubd_preparation_modifiers",
+            "arguments": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\tmp",
+              "-jar",
+              "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\generated-fixture\\common\\modifiers\\aubd_preparation_modifiers.txt"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.404018
+          },
+          {
+            "label": "parse-aubd_on_actions",
+            "arguments": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\tmp",
+              "-jar",
+              "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\generated-fixture\\common\\on_action\\aubd_on_actions.txt"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.249629
+          },
+          {
+            "label": "parse-aubd_preparation_effects",
+            "arguments": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\tmp",
+              "-jar",
+              "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\generated-fixture\\common\\scripted_effects\\aubd_preparation_effects.txt"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.260219
+          },
+          {
+            "label": "parse-aubd_preparation_triggers",
+            "arguments": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\tmp",
+              "-jar",
+              "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\generated-fixture\\common\\scripted_triggers\\aubd_preparation_triggers.txt"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.273795
+          },
+          {
+            "label": "parse-aubd_events",
+            "arguments": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\tmp",
+              "-jar",
+              "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\generated-fixture\\events\\aubd_events.txt"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.251024
+          },
+          {
+            "label": "parse-descriptor",
+            "arguments": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\tmp",
+              "-jar",
+              "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\ck3-state\\upgrade-20261118\\aub-duchy-gui-software-a01\\generated-fixture\\descriptor.mod"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.240703
+          }
+        ],
+        "generated_data_checks": {
+          "passed": true,
+          "actual_output_marker_count": 8,
+          "localization_keys_per_language": 15,
+          "clausewitz_parser": "existing extract_auto_upgrade_buildings.parse_clausewitz",
+          "first_tier_script_query_and_start_absent": true,
+          "native02_and_exact_business_assertions_preserved": true,
+          "maximum_natural_days": 15,
+          "runtime_status": "NOT_RUN"
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-lease-container-archive-a02\\summary.json",
+        "bytes": 325,
+        "sha256": "574cb045df1306a06e382b7a7459cbbe871448dfdc85986516ec477f3a0b0737"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T12:41:04.279354+00:00",
+        "deleted_files": 2,
+        "deleted_logical_bytes": 9220695,
+        "failed": [],
+        "free_before": {
+          "C:/": 50190725120,
+          "D:/": 21805117440
+        },
+        "free_after": {
+          "C:/": 50190725120,
+          "D:/": 21814341632
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-prepare-result-archive-a03\\summary.json",
+        "bytes": 325,
+        "sha256": "01e8b19605639f0a768ef43397a0d45a7e87e888bcb65c4f9ef29b69664580df"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T12:42:51.037408+00:00",
+        "deleted_files": 1,
+        "deleted_logical_bytes": 1808644,
+        "failed": [],
+        "free_before": {
+          "C:/": 50188001280,
+          "D:/": 21814095872
+        },
+        "free_after": {
+          "C:/": 50188001280,
+          "D:/": 21815906304
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-inventory-archive-a01\\summary.json",
+        "bytes": 326,
+        "sha256": "5df4607b2872a76a659ddf1da31dbdc02a07b10f0b5134768a2919aa9127664f"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T13:45:15.895292+00:00",
+        "deleted_files": 57,
+        "deleted_logical_bytes": 4099757,
+        "failed": [],
+        "free_before": {
+          "C:/": 49915817984,
+          "D:/": 21742780416
+        },
+        "free_after": {
+          "C:/": 49915817984,
+          "D:/": 21747023872
+        }
+      }
+    }
+  ],
+  "scope": "R20 day1 only first-tier Province/Holding native queriesfalse; other13 observations true including ordinary free slots. Initial script-query route failure/error0/normal Popen0 retained, no construction or product credit. New seven-file route uses actual paused day0 native GUI Duchy slot selection/CanConstruct/Construct->Queue, day1 observes actual in-progress/no primary; no script first-tier query or construction dispatch. Original total15days/14polls, actual completed District, modifier removal, Native02 and gold100/count1/otherresources unchanged preserved. New GUI BEGIN/DONE separate from old route. Existing actual producer test/CLI/mypy and6generic parses0; new real GUI NOT_RUN. Closed inventory JSON57files/4099757B exact bytes archived646586B ZIP; old direct paths unavailable, exact bytes/SHA recoverable, old FileIDs not restored, currentR20 kept, TTL unchanged. Opaque old auditZIP4/5 and one closed wrapper likewise losslessly archived, all0failure. No foreign Native cache retired.",
+  "runtime_status": "NOT_RUN",
+  "product_release_pass": false,
+  "workshop_published": false,
+  "source_construction_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-initial-construction-review-a01.json",
+    "bytes": 21487,
+    "sha256": "6cfd11349f1adff35f6b789c10223090735a1224847cf45eb45232d112c16757"
+  },
+  "money_diagnostic_source_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r9-diagnostic-review\\ops\\aub-money-R9-diagnostic-source-review-a01.json",
+    "bytes": 48301,
+    "sha256": "4d67b2116a971b121a690b505f05faabe297bf970e26efac53c80217f6d33b15"
+  },
+  "R9_status": "17assertions pass/raw1125B failure kept; first1024B stock movement event source causality established, court101B callback family narrowed but exact destroycaller stillunknown. No allowlist or outcome reclassification."
+}

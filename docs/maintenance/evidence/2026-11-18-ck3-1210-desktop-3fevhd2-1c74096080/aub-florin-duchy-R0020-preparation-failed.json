@@ -1,0 +1,202 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T13:19:47.251135+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0020",
+  "case": "duchy-primary-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "PREPARATION_FAILED_ONLY_INITIAL_NATIVE_QUERIES_FALSE_ERROR0",
+  "source_head": "1a39f86ae2ce1971a059e34ef8475c3d67387a01",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r20-gui-prepare\\prepared-case.json",
+    "bytes": 1588988,
+    "sha256": "5bee8eaae967aa830e76cb57891340cc22a68560b70dd70c04de661767bd1ef4"
+  },
+  "facts": {
+    "actual_robert1128_owned_unleased_trani2619_county_apulia_and_duchy_apulia_with_holdingII": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\debug.log",
+          "bytes": 1198132,
+          "sha256": "d0428303e05ffb9aeb20580cc27aba0c317d4d8306aebe120b02b74f9308a44f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd03-initial-world.png",
+          "bytes": 1175606,
+          "sha256": "d2047d1d603bedc1ab98d17e63122ceed70918cb533befb0c21cf6fb4b0977b4"
+        }
+      ],
+      "scope": "Actual initial Robert1128/top-liege/unleased Trani2619/c_apulia/d_apulia/holdingII predicate passed before preparation; no separate day1 conjunct attribution."
+    },
+    "actual_province_burhs_castle_baileys_and_native_primary01_construction_eligibility": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\debug.log",
+          "bytes": 1198132,
+          "sha256": "d0428303e05ffb9aeb20580cc27aba0c317d4d8306aebe120b02b74f9308a44f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    },
+    "real_timed_primary01_start_and_completion_within14_daily_polls_after_one_setup_day": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\debug.log",
+          "bytes": 1198132,
+          "sha256": "d0428303e05ffb9aeb20580cc27aba0c317d4d8306aebe120b02b74f9308a44f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    },
+    "actual_built_primary01_district_and_native_primary02_eligibility_after_modifier_removal": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\debug.log",
+          "bytes": 1198132,
+          "sha256": "d0428303e05ffb9aeb20580cc27aba0c317d4d8306aebe120b02b74f9308a44f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    },
+    "one_production_military_duchy_chain_primary01_to02_exact_personal_gold100_count1_other_resources_unchanged": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\debug.log",
+          "bytes": 1198132,
+          "sha256": "d0428303e05ffb9aeb20580cc27aba0c317d4d8306aebe120b02b74f9308a44f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    },
+    "known_start_started_ready_completion_or_failure_windows_actual_calendar_and_normal_exit": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\debug.log",
+          "bytes": 1198132,
+          "sha256": "d0428303e05ffb9aeb20580cc27aba0c317d4d8306aebe120b02b74f9308a44f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    }
+  },
+  "marker_counts": {
+    "AUBD: TEST BEGIN duchy_primary_1210": 1,
+    "AUBD: READY actual_duchy_owner_and_holdingII": 1,
+    "AUBD: READY native_primary01_construction_inputs": 0,
+    "AUBD: OBSERVE real_primary01_construction_started": 0,
+    "AUBD: OBSERVE real_primary01_construction_completed": 0,
+    "AUBD: READY actual_district_primary01_native02_eligible": 0,
+    "AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1": 0,
+    "AUBD: TEST DONE duchy_primary_1210": 0
+  },
+  "failure_lines": [
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 106 (aubd.10:immediate): AUBD: PREP FAIL native_primary01_construction_inputs"
+  ],
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-2abd9979411743fbb0f4f97e2674f2ca\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "error_bytes": 0,
+  "world_started": true,
+  "actual_date": "1066-09-16",
+  "observed_natural_days": 1,
+  "maximum_natural_days": 15,
+  "calendar_pass": true,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd03-quit-dialog-view.png",
+      "bytes": 696745,
+      "sha256": "d36b71bff8f3827f225e9e8da75fe6bcf82ad86f7e28ee791303821f9a931703"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd03-normal-quit.png.json",
+      "bytes": 1440,
+      "sha256": "39169c49f5fe960cabc18f6b3d36b3246c60edb67e39d195b4d8e1122988d589"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0020\\game-exit.json",
+      "bytes": 253,
+      "sha256": "47e6f1f667e01ab5e076f7c260b8a9c12ff07a6f1c6b888b26ec7ce4fd2065d4"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0020\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "16ad8926851e6e62eb958e0ad16294facc71b421681a1d52334a132de626c24f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0020\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "38408ad4e7b7d501682a7c5f09ebf8fb316cc4e7527bf1a8acb34bd84fce5f9f"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r20-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "ec8a894933c15d32227457b3e43b1659e9950166eb89be78f980d4721f428208"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "diagnosis_scope": "Finite day1 observations prove phase1/actual owner/modifier/auto-disabled/gold>=50/province inputs/duchy capital/Burhs/castle baileys/no ongoing province construction/no military01/positive ordinary free slots/holdingII. Both Province and holding-District can_start_building_construction_for_owner=military01 returnedfalse. Thus ordinary full slots are not the cause, and the first-tier Province API cannot be assumed to create a missing Duchy District. No construction or product call occurred. Known failure900 paused09-16,1day/zeroSAVE; original normal unchecked desktop Quit Popen0/no timeout/keeper/CAS closed. Future actual native GUI Duchy-slot selection/CanConstruct/Queue and real timed completion must replace unsupported initial query route; actual Native02/exact gold100/count1 remain. No unknown event selected.",
+  "retention_review_at_utc": "2026-12-19T13:13:48.924381+00:00",
+  "precondition_lines": [
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 35 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND phase1_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 37 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND actual_owner_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 39 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND preparation_modifier_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 42 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND auto_disabled_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 43 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND gold_at_least50_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 46 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND province_inputs_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 48 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND duchy_capital_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 51 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND burhs_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 53 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND castle_baileys_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 57 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND province_construction_absent",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 59 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND primary01_absent",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 60 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND ordinary_free_slot_positive",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 63 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND native_province_primary01_no",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 65 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND holdingII_yes",
+    "[21:01:49][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 68 (aubd_observe_preconstruction_gate_effect): AUBD: PRECOND native_holding_primary01_no"
+  ],
+  "construction_source_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-initial-construction-review-a01.json",
+    "bytes": 21487,
+    "sha256": "6cfd11349f1adff35f6b789c10223090735a1224847cf45eb45232d112c16757"
+  }
+}

@@ -1,5 +1,9 @@
 # 自动升级建筑：Florin 迁移进行中
 
+2026-11-19T13:45Z，machine_id `desktop-3fevhd2-1c74096080`：R0020第1日15项有限观察中，只有Province及holding-District首建Native01查询为false；另13项通过，包含实际所有者、科技、holdingII、未施工及普通空槽为正，不能归因为普通槽满。未施工、未调用产品链，error0、09-16/1自然日/零SAVE；13:13:48Z正常退出原Popen0、无超时关窗、keeper/CAS闭合，原BLOCKED保持。[R20原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0020-preparation-failed.json)。现有七文件夹具改为暂停day0由原版GUI公国专槽选择集合场区、实际启用建造并Queue；day1只观察真实在建/无一级主建筑，移除旧的首建查询和脚本start。原14次真实日轮询/总15日、实际建成District、移除临时修正、Native02、单生产链精确gold100/count1及其他资源不变全部保留。新GUI BEGIN/DONE与旧失败分开，实际GUI选型/建造/Queue另须保留证据；现有准备器用例、实际CLI、入口mypy和6份通用解析0，新实机待验。[来源与存储](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-R0020-gui-preparation-source.json)。
+
+R20闭场回收4184份可重建shader/183789217逻辑字节，零失败；57份已闭场重复profile/product清单4099757字节已逐成员SHA核验后无损归档为646586字节ZIP，当前R20清单直接保留。另两个旧审计ZIP完整容器和旧wrapper输出无损压缩；旧展开路径不可直接读取，但原字节及SHA均可恢复，原FileID不重建、期限不刷新，历史复验须先恢复输入，不复跑旧删除计划。存储审阅未授予任何身份/用途不明Native编译缓存清理资格，本轮未删除它们。资金R9前1024B已查明原版请愿脚本链；后101B法院职位只缩小到撤销/失效回调族，精确销毁调用仍不明，原整体失败保持，不靠过滤诊断授全通过。
+
 2026-11-19T12:33Z，machine_id `desktop-3fevhd2-1c74096080`：公国R0019已修复API装载错误，error.log零字节；真实初始Robert/Trani/c_apulia/d_apulia/holdingII条件通过，但第1日施工复合准备条件拒绝，尚无施工或产品链调用。日志未逐项区分条件，不能断言只有Native01为false。已知900窗口实际暂停09-16，1自然日/零SAVE；12:17:20Z正常未勾选保存退出，原Popen0、无超时关窗、keeper/CAS闭合，公共verify保留BLOCKED。[R19原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0019-preparation-failed.json)。后继只增加phase/owner/modifier/策略/科技/施工/原生门等有限布尔观察；移除新增观察定义与调用后，原完整AST与本场精确一致，全部准备和升级条件保留。目标准备器测试、实际CLI及两份改动脚本通用解析均0，实机待验。[观察与闭场存储](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-R0019-preconditions-and-storage.json)。
 
 R19闭场精确回收4188份shader/184069384逻辑字节；15份闭场stdout/8395747字节及11份已完成删除计划/4939174字节经逐成员SHA验证后无损归档，旧展开路径不可读、原字节可恢复、期限不刷新。21个普通准备图别名/15016158唯一载荷字节按用途退役，实际世界/失败/日历/退出/公共/anchor与永久资产保留，全部零失败。12:33:02Z D空闲21809065984字节；Steam离线。已完成的删除计划不得再次执行。

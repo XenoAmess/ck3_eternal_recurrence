@@ -2,7 +2,8 @@
 
 # Explicit partial Florin case. Fresh1066 Robert1128; Trani2619 is the
 # historical c_apulia/d_apulia capital with holdingII. Runtime checks remain
-# mandatory. No title/government/holding replacement is used for preparation.
+# mandatory. Stock GUI creates the first duchy district while day0 is paused.
+# No title/government/holding replacement is used for preparation.
 aubd.1 = {
     type = character_event
     theme = realm
@@ -10,7 +11,7 @@ aubd.1 = {
     desc = aubd_start_desc
     immediate = {
         set_variable = { name = aubd_phase value = 0 }
-        debug_log = "AUBD: TEST BEGIN duchy_primary_1210"
+        debug_log = "AUBD: TEST BEGIN gui_duchy_primary_1210"
     }
     option = {
         name = aubd_start_confirm
@@ -52,7 +53,11 @@ aubd.1 = {
                 add_character_modifier = { modifier = aubd_fast_district_preparation days = 30 }
                 set_variable = { name = aubd_phase value = 1 }
                 set_variable = { name = aubd_wait_days value = 0 }
-                # Cross one real day so culture and modifier preparation settle.
+                debug_log = "AUBD: READY day0_gui_primary01_preparation"
+                # This option closes while day0 stays paused. The actual GUI
+                # operator now selects military_duchy_capital_district and uses
+                # its enabled stock Construct/Queue action before resuming.
+                # No script first-tier query or construction effect is used.
                 trigger_event = { id = aubd.10 days = 1 }
             }
             else = {
@@ -68,7 +73,7 @@ aubd.10 = {
     hidden = yes
     immediate = {
         aubd_bind_preparation_scopes_effect = yes
-        aubd_observe_preconstruction_gate_effect = yes
+        aubd_observe_gui_construction_effect = yes
         if = {
             limit = {
                 var:aubd_phase = 1
@@ -77,33 +82,19 @@ aubd.10 = {
                 NOT = { has_character_flag = enable_auto_build }
                 province:2619 = {
                     aubd_preparation_inputs_trigger = yes
-                    has_ongoing_holding_construction = no
+                    has_ongoing_holding_construction = yes
                     NOT = { has_building_or_higher = military_duchy_building_01 }
-                    can_start_building_construction_for_owner = military_duchy_building_01
                 }
             }
-            debug_log = "AUBD: READY native_primary01_construction_inputs"
-            province:2619 = {
-                start_building_construction_for_holder = military_duchy_building_01
-            }
-            if = {
-                limit = {
-                    province:2619 = {
-                        has_ongoing_holding_construction = yes
-                        NOT = { has_building_or_higher = military_duchy_building_01 }
-                    }
-                }
-                set_variable = { name = aubd_phase value = 3 }
-                debug_log = "AUBD: OBSERVE real_primary01_construction_started"
-                trigger_event = aubd.20
-            }
-            else = {
-                debug_log = "AUBD: PREP FAIL construction_start_poststate"
-                aubd_stop_at_known_failure_effect = yes
-            }
+            # This readback witnesses active construction, not its selected
+            # type or the click. Exact military selection, enabled Construct,
+            # Queue and actual day0 progress remain mandatory GUI evidence.
+            set_variable = { name = aubd_phase value = 3 }
+            debug_log = "AUBD: OBSERVE day1_gui_construction_active_no_primary01"
+            trigger_event = aubd.20
         }
         else = {
-            debug_log = "AUBD: PREP FAIL native_primary01_construction_inputs"
+            debug_log = "AUBD: PREP FAIL day1_gui_construction_inputs_or_poststate"
             aubd_stop_at_known_failure_effect = yes
         }
     }
@@ -308,7 +299,7 @@ aubd.800 = {
     theme = realm
     title = aubd_done_title
     desc = aubd_done_desc
-    immediate = { debug_log = "AUBD: TEST DONE duchy_primary_1210" }
+    immediate = { debug_log = "AUBD: TEST DONE gui_duchy_primary_1210" }
     option = { name = aubd_close_confirm }
 }
 
