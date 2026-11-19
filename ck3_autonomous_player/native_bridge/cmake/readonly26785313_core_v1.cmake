@@ -1,9 +1,41 @@
-# Independent default-OFF current-image readonly implementation. No wire/Full/GUI capability.
+# Independent default-OFF current-image readonly and Core-only wire route. No Full/GUI/actions.
 option(XAR_CK3_ENABLE_121003_26785313_READONLY_V1 "Compile isolated exact26785313 Core/raw-resource owner reader" OFF)
 if(XAR_CK3_ENABLE_121003_26785313_READONLY_V1)
   target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_121003_readonly26785313_v1.cpp)
 endif()
+option(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1 "Enable exact26785313 paused living-player partial Core wire route only" OFF)
+if(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
+  if(NOT XAR_CK3_ENABLE_121003_26785313_READONLY_V1)
+    target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_121003_readonly26785313_v1.cpp)
+  endif()
+  target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_121003_core_route26785313_v1.cpp)
+  target_compile_definitions(xar_ck3_12002_runtime PUBLIC XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1)
+endif()
 if(BUILD_TESTING)
+  add_library(xar_ck3_121003_26785313_core_route_compile OBJECT
+    src/ck3_121003_core_route26785313_v1.cpp src/ck3_121003_readonly26785313_v1.cpp
+    src/ck3_1210_adapter.cpp src/ck3_1210_core_frame_v1.cpp)
+  set_target_properties(xar_ck3_121003_26785313_core_route_compile PROPERTIES EXCLUDE_FROM_ALL TRUE)
+  target_include_directories(xar_ck3_121003_26785313_core_route_compile PRIVATE include src)
+  target_compile_features(xar_ck3_121003_26785313_core_route_compile PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_121003_26785313_core_route_compile PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1)
+  add_library(xar_ck3_121003_26785313_core_route_bridge_compile OBJECT src/bridge.cpp)
+  set_target_properties(xar_ck3_121003_26785313_core_route_bridge_compile PROPERTIES EXCLUDE_FROM_ALL TRUE)
+  target_include_directories(xar_ck3_121003_26785313_core_route_bridge_compile PRIVATE include research src
+    $<TARGET_PROPERTY:xar_ck3_bridge,INCLUDE_DIRECTORIES>)
+  target_compile_features(xar_ck3_121003_26785313_core_route_bridge_compile PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_121003_26785313_core_route_bridge_compile PRIVATE
+    $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>
+    $<TARGET_PROPERTY:xar_ck3_12002_runtime,INTERFACE_COMPILE_DEFINITIONS>
+    NOMINMAX WIN32_LEAN_AND_MEAN XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1)
+  if(MSVC)
+    target_compile_options(xar_ck3_121003_26785313_core_route_compile PRIVATE /W4 /WX /permissive- /EHsc)
+    target_compile_options(xar_ck3_121003_26785313_core_route_bridge_compile PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_121003_26785313_core_wire_fixture
+    COMMAND xar_ck3_1210_core_frame_test --verify-26785313-fixtures
+      "${CMAKE_CURRENT_SOURCE_DIR}/../../java/ck3-control/native-transport/src/test/resources/native26785313")
   # Compile the actual production branch without the finite fixture macro.
   add_library(xar_ck3_121003_26785313_readonly_compile OBJECT
     src/ck3_121003_readonly26785313_v1.cpp)

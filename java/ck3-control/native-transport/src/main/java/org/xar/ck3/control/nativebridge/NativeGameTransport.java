@@ -2105,7 +2105,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         ObjectNode rawHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
         String version=NativeWire.text(rawHello.get("expected_ck3_version"));
         if(!decoded.equals(actual.frame)||!decoded.build().matches(version,hello.gameSha256())
-                ||!hello.adapterId().equals(decoded.build().coreFullAdapterId()))
+                ||!hello.adapterId().equals(decoded.build().coreFrameAdapterId()))
             throw new IOException("core result belongs to another exact executable or original received frame");
     }
     /** The fixed standalone partial-prefix read. It cannot carry a caller-selected step or mutation. */
@@ -2117,8 +2117,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             String version=NativeWire.text(original.get("expected_ck3_version"));
             boolean exactFour=ExactCk3Build.CK3_12004.matches(version,hello.gameSha256())
                     &&hello.adapterId().equals("ck3-1.20.0.4-msvc-x64");
-            boolean exactFlorin=ExactCk3Build.florinCoreFullBuild(version,hello.gameSha256())
-                    .filter(build->hello.adapterId().equals(build.coreFullAdapterId())).isPresent();
+            boolean exactFlorin=ExactCk3Build.florinCoreFrameBuild(version,hello.gameSha256())
+                    .filter(build->hello.adapterId().equals(build.coreFrameAdapterId())).isPresent();
             if (!hello.capabilities().contains("game.query.core-frame.v1")||!(exactFour||exactFlorin))
                 throw new IOException("standalone core prefix requires the original ready exact core build and advertised capability");
             if (sentRequestIds.size() >= maximumSubmissions) throw new IOException("Native request identity retention limit reached");

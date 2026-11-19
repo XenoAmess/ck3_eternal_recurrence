@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
 
 #include <array>
 #include <iostream>
@@ -46,6 +47,13 @@ int main() {
       return 1;
     }
   }
+  namespace current=xar::ck3_121003::build26785313;
+  auto current_adapter=CreateCk3_1210Adapter(current::kExecutableSha256);
+  if(!current_adapter||current_adapter->enabled()||!IsCk3_121003Core26785313Descriptor(current_adapter->descriptor())||
+      !current_adapter->descriptor().capabilities.empty()||current_adapter->supports_snapshot()||
+      current_adapter->supports(xar::ck3_1210::kCoreFrameCapabilityV1)||IsCk3_1210BasicDescriptor(current_adapter->descriptor()))return 1;
+  Snapshot denied{};
+  if(current_adapter->read_snapshot(denied)||ReadCk3_1210TimelineCoreSnapshot(*current_adapter,denied))return 1;
   std::cout << "PASS Florin exact identity; four hashes remain disabled; zero gameplay capabilities" << std::endl;
   return 0;
 }

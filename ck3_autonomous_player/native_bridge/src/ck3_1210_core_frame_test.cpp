@@ -4,6 +4,9 @@
 #include <array>
 #include <cstring>
 #include <iostream>
+#include <fstream>
+#include <filesystem>
+#include <iterator>
 #include <vector>
 #include <windows.h>
 
@@ -240,6 +243,11 @@ int wmain(int argc, wchar_t **argv) {
   xar::ck3_11906::MainThreadExecutionStampV1 stamp{};
   stamp.thread_id = 1; stamp.pump_epoch = 1; stamp.date_raw = 123456; stamp.paused = true;
   CHECK(ExecuteCoreFrameMailboxV1(&context, stamp) && context.observation.core_available && gReads == 1);
+  const auto new_partial=SerializeCoreFrameV1(context.observation,CoreFrameReadonlySourceV1::hotfix26785313);
+  CHECK(new_partial.find("859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28")!=std::string::npos);
+  CHECK(new_partial.find("ck3-1.21.0.3-26785313-msvc-x64")!=std::string::npos);
+  CHECK(new_partial.find("ck3-1.21.0.3-native-headless-main-thread")!=std::string::npos);
+  CHECK(new_partial.find("\"complete_snapshot\":false")!=std::string::npos);
   const auto wire = SerializeCoreFrameV1(context.observation);
   const auto partial_reply = SerializeCoreFrameCommandResultV1("producer-partial", context.observation);
   CHECK(wire.find("ck3_1210_core_frame_v1") != std::string::npos);
@@ -247,6 +255,10 @@ int wmain(int argc, wchar_t **argv) {
   ++stamp.date_raw;
   CHECK(ExecuteCoreFrameMailboxV1(&context, stamp) && !context.observation.core_available);
   CHECK(context.observation.unavailable_reason == "core_frame_changed");
+  const auto new_unavailable=SerializeCoreFrameV1(context.observation,CoreFrameReadonlySourceV1::hotfix26785313);
+  const auto new_reply=SerializeCoreFrameCommandResultV1("new-unavailable",context.observation,CoreFrameReadonlySourceV1::hotfix26785313);
+  CHECK(new_reply.find(new_unavailable)!=std::string::npos);
+  CHECK(new_unavailable.find("\"date_raw\":null")!=std::string::npos);
   const auto unavailable_wire = SerializeCoreFrameV1(context.observation);
   const auto unavailable_reply = SerializeCoreFrameCommandResultV1("producer-unavailable", context.observation);
   CHECK(!BindThreadRuntimeImage(1, "wrong").exact_build_admitted);
@@ -270,6 +282,17 @@ int wmain(int argc, wchar_t **argv) {
   CHECK(!denied.exact_build_admitted && !denied.executor_submission_enabled && denied.permitted_executor == nullptr &&
       denied.permitted_executor_quinary == nullptr && denied.permitted_executor_senary == nullptr);
   CHECK(!VerifyThreadRuntimeImage(0));
+  if(argc==3) {
+    CHECK(std::wstring_view(argv[1])==L"--verify-26785313-fixtures");
+    const auto directory=std::filesystem::path(argv[2]);CHECK(directory.is_absolute());
+    const auto read=[&](const char *name) {
+      std::ifstream input(directory/name,std::ios::binary);
+      return std::string(std::istreambuf_iterator<char>{input},std::istreambuf_iterator<char>{});
+    };
+    // Byte-for-byte current C++ formatter -> checked-in Java receiver resources.
+    CHECK(read("core-producer-partial.json")==new_partial);
+    CHECK(read("core-producer-unavailable.json")==new_unavailable);
+  } else CHECK(argc==1||argc==2);
   if (argc == 2) {
     // Resource-only Windows mapping: no entry point, imported function, game
     // process, native callback, or function pointer in this image is executed.

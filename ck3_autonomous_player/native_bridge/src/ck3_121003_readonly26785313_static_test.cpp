@@ -3,6 +3,8 @@
 // Compile the actual unchanged Core and actual new implementation once.
 #include "ck3_1210_core.cpp"
 #include "ck3_121003_readonly26785313_v1.cpp"
+#include "ck3_121003_core_route26785313_v1.cpp"
+#include "xar_bridge/ck3_1210_adapter.hpp"
 #include <windows.h>
 #include <bcrypt.h>
 #include <array>
@@ -85,9 +87,9 @@ struct Fixture {
     storage=std::vector<unsigned char>(0x30),slots=std::vector<unsigned char>(0x20),
     actor=std::vector<unsigned char>(0x1D8),living=std::vector<unsigned char>(0x300);
   void *state_slot=state.data(),*jomini_slot=jomini.data(),*storage_slot=storage.data(),*entry_slot=entry.data();
-  std::int32_t id=-16777215;std::uint32_t calls=0;bool drift=false;
+  std::int32_t id=-16777215;std::uint32_t calls=0;bool drift=false,actor_drift=false;
   static Fixture *active;
-  static void*Local(void*){auto&v=*active;++v.calls;if(v.drift&&v.calls==2)Put(v.living,0x100,std::int64_t{-12344});return v.player.data();}
+  static void*Local(void*){auto&v=*active;++v.calls;if(v.drift&&v.calls==2)Put(v.living,0x100,std::int64_t{-12344});if(v.actor_drift&&v.calls==2)Put(v.actor,0x18,std::int32_t{-16777214});return v.player.data();}
   Fixture(){active=this;Put(state,8,std::int32_t{53176992});Put(state,0x70,std::int32_t{2});Put(state,0xA0,data.data());
     Put(jomini,0x18,players.data());Put(jomini,0x20,std::uint8_t{1});Put(players,0x1F0,std::int32_t{1});Put(player,0x70,std::int32_t{1});
     Put(data,0x26FB0,&entry_slot);Put(data,0x26FBC,std::int32_t{1});Put(entry,0xD8,std::int32_t{1});Put(entry,0xB0,id);
@@ -98,9 +100,9 @@ struct Fixture {
   c::CoreBindings Core(){return {true,&state_slot,&jomini_slot,&storage_slot,&Local,c::ImageBuildV1::unknown};}
 };
 Fixture*Fixture::active=nullptr;
-bool Run(Fixture&fixture,std::uintptr_t image,f::ReadonlyObservation&out,bool offline=true){
+bool Run(Fixture&fixture,std::uintptr_t image,f::ReadonlyObservation&out,bool offline=true,f::ReadonlyModeV1 mode=f::ReadonlyModeV1::core_and_raw_resources){
   m::MainThreadQueryMailboxV1 mailbox;mailbox.offline_fixture=offline;
-  f::ReadonlyContext query;query.bindings=f::NoGameBindings(image,fixture.Core());query.mailbox=&mailbox;query.ticket.sequence=1;
+  f::ReadonlyContext query;query.bindings=f::NoGameBindings(image,fixture.Core());query.mailbox=&mailbox;query.ticket.sequence=1;query.mode=mode;
   const bool ack=f::ExecuteReadonlyOnOwner(&query,{});out=query.observation;return ack;
 }
 }
@@ -126,7 +128,31 @@ int main(int argc,char**argv){
   {Fixture fixture;Put(fixture.actor,0x18,std::int32_t{-16777214});Require(Run(fixture,base,out)&&!out.available&&!out.raw_resources,"full generation mismatch denied");}
   {Fixture fixture;Put(fixture.jomini,0x20,std::uint8_t{0});Require(Run(fixture,base,out)&&!out.available&&!out.raw_resources,"running gameplay denied");}
   {Fixture fixture;Require(Run(fixture,base,out,false)&&!out.available&&!out.main_owner_observed&&fixture.calls==0,"offline seam cannot claim a real main owner");}
-   if(synthetic)std::cout<<"PASS SOURCE_ONLY synthetic PE/Core/actor/resources/drift; EXE NOT_CHECKED; LIVE NOT_RUN\n";
+   {Fixture fixture;fixture.drift=true;
+    Require(Run(fixture,base,out,true,f::ReadonlyModeV1::core_only)&&out.available&&!out.raw_resources&&out.core_read_attempts==2,"Core-only ignores unrelated raw amount drift");
+    Require(!f::CoreRouteObservationV1(out).core_available,"NoGame observation cannot become a live Core");}
+   {Fixture fixture;Put(fixture.actor,0x1B0,std::uintptr_t{1});
+    Require(Run(fixture,base,out,true,f::ReadonlyModeV1::core_only)&&out.available&&!out.raw_resources,"Core-only never dereferences living/resource storage");}
+   {Fixture fixture;fixture.actor_drift=true;
+    Require(Run(fixture,base,out,true,f::ReadonlyModeV1::core_only)&&!out.available&&!out.raw_resources,"Core-only full-generation drift denied");}
+   {Fixture fixture;Require(Run(fixture,base,out,true,static_cast<f::ReadonlyModeV1>(99))&&!out.available,"unknown mode denied");}
+   const auto environment=f::BindCoreRouteMailboxEnvironmentV1(base,f::kExecutableSha256);
+   Require(environment.exact_build_admitted&&environment.build_profile==&f::ReadonlyThreadProfile()&&
+       environment.permitted_executor==&f::ExecuteReadonlyOnOwner&&environment.permitted_executor_secondary==nullptr&&
+       environment.snapshot_observer_callback==nullptr&&environment.permitted_frontend_executor==nullptr,"only one exact owner executor");
+   Require(!f::BindCoreRouteMailboxEnvironmentV1(base,"wrong").exact_build_admitted&&
+       !f::BindCoreRouteMailboxEnvironmentV1(0,f::kExecutableSha256).exact_build_admitted,"mixed mailbox source denied");
+   f::ReadonlyObservation data{};data.available=true;data.main_owner_observed=true;
+   data.core.clock={123456,5,true};data.core.local_player_id=7;data.core.map_ready=true;
+   data.core.has_played_character=true;data.core.played_character_id=16777217;data.core.played_character_alive=true;
+   Require(f::CoreRouteObservationV1(data).core_available,"hand-authored mapper DATA only");
+   data.raw_resources=f::RawResources{};Require(!f::CoreRouteObservationV1(data).core_available,"raw resource observation cannot masquerade as Core-only");
+   data.raw_resources.reset();data.main_owner_observed=false;
+   Require(!f::CoreRouteObservationV1(data).core_available,"missing owner denied");
+   constexpr std::array<std::string_view,1> caps{c::kCoreFrameCapabilityV1};
+   const xar::game::AdapterDescriptor descriptor{f::kAdapterId,f::kGameVersion,f::kExecutableSha256,"xar_checkpoint",caps};
+   Require(xar::game::IsCk3_121003Core26785313Descriptor(descriptor)&&!xar::game::IsCk3_1210BasicDescriptor(descriptor),"Core identity is outside old Full/clock union");
+    if(synthetic)std::cout<<"PASS SOURCE_ONLY synthetic PE/Core/actor/resources/drift; EXE NOT_CHECKED; LIVE NOT_RUN\n";
    else std::cout<<"PASS exact26785313 disk SHA/PE windows; real Core reader synthetic signed-ID/resources/drift; legacy routing closed; no Game code executed; LIVE NOT_RUN\n";
   return 0;
  }catch(const std::exception&e){std::cerr<<e.what()<<"\n";return 1;}

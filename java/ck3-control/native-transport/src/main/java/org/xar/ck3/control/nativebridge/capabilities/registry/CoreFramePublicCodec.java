@@ -52,7 +52,7 @@ public final class CoreFramePublicCodec {
         Objects.requireNonNull(actual);ObjectNode row=JsonNodeFactory.instance.objectNode();
         var build=actual.build();
         row.put("schema",CoreFrame.schema(build));row.put("game_version",build.version());row.put("executable_sha256",build.executableSha256().toUpperCase(java.util.Locale.ROOT));
-        row.put("adapter_id",build.coreFullAdapterId());row.put("backend","ck3-"+build.version()+"-native-headless-main-thread");
+        row.put("adapter_id",build.coreFrameAdapterId());row.put("backend","ck3-"+build.version()+"-native-headless-main-thread");
         row.put("complete_snapshot",false);var excluded=row.putArray("excluded_snapshot_families");CoreFrame.EXCLUDED.forEach(excluded::add);
         if(actual instanceof CoreFrame.Partial partial) {
             var prefix=partial.prefix();row.put("status","partial");row.put("core_available",true);row.put("application_main_observed",true);row.putNull("unavailable_reason");

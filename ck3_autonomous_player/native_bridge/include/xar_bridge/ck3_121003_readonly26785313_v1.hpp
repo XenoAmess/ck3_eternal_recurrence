@@ -50,18 +50,21 @@ struct ReadonlyObservation {
   std::uint32_t core_read_attempts=0;
   std::string_view unavailable_reason="not_read";
 };
+enum class ReadonlyModeV1 { core_and_raw_resources, core_only };
 struct ReadonlyContext {
   ReadonlyBindings bindings{};
   ck3_11906::MainThreadQueryMailboxV1 *mailbox=nullptr;
   ck3_11906::MainThreadQueryTicketV1 ticket{};
   ReadonlyObservation observation{};
+  // The production Core route must not read raw financial/resource storage.
+  ReadonlyModeV1 mode=ReadonlyModeV1::core_and_raw_resources;
 };
 struct ImagePin {std::uintptr_t rva;std::span<const unsigned char> bytes;};
 std::span<const ImagePin> ReadonlyImagePins() noexcept;
 bool VerifyReadonlyImage(std::uintptr_t image_base) noexcept;
 ReadonlyBindings BindReadonlyImage(std::uintptr_t image_base,std::string_view sha256) noexcept;
 const ck3_11906::MainThreadQueryBuildProfileV1 &ReadonlyThreadProfile() noexcept;
-// No protocol route/adapter capability is installed by this candidate.
+// The independent default-OFF Core route supplies its own capability and exact identity.
 bool ExecuteReadonlyOnOwner(void*,const ck3_11906::MainThreadExecutionStampV1&) noexcept;
 #if defined(XAR_CK3_26785313_OFFLINE_FIXTURE)
 // Present only in the finite NoGame executable, never a production DLL.

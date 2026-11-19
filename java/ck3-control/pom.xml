@@ -136,6 +136,12 @@
                 <testInclude>**/NativeGuiProducerConsumerTest.java</testInclude>
                 <testInclude>**/NativeTransportSubmissionFixture.java</testInclude>
                 <testInclude>**/CoreFrameBuildIdentityTest.java</testInclude>
+                <testInclude>**/NativeCoreFrame26785313ProducerTest.java</testInclude>
+                <testInclude>**/NativeCoreFrame1210ProducerTest.java</testInclude>
+                <testInclude>**/HotfixCoreFullIdentityDataTest.java</testInclude>
+                <testInclude>**/CoreClockControlTest.java</testInclude>
+                <testInclude>**/NativeCoreClockControlPortTest.java</testInclude>
+                <testInclude>**/NativeCoreApplicationExitPortTest.java</testInclude>
               </testIncludes>
             </configuration>
           </plugin>

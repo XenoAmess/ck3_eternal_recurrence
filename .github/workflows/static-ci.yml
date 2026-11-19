@@ -99,9 +99,9 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test 26785313 source-only Core fixture without game files
         run: |
-          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-florin-core-ci" --configuration Release --jobs 1 --build --target xar_ck3_121003_26785313_core_static_test xar_ck3_121003_26785313_readonly_compile
+          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-florin-core-ci" --configuration Release --jobs 1 --build --target xar_ck3_121003_26785313_core_static_test xar_ck3_121003_26785313_readonly_compile xar_ck3_121003_26785313_core_route_compile xar_ck3_121003_26785313_core_route_bridge_compile
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^xar_ck3_121003_26785313_core_synthetic$" --no-tests=error --output-on-failure
+          ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^xar_ck3_121003_26785313_core_(synthetic|wire_fixture)$" --no-tests=error --output-on-failure
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test native Workshop publication text bounds without Steam
         env:

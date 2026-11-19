@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_1210_character_roster_frame_v1.hpp"
 #endif
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
 #include "xar_bridge/ck3_1210_opening_readonly56.hpp"
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
@@ -23,7 +24,7 @@
 #include "xar_bridge/ck3_1210_event_option_control_v1.hpp"
 #include "xar_bridge/ck3_1210_gui_control_v1.hpp"
 #include "xar_bridge/ck3_1210_toast_query_v1.hpp"
-#if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+#if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1) || defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
 #include <windows.h>
 #endif
 
@@ -34,14 +35,17 @@ namespace {
 // versioned wire clock control has its own complete-value admission.
 class FlorinAdapter final : public GameAdapter {
 public:
-  explicit FlorinAdapter(ck3_1210::CoreBindings bindings, ck3_1210::FullSnapshotBindingsV1 full={}) noexcept : core_(bindings),full_(full) {}
+  explicit FlorinAdapter(ck3_1210::CoreBindings bindings, ck3_1210::FullSnapshotBindingsV1 full={},
+      bool core_only_26785313=false) noexcept : core_(bindings),full_(full),core_only_26785313_(core_only_26785313) {}
   const AdapterDescriptor &descriptor() const noexcept override {
+    if(core_only_26785313_)return Ck3_121003Core26785313AdapterDescriptor();
     return ck3_1210::IsHotfix(core_.image_build)?Ck3_1210Hotfix26757580AdapterDescriptor():Ck3_1210AdapterDescriptor();
   }
   bool enabled() const noexcept override { return core_.enabled; }
   void BindSnapshotOwner(const ck3_11906::MainThreadQueryMailboxV1 &m) const noexcept {owner_mailbox_.store(&m);}
   bool read_snapshot(xar::game::Snapshot &output) const noexcept override {
     output = {};
+    if(core_only_26785313_)return false;
 #if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
     ck3_1210::FullSnapshotDiagnosticsV1 diagnostics{};
     const auto finish=[&](bool result) noexcept {
@@ -243,6 +247,7 @@ public:
   }
   bool ReadTimelineCore(Snapshot &output) const noexcept {
     output = {};
+    if(core_only_26785313_)return false; // Only the ticketed current-image reader can serve this profile.
     ck3_1210::CoreSnapshotPrefix prefix{};
     if (!ck3_1210::ReadCoreSnapshot(core_, prefix)) return false;
     output.date_raw = prefix.clock.date_raw;
@@ -371,6 +376,7 @@ private:
   mutable std::atomic<const ck3_11906::MainThreadQueryMailboxV1 *> owner_mailbox_{nullptr};
   ck3_1210::CoreBindings core_{};
   ck3_1210::FullSnapshotBindingsV1 full_{};
+  bool core_only_26785313_=false;
   mutable std::mutex diagnostic_mutex_;
   mutable ck3_1210::FullSnapshotDiagnosticsV1 diagnostics_{};
 };
@@ -381,6 +387,18 @@ bool BindCk3_1210SnapshotOwnerMailbox(const GameAdapter &game,
   const auto *florin=dynamic_cast<const FlorinAdapter *>(&game);
   if(!florin || !florin->enabled() || !IsCk3_1210BasicDescriptor(game.descriptor()))return false;
   florin->BindSnapshotOwner(mailbox);return true;
+}
+
+const AdapterDescriptor &Ck3_121003Core26785313AdapterDescriptor() noexcept {
+  namespace current=ck3_121003::build26785313;
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
+  static constexpr std::array<std::string_view,1> caps{ck3_1210::kCoreFrameCapabilityV1};
+#else
+  static constexpr std::array<std::string_view,0> caps{};
+#endif
+  static const AdapterDescriptor descriptor{current::kAdapterId,current::kGameVersion,
+      current::kExecutableSha256,"xar_checkpoint",caps};
+  return descriptor;
 }
 
 const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
@@ -507,6 +525,16 @@ bool ReadCk3_1210TimelineCoreSnapshot(const GameAdapter &adapter,
 std::unique_ptr<GameAdapter> CreateCk3_1210Adapter(
     std::string_view executable_sha256) noexcept {
   ck3_1210::CoreBindings core{};
+  namespace current=ck3_121003::build26785313;
+  // The selected current-process hash is uppercase. Keep the old factories and
+  // ImageBuildForSha unchanged: this is a separate Core-only descriptor.
+  if(executable_sha256==current::kExecutableSha256) {
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
+    core=current::BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+        executable_sha256).core;
+#endif
+    return std::make_unique<FlorinAdapter>(core,ck3_1210::FullSnapshotBindingsV1{},true);
+  }
 #if !defined(XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1)
   if(executable_sha256==ck3_1210::hotfix26757580::kExecutableSha256) {
     core.image_build=ck3_1210::ImageBuildV1::hotfix26757580;

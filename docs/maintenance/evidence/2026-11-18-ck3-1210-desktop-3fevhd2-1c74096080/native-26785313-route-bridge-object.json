@@ -1,0 +1,50 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T19:40:28.259680+00:00",
+  "checks": [
+    {
+      "name": "real-bridge-object",
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/O2",
+        "/MD",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/permissive-",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "/ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-core-route\\native_bridge\\include",
+        "/ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-core-route\\native_bridge\\src",
+        "/ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+        "/ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src",
+        "/c",
+        "/FoD:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\core-route-bridge-object-a03\\bridge.obj",
+        "/DUNICODE",
+        "/D_UNICODE",
+        "/DXAR_BRIDGE_VERSION=\"0.1.0\"",
+        "/Dxar_ck3_bridge_EXPORTS",
+        "/ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-core-route\\native_bridge\\src\\bridge.cpp"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 48.029893200000515,
+      "own_sampled_logical_bytes": 17268953,
+      "cap_exceeded": false,
+      "tail": "bridge.cpp\r\n"
+    }
+  ],
+  "passed": true,
+  "actual_object_TUs": 1,
+  "actual_bridge_object_link": "OBJECT_COMPILED_LINK_NOT_RUN",
+  "core_route_macro": "ON",
+  "offline_fixture_macro": "OFF",
+  "full_CMake_DLL_Java_Game": "NOT_RUN",
+  "own_sampled_logical_peak_lower_bound": 17268953,
+  "sampling_limit": "100ms logical own outputs only; transient/allocated peaks not exhaustively measured; whole-volume delta not attributed",
+  "free_D": 21794803712,
+  "remaining_reservation_bytes": 0
+}

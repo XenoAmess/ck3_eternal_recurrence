@@ -30,11 +30,11 @@ public final class RegistryCore {
         this.held = Objects.requireNonNull(held, "sole held Native transport required"); this.routes = Objects.requireNonNull(routes);
     }
     public CoreResult query_core_frame_v1(CoreRequest request) throws InterruptedException {
-        NativeActionPort.DispatchOutcome original = held.readCoreFrame(Objects.requireNonNull(request).deadline());
-        if (!(original instanceof NativeActionPort.AckReceived ack) || !ack.nativeOk() || ack.originalResultToken().isEmpty())
-            return new CoreUnavailable("original standalone core result is absent, rejected or UNKNOWN; no replay", original);
-        try { return new CoreKnown(CoreFrame.decode(ack.originalResultToken().orElseThrow()),ack); }
-        catch (IllegalArgumentException invalid) { return new CoreUnavailable("malformed original core prefix: " + invalid.getMessage(), original); }
+        var actual=held.readCoreFrameReceived(Objects.requireNonNull(request).deadline());
+        if(actual instanceof NativeGameTransport.CoreReceived received)
+            return new CoreKnown(received.frame(),received.original());
+        var unavailable=(NativeGameTransport.CoreReadUnavailable)actual;
+        return new CoreUnavailable(unavailable.reason(),unavailable.original());
     }
     public NativeGameTransport.TransportDiagnostics bridge_diagnostics() { return held.diagnostics(); }
     /** Raw hello advertisements and installed Java routes remain distinct; neither grants execution. */

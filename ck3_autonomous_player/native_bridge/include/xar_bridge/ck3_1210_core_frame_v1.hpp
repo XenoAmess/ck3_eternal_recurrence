@@ -35,6 +35,11 @@ bool ExecuteCoreFrameMailboxV1(void *context,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept;
 ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreFrameMailboxEnvironmentV1(
     std::uintptr_t module_base, std::string_view executable_sha256) noexcept;
+// Separate source identity, deliberately absent from the legacy ABI ImageBuildV1 union.
+enum class CoreFrameReadonlySourceV1 { hotfix26785313 };
+std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &,CoreFrameReadonlySourceV1);
+std::string SerializeCoreFrameCommandResultV1(std::string_view request_id,
+    const CoreFrameObservationV1 &,CoreFrameReadonlySourceV1);
 std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation,ImageBuildV1 build=ImageBuildV1::original26622941);
 std::string SerializeCoreFrameCommandResultV1(std::string_view request_id,
     const CoreFrameObservationV1 &observation,ImageBuildV1 build=ImageBuildV1::original26622941);

@@ -4,7 +4,8 @@ package org.xar.ck3.control.contracts;
 public enum ExactCk3Build {
     CK3_12004("1.20.0.4", "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"),
     CK3_1210("1.21.0", "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"),
-    CK3_1210_STEAM_26757580("1.21.0", "bb3fef106240e95ecdb6f1532982e89e9432c92a99d33db623521572f06e6f79");
+    CK3_1210_STEAM_26757580("1.21.0", "bb3fef106240e95ecdb6f1532982e89e9432c92a99d33db623521572f06e6f79"),
+    CK3_121003_STEAM_26785313("1.21.0.3", "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28");
     private final String version;
     private final String executableSha256;
     ExactCk3Build(String version, String executableSha256) { this.version = version; this.executableSha256 = executableSha256; }
@@ -16,7 +17,17 @@ public enum ExactCk3Build {
             if(build.matches(version,sha256))return java.util.Optional.of(build);
         return java.util.Optional.empty();
     }
+    /** Core DATA identity only. Full/clock/domain callers must keep using florinCoreFullBuild. */
+    public static java.util.Optional<ExactCk3Build> florinCoreFrameBuild(String version,String sha256) {
+        if(CK3_121003_STEAM_26785313.matches(version,sha256))
+            return java.util.Optional.of(CK3_121003_STEAM_26785313);
+        return florinCoreFullBuild(version,sha256);
+    }
+    public String coreFrameAdapterId() {
+        return this==CK3_121003_STEAM_26785313?"ck3-1.21.0.3-26785313-msvc-x64":coreFullAdapterId();
+    }
     public String coreFullAdapterId() {
+        if(this==CK3_121003_STEAM_26785313)throw new IllegalStateException("26785313 has only a partial Core profile");
         return this==CK3_1210_STEAM_26757580?"ck3-1.21.0-26757580-msvc-x64":"ck3-"+version+"-msvc-x64";
     }
     public boolean matches(String observedVersion, String observedSha256) {

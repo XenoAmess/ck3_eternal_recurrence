@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_121003_readonly26785313_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 
 #include <array>
@@ -80,16 +81,20 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreFrameMailboxEnvironmentV1
   return BindThreadRuntimeImage(module_base, executable_sha256, executors);
 }
 
-std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation,ImageBuildV1 build) {
+namespace {
+std::string SerializeCoreFrameIdentityV1(const CoreFrameObservationV1 &observation,
+    std::string_view version,std::string_view sha,std::string_view adapter,std::string_view backend) {
   std::string result = "{\"schema\":";
   AppendString(result, kCoreFrameSchemaV1);
   result += ",\"game_version\":";
-  AppendString(result, kGameVersion);
+  AppendString(result, version);
   result += ",\"executable_sha256\":";
-  AppendString(result, ExecutableShaForBuild(build));
+  AppendString(result, sha);
   result += ",\"adapter_id\":";
-  AppendString(result, AdapterIdForBuild(build));
-  result += ",\"backend\":\"ck3-1.21.0-native-headless-main-thread\",\"status\":";
+  AppendString(result, adapter);
+  result += ",\"backend\":";
+  AppendString(result,backend);
+  result += ",\"status\":";
   AppendString(result, observation.core_available ? "partial" : "unavailable");
   result += ",\"complete_snapshot\":false,\"core_available\":";
   result += Boolean(observation.core_available);
@@ -120,13 +125,30 @@ std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation,Image
   return result;
 }
 
-std::string SerializeCoreFrameCommandResultV1(std::string_view request_id,
-    const CoreFrameObservationV1 &observation,ImageBuildV1 build) {
+std::string SerializeCoreFrameResultV1(std::string_view request_id,std::string_view frame) {
   std::string result = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendString(result, request_id);
   result += ",\"ok\":true,\"result\":";
-  result += SerializeCoreFrameV1(observation,build);
+  result += frame;
   result += '}';
   return result;
+}
+} // namespace
+std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation,ImageBuildV1 build) {
+  return SerializeCoreFrameIdentityV1(observation,kGameVersion,ExecutableShaForBuild(build),
+      AdapterIdForBuild(build),"ck3-1.21.0-native-headless-main-thread");
+}
+std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation,CoreFrameReadonlySourceV1) {
+  namespace current=ck3_121003::build26785313;
+  return SerializeCoreFrameIdentityV1(observation,current::kGameVersion,current::kExecutableSha256,
+      current::kAdapterId,"ck3-1.21.0.3-native-headless-main-thread");
+}
+std::string SerializeCoreFrameCommandResultV1(std::string_view id,
+    const CoreFrameObservationV1 &observation,ImageBuildV1 build) {
+  return SerializeCoreFrameResultV1(id,SerializeCoreFrameV1(observation,build));
+}
+std::string SerializeCoreFrameCommandResultV1(std::string_view id,
+    const CoreFrameObservationV1 &observation,CoreFrameReadonlySourceV1 source) {
+  return SerializeCoreFrameResultV1(id,SerializeCoreFrameV1(observation,source));
 }
 } // namespace xar::ck3_1210

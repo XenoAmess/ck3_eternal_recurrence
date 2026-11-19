@@ -120,7 +120,9 @@ bool Take(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,Sample
     !At(out.state,0xA0,out.data)||!At(out.jomini,0x18,out.players))return false;
   out.actor=Resolve(q.bindings.core,out.core.played_character_id);
   if(!At(out.actor,0x18,out.id)||!At(out.actor,0x1C,out.type)||!At(out.actor,0x1D0,out.death)||
-    !At(out.actor,0x1B0,out.living)||out.id!=out.core.played_character_id||out.type!=0x43686172U||out.death!=0)return false;
+    out.id!=out.core.played_character_id||out.type!=0x43686172U||out.death!=0)return false;
+  if(q.mode==ReadonlyModeV1::core_only)return Owner(q,s);
+  if(q.mode!=ReadonlyModeV1::core_and_raw_resources||!At(out.actor,0x1B0,out.living))return false;
   // Named current-image GetGold/GetPrestige/GetPiety/GetStress callers prove these widths.
   // Null living is the native getters' observed zero branch, not a failed copy.
   if(out.living&&(!At(out.living,0x100,out.resources.personal_gold_raw)||
@@ -131,7 +133,8 @@ bool Take(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,Sample
 bool Read(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s) noexcept {
   Sample a{},b{};
   if(!Take(q,s,a)||!Take(q,s,b)||!Same(a,b)||!Owner(q,s))return false;
-  q.observation.available=true;q.observation.core=b.core;q.observation.raw_resources=b.resources;
+  q.observation.available=true;q.observation.core=b.core;
+  if(q.mode==ReadonlyModeV1::core_and_raw_resources)q.observation.raw_resources=b.resources;
 #if defined(XAR_CK3_26785313_OFFLINE_FIXTURE)
   q.observation.offline_fixture=q.bindings.offline_fixture;
 #endif
