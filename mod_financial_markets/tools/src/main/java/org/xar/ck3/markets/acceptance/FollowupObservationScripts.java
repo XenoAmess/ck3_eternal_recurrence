@@ -26,14 +26,14 @@ public final class FollowupObservationScripts {
                     is_valid = { is_ai = no is_alive = yes exists = var:${P}_story }
                     effect = { var:${P}_story = { ${P}_observe_effect = yes } }
                 }
-                """);
+                """ + spotScopeProbeGuis(request));
         scripts.put("gui/scripted_widgets/" + prefix + ".txt", "gui/" + prefix + ".gui = xfma_observer_widget\n");
         scripts.put("gui/" + prefix + ".gui", """
                 window = {
                     name = "xfma_observer_widget"
                     parentanchor = top|right
                     position = { -290 130 }
-                    size = { 220 82 }
+                    size = { 220 ${SCOPE_PROBE_HEIGHT} }
                     layer = middle
                     visible = "[GetPlayer.IsValid]"
                     button_standard = {
@@ -51,17 +51,22 @@ public final class FollowupObservationScripts {
                         enabled = "[GetScriptedGui( '${P}_refresh_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
                         onclick = "[GetScriptedGui( '${P}_refresh_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
                     }
+                    ${SCOPE_VALUE_PROBE}
                 }
                 """);
         scripts.put("localization/english/" + prefix + "_l_english.yml", """
                 l_english:
                  xfma_followup_arm_label:0 "Record observation baseline"
                  xfma_followup_refresh_label:0 "Read watched market facts"
+                 xfma_scope_probe_positive_label:0 "Read-only ID > 0"
+                 xfma_scope_probe_negative_label:0 "Read-only ID < 0"
                 """);
         scripts.put("localization/simp_chinese/" + prefix + "_l_simp_chinese.yml", """
                 l_simp_chinese:
                  xfma_followup_arm_label:0 "记录只读观察基线"
                  xfma_followup_refresh_label:0 "读回所观察的市场事实"
+                 xfma_scope_probe_positive_label:0 "只读 ID > 0"
+                 xfma_scope_probe_negative_label:0 "只读 ID < 0"
                 """);
         scripts.put("common/story_cycles/" + prefix + ".txt", "${P}_observer = {\n visible = no\n on_owner_death = {\n"
                 + ownerDeath(request) + "\n }\n effect_group = { days = 1 triggered_effect = { trigger = { exists = story_owner } effect = { ${P}_observe_effect = yes } } }\n}\n"
@@ -82,8 +87,61 @@ public final class FollowupObservationScripts {
         Map<String, byte[]> result = new LinkedHashMap<>();
         scripts.forEach((name, source) -> result.put(name, ("\ufeff" + source.replace("${P}", prefix)
                 .replace("${ACTOR}", actorCondition(request))
+                .replace("${SCOPE_PROBE_HEIGHT}", request.caseId() == Profile.SPOT ? "560" : "82")
+                .replace("${SCOPE_VALUE_PROBE}", spotScopeProbeWidget(request).replace("${P}", prefix))
                 .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT ? prefix + "_next_sample_day_value" : "{ value = var:xfma_last_sample_day add = 1 }")).getBytes(StandardCharsets.UTF_8)));
         return Map.copyOf(result);
+    }
+
+    /**
+     * Diagnostic only: emit the numeric MakeScopeValue chain in a real GetList item.
+     * Neither branch has an effect. Actual parser/validity evidence must precede any product use.
+     */
+    private static String spotScopeProbeGuis(Request request) {
+        if (request.caseId() != Profile.SPOT) return "";
+        return """
+                ${P}_scope_id_positive_gui = {
+                    scope = character
+                    saved_scopes = { xfma_probe_order_id }
+                    is_valid = { is_ai = no is_alive = yes exists = scope:xfma_probe_order_id scope:xfma_probe_order_id > 0 }
+                }
+                ${P}_scope_id_negative_gui = {
+                    scope = character
+                    saved_scopes = { xfma_probe_order_id }
+                    is_valid = { is_ai = no is_alive = yes exists = scope:xfma_probe_order_id scope:xfma_probe_order_id < 0 }
+                }
+                """;
+    }
+
+    private static String spotScopeProbeWidget(Request request) {
+        if (request.caseId() != Profile.SPOT) return "";
+        return """
+                vbox = {
+                    name = "xfma_scope_value_probe"
+                    position = { 0 86 }
+                    size = { 220 470 }
+                    spacing = 2
+                    datamodel = "[DataModelSubSpan( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_history_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ) ), Max_int32( '(int32)0', Min_int32( '(int32)16', Subtract_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_history_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ) ) ) ) ) )]"
+                    item = {
+                        hbox = {
+                            size = { 220 26 }
+                            spacing = 4
+                            button_standard = {
+                                name = "xfma_scope_probe_positive"
+                                size = { 108 24 }
+                                text = "xfma_scope_probe_positive_label"
+                                enabled = "[GetScriptedGui( '${P}_scope_id_positive_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfma_probe_order_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).End )]"
+                            }
+                            button_standard = {
+                                name = "xfma_scope_probe_negative"
+                                size = { 108 24 }
+                                text = "xfma_scope_probe_negative_label"
+                                enabled = "[GetScriptedGui( '${P}_scope_id_negative_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfma_probe_order_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).End )]"
+                            }
+                        }
+                    }
+                }
+                """;
     }
 
     /**

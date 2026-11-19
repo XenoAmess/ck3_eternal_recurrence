@@ -387,6 +387,10 @@ final class FollowupFixtureTest {
         var manifest = FixtureEmitter.JSON.readTree(Files.readAllBytes(Path.of(emission.manifest().path())));
         assertEquals(6, manifest.path("producer_source_pins").size());
         assertEquals(11, manifest.path("files").size());
+        String probeGui = Files.readString(fixture.resolve("gui/" + input.prefix() + ".gui"));
+        assertTrue(probeGui.contains("xfma_scope_probe_positive"));
+        assertTrue(probeGui.contains("xfma_scope_probe_negative"));
+        assertEquals(2, occurrences(probeGui, "MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue )"));
         assertEquals(input, FixtureEmitter.readInput(fixture.resolve("_xfma_request.json")));
         Path shared = Path.of(System.getProperty("xfm.shared.source", repository().toString())).toAbsolutePath().normalize();
         Path consumer = repository().resolve("mod_financial_markets/tools/src/test/resources/acceptance/verify_saved_observer_inventory.py");
@@ -402,6 +406,69 @@ final class FollowupFixtureTest {
         assertTrue(result.path("host_copy_readback_verified").booleanValue());
         assertFalse(result.path("game_started").booleanValue());
         assertFalse(result.path("business_acceptance_proven").booleanValue());
+    }
+
+    @Test void spotNumericScopeProbeUsesTheRealSixteenRowHistoryPageAndOnlyReadOnlyValidity() {
+        for (Profile profile : Profile.values()) {
+            Request input = request(profile, 3);
+            var scripts = FollowupObservationScripts.render(input);
+            String gui = new String(scripts.get("gui/" + input.prefix() + ".gui"), StandardCharsets.UTF_8);
+            String guis = new String(scripts.get("common/scripted_guis/" + input.prefix() + ".txt"), StandardCharsets.UTF_8);
+            if (profile != Profile.SPOT) {
+                assertFalse(gui.contains("xfma_scope_value_probe"));
+                assertFalse(guis.contains("_scope_id_positive_gui"));
+                assertFalse(guis.contains("_scope_id_negative_gui"));
+                continue;
+            }
+            assertEquals(10, scripts.size(), "the existing ten rendered files plus request remain eleven");
+            assertTrue(gui.contains("DataModelSubSpan( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' )"));
+            assertTrue(gui.contains("xfm_ui_history_offset"));
+            assertTrue(gui.contains("'(int32)16'"));
+            assertEquals(2, occurrences(gui, ".AddScope( 'xfma_probe_order_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) )"));
+            assertFalse(gui.contains("Scope.Self"));
+            Block probe = parse(gui).block("window").block("vbox");
+            assertFalse(hasKey(probe, "onclick"), "probe controls can never dispatch");
+            assertFalse(hasKey(probe, "datacontext"), "keep the native GetList item context");
+            for (String side : List.of("positive", "negative")) {
+                Block definition = parse(guis).block(input.prefix() + "_scope_id_" + side + "_gui");
+                assertEquals(Set.of("scope", "saved_scopes", "is_valid"),
+                        definition.entries.stream().map(Entry::key).collect(java.util.stream.Collectors.toSet()));
+                assertTrue(definition.block("is_valid").entries.stream()
+                        .anyMatch(entry -> entry.key.equals("scope:xfma_probe_order_id")));
+            }
+        }
+    }
+
+    @Test void actualEmittedNumericScopePredicatesDisagreeForTheSameRealPositiveIdAndDoNotWrite() {
+        Request input = request(Profile.SPOT, 3);
+        var scripts = FollowupObservationScripts.render(input);
+        Block definitions = parse(new String(scripts.get("common/scripted_guis/" + input.prefix() + ".txt"), StandardCharsets.UTF_8));
+        Block positive = definitions.block(input.prefix() + "_scope_id_positive_gui").block("is_valid");
+        Block negative = definitions.block(input.prefix() + "_scope_id_negative_gui").block("is_valid");
+        Node actor = new Node("character").number("is_ai", 0).number("is_alive", 1);
+        Node values = new Node("saved-numeric-scope").number("xfma_probe_order_id", 760);
+        Map<String, Datum> actorBefore = Map.copyOf(actor.variables), valuesBefore = Map.copyOf(values.variables);
+        assertTrue(matches(positive, actor, values, null));
+        assertFalse(matches(negative, actor, values, null));
+        assertEquals(actorBefore, actor.variables);
+        assertEquals(valuesBefore, values.variables);
+        values.number("xfma_probe_order_id", 0);
+        assertFalse(matches(positive, actor, values, null));
+        assertFalse(matches(negative, actor, values, null));
+        values.variables.remove("xfma_probe_order_id");
+        assertFalse(matches(positive, actor, values, null));
+        assertFalse(matches(negative, actor, values, null));
+        values.number("xfma_probe_order_id", -1);
+        assertFalse(matches(positive, actor, values, null));
+        assertTrue(matches(negative, actor, values, null), "the negative control evaluates the input rather than a constant false");
+        actor.number("is_alive", 0); values.number("xfma_probe_order_id", 760);
+        assertFalse(matches(positive, actor, values, null));
+        assertFalse(matches(negative, actor, values, null));
+    }
+
+    private static boolean hasKey(Block block, String key) {
+        return block.entries.stream().anyMatch(entry -> entry.key.equals(key)
+                || entry.value instanceof Block child && hasKey(child, key));
     }
 
     private static void assertCompatibilityCatalog(Block catalog, Request input) {
@@ -459,6 +526,9 @@ final class FollowupFixtureTest {
         while (cursor[0] < tokens.size()) {
             String key = tokens.get(cursor[0]++);
             if (key.equals("}")) { assertTrue(nested); return new Block(entries); }
+            if (cursor[0] >= tokens.size() || !Set.of("=", "!=", ">", "<", ">=", "<=").contains(tokens.get(cursor[0]))) {
+                entries.add(new Entry("$literal", "=", new Atom(key))); continue;
+            }
             String operator = tokens.get(cursor[0]++); String token = tokens.get(cursor[0]++);
             Expr value = token.equals("{") ? parseBlock(tokens, cursor, true) : new Atom(token.startsWith("\"") ? token.substring(1, token.length() - 1) : token);
             entries.add(new Entry(key, operator, value));
@@ -504,6 +574,7 @@ final class FollowupFixtureTest {
         String[] parts = path.split("\\.var:");
         Datum value = switch (parts[0]) {
             case "scope:xfma_context" -> new NodeValue(context);
+            case "scope:xfma_probe_order_id" -> context.variables.get("xfma_probe_order_id");
             case "global_var:xfm_exchange" -> exchange == null ? null : new NodeValue(exchange);
             case "this" -> new NodeValue(node);
             default -> parts[0].startsWith("var:") ? node.variables.get(parts[0].substring(4)) : null;

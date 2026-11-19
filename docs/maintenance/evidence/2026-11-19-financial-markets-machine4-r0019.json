@@ -1,0 +1,200 @@
+{
+  "schema": "ck3-financial-market-r0019-actual-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T04:31:43.949225+00:00",
+  "run_id": "4-8e1c2f1861--financial-markets--R0019",
+  "loaded_source_commit": "affd5724b958df48b528cab662f8ffa4ec3a8fd9",
+  "actual_business": {
+    "cold_restored_financial_records": 1071,
+    "cold_restore_differences": 0,
+    "new_natural_game_days": 1,
+    "date_raw": 53144448,
+    "player_account": 54,
+    "orders": [
+      {
+        "permanent_id": 13,
+        "native_id": 1128,
+        "contract": "grain perpetual",
+        "short": true,
+        "leverage": 3,
+        "submitted_lots": 11,
+        "filled_lots": 6,
+        "remaining_lots": 5,
+        "gross_cents": 570,
+        "cumulative_fee_cents": 2,
+        "remaining_reservation_cents": 196
+      },
+      {
+        "permanent_id": 14,
+        "native_id": 1130,
+        "contract": "trade perpetual",
+        "short": true,
+        "leverage": 5,
+        "submitted_lots": 11,
+        "filled_lots": 6,
+        "remaining_lots": 5,
+        "gross_cents": 636,
+        "cumulative_fee_cents": 2,
+        "remaining_reservation_cents": 131
+      }
+    ],
+    "new_player_short_positions": [
+      {
+        "permanent_id": 7,
+        "native_id": 1140,
+        "lots": 2,
+        "margin_cents": 43
+      },
+      {
+        "permanent_id": 9,
+        "native_id": 1188,
+        "lots": 2,
+        "margin_cents": 43
+      },
+      {
+        "permanent_id": 12,
+        "native_id": 1259,
+        "lots": 2,
+        "margin_cents": 43
+      },
+      {
+        "permanent_id": 10,
+        "native_id": 1207,
+        "lots": 2,
+        "margin_cents": 64
+      },
+      {
+        "permanent_id": 11,
+        "native_id": 1251,
+        "lots": 4,
+        "margin_cents": 127
+      }
+    ],
+    "independent_AI_AI_position_native_id": 1146,
+    "independent_player_counterparty_character_ids": [
+      35808,
+      35900,
+      35945,
+      36107,
+      36110
+    ],
+    "player_free_cents_before_after": [
+      5244,
+      5312
+    ],
+    "player_reserved_cents_before_after": [
+      826,
+      754
+    ],
+    "private_net_cents": -4,
+    "prior_position_margin_cents": 107,
+    "new_position_margin_cents": 320,
+    "remaining_order_reservation_cents": 327,
+    "default_fund_delta_cents": 2,
+    "default_fund_is_private_player_money": false,
+    "global_AI_deposit_observation_cents": 2512,
+    "all_AI_vanilla_gold_sources_proven": false
+  },
+  "GUI": {
+    "bare_Scope_AddScope_parser_failure": true,
+    "spot_epoch3_armed": false,
+    "spot_order_cancel_pass": false,
+    "position_management_pass": false,
+    "numeric_scope_probe": "two existing observer producer/test leaves adopted; same actual row positive and negative controls await new engine run",
+    "numeric_probe_software_test_methods": 20,
+    "numeric_probe_software_failures_errors_skips": 0,
+    "numeric_probe_engine_pass": false
+  },
+  "closure": {
+    "public_run_returncode": 2,
+    "public_run_elapsed_seconds": 1223.3025923001114,
+    "normal_game_exit": true,
+    "normal_original_host_wait": true,
+    "job_empty_tree_gone": true,
+    "original_allocator_returncode": 0,
+    "screen_release_previous_sequence": 15415,
+    "screen_release_sequence": 15416
+  },
+  "continuation": {
+    "latest_archive": "financial-physical-saves-R0019/spot21-day01-save01/ARCHIVE.actual.json",
+    "latest_save_bytes": 142779300,
+    "latest_save_sha256": "00455291d19e7c0d276eb4c640f43c4b0e8d575f6d5216ae2e0c6f9afb8947e7",
+    "physical_archives": 6,
+    "restore_must_keep_actual_positions_and_partial_orders": true,
+    "whole_mod_business_pass": false,
+    "financialCertified": false,
+    "source_only_or_normal_cleanup_is_business_pass": false
+  },
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0019-closure-before-release.actual.json",
+      "bytes": 2112,
+      "sha256": "357bd18f225f414e888bc2e334a18cc3fbd19dd40eec2f29b524aed3c81816d6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0019-leveraged-short-reconciliation01\\EVIDENCE.actual.json",
+      "bytes": 56711,
+      "sha256": "09a3bb0b13723516fc876ee52d3e669a65e6b27aee63ca3b6b43f0ebe4b25a05"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0019-gui-parser-prefix01\\EVIDENCE.actual.json",
+      "bytes": 248707,
+      "sha256": "70c926c85ed06db91dec1b8c0b6fd768243d48b3880381785deedaa41479f34a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0019-scope-var-value-export-pe01\\TYPED-PE.actual.json",
+      "bytes": 176887,
+      "sha256": "57446617746c63eac3ee7b8a48403482f9a714e4ecfc1b7ba3923f864887fba1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0019\\spot21-day01-save01\\ARCHIVE.actual.json",
+      "bytes": 7500,
+      "sha256": "74b4b37cc2b54c1c264131c3d304d7dbfc3cd052068b3d94e5b11d8bc31563ec"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot21-day01-save01-audit\\report.json",
+      "bytes": 906391,
+      "sha256": "a639baa7080ca29d0ea2da0b2b4a0f90f9057db4f7b514af4234b5f879b3d780"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\scope-numeric-probe-candidate01\\candidate-source-manifest.json",
+      "bytes": 4565,
+      "sha256": "a2120ed4609e02e23952cccc15b54d904a1f74ccb6c1f294c126dbe5bf0b22fc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\scope-numeric-probe-independent-review01\\REVIEW.actual.json",
+      "bytes": 4983,
+      "sha256": "80b9e7c7224aa2fa56a80d3644dd30dab1310e230334eaffaadfd5c287a11170"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\scope-numeric-probe-Root-adoption01.actual.json",
+      "bytes": 781,
+      "sha256": "352f85583eab7ee20ab91022c2f47698842d1a4eb2fe10d42371ab08fd3b1fe8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT21-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1500,
+      "sha256": "26c9f243b1795bec5adba95c8b7cd978fc9f606949f443f0ae59040b07fdbb73"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-spot21\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1807,
+      "sha256": "b22cc2b1e576c5eca28b30a4df99ce5929b0809b24ec7306aee068c654eb5811"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot21\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1398,
+      "sha256": "d757cf1233b0b9b31fecfc497854318fc66675fe42ed92a2395a624cdd898acc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-scope-numeric-probe01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1128,
+      "sha256": "1f9b5bedb00a5f680e04c560201aa8a5427ea96ff57e7611c0d192c0fcb3a6b6"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.FollowupFixtureTest.xml",
+      "bytes": 23284,
+      "sha256": "aee3e6e815799109df6cdc0e29d457d64fbc0cb9c4719a180703115135a8b9ea"
+    }
+  ]
+}
