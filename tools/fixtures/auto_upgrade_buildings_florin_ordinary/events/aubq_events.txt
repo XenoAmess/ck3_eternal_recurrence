@@ -1,0 +1,207 @@
+﻿namespace = aubq
+
+# Explicit partial Florin matrix. Preparation cannot earn business PASS.
+aubq.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "AUBQ: TEST BEGIN ordinary_matrix"
+        if = {
+            limit = { this = character:1132 this = top_liege is_ai = no capital_province = { has_holding_type = castle_holding province_owner = { this = root } } }
+            remove_character_flag = enable_auto_build
+            remove_character_flag = aub_funding_treasury_only
+            remove_character_flag = aub_pause_when_over_domain_limit
+            add_character_flag = aub_funding_personal_only
+            change_government = celestial_government
+            if = {
+                limit = { this = top_liege has_treasury = yes is_ai = no capital_province = { province_owner = { this = root } barony = { is_leased_out = no } } }
+                debug_log = "AUBQ: READY independent_owned_treasury_payer"
+            }
+            else = { debug_log = "AUBQ: TEST FAIL treasury_actor_owner_or_lease" }
+            save_scope_as = aub_payer
+            save_scope_as = character
+            add_gold = 100000
+            add_prestige = 100000
+            add_piety = 100000
+            capital_province = {
+                set_global_variable = { name = aubt_province value = this }
+                province_owner = { save_scope_as = holder }
+                province_owner = { save_scope_as = build_owner }
+                county = { save_scope_as = county }
+                culture = {
+                    if = { limit = { NOT = { has_cultural_era_or_later = culture_era_high_medieval } } join_era = culture_era_high_medieval }
+                }
+                holding_district = {
+                    if = { limit = { has_building = castle_04 } downgrade_building_effect = castle_04 }
+                    if = { limit = { has_building = castle_03 } downgrade_building_effect = castle_03 }
+                    if = { limit = { has_building = castle_02 } downgrade_building_effect = castle_02 }
+                }
+            }
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            global_var:aubt_province = {
+                holding_district = {
+                    if = {
+                        limit = { has_building = castle_01 can_start_building_construction_for_owner = castle_02 }
+                        aub_upgrade_chain_castle_01_effect = yes
+                        if = {
+                            limit = { has_building = castle_02 NOT = { has_building_or_higher = castle_03 } can_start_building_construction_for_owner = castle_03 }
+                            debug_log = "AUBT: TEST PASS main_castle"
+                        }
+                        else = { debug_log = "AUBT: TEST FAIL main_castle" }
+                    }
+                    else = { debug_log = "AUBQ: TEST FAIL castle_source_or_eligibility" }
+                }
+            }
+            # Exactly fifteen real upgrade/payments, then the real dispatcher.
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            set_variable = { name = aubt_quota_attempts value = 0 }
+            set_variable = { name = aubq_expected_quota_gold value = { value = gold subtract = { value = regular_building_cost_tier_2 multiply = 15 } } }
+            while = {
+                limit = { var:aubt_quota_attempts < 15 }
+                global_var:aubt_province = {
+                    holding_district = {
+                        if = { limit = { has_building = castle_garrison_5 } remove_building = castle_garrison_5 }
+                        if = { limit = { has_building = castle_garrison_4 } remove_building = castle_garrison_4 }
+                        if = { limit = { has_building = castle_garrison_3 } remove_building = castle_garrison_3 }
+                        if = { limit = { has_building = castle_garrison_2 } remove_building = castle_garrison_2 }
+                        if = { limit = { has_building = castle_garrison_1 } remove_building = castle_garrison_1 }
+                        add_building = castle_garrison_1
+                        if = {
+                            limit = { has_building = castle_garrison_1 can_start_building_construction_for_owner = castle_garrison_2 }
+                            aub_upgrade_chain_castle_garrison_1_effect = yes
+                        }
+                        else = { debug_log = "AUBQ: TEST FAIL quota_source_or_eligibility" }
+                    }
+                }
+                change_variable = { name = aubt_quota_attempts add = 1 }
+            }
+            global_var:aubt_province = {
+                holding_district = { if = { limit = { has_building = castle_garrison_2 } remove_building = castle_garrison_2 } add_building = castle_garrison_1 }
+            }
+            set_variable = { name = aubt_quota_gold_before value = gold }
+            set_variable = { name = aubq_quota_treasury_before value = treasury }
+            global_var:aubt_province = { aub_upgrade_all_supported_buildings_effect = yes }
+            if = {
+                limit = { var:aub_upgrades_this_scan = 15 gold = var:aubt_quota_gold_before gold = var:aubq_expected_quota_gold treasury = var:aubq_quota_treasury_before global_var:aubt_province = { has_building = castle_garrison_1 } }
+                debug_log = "AUBT: TEST PASS fifteen_upgrade_quota"
+            }
+            else = { debug_log = "AUBT: TEST FAIL fifteen_upgrade_quota" }
+            add_character_flag = enable_auto_build
+            trigger_event = auto_build.0004
+            if = {
+                limit = { var:aub_upgrades_this_scan > 0 NOT = { var:aub_upgrades_this_scan > 15 } global_var:aubt_province = { has_building = castle_garrison_2 } }
+                debug_log = "AUBT: TEST PASS next_scan_quota_reset"
+            }
+            else = { debug_log = "AUBT: TEST FAIL next_scan_quota_reset" }
+            remove_character_flag = enable_auto_build
+            # A valid source2 in level2 district, whose next tier requires level3.
+            global_var:aubt_province = {
+                province_owner = { save_scope_as = holder }
+                province_owner = { save_scope_as = build_owner }
+                county = { save_scope_as = county }
+                holding_district = {
+                    if = { limit = { has_building = castle_04 } downgrade_building_effect = castle_04 }
+                    if = { limit = { has_building = castle_03 } downgrade_building_effect = castle_03 }
+                    if = { limit = { has_building = castle_garrison_5 } remove_building = castle_garrison_5 }
+                    if = { limit = { has_building = castle_garrison_4 } remove_building = castle_garrison_4 }
+                    if = { limit = { has_building = castle_garrison_3 } remove_building = castle_garrison_3 }
+                    if = { limit = { has_building = castle_garrison_2 } remove_building = castle_garrison_2 }
+                    if = { limit = { has_building = castle_garrison_1 } remove_building = castle_garrison_1 }
+                    add_building = castle_garrison_2
+                }
+            }
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            set_variable = { name = aubt_gold_before_gate value = gold }
+            set_variable = { name = aubt_prestige_before_gate value = prestige }
+            set_variable = { name = aubt_piety_before_gate value = piety }
+            set_variable = { name = aubq_treasury_before_gate value = treasury }
+            global_var:aubt_province = { holding_district = { aub_upgrade_chain_castle_garrison_1_effect = yes } }
+            if = {
+                limit = {
+                    global_var:aubt_province = { holding_district = { has_building = castle_02 has_building = castle_garrison_2 NOT = { has_building = castle_garrison_3 } NOT = { aub_can_upgrade_to_castle_garrison_3_trigger = yes } } }
+                    gold = var:aubt_gold_before_gate prestige = var:aubt_prestige_before_gate piety = var:aubt_piety_before_gate treasury = var:aubq_treasury_before_gate var:aub_upgrades_this_scan = 0
+                }
+                debug_log = "AUBT: TEST PASS vanilla_gate_rejection"
+            }
+            else = { debug_log = "AUBT: TEST FAIL vanilla_gate_rejection" }
+            # Separate preparation from the two scripted-cost observations.
+            set_variable = { name = provide_for_the_poor_oath value = 0 }
+            set_variable = { name = provide_for_the_faithful_oath value = 0 }
+            global_var:aubt_province = {
+                county = { set_county_faith = scope:aub_payer.faith set_county_rite = scope:aub_payer.rite }
+                holding_district = {
+                    if = { limit = { has_building = castle_garrison_2 } remove_building = castle_garrison_2 }
+                    # Native preparation grants room for both ordinary samples;
+                    # it has no business credit or resource baseline yet.
+                    if = { limit = { has_building = castle_02 can_start_building_construction_for_owner = castle_03 } upgrade_building_effect = castle_02 }
+                    add_building = oath_poor_building_01
+                    add_building = oath_faithful_building_01
+                }
+            }
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            set_variable = { name = aubt_prestige_before value = prestige }
+            set_variable = { name = aubt_piety_before value = piety }
+            set_variable = { name = aubq_oath_expected_gold value = { value = gold subtract = { value = expensive_building_tier_2_cost multiply = 2 } } }
+            set_variable = { name = aubq_oath_expected_prestige value = { value = prestige subtract = 250 } }
+            set_variable = { name = aubq_oath_expected_piety value = { value = piety subtract = 200 } }
+            set_variable = { name = aubq_oath_treasury_before value = treasury }
+            global_var:aubt_province = {
+                holding_district = {
+                    if = {
+                        limit = { has_building = oath_poor_building_01 has_building = oath_faithful_building_01 can_start_building_construction_for_owner = oath_poor_building_02 can_start_building_construction_for_owner = oath_faithful_building_02 }
+                        aub_upgrade_chain_oath_poor_building_01_effect = yes
+                        aub_upgrade_chain_oath_faithful_building_01_effect = yes
+                    }
+                    else = { debug_log = "AUBQ: TEST FAIL oath_sources_slots_faith_or_eligibility" }
+                }
+            }
+            if = {
+                limit = {
+                    global_var:aubt_province = { has_building = oath_poor_building_02 has_building = oath_faithful_building_02 }
+                    prestige < var:aubt_prestige_before piety < var:aubt_piety_before
+                    prestige = var:aubq_oath_expected_prestige piety = var:aubq_oath_expected_piety gold = var:aubq_oath_expected_gold treasury = var:aubq_oath_treasury_before var:aub_upgrades_this_scan = 2
+                }
+                debug_log = "AUBT: TEST PASS scripted_cost_resources"
+            }
+            else = { debug_log = "AUBT: TEST FAIL scripted_cost_resources" }
+            global_var:aubt_province = {
+                if = { limit = { NOT = { has_holding_type = city_holding } } set_holding_type = city_holding }
+                province_owner = { save_scope_as = holder }
+                province_owner = { save_scope_as = build_owner }
+                county = { save_scope_as = county }
+                holding_district = {
+                    if = { limit = { has_building = city_04 } downgrade_building_effect = city_04 }
+                    if = { limit = { has_building = city_03 } downgrade_building_effect = city_03 }
+                    if = { limit = { has_building = city_02 } downgrade_building_effect = city_02 }
+                }
+            }
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            set_variable = { name = aubq_city_expected_gold value = { value = gold subtract = main_building_tier_2_cost } }
+            global_var:aubt_province = {
+                if = {
+                    limit = { has_holding_type = city_holding province_owner = { this = scope:aub_payer } barony = { is_leased_out = no } holding_district = { has_building = city_01 can_start_building_construction_for_owner = city_02 } }
+                    holding_district = {
+                        aub_upgrade_chain_city_01_effect = yes
+                        if = {
+                            limit = { has_building = city_02 NOT = { has_building_or_higher = city_03 } scope:aub_payer = { gold = var:aubq_city_expected_gold var:aub_upgrades_this_scan = 1 } }
+                            debug_log = "AUBT: TEST PASS main_city"
+                        }
+                        else = { debug_log = "AUBT: TEST FAIL main_city" }
+                    }
+                }
+                else = { debug_log = "AUBQ: TEST FAIL city_owner_source_or_eligibility" }
+            }
+            trigger_event = aubq.800
+        }
+        else = { debug_log = "AUBQ: TEST FAIL actor_owner_or_independence" }
+    }
+}
+
+aubq.800 = {
+    type = character_event
+    theme = realm
+    title = aubq_done_title
+    desc = aubq_done_desc
+    immediate = { debug_log = "AUBQ: TEST DONE ordinary_matrix" }
+    option = { name = aubq_done_confirm }
+}

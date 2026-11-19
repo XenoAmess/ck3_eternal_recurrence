@@ -234,6 +234,25 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
             self.assertFalse(output.exists())
             self.assertFalse(output.with_suffix(".prepare.json").exists())
 
+    def test_actual_ordinary_producer_preserves_partial_six_cell_contract(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "ordinary"
+            self.assertEqual(aub.prepare_ordinary(REPO, output), output)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_ordinary.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["required_markers"], case["required_markers"])
+            self.assertIs(receipt["full_product_pass_from_cell"], False)
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            combined = "\n".join(p.read_text(encoding="utf-8-sig") for p in output.rglob("*.txt"))
+            passes = [m for m in case["required_markers"] if m.startswith("AUBT: TEST PASS ")]
+            self.assertEqual(len(passes), 6)
+            original = self.assertion_limits(parser.parse_clausewitz((REPO / "tools/fixtures/auto_upgrade_buildings_acceptance/events/aubt_events.txt").read_text(encoding="utf-8-sig")))
+            self.assertTrue(set(passes).issubset(original))
+            for marker in case["required_markers"]:
+                self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
+
 
 if __name__ == "__main__":
     unittest.main()

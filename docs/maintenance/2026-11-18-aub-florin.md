@@ -61,3 +61,8 @@ R3闭场后按本机用途清理：4,184个可重建shader／183,734,611逻辑�
 资金R0008在加载阶段发现可见完成事件aubt.800缺theme（65B错误）；尚未启动世界、0/22标记、零日／SAVE。直接回主菜单正常退出，04:57:43Z原Popen0／keeper及CAS闭合，无WM_CLOSE；未继续用带启动错误的场景验收，不取得产品或格式修复资格。[R8失败](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-money-R0008-red-theme.json)。当前原版realm主题定义473–486及可见无portrait的global_culture.0005提供合法结构；仅补theme=realm。准备器在写出前拒绝无theme的可见角色事件，真实生产入口回归10项及完整严格mypy通过，原17条件不变；新场实际暂停与格式诊断仍待复测。
 
 本轮R8可重建shader精确回收4,188文件／183,984,751B；另提前到期回收已发布MRM／Ox／CHT的48条过渡EULA／隐私／加载／书签截图路径，独立载荷48,196,489B。排除了现行公共记录及活跃anchor直接引用，保留实际世界、业务UI、失败诊断、退出及发布证据；已退役过渡像素不可读取，不制作替代原件。两批零失败，精确计划／回执保留；[修复来源、软件检查与清理](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-visible-theme-fix-and-storage.json)。
+
+
+本机资金R0009：新345文件包的17项原资金／直辖条件及22标记各一次、零业务FAIL，实际中文家族关系新闻渲染未再出现formatter错误；已知完成事件正确显示，在1066-12-13／89日暂停，未点事件选项或DONE后续行。05:17:22Z正常不保存退出、原Popen0，keeper/CAS闭合，零SAVE。raw error.log为1,125B：1,024B原版中国AI请愿的flag型ScriptValue／已有法律重复添加，另101B宫廷职位无效销毁提示，后者精确原因仍未知。保留第一watcher的engine_script_error；第二只确认并固定旧1,024B前缀，继续对新增ScriptSystemError／formatter监控，取得core_done；原错误未清除。公共verify仍拒绝原严格no_errors合取，整体passed=false，不将来源推断当无Mod对照，不发布。[R9业务、格式和暂停实测](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-money-R0009-assertions-format-pass-stock-errors.json)。
+
+其余矩阵新增显式florin-ordinary部分场景，含原城堡／15配额／真实0004重置／原版拒绝／两誓言脚本费用／城市六项。使用当前区域作用域，合法garrison1→2与L2下拒绝garrison2→3；主建筑只guarded降级，加入真实owner／未lease／目标资格读回，15次实际付款及誓言资源精确值更严格。誓言区容量准备在余额基线之前，不给业务信用；城市转换后重新取scope，不能重用城堡区。11项入口回归、完整准备器严格mypy、实际prepare和两个脚本Java通用语法解析通过；九标记尚未实机执行，剩余13条及资金日志／禁用GUI仍单列。R9 shader回收4,188文件／184,069,384B；R8/R9审计与已闭清理计划无损归档，零删除失败，旧展开路径可用性和期限见[新部分场景与存储记录](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-ordinary-preparation-and-R0009-storage.json)。

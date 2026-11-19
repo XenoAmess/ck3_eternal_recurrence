@@ -1,0 +1,205 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T05:19:08.133223+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0009",
+  "case": "money-domain-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "ALL_SEVENTEEN_ASSERTIONS_AND_FORMATTER_FIX_PASS_STOCK_DIAGNOSTICS_RETAINED",
+  "source_head": "b203d5bf5a22ae8707a009c99a723b2151a6bda9",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r9-gui-prepare\\prepared-case.json",
+    "bytes": 1588851,
+    "sha256": "59e1cc481828e5f17b35772877670408c778aa175ea35d0d751a545e86098651"
+  },
+  "facts": {
+    "actual_production_six_choices_and_default_selection": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-enable-panel-auto-view.png",
+          "bytes": 1125196,
+          "sha256": "2917d181a86744d07463b86493a3b5459016d1aec715a9b0a74a95e5cb896099"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-default-policy-auto-view.png",
+          "bytes": 1125082,
+          "sha256": "0c7caa7452b0240eb1cdcde79472a5b17fd1add37e6fa1d66811bbb8a994685e"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-policy-confirmation-auto-view.png",
+          "bytes": 1096265,
+          "sha256": "93121694484d3ac12e833c7008ecdf0db9c67e4fcd0b8c720de2ecc53c6ad10f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-production-enabled-auto-view.png",
+          "bytes": 1091803,
+          "sha256": "ff3d5fbd0785e2066d4f79bab251625c8295c224219c215dfa8153afbdb22b82"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-fixture-panel-auto-view.png",
+          "bytes": 1106606,
+          "sha256": "2618bb2aa857eac36c05cca2fa9230554701dbce7177b77953a1ca375f4ddbf0"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-fixture-started-auto-view.png",
+          "bytes": 1081171,
+          "sha256": "e1fb0773b1e018806300d60584fb36d7cb64b935a8691a4160c041fb8d384582"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-d40f1950d96e433cb6d04abe1b0473f2\\profile\\logs\\debug.log",
+          "bytes": 1258474,
+          "sha256": "365ee46bb8b4f932b60ac065def4fb0be70d8dda132c8fb2ba53a94fa79e404c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\aubm07-policy-gui-report.json",
+          "bytes": 3198,
+          "sha256": "a632020fda2c79391c723d77be1d28c365be86213787e2a4716182382b59710f"
+        }
+      ]
+    },
+    "original_seventeen_money_domain_assertions_and_no_errors": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-d40f1950d96e433cb6d04abe1b0473f2\\profile\\logs\\debug.log",
+          "bytes": 1258474,
+          "sha256": "365ee46bb8b4f932b60ac065def4fb0be70d8dda132c8fb2ba53a94fa79e404c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-d40f1950d96e433cb6d04abe1b0473f2\\profile\\logs\\error.log",
+          "bytes": 1125,
+          "sha256": "ccf6e33c0b74a941b39e3194131263188aae9086c35b03e587748eb94be620a4"
+        }
+      ],
+      "assertions_passed": true,
+      "formatter_errors": 0,
+      "raw_error_free": false
+    },
+    "actual_calendar_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-advance02-before-menu-hold.png",
+          "bytes": 1132044,
+          "sha256": "b9e9dc91449da213141e35727fc1daf52973efb08a601696e2d3d192704e9a60"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-quit-dialog-view.png",
+          "bytes": 693754,
+          "sha256": "ea88c6ba51b00495b9e4714a4b73600f345ac08467b2655be2a5d167d4954a18"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-quit-desktop.png.json",
+          "bytes": 1445,
+          "sha256": "9c5e022ac56ae554f7d77024fc112d3952a71e836da2386d4ba623b44a803e55"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0009\\game-exit.json",
+          "bytes": 253,
+          "sha256": "10cbb3d6f608da8ae6318376851ba66fe22e8e242f2af485e8b6b8313ee1c0a0"
+        }
+      ],
+      "scope": "Known completion popup title/description, red paused indicator and date1066-12-13 directly reviewed, followed by menu hold and normal unchecked Quit. No event choice or resumption after DONE."
+    }
+  },
+  "marker_counts": {
+    "AUBF: READY money_domain_actual_production_decision": 1,
+    "AUBT: TEST BEGIN source-live": 1,
+    "AUBF: READY money_domain_roger_head_cooldowns": 1,
+    "AUBF: READY money_domain_independent_treasury_government": 1,
+    "AUBT: TEST PASS native_decision_priority_continue_selection": 1,
+    "AUBT: TEST PASS domain_limit_normalized_zero": 1,
+    "AUBT: TEST PASS treasury_priority_one_tier": 1,
+    "AUBT: TEST PASS domain_limit_zero_builds": 1,
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect": 1,
+    "AUBT: TEST PASS domain_limit_recovery_resumes": 1,
+    "AUBT: TEST PASS over_limit_continue_builds": 1,
+    "AUBT: TEST PASS legacy_no_pause_flag_continues": 1,
+    "AUBT: TEST PASS disabled_zero_side_effect": 1,
+    "AUBT: TEST PASS personal_gold_fallback": 1,
+    "AUBT: TEST PASS reenabled_loop_stopped_cleanly": 1,
+    "AUBT: TEST PASS insufficient_funds_no_change": 1,
+    "AUBT: TEST PASS treasury_only_uses_treasury": 1,
+    "AUBT: TEST PASS treasury_only_no_personal_fallback": 1,
+    "AUBT: TEST PASS personal_only_uses_personal": 1,
+    "AUBT: TEST PASS personal_only_no_treasury_fallback": 1,
+    "AUBT: TEST PASS priority_no_split_payment": 1,
+    "AUBF: TEST DONE money_domain": 1
+  },
+  "all_original_assertions_passed": true,
+  "formatter_fix_runtime_pass": true,
+  "formatter_causality_limit": "The one-space stock-key override is loaded and same house-relation news rendered without formatting errors in this complete new scene. This demonstrates the tested candidate behavior, not counterfactual proof that every historical formatter diagnostic came from that single key.",
+  "known_fixture_completion_popup_pass": true,
+  "last_visible_date": "1066-12-13",
+  "observed_natural_days": 89,
+  "calendar_limit": 180,
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-d40f1950d96e433cb6d04abe1b0473f2\\profile\\logs\\error.log",
+    "bytes": 1125,
+    "sha256": "ccf6e33c0b74a941b39e3194131263188aae9086c35b03e587748eb94be620a4"
+  },
+  "error_text": "[13:11:27][E][jomini_scriptvalue.cpp:1511]: Value of wrong type in 'file: events/decisions_events/tgp_decision_events.txt line: 494 (tgp_decision_events.0100:after)'. Got value of type 'flag'\n[13:11:27][E][jomini_script_system.cpp:307]: Script system error!\n  Error: add_realm_law_skip_effects effect [ Trying to add law to character 'Guan_8CAB 河阳陈 of k_xingyuan (Internal ID: 32685 - Historical ID han_6071)' who already has the law ]\n  Script location: file: common/scripted_effects/10_dlc_tgp_scripted_effects.txt line: 735 (change_province_industrial_effect)\n    file: common/scripted_effects/10_dlc_tgp_scripted_effects.txt line: 962 (grant_movement_petition_effect)\n    file: events/decisions_events/tgp_decision_events.txt line: 656 (tgp_decision_events.0101:option)\n    file: events/decisions_events/tgp_decision_events.txt line: 498 (tgp_decision_events.0100:after)\n    file: common/decisions/dlc_decisions/tgp/tgp_dynastic_cycle_decisions.txt line: 2069 (ai_movement_petition_change_laws_decision:effect)\n\n[13:15:03][E][court_position.cpp:700]: Attempt to destroy an court position that is already invalid\n",
+  "raw_diagnostics": "1024B prefix: current-stock foreign AI tgp_decision_events.0100 flag ScriptValue and duplicate realm-law through0101/industrial effect for han_6071;101B later court-position invalid-destroy diagnostic, precise cause not yet established. No raw-zero claim or exception automatically accepted.",
+  "acknowledged_prefix": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aubm07-known-stock-error-prefix.json",
+    "bytes": 1542,
+    "sha256": "a4e538b01eee1aaab9992a1d7e08acc254c00dfaa20db9557152014f91e70475"
+  },
+  "watch_reports": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aubm07-advance01-watch.json",
+      "bytes": 470,
+      "sha256": "5527f7afc5bc06c99cbff71516cfeab73bd3310d1fa6743569a8d3aabfe6582a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aubm07-advance02-watch.json",
+      "bytes": 461,
+      "sha256": "31d868d1231cb2aadd199ca3274f0f31be01cfd036ec7e0cdd864ef969f5958a"
+    }
+  ],
+  "watch_scope": "First watcher stopped on new ScriptSystemError. Second explicitly pinned/acknowledged only old1024B prefix, retained it unchanged and stopped on fresh ScriptSystemError/formatter; reached core_done. Other later diagnostic101B retained.",
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-quit-dialog-view.png",
+      "bytes": 693754,
+      "sha256": "ea88c6ba51b00495b9e4714a4b73600f345ac08467b2655be2a5d167d4954a18"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm07-quit-desktop.png.json",
+      "bytes": 1445,
+      "sha256": "9c5e022ac56ae554f7d77024fc112d3952a71e836da2386d4ba623b44a803e55"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0009\\game-exit.json",
+      "bytes": 253,
+      "sha256": "10cbb3d6f608da8ae6318376851ba66fe22e8e242f2af485e8b6b8313ee1c0a0"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0009\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "735ca25df0b513fd236b448d8318afb3ea2a64ba020442d50e95744c01452a8a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0009\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "f10307ee576c1af5bb23df43db0e996bf36bd2b6f6f8ef53e7b9053f672b7491"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r9-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "88142c548b20f57b1c0dc3ede1561c670ce53d7addec9515aae4961e3f700014"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "remaining_scope": "Remaining19 original building/quota/special/Tribal/Mandala/negative/succession and production disable GUI mandatory; strict raw-error-free funds cell remains false despite17 assertion coverage.",
+  "retention_review_at_utc": "2026-12-19T05:17:22Z"
+}

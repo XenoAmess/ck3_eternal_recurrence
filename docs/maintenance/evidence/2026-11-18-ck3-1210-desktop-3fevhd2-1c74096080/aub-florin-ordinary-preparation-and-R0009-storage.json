@@ -1,0 +1,208 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T05:29:10.520165+00:00",
+  "status": "SIX_CELL_SOFTWARE_PREPARATION_ONLY",
+  "source_fixture_files": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_ordinary\\common\\on_action\\aubq_on_actions.txt",
+      "bytes": 1381,
+      "sha256": "4159660072ce6ed0fd62888044fc76adb67d010613a19f42f868b841b7c119eb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_ordinary\\descriptor.mod",
+      "bytes": 89,
+      "sha256": "0cb8712b4ba9dfd0de84c458eaea91b2232e68f50cea0f8e31fa0dc5486f2ebd"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_ordinary\\events\\aubq_events.txt",
+      "bytes": 13459,
+      "sha256": "2131398e0dd5c8400d0ebcc03eea0e7a2f1c05d6400259dc927fee8c055324e9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_ordinary\\localization\\english\\aubq_l_english.yml",
+      "bytes": 252,
+      "sha256": "e2619f6c3828ac66e6208efc0cea3032a444cb3afac09222d54663f12e40fa87"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_ordinary\\localization\\simp_chinese\\aubq_l_simp_chinese.yml",
+      "bytes": 260,
+      "sha256": "7621e6e630821a02e29bda6e05eda71d42223403373e0d0751ae4fada988955d"
+    }
+  ],
+  "case": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_ordinary.json",
+    "bytes": 2161,
+    "sha256": "30d04e878c6d24c2a955f0a2ae21c068c7a6b5a28789ff75756718363cca2012"
+  },
+  "checks": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "checks": [
+      {
+        "command": [
+          "-m",
+          "unittest",
+          "tools.test_fixture_engine_prepare"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "tools/prepare_aub_1_20_fixture.py"
+        ],
+        "returncode": 0
+      }
+    ]
+  },
+  "syntax_parser": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T05:27:59.714681+00:00",
+    "prepare_exit": 0,
+    "parser_scope": "Generic Clausewitz syntax only, not engine symbol/eligibility or business qualification",
+    "concurrency": 2,
+    "heap_per_process": "192MiB",
+    "results": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a02\\fixture\\common\\on_action\\aubq_on_actions.txt",
+        "sha256": "4159660072ce6ed0fd62888044fc76adb67d010613a19f42f868b841b7c119eb",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a02\\fixture\\common\\on_action\\aubq_on_actions.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a02\\fixture\\events\\aubq_events.txt",
+        "sha256": "2131398e0dd5c8400d0ebcc03eea0e7a2f1c05d6400259dc927fee8c055324e9",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a02\\fixture\\events\\aubq_events.txt"
+        ],
+        "returncode": 0
+      }
+    ],
+    "passed": true
+  },
+  "runtime_status": "NOT_RUN",
+  "product_runtime_unchanged": true,
+  "product_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\releases\\aub-format-4.0.4\\mod_auto_upgrade_buildings.manifest.json",
+    "bytes": 63899,
+    "sha256": "6124ac56f73e9270f6f09f2bc6cf73682686fac651e9b21e0cb8ffc517457193"
+  },
+  "source_scope": "Six old representative assertions translated into actual District contexts and renamed current buildings. Source/owner/lease/Native-eligibility readbacks required. Stronger exact15 gold payments, both oath02 gold/prestige/piety/count and city cost/count. Old17 money AST conditions unchanged; no claim these6 translated predicates are byte-identical to legacy AST. Preparation native primary upgrade for oath slot capacity occurs before resource baselines and earns no business credit. No calendar resume, death or loop seed; actual0004 quota reset required.",
+  "known_stock_diagnostics_sources": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\decisions_events\\tgp_decision_events.txt",
+      "bytes": 38851,
+      "sha256": "11805fa6349fe17806602e0c61087c38a54b5c57e113d270afa50633b3148db3"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\10_dlc_tgp_scripted_effects.txt",
+      "bytes": 282409,
+      "sha256": "be19988201d24e24bb1e36a4bc09290b9ccdb353e5eb4ce769a4e755916e758d"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\dlc_decisions\\tgp\\tgp_dynastic_cycle_decisions.txt",
+      "bytes": 94759,
+      "sha256": "76e5eef44c85f8663e641f4c95b84c93c33bfd0d87cbb0f46e2658ac8447976d"
+    }
+  ],
+  "stock_diagnostic_findings": "R9 raw1024B path matches flag movement_petition passed to numeric/bool save_scope_value_as at494;0101 option656/grant962/industrial735 adds existing realm law without guard. Affected han_6071 is not proved petitioner. No same-SHA no-Mod runtime baseline; later101B court-position cause unresolved. Existing group recent_movement_petition=actual petitioner with3years is a possible next-scene isolation input, not retroactive error deletion or adopted fix.",
+  "actual_cleanup": [
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-money-R0009\\summary.json",
+        "bytes": 330,
+        "sha256": "2014ca9cd66bf067d8cee8716817bf043a74fa9e22355aad1a83b40585504e8d"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T05:25:22.883805+00:00",
+        "deleted_files": 4188,
+        "deleted_logical_bytes": 184069384,
+        "failed": [],
+        "free_before": {
+          "C:/": 51294085120,
+          "D:/": 21624094720
+        },
+        "free_after": {
+          "C:/": 51294011392,
+          "D:/": 21817823232
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-lease-archive-a06\\summary.json",
+        "bytes": 326,
+        "sha256": "4ca4adb6dbb6e05d59a3f34c46d6630f0e10c6b1ce580c89f25ac937bb853db9"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T05:26:33.171061+00:00",
+        "deleted_files": 15,
+        "deleted_logical_bytes": 8321934,
+        "failed": [],
+        "free_before": {
+          "C:/": 51294011392,
+          "D:/": 21816426496
+        },
+        "free_after": {
+          "C:/": 51294011392,
+          "D:/": 21824790528
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-cleanup-plan-archive-a03\\summary.json",
+        "bytes": 326,
+        "sha256": "538fd665fe02d60147fe4358a946d9c082843f495cf62ddb60cc3591d0a48f10"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T05:27:06.009394+00:00",
+        "deleted_files": 15,
+        "deleted_logical_bytes": 8914551,
+        "failed": [],
+        "free_before": {
+          "C:/": 51293810688,
+          "D:/": 21824221184
+        },
+        "free_after": {
+          "C:/": 51293810688,
+          "D:/": 21833170944
+        }
+      }
+    }
+  ],
+  "retained_archives": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-gui-lease-stdout-lossless-a06.zip",
+      "bytes": 1357530,
+      "sha256": "d402c13efeba2d2cc5dc92177304a56486ecf20779985466872003e9b211d073"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cleanup-plans-lossless-a03.zip",
+      "bytes": 529304,
+      "sha256": "8b2f140be491ebfbec5fbb34f1de954a80c829b9301346a1284f39dfe7f97411"
+    }
+  ],
+  "availability": "R9 shader copy unavailable/rebuildable. R8/R9 expanded15 audit stdout and15 completed cleanup plans unavailable directly; all exact bytes retained in verified ZIP members. Restore before historical readback, no original FileID claim. Source/logs/images/current prepared inputs, sole warm cache and physical CHT save remain.",
+  "review_at_utc": "2026-12-19T05:27:06Z",
+  "published": false
+}

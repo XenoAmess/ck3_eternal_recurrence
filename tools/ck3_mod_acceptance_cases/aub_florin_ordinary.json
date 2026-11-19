@@ -1,0 +1,39 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "ordinary-matrix-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 1,
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": [
+      "--output",
+      "{output}",
+      "--scenario",
+      "florin-ordinary"
+    ],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "six_original_ordinary_building_and_quota_assertions",
+    "actual_initial_calendar_completion_popup_and_normal_exit"
+  ],
+  "required_markers": [
+    "AUBQ: TEST BEGIN ordinary_matrix",
+    "AUBQ: READY independent_owned_treasury_payer",
+    "AUBT: TEST PASS main_castle",
+    "AUBT: TEST PASS fifteen_upgrade_quota",
+    "AUBT: TEST PASS next_scan_quota_reset",
+    "AUBT: TEST PASS vanilla_gate_rejection",
+    "AUBT: TEST PASS scripted_cost_resources",
+    "AUBT: TEST PASS main_city",
+    "AUBQ: TEST DONE ordinary_matrix"
+  ],
+  "forbidden_markers": [
+    "AUBT: TEST FAIL",
+    "AUBQ: TEST FAIL"
+  ],
+  "scope": "Six explicitly partial original ordinary-building/quota assertions: main_castle, fifteen_upgrade_quota, next_scan_quota_reset, vanilla_gate_rejection, scripted_cost_resources, main_city. Select Robert1128 normally, official pre-day player switch to landed Roger1132 and independence transaction. Fixture-only personal policy seeded explicitly, not production enable GUI credit. District primary downgrade normalization; provincial high-medieval culture; current garrison1->2 for15 exact charges and real dispatcher refusal, original0004 quota reset; legitimate garrison2->3 level2 negative; current two oath02 scripted costs with exact resources/count and real source/slot/faith qualifications; actual owned/unleased city primary01->02. No primary removal, target gate bypass or foreign payer substitution. Preparation effects have no credit. Remaining13 original building/special/Tribal/Mandala/N/A/succession cells,17 money/log qualification and actual disable GUI remain separate mandatory coverage.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

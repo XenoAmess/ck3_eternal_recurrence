@@ -1,0 +1,4 @@
+﻿l_simp_chinese:
+ aubq_done_title:0 "普通建筑与配额验收完成"
+ aubq_done_desc:0 "六项普通建筑与配额断言已执行。请保持暂停并正常退出；其他建筑、继承和界面验收仍需完成。"
+ aubq_done_confirm:0 "保持暂停"

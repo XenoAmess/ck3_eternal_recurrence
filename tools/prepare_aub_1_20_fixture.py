@@ -121,6 +121,15 @@ def prepare_money(repo: Path, output: Path) -> Path:
         rules="1066 select Robert1128 normally; fixture switches current player to landed Roger1132 and uses the official create/becomes_independent/resolve transaction before any day or government change. Actual player/top_liege, Catholic faith, owned castle and existing head bull cooldowns must read back. Independent/has_treasury must remain true after government change, outside unrelated merit-career vassal dispatch. Robert intro remains AI. Vanilla game rules and original17 money predicates unchanged; no old actor qualification reused.")
 
 
+def prepare_ordinary(repo: Path, output: Path) -> Path:
+    return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_ordinary",
+        contract="aub_florin_ordinary.json", case_id="ordinary-matrix-1210",
+        mode="florin-original-ordinary-building-quota-matrix",
+        entry="on_game_start_after_lobby -> actual Roger1132 and independence -> aubq.1 -> known visible aubq.800",
+        advance="Synchronous paused startup matrix; no calendar resumption needed. At most1natural day if required by startup; no manual Save.",
+        rules="1066 normal Robert1128 selection; official switch/independence to landed Roger1132 before any day. Explicit fixture personal-only baseline, then native-qualified District main/quota/negative/oath/city matrix. Production GUI is separate coverage; no credited preparation effects.")
+
+
 def prepare(repo: Path, output: Path) -> dict[str, object]:
     repo, output = checked_output(repo, output)
     if engine_identity(repo)["game_version"].startswith("1.21."):
@@ -157,8 +166,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money"), default="core")
+    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money", "florin-ordinary"), default="core")
     args = parser.parse_args()
+    if args.scenario == "florin-ordinary":
+        output = prepare_ordinary(args.repo, args.output)
+        print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
+        return
     if args.scenario == "florin-probe":
         output = prepare_probe(args.repo, args.output)
         print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
