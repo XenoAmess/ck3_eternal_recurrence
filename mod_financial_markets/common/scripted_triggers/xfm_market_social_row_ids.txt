@@ -1,0 +1,51 @@
+﻿xfm_market_social_debt_id_trigger = { story_type = xfm_debt_claim var:xfm_debt_id = scope:xfm_ui_row_id }
+xfm_market_social_claim_id_trigger = { story_type = xfm_debt_claim var:xfm_debt_id = scope:xfm_ui_row_id }
+xfm_market_social_aid_id_trigger = { story_type = xfm_debt_claim var:xfm_debt_id = scope:xfm_ui_row_id }
+xfm_market_social_news_id_trigger = { story_type = xfm_news_entry var:xfm_news_id = scope:xfm_ui_row_id }
+xfm_market_social_otc_id_trigger = { story_type = xfm_finance_position var:xfm_account.var:xfm_account_id = scope:xfm_ui_row_id }
+xfm_market_select_debt_gui_row_valid_trigger = {
+ xfm_market_row_input_trigger = yes is_ai = no
+ xfm_market_row_owned_account_trigger = yes
+exists = var:xfm_ui_debt_page_account
+var:xfm_ui_debt_page_account = var:xfm_active_account
+var:xfm_ui_debts_page_offset = var:xfm_ui_debts_offset
+ xfm_market_social_debt_count_value = 1
+ any_in_list = { variable = xfm_ui_debts_page xfm_market_social_debt_id_trigger = yes var:xfm_debtor_account = root.var:xfm_active_account }
+}
+xfm_market_select_claim_gui_row_valid_trigger = {
+ xfm_market_row_input_trigger = yes is_ai = no
+ xfm_market_row_owned_account_trigger = yes
+exists = var:xfm_ui_debt_page_account
+var:xfm_ui_debt_page_account = var:xfm_active_account
+var:xfm_ui_claims_page_offset = var:xfm_ui_claims_offset
+ xfm_market_social_claim_count_value = 1
+ any_in_list = { variable = xfm_ui_claims_page xfm_market_social_claim_id_trigger = yes OR = { var:xfm_creditor_account = root.var:xfm_active_account var:xfm_fund_account = root.var:xfm_active_account } }
+}
+xfm_market_select_aid_debt_gui_row_valid_trigger = {
+ xfm_market_row_input_trigger = yes is_ai = no
+ exists = var:xfm_selected_news
+var:xfm_selected_news = { story_type = xfm_news_entry }
+var:xfm_ui_aid_news = var:xfm_selected_news
+exists = var:xfm_selected_news.var:xfm_news_actor.var:xfm_account
+var:xfm_ui_aid_account = var:xfm_selected_news.var:xfm_news_actor.var:xfm_account
+var:xfm_ui_aid_account = { story_type = xfm_finance_account }
+has_variable = xfm_ui_aid_page_offset
+var:xfm_ui_aid_page_offset = var:xfm_ui_aid_offset
+ xfm_market_social_aid_count_value = 1
+ any_in_list = { variable = xfm_ui_aid_debts xfm_market_social_aid_id_trigger = yes var:xfm_debtor_account = root.var:xfm_ui_aid_account var:xfm_outstanding_cents > 0 }
+}
+xfm_market_select_news_gui_row_valid_trigger = {
+ xfm_market_row_input_trigger = yes is_ai = no
+ has_variable = xfm_ui_news_bound_before_id has_variable = xfm_ui_news_before_id var:xfm_ui_news_bound_before_id = var:xfm_ui_news_before_id
+ xfm_market_social_news_count_value = 1
+ any_in_list = { variable = xfm_ui_news xfm_market_social_news_id_trigger = yes  }
+}
+xfm_market_otc_select_buyer_gui_row_valid_trigger = {
+ xfm_market_row_input_trigger = yes is_ai = no
+ exists = var:xfm_selected_coin exists = var:xfm_ui_otc_source_coin
+var:xfm_ui_otc_source_coin = var:xfm_selected_coin
+has_variable = xfm_ui_otc_page_offset
+var:xfm_ui_otc_page_offset = var:xfm_ui_otc_offset
+ xfm_market_social_otc_count_value = 1
+ any_in_list = { variable = xfm_ui_otc_buyers xfm_market_social_otc_id_trigger = yes xfm_market_otc_holder_position_trigger = yes }
+}

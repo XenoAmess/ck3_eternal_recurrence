@@ -68,7 +68,20 @@ final class FuturesBookUiScriptContractTest {
         "script_values/xfm_market_row_id_counts_1.txt",
         "scripted_effects/xfm_market_row_id_resolve_1.txt",
         "scripted_effects/xfm_market_ui_portfolio_pages.txt",
-        "script_values/xfm_market_ui_portfolio_pages.txt");
+        "script_values/xfm_market_ui_portfolio_pages.txt",
+        "scripted_triggers/xfm_market_social_row_ids.txt",
+        "script_values/xfm_market_social_row_ids.txt",
+        "scripted_effects/xfm_market_social_row_ids.txt",
+        "scripted_effects/xfm_market_ui_debt_pages.txt",
+        "script_values/xfm_market_ui_debt_pages.txt",
+        "scripted_effects/xfm_market_ui_aid_page.txt",
+        "scripted_guis/xfm_market_social_rows.txt",
+        "scripted_guis/xfm_market_debts.txt",
+        "scripted_guis/xfm_market_otc_panel.txt",
+        "scripted_triggers/xfm_market_otc_triggers.txt",
+        "script_values/xfm_market_ui_otc_values.txt",
+        "scripted_effects/xfm_market_ui_otc_targets.txt",
+        "scripted_effects/xfm_market_ui_news.txt");
     public static void main(String[] ignored) throws Exception {
         int passed = 0;
         for (var method : FuturesBookUiScriptContractTest.class.getDeclaredMethods()) {
@@ -530,6 +543,102 @@ final class FuturesBookUiScriptContractTest {
         assertFalse(m.vm.scopes.containsKey("xfm_ui_item")); assertEquals(0, m.vm.created("xfm_futures_order"));
     }
 
+    private static Node debt(Vm v, String name, long id, Node debtor, Node creditor, long outstanding) {
+        Node d = v.node(name, "xfm_debt_claim"); d.put("xfm_debt_id", id); d.put("xfm_debtor_account", debtor);
+        d.put("xfm_creditor_account", creditor); d.put("xfm_outstanding_cents", outstanding); d.put("xfm_state", 1);
+        debtor.list("xfm_debts").add(d); creditor.list("xfm_claims").add(d); return d;
+    }
+    @Test void typedDebtAndClaimIdsSelectOnlyTheCurrentLegalAccountPageAndNeverPay() throws IOException {
+        Market m = market(); Node own = m.actor.ref("xfm_active_account"), other = m.vm.account("social-other", m.vm.node("social-other-holder", ""), 0);
+        Node owed = debt(m.vm, "social-owed", 1, own, other, 200);
+        Node claim = debt(m.vm, "social-claim", 2, other, own, 300);
+        m.vm.run("xfm_market_ui_debt_pages_effect", m.actor); BigDecimal cash = m.vm.cashStock();
+        row(m.vm, 1, 0, 1); assertFalse(m.vm.validGui("xfm_market_select_claim_gui", m.actor));
+        m.vm.runGui("xfm_market_select_debt_gui", m.actor); assertSame(owed, m.actor.ref("xfm_selected_debt"));
+        assertEquals(1000, m.actor.integer("xfm_ui_debt_pay_cents"));
+        row(m.vm, 2, 0, 1); assertFalse(m.vm.validGui("xfm_market_select_debt_gui", m.actor));
+        m.vm.runGui("xfm_market_select_claim_gui", m.actor); assertSame(claim, m.actor.ref("xfm_selected_debt"));
+        assertEquals(cash, m.vm.cashStock()); assertEquals(200, owed.integer("xfm_outstanding_cents")); assertEquals(300, claim.integer("xfm_outstanding_cents"));
+        Map<String, Datum> before = Map.copyOf(m.actor.vars);
+        m.actor.put("xfm_ui_claims_offset", 16); assertFalse(m.vm.validGui("xfm_market_select_claim_gui", m.actor)); m.actor.put("xfm_ui_claims_offset", 0);
+        claim.put("xfm_creditor_account", other); assertFalse(m.vm.validGui("xfm_market_select_claim_gui", m.actor)); claim.put("xfm_creditor_account", own);
+        own.list("xfm_claims").remove(claim);
+        m.vm.execute(m.vm.definition("xfm_market_select_claim_gui").block("effect"), new Frame(m.actor, null, m.actor));
+        assertEquals(before, m.actor.vars); assertFalse(m.vm.scopes.containsKey("xfm_ui_item"));
+    }
+    @Test void debtPagesAreSixteenAndMissingDuplicateOrForeignAccountIdsNeverMutateSelection() throws IOException {
+        Market m = market(); Node own = m.actor.ref("xfm_active_account"), other = m.vm.account("debt-pages-other", m.vm.node("debt-pages-holder", ""), 0);
+        List<Node> all = new ArrayList<>();
+        for (int i = 1; i <= 17; i++) all.add(debt(m.vm, "debt-pages-" + i, i, own, other, 100));
+        m.vm.run("xfm_market_ui_debt_pages_effect", m.actor);
+        assertEquals(all.subList(0, 16), m.actor.list("xfm_ui_debts_page")); row(m.vm, 17, 0, 1);
+        assertFalse(m.vm.validGui("xfm_market_select_debt_gui", m.actor));
+        m.vm.runGui("xfm_market_debts_next_gui", m.actor); assertEquals(List.of(all.get(16)), m.actor.list("xfm_ui_debts_page"));
+        assertTrue(m.vm.validGui("xfm_market_select_debt_gui", m.actor)); row(m.vm, 1, 0, 1); assertFalse(m.vm.validGui("xfm_market_select_debt_gui", m.actor));
+        row(m.vm, 17, 0, 1); m.vm.scopes.remove("xfm_ui_row_id"); assertFalse(m.vm.validGui("xfm_market_select_debt_gui", m.actor));
+        row(m.vm, 0, 0, 1); assertFalse(m.vm.validGui("xfm_market_select_debt_gui", m.actor));
+        row(m.vm, 17, 0, 1); Node duplicate = m.vm.node("duplicate-social-debt", "xfm_debt_claim");
+        duplicate.put("xfm_debt_id", 17); duplicate.put("xfm_debtor_account", own); m.actor.list("xfm_ui_debts_page").add(duplicate);
+        Map<String, Datum> before = Map.copyOf(m.actor.vars); assertFalse(m.vm.validGui("xfm_market_select_debt_gui", m.actor));
+        m.vm.execute(m.vm.definition("xfm_market_select_debt_gui").block("effect"), new Frame(m.actor, null, m.actor));
+        assertEquals(before, m.actor.vars); m.actor.list("xfm_ui_debts_page").remove(duplicate);
+        own.put("xfm_holder", other.ref("xfm_holder")); assertFalse(m.vm.validGui("xfm_market_select_debt_gui", m.actor));
+        assertFalse(m.actor.vars.containsKey("xfm_selected_debt"));
+    }
+    @Test void normalAidButtonAndPagingSelectOnlyThisNewsActorsOutstandingDebts() throws IOException {
+        Market m = market(); Node victim = m.vm.node("aid-victim", ""), wallet = m.vm.account("aid-victim-wallet", victim, 0);
+        victim.put("xfm_account", wallet); Node creditor = m.actor.ref("xfm_active_account");
+        Node news = m.vm.node("aid-news", "xfm_news_entry"); news.put("xfm_news_id", 20); news.put("xfm_news_actor", victim);
+        m.actor.put("xfm_selected_news", news); List<Node> all = new ArrayList<>();
+        for (int i = 1; i <= 17; i++) all.add(debt(m.vm, "aid-debt-" + i, i, wallet, creditor, 100));
+        Node settled = debt(m.vm, "aid-settled", 18, wallet, creditor, 0);
+        BigDecimal cash = m.vm.cashStock(); m.vm.runGui("xfm_market_news_aid_gui", m.actor);
+        assertEquals(all.subList(0, 16), m.actor.list("xfm_ui_aid_debts")); assertEquals(1, m.actor.integer("xfm_ui_aid_has_next"));
+        row(m.vm, 1, 0, 1); m.vm.runGui("xfm_market_select_aid_debt_gui", m.actor); assertSame(all.getFirst(), m.actor.ref("xfm_selected_debt"));
+        assertFalse(m.vm.validGui("xfm_market_select_debt_gui", m.actor)); // These are another person's debts, never the player's debt page.
+        m.vm.runGui("xfm_market_aid_next_gui", m.actor); assertEquals(List.of(all.get(16)), m.actor.list("xfm_ui_aid_debts"));
+        row(m.vm, 1, 0, 1); assertFalse(m.vm.validGui("xfm_market_select_aid_debt_gui", m.actor));
+        row(m.vm, 17, 0, 1); m.vm.runGui("xfm_market_select_aid_debt_gui", m.actor); assertSame(all.get(16), m.actor.ref("xfm_selected_debt"));
+        row(m.vm, 18, 0, 1); assertFalse(m.vm.validGui("xfm_market_select_aid_debt_gui", m.actor)); assertEquals(0, settled.integer("xfm_outstanding_cents"));
+        Node different = m.vm.node("aid-different-news", "xfm_news_entry"); different.put("xfm_news_id", 21); different.put("xfm_news_actor", m.actor);
+        m.actor.put("xfm_selected_news", different); row(m.vm, 17, 0, 1);
+        assertFalse(m.vm.validGui("xfm_market_select_aid_debt_gui", m.actor)); assertEquals(cash, m.vm.cashStock());
+        for (Node d : all) assertEquals(100, d.integer("xfm_outstanding_cents")); assertFalse(m.vm.scopes.containsKey("xfm_ui_item"));
+    }
+    @Test void publicNewsRowIdsAreBoundToThisCursorAndRejectDuplicateMissingAndWrongTypes() throws IOException {
+        Market m = market(); Node news = m.vm.node("journal-row", "xfm_news_entry"); news.put("xfm_news_id", 21);
+        m.actor.list("xfm_ui_news").add(news); m.actor.put("xfm_ui_news_before_id", 22); m.actor.put("xfm_ui_news_bound_before_id", 22);
+        row(m.vm, 21, 0, 1); m.vm.runGui("xfm_market_select_news_gui", m.actor); assertSame(news, m.actor.ref("xfm_selected_news"));
+        Map<String, Datum> before = Map.copyOf(m.actor.vars); assertTrue(m.vm.validGui("xfm_market_select_news_gui", m.actor)); assertEquals(before, m.actor.vars);
+        m.actor.put("xfm_ui_news_before_id", 20); assertFalse(m.vm.validGui("xfm_market_select_news_gui", m.actor)); m.actor.put("xfm_ui_news_before_id", 22);
+        Node duplicate = m.vm.node("journal-duplicate", "xfm_news_entry"); duplicate.put("xfm_news_id", 21); m.actor.list("xfm_ui_news").add(duplicate);
+        assertFalse(m.vm.validGui("xfm_market_select_news_gui", m.actor)); m.actor.list("xfm_ui_news").remove(duplicate);
+        Node wrong = m.vm.node("journal-wrong-type", "xfm_debt_claim"); wrong.put("xfm_news_id", 21);
+        m.actor.list("xfm_ui_news").clear(); m.actor.list("xfm_ui_news").add(wrong);
+        m.vm.execute(m.vm.definition("xfm_market_select_news_gui").block("effect"), new Frame(m.actor, null, m.actor));
+        assertEquals(before, m.actor.vars); assertFalse(m.vm.scopes.containsKey("xfm_ui_item"));
+    }
+    @Test void otcBuyerAccountIdRebindsOnlyThisCoinsCurrentLegalPrimaryHolderPage() throws IOException {
+        Market m = market(); Node coin = spotCoin(m.vm, "otc-numeric-coin"); coin.put("xfm_coin_id", 55);
+        Node buyer = m.vm.node("otc-actual-buyer", ""), account = m.vm.account("otc-buyer-primary", buyer, 0); account.put("xfm_account_id", 99); buyer.put("xfm_account", account);
+        Node holding = spotPosition(m.vm, "otc-holder-position", account, coin, 100);
+        m.actor.put("xfm_selected_coin", coin); m.vm.runGui("xfm_market_otc_refresh_gui", m.actor);
+        assertEquals(List.of(holding), m.actor.list("xfm_ui_otc_buyers")); assertEquals(0, m.actor.integer("xfm_ui_otc_page_offset"));
+        BigDecimal cash = m.vm.cashStock();
+        row(m.vm, 99, 0, 1); m.vm.runGui("xfm_market_otc_select_buyer_gui", m.actor);
+        assertSame(holding, m.actor.ref("xfm_ui_otc_target_position")); assertSame(account, m.actor.ref("xfm_ui_otc_target_account")); assertSame(buyer, m.actor.ref("xfm_ui_otc_target_buyer"));
+        assertEquals(cash, m.vm.cashStock()); assertEquals(100, holding.integer("xfm_quantity_units")); // Selection neither pays nor reserves.
+        Map<String, Datum> before = Map.copyOf(m.actor.vars);
+        m.actor.put("xfm_ui_otc_offset", 16); assertFalse(m.vm.validGui("xfm_market_otc_select_buyer_gui", m.actor)); m.actor.put("xfm_ui_otc_offset", 0);
+        m.actor.put("xfm_selected_coin", m.asset); assertFalse(m.vm.validGui("xfm_market_otc_select_buyer_gui", m.actor)); m.actor.put("xfm_selected_coin", coin);
+        account.put("xfm_holder", m.actor); assertFalse(m.vm.validGui("xfm_market_otc_select_buyer_gui", m.actor)); account.put("xfm_holder", buyer);
+        buyer.adult = false; assertFalse(m.vm.validGui("xfm_market_otc_select_buyer_gui", m.actor)); buyer.adult = true;
+        account.put("xfm_account_frozen", 1); assertFalse(m.vm.validGui("xfm_market_otc_select_buyer_gui", m.actor)); account.put("xfm_account_frozen", 0);
+        coin.list("xfm_holders").remove(holding);
+        m.vm.execute(m.vm.definition("xfm_market_otc_select_buyer_gui").block("effect"), new Frame(m.actor, null, m.actor));
+        assertEquals(before, m.actor.vars); assertFalse(m.vm.scopes.containsKey("xfm_ui_item"));
+    }
+
     private static Node spotCoin(Vm v, String id) {
         Node c = v.node(id, "xfm_finance_coin"); c.put("xfm_listing_state", 1); c.put("xfm_trading_open", 1);
         c.put("xfm_controller", v.node(id + "-controller", "")); c.put("xfm_open_orders_count", 0); c.put("xfm_supply_units", 0); return c;
@@ -724,7 +833,7 @@ final class FuturesBookUiScriptContractTest {
         }
         List<Node> list(Node owner, String name) {
             List<Node> result = List.copyOf(owner.list(name));
-            if (Set.of("xfm_ui_positions_page", "xfm_ui_orders_page", "xfm_ui_history_page").contains(name)) {
+            if (Set.of("xfm_ui_positions_page", "xfm_ui_orders_page", "xfm_ui_history_page", "xfm_ui_debts_page", "xfm_ui_claims_page", "xfm_ui_aid_debts", "xfm_ui_news", "xfm_ui_otc_buyers").contains(name)) {
                 maxUiPageEntries = Math.max(maxUiPageEntries, result.size());
                 if (result.size() > 16) throw new IllegalArgumentException("portfolio UI page exceeds sixteen real references");
             }

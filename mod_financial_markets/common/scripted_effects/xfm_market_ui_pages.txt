@@ -103,6 +103,8 @@ xfm_market_ui_refresh_effect = {
     }
 
  xfm_market_ui_portfolio_pages_effect = yes
+
+ xfm_market_ui_debt_pages_effect = yes
 }
 xfm_market_ui_first_page_effect = {
     set_variable = { name = xfm_ui_offset value = 0 }

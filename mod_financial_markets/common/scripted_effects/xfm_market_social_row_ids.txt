@@ -1,0 +1,20 @@
+﻿xfm_market_social_resolve_debt_effect = {
+ clear_saved_scope = xfm_ui_item
+ every_in_list = { variable = xfm_ui_debts_page limit = { xfm_market_social_debt_id_trigger = yes } save_scope_as = xfm_ui_item }
+}
+xfm_market_social_resolve_claim_effect = {
+ clear_saved_scope = xfm_ui_item
+ every_in_list = { variable = xfm_ui_claims_page limit = { xfm_market_social_claim_id_trigger = yes } save_scope_as = xfm_ui_item }
+}
+xfm_market_social_resolve_aid_effect = {
+ clear_saved_scope = xfm_ui_item
+ every_in_list = { variable = xfm_ui_aid_debts limit = { xfm_market_social_aid_id_trigger = yes } save_scope_as = xfm_ui_item }
+}
+xfm_market_social_resolve_news_effect = {
+ clear_saved_scope = xfm_ui_item
+ every_in_list = { variable = xfm_ui_news limit = { xfm_market_social_news_id_trigger = yes } save_scope_as = xfm_ui_item }
+}
+xfm_market_social_resolve_otc_effect = {
+ clear_saved_scope = xfm_ui_item
+ every_in_list = { variable = xfm_ui_otc_buyers limit = { xfm_market_social_otc_id_trigger = yes } save_scope_as = xfm_ui_item }
+}

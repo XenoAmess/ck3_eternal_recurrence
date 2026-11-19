@@ -1,0 +1,39 @@
+﻿# Normal aid picker: sixteen actual outstanding debts per explicit page.
+xfm_market_ui_aid_page_effect = {
+ save_scope_as = xfm_ui_aid_page_actor
+ clear_variable_list = xfm_ui_aid_debts
+ remove_variable = xfm_ui_aid_news
+ remove_variable = xfm_ui_aid_account
+ if = { limit = { NOT = { has_variable = xfm_ui_aid_offset } } set_variable = { name = xfm_ui_aid_offset value = 0 } }
+ set_variable = { name = xfm_ui_aid_page_offset value = var:xfm_ui_aid_offset }
+ set_variable = { name = xfm_ui_aid_has_next value = 0 }
+ set_variable = { name = xfm_ui_aid_scan value = 0 }
+ if = {
+  limit = {
+   exists = var:xfm_selected_news
+   var:xfm_selected_news = { story_type = xfm_news_entry }
+   exists = var:xfm_selected_news.var:xfm_news_actor.var:xfm_account
+   var:xfm_selected_news.var:xfm_news_actor.var:xfm_account = { story_type = xfm_finance_account }
+  }
+  set_variable = { name = xfm_ui_aid_news value = var:xfm_selected_news }
+  set_variable = { name = xfm_ui_aid_account value = var:xfm_selected_news.var:xfm_news_actor.var:xfm_account }
+  var:xfm_ui_aid_account = {
+   every_in_list = {
+    variable = xfm_debts
+    limit = { story_type = xfm_debt_claim var:xfm_outstanding_cents > 0 }
+    save_scope_as = xfm_ui_aid_page_item
+    scope:xfm_ui_aid_page_actor = {
+     change_variable = { name = xfm_ui_aid_scan add = 1 }
+     if = {
+      limit = { var:xfm_ui_aid_scan > var:xfm_ui_aid_offset var:xfm_ui_aid_scan <= xfm_market_ui_aid_page_end_value }
+      add_to_variable_list = { name = xfm_ui_aid_debts target = scope:xfm_ui_aid_page_item }
+     }
+     else_if = { limit = { var:xfm_ui_aid_scan > xfm_market_ui_aid_page_end_value } set_variable = { name = xfm_ui_aid_has_next value = 1 } }
+    }
+   }
+  }
+ }
+ remove_variable = xfm_ui_aid_scan
+ clear_saved_scope = xfm_ui_aid_page_item
+ clear_saved_scope = xfm_ui_aid_page_actor
+}

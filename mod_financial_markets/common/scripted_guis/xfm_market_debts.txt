@@ -1,8 +1,19 @@
 ﻿xfm_market_select_debt_gui = {
-    scope = character
-    saved_scopes = { xfm_ui_item }
-    is_valid = { is_ai = no exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_debt_claim } }
-    effect = { set_variable = { name = xfm_selected_debt value = scope:xfm_ui_item } set_variable = { name = xfm_ui_debt_pay_cents value = 1000 } }
+ scope = character
+ saved_scopes = { xfm_ui_row_id }
+ is_valid = { xfm_market_select_debt_gui_row_valid_trigger = yes }
+ effect = {
+  clear_saved_scope = xfm_ui_item
+  if = {
+   limit = { xfm_market_select_debt_gui_row_valid_trigger = yes }
+   xfm_market_social_resolve_debt_effect = yes
+   if = {
+    limit = { var:xfm_active_account = { is_target_in_variable_list = { name = xfm_debts target = scope:xfm_ui_item } }  is_ai = no exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_debt_claim }  }
+     set_variable = { name = xfm_selected_debt value = scope:xfm_ui_item } set_variable = { name = xfm_ui_debt_pay_cents value = 1000 }
+   }
+  }
+  clear_saved_scope = xfm_ui_item
+ }
 }
 xfm_market_debt_pay_up_gui = {
     scope = character
@@ -29,10 +40,21 @@ xfm_market_debt_restructure_gui = {
     effect = { trigger_event = xfm_market.107 }
 }
 xfm_market_select_news_gui = {
-    scope = character
-    saved_scopes = { xfm_ui_item }
-    is_valid = { is_ai = no exists = scope:xfm_ui_item }
-    effect = { set_variable = { name = xfm_selected_news value = scope:xfm_ui_item } }
+ scope = character
+ saved_scopes = { xfm_ui_row_id }
+ is_valid = { xfm_market_select_news_gui_row_valid_trigger = yes }
+ effect = {
+  clear_saved_scope = xfm_ui_item
+  if = {
+   limit = { xfm_market_select_news_gui_row_valid_trigger = yes }
+   xfm_market_social_resolve_news_effect = yes
+   if = {
+    limit = {   is_ai = no exists = scope:xfm_ui_item  }
+     set_variable = { name = xfm_selected_news value = scope:xfm_ui_item }
+   }
+  }
+  clear_saved_scope = xfm_ui_item
+ }
 }
 xfm_market_news_aid_gui = {
     scope = character

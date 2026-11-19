@@ -26,21 +26,32 @@ xfm_market_otc_previous_gui = {
     }
 }
 xfm_market_otc_select_buyer_gui = {
-    scope = character
-    saved_scopes = { xfm_ui_item }
-    is_valid = {
+ scope = character
+ saved_scopes = { xfm_ui_row_id }
+ is_valid = { xfm_market_otc_select_buyer_gui_row_valid_trigger = yes }
+ effect = {
+  clear_saved_scope = xfm_ui_item
+  if = {
+   limit = { xfm_market_otc_select_buyer_gui_row_valid_trigger = yes }
+   xfm_market_social_resolve_otc_effect = yes
+   if = {
+    limit = { var:xfm_selected_coin = { is_target_in_variable_list = { name = xfm_holders target = scope:xfm_ui_item } }
         is_ai = no
         exists = scope:xfm_ui_item
         exists = var:xfm_ui_otc_source_coin
         var:xfm_ui_otc_source_coin = var:xfm_selected_coin
         is_target_in_variable_list = { name = xfm_ui_otc_buyers target = scope:xfm_ui_item }
         scope:xfm_ui_item = { xfm_market_otc_holder_position_trigger = yes }
-    }
-    effect = {
+     }
+
         set_variable = { name = xfm_ui_otc_target_position value = scope:xfm_ui_item }
         set_variable = { name = xfm_ui_otc_target_account value = scope:xfm_ui_item.var:xfm_account }
         set_variable = { name = xfm_ui_otc_target_buyer value = scope:xfm_ui_item.var:xfm_account.var:xfm_holder }
-    }
+
+   }
+  }
+  clear_saved_scope = xfm_ui_item
+ }
 }
 xfm_market_otc_buyer_selected_gui = {
     scope = character

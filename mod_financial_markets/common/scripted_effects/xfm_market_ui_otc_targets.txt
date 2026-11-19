@@ -46,4 +46,6 @@ xfm_market_ui_otc_targets_effect = {
     }
     clear_saved_scope = xfm_ui_otc_picker_position
     clear_saved_scope = xfm_ui_otc_picker_actor
+
+ set_variable = { name = xfm_ui_otc_page_offset value = var:xfm_ui_otc_offset }
 }

@@ -11,15 +11,26 @@
         text_single = { visible = "[GetScriptedGui( 'xfm_market_news_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_news_full_report" tooltip = "[GetScriptedGui( 'xfm_market_news_report_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_news_actor', GetPlayer.MakeScope.Var('xfm_selected_news').Var('xfm_news_actor').Char.MakeScope ).End )]" }
         button_standard = { name = "xfm_market_news_aid" size = { 720 34 } text = "xfm_market_news_aid" enabled = "[GetScriptedGui( 'xfm_market_news_aid_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_news_aid_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_news_aid_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
         scrollbox = { name = "xfm_market_aid_scroll" size = { 735 100 } blockoverride "scrollbox_content" {
-            vbox = { layoutpolicy_horizontal = expanding spacing = 5 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_aid_debts' )]" item = { xfm_market_debt_row = {} } }
+            vbox = { layoutpolicy_horizontal = expanding spacing = 5 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_aid_debts' )]" item = { button_standard_list = {
+        name = "xfm_market_debt_row"
+        size = { 725 55 }
+        text = "xfm_market_debt_row_text"
+        enabled = "[GetScriptedGui( 'xfm_market_select_aid_debt_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_debt_id' ).GetValue ) ).End )]"
+        onclick = "[GetScriptedGui( 'xfm_market_select_aid_debt_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_debt_id' ).GetValue ) ).End )]"
+    } } }
         } }
+
+        hbox = { spacing = 8
+            button_standard = { name = "xfm_market_aid_previous" size = { 175 30 } text = "xfm_market_previous" enabled = "[GetScriptedGui( 'xfm_market_aid_previous_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_aid_previous_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+            button_standard = { name = "xfm_market_aid_next" size = { 175 30 } text = "xfm_market_next" enabled = "[GetScriptedGui( 'xfm_market_aid_next_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_aid_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+        }
         text_multi = { text = "xfm_market_aid_help" max_width = 730 autoresize = yes }
     }
     type xfm_market_news_row = button_standard_list {
         name = "xfm_market_news_row"
         size = { 725 55 }
         text = "xfm_market_news_row_text"
-        enabled = "[GetScriptedGui( 'xfm_market_select_news_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope ).End )]"
-        onclick = "[GetScriptedGui( 'xfm_market_select_news_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope ).End )]"
+        enabled = "[GetScriptedGui( 'xfm_market_select_news_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_news_id' ).GetValue ) ).End )]"
+        onclick = "[GetScriptedGui( 'xfm_market_select_news_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_news_id' ).GetValue ) ).End )]"
     }
 }

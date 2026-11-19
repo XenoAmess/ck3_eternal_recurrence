@@ -1,0 +1,44 @@
+﻿# Explicit normal UI refresh only. Never creates or pays a debt.
+xfm_market_ui_debt_pages_effect = {
+ save_scope_as = xfm_ui_debt_page_actor
+ clear_variable_list = xfm_ui_debts_page
+ clear_variable_list = xfm_ui_claims_page
+ remove_variable = xfm_ui_debt_page_account
+ if = {
+  limit = { xfm_market_row_owned_account_trigger = yes }
+  set_variable = { name = xfm_ui_debt_page_account value = var:xfm_active_account }
+  if = { limit = { NOT = { has_variable = xfm_ui_debts_offset } } set_variable = { name = xfm_ui_debts_offset value = 0 } }
+  set_variable = { name = xfm_ui_debts_page_offset value = var:xfm_ui_debts_offset }
+  set_variable = { name = xfm_ui_debt_page_scan value = 0 }
+  var:xfm_active_account = {
+   every_in_list = {
+    variable = xfm_debts save_scope_as = xfm_ui_debt_page_item
+    scope:xfm_ui_debt_page_actor = {
+     change_variable = { name = xfm_ui_debt_page_scan add = 1 }
+     if = {
+      limit = { var:xfm_ui_debt_page_scan > var:xfm_ui_debts_offset var:xfm_ui_debt_page_scan <= xfm_market_ui_debts_page_end_value }
+      add_to_variable_list = { name = xfm_ui_debts_page target = scope:xfm_ui_debt_page_item }
+     }
+    }
+   }
+  }
+  if = { limit = { NOT = { has_variable = xfm_ui_claims_offset } } set_variable = { name = xfm_ui_claims_offset value = 0 } }
+  set_variable = { name = xfm_ui_claims_page_offset value = var:xfm_ui_claims_offset }
+  set_variable = { name = xfm_ui_debt_page_scan value = 0 }
+  var:xfm_active_account = {
+   every_in_list = {
+    variable = xfm_claims save_scope_as = xfm_ui_debt_page_item
+    scope:xfm_ui_debt_page_actor = {
+     change_variable = { name = xfm_ui_debt_page_scan add = 1 }
+     if = {
+      limit = { var:xfm_ui_debt_page_scan > var:xfm_ui_claims_offset var:xfm_ui_debt_page_scan <= xfm_market_ui_claims_page_end_value }
+      add_to_variable_list = { name = xfm_ui_claims_page target = scope:xfm_ui_debt_page_item }
+     }
+    }
+   }
+  }
+ }
+ remove_variable = xfm_ui_debt_page_scan
+ clear_saved_scope = xfm_ui_debt_page_item
+ clear_saved_scope = xfm_ui_debt_page_actor
+}

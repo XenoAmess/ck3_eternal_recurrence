@@ -28,19 +28,10 @@ xfm_market_ui_news_effect = {
             else = { set_variable = { name = xfm_ui_news_has_older value = 1 } }
         }
     }
+
+ set_variable = { name = xfm_ui_news_bound_before_id value = var:xfm_ui_news_before_id }
 }
 xfm_market_ui_select_news_debts_effect = {
-    clear_variable_list = xfm_ui_aid_debts
-    save_scope_as = xfm_ui_news_reader
-    if = {
-        limit = { exists = var:xfm_selected_news.var:xfm_news_actor.var:xfm_account }
-        var:xfm_selected_news.var:xfm_news_actor.var:xfm_account = {
-            every_in_list = {
-                variable = xfm_debts
-                limit = { var:xfm_outstanding_cents > 0 }
-                save_scope_as = xfm_ui_aid_debt
-                scope:xfm_ui_news_reader = { add_to_variable_list = { name = xfm_ui_aid_debts target = scope:xfm_ui_aid_debt } }
-            }
-        }
-    }
+ set_variable = { name = xfm_ui_aid_offset value = 0 }
+ xfm_market_ui_aid_page_effect = yes
 }
