@@ -1,0 +1,106 @@
+{
+  "schema": "xar.personal-gold.profile-overflow-regression-ready/v1",
+  "begin_utc": "2026-11-19T19:53:15.999623+00:00",
+  "end_utc": "2026-11-19T19:53:37.533440+00:00",
+  "actual_seconds": 21.53383159986697,
+  "steps": [
+    {
+      "name": "configure",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "-S",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\project",
+        "-B",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\build-01\\cmake",
+        "-G",
+        "Ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_MAKE_PROGRAM=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+        "-DCMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe"
+      ],
+      "begin_utc": "2026-11-19T19:53:17.479299+00:00",
+      "exit": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\build-01\\configure.log",
+        "bytes": 566,
+        "sha256": "c4f00c7cd5187bf881c2764b5812ab822547c943fc3a621a4365de1e2e20ae78"
+      }
+    },
+    {
+      "name": "build-gold",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "--build",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\build-01\\cmake",
+        "--parallel",
+        "1",
+        "--target",
+        "xar_ck3_1210_personal_gold_test"
+      ],
+      "begin_utc": "2026-11-19T19:53:20.081833+00:00",
+      "exit": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\build-01\\build-gold.log",
+        "bytes": 1393,
+        "sha256": "20205f8cd68dea4922ac6d10891724cc2a83bf559762e307bc890a353f509aac"
+      }
+    },
+    {
+      "name": "ctest-gold",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "--test-dir",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\build-01\\cmake",
+        "-R",
+        "^xar_ck3_native_bridge_1210_personal_gold$",
+        "--no-tests=error",
+        "--output-on-failure"
+      ],
+      "begin_utc": "2026-11-19T19:53:37.032449+00:00",
+      "exit": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\build-01\\ctest-gold.log",
+        "bytes": 346,
+        "sha256": "2d9c6b3e1ef20e9029ff12c0f6cd847a71a7ff67289f0d0a6e2583bb335ec66b"
+      }
+    }
+  ],
+  "source_resolution": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\SOURCE-RESOLUTION73.json",
+    "bytes": 4966,
+    "sha256": "8eb3f401d13d71acb13e611664e78163b1c7d1311df2e4f8f5f4dfa00891e78d"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\INPUTS73.json",
+    "bytes": 5470,
+    "sha256": "68df2bd8ef999cb29acb1842812f369e60b47d49a765a188a7faf33d8b19025d"
+  },
+  "driver": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\build73.py",
+    "bytes": 4432,
+    "sha256": "3650634ec78447dde44c167ca610bcae6b8219b257ab7ed1d4f5a4e7917493d0"
+  },
+  "production_source": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\candidate\\src\\ck3_1210_personal_gold_v1.cpp",
+    "bytes": 6709,
+    "sha256": "ccbbcd2cf3d25f01c0602eab3ad554c026078f56e7dc26d996e8ba70ea4f895f"
+  },
+  "test_source": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\candidate\\src\\ck3_1210_personal_gold_v1_test.cpp",
+    "bytes": 19222,
+    "sha256": "f7e7062a7e52b99eed6e06a3c225cbc3f4b7e5c1d3d6521ce4e4800f3c2f8509"
+  },
+  "patch": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\PERSONAL-GOLD-OVERFLOW73.patch",
+    "bytes": 3462,
+    "sha256": "6019400a8db0fc9180b47226e14396795e21059fad08df8ce349c271edf7c381"
+  },
+  "target_executable": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\build-01\\cmake\\xar_ck3_1210_personal_gold_test.exe",
+    "bytes": 144384,
+    "sha256": "fd1797ee4408299130ad68c0ea6a99a2dc597eb41b51aeac516f1c0f01af647f"
+  },
+  "output_upper_before_ready": 4767744,
+  "output_budget": 16777216,
+  "scope": "Actual PersonalGold CMake target definition relocated to exact formal56ef sources; only Gold binder and boundary testcase changed. Single complete Gold CTest including its prior RAM/Frame cases. Both exact profile address bounds tested as metadata only, no dereference at the artificial address. Core/headers/layout/feature flags unchanged. No other21 tests replayed, wholeCI/DLL/PE/Game/MainTLS/Cash budget qualification absent."
+}

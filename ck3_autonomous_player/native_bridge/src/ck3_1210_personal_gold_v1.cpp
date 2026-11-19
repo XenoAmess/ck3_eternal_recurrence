@@ -134,7 +134,21 @@ bool ReadImpl(const PersonalGoldBindingsV1 &bindings,
 PersonalGoldBindingsV1 BindPersonalGoldImageV1(std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept {
   PersonalGoldBindingsV1 result{};
-  // Core performs exact-profile and image-overflow checks. No native Gold call.
+  // Keep the original full-slot overflow guard for both exact profiles.
+  // Jomini is the highest Core address in each of these reviewed profiles.
+  static_assert(kJominiStateSlotRva >= kGameStateSlotRva &&
+      kJominiStateSlotRva >= kCharacterStorageSlotRva &&
+      kJominiStateSlotRva >= kGetLocalPlayerRva);
+  static_assert(hotfix26757580::kJominiStateSlotRva >= hotfix26757580::kGameStateSlotRva &&
+      hotfix26757580::kJominiStateSlotRva >= hotfix26757580::kCharacterStorageSlotRva &&
+      hotfix26757580::kJominiStateSlotRva >= hotfix26757580::kGetLocalPlayerRva);
+  const auto build = ImageBuildForSha(executable_sha256);
+  const auto last_slot_rva = ImageRva(build, kJominiStateSlotRva,
+      hotfix26757580::kJominiStateSlotRva);
+  if (image_base == 0 || build == ImageBuildV1::unknown ||
+      image_base > (std::numeric_limits<std::uintptr_t>::max)() -
+          last_slot_rva - (sizeof(void *) - 1)) return result;
+  // No native Gold call or mapped-image read is performed here.
   result.core = BindCoreImage(image_base, executable_sha256);
   result.exact_build_admitted = result.core.enabled;
   return result;

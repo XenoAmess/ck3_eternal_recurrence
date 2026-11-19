@@ -76,16 +76,18 @@ def actual_client(report: dict[str, object], result: object, calls: list[tuple[s
     names = {"lookup", "resolve", "finished_native_process_exit_zero_proof",
              "finished_native_exit_zero_proof", "finished_native_failure_shutdown_proof"}
     nodes = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name in names]
+    exceptions = [node for node in tree.body if isinstance(node, ast.ClassDef) and
+                  node.name == "SavedCampaignNativeObserverTerminalError"]
     original = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "PlanClient")
     methods: list[ast.stmt] = [node for node in original.body if isinstance(node, ast.AsyncFunctionDef) and
                node.name in {"invoke", "execute", "observe_final"}]
-    if len(nodes) != len(names) or len(methods) != 3:
+    if len(nodes) != len(names) or len(methods) != 3 or len(exceptions) != 1:
         raise AssertionError("Actual host dependency scope incomplete")
     node = ast.ClassDef(name="ActualPlanClient", bases=[], keywords=[], body=methods, decorator_list=[])
     namespace: dict[str, object] = {"datetime": datetime, "timezone": timezone, "re": re,
         "copy": copy, "json": json, "now": lambda: "AUTHORED-NO-GAME-CLOCK"}
     module = ast.fix_missing_locations(ast.Module(body=[ast.ImportFrom(module="__future__",
-        names=[ast.alias(name="annotations")], level=0), *nodes, node], type_ignores=[]))
+        names=[ast.alias(name="annotations")], level=0), *nodes, *exceptions, node], type_ignores=[]))
     exec(compile(module, str(HOST), "exec"), namespace)
     factory = namespace["ActualPlanClient"]
     if not isinstance(factory, type):

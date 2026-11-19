@@ -1,0 +1,164 @@
+{
+  "schema": "ck3.runtime.Source31-restored45-61-30days-save-final/v1",
+  "at": "2026-11-19T19:43:58.999167+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\HOTFIX61-SOURCE31-ORIGINAL-FIXED45M-SAME45-ROOT-SHORT34.json",
+    "bytes": 8184,
+    "sha256": "c8cce31e5cca83d2dbf73f9fcbe5e168e27cbddabfebadcc8c8b24496bc52339"
+  },
+  "game": {
+    "creation_filetime": "134395893302291686",
+    "pid": 254956
+  },
+  "Source_Loaded_adopt_loop_and_newRoot_selection_actual": true,
+  "actual_selected_action": {
+    "turn_index": 1,
+    "action_id": "action-b5254bdf811cafcae9f22acb32ed404390066ab017a1e86f5a8e427f3cca1239",
+    "body_sha256": "a37736a371c638e5e5360ae0c63755347db02b633eb6a5b6b56233c5c10d6414",
+    "outcome": "APPLIED_CONFIRMED",
+    "writer_sequence": 38,
+    "visible_gameplay": true,
+    "eligible_advance": true,
+    "independent_native_evidence": [
+      {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\continuity\\artifacts\\7a2ca92ef57ea4fcb5cc11b992ede3a72bd6508df33cbed43def0585b4220f00.bin",
+        "bytes": 1212,
+        "sha256": "7a2ca92ef57ea4fcb5cc11b992ede3a72bd6508df33cbed43def0585b4220f00"
+      }
+    ]
+  },
+  "Root_short_selection": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp31\\codex\\response31\\selection.json",
+    "bytes": 254,
+    "sha256": "37b4fc6e927268d9e7a39574bff4b27039ed1c9679799c256be54846859f957e"
+  },
+  "sole139_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp31\\codex\\response31\\WATCHER.END.json",
+    "bytes": 830,
+    "sha256": "dcfd3349d4307acc70d67dc19bfcde6166befb114a63cb4de94779657fd47c36"
+  },
+  "parent_batch": {
+    "terminal": "TURN_BOUND",
+    "attempted": 1,
+    "applied": 1,
+    "ordinary_ACK_count": 0,
+    "annual_saved_days": 0
+  },
+  "checkpoint": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix31-work\\SELECTED-CHECKPOINT-RESULT31.json",
+    "bytes": 2814,
+    "sha256": "3d79313e768c67ed272bbc8e3b0e2db644aecea168b0f9417858bc70928897a8"
+  },
+  "independent_post": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE31-INDEPENDENT-THIRTY-DAYS-PHYSICAL-SAVE-POST01.json",
+    "bytes": 8911,
+    "sha256": "813fcf55db8b7c73cd0401eb8104d202254fe9dc12551a45d665d5069bde157a"
+  },
+  "new_save": {
+    "bytes": 93494589,
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\profile-next30\\save games\\xar_checkpoint.ck3",
+    "sha256": "629f591ed9189949fd2551817719e182493ab6c330182d1b278a1a2ff5c73119"
+  },
+  "new_driver": {
+    "bytes": 4360347,
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\state\\driver\\checkpoint.json",
+    "sha256": "bdf917002f1cc5b4725317b359b6048df12aa9944e37f0bf9e42bfd9f7d7fbee"
+  },
+  "new_pair": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\state\\checkpoints\\evidence\\save-3bbc2334-6014-4749-987a-e14467580d89-pair.json",
+    "bytes": 1661,
+    "sha256": "8a252acdfcab8b610f85e57942d44f9ef489cd18eee9d78b3cef90f252ba6324"
+  },
+  "new_confirmation": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00000048.json",
+    "bytes": 51510,
+    "sha256": "65c3c3d111c9bd95d026cc9e5dd2b4d954563a8d34ada8a14d44299b6285e50f"
+  },
+  "new_source_config": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\HOTFIX61-ENV31-POLICY31-PLAIN-CONFIG31.json",
+    "bytes": 2213,
+    "sha256": "e45551d9fb23df7bf03bca07c171c5a88889d85763c0a62dfa09527a62f6547e"
+  },
+  "new_head": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\continuity\\continuity.json",
+    "bytes": 44665,
+    "sha256": "3671e70afc530fcf6b940b25fc42d606ac7a8a8d2040e81cbe841419b98faefc"
+  },
+  "new_saved_days": 30,
+  "new_cycle": 53,
+  "new_date_raw": 53177880,
+  "cumulative_window_days": 410,
+  "Main_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix31-work\\MAIN25031-END.json",
+    "bytes": 108,
+    "sha256": "6954a706836d6ca918402b4ea2ba0ce596c40df3b678471c0c3953f4c0aa1551"
+  },
+  "GSV_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix31-work\\GSV-SOURCE31-END.json",
+    "bytes": 107,
+    "sha256": "cb104ce79f432c2cce44a2c46e345256c8822993dbd463a947ffdd2b555b3722"
+  },
+  "GSV_Natural0_Job0": {
+    "actual_terminal": {
+      "accounting": {
+        "active_processes": 0,
+        "limit_flags": 8704,
+        "memory_limit_bytes": 34359738368,
+        "peak_job_memory_bytes": 12985040896
+      },
+      "elapsed_seconds_decimal": "1226.9639945",
+      "exit_code": 0,
+      "identity": {
+        "creation_filetime_decimal": "134395893302291686",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 254956
+      },
+      "stop_reason": null
+    },
+    "cleanup_proven": true,
+    "evidence": {
+      "bytes": 1041,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-save61-31\\event-000007.json",
+      "sha256": "0eb92e7da664f4c07127cfb8d3c09ea18c8d457d45166c81d99f30384ced4c28"
+    },
+    "game": {
+      "creation_filetime": "134395893302291686",
+      "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 254956
+    },
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-19T19:35:57.298469Z",
+    "schema": "xar.java-game-supervisor-result/v1",
+    "session_id": "session-migration1210-hotfix26757580-firstroot31",
+    "status": "GAME_EXITED",
+    "stop_request_id": "",
+    "terminal_kind": "NATURAL_EXIT"
+  },
+  "freshCore_AppExit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit31-01\\summary.json",
+    "bytes": 14321,
+    "sha256": "c162832ae78745edd00ef21e190ef194e1b4f86d981f7227c8b4e263ba3f6d68"
+  },
+  "ownstop": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix31-work\\OWN-WATCH31-END.json",
+    "bytes": 327,
+    "sha256": "9d81e844e4432d021fff876b7cb0f32d2ca76d7d1716d448f0dde99c02e10adb"
+  },
+  "metadata_cache_only_observer_error_preserved": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix31-work\\NATURAL-OBSERVER31-CACHE-ONLY-REPAIR02.json",
+    "bytes": 378,
+    "sha256": "cb23e4f6af5f3abb260f2e146bd727643393339ce23011388021da431264b090"
+  },
+  "actual_passive_natural_phase": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-natural-world31-02\\summary.json",
+    "bytes": 324,
+    "sha256": "a702faa36b9ddf32058847762136ef01f9df8ecbc3d73df85d69f42de48d2989"
+  },
+  "actual_one_SDKFull": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm31-01\\summary.json",
+    "bytes": 11579,
+    "sha256": "14aee63813c2e475fdcaaba3c4c71ccdae77f0599577597654e6d68471af4191"
+  },
+  "no_Game_restart_within_Source31_no_ID_or_deadline_replay": true,
+  "no_performance_goal_claim": true
+}

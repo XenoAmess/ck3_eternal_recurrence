@@ -1,0 +1,142 @@
+{
+  "schema": "ck3.rite7461.fixture-final-ready.v1",
+  "status": "LOCAL_ORIGINAL8_PASS_READY_FOR_SOLE_JAVA_GIT",
+  "base": "7461ea802305abc813cd727eb6ace63f46d95583",
+  "readOnlyGitDir": "Z:/ck3_mod_rewrite/.git/worktrees/java-publish-offline16",
+  "change": "Extract the existing production SavedCampaignNativeObserverTerminalError ClassDef into the test fixture AST namespace; validate exactly one and assemble it before ActualPlanClient.",
+  "productionChanges": 0,
+  "originalEightTestBodiesUnchanged": 8,
+  "onlyCandidateFile": "tools/test_ck3_host_terminal_observation.py",
+  "historicalCI": {
+    "run": 44579588909,
+    "job": 135756307456,
+    "step": 12,
+    "failedCommandOrdinal": 7,
+    "tests": 8,
+    "errors": 4,
+    "python": "3.14.10",
+    "firstSixCommands": "PASS",
+    "eighthCommand": "NOT_REACHED",
+    "claim": "Historical CI remains the original failure; local result does not rewrite it"
+  },
+  "sourceIntegrity": {
+    "original633TreeSha256": "399865ed27e328828b24e3a019251be6c2cedc71f5356c136100cac3caed8e65",
+    "candidate634TreeSha256": "a5b25c143aa17cd521ffed8527d3b2ddad58942f80828650cf10d94f1cf29f51",
+    "treeHashFormat": "sorted relative path UTF8 + NUL + file SHA256 hex + LF",
+    "sourceDataAddedOnlyPrivately": "ck3_autonomous_player/src/xar_autoplayer/data/vanilla_lifestyle_catalog_12004.json",
+    "productionHostSha256": "cdb81911bde8565e26d5c0bf4fff15c36b805088764608e19e14a285fda2e4ad"
+  },
+  "localOriginal8": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "exitCode": 0,
+    "python": "3.13.2",
+    "stdoutBytes": 0,
+    "stderrText": "........\r\n----------------------------------------------------------------------\r\nRan 8 tests in 3.477s\r\n\r\nOK\r\n",
+    "wallSeconds": 5.34757,
+    "peakProcessMemoryBytes": 150585344,
+    "CPUCountLimit": 1,
+    "RAMLimitBytes": 536870912,
+    "secondsLimit": 60,
+    "onlyChildEnvironmentDelta": {
+      "OPENBLAS_NUM_THREADS": "1"
+    },
+    "globalOpenBlasEnvAfterRun": null,
+    "NoGame": true
+  },
+  "retainedEarlierAttempts": [
+    {
+      "attempt": 1,
+      "status": "FAIL_INCOMPLETE",
+      "reason": "256MiB OpenBLAS allocation failure after six success markers"
+    },
+    {
+      "attempt": 2,
+      "status": "FAIL_INCOMPLETE",
+      "reason": "512MiB OpenBLAS allocation failure after six success markers"
+    },
+    {
+      "attempt": 3,
+      "status": "7PASS_1ERROR",
+      "reason": "Missing genuine eager JSON in the private source closure"
+    }
+  ],
+  "scope": {
+    "formalGitWrites": false,
+    "productionSourceWrites": false,
+    "SDKHostNativeGameStarted": false,
+    "networkOrEnvironmentInstallation": false,
+    "earlierSixCICommandsRepeated": false,
+    "wholeSuiteRun": false,
+    "localInterpreterReplaced": false
+  },
+  "artifactPins": {
+    "isolated.patch": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\isolated.patch",
+      "bytes": 1753,
+      "sha256": "cce09137d250b2e37b734ba9410c7b6c9db3c5e97c02a8e76b1381b1eed636df"
+    },
+    "SOURCE-READY.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\SOURCE-READY.json",
+      "bytes": 3318,
+      "sha256": "5ab9eaca399b42b7a1979e8ad6766d2cad82e4532d596eea6c36487a12395a22"
+    },
+    "SOURCE-READY-DATA.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\SOURCE-READY-DATA.json",
+      "bytes": 900,
+      "sha256": "436b52930d2095f18044ab1ff0d5e6b7ad42c86f656a6e0d652947b243a94b58"
+    },
+    "OPENBLAS-STATIC.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\OPENBLAS-STATIC.json",
+      "bytes": 1699,
+      "sha256": "8d2aa6c270bdf138e2bd2afe751e782fac0790c9929aa28f4925f7a7a57ea4c2"
+    },
+    "TEST-RESULT.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\TEST-RESULT.json",
+      "bytes": 1423,
+      "sha256": "d4fe6f90dcbe73fa15c392ed7d8f08d3028ab8957a9a03206f146f6eb98e0d6f"
+    },
+    "attempt02/TEST-RESULT.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\attempt02\\TEST-RESULT.json",
+      "bytes": 1446,
+      "sha256": "062b3d1b0727320a477a79fa84a420db616fc3ac7979897adef10e0cf03f9af6"
+    },
+    "attempt03/TEST-RESULT.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\attempt03\\TEST-RESULT.json",
+      "bytes": 1506,
+      "sha256": "cf13bb32d94b0d51a9d1f2cd79305e9b2ac4fa02ad9019f5cd552a8a3225764f"
+    },
+    "attempt04/TEST-RESULT.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\attempt04\\TEST-RESULT.json",
+      "bytes": 1599,
+      "sha256": "d604994ce0aee7ffa1083adb8767d514ab9ae457e969b16b63c48e55705397d0"
+    },
+    "attempt04/original8.stdout.log": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\attempt04\\original8.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "attempt04/original8.stderr.log": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\attempt04\\original8.stderr.log",
+      "bytes": 111,
+      "sha256": "cdc13a47c621ac243d17e6fdc3aa1c70784acb596818705b5fac10a07390b4f5"
+    },
+    "run_original8_attempt04_guard.py": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\run_original8_attempt04_guard.py",
+      "bytes": 8595,
+      "sha256": "4c0cac45086a284276828440109c12b31b3967a4a774f8138c45af288304d535"
+    },
+    "minirepo/tools/test_ck3_host_terminal_observation.py": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\rite-ci7461-ast01\\minirepo\\tools\\test_ck3_host_terminal_observation.py",
+      "bytes": 16721,
+      "sha256": "235135f750feb932397b230d610b56c906203b3e5f987089f0ef563da3ad3cd2"
+    }
+  },
+  "budget": {
+    "totalBoundBytes": 18874368,
+    "packetRawBoundBytes": 131072,
+    "newReserve": 0,
+    "spendRefund": 0
+  }
+}

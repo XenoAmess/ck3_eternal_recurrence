@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_1210_personal_gold_v1.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #if defined(XAR_CK3_PERSONAL_GOLD_FRAME_TEST)
 #include "xar_bridge/ck3_1210_personal_gold_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
@@ -293,6 +294,30 @@ int main() {
       .exact_build_admitted, "old .4 image identity rejected");
   Require(!BindPersonalGoldImageV1((std::numeric_limits<std::uintptr_t>::max)(),
       kExecutableSha256).exact_build_admitted, "address overflow rejected");
+  struct ProfileBoundary {
+    std::string_view sha;
+    std::uintptr_t last_slot_rva;
+  };
+  const ProfileBoundary profiles[]{
+      {kExecutableSha256, kJominiStateSlotRva},
+      {hotfix26757580::kExecutableSha256, hotfix26757580::kJominiStateSlotRva}};
+  for (const auto &profile : profiles) {
+    const auto maximum = (std::numeric_limits<std::uintptr_t>::max)();
+    const auto last_base = maximum - profile.last_slot_rva - (sizeof(void *) - 1);
+    const auto last = BindPersonalGoldImageV1(last_base, profile.sha);
+    Require(last.exact_build_admitted && last.core.enabled &&
+        reinterpret_cast<std::uintptr_t>(last.core.jomini_state_slot) ==
+            maximum - (sizeof(void *) - 1), "last complete Core slot admitted");
+    for (const auto overflow : {last_base + 1, maximum}) {
+      const auto rejected = BindPersonalGoldImageV1(overflow, profile.sha);
+      Require(!rejected.exact_build_admitted && !rejected.core.enabled &&
+          rejected.core.game_state_slot == nullptr &&
+          rejected.core.jomini_state_slot == nullptr &&
+          rejected.core.character_storage_slot == nullptr &&
+          rejected.core.get_local_player == nullptr,
+          "profile overflow clears all calculated bindings");
+    }
+  }
 #if defined(XAR_CK3_PERSONAL_GOLD_FRAME_TEST)
   {
     using namespace xar::ck3_11906;

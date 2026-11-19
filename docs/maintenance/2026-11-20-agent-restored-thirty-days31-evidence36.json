@@ -1,0 +1,199 @@
+{
+  "schema": "ck3.root.restored-thirty-days31-canonical-save-evidence36/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-11-19T19:59:31.209771+00:00",
+  "refs_verified_at_recording": {
+    "registration347": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC36-RESTORED-THIRTY-DAYS31-EXACT128K-REGISTRATION347.json",
+      "bytes": 1382,
+      "sha256": "abae6c3682083e5efb25ba4933fa70eb466af1039f679f645036eef81005d622"
+    },
+    "final31": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE31-RESTORED-ROOT-SELECT-THIRTY-DAYS-SAVE-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 7671,
+      "sha256": "adc4b92d7277bb72472be699723725140c90438ac1c4e8803afccbbcfd21f313"
+    },
+    "post31": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE31-INDEPENDENT-THIRTY-DAYS-PHYSICAL-SAVE-POST01.json",
+      "bytes": 8911,
+      "sha256": "813fcf55db8b7c73cd0401eb8104d202254fe9dc12551a45d665d5069bde157a"
+    },
+    "lease31": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/R45-LIVE-LEASE-SOURCE31-RELEASED01.json",
+      "bytes": 627,
+      "sha256": "6bc172771378cb16ddab3b02555fe34505de709f7ec9a49391990eeea77cc9ae"
+    },
+    "source": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/HOTFIX61-SOURCE31-ORIGINAL-FIXED45M-SAME45-ROOT-SHORT34.json",
+      "bytes": 8184,
+      "sha256": "c8cce31e5cca83d2dbf73f9fcbe5e168e27cbddabfebadcc8c8b24496bc52339"
+    },
+    "Root_short_selection": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp31/codex/response31/selection.json",
+      "bytes": 254,
+      "sha256": "37b4fc6e927268d9e7a39574bff4b27039ed1c9679799c256be54846859f957e"
+    },
+    "sole139_END": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp31/codex/response31/WATCHER.END.json",
+      "bytes": 830,
+      "sha256": "dcfd3349d4307acc70d67dc19bfcde6166befb114a63cb4de94779657fd47c36"
+    },
+    "checkpoint": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix31-work/SELECTED-CHECKPOINT-RESULT31.json",
+      "bytes": 2814,
+      "sha256": "3d79313e768c67ed272bbc8e3b0e2db644aecea168b0f9417858bc70928897a8"
+    },
+    "independent_post": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE31-INDEPENDENT-THIRTY-DAYS-PHYSICAL-SAVE-POST01.json",
+      "bytes": 8911,
+      "sha256": "813fcf55db8b7c73cd0401eb8104d202254fe9dc12551a45d665d5069bde157a"
+    },
+    "new_pair": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/business-root31/state/checkpoints/evidence/save-3bbc2334-6014-4749-987a-e14467580d89-pair.json",
+      "bytes": 1661,
+      "sha256": "8a252acdfcab8b610f85e57942d44f9ef489cd18eee9d78b3cef90f252ba6324"
+    },
+    "new_confirmation": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/business-root31/continuity/ROOT-CONTINUITY-WINDOW-EVENTS/00000048.json",
+      "bytes": 51510,
+      "sha256": "65c3c3d111c9bd95d026cc9e5dd2b4d954563a8d34ada8a14d44299b6285e50f"
+    },
+    "new_source_config": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/HOTFIX61-ENV31-POLICY31-PLAIN-CONFIG31.json",
+      "bytes": 2213,
+      "sha256": "e45551d9fb23df7bf03bca07c171c5a88889d85763c0a62dfa09527a62f6547e"
+    },
+    "new_head": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/business-root31/continuity/continuity.json",
+      "bytes": 44665,
+      "sha256": "3671e70afc530fcf6b940b25fc42d606ac7a8a8d2040e81cbe841419b98faefc"
+    },
+    "Main_END0": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix31-work/MAIN25031-END.json",
+      "bytes": 108,
+      "sha256": "6954a706836d6ca918402b4ea2ba0ce596c40df3b678471c0c3953f4c0aa1551"
+    },
+    "GSV_END0": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix31-work/GSV-SOURCE31-END.json",
+      "bytes": 107,
+      "sha256": "cb104ce79f432c2cce44a2c46e345256c8822993dbd463a947ffdd2b555b3722"
+    },
+    "freshCore_AppExit": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/sdk-normal-exit31-01/summary.json",
+      "bytes": 14321,
+      "sha256": "c162832ae78745edd00ef21e190ef194e1b4f86d981f7227c8b4e263ba3f6d68"
+    },
+    "ownstop": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix31-work/OWN-WATCH31-END.json",
+      "bytes": 327,
+      "sha256": "9d81e844e4432d021fff876b7cb0f32d2ca76d7d1716d448f0dde99c02e10adb"
+    },
+    "metadata_cache_only_observer_error_preserved": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix31-work/NATURAL-OBSERVER31-CACHE-ONLY-REPAIR02.json",
+      "bytes": 378,
+      "sha256": "cb23e4f6af5f3abb260f2e146bd727643393339ce23011388021da431264b090"
+    },
+    "actual_passive_natural_phase": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/sdk-natural-world31-02/summary.json",
+      "bytes": 324,
+      "sha256": "a702faa36b9ddf32058847762136ef01f9df8ecbc3d73df85d69f42de48d2989"
+    },
+    "actual_one_SDKFull": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/sdk-full-warm31-01/summary.json",
+      "bytes": 11579,
+      "sha256": "14aee63813c2e475fdcaaba3c4c71ccdae77f0599577597654e6d68471af4191"
+    },
+    "checkpoint_result": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix31-work/SELECTED-CHECKPOINT-RESULT31.json",
+      "bytes": 2814,
+      "sha256": "3d79313e768c67ed272bbc8e3b0e2db644aecea168b0f9417858bc70928897a8"
+    },
+    "actual_Root_selection": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp31/codex/response31/selection.json",
+      "bytes": 254,
+      "sha256": "37b4fc6e927268d9e7a39574bff4b27039ed1c9679799c256be54846859f957e"
+    },
+    "actual_solepublisher_END": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp31/codex/response31/WATCHER.END.json",
+      "bytes": 830,
+      "sha256": "dcfd3349d4307acc70d67dc19bfcde6166befb114a63cb4de94779657fd47c36"
+    },
+    "actual_publicCLI_response": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/codex-queue31/codex-0771803c-b361-45dd-b9bf-923c268e8398/response.json",
+      "bytes": 456,
+      "sha256": "a851f0d10f1f2cb4127c12725f31240c1722cf45514a06ec96a83c81c2997092"
+    }
+  },
+  "actual_published_doc_postimages": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/doc35-post181-0.md",
+      "bytes": 108086,
+      "sha256": "f868568c1bea93bc49fb7ea7a9265eb7ba074b04673f03f041b54c4eae4fd29f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/doc35-post181-1.md",
+      "bytes": 3199,
+      "sha256": "55f0fdf6a88924dcf325ab9f4b0c036dec3aa0c723b8a4f72254fccf8215cb9f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/doc35-post181-2.md",
+      "bytes": 31594,
+      "sha256": "83a43cb4d23b5afa7f438c7110f3b31de9d3d8b1cbf0c83494e3fb3afd395e7a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/doc35-post181-3.md",
+      "bytes": 3829,
+      "sha256": "8a7dffc4a8e37d2b8aa98423df3f7f3e762f5743a775844c2a95f8b80f743f11"
+    }
+  ],
+  "base_commit": "56ef3ebbf468c42cd73aa5b89968e2064920656f",
+  "qualification": {
+    "restored_pair29_date_raw": 53177160,
+    "after_date_raw": 53177880,
+    "delta_raw_hours": 720,
+    "actual_new_days_by_date_delta": 30,
+    "prior_scene29_days": 7,
+    "two_actual_closed_scenes_total_date_delta_days": 37,
+    "source_origin_cumulative_saved_whole_days": 410,
+    "checkpoint_result_advanced_days_field": 0,
+    "parent_batch_annual_saved_days": 0,
+    "cycle_before": 52,
+    "cycle_after": 53,
+    "Root_actual_original_selection_within_deadline": true,
+    "Root_read_to_atomic_write_seconds": 12.777061,
+    "sole_original_CLI_response_published": true,
+    "same_Root_canonical_physical_SAVE": true,
+    "new_SAVE_bytes": 93494589,
+    "Main0_NATURAL0_cleanuptrue_Job0_GSV0_uniqueAppExit0": true,
+    "independent_post_passed": true,
+    "new93M_cold_reload_proven_at_scene31_close": false,
+    "whole_migration_complete": false,
+    "performance_target_claimed": false
+  },
+  "new_artifacts_from_independent_post": {
+    "new_saved_file": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\profile-next30\\save games\\xar_checkpoint.ck3",
+      "bytes": 93494589,
+      "sha256": "629f591ed9189949fd2551817719e182493ab6c330182d1b278a1a2ff5c73119"
+    },
+    "new_driver": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\state\\driver\\checkpoint.json",
+      "bytes": 4360347,
+      "sha256": "bdf917002f1cc5b4725317b359b6048df12aa9944e37f0bf9e42bfd9f7d7fbee"
+    },
+    "pair": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\state\\checkpoints\\evidence\\save-3bbc2334-6014-4749-987a-e14467580d89-pair.json",
+      "bytes": 1661,
+      "sha256": "8a252acdfcab8b610f85e57942d44f9ef489cd18eee9d78b3cef90f252ba6324"
+    },
+    "canonical_head": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\continuity\\continuity.json",
+      "bytes": 44665,
+      "sha256": "3671e70afc530fcf6b940b25fc42d606ac7a8a8d2040e81cbe841419b98faefc"
+    }
+  },
+  "prior_source_preserved": "independent post verifies old29 91M/head/driver/pair and frozen runtime; no old ID/deadline replay",
+  "next": "newpair31/date53177880/cycle53 -> current public source/new target profile/ENV/fixed window, continue actual gameplay; no missing Family handler support/historical success invented",
+  "CI_boundary": "Native72 necessary2 targets/CoreCTest P and source published56ef; later Gold overflow73 necessary target P separate, officialCI still pending; Rite fixture resource/data qualification separately pending",
+  "publication": "Java sole normal latestremote merge, preserve every remote tail/formal53/index; no source32 gate"
+}
