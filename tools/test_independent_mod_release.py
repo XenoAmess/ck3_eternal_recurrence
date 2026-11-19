@@ -228,5 +228,11 @@ class IndependentModReleaseTests(unittest.TestCase):
             release.verify_manifest(self.spec, staging, manifest)
 
 
+def load_tests(loader: unittest.TestLoader, tests: unittest.TestSuite, pattern: str | None) -> unittest.TestSuite:
+    product_tests = Path(__file__).resolve().parents[1] / "mod_de_jure_conquest/tools"
+    tests.addTests(unittest.TestLoader().discover(str(product_tests), pattern="test_de_jure_conquest_static.py", top_level_dir=str(product_tests)))
+    return tests
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -1,5 +1,7 @@
 # 公国／王国／帝国法理征服（XenoAmess维护版）
 
+Current source candidate (2026-11-20): **1.0.1 / CK3 1.21.0.3 Florin**. Source and NoGame software checks only; fresh game/GUI/payment/SaveLoad and publication are NOT_RUN. Canonical Workshop item remains 3812510217. See [the migration scope and remaining acceptance contract](docs/migration-florin-121003.md). The 1.0.0 publication described below remains historical.
+
 独立维护目录。上游为白绮的 [Workshop 3600021457](https://steamcommunity.com/sharedfiles/filedetails/?id=3600021457)。维护版物品为 `3812510217`；后续更新仅针对维护版，不得更新上游物品。
 
 当前状态（2026-10-03）：**1.0.0已公开发布至[新维护版Workshop物品 3812510217](https://steamcommunity.com/sharedfiles/filedetails/?id=3812510217)**。CK3 1.20.0.3中文实机验收、正式构建、完整更新说明匿名回读、中文媒体及全新订阅缓存复核通过；Steam已恢复离线。**只实机验收简体中文，其他八语仅格式检查。** 详细结果和已知限制见[正式发布报告](docs/release-1.0.0-2026-10-03/README.md)。历史外语实机和失败attempt仅保留为诊断证据，不作为中文签核。

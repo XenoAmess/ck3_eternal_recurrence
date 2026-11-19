@@ -1,0 +1,633 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T21:38:00.493450+00:00",
+  "manifest": {
+    "schema": "djc.florin121003.offline-candidate.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_utc": "2026-11-19T21:20:35.029398+00:00",
+    "product": "mod_de_jure_conquest",
+    "version": "1.0.1",
+    "supported_version": "1.21.*",
+    "reviewed_actual_raw_version": "1.21.0.3",
+    "build": 26785313,
+    "canonical_workshop_item_id": "3812510217",
+    "forbidden_upstream_workshop_item_id": "3600021457",
+    "source_binding": "candidate-source-binding.json",
+    "source_binding_scope": "Exact runtime/tools/shared source closure used by the builder before the two source-only documentation files were added. Final changes below additionally pin those documents.",
+    "patch_sha256": "f21fe25c0a5bbf899bf0e4b2c10915a4a19a05946e3fda4e0c8ce9579ba5075d",
+    "patch_bytes": 96723,
+    "changes": [
+      {
+        "path": "mod_de_jure_conquest/descriptor.mod",
+        "new": false,
+        "base_bytes": 173,
+        "base_sha256": "6e893000578e2a528b52eb917803e5fd37aba9481200098dc136aad9eb65f6aa",
+        "target_bytes": 172,
+        "target_sha256": "81c7f067924bd05ab6c282f76277af287cecd40a6071acb6b62f70931c0107e6"
+      },
+      {
+        "path": "mod_de_jure_conquest/docs/migration-florin-121003.md",
+        "new": true,
+        "base_bytes": null,
+        "base_sha256": null,
+        "target_bytes": 5961,
+        "target_sha256": "86734c78030d1d93284a0876fc793cdcfece2434d7725aaa6872ec3d4e6b5800"
+      },
+      {
+        "path": "mod_de_jure_conquest/README.md",
+        "new": false,
+        "base_bytes": 2638,
+        "base_sha256": "1db773695e033f438929db977afece6531470ec057c264ef051ae04b067c0bd3",
+        "target_bytes": 3008,
+        "target_sha256": "718b8d60add3218b7638f7e2f0d921b75a73420e1925a783d96fcc144da42768"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/build_release.py",
+        "new": false,
+        "base_bytes": 2657,
+        "base_sha256": "4435a0fac2353a78c91415fb1d9b03c6dc8b7ab384100681f9c5c29f4fcde2e8",
+        "target_bytes": 3157,
+        "target_sha256": "608bba098f7f39d682e06a91a39fab0258cd5d3eb221e00a081717c50489a630"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+        "new": false,
+        "base_bytes": 10140,
+        "base_sha256": "91ee3ce38fd7494357250d8e7a72e1b83af4ef261fe90116f3f7d4141ce13505",
+        "target_bytes": 10482,
+        "target_sha256": "a548ef52717637ea726b5e3097ee11b4a8f9fb9ad38dd0e23d6bfec3d95c5d27"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/product.py",
+        "new": false,
+        "base_bytes": 1314,
+        "base_sha256": "d80efdededbe646c256857669b764c7648eb58dccf0c4767cec2eec20ab1346f",
+        "target_bytes": 2064,
+        "target_sha256": "8fc9855858d48e364a644078828099df83fcd4a5c1b38005d588b67c8a30bf0c"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+        "new": true,
+        "base_bytes": null,
+        "base_sha256": null,
+        "target_bytes": 6316,
+        "target_sha256": "aee7289e93a4758ea1c20a4d85e32092e868f71425feb4c14a9db246f32ede8e"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/validate_static.py",
+        "new": false,
+        "base_bytes": 11129,
+        "base_sha256": "01c087e4caca8fd57f8aa9374b2560585edce2c4ddacde12d51a73ce40657bd5",
+        "target_bytes": 14328,
+        "target_sha256": "9dc75de2b68cdaac8f24d6d665cde2c99211775602eef90b1076f7beebe81d78"
+      },
+      {
+        "path": "tools/test_independent_mod_release.py",
+        "new": false,
+        "base_bytes": 12473,
+        "base_sha256": "219ed06c13ef433224eae5c932dba8b8ada82d01f467ed176fc5ca54dbfddde2",
+        "target_bytes": 13080,
+        "target_sha256": "f868a921f52a45a2b207b229d226da40076598887f76d60bd1b55c7281378f7e"
+      }
+    ],
+    "production_gameplay_changed": false,
+    "formal_release": "NOT_RUN",
+    "new_game_GUI_Native_payment_SaveLoad_full_product": "NOT_RUN"
+  },
+  "source_binding": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "kind": "uncommitted-candidate-content-binding-NOT-GIT-COMMIT",
+    "binding_sha1": "94ea6038cdb9447545cae2bfbc8f8203aeb8d6b4",
+    "source_inventory_sha256": "ef99ba28db482c14c2a25d016168db83b8913824718d1b0821e351e6f3803ef2",
+    "sources": [
+      {
+        "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/__init__.py",
+        "bytes": 469,
+        "sha256": "981791a2cd6932c2e622795482205cae0dca1f1f48721330158bb3d2d9ab8b8a"
+      },
+      {
+        "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+        "bytes": 3262,
+        "sha256": "2299c70e9400d4e24b2fae07e2c7e5bca4bb4102fd5f31125ff51f13b9c432da"
+      },
+      {
+        "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/engine.py",
+        "bytes": 19599,
+        "sha256": "413d92ae4e7c8d243f784e932cd7390258f80e8214a0d6583466f875bdf32191"
+      },
+      {
+        "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/errors.py",
+        "bytes": 1394,
+        "sha256": "9662846f25a784cb752e7a8d8151824f1d9ae84816a68d4fcfe54bef857ce91b"
+      },
+      {
+        "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/models.py",
+        "bytes": 8018,
+        "sha256": "016a95d0599106d04d96ea5883412097997000625d48d0adf9074b9f2954bf60"
+      },
+      {
+        "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/providers.py",
+        "bytes": 8106,
+        "sha256": "77372f38cb1b8396e462178b9608e51eb9cf79f211eb9bd2ac1dc5bb589db9a9"
+      },
+      {
+        "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/validation.py",
+        "bytes": 6954,
+        "sha256": "7cd0e0a9f752025ac06481ef260180ed16b792a9308b55fe4cde0c1a3f340814"
+      },
+      {
+        "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/wal.py",
+        "bytes": 11813,
+        "sha256": "ca123c06a51c62de11e90d16cdcb13adeab72595ec9d9d102bdf6422f7803c69"
+      },
+      {
+        "path": "mod_de_jure_conquest/common/casus_belli_types/duchy_de_jure_greatwar.txt",
+        "bytes": 5528,
+        "sha256": "2bf55d811901828136416689e75917219d00440d5e63ad8aab2d5db4c6d5aeb1"
+      },
+      {
+        "path": "mod_de_jure_conquest/common/casus_belli_types/empire_de_jure_greatwar.txt",
+        "bytes": 5534,
+        "sha256": "dfd554edc5d42be3cbc76b1ced8555f3fa1e25f499189649e4f8e7c693ec0363"
+      },
+      {
+        "path": "mod_de_jure_conquest/common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+        "bytes": 5537,
+        "sha256": "dfff8ebedc4f8bcf744b198324b1be5faa7ab9076d3956fe548e6ddf236ae56d"
+      },
+      {
+        "path": "mod_de_jure_conquest/common/on_action/greatwar.txt",
+        "bytes": 839,
+        "sha256": "c9e7aa7c3092e633f74413b861357ea9fd0bb7cd6004ef0d38bbe6c3424356cf"
+      },
+      {
+        "path": "mod_de_jure_conquest/common/scripted_effects/djc_war_effects.txt",
+        "bytes": 2751,
+        "sha256": "963e10b91a9f2b4df60396a32b06b6ccce46f3db051d5340d6e1e35b0897941f"
+      },
+      {
+        "path": "mod_de_jure_conquest/descriptor.mod",
+        "bytes": 172,
+        "sha256": "81c7f067924bd05ab6c282f76277af287cecd40a6071acb6b62f70931c0107e6"
+      },
+      {
+        "path": "mod_de_jure_conquest/localization/english/greatwar_l_english.yml",
+        "bytes": 1584,
+        "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a"
+      },
+      {
+        "path": "mod_de_jure_conquest/localization/french/greatwar_l_french.yml",
+        "bytes": 1656,
+        "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34"
+      },
+      {
+        "path": "mod_de_jure_conquest/localization/german/greatwar_l_german.yml",
+        "bytes": 1758,
+        "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986"
+      },
+      {
+        "path": "mod_de_jure_conquest/localization/japanese/greatwar_l_japanese.yml",
+        "bytes": 1459,
+        "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7"
+      },
+      {
+        "path": "mod_de_jure_conquest/localization/korean/greatwar_l_korean.yml",
+        "bytes": 1543,
+        "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89"
+      },
+      {
+        "path": "mod_de_jure_conquest/localization/polish/greatwar_l_polish.yml",
+        "bytes": 1563,
+        "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2"
+      },
+      {
+        "path": "mod_de_jure_conquest/localization/russian/greatwar_l_russian.yml",
+        "bytes": 2389,
+        "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6"
+      },
+      {
+        "path": "mod_de_jure_conquest/localization/simp_chinese/greatwar_l_simp_chinese.yml",
+        "bytes": 1430,
+        "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2"
+      },
+      {
+        "path": "mod_de_jure_conquest/localization/spanish/greatwar_l_spanish.yml",
+        "bytes": 1608,
+        "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55"
+      },
+      {
+        "path": "mod_de_jure_conquest/thumbnail.png",
+        "bytes": 111868,
+        "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/build_release.py",
+        "bytes": 3157,
+        "sha256": "608bba098f7f39d682e06a91a39fab0258cd5d3eb221e00a081717c50489a630"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+        "bytes": 10482,
+        "sha256": "a548ef52717637ea726b5e3097ee11b4a8f9fb9ad38dd0e23d6bfec3d95c5d27"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/product.py",
+        "bytes": 2064,
+        "sha256": "8fc9855858d48e364a644078828099df83fcd4a5c1b38005d588b67c8a30bf0c"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+        "bytes": 6316,
+        "sha256": "aee7289e93a4758ea1c20a4d85e32092e868f71425feb4c14a9db246f32ede8e"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/validate_static.py",
+        "bytes": 14328,
+        "sha256": "9dc75de2b68cdaac8f24d6d665cde2c99211775602eef90b1076f7beebe81d78"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/verify_fixture_log.py",
+        "bytes": 2604,
+        "sha256": "f52dfa10eb981ea4842a997cca70dc31a6ba93b6d3e22623f6f8fb2a0136ca5f"
+      },
+      {
+        "path": "tools/extract_auto_upgrade_buildings.py",
+        "bytes": 19459,
+        "sha256": "59e1fc8186d71395fa58a7f74834b7d6e7a04d9c983dfc14906d500bf68ce412"
+      },
+      {
+        "path": "tools/independent_mod_release.py",
+        "bytes": 17076,
+        "sha256": "83783e794d14b86380219e5b53a384578c59ac62cc03bc5a2d36166b3b0eca1d"
+      },
+      {
+        "path": "tools/test_independent_mod_release.py",
+        "bytes": 13080,
+        "sha256": "f868a921f52a45a2b207b229d226da40076598887f76d60bd1b55c7281378f7e"
+      },
+      {
+        "path": "tools/translate_localization_minimax.py",
+        "bytes": 20038,
+        "sha256": "6c43897362189a2b2737f006805b62d42b2e9b4d6d96b4f7df89d4d02e6e1870"
+      },
+      {
+        "path": "tools/workshop_compatibility_tags.py",
+        "bytes": 3351,
+        "sha256": "20fbb78f2d3ad571f1ad32fc111ee87af2d6c9b951259be35297bb28fc9bf491"
+      }
+    ],
+    "manifest_git_sha_semantics": "Existing shared API requires 40 hex characters. This field carries the above candidate content binding only; it is not a Git commit. git_tag is null. Formal committed/tagged release is NOT_RUN."
+  },
+  "qualifications": {
+    "release-static-final.json": {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\dev\\mod_de_jure_conquest\\tools\\validate_static.py",
+        "--game",
+        "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+        "--release-localization"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "elapsed": 0.40675529997679405
+    },
+    "shared-and-product-tests-a02.json": {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\dev\\tools\\test_independent_mod_release.py"
+      ],
+      "exit": 0,
+      "elapsed": 9.87088900001254
+    },
+    "strict-tools-final.json": {
+      "command": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "--follow-imports=silent",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\dev\\mod_de_jure_conquest\\tools\\product.py",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\dev\\mod_de_jure_conquest\\tools\\validate_static.py",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\dev\\mod_de_jure_conquest\\tools\\build_release.py",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\dev\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\dev\\mod_de_jure_conquest\\tools\\test_de_jure_conquest_static.py"
+      ],
+      "exit": 0,
+      "elapsed": 2.7695144999888726
+    },
+    "typing-shared-test.json": {
+      "command": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "--follow-imports=silent",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\dev\\tools\\test_independent_mod_release.py"
+      ],
+      "exit": 0,
+      "elapsed": 2.273468499974115
+    },
+    "fixture-producer.json": {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\dev\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\fixture"
+      ],
+      "exit": 0,
+      "elapsed": 0.2243153000017628
+    },
+    "shared-builder-software.json": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "exit": 0,
+      "elapsed": 0.3704276999924332,
+      "actual_shared_API": [
+        "check_reproducible: two independent full builds, exact manifest and ZIP byte comparison",
+        "build: third retained full build",
+        "verify_manifest: all 16 runtime files",
+        "ZipFile.testzip and all 16 extracted members SHA/byte equality to stage and candidate source"
+      ],
+      "double_build": {
+        "file_count": 16,
+        "manifest_sha256": "3a5f4bbf987c3dcb62cb26b2545ccef48fb4f62312483c9d6a100d1cfdbe9b47",
+        "zip_sha256": "748ff56dd6bd46bc0af27c644449e58ad7c4f2635611ab6e1218a34200c7f6f5"
+      },
+      "retained_stage": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\artifact\\mod_de_jure_conquest",
+      "retained_manifest": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\artifact\\mod_de_jure_conquest.manifest.json",
+      "retained_zip": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a01\\artifact\\mod_de_jure_conquest.zip",
+      "candidate_only": true,
+      "formal_exact_tag_release": "NOT_RUN",
+      "live": "NOT_RUN"
+    },
+    "installed-boundary-regression.json": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "exit": 0,
+      "cases": [
+        {
+          "case": "all_actual_17_stock_pins_and_actual_launcher_copy",
+          "exit": 0,
+          "result": "GREEN"
+        },
+        {
+          "case": "wrong_version",
+          "exit": 1,
+          "errors": [
+            "installed game version is not reviewed 1.21.0.3"
+          ]
+        },
+        {
+          "case": "boolean_version",
+          "exit": 1,
+          "errors": [
+            "installed game version is not reviewed 1.21.0.3"
+          ]
+        },
+        {
+          "case": "array_root",
+          "exit": 1,
+          "errors": [
+            "installed game version is not reviewed 1.21.0.3"
+          ]
+        },
+        {
+          "case": "invalid_json",
+          "exit": 1,
+          "errors": [
+            "installed game version metadata invalid: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+          ]
+        },
+        {
+          "case": "stock_source_byte_mutation",
+          "exit": 1,
+          "errors": [
+            "exact-build vanilla differs: game/common/casus_belli_types/_casus_belli.info"
+          ]
+        }
+      ],
+      "actual_original_validator_CLI": true,
+      "mutated_installed_data": false,
+      "temporary_copy_now_removed": true
+    },
+    "source-and-patch-validation.json": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "exit": 0,
+      "changes": 9,
+      "exact_byte_replay": true,
+      "shared_replay_source": "native-26785313-core-route-a01/validate_candidate.py:replay",
+      "adaptation": "read_bytes().decode preserves CRLF",
+      "all_original_34_input_pins_unchanged": 34,
+      "unchanged_original_inputs": [
+        {
+          "path": "mod_de_jure_conquest/common/casus_belli_types/duchy_de_jure_greatwar.txt",
+          "bytes": 5528,
+          "sha256": "2bf55d811901828136416689e75917219d00440d5e63ad8aab2d5db4c6d5aeb1"
+        },
+        {
+          "path": "mod_de_jure_conquest/common/casus_belli_types/empire_de_jure_greatwar.txt",
+          "bytes": 5534,
+          "sha256": "dfd554edc5d42be3cbc76b1ced8555f3fa1e25f499189649e4f8e7c693ec0363"
+        },
+        {
+          "path": "mod_de_jure_conquest/common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+          "bytes": 5537,
+          "sha256": "dfff8ebedc4f8bcf744b198324b1be5faa7ab9076d3956fe548e6ddf236ae56d"
+        },
+        {
+          "path": "mod_de_jure_conquest/common/on_action/greatwar.txt",
+          "bytes": 839,
+          "sha256": "c9e7aa7c3092e633f74413b861357ea9fd0bb7cd6004ef0d38bbe6c3424356cf"
+        },
+        {
+          "path": "mod_de_jure_conquest/common/scripted_effects/djc_war_effects.txt",
+          "bytes": 2751,
+          "sha256": "963e10b91a9f2b4df60396a32b06b6ccce46f3db051d5340d6e1e35b0897941f"
+        },
+        {
+          "path": "mod_de_jure_conquest/descriptor.mod",
+          "bytes": 173,
+          "sha256": "6e893000578e2a528b52eb917803e5fd37aba9481200098dc136aad9eb65f6aa"
+        },
+        {
+          "path": "mod_de_jure_conquest/localization/english/greatwar_l_english.yml",
+          "bytes": 1584,
+          "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a"
+        },
+        {
+          "path": "mod_de_jure_conquest/localization/french/greatwar_l_french.yml",
+          "bytes": 1656,
+          "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34"
+        },
+        {
+          "path": "mod_de_jure_conquest/localization/german/greatwar_l_german.yml",
+          "bytes": 1758,
+          "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986"
+        },
+        {
+          "path": "mod_de_jure_conquest/localization/japanese/greatwar_l_japanese.yml",
+          "bytes": 1459,
+          "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7"
+        },
+        {
+          "path": "mod_de_jure_conquest/localization/korean/greatwar_l_korean.yml",
+          "bytes": 1543,
+          "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89"
+        },
+        {
+          "path": "mod_de_jure_conquest/localization/polish/greatwar_l_polish.yml",
+          "bytes": 1563,
+          "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2"
+        },
+        {
+          "path": "mod_de_jure_conquest/localization/russian/greatwar_l_russian.yml",
+          "bytes": 2389,
+          "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6"
+        },
+        {
+          "path": "mod_de_jure_conquest/localization/simp_chinese/greatwar_l_simp_chinese.yml",
+          "bytes": 1430,
+          "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2"
+        },
+        {
+          "path": "mod_de_jure_conquest/localization/spanish/greatwar_l_spanish.yml",
+          "bytes": 1608,
+          "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55"
+        },
+        {
+          "path": "mod_de_jure_conquest/thumbnail.png",
+          "bytes": 111868,
+          "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465"
+        },
+        {
+          "path": "mod_de_jure_conquest/tools/product.py",
+          "bytes": 1314,
+          "sha256": "d80efdededbe646c256857669b764c7648eb58dccf0c4767cec2eec20ab1346f"
+        },
+        {
+          "path": "mod_de_jure_conquest/tools/validate_static.py",
+          "bytes": 11129,
+          "sha256": "01c087e4caca8fd57f8aa9374b2560585edce2c4ddacde12d51a73ce40657bd5"
+        },
+        {
+          "path": "mod_de_jure_conquest/tools/build_release.py",
+          "bytes": 2657,
+          "sha256": "4435a0fac2353a78c91415fb1d9b03c6dc8b7ab384100681f9c5c29f4fcde2e8"
+        },
+        {
+          "path": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+          "bytes": 10140,
+          "sha256": "91ee3ce38fd7494357250d8e7a72e1b83af4ef261fe90116f3f7d4141ce13505"
+        },
+        {
+          "path": "mod_de_jure_conquest/tools/verify_fixture_log.py",
+          "bytes": 2604,
+          "sha256": "f52dfa10eb981ea4842a997cca70dc31a6ba93b6d3e22623f6f8fb2a0136ca5f"
+        },
+        {
+          "path": "tools/independent_mod_release.py",
+          "bytes": 17076,
+          "sha256": "83783e794d14b86380219e5b53a384578c59ac62cc03bc5a2d36166b3b0eca1d"
+        },
+        {
+          "path": "tools/workshop_compatibility_tags.py",
+          "bytes": 3351,
+          "sha256": "20fbb78f2d3ad571f1ad32fc111ee87af2d6c9b951259be35297bb28fc9bf491"
+        },
+        {
+          "path": "tools/extract_auto_upgrade_buildings.py",
+          "bytes": 19459,
+          "sha256": "59e1fc8186d71395fa58a7f74834b7d6e7a04d9c983dfc14906d500bf68ce412"
+        },
+        {
+          "path": "tools/translate_localization_minimax.py",
+          "bytes": 20038,
+          "sha256": "6c43897362189a2b2737f006805b62d42b2e9b4d6d96b4f7df89d4d02e6e1870"
+        },
+        {
+          "path": "tools/test_independent_mod_release.py",
+          "bytes": 12473,
+          "sha256": "219ed06c13ef433224eae5c932dba8b8ada82d01f467ed176fc5ca54dbfddde2"
+        },
+        {
+          "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+          "bytes": 3262,
+          "sha256": "2299c70e9400d4e24b2fae07e2c7e5bca4bb4102fd5f31125ff51f13b9c432da"
+        },
+        {
+          "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/__init__.py",
+          "bytes": 469,
+          "sha256": "981791a2cd6932c2e622795482205cae0dca1f1f48721330158bb3d2d9ab8b8a"
+        },
+        {
+          "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/wal.py",
+          "bytes": 11813,
+          "sha256": "ca123c06a51c62de11e90d16cdcb13adeab72595ec9d9d102bdf6422f7803c69"
+        },
+        {
+          "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/models.py",
+          "bytes": 8018,
+          "sha256": "016a95d0599106d04d96ea5883412097997000625d48d0adf9074b9f2954bf60"
+        },
+        {
+          "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/errors.py",
+          "bytes": 1394,
+          "sha256": "9662846f25a784cb752e7a8d8151824f1d9ae84816a68d4fcfe54bef857ce91b"
+        },
+        {
+          "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/providers.py",
+          "bytes": 8106,
+          "sha256": "77372f38cb1b8396e462178b9608e51eb9cf79f211eb9bd2ac1dc5bb589db9a9"
+        },
+        {
+          "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/engine.py",
+          "bytes": 19599,
+          "sha256": "413d92ae4e7c8d243f784e932cd7390258f80e8214a0d6583466f875bdf32191"
+        },
+        {
+          "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/validation.py",
+          "bytes": 6954,
+          "sha256": "7cd0e0a9f752025ac06481ef260180ed16b792a9308b55fe4cde0c1a3f340814"
+        }
+      ],
+      "frozen_1_0_0_tag_object": "d64d6ea4d3801d77140af6521cc24e347402aeb5",
+      "repo_written": false
+    },
+    "software-harness-initial-failures.json": {
+      "preserved_failures": [
+        {
+          "receipt": "strict-tools.json",
+          "exit": 1,
+          "cause": "eight true typing errors fixed in candidate tools; strict-tools-final.json is later exit0"
+        },
+        {
+          "receipt": "shared-and-product-tests.json",
+          "exit": 1,
+          "cause": "new test incorrectly expected string 1128 instead of original integer player_history_id; fixed assertion only, original producer field unchanged"
+        },
+        {
+          "command": "first finish_software.py",
+          "exit": 1,
+          "cause": "external ZIP checker incorrectly expected unprefixed member names; shared builder correctly prefixes product_id. Checker corrected; second invocation exit0. Actual two-build comparison had already passed. Original retained artifact was not overwritten."
+        }
+      ],
+      "old_1_20_or_runtime_failures_erased": false
+    }
+  },
+  "formal_exact_tag_release": "NOT_RUN",
+  "live": "NOT_RUN"
+}

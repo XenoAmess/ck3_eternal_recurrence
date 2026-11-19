@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import io
 from pathlib import Path
 import subprocess
 import sys
 
-from product import PRODUCT_ID, ROOT, SOURCE, TAG_PREFIX, VERSION, product_spec
+from product import PRODUCT_ID, ROOT, SOURCE, TAG_PREFIX, VERSION, WORKSHOP_ITEM_ID, product_spec, reviewed_workshop_item_id
 
 
 def git(*args: str) -> str:
@@ -18,7 +19,8 @@ def git(*args: str) -> str:
 
 
 def main() -> int:
-    sys.stdout.reconfigure(encoding="utf-8")
+    if isinstance(sys.stdout, io.TextIOWrapper):
+        sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--check", action="store_true")
@@ -29,6 +31,9 @@ def main() -> int:
     parser.add_argument("--release", action="store_true")
     args = parser.parse_args()
     try:
+        item_id = reviewed_workshop_item_id(args.workshop_item_id)
+        if args.release and item_id is None:
+            raise ValueError(f"formal maintained release requires Workshop item {WORKSHOP_ITEM_ID}")
         spec = product_spec()
         from independent_mod_release import build, check_reproducible, verify_manifest
         if args.verify:
@@ -42,7 +47,7 @@ def main() -> int:
         if args.check:
             if args.release:
                 raise ValueError("--check and --release are separate modes")
-            print(check_reproducible(spec, revision, args.workshop_item_id))
+            print(check_reproducible(spec, revision, item_id))
             return 0
         tag = None
         if args.release:
@@ -51,8 +56,11 @@ def main() -> int:
             tag = TAG_PREFIX + VERSION
             if tag not in git("tag", "--points-at", "HEAD").splitlines():
                 raise ValueError(f"formal release requires {tag} on HEAD")
-        result = build(spec, args.output, revision, args.workshop_item_id, git_tag=tag)
-        print(f"Staging: {result[0]}\nManifest: {result[1]}\nZIP: {result[2]}\nFiles: {len(result[3]['files'])}")
+        result = build(spec, args.output, revision, item_id, git_tag=tag)
+        files = result[3].get("files")
+        if not isinstance(files, list):
+            raise ValueError("release manifest files must be a list")
+        print(f"Staging: {result[0]}\nManifest: {result[1]}\nZIP: {result[2]}\nFiles: {len(files)}")
         return 0
     except (OSError, ValueError, subprocess.CalledProcessError) as error:
         print(f"DE JURE CONQUEST RELEASE FAILED: {error}", file=sys.stderr)

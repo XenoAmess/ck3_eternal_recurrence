@@ -1,0 +1,68 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T21:36:54.641123+00:00",
+  "source_HEAD_before_commit": "530dc59fd0a2c3a15e5283abfcf2e2cd00365400",
+  "candidate_manifest_sha256": "8fd05ea688314a1452ab79d136080f972283f56cedbaf1ade8ae842c2055dcb9",
+  "target_paths": [
+    "mod_de_jure_conquest/descriptor.mod",
+    "mod_de_jure_conquest/docs/migration-florin-121003.md",
+    "mod_de_jure_conquest/README.md",
+    "mod_de_jure_conquest/tools/build_release.py",
+    "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+    "mod_de_jure_conquest/tools/product.py",
+    "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+    "mod_de_jure_conquest/tools/validate_static.py",
+    "tools/test_independent_mod_release.py"
+  ],
+  "target_pins": {
+    "mod_de_jure_conquest/descriptor.mod": "81c7f067924bd05ab6c282f76277af287cecd40a6071acb6b62f70931c0107e6",
+    "mod_de_jure_conquest/docs/migration-florin-121003.md": "86734c78030d1d93284a0876fc793cdcfece2434d7725aaa6872ec3d4e6b5800",
+    "mod_de_jure_conquest/README.md": "718b8d60add3218b7638f7e2f0d921b75a73420e1925a783d96fcc144da42768",
+    "mod_de_jure_conquest/tools/build_release.py": "608bba098f7f39d682e06a91a39fab0258cd5d3eb221e00a081717c50489a630",
+    "mod_de_jure_conquest/tools/gen_acceptance_fixture.py": "a548ef52717637ea726b5e3097ee11b4a8f9fb9ad38dd0e23d6bfec3d95c5d27",
+    "mod_de_jure_conquest/tools/product.py": "8fc9855858d48e364a644078828099df83fcd4a5c1b38005d588b67c8a30bf0c",
+    "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py": "aee7289e93a4758ea1c20a4d85e32092e868f71425feb4c14a9db246f32ede8e",
+    "mod_de_jure_conquest/tools/validate_static.py": "9dc75de2b68cdaac8f24d6d665cde2c99211775602eef90b1076f7beebe81d78",
+    "tools/test_independent_mod_release.py": "f868a921f52a45a2b207b229d226da40076598887f76d60bd1b55c7281378f7e"
+  },
+  "source_binding_verified_paths": 35,
+  "actual_commands": [
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\validate_static.py",
+        "--game",
+        "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+        "--release-localization"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\build_release.py",
+        "--check",
+        "--workshop-item-id",
+        "3812510217"
+      ],
+      "exit": 0
+    }
+  ],
+  "original_candidate_checks": {
+    "tests": 19,
+    "strict_product_modules": 5,
+    "runtime_members": 16,
+    "stock_source_pins": 17,
+    "gameplay_five_byte_unchanged": true
+  },
+  "passed": true,
+  "scope": "Exact9 source integration and fresh actual installed static/full shared builder --check. Precommit check artifact uses actualoldHEAD with dirty candidate sources and is software only. Formal exact-tag artifact/Game/fullDJC01-13/Workshop NOT_RUN.",
+  "future_reserved_bytes": 41943040,
+  "free_D": 21646577664
+}

@@ -1,0 +1,249 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "version": "1.21.0.3",
+  "build": 26785313,
+  "EXE_identity_from_Root_actual_receipt_not_Native_qualification": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "stock_pins": [
+    {
+      "path": "game/common/casus_belli_types/_casus_belli.info",
+      "bytes": 11142,
+      "sha256": "b2dca405667a9917cc88e3dcf2a9aef54ac216f82c49e74b5459d45ab0694006",
+      "definition_lines": {}
+    },
+    {
+      "path": "game/common/casus_belli_types/00_invasion_war.txt",
+      "bytes": 35631,
+      "sha256": "ddf5e871a44382dac37a48c2efe3d29f5384d80afda190a2a5f76a8628776335",
+      "definition_lines": {}
+    },
+    {
+      "path": "game/common/casus_belli_types/00_religious_war.txt",
+      "bytes": 89758,
+      "sha256": "731b7554b81ca95dd1e5150636f552e8e84d758b1a03d6b44cf7cdb4e5f7a102",
+      "definition_lines": {}
+    },
+    {
+      "path": "game/common/casus_belli_types/00_dejure_war.txt",
+      "bytes": 30878,
+      "sha256": "8845415e78bf69ca62144758c36b131cb0fbf4f5d5e98fe5fb40725fd5b19eed",
+      "definition_lines": {}
+    },
+    {
+      "path": "game/common/on_action/war_on_actions.txt",
+      "bytes": 68717,
+      "sha256": "d90b0d6d9c63f09a37a0b9eff485d6c0004411d08127eeb2d3833fa2b21db28b",
+      "definition_lines": {
+        "on_war_started": 312
+      }
+    },
+    {
+      "path": "game/common/scripted_effects/00_war_effects.txt",
+      "bytes": 83435,
+      "sha256": "6741fbd7477f0e995c783d70f148d8fe6017d0046ed5261811496ff67d455807",
+      "definition_lines": {
+        "on_declared_war": 143,
+        "show_pow_release_message_effect": 2279,
+        "add_truce_attacker_victory_effect": 1698,
+        "add_truce_white_peace_effect": 1844,
+        "add_truce_attacker_defeat_effect": 2021,
+        "on_lost_aggression_war_discontent_loss": 970
+      }
+    },
+    {
+      "path": "game/common/scripted_effects/00_casus_belli_effects.txt",
+      "bytes": 16191,
+      "sha256": "ca301ea28dfcd29995972ded9a51d5b9c5a3f180901d938c0acac02ccc55856f",
+      "definition_lines": {
+        "modify_allies_of_participants_fame_values": 222
+      }
+    },
+    {
+      "path": "game/common/scripted_effects/00_accolades_scripted_effects.txt",
+      "bytes": 340790,
+      "sha256": "14f55d1163d773900d2be778e9815616fe30a19cf648404769d80efc3ef2e787",
+      "definition_lines": {
+        "accolade_attacker_war_end_glory_gain_high_effect": 1468,
+        "accolade_attacker_war_end_glory_gain_low_effect": 1288,
+        "accolade_defender_war_end_glory_gain_high_effect": 1513,
+        "accolade_defender_war_end_glory_gain_med_effect": 1423
+      }
+    },
+    {
+      "path": "game/common/scripted_effects/06_dlc_ce1_legitimacy_effects.txt",
+      "bytes": 13213,
+      "sha256": "e32cb4689912f2e947dc41ba99f54b94d6936298dfadfdf1dca3e87e82a7668e",
+      "definition_lines": {
+        "add_legitimacy_attacker_victory_effect": 111,
+        "add_legitimacy_attacker_defeat_effect": 135
+      }
+    },
+    {
+      "path": "game/common/scripted_effects/01_dlc_fp1_scripted_effects.txt",
+      "bytes": 33414,
+      "sha256": "440bda9974bed482b305d55f26d6a69dc144ae590ce89337f1640056b0921d4a",
+      "definition_lines": {
+        "fp1_remember_recent_conquest_victory_effect": 913
+      }
+    },
+    {
+      "path": "game/common/scripted_effects/07_dlc_ep3_scripted_effects.txt",
+      "bytes": 351068,
+      "sha256": "7d2b758d3edfa0ea124d5c76aed92ad0b5054db578759c17d3e0c54b5e6f0d2a",
+      "definition_lines": {
+        "laamp_as_mercenary_payout_tooltip_effect": 11836
+      }
+    },
+    {
+      "path": "game/common/script_values/99_casus_belli_values.txt",
+      "bytes": 38930,
+      "sha256": "d3c920b32669eb6d82f9f569c20c63a0627452480f566784b41f91ff4450da0f",
+      "definition_lines": {
+        "common_cb_impious_piety_cost": 557,
+        "common_cb_prestige_cost_multiplier": 715
+      }
+    },
+    {
+      "path": "game/common/script_values/00_war_values.txt",
+      "bytes": 27526,
+      "sha256": "f8fc912174740be27fe8f323ae52ac39903d0580a72dc27a415f7aaa4509acbf",
+      "definition_lines": {
+        "mongol_invasion_cb_ally_prestige": 77,
+        "mongol_invasion_cb_prestige_experience_gain": 74,
+        "mongol_invasion_cb_prestige_gain": 80,
+        "mongol_invasion_cb_prestige_white_peace": 83
+      }
+    },
+    {
+      "path": "game/common/script_values/01_dynamic_values.txt",
+      "bytes": 49847,
+      "sha256": "e782c5a720b2704e23feef3add2252a059aa8340c9f43b216ea9fc28eb91559c",
+      "definition_lines": {
+        "medium_gold_value": 93
+      }
+    },
+    {
+      "path": "game/common/script_values/00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4",
+      "definition_lines": {
+        "medium_stress_impact_gain": 28
+      }
+    },
+    {
+      "path": "game/common/opinion_modifiers/00_war_opinions.txt",
+      "bytes": 2095,
+      "sha256": "750864482d2d6c5d268424a1e03cba24301dedf853722d7fc12cb6f9fbcc68dc",
+      "definition_lines": {
+        "liege_lost_mongol_invasion_war": 64
+      }
+    },
+    {
+      "path": "game/common/story_cycles/ep3_story_cycle_frankokratia.txt",
+      "bytes": 12858,
+      "sha256": "333577c6b7f47de46422a5ca2ac0f116829ff7c7c604eb16e9eefb17e6997839",
+      "definition_lines": {
+        "frankokratia_story": 1
+      }
+    }
+  ],
+  "stock_callbacks_same_scope_documented": "game/common/on_action/war_on_actions.txt:309-310",
+  "CB_API_documentation": "game/common/casus_belli_types/_casus_belli.info:50-86,138-139",
+  "holy_war_UI_optional_default_no_no_new_gameplay_flag_added": true,
+  "gameplay_five_files_unchanged": [
+    {
+      "path": "common/casus_belli_types/duchy_de_jure_greatwar.txt",
+      "sha256": "2bf55d811901828136416689e75917219d00440d5e63ad8aab2d5db4c6d5aeb1"
+    },
+    {
+      "path": "common/casus_belli_types/empire_de_jure_greatwar.txt",
+      "sha256": "dfd554edc5d42be3cbc76b1ced8555f3fa1e25f499189649e4f8e7c693ec0363"
+    },
+    {
+      "path": "common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+      "sha256": "dfff8ebedc4f8bcf744b198324b1be5faa7ab9076d3956fe548e6ddf236ae56d"
+    },
+    {
+      "path": "common/on_action/greatwar.txt",
+      "sha256": "c9e7aa7c3092e633f74413b861357ea9fd0bb7cd6004ef0d38bbe6c3424356cf"
+    },
+    {
+      "path": "common/scripted_effects/djc_war_effects.txt",
+      "sha256": "963e10b91a9f2b4df60396a32b06b6ccce46f3db051d5340d6e1e35b0897941f"
+    }
+  ],
+  "old_292_zip": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\florin266-source-before-public-update-a01\\selected-vanilla-1.21.0-build26622941.zip",
+    "sha256": "dd43be0f5e30f17f19de216c0d3cb4b9ac1871e044707e8293d6feac8e61a72e",
+    "member_count": 292
+  },
+  "old_292_exact_member_evidence": {
+    "common/casus_belli_types/_casus_belli.info": {
+      "member_exists": false
+    },
+    "common/casus_belli_types/00_invasion_war.txt": {
+      "member_exists": false
+    },
+    "common/casus_belli_types/00_religious_war.txt": {
+      "member_exists": false
+    },
+    "common/casus_belli_types/00_dejure_war.txt": {
+      "member_exists": false
+    },
+    "common/on_action/war_on_actions.txt": {
+      "member_exists": false
+    },
+    "common/scripted_effects/00_war_effects.txt": {
+      "member_exists": true,
+      "bytes": 83435,
+      "sha256": "6741fbd7477f0e995c783d70f148d8fe6017d0046ed5261811496ff67d455807",
+      "same_as_actual_current": true
+    },
+    "common/scripted_effects/00_casus_belli_effects.txt": {
+      "member_exists": false
+    },
+    "common/scripted_effects/00_accolades_scripted_effects.txt": {
+      "member_exists": false
+    },
+    "common/scripted_effects/06_dlc_ce1_legitimacy_effects.txt": {
+      "member_exists": false
+    },
+    "common/scripted_effects/01_dlc_fp1_scripted_effects.txt": {
+      "member_exists": false
+    },
+    "common/scripted_effects/07_dlc_ep3_scripted_effects.txt": {
+      "member_exists": false
+    },
+    "common/script_values/99_casus_belli_values.txt": {
+      "member_exists": true,
+      "bytes": 38930,
+      "sha256": "d3c920b32669eb6d82f9f569c20c63a0627452480f566784b41f91ff4450da0f",
+      "same_as_actual_current": true
+    },
+    "common/script_values/00_war_values.txt": {
+      "member_exists": true,
+      "bytes": 27526,
+      "sha256": "f8fc912174740be27fe8f323ae52ac39903d0580a72dc27a415f7aaa4509acbf",
+      "same_as_actual_current": true
+    },
+    "common/script_values/01_dynamic_values.txt": {
+      "member_exists": true,
+      "bytes": 49848,
+      "sha256": "89b4722ceff383d1adb4d8f99faf4decdaa984e9c2cd3c950458eabcd302a141",
+      "same_as_actual_current": false
+    },
+    "common/script_values/00_stress_values.txt": {
+      "member_exists": true,
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4",
+      "same_as_actual_current": true
+    },
+    "common/opinion_modifiers/00_war_opinions.txt": {
+      "member_exists": false
+    },
+    "common/story_cycles/ep3_story_cycle_frankokratia.txt": {
+      "member_exists": false
+    }
+  },
+  "missing_old_12003_4_CB_original_texts_not_reconstructed_from_hash": true,
+  "all_old_Game_Native_GUI_fees_72_matrix_credit_reused": false
+}

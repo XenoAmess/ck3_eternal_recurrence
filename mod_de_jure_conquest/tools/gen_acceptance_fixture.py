@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import io
 import hashlib
 import json
 from pathlib import Path
 import sys
 
-from product import ROOT
+from product import ROOT, SUPPORTED_VERSION
 sys.path.insert(0, str(ROOT / "tools"))
 from extract_auto_upgrade_buildings import parse_clausewitz
 
@@ -29,13 +30,13 @@ def check(condition: str, marker: str) -> str:
 
 
 def generated_files() -> dict[str, bytes]:
-    files = {}
-    def add(relative: str, value: str, *, bom: bool = True):
+    files: dict[str, bytes] = {}
+    def add(relative: str, value: str, *, bom: bool = True) -> None:
         value = value.strip() + "\n"
         if relative.endswith(".txt"):
             parse_clausewitz(value)
         files[relative] = value.encode("utf-8-sig" if bom else "utf-8")
-    add("descriptor.mod", 'version="1.0.0"\nname="De Jure Conquest external acceptance fixture"\nsupported_version="1.20.*"', bom=False)
+    add("descriptor.mod", f'version="1.0.0"\nname="De Jure Conquest external acceptance fixture"\nsupported_version="{SUPPORTED_VERSION}"', bom=False)
     add("common/on_action/djct_on_actions.txt", '''
 # GENERATED FILE: tools/gen_acceptance_fixture.py. Fixture only, never production.
 on_game_start_after_lobby = { on_actions = { djct_initialize } }
@@ -80,7 +81,7 @@ djct.1 = {
 }
 '''
     add("events/djct_init.txt", init)
-    markers = []
+    markers: list[str] = []
     stage = 10
     for tier_index, (tier, goal, county_a, county_b, holder_a, holder_b) in enumerate(TIERS):
         events = ["# GENERATED FILE: tools/gen_acceptance_fixture.py; never upload.\nnamespace = djct"]
@@ -184,7 +185,8 @@ djct.{stage+2} = {{
 
 
 def main() -> int:
-    sys.stdout.reconfigure(encoding="utf-8")
+    if isinstance(sys.stdout, io.TextIOWrapper):
+        sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
