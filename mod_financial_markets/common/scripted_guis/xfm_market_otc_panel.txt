@@ -9,7 +9,17 @@
 }
 xfm_market_otc_next_gui = {
     scope = character
-    is_valid = { is_ai = no var:xfm_ui_otc_has_next = 1 exists = var:xfm_ui_otc_source_coin var:xfm_ui_otc_source_coin = var:xfm_selected_coin }
+    is_valid = {
+        is_ai = no
+        has_variable = xfm_ui_otc_has_next
+        exists = var:xfm_ui_otc_source_coin
+        exists = var:xfm_selected_coin
+        trigger_if = {
+            limit = { has_variable = xfm_ui_otc_has_next exists = var:xfm_ui_otc_source_coin exists = var:xfm_selected_coin }
+            var:xfm_ui_otc_has_next = 1
+            var:xfm_ui_otc_source_coin = var:xfm_selected_coin
+        }
+    }
     effect = {
         change_variable = { name = xfm_ui_otc_offset add = 16 }
         change_variable = { name = xfm_ui_otc_page add = 1 }
@@ -18,7 +28,17 @@ xfm_market_otc_next_gui = {
 }
 xfm_market_otc_previous_gui = {
     scope = character
-    is_valid = { is_ai = no var:xfm_ui_otc_offset >= 16 exists = var:xfm_ui_otc_source_coin var:xfm_ui_otc_source_coin = var:xfm_selected_coin }
+    is_valid = {
+        is_ai = no
+        has_variable = xfm_ui_otc_offset
+        exists = var:xfm_ui_otc_source_coin
+        exists = var:xfm_selected_coin
+        trigger_if = {
+            limit = { has_variable = xfm_ui_otc_offset exists = var:xfm_ui_otc_source_coin exists = var:xfm_selected_coin }
+            var:xfm_ui_otc_offset >= 16
+            var:xfm_ui_otc_source_coin = var:xfm_selected_coin
+        }
+    }
     effect = {
         change_variable = { name = xfm_ui_otc_offset subtract = 16 }
         change_variable = { name = xfm_ui_otc_page subtract = 1 }

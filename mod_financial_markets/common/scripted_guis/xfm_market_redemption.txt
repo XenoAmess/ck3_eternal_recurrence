@@ -21,13 +21,27 @@ xfm_redemption_duration_gui = {
 xfm_redemption_publish_gui = {
  scope = character
  is_valid = {
-  is_ai = no xfm_redemption_controller_trigger = yes
-  var:xfm_selected_coin.var:xfm_listing_state <= 6
-  var:xfm_redemption_price_cents >= 1 var:xfm_redemption_budget_cents >= var:xfm_redemption_price_cents
-  var:xfm_selected_coin.var:xfm_issuer_account.var:xfm_free_cents >= var:xfm_redemption_budget_cents
-  var:xfm_selected_coin = {
-   OR = { NOT = { has_variable = xfm_redemption_next_publish_day } var:xfm_redemption_next_publish_day <= global_var:xfm_exchange.var:xfm_day }
-   OR = { NOT = { exists = var:xfm_redemption_window } AND = { var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day var:xfm_redemption_window.var:xfm_remaining_cents = 0 } }
+  has_variable = xfm_redemption_price_cents
+  has_variable = xfm_redemption_budget_cents
+  exists = var:xfm_selected_coin
+  exists = global_var:xfm_exchange
+  trigger_if = {
+   limit = { has_variable = xfm_redemption_price_cents has_variable = xfm_redemption_budget_cents exists = var:xfm_selected_coin exists = global_var:xfm_exchange }
+   is_ai = no xfm_redemption_controller_trigger = yes
+   var:xfm_selected_coin.var:xfm_listing_state <= 6
+   var:xfm_redemption_price_cents >= 1 var:xfm_redemption_budget_cents >= var:xfm_redemption_price_cents
+   var:xfm_selected_coin.var:xfm_issuer_account.var:xfm_free_cents >= var:xfm_redemption_budget_cents
+   var:xfm_selected_coin = {
+    trigger_if = {
+     limit = { has_variable = xfm_redemption_next_publish_day }
+     var:xfm_redemption_next_publish_day <= global_var:xfm_exchange.var:xfm_day
+    }
+    trigger_if = {
+     limit = { exists = var:xfm_redemption_window }
+     var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day
+     var:xfm_redemption_window.var:xfm_remaining_cents = 0
+    }
+   }
   }
  }
  effect = { xfm_redemption_prepare_publish_effect = yes if = { limit = { scope:xfm_red_publish_ready = 1 } trigger_event = xfm_redemption.1 } }

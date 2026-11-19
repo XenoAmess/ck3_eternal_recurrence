@@ -1,0 +1,40 @@
+# Historical regression input: actual pre-R0033 GUI definitions, not a replacement implementation.
+
+# Source C:\workspace\ck3_eternal_recurrence\mod_financial_markets\common\scripted_guis\xfm_market_otc_panel.txt SHA256 39fb1b6bc878b236087af170b4cedb7fdd2fddf693dfe0c1a9bc2a64cff266e3
+
+xfm_market_otc_next_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_otc_has_next = 1 exists = var:xfm_ui_otc_source_coin var:xfm_ui_otc_source_coin = var:xfm_selected_coin }
+    effect = {
+        change_variable = { name = xfm_ui_otc_offset add = 16 }
+        change_variable = { name = xfm_ui_otc_page add = 1 }
+        xfm_market_ui_otc_targets_effect = yes
+    }
+}
+
+xfm_market_otc_previous_gui = {
+    scope = character
+    is_valid = { is_ai = no var:xfm_ui_otc_offset >= 16 exists = var:xfm_ui_otc_source_coin var:xfm_ui_otc_source_coin = var:xfm_selected_coin }
+    effect = {
+        change_variable = { name = xfm_ui_otc_offset subtract = 16 }
+        change_variable = { name = xfm_ui_otc_page subtract = 1 }
+        xfm_market_ui_otc_targets_effect = yes
+    }
+}
+
+# Source C:\workspace\ck3_eternal_recurrence\mod_financial_markets\common\scripted_guis\xfm_market_redemption.txt SHA256 4bfbf7072680a4553d27721e760cd05ca7cef9f080b2eeed04957302c1a8ae41
+
+xfm_redemption_publish_gui = {
+ scope = character
+ is_valid = {
+  is_ai = no xfm_redemption_controller_trigger = yes
+  var:xfm_selected_coin.var:xfm_listing_state <= 6
+  var:xfm_redemption_price_cents >= 1 var:xfm_redemption_budget_cents >= var:xfm_redemption_price_cents
+  var:xfm_selected_coin.var:xfm_issuer_account.var:xfm_free_cents >= var:xfm_redemption_budget_cents
+  var:xfm_selected_coin = {
+   OR = { NOT = { has_variable = xfm_redemption_next_publish_day } var:xfm_redemption_next_publish_day <= global_var:xfm_exchange.var:xfm_day }
+   OR = { NOT = { exists = var:xfm_redemption_window } AND = { var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day var:xfm_redemption_window.var:xfm_remaining_cents = 0 } }
+  }
+ }
+ effect = { xfm_redemption_prepare_publish_effect = yes if = { limit = { scope:xfm_red_publish_ready = 1 } trigger_event = xfm_redemption.1 } }
+}

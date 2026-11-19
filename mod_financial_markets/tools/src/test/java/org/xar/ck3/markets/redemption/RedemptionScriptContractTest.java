@@ -32,7 +32,8 @@ final class RedemptionScriptContractTest {
         "script_values/xfm_redemption_values.txt", "scripted_triggers/xfm_redemption_triggers.txt",
         "scripted_effects/xfm_redemption_windows.txt", "scripted_effects/xfm_redemption_exchange.txt",
         "scripted_effects/xfm_redemption_ai.txt", "scripted_effects/xfm_market_ui_redemption.txt",
-        "scripted_guis/xfm_market_redemption.txt", "scripted_effects/xfm_finance_attention.txt",
+        "scripted_guis/xfm_market_redemption.txt", "scripted_guis/xfm_market_otc_panel.txt",
+        "scripted_effects/xfm_finance_attention.txt",
         "scripted_effects/xfm_finance_otc.txt", "scripted_effects/xfm_finance_assets.txt",
         "scripted_effects/xfm_finance_cash.txt", "scripted_effects/xfm_finance_init.txt",
         "scripted_effects/xfm_finance_policy.txt", "scripted_triggers/xfm_finance_triggers.txt",
@@ -347,6 +348,174 @@ final class RedemptionScriptContractTest {
         assertEquals(1000000000000L, exact.coin.integer("xfm_redemption_lifetime_units"));
     }
 
+    // These predicates are parsed from the selected production GUI files. The three
+    // historical predicates are immutable regression data, not a second GUI implementation.
+    @Test void hiddenGuiOriginalPredicatesDiagnoseMissingNumericInputsInStrictMode() throws IOException {
+        for (String name : List.of("xfm_market_otc_next_gui", "xfm_market_otc_previous_gui")) {
+            Vm v = vm(); v.strictTriggerInputs = true;
+            Node actor = v.node("fresh-hidden-actor", ""); actor.ai = false;
+            MissingTriggerInput error = assertThrows(MissingTriggerInput.class, () -> historicalHiddenGui(v, name, actor));
+            assertTrue(error.getMessage().contains(name.contains("next") ? "var:xfm_ui_otc_has_next" : "var:xfm_ui_otc_offset"));
+        }
+        Scene s = strictHiddenScene();
+        s.controller.vars.remove("xfm_redemption_price_cents"); s.controller.vars.remove("xfm_redemption_budget_cents");
+        MissingTriggerInput error = assertThrows(MissingTriggerInput.class,
+            () -> historicalHiddenGui(s.v, "xfm_redemption_publish_gui", s.controller));
+        assertTrue(error.getMessage().contains("var:xfm_redemption_price_cents"));
+    }
+
+    @Test void hiddenGuiFreshInputsAreFalseWithoutAnyStrictMissingRead() throws IOException {
+        Vm v = vm(); v.strictTriggerInputs = true;
+        Node actor = v.node("fresh-hidden-actor", ""); actor.ai = false;
+        for (String name : List.of("xfm_market_otc_next_gui", "xfm_market_otc_previous_gui", "xfm_redemption_publish_gui")) {
+            assertFalse(v.validGui(name, actor), name);
+            assertTrue(actor.vars.isEmpty(), "is_valid must not initialize the inputs");
+        }
+    }
+
+    @Test void hiddenGuiPartiallyInitializedInputsRemainQuietAndFalse() throws IOException {
+        for (String name : List.of("xfm_market_otc_next_gui", "xfm_market_otc_previous_gui")) {
+            String numeric = name.contains("next") ? "xfm_ui_otc_has_next" : "xfm_ui_otc_offset";
+            for (String missing : List.of(numeric, "xfm_ui_otc_source_coin", "xfm_selected_coin")) {
+                Vm v = vm(); v.strictTriggerInputs = true;
+                Node actor = hiddenGuiOtcActor(v, true); actor.vars.remove(missing);
+                assertFalse(v.validGui(name, actor), name + " missing " + missing);
+            }
+        }
+        for (String missing : List.of("xfm_redemption_price_cents", "xfm_redemption_budget_cents", "xfm_selected_coin")) {
+            Scene s = strictHiddenScene(); s.controller.vars.remove(missing);
+            assertFalse(s.v.validGui("xfm_redemption_publish_gui", s.controller), missing);
+        }
+    }
+
+    @Test void hiddenGuiStrictModeIsOptInAndOrdinaryAndDoesNotMaskLaterReads() throws IOException {
+        Vm v = vm(); Node actor = v.node("hidden-ai-actor", ""); // is_ai=no is already false
+        assertFalse(v.strictTriggerInputs);
+        assertFalse(historicalHiddenGui(v, "xfm_market_otc_next_gui", actor));
+        v.strictTriggerInputs = true;
+        assertThrows(MissingTriggerInput.class, () -> historicalHiddenGui(v, "xfm_market_otc_next_gui", actor));
+        // The real trigger_if does not enter its body when the existence limit is false.
+        assertFalse(v.validGui("xfm_market_otc_next_gui", actor));
+        assertFalse(v.validGui("xfm_redemption_publish_gui", actor));
+    }
+
+    @Test void hiddenGuiOriginalReferenceComparisonAlsoDiagnosesMissingCoin() throws IOException {
+        for (String name : List.of("xfm_market_otc_next_gui", "xfm_market_otc_previous_gui")) {
+            for (String missing : List.of("xfm_ui_otc_source_coin", "xfm_selected_coin")) {
+                Vm v = vm(); v.strictTriggerInputs = true;
+                Node actor = hiddenGuiOtcActor(v, true); actor.vars.remove(missing);
+                MissingTriggerInput error = assertThrows(MissingTriggerInput.class, () -> historicalHiddenGui(v, name, actor));
+                assertTrue(error.getMessage().contains("var:" + missing), error.getMessage());
+                assertFalse(v.validGui(name, actor));
+            }
+        }
+    }
+
+    @Test void hiddenGuiNextRetainsHasNextAndExactCoinBoundaries() throws IOException {
+        for (int hasNext : List.of(0, 1)) for (boolean sameCoin : List.of(false, true)) {
+            Vm v = vm(); v.strictTriggerInputs = true;
+            Node actor = hiddenGuiOtcActor(v, sameCoin); actor.put("xfm_ui_otc_has_next", hasNext);
+            assertHiddenGuiEquivalent(v, "xfm_market_otc_next_gui", actor, hasNext == 1 && sameCoin);
+        }
+    }
+
+    @Test void hiddenGuiPreviousRetainsZeroAndSixteenOffsetBoundaries() throws IOException {
+        for (int offset : List.of(0, 15, 16, 32)) for (boolean sameCoin : List.of(false, true)) {
+            Vm v = vm(); v.strictTriggerInputs = true;
+            Node actor = hiddenGuiOtcActor(v, sameCoin); actor.put("xfm_ui_otc_offset", offset);
+            assertHiddenGuiEquivalent(v, "xfm_market_otc_previous_gui", actor, offset >= 16 && sameCoin);
+        }
+    }
+
+    @Test void hiddenGuiInitializedOtcButtonsStillRequireThePlayer() throws IOException {
+        for (boolean ai : List.of(false, true)) {
+            Vm v = vm(); v.strictTriggerInputs = true;
+            Node actor = hiddenGuiOtcActor(v, true); actor.ai = ai;
+            assertHiddenGuiEquivalent(v, "xfm_market_otc_next_gui", actor, !ai);
+            assertHiddenGuiEquivalent(v, "xfm_market_otc_previous_gui", actor, !ai);
+        }
+    }
+
+    @Test void hiddenGuiPublishRetainsPriceFloorAndBudgetCoverage() throws IOException {
+        for (long[] terms : List.of(new long[] {0, 100, 0}, new long[] {1, 1, 1},
+                new long[] {20, 19, 0}, new long[] {20, 20, 1})) {
+            Scene s = strictHiddenScene(); s.controller.put("xfm_redemption_price_cents", terms[0]);
+            s.controller.put("xfm_redemption_budget_cents", terms[1]);
+            assertHiddenGuiEquivalent(s.v, "xfm_redemption_publish_gui", s.controller, terms[2] == 1);
+        }
+    }
+
+    @Test void hiddenGuiPublishRetainsRealIssuerFreeAndListingLimits() throws IOException {
+        for (int free : List.of(99, 100)) for (int listing : List.of(6, 7)) {
+            Scene s = strictHiddenScene(); s.issuer.put("xfm_free_cents", free); s.coin.put("xfm_listing_state", listing);
+            assertHiddenGuiEquivalent(s.v, "xfm_redemption_publish_gui", s.controller, free >= 100 && listing <= 6);
+        }
+    }
+
+    @Test void hiddenGuiPublishAbsentCooldownAndExactCurrentDayAreQuiet() throws IOException {
+        for (int nextDay : List.of(-1, 0, 1, 2)) {
+            Scene s = strictHiddenScene();
+            if (nextDay >= 0) s.coin.put("xfm_redemption_next_publish_day", nextDay);
+            assertHiddenGuiEquivalent(s.v, "xfm_redemption_publish_gui", s.controller, nextDay <= 1);
+            assertEquals(nextDay >= 0, s.coin.vars.containsKey("xfm_redemption_next_publish_day"));
+        }
+    }
+
+    @Test void hiddenGuiPublishAbsentOrExpiredEmptyWindowRetainsExactTerms() throws IOException {
+        Scene absent = strictHiddenScene();
+        assertHiddenGuiEquivalent(absent.v, "xfm_redemption_publish_gui", absent.controller, true);
+        assertFalse(absent.coin.vars.containsKey("xfm_redemption_window"));
+        for (int expiry : List.of(0, 1, 2)) for (int remaining : List.of(0, 1)) {
+            Scene s = strictHiddenScene(); Node window = s.v.node("old-window", "xfm_finance_redemption_window");
+            window.put("xfm_expiry_day", expiry); window.put("xfm_remaining_cents", remaining);
+            s.coin.put("xfm_redemption_window", window);
+            assertHiddenGuiEquivalent(s.v, "xfm_redemption_publish_gui", s.controller, expiry <= 1 && remaining == 0);
+            assertEquals(expiry, window.integer("xfm_expiry_day")); assertEquals(remaining, window.integer("xfm_remaining_cents"));
+        }
+    }
+
+    @Test void hiddenGuiPublishStillRequiresActualControllerAndPlayer() throws IOException {
+        Scene other = strictHiddenScene(); other.user.put("xfm_redemption_price_cents", 20); other.user.put("xfm_redemption_budget_cents", 100);
+        assertHiddenGuiEquivalent(other.v, "xfm_redemption_publish_gui", other.user, false);
+        Scene ai = strictHiddenScene(); ai.controller.ai = true;
+        assertHiddenGuiEquivalent(ai.v, "xfm_redemption_publish_gui", ai.controller, false);
+    }
+
+    @Test void hiddenGuiRepeatedReadonlyPollingDoesNotInitializeTermsOrInvokeBusiness() throws IOException {
+        Scene s = strictHiddenScene();
+        Map<Node, Map<String, Datum>> before = new LinkedHashMap<>();
+        s.v.nodes.values().forEach(n -> before.put(n, Map.copyOf(n.vars)));
+        BigDecimal cash = s.v.cashStock(), coins = s.v.coinStock(s.coin);
+        for (int poll = 0; poll < 20; poll++) {
+            assertFalse(s.v.validGui("xfm_market_otc_next_gui", s.controller));
+            assertFalse(s.v.validGui("xfm_market_otc_previous_gui", s.controller));
+            assertTrue(s.v.validGui("xfm_redemption_publish_gui", s.controller));
+        }
+        before.forEach((node, vars) -> assertEquals(vars, node.vars, node.id));
+        assertEquals(before.size(), s.v.nodes.size()); assertEquals(cash, s.v.cashStock()); assertEquals(coins, s.v.coinStock(s.coin));
+        assertEquals("", s.v.lastEvent); assertTrue(s.v.businessPorts.isEmpty());
+    }
+
+    private static Scene strictHiddenScene() throws IOException { Scene s = scene(); s.v.strictTriggerInputs = true; return s; }
+    private static Node hiddenGuiOtcActor(Vm v, boolean sameCoin) {
+        Node actor = v.node("hidden-actor", ""), source = v.node("source-coin", "xfm_finance_coin"); actor.ai = false;
+        actor.put("xfm_ui_otc_has_next", 1); actor.put("xfm_ui_otc_offset", 16); actor.put("xfm_ui_otc_source_coin", source);
+        actor.put("xfm_selected_coin", sameCoin ? source : v.node("other-coin", "xfm_finance_coin")); return actor;
+    }
+    private static void assertHiddenGuiEquivalent(Vm v, String name, Node actor, boolean expected) throws IOException {
+        assertEquals(expected, historicalHiddenGui(v, name, actor), "initialized historical " + name);
+        assertEquals(expected, v.validGui(name, actor), "selected production " + name);
+    }
+    private static boolean historicalHiddenGui(Vm v, String name, Node actor) throws IOException {
+        try (var input = RedemptionScriptContractTest.class.getResourceAsStream("/fixtures/hidden_gui_r0033_before.txt")) {
+            if (input == null) throw new IOException("missing actual historical hidden-GUI regression input");
+            Block source = Clausewitz.parse(new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
+            Block gui = (Block)field(source, name);
+            return v.test(gui.block("is_valid"), new Frame(actor, null, actor));
+        }
+    }
+
+
     private record Scene(Vm v, Node controller, Node user, Node coin, Node issuer, Node maker, Node wallet, Node position) { }
     private static Scene scene() throws IOException {
         Vm v = vm(); Node c = v.node("controller", ""), u = v.node("user", ""), coin = v.node("coin", "xfm_finance_coin"); c.ai = false; u.ai = false;
@@ -406,11 +575,21 @@ final class RedemptionScriptContractTest {
         List<Node> list(String name) { return lists.computeIfAbsent(name, ignored -> new ArrayList<>()); }
     }
     private record Frame(Node here, Node previous, Node root) { Frame enter(Node node) { return new Frame(node, here, root); } }
+    private static final class MissingTriggerInput extends IllegalStateException {
+        private static final long serialVersionUID = 1L;
+        MissingTriggerInput(String expression, Frame frame) {
+            super("Missing trigger input at " + frame.here().id + ": " + expression);
+        }
+    }
     private static final class Vm {
         final Map<String, Block> program; final Map<String, Node> nodes = new LinkedHashMap<>();
         final Map<String, Datum> scopes = new HashMap<>();
         final Map<String, List<Node>> globalLists = new HashMap<>();
         final Node exchange, custodian;
+        // Opt-in adversarial hidden-GUI diagnostic: ordinary AND visits all siblings.
+        // Missing comparison operands are observable; exists/has_variable remain safe.
+        // This models the observed log hazard, not every CK3 evaluation rule.
+        boolean strictTriggerInputs;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries, accountSequence = 1000; String lastEvent = ""; Map<String, Datum> lastEventScopes = Map.of(); final Map<String, Integer> businessPorts = new HashMap<>();
         Vm(Map<String, Block> program) {
             this.program = program; custodian = node("technical-owner", ""); exchange = node("exchange", "xfm_finance_exchange"); exchange.owner = custodian;
@@ -495,7 +674,16 @@ final class RedemptionScriptContractTest {
             }
             return n;
         }
-        boolean test(Block b, Frame f) { for (Entry e : b.entries()) if (!check(e, f)) { if (trace.size() > 40) trace.removeFirst(); trace.add(f.here().id + ":" + e.key() + e.operator() + (e.value() instanceof Atom a ? a.token() : "{...}")); return false; } return true; }
+        boolean test(Block b, Frame f) {
+            boolean all = true;
+            for (Entry e : b.entries()) if (!check(e, f)) {
+                if (trace.size() > 40) trace.removeFirst();
+                trace.add(f.here().id + ":" + e.key() + e.operator() + (e.value() instanceof Atom a ? a.token() : "{...}"));
+                if (!strictTriggerInputs) return false;
+                all = false;
+            }
+            return all;
+        }
         boolean check(Entry e, Frame f) {
             String k = e.key();
             if (k.equals("OR")) return ((Block)e.value()).entries().stream().anyMatch(x -> check(x, f));
@@ -516,9 +704,13 @@ final class RedemptionScriptContractTest {
             }
             if (k.endsWith("_trigger") && program.containsKey(k)) return test(definition(k), f);
             if (e.value() instanceof Block child && !(resolve(k, f) instanceof NumberDatum)) {
-                Datum scope = resolve(k, f); return scope instanceof Node n && test(child, f.enter(n));
+                Datum scope = resolve(k, f);
+                if (strictTriggerInputs && scope == null) throw new MissingTriggerInput(k + " scope predicate", f);
+                return scope instanceof Node n && test(child, f.enter(n));
             }
             Datum left = resolve(k, f), right = evaluate(e.value(), f);
+            if (strictTriggerInputs && (left == null || right == null))
+                throw new MissingTriggerInput(k + " " + e.operator() + " " + (e.value() instanceof Atom a ? a.token() : "{...}"), f);
             if (left instanceof NumberDatum x && right instanceof NumberDatum y) {
                 int cmp = x.value().compareTo(y.value()); return switch (e.operator()) { case "=" -> cmp == 0; case "!=" -> cmp != 0; case ">" -> cmp > 0; case "<" -> cmp < 0; case ">=" -> cmp >= 0; case "<=" -> cmp <= 0; default -> throw new IllegalArgumentException(e.operator()); };
             }

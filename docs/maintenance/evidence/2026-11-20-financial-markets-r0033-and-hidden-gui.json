@@ -1,0 +1,111 @@
+{
+  "schema": "ck3-financial-r0033-and-gui16-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T22:49:00.251703+00:00",
+  "actual_R0033": {
+    "calendar_days": 14,
+    "financial_days": 13,
+    "financial_baseline": 81,
+    "financial_final": 94,
+    "original_notice_day": 56,
+    "stored_delisting_age": 30,
+    "coin_state": 5,
+    "settlement_price_pending": true,
+    "external_units": 100,
+    "cancelled_order_refund_cents": 79,
+    "new_AI_controlled_coins": 10,
+    "normal_close_qualified": true,
+    "Game_exit": 0,
+    "Host_exit": 0,
+    "keeper_exit": 0,
+    "public_run_exit": 2,
+    "release_sequence": 15625,
+    "business_pass": false
+  },
+  "actual_GUI_software": {
+    "new_targeted_tests": 14,
+    "full_financial_tests": 433,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "software": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-gui16-actual01\\SOFTWARE.actual.json",
+      "bytes": 164078,
+      "sha256": "2cf36d8e9f73cbad18504a9e247f182baa6ef999b67500947292df76e6dc00fb"
+    },
+    "new_runtime_verification": false
+  },
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0033-closure-released.actual.json",
+      "bytes": 978,
+      "sha256": "2ebf60346fa001d9d7d81a3c89d03b6452b67b1b9f80a9d963517e34706c6dca"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0033-closure-before-release.actual.json",
+      "bytes": 3161,
+      "sha256": "3c46351dcb9891a4d0905e1f94e2ce7fe3f9bb7d2309a48a9e17a2ff8b2adcae"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-phase0.Root-reviewed01.json",
+      "bytes": 6470,
+      "sha256": "9ce1ef221f2f3b50dd370f65f64466505c35a611fdc8927ea9e2d106170274f1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-phase4.Root-reviewed01.json",
+      "bytes": 5101,
+      "sha256": "3335724b1237b1c71af41dbde97d9800095b68b096f679f764fc6bb7eb5d96a4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-phase14.Root-reviewed01.json",
+      "bytes": 4833,
+      "sha256": "91f889db2eb70d278da982eec391794925f66551943465b8ea9a8bed64466a95"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-day14-01-PIPELINE.actual.json",
+      "bytes": 22973,
+      "sha256": "545481505c50541722c202e5ac90df4596fcea42d1f392cfd496ac5cfff065e4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-day14-01-exact\\readback.json",
+      "bytes": 1024792,
+      "sha256": "66085a57b5bac80ca81382ce54f4b526a9db53da1f0183f8b67e8c5463f65b8e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-day14-toast01.toast-query\\QUERY.actual.json",
+      "bytes": 7103,
+      "sha256": "45634b9c6b6465ea6b5504fba492b6a07e91d29dedc0fdcceac80406af0034c0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-day4-01-offline-summary01\\EVIDENCE.actual.json",
+      "bytes": 46181,
+      "sha256": "63463b3edc7ebf1f20f2cbbd0a8a7e2752c87aebf5401fa9085af52914447dd2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\r0033-hidden-gui-guards-independent-review02\\REVIEW.actual.json",
+      "bytes": 5461,
+      "sha256": "c436296fb17f855361bdd732f039c9c8b05777e097df866d5f27f34e8a4b713a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-hidden-gui-regression01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1065,
+      "sha256": "d773ad045ec9a057f8dbc1380b5492f12eae768b310edf27109ffcbf1b8ba375"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119x\\live\\4-8e1c2f1861--financial-markets--R0033\\case-output\\normal-close-result.json",
+      "bytes": 8702,
+      "sha256": "31fd05ae18d47feddeb9fae31ae2abd6f66d5216a726d58779292d78319003dc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119x\\live\\4-8e1c2f1861--financial-markets--R0033\\native-report.json",
+      "bytes": 2285107,
+      "sha256": "3e620751deb1a8b21187907c3f3a30ee7048adadfeb72044e38b93a4fb61d278"
+    }
+  ],
+  "limits": [
+    "Missing one financial dispatch remains unresolved; no historical backfill.",
+    "Current available empty toast queries give no delivery credit.",
+    "Startup GUI diagnostic log later stayed unchanged; no sole loading-latency attribution.",
+    "Whole product, capacity and first Workshop publication remain incomplete."
+  ]
+}
