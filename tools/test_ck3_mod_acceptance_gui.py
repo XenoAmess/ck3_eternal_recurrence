@@ -80,6 +80,145 @@ class GuiAcceptanceTests(unittest.TestCase):
         self.assertFalse(result['business_pass'])
         self.assertEqual(result['runtime_status'], 'NOT_RUN')
 
+    def vanilla_inputs(self):
+        configuration = {'pdx_settings.txt': gui.pin(self.settings)}
+        for name in gui.CONFIG_NAMES[1:]:
+            path = self.root / ('plain-' + name.replace('/', '-'))
+            path.write_bytes(b'original_plain_configuration=yes\n')
+            configuration[name] = gui.pin(path)
+        self.args.product = self.args.case = 'vanilla-diagnostic'
+        self.write(self.products, {'schema': 'ck3-mod-acceptance-products-v1', 'products': {
+            'vanilla-diagnostic': {'external_mod': True, 'cases': [{'id': 'vanilla-diagnostic',
+                'profile_kind': 'vanilla_diagnostic', 'business_contract_applicable': False,
+                'required_business_evidence': [], 'budgets': {'timeout': 10, 'quit_timeout': 1,
+                'poll_interval': .1, 'max_prepare_bytes': 8192}}]}}})
+        value = {'profile_kind': 'vanilla_diagnostic', 'plain_configuration': configuration,
+                 'mcp_fallback_evidence': [gui.pin(self.fallback)]}
+        self.write(self.inputs, value)
+        return value
+
+    def test_vanilla_public_producer_has_no_product_fixture_or_save_and_freezes_all_inputs(self):
+        self.vanilla_inputs()
+        result = self.prepare()
+        self.assertEqual(result['profile_kind'], 'vanilla_diagnostic')
+        self.assertFalse(result['business_contract_applicable'])
+        profile = Path(result['profile'])
+        self.assertEqual(gui.read_json(profile / 'dlc_load.json'), {'enabled_mods': [], 'disabled_dlcs': []})
+        self.assertEqual(set(result['profile_files']), {*gui.CONFIG_NAMES, 'dlc_load.json'})
+        self.assertFalse((profile / 'mod-content').exists())
+        self.assertFalse((profile / 'mod').exists())
+        self.assertFalse((profile / 'save games').exists())
+        self.assertFalse((profile / 'shadercache').exists())
+        self.assertEqual(gui.read_json(result['product_inventory']['path'])['product_files'], [])
+        self.assertIn('l_simp_chinese', (profile / 'pdx_settings.txt').read_text(encoding='utf-8'))
+        for row in result['inputs']:
+            gui.check_pin(row)
+        self.write(self.args.prepare_output / 'prepared-case.json', result)
+        self.args.prepared_case = self.args.prepare_output / 'prepared-case.json'
+        source = Path(result['case_inputs']['plain_configuration']['tutorial.txt']['path'])
+        source.write_bytes(b'changed original configuration')
+        with patch.object(gui.GuiSelection, 'lease', return_value=(self.lease_module, None, None, None, self.root)):
+            with self.assertRaises(ValueError):
+                gui.GuiSelection(self.args).preflight()
+
+    def test_vanilla_rejects_product_warm_save_fixture_and_unknown_inputs_before_writing(self):
+        original = self.vanilla_inputs()
+        for field in ('staging', 'formal_manifest', 'fixture', 'fixture_manifest', 'save', 'warm_cache',
+                      'debug_mode', 'source_repo', 'unknown'):
+            with self.subTest(field=field):
+                self.write(self.inputs, {**original, field: None})
+                with self.assertRaisesRegex(ValueError, 'only its explicit kind'):
+                    self.prepare()
+                self.assertFalse(self.args.prepare_output.exists())
+
+    def test_vanilla_rejects_missing_wrong_or_changed_configuration_and_fallback(self):
+        original = self.vanilla_inputs()
+        invalid = [
+            {**original, 'plain_configuration': {}},
+            {**original, 'mcp_fallback_evidence': []},
+            {**original, 'mcp_fallback_evidence': True},
+            {**original, 'mcp_fallback_evidence': [{**gui.pin(self.fallback), 'bytes': True}]},
+            {**original, 'profile_kind': True},
+        ]
+        for value in invalid:
+            self.write(self.inputs, value)
+            with self.assertRaises((ValueError, TypeError)):
+                self.prepare()
+            self.assertFalse(self.args.prepare_output.exists())
+        self.write(self.inputs, original)
+        self.fallback.write_bytes(b'tampered fallback')
+        with self.assertRaises(ValueError):
+            self.prepare()
+        self.assertFalse(self.args.prepare_output.exists())
+
+    def test_vanilla_kind_cannot_relabel_a_product_or_business_case(self):
+        value = self.vanilla_inputs()
+        products = gui.read_json(self.products)
+        products['products']['sample'] = products['products']['vanilla-diagnostic']
+        self.write(self.products, products)
+        self.args.product = 'sample'
+        with self.assertRaisesRegex(ValueError, 'cannot declare a product business'):
+            gui.dispatch(self.args)
+        self.args.product = 'vanilla-diagnostic'
+        products['products']['vanilla-diagnostic']['cases'][0]['business_contract_applicable'] = True
+        self.write(self.products, products)
+        with self.assertRaisesRegex(ValueError, 'cannot declare a product business'):
+            gui.dispatch(self.args)
+        self.args.product = 'sample'
+        self.args.case = 'core'
+        products['products']['sample']['cases'][0]['id'] = 'core'
+        self.write(self.products, products)
+        with self.assertRaisesRegex(ValueError, 'dedicated case'):
+            gui.dispatch(self.args)
+
+    def test_vanilla_review_roundtrip_certifies_only_diagnostic_and_preserves_raw_error(self):
+        self.vanilla_inputs()
+        prepared = self.prepare()
+        run = self.root / 'diagnostic-run'
+        run.mkdir()
+        self.args.prepared_case = self.args.prepare_output / 'prepared-case.json'
+        context = {'product': self.args.product, 'case': self.args.case,
+            'runtime_manifest': gui.pin(self.manifest), 'run_id': 'actual-diagnostic-run',
+            'run_dir': str(run), 'identity': {'machine_id': 'fixture-machine'}}
+        self.args.run_context = self.root / 'context.json'
+        self.write(self.args.run_context, context)
+        self.write(run / 'game-started.json', {'pid': 123, 'run_id': context['run_id']})
+        self.write(run / 'game-exit.json', {'pid': 123, 'process_pass': True, 'actual_original_popen_wait': True})
+        self.write(run / 'keeper-report.json', {'thread_exited': True, 'failure': None})
+        self.write(run / 'screen-release.json', {'ok': True})
+        raw = run / 'raw-error.log'
+        raw.write_bytes(b'actual retained stock diagnostic, never filtered')
+        image = run / 'actual-close.png'
+        image.write_bytes(b'offline fixture, not a real screenshot')
+        review = {'schema': 'ck3-mod-acceptance-vanilla-diagnostic-review-v1',
+            'run_id': context['run_id'], 'case': self.args.case, 'machine_id': 'fixture-machine',
+            'direct_image_review': True, 'reviewer': 'offline-fixture', 'normal_gui_quit': True,
+            'normal_quit_evidence': [gui.pin(image)], 'observations': [gui.pin(raw)], 'passed': True}
+        self.write(run / 'diagnostic-review.json', review)
+        self.args.mode = 'verify'
+        result = gui.dispatch(self.args)
+        self.assertTrue(result['diagnostic_pass'])
+        self.assertTrue(result['case_acceptance_pass'])
+        for field in ('business_contract_applicable', 'gui_business_pass', 'business_pass',
+                      'product_release_pass', 'native_capability_pass', 'baseline_error_waiver'):
+            self.assertIs(result[field], False)
+        self.assertEqual(raw.read_bytes(), b'actual retained stock diagnostic, never filtered')
+        for field,value in (('machine_id', 'foreign'), ('run_id', 'foreign'), ('normal_gui_quit', False),
+                            ('observations', [])):
+            self.write(run / 'diagnostic-review.json', {**review, field: value})
+            with self.assertRaises(ValueError):
+                gui.dispatch(self.args)
+        self.write(run / 'diagnostic-review.json', review)
+        raw.write_bytes(b'tampered raw log')
+        with self.assertRaises(ValueError):
+            gui.dispatch(self.args)
+
+    def test_vanilla_plan_explicitly_has_no_product_business_contract(self):
+        self.vanilla_inputs()
+        result = gui.dispatch(self.args)
+        self.assertEqual(result['required_business_evidence'], [])
+        self.assertFalse(result['business_contract_applicable'])
+
     def test_prepare_exact_isolated_chinese_profile_and_warm_cache(self):
         cache = self.root / 'warm'
         cache.mkdir()

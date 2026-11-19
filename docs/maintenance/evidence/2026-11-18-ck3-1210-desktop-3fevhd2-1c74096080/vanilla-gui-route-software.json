@@ -1,0 +1,48 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T21:12:46.918566+00:00",
+  "passed": true,
+  "runs": [
+    {
+      "name": "tests",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "-v",
+        "test_ck3_mod_acceptance_gui"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 4.755612000008114
+    },
+    {
+      "name": "mypy",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "tools/ck3_mod_acceptance_gui.py"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 2.598933700006455
+    }
+  ],
+  "source_sha256": {
+    "tools\\ck3_mod_acceptance_gui.py": "0568dd3f85a279e56eb5910c6e2e04a5bb1e62bc04385cd5d5ae77677a61bfa2",
+    "tools\\test_ck3_mod_acceptance_gui.py": "30b6261cc5747e2666d8ba13bbea0fb638baf4646afe0bd998ffaf73209d38a0"
+  },
+  "scope": "Whole original GUI acceptance module including actual shared pure materializer, preparation->preflight/verify; fakeEXE/process only, no actual CLI/runtime installation/Steam/Game or baseline diagnostic yet. Type coverage full modified production module at existing default strictness, imports silent/ignoremissing, not strict whole legacy file.",
+  "future_reserved_bytes": 0,
+  "free_D": 21823111168
+}

@@ -12,6 +12,7 @@ import json
 import math
 import os
 from pathlib import Path
+from typing import Literal, TypedDict
 import re
 import shutil
 import subprocess
@@ -21,7 +22,64 @@ import time
 import uuid
 
 from ck3_mod_acceptance_keeper import check_pin, pin, read_json, require, utc, write_new
-from ck3_mod_acceptance_prepare import _outer_from_inner, checked_copy
+from ck3_mod_acceptance_prepare import CONFIG_NAMES, _outer_from_inner, checked_copy, materialize_product_profile
+from ck3_mod_acceptance_background_types import FilePin, file_pin, json_object
+
+
+class VanillaDiagnosticInputs(TypedDict):
+    profile_kind: Literal['vanilla_diagnostic']
+    plain_configuration: dict[str, FilePin]
+    mcp_fallback_evidence: list[FilePin]
+
+
+class VanillaDiagnosticPrepared(TypedDict):
+    schema: Literal['ck3-mod-acceptance-gui-prepared-v1']
+    profile_kind: Literal['vanilla_diagnostic']
+    product: str
+    case: str
+    runtime_manifest: FilePin
+    inputs: list[FilePin]
+    profile: str
+    profile_files: dict[str, FilePin]
+    case_inputs: VanillaDiagnosticInputs
+    prepared_bytes: int
+    product_inventory: FilePin
+    fixture_mounted: Literal[False]
+    runtime_status: Literal['NOT_RUN']
+    business_contract_applicable: Literal[False]
+    business_pass: Literal[False]
+
+
+class VanillaDiagnosticVerification(TypedDict):
+    status: Literal['PASS', 'INCOMPLETE']
+    process_pass: bool
+    closure_pass: bool
+    diagnostic_pass: bool
+    case_acceptance_pass: bool
+    business_contract_applicable: Literal[False]
+    gui_business_pass: Literal[False]
+    business_pass: Literal[False]
+    product_release_pass: Literal[False]
+    native_capability_pass: Literal[False]
+    baseline_error_waiver: Literal[False]
+    evidence: list[FilePin]
+
+
+def parse_vanilla_diagnostic_inputs(value: object) -> VanillaDiagnosticInputs:
+    row = json_object(value)
+    if set(row) != {'profile_kind', 'plain_configuration', 'mcp_fallback_evidence'}:
+        raise ValueError('Vanilla diagnostic requires only its explicit kind, four configurations and fallback pins')
+    if row['profile_kind'] != 'vanilla_diagnostic':
+        raise ValueError('Explicit vanilla_diagnostic profile kind required')
+    configuration = json_object(row['plain_configuration'])
+    if set(configuration) != set(CONFIG_NAMES):
+        raise ValueError('Exactly four plain configurations required for vanilla diagnostic')
+    fallback = row['mcp_fallback_evidence']
+    if not isinstance(fallback, list) or not fallback:
+        raise ValueError('Actual MCP fallback evidence pins required')
+    return VanillaDiagnosticInputs(profile_kind='vanilla_diagnostic',
+        plain_configuration={name: file_pin(item) for name, item in configuration.items()},
+        mcp_fallback_evidence=[file_pin(item) for item in fallback])
 
 
 def load_module(path, name):
@@ -102,6 +160,14 @@ class GuiSelection:
         require(len(matches) == 1, 'Exactly one GUI business case required')
         self.case = matches[0]
         self.workshop_cache = args.case == 'workshop_cache'
+        self.vanilla_diagnostic = args.case == 'vanilla-diagnostic'
+        require((self.case.get('profile_kind') == 'vanilla_diagnostic') == self.vanilla_diagnostic,
+                'Vanilla diagnostic must use its dedicated case and profile kind')
+        if self.vanilla_diagnostic:
+            require(args.product == 'vanilla-diagnostic' and
+                    self.case.get('business_contract_applicable') is False and
+                    self.case.get('required_business_evidence') == [],
+                    'Vanilla diagnostic cannot declare a product business contract')
         for obj in (self.product, self.case):
             require(not set(obj) & {'host', 'source_root', 'source_index', 'native', 'dll', 'injector',
                                    'engine', 'host_args', 'host_features', 'profile_features', 'execution_mode'},
@@ -166,6 +232,9 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
     inputs = read_json(args.case_inputs)
     if selection.workshop_cache:
         return prepare_workshop_cache(selection, inputs)
+    if selection.vanilla_diagnostic:
+        return dict(prepare_vanilla_diagnostic(selection, inputs))
+    require('profile_kind' not in inputs, 'Diagnostic inputs cannot select a product preparation')
     required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
     require(required <= inputs.keys(), 'Missing explicit GUI case inputs')
     staging = Path(inputs['staging']).resolve()
@@ -203,8 +272,8 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
     if inputs.get('plain_configuration'):
         configuration = dict(inputs['plain_configuration'])
         configuration['pdx_settings.txt'] = inputs['settings']
-        result = materialize_saved_profile_v2({'state_dir': str(state), 'output': str(out)}, staging, configuration, source_role="formal_product")
-        profile = Path(result['profile'])
+        materialized = materialize_saved_profile_v2({'state_dir': str(state), 'output': str(out)}, staging, configuration, source_role="formal_product")
+        profile = Path(materialized['profile'])
     else:
         # Product-only helper requires four legacy plain files. This route has
         # only a settings seed; reuse its copier and outer-descriptor projection.
@@ -233,7 +302,7 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
             checked_copy(row, profile / 'shadercache' / relative)
     if saved:
         checked_copy(saved, profile / 'save games' / Path(saved['path']).name)
-    result = {'schema': 'ck3-mod-acceptance-gui-prepared-v1', 'product': args.product, 'case': args.case,
+    result: dict[str, object] = {'schema': 'ck3-mod-acceptance-gui-prepared-v1', 'product': args.product, 'case': args.case,
               'runtime_manifest': selection.manifest_ref, 'inputs': pins, 'profile': str(profile),
               'profile_files': inventory(profile), 'case_inputs': inputs, 'prepared_bytes': total,
               'runtime_status': 'NOT_RUN', 'business_pass': False}
@@ -243,6 +312,71 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
         result['product_source'] = {'repo': str(product_repo), 'head': module.checkout_head(product_repo)}
     write_new(out / 'prepared-case.json', result)
     return result
+
+
+def prepare_vanilla_diagnostic(selection: GuiSelection, value: object) -> VanillaDiagnosticPrepared:
+    """Use the existing zero-product materializer; allocate/run retain custody."""
+    require(selection.vanilla_diagnostic, 'Dedicated vanilla diagnostic selection required')
+    inputs = parse_vanilla_diagnostic_inputs(value)
+    pins = [pin(selection.args.case_inputs), pin(selection.products_path), pin(selection.runtime_path),
+            pin(Path(__file__).with_name('ck3_mod_acceptance_prepare.py'))]
+    pins.extend(check_pin(row) for row in inputs['plain_configuration'].values())
+    pins.extend(check_pin(row) for row in inputs['mcp_fallback_evidence'])
+    settings_source = inputs['plain_configuration']['pdx_settings.txt']
+    settings = chinese_settings(Path(settings_source['path']).read_text(encoding='utf-8-sig'))
+    total = sum(row['bytes'] for row in inputs['plain_configuration'].values())
+    total += len(settings.encode('utf-8')) + 4096  # replacement settings and generated load JSON
+    require(total <= selection.budgets['max_prepare_bytes'], 'Prepared input exceeds allocated byte budget')
+    require(shutil.disk_usage(selection.paths['userdir_root'].parent).free > total,
+            'Insufficient free space for declared preparation')
+    out = Path(selection.args.prepare_output).resolve()
+    require(not out.exists(), 'Use a new prepare output')
+    out.mkdir(parents=True)
+    state = selection.paths['userdir_root'] / ('gui-' + uuid.uuid4().hex)
+    result = materialize_product_profile({'state_dir': str(state), 'output': str(out)}, None,
+                                         inputs['plain_configuration'])
+    profile = Path(result['profile'])
+    (profile / 'pdx_settings.txt').write_text(settings, encoding='utf-8', newline='\n')
+    require(read_json(profile / 'dlc_load.json') == {'enabled_mods': [], 'disabled_dlcs': []},
+            'Vanilla diagnostic cannot enable any mod')
+    prepared: VanillaDiagnosticPrepared = {'schema': 'ck3-mod-acceptance-gui-prepared-v1',
+        'profile_kind': 'vanilla_diagnostic', 'product': selection.args.product, 'case': selection.args.case,
+        'runtime_manifest': selection.manifest_ref, 'inputs': pins, 'profile': str(profile),
+        'profile_files': inventory(profile), 'case_inputs': inputs, 'prepared_bytes': total,
+        'product_inventory': file_pin(result['product_inventory']), 'fixture_mounted': False,
+        'runtime_status': 'NOT_RUN', 'business_contract_applicable': False, 'business_pass': False}
+    write_new(out / 'prepared-case.json', prepared)
+    return prepared
+
+
+def verify_vanilla_diagnostic(selection: GuiSelection, process_pass: bool,
+                              closure_pass: bool) -> VanillaDiagnosticVerification:
+    """Certify completion of a retained diagnostic, never product/error waiver."""
+    require(selection.vanilla_diagnostic and selection.prepared and selection.context,
+            'Prepared allocated vanilla diagnostic required')
+    require(selection.prepared.get('profile_kind') == 'vanilla_diagnostic', 'Diagnostic profile kind changed')
+    parse_vanilla_diagnostic_inputs(selection.prepared['case_inputs'])
+    profile = Path(selection.prepared['profile'])
+    require(read_json(profile / 'dlc_load.json') == {'enabled_mods': [], 'disabled_dlcs': []} and
+            not (profile / 'mod-content').exists(), 'Vanilla diagnostic mounted product content')
+    review = read_json(Path(selection.context['run_dir']) / 'diagnostic-review.json')
+    require(review.get('schema') == 'ck3-mod-acceptance-vanilla-diagnostic-review-v1' and
+            review.get('run_id') == selection.context['run_id'] and review.get('case') == 'vanilla-diagnostic' and
+            review.get('machine_id') == selection.context['identity']['machine_id'] and
+            review.get('direct_image_review') is True and isinstance(review.get('reviewer'), str) and
+            review['reviewer'].strip(), 'Diagnostic review source identity differs')
+    require(review.get('normal_gui_quit') is True and review.get('normal_quit_evidence'),
+            'Actual normal in-game Quit evidence required')
+    observations = review.get('observations')
+    require(isinstance(observations, list) and observations, 'Retained diagnostic observations required')
+    evidence = [check_pin(file_pin(row)) for row in observations]
+    evidence.extend(check_pin(file_pin(row)) for row in review['normal_quit_evidence'])
+    passed = process_pass and closure_pass and review.get('passed') is True
+    return {'status': 'PASS' if passed else 'INCOMPLETE', 'process_pass': process_pass,
+            'closure_pass': closure_pass, 'diagnostic_pass': passed, 'case_acceptance_pass': passed,
+            'business_contract_applicable': False, 'gui_business_pass': False, 'business_pass': False,
+            'product_release_pass': False, 'native_capability_pass': False, 'baseline_error_waiver': False,
+            'evidence': evidence}
 
 
 def workshop_cache_context(selection, output, state, inputs):
@@ -529,7 +663,7 @@ def run(selection):
             'process': exited, 'error': failure, 'business_pass': False, 'native_injection': False}
 
 
-def verify(selection):
+def verify(selection: GuiSelection) -> dict[str, object]:
     require(selection.context, 'Allocated run context required')
     root = Path(selection.context['run_dir'])
     process = read_json(root / 'game-exit.json') if (root / 'game-exit.json').exists() else {}
@@ -541,9 +675,11 @@ def verify(selection):
         keeper = read_json(root / 'keeper-report.json')
         release = read_json(root / 'screen-release.json')
         closure = keeper.get('thread_exited') is True and keeper.get('failure') is None and release.get('ok') is True
+    if selection.vanilla_diagnostic:
+        return dict(verify_vanilla_diagnostic(selection, bool(process_pass), closure))
     if selection.workshop_cache:
         loaded = workshop_cache_log_load(selection, start) if start else {'loaded': False}
-        reviewed = []
+        reviewed: list[FilePin] = []
         normal = False
         review_path = root / 'cache-review.json'
         if review_path.exists():
@@ -596,9 +732,9 @@ def dispatch(args):
     if args.mode == 'plan':
         return {'execution_mode': 'gui_only', 'runtime_manifest': selection.manifest_ref,
                 'product': args.product, 'case': args.case, 'budgets': selection.budgets,
-                'required_business_evidence': ([] if selection.workshop_cache else
+                'required_business_evidence': ([] if selection.workshop_cache or selection.vanilla_diagnostic else
                                                selection.case['required_business_evidence']),
-                'business_contract_applicable': not selection.workshop_cache,
+                'business_contract_applicable': not (selection.workshop_cache or selection.vanilla_diagnostic),
                 'runtime_status': 'NOT_RUN', 'business_pass': False}
     if args.mode == 'preflight':
         return selection.preflight()
