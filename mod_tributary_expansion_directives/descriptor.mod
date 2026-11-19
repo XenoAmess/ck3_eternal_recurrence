@@ -1,8 +1,8 @@
-version="1.0.1"
+version="1.0.2"
 tags={
 	"Gameplay"
-	"1.20 'Crozier'"
+	"1.21 'Florin'"
 }
 name="Tributary Expansion Directives — 驱策朝贡国"
 picture="thumbnail.png"
-supported_version="1.20.0.4"
+supported_version="1.21.0.3"

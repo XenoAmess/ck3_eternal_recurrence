@@ -1,0 +1,203 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T17:52:58.961498+00:00",
+  "game_version": "1.21.0.3",
+  "steam_build_id": "26785313",
+  "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "qualification": "SOURCE_AND_NOGAME_SOFTWARE_PASS_NOT_LOADED",
+  "source_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-port-a01\\REVIEW.txt",
+    "bytes": 12083,
+    "sha256": "0234d4416594cbf1a1eb6b1c7ea970fb2d751176788880e9995e040d78aa4df6"
+  },
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-port-a01\\candidate-manifest.json",
+    "bytes": 4198,
+    "sha256": "0c90e2b21e4da4d9e29395d3262aee6ced362cc577925580756c72cfe9064077"
+  },
+  "actual_initial_compile_and_disk_NoGame": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T17:39:41.577796+00:00",
+    "target": "xar_ck3_121003_26785313_core_static_test",
+    "actual_TUs": 1,
+    "results": [
+      {
+        "name": "compile",
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+          "/nologo",
+          "/std:c++20",
+          "/O2",
+          "/MD",
+          "/EHsc",
+          "/W4",
+          "/WX",
+          "/permissive-",
+          "/DNOMINMAX",
+          "/DWIN32_LEAN_AND_MEAN",
+          "/DXAR_CK3_26785313_OFFLINE_FIXTURE=1",
+          "/ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev\\native_bridge\\include",
+          "/ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev\\native_bridge\\src",
+          "/ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+          "/ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src",
+          "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev\\native_bridge\\src\\ck3_121003_readonly26785313_static_test.cpp",
+          "/FoD:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\core26785313.obj",
+          "/FeD:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\core26785313-static-test.exe",
+          "/link",
+          "/INCREMENTAL:NO",
+          "bcrypt.lib"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 4.8418486999871675,
+        "tail": "ck3_121003_readonly26785313_static_test.cpp\r\n"
+      },
+      {
+        "name": "NoGame",
+        "command": [
+          "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\core26785313-static-test.exe",
+          "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.932376499986276,
+        "tail": "PASS exact26785313 disk SHA/PE windows; real Core reader synthetic signed-ID/resources/drift; legacy routing closed; no Game code executed; LIVE NOT_RUN\r\n"
+      }
+    ],
+    "passed": true,
+    "qualification": "NoGame source/fixture only; no Game code execution, loaded DLL, HELLO, Full, Native GUI or actions.",
+    "candidate_originals_unchanged": true,
+    "remaining_reservation_bytes": 0,
+    "retained_build_bytes": 478913,
+    "free_D_after": 21771010048
+  },
+  "actual_final_finite_unit": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T17:46:29.690333+00:00",
+    "checks": [
+      {
+        "name": "compile",
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+          "/nologo",
+          "/std:c++20",
+          "/O2",
+          "/MD",
+          "/EHsc",
+          "/W4",
+          "/WX",
+          "/permissive-",
+          "/DNOMINMAX",
+          "/DWIN32_LEAN_AND_MEAN",
+          "/DXAR_CK3_26785313_OFFLINE_FIXTURE=1",
+          "/ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev\\native_bridge\\include",
+          "/ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev\\native_bridge\\src",
+          "/ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+          "/ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src",
+          "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev\\native_bridge\\src\\ck3_121003_readonly26785313_static_test.cpp",
+          "/FoD:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\core26785313.obj",
+          "/FeD:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\core26785313-static-test.exe",
+          "/link",
+          "/INCREMENTAL:NO",
+          "bcrypt.lib"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 4.1074453000037465,
+        "tail": "ck3_121003_readonly26785313_static_test.cpp\r\n"
+      },
+      {
+        "name": "actual-disk-NoGame",
+        "command": [
+          "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\core26785313-static-test.exe",
+          "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.9502969000022858,
+        "tail": "PASS exact26785313 disk SHA/PE windows; real Core reader synthetic signed-ID/resources/drift; legacy routing closed; no Game code executed; LIVE NOT_RUN\r\n"
+      },
+      {
+        "name": "CI-source-synthetic",
+        "command": [
+          "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\core26785313-static-test.exe",
+          "--synthetic-image"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.02395780000369996,
+        "tail": "PASS SOURCE_ONLY synthetic PE/Core/actor/resources/drift; EXE NOT_CHECKED; LIVE NOT_RUN\r\n"
+      }
+    ],
+    "passed": true,
+    "actual_TUs": 1,
+    "native_DLL_Game_HELLO_Full_GUI": "NOT_RUN",
+    "CMake_and_full_CI_job": "NOT_RUN",
+    "remaining_build_reservation_bytes": 0,
+    "incremental_reuse": "Same dev/output/object/executable paths as first actual1TU build; only changed finite test source copied. Prior results retained; mutable developer exe/object updated.",
+    "retained_build_logical_bytes": 507019,
+    "free_D": 21760778240
+  },
+  "actual_production_macro_OFF_compile": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T17:50:45.399498+00:00",
+    "command": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+      "/nologo",
+      "/std:c++20",
+      "/O2",
+      "/MD",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/DNOMINMAX",
+      "/DWIN32_LEAN_AND_MEAN",
+      "/ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+      "/c",
+      "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_v1.cpp",
+      "/FoD:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\readonly26785313-production.obj"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.481717699993169,
+    "tail": "ck3_121003_readonly26785313_v1.cpp\r\n",
+    "scope": "Exactly1 actual production reader TU, offline fixture macro absent. Compile-only/no DLL link/no Game. Finite synthetic/direct-disk runner has a separate actual TU.",
+    "remaining_native_build_reservation_bytes": 0
+  },
+  "actual_distinct_compiler_TUs": 2,
+  "CMake_full_CI_job": "NOT_RUN",
+  "CI_registration": "Persistent static-ci builds finite synthetic executable and production compile-only object; CTest executes explicit --synthetic-image and claims EXE NOT_CHECKED/LIVE NOT_RUN. Actual disk NoGame is separate and local. Existing configured native-florin-core-ci directory is reused.",
+  "default_production_option": "XAR_CK3_ENABLE_121003_26785313_READONLY_V1=OFF",
+  "wire_adapter_HELLO_Full_GUI_or_Game": "NOT_RUN",
+  "new_Native_identity_permission_added": false,
+  "observed_build_retained_bytes": 553573,
+  "measured_compiler_TEMP_peak": "NOT_SAMPLED; admission16MiB based on finite1TU closure/Release outputs, not a measured peak PASS",
+  "base_actual_source_closure_files": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_readonly26785313_v1.hpp",
+      "bytes": 3171,
+      "sha256": "b1c8fece198966f8702cba52e893d372de0b0e5f20a9f445fc990b45dd6f7f1e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_readonly26785313_pins_v1.hpp",
+      "bytes": 6029,
+      "sha256": "d8d2a28dbd7809abb0a4ea909b96212fae66b4e36bf3a59098d9e3a65d39da34"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 10744,
+      "sha256": "aad1e16a3dcd4ccdb5dccbd65b8d89671e49760f07a5fccaf844f8cbe7b63fb7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_static_test.cpp",
+      "bytes": 9861,
+      "sha256": "a8b70e4c229a939a1a8a7268ec6cde7d2133cf7a3a1e52f282a82d0e0e4f97dc"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_core.cpp",
+      "bytes": 5526,
+      "sha256": "c5c3fd3fb6ee3e5774b65d9e9efced4f6e832510216208e8a04bb24edf5b6a6f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\cmake\\readonly26785313_core_v1.cmake",
+      "bytes": 1984,
+      "sha256": "6757ce1537ecf63656200d38a3e3fa6bb7b684b7d2936d41a2fbd345aea080e2"
+    }
+  ],
+  "retention_review_at_utc": "2027-05-18T17:55:00Z"
+}

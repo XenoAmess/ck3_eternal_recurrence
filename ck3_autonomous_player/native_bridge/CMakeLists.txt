@@ -10652,3 +10652,6 @@ include(cmake/save_mapped61.cmake)
 include(cmake/hotfix26757580_personal_cash_v2.cmake)
 
 include(cmake/council_observation67.cmake)
+
+# Explicit isolated exact26785313 readonly source; no adapter/wire capability.
+include(cmake/readonly26785313_core_v1.cmake)

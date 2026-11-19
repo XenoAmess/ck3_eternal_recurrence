@@ -97,6 +97,12 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^(xar_ck3_native_bridge_1210_(identity|core_frame|core_control|timeline_mailbox|application_exit|personal_gold|actor_foundation|full_snapshot|full_clock_request|daily_final_hook|date_sentinel|date_sentinel_request|date_worker_game_access|monthly_flow|personal_cash|personal_cash_frame|player_armies|army_base|full_army_snapshot|active_wars)|xar_ck3_fresh_full_state_handler_ack12004(_write_failure)?)$" --no-tests=error --output-on-failure
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test 26785313 source-only Core fixture without game files
+        run: |
+          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-florin-core-ci" --configuration Release --jobs 1 --build --target xar_ck3_121003_26785313_core_static_test xar_ck3_121003_26785313_readonly_compile
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^xar_ck3_121003_26785313_core_synthetic$" --no-tests=error --output-on-failure
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test native Workshop publication text bounds without Steam
         env:
           PYTHONPATH: ck3_workshop_mcp/src

@@ -3,6 +3,10 @@
 from __future__ import annotations
 
 import copy
+from dataclasses import replace
+import hashlib
+import tempfile
+from unittest.mock import patch
 from pathlib import Path
 import unittest
 
@@ -71,6 +75,73 @@ class TributaryExpansionDisplayTests(unittest.TestCase):
                 errors = gate.interaction_localization_errors(self.interaction, localized)
                 self.assertEqual(len(errors), 1)
                 self.assertIn("display token", errors[0])
+
+
+class TributaryVanillaSourceTests(unittest.TestCase):
+    def seed(self, directory: Path) -> tuple[gate.VanillaDefinitionPin, ...]:
+        bodies: dict[str, list[str]] = {}
+        pins = []
+        for pin in gate.VANILLA_PINS:
+            body = f'{pin.name} = {{ test_literal = "{pin.name}" }}\n'
+            bodies.setdefault(pin.relative_path, []).append(body)
+            pins.append(replace(pin, sha256=hashlib.sha256(body.encode()).hexdigest()))
+        for relative, definitions in bodies.items():
+            path = directory / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("".join(definitions), encoding="utf-8-sig", newline="\r\n")
+        return tuple(pins)
+
+    def test_all_callback_paths_normalize_crlf_and_allow_unrelated_definitions(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            pins = self.seed(directory)
+            with patch.object(gate, "VANILLA_PINS", pins):
+                self.assertEqual(gate.validate_vanilla(directory), [])
+                path = directory / pins[0].relative_path
+                with path.open("a", encoding="utf-8") as stream:
+                    stream.write('unrelated = { literal = "quoted } # brace" }\n')
+                self.assertEqual(gate.validate_vanilla(directory), [])
+
+    def test_each_actual_dependency_name_rejects_a_changed_or_missing_body(self) -> None:
+        for target in gate.VANILLA_PINS:
+            for defect in ("changed", "missing"):
+                with self.subTest(name=target.name, defect=defect), tempfile.TemporaryDirectory() as temporary:
+                    directory = Path(temporary)
+                    pins = self.seed(directory)
+                    path = directory / target.relative_path
+                    text = path.read_text(encoding="utf-8-sig")
+                    if defect == "changed":
+                        text = text.replace(f'test_literal = "{target.name}"', 'test_literal = changed')
+                    else:
+                        text = text.replace(target.name + " =", target.name + "_renamed =", 1)
+                    path.write_text(text, encoding="utf-8-sig")
+                    with patch.object(gate, "VANILLA_PINS", pins):
+                        errors = gate.validate_vanilla(directory)
+                    self.assertEqual(len(errors), 1)
+                    self.assertIn(target.name, errors[0])
+
+    def test_duplicate_callback_definition_is_ambiguous(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            pins = self.seed(directory)
+            path = directory / pins[0].relative_path
+            with path.open("a", encoding="utf-8") as stream:
+                stream.write(pins[0].name + " = { always = yes }\n")
+            with patch.object(gate, "VANILLA_PINS", pins):
+                errors = gate.validate_vanilla(directory)
+            self.assertEqual(len(errors), 1)
+            self.assertIn("found 2", errors[0])
+
+    def test_missing_and_invalid_utf8_sources_are_explicit_failures(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            pins = self.seed(directory)
+            (directory / pins[0].relative_path).unlink()
+            (directory / pins[-1].relative_path).write_bytes(b"\xff")
+            with patch.object(gate, "VANILLA_PINS", pins):
+                errors = gate.validate_vanilla(directory)
+            self.assertEqual(len(errors), 6)
+            self.assertTrue(all("unavailable" in error for error in errors))
 
 
 if __name__ == "__main__":

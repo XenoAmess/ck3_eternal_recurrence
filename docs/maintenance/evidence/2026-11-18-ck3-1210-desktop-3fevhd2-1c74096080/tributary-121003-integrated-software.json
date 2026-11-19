@@ -1,0 +1,109 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T17:52:58.961498+00:00",
+  "source_candidate": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\tributary-121003-offline-candidate-a01\\candidate-manifest-final.json",
+    "bytes": 6868,
+    "sha256": "8ef87b8f4f2540ac74bb6f681bf2b056dae6029efb419cf4a60a5f1adf5a8bf0"
+  },
+  "actual_software": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T17:46:33.802308+00:00",
+    "checks": [
+      {
+        "name": "complete-affected-unit-modules",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "test_build_tributary_expansion_directives_release",
+          "test_tributary_expansion_directives_display"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 2.9356558000145014,
+        "tail": "................\r\n----------------------------------------------------------------------\r\nRan 16 tests in 2.188s\r\n\r\nOK\r\n"
+      },
+      {
+        "name": "installed-static",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/validate_tributary_expansion_directives_static.py",
+          "--game-root",
+          "C:/SteamLibrary/steamapps/common/Crusader Kings III/game"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.9941198999877088,
+        "tail": "TRIBUTARY EXPANSION DIRECTIVES STATIC VALIDATION OK\r\nRuntime files: 16\r\nLanguages: 9\r\nDirected wars: one county per accepted order\r\nVanilla dependencies: 7\r\n"
+      },
+      {
+        "name": "full16-doublebuild",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/build_tributary_expansion_directives_release.py",
+          "--check"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.7510525000107009,
+        "tail": "Reproducibility source: D:\\workspace\\ck3_eternal_recurrence\\mod_tributary_expansion_directives\r\nFiles: 16\r\nManifest SHA-256: 8dce187b5406f2d40843522e65e63c5018c25b8116a151372a2da2df498227c2\r\nZIP SHA-256: 8c3668f763ea2a6648e8dfa174f496dc6c50fc01e314acfb3e83f0d6d0db15f7\r\n"
+      },
+      {
+        "name": "complete-validator-types",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=silent",
+          "--no-incremental",
+          "--cache-dir",
+          "nul",
+          "tools/validate_tributary_expansion_directives_static.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 7.336128399998415,
+        "tail": "Success: no issues found in 1 source file\r\n"
+      }
+    ],
+    "passed": true,
+    "game": "NOT_RUN",
+    "published": false,
+    "remaining_software_reservation_bytes": 0,
+    "free_D": 21760770048,
+    "cache_policy": "Actual mypy --no-incremental --cache-dir=NUL; no cache reaccumulation.",
+    "admission": {
+      "free_D_before": 21761331200,
+      "total_D": 500090007552,
+      "peak": 12582912,
+      "other_unspent": 44302336,
+      "floor": 21474836480,
+      "growth": 67108864,
+      "current_project_usage_upper_bound": 478328676352,
+      "quota_override": {
+        "owner": "/root",
+        "max_project_bytes": 478615171072,
+        "reason": "Finite two complete unit modules and actual16-file doublebuild/source validation; Native16+Git24+Living2+media256KiB separately reserved",
+        "review_at_utc": "2026-11-26T17:46:33.802459+00:00"
+      }
+    }
+  },
+  "actual_affected_tests": 16,
+  "canonical_workshop_id": "3801490405",
+  "candidate_version": "1.0.2",
+  "production_gameplay_unchanged": true,
+  "source_contract": "Seven exact current stock complete definitions checked explicitly; full gate/actual16-file doublebuild passed. New core business case preserves12 original markers plus engineStartup, including original GAP. Actual producer core/context-only metadata passed independently; no selector/response/outcome/truce/SaveLoad credit.",
+  "source_transport": "Original external candidate patch lacked inter-file newline at one EOF boundary; git apply --check rejected before any mutation. Integrated only after every original/candidate per-file SHA matched, by exact candidate bytes. No context bypass or source guard weakened.",
+  "Game_Native_GUI_SaveLoad": "NOT_RUN",
+  "formal_tag_or_workshop_published": false
+}

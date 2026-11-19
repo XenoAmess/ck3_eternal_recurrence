@@ -1,0 +1,270 @@
+{
+  "schema": "aub-gui-preparation-resource-failure-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T17:39:43.863829+00:00",
+  "reviewer": "/root/aub_florin_review",
+  "source_head": "2416f1d2badccffea41cdbce7529b2ed0bfe00f1",
+  "status": "NO_GAME_PREPARATION_RETIRED_BEFORE_ALLOCATION",
+  "Game": false,
+  "SCREEN": false,
+  "allocated_run_id": null,
+  "keeper": false,
+  "Repo_freeze_released": true,
+  "software": {
+    "bundle345": 0,
+    "first_fixture": "missing explicit game dir rejected before output",
+    "fixture_a02": 0,
+    "shared_prepare_a02": 0,
+    "parent_session": 2303,
+    "parent_original_wait_exit": 0,
+    "no_live_credit": true
+  },
+  "identity": {
+    "version": "1.21.0.3",
+    "build": 26785313,
+    "EXE_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+    "route": "shared_gui_only",
+    "Native_qualified": false
+  },
+  "profile": {
+    "files": 4528,
+    "logical_bytes": 184595961,
+    "allocated_bytes": 90127504,
+    "shader_copy_files": 4168,
+    "shader_logical": 182529334,
+    "shader_allocated": 88306432
+  },
+  "preparation_global_volume_observation": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "minimum_observed_D_free": 21276737536,
+    "before_D_free": 21792235520,
+    "after_D_free": 21279051776,
+    "maximum_observed_net_increment": 515497984,
+    "sampling_seconds": 0.1,
+    "not_continuous_peak_guarantee": true
+  },
+  "original_224MiB_envelope_passed": false,
+  "cause": "UNKNOWN; selected new trees approx96MB do not explain515MB volume net change; current lowIO and C-only pagefile are not historical attribution",
+  "flush_all_SHA_ID_mtime_verified": {
+    "count": 4528,
+    "allocation_before": 90127504,
+    "allocation_after": 90127504,
+    "error": null
+  },
+  "retirement": {
+    "R23_setup": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-19T17:04:52.318205+00:00",
+      "plan_sha256": "8514ecc40b59975c5025f945d530262a7578df8fb87003998a559f8de2ec4688",
+      "planned_aliases": 24,
+      "unique_files": 15,
+      "unique_logical_bytes": 16792423,
+      "unique_allocated_bytes": 16814080,
+      "alias_logical_bytes": 26763433,
+      "identities": {
+        "3659174700635604": {
+          "logical_bytes": 1373662,
+          "allocated_bytes": 1376256,
+          "all_aliases_in_exact_plan": true,
+          "links": 2
+        },
+        "3377699723924917": {
+          "logical_bytes": 998538,
+          "allocated_bytes": 999424,
+          "all_aliases_in_exact_plan": true,
+          "links": 2
+        },
+        "3377699723924914": {
+          "logical_bytes": 998375,
+          "allocated_bytes": 999424,
+          "all_aliases_in_exact_plan": true,
+          "links": 1
+        },
+        "3377699723924927": {
+          "logical_bytes": 992926,
+          "allocated_bytes": 995328,
+          "all_aliases_in_exact_plan": true,
+          "links": 2
+        },
+        "6192449491031450": {
+          "logical_bytes": 992795,
+          "allocated_bytes": 995328,
+          "all_aliases_in_exact_plan": true,
+          "links": 1
+        },
+        "3377699723924938": {
+          "logical_bytes": 1378369,
+          "allocated_bytes": 1380352,
+          "all_aliases_in_exact_plan": true,
+          "links": 2
+        },
+        "3940649677346236": {
+          "logical_bytes": 1036030,
+          "allocated_bytes": 1036288,
+          "all_aliases_in_exact_plan": true,
+          "links": 1
+        },
+        "3377699723924960": {
+          "logical_bytes": 1235371,
+          "allocated_bytes": 1236992,
+          "all_aliases_in_exact_plan": true,
+          "links": 2
+        },
+        "3659174700635611": {
+          "logical_bytes": 1374891,
+          "allocated_bytes": 1376256,
+          "all_aliases_in_exact_plan": true,
+          "links": 1
+        },
+        "3659174700635561": {
+          "logical_bytes": 990513,
+          "allocated_bytes": 991232,
+          "all_aliases_in_exact_plan": true,
+          "links": 2
+        },
+        "3659174700635635": {
+          "logical_bytes": 1155154,
+          "allocated_bytes": 1159168,
+          "all_aliases_in_exact_plan": true,
+          "links": 2
+        },
+        "7036874421163495": {
+          "logical_bytes": 1236198,
+          "allocated_bytes": 1236992,
+          "all_aliases_in_exact_plan": true,
+          "links": 2
+        },
+        "3377699723924969": {
+          "logical_bytes": 1236108,
+          "allocated_bytes": 1236992,
+          "all_aliases_in_exact_plan": true,
+          "links": 1
+        },
+        "3377699723924991": {
+          "logical_bytes": 610279,
+          "allocated_bytes": 610304,
+          "all_aliases_in_exact_plan": true,
+          "links": 2
+        },
+        "5348024560899577": {
+          "logical_bytes": 1183214,
+          "allocated_bytes": 1183744,
+          "all_aliases_in_exact_plan": true,
+          "links": 1
+        }
+      },
+      "actual_deleted": 24,
+      "actual_errors": 0
+    },
+    "closed_recent_records": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-19T17:19:20.514633+00:00",
+      "files_completed": 34,
+      "expected_files": 34,
+      "all_passed": true,
+      "logical_bytes": 33035327,
+      "allocated_before": 33095680,
+      "allocated_after": 14209024,
+      "allocation_reduction_bytes": 18886656,
+      "free_before": 21777121280,
+      "free_after": 21795987456,
+      "elapsed_seconds": 5.146504900010768,
+      "remaining_write_reservation_bytes": 0,
+      "content_identity_mtime_preserved_for_completed_files": true,
+      "deletion": false
+    },
+    "Root_mypy_cache": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-19T17:31:48.755906+00:00",
+      "deleted_files": 18,
+      "deleted_logical_bytes": 14860517,
+      "failed": [],
+      "free_before": {
+        "C:/": 44329713664,
+        "D:/": 21287751680
+      },
+      "free_after": {
+        "C:/": 44329713664,
+        "D:/": 21302607872
+      }
+    },
+    "own_unused_warm_copy": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-19T17:34:28.851759+00:00",
+      "deleted_files": 4168,
+      "deleted_logical_bytes": 182529334,
+      "failed": [],
+      "free_before": {
+        "C:/": 44330434560,
+        "D:/": 21298696192
+      },
+      "free_after": {
+        "C:/": 44328955904,
+        "D:/": 21771530240
+      }
+    },
+    "own_shader_unique_allocated_before": 88306432,
+    "deletion_window_extra_volume_change_unattributed": 384527616,
+    "Root_did_not_delete_default_cache_in_that_window": true,
+    "original_warm_all_bytes_retained_SHA_verified": true,
+    "business_world_failure_anchors_exit_images_retained": true,
+    "old_prepared_case_not_usable": true,
+    "original_private_allocate_run_wrapper_hard_rejects": true
+  },
+  "next": {
+    "prepare_a03_not_authorized": true,
+    "fresh_source_HEAD_required": true,
+    "new_preparation_min_envelope": 570425344,
+    "floor": 21474836480,
+    "growth": 67108864,
+    "fresh_D_free": 21771001856,
+    "required_without_other": 22112370688,
+    "shortfall_without_other": 341368832,
+    "Root_separate_NoGame_software_future": 54525952,
+    "Root_media_future": 262144,
+    "Root_software_to_close_before_future_prepare": true,
+    "our_future_reservation_after_this_record": 0
+  },
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-r24-preparation-admission.json",
+      "bytes": 730,
+      "sha256": "75c5a619f1c6246e88a9441ff853649083cb9edc0cbad6748e339989dd4d3a10"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-r24-preparation-minfree-a02.json",
+      "bytes": 276,
+      "sha256": "9e05c9adad2af96da0cc6a0a3b5e622a7f91da35a8d99baf07e8f3f6641709c1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-r24-profile-flush-a01.json",
+      "bytes": 966,
+      "sha256": "c7ec1c18b8a3b1a0587d841ffb2f0283ff7b0c7700bb8e5acebb86dd113b8329"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-r24-prepared-retired-before-allocation.json",
+      "bytes": 839,
+      "sha256": "a4751edab213171fda9a6bf786b5ce1ba7a67c10b2effd4ab5a3fd0c49a66c83"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-r24-unused-warm-copy-a01\\summary.json",
+      "bytes": 330,
+      "sha256": "6c4c58766e50a53b80bf5f143722a73b6be0442006eb29f695ad786ce1474d95"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-root-mypy-a01\\summary.json",
+      "bytes": 327,
+      "sha256": "f801a9492fc7024eddb37d22726c788d94db73edfb432aca7fa930a9b87bda4c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-gui-next-storage-a01\\compression-probe-a02.json",
+      "bytes": 3188,
+      "sha256": "4326f3c9374b4e06e448977f6ece2bbd553a02978c52f00474af99d3b8ef3266"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\recent-closed-records-ntfs-a02\\summary.json",
+      "bytes": 543,
+      "sha256": "1d001c5fe131b33991e5f690a8ff51d7f2a5b632733b1e922082f33018f46cc2"
+    }
+  ]
+}

@@ -3,6 +3,9 @@
 
 from __future__ import annotations
 
+import argparse
+from dataclasses import dataclass
+import hashlib
 import re
 import sys
 from pathlib import Path
@@ -13,6 +16,7 @@ import build_tributary_expansion_directives_release as builder
 import compose_tributary_expansion_directives_key_art as art
 import compose_tributary_expansion_directives_workshop_media as workshop_media
 from translate_localization_minimax import protected_tokens
+from fixture_engine_prepare import balanced_excerpt
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,6 +39,43 @@ LANGUAGES = {
     "simp_chinese": "l_simp_chinese",
     "spanish": "l_spanish",
 }
+
+
+@dataclass(frozen=True)
+class VanillaDefinitionPin:
+    relative_path: str
+    name: str
+    sha256: str
+
+
+# Actual public1.21.0.3/build26785313 source; no stock VFS override is added.
+# The first five are production callbacks, county CB is the outcome reference,
+# and start_tributary is the acceptance fixture's original setup producer.
+VANILLA_PINS = (
+    VanillaDefinitionPin('common/scripted_effects/00_war_effects.txt', 'on_declared_war', '7ee85ed6e80ce3ef274d784bcd142f65ca6d2420d3cf22cb6daf0ac0eba2d704'),
+    VanillaDefinitionPin('common/scripted_effects/00_war_effects.txt', 'add_truce_attacker_victory_effect', '181c001316c25078c971113d2ac90115b0d4d83544d79ffba6e9de109598c62a'),
+    VanillaDefinitionPin('common/scripted_effects/00_war_effects.txt', 'add_truce_white_peace_effect', '050bba07f3f94faac6b54607a3176496ebc0d4501c61ca54a4f313f32a5e2bc0'),
+    VanillaDefinitionPin('common/scripted_effects/00_war_effects.txt', 'add_truce_attacker_defeat_effect', 'd67f28c28f53d19e3d292b11d0a30dac4add9ae86c1db051c913ed042f033d30'),
+    VanillaDefinitionPin('common/scripted_effects/00_war_effects.txt', 'show_pow_release_message_effect', '8a7ee23e44dc46ea509db6bd2f4dc09ea446b10ef5dfb6c3bc86a26657fd93cc'),
+    VanillaDefinitionPin('common/casus_belli_types/00_conquest.txt', 'county_conquest_cb', '05a5961348e23d6f00d47a8b73cf134f1fad948aed39878b6e1ca89e7927c01f'),
+    VanillaDefinitionPin('common/scripted_effects/00_interaction_effects.txt', 'start_tributary_interaction_effect', '2716b10b6eefc9f11b525bbf8292ef36dfceb2d31f44474cd1299f55b01a2e73'),
+)
+
+
+def validate_vanilla(game_root: Path) -> list[str]:
+    """Check only the relevant complete definitions, without live qualification."""
+    errors: list[str] = []
+    sources: dict[str, str] = {}
+    for pin in VANILLA_PINS:
+        try:
+            if pin.relative_path not in sources:
+                sources[pin.relative_path] = (game_root / pin.relative_path).read_text(encoding="utf-8-sig")
+            body = balanced_excerpt(sources[pin.relative_path], rf"^{re.escape(pin.name)}\s*=\s*\{{") + "\n"
+            if hashlib.sha256(body.encode("utf-8")).hexdigest() != pin.sha256:
+                errors.append(f"vanilla dependency changed: {pin.relative_path}:{pin.name}")
+        except (OSError, UnicodeError, ValueError) as error:
+            errors.append(f"vanilla dependency unavailable: {pin.relative_path}:{pin.name}: {error}")
+    return errors
 
 
 def text(relative: str) -> str:
@@ -102,15 +143,17 @@ def subsidy_reference(monthly_income: float) -> int:
     return int((value + 4.999999) // 5 * 5)
 
 
-def validate() -> list[str]:
+def validate(game_root: Path | None = None) -> list[str]:
     errors = builder.release_source_errors(MOD)
+    if game_root is not None:
+        errors.extend(validate_vanilla(game_root))
     descriptor = text("descriptor.mod")
     expected_descriptor = (
-        'version="1.0.1"\n'
+        'version="1.0.2"\n'
         'tags={\n\t"Gameplay"\n}\n'
         'name="Tributary Expansion Directives — 驱策朝贡国"\n'
         'picture="thumbnail.png"\n'
-        'supported_version="1.20.0.4"\n'
+        'supported_version="1.21.0.3"\n'
     )
     from workshop_compatibility_tags import render_workshop_descriptor_bytes
     expected_descriptor = render_workshop_descriptor_bytes(expected_descriptor.encode("utf-8")).decode("utf-8")
@@ -249,13 +292,13 @@ def validate() -> list[str]:
         try:
             with Image.open(workshop_image) as image:
                 image.load()
-                expected = (
+                expected_size = (
                     workshop_media.CROP[2] - workshop_media.CROP[0],
                     workshop_media.CROP[3] - workshop_media.CROP[1],
                 )
-                if image.size != expected or image.mode != "RGB":
+                if image.size != expected_size or image.mode != "RGB":
                     errors.append(
-                        f"Workshop gameplay JPEG must be {expected} RGB, got "
+                        f"Workshop gameplay JPEG must be {expected_size} RGB, got "
                         f"{image.size} {image.mode}"
                     )
         except OSError as error:
@@ -273,7 +316,10 @@ def validate() -> list[str]:
 
 
 def main() -> int:
-    errors = validate()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--game-root", type=Path)
+    args = parser.parse_args()
+    errors = validate(args.game_root)
     if errors:
         print("TRIBUTARY EXPANSION DIRECTIVES STATIC VALIDATION FAILED", file=sys.stderr)
         for error in errors:
@@ -283,7 +329,8 @@ def main() -> int:
         "TRIBUTARY EXPANSION DIRECTIVES STATIC VALIDATION OK\n"
         f"Runtime files: {len(builder.RUNTIME_FILES)}\n"
         f"Languages: {len(LANGUAGES)}\n"
-        "Directed wars: one county per accepted order"
+        "Directed wars: one county per accepted order\n"
+        f"Vanilla dependencies: {len(VANILLA_PINS) if args.game_root is not None else 'NOT_CHECKED'}"
     )
     return 0
 
