@@ -1,0 +1,140 @@
+{
+  "schema": "ck3-financial-market-r0020-actual-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T04:51:37.324150+00:00",
+  "run_id": "4-8e1c2f1861--financial-markets--R0020",
+  "loaded_source_commit": "1fe1e9ca0ccb2bfff4fdc4ee4e152da8c684e765",
+  "numeric_probe": {
+    "actual_positive_and_negative_sibling_pairs": 3,
+    "all_same_row_positive_enabled": true,
+    "all_same_row_negative_disabled": true,
+    "all_controls_effective_visible": true,
+    "constructor": "MakeScopeValue( Scope.Var( xfm_order_id ).GetValue )",
+    "full_stable_parser_log": true,
+    "corresponding_parser_errors": 0,
+    "PASS": true,
+    "controls_activated": false,
+    "observer_E3_armed": false,
+    "financial_fields_written": false,
+    "production_callbacks_fixed": false
+  },
+  "cold_restore": {
+    "financial_records": 1221,
+    "exact_selected_financial_state": true,
+    "differences": [],
+    "date_raw": 53144448,
+    "player_id": 31254,
+    "existing_five_player_shorts_and_two_remaining5_orders_preserved": true,
+    "new_natural_days": 0,
+    "physical_saves": 1,
+    "latest_save_bytes": 142779663,
+    "latest_save_sha256": "56968acddc41dd6d80f3bf3bfe394911ca4bb5cb24362a131818cf85b95ac696",
+    "financialCertified": false
+  },
+  "closure": {
+    "public_run_original_returncode": 2,
+    "public_run_elapsed_seconds": 578.2742693999317,
+    "normal_original_Game_Host_Job_keeper_exit": true,
+    "release_expected_sequence": 15422,
+    "release_actual_sequence": 15423,
+    "resources": [],
+    "spot_business_phase_pass": false,
+    "whole_product_business_pass": false
+  },
+  "CI": {
+    "run_id": 44459024126,
+    "original_conclusion": "failure",
+    "tests": 309,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "failure": "FollowupClaimEqualityTest.everyProfileEmitsNoNumericEqualityToArithmeticBlockAndDeclaredProfilesGainValues old private AST parser rejects a legal bare saved_scopes list",
+    "correction": "One test source adds distinct immutable bare-list literals; original conservation-law guard and amount assertions remain",
+    "new_focused_methods": 7,
+    "new_focused_failures_errors_skips": 0,
+    "original_CI_reclassified": false,
+    "full_reverification": "pending next production callback package"
+  },
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot22-numeric-scope-initial01.scope-probe\\PROBE.actual.json",
+      "bytes": 3344,
+      "sha256": "2bdbcf6f9334d5088b63dd64395f987dd7c0dbb99f18a7cff66bc839e2e10bb8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot22-numeric-scope-initial01.scope-probe\\host-report.original.json",
+      "bytes": 609590,
+      "sha256": "88f60bde0db8f0f138fb6cb385509d782edbdbf2f36825416f20a1ea3f0cd523"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot22-numeric-scope-initial01.scope-probe\\error-log.original.log",
+      "bytes": 512710,
+      "sha256": "b63be3a38b74b807c0f5a6e7bf201a9ce89ce33fa7833dbcb57647131323a8b4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot22-probe-cold-save01-audit\\report.json",
+      "bytes": 1806017,
+      "sha256": "d7b1d31bb636c3baf4e27ac5102471f3f1da786a44cdb8c35cddf24a1a9aee93"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot22-probe-cold-save01-PIPELINE.actual.json",
+      "bytes": 1167,
+      "sha256": "978c990504ac874460a9ba82984053c2e384a5d07a06b9869bcb483e01085097"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0020\\spot22-probe-cold-save01\\ARCHIVE.actual.json",
+      "bytes": 7495,
+      "sha256": "d52a8f1a71accdcb8c7004025a95aa1b7e88606336c6ff4d291377381105b5f0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0020-restored-window01.actual.json",
+      "bytes": 782,
+      "sha256": "8bb58625c43818e9db37c525eb343ff6fadc3e72eb08781e46d1b8abed116f5d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0020-closure-before-release.actual.json",
+      "bytes": 2248,
+      "sha256": "aa69fad3f5f5a093191d119c103345bcf8cfdf5e9091b5825b19585351b48422"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT22-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1499,
+      "sha256": "419ed08e528c09e4b112eecbea77be0c42edcc0d6862dd2fc1b08fb1a2789413"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-spot22\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1807,
+      "sha256": "ca9ae3fd93b2160ff9b3d06d6216dd2574c231a30fef1a279592b5db12ae036d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot22\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1409,
+      "sha256": "597215d36c3ea7da77d78766b74767c7d151d2eabb9d700a51e6fac85b8dfca7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ci-financial-44459024126-original01\\EVIDENCE.actual.json",
+      "bytes": 2473,
+      "sha256": "9d0c1d46aa39d4ea62f196840a9f6763562363726db6c31619304c5c68ae3776"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\followup-claim-literal-parser-candidate02\\candidate-source-manifest.json",
+      "bytes": 2217,
+      "sha256": "11f9ed0c9403c8eeedac15ca8f01c02b952c6ae9fcdba889b9164bd1e8854d0c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\claim-literals02-Root-adoption.actual.json",
+      "bytes": 511,
+      "sha256": "c459175690af44d8a57b74fc80506aafafacfde7b4c39fd38f59125afe23fa72"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-claim-literals02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1123,
+      "sha256": "386a4ac77132b9acedb66f677353427ed42cadb308da8c9f9c16b06abe3e4e62"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest.xml",
+      "bytes": 21142,
+      "sha256": "fabcfeea0728e11247bd72055a75e0634bcb6327c62dfa7fb2eac22732d50a16"
+    }
+  ]
+}

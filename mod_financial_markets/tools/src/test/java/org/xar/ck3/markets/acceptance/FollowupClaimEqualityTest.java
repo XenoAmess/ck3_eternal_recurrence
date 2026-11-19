@@ -45,6 +45,27 @@ final class FollowupClaimEqualityTest {
         assertThrows(AssertionError.class,()->rejectArithmeticEquality(parse("if = { limit = { var:xfm_original_cents = { value = var:xfm_outstanding_cents add = var:xfm_repaid_cents } } }"),"former claim"));
     }
 
+    @Test void savedScopeLiteralsStayDistinctAndCannotHideForbiddenArithmeticEquality() {
+        Request r=request(Profile.SPOT,107);
+        Block generated=script(FollowupObservationScripts.render(r),"common/scripted_guis/"+r.prefix()+".txt");
+        for(String polarity:List.of("positive","negative")) {
+            Block saved=generated.block(r.prefix()+"_scope_id_"+polarity+"_gui").block("saved_scopes");
+            assertEquals(List.of(new Atom("xfma_probe_order_id")),saved.literals());
+            assertTrue(saved.entries().isEmpty(),"saved scope literal is not an assignment");
+        }
+        Block list=parse("saved_scopes = { xfma_probe_order_id \"second_scope\" }").block("saved_scopes");
+        assertEquals(List.of(new Atom("xfma_probe_order_id"),new Atom("second_scope")),list.literals());
+        assertTrue(list.entries().isEmpty());
+        rejectArithmeticEquality(generated,"actual spot ScriptedGUI");
+        assertThrows(AssertionError.class,()->rejectArithmeticEquality(parse(
+                "if = { saved_scopes = { xfma_probe_order_id } limit = { scope:claim = { value = var:outstanding add = var:repaid } } }"),"arithmetic after literal"));
+        assertThrows(AssertionError.class,()->parse("saved_scopes = { xfma_probe_order_id } limit = }"));
+        assertThrows(AssertionError.class,()->parse("saved_scopes = { xfma_probe_order_id"));
+        assertThrows(AssertionError.class,()->parse("xfma_probe_order_id"));
+        assertThrows(AssertionError.class,()->matches(parse("predicate = { rogue_literal }").block("predicate"),new Node("claim"),parse("")));
+        assertThrows(AssertionError.class,()->sum(parse("claim_sum = { value = 1 rogue_literal }").block("claim_sum"),new Node("claim"),parse("")));
+    }
+
     @Test void namedSumsKeepDebtScopeOriginalOperandsAndBothComparisonDirections() {
         for(Profile p:CLAIM_PROFILES) {
             Request r=request(p,102); var files=FollowupObservationScripts.render(r); Block values=script(files,valuePath(r));
@@ -157,7 +178,10 @@ final class FollowupClaimEqualityTest {
     private sealed interface Expr permits Atom,Block{}
     private record Atom(String text)implements Expr{}
     private record Entry(String key,String op,Expr value){}
-    private record Block(List<Entry> entries)implements Expr{Block{entries=List.copyOf(entries);}Block block(String key){return entries.stream().filter(e->e.key().equals(key)).map(e->(Block)e.value()).findFirst().orElseThrow();}}
+    private record Block(List<Entry> entries,List<Atom> literals)implements Expr{
+        Block{entries=List.copyOf(entries);literals=List.copyOf(literals);}
+        Block block(String key){return entries.stream().filter(e->e.key().equals(key)).map(e->(Block)e.value()).findFirst().orElseThrow();}
+    }
     private sealed interface Datum permits NumberValue,NodeValue{}
     private record NumberValue(long value)implements Datum{}
     private record NodeValue(Node value)implements Datum{}
@@ -167,12 +191,26 @@ final class FollowupClaimEqualityTest {
         List<String> tokens=new ArrayList<>();while(matcher.find())tokens.add(matcher.group());int[] index={0};Block result=block(tokens,index,false);assertEquals(tokens.size(),index[0]);return result;
     }
     private static Block block(List<String> tokens,int[] index,boolean nested){
-        List<Entry> entries=new ArrayList<>();while(index[0]<tokens.size()){
-            String key=tokens.get(index[0]++);if(key.equals("}")){assertTrue(nested);return new Block(entries);}String op=tokens.get(index[0]++);assertTrue(Set.of("=","!=",">=","<=",">","<").contains(op));String value=tokens.get(index[0]++);
+        List<Entry> entries=new ArrayList<>();List<Atom> literals=new ArrayList<>();
+        Set<String> operators=Set.of("=","!=",">=","<=",">","<");
+        while(index[0]<tokens.size()){
+            String key=tokens.get(index[0]++);
+            if(key.equals("}")){assertTrue(nested);return new Block(entries,literals);}
+            assertFalse(key.equals("{")||operators.contains(key),"expected script key or list literal");
+            if(index[0]>=tokens.size()||!operators.contains(tokens.get(index[0]))){
+                assertTrue(nested,"bare literal outside a block");
+                literals.add(new Atom(key.startsWith("\"")?key.substring(1,key.length()-1):key));
+                continue;
+            }
+            String op=tokens.get(index[0]++);
+            assertTrue(index[0]<tokens.size(),"missing script value");
+            String value=tokens.get(index[0]++);
+            assertFalse(value.equals("}")||operators.contains(value),"missing script value");
             entries.add(new Entry(key,op,value.equals("{")?block(tokens,index,true):new Atom(value.startsWith("\"")?value.substring(1,value.length()-1):value)));
-        }assertFalse(nested,"unclosed script");return new Block(entries);
+        }
+        assertFalse(nested,"unclosed script");return new Block(entries,literals);
     }
-    private static boolean matches(Block b,Node node,Block values){return b.entries().stream().allMatch(e->check(e,node,values));}
+    private static boolean matches(Block b,Node node,Block values){assertTrue(b.literals().isEmpty(),"bare list is not a trigger predicate");return b.entries().stream().allMatch(e->check(e,node,values));}
     private static boolean check(Entry e,Node node,Block values){
         if(e.key().equals("NOT"))return !matches((Block)e.value(),node,values);
         if(e.key().equals("has_variable"))return node.variables.containsKey(((Atom)e.value()).text());
@@ -188,5 +226,5 @@ final class FollowupClaimEqualityTest {
         for(Entry e:values.entries())if(e.key().equals(text))return new NumberValue(sum((Block)e.value(),node,values));
         throw new AssertionError("unknown fixture reference "+text);
     }
-    private static long sum(Block b,Node node,Block values){long result=0;for(Entry e:b.entries()){Datum d=resolve(((Atom)e.value()).text(),node,values);if(!(d instanceof NumberValue n))throw new AssertionError("missing sum operand");result=switch(e.key()){case "value"->n.value();case "add"->Math.addExact(result,n.value());default->throw new AssertionError("unexpected value operation "+e.key());};}return result;}
+    private static long sum(Block b,Node node,Block values){assertTrue(b.literals().isEmpty(),"bare list is not arithmetic");long result=0;for(Entry e:b.entries()){Datum d=resolve(((Atom)e.value()).text(),node,values);if(!(d instanceof NumberValue n))throw new AssertionError("missing sum operand");result=switch(e.key()){case "value"->n.value();case "add"->Math.addExact(result,n.value());default->throw new AssertionError("unexpected value operation "+e.key());};}return result;}
 }
