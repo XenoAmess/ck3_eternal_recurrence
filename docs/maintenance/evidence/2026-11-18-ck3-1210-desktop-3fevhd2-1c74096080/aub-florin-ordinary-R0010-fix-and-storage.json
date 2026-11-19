@@ -1,0 +1,248 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T06:05:47.321954+00:00",
+  "status": "R10_PREPARATION_FIX_SOFTWARE_ONLY",
+  "source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_ordinary\\events\\aubq_events.txt",
+    "bytes": 17022,
+    "sha256": "d5a86386bc85be0f079d9ffe1c5c7970c6569b4acab7abcae232033e6dd65685"
+  },
+  "checks": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "checks": [
+      {
+        "command": [
+          "-m",
+          "unittest",
+          "tools.test_fixture_engine_prepare"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "tools/prepare_aub_1_20_fixture.py"
+        ],
+        "returncode": 0
+      }
+    ]
+  },
+  "syntax": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T05:58:26.911008+00:00",
+    "prepare_exit": 0,
+    "parser_scope": "Generic Clausewitz syntax only, not engine symbol/eligibility or business qualification",
+    "concurrency": 2,
+    "heap_per_process": "192MiB",
+    "results": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a05\\fixture\\common\\on_action\\aubq_on_actions.txt",
+        "sha256": "4159660072ce6ed0fd62888044fc76adb67d010613a19f42f868b841b7c119eb",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a05\\fixture\\common\\on_action\\aubq_on_actions.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a05\\fixture\\events\\aubq_events.txt",
+        "sha256": "d5a86386bc85be0f079d9ffe1c5c7970c6569b4acab7abcae232033e6dd65685",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a05\\fixture\\events\\aubq_events.txt"
+        ],
+        "returncode": 0
+      }
+    ],
+    "passed": true
+  },
+  "stock_sources": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\districts\\holding_districts.txt",
+      "bytes": 7033,
+      "sha256": "e3e88e2052f3abef1f7e39048eeb66aa94bdd710add88692c1329f0c8fb93d1f"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\99_ach_buildings.txt",
+      "bytes": 8227,
+      "sha256": "ba76e7ef736d475fc524ebbb984b3eb6549bda314061137e159c6f8e9afbbb0e"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\holding_buildings\\00_castle_buildings.txt",
+      "bytes": 200805,
+      "sha256": "ed7656146395cd352dd1d7ce0029cad9e79486a8b1204136d584618738a0d0b4"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_building_requirement_triggers.txt",
+      "bytes": 22766,
+      "sha256": "791ebaf4f8a633f650d0667579d549110dcc89dcba11c7446d53188f0f618d86"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_building_effects.txt",
+      "bytes": 42650,
+      "sha256": "6540dd747dedbb40c6248681063d8d47c07e743272493440811171297eb5ea97"
+    }
+  ],
+  "changes": "Remove every primary downgrade from ordinary scene. Require actual stock initialCastleI and conversionCityI. After actual0004 yields intactCastleIII, verify high/non-late province era and NativeCastleIV refusal, call actual chain and require original source/all4resources/count unchanged. Oath source preparation reads owner variables/faith, clears only30 explicitly reviewed current vanilla castle secondary keys (primary=false) before baselines, checks each source01 native construction eligibility before adding and both actual sources/target02 eligibility afterward. Source/key types or permitted district membership alone earn no qualification. Exact15 and oath/city cost/count assertions unchanged.",
+  "secondary_preparation": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\holding_district_buildings\\00_castle_district_buildings.txt",
+      "sha256": "0ca9f773f728ec328f6c34631b470b7a8e125c138f2672369e3bc520fe5f15d7"
+    },
+    "keys": [
+      "castle_citadel_1",
+      "castle_citadel_2",
+      "castle_citadel_3",
+      "castle_citadel_4",
+      "castle_citadel_5",
+      "castle_court_1",
+      "castle_court_2",
+      "castle_court_3",
+      "castle_court_4",
+      "castle_court_5",
+      "castle_garrison_1",
+      "castle_garrison_2",
+      "castle_garrison_3",
+      "castle_garrison_4",
+      "castle_garrison_5",
+      "castle_great_hall_1",
+      "castle_great_hall_2",
+      "castle_great_hall_3",
+      "castle_great_hall_4",
+      "castle_great_hall_5",
+      "castle_larder_1",
+      "castle_larder_2",
+      "castle_larder_3",
+      "castle_larder_4",
+      "castle_larder_5",
+      "castle_training_grounds_1",
+      "castle_training_grounds_2",
+      "castle_training_grounds_3",
+      "castle_training_grounds_4",
+      "castle_training_grounds_5"
+    ],
+    "scope": "Explicit disposable holding-district secondary preparation only, each key known current stock/graph and primary_building=false. No original-world modification or business credit. Full primary/owner/faith/Native source-and-target eligibility still required before baselines."
+  },
+  "runtime_status": "NOT_RUN",
+  "product_runtime_unchanged": true,
+  "actual_cleanup": [
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-ordinary-R0010\\summary.json",
+        "bytes": 330,
+        "sha256": "32c3fe987652efc46929e92ff9d0e64355eff3446ff64dc694764363f5c22f58"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T05:50:39.461460+00:00",
+        "deleted_files": 4192,
+        "deleted_logical_bytes": 184319524,
+        "failed": [],
+        "free_before": {
+          "C:/": 51276742656,
+          "D:/": 21584957440
+        },
+        "free_after": {
+          "C:/": 51276845056,
+          "D:/": 21779468288
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-superseded-aub-setup-images-a02\\summary.json",
+        "bytes": 327,
+        "sha256": "4e545f79539d51f4d90a7085ac807607955b8cb26d70dc3668dd6243662bcffb"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T05:59:51.829300+00:00",
+        "deleted_files": 34,
+        "deleted_logical_bytes": 37607499,
+        "failed": [],
+        "free_before": {
+          "C:/": 51279257600,
+          "D:/": 21784174592
+        },
+        "free_after": {
+          "C:/": 51279257600,
+          "D:/": 21807206400
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-lease-archive-a07\\summary.json",
+        "bytes": 326,
+        "sha256": "886327f917d53750be47b61aa0c516e46054090e9e54fa62c374880388c8ba4a"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T05:59:50.290933+00:00",
+        "deleted_files": 12,
+        "deleted_logical_bytes": 6663815,
+        "failed": [],
+        "free_before": {
+          "C:/": 51279282176,
+          "D:/": 21777653760
+        },
+        "free_after": {
+          "C:/": 51279282176,
+          "D:/": 21784350720
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-r5-debug-error-archive\\summary.json",
+        "bytes": 326,
+        "sha256": "b879365696251f04fea93b786970eb4a5e60299661c7dc807b7a067cc2261997"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T06:04:34.909254+00:00",
+        "deleted_files": 2,
+        "deleted_logical_bytes": 46159022,
+        "failed": [],
+        "free_before": {
+          "C:/": 51092197376,
+          "D:/": 21806780416
+        },
+        "free_after": {
+          "C:/": 51092197376,
+          "D:/": 21852946432
+        }
+      }
+    }
+  ],
+  "retained_archives": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-gui-lease-stdout-lossless-a07.zip",
+      "bytes": 1086672,
+      "sha256": "b2e35a831c4e039677c25317ccb45a2823255263bd8d98fb1863cf429f9c6bf1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\r5-debug-error-lossless.zip",
+      "bytes": 398345,
+      "sha256": "8e5d2cdbcb87236740abb25d6a30a5d6a0f44e1469de530900b06c80d97e953e"
+    }
+  ],
+  "availability": "R10 rebuildable shader copy unavailable.34 ordinary R3/R8 EULA/legal/bookmark setup PNG alias paths retired (22,993,154 unique payload bytes), superseded by clean R9/R10 startups; no public pinned failure/quit or active anchor images selected, retired pixels unavailable. R10 expanded12 audit stdout and full R5 debug/error raw paths now unavailable directly; exact bytes retained in verified ZIP members. R5 full46,159,022B diagnostics preserved without truncation. Restore before historical raw analysis; old FileIDs not reproduced. Existing R5 game.log ZIP and all records retained. This observation supersedes older statements that R5 raw debug/error are still directly readable.",
+  "original_R5_review_at_utc": "2026-12-19T00:47:03Z",
+  "review_at_utc": "2026-12-19T05:59:51Z",
+  "published": false
+}

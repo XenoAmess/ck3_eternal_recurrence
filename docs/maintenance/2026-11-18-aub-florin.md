@@ -66,3 +66,10 @@ R3闭场后按本机用途清理：4,184个可重建shader／183,734,611逻辑�
 本机资金R0009：新345文件包的17项原资金／直辖条件及22标记各一次、零业务FAIL，实际中文家族关系新闻渲染未再出现formatter错误；已知完成事件正确显示，在1066-12-13／89日暂停，未点事件选项或DONE后续行。05:17:22Z正常不保存退出、原Popen0，keeper/CAS闭合，零SAVE。raw error.log为1,125B：1,024B原版中国AI请愿的flag型ScriptValue／已有法律重复添加，另101B宫廷职位无效销毁提示，后者精确原因仍未知。保留第一watcher的engine_script_error；第二只确认并固定旧1,024B前缀，继续对新增ScriptSystemError／formatter监控，取得core_done；原错误未清除。公共verify仍拒绝原严格no_errors合取，整体passed=false，不将来源推断当无Mod对照，不发布。[R9业务、格式和暂停实测](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-money-R0009-assertions-format-pass-stock-errors.json)。
 
 其余矩阵新增显式florin-ordinary部分场景，含原城堡／15配额／真实0004重置／原版拒绝／两誓言脚本费用／城市六项。使用当前区域作用域，合法garrison1→2与L2下拒绝garrison2→3；主建筑只guarded降级，加入真实owner／未lease／目标资格读回，15次实际付款及誓言资源精确值更严格。誓言区容量准备在余额基线之前，不给业务信用；城市转换后重新取scope，不能重用城堡区。11项入口回归、完整准备器严格mypy、实际prepare和两个脚本Java通用语法解析通过；九标记尚未实机执行，剩余13条及资金日志／禁用GUI仍单列。R9 shader回收4,188文件／184,069,384B；R8/R9审计与已闭清理计划无损归档，零删除失败，旧展开路径可用性和期限见[新部分场景与存储记录](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-ordinary-preparation-and-R0009-storage.json)。
+
+
+普通矩阵R0010：城堡、15次精确付款／额度拒绝、真实0004计数重置、城市四项各通过；负例及誓言未通过，原错误2,220B保留。主要准备错误为CastleIII→II主建筑降级和直接添加garrison2被引擎拒绝，随后两个誓言01也无法添加；未采失败后primary／槽位后态，不断言已证实连锁破坏。1066-09-15／零日／零SAVE，已知完成弹窗显示，05:45:27Z正常不保存退出、原Popen0，keeper/CAS闭合。公共verify拒绝6项合取，整体false。[R10部分原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-ordinary-R0010-partial-preparation.json)。
+
+后继取消本场全部primary降级准备：要求实际初始CastleI／转换CityI；负例利用完整CastleIII、真实高且非晚中世纪省文化及CastleIV原生拒绝，仍核四账户／计数零变化。当前stock的downgrade例只选择非primary regular区建筑，不能授予已失败的主建筑降级资格。誓言仍属普通holding区，没有新区域或额外DLC门；基线前仅清理30个与当前原版SHA／图一致、primary=false的城堡附属建筑键，之后逐个读回01建造资格再添加，并读回两个源／02资格，缺少任意一项都记PREP_FAIL。11项入口回归、准备器严格mypy、实际prepare／两脚本解析通过，新场未运行，不能计为修复实机通过。[准备修复与存储](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-ordinary-R0010-fix-and-storage.json)。
+
+R10 shader精确回收4,192文件／184,319,524B，零失败；34条已被干净启动替代的R3/R8普通许可／书签过渡截图路径提前到期，保留公共失败／退出与活跃模板图，退役像素不可读取。R10展开审计无损归档。R5完整debug/error合计46,159,022B逐字节保留在398,345B ZIP，不截断，原review期限不延长；旧debug/error展开路径现在不可读取，需要先恢复相同字节再作历史原件分析，旧FileID不追认。上述可用性替代此前“R5 raw debug/error直接可读”的较早观察，现行R9/R10原日志仍直接保留。

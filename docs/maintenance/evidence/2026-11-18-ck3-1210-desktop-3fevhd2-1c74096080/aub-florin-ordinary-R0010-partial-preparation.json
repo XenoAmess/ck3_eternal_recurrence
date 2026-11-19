@@ -1,0 +1,132 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T05:50:08.868983+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0010",
+  "case": "ordinary-matrix-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "PARTIAL_FOUR_OF_SIX_PREPARATION_REJECTED",
+  "source_head": "520f639814d3af7beffa7e0618da30f985642682",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-ordinary-gui-prepare\\prepared-case.json",
+    "bytes": 1587127,
+    "sha256": "b6302d07c0a418147125f2cac8dab244ef1ce28915e699615b6eafb29f0417f5"
+  },
+  "facts": {
+    "six_original_ordinary_building_and_quota_assertions": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-7d62ff8a27b04df6b098c957f59ebe64\\profile\\logs\\debug.log",
+          "bytes": 1186681,
+          "sha256": "da53532de8c36757f42dd6dd62b2e628b4ec39f9ead0cce80ea35f046b2424b1"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-7d62ff8a27b04df6b098c957f59ebe64\\profile\\logs\\error.log",
+          "bytes": 2220,
+          "sha256": "e820c4bffb54554056bbde68808677b60ef92b9f9e85e352caa615b65bc80a75"
+        }
+      ],
+      "assertions_passed": 4,
+      "assertions_required": 6
+    },
+    "actual_initial_calendar_completion_popup_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq01-world-rendered.png",
+          "bytes": 1118626,
+          "sha256": "39d1e3c5581d879b39de559169510b5ec3fb301f3c145020a1a90dee22d4b068"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq01-quit-dialog-view.png",
+          "bytes": 691125,
+          "sha256": "96fc662f91eb982c2dfe041a4140f3cdabb64c7eb24dafcb630ac654cd4a3ff8"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq01-quit-desktop.png.json",
+          "bytes": 1446,
+          "sha256": "38e9dc15e1b66d65ac94f69c56f5a8db98b40bc5c2da3952524bfcbb8fb84459"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0010\\game-exit.json",
+          "bytes": 253,
+          "sha256": "20bdfda76fe1a549e2e97c8684e9201e307a37c72ff433a1b7ae58653a7632bd"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBQ: TEST BEGIN ordinary_matrix": 1,
+    "AUBQ: READY independent_owned_treasury_payer": 1,
+    "AUBT: TEST PASS main_castle": 1,
+    "AUBT: TEST PASS fifteen_upgrade_quota": 1,
+    "AUBT: TEST PASS next_scan_quota_reset": 1,
+    "AUBT: TEST PASS vanilla_gate_rejection": 0,
+    "AUBT: TEST PASS scripted_cost_resources": 0,
+    "AUBT: TEST PASS main_city": 1,
+    "AUBQ: TEST DONE ordinary_matrix": 1
+  },
+  "passed_original_assertions": [
+    "AUBT: TEST PASS main_castle",
+    "AUBT: TEST PASS fifteen_upgrade_quota",
+    "AUBT: TEST PASS next_scan_quota_reset",
+    "AUBT: TEST PASS main_city"
+  ],
+  "failure_lines": [
+    "[13:40:57][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 126 (aubq.1:immediate): AUBT: TEST FAIL vanilla_gate_rejection",
+    "[13:40:57][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 155 (aubq.1:immediate): AUBQ: TEST FAIL oath_sources_slots_faith_or_eligibility",
+    "[13:40:57][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 166 (aubq.1:immediate): AUBT: TEST FAIL scripted_cost_resources"
+  ],
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-7d62ff8a27b04df6b098c957f59ebe64\\profile\\logs\\error.log",
+    "bytes": 2220,
+    "sha256": "e820c4bffb54554056bbde68808677b60ef92b9f9e85e352caa615b65bc80a75"
+  },
+  "error_text": "[13:40:57][E][jomini_script_system.cpp:307]: Script system error!\n  Error: downgrade_building_effect effect [ Building '城堡 II (Key: 'castle_02')' cannot be constructed in district '城堡地产区 (Key: 'castle_holding_district')' ]\n  Script location: file: events/aubq_events.txt line: 104 (aubq.1:immediate)\n    file: common/on_action/aubq_on_actions.txt line: 41 (aubq_ordinary_start)\n    file: common/on_action/aubq_on_actions.txt line: 5 (aubq_ordinary_start)\n    file: common/on_action/game_start.txt line: 2806 (on_game_start_after_lobby)\n\n[13:40:57][E][jomini_script_system.cpp:307]: Script system error!\n  Error: add_building effect [ Building '城堡驻防地 II (Key: 'castle_garrison_2')' cannot be constructed in district '城堡地产区 (Key: 'castle_holding_district')' ]\n  Script location: file: events/aubq_events.txt line: 109 (aubq.1:immediate)\n    file: common/on_action/aubq_on_actions.txt line: 41 (aubq_ordinary_start)\n    file: common/on_action/aubq_on_actions.txt line: 5 (aubq_ordinary_start)\n    file: common/on_action/game_start.txt line: 2806 (on_game_start_after_lobby)\n\n[13:40:57][E][jomini_script_system.cpp:307]: Script system error!\n  Error: add_building effect [ Building '慈善习俗 (Key: 'oath_poor_building_01')' cannot be constructed in district '城堡地产区 (Key: 'castle_holding_district')' ]\n  Script location: file: events/aubq_events.txt line: 136 (aubq.1:immediate)\n    file: common/on_action/aubq_on_actions.txt line: 41 (aubq_ordinary_start)\n    file: common/on_action/aubq_on_actions.txt line: 5 (aubq_ordinary_start)\n    file: common/on_action/game_start.txt line: 2806 (on_game_start_after_lobby)\n\n[13:40:57][E][jomini_script_system.cpp:307]: Script system error!\n  Error: add_building effect [ Building '路边神龛 (Key: 'oath_faithful_building_01')' cannot be constructed in district '城堡地产区 (Key: 'castle_holding_district')' ]\n  Script location: file: events/aubq_events.txt line: 137 (aubq.1:immediate)\n    file: common/on_action/aubq_on_actions.txt line: 41 (aubq_ordinary_start)\n    file: common/on_action/aubq_on_actions.txt line: 5 (aubq_ordinary_start)\n    file: common/on_action/game_start.txt line: 2806 (on_game_start_after_lobby)\n\n",
+  "actual_date": "1066-09-15",
+  "observed_natural_days": 0,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq01-quit-dialog-view.png",
+      "bytes": 691125,
+      "sha256": "96fc662f91eb982c2dfe041a4140f3cdabb64c7eb24dafcb630ac654cd4a3ff8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq01-quit-desktop.png.json",
+      "bytes": 1446,
+      "sha256": "38e9dc15e1b66d65ac94f69c56f5a8db98b40bc5c2da3952524bfcbb8fb84459"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0010\\game-exit.json",
+      "bytes": 253,
+      "sha256": "20bdfda76fe1a549e2e97c8684e9201e307a37c72ff433a1b7ae58653a7632bd"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0010\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "ce97191866e2b59ce27f89f32a168d16c4fb32f67d7853608577a3556f0d9648"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0010\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "e20abc72d612390dfce358ae368529a40181ec805ebb857f7fedb839230d5743"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-ordinary-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "1f492a2350650fc911c88e21ace3f4943fd0c2f8bde9c24f8ee93ebb624c9f31"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "diagnosis_scope": "Native primary03->02 downgrade and direct add garrison2 rejected; subsequent two oath01 add rejected. Exact post-downgrade primary/slots not sampled, so no claim of proven destructive cascade. New negative should use existing intactCastle03 and true late-era04 rejection; oath preparation must individually read holder variables, province faith and can_start01 before adding. No new oath district needed.",
+  "retention_review_at_utc": "2026-12-19T05:45:27Z"
+}

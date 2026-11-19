@@ -24,7 +24,9 @@
     "AUBT: TEST PASS main_castle",
     "AUBT: TEST PASS fifteen_upgrade_quota",
     "AUBT: TEST PASS next_scan_quota_reset",
+    "AUBQ: READY intact_castle_late_era_negative",
     "AUBT: TEST PASS vanilla_gate_rejection",
+    "AUBQ: READY oath_sources_and_targets",
     "AUBT: TEST PASS scripted_cost_resources",
     "AUBT: TEST PASS main_city",
     "AUBQ: TEST DONE ordinary_matrix"
@@ -33,7 +35,7 @@
     "AUBT: TEST FAIL",
     "AUBQ: TEST FAIL"
   ],
-  "scope": "Six explicitly partial original ordinary-building/quota assertions: main_castle, fifteen_upgrade_quota, next_scan_quota_reset, vanilla_gate_rejection, scripted_cost_resources, main_city. Select Robert1128 normally, official pre-day player switch to landed Roger1132 and independence transaction. Fixture-only personal policy seeded explicitly, not production enable GUI credit. District primary downgrade normalization; provincial high-medieval culture; current garrison1->2 for15 exact charges and real dispatcher refusal, original0004 quota reset; legitimate garrison2->3 level2 negative; current two oath02 scripted costs with exact resources/count and real source/slot/faith qualifications; actual owned/unleased city primary01->02. No primary removal, target gate bypass or foreign payer substitution. Preparation effects have no credit. Remaining13 original building/special/Tribal/Mandala/N/A/succession cells,17 money/log qualification and actual disable GUI remain separate mandatory coverage.",
+  "scope": "Six explicitly partial original ordinary-building/quota assertions: main_castle, fifteen_upgrade_quota, next_scan_quota_reset, vanilla_gate_rejection, scripted_cost_resources, main_city. Select Robert1128 normally, official pre-day player switch to landed Roger1132 and independence transaction. Fixture-only personal policy seeded explicitly, not production enable GUI credit. No primary downgrade: initial stockCastleI and actual holding conversion sourceI are required, otherwise PREP_FAIL; provincial high-medieval culture; current garrison1->2 for15 exact charges and real dispatcher refusal, original0004 quota reset; intactCastleIII->IV high/non-late province-era negative with actual Native rejection, no source forcing; current two oath02 scripted costs with exact resources/count; actual holder oath variables/province faith and each source01 native construction qualification must read back before adding, then both target02 qualifications before baseline; actual owned/unleased city primary01->02. No primary removal, target gate bypass or foreign payer substitution. Preparation effects have no credit. Remaining13 original building/special/Tribal/Mandala/N/A/succession cells,17 money/log qualification and actual disable GUI remain separate mandatory coverage.",
   "business_contract_applicable": true,
   "full_product_pass_from_cell": false
 }
