@@ -88,6 +88,57 @@
           "budget_provenance": "Prospective fixed budgets for real paid issuance and same-day spot orders, with a 14-natural-day cap. All interactions remain minimized and do not activate the foreground. No live deadline extension."
         },
         {
+          "id": "spot",
+          "status": "ready",
+          "implementation_credit": "Source candidate for existing-listed-save spot continuation. Schema2 epoch, actual UI/native/cash/order/SAVE evidence and qualification remain mandatory.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_spot.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 6000,
+            "hold_seconds": 3600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "continued_actual_same_day_spot_book_obligations_from_existing_listed_save",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective spot-only continuation from R15 exact physical SAVE; natural-days<=3, main timeout6000s and ordinary business hold3600s. No live extension or old-core/issuance marker credit."
+        },
+        {
           "id": "derivatives",
           "status": "ready",
           "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",

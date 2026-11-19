@@ -1,0 +1,312 @@
+{
+"schema": "ck3-financial-spot-book-software-evidence-v1",
+"machine_id": "4-8e1c2f1861",
+"recorded_at_utc": "2026-11-19T00:45:51.047959+00:00",
+"scope": "Read-only compact account of Root actual software work, no new execution by this summarizer.",
+"full02": {
+"source": "s1",
+"operation": "MVN-financial-spot-epoch-full02",
+"actual_original_popen_wait": true,
+"returncode": 0,
+"elapsed_seconds": 88.27197710005566,
+"started_at_utc": "2026-11-19T00:39:50.670600+00:00",
+"finished_at_utc": "2026-11-19T00:41:18.942562+00:00",
+"command": "default mvn -T1 -f mod_financial_markets/tools/pom.xml verify; exact argv in pinned VERIFY",
+"totals": {
+"tests": 281,
+"failures": 0,
+"errors": 0,
+"skipped": 0
+},
+"unique_junit_methods": 281,
+"directly_read_preserved_suites": [
+{
+"source": "s22",
+"class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+"tests": 20,
+"failures": 0,
+"errors": 0,
+"skipped": 0
+},
+{
+"source": "s23",
+"class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+"tests": 14,
+"failures": 0,
+"errors": 0,
+"skipped": 0
+},
+{
+"source": "s24",
+"class": "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest",
+"tests": 6,
+"failures": 0,
+"errors": 0,
+"skipped": 0
+}
+],
+"credit": "Financial module software verify only; changed production script subset/fixture/emitter paths, not engine or business acceptance."
+},
+"retained_failures": [
+{
+"source": "s3",
+"junit_source": "s4",
+"operation": "MVN-financial-spot-fullbook-focused01",
+"returncode": 1,
+"elapsed_seconds": 33.90823390008882,
+"tests": 16,
+"failures": 9,
+"errors": 0,
+"skipped": 0,
+"cause": "Fixture omitted the actual bootstrap story counter; first order refused. fixturecounter02 corrects only setup. Original16/9RED stays unchanged."
+},
+{
+"source": "s2",
+"failed_suite_source": "s5",
+"operation": "MVN-financial-spot-epoch-full01",
+"returncode": 1,
+"elapsed_seconds": 86.55421319999732,
+"totals": {
+"tests": 277,
+"failures": 1,
+"errors": 0,
+"skipped": 0
+},
+"failed_methods": [
+"normalSpotButtonsReadTheSameCapacityCrossingAndLegalActiveAccountWithoutMutating"
+],
+"cause": "GUI fallback incorrectly combined negations of valid-active conditions; GUIfallback03 corrects conjunction. Original277/1RED stays unchanged."
+}
+],
+"adopted_packages": [
+{
+"package": "fullbook01",
+"source": "s6",
+"adoption": "Root reported adopted before full02",
+"scope": "Bounded resting-book admission can match a fully funded independent crossing taker before deciding whether its unfilled GTC remainder can rest; no65thresting entry or extra matching budget."
+},
+{
+"package": "fixturecounter02",
+"source": "s7",
+"adoption": "Root reported adopted before full02",
+"scope": "Test VM initializes the real production bootstrap xfm_order_stories_count=0; production admission and assertions unchanged."
+},
+{
+"package": "GUIfallback03",
+"source": "s8",
+"adoption": "Root reported adopted before full02",
+"scope": "Invalid/foreign active wallet falls back to the legal primary; fixes NOT(AND valid conditions), preserving live legal checks."
+},
+{
+"package": "spot03",
+"source": "s9",
+"adoption": "Root reported adopted before full02",
+"scope": "Read-only bounded spot follow-up profile, real selected account/coin and order outcome observation; corrected initial100cvs87c noncrossing evidence retained."
+},
+{
+"package": "leverageGUI02",
+"source": "s10",
+"adoption": "Root reported adopted before full02",
+"scope": "Leverage cycle respects selected-asset maximum, wraps to1, and both long/short GUI guards reject above-cap tickets; backend unchanged."
+}
+],
+"independent_source_reviews": [
+{
+"source": "s11",
+"status": "SOURCE_REVIEW_APPROVED_PENDING_ROOT_ACTUAL_VALIDATION",
+"blocking_findings": [],
+"scope": "Independent source review; no author compile/Game credit."
+},
+{
+"source": "s12",
+"status": "SOURCE_REVIEW_APPROVED_PENDING_ROOT_ACTUAL_RERUN",
+"blocking_findings": [],
+"scope": "Independent source review; no author compile/Game credit."
+},
+{
+"source": "s13",
+"status": "SOURCE_REVIEW_APPROVED_PENDING_ROOT_ACTUAL_VALIDATION",
+"blocking_findings": [],
+"scope": "Independent source review; no author compile/Game credit."
+}
+],
+"rite_ci_failure_and_local_fixture_repair": {
+"failure_source": "s14",
+"log_source": "s15",
+"cloud_run_id": "44421401563",
+"url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44421401563",
+"cloud_conclusion": "failure",
+"source_commit": "af81eb22b011e8991817caf81a0cb794b7d7497d",
+"failed_step": "Check failed-host typed normal-exit transport",
+"log_lines": [
+1959,
+1977,
+1980,
+1983
+],
+"actual_failure": "Test fixture extraction did not include the real SavedCampaignNativeObserverTerminalError class; observe_final raised NameError. Cloud4tests/1error/exit1 remains failure.",
+"fixture_source": "s19",
+"repair": "Fixture AST now includes the actual host exception class; this is fixture correction, not evidence of a new Game shutdown.",
+"first_direct_environment_attempt": {
+"provenance": "Root message; no separate persisted receipt supplied to this summarizer",
+"result": "ModuleNotFoundError without PYTHONPATH",
+"passed": false,
+"counted_tests": 0,
+"original_failure_not_relabelled": true
+},
+"correct_environment_run": {
+"wait_source": "s16",
+"stderr_source": "s17",
+"wrapper_source": "s18",
+"operation": "TEST-failure-shutdown-real-class01",
+"returncode": 0,
+"elapsed_seconds": 2.445107900071889,
+"tests": 4,
+"result": "OK",
+"test_internal_seconds": 1.977,
+"environment": "existing workflow: cwd ck3_autonomous_player, PYTHONPATH=<repo>/ck3_autonomous_player/src, explicit --host-source",
+"credit": "4local pure-host tests, separate from281Maven tests; does not repair or replace cloud result."
+}
+},
+"observer_spot17_emit": {
+"wait_source": "s20",
+"manifest_source": "s21",
+"returncode": 0,
+"elapsed_seconds": 1.8068933000322431,
+"case_id": "spot",
+"generated_content_files_including_request": 11,
+"producer_source_pins": 6,
+"credit": "Actual emitter completion/manifest only, not loading, Game marker delivery, player fill, cold reload or full product pass."
+},
+"limits": {
+"source_build_evidence_only": true,
+"engine_run_by_this_package": false,
+"cold_load_proven": false,
+"whole_product_pass": false,
+"financialCertified": false,
+"R0015_reclassified_as_crossing_rejection": false,
+"this_summary_ran_compile_test_Git_Game_or_audit": false
+},
+"sources": {
+"s1": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\software-21-spot-epoch-full02\\VERIFY.actual.json",
+"bytes": 50129,
+"sha256": "8b9e9d64ce457f948eac768c5604d245b2e4aa3ada6d6b81bf543d6ecab6d8a9"
+},
+"s2": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\software-20-spot-epoch-full01-FAILED\\VERIFY.actual.json",
+"bytes": 50347,
+"sha256": "845497912d1dffb17eda7e28d3d6972e96819ef6fb44bea34858c1653c499460"
+},
+"s3": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\software-19-spot-fullbook-focused01-FAILED\\RESULT.actual.json",
+"bytes": 37801,
+"sha256": "d6a7d78512d0d1d117111a344ea3d2d9c0c5bfd50e3e405e47bc70f72bf8e5c6"
+},
+"s4": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\software-19-spot-fullbook-focused01-FAILED\\TEST-org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest.xml",
+"bytes": 32287,
+"sha256": "e69c494561bbb3add5df541a8036e998b11b30807c4302f740230285c5dcc31f"
+},
+"s5": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\software-20-spot-epoch-full01-FAILED\\TEST-org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest.xml",
+"bytes": 23559,
+"sha256": "3dac19ef376d135248b9f7eb1a7a3705c70ada2f27468dc1bac94ea95f016d84"
+},
+"s6": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\spot-full-book-candidate01\\SOURCEPINS.actual.json",
+"bytes": 4800,
+"sha256": "380789146e2c96e7793250dd087e5901515b81bfa2d612b664b1c54ee07501b8"
+},
+"s7": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\spot-full-book-fixture-init-candidate02\\SOURCEPINS.actual.json",
+"bytes": 1422,
+"sha256": "bffd7ecee69af1372c3496af557ba34f47543dfa127d917dcfc0c5555de3fedd"
+},
+"s8": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\spot-gui-fallback-candidate03\\SOURCEPINS.actual.json",
+"bytes": 1202,
+"sha256": "13f0f62d97d0dc4adf22d7595965c72f1ea9599f633ac31c199d5ab5ba135a92"
+},
+"s9": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\spot-followup-case-candidate03\\SOURCE-READY.json",
+"bytes": 6367,
+"sha256": "e5f69e3c2feec8527185cd415afb34a9d893adad8d0c5cd64d27d262b04db87a"
+},
+"s10": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\futures-leverage-gui-candidate01\\candidate-source-manifest02.json",
+"bytes": 3927,
+"sha256": "27eacb8b2f8133275fdfc79da6061bfe3b7cc635f50e38bfd8701ad30a1918f4"
+},
+"s11": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\spot-full-book-independent-review01\\REVIEW.actual.json",
+"bytes": 15982,
+"sha256": "c4d017bb8bc6d09ce0df26b1935d6e444a2f559c283e0dd7944cbfeede14814f"
+},
+"s12": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\spot-full-book-independent-review01\\FIXTURE02_ADDENDUM.actual.json",
+"bytes": 3101,
+"sha256": "70e36edb4fd9ff3f6fa8df8f290f087d759a61f858ba430a5be09a3093aa7186"
+},
+"s13": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\spot-followup-independent-review03\\REVIEW.actual.json",
+"bytes": 8970,
+"sha256": "65c64f24a17458105c67e5045a60fe0da0908b9b827ca51ce4b1d32e5ddb098e"
+},
+"s14": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\rite-contract-ci-44421401563\\FAILURE.actual.json",
+"bytes": 6606,
+"sha256": "5ee2f8bb3e7e05f3f5586e86455d0125ae10083bdcd814bb527423f8cbdbd72c"
+},
+"s15": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\rite-contract-ci-44421401563\\CI-44421401563-full.original.log",
+"bytes": 360499,
+"sha256": "005a498afcbd75b7bc5821c5ddb0e70409f5162d5b713c091cc1e18f6e04166d"
+},
+"s16": {
+"path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-failure-shutdown-real-class01\\ORIGINAL-WAIT.actual.json",
+"bytes": 1073,
+"sha256": "05ee80cd351210aab95e3488ea84db83eddd0b2210e48719594c1f761bbf4ce0"
+},
+"s17": {
+"path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-failure-shutdown-real-class01\\stderr.log",
+"bytes": 107,
+"sha256": "1b7969d035f7fa2d2062641c967de1a276bbd609404b8e3d98bc2cc5bd7b0491"
+},
+"s18": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\run_failure_shutdown_workflow_env01.py",
+"bytes": 525,
+"sha256": "1768addc243cf9c10a6048cd2a97f950c21122fe4c2abfeddc649c8e8dff61ec"
+},
+"s19": {
+"path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_failure_shutdown.py",
+"bytes": 6635,
+"sha256": "53f3887e89fe2cab356c1365a9a1c4e594749bf4be96d575f5a68527811494d8"
+},
+"s20": {
+"path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EMIT-observer-spot17\\ORIGINAL-WAIT.actual.json",
+"bytes": 1479,
+"sha256": "59877a45c1475ba524df6d300a2491b4dfd706959b0ea8c2f5293224328daad8"
+},
+"s21": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\observer-spot17.fixture.json",
+"bytes": 4232,
+"sha256": "25988062d456eff172443b8619e7dd02654152fe7e6511d5a9c7ba3be0ebddc1"
+},
+"s22": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\software-21-spot-epoch-full02\\TEST-org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest.xml",
+"bytes": 23338,
+"sha256": "0d4b0fce4e8528d7a3fd194f4c423f7a5baed0467000e67689f0778d516152ab"
+},
+"s23": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\software-21-spot-epoch-full02\\TEST-org.xar.ck3.markets.acceptance.FollowupFixtureTest.xml",
+"bytes": 22190,
+"sha256": "c335c39b6acd44aed37cf61393366eed21f830e1317a6245adff1c8b5977f3b0"
+},
+"s24": {
+"path": "C:\\workspace\\ck3-market-task-20261118\\software-21-spot-epoch-full02\\TEST-org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest.xml",
+"bytes": 20901,
+"sha256": "1fd3f40dd53dce698759280143827352a7b876f421b18b60c89ee8819a915bb0"
+}
+}
+}

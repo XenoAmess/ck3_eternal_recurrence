@@ -29,7 +29,7 @@ final class FollowupFixtureTest {
                 profile == Profile.AI_CAPACITY ? ScaleTier.SMOKE : null);
     }
 
-    @Test void allSixProfilesRoundTripThroughActualEmitterAndExistingManifestContract() throws IOException {
+    @Test void allFollowupProfilesRoundTripThroughActualEmitterAndExistingManifestContract() throws IOException {
         Set<String> allMarkers = new HashSet<>();
         for (Profile profile : Profile.values()) {
             Request input = request(profile, 11);
@@ -261,6 +261,57 @@ final class FollowupFixtureTest {
         heir.number(input.prefix() + "_armed", 1);
         assertFalse(matches(valid, heir, heir, null));
         assertTrue(text(scripts).contains("name = " + input.prefix() + "_armed value = 1"));
+    }
+
+    @Test void spotRejectsHistoricalWrongAccountAndWrongCoinOrdersAfterNewEpoch() {
+        var input = new Request(2, Profile.SPOT, 101, new ActorBinding(ActorMode.CURRENT_PLAYER, null),
+                new Targets("2", "1", null, null, null, null), null, null);
+        Block predicate = markerLimit(FollowupObservationScripts.render(input), input, "new_buy_filled_readback");
+        Node account = new Node("xfm_finance_account"), coin = new Node("xfm_finance_coin");
+        Node context = new Node("observer").number("xfma_start_order_id", 152).reference("xfma_account", account).reference("xfma_coin", coin);
+        Node order = new Node("xfm_spot_order").number("xfm_order_id", 153).number("xfm_side", 1).number("xfm_filled_lots", 1)
+                .reference("xfm_account", account).reference("xfm_coin", coin);
+        context.reference("xfma_buy_order", order);
+        assertTrue(matches(predicate, context, context, null));
+        order.number("xfm_order_id", 152);
+        assertFalse(matches(predicate, context, context, null), "saved pre-arm fills cannot supply a new observation");
+        order.number("xfm_order_id", 153).reference("xfm_account", new Node("xfm_finance_account"));
+        assertFalse(matches(predicate, context, context, null));
+        order.reference("xfm_account", account).reference("xfm_coin", new Node("xfm_finance_coin"));
+        assertFalse(matches(predicate, context, context, null));
+        order.reference("xfm_coin", coin).number("xfm_filled_lots", 0);
+        assertFalse(matches(predicate, context, context, null), "accepted unfilled order is not a trade");
+    }
+
+    @Test void spotPartialCancelRequiresActualNewPartialTerminalOrderAndRejectsWrongSchemaTargets() {
+        var input = new Request(2, Profile.SPOT, 102, new ActorBinding(ActorMode.CURRENT_PLAYER, null),
+                new Targets("2", "1", null, null, null, null), null, null);
+        Block predicate = markerLimit(FollowupObservationScripts.render(input), input, "partial_cancelled_readback");
+        Node account = new Node("xfm_finance_account"), coin = new Node("xfm_finance_coin");
+        Node context = new Node("observer").number("xfma_start_order_id", 152).reference("xfma_account", account).reference("xfma_coin", coin);
+        Node order = new Node("xfm_spot_order").number("xfm_order_id", 153).number("xfm_original_lots", 10).number("xfm_filled_lots", 4)
+                .number("xfm_cancelled_lots", 6).number("xfm_remaining_lots", 0).number("xfm_status", 3).number("xfm_finalized", 1)
+                .reference("xfm_account", account).reference("xfm_coin", coin);
+        context.reference("xfma_partial_order", order);
+        assertTrue(matches(predicate, context, context, null));
+        order.number("xfm_filled_lots", 0);
+        assertFalse(matches(predicate, context, context, null), "cancel without fill is not partial-fill cancellation");
+        order.number("xfm_filled_lots", 4).number("xfm_status", 1);
+        assertFalse(matches(predicate, context, context, null), "still-open order has not released its obligations");
+        order.number("xfm_status", 3).number("xfm_order_id", 152);
+        assertFalse(matches(predicate, context, context, null));
+        assertThrows(IllegalArgumentException.class, () -> new Request(2, Profile.SPOT, 103, input.actor(),
+                new Targets("2", null, null, null, null, null, "1"), null, null));
+        assertThrows(IllegalArgumentException.class, () -> new Request(2, Profile.SPOT, 103, input.actor(),
+                new Targets("2", "1", "3", null, null, null), null, null));
+        String scripts = text(FollowupObservationScripts.render(input));
+        assertFalse(scripts.contains("XFMAT: TEST PASS fixture_ready"));
+        assertFalse(scripts.contains("registered_owned_coin"));
+        assertFalse(scripts.contains("name = xfm_"));
+        assertFalse(scripts.contains("var:xfma_last_sample_day add = 1 } }"));
+        assertTrue(scripts.contains("xfma_spot_e102_next_sample_day_value"));
+        assertTrue(scripts.contains("var:xfm_fee_paid_cents >= xfma_spot_e102_spot_expected_fee_value"));
+        assertTrue(scripts.contains("var:xfm_fee_paid_cents <= xfma_spot_e102_spot_expected_fee_value"));
     }
 
     // Test-only evaluator consumes the emitted trigger tree and actual production capacity script.

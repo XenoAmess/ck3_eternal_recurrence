@@ -1,0 +1,110 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "spot",
+  "acceptance_scope": "continued_actual_same_day_spot_book_obligations_from_existing_listed_save",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 3,
+  "failure_prefixes": [
+    "XFMAT:"
+  ],
+  "required_startup": [],
+  "forbidden_startup": [
+    "XFMAT: TEST FAIL"
+  ],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "observer_profile_contract": {
+    "status": "SOURCE_CANDIDATE_NOT_COMPILED_NOT_RUN",
+    "profile": "spot",
+    "manifest_case_id_must_equal": "spot",
+    "schema_version": 2,
+    "required_readback_markers": [
+      "XFMAT: TEST PASS spot_observation_ready",
+      "XFMAT: TEST PASS spot_watched_sample_readback",
+      "XFMAT: TEST PASS spot_new_buy_filled_readback",
+      "XFMAT: TEST PASS spot_new_sell_filled_readback",
+      "XFMAT: TEST PASS spot_partial_cancelled_readback",
+      "XFMAT: TEST PASS spot_original_order_fee_readback"
+    ],
+    "core_manifest_is_valid_for_this_case": false,
+    "readback_markers_replace_gui_native_and_save_reconciliation": false,
+    "business_acceptance": "NOT_RUN"
+  },
+  "source_save_requirements": [
+    "Restore the exact independently archived R0015 core16-after-sell-save-01 physical bytes, actor31254/date53144400 and admitted saved inventory; bind source path/size/SHA and source native receipts before fixture emission/allocation.",
+    "Coin permanent1/native55 must already be genuinely listed with original real funding/AI subscriptions and issuer account references; issuance credit comes only from pinned R15 originals, never new spot markers or another IPO.",
+    "Private account permanent2/native54 belongs to actual player31254; prior private position native343 quantity8000/reserved0 and ticket GTC sell71@100 (step10) result0/high-water152 are historical expectations to reverify on load, not fixture state. This limit100 does not cross the saved best bid87; never describe the R15 rejection as denial of an executable crossing order.",
+    "Use a fresh spot observation epoch and actual permanent IDs; never remove xfma_armed, reuse schema1 core or import old PASS markers. Missing identity/cash/coin/independent depth remains missing."
+  ],
+  "gui_phases": [
+    {
+      "id": "restore-and-arm-fresh-spot-epoch",
+      "at_day": 0,
+      "requirements": [
+        "actual_background_minimized_non_topmost_no_foreground_activation",
+        "actual_saved_bytes_actor_native_date_and_current_account_coin_identity_match_admission",
+        "actual_normal_xfma_observer_widget_arm_only_fresh_spot_epoch_with_xfma_baseline_and_new_ready_marker",
+        "actual_before_snapshots_include_private_gold_cash_coin_positions_all_executable_orders_beneficial_owners_reservations_fees_and_order_high_water"
+      ]
+    },
+    {
+      "id": "same-day-book-actions-and-reconciliation",
+      "when_markers": [
+        "XFMAT: TEST PASS spot_observation_ready"
+      ],
+      "requirements": [
+        "actual_complete_fresh_GUI_query_proves_non_crossing_full_book_GTC_ticket_disabled_with_no_dispatch_no_new_order_id_and_unchanged_real_collateral_or_if_a_normal_enabled_valid_unfunded_path_exists_one_actual_native_rejection_receipt_proves_result0_and_unchanged_backing_never_activate_a_disabled_control",
+        "actual_ticket_price_is_read_from_same_SAVE_actor_before_submission_initial100c_is_not20c_and_new_crossing_sell_limit_must_be_adjusted_via_normal_GUI_to_at_most_actual_best_bid87_or_current_observed_bid",
+        "actual_normal_full64_crossing_GTC_is_admitted_and_matches_independent_funded_resting_orders_before_capacity_is_applied_only_to_unfilled_remainder_without_raising_capacity_or_deleting_AI_orders",
+        "actual_player_buy_and_sell_fills_both_happen_within_one_unchanged_native_calendar_day_not_just_two_observer_refresh_dates",
+        "actual_multi_lot_crossing_GTC_on_full64_partially_fills_then_only_remaining_lots_with_real_available_slot_stay_live_and_actual_owner_cancel_returns_exact_remaining_collateral_IOC_is_optional_independent_coverage_not_a_required_capacity_workaround",
+        "actual_GTC_partial_fill_and_owned_cancel_return_exact_remaining_cash_or_coin_collateral_with_original_filled_and_cancelled_lots_reconciled",
+        "actual_affordable_valid_order_and_separate_valid_but_unfunded_buy_rejection_are_distinguished_from_full_book_bad_quantity_wrong_authority_or_qualification_rejections",
+        "actual_FIFO_checks_order_ids_within_equal_best_prices_excludes_same_beneficiary_and_uses_only_real_before_snapshot_executable_reservation_and_coin_inventory",
+        "actual_cumulative_original_order_fee_is_max1_ceil3per1000_of_total_filled_notional_and_incremental_fee_is_new_total_minus_already_paid",
+        "actual_both_parties_cash_coin_reservations_fees_and_same_day_refreshes_reconcile_no_double_count",
+        "actual_UNKNOWN_preserved_no_order_or_cancel_replay"
+      ]
+    },
+    {
+      "id": "physical-checkpoint-and-normal-typed-close",
+      "requirements": [
+        "actual_at_most_three_natural_days_only_if_independent_market_depth_is_needed_no_forced_AI_or_price_or_funds",
+        "actual_physical_SAVE_materialization_original_receipt_exact_copy_archive_and_independent_audit_raw_graph_retained",
+        "actual_normal_typed_exit_cancel_exit_autosave_Game_Job_Host_and_keeper_original_waits_then_public_release",
+        "every_unobserved_partial_FIFO_counterparty_or_unfunded_subcase_remains_NOT_OBSERVED_without_fixture_intervention_or_post_allocation_deadline_extension"
+      ],
+      "when_markers": [
+        "XFMAT: TEST PASS spot_new_buy_filled_readback",
+        "XFMAT: TEST PASS spot_new_sell_filled_readback",
+        "XFMAT: TEST PASS spot_partial_cancelled_readback",
+        "XFMAT: TEST PASS spot_original_order_fee_readback"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/runtime-contract.md",
+    "mod_financial_markets/docs/actual-business-acceptance-matrix.md",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java"
+  ],
+  "budget_proposal": {
+    "status": "PROSPECTIVE_NOT_ALLOCATED",
+    "command_timeout_seconds": 300,
+    "readiness_timeout_seconds": 1800,
+    "run_timeout_seconds": 6000,
+    "gui_hold_seconds": 3600,
+    "normal_close_timeout_seconds": 180
+  },
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "New prospective 3-day spot continuation only. R15 issuance/listing/day3 observations stay independent historical evidence; no old marker supplies this epoch."
+}

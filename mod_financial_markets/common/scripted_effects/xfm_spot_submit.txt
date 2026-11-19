@@ -1,4 +1,4 @@
-﻿# 4 effects. Account entry is internal; public character entry checks legal authority.
+﻿# 5 effects. Incoming takers match before any remainder joins the bounded resting book.
 xfm_spot_submit_effect = {
  save_scope_as = xfm_spot_actor
  xfm_finance_select_account_effect = yes
@@ -32,7 +32,8 @@ xfm_spot_submit_account_effect = {
  clear_saved_scope = xfm_spot_sell_position
  if = {
   limit = { xfm_finance_account_usable_trigger = yes xfm_spot_input_valid_trigger = yes }
-  xfm_spot_reclaim_quote_slot_effect = yes
+  # One bounded refresh before both admission and matching prevents inherited self-trades.
+  var:xfm_selected_coin = { every_in_list = { variable = xfm_spot_orders var:xfm_account = { xfm_finance_refresh_beneficiary_effect = yes } } }
   if = {
    limit = { xfm_spot_capacity_trigger = yes }
    if = {
@@ -105,41 +106,40 @@ xfm_spot_fund_new_order_effect = {
    set_variable = { name = xfm_external_refs value = 0 }
    set_variable = { name = xfm_expiry_day value = { value = global_var:xfm_exchange.var:xfm_day add = 30 } }
   }
-  if = {
-   limit = { NOT = { var:xfm_order_ioc = 1 } }
-   add_to_variable_list = { name = xfm_orders target = scope:xfm_spot_new_order }
-   change_variable = { name = xfm_open_orders_count add = 1 }
-   global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count add = 1 } }
-   var:xfm_selected_coin = {
-    add_to_variable_list = { name = xfm_spot_orders target = scope:xfm_spot_new_order }
-    change_variable = { name = xfm_open_orders_count add = 1 }
-   }
-   scope:xfm_spot_new_order = { set_variable = { name = xfm_indexed value = 1 } }
-   add_to_global_variable_list = { name = xfm_spot_open_orders target = scope:xfm_spot_new_order }
-  }
-  var:xfm_selected_coin = { every_in_list = { variable = xfm_spot_orders var:xfm_account = { xfm_finance_refresh_beneficiary_effect = yes } } }
   scope:xfm_spot_new_order = { xfm_spot_match_effect = yes }
-  if = {
-   limit = { var:xfm_order_ioc = 1 scope:xfm_spot_new_order = { var:xfm_status = 1 } }
-   scope:xfm_spot_new_order = { xfm_spot_cancel_order_effect = yes }
-  }
+  xfm_spot_admit_remainder_effect = yes
   set_variable = { name = xfm_result_order value = scope:xfm_spot_new_order }
   set_variable = { name = xfm_result value = 1 }
  }
  else = { scope:xfm_spot_new_order = { end_story = yes } }
 }
-xfm_spot_reclaim_quote_slot_effect = {
+xfm_spot_admit_remainder_effect = {
  if = {
-  limit = { NOT = { xfm_spot_capacity_trigger = yes } NOT = { var:xfm_order_ioc = 1 } }
-  save_scope_as = xfm_spot_reclaim_account
-  clear_saved_scope = xfm_spot_reclaim_order
-  var:xfm_selected_coin = {
-   random_in_list = {
-    variable = xfm_spot_orders
-    limit = { var:xfm_status = 1 var:xfm_is_maker_quote = 1 var:xfm_side = scope:xfm_spot_reclaim_account.var:xfm_order_side }
-    save_scope_as = xfm_spot_reclaim_order
+  limit = { scope:xfm_spot_new_order = { var:xfm_status = 1 var:xfm_remaining_lots > 0 } }
+  if = {
+   limit = { NOT = { var:xfm_order_ioc = 1 } xfm_spot_rest_capacity_trigger = yes }
+   xfm_spot_index_new_order_effect = yes
+  }
+  else = {
+   scope:xfm_spot_new_order = {
+    # A successful fill stays settled; only the unfilled capacity/IOC remainder is returned.
+    if = {
+     limit = { NOT = { scope:xfm_spot_submitting_account.var:xfm_order_ioc = 1 } }
+     set_variable = { name = xfm_capacity_cancelled_lots value = var:xfm_remaining_lots }
+    }
+    xfm_spot_cancel_order_effect = yes
    }
   }
-  if = { limit = { exists = scope:xfm_spot_reclaim_order } scope:xfm_spot_reclaim_order = { xfm_spot_cancel_order_effect = yes } }
  }
+}
+xfm_spot_index_new_order_effect = {
+ add_to_variable_list = { name = xfm_orders target = scope:xfm_spot_new_order }
+ change_variable = { name = xfm_open_orders_count add = 1 }
+ global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count add = 1 } }
+ var:xfm_selected_coin = {
+  add_to_variable_list = { name = xfm_spot_orders target = scope:xfm_spot_new_order }
+  change_variable = { name = xfm_open_orders_count add = 1 }
+ }
+ scope:xfm_spot_new_order = { set_variable = { name = xfm_indexed value = 1 } }
+ add_to_global_variable_list = { name = xfm_spot_open_orders target = scope:xfm_spot_new_order }
 }

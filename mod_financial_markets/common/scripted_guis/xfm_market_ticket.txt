@@ -32,6 +32,7 @@ xfm_market_buy_gui = {
         is_ai = no is_alive = yes is_adult = yes has_variable = xfm_selected_coin
         var:xfm_selected_coin = { story_type = xfm_finance_coin var:xfm_trading_open = 1 }
         var:xfm_order_lots >= 1 var:xfm_order_lots <= 10000 var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000
+        xfm_spot_ticket_capacity_trigger = { SIDE = 2 }
     }
     effect = { set_variable = { name = xfm_order_side value = 1 } xfm_spot_submit_effect = yes xfm_market_ui_book_effect = yes }
 }
@@ -41,6 +42,7 @@ xfm_market_sell_gui = {
         is_ai = no is_alive = yes is_adult = yes has_variable = xfm_selected_coin
         var:xfm_selected_coin = { story_type = xfm_finance_coin var:xfm_trading_open = 1 }
         var:xfm_order_lots >= 1 var:xfm_order_lots <= 10000 var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000
+        xfm_spot_ticket_capacity_trigger = { SIDE = 1 }
     }
     effect = { set_variable = { name = xfm_order_side value = 2 } xfm_spot_submit_effect = yes xfm_market_ui_book_effect = yes }
 }

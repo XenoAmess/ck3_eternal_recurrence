@@ -13,7 +13,7 @@ public final class FollowupContracts {
         public LegacyInput { Objects.requireNonNull(request, "core request"); }
     }
     public enum Profile {
-        DERIVATIVES("derivatives"), LIFECYCLE("lifecycle"), INHERITANCE("inheritance"),
+        SPOT("spot"), DERIVATIVES("derivatives"), LIFECYCLE("lifecycle"), INHERITANCE("inheritance"),
         COLD_RELOAD("cold-reload"), NEWS_CRISIS("news-crisis"), AI_CAPACITY("ai-capacity");
         private final String wire;
         Profile(String wire) { this.wire = wire; }
@@ -101,6 +101,8 @@ public final class FollowupContracts {
             require(observationEpoch >= 1 && observationEpoch <= 1_000_000_000, "positive bounded observation epoch");
             if (caseId == Profile.DERIVATIVES) require(targets.coinId != null || targets.indexId != null, "derivatives needs an actual coin or model index");
             else require(targets.indexId == null, "model index observation applies to derivatives only");
+            if (caseId == Profile.SPOT) require(targets.coinId != null && targets.contractId == null && targets.positionId == null
+                    && targets.debtId == null && targets.newsId == null, "spot requires only a real coin/account target");
             if (caseId == Profile.LIFECYCLE || caseId == Profile.AI_CAPACITY)
                 require(targets.coinId != null, "profile needs a real coin target");
             if (caseId == Profile.LIFECYCLE || caseId == Profile.INHERITANCE || caseId == Profile.NEWS_CRISIS)
@@ -117,6 +119,7 @@ public final class FollowupContracts {
         public List<String> markers() {
             String prefix = "XFMAT: TEST PASS " + caseId.scriptKey() + "_";
             List<String> observations = switch (caseId) {
+                case SPOT -> List.of("observation_ready", "watched_sample_readback", "new_buy_filled_readback", "new_sell_filled_readback", "partial_cancelled_readback", "original_order_fee_readback");
                 case DERIVATIVES -> List.of("observation_ready", "paired_position_readback", "settled_after_baseline", "claim_accounting_readback");
                 case LIFECYCLE -> List.of("observation_ready", "new_notice_readback", "exit_state_after_notice", "surviving_claim_readback");
                 case INHERITANCE -> List.of("observation_ready", "original_holder_died", "account_inherited_or_frozen", "original_claim_reference_survives");

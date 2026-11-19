@@ -1,0 +1,742 @@
+{
+ "schema": "ck3-financial-market-r0015-compact-evidence-v1",
+ "machine_id": "4-8e1c2f1861",
+ "recorded_at_utc": "2026-11-19T00:30:33.564759+00:00",
+ "run_id": "4-8e1c2f1861--financial-markets--R0015",
+ "attempt": "a93",
+ "root_current_head_reported": "ff2daf",
+ "scene_head_from_release": "af81eb22b011e8991817caf81a0cb794b7d7497d",
+ "scope": "closed-scene read-only evidence summary, not new Game/compile/test/audit execution",
+ "dates": {
+  "first_raw": 53144328,
+  "last_raw": 53144400,
+  "new_native_days": 3,
+  "raw_ticks_per_day": 24
+ },
+ "audit_declared_layout": {
+  "gameVersion": "1.21.0",
+  "saveFormat": "19",
+  "numericScale": 100000,
+  "storyReferenceType": "story",
+  "characterReferenceType": "char",
+  "numberIdentityEncoding": "unsigned64OmittedZero"
+ },
+ "seven_explicit_saved_archives": [
+  {
+   "stage": "baseline",
+   "archive_source": "s1",
+   "audit_source": "s2",
+   "date_raw": 53144328,
+   "game_date": "1066.9.15",
+   "physical_archive_pin_from_receipt": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-exchange-baseline-save-01\\xar_checkpoint.ck3",
+    "bytes": 140063472,
+    "sha256": "086f6ea55d6a27122a5377f210d7cf3eae0d3d96e487f3ab5d28dce359649857"
+   },
+   "exact_copy": true,
+   "same_file": false,
+   "native_physical_save_confirmed": false,
+   "archive_financialCertified": false,
+   "cold_load_proven": false,
+   "audit_assessment": "CANDIDATE_INVARIANTS_HOLD",
+   "audit_financialCertified": false,
+   "inner_audit_financialCertified": false,
+   "audit_number_identity_encoding": "unsigned64OmittedZero",
+   "exchange": {
+    "xfm_next_coin_id": "0",
+    "xfm_day": "0",
+    "xfm_next_order_id": "0",
+    "xfm_fee_cents": "0"
+   },
+   "player_account": {
+    "native_id": "54",
+    "permanent_id": "2",
+    "holder_native_id": "31254",
+    "free_cents": "0",
+    "reserved_cents": "0"
+   }
+  },
+  {
+   "stage": "registered",
+   "archive_source": "s3",
+   "audit_source": "s4",
+   "date_raw": 53144328,
+   "game_date": "1066.9.15",
+   "physical_archive_pin_from_receipt": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-registered-save-01\\xar_checkpoint.ck3",
+    "bytes": 140091697,
+    "sha256": "cfb3765db8c28badb21ad208e17d3826a7734fb2c1735e46ef8a0018afe7a89f"
+   },
+   "exact_copy": true,
+   "same_file": false,
+   "native_physical_save_confirmed": false,
+   "archive_financialCertified": false,
+   "cold_load_proven": false,
+   "audit_assessment": "CANDIDATE_INVARIANTS_HOLD",
+   "audit_financialCertified": false,
+   "inner_audit_financialCertified": false,
+   "audit_number_identity_encoding": "unsigned64OmittedZero",
+   "exchange": {
+    "xfm_fee_cents": "100",
+    "xfm_next_coin_id": "1",
+    "xfm_day": "0",
+    "xfm_next_order_id": "0"
+   },
+   "player_account": {
+    "native_id": "54",
+    "permanent_id": "2",
+    "holder_native_id": "31254",
+    "free_cents": "900",
+    "reserved_cents": "0"
+   },
+   "coin": {
+    "native_id": "55",
+    "permanent_id": "1",
+    "supply_units": "15000"
+   }
+  },
+  {
+   "stage": "subscribed",
+   "archive_source": "s5",
+   "audit_source": "s6",
+   "date_raw": 53144328,
+   "game_date": "1066.9.15",
+   "physical_archive_pin_from_receipt": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-subscribed-save-01\\xar_checkpoint.ck3",
+    "bytes": 140115215,
+    "sha256": "4a5fd6061e810ea6edb3c79d47e7563e3bbc94dc837614232143fea8a1440eff"
+   },
+   "exact_copy": true,
+   "same_file": false,
+   "native_physical_save_confirmed": false,
+   "archive_financialCertified": false,
+   "cold_load_proven": false,
+   "audit_assessment": "CANDIDATE_INVARIANTS_HOLD",
+   "audit_financialCertified": false,
+   "inner_audit_financialCertified": false,
+   "audit_number_identity_encoding": "unsigned64OmittedZero",
+   "exchange": {
+    "xfm_next_coin_id": "1",
+    "xfm_day": "0",
+    "xfm_next_order_id": "0",
+    "xfm_fee_cents": "200"
+   },
+   "player_account": {
+    "native_id": "54",
+    "permanent_id": "2",
+    "holder_native_id": "31254",
+    "free_cents": "0",
+    "reserved_cents": "1600"
+   },
+   "coin": {
+    "native_id": "55",
+    "permanent_id": "1",
+    "supply_units": "15000"
+   }
+  },
+  {
+   "stage": "funded",
+   "archive_source": "s7",
+   "audit_source": "s8",
+   "date_raw": 53144376,
+   "game_date": "1066.9.17",
+   "physical_archive_pin_from_receipt": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-funded-save-01\\xar_checkpoint.ck3",
+    "bytes": 139987326,
+    "sha256": "600f0c648c7f36508bd870348e60bd95607a3cb012bd2407936c722ec0328456"
+   },
+   "exact_copy": true,
+   "same_file": false,
+   "native_physical_save_confirmed": false,
+   "archive_financialCertified": false,
+   "cold_load_proven": false,
+   "audit_assessment": "CANDIDATE_INVARIANTS_HOLD",
+   "audit_financialCertified": false,
+   "inner_audit_financialCertified": false,
+   "audit_number_identity_encoding": "unsigned64OmittedZero",
+   "exchange": {
+    "xfm_next_coin_id": "1",
+    "xfm_fee_cents": "184",
+    "xfm_day": "2",
+    "xfm_next_order_id": "0"
+   },
+   "player_account": {
+    "native_id": "54",
+    "permanent_id": "2",
+    "holder_native_id": "31254",
+    "free_cents": "0",
+    "reserved_cents": "1600"
+   },
+   "coin": {
+    "native_id": "55",
+    "permanent_id": "1",
+    "supply_units": "15000"
+   }
+  },
+  {
+   "stage": "listed",
+   "archive_source": "s9",
+   "audit_source": "s10",
+   "date_raw": 53144376,
+   "game_date": "1066.9.17",
+   "physical_archive_pin_from_receipt": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-listed-save-01\\xar_checkpoint.ck3",
+    "bytes": 140005530,
+    "sha256": "6cae390df77ba39d65f00cff09f48c883ae59c09f28fb8f180180fea8d294385"
+   },
+   "exact_copy": true,
+   "same_file": false,
+   "native_physical_save_confirmed": false,
+   "archive_financialCertified": false,
+   "cold_load_proven": false,
+   "audit_assessment": "CANDIDATE_INVARIANTS_HOLD",
+   "audit_financialCertified": false,
+   "inner_audit_financialCertified": false,
+   "audit_number_identity_encoding": "unsigned64OmittedZero",
+   "exchange": {
+    "xfm_next_order_id": "2",
+    "xfm_day": "2",
+    "xfm_fee_cents": "324",
+    "xfm_next_coin_id": "1"
+   },
+   "player_account": {
+    "native_id": "54",
+    "permanent_id": "2",
+    "holder_native_id": "31254",
+    "free_cents": "0",
+    "reserved_cents": "0"
+   },
+   "coin": {
+    "native_id": "55",
+    "permanent_id": "1",
+    "supply_units": "15000"
+   },
+   "player_coin_position": {
+    "native_id": "343",
+    "coin_native_id": "55",
+    "account_native_id": "54",
+    "xfm_reserved_units": "0",
+    "xfm_quantity_units": "8000"
+   }
+  },
+  {
+   "stage": "book-day03",
+   "archive_source": "s11",
+   "audit_source": "s12",
+   "date_raw": 53144400,
+   "game_date": "1066.9.18",
+   "physical_archive_pin_from_receipt": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-book-day03-save-01\\xar_checkpoint.ck3",
+    "bytes": 141108455,
+    "sha256": "323f9f5c0ec60a99734f0e08184255bf967f45461493ec83a11aea41edccbb9d"
+   },
+   "exact_copy": true,
+   "same_file": false,
+   "native_physical_save_confirmed": false,
+   "archive_financialCertified": false,
+   "cold_load_proven": false,
+   "audit_assessment": "CANDIDATE_INVARIANTS_HOLD",
+   "audit_financialCertified": false,
+   "inner_audit_financialCertified": false,
+   "audit_number_identity_encoding": "unsigned64OmittedZero",
+   "exchange": {
+    "xfm_next_order_id": "152",
+    "xfm_day": "3",
+    "xfm_fee_cents": "368",
+    "xfm_next_coin_id": "1"
+   },
+   "player_account": {
+    "native_id": "54",
+    "permanent_id": "2",
+    "holder_native_id": "31254",
+    "free_cents": "0",
+    "reserved_cents": "0"
+   },
+   "coin": {
+    "native_id": "55",
+    "permanent_id": "1",
+    "supply_units": "15000"
+   },
+   "player_coin_position": {
+    "native_id": "343",
+    "coin_native_id": "55",
+    "account_native_id": "54",
+    "xfm_quantity_units": "8000",
+    "xfm_reserved_units": "0"
+   }
+  },
+  {
+   "stage": "after-sell",
+   "archive_source": "s13",
+   "audit_source": "s14",
+   "date_raw": 53144400,
+   "game_date": "1066.9.18",
+   "physical_archive_pin_from_receipt": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-after-sell-save-01\\xar_checkpoint.ck3",
+    "bytes": 141109125,
+    "sha256": "0a886b723e58864e41635218c1aa2407cad143d5319bb7220ab8292dc548bbbb"
+   },
+   "exact_copy": true,
+   "same_file": false,
+   "native_physical_save_confirmed": false,
+   "archive_financialCertified": false,
+   "cold_load_proven": false,
+   "audit_assessment": "CANDIDATE_INVARIANTS_HOLD",
+   "audit_financialCertified": false,
+   "inner_audit_financialCertified": false,
+   "audit_number_identity_encoding": "unsigned64OmittedZero",
+   "exchange": {
+    "xfm_next_order_id": "152",
+    "xfm_next_coin_id": "1",
+    "xfm_fee_cents": "368",
+    "xfm_day": "3"
+   },
+   "player_account": {
+    "native_id": "54",
+    "permanent_id": "2",
+    "holder_native_id": "31254",
+    "free_cents": "0",
+    "reserved_cents": "0"
+   },
+   "coin": {
+    "native_id": "55",
+    "permanent_id": "1",
+    "supply_units": "15000"
+   },
+   "player_coin_position": {
+    "native_id": "343",
+    "coin_native_id": "55",
+    "account_native_id": "54",
+    "xfm_quantity_units": "8000",
+    "xfm_reserved_units": "0"
+   }
+  }
+ ],
+ "issuance": {
+  "coin_native_id": "55",
+  "permanent_coin_id": "1",
+  "registered_actual_supply_units": "15000",
+  "raw_stage_evidence": {
+   "registered": {
+    "source": "s15",
+    "json_pointer": "/stories/3",
+    "native_id": "55",
+    "producer_canonical_token_sha256": "9b0cb62fffd9d79014c915dfd9530d1a0e037754280853e976256056c08c6c2f",
+    "fields": {
+     "xfm_coin_id": "1",
+     "xfm_listing_state": "0",
+     "xfm_actual_raised_cents": "0",
+     "xfm_external_raised_cents": "0",
+     "xfm_offer_units_remaining": "10000",
+     "xfm_offer_price_cents": "20"
+    }
+   },
+   "subscribed": {
+    "source": "s16",
+    "json_pointer": "/stories/3",
+    "native_id": "55",
+    "producer_canonical_token_sha256": "d95fcb95e2a3c260e98551c0f03804eec40356e3cfbb9f5914168a7157518e27",
+    "fields": {
+     "xfm_coin_id": "1",
+     "xfm_listing_state": "0",
+     "xfm_actual_raised_cents": "1600",
+     "xfm_external_raised_cents": "0",
+     "xfm_offer_units_remaining": "2000",
+     "xfm_offer_price_cents": "20"
+    }
+   },
+   "funded": {
+    "source": "s17",
+    "json_pointer": "/stories/3",
+    "native_id": "55",
+    "producer_canonical_token_sha256": "60108f1f429a352788fbfefdcd943e2dd18f192ef7969469b05d36335a6f9bd6",
+    "fields": {
+     "xfm_coin_id": "1",
+     "xfm_listing_state": "0",
+     "xfm_actual_raised_cents": "2000",
+     "xfm_external_raised_cents": "400",
+     "xfm_offer_units_remaining": "0",
+     "xfm_offer_price_cents": "20"
+    }
+   },
+   "after-sell": {
+    "source": "s19",
+    "json_pointer": "/stories/3",
+    "native_id": "55",
+    "producer_canonical_token_sha256": "60f050c5c2fe4ff7b876cc0dd86237d24280b38b7c307cc36c33aca346cbc84b",
+    "fields": {
+     "xfm_coin_id": "1",
+     "xfm_listing_state": "1",
+     "xfm_actual_raised_cents": "2000",
+     "xfm_external_raised_cents": "400",
+     "xfm_offer_units_remaining": "0",
+     "xfm_offer_price_cents": "20"
+    }
+   }
+  },
+  "funded_player_reserved_cents": "1600",
+  "funded_external_cents": "400",
+  "funded_total_cents": "2000",
+  "funded_counterparties_source": "s8",
+  "funded_counterparty_raw_source": "s18",
+  "funded_counterparties": [
+   {
+    "account_native_id": "64",
+    "permanent_account_id": "5",
+    "holder_native_id": "34232",
+    "free_cents": "22",
+    "reserved_cents": "307"
+   },
+   {
+    "account_native_id": "67",
+    "permanent_account_id": "8",
+    "holder_native_id": "34973",
+    "free_cents": "0",
+    "reserved_cents": "200"
+   }
+  ],
+  "listed_source": "s10",
+  "player_allocated_units": "8000",
+  "outside_allocations": [
+   {
+    "account_native_id": "64",
+    "units": "1000"
+   },
+   {
+    "account_native_id": "67",
+    "units": "1000"
+   }
+  ]
+ },
+ "spot_market": {
+  "source": "s14",
+  "coin_native_id": "55",
+  "raw_source": "s19",
+  "coin_market_fields": {
+   "xfm_actual_trades": {
+    "raw_data": "type = value identity = 2900000",
+    "exact_integer": "29"
+   },
+   "xfm_day_volume_units": {
+    "raw_data": "type = value identity = 290000000",
+    "exact_integer": "2900"
+   },
+   "xfm_last_trade_day": {
+    "raw_data": "type = value identity = 300000",
+    "exact_integer": "3"
+   },
+   "xfm_last_price_cents": {
+    "raw_data": "type = value identity = 8700000",
+    "exact_integer": "87"
+   },
+   "xfm_price_version": {
+    "raw_data": "type = value identity = 2900000",
+    "exact_integer": "29"
+   },
+   "xfm_oracle_reason": {
+    "raw_data": "type = value identity = 100000",
+    "exact_integer": "1"
+   }
+  },
+  "spot_order_records": 152,
+  "filled_order_records": 58,
+  "filled_buy_lots": 29,
+  "filled_sell_lots": 29,
+  "filled_buy_notional_cents": 1268,
+  "filled_sell_notional_cents": 1268,
+  "active_order_groups": [
+   {
+    "side": "1",
+    "limit_cents": "87",
+    "orders": 64,
+    "remaining_lots": 64
+   }
+  ],
+  "player_account54_spot_order_records": 0,
+  "representative_filled_pair": [
+   {
+    "native_id": "348",
+    "permanent_id": "1",
+    "numbers": {
+     "xfm_filled_lots": "1",
+     "xfm_filled_notional_cents": "19",
+     "xfm_fee_paid_cents": "1",
+     "xfm_expiry_day": "32",
+     "xfm_order_id": "1",
+     "xfm_status": "2",
+     "xfm_side": "1",
+     "xfm_remaining_lots": "0",
+     "xfm_original_lots": "1",
+     "xfm_limit_cents": "19"
+    },
+    "account_native_id": "346"
+   },
+   {
+    "native_id": "352",
+    "permanent_id": "3",
+    "numbers": {
+     "xfm_filled_lots": "1",
+     "xfm_filled_notional_cents": "19",
+     "xfm_fee_paid_cents": "1",
+     "xfm_expiry_day": "33",
+     "xfm_order_id": "3",
+     "xfm_status": "2",
+     "xfm_side": "2",
+     "xfm_remaining_lots": "0",
+     "xfm_original_lots": "1",
+     "xfm_limit_cents": "19"
+    },
+    "account_native_id": "64"
+   }
+  ],
+  "meaning": "29actual market trades/2900units, supported independently by58filled order sides,29lots each side and1268cents single-sided notional. Do not double count both sides as58trades. No player spot fill demonstrated."
+ },
+ "latest_player_sell_ticket": {
+  "source": "s19",
+  "json_pointer": "/actors/2",
+  "actor_native_id": "31254",
+  "producer_canonical_token_sha256": "ff38009fbea524ef5b0fadfffe82a9ae97f0144dcddec4a3ca8e2bb34aafa8a0",
+  "fields": {
+   "xfm_result": {
+    "raw_data": "type = value",
+    "exact_integer": "0"
+   },
+   "xfm_order_lots": {
+    "raw_data": "type = value identity = 7100000",
+    "exact_integer": "71"
+   },
+   "xfm_order_limit_cents": {
+    "raw_data": "type = value identity = 10000000",
+    "exact_integer": "100"
+   },
+   "xfm_order_ioc": {
+    "raw_data": "type = value",
+    "exact_integer": "0"
+   },
+   "xfm_order_side": {
+    "raw_data": "type = value identity = 200000",
+    "exact_integer": "2"
+   }
+  },
+  "selected_coin_raw_data": "type = story identity = 55",
+  "interpretation": "71-lot sell, limit100 cents/lot, IOC0 (GTC). All64active buy orders are1lot at87. These prices do not cross; this is not an executable-crossing rejection demonstration."
+ },
+ "unchanged_player_financial_state_after_rejection": {
+  "before_source": "s12",
+  "after_source": "s14",
+  "player_wallet_free_cents_before_after": [
+   "0",
+   "0"
+  ],
+  "player_wallet_reserved_cents_before_after": [
+   "0",
+   "0"
+  ],
+  "player_position_units_before_after": [
+   "8000",
+   "8000"
+  ],
+  "player_position_reserved_units_before_after": [
+   "0",
+   "0"
+  ],
+  "exchange_fee_cents_before_after": [
+   "368",
+   "368"
+  ],
+  "no_player_order_created_in_selected_financial_census": true
+ },
+ "phase2_failure": {
+  "entry_source": "s20",
+  "preserved_error_source": "s21",
+  "error": "TimeoutError: Original normal Quit reserve reached; pending Root phase remains GAP",
+  "business_pass": false,
+  "entry_business_acceptance": "RED_OR_INCOMPLETE",
+  "public_run_wait_source": "s25",
+  "returncode": 2,
+  "elapsed_seconds": 2061.319150700001
+ },
+ "normal_close_separate_from_business": {
+  "source": "s22",
+  "normal_close_qualified": true,
+  "cleanup_ok": true,
+  "business_pass": false,
+  "game_retained_handle_exit_code": 0,
+  "creation_filetime_100ns": "134395187514041546",
+  "managed_process_exit_code": 0,
+  "job_active_processes_final": 0,
+  "tree_gone": true,
+  "host_wait_source": "s23",
+  "host_returncode": 0,
+  "keeper_wait_source": "s24",
+  "keeper_returncode": 0,
+  "allocate_parent_final_wait_source": "s26",
+  "allocate_parent_final_returncode": 0,
+  "allocate_parent_final_wait_seconds": 2549.200091399951
+ },
+ "release": {
+  "wait_source": "s27",
+  "result_source": "s28",
+  "returncode": 0,
+  "elapsed_seconds": 0.9361893001478165,
+  "requested_cas_expected_sequence": "15354",
+  "actual_completed_sequence": "15356",
+  "at_utc": "2026-11-19T00:21:16.932330+00:00",
+  "resources": []
+ },
+ "limits": {
+  "financialCertified": false,
+  "cold_load_proven": false,
+  "whole_product_business_pass": false,
+  "player_spot_trade_demonstrated": false,
+  "native_physical_save_confirmed_all": false,
+  "native_confirmation_note": "All seven original Native physical_save_confirmed flags are false; independent exact_copy archives do not rewrite those flags.",
+  "physical_saves_reopened_by_this_summary": false,
+  "source_archive_pins_from_receipts_not_rehashed_large_saves": true,
+  "no_executable_order_rejection_claim": true,
+  "no_new_game_action_compile_test_or_Git": true,
+  "next_scope": "continue from listed/archive state with an actually crossing and legally admissible player order; futures, debt, delisting, cold reload and scale acceptance remain separate work"
+ },
+ "sources": {
+  "s1": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-exchange-baseline-save-01\\ARCHIVE.actual.json",
+   "bytes": 7491,
+   "sha256": "e9db95a7168487bc927bf377a5bad89837f2a2fc0effb9800ece28a514e75de1"
+  },
+  "s2": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-baseline-audit01\\audit-report.json",
+   "bytes": 10930,
+   "sha256": "422d39950ccb3aa9ffa14cb08dda87637fdf92df54ef792804b13c8a76fc0e30"
+  },
+  "s3": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-registered-save-01\\ARCHIVE.actual.json",
+   "bytes": 7480,
+   "sha256": "b2df39525b1b7847ca25a8bd687fea73693ca90f49c411f230ec7a5fa66e8200"
+  },
+  "s4": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-registered-audit01\\audit-report.json",
+   "bytes": 14326,
+   "sha256": "6aee765a1e10b6fc0475fc9469132dcccde18b5eec5338dd3f7b6c6aebf3480c"
+  },
+  "s5": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-subscribed-save-01\\ARCHIVE.actual.json",
+   "bytes": 7487,
+   "sha256": "d3cff23e60bfd7963dadac2fb49c0e5d7b5564375e40d4a4dc21e4f3c1262ac4"
+  },
+  "s6": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-subscribed-audit01\\audit-report.json",
+   "bytes": 14816,
+   "sha256": "c7d95de81fcd8e053c3584820c4f1a49ef6558fe1a5bf4b5ba253baf8f998be1"
+  },
+  "s7": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-funded-save-01\\ARCHIVE.actual.json",
+   "bytes": 7475,
+   "sha256": "f50d784833f39ed876fa86cac87d67607fba5aeace86b7cb20bb0f5ecd9df62a"
+  },
+  "s8": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-funded-audit01\\audit-report.json",
+   "bytes": 195213,
+   "sha256": "bf19e9b49f2860a559b682555af9e4c16943f79f37fd737007dd1321c77db8b9"
+  },
+  "s9": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-listed-save-01\\ARCHIVE.actual.json",
+   "bytes": 7475,
+   "sha256": "e1d05fe0ae5388e463d91881feeabc220f14eb69bd9b3d99fa54db16dfe2a601"
+  },
+  "s10": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-listed-audit01\\audit-report.json",
+   "bytes": 202270,
+   "sha256": "d4cedff9528f7593ac44eb78830a63fe43518063895d7da8527e1ebd59f3a6fa"
+  },
+  "s11": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-book-day03-save-01\\ARCHIVE.actual.json",
+   "bytes": 7489,
+   "sha256": "335201d14214c34c0b9870e4b1bb750fc84c83e5b9c5d82b82700aa96e289857"
+  },
+  "s12": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-book-day03-audit01\\audit-report.json",
+   "bytes": 494805,
+   "sha256": "189a8fbd459b693a836af53f1efb6ba12c1f7944c6ca0fa41782d2f3bc4c734c"
+  },
+  "s13": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0015\\core16-after-sell-save-01\\ARCHIVE.actual.json",
+   "bytes": 7489,
+   "sha256": "f2da176a209a223bf9229c36a18813e585022307829853361afd32b0db19059c"
+  },
+  "s14": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-after-sell-audit01\\audit-report.json",
+   "bytes": 494808,
+   "sha256": "4c4179e3c519dd9da367334bcb37fd9d05940358ce6d6e90c55498dabad16137"
+  },
+  "s15": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-registered-raw01\\readback.json",
+   "bytes": 96525,
+   "sha256": "1b02533d43a36159289b14e06e5ac9271870d62cdb991005e7082bc8fb2c3b0f"
+  },
+  "s16": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-subscribed-raw01\\readback.json",
+   "bytes": 98568,
+   "sha256": "40ee70d7d78fdc49655d3b599274bc99059cccaeac8b74ba76dbe34f86fbe8a6"
+  },
+  "s17": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-funded-raw01\\readback.json",
+   "bytes": 114806,
+   "sha256": "57ef9cac66a598a23fee9d1255bb994cf8b6ddf986c01d6ffe8f8f5be79b92f7"
+  },
+  "s18": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-funded-counterparties-raw01\\readback.json",
+   "bytes": 135564,
+   "sha256": "07dc6b528311e120efc2bde5d5482b184f6ff02b1f5a20e66a0ab43a343df6ec"
+  },
+  "s19": {
+   "path": "C:\\workspace\\ck3-market-task-20261118\\R0015-after-sell-raw01\\readback.json",
+   "bytes": 147126,
+   "sha256": "7a7aa4a290cfe2f76f64dc936b22df13f76fe55780f20367d46ca40df9db1014"
+  },
+  "s20": {
+   "path": "C:\\workspace\\ck3-market-live-20261119h\\live\\4-8e1c2f1861--financial-markets--R0015\\case-output\\entry-run-result.json",
+   "bytes": 77113,
+   "sha256": "b2ee89c9ad80d67a61d0e4ace3a15f47faf222aefa3141749bd9690fde05cc08"
+  },
+  "s21": {
+   "path": "C:\\workspace\\ck3-market-live-20261119h\\live\\4-8e1c2f1861--financial-markets--R0015\\case-output\\case-error-preserved.json",
+   "bytes": 222,
+   "sha256": "826614bb65fca09f10b101e4b3b5f69f97b273a4911da48bcacb41947cc3f68f"
+  },
+  "s22": {
+   "path": "C:\\workspace\\ck3-market-live-20261119h\\live\\4-8e1c2f1861--financial-markets--R0015\\case-output\\normal-close-result.json",
+   "bytes": 8458,
+   "sha256": "4b04849ffa4bc68ec18fe1fbbe6f6c5a5cf22869e50d1a05a2e40d108038147e"
+  },
+  "s23": {
+   "path": "C:\\workspace\\ck3-market-live-20261119h\\live\\4-8e1c2f1861--financial-markets--R0015\\host-original-process-exit.json",
+   "bytes": 241,
+   "sha256": "16a1c1f05ba1218f69b3070e2ed9b1548cf7f4218db214e4f53c01c78fe6dc8a"
+  },
+  "s24": {
+   "path": "C:\\workspace\\ck3-market-live-20261119h\\live\\4-8e1c2f1861--financial-markets--R0015\\keeper-actual-parent-exit.json",
+   "bytes": 599,
+   "sha256": "0ae7630d90a5eb1b556d23357c95142f1f839676c60d937fa37a3017ef0539d3"
+  },
+  "s25": {
+   "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CORE16-run\\ORIGINAL-WAIT.actual.json",
+   "bytes": 1499,
+   "sha256": "ecfa685634db0b45acac468d5ecb2aa700059075a6cd2d1f3eb1d3c391d1172c"
+  },
+  "s26": {
+   "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-core16\\ORIGINAL-WAIT.actual.json",
+   "bytes": 1808,
+   "sha256": "3e6975c19554fc469a100fe02cd6f591fdcae21f6345be4f9afb40e572b7dcc6"
+  },
+  "s27": {
+   "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-core16\\ORIGINAL-WAIT.actual.json",
+   "bytes": 1351,
+   "sha256": "bcdf7013e69e43001f5ab56ce292b495644de98fce53a9d5787b043f4edfa825"
+  },
+  "s28": {
+   "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-core16\\stdout.log",
+   "bytes": 1416,
+   "sha256": "c23f6d8d6ba4bcf6ffaf6fbda3e9451d676a448d5aef5575ac858c686017145f"
+  }
+ }
+}

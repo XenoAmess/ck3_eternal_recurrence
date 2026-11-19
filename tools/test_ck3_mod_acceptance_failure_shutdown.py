@@ -15,6 +15,7 @@ class FailureShutdownTests(unittest.TestCase):
         tree=ast.parse(HOST.read_text(encoding='utf-8'))
         names={'finished_native_process_exit_zero_proof','finished_native_exit_zero_proof','finished_native_failure_shutdown_proof','lookup'}
         body=[n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name in names]
+        body.append(next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='SavedCampaignNativeObserverTerminalError'))
         plan=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='PlanClient')
         body.append(ast.ClassDef(name='PlanClient',bases=[],keywords=[],decorator_list=[],body=[n for n in plan.body if isinstance(n,ast.AsyncFunctionDef) and n.name in {'execute','observe_final'}]))
         cls.ns={'datetime':datetime,'timezone':timezone,'re':re,'copy':copy,'asyncio':asyncio,'now':lambda:datetime.now(timezone.utc).isoformat()}

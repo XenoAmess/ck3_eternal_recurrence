@@ -30,11 +30,12 @@ final class FollowupClaimEqualityTest {
                 profile==Profile.AI_CAPACITY?ScaleTier.SMOKE:null);
     }
 
-    @Test void everyProfileEmitsNoNumericEqualityToArithmeticBlockAndOnlyClaimProfilesGainValues() {
+    @Test void everyProfileEmitsNoNumericEqualityToArithmeticBlockAndDeclaredProfilesGainValues() {
         for(Profile profile:Profile.values()) {
             Request input=request(profile,101); var files=FollowupObservationScripts.render(input);
-            assertEquals(CLAIM_PROFILES.contains(profile)?10:9,files.size());
-            assertEquals(CLAIM_PROFILES.contains(profile),files.containsKey(valuePath(input)));
+            boolean hasValues = CLAIM_PROFILES.contains(profile) || profile == Profile.SPOT;
+            assertEquals(hasValues?10:9,files.size());
+            assertEquals(hasValues,files.containsKey(valuePath(input)));
             files.forEach((path,bytes)->{
                 if(path.startsWith("common/")) rejectArithmeticEquality(parse(new String(bytes,StandardCharsets.UTF_8)),path);
                 assertArrayEquals(new byte[]{(byte)0xef,(byte)0xbb,(byte)0xbf},java.util.Arrays.copyOf(bytes,3));

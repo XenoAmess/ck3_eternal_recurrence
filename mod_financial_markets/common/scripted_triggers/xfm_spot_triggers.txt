@@ -10,15 +10,64 @@
  OR = { var:xfm_order_side = 2 xfm_config_spot_open_trigger = yes }
 }
 xfm_spot_capacity_trigger = {
- global_var:xfm_exchange = {
-  var:xfm_order_stories_count < 24576
- }
  OR = {
-  var:xfm_order_ioc = 1
   AND = {
-   var:xfm_open_orders_count < xfm_config_player_order_capacity_value
-   global_var:xfm_exchange = { var:xfm_active_orders_count < xfm_config_global_order_capacity_value }
-   var:xfm_selected_coin = { var:xfm_open_orders_count < xfm_config_coin_order_capacity_value }
+   var:xfm_order_side = 1
+   xfm_spot_admission_trigger = { ACCOUNT = scope:xfm_spot_submitting_account COIN = scope:xfm_spot_submitting_account.var:xfm_selected_coin PRICE = scope:xfm_spot_submitting_account.var:xfm_order_limit_cents IOC = scope:xfm_spot_submitting_account.var:xfm_order_ioc SIDE = 2 }
+  }
+  AND = {
+   var:xfm_order_side = 2
+   xfm_spot_admission_trigger = { ACCOUNT = scope:xfm_spot_submitting_account COIN = scope:xfm_spot_submitting_account.var:xfm_selected_coin PRICE = scope:xfm_spot_submitting_account.var:xfm_order_limit_cents IOC = scope:xfm_spot_submitting_account.var:xfm_order_ioc SIDE = 1 }
+  }
+ }
+}
+
+# Current submitting account. Incoming orders are not stored in the book until matching ends.
+xfm_spot_rest_capacity_trigger = {
+ xfm_spot_book_slot_trigger = { ACCOUNT = scope:xfm_spot_submitting_account COIN = scope:xfm_spot_submitting_account.var:xfm_selected_coin }
+}
+xfm_spot_book_slot_trigger = {
+ $ACCOUNT$ = { var:xfm_open_orders_count < xfm_config_player_order_capacity_value }
+ global_var:xfm_exchange = { var:xfm_active_orders_count < xfm_config_global_order_capacity_value }
+ $COIN$ = { var:xfm_open_orders_count < xfm_config_coin_order_capacity_value }
+}
+xfm_spot_admission_trigger = {
+ global_var:xfm_exchange = { var:xfm_order_stories_count < 24576 }
+ OR = {
+  $IOC$ = 1
+  xfm_spot_book_slot_trigger = { ACCOUNT = $ACCOUNT$ COIN = $COIN$ }
+  $COIN$ = {
+   any_in_list = {
+    variable = xfm_spot_orders
+    xfm_spot_independent_crossing_trigger = { ACCOUNT = $ACCOUNT$ COIN = $COIN$ PRICE = $PRICE$ SIDE = $SIDE$ }
+   }
+  }
+ }
+}
+# One read-only candidate rule is shared by account admission and the two normal GUI buttons.
+xfm_spot_independent_crossing_trigger = {
+ xfm_spot_order_executable_trigger = yes
+ var:xfm_coin = $COIN$
+ var:xfm_side = $SIDE$
+ var:xfm_account != $ACCOUNT$
+ var:xfm_account = { var:xfm_beneficial_owner != $ACCOUNT$.var:xfm_beneficial_owner }
+ OR = {
+  AND = { var:xfm_side = 1 var:xfm_limit_cents >= $PRICE$ }
+  AND = { var:xfm_side = 2 var:xfm_limit_cents <= $PRICE$ }
+ }
+}
+xfm_spot_ticket_capacity_trigger = {
+ OR = {
+  AND = {
+   exists = var:xfm_active_account
+   var:xfm_active_account = { story_type = xfm_finance_account var:xfm_system_account = 0 var:xfm_holder = root xfm_finance_account_usable_trigger = yes }
+   xfm_spot_admission_trigger = { ACCOUNT = root.var:xfm_active_account COIN = root.var:xfm_selected_coin PRICE = root.var:xfm_order_limit_cents IOC = root.var:xfm_order_ioc SIDE = $SIDE$ }
+  }
+  AND = {
+   NOT = { AND = { exists = var:xfm_active_account var:xfm_active_account = { story_type = xfm_finance_account var:xfm_system_account = 0 var:xfm_holder = root } } }
+   exists = var:xfm_account
+   var:xfm_account = { story_type = xfm_finance_account var:xfm_system_account = 0 var:xfm_holder = root xfm_finance_account_usable_trigger = yes }
+   xfm_spot_admission_trigger = { ACCOUNT = root.var:xfm_account COIN = root.var:xfm_selected_coin PRICE = root.var:xfm_order_limit_cents IOC = root.var:xfm_order_ioc SIDE = $SIDE$ }
   }
  }
 }

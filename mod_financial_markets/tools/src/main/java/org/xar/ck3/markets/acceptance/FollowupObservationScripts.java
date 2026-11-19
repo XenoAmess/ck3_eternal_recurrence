@@ -73,10 +73,15 @@ public final class FollowupObservationScripts {
                     ${P}_claim_principal_value = { value = var:xfm_outstanding_cents add = var:xfm_repaid_cents add = var:xfm_written_off_cents }
                     """);
         }
+        if (request.caseId() == Profile.SPOT) scripts.put("common/script_values/" + prefix + ".txt", """
+                ${P}_next_sample_day_value = { value = var:xfma_last_sample_day add = 1 }
+                ${P}_spot_expected_fee_value = { value = var:xfm_filled_notional_cents multiply = 0.003 ceiling = yes min = 1 }
+                """);
         scripts.put("common/scripted_effects/" + prefix + "_observe.txt", common(request) + profile(request));
         Map<String, byte[]> result = new LinkedHashMap<>();
         scripts.forEach((name, source) -> result.put(name, ("\ufeff" + source.replace("${P}", prefix)
-                .replace("${ACTOR}", actorCondition(request))).getBytes(StandardCharsets.UTF_8)));
+                .replace("${ACTOR}", actorCondition(request))
+                .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT ? prefix + "_next_sample_day_value" : "{ value = var:xfma_last_sample_day add = 1 }")).getBytes(StandardCharsets.UTF_8)));
         return Map.copyOf(result);
     }
 
@@ -94,6 +99,9 @@ public final class FollowupObservationScripts {
         if (request.targets().newsId() != null) required += "exists = var:xfma_news\n";
         if (request.caseId() == Profile.INHERITANCE) required += "var:xfma_account.var:xfm_holder = { is_alive = yes }\n";
         if (request.caseId() == Profile.NEWS_CRISIS) required += "global_var:xfm_exchange = { has_variable = xfm_news_counter }\n";
+        if (request.caseId() == Profile.SPOT) required += "global_var:xfm_exchange = { has_variable = xfm_next_order_id }\n"
+                + "var:xfma_coin = { story_type = xfm_finance_coin has_variable = xfm_supply_units has_variable = xfm_actual_trades var:xfm_trading_open = 1 var:xfm_listing_state >= 1 var:xfm_listing_state < 5 }\n"
+                + "var:xfma_account.var:xfm_holder = story_owner\n";
         required += "${P}_associations_trigger = yes\n";
         return """
                 # Only xfma_ observation state is written. No product effect is invoked.
@@ -118,6 +126,7 @@ public final class FollowupObservationScripts {
                                 if = { limit = { global_var:xfm_exchange = { has_variable = xfm_news_counter } } set_variable = { name = xfma_start_news_counter value = global_var:xfm_exchange.var:xfm_news_counter } }
                                 ${P}_bind_effect = yes
                 """ + "if = { limit = {\n" + required + "}\n"
+                + spotArm(request)
                 + "set_variable = { name = xfma_ready value = 1 }\n"
                 + "set_variable = { name = xfma_holder_before value = var:xfma_account.var:xfm_holder }\n"
                 + "if = { limit = { exists = var:xfma_holder_before.primary_heir } set_variable = { name = xfma_heir_before value = var:xfma_holder_before.primary_heir } }\n"
@@ -136,7 +145,7 @@ public final class FollowupObservationScripts {
                         change_variable = { name = xfma_refreshes add = 1 }
                         if = {
                             limit = { global_var:xfm_exchange.var:xfm_day > var:xfma_last_sample_day }
-                            if = { limit = { global_var:xfm_exchange.var:xfm_day > { value = var:xfma_last_sample_day add = 1 } } set_variable = { name = xfma_sample_gap value = 1 } }
+                            if = { limit = { global_var:xfm_exchange.var:xfm_day > ${NEXT_SAMPLE_DAY} } set_variable = { name = xfma_sample_gap value = 1 } }
                             change_variable = { name = xfma_daily_samples add = 1 }
                             if = { limit = { var:xfma_daily_samples > 30 } change_variable = { name = xfma_measured_samples add = 1 } }
                             set_variable = { name = xfma_last_sample_day value = global_var:xfm_exchange.var:xfm_day }
@@ -235,13 +244,71 @@ public final class FollowupObservationScripts {
             case LIFECYCLE -> "var:xfm_coin = scope:xfma_context.var:xfma_coin\n";
             case INHERITANCE -> "OR = { var:xfm_debtor_account = scope:xfma_context.var:xfma_account var:xfm_creditor_account = scope:xfma_context.var:xfma_account }\n";
             case NEWS_CRISIS -> "var:xfm_debtor_account = scope:xfma_context.var:xfma_account\n";
-            case COLD_RELOAD, AI_CAPACITY -> "always = yes\n";
+            case SPOT, COLD_RELOAD, AI_CAPACITY -> "always = yes\n";
         };
         return result + "OR = { NOT = { exists = var:xfma_debt } var:xfma_debt = { " + debt + " } }\n";
     }
 
+    private static String spotArm(Request request) {
+        if (request.caseId() != Profile.SPOT) return "";
+        return """
+                set_variable = { name = xfma_start_order_id value = global_var:xfm_exchange.var:xfm_next_order_id }
+                set_variable = { name = xfma_start_supply_units value = var:xfma_coin.var:xfm_supply_units }
+                set_variable = { name = xfma_start_actual_trades value = var:xfma_coin.var:xfm_actual_trades }
+                set_variable = { name = xfma_start_free_cents value = var:xfma_account.var:xfm_free_cents }
+                set_variable = { name = xfma_start_reserved_cents value = var:xfma_account.var:xfm_reserved_cents }
+                """;
+    }
+
+    private static String spotOrderGuard() {
+        return """
+                story_type = xfm_spot_order
+                has_variable = xfm_order_id var:xfm_order_id > scope:xfma_context.var:xfma_start_order_id
+                var:xfm_account = scope:xfma_context.var:xfma_account
+                var:xfm_coin = scope:xfma_context.var:xfma_coin
+                """;
+    }
+
+    private static String spot(Request request) {
+        StringBuilder source = new StringBuilder();
+        // No result=0 marker: a repeated identical rejection has no production sequence to distinguish it from saved state.
+        for (String input : List.of("xfm_result_order", "xfm_selected_order")) {
+            for (int side = 1; side <= 2; side++) {
+                String target = side == 1 ? "xfma_buy_order" : "xfma_sell_order";
+                source.append("if = { limit = { NOT = { exists = var:").append(target)
+                        .append(" } exists = story_owner.var:").append(input).append(" story_owner.var:").append(input).append(" = {\n")
+                        .append(spotOrderGuard()).append("has_variable = xfm_side var:xfm_side = ").append(side)
+                        .append(" has_variable = xfm_filled_lots var:xfm_filled_lots > 0\n} }\n")
+                        .append("set_variable = { name = ").append(target).append(" value = story_owner.var:").append(input).append(" } }\n");
+            }
+            source.append("if = { limit = { NOT = { exists = var:xfma_partial_order } exists = story_owner.var:")
+                    .append(input).append(" story_owner.var:").append(input).append(" = {\n").append(spotOrderGuard())
+                    .append(fields("xfm_original_lots", "xfm_filled_lots", "xfm_cancelled_lots", "xfm_remaining_lots", "xfm_status", "xfm_finalized"))
+                    .append("var:xfm_filled_lots > 0 var:xfm_original_lots > var:xfm_filled_lots var:xfm_cancelled_lots > 0 var:xfm_remaining_lots = 0 var:xfm_status = 3 var:xfm_finalized = 1\n} }\n")
+                    .append("set_variable = { name = xfma_partial_order value = story_owner.var:").append(input).append(" } }\n");
+        }
+        source.append(once(request, "watched_sample_readback", """
+                has_variable = xfma_start_supply_units
+                var:xfma_account = { has_variable = xfm_free_cents has_variable = xfm_reserved_cents var:xfm_free_cents >= 0 var:xfm_reserved_cents >= 0 }
+                var:xfma_coin = { has_variable = xfm_supply_units var:xfm_supply_units = scope:xfma_context.var:xfma_start_supply_units }
+                """));
+        source.append(once(request, "new_buy_filled_readback", "exists = var:xfma_buy_order\nvar:xfma_buy_order = {\n" + spotOrderGuard()
+                + "has_variable = xfm_side var:xfm_side = 1 has_variable = xfm_filled_lots var:xfm_filled_lots > 0\n}\n"));
+        source.append(once(request, "new_sell_filled_readback", "exists = var:xfma_sell_order\nvar:xfma_sell_order = {\n" + spotOrderGuard()
+                + "has_variable = xfm_side var:xfm_side = 2 has_variable = xfm_filled_lots var:xfm_filled_lots > 0\n}\n"));
+        source.append(once(request, "partial_cancelled_readback", "exists = var:xfma_partial_order\nvar:xfma_partial_order = {\n" + spotOrderGuard()
+                + fields("xfm_original_lots", "xfm_filled_lots", "xfm_cancelled_lots", "xfm_remaining_lots", "xfm_status", "xfm_finalized")
+                + "var:xfm_filled_lots > 0 var:xfm_original_lots > var:xfm_filled_lots var:xfm_cancelled_lots > 0 var:xfm_remaining_lots = 0 var:xfm_status = 3 var:xfm_finalized = 1\n}\n"));
+        String fee = "has_variable = xfm_filled_notional_cents has_variable = xfm_fee_paid_cents var:xfm_filled_notional_cents > 0\n"
+                + "var:xfm_fee_paid_cents >= ${P}_spot_expected_fee_value\nvar:xfm_fee_paid_cents <= ${P}_spot_expected_fee_value\n";
+        source.append(once(request, "original_order_fee_readback", "exists = var:xfma_buy_order exists = var:xfma_sell_order\nvar:xfma_buy_order = { "
+                + fee + " }\nvar:xfma_sell_order = { " + fee + " }\n"));
+        return source.toString();
+    }
+
     private static String profile(Request request) {
         String body = switch (request.caseId()) {
+            case SPOT -> spot(request);
             case DERIVATIVES -> derivatives(request);
             case LIFECYCLE -> lifecycle(request);
             case INHERITANCE -> inheritance(request);
