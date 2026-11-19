@@ -1,0 +1,105 @@
+﻿aubs_fail_effect = {
+    random_player = {
+        add_character_flag = aubs_failed
+        trigger_event = aubs.901
+    }
+}
+
+aubs_read_estate_effect = {
+    save_scope_as = aubs_observed_player
+    set_variable = { name = aubs_direct_count value = 0 }
+    set_variable = { name = aubs_eligible_count value = 0 }
+    set_variable = { name = aubs_eligible_trani_count value = 0 }
+    every_directly_owned_province = {
+        scope:aubs_observed_player = { change_variable = { name = aubs_direct_count add = 1 } }
+        if = { limit = { this = province:2619 } debug_log = "AUBS: OBSERVE actual_direct_trani2619" }
+        else = { debug_log = "AUBS: OBSERVE unexpected_direct_estate" }
+        # Exact production0004 province filter; the fixture initializes the
+        # quota during PREP only. Production0004 still owns each scan reset.
+        if = {
+            limit = {
+                scope:aubs_observed_player = { var:aub_upgrades_this_scan < 15 }
+                has_ongoing_holding_construction = no
+                barony = { is_leased_out = no }
+                OR = {
+                    has_holding_type = castle_holding
+                    has_holding_type = city_holding
+                    has_holding_type = church_holding
+                    has_holding_type = tribal_holding
+                    has_holding_type = temple_citadel_holding
+                }
+            }
+            scope:aubs_observed_player = { change_variable = { name = aubs_eligible_count add = 1 } }
+            if = {
+                limit = { this = province:2619 }
+                scope:aubs_observed_player = { change_variable = { name = aubs_eligible_trani_count add = 1 } }
+            }
+        }
+    }
+    set_variable = { name = aubs_built_count value = 0 }
+    set_variable = { name = aubs_primary_count value = 0 }
+    province:2619 = {
+        every_built_buildings = {
+            scope:aubs_observed_player = { change_variable = { name = aubs_built_count add = 1 } }
+            if = {
+                limit = { is_primary_building = yes }
+                scope:aubs_observed_player = { change_variable = { name = aubs_primary_count add = 1 } }
+            }
+        }
+    }
+    if = { limit = { var:aubs_direct_count = 1 var:aubs_eligible_count = 1 var:aubs_eligible_trani_count = 1 } debug_log = "AUBS: OBSERVE actual_single_direct_and_eligible_trani" }
+    else = { debug_log = "AUBS: OBSERVE direct_or_eligible_inventory_refused" }
+    if = { limit = { province:2619 = { province_owner = { this = scope:aubs_observed_player } } } debug_log = "AUBS: OBSERVE actual_province_owner_is_player" }
+    else = { debug_log = "AUBS: OBSERVE actual_province_owner_not_player" }
+    if = { limit = { title:c_apulia = { holder = scope:aubs_observed_player } title:b_trani = { holder = scope:aubs_observed_player } } debug_log = "AUBS: OBSERVE actual_county_and_barony_holder_is_player" }
+    else = { debug_log = "AUBS: OBSERVE actual_title_holder_refused" }
+    if = { limit = { var:aubs_built_count = 2 var:aubs_primary_count = 1 } debug_log = "AUBS: OBSERVE exactly_two_built_one_primary" }
+    else = { debug_log = "AUBS: OBSERVE building_inventory_refused" }
+}
+
+# Official stock current_date arithmetic is in DAYS:
+# common/scripted_effects/00_custom_loc_effects.txt:2,9-18.
+aubs_read_elapsed_effect = {
+    set_variable = {
+        name = aubs_elapsed
+        value = { value = current_date subtract = var:aubs_seed_date }
+    }
+}
+
+# Observation only: never upgrade/pay, seed a loop or close a window here.
+# Whether immediate upgrade_building_effect emits this callback remains a
+# runtime candidate until the paused MANUAL_PROBE observes it exactly once.
+aubs_record_completion_effect = {
+    aubs_read_elapsed_effect = yes
+    if = {
+        limit = { var:aubs_phase = 1 }
+        change_variable = { name = aubs_first_callbacks add = 1 }
+        set_variable = { name = aubs_first_callback_day value = var:aubs_elapsed }
+        if = { limit = { aubs_source2_native3_trigger = yes } add_character_flag = aubs_first_callback_source_ok }
+        else = { add_character_flag = aubs_bad_callback_source }
+        debug_log = "AUBS: OBSERVE first_auto_completion_callback_candidate"
+    }
+    else_if = {
+        limit = { var:aubs_phase = 2 }
+        change_variable = { name = aubs_manual_callbacks add = 1 }
+        set_variable = { name = aubs_manual_callback_day value = var:aubs_elapsed }
+        if = { limit = { aubs_source3_trigger = yes } add_character_flag = aubs_manual_callback_source_ok }
+        else = { add_character_flag = aubs_bad_callback_source }
+        debug_log = "AUBS: OBSERVE manual_completion_callback_candidate"
+    }
+    else_if = {
+        limit = { var:aubs_phase = 3 }
+        if = {
+            limit = { var:aubs_elapsed = 16 }
+            change_variable = { name = aubs_second_callbacks add = 1 }
+            set_variable = { name = aubs_second_callback_day value = var:aubs_elapsed }
+            if = { limit = { aubs_source2_native3_trigger = yes } add_character_flag = aubs_second_callback_source_ok }
+            else = { add_character_flag = aubs_bad_callback_source }
+            debug_log = "AUBS: OBSERVE second_auto_completion_callback_candidate"
+        }
+        else = {
+            add_character_flag = aubs_off_phase_callback
+            debug_log = "AUBS: OBSERVE off_phase_completion_callback"
+        }
+    }
+}

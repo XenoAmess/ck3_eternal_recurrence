@@ -1,0 +1,204 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T11:42:33.841224+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018",
+  "case": "duchy-primary-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "RED_FIXTURE_UNKNOWN_EFFECTS_AND_TRIGGERS",
+  "source_head": "23cbba44358a4e58f51022320ae73bd2fc67945e",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r18-gui-prepare\\prepared-case.json",
+    "bytes": 1588988,
+    "sha256": "6307a719413d8fc4cc2f5b0ac9ff2334f1e12e766dcc8df8522d2f48b0bf4293"
+  },
+  "facts": {
+    "actual_robert1128_owned_unleased_trani2619_county_apulia_and_duchy_apulia_with_holdingII": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\debug.log",
+          "bytes": 502011,
+          "sha256": "9f791d0ca68d4ab7b25568fe1ea96a86fefdd653f820452493b46629085962db"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\error.log",
+          "bytes": 964,
+          "sha256": "055a6994897da66cf136a2e958c2db461efd6b0b3d5db07168b7405fdcd8b63d"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018\\game-exit.json",
+          "bytes": 253,
+          "sha256": "521a1a4cf40280a9a0a762aaf99ad9792d23afb909d7e617b8dc3c8e9666437c"
+        }
+      ],
+      "scope": "Stopped before world start: actual Florin engine rejected two discover_innovation effects and three has_ongoing_construction district triggers. Generic offline parsing did not validate engine API names. No business assertion, construction, world date or SAVE credit."
+    },
+    "actual_province_burhs_castle_baileys_and_native_primary01_construction_eligibility": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\debug.log",
+          "bytes": 502011,
+          "sha256": "9f791d0ca68d4ab7b25568fe1ea96a86fefdd653f820452493b46629085962db"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\error.log",
+          "bytes": 964,
+          "sha256": "055a6994897da66cf136a2e958c2db461efd6b0b3d5db07168b7405fdcd8b63d"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018\\game-exit.json",
+          "bytes": 253,
+          "sha256": "521a1a4cf40280a9a0a762aaf99ad9792d23afb909d7e617b8dc3c8e9666437c"
+        }
+      ],
+      "scope": "Stopped before world start: actual Florin engine rejected two discover_innovation effects and three has_ongoing_construction district triggers. Generic offline parsing did not validate engine API names. No business assertion, construction, world date or SAVE credit."
+    },
+    "real_timed_primary01_start_and_completion_within14_daily_polls_after_one_setup_day": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\debug.log",
+          "bytes": 502011,
+          "sha256": "9f791d0ca68d4ab7b25568fe1ea96a86fefdd653f820452493b46629085962db"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\error.log",
+          "bytes": 964,
+          "sha256": "055a6994897da66cf136a2e958c2db461efd6b0b3d5db07168b7405fdcd8b63d"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018\\game-exit.json",
+          "bytes": 253,
+          "sha256": "521a1a4cf40280a9a0a762aaf99ad9792d23afb909d7e617b8dc3c8e9666437c"
+        }
+      ],
+      "scope": "Stopped before world start: actual Florin engine rejected two discover_innovation effects and three has_ongoing_construction district triggers. Generic offline parsing did not validate engine API names. No business assertion, construction, world date or SAVE credit."
+    },
+    "actual_built_primary01_district_and_native_primary02_eligibility_after_modifier_removal": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\debug.log",
+          "bytes": 502011,
+          "sha256": "9f791d0ca68d4ab7b25568fe1ea96a86fefdd653f820452493b46629085962db"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\error.log",
+          "bytes": 964,
+          "sha256": "055a6994897da66cf136a2e958c2db461efd6b0b3d5db07168b7405fdcd8b63d"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018\\game-exit.json",
+          "bytes": 253,
+          "sha256": "521a1a4cf40280a9a0a762aaf99ad9792d23afb909d7e617b8dc3c8e9666437c"
+        }
+      ],
+      "scope": "Stopped before world start: actual Florin engine rejected two discover_innovation effects and three has_ongoing_construction district triggers. Generic offline parsing did not validate engine API names. No business assertion, construction, world date or SAVE credit."
+    },
+    "one_production_military_duchy_chain_primary01_to02_exact_personal_gold100_count1_other_resources_unchanged": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\debug.log",
+          "bytes": 502011,
+          "sha256": "9f791d0ca68d4ab7b25568fe1ea96a86fefdd653f820452493b46629085962db"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\error.log",
+          "bytes": 964,
+          "sha256": "055a6994897da66cf136a2e958c2db461efd6b0b3d5db07168b7405fdcd8b63d"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018\\game-exit.json",
+          "bytes": 253,
+          "sha256": "521a1a4cf40280a9a0a762aaf99ad9792d23afb909d7e617b8dc3c8e9666437c"
+        }
+      ],
+      "scope": "Stopped before world start: actual Florin engine rejected two discover_innovation effects and three has_ongoing_construction district triggers. Generic offline parsing did not validate engine API names. No business assertion, construction, world date or SAVE credit."
+    },
+    "known_start_started_ready_completion_or_failure_windows_actual_calendar_and_normal_exit": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\debug.log",
+          "bytes": 502011,
+          "sha256": "9f791d0ca68d4ab7b25568fe1ea96a86fefdd653f820452493b46629085962db"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\error.log",
+          "bytes": 964,
+          "sha256": "055a6994897da66cf136a2e958c2db461efd6b0b3d5db07168b7405fdcd8b63d"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018\\game-exit.json",
+          "bytes": 253,
+          "sha256": "521a1a4cf40280a9a0a762aaf99ad9792d23afb909d7e617b8dc3c8e9666437c"
+        }
+      ],
+      "scope": "Stopped before world start: actual Florin engine rejected two discover_innovation effects and three has_ongoing_construction district triggers. Generic offline parsing did not validate engine API names. No business assertion, construction, world date or SAVE credit."
+    }
+  },
+  "marker_counts": {
+    "AUBD: TEST BEGIN duchy_primary_1210": 0,
+    "AUBD: READY actual_duchy_owner_and_holdingII": 0,
+    "AUBD: READY native_primary01_construction_inputs": 0,
+    "AUBD: OBSERVE real_primary01_construction_started": 0,
+    "AUBD: OBSERVE real_primary01_construction_completed": 0,
+    "AUBD: READY actual_district_primary01_native02_eligible": 0,
+    "AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1": 0,
+    "AUBD: TEST DONE duchy_primary_1210": 0
+  },
+  "all_original_assertions_passed": false,
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-07f5e03646774905a40f87a4604c35a0\\profile\\logs\\error.log",
+    "bytes": 964,
+    "sha256": "055a6994897da66cf136a2e958c2db461efd6b0b3d5db07168b7405fdcd8b63d"
+  },
+  "error_text": "[19:37:54][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown effect: discover_innovation, near line: 48\" in file: \"events/aubd_events.txt\" near line: 48\n[19:37:54][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown effect: discover_innovation, near line: 49\" in file: \"events/aubd_events.txt\" near line: 49\n[19:37:54][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: has_ongoing_construction, near line: 156 (expanded from file: events/aubd_events.txt line: 157)\" in file: \"events/aubd_events.txt\" near line: 158\n[19:37:54][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: has_ongoing_construction, near line: 251 (expanded from file: events/aubd_events.txt line: 252)\" in file: \"events/aubd_events.txt\" near line: 254\n[19:37:54][E][pdx_persistent_reader.cpp:216]: Error: \"Unknown trigger: has_ongoing_construction, near line: 273 (expanded from file: events/aubd_events.txt line: 274)\" in file: \"events/aubd_events.txt\" near line: 275\n",
+  "world_started": false,
+  "observed_natural_days": 0,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd01-exit-titlebar.png",
+      "bytes": 1162105,
+      "sha256": "b9b879372d752aa4e162980bb08374dd98490e0a10c019efe9b556f1dc1bf56c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd01-normal-window-close.png.json",
+      "bytes": 1455,
+      "sha256": "783a2cfc386a333ef0d3f8a480b9af8e70ab3b2e2edf2591c08624113cca6d63"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018\\game-exit.json",
+      "bytes": 253,
+      "sha256": "521a1a4cf40280a9a0a762aaf99ad9792d23afb909d7e617b8dc3c8e9666437c"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "39d4e8517f4d28ec29195e10c8bcc04e068d74f04a7dd15be48451fa0fdfa98e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0018\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "0e2306ca838144dfe8e07fd43382a907284a362f2358c1ea912f28b336c88a07"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r18-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "2952c1b85750915ee0845a7ecfa89fd78abc69cd2b4d38fbfc90683b4558575a"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "retention_review_at_utc": "2026-12-19T11:40:43Z"
+}

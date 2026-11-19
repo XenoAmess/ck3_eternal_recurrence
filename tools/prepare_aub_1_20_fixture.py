@@ -168,6 +168,15 @@ def prepare_duchy(repo: Path, output: Path) -> Path:
         rules="Fresh1066 Robert1128; actual owned/unleased Trani2619, c_apulia+d_apulia, independence and native holdingII required. Explicit province Burhs/castle_baileys and character district_build_speed preparation; only native timed military primary01 start and actual completion qualify the district. Single existing primary01->02 production chain and exact personal gold100/count1; ordinary archery, full province scan and other cells remain separate.")
 
 
+def prepare_succession(repo: Path, output: Path) -> Path:
+    return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_succession",
+        contract="aub_florin_succession.json", case_id="succession-bounded-1210",
+        mode="florin-bounded-actual-succession",
+        entry="on_game_start_after_lobby -> aubs.1 PREP -> known800 -> one initial production start and real death -> original Continue as sampled heir -> day2 known810/manual0004 -> known820/rearm/two helper reentries -> known825 -> daily3..16 -> day17 known830 or partial831; failure901",
+        advance="At most17natural days from the actual initial seed. Preserve ordinary campaign lifecycle; actual default Continue, modal clearance, exact heir and date separately evidenced through authorized sharedGUI. Stop on known DONE/failure/partial or unknown stock interruption. No SAVE or old-seed deletion.",
+        rules="Normal1066 Robert1128 remains original player. Formal grants, Native CastleII->III preparation and ordinary garrisonI require actual single owned/unleased Trani2619, closed2built/1primary inventory and sampled living unlanded heir. Preseed opposite heir policies; unchanged production on_death must inherit enabled/personal-only/pause and reuse original queued seed. First auto1->2, paused manual2->3 exact120/count1, disclosed ordinary rearm and original second auto1->2. Exact15-day qualification requires actual callback payer/source/count/dates1/2/16; missing callbacks give partial, never loopPASS. Event queue cardinality, all future cadence, full matrix and publication are not proven.")
+
+
 def prepare(repo: Path, output: Path) -> dict[str, object]:
     repo, output = checked_output(repo, output)
     if engine_identity(repo)["game_version"].startswith("1.21."):
@@ -204,8 +213,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money", "florin-ordinary", "florin-mandala", "florin-holdings", "florin-special", "florin-duchy"), default="core")
+    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money", "florin-ordinary", "florin-mandala", "florin-holdings", "florin-special", "florin-duchy", "florin-succession"), default="core")
     args = parser.parse_args()
+    if args.scenario == "florin-succession":
+        output = prepare_succession(args.repo, args.output)
+        print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
+        return
     if args.scenario == "florin-duchy":
         output = prepare_duchy(args.repo, args.output)
         print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))

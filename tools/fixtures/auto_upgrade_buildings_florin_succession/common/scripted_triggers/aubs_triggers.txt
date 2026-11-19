@@ -1,0 +1,69 @@
+﻿# Readback contract. The ordinary primary and source are never forced by this.
+aubs_exact_estate_trigger = {
+    var:aubs_direct_count = 1
+    var:aubs_eligible_count = 1
+    var:aubs_eligible_trani_count = 1
+    var:aubs_built_count = 2
+    var:aubs_primary_count = 1
+    any_directly_owned_province = { this = province:2619 }
+    title:c_apulia = { holder = root }
+    title:b_trani = { holder = root }
+    province:2619 = {
+        province_owner = { this = root }
+        is_county_capital = yes
+        has_holding_type = castle_holding
+        has_ongoing_holding_construction = no
+        barony = { this = title:b_trani is_leased_out = no }
+        holding_district = {
+            this = global_var:aubs_original_holding
+            has_building = castle_03
+            NOT = { has_building_or_higher = castle_04 }
+            NOT = { can_start_building_construction_for_owner = castle_04 }
+        }
+    }
+}
+
+aubs_exact_successor_trigger = {
+    this = global_var:aubs_expected_heir
+    is_ai = no
+    is_alive = yes
+    has_government = feudal_government
+    domain_limit_available >= 0
+    global_var:aubs_predecessor = { is_alive = no }
+    has_character_flag = enable_auto_build
+    has_character_flag = aub_funding_personal_only
+    has_character_flag = aub_pause_when_over_domain_limit
+    NOT = { has_character_flag = aub_funding_treasury_only }
+    NOT = { has_character_flag = aubs_failed }
+    has_global_variable = aub_auto_build_loop_started
+    aubs_exact_estate_trigger = yes
+}
+
+aubs_source1_native2_trigger = {
+    province:2619 = {
+        holding_district = {
+            has_building = castle_garrison_1
+            NOT = { has_building_or_higher = castle_garrison_2 }
+            can_start_building_construction_for_owner = castle_garrison_2
+        }
+    }
+}
+
+aubs_source2_native3_trigger = {
+    province:2619 = {
+        holding_district = {
+            has_building = castle_garrison_2
+            NOT = { has_building_or_higher = castle_garrison_3 }
+            can_start_building_construction_for_owner = castle_garrison_3
+        }
+    }
+}
+
+aubs_source3_trigger = {
+    province:2619 = {
+        holding_district = {
+            has_building = castle_garrison_3
+            NOT = { has_building_or_higher = castle_garrison_4 }
+        }
+    }
+}

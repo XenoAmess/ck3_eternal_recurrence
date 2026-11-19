@@ -1,0 +1,447 @@
+﻿namespace = aubs
+
+# PREP only. Normal1066 Robert1128 remains the original player throughout.
+# No player switch, no original queued seed deletion, no credited preparation.
+aubs.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "AUBS: PREPARE isolated_ordinary_succession"
+        if = {
+            limit = {
+                this = character:1128
+                this = top_liege
+                is_ai = no
+                is_alive = yes
+                has_government = feudal_government
+                title:c_apulia = { holder = root }
+                title:b_trani = { holder = root }
+                character:1132 = { is_alive = yes }
+                exists = player_heir
+                NOT = { has_global_variable = aubs_predecessor }
+                NOT = { has_global_variable = aub_auto_build_loop_started }
+                NOT = { any_player = { has_character_flag = enable_auto_build } }
+                province:2619 = {
+                    province_owner = { this = root }
+                    has_holding_type = castle_holding
+                    barony = { this = title:b_trani is_leased_out = no }
+                    has_ongoing_holding_construction = no
+                    holding_district = { has_building = castle_02 }
+                }
+            }
+            set_global_variable = { name = aubs_predecessor value = this }
+            # Formal grants precede BEGIN. The later actual iterator, not this
+            # transaction's ACK, must prove that one direct estate remains.
+            create_title_and_vassal_change = {
+                type = granted
+                save_scope_as = aubs_other_titles_change
+            }
+            every_held_title = {
+                limit = {
+                    OR = { tier = tier_county tier = tier_barony }
+                    NOT = { this = title:c_apulia }
+                    NOT = { this = title:b_trani }
+                }
+                change_title_holder = {
+                    holder = character:1132
+                    change = scope:aubs_other_titles_change
+                }
+            }
+            resolve_title_and_vassal_change = scope:aubs_other_titles_change
+            add_gold = 100000
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            province:2619 = {
+                culture = {
+                    if = {
+                        limit = { NOT = { has_cultural_era_or_later = culture_era_high_medieval } }
+                        join_era = culture_era_high_medieval
+                    }
+                }
+                # Stock Trani1066 has these districts, castleII and training2.
+                # A single Native-qualified II->III preparation is disclosed.
+                remove_district_type = oil_district
+                remove_district_type = villages_district
+                remove_district_type = manor_houses_district
+                holding_district = {
+                    if = {
+                        limit = { has_building = castle_02 can_start_building_construction_for_owner = castle_03 }
+                        upgrade_building_effect = castle_02
+                    }
+                    if = { limit = { has_building = castle_training_grounds_1 } remove_building = castle_training_grounds_1 }
+                    if = { limit = { has_building = castle_training_grounds_2 } remove_building = castle_training_grounds_2 }
+                    if = { limit = { has_building = castle_training_grounds_3 } remove_building = castle_training_grounds_3 }
+                    if = { limit = { has_building = castle_training_grounds_4 } remove_building = castle_training_grounds_4 }
+                    if = { limit = { has_building = castle_training_grounds_5 } remove_building = castle_training_grounds_5 }
+                    if = { limit = { has_building = castle_garrison_1 } remove_building = castle_garrison_1 }
+                    if = { limit = { has_building = castle_garrison_2 } remove_building = castle_garrison_2 }
+                    if = { limit = { has_building = castle_garrison_3 } remove_building = castle_garrison_3 }
+                    if = { limit = { has_building = castle_garrison_4 } remove_building = castle_garrison_4 }
+                    if = { limit = { has_building = castle_garrison_5 } remove_building = castle_garrison_5 }
+                    add_building = castle_garrison_1
+                    set_global_variable = { name = aubs_original_holding value = this }
+                }
+            }
+            aubs_read_estate_effect = yes
+            if = {
+                limit = {
+                    is_ai = no
+                    has_government = feudal_government
+                    domain_limit_available >= 0
+                    aubs_exact_estate_trigger = yes
+                    aubs_source1_native2_trigger = yes
+                    exists = player_heir
+                    player_heir = { is_alive = yes is_landed = no }
+                    NOT = { has_global_variable = aub_auto_build_loop_started }
+                }
+                remove_character_flag = aub_funding_treasury_only
+                add_character_flag = aub_funding_personal_only
+                add_character_flag = aub_pause_when_over_domain_limit
+                add_character_flag = enable_auto_build
+                player_heir = {
+                    set_global_variable = { name = aubs_expected_heir value = this }
+                    remove_character_flag = enable_auto_build
+                    remove_character_flag = aub_funding_personal_only
+                    remove_character_flag = aub_pause_when_over_domain_limit
+                    add_character_flag = aub_funding_treasury_only
+                    add_gold = 100000
+                    set_variable = { name = aubs_phase value = 0 }
+                    set_variable = { name = aubs_first_callbacks value = 0 }
+                    set_variable = { name = aubs_manual_callbacks value = 0 }
+                    set_variable = { name = aubs_second_callbacks value = 0 }
+                    set_variable = { name = aubs_daily_observations value = 0 }
+                    set_variable = { name = aub_upgrades_this_scan value = 0 }
+                }
+                debug_log = "AUBS: READY legal_castleIII_garrison1_no_seed"
+                trigger_event = aubs.800
+            }
+            else = {
+                debug_log = "AUBS: TEST FAIL preparation_estate_primary_or_real_heir"
+                aubs_fail_effect = yes
+            }
+        }
+        else = {
+            debug_log = "AUBS: TEST FAIL initial_player_world_or_native_source"
+            aubs_fail_effect = yes
+        }
+    }
+}
+
+# Only the known READY option invokes this. It does not select the heir.
+aubs.10 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        aubs_read_estate_effect = yes
+        if = {
+            limit = {
+                this = global_var:aubs_predecessor
+                is_ai = no
+                is_alive = yes
+                aubs_exact_estate_trigger = yes
+                aubs_source1_native2_trigger = yes
+                has_character_flag = enable_auto_build
+                has_character_flag = aub_funding_personal_only
+                has_character_flag = aub_pause_when_over_domain_limit
+                NOT = { has_character_flag = aub_funding_treasury_only }
+                player_heir = {
+                    this = global_var:aubs_expected_heir
+                    is_alive = yes
+                    is_landed = no
+                    has_character_flag = aub_funding_treasury_only
+                    NOT = { has_character_flag = enable_auto_build }
+                    NOT = { has_character_flag = aub_funding_personal_only }
+                    NOT = { has_character_flag = aub_pause_when_over_domain_limit }
+                }
+                NOT = { has_global_variable = aub_auto_build_loop_started }
+            }
+            debug_log = "AUBS: TEST BEGIN succession_matrix"
+            debug_log = "AUBS: OBSERVE stale_heir_policy_counterexample_armed"
+            player_heir = {
+                set_variable = { name = aubs_seed_date value = current_date }
+                set_variable = { name = aubs_phase value = 1 }
+                # The living heir carries the observation across actual death.
+                trigger_event = { id = aubs.2 days = 2 }
+            }
+            # The sole initial production start call, before real death.
+            # The production on_death helper must reuse its still-queued seed.
+            aub_start_global_loop_effect = yes
+            debug_log = "AUBS: OBSERVE real_old_player_death_armed"
+            death = { death_reason = death_old_age }
+        }
+        else = {
+            debug_log = "AUBS: TEST FAIL pre_death_identity_policy_or_fresh_seed"
+            aubs_fail_effect = yes
+        }
+    }
+}
+
+# No script can attest official Continue: the case separately requires the
+# actual stock button/material-clearance/identity receipt from the live owner.
+aubs.2 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        aubs_read_elapsed_effect = yes
+        aubs_read_estate_effect = yes
+        if = {
+            limit = {
+                var:aubs_elapsed = 2
+                aubs_exact_successor_trigger = yes
+                aubs_source2_native3_trigger = yes
+                var:aub_upgrades_this_scan = 1
+            }
+            debug_log = "AUBT: TEST PASS succession_enabled_retained"
+            debug_log = "AUBT: TEST PASS succession_policy_retained"
+            debug_log = "AUBS: TEST PASS actual_sampled_heir_and_first_auto_edge"
+            debug_log = "AUBS: OBSERVE first_auto_source2_next3_native_eligible"
+            trigger_event = aubs.810
+        }
+        else = {
+            debug_log = "AUBS: TEST FAIL real_successor_or_first_automatic_scan"
+            aubs_fail_effect = yes
+        }
+    }
+}
+
+# A separate fresh production scan while the actual heir stays paused at+2.
+aubs.20 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        aubs_read_elapsed_effect = yes
+        aubs_read_estate_effect = yes
+        if = {
+            limit = {
+                var:aubs_elapsed = 2
+                aubs_exact_successor_trigger = yes
+                aubs_source2_native3_trigger = yes
+                gold >= regular_building_cost_tier_3
+            }
+            set_variable = { name = aubs_phase value = 2 }
+            set_variable = {
+                name = aubs_expected_probe_gold
+                value = { value = gold subtract = regular_building_cost_tier_3 }
+            }
+            trigger_event = { id = auto_build.0004 }
+            aubs_read_estate_effect = yes
+            if = {
+                limit = {
+                    aubs_exact_successor_trigger = yes
+                    aubs_source3_trigger = yes
+                    gold = var:aubs_expected_probe_gold
+                    var:aub_upgrades_this_scan = 1
+                }
+                debug_log = "AUBS: TEST PASS exact_manual_personal120_count1"
+                trigger_event = aubs.820
+            }
+            else = {
+                debug_log = "AUBS: TEST FAIL exact_manual_charge_or_native_one_tier"
+                aubs_fail_effect = yes
+            }
+        }
+        else = {
+            debug_log = "AUBS: TEST FAIL paused_manual_probe_precondition"
+            aubs_fail_effect = yes
+        }
+    }
+}
+
+# Publicly disclosed ordinary rearm earns no upgrade credit. No primary,
+# inheritance flag, money, product seed or queued event is changed here.
+aubs.30 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        aubs_read_elapsed_effect = yes
+        aubs_read_estate_effect = yes
+        if = {
+            limit = {
+                var:aubs_phase = 2
+                var:aubs_elapsed = 2
+                aubs_exact_successor_trigger = yes
+                aubs_source3_trigger = yes
+                gold = var:aubs_expected_probe_gold
+                var:aub_upgrades_this_scan = 1
+            }
+            set_variable = { name = aubs_phase value = 0 }
+            province:2619 = {
+                holding_district = {
+                    remove_building = castle_garrison_3
+                    add_building = castle_garrison_1
+                }
+            }
+            aubs_read_estate_effect = yes
+            if = {
+                limit = { aubs_exact_successor_trigger = yes aubs_source1_native2_trigger = yes }
+                # The actual paused manual callback may finish after aubs.20
+                # returns but before the known820 option. Recheck its recorded
+                # payer/source/date/count here without assuming synchronous dispatch.
+                if = {
+                    limit = {
+                        var:aubs_manual_callbacks = 1
+                        var:aubs_manual_callback_day = 2
+                        has_character_flag = aubs_manual_callback_source_ok
+                        NOT = { has_character_flag = aubs_bad_callback_source }
+                    }
+                    add_character_flag = aubs_callback_observed_qualification
+                    debug_log = "AUBS: TEST PASS manual_callback_payer_source_and_date"
+                }
+                else = { debug_log = "AUBS: OBSERVE completion_callback_still_partial" }
+                set_variable = { name = aubs_phase value = 3 }
+                set_variable = { name = aubs_expected_observer_day value = 3 }
+                # Fresh helper reentry challenge, not a seed/event replay.
+                aub_start_global_loop_effect = yes
+                aub_start_global_loop_effect = yes
+                debug_log = "AUBS: READY ordinary_rearm_and_two_start_reentries"
+                trigger_event = { id = aubs.3 days = 1 }
+                trigger_event = aubs.825
+            }
+            else = {
+                debug_log = "AUBS: TEST FAIL ordinary_rearm_owner_primary_or_native2"
+                aubs_fail_effect = yes
+            }
+        }
+        else = {
+            debug_log = "AUBS: TEST FAIL paused_rearm_precondition"
+            aubs_fail_effect = yes
+        }
+    }
+}
+
+# Read-only daily observations. On day16 accept either source1 or2, since a
+# same-day scheduled observer cannot assume order relative to the real seed.
+aubs.3 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        aubs_read_elapsed_effect = yes
+        aubs_read_estate_effect = yes
+        if = {
+            limit = {
+                aubs_exact_successor_trigger = yes
+                var:aubs_elapsed = var:aubs_expected_observer_day
+                var:aubs_elapsed >= 3
+                var:aubs_elapsed <= 16
+                NOT = { has_character_flag = aubs_off_phase_callback }
+                OR = {
+                    AND = { var:aubs_elapsed < 16 aubs_source1_native2_trigger = yes }
+                    AND = {
+                        var:aubs_elapsed = 16
+                        OR = { aubs_source1_native2_trigger = yes aubs_source2_native3_trigger = yes }
+                    }
+                }
+            }
+            change_variable = { name = aubs_daily_observations add = 1 }
+            debug_log = "AUBS: OBSERVE bounded_daily_source_and_identity_ready"
+            if = {
+                limit = { var:aubs_elapsed < 16 }
+                change_variable = { name = aubs_expected_observer_day add = 1 }
+                trigger_event = { id = aubs.3 days = 1 }
+            }
+            else = { trigger_event = { id = aubs.4 days = 1 } }
+        }
+        else = {
+            debug_log = "AUBS: TEST FAIL off_cadence_source_identity_or_date"
+            aubs_fail_effect = yes
+        }
+    }
+}
+
+aubs.4 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        aubs_read_elapsed_effect = yes
+        aubs_read_estate_effect = yes
+        if = {
+            limit = {
+                var:aubs_elapsed = 17
+                var:aubs_daily_observations = 14
+                aubs_exact_successor_trigger = yes
+                aubs_source2_native3_trigger = yes
+                var:aub_upgrades_this_scan = 1
+                NOT = { has_character_flag = aubs_off_phase_callback }
+            }
+            set_variable = { name = aubs_final_actual_gold value = gold }
+            debug_log = "AUBS: TEST PASS bounded_two_auto_edges_no_functional_duplicates"
+            if = {
+                limit = {
+                    has_character_flag = aubs_callback_observed_qualification
+                    has_character_flag = aubs_first_callback_source_ok
+                    has_character_flag = aubs_second_callback_source_ok
+                    NOT = { has_character_flag = aubs_bad_callback_source }
+                    var:aubs_first_callbacks = 1
+                    var:aubs_manual_callbacks = 1
+                    var:aubs_second_callbacks = 1
+                    var:aubs_first_callback_day = 1
+                    var:aubs_manual_callback_day = 2
+                    var:aubs_second_callback_day = 16
+                }
+                debug_log = "AUBS: TEST PASS fifteen_day_callback_bounded_behavior"
+                debug_log = "AUBT: TEST PASS succession_loop_retained"
+                trigger_event = aubs.830
+            }
+            else = {
+                # Missing callback qualification cannot become exact cadence.
+                debug_log = "AUBS: TEST STOP callback_date_qualification_partial"
+                trigger_event = aubs.831
+            }
+        }
+        else = {
+            debug_log = "AUBS: TEST FAIL final_source_counter_identity_or_window"
+            aubs_fail_effect = yes
+        }
+    }
+}
+
+aubs.800 = {
+    type = character_event
+    theme = realm
+    title = aubs_ready_title
+    desc = aubs_ready_desc
+    option = { name = aubs_arm_death trigger_event = aubs.10 }
+}
+aubs.810 = {
+    type = character_event
+    theme = realm
+    title = aubs_handover_title
+    desc = aubs_handover_desc
+    option = { name = aubs_probe_confirm trigger_event = aubs.20 }
+}
+aubs.820 = {
+    type = character_event
+    theme = realm
+    title = aubs_probe_title
+    desc = aubs_probe_desc
+    option = { name = aubs_rearm_confirm trigger_event = aubs.30 }
+}
+aubs.825 = {
+    type = character_event
+    theme = realm
+    title = aubs_watch_title
+    desc = aubs_watch_desc
+    option = { name = aubs_watch_confirm }
+}
+aubs.830 = {
+    type = character_event
+    theme = realm
+    title = aubs_done_title
+    desc = aubs_done_desc
+    immediate = { debug_log = "AUBS: TEST DONE succession_matrix" }
+    option = { name = aubs_review_exit }
+}
+aubs.831 = {
+    type = character_event
+    theme = realm
+    title = aubs_partial_title
+    desc = aubs_partial_desc
+    option = { name = aubs_review_exit }
+}
+aubs.901 = {
+    type = character_event
+    theme = realm
+    title = aubs_failed_title
+    desc = aubs_failed_desc
+    immediate = { debug_log = "AUBS: TEST STOP visible_failure" }
+    option = { name = aubs_review_exit }
+}

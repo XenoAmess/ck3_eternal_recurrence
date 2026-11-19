@@ -1,0 +1,447 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T11:56:06.672312+00:00",
+  "records": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-succession-integration-a01\\summary.json",
+        "bytes": 9515,
+        "sha256": "156f0f1adad803a5e3071bd3126a29e40c0fd972ae539c800ebfe5639e5a16bb"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T11:49:22.625406+00:00",
+        "results": [
+          {
+            "name": "producer-unit",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-B",
+              "-m",
+              "unittest",
+              "discover",
+              "-s",
+              "tools",
+              "-p",
+              "test_fixture_engine_prepare.py",
+              "-v"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 2.962325000000419
+          },
+          {
+            "name": "producer-mypy",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-m",
+              "mypy",
+              "--strict",
+              "--follow-imports=silent",
+              "--no-incremental",
+              "--cache-dir=nul",
+              "tools/prepare_aub_1_20_fixture.py"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 2.113235099997837
+          },
+          {
+            "name": "duchy-cli",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-B",
+              "tools/prepare_aub_1_20_fixture.py",
+              "--scenario",
+              "florin-duchy",
+              "--output",
+              "D:\\ck3-state\\upgrade-20261118\\aub-succession-integration-a01\\duchy-fixture"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 1.6351825000019744
+          },
+          {
+            "name": "succession-cli",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-B",
+              "tools/prepare_aub_1_20_fixture.py",
+              "--scenario",
+              "florin-succession",
+              "--output",
+              "D:\\ck3-state\\upgrade-20261118\\aub-succession-integration-a01\\succession-fixture"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 1.6912353999796323
+          },
+          {
+            "name": "six_existing_structural_checks_on_integrated_payload",
+            "returncode": 0,
+            "tests_run": 6,
+            "failures": 0,
+            "errors": 0,
+            "promotion_change": "Only contract source-kind assertions updated from external prebuilt to real registered emitter; all original marker/filter/seed/date/source/count checks retained."
+          },
+          {
+            "name": "manual_callback_qualification_at_known_rearm_checkpoint_AST",
+            "returncode": 0,
+            "scope": "Exact existing recorded callback predicate moved; no CK3 callback timing/runtime claim."
+          },
+          {
+            "name": "parse-0",
+            "command": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-succession-integration-a01\\tmp",
+              "-jar",
+              "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\events\\aubd_events.txt"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 0.9838387000199873
+          },
+          {
+            "name": "parse-1",
+            "command": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-succession-integration-a01\\tmp",
+              "-jar",
+              "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\common\\on_action\\aubs_on_actions.txt"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 0.22936050000134856
+          },
+          {
+            "name": "parse-2",
+            "command": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-succession-integration-a01\\tmp",
+              "-jar",
+              "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\common\\scripted_effects\\aubs_effects.txt"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 0.2942902999930084
+          },
+          {
+            "name": "parse-3",
+            "command": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-succession-integration-a01\\tmp",
+              "-jar",
+              "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\common\\scripted_triggers\\aubs_triggers.txt"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 0.2217084000003524
+          },
+          {
+            "name": "parse-4",
+            "command": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-succession-integration-a01\\tmp",
+              "-jar",
+              "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\descriptor.mod"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 0.21934199999668635
+          },
+          {
+            "name": "parse-5",
+            "command": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-succession-integration-a01\\tmp",
+              "-jar",
+              "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\events\\aubs_events.txt"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 0.2517302999913227
+          }
+        ],
+        "source_pins": [
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_aub_1_20_fixture.py",
+            "bytes": 19740,
+            "sha256": "39381ce6e50821236691f9a8a49a8153c3e616caca55fcaafca1a74680df5761"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\events\\aubd_events.txt",
+            "bytes": 13415,
+            "sha256": "1d408f2af8d5770487f90118773b7b174cb52b84c26f6023d41c2b70127fad60"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_succession.json",
+            "bytes": 6051,
+            "sha256": "cb2ded3a5104fbcfae4b8157ea26c8cc6dae7810038017f3fa118065903b6178"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\common\\on_action\\aubs_on_actions.txt",
+            "bytes": 919,
+            "sha256": "0a4ed2b8086bcca9900fec29a415b637a7900155fb32d2c88581b83e29db1089"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\common\\scripted_effects\\aubs_effects.txt",
+            "bytes": 5372,
+            "sha256": "dea1259b71b1b59807236abacc2d691b8ff57fdb4a33f2a7256f5c71fccb5f82"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\common\\scripted_triggers\\aubs_triggers.txt",
+            "bytes": 2284,
+            "sha256": "f7cd9cbb1d896ec98fbe2501f731e4bb51f1b25b762e090a87a696c10e9e7317"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\descriptor.mod",
+            "bytes": 90,
+            "sha256": "02544f6a1474a303c2492a82c965288ea92cc4378cf7d3dda301ed8283a0578b"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\events\\aubs_events.txt",
+            "bytes": 18953,
+            "sha256": "6542100a18dd29a0cb86f043ff39e3c932d831487f9b04c76d4a26a78a7aa54d"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\localization\\english\\aubs_l_english.yml",
+            "bytes": 3312,
+            "sha256": "dcb1594800bb53f77e30e5f98b6b082c7cf8ab0433b801a366c2ccd54647e692"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_succession\\localization\\simp_chinese\\aubs_l_simp_chinese.yml",
+            "bytes": 2887,
+            "sha256": "9cd76264d6290e20736be4ec2831e6f26e2f78fd0d852b14992b949a3f15183d"
+          }
+        ],
+        "passed": true,
+        "open_kaishek": {
+          "commit": "d2a2627e3023310d96f1a2d1e63478f6a6ee7a57",
+          "profile": "generic parse/roundTrip, engine effects/triggers and runtime semantics unsupported",
+          "jar_sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82"
+        },
+        "runtime_status": "NOT_RUN",
+        "business_pass": false,
+        "product_release_pass": false,
+        "scope": "R18 actual engine errors retained. Duchy uses stock add_innovation, no invented district has_ongoing_construction; existing province construction and exact native target gates retained. Succession fresh actual producer and original six checks on final repo payload, new strict callback-placement AST check, six Java generic parses. No full product or live callback/Continue claim.",
+        "reserved_peak_bytes": 8388608,
+        "remaining_write_reservation_bytes": 0,
+        "retained_output_bytes_before_summary": 76422
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-prepare-result-archive-a01\\summary.json",
+        "bytes": 327,
+        "sha256": "97bc8d8ee2e3230f703fb5089ccc490cf1de8042f7fd3289a1eda3af611cab49"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T11:32:34.562096+00:00",
+        "deleted_files": 14,
+        "deleted_logical_bytes": 25299449,
+        "failed": [],
+        "free_before": {
+          "C:/": 50389118976,
+          "D:/": 21788917760
+        },
+        "free_after": {
+          "C:/": 50389118976,
+          "D:/": 21814251520
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-prepared-case-archive-a03\\summary.json",
+        "bytes": 325,
+        "sha256": "ed04a675c0fc80ef5814dac80d34033dfc28d59a6cd72fbbd018c94156f13f2a"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T11:33:28.719684+00:00",
+        "deleted_files": 2,
+        "deleted_logical_bytes": 3174300,
+        "failed": [],
+        "free_before": {
+          "C:/": 50389016576,
+          "D:/": 21813784576
+        },
+        "free_after": {
+          "C:/": 50389016576,
+          "D:/": 21816963072
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-lease-archive-a12\\summary.json",
+        "bytes": 325,
+        "sha256": "7460079c278d35ba8df6df507799c30b4531b8df0f820b811be964d421e80c27"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T11:50:47.919966+00:00",
+        "deleted_files": 6,
+        "deleted_logical_bytes": 3355677,
+        "failed": [],
+        "free_before": {
+          "C:/": 50391900160,
+          "D:/": 21769023488
+        },
+        "free_after": {
+          "C:/": 50391900160,
+          "D:/": 21772390400
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-superseded-aub-setup-images-a08\\summary.json",
+        "bytes": 327,
+        "sha256": "7c9f6a161059e9da6bfda2c59375f5dff28261e08425c47215b3f0fa0b7bddf4"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T11:50:50.238686+00:00",
+        "deleted_files": 16,
+        "deleted_logical_bytes": 18335306,
+        "failed": [],
+        "free_before": {
+          "C:/": 50391830528,
+          "D:/": 21772206080
+        },
+        "free_after": {
+          "C:/": 50391830528,
+          "D:/": 21783584768
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-cleanup-plan-archive-a08\\summary.json",
+        "bytes": 326,
+        "sha256": "7502c751fc36f8dc269ff7cdcc46d019b411f6bcc5e9020f83c8460ef4bce543"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T11:50:52.052607+00:00",
+        "deleted_files": 10,
+        "deleted_logical_bytes": 4977538,
+        "failed": [],
+        "free_before": {
+          "C:/": 50391830528,
+          "D:/": 21783261184
+        },
+        "free_after": {
+          "C:/": 50391830528,
+          "D:/": 21788262400
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-prepare-result-archive-a02\\summary.json",
+        "bytes": 325,
+        "sha256": "944e6b665c8b9d435d98398ca15b667236c96940c899c72c8b48532f93c6cdcc"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T11:50:53.529890+00:00",
+        "deleted_files": 1,
+        "deleted_logical_bytes": 1808644,
+        "failed": [],
+        "free_before": {
+          "C:/": 50391830528,
+          "D:/": 21788016640
+        },
+        "free_after": {
+          "C:/": 50391830528,
+          "D:/": 21789827072
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-prepared-case-archive-a04\\summary.json",
+        "bytes": 325,
+        "sha256": "5e9f94427113c080a1466038069df04cbef3f769ae1e9ddeb70ba407da456790"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T11:50:55.183252+00:00",
+        "deleted_files": 1,
+        "deleted_logical_bytes": 1587765,
+        "failed": [],
+        "free_before": {
+          "C:/": 50391830528,
+          "D:/": 21789577216
+        },
+        "free_after": {
+          "C:/": 50391830528,
+          "D:/": 21791166464
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-lease-container-archive-a01\\summary.json",
+        "bytes": 326,
+        "sha256": "2b78a144c181db43e71c1e9829fa632302b95be1de74fbbb25a01875888b7d87"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T11:53:15.514768+00:00",
+        "deleted_files": 3,
+        "deleted_logical_bytes": 66840299,
+        "failed": [],
+        "free_before": {
+          "C:/": 50390433792,
+          "D:/": 21778264064
+        },
+        "free_after": {
+          "C:/": 50390433792,
+          "D:/": 21845110784
+        }
+      }
+    }
+  ],
+  "external_succession_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-succession-candidate\\ops\\aub-succession-review-a01.json",
+    "bytes": 26367,
+    "sha256": "f1533daa295d1d12352b86039b7cc9fe188a915eb5abdf2f34fb8f817676d4b7"
+  },
+  "stock_add_innovation_source": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\fp3\\fp3_scholarship_events.txt",
+    "bytes": 45306,
+    "sha256": "9143119ef8cacbc6a0e1035868915b60b17bc827cf4200c869204ee71d0e643b"
+  },
+  "scope": "R18 rejected before world start with2unknown effects/3unknown triggers, no business/date/SAVE; original titlebar OS close Popen0/no timeout/keeper/CAS. Engine failure retained separately from generic parser0. Corrected Duchy uses stock add_innovation and existing province construction/native target checks. Eight succession source payloads integrated, actual emitter registered, GUI channel wording corrected and original manual callback predicate moved to known rearm checkpoint guarded phase2; final callback payer/source/count/date requirements unchanged.20existing producer tests,6adapted existing succession structure/data checks,1callback-placement AST, full producer strict mypy/imports-silent,2actual CLI and6generic Java parses all0; runtime remains NOT_RUN for revised scenes. Public product/Native ABI/Workshop stillfalse.",
+  "archive_availability": "Exact expanded prepare JSON and wrapper results for selected closed runs are archived; restore before historical readers. Full old aub-money-R0003-lease-stdout-lossless.zip and closed-gui-lease-stdout-lossless-a02.zip container bytes plus old-bin-cache-inventory.json now exist as opaque LZMA ZIP members in closed-lease-containers-lossless-a01.zip,12870835B SHA df929f477b3ebb3994aaa27b985017f73e24b505d964e547991d49047ebe6fca. Old direct container/inventory paths unavailable; original ZIP bytes/SHA and all source member bytes exactly recoverable. Old FileIDs not recreated, TTLs unchanged, old deletion plans never reexecuted. Ordinary retired setup pixels unavailable; all business/failure/actual world/calendar/exit/public/anchor/protected assets retained. No deletion failure.",
+  "runtime_status": "NOT_RUN",
+  "business_pass": false,
+  "product_release_pass": false,
+  "workshop_published": false
+}

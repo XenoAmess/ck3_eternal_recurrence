@@ -1,0 +1,62 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "succession-bounded-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 17,
+  "required_business_evidence": [
+    "fresh_ordinary_campaign_and_exact_build_source_binding",
+    "real_original_player_death_default_heir_continue_action_and_material_modal_clearance",
+    "actual_sampled_successor_identity_exact_flags_single_owned_estate_and_native_gates",
+    "paused_separate_production_scan_personal120_count1",
+    "preserved_seed_two_automatic_edges_with_actual_callback_days1_and16",
+    "bounded_start_reentry_observation_and_normal_exit_without_save"
+  ],
+  "required_markers": [
+    "AUBS: READY legal_castleIII_garrison1_no_seed",
+    "AUBS: TEST BEGIN succession_matrix",
+    "AUBS: OBSERVE stale_heir_policy_counterexample_armed",
+    "AUBS: OBSERVE real_old_player_death_armed",
+    "AUBT: TEST PASS succession_enabled_retained",
+    "AUBT: TEST PASS succession_policy_retained",
+    "AUBS: TEST PASS actual_sampled_heir_and_first_auto_edge",
+    "AUBS: OBSERVE first_auto_source2_next3_native_eligible",
+    "AUBS: TEST PASS exact_manual_personal120_count1",
+    "AUBS: TEST PASS manual_callback_payer_source_and_date",
+    "AUBS: READY ordinary_rearm_and_two_start_reentries",
+    "AUBS: TEST PASS bounded_two_auto_edges_no_functional_duplicates",
+    "AUBS: TEST PASS fifteen_day_callback_bounded_behavior",
+    "AUBT: TEST PASS succession_loop_retained",
+    "AUBS: TEST DONE succession_matrix"
+  ],
+  "forbidden_markers": [
+    "AUBT: TEST FAIL",
+    "AUBS: TEST FAIL",
+    "AUBS: TEST STOP"
+  ],
+  "known_fixture_event_ids": [
+    "aubs.800",
+    "aubs.810",
+    "aubs.820",
+    "aubs.825",
+    "aubs.830",
+    "aubs.831",
+    "aubs.901"
+  ],
+  "runtime_status": "NOT_RUN",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false,
+  "internal_pending_queue_cardinality_proven": false,
+  "candidate_integration": "Root integrated the exact eight-file external candidate, then moved the unchanged manual callback qualification to the known rearm checkpoint with an explicit phase2 precondition and corrected GUI channel wording. Registered existing producer scenario florin-succession creates the real fixture; software validation and live outcome remain separate.",
+  "scope": "Preserve the three original succession marker predicates and prove only the declared bounded behavior. Normal1066 Robert1128 remains the original player; no SetPlayerCharacter anywhere. Formal PREP grants other held county/barony titles to existing Roger1132, but actual iterator/title/province readback must prove exactly one direct and eligible Trani2619/b_trani/c_apulia before BEGIN and after inheritance. Stock TraniCastleII is legally prepared toIII only through a true Native castle03 gate and stock upgrade effect; no primary downgrade or forced primary. Remove the three declared stock unrelated districts and training grounds, add ordinary garrison1, and require exactly2built/1primary in the whole target province. High province culture and real Native source1->2/source2->3 gates remain mandatory; primaryIV stays Native blocked. Actual living unlanded player_heir is sampled after title preparation, never hardcoded or made adult. Predecessor enabled/personal-only/pause=true, treasury-only=false; heir disabled/treasury-only=true, personal-only/pause=false. Funds precede Native queries. One initial production start before real original-player death preserves its queued seed; production on_death must transfer exact policy and reuse that seed. Real original default Continue action, visible actor, material modal clearance and actual successor identity must be separately evidenced through the currently authorized shared_gui_only route, with reviewed actual screenshots and guarded ordinary GUI controls; script identity alone does not prove Continue. At actual T+2 the first automatic edge must leave garrison2 with native3 eligible. Known paused checkpoint permits one separate fresh real0004:2->3, exact personal gold120/count1, then another known checkpoint permits disclosed ordinary rearm3->1 and two guarded start-helper reentries. Daily exact-date readbacks3..16 require no off-phase source upgrade, treating day16 observation ordering honestly; finalT+17 requires source2/not3, same CastleIII/district/owner/policy, count1 and14daily reads. Official current_date arithmetic supplies actual elapsed days. Stock on_building_completed is only a candidate observation until the paused manual probe observes exactly one correct payer/source/day2 callback; absent or inconsistent callbacks keep exact fifteen-day qualification partial and emit a known visible partial STOP, without loop PASS. Strict bounded callback qualification additionally requires one automatic callback on actual day1 and one on16 with expected target2. This proves two functional pulses and no observed duplicates in this controlled window, never internal pending queue cardinality or all future loop behavior. No direct0005 injection, global seed removal, production definition override, post-death flag repair, heir player switch or replay. Cross-day final gold is actual observation, not T0gold-240; only same-paused-frame manual probe has exact fee credit. Every macro checkpoint/failure is a known Realm window; unknown stock interruptions are retained and never auto-selected. Root owns the exclusive live scene and SCREEN; only the authorized GUI/SCREEN route is used here, without an unqualified Native ABI claim. Expected next logical seedT+31 is preserved, not claimed drained; normal exit closes this isolated world. Whole original matrix, GUI policy coverage, other products and Workshop publication remain separate.",
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": [
+      "--output",
+      "{output}",
+      "--scenario",
+      "florin-succession"
+    ],
+    "receipt_suffix": ".prepare.json"
+  }
+}

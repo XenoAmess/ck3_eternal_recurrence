@@ -1,0 +1,30 @@
+﻿on_game_start_after_lobby = {
+    on_actions = { aubs_scene_start }
+}
+
+aubs_scene_start = {
+    effect = { random_player = { trigger_event = aubs.1 } }
+}
+
+# Official extension pattern: stock pam_on_actions.txt:87-90.
+# Root is the completed province; optional scope:character is the payer.
+on_building_completed = {
+    on_actions = { aubs_observe_building_completion }
+}
+
+aubs_observe_building_completion = {
+    trigger = {
+        has_global_variable = aubs_expected_heir
+        this = province:2619
+        holding_district = {
+            OR = { has_building = castle_garrison_2 has_building = castle_garrison_3 }
+        }
+        exists = scope:character
+        scope:character = {
+            this = global_var:aubs_expected_heir
+            has_variable = aubs_phase
+            var:aubs_phase > 0
+        }
+    }
+    effect = { global_var:aubs_expected_heir = { aubs_record_completion_effect = yes } }
+}
