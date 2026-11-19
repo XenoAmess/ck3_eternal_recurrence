@@ -49,3 +49,10 @@ R3闭场后按本机用途清理：4,184个可重建shader／183,734,611逻辑�
 本机R0006已实际读回Roger／Catholic／自有城堡及实际领袖两项既有bull冷却，生产六选一重新操作完成；4/17资金条件通过。1066-09-25／10自然日时贤阶普通事件暂停日历，未选择；静态标题／正文／按钮对应tgp_china_career.0010，但Native实例及定义ID仍未观测。80B“科孚商会”本地化提示在资金矩阵前已出现，之后未增加；无业务FAIL或Script system error。02:21:40Z正常退出、原Popen0、keeper/CAS闭合，零SAVE；公共verify拒绝未完成17项。[R6原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-money-R0006-partial.json)。
 
 原版character_levels.txt295–371的贤阶派发要求this!=top_liege，没有一次性intro完成flag。新夹具在变更政体前使用当前原版完整独立事务（00_almohad_invasion_effects.txt254–265及正常交互1620–1629）：create_title_and_vassal_change(type=independency,add_claim_on_loss=no)→becomes_independent→resolve，事务不复用；不伪造flag、不删除队列。独立在变政体前后均须读回，且后者必须has_treasury；原17个PASS条件与产品不变。事务会触发原版on-actions，不预称零副作用；新独立状态仍待新场实机确认。
+
+
+本机资金R0007完整跑通17项原资金／直辖条件，22个标记各一次，零业务FAIL／Script system error；独立事务前后、Catholic／实际head两冷却与国库资格实际读回成功。原344文件产品包未变。raw error.log仍有4,320B组合格式标签错误，故公共verify继续BLOCKED，整体passed=false；不能用17项通过代替日志或全部产品通过。最后直接可见1066-12-13／89日；DONE在watcher收尾期间出现，原bounded_wall_timeout保留，精确最终暂停日期UNKNOWN。04:11:03Z正常菜单退出、原Popen0，无WM_CLOSE，keeper/CAS闭合，零SAVE。[R7原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-money-R0007-seventeen-pass-formatter-open.json)。
+
+下一候选在现行中文house_relation_latest_change_amount的#weak后仅补ASCII空格，保留getter、=+%^标志及全角括号；原版英文同位置已有空格。沿已有localization/replace路径，新增单键文件，345运行文件；这是来源明确的语法候选，尚未取得新场零错误或运行期归因。九语言费用说明同步指向1.21.0。发布构建器实际拒绝过期费用版本和被篡改空格／getter的覆盖；manifest改为入口校验后构造明确TypedDict，拒绝bool／浮点format_version及非法tag形状。37项回归通过，三完整改动文件严格mypy通过；本机原版全图核对、329生成脚本检查通过，更新后的manifest往返／坏类型回归和重复构建逐字节一致检查通过。测试中真实失败与修复见[软件记录](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-formatter-candidate-software.json)。
+
+夹具DONE改为已知专用可见事件，空选项，请求正常单人事件暂停；新场仍需读回实际画面／日期，不预称已暂停。17原条件不改，剩余19条建筑／配额／继承及生产禁用GUI继续为必验。Steam全程离线，未发布AUB。闭场shader按清单精确回收，展开审计／旧EXE／已闭prepare等逐字节校验后无损归档，全部删除零失败；27个重复PNG路径以相同字节硬链接保留，旧FileID不复用。当前原图／错误／CHT物理存档与唯一暖缓存继续保留；原路径可读性、归档及期限见[存储目录](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/storage-closed-gui-lossless-20261119.json)。

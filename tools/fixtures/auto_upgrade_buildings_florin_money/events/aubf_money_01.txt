@@ -527,4 +527,10 @@ aubt.6 = {
 	}
 }
 
-aubt.800 = { type = character_event hidden = yes immediate = { debug_log = "AUBF: TEST DONE money_domain" } }
+aubt.800 = {
+	type = character_event
+	title = aubf_money_done_title
+	desc = aubf_money_done_desc
+	immediate = { debug_log = "AUBF: TEST DONE money_domain" }
+	option = { name = aubf_money_done_confirm }
+}

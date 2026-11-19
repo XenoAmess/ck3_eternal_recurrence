@@ -9,3 +9,6 @@
  aubf_begin_money_domain_desc:0 "先通过正式决议启用自动建造，选择优先国库与超直辖继续。本隔离场景随后检验原有资金和直辖规则；其他建筑与继承验收仍需单独完成。"
  aubf_begin_money_domain_tooltip:0 "开始原资金与直辖验收场景"
  aubf_begin_money_domain_confirm:0 "开始验收"
+ aubf_money_done_title:0 "资金与直辖验收完成"
+ aubf_money_done_desc:0 "原有17项资金与直辖断言已执行完毕。请保持暂停，正常退出验收场景；其他建筑和继承矩阵仍需单独验证。"
+ aubf_money_done_confirm:0 "保持暂停"

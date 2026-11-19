@@ -1,0 +1,344 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T04:50:43.057476+00:00",
+  "policy_version": "1.0.0",
+  "actual_groups": [
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-money-R0004\\summary.json",
+        "bytes": 330,
+        "sha256": "fd63b9048aa73b6fbdd78c0883996172351e65bf08c18ab7bd1a661c60bed68e"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T00:09:05.467438+00:00",
+        "deleted_files": 4184,
+        "deleted_logical_bytes": 183656232,
+        "failed": [],
+        "free_before": {
+          "C:/": 50541182976,
+          "D:/": 21669056512
+        },
+        "free_after": {
+          "C:/": 50541113344,
+          "D:/": 21862367232
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-money-R0005\\summary.json",
+        "bytes": 330,
+        "sha256": "49ad1e0d8a235933e6b97901bddff63d770b18ae316bcd022216a7d96ad3094f"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T01:09:31.441993+00:00",
+        "deleted_files": 4192,
+        "deleted_logical_bytes": 184324556,
+        "failed": [],
+        "free_before": {
+          "C:/": 51355926528,
+          "D:/": 21664403456
+        },
+        "free_after": {
+          "C:/": 51355738112,
+          "D:/": 21858394112
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-money-R0006\\summary.json",
+        "bytes": 330,
+        "sha256": "bb9947986a77b2e313d90c93b590bfd3ead6dbda80e33650dcd69b6f945bb1a6"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T02:40:16.149100+00:00",
+        "deleted_files": 4192,
+        "deleted_logical_bytes": 184324780,
+        "failed": [],
+        "free_before": {
+          "C:/": 51783471104,
+          "D:/": 21629116416
+        },
+        "free_after": {
+          "C:/": 51782619136,
+          "D:/": 21823631360
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-money-R0007\\summary.json",
+        "bytes": 330,
+        "sha256": "cb3680f6505f0b2544548f2de69b99185d0e0084f7eabe2626d007a3ed36fb19"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T04:43:11.023587+00:00",
+        "deleted_files": 4192,
+        "deleted_logical_bytes": 184324556,
+        "failed": [],
+        "free_before": {
+          "C:/": 51311443968,
+          "D:/": 21634859008
+        },
+        "free_after": {
+          "C:/": 51310583808,
+          "D:/": 21829574656
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-lease-archive-a02\\summary.json",
+        "bytes": 329,
+        "sha256": "e198159940e4c2e2ead699da97ff75b4bb9b28fe27b11776b676c4f39b1eeb99"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T00:11:14.155631+00:00",
+        "deleted_files": 327,
+        "deleted_logical_bytes": 179546086,
+        "failed": [],
+        "free_before": {
+          "C:/": 50540777472,
+          "D:/": 21832556544
+        },
+        "free_after": {
+          "C:/": 50540777472,
+          "D:/": 22012747776
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-lease-archive-a03\\summary.json",
+        "bytes": 327,
+        "sha256": "69dda70cc03cbe36260d5ef72be9a3384a941383511a123c9a4b0d931739abe3"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T01:16:14.327722+00:00",
+        "deleted_files": 24,
+        "deleted_logical_bytes": 13275352,
+        "failed": [],
+        "free_before": {
+          "C:/": 51363766272,
+          "D:/": 21918793728
+        },
+        "free_after": {
+          "C:/": 51363766272,
+          "D:/": 21932126208
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-lease-archive-a04\\summary.json",
+        "bytes": 327,
+        "sha256": "35242753d18578cb7df15b32ce6aca76b7a8e26c4de958b7898b7c76f5d7d4ec"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T03:08:09.511731+00:00",
+        "deleted_files": 54,
+        "deleted_logical_bytes": 29893074,
+        "failed": [],
+        "free_before": {
+          "C:/": 51595759616,
+          "D:/": 21904252928
+        },
+        "free_after": {
+          "C:/": 51595825152,
+          "D:/": 21934256128
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-lease-archive-a05\\summary.json",
+        "bytes": 327,
+        "sha256": "d46599499dfeb56ff71a2bddf03312b0a2944b4b388a9637b399b6942888a537"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T04:44:41.785245+00:00",
+        "deleted_files": 48,
+        "deleted_logical_bytes": 26592600,
+        "failed": [],
+        "free_before": {
+          "C:/": 51308171264,
+          "D:/": 21822529536
+        },
+        "free_after": {
+          "C:/": 51308171264,
+          "D:/": 21849198592
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-cleanup-plan-archive-a01\\summary.json",
+        "bytes": 327,
+        "sha256": "6a885304e240e4ea0dac248cae43525f65021ad88fbbb68433f0aebfc1aee642"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T01:14:36.629202+00:00",
+        "deleted_files": 92,
+        "deleted_logical_bytes": 66832226,
+        "failed": [],
+        "free_before": {
+          "C:/": 51353899008,
+          "D:/": 21854003200
+        },
+        "free_after": {
+          "C:/": 51353899008,
+          "D:/": 21921013760
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-cleanup-plan-archive-a02\\summary.json",
+        "bytes": 326,
+        "sha256": "8b9837800760199d60556cefd0f587055cd625b6593611b4c4a157480411326a"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T04:46:23.261712+00:00",
+        "deleted_files": 15,
+        "deleted_logical_bytes": 8806143,
+        "failed": [],
+        "free_before": {
+          "C:/": 51308761088,
+          "D:/": 21856317440
+        },
+        "free_after": {
+          "C:/": 51308761088,
+          "D:/": 21862563840
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-legacy-and-r5-game-log-archive\\summary.json",
+        "bytes": 327,
+        "sha256": "351a2c744512dd348a089d92bcd8f2a58e9ce11d26c8776345263b5f200ff947"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T03:01:09.204939+00:00",
+        "deleted_files": 2,
+        "deleted_logical_bytes": 124156522,
+        "failed": [],
+        "free_before": {
+          "C:/": 51585687552,
+          "D:/": 21785059328
+        },
+        "free_after": {
+          "C:/": 51585638400,
+          "D:/": 21909221376
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-exact-screens-hardlinks-a01\\summary.json",
+        "bytes": 327,
+        "sha256": "c90803ffdf39723bfe60f0fa0b46874cf96ef5bc2f8354f388eb487ccefb0e0b"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T04:48:52.813691+00:00",
+        "deleted_files": 27,
+        "deleted_logical_bytes": 23508217,
+        "failed": [],
+        "free_before": {
+          "C:/": 51309875200,
+          "D:/": 21860397056
+        },
+        "free_after": {
+          "C:/": 51309875200,
+          "D:/": 21882736640
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-prepared-case-archive-a01\\summary.json",
+        "bytes": 327,
+        "sha256": "3559bc2fc79426a1e760eda66537e0da5e5b313c25f371985e12bd31a9e80804"
+      },
+      "actual_summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T04:49:35.079873+00:00",
+        "deleted_files": 20,
+        "deleted_logical_bytes": 23362162,
+        "failed": [],
+        "free_before": {
+          "C:/": 51309326336,
+          "D:/": 21874225152
+        },
+        "free_after": {
+          "C:/": 51309326336,
+          "D:/": 21896888320
+        }
+      }
+    }
+  ],
+  "retained_archives": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-gui-lease-stdout-lossless-a02.zip",
+      "bytes": 29394329,
+      "sha256": "f081f088618856421e38112c1f40a1ea858263b820f384cf5e2e281c2207efad"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-gui-lease-stdout-lossless-a03.zip",
+      "bytes": 2167808,
+      "sha256": "52339124476af7b8d0bf467c1d3fc1b72e65070b9d57f4a518cd70fdc8f4c5eb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-gui-lease-stdout-lossless-a04.zip",
+      "bytes": 4880308,
+      "sha256": "b8c09d30712b9043545edeceba3d670fafe1c9d2da3164b95dcf2ab483fd1491"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-gui-lease-stdout-lossless-a05.zip",
+      "bytes": 4340387,
+      "sha256": "4fc29d256ba0ca2308381d2308a7bb5e171ef8f4b4cbab6d40e6d11a62099c4d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cleanup-plans-lossless-a01.zip",
+      "bytes": 4275246,
+      "sha256": "f199ca60d89a836610f2f4bdb94635df942f37ff46b41ae8ad6e05d46be52e8f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cleanup-plans-lossless-a02.zip",
+      "bytes": 506800,
+      "sha256": "67b53c6d867d667fc5cab4f30fd4fab9e8b6a4df2d97b05bac470c5729ba1c28"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\legacy-exe-and-r5-game-log-lossless.zip",
+      "bytes": 32016741,
+      "sha256": "5e2152a15ac89e65e425a94b84dace143da498036e3e63c62bfc92c76335ae05"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-prepared-cases-lossless-a01.zip",
+      "bytes": 3182233,
+      "sha256": "6aabb112c4b6c6b7a2dd7b0ee6a0167477040748e6f642baea68d98a54cb7e73"
+    }
+  ],
+  "availability": "Retired shader files unavailable/rebuildable. Archived expanded stdout, completed plans, legacy standalone EXE, R5 game.log mirror and20 closed prepared-case JSON paths unavailable directly; exact bytes retained in ZIP members named by old relative paths. Restore bytes before historical re-verification; original FileID is never claimed restored. R5 raw debug/error, current R7 prepared case, all logs/source/staging remain. PNG dedup27 names remain readable with identical bytes through hardlinks; old27 FileIDs retired, no image pixels lost.",
+  "protected": [
+    "Sole MRM warm shader cache",
+    "Physical CHT savedPair through2026-11-25 review",
+    "Old33 stock source files needed for remaining mods",
+    "Old1.20 EXE exact full bytes retained in archive through original2026-11-24 review; current C installed EXE untouched"
+  ],
+  "review_at_utc": "2026-11-24T03:01:09Z",
+  "archive_review_does_not_reset_original_expiry": true
+}

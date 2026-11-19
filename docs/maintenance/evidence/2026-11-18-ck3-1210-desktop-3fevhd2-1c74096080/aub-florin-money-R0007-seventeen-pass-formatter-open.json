@@ -1,0 +1,219 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T04:25:23.864029+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0007",
+  "case": "money-domain-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "ALL_SEVENTEEN_ASSERTIONS_PASS_FORMATTER_UNRESOLVED",
+  "source_head": "4d538341d34a3bdc30df983a2c798b953ca57941",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r7-gui-prepare\\prepared-case.json",
+    "bytes": 1587807,
+    "sha256": "1ba17d98af1943b1c813362a0c6d65082d8ac39548105e8a67f78a39176c9ac3"
+  },
+  "facts": {
+    "actual_production_six_choices_and_default_selection": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-enable-panel-auto-view.png",
+          "bytes": 1120937,
+          "sha256": "3de0aaf6938a56414adde1eecf5c571bc8d099c3ceb6d59b5a377258d981066b"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-default-policy-auto-view.png",
+          "bytes": 1121379,
+          "sha256": "c90f7cee03430398f04d2f1866a2313de02983b8dc6d83889497e95fec1be4e4"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-policy-confirmation-auto-view.png",
+          "bytes": 1090989,
+          "sha256": "30ce9eb4fa24e1ca2a18fe6b1597006f131687faa6355eaaaf53ab7a66fe73e3"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-production-enabled-auto-view.png",
+          "bytes": 1091514,
+          "sha256": "b93b44935e06f63bcb78e6e4dfa13b1e0871f34dbacb98ab52ec3708caae61da"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-fixture-panel-auto-view.png",
+          "bytes": 1107488,
+          "sha256": "dd5f01889c3b34058f08cd24a23c27eb227af07da96e0b9e59819f06776dd3c6"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-fixture-started-auto-view.png",
+          "bytes": 1081062,
+          "sha256": "2a2bbd843eea70e50c5fad10f3f6e553b1e354b13b0edcecb709488d6ddbd2dc"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-d4663eb5ce0d40bba66aa0e14edf0a27\\profile\\logs\\debug.log",
+          "bytes": 1274914,
+          "sha256": "05e3b3d090c39dbf42c26794ab2f43bbaf3a1b7a85b4b9dfcd917dadb5b6b907"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\aubm05-policy-gui-report.json",
+          "bytes": 3195,
+          "sha256": "b9fe0a1ac93b00675eb5c83eed6f7ee4ed24ea34b17ed958203d2713f6311cd4"
+        }
+      ]
+    },
+    "original_seventeen_money_domain_assertions_and_no_errors": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-d4663eb5ce0d40bba66aa0e14edf0a27\\profile\\logs\\debug.log",
+          "bytes": 1274914,
+          "sha256": "05e3b3d090c39dbf42c26794ab2f43bbaf3a1b7a85b4b9dfcd917dadb5b6b907"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-d4663eb5ce0d40bba66aa0e14edf0a27\\profile\\logs\\error.log",
+          "bytes": 4320,
+          "sha256": "323cad3d277fa3fc1298c3617aaf41e407d0cf657685e50000a915711aa5f014"
+        }
+      ],
+      "assertions_passed": true,
+      "raw_error_free": false
+    },
+    "actual_calendar_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-advance02-before-menu-hold.png",
+          "bytes": 1112673,
+          "sha256": "5593b1e93c90e08f7b56b9005a59d0dc0cbea31eee4b5214db92d5e68d606ad1"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-quit-dialog-view.png",
+          "bytes": 663930,
+          "sha256": "618fa02ac4d242a322cc3f8de5e319d1ad0aba2882c219ea6148cd1604d6ff36"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-quit-desktop.png.json",
+          "bytes": 1443,
+          "sha256": "b844371944dfab200e4a983ff1054e4bb7a66912d0ea07c5087073a526435f38"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0007\\game-exit.json",
+          "bytes": 253,
+          "sha256": "1f40a5d77db4fd44612f03f69641bd82687b29bd10400027c1c17c7b3f5a3ca9"
+        }
+      ],
+      "scope": "Actual last visible calendar and menu hold/normal exit; exact final held date not directly observed."
+    }
+  },
+  "marker_counts": {
+    "AUBF: READY money_domain_actual_production_decision": 1,
+    "AUBT: TEST BEGIN source-live": 1,
+    "AUBF: READY money_domain_roger_head_cooldowns": 1,
+    "AUBF: READY money_domain_independent_treasury_government": 1,
+    "AUBT: TEST PASS native_decision_priority_continue_selection": 1,
+    "AUBT: TEST PASS domain_limit_normalized_zero": 1,
+    "AUBT: TEST PASS treasury_priority_one_tier": 1,
+    "AUBT: TEST PASS domain_limit_zero_builds": 1,
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect": 1,
+    "AUBT: TEST PASS domain_limit_recovery_resumes": 1,
+    "AUBT: TEST PASS over_limit_continue_builds": 1,
+    "AUBT: TEST PASS legacy_no_pause_flag_continues": 1,
+    "AUBT: TEST PASS disabled_zero_side_effect": 1,
+    "AUBT: TEST PASS personal_gold_fallback": 1,
+    "AUBT: TEST PASS reenabled_loop_stopped_cleanly": 1,
+    "AUBT: TEST PASS insufficient_funds_no_change": 1,
+    "AUBT: TEST PASS treasury_only_uses_treasury": 1,
+    "AUBT: TEST PASS treasury_only_no_personal_fallback": 1,
+    "AUBT: TEST PASS personal_only_uses_personal": 1,
+    "AUBT: TEST PASS personal_only_no_treasury_fallback": 1,
+    "AUBT: TEST PASS priority_no_split_payment": 1,
+    "AUBF: TEST DONE money_domain": 1
+  },
+  "passed_original_assertions": [
+    "AUBT: TEST PASS native_decision_priority_continue_selection",
+    "AUBT: TEST PASS domain_limit_normalized_zero",
+    "AUBT: TEST PASS treasury_priority_one_tier",
+    "AUBT: TEST PASS domain_limit_zero_builds",
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect",
+    "AUBT: TEST PASS domain_limit_recovery_resumes",
+    "AUBT: TEST PASS over_limit_continue_builds",
+    "AUBT: TEST PASS legacy_no_pause_flag_continues",
+    "AUBT: TEST PASS disabled_zero_side_effect",
+    "AUBT: TEST PASS personal_gold_fallback",
+    "AUBT: TEST PASS reenabled_loop_stopped_cleanly",
+    "AUBT: TEST PASS insufficient_funds_no_change",
+    "AUBT: TEST PASS treasury_only_uses_treasury",
+    "AUBT: TEST PASS treasury_only_no_personal_fallback",
+    "AUBT: TEST PASS personal_only_uses_personal",
+    "AUBT: TEST PASS personal_only_no_treasury_fallback",
+    "AUBT: TEST PASS priority_no_split_payment"
+  ],
+  "original_assertions_required": 17,
+  "all_original_assertions_passed": true,
+  "failure_lines": [],
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-d4663eb5ce0d40bba66aa0e14edf0a27\\profile\\logs\\error.log",
+    "bytes": 4320,
+    "sha256": "323cad3d277fa3fc1298c3617aaf41e407d0cf657685e50000a915711aa5f014"
+  },
+  "error_text": "[11:56:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:08][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:09][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:09][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:09][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:10][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:11][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:11][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:11][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:15][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:15][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:15][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:15][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:15][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:15][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:15][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[11:56:15][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:03][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:03][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:03][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:29][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:29][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:29][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:29][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:29][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:29][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:29][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:29][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[12:01:30][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n",
+  "script_error_count": 0,
+  "formatter_root_cause": "UNCONFIRMED. Current stock zh house_relation_latest_change_amount lacks space after#weak; English has space and actual screenshots show house-relation news while combined weak/control/positive_value formatting errors occur. Source-backed minimal one-space override is a candidate, not yet validated or adopted.",
+  "last_visible_date": "1066-12-13",
+  "observed_natural_days": 89,
+  "actual_final_date": null,
+  "calendar_limit": 180,
+  "calendar_observation_scope": "Last pre-menu screenshot is12/13. DONE logged while second watcher was finalizing bounded25s timeout; report reason remains bounded_wall_timeout, not rewritten core_done. Final capture/menu latency is retained, no claim of exact instant pause at DONE. No operator time-control resumption after observing DONE.",
+  "watch_reports": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aubm05-advance01-watch.json",
+      "bytes": 466,
+      "sha256": "a606a3be1cc4d6d654775cd7f5c69671370b5e36c86a00e87d6bc472356351cd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aubm05-advance02-watch.json",
+      "bytes": 463,
+      "sha256": "79a33b4cbfb5bce9597e7e2bc3c137776a55ee1dde7b213672e3c708988bfeb1"
+    }
+  ],
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-quit-dialog-view.png",
+      "bytes": 663930,
+      "sha256": "618fa02ac4d242a322cc3f8de5e319d1ad0aba2882c219ea6148cd1604d6ff36"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm05-quit-desktop.png.json",
+      "bytes": 1443,
+      "sha256": "b844371944dfab200e4a983ff1054e4bb7a66912d0ea07c5087073a526435f38"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0007\\game-exit.json",
+      "bytes": 253,
+      "sha256": "1f40a5d77db4fd44612f03f69641bd82687b29bd10400027c1c17c7b3f5a3ca9"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0007\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "362ab450d92dc600942b7dde49e56b186c9499e7a9d5c22a7f38fc4ab1621c64"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0007\\screen-release.json",
+      "bytes": 1250,
+      "sha256": "ce3445987b09e22a51c31d4dd48489ffbfbf113e98c18e8305b257103664bfe3"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r7-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "b94d0ccb21f57758b9dfc98a20e3969b5e0e860f035755adbec369b8837e1a29"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "remaining_product_scope": "Original quota/main/special/tribal/Mandala/negative-gate/succession/full disable GUI remain mandatory; this cell also still has formatter diagnostics.",
+  "retention_review_at_utc": "2026-12-19T04:11:03Z"
+}

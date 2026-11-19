@@ -9,3 +9,6 @@
  aubf_begin_money_domain_desc:0 "First use the production decision with treasury first and continue over the domain limit. This isolated scene then verifies the original money and domain rules. Other buildings and succession still require separate acceptance."
  aubf_begin_money_domain_tooltip:0 "Start the original money and domain matrix"
  aubf_begin_money_domain_confirm:0 "Start acceptance"
+ aubf_money_done_title:0 "Money and Domain Matrix Complete"
+ aubf_money_done_desc:0 "All17 original money and domain assertions have run. Keep paused and exit this acceptance scene normally; the other building and succession matrix remains mandatory."
+ aubf_money_done_confirm:0 "Keep paused"

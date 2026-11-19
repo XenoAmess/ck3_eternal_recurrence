@@ -117,6 +117,24 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "reviewed building contract"):
             self.build()
 
+    def test_stale_price_description_cannot_enter_release(self) -> None:
+        path = self.source / "localization/simp_chinese/auto_build_l_simp_chinese.yml"
+        value = path.read_text(encoding="utf-8-sig")
+        self.assertIn(data.EXPECTED_GAME_VERSION, value)
+        path.write_text(value.replace(data.EXPECTED_GAME_VERSION, "1.19.0.6"), encoding="utf-8-sig")
+        with self.assertRaisesRegex(ValueError, "reviewed building contract"):
+            self.build()
+
+    def test_house_format_override_preserves_separator_and_expression(self) -> None:
+        path = self.source / release.HOUSE_RELATION_FIX_FILE
+        original = path.read_text(encoding="utf-8-sig")
+        for before, after in (("#weak （", "#weak（"), ("|=+%^", "|=+")):
+            with self.subTest(change=(before, after)):
+                self.assertIn(before, original)
+                path.write_text(original.replace(before, after), encoding="utf-8-sig")
+                with self.assertRaisesRegex(ValueError, "reviewed building contract"):
+                    self.build()
+
     def test_canonical_workshop_identity_is_rejected(self) -> None:
         descriptor = self.source / "descriptor.mod"
         descriptor.write_text(
@@ -136,6 +154,18 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
         self.assertEqual(loaded["mod_version"], "4.0.4")
         self.assertIsNone(loaded["git_tag"])
         self.assertIsNone(loaded["workshop_item_id"])
+        self.assertEqual(release.load_manifest(manifest_path), manifest)
+        for wrong in (True, 1.0, "1"):
+            with self.subTest(format_version=wrong):
+                malformed = dict(loaded, format_version=wrong)
+                manifest_path.write_text(json.dumps(malformed), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "identity mismatch"):
+                    release.load_manifest(manifest_path)
+        for wrong_tag in ({}, [], 4):
+            with self.subTest(git_tag=wrong_tag):
+                manifest_path.write_text(json.dumps(dict(loaded, git_tag=wrong_tag)), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "Git tag"):
+                    release.load_manifest(manifest_path)
 
     def test_workshop_identity_rejects_upstream_item(self) -> None:
         with self.assertRaisesRegex(ValueError, "must not reuse"):

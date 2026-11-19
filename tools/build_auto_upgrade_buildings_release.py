@@ -13,10 +13,12 @@ import sys
 import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
+from typing import TypedDict
 
 from workshop_compatibility_tags import render_release_file_bytes
 
 import gen_auto_upgrade_buildings as generator
+from auto_upgrade_buildings_data import EXPECTED_GAME_VERSION
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +28,11 @@ DEFAULT_SOURCE = ROOT / PRODUCT_ID
 DEFAULT_OUTPUT = ROOT / "dist" / PRODUCT_ID
 UPSTREAM_WORKSHOP_ITEM_ID = "3596580780"
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
+HOUSE_RELATION_FIX_FILE = "localization/replace/aub_florin_house_relation_l_simp_chinese.yml"
+HOUSE_RELATION_FIX_TEXT = (
+    'l_simp_chinese:\n'
+    ' house_relation_latest_change_amount:0 "#weak （[HOUSE_RELATION.GetLatestChangeAmount|=+%^]）#!"\n'
+)
 RUNTIME_FILES = frozenset(
     {
         "common/decisions/build_decision.txt",
@@ -41,6 +48,7 @@ RUNTIME_FILES = frozenset(
         "localization/polish/auto_build_l_polish.yml",
         "localization/russian/auto_build_l_russian.yml",
         "localization/simp_chinese/auto_build_l_simp_chinese.yml",
+        HOUSE_RELATION_FIX_FILE,
         "localization/spanish/auto_build_l_spanish.yml",
         "thumbnail.png",
     }
@@ -49,6 +57,22 @@ SOURCE_ONLY_FILES = frozenset({"README.md"})
 SEMVER = re.compile(r"\d+\.\d+\.\d+")
 FULL_SHA = re.compile(r"[0-9a-f]{40}")
 WORKSHOP_ITEM_ID = re.compile(r"[1-9][0-9]*", re.ASCII)
+
+
+class ManifestFile(TypedDict):
+    path: str
+    size: int
+    sha256: str
+
+
+class ReleaseManifest(TypedDict):
+    format_version: int
+    product_id: str
+    mod_version: str
+    git_tag: str | None
+    git_sha: str
+    workshop_item_id: str | None
+    files: list[ManifestFile]
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -134,6 +158,13 @@ def source_errors(source: Path) -> list[str]:
                 errors.append(f"canonical runtime contains remote_file_id: {relative}")
             if UPSTREAM_WORKSHOP_ITEM_ID in value:
                 errors.append(f"upstream Workshop identity leaked into runtime: {relative}")
+            if path.name.startswith("auto_build_l_"):
+                price_lines = [line for line in value.splitlines()
+                               if line.lstrip().startswith("enable_auto_build_text:")]
+                if len(price_lines) != 1 or EXPECTED_GAME_VERSION not in price_lines[0]:
+                    errors.append(f"localization differs from reviewed building contract: {relative}: price version")
+            if relative == HOUSE_RELATION_FIX_FILE and value.replace("\r\n", "\n") != HOUSE_RELATION_FIX_TEXT:
+                errors.append(f"localization differs from reviewed building contract: {relative}: one-space correction")
     for path, expected in generator.generated_outputs().items():
         relative = path.relative_to(DEFAULT_SOURCE)
         actual = source / relative
@@ -144,10 +175,10 @@ def source_errors(source: Path) -> list[str]:
 
 def descriptor_version(source: Path) -> str:
     value = (source / "descriptor.mod").read_text(encoding="utf-8")
-    matches = re.findall(r'(?m)^version="([^"\n]+)"$', value.replace("\r\n", "\n"))
-    if len(matches) != 1 or SEMVER.fullmatch(matches[0]) is None:
+    matches = list(re.finditer(r'(?m)^version="([^"\n]+)"$', value.replace("\r\n", "\n")))
+    if len(matches) != 1 or SEMVER.fullmatch(matches[0].group(1)) is None:
         raise ValueError("descriptor.mod requires exactly one semantic version")
-    return matches[0]
+    return matches[0].group(1)
 
 
 def git_sha() -> str:
@@ -200,7 +231,7 @@ def manifest(
     version: str,
     workshop_item_id: str | None = None,
     git_tag: str | None = None,
-) -> dict[str, object]:
+) -> ReleaseManifest:
     workshop_item_id = normalize_workshop_item_id(workshop_item_id)
     if git_tag not in {None, product_tag(version)}:
         raise ValueError(f"manifest Git tag must be {product_tag(version)!r} or null")
@@ -229,7 +260,7 @@ def build_release(
     workshop_item_id: str | None = None,
     versioned_sidecars: bool = False,
     git_tag: str | None = None,
-) -> tuple[Path, Path, Path, dict[str, object]]:
+) -> tuple[Path, Path, Path, ReleaseManifest]:
     source = source.resolve()
     staging = staging.resolve()
     errors = source_errors(source)
@@ -293,7 +324,7 @@ def check_reproducible(
 
 
 def workshop_descriptor_matches(
-    path: Path, entry: dict[str, object], workshop_item_id: str
+    path: Path, entry: ManifestFile, workshop_item_id: str | None
 ) -> bool:
     try:
         workshop_item_id = normalize_workshop_item_id(workshop_item_id)
@@ -324,7 +355,7 @@ def workshop_descriptor_matches(
     return False
 
 
-def load_manifest(path: Path) -> dict[str, object]:
+def load_manifest(path: Path) -> ReleaseManifest:
     try:
         payload = json.loads(Path(path).read_text(encoding="utf-8"))
     except json.JSONDecodeError as error:
@@ -340,20 +371,22 @@ def load_manifest(path: Path) -> dict[str, object]:
     }
     if not isinstance(payload, dict) or set(payload) != required:
         raise ValueError("manifest fields mismatch")
-    if payload["format_version"] != 1 or payload["product_id"] != PRODUCT_ID:
+    if type(payload["format_version"]) is not int or payload["format_version"] != 1 or payload["product_id"] != PRODUCT_ID:
         raise ValueError("manifest identity mismatch")
     version = payload["mod_version"]
     if not isinstance(version, str) or SEMVER.fullmatch(version) is None:
         raise ValueError("manifest version is invalid")
-    if payload["git_tag"] not in {None, product_tag(version)}:
+    tag = payload["git_tag"]
+    if tag is not None and (not isinstance(tag, str) or tag != product_tag(version)):
         raise ValueError("manifest Git tag is invalid")
     if not isinstance(payload["git_sha"], str) or FULL_SHA.fullmatch(payload["git_sha"]) is None:
         raise ValueError("manifest Git revision is invalid")
-    normalize_workshop_item_id(payload["workshop_item_id"])
+    item_id = normalize_workshop_item_id(payload["workshop_item_id"])
     entries = payload["files"]
     if not isinstance(entries, list):
         raise ValueError("manifest files must be a list")
     paths: list[str] = []
+    files: list[ManifestFile] = []
     for entry in entries:
         if (
             not isinstance(entry, dict)
@@ -367,9 +400,12 @@ def load_manifest(path: Path) -> dict[str, object]:
         ):
             raise ValueError("manifest file entry is invalid")
         paths.append(entry["path"])
+        files.append({"path": entry["path"], "size": entry["size"], "sha256": entry["sha256"]})
     if paths != sorted(RUNTIME_FILES):
         raise ValueError("manifest file inventory mismatch")
-    return payload
+    return {"format_version": 1, "product_id": PRODUCT_ID, "mod_version": version,
+            "git_tag": tag, "git_sha": payload["git_sha"], "workshop_item_id": item_id,
+            "files": files}
 
 
 def verify_manifest(target: Path, manifest_path: Path, workshop_cache: bool = False) -> int:

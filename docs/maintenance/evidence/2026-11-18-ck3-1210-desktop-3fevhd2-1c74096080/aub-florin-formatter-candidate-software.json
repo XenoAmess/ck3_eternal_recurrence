@@ -1,0 +1,90 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T04:50:43.093751+00:00",
+  "status": "SOFTWARE_PASS_ACTUAL_FORMATTER_FIX_NOT_RUN",
+  "stock_chinese_source": {
+    "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/house_relations_l_simp_chinese.yml",
+    "sha256": "952a1b95e24720724a5bc794cf71efd74b9e88e640f5da11d7de8076f2c3dbc4"
+  },
+  "candidate": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\localization\\replace\\aub_florin_house_relation_l_simp_chinese.yml",
+    "bytes": 118,
+    "sha256": "41ba1efe9cc6c295a83522ab032edcc3bd71b3c3c7afddff88a9ae2f5fa5a982"
+  },
+  "change": "Only insert ASCII space after #weak; preserve fullwidth parentheses, HOUSE_RELATION getter and=+%^ flags. Existing localization/replace layout used.9 price descriptions update1.19.0.6 to1.21.0.",
+  "tests": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "checks": [
+      {
+        "command": [
+          "-m",
+          "unittest",
+          "tools.test_fixture_engine_prepare",
+          "tools.test_build_auto_upgrade_buildings_release"
+        ],
+        "returncode": 0,
+        "started_at_utc": "2026-11-19T04:46:21.565197+00:00",
+        "elapsed_seconds": 47.645225,
+        "output": "D:\\ck3-state\\upgrade-20261118\\aub-format-check-a03-0.log"
+      },
+      {
+        "command": [
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "tools/build_auto_upgrade_buildings_release.py",
+          "tools/validate_auto_upgrade_buildings_static.py",
+          "tools/prepare_aub_1_20_fixture.py"
+        ],
+        "returncode": 0,
+        "started_at_utc": "2026-11-19T04:47:09.210507+00:00",
+        "elapsed_seconds": 0.957101,
+        "output": "D:\\ck3-state\\upgrade-20261118\\aub-format-check-a03-1.log"
+      },
+      {
+        "command": [
+          "tools/validate_auto_upgrade_buildings_static.py",
+          "--game-root",
+          "C:/SteamLibrary/steamapps/common/Crusader Kings III/game",
+          "--release-localization"
+        ],
+        "returncode": 0,
+        "started_at_utc": "2026-11-19T04:47:10.167749+00:00",
+        "elapsed_seconds": 15.721013,
+        "output": "D:\\ck3-state\\upgrade-20261118\\aub-format-check-a03-2.log"
+      },
+      {
+        "command": [
+          "tools/gen_auto_upgrade_buildings.py",
+          "--check"
+        ],
+        "returncode": 0,
+        "started_at_utc": "2026-11-19T04:47:25.888828+00:00",
+        "elapsed_seconds": 0.723549,
+        "output": "D:\\ck3-state\\upgrade-20261118\\aub-format-check-a03-3.log"
+      }
+    ]
+  },
+  "additional_checks": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-format-final-a01-0.log",
+      "bytes": 103,
+      "sha256": "0332eca42243709a8907edc2aa861c99d6e565c5e3ed78dbc1410b7916fb30c9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-format-final-a01-1.log",
+      "bytes": 216,
+      "sha256": "bca93062b8d8f51e7ffa889dd4108e2b6780b97323baf3ac2b3240b8cfea6da1"
+    }
+  ],
+  "failures_preserved": [
+    "a01 mutation regressions showed real builder did not reject localized drift; shared source_errors fixed before a02",
+    "a02 full builder strict mypy exposed8 existing loose manifest annotations; explicit validated TypedDict manifest added, no ignore/cast",
+    "first targeted test lacked PYTHONPATH and failed import; rerun with tools path and D TEMP passed"
+  ],
+  "fixture_completion": "Known visible fixture-only .800 replaces hidden DONE; empty option. Intended single-player autopause not yet verified.17 original PASS ASTs unchanged.",
+  "runtime_file_count": 345,
+  "business_pass": false,
+  "published": false
+}
