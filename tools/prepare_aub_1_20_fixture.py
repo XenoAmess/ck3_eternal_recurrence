@@ -54,6 +54,12 @@ def _validate_florin_event_ids(source: Path) -> None:
             if entry.key in definitions:
                 raise ValueError(f"Duplicate Florin event ID: {entry.key}")
             definitions.add(entry.key)
+            if isinstance(entry.value, Block):
+                fields = {field.key: field.value for field in entry.value.entries}
+                if fields.get("type") == "character_event" and fields.get("hidden") != "yes":
+                    theme = fields.get("theme")
+                    if not isinstance(theme, str) or not theme:
+                        raise ValueError(f"Visible Florin character event requires a theme: {entry.key}")
 
 
 def _prepare_florin_scene(repo: Path, output: Path, *, fixture: str, contract: str,

@@ -213,6 +213,27 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
                     self.assertFalse(output.exists())
                     self.assertFalse(output.with_suffix(".prepare.json").exists())
 
+    def test_florin_money_rejects_missing_visible_event_theme_before_writes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            base = Path(temporary)
+            repo = base / "repo"
+            relative = Path("tools/fixtures/auto_upgrade_buildings_florin_money")
+            shutil.copytree(REPO / relative, repo / relative)
+            contracts = repo / "tools/ck3_mod_acceptance_cases"
+            contracts.mkdir(parents=True)
+            shutil.copyfile(REPO / "tools/ck3_mod_acceptance_cases/aub_florin_money.json", contracts / "aub_florin_money.json")
+            path = repo / relative / "events/aubf_money_01.txt"
+            original = path.read_text(encoding="utf-8-sig")
+            self.assertEqual(original.count("theme = realm"), 1)
+            path.write_text(original.replace("theme = realm", ""), encoding="utf-8-sig")
+            output = base / "output"
+            with self.assertRaisesRegex(ValueError, "requires a theme: aubt.800"):
+                aub.prepare_money(repo, output)
+            self.assertFalse(output.exists())
+            self.assertFalse(output.with_suffix(".prepare.json").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

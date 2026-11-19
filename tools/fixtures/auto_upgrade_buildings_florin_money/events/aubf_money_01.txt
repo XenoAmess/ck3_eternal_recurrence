@@ -529,6 +529,7 @@ aubt.6 = {
 
 aubt.800 = {
 	type = character_event
+	theme = realm
 	title = aubf_money_done_title
 	desc = aubf_money_done_desc
 	immediate = { debug_log = "AUBF: TEST DONE money_domain" }

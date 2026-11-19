@@ -1,0 +1,101 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T05:01:36.832338+00:00",
+  "source_scope": "Current installed1.21.0/build26622941; new visible fixture-only DONE had no theme and was rejected during load. Product345-file manifest6124ac56f73e9270f6f09f2bc6cf73682686fac651e9b21e0cb8ffc517457193 remains unchanged.",
+  "source_pins": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\event_themes\\00_event_themes.txt",
+      "bytes": 73892,
+      "sha256": "b64a3e0bd55d3bc52ec03f886ea99a55cd97e62ad63cf8f09729edcde85cac41"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\global_culture_events.txt",
+      "bytes": 32575,
+      "sha256": "eaaed0d4df94e0cc4dd21e6ce93dcc1b8b0a9448f3d7d6790849c22a1f1762e0"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\_events.info",
+      "bytes": 21304,
+      "sha256": "25be15adcf8a02f44996369e1d479c8fe3be96ed807df703ad4c0fe532ea1e61"
+    }
+  ],
+  "source_lines": {
+    "00_event_themes.txt": "473–486 realm definition; culture_change1944–1957",
+    "global_culture_events.txt": "363–373 visible character event with type/title/desc/theme/option and no portraits",
+    "_events.info": "260 theme source;88–101 portrait customization, letter sender required separately"
+  },
+  "fix": "Add theme=realm to aubt.800. Producer rejects any visible Florin character_event with missing/non-scalar theme before output writes. No arbitrary portrait or unknown option selection added.",
+  "checks": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "checks": [
+      {
+        "command": [
+          "-m",
+          "unittest",
+          "tools.test_fixture_engine_prepare"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "tools/prepare_aub_1_20_fixture.py"
+        ],
+        "returncode": 0
+      }
+    ]
+  },
+  "actual_cleanup": [
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-money-R0008\\summary.json",
+        "bytes": 330,
+        "sha256": "55573fb0750dc4f7337dc37ffce3178ae7c0d4f8d3eb51f777901940ae3b9e5f"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T04:59:15.238700+00:00",
+        "deleted_files": 4188,
+        "deleted_logical_bytes": 183984751,
+        "failed": [],
+        "free_before": {
+          "C:/": 51301736448,
+          "D:/": 21666787328
+        },
+        "free_after": {
+          "C:/": 51301801984,
+          "D:/": 21860429824
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-superseded-published-setup-images-a01\\summary.json",
+        "bytes": 327,
+        "sha256": "f52567135757edbf597686a24c9e6a3f9373440fda0b5bf5d980d91fbdfb50c3"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T05:00:12.896611+00:00",
+        "deleted_files": 48,
+        "deleted_logical_bytes": 51435333,
+        "failed": [],
+        "free_before": {
+          "C:/": 51301662720,
+          "D:/": 21860241408
+        },
+        "free_after": {
+          "C:/": 51301662720,
+          "D:/": 21908504576
+        }
+      }
+    }
+  ],
+  "cleanup_scope": "Retired R8 rebuildable shader copy. Early-expired48 ordinary setup PNG alias paths (48,196,489 unique payload bytes) for previously published MRM/Ox/CHT, excluding every path referenced by current public maintenance records and active anchor qualifications. No unresolved stock popup/failure image selected. Actual world/UI/exit/acceptance evidence, all source/logs/inputs and current templates retained. Retired setup pixels are unavailable, no substitute images fabricated. Exact identity/SHA plans and actual receipts retained.",
+  "review_at_utc": "2026-12-19T05:00:12Z",
+  "runtime_fix_verified": false,
+  "product_published": false
+}

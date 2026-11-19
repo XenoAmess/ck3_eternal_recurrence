@@ -1,0 +1,155 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T04:58:47.391653+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0008",
+  "case": "money-domain-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "RED_FIXTURE_VISIBLE_DONE_MISSING_THEME",
+  "source_head": "4262df7a918a135099b71c83c2106ec331515bd5",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r8-gui-prepare\\prepared-case.json",
+    "bytes": 1588851,
+    "sha256": "97dcbe390e624ddb93fe59c281bc2b01a9f866f26674efaec3fe8ee20b98815a"
+  },
+  "facts": {
+    "actual_production_six_choices_and_default_selection": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-684872925b614c1fa9e219edac89bade\\profile\\logs\\debug.log",
+          "bytes": 501546,
+          "sha256": "96063aa4a97fa0c1ec65dbab734cb424ed716c38b098537c378e3055a8eeaffc"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-684872925b614c1fa9e219edac89bade\\profile\\logs\\error.log",
+          "bytes": 65,
+          "sha256": "c9109a1592a39ca92beb62ded37062a9020b98b9a98e142bccbf562f95093192"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0008\\game-exit.json",
+          "bytes": 253,
+          "sha256": "27377417460bf0e4137c899f6f476af4f352af46667a2d68f9c0b662e9d6397e"
+        }
+      ],
+      "scope": "Stopped before world start because visible fixture completion event lacks required theme; no matrix or runtime formatter-fix qualification."
+    },
+    "original_seventeen_money_domain_assertions_and_no_errors": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-684872925b614c1fa9e219edac89bade\\profile\\logs\\debug.log",
+          "bytes": 501546,
+          "sha256": "96063aa4a97fa0c1ec65dbab734cb424ed716c38b098537c378e3055a8eeaffc"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-684872925b614c1fa9e219edac89bade\\profile\\logs\\error.log",
+          "bytes": 65,
+          "sha256": "c9109a1592a39ca92beb62ded37062a9020b98b9a98e142bccbf562f95093192"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0008\\game-exit.json",
+          "bytes": 253,
+          "sha256": "27377417460bf0e4137c899f6f476af4f352af46667a2d68f9c0b662e9d6397e"
+        }
+      ],
+      "scope": "Stopped before world start because visible fixture completion event lacks required theme; no matrix or runtime formatter-fix qualification."
+    },
+    "actual_calendar_and_normal_exit": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-684872925b614c1fa9e219edac89bade\\profile\\logs\\debug.log",
+          "bytes": 501546,
+          "sha256": "96063aa4a97fa0c1ec65dbab734cb424ed716c38b098537c378e3055a8eeaffc"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-684872925b614c1fa9e219edac89bade\\profile\\logs\\error.log",
+          "bytes": 65,
+          "sha256": "c9109a1592a39ca92beb62ded37062a9020b98b9a98e142bccbf562f95093192"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0008\\game-exit.json",
+          "bytes": 253,
+          "sha256": "27377417460bf0e4137c899f6f476af4f352af46667a2d68f9c0b662e9d6397e"
+        }
+      ],
+      "scope": "Stopped before world start because visible fixture completion event lacks required theme; no matrix or runtime formatter-fix qualification."
+    }
+  },
+  "marker_counts": {
+    "AUBF: READY money_domain_actual_production_decision": 0,
+    "AUBT: TEST BEGIN source-live": 0,
+    "AUBF: READY money_domain_roger_head_cooldowns": 0,
+    "AUBF: READY money_domain_independent_treasury_government": 0,
+    "AUBT: TEST PASS native_decision_priority_continue_selection": 0,
+    "AUBT: TEST PASS domain_limit_normalized_zero": 0,
+    "AUBT: TEST PASS treasury_priority_one_tier": 0,
+    "AUBT: TEST PASS domain_limit_zero_builds": 0,
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect": 0,
+    "AUBT: TEST PASS domain_limit_recovery_resumes": 0,
+    "AUBT: TEST PASS over_limit_continue_builds": 0,
+    "AUBT: TEST PASS legacy_no_pause_flag_continues": 0,
+    "AUBT: TEST PASS disabled_zero_side_effect": 0,
+    "AUBT: TEST PASS personal_gold_fallback": 0,
+    "AUBT: TEST PASS reenabled_loop_stopped_cleanly": 0,
+    "AUBT: TEST PASS insufficient_funds_no_change": 0,
+    "AUBT: TEST PASS treasury_only_uses_treasury": 0,
+    "AUBT: TEST PASS treasury_only_no_personal_fallback": 0,
+    "AUBT: TEST PASS personal_only_uses_personal": 0,
+    "AUBT: TEST PASS personal_only_no_treasury_fallback": 0,
+    "AUBT: TEST PASS priority_no_split_payment": 0,
+    "AUBF: TEST DONE money_domain": 0
+  },
+  "all_original_assertions_passed": false,
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-684872925b614c1fa9e219edac89bade\\profile\\logs\\error.log",
+    "bytes": 65,
+    "sha256": "c9109a1592a39ca92beb62ded37062a9020b98b9a98e142bccbf562f95093192"
+  },
+  "error_text": "[12:55:39][E][event.cpp:383]: Theme missing in event 'aubt.800'\n",
+  "world_started": false,
+  "observed_natural_days": 0,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm06-main-return-view.png",
+      "bytes": 985301,
+      "sha256": "d75f13096d75f699ad764326f767fa5debefd98d24b968e940903d465dbd17b6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm06-main-exit.png.json",
+      "bytes": 1435,
+      "sha256": "82a0308e17623a62c7b7d9b70d8fcc747daad998cd7506ef535b4255740ed759"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0008\\game-exit.json",
+      "bytes": 253,
+      "sha256": "27377417460bf0e4137c899f6f476af4f352af46667a2d68f9c0b662e9d6397e"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0008\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "b02aa70e3a7b972d9988a1ee9d84c5e4e0fee3c4ff12af6117d4ccc0d4bb64b5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0008\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "a3cd2fa90a28b382703e87a996e506b1a6f6519a1ffa0965d5b9aa1b75d38e17"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r8-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "698c12b3fcc1e2a3a6baf99f6d5b64f7d8a3c2466fa494f8ff1756d5c57992e7"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "retention_review_at_utc": "2026-12-19T04:57:43Z"
+}

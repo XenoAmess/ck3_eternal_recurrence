@@ -56,3 +56,8 @@ R3闭场后按本机用途清理：4,184个可重建shader／183,734,611逻辑�
 下一候选在现行中文house_relation_latest_change_amount的#weak后仅补ASCII空格，保留getter、=+%^标志及全角括号；原版英文同位置已有空格。沿已有localization/replace路径，新增单键文件，345运行文件；这是来源明确的语法候选，尚未取得新场零错误或运行期归因。九语言费用说明同步指向1.21.0。发布构建器实际拒绝过期费用版本和被篡改空格／getter的覆盖；manifest改为入口校验后构造明确TypedDict，拒绝bool／浮点format_version及非法tag形状。37项回归通过，三完整改动文件严格mypy通过；本机原版全图核对、329生成脚本检查通过，更新后的manifest往返／坏类型回归和重复构建逐字节一致检查通过。测试中真实失败与修复见[软件记录](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-formatter-candidate-software.json)。
 
 夹具DONE改为已知专用可见事件，空选项，请求正常单人事件暂停；新场仍需读回实际画面／日期，不预称已暂停。17原条件不改，剩余19条建筑／配额／继承及生产禁用GUI继续为必验。Steam全程离线，未发布AUB。闭场shader按清单精确回收，展开审计／旧EXE／已闭prepare等逐字节校验后无损归档，全部删除零失败；27个重复PNG路径以相同字节硬链接保留，旧FileID不复用。当前原图／错误／CHT物理存档与唯一暖缓存继续保留；原路径可读性、归档及期限见[存储目录](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/storage-closed-gui-lossless-20261119.json)。
+
+
+资金R0008在加载阶段发现可见完成事件aubt.800缺theme（65B错误）；尚未启动世界、0/22标记、零日／SAVE。直接回主菜单正常退出，04:57:43Z原Popen0／keeper及CAS闭合，无WM_CLOSE；未继续用带启动错误的场景验收，不取得产品或格式修复资格。[R8失败](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-money-R0008-red-theme.json)。当前原版realm主题定义473–486及可见无portrait的global_culture.0005提供合法结构；仅补theme=realm。准备器在写出前拒绝无theme的可见角色事件，真实生产入口回归10项及完整严格mypy通过，原17条件不变；新场实际暂停与格式诊断仍待复测。
+
+本轮R8可重建shader精确回收4,188文件／183,984,751B；另提前到期回收已发布MRM／Ox／CHT的48条过渡EULA／隐私／加载／书签截图路径，独立载荷48,196,489B。排除了现行公共记录及活跃anchor直接引用，保留实际世界、业务UI、失败诊断、退出及发布证据；已退役过渡像素不可读取，不制作替代原件。两批零失败，精确计划／回执保留；[修复来源、软件检查与清理](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-visible-theme-fix-and-storage.json)。
