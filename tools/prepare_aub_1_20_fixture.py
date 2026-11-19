@@ -57,7 +57,8 @@ def _validate_florin_event_ids(source: Path) -> None:
 
 
 def _prepare_florin_scene(repo: Path, output: Path, *, fixture: str, contract: str,
-                          case_id: str, mode: str, entry: str, advance: str) -> Path:
+                          case_id: str, mode: str, entry: str, advance: str,
+                          rules: str = "1066 Robert of Apulia, historical character1128, original castle capital; vanilla rules.") -> Path:
     repo, output = checked_output(repo, output)
     if engine_identity(repo)["game_version"] != "1.21.0":
         raise ValueError("Florin scene requires exact CK3 1.21.0")
@@ -89,7 +90,7 @@ def _prepare_florin_scene(repo: Path, output: Path, *, fixture: str, contract: s
         "product": "mod_auto_upgrade_buildings", "mode": mode,
         "required_markers": markers,
         "entry": entry,
-        "rules": "1066 Robert of Apulia, historical character1128, original castle capital; vanilla rules.",
+        "rules": rules,
         "scope": scope, "full_product_pass_from_cell": False,
         "advance_policy": advance,
     }
@@ -110,7 +111,8 @@ def prepare_money(repo: Path, output: Path) -> Path:
         contract="aub_florin_money.json", case_id="money-domain-1210",
         mode="florin-original-money-domain-matrix",
         entry="Actual production enable UI with treasury-first/continue -> isolated fixture start decision -> aubt.900 (original aubt.0) -> original aubt.1..6 money/domain events",
-        advance="Keep paused for actual production selection and fixture start; then at most180natural days. Stop on failure, interruption, or exact DONE; no manual Save.")
+        advance="Keep paused for actual production selection and fixture start; then at most180natural days. Stop on failure, interruption, or exact DONE; no manual Save.",
+        rules="1066 Robert of Apulia, character1128, original castle capital; vanilla game rules. Disposable payer faith changed to hellenic_pagan before any day, with actual faith/no-head readback, solely to isolate unrelated same-faith religious-head notifications; original17 money predicates unchanged.")
 
 
 def prepare(repo: Path, output: Path) -> dict[str, object]:

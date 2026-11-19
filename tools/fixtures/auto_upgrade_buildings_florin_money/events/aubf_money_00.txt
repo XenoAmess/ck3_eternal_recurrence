@@ -29,6 +29,18 @@ aubt.900 = {
 		}
 		remove_character_flag = enable_auto_build
 		remove_global_variable = aub_auto_build_loop_started
+		# Test-only isolation: stock religious-head announcements target rulers
+		# of the issuer's faith. Change this disposable payer before any day runs.
+		set_character_faith = faith:hellenic_pagan
+		if = {
+			limit = {
+				faith = faith:hellenic_pagan
+				faith = { has_doctrine = doctrine_no_head }
+				NOT = { exists = faith.religious_head }
+			}
+			debug_log = "AUBF: READY money_domain_no_head_faith_isolation"
+		}
+		else = { debug_log = "AUBF: TEST FAIL money_domain_no_head_faith_isolation" }
 		change_government = celestial_government
 		set_variable = {
 			name = aubt_domain_adjust_guard
