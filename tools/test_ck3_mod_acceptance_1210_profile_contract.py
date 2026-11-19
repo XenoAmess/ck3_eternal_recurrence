@@ -326,5 +326,168 @@ class FlorinToastRuntimeCapabilityConsumer(unittest.TestCase):
         self.assertTrue(all(self.TOOL not in row["required_mcp_tools"] for row in cases if row["id"] != "spot"))
 
 
+class FlorinOpeningDisabledProfileConsumer(unittest.TestCase):
+    """Owned metadata exercises the existing guards; no Native execution credit."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v5"
+    OPENING_FLAG = "XAR_CK3_ENABLE_26757580_OPENING_READONLY56"
+    CLOSED_SOURCES = (
+        ("xar_ck3_12002_runtime", "src/ck3_1210_adapter.cpp"),
+        ("xar_ck3_12002_runtime", "src/ck3_1210_personal_gold_frame_v1.cpp"),
+        ("xar_ck3_bridge", "src/bridge.cpp"),
+    )
+    INACTIVE_SOURCES = (
+        "src/ck3_1210_opening_readonly56.cpp", "src/ck3_1210_opening_frame56.cpp",
+        "src/ck3_1210_opening_serialize56.cpp",
+    )
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.registry = builder.read(HERE / "ck3_mod_acceptance_native_profile_expansions.json")
+        cls.contract = builder.select_profile_expansion_contract(cls.registry, cls.CONTRACT_ID)
+        paths = {relative for section in ("production_source_lists", "fixture_sources", "fixture_included_bodies")
+                 for bodies in cls.contract[section].values() for relative in bodies}
+        cls.indexed = {relative: builder.pin(NATIVE / relative) for relative in paths}
+
+    def setUp(self) -> None:
+        FlorinProfileContractConsumer.setUp(self)
+
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+
+    def test_only_new_explicit_off_extends_actual_201_flag_baseline(self) -> None:
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v4")
+        effective = dict(prior["before_flags"])
+        effective.update({key: change["after"] for key, change in prior["flag_changes"].items()})
+        self.assertEqual(self.contract["before_flags"], effective)
+        self.assertEqual(len(effective), 201)
+        self.assertNotIn(self.OPENING_FLAG, effective)
+        self.assertEqual(self.contract["flag_changes"], {self.OPENING_FLAG: {"before": None, "after": "OFF"}})
+        after = dict(effective, **{self.OPENING_FLAG: "OFF"})
+        self.assertEqual(len(after), 202)
+        self.assertEqual(after["XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1"], "OFF")
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"],
+                         "ck3-12004-five-gate-native-profile-v1")
+
+    def test_off_scope_preserves_799_units_22_fixtures_and_real_source_pins(self) -> None:
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v4")
+        self.assertEqual(self.contract["production_TUs"], {
+            "xar_ck3_bridge": 268, "xar_ck3_12002_runtime": 530, "xar_bridge_protocol": 1})
+        for field in ("production_source_lists", "fixture_sources", "fixture_included_bodies"):
+            self.assertEqual(self.contract[field], prior[field])
+        self.assertEqual(len(self.fixtures), 22)
+        runtime = self.contract["production_source_lists"]["xar_ck3_12002_runtime"]
+        self.assertTrue(all(relative not in runtime for relative in self.INACTIVE_SOURCES))
+        for current, previous in zip(self.contract["fixture_contracts"], prior["fixture_contracts"], strict=True):
+            restored = copy.deepcopy(current)
+            suffix = restored["forbidden_defines"][-3:]
+            self.assertEqual(suffix, [self.OPENING_FLAG, self.OPENING_FLAG + "=0", self.OPENING_FLAG + "=1"])
+            del restored["forbidden_defines"][-3:]
+            self.assertEqual(restored, previous)
+        self.consume()
+
+    def test_hidden_opening_define_is_rejected_on_all_three_gate_sources(self) -> None:
+        for target, relative in self.CLOSED_SOURCES:
+            definitions = self.source_defines(target, relative)
+            for value in (self.OPENING_FLAG, self.OPENING_FLAG + "=0", self.OPENING_FLAG + "=1"):
+                with self.subTest(target=target, relative=relative, define=value):
+                    definitions.append({"define": value})
+                    try:
+                        with self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                            self.consume()
+                    finally:
+                        definitions.pop()
+
+    def test_opening_define_cannot_leak_into_old_or_toast_fixture(self) -> None:
+        for target in ("xar_ck3_1210_identity_test", "xar_ck3_1210_toast_query_test"):
+            relative = self.contract["fixture_sources"][target][0]
+            definitions = self.source_defines(target, relative)
+            for value in (self.OPENING_FLAG, self.OPENING_FLAG + "=0", self.OPENING_FLAG + "=1"):
+                with self.subTest(target=target, define=value):
+                    definitions.append({"define": value})
+                    try:
+                        with self.assertRaisesRegex(ValueError, "fixture compile definitions differ"):
+                            self.consume()
+                    finally:
+                        definitions.pop()
+
+    def test_off_profile_cannot_add_opening_runtime_body(self) -> None:
+        relative = self.INACTIVE_SOURCES[0]
+        self.indexed = dict(self.indexed)
+        self.indexed[relative] = builder.pin(NATIVE / relative)
+        self.targets["xar_ck3_12002_runtime"]["sources"].append({"path": relative, "compileGroupIndex": 0})
+        with self.assertRaisesRegex(ValueError, "production TU counts differ"):
+            self.consume()
+
+    def consume_profile_receipt(self, *, old_flags: dict[str, str] | None = None,
+                                actual_flags: dict[str, str] | None = None) -> dict:
+        # The only mock is Git's immutable registry read. Every pin below is a
+        # real owned JSON file; these are not CMake/build/qualification receipts.
+        import json
+        import tempfile
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        machine, commit = "software-profile-fixture", "a" * 40
+        previous = {"schema": "ck3-native-profile-v1", "machine_id": machine,
+                    "repository_default_flags_changed": False,
+                    "flags": dict(self.contract["before_flags"])}
+        old_profile = copy.deepcopy(previous)
+        if old_flags is not None:
+            old_profile["flags"] = old_flags
+        profile = copy.deepcopy(previous)
+        profile["flags"] = dict(self.contract["before_flags"], **{self.OPENING_FLAG: "OFF"})
+        if actual_flags is not None:
+            profile["flags"] = actual_flags
+        registry_path = HERE / "ck3_mod_acceptance_native_profile_expansions.json"
+        registry_bytes = registry_path.read_bytes()
+        with tempfile.TemporaryDirectory(prefix="florin-profile-v5-") as folder:
+            base = Path(folder)
+
+            def owned(name: str, value: object) -> dict:
+                path = base / name
+                path.write_text(json.dumps(value, sort_keys=True), encoding="utf-8")
+                return builder.pin(path)
+
+            refs = {"profile": owned("profile.json", profile)}
+            for name in ("snapshot", "configured_scope", "production_freeze"):
+                refs[name] = owned(name + ".json", {"software_fixture": name})
+            actual = {"schema": "ck3-native-profile-expansion-v1", "machine_id": machine,
+                      "source_commit": commit, "actual_live_business_qualified": False,
+                      "contract": builder.pin(registry_path), "contract_id": self.CONTRACT_ID,
+                      "previous_profile": owned("previous-profile.json", previous),
+                      "fixture_results": [], **refs}
+            value = {"source_commit": commit, "fixture_results": [],
+                     "profile_expansion": owned("expansion.json", actual)}
+            with patch.object(builder.subprocess, "run", return_value=SimpleNamespace(stdout=registry_bytes)) as git_read:
+                result = builder.profile_expansion_contract(value, refs, ROOT, commit, machine, old_profile, profile,
+                                                            require_current_contract_pin=True)
+                git_read.assert_called_once_with(
+                    ["git", "-c", "core.longpaths=true", "show", commit + ":" + builder.PROFILE_EXPANSION_RELATIVE],
+                    cwd=ROOT, capture_output=True, check=True)
+            return result
+
+    def test_existing_receipt_guard_accepts_only_the_exact_201_to_202_delta(self) -> None:
+        self.assertEqual(self.consume_profile_receipt()["contract"]["contract_id"], self.CONTRACT_ID)
+        expected = dict(self.contract["before_flags"], **{self.OPENING_FLAG: "OFF"})
+        for mode in ("on", "missing", "unrelated"):
+            changed = dict(expected)
+            if mode == "on":
+                changed[self.OPENING_FLAG] = "ON"
+            elif mode == "missing":
+                del changed[self.OPENING_FLAG]
+            else:
+                changed["XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1"] = "ON"
+            with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                self.consume_profile_receipt(actual_flags=changed)
+
+    def test_historical_180_flag_profile_cannot_replace_selected_201_baseline(self) -> None:
+        historical = builder.select_profile_expansion_contract(
+            self.registry, "ck3-1210-financial-markets-native-profile-v4")["before_flags"]
+        self.assertEqual(len(historical), 180)
+        with self.assertRaisesRegex(ValueError, "prior profile differs"):
+            self.consume_profile_receipt(old_flags=copy.deepcopy(historical))
+
+
 if __name__ == "__main__":
     unittest.main()

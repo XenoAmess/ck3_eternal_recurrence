@@ -4,6 +4,8 @@
 
 ## 当前状态（R0021 已正常关场，继续业务验收）
 
+后继[官方CI44485708247](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44485708247)已实际成功：共享17项、金融370项，40份原JUnit共387个不同方法全部通过，0失败／错误／跳过，下载产物与GitHub上传摘要精确相等。远端同步新增另一EXE专用的原生代码；本机v5只新增一个明确关闭的Opening56开关，BB3能力仍关闭，799生产TU及22有限目标不变，7项开关和宏闭包检查实际通过。保留Q22原件，随后按实际依赖进行Q23增编，尚不授新实机信用。[本轮CI与配置证据](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-native-v5-and-ci.json)。
+
 本轮官方CI44484396907保留失败：370项中1项路径错误；测试对默认含`..`的`xfm.source`直接取父目录，本地显式shared路径掩盖了问题。仅规范化测试目录后，原失败方法在无shared覆盖的默认Maven参数下实际通过1项；完整CI随正常推送重跑，生产源码、Mod包及既有完整370项原件不改写。[原CI与窄修复](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-evolution-ci-path.json)。
 
 气泡及公告关联的软件链已完成本轮验证：共享存档模块17项、完整金融模块370项，均0失败／错误／跳过。原生Q22实际增编33个C++编译单元并链接14项，22个有限目标中9个新执行、13个沿精确依赖证据复用；实际C++输出经SDK的12项检查通过，公共气泡能力接线6项通过。首次共享测试17项有1项失败，明确区分旧命名路径与精确Story工厂后全模块通过；首次公告定向30项有1项报错，修复Java与真实SDK的大写EXE哈希合同，并让测试实际消费SDK normalizer输出后，原失败项和CI软件输入分支分别通过，再完成完整验证。旧失败与全部原件保留。当前仍未装载本轮215文件版本，也未取得本轮实际气泡、撤单、保证金或减仓验收；正常实机继续，不能据软件结果称完整Mod已完成。[本轮软件及原件证据](../../docs/maintenance/evidence/2026-11-19-financial-markets-machine4-toast-software.json)。

@@ -1,0 +1,1131 @@
+{
+  "schema": "xfm-native-v5-software-and-official-ci-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-19T08:21:27.807996+00:00",
+  "actual_source_pins": {
+    "tools/ck3_mod_acceptance_native_profile_expansions.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 1142550,
+      "sha256": "4c6f5ab16de9e4a11799fa9f61aab334c369a55835df2364b788644d58e44f2a"
+    },
+    "tools/test_ck3_mod_acceptance_1210_profile_contract.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 28464,
+      "sha256": "0932949c82fa6ae424459115dbc89ad788b305ec7ba9632466ae915dff95f1be"
+    }
+  },
+  "candidate": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-q23-profile-v5-candidate01\\candidate-source-manifest.json",
+    "bytes": 5439,
+    "sha256": "216852a94805806732241d5a20b95c09b8c158ba95ee61050bf92dcd69c172ca"
+  },
+  "review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-q23-profile-v5-independent-review01\\REVIEW.actual.json",
+    "bytes": 8488,
+    "sha256": "3575d3d4aa14b01ca5417d5a67c388582dd54a029f73447332f78805c3297956"
+  },
+  "actual_seven_profile_tests": {
+    "original": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v5-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1018,
+      "sha256": "b76dd7babcd8d2d62bdc7883dad597212dcdaca19bdd094eab6d85a6e0a1d1ea"
+    },
+    "value": {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-19T08:18:47.703738+00:00",
+      "finished_at_utc": "2026-11-19T08:19:45.764717+00:00",
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_1210_profile_contract.py",
+        "FlorinOpeningDisabledProfileConsumer",
+        "-v"
+      ],
+      "pid": 23244,
+      "birth_filetime": "134395499277049387",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 58.061000500107184,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v5-01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v5-01\\stderr.log",
+        "bytes": 1372,
+        "sha256": "44b8e8fa410d751407f333c0bd1999050f8009ae4c1cbe0fd4607a9b84fddef7"
+      }
+    }
+  },
+  "official_CI": {
+    "source_commit": "bc8188c647b4e15abc5df0e0f87b352d762be15e",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44485708247",
+    "result": "success",
+    "original_run": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\run.original.json",
+      "bytes": 3531,
+      "sha256": "79357eb98a13b982c094436aad39918742709347ecfa2c1b1fed12b778afb714"
+    },
+    "original_full_log": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\CI-44485708247-full.original.log",
+      "bytes": 209799,
+      "sha256": "580289773e7ab17ccc1791a5348e3e6eb88f47d8b0f2f8fa85fabbc16afe0871"
+    },
+    "artifact": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\software-tests.artifact.original.zip",
+      "bytes": 203693,
+      "sha256": "330c058f379201e8f114e816f56f9b550f8ff43b23d1a508a5ecbda237453e98"
+    },
+    "artifact_api_digest_matches": true,
+    "totals": {
+      "shared": {
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "financial": {
+        "tests": 370,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "actual_original_reports": [
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\java\\ck3-save-core\\target\\surefire-reports\\TEST-org.xar.ck3.save.ExactStoryProjectionTest.xml",
+          "bytes": 11481,
+          "sha256": "f90f855667a98c44bb10834d133d76d94b7055d40f79a384d53333948d013d63"
+        },
+        "group": "shared",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.save.ExactStoryProjectionTest#exactStoryPathUsesActualStreamingCaptureAndMetadata",
+          "org.xar.ck3.save.ExactStoryProjectionTest#zeroAndLastValidUint32AreExactWithoutBroadNumericPaths",
+          "org.xar.ck3.save.ExactStoryProjectionTest#sharedStrictJsonRejectsNonTextNumericPathComponents",
+          "org.xar.ck3.save.ExactStoryProjectionTest#oldTableCensusAndNamedProjectionDomainsStayStrict",
+          "org.xar.ck3.save.ExactStoryProjectionTest#duplicateMissingMalformedAndOversizeSelectedRecordRemainErrors"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\java\\ck3-save-core\\target\\surefire-reports\\TEST-org.xar.ck3.save.SaveCoreTest.xml",
+          "bytes": 12583,
+          "sha256": "6286a613a30ad917172d57f62b5744709c9bbf276258c9d9ea9d1277a673702f"
+        },
+        "group": "shared",
+        "counts": {
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.save.SaveCoreTest#untypedCaptureRetainsExistingPerRecordAndTotalStreamBounds",
+          "org.xar.ck3.save.SaveCoreTest#optionalUntypedCallbackKeepsStrictDefaultAndDropsTypedUnselectedPrefixEarly",
+          "org.xar.ck3.save.SaveCoreTest#explicitCensusRootsExcludeThousandsOfUnrelatedNamedKeysButStillValidateTheirSyntax",
+          "org.xar.ck3.save.SaveCoreTest#oneDecodeSelectsEightRelativesThreeVassalsAndExplicitDynastyHouseCoa",
+          "org.xar.ck3.save.SaveCoreTest#canonicalV2RecordTokensQuotedLexemesAndDuplicateKeysAreStable",
+          "org.xar.ck3.save.SaveCoreTest#malformedDuplicateMissingAndBoundedProjectionsFailClosed",
+          "org.xar.ck3.save.SaveCoreTest#decoderOriginalFailuresAndTerminationAreNotSuccessfulEvidence",
+          "org.xar.ck3.save.SaveCoreTest#unknownLayoutsMissingTablesAndMissingRecordsRemainDistinct",
+          "org.xar.ck3.save.SaveCoreTest#realIndependentCliProducerToStrictConsumerAndNoOverwrite",
+          "org.xar.ck3.save.SaveCoreTest#censusRootContractRejectsMissingWrongEmptyDuplicateAndDisabledNonemptyRoots",
+          "org.xar.ck3.save.SaveCoreTest#requestTypesUnknownMissingAndDuplicateFieldsRejectBeforeDecode",
+          "org.xar.ck3.save.SaveCoreTest#loadedArtifactRejectsChangedOrMissingEmbeddedSourceClosure"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.AcceptanceFixtureTest.xml",
+          "bytes": 22899,
+          "sha256": "5a45a32deb640adb3b32dabe4c64d14d8d3784b6f4cf35f24c66a382b6e92bbc"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#emittedManifestUsesTheExistingClosedPublicPrebuiltContract",
+          "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#requestRejectsWrongJsonTypesDuplicateFieldsAndScriptInjection",
+          "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#actualJavaEmissionReachesSharedSavedInventoryAndHostCopyConsumer",
+          "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#observerCannotWriteMoneyPositionsOrCallAProductionEffect",
+          "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#savedObserverCanOnlyBeArmedThroughItsOrdinaryGui",
+          "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#outputInsideRepositoryAndInvalidMachineAreRejectedBeforeWriting",
+          "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#stalePackagedProducerIsRejectedBeforeCreatingFixture",
+          "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#repeatedEmissionRefusesBeforeChangingExistingEvidence"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest.xml",
+          "bytes": 22891,
+          "sha256": "24e12c28c45f0d50c9f8e80459ec553506db3ed9f571501021c29ef57970cd6d"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#generatedPredicatesAcceptConservedClaimsAndRejectEitherSideOffByOneCent",
+          "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#generatedComparisonMatchesOriginalConservationLawAcrossAuthoredBoundarySamples",
+          "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#actualEmitterIncludesNewPureValueFileAndBothReachExistingSavedAndHostCopyConsumers",
+          "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#namedSumsKeepDebtScopeOriginalOperandsAndBothComparisonDirections",
+          "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#everyProfileEmitsNoNumericEqualityToArithmeticBlockAndDeclaredProfilesGainValues",
+          "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#savedScopeLiteralsStayDistinctAndCannotHideForbiddenArithmeticEquality",
+          "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#originalFieldPresenceSourcePartiesAndNonnegativeGuardsRemainRequired"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.FollowupFixtureTest.xml",
+          "bytes": 25066,
+          "sha256": "203dd6addc18d62f61d5146f023f0583dc0274a0eb61be832a24a4d12e8dbc55"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 20,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#emittedAssociationPredicateRejectsCrossAssetCrossContractAndUnrelatedClaimFixtures",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotPartialCancelRequiresActualNewPartialTerminalOrderAndRejectsWrongSchemaTargets",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#malformedSchemaTwoInputsRejectBeforeAnyEmissionOrScriptSubstitution",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#epochsSeparateSavedObservationStateAndInheritanceUsesOnlyActualPrimaryHeir",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotRejectsHistoricalWrongAccountAndWrongCoinOrdersAfterNewEpoch",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#actualEmittedArmValidityRejectsInheritedStoryAndCarriedArmedFlag",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#capacityRetainsWholeWindowAndMissingSamplesCannotGrantWindowMarker",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#eachFollowupEmissionReachesCurrentSharedSavedInventoryAndHostCopyConsumer",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#savedCoreCompletionAndForeignCaseStateNeitherResetCurrentBaselineNorSupplyReadiness",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotEpochThreeEmissionRetainsEpochTwoThroughExistingSavedInventoryConsumer",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#actualEmittedNumericScopePredicatesDisagreeForTheSameRealPositiveIdAndDoNotWrite",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#configuredConservativeBoundaryIsReachableAndStandardRemainsDistinct",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotNumericScopeProbeUsesTheRealSixteenRowHistoryPageAndOnlyReadOnlyValidity",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotEpochThreeArmKeepsOlderStateAndNeverResetsItsCurrentBaseline",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#generatedStoryCatalogKeepsCoreKnownSpotEpochThreeAndOtherEpochOneTwoTypesWithOnlyCurrentCaseActive",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#allFollowupProfilesRoundTripThroughActualEmitterAndExistingManifestContract",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#everyGeneratedMutationIsObservationOnlyAndEveryArtifactHasBomAndBalancedSyntax",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#coldBaselineChecksZeroValuedFieldsAndFullWatchedPositionAndDebtWithoutWritingThem",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#derivativesCanBindRealModelIndexesWithoutInventingCoinOrOracleState",
+          "org.xar.ck3.markets.acceptance.FollowupFixtureTest#schemaOneRemainsClosedAndCoreMarkersAreUnchanged"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest.xml",
+          "bytes": 23867,
+          "sha256": "ccd07070f475335aaaad5e0bf0c34da08c046b972836ae85e9b2035b340b19fa"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#readableContractDatesDoNotInventReadablePositionsOrMissingContractStatus",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#subscriptionInspectionHasAHardHundredRecordBodyBoundAndReportsTruncation",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#unrelatedOrSystemAccountAndPerpetualTargetCannotBeArmedAsADatedPrivateBaseline",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#baselineAndRepeatedSameDayReadsDoNotInventCoinsFeesOrDailySamples",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#skippedFinancialDayOrAllocationFailureNeverCompletesAnObservationWindow",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#publicRegistryAddsOnlyTheNewCaseAndKeepsExistingFiniteWindowsAndStrictClaims",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#newObservationProfileNeedsNoDebtAndNeverRelaxesLifecycleOrCapacity",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#finiteCoinCapacityIsRecheckedInsideTheIteratorAndTruncationIsExplicit",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#newLandlessAiIssueAndRealListedStateUsePermanentIdentityAndFirstObservedRank",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#expiryDateReachedIsDistinctFromPendingOrActualTerminalReadback",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#refundWitnessNeedsActualOriginalReservationStateAndMissingAmountsStayUnavailable",
+          "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest#exactlyThirtyFiveConsecutiveDaysCompleteObservationWithoutRequiringRandomFeatures"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+          "bytes": 22779,
+          "sha256": "58af6eda6e26279f85862eada3343e56e5c4985fdb01682547171ddca609bdde"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.build.BuildContractTest#rejectsMissingBomUndefinedEffectAndUnlistedRuntime",
+          "org.xar.ck3.markets.build.BuildContractTest#candidateCopiesOnlyRuntimeAndPinsActualBytes",
+          "org.xar.ck3.markets.build.BuildContractTest#rejectsBrokenStructureLocalizationAndUnsafeManifest",
+          "org.xar.ck3.markets.build.BuildContractTest#rejectsMissingTriggersWithoutTreatingCommentsOrQuotesAsCalls",
+          "org.xar.ck3.markets.build.BuildContractTest#actualProductHasConsistentSourceContract",
+          "org.xar.ck3.markets.build.BuildContractTest#rejectsOverlappingOutputAndMalformedRevisionBeforeCreatingOutput",
+          "org.xar.ck3.markets.build.BuildContractTest#rejectsObservedArithmeticEqualityAndNegativeGoldLoadErrors",
+          "org.xar.ck3.markets.build.BuildContractTest#requiresRealScriptedGuiAndRegisteredCustomWindow"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.core.FinancialMarketTest.xml",
+          "bytes": 25435,
+          "sha256": "6490b3e35079f2e3acee2d134edb4400bd55d2f8d95c85e3c04912c2e40136ad"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 26,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.core.FinancialMarketTest#snapshotsDoNotExposeMutableEngineState",
+          "org.xar.ck3.markets.core.FinancialMarketTest#sameBeneficiarySelfTradeRollsBackEvenEarlierExternalFillsInTheCommand",
+          "org.xar.ck3.markets.core.FinancialMarketTest#deterministicRandomCommandsPreserveCashCoinsAndFailureAtomicity",
+          "org.xar.ck3.markets.core.FinancialMarketTest#feeHistorySurvivesIncomingOrderBecomingResting",
+          "org.xar.ck3.markets.core.FinancialMarketTest#issuanceRequiresTheRealUnreservedFeeAndDoesNotLeaveAnEmptyCoin",
+          "org.xar.ck3.markets.core.FinancialMarketTest#nonCrossingOrdersByOneBeneficiaryRemainPermitted",
+          "org.xar.ck3.markets.core.FinancialMarketTest#priceImprovementReleasesOnlyExcessAndCancelReturnsUnspentReservation",
+          "org.xar.ck3.markets.core.FinancialMarketTest#onlyOwnerCanCancelAndTerminalCancellationCannotReturnCashAgain",
+          "org.xar.ck3.markets.core.FinancialMarketTest#issuanceAndCappedMintTransferActualFeesWithoutImportingCash",
+          "org.xar.ck3.markets.core.FinancialMarketTest#duplicateStableIdentifiersAndUnauthorizedMintFailAtomically",
+          "org.xar.ck3.markets.core.FinancialMarketTest#buyerCannotReservePrincipalWithoutItsFeeOrReuseAlreadyFrozenCash",
+          "org.xar.ck3.markets.core.FinancialMarketTest#invalidAndOverflowingOrdersLeaveAllStateAndSequencesUnchanged",
+          "org.xar.ck3.markets.core.FinancialMarketTest#equalPriceAsksUseOriginalOrderSequence",
+          "org.xar.ck3.markets.core.FinancialMarketTest#restingAsksHavePriceThenTimePriorityAndTradeAtMakerPrice",
+          "org.xar.ck3.markets.core.FinancialMarketTest#cancelUnfilledOrdersReturnsAllCashAndCoinsWithoutTradingFees",
+          "org.xar.ck3.markets.core.FinancialMarketTest#restingBidsUseHighestPriceThenTimePriority",
+          "org.xar.ck3.markets.core.FinancialMarketTest#nakedSellingAndReusingFrozenCoinsAreRejected",
+          "org.xar.ck3.markets.core.FinancialMarketTest#sellerPartialFeesAccumulatePerOriginalOrder",
+          "org.xar.ck3.markets.core.FinancialMarketTest#ordersOnDifferentCoinsStillShareOneRealWalletReservation",
+          "org.xar.ck3.markets.core.FinancialMarketTest#overflowingWalletImportCannotChangeTheWorldCashTotal",
+          "org.xar.ck3.markets.core.FinancialMarketTest#cancellingPartiallyFilledSellerReturnsOnlyItsUnfilledCoins",
+          "org.xar.ck3.markets.core.FinancialMarketTest#sameDayAllowsSeveralTradesWhileRepeatedDayAdvanceDoesNothing",
+          "org.xar.ck3.markets.core.FinancialMarketTest#coinMarketsAndTheirFrozenInventoriesDoNotCross",
+          "org.xar.ck3.markets.core.FinancialMarketTest#buyOrderFreezesPrincipalAndWorstCaseCumulativeFee",
+          "org.xar.ck3.markets.core.FinancialMarketTest#buyerPartialFeesAccumulatePerOriginalOrderInsteadOfPerFill",
+          "org.xar.ck3.markets.core.FinancialMarketTest#feesUseCumulativeCeilingAndDoNotOverflowForLargeGrossAmounts"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.core.LedgerBatchTest.xml",
+          "bytes": 22298,
+          "sha256": "f57b01c5adedd62fa6eeb1ea097c017f55974e8ab3a15cb8496a70453388a849"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.core.LedgerBatchTest#failedCoinDeliveryRollsBackCashIssuanceAndFee",
+          "org.xar.ck3.markets.core.LedgerBatchTest#conflictingIdCannotChangeAnAppliedBatch",
+          "org.xar.ck3.markets.core.LedgerBatchTest#emptyEscrowAtomicMovesFeesAndReplayConserve",
+          "org.xar.ck3.markets.core.LedgerBatchTest#finiteIssuanceCoinDeliveryCashAndFeeCommitTogether",
+          "org.xar.ck3.markets.core.LedgerBatchTest#failedLatePaymentRollsBackEscrowAndEarlierTransfer"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.debt.CrisisPolicyTest.xml",
+          "bytes": 22077,
+          "sha256": "acdd5af4a379b9bde411d37dace42edb1c071cfb98e09fbc7df30f29dc2e1d8e"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.debt.CrisisPolicyTest#paidDebtAidHiddenAssetsAndIncompleteReviewCancelTerminalEligibility",
+          "org.xar.ck3.markets.debt.CrisisPolicyTest#humansChildrenDeadAndInheritedEstateHoldersAreProtected",
+          "org.xar.ck3.markets.debt.CrisisPolicyTest#adultAiMustHaveRealSevereDebtMatureCrisisAndRecordedHelp"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.debt.DebtLedgerTest.xml",
+          "bytes": 23495,
+          "sha256": "1d29a21a46467636109cad9987a8e4cff2583ed66e8d33d20be060f065e86c12"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.debt.DebtLedgerTest#emptyFundDoesNotCreateMoneyAndTwoPreparedClaimsCannotOverdrawFund",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#largeGapRemainsWholeDebtWhileSingleFundPaymentIsBounded",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#finiteFundCreatesRecourseAndOnlyUnpaidRemainderIsWinnerClaim",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#invalidFinancialInputsAndDuplicateSaveRecordsAreRejected",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#fundingClaimsRemainRealButCannotDrainDefaultFund",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#operationIdentityCannotBeReservedForTwoClaims",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#insufficientPayerMoneyAndUnconsentedWriteDownNeverChangeClaims",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#monetaryClaimAndOperationIdentitySurviveJsonRoundTrip",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#snapshotsMustReconcileActualPaymentHistoryRatherThanOnlyCurrentTotals",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#uncommittedCashPlansCannotBeSavedOrWrittenDown",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#realAidPaysWinnerBeforeFundAndUnusedDonationRemainsWithPayer",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#inheritanceKeepsStableDebtorAccountAndSnapshotKeepsRetryProtection",
+          "org.xar.ck3.markets.debt.DebtLedgerTest#exactRetryPaysNothingAndConflictingIdentityFails"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.debt.WorldNewsJournalTest.xml",
+          "bytes": 22510,
+          "sha256": "458726579d82d5a1a9f19631f9583c300a162b6d9f98fbc277999ed89f40f93f"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.debt.WorldNewsJournalTest#malformedJournalAndReverseDayAreRejected",
+          "org.xar.ck3.markets.debt.WorldNewsJournalTest#remoteFactsReachEveryHumanIndependentlyAtMostThreePerDay",
+          "org.xar.ck3.markets.debt.WorldNewsJournalTest#sameFactDoesNotDuplicateAndConflictCannotReplaceHistory",
+          "org.xar.ck3.markets.debt.WorldNewsJournalTest#deathsTakePriorityOverOrdinaryBacklogWithoutLosingOrRepeatingFacts",
+          "org.xar.ck3.markets.debt.WorldNewsJournalTest#journalAndIndependentQueueCursorsSurviveJsonRoundTrip",
+          "org.xar.ck3.markets.debt.WorldNewsJournalTest#saveLoadPreservesDailyCapAndPendingNotifications"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesAiScriptContractTest.xml",
+          "bytes": 25115,
+          "sha256": "bcdaab9b242ebe250d0fdf1cda6965e2b578b654f884ca0f520207e60c141920"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 21,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#aiFindsFundedDatedCounterpartyAndSameDayRetryCannotSpendAgain",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#onlyTheRealGapIsDepositedAndReservedMoneyIsExcluded",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#explicitExistingContractRegistersWithoutChangingIdentityAndFailedSelectionClearsStaleTicket",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#mixedLegacyAndNewModelUnitsDoNotRewriteOldPortfolioOrCash",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#inheritedActiveAndProjectFundsCannotFinanceAiRisk",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#sizingNeverBorrowsFrozenProjectReservedOrInheritedMoney",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#discoveryCyclesOnlyValidSameAssetContractsWithFixedEightEntryBound",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#goldFundsANewZeroPrivateWalletAndAnActualReservation",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#publishedSmallFaceFeedsActualAiReservationAndUnchangedMarginVariationValues",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#exactMultiLotBudgetBoundaryIncludesBothRoundingsAtOneThreeAndFiveTimes",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#exactFivePercentBoundaryIncludesRoundedFeeAndFiveGoldReserve",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#newModelFirstAndRepeatedDailyQuotesUseSmallFaceAndPendingRetainsLastMark",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#invalidPrimaryAssetsNeverCountAsPersonalLiquidity",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#orderOrReservationCreationFailureDoesNotDepositOrLeaveAnOpenOrder",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#legacyEmptyLiveSeriesMigrationPreservesIdentityWithoutDailyObligation",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#disabledDebtPendingAndRelatedCrossesRejectBeforeFunding",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#richAiQuantityIsCappedAtSixteenWithNoNewActionOrPopulationVisit",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#normalGuiAndAiShareTheSameSeriesAndGuiRejectsClosedOrForeignEntries",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#playersKeepTheirExplicitActiveWalletAndDoNotAutoDeposit",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#fixedExpirySharesAcrossDaysAndRollsWithoutRewritingOldIdentity",
+          "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#boundedSizingKeepsOneLotAndReturnsZeroBelowItsRealRoundedCost"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest.xml",
+          "bytes": 27700,
+          "sha256": "9c592e2741b62e3e53cdcf0211774638c937a26ab00add51ec6b1de6d67b63e0"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 34,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullSubmitterCapacityStillPermitsFillsButReturnsOnlyUnplaceableRemainder",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#absentOrUnqualifiedAssetNeverEnablesLeverageOrOpeningSides",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#normalUiReferencesRefreshHooksAndInventoryCloseWithoutAnyDailyHistoryHook",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#publicNewsRowIdsAreBoundToThisCursorAndRejectDuplicateMissingAndWrongTypes",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#twoSameAssetSeriesHaveDifferentRealBooksAndExecutionSnapshots",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#normalPortfolioPagingCachesOnlySixteenRealReferencesAndSpotRowsUseCoinIds",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#partialMakerFreesNoSlotButFullyFilledTakerNeverNeedsAnotherRestingSlot",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#actualMakerFollowsPoliticalControllerAndCannotFillItsNewControllersOwnOrder",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#readOnlyBookUsesOtherPeoplesCurrentContractIdsAndRejectsStaleOrDuplicateIds",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#numericSpotCancelRebindsTheRealPartialOrderAndReleasesOnlyItsSevenLots",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullSpotBookAcceptsRealOppositeGtcAndRestsOnlyAfterSixtyFourFifoFills",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#otcBuyerAccountIdRebindsOnlyThisCoinsCurrentLegalPrimaryHolderPage",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#leverageCycleUsesSelectedAssetCapsOneThreeTenAndFutureTwenty",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#normalAidButtonAndPagingSelectOnlyThisNewsActorsOutstandingDebts",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fourLotShortPositionElevenCanBeSelectedThenSubmitTwoLotCloseAtThisGuiPrice",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#missingZeroForeignStaleDuplicateAndWrongPageIdsCannotWriteSelectionOrCancel",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#onlyFundedRemainingPartialOrdersSurviveBlockedCancelledWrongSeriesAndSelf",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#normalSpotButtonsReadTheSameCapacityCrossingAndLegalActiveAccountWithoutMutating",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullAskBookPriceImprovementKeepsExactCumulativeFeeAndOnlyRemainingCashFrozen",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#staleOracleClosedMarketAndExpiredSeriesNeverSubstituteSpotOrMarkForExecution",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#exactPriceFifoTopFiveHasBoundedRowsAndFullEligibleDepth",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#failedAccountFactoryCannotFreezeOrImportAnotherBeneficiarysLegacyAssetsAndRetryIsIdempotent",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#crossingAtFullCapacityStillRequiresWholeCashFeeOrUnreservedCoinsBeforeZeroFills",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullMixedBookSkipsOwnBetterBidAndKeepsRealPriceThenFifoPriority",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#naturalSpotAndFuturesOrderIdCollisionHasSeparateKindsAndRealCancellationEffects",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#actualControllerRefreshExcludesNewlyOwnedProjectAndRestoresExternalOwner",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#makerCashWithdrawalUsesThirtyTwoRealBoundedTransfersThenTheActualDailyPendingBranchExactlyOnce",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullBookWithoutIndependentCrossingCannotAlterFundsOrEvictAMaker",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#modelLeverageCyclesOnlyThroughItsActualMaximum",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#debtPagesAreSixteenAndMissingDuplicateOrForeignAccountIdsNeverMutateSelection",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#changedAssetCapImmediatelyDisablesBothSidesAndCycleRepairsOldTicket",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#inheritedHolderCanSelectThenReduceAtThisGuiLimitWithoutAnyOpeningOrSpotCopy",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#typedDebtAndClaimIdsSelectOnlyTheCurrentLegalAccountPageAndNeverPay",
+          "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#iocStillCancelsOnlyItsRemainderAndHardStoryLimitCannotBeBypassedByCrossing"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest.xml",
+          "bytes": 23290,
+          "sha256": "9f29c0e0c59264a1d4468eef586225aab2dc362d6476e22f7fc715bef72f6f84"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#legacyTailObligationsAreMigratedBeforeAnyDailyAndHistoryIsNeverRescanned",
+          "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#staleExpiredDefaultedPendingAndFreshPositionKeepTheirSeparateObligations",
+          "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#sameDayRepeatAndAuthoredGraphReloadKeepIdentityAndDoNoSecondBusinessTick",
+          "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#callbackAdmissionAndCurrentReAdmissionCannotEnlargeCapturedPass",
+          "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#interruptedProcessingFlagSurvivesGraphReloadAndResumesRatherThanSwallowingHead",
+          "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#partlySeededLegacyIndexRetriesWithoutResettingLinksOrLosingTail",
+          "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#sourceCompositionHasOneMigrationScanNoPermanentDeletionAndAtMostTwentyDirectEffects",
+          "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#finishedOrdersAndClosedClaimsLeaveRingButPermanentDebtAndIdentityRemain",
+          "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#successfulOrdinaryMatchHookEnrollsTypedContractWithoutSettling"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesExchangeTest.xml",
+          "bytes": 23859,
+          "sha256": "49c39abf904cf93af85c3b732ffdce67fd4ad41bdd5b90a0f42fe54217dcf746"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#actualOpposingCashCreatesPositionAndOnlyFeesLeaveWallets",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#pendingOraclePreservesPositionsAndCollateralAndDefersExpiry",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#fundingDefaultClosesAndReleasesOtherCollateralWithoutFundInsurance",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#stopGapUsesAvailableBidAndCannotInventStopPriceLiquidity",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#cappedPerpetualFundingTransfersActualMarginOnce",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#genuineReductionNovatesPartialExposureAtActualPrice",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#laterRelatedCrossingRollsBackEarlierExternalFill",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#gapDefaultRetainsWinnerClaimAndFundRecourseWithoutMinting",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#withdrawalsKeepInitialRatherThanMaintenanceMargin",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#oracleGapCancelsOldOpeningPriceBeforeItCanOverrunNewCounterpartyMargin",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#priceTimeAndPartialFillsReserveActualCash",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#insufficientCashDoesNotPublishEscrowOrOrder",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#qualificationControlsTwentyTimesAndModelIndexNeedsNoCoinSupply",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#cancellationRefundsOnlyUnspentRealReservation",
+          "org.xar.ck3.markets.futures.FuturesExchangeTest#dailyRealizedVariationThenExpiryDoesNotPayEntryProfitTwice"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest.xml",
+          "bytes": 23401,
+          "sha256": "5cbd6e34385a6bac394098d716cfc26580df252d2861966443c67617bb768e59"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#firstUnmatchedOrderRestsAndEnrolsOnlyAfterTheTransientEntryFinishes",
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#originalThirtyTwoFillAndPositionCapsRemainBindingAfterFullBookAdmission",
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#fullAccountSettlesFillsButCancelsAndReturnsOnlyItsUnplaceableRemainder",
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#insufficientCashPositionLimitAndStaleOracleRefuseBeforeReservation",
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#allocationFailureDoesNotInventAPositionOrChargeFeesAndReturnsTransientCollateral",
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#noCrossRelatedCrossOrUnderfundedBookCannotFreezeMoneyAtCapacity",
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#forcedExitAgainstASameSideFullBookNeverEntersA65thSlotOrErasesThePosition",
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#aRealElevenLotPairSupportsAnActualPartialThreeLotNovation",
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#fullOpeningBookFormsARealPairWithoutAnExtraRestingSlot",
+          "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#legacyIndexedOrdersWithoutTheNewMarkerArchiveExactlyOnce"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.AiAttentionScriptContractTest.xml",
+          "bytes": 24213,
+          "sha256": "fa61115e1462c100d09a37e04869dc819f66ebd20dbde14ec50aa16f42a56109"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#quotasAndCapacityReadActualPresetValues",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#deadlinesDeathsPlayersAndChildrenDropWithoutLosingNormalMembership",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#nestedAdvertisingUsesIndependentAliasesAndFailedBusinessStaysQueued",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#actualMoneyFormulasAnd171BoundaryExcludeOtherPeoplesOrReservedCash",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#actualPendingTickClosesDay29FundingOnDay30BeforeRefundAndRestoresSelection",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#fullRingsShareBudgetPreserveOrdinaryAndDoNotDoubleDecide",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#existingSubscriptionLotAndCostFormulasRoundDownWithinCashAndFounderCaps",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#smallPriorityReturnsUnusedSlotsAndSmallRingsVisitOnce",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#fundedPlayersRemainManualButPriorClosingRetriesAndNativeCapacityStillApply",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#paidPromotionAdmissionOccursOnlyAfterSuccessfulRealFeeAndKeepsIssuerReachable",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#authoredSnapshotReloadRetainsPointersDeadlineAndSameDayGuard",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#paidPriorityAdmissionIsBoundedAndNeverMutatesOrdinaryLinks",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#completingInheritedOfferPreservesOnlyDifferentLiveStillOwnedPendingOffer",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#actualSubscriptionHelpersCapAndReserveRealAssetsAndStillUseOrdinaryPayment",
+          "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#sourceCompositionRetainsChanceNormalFundingAndNoSecondGlobalScan"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.CharterTargetScriptTest.xml",
+          "bytes": 23240,
+          "sha256": "288c851891adfac7fb442693f84bd7e14835c183eaa898cbf1cdb2fd78e7c1c0"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.issuance.CharterTargetScriptTest#actualFreezeOfCharterAAfterSelectingBMutatesOnlyAAndRestoresBTicketAndActiveWallet",
+          "org.xar.ck3.markets.issuance.CharterTargetScriptTest#temporaryConfirmationAliasesCannotRedirectCharterAndOtherPendingSurvivesCompleteOrAbort",
+          "org.xar.ck3.markets.issuance.CharterTargetScriptTest#displayAndOptionContractUsesEventSnapshotNotActorViewAndNoNewTimePolicy",
+          "org.xar.ck3.markets.issuance.CharterTargetScriptTest#archivedOrMissingCoinFrozenPayerAndChangedCounterpartyRejectBeforeBusiness",
+          "org.xar.ck3.markets.issuance.CharterTargetScriptTest#liveControllerBindingAndExpiredOfferingCannotBorrowAuthorityOrOldDisplayedNumbers",
+          "org.xar.ck3.markets.issuance.CharterTargetScriptTest#allNineOptionsConsumeFrozenTargetAndNeverCurrentlySelectedB",
+          "org.xar.ck3.markets.issuance.CharterTargetScriptTest#actualProjectTransferUsesFrozenPrimaryRecipientNotCurrentlyViewedWalletOrCoinB",
+          "org.xar.ck3.markets.issuance.CharterTargetScriptTest#newCharterInvalidatesOldWindowAndOldCloseCannotConsumeFreshTicketOrDoubleConfirm",
+          "org.xar.ck3.markets.issuance.CharterTargetScriptTest#restorationClearsInvalidPreviousSelectionsAndDoesNotInventMissingTicketOrWalletState"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.IssuanceTest.xml",
+          "bytes": 22817,
+          "sha256": "25dbf63545d1f17674829d16ec4cf896507c890138e895d4e0364edbd5519831"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.issuance.IssuanceTest#personalConcurrentAndPendingLimitsHaveNoRankGate",
+          "org.xar.ck3.markets.issuance.IssuanceTest#supplyCannotBurnHoldersOrUnlockTwice",
+          "org.xar.ck3.markets.issuance.IssuanceTest#standardInitialCashIsNotLostAndFeesAreNotDoubleCharged",
+          "org.xar.ck3.markets.issuance.IssuanceTest#maintenanceAppliesExistingCreditOnlyOnceBeforeEscrow",
+          "org.xar.ck3.markets.issuance.IssuanceTest#paidMicroSubscriptionsAllocateRealCoinsAndExactCents",
+          "org.xar.ck3.markets.issuance.IssuanceTest#failureRefundsEachOriginalBuyerExactlyOnce",
+          "org.xar.ck3.markets.issuance.IssuanceTest#badSubscriptionsCannotPartlyMutateEscrow",
+          "org.xar.ck3.markets.issuance.IssuanceTest#fixedSupplyAndCapAreReal",
+          "org.xar.ck3.markets.issuance.IssuanceTest#successionPreservesDebtDefaultsAndCooldown"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.OfferingWalletTest.xml",
+          "bytes": 22541,
+          "sha256": "0755b87312f60635509b018ae34c84b51fdb859824c2619def854ded94a8e481"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.issuance.OfferingWalletTest#openingModelOnExistingCustodyRequiresRestoreRatherThanResettingClaims",
+          "org.xar.ck3.markets.issuance.OfferingWalletTest#failedRefundRetainsClaimAndSuccessfulRetryPaysExactlyOnce",
+          "org.xar.ck3.markets.issuance.OfferingWalletTest#invalidOrUnfundedSubscriptionNeverDebitsAndRetryCanSucceed",
+          "org.xar.ck3.markets.issuance.OfferingWalletTest#coinDeliveryFailureRollsBackAllCashFeesAndClaims",
+          "org.xar.ck3.markets.issuance.OfferingWalletTest#actualWalletSubscriptionAndClosingConserveGoldAndCoins",
+          "org.xar.ck3.markets.issuance.OfferingWalletTest#selfOwnedFundingDoesNotCountAsIndependentDemand"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest.xml",
+          "bytes": 23010,
+          "sha256": "a3cf39d3e8d8b17dc990bb11c669b7ce7d0956524f0b627f9dd33b7ef5a2b757"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#proposalNonceVersionExpiryWholeLotsAndSuccessfulSevenDayCooldownRecheck",
+          "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#defaultD30DelistedProposalCanBeConsideredWithRealCertifiedHistoryWithoutFreshOracle",
+          "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#sourceUsesExistingAtomicDvpWithoutIssuerReserveFloorOrPriceWrites",
+          "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#eventRevalidatesAfterWeightAndMarksOnlyRealSuccessWhileHumanConsentPathStaysOriginal",
+          "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#actualFreeCashPlusGoldBudgetsKeepFiveGoldAndRespectTwoRiskCaps",
+          "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#staleHistoryRequiresEveryProducerBindingAndFiniteRealTimeWindow",
+          "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#invalidRightsRelatedBeneficiariesDestroyedAssetsAndMissingProposalFieldsAlwaysReject",
+          "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#currentQualifiedIndexGetsFreshRiskDiscountAndWeightWithoutStaleFallback"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest.xml",
+          "bytes": 24613,
+          "sha256": "a871ae2b2d2f3a2c22182c0b12bcd699377eb81af087906cb8e79e6f52b9fd1c"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#failedRefundExternalUnitsPlayerControlAndClosingNeverAuthorizeAutomaticConfiscation",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#removalOccursAfterTraversalOnceAndPreservesIdentityReferencesAndHistoricalOracleFields",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#allIndependentResidualRightsPreventRetirementWithoutEditingMoneyOrSupply",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#protected1920PrefixCannotStarveCleanTailAtDay31OrRestartBeforeTheRoundCompletes",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#invalidOrMissingHistoricalCounterCannotSilentlyCreateFreeCapacity",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#actuallyRefundedFailedAiOfferUsesExistingControllerAndBurnsRealInventoryBeforeSlotRelease",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#actualExistingIssuerTraversalMigratesOnly64ThenContinuesOnTheNextRealDay",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#explicitHistoricalIdLookupIsReachableButDefaultMarketRefreshDoesNotWalkColdHistory",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#zeroResidualSuccessfullyListedCoinCanRetireDespiteItsHistoricalClosingMarker",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#legacyArchivedRedemptionRightReturnsToResidualServiceAndDoesNotStarveLaterCleanObjects",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#currentHouseDynastyTitleAndFaithHeadsRetireOnlyTheirOwnFullyRefundedProjects",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#legacyBaselineIsConstantWorkAndHistoricalCounterNeverBecomesAnAdmissionLimit",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#queueRevalidatesRightsAppearingAfterPreparationBeforeAnySlotIsReleased",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#actualReleaseFailureKeepsSubscriptionPendingAndNeverBurnsOrReleasesCapacity",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#realRefundReleasesOnlyRealReservedCashThenAllowsLaterAiRetirement",
+          "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest#completedRoundCannotReviewSingleProtectedCandidateAgainOnTheSameDayButNextDayCan"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.lifecycle.ListingLifecycleTest.xml",
+          "bytes": 22635,
+          "sha256": "6b0d3deb7c1ae2278eaed619c421bec3811823034fc502dbf9053cb762baf03d"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#missingOracleNeverInventsZeroOrWritesOffCollateral",
+          "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#otherVenueContractsAndOrdersContinue",
+          "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#thirtyDayExitKeepsSpotBothDirectionsWhileStoppingNewLeverage",
+          "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#emergencyReviewHasThreeThenSevenDayDeadlines",
+          "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#duplicateDayDoesNotAddSecondPriceSample",
+          "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#oneResidualRightForbidsArchiveAndCoinIdSurvivesRelisting",
+          "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#archiveRequiresEveryCounterZero"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.listing.ListingFundingTest.xml",
+          "bytes": 22199,
+          "sha256": "cd4097d946d6d6fc11606f21ce485168b6df0f56bed9247a45c05fac6cdf1004"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.listing.ListingFundingTest#noProceedsRequireFivePointSixRealGoldForMicroListing",
+          "org.xar.ck3.markets.listing.ListingFundingTest#standard200GoldPreservesFeeCapitalDistinctionAndInitialCash",
+          "org.xar.ck3.markets.listing.ListingFundingTest#admissionAndRoundingRejectFreeOrUnboundedMicroOffers",
+          "org.xar.ck3.markets.listing.ListingFundingTest#micro20GoldLeaves14GoldFree"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.oracle.IdleMarketScriptContractTest.xml",
+          "bytes": 22860,
+          "sha256": "3c199ea13802e5b8cb42a5d75933d147d24721c0d541b2f6df094ffecf3f67d3"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#activeWarningNoticeSuspensionAndRelistingKeepOriginalBarsAndOracleEveryDay",
+          "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#anyArchivedObligationOrMissingOldFieldKeepsOriginalOraclePath",
+          "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#retiredFixedPointElidesOnlyIdenticalWritesAfterThirtyRealOriginalCloses",
+          "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#noticeWindowD15ThroughD20AndTerminalCertificateAreUnchanged",
+          "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#archivedIdleExplicitlyRevokesRiskWithoutRefreshingHistoricalDatesOrErasingClaims",
+          "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#sourceMutationStaysInsideHotWritesAndNeverTouchesIdsDebtsOrFreshnessPolicy",
+          "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#authoredColdGraphPriceChangeTradeAndYearGapRelistingCannotInventFreshness"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.oracle.ModelIndexOracleTest.xml",
+          "bytes": 22558,
+          "sha256": "1b38af5461c8d0b92ab1d1664a5d034e4c2f3838aadc5fa536044eb80eafb945"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.oracle.ModelIndexOracleTest#membershipAndDuplicateObservationsAreValidatedBeforePublication",
+          "org.xar.ck3.markets.oracle.ModelIndexOracleTest#actualWarAndDisruptionMoveThreeModelsDifferently",
+          "org.xar.ck3.markets.oracle.ModelIndexOracleTest#explicitRouteCannotSubstituteAnotherAssetOrAStalePublication",
+          "org.xar.ck3.markets.oracle.ModelIndexOracleTest#explicitNewFaceMatchesBoundedModelAndLegacyConstructorKeepsOldUnits",
+          "org.xar.ck3.markets.oracle.ModelIndexOracleTest#pendingQuotesCannotAuthorizeTerminationAndSingleVenueCannotClaimTwenty",
+          "org.xar.ck3.markets.oracle.ModelIndexOracleTest#modelNeedsEightRealMembersAndCurrentObservations"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.oracle.WindowPriceOracleTest.xml",
+          "bytes": 23253,
+          "sha256": "f0684ed148b9ae5d856b29a96e37bfde9a92d874469d1d7a884c295ffee9d31b"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#staleReferencePreservesHistoricalPriceWithoutAuthorizingZeroSettlement",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#realIndependentMultiDayRepricingMovesTheReference",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#fullWindowBeforeThirtyDaysRemainsThreeTimes",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#economicBeneficiaryReuseIsRejectedAcrossDifferentTrades",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#matureThirtyDayCoinCanReachTenTimesButNeverTwenty",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#incompleteDayAndSingleLargestAndSmallestDaysCannotSetMark",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#tinyAndUnfundedSizeCannotCreateQualifiedDay",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#capacityAndClockDoNotSilentlyEvictOrReplay",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#fewerThanSevenCompletedDaysDoNotAuthorizeFutures",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#eightSampleBoundRejectsLateSamplesWithoutChangingPrice",
+          "org.xar.ck3.markets.oracle.WindowPriceOracleTest#boundedLotsWeightAndIntegerDivisionMatchNativeSpecification"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.otc.OtcGuiContractTest.xml",
+          "bytes": 22075,
+          "sha256": "056173c7093c77353bb2bffd1e9e85ec3b14508eb66b9fdf4b5ec14939dd2ade"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.otc.OtcGuiContractTest#normalButtonsUseTheSameProposalAndCancellationPaths",
+          "org.xar.ck3.markets.otc.OtcGuiContractTest#mergedRealRuntimeReferencesAndBilingualContentClose(Path)",
+          "org.xar.ck3.markets.otc.OtcGuiContractTest#originalInteractionEligibilityAndBusinessReceiversArePreserved"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.pool.PoolQuoteTest.xml",
+          "bytes": 22357,
+          "sha256": "859d2c9e1d9d180eaadb08c2e54fc77f7ea090eff0024019fd1aa59339f8a157"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.pool.PoolQuoteTest#roundTripAccountsForBothPoolAndTraderFeesWithoutCreatingCash",
+          "org.xar.ck3.markets.pool.PoolQuoteTest#wideInventoryAndCapitalVectorsKeepRealCashAndCoinDeltasBalanced",
+          "org.xar.ck3.markets.pool.PoolQuoteTest#unsellableDustAndExhaustedInventoryAreRefused",
+          "org.xar.ck3.markets.pool.PoolQuoteTest#referenceArithmeticAvoidsIntermediateOverflowAndRejectsUnrepresentableTotal",
+          "org.xar.ck3.markets.pool.PoolQuoteTest#initialTwoGoldPoolQuotesThreeCentPrincipalAndOneCentEachFee"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.redemption.RedemptionScriptContractTest.xml",
+          "bytes": 24317,
+          "sha256": "2589f74cc58d2123c467f0fee15c0a44a6369a2b40d1c2bfa24d629ec4dc69ff"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#simultaneousBudgetQuotesCannotOverpayAndOldConfirmationsCannotReplay",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#normalGuiCapturesTermsAndWalletRatherThanLaterMutableInputs",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#changedAccountCoinTermsControllerDayAndForgedUnitsInvalidateAQuote",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#lifetimeCashAndUnitsRemainWithinExactBoundedCounters",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#aiUsesExistingPaidDecisionOnceAndOnlyItsPrimaryInventory",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#publicationMovesOnlyIssuerFreeAndFreezesTheFiniteTerms",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#ordinaryAcceptedOtcCannotSelectTheDedicatedSystemCash",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#controlSuccessionPreservesEscrowIdentityTermsAndIndependentUse",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#insufficientFrozenWrongAuthorityAndInvalidTermsNeverCreateMoneyOrWindow",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#corruptEscrowReconciliationRefusesToTurnBookBudgetIntoCash",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#reservedCoinsAndOldOtcConsumingAvailableUnitsCauseAtomicRefusal",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#relatedPartiesAndProjectOrFrozenAccountsCannotManufactureUtility",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#monthlyUtilityWindowResetsWithoutLosingLifetimeOrReceiptEvidence",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#allocationFailuresCannotMakeUnreceiptedPayments",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#successfulDeliveryPreservesSupplyAndRecordsOnlyActualPaidUtility",
+          "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#soldOutDustIsExplicitAndExpiryReturnsOnlyRealUnusedCash"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest.xml",
+          "bytes": 23707,
+          "sha256": "4d3d57511f09c807418d6af6680f54d0296cc35751bfbc9f18afa36a275a955c"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#originalReadbackAndFinancialInvariants",
+          "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#namedRetiredObserverCommandUsesSourceBoundReportWhileOldVerbStillRejects",
+          "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#explicitRetiredObserverReadbackReportsEveryUntypedIdentityWithoutRelaxingFinancialRecords",
+          "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#retiredObserverInspectKeepsTypedColdFinancialComparisonAndExplicitEvidence",
+          "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#streamingGrowthAndRefusalBoundaries"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest.xml",
+          "bytes": 22210,
+          "sha256": "8c9fd21a245ddea4cf66d0345f88a3c04bdb6532a11910bbad75ad52f1bd1a8d"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest#unrelatedUnknownFinancialTypesRemainSelectedAndIncomplete",
+          "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest#emittedTypedEvolutionAndRetainedSpotEpochThreeLeaveFinancialColdProjectionExact",
+          "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest#removingEvolutionDiscriminatorDoesNotWidenRetiredNumericObserverAdmission"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest.xml",
+          "bytes": 21985,
+          "sha256": "90e72c8f0c337962ac99bc319f9fc1d6624a7deda5797c9b1a5c9fa89f98dd53"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest#optionalUnitIdentityProjectsExactlyAndColdComparisonDetectsItsLoss",
+          "org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest#explicitUnitWrongTypeOrNonIntegralValueStaysIncompleteInsteadOfDefaulting"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest.xml",
+          "bytes": 24091,
+          "sha256": "d47f0a458b4b0b54f12489c9b7bd5ec57c1a2def406945e5a74e5e1f92a92c18"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#signedCharacterBitsAndZeroArePreservedAtActualReaderBoundary",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#unsigned64CharacterReferenceIsNotGuessedOrReducedModulo32",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#onlyActualNamedRolesCanJoinViewerAndActor",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#actualJsonCodecRejectsAliasesTypesInvalidIdsAndForgedClaims",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#hiddenPendingEmptyAndUnavailableCannotReadSaveOrClaimDelivery",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#namedCommandUsesRealVerifierReaderAndCreateOnlyReport",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#actualCompleteMetadataDuplicateBlockCannotHideBehindDirectScalarScope",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#actualProducerPacketCanFeedSameStrictJavaBoundaryWithDeclaredSoftwarePublicBinding(Path)",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#currentSourceEventAndFactFieldsMustMatchImmutableEntry",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#realInspectionTwiceVerifiesExactNewsSourceAndFullMetadata",
+          "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest#decodeFailureAndSelectedRecordDriftCannotPublishPartialJoin"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest.xml",
+          "bytes": 22797,
+          "sha256": "6fc7a59a65ec26390cfa6f363af6af3c80985f9eb724725568a476d39c27508e"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#referenceOmissionsAndDuplicateFinancialVariablesStayRejected",
+          "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#actualR0013PositiveAndOmittedZeroEnvelopesProjectOnlyWithOptIn",
+          "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#legacyFiveFieldNamedRequestStaysStrictAndExplicitModeRoundTrips",
+          "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#jsonEncodingOptInRejectsWrongTuplesAndWrongTypesWithoutRelaxingBoundary",
+          "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#fullHeaderRejectsDuplicateBlockMissingAndMalformedMetadataBeforeZeroProjection",
+          "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#missingVariableDataTypeAndMalformedIdentityAreNeverOmittedZero",
+          "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#sharedReaderBindsOptInToActualHeaderAndStrictModeKeepsOldBehavior"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest.xml",
+          "bytes": 22837,
+          "sha256": "1112ff21321c04fb47960d09072c4dc14d64f5fc3632bc2ed461283cec8897b3"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#exactPreviousReceiptChainAndBudgetAfterSequenceRejectDuplicatesAndCycles",
+          "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#historicalPaymentActorsDoNotBecomeCurrentInheritedAccountHolders",
+          "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#twoPassReaderRecognizesPermanentWindowsReceiptsAndCountsOnlyPhysicalAccounts",
+          "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#samePausedColdPlainZipAndJsonRoundTripsPreserveEveryRedemptionTerm",
+          "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#receiptIdsReferencesTermsUnitsAndPaidPartyCannotBeSubstituted",
+          "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#missingMalformedUnknownAndWrongScopeFieldsStayIncompleteRatherThanZero",
+          "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#historicalClosedWindowMayReuseEscrowWhileCurrentPhysicalBudgetMustReconcile"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest.xml",
+          "bytes": 22787,
+          "sha256": "abc5f7a1cd3f051432c6bd95c5f00b92d51aadc7846abd4991251ae4433a52cd"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#referencesAndPositivePermanentIdsNeverUseNumericTwosComplement",
+          "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#sharedTwoPassReaderUsesActualSentinelsAndChecksCompleteHeaderBeforeProjection",
+          "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#missingDuplicateMalformedAndUnknownValueBodiesCannotBecomeZero",
+          "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#unsignedRangeAndCanonicalSpellingRejectRatherThanWrapOrCoerce",
+          "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#signedBoundaryLatticeScalesExactlyAndRawExtremaRemainFractional",
+          "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#actualBothNegativeSentinelsDecodeOnlyInExplicitUnsignedMode",
+          "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#explicitModeRoundTripsInNestedPortableRequestAndRequiresExactDeclaredTuple"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.ui.MarketOrderRowContextContractTest.xml",
+          "bytes": 22539,
+          "sha256": "f2db20905cf484e0cd94d599db77ec97055685e68aaf699574fbca64320eef75"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#activeAndHistoryInlineRowsKeepIdenticalControlsButHaveDifferentSourceDomains",
+          "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#validityNeverWritesAndEffectRebindsARealStoryBeforeTheOriginalCancellation",
+          "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#portfolioCachesAreExplicitSixteenRowSnapshotsAndAllSixPageControlsRebuildThem",
+          "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#onlyTheThirtySevenIncludedCallbacksUseNumericValuesWithoutBareOrSelfScopes",
+          "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#mixedRowsCarryKindAndOrderTableWhileSpotPositionsUseTheRealAccountCoinIdentity"
+        ]
+      },
+      {
+        "file": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-ci-pass-44485708247\\artifact-expanded\\ck3_eternal_recurrence\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.ui.MarketSocialRowIdContractTest.xml",
+          "bytes": 22351,
+          "sha256": "e2f7ce3e33727320622b2d68d05324fb5428be29141ee2584b0cb07d21cc2ca0"
+        },
+        "group": "financial",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "distinct_methods": [
+          "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest#inventoryAndRealOriginalOtcProposalConsumerRemainConnected",
+          "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest#allSixProductGuiFilesUseNumericRowsAndClaimsAidHaveTheirOwnConcreteButtons",
+          "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest#privateValidityAndCountsArePureBoundedPageLookupsAndNeverEnumerateTheWorldJournalOrCoinHolders",
+          "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest#cacheRefreshIsExplicitAndAidPaginationUsesSixteenActualOutstandingDebtsWithoutPaying"
+        ]
+      }
+    ]
+  },
+  "Native_profile": "v5 actual201 flags plus new Opening56 OFF; BB3 basic remains OFF;799 configured TUs and22 finite fixtures",
+  "Native_Q23_build": "NOT_EXECUTED_YET",
+  "Game_started": false,
+  "whole_product_business_pass": false
+}
