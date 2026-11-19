@@ -1,0 +1,205 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T02:28:42.194825+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0006",
+  "case": "money-domain-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "PARTIAL_FOUR_MONEY_ASSERTIONS_MERIT_EVENT",
+  "source_head": "4159e1a89c66b5989430559302d8e9449d654195",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r6-gui-prepare\\prepared-case.json",
+    "bytes": 1587787,
+    "sha256": "4a0973351da05ea16e4e1d7328498551e0ae020cd94f9025bde002ba62d5e2d0"
+  },
+  "facts": {
+    "actual_production_six_choices_and_default_selection": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-enable-panel-view.png",
+          "bytes": 1121678,
+          "sha256": "7a5a492197b26736985a6e64270074505884e4d6f87e41738a580f5192db10a5"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-default-policy-view.png",
+          "bytes": 1120850,
+          "sha256": "e353221d1145666cde3eb8d92debea96ad0f1dbc4a646c993ad15df5d3eb128e"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-policy-confirmation-view.png",
+          "bytes": 1091716,
+          "sha256": "c40dd26e03de1a9c7003329371a0624e08efd140b324bcb15dc8353bcc9b6237"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-production-enabled-view.png",
+          "bytes": 1096615,
+          "sha256": "0dacfcc47c5bef608ac814c9ce107b2f649fc7578c048f5b5e4a6d5a8631e17f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-fixture-panel-view.png",
+          "bytes": 1105304,
+          "sha256": "535b39fc97a6d78c5cfaf74a32fd6a52b68c721f31a20cece9ca6900cd364f95"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-fixture-started-view.png",
+          "bytes": 1092690,
+          "sha256": "cdb6ebec190149d9f00e729d847596ddaff6d77c2b098eec157c26af4442996f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-b919c4022b604121b0fd9bf9e65283a6\\profile\\logs\\debug.log",
+          "bytes": 1191162,
+          "sha256": "ab4ef8b285b7a6af290053c6bbe6f822bf6447e9c3b38309d4055d3c5a2af648"
+        }
+      ]
+    },
+    "original_seventeen_money_domain_assertions_and_no_errors": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-b919c4022b604121b0fd9bf9e65283a6\\profile\\logs\\debug.log",
+          "bytes": 1191162,
+          "sha256": "ab4ef8b285b7a6af290053c6bbe6f822bf6447e9c3b38309d4055d3c5a2af648"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-b919c4022b604121b0fd9bf9e65283a6\\profile\\logs\\error.log",
+          "bytes": 80,
+          "sha256": "ce4d483a12b12c3d45cc9591f8de5bfe2b185ffd66e375d3b7c894bd1f5be6c3"
+        }
+      ]
+    },
+    "actual_calendar_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-advance01-before-menu-hold.png",
+          "bytes": 1112567,
+          "sha256": "0b56f0279d257b06db08bff95ac366b1d3c4261fcdcda83bb88dfd604325ad38"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-quit-dialog-view.png",
+          "bytes": 682426,
+          "sha256": "f9b9186d02d8e5dc4b190be07dcc5863c745813ef06771234e6b0f79d02ab380"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-quit-desktop.png.json",
+          "bytes": 1441,
+          "sha256": "e51f4cab9eaf644e9a3a26fae06d3f5a5c83645025cbe924608c7bb2e0d63cf6"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0006\\game-exit.json",
+          "bytes": 252,
+          "sha256": "4a0e9593b8ed664e43ddf323b8e98369426084b80184f818375e92e8b66fbefc"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBF: READY money_domain_actual_production_decision": 1,
+    "AUBT: TEST BEGIN source-live": 1,
+    "AUBF: READY money_domain_roger_head_cooldowns": 1,
+    "AUBT: TEST PASS native_decision_priority_continue_selection": 1,
+    "AUBT: TEST PASS domain_limit_normalized_zero": 1,
+    "AUBT: TEST PASS treasury_priority_one_tier": 1,
+    "AUBT: TEST PASS domain_limit_zero_builds": 1,
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect": 0,
+    "AUBT: TEST PASS domain_limit_recovery_resumes": 0,
+    "AUBT: TEST PASS over_limit_continue_builds": 0,
+    "AUBT: TEST PASS legacy_no_pause_flag_continues": 0,
+    "AUBT: TEST PASS disabled_zero_side_effect": 0,
+    "AUBT: TEST PASS personal_gold_fallback": 0,
+    "AUBT: TEST PASS reenabled_loop_stopped_cleanly": 0,
+    "AUBT: TEST PASS insufficient_funds_no_change": 0,
+    "AUBT: TEST PASS treasury_only_uses_treasury": 0,
+    "AUBT: TEST PASS treasury_only_no_personal_fallback": 0,
+    "AUBT: TEST PASS personal_only_uses_personal": 0,
+    "AUBT: TEST PASS personal_only_no_treasury_fallback": 0,
+    "AUBT: TEST PASS priority_no_split_payment": 0,
+    "AUBF: TEST DONE money_domain": 0
+  },
+  "passed_original_assertions": [
+    "AUBT: TEST PASS native_decision_priority_continue_selection",
+    "AUBT: TEST PASS domain_limit_normalized_zero",
+    "AUBT: TEST PASS treasury_priority_one_tier",
+    "AUBT: TEST PASS domain_limit_zero_builds"
+  ],
+  "original_assertions_required": 17,
+  "failure_lines": [],
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-b919c4022b604121b0fd9bf9e65283a6\\profile\\logs\\error.log",
+    "bytes": 80,
+    "sha256": "ce4d483a12b12c3d45cc9591f8de5bfe2b185ffd66e375d3b7c894bd1f5be6c3"
+  },
+  "error_text": "[09:37:34][E][pdx_locstring.cpp:93]: Key is missing localization: 科孚商会\n",
+  "error_scope": "Single80B missing-localization diagnostic for 科孚商会 was already present before production UI/fixture begin; unchanged after10days. Not claimed empty or attributed to product. No Script system error.",
+  "payer_head_readback": {
+    "actual_player": "1132",
+    "faith": "catholic",
+    "owned_castle_capital": true,
+    "existing_head_bull_variables_both_present": true,
+    "evidence": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-b919c4022b604121b0fd9bf9e65283a6\\profile\\logs\\debug.log",
+      "bytes": 1191162,
+      "sha256": "ab4ef8b285b7a6af290053c6bbe6f822bf6447e9c3b38309d4055d3c5a2af648"
+    }
+  },
+  "event_interruption": {
+    "screenshot": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-advance01-before-menu-hold.png",
+      "bytes": 1112567,
+      "sha256": "0b56f0279d257b06db08bff95ac366b1d3c4261fcdcda83bb88dfd604325ad38"
+    },
+    "definition_static_candidate": "tgp_china_career.0010 title/body/options match current stock; actual Native instance/definition IDs not observed",
+    "actual_native_instance_id": null,
+    "actual_native_definition_id": null,
+    "event_action_dispatched": false,
+    "mouse_or_keyboard_event_selection": false,
+    "source_condition": "Stock character_levels.txt295..371 requires government_allows merit, this!=top_liege and player, then delays2..10days on merit level gain. No completed intro flag.",
+    "future_fix_candidate": "New isolated Roger scene may use official becomes_independent create/resolve transaction before changing government and read back this=top_liege, leaving17 funding predicates untouched. No current event canceled."
+  },
+  "actual_final_date": "1066-09-25",
+  "natural_days": 10,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-quit-dialog-view.png",
+      "bytes": 682426,
+      "sha256": "f9b9186d02d8e5dc4b190be07dcc5863c745813ef06771234e6b0f79d02ab380"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm04-quit-desktop.png.json",
+      "bytes": 1441,
+      "sha256": "e51f4cab9eaf644e9a3a26fae06d3f5a5c83645025cbe924608c7bb2e0d63cf6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0006\\game-exit.json",
+      "bytes": 252,
+      "sha256": "4a0e9593b8ed664e43ddf323b8e98369426084b80184f818375e92e8b66fbefc"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0006\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "0233f46942fca67521792e11a32f3d27a587a7eded85e1489dfc92f7cca50451"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0006\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "3396f1f9248ddb287bc74b11c3dce5e989ab321d062a2c81cc48ed5f75a3ac9f"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r6-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "5aa2b80b57a1122e3590eca7f5ee792410067869a94802a389336157d7ae81e0"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "native_gap_refresh": "Current source4159 supports exact2f2 event instance/options routes, but no1.21 DLL/cache found in reviewed local project roots; other-machine Full/software receipts are not this machine qualification and current public result lacks definition/saved-scopes/effects. No old DLL injection or event selection.",
+  "retention_review_at_utc": "2026-12-19T02:21:40Z"
+}

@@ -45,3 +45,7 @@ R3闭场后按本机用途清理：4,184个可重建shader／183,734,611逻辑�
 后续只读来源将R4信件候选收窄为pam_bull_events.0004：其允许正文复用0011，但opening及“就这样吧”按钮同时匹配；仍不追认为Native实例。Pope专用bull决策存在现行角色变量冷却：bulls_decisions.txt497–501／546–549的enact_a_bull_tenet_permitted_cooldown，以及789–793／838–841的enact_a_bull_tenet_forbidden_cooldown，原版effect期限五年。新夹具可在首日之前对已核实际head预置并读回这两个冷却，保留payer原信仰；预置不等于曾执行决策，也不能撤销已排程事件。Robert开局剧情仍须另行处理或显式更换测试payer，不能以没有找到setter为由编造通用decision cooldown接口。
 
 后继夹具显式更换payer：仍从普通书签选Robert1128，首日之前按原版set_player_character接口切换至实际Roger1132；不再改信仰、不取消事件、不复用Robert身份资格。新玩家必须实际为1132／原Catholic信仰／自有城堡首府，并在实际宗教领袖上预置后读回两项既有五年bull变量，才允许启动矩阵；生产六选一也重新在Roger身上操作。当前历史来源为norman.txt647–678、k_sicily头衔历史495–498等；1129实际是另一人物，未使用。原版game_start.txt4117–4119提供当前player作用域切换例；没有找到Roger专属开局派发，不外推为无随机事件。9项回归及完整准备器严格mypy通过，17原条件AST仍全部相同；新角色／冷却实际读回与其余8项资金条件仍待新场验证。
+
+本机R0006已实际读回Roger／Catholic／自有城堡及实际领袖两项既有bull冷却，生产六选一重新操作完成；4/17资金条件通过。1066-09-25／10自然日时贤阶普通事件暂停日历，未选择；静态标题／正文／按钮对应tgp_china_career.0010，但Native实例及定义ID仍未观测。80B“科孚商会”本地化提示在资金矩阵前已出现，之后未增加；无业务FAIL或Script system error。02:21:40Z正常退出、原Popen0、keeper/CAS闭合，零SAVE；公共verify拒绝未完成17项。[R6原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-money-R0006-partial.json)。
+
+原版character_levels.txt295–371的贤阶派发要求this!=top_liege，没有一次性intro完成flag。新夹具在变更政体前使用当前原版完整独立事务（00_almohad_invasion_effects.txt254–265及正常交互1620–1629）：create_title_and_vassal_change(type=independency,add_claim_on_loss=no)→becomes_independent→resolve，事务不复用；不伪造flag、不删除队列。独立在变政体前后均须读回，且后者必须has_treasury；原17个PASS条件与产品不变。事务会触发原版on-actions，不预称零副作用；新独立状态仍待新场实机确认。

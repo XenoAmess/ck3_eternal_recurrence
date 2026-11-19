@@ -34,6 +34,7 @@ aubt.900 = {
 		if = {
 			limit = {
 				this = character:1132
+				this = top_liege
 				faith = faith:catholic
 				exists = faith.religious_head
 				faith.religious_head = {
@@ -49,6 +50,11 @@ aubt.900 = {
 		}
 		else = { debug_log = "AUBF: TEST FAIL money_domain_roger_head_cooldowns" }
 		change_government = celestial_government
+		if = {
+			limit = { this = top_liege has_treasury = yes }
+			debug_log = "AUBF: READY money_domain_independent_treasury_government"
+		}
+		else = { debug_log = "AUBF: TEST FAIL money_domain_independent_treasury_government" }
 		set_variable = {
 			name = aubt_domain_adjust_guard
 			value = 0

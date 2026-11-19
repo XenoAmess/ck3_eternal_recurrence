@@ -112,7 +112,7 @@ def prepare_money(repo: Path, output: Path) -> Path:
         mode="florin-original-money-domain-matrix",
         entry="Actual production enable UI with treasury-first/continue -> isolated fixture start decision -> aubt.900 (original aubt.0) -> original aubt.1..6 money/domain events",
         advance="Keep paused for actual production selection and fixture start; then at most180natural days. Stop on failure, interruption, or exact DONE; no manual Save.",
-        rules="1066 select Robert of Apulia1128 through the normal bookmark; fixture explicitly switches the current player to landed Roger1132 before any day and uses his actual owned castle capital, keeping stock Catholic faith. Existing five-year permit/prohibit bull cooldown variables are preseeded on his actual religious head and must be read back with payer/faith/holding/owner. Robert intro stays with AI Robert. Vanilla game rules and original17 money predicates unchanged; no old actor qualification reused.")
+        rules="1066 select Robert1128 normally; fixture switches current player to landed Roger1132 and uses the official create/becomes_independent/resolve transaction before any day or government change. Actual player/top_liege, Catholic faith, owned castle and existing head bull cooldowns must read back. Independent/has_treasury must remain true after government change, outside unrelated merit-career vassal dispatch. Robert intro remains AI. Vanilla game rules and original17 money predicates unchanged; no old actor qualification reused.")
 
 
 def prepare(repo: Path, output: Path) -> dict[str, object]:
