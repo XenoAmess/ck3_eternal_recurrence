@@ -1,0 +1,101 @@
+﻿# Exchange scope: O(1) conservative migration from the old lifetime counter.
+# Never recompute it by scanning history; IDs and registered totals are never reduced.
+xfm_registry_capacity_ensure_effect = {
+ if = {
+  limit = {
+   NOT = { has_variable = xfm_resident_coin_count }
+   has_variable = xfm_registered_coin_count var:xfm_registered_coin_count >= 0
+   var:xfm_registered_coin_count = xfm_registry_registered_floor_value
+  }
+  set_variable = { name = xfm_resident_coin_count value = var:xfm_registered_coin_count }
+  set_variable = { name = xfm_registry_capacity_version value = 1 }
+ }
+ if = { limit = { NOT = { has_variable = xfm_registry_retire_queue_count } } set_variable = { name = xfm_registry_retire_queue_count value = 0 } }
+ if = { limit = { NOT = { has_variable = xfm_registry_review_round } } set_variable = { name = xfm_registry_review_round value = 1 } }
+}
+# Coin scope. Queue only: caller may be traversing the live registry.
+xfm_registry_queue_retire_effect = {
+ if = {
+  limit = {
+   xfm_registry_clean_terminal_trigger = yes
+   NOT = { has_variable = xfm_capacity_slot_released }
+   NOT = { has_variable = xfm_registry_retire_queued }
+   global_var:xfm_exchange = { xfm_registry_capacity_ready_trigger = yes var:xfm_registry_retire_queue_count < 64 }
+   is_target_in_global_variable_list = { name = xfm_coin_registry target = this }
+  }
+  save_scope_as = xfm_registry_retiring_coin
+  set_variable = { name = xfm_registry_retire_queued value = 1 }
+  global_var:xfm_exchange = {
+   add_to_variable_list = { name = xfm_registry_retire_queue target = scope:xfm_registry_retiring_coin }
+   change_variable = { name = xfm_registry_retire_queue_count add = 1 }
+  }
+  clear_saved_scope = xfm_registry_retiring_coin
+ }
+}
+# Exchange scope. The <=64 queue is distinct from the live list; recheck rights before removal.
+xfm_registry_flush_retire_effect = {
+ if = {
+  limit = { OR = { NOT = { has_variable = xfm_registry_iteration_open } var:xfm_registry_iteration_open = 0 } }
+  every_in_list = {
+   variable = xfm_registry_retire_queue
+   if = {
+    limit = {
+     xfm_registry_clean_terminal_trigger = yes
+     NOT = { has_variable = xfm_capacity_slot_released }
+     is_target_in_global_variable_list = { name = xfm_coin_registry target = this }
+     global_var:xfm_exchange = { xfm_registry_capacity_ready_trigger = yes var:xfm_resident_coin_count > 0 }
+    }
+    # Authorization becomes historical before leaving oracle's ordinary idle invalidation pass.
+    set_variable = { name = xfm_oracle_quality value = 0 }
+    set_variable = { name = xfm_max_leverage value = 0 }
+    set_variable = { name = xfm_oracle_reason value = 2 }
+    set_variable = { name = xfm_capacity_slot_released value = 1 }
+    remove_list_global_variable = { name = xfm_coin_registry target = this }
+    if = { limit = { NOT = { is_target_in_global_variable_list = { name = xfm_archived_coin_registry target = this } } } add_to_global_variable_list = { name = xfm_archived_coin_registry target = this } }
+    global_var:xfm_exchange = { change_variable = { name = xfm_resident_coin_count subtract = 1 } }
+   }
+   remove_variable = xfm_registry_retire_queued
+  }
+  clear_variable_list = xfm_registry_retire_queue
+  set_variable = { name = xfm_registry_retire_queue_count value = 0 }
+ }
+}
+# Coin scope, invoked from the EXISTING issuer daily traversal, never a second global scan.
+# At most 64 old terminal/failed-offer rights reviews per game day. Existing registry iteration
+# still visits its current entries; no claim of O(64) total daily scanning is made.
+xfm_registry_review_terminal_effect = {
+ if = {
+  limit = {
+   global_var:xfm_exchange = { var:xfm_registry_review_round >= 1 var:xfm_registry_review_round = xfm_registry_round_floor_value }
+   global_var:xfm_exchange = { OR = { NOT = { has_variable = xfm_registry_round_completed_day } var:xfm_registry_round_completed_day < var:xfm_day } }
+   OR = { NOT = { has_variable = xfm_registry_coin_review_round } var:xfm_registry_coin_review_round < global_var:xfm_exchange.var:xfm_registry_review_round }
+   OR = {
+    var:xfm_listing_state = 7
+    AND = {
+     var:xfm_listing_state = 6 NOT = { has_variable = xfm_listed_day }
+     exists = var:xfm_controller var:xfm_controller = { is_ai = yes }
+    }
+   }
+  }
+  if = {
+   limit = { global_var:xfm_exchange.var:xfm_registry_review_budget > 0 }
+   # Persistent round membership prevents a protected prefix from being revisited
+   # until the same round has reached the tail, even if list order changes on reload.
+   set_variable = { name = xfm_registry_coin_review_round value = global_var:xfm_exchange.var:xfm_registry_review_round }
+   global_var:xfm_exchange = { change_variable = { name = xfm_registry_review_budget subtract = 1 } }
+   if = {
+    limit = { var:xfm_listing_state = 7 }
+    if = { limit = { xfm_registry_clean_terminal_trigger = yes } xfm_registry_queue_retire_effect = yes }
+    else = {
+     # Legacy state7 may predate redemption guards. Restore residual service, not trading,
+     # and retain all identity/history/assets; an outstanding right cannot become cold.
+     set_variable = { name = xfm_listing_state value = 6 }
+     set_variable = { name = xfm_trading_open value = 0 }
+     set_variable = { name = xfm_registry_legacy_archive_reopened value = 1 }
+    }
+   }
+   else = { xfm_issuer_ai_retire_failed_offer_effect = yes }
+  }
+  else = { global_var:xfm_exchange = { set_variable = { name = xfm_registry_round_has_remaining value = 1 } } }
+ }
+}

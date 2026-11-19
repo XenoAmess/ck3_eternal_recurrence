@@ -17,6 +17,8 @@ xfm_finance_bootstrap_effect = {
     set_variable = { name = xfm_next_order_id value = 0 }
     set_variable = { name = xfm_coin_count value = 0 }
     set_variable = { name = xfm_registered_coin_count value = 0 }
+    set_variable = { name = xfm_resident_coin_count value = 0 }
+    set_variable = { name = xfm_registry_capacity_version value = 1 }
     set_variable = { name = xfm_pending_coin_count value = 0 }
     set_variable = { name = xfm_active_coin_count value = 0 }
     set_variable = { name = xfm_fee_cents value = 0 }
@@ -125,6 +127,7 @@ xfm_finance_select_account_effect = {
 }
 xfm_finance_create_coin_effect = {
  xfm_finance_select_account_effect = yes
+ global_var:xfm_exchange = { xfm_registry_capacity_ensure_effect = yes }
  save_scope_as = xfm_fin_coin_issuer
  set_variable = { name = xfm_result value = 0 }
  clear_saved_scope = xfm_coin
@@ -133,7 +136,8 @@ xfm_finance_create_coin_effect = {
   limit = {
    exists = scope:xfm_account
    global_var:xfm_exchange = {
-    var:xfm_registered_coin_count < xfm_config_registration_capacity_value
+    xfm_registry_capacity_ready_trigger = yes
+    var:xfm_resident_coin_count < xfm_config_registration_capacity_value
     var:xfm_pending_coin_count < xfm_config_pending_capacity_value
    }
   }
@@ -143,6 +147,7 @@ xfm_finance_create_coin_effect = {
    global_var:xfm_exchange = {
     change_variable = { name = xfm_coin_count add = 1 }
     change_variable = { name = xfm_registered_coin_count add = 1 }
+    change_variable = { name = xfm_resident_coin_count add = 1 }
     change_variable = { name = xfm_pending_coin_count add = 1 }
     change_variable = { name = xfm_next_coin_id add = 1 }
    }

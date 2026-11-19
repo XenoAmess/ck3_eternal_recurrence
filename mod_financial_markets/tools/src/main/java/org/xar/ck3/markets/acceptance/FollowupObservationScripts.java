@@ -83,13 +83,17 @@ public final class FollowupObservationScripts {
                 ${P}_next_sample_day_value = { value = var:xfma_last_sample_day add = 1 }
                 ${P}_spot_expected_fee_value = { value = var:xfm_filled_notional_cents multiply = 0.003 ceiling = yes min = 1 }
                 """);
-        scripts.put("common/scripted_effects/" + prefix + "_observe.txt", common(request) + profile(request));
+        if (request.caseId() == Profile.MARKET_EVOLUTION)
+            scripts.put("common/script_values/" + prefix + ".txt", Evolution.values());
+        scripts.put("common/scripted_effects/" + prefix + "_observe.txt", common(request) + profile(request)
+                + (request.caseId() == Profile.MARKET_EVOLUTION ? Evolution.effects() : ""));
         Map<String, byte[]> result = new LinkedHashMap<>();
         scripts.forEach((name, source) -> result.put(name, ("\ufeff" + source.replace("${P}", prefix)
                 .replace("${ACTOR}", actorCondition(request))
                 .replace("${SCOPE_PROBE_HEIGHT}", request.caseId() == Profile.SPOT ? "560" : "82")
                 .replace("${SCOPE_VALUE_PROBE}", spotScopeProbeWidget(request).replace("${P}", prefix))
-                .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT ? prefix + "_next_sample_day_value" : "{ value = var:xfma_last_sample_day add = 1 }")).getBytes(StandardCharsets.UTF_8)));
+                .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT || request.caseId() == Profile.MARKET_EVOLUTION
+                        ? prefix + "_next_sample_day_value" : "{ value = var:xfma_last_sample_day add = 1 }")).getBytes(StandardCharsets.UTF_8)));
         return Map.copyOf(result);
     }
 
@@ -145,7 +149,7 @@ public final class FollowupObservationScripts {
     }
 
     /**
-     * Retain core and the finite schema-two epoch-one/epoch-two story identities when another fixture is loaded.
+     * Retain core and the known finite schema-two epochs: spot one through three, other profiles one/two.
      * Passive declarations deliberately have no callbacks, markers, writes, or end_story operation.
      * This finite compatibility catalog does not claim to cover arbitrary historical epochs.
      */
@@ -153,12 +157,17 @@ public final class FollowupObservationScripts {
         StringBuilder source = new StringBuilder("# Passive compatibility: preserve old observation data without running an old case.\n"
                 + "xfma_observer = { visible = no }\n");
         for (Profile profile : Profile.values()) {
-            for (int epoch : List.of(1, 2)) {
+            for (int epoch : profile == Profile.SPOT ? List.of(1, 2, 3) : List.of(1, 2)) {
                 String type = "xfma_" + profile.scriptKey() + "_e" + epoch + "_observer";
                 if (!type.equals(activeType)) source.append(type).append(" = { visible = no }\n");
             }
         }
+        for (String type : marketEvolutionRecordTypes()) source.append(type).append(" = { visible = no }\n");
         return source.toString();
+    }
+
+    static List<String> marketEvolutionRecordTypes() {
+        return List.of("xfma_market_evolution_day_record", "xfma_market_evolution_coin_record");
     }
 
     private static String actorCondition(Request request) {
@@ -178,6 +187,12 @@ public final class FollowupObservationScripts {
         if (request.caseId() == Profile.SPOT) required += "global_var:xfm_exchange = { has_variable = xfm_next_order_id }\n"
                 + "var:xfma_coin = { story_type = xfm_finance_coin has_variable = xfm_supply_units has_variable = xfm_actual_trades var:xfm_trading_open = 1 var:xfm_listing_state >= 1 var:xfm_listing_state < 5 }\n"
                 + "var:xfma_account.var:xfm_holder = story_owner\n";
+        if (request.caseId() == Profile.MARKET_EVOLUTION) {
+            required += "var:xfma_account = { var:xfm_system_account = 0 var:xfm_holder = scope:xfma_context.story_owner }\n"
+                    + "var:xfma_coin = { story_type = xfm_finance_coin has_variable = xfm_coin_id }\n";
+            if (request.targets().contractId() != null)
+                required += "var:xfma_contract = { story_type = xfm_futures_contract has_variable = xfm_contract_id has_variable = xfm_expiry_day var:xfm_perpetual = 0 }\n";
+        }
         required += "${P}_associations_trigger = yes\n";
         return """
                 # Only xfma_ observation state is written. No product effect is invoked.
@@ -203,6 +218,7 @@ public final class FollowupObservationScripts {
                                 ${P}_bind_effect = yes
                 """ + "if = { limit = {\n" + required + "}\n"
                 + spotArm(request)
+                + (request.caseId() == Profile.MARKET_EVOLUTION ? Evolution.arm() : "")
                 + "set_variable = { name = xfma_ready value = 1 }\n"
                 + "set_variable = { name = xfma_holder_before value = var:xfma_account.var:xfm_holder }\n"
                 + "if = { limit = { exists = var:xfma_holder_before.primary_heir } set_variable = { name = xfma_heir_before value = var:xfma_holder_before.primary_heir } }\n"
@@ -309,7 +325,8 @@ public final class FollowupObservationScripts {
 
     private static String associations(Request request) {
         boolean asset = request.targets().coinId() != null || request.targets().indexId() != null;
-        String assetContract = asset ? "var:xfm_coin = scope:xfma_context.var:xfma_coin\n" : "";
+        String assetContract = asset && request.caseId() != Profile.MARKET_EVOLUTION
+                ? "var:xfm_coin = scope:xfma_context.var:xfma_coin\n" : "";
         String result = "OR = { NOT = { exists = var:xfma_contract } var:xfma_contract = { " + assetContract + " } }\n"
                 + "OR = { NOT = { exists = var:xfma_position } var:xfma_position = {\n"
                 + "story_type = xfm_futures_position var:xfm_contract = scope:xfma_context.var:xfma_contract\n" + assetContract
@@ -320,7 +337,7 @@ public final class FollowupObservationScripts {
             case LIFECYCLE -> "var:xfm_coin = scope:xfma_context.var:xfma_coin\n";
             case INHERITANCE -> "OR = { var:xfm_debtor_account = scope:xfma_context.var:xfma_account var:xfm_creditor_account = scope:xfma_context.var:xfma_account }\n";
             case NEWS_CRISIS -> "var:xfm_debtor_account = scope:xfma_context.var:xfma_account\n";
-            case SPOT, COLD_RELOAD, AI_CAPACITY -> "always = yes\n";
+            case SPOT, COLD_RELOAD, AI_CAPACITY, MARKET_EVOLUTION -> "always = yes\n";
         };
         return result + "OR = { NOT = { exists = var:xfma_debt } var:xfma_debt = { " + debt + " } }\n";
     }
@@ -391,6 +408,7 @@ public final class FollowupObservationScripts {
             case COLD_RELOAD -> cold(request);
             case NEWS_CRISIS -> news(request);
             case AI_CAPACITY -> capacity(request);
+            case MARKET_EVOLUTION -> Evolution.profile(request);
         };
         return "${P}_profile_effect = {\n" + body + "\n}\n";
     }
@@ -552,6 +570,379 @@ public final class FollowupObservationScripts {
                 global_var:xfm_exchange.var:xfm_day >= { value = var:xfma_start_day add = 395 }
                 has_variable = xfma_seen_declared_inventory_readback
                 """);
+    }
+
+    /** Observation records are bounded, passive and never become product accounts or instruments. */
+    private static final class Evolution {
+        private Evolution() { }
+        static String values() {
+            return """
+                    ${P}_next_sample_day_value = { value = var:xfma_last_sample_day add = 1 }
+                    ${P}_end_day_value = { value = var:xfma_start_day add = 35 }
+                    """;
+        }
+        static String arm() {
+            return """
+                    set_variable = { name = xfma_evolution_coin_cursor value = 0 }
+                    set_variable = { name = xfma_evolution_coin_records value = 0 }
+                    set_variable = { name = xfma_evolution_day_records value = 0 }
+                    set_variable = { name = xfma_expiry_source_count value = 0 }
+                    set_variable = { name = xfma_expiry_due_occurred value = 0 }
+                    set_variable = { name = xfma_expiry_closed_readback_occurred value = 0 }
+                    set_variable = { name = xfma_evolution_start_coin_id_available value = 0 }
+                    if = {
+                        limit = { global_var:xfm_exchange = { has_variable = xfm_next_coin_id } }
+                        set_variable = { name = xfma_evolution_start_coin_id value = global_var:xfm_exchange.var:xfm_next_coin_id }
+                        set_variable = { name = xfma_evolution_start_coin_id_available value = 1 }
+                    }
+                    """;
+        }
+        static String profile(Request request) {
+            return """
+                    # All feature flags mean observed witnesses, never automatic feature acceptance.
+                    ${P}_evolution_day_effect = yes
+                    ${P}_evolution_discover_effect = yes
+                    set_variable = { name = xfma_new_ai_issues_observed value = 0 }
+                    set_variable = { name = xfma_new_landless_ai_issues_observed value = 0 }
+                    set_variable = { name = xfma_new_low_tier_ai_issues_observed value = 0 }
+                    set_variable = { name = xfma_new_listings_observed value = 0 }
+                    set_variable = { name = xfma_offer_refunds_observed value = 0 }
+                    set_variable = { name = xfma_fundraise_failures_observed value = 0 }
+                    set_variable = { name = xfma_new_notices_observed value = 0 }
+                    set_variable = { name = xfma_ai_issue_available value = var:xfma_coin_coverage_complete }
+                    set_variable = { name = xfma_listing_available value = var:xfma_coin_coverage_complete }
+                    set_variable = { name = xfma_refund_available value = var:xfma_coin_coverage_complete }
+                    set_variable = { name = xfma_fundraise_failure_available value = var:xfma_coin_coverage_complete }
+                    set_variable = { name = xfma_notice_available value = var:xfma_coin_coverage_complete }
+                    if = { limit = { var:xfma_evolution_start_coin_id_available = 0 } set_variable = { name = xfma_ai_issue_available value = 0 } }
+                    every_in_list = {
+                        variable = xfma_evolution_coins
+                        ${P}_evolution_coin_effect = yes
+                        if = { limit = { OR = { var:xfma_first_issuer_available = 0 var:xfma_first_registration_paid_cents_available = 0 } } scope:xfma_context = { set_variable = { name = xfma_ai_issue_available value = 0 } } }
+                        if = { limit = { var:xfma_latest_listing_state_available = 0 } scope:xfma_context = { set_variable = { name = xfma_listing_available value = 0 } set_variable = { name = xfma_notice_available value = 0 } set_variable = { name = xfma_fundraise_failure_available value = 0 } } }
+                        if = { limit = { var:xfma_latest_listing_state_available = 1 var:xfma_latest_listing_state >= 1 var:xfma_latest_listing_state <= 3 var:xfma_latest_listed_day_available = 0 } scope:xfma_context = { set_variable = { name = xfma_listing_available value = 0 } } }
+                        if = { limit = { var:xfma_subscriptions_available = 0 } scope:xfma_context = { set_variable = { name = xfma_refund_available value = 0 } } }
+                        if = { limit = { var:xfma_new_ai_issue_occurred = 1 } scope:xfma_context = { change_variable = { name = xfma_new_ai_issues_observed add = 1 } } }
+                        if = { limit = { var:xfma_new_ai_issue_occurred = 1 var:xfma_first_issuer_landless = 1 } scope:xfma_context = { change_variable = { name = xfma_new_landless_ai_issues_observed add = 1 } } }
+                        if = { limit = { var:xfma_new_ai_issue_occurred = 1 var:xfma_first_issuer_rank_available = 1 var:xfma_first_issuer_rank <= 2 } scope:xfma_context = { change_variable = { name = xfma_new_low_tier_ai_issues_observed add = 1 } } }
+                        if = { limit = { var:xfma_new_listing_occurred = 1 } scope:xfma_context = { change_variable = { name = xfma_new_listings_observed add = 1 } } }
+                        if = { limit = { var:xfma_refund_readback_occurred = 1 } scope:xfma_context = { change_variable = { name = xfma_offer_refunds_observed add = 1 } } }
+                        if = { limit = { var:xfma_fundraise_failed_occurred = 1 } scope:xfma_context = { change_variable = { name = xfma_fundraise_failures_observed add = 1 } } }
+                        if = { limit = { var:xfma_new_notice_occurred = 1 } scope:xfma_context = { change_variable = { name = xfma_new_notices_observed add = 1 } } }
+                    }
+                    set_variable = { name = xfma_ai_issue_occurred value = 0 }
+                    set_variable = { name = xfma_listing_occurred value = 0 }
+                    set_variable = { name = xfma_refund_occurred value = 0 }
+                    set_variable = { name = xfma_notice_occurred value = 0 }
+                    set_variable = { name = xfma_fundraise_failure_occurred value = 0 }
+                    if = { limit = { var:xfma_new_ai_issues_observed > 0 } set_variable = { name = xfma_ai_issue_occurred value = 1 } }
+                    if = { limit = { var:xfma_new_listings_observed > 0 } set_variable = { name = xfma_listing_occurred value = 1 } }
+                    if = { limit = { var:xfma_offer_refunds_observed > 0 } set_variable = { name = xfma_refund_occurred value = 1 } }
+                    if = { limit = { var:xfma_fundraise_failures_observed > 0 } set_variable = { name = xfma_fundraise_failure_occurred value = 1 } }
+                    if = { limit = { var:xfma_new_notices_observed > 0 } set_variable = { name = xfma_notice_occurred value = 1 } }
+                    ${P}_evolution_expiry_effect = yes
+                    set_variable = { name = xfma_fact_summary_available value = 1 }
+                    """ + once(request, "baseline_inventory_captured", "var:xfma_baseline_inventory_available = 1\n")
+                    + once(request, "availability_summary_recorded", "var:xfma_fact_summary_available = 1\nhas_variable = xfma_coin_coverage_complete\nhas_variable = xfma_ai_issue_available\nhas_variable = xfma_ai_issue_occurred\nhas_variable = xfma_listing_available\nhas_variable = xfma_listing_occurred\nhas_variable = xfma_refund_available\nhas_variable = xfma_refund_occurred\nhas_variable = xfma_notice_available\nhas_variable = xfma_notice_occurred\nhas_variable = xfma_expiry_available\nhas_variable = xfma_expiry_contract_available\nhas_variable = xfma_expiry_positions_available\n")
+                    + once(request, "35_daily_samples_observed", """
+                    var:xfma_baseline_inventory_available = 1
+                    NOT = { has_variable = xfma_sample_gap }
+                    NOT = { has_variable = xfma_record_allocation_failed }
+                    var:xfma_daily_samples >= 35
+                    var:xfma_evolution_day_records = 36
+                    global_var:xfm_exchange.var:xfm_day >= ${P}_end_day_value
+                    global_var:xfm_exchange.var:xfm_day <= ${P}_end_day_value
+                    """);
+        }
+        static String effects() {
+            return dayEffect() + discoverEffect() + coinEffect() + expiryEffect();
+        }
+        private static String copy(String source, String field, String destination) {
+            return "set_variable = { name = " + destination + "_available value = 0 }\nremove_variable = " + destination + "\n"
+                    + "if = { limit = { " + source + " = { has_variable = " + field + " } }\n"
+                    + "set_variable = { name = " + destination + " value = " + source + ".var:" + field + " }\n"
+                    + "set_variable = { name = " + destination + "_available value = 1 }\n}\n";
+        }
+        private static String copies(String source, String prefix, String... fields) {
+            StringBuilder result = new StringBuilder();
+            for (String field : fields) result.append(copy(source, "xfm_" + field, prefix + field));
+            return result.toString();
+        }
+        private static String dayEffect() {
+            return """
+                    ${P}_evolution_day_effect = {
+                        clear_saved_scope = xfma_evolution_day_record
+                        if = {
+                            limit = { exists = var:xfma_evolution_latest_day var:xfma_evolution_latest_day = { var:xfma_financial_day = global_var:xfm_exchange.var:xfm_day } }
+                            var:xfma_evolution_latest_day = { save_scope_as = xfma_evolution_day_record }
+                        }
+                        else_if = {
+                            limit = { var:xfma_evolution_day_records < 36 global_var:xfm_exchange.var:xfm_day <= ${P}_end_day_value }
+                            story_owner = { create_story = { type = xfma_market_evolution_day_record save_scope_as = xfma_evolution_day_record } }
+                            if = {
+                                limit = { exists = scope:xfma_evolution_day_record scope:xfma_evolution_day_record = { story_type = xfma_market_evolution_day_record } }
+                                change_variable = { name = xfma_evolution_day_records add = 1 }
+                                set_variable = { name = xfma_evolution_latest_day value = scope:xfma_evolution_day_record }
+                                add_to_variable_list = { name = xfma_evolution_days target = scope:xfma_evolution_day_record }
+                                scope:xfma_evolution_day_record = {
+                                    set_variable = { name = xfma_observer value = scope:xfma_context }
+                                    set_variable = { name = xfma_record_id value = scope:xfma_context.var:xfma_evolution_day_records }
+                                    set_variable = { name = xfma_financial_day value = global_var:xfm_exchange.var:xfm_day }
+                                    set_variable = { name = xfma_first_native_date value = current_date }
+                    """ + copies("global_var:xfm_exchange", "xfma_first_", "next_coin_id", "registered_coin_count", "pending_coin_count", "active_coin_count", "fee_cents")
+                    + """
+                                }
+                            }
+                            else = { set_variable = { name = xfma_record_allocation_failed value = 1 } debug_log = "XFMAT: TEST FAIL evolution_day_record_allocation_failed" }
+                        }
+                        if = {
+                            limit = { exists = scope:xfma_evolution_day_record }
+                            scope:xfma_evolution_day_record = {
+                                set_variable = { name = xfma_latest_native_date value = current_date }
+                    """ + copies("global_var:xfm_exchange", "xfma_", "next_coin_id", "registered_coin_count", "pending_coin_count", "active_coin_count", "new_listings_today", "fee_cents", "ai_work_today", "ai_decisions_today", "ai_count", "futures_open_positions_count")
+                    + copy("global_var:xfm_exchange.var:xfm_default_fund_account", "xfm_free_cents", "xfma_fund_free_cents")
+                    + """
+                                if = {
+                                    limit = { var:xfma_record_id = 1 }
+                                    scope:xfma_context = {
+                                        set_variable = { name = xfma_baseline_inventory_available value = 0 }
+                                        if = {
+                                            limit = { scope:xfma_evolution_day_record = { var:xfma_first_next_coin_id_available = 1 var:xfma_first_registered_coin_count_available = 1 var:xfma_first_pending_coin_count_available = 1 var:xfma_first_active_coin_count_available = 1 } }
+                                            set_variable = { name = xfma_baseline_inventory_available value = 1 }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    """;
+        }
+        private static String discoverEffect() {
+            return """
+                    ${P}_evolution_discover_effect = {
+                        ordered_in_global_list = {
+                            variable = xfm_coin_registry
+                            limit = { story_type = xfm_finance_coin has_variable = xfm_coin_id var:xfm_coin_id > scope:xfma_context.var:xfma_evolution_coin_cursor scope:xfma_context = { var:xfma_evolution_coin_records < 64 } }
+                            order_by = { value = 0 subtract = var:xfm_coin_id }
+                            max = 64
+                            check_range_bounds = no
+                            if = {
+                            limit = { scope:xfma_context.var:xfma_evolution_coin_records < 64 }
+                            save_scope_as = xfma_evolution_source_coin
+                            clear_saved_scope = xfma_evolution_coin_record
+                            scope:xfma_context.story_owner = { create_story = { type = xfma_market_evolution_coin_record save_scope_as = xfma_evolution_coin_record } }
+                            if = {
+                                limit = { exists = scope:xfma_evolution_coin_record scope:xfma_evolution_coin_record = { story_type = xfma_market_evolution_coin_record } }
+                                scope:xfma_context = {
+                                    change_variable = { name = xfma_evolution_coin_records add = 1 }
+                                    add_to_variable_list = { name = xfma_evolution_coins target = scope:xfma_evolution_coin_record }
+                                    set_variable = { name = xfma_evolution_coin_cursor value = scope:xfma_evolution_source_coin.var:xfm_coin_id }
+                                }
+                                scope:xfma_evolution_coin_record = {
+                                    set_variable = { name = xfma_observer value = scope:xfma_context }
+                                    set_variable = { name = xfma_record_id value = scope:xfma_context.var:xfma_evolution_coin_records }
+                                    set_variable = { name = xfma_coin_source value = scope:xfma_evolution_source_coin }
+                                    set_variable = { name = xfma_first_financial_day value = global_var:xfm_exchange.var:xfm_day }
+                                    set_variable = { name = xfma_first_native_date value = current_date }
+                                    set_variable = { name = xfma_new_ai_issue_occurred value = 0 }
+                                    set_variable = { name = xfma_new_listing_occurred value = 0 }
+                                    set_variable = { name = xfma_refund_readback_occurred value = 0 }
+                                    set_variable = { name = xfma_fundraise_failed_occurred value = 0 }
+                                    set_variable = { name = xfma_new_notice_occurred value = 0 }
+                                    set_variable = { name = xfma_actual_registration_transfer_verified value = 0 }
+                                    set_variable = { name = xfma_subscriptions_max_seen value = 0 }
+                    """ + copies("var:xfma_coin_source", "xfma_first_", "coin_id", "listing_state", "notice_day", "original_issuer", "issuer_account", "service_tier", "entity_type", "bound_entity", "controller", "registration_paid_cents", "minimum_raised_cents")
+                    + issuerFirstSnapshot()
+                    + """
+                                }
+                            }
+                            else = { scope:xfma_context = { set_variable = { name = xfma_record_allocation_failed value = 1 } } debug_log = "XFMAT: TEST FAIL evolution_coin_record_allocation_failed" }
+                            }
+                        }
+                        set_variable = { name = xfma_coin_coverage_complete value = 1 }
+                        if = {
+                            limit = { any_in_global_list = { variable = xfm_coin_registry OR = { NOT = { story_type = xfm_finance_coin } NOT = { has_variable = xfm_coin_id } var:xfm_coin_id > scope:xfma_context.var:xfma_evolution_coin_cursor } } }
+                            set_variable = { name = xfma_coin_coverage_complete value = 0 }
+                        }
+                    }
+                    """;
+        }
+        private static String issuerFirstSnapshot() {
+            return """
+                    set_variable = { name = xfma_first_issuer_available value = 0 }
+                    set_variable = { name = xfma_first_issuer_rank_available value = 0 }
+                    if = {
+                        limit = { exists = var:xfma_first_original_issuer }
+                        set_variable = { name = xfma_first_issuer_available value = 1 }
+                        set_variable = { name = xfma_first_issuer_ai value = 0 }
+                        set_variable = { name = xfma_first_issuer_adult value = 0 }
+                        set_variable = { name = xfma_first_issuer_landless value = 0 }
+                        var:xfma_first_original_issuer = {
+                            save_scope_as = xfma_evolution_issuer
+                            if = { limit = { is_ai = yes } scope:xfma_evolution_coin_record = { set_variable = { name = xfma_first_issuer_ai value = 1 } } }
+                            if = { limit = { is_adult = yes } scope:xfma_evolution_coin_record = { set_variable = { name = xfma_first_issuer_adult value = 1 } } }
+                            if = { limit = { is_landed = no } scope:xfma_evolution_coin_record = { set_variable = { name = xfma_first_issuer_landless value = 1 } set_variable = { name = xfma_first_issuer_rank value = 0 } set_variable = { name = xfma_first_issuer_rank_available value = 1 } } }
+                            else = {
+                    """ + rankBranches()
+                    + """
+                            }
+                            if = { limit = { exists = primary_title } scope:xfma_evolution_coin_record = { set_variable = { name = xfma_first_issuer_primary_title value = scope:xfma_evolution_issuer.primary_title } } }
+                            if = {
+                                limit = { exists = var:xfm_account var:xfm_account = { story_type = xfm_finance_account var:xfm_system_account = 0 var:xfm_holder = scope:xfma_evolution_issuer } }
+                                scope:xfma_evolution_coin_record = { set_variable = { name = xfma_first_issuer_private_account value = scope:xfma_evolution_issuer.var:xfm_account } }
+                            }
+                        }
+                        set_variable = { name = xfma_first_issuer_gold value = var:xfma_first_original_issuer.gold }
+                    }
+                    """ + copies("var:xfma_first_issuer_private_account", "xfma_first_private_", "account_id", "free_cents", "reserved_cents")
+                    + """
+                    if = {
+                        limit = { scope:xfma_context.var:xfma_evolution_start_coin_id_available = 1 var:xfma_first_coin_id_available = 1 var:xfma_first_coin_id > scope:xfma_context.var:xfma_evolution_start_coin_id var:xfma_first_issuer_available = 1 var:xfma_first_issuer_ai = 1 var:xfma_first_issuer_adult = 1 var:xfma_first_registration_paid_cents_available = 1 var:xfma_first_registration_paid_cents > 0 }
+                        set_variable = { name = xfma_new_ai_issue_occurred value = 1 }
+                    }
+                    """;
+        }
+        private static String rankBranches() {
+            StringBuilder source = new StringBuilder();
+            String[] tiers = {"barony", "county", "duchy", "kingdom", "empire"};
+            for (int i = 0; i < tiers.length; i++) source.append("if = { limit = { highest_held_title_tier = tier_").append(tiers[i])
+                    .append(" } scope:xfma_evolution_coin_record = { set_variable = { name = xfma_first_issuer_rank value = ").append(i + 1)
+                    .append(" } set_variable = { name = xfma_first_issuer_rank_available value = 1 } } }\n");
+            source.append("if = { limit = { highest_held_title_tier > tier_empire } scope:xfma_evolution_coin_record = { set_variable = { name = xfma_first_issuer_rank value = 6 } set_variable = { name = xfma_first_issuer_rank_available value = 1 } } }\n");
+            return source.toString();
+        }
+        private static String coinEffect() {
+            return """
+                    ${P}_evolution_coin_effect = {
+                        save_scope_as = xfma_evolution_coin_record
+                        set_variable = { name = xfma_latest_financial_day value = global_var:xfm_exchange.var:xfm_day }
+                        set_variable = { name = xfma_latest_native_date value = current_date }
+                    """ + copies("var:xfma_coin_source", "xfma_latest_", "coin_id", "supply_units", "listing_state", "trading_open", "asset_age", "offer_age", "listed_day", "registration_paid_cents", "actual_raised_cents", "external_raised_cents", "minimum_raised_cents", "issuer_account", "controller", "notice_day", "delisting_age", "termination_requested", "settlement_price_pending", "termination_price_certified", "unresolved_claim_count")
+                    + copies("var:xfma_latest_issuer_account", "xfma_latest_project_", "account_id", "free_cents", "reserved_cents")
+                    + """
+                        set_variable = { name = xfma_subscriptions_available value = 1 }
+                        if = { limit = { NOT = { exists = var:xfma_coin_source } } set_variable = { name = xfma_subscriptions_available value = 0 } }
+                        set_variable = { name = xfma_subscriptions_sampled value = 0 }
+                        set_variable = { name = xfma_subscriptions_held_cents value = 0 }
+                        set_variable = { name = xfma_subscriptions_refunded value = 0 }
+                        clear_variable_list = xfma_subscription_sources
+                        var:xfma_coin_source = {
+                            ordered_in_list = {
+                                variable = xfm_subscriptions
+                                order_by = { value = 0 }
+                                max = 100
+                                check_range_bounds = no
+                                if = {
+                                    limit = { scope:xfma_evolution_coin_record.var:xfma_subscriptions_sampled < 100 }
+                                    save_scope_as = xfma_evolution_subscription
+                                    scope:xfma_evolution_coin_record = {
+                                        add_to_variable_list = { name = xfma_subscription_sources target = scope:xfma_evolution_subscription }
+                                        change_variable = { name = xfma_subscriptions_sampled add = 1 }
+                                    }
+                                    if = {
+                                        limit = { has_variable = xfm_reservation_id has_variable = xfm_subscription_state has_variable = xfm_subscription_paid_cents has_variable = xfm_remaining_cents exists = var:xfm_account var:xfm_account = { has_variable = xfm_account_id has_variable = xfm_free_cents has_variable = xfm_reserved_cents } }
+                                        scope:xfma_evolution_coin_record = { change_variable = { name = xfma_subscriptions_held_cents add = scope:xfma_evolution_subscription.var:xfm_remaining_cents } }
+                                        if = { limit = { var:xfm_subscription_state = 3 var:xfm_remaining_cents = 0 } scope:xfma_evolution_coin_record = { change_variable = { name = xfma_subscriptions_refunded add = 1 } } }
+                                    }
+                                    else = { scope:xfma_evolution_coin_record = { set_variable = { name = xfma_subscriptions_available value = 0 } } }
+                                }
+                                else = { scope:xfma_evolution_coin_record = { set_variable = { name = xfma_subscriptions_available value = 0 } } }
+                            }
+                            if = {
+                                limit = { any_in_list = { variable = xfm_subscriptions NOT = { scope:xfma_evolution_coin_record = { is_target_in_variable_list = { name = xfma_subscription_sources target = prev } } } } }
+                                scope:xfma_evolution_coin_record = { set_variable = { name = xfma_subscriptions_available value = 0 } }
+                            }
+                        }
+                        if = { limit = { var:xfma_subscriptions_sampled < var:xfma_subscriptions_max_seen } set_variable = { name = xfma_subscriptions_available value = 0 } }
+                        else = { set_variable = { name = xfma_subscriptions_max_seen value = var:xfma_subscriptions_sampled } }
+                        if = {
+                            limit = { var:xfma_latest_listing_state_available = 1 var:xfma_latest_listing_state >= 1 var:xfma_latest_listing_state <= 3 var:xfma_latest_listed_day_available = 1 var:xfma_latest_listed_day >= scope:xfma_context.var:xfma_start_day OR = { AND = { var:xfma_first_listing_state_available = 1 var:xfma_first_listing_state = 0 } AND = { scope:xfma_context.var:xfma_evolution_start_coin_id_available = 1 var:xfma_first_coin_id > scope:xfma_context.var:xfma_evolution_start_coin_id } } }
+                            set_variable = { name = xfma_new_listing_occurred value = 1 }
+                        }
+                        if = {
+                            limit = { var:xfma_latest_listing_state_available = 1 var:xfma_latest_listing_state = 6 var:xfma_coin_source = { has_variable = xfm_refund_news_recorded } OR = { var:xfma_first_listing_state = 0 AND = { scope:xfma_context.var:xfma_evolution_start_coin_id_available = 1 var:xfma_first_coin_id > scope:xfma_context.var:xfma_evolution_start_coin_id } } }
+                            set_variable = { name = xfma_fundraise_failed_occurred value = 1 }
+                        }
+                        if = {
+                            limit = { var:xfma_latest_listing_state_available = 1 var:xfma_latest_listing_state = 6 var:xfma_coin_source = { has_variable = xfm_refund_news_recorded } var:xfma_subscriptions_available = 1 var:xfma_subscriptions_sampled > 0 var:xfma_subscriptions_refunded >= var:xfma_subscriptions_sampled var:xfma_subscriptions_refunded <= var:xfma_subscriptions_sampled OR = { var:xfma_first_listing_state = 0 AND = { scope:xfma_context.var:xfma_evolution_start_coin_id_available = 1 var:xfma_first_coin_id > scope:xfma_context.var:xfma_evolution_start_coin_id } } }
+                            set_variable = { name = xfma_refund_readback_occurred value = 1 }
+                        }
+                        if = {
+                            limit = { var:xfma_latest_notice_day_available = 1 var:xfma_latest_notice_day >= scope:xfma_context.var:xfma_start_day OR = { var:xfma_first_notice_day_available = 0 var:xfma_latest_notice_day > var:xfma_first_notice_day } }
+                            set_variable = { name = xfma_new_notice_occurred value = 1 }
+                        }
+                    }
+                    """;
+        }
+        private static String expiryEffect() {
+            return """
+                    ${P}_evolution_expiry_effect = {
+                        set_variable = { name = xfma_expiry_available value = 0 }
+                        set_variable = { name = xfma_expiry_contract_available value = 0 }
+                        set_variable = { name = xfma_expiry_positions_available value = 0 }
+                        set_variable = { name = xfma_expiry_positions_sampled value = 0 }
+                        set_variable = { name = xfma_expiry_open_positions value = 0 }
+                        set_variable = { name = xfma_expiry_pending_positions value = 0 }
+                        set_variable = { name = xfma_expiry_terminal_positions value = 0 }
+                        if = {
+                            limit = { exists = var:xfma_contract var:xfma_contract = { story_type = xfm_futures_contract has_variable = xfm_contract_id has_variable = xfm_perpetual has_variable = xfm_expiry_day var:xfm_perpetual = 0 } }
+                            set_variable = { name = xfma_expiry_contract_available value = 1 }
+                            set_variable = { name = xfma_expiry_positions_available value = 1 }
+                    """ + copies("var:xfma_contract", "xfma_watched_", "contract_id", "perpetual", "expiry_day", "status", "coin")
+                    + copies("var:xfma_watched_coin", "xfma_watched_asset_", "oracle_quality", "oracle_day", "mark_cents", "index_cents", "termination_requested", "settlement_price_pending", "termination_price_certified")
+                    + """
+                            var:xfma_contract = {
+                                ordered_in_list = {
+                                    variable = xfm_positions
+                                    limit = { story_type = xfm_futures_position has_variable = xfm_position_id NOT = { scope:xfma_context = { is_target_in_variable_list = { name = xfma_expiry_position_sources target = prev } } } scope:xfma_context.var:xfma_expiry_source_count < 64 }
+                                    order_by = { value = 0 subtract = var:xfm_position_id }
+                                    max = 64
+                                    check_range_bounds = no
+                                    if = {
+                                        limit = { scope:xfma_context.var:xfma_expiry_source_count < 64 }
+                                        save_scope_as = xfma_evolution_expiry_position
+                                        scope:xfma_context = { add_to_variable_list = { name = xfma_expiry_position_sources target = scope:xfma_evolution_expiry_position } change_variable = { name = xfma_expiry_source_count add = 1 } }
+                                    }
+                                }
+                            }
+                            if = { limit = { exists = var:xfma_position NOT = { is_target_in_variable_list = { name = xfma_expiry_position_sources target = var:xfma_position } } var:xfma_expiry_source_count < 64 } add_to_variable_list = { name = xfma_expiry_position_sources target = var:xfma_position } change_variable = { name = xfma_expiry_source_count add = 1 } }
+                            if = {
+                                limit = { var:xfma_contract = { any_in_list = { variable = xfm_positions NOT = { scope:xfma_context = { is_target_in_variable_list = { name = xfma_expiry_position_sources target = prev } } } } } }
+                                set_variable = { name = xfma_expiry_positions_available value = 0 }
+                            }
+                            if = {
+                                limit = { var:xfma_watched_expiry_day <= global_var:xfm_exchange.var:xfm_day }
+                                set_variable = { name = xfma_expiry_due_occurred value = 1 }
+                            }
+                            every_in_list = {
+                                variable = xfma_expiry_position_sources
+                                if = {
+                                    limit = { story_type = xfm_futures_position has_variable = xfm_position_id var:xfm_contract = scope:xfma_context.var:xfma_contract has_variable = xfm_status has_variable = xfm_last_settled_day }
+                                    scope:xfma_context = { change_variable = { name = xfma_expiry_positions_sampled add = 1 } }
+                                    if = { limit = { var:xfm_status = 0 } scope:xfma_context = { change_variable = { name = xfma_expiry_open_positions add = 1 } } }
+                                    if = { limit = { has_variable = xfm_pending_payment } scope:xfma_context = { change_variable = { name = xfma_expiry_pending_positions add = 1 } } }
+                                    if = { limit = { OR = { var:xfm_status = 2 var:xfm_status = 3 } } scope:xfma_context = { change_variable = { name = xfma_expiry_terminal_positions add = 1 } } }
+                                    if = {
+                                        limit = { OR = { var:xfm_status = 2 var:xfm_status = 3 } var:xfm_pending_kind = 4 NOT = { has_variable = xfm_pending_payment } var:xfm_last_settled_day >= scope:xfma_context.var:xfma_watched_expiry_day var:xfm_long_account = { has_variable = xfm_account_id } var:xfm_short_account = { has_variable = xfm_account_id } var:xfm_long_reservation = { has_variable = xfm_remaining_cents var:xfm_remaining_cents = 0 } var:xfm_short_reservation = { has_variable = xfm_remaining_cents var:xfm_remaining_cents = 0 } }
+                                        scope:xfma_context = {
+                                            set_variable = { name = xfma_expiry_closed_readback_occurred value = 1 }
+                                            if = {
+                                                limit = { NOT = { has_variable = xfma_expiry_closed_position_id } }
+                                                set_variable = { name = xfma_expiry_closed_position value = prev }
+                                                set_variable = { name = xfma_expiry_closed_position_id value = prev.var:xfm_position_id }
+                                                set_variable = { name = xfma_expiry_closed_observed_day value = global_var:xfm_exchange.var:xfm_day }
+                                            }
+                                        }
+                                    }
+                                }
+                                else = { scope:xfma_context = { set_variable = { name = xfma_expiry_positions_available value = 0 } } }
+                            }
+                            if = { limit = { OR = { var:xfma_expiry_positions_sampled = 0 var:xfma_expiry_positions_sampled < var:xfma_expiry_source_count var:xfma_watched_status_available = 0 } } set_variable = { name = xfma_expiry_positions_available value = 0 } }
+                            set_variable = { name = xfma_expiry_available value = var:xfma_expiry_positions_available }
+                        }
+                    }
+                    """;
+        }
     }
 
     private static String once(Request request, String observation, String predicate) {

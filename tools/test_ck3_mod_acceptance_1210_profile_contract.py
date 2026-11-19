@@ -148,5 +148,89 @@ class FlorinProfileContractConsumer(unittest.TestCase):
             self.consume()
 
 
+class FlorinToastProfileContractConsumer(unittest.TestCase):
+    """Versioned real source registry through the unchanged public scope guard."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v4"
+    NEW_SOURCES = (
+        "src/ck3_1210_toast_objects_v1.cpp", "src/ck3_1210_toast_objects_native_v1.cpp",
+        "src/ck3_1210_toast_query_v1.cpp", "src/ck3_1210_toast_query_native_v1.cpp",
+        "src/ck3_1210_toast_scope_identity_v1.cpp", "src/ck3_1210_toast_scope_identity_native_v1.cpp",
+    )
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.registry = builder.read(HERE / "ck3_mod_acceptance_native_profile_expansions.json")
+        cls.contract = builder.select_profile_expansion_contract(cls.registry, cls.CONTRACT_ID)
+        paths = {relative for section in ("production_source_lists", "fixture_sources", "fixture_included_bodies")
+                 for bodies in cls.contract[section].values() for relative in bodies}
+        cls.indexed = {relative: builder.pin(NATIVE / relative) for relative in paths}
+
+    def setUp(self) -> None:
+        FlorinProfileContractConsumer.setUp(self)
+
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+
+    def test_exact_v4_scope_adds_six_runtime_bodies_and_three_owned_fixtures_with_identical_flags(self) -> None:
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v3")
+        self.assertEqual(self.contract["before_flags"], prior["before_flags"])
+        self.assertEqual(self.contract["flag_changes"], prior["flag_changes"])
+        flags = dict(self.contract["before_flags"])
+        flags.update({key: value["after"] for key, value in self.contract["flag_changes"].items()})
+        self.assertEqual(len(flags), 201)
+        self.assertEqual(flags["XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1"], "OFF")
+        self.assertEqual(self.contract["production_TUs"], {
+            "xar_ck3_bridge":268,"xar_ck3_12002_runtime":530,"xar_bridge_protocol":1})
+        old = prior["production_source_lists"]["xar_ck3_12002_runtime"]
+        new = self.contract["production_source_lists"]["xar_ck3_12002_runtime"]
+        self.assertEqual(set(new) - set(old), set(self.NEW_SOURCES))
+        self.assertEqual([relative for relative in new if relative not in self.NEW_SOURCES], old)
+        self.assertEqual(len(self.fixtures), 22)
+        self.assertEqual(len(prior["fixture_sources"]),19)
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"],
+                         "ck3-12004-five-gate-native-profile-v1")
+        self.consume()
+
+    def test_old_v3_cannot_authorize_new_six_translation_units(self) -> None:
+        self.expansion["contract"] = builder.select_profile_expansion_contract(
+            self.registry,"ck3-1210-financial-markets-native-profile-v3")
+        with self.assertRaisesRegex(ValueError,"production TU counts differ"):
+            self.consume()
+
+    def test_missing_or_same_count_substituted_new_runtime_body_is_rejected(self) -> None:
+        sources=self.targets["xar_ck3_12002_runtime"]["sources"]
+        original=copy.deepcopy(sources)
+        sources[:]=[row for row in sources if row["path"]!=self.NEW_SOURCES[0]]
+        with self.assertRaisesRegex(ValueError,"production TU counts differ"):
+            self.consume()
+        sources[:]=original
+        next(row for row in sources if row["path"]==self.NEW_SOURCES[0])["path"]="src/ck3_1210_core.cpp"
+        with self.assertRaisesRegex(ValueError,"production source bodies differ"):
+            self.consume()
+
+    def test_new_tu_keeps_core_macro_and_forbids_per_source_gui_or_hotfix_permissions(self) -> None:
+        definitions=self.source_defines("xar_ck3_12002_runtime",self.NEW_SOURCES[0])
+        definitions.remove({"define":"XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1"})
+        with self.assertRaisesRegex(ValueError,"per-TU present/absent macros differ"):
+            self.consume()
+        definitions.append({"define":"XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1"})
+        for leaked in ("XAR_CK3_ENABLE_1210_GUI_CONTROL_V1=1","XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1=0"):
+            with self.subTest(leaked=leaked):
+                definitions.append({"define":leaked})
+                with self.assertRaisesRegex(ValueError,"per-TU present/absent macros differ"):
+                    self.consume()
+                definitions.pop()
+
+    def test_new_fixture_receipt_and_real_owned_header_pin_cannot_be_omitted(self) -> None:
+        original=self.fixtures.pop()
+        with self.assertRaisesRegex(ValueError,"exact reviewed finite target set differs"):
+            self.consume()
+        self.fixtures.append(original)
+        self.expansion["actual"]["fixture_source_bindings"].pop("tests/toast_owned_fixture_v1.hpp")
+        with self.assertRaisesRegex(ValueError,"direct/included body pins differ"):
+            self.consume()
+
+
 if __name__ == "__main__":
     unittest.main()

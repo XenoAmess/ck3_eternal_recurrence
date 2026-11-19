@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include <array>
 #include <cstring>
@@ -260,7 +261,11 @@ int wmain(int argc, wchar_t **argv) {
   const auto all_six = BindThreadRuntimeImage(1,kExecutableSha256,six);
   CHECK(all_six.exact_build_admitted && all_six.permitted_executor_quinary == six[4] && all_six.permitted_executor_senary == six[5]);
   CHECK(!BindThreadRuntimeImage(1,"wrong",six).exact_build_admitted && !BindThreadRuntimeImage(0,kExecutableSha256,six).exact_build_admitted);
-  const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 7> too_many{&ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1};
+  const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 7> seven{&ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1};
+  const auto all_seven=BindThreadRuntimeImage(1,kExecutableSha256,seven);
+  CHECK(all_seven.exact_build_admitted && all_seven.permitted_executor_septenary==seven[6]);
+  CHECK(!BindThreadRuntimeImage(1,hotfix26757580::kExecutableSha256,seven).exact_build_admitted);
+  const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 8> too_many{&ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1, &ExecuteCoreFrameMailboxV1};
   const auto denied = BindThreadRuntimeImage(1,kExecutableSha256,too_many);
   CHECK(!denied.exact_build_admitted && !denied.executor_submission_enabled && denied.permitted_executor == nullptr &&
       denied.permitted_executor_quinary == nullptr && denied.permitted_executor_senary == nullptr);

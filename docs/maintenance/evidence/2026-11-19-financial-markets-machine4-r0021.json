@@ -1,0 +1,226 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "actual_closure": {
+    "schema": "ck3-financial-original-scene-closure-v1",
+    "machine_id": "4-8e1c2f1861",
+    "at_utc": "2026-11-19T06:12:22.849914+00:00",
+    "run_id": "4-8e1c2f1861--financial-markets--R0021",
+    "host_pid": 7752,
+    "host_actual_original_exit_code": 0,
+    "game_pid": 20856,
+    "game_birth_filetime": "134395395825978194",
+    "game_actual_exit_code": 0,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "native_cleanup_proven": true,
+    "native_contract_errors": [],
+    "native_final_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "native_control_files_absent": {
+      "C:\\workspace\\ck3-market-live-20261119n\\managed-states\\financial-spot23\\state\\control\\ck3.json": true,
+      "C:\\workspace\\ck3-market-live-20261119n\\managed-states\\financial-spot23\\state\\control\\watchdog-3d9838dc579a46cdb989d35c0d44f515.ready.json": true,
+      "C:\\workspace\\ck3-market-live-20261119n\\managed-states\\financial-spot23\\state\\control\\ck3.watchdog_error": true,
+      "C:\\workspace\\ck3-market-live-20261119n\\managed-states\\financial-spot23\\state\\control\\unsafe-cleanup.json": true
+    },
+    "host_finished_at": "2026-11-19T05:59:41.150376+00:00",
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true,
+    "host_error": null,
+    "public_run_actual_exit_code": 2,
+    "launcher_exit_code": 0,
+    "public_allocate_actual_exit_code": 0,
+    "keeper_actual_exit_code": 1,
+    "keeper_last_sequence": 15428,
+    "keeper_thread_exited": true,
+    "keeper_entry_error_preserved": "RuntimeError('screen task checkout has current tracked or untracked changes')",
+    "case_error_preserved": "ValueError: Original screen keeper no longer owns this held scene",
+    "normal_close_error_preserved": "ValueError: Original screen keeper no longer owns this held scene",
+    "lease_renewed": false,
+    "typed_sdk_exit_fact_claim_observer_originals_verified": true,
+    "original_normal_close_qualified": false,
+    "business_pass": false,
+    "financial_actions": 0,
+    "new_game_days": 0,
+    "physical_saves": 0,
+    "cleanup_steps": [
+      {
+        "id": "root-stopped-keeper-normal-exit-01-001",
+        "tool": "ck3_query_normal_exit_context_v1",
+        "kind": "tool",
+        "started_at": "2026-11-19T05:59:19.513715+00:00",
+        "finished_at": "2026-11-19T05:59:24.800549+00:00"
+      },
+      {
+        "id": "root-stopped-keeper-normal-exit-01-002",
+        "tool": "ck3_request_normal_exit_v1",
+        "kind": "tool",
+        "started_at": "2026-11-19T05:59:25.322285+00:00",
+        "finished_at": "2026-11-19T05:59:35.121555+00:00"
+      },
+      {
+        "id": "root-stopped-keeper-normal-exit-01-003",
+        "tool": "ck3_observe_normal_exit_v1",
+        "kind": "tool",
+        "started_at": "2026-11-19T05:59:35.386234+00:00",
+        "finished_at": "2026-11-19T05:59:37.856568+00:00"
+      },
+      {
+        "id": "root-stopped-keeper-normal-exit-01-finish",
+        "tool": null,
+        "kind": "finish_hold",
+        "started_at": "2026-11-19T05:59:40.514274+00:00",
+        "finished_at": "2026-11-19T05:59:40.526624+00:00"
+      }
+    ],
+    "originals": {
+      "frozen_argv": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\frozen-argv.json",
+        "bytes": 184917,
+        "sha256": "d432f4e3d017a05d946c27cde92ecd96f32f74146beee5b47b1d194ad51631c5"
+      },
+      "native_report": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\native-report.json",
+        "bytes": 566938,
+        "sha256": "313b09693ccc815e1df6a48d6c7fe4d85a8d7d62bd98771d7f5034680e8ae2dd"
+      },
+      "session_log": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\native-report.session.log",
+        "bytes": 8046,
+        "sha256": "c2a409ec6ed9676c135444075e54ef66a59c51a30753d32417661ebd696f1276"
+      },
+      "host_exit": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\host-original-process-exit.json",
+        "bytes": 240,
+        "sha256": "8a6e68a978977cf63846366a91047b4b3c456445712916a05215b256ecf232b0"
+      },
+      "run_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT23-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1500,
+        "sha256": "4caee05591be656add9e77d2f5f51abd23084195f58a661dd2a3c02043e20371"
+      },
+      "allocate_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-spot23\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1809,
+        "sha256": "4482e5696fb2ca14dc8fe5c8bba5c339c8e53fa7128bcb71cab9a612820befbd"
+      },
+      "keeper_report": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\keepers\\a99\\report.json",
+        "bytes": 515,
+        "sha256": "824a950111551bb5fb765a8fd7bc5eba167cab3f6e99daa7aa101204660ac14b"
+      },
+      "keeper_parent_exit": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\keeper-actual-parent-exit.json",
+        "bytes": 674,
+        "sha256": "79901b629cc4fe030253e539878b18b2a2ddb8663d288ea4608cb9a702c8c148"
+      },
+      "keeper_stop": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\keepers\\a99\\ROOT_STOP_REQUIRED.json",
+        "bytes": 239,
+        "sha256": "9263c865b242bba9e83bdf94c3f7d7b5bab75d876b4fc4df9f24bb1a798544ff"
+      },
+      "entry_result": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\case-output\\entry-run-result.json",
+        "bytes": 68491,
+        "sha256": "e67bee25101fbf8fdbbcaaf9d1dedd7f78d985a21e10211f0576b2bb781dfa8f"
+      },
+      "case_error": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\case-output\\case-error-preserved.json",
+        "bytes": 205,
+        "sha256": "22033b8989e143a86dba772be82013200c5f6e259156f428c17125c8d4200542"
+      },
+      "normal_close_error": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\case-output\\normal-close-error-preserved.json",
+        "bytes": 109,
+        "sha256": "ecc00c0f01267642b982458f458b0378b5bc5e98b061324dc3dfda926fe914a3"
+      },
+      "retained_exit": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\case-output\\actual-retained-handle-os-exit.json",
+        "bytes": 230,
+        "sha256": "eb02209ca3aa3de4c8f67d71829fb2dac1b285d0287d2fdfc43c8cd70150c0ac"
+      },
+      "cleanup_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EXIT-stopped-keeper-R21-02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1353,
+        "sha256": "1d4c46ed0ea8745a9cb8f12008688a1456041e18b633ea0ef09823c0dc2a2495"
+      },
+      "cleanup_result": {
+        "path": "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021\\case-output\\root-stopped-keeper-normal-exit-01-result.json",
+        "bytes": 4583,
+        "sha256": "d6c3f934d8696ed7834d28d9f9fa36e30e8e95ed2a268606dc28d2e5ae4f8084"
+      }
+    },
+    "public_predecessor_route": {
+      "mode": "previous-shared-managed-session"
+    },
+    "public_consumer": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 362104,
+      "sha256": "bfb5e284f07094c06d30829a641dfd27f1b0dd5c899f0dae31152b0e5e03a2d7"
+    },
+    "latest_physical_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0020\\spot22-probe-cold-save01\\ARCHIVE.actual.json",
+      "bytes": 7495,
+      "sha256": "d52a8f1a71accdcb8c7004025a95aa1b7e88606336c6ff4d291377381105b5f0"
+    },
+    "note": "Normal Game/Native/Host resource closure; original keeper failure and business failure remain. No keeper0/PASS inferred.",
+    "bus_snapshot_before_release": {
+      "path": "C:\\workspace\\.codex-task-bus\\tasks\\ck3-financial-market-core-a99.json",
+      "bytes": 582,
+      "sha256": "69bb0d23a082b20676fe208ea974dcfdf744830a148c0f53838e3a98f156a513"
+    }
+  },
+  "actual_release": {
+    "machine_id": "4-8e1c2f1861",
+    "run_id": "4-8e1c2f1861--financial-markets--R0021",
+    "closure": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0021-closure-before-release.actual.json",
+      "bytes": 8008,
+      "sha256": "8a52d02a3010a9869fa66edc5ce5865beb01cf48b6ad932224e6b6e93eae6dad"
+    },
+    "actual_release_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot23\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1481,
+      "sha256": "4e3a755ce5110cdcad9a04b44113b8316f4ae1fbe2fb41d388de4c6e6ce96c87"
+    },
+    "actual_release": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot23\\stdout.log",
+      "bytes": 1816,
+      "sha256": "20aae967ee88d02500eec63ac292720f6c13f13eeb9e5c7b47ba94ab6c4db804"
+    },
+    "actual_public_closed_lease": true,
+    "actual_release_state": "waiting",
+    "actual_release_sequence": 15431,
+    "actual_resources": [],
+    "keeper_actual_exit_code": 1,
+    "keeper_failure_preserved": true,
+    "business_pass": false,
+    "allocation_executed": false,
+    "next_arguments": [
+      "--previous-live",
+      "C:\\workspace\\ck3-market-live-20261119n\\live\\4-8e1c2f1861--financial-markets--R0021",
+      "--previous-keeper",
+      "C:\\workspace\\ck3-market-live-20261119n\\keepers\\a99",
+      "--previous-release",
+      "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot23\\stdout.log"
+    ],
+    "previous_failure_close_required": false
+  },
+  "original_closure": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0021-closure-before-release.actual.json",
+    "bytes": 8008,
+    "sha256": "8a52d02a3010a9869fa66edc5ce5865beb01cf48b6ad932224e6b6e93eae6dad"
+  },
+  "original_release": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0021-release-predecessor-readback.actual.json",
+    "bytes": 1420,
+    "sha256": "f588d484391eaf133698d3bb5b10d41fb82bcae317ae226879830fc64156a320"
+  },
+  "latest_physical_save_remains_R0020": true,
+  "whole_product_business_pass": false
+}

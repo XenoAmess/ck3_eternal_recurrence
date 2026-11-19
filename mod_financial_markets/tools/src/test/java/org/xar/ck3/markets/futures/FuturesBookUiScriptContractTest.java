@@ -81,7 +81,10 @@ final class FuturesBookUiScriptContractTest {
         "scripted_triggers/xfm_market_otc_triggers.txt",
         "script_values/xfm_market_ui_otc_values.txt",
         "scripted_effects/xfm_market_ui_otc_targets.txt",
-        "scripted_effects/xfm_market_ui_news.txt");
+        "scripted_effects/xfm_market_ui_news.txt",
+        "scripted_effects/xfm_finance_legacy.txt",
+        "scripted_effects/xfm_spot_maker.txt",
+        "scripted_effects/xfm_spot_history.txt");
     public static void main(String[] ignored) throws Exception {
         int passed = 0;
         for (var method : FuturesBookUiScriptContractTest.class.getDeclaredMethods()) {
@@ -639,6 +642,84 @@ final class FuturesBookUiScriptContractTest {
         assertEquals(before, m.actor.vars); assertFalse(m.vm.scopes.containsKey("xfm_ui_item"));
     }
 
+    @Test void failedAccountFactoryCannotFreezeOrImportAnotherBeneficiarysLegacyAssetsAndRetryIsIdempotent() throws IOException {
+        Vm v = vm(); Node a = v.node("legacy-owner-a", ""), b = v.node("legacy-owner-b", "");
+        Node accountA = v.account("legacy-account-a", a, 777); a.put("xfm_account", accountA);
+        Node debtA = v.node("legacy-unrelated-debt-a", "xfm_debt_claim"); debtA.put("xfm_debtor_account", accountA); debtA.put("xfm_outstanding_cents", 345); accountA.list("xfm_debts").add(debtA);
+        Node migratedCoin = spotCoin(v, "legacy-migrated-coin"); migratedCoin.put("xfm_coin_id", 55); migratedCoin.put("xfm_supply_units", 200); migratedCoin.put("xfm_legacy_accounted_units", 0);
+        Node legacyCoin = v.node("legacy-original-coin", "xfm_a0_coin"); legacyCoin.put("xfm_finance_migrated_coin", migratedCoin);
+        Node legacyPosition = v.node("legacy-original-position", "xfm_a0_position"); legacyPosition.put("xfm_coin", legacyCoin);
+        legacyPosition.put("xfm_frozen_beneficiary", b); legacyPosition.put("xfm_quantity", 200);
+        v.scopes.put("xfm_account", accountA); v.failType = "xfm_finance_account"; BigDecimal cash = v.cashStock();
+        v.run("xfm_finance_ensure_account_effect", b);
+        assertFalse(v.scopes.containsKey("xfm_account")); assertFalse(b.vars.containsKey("xfm_account"));
+        v.scopes.put("xfm_account", accountA); v.run("xfm_finance_import_a0_position_effect", legacyPosition);
+        assertFalse(v.scopes.containsKey("xfm_account")); assertEquals(0, v.created("xfm_finance_position"));
+        assertEquals(0, accountA.integer("xfm_account_frozen")); assertEquals(0, accountA.integer("xfm_inheritance_state"));
+        assertTrue(accountA.list("xfm_positions").isEmpty()); assertEquals(777, accountA.integer("xfm_free_cents"));
+        assertEquals(List.of(debtA), accountA.list("xfm_debts")); assertSame(accountA, debtA.ref("xfm_debtor_account")); assertEquals(345, debtA.integer("xfm_outstanding_cents"));
+        assertFalse(legacyPosition.vars.containsKey("xfm_finance_imported")); assertEquals(0, migratedCoin.integer("xfm_legacy_accounted_units")); assertEquals(1, v.exchange.integer("xfm_a0_import_errors")); assertEquals(cash, v.cashStock());
+        v.failType = ""; v.run("xfm_finance_import_a0_position_effect", legacyPosition);
+        Node accountB = b.ref("xfm_account"), imported = legacyPosition.ref("xfm_finance_migrated_position");
+        assertNotNull(accountB); assertNotSame(accountA, accountB); assertSame(b, accountB.ref("xfm_holder")); assertSame(accountB, imported.ref("xfm_account"));
+        assertEquals(1, accountB.integer("xfm_account_frozen")); assertEquals(2, accountB.integer("xfm_inheritance_state"));
+        assertEquals(200, imported.integer("xfm_quantity_units")); assertEquals(200, migratedCoin.integer("xfm_legacy_accounted_units"));
+        assertEquals(1, legacyPosition.integer("xfm_finance_imported")); assertEquals(1, v.created("xfm_finance_position"));
+        v.run("xfm_finance_import_a0_position_effect", legacyPosition);
+        assertEquals(200, imported.integer("xfm_quantity_units")); assertEquals(200, migratedCoin.integer("xfm_legacy_accounted_units"));
+        assertEquals(1, v.created("xfm_finance_position")); assertEquals(cash, v.cashStock()); assertSame(a, accountA.ref("xfm_holder"));
+    }
+    @Test void actualMakerFollowsPoliticalControllerAndCannotFillItsNewControllersOwnOrder() throws IOException {
+        Vm v = vm(); Node a = v.node("maker-controller-a", ""), b = v.node("maker-controller-b", ""), external = v.node("maker-independent-buyer", "");
+        Node coin = spotCoin(v, "political-maker-coin"); coin.put("xfm_coin_id", 55); coin.put("xfm_last_price_cents", 100); coin.put("xfm_entity_type", 4); coin.put("xfm_controller", a);
+        Node title = v.node("maker-bound-title", "landed_title"); title.links.put("holder", a); coin.put("xfm_bound_entity", title);
+        Node issuer = v.account("maker-project", a, 0), maker = v.account("maker-dedicated", a, 1000);
+        issuer.put("xfm_system_account", 1); maker.put("xfm_system_account", 1); issuer.put("xfm_legal_entity", coin); maker.put("xfm_legal_entity", coin);
+        coin.put("xfm_issuer_account", issuer); coin.put("xfm_market_maker_account", maker);
+        Node inventory = spotPosition(v, "maker-inventory", maker, coin, 300);
+        v.run("xfm_spot_maker_effect", coin);
+        assertEquals(2, maker.list("xfm_orders").size());
+        Node ask = maker.list("xfm_orders").stream().filter(o -> o.integer("xfm_side") == 2).findFirst().orElseThrow();
+        assertEquals(1, ask.integer("xfm_is_maker_quote")); assertEquals(105, ask.integer("xfm_limit_cents")); assertEquals(100, inventory.integer("xfm_reserved_units"));
+        title.links.put("holder", b); v.run("xfm_issuer_refresh_controller_effect", coin);
+        assertSame(b, coin.ref("xfm_controller")); assertSame(b, maker.ref("xfm_holder")); assertSame(b, maker.ref("xfm_beneficial_owner")); assertSame(b, issuer.ref("xfm_beneficial_owner"));
+        Node own = v.account("maker-controller-b-private", b, 1000); b.put("xfm_account", own);
+        BigDecimal cash = v.cashStock(); Node ownBuy = spotSubmit(v, own, coin, 1, 1, 105, false);
+        assertNotNull(ownBuy); assertEquals(0, ownBuy.integer("xfm_filled_lots")); assertEquals(1, ownBuy.integer("xfm_remaining_lots"));
+        assertEquals(1, ask.integer("xfm_status")); assertEquals(1, ask.integer("xfm_remaining_lots")); assertTrue(v.spotExecutionOrderIds.isEmpty());
+        assertEquals(300, inventory.integer("xfm_quantity_units")); assertEquals(0, v.exchange.integer("xfm_fee_cents")); assertEquals(cash, v.cashStock());
+        Node outsider = v.account("maker-independent-wallet", external, 1000); external.put("xfm_account", outsider);
+        cash = v.cashStock(); Node externalBuy = spotSubmit(v, outsider, coin, 1, 1, 105, false);
+        assertNotNull(externalBuy); assertEquals(1, externalBuy.integer("xfm_filled_lots")); assertEquals(2, ask.integer("xfm_status"));
+        assertEquals(List.of(ask.integer("xfm_order_id")), v.spotExecutionOrderIds); assertEquals(200, inventory.integer("xfm_quantity_units"));
+        assertEquals(0, ownBuy.integer("xfm_filled_lots")); assertEquals(1, ownBuy.integer("xfm_remaining_lots")); assertEquals(cash, v.cashStock());
+    }
+    @Test void makerCashWithdrawalUsesThirtyTwoRealBoundedTransfersThenTheActualDailyPendingBranchExactlyOnce() throws IOException {
+        Vm v = vm(); Node owner = v.node("large-maker-controller", ""), coin = spotCoin(v, "large-maker-coin"); coin.put("xfm_controller", owner);
+        Node maker = v.account("large-maker-wallet", owner, 3_200_000_123L), issuer = v.account("large-maker-project", owner, 7);
+        maker.put("xfm_system_account", 1); issuer.put("xfm_system_account", 1);
+        maker.put("xfm_legal_entity", coin); issuer.put("xfm_legal_entity", coin);
+        coin.put("xfm_market_maker_account", maker); coin.put("xfm_issuer_account", issuer);
+        BigDecimal cash = v.cashStock(); v.run("xfm_spot_withdraw_maker_effect", coin);
+        assertEquals(123, maker.integer("xfm_free_cents")); assertEquals(3_200_000_007L, issuer.integer("xfm_free_cents"));
+        assertEquals(1, coin.integer("xfm_maker_withdrawn")); assertEquals(1, coin.integer("xfm_maker_withdrawal_pending"));
+        assertEquals(32, v.effectCalls.getOrDefault("xfm_finance_transfer_effect", 0));
+        assertEquals(32, v.cashTransferRequests.size()); assertTrue(v.cashTransferRequests.stream().allMatch(n -> n == 100_000_000L));
+        assertEquals(cash, v.cashStock());
+        // Use the unchanged actual if Entry inside the registry loop, not an authored replacement predicate/body.
+        List<Block> loops = v.definition("xfm_spot_daily_effect").named("every_in_global_list").stream().map(e -> (Block)e.value())
+                .filter(b -> atom(field(b, "variable")).equals("xfm_coin_registry")).toList();
+        assertEquals(1, loops.size()); List<Entry> originalBranches = loops.getFirst().named("if"); assertEquals(1, originalBranches.size());
+        Block actualPendingBranch = new Block(originalBranches); int withdrawalsBefore = v.effectCalls.getOrDefault("xfm_spot_withdraw_maker_effect", 0);
+        v.execute(actualPendingBranch, new Frame(coin, v.exchange, v.exchange));
+        assertEquals(withdrawalsBefore + 1, v.effectCalls.getOrDefault("xfm_spot_withdraw_maker_effect", 0));
+        assertEquals(0, maker.integer("xfm_free_cents")); assertEquals(3_200_000_130L, issuer.integer("xfm_free_cents")); assertEquals(0, coin.integer("xfm_maker_withdrawal_pending"));
+        assertEquals(33, v.effectCalls.getOrDefault("xfm_finance_transfer_effect", 0)); assertEquals(123L, v.cashTransferRequests.getLast().longValue()); assertEquals(cash, v.cashStock());
+        v.execute(actualPendingBranch, new Frame(coin, v.exchange, v.exchange));
+        assertEquals(withdrawalsBefore + 1, v.effectCalls.getOrDefault("xfm_spot_withdraw_maker_effect", 0));
+        assertEquals(33, v.effectCalls.getOrDefault("xfm_finance_transfer_effect", 0)); assertEquals(0, maker.integer("xfm_free_cents")); assertEquals(3_200_000_130L, issuer.integer("xfm_free_cents")); assertEquals(cash, v.cashStock());
+    }
+
     private static Node spotCoin(Vm v, String id) {
         Node c = v.node(id, "xfm_finance_coin"); c.put("xfm_listing_state", 1); c.put("xfm_trading_open", 1);
         c.put("xfm_controller", v.node(id + "-controller", "")); c.put("xfm_open_orders_count", 0); c.put("xfm_supply_units", 0); return c;
@@ -703,6 +784,9 @@ final class FuturesBookUiScriptContractTest {
         final Map<String, Block> program; final Map<String, Node> nodes = new LinkedHashMap<>();
         final Map<String, Datum> scopes = new HashMap<>();
         final Map<String, List<Node>> globalLists = new HashMap<>();
+        final Map<String, List<Node>> temporaryLists = new HashMap<>();
+        final Map<String, Integer> effectCalls = new HashMap<>();
+        final List<Long> cashTransferRequests = new ArrayList<>();
         final Node exchange, custodian;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries;
         final List<Long> spotExecutionOrderIds = new ArrayList<>(); int maxSpotBookEntries, maxSpotMatchIterations;
@@ -750,7 +834,7 @@ final class FuturesBookUiScriptContractTest {
         long integerValue(String value, Node node) { return value(program.get(value), new Frame(node, null, node), BigDecimal.ZERO).longValueExact(); }
         boolean validGui(String name, Node node) { return test(definition(name).block("is_valid"), new Frame(node, null, node)); }
         void runGui(String name, Node node) { if (!validGui(name, node)) throw new IllegalArgumentException("invalid GUI action"); execute(definition(name).block("effect"), new Frame(node, null, node)); }
-        void run(String name, Node node) { trace.clear(); execute(definition(name), new Frame(node, null, node)); if (Boolean.getBoolean("xfm.subset.trace") && name.equals("xfm_futures_submit_effect") && node.integer("xfm_futures_result") == 0) System.out.println("REJECT reason=" + node.integer("xfm_futures_reason") + " " + trace); }
+        void run(String name, Node node) { trace.clear(); temporaryLists.clear(); execute(definition(name), new Frame(node, null, node)); if (Boolean.getBoolean("xfm.subset.trace") && name.equals("xfm_futures_submit_effect") && node.integer("xfm_futures_result") == 0) System.out.println("REJECT reason=" + node.integer("xfm_futures_reason") + " " + trace); }
         Block definition(String name) { Block b = program.get(name); if (b == null) throw new IllegalArgumentException("unknown definition " + name); return b; }
         Datum resolve(String text, Frame f) {
             try { return new NumberDatum(new BigDecimal(text)); } catch (NumberFormatException ignored) { /* scope/value token */ }
@@ -854,6 +938,7 @@ final class FuturesBookUiScriptContractTest {
                 if (k.equals("clear_saved_scope")) { scopes.remove(atom(e.value())); continue; }
                 if (k.equals("remove_variable")) { f.here().vars.remove(atom(e.value())); continue; }
                 if (k.equals("clear_variable_list")) { f.here().list(atom(e.value())).clear(); continue; }
+                if (k.equals("add_to_temporary_list")) { temporaryLists.computeIfAbsent(atom(e.value()), ignored -> new ArrayList<>()).add(f.here()); continue; }
                 if (k.equals("while")) {
                     Block a = (Block)e.value(); int bound = 0;
                     if (!a.named("count").isEmpty()) {
@@ -902,10 +987,12 @@ final class FuturesBookUiScriptContractTest {
                     continue;
                 }
                 if (k.equals("every_in_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {
-                    Block a = (Block)e.value(); String name = atom(field(a, "variable"));
-                    List<Node> list = k.equals("random_in_global_list") ? List.copyOf(globalLists.getOrDefault(name, List.of())) : list(f.here(), name);
+                    Block a = (Block)e.value(); String selector = a.named("variable").isEmpty() ? "list" : "variable";
+                    String name = atom(field(a, selector));
+                    List<Node> list = k.equals("random_in_global_list") ? List.copyOf(globalLists.getOrDefault(name, List.of()))
+                            : selector.equals("list") ? List.copyOf(temporaryLists.getOrDefault(name, List.of())) : list(f.here(), name);
                     for (Node n : list) if (test(a.block("limit"), f.enter(n))) {
-                        execute(without(without(a, "variable"), "limit"), f.enter(n)); if (!k.equals("every_in_list")) break;
+                        execute(without(without(a, selector), "limit"), f.enter(n)); if (!k.equals("every_in_list")) break;
                     }
                     continue;
                 }
@@ -914,7 +1001,9 @@ final class FuturesBookUiScriptContractTest {
                 if (k.equals("xfm_oracle_record_trade_effect")) continue; // independent oracle sampler, outside cash/coin settlement subset
                 if (k.equals("xfm_spot_record_trade_effect")) spotExecutionOrderIds.add(((Node)scopes.get("xfm_spot_resting")).integer("xfm_order_id"));
                 if (e.value() instanceof Block child) { Datum scope = resolve(k, f); if (!(scope instanceof Node n)) throw new IllegalArgumentException("missing effect scope " + k); execute(child, f.enter(n)); continue; }
-                execute(definition(k), f);
+                effectCalls.merge(k, 1, Integer::sum);
+                if (k.equals("xfm_finance_transfer_effect")) cashTransferRequests.add(f.here().integer("xfm_request_cents"));
+                execute(definition(k), f); // Observe calls only; execute the unchanged actual production body.
             }
         }
     }

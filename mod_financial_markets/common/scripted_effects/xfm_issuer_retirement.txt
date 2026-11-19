@@ -1,0 +1,19 @@
+﻿# Coin scope. AI policy abandons only a never-listed, actually refunded empty project.
+# The existing public controller action still checks current political authority and burns
+# real unreserved issuer/founder inventory. It cannot cancel player projects or confiscate holders.
+xfm_issuer_ai_retire_failed_offer_effect = {
+ if = {
+  limit = { xfm_registry_failed_ai_offer_trigger = yes }
+  save_scope_as = xfm_registry_failed_coin
+  var:xfm_controller = {
+   clear_saved_scope = xfm_registry_previous_selected
+   if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { save_scope_as = xfm_registry_previous_selected } }
+   set_variable = { name = xfm_selected_coin value = scope:xfm_registry_failed_coin }
+   xfm_issuer_cancel_unallocated_supply_effect = yes
+   if = { limit = { exists = scope:xfm_registry_previous_selected } set_variable = { name = xfm_selected_coin value = scope:xfm_registry_previous_selected } }
+   else = { remove_variable = xfm_selected_coin }
+   clear_saved_scope = xfm_registry_previous_selected
+  }
+  clear_saved_scope = xfm_registry_failed_coin
+ }
+}

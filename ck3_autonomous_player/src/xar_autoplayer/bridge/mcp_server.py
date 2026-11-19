@@ -4507,6 +4507,11 @@ def create_server(
         """Open the fixed exact .3 Decisions HUD button once, with later native visibility proof."""
         return service.open_ingame_decisions_v1(expected_revision=expected_revision)
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_current_interface_toast_v1(expected_revision: ScriptedWidgetDecimalV1) -> dict[str, object]:
+        """Read exact Florin toast text/visibility and canonical named scope identities; no recipient/news delivery claim or input."""
+        return dict(service.query_current_interface_toast_v1(expected_revision=int(expected_revision)))
+
     @server.tool()
     def ck3_query_scripted_widget_controls_v1(
         root_name: ScriptedWidgetRootV1, expected_revision: ScriptedWidgetDecimalV1,
@@ -5361,6 +5366,7 @@ def create_server(
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_inspect_gui_window_tree_v1"
     )
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_current_interface_toast_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_query_scripted_widget_controls_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_activate_scripted_widget_control_v1")
     _forbid_unknown_tool_arguments_v1(

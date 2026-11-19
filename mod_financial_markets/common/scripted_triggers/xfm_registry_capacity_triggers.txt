@@ -1,0 +1,94 @@
+﻿# Missing optional zero counters are legacy-compatible; positive/malformed rights are never waived.
+xfm_registry_capacity_ready_trigger = {
+ has_variable = xfm_resident_coin_count
+ has_variable = xfm_registered_coin_count
+ var:xfm_registered_coin_count = xfm_registry_registered_floor_value
+ var:xfm_resident_coin_count >= 0
+ var:xfm_resident_coin_count = xfm_registry_resident_floor_value
+ var:xfm_registered_coin_count >= var:xfm_resident_coin_count
+}
+xfm_registry_empty_account_trigger = {
+ story_type = xfm_finance_account
+ has_variable = xfm_free_cents has_variable = xfm_reserved_cents
+ var:xfm_free_cents = 0 var:xfm_reserved_cents = 0
+ var:xfm_account_frozen = 0
+ OR = { NOT = { has_variable = xfm_inheritance_state } var:xfm_inheritance_state = 0 }
+ OR = { NOT = { has_variable = xfm_futures_pending_count } var:xfm_futures_pending_count = 0 }
+ NOT = { any_in_list = { variable = xfm_reservations var:xfm_remaining_cents > 0 } }
+}
+xfm_registry_no_external_obligations_trigger = {
+ story_type = xfm_finance_coin
+ var:xfm_trading_open = 0
+ var:xfm_unpaid_debt_cents = 0 var:xfm_promises_due_cents = 0
+ var:xfm_maintenance_arrears_cents = 0 var:xfm_settlement_price_pending = 0
+ NOT = { has_variable = xfm_unresolved_claims }
+ var:xfm_unresolved_claim_count = 0
+ NOT = { has_variable = xfm_unclaimed_assets }
+ # The successful closing marker is historical. A partial closing without a listed day stays live.
+ OR = { NOT = { has_variable = xfm_offer_closing_started } has_variable = xfm_listed_day }
+ OR = { NOT = { has_variable = xfm_offer_counted } var:xfm_offer_counted = 0 }
+ OR = { NOT = { has_variable = xfm_active_listing_counted } var:xfm_active_listing_counted = 0 }
+ NOT = { any_in_list = { variable = xfm_claims OR = { NOT = { has_variable = xfm_outstanding_cents } var:xfm_outstanding_cents != 0 } } }
+ NOT = { any_in_list = { variable = xfm_subscriptions OR = { NOT = { has_variable = xfm_subscription_state } NOT = { has_variable = xfm_remaining_cents } var:xfm_subscription_state < 2 var:xfm_remaining_cents != 0 } } }
+ NOT = { any_in_list = { variable = xfm_spot_orders var:xfm_status = 1 } }
+ NOT = {
+  any_in_list = {
+   variable = xfm_futures_contracts
+   OR = {
+    any_in_list = { variable = xfm_positions OR = { AND = { var:xfm_status = 0 var:xfm_lots > 0 } has_variable = xfm_pending_payment } }
+    any_in_list = { variable = xfm_orders OR = { var:xfm_status = 0 var:xfm_status = 1 } var:xfm_remaining_lots > 0 }
+   }
+  }
+ }
+ trigger_if = { limit = { exists = var:xfm_maintenance_reservation } var:xfm_maintenance_reservation = { var:xfm_remaining_cents = 0 } }
+ trigger_if = { limit = { exists = var:xfm_bond_reservation } var:xfm_bond_reservation = { var:xfm_remaining_cents = 0 } }
+ trigger_if = { limit = { exists = var:xfm_maker_reservation } var:xfm_maker_reservation = { var:xfm_remaining_cents = 0 } }
+ trigger_if = {
+  limit = { exists = var:xfm_redemption_window }
+  var:xfm_redemption_window = {
+   var:xfm_remaining_cents = 0
+   OR = { var:xfm_status = 4 var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day }
+  }
+ }
+ trigger_if = { limit = { exists = var:xfm_redemption_account } var:xfm_redemption_account = { xfm_registry_empty_account_trigger = yes } }
+}
+xfm_registry_empty_property_trigger = {
+ xfm_registry_no_external_obligations_trigger = yes
+ var:xfm_supply_units = 0
+ NOT = { any_in_list = { variable = xfm_holders OR = { var:xfm_quantity_units != 0 var:xfm_reserved_units != 0 } } }
+ exists = var:xfm_issuer_account
+ var:xfm_issuer_account = { xfm_registry_empty_account_trigger = yes }
+ trigger_if = { limit = { exists = var:xfm_founder_account } var:xfm_founder_account = { xfm_registry_empty_account_trigger = yes } }
+ trigger_if = { limit = { exists = var:xfm_market_maker_account } var:xfm_market_maker_account = { xfm_registry_empty_account_trigger = yes } }
+}
+xfm_registry_clean_terminal_trigger = {
+ xfm_registry_empty_property_trigger = yes
+ var:xfm_listing_state = 7
+}
+xfm_registry_cancel_unallocated_trigger = {
+ xfm_registry_no_external_obligations_trigger = yes
+ var:xfm_listing_state = 6
+ NOT = { has_variable = xfm_offer_closing_started }
+ exists = var:xfm_issuer_account exists = var:xfm_founder_account
+ var:xfm_issuer_account = { xfm_finance_account_usable_trigger = yes OR = { NOT = { has_variable = xfm_inheritance_state } var:xfm_inheritance_state = 0 } }
+ var:xfm_founder_account = { xfm_finance_account_usable_trigger = yes OR = { NOT = { has_variable = xfm_inheritance_state } var:xfm_inheritance_state = 0 } }
+ NOT = {
+  any_in_list = {
+   variable = xfm_holders
+   OR = {
+    var:xfm_quantity_units < 0 var:xfm_reserved_units != 0
+    AND = { var:xfm_quantity_units > 0 var:xfm_account != prev.var:xfm_issuer_account var:xfm_account != prev.var:xfm_founder_account }
+   }
+  }
+ }
+ var:xfm_supply_units = xfm_registry_unallocated_units_value
+}
+xfm_registry_failed_ai_offer_trigger = {
+ xfm_registry_cancel_unallocated_trigger = yes
+ NOT = { has_variable = xfm_listed_day }
+ NOT = { any_in_list = { variable = xfm_subscriptions var:xfm_subscription_state != 3 } }
+ exists = var:xfm_controller var:xfm_controller = { is_ai = yes is_alive = yes is_adult = yes }
+ var:xfm_issuer_account = { xfm_registry_empty_account_trigger = yes }
+ var:xfm_founder_account = { xfm_registry_empty_account_trigger = yes }
+ trigger_if = { limit = { exists = var:xfm_market_maker_account } var:xfm_market_maker_account = { xfm_registry_empty_account_trigger = yes } }
+}

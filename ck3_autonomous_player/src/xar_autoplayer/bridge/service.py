@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from .gui_window_tree_contract import (
-    ScriptedWidgetActionV1, ScriptedWidgetQueryV1,
+    ScriptedWidgetActionV1, ScriptedWidgetQueryV1, CurrentInterfaceToastV1,
     normalize_scripted_widget_action_v1, normalize_scripted_widget_query_v1,
 )
 
@@ -14910,6 +14910,14 @@ class GameplayBridgeService:
         if not isinstance(result, dict) or result.get("schema") != "ck3-ingame-decisions-open-v1" or result.get("postcondition_verified") is not True:
             raise BridgeUnavailableError("typed Decisions opener lacks later visibility proof")
         return result
+
+    def query_current_interface_toast_v1(self, *, expected_revision: int) -> CurrentInterfaceToastV1:
+        """Observe a typed current native toast object; delivery remains unconfirmed."""
+        from .gui_window_tree_contract import normalize_current_interface_toast_v1
+        method = getattr(self.driver, "query_current_interface_toast_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks current native interface-toast observation")
+        return normalize_current_interface_toast_v1(method(expected_revision=expected_revision))
 
     def query_scripted_widget_controls_v1(
         self, root_name: str, *, expected_revision: int,

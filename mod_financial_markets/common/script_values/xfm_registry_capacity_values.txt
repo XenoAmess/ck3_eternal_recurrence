@@ -1,0 +1,12 @@
+﻿# Historical counters remain monotonic. Only resident service slots can be released.
+xfm_registry_registered_floor_value = { value = var:xfm_registered_coin_count floor = yes }
+xfm_registry_resident_floor_value = { value = var:xfm_resident_coin_count floor = yes }
+xfm_registry_round_floor_value = { value = var:xfm_registry_review_round floor = yes }
+xfm_registry_unallocated_units_value = {
+ value = 0
+ every_in_list = {
+  variable = xfm_holders
+  limit = { OR = { var:xfm_account = prev.var:xfm_issuer_account var:xfm_account = prev.var:xfm_founder_account } }
+  add = var:xfm_quantity_units
+ }
+}

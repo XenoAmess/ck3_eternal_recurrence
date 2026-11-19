@@ -15,7 +15,7 @@ xfm_market_close_gui = {
 xfm_market_refresh_gui = {
     scope = character
     is_valid = { is_ai = no has_character_flag = xfm_market_open }
-    effect = { xfm_market_ui_refresh_effect = yes }
+    effect = { xfm_market_ui_refresh_effect = yes xfm_registry_lookup_history_effect = yes }
 }
 xfm_market_next_gui = {
     scope = character
@@ -47,7 +47,13 @@ xfm_market_select_coin_gui = {
    if = {
      limit = {
         is_ai = no exists = scope:xfm_ui_item
-        is_target_in_global_variable_list = { name = xfm_coin_registry target = scope:xfm_ui_item }
+        OR = {
+         is_target_in_global_variable_list = { name = xfm_coin_registry target = scope:xfm_ui_item }
+         AND = {
+          scope:xfm_ui_item = { var:xfm_listing_state = 7 has_variable = xfm_capacity_slot_released }
+          is_target_in_global_variable_list = { name = xfm_archived_coin_registry target = scope:xfm_ui_item }
+         }
+        }
      }
      xfm_market_ui_select_coin_effect = yes
    }

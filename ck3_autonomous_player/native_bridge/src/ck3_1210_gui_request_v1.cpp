@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_1210_gui_control_v1.hpp"
+#include "xar_bridge/ck3_1210_toast_query_v1.hpp"
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include <charconv>
 
@@ -104,6 +105,8 @@ bool ParseGuiControlRequestV1(std::string_view payload,GuiControlRequestV1 &out)
     c.space();if(c.at!=payload.size() || (seen&63U)!=63U || expected!=r.native_revision)return false;
     if(r.step==kGuiControlQueryStepV1) {r.step=kGuiControlQueryStepV1;if(r.query_generation || r.widget_id)return false;}
     else if(r.step==kGuiControlActivateStepV1) {r.step=kGuiControlActivateStepV1;r.activate=true;if(!r.query_generation || !r.widget_id)return false;}
+    else if(r.step==kToastQueryStepV1) {r.step=kToastQueryStepV1;
+      if(r.root_name!=kToastQueryRootV1 || r.query_generation || r.widget_id)return false;}
     else return false;
     out=std::move(r);return true;
   }catch(...) {out={};return false;}

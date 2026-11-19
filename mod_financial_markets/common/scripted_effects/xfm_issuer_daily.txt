@@ -1,8 +1,20 @@
 ﻿# Exchange scope hooks. No AI-by-coin scan: one light pass over registered assets.
 xfm_coin_daily_effect = {
+    xfm_registry_capacity_ensure_effect = yes
+    if = {
+        limit = { OR = { NOT = { has_variable = xfm_registry_review_day } var:xfm_registry_review_day < var:xfm_day } }
+        set_variable = { name = xfm_registry_review_day value = var:xfm_day }
+        set_variable = { name = xfm_registry_review_budget value = 64 }
+        set_variable = { name = xfm_registry_round_has_remaining value = 0 }
+    }
+    set_variable = { name = xfm_registry_iteration_open value = 1 }
     every_in_global_list = {
         variable = xfm_coin_registry
-        limit = { story_type = xfm_finance_coin has_variable = xfm_entity_type var:xfm_listing_state != 7 OR = { NOT = { has_variable = xfm_issuer_last_day } var:xfm_issuer_last_day < global_var:xfm_exchange.var:xfm_day } }
+        limit = { story_type = xfm_finance_coin has_variable = xfm_entity_type }
+        # Terminal reviews share this existing pass, before the old state7 filter.
+        xfm_registry_review_terminal_effect = yes
+        if = {
+        limit = { var:xfm_listing_state != 7 OR = { NOT = { has_variable = xfm_issuer_last_day } var:xfm_issuer_last_day < global_var:xfm_exchange.var:xfm_day } }
         set_variable = { name = xfm_issuer_last_day value = global_var:xfm_exchange.var:xfm_day }
         xfm_issuer_adopt_legacy_defaults_effect = yes
         change_variable = { name = xfm_asset_age add = 1 }
@@ -17,7 +29,21 @@ xfm_coin_daily_effect = {
             xfm_issuer_revisit_offer_effect = yes
             if = { limit = { var:xfm_listing_state = 0 var:xfm_offer_age >= 30 NOT = { has_variable = xfm_offer_closing_started } } xfm_issuer_refund_effect = yes }
         }
+        # Expiration above may just have completed actual refunds. Revisit in a later round;
+        # this keeps the same hard 64 rights-review budget and one issuer service per day.
+        }
     }
+    if = {
+        limit = {
+            var:xfm_registry_round_has_remaining = 0
+            var:xfm_registry_review_round >= 1 var:xfm_registry_review_round = xfm_registry_round_floor_value
+            OR = { NOT = { has_variable = xfm_registry_round_completed_day } var:xfm_registry_round_completed_day < var:xfm_day }
+        }
+        change_variable = { name = xfm_registry_review_round add = 1 }
+        set_variable = { name = xfm_registry_round_completed_day value = var:xfm_day }
+    }
+    set_variable = { name = xfm_registry_iteration_open value = 0 }
+    xfm_registry_flush_retire_effect = yes
 }
 
 xfm_coin_ai_effect = {

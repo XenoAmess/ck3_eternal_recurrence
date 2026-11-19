@@ -4,22 +4,7 @@ xfm_issuer_cancel_unallocated_supply_effect = {
     if = {
         limit = {
             xfm_issuer_controls_selected_trigger = yes
-            var:xfm_selected_coin = {
-                var:xfm_listing_state = 6
-                NOT = { has_variable = xfm_offer_closing_started }
-                NOT = { has_variable = xfm_unresolved_claims }
-                var:xfm_unresolved_claim_count = 0
-                NOT = { has_variable = xfm_unclaimed_assets }
-                NOT = {
-                    any_in_list = {
-                        variable = xfm_holders
-                        OR = {
-                            var:xfm_reserved_units > 0
-                            AND = { var:xfm_quantity_units > 0 var:xfm_account != prev.var:xfm_issuer_account var:xfm_account != prev.var:xfm_founder_account }
-                        }
-                    }
-                }
-            }
+            var:xfm_selected_coin = { xfm_registry_cancel_unallocated_trigger = yes }
         }
         var:xfm_selected_coin = {
             save_scope_as = xfm_offer_cancelling_coin

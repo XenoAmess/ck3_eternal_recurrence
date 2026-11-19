@@ -412,9 +412,296 @@ def terminal_cleanup_evidence(keeper: Path, frozen: Mapping[str, object],
             "normal_close_qualified": False}
 
 
+# A stopped keeper is never renewed. This review only permits the existing
+# normal-exit SDK on the original held host, until its original deadline.
+def _cleanup_pairs_v1(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        require(key not in result, "Duplicate cleanup review JSON field")
+        result[key] = value
+    return result
+
+
+def _cleanup_original_v1(reference: object, expected: Path | None = None) -> dict[str, object]:
+    row = _queue_object(reference, "Cleanup original pin")
+    require(set(row) == {"path", "bytes", "sha256"}, "Exact cleanup original pin required")
+    path = Path(text_field(row, "path")).resolve(strict=True)
+    require(expected is None or path == expected.resolve(), "Cleanup original crossed its allocated path")
+    raw = _exit_sdk_bytes_v1(path, row)
+    return _queue_object(json.loads(raw, object_pairs_hook=_cleanup_pairs_v1), "Cleanup original")
+
+
+def _cleanup_qualification_v1(value: object) -> dict[str, object]:
+    qualification = _cleanup_original_v1(value)
+    require(set(qualification) == {"schema", "queue_source", "test_source", "original_wait"}
+            and qualification["schema"] == "ck3-stopped-keeper-exit-software-v1",
+            "Exact cleanup software qualification required")
+    source = _queue_object(qualification["queue_source"], "Qualified cleanup source")
+    _exit_sdk_bytes_v1(Path(__file__).resolve(), source)
+    test = _queue_object(qualification["test_source"], "Qualified cleanup tests")
+    _exit_sdk_bytes_v1(Path(text_field(test, "path")), test)
+    waited = _cleanup_original_v1(qualification["original_wait"])
+    require(waited.get("actual_original_popen_wait") is True and type(waited.get("returncode")) is int
+            and waited["returncode"] == 0, "Cleanup tests need their actual original wait zero")
+    argv = strings_field(waited, "argv")
+    require(any(Path(item).resolve() == Path(text_field(test, "path")).resolve() for item in argv)
+            and argv.count("--queue") == 1 and argv.index("--queue") + 1 < len(argv)
+            and Path(argv[argv.index("--queue") + 1]).resolve() == Path(__file__).resolve(),
+            "Cleanup qualification did not execute these exact candidate tests/source")
+    log_ref = _queue_object(waited.get("stderr"), "Cleanup test original stderr")
+    log = _exit_sdk_bytes_v1(Path(text_field(log_ref, "path")), log_ref).decode("utf-8", errors="strict")
+    require(re.search(r"(?m)^Ran [1-9][0-9]* tests? in ", log) is not None
+            and re.search(r"(?m)^OK\s*$", log) is not None
+            and not re.search(r"(?im)(skipped[= ]|^FAILED|^ERROR|^FAIL:)", log),
+            "Cleanup qualification lacks its complete passing non-skipped unittest originals")
+    return qualification
+
+
+def stopped_keeper_exit_evidence_v1(live: Path, keeper: Path, frozen: Mapping[str, object],
+        context: Mapping[str, object], report: dict[str, object], steps: object,
+        review_path: Path, intent_name: str) -> dict[str, object]:
+    """Read an explicit source handoff; it never grants or resurrects a lease."""
+    review = _cleanup_original_v1(pin(review_path))
+    require(set(review) == {"schema", "reviewer", "run_id", "pid", "birth_filetime", "original_hold_deadline",
+            "originals", "software_qualification"} and
+            review["schema"] == "ck3-stopped-keeper-normal-exit-review-v1", "Exact cleanup review required")
+    require(review.get("run_id") == frozen.get("run_id") == live.name,
+            "Cleanup review crossed the original run")
+    reviewer = text_field(review, "reviewer")
+    pid = _native_positive_integer(review.get("pid"), "Cleanup retained PID")
+    birth = review.get("birth_filetime")
+    require(type(birth) is str and re.fullmatch(r"[1-9][0-9]{0,19}", birth) is not None
+            and int(birth) < 2**64, "Cleanup birth requires canonical uint64 text")
+    deadline = review.get("original_hold_deadline")
+    require(type(deadline) in (int, float) and 0 < deadline < float("inf")
+            and deadline == report.get("hold_until_utc_estimated") and time.time() < deadline,
+            "Cleanup cannot extend or replace the original hold deadline")
+    originals = _queue_object(review.get("originals"), "Cleanup originals")
+    required = {"frozen_argv": live / "frozen-argv.json", "ready_context": live / "ready-context.json",
+        "manual_quit": live / "case-output/manual-quit-awaiting.json",
+        "normal_quit": live / "case-output/normal-quit-awaiting.json",
+        "automation_failure": live / "case-output/normal-quit-typed-automation-failure-preserved.json",
+        "keeper_report": keeper / "report.json", "keeper_stop": keeper / "ROOT_STOP_REQUIRED.json"}
+    require(set(originals) == set(required), "Cleanup originals are incomplete or contain unrecognized proofs")
+    rows = {key: _cleanup_original_v1(originals[key], path) for key, path in required.items()}
+    manual, normal, ended, stop = (rows[key] for key in ("manual_quit", "normal_quit", "keeper_report", "keeper_stop"))
+    require(ended.get("task_id") == stop.get("task_id") == frozen.get("screen_task")
+            and ended.get("thread_exited") is True and type(ended.get("entry_error")) is str
+            and bool(ended["entry_error"]) and stop.get("reason") == "Keeper failed; stop live actions",
+            "Cleanup requires the original failed and stopped keeper; no lease revival")
+    require(manual.get("status") == "MANUAL_QUIT_AWAITING_ORIGINAL_DEADLINE"
+            and normal.get("original_typed_exit_already_observed") is False
+            and normal.get("screen_task") == frozen.get("screen_task")
+            and Path(text_field(normal, "keeper_root")).resolve() == keeper,
+            "Cleanup requires the original manual/normal Quit wait")
+    for row in (manual, normal):
+        require(row.get("run_id") == live.name and row.get("reviewer") == reviewer
+                and type(row.get("pid")) is int and row["pid"] == pid
+                and row.get("original_hold_deadline") == deadline
+                and type(row.get("create_time")) in (int, float), "Cleanup original retained identity/deadline differs")
+    require(manual["create_time"] == normal["create_time"], "Cleanup retained creation times differ")
+    failure = rows["automation_failure"]
+    require(failure.get("automation_replayed") is False and failure.get("business_pass") is False
+            and failure.get("original_hold_deadline") == deadline
+            and failure.get("error") == "ValueError: Original screen keeper no longer owns this held scene",
+            "Cleanup is limited to the preserved pre-dispatch stopped-keeper failure")
+    _cleanup_qualification_v1(review["software_qualification"])
+    typed = _normal_exit_plan_v1(steps, frozen)
+    finishing = (isinstance(steps, list) and len(steps) == 1 and isinstance(steps[0], dict)
+                 and steps[0].get("kind") == "finish_hold")
+    require(typed or finishing, "Stopped keeper permits normal-exit cleanup only; no business/advance/SAVE")
+    require(isinstance(steps, list) and all(_queue_object(step, "Cleanup step").get("id", "").startswith(
+            intent_name + "-") for step in steps), "Cleanup steps must belong to the new once-only exit intent")
+    if finishing:
+        require(native_zero_proof(frozen, report, failure_shutdown=steps[0].get("failure_shutdown") is True) is not None,
+                "Cleanup finish requires the original host's actual native-zero proof")
+    if typed and steps[0].get("tool") == "ck3_request_normal_exit_v1" and steps[0].get("args", {}).get("action") == "confirm_desktop":
+        for path in (live / "controls").glob("*.json"):
+            require(path.stat().st_size <= 1024 * 1024, "Original published plan exceeds cleanup bound")
+            published = _queue_object(json.loads(path.read_bytes(), object_pairs_hook=_cleanup_pairs_v1), "Published original plan")
+            for old in published.get("steps", []):
+                previous = _queue_object(old, "Published original step")
+                require(not (previous.get("tool") == "ck3_request_normal_exit_v1"
+                    and _queue_object(previous.get("args", {}), "Published arguments").get("action") == "confirm_desktop"),
+                    "Original exit confirmation was already published or UNKNOWN; never replay")
+    return {"scope": "original-held-host-normal-exit-only", "review": pin(review_path),
+        "pid": pid, "birth_filetime": birth, "create_time": manual["create_time"],
+        "original_hold_deadline": deadline, "lease_renewed": False, "failure_preserved": True,
+        "business_pass": False, "normal_close_qualified": False}
+
+
+def _cleanup_no_previous_dispatch_v1(live: Path, report: Mapping[str, object]) -> None:
+    """Do not start a second quit over any original published or UNKNOWN action."""
+    require(report.get("steps") == [], "Cleanup entry requires zero original dispatched steps")
+    require(not any((live / "controls").glob("*.json")), "Original published controls must never be replayed")
+    ledger = live / "control-once-ledger"
+    require(not ledger.exists() or not any(ledger.iterdir()),
+            "Original queued or UNKNOWN claims prevent a second exit intent")
+
+
+def _cleanup_no_sdk_claim_v1(state: Path) -> None:
+    # Both Core and legacy normal-exit producers use this permanent once claim.
+    # Any original claim is terminal/UNKNOWN evidence, never permission to retry.
+    directory = state / "native-session/normal-exit-map-requests"
+    require(not any(directory.glob("*.claim.json")),
+            "Original SDK exit confirmation claim exists; never replay")
+
+
+@runtime_checkable
+class _CleanupObserverV1(Protocol):
+    def verify_before_dispatch(self) -> dict[str, object]: ...
+    def observe(self, timeout_ms: int = 5000) -> dict[str, object]: ...
+    def close(self) -> None: ...
+
+
+@runtime_checkable
+class _CleanupObserverModuleV1(Protocol):
+    def Win32ProcessApi(self) -> object: ...
+    def RetainedProcessObserver(self, api: object, pid: int, birth: int) -> _CleanupObserverV1: ...
+
+
+@contextmanager
+def _cleanup_retained_observer_v1(frozen: Mapping[str, object], pid: int, birth: int) -> Iterator[_CleanupObserverV1]:
+    """Load the original read-only SDK observer; never a new native/OS provider."""
+    import importlib.util
+    import secrets
+    import sys
+    source = Path(text_field(frozen, "source_root")).resolve()
+    manifest = _queue_object(frozen["runtime_manifest"], "Frozen runtime")
+    index_path = Path(text_field(manifest, "path")).with_name("source-index.json").resolve()
+    files = _queue_object(frozen["files"], "Frozen files")
+    index = _cleanup_original_v1({**_queue_object(files[str(index_path)], "Original SDK index pin"), "path":str(index_path)})
+    relative = "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_process_observer_v1.py"
+    path = source / relative
+    raw = _exit_sdk_bytes_v1(path, _queue_object(index["files"], "SDK indexed files")[relative])
+    name = "_cleanup_original_observer_" + secrets.token_hex(16)
+    spec = importlib.util.spec_from_file_location(name, path)
+    require(spec is not None and spec.loader is not None, "Original observer loader unavailable")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    observer = None
+    try:
+        exec(compile(raw, str(path), "exec"), module.__dict__)
+        require(isinstance(module, _CleanupObserverModuleV1), "Original observer API differs")
+        observer = module.RetainedProcessObserver(module.Win32ProcessApi(), pid, birth)
+        observer.verify_before_dispatch()
+        yield observer
+    finally:
+        if observer is not None:
+            observer.close()
+        sys.modules.pop(name, None)
+
+
+def run_stopped_keeper_normal_exit_v1(live: Path, review_path: Path, intent_name: str) -> dict[str, object]:
+    """Use the old public coordinator/SDK and original queue namespace, once."""
+    from ck3_mod_acceptance import normal_exit_static_binding_v1
+    from ck3_mod_acceptance_client import _typed_quit_codec, _typed_quit_run_v1, typed_normal_quit_evidence_v1
+    live = live.resolve()
+    require(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,70}", intent_name) is not None,
+            "New bounded cleanup intent name required")
+    frozen, context = frozen_run(live, all_pins=False)
+    keeper = Path(text_field(context, "keeper_root")).resolve()
+    initial = stable_report(live / "native-report.json")
+    probe = [{"id": intent_name + "-001", "tool": "ck3_query_normal_exit_context_v1", "args": {}}]
+    admitted = stopped_keeper_exit_evidence_v1(live, keeper, frozen, context, initial, probe, review_path, intent_name)
+    _cleanup_no_previous_dispatch_v1(live, initial)
+    state = Path(text_field(frozen, "state_dir")).resolve()
+    _cleanup_no_sdk_claim_v1(state)
+    runtime_ref = _queue_object(frozen["runtime_manifest"], "Frozen runtime reference")
+    binding = normal_exit_static_binding_v1(context.get("normal_exit_managed_profile"), state_dir=state,
+        run_dir=live, runtime_manifest=runtime_ref)
+    profile = _queue_object(binding["profile"], "Original exit profile")
+    argv = strings_field(frozen, "argv")
+    require(argv.count("--normal-exit-managed-profile") == argv.count("--normal-exit-managed-profile-sha256") == 1
+            and argv[argv.index("--normal-exit-managed-profile") + 1] == profile["path"]
+            and argv[argv.index("--normal-exit-managed-profile-sha256") + 1] == profile["sha256"],
+            "Cleanup profile crossed original frozen Host argv")
+    index = Path(text_field(runtime_ref, "path")).with_name("source-index.json").resolve()
+    files = _queue_object(frozen["files"], "Frozen files")
+    codec, index_pin, sdk_pins = _typed_quit_codec(Path(text_field(frozen, "source_root")), index,
+        {**_queue_object(files[str(index)], "Original SDK source index pin"), "path":str(index)})
+    intent = live / "case-output" / (intent_name + "-once.json")
+    deadline = admitted["original_hold_deadline"]
+    remaining = lambda: deadline - time.time()
+    sequence = 0
+    paused_binding = None
+    with _cleanup_retained_observer_v1(frozen, admitted["pid"], int(admitted["birth_filetime"])) as observer:
+        # Exclusive intent precedes every queue publication. Never overwrite it,
+        # including after a timeout, rejected query, exception or UNKNOWN confirm.
+        write_new(intent, {"schema":"ck3-stopped-keeper-normal-exit-once-v1", **admitted,
+            "profile":profile, "source_index":index_pin, "sdk_sources":sdk_pins,
+            "confirm_maximum":1, "unknown_replayed":False})
+        def invoke(tool: str, arguments: dict[str, object]) -> dict[str, object]:
+            nonlocal sequence, paused_binding
+            require(remaining() > 0, "Original cleanup deadline expired; never replay")
+            if tool != "ck3_observe_normal_exit_v1":
+                observer.verify_before_dispatch()
+            sequence += 1
+            name = intent_name + "-" + str(sequence).zfill(3)
+            step = {"id":name, "tool":tool, "args":arguments,
+                    "fresh_revision":"expected_revision" not in arguments}
+            plan = live / "case-output" / (name + ".plan.json")
+            write_new(plan, {"steps":[step]})
+            enqueue(live, plan, name + ".json", stopped_keeper_exit_review=review_path,
+                    stopped_keeper_exit_intent=intent_name)
+            while remaining() > 0:
+                report = stable_report(live / "native-report.json")
+                rows = [row for row in report.get("steps", []) if isinstance(row, dict) and row.get("id") == name]
+                require(len(rows) <= 1, "Duplicate actual cleanup step result")
+                if rows and rows[0].get("finished_at"):
+                    row = rows[0]
+                    require(not row.get("error") and row.get("plan") == step,
+                            "Original cleanup step failed or crossed its exact plan; never replay")
+                    if tool != "ck3_observe_normal_exit_v1" and arguments.get("action") != "confirm_desktop":
+                        frame = _queue_object(row.get("after_snapshot"), "Cleanup paused actual frame")
+                        require(frame.get("paused") is True and type(frame.get("date_raw")) is int,
+                                "Cleanup query requires its actual paused frame")
+                        current = (frame["date_raw"], frame.get("native_revision"), frame.get("played_character"))
+                        require(paused_binding is None or current == paused_binding,
+                                "Cleanup crossed original paused date/revision/actor")
+                        paused_binding = current
+                    return _queue_object(row.get("result"), "Actual SDK normal-exit result")
+                time.sleep(.1)
+            raise TimeoutError("Original cleanup publication outcome unknown; never replay")
+        _typed_quit_run_v1(codec, invoke, remaining, pid=admitted["pid"], birth=int(admitted["birth_filetime"]))
+        report = stable_report(live / "native-report.json")
+        retained = {"pid":admitted["pid"], "create_time":admitted["create_time"],
+            "creation_filetime_100ns":admitted["birth_filetime"], "retained_synchronize_query_handle_acquired":True}
+        evidence = typed_normal_quit_evidence_v1(report, live=live, state=state, retained_value=retained,
+            context_value=context, frozen_value=frozen, source_root=Path(text_field(frozen, "source_root")),
+            source_index=index, source_index_reference=index_pin, allow_preserved_failure=True)
+        require(evidence is not None, "Cleanup lacks its actual SDK fact/claim/observer close evidence")
+        observed = observer.observe(0)
+        require(observed.get("process_identity_verified") is True and observed.get("process_exit_observed") is True
+                and type(observed.get("exit_code")) is int and observed["exit_code"] == 0,
+                "Cleanup retained original handle has no actual OS exit zero")
+        write_new(live / "case-output" / (intent_name + "-typed-evidence.json"), evidence)
+        # The original Client may finish concurrently. Only an actual native-zero
+        # report permits this existing finish step, never the submitted exit ACK.
+        while remaining() > 0:
+            report = stable_report(live / "native-report.json")
+            if report.get("hold_finished_by_control_plan") or report.get("finished_at"):
+                break
+            failure = bool(report.get("error"))
+            if native_zero_proof(frozen, report, failure_shutdown=failure) is not None:
+                name = intent_name + "-finish"
+                plan = live / "case-output" / (name + ".plan.json")
+                write_new(plan, {"steps":[{"id":name, "kind":"finish_hold", "failure_shutdown":failure}]})
+                enqueue(live, plan, name + ".json", stopped_keeper_exit_review=review_path,
+                        stopped_keeper_exit_intent=intent_name)
+                break
+            time.sleep(.1)
+        result = {"schema":"ck3-stopped-keeper-normal-exit-result-v1", "at_utc":utc(),
+            **admitted, "typed_evidence":evidence, "independent_retained_observation":observed,
+            "original_keeper_renewed":False, "business_pass":False}
+        write_new(live / "case-output" / (intent_name + "-result.json"), result)
+        return result
+
+
 def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | None = None,
         startup_recovery_error: str | None = None, startup_recovery_reviewer: str | None = None,
-        terminal_cleanup: bool = False) -> dict[str, object]:
+        terminal_cleanup: bool = False, stopped_keeper_exit_review: Path | None = None,
+        stopped_keeper_exit_intent: str | None = None) -> dict[str, object]:
     enqueue_deadline(deadline)
     lease_options = {"deadline": deadline} if deadline is not None else {}
     live, plan = Path(live).resolve(), Path(plan).resolve()
@@ -424,7 +711,11 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
     keeper = Path(text_field(context, "keeper_root")).resolve()
     argv = strings_field(frozen, "argv")
     require(type(terminal_cleanup) is bool, "terminal_cleanup must be a literal boolean")
-    if not terminal_cleanup:
+    cleanup_exit = stopped_keeper_exit_review is not None
+    require(not cleanup_exit or (not terminal_cleanup and startup_recovery_error is None and
+            startup_recovery_reviewer is None and isinstance(stopped_keeper_exit_intent, str)),
+            "Cleanup-only review cannot combine with another recovery or lease scope")
+    if not terminal_cleanup and not cleanup_exit:
         live_lease(keeper, frozen, **lease_options)
     enqueue_deadline(deadline)
     report = stable_report(live / "native-report.json")
@@ -443,6 +734,16 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
     ids = validate_steps(steps, report, frozen)
     finishing = len(steps) == 1 and steps[0].get("kind") == "finish_hold"
     typed_exit = _normal_exit_plan_v1(steps, frozen)
+    cleanup = None
+    if cleanup_exit:
+        cleanup = stopped_keeper_exit_evidence_v1(live, keeper, frozen, context, report, steps,
+            stopped_keeper_exit_review, stopped_keeper_exit_intent)
+        intent_path = live / "case-output" / (stopped_keeper_exit_intent + "-once.json")
+        intent = _cleanup_original_v1(pin(intent_path))
+        require(intent.get("schema") == "ck3-stopped-keeper-normal-exit-once-v1" and
+                intent.get("review") == cleanup["review"] and intent.get("pid") == cleanup["pid"] and
+                intent.get("birth_filetime") == cleanup["birth_filetime"],
+                "Cleanup queue requires its original once-only reviewed intent")
     terminal = terminal_cleanup_evidence(keeper, frozen, report, steps) if terminal_cleanup else None
     hold_deadline = report.get("hold_until_utc_estimated")
     require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing or typed_exit else 90),
@@ -488,6 +789,13 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
         if terminal_cleanup:
             terminal = terminal_cleanup_evidence(keeper, frozen, stable_report(live / "native-report.json"), steps)
             latest = None
+        elif cleanup_exit:
+            first_cleanup = cleanup
+            cleanup = stopped_keeper_exit_evidence_v1(live, keeper, frozen, context,
+                stable_report(live / "native-report.json"), steps, stopped_keeper_exit_review, stopped_keeper_exit_intent)
+            require(cleanup == first_cleanup, "Reviewed cleanup admission changed after claim; never replay")
+            require(_cleanup_original_v1(pin(intent_path)) == intent, "Original cleanup intent changed")
+            latest = None
         else:
             latest = live_lease(keeper, frozen, **lease_options)
         enqueue_deadline(deadline)
@@ -500,6 +808,8 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
     result = {"status": "QUEUED_ONCE_ACK_NOT_BUSINESS_PASS", "at_utc": utc(), "run_id": frozen["run_id"],
               "plan": pin(plan), "published": pin(target), "step_ids": ids,
               "lease": latest["lease"] if latest is not None else None, "claims": claims, "business_pass": False}
+    if cleanup is not None:
+        result["stopped_keeper_exit"] = cleanup
     if terminal is not None:
         result["terminal_cleanup"] = terminal
     if recovery is not None:
@@ -511,8 +821,11 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--live", type=Path, required=True)
-    parser.add_argument("--plan", type=Path, required=True)
-    parser.add_argument("--name", required=True)
+    parser.add_argument("--plan", type=Path)
+    parser.add_argument("--name")
+    parser.add_argument("--stopped-keeper-normal-exit-review", type=Path,
+                        help="Explicit qualified cleanup-only source handoff; never renews the failed keeper")
+    parser.add_argument("--exit-intent-name", help="New durable once-only exit intent, never a replay")
     parser.add_argument("--timeout-seconds", type=float, help="Bound this original submission; no retries")
     parser.add_argument("--startup-recovery-error", help="Explicit original failed-startup error; default preserves ordinary guard")
     parser.add_argument("--startup-recovery-reviewer", help="Actual retained-session operator")
@@ -520,6 +833,16 @@ def main(argv=None):
                         help="Only failure finish_hold after actual native zero cleanup and an ended keeper")
     args = parser.parse_args(argv)
     try:
+        if args.stopped_keeper_normal_exit_review is not None:
+            require(args.plan is None and args.name is None and args.timeout_seconds is None and
+                    args.startup_recovery_error is None and args.startup_recovery_reviewer is None and
+                    not args.terminal_cleanup and isinstance(args.exit_intent_name, str),
+                    "Stopped keeper entry permits only original-deadline typed normal exit")
+            print(json.dumps(run_stopped_keeper_normal_exit_v1(args.live,
+                args.stopped_keeper_normal_exit_review, args.exit_intent_name)), flush=True)
+            return 0
+        require(args.plan is not None and args.name is not None and args.exit_intent_name is None,
+                "Ordinary queue requires its explicit plan and name")
         if args.timeout_seconds is not None:
             require(0 < args.timeout_seconds < float("inf"), "Finite positive queue timeout required")
         deadline = None if args.timeout_seconds is None else time.monotonic() + args.timeout_seconds

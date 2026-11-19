@@ -74,7 +74,9 @@ final class FollowupFixtureTest {
                 var mutations = writes.matcher(source);
                 while (mutations.find()) assertTrue(mutations.group(1).startsWith("xfma_"), mutations.group(1));
                 var creates = businessCreate.matcher(source);
-                while (creates.find()) assertEquals(input.prefix() + "_observer", creates.group(1));
+                Set<String> allowedCreates = new HashSet<>(Set.of(input.prefix() + "_observer"));
+                if (profile == Profile.MARKET_EVOLUTION) allowedCreates.addAll(FollowupObservationScripts.marketEvolutionRecordTypes());
+                while (creates.find()) assertTrue(allowedCreates.contains(creates.group(1)), creates.group(1));
                 for (String forbidden : List.of("add_gold", "change_gold", "set_stress", "add_stress", "set_global_variable", "add_to_global_variable_list", "trigger_event", "on_game_start_after_lobby")) assertFalse(source.contains(forbidden), name + ": " + forbidden);
                 assertFalse(Pattern.compile("\\bdeath\\s*=").matcher(source).find(), name);
                 balanced(source, name);
@@ -319,7 +321,7 @@ final class FollowupFixtureTest {
         assertTrue(scripts.contains("var:xfm_fee_paid_cents <= xfma_spot_e102_spot_expected_fee_value"));
     }
 
-    @Test void generatedStoryCatalogKeepsCoreAndEpochOneAndTwoTypesWithOnlyCurrentCaseActive() {
+    @Test void generatedStoryCatalogKeepsCoreKnownSpotEpochThreeAndOtherEpochOneTwoTypesWithOnlyCurrentCaseActive() {
         for (Profile profile : Profile.values()) {
             for (int epoch : List.of(1, 2, 3, 1_000_000_000)) {
                 Request input = request(profile, epoch);
@@ -477,7 +479,9 @@ final class FollowupFixtureTest {
                 "xfma_news_crisis_e1_observer", "xfma_ai_capacity_e1_observer",
                 "xfma_spot_e2_observer", "xfma_derivatives_e2_observer", "xfma_lifecycle_e2_observer",
                 "xfma_inheritance_e2_observer", "xfma_cold_reload_e2_observer",
-                "xfma_news_crisis_e2_observer", "xfma_ai_capacity_e2_observer"));
+                "xfma_news_crisis_e2_observer", "xfma_ai_capacity_e2_observer",
+                "xfma_market_evolution_e1_observer", "xfma_market_evolution_e2_observer", "xfma_spot_e3_observer"));
+        expected.addAll(FollowupObservationScripts.marketEvolutionRecordTypes());
         String active = input.prefix() + "_observer";
         expected.add(active);
         Set<String> actual = new HashSet<>();
@@ -499,11 +503,12 @@ final class FollowupFixtureTest {
 
     // Test-only evaluator consumes the emitted trigger tree and actual production capacity script.
     // It implements only this explicitly exercised subset; unknown constructs fail rather than pass.
-    private sealed interface Expr permits Atom, Block { }
-    private record Atom(String word) implements Expr { }
-    private record Entry(String key, String operator, Expr value) { }
-    private record Block(List<Entry> entries) implements Expr {
+    sealed interface Expr permits Atom, Block { }
+    record Atom(String word) implements Expr { }
+    record Entry(String key, String operator, Expr value) { }
+    record Block(List<Entry> entries) implements Expr {
         Block block(String key) { return entries.stream().filter(entry -> entry.key.equals(key)).map(entry -> (Block)entry.value).findFirst().orElseThrow(); }
+        Expr blockOrAtom(String key) { return entries.stream().filter(entry -> entry.key.equals(key)).map(Entry::value).findFirst().orElseThrow(); }
     }
     private sealed interface Datum permits NumberValue, NodeValue { }
     private record NumberValue(long value) implements Datum { }
@@ -515,7 +520,7 @@ final class FollowupFixtureTest {
         Node number(String key, long value) { variables.put(key, new NumberValue(value)); return this; }
         Node reference(String key, Node value) { variables.put(key, new NodeValue(value)); return this; }
     }
-    private static Block parse(String source) {
+    static Block parse(String source) {
         var matcher = Pattern.compile("\"(?:\\\\.|[^\"\\\\])*\"|!=|>=|<=|[{}=<>]|[^\\s{}=<>]+").matcher(source.replace("\ufeff", "").replaceAll("(?m)#.*$", ""));
         List<String> tokens = new ArrayList<>(); while (matcher.find()) tokens.add(matcher.group());
         int[] cursor = {0}; Block result = parseBlock(tokens, cursor, false);

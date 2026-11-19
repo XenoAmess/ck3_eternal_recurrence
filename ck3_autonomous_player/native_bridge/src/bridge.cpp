@@ -35,6 +35,7 @@
 #include "xar_bridge/ck3_1210_full_clock_request_v1.hpp"
 #include "xar_bridge/ck3_1210_event_option_control_v1.hpp"
 #include "xar_bridge/ck3_1210_gui_control_v1.hpp"
+#include "xar_bridge/ck3_1210_toast_query_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_request_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
 #include "xar_bridge/ck3_1210_date_worker_game_access_v1.hpp"
@@ -12685,7 +12686,7 @@ public:
         !game_->supports(xar::ck3_1210::kCoreFrameCapabilityV1)) return;
     attempted_ = true;
     const bool control=game_->supports(xar::ck3_1210::kCoreControlCapabilityV1);
-    std::array<xar::ck3_11906::MainThreadQueryExecutorV1,6> executors{
+    std::array<xar::ck3_11906::MainThreadQueryExecutorV1,7> executors{
         &xar::ck3_1210::ExecuteCoreFrameMailboxV1};
     std::size_t count=1;
     if(control) executors[count++]=&xar::ck3_1210::ExecuteCoreControlMailboxV1;
@@ -12704,6 +12705,8 @@ public:
       executors[count++]=&xar::ck3_1210::ExecuteGuiControlMailboxV1;
     if(game_->supports(xar::ck3_1210::kEventOptionsQueryCapabilityV1))
       executors[count++]=&xar::ck3_1210::ExecuteEventOptionControlMailboxV1;
+    if(game_->supports(xar::ck3_1210::kToastQueryCapabilityV1))
+      executors[count++]=&xar::ck3_1210::ExecuteToastQueryMailboxV1;
     if(game_->supports_snapshot() && !xar::game::BindCk3_1210SnapshotOwnerMailbox(
         xar::ck3_12002::NativeAdapter12002(*game_),g_main_thread_query_mailbox_v1))return;
     auto environment=xar::ck3_1210::BindThreadRuntimeImage(
@@ -13191,6 +13194,7 @@ struct WorkerState {
   std::optional<xar::game::Snapshot> previous_snapshot;
   xar::ck3_11906::ScriptedWidgetProvider12004 scripted_widget_provider{};
   xar::ck3_1210::GuiControlProviderV1 gui_control_provider_1210{};
+  xar::ck3_1210::ToastQueryProviderV1 toast_query_provider_1210{};
   std::uint64_t declaration_query_sequence = 0;
   std::vector<xar::game::DeclarableWarSnapshot> declarable_wars;
   std::uint64_t war_entry_assessment_query_sequence = 0;
@@ -15757,6 +15761,52 @@ std::string RunCoreControl1210(const xar::game::GameAdapter &game,
   return SerializeCoreControlCommandResultV1(request_id,step,query.result,{},0,image_build);
 }
 
+std::string RunToastQuery1210(const xar::game::GameAdapter &game,WorkerState &state,
+    std::string_view id,std::string_view step,std::string_view payload) {
+  using namespace xar::ck3_1210;
+  ToastQueryContextV1 query{};
+  if(!ParseGuiControlRequestV1(payload,query.request) || query.request.step!=kToastQueryStepV1 || step!=kToastQueryStepV1)
+    return CommandResultFrame(id,step,false,"invalid exact interface toast request");
+  const auto answer=[&](){return SerializeToastQueryResultV1(id,query.request,query.result);};
+  if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) || !game.supports(kToastQueryCapabilityV1)) {
+    query.result.unavailable_reason="toast_exact_capability_unavailable";return answer();
+  }
+  if(!game.supports_snapshot() || !state.previous_snapshot || !state.state_revision || !state.connection_generation ||
+      query.request.native_revision!=state.state_revision) {
+    query.result.unavailable_reason="toast_full_binding_unavailable";return answer();
+  }
+  const auto expected=*state.previous_snapshot;
+  if(!expected.paused || !expected.map_ready || !expected.has_played_character || !expected.played_character_alive) {
+    query.result.unavailable_reason="toast_full_not_paused_played_map";return answer();
+  }
+  query.game=&game;query.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
+  query.expected_full_snapshot=&expected;query.mailbox=&g_main_thread_query_mailbox_v1;
+  query.provider=&state.toast_query_provider_1210;query.connection_generation=state.connection_generation;
+  const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.core=BindCoreImage(base,game.descriptor().executable_sha256);
+  query.bindings=BindToastObjectImageV1(base,game.descriptor().executable_sha256);
+  ArmToastQueryDeadlineV1(query);
+  if(!query.monotonic_deadline_ms) {query.result.unavailable_reason="request_expired";return answer();}
+  // The single read ticket performs real Full reads on the owner before and
+  // after capture. No second mailbox, off-owner read or business action.
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecuteToastQueryMailboxV1,&query,query.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    query.result.unavailable_reason=submit==xar::ck3_11906::MainThreadQuerySubmitResultV1::invalid_request
+        ?"toast_mailbox_invalid_request":"toast_mailbox_submit_rejected";return answer();
+  }
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8000);
+  // Preserve stack ownership until an already-started executor terminates.
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2000);
+  const auto reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket);
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      reclaim!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    state.toast_query_provider_1210={};query.result={};query.result.unavailable_reason="toast_mailbox_not_completed";
+  }
+  return answer();
+}
+
 std::string RunGuiControl1210(const xar::game::GameAdapter &game,WorkerState &state,
     std::string_view id,std::string_view step,std::string_view payload) {
   using namespace xar::ck3_1210;
@@ -16062,6 +16112,7 @@ void RunConnectedSession(
   }
   ++state.connection_generation;
   state.gui_control_provider_1210.valid=false;
+  state.toast_query_provider_1210={};
   // Worker publishes only atomic connection state. Owner callback alone
   // retires the non-atomic GUI receipt on mismatch or disconnect.
   xar::ck3_11906::PublishFaithPowerTooltipPresentationConnection12004(state.connection_generation);
@@ -16644,6 +16695,11 @@ void RunConnectedSession(
         if (!early_step_dispatched && step==xar::ck3_1210::kPersonalGoldStepV1 &&
             xar::game::IsCk3_1210Descriptor(game.descriptor())) {
           connected=write_frame(pipe,RunPersonalGoldQuery1210(game,request_id,incoming.payload));
+          early_step_dispatched=true;
+        }
+        if (!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&
+            step==xar::ck3_1210::kToastQueryStepV1) {
+          connected=write_frame(pipe,RunToastQuery1210(game,state,request_id,step,incoming.payload));
           early_step_dispatched=true;
         }
         if (!early_step_dispatched && xar::game::IsCk3_1210Descriptor(game.descriptor()) &&

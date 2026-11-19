@@ -118,7 +118,7 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindThreadRuntimeImage(
     std::span<const ck3_11906::MainThreadQueryExecutorV1> executors) noexcept {
   ck3_11906::MainThreadQueryInstallEnvironmentV1 output{};
   const auto build=ImageBuildForSha(executable_sha256);
-  const std::size_t maximum=IsHotfix(build)?4U:6U;
+  const std::size_t maximum=IsHotfix(build)?4U:7U;
   if(image_base==0 || build==ImageBuildV1::unknown || executors.size()>maximum)return output;
   output.module_base = image_base;
   output.exact_build_admitted = true;
@@ -130,6 +130,7 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindThreadRuntimeImage(
   if (executors.size()>3) output.permitted_executor_quaternary=executors[3];
   if (executors.size()>4) output.permitted_executor_quinary=executors[4];
   if (executors.size()>5) output.permitted_executor_senary=executors[5];
+  if (executors.size()>6) output.permitted_executor_septenary=executors[6];
   return output;
 }
 } // namespace xar::ck3_1210

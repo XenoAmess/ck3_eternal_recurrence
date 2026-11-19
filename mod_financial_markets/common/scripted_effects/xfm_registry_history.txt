@@ -1,0 +1,25 @@
+﻿# Explicit positive-ID refresh only. Default market browsing never merges cold history.
+# Retained archived stories remain inspectable by their permanent ID; no trade is reopened.
+xfm_registry_lookup_history_effect = {
+ if = {
+  limit = { is_ai = no var:xfm_ui_id_filter > 0 var:xfm_ui_offset = 0 var:xfm_ui_holdings_only = 0 }
+  save_scope_as = xfm_registry_history_actor
+  clear_saved_scope = xfm_registry_history_coin
+  if = {
+   limit = { NOT = { any_in_list = { variable = xfm_ui_coin_page var:xfm_coin_id > 0 } } }
+   random_in_global_list = {
+    variable = xfm_archived_coin_registry
+    limit = {
+     story_type = xfm_finance_coin var:xfm_listing_state = 7 has_variable = xfm_capacity_slot_released
+     var:xfm_coin_id = scope:xfm_registry_history_actor.var:xfm_ui_id_filter
+     OR = { scope:xfm_registry_history_actor.var:xfm_ui_type_filter = 0 var:xfm_entity_type = scope:xfm_registry_history_actor.var:xfm_ui_type_filter }
+     OR = { scope:xfm_registry_history_actor = { NOT = { exists = var:xfm_ui_issuer_filter } } var:xfm_controller = scope:xfm_registry_history_actor.var:xfm_ui_issuer_filter var:xfm_original_issuer = scope:xfm_registry_history_actor.var:xfm_ui_issuer_filter }
+    }
+    save_scope_as = xfm_registry_history_coin
+   }
+   if = { limit = { exists = scope:xfm_registry_history_coin } add_to_variable_list = { name = xfm_ui_coin_page target = scope:xfm_registry_history_coin } }
+  }
+  clear_saved_scope = xfm_registry_history_coin
+  clear_saved_scope = xfm_registry_history_actor
+ }
+}

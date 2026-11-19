@@ -1,0 +1,473 @@
+{
+  "schema": "xfm-resident-observer-toast-incremental-source-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-19T06:33:50.948604+00:00",
+  "source_head_before_commit": "9a47a8f61d0e98a79156786710861cdc195828d0",
+  "reviewed_manifests": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\market-cash-ownership-regression-candidate01\\candidate-source-manifest.json",
+      "bytes": 2958,
+      "sha256": "c1696dab648a22ecdd6c7958bc432c8b8807f41bf0928513d0281b3dfbaf4781"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\stopped-keeper-exit-candidate05\\source-ready.json",
+      "bytes": 2169,
+      "sha256": "9dc304343f7a2ba07140a628ce4c5f1e77ffa9c14a39711e66628d28e23aef77"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin-resident-capacity-candidate03\\SOURCE_READY.json",
+      "bytes": 8881,
+      "sha256": "ac8ee177dd6c11aaf83d97b7f92c0d685ed2e9cd9764c4acb1a89ca3c4d74cd9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\market-evolution-observer-candidate02\\candidate-source-manifest.json",
+      "bytes": 12262,
+      "sha256": "7e800af46d66740459f4bf85f0c8ffe85cc2be96ed2a15121914308432c703a0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\market-evolution-observer-candidate03\\candidate-source-manifest.json",
+      "bytes": 2382,
+      "sha256": "1b3efe1905636ce28fb5ba3d4b3aed80662c8bde8aee6a03328cf18b674c141e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\toast-public-query-candidate04\\SOURCE_READY.actual.json",
+      "bytes": 30407,
+      "sha256": "88117b985d22bd45782011d5da4d8d5a724997646e61ccf373c28b44364e6361"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q22-profile-v4-candidate01\\SOURCE_READY.json",
+      "bytes": 2070,
+      "sha256": "f94f9c90c7c4044882d6612398b2f2fb95f19dfbce4dc7ccc1da036f8f6fee1b"
+    }
+  ],
+  "actual_source_pins": {
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesBookUiScriptContractTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\futures\\FuturesBookUiScriptContractTest.java",
+      "bytes": 94749,
+      "sha256": "23fa79cb5ee7937a3f8b9ab49e3f735ca13b6a945a6173d00370b00996f04959"
+    },
+    "mod_financial_markets/docs/cash-ownership-script-regressions.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\docs\\cash-ownership-script-regressions.md",
+      "bytes": 2425,
+      "sha256": "e6f13774d1687bd7dfb39f52e3b586cd5db977d31d7e064a33e8774415c6cedf"
+    },
+    "tools/ck3_mod_acceptance_queue.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 53174,
+      "sha256": "5d3461d9b154419126d3b7f5da782e1ac5e451a9438b55343206d6ad7c58f181"
+    },
+    "tools/test_ck3_mod_acceptance_queue_failure_shutdown.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_queue_failure_shutdown.py",
+      "bytes": 23171,
+      "sha256": "9f6d4631cb6f12415857e92bb9713f658830f8c4779a2d21c215d536de669392"
+    },
+    "mod_financial_markets/common/script_values/xfm_registry_capacity_values.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\script_values\\xfm_registry_capacity_values.txt",
+      "bytes": 603,
+      "sha256": "f4deec1054bc8f606fd5c328ab4018ee10f1850f27497883b3aa4a4635afc65f"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_finance_init.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_finance_init.txt",
+      "bytes": 8658,
+      "sha256": "fc8dda117e71c53724c75255b4bab5226a3d606ddcaa3979ba279e4af1905d3f"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_issuer_closure.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_closure.txt",
+      "bytes": 2103,
+      "sha256": "c03c794dcf16fe50e80598ebee366dfccd0921b127c7d48c2c2f05b50278d06b"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_issuer_daily.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_daily.txt",
+      "bytes": 5744,
+      "sha256": "a2438157972a2ebdb75c339cf19803011f93bcb4429a39f9ecbee6e7fbb5b242"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_issuer_retirement.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_retirement.txt",
+      "bytes": 1101,
+      "sha256": "a9df55f8a3516e6c210ce7caba6c88a85bd8837d6e59d91783c96af4846c374b"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_listing_transitions.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_listing_transitions.txt",
+      "bytes": 6687,
+      "sha256": "534e2010a26e02041aadd4692ecb5f5d0852cc0dc498b1ead5f82695b4c3a581"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_registry_capacity.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_registry_capacity.txt",
+      "bytes": 5472,
+      "sha256": "2c00526a93088ef7b139324815f7208520d732640a21848b08d2c537d54a19bb"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_registry_history.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_registry_history.txt",
+      "bytes": 1521,
+      "sha256": "07b65fc403f9d890619de53cf0aa7cfcf758fb09b732996e52ac87cdea8f85f2"
+    },
+    "mod_financial_markets/common/scripted_guis/xfm_market_navigation.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_guis\\xfm_market_navigation.txt",
+      "bytes": 4304,
+      "sha256": "cbc5292854b8bbfec67ebbe0e89fa84673ec3edc4ad6bda1fd688601de6c2193"
+    },
+    "mod_financial_markets/common/scripted_triggers/xfm_registry_capacity_triggers.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_triggers\\xfm_registry_capacity_triggers.txt",
+      "bytes": 5432,
+      "sha256": "9e304657ef44269733ae493c86a5dbf93b409cfd6690ace5cbf41a17534e91c6"
+    },
+    "mod_financial_markets/docs/coin-resident-capacity-runtime.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\docs\\coin-resident-capacity-runtime.md",
+      "bytes": 3844,
+      "sha256": "52d0c5c8714c958ee2c9584c36f64ee6efa683fa8f2786eba86e78e84abdba28"
+    },
+    "mod_financial_markets/runtime-files.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\runtime-files.json",
+      "bytes": 11580,
+      "sha256": "402ac097f0fd07c564c9f7e66830ac267a123bd3f26399e9a3e7553f8756b66e"
+    },
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/lifecycle/CoinResidentCapacityScriptTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\lifecycle\\CoinResidentCapacityScriptTest.java",
+      "bytes": 35753,
+      "sha256": "e8deaced96112a7e4965f30bb5b5c468dbf2e86587c1810872c58031ab21f2be"
+    },
+    "mod_financial_markets/docs/natural-market-evolution-observation.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\docs\\natural-market-evolution-observation.md",
+      "bytes": 10300,
+      "sha256": "f6f3de10bcfd5ff79767d97696795b9d50e2ff1da41ec4dcc0b9eb4660ecdb69"
+    },
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\acceptance\\FollowupContracts.java",
+      "bytes": 10974,
+      "sha256": "17e82c41eb20bdbc6314cad1977735a47c57f66ccfe70ca16d9acfd487d83023"
+    },
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\acceptance\\FollowupObservationScripts.java",
+      "bytes": 79155,
+      "sha256": "c71af2a0edd9c6a43b24e3f3ae207a59e3ea72dd95c620b10dbfda771deff50f"
+    },
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/FollowupClaimEqualityTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\acceptance\\FollowupClaimEqualityTest.java",
+      "bytes": 18879,
+      "sha256": "2432b9cfe6e512cb5df3fac31d8c5ebc7640ce1c3609d4788c0974a33ba62dbd"
+    },
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/FollowupFixtureTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\acceptance\\FollowupFixtureTest.java",
+      "bytes": 46802,
+      "sha256": "f6b532c7bd9ab646c21243e5fc641ab18b0e6be64d982a25125f7ce54a44eeee"
+    },
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/MarketEvolutionScriptContractTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\acceptance\\MarketEvolutionScriptContractTest.java",
+      "bytes": 36014,
+      "sha256": "7bd41eb54d2723f565ca7e912dee5d5749e4736168bf8c590771af882bbb6db9"
+    },
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/saveaudit/MarketEvolutionSaveCompatibilityTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\saveaudit\\MarketEvolutionSaveCompatibilityTest.java",
+      "bytes": 5363,
+      "sha256": "cfb71b3074c44dcdd39d206995061fe8cb128611eee25e4899d100ce32a0f819"
+    },
+    "tools/ck3_mod_acceptance_cases/financial_markets_market_evolution.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_market_evolution.json",
+      "bytes": 5383,
+      "sha256": "7129753acedd978d7f9868700eff4d36b0f07cbd0821aeeee75cd1be0800d626"
+    },
+    "tools/ck3_mod_acceptance_products.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 258791,
+      "sha256": "822f9bc0fc2bc606a969068a0b9034f2ea53ef4c62acdf56167ba27581f54617"
+    },
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 490041,
+      "sha256": "cfa7b2362309e6b4a19dc2090afcec619fd35fc67a86c9d262cffd1e804d9050"
+    },
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_toast_objects_v1.hpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_1210_toast_objects_v1.hpp",
+      "bytes": 4486,
+      "sha256": "36f49c080115925cdab1ff7f4e0a84e03d7d134b8dd24deff07e0f94fac6b747"
+    },
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_toast_query_v1.hpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_1210_toast_query_v1.hpp",
+      "bytes": 2091,
+      "sha256": "c380def10a512d02000f2d64d4d06b38fd8f584352b26bd006fe451f2433e85e"
+    },
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_toast_scope_identity_v1.hpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_1210_toast_scope_identity_v1.hpp",
+      "bytes": 1868,
+      "sha256": "6af5319ebc19051c1d4a71e3eec77ccae4ab0135ebc225e92c398280f38709e5"
+    },
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1703763,
+      "sha256": "4174224b0f04b3a094213d4fa17905a6e92001e328716ce2ffcd578f8d55e21c"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_adapter.cpp",
+      "bytes": 24375,
+      "sha256": "70b7f1679226347201378a482b379f432cfdfb34cae7cee9d7218827981db080"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_core_frame_test.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_core_frame_test.cpp",
+      "bytes": 14745,
+      "sha256": "dbd6ac226c646e206f4d14288892a66d7e23edf18cba7d07d52e5370be282e5b"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_gui_request_v1.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_gui_request_v1.cpp",
+      "bytes": 8257,
+      "sha256": "dd72b8bf0060af7f8b5e001f52e2a34ba5ae8f74302bf557583e5b5a607318b4"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_thread_runtime.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_thread_runtime.cpp",
+      "bytes": 9356,
+      "sha256": "b0bf69a594c9ec08e1f33de4602900e27cc23a138baade8ba0fee954c8ff78f6"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_toast_objects_native_v1.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_toast_objects_native_v1.cpp",
+      "bytes": 2551,
+      "sha256": "4e617b3f2539f5dd8b4f300d31410cf88f82b7fe4c5c483cf483b41d2be3b718"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_toast_objects_v1.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_toast_objects_v1.cpp",
+      "bytes": 17368,
+      "sha256": "dc3646ecf8e04e6b64296e45afbf367b2fd079680555a2c694e690c8a83d2670"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_toast_query_native_v1.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_toast_query_native_v1.cpp",
+      "bytes": 6136,
+      "sha256": "6d95b744012ad682a963e4a74beec5d94f3a65c47122e2482827f0be294a34ef"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_toast_query_v1.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_toast_query_v1.cpp",
+      "bytes": 3758,
+      "sha256": "6cdb71507b95df9318073b5677488581a8f60a59401773d8f9b16835b8994d65"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_toast_scope_identity_native_v1.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_toast_scope_identity_native_v1.cpp",
+      "bytes": 1745,
+      "sha256": "f6e9b4e66646bebc3e0990563367623571c87b7c6e35e8f43ff71d1588af1354"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_1210_toast_scope_identity_v1.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_toast_scope_identity_v1.cpp",
+      "bytes": 3566,
+      "sha256": "815e55daaccf52d1d365c72da16575e6360e58ebc060746399fc970611202798"
+    },
+    "ck3_autonomous_player/native_bridge/tests/ck3_1210_toast_objects_v1_test.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tests\\ck3_1210_toast_objects_v1_test.cpp",
+      "bytes": 8021,
+      "sha256": "c273de707d4f03851cb9d4028e8f5c92c38fcd3c4d9ebb125889bbf8412eb514"
+    },
+    "ck3_autonomous_player/native_bridge/tests/ck3_1210_toast_query_v1_test.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tests\\ck3_1210_toast_query_v1_test.cpp",
+      "bytes": 4311,
+      "sha256": "289003cdd9099029fcb960152a6c6f7d8488aa9d2bd3efc4b4b5298a4f3e0143"
+    },
+    "ck3_autonomous_player/native_bridge/tests/ck3_1210_toast_scope_identity_v1_test.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tests\\ck3_1210_toast_scope_identity_v1_test.cpp",
+      "bytes": 5536,
+      "sha256": "3856439fba593dcfa8add8e32f9ce4f70ce271701c42c04172bd7b6fea554c8f"
+    },
+    "ck3_autonomous_player/native_bridge/tests/fresh_full_state_handler_ack12004_fixture.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tests\\fresh_full_state_handler_ack12004_fixture.cpp",
+      "bytes": 40770,
+      "sha256": "3fb5831bc591e27de55e18bfad2b1d252ff9cbfa2fae2e2f08e2d6076d0654ea"
+    },
+    "ck3_autonomous_player/native_bridge/tests/fresh_full_state_owner12004_fixture.cpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tests\\fresh_full_state_owner12004_fixture.cpp",
+      "bytes": 38622,
+      "sha256": "83b74caa6ba9c973353a79d3a1acf21a5db7e6e80f03f1b4b33f1166f17c8ed3"
+    },
+    "ck3_autonomous_player/native_bridge/tests/toast_owned_fixture_v1.hpp": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tests\\toast_owned_fixture_v1.hpp",
+      "bytes": 8230,
+      "sha256": "8ab104f51f7bea4c43ce84ee737b0736694d177cec23f1d3a351ff1732202ad2"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/gui_window_tree_contract.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\gui_window_tree_contract.py",
+      "bytes": 48612,
+      "sha256": "639d951433185daa5043acd7d3004e19c47086e4704173c523733670c585f301"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 287464,
+      "sha256": "b43429217740e6df96621e1995c6a19bd806b7c1f0ed30fadf570ec4c8ae1651"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1717955,
+      "sha256": "7e51780ddcdac32f4784baf3803f48cba028164389ade00a66ba6fd35ca38644"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 901743,
+      "sha256": "37aa9e19f238767db561b48533997f7fc517a65371d2185e28283e5cfe5a6d61"
+    },
+    "ck3_autonomous_player/tests/unit/test_florin_current_interface_toast_v1.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_florin_current_interface_toast_v1.py",
+      "bytes": 17777,
+      "sha256": "d2d8785cfaeb0f2a7f034d4657919fbe969f4d9b04974c5ad7babe8688c3adb7"
+    },
+    "tools/ck3_mod_acceptance_native_profile_expansions.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 982833,
+      "sha256": "21bb7fb0557690feb6c15e69bdf501cbfbec9da8a8d00eb0a902c3b456e98f0c"
+    },
+    "tools/test_ck3_mod_acceptance_1210_profile_contract.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 13102,
+      "sha256": "372f32856826b78eb1f7179c214ebc967ba542bb7852783d12a7adcb4cea1872"
+    }
+  },
+  "runtime_files": 215,
+  "actual_incremental_results": [
+    {
+      "name": "TEST-financial-cash-ownership01",
+      "scope": "34 test methods, 0 failures/errors/skips",
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-cash-ownership01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1129,
+        "sha256": "03e2df6fb1016c14b99d2b18a179bf588837eddf57da15351f9287bd720733a1"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 88.20096619985998,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-cash-ownership01\\stdout.log",
+        "bytes": 3039,
+        "sha256": "c5b3f0ea07c37906c92c9c69c19f05a1e8cb7ffa8cda14935f85bd3b3ad2cbcf"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-cash-ownership01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-stopped-keeper-exit-root06",
+      "scope": "16 test methods, 0 failures/errors/skips",
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-stopped-keeper-exit-root06\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1061,
+        "sha256": "8ec31478fdddfdb4b022bd63edb5969a525684da2d3e1836ed9cce8e692867d3"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 3.0426699998788536,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-stopped-keeper-exit-root06\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-stopped-keeper-exit-root06\\stderr.log",
+        "bytes": 3502,
+        "sha256": "e72c23ac46b2c3855081dfdd6d1dc93b2641e595f6b08f22951835b70d0d8d94"
+      }
+    },
+    {
+      "name": "TEST-financial-resident-capacity03",
+      "scope": "16 test methods, 0 failures/errors/skips",
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-resident-capacity03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1135,
+        "sha256": "17b7debebbaabf27abfe873541bf690c258e780dfc669307f9de4b4558f31ec7"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 29.799681199947372,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-resident-capacity03\\stdout.log",
+        "bytes": 3040,
+        "sha256": "64db4146b7799a956838fc7d555b44c324486941a5ceef019baf363e573bbf89"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-resident-capacity03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-financial-market-evolution02",
+      "scope": "42 methods:41 pass,1 failure,0 errors/skips; original retained",
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-market-evolution02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1219,
+        "sha256": "9ebe092c3e19d126c94f8e815c15e7227adf38d5e5421974c608557d87ed01f4"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 29.146213800180703,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-market-evolution02\\stdout.log",
+        "bytes": 7968,
+        "sha256": "fba20dec2f061aa2288a17965f139cca23acd8e0cd1a2b076b6cf80c37273e63"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-market-evolution02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-financial-market-evolution03-failed-method",
+      "scope": "Only the original failed method:1 pass,0 failures/errors/skips",
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-market-evolution03-failed-method\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1226,
+        "sha256": "4e1940677fabfe0715dd668ab45cc08095998041fa612de0b94bb513c741f12c"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 19.39410959999077,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-market-evolution03-failed-method\\stdout.log",
+        "bytes": 3046,
+        "sha256": "e169f648d47acc390f8753b62340ca48ca69bb0dd5322f126ebef4c91f4bfa05"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-market-evolution03-failed-method\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TYPECHECK-toast-gui-contract04",
+      "scope": "Full changed DTO module, strict, follow-imports=skip",
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPECHECK-toast-gui-contract04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1124,
+        "sha256": "80cf91e58500d9a958c2c26323fbee4498d8390f94ec25221007e1243daa8848"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.9986978999804705,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPECHECK-toast-gui-contract04\\stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPECHECK-toast-gui-contract04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-native-profile-v4-01",
+      "scope": "5 test methods,0 failures/errors/skips",
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v4-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1016,
+        "sha256": "ecdd5afe1ed2e240b5896fb1ccb72fd3e393df18e0e2ca8c647559dd61377b04"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 30.479518100153655,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v4-01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v4-01\\stderr.log",
+        "bytes": 1094,
+        "sha256": "52125b90db22b7b3d5b0fce00d1b437f86e59ca6e879ab595f44e24aacaeb7e2"
+      }
+    }
+  ],
+  "resident_slot_reuse": "Only clean terminal projects leave the active registry; IDs/history and outstanding rights remain.",
+  "retirement_budget": "At most64 actual rights reviews/day, persistent rounds, same-day completion guard; global traversal remains.",
+  "continuous_observation": "Separate35-natural-day case; missing, unavailable, truncated or unobserved business is not a pass.",
+  "native_compilation": "NOT_RUN_FOR_THIS_SOURCE",
+  "native_producer_sdk_integration": "NOT_RUN_FOR_THIS_SOURCE",
+  "full_financial_module_verify": "PENDING_FINAL_SOURCE",
+  "current_game_active": false,
+  "whole_product_business_pass": false
+}

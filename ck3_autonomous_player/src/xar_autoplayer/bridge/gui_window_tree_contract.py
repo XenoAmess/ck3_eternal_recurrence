@@ -67,6 +67,7 @@ SCRIPTED_WIDGET_FLORIN_SCHEMA = "ck3_1210_gui_control_result_v1"
 SCRIPTED_WIDGET_FLORIN_BACKEND = "ck3-1.21.0-native-headless-main-thread"
 SCRIPTED_WIDGET_REVISION_TOOLS = frozenset({
     "ck3_query_scripted_widget_controls_v1", "ck3_activate_scripted_widget_control_v1",
+    "ck3_query_current_interface_toast_v1",
 })
 
 
@@ -626,3 +627,187 @@ def _normalize_scripted_widget_florin_action(
             "root_name": scripted_widget_root_v1(raw.get("root_name")), "query_generation": generation, "widget_id": widget,
             "dispatch_attempted": attempted, "dispatch_invoked": attempted and handled, "native_handled": handled,
             "verification_pending": raw["verification_pending"] is True, "postcondition_verified": False, "result_unknown": unknown}
+
+
+# Native HUD object observation, separate from named scripted widget actions.
+# This first public contract deliberately cannot certify a journal recipient,
+# source Story/event or notification delivery.
+CURRENT_INTERFACE_TOAST_STEP_V1 = "query-current-interface-toast-v1"
+CURRENT_INTERFACE_TOAST_CAPABILITY_V1 = "game.query.current-interface-toast.v1"
+CURRENT_INTERFACE_TOAST_SCHEMA_V1 = "ck3_1210_current_interface_toast_result_v1"
+
+class ToastSavedScopeIdentityV1(TypedDict):
+    name: str
+    kind: Literal["unsupported", "character", "story"]
+    observed_tag: int
+    identity_available: bool
+    identity: str | None
+    unavailable_reason: str | None
+
+
+class CurrentInterfaceToastV1(TypedDict):
+    schema: Literal["ck3_1210_current_interface_toast_result_v1"]
+    step: Literal["query-current-interface-toast-v1"]
+    game_version: str
+    executable_sha256: str
+    adapter_id: str
+    backend: str
+    status: Literal["available", "unavailable"]
+    accepted: bool
+    snapshot_id: str
+    native_revision: str
+    connection_generation: str
+    query_sequence: str
+    owner_thread_id: int
+    application_main_observed: bool
+    full_snapshot_before_verified: bool
+    full_snapshot_after_verified: bool
+    source_abi_pins_verified: bool
+    read_only: Literal[True]
+    effect_attempted: Literal[False]
+    stage: Literal["unavailable", "empty", "hidden", "visible_pending_frame", "visible"]
+    completed_application_frame: str
+    queue_count: int
+    title: str
+    description: str
+    saved_gui_scopes: list[ToastSavedScopeIdentityV1]
+    saved_script_scopes: list[ToastSavedScopeIdentityV1]
+    recipient_identity_available: Literal[False]
+    news_origin_available: Literal[False]
+    delivery_confirmed: Literal[False]
+    unavailable_reason: str | None
+    public_revision: NotRequired[str]
+    game_pid: NotRequired[int]
+    viewer_played_character_id: NotRequired[int]
+    date_raw: NotRequired[int]
+
+def normalize_current_interface_toast_v1(
+    value: object, binding: ScriptedWidgetBindingV1 | None = None,
+) -> CurrentInterfaceToastV1:
+    raw = scripted_widget_object_v1(value)
+    public = {"public_revision", "game_pid", "viewer_played_character_id", "date_raw"}
+    fields = {"schema", "step", "game_version", "executable_sha256", "adapter_id", "backend", "status", "accepted",
+        "snapshot_id", "native_revision", "connection_generation", "query_sequence", "owner_thread_id",
+        "application_main_observed", "full_snapshot_before_verified", "full_snapshot_after_verified", "source_abi_pins_verified",
+        "read_only", "effect_attempted", "stage", "completed_application_frame", "queue_count", "title", "description",
+        "saved_gui_scopes", "saved_script_scopes", "recipient_identity_available", "news_origin_available",
+        "delivery_confirmed", "unavailable_reason"}
+    keys = set(raw) - {"backend_id"}
+    if (keys not in (fields, fields | public) or ("backend_id" in raw and raw["backend_id"] != "native-headless")
+            or raw.get("schema") != CURRENT_INTERFACE_TOAST_SCHEMA_V1 or raw.get("step") != CURRENT_INTERFACE_TOAST_STEP_V1
+            or require_exact_native_build(raw.get("game_version"), raw.get("executable_sha256")) != CK3_1210
+            or raw.get("adapter_id") != "ck3-1.21.0-msvc-x64" or raw.get("backend") != SCRIPTED_WIDGET_FLORIN_BACKEND):
+        raise ValueError("closed exact Florin current-toast result required")
+    status = raw.get("status")
+    if status not in ("available", "unavailable"):
+        raise ValueError("invalid current-toast status")
+    available = status == "available"
+    if raw.get("accepted") is not available:
+        raise ValueError("current-toast acceptance contradicts status")
+    for key in ("application_main_observed", "full_snapshot_before_verified", "full_snapshot_after_verified", "source_abi_pins_verified"):
+        _widget_boolean(raw.get(key), key)
+    for key, expected in (("read_only", True), ("effect_attempted", False), ("recipient_identity_available", False),
+                           ("news_origin_available", False), ("delivery_confirmed", False)):
+        if raw.get(key) is not expected:
+            raise ValueError("raw toast object cannot grant a delivery or mutation claim")
+    revision = scripted_widget_decimal_v1(raw.get("native_revision"))
+    generation = scripted_widget_decimal_v1(raw.get("connection_generation"), allow_zero=not available)
+    sequence = scripted_widget_decimal_v1(raw.get("query_sequence"), allow_zero=not available)
+    epoch = scripted_widget_decimal_v1(raw.get("completed_application_frame"), allow_zero=not available)
+    if raw.get("snapshot_id") != "native:" + revision:
+        raise ValueError("current-toast Native snapshot identity differs")
+    owner = _widget_integer(raw.get("owner_thread_id"), "owner_thread_id", minimum=1 if available else 0, maximum=2**32-1)
+    count = _widget_integer(raw.get("queue_count"), "queue_count", minimum=0, maximum=64)
+    title = _widget_text(raw.get("title"), "title", 8192)
+    description = _widget_text(raw.get("description"), "description", 32768)
+    if len(title.encode("utf-8")) > 8192 or len(description.encode("utf-8")) > 32768:
+        raise ValueError("current-toast native UTF-8 byte budget exceeded")
+    def scopes(key: str) -> list[ToastSavedScopeIdentityV1]:
+        rows = raw.get(key)
+        if not isinstance(rows, list) or len(rows)>64:
+            raise ValueError("bounded current-toast saved scope identities required")
+        out: list[ToastSavedScopeIdentityV1] = []
+        names: set[str] = set()
+        for item in rows:
+            row = scripted_widget_object_v1(item)
+            if set(row)!={"name", "kind", "observed_tag", "identity_available", "identity", "unavailable_reason"}:
+                raise ValueError("closed current-toast saved scope identity required")
+            name = _widget_text(row.get("name"), key, 192)
+            if not name or any(ord(ch)<0x21 or ord(ch)>0x7e for ch in name) or name in names:
+                raise ValueError("invalid or duplicate current-toast scope name")
+            names.add(name)
+            tag = _widget_integer(row.get("observed_tag"), "scope tag", minimum=0, maximum=65535)
+            kind = row.get("kind")
+            identity_available = _widget_boolean(row.get("identity_available"), "scope identity_available")
+            identity, why = row.get("identity"), row.get("unavailable_reason")
+            if kind=="unsupported":
+                if tag in (4,22) or identity_available or identity is not None or why!="scope_tag_not_admitted":
+                    raise ValueError("unsupported current-toast tag must have explicit unavailable identity")
+            elif kind in ("character", "story"):
+                if (not identity_available or not isinstance(identity,str) or why is not None
+                        or tag!=(4 if kind=="character" else 22)):
+                    raise ValueError("known current-toast scope lacks canonical object identity")
+                if kind=="character":
+                    if (re.fullmatch(r"0|-?[1-9][0-9]{0,9}",identity) is None
+                            or not -(2**31)<=int(identity)<2**31 or identity=="-1"):
+                        raise ValueError("current-toast Character must preserve exact signed32 bits except invalid -1")
+                else:
+                    scripted_widget_decimal_v1(identity,allow_zero=True)
+                    if int(identity)>=2**32-1:
+                        raise ValueError("current-toast Story identity outside valid uint32 domain")
+            else:
+                raise ValueError("unsupported current-toast scope kind")
+            out.append({"name":name,"kind":"character" if kind=="character" else "story" if kind=="story" else "unsupported",
+                "observed_tag":tag,"identity_available":identity_available,
+                "identity":identity if isinstance(identity,str) else None,"unavailable_reason":why if isinstance(why,str) else None})
+        return out
+    gui, script = scopes("saved_gui_scopes"), scopes("saved_script_scopes")
+    if len(gui)+len(script)>64:
+        raise ValueError("current-toast combined saved scope entry budget exceeded")
+    script_by_name={row["name"]:row for row in script}
+    for row in gui:
+        if row["name"] in script_by_name and row!=script_by_name[row["name"]]:
+            raise ValueError("current-toast same-name GUI/script identity context differs")
+    stage = raw.get("stage")
+    if stage not in ("unavailable", "empty", "hidden", "visible_pending_frame", "visible"):
+        raise ValueError("invalid current-toast native stage")
+    reason = raw.get("unavailable_reason")
+    if available:
+        if (stage == "unavailable" or reason is not None or not all(raw[key] is True for key in
+                ("application_main_observed", "full_snapshot_before_verified", "full_snapshot_after_verified", "source_abi_pins_verified"))
+                or (stage == "empty" and (count != 0 or title or description or gui or script))
+                or (stage != "empty" and count == 0)):
+            raise ValueError("available current-toast lacks exact owner/Full/complete object proof")
+    elif (stage != "unavailable" or not isinstance(reason, str) or not reason or len(reason)>1024
+            or epoch != "0" or count or title or description or gui or script):
+        raise ValueError("unavailable current-toast must retain only its typed failure proof")
+    if binding is not None:
+        if (require_exact_native_build(binding.get("game_version"), binding.get("executable_sha256")) != CK3_1210
+                or revision != str(binding["native_revision"]) or (available and generation != str(binding["connection_generation"]))):
+            raise ValueError("current-toast crossed original Full/connection identity")
+    # Construct the single typed public/native contract after strict validation.
+    result: CurrentInterfaceToastV1 = {
+        "schema": "ck3_1210_current_interface_toast_result_v1", "step": "query-current-interface-toast-v1",
+        "game_version": CK3_1210.game_version, "executable_sha256": CK3_1210.executable_sha256,
+        "adapter_id": "ck3-1.21.0-msvc-x64", "backend": SCRIPTED_WIDGET_FLORIN_BACKEND,
+        "status": "available" if available else "unavailable", "accepted": available, "snapshot_id": "native:"+revision,
+        "native_revision": revision, "connection_generation": generation, "query_sequence": sequence, "owner_thread_id": owner,
+        "application_main_observed": _widget_boolean(raw["application_main_observed"], "application_main_observed"),
+        "full_snapshot_before_verified": _widget_boolean(raw["full_snapshot_before_verified"], "full_snapshot_before_verified"),
+        "full_snapshot_after_verified": _widget_boolean(raw["full_snapshot_after_verified"], "full_snapshot_after_verified"),
+        "source_abi_pins_verified": _widget_boolean(raw["source_abi_pins_verified"], "source_abi_pins_verified"),
+        "read_only": True, "effect_attempted": False,
+        "stage": "empty" if stage == "empty" else "hidden" if stage == "hidden" else "visible_pending_frame" if stage == "visible_pending_frame" else "visible" if stage == "visible" else "unavailable",
+        "completed_application_frame": epoch, "queue_count": count, "title": title, "description": description,
+        "saved_gui_scopes": gui, "saved_script_scopes": script, "recipient_identity_available": False,
+        "news_origin_available": False, "delivery_confirmed": False, "unavailable_reason": reason if isinstance(reason,str) else None,
+    }
+    if public <= keys:
+        result["public_revision"] = scripted_widget_decimal_v1(raw["public_revision"])
+        result["game_pid"] = _widget_integer(raw["game_pid"], "game_pid", maximum=2**32-1)
+        viewer = _widget_integer(raw["viewer_played_character_id"], "viewer_played_character_id", minimum=-(2**31), maximum=2**31-1)
+        if viewer == -1:
+            raise ValueError("current-toast viewer uses the invalid signed character ID")
+        result["viewer_played_character_id"] = viewer
+        result["date_raw"] = _widget_integer(raw["date_raw"], "date_raw", minimum=-(2**31), maximum=2**31-1)
+    return result

@@ -14,7 +14,8 @@ public final class FollowupContracts {
     }
     public enum Profile {
         SPOT("spot"), DERIVATIVES("derivatives"), LIFECYCLE("lifecycle"), INHERITANCE("inheritance"),
-        COLD_RELOAD("cold-reload"), NEWS_CRISIS("news-crisis"), AI_CAPACITY("ai-capacity");
+        COLD_RELOAD("cold-reload"), NEWS_CRISIS("news-crisis"), AI_CAPACITY("ai-capacity"),
+        MARKET_EVOLUTION("market-evolution");
         private final String wire;
         Profile(String wire) { this.wire = wire; }
         @JsonValue public String wire() { return wire; }
@@ -103,8 +104,10 @@ public final class FollowupContracts {
             else require(targets.indexId == null, "model index observation applies to derivatives only");
             if (caseId == Profile.SPOT) require(targets.coinId != null && targets.contractId == null && targets.positionId == null
                     && targets.debtId == null && targets.newsId == null, "spot requires only a real coin/account target");
-            if (caseId == Profile.LIFECYCLE || caseId == Profile.AI_CAPACITY)
+            if (caseId == Profile.LIFECYCLE || caseId == Profile.AI_CAPACITY || caseId == Profile.MARKET_EVOLUTION)
                 require(targets.coinId != null, "profile needs a real coin target");
+            if (caseId == Profile.MARKET_EVOLUTION)
+                require(targets.debtId == null && targets.newsId == null, "natural evolution records optional facts without a forced debt/news target");
             if (caseId == Profile.LIFECYCLE || caseId == Profile.INHERITANCE || caseId == Profile.NEWS_CRISIS)
                 require(targets.debtId != null, "profile needs its genuine existing claim target");
             if (caseId == Profile.COLD_RELOAD) {
@@ -126,6 +129,7 @@ public final class FollowupContracts {
                 case COLD_RELOAD -> List.of("observation_ready", "loaded_sample_matches_baseline", "same_day_refresh_sample_unchanged");
                 case NEWS_CRISIS -> List.of("observation_ready", "claim_accounting_readback", "crisis_or_relief_readback", "new_world_fact_after_baseline", "delivery_state_bounded_readback");
                 case AI_CAPACITY -> List.of("observation_ready", "declared_inventory_readback", "ai_paid_issuance_readback", "365_daily_samples_after_warmup");
+                case MARKET_EVOLUTION -> List.of("observation_ready", "baseline_inventory_captured", "availability_summary_recorded", "35_daily_samples_observed");
             };
             return observations.stream().map(prefix::concat).toList();
         }

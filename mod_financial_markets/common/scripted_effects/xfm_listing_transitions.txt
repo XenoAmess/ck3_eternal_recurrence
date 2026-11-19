@@ -82,6 +82,8 @@ xfm_listing_archive_effect = {
     if = {
         limit = {
             story_type = xfm_finance_coin
+            xfm_registry_no_external_obligations_trigger = yes
+            xfm_registry_empty_property_trigger = yes
             OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 }
             var:xfm_supply_units = 0
             var:xfm_unpaid_debt_cents = 0
@@ -110,5 +112,8 @@ xfm_listing_archive_effect = {
         set_variable = { name = xfm_trading_open value = 0 }
         set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day }
         # Keep permanent identity and defaults. No end_story and no ID reuse.
+        # Reuse the complete terminal guard for accounts/frozen inheritance as well.
+        xfm_registry_queue_retire_effect = yes
+        global_var:xfm_exchange = { xfm_registry_flush_retire_effect = yes }
     }
 }

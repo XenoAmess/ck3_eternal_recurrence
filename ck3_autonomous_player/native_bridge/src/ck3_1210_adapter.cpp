@@ -19,6 +19,7 @@
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/ck3_1210_event_option_control_v1.hpp"
 #include "xar_bridge/ck3_1210_gui_control_v1.hpp"
+#include "xar_bridge/ck3_1210_toast_query_v1.hpp"
 #if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
 #include <windows.h>
 #endif
@@ -374,6 +375,7 @@ const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_1210_GUI_CONTROL_V1)
       ck3_1210::kGuiControlQueryCapabilityV1,ck3_1210::kGuiControlActivateCapabilityV1,
+      ck3_1210::kToastQueryCapabilityV1,"game.command.query-current-interface-toast-v1",
       "game.command.query-scripted-widget-controls-v1","game.command.activate-scripted-widget-control-v1",
 #endif
 #endif

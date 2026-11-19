@@ -10545,7 +10545,10 @@ if(BUILD_TESTING)
 endif()
 
 target_sources(xar_ck3_12002_runtime PRIVATE
-  src/ck3_1210_gui_control_v1.cpp src/ck3_1210_gui_request_v1.cpp src/ck3_1210_gui_control_native_v1.cpp)
+  src/ck3_1210_gui_control_v1.cpp src/ck3_1210_gui_request_v1.cpp src/ck3_1210_gui_control_native_v1.cpp
+  src/ck3_1210_toast_objects_v1.cpp src/ck3_1210_toast_objects_native_v1.cpp
+  src/ck3_1210_toast_query_v1.cpp src/ck3_1210_toast_query_native_v1.cpp
+  src/ck3_1210_toast_scope_identity_v1.cpp src/ck3_1210_toast_scope_identity_native_v1.cpp)
 option(XAR_CK3_ENABLE_1210_GUI_CONTROL_V1 "Enable exact paused scripted widget source controls" OFF)
 if(XAR_CK3_ENABLE_1210_GUI_CONTROL_V1)
   if(NOT XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
@@ -10612,3 +10615,32 @@ include(cmake/character_roster_1210.cmake)
 include(cmake/hotfix26757580_basic_v1.cmake)
 
 include(cmake/opening_readonly56.cmake)
+
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_toast_query_test src/ck3_1210_toast_query_v1.cpp
+    src/ck3_1210_toast_objects_v1.cpp src/ck3_1210_toast_scope_identity_v1.cpp
+    src/ck3_1210_gui_request_v1.cpp src/ck3_1210_gui_control_v1.cpp tests/ck3_1210_toast_query_v1_test.cpp)
+  target_include_directories(xar_ck3_1210_toast_query_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_toast_query_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_toast_query_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_toast_query COMMAND xar_ck3_1210_toast_query_test)
+  add_executable(xar_ck3_1210_toast_objects_test src/ck3_1210_toast_objects_v1.cpp src/ck3_1210_toast_scope_identity_v1.cpp tests/ck3_1210_toast_objects_v1_test.cpp)
+  target_include_directories(xar_ck3_1210_toast_objects_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_toast_objects_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_toast_objects_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_toast_objects COMMAND xar_ck3_1210_toast_objects_test)
+endif()
+
+if(BUILD_TESTING)
+  add_executable(xar_ck3_1210_toast_scope_identity_test src/ck3_1210_toast_scope_identity_v1.cpp tests/ck3_1210_toast_scope_identity_v1_test.cpp)
+  target_include_directories(xar_ck3_1210_toast_scope_identity_test PRIVATE include)
+  target_compile_definitions(xar_ck3_1210_toast_scope_identity_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_1210_toast_scope_identity_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_1210_toast_scope_identity COMMAND xar_ck3_1210_toast_scope_identity_test)
+endif()

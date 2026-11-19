@@ -7,7 +7,7 @@ semantic driver interface used by the visual and data-Mod backends.
 
 from __future__ import annotations
 
-from .gui_window_tree_contract import ScriptedWidgetActionV1, ScriptedWidgetBindingV1, ScriptedWidgetQueryV1
+from .gui_window_tree_contract import ScriptedWidgetActionV1, ScriptedWidgetBindingV1, ScriptedWidgetQueryV1, CurrentInterfaceToastV1
 
 from .player_pilgrimage_planner_contract import PilgrimageOptionKey
 
@@ -8712,6 +8712,36 @@ class NativeHeadlessGameplayDriver:
                     raise BridgeUnavailableError("scripted widget owner sampling crossed its original paused frame")
                 current = later
         raise BridgeUnavailableError("scripted widget owner sample unavailable")
+
+    def query_current_interface_toast_v1(self, *, expected_revision: int) -> CurrentInterfaceToastV1:
+        """Read a current native HUD toast object; never infer news delivery."""
+        from .gui_window_tree_contract import (
+            CURRENT_INTERFACE_TOAST_STEP_V1, CURRENT_INTERFACE_TOAST_CAPABILITY_V1,
+            scripted_widget_florin_fields_v1, normalize_current_interface_toast_v1,
+        )
+        from .version_identity import CK3_1210, require_exact_native_build
+        from xar_autoplayer.native_session import require_game_windows_background
+        _validate_revision(expected_revision, "expected_revision")
+        starting, binding = self._scripted_widget_stable_frame_v1()
+        if starting.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("current-toast public revision changed")
+        if require_exact_native_build(binding.get("game_version"), binding.get("executable_sha256")) != CK3_1210:
+            raise UnsupportedStepError("current-toast observation requires exact Florin 26622941")
+        require_game_windows_background(binding["game_pid"])
+        budget = min(120.0, _positive_seconds(self.command_timeout_seconds, "command_timeout_seconds"))
+        deadline = time.monotonic() + budget
+        fields = scripted_widget_florin_fields_v1(binding, "toast_container_widget", int(time.time()*1000)+int(budget*1000))
+        raw = self._execute_primitive_step(CURRENT_INTERFACE_TOAST_STEP_V1, expected_revision=expected_revision,
+            required_capability=CURRENT_INTERFACE_TOAST_CAPABILITY_V1, request_fields=fields, absolute_deadline=deadline)
+        result = normalize_current_interface_toast_v1(raw, binding)
+        ending, after = self._scripted_widget_stable_frame_v1()
+        if after != binding or not _same_paused_native_frame(starting, ending):
+            raise BridgeUnavailableError("current-toast query crossed its paused Full/run/transport identity")
+        result["public_revision"] = str(expected_revision)
+        result["game_pid"] = binding["game_pid"]
+        result["viewer_played_character_id"] = binding["played_character_id"]
+        result["date_raw"] = binding["date_raw"]
+        return result
 
     def query_scripted_widget_controls_v1(
         self, root_name: str, *, expected_revision: int,
