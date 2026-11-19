@@ -274,6 +274,7 @@ ervc_cc_candidate_trait_metadata_valid_trigger = {
 		scope:ervc_cc_candidate_trait = trait:infertile
 		scope:ervc_cc_candidate_trait = trait:pilgrim
 		scope:ervc_cc_candidate_trait = trait:hajjaj
+		scope:ervc_cc_candidate_trait = trait:devoted
 		scope:ervc_cc_candidate_trait = trait:sayyid
 		scope:ervc_cc_candidate_trait = trait:faith_warrior
 		scope:ervc_cc_candidate_trait = trait:berserker
@@ -293,6 +294,7 @@ ervc_cc_candidate_trait_metadata_valid_trigger = {
 		scope:ervc_cc_candidate_trait = trait:viking
 		scope:ervc_cc_candidate_trait = trait:adventurer
 		scope:ervc_cc_candidate_trait = trait:adventurer_follower
+		scope:ervc_cc_candidate_trait = trait:merchant_associate
 		scope:ervc_cc_candidate_trait = trait:heresiarch
 		scope:ervc_cc_candidate_trait = trait:herald
 		scope:ervc_cc_candidate_trait = trait:peasant_leader
@@ -334,6 +336,14 @@ ervc_cc_candidate_trait_metadata_valid_trigger = {
 		scope:ervc_cc_candidate_trait = trait:burdened
 		AND = {
 			scope:ervc_cc_candidate_trait = trait:lifestyle_scholar
+			var:ervc_cc_age >= 16
+		}
+		AND = {
+			scope:ervc_cc_candidate_trait = trait:lifestyle_merchant
+			var:ervc_cc_age >= 16
+		}
+		AND = {
+			scope:ervc_cc_candidate_trait = trait:dealbreaker
 			var:ervc_cc_age >= 16
 		}
 	}
@@ -908,6 +918,12 @@ ervc_cc_candidate_replaces_selected_trait_trigger = {
 			}
 		}
 		AND = {
+			scope:ervc_cc_candidate_trait = trait:merchant_associate
+			OR = {
+				ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_merchant }
+			}
+		}
+		AND = {
 			scope:ervc_cc_candidate_trait = trait:loyal
 			OR = {
 				ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:disloyal }
@@ -929,6 +945,12 @@ ervc_cc_candidate_replaces_selected_trait_trigger = {
 			scope:ervc_cc_candidate_trait = trait:cautious_leader
 			OR = {
 				ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:reckless }
+			}
+		}
+		AND = {
+			scope:ervc_cc_candidate_trait = trait:lifestyle_merchant
+			OR = {
+				ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:merchant_associate }
 			}
 		}
 	}
@@ -1306,6 +1328,10 @@ ervc_cc_selected_traits_compatible_trigger = {
 	NAND = {
 		ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:adventurer }
 		ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:adventurer_follower }
+	}
+	NAND = {
+		ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:merchant_associate }
+		ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_merchant }
 	}
 	NAND = {
 		ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:loyal }

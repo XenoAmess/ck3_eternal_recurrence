@@ -1200,6 +1200,13 @@ ervc_cc_rebuild_trait_catalogs_effect = {
 			target = scope:ervc_cc_catalog_entry
 		}
 	}
+	trait:devoted = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
 	trait:sayyid = { save_scope_as = ervc_cc_catalog_entry }
 	root = {
 		add_to_variable_list = {
@@ -1327,6 +1334,13 @@ ervc_cc_rebuild_trait_catalogs_effect = {
 		}
 	}
 	trait:adventurer_follower = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:merchant_associate = { save_scope_as = ervc_cc_catalog_entry }
 	root = {
 		add_to_variable_list = {
 			name = ervc_cc_catalog_other
@@ -1586,6 +1600,20 @@ ervc_cc_rebuild_trait_catalogs_effect = {
 		}
 	}
 	trait:lifestyle_scholar = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_merchant = { save_scope_as = ervc_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = ervc_cc_catalog_other
+			target = scope:ervc_cc_catalog_entry
+		}
+	}
+	trait:dealbreaker = { save_scope_as = ervc_cc_catalog_entry }
 	root = {
 		add_to_variable_list = {
 			name = ervc_cc_catalog_other
@@ -2010,6 +2038,10 @@ ervc_cc_remove_selected_trait_conflicts_effect = {
 		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:adventurer }
 	}
 	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:merchant_associate }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:lifestyle_merchant }
+	}
+	if = {
 		limit = { scope:ervc_cc_candidate_trait = trait:loyal }
 		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:disloyal }
 	}
@@ -2024,5 +2056,9 @@ ervc_cc_remove_selected_trait_conflicts_effect = {
 	if = {
 		limit = { scope:ervc_cc_candidate_trait = trait:cautious_leader }
 		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:reckless }
+	}
+	if = {
+		limit = { scope:ervc_cc_candidate_trait = trait:lifestyle_merchant }
+		ervc_cc_remove_selected_trait_effect = { ervc_trait = trait:merchant_associate }
 	}
 }

@@ -43,14 +43,14 @@ LANGUAGES = (
 OTHER_LANGUAGES = tuple(
     language for language in LANGUAGES if language not in {"english", "simp_chinese"}
 )
-LOCALIZATION_CONTRACT = ROOT / "tools/vivhite_localization_contract_1_20_0_2.json"
+LOCALIZATION_CONTRACT = ROOT / "tools/vivhite_localization_contract_1_21_0.json"
 # Bind the committed LF bytes enforced by .gitattributes, not a pre-add CRLF file.
-LOCALIZATION_CONTRACT_SHA256 = "5da51b06cec8796e4c581fc85a21f38946c763d265f05c35fc9931c1c2195fb5"
+LOCALIZATION_CONTRACT_SHA256 = "29c17bc13ac7787fe05f94716f0a4387c6d26d3353b14784ef7283af13884bb4"
 DESCRIPTOR_FIELDS = {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "name": "琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版",
     "picture": "thumbnail.png",
-    "supported_version": "1.20.0.3",
+    "supported_version": "1.21.0",
 }
 GROUP_KEY = "decision_group_type_ervc_courtier_creator"
 DECISION_TITLE_KEY = "ervc_courtier_creator_decision"
@@ -414,7 +414,7 @@ def generator_checks(errors: list[str], report: dict[str, object]) -> None:
         errors.append(f"trait catalog union is {len(union)}, expected {generator.EXPECTED_UNION_COUNT}")
     if len(pairs) != generator.EXPECTED_CONFLICT_PAIR_COUNT or rendered_pair_count != generator.EXPECTED_CONFLICT_PAIR_COUNT:
         errors.append(
-            f"trait conflict count drifted: API={len(pairs)}, render={rendered_pair_count}, expected=95"
+            f"trait conflict count drifted: API={len(pairs)}, render={rendered_pair_count}, expected={generator.EXPECTED_CONFLICT_PAIR_COUNT}"
         )
     if digest != generator.EXPECTED_SOURCE_SHA256:
         errors.append("generator reported an unexpected source snapshot SHA-256")
@@ -470,7 +470,7 @@ def load_localization_contract(path: Path = LOCALIZATION_CONTRACT) -> dict[str, 
     payload = json.loads(data.decode("utf-8"))
     if (payload.get("schema_version") != 1
             or payload.get("product") != "vivhite-courtier"
-            or payload.get("compatibility_candidate") != "1.20.0.2"):
+            or payload.get("compatibility_candidate") != "1.21.0"):
         raise ValueError("independent localization contract identity changed")
     values = payload.get("values", {})
     inherited = EXPECTED_LOC_KEYS - {GROUP_KEY, DECISION_TITLE_KEY}

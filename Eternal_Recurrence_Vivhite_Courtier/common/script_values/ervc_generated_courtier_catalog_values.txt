@@ -684,6 +684,10 @@ ervc_cc_selected_trait_cost = {
 		add = 30
 	}
 	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:devoted } }
+		add = 0
+	}
+	if = {
 		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:sayyid } }
 		add = 25
 	}
@@ -757,6 +761,10 @@ ervc_cc_selected_trait_cost = {
 	}
 	if = {
 		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:adventurer_follower } }
+		add = 10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:merchant_associate } }
 		add = 10
 	}
 	if = {
@@ -906,5 +914,13 @@ ervc_cc_selected_trait_cost = {
 	if = {
 		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_scholar } }
 		add = 15
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:lifestyle_merchant } }
+		add = 10
+	}
+	if = {
+		limit = { ervc_cc_trait_is_selected_trigger = { ervc_trait = trait:dealbreaker } }
+		add = 10
 	}
 }

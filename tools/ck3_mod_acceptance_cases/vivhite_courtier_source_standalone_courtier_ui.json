@@ -28,7 +28,9 @@
         "default_120_one_delivery_one_charge",
         "custom_348_configuration_retained_and_reopened",
         "custom_348_one_delivery_one_charge",
-        "new_trait_and_legacy_rite_actual_UI"
+        "new_trait_and_legacy_rite_actual_UI",
+        "florin_four_added_catalog_traits_actual_UI_and_exact_delivery_charge",
+        "florin_age16_and_merchant_opposite_replacement_actual_UI"
       ],
       "at_day": 1
     }
@@ -38,7 +40,8 @@
     "tools/run_vivhite_acceptance.py"
   ],
   "uncovered_product_business": [
-    "dual mount-order isolation cases retain their original separate fixture/GUI requirements"
+    "dual mount-order isolation cases retain their original separate fixture/GUI requirements",
+    "fresh Florin four-trait GUI/purchase and both dual-order scenes remain NOT_RUN; metadata marker alone does not grant delivery/UI credit"
   ],
   "schema": "ck3-mod-acceptance-product-case-v1",
   "product": "vivhite-courtier",

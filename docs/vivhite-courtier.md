@@ -5,7 +5,9 @@
 - Source root: `Eternal_Recurrence_Vivhite_Courtier/`
 - Chinese title: 【琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版】
 - English title: **Eternal Recurrence: Glassfire Courtier Creator - Vivhite Edition**
-- Version: `1.0.1`; tested baseline: CK3 `1.19.0.6`
+- Version: `1.0.3` source candidate; target: CK3 `1.21.0 (Florin)`. Fresh runtime acceptance is NOT_RUN.
+  See [the Florin source migration and fresh matrix](ck3-1.21.0-vivhite-compatibility-2026-11-19.md).
+  Historical 1.0.1 tested baseline: CK3 `1.19.0.6`.
 - The 2026-10-01 CK3 1.20.0.2 source candidate is recorded in
   [the independent compatibility work package](ck3-1.20.0.2-vivhite-compatibility-2026-10-01.md).
   The inherited descriptor declares the 1.20.0.2 source compatibility target. Runtime acceptance is pending;
@@ -36,15 +38,18 @@ rejects any custom `xar`, `xa_`, `XAR:`, original Workshop ID, forbidden subsyst
 
 ## Generation
 
-`tools/gen_vivhite_courtier.py` reads only the independently pinned
-`tools/vivhite_courtier_traits_1_20_0_2.json`. Ordinary generation never reads the ignored game installation or the
-main product's snapshot. The candidate snapshot records CK3 `1.20.0.2`, source `00_traits.txt` SHA-256
-`93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa`, 306 source traits, 226 catalog traits and
-95 conflict pairs. It emits three generated ERVC catalog files and supports `--check` parity.
-The independently archived 1.19.0.6 snapshot remains unchanged and is rejected by the new generator.
-The former `scholar` trait is now `erudite` (50 points); the new `lifestyle_scholar` (15 points, age 16+) and
-`herald` (100 points) have their own catalog entries. Default configurations retain the player's Rite; another Faith
-uses its main Rite. Existing valid Rite selections survive reopen, and older designs fill their missing Rite.
+`tools/gen_vivhite_courtier.py` reads only the independent
+`tools/vivhite_courtier_traits_1_21_0.json` snapshot. It pins CK3 `1.21.0`,
+`00_traits.txt` SHA-256 `793718c2388f8d7b6c009468a2f5f8f5d1d8443acec4a015614ffac4f05b98cd`,
+311 source traits, 230 catalog traits, 229 visible traits and 96 conflict pairs.
+Education/commander/physical/personality counts remain 25/17/38/36; other grows to114.
+The four additions are `devoted` (0), `merchant_associate` (10), `lifestyle_merchant`
+(10, age16+) and `dealbreaker` (10, age16+). The two merchant traits replace each
+other. Hidden `adopted_no_inheritance` and `education_republican_knowledge_5` stay out.
+The historical snapshots are retained and rejected by active generation. The three
+generated ERVC catalogs still support `--check`; no live installation or main-mod
+snapshot is read during ordinary generation. Existing `erudite`/`lifestyle_scholar`/
+`herald` prices, default120/custom348 vectors, classification and Rite policy remain.
 
 `tools/compose_vivhite_key_art.py` renders the owner-supplied
 `images/vivhite_courtier_key_art.png` to the standalone mod's 640×640 launcher/Workshop `thumbnail.png`. The static
@@ -59,31 +64,12 @@ py tools/compose_vivhite_key_art.py
 
 ## Localization Status
 
-The standalone files own their `ervc` keys so the product loads without the original mod, but they do not fork the
-already released translations. Of each language's 45 values, 43 must match the independent
-`tools/vivhite_localization_contract_1_20_0_2.json` contract byte-for-byte after the
-mechanical `xar` to `ervc` key/state namespace substitution. Only the decision title and decision-group title are
-standalone branding deltas. The seven new edition/group values were translated with MiniMax-M3 assistance, then
-manually normalized to each language's existing Eternal Recurrence, Glassfire and courtier terminology while preserving
-`@ervc_decision_group_icon!` and `Vivhite`. The static validator enforces the 43-value inheritance contract, all 45-key
-inventories, protected tokens, numeric literals, BOM and the absence of English group-title placeholders. The daily gate
-for the 1.20 candidate reads this frozen contract rather than the main product's changing files. English and Simplified
-Chinese help now describe the 110-item other catalog and Rite policy. The seven other origin descriptions retain
-historical text; the upstream numeric catalog update is preserved in all nine languages. The origin descriptions
-require synchronization and release review before publication; the daily
-structure gate does not count them as completed translations.
-
-On 2026-10-01, the existing creator inherited the main product's CK3 1.20
-compatibility for commissioned characters: retain a valid selected Rite; migrate
-older Faith-only designs to the player's Rite for their Faith or another Faith's
-main Rite; supply that same Rite to native trait preview, creation and delivery
-verification. This adds no arbitrary Rite selector or autonomous religion policy.
-The Chinese and English origin help now describes those actual paths. All nine
-`other.help` values received only the numeric catalog update 108 → 110; the seven
-other origin descriptions remain their existing text pending release translation.
-The independent frozen contract records that precise upstream numeric metadata substitution,
-without reading the changing main translations. This is not a completed
-release localization or live Rite compatibility claim.
+All nine languages retain45 keys, with43 inherited values pinned independently in
+`tools/vivhite_localization_contract_1_21_0.json`; only decision/group titles are
+standalone branding deltas. This Florin migration changes only the other-catalog
+quantity110 to114. Reviewed Rite/origin prose, protected tokens, numeric formatting
+and all other translation bytes are preserved. The old1.20 contract remains historical.
+The gate never reads the changing main-product translations to regenerate this contract.
 
 ## Build And Static Gates
 

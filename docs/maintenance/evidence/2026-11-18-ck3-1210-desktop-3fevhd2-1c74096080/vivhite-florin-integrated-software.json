@@ -1,0 +1,522 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T15:25:07.268854+00:00",
+  "source_candidate": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-offline-candidate\\candidate-manifest.json",
+    "bytes": 7064,
+    "sha256": "f8ae8f8c0b7dca8778f16cdf1294bb3c63c71d02cd8e24b81f5f7b077e7e5f8e"
+  },
+  "initial_19_type_diagnostics": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\two-whole-module-mypy.stdout",
+    "bytes": 2627,
+    "sha256": "8c8dc2c3e59d3d8772d1b567269de8a92b1c68ebed0a6fe668fce9b4f327a7ce"
+  },
+  "final_actual_results": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T15:19:34.503611+00:00",
+    "passed": true,
+    "results": [
+      {
+        "name": "generator-whole-file-strict",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=silent",
+          "--ignore-missing-imports",
+          "--cache-dir",
+          "nul",
+          "tools/gen_vivhite_courtier.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.9223841000057291
+      },
+      {
+        "name": "full-affected-unit",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "test_gen_vivhite_courtier",
+          "test_build_vivhite_release",
+          "test_courtier_optional_list_gates",
+          "-v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 16.07589619999635
+      },
+      {
+        "name": "generator-check",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/gen_vivhite_courtier.py",
+          "--check"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2827365999983158
+      },
+      {
+        "name": "static-physical-candidate",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/validate_vivhite_static.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 2.5656770000059623
+      },
+      {
+        "name": "two-whole-module-mypy",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--follow-imports=silent",
+          "--ignore-missing-imports",
+          "--cache-dir",
+          "nul",
+          "tools/gen_vivhite_courtier.py",
+          "tools/prepare_courtier_1_20_fixture.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 2.154054000013275
+      },
+      {
+        "name": "duchy-producer-unit",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "test_fixture_engine_prepare.AubFlorinProbePreparationTests.test_actual_duchy_producer_keeps_timed_partial_scope",
+          "-v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.7244278999860398
+      },
+      {
+        "name": "real-product-double-build",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/build_vivhite_release.py",
+          "--check",
+          "--workshop-item-id",
+          "3787304042"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.3913035000150558
+      },
+      {
+        "name": "real-solo-fixture-prepare",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/prepare_courtier_1_20_fixture.py",
+          "--scenario",
+          "vivhite-ui",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.9233530999918003
+      },
+      {
+        "name": "duchy-22day-prepare",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/prepare_aub_1_20_fixture.py",
+          "--repo",
+          "D:\\workspace\\ck3_eternal_recurrence",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\duchy-22day-prepared",
+          "--scenario",
+          "florin-duchy"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.5420849999936763
+      },
+      {
+        "name": "generic-parse-00",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\decision_group_types\\cca120_groups.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.4373308999929577
+      },
+      {
+        "name": "generic-parse-01",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\decision_group_types\\erva_acceptance_decision_group_types.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2665032000222709
+      },
+      {
+        "name": "generic-parse-02",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\decisions\\cca120_decisions.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2522410999808926
+      },
+      {
+        "name": "generic-parse-03",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\decisions\\erva_acceptance_decisions.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2605889999831561
+      },
+      {
+        "name": "generic-parse-04",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\game_rules\\erva_acceptance_game_rules.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.19098069999017753
+      },
+      {
+        "name": "generic-parse-05",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\on_action\\cca120_start.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2609511000046041
+      },
+      {
+        "name": "generic-parse-06",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\scripted_effects\\cca120_effects.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.26716839999426156
+      },
+      {
+        "name": "generic-parse-07",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\scripted_effects\\erva_acceptance_effects.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.30256999999983236
+      },
+      {
+        "name": "generic-parse-08",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\scripted_guis\\erva_acceptance_guis.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2597376999910921
+      },
+      {
+        "name": "generic-parse-09",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\common\\scripted_triggers\\erva_acceptance_triggers.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.24363890002132393
+      },
+      {
+        "name": "generic-parse-10",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\events\\cca120_events.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.25013279999257065
+      },
+      {
+        "name": "generic-parse-11",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\events\\erva_acceptance_events.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2624649000063073
+      },
+      {
+        "name": "generic-parse-12",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\fixture\\gui\\scripted_widgets\\erva_acceptance_scripted_widgets.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.21421649999683723
+      },
+      {
+        "name": "generic-parse-13",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\duchy-22day-prepared\\events\\aubd_events.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2669944000081159
+      }
+    ],
+    "source_pins": [
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/common/script_values/ervc_generated_courtier_catalog_values.txt",
+        "sha256": "bc341899ab9365c12ce407fe30416ab180df9d72ba1664531d8d22af97329773",
+        "bytes": 24915
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/common/scripted_effects/ervc_generated_courtier_catalog_effects.txt",
+        "sha256": "0c03bdd34e0113bcd2c760af4f24c535a585c9a4feab4bc27ced302e067ed751",
+        "bytes": 62979
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/common/scripted_triggers/ervc_generated_courtier_catalog_triggers.txt",
+        "sha256": "83384174fb1a3f0dafb200996ed09a91bb311a59baa44ad1c2a8bbc95907591e",
+        "bytes": 50377
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/descriptor.mod",
+        "sha256": "e91e2778343eded9fdc18dae0cfdf8dbf2e0e5483d67a3fc8a5b8a4690015dfb",
+        "bytes": 175
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/localization/english/ervc_l_english.yml",
+        "sha256": "2008b496bf167738e1474b6ce641a2476bcf813b955901afe173b204441d35b5",
+        "bytes": 3451
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/localization/french/ervc_l_french.yml",
+        "sha256": "276774f8b5a64ea129927dd79a6e30971e8b153ce562b3206e68dbbdfc9850c8",
+        "bytes": 3945
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/localization/german/ervc_l_german.yml",
+        "sha256": "1f4ef1c0349f27b1f79a291a2021fba2aeaaf5bdfd6db14dbb8fbb5cdf8bc937",
+        "bytes": 3975
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/localization/japanese/ervc_l_japanese.yml",
+        "sha256": "7ac2d36a646a53eaa6ba4324c94d7f11cd4201165062bfafcf7ef7f9cd5772c7",
+        "bytes": 4066
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/localization/korean/ervc_l_korean.yml",
+        "sha256": "358c637219a78578f36690f127026b129618eaf0a5d258d72b7a25c0b2463f59",
+        "bytes": 4102
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/localization/polish/ervc_l_polish.yml",
+        "sha256": "085e88a735555de0b1061e8078521a2af923326986989d2b88a095fdfedb99c8",
+        "bytes": 3780
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/localization/russian/ervc_l_russian.yml",
+        "sha256": "6e637f31df03771015dcbc9ede38bf30811acc683b5b32818f5501a512831c7e",
+        "bytes": 5562
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/localization/simp_chinese/ervc_l_simp_chinese.yml",
+        "sha256": "cafdce7f33d78baf84e90ac489b9d2bbdba85e384a1b4a690c7499840607f343",
+        "bytes": 3594
+      },
+      {
+        "path": "Eternal_Recurrence_Vivhite_Courtier/localization/spanish/ervc_l_spanish.yml",
+        "sha256": "3dc793f9463207588605042a3591cbe54a29a70c4341e153f39670400cdb5691",
+        "bytes": 3780
+      },
+      {
+        "path": "docs/ck3-1.21.0-vivhite-compatibility-2026-11-19.md",
+        "sha256": "3aef07f0c2e7945539616c60e8907f9a0f49b66d48bfc60c1407d9274f37d543",
+        "bytes": 6070
+      },
+      {
+        "path": "docs/vivhite-courtier.md",
+        "sha256": "0028c07c724d165e31f7c01cf3dbdd2e18500fc2d1aa9a9c35d04442f34e370e",
+        "bytes": 14985
+      },
+      {
+        "path": "tools/ck3_mod_acceptance_cases/vivhite_courtier_source_standalone_courtier_ui.json",
+        "sha256": "ec3c6aaac5306d3fc199e0ef1697da1c71286d07372b85f94c9bb9fd32aa39e5",
+        "bytes": 2713
+      },
+      {
+        "path": "tools/gen_vivhite_courtier.py",
+        "sha256": "a8d1989a819a77f4ceac73913e15ca8e419f6f8550292b39ee7b54eb78291858",
+        "bytes": 19967
+      },
+      {
+        "path": "tools/prepare_courtier_1_20_fixture.py",
+        "sha256": "eecbd2233f65123b9051a88830291a2c4e177294ef5a5c1e0892d930edf2b13c",
+        "bytes": 21603
+      },
+      {
+        "path": "tools/test_gen_vivhite_courtier.py",
+        "sha256": "5bfcac1e8c0ae8562f5e35ea9720cee24ce56a396d5bdb7072a8b88b21d9722f",
+        "bytes": 11768
+      },
+      {
+        "path": "tools/validate_vivhite_static.py",
+        "sha256": "f34493526f68dda9daee49de186e26bfaf947f8a35fcb467ee3cadd9cd37ee31",
+        "bytes": 73719
+      },
+      {
+        "path": "tools/vivhite_courtier_traits_1_21_0.json",
+        "sha256": "41bdc40da4d558d479fe3a8f3ad350b2079aaac3d401ea7b3389c46251afaf49",
+        "bytes": 121120
+      },
+      {
+        "path": "tools/vivhite_localization_contract_1_21_0.json",
+        "sha256": "29c17bc13ac7787fe05f94716f0a4387c6d26d3353b14784ef7283af13884bb4",
+        "bytes": 38803
+      },
+      {
+        "path": "workshop/vivhite_description.bbcode",
+        "sha256": "55bfafe2f4d1e9824c417770c34c71be04287992ad9f6c0567dc5dfea4df62fc",
+        "bytes": 6768
+      }
+    ],
+    "source_scope": "Actual physical integrated23-file Vivhite candidate; three entire affected test modules including previously unrun real production projection/ZIP test; generator/static/full real-product reproducibility, actual complete solo fixture producer and generic syntax only. Root additionally narrowed the validated trait metadata contract, preserved generated product bytes and added malformed JSON type/missing-field regression. Full generator strict and two-whole-module non-strict mypy are actual; the initial19 broad-type diagnostics and first failed suite summary remain in the parent directory. New Duchy22-day preparation has its own actual producer unit/emission/changed-event generic parse. No engine symbol, actual Game/GUI purchase, Native ABI, health or publication credit.",
+    "runtime_status": "NOT_RUN",
+    "formal_tag": "NOT_RUN",
+    "product_release_pass": false,
+    "workshop_published": false,
+    "retained_output_bytes_before_summary": 2570038,
+    "temporary_files_remaining": 0,
+    "remaining_write_reservation_bytes": 0
+  },
+  "actual_result_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\summary.json",
+    "bytes": 18780,
+    "sha256": "51d120609bed7768f7793ac1335dc9f57c80b2cfb31bb43971bbf7d9d6c8e7e1"
+  },
+  "unit_tests": 32,
+  "unit_skips": 0,
+  "generator_full_file_strict_mypy_pass": true,
+  "two_full_modules_non_strict_mypy_pass": true,
+  "initial_failed_check_preserved": true,
+  "software_reproducibility_only": {
+    "files": 27,
+    "manifest_sha256": "a2a70e4735a11e172320d3f889a3504fdcda5f58e2c9733ca315f946f9c0da4e",
+    "zip_sha256": "536c97af1e5ae41ff5a75354a48f0a9aaaba99b472fdaa10b7f776c30c2b29d2",
+    "git_sha": "ecf0874e7ac949a2e38a78768fc618dd939c9952",
+    "dirty_source_explicitly_pinned_in_final_actual_results": true,
+    "formal_tag_or_retained_release_artifact": false
+  },
+  "runtime_status": "NOT_RUN",
+  "workshop_published": false,
+  "product_release_pass": false,
+  "retention_review_at_utc": "2027-05-18T15:30:00Z"
+}
