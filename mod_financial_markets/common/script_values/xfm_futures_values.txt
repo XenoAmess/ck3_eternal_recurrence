@@ -26,6 +26,19 @@ xfm_futures_remaining_margin_value = { value = var:xfm_remaining_notional divide
 xfm_futures_remaining_fee_value = {
  value = var:xfm_filled_gross_cents add = var:xfm_remaining_notional multiply = 0.003 ceiling = yes subtract = var:xfm_fee_paid_cents
 }
+# Current resting order. Closing orders require the remaining original-order fee only.
+xfm_futures_order_required_reserve_value = {
+ value = 0
+ if = {
+  limit = { NOT = { has_variable = xfm_reduce_order } var:xfm_leverage > 0 }
+  value = xfm_futures_remaining_notional_value divide = var:xfm_leverage ceiling = yes
+ }
+ # Compute from permanent order fields; a new resting order has no remaining_notional cache.
+ add = {
+  value = var:xfm_filled_gross_cents add = xfm_futures_remaining_notional_value
+  multiply = 0.003 ceiling = yes subtract = var:xfm_fee_paid_cents
+ }
+}
 xfm_futures_variation_value = { value = var:xfm_new_mark_cents subtract = var:xfm_mark_cents multiply = var:xfm_lots floor = yes }
 xfm_futures_maintenance_long_value = { value = var:xfm_mark_cents multiply = var:xfm_lots multiply = 0.6 divide = var:xfm_long_leverage ceiling = yes }
 xfm_futures_maintenance_short_value = { value = var:xfm_mark_cents multiply = var:xfm_lots multiply = 0.6 divide = var:xfm_short_leverage ceiling = yes }

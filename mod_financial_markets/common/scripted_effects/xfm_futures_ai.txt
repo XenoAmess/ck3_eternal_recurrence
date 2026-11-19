@@ -34,10 +34,10 @@ xfm_futures_ai_effect = {
       limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 10 has_trait = greedy has_trait = ambitious }
       random = { chance = 10 set_variable = { name = xfm_futures_leverage value = 10 } }
      }
-     set_variable = { name = xfm_futures_lots value = 1 }
      xfm_futures_ai_choose_market_effect = yes
-     # Full submit validates the actual band-high margin + rounded fee against the 5% budget.
-     xfm_futures_submit_effect = yes
+     xfm_futures_ai_size_order_effect = yes
+     # One action in the existing daily ring. No budget-fitting quantity means no submission.
+     if = { limit = { var:xfm_futures_ai_size_result = 1 } xfm_futures_submit_effect = yes }
     }
    }
   }

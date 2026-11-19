@@ -35,7 +35,7 @@ final class FuturesDailyIndexScriptContractTest {
     private static final Path REFERENCE = Path.of(System.getProperty("xfm.reference.source", SOURCE.toString()));
     private static final List<String> LEAVES = List.of("scripted_effects/xfm_futures_daily_index.txt",
         "scripted_effects/xfm_futures_settlement.txt", "scripted_effects/xfm_futures_match.txt",
-        "scripted_triggers/xfm_futures_triggers.txt");
+        "scripted_triggers/xfm_futures_triggers.txt", "scripted_effects/xfm_futures_orders.txt");
 
     public static void main(String[] ignored) throws Exception {
         int passed = 0;

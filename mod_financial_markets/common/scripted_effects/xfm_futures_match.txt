@@ -1,8 +1,8 @@
-﻿# Price/time priority. Maximum 32 fills per entry; residual live orders remain indexed.
+﻿# Price/time priority. Maximum 32 fills per entry; residual admission happens after matching.
 xfm_futures_match_effect = {
  save_scope_as = xfm_fut_incoming
- # All successful ordinary/reduce/forced-exit callers have already indexed this live order.
- # Enrolment never runs settlement, and rejects missing/wrong-type contracts.
+ # Ordinary/reduce/forced-exit callers keep the incoming order outside the resting book.
+ # Existing obligations may enrol now; first-order enrolment is repeated after admission.
  if = {
   limit = {
    story_type = xfm_futures_order
@@ -78,6 +78,7 @@ xfm_futures_match_effect = {
  }
  remove_variable = xfm_match_budget
  remove_variable = xfm_match_continue
+ xfm_futures_finish_incoming_effect = yes
 }
 
 xfm_futures_execute_pair_effect = {

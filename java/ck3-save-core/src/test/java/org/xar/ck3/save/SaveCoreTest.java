@@ -248,4 +248,44 @@ final class SaveCoreTest {
             if (args[0].equals("nonzero")) System.exit(7);
         }
     }
+    @Test void optionalUntypedCallbackKeepsStrictDefaultAndDropsTypedUnselectedPrefixEarly() throws Exception {
+        Selection empty = new Selection(List.of(), List.of(), false, false, List.of());
+        String source = "stories={active={1={story_cycle=vanilla pad=\"" + "x".repeat(600000)
+                + "\"}2={owner=31254 seed=1 variables={data={{flag=xfma_complete data={type=value identity=100000}}}}}3={owner=1 story_cycle=finance}}}";
+        List<UntypedRecord> untyped = new ArrayList<>(); List<StreamedRecord> typed = new ArrayList<>();
+        StreamingTableSink accepting = new StreamingTableSink() {
+            @Override public void discriminator(NativeId id, String value) { }
+            @Override public void record(StreamedRecord value) { typed.add(value); }
+            @Override public void missingDiscriminator(UntypedRecord value) { untyped.add(value); }
+        };
+        StreamingTable strict = new StreamingTable(List.of("stories", "active"), "story_cycle", ids("3"), 20, 512 * 1024, 1024 * 1024, true);
+        assertEquals(MissingDiscriminatorPolicy.REJECT, strict.missingDiscriminatorPolicy());
+        assertThrows(IOException.class, () -> new SaveStream(new StringReader(source), empty, strict, accepting).read());
+        StreamingTable opted = new StreamingTable(List.of("stories", "active"), "story_cycle", ids("3"), 20, 512 * 1024, 1024 * 1024, true, MissingDiscriminatorPolicy.CAPTURE_MISSING_BOUNDED);
+        typed.clear(); untyped.clear(); SaveStream parser = new SaveStream(new StringReader(source), empty, opted, accepting); parser.read();
+        assertEquals(3, parser.streamingObservation().records()); assertEquals(1, parser.streamingObservation().selectedRecords());
+        assertEquals(List.of(new NativeId("2")), untyped.stream().map(UntypedRecord::id).toList());
+        assertEquals(List.of(new NativeId("3")), typed.stream().map(StreamedRecord::id).toList());
+        assertEquals("31254", untyped.getFirst().ast().atom("owner", ""));
+        StreamingTableSink strictSink = new StreamingTableSink() {
+            @Override public void discriminator(NativeId id, String value) { }
+            @Override public void record(StreamedRecord value) { }
+        };
+        assertThrows(IOException.class, () -> new SaveStream(new StringReader(source), empty, opted, strictSink).read());
+        assertThrows(IOException.class, () -> new SaveStream(new StringReader(source + "broken={"), empty, opted, accepting).read());
+    }
+    @Test void untypedCaptureRetainsExistingPerRecordAndTotalStreamBounds() {
+        Selection empty = new Selection(List.of(), List.of(), false, false, List.of());
+        StreamingTableSink accepting = new StreamingTableSink() {
+            @Override public void discriminator(NativeId id, String value) { }
+            @Override public void record(StreamedRecord value) { }
+            @Override public void missingDiscriminator(UntypedRecord value) { }
+        };
+        StreamingTable lowRecord = new StreamingTable(List.of("stories", "active"), "story_cycle", List.of(), 20, 100, 1024, true, MissingDiscriminatorPolicy.CAPTURE_MISSING_BOUNDED);
+        assertThrows(IOException.class, () -> new SaveStream(new StringReader("stories={active={1={pad=\"" + "x".repeat(101) + "\"}}}"), empty, lowRecord, accepting).read());
+        StreamingTable lowTotal = new StreamingTable(List.of("stories", "active"), "story_cycle", List.of(), 20, 1024, 50, true, MissingDiscriminatorPolicy.CAPTURE_MISSING_BOUNDED);
+        assertThrows(IOException.class, () -> new SaveStream(new StringReader("stories={active={1={owner=1 seed=2}2={owner=3 seed=4}}}"), empty, lowTotal, accepting).read());
+        assertThrows(IOException.class, () -> new SaveStream(new StringReader("stories={active={1={story_cycle=vanilla story_cycle=other}}}"), empty, lowRecord, accepting).read());
+    }
+
 }

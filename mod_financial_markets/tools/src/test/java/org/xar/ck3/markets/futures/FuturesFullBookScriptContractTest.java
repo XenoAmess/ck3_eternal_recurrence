@@ -1,0 +1,451 @@
+package org.xar.ck3.markets.futures;
+
+import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+import org.junit.jupiter.api.Test;
+import org.xar.ck3.save.Clausewitz;
+import org.xar.ck3.save.Clausewitz.Atom;
+import org.xar.ck3.save.Clausewitz.Block;
+import org.xar.ck3.save.Clausewitz.Entry;
+import org.xar.ck3.save.Clausewitz.Value;
+
+/** Actual production futures submit/match/reservation/allocation/archive/reduce scripts.
+ * No matching or financial transfer port. Authored source fixtures are not a Game or physical SAVE. */
+final class FuturesFullBookScriptContractTest {
+    private static final Path SOURCE = Path.of(System.getProperty("xfm.source", ".."));
+    private static final List<String> INPUTS = List.of(
+        "scripted_effects/xfm_futures_orders.txt", "scripted_effects/xfm_futures_match.txt",
+        "scripted_effects/xfm_futures_archive.txt", "scripted_effects/xfm_futures_reduce.txt",
+        "scripted_effects/xfm_futures_liquidation.txt", "scripted_effects/xfm_futures_book_daily.txt",
+        "scripted_effects/xfm_futures_identity.txt", "scripted_effects/xfm_futures_margin.txt",
+        "scripted_effects/xfm_futures_daily_index.txt", "scripted_effects/xfm_futures_settlement.txt",
+        "scripted_effects/xfm_futures_ai_funding.txt",
+        "scripted_effects/xfm_finance_init.txt", "scripted_effects/xfm_finance_cash.txt",
+        "scripted_effects/xfm_finance_reserve.txt", "scripted_effects/xfm_finance_split.txt",
+        "scripted_effects/xfm_finance_policy.txt", "scripted_effects/xfm_issuer_governance.txt",
+        "scripted_triggers/xfm_finance_triggers.txt", "scripted_triggers/xfm_futures_triggers.txt",
+        "scripted_triggers/xfm_futures_ai_triggers.txt", "script_values/xfm_finance_values.txt",
+        "script_values/xfm_futures_values.txt", "script_values/xfm_futures_ai_values.txt",
+        "script_values/xfm_numeric_comparison_values.txt", "script_values/xfm_config_values.txt");
+
+    @Test void firstUnmatchedOrderRestsAndEnrolsOnlyAfterTheTransientEntryFinishes() throws IOException {
+        Vm v = vm(); Node c = series(v, "series"), a = actor(v, "actor", 121);
+        Node o = submit(v, a, c, 1, 1, 100);
+        assertEquals(1, a.integer("xfm_futures_result")); assertNotNull(o);
+        assertEquals(List.of(o), c.list("xfm_orders")); assertEquals(1, o.integer("xfm_indexed"));
+        assertEquals(121, a.ref("xfm_account").integer("xfm_reserved_cents"));
+        assertEquals(1, c.integer("xfm_futures_daily_queued")); assertEquals(1, v.exchange.integer("xfm_futures_daily_count"));
+        assertEquals(1, v.exchange.integer("xfm_active_orders_count")); assertTrue(c.list("xfm_positions").isEmpty());
+        assertBalanced(v);
+    }
+    @Test void fullOpeningBookFormsARealPairWithoutAnExtraRestingSlot() throws IOException {
+        Vm v = vm(); Node c = series(v, "series"); List<Node> bids = fullBook(v, c, 1, 100);
+        Node a = actor(v, "seller", 121); BigDecimal cash = v.cashStock();
+        Node o = submit(v, a, c, 2, 1, 100);
+        assertEquals(1, a.integer("xfm_futures_result")); assertEquals(2, o.integer("xfm_status"));
+        assertEquals(0, o.integer("xfm_indexed")); assertEquals(63, c.list("xfm_orders").size());
+        assertEquals(63, c.integer("xfm_open_orders_count")); assertEquals(63, v.exchange.integer("xfm_active_orders_count"));
+        Node p = c.list("xfm_positions").getFirst();
+        assertEquals(1, p.integer("xfm_lots")); assertEquals(1, p.integer("xfm_position_id"));
+        assertSame(bids.getFirst().ref("xfm_account"), p.ref("xfm_long_account")); assertSame(a.ref("xfm_account"), p.ref("xfm_short_account"));
+        assertEquals(100, p.ref("xfm_long_reservation").integer("xfm_remaining_cents"));
+        assertEquals(100, p.ref("xfm_short_reservation").integer("xfm_remaining_cents"));
+        assertEquals(2, v.exchange.integer("xfm_fee_cents")); assertEquals(64, v.maxFuturesBookEntries);
+        assertEquals(cash, v.cashStock()); assertBalanced(v);
+    }
+    @Test void originalThirtyTwoFillAndPositionCapsRemainBindingAfterFullBookAdmission() throws IOException {
+        Vm v = vm(); Node c = series(v, "series"); List<Node> bids = fullBook(v, c, 1, 100);
+        Node a = actor(v, "seller", 8546); BigDecimal cash = v.cashStock();
+        Node o = submit(v, a, c, 2, 71, 100);
+        assertEquals(32, c.list("xfm_positions").size()); assertEquals(32, a.ref("xfm_account").integer("xfm_open_positions_count"));
+        assertEquals(39, o.integer("xfm_remaining_lots")); assertEquals(1, o.integer("xfm_indexed"));
+        assertEquals(33, c.list("xfm_orders").size()); assertEquals(32, v.maxFuturesMatchIterations);
+        assertEquals(bids.subList(0,32).stream().map(b -> b.ref("xfm_account")).toList(),
+            c.list("xfm_positions").stream().map(p -> p.ref("xfm_long_account")).toList());
+        assertEquals(10, o.integer("xfm_fee_paid_cents")); assertEquals(4694, o.ref("xfm_reservation").integer("xfm_remaining_cents"));
+        assertEquals(7894, a.ref("xfm_account").integer("xfm_reserved_cents")); assertEquals(642, a.ref("xfm_account").integer("xfm_free_cents"));
+        assertEquals(cash, v.cashStock()); assertBalanced(v);
+    }
+    @Test void fullAccountSettlesFillsButCancelsAndReturnsOnlyItsUnplaceableRemainder() throws IOException {
+        Vm v = vm(); Node c = series(v, "series"), other = series(v, "other"); Node a = actor(v, "seller", 12418);
+        for (int i=0;i<32;i++) assertNotNull(submit(v,a,other,1,1,100));
+        fullBook(v,c,1,100); BigDecimal cash=v.cashStock();
+        Node o=submit(v,a,c,2,71,100);
+        assertEquals(32,c.list("xfm_positions").size()); assertEquals(3,o.integer("xfm_status"));
+        assertEquals(39,o.integer("xfm_capacity_cancelled_lots")); assertEquals(0,o.ref("xfm_reservation").integer("xfm_remaining_cents"));
+        assertEquals(32,a.ref("xfm_account").integer("xfm_open_orders_count")); assertEquals(32,other.list("xfm_orders").size());
+        assertEquals(32,c.list("xfm_orders").size()); assertEquals(7072,a.ref("xfm_account").integer("xfm_reserved_cents"));
+        assertEquals(5336,a.ref("xfm_account").integer("xfm_free_cents")); assertEquals(cash,v.cashStock()); assertBalanced(v);
+    }
+    @Test void noCrossRelatedCrossOrUnderfundedBookCannotFreezeMoneyAtCapacity() throws IOException {
+        for (String defect:List.of("no-cross","related","underfunded","fee-only")) {
+            Vm v=vm();Node c=series(v,"series");List<Node> bids=fullBook(v,c,1,100);Node a=actor(v,"seller",121);
+            if(defect.equals("related")) bids.getLast().ref("xfm_account").put("xfm_holder",a);
+            if(defect.equals("underfunded") || defect.equals("fee-only")) for(Node b:bids) {
+                b.ref("xfm_reservation").put("xfm_request_cents",defect.equals("fee-only")?1:120);v.run("xfm_finance_release_effect",b.ref("xfm_reservation"));
+            }
+            BigDecimal cash=v.cashStock();int allocations=v.created("xfm_futures_order");
+            assertNull(submit(v,a,c,2,1,defect.equals("no-cross")?101:100),defect);
+            assertEquals(0,a.integer("xfm_futures_result"));assertEquals(121,a.ref("xfm_account").integer("xfm_free_cents"));
+            assertEquals(0,a.ref("xfm_account").integer("xfm_reserved_cents"));assertEquals(allocations,v.created("xfm_futures_order"));
+            assertEquals(bids,c.list("xfm_orders"));assertTrue(c.list("xfm_positions").isEmpty());assertEquals(cash,v.cashStock());assertBalanced(v);
+        }
+        // Actual four-lot position -> actual reducing order. Its remaining fee is two cents,
+        // even before the first fill has ever populated remaining_notional.
+        Vm v=vm();Node c=series(v,"reduce-fee"), la=actor(v,"long",2000), sa=actor(v,"short",2000);
+        submit(v,la,c,1,4,100);submit(v,sa,c,2,4,100);Node p=c.list("xfm_positions").getFirst();
+        la.put("xfm_futures_selected_position",p);la.put("xfm_futures_reduce_lots",4);la.put("xfm_futures_limit_cents",100);
+        v.run("xfm_futures_reduce_effect",la);assertEquals(1,la.integer("xfm_futures_result"));
+        Node close=c.list("xfm_orders").getFirst();assertTrue(close.vars.containsKey("xfm_reduce_order"));
+        assertFalse(close.vars.containsKey("xfm_remaining_notional"));
+        assertEquals(2,v.integerValue("xfm_futures_order_required_reserve_value",close));
+        Node reservation=close.ref("xfm_reservation");assertEquals(2,reservation.integer("xfm_remaining_cents"));
+        BigDecimal cash=v.cashStock();reservation.put("xfm_request_cents",1);v.run("xfm_finance_release_effect",reservation);
+        assertEquals(1,reservation.integer("xfm_remaining_cents"));
+        assertTrue(v.test(v.definition("xfm_finance_reservation_usable_trigger"),new Frame(reservation,null,reservation)));
+        assertFalse(v.test(v.definition("xfm_futures_order_collateralized_trigger"),new Frame(close,null,close)));
+        assertEquals(4,p.integer("xfm_lots"));assertEquals(cash,v.cashStock());assertBalanced(v);
+    }
+    @Test void insufficientCashPositionLimitAndStaleOracleRefuseBeforeReservation() throws IOException {
+        for(String defect:List.of("cash","position-cap","global-cap","oracle")) {
+            Vm v=vm();Node c=series(v,"series");fullBook(v,c,1,100);Node a=actor(v,"seller",defect.equals("cash")?120:121);
+            if(defect.equals("position-cap"))a.ref("xfm_account").put("xfm_open_positions_count",32);
+            if(defect.equals("global-cap"))v.exchange.put("xfm_futures_open_positions_count",4096);
+            if(defect.equals("oracle"))c.ref("xfm_coin").put("xfm_oracle_day",0);
+            BigDecimal cash=v.cashStock();int allocations=v.created("xfm_futures_order");
+            assertNull(submit(v,a,c,2,1,100),defect);assertEquals(0,a.integer("xfm_futures_result"));
+            assertEquals(0,a.ref("xfm_account").integer("xfm_reserved_cents"));assertEquals(allocations,v.created("xfm_futures_order"));
+            assertEquals(64,c.list("xfm_orders").size());assertEquals(cash,v.cashStock());
+        }
+    }
+    @Test void allocationFailureDoesNotInventAPositionOrChargeFeesAndReturnsTransientCollateral() throws IOException {
+        Vm v=vm();Node c=series(v,"series");fullBook(v,c,1,100);Node a=actor(v,"seller",121);
+        v.failType="xfm_futures_position";BigDecimal cash=v.cashStock();Node o=submit(v,a,c,2,1,100);
+        assertNotNull(o);assertEquals(3,o.integer("xfm_status"));assertEquals(1,o.integer("xfm_capacity_cancelled_lots"));
+        assertTrue(c.list("xfm_positions").isEmpty());assertEquals(0,v.exchange.integer("xfm_fee_cents"));
+        assertEquals(121,a.ref("xfm_account").integer("xfm_free_cents"));assertEquals(0,a.ref("xfm_account").integer("xfm_reserved_cents"));
+        assertEquals(64,c.list("xfm_orders").size());assertEquals(cash,v.cashStock());assertBalanced(v);
+    }
+    @Test void aRealElevenLotPairSupportsAnActualPartialThreeLotNovation() throws IOException {
+        Vm v=vm();Node c=series(v,"series"), longActor=actor(v,"long",26980), shortActor=actor(v,"short",1324);
+        // Exact output from the actual bounded AI size producer flows unchanged into the actual submitter.
+        longActor.ai=true;longActor.put("xfm_selected_coin",c.ref("xfm_coin"));longActor.put("xfm_futures_contract",c);
+        longActor.put("xfm_futures_leverage",1);longActor.put("xfm_futures_side",1);longActor.put("xfm_futures_limit_cents",100);
+        v.run("xfm_futures_ai_size_order_effect",longActor);
+        assertEquals(1,longActor.integer("xfm_futures_ai_size_result"));assertEquals(11,longActor.integer("xfm_futures_lots"));
+        assertEquals(1324,longActor.integer("xfm_futures_reserve_cents"));
+        v.run("xfm_futures_submit_effect",longActor);assertEquals(1,longActor.integer("xfm_futures_result"));
+        submit(v,shortActor,c,2,11,100);
+        assertEquals(1,c.list("xfm_positions").size());Node original=c.list("xfm_positions").getFirst();
+        assertEquals(11,original.integer("xfm_lots"));long id=original.integer("xfm_position_id");
+        Node replacement=actor(v,"replacement",362);submit(v,replacement,c,1,3,100);
+        longActor.put("xfm_futures_selected_position",original);longActor.put("xfm_futures_reduce_lots",3);longActor.put("xfm_futures_limit_cents",100);
+        BigDecimal cash=v.cashStock();v.run("xfm_futures_reduce_effect",longActor);
+        assertEquals(1,longActor.integer("xfm_futures_result"));assertEquals(8,original.integer("xfm_lots"));assertEquals(id,original.integer("xfm_position_id"));
+        assertEquals(2,c.list("xfm_positions").size());Node novated=c.list("xfm_positions").getLast();
+        assertEquals(3,novated.integer("xfm_lots"));assertSame(replacement.ref("xfm_account"),novated.ref("xfm_long_account"));
+        assertSame(shortActor.ref("xfm_account"),novated.ref("xfm_short_account"));assertNotEquals(id,novated.integer("xfm_position_id"));
+        assertEquals(800,original.ref("xfm_long_reservation").integer("xfm_remaining_cents"));assertEquals(800,original.ref("xfm_short_reservation").integer("xfm_remaining_cents"));
+        assertEquals(300,novated.ref("xfm_long_reservation").integer("xfm_remaining_cents"));assertEquals(300,novated.ref("xfm_short_reservation").integer("xfm_remaining_cents"));
+        assertEquals(26175,longActor.ref("xfm_account").integer("xfm_free_cents"));assertEquals(10,v.exchange.integer("xfm_fee_cents"));
+        assertEquals(cash,v.cashStock());assertBalanced(v);
+    }
+    @Test void forcedExitAgainstASameSideFullBookNeverEntersA65thSlotOrErasesThePosition() throws IOException {
+        Vm v=vm();Node c=series(v,"series"), la=actor(v,"long",1324), sa=actor(v,"short",1324);
+        submit(v,la,c,1,11,100);submit(v,sa,c,2,11,100);Node p=c.list("xfm_positions").getFirst();
+        fullBook(v,c,2,100);BigDecimal cash=v.cashStock();
+        v.execute(substitute(v.definition("xfm_futures_post_exit_effect"),Clausewitz.parse("SIDE = long ORDER_SIDE = 2 LONG_EXIT = yes")),new Frame(p,null,p));
+        assertEquals(64,c.list("xfm_orders").size());assertEquals(64,c.integer("xfm_open_orders_count"));
+        assertEquals(64,v.exchange.integer("xfm_active_orders_count"));assertEquals(11,p.integer("xfm_lots"));assertEquals(0,p.integer("xfm_status"));
+        assertEquals(1100,p.ref("xfm_long_reservation").integer("xfm_remaining_cents"));assertEquals(220,la.ref("xfm_account").integer("xfm_free_cents"));
+        assertEquals(64,v.maxFuturesBookEntries);assertEquals(cash,v.cashStock());assertBalanced(v);
+    }
+    @Test void legacyIndexedOrdersWithoutTheNewMarkerArchiveExactlyOnce() throws IOException {
+        Vm v=vm();Node c=series(v,"series"), a=actor(v,"actor",121);Node o=submit(v,a,c,1,1,100);
+        o.vars.remove("xfm_indexed");v.run("xfm_futures_cancel_order_effect",o);v.run("xfm_futures_cancel_order_effect",o);
+        assertTrue(c.list("xfm_orders").isEmpty());assertEquals(0,c.integer("xfm_open_orders_count"));
+        assertEquals(0,a.ref("xfm_account").integer("xfm_open_orders_count"));assertEquals(0,v.exchange.integer("xfm_active_orders_count"));
+        assertEquals(121,a.ref("xfm_account").integer("xfm_free_cents"));assertEquals(1,a.ref("xfm_account").list("xfm_futures_order_history").size());assertBalanced(v);
+    }
+    private static Vm vm() throws IOException {
+        Map<String,Block> program=new LinkedHashMap<>();
+        for(String input:INPUTS)for(Entry e:Clausewitz.parse(Files.readString(SOURCE.resolve("common").resolve(input))).entries()) {
+            Block b=e.value() instanceof Block block?block:new Block(List.of(new Entry("value","=",e.value())));
+            if(program.putIfAbsent(e.key(),b)!=null)throw new IllegalArgumentException("duplicate "+e.key());
+        }
+        return new Vm(program);
+    }
+    private static Node series(Vm v,String id) {
+        Node asset=v.asset(id+"-asset"), c=v.contract(id,asset,1,0);
+        c.put("xfm_contract_id",v.nodes.size());c.put("xfm_execution_day",-1);c.put("xfm_execution_volume_cents",0);c.put("xfm_execution_lots",0);return c;
+    }
+    private static Node actor(Vm v,String id,long free) {
+        Node a=v.node(id,"");a.ai=false;Node wallet=v.account(id+"-wallet",a,free);
+        a.put("xfm_account",wallet);a.put("xfm_active_account",wallet);return a;
+    }
+    private static Node submit(Vm v,Node a,Node c,int side,int lots,int price) {
+        a.put("xfm_selected_coin",c.ref("xfm_coin"));a.put("xfm_futures_contract",c);
+        a.put("xfm_futures_side",side);a.put("xfm_futures_lots",lots);a.put("xfm_futures_limit_cents",price);a.put("xfm_futures_leverage",1);
+        v.run("xfm_futures_submit_effect",a);return (Node)v.scopes.get("xfm_fut_incoming");
+    }
+    private static List<Node> fullBook(Vm v,Node c,int side,int price) {
+        List<Node> out=new ArrayList<>();
+        for(int i=0;i<64;i++){Node a=actor(v,c.id+"-"+side+"-actor-"+i,121);Node o=submit(v,a,c,side,1,price);assertNotNull(o);out.add(o);}
+        assertEquals(64,c.list("xfm_orders").size());return out;
+    }
+    private static void assertBalanced(Vm v) {
+        for(Node a:v.nodes.values())if(a.type.equals("xfm_finance_account")){
+            assertTrue(a.integer("xfm_free_cents")>=0,a.id);assertTrue(a.integer("xfm_reserved_cents")>=0,a.id);
+            long claims=a.list("xfm_reservations").stream().filter(r->!r.ended).mapToLong(r->r.integer("xfm_remaining_cents")).sum();
+            assertEquals(a.integer("xfm_reserved_cents"),claims,a.id);
+            assertEquals(a.integer("xfm_open_orders_count"),a.list("xfm_orders").stream().filter(o->o.integer("xfm_status")<2&&o.integer("xfm_remaining_lots")>0).count(),a.id);
+        }
+        for(Node c:v.nodes.values())if(c.type.equals("xfm_futures_contract")) {
+            assertTrue(c.list("xfm_orders").size()<=64,c.id);assertEquals(c.integer("xfm_open_orders_count"),c.list("xfm_orders").size(),c.id);
+        }
+    }
+
+    private sealed interface Datum permits NumberDatum, TextDatum, Node { }
+    private record NumberDatum(BigDecimal value) implements Datum { }
+    private record TextDatum(String text) implements Datum { }
+    private static final class Node implements Datum {
+        final String id, type;
+        final Map<String, Datum> vars = new LinkedHashMap<>();
+        final Map<String, List<Node>> lists = new HashMap<>();
+        final Set<String> traits = new HashSet<>(); final Map<String, Node> links = new HashMap<>();
+        BigDecimal gold = BigDecimal.ZERO; Node owner; boolean ai = true, alive = true, adult = true, ended;
+        Node(String id, String type) { this.id = id; this.type = type; }
+        void put(String name, long value) { vars.put(name, new NumberDatum(BigDecimal.valueOf(value))); }
+        void put(String name, Node value) { vars.put(name, value); }
+        long integer(String name) { Datum d = vars.get(name); return d == null ? 0 : ((NumberDatum) d).value().longValueExact(); }
+        Node ref(String name) { return (Node) vars.get(name); }
+        List<Node> list(String name) { return lists.computeIfAbsent(name, ignored -> new ArrayList<>()); }
+    }
+    private record Frame(Node here, Node previous, Node root) { Frame enter(Node node) { return new Frame(node, here, root); } }
+    private static final class Vm {
+        final Map<String, Block> program; final Map<String, Node> nodes = new LinkedHashMap<>();
+        final Map<String, Datum> scopes = new HashMap<>();
+        final Map<String, List<Node>> globalLists = new HashMap<>();
+        final Node exchange, custodian;
+        final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries;
+        final List<Long> spotExecutionOrderIds = new ArrayList<>(); int maxSpotBookEntries, maxSpotMatchIterations;
+        int maxFuturesBookEntries, maxFuturesMatchIterations;
+        Vm(Map<String, Block> program) {
+            this.program = program; custodian = node("technical-owner", ""); exchange = node("exchange", "xfm_finance_exchange"); exchange.owner = custodian;
+            exchange.put("xfm_day", 1); exchange.put("xfm_ai_seeded", 1); exchange.put("xfm_next_account_id", 0); exchange.put("xfm_next_reservation_id", 0);
+            exchange.put("xfm_next_futures_contract_id", 0); exchange.put("xfm_next_futures_position_id", 0);
+            exchange.put("xfm_active_orders_count", 0); exchange.put("xfm_futures_open_positions_count", 0);
+            exchange.put("xfm_order_stories_count", 0); // Actual finance bootstrap initializes the physical spot-story admission counter.
+        }
+        Node node(String id, String type) {
+            Node n = new Node(id, type); if (nodes.putIfAbsent(id, n) != null) throw new IllegalArgumentException("duplicate node " + id); return n;
+        }
+        Node asset(String id) {
+            Node a = node(id, "xfm_oracle_index"); a.put("xfm_mark_cents", 100); a.put("xfm_index_cents", 100);
+            a.put("xfm_oracle_quality", 3); a.put("xfm_oracle_day", exchange.integer("xfm_day")); a.put("xfm_max_leverage", 5);
+            a.put("xfm_derivatives_reduce_only", 0); return a;
+        }
+        Node account(String id, Node holder, long free) {
+            Node a = node(id, "xfm_finance_account"); a.owner = custodian; a.put("xfm_holder", holder); a.put("xfm_beneficial_owner", holder);
+            a.put("xfm_free_cents", free); a.put("xfm_reserved_cents", 0); a.put("xfm_account_frozen", 0);
+            a.put("xfm_system_account", 0); a.put("xfm_inheritance_state", 0); a.put("xfm_open_orders_count", 0); a.put("xfm_open_positions_count", 0); return a;
+        }
+        Node contract(String id, Node asset, long perpetual, long expiry) {
+            Node c = node(id, "xfm_futures_contract"); c.owner = custodian; c.put("xfm_coin", asset); c.put("xfm_status", 0);
+            c.put("xfm_perpetual", perpetual); c.put("xfm_expiry_day", expiry); c.put("xfm_open_orders_count", 0); return c;
+        }
+        void order(String id, Node contract, Node account, int side, int price) {
+            Node r = node(id + "-reservation", "xfm_finance_reservation"); r.put("xfm_account", account); r.put("xfm_status", 1); r.put("xfm_remaining_cents", 121);
+            account.put("xfm_reserved_cents", account.integer("xfm_reserved_cents") + 121);
+            Node o = node(id, "xfm_futures_order"); o.put("xfm_contract", contract); o.put("xfm_account", account); o.put("xfm_reservation", r);
+            o.put("xfm_status", 0); o.put("xfm_remaining_lots", 1); o.put("xfm_side", side); o.put("xfm_limit_cents", price);
+            contract.list("xfm_orders").add(o); contract.put("xfm_open_orders_count", contract.integer("xfm_open_orders_count") + 1);
+        }
+        int created(String type) { return (int) nodes.values().stream().filter(n -> n.id.startsWith("created-") && n.type.equals(type)).count(); }
+        BigDecimal cashStock() {
+            BigDecimal sum = BigDecimal.ZERO;
+            for (Node n : nodes.values()) {
+                sum = sum.add(n.gold.multiply(BigDecimal.valueOf(100)));
+                if (n.type.equals("xfm_finance_account")) sum = sum.add(number(n.vars.get("xfm_free_cents"))).add(number(n.vars.get("xfm_reserved_cents")));
+            }
+            return sum.add(BigDecimal.valueOf(exchange.integer("xfm_fee_cents"))).stripTrailingZeros();
+        }
+        long integerValue(String value, Node node) { return value(program.get(value), new Frame(node, null, node), BigDecimal.ZERO).longValueExact(); }
+        boolean validGui(String name, Node node) { return test(definition(name).block("is_valid"), new Frame(node, null, node)); }
+        void runGui(String name, Node node) { if (!validGui(name, node)) throw new IllegalArgumentException("invalid GUI action"); execute(definition(name).block("effect"), new Frame(node, null, node)); }
+        void run(String name, Node node) { trace.clear(); execute(definition(name), new Frame(node, null, node)); if (Boolean.getBoolean("xfm.subset.trace") && name.equals("xfm_futures_submit_effect") && node.integer("xfm_futures_result") == 0) System.out.println("REJECT reason=" + node.integer("xfm_futures_reason") + " " + trace); }
+        Block definition(String name) { Block b = program.get(name); if (b == null) throw new IllegalArgumentException("unknown definition " + name); return b; }
+        Datum resolve(String text, Frame f) {
+            try { return new NumberDatum(new BigDecimal(text)); } catch (NumberFormatException ignored) { /* scope/value token */ }
+            int dot = text.indexOf('.');
+            if (dot > 0) { Datum base = resolve(text.substring(0, dot), f); return base instanceof Node n ? resolve(text.substring(dot + 1), f.enter(n)) : null; }
+            if (text.equals("this")) return f.here(); if (text.equals("prev")) return f.previous(); if (text.equals("root")) return f.root();
+            if (text.equals("global_var:xfm_exchange")) return exchange;
+            if (text.equals("story_owner")) return f.here().owner;
+            if (text.startsWith("scope:")) return scopes.get(text.substring(6));
+            if (text.startsWith("var:")) return f.here().vars.get(text.substring(4));
+            if (text.equals("gold")) return new NumberDatum(f.here().gold);
+            if (f.here().links.containsKey(text)) return f.here().links.get(text);
+            if (program.containsKey(text)) return new NumberDatum(value(definition(text), f, BigDecimal.ZERO));
+            if (Set.of("xfm_config_player_order_capacity_value", "xfm_config_coin_order_capacity_value", "xfm_config_global_order_capacity_value", "xfm_config_futures_position_capacity_value").contains(text)) return new NumberDatum(BigDecimal.valueOf(4096));
+            try { return new NumberDatum(new BigDecimal(text)); } catch (NumberFormatException ignored) { return new TextDatum(text); }
+        }
+        Datum evaluate(Value v, Frame f) { return v instanceof Block b ? new NumberDatum(value(b, f, BigDecimal.ZERO)) : resolve(atom(v), f); }
+        BigDecimal number(Datum d) { if (d == null) return BigDecimal.ZERO; if (d instanceof NumberDatum n) return n.value(); throw new IllegalArgumentException("number required " + d); }
+        BigDecimal value(Block b, Frame f, BigDecimal initial) {
+            BigDecimal n = initial; boolean chain = false;
+            for (Entry e : b.entries()) {
+                if (e.key().equals("if") || e.key().equals("else_if")) {
+                    Block child = (Block)e.value(); boolean yes = (!e.key().equals("else_if") || !chain) && test(child.block("limit"), f);
+                    if (e.key().equals("if")) chain = false;
+                    if (yes) { n = value(without(child, "limit"), f, n); chain = true; } continue;
+                }
+                if (e.key().equals("else")) { if (!chain) n = value((Block)e.value(), f, n); chain = false; continue; }
+                if (e.key().equals("floor")) { n = n.setScale(0, RoundingMode.FLOOR); continue; }
+                if (e.key().equals("ceiling")) { n = n.setScale(0, RoundingMode.CEILING); continue; }
+                BigDecimal x = number(evaluate(e.value(), f));
+                n = switch (e.key()) {
+                    case "value" -> x; case "add" -> n.add(x); case "subtract" -> n.subtract(x); case "multiply" -> n.multiply(x);
+                    case "divide" -> n.divide(x, 18, RoundingMode.HALF_EVEN); case "max" -> n.min(x); case "min" -> n.max(x);
+                    default -> throw new IllegalArgumentException("unknown value operation " + e.key());
+                };
+            }
+            return n;
+        }
+        boolean test(Block b, Frame f) { for (Entry e : b.entries()) if (!check(e, f)) { if (trace.size() > 40) trace.removeFirst(); trace.add(f.here().id + ":" + e.key() + e.operator() + (e.value() instanceof Atom a ? a.token() : "{...}")); return false; } return true; }
+        boolean check(Entry e, Frame f) {
+            String k = e.key();
+            if (k.equals("OR")) return ((Block)e.value()).entries().stream().anyMatch(x -> check(x, f));
+            if (k.equals("AND")) return test((Block)e.value(), f);
+            if (k.equals("NOT")) return ((Block)e.value()).entries().stream().noneMatch(x -> check(x, f));
+            if (k.equals("exists")) return resolve(atom(e.value()), f) != null;
+            if (k.equals("has_variable")) return f.here().vars.containsKey(atom(e.value()));
+            if (k.equals("is_ai")) return f.here().ai == atom(e.value()).equals("yes");
+            if (k.equals("is_alive")) return f.here().alive == atom(e.value()).equals("yes");
+            if (k.equals("is_adult")) return f.here().adult == atom(e.value()).equals("yes");
+            if (k.equals("story_type")) return f.here().type.equals(atom(e.value()));
+            if (k.equals("has_trait")) return f.here().traits.contains(atom(e.value()));
+            if (k.equals("has_game_rule")) return false; // explicit default-rules port
+            if (k.equals("always")) return atom(e.value()).equals("yes");
+            if (k.equals("xfm_config_futures_open_trigger")) return open;
+            if (k.equals("xfm_config_spot_open_trigger")) return open;
+            if (k.equals("any_in_list")) {
+                Block b = (Block)e.value(); for (Node n : list(f.here(), atom(field(b, "variable")))) if (test(without(b, "variable"), f.enter(n))) return true; return false;
+            }
+            if (k.endsWith("_trigger") && program.containsKey(k)) return test(e.value() instanceof Block args ? substitute(definition(k), args) : definition(k), f);
+            if (e.value() instanceof Block child && !(resolve(k, f) instanceof NumberDatum)) {
+                Datum scope = resolve(k, f); return scope instanceof Node n && test(child, f.enter(n));
+            }
+            Datum left = resolve(k, f), right = evaluate(e.value(), f);
+            if (left instanceof NumberDatum x && right instanceof NumberDatum y) {
+                int cmp = x.value().compareTo(y.value()); return switch (e.operator()) { case "=" -> cmp == 0; case "!=" -> cmp != 0; case ">" -> cmp > 0; case "<" -> cmp < 0; case ">=" -> cmp >= 0; case "<=" -> cmp <= 0; default -> throw new IllegalArgumentException(e.operator()); };
+            }
+            if (e.operator().equals("=")) return java.util.Objects.equals(left, right);
+            if (e.operator().equals("!=")) return !java.util.Objects.equals(left, right);
+            return false;
+        }
+        List<Node> list(Node owner, String name) {
+            List<Node> result = List.copyOf(owner.list(name));
+            if (name.equals("xfm_futures_discovery_contracts")) { maxDiscoveryEntries = Math.max(maxDiscoveryEntries, result.size()); if (result.size() > 8) throw new IllegalArgumentException("discovery capacity exceeded"); }
+            if (name.equals("xfm_futures_contracts")) historyVisits += result.size();
+            return result;
+        }
+        void execute(Block b, Frame f) {
+            boolean chain = false;
+            for (Entry e : b.entries()) {
+                String k = e.key();
+                if (k.equals("if") || k.equals("else_if")) {
+                    Block child = (Block)e.value(); boolean yes = (!k.equals("else_if") || !chain) && test(child.block("limit"), f);
+                    if (k.equals("if")) chain = false; if (yes) { execute(without(child, "limit"), f); chain = true; } continue;
+                }
+                if (k.equals("else")) { if (!chain) execute((Block)e.value(), f); chain = false; continue; }
+                if (k.equals("save_scope_as")) { scopes.put(atom(e.value()), f.here()); continue; }
+                if (k.equals("clear_saved_scope")) { scopes.remove(atom(e.value())); continue; }
+                if (k.equals("remove_variable")) { f.here().vars.remove(atom(e.value())); continue; }
+                if (k.equals("clear_variable_list")) { f.here().list(atom(e.value())).clear(); continue; }
+                if (k.equals("while")) {
+                    Block a = (Block)e.value(); int bound = 0;
+                    if (!a.named("count").isEmpty()) {
+                        int count = number(evaluate(field(a, "count"), f)).intValueExact();
+                        if (f.here().type.equals("xfm_spot_order")) { if (count > 64) throw new IllegalArgumentException("spot work cap exceeded"); maxSpotMatchIterations = Math.max(maxSpotMatchIterations, count); }
+                        for (int i = 0; i < count; i++) execute(without(a, "count"), f);
+                        continue;
+                    }
+                    while (test(a.block("limit"), f)) { if (++bound > 64) throw new IllegalArgumentException("bounded production loop exceeded 64"); if (f.here().type.equals("xfm_futures_order")) { if (bound > 32) throw new IllegalArgumentException("original futures match work exceeded 32"); maxFuturesMatchIterations = Math.max(maxFuturesMatchIterations, bound); } execute(without(a, "limit"), f); }
+                    continue;
+                }
+                if (k.equals("ordered_in_list")) {
+                    Block a = (Block)e.value(); String name = atom(field(a, "variable"));
+                    List<Node> ordered = new ArrayList<>();
+                    for (Node n : list(f.here(), name)) if (test(a.block("limit"), f.enter(n))) ordered.add(n);
+                    ordered.sort((left, right) -> number(evaluate(field(a, "order_by"), f.enter(right))).compareTo(number(evaluate(field(a, "order_by"), f.enter(left)))));
+                    int start = a.named("position").isEmpty() ? 0 : number(evaluate(field(a, "position"), f)).intValueExact();
+                    int count = a.named("max").isEmpty() ? 1 : number(evaluate(field(a, "max"), f)).intValueExact();
+                    Block effect = without(without(without(without(without(without(a, "variable"), "limit"), "order_by"), "max"), "position"), "check_range_bounds");
+                    for (int i = start; i < Math.min(ordered.size(), start + count); i++) execute(effect, f.enter(ordered.get(i)));
+                    continue;
+                }
+                if (k.equals("set_variable") || k.equals("change_variable")) {
+                    Block a = (Block)e.value(); String name = atom(field(a, "name"));
+                    if (k.equals("set_variable")) f.here().vars.put(name, evaluate(field(a, "value"), f));
+                    else {
+                        boolean add = !a.named("add").isEmpty(); BigDecimal amount = number(evaluate(field(a, add ? "add" : "subtract"), f));
+                        BigDecimal old = number(f.here().vars.get(name)); f.here().vars.put(name, new NumberDatum(add ? old.add(amount) : old.subtract(amount)));
+                    }
+                    continue;
+                }
+                if (k.equals("save_scope_value_as")) { Block a = (Block)e.value(); scopes.put(atom(field(a, "name")), evaluate(field(a, "value"), f)); continue; }
+                if (k.equals("remove_short_term_gold")) { f.here().gold = f.here().gold.subtract(number(evaluate(e.value(), f))).setScale(2); continue; }
+                if (k.equals("add_gold")) { f.here().gold = f.here().gold.add(number(evaluate(e.value(), f))).setScale(2); continue; }
+                if (k.equals("create_story")) {
+                    Block a = (Block)e.value(); String type = atom(field(a, "type"));
+                    if (!type.equals(failType)) { Node created = node("created-" + ++sequence, type); created.owner = f.here(); scopes.put(atom(field(a, "save_scope_as")), created); }
+                    continue;
+                }
+                if (k.equals("end_story")) { f.here().ended = true; continue; }
+                if (k.equals("add_to_variable_list") || k.equals("remove_list_variable") || k.equals("add_to_global_variable_list") || k.equals("remove_list_global_variable")) {
+                    Block a = (Block)e.value(); String name = atom(field(a, "name")); Node target = (Node)evaluate(field(a, "target"), f);
+                    List<Node> list = k.equals("add_to_global_variable_list") || k.equals("remove_list_global_variable") ? globalLists.computeIfAbsent(name, ignored -> new ArrayList<>()) : f.here().list(name);
+                    if (k.equals("remove_list_variable") || k.equals("remove_list_global_variable")) list.remove(target); else list.add(target);
+                    if (name.equals("xfm_spot_orders")) { maxSpotBookEntries = Math.max(maxSpotBookEntries, list.size()); if (list.size() > 64) throw new IllegalArgumentException("65th resting order"); }
+                    if (name.equals("xfm_orders") && f.here().type.equals("xfm_futures_contract")) { maxFuturesBookEntries = Math.max(maxFuturesBookEntries, list.size()); if (list.size() > 64) throw new IllegalArgumentException("65th futures resting order"); }
+                    continue;
+                }
+                if (k.equals("every_in_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {
+                    Block a = (Block)e.value(); String name = atom(field(a, "variable"));
+                    List<Node> list = k.equals("random_in_global_list") ? List.copyOf(globalLists.getOrDefault(name, List.of())) : list(f.here(), name);
+                    for (Node n : list) if (test(a.block("limit"), f.enter(n))) {
+                        execute(without(without(a, "variable"), "limit"), f.enter(n)); if (!k.equals("every_in_list")) break;
+                    }
+                    continue;
+                }
+                if (k.equals("random")) { Block a = (Block)e.value(); if (randomEnabled && number(evaluate(field(a, "chance"), f)).signum() > 0) execute(without(a, "chance"), f); continue; }
+                if (k.equals("xfm_oracle_record_trade_effect")) continue; // independent oracle sampler, outside cash/coin settlement subset
+                if (k.equals("xfm_spot_record_trade_effect")) spotExecutionOrderIds.add(((Node)scopes.get("xfm_spot_resting")).integer("xfm_order_id"));
+                if (e.value() instanceof Block child) { if (program.containsKey(k)) { execute(substitute(definition(k), child), f); continue; } Datum scope = resolve(k, f); if (!(scope instanceof Node n)) throw new IllegalArgumentException("missing effect scope " + k); execute(child, f.enter(n)); continue; }
+                execute(definition(k), f);
+            }
+        }
+    }
+    private static String atom(Value value) { if (!(value instanceof Atom a)) throw new IllegalArgumentException("atom required"); return a.token(); }
+    private static Block substitute(Block block, Block arguments) {
+        Map<String, String> replacements = new LinkedHashMap<>();
+        for (Entry arg : arguments.entries()) replacements.put("$" + arg.key() + "$", atom(arg.value()));
+        return substitute(block, replacements);
+    }
+    private static Block substitute(Block block, Map<String, String> replacements) {
+        return new Block(block.entries().stream().map(entry -> new Entry(replace(entry.key(), replacements), entry.operator(),
+                entry.value() instanceof Block child ? substitute(child, replacements)
+                        : new Atom(replace(atom(entry.value()), replacements)))).toList());
+    }
+    private static String replace(String text, Map<String, String> replacements) {
+        String result = text; for (var e : replacements.entrySet()) result = result.replace(e.getKey(), e.getValue()); return result;
+    }
+    private static Value field(Block block, String name) { List<Entry> found = block.named(name); if (found.size() != 1) throw new IllegalArgumentException("one field required " + name); return found.getFirst().value(); }
+    private static Block without(Block block, String name) { return new Block(block.entries().stream().filter(e -> !e.key().equals(name)).toList()); }
+}

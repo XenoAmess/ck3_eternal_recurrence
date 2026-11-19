@@ -4,16 +4,21 @@ xfm_futures_archive_order_effect = {
   limit = { NOT = { has_variable = xfm_archived_day } }
   save_scope_as = xfm_fut_archived_order
   set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day }
-  var:xfm_contract = {
-   remove_list_variable = { name = xfm_orders target = scope:xfm_fut_archived_order }
-   change_variable = { name = xfm_open_orders_count subtract = 1 }
+  if = {
+   # Every legacy live order was indexed. Explicit zero identifies only new transient takers.
+   limit = { OR = { NOT = { has_variable = xfm_indexed } var:xfm_indexed = 1 } }
+   var:xfm_contract = {
+    remove_list_variable = { name = xfm_orders target = scope:xfm_fut_archived_order }
+    change_variable = { name = xfm_open_orders_count subtract = 1 }
+   }
+   var:xfm_account = {
+    remove_list_variable = { name = xfm_orders target = scope:xfm_fut_archived_order }
+    change_variable = { name = xfm_open_orders_count subtract = 1 }
+   }
+   global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count subtract = 1 } }
   }
-  var:xfm_account = {
-   remove_list_variable = { name = xfm_orders target = scope:xfm_fut_archived_order }
-   add_to_variable_list = { name = xfm_futures_order_history target = scope:xfm_fut_archived_order }
-   change_variable = { name = xfm_open_orders_count subtract = 1 }
-  }
-  global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count subtract = 1 } }
+  set_variable = { name = xfm_indexed value = 0 }
+  var:xfm_account = { add_to_variable_list = { name = xfm_futures_order_history target = scope:xfm_fut_archived_order } }
   xfm_futures_archive_enqueue_effect = yes
  }
 }

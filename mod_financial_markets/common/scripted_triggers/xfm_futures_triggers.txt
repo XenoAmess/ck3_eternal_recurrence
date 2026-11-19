@@ -18,6 +18,70 @@ xfm_futures_order_open_trigger = {
  var:xfm_remaining_lots > 0
 }
 xfm_futures_position_open_trigger = { var:xfm_status = 0 var:xfm_lots > 0 }
+
+# Incoming order scope. Capacity limits resting orders, not funded transient takers.
+xfm_futures_rest_capacity_trigger = {
+ var:xfm_account.var:xfm_open_orders_count < xfm_config_player_order_capacity_value
+ var:xfm_contract.var:xfm_open_orders_count < xfm_config_coin_order_capacity_value
+ global_var:xfm_exchange.var:xfm_active_orders_count < xfm_config_global_order_capacity_value
+}
+# Actor scope, after actual account/contract selection and beneficiary refresh.
+xfm_futures_submit_capacity_trigger = {
+ OR = {
+  AND = {
+   scope:xfm_fut_account.var:xfm_open_orders_count < xfm_config_player_order_capacity_value
+   scope:xfm_fut_contract.var:xfm_open_orders_count < xfm_config_coin_order_capacity_value
+   global_var:xfm_exchange.var:xfm_active_orders_count < xfm_config_global_order_capacity_value
+  }
+  scope:xfm_fut_contract = {
+   any_in_list = { variable = xfm_orders xfm_futures_opening_counterparty_trigger = yes }
+  }
+ }
+}
+xfm_futures_opening_counterparty_trigger = {
+ story_type = xfm_futures_order xfm_futures_order_open_trigger = yes
+ var:xfm_contract = scope:xfm_fut_contract
+ OR = { var:xfm_side = 1 var:xfm_side = 2 }
+ NOT = { var:xfm_side = scope:xfm_fut_actor.var:xfm_futures_side }
+ OR = {
+  AND = { var:xfm_side = 1 var:xfm_limit_cents >= scope:xfm_fut_actor.var:xfm_futures_limit_cents }
+  AND = { var:xfm_side = 2 var:xfm_limit_cents <= scope:xfm_fut_actor.var:xfm_futures_limit_cents }
+ }
+ var:xfm_account != scope:xfm_fut_account
+ var:xfm_account = {
+  xfm_finance_account_usable_trigger = yes
+  var:xfm_holder != scope:xfm_fut_account.var:xfm_holder
+  NOT = { AND = { exists = var:xfm_beneficial_owner exists = scope:xfm_fut_account.var:xfm_beneficial_owner var:xfm_beneficial_owner = scope:xfm_fut_account.var:xfm_beneficial_owner } }
+ }
+ xfm_futures_order_collateralized_trigger = yes
+ OR = {
+  AND = {
+   NOT = { has_variable = xfm_reduce_order }
+   var:xfm_account.var:xfm_open_positions_count < xfm_futures_account_position_capacity_value
+   var:xfm_leverage <= scope:xfm_fut_contract.var:xfm_coin.var:xfm_max_leverage
+   var:xfm_limit_cents >= scope:xfm_fut_contract.var:xfm_band_low
+   var:xfm_limit_cents <= scope:xfm_fut_contract.var:xfm_band_high
+  }
+  AND = {
+   has_variable = xfm_reduce_order exists = var:xfm_close_position
+   var:xfm_close_position = { xfm_futures_position_open_trigger = yes NOT = { has_variable = xfm_pending_payment } }
+   OR = {
+    AND = { var:xfm_side = 1 var:xfm_close_position.var:xfm_short_account = var:xfm_account }
+    AND = { var:xfm_side = 2 var:xfm_close_position.var:xfm_long_account = var:xfm_account }
+   }
+  }
+ }
+}
+xfm_futures_order_collateralized_trigger = {
+ var:xfm_leverage > 0 var:xfm_reserve_price_cents > 0
+ exists = var:xfm_reservation
+ var:xfm_reservation = {
+  xfm_finance_reservation_usable_trigger = yes
+  var:xfm_account = prev.var:xfm_account
+  var:xfm_account.var:xfm_reserved_cents >= var:xfm_remaining_cents
+  var:xfm_remaining_cents >= prev.xfm_futures_order_required_reserve_value
+ }
+}
 xfm_futures_terminal_certificate_trigger = {
  exists = var:xfm_coin
  var:xfm_coin = {

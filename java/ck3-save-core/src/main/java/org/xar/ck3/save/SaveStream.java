@@ -133,7 +133,9 @@ public final class SaveStream {
         if (braced) {
             if (!"}".equals(next())) throw failure("truncated block");
             boolean recordEnd = streamingContext != null && streamingContext.path.equals(path);
-            if (recordEnd && streamingContext.discriminator == null) throw failure("streaming record discriminator absent at " + path);
+            if (recordEnd && streamingContext.discriminator == null
+                    && streaming.missingDiscriminatorPolicy() == MissingDiscriminatorPolicy.REJECT)
+                throw failure("streaming record discriminator absent at " + path);
             for (int i = active.size() - 1; i >= 0; i--) if (active.get(i).path.equals(path)) finish(active.remove(i));
             if (recordEnd) streamingContext = null;
         } else if (lexer.peek() != null) throw failure("unexpected root closing brace");
@@ -150,6 +152,10 @@ public final class SaveStream {
                 if (streamingIds.size() > streaming.maxTableRecords()) throw failure("streaming table identity cap exceeded");
                 streamingContext = new RecordContext(new NativeId(id), path);
                 if (streamingSelected.contains(id)) { streamedRecords++; start(new Capture(path, new NativeId(id))); }
+                else if (streaming.missingDiscriminatorPolicy() == MissingDiscriminatorPolicy.CAPTURE_MISSING_BOUNDED) {
+                    Capture prefix = new Capture(path, new NativeId(id), true);
+                    streamingContext.prefix = prefix; start(prefix);
+                }
             }
         }
         if (path.size() == 2 && !path.getLast().matches("[0-9]+") && selection.tables().stream().anyMatch(table -> table.path().getFirst().equals(path.getFirst()))) {
@@ -178,7 +184,8 @@ public final class SaveStream {
         }
     }
     private void start(Capture capture) throws IOException {
-        if (capture.streamedId != null) addStreamedBytes(capture.bytes);
+        if (capture.streamedId != null && !capture.provisionalPrefix) addStreamedBytes(capture.bytes);
+        else if (capture.provisionalPrefix) { /* Only this record prefix is retained, never the whole table. */ }
         else {
             selectedBytes += capture.bytes;
             if (selectedBytes > MAX_SELECTED_BYTES) throw failure("total selected record cap exceeded");
@@ -192,7 +199,12 @@ public final class SaveStream {
         catch (IllegalArgumentException invalid) { throw new IOException("invalid selected AST", invalid); }
         String hash = FilePins.sha256(bytes);
         if (capture.streamedId != null) {
-            streamingSink.record(new StreamedRecord(capture.streamedId, streamingContext.discriminator, hash, bytes.length, ast));
+            if (streamingContext.discriminator == null) {
+                if (streaming.missingDiscriminatorPolicy() != MissingDiscriminatorPolicy.CAPTURE_MISSING_BOUNDED)
+                    throw failure("untyped streaming callback is not enabled");
+                if (capture.provisionalPrefix) addStreamedBytes(bytes.length);
+                streamingSink.missingDiscriminator(new UntypedRecord(capture.streamedId, hash, bytes.length, ast));
+            } else streamingSink.record(new StreamedRecord(capture.streamedId, streamingContext.discriminator, hash, bytes.length, ast));
         } else if (capture.projection != null) {
             projections.add(new ProjectionScope(capture.projection.name(), capture.projection.kind(), capture.path, capture.occurrence, hash, ast));
         } else {
@@ -208,7 +220,7 @@ public final class SaveStream {
             for (Capture capture : active) {
                 capture.text.append(value).append(' '); capture.bytes += bytes;
                 if (capture.streamedId != null) {
-                    addStreamedBytes(bytes);
+                    if (!capture.provisionalPrefix) addStreamedBytes(bytes);
                     if (capture.bytes > streaming.maxRecordBytes()) throw failure("streamed record byte cap exceeded at " + capture.path);
                 } else selectedBytes += bytes;
                 if (capture.text.length() > MAX_RECORD_CHARS) throw failure("selected record cap exceeded");
@@ -224,6 +236,11 @@ public final class SaveStream {
         if (value.getBytes(StandardCharsets.UTF_8).length > 256) throw failure("streaming discriminator byte cap exceeded");
         streamingContext.discriminator = value;
         streamingSink.discriminator(streamingContext.id, value);
+        // A normal type makes an unselected record irrelevant immediately; release its prefix before the rest is read.
+        if (streamingContext.prefix != null) {
+            if (!active.remove(streamingContext.prefix)) throw failure("provisional streaming prefix absent");
+            streamingContext.prefix = null;
+        }
     }
     private void addStreamedBytes(int bytes) throws IOException {
         streamedBytes += bytes;
@@ -231,6 +248,7 @@ public final class SaveStream {
     }
     private static final class RecordContext {
         private final NativeId id; private final List<String> path; private String discriminator;
+        private Capture prefix;
         private RecordContext(NativeId id, List<String> path) { this.id = id; this.path = path; }
     }
     private StructureBuilder structure(List<String> path) throws IOException {
@@ -268,13 +286,16 @@ public final class SaveStream {
         private final ProjectionSelection projection;
         private final int occurrence;
         private final NativeId streamedId;
+        private final boolean provisionalPrefix;
         private final StringBuilder text = new StringBuilder("record = { ");
         private int bytes = 11;
         private Capture(ScopeKind kind, List<String> path, ProjectionSelection projection, int occurrence) {
-            this.kind = kind; this.path = path; this.projection = projection; this.occurrence = occurrence; this.streamedId = null;
+            this.kind = kind; this.path = path; this.projection = projection; this.occurrence = occurrence; this.streamedId = null; this.provisionalPrefix = false;
         }
-        private Capture(List<String> path, NativeId streamedId) {
+        private Capture(List<String> path, NativeId streamedId) { this(path, streamedId, false); }
+        private Capture(List<String> path, NativeId streamedId, boolean provisionalPrefix) {
             this.kind = null; this.path = path; this.projection = null; this.occurrence = 0; this.streamedId = streamedId;
+            this.provisionalPrefix = provisionalPrefix;
         }
     }
     private IOException failure(String message) { return new IOException(message + " at token " + lexer.tokens()); }

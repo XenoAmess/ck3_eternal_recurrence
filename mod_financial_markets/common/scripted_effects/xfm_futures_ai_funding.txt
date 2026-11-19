@@ -31,3 +31,42 @@ xfm_futures_ai_refund_failed_funding_effect = {
   set_variable = { name = xfm_futures_ai_funded_cents value = 0 }
  }
 }
+
+# Pure character-ticket sizing; no gold transfer, reservation, random choice or population visit.
+# Probe at most sixteen decreasing quantities with the SAME rounded margin/fee values as submit.
+xfm_futures_ai_size_order_effect = {
+ set_variable = { name = xfm_futures_lots value = 0 }
+ set_variable = { name = xfm_futures_ai_size_result value = 0 }
+ if = {
+  limit = {
+   is_ai = yes is_alive = yes is_adult = yes
+   xfm_futures_ai_primary_account_trigger = yes
+   xfm_futures_ai_budget_cents_value > 0
+   xfm_futures_leverage_trigger = yes
+   exists = var:xfm_selected_coin exists = var:xfm_futures_contract
+   var:xfm_futures_contract.var:xfm_coin = var:xfm_selected_coin
+   var:xfm_selected_coin.var:xfm_mark_cents > 0
+   var:xfm_selected_coin.var:xfm_max_leverage >= var:xfm_futures_leverage
+  }
+  set_variable = { name = xfm_futures_ai_size_budget_cents value = xfm_futures_ai_budget_cents_value }
+  set_variable = { name = xfm_futures_ai_size_band_high_cents value = var:xfm_futures_contract.xfm_futures_band_high_value }
+  set_variable = { name = xfm_futures_lots value = xfm_futures_ai_order_lot_cap_value }
+  xfm_futures_ai_probe_size_effect = yes
+  while = {
+   limit = {
+    var:xfm_futures_lots > 0
+    OR = { var:xfm_futures_reserve_cents > var:xfm_futures_ai_size_budget_cents var:xfm_futures_reserve_cents > 100000000 }
+   }
+   change_variable = { name = xfm_futures_lots subtract = 1 }
+   xfm_futures_ai_probe_size_effect = yes
+  }
+  if = { limit = { var:xfm_futures_lots > 0 } set_variable = { name = xfm_futures_ai_size_result value = 1 } }
+ }
+}
+xfm_futures_ai_probe_size_effect = {
+ set_variable = { name = xfm_futures_reserve_gross value = { value = var:xfm_futures_lots multiply = var:xfm_futures_ai_size_band_high_cents floor = yes } }
+ set_variable = { name = xfm_futures_initial_margin value = xfm_futures_ceiling_margin_value }
+ set_variable = { name = xfm_futures_fee_gross value = var:xfm_futures_reserve_gross }
+ set_variable = { name = xfm_futures_fee_reserve value = xfm_futures_ceiling_fee_value }
+ set_variable = { name = xfm_futures_reserve_cents value = xfm_futures_order_reserve_value }
+}

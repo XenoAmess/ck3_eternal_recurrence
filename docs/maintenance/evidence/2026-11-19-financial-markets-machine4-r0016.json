@@ -1,0 +1,1057 @@
+{
+  "schema": "ck3-financial-markets-machine4-r0016-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0016",
+  "case": "spot",
+  "runtime": "runtime-spot17",
+  "source_commit_observed_in_actual_release": "bcd466922ffb029f724c1df4b7421dbde6a24cc1",
+  "status": "NORMAL_CLOSED_PHASE2_RED_OR_INCOMPLETE",
+  "business_pass": false,
+  "prior_issuance_credit": "R0015 independent originals only; no new issuance or fundraising credited to R0016",
+  "cold_known_financial_closure": {
+    "source": "baseline_known_cold",
+    "root_phase1_review_source": "phase1_review",
+    "initial_full_source": "initial_full",
+    "window_state_sample_source": "window_sample",
+    "actor_native_id": "31254",
+    "date_raw": 53144400,
+    "game_date": "1066.9.18",
+    "gold_at_initial_full": "237",
+    "known_financial_records": 704,
+    "complete_story_table_records": 759,
+    "all_selected_financial_records_actually_read": true,
+    "complete_known_financial_closure": true,
+    "comparison": {
+      "comparable": true,
+      "exactSelectedFinancialState": true,
+      "financialCertified": false,
+      "differences": []
+    },
+    "initial_player_state": {
+      "account_native_id": "54",
+      "account_permanent_id": "2",
+      "free_cents": "0",
+      "reserved_cents": "0",
+      "position_native_id": "343",
+      "quantity_units": "8000",
+      "reserved_units": "0",
+      "exchange_fee_cents": "368",
+      "exchange_day": "3",
+      "next_order_id": "152"
+    },
+    "original_app05_pass": false,
+    "financialCertified": false,
+    "scope": "All 704 previously known financial records and full759 story census; exact equality, no selected financial differences. This is separately source-bound external closure, not original named app05 success or universal layout certification."
+  },
+  "strict_app05_failure_preserved": {
+    "original_wait": {
+      "source": "strict_app05_wait",
+      "started_at_utc": "2026-11-19T01:08:15.324372+00:00",
+      "finished_at_utc": "2026-11-19T01:08:22.195694+00:00",
+      "returncode": 1,
+      "elapsed_seconds": 6.871307699941099
+    },
+    "stderr_source": "strict_app05_stderr",
+    "request_source": "strict_app05_request",
+    "stderr": "XFM SAVE AUDIT FAILED: streaming record discriminator absent at [stories, active, 51] at token 12681547",
+    "diagnostic_source": "story51_diagnostic",
+    "story51_observed_fields": [
+      "owner",
+      "seed",
+      "variables"
+    ],
+    "story_cycle_present": false,
+    "sole_observed_variable": "xfma_complete",
+    "failure_reclassified_as_pass": false
+  },
+  "current_external_audits": [
+    {
+      "stage": "after-sell",
+      "source": "audit_after-sell",
+      "original_wait": {
+        "source": "audit_wait_after-sell",
+        "started_at_utc": "2026-11-19T01:43:08.538901+00:00",
+        "finished_at_utc": "2026-11-19T01:44:01.269033+00:00",
+        "returncode": 0,
+        "elapsed_seconds": 52.73013569996692
+      },
+      "schema": "ck3-r16-external-all-current-records-generic-financial-audit-v1",
+      "admission_mode": "R0016_ONLY_53144400_THROUGH_53144472_FULL_CENSUS_ALL_RECORDS_ACTUAL_AST",
+      "date_raw": 53144400,
+      "game_date": "1066.9.18",
+      "assessment": "CANDIDATE_INVARIANTS_HOLD",
+      "known_ledger_cash": {
+        "known": true,
+        "cents": "9883"
+      },
+      "account_count": 362,
+      "coin_count": 1,
+      "futures_position_count": 2,
+      "debt_count": 0,
+      "monetary_records": 769,
+      "all_story_records_censused": 825,
+      "classification_counts": {
+        "ACTUAL_CURRENT_SPOT_OBSERVER": 1,
+        "EXACT_DIAGNOSED_RETIRED_OBSERVER51": 1,
+        "EXPLICIT_NONMONETARY_AUXILIARY_NEWS": 1,
+        "MONETARY_PROJECTED": 769,
+        "OTHER_EXPLICIT_NONFINANCIAL_TYPE": 53
+      },
+      "complete_pass_count": 8,
+      "all_complete_passes_eof": true,
+      "issues": {
+        "INCOMPLETE": [],
+        "VIOLATION": [],
+        "UNQUALIFIED": [
+          {
+            "severity": "UNQUALIFIED",
+            "identity": "save",
+            "field": "layout",
+            "detail": "External candidate only; no financial 1.21 source-layout qualification or live funds certification."
+          }
+        ]
+      },
+      "player_state": {
+        "account_native_id": "54",
+        "account_permanent_id": "2",
+        "free_cents": "5551",
+        "reserved_cents": "0",
+        "position_native_id": "343",
+        "quantity_units": "1600",
+        "reserved_units": "700",
+        "exchange_fee_cents": "449",
+        "exchange_day": "3",
+        "next_order_id": "153"
+      },
+      "original_app05_pass": false,
+      "financialCertified": false
+    },
+    {
+      "stage": "bid",
+      "source": "audit_bid",
+      "original_wait": {
+        "source": "audit_wait_bid",
+        "started_at_utc": "2026-11-19T01:47:00.790263+00:00",
+        "finished_at_utc": "2026-11-19T01:47:53.228143+00:00",
+        "returncode": 0,
+        "elapsed_seconds": 52.437872800044715
+      },
+      "schema": "ck3-r16-external-all-current-records-generic-financial-audit-v1",
+      "admission_mode": "R0016_ONLY_53144400_THROUGH_53144472_FULL_CENSUS_ALL_RECORDS_ACTUAL_AST",
+      "date_raw": 53144400,
+      "game_date": "1066.9.18",
+      "assessment": "CANDIDATE_INVARIANTS_HOLD",
+      "known_ledger_cash": {
+        "known": true,
+        "cents": "9883"
+      },
+      "account_count": 362,
+      "coin_count": 1,
+      "futures_position_count": 2,
+      "debt_count": 0,
+      "monetary_records": 773,
+      "all_story_records_censused": 829,
+      "classification_counts": {
+        "ACTUAL_CURRENT_SPOT_OBSERVER": 1,
+        "EXACT_DIAGNOSED_RETIRED_OBSERVER51": 1,
+        "EXPLICIT_NONMONETARY_AUXILIARY_NEWS": 1,
+        "MONETARY_PROJECTED": 773,
+        "OTHER_EXPLICIT_NONFINANCIAL_TYPE": 53
+      },
+      "complete_pass_count": 8,
+      "all_complete_passes_eof": true,
+      "issues": {
+        "INCOMPLETE": [],
+        "VIOLATION": [],
+        "UNQUALIFIED": [
+          {
+            "severity": "UNQUALIFIED",
+            "identity": "save",
+            "field": "layout",
+            "detail": "External candidate only; no financial 1.21 source-layout qualification or live funds certification."
+          }
+        ]
+      },
+      "player_state": {
+        "account_native_id": "54",
+        "account_permanent_id": "2",
+        "free_cents": "5450",
+        "reserved_cents": "101",
+        "position_native_id": "343",
+        "quantity_units": "1600",
+        "reserved_units": "700",
+        "exchange_fee_cents": "449",
+        "exchange_day": "3",
+        "next_order_id": "155"
+      },
+      "original_app05_pass": false,
+      "financialCertified": false
+    },
+    {
+      "stage": "day01",
+      "source": "audit_day01",
+      "original_wait": {
+        "source": "audit_wait_day01",
+        "started_at_utc": "2026-11-19T01:49:50.387300+00:00",
+        "finished_at_utc": "2026-11-19T01:50:54.226111+00:00",
+        "returncode": 0,
+        "elapsed_seconds": 63.83882990013808
+      },
+      "schema": "ck3-r16-external-all-current-records-generic-financial-audit-v1",
+      "admission_mode": "R0016_ONLY_53144400_THROUGH_53144472_FULL_CENSUS_ALL_RECORDS_ACTUAL_AST",
+      "date_raw": 53144424,
+      "game_date": "1066.9.19",
+      "assessment": "CANDIDATE_INVARIANTS_HOLD",
+      "known_ledger_cash": {
+        "known": true,
+        "cents": "15981"
+      },
+      "account_count": 482,
+      "coin_count": 1,
+      "futures_position_count": 5,
+      "debt_count": 0,
+      "monetary_records": 1064,
+      "all_story_records_censused": 1120,
+      "classification_counts": {
+        "ACTUAL_CURRENT_SPOT_OBSERVER": 1,
+        "EXACT_DIAGNOSED_RETIRED_OBSERVER51": 1,
+        "EXPLICIT_NONMONETARY_AUXILIARY_NEWS": 1,
+        "MONETARY_PROJECTED": 1064,
+        "OTHER_EXPLICIT_NONFINANCIAL_TYPE": 53
+      },
+      "complete_pass_count": 10,
+      "all_complete_passes_eof": true,
+      "issues": {
+        "INCOMPLETE": [],
+        "VIOLATION": [],
+        "UNQUALIFIED": [
+          {
+            "severity": "UNQUALIFIED",
+            "identity": "save",
+            "field": "layout",
+            "detail": "External candidate only; no financial 1.21 source-layout qualification or live funds certification."
+          }
+        ]
+      },
+      "player_state": {
+        "account_native_id": "54",
+        "account_permanent_id": "2",
+        "free_cents": "5994",
+        "reserved_cents": "0",
+        "position_native_id": "343",
+        "quantity_units": "1000",
+        "reserved_units": "0",
+        "exchange_fee_cents": "454",
+        "exchange_day": "4",
+        "next_order_id": "230"
+      },
+      "original_app05_pass": false,
+      "financialCertified": false
+    },
+    {
+      "stage": "sellback",
+      "source": "audit_sellback",
+      "original_wait": {
+        "source": "audit_wait_sellback",
+        "started_at_utc": "2026-11-19T01:56:17.483162+00:00",
+        "finished_at_utc": "2026-11-19T01:57:22.430876+00:00",
+        "returncode": 0,
+        "elapsed_seconds": 64.94771849992685
+      },
+      "schema": "ck3-r16-external-all-current-records-generic-financial-audit-v1",
+      "admission_mode": "R0016_ONLY_53144400_THROUGH_53144472_FULL_CENSUS_ALL_RECORDS_ACTUAL_AST",
+      "date_raw": 53144424,
+      "game_date": "1066.9.19",
+      "assessment": "CANDIDATE_INVARIANTS_HOLD",
+      "known_ledger_cash": {
+        "known": true,
+        "cents": "15981"
+      },
+      "account_count": 482,
+      "coin_count": 1,
+      "futures_position_count": 5,
+      "debt_count": 0,
+      "monetary_records": 1066,
+      "all_story_records_censused": 1122,
+      "classification_counts": {
+        "ACTUAL_CURRENT_SPOT_OBSERVER": 1,
+        "EXACT_DIAGNOSED_RETIRED_OBSERVER51": 1,
+        "EXPLICIT_NONMONETARY_AUXILIARY_NEWS": 1,
+        "MONETARY_PROJECTED": 1066,
+        "OTHER_EXPLICIT_NONFINANCIAL_TYPE": 53
+      },
+      "complete_pass_count": 10,
+      "all_complete_passes_eof": true,
+      "issues": {
+        "INCOMPLETE": [],
+        "VIOLATION": [],
+        "UNQUALIFIED": [
+          {
+            "severity": "UNQUALIFIED",
+            "identity": "save",
+            "field": "layout",
+            "detail": "External candidate only; no financial 1.21 source-layout qualification or live funds certification."
+          }
+        ]
+      },
+      "player_state": {
+        "account_native_id": "54",
+        "account_permanent_id": "2",
+        "free_cents": "6071",
+        "reserved_cents": "0",
+        "position_native_id": "343",
+        "quantity_units": "900",
+        "reserved_units": "0",
+        "exchange_fee_cents": "456",
+        "exchange_day": "4",
+        "next_order_id": "231"
+      },
+      "original_app05_pass": false,
+      "financialCertified": false
+    }
+  ],
+  "spot_business_observed": {
+    "first_full64_crossing_GTC_sell": {
+      "source": "audit_after-sell",
+      "raw_ticket_source": "raw_before_sell",
+      "date_raw": 53144400,
+      "order": {
+        "native_id": "760",
+        "permanent_id": "153",
+        "numbers": {
+          "xfm_expiry_day": "33",
+          "xfm_fee_paid_cents": "17",
+          "xfm_filled_lots": "64",
+          "xfm_filled_notional_cents": "5568",
+          "xfm_limit_cents": "78",
+          "xfm_order_id": "153",
+          "xfm_original_lots": "71",
+          "xfm_remaining_lots": "7",
+          "xfm_side": "2",
+          "xfm_status": "1"
+        },
+        "scope_references": {
+          "xfm_account": {
+            "serializedType": "story",
+            "nativeId": "54"
+          },
+          "xfm_coin": {
+            "serializedType": "story",
+            "nativeId": "55"
+          },
+          "xfm_sell_position": {
+            "serializedType": "story",
+            "nativeId": "343"
+          }
+        }
+      },
+      "after_player_state": {
+        "account_native_id": "54",
+        "account_permanent_id": "2",
+        "free_cents": "5551",
+        "reserved_cents": "0",
+        "position_native_id": "343",
+        "quantity_units": "1600",
+        "reserved_units": "700",
+        "exchange_fee_cents": "449",
+        "exchange_day": "3",
+        "next_order_id": "153"
+      },
+      "meaning": "Actual normal71@78 GTC sell filled64 at resting87, notional5568, cumulative fee17, remainder7 with700 units still reserved. Not an IOC capacity workaround."
+    },
+    "owner_cancel_attempt": {
+      "activation_source": "cancel_original_activation",
+      "before_raw_source": "raw_after_sell",
+      "after_raw_source": "raw_after_cancel",
+      "status": "ATTEMPT_NOT_EFFECTIVE_BUSINESS_GAP",
+      "watched_raw_records": [
+        {
+          "path": [
+            "living",
+            "31254"
+          ],
+          "before_canonical_token_sha256": "bb7efbcd83e7627349ca396d8c550e1984f6cf59e28688b68088672c577c7a07",
+          "after_canonical_token_sha256": "bb7efbcd83e7627349ca396d8c550e1984f6cf59e28688b68088672c577c7a07",
+          "equal": true
+        },
+        {
+          "path": [
+            "stories",
+            "active",
+            "54"
+          ],
+          "before_canonical_token_sha256": "3726197d4719e47fa5c8a1aa1bfe6329a295079a87ae9316a0faf851c6219f87",
+          "after_canonical_token_sha256": "3726197d4719e47fa5c8a1aa1bfe6329a295079a87ae9316a0faf851c6219f87",
+          "equal": true
+        },
+        {
+          "path": [
+            "stories",
+            "active",
+            "343"
+          ],
+          "before_canonical_token_sha256": "4f0398941997fa64e84276a06f9b11a1d4242e8a29471a62c7aa7a388f58bc43",
+          "after_canonical_token_sha256": "4f0398941997fa64e84276a06f9b11a1d4242e8a29471a62c7aa7a388f58bc43",
+          "equal": true
+        }
+      ],
+      "note": "Actor31254/account54/position343 exact canonical records unchanged; no selected_order reference was observed. Do not invent a new result0: actor still carries the preceding successful sell result1. No owner-cancel collateral release is credited."
+    },
+    "resting_bid_then_natural_day": {
+      "bid_source": "audit_bid",
+      "day_source": "audit_day01",
+      "day_step_wait_source": "advance_wait",
+      "before_date_raw": 53144400,
+      "after_date_raw": 53144424,
+      "new_natural_days": 1,
+      "bid_player_state": {
+        "account_native_id": "54",
+        "account_permanent_id": "2",
+        "free_cents": "5450",
+        "reserved_cents": "101",
+        "position_native_id": "343",
+        "quantity_units": "1600",
+        "reserved_units": "700",
+        "exchange_fee_cents": "449",
+        "exchange_day": "3",
+        "next_order_id": "155"
+      },
+      "day_player_state": {
+        "account_native_id": "54",
+        "account_permanent_id": "2",
+        "free_cents": "5994",
+        "reserved_cents": "0",
+        "position_native_id": "343",
+        "quantity_units": "1000",
+        "reserved_units": "0",
+        "exchange_fee_cents": "454",
+        "exchange_day": "4",
+        "next_order_id": "230"
+      },
+      "original_sell_after_natural_fill": {
+        "native_id": "760",
+        "permanent_id": "153",
+        "numbers": {
+          "xfm_expiry_day": "33",
+          "xfm_fee_paid_cents": "19",
+          "xfm_filled_lots": "71",
+          "xfm_filled_notional_cents": "6114",
+          "xfm_limit_cents": "78",
+          "xfm_order_id": "153",
+          "xfm_original_lots": "71",
+          "xfm_remaining_lots": "0",
+          "xfm_side": "2",
+          "xfm_status": "2"
+        },
+        "scope_references": {
+          "xfm_account": {
+            "serializedType": "story",
+            "nativeId": "54"
+          },
+          "xfm_coin": {
+            "serializedType": "story",
+            "nativeId": "55"
+          },
+          "xfm_sell_position": {
+            "serializedType": "story",
+            "nativeId": "343"
+          }
+        }
+      },
+      "note": "Failed cancellation did not prevent remaining7 from genuinely filling. Order153 ultimately filled71/notional6114/totalfee19/status2; natural execution is not a cancellation success."
+    },
+    "same_day_buy_and_sell_readback": {
+      "date_raw": 53144424,
+      "game_date": "1066.9.19",
+      "buy_source": "audit_day01",
+      "buy_order": {
+        "native_id": "16778043",
+        "permanent_id": "155",
+        "numbers": {
+          "xfm_expiry_day": "33",
+          "xfm_fee_paid_cents": "1",
+          "xfm_filled_lots": "1",
+          "xfm_filled_notional_cents": "100",
+          "xfm_limit_cents": "100",
+          "xfm_order_id": "155",
+          "xfm_original_lots": "1",
+          "xfm_remaining_lots": "0",
+          "xfm_side": "1",
+          "xfm_status": "2"
+        },
+        "scope_references": {
+          "xfm_account": {
+            "serializedType": "story",
+            "nativeId": "54"
+          },
+          "xfm_coin": {
+            "serializedType": "story",
+            "nativeId": "55"
+          },
+          "xfm_reservation": {
+            "serializedType": "story",
+            "nativeId": "828"
+          }
+        }
+      },
+      "buy_counterparty_candidates_from_actual_current_graph": [
+        {
+          "native_id": "33555261",
+          "permanent_id": "156",
+          "numbers": {
+            "xfm_expiry_day": "34",
+            "xfm_fee_paid_cents": "1",
+            "xfm_filled_lots": "1",
+            "xfm_filled_notional_cents": "100",
+            "xfm_limit_cents": "100",
+            "xfm_order_id": "156",
+            "xfm_original_lots": "1",
+            "xfm_remaining_lots": "0",
+            "xfm_side": "2",
+            "xfm_status": "2"
+          },
+          "account": {
+            "serializedType": "story",
+            "nativeId": "64"
+          }
+        }
+      ],
+      "sell_source": "audit_sellback",
+      "sell_original_activation_source": "sellback_original_activation",
+      "sell_order": {
+        "native_id": "1120",
+        "permanent_id": "231",
+        "numbers": {
+          "xfm_expiry_day": "34",
+          "xfm_fee_paid_cents": "1",
+          "xfm_filled_lots": "1",
+          "xfm_filled_notional_cents": "78",
+          "xfm_limit_cents": "70",
+          "xfm_order_id": "231",
+          "xfm_original_lots": "1",
+          "xfm_remaining_lots": "0",
+          "xfm_side": "2",
+          "xfm_status": "2"
+        },
+        "scope_references": {
+          "xfm_account": {
+            "serializedType": "story",
+            "nativeId": "54"
+          },
+          "xfm_coin": {
+            "serializedType": "story",
+            "nativeId": "55"
+          },
+          "xfm_sell_position": {
+            "serializedType": "story",
+            "nativeId": "343"
+          }
+        }
+      },
+      "independent_resting_bid": {
+        "native_id": "33555296",
+        "permanent_id": "168",
+        "numbers": {
+          "xfm_expiry_day": "34",
+          "xfm_fee_paid_cents": "1",
+          "xfm_filled_lots": "1",
+          "xfm_filled_notional_cents": "78",
+          "xfm_limit_cents": "78",
+          "xfm_order_id": "168",
+          "xfm_original_lots": "1",
+          "xfm_remaining_lots": "0",
+          "xfm_side": "1",
+          "xfm_status": "2"
+        },
+        "scope_references": {
+          "xfm_account": {
+            "serializedType": "story",
+            "nativeId": "863"
+          },
+          "xfm_coin": {
+            "serializedType": "story",
+            "nativeId": "55"
+          },
+          "xfm_reservation": {
+            "serializedType": "story",
+            "nativeId": "865"
+          }
+        }
+      },
+      "resting_bid_account": {
+        "native_id": "863",
+        "permanent_id": "369",
+        "holder": {
+          "serializedType": "char",
+          "nativeId": "35374"
+        },
+        "beneficial_owner": {
+          "serializedType": "char",
+          "nativeId": "35374"
+        },
+        "before_reserved_cents": "79",
+        "after_reserved_cents": "0"
+      },
+      "sellback_cash_delta_cents": "77",
+      "sellback_units_delta": "-100",
+      "exchange_fee_delta_cents": "2",
+      "cash_reconciliation": "resting buyer reserved79 debited; player +77 and exchange +2; coin100 moved to actual independent account863/holder35374 position1121",
+      "final_player_state": {
+        "account_native_id": "54",
+        "account_permanent_id": "2",
+        "free_cents": "6071",
+        "reserved_cents": "0",
+        "position_native_id": "343",
+        "quantity_units": "900",
+        "reserved_units": "0",
+        "exchange_fee_cents": "456",
+        "exchange_day": "4",
+        "next_order_id": "231"
+      },
+      "does_not_make_phase2_pass": true
+    },
+    "current_ledger_cash_note": "after-sell/bid known9883c; day01/sellback known15981c. Same-day sellback leaves15981c unchanged. Natural-day ledger stock increase is not called money creation or full external-gold conservation; real funding/deposits require their own evidence.",
+    "fee_readback": "Original sell fee17 on5568c then19 on6114c equals cumulative ceil0.3%; buy155 fee1 on100c, sell231 fee1 on78c. These actual records do not replace all required cancellation/FIFO/unfunded subcase evidence."
+  },
+  "physical_saves": {
+    "count": 8,
+    "total_distinct_archive_bytes": 1131107680,
+    "rows": [
+      {
+        "stage": "baseline",
+        "source": "archive_baseline",
+        "date_raw": 53144400,
+        "archive_pin_from_actual_receipt_not_rehashed": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-baseline-save-01\\xar_checkpoint.ck3",
+          "bytes": 141110059,
+          "sha256": "34c8277d450d11bc5edc28361791fd334482c7ac61a1cd7bd2df0427d999f6b0"
+        },
+        "exact_copy": true,
+        "same_file": false,
+        "native_physical_save_confirmed": false,
+        "materialization_available": true,
+        "driver_save_binding_verified": false,
+        "driver_binding_reason": "save_binding_mismatch",
+        "financialCertified": false
+      },
+      {
+        "stage": "ticket",
+        "source": "archive_ticket",
+        "date_raw": 53144400,
+        "archive_pin_from_actual_receipt_not_rehashed": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-ticket-save-01\\xar_checkpoint.ck3",
+          "bytes": 141112624,
+          "sha256": "379d9cf6436bd9a7989aa8d89b12ba56df9e7c60c0bdb14ffac307d2fde30fee"
+        },
+        "exact_copy": true,
+        "same_file": false,
+        "native_physical_save_confirmed": false,
+        "materialization_available": true,
+        "driver_save_binding_verified": false,
+        "driver_binding_reason": "save_binding_mismatch",
+        "financialCertified": false
+      },
+      {
+        "stage": "before-sell",
+        "source": "archive_before-sell",
+        "date_raw": 53144400,
+        "archive_pin_from_actual_receipt_not_rehashed": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-before-sell-save-01\\xar_checkpoint.ck3",
+          "bytes": 141112626,
+          "sha256": "2b0b876c8bf526e35975b27aa06b93a15a79dffea17bf277ae01d059cc5768a0"
+        },
+        "exact_copy": true,
+        "same_file": false,
+        "native_physical_save_confirmed": false,
+        "materialization_available": true,
+        "driver_save_binding_verified": false,
+        "driver_binding_reason": "save_binding_mismatch",
+        "financialCertified": false
+      },
+      {
+        "stage": "after-sell",
+        "source": "archive_after-sell",
+        "date_raw": 53144400,
+        "archive_pin_from_actual_receipt_not_rehashed": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-after-sell-save-01\\xar_checkpoint.ck3",
+          "bytes": 141178888,
+          "sha256": "8f71f79b55bb8bc130536387927c443f428c494d672ee39436dc25938865887e"
+        },
+        "exact_copy": true,
+        "same_file": false,
+        "native_physical_save_confirmed": false,
+        "materialization_available": true,
+        "driver_save_binding_verified": false,
+        "driver_binding_reason": "save_binding_mismatch",
+        "financialCertified": false
+      },
+      {
+        "stage": "after-cancel",
+        "source": "archive_after-cancel",
+        "date_raw": 53144400,
+        "archive_pin_from_actual_receipt_not_rehashed": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-after-cancel-save-01\\xar_checkpoint.ck3",
+          "bytes": 141178888,
+          "sha256": "ea0fa24a0a932e81f8c74897fe12704135077cefbf81fecf0c9edaecc5d6c76c"
+        },
+        "exact_copy": true,
+        "same_file": false,
+        "native_physical_save_confirmed": false,
+        "materialization_available": true,
+        "driver_save_binding_verified": false,
+        "driver_binding_reason": "save_binding_mismatch",
+        "financialCertified": false
+      },
+      {
+        "stage": "bid",
+        "source": "archive_bid",
+        "date_raw": 53144400,
+        "archive_pin_from_actual_receipt_not_rehashed": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-bid-save-01\\xar_checkpoint.ck3",
+          "bytes": 141185144,
+          "sha256": "be4ac3dd6603cb712f568173a71b78377d86ffd32b1e530cec9ba0745b9d6d67"
+        },
+        "exact_copy": true,
+        "same_file": false,
+        "native_physical_save_confirmed": false,
+        "materialization_available": true,
+        "driver_save_binding_verified": false,
+        "driver_binding_reason": "save_binding_mismatch",
+        "financialCertified": false
+      },
+      {
+        "stage": "day01",
+        "source": "archive_day01",
+        "date_raw": 53144424,
+        "archive_pin_from_actual_receipt_not_rehashed": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-day01-save-01\\xar_checkpoint.ck3",
+          "bytes": 142113070,
+          "sha256": "f5793646d0a42751a78a3a59acffcebe636d557c73fc650901887502273ab855"
+        },
+        "exact_copy": true,
+        "same_file": false,
+        "native_physical_save_confirmed": false,
+        "materialization_available": true,
+        "driver_save_binding_verified": false,
+        "driver_binding_reason": "save_binding_mismatch",
+        "financialCertified": false
+      },
+      {
+        "stage": "sellback",
+        "source": "archive_sellback",
+        "date_raw": 53144424,
+        "archive_pin_from_actual_receipt_not_rehashed": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-sellback-save-01\\xar_checkpoint.ck3",
+          "bytes": 142116381,
+          "sha256": "60e5d59a0fc63d7c73ce53d056407db5300d73c4b26a6d52de885e8290e6a360"
+        },
+        "exact_copy": true,
+        "same_file": false,
+        "native_physical_save_confirmed": false,
+        "materialization_available": true,
+        "driver_save_binding_verified": false,
+        "driver_binding_reason": "save_binding_mismatch",
+        "financialCertified": false
+      }
+    ],
+    "large_save_bytes_reopened_by_this_author": false,
+    "native_submission_flags_rewritten": false
+  },
+  "phase2_failure": {
+    "source": "phase2_error",
+    "awaiting_contract_source": "phase2_awaiting",
+    "entry_result_source": "entry_result",
+    "error": "TimeoutError: Original normal Quit reserve reached; pending Root phase remains GAP",
+    "business_pass": false,
+    "original_run_wait": {
+      "source": "run_wait",
+      "started_at_utc": "2026-11-19T00:58:10.477435+00:00",
+      "finished_at_utc": "2026-11-19T02:02:34.888962+00:00",
+      "returncode": 2,
+      "elapsed_seconds": 3864.411546899937
+    },
+    "no_expired_checkpoint_backfilled": true,
+    "phase2_completion_written": false
+  },
+  "normal_close_separate_from_business": {
+    "source": "normal_close",
+    "normal_close_qualified": true,
+    "cleanup_ok": true,
+    "business_pass": false,
+    "game_pid": 18192,
+    "creation_filetime_100ns": "134395235130109069",
+    "retained_game_exit_code": 0,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "host_wait_source": "host_wait",
+    "host_returncode": 0,
+    "keeper_wait_source": "keeper_wait",
+    "keeper_returncode": 0,
+    "keeper_report_source": "keeper_report",
+    "keeper_thread_exited": true,
+    "keeper_report_at_utc": "2026-11-19T02:06:36.551890+00:00",
+    "keeper_failure": null,
+    "allocate_original_wait": {
+      "source": "allocate_wait",
+      "started_at_utc": "2026-11-19T00:57:16.003098+00:00",
+      "finished_at_utc": "2026-11-19T02:06:36.794107+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 4160.791038899915
+    },
+    "pre_release_source": "pre_release"
+  },
+  "release": {
+    "original_wait": {
+      "source": "release_wait",
+      "started_at_utc": "2026-11-19T02:07:26.172578+00:00",
+      "finished_at_utc": "2026-11-19T02:07:27.072549+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 0.8999739999417216
+    },
+    "source": "release_result",
+    "argv_source": "release_argv",
+    "requested_cas_expected_sequence": "15383",
+    "actual_completed_sequence": "15385",
+    "at_utc": "2026-11-19T02:07:27.052240+00:00",
+    "resources": [],
+    "task_state": "done"
+  },
+  "remaining_business": [
+    "Normal owner cancellation of a genuinely partially filled GTC order and exact collateral release remain unproved; failed order760 cancellation must not be counted.",
+    "Separate valid but unfunded normal buy rejection remains unproved; noncrossing fullbook disabled controls and carried result flags do not substitute.",
+    "Phase2 has no accepted completion; same-day real buy/sell and cumulative fee readback are a partial business result, not whole-case PASS. Required FIFO/independent before-graph and all asserted obligations must remain tied to actual originals.",
+    "Typed observer compatibility and strict named-audit sparse observer handling require the reviewed next source/fixture window; do not hot repair the closed scene or rewrite its original app05 failure.",
+    "Full product still needs representative futures long/short/leverage/reduction/margin/liquidation, debts/lifecycle/delist/inheritance/cold/news-crisis/AI-capacity acceptance and publishing; ambient AI futures positions alone do not demonstrate all normal player UI paths."
+  ],
+  "limits": {
+    "financialCertified": false,
+    "whole_product_business_pass": false,
+    "original_named_app05_pass": false,
+    "cold_scope": "finite complete known R15 financial set, not universal source-layout/whole-world certification",
+    "no_game_native_compile_test_or_git_invoked_by_author": true,
+    "source_runtime_profiles_or_pass_markers_modified": false,
+    "no_seconds_per_day_performance_claim": true
+  },
+  "sources": {
+    "baseline_known_cold": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-baseline-full-cold-known-closure01.json",
+      "bytes": 1141742,
+      "sha256": "f7af13741d7d57f2b0de76f1b939fc621a381588532e1a8a21e1c12222b1a5b1"
+    },
+    "story51_diagnostic": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-story51-generic-diagnostic01.json",
+      "bytes": 7682,
+      "sha256": "13a999e3e1f2f1c7b713ae947298ae750b5432f1fbb939820c0c6ba12f2012c0"
+    },
+    "phase1_review": {
+      "path": "C:\\workspace\\ck3-market-live-20261119i\\live\\4-8e1c2f1861--financial-markets--R0016\\case-output\\restore-and-arm-fresh-spot-epoch-accepted.json",
+      "bytes": 4093,
+      "sha256": "a480142922e9b34109a701b805f652519a3ab0d625eb9712c03f00e1dfcad58c"
+    },
+    "initial_full": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-initial-completed01.json",
+      "bytes": 559095,
+      "sha256": "89e5be94d9999a56e0ffc30a64d86cac3cbe5b27cd526f9cb46efdb5e814d350"
+    },
+    "window_sample": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-window-observation02.actual.json",
+      "bytes": 783,
+      "sha256": "97abec2362ff477227ef292930600d3ca76be6e104d1342f235dd264d9d749d6"
+    },
+    "prior_r15_evidence": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-19-financial-markets-machine4-r0015.json",
+      "bytes": 24222,
+      "sha256": "22d8b3cfa0033743e6f7f7e818911224e25e9bc817cfb69020b3a5058c251820"
+    },
+    "audit_after-sell": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-after-sell-current-audit01.json",
+      "bytes": 737063,
+      "sha256": "a5e5040916de8d2ad40c7275d43fbfd2a3b261b7383a04b5867860c28b54e6d2"
+    },
+    "audit_wait_after-sell": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-spot17-after-sell-current01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1558,
+      "sha256": "1e55ee2411bd63f729a9bd288c993ff1204891b221fb1add1daecd8b534064d7"
+    },
+    "audit_bid": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-bid-current-audit01.json",
+      "bytes": 741151,
+      "sha256": "32897346fc3963a8ba103bf984821129d511a6d420f9d4cffc9a0a32f9661fed"
+    },
+    "audit_wait_bid": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-spot17-bid-current01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1531,
+      "sha256": "9fcd8e0f6297bf0e634abd5fa0211a2ecd199a8cd3c0d623e00d1c63089be8e5"
+    },
+    "audit_day01": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-day01-current-audit01.json",
+      "bytes": 1012191,
+      "sha256": "4df14266d10d9cb8f400206b9e15388f1ce9ae6f2be105f97afbf27bb39927e3"
+    },
+    "audit_wait_day01": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-spot17-day01-current01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1538,
+      "sha256": "20bb9ea2f49c17e50aed94ea553f8a1509244239a998f6839bf7f125b0263117"
+    },
+    "audit_sellback": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-sellback-current-audit01.json",
+      "bytes": 1014242,
+      "sha256": "6b033a1c2de3bdd15e02eef8ca062f0d6c7a043df830d693efb944fa74ac9d69"
+    },
+    "audit_wait_sellback": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-spot17-sellback-current01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1548,
+      "sha256": "01462855c258f21e2ed761317b6c1bf6b8a2a15c2ebad13cb9e9cf85fe9c0a37"
+    },
+    "archive_baseline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-baseline-save-01\\ARCHIVE.actual.json",
+      "bytes": 7466,
+      "sha256": "7b52ba290024093206784dab0aba56da3f0ccf40c6f88123b059dc8c5f9ee76b"
+    },
+    "archive_ticket": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-ticket-save-01\\ARCHIVE.actual.json",
+      "bytes": 7472,
+      "sha256": "6c2a1c92dd906901cac77557cc5b4e36f871336b24f8a4340fc1bffafb4967bc"
+    },
+    "archive_before-sell": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-before-sell-save-01\\ARCHIVE.actual.json",
+      "bytes": 7492,
+      "sha256": "7b7af9c1419a88f2db64c0d26c915faaddaca97b170803d858d55dea9e323dae"
+    },
+    "archive_after-sell": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-after-sell-save-01\\ARCHIVE.actual.json",
+      "bytes": 7489,
+      "sha256": "b151911a7702df65d2a5066d069fbf2aead8cfd30a0eb0be66267039117226e4"
+    },
+    "archive_after-cancel": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-after-cancel-save-01\\ARCHIVE.actual.json",
+      "bytes": 7495,
+      "sha256": "7ba0346b47c14f4c0ce86ea615432186b08414c334f8fadd6eb8d41a0f4d357d"
+    },
+    "archive_bid": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-bid-save-01\\ARCHIVE.actual.json",
+      "bytes": 7470,
+      "sha256": "1d2fb3d641c9af4b3e9901354067482e03725638e552d7c11446a4ec66d0642e"
+    },
+    "archive_day01": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-day01-save-01\\ARCHIVE.actual.json",
+      "bytes": 7476,
+      "sha256": "74848c9d6ad1c709e7a2cfe639d2a5f9711cafff933edaa02b87214912ea475f"
+    },
+    "archive_sellback": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-sellback-save-01\\ARCHIVE.actual.json",
+      "bytes": 7486,
+      "sha256": "4acc6563c0d835d38c1044c1fd983e0ac7cd9ecbc35537c799d80906fc6f5c9d"
+    },
+    "raw_after_sell": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-after-sell-raw02.json",
+      "bytes": 54357,
+      "sha256": "58ffbcdb482e3c8530c1d98efa92473f458d5c92090b229a900288e6b922d523"
+    },
+    "raw_after_cancel": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-after-cancel-raw02.json",
+      "bytes": 54362,
+      "sha256": "e2fa7ab373e92f130dbf400fcfdc65cdc8138dbbccbfdf832af3dc26aeb5ddad"
+    },
+    "raw_before_sell": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-before-sell-raw02.json",
+      "bytes": 53936,
+      "sha256": "15efc32ce53ee88a472e07b7839f77031f8a1d86242a83da0746bbd731c10bd8"
+    },
+    "cancel_original_activation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot17-cancel-remainder-01.gui-action\\spot17-cancel-remainder-01-activate.host-report.original.json",
+      "bytes": 14856062,
+      "sha256": "54568867a9e500d5b23feaab58fff53479cf1519ab1c035ecc902c0364ef4699"
+    },
+    "sellback_original_activation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\spot17-sellback1-at70-01.gui-action\\spot17-sellback1-at70-01-activate.host-report.original.json",
+      "bytes": 19697184,
+      "sha256": "03e1e39d162d79f28d90c6094a5cb68229e89bdb74f2b05cdc3f0ccf9cb425c3"
+    },
+    "run_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT17-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1502,
+      "sha256": "ec0b62de3ed3d379b07f60e6685e780676adcb02aa0716188a6f9821944fad09"
+    },
+    "strict_app05_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-spot17-baseline-save-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1203,
+      "sha256": "0e966cedbcd23f9f6664ccb92c4ebe41db36371cae928484222da2539bf24abf"
+    },
+    "strict_app05_stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-spot17-baseline-save-01\\stderr.log",
+      "bytes": 105,
+      "sha256": "f413d1df67d9837e219acf7c4c7419a8437197ba90388294118efd779e0be6eb"
+    },
+    "strict_app05_request": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-baseline-audit01\\audit-request.json",
+      "bytes": 683,
+      "sha256": "ca1aa677146010136d7ef2a10b4b15f9c1015e1dc91da612494710962d648059"
+    },
+    "phase2_error": {
+      "path": "C:\\workspace\\ck3-market-live-20261119i\\live\\4-8e1c2f1861--financial-markets--R0016\\case-output\\case-error-preserved.json",
+      "bytes": 222,
+      "sha256": "120824b26a33d747dcf38b1a499d31a46cfe3cf669804b40d9eb77cc4eedbcdb"
+    },
+    "phase2_awaiting": {
+      "path": "C:\\workspace\\ck3-market-live-20261119i\\live\\4-8e1c2f1861--financial-markets--R0016\\case-output\\same-day-book-actions-and-reconciliation-awaiting.json",
+      "bytes": 17425,
+      "sha256": "3ec0d1d4d9f902a7d3ccea8fa3af6a42309f578985123ffa1e78425415971171"
+    },
+    "entry_result": {
+      "path": "C:\\workspace\\ck3-market-live-20261119i\\live\\4-8e1c2f1861--financial-markets--R0016\\case-output\\entry-run-result.json",
+      "bytes": 77134,
+      "sha256": "a9fcc6bdc86d911081b40a503310e8a69fc424810f74bd1c7962da11b5b0249d"
+    },
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-market-live-20261119i\\live\\4-8e1c2f1861--financial-markets--R0016\\case-output\\normal-close-result.json",
+      "bytes": 8463,
+      "sha256": "239d9e21799a8cc9e9c4773d6fd5a69aeac169b83e549a31e6848f67a15e0c40"
+    },
+    "host_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261119i\\live\\4-8e1c2f1861--financial-markets--R0016\\host-original-process-exit.json",
+      "bytes": 241,
+      "sha256": "b529b771d14d3fd738ff1e31d390f80c32154a12db47ca43457a91ae395e6de9"
+    },
+    "keeper_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261119i\\live\\4-8e1c2f1861--financial-markets--R0016\\keeper-actual-parent-exit.json",
+      "bytes": 599,
+      "sha256": "53d05df520a311ede905fb16e906bd39a61eadf500c739cdbdc84ed15a2195c3"
+    },
+    "keeper_report": {
+      "path": "C:\\workspace\\ck3-market-live-20261119i\\keepers\\a94\\report.json",
+      "bytes": 440,
+      "sha256": "45e46b4cb4f0d7b29e88bcfcfc7dbd9fa0846f32fe8d00b23663aa6e0288b403"
+    },
+    "pre_release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-closure-before-release.actual.json",
+      "bytes": 1578,
+      "sha256": "df02b26bf8813a359a3c5a49a826c0c2f6bf0968d2636e40b44628f69e4d0441"
+    },
+    "allocate_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-spot17-02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1816,
+      "sha256": "66de4e340d9be4776cb68d1efd4a2703e05b9c46de77f10baa7c8949e7d51bb2"
+    },
+    "release_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot17\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1374,
+      "sha256": "58cb9a7215ab1d0d76c96acb2348e88fc64676d222888f5d943a3cdb56b09db9"
+    },
+    "release_result": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot17\\stdout.log",
+      "bytes": 1463,
+      "sha256": "cfca77dfee1407d4156c0880704395cd124273aeda0a2579b3d80a236277c838"
+    },
+    "release_argv": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot17.argv.json",
+      "bytes": 582,
+      "sha256": "ee62119c9a9888c3715524176fb4f94a2c9d2e1e263195d2ba13bb172007a86e"
+    },
+    "advance_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\spot17-day01-ADVANCE\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1258,
+      "sha256": "702b63ca44a3ba6850e6a7637a6fec51585db5c294fbc4786a1d4daae520a61a"
+    }
+  }
+}

@@ -952,7 +952,7 @@ class CapabilityRegistrationConsumer(unittest.TestCase):
     def test_financial_saved_cases_require_and_register_fresh_full_read(self) -> None:
         catalog = json.loads((HERE / 'ck3_mod_acceptance_products.json').read_text(encoding='utf-8'))
         cases = catalog['products']['financial-markets']['cases']
-        self.assertEqual([case['id'] for case in cases], ['core', 'derivatives', 'lifecycle', 'inheritance', 'cold-reload', 'news-crisis', 'ai-capacity'])
+        self.assertEqual([case['id'] for case in cases], ['core', 'spot', 'derivatives', 'lifecycle', 'inheritance', 'cold-reload', 'news-crisis', 'ai-capacity'])
         for case in cases:
             with self.subTest(case=case['id']):
                 self.assertEqual(case['startup']['mode'], 'saved_campaign')

@@ -69,11 +69,51 @@
  expand = {}
  button_standard = { name = "xfm_market_positions_next" size = { 150 30 } text = "xfm_market_next" enabled = "[GreaterThan_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_positions' ) ), Add_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_positions_offset' ).GetValue ), '(int32)16' ) )]" onclick = "[GetScriptedGui( 'xfm_market_positions_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
 } }
-                    vbox = { visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'orders' )]" size = { 100% 100% } spacing = 8 text_multi = { text = "xfm_market_orders_help" max_width = 720 autoresize = yes }scrollbox = { name = "xfm_market_orders_scroll" layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[DataModelSubSpan( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_orders' ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_orders_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_orders' ) ) ), Max_int32( '(int32)0', Min_int32( '(int32)16', Subtract_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_orders' ) ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_orders_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_orders' ) ) ) ) ) ) )]" item = { xfm_market_order_row = {} } } } } hbox = { spacing = 8
+                    vbox = { visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'orders' )]" size = { 100% 100% } spacing = 8 text_multi = { text = "xfm_market_orders_help" max_width = 720 autoresize = yes }scrollbox = { name = "xfm_market_orders_scroll" layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[DataModelSubSpan( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_orders' ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_orders_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_orders' ) ) ), Max_int32( '(int32)0', Min_int32( '(int32)16', Subtract_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_orders' ) ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_orders_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_orders' ) ) ) ) ) ) )]" item = { vbox = {
+        datacontext = "[Scope.Self]"
+
+        layoutpolicy_horizontal = expanding spacing = 5
+        hbox = {
+            visible = "[GetScriptedGui( 'xfm_market_is_spot_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+            spacing = 8
+            text_multi = { text = "xfm_market_order_text" max_width = 540 autoresize = yes }
+            expand = {}
+            button_standard = { name = "xfm_market_cancel" size = { 135 34 } text = "xfm_market_cancel_order" enabled = "[GetScriptedGui( 'xfm_market_cancel_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_cancel_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" onclick = "[GetScriptedGui( 'xfm_market_cancel_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" }
+        }
+        hbox = {
+            visible = "[GetScriptedGui( 'xfm_market_is_futures_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+            spacing = 8
+            text_multi = { text = "xfm_market_futures_order_text" max_width = 540 autoresize = yes }
+            expand = {}
+            button_standard = { name = "xfm_market_cancel_futures_order" size = { 135 34 } text = "xfm_market_cancel_order" enabled = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" onclick = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" }
+        }
+        divider_light = { layoutpolicy_horizontal = expanding }
+
+    } } } } } hbox = { spacing = 8
  button_standard = { name = "xfm_market_orders_previous" size = { 150 30 } text = "xfm_market_previous" enabled = "[GetScriptedGui( 'xfm_market_orders_previous_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_orders_previous_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
  expand = {}
  button_standard = { name = "xfm_market_orders_next" size = { 150 30 } text = "xfm_market_next" enabled = "[GreaterThan_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_orders' ) ), Add_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_orders_offset' ).GetValue ), '(int32)16' ) )]" onclick = "[GetScriptedGui( 'xfm_market_orders_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
-} text_label_left = { text = "xfm_market_order_history" } scrollbox = { name = "xfm_market_history_scroll" size = { 735 180 } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[DataModelSubSpan( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_history_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ) ), Max_int32( '(int32)0', Min_int32( '(int32)16', Subtract_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_history_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ) ) ) ) ) )]" item = { xfm_market_order_row = {} } } } } hbox = { spacing = 8
+} text_label_left = { text = "xfm_market_order_history" } scrollbox = { name = "xfm_market_history_scroll" size = { 735 180 } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[DataModelSubSpan( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_history_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ) ), Max_int32( '(int32)0', Min_int32( '(int32)16', Subtract_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ), Min_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_history_offset' ).GetValue ), GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ) ) ) ) ) )]" item = { vbox = {
+        datacontext = "[Scope.Self]"
+
+        layoutpolicy_horizontal = expanding spacing = 5
+        hbox = {
+            visible = "[GetScriptedGui( 'xfm_market_is_spot_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+            spacing = 8
+            text_multi = { text = "xfm_market_order_text" max_width = 540 autoresize = yes }
+            expand = {}
+            button_standard = { name = "xfm_market_cancel" size = { 135 34 } text = "xfm_market_cancel_order" enabled = "[GetScriptedGui( 'xfm_market_cancel_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_cancel_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" onclick = "[GetScriptedGui( 'xfm_market_cancel_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" }
+        }
+        hbox = {
+            visible = "[GetScriptedGui( 'xfm_market_is_futures_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]"
+            spacing = 8
+            text_multi = { text = "xfm_market_futures_order_text" max_width = 540 autoresize = yes }
+            expand = {}
+            button_standard = { name = "xfm_market_cancel_futures_order" size = { 135 34 } text = "xfm_market_cancel_order" enabled = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" onclick = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope.Self ).End )]" }
+        }
+        divider_light = { layoutpolicy_horizontal = expanding }
+
+    } } } } } hbox = { spacing = 8
  button_standard = { name = "xfm_market_history_previous" size = { 150 30 } text = "xfm_market_previous" enabled = "[GetScriptedGui( 'xfm_market_history_previous_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_history_previous_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
  expand = {}
  button_standard = { name = "xfm_market_history_next" size = { 150 30 } text = "xfm_market_next" enabled = "[GreaterThan_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ), Add_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_history_offset' ).GetValue ), '(int32)16' ) )]" onclick = "[GetScriptedGui( 'xfm_market_history_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }

@@ -64,7 +64,8 @@ public final class FollowupObservationScripts {
                  xfma_followup_refresh_label:0 "读回所观察的市场事实"
                 """);
         scripts.put("common/story_cycles/" + prefix + ".txt", "${P}_observer = {\n visible = no\n on_owner_death = {\n"
-                + ownerDeath(request) + "\n }\n effect_group = { days = 1 triggered_effect = { trigger = { exists = story_owner } effect = { ${P}_observe_effect = yes } } }\n}\n");
+                + ownerDeath(request) + "\n }\n effect_group = { days = 1 triggered_effect = { trigger = { exists = story_owner } effect = { ${P}_observe_effect = yes } } }\n}\n"
+                + passiveCompatibilityStories(request.prefix() + "_observer"));
         scripts.put("common/scripted_triggers/" + prefix + ".txt", "${P}_associations_trigger = {\n" + associations(request) + "\n}\n");
         if (request.caseId() == Profile.DERIVATIVES || request.caseId() == Profile.NEWS_CRISIS) {
             scripts.put("common/script_values/" + prefix + ".txt", """
@@ -83,6 +84,21 @@ public final class FollowupObservationScripts {
                 .replace("${ACTOR}", actorCondition(request))
                 .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT ? prefix + "_next_sample_day_value" : "{ value = var:xfma_last_sample_day add = 1 }")).getBytes(StandardCharsets.UTF_8)));
         return Map.copyOf(result);
+    }
+
+    /**
+     * Retain the core and published schema-two epoch-one story identities when another fixture is loaded.
+     * Passive declarations deliberately have no callbacks, markers, writes, or end_story operation.
+     * This finite compatibility catalog does not claim to cover arbitrary historical epochs.
+     */
+    private static String passiveCompatibilityStories(String activeType) {
+        StringBuilder source = new StringBuilder("# Passive compatibility: preserve old observation data without running an old case.\n"
+                + "xfma_observer = { visible = no }\n");
+        for (Profile profile : Profile.values()) {
+            String type = "xfma_" + profile.scriptKey() + "_e1_observer";
+            if (!type.equals(activeType)) source.append(type).append(" = { visible = no }\n");
+        }
+        return source.toString();
     }
 
     private static String actorCondition(Request request) {

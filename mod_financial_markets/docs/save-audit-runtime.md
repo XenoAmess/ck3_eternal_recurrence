@@ -16,6 +16,10 @@
 
 冷比较需要另一个真实进程载入后、同暂停日期的物理SAVE及独立装载证据。同文件复制或对象总数相同不能证明冷载。候选报告始终`financialCertified=false`；exit0只代表已选择字段约束成立，exit2为不完整/冷比较不同，exit3为约束冲突，exit1为输入或处理失败。真正业务认证由实际动作、完整财务读回和运行证据共同判断。
 
+`audit-retired-xfma --inputs request.json --output unused-external-report.json`是显式兼容入口。R0016真实存档中的旧观察story51缺少`story_cycle`，只留下owner、seed和数值`xfma_complete`；原`audit`拒绝此记录的失败保留。新入口仅接收完整、唯一的owner/seed/variables封套，且变量非空、名称唯一、全为规范`xfma_`数值观察量；任何`xfm_`金融字段、引用值、未知结构或其它缺类型故事仍拒绝。报告逐条列出原生ID、owner、seed、规范token哈希／字节与变量编码，并要求两遍ID及哈希完全一致。旧`audit`、原reader及共享七参数流式合同仍默认严格拒绝。
+
+兼容入口仍读完整两遍，不按故事批次重复读取整个SAVE。普通非选中故事读到类型后即释放暂存前缀；真正缺类型记录才保留完整512KiB有界AST，总流式工作64MiB及原投影限制不变。它不会补写存档、恢复已丢失的类型或把未知金融记录当零。后续观察包同时保留已发表core及epoch1的无回调类型声明，以免正常续载时再遗漏这些已知类型；任意其它旧epoch须先按真实来源扩展兼容目录。
+
 2026-11-18，machine_id`4-8e1c2f1861`：共享原10项回归及金融完整160项通过，其中两项SAVE JUnit复用52个合成断言；这不是1.21实际编码、命名入口实用或冷载通过。对应原件位于`C:/workspace/ck3-market-live-20261118/operations/MVN-save-core-audit01`与`MVN-financial-ai-save-full01`。
 
 14:21Z后命名入口已单独实际打包至`target/save-audit-app/quarkus-run.jar`，原wait0/20.194778秒；随后公共CLI对明确标记的合成物理文件实际wait0/1.198547秒，得到来源绑定报告且`financialCertified=false`。原件分别在`operations/MVN-financial-save-audit-package01`、`operations/CHECK-save-audit-named-cli01`及外部`save-audit-cli-software01`。这只验证命名入口和合成输入消费，真实1.21金融SAVE、编码scale及冷载仍未通过。

@@ -109,9 +109,7 @@ xfm_futures_submit_effect = {
   if = {
    limit = {
     scope:xfm_fut_account = { xfm_finance_account_usable_trigger = yes }
-    scope:xfm_fut_account.var:xfm_open_orders_count < xfm_config_player_order_capacity_value
-    scope:xfm_fut_contract.var:xfm_open_orders_count < xfm_config_coin_order_capacity_value
-    global_var:xfm_exchange.var:xfm_active_orders_count < xfm_config_global_order_capacity_value
+    xfm_futures_submit_capacity_trigger = yes
     scope:xfm_fut_account.var:xfm_open_positions_count < xfm_futures_account_position_capacity_value
     global_var:xfm_exchange.var:xfm_futures_open_positions_count < xfm_futures_global_position_capacity_value
     OR = { scope:xfm_fut_account = { NOT = { has_variable = xfm_total_debt_cents } } scope:xfm_fut_account.var:xfm_total_debt_cents = 0 }
@@ -192,12 +190,8 @@ xfm_futures_submit_effect = {
         set_variable = { name = xfm_filled_gross_cents value = 0 }
         set_variable = { name = xfm_fee_paid_cents value = 0 }
         set_variable = { name = xfm_status value = 0 }
+        set_variable = { name = xfm_indexed value = 0 }
        }
-       scope:xfm_fut_contract = { add_to_variable_list = { name = xfm_orders target = scope:xfm_fut_incoming } }
-       scope:xfm_fut_account = { add_to_variable_list = { name = xfm_orders target = scope:xfm_fut_incoming } }
-       scope:xfm_fut_contract = { change_variable = { name = xfm_open_orders_count add = 1 } }
-       scope:xfm_fut_account = { change_variable = { name = xfm_open_orders_count add = 1 } }
-       global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count add = 1 } }
        scope:xfm_fut_incoming = { xfm_futures_match_effect = yes }
        set_variable = { name = xfm_futures_result value = 1 }
        set_variable = { name = xfm_futures_reason value = 0 }
@@ -244,4 +238,34 @@ xfm_futures_reduce_only_effect = {
    xfm_futures_cancel_order_effect = yes
   }
  }
+}
+
+# Incoming order scope. Matching completes before any remainder can consume a resting slot.
+xfm_futures_finish_incoming_effect = {
+ if = {
+  limit = { has_variable = xfm_indexed var:xfm_indexed = 0 xfm_futures_order_open_trigger = yes }
+  if = {
+   limit = { NOT = { has_variable = xfm_forced_exit } xfm_futures_rest_capacity_trigger = yes }
+   xfm_futures_index_order_effect = yes
+  }
+  else = {
+   if = { limit = { NOT = { has_variable = xfm_forced_exit } } set_variable = { name = xfm_capacity_cancelled_lots value = var:xfm_remaining_lots } }
+   xfm_futures_cancel_order_effect = yes
+  }
+ }
+ # The first unmatched unindexed order was invisible to enrolment at matcher entry.
+ var:xfm_contract = { xfm_futures_daily_enroll_effect = yes }
+}
+xfm_futures_index_order_effect = {
+ save_scope_as = xfm_fut_index_order
+ var:xfm_contract = {
+  add_to_variable_list = { name = xfm_orders target = scope:xfm_fut_index_order }
+  change_variable = { name = xfm_open_orders_count add = 1 }
+ }
+ var:xfm_account = {
+  add_to_variable_list = { name = xfm_orders target = scope:xfm_fut_index_order }
+  change_variable = { name = xfm_open_orders_count add = 1 }
+ }
+ global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count add = 1 } }
+ set_variable = { name = xfm_indexed value = 1 }
 }

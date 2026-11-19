@@ -39,9 +39,9 @@
     "business_acceptance": "NOT_RUN"
   },
   "source_save_requirements": [
-    "Restore the exact independently archived R0015 core16-after-sell-save-01 physical bytes, actor31254/date53144400 and admitted saved inventory; bind source path/size/SHA and source native receipts before fixture emission/allocation.",
+    "Restore the exact latest independently archived continuation SAVE admitted for this attempt, with its actual actor, native date and saved inventory; bind source path/size/SHA and source native receipts before fixture emission/allocation. R0016 used R0015 core16-after-sell-save-01 at date53144400; its successor must preserve the later R0016 trades by loading spot17-sellback-save-01 at date53144424 rather than rolling back to R0015.",
     "Coin permanent1/native55 must already be genuinely listed with original real funding/AI subscriptions and issuer account references; issuance credit comes only from pinned R15 originals, never new spot markers or another IPO.",
-    "Private account permanent2/native54 belongs to actual player31254; prior private position native343 quantity8000/reserved0 and ticket GTC sell71@100 (step10) result0/high-water152 are historical expectations to reverify on load, not fixture state. This limit100 does not cross the saved best bid87; never describe the R15 rejection as denial of an executable crossing order.",
+    "Private account permanent2/native54 belongs to actual player31254. Reverify its actual cash, position native343, ticket and order high-water on load. Historical R0015 had quantity8000/reserved0 and noncrossing GTC sell71@100 against best bid87; latest R0016 has free6071/reserved0 and quantity900/reserved0 after real trades. These are independently pinned history, never fixture state or new-epoch credit.",
     "Use a fresh spot observation epoch and actual permanent IDs; never remove xfma_armed, reuse schema1 core or import old PASS markers. Missing identity/cash/coin/independent depth remains missing."
   ],
   "gui_phases": [
@@ -106,5 +106,5 @@
   },
   "business_contract_applicable": true,
   "whole_product_release_pass": false,
-  "calendar_bound_provenance": "New prospective 3-day spot continuation only. R15 issuance/listing/day3 observations stay independent historical evidence; no old marker supplies this epoch."
+  "calendar_bound_provenance": "Each attempt is a new prospective 3-day spot continuation from its admitted latest physical SAVE. Earlier issuance, listing and trades remain independent historical evidence; no old marker supplies the fresh epoch."
 }

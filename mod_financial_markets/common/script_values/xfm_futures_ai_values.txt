@@ -19,3 +19,6 @@ xfm_futures_standard_expiry_day_value = {
  value = global_var:xfm_exchange.var:xfm_day add = 7 divide = 30 ceiling = yes multiply = 30
 }
 xfm_futures_discovery_capacity_value = 8
+
+# Constant work and order-size bound; the original 5% cash budget remains authoritative.
+xfm_futures_ai_order_lot_cap_value = 16

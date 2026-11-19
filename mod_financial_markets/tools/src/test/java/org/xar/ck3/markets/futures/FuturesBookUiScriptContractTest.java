@@ -38,6 +38,7 @@ final class FuturesBookUiScriptContractTest {
         "scripted_guis/xfm_market_futures_stops.txt",
         "scripted_effects/xfm_futures_margin.txt",
         "scripted_effects/xfm_futures_reduce.txt",
+        "scripted_effects/xfm_futures_orders.txt", "scripted_effects/xfm_futures_daily_index.txt",
         "scripted_effects/xfm_finance_policy.txt",
         "scripted_effects/xfm_issuer_governance.txt",
         "scripted_effects/xfm_finance_cash.txt",
@@ -617,7 +618,7 @@ final class FuturesBookUiScriptContractTest {
                     continue;
                 }
                 if (k.equals("random")) { Block a = (Block)e.value(); if (randomEnabled && number(evaluate(field(a, "chance"), f)).signum() > 0) execute(without(a, "chance"), f); continue; }
-                if (k.equals("xfm_futures_match_effect")) { matchCalls++; continue; } // no fictitious fill; reservation remains held
+                if (k.equals("xfm_futures_match_effect")) { matchCalls++; execute(definition("xfm_futures_finish_incoming_effect"), f); continue; } // no fabricated fill; actual post-match remainder admission/enrolment still runs
                 if (k.equals("xfm_oracle_record_trade_effect")) continue; // independent oracle sampler, outside cash/coin settlement subset
                 if (k.equals("xfm_spot_record_trade_effect")) spotExecutionOrderIds.add(((Node)scopes.get("xfm_spot_resting")).integer("xfm_order_id"));
                 if (e.value() instanceof Block child) { Datum scope = resolve(k, f); if (!(scope instanceof Node n)) throw new IllegalArgumentException("missing effect scope " + k); execute(child, f.enter(n)); continue; }

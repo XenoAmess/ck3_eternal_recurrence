@@ -68,12 +68,8 @@ xfm_futures_post_exit_effect = {
      set_variable = { name = xfm_filled_gross_cents value = 0 }
      set_variable = { name = xfm_fee_paid_cents value = 0 }
      set_variable = { name = xfm_status value = 0 }
+     set_variable = { name = xfm_indexed value = 0 }
     }
-    scope:xfm_fut_exit_contract = { add_to_variable_list = { name = xfm_orders target = scope:xfm_fut_exit_order } }
-    scope:xfm_fut_exit_account = { add_to_variable_list = { name = xfm_orders target = scope:xfm_fut_exit_order } }
-    scope:xfm_fut_exit_contract = { change_variable = { name = xfm_open_orders_count add = 1 } }
-    scope:xfm_fut_exit_account = { change_variable = { name = xfm_open_orders_count add = 1 } }
-    global_var:xfm_exchange = { change_variable = { name = xfm_active_orders_count add = 1 } }
     scope:xfm_fut_exit_order = { xfm_futures_match_effect = yes }
     scope:xfm_fut_exit_order = {
      if = { limit = { xfm_futures_order_open_trigger = yes } xfm_futures_cancel_order_effect = yes }

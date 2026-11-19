@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.math.BigInteger;
+import java.util.HashSet;
+import java.util.Set;
+import org.xar.ck3.save.Clausewitz;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -60,6 +64,31 @@ public final class FinancialSaveReader {
             if (!inputUnchanged || sourceLayoutQualified) throw new IllegalArgumentException("candidate is unchanged-input readback, never layout qualification");
         }
     }
+    public record ObserverVariableEvidence(String flag, String serializedType, boolean identityPresent, String rawIdentity) {
+        public ObserverVariableEvidence {
+            if (flag == null || !flag.matches("xfma_[a-z0-9_]{1,122}") || !"value".equals(serializedType) || rawIdentity == null)
+                throw new IllegalArgumentException("typed canonical observer value evidence required");
+            if (identityPresent) new NativeId(rawIdentity);
+            else if (!rawIdentity.isEmpty()) throw new IllegalArgumentException("absent identity must retain explicit empty lexical value");
+        }
+    }
+    public record RetiredObserverEvidence(String nativeId, String canonicalTokenSha256, int canonicalTokenBytes,
+                                          String classification, String owner, String seed, List<ObserverVariableEvidence> variables) {
+        public RetiredObserverEvidence {
+            new NativeId(nativeId); SaveContracts.digest(canonicalTokenSha256); new NativeId(owner); new NativeId(seed);
+            variables = List.copyOf(variables);
+            if (canonicalTokenBytes < 11 || canonicalTokenBytes > 512 * 1024 || !"RETIRED_XFMA_VALUE_ONLY_V1".equals(classification)
+                    || variables.isEmpty() || variables.size() > 4096 || variables.stream().map(ObserverVariableEvidence::flag).distinct().count() != variables.size())
+                throw new IllegalArgumentException("bounded classified nonempty unique observer evidence required");
+        }
+    }
+    private record RetiredObserverIdentity(String nativeId, String canonicalTokenSha256, int canonicalTokenBytes, String classification) { }
+    private static RetiredObserverIdentity identity(RetiredObserverEvidence evidence) {
+        return new RetiredObserverIdentity(evidence.nativeId(), evidence.canonicalTokenSha256(), evidence.canonicalTokenBytes(), evidence.classification());
+    }
+    public record RetiredObserverReadback(Readback financial, List<RetiredObserverEvidence> untypedRecords) {
+        public RetiredObserverReadback { Objects.requireNonNull(financial); untypedRecords = List.copyOf(untypedRecords); }
+    }
     private record Pass(Projection projection, StreamingObservation observation, String sha256, long bytes, Container container) { }
 
     /** Retained metadata/globals keep original shared limits; stories are not a whole-block projection. */
@@ -92,11 +121,79 @@ public final class FinancialSaveReader {
             return new Pass(decoded.projection(), tracking.observation(), decoded.streamSha256(), Long.parseLong(decoded.streamBytes()), Container.SHARED_DECODER);
         });
     }
+    /** Opt-in is deliberately separate from the existing strict read/readDecoded entry points. */
+    public static RetiredObserverReadback readWithRetiredXfma(Path input, String machineId, FinancialProjector.LayoutHypothesis layout) throws IOException {
+        Pin pin = FilePins.pin(input);
+        return readTwoPassesWithEvidence(pin, machineId, layout, Budgets.standard(), (table, sink) -> pass(pin, table, sink, layout), true);
+    }
+    public static RetiredObserverReadback readDecodedWithRetiredXfma(Pin input, Pin decoder, String machineId, FinancialProjector.LayoutHypothesis layout) throws IOException {
+        return readTwoPassesWithEvidence(input, machineId, layout, Budgets.standard(), (table, sink) -> {
+            TrackingSink tracking = new TrackingSink(sink);
+            Decoded decoded = SaveDecoder.inspect(input, decoder, selection(layout), DecoderLimits.standard(), SaveDecoder::launch, table, tracking);
+            return new Pass(decoded.projection(), tracking.observation(), decoded.streamSha256(), Long.parseLong(decoded.streamBytes()), Container.SHARED_DECODER);
+        }, true);
+    }
+    private static Clausewitz.Block onlyBlock(Clausewitz.Block parent, String key) throws IOException {
+        var entries = parent.named(key);
+        if (entries.size() != 1 || !entries.getFirst().operator().equals("=") || !(entries.getFirst().value() instanceof Clausewitz.Block block))
+            throw new IOException("retired observer requires one assigned block: " + key);
+        return block;
+    }
+    private static String unsignedIdentity(String value) throws IOException {
+        if (!value.matches("0|[1-9][0-9]{0,19}") || new BigInteger(value).bitLength() > 64)
+            throw new IOException("retired observer requires canonical unsigned64 lexical identity");
+        return value;
+    }
+    private static RetiredObserverEvidence classifyRetired(UntypedRecord record, FinancialProjector.LayoutHypothesis layout) throws IOException {
+        Clausewitz.Block body = record.ast();
+        try {
+            if (body.entries().size() != 3 || !body.entries().stream().map(Clausewitz.Entry::key).collect(java.util.stream.Collectors.toSet()).equals(Set.of("owner", "seed", "variables")))
+                throw new IOException("untyped record is not the bounded owner/seed/observer-variables envelope: " + record.id().value());
+            String owner = unsignedIdentity(FinancialProjector.atom(body, "owner").orElseThrow());
+            String seed = unsignedIdentity(FinancialProjector.atom(body, "seed").orElseThrow());
+            Clausewitz.Block variables = onlyBlock(body, "variables");
+            if (variables.entries().size() != 1) throw new IOException("retired observer variables must contain only data");
+            Clausewitz.Block list = onlyBlock(variables, "data");
+            if (list.entries().isEmpty() || list.entries().size() > 4096) throw new IOException("nonempty bounded retired observer variables required");
+            List<ObserverVariableEvidence> evidence = new ArrayList<>(); Set<String> names = new HashSet<>();
+            for (Clausewitz.Entry item : list.entries()) {
+                if (!item.key().isEmpty() || !(item.value() instanceof Clausewitz.Block variable) || variable.entries().size() != 2)
+                    throw new IOException("retired observer variable envelope is malformed");
+                String flag = FinancialProjector.atom(variable, "flag").map(FinancialProjector::unquote).orElseThrow();
+                if (!flag.matches("xfma_[a-z0-9_]{1,122}") || !names.add(flag)) throw new IOException("untyped non-observer/duplicate variable: " + flag);
+                Clausewitz.Block data = onlyBlock(variable, "data");
+                if (!FinancialProjector.atom(data, "type").orElse("").equals("value")) throw new IOException("retired observer only admits numeric observation values");
+                var identity = FinancialProjector.atom(data, "identity");
+                if (identity.isPresent()) {
+                    if (data.entries().size() != 2) throw new IOException("retired observer value has unknown fields");
+                    unsignedIdentity(identity.get());
+                } else if (!layout.numberIdentityEncoding().requiresObserved121Metadata() || data.entries().size() != 1)
+                    throw new IOException("retired observer value missing identity outside explicit observed121 omitted-zero encoding");
+                evidence.add(new ObserverVariableEvidence(flag, "value", identity.isPresent(), identity.orElse("")));
+            }
+            return new RetiredObserverEvidence(record.id().value(), record.canonicalTokenSha256(), record.canonicalTokenBytes(), "RETIRED_XFMA_VALUE_ONLY_V1", owner, seed, evidence);
+        } catch (IllegalArgumentException | java.util.NoSuchElementException malformed) {
+            throw new IOException("untyped record is not a structurally exact retired xfma observer: " + record.id().value(), malformed);
+        }
+    }
     @FunctionalInterface private interface PassReader { Pass read(StreamingTable table, StreamingTableSink sink) throws IOException; }
     private static Readback readTwoPasses(Pin pin, String machineId, FinancialProjector.LayoutHypothesis layout,
                                           Budgets budgets, PassReader reader) throws IOException {
+        return readTwoPassesWithEvidence(pin, machineId, layout, budgets, reader, false).financial();
+    }
+    private static RetiredObserverReadback readTwoPassesWithEvidence(Pin pin, String machineId, FinancialProjector.LayoutHypothesis layout,
+                                          Budgets budgets, PassReader reader, boolean allowRetired) throws IOException {
         Map<NativeId, String> selected = new LinkedHashMap<>();
+        List<RetiredObserverIdentity> firstUntyped = new ArrayList<>();
         StreamingTableSink census = new StreamingTableSink() {
+            private int retiredFields;
+            @Override public void missingDiscriminator(UntypedRecord record) throws IOException {
+                if (!allowRetired) throw new IOException("retired observer admission is not enabled");
+                RetiredObserverEvidence evidence = classifyRetired(record, layout);
+                retiredFields = Math.addExact(retiredFields, evidence.variables().size() + 3);
+                if (firstUntyped.size() >= budgets.maxFinancialRecords() || retiredFields > budgets.maxProjectedFields()) throw new IOException("retired observer evidence budget exceeded");
+                firstUntyped.add(identity(evidence));
+            }
             @Override public void discriminator(NativeId id, String rawType) throws IOException {
                 String type = normalizedType(rawType);
                 if (isFinancial(type)) {
@@ -106,19 +203,19 @@ public final class FinancialSaveReader {
             }
             @Override public void record(StreamedRecord ignored) throws IOException { throw new IOException("census pass must not retain records"); }
         };
-        Pass first = reader.read(table(List.of(), budgets), census);
+        Pass first = reader.read(table(List.of(), budgets, allowRetired), census);
         FilePins.verify(Path.of(pin.path()), pin);
         requireObservedNumberEncoding(first.projection(), layout);
-        ProjectionSink projected = new ProjectionSink(selected, layout, budgets);
-        Pass second = reader.read(table(List.copyOf(selected.keySet()), budgets), projected);
+        ProjectionSink projected = new ProjectionSink(selected, layout, budgets, allowRetired);
+        Pass second = reader.read(table(List.copyOf(selected.keySet()), budgets, allowRetired), projected);
         if (first.container() != second.container() || first.bytes() != second.bytes() || !first.sha256().equals(second.sha256())
                 || first.observation().records() != second.observation().records()
-                || second.observation().selectedRecords() != selected.size()) throw new IOException("save stream/selection changed between complete passes");
+                || second.observation().selectedRecords() != selected.size() || !firstUntyped.equals(projected.untyped.stream().map(FinancialSaveReader::identity).toList())) throw new IOException("save stream/selection changed between complete passes");
         FilePins.verify(Path.of(pin.path()), pin);
         StreamingCoverage coverage = new StreamingCoverage(2, second.sha256(), Long.toString(second.bytes()), second.observation().records(),
-                second.observation().selectedRecords(), second.observation().streamedTokenBytes(), projected.fields, budgets);
-        return new Readback(machineId, Instant.now().toString(), pin, second.container(), second.projection(), projected.stories,
-                projected.issues, coverage, true, false);
+                second.observation().selectedRecords(), second.observation().streamedTokenBytes() - projected.untyped.stream().mapToLong(RetiredObserverEvidence::canonicalTokenBytes).sum(), projected.fields, budgets);
+        return new RetiredObserverReadback(new Readback(machineId, Instant.now().toString(), pin, second.container(), second.projection(), projected.stories,
+                projected.issues, coverage, true, false), projected.untyped);
     }
     private static void requireObservedNumberEncoding(Projection projection, FinancialProjector.LayoutHypothesis layout) throws IOException {
         if (!layout.numberIdentityEncoding().requiresObserved121Metadata()) return;
@@ -133,9 +230,10 @@ public final class FinancialSaveReader {
             throw new IOException("actual SAVE metadata does not admit omittedZero", malformed);
         }
     }
-    private static StreamingTable table(List<NativeId> selected, Budgets budgets) {
+    private static StreamingTable table(List<NativeId> selected, Budgets budgets, boolean allowRetired) {
         return new StreamingTable(List.of("stories", "active"), "story_cycle", selected, budgets.maxTableRecords(),
-                budgets.maxRecordBytes(), budgets.maxStreamedBytes(), true);
+                budgets.maxRecordBytes(), budgets.maxStreamedBytes(), true,
+                allowRetired ? MissingDiscriminatorPolicy.CAPTURE_MISSING_BOUNDED : MissingDiscriminatorPolicy.REJECT);
     }
     private static final class ProjectionSink implements StreamingTableSink {
         private final Map<NativeId, String> selected;
@@ -144,8 +242,17 @@ public final class FinancialSaveReader {
         private final List<Story> stories = new ArrayList<>();
         private final List<Issue> issues = new ArrayList<>();
         private int fields;
-        ProjectionSink(Map<NativeId, String> selected, FinancialProjector.LayoutHypothesis layout, Budgets budgets) {
-            this.selected = Map.copyOf(selected); this.layout = layout; this.budgets = budgets;
+        private final boolean allowRetired;
+        private final List<RetiredObserverEvidence> untyped = new ArrayList<>();
+        ProjectionSink(Map<NativeId, String> selected, FinancialProjector.LayoutHypothesis layout, Budgets budgets, boolean allowRetired) {
+            this.selected = Map.copyOf(selected); this.layout = layout; this.budgets = budgets; this.allowRetired = allowRetired;
+        }
+        @Override public void missingDiscriminator(UntypedRecord record) throws IOException {
+            if (!allowRetired) throw new IOException("retired observer admission is not enabled");
+            RetiredObserverEvidence evidence = classifyRetired(record, layout);
+            fields = Math.addExact(fields, evidence.variables().size() + 3);
+            if (untyped.size() >= budgets.maxFinancialRecords() || fields > budgets.maxProjectedFields()) throw new IOException("retired observer evidence budget exceeded");
+            untyped.add(evidence);
         }
         @Override public void discriminator(NativeId id, String rawType) throws IOException {
             String actual = normalizedType(rawType), expected = selected.get(id);
@@ -205,6 +312,7 @@ public final class FinancialSaveReader {
         TrackingSink(StreamingTableSink delegate) { this.delegate = delegate; }
         @Override public void discriminator(NativeId id, String value) throws IOException { records++; delegate.discriminator(id, value); }
         @Override public void record(StreamedRecord record) throws IOException { selected++; bytes += record.canonicalTokenBytes(); delegate.record(record); }
+        @Override public void missingDiscriminator(UntypedRecord record) throws IOException { records++; bytes += record.canonicalTokenBytes(); delegate.missingDiscriminator(record); }
         StreamingObservation observation() { return new StreamingObservation(true, records, selected, bytes); }
     }
     private static final class BoundedStream extends FilterInputStream {

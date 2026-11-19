@@ -45,6 +45,8 @@ final class FollowupFixtureTest {
             assertEquals(input.markers(), FixtureEmitter.JSON.convertValue(manifest.path("receipt").path("required_markers"),
                     FixtureEmitter.JSON.getTypeFactory().constructCollectionType(List.class, String.class)));
             assertEquals(input, FixtureEmitter.readInput(Path.of(emission.fixture()).resolve("_xfma_request.json")));
+            assertCompatibilityCatalog(parse(Files.readString(Path.of(emission.fixture())
+                    .resolve("common/story_cycles/" + input.prefix() + ".txt"))), input);
             for (String marker : input.markers()) assertTrue(allMarkers.add(marker), "cross-profile marker collision");
             String scripts = text(FollowupObservationScripts.render(input));
             for (String marker : input.markers()) assertEquals(1, occurrences(scripts, "debug_log = \"" + marker + "\""), marker);
@@ -99,7 +101,10 @@ final class FollowupFixtureTest {
         Path consumer = repository().resolve("mod_financial_markets/tools/src/test/resources/acceptance/verify_saved_observer_inventory.py");
         for (Profile profile : Profile.values()) {
             var emission = FixtureEmitter.emit(repository(), temporary.resolve("saved-" + profile.wire()),
-                    "synthetic-fixture-machine", request(profile, 71));
+                    "synthetic-fixture-machine", request(profile, 1));
+            Request input = request(profile, 1);
+            assertCompatibilityCatalog(parse(Files.readString(Path.of(emission.fixture())
+                    .resolve("common/story_cycles/" + input.prefix() + ".txt"))), input);
             Path scratch = temporary.resolve("consumer-" + profile.wire());
             Path log = temporary.resolve("consumer-" + profile.wire() + ".log");
             var process = new ProcessBuilder(System.getProperty("xfm.python", "python"), "-B", "-X", "utf8",
@@ -312,6 +317,70 @@ final class FollowupFixtureTest {
         assertTrue(scripts.contains("xfma_spot_e102_next_sample_day_value"));
         assertTrue(scripts.contains("var:xfm_fee_paid_cents >= xfma_spot_e102_spot_expected_fee_value"));
         assertTrue(scripts.contains("var:xfm_fee_paid_cents <= xfma_spot_e102_spot_expected_fee_value"));
+    }
+
+    @Test void generatedStoryCatalogKeepsCoreAndPublishedEpochOneTypesWithOnlyCurrentCaseActive() {
+        for (Profile profile : Profile.values()) {
+            for (int epoch : List.of(1, 2, 1_000_000_000)) {
+                Request input = request(profile, epoch);
+                Map<String, byte[]> scripts = FollowupObservationScripts.render(input);
+                assertCompatibilityCatalog(parse(new String(scripts.get("common/story_cycles/" + input.prefix() + ".txt"),
+                        StandardCharsets.UTF_8)), input);
+                // The passive catalog shares the existing story file, not a new unpinned output.
+                assertEquals(1, scripts.keySet().stream().filter(name -> name.startsWith("common/story_cycles/")).count());
+                assertFalse(text(scripts).contains("end_story"));
+            }
+        }
+    }
+
+    @Test void savedCoreCompletionAndForeignCaseStateNeitherResetCurrentBaselineNorSupplyReadiness() {
+        for (Profile profile : Profile.values()) {
+            Request input = request(profile, 1);
+            Map<String, byte[]> scripts = FollowupObservationScripts.render(input);
+            Block arm = parse(new String(scripts.get("common/scripted_guis/" + input.prefix() + ".txt"), StandardCharsets.UTF_8))
+                    .block(input.prefix() + "_arm_gui").block("is_valid");
+            Block observe = parse(new String(scripts.get("common/scripted_effects/" + input.prefix() + "_observe.txt"), StandardCharsets.UTF_8))
+                    .block(input.prefix() + "_observe_effect");
+            Block observationGate = observe.entries.stream().filter(entry -> entry.key.equals("if"))
+                    .map(entry -> ((Block)entry.value).block("limit")).findFirst().orElseThrow();
+            Node core = new Node("xfma_observer").number("xfma_complete", 1);
+            Profile foreign = profile == Profile.SPOT ? Profile.DERIVATIVES : Profile.SPOT;
+            String foreignPrefix = request(foreign, 1).prefix();
+            Node actor = new Node("character").number("is_ai", 0).number("is_alive", 1).number("xfma_armed", 1)
+                    .number(foreignPrefix + "_armed", 1).reference(foreignPrefix + "_story", new Node(foreignPrefix + "_observer"));
+            Map<String, Datum> oldCore = Map.copyOf(core.variables), oldActor = Map.copyOf(actor.variables);
+            assertTrue(matches(arm, actor, actor, null), "a different saved case does not block a fresh namespace");
+            assertFalse(matches(observationGate, core, core, new Node("exchange")), "old xfma_complete is not this case's ready state");
+            assertEquals(oldCore, core.variables); assertEquals(oldActor, actor.variables);
+            actor.number(input.prefix() + "_armed", 1);
+            assertFalse(matches(arm, actor, actor, null), "the current baseline cannot be reset");
+            actor.variables.remove(input.prefix() + "_armed");
+            actor.reference(input.prefix() + "_story", new Node(input.prefix() + "_observer"));
+            assertFalse(matches(arm, actor, actor, null), "a current carried story still prevents rearm without its flag");
+        }
+    }
+
+    private static void assertCompatibilityCatalog(Block catalog, Request input) {
+        Set<String> expected = new HashSet<>(Set.of("xfma_observer", "xfma_spot_e1_observer", "xfma_derivatives_e1_observer",
+                "xfma_lifecycle_e1_observer", "xfma_inheritance_e1_observer", "xfma_cold_reload_e1_observer",
+                "xfma_news_crisis_e1_observer", "xfma_ai_capacity_e1_observer"));
+        String active = input.prefix() + "_observer";
+        expected.add(active);
+        Set<String> actual = new HashSet<>();
+        Block passive = parse("visible = no");
+        for (Entry entry : catalog.entries) {
+            assertTrue(actual.add(entry.key), "duplicate observer type: " + entry.key);
+            assertEquals("=", entry.operator);
+            assertInstanceOf(Block.class, entry.value);
+            Block body = (Block)entry.value;
+            if (entry.key.equals(active)) {
+                assertNotNull(body.block("effect_group"));
+                assertNotNull(body.block("on_owner_death"));
+            } else {
+                assertEquals(passive, body, "retired types have no callbacks, logs, writes, create/end, or business authority");
+            }
+        }
+        assertEquals(expected, actual);
     }
 
     // Test-only evaluator consumes the emitted trigger tree and actual production capacity script.

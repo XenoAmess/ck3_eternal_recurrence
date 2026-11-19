@@ -1,0 +1,42 @@
+{
+  "schema": "ck3-native-profile-v3-source-and-consumer-increment-v1",
+  "at_utc": "2026-11-19T02:22:22.486576+00:00",
+  "profile_source_adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-q20-profile-adopted01.actual.json",
+    "bytes": 2837,
+    "sha256": "dea77359af86347e293778959447fc7b083f3dd2327cc0743fab3fe82cf5b4a7"
+  },
+  "native_source_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\remote-f166-native-impact-review01\\REVIEW.actual.json",
+    "bytes": 12607,
+    "sha256": "f7d116699ee052a300bc8e44d707014de6aa707d4ee9a8ea6cdbae9fd0f7a48d"
+  },
+  "original_22_method_run": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v3-consumer01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1041,
+      "sha256": "ba8eebcabfe84d30bf4f02e76c1bbe6093d866c223aee783534f1ac964f5932c"
+    },
+    "passed": 21,
+    "failed": 1,
+    "reason": "Saved-case expectation omitted the already registered spot case; actual factory rejected no capability"
+  },
+  "corrected_method_run": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-spot-factory-case-list02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1083,
+      "sha256": "4e89325c07b7d77bd6113e62088f419b7b0864629572fb8727108b76dabb6c30"
+    },
+    "passed": 1,
+    "source": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_build_runtime.py",
+      "bytes": 124270,
+      "sha256": "d0d4605dc2a0be1e70e30b01b7a0d89fad86a2b5f6a465ab33bf6d46c42f936e"
+    },
+    "scope": "Add spot to expected case list, retaining actual saved startup/fresh Full and existing factory registration checks"
+  },
+  "native_compiled": false,
+  "next": "Clean commit then actual same-cache Q20 qualification with hotfix26757580 OFF; previous Q19 original facts unchanged",
+  "Game_access": false,
+  "business_pass": false
+}

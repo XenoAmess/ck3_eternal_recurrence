@@ -52,11 +52,29 @@ public final class SaveContracts {
     public interface StreamingTableSink {
         void discriminator(NativeId id, String value) throws java.io.IOException;
         void record(StreamedRecord record) throws java.io.IOException;
+        /** Explicit opt-in callback is provisional until complete EOF and physical-pin validation. */
+        default void missingDiscriminator(UntypedRecord record) throws java.io.IOException {
+            throw new java.io.IOException("untyped streaming record has no accepting sink: " + record.id().value());
+        }
+    }
+    public enum MissingDiscriminatorPolicy { REJECT, CAPTURE_MISSING_BOUNDED }
+    public record UntypedRecord(NativeId id, String canonicalTokenSha256, int canonicalTokenBytes, Clausewitz.Block ast) {
+        public UntypedRecord {
+            Objects.requireNonNull(id); digest(canonicalTokenSha256); Objects.requireNonNull(ast);
+            if (canonicalTokenBytes < 11 || canonicalTokenBytes > 512 * 1024) throw new IllegalArgumentException("bounded untyped record required");
+        }
     }
     /** Separate streamed-work budget; existing retained-record/projection limits are unchanged. */
     public record StreamingTable(List<String> path, String discriminatorField, List<NativeId> selectedIds,
-                                 int maxTableRecords, int maxRecordBytes, long maxStreamedBytes, boolean required) {
+                                 int maxTableRecords, int maxRecordBytes, long maxStreamedBytes, boolean required,
+                                 MissingDiscriminatorPolicy missingDiscriminatorPolicy) {
+        /** Existing seven-argument callers retain strict missing-discriminator rejection. */
+        public StreamingTable(List<String> path, String discriminatorField, List<NativeId> selectedIds,
+                              int maxTableRecords, int maxRecordBytes, long maxStreamedBytes, boolean required) {
+            this(path, discriminatorField, selectedIds, maxTableRecords, maxRecordBytes, maxStreamedBytes, required, MissingDiscriminatorPolicy.REJECT);
+        }
         public StreamingTable {
+            Objects.requireNonNull(missingDiscriminatorPolicy);
             path = checkedPath(path); selectedIds = List.copyOf(selectedIds);
             if (discriminatorField == null || !discriminatorField.matches("[A-Za-z_][A-Za-z0-9_]{0,127}")
                     || maxTableRecords < 1 || maxTableRecords > 200000 || selectedIds.size() > maxTableRecords

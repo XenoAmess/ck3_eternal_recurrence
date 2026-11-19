@@ -29,6 +29,13 @@ public final class FinancialSaveAuditMain {
     public record Output(String schema, String machineId, String observedAtUtc, boolean financialCertified,
                          FinancialProjector.LayoutHypothesis layoutHypothesis, SaveEvidence first,
                          List<SaveEvidence> second, List<FinancialAudit.ColdComparison> coldComparison) { }
+    public record RetiredObserverOutput(Output financial, List<FinancialSaveReader.RetiredObserverEvidence> firstUntypedRecords,
+                                        List<List<FinancialSaveReader.RetiredObserverEvidence>> secondUntypedRecords) {
+        public RetiredObserverOutput {
+            Objects.requireNonNull(financial); firstUntypedRecords = List.copyOf(firstUntypedRecords);
+            secondUntypedRecords = secondUntypedRecords.stream().map(List::copyOf).toList();
+        }
+    }
     /** Exact pins are supplied by the caller; decoder and cold save are explicit zero-or-one lists. */
     public record Inputs(String machineId, SaveContracts.Pin firstSave, List<SaveContracts.Pin> coldSave,
                          FinancialProjector.LayoutHypothesis layout, List<SaveContracts.Pin> decoder) {
@@ -66,6 +73,38 @@ public final class FinancialSaveAuditMain {
         }
         return new Output("ck3-financial-save-audit-candidate-v3", inputs.machineId(), Instant.now().toString(), false,
                 layout, evidence(inputs.firstSave(), firstRead, first), second.stream().toList(), comparison.stream().toList());
+    }
+    /** Separate explicit admission; the existing inspect() and strict CLI remain unchanged. */
+    public static RetiredObserverOutput inspectRetiredXfma(Inputs inputs) throws IOException {
+        FinancialSaveReader.RetiredObserverReadback firstRead = readPinnedRetiredXfma(inputs.firstSave(), inputs);
+        FinancialSnapshot first = FinancialProjector.project(firstRead.financial(), inputs.layout());
+        List<SaveEvidence> second = new java.util.ArrayList<>(); List<FinancialAudit.ColdComparison> comparisons = new java.util.ArrayList<>();
+        List<List<FinancialSaveReader.RetiredObserverEvidence>> secondUntyped = new java.util.ArrayList<>();
+        for (SaveContracts.Pin nextPin : inputs.coldSave()) {
+            FinancialSaveReader.RetiredObserverReadback nextRead = readPinnedRetiredXfma(nextPin, inputs);
+            FinancialSnapshot next = FinancialProjector.project(nextRead.financial(), inputs.layout());
+            second.add(evidence(nextPin, nextRead.financial(), next)); comparisons.add(FinancialAudit.compareCold(first, next)); secondUntyped.add(nextRead.untypedRecords());
+        }
+        Output output = new Output("ck3-financial-save-audit-candidate-v3", inputs.machineId(), Instant.now().toString(), false,
+                inputs.layout(), evidence(inputs.firstSave(), firstRead.financial(), first), second, comparisons);
+        return new RetiredObserverOutput(output, firstRead.untypedRecords(), secondUntyped);
+    }
+    private static FinancialSaveReader.RetiredObserverReadback readPinnedRetiredXfma(SaveContracts.Pin expected, Inputs inputs) throws IOException {
+        Path requested = Path.of(expected.path()), canonical = requested.toRealPath();
+        if (!Files.isSameFile(requested, canonical)) throw new IOException("requested compatible save does not resolve to exact source");
+        BasicFileAttributes before = Files.readAttributes(canonical, BasicFileAttributes.class);
+        if (!before.isRegularFile()) throw new IOException("requested save is not regular");
+        FilePins.verify(requested, expected);
+        SaveContracts.Pin physical = new SaveContracts.Pin(canonical.toString(), expected.bytes(), expected.sha256()); FilePins.verify(canonical, physical);
+        FinancialSaveReader.RetiredObserverReadback readback = inputs.decoder().isEmpty()
+                ? FinancialSaveReader.readWithRetiredXfma(canonical, inputs.machineId(), inputs.layout())
+                : FinancialSaveReader.readDecodedWithRetiredXfma(physical, inputs.decoder().getFirst(), inputs.machineId(), inputs.layout());
+        BasicFileAttributes after = Files.readAttributes(canonical, BasicFileAttributes.class);
+        if (!requested.toRealPath().equals(canonical) || !Files.isSameFile(requested, canonical)
+                || before.size() != after.size() || !before.lastModifiedTime().equals(after.lastModifiedTime())
+                || !before.creationTime().equals(after.creationTime()) || !Objects.equals(before.fileKey(), after.fileKey())
+                || !readback.financial().save().equals(physical)) throw new IOException("compatible read changed physical SAVE identity/pin");
+        FilePins.verify(requested, expected); FilePins.verify(canonical, physical); return readback;
     }
     private static FinancialSaveReader.Readback readPinned(SaveContracts.Pin expected, Inputs inputs) throws IOException {
         Path requested = Path.of(expected.path());

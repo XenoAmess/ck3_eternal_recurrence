@@ -1,0 +1,142 @@
+{
+  "schema": "ck3-financial-shared-and-named-audit-actual-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-19T02:16:34.224226+00:00",
+  "original_successful_waits": {
+    "MVN-save-core-retired-xfma01": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-save-core-retired-xfma01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 919,
+        "sha256": "f8aa6d440555c0670b7f36162f9d668c57d1f2b0e7a1e80a91da8a9b465b844d"
+      },
+      "started_at_utc": "2026-11-19T02:09:53.662704+00:00",
+      "finished_at_utc": "2026-11-19T02:10:15.306961+00:00",
+      "elapsed_seconds": 21.644279500003904
+    },
+    "MVN-financial-market-integrated22": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-market-integrated22\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1088,
+        "sha256": "1fc2c10986dee368c85dbd6bafbd4d33669e8d896e8c295d85e27e60afdb5cf4"
+      },
+      "started_at_utc": "2026-11-19T02:10:41.211266+00:00",
+      "finished_at_utc": "2026-11-19T02:12:37.681554+00:00",
+      "elapsed_seconds": 116.47031420003623
+    },
+    "TEST-ci-capstone-import01": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-ci-capstone-import01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 981,
+        "sha256": "723f61c71d9161039a79386508a7f5e1b250e89a0f1dad80ae594afa84a1e06e"
+      },
+      "started_at_utc": "2026-11-19T02:11:52.320007+00:00",
+      "finished_at_utc": "2026-11-19T02:11:52.733140+00:00",
+      "elapsed_seconds": 0.4131489999126643
+    },
+    "MVN-financial-save-audit-package06": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-save-audit-package06\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1068,
+        "sha256": "43b898ae877eb9bb1c8ba9f33ec7002925b1ebe25c71135f637da011730ae85b"
+      },
+      "started_at_utc": "2026-11-19T02:13:21.309397+00:00",
+      "finished_at_utc": "2026-11-19T02:13:35.017386+00:00",
+      "elapsed_seconds": 13.707992099924013
+    },
+    "AUDIT-spot17-sellback-named-app06-01": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-spot17-sellback-named-app06-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1244,
+        "sha256": "7cc71041d29ebb6939a7c82fcc6b0676336be1ea3a78f3cbc6625c4e7e37b5d0"
+      },
+      "started_at_utc": "2026-11-19T02:14:38.794490+00:00",
+      "finished_at_utc": "2026-11-19T02:14:54.371754+00:00",
+      "elapsed_seconds": 15.577269500121474
+    }
+  },
+  "shared_junit": {
+    "original": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\target\\surefire-reports\\TEST-org.xar.ck3.save.SaveCoreTest.xml",
+      "bytes": 10388,
+      "sha256": "d42b014ea0c27133928a41dca44fa12b83e422f21616f4d29ea1eb88ea89fb5a"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-24-shared-and-named-audit06\\TEST-org.xar.ck3.save.SaveCoreTest.xml",
+      "bytes": 10388,
+      "sha256": "d42b014ea0c27133928a41dca44fa12b83e422f21616f4d29ea1eb88ea89fb5a"
+    },
+    "totals": {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "financial_junit": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\software-23-market-integrated22-verify\\VERIFY.actual.json",
+    "bytes": 52273,
+    "sha256": "8c56557ca29b09b1883ad630e7444e1bcae8c426aef3ac418d80261e696db218"
+  },
+  "named_actual_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0016-sellback-named-app06-audit01\\report.json",
+    "bytes": 792140,
+    "sha256": "7612de4b31a959ab73f9d9f90236a12602b40aa1ac0cb3839058f62110633eeb"
+  },
+  "named_coverage": {
+    "passes": 2,
+    "completeStreamSha256": "60e5d59a0fc63d7c73ce53d056407db5300d73c4b26a6d52de885e8290e6a360",
+    "completeStreamBytes": "142116381",
+    "tableRecords": 1122,
+    "selectedFinancialRecords": 1066,
+    "streamedFinancialTokenBytes": 1123009,
+    "projectedFields": 10690,
+    "budgets": {
+      "maxTableRecords": 200000,
+      "maxFinancialRecords": 65536,
+      "maxRecordBytes": 524288,
+      "maxStreamedBytes": 67108864,
+      "maxProjectedFields": 1000000
+    }
+  },
+  "explicit_retired_observer": [
+    {
+      "nativeId": "51",
+      "canonicalTokenSha256": "62f7d7e153aaf8574f3737f3069d9b51b79093236fadfd7c114d855dea98f557",
+      "canonicalTokenBytes": 139,
+      "classification": "RETIRED_XFMA_VALUE_ONLY_V1",
+      "owner": "31254",
+      "seed": "2278055527",
+      "variables": [
+        {
+          "flag": "xfma_complete",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "100000"
+        }
+      ]
+    }
+  ],
+  "R0016_evidence_document": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-19-financial-markets-machine4-r0016.json",
+    "bytes": 41952,
+    "sha256": "e33eb0d07ae28e75255c0d1c39d516e923ef3de3053a6d8fbf7b0cb1481a9708"
+  },
+  "gui_candidate_blank_lines_trimmed_before_financial_verify": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\gui\\xfm_market_window.gui",
+    "bytes": 26091,
+    "sha256": "18a5599497873709d78df4f38db161a640f53c81ad7027005bb9926418aa2ad3"
+  },
+  "original_app05_failed_not_relabelled": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-spot17-baseline-save-01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1203,
+    "sha256": "0e966cedbcd23f9f6664ccb92c4ebe41db36371cae928484222da2539bf24abf"
+  },
+  "original_public_spot_case_still_failed": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT17-run\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1502,
+    "sha256": "ec0b62de3ed3d379b07f60e6685e780676adcb02aa0716188a6f9821944fad09"
+  },
+  "financialCertified": false,
+  "full_product_pass": false,
+  "next": "New source qualification, source-bound product/epoch2 observer and ordinary saved continuation to test newly-created partial-order cancellation and player derivatives"
+}

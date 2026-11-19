@@ -379,6 +379,73 @@ final class FuturesAiScriptContractTest {
         }
     }
 
+    @Test void boundedSizingKeepsOneLotAndReturnsZeroBelowItsRealRoundedCost() throws IOException {
+        Vm v = vm(); Node a = ticket(v, "29.20"); primary(v, a, 0); BigDecimal cash = v.cashStock();
+        v.run("xfm_futures_ai_size_order_effect", a);
+        assertEquals(1, a.integer("xfm_futures_lots")); assertEquals(121, a.integer("xfm_futures_reserve_cents"));
+        assertEquals(1, a.integer("xfm_futures_ai_size_result")); assertEquals(cash, v.cashStock());
+        v.run("xfm_futures_submit_effect", a); assertEquals(121, a.ref("xfm_account").integer("xfm_reserved_cents"));
+        Vm below = vm(); Node b = ticket(below, "29.19"); primary(below, b, 0); BigDecimal before = below.cashStock();
+        below.run("xfm_futures_ai_size_order_effect", b);
+        assertEquals(0, b.integer("xfm_futures_lots")); assertEquals(0, b.integer("xfm_futures_ai_size_result"));
+        assertEquals(before, below.cashStock()); assertEquals(0, below.created("xfm_futures_order"));
+        assertTrue(v.maxSizingIterations <= 16); assertEquals(16, below.maxSizingIterations);
+    }
+    @Test void exactMultiLotBudgetBoundaryIncludesBothRoundingsAtOneThreeAndFiveTimes() throws IOException {
+        // At mark 107, H=129. Eleven-lot total costs are 1424 / 478 / 289, respectively.
+        // A budget one cent below each must choose ten lots costing 1294 / 434 / 262.
+        long[][] cases = {{1, 1424, 1294}, {3, 478, 434}, {5, 289, 262}};
+        for (long[] c : cases) for (boolean below : List.of(false, true)) {
+            long budget = c[1] - (below ? 1 : 0); Vm v = vm();
+            Node a = ticket(v, BigDecimal.valueOf(budget * 20 + 500, 2).toPlainString()); primary(v, a, 0);
+            a.ref("xfm_selected_coin").put("xfm_mark_cents", 107); a.put("xfm_futures_leverage", c[0]);
+            BigDecimal stock = v.cashStock(); v.run("xfm_futures_ai_size_order_effect", a);
+            assertEquals(below ? 10 : 11, a.integer("xfm_futures_lots"));
+            assertEquals(below ? c[2] : c[1], a.integer("xfm_futures_reserve_cents"));
+            assertTrue(a.integer("xfm_futures_reserve_cents") <= budget); assertEquals(stock, v.cashStock());
+            v.run("xfm_futures_submit_effect", a); assertEquals(1, a.integer("xfm_futures_result"));
+            assertEquals(below ? c[2] : c[1], a.ref("xfm_account").integer("xfm_reserved_cents"));
+            Node order = a.ref("xfm_account").list("xfm_orders").getLast();
+            assertEquals(below ? 10 : 11, order.integer("xfm_remaining_lots")); assertEquals(c[0], order.integer("xfm_leverage"));
+            assertTrue(a.gold.compareTo(new BigDecimal("5.00")) >= 0); assertEquals(stock, v.cashStock());
+        }
+    }
+    @Test void richAiQuantityIsCappedAtSixteenWithNoNewActionOrPopulationVisit() throws IOException {
+        for (long leverage : List.of(1L, 3L, 5L)) {
+            Vm v = vm(); Node a = ticket(v, "2005.00"); primary(v, a, 0); a.put("xfm_futures_leverage", leverage);
+            a.ref("xfm_selected_coin").put("xfm_mark_cents", 107); BigDecimal stock = v.cashStock();
+            v.run("xfm_futures_ai_size_order_effect", a); assertEquals(16, a.integer("xfm_futures_lots"));
+            assertEquals(leverage == 1 ? 2071 : leverage == 3 ? 695 : 420, a.integer("xfm_futures_reserve_cents"));
+            assertEquals(0, v.maxSizingIterations); assertEquals(stock, v.cashStock());
+        }
+        Vm v = vm(); Node a = ticket(v, "500.00"); a.vars.remove("xfm_futures_contract");
+        Node asset = a.ref("xfm_selected_coin"), dated = v.contract("multi-dated", asset, 0, 30);
+        v.run("xfm_futures_register_discovery_effect", dated);
+        v.order("independent-offer", dated, v.account("external", v.node("external-holder", ""), 0), 1, 100);
+        a.list("xfm_finance_watchlist").add(asset); BigDecimal stock = v.cashStock();
+        v.run("xfm_futures_ai_effect", a); assertEquals(16, a.integer("xfm_futures_lots"));
+        assertEquals(1, a.integer("xfm_futures_result")); assertEquals(1926, a.ref("xfm_account").integer("xfm_reserved_cents"));
+        assertEquals(1, v.matchCalls); BigDecimal gold = a.gold;
+        v.run("xfm_futures_ai_effect", a); assertEquals(1, v.matchCalls); assertEquals(gold, a.gold);
+        assertEquals(stock, v.cashStock()); assertEquals(0, v.historyVisits);
+    }
+    @Test void sizingNeverBorrowsFrozenProjectReservedOrInheritedMoney() throws IOException {
+        for (String defect : List.of("frozen", "project", "system", "other-holder", "reserved", "inherited")) {
+            Vm v = vm(); Node a = ticket(v, "5.00"), own = primary(v, a, 0);
+            switch (defect) {
+                case "frozen" -> { own.put("xfm_free_cents", 1000000); own.put("xfm_account_frozen", 1); }
+                case "project" -> { own.put("xfm_free_cents", 1000000); own.put("xfm_legal_entity", v.node("project", "xfm_finance_coin")); }
+                case "system" -> { own.put("xfm_free_cents", 1000000); own.put("xfm_system_account", 1); }
+                case "other-holder" -> { own.put("xfm_free_cents", 1000000); own.put("xfm_holder", v.node("foreign", "")); }
+                case "reserved" -> own.put("xfm_reserved_cents", 1000000);
+                case "inherited" -> a.put("xfm_active_account", v.account("inherited", a, 1000000));
+                default -> throw new AssertionError(defect);
+            }
+            BigDecimal stock = v.cashStock(); v.run("xfm_futures_ai_size_order_effect", a);
+            assertEquals(0, a.integer("xfm_futures_lots"), defect); assertEquals(0, a.integer("xfm_futures_ai_size_result"), defect);
+            assertEquals(stock, v.cashStock()); assertEquals(0, v.created("xfm_futures_order"));
+        }
+    }
     private static Vm vm() throws IOException {
         Map<String, Block> definitions = new LinkedHashMap<>();
         for (String input : INPUTS) {
@@ -424,7 +491,7 @@ final class FuturesAiScriptContractTest {
         final Map<String, Datum> globals = new HashMap<>();
         final Map<String, List<Node>> globalLists = new HashMap<>();
         final Node exchange, custodian;
-        final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries;
+        final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries, maxSizingIterations;
         Vm(Map<String, Block> program) {
             this.program = program; custodian = node("technical-owner", ""); exchange = node("exchange", "xfm_finance_exchange"); exchange.owner = custodian;
             globals.put("xfm_exchange", exchange);
@@ -564,6 +631,14 @@ final class FuturesAiScriptContractTest {
                     if (k.equals("if")) chain = false; if (yes) { execute(without(child, "limit"), f); chain = true; } continue;
                 }
                 if (k.equals("else")) { if (!chain) execute((Block)e.value(), f); chain = false; continue; }
+                if (k.equals("while")) {
+                    Block child = (Block)e.value(); int iterations = 0;
+                    while (test(child.block("limit"), f)) {
+                        if (++iterations > 16) throw new IllegalArgumentException("AI size probe exceeded its sixteen-lot bound");
+                        execute(without(child, "limit"), f);
+                    }
+                    maxSizingIterations = Math.max(maxSizingIterations, iterations); continue;
+                }
                 if (k.equals("save_scope_as")) { scopes.put(atom(e.value()), f.here()); continue; }
                 if (k.equals("clear_saved_scope")) { scopes.remove(atom(e.value())); continue; }
                 if (k.equals("remove_variable")) { f.here().vars.remove(atom(e.value())); continue; }
@@ -602,7 +677,7 @@ final class FuturesAiScriptContractTest {
                 if (k.equals("random")) { Block a = (Block)e.value(); if (randomEnabled && number(evaluate(field(a, "chance"), f)).signum() > 0) execute(without(a, "chance"), f); continue; }
                 if (k.equals("xfm_finance_refresh_beneficiary_effect")) continue; // explicit engine/controller port; fixtures supply authoritative holders
                 if (k.equals("xfm_market_ui_futures_book_effect")) continue; // UI-only refresh port; the independent book contract executes its production scripts
-                if (k.equals("xfm_futures_match_effect")) { matchCalls++; continue; } // no fictitious fill; reservation remains held
+                if (k.equals("xfm_futures_match_effect")) { matchCalls++; execute(definition("xfm_futures_finish_incoming_effect"), f); continue; } // no fabricated fill; actual post-match remainder admission/enrolment still runs
                 if (e.value() instanceof Block child) { Datum scope = resolve(k, f); if (!(scope instanceof Node n)) throw new IllegalArgumentException("missing effect scope " + k); execute(child, f.enter(n)); continue; }
                 execute(definition(k), f);
             }
