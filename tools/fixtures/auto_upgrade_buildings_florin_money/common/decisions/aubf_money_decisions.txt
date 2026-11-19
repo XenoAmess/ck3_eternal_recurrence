@@ -7,7 +7,7 @@ aubf_begin_money_domain = {
 	confirm_text = aubf_begin_money_domain_confirm
 	is_shown = {
 		is_ai = no
-		this = character:1128
+		this = character:1132
 		has_character_flag = enable_auto_build
 		NOT = { has_character_flag = aubf_money_running }
 	}

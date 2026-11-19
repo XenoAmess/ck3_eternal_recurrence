@@ -22,7 +22,7 @@
   "required_markers": [
     "AUBF: READY money_domain_actual_production_decision",
     "AUBT: TEST BEGIN source-live",
-    "AUBF: READY money_domain_no_head_faith_isolation",
+    "AUBF: READY money_domain_roger_head_cooldowns",
     "AUBT: TEST PASS native_decision_priority_continue_selection",
     "AUBT: TEST PASS domain_limit_normalized_zero",
     "AUBT: TEST PASS treasury_priority_one_tier",
@@ -46,7 +46,7 @@
     "AUBT: TEST FAIL",
     "AUBF: TEST FAIL"
   ],
-  "scope": "The original17 money/domain/default UI assertions with their exact conditions, updated garrison IDs and district mutation scopes. Actual production UI must select treasury-first/continue before the isolated fixture start decision. Before any day, the disposable payer switches to source-confirmed no-head hellenic_pagan and must read back faith/doctrine/absent head; this isolates unrelated same-faith head announcements without modifying production or the17 money predicates. Original quota/main/special/tribal/Mandala/negative-gate/succession and full disable UI remain mandatory separate coverage. No full product qualification from this cell.",
+  "scope": "The original17 money/domain/default UI assertions with their exact conditions, updated garrison IDs and district mutation scopes. Select Robert1128 normally; fixture explicitly switches current player to stock landed Roger1132 before any day, keeping his Catholic faith and verifying actual owned castle. Actual production UI must select treasury-first/continue on Roger before the isolated start decision. The actual religious head receives and must read back the two existing five-year bull cooldown variables, solely isolating unrelated announcements. Robert intro remains with AI Robert; no canceled events, invented flags, previous actor qualification, product or17-predicate changes. Original quota/main/special/tribal/Mandala/negative-gate/succession and full disable UI remain mandatory separate coverage. No full product qualification from this cell.",
   "business_contract_applicable": true,
   "full_product_pass_from_cell": false
 }

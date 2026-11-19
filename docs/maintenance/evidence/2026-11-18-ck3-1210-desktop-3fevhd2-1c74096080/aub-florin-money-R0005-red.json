@@ -1,0 +1,206 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T00:56:26.904422+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0005",
+  "case": "money-domain-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "RED_BOOKMARK_POPE_SCOPE_AFTER_NINE_MONEY_ASSERTIONS",
+  "source_head": "2daf23d6d141203e800081bc683704067ee23a2f",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r5-gui-prepare\\prepared-case.json",
+    "bytes": 1587785,
+    "sha256": "a09bf939ecaace5ecaa4d933c07d5ec5f29d7e64349ce72b6b968dc540f683d7"
+  },
+  "facts": {
+    "actual_production_six_choices_and_default_selection": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-enable-panel-view.png",
+          "bytes": 1156670,
+          "sha256": "4ad72a80394cd74c7711ff3858de9861510a26eccb1064b178ff41b996f3dc0e"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-default-policy-view.png",
+          "bytes": 1155489,
+          "sha256": "33a416a8a836c6a8c31fdb8643facd9ebeee2150c268025df60b846f4c4795c1"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-policy-confirmation-view.png",
+          "bytes": 1124480,
+          "sha256": "8693f64bb3716c4d122a6ed52d23c12e9f2e4d3139002679d239babdd369a8d9"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-production-enabled-view.png",
+          "bytes": 1119448,
+          "sha256": "15ab625ad74d9d557fb451567cd37cfc588184028acfe9e58bd9165e924b2361"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-fixture-panel-view.png",
+          "bytes": 1135265,
+          "sha256": "36b11fa3799cf577ac5e749ce7567b8a0af1424cc74b51a10a80720177036fe8"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-fixture-started-view.png",
+          "bytes": 1103980,
+          "sha256": "4beb845f3d7a8f7b9b726ae815250b21df5fab8ca5d4842656b059d5017058d5"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-1c51c844feb64c0cb643253c4b9318cf\\profile\\logs\\debug.log",
+          "bytes": 23704648,
+          "sha256": "23ac989a237b695a80f71737c034f1c1af50072fb83d56f04457272deeef7e49"
+        }
+      ]
+    },
+    "original_seventeen_money_domain_assertions_and_no_errors": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-1c51c844feb64c0cb643253c4b9318cf\\profile\\logs\\debug.log",
+          "bytes": 23704648,
+          "sha256": "23ac989a237b695a80f71737c034f1c1af50072fb83d56f04457272deeef7e49"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-1c51c844feb64c0cb643253c4b9318cf\\profile\\logs\\error.log",
+          "bytes": 22454374,
+          "sha256": "a25e8f3831b76671eb64aa6faf1e3ced109e3a486cf3bc5c2e3c51381d4c5fd5"
+        }
+      ]
+    },
+    "actual_calendar_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-advance02-before-menu-hold.png",
+          "bytes": 1177383,
+          "sha256": "af54d61ad80af20182e9e5c563f652da503237e212fcd2c637f3d6bf13027f10"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-quit-dialog-view.png",
+          "bytes": 703366,
+          "sha256": "3d0308a153b97dd2616ee5493f95f736b16ce1cf931991b09375c90281cc81dd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-quit-desktop.png.json",
+          "bytes": 1440,
+          "sha256": "3ea58eff8f8067835c53d83c96a4f59590b7f17c1e38ac5e46953a42d32a5562"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0005\\game-exit.json",
+          "bytes": 253,
+          "sha256": "4678fe3f04aad9f3b000418c9a7559cda440df2d9ee6b3845c2563dbcdf17d4e"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBF: READY money_domain_actual_production_decision": 1,
+    "AUBT: TEST BEGIN source-live": 1,
+    "AUBF: READY money_domain_no_head_faith_isolation": 1,
+    "AUBT: TEST PASS native_decision_priority_continue_selection": 1,
+    "AUBT: TEST PASS domain_limit_normalized_zero": 1,
+    "AUBT: TEST PASS treasury_priority_one_tier": 1,
+    "AUBT: TEST PASS domain_limit_zero_builds": 1,
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect": 1,
+    "AUBT: TEST PASS domain_limit_recovery_resumes": 1,
+    "AUBT: TEST PASS over_limit_continue_builds": 1,
+    "AUBT: TEST PASS legacy_no_pause_flag_continues": 1,
+    "AUBT: TEST PASS disabled_zero_side_effect": 1,
+    "AUBT: TEST PASS personal_gold_fallback": 0,
+    "AUBT: TEST PASS reenabled_loop_stopped_cleanly": 0,
+    "AUBT: TEST PASS insufficient_funds_no_change": 0,
+    "AUBT: TEST PASS treasury_only_uses_treasury": 0,
+    "AUBT: TEST PASS treasury_only_no_personal_fallback": 0,
+    "AUBT: TEST PASS personal_only_uses_personal": 0,
+    "AUBT: TEST PASS personal_only_no_treasury_fallback": 0,
+    "AUBT: TEST PASS priority_no_split_payment": 0,
+    "AUBF: TEST DONE money_domain": 0
+  },
+  "passed_original_assertions": [
+    "AUBT: TEST PASS native_decision_priority_continue_selection",
+    "AUBT: TEST PASS domain_limit_normalized_zero",
+    "AUBT: TEST PASS treasury_priority_one_tier",
+    "AUBT: TEST PASS domain_limit_zero_builds",
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect",
+    "AUBT: TEST PASS domain_limit_recovery_resumes",
+    "AUBT: TEST PASS over_limit_continue_builds",
+    "AUBT: TEST PASS legacy_no_pause_flag_continues",
+    "AUBT: TEST PASS disabled_zero_side_effect"
+  ],
+  "original_assertions_required": 17,
+  "failure_lines": [],
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-1c51c844feb64c0cb643253c4b9318cf\\profile\\logs\\error.log",
+    "bytes": 22454374,
+    "sha256": "a25e8f3831b76671eb64aa6faf1e3ced109e3a486cf3bc5c2e3c51381d4c5fd5"
+  },
+  "error_excerpt_first": "[08:36:59][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:36:59][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:36:59][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:36:59][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:36:59][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:36:59][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:36:59][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:36:59][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:36:59][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:00][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:01][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:01][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:37:01][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:40:06][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:40:06][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:40:06][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:40:06][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:40:06][E][pdx_text_formatter.cpp:809]: Unknown formatting tag 'weak\b\u0015positive_value'\n[08:40:0",
+  "error_excerpt_last": "eturned an unset scope\n  Script location: file: events/bookmark_events.txt line: 1403 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Undefined event target 'pope'\n  Script location: file: events/bookmark_events.txt line: 1340 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Event target link 'scope' returned an unset scope\n  Script location: file: events/bookmark_events.txt line: 1340 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Undefined event target 'pope'\n  Script location: file: events/bookmark_events.txt line: 1403 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Event target link 'scope' returned an unset scope\n  Script location: file: events/bookmark_events.txt line: 1403 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Undefined event target 'pope'\n  Script location: file: events/bookmark_events.txt line: 1340 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Event target link 'scope' returned an unset scope\n  Script location: file: events/bookmark_events.txt line: 1340 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Undefined event target 'pope'\n  Script location: file: events/bookmark_events.txt line: 1403 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Event target link 'scope' returned an unset scope\n  Script location: file: events/bookmark_events.txt line: 1403 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Undefined event target 'pope'\n  Script location: file: events/bookmark_events.txt line: 1340 (bookmark.1070:option)\n\n[08:46:50][E][jomini_script_system.cpp:307]: Script system error! (while building tooltip/description)\n  Error: Event target link 'scope' returned an unset scope\n  Script location: file: events/bookmark_events.txt line: 1340 (bookmark.1070:option)\n\n",
+  "script_error_count": 93547,
+  "unique_script_error_locations": [
+    "Script location: file: events/bookmark_events.txt line: 1248 (bookmark.1070:immediate)",
+    "Script location: file: events/bookmark_events.txt line: 1340 (bookmark.1070:option)",
+    "Script location: file: events/bookmark_events.txt line: 1403 (bookmark.1070:option)"
+  ],
+  "isolation_readback_passed": true,
+  "diagnosis": "No-head faith isolation actually succeeded, but unrelated Robert bookmark.1070 unconditionally saves root.faith.religious_head as pope. Its option tooltip now reports undefined pope/unset scope. Existing stock trigger has no completed intro flag and is scheduled at day35..120. This source-backed harness coupling is preserved as RED, not an AUB assertion failure.",
+  "event_action_dispatched": false,
+  "mouse_or_keyboard_event_selection": false,
+  "actual_native_event_instance_id": null,
+  "actual_final_date": "1066-11-20",
+  "natural_days": 66,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-quit-dialog-view.png",
+      "bytes": 703366,
+      "sha256": "3d0308a153b97dd2616ee5493f95f736b16ce1cf931991b09375c90281cc81dd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm03-quit-desktop.png.json",
+      "bytes": 1440,
+      "sha256": "3ea58eff8f8067835c53d83c96a4f59590b7f17c1e38ac5e46953a42d32a5562"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0005\\game-exit.json",
+      "bytes": 253,
+      "sha256": "4678fe3f04aad9f3b000418c9a7559cda440df2d9ee6b3845c2563dbcdf17d4e"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0005\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "483dd7367c9d656bb3699dab3d91fed6fdb5754d3b17bdaab487e990a5f59d0d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0005\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "98db6e6e6bfa3aeea4efc3a3acdbaabd8d7da3ca9beec07f3e2b327bf407968b"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r5-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "417b9eda255981b42db7cfadfd2f6c4c20caafe66d4271802accd2e2d8d34da7"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "storage": {
+    "total_profile_log_bytes": 69348560,
+    "declared_log_cap_bytes": 16777216,
+    "cap_exceeded": true,
+    "watcher_gap": "Watch only guarded debug.log size; repeated error.log tooltip diagnostics continued while Root reviewed a paused menu. Future watcher must count every actual profile log and close promptly on script error; actual bytes retained, no log truncation.",
+    "budget_rebalance": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-money-r5-budget-rebalance-01.json",
+      "bytes": 826,
+      "sha256": "0bdd5f765e01b96092ab46c9cc45ba91149f137cf897275f5665394b3b551d99"
+    }
+  },
+  "retention_review_at_utc": "2026-12-19T00:47:03Z"
+}

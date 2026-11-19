@@ -4,9 +4,30 @@ on_game_start_after_lobby = {
 
 aubf_money_ready = {
 	effect = {
+		# Select Robert in the normal bookmark, then explicitly use the stock
+		# landed Roger as payer; Robert's unrelated intro remains with AI Robert.
 		random_player = {
 			if = {
 				limit = { this = character:1128 }
+				set_player_character = character:1132
+			}
+		}
+		random_player = {
+			if = {
+				limit = {
+					this = character:1132
+					faith = faith:catholic
+					capital_province = {
+						has_holding_type = castle_holding
+						province_owner = { this = character:1132 }
+					}
+					exists = faith.religious_head
+				}
+				# Exact existing five-year bull cooldowns, not a fabricated intro flag.
+				faith.religious_head = {
+					set_variable = { name = enact_a_bull_tenet_permitted_cooldown years = 5 }
+					set_variable = { name = enact_a_bull_tenet_forbidden_cooldown years = 5 }
+				}
 				debug_log = "AUBF: READY money_domain_actual_production_decision"
 			}
 			else = { debug_log = "AUBF: TEST FAIL money_domain_wrong_actor" }

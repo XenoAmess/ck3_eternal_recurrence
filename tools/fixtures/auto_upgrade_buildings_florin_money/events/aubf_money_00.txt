@@ -29,18 +29,25 @@ aubt.900 = {
 		}
 		remove_character_flag = enable_auto_build
 		remove_global_variable = aub_auto_build_loop_started
-		# Test-only isolation: stock religious-head announcements target rulers
-		# of the issuer's faith. Change this disposable payer before any day runs.
-		set_character_faith = faith:hellenic_pagan
+		# Read back the explicit new payer, owned castle and existing head cooldowns.
+		# Keep his stock faith, avoiding Robert's unrelated bookmark/head coupling.
 		if = {
 			limit = {
-				faith = faith:hellenic_pagan
-				faith = { has_doctrine = doctrine_no_head }
-				NOT = { exists = faith.religious_head }
+				this = character:1132
+				faith = faith:catholic
+				exists = faith.religious_head
+				faith.religious_head = {
+					has_variable = enact_a_bull_tenet_permitted_cooldown
+					has_variable = enact_a_bull_tenet_forbidden_cooldown
+				}
+				capital_province = {
+					has_holding_type = castle_holding
+					province_owner = { this = character:1132 }
+				}
 			}
-			debug_log = "AUBF: READY money_domain_no_head_faith_isolation"
+			debug_log = "AUBF: READY money_domain_roger_head_cooldowns"
 		}
-		else = { debug_log = "AUBF: TEST FAIL money_domain_no_head_faith_isolation" }
+		else = { debug_log = "AUBF: TEST FAIL money_domain_roger_head_cooldowns" }
 		change_government = celestial_government
 		set_variable = {
 			name = aubt_domain_adjust_guard
