@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate CK3 1.21.0 district-scoped Auto Upgrade Buildings branches."""
+"""Generate CK3 1.21.0.3 district-scoped Auto Upgrade Buildings branches."""
 
 from __future__ import annotations
 

@@ -369,7 +369,7 @@ def graph_chains(edges: dict[str, str]) -> tuple[list[list[str]], dict[str, str]
 
 def build_snapshot(game_root: Path, game_version: str = EXPECTED_GAME_VERSION) -> dict[str, object]:
     game_root = game_root.resolve()
-    florin = game_version == "1.21.0"
+    florin = game_version in {"1.21.0", "1.21.0.3"}
     if (game_root / "common" / "districts").is_dir() != florin:
         raise ExtractionError("building layout differs from the explicitly selected game version")
     buildings, building_hashes = read_buildings(game_root)
@@ -461,15 +461,15 @@ def render_snapshot(payload: dict[str, object]) -> bytes:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--game-root", type=Path, default=DEFAULT_GAME_ROOT)
-    parser.add_argument("--game-version", choices=(EXPECTED_GAME_VERSION, "1.21.0"), default=EXPECTED_GAME_VERSION)
+    parser.add_argument("--game-version", choices=(EXPECTED_GAME_VERSION, "1.21.0", "1.21.0.3"), default=EXPECTED_GAME_VERSION)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
     try:
-        if args.game_version == "1.21.0" and args.output is None:
+        if args.game_version in {"1.21.0", "1.21.0.3"} and args.output is None:
             raise ExtractionError("Florin extraction requires an explicit output; never overwrite the historical snapshot")
         output = args.output if args.output is not None else OUTPUT
-        if args.game_version == "1.21.0" and output.resolve() == OUTPUT.resolve():
+        if args.game_version in {"1.21.0", "1.21.0.3"} and output.resolve() == OUTPUT.resolve():
             raise ExtractionError("Florin extraction cannot overwrite the historical snapshot")
         expected = render_snapshot(build_snapshot(args.game_root, args.game_version))
     except (OSError, UnicodeError, ExtractionError) as error:

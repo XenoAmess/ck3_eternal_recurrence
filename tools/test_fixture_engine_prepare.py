@@ -29,7 +29,7 @@ def native_builds():
     sys.modules[name] = module
     try:
         spec.loader.exec_module(module)
-        return tuple(build for build in module.NATIVE_BUILD_IDENTITIES
+        return tuple(build for build in module.ENGINE_BUILD_IDENTITIES
                      if build.game_version.startswith(("1.20.", "1.21.")))
     finally:
         sys.modules.pop(name, None)
@@ -53,6 +53,29 @@ def complete_fixture(base):
 
 
 class EngineIdentityTests(unittest.TestCase):
+    def test_preparation_only_build_cannot_admit_native_wire_sources(self):
+        name = "_fixture_engine_native_admission_test"
+        spec = importlib.util.spec_from_file_location(name, REPO / REGISTRY)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        try:
+            spec.loader.exec_module(module)
+            build = module.CK3_121003
+            self.assertIn(build, module.ENGINE_BUILD_IDENTITIES)
+            self.assertNotIn(build, module.NATIVE_BUILD_IDENTITIES)
+            for version, sha in ((build.game_version, build.executable_sha256),
+                                 (build.game_version, build.executable_sha256.lower()),
+                                 (module.CK3_1210.game_version, build.executable_sha256),
+                                 (build.game_version, module.CK3_1210.executable_sha256)):
+                with self.subTest(version=version, sha=sha):
+                    with self.assertRaisesRegex(ValueError, "frozen exact build"):
+                        module.require_exact_native_build(version, sha)
+            self.assertEqual(module.require_exact_native_build(
+                module.CK3_1210.game_version,
+                module.CK3_1210.executable_sha256.lower()), module.CK3_1210)
+        finally:
+            sys.modules.pop(name, None)
+
     def test_each_reviewed_executable_keeps_its_own_identity(self):
         builds = native_builds()
         self.assertTrue(builds)
@@ -524,9 +547,26 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
             combined = "\n".join(p.read_text(encoding="utf-8-sig") for p in output.rglob("*.txt"))
             for marker in case["required_markers"]:
                 self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
+
             for forbidden in ("add_character_flag", "remove_character_flag", "auto_build.0003",
                               "auto_build.0004", "remove_global_variable", "set_player_character", "debug_log_scopes"):
                 self.assertNotIn(forbidden, combined)
+
+    def test_hotfix_gui_producer_records_exact_engine_without_native_admission(self) -> None:
+        build = next(build for build in native_builds() if build.game_version == "1.21.0.3")
+        identity = {"game_version": build.game_version, "steam_build_id": "26785313",
+                    "exe_sha256": build.executable_sha256.lower()}
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=identity), \
+                patch.object(aub, "engine_identity", return_value=identity):
+            output = Path(temporary) / "gui"
+            aub.prepare_gui(REPO, output)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            for key, value in identity.items():
+                self.assertEqual(receipt[key], value)
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            self.assertIs(receipt["native_abi_loaded"], False)
+            self.assertIs(receipt["gui_callbacks_mounted"], False)
 
     def test_gui_observer_guard_rejects_business_writes_and_foreign_delays(self) -> None:
         bad_effects = (

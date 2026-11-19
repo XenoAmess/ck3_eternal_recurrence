@@ -42,6 +42,14 @@ CK3_1210 = NativeBuildIdentity(
 )
 NATIVE_BUILD_IDENTITIES = (CK3_11906, CK3_12002, CK3_12003, CK3_12004, CK3_1210)
 
+# Installed-engine metadata for fixture preparation. This executable has no
+# qualified native adapter yet; keep it outside NATIVE_BUILD_IDENTITIES.
+CK3_121003 = NativeBuildIdentity(
+    "1.21.0.3",
+    "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+)
+ENGINE_BUILD_IDENTITIES = (*NATIVE_BUILD_IDENTITIES, CK3_121003)
+
 
 @dataclass(frozen=True)
 class FlorinFullSource:

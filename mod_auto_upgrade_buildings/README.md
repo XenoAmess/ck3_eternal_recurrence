@@ -9,7 +9,7 @@
 
 - 入口：玩家决议“启用自动建造”与“禁用自动建造”。
 - 启用后：由唯一全局循环每 15 个游戏日检查玩家直接持有的地产；每名人物每次扫描最多成功升级 15 栋建筑，每条已有下一等级、符合原版资格条件的建筑链每轮最多即时升级一级。
-- 覆盖：CK3 1.21.0 的677条建筑链、2,583条非伟大工程升级边；只在玩家直接持有的城堡、城市、神殿、部落和神殿城塞地产内处理已有建筑。
+- 覆盖：CK3 1.21.0.3 的677条建筑链、2,583条非伟大工程升级边；只在玩家直接持有的城堡、城市、神殿、部落和神殿城塞地产内处理已有建筑。
 - 费用：使用对应建筑的原版基础费用和金币／威望／虔诚／scripted cost 资源形状；启用时可选择“只用国库”“只用个人金钱”或“优先国库”，同一笔金币费用不拆分，资源不足时不升级、不扣款。
 - 超直辖策略：启用时同时选择“超直辖暂停”或“超直辖继续”。暂停只跳过超直辖期间的整轮修建，不关闭 15 日循环；回到直辖上限内后自动恢复。
 - 继承：玩家角色死亡并继续扮演继承人时，启用状态、资金策略和超直辖策略会原样迁移，唯一 15 日循环继续生效。
@@ -20,7 +20,7 @@
 
 ## 维护目标
 
-当前开发候选为4.0.4，目标 CK3 `1.21.0 (Florin)`；新版软件及实机资格分别记录于 `../docs/maintenance/2026-11-18-aub-florin.md`，候选版本号不代表已发布或实机通过。
+当前开发候选为4.0.4，目标 CK3 `1.21.0.3 (Florin)`；新版软件及实机资格分别记录于 `../docs/maintenance/2026-11-18-aub-florin.md`，候选版本号不代表已发布或实机通过。
 历史维护基线证据见 `../docs/auto-upgrade-buildings-maintenance.md`，三期资金策略与 R0025 证据见 `../docs/auto-upgrade-buildings-phase-3-plan.md`，四期超直辖策略见 `../docs/auto-upgrade-buildings-phase-4-plan.md`。正式版提供简体中文、英文、法文、德文、日文、韩文、波兰文、俄文和西班牙文；Workshop 文案维护在
 `../workshop/auto_upgrade_buildings_description.bbcode`。
 
@@ -34,12 +34,12 @@
 ## 生成与校验
 
 `common/scripted_effects/build_scripted_effect.txt`、`common/scripted_triggers/aub_building_triggers.txt`及各自的分片是生成文件，每文件最多10个顶层定义。建筑图谱来自
-`../tools/auto_upgrade_buildings_1_21_0.json`；旧 `1_19_0_6`、`1_20_0_2` 快照保留为历史政策对照。
+`../tools/auto_upgrade_buildings_1_21_0_3.json`；旧 `1_19_0_6`、`1_20_0_2` 快照保留为历史政策对照。
 刷新 exact 原版定义时先运行提取器、审阅全部图谱／费用／资格差异，再更新独立冻结合同并运行生成器。
 普通提取器与生成器不会更新 `auto_upgrade_buildings_data.py` 的政策和资格 SHA-256。当前快照的只读检查与构建命令为：
 
 ```text
-tools\.venv\Scripts\python.exe tools\extract_auto_upgrade_buildings.py --game-version 1.21.0 --output tools/auto_upgrade_buildings_1_21_0.json --check
+tools\.venv\Scripts\python.exe tools\extract_auto_upgrade_buildings.py --game-version 1.21.0.3 --output tools/auto_upgrade_buildings_1_21_0_3.json --check
 tools\.venv\Scripts\python.exe tools\gen_auto_upgrade_buildings.py --check
 tools\.venv\Scripts\python.exe tools\validate_auto_upgrade_buildings_static.py
 tools\.venv\Scripts\python.exe tools\test_build_auto_upgrade_buildings_release.py

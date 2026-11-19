@@ -1,0 +1,461 @@
+{
+  "schema": "ck3-steam-public-update-machine-review-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T16:52:56.484762+00:00",
+  "reviewer": "/root/aub_florin_review",
+  "source_head": "14444f5704610c8078e610742452b8c9629bb8e4",
+  "result": "PUBLIC_APP_UPDATE_VERIFIED_OFFLINE",
+  "installed": {
+    "observed_at_utc": "2026-11-19T16:47:21.324085+00:00",
+    "manifest_path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "manifest_sha256": "1e89019eaa4a6bed34a27cffdafc8b2d74928116169b7c7cb76c539a5875582f",
+    "app_id": "1158310",
+    "branch": "public",
+    "numbers": {
+      "StateFlags": 4,
+      "buildid": 26785313,
+      "TargetBuildID": 0,
+      "BytesToDownload": 0,
+      "BytesDownloaded": 0,
+      "BytesToStage": 0,
+      "BytesStaged": 0,
+      "UpdateResult": 6
+    },
+    "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+    "launcher": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+      "raw_version": "1.21.0.3",
+      "display_version": "1.21.0.3 (Florin)",
+      "sha256": "9d588f9a1d3a0b97984a5daf133b5d13e9f79ea82eb65b399af129b1bc96563e"
+    },
+    "executable": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exists": true,
+      "bytes": 114758264,
+      "mtime_ns": 1795106631289061400,
+      "sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+    },
+    "installed_depots": {
+      "1158311": {
+        "manifest": "7584914003502786044",
+        "size": "20381203637"
+      },
+      "1158312": {
+        "manifest": "8355180353365743382",
+        "size": "222238649"
+      },
+      "1158315": {
+        "manifest": "3578199068084097698",
+        "size": "198460575"
+      },
+      "1296730": {
+        "manifest": "4673314442703562503",
+        "size": "84848",
+        "dlcappid": "1296730"
+      },
+      "1296731": {
+        "manifest": "6186085975311389712",
+        "size": "65328",
+        "dlcappid": "1296731"
+      },
+      "1303183": {
+        "manifest": "319832865587329166",
+        "size": "25074458",
+        "dlcappid": "1303183"
+      },
+      "1303182": {
+        "manifest": "3468873485590171544",
+        "size": "23359792",
+        "dlcappid": "1303182"
+      },
+      "1303184": {
+        "manifest": "5241138021689778611",
+        "size": "9854377",
+        "dlcappid": "1303184"
+      },
+      "2114760": {
+        "manifest": "3994555691751599121",
+        "size": "9199940",
+        "dlcappid": "2114760"
+      },
+      "2311920": {
+        "manifest": "8719583443579045955",
+        "size": "30559359",
+        "dlcappid": "2311920"
+      },
+      "2311930": {
+        "manifest": "6473405525877152548",
+        "size": "80415",
+        "dlcappid": "2311930"
+      },
+      "2313541": {
+        "manifest": "3449603529685425916",
+        "size": "6707287",
+        "dlcappid": "2313541"
+      },
+      "2313540": {
+        "manifest": "9046852841453602413",
+        "size": "15690475",
+        "dlcappid": "2313540"
+      },
+      "2671060": {
+        "manifest": "3480737143151580105",
+        "size": "15898541",
+        "dlcappid": "2671060"
+      },
+      "2671030": {
+        "manifest": "2257513862370412160",
+        "size": "100482",
+        "dlcappid": "2671030"
+      },
+      "2671040": {
+        "manifest": "836968934287748787",
+        "size": "64416",
+        "dlcappid": "2671040"
+      },
+      "2671070": {
+        "manifest": "7182082075039972348",
+        "size": "21073072",
+        "dlcappid": "2671070"
+      },
+      "3077630": {
+        "manifest": "1712003839548962838",
+        "size": "69250933",
+        "dlcappid": "3077630"
+      },
+      "2671080": {
+        "manifest": "4340206838279069052",
+        "size": "82855",
+        "dlcappid": "2671080"
+      },
+      "3275760": {
+        "manifest": "4288366890699939411",
+        "size": "99060",
+        "dlcappid": "3275760"
+      },
+      "3315550": {
+        "manifest": "2840621713410264825",
+        "size": "1852566",
+        "dlcappid": "3315550"
+      },
+      "3315540": {
+        "manifest": "1359283799129796893",
+        "size": "19982507",
+        "dlcappid": "3315540"
+      },
+      "3315500": {
+        "manifest": "4503344207642007609",
+        "size": "72114",
+        "dlcappid": "3315500"
+      },
+      "3315510": {
+        "manifest": "790589402422625178",
+        "size": "18258763",
+        "dlcappid": "3315510"
+      },
+      "3315530": {
+        "manifest": "3349156447638110814",
+        "size": "90723528",
+        "dlcappid": "3315530"
+      },
+      "3315520": {
+        "manifest": "7521553339934362737",
+        "size": "84060",
+        "dlcappid": "3315520"
+      },
+      "3315560": {
+        "manifest": "5111920289037265676",
+        "size": "98743",
+        "dlcappid": "3315560"
+      },
+      "3315570": {
+        "manifest": "409066589632915157",
+        "size": "98734",
+        "dlcappid": "3315570"
+      },
+      "4232870": {
+        "manifest": "6970199339967430673",
+        "size": "96059",
+        "dlcappid": "4232870"
+      },
+      "4232860": {
+        "manifest": "2743333143025069241",
+        "size": "94895",
+        "dlcappid": "4232860"
+      },
+      "3315580": {
+        "manifest": "6705959764445437481",
+        "size": "4625479",
+        "dlcappid": "3315580"
+      },
+      "3315590": {
+        "manifest": "3805573564847634757",
+        "size": "35828368",
+        "dlcappid": "3315590"
+      },
+      "4232890": {
+        "manifest": "994388108942955474",
+        "size": "69984",
+        "dlcappid": "4232890"
+      },
+      "4232900": {
+        "manifest": "4759350661389176956",
+        "size": "14106186",
+        "dlcappid": "4232900"
+      },
+      "4232910": {
+        "manifest": "6107394979532102146",
+        "size": "28176651",
+        "dlcappid": "4232910"
+      }
+    }
+  },
+  "PE": {
+    "machine": "0x8664",
+    "optional_header_magic": "0x20b",
+    "time_date_stamp": 1795091113,
+    "size_of_image": "0x6fe5000"
+  },
+  "fresh_public_offer": {
+    "build": 26785313,
+    "change_number": "41266743/41266743",
+    "client_last_change_local": "2026-11-20 00:29:54",
+    "default_public_selected": true,
+    "branch_mutated": false
+  },
+  "network_timeline_UTC": {
+    "goonline_request": "2026-11-19T16:28:25Z",
+    "first_LoggedOn": "2026-11-19T16:28:32Z",
+    "disconnects": [
+      "2026-11-19T16:31:53Z",
+      "2026-11-19T16:41:54Z"
+    ],
+    "relogins": [
+      "2026-11-19T16:32:18Z",
+      "2026-11-19T16:42:12Z"
+    ],
+    "app_commit": "2026-11-19T16:46:20Z",
+    "app_complete": "2026-11-19T16:46:23Z",
+    "offline_request": "2026-11-19T16:46:43.685616Z",
+    "LogOff": "2026-11-19T16:46:44Z",
+    "user_initiated_disconnect": "2026-11-19T16:46:46Z",
+    "fresh_native_offline": "2026-11-19T16:46:59.619000Z",
+    "request_window_seconds_approx": 1099,
+    "not_continuous_connection": true
+  },
+  "app_plan": {
+    "download_bytes": 192766192,
+    "stage_bytes": 312041293,
+    "updated_files": 93,
+    "moved_files": 0,
+    "deleted_files": 0,
+    "pending_cleared": true
+  },
+  "Workshop": {
+    "completed": false,
+    "automatic_followup_started_UTC": "2026-11-19T16:46:24Z",
+    "preallocation_UTC": "2026-11-19T16:46:36Z",
+    "actual_plan_download_bytes": 3729415872,
+    "actual_plan_stage_bytes": 6119302096,
+    "first_stop": "16:46:41Z Missing game files",
+    "final_stop": "16:46:45Z No connection",
+    "NeedsUpdate": 1,
+    "NeedsDownload": 1,
+    "old_installed_size_bytes": 67097087499,
+    "qualification_limit": "followup was not individually admitted before automatic start; actual plan learned afterward; app plus workshop plans below25GiB, incomplete retained; no cache deletion"
+  },
+  "UI": {
+    "Stellaris_removed_from_queue_not_uninstalled": true,
+    "limiter_original": "OFF; blank field",
+    "temporary_limit_Kbps": 8000,
+    "limiter_restored": "OFF; field cleared; actual image reviewed",
+    "download_region_not_changed_by_operator": true,
+    "settings_normally_closed": true,
+    "Steam_minimized_actual_IsIconic": true,
+    "initial_properties_list_exit": 2,
+    "fresh_properties_list_exit": 0,
+    "old_UIA_window_mismatch_preserved": true
+  },
+  "resource": {
+    "D_tools_cap": 33554432,
+    "D_Steam_client_appcache_cap": 201326592,
+    "D_total_cap": 234881024,
+    "D_growth": 67108864,
+    "C_update_cap": 26843545600,
+    "C_growth": 1073741824,
+    "both_volume_floor": 21474836480,
+    "other_D_reservation": 131072,
+    "initial_free_C": 49614757888,
+    "initial_free_D": 21832994816,
+    "minimum_observed_free_D": 21662339072,
+    "D_max_observed_net_increment": 170655744,
+    "final_free_C": 44338323456,
+    "final_free_D": 21782855680,
+    "unobserved_peak_not_claimed": true,
+    "volume_deltas_not_exact_asset_accounting": true
+  },
+  "native": {
+    "new_EXE_differs_from_2f2_and_BB3": true,
+    "selected_include_and_Python_registry_newSHA_search_exit": 1,
+    "newSHA_matches": "",
+    "no_Game_launch": true,
+    "no_DLL_injection": true,
+    "no_live_Native_qualification": true
+  },
+  "closure": {
+    "keeper_original_session": 85663,
+    "keeper_original_wait_exit": 0,
+    "keeper_failure": null,
+    "keeper_thread_exited": true,
+    "SCREEN_release_ok": true,
+    "SCREEN_CAS_sequence": 10693,
+    "SCREEN_release_UTC": "2026-11-19T16:49:31.995360Z",
+    "Repo_Steam_SCREEN_leases_released": true,
+    "future_update_reservation_released": true
+  },
+  "logs": [
+    {
+      "path": "D:\\Program Files (x86)\\Steam\\logs\\connection_log.txt",
+      "captured_prefix_bytes": 1098659,
+      "captured_prefix_sha256": "31266bab0b8e7d2e10d4b57e25df17d21e1eac6ff525deb800600b0efe6c6c7e",
+      "local_timezone_utc_offset": "+08:00",
+      "selected_lines_account_redacted": [
+        "[2026-11-20 00:28:32] [Logging On, 4, 7] [account] RecvMsgClientLogOnResponse() : [account] 'OK'",
+        "[2026-11-20 00:28:32] [Logged On, 4, 7] [account] RecvMsgClientLogOnResponse() : processing complete",
+        "[2026-11-20 00:31:53] [Logged Off, 4, 0] [account] ConnectionDisconnected('I/O Operation Failed') : 'OK' (127.0.0.1:10808, WebSocket)",
+        "[2026-11-20 00:32:18] [Logging On, 4, 11] [account] RecvMsgClientLogOnResponse() : [account] 'OK'",
+        "[2026-11-20 00:32:18] [Logged On, 4, 11] [account] RecvMsgClientLogOnResponse() : processing complete",
+        "[2026-11-20 00:41:54] [Logged Off, 4, 0] [account] ConnectionDisconnected('I/O Operation Failed') : 'OK' (127.0.0.1:10808, WebSocket)",
+        "[2026-11-20 00:42:12] [Logging On, 4, 19] [account] RecvMsgClientLogOnResponse() : [account] 'OK'",
+        "[2026-11-20 00:42:12] [Logged On, 4, 19] [account] RecvMsgClientLogOnResponse() : processing complete",
+        "[2026-11-20 00:46:44] [Logged On, 4, 19] [account] LogOff()",
+        "[2026-11-20 00:46:46] [Logged Off, 0, 0] [account] ConnectionDisconnected('Disconnected By Remote Host') : 'OK' (127.0.0.1:10808, WebSocket)",
+        "[2026-11-20 00:46:46] [Logged Off, 0, 0] [account] ConnectionDisconnected() not auto reconnecting due to user initiated logoff"
+      ]
+    },
+    {
+      "path": "D:\\Program Files (x86)\\Steam\\logs\\content_log.txt",
+      "captured_prefix_bytes": 1314300,
+      "captured_prefix_sha256": "b13c657daa7324c88c72a4a6e98b0d469af0312f19133bca389f5e358ee62737",
+      "local_timezone_utc_offset": "+08:00",
+      "selected_lines_account_redacted": [
+        "[2026-11-20 00:41:35] AppID 1158310 starting commit from \"C:\\SteamLibrary\\steamapps\\shadercache\\1158310/downloads/\" to \"C:\\SteamLibrary\\steamapps\\shadercache\\1158310/\" : 0 updated, 0 moved, 0 deleted files",
+        "[2026-11-20 00:41:35] AppID 1158310 scheduler finished : staying in schedule (result No Error, state 0xe) ",
+        "[2026-11-20 00:41:35] AppID 1158310 App update changed : Running Update,",
+        "[2026-11-20 00:41:35] AppID 1158310 App update changed : Running Update,Reconfiguring,",
+        "[2026-11-20 00:41:56] AppID 1158310 App update changed : Running Update,Reconfiguring,Stopping,",
+        "[2026-11-20 00:42:14] AppID 1158310 App update changed : Running Update,Stopping,",
+        "[2026-11-20 00:42:14] AppID 1158310 App update changed : None",
+        "[2026-11-20 00:42:14] AppID 1158310 scheduler finished : staying in schedule (result Suspended, state 0xe) ",
+        "[2026-11-20 00:43:39] AppID 1158310 App update changed : Running Update,",
+        "[2026-11-20 00:43:39] AppID 1158310 App update changed : Running Update,Reconfiguring,",
+        "[2026-11-20 00:43:51] AppID 1158310 App update changed : Running Update,",
+        "[2026-11-20 00:43:51] AppID 1158310 App update changed : Running Update,Verifying Installed,",
+        "[2026-11-20 00:43:51] AppID 1158310 App update changed : Running Update,",
+        "[2026-11-20 00:43:51] AppID 1158310 App update changed : Running Update,Preallocating,",
+        "[2026-11-20 00:43:51] AppID 1158310 App update changed : Running Update,",
+        "[2026-11-20 00:43:51] AppID 1158310 update started : download 0/192766192, store 0/0, reuse 0/83496764, delta 0/78652220, stage 0/312041293 ",
+        "[2026-11-20 00:43:51] AppID 1158310 App update changed : Running Update,Downloading,Staging,",
+        "[2026-11-20 00:46:19] AppID 1158310 App update changed : Running Update,",
+        "[2026-11-20 00:46:19] AppID 1158310 App update changed : Running Update,Staging,",
+        "[2026-11-20 00:46:20] AppID 1158310 App update changed : Running Update,",
+        "[2026-11-20 00:46:20] AppID 1158310 App update changed : Running Update,Committing,",
+        "[2026-11-20 00:46:20] AppID 1158310 starting commit from \"C:\\SteamLibrary\\steamapps\\downloading\\1158310\" to \"C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\" : 93 updated, 0 moved, 0 deleted files",
+        "[2026-11-20 00:46:23] AppID 1158310 App update changed : Running Update,",
+        "[2026-11-20 00:46:23] AppID 1158310 App update changed : None",
+        "[2026-11-20 00:46:23] AppID 1158310 scheduler finished : staying in schedule (result No Error, state 0xc) ",
+        "[2026-11-20 00:46:24] AppID 1158310 Workshop update changed : Running Update,",
+        "[2026-11-20 00:46:24] AppID 1158310 Workshop update changed : Running Update,Reconfiguring,",
+        "[2026-11-20 00:46:35] AppID 1158310 Workshop update changed : Running Update,",
+        "[2026-11-20 00:46:36] AppID 1158310 Workshop update changed : Running Update,Preallocating,",
+        "[2026-11-20 00:46:40] AppID 1158310 Workshop update changed : Running Update,",
+        "[2026-11-20 00:46:40] AppID 1158310 update started : download 0/3729415872, store 0/0, reuse 0/99848350, delta 0/0, stage 0/6119302096 ",
+        "[2026-11-20 00:46:40] AppID 1158310 Workshop update changed : Running Update,Downloading,Staging,",
+        "[2026-11-20 00:46:40] AppID 1158310 Workshop update changed : Running Update,Downloading,Staging,Stopping,",
+        "[2026-11-20 00:46:41] AppID 1158310 Workshop update changed : Running Update,Stopping,",
+        "[2026-11-20 00:46:41] AppID 1158310 Workshop update changed : None",
+        "[2026-11-20 00:46:41] AppID 1158310 scheduler finished : removed from schedule (result Missing game files, state 0xc) ",
+        "[2026-11-20 00:46:41] AppID 1158310 Workshop update changed : Running Update,",
+        "[2026-11-20 00:46:41] AppID 1158310 Workshop update changed : Running Update,Reconfiguring,",
+        "[2026-11-20 00:46:43] AppID 1158310 Workshop update changed : Running Update,",
+        "[2026-11-20 00:46:43] AppID 1158310 Workshop update changed : Running Update,Verifying Installed,",
+        "[2026-11-20 00:46:45] AppID 1158310 Workshop update changed : Running Update,Verifying Installed,Stopping,",
+        "[2026-11-20 00:46:45] AppID 1158310 Workshop update changed : Running Update,Stopping,",
+        "[2026-11-20 00:46:45] AppID 1158310 Workshop update changed : None",
+        "[2026-11-20 00:46:45] AppID 1158310 scheduler finished : removed from schedule (result No connection, state 0xc) "
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\ready-admission.json",
+      "bytes": 893,
+      "sha256": "fffe7767929a9ba5b734936c0a8624f0fde2e77a3788445871fd2ea6e31da18f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\online-request.json",
+      "bytes": 420,
+      "sha256": "bfbaccd1f523fa233b31edc2ac5c8dc6882799bb0841572942b13e67fc28408c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\appinfo-console-readback-a01.txt",
+      "bytes": 163419,
+      "sha256": "e08e15335d1d3526a9a46c8d4d7bdce9a577b3bc7884be70945571cb44645797"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\public-list-a01\\result.json",
+      "bytes": 624,
+      "sha256": "0236e4ab9ed59ce1e30111f562521d7caef7b4c9e84491734e4cdf7b05d31e77"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\public-list-a02\\result.json",
+      "bytes": 16156,
+      "sha256": "459e8f9161fd5a3157e2ec7e35dd3fe2588f9f0a4c1b4867164b7fb902da88bd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\actual-app-update-admission.json",
+      "bytes": 708,
+      "sha256": "0b7a007fac96506b00eceee960394fefd61b50266de6c28128e45bfaa4204da7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\update-completion-and-offline-request-a01.json",
+      "bytes": 615,
+      "sha256": "a7f31d08ce32201f13fef2ef07f051c66ea29288e8175c7bde6628cafcabde71"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\installed-wait-a01\\result.json",
+      "bytes": 6138,
+      "sha256": "f4aeac50df41e254c792008cdf837ea656d026f42fc76362e216b898b529c01c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\offline-probe-after-update-a01.json",
+      "bytes": 2533,
+      "sha256": "5dc657be36e1345c389142bc17d9565d6bb062ad220f1ee30ae94f749535459d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\restore-limit-off-a01.png",
+      "bytes": 183969,
+      "sha256": "c02753e2069c1cd3d58654e9d27ed13646e248b4f7c4d074fef3946d42ac1460"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\final-offline-downloads-a01.png",
+      "bytes": 221055,
+      "sha256": "2c508e1bbda3debcc220e2d96565c98a1af1d66511073cdc4b029b4fc610e800"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\ui-close-and-minimize.json",
+      "bytes": 489,
+      "sha256": "61c980d3d5325618e1554a59bea978c642ae2ef5faa99dc4ed557dac2329fc8a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\keeper\\report.json",
+      "bytes": 462,
+      "sha256": "30d4a093f9a9ae26df5c418e646b90a77abae2997fe38453467612914b08c119"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-public-update-20261120-a01\\screen-release.json",
+      "bytes": 1379,
+      "sha256": "a7de00143bc2469e21efa2e1c437f2b7523f700b9cfe4863a6aa5be84781b652"
+    }
+  ]
+}

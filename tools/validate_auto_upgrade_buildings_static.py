@@ -188,12 +188,12 @@ def validate(
         'version="4.0.4"\n'
         'tags={\n\t"Balance"\n}\n'
         'name="自动升级建筑（XenoAmess维护版）"\n'
-        'supported_version="1.21.0"\n'
+        'supported_version="1.21.0.3"\n'
     )
     from workshop_compatibility_tags import render_workshop_descriptor_bytes
     expected_descriptor = render_workshop_descriptor_bytes(expected_descriptor.encode("utf-8")).decode("utf-8")
     if descriptor != expected_descriptor:
-        errors.append("descriptor.mod differs from the 4.0.4 / 1.21.0 maintenance contract")
+        errors.append("descriptor.mod differs from the 4.0.4 / 1.21.0.3 maintenance contract")
 
     decisions = text("common/decisions/build_decision.txt")
     on_actions = text("common/on_action/aub_on_actions.txt")
@@ -755,7 +755,7 @@ def validate(
         workshop_description = WORKSHOP_DESCRIPTION.read_text(encoding="utf-8")
         for fragment in (
             "[h1]自动升级建筑（XenoAmess维护版）[/h1]",
-            "Version 4.0.4 · CK3 1.21.0",
+            "Version 4.0.4 · CK3 1.21.0.3",
             "[h1]4.0.4 更新记录[/h1]",
             "[h1]4.0.3 更新记录[/h1]",
             "[h1]4.0.2 更新记录[/h1]",

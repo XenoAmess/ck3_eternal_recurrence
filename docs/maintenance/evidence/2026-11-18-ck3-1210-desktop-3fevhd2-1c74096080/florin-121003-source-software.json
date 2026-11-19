@@ -1,0 +1,432 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T17:03:38.900149+00:00",
+  "stock_diff": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T16:50:24.107224+00:00",
+    "old_version": "1.21.0",
+    "old_build": "26622941",
+    "new_version": "1.21.0.3",
+    "new_build": "26785313",
+    "new_exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+    "new_exe_bytes": 114758264,
+    "old_archive_sha256": "dd43be0f5e30f17f19de216c0d3cb4b9ac1871e044707e8293d6feac8e61a72e",
+    "examined_files": 292,
+    "changed": [
+      {
+        "path": "common/buildings/regular_district_buildings/00_manor_houses_district_buildings.txt",
+        "old_sha256": "8bd0a06254d825261acbe738976538a0fd42eabb5b28b847bf54c00ffbba4a9d",
+        "new_sha256": "aba684402833ac90bc4af4170871b517274e35043698819bd30f8dfba21c700f",
+        "old_bytes": 68943,
+        "new_bytes": 69118,
+        "new_file_id": "3659174700275407",
+        "new_mtime_ns": "1795106633707981500",
+        "status": "changed"
+      },
+      {
+        "path": "common/buildings/regular_primary_buildings.txt",
+        "old_sha256": "0c487a011afadca838241aaad2d3276ce53bbc83951b91246320a15cf8aaeabc",
+        "new_sha256": "147a9bdd882ad044817fee7ea616c11c2400321d30d10d8177e76b8646eaea3d",
+        "old_bytes": 208419,
+        "new_bytes": 208987,
+        "new_file_id": "2814749770143452",
+        "new_mtime_ns": "1795106633955589700",
+        "status": "changed"
+      },
+      {
+        "path": "common/buildings/special_buildings/00_special_buildings.txt",
+        "old_sha256": "8d20f9ca207df6670a9ae12c9ac5178a51b320281271dbee22411f2b03bf8ace",
+        "new_sha256": "7ac40e11e25450b3286673300947b029648f6d3c271e85e8126c0e8279199c46",
+        "old_bytes": 367448,
+        "new_bytes": 367442,
+        "new_file_id": "1688849863276510",
+        "new_mtime_ns": "1795106631275561000",
+        "status": "changed"
+      },
+      {
+        "path": "common/defines/00_defines.txt",
+        "old_sha256": "a28c9eccaa3990691190f3073eac7a272679995062739fb90de2b156ec2af753",
+        "new_sha256": "e30fad840bb6f0e73e7eec4363ec6d554058eba76214adc68e4440d272371cae",
+        "old_bytes": 137145,
+        "new_bytes": 137143,
+        "new_file_id": "1407374886565960",
+        "new_mtime_ns": "1795106631867194400",
+        "status": "changed"
+      },
+      {
+        "path": "common/lifestyle_perks/00_learning_2_scholarship_tree_perks.txt",
+        "old_sha256": "248609298f3308866b37aaf7ffa9e08dc3dcb85e80187a6eda9dd756eeef3380",
+        "new_sha256": "5a2be8668efff8b59a56eeb64b9f8fa2a3b9a957c37b2e1ecfa19637162fa4b2",
+        "old_bytes": 10939,
+        "new_bytes": 10939,
+        "new_file_id": "1407374886565962",
+        "new_mtime_ns": "1795106631988511700",
+        "status": "changed"
+      },
+      {
+        "path": "common/lifestyle_perks/00_martial_2_authority_tree_perks.txt",
+        "old_sha256": "dad53f3d36715faf0fac76fd70618a541387950938638a0505730ce16e236d91",
+        "new_sha256": "a7c47066eaaa0116d97316da4549c0fceaf21c69dc341807b2df291750641be3",
+        "old_bytes": 11093,
+        "new_bytes": 11096,
+        "new_file_id": "11258999071463076",
+        "new_mtime_ns": "1795106633024761800",
+        "status": "changed"
+      },
+      {
+        "path": "common/script_values/00_contract_script_values.txt",
+        "old_sha256": "4b733960f8097b05b3ed37edbe9ec9f00a949cf1d55e0d937d9dca0bd6cb1ae8",
+        "new_sha256": "7f6bec41417471daf4dad0f0cd0f0d811e3feeea914468cc02a0ef68fea1e604",
+        "old_bytes": 5998,
+        "new_bytes": 5994,
+        "new_file_id": "1407374886581862",
+        "new_mtime_ns": "1795106632469523200",
+        "status": "changed"
+      },
+      {
+        "path": "common/script_values/00_gdp_guelph_ghibelline_values.txt",
+        "old_sha256": "6894f9523be135123c36e0f747331fa1b16bb7f90d18516e332726be15121033",
+        "new_sha256": "2fbb10eba7d1d03319f5dbad2adb2f8cdcce09c216742e641345541d7079ee49",
+        "old_bytes": 23812,
+        "new_bytes": 23808,
+        "new_file_id": "3940649677006392",
+        "new_mtime_ns": "1795106635880089400",
+        "status": "changed"
+      },
+      {
+        "path": "common/script_values/01_dlc_fp1_script_values.txt",
+        "old_sha256": "ad75912e9b7ce9679be9cc67075b445fe231c136b0975946c3a368b047eb108f",
+        "new_sha256": "7a171b20de9efb9ae71522d4cd98f39d4c22564b38ecd9b9032db6ea561660d1",
+        "old_bytes": 21257,
+        "new_bytes": 21309,
+        "new_file_id": "7036874420803263",
+        "new_mtime_ns": "1795106633519857800",
+        "status": "changed"
+      },
+      {
+        "path": "common/script_values/01_dynamic_values.txt",
+        "old_sha256": "89b4722ceff383d1adb4d8f99faf4decdaa984e9c2cd3c950458eabcd302a141",
+        "new_sha256": "e782c5a720b2704e23feef3add2252a059aa8340c9f43b216ea9fc28eb91559c",
+        "old_bytes": 49848,
+        "new_bytes": 49847,
+        "new_file_id": "1970324840016233",
+        "new_mtime_ns": "1795106634633445100",
+        "status": "changed"
+      },
+      {
+        "path": "common/script_values/99_court_chaplain_values.txt",
+        "old_sha256": "3c4a1dc416b6d9f827fd0e0a42001f85bf613f609dad5a78ef31567dbf3ea712",
+        "new_sha256": "09e2a3b4163a69701f608a463d43062f74779c108899d017c15eb5daa59c04b0",
+        "old_bytes": 64729,
+        "new_bytes": 64770,
+        "new_file_id": "3659174700275415",
+        "new_mtime_ns": "1795106633955023000",
+        "status": "changed"
+      },
+      {
+        "path": "common/scripted_effects/gdp_merchant_scripted_effects.txt",
+        "old_sha256": "44b987f213985620046f6439bc8471f46cbd9d6bb5f140d898507dcbf8bc0298",
+        "new_sha256": "adca26d933649544000a5a488b8f134ca8c7d482a1bbed83f49e5f4780fb4748",
+        "old_bytes": 234720,
+        "new_bytes": 235463,
+        "new_file_id": "1125899909859913",
+        "new_mtime_ns": "1795106632469523200",
+        "status": "changed"
+      },
+      {
+        "path": "gui/window_county_view.gui",
+        "old_sha256": "4dee549851fd8237b302619ec6a62b0b316a5b0ec3adec7d10e5503594105a88",
+        "new_sha256": "e9202f91a2273c524bde1167c70594529b2ce7d3ca025a01258609ba059bd1f8",
+        "old_bytes": 251914,
+        "new_bytes": 251908,
+        "new_file_id": "1407374886604984",
+        "new_mtime_ns": "1795106635381844300",
+        "status": "changed"
+      }
+    ],
+    "diff_bytes": 16694,
+    "scope": "Exact292 prior selected stock files only; not a whole-install diff. No Game/Steam/Native action. Missing new files outside this selected scope are not assessed.",
+    "remaining_reservation_bytes": 0,
+    "unchanged_count": 279,
+    "source_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\florin26785313-stock-diff-a01\\summary.json",
+      "bytes": 119975,
+      "sha256": "26eb37cb1aacf410894a2cf0ede74966c179a1993d3c5020587f87b22050d105"
+    },
+    "selected_unchanged": [
+      {
+        "path": "common/scripted_effects/00_interaction_effects.txt",
+        "old_sha256": "26151bd9f91cf66d79297d2fe20d8ae5b919d7e83a5fac81e9c93bbea2388465",
+        "new_sha256": "26151bd9f91cf66d79297d2fe20d8ae5b919d7e83a5fac81e9c93bbea2388465",
+        "old_bytes": 153104,
+        "new_bytes": 153104,
+        "new_file_id": "844424932720370",
+        "new_mtime_ns": "1794941426651890100"
+      },
+      {
+        "path": "common/scripted_effects/00_war_effects.txt",
+        "old_sha256": "6741fbd7477f0e995c783d70f148d8fe6017d0046ed5261811496ff67d455807",
+        "new_sha256": "6741fbd7477f0e995c783d70f148d8fe6017d0046ed5261811496ff67d455807",
+        "old_bytes": 83435,
+        "new_bytes": 83435,
+        "new_file_id": "1407374886132385",
+        "new_mtime_ns": "1794941426477835000"
+      },
+      {
+        "path": "common/scripted_triggers/00_distance_triggers.txt",
+        "old_sha256": "6d1d3987bf56d1947aca3d66cb8a1fae9a2caaf44a453192485412568c189522",
+        "new_sha256": "6d1d3987bf56d1947aca3d66cb8a1fae9a2caaf44a453192485412568c189522",
+        "old_bytes": 1157,
+        "new_bytes": 1157,
+        "new_file_id": "281474977733925",
+        "new_mtime_ns": "1788625046530865900"
+      },
+      {
+        "path": "common/traits/00_traits.txt",
+        "old_sha256": "793718c2388f8d7b6c009468a2f5f8f5d1d8443acec4a015614ffac4f05b98cd",
+        "new_sha256": "793718c2388f8d7b6c009468a2f5f8f5d1d8443acec4a015614ffac4f05b98cd",
+        "old_bytes": 355058,
+        "new_bytes": 355058,
+        "new_file_id": "844424931226177",
+        "new_mtime_ns": "1794941419162172800"
+      },
+      {
+        "path": "gui/hud.gui",
+        "old_sha256": "35bb7ceffe17222a7de8796cec5a676349e2294de406df261f623ce48d112f01",
+        "new_sha256": "35bb7ceffe17222a7de8796cec5a676349e2294de406df261f623ce48d112f01",
+        "old_bytes": 239779,
+        "new_bytes": 239779,
+        "new_file_id": "562949956449155",
+        "new_mtime_ns": "1794941463129682900"
+      },
+      {
+        "path": "gui/shortcuts.shortcuts",
+        "old_sha256": "13bffe9527d1968216feae3e65c4c1192f2512883bfc8a3ec2d674e690d9f73e",
+        "new_sha256": "13bffe9527d1968216feae3e65c4c1192f2512883bfc8a3ec2d674e690d9f73e",
+        "old_bytes": 29380,
+        "new_bytes": 29380,
+        "new_file_id": "1125899909821076",
+        "new_mtime_ns": "1794941443337245900"
+      },
+      {
+        "path": "localization/english/house_relations_l_english.yml",
+        "old_sha256": "be36005e2c3f4f3b7a34bfd64200e1a971608634bb42aa1ad725919e0d723a5d",
+        "new_sha256": "be36005e2c3f4f3b7a34bfd64200e1a971608634bb42aa1ad725919e0d723a5d",
+        "old_bytes": 19964,
+        "new_bytes": 19964,
+        "new_file_id": "844424933133322",
+        "new_mtime_ns": "1794941451316419600"
+      },
+      {
+        "path": "localization/simp_chinese/house_relations_l_simp_chinese.yml",
+        "old_sha256": "952a1b95e24720724a5bc794cf71efd74b9e88e640f5da11d7de8076f2c3dbc4",
+        "new_sha256": "952a1b95e24720724a5bc794cf71efd74b9e88e640f5da11d7de8076f2c3dbc4",
+        "old_bytes": 19485,
+        "new_bytes": 19485,
+        "new_file_id": "844424933077305",
+        "new_mtime_ns": "1794941431433531400"
+      }
+    ]
+  },
+  "AUB_source_adoption": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T16:56:25.675962+00:00",
+    "new_version": "1.21.0.3",
+    "new_build": "26785313",
+    "new_exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+    "building_policy_equal": true,
+    "building_source_changes": {
+      "common/buildings/regular_district_buildings/00_manor_houses_district_buildings.txt": {
+        "old": "8BD0A06254D825261ACBE738976538A0FD42EABB5B28B847BF54C00FFBBA4A9D",
+        "new": "ABA684402833AC90BC4AF4170871B517274E35043698819BD30F8DFBA21C700F"
+      },
+      "common/buildings/regular_primary_buildings.txt": {
+        "old": "0C487A011AFADCA838241AAAD2D3276CE53BBC83951B91246320A15CF8AAEABC",
+        "new": "147A9BDD882AD044817FEE7EA616C11C2400321D30D10D8177E76B8646EAEA3D"
+      },
+      "common/buildings/special_buildings/00_special_buildings.txt": {
+        "old": "8D20F9CA207DF6670A9AE12C9AC5178A51B320281271DBEE22411F2B03BF8ACE",
+        "new": "7AC40E11E25450B3286673300947B029648F6D3C271E85E8126C0E8279199C46"
+      }
+    },
+    "new_snapshot_sha256": "caa4ca07d9f0d03d5682c6912a2c96f249f62fde498612c1b90819442cb49023",
+    "new_snapshot_bytes": 2255415,
+    "old_snapshot_available_in_git": "14444f5704610c8078e610742452b8c9629bb8e4:tools/auto_upgrade_buildings_1_21_0.json",
+    "native_qualified": false,
+    "live_NOT_RUN": true,
+    "initial_adoption_attempt": "Partial source writes completed, then nonexistent product/site path raised FileNotFoundError. Correct actual publication input is workshop/auto_upgrade_buildings_description.bbcode. No initial tests/build/Git/live run; source adoption resumed without replay or duplicate version suffix."
+  },
+  "generated_runtime_header_only_changes": 329,
+  "generated_runtime_comparison": "git archive old14444 common files compared byte-for-byte with current after only exact Source snapshot filename replacement. All329 changed common files are comment-only, no engine script semantics changed.",
+  "software": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T17:01:40.477006+00:00",
+    "checks": [
+      {
+        "name": "typed-producers",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=silent",
+          "tools/fixture_engine_prepare.py",
+          "tools/prepare_aub_1_20_fixture.py",
+          "tools/extract_auto_upgrade_buildings.py",
+          "tools/auto_upgrade_buildings_data.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 0.8219571000081487,
+        "tail": "Success: no issues found in 4 source files\r\n"
+      },
+      {
+        "name": "typed-engine-registry",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 1.9462375000002794,
+        "tail": "Success: no issues found in 1 source file\r\n"
+      },
+      {
+        "name": "actual-hotfix-gui-prepare",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/prepare_aub_1_20_fixture.py",
+          "--scenario",
+          "florin-gui",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\florin26785313-integration-a01\\checks-a02\\typed-final\\fixture-gui"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 1.605766200023936,
+        "tail": "{\"prepared_fixture\": \"D:\\\\ck3-state\\\\upgrade-20261118\\\\florin26785313-integration-a01\\\\checks-a02\\\\typed-final\\\\fixture-gui\", \"runtime_status\": \"NOT_RUN\"}\r\n"
+      },
+      {
+        "name": "actual-hotfix-duchy-prepare",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/prepare_aub_1_20_fixture.py",
+          "--scenario",
+          "florin-duchy",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\florin26785313-integration-a01\\checks-a02\\typed-final\\fixture-duchy"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 1.5412398999906145,
+        "tail": "{\"prepared_fixture\": \"D:\\\\ck3-state\\\\upgrade-20261118\\\\florin26785313-integration-a01\\\\checks-a02\\\\typed-final\\\\fixture-duchy\", \"runtime_status\": \"NOT_RUN\"}\r\n"
+      }
+    ],
+    "reused_checks": [
+      {
+        "name": "affected-unit-modules",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "test_build_auto_upgrade_buildings_release",
+          "test_fixture_engine_prepare"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence\\tools",
+        "exit": 0,
+        "elapsed_seconds": 54.123325900000054,
+        "tail": "....................................................\r\n----------------------------------------------------------------------\r\nRan 52 tests in 53.191s\r\n\r\nOK\r\n"
+      },
+      {
+        "name": "installed-static",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/validate_auto_upgrade_buildings_static.py"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+        "exit": 0,
+        "elapsed_seconds": 15.86639379998087,
+        "tail": "AUTO UPGRADE BUILDINGS STATIC VALIDATION OK\r\nRuntime files: 345\r\nBuilding chains: 677\r\nFrozen vanilla building inputs (1.21.0.3 snapshot) checked against installed data: yes\r\n"
+      },
+      {
+        "name": "generated-check",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/gen_auto_upgrade_buildings.py",
+          "--check"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+        "exit": 0,
+        "elapsed_seconds": 0.6788074999931268,
+        "tail": "AUTO UPGRADE BUILDINGS GENERATOR OK: 677 chains, 2583 edges\r\n"
+      },
+      {
+        "name": "builder-check",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/build_auto_upgrade_buildings_release.py",
+          "--check"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+        "exit": 0,
+        "elapsed_seconds": 6.82328600002802,
+        "tail": "AUTO UPGRADE BUILDINGS RELEASE CHECK OK\r\nFiles: 345\r\nManifest SHA-256: 1e0e23bb921ae593965a2b3d166fccf89fd6768f7129925cf6ecef47861797e1\r\nZIP SHA-256: 1d21a6e77a822245a2ad372e679b1714f6cae4c72697548f6e06b6fba1b3c8b5\r\n"
+      }
+    ],
+    "reuse_reason": "Only decision_effect return annotation and finish_receipt parameter/return generic arguments changed after these checks. No function body/data/generated bytes modified. Original52-unit/full-installed-static/generator/full345-doublebuild pass retained.",
+    "passed": true,
+    "native_qualified": false,
+    "game_run": "NOT_RUN",
+    "workshop_published": false,
+    "free_D": 21775925248,
+    "remaining_software_reservation_bytes": 0
+  },
+  "software_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\florin26785313-integration-a01\\checks-a02\\typed-final\\summary.json",
+    "bytes": 5518,
+    "sha256": "a9b57476311b2d256d7e1f2a538a367227f540bb6a0b16a367f8ab2fd8ed7057"
+  },
+  "prior_failed_checks_retained": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\florin26785313-integration-a01\\checks\\summary.json",
+      "bytes": 2924,
+      "sha256": "bdca7340766f7cf4ebefd4d63bdb0f63f6546c6e4adaf032e221a6ea79d49723"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\florin26785313-integration-a01\\checks-a02\\summary.json",
+      "bytes": 3657,
+      "sha256": "dece36c27ab5094ba1f8946621f3477a85d57456e79d4ccaf3f19737472d3ef4"
+    }
+  ],
+  "initial_failures": "Old generated Source comments not regenerated, one new test local variable placement; corrected before52/52 pass. Complete strict check also exposed two existing bare dict annotations; narrowed metadata return/receipt JSON types, reran full4 modules+registry. No test skipped. Initial private integration path/anchor errors retained separately; no live attempt.",
+  "native_boundary": "859F belongs only to ENGINE_BUILD_IDENTITIES for script preparation. NATIVE_BUILD_IDENTITIES/require_exact_native_build remain unchanged and new/mixed tuples rejected in actual regression. No new native capabilities or BB3 offsets adopted.",
+  "new_live": "NOT_RUN",
+  "workshop_published": false,
+  "historical_published_count": 3,
+  "historical_published_build": "26622941",
+  "retention_review_at_utc": "2027-05-18T16:20:00Z"
+}

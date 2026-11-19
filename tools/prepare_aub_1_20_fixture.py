@@ -68,8 +68,8 @@ def _prepare_florin_scene(repo: Path, output: Path, *, fixture: str, contract: s
                           case_id: str, mode: str, entry: str, advance: str,
                           rules: str = "1066 Robert of Apulia, historical character1128, original castle capital; vanilla rules.") -> Path:
     repo, output = checked_output(repo, output)
-    if engine_identity(repo)["game_version"] != "1.21.0":
-        raise ValueError("Florin scene requires exact CK3 1.21.0")
+    if engine_identity(repo)["game_version"] not in {"1.21.0", "1.21.0.3"}:
+        raise ValueError("Florin scene requires exact reviewed CK3 1.21 build")
     source = repo / "tools/fixtures" / fixture
     files = sorted(path for path in source.rglob("*") if path.is_file())
     raw: object = json.loads((repo / "tools/ck3_mod_acceptance_cases" / contract).read_text(encoding="utf-8"))

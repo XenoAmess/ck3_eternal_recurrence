@@ -38,11 +38,13 @@ def engine_identity(repo: Path, *, game_dir: Path | None = None,
     configured = os.environ.get("XAR_CK3_GAME_DIR")
     game = (game_dir or (Path(configured) if configured else repo / "Crusader Kings III")).resolve()
     exe_sha256 = digest(game / "binaries/ck3.exe")
-    matches = [item for item in registry.NATIVE_BUILD_IDENTITIES
+    matches = [item for item in registry.ENGINE_BUILD_IDENTITIES
                if item.executable_sha256.lower() == exe_sha256 and item.game_version.startswith(("1.20.", "1.21."))]
     if len(matches) != 1:
         raise ValueError("installed EXE differs from the registry's exact CK3 1.20/1.21 identities")
-    build = registry.require_exact_native_build(matches[0].game_version, exe_sha256)
+    # Exact engine metadata is sufficient for script preparation. Native wire
+    # admission continues to use its separately qualified build registry.
+    build = matches[0]
     configured_manifest = os.environ.get("XAR_CK3_STEAM_MANIFEST")
     manifest = (steam_manifest or (Path(configured_manifest) if configured_manifest
                                   else game.parent.parent / "appmanifest_1158310.acf")).resolve()
@@ -133,7 +135,7 @@ def balanced_excerpt(source: str, marker: str) -> str:
     raise ValueError("unterminated excerpt")
 
 
-def decision_effect(repo: Path, product: str, relative: str, name: str) -> tuple[str, dict]:
+def decision_effect(repo: Path, product: str, relative: str, name: str) -> tuple[str, dict[str, str]]:
     source = repo / product / relative
     raw = source.read_bytes()
     text = raw.decode("utf-8-sig").replace("\r\n", "\n")
@@ -153,7 +155,8 @@ def required_markers(runner: Path) -> list[str]:
     raise ValueError("runner marker inventory is unavailable")
 
 
-def finish_receipt(repo: Path, source: Path, output: Path, files: list[Path], receipt: dict) -> dict:
+def finish_receipt(repo: Path, source: Path, output: Path, files: list[Path],
+                   receipt: dict[str, object]) -> dict[str, object]:
     receipt.update({
         **engine_identity(repo),
         "source_fixture":str(source), "prepared_fixture":str(output),

@@ -237,6 +237,10 @@ class FlorinBuildingExtractionTests(unittest.TestCase):
             self.assertEqual(snapshot["included_edges"][0]["resources"], {"gold": "200"})
             self.assertEqual(snapshot["included_edges"][0]["gates"], {"can_construct": "always = yes"})
             self.assertEqual(snapshot["included_edges"][0]["district_level_requirement"], {"kind": "scalar", "value": "2"})
+            hotfix = extractor.build_snapshot(game, game_version="1.21.0.3")
+            self.assertEqual(hotfix["game_version"], "1.21.0.3")
+            self.assertEqual({key: value for key, value in hotfix.items() if key != "game_version"},
+                             {key: value for key, value in snapshot.items() if key != "game_version"})
 
     def test_missing_or_ambiguous_primary_district_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -283,10 +287,11 @@ class FlorinBuildingExtractionTests(unittest.TestCase):
             game = self.game(Path(temporary))
             historical = game / "historical.json"
             historical.write_bytes(b"historical content")
-            args = ["--game-root", str(game), "--game-version", "1.21.0"]
-            with patch.object(extractor, "OUTPUT", historical), contextlib.redirect_stderr(io.StringIO()):
-                self.assertEqual(extractor.main(args), 1)
-                self.assertEqual(extractor.main([*args, "--output", str(historical)]), 1)
+            for version in ("1.21.0", "1.21.0.3"):
+                args = ["--game-root", str(game), "--game-version", version]
+                with self.subTest(version=version), patch.object(extractor, "OUTPUT", historical), contextlib.redirect_stderr(io.StringIO()):
+                    self.assertEqual(extractor.main(args), 1)
+                    self.assertEqual(extractor.main([*args, "--output", str(historical)]), 1)
             self.assertEqual(historical.read_bytes(), b"historical content")
 
 

@@ -1,4 +1,4 @@
-"""Reviewed CK3 1.21.0 building graph for Auto Upgrade Buildings."""
+"""Reviewed CK3 1.21.0.3 building graph for Auto Upgrade Buildings."""
 
 from __future__ import annotations
 
@@ -13,8 +13,8 @@ from extract_auto_upgrade_buildings import BlockScriptValue, ScalarScriptValue
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SNAPSHOT = ROOT / "tools" / "auto_upgrade_buildings_1_21_0.json"
-EXPECTED_GAME_VERSION = "1.21.0"
+SNAPSHOT = ROOT / "tools" / "auto_upgrade_buildings_1_21_0_3.json"
+EXPECTED_GAME_VERSION = "1.21.0.3"
 # Independently reviewed contracts; extracting/generating never refreshes these.
 # Policy hashes every edge field except vanilla gates, the primary roots and
 # Great Project exclusions, including scalar/block district level requirements.
@@ -149,7 +149,7 @@ def validate_snapshot_contract(payload: dict[str, object]) -> None:
     if _semantic_sha256(policy) != EXPECTED_POLICY_SHA256:
         raise ValueError("reviewed building upgrade policy contract drifted")
     if _semantic_sha256(gates) != EXPECTED_GATES_SHA256:
-        raise ValueError("reviewed CK3 1.21.0 building gate contract drifted")
+        raise ValueError("reviewed CK3 1.21.0.3 building gate contract drifted")
 
 
 def _load() -> tuple[dict[str, object], tuple[BuildingEdge, ...], tuple[ExcludedEdge, ...]]:
