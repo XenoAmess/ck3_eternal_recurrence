@@ -121,6 +121,7 @@ public final class RootHolyWarPlanningPolicies {
         private Decision defenders(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,PlanningRequest request,Draft previous,Complete frame)throws IOException {
             var snapshot=request.observations().snapshot();
             if(!ready(snapshot))return annotate(previous,"ordinary_holy_war_candidate_observation",diagnostic(request,"frame_not_ready",null));
+            return observeDefenderCatalogue(snapshot,request.observations().bridgeCapabilities(),previous,()->{
             var wars=army.quotes().producers().wars();var current=new ArmyRetreatFrames.Current(frame,request.deadline());
             var lease=wars.currentDeclarations(current);
             if(lease.isEmpty())lease=wars.canonicalDeclarations(same,context.readCatalog(),current);
@@ -138,6 +139,7 @@ public final class RootHolyWarPlanningPolicies {
             var holy=(ArmyWarReadCodec.HolyContext)known.value();
             return annotate(previous,"ordinary_holy_war_candidate_observation",defenderAnnotation(snapshot,holy,ordinal)
                     .with("original_read",value(known.originalReceipt().toJson())).with("original_declarations",value(lease.orElseThrow().evidence().toJson())));
+            });
         }
     }
     public record Need(int warId,int targetProvince,int garrison,int strength) {
@@ -215,6 +217,15 @@ public final class RootHolyWarPlanningPolicies {
         for(String field:List.of("primary_attacker_character_id","primary_defender_character_id","primary_defender_faith_available","primary_defender_faith_unavailable_reason","primary_defender_rite_id","primary_defender_faith_id","cb_flags_raw","defender_faith_can_join","native_joiner_set_observed","joiner_count","joiners","raw_scale","unit","is_final_join_score"))out.set(field,child.isNull()?null:child.get(field));
         out.set("defender_inputs_available",child.isNull()?null:child.get("available"));out.set("defender_inputs_unavailable_reason",child.isNull()?null:child.get("unavailable_reason"));
         JsonNode cost=original.get("cb_cost");out.set("cb_cost_available",cost!=null&&cost.isObject()?cost.get("available"):null);return object(out);
+    }
+    @FunctionalInterface interface DeclarationObservation {Decision read()throws IOException;}
+    /** Preserve this optional observation stage without manufacturing a declaration catalogue or querying an unadvertised source. */
+    static Decision observeDefenderCatalogue(Obj snapshot,Set<String> capabilities,Draft previous,DeclarationObservation actual)throws IOException {
+        if(!capabilities.contains("game.command.query-declarable-wars")) {
+            var detail=annotation(snapshot,"native_catalogue_unavailable").put("reason","the actual advertised declaration capability is absent; no current or canonical declaration read was attempted");
+            return annotate(previous,"ordinary_holy_war_candidate_observation",object(detail));
+        }
+        return actual.read();
     }
     static Decision annotate(Draft previous,String key,Obj annotation) {
         return new Annotate(new Draft(previous.policy(),previous.phase(),previous.reason(),previous.kind(),previous.command(),previous.purpose(),previous.domain(),previous.detail().with(key,annotation)),"current native holy observation retained the identical chosen action");

@@ -1,0 +1,73 @@
+{
+  "schema": "ck3.normal-main37-opening-current-holywar-ENV22-runtime-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "normal_package": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/qualification/maven-package109.END.json",
+    "bytes": 944,
+    "sha256": "a1d4f8260c06811ab0709655c5b15b5cd220d5ed69f45877695c1d1e03eecc8a"
+  },
+  "three_existing_local_changes": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/source/local-service/src/main/java/org/xar/ck3/control/service/root/OpeningTransitions.java",
+      "bytes": 33967,
+      "sha256": "2c80f37109ac889bf47b4e2a6395a8c30b9887ef8343d21ea9df597190fbda00"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/source/local-service/src/main/java/org/xar/ck3/control/service/root/GovernanceOrdinaryRuntimeInstaller.java",
+      "bytes": 30116,
+      "sha256": "2a67182f42c19e34b192a81ba63ef079f50175dc4909ba3a09b3228f3b09c99f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/source/local-service/src/main/java/org/xar/ck3/control/service/root/RootHolyWarPlanningPolicies.java",
+      "bytes": 27049,
+      "sha256": "eb7d6c42b9cd613c5cb948ff851ac234e2766de68ecab43181d271b05a564d4f"
+    }
+  ],
+  "software_qualification": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/OPENING-CURRENT-HOLYWAR-3LEAF-5METHODS-SOFTWARE-READY109.json",
+    "bytes": 3617,
+    "sha256": "bc8526184fdce23e3db80e99ab5be7a227fccb122aa5539e172df9558199d36e"
+  },
+  "runtime_archives": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/qualification/MAIN37-FROZEN-RUNTIME-ARCHIVES110.json",
+    "bytes": 92814,
+    "sha256": "26f00818106ba931ddad354e03261d2dcdca6d4fc358156b93e0d93197f0e025"
+  },
+  "new_local_only_App_storage_NT_reused": true,
+  "genuine_archive_owner_actual_current_replay": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/qualification/genuine110.END.json",
+    "bytes": 405,
+    "sha256": "3dd499f58a9708c1c2ac9b3225f88b7c223602b1205f372bf4341aff73615cb8"
+  },
+  "public_environment_origins": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/qualification/ACTUAL-ENV22-NEWMAIN37-ORIGINS111.json",
+    "bytes": 143607,
+    "sha256": "a57deb788971cdc103dd0eb9f448477083c7d5ddd97955d7d9f1374c864a5fab"
+  },
+  "environment": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/env22/xar-autoplayer-environment.json",
+    "bytes": 36869,
+    "sha256": "7a3800318d60dfaaa086101bf290a7ea4e07f84f5dbfccf999c533af0179d4d3"
+  },
+  "entry_prefixes": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/qualification/NORMAL-MAIN37-ENTRY-PREFIXES112.json",
+    "bytes": 1516,
+    "sha256": "263ad038c69f32fe787afbe441e292dbf9538ff15e2dde4c038a91aaab176b89"
+  },
+  "same_plan_checker": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/qualification/ACTUAL-CALLER37-INPUTS112.json",
+    "bytes": 736,
+    "sha256": "f94e9d0534cdf0097f4d7982fe4db0218ec7322f8e58c40574a3268ed540d668"
+  },
+  "unique_WAIT_response23": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-continuity-main37/qualification/first-codex-response23.py",
+    "bytes": 3062,
+    "sha256": "11b1759427c718a46e7f348220a6ed5df40cc850cff214b7dee0a17176ab518f"
+  },
+  "actual_native56_positive_scope": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE22-NATIVE56-ACTUAL-MAIN-TICKET-OPENING-ORIGINALS01.json",
+    "bytes": 24259,
+    "sha256": "0d1abde59c03f3f9f8443a76eea2c8512a955680a7ebf764b300910e2c4da949"
+  },
+  "qualification": "Normal sole local MAIN +current157 CP+actual wholearchive owner and closed22 original pure replay +public completed ENV22 consumer PASS. Old50JAR frozen exact. Two real Native56 query paths were available in closed22; new current-gate writer completion/holywar fallback/Root/WAIT not live-qualified until fresh23. Full governance/actions/finance/Save/day0 preserved. Native57 merged-source software qualification is separate; currentRuntimeDLL remains original56 frozen6d6edd. No repeatfullSaved/4module/Native/oldP. R37/JAR/JNA now frozen for fresh23."
+}

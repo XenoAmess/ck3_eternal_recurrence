@@ -1,0 +1,72 @@
+{
+  "schema": "xar.native56.opening-readonly-candidate-ready/v1",
+  "qualification": "ACTUAL_DEFAULT_OFF_AND_ON_RAM_CORE_FULL_ACTOR_READER_PRODUCTION_FORMATTER_PASS_THEN_INDEPENDENT_CANDIDATE_DLL_ONLY",
+  "source_overlay": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\PRODUCTION-OVERLAY56.json",
+    "bytes": 5139,
+    "sha256": "81f16da2b594c245e561798520a1e2e199142e7ca85220da606465091ce46faa"
+  },
+  "wire": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\OPENING-READONLY-WIRE56.json",
+    "bytes": 7152,
+    "sha256": "85f7542bd47b93c96690365bd4fe4ce87514be4ba21a5b168f35621462bb5781"
+  },
+  "wire_numeric": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\OPENING-WIRE-NUMERIC-AMENDMENT56.json",
+    "bytes": 1595,
+    "sha256": "ee76937997e9f8b85ce2c72668663a2a6ca09a0a81278846d9564cc197ec4943"
+  },
+  "abi": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\OPENING-ABI56.json",
+    "bytes": 1129,
+    "sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+  },
+  "reader": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\candidate\\src\\ck3_1210_opening_readonly56.cpp",
+    "bytes": 16745,
+    "sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\INPUTS56.json",
+    "bytes": 489675,
+    "sha256": "c46bab2c73a1c47d6eefc395dc46dfc56c17fb69bb5f07ba32b001db027e7435"
+  },
+  "plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\PLAN56.json",
+    "bytes": 134803,
+    "sha256": "f80b2f29074906b6aec5840df9e49008f5b3618606ea3e3583704c3b5c5efcd3"
+  },
+  "typing": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\typing-01\\TYPING-READY56.json",
+    "bytes": 2164,
+    "sha256": "0852c8567e9d707f71ba1d3856df498ba27aa93cdd89f2aa8fb3292c4e0af0a7"
+  },
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\build-01\\ACTUAL56.json",
+    "bytes": 18880,
+    "sha256": "959cdbcac146250a166b48de62ac2e642c107a61e38f69c3a673848c86900897"
+  },
+  "originals": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\build-01\\ACTUAL-ORIGINALS56.json",
+    "bytes": 229216,
+    "sha256": "0ee7008e3968837473e04af52f7de630d2b9878deea439d5af90a320315bc360"
+  },
+  "link_proof": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\build-01\\FINAL-LINK-INPUTS56.json",
+    "bytes": 108056,
+    "sha256": "39957f5cc767c7252f23e42643a5bda804130a958add686c92d1a208c63c7bf9"
+  },
+  "candidate_dll": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\build-01\\frozen\\xar_ck3_bridge.dll",
+    "bytes": 13443584,
+    "sha256": "6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3"
+  },
+  "not_qualified": [
+    "actual native getter bodies",
+    "actual application-main TLS/owner/MQ custody",
+    "Java current-frame consumer interop",
+    "Runtime adoption/live",
+    "full governance/stock/action/Cash/finance/budget"
+  ],
+  "Native54_forced_publisher_retained": true
+}

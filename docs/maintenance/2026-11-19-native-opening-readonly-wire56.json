@@ -1,0 +1,78 @@
+{
+  "contract": "xar.native56.opening-readonly-wire-contract/v1",
+  "qualification": "SOURCE_ONLY_CONTRACT_NOT_A_PACKET_NOT_NATIVE_OR_JAVA_P",
+  "build": {
+    "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+    "game_version": "1.21.0",
+    "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79"
+  },
+  "baseline": "Native54 forced-publication behavior retained. Native55 is separate and unchanged; no Cash capability inherited by this scope.",
+  "request": {
+    "exact_fields": ["type", "protocol_version", "request_id", "step", "expected_revision"],
+    "type": "execute_step",
+    "protocol_version": 1,
+    "request_id": "existing NativeWire simple request id, outer id must match",
+    "expected_revision": "canonical JSON integer, uint64 1..18446744073709551615",
+    "selectors": "No actor, date, address, context, PID, source or campaign selector accepted. Current worker Full and native owner determine them. Duplicate/nested/extra/coerced fields rejected."
+  },
+  "operations": [
+    {
+      "step": "query-current-lifestyle-scope-26757580-v1",
+      "capability": "game.query.current-lifestyle-scope.26757580.v1",
+      "schema": "xar.ck3.lifestyle-scope.26757580.v1",
+      "profile_id": "ck3-26757580-lifestyle-scope-v1",
+      "data_exact_fields": ["schema", "status", "unavailable_reason", "read_only", "full_governance_ready", "action_ready", "native_revision", "snapshot_id", "date_raw", "player_character_id", "government", "readiness", "origin", "provenance"],
+      "available_government": {
+        "exact_fields": ["key", "native_flag_count", "flags"],
+        "key": "actual nonempty definition key, UTF-8 owned copy",
+        "native_flag_count": "int32 0..4096, actual complete native span count",
+        "flags": "complete native-order array of actual identifier names; preserve duplicates/order, count equals native_flag_count; no named-bit substitution or UI-filtered list"
+      },
+      "readiness_exact_fields": ["same_frame_ready", "government_key_ready", "government_flags_ready"],
+      "unavailable_values": "government=null; all readiness false; all four frame identity fields null"
+    },
+    {
+      "step": "query-current-lifestyle-state-26757580-v1",
+      "capability": "game.query.current-lifestyle-state.26757580.v1",
+      "schema": "xar.ck3.lifestyle-current.26757580.v1",
+      "profile_id": "ck3-26757580-lifestyle-current-v1",
+      "data_exact_fields": ["schema", "status", "unavailable_reason", "read_only", "full_governance_ready", "action_ready", "native_revision", "snapshot_id", "date_raw", "player_character_id", "current_focus", "current_lifestyle_progress", "readiness", "origin", "provenance"],
+      "current_focus_exact_fields": ["presence", "key", "lifestyle_key"],
+      "current_lifestyle_progress_exact_fields": ["presence", "lifestyle_key", "xp_total_raw", "xp_within_level_raw", "xp_per_level", "unspent_perk_points", "used_perk_points"],
+      "presence": "present or absent only; unknown source means unavailable whole DATA, never absent",
+      "present_focus": "actual nonempty focus key and actual nonempty linked lifestyle key",
+      "present_progress": "actual linked lifestyle key equals current_focus.lifestyle_key; xp_total_raw and xp_within_level_raw are native signed-Q100000 observations emitted as JSON integers, both >=0; xp_per_level is native unscaled threshold integer >=1; unspent_perk_points and used_perk_points are native named getter observations >=0. Do not reinterpret as lifetime earned or subtract Used from GetPerkPoints without native evidence.",
+      "known_absence": "Only verified native null/default absence: presence=absent and every other member null. Both absence tags and readiness require actual source proof; malformed pointers/unknown layout never become absence.",
+      "readiness_exact_fields": ["same_frame_ready", "current_focus_ready", "lifestyle_progress_ready"],
+      "unavailable_values": "current_focus=null and current_lifestyle_progress=null; all readiness false; all four frame identity fields null"
+    }
+  ],
+  "common_data": {
+    "status": ["available", "unavailable"],
+    "unavailable_reason": "available => null, unavailable => fixed nonempty owned diagnostic string",
+    "read_only": true,
+    "full_governance_ready": false,
+    "action_ready": false,
+    "available_native_revision": "actual same-worker current publication uint64 as JSON integer; equals requested expected_revision",
+    "available_snapshot_id": "native:<canonical decimal native_revision>",
+    "available_date_raw": "actual same Full/live Core date, signed int32 JSON integer",
+    "available_player_character_id": "actual same Full/live Core complete signed int32 Character id, including zero/negative generations, except -1 sentinel",
+    "available_requires": "current worker Full basis, independent actual current Full before/after, repeated native field/source copies, complete actual main-owner/module/TLS/executing ticket/context/pump checks, actor/date/core roots and revision-source identity stable",
+    "origin_exact_fields": ["source_kind", "ticket_sequence", "pump_epoch", "thread_id", "main_owner_observed"],
+    "origin": {
+      "source_kind": ["application_main_ticket", "offline_fixture", "unavailable"],
+      "ticket_sequence": "uint64 JSON integer when observed, otherwise null",
+      "pump_epoch": "uint64 JSON integer when observed, otherwise null",
+      "thread_id": "uint32 JSON integer when observed, otherwise null",
+      "main_owner_observed": "true only for real registered application-main ticket scope; offline_fixture and unavailable always false. Offline DATA cannot install a live producer."
+    },
+    "provenance_exact_fields": ["profile_id", "adapter_id", "game_version", "executable_sha256", "reader_source_sha256", "abi_manifest_sha256"],
+    "provenance": "Exact operation profile_id and build tuple above. Two lowercase 64-hex hashes pin separately frozen pure reader source and matching static ABI manifest; final values supplied with actual producer artefacts, not guessed in this contract. No legacy 18/full ROOT provenance alias."
+  },
+  "envelope": {
+    "typed_DATA": "command_result/protocol_version1/request_id/ok=true/result=<exact typed DATA>. An observed status=unavailable remains typed read-only DATA, not root or action permission.",
+    "route_failure": "Invalid request, unsupported capability, unsubmitted/reclaim-failed MQ or no typed callback result uses existing command_result ok=false/error, no result. A false route ACK cannot be converted to available typed DATA."
+  },
+  "authority": "Both features default OFF. Preserve old ROOT/LIFE schema, step, provenance, nativeQualified and all capabilities. No income/domain/council/rules/stock focus legality/selection/Root complete/finance/budget permission. Existing-focus-only Java use remains read-only; missing-focus action still requires its independent final legality path.",
+  "pending_evidence": "Government key/type/complete string-flag and Lifestyle focus/progress source/caller evidence are being closed independently. This schema does not attest those values or an actual runtime source."
+}

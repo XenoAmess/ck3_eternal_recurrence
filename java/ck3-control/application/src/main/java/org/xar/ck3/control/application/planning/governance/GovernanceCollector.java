@@ -35,9 +35,14 @@ import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 
 /** Actual Java collection sequence over the sole guarded read transport. It does not implement another native client. */
 public final class GovernanceCollector implements GovernanceObservationSupplier {
+    /** Partial readonly Opening DATA has no legacy campaign ROOT or final-action qualification. */
+    public record ReadOnlyOpening(Obj scope,Obj query) {
+        public ReadOnlyOpening {Objects.requireNonNull(scope);Objects.requireNonNull(query);}
+    }
     public interface LifestyleReadPort {
         Read<Obj> formal(PlanningRequest request);
         Read<Obj> stockFocus(PlanningRequest request, String target);
+        default Optional<Read<ReadOnlyOpening>> openingReadOnly(PlanningRequest request) {return Optional.empty();}
     }
     @FunctionalInterface public interface RootReadPort { Read<Obj> read(PlanningRequest request); }
     @FunctionalInterface public interface CrownCooldownReadPort { Read<org.xar.ck3.control.wave3.governance.crowncooldown.CrownCooldownCodec.ClockRequest> read(PlanningRequest request); }
@@ -126,6 +131,23 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
     }
 
     @Override public Read<Life> lifestyle(PlanningRequest request, String preferredFocus, boolean opening) {
+        if(opening&&lifestyleReads.isPresent()) {
+            var selected=lifestyleReads.orElseThrow().openingReadOnly(request);
+            if(selected.isPresent()) {
+                if(selected.orElseThrow() instanceof Unavailable<ReadOnlyOpening> unavailable)return new Unavailable<>(unavailable.reason());
+                var actual=(Known<ReadOnlyOpening>)selected.orElseThrow();var data=actual.value();
+                if(new Text("admitted").equals(data.scope().get("status"))) {
+                    bindLife(request,data.query());
+                    StrictJson.require(GovernancePolicies.existingFocus(data.query()),"readonly Opening cannot authorize an unobserved or absent focus");
+                }else StrictJson.require(new Text("not_requested_outside_current_admitted_scope").equals(data.query().get("status")),
+                        "outside Opening scope cannot acquire a current-focus claim");
+                Obj wrapper=new Obj(Map.of()).with("schema",new Text(LifestyleConsumerCodec.SCHEMA))
+                        .with("baseline_plan",new Obj(Map.of()).with("selected_step",new Text("life-advance")))
+                        .with("scope",data.scope()).with("query",data.query()).with("preferred_focus_target_key",new Text(preferredFocus))
+                        .with("allow_wartime_initial_focus",new Bool(true));
+                return new Known<>(new Life(LifestyleConsumerCodec.decode(encode(wrapper)),lifecycleHistory(request),data.query()),actual.originals());
+            }
+        }
         Read<Obj> root = root(request);
         if (root instanceof Unavailable<Obj> unavailable) return new Unavailable<>(unavailable.reason());
         Known<Obj> rootKnown = (Known<Obj>) root;

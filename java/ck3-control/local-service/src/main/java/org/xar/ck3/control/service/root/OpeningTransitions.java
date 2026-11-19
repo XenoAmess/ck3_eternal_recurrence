@@ -14,6 +14,7 @@ import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.*;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import static org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.*;
+import org.xar.ck3.control.nativebridge.capabilities.governance.GovernancePlanningReads.OpeningReadProfile;
 
 /** Transition producer owned by the original OPENING_GATE registration; no second writer or SAVE authority. */
 public final class OpeningTransitions implements OrdinaryPlanCompletion {
@@ -26,8 +27,14 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
     private record Input(Kind kind,ExactRef previous,ExactRef original) { }
     private final RootRuntimeContext context;private final List<ExactRef> producers;
     private GovernanceRuntimeInstaller.Installed nativeGovernance;
+    private OpeningReadProfile.Bindings readOnlyOpening;
     public OpeningTransitions(RootRuntimeContext context,List<ExactRef> producers){this.context=Objects.requireNonNull(context);this.producers=List.copyOf(producers);}
     public void bindNative(GovernanceRuntimeInstaller.Installed actual){nativeGovernance=Objects.requireNonNull(actual);}
+    void bindReadOnlyOpening(OpeningReadProfile.Bindings actual) {
+        StrictJson.require(nativeGovernance==null&&readOnlyOpening==null,"readonly Opening binds once independently of legacy Native governance");
+        readOnlyOpening=Objects.requireNonNull(actual);
+    }
+
     private ContinuityStorePort.Session session()throws IOException{var same=context.borrowedSession();context.writer().requireSession(same);return same;}
     public RootDomainIntentPreparation.Binding pendingBinding(ExactRef implementation){return new RootDomainIntentPreparation.Binding("opening-focus",implementation,
             command->command.operation().equals(GovernancePolicies.FOCUS),(same,command)->{try{
@@ -98,10 +105,22 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
             if(!new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text("consume_verified_existing_focus_on_following_turn").equals(intent))return new Unchanged("opening has no verified existing-focus intent");
             if(document.existingObserved().filter(observed->observed.frame().snapshotId().equals(request.before().frame().snapshotId())).isPresent())
                 return new Unchanged("existing opening focus awaits a different actual formal snapshot");
-            var definitions=Objects.requireNonNull(nativeGovernance,"actual native LIFE installation missing").planningReads();
-            var result=context.reads().read(same,definitions.formal(),new PlanningReadRequest(request.before(),request.source(),request.sessionId(),definitions.formal().operation(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(Map.of()),request.deadline()));
-            if(!(result instanceof PlanningReadResult.Known<org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj> known))return new Unchanged("actual existing-focus formal query unavailable");
-            var payload=current(same,request);payload.set("query",known.originalReceipt().toJson());return planning(same,Kind.EXISTING,before,payload);
+            final ExactRef original;
+            if(readOnlyOpening!=null) {
+                var contract=readOnlyOpening.current();StrictJson.require(context.readCatalog().containsIdentity(contract),"readonly Opening current definition is not the identical installed catalog member");
+                var readRequest=new PlanningReadRequest(request.before(),request.source(),request.sessionId(),contract.operation(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(Map.of()),request.deadline());
+                var result=context.reads().read(same,contract,readRequest);
+                if(!(result instanceof PlanningReadResult.Known<OpeningReadProfile.Data> known))return new Unchanged("actual readonly Opening current query unavailable");
+                context.archive().inSession(same,archive->{org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(known.receipt(),archive);return Boolean.TRUE;});
+                requireReadOnlyExisting(known.receipt(),contract);original=known.originalReceipt();
+            }else {
+                if(nativeGovernance==null)throw new IOException("actual native LIFE installation missing");
+                var definitions=nativeGovernance.planningReads();
+                var result=context.reads().read(same,definitions.formal(),new PlanningReadRequest(request.before(),request.source(),request.sessionId(),definitions.formal().operation(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(Map.of()),request.deadline()));
+                if(!(result instanceof PlanningReadResult.Known<org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj> known))return new Unchanged("actual existing-focus formal query unavailable");
+                original=known.originalReceipt();
+            }
+            var payload=current(same,request);payload.set("query",original.toJson());return planning(same,Kind.EXISTING,before,payload);
         }catch(IOException|IllegalArgumentException|IllegalStateException failure){return new Blocked("actual opening consumption unavailable: "+failure.getMessage(),List.of());}}
     private ObjectNode checkpointPayload(ContinuityStorePort.Session same,PlanningRequest request,CheckpointPair pair,ActionReceipt focus)throws IOException {
         var payload=current(same,request);Optional<ExactRef> basis=Optional.empty();SavedCheckpointMaterial material;
@@ -148,7 +167,14 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         context.semanticVerifier().verify(same,new SessionIdentity(current.before().machineId(),current.before().game(),current.sessionId()),proof);refs.addAll(proof.references());refs.add(ExactRef.fromJson(payload.get("request")));
         if(input.kind()==Kind.EXISTING){StrictJson.object(payload,Set.of("request","semantic","query"));requireExisting(old,old.preparedCommand().isPresent()?canonical(same,command(same,old.preparedCommand().orElseThrow()).actionId()):Optional.empty());
             var read=context.archive().inSession(same,archive->archive.loadRead(ExactRef.fromJson(payload.get("query"))));StrictJson.require(read.request().before().equals(current.before())&&read.request().source().equals(current.source()),"existing focus read crossed its actual frame/source");
-            var query=Objects.requireNonNull(nativeGovernance,"actual LIFE replay missing").planningReads().formal().decode(read);StrictJson.require(GovernancePolicies.existingFocus(query),"actual LIFE read has no qualified existing focus/progress");refs.add(ExactRef.fromJson(payload.get("query")));
+            if(readOnlyOpening!=null&&read.contractId().equals(readOnlyOpening.current().contractId())) {
+                context.archive().inSession(same,archive->{org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(read,archive);return Boolean.TRUE;});
+                requireReadOnlyExisting(read,readOnlyOpening.current());
+            }else {
+                var query=Objects.requireNonNull(nativeGovernance,"actual LIFE replay missing").planningReads().formal().decode(read);
+                StrictJson.require(GovernancePolicies.existingFocus(query),"actual LIFE read has no qualified existing focus/progress");
+            }
+            refs.add(ExactRef.fromJson(payload.get("query")));
             boolean following=old.existingObserved().isPresent()&&!old.existingObserved().orElseThrow().frame().snapshotId().equals(current.before().frame().snapshotId());
             return encode(old,old.observed(),following?OpeningStage.COMPLETE:OpeningStage.AWAIT_SUBMIT,Optional.empty(),Optional.empty(),refs,Optional.empty(),Optional.of(current.before()));}
         var focus=receipt(same,old.actionReceipt().orElseThrow(()->new IOException("opening lacks independent material focus receipt")));validate(same,focus);
@@ -177,6 +203,22 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
                 &&GovernanceReceipts.consumeOpeningSameGame(focus,current,old.checkpoint()).status()==GovernanceReceipts.Status.CONSUMED,
                 "opening has not reached actual following-turn original focus consumption");
         return encode(old,old.observed(),OpeningStage.COMPLETE,old.actionReceipt(),old.checkpoint(),refs,old.preparedCommand(),old.existingObserved());}
+    /** Pure archival replay. Native/source/current writer qualification stays with the installed catalog and retained original verifier. */
+    static void requireReadOnlyExisting(PlanningReadReceipt read,ReadContract<OpeningReadProfile.Data> contract) {
+        StrictJson.require(contract.operation().value().equals(OpeningReadProfile.Kind.CURRENT.step())&&read.contractId().equals(contract.contractId())
+                &&read.request().operation().equals(contract.operation())&&read.request().arguments().members().isEmpty(),"exact readonly current-focus receipt required");
+        var data=contract.replay(read);var id=read.request().before().frame().identity();
+        requireReadOnlyExistingData(data,new OpeningReadProfile.Frame(id.nativeRevision(),id.dateRaw(),id.player()));
+    }
+    static void requireReadOnlyExistingData(OpeningReadProfile.Data data,OpeningReadProfile.Frame expected) {
+        data.requireApplicationMainOrigin();StrictJson.require(readOnlyExistingMatches(data,expected),
+                "readonly Opening existing focus lacks its original actual current frame/progress");
+    }
+    /** DATA predicate only. Its caller must separately verify the original read, catalog, writer and main-ticket origin. */
+    static boolean readOnlyExistingMatches(OpeningReadProfile.Data data,OpeningReadProfile.Frame expected) {
+        return data.kind()==OpeningReadProfile.Kind.CURRENT&&data.available()&&data.progress().filter(OpeningReadProfile.FocusProgress::present).isPresent()
+                &&data.frame().filter(expected::equals).isPresent();
+    }
     static void requireExisting(GovernanceOpeningDocument.Document document,Optional<ActionReceipt> canonical) {
         StrictJson.require(document.actionReceipt().isEmpty()&&document.checkpoint().isEmpty()
                 &&(document.preparedCommand().isEmpty()||document.stage()==OpeningStage.AWAIT_RECEIPT&&canonical.isEmpty()),

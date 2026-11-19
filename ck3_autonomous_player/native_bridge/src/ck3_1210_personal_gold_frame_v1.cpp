@@ -9,6 +9,9 @@
 #if defined(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1)
 #include "xar_bridge/ck3_1210_active_wars_frame_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56)
+#include "xar_bridge/ck3_1210_opening_frame56.hpp"
+#endif
 #include <windows.h>
 #include <cstring>
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
@@ -162,6 +165,13 @@ bool Read(PersonalGoldMailboxContextV1 &q,
 #if defined(XAR_CK3_ENABLE_1210_RESOURCE_OWNER_SOURCES_V3)
   q.additional_sources={};
 #endif
+  if(q.kind==ActorObservationKindV1::opening_readonly56) {
+#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56)
+    return ExecuteOpeningOnActorOwner56(q,s);
+#else
+    return true;
+#endif
+  }
   if(q.kind==ActorObservationKindV1::character_roster) {
 #if defined(XAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1)
     return ExecuteCharacterRosterOnActorOwnerV1(q,s);

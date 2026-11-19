@@ -1,0 +1,108 @@
+{
+  "schema": "ck3.opening56-readonly-four-production-four-new-software-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "typing": {
+    "phase": "type",
+    "begin_utc": "2026-11-19T05:57:28.498675+00:00",
+    "end_utc": "2026-11-19T05:57:30.363602+00:00",
+    "seconds": 1.8649299999233335,
+    "exit": 0,
+    "scope": "Joint four production leaves/two tests: two exact source-profile/catalog DATA cases and two selected actual C++ packet cold-consumer cases. No Native execution, RootContext, live main-ticket, Game, action or Root/WAIT authority."
+  },
+  "run": {
+    "phase": "interop",
+    "begin_utc": "2026-11-19T05:57:39.483061+00:00",
+    "end_utc": "2026-11-19T05:57:40.503644+00:00",
+    "seconds": 1.0205858000554144,
+    "exit": 0,
+    "scope": "Joint four production leaves/two tests: two exact source-profile/catalog DATA cases and two selected actual C++ packet cold-consumer cases. No Native execution, RootContext, live main-ticket, Game, action or Root/WAIT authority."
+  },
+  "new_methods": 4,
+  "passed": 4,
+  "skipped": 0,
+  "sources": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source-final100/GovernanceCollector.java",
+      "bytes": 34049,
+      "sha256": "e3bd296f5cc7c655d20680a5f69fdfbe4f60c90aee157cf9eda627eeae216be7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source-final100/GovernancePlanningReads.java",
+      "bytes": 55912,
+      "sha256": "c6dc22786e00099d4a86b027ca678e73d4fb14851298104c516a9982d309e90b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source-final100/GovernanceRuntimeInstaller.java",
+      "bytes": 38790,
+      "sha256": "33030aeec16b357e5eaadd73da9502e4dbb2604cae20d8d6a556e9ffd661c260"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source-final100/GovernanceOrdinaryRuntimeInstaller.java",
+      "bytes": 29941,
+      "sha256": "11475e1640167864890e203611bc5d1751c089f1a588027d3459ea384821bd1a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source-final100/OpeningReadBindingQualificationTest.java",
+      "bytes": 3901,
+      "sha256": "6c4cd758b809e5b04a72fcacf5ace1459b1ffc7ac2dc2852da948a4cc239f26d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source-final100/OpeningRead56CppProducerTest.java",
+      "bytes": 6925,
+      "sha256": "8e3218ef57a69f29f511465e04e339bda83f8a541810c371a5512ce0e83c1e9d"
+    }
+  ],
+  "request": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/OPENING56-4TU-4NEW-METHODS-SAME96M-REQUEST100.json",
+    "bytes": 6648,
+    "sha256": "afb1f2f7d066bfa7df262ac48bde8175ccb4fcb3a73798782580376280d158c2"
+  },
+  "actuals": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/type100.END.json",
+      "bytes": 419,
+      "sha256": "86898bc734aace551be561601be31fb77cfa247d0a76c3b66232841443795b3e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/type100.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/type100.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/interop100.END.json",
+      "bytes": 422,
+      "sha256": "9d7ad089a1a5d6b1917dbc15dd1638cd52dcb3a37afe9ba8618ef1b86c870d30"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/interop100.stdout",
+      "bytes": 480,
+      "sha256": "e93ca97a4fb08f5cb8d88426f26865072057ccfb73e54346d587e87add648822"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/interop100.stderr",
+      "bytes": 234,
+      "sha256": "475ee2164e85568dc0ec0b549a5513ac0468ba9951a3d5d91930291acafc2379"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/reports100/TEST-junit-jupiter.xml",
+      "bytes": 36768,
+      "sha256": "600284e60adf83641925ea3c5cbf86af3c6b7d340aecf783ae5051d77cc8a362"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/reports100/TEST-junit-platform-suite.xml",
+      "bytes": 34608,
+      "sha256": "34474fcac8fc5b0531ef9eefa804c38d7728f986d14ac89e05ceff4625768b20"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/reports100/TEST-junit-vintage.xml",
+      "bytes": 34587,
+      "sha256": "02e99bcbd6deaeb93ad6e86b4aa2bd379c674dc01ecad41c08cc066a1b96fbe0"
+    }
+  ],
+  "scope": "Four existing production leaves jointly compiled; exact selected Native56 DLL factory and only two readonly advertised operations. Two catalog/profile DATA methods and two cold consumers of 10 actual Native-selected independent Full/DATA/request/command groups plus 6 original route refusals passed. Offline origin always rejects live read installation. Legacy governance remains false; no RootContext/live main ticket/Game/action/Root/WAIT. No repeat of5synthetic/fullSaved/Native. Genuine archive/current config qualification remains pending normal MAIN."
+}

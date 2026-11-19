@@ -13,7 +13,8 @@ inline constexpr char kActorFoundationStepV1[]="query-actor-foundation-frame-v1"
 struct PersonalCashMailboxContextV1;
 struct ActiveWarsMailboxContextV1;
 struct CharacterRosterMailboxContextV1;
-enum class ActorObservationKindV1 {personal_gold,foundation,personal_cash,active_wars,character_roster,resource_leaf};
+struct OpeningMailboxContext56;
+enum class ActorObservationKindV1 {personal_gold,foundation,personal_cash,active_wars,character_roster,resource_leaf,opening_readonly56};
 // Both operations use one fixed paused-only actor reader; kind is chosen by
 // the native step router, never by a caller-supplied memory address.
 struct PersonalGoldMailboxContextV1 {
@@ -32,6 +33,7 @@ struct PersonalGoldMailboxContextV1 {
   ck3_11906::MainThreadQueryTicketV1 ticket{};
   PersonalGoldObservationV1 observation{};
   bool application_main_observed=false;
+  OpeningMailboxContext56 *opening56=nullptr;
 };
 bool ExecutePersonalGoldMailboxV1(void *,const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 std::string SerializeActorFoundationCommandResultV1(std::string_view request_id,

@@ -10610,3 +10610,5 @@ include(cmake/actor_resource_leaf27.cmake)
 include(cmake/character_roster_1210.cmake)
 
 include(cmake/hotfix26757580_basic_v1.cmake)
+
+include(cmake/opening_readonly56.cmake)

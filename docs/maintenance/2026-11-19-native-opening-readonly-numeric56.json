@@ -1,0 +1,40 @@
+{
+  "schema": "xar.native56.opening-wire-numeric-presence-amendment/v1",
+  "original_contract": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\OPENING-READONLY-WIRE56.json",
+    "bytes": 7152,
+    "sha256": "85f7542bd47b93c96690365bd4fe4ce87514be4ba21a5b168f35621462bb5781"
+  },
+  "qualification": "SOURCE_ONLY_NOT_A_PACKET",
+  "xp_total_raw": {
+    "minimum": 0,
+    "maximum": 9223372036854775807,
+    "scale": 100000
+  },
+  "xp_within_level_raw": {
+    "minimum": 0,
+    "maximum": 9223372036854775807,
+    "scale": 100000,
+    "strict_upper_bound": "xp_per_level * 100000"
+  },
+  "xp_per_level": {
+    "minimum": 1,
+    "maximum": 2147483647,
+    "scale": 1
+  },
+  "unspent_perk_points": {
+    "minimum": 0,
+    "maximum": 2147483647
+  },
+  "used_perk_points": {
+    "minimum": 0,
+    "maximum": 2147483647
+  },
+  "presence": "First producer profile emits available only present/present with identical actual lifestyle. Default/fallback/mixed/unproven absence is unavailable whole DATA. No absent/absent output in this profile.",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\LIFE-static\\LIFE-HOTFIX26757580-STATIC56.json",
+    "bytes": 36311,
+    "sha256": "abcb55c587c675c0b989b5e263f2bb278042eaf41f20bd097f7093374579a153"
+  },
+  "reasoning": "Actual getter signed remainder; positive signed32 denominator *100000 fits int64. Reader requires native total>=0 and compares exact returned values without clamp or consumer replacement."
+}

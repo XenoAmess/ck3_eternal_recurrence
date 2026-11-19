@@ -1,0 +1,130 @@
+{
+  "schema": "ck3.opening-readonly-synthetic-protocol-software-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "typing": {
+    "phase": "type",
+    "begin_utc": "2026-11-19T05:34:49.902193+00:00",
+    "end_utc": "2026-11-19T05:34:51.432115+00:00",
+    "seconds": 1.529920700006187,
+    "exit": 0,
+    "scope": "Two joint production TUs plus one test; five synthetic protocol DATA/negative methods only. No actual C++ packet, owner ticket, Native/Game, RootContext or Root/WAIT qualification."
+  },
+  "methods": 5,
+  "passed": 5,
+  "failed": 0,
+  "inputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source/GovernanceCollector.java",
+      "bytes": 34049,
+      "sha256": "e3bd296f5cc7c655d20680a5f69fdfbe4f60c90aee157cf9eda627eeae216be7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source/GovernancePlanningReads.java",
+      "bytes": 54909,
+      "sha256": "5fa84d19084fba6c2d9d6fe41eda9ad088f0a39ed43532f9c69cbcd548fb6067"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source/OpeningReadProfileProtocolTest.java",
+      "bytes": 11187,
+      "sha256": "dd1130a458b2ccd2d51f726f205c3134b93e01b32784bc969ace0ee768f548b0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source/OpeningReadProfile97.fragment.java",
+      "bytes": 16153,
+      "sha256": "38d92d5447b35fa8fb4cde1f3f2d3c522c990e9207d6522a17d19bdc219150df"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/source/OpeningBindings97.fragment.java",
+      "bytes": 13749,
+      "sha256": "f3c09c0f0057dae5cff67e4e11c55bd76eff646d5f67c8de0507a1c12302ea5d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/javac97.args",
+      "bytes": 27897,
+      "sha256": "12caaa2b98fb801abee734f646ac5ebd399b9db82aa26176080849854b4e3980"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/junit97.args",
+      "bytes": 28038,
+      "sha256": "ca8738c9fd6e03f97a9dffcae015508286d7630269af64e33c2f9b581cbae152"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/run97.py",
+      "bytes": 1441,
+      "sha256": "e079d890865f51d1cee7cce63b39014f577fd08d5df0ee5dd75ebbbdcb5d4ea5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/MAIN35-FROZEN-RUNTIME-ARCHIVES90.json",
+      "bytes": 92806,
+      "sha256": "a56f1e26e1437f6d429f6ea710f7cbb3d17d31b9e8ead5cbe86251f4ebb26659"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/m2/org/junit/platform/junit-platform-console-standalone/6.1.3/junit-platform-console-standalone-6.1.3.jar",
+      "bytes": 2997949,
+      "sha256": "e62b96ac475dbcde8599ea905d088f65d90778f86e259b856a49fa5c4ea256ec"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/OPENING-READONLY-WIRE56.json",
+      "bytes": 7152,
+      "sha256": "85f7542bd47b93c96690365bd4fe4ce87514be4ba21a5b168f35621462bb5781"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/OPENING-WIRE-NUMERIC-AMENDMENT56.json",
+      "bytes": 1595,
+      "sha256": "ee76937997e9f8b85ce2c72668663a2a6ca09a0a81278846d9564cc197ec4943"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/OPENING-ABI56.json",
+      "bytes": 1129,
+      "sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+    }
+  ],
+  "actuals": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/type97.END.json",
+      "bytes": 370,
+      "sha256": "516f2cb1533bcb204dbc94bd9997966ca1dc7009c02397d3f615f068a0b94264"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/type97.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/type97.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/protocol97.END.json",
+      "bytes": 375,
+      "sha256": "a4a5840a71637a9eb0472f96a45ac2e64943e14f661641083659a22ece01db0a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/protocol97.stdout",
+      "bytes": 480,
+      "sha256": "4d2bc8d57dbe980eda3606e306cd41d38595dbdf364e54c1eaab57c5eebbeafe"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/protocol97.stderr",
+      "bytes": 234,
+      "sha256": "2896c57a370b2217a5057292387f5386c9b91316c190c5d58cdf946a4ebfafe1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/reports97/TEST-junit-jupiter.xml",
+      "bytes": 36662,
+      "sha256": "1af8f56cc585bfbc6d0d1995cba81c4695df7a8c0113ad5b7d6b4366e4a12fa3"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/reports97/TEST-junit-platform-suite.xml",
+      "bytes": 33791,
+      "sha256": "7d8bb7636265b4aac1dc34b441600139f9814c289259b7480f5f0d0778c1a9be"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/reports97/TEST-junit-vintage.xml",
+      "bytes": 33770,
+      "sha256": "614a966d4119b01c56d294b55b03e2216ba8e3bb1c6da07090d3a1288ab62b68"
+    }
+  ],
+  "scope": "Joint NT/App two actual candidate production leaves compiled. Five synthetic protocol DATA/negative methods passed; source WIRE/numeric/ABI only, no Native/C++ interoperability or live application-main owner/read/Root/WAIT. LS candidates not yet compiled; exact frozen reader/DLL selectQualified factory pending Native56."
+}

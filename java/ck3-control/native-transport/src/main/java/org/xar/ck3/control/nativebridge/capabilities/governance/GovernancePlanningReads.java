@@ -225,5 +225,297 @@ public final class GovernancePlanningReads {
     private static void equal(ObjectNode value, String key, String expected) { StrictJson.require(CouncilCodec.text(value, key).equals(expected), "native governance field drift: " + key); }
     private static void number(ObjectNode value, String key, BigInteger expected) { StrictJson.require(value.has(key) && value.get(key).isIntegralNumber() && value.get(key).bigIntegerValue().equals(expected), "native governance integer/frame drift: " + key); }
     private static void signed(BigInteger value) { StrictJson.require(value.compareTo(BigInteger.valueOf(Long.MIN_VALUE)) >= 0 && value.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) <= 0, "native amount exceeds signed int64"); }
+    /** Exact hotfix read-only DATA. This profile grants no legacy ROOT, governance or action authority. */
+    public static final class OpeningReadProfile {
+        public static final String ADAPTER="ck3-1.21.0-26757580-msvc-x64";
+        public static final String VERSION="1.21.0";
+        public static final String EXECUTABLE="BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79";
+        private static final BigInteger U64=BigInteger.ONE.shiftLeft(64).subtract(BigInteger.ONE);
+        private static final BigInteger U32=BigInteger.ONE.shiftLeft(32).subtract(BigInteger.ONE);
+        private static final BigInteger I32_MIN=BigInteger.valueOf(Integer.MIN_VALUE),I32_MAX=BigInteger.valueOf(Integer.MAX_VALUE);
+        private static final Set<String> COMMON=Set.of("schema","status","unavailable_reason","read_only","full_governance_ready","action_ready",
+                "native_revision","snapshot_id","date_raw","player_character_id","readiness","origin","provenance");
+        public enum Kind {
+            SCOPE("query-current-lifestyle-scope-26757580-v1","game.query.current-lifestyle-scope.26757580.v1",
+                    "xar.ck3.lifestyle-scope.26757580.v1","ck3-26757580-lifestyle-scope-v1"),
+            CURRENT("query-current-lifestyle-state-26757580-v1","game.query.current-lifestyle-state.26757580.v1",
+                    "xar.ck3.lifestyle-current.26757580.v1","ck3-26757580-lifestyle-current-v1");
+            private final String step,capability,schema,profile;
+            Kind(String step,String capability,String schema,String profile){this.step=step;this.capability=capability;this.schema=schema;this.profile=profile;}
+            public String step(){return step;} public String capability(){return capability;}
+            public String schema(){return schema;} public String profile(){return profile;}
+        }
+        /** Exact separately frozen reader/ABI identity; syntactic pins alone never install a live producer. */
+        public record SourcePins(String readerSourceSha256,String abiManifestSha256) {
+            public SourcePins {
+                StrictJson.require(readerSourceSha256!=null&&readerSourceSha256.matches("[0-9a-f]{64}")
+                        &&abiManifestSha256!=null&&abiManifestSha256.matches("[0-9a-f]{64}"),"two exact lowercase source/ABI SHA256 pins required");
+            }
+        }
+        public record Frame(BigInteger nativeRevision,BigInteger dateRaw,BigInteger playerCharacterId) {
+            public Frame {
+                range(nativeRevision,BigInteger.ONE,U64,"expected native revision");range(dateRaw,I32_MIN,I32_MAX,"expected native date");
+                range(playerCharacterId,I32_MIN,I32_MAX,"expected complete character ID");
+                StrictJson.require(!playerCharacterId.equals(BigInteger.valueOf(-1)),"absent character sentinel is not a complete actor");
+            }
+            public String snapshotId(){return "native:"+nativeRevision;}
+        }
+        public enum SourceKind { APPLICATION_MAIN_TICKET, OFFLINE_FIXTURE, UNAVAILABLE }
+        public record Origin(SourceKind kind,Optional<BigInteger> ticketSequence,Optional<BigInteger> pumpEpoch,
+                Optional<BigInteger> threadId,boolean mainOwnerObserved) {
+            public Origin {
+                java.util.Objects.requireNonNull(kind);ticketSequence=java.util.Objects.requireNonNull(ticketSequence);
+                pumpEpoch=java.util.Objects.requireNonNull(pumpEpoch);threadId=java.util.Objects.requireNonNull(threadId);
+                ticketSequence.ifPresent(v->range(v,BigInteger.ZERO,U64,"ticket sequence"));pumpEpoch.ifPresent(v->range(v,BigInteger.ZERO,U64,"pump epoch"));
+                threadId.ifPresent(v->range(v,BigInteger.ZERO,U32,"thread ID"));
+                if(kind==SourceKind.APPLICATION_MAIN_TICKET) {
+                    StrictJson.require(mainOwnerObserved&&ticketSequence.filter(v->v.signum()>0).isPresent()
+                            &&pumpEpoch.filter(v->v.signum()>0).isPresent()&&threadId.filter(v->v.signum()>0).isPresent(),
+                            "application-main origin requires its actual positive ticket/pump/thread observations");
+                } else StrictJson.require(!mainOwnerObserved,"offline or unavailable origin cannot claim a main owner");
+            }
+        }
+        public record Government(String key,List<String> flags) {
+            public Government {key=nonempty(key,"government key");flags=List.copyOf(flags);StrictJson.require(flags.size()<=4096,"bounded complete flag span required");
+                flags.forEach(v->nonempty(v,"government flag"));}
+        }
+        public record FocusProgress(boolean present,Optional<String> focusKey,Optional<String> lifestyleKey,
+                Optional<BigInteger> xpTotalRaw,Optional<BigInteger> xpWithinLevelRaw,Optional<BigInteger> xpPerLevel,
+                Optional<BigInteger> unspentPerkPoints,Optional<BigInteger> usedPerkPoints) {
+            public FocusProgress {
+                java.util.Objects.requireNonNull(focusKey);java.util.Objects.requireNonNull(lifestyleKey);java.util.Objects.requireNonNull(xpTotalRaw);
+                java.util.Objects.requireNonNull(xpWithinLevelRaw);java.util.Objects.requireNonNull(xpPerLevel);
+                java.util.Objects.requireNonNull(unspentPerkPoints);java.util.Objects.requireNonNull(usedPerkPoints);
+                if(present) {
+                    nonempty(focusKey.orElseThrow(),"focus key");nonempty(lifestyleKey.orElseThrow(),"lifestyle key");
+                    range(xpTotalRaw.orElseThrow(),BigInteger.ZERO,BigInteger.valueOf(Long.MAX_VALUE),"native total XP raw");
+                    range(xpWithinLevelRaw.orElseThrow(),BigInteger.ZERO,BigInteger.valueOf(Long.MAX_VALUE),"native within-level XP raw");
+                    range(xpPerLevel.orElseThrow(),BigInteger.ONE,I32_MAX,"observed native XP threshold");
+                    StrictJson.require(xpWithinLevelRaw.orElseThrow().compareTo(xpPerLevel.orElseThrow().multiply(BigInteger.valueOf(100000)))<0,"observed within-level XP exceeds native fixed-scale remainder domain");
+                    range(unspentPerkPoints.orElseThrow(),BigInteger.ZERO,I32_MAX,"observed native perk points");
+                    range(usedPerkPoints.orElseThrow(),BigInteger.ZERO,I32_MAX,"observed native used perk points");
+                } else StrictJson.require(focusKey.isEmpty()&&lifestyleKey.isEmpty()&&xpTotalRaw.isEmpty()&&xpWithinLevelRaw.isEmpty()
+                        &&xpPerLevel.isEmpty()&&unspentPerkPoints.isEmpty()&&usedPerkPoints.isEmpty(),"known absence cannot carry invented focus/progress values");
+            }
+        }
+        /** The parser is the sole constructor; original native bytes are retained separately from projections. */
+        public static final class Data {
+            private final Kind kind;private final boolean available;private final Optional<String> unavailableReason;
+            private final Optional<Frame> frame;private final Optional<Government> government;private final Optional<FocusProgress> progress;
+            private final Origin origin;private final RawJson original;
+            private Data(Kind kind,boolean available,Optional<String> reason,Optional<Frame> frame,Optional<Government> government,
+                    Optional<FocusProgress> progress,Origin origin,RawJson original) {
+                this.kind=kind;this.available=available;this.unavailableReason=reason;this.frame=frame;this.government=government;
+                this.progress=progress;this.origin=origin;this.original=original;
+            }
+            public Kind kind(){return kind;}public boolean available(){return available;}public Optional<String> unavailableReason(){return unavailableReason;}
+            public Optional<Frame> frame(){return frame;}public Optional<Government> government(){return government;}
+            public Optional<FocusProgress> progress(){return progress;}public Origin origin(){return origin;}public RawJson original(){return original;}
+            /** Additional live receipt/owner/frame/deadline/catalog checks remain mandatory at the actual read binding. */
+            public void requireApplicationMainOrigin(){StrictJson.require(origin.kind()==SourceKind.APPLICATION_MAIN_TICKET,"offline DATA cannot install a live opening read");}
+        }
+        /** One actually built source-exact readonly candidate; a copied identical DLL still needs real catalog/HELLO/owner/read guards. */
+        public static Optional<OpeningReadProfile> selectQualified(String version,String executableSha256,ExactRef selectedDll) {
+            if(!VERSION.equals(version)||executableSha256==null||!EXECUTABLE.equalsIgnoreCase(executableSha256)||selectedDll==null
+                    ||selectedDll.bytes()!=13443584L||!selectedDll.sha256().equals("6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3")
+                    ||!java.nio.file.Path.of(selectedDll.path()).isAbsolute())return Optional.empty();
+            return Optional.of(new OpeningReadProfile(new SourcePins("856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+                    "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8")));
+        }
+        private final SourcePins pins;
+        public OpeningReadProfile(SourcePins actualFrozenPins){pins=java.util.Objects.requireNonNull(actualFrozenPins);}
+        public SourcePins pins(){return pins;}
+        /** DATA decoding only. A matching provenance string does not itself prove Native execution or owner authority. */
+        public Data decodeData(Kind kind,RawJson original,Frame expected) {
+            java.util.Objects.requireNonNull(kind);java.util.Objects.requireNonNull(original);java.util.Objects.requireNonNull(expected);
+            var fields=new HashSet<>(COMMON);if(kind==Kind.SCOPE)fields.add("government");else fields.addAll(Set.of("current_focus","current_lifestyle_progress"));
+            ObjectNode row=StrictJson.object(StrictJson.parse(original.bytes(),65536),fields);
+            equal(row,"schema",kind.schema());String status=StrictJson.text(row.get("status"));
+            StrictJson.require(status.equals("available")||status.equals("unavailable"),"exact opening DATA status required");boolean available=status.equals("available");
+            StrictJson.require(CouncilCodec.bool(row.get("read_only"))&&!CouncilCodec.bool(row.get("full_governance_ready"))
+                    &&!CouncilCodec.bool(row.get("action_ready")),"opening DATA cannot claim full governance or action readiness");
+            ObjectNode provenance=StrictJson.object(row.get("provenance"),Set.of("profile_id","adapter_id","game_version","executable_sha256","reader_source_sha256","abi_manifest_sha256"));
+            equal(provenance,"profile_id",kind.profile());equal(provenance,"adapter_id",ADAPTER);equal(provenance,"game_version",VERSION);equal(provenance,"executable_sha256",EXECUTABLE);
+            equal(provenance,"reader_source_sha256",pins.readerSourceSha256());equal(provenance,"abi_manifest_sha256",pins.abiManifestSha256());
+            Origin origin=origin(row.get("origin"));Optional<String> reason;
+            Optional<Frame> frame;
+            if(available) {
+                nil(row.get("unavailable_reason"),"available reason");reason=Optional.empty();
+                Frame actual=new Frame(integer(row.get("native_revision"),"native revision"),integer(row.get("date_raw"),"native date"),integer(row.get("player_character_id"),"complete actor"));
+                StrictJson.require(actual.equals(expected),"opening DATA crossed its independently bound Full actor/revision/date");equal(row,"snapshot_id",actual.snapshotId());
+                StrictJson.require(origin.kind()!=SourceKind.UNAVAILABLE,"available DATA requires its actual source kind");frame=Optional.of(actual);
+            } else {
+                reason=Optional.of(nonempty(StrictJson.text(row.get("unavailable_reason")),"unavailable reason"));frame=Optional.empty();
+                for(String key:List.of("native_revision","snapshot_id","date_raw","player_character_id"))nil(row.get(key),"unavailable "+key);
+            }
+            Set<String> readyFields=kind==Kind.SCOPE?Set.of("same_frame_ready","government_key_ready","government_flags_ready")
+                    :Set.of("same_frame_ready","current_focus_ready","lifestyle_progress_ready");
+            ObjectNode readiness=StrictJson.object(row.get("readiness"),readyFields);
+            for(String key:readyFields)StrictJson.require(CouncilCodec.bool(readiness.get(key))==available,"opening readiness disagrees with its observed status");
+            Optional<Government> government=Optional.empty();Optional<FocusProgress> progress=Optional.empty();
+            if(kind==Kind.SCOPE) {
+                if(!available)nil(row.get("government"),"unavailable government");else {
+                    ObjectNode value=StrictJson.object(row.get("government"),Set.of("key","native_flag_count","flags"));
+                    int count=StrictJson.integer(value.get("native_flag_count"),BigInteger.ZERO,BigInteger.valueOf(4096)).intValueExact();
+                    JsonNode rawFlags=value.get("flags");StrictJson.require(rawFlags.isArray()&&rawFlags.size()==count,"complete government flag span/count changed");
+                    java.util.ArrayList<String> flags=new java.util.ArrayList<>();rawFlags.forEach(v->flags.add(nonempty(StrictJson.text(v),"government flag")));
+                    government=Optional.of(new Government(StrictJson.text(value.get("key")),flags));
+                }
+            } else if(!available) {nil(row.get("current_focus"),"unavailable current focus");nil(row.get("current_lifestyle_progress"),"unavailable current progress");}
+            else progress=Optional.of(progress(row.get("current_focus"),row.get("current_lifestyle_progress")));
+            return new Data(kind,available,reason,frame,government,progress,origin,new RawJson(original.bytes()));
+        }
+        private static FocusProgress progress(JsonNode focusNode,JsonNode progressNode) {
+            ObjectNode focus=StrictJson.object(focusNode,Set.of("presence","key","lifestyle_key"));
+            ObjectNode progress=StrictJson.object(progressNode,Set.of("presence","lifestyle_key","xp_total_raw","xp_within_level_raw","xp_per_level","unspent_perk_points","used_perk_points"));
+            String presence=StrictJson.text(focus.get("presence"));
+            StrictJson.require(presence.equals("present"),"this exact profile has no proven focus/progress absence producer");
+            equal(progress,"presence",presence);
+            String key=nonempty(StrictJson.text(focus.get("key")),"focus key"),style=nonempty(StrictJson.text(focus.get("lifestyle_key")),"lifestyle key");equal(progress,"lifestyle_key",style);
+            return new FocusProgress(true,Optional.of(key),Optional.of(style),Optional.of(integer(progress.get("xp_total_raw"),"total XP raw")),
+                    Optional.of(integer(progress.get("xp_within_level_raw"),"within-level XP raw")),Optional.of(integer(progress.get("xp_per_level"),"XP threshold")),
+                    Optional.of(integer(progress.get("unspent_perk_points"),"unspent perk points")),Optional.of(integer(progress.get("used_perk_points"),"used perk points")));
+        }
+        private static Origin origin(JsonNode value) {
+            ObjectNode row=StrictJson.object(value,Set.of("source_kind","ticket_sequence","pump_epoch","thread_id","main_owner_observed"));
+            SourceKind kind=switch(StrictJson.text(row.get("source_kind"))){case "application_main_ticket"->SourceKind.APPLICATION_MAIN_TICKET;
+                case "offline_fixture"->SourceKind.OFFLINE_FIXTURE;case "unavailable"->SourceKind.UNAVAILABLE;default->throw new IllegalArgumentException("unknown opening source kind");};
+            return new Origin(kind,optionalInteger(row.get("ticket_sequence"),"ticket sequence"),optionalInteger(row.get("pump_epoch"),"pump epoch"),
+                    optionalInteger(row.get("thread_id"),"thread ID"),CouncilCodec.bool(row.get("main_owner_observed")));
+        }
+        private static Optional<BigInteger> optionalInteger(JsonNode value,String name){java.util.Objects.requireNonNull(value,name);return value.isNull()?Optional.empty():Optional.of(integer(value,name));}
+        private static BigInteger integer(JsonNode value,String name){StrictJson.require(value!=null&&value.isIntegralNumber(),"exact JSON integer required: "+name);return value.bigIntegerValue();}
+        private static void range(BigInteger value,BigInteger min,BigInteger max,String name){StrictJson.require(value!=null&&value.compareTo(min)>=0&&value.compareTo(max)<=0,"integer outside native domain: "+name);}
+        private static String nonempty(String value,String name){StrictJson.require(value!=null&&!value.isEmpty(),"observed nonempty "+name+" required");return value;}
+        private static void nil(JsonNode value,String name){StrictJson.require(value!=null&&value.isNull(),"explicit null required for "+name);}
+        /** Only these two advertised reads exist in this profile; no legacy read/action contract is constructed. */
+        public static final class Bindings {
+            private final OpeningReadProfile profile;
+            private final ReadContract<Data> scope,current;
+            public Bindings(OpeningReadProfile profile,ExactRef nativeSource) {
+                this.profile=java.util.Objects.requireNonNull(profile);java.util.Objects.requireNonNull(nativeSource);
+                StrictJson.require(nativeSource.bytes()>0&&java.nio.file.Path.of(nativeSource.path()).isAbsolute(),"actual selected native read producer required");
+                scope=contract(Kind.SCOPE,nativeSource);current=contract(Kind.CURRENT,nativeSource);
+            }
+            public List<ReadContract<?>> all(){return List.of(scope,current);}
+            public ReadContract<Data> scope(){return scope;}public ReadContract<Data> current(){return current;}
+            private ReadContract<Data> contract(Kind kind,ExactRef source) {
+                java.util.function.Function<PlanningReadReceipt,Data> decoder=receipt->{
+                    requireReceipt(receipt,kind);
+                    original(receipt);
+                    Data data=profile.decodeData(kind,receipt.original().originalResultToken().orElseThrow(),frame(receipt.request()));
+                    if(data.available())data.requireApplicationMainOrigin();
+                    return data;
+                };
+                return new ReadContract<>("governance.opening-readonly."+kind.profile(),new OperationKey(kind.step()),Optional.of(kind.capability()),
+                        kind.capability(),ReadContract.PermissionMode.ADVERTISED_CAPABILITY,ReadContract.WireProfile.EXECUTE_STEP,
+                        ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,source,(request,id)->{
+                            StrictJson.require(request.arguments().members().isEmpty(),"Opening read takes no caller selector or extra wire fields");
+                            frame(request);
+                            return new NativeRequest(kind.step(),Optional.of(kind.capability()),new RawJson(StrictJson.canonical(StrictJson.object())));
+                        },decoder,decoder);
+            }
+            private static Frame frame(PlanningReadRequest request) {
+                StrictJson.require(request.origin() instanceof CommandOrigin.Gameplay,"Opening read requires its actual gameplay frame");
+                var id=request.before().frame().identity();return new Frame(id.nativeRevision(),id.dateRaw(),id.player());
+            }
+            private static void requireReceipt(PlanningReadReceipt receipt,Kind kind) {
+                var request=receipt.request();frame(request);
+                StrictJson.require(request.operation().value().equals(kind.step())&&request.arguments().members().isEmpty()
+                        &&receipt.adoption().isEmpty()&&receipt.archiveVersion()==PlanningReadReceipt.ArchiveVersion.CURRENT_V2,
+                        "Opening read cannot adopt another operation or historical/canonical receipt");
+                for(var guard:List.of(receipt.before(),receipt.after())) {
+                    StrictJson.require(guard.guardMode()==ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP
+                            &&guard.binding().observed().equals(request.before())&&guard.paused()&&guard.mapReady()&&guard.playerAlive()
+                            &&!guard.binding().observedAt().isAfter(request.deadline()),"Opening read crossed its live paused Full frame or deadline");
+                }
+                StrictJson.require(receipt.before().originalBindingSha256().equals(receipt.after().originalBindingSha256())
+                        &&!receipt.after().binding().observedAt().isBefore(receipt.before().binding().observedAt()),
+                        "Opening read changed its complete bound owner/source or time order");
+                var chronology=GovernanceReadChronology.requireAck(receipt.original(),receipt.before().binding());chronology.verify(receipt);
+                StrictJson.require(!chronology.responseReceived().observedAt().isAfter(request.deadline()),"Opening original arrived after its actual deadline");
+            }
+        }
+        @FunctionalInterface public interface CurrentGuard {void requireCurrent(java.time.Instant deadline)throws java.io.IOException;}
+        /** Reuses the sole installed coordinator and the currently borrowed writer Session. */
+        public static org.xar.ck3.control.application.planning.governance.GovernanceCollector.LifestyleReadPort readPort(
+                Bindings definitions,PlanningReadPort port,ActionPorts.OutcomeArchive archive,
+                org.xar.ck3.control.application.planning.governance.GovernanceBorrowedSession borrowed,
+                java.time.Clock clock,CurrentGuard currentGuard) {
+            java.util.Objects.requireNonNull(definitions);java.util.Objects.requireNonNull(port);java.util.Objects.requireNonNull(archive);
+            java.util.Objects.requireNonNull(borrowed);java.util.Objects.requireNonNull(clock);java.util.Objects.requireNonNull(currentGuard);
+            return new org.xar.ck3.control.application.planning.governance.GovernanceCollector.LifestyleReadPort() {
+                @Override public org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.Read<OpportunityJson.Obj> formal(
+                        org.xar.ck3.control.application.planning.PlanningRequest request) {
+                    return new org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.Unavailable<>("readonly Opening profile does not qualify legacy LIFE formal reads");
+                }
+                @Override public org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.Read<OpportunityJson.Obj> stockFocus(
+                        org.xar.ck3.control.application.planning.PlanningRequest request,String target) {
+                    return new org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.Unavailable<>("independent final-focus legality/action producer is not qualified");
+                }
+                @Override public Optional<org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.Read<org.xar.ck3.control.application.planning.governance.GovernanceCollector.ReadOnlyOpening>> openingReadOnly(
+                        org.xar.ck3.control.application.planning.PlanningRequest request) {
+                    try {
+                        currentGuard.requireCurrent(request.deadline());StrictJson.require(clock.instant().isBefore(request.deadline()),"Opening planning deadline elapsed");
+                        var value=borrowed.use(request,same->archive.inSession(same,bound->{
+                            var originals=new java.util.ArrayList<PlanningReadReceipt>();var refs=new java.util.ArrayList<ExactRef>();
+                            java.util.function.Function<ReadContract<Data>,Data> read=contract->{
+                                var actualRequest=new PlanningReadRequest(request.before(),request.source(),request.sessionId(),contract.operation(),new OpportunityJson.Obj(java.util.Map.of()),request.deadline());
+                                var result=port.read(same,contract,actualRequest);
+                                if(result instanceof PlanningReadResult.Unavailable<Data> unavailable) {
+                                    unavailable.original().ifPresent(bound::preserve);throw new IllegalStateException(unavailable.reason());
+                                }
+                                var actual=(PlanningReadResult.Known<Data>)result;var receipt=actual.receipt();
+                                StrictJson.require(receipt.request().equals(actualRequest)&&actual.originalReceipt().equals(bound.readReferenceOf(receipt)),"Opening coordinator receipt belongs to another request/archive");
+                                org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(receipt,bound);
+                                StrictJson.require(contract.decode(receipt).original().equals(actual.value().original()),"Opening typed DATA differs from its original native receipt");
+                                if(!originals.isEmpty()) {
+                                    var previous=originals.getLast().after().binding();var next=receipt.before().binding();
+                                    StrictJson.require(previous.connectionGeneration().equals(next.connectionGeneration())&&previous.authorityId().equals(next.authorityId())
+                                            &&previous.nativeEvidence().equals(next.nativeEvidence())&&previous.capabilityEvidence().equals(next.capabilityEvidence()),
+                                            "Opening scope/current reads crossed their held connection, owner, Full or HELLO originals");
+                                }
+                                originals.add(receipt);GovernanceReadChronology.requireOrderedReads(originals);
+                                refs.add(actual.originalReceipt());refs.add(bound.referenceOf(receipt.original()));refs.add(contract.sourceRef());
+                                Data data=actual.value();if(!data.available())throw new IllegalStateException(data.unavailableReason().orElseThrow());
+                                data.requireApplicationMainOrigin();return data;
+                            };
+                            Data scopeData=read.apply(definitions.scope());Government government=scopeData.government().orElseThrow();
+                            boolean admitted=government.key().equals("feudal_government")&&government.flags().contains("government_is_feudal");
+                            ObjectNode scope=StrictJson.object().put("status",admitted?"admitted":"outside_scene")
+                                    .put("at_peace",!request.observations().warInProgress()).put("government_key",government.key())
+                                    .put("snapshot_revision",scopeData.frame().orElseThrow().nativeRevision()).put("player_character_id",scopeData.frame().orElseThrow().playerCharacterId());
+                            ObjectNode query=StrictJson.object().put("status","not_requested_outside_current_admitted_scope");
+                            if(admitted)query=projectCurrent(request,read.apply(definitions.current()));
+                            query.set("opening_native_scope",StrictJson.parse(scopeData.original().bytes()));
+                            var result=new org.xar.ck3.control.application.planning.governance.GovernanceCollector.ReadOnlyOpening(
+                                    (OpportunityJson.Obj)OpportunityJson.parse(StrictJson.canonical(scope)),(OpportunityJson.Obj)OpportunityJson.parse(StrictJson.canonical(query)));
+                            return new org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.Known<>(result,refs.stream().distinct().toList());
+                        }));
+                        currentGuard.requireCurrent(request.deadline());StrictJson.require(clock.instant().isBefore(request.deadline()),"Opening completed after its planning deadline");
+                        return Optional.of(value);
+                    }catch(java.io.IOException|IllegalStateException|IllegalArgumentException failure) {
+                        return Optional.of(new org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.Unavailable<>("actual readonly Opening read unavailable: "+failure.getMessage()));
+                    }
+                }
+            };
+        }
+        private static ObjectNode projectCurrent(org.xar.ck3.control.application.planning.PlanningRequest request,Data data) {
+            StrictJson.require(data.kind()==Kind.CURRENT&&data.available()&&data.progress().orElseThrow().present(),"actual present current focus/progress required");
+            data.requireApplicationMainOrigin();var frame=request.before().frame();var id=frame.identity();var p=data.progress().orElseThrow();
+            StrictJson.require(data.frame().orElseThrow().equals(new Frame(id.nativeRevision(),id.dateRaw(),id.player())),"Opening projection crossed its Full frame");
+            ObjectNode query=StrictJson.object().put("status","available").put("opening_read_profile",Kind.CURRENT.profile());
+            query.set("source_frame",StrictJson.object().put("snapshot_id",frame.snapshotId()).put("revision",frame.revision()).put("native_revision",id.nativeRevision()).put("date_raw",id.dateRaw()));
+            ObjectNode snapshot=query.putObject("snapshot").put("status","available").put("snapshot_id",frame.snapshotId()).put("episode_run_id",frame.episodeRunId())
+                    .put("public_revision",frame.revision()).put("native_revision",id.nativeRevision()).put("date_raw",id.dateRaw()).put("player_character_id",id.player());
+            snapshot.putObject("current_focus").put("presence","present").put("key",p.focusKey().orElseThrow()).put("lifestyle_key",p.lifestyleKey().orElseThrow());
+            snapshot.putObject("current_lifestyle_progress").put("presence","present").put("lifestyle_key",p.lifestyleKey().orElseThrow())
+                    .put("xp_total_raw",p.xpTotalRaw().orElseThrow()).put("xp_within_level_raw",p.xpWithinLevelRaw().orElseThrow()).put("xp_per_level",p.xpPerLevel().orElseThrow())
+                    .put("unspent_perk_points",p.unspentPerkPoints().orElseThrow()).put("used_perk_points",p.usedPerkPoints().orElseThrow());
+            snapshot.putObject("readiness").put("current_focus_ready",true).put("lifestyle_progress_ready",true).put("same_frame_ready",true);
+            query.set("opening_native_current",StrictJson.parse(data.original().bytes()));
+            return query;
+        }
+    }
 }
 

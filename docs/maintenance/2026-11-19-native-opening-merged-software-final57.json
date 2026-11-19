@@ -1,0 +1,61 @@
+{
+  "schema": "xar.native57.final-merged-source-software-receipt/v1",
+  "qualification": "ACTUAL_SEVEN_TU_COMPILE_TWO_NOGAME50_PIPELINES_PASS_RESOURCE_OVERRUN_EXPLICITLY_CORRECTED_NO_DLL",
+  "publication_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-opening-merge57\\build-01\\PUBLICATION-RECIPE57-FINAL.json",
+    "bytes": 25103,
+    "sha256": "d7781fda694f8c620e69d53d734c799e87bffc552f2811bc2efc086e41573a9a"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-opening-merge57\\INPUTS57.json",
+    "bytes": 588252,
+    "sha256": "ac53a089d1337454b841ae5559e1b5d8431d9372998a99cec300106b588b8697"
+  },
+  "plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-opening-merge57\\PLAN57.json",
+    "bytes": 45740,
+    "sha256": "8769848b4db027092244c274495267fb604833f83fddd3300df9cfab00619c43"
+  },
+  "source_resolution": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-opening-merge57\\RESOLUTION57.json",
+    "bytes": 740754,
+    "sha256": "82655b4ce55a7130d6c73a8877c32bdadddd53183bb6eb166a5aa422f6487684"
+  },
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-opening-merge57\\build-01\\ACTUAL57.json",
+    "bytes": 11018,
+    "sha256": "e7d3ea2db0b991c7511b84cd4e630776a93bc665d0dc0200ccd341ef7fab953b"
+  },
+  "originals": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-opening-merge57\\build-01\\ACTUAL-ORIGINALS57.json",
+    "bytes": 264243,
+    "sha256": "01f119304d05ffb927a9ccac0e0dbf05dc0e9fd2104970634e90d0967c913b12"
+  },
+  "prior_early_ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-opening-merge57\\build-01\\NATIVE-OPENING-MERGED-SOFTWARE-READY57.json",
+    "bytes": 2516,
+    "sha256": "cee3464de18960700503f5e905f952b83ffa025b4e3d5722fb39a2ebb8763d3d"
+  },
+  "prior_early_ready_generated_before_budget_assert": true,
+  "initial_driver_exit": 1,
+  "initial_failure": {
+    "kind": "OUTPUT_ESTIMATE_UNDERRUN_NOT_CODE_OR_PROGRAM_FAILURE",
+    "original_upper_bytes": 33554432,
+    "actual_page_directory_upper_at_failure": 42414080,
+    "actual_file_allocation_Runtime_census": 40569152,
+    "actual_file_allocation_plus_directory_guard_Runtime_census": 41003328,
+    "exception": "AssertionError: 42414080",
+    "all_compile_link_program_command_exits_zero": true
+  },
+  "normal_resource_amendment": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-NATIVE57-ACTUAL-OVERRUN32-TO48M-AMEND186.json",
+    "bytes": 1400,
+    "sha256": "af07b7fb1ef27c0ccd8472496e8e28ffd41f26011bbcccc4971b9a44d45d3fa7"
+  },
+  "new_output_bucket_bytes": 50331648,
+  "old_32M_sufficiency_not_claimed": true,
+  "old_early_ready_and_all_inputs_outputs_retained": true,
+  "no_recompile_relink_program_rerun": true,
+  "no_new_DLL_or_live_or_Runtime_graph_change": true,
+  "old36_54_55_56_and_Java104_guards_exact": true
+}

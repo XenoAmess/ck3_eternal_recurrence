@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_1210_character_roster_frame_v1.hpp"
 #endif
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_1210_opening_readonly56.hpp"
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
@@ -435,7 +436,11 @@ const AdapterDescriptor &Ck3_1210Hotfix26757580AdapterDescriptor() noexcept {
     "game.command.research-arm-tactical-daily-sentinel-v1-N",
     "game.command.research-query-tactical-daily-sentinel-v1",
     "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
-    ck3_1210::kApplicationExitCapabilityV1};
+    ck3_1210::kApplicationExitCapabilityV1
+#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56)
+    ,ck3_1210::kOpeningScopeCapability56,ck3_1210::kOpeningCurrentCapability56
+#endif
+    };
 #else
   static constexpr std::array<std::string_view,0> caps{};
 #endif

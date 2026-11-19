@@ -1,0 +1,165 @@
+{
+  "schema": "ck3.root.native56-main-ticket22-evidence27/v1",
+  "cut_utc": "2026-11-19T07:01:30.628204Z",
+  "scope": "Historical realScene22 only. Does not rate successor107/108/newMAIN/nextscene outcomes; each qualified separately.",
+  "exact_original_index": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc27-main-ticket22/actual-originals22.json",
+    "bytes": 24259,
+    "sha256": "0d1abde59c03f3f9f8443a76eea2c8512a955680a7ebf764b300910e2c4da949"
+  },
+  "exact_final": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc27-main-ticket22/actual-final22.json",
+    "bytes": 7205,
+    "sha256": "b59cb7ae534171e651fba9ba20ff6b6897e1fb598374524ebc87191369a799b9"
+  },
+  "query_results": {
+    "scope": {
+      "schema": "xar.ck3.lifestyle-scope.26757580.v1",
+      "status": "available",
+      "unavailable_reason": null,
+      "read_only": true,
+      "full_governance_ready": false,
+      "action_ready": false,
+      "native_revision": 6,
+      "snapshot_id": "native:6",
+      "date_raw": 53176992,
+      "player_character_id": 31254,
+      "government": {
+        "key": "feudal_government",
+        "native_flag_count": 9,
+        "flags": [
+          "distribution_trade_routes",
+          "government_is_feudal",
+          "government_is_settled",
+          "government_is_settled_non_tribal",
+          "may_elevate_co_monarch",
+          "government_uses_crown_authority",
+          "government_uses_domain_limit",
+          "government_uses_legitimacy",
+          "government_uses_royal_court"
+        ]
+      },
+      "readiness": {
+        "same_frame_ready": true,
+        "government_key_ready": true,
+        "government_flags_ready": true
+      },
+      "origin": {
+        "source_kind": "application_main_ticket",
+        "ticket_sequence": 5,
+        "pump_epoch": 35722,
+        "thread_id": 234264,
+        "main_owner_observed": true
+      },
+      "provenance": {
+        "profile_id": "ck3-26757580-lifestyle-scope-v1",
+        "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+        "game_version": "1.21.0",
+        "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+        "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+        "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+      }
+    },
+    "current": {
+      "schema": "xar.ck3.lifestyle-current.26757580.v1",
+      "status": "available",
+      "unavailable_reason": null,
+      "read_only": true,
+      "full_governance_ready": false,
+      "action_ready": false,
+      "native_revision": 6,
+      "snapshot_id": "native:6",
+      "date_raw": 53176992,
+      "player_character_id": 31254,
+      "current_focus": {
+        "presence": "present",
+        "key": "martial_authority_focus",
+        "lifestyle_key": "martial_lifestyle"
+      },
+      "current_lifestyle_progress": {
+        "presence": "present",
+        "lifestyle_key": "martial_lifestyle",
+        "xp_total_raw": 78750000,
+        "xp_within_level_raw": 78750000,
+        "xp_per_level": 1000,
+        "unspent_perk_points": 0,
+        "used_perk_points": 14
+      },
+      "readiness": {
+        "same_frame_ready": true,
+        "current_focus_ready": true,
+        "lifestyle_progress_ready": true
+      },
+      "origin": {
+        "source_kind": "application_main_ticket",
+        "ticket_sequence": 6,
+        "pump_epoch": 35936,
+        "thread_id": 234264,
+        "main_owner_observed": true
+      },
+      "provenance": {
+        "profile_id": "ck3-26757580-lifestyle-current-v1",
+        "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+        "game_version": "1.21.0",
+        "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+        "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+        "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+      }
+    }
+  },
+  "qualification": "Both real read-only operations returned available within independent application-main tickets againstsameactualFull native:6/actor31254/date53176992; source_scope/current observer only, not fullROOT/allGov/actions/Cash/budget/WAIT/day/SAVE.",
+  "raw_refs": 15,
+  "raw_unchanged_no_new_SDK_for_extraction": true,
+  "new_business_head_not_original_head": {
+    "new_head": 20,
+    "new_sha_prefix": "7f32",
+    "original_head": 2003
+  },
+  "batch": {
+    "batch_id": "migration1210-first-root22-0",
+    "terminal": "INTERNAL_FAILURE",
+    "detail": "org.xar.ck3.control.contracts.ContractViolationException: canonical query lacks its actual current advertised capability",
+    "began_at_utc": "2026-11-19T06:35:09.492987200Z",
+    "ended_at_utc": "2026-11-19T06:35:26.694389700Z",
+    "attempted_turns": 0,
+    "applied_turns": 0,
+    "committed_saved_days": 0,
+    "next_sequence": "1"
+  },
+  "first_failure_chain": "DriverReadHistoryPublisher492 canonical actual advertised cap -> ArmyWarReads.canonicalDeclarations339 -> RootHolyWarPlanningPolicies.defenders126 -> readiness.currentPlanning -> OrdinaryPlanner.finish234",
+  "known_but_not_reached": "OpeningTransitions101 legacyformal dependency for existing-focus completion; actual22 instead stops earlierholywar observer canonicalcap guard",
+  "normal_exit": {
+    "observed_at_utc": "2026-11-19T06:38:35.186917Z",
+    "kind": "NATURAL_EXIT",
+    "game_exit": 0,
+    "GSV_exit": 0,
+    "job_active": 0,
+    "cleanup_proven": true,
+    "freshCore_READs": 1,
+    "AppExit_calls": 1,
+    "post_originals": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE22-POSTEXIT-ORIGINALS-PDX-AND-SILENT01.json",
+      "bytes": 3186,
+      "sha256": "8d129f50a406cde84af2ba369a46638a0ebd4017ae718c63f5be9252d87495e1"
+    },
+    "lease": "RELEASED",
+    "lease_report": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/R36-LIVE-LEASE-SOURCE22-RELEASED01.json",
+      "bytes": 490,
+      "sha256": "c2f3a22cfb076adfd54c437797dbda4c1588fc8fc29db75f1da796d60a4247eb"
+    }
+  },
+  "protected": "OriginalPair/head2003/WAL/UNKNOWN/SAVE witnesses, current157JAR andNative56coldSHA exact; foregroundunchanged, partialroot retained; no repeatedAppExit/forcekill.",
+  "credit": {
+    "WAIT": 0,
+    "world_actions": 0,
+    "newdays": 0,
+    "SAVE": 0,
+    "completeRoot": false,
+    "allGovernance": false
+  },
+  "owner_fix_boundary": "Missing actual game.command.query-declarable-wars should retainchosen draft with existingnative_catalogue_unavailable annotation andzero declarationlookup; cap present keepsoriginalbody/guard/errors. Genericcanonical capability guard remainsstrict; no emptycandidate fiction.",
+  "completion_fix_boundary": "Existingfocus completes via actualCURRENT definition/originalreceipt/pure replay; no legacyfullROOT/Gov alias. InternalReadonlyWait is not CodexWAIT.",
+  "real_next_environment_reason": "Actualnewpdx stamp134395430950903534 requires anew sibling, nottime renewals",
+  "nextsource": "Newindependentafterqualifiedsuccessor; neverreuse22 window"
+}

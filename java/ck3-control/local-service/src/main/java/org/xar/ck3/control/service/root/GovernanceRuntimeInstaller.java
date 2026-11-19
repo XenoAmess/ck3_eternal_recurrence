@@ -102,6 +102,13 @@ public final class GovernanceRuntimeInstaller {
                     NativeGovernanceEffects.readContracts(sources.nativeProducers().lifestyle(),sources.nativeProducers().council(),sources.nativeProducers().crown()),
                     new NativeCrownFinalTermsRead(sources.finalTermsNative(),config.gameVersion(),config.executableSha256()))):Optional.empty();
         }
+        /** Independent exact readonly profile; never upgrades the existing full-governance qualification. */
+        record OpeningReadOnly(GovernancePlanningReads.OpeningReadProfile.Bindings definitions,ExactRef decoder) { }
+        Optional<OpeningReadOnly> openingReadOnly() {
+            if(nativeQualified())return Optional.empty();
+            return GovernancePlanningReads.OpeningReadProfile.selectQualified(config.gameVersion(),config.executableSha256(),sources.nativeProducers().lifestyle())
+                    .map(profile->new OpeningReadOnly(new GovernancePlanningReads.OpeningReadProfile.Bindings(profile,sources.nativeProducers().lifestyle()),sources.planningDecoder()));
+        }
         public boolean nativeQualified(){return nativeReads.isPresent();}
         public Optional<String> unavailableReason(){return config.unavailableReason();}
         private NativeReads nativeReads(){return nativeReads.orElseThrow(()->new IllegalStateException(config.unavailableReason().orElseThrow()));}

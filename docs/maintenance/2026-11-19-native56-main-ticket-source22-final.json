@@ -1,0 +1,162 @@
+{
+  "schema": "ck3.actual-Source22-Native56-two-readonly-query-P-next-canonical-cap-RED-natural-close/v1",
+  "at": "2026-11-19T06:47:24.691767+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\HOTFIX56-SOURCE22-ORIGINAL-FIXED45M.json",
+    "bytes": 5250,
+    "sha256": "2fcea1accff2332630ef3d7ffda1373928ed9e46f92359cdb3e684b2b88c855b"
+  },
+  "JavaReady": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-opening-readonly-main36\\qualification\\NORMAL-MAIN36-OPENING56-ENV21-RUNTIME-READY103.json",
+    "bytes": 4532,
+    "sha256": "9cd5595df1620f52ba3cc11d54f665d2df5d373b5eac4381a5016d1ba539868d"
+  },
+  "policy_proof": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\ACTUAL-INITIAL-SAVED-POLICY22-CREATED-PROOF01.json",
+    "bytes": 4651,
+    "sha256": "505610628b9121536dd640908c4abc491d52c532083bc30264786311fc5ed2e4"
+  },
+  "checker": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix22-work\\ACTUAL-PLAIN-CODEX-CALLER-INPUTS22.json",
+    "bytes": 146049,
+    "sha256": "fb6007e904a2dada99f048db6eeae8544b042fc8bb5e7ecddd686b75c797daa0"
+  },
+  "Full": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm22-01\\summary.json",
+    "bytes": 11559,
+    "sha256": "93d544e4b07ba231c26bea62b8b38a7e31e92f213f167e8f3eb883a82c02bba3"
+  },
+  "actual_saved_entry": {
+    "actual_head_digest": "7f32da961fe369ac0c7e28c30b3f6332d4b9e585a6534ad9c381e3237b3c2c03",
+    "actual_head_sequence": 20,
+    "game": {
+      "creation_filetime": "134395430728134687",
+      "pid": 229152
+    },
+    "next_sequence": "0",
+    "observed_at_utc": "2026-11-19T06:35:09.484697200Z",
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "SAVED_ENTRY_ADOPTED"
+  },
+  "ordinary_worker_start": {
+    "game": {
+      "creation_filetime": "134395430728134687",
+      "pid": 229152
+    },
+    "next_sequence": "0",
+    "observed_at_utc": "2026-11-19T06:35:09.484697200Z",
+    "ordinary_batch_started": false,
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "ORDINARY_WORKER_LOOP_START"
+  },
+  "actual_Native56_two_readonly_queries": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE22-NATIVE56-ACTUAL-MAIN-TICKET-OPENING-ORIGINALS01.json",
+    "bytes": 24259,
+    "sha256": "0d1abde59c03f3f9f8443a76eea2c8512a955680a7ebf764b300910e2c4da949"
+  },
+  "actual_gov_current_scope": "available/feudal_government9flags",
+  "actual_life_current": "available/martial_authority_focus/martial_lifestyle/rawXP78750000/unspent0/used14",
+  "actual_main_ticket_sequences": [
+    5,
+    6
+  ],
+  "actual_query_thread": 234264,
+  "actual_query_frame": "native:6",
+  "actual_actor": 31254,
+  "actual_date": 53176992,
+  "no_fullGovernance_action_finance_qualification": true,
+  "batch": {
+    "batch_id": "migration1210-first-root22-0",
+    "terminal": "INTERNAL_FAILURE",
+    "detail": "org.xar.ck3.control.contracts.ContractViolationException: canonical query lacks its actual current advertised capability",
+    "began_at_utc": "2026-11-19T06:35:09.492987200Z",
+    "ended_at_utc": "2026-11-19T06:35:26.694389700Z",
+    "attempted_turns": 0,
+    "applied_turns": 0,
+    "committed_saved_days": 0,
+    "next_sequence": "1"
+  },
+  "failure_chain": "DriverReadHistoryPublisher492 canonical actual advertised cap -> ArmyWarReads.canonicalDeclarations339 -> RootHolyWarPlanningPolicies.defenders126 -> readiness.currentPlanning -> OrdinaryPlanner.finish234",
+  "not_known_OpeningTransitions101": true,
+  "Main_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix22-work\\MAIN25022-END.json",
+    "bytes": 132,
+    "sha256": "5d686d72c30fa40618dce1845419a5d0fbcf3a93eac2939dcedf3114789ee9a4"
+  },
+  "Main_stdout": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix22-work\\MAIN25022.stdout",
+    "bytes": 5757,
+    "sha256": "b54ed9c46772f0ccccbe6831d35b75712470c01312cf45737befa6c98a1d1dfc"
+  },
+  "Main_stderr": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix22-work\\MAIN25022.stderr",
+    "bytes": 11603,
+    "sha256": "adb712e33063a6162b613640641922c73fbcec68a9e1cbce50fcb3011c335d14"
+  },
+  "normal_exit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit22-01\\summary.json",
+    "bytes": 14298,
+    "sha256": "f3ac7ce316cbf9e3fabe5551e14669e29a54ed20a24e019868ded7bcecddcfbc"
+  },
+  "normal_exit_freshCore1_AppExit1_nativeok": true,
+  "SDK_not_terminal_proof": true,
+  "actual_terminal": {
+    "actual_terminal": {
+      "accounting": {
+        "active_processes": 0,
+        "limit_flags": 8704,
+        "memory_limit_bytes": 34359738368,
+        "peak_job_memory_bytes": 12540076032
+      },
+      "elapsed_seconds_decimal": "842.1524258",
+      "exit_code": 0,
+      "identity": {
+        "creation_filetime_decimal": "134395430728134687",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 229152
+      },
+      "stop_reason": null
+    },
+    "cleanup_proven": true,
+    "evidence": {
+      "bytes": 1040,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-opening56-22\\event-000007.json",
+      "sha256": "1a093262aa675cf2358623f404f561afb9b881b408650138b336f3bde34d9da1"
+    },
+    "game": {
+      "creation_filetime": "134395430728134687",
+      "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 229152
+    },
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-19T06:38:35.186917Z",
+    "schema": "xar.java-game-supervisor-result/v1",
+    "session_id": "session-migration1210-hotfix26757580-firstroot22",
+    "status": "GAME_EXITED",
+    "stop_request_id": "",
+    "terminal_kind": "NATURAL_EXIT"
+  },
+  "GSV_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix22-work\\GSV-SOURCE22-END.json",
+    "bytes": 131,
+    "sha256": "bf92d14cc8577629e7e5a0eda8243ef51baca829ad69f5e66d80667d41dd5bb4"
+  },
+  "post": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE22-POSTEXIT-ORIGINALS-PDX-AND-SILENT01.json",
+    "bytes": 3186,
+    "sha256": "8d129f50a406cde84af2ba369a46638a0ebd4017ae718c63f5be9252d87495e1"
+  },
+  "current157JAR_cold_SHA_exact_after": true,
+  "Native56_frozen_unchanged": true,
+  "R36_livelease": "RELEASED",
+  "WAIT": 0,
+  "queue_absent": true,
+  "ownstop_absent": true,
+  "newday_credit": 0,
+  "SAVE_actions": 0,
+  "ordinary_world_actions": 0,
+  "partial_root22_retained": true,
+  "all_old_sources_deadlines_Pair_WAL_UNKNOWN_preserved": true,
+  "source23": "NOT_SIGNED",
+  "own_jcmd_skipped_Main_had_already_ended": true
+}

@@ -1,0 +1,109 @@
+{
+  "schema": "ck3.root.opening-readonly56-evidence26/v1",
+  "cut_utc": "2026-11-19T06:05:12.241052Z",
+  "qualification": "Historical offline Native56 +Java97/100 software only. No MAIN/Source22/currentOwner payload or live/action/wholeROOT credit.",
+  "native_ready": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc26-opening56/native-ready56.json",
+    "bytes": 3776,
+    "sha256": "0b462dcefd8d02e3ce4d3cd59a94a4fe2e2db06a8495c20282208fdc014e2417"
+  },
+  "wire": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc26-opening56/wire56.json",
+    "bytes": 7152,
+    "sha256": "85f7542bd47b93c96690365bd4fe4ce87514be4ba21a5b168f35621462bb5781"
+  },
+  "numeric": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc26-opening56/numeric56.json",
+    "bytes": 1595,
+    "sha256": "ee76937997e9f8b85ce2c72668663a2a6ca09a0a81278846d9564cc197ec4943"
+  },
+  "abi": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc26-opening56/abi56.json",
+    "bytes": 1129,
+    "sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+  },
+  "native_actual": {
+    "new_TU": 14,
+    "reused_passed_objects": 4,
+    "OFF_cases": 50,
+    "ON_cases": 50,
+    "actual_original_outputs": 750,
+    "source_upper": 4014080,
+    "source_cap": 4194304,
+    "output_upper": 89358336,
+    "output_cap": 117440512,
+    "dll_bytes": 13443584,
+    "dll_sha256": "6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3",
+    "Native54_forced_publisher_exact": true,
+    "old_ABI_members_and_offline_frame_excluded_by_actual_MAP": true,
+    "actual": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/build-01/ACTUAL56.json",
+      "bytes": 18880,
+      "sha256": "959cdbcac146250a166b48de62ac2e642c107a61e38f69c3a673848c86900897"
+    },
+    "originals_manifest": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/build-01/ACTUAL-ORIGINALS56.json",
+      "bytes": 229216,
+      "sha256": "0ee7008e3968837473e04af52f7de630d2b9878deea439d5af90a320315bc360"
+    },
+    "link_proof": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/build-01/FINAL-LINK-INPUTS56.json",
+      "bytes": 108056,
+      "sha256": "39957f5cc767c7252f23e42643a5bda804130a958add686c92d1a208c63c7bf9"
+    },
+    "delivery": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/build-01/DELIVERY56.json",
+      "bytes": 33592,
+      "sha256": "dcc2c25868ebf2e2f4a3eeb6d0c5c69eef57a7af41aefac4cecc42079aaf7a7d"
+    },
+    "source_recipe_15production_leaves": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/governance-hotfix56/build-01/SOURCE-RECIPE56.json",
+      "bytes": 10207,
+      "sha256": "03e1bb66361acb8bc8ff733ffaab41167c77743574bef0766782e0520f5411d4"
+    }
+  },
+  "native_limit": "Seven Game getter execution bodies and RAM are explicit fakes; actual Full/Actor/reader/productionserializer runs are real software; origin offline/main=false, no actualGame/nativebody/TLS/owner/MQ/live/action permission.",
+  "java_97": {
+    "ready": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/OPENING-READONLY-SYNTHETIC-PROTOCOL-SOFTWARE-READY97.json",
+      "bytes": 6915,
+      "sha256": "b2bb922156ea053038c5023e8cedbe36c8b4d2a523741981b24595cc8b30062d"
+    },
+    "typing_seconds": 1.53,
+    "methods": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "run_seconds": 0.93,
+    "scope": "Synthetic DATA protocol software only"
+  },
+  "java_100": {
+    "ready": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/OPENING56-READONLY-4TU-4NEW-SOFTWARE-READY100.json",
+      "bytes": 6193,
+      "sha256": "876fa730f58bb20dde53648763c269f4a283c537a698a4873b4ff6c0123e9c13"
+    },
+    "typed_production": 4,
+    "typed_tests": 2,
+    "typing_seconds": 1.865,
+    "new_methods": 4,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "run_seconds": 1.021,
+    "actualCpp_selected_cases": 10,
+    "actual_route_refusal_originals": 6,
+    "scope": "Two exactprofile/catalog andtwo trueCpp coldconsumer methods; independentFull expectedframe andoriginalclosed5 request-command correlation; no live installation"
+  },
+  "distinct_software_methods": 9,
+  "not_one_replayed_allgreen_suite": true,
+  "first_profile": "Present/present only; defaultFocus cannotprove progressabsence; mixed/unproved unavailable; signed64Q100000 XP, signed32 threshold/points, withinXP<threshold*100000.",
+  "partial_scope": "Dedicated typed Opening hook, no legacyFinanceROOT alias; old nativeQualified/effects/retry/action unchanged",
+  "stock_countercheck": {
+    "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/lifestyles/00_lifestyles.txt",
+    "bytes": 825,
+    "sha256": "9792d3582f988a61a7f2955a3a24a00912d50b3386e0752fe0be811b2b811821",
+    "meaning": "Six stock per-lifestyle definitions xp_per_level1000, not a globalconstant or runtime observation"
+  },
+  "future": "Normal MAIN/genuine JAR origins/currentENV/next silent live entry and actual queries require separate real qualification. This package is not a gate."
+}

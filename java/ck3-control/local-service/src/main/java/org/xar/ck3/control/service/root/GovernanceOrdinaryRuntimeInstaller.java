@@ -21,6 +21,7 @@ import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.nativebridge.capabilities.activity.ActivityActionRoutes;
+import org.xar.ck3.control.nativebridge.capabilities.governance.GovernancePlanningReads;
 import org.xar.ck3.control.planning.optionalcadence.CadenceJson;
 import org.xar.ck3.control.planning.optionalcadence.CadenceModels;
 import org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain;
@@ -117,7 +118,7 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             StrictJson.require(context.core()==core(),"ordinary governance cannot adopt another Core/writer");
             StrictJson.require(current==null||current.context!=context,"ordinary governance installs once per actual Game");
             context.requireCurrent(clock.instant().plusSeconds(1));opening.installContext(context);feast.installContext(context);cadenceActions.installContext(context);
-            var installed=new Installed(this,context,Optional.empty(),activity,actions,domains,Optional.empty());current=installed;return installed;
+            var installed=new Installed(this,context,Optional.empty(),activity,actions,domains,Optional.empty(),nativePrepared.openingReadOnly());current=installed;return installed;
         }
         public List<WriterContracts.Receipt> afterInitialEntry(ContinuityStorePort.Session borrowed,RootInitialEpisodeProof actual)throws IOException {
             requireSession(borrowed);actual.requireCurrent(borrowed);
@@ -208,10 +209,11 @@ public final class GovernanceOrdinaryRuntimeInstaller {
         private final boolean nativeQualified;
         private Installed(Prepared prepared,RootRuntimeContext context,GovernanceRuntimeInstaller.Installed nativeGovernance,
                 GovernanceActivityRuntime activity,ActivityActionRoutes activityActions,StateDomains domains,RootCrownRetryRuntime.Installed retry) {
-            this(prepared,context,Optional.of(nativeGovernance),activity,activityActions,domains,Optional.of(retry));
+            this(prepared,context,Optional.of(nativeGovernance),activity,activityActions,domains,Optional.of(retry),Optional.empty());
         }
         private Installed(Prepared prepared,RootRuntimeContext context,Optional<GovernanceRuntimeInstaller.Installed> nativeProducts,
-                GovernanceActivityRuntime activity,ActivityActionRoutes activityActions,StateDomains domains,Optional<RootCrownRetryRuntime.Installed> retryProducts) {
+                GovernanceActivityRuntime activity,ActivityActionRoutes activityActions,StateDomains domains,Optional<RootCrownRetryRuntime.Installed> retryProducts,
+                Optional<GovernanceRuntimeInstaller.Prepared.OpeningReadOnly> openingReadOnly) {
             nativeQualified=nativeProducts.isPresent();StrictJson.require(nativeQualified==retryProducts.isPresent(),"Native governance and retry products must be available together");
             this.prepared=prepared;this.context=Objects.requireNonNull(context);this.activity=Objects.requireNonNull(activity);
             nextInitialization=new GovernanceNextInitialization(context,activity,prepared.feast,
@@ -245,7 +247,13 @@ public final class GovernanceOrdinaryRuntimeInstaller {
                 actualGovernance=new GovernanceCouncilSupplier(collector,nativeGovernance.councilReads());
                 observed=replay.observe(retry.observe(actualGovernance));
             }else{
-                collector=unavailableCollector(context.reads(),context.archive(),states,scope);
+                if(openingReadOnly.isPresent()) {
+                    var actual=openingReadOnly.orElseThrow();
+                    try{prepared.opening.transitions().bindReadOnlyOpening(actual.definitions());}catch(IOException unavailable){throw new UncheckedIOException(unavailable);}
+                    var readonly=GovernancePlanningReads.OpeningReadProfile.readPort(actual.definitions(),context.reads(),context.archive(),scope,prepared.clock,this::requireCurrent);
+                    collector=new GovernanceCollector(context.reads(),context.archive(),states,new GovernanceCollector.Reads(Optional.empty(),Optional.empty(),Optional.empty(),
+                            Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty()),scope,readonly);
+                }else collector=unavailableCollector(context.reads(),context.archive(),states,scope);
                 actualGovernance=collector;observed=replay.observe(actualGovernance);
             }
             FeastObservationCollector.ActivityReads activityReads=nativeQualified?activity:
@@ -266,7 +274,9 @@ public final class GovernanceOrdinaryRuntimeInstaller {
                     NativeFeastEffects.archivedVerifier(operation,prepared.sources.feastEffects(),context.frameLoader(),activity)).toList();
             var required=new java.util.HashSet<OperationKey>();if(nativeQualified){required.addAll(OrdinaryFeastPolicy.OWNED);required.add(GovernancePolicies.FOCUS);}
             final OpeningTransitions openingTransitions;try{openingTransitions=prepared.opening.transitions();}catch(IOException failure){throw new UncheckedIOException(failure);}
-            installation=new RootDomainInstallation("ordinary-governance",prepared.domainRegistrations(),List.of(),List.of(),actions,List.of(),archived,
+            var openingReads=openingReadOnly.stream().flatMap(actual->actual.definitions().all().stream()
+                    .map(contract->new RootReadContractCatalog.InstalledRead(contract,actual.decoder()))).toList();
+            installation=new RootDomainInstallation("ordinary-governance",prepared.domainRegistrations(),openingReads,List.of(),actions,List.of(),archived,
                     List.of(),List.of(),List.of(),nativeQualified?List.of(prepared.feast.pendingBinding(),openingTransitions.pendingBinding(prepared.sources.openingTransitions())):List.of(),Set.copyOf(required),policies,List.of(openingTransitions,prepared.feast,prepared.cadenceActions.lifestyleCompletion(),completion),
                     actions.stream().map(binding->new RootDomainInstallation.FixedDomain(binding,Domain.diplomacy)).toList(),List.of(),List.of());
         }

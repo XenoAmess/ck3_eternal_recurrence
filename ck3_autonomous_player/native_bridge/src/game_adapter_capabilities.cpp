@@ -16,6 +16,9 @@ bool GameAdapter::supports(std::string_view capability) const noexcept {
   if (florin_read && (identity.adapter_id != ck3_1210::kAdapterId ||
       identity.game_version != ck3_1210::kGameVersion ||
       identity.executable_sha256 != ck3_1210::kExecutableSha256)) return false;
+  for(const auto &read:ck3_1210::kOpeningReadWireContracts56)
+    if(read.capability==capability && !ck3_1210::FindReadWireContractV1(
+        {identity.adapter_id,identity.game_version,identity.executable_sha256},read.step))return false;
   for (const auto candidate : identity.capabilities) {
     if (candidate == capability) {
       return true;

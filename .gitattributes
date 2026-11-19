@@ -1469,3 +1469,18 @@ docs/maintenance/2026-11-19-native-cash-fresh-combined-ready55.json -text whites
 docs/maintenance/2026-11-19-runtime17-20-evidence24.json -text
 docs/maintenance/2026-11-19-saved-entry21-actual-final.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/maintenance/2026-11-19-saved-entry21-evidence25.json -text
+
+# Exact frozen Opening56/current37 migration proof originals.
+/docs/maintenance/2026-11-19-native-opening-readonly-ready56.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-native-opening-readonly-wire56.json -text
+/docs/maintenance/2026-11-19-native-opening-readonly-numeric56.json -text
+/docs/maintenance/2026-11-19-native-opening-readonly-abi56.json -text
+/docs/maintenance/2026-11-19-opening-readonly-evidence26.json -text
+/docs/maintenance/2026-11-19-native56-main-ticket-source22-originals.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-native56-main-ticket-source22-final.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-native56-main-ticket-evidence27.json -text
+/docs/maintenance/2026-11-19-opening-readonly-protocol-software-ready97.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-opening-readonly-cpp-software-ready100.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-opening-current-holywar-software-ready109.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-native-opening-merged-software-final57.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/docs/maintenance/2026-11-19-java-opening-current-holywar-runtime-ready112.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

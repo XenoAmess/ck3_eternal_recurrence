@@ -1,0 +1,606 @@
+{
+  "schema": "ck3.actual-live-Native56-two-readonly-query-original-index/v1",
+  "at": "2026-11-19T06:41:22.659687+00:00",
+  "OwnGame": 229152,
+  "birth_filetime": "134395430728134687",
+  "actual_session": "session-migration1210-hotfix26757580-firstroot22",
+  "Native56_ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\build-01\\NATIVE-OPENING-READONLY-CANDIDATE-READY56.json",
+    "bytes": 3776,
+    "sha256": "0b462dcefd8d02e3ce4d3cd59a94a4fe2e2db06a8495c20282208fdc014e2417"
+  },
+  "selected_originals": [
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\08bbfeacd2bce22a8dec2950041df3ec724ca346a35e86935eb0e9dc57be3976.bin",
+        "bytes": 1310,
+        "sha256": "08bbfeacd2bce22a8dec2950041df3ec724ca346a35e86935eb0e9dc57be3976"
+      },
+      "schema": "",
+      "type": "command_result",
+      "request_id": "step-2-d52d8c4be867",
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": true,
+      "decoded_result": {
+        "schema": "xar.ck3.lifestyle-current.26757580.v1",
+        "status": "available",
+        "unavailable_reason": null,
+        "read_only": true,
+        "full_governance_ready": false,
+        "action_ready": false,
+        "native_revision": 6,
+        "snapshot_id": "native:6",
+        "date_raw": 53176992,
+        "player_character_id": 31254,
+        "current_focus": {
+          "presence": "present",
+          "key": "martial_authority_focus",
+          "lifestyle_key": "martial_lifestyle"
+        },
+        "current_lifestyle_progress": {
+          "presence": "present",
+          "lifestyle_key": "martial_lifestyle",
+          "xp_total_raw": 78750000,
+          "xp_within_level_raw": 78750000,
+          "xp_per_level": 1000,
+          "unspent_perk_points": 0,
+          "used_perk_points": 14
+        },
+        "readiness": {
+          "same_frame_ready": true,
+          "current_focus_ready": true,
+          "lifestyle_progress_ready": true
+        },
+        "origin": {
+          "source_kind": "application_main_ticket",
+          "ticket_sequence": 6,
+          "pump_epoch": 35936,
+          "thread_id": 234264,
+          "main_owner_observed": true
+        },
+        "provenance": {
+          "profile_id": "ck3-26757580-lifestyle-current-v1",
+          "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+          "game_version": "1.21.0",
+          "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+          "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+          "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+        }
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\0abc940bca3946b01c43e5be88ec902f14a4553983e28b57d780d99bc1a8908d.bin",
+        "bytes": 2163,
+        "sha256": "0abc940bca3946b01c43e5be88ec902f14a4553983e28b57d780d99bc1a8908d"
+      },
+      "schema": "xar.native-dispatch-archive/v3",
+      "type": null,
+      "request_id": "step-1-23b4325b97bb",
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": false,
+      "decoded_result": null
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\142dd103331b5f2eaa1bc26875b589135065f256f1fb510d46712082e3a8ce0f.bin",
+        "bytes": 2751,
+        "sha256": "142dd103331b5f2eaa1bc26875b589135065f256f1fb510d46712082e3a8ce0f"
+      },
+      "schema": "xar.java.root-guard-original-basis/v3",
+      "type": null,
+      "request_id": null,
+      "contract_id": null,
+      "operation": "query-current-lifestyle-state-26757580-v1",
+      "LE32_frame": false,
+      "decoded_result": null
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\2238e4053a86e41f3012ff19688080dc906463904e40dc625ed11900b6f973a8.bin",
+        "bytes": 2751,
+        "sha256": "2238e4053a86e41f3012ff19688080dc906463904e40dc625ed11900b6f973a8"
+      },
+      "schema": "xar.java.root-guard-original-basis/v3",
+      "type": null,
+      "request_id": null,
+      "contract_id": null,
+      "operation": "query-current-lifestyle-scope-26757580-v1",
+      "LE32_frame": false,
+      "decoded_result": null
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\2e765ab0c1016bbacd8cef0dd143d461ecfc866d963f7c2b62de684f963068fb.bin",
+        "bytes": 1306,
+        "sha256": "2e765ab0c1016bbacd8cef0dd143d461ecfc866d963f7c2b62de684f963068fb"
+      },
+      "schema": "",
+      "type": "command_result",
+      "request_id": "step-2-d52d8c4be867",
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": false,
+      "decoded_result": {
+        "schema": "xar.ck3.lifestyle-current.26757580.v1",
+        "status": "available",
+        "unavailable_reason": null,
+        "read_only": true,
+        "full_governance_ready": false,
+        "action_ready": false,
+        "native_revision": 6,
+        "snapshot_id": "native:6",
+        "date_raw": 53176992,
+        "player_character_id": 31254,
+        "current_focus": {
+          "presence": "present",
+          "key": "martial_authority_focus",
+          "lifestyle_key": "martial_lifestyle"
+        },
+        "current_lifestyle_progress": {
+          "presence": "present",
+          "lifestyle_key": "martial_lifestyle",
+          "xp_total_raw": 78750000,
+          "xp_within_level_raw": 78750000,
+          "xp_per_level": 1000,
+          "unspent_perk_points": 0,
+          "used_perk_points": 14
+        },
+        "readiness": {
+          "same_frame_ready": true,
+          "current_focus_ready": true,
+          "lifestyle_progress_ready": true
+        },
+        "origin": {
+          "source_kind": "application_main_ticket",
+          "ticket_sequence": 6,
+          "pump_epoch": 35936,
+          "thread_id": 234264,
+          "main_owner_observed": true
+        },
+        "provenance": {
+          "profile_id": "ck3-26757580-lifestyle-current-v1",
+          "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+          "game_version": "1.21.0",
+          "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+          "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+          "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+        }
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\42a8bfda7f47c2cd2f1a19e32a40f806b969f236ffe159f7ae7fb3224b2aa6e7.bin",
+        "bytes": 156,
+        "sha256": "42a8bfda7f47c2cd2f1a19e32a40f806b969f236ffe159f7ae7fb3224b2aa6e7"
+      },
+      "schema": "",
+      "type": "execute_step",
+      "request_id": "step-1-23b4325b97bb",
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": true,
+      "decoded_result": null
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\6f0ff6e309cda726a5798f408af6a27f1826bedd2ffaf244a89eb5ee191878ce.bin",
+        "bytes": 2157,
+        "sha256": "6f0ff6e309cda726a5798f408af6a27f1826bedd2ffaf244a89eb5ee191878ce"
+      },
+      "schema": "xar.native-dispatch-archive/v3",
+      "type": null,
+      "request_id": "step-2-d52d8c4be867",
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": false,
+      "decoded_result": null
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\71edff16d4da5dcc12e141cd6c22f6b9c6280b2c4e37c7cb52eeee94ccf7abef.bin",
+        "bytes": 6346,
+        "sha256": "71edff16d4da5dcc12e141cd6c22f6b9c6280b2c4e37c7cb52eeee94ccf7abef"
+      },
+      "schema": "xar.planning-read-archive/v2",
+      "type": null,
+      "request_id": "step-2-d52d8c4be867",
+      "contract_id": "governance.opening-readonly.ck3-26757580-lifestyle-current-v1",
+      "operation": null,
+      "LE32_frame": false,
+      "decoded_result": null
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\807327863dad25d9c9304eaa53cae0ae2b33131e786e5531dfa780d7404c3aa7.bin",
+        "bytes": 6344,
+        "sha256": "807327863dad25d9c9304eaa53cae0ae2b33131e786e5531dfa780d7404c3aa7"
+      },
+      "schema": "xar.planning-read-archive/v2",
+      "type": null,
+      "request_id": "step-1-23b4325b97bb",
+      "contract_id": "governance.opening-readonly.ck3-26757580-lifestyle-scope-v1",
+      "operation": null,
+      "LE32_frame": false,
+      "decoded_result": null
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\8859825523e0b6a3d5defab7bedd787e1cf7492decc8869994d4cbae74267b46.bin",
+        "bytes": 1321,
+        "sha256": "8859825523e0b6a3d5defab7bedd787e1cf7492decc8869994d4cbae74267b46"
+      },
+      "schema": "",
+      "type": "command_result",
+      "request_id": "step-1-23b4325b97bb",
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": true,
+      "decoded_result": {
+        "schema": "xar.ck3.lifestyle-scope.26757580.v1",
+        "status": "available",
+        "unavailable_reason": null,
+        "read_only": true,
+        "full_governance_ready": false,
+        "action_ready": false,
+        "native_revision": 6,
+        "snapshot_id": "native:6",
+        "date_raw": 53176992,
+        "player_character_id": 31254,
+        "government": {
+          "key": "feudal_government",
+          "native_flag_count": 9,
+          "flags": [
+            "distribution_trade_routes",
+            "government_is_feudal",
+            "government_is_settled",
+            "government_is_settled_non_tribal",
+            "may_elevate_co_monarch",
+            "government_uses_crown_authority",
+            "government_uses_domain_limit",
+            "government_uses_legitimacy",
+            "government_uses_royal_court"
+          ]
+        },
+        "readiness": {
+          "same_frame_ready": true,
+          "government_key_ready": true,
+          "government_flags_ready": true
+        },
+        "origin": {
+          "source_kind": "application_main_ticket",
+          "ticket_sequence": 5,
+          "pump_epoch": 35722,
+          "thread_id": 234264,
+          "main_owner_observed": true
+        },
+        "provenance": {
+          "profile_id": "ck3-26757580-lifestyle-scope-v1",
+          "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+          "game_version": "1.21.0",
+          "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+          "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+          "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+        }
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\a7171f00fcf1099e66fe4f22f0303ff4fbcd206943c95171229f9da6ed3c6565.bin",
+        "bytes": 1205,
+        "sha256": "a7171f00fcf1099e66fe4f22f0303ff4fbcd206943c95171229f9da6ed3c6565"
+      },
+      "schema": "xar.ck3.lifestyle-current.26757580.v1",
+      "type": null,
+      "request_id": null,
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": false,
+      "decoded_result": {
+        "schema": "xar.ck3.lifestyle-current.26757580.v1",
+        "status": "available",
+        "unavailable_reason": null,
+        "read_only": true,
+        "full_governance_ready": false,
+        "action_ready": false,
+        "native_revision": 6,
+        "snapshot_id": "native:6",
+        "date_raw": 53176992,
+        "player_character_id": 31254,
+        "current_focus": {
+          "presence": "present",
+          "key": "martial_authority_focus",
+          "lifestyle_key": "martial_lifestyle"
+        },
+        "current_lifestyle_progress": {
+          "presence": "present",
+          "lifestyle_key": "martial_lifestyle",
+          "xp_total_raw": 78750000,
+          "xp_within_level_raw": 78750000,
+          "xp_per_level": 1000,
+          "unspent_perk_points": 0,
+          "used_perk_points": 14
+        },
+        "readiness": {
+          "same_frame_ready": true,
+          "current_focus_ready": true,
+          "lifestyle_progress_ready": true
+        },
+        "origin": {
+          "source_kind": "application_main_ticket",
+          "ticket_sequence": 6,
+          "pump_epoch": 35936,
+          "thread_id": 234264,
+          "main_owner_observed": true
+        },
+        "provenance": {
+          "profile_id": "ck3-26757580-lifestyle-current-v1",
+          "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+          "game_version": "1.21.0",
+          "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+          "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+          "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+        }
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\aba9901de7a4e6475dfd6f58c1914739e7daa5c7ebab941e8c3a9c76f079a31a.bin",
+        "bytes": 1216,
+        "sha256": "aba9901de7a4e6475dfd6f58c1914739e7daa5c7ebab941e8c3a9c76f079a31a"
+      },
+      "schema": "xar.ck3.lifestyle-scope.26757580.v1",
+      "type": null,
+      "request_id": null,
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": false,
+      "decoded_result": {
+        "schema": "xar.ck3.lifestyle-scope.26757580.v1",
+        "status": "available",
+        "unavailable_reason": null,
+        "read_only": true,
+        "full_governance_ready": false,
+        "action_ready": false,
+        "native_revision": 6,
+        "snapshot_id": "native:6",
+        "date_raw": 53176992,
+        "player_character_id": 31254,
+        "government": {
+          "key": "feudal_government",
+          "native_flag_count": 9,
+          "flags": [
+            "distribution_trade_routes",
+            "government_is_feudal",
+            "government_is_settled",
+            "government_is_settled_non_tribal",
+            "may_elevate_co_monarch",
+            "government_uses_crown_authority",
+            "government_uses_domain_limit",
+            "government_uses_legitimacy",
+            "government_uses_royal_court"
+          ]
+        },
+        "readiness": {
+          "same_frame_ready": true,
+          "government_key_ready": true,
+          "government_flags_ready": true
+        },
+        "origin": {
+          "source_kind": "application_main_ticket",
+          "ticket_sequence": 5,
+          "pump_epoch": 35722,
+          "thread_id": 234264,
+          "main_owner_observed": true
+        },
+        "provenance": {
+          "profile_id": "ck3-26757580-lifestyle-scope-v1",
+          "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+          "game_version": "1.21.0",
+          "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+          "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+          "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+        }
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\b826e31671b968e915b25e1423e4c23789a53d4e6ccaee096ed85c4f55f54530.bin",
+        "bytes": 1317,
+        "sha256": "b826e31671b968e915b25e1423e4c23789a53d4e6ccaee096ed85c4f55f54530"
+      },
+      "schema": "",
+      "type": "command_result",
+      "request_id": "step-1-23b4325b97bb",
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": false,
+      "decoded_result": {
+        "schema": "xar.ck3.lifestyle-scope.26757580.v1",
+        "status": "available",
+        "unavailable_reason": null,
+        "read_only": true,
+        "full_governance_ready": false,
+        "action_ready": false,
+        "native_revision": 6,
+        "snapshot_id": "native:6",
+        "date_raw": 53176992,
+        "player_character_id": 31254,
+        "government": {
+          "key": "feudal_government",
+          "native_flag_count": 9,
+          "flags": [
+            "distribution_trade_routes",
+            "government_is_feudal",
+            "government_is_settled",
+            "government_is_settled_non_tribal",
+            "may_elevate_co_monarch",
+            "government_uses_crown_authority",
+            "government_uses_domain_limit",
+            "government_uses_legitimacy",
+            "government_uses_royal_court"
+          ]
+        },
+        "readiness": {
+          "same_frame_ready": true,
+          "government_key_ready": true,
+          "government_flags_ready": true
+        },
+        "origin": {
+          "source_kind": "application_main_ticket",
+          "ticket_sequence": 5,
+          "pump_epoch": 35722,
+          "thread_id": 234264,
+          "main_owner_observed": true
+        },
+        "provenance": {
+          "profile_id": "ck3-26757580-lifestyle-scope-v1",
+          "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+          "game_version": "1.21.0",
+          "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+          "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+          "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+        }
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\e3cb97db56413941c7e6b9631bf7f4d3099b22698dcd9f0251cca464538284b2.bin",
+        "bytes": 1906,
+        "sha256": "e3cb97db56413941c7e6b9631bf7f4d3099b22698dcd9f0251cca464538284b2"
+      },
+      "schema": "xar.java-opening-gate/v2",
+      "type": null,
+      "request_id": null,
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": false,
+      "decoded_result": null
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\f16ea628d24a5609f50d30d470406c3d8397bf57092d4b04bc4449f95ba11082.bin",
+        "bytes": 156,
+        "sha256": "f16ea628d24a5609f50d30d470406c3d8397bf57092d4b04bc4449f95ba11082"
+      },
+      "schema": "",
+      "type": "execute_step",
+      "request_id": "step-2-d52d8c4be867",
+      "contract_id": null,
+      "operation": null,
+      "LE32_frame": true,
+      "decoded_result": null
+    }
+  ],
+  "result_tokens": {
+    "xar.ck3.lifestyle-current.26757580.v1": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\a7171f00fcf1099e66fe4f22f0303ff4fbcd206943c95171229f9da6ed3c6565.bin",
+      "bytes": 1205,
+      "sha256": "a7171f00fcf1099e66fe4f22f0303ff4fbcd206943c95171229f9da6ed3c6565"
+    },
+    "xar.ck3.lifestyle-scope.26757580.v1": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root22\\continuity\\artifacts\\aba9901de7a4e6475dfd6f58c1914739e7daa5c7ebab941e8c3a9c76f079a31a.bin",
+      "bytes": 1216,
+      "sha256": "aba9901de7a4e6475dfd6f58c1914739e7daa5c7ebab941e8c3a9c76f079a31a"
+    }
+  },
+  "decoded_scope": {
+    "schema": "xar.ck3.lifestyle-scope.26757580.v1",
+    "status": "available",
+    "unavailable_reason": null,
+    "read_only": true,
+    "full_governance_ready": false,
+    "action_ready": false,
+    "native_revision": 6,
+    "snapshot_id": "native:6",
+    "date_raw": 53176992,
+    "player_character_id": 31254,
+    "government": {
+      "key": "feudal_government",
+      "native_flag_count": 9,
+      "flags": [
+        "distribution_trade_routes",
+        "government_is_feudal",
+        "government_is_settled",
+        "government_is_settled_non_tribal",
+        "may_elevate_co_monarch",
+        "government_uses_crown_authority",
+        "government_uses_domain_limit",
+        "government_uses_legitimacy",
+        "government_uses_royal_court"
+      ]
+    },
+    "readiness": {
+      "same_frame_ready": true,
+      "government_key_ready": true,
+      "government_flags_ready": true
+    },
+    "origin": {
+      "source_kind": "application_main_ticket",
+      "ticket_sequence": 5,
+      "pump_epoch": 35722,
+      "thread_id": 234264,
+      "main_owner_observed": true
+    },
+    "provenance": {
+      "profile_id": "ck3-26757580-lifestyle-scope-v1",
+      "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+      "game_version": "1.21.0",
+      "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+      "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+      "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+    }
+  },
+  "decoded_current": {
+    "schema": "xar.ck3.lifestyle-current.26757580.v1",
+    "status": "available",
+    "unavailable_reason": null,
+    "read_only": true,
+    "full_governance_ready": false,
+    "action_ready": false,
+    "native_revision": 6,
+    "snapshot_id": "native:6",
+    "date_raw": 53176992,
+    "player_character_id": 31254,
+    "current_focus": {
+      "presence": "present",
+      "key": "martial_authority_focus",
+      "lifestyle_key": "martial_lifestyle"
+    },
+    "current_lifestyle_progress": {
+      "presence": "present",
+      "lifestyle_key": "martial_lifestyle",
+      "xp_total_raw": 78750000,
+      "xp_within_level_raw": 78750000,
+      "xp_per_level": 1000,
+      "unspent_perk_points": 0,
+      "used_perk_points": 14
+    },
+    "readiness": {
+      "same_frame_ready": true,
+      "current_focus_ready": true,
+      "lifestyle_progress_ready": true
+    },
+    "origin": {
+      "source_kind": "application_main_ticket",
+      "ticket_sequence": 6,
+      "pump_epoch": 35936,
+      "thread_id": 234264,
+      "main_owner_observed": true
+    },
+    "provenance": {
+      "profile_id": "ck3-26757580-lifestyle-current-v1",
+      "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+      "game_version": "1.21.0",
+      "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+      "reader_source_sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
+      "abi_manifest_sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+    }
+  },
+  "no_new_SDK_call": true,
+  "raw_originals_untouched": true,
+  "no_fullGovernance_action_finance_Wait_or_day_credit": true,
+  "current_stage": "Actual two query available then canonical Army/HolyWar capability ContractViolation; Main4 and normalGameExit0/Job0, final proof pending"
+}

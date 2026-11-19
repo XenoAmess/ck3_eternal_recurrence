@@ -1,0 +1,20 @@
+{
+  "schema": "xar.native56.opening-abi-manifest/v1",
+  "qualification": "STATIC_ONLY_NOT_NATIVE_BODY_OR_LIVE_P",
+  "government": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\ROOT-static\\GOVERNMENT-KEY-FLAGS-BB3-RAW01.json",
+    "bytes": 10913,
+    "sha256": "81237bed89d0c9d05cc975d98a1dc0de9f2e515764bff241a736cb8fdafe9643"
+  },
+  "lifestyle": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\LIFE-static\\LIFE-HOTFIX26757580-STATIC56.json",
+    "bytes": 36311,
+    "sha256": "abcb55c587c675c0b989b5e263f2bb278042eaf41f20bd097f7093374579a153"
+  },
+  "entry_profile": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\candidate\\include\\xar_bridge\\opening_readonly_profile56.hpp",
+    "bytes": 1996,
+    "sha256": "25fb6c3e46e8bbc7bed05494ff65a32380f0440c4616266e0caf0fe260ca6df9"
+  },
+  "first_current_profile": "present/present only; fallback/default/mixed => unavailable; no owned-key/candidate/action readiness"
+}
