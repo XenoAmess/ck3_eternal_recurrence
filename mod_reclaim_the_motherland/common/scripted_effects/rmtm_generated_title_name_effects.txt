@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE. Edit tools/gen_reclaim_the_motherland_title_names.py.
-# Vanilla TGP scripted-effects SHA-256: E2035C8C0D525064302EFECBCC95DA21544F159C86D6E9BF937ECC0D00C2277F
+# Vanilla TGP scripted-effects SHA-256: 10A862A8779AFE4639F193C74D541BEFD8F9E208EFF7D4CEB9B4DB2B4F9C34E4
 # Character scope; h_china and scope:rmtm_restoration_hegemony_title exist.
 rmtm_freeze_restoration_hegemony_name_effect = {
 	if = {

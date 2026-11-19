@@ -1,0 +1,411 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T13:53:24.557800+00:00",
+  "records": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-integration-a01\\summary.json",
+        "bytes": 4589,
+        "sha256": "9731d170aac7a2215064ef2c0c5ad4fd8da2d07d18a3d7eddbaa28f8e16e846c"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T13:28:46.360974+00:00",
+        "results": [
+          {
+            "name": "full-affected-unit",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-X",
+              "utf8",
+              "-m",
+              "unittest",
+              "test_reclaim_the_motherland_contract",
+              "test_reclaim_the_motherland_keypaths",
+              "test_reclaim_ministry_scope_guard",
+              "test_reclaim_the_motherland_scope_witness",
+              "test_build_reclaim_the_motherland_release",
+              "-v"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 8.278391600004397
+          },
+          {
+            "name": "three-file-strict-mypy",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-X",
+              "utf8",
+              "-m",
+              "mypy",
+              "--strict",
+              "--follow-imports=silent",
+              "--cache-dir",
+              "nul",
+              "tools/reclaim_the_motherland_vanilla_contract.py",
+              "tools/gen_reclaim_native_overrides.py",
+              "tools/gen_reclaim_vassalization_override.py"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 1.9335272000171244
+          },
+          {
+            "name": "focused-core",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-X",
+              "utf8",
+              "tools/prepare_reclaim_the_motherland_1_20_fixture.py",
+              "--output",
+              "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-integration-a01\\focused-core",
+              "--compressed-days",
+              "10",
+              "--ui-checkpoints",
+              "--game-dir",
+              "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+              "--formal-product-dir",
+              "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-integration-a01\\software-product-input\\mod_reclaim_the_motherland",
+              "--focused-keypaths"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 1.2473107999830972
+          },
+          {
+            "name": "threshold-ui",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-X",
+              "utf8",
+              "tools/prepare_reclaim_the_motherland_1_20_fixture.py",
+              "--output",
+              "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-integration-a01\\threshold-ui",
+              "--compressed-days",
+              "10",
+              "--ui-checkpoints",
+              "--game-dir",
+              "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+              "--formal-product-dir",
+              "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-integration-a01\\software-product-input\\mod_reclaim_the_motherland",
+              "--threshold-ui"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 1.2525382000021636
+          }
+        ],
+        "passed": true,
+        "candidate_manifest_sha256": "2ae9c7b4c65f9fd54e7a39d3596675da397a5ee46c0cab12313ca0db230db0b7",
+        "typed_source_pins": [
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\reclaim_the_motherland_vanilla_contract.py",
+            "bytes": 3686,
+            "sha256": "2d9f21200a2058427dce199ed81005e4f12b9f69ef6d6bc2256972701b7628e4"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\gen_reclaim_native_overrides.py",
+            "bytes": 4941,
+            "sha256": "948c2249dfe234c3b1b2ea8a9bde76989176000563448081933d3a3fe7b5bf22"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\gen_reclaim_vassalization_override.py",
+            "bytes": 8311,
+            "sha256": "4b03d005c63ce4a2fe4521412e621b76ccf7c21df760f7cfd3a85ca6804920be"
+          }
+        ],
+        "scope": "Actual integrated affected five unit modules including all release-builder ephemeral tests, not only external46selected tests; three complete source files strict mypy/imports silent. Actual current-install focused-core and threshold-ui emission against exact36-file software input view, not formal release/ZIP/tag or live qualification. New fresh26-family config retains all business gates and Native/physical pending boundaries. One whitespace-only added blank line in generated offer projection is exact upstream content and retained for byte-exact inverse; git diff --check warns at that generated line.",
+        "runtime_status": "NOT_RUN",
+        "native_abi_qualified": false,
+        "product_release_pass": false,
+        "workshop_published": false,
+        "reserved_bytes": 8388608,
+        "retained_output_bytes_before_summary": 1291961,
+        "remaining_write_reservation_bytes": 0
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-offline-candidate\\software-summary.json",
+        "bytes": 6952,
+        "sha256": "c9af07edd175f04235f4f31efcb99ece47c83492ea5412493945a16ad8fea0f5"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-11-19T12:22:24.782197+00:00",
+        "source_head_parent_reported": "88a6aa48e144a20b65f45eedc18da53703663db8",
+        "canonical_workshop_item_id": "3798404599",
+        "candidate_version": "0.4.2",
+        "runtime_status": "NOT_RUN",
+        "software_exit_code": 0,
+        "tests_run": 46,
+        "test_failures": 0,
+        "test_errors": 0,
+        "skipped_tests": 0,
+        "static_and_localization_errors": [],
+        "actual_installed_source_pins_checked": true,
+        "generated_projections_compared_to_actual_sources": 5,
+        "runtime_scripts_parsed": [
+          "common/character_interactions/zz_rmtm_offer_vassalization.txt",
+          "common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt",
+          "common/decisions/rmtm_restoration_decisions.txt",
+          "common/game_rules/rmtm_game_rules.txt",
+          "common/on_action/rmtm_on_actions.txt",
+          "common/script_values/rmtm_loyalty_values.txt",
+          "common/scripted_effects/rmtm_dynastic_cycle_effects.txt",
+          "common/scripted_effects/rmtm_generated_title_name_effects.txt",
+          "common/scripted_effects/rmtm_loyalty_resolution_effects.txt",
+          "common/scripted_effects/rmtm_vanilla_compat_effects.txt",
+          "common/scripted_effects/zz_rmtm_vanilla_overrides.txt",
+          "common/scripted_modifiers/zz_rmtm_offer_vassalization_modifiers.txt",
+          "common/scripted_triggers/rmtm_loyalty_triggers.txt",
+          "common/scripted_triggers/rmtm_restoration_triggers.txt",
+          "common/scripted_triggers/zz_rmtm_ministry_override.txt",
+          "events/rmtm_loyalty_events.txt"
+        ],
+        "python_files_compiled_in_memory": [
+          "tools/gen_reclaim_native_overrides.py",
+          "tools/gen_reclaim_the_motherland_title_names.py",
+          "tools/gen_reclaim_vassalization_override.py",
+          "tools/reclaim_the_motherland_effective_law_contract.py",
+          "tools/reclaim_the_motherland_vanilla_contract.py",
+          "tools/test_build_reclaim_the_motherland_release.py",
+          "tools/test_reclaim_the_motherland_contract.py",
+          "tools/test_reclaim_the_motherland_keypaths.py",
+          "tools/validate_reclaim_the_motherland_static.py"
+        ],
+        "mypy_command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=silent",
+          "--cache-dir",
+          "nul",
+          "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-offline-candidate\\repo-relative\\tools\\reclaim_the_motherland_vanilla_contract.py",
+          "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-offline-candidate\\repo-relative\\tools\\gen_reclaim_native_overrides.py",
+          "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-offline-candidate\\repo-relative\\tools\\gen_reclaim_vassalization_override.py"
+        ],
+        "mypy_exit_code": 0,
+        "type_check_scope": [
+          "reclaim_the_motherland_vanilla_contract.py",
+          "gen_reclaim_native_overrides.py",
+          "gen_reclaim_vassalization_override.py"
+        ],
+        "type_check_limits": "Only the three exact-source generator/contract modules; not legacy law helper/test modules or all repository.",
+        "test_view_scope": "Exact36-file product projection plus its57KiB fixture and selected original contract data/source, no whole-repository copy. Test Path constants rebound to this view; production functions and installed source predicates unchanged.",
+        "excluded_execution": [
+          "Git",
+          "Steam",
+          "Game",
+          "Native ABI",
+          "Maven",
+          "publication tag",
+          "formal staging/ZIP",
+          "actual GUI/business PASS"
+        ],
+        "payload_sha256": {
+          "docs/maintenance/2026-11-19-reclaim-motherland-florin-offline.md": "c001183f1e71a2a7ec373c3b47fb688ea4524b2cd50f6a7a68947593651a4aad",
+          "mod_reclaim_the_motherland/common/character_interactions/zz_rmtm_offer_vassalization.txt": "8970bf19ab393194299d5d19b31f81bc9c4b2cbe41628a6eee84911956d6a228",
+          "mod_reclaim_the_motherland/common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt": "a9faefe13cbb8a845c5d1d7160cc922735380f9b854f81fad2ac8c9a715b28e9",
+          "mod_reclaim_the_motherland/common/scripted_effects/rmtm_dynastic_cycle_effects.txt": "919aa13e7cfe646889d82adc4ae3832431680f74ead21d398b2533113642e8ec",
+          "mod_reclaim_the_motherland/common/scripted_effects/rmtm_generated_title_name_effects.txt": "cddafc68d054f512d019240da4f4b5aa7e35d9db6f6658c56e32aef942fd980a",
+          "mod_reclaim_the_motherland/common/scripted_effects/rmtm_vanilla_compat_effects.txt": "c5ba27b30a42d742434a85c88718ed661ae6eb4efbe698815d3214838921a223",
+          "mod_reclaim_the_motherland/common/scripted_modifiers/zz_rmtm_offer_vassalization_modifiers.txt": "19033a931c15fa96143fb89f2c855a39a3ae82e6cda9a07773d313284569ff89",
+          "mod_reclaim_the_motherland/common/scripted_triggers/zz_rmtm_ministry_override.txt": "d36354627f75f5449ddf62a8229d0a45463a5cfa52b8d7ab7f6ed21759a4d238",
+          "mod_reclaim_the_motherland/descriptor.mod": "2602906a509f4bc28480f438053eb33de2c449a7598a21af8123479fb0078a94",
+          "mod_reclaim_the_motherland/README.md": "e800cd92f1468c726f4afcdef1b56d0695d38c7c23037c6c856ff1835c3a6e02",
+          "tools/ck3_mod_acceptance_cases/rmtm_florin_keypaths.json": "e93c96f7bd87c8665a74d790ddf5648582718c7c01a858e21f112aa8fe1e1407",
+          "tools/gen_reclaim_native_overrides.py": "948c2249dfe234c3b1b2ea8a9bde76989176000563448081933d3a3fe7b5bf22",
+          "tools/gen_reclaim_the_motherland_title_names.py": "bae5044e4f50410b7d320b082413d031c73280290b677e01df66460732a6b489",
+          "tools/gen_reclaim_vassalization_override.py": "4b03d005c63ce4a2fe4521412e621b76ccf7c21df760f7cfd3a85ca6804920be",
+          "tools/reclaim_the_motherland_effective_law_contract.py": "646876ba1e2174e159854ca3e1b0502b6936ed17ec7c2959f1bb5dfcc6c587d1",
+          "tools/reclaim_the_motherland_vanilla_1_21_0.json": "89421b2e5f2694d9aa24f3573db0fbf533a77abb44896e375d957cdc37fa4145",
+          "tools/reclaim_the_motherland_vanilla_contract.py": "2d9f21200a2058427dce199ed81005e4f12b9f69ef6d6bc2256972701b7628e4",
+          "tools/test_build_reclaim_the_motherland_release.py": "c8e9c0e377c0ad0afa6583c4fafd8a8a70dede24a882097f08ff7bc83d1f3eb5",
+          "tools/test_reclaim_the_motherland_contract.py": "677fb9063789df824d471d9a41dc196db2de2316bcccda5c6c68de52bd1585d8",
+          "tools/test_reclaim_the_motherland_keypaths.py": "735a0a52b6d4be822aedf2aee150a26994b7e41e1023fd7084b3c347e2c97bcd",
+          "tools/validate_reclaim_the_motherland_static.py": "c51fc4f99db08ab076df0d47dbcb2ecfa49c77b1ba9c5a73e8716d5b5e5e7c4c",
+          "workshop/reclaim_the_motherland_description.bbcode": "c06f2c68df240d20823b5d0596e70307c832e7c4083a9deed8c6b83437320f14"
+        },
+        "storage_budget_bytes": 8388608,
+        "footprint_before_summary_bytes": 1467902,
+        "metadata_docs_added_after_checks": [
+          "docs/maintenance/2026-11-19-reclaim-motherland-florin-offline.md",
+          "mod_reclaim_the_motherland/README.md",
+          "workshop/reclaim_the_motherland_description.bbcode"
+        ],
+        "fixture_producer_summary": "fixture-projection-summary.json",
+        "native_abi_qualified": false
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-offline-candidate\\fixture-projection-summary.json",
+        "bytes": 1619,
+        "sha256": "35ba00c4bb9ac87d4c07c51af2449615d736b76edcc704253dbdedd08cbc7785"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "exit_code": 0,
+        "producer": "Original prepare_reclaim_the_motherland_1_20_fixture.prepare, unchanged",
+        "formal_parameter_input": "Private software test view of candidate36runtimefiles; not formal release/staging qualification",
+        "runtime_status": "NOT_RUN",
+        "scenes": [
+          {
+            "scene": "focused-core",
+            "receipt": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-offline-candidate\\emitted\\focused-core.prepare.json",
+            "reused_completed_first_emission": true,
+            "game_version": "1.21.0",
+            "steam_build_id": "26622941",
+            "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+            "runtime_status": "NOT_RUN",
+            "prepared_file_count": 16,
+            "event_id_theme_and_parse_exit_code": 0
+          },
+          {
+            "scene": "threshold-ui",
+            "receipt": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-offline-candidate\\emitted\\threshold-ui.prepare.json",
+            "reused_completed_first_emission": false,
+            "game_version": "1.21.0",
+            "steam_build_id": "26622941",
+            "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+            "runtime_status": "NOT_RUN",
+            "prepared_file_count": 20,
+            "event_id_theme_and_parse_exit_code": 0
+          }
+        ],
+        "previous_check_failure": "First core emission completed, but this checker used the wrong receipt field effective_single_heir_contract and exited1/KeyError. Corrected to actual effective_law_contract and verified/reused the unchanged completed emission; no product or emitter change."
+      }
+    }
+  ],
+  "scope": "Reclaim0.4.2/1.21.0 canonical3798404599. Actual installed seven source files/six objects: only OfferGG alignment-50/layout and Chaos tributary membership changed; preserve loyal guards/51percent/1825days/nine seats/89nine-language title mappings. Original generators five exact projections retargeted, inverse against currentstock; legacy contracts kept. All64affected unit/release-builder ephemeral tests, three-source strict mypy/importssilent and actual two current-install fixture emissions0. Fresh26-family case does not reuse oldmachine seven-positive scope. Native-law helper merely retargeted accepted identity, actual ABI/current heir/Continue/law/business are NOT_RUN; no formal release/tag/publication. Generated upstream empty tab line retained because exactinverse, diff--check warning stated, no false all-checks-green claim.",
+  "runtime_status": "NOT_RUN",
+  "product_release_pass": false,
+  "workshop_published": false,
+  "actual_integrated_test_count": 64,
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\2026-11-19-reclaim-motherland-florin-offline.md",
+      "bytes": 3631,
+      "sha256": "c001183f1e71a2a7ec373c3b47fb688ea4524b2cd50f6a7a68947593651a4aad"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\character_interactions\\zz_rmtm_offer_vassalization.txt",
+      "bytes": 13368,
+      "sha256": "8970bf19ab393194299d5d19b31f81bc9c4b2cbe41628a6eee84911956d6a228"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\decisions\\dlc_decisions\\tgp\\zz_rmtm_mandate_override.txt",
+      "bytes": 2733,
+      "sha256": "a9faefe13cbb8a845c5d1d7160cc922735380f9b854f81fad2ac8c9a715b28e9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\scripted_effects\\rmtm_dynastic_cycle_effects.txt",
+      "bytes": 33529,
+      "sha256": "919aa13e7cfe646889d82adc4ae3832431680f74ead21d398b2533113642e8ec"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\scripted_effects\\rmtm_generated_title_name_effects.txt",
+      "bytes": 18035,
+      "sha256": "cddafc68d054f512d019240da4f4b5aa7e35d9db6f6658c56e32aef942fd980a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\scripted_effects\\rmtm_vanilla_compat_effects.txt",
+      "bytes": 7334,
+      "sha256": "c5ba27b30a42d742434a85c88718ed661ae6eb4efbe698815d3214838921a223"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\scripted_modifiers\\zz_rmtm_offer_vassalization_modifiers.txt",
+      "bytes": 11012,
+      "sha256": "19033a931c15fa96143fb89f2c855a39a3ae82e6cda9a07773d313284569ff89"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\scripted_triggers\\zz_rmtm_ministry_override.txt",
+      "bytes": 1016,
+      "sha256": "d36354627f75f5449ddf62a8229d0a45463a5cfa52b8d7ab7f6ed21759a4d238"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\descriptor.mod",
+      "bytes": 152,
+      "sha256": "2602906a509f4bc28480f438053eb33de2c449a7598a21af8123479fb0078a94"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\README.md",
+      "bytes": 27476,
+      "sha256": "e800cd92f1468c726f4afcdef1b56d0695d38c7c23037c6c856ff1835c3a6e02"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\rmtm_florin_keypaths.json",
+      "bytes": 6358,
+      "sha256": "e93c96f7bd87c8665a74d790ddf5648582718c7c01a858e21f112aa8fe1e1407"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\gen_reclaim_native_overrides.py",
+      "bytes": 4941,
+      "sha256": "948c2249dfe234c3b1b2ea8a9bde76989176000563448081933d3a3fe7b5bf22"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\gen_reclaim_the_motherland_title_names.py",
+      "bytes": 5502,
+      "sha256": "bae5044e4f50410b7d320b082413d031c73280290b677e01df66460732a6b489"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\gen_reclaim_vassalization_override.py",
+      "bytes": 8311,
+      "sha256": "4b03d005c63ce4a2fe4521412e621b76ccf7c21df760f7cfd3a85ca6804920be"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\reclaim_the_motherland_effective_law_contract.py",
+      "bytes": 14147,
+      "sha256": "646876ba1e2174e159854ca3e1b0502b6936ed17ec7c2959f1bb5dfcc6c587d1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\reclaim_the_motherland_vanilla_1_21_0.json",
+      "bytes": 3984,
+      "sha256": "89421b2e5f2694d9aa24f3573db0fbf533a77abb44896e375d957cdc37fa4145"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\reclaim_the_motherland_vanilla_contract.py",
+      "bytes": 3686,
+      "sha256": "2d9f21200a2058427dce199ed81005e4f12b9f69ef6d6bc2256972701b7628e4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_build_reclaim_the_motherland_release.py",
+      "bytes": 14472,
+      "sha256": "c8e9c0e377c0ad0afa6583c4fafd8a8a70dede24a882097f08ff7bc83d1f3eb5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_reclaim_the_motherland_contract.py",
+      "bytes": 61415,
+      "sha256": "677fb9063789df824d471d9a41dc196db2de2316bcccda5c6c68de52bd1585d8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_reclaim_the_motherland_keypaths.py",
+      "bytes": 26475,
+      "sha256": "735a0a52b6d4be822aedf2aee150a26994b7e41e1023fd7084b3c347e2c97bcd"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_reclaim_the_motherland_static.py",
+      "bytes": 21101,
+      "sha256": "c51fc4f99db08ab076df0d47dbcb2ecfa49c77b1ba9c5a73e8716d5b5e5e7c4c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\reclaim_the_motherland_description.bbcode",
+      "bytes": 7715,
+      "sha256": "c06f2c68df240d20823b5d0596e70307c832e7c4083a9deed8c6b83437320f14"
+    }
+  ],
+  "upstream_comparison": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-offline-candidate\\upstream-comparison.json",
+    "bytes": 5435,
+    "sha256": "1104219f07871b0d75d640c438d46d2007a84c4cbef1d4fd1b6441bee3c916c3"
+  },
+  "fresh_acceptance_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin-offline-candidate\\FRESH-ACCEPTANCE.md",
+    "bytes": 13215,
+    "sha256": "3dad877420b055d6c86b1379490561e22911444c42aa4f6a1259542f1c70956e"
+  }
+}

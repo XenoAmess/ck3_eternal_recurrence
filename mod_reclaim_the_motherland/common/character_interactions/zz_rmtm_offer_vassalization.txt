@@ -1,7 +1,7 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# CK3 1.20.0.2 / Steam build 25588574 source projection.
-# Vanilla common/character_interactions/00_character_interactions.txt SHA-256: E66FC0CCAA69E84BB6B36C2C3A4CAC1E8F8D871D70CF7234724A0150E2FF8A4B
-# Vanilla offer_vassalization_interaction SHA-256: 9C8E8A284950D6D8B221F3710D4F91E1C759B161C1462B435F6ECF8F9AC30D30
+# CK3 1.21.0 / Steam build 26622941 source projection.
+# Vanilla common/character_interactions/00_character_interactions.txt SHA-256: 5ACF9D7BD1688EA3FB0C67AB9E1577C3313225043F6B51D70301636B689489DE
+# Vanilla offer_vassalization_interaction SHA-256: 6D29C59F423684B28FB6A571BF5D60BA03E9BA7A1534F24AEF9AEEC657AD0AE0
 # Only the general acceptance call is redirected.
 
 offer_vassalization_interaction = {
@@ -9,6 +9,8 @@ offer_vassalization_interaction = {
 	icon = icon_vassal
 
 	desc = offer_vassalization_interaction_desc
+	greeting = positive
+	notification_text = OFFER_VASSALIZATION_INTERACTION_NOTIFICATION
 
 	ai_targets = {
 		ai_recipients = neighboring_rulers
@@ -125,9 +127,6 @@ offer_vassalization_interaction = {
 			}
 		}
 	}
-
-	greeting = positive
-	notification_text = OFFER_VASSALIZATION_INTERACTION_NOTIFICATION
 
 	cost = {
 		influence = {
@@ -264,7 +263,7 @@ offer_vassalization_interaction = {
 				ceiling = yes
 	  		}
 		}
-
+		
 		# TRAITS/PERSONALITY
 			modifier = { # Ambitious
 				desc = TAKE_THE_VOWS_AMBITIOUS
@@ -400,6 +399,16 @@ offer_vassalization_interaction = {
 				opinion_target = scope:actor
 				multiplier = 1
 			}
+
+		#GG modifier
+		modifier = {
+			add = -50
+			OR = {
+				gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:actor SECOND = scope:recipient }
+				scope:recipient = { is_gg_undecided_trigger = yes }
+			}
+			desc = RECIPIENT_IS_NOT_YOUR_GG
+		}
 	}
 
 	# Low starting obligations

@@ -1,0 +1,19 @@
+# 重整河山 Florin 离线迁移候选
+
+- machine_id: desktop-3fevhd2-1c74096080。
+- 目标：版本0.4.2，CK3 1.21.0/Florin、build26622941、EXE SHA-256 2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc。
+- canonical Workshop条目仍为3798404599。本记录为离线候选，没有Git发表、正式tag/ZIP、Steam上传、Native ABI资格或新实机通过。
+
+六个锁定原版对象中，和平附庸交互和群雄割据效果变化。交互完整吸收原版新的圭尔夫/吉伯林对立或未决阵营-50项及字段排序；私有general/diplomacy委托、后朝固定品级项与1825日精确头衔绑定的-50保留。原版割据在连接成员处先判断朝贡关系、移除冗余“不是新领主本人”条件；原版兼容副本及自定义割据的相应小块都同步，忠臣旧天子realm排除继续保留。宣称天命决议、官署trigger和两个接受度modifier正文不变。51%阈值文件字节不变；89个原版朝号集合完全相同，仅更新朝号生成器的来源hash/header。旧Crozier JSON保持历史，当前生成器改用新增Florin七文件/六对象合同。
+
+46项软件回归、三个源码合同/生成器模块strict mypy、36文件发行源清单与九语检查、16运行时脚本解析均通过。原有夹具producer对当前实际Florin stock分别生成focused core和threshold UI；两者通过事件ID/theme与通用parse，实际准备回执为1.21.0/build26622941、NOT_RUN。私有软件product view不是正式staging，未生成正式ZIP。第一次软件检查因外置默认Game路径缺失报两项静态错误；统一尊重既有RMTM_CK3_GAME_ROOT配置后通过。第一次夹具检查器在producer完成后误取receipt字段名，已改成实际effective_law_contract并核哈希复用原完成产物；两个初始检查失败如实保留。
+
+新增rmtm_florin_keypaths.json保留完整26families、14自然日、10日夹具压缩、D3/predeath/postdeath实体法合取和原死亡/忠臣/九席断言，不进入旧migration_delta_v1的七项旧GUI复用路径。旧contract不改。共享registry尚未切换到新config；最终集成由Root处理。
+
+本机尚无26622941 Native ABI资格。effective_law_contract的version/SHA只限制将来收到的真实新帧；它仍要求原Native物理law数组、同owner/title/frame及引擎heir，与改常量获得可运行能力是两回事。当前三项PENDING_PHYSICAL仍未解决。Root已授权shared_gui_only fallback及必要真实Save/Continue；背景窗口继续最小化、无置顶、不抢焦点。
+
+需要新场重新获得后朝空法理/亲领/忠臣树、九席与预算Cancel、真实Continue、原玩家死亡、执行时引擎heir及同一完整title恢复。独立threshold_ui还须真实50%禁用/51%启用及仅一次生产复辟确认。不能复用另一机器1.20实机资格。
+
+ZIP物理存档可作为未来独立替代证据：在D3、执行前暂停、恢复后各保留真实新存档，按同世界完整titleID关联物理law容器和holder；结合实际script见证和GUI的执行时继承人、默认Continue。存档不是Native帧，不能伪造Native backend/revision/definition IDs喂给旧helper；空law容器的序列化语义及realm baseline也须先在本机Florin实证。该替代reader/合同本轮未实现，不能仅凭存档里出现single_heir字符串授予实体法合取或继承通过。
+
+外置精确补丁、before/after SHA、软件原件及逐项fresh输入见本机D:/ck3-state/upgrade-20261118/reclaim-florin-offline-candidate/。Source/软件、实际装载、实机业务与Workshop发表分别记账。

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate RMTM's private offer-vassalization path from exact CK3 1.20 sources."""
+"""Generate RMTM's private offer-vassalization path from exact CK3 1.21.0 Florin sources."""
 from __future__ import annotations
 
 import argparse

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate RMTM's three narrow native projections for exact CK3 1.20.0.2."""
+"""Generate RMTM's three narrow native projections for exact CK3 1.21.0 Florin."""
 from __future__ import annotations
 
 import argparse

@@ -1,8 +1,8 @@
-version="0.4.1"
+version="0.4.2"
 tags={
 	"Gameplay"
-	"1.20 'Crozier'"
+	"1.21 'Florin'"
 }
 name="Reclaim the Motherland — 重整河山"
 picture="thumbnail.png"
-supported_version="1.20.0.4"
+supported_version="1.21.0"

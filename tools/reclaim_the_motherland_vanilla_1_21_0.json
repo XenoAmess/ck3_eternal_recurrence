@@ -1,0 +1,58 @@
+{
+  "game_version": "1.21.0",
+  "steam_build_id": "26622941",
+  "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+  "source": "Current installed Florin source on desktop-3fevhd2-1c74096080; six definitions reviewed against inverse-validated committed Crozier projections. Software/source candidate only; runtime NOT_RUN.",
+  "paths": {
+    "interaction": "common/character_interactions/00_character_interactions.txt",
+    "modifiers": "common/scripted_modifiers/00_character_interaction_modifiers.txt",
+    "decision": "common/decisions/dlc_decisions/tgp/tgp_dynastic_cycle_decisions.txt",
+    "values": "common/script_values/10_tgp_dynastic_cycle_values.txt",
+    "effects": "common/scripted_effects/10_dlc_tgp_dynastic_cycle_scripted_effects.txt",
+    "ministry": "common/scripted_triggers/10_tgp_triggers.txt",
+    "government": "common/governments/00_government_types.txt"
+  },
+  "files": {
+    "common/character_interactions/00_character_interactions.txt": "5ACF9D7BD1688EA3FB0C67AB9E1577C3313225043F6B51D70301636B689489DE",
+    "common/scripted_modifiers/00_character_interaction_modifiers.txt": "0BCB7FB1C478B88F07B8562429134DE8FF8F46D9D960041533620FE729132542",
+    "common/decisions/dlc_decisions/tgp/tgp_dynastic_cycle_decisions.txt": "76E5EEF44C85F8663E641F4C95B84C93C33BFD0D87CBB0F46E2658AC8447976D",
+    "common/script_values/10_tgp_dynastic_cycle_values.txt": "C4972BEE4FFE1E96CBFDBC0B7725A96997E651168F44E780D309ADEF6C6B9B36",
+    "common/scripted_effects/10_dlc_tgp_dynastic_cycle_scripted_effects.txt": "10A862A8779AFE4639F193C74D541BEFD8F9E208EFF7D4CEB9B4DB2B4F9C34E4",
+    "common/scripted_triggers/10_tgp_triggers.txt": "4768B7CA9DA3168A4D4873E12EB896C5D3AD00FC5F48B18F08676F859EFF93F6",
+    "common/governments/00_government_types.txt": "BD6E5DC96F04AD3EBF12841AF4310A7437F1E032D641F2947E5C22DC354E2ACC"
+  },
+  "definitions": {
+    "offer_vassalization_interaction": {
+      "file": "common/character_interactions/00_character_interactions.txt",
+      "normalized_text_sha256": "6D29C59F423684B28FB6A571BF5D60BA03E9BA7A1534F24AEF9AEEC657AD0AE0",
+      "parsed_body_sha256": "A5FAF08D73AD164C1F2929D0519F2C1DCDA94CC8F2A4E26D7E2F474753A5ACDE"
+    },
+    "offer_vassalization_interaction_ai_acceptance_general": {
+      "file": "common/scripted_modifiers/00_character_interaction_modifiers.txt",
+      "normalized_text_sha256": "97DCF855A238D013F971B6ABD273C78B9B77F19F8CD1F4A9A1E6396FAA5020AC",
+      "parsed_body_sha256": "BBE5FC6E560F213365A3876C4FDE1010EB4156903AAA83736BBD8C0D1B30EECD"
+    },
+    "offer_vassalization_interaction_ai_acceptance_diplomacy": {
+      "file": "common/scripted_modifiers/00_character_interaction_modifiers.txt",
+      "normalized_text_sha256": "4309ECC7D953DD03EFC6508F72EBE1FC50EC182448AE8D6C34453075F88D5726",
+      "parsed_body_sha256": "8CD32E471C7F9056F27649075DBA65BFC43B44F3052BA291993748785ABBF0D7"
+    },
+    "situation_dynastic_cycle_claim_mandate_decision": {
+      "file": "common/decisions/dlc_decisions/tgp/tgp_dynastic_cycle_decisions.txt",
+      "normalized_text_sha256": "545FC1AA3FAF20E59A3766402FE23712899FD3CBF55D9A23E546ED28F035926F",
+      "parsed_body_sha256": "5AB446E2BE1BE218D38F9AD51F2855DB15DDEA39159DD9AA4EC17D873C906251"
+    },
+    "tgp_chaos_shattering_effect": {
+      "file": "common/scripted_effects/10_dlc_tgp_dynastic_cycle_scripted_effects.txt",
+      "normalized_text_sha256": "8A6B511B5F55EC70941B8A4690DD07F174C334DCA1FAAC5B4203EE695F8D40D5",
+      "parsed_body_sha256": "02A2C669C58D58CD090AD936A3CEE0AB043409B267CBA307410AEED5EA7A1BD9"
+    },
+    "tgp_has_access_to_ministry_trigger": {
+      "file": "common/scripted_triggers/10_tgp_triggers.txt",
+      "normalized_text_sha256": "1EFA20DB3EAD3DC4A69D4D75605EE5550D56D5F34980F54E3C5C3D3B4846C8DA",
+      "parsed_body_sha256": "DEF722C6413A0ECFEBE4FB263BB6E0AB0AE6831A2AA8F13567FF349A000E445D"
+    }
+  },
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-19T12:22:19.204228+00:00"
+}

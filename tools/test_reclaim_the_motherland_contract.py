@@ -2,7 +2,7 @@
 
 This suite deliberately does not launch CK3.  It parses the small Clausewitz-script
 surface needed by the feature and checks the approved gameplay invariants.  The
-upstream SHA-256 pins are for exact CK3 1.20.0.2 / Steam build 25588574.
+upstream SHA-256 pins are for exact CK3 1.21.0 / Steam build 26622941.
 """
 
 from __future__ import annotations
@@ -1344,6 +1344,39 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             parsed_keys["simp_chinese"],
             "daily-development English and Simplified Chinese key sets must stay symmetric",
         )
+
+
+    def test_florin_offer_keeps_native_gg_alignment_penalty(self) -> None:
+        _, parsed = read_script(VASSALIZATION_OVERRIDE)
+        interaction = direct_block(parsed, "offer_vassalization_interaction")
+        acceptance = direct_block(interaction, "ai_accept")
+        rows = [block for block in descendant_blocks(acceptance, "modifier")
+                if has_assignment(block, "desc", "RECIPIENT_IS_NOT_YOUR_GG", recursive=False)]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(scalar_values(rows[0], "add", recursive=False), ["-50"])
+        self.assertTrue(has_key(rows[0], "gg_first_and_second_are_opposite_sides_trigger"))
+        self.assertTrue(has_assignment(rows[0], "is_gg_undecided_trigger", "yes"))
+        self.assertFalse(has_key(rows[0], "rmtm_primary_title_is_restoration_hegemony_trigger"))
+
+    def test_florin_connected_tributary_member_matches_stock_subblock(self) -> None:
+        _, parsed = read_script(CUSTOM_EFFECTS)
+        custom = direct_block(parsed, RECLAIM_EFFECT)
+        game_root = find_vanilla_game_root()
+        self.assertIsNotNone(game_root, "The migration check requires installed Florin source")
+        assert game_root is not None
+        upstream = direct_block(parse_clausewitz(native.definition(DISPATCH_EFFECT, game_root)), DISPATCH_EFFECT)
+
+        def connected(block: Block) -> list[Block]:
+            return [item for item in descendant_blocks(block, "any_in_list")
+                    if has_assignment(item, "list", "former_vassals", recursive=False)
+                    and has_assignment(item, "is_tributary_of", "scope:new_liege", recursive=False)]
+
+        actual, expected = connected(custom), connected(upstream)
+        self.assertEqual(len(actual), 1)
+        self.assertEqual(len(expected), 1)
+        self.assertEqual(body_digest(actual[0]), body_digest(expected[0]))
+        self.assertEqual([entry.value for entry in actual[0].entries if entry.key == "this"],
+                         ["scope:member"])
 
 
 if __name__ == "__main__":

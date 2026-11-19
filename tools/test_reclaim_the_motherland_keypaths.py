@@ -202,6 +202,30 @@ class OwnedKeypaths(unittest.TestCase):
         self.assertFalse(Path(directory).exists())
 
 
+    def test_florin_fresh_case_retains_all26_and_rejects_old_seven_subset(self) -> None:
+        fresh = json.loads((ROOT / "tools/ck3_mod_acceptance_cases/rmtm_florin_keypaths.json").read_text(encoding="utf-8"))
+        original = self.config()
+        for key in ("families", "begin", "done", "natural_game_day_limit",
+                    "fixture_recent_independence_override_days", "physical_law_gate",
+                    "forbidden_markers"):
+            self.assertEqual(fresh[key], original[key], key)
+        self.assertNotIn("verification_scope", fresh)
+        self.assertNotIn("reused_setup_input", fresh)
+        self.assertEqual(fresh["target_engine"]["game_version"], law.VERSION)
+        self.assertEqual(fresh["target_engine"]["exe_sha256"], law.EXE_SHA)
+        expected = [f"RQA: {row['kind']} {row['representation']} {row['name']}" for row in fresh["families"]]
+        bundle = {"schema": "rmtm-effective-single-heir-actual-rows-v1",
+                  "phases": [phase("d3", 11, 1000), phase("predeath", 11, 1001),
+                             phase("postdeath", 22, 1002)]}
+        raw = ("\n".join(expected + [fresh["begin"], fresh["done"]]) + "\n").encode()
+        self.assertFalse(adapter.focused_marker_verdict(fresh, raw, bundle, law)["business_pass"])
+        legacy = json.loads(CONFIG.read_text(encoding="utf-8-sig"))
+        seven = [marker for marker, row in zip(expected, fresh["families"])
+                 if row["name"] in legacy["required_release_families"]]
+        with self.assertRaises(ValueError):
+            adapter.focused_marker_verdict(fresh, ("\n".join(seven + [fresh["begin"], fresh["done"]]) + "\n").encode(), bundle, law)
+
+
 class MigrationDelta(unittest.TestCase):
     def config(self):
         return json.loads(CONFIG.read_text(encoding="utf-8-sig"))

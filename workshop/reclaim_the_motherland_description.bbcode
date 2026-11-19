@@ -3,7 +3,7 @@
 [b]The Mandate may be lost. The dynasty need not vanish with it.[/b]
 [b]天命可以失去，王朝不必随之湮灭。[/b]
 
-0.4.1 · CK3 1.20.0.4 · All Under Heaven required
+0.4.2 candidate · CK3 1.21.0 Florin · All Under Heaven required
 
 [h1]Rules / 游戏规则[/h1]
 
@@ -28,8 +28,8 @@
 
 [h1]Diplomacy / 和平附庸[/h1]
 
-Later rulers receive no reigning Chinese Hegemony identity advantages. Under CK3 1.20's formula, their ordinary rank bonus stays +10 when the gap exceeds one tier; high-tier refusal reasons return. Other vanilla acceptance reasons remain.
-后朝不再冒领现任中华霸权的身份优惠；在 CK3 1.20 的公式中，品级差大于一级时保留固定 +10，并恢复高阶诸侯拒绝项，其他原版接受度理由照常。
+Later rulers receive no reigning Chinese Hegemony identity advantages. Under CK3 1.21's formula, their ordinary rank bonus stays +10 when the gap exceeds one tier; high-tier refusal reasons return. Other vanilla acceptance reasons remain.
+后朝不再冒领现任中华霸权的身份优惠；在 CK3 1.21 的公式中，品级差大于一级时保留固定 +10，并恢复高阶诸侯拒绝项，其他原版接受度理由照常。
 
 Only direct lords actually released by that shattering gain a title-bound “Recently Independent” -50 acceptance reason against the exact Later Dynasty for 1,825 days. Ruler changes cannot bypass it. This is soft resistance; exceptional diplomacy may succeed, and normal diplomacy returns after expiry.
 只有本轮实际脱离的直属诸侯获得持续 1825 日、绑定确切双方头衔的【新近自立】-50；双方换君不能绕过。这是软性阻力，出色外交仍可能成功，期满恢复正常外交。
@@ -39,7 +39,12 @@ Only direct lords actually released by that shattering gain a title-bound “Rec
 A Later ruler cannot Claim the Mandate. During Chaos, an independent, adult ruler at peace who controls 51% of China's de-jure counties, including qualifying tributary land, can Proclaim the Restoration. It uses vanilla Mandate effects and removes that ruler's Later titles. Other historic Later Dynasties may continue to exist.
 后朝持有者不能【宣称天命】。群雄割据期间，独立、成年且和平的后朝统治者控制中华法理伯爵领 51%（含合资格朝贡国）后可【宣称复辟】，执行原版天命效果并销毁自身后朝头衔；其他历史后朝仍可存在。
 
-[h1]0.4.1 Update / 本次更新[/h1]
+[h1]0.4.2 Florin Candidate / Florin兼容候选[/h1]
+
+Source/software candidate for CK3 1.21.0. Preserves the new vanilla Guelph/Ghibelline acceptance condition and current Chaos tributary-connectivity logic. Florin live acceptance and publication have not completed.
+CK3 1.21.0 源码／软件候选：保留新版原版圭尔夫／吉伯林接受度条件，并同步割据朝贡连接逻辑；Florin实机验收与发表尚未完成。
+
+[h1]Earlier 0.4.1 Checks / 早期0.4.1记录[/h1]
 
 Updates CK3 1.20.0.4 vassalization, ministry-budget flags, Chaos ordering and Mandate conditions. Fixes the signed Recently Independent value display and restores a missing Later-title succession law after the final primary-title transition.
 适配 CK3 1.20.0.4 的附庸公式、官署预算标记、割据执行顺序及天命条件；修复【新近脱离旧朝】的有符号数值显示，并在后朝最终设为主头衔后幂等补齐缺失继承法。
@@ -57,8 +62,8 @@ The images below were captured on CK3 1.19.0.6 for version 0.4.0. / 下图来自
 
 [h1]Compatibility / 兼容性[/h1]
 
-Requires CK3 1.20.0.4 and All Under Heaven. New single-player games are recommended; cross-major-version save compatibility is not guaranteed. Old Chaos saves do not receive a reconstructed release list. Human loyalists use a deterministic 50-point boundary. Overrides [code]tgp_chaos_shattering_effect[/code], [code]situation_dynastic_cycle_claim_mandate_decision[/code], [code]tgp_has_access_to_ministry_trigger[/code], and [code]offer_vassalization_interaction[/code]; mods replacing those definitions may conflict by load order.
-需要 CK3 1.20.0.4 与《溥天之下》，推荐新开单人存档，不保证跨游戏大版本存档兼容。旧割据存档不补造历史释放名单。人类尊王诸侯采用确定性的 50 分分界。同类覆写上述四个定义的 mod 可能产生加载顺序冲突。
+Targets CK3 1.21.0 and All Under Heaven. New single-player games are recommended; cross-major-version save compatibility is not guaranteed. Old Chaos saves do not receive a reconstructed release list. Human loyalists use a deterministic 50-point boundary. Overrides [code]tgp_chaos_shattering_effect[/code], [code]situation_dynastic_cycle_claim_mandate_decision[/code], [code]tgp_has_access_to_ministry_trigger[/code], and [code]offer_vassalization_interaction[/code]; mods replacing those definitions may conflict by load order.
+目标为 CK3 1.21.0 与《溥天之下》，推荐新开单人存档，不保证跨游戏大版本存档兼容。旧割据存档不补造历史释放名单。人类尊王诸侯采用确定性的 50 分分界。同类覆写上述四个定义的 mod 可能产生加载顺序冲突。
 
 [h1]Languages / 本地化[/h1]
 English / 简体中文 / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español

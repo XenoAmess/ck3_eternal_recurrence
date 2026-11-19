@@ -1,17 +1,18 @@
-"""Exact CK3 1.20.0.2 source contract; no runtime or semantic compatibility claim."""
+"""Exact CK3 1.21.0 source contract; no runtime or semantic compatibility claim."""
 from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-GAME = ROOT / "Crusader Kings III/game"
-CONTRACT_PATH = ROOT / "tools/reclaim_the_motherland_vanilla_1_20_0_2.json"
+GAME = Path(os.environ.get("RMTM_CK3_GAME_ROOT", str(ROOT / "Crusader Kings III/game")))
+CONTRACT_PATH = ROOT / "tools/reclaim_the_motherland_vanilla_1_21_0.json"
 CONTRACT = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
 if (CONTRACT["game_version"], CONTRACT["steam_build_id"], CONTRACT["exe_sha256"]) != (
-    "1.20.0.2", "25588574", "ae1ba6ff060ba603842f6f4a2ded0af4b7d3666b3dd271f75fb01b0da8e81b2d"
+    "1.21.0", "26622941", "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"
 ):
     raise ValueError("RMTM vanilla contract targets a different exact build")
 
@@ -85,7 +86,7 @@ def assert_definition(body: str, name: str) -> None:
 
 
 def header(names: tuple[str, ...], note: str) -> str:
-    rows = ["# GENERATED FILE. DO NOT EDIT.", "# CK3 1.20.0.2 / Steam build 25588574 source projection."]
+    rows = ["# GENERATED FILE. DO NOT EDIT.", "# CK3 1.21.0 / Steam build 26622941 source projection."]
     for name in names:
         item = CONTRACT["definitions"][name]
         rows.append(f"# Vanilla {item['file']} SHA-256: {CONTRACT['files'][item['file']]}")

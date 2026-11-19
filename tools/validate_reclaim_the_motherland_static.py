@@ -103,17 +103,17 @@ def balanced_braces(value: str) -> bool:
 def validate(*, release_localization: bool = False) -> list[str]:
     errors = builder.release_source_errors(MOD)
     expected_descriptor = (
-        'version="0.4.1"\n'
+        'version="0.4.2"\n'
         'tags={\n\t"Gameplay"\n}\n'
         'name="Reclaim the Motherland — 重整河山"\n'
         'picture="thumbnail.png"\n'
-        'supported_version="1.20.0.4"\n'
+        'supported_version="1.21.0"\n'
     )
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     from workshop_compatibility_tags import render_workshop_descriptor_bytes
     expected_descriptor = render_workshop_descriptor_bytes(expected_descriptor.encode("utf-8")).decode("utf-8")
     if descriptor != expected_descriptor:
-        errors.append("descriptor.mod fields or ordering differ from the 0.4.1 contract")
+        errors.append("descriptor.mod fields or ordering differ from the 0.4.2 contract")
     thumbnail = MOD / "thumbnail.png"
     if not thumbnail.is_file():
         errors.append("thumbnail.png is missing")
