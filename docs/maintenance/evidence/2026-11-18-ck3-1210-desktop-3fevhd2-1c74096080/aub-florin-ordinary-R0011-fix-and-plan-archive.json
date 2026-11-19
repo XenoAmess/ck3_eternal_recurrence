@@ -1,0 +1,137 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T07:21:19.385521+00:00",
+  "status": "R11_SOURCE_PREPARATION_FIX_NOT_RUN",
+  "fixture": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_ordinary\\events\\aubq_events.txt",
+    "bytes": 18671,
+    "sha256": "8046f95f093d023410df3f3693c85effa978ff32c5ea9a9b5a22b8b58e990bdf"
+  },
+  "case": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_ordinary.json",
+    "bytes": 2916,
+    "sha256": "7c8a6291ca226699f7b0e5e6f6c2de6a7e9633b83448e9409b4547cd373f1b3f"
+  },
+  "checks": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "checks": [
+      {
+        "command": [
+          "-m",
+          "unittest",
+          "tools.test_fixture_engine_prepare"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "tools/prepare_aub_1_20_fixture.py"
+        ],
+        "returncode": 0
+      }
+    ]
+  },
+  "syntax": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T06:59:27.229977+00:00",
+    "prepare_exit": 0,
+    "parser_scope": "Generic Clausewitz syntax only, not engine symbol/eligibility or business qualification",
+    "concurrency": 2,
+    "heap_per_process": "192MiB",
+    "results": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a07\\fixture\\common\\on_action\\aubq_on_actions.txt",
+        "sha256": "4159660072ce6ed0fd62888044fc76adb67d010613a19f42f868b841b7c119eb",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a07\\fixture\\common\\on_action\\aubq_on_actions.txt"
+        ],
+        "returncode": 0
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a07\\fixture\\events\\aubq_events.txt",
+        "sha256": "8046f95f093d023410df3f3693c85effa978ff32c5ea9a9b5a22b8b58e990bdf",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\aub-florin-ordinary-a07\\fixture\\events\\aubq_events.txt"
+        ],
+        "returncode": 0
+      }
+    ],
+    "passed": true
+  },
+  "runtime_status": "NOT_RUN",
+  "product_runtime_unchanged": true,
+  "scope": "Initial sourceII is explicitly logged before attempting onlyII->I setup exercised by R2/R10, then sourceI/nativeII remain mandatory; no failedIII->II reuse. Oath sample restores original feudal government and observes source01 native query separately from actual legal scripted add effect. Effect rejection or missing source remains raw failure; both actual source01 and full native target02 eligibility mandatory before unchanged exact payment/count checks. This is a controlled preparation probe, not proof the alternative setup works or why old query refused. City returns to celestial before owned/unleased conversion.",
+  "actual_cleanup": [
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-ordinary-R0011\\summary.json",
+        "bytes": 330,
+        "sha256": "0cb550109fc2c6f23b81f695be61ac28bfe5d7cd3cad94651fd22bb6600a8e9e"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T06:55:38.095461+00:00",
+        "deleted_files": 4192,
+        "deleted_logical_bytes": 184324556,
+        "failed": [],
+        "free_before": {
+          "C:/": 51068628992,
+          "D:/": 21596676096
+        },
+        "free_after": {
+          "C:/": 51068235776,
+          "D:/": 21790666752
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-cleanup-plan-archive-a04\\summary.json",
+        "bytes": 328,
+        "sha256": "f4047ef176f86353238ecbc0adb6f5053389ea8f6ab51f3ee7d2b93d18944c0a"
+      },
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T07:14:10.336390+00:00",
+        "deleted_files": 126,
+        "deleted_logical_bytes": 60329373,
+        "failed": [],
+        "free_before": {
+          "C:/": 51063209984,
+          "D:/": 21790740480
+        },
+        "free_after": {
+          "C:/": 51063218176,
+          "D:/": 21851291648
+        }
+      }
+    }
+  ],
+  "archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cleanup-plans-lossless-a04.zip",
+    "bytes": 3040770,
+    "sha256": "17f5e53cb54b575f206282c22023bd95951d08e07d505e41753e3a3c7fec6804"
+  },
+  "archive_bound_bytes": 4584250,
+  "archive_scope": "126 expanded completed cleanup plans from15 verified closed zero-failure own groups, including older shader/build/duplicate/expired-export plans omitted by the earlier closed-cache-only selector. All60,329,373B retained byte-for-byte in3,040,770B ZIP, every member verified under archive lock before exact raw deletion. Small actual summaries and receipts remain directly readable. Old expanded paths unavailable; restore content for historical analysis, no original FileID or re-execution qualification.",
+  "original_earliest_plan_review_at_utc": "2026-12-17T18:45:27.683662+00:00",
+  "cold_storage_resets_expiry": false,
+  "review_at_utc": "2026-12-17T18:45:27.683662+00:00",
+  "published": false
+}

@@ -1,0 +1,138 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T06:55:10.317090+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0011",
+  "case": "ordinary-matrix-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "PARTIAL_FOUR_OF_SIX_NO_ENGINE_ERRORS",
+  "source_head": "bcfafb3e9ea2878c3c0e95e9234d6486c9ba83c3",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-ordinary-r11-gui-prepare\\prepared-case.json",
+    "bytes": 1587131,
+    "sha256": "24d594277fdac4c0d6b1894f4f84b08f4b49dc57a42699babffa16694209d574"
+  },
+  "facts": {
+    "six_original_ordinary_building_and_quota_assertions": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-285fe710724647a9b7cce7f72920615f\\profile\\logs\\debug.log",
+          "bytes": 1185115,
+          "sha256": "6e6ba4fd1772229e76c35899fe3f98cbfda2a8b426ec2730953149850bab9c07"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-285fe710724647a9b7cce7f72920615f\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "assertions_passed": 4,
+      "assertions_required": 6
+    },
+    "actual_initial_calendar_completion_popup_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq02-terminal-reviewed.png",
+          "bytes": 1118928,
+          "sha256": "76c849f2d29f225a2c0921358f7bef626dac8720fd0a5bd8772b8d3720ea6f92"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq02-quit-dialog-view.png",
+          "bytes": 691383,
+          "sha256": "249e59fc060e9316f5ec8f77b19aa7e71ec8999db4d9b8b5ea2636f31654763b"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq02-quit-desktop.png.json",
+          "bytes": 1439,
+          "sha256": "c94781e1e95e084933adcd2e9277e758a1639593eb98d93d84842afed3579ddd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0011\\game-exit.json",
+          "bytes": 251,
+          "sha256": "d4c00c3baf0c31229e4b2f0a9eb6c9e9d3db3c871dd24e1752be0be316b44b17"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBQ: TEST BEGIN ordinary_matrix": 1,
+    "AUBQ: READY independent_owned_treasury_payer": 1,
+    "AUBT: TEST PASS main_castle": 0,
+    "AUBT: TEST PASS fifteen_upgrade_quota": 1,
+    "AUBT: TEST PASS next_scan_quota_reset": 1,
+    "AUBQ: READY intact_castle_late_era_negative": 1,
+    "AUBT: TEST PASS vanilla_gate_rejection": 1,
+    "AUBQ: READY oath_sources_and_targets": 0,
+    "AUBT: TEST PASS scripted_cost_resources": 0,
+    "AUBT: TEST PASS main_city": 1,
+    "AUBQ: TEST DONE ordinary_matrix": 1
+  },
+  "passed_original_assertions": [
+    "AUBT: TEST PASS fifteen_upgrade_quota",
+    "AUBT: TEST PASS next_scan_quota_reset",
+    "AUBT: TEST PASS vanilla_gate_rejection",
+    "AUBT: TEST PASS main_city"
+  ],
+  "failure_lines": [
+    "[14:19:51][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 47 (aubq.1:immediate): AUBQ: TEST FAIL castle_source_or_eligibility",
+    "[14:19:51][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 168 (aubq.1:immediate): AUBQ: TEST FAIL poor_source_construction_eligibility",
+    "[14:19:51][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 170 (aubq.1:immediate): AUBQ: TEST FAIL faithful_source_construction_eligibility",
+    "[14:19:51][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 175 (aubq.1:immediate): AUBQ: TEST FAIL oath_sources_or_targets",
+    "[14:19:51][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 192 (aubq.1:immediate): AUBQ: TEST FAIL oath_sources_slots_faith_or_eligibility",
+    "[14:19:51][D][jomini_effect_impl.cpp:444]: file: events/aubq_events.txt line: 203 (aubq.1:immediate): AUBT: TEST FAIL scripted_cost_resources"
+  ],
+  "oath_variables_owner_faith_readback": true,
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-285fe710724647a9b7cce7f72920615f\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "error_bytes": 0,
+  "actual_date": "1066-09-15",
+  "observed_natural_days": 0,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq02-quit-dialog-view.png",
+      "bytes": 691383,
+      "sha256": "249e59fc060e9316f5ec8f77b19aa7e71ec8999db4d9b8b5ea2636f31654763b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq02-quit-desktop.png.json",
+      "bytes": 1439,
+      "sha256": "c94781e1e95e084933adcd2e9277e758a1639593eb98d93d84842afed3579ddd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0011\\game-exit.json",
+      "bytes": 251,
+      "sha256": "d4c00c3baf0c31229e4b2f0a9eb6c9e9d3db3c871dd24e1752be0be316b44b17"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0011\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "709efe1340c6740c08310ed518b87456364c256e2fd5f8249302426d7026341b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0011\\screen-release.json",
+      "bytes": 1250,
+      "sha256": "87b2e0be12ace987c907c1b5a764eaa1c127a09c0c9e43077d3aeaa273a7fb36"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-ordinary-r11-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "79e7f7d649b8a6625a7b5fdd01980fe0788953a424c6fb580dd93ca89c27adc7"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "diagnosis_scope": "New intactCastleIII/late-era negative actual READY/PASS and zero engine errors. Initial sourceI-or-targetII qualification failed; exact initial tier not separately sampled in this run. Stock/history and R10 preparation support expectedII, next scene must explicitly read it. Oath actual owner/variables/faith read back but native source01 qualification false after30-secondary preparation; sources not added, no target/cost credit. No proof of why native source check refused; cannot claim oath compatibility or that a different government/effect will work.",
+  "retention_review_at_utc": "2026-12-19T06:40:39Z"
+}

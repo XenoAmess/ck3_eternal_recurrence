@@ -73,3 +73,10 @@ R3闭场后按本机用途清理：4,184个可重建shader／183,734,611逻辑�
 后继取消本场全部primary降级准备：要求实际初始CastleI／转换CityI；负例利用完整CastleIII、真实高且非晚中世纪省文化及CastleIV原生拒绝，仍核四账户／计数零变化。当前stock的downgrade例只选择非primary regular区建筑，不能授予已失败的主建筑降级资格。誓言仍属普通holding区，没有新区域或额外DLC门；基线前仅清理30个与当前原版SHA／图一致、primary=false的城堡附属建筑键，之后逐个读回01建造资格再添加，并读回两个源／02资格，缺少任意一项都记PREP_FAIL。11项入口回归、准备器严格mypy、实际prepare／两脚本解析通过，新场未运行，不能计为修复实机通过。[准备修复与存储](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-ordinary-R0010-fix-and-storage.json)。
 
 R10 shader精确回收4,192文件／184,319,524B，零失败；34条已被干净启动替代的R3/R8普通许可／书签过渡截图路径提前到期，保留公共失败／退出与活跃模板图，退役像素不可读取。R10展开审计无损归档。R5完整debug/error合计46,159,022B逐字节保留在398,345B ZIP，不截断，原review期限不延长；旧debug/error展开路径现在不可读取，需要先恢复相同字节再作历史原件分析，旧FileID不追认。上述可用性替代此前“R5 raw debug/error直接可读”的较早观察，现行R9/R10原日志仍直接保留。
+
+
+R0011全程零引擎错误，真实CastleIII／高且非晚中世纪／CastleIV拒绝读回及负例通过，15精确付款、真实计数重置、城市也通过；4/6合取仍false。初始I级源／II级资格不成立，未单独采起始档位；按原版历史和R10准备推测为II，后继必须显式读回。誓言owner、两变量、faith实际成立，但01 Native建造查询拒绝，因此没有放置两个源或取得扣费信用。09-15／零日／零SAVE，06:40:39Z正常不保存退出、原Popen0、keeper/CAS闭合，无WM_CLOSE；公共verify保留拒绝。[R11原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-ordinary-R0011-partial-zero-errors.json)。
+
+后继只尝试R2/R10已执行的II→I精确准备，并先记录实际II；不复用III→II失败或推成所有primary降级可用。誓言恢复原矩阵封建样本，将01 Native查询与原版脚本add_building效果分开观察：后者自带建造校验，若拒绝如实留错；两源实际存在、02完整Native资格和精确费用／count仍是必验，不能把准备探针当业务通过。城市前恢复真实Celestial。11入口回归、准备器严格mypy、实际prepare／两脚本解析通过；新场NOT_RUN。[准备探针与归档](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-ordinary-R0011-fix-and-plan-archive.json)。
+
+R11可重建shader精确回收4,192文件／184,324,556B，零失败。另将此前closed-cache选择器未覆盖的已闭shader/build/duplicate/export清理计划一并无损归档：126展开文件／60,329,373B→3,040,770B ZIP，逐成员锁定校验后精确删除，零失败；原小型summary／actual回执仍直接可读，展开计划旧路径不可读取、旧FileID不复用、旧删除计划不因此可重跑，保留原期限而不从压缩日重新计期。

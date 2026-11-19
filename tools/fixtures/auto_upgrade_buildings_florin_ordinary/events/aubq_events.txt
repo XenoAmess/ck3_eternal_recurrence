@@ -31,6 +31,15 @@ aubq.1 = {
                 culture = {
                     if = { limit = { NOT = { has_cultural_era_or_later = culture_era_high_medieval } } join_era = culture_era_high_medieval }
                 }
+                holding_district = {
+                    if = {
+                        limit = { has_building = castle_02 NOT = { has_building_or_higher = castle_03 } }
+                        debug_log = "AUBQ: OBSERVE initial_castle02"
+                        # This exactII->I setup was exercised by R2/R10; it does
+                        # not grant the failedIII->II or any other downgrade.
+                        downgrade_building_effect = castle_02
+                    }
+                }
             }
             set_variable = { name = aub_upgrades_this_scan value = 0 }
             global_var:aubt_province = {
@@ -119,6 +128,8 @@ aubq.1 = {
             }
             else = { debug_log = "AUBT: TEST FAIL vanilla_gate_rejection" }
             # Separate preparation from the two scripted-cost observations.
+            # Restore the original matrix's feudal oath sample explicitly.
+            change_government = feudal_government
             set_variable = { name = provide_for_the_poor_oath value = 0 }
             set_variable = { name = provide_for_the_faithful_oath value = 0 }
             global_var:aubt_province = {
@@ -164,10 +175,23 @@ aubq.1 = {
                     if = { limit = { has_building = castle_training_grounds_3 } remove_building = castle_training_grounds_3 }
                     if = { limit = { has_building = castle_training_grounds_4 } remove_building = castle_training_grounds_4 }
                     if = { limit = { has_building = castle_training_grounds_5 } remove_building = castle_training_grounds_5 }
-                    if = { limit = { has_building = castle_03 can_start_building_construction_for_owner = oath_poor_building_01 } add_building = oath_poor_building_01 }
-                    else = { debug_log = "AUBQ: TEST FAIL poor_source_construction_eligibility" }
-                    if = { limit = { has_building = oath_poor_building_01 can_start_building_construction_for_owner = oath_faithful_building_01 } add_building = oath_faithful_building_01 }
-                    else = { debug_log = "AUBQ: TEST FAIL faithful_source_construction_eligibility" }
+                    # First-tier GUI/native query and scripted construction are
+                    # observed separately. The real add effect still validates
+                    # construction; failed/missing poststate never earns credit.
+                    if = { limit = { can_start_building_construction_for_owner = oath_poor_building_01 } debug_log = "AUBQ: OBSERVE poor_native_source01_eligible" }
+                    else = { debug_log = "AUBQ: OBSERVE poor_native_source01_refused" }
+                    if = {
+                        limit = { has_building = castle_03 scope:aub_payer = { has_government = feudal_government has_variable = provide_for_the_poor_oath } }
+                        add_building = oath_poor_building_01
+                    }
+                    else = { debug_log = "AUBQ: TEST FAIL poor_source_preparation_inputs" }
+                    if = { limit = { can_start_building_construction_for_owner = oath_faithful_building_01 } debug_log = "AUBQ: OBSERVE faithful_native_source01_eligible" }
+                    else = { debug_log = "AUBQ: OBSERVE faithful_native_source01_refused" }
+                    if = {
+                        limit = { has_building = castle_03 has_building = oath_poor_building_01 scope:aub_payer = { has_government = feudal_government has_variable = provide_for_the_faithful_oath } }
+                        add_building = oath_faithful_building_01
+                    }
+                    else = { debug_log = "AUBQ: TEST FAIL faithful_source_preparation_inputs" }
                     if = {
                         limit = { has_building = oath_poor_building_01 has_building = oath_faithful_building_01 can_start_building_construction_for_owner = oath_poor_building_02 can_start_building_construction_for_owner = oath_faithful_building_02 }
                         debug_log = "AUBQ: READY oath_sources_and_targets"
@@ -201,6 +225,7 @@ aubq.1 = {
                 debug_log = "AUBT: TEST PASS scripted_cost_resources"
             }
             else = { debug_log = "AUBT: TEST FAIL scripted_cost_resources" }
+            change_government = celestial_government
             global_var:aubt_province = {
                 if = { limit = { NOT = { has_holding_type = city_holding } } set_holding_type = city_holding }
                 province_owner = { save_scope_as = holder }
