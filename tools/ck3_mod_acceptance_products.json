@@ -123,6 +123,7 @@
             "ck3_select_event_option",
             "ck3_query_scripted_widget_controls_v1",
             "ck3_activate_scripted_widget_control_v1",
+            "ck3_query_current_interface_toast_v1",
             "ck3_save_checkpoint",
             "ck3_query_normal_exit_context_v1",
             "ck3_request_normal_exit_v1",

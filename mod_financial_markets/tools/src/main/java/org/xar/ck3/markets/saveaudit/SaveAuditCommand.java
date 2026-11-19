@@ -9,12 +9,14 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.Set;
 import org.xar.ck3.save.FilePins;
 import org.xar.ck3.save.SaveContracts.Pin;
 import org.xar.ck3.save.SaveJson;
+import org.xar.ck3.save.SaveDecoder;
 
 /** Optional named host; default validate/build and the acceptance entry stay unchanged. */
 @QuarkusMain(name = "save-audit")
@@ -56,6 +58,8 @@ public final class SaveAuditCommand implements QuarkusApplication {
         }
     }
     @Override public int run(String... args) {
+        if (args.length > 0 && args[0].equals("audit-news-toast"))
+            return NewsToastAuditCommand.run(Arrays.copyOfRange(args, 1, args.length), SaveDecoder::launch);
         try {
             if (args.length != 5 || !Set.of("audit", "audit-retired-xfma").contains(args[0])) throw new IllegalArgumentException("expected audit|audit-retired-xfma --inputs request.json --output unused-report.json");
             Map<String, String> options = new LinkedHashMap<>(); Set<String> allowed = Set.of("--inputs", "--output");

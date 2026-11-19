@@ -120,11 +120,7 @@ public final class FinancialProjector {
                 Clausewitz.Block data = variables.get(field.wire());
                 if (data == null) continue;
                 try {
-                    if (!atom(data, "type").orElse("").equals("value")) throw new IllegalArgumentException("Expected type=value.");
-                    String lexical = numericIdentity(data, layout);
-                    BigInteger[] division = rawNumericValue(lexical, layout.numberIdentityEncoding()).divideAndRemainder(layout.numericScale());
-                    if (division[1].signum() != 0) throw new IllegalArgumentException("Fractional cent/unit/day/ID after exact scaling.");
-                    numbers.put(field, division[0]);
+                    numbers.put(field, exactNumber(data, layout));
                 } catch (IllegalArgumentException error) { issues.add(new Issue(Severity.INCOMPLETE, identity, field.wire(), error.getMessage())); }
             }
             for (ReferenceField field : ReferenceField.values()) {
@@ -149,6 +145,15 @@ public final class FinancialProjector {
                 } else issues.add(new Issue(Severity.INCOMPLETE, identity, "permanent_id", "Missing permanent financial ID."));
             }
             return new RecordProjection(Optional.of(new Story(type.get(), nativeId, permanent, numbers, references)), issues);
+    }
+
+    /** Same strict observed envelope/encoding for bounded product projections. */
+    static BigInteger exactNumber(Clausewitz.Block data, LayoutHypothesis layout) {
+        if (!atom(data, "type").orElse("").equals("value")) throw new IllegalArgumentException("Expected type=value.");
+        String lexical = numericIdentity(data, layout);
+        BigInteger[] division = rawNumericValue(lexical, layout.numberIdentityEncoding()).divideAndRemainder(layout.numericScale());
+        if (division[1].signum() != 0) throw new IllegalArgumentException("Fractional cent/unit/day/ID after exact scaling.");
+        return division[0];
     }
 
     private static String numericIdentity(Clausewitz.Block data, LayoutHypothesis layout) {

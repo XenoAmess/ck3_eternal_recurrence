@@ -45,7 +45,22 @@ public final class SaveContracts {
     public record ProjectionSelection(String name, ProjectionKind kind, List<String> path, int maxMatches, int maxBytes, boolean required) {
         public ProjectionSelection {
             if (name == null || !name.matches("[a-z][a-z0-9_-]{0,63}") || kind == null || maxMatches < 1 || maxMatches > 1024 || maxBytes < 1 || maxBytes > 512 * 1024) throw new IllegalArgumentException("bounded named projection required");
-            path = checkedPath(path);
+            // Only an exact observed Story record has a numeric projection path.
+            // Table/census and all other projections retain checkedPath unchanged.
+            if (path != null && path.size() == 3 && path.get(0).equals("stories") && path.get(1).equals("active")
+                    && path.get(2) != null && path.get(2).matches("0|[1-9][0-9]{0,9}")) {
+                BigInteger id = new BigInteger(path.get(2));
+                if (kind != ProjectionKind.OTHER || maxMatches != 1 || id.compareTo(BigInteger.valueOf(0xFFFFFFFFL)) >= 0)
+                    throw new IllegalArgumentException("exact valid uint32 Story projection required");
+                path = List.copyOf(path);
+            } else path = checkedPath(path);
+        }
+        /** Explicit identity request, distinct from the legacy generic named-path constructor. */
+        public static ProjectionSelection exactStory(String name, String canonicalStoryId, int maxBytes, boolean required) {
+            if (canonicalStoryId == null || !canonicalStoryId.matches("0|[1-9][0-9]{0,9}")
+                    || new BigInteger(canonicalStoryId).compareTo(BigInteger.valueOf(0xFFFFFFFFL)) >= 0)
+                throw new IllegalArgumentException("canonical valid uint32 exact Story ID required: " + canonicalStoryId);
+            return new ProjectionSelection(name, ProjectionKind.OTHER, List.of("stories", "active", canonicalStoryId), 1, maxBytes, required);
         }
     }
     /** Provisional streaming callbacks; callers publish only after full read/physical-pin validation succeeds. */

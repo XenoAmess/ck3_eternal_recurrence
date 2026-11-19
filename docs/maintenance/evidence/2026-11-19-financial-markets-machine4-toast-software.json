@@ -1,0 +1,448 @@
+{
+  "schema": "xfm-toast-source-join-qualified-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-19T07:59:36.637593+00:00",
+  "source_head_before_commit": "e778d667636d18f2a68f3b1a661741ed3234d39c",
+  "actual_effective_sources": {
+    "java/ck3-save-core/src/main/java/org/xar/ck3/save/SaveContracts.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveContracts.java",
+      "bytes": 14306,
+      "sha256": "762b6388639e1fe981529e4f1524e1196e99eaf69727f8fa12171e15be15ba18"
+    },
+    "java/ck3-save-core/src/test/java/org/xar/ck3/save/ExactStoryProjectionTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\test\\java\\org\\xar\\ck3\\save\\ExactStoryProjectionTest.java",
+      "bytes": 5103,
+      "sha256": "658009c4d2bfa41d285a9452a6fe69f61d646a0213624e3e034d8375f11bc06d"
+    },
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/saveaudit/FinancialProjector.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialProjector.java",
+      "bytes": 18070,
+      "sha256": "5ca2b236291ab5d7ec5c4a5a4cc108a9e549df055e6f549b5cea58d7a99e65cc"
+    },
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/saveaudit/NewsToastAuditCommand.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\NewsToastAuditCommand.java",
+      "bytes": 3187,
+      "sha256": "0ed358df9a84191a02efbbda6aaa411a9e4aa95f0ba2eb1a110834544b33295f"
+    },
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/saveaudit/NewsToastDelivery.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\NewsToastDelivery.java",
+      "bytes": 30123,
+      "sha256": "de6e900c5f28c73b8fe48b6b636df5eede9b2fbea9eb1245644f6821a81f977b"
+    },
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/saveaudit/SaveAuditCommand.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\SaveAuditCommand.java",
+      "bytes": 8796,
+      "sha256": "6d6d30656b7ad11b0ffea8702addb4af223f7eafd05d16da6894d15a885cb39b"
+    },
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/saveaudit/NewsToastDeliveryTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\saveaudit\\NewsToastDeliveryTest.java",
+      "bytes": 22815,
+      "sha256": "9f5e31aa5032fb48c54552189ed64aa7989165770ee25e0bb62e3fdfd2e64536"
+    },
+    "mod_financial_markets/tools/src/test/resources/saveaudit/normalize_toast_sdk.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\resources\\saveaudit\\normalize_toast_sdk.py",
+      "bytes": 4286,
+      "sha256": "7127a57c59da700a3fb513c261979bac8b7fdf00232a6e2e1ac2bd45f92f112e"
+    },
+    "tools/ck3_mod_acceptance_build_runtime.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+      "bytes": 169651,
+      "sha256": "6db7060230622deb2179ef0d180d6ee9bf011f4d261bd093f27a2597c30332e8"
+    },
+    "tools/ck3_mod_acceptance_products.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 258843,
+      "sha256": "b46a811b24ad253c0a16ba83c1f67681876697dcc61cc4629c18675c1e5c6c93"
+    },
+    "tools/test_ck3_mod_acceptance_1210_profile_contract.py": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 18796,
+      "sha256": "d7a978137c1d1d588bba78151ea2f3c2271ec2a9f20f430786a499604480127d"
+    }
+  },
+  "source_manifests": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-toast-delivery-candidate02\\SOURCE_READY.actual.json",
+      "bytes": 11563,
+      "sha256": "23bd4483387d829c41238a2547b9d090c91c263bfd677c1ba775794dee482ec4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-toast-delivery-candidate03\\SOURCE_READY.actual.json",
+      "bytes": 5824,
+      "sha256": "ead4e088bb8fcd69f9c5f63fef0322e2eb4edc6c090e8e23791dbf4014223b6d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-toast-delivery-candidate04\\SOURCE_READY.actual.json",
+      "bytes": 6306,
+      "sha256": "cc96d23b87a517aa4494e1dbaf0566aeedd783e9158338522cbc09c739d8b7de"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\toast-runtime-capability-candidate01\\SOURCE_READY.json",
+      "bytes": 3162,
+      "sha256": "2537366a356cb5709450e24e3479b2dcf08001c6febe0e02d4698db710e991d9"
+    }
+  ],
+  "full_financial_source_inputs": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-complete05-source-inputs.actual.json",
+    "bytes": 69182,
+    "sha256": "179f674dfd9853d94d99b351df20251a6a6887089c8f006b92d2208188338f47"
+  },
+  "actual_complete_financial": {
+    "immutable_JUnit": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-complete05-immutable-junit01\\VERIFY.actual.json",
+      "bytes": 168539,
+      "sha256": "839da47f3e4ccd486c565306b5bdb3c8fdf192149ed611f3fccfbf2378d51433"
+    },
+    "counts": {
+      "tests": 370,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "actual_complete_shared": {
+    "immutable_JUnit": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\shared-install03-immutable-junit01\\VERIFY.actual.json",
+      "bytes": 47462,
+      "sha256": "5e2c6b741dc7219916695fae38e7f4c046d4bc567b2e88594bb53db75aa68cde"
+    },
+    "counts": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "actual_original_executions": [
+    {
+      "name": "BUILD-native-qualification22",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification22\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1181,
+        "sha256": "29499508391c2ce0569acaeb002a374a90e7466a8397d9ab2d0e83bc61ec0d5f"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 177.0386310000904,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification22\\stdout.log",
+        "bytes": 945,
+        "sha256": "7612dc7047da129fd8c5d469bc2ee05a729f41f156dc50cda70cdb8db10c2067"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification22\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-native-toast-sdk22",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-toast-sdk22\\ORIGINAL-WAIT.actual.json",
+        "bytes": 903,
+        "sha256": "809f41fb11cdb35206156758dd2bf7ffabe147929226c763486f513599b48d2d"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 9.105949299875647,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-toast-sdk22\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-toast-sdk22\\stderr.log",
+        "bytes": 6103,
+        "sha256": "21cf40499d91abf25a5143e8294736799a4c81f5f12e16654efc9acef9be87a9"
+      }
+    },
+    {
+      "name": "TYPECHECK-toast-gui-contract04",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPECHECK-toast-gui-contract04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1124,
+        "sha256": "80cf91e58500d9a958c2c26323fbee4498d8390f94ec25221007e1243daa8848"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.9986978999804705,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPECHECK-toast-gui-contract04\\stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPECHECK-toast-gui-contract04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-native-owner-no-pump12004-22",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-owner-no-pump12004-22\\ORIGINAL-WAIT.actual.json",
+        "bytes": 938,
+        "sha256": "def9e112e4550f60c93ec25f19373ec0769ce67e97d4980e38b20d074f304e0c"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.129486999940127,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-owner-no-pump12004-22\\stdout.log",
+        "bytes": 403,
+        "sha256": "209e8f8843e3aeffe2d530dec855491570419c7f0d8e283d09d39e26ad182994"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-owner-no-pump12004-22\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-native-owner-no-pump1210-22",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-owner-no-pump1210-22\\ORIGINAL-WAIT.actual.json",
+        "bytes": 936,
+        "sha256": "e891a78432ad2b26a5fb1528932cf8c463edfb79f709ed22222a0a680dba69b7"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.131022999994457,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-owner-no-pump1210-22\\stdout.log",
+        "bytes": 403,
+        "sha256": "edef5f32fe037131e8998692a0eab405a9854705ba615c34f38f155e1c1a7d8f"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-owner-no-pump1210-22\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-native-owner-running1210-22",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-owner-running1210-22\\ORIGINAL-WAIT.actual.json",
+        "bytes": 944,
+        "sha256": "317f21079b5663cc523b49affeb7b1c42a3eb01b0a0369153ee1e2ecff6ad97f"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.420461100060493,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-owner-running1210-22\\stdout.log",
+        "bytes": 395,
+        "sha256": "47ebb29665adac406f75964f32e032076215deda2cf2b932e284086921e7283b"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-owner-running1210-22\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-native-handler-ack-failure-22",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-handler-ack-failure-22\\ORIGINAL-WAIT.actual.json",
+        "bytes": 956,
+        "sha256": "774183aed0b8a69a2f2882460433537f7336eb6d756d530f214ad9d2f6c9eecf"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.24455519998446107,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-handler-ack-failure-22\\stdout.log",
+        "bytes": 99,
+        "sha256": "87628d7f48ec2a2e62e32578a8585766b13bb45834b192b72f7bfec99840ac49"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-handler-ack-failure-22\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-toast-runtime-capability01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-toast-runtime-capability01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1030,
+        "sha256": "011b5536b250cced38fc6af835fbf20d1db81ba824a66ef1ed13ffb39509e0b0"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.1817029998637736,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-toast-runtime-capability01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-toast-runtime-capability01\\stderr.log",
+        "bytes": 1247,
+        "sha256": "fd3d37477d41c6180cd8217f315900d0ba4e7c9e812a4ba6634a7a5aa01b232a"
+      }
+    },
+    {
+      "name": "INSTALL-save-core-exact-story02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\INSTALL-save-core-exact-story02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 924,
+        "sha256": "c12b10fc7f06cee1ee79fe6c901e7cef4ed4866843fe1b83161a7d7e047b7d73"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 20.446212799986824,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\INSTALL-save-core-exact-story02\\stdout.log",
+        "bytes": 4357,
+        "sha256": "f1eee83e91c859097638026a16248d07512b8d4be80c5f68104355aa077ed2c3"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\INSTALL-save-core-exact-story02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-save-core-exact-story03-failed-method",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-save-core-exact-story03-failed-method\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1038,
+        "sha256": "43c3421f21f44bed549cfd162a6e22b1641a748c44747a123bb2cfe01a814edb"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.337743600131944,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-save-core-exact-story03-failed-method\\stdout.log",
+        "bytes": 2399,
+        "sha256": "6113306bc3c04bb1bd4996c27991f09caec42b5b6449f214d416e27fd9971f36"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-save-core-exact-story03-failed-method\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "INSTALL-save-core-exact-story03",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\INSTALL-save-core-exact-story03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 924,
+        "sha256": "da9c60c0e27a477b12314f120d34809dd4ae286c449e4ea1ee3384f4574a7544"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 12.572715800022706,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\INSTALL-save-core-exact-story03\\stdout.log",
+        "bytes": 3099,
+        "sha256": "d1f434954709a29285831386465f06b58959e75c268e4ec5dadd9f5989cd73b1"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\INSTALL-save-core-exact-story03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-financial-news-source-join02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-news-source-join02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 917,
+        "sha256": "e8f1ba84c06a599b658c3ac9774a00ff9d9b46810568e174ccecfb5513b66191"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 45.378775499993935,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-news-source-join02\\stdout.log",
+        "bytes": 6989,
+        "sha256": "41cfad3d8735d71b9c96ad804faa345c8f45559d06d730eee35fcd7839791114"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-news-source-join02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-financial-news-failed-method04",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-news-failed-method04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 928,
+        "sha256": "5714d20cda6547138e80b37eb483207788c148f58881e28a5118b8d11d8132c1"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 19.387371100019664,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-news-failed-method04\\stdout.log",
+        "bytes": 3108,
+        "sha256": "230334b077ed83eade8d05a2f40d68bd178586f78671575aebd8754c038f830a"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-news-failed-method04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "TEST-financial-news-portable-method04",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-news-portable-method04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 932,
+        "sha256": "084278412b59e4c0b5974cc7331391840a5cd82c78a9a8d63e11525de7a789ac"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 14.3568003999535,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-news-portable-method04\\stdout.log",
+        "bytes": 2928,
+        "sha256": "b644b66519e220e4dac53fa81d62fa15fc88eeb988db25dbfed051e50112153a"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-news-portable-method04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "VERIFY-financial-complete05",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-complete05\\ORIGINAL-WAIT.actual.json",
+        "bytes": 908,
+        "sha256": "769b9e7c7e5b6879b2c6726a1aacc4eb5736c1d067d7430f23b9a8eda0091d40"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 138.083998600021,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-complete05\\stdout.log",
+        "bytes": 12614,
+        "sha256": "11b01fd90b0d1bfc253efb88db10cf26cdfdbd20fcf810f422646d23b08c4310"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-complete05\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "original_Q22": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification22\\Q.actual.json",
+    "bytes": 16599,
+    "sha256": "184053742b922359a3e178a4df3ebb8b916e7e910dfa5783231aa25ba4c3c991"
+  },
+  "published_DLL": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification22\\published\\xar_ck3_bridge.dll",
+    "bytes": 13484032,
+    "sha256": "e55c20c5bf1929c524c0bc0487319bb5bde8dc445343c09226f8398259328560"
+  },
+  "Q22_original_public_consumer": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification22\\PUBLIC-CONSUMER-PASS.actual.json",
+    "bytes": 1880,
+    "sha256": "d94055cb4fb86171342fe1ac0f9b457ea814ae00b1e5898c1bc32a5a4c869162"
+  },
+  "finite_native_targets": 22,
+  "Q22_compile_source_commit_unchanged": "e778d667636d18f2a68f3b1a661741ed3234d39c",
+  "original_CPP_packet": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification22\\toast-visible-producer.actual.log",
+    "bytes": 1346,
+    "sha256": "dbd4ad20cdd3d9420a9b8489f5272f43234f37cb6a89fa13aec4ecf1ec7dc7f8"
+  },
+  "CPP_packet_capture_scope": "Whole original combined stdout/stderr; never filtered or relabelled as separate capture",
+  "new_software_boundary": "Actual SDK canonical uppercase digest, exact Story request factory and strict typed report roundtrip",
+  "old_named_projection_compatible": true,
+  "offline_report_delivery_flags_always_false": true,
+  "financial_runtime_files": 215,
+  "actual_new_Game_started": false,
+  "whole_product_business_pass": false,
+  "next_work": "Final source rebase/exact Native source binding; normal order/margin/spot/news live acceptance; separate35-day observation"
+}

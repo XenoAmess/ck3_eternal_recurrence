@@ -123,6 +123,15 @@ _CORE_1210_EVENT_RULE = Core1210CapabilityRule(
 _CORE_1210_GUI_RULE = Core1210CapabilityRule(
     _CORE_1210_NATIVE + ("src/ck3_1210_gui_request_v1.cpp", "src/ck3_1210_gui_control_v1.cpp", "src/ck3_1210_gui_control_native_v1.cpp"),
     _CORE_1210_SDK + ("gui_window_tree_contract.py",), _CORE_1210_FULL_FLAGS + ("XAR_CK3_ENABLE_1210_GUI_CONTROL_V1",))
+_CORE_1210_TOAST_RULE = Core1210CapabilityRule(
+    _CORE_1210_NATIVE + (
+        "src/ck3_1210_full_snapshot_v1.cpp", "src/ck3_1210_ingame_ready_v1.cpp",
+        "src/ck3_1210_gui_request_v1.cpp",
+        "src/ck3_1210_toast_objects_v1.cpp", "src/ck3_1210_toast_objects_native_v1.cpp",
+        "src/ck3_1210_toast_query_v1.cpp", "src/ck3_1210_toast_query_native_v1.cpp",
+        "src/ck3_1210_toast_scope_identity_v1.cpp", "src/ck3_1210_toast_scope_identity_native_v1.cpp"),
+    _CORE_1210_SDK + ("gui_window_tree_contract.py",),
+    _CORE_1210_FULL_FLAGS + ("XAR_CK3_ENABLE_1210_GUI_CONTROL_V1",))
 _CORE_1210_EXIT_RULE = Core1210CapabilityRule(
     _CORE_1210_NATIVE + _CORE_1210_CONTROL + ("src/ck3_1210_application_exit_v1.cpp",),
     _CORE_1210_SDK + ("normal_exit_map_driver_v1.py", "normal_exit_contract_v1.py", "normal_exit_pending_observer_v1.py", "normal_exit_process_observer_v1.py"),
@@ -140,6 +149,7 @@ CORE_1210_CAPABILITIES: dict[str, Core1210CapabilityRule] = {
     "ck3_select_event_option": _CORE_1210_EVENT_RULE,
     "ck3_query_scripted_widget_controls_v1": _CORE_1210_GUI_RULE,
     "ck3_activate_scripted_widget_control_v1": _CORE_1210_GUI_RULE,
+    "ck3_query_current_interface_toast_v1": _CORE_1210_TOAST_RULE,
     "ck3_query_normal_exit_context_v1": _CORE_1210_EXIT_RULE,
     "ck3_request_normal_exit_v1": _CORE_1210_EXIT_RULE,
     "ck3_observe_normal_exit_v1": _CORE_1210_EXIT_RULE,

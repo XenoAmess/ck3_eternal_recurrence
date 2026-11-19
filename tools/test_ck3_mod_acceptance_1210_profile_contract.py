@@ -232,5 +232,99 @@ class FlorinToastProfileContractConsumer(unittest.TestCase):
             self.consume()
 
 
+
+class FlorinToastRuntimeCapabilityConsumer(unittest.TestCase):
+    """Reviewed capability uses the actual public source/flag consumer."""
+    TOOL = "ck3_query_current_interface_toast_v1"
+    NATIVE_SOURCES = (
+        "src/bridge.cpp", "src/ck3_1210_adapter.cpp", "src/ck3_1210_core.cpp",
+        "src/ck3_1210_full_snapshot_v1.cpp", "src/ck3_1210_ingame_ready_v1.cpp",
+        "src/ck3_1210_gui_request_v1.cpp",
+        "src/ck3_1210_toast_objects_v1.cpp", "src/ck3_1210_toast_objects_native_v1.cpp",
+        "src/ck3_1210_toast_query_v1.cpp", "src/ck3_1210_toast_query_native_v1.cpp",
+        "src/ck3_1210_toast_scope_identity_v1.cpp", "src/ck3_1210_toast_scope_identity_native_v1.cpp",
+    )
+    SDK_SOURCES = ("native_driver.py", "mcp_server.py", "service.py", "version_identity.py", "gui_window_tree_contract.py")
+
+    def setUp(self) -> None:
+        # Real checkout bodies in owned source indices, not a Native execution
+        # or a claim that the synthesized index itself is a qualified build.
+        self.native = {builder.NATIVE_PREFIX + relative: builder.sig((NATIVE / relative).read_bytes())
+                       for relative in self.NATIVE_SOURCES}
+        self.sdk = {builder.SDK_PREFIX + "xar_autoplayer/bridge/" + name:
+                    builder.sig((ROOT / builder.SDK_PREFIX / "xar_autoplayer/bridge" / name).read_bytes())
+                    for name in self.SDK_SOURCES}
+        self.flags = {name: "ON" for name in (
+            "XAR_CK3_ENABLE_1210_CORE_FRAME_V1", "XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1",
+            "XAR_CK3_ENABLE_1210_GUI_CONTROL_V1")}
+        self.flags["XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1"] = "OFF"
+
+    def consume(self):
+        return builder.core_1210_source_evidence(self.TOOL, ROOT, NATIVE, self.native, self.sdk, self.flags)
+
+    def test_exact_read_only_toast_rule_consumes_twelve_native_and_five_sdk_real_bodies(self) -> None:
+        rule = builder.CORE_1210_CAPABILITIES[self.TOOL]
+        self.assertEqual(rule.native_sources, self.NATIVE_SOURCES)
+        self.assertEqual(rule.sdk_sources, self.SDK_SOURCES)
+        self.assertEqual(rule.required_flags, (
+            "XAR_CK3_ENABLE_1210_CORE_FRAME_V1", "XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1",
+            "XAR_CK3_ENABLE_1210_GUI_CONTROL_V1"))
+        evidence = self.consume()
+        self.assertEqual(set(evidence), set(self.native) | set(self.sdk))
+        self.assertEqual(len(evidence), 17)
+        self.assertNotIn("src/ck3_1210_gui_control_native_v1.cpp", rule.native_sources)
+
+    def test_each_required_flag_rejects_missing_off_and_wrong_type(self) -> None:
+        for flag in builder.CORE_1210_CAPABILITIES[self.TOOL].required_flags:
+            for value in (None, "OFF", True, 1):
+                with self.subTest(flag=flag, value=value):
+                    original = self.flags.pop(flag)
+                    if value is not None:
+                        self.flags[flag] = value
+                    with self.assertRaisesRegex(ValueError, "Core profile lacks required flag"):
+                        self.consume()
+                    self.flags[flag] = original
+
+    def test_each_native_provider_requires_exact_qualified_body_and_index_entry(self) -> None:
+        for relative in self.NATIVE_SOURCES:
+            key = builder.NATIVE_PREFIX + relative
+            original = self.native.pop(key)
+            with self.subTest(relative=relative, mode="missing"), self.assertRaisesRegex(ValueError, "exact qualified production TU"):
+                self.consume()
+            self.native[key] = {"bytes": original["bytes"], "sha256": "0" * 64}
+            with self.subTest(relative=relative, mode="substituted"), self.assertRaisesRegex(ValueError, "exact qualified production TU"):
+                self.consume()
+            self.native[key] = original
+
+    def test_each_sdk_provider_requires_exact_loaded_source_index(self) -> None:
+        for name in self.SDK_SOURCES:
+            key = builder.SDK_PREFIX + "xar_autoplayer/bridge/" + name
+            original = self.sdk.pop(key)
+            with self.subTest(name=name, mode="missing"), self.assertRaisesRegex(ValueError, "outside the exact source index"):
+                self.consume()
+            self.sdk[key] = {"bytes": original["bytes"], "sha256": "0" * 64}
+            with self.subTest(name=name, mode="substituted"), self.assertRaisesRegex(ValueError, "outside the exact source index"):
+                self.consume()
+            self.sdk[key] = original
+
+    def test_unknown_toast_name_keeps_unreviewed_provider_closed(self) -> None:
+        unknown = self.TOOL + "_unreviewed"
+        self.assertNotIn(unknown, builder.CORE_1210_CAPABILITIES)
+        with self.assertRaises(KeyError):
+            builder.core_1210_source_evidence(unknown, ROOT, NATIVE, self.native, self.sdk, self.flags)
+
+    def test_only_selected_spot_case_requires_tool_without_changing_three_day_budgets(self) -> None:
+        products = builder.read(HERE / "ck3_mod_acceptance_products.json")
+        cases = products["products"]["financial-markets"]["cases"]
+        selected = next(row for row in cases if row["id"] == "spot")
+        self.assertEqual(selected["required_mcp_tools"].count(self.TOOL), 1)
+        self.assertEqual(selected["budgets"], {"command_timeout": 300, "readiness_timeout": 1800,
+            "timeout": 6000, "hold_seconds": 3600, "poll_interval": 0.5})
+        config = builder.read(HERE / "ck3_mod_acceptance_cases/financial_markets_spot.json")
+        self.assertEqual(config["maximum_natural_days"], 3)
+        self.assertEqual(config["required_startup"], [])
+        self.assertTrue(all(self.TOOL not in row["required_mcp_tools"] for row in cases if row["id"] != "spot"))
+
+
 if __name__ == "__main__":
     unittest.main()
