@@ -92,6 +92,19 @@ def generated_files(tier: Tier = "all") -> dict[str, bytes]:
     deadline = date(1066, 9, 15) + timedelta(days=max_days)
     latest_date = f"{deadline.year}.{deadline.month}.{deadline.day}"
     files: dict[str, bytes] = {}
+    # Capua is always an actual consumer: it owns the outside Vannes control.
+    # Other holders exist only for the selected tier's original predicates.
+    needed_holders = {"djct_capua_holder", *(holder for row in selected for holder in row[4:6])}
+    holder_pairs = (("djct_capua_holder", "c_capua"), ("djct_napoli_holder", "c_napoli"),
+                    ("djct_roma_holder", "c_roma"), ("djct_firenze_holder", "c_firenze"))
+    holder_setup = "\n            ".join(f"set_variable = {{ name = {holder} value = title:{county}.holder }}" for holder, county in holder_pairs if holder in needed_holders)
+    holder_guards = " ".join(f"exists = title:{county}.holder" for holder, county in holder_pairs if holder in needed_holders)
+    napoli_initial = '''if = {
+                limit = { var:djct_napoli_holder = { is_independent_ruler = yes } }
+                set_variable = { name = djct_napoli_originally_independent value = 1 }
+                debug_log = "DJCT: PREP READBACK initial_napoli_independent TRUE"
+            }
+            else = { debug_log = "DJCT: PREP READBACK initial_napoli_independent FALSE" }''' if "djct_napoli_holder" in needed_holders else ""
 
     def add(relative: str, value: str, *, bom: bool = True) -> None:
         value = value.strip() + "\n"
@@ -145,19 +158,11 @@ djct.1 = {{
     hidden = yes
     immediate = {{
         if = {{
-            limit = {{ djct_can_continue_trigger = yes exists = title:c_capua.holder exists = title:c_napoli.holder exists = title:c_roma.holder exists = title:c_firenze.holder title:c_apulia.holder = root }}
+            limit = {{ djct_can_continue_trigger = yes {holder_guards} title:c_apulia.holder = root }}
             debug_log = "{BEGIN_MARKER}"
-            set_variable = {{ name = djct_capua_holder value = title:c_capua.holder }}
-            set_variable = {{ name = djct_napoli_holder value = title:c_napoli.holder }}
-            set_variable = {{ name = djct_roma_holder value = title:c_roma.holder }}
-            set_variable = {{ name = djct_firenze_holder value = title:c_firenze.holder }}
+            {holder_setup}
             set_variable = {{ name = djct_owned_holder value = title:c_apulia.holder }}
-            if = {{
-                limit = {{ var:djct_napoli_holder = {{ is_independent_ruler = yes }} }}
-                set_variable = {{ name = djct_napoli_originally_independent value = 1 }}
-                debug_log = "DJCT: PREP READBACK initial_napoli_independent TRUE"
-            }}
-            else = {{ debug_log = "DJCT: PREP READBACK initial_napoli_independent FALSE" }}
+            {napoli_initial}
             create_title_and_vassal_change = {{ type = granted save_scope_as = djct_setup_change }}
             title:c_vannes = {{ change_title_holder = {{ holder = root.var:djct_capua_holder change = scope:djct_setup_change take_baronies = yes }} }}
             resolve_title_and_vassal_change = scope:djct_setup_change
@@ -216,7 +221,6 @@ djct.{stage} = {{
                 cancel_truce_one_way = var:djct_case_primary.top_liege
             }}
             else = {{ debug_log = "DJCT: DIAGNOSTIC {label}_player_to_primary_truce_before FALSE" }}
-            set_variable = {{ name = djct_reset_date value = current_date }}
             add_character_flag = {{ flag = djct_reset_wait days = 2 }}
             set_variable = {{ name = djct_phase value = 1 }}
             debug_log = "DJCT: PREP {label}_reset_then_wait_two_natural_days"
@@ -244,7 +248,6 @@ djct.{stage+3} = {{
                 title:c_vannes.holder = var:djct_capua_holder title:c_apulia.holder = var:djct_owned_holder
                 {napoli_ready}
             }}
-            set_variable = {{ name = djct_ready_date value = current_date }}
             debug_log = "DJCT: PREP READBACK {label}_owners_realms_stress_zero_wait_expired_resources_no_truce TRUE"
             debug_log = "DJCT: DIAGNOSTIC {label}_player_to_primary_truce_after FALSE"
             {check(f'var:djct_case_primary = {{ NOT = {{ can_declare_war = {{ defender = root casus_belli = {cb} target_titles = {{ title:{goal} }} }} }} }}', label+'_ai_unavailable')}
@@ -374,16 +377,228 @@ djct.901 = {{
     return files
 
 
+GUI_BASE_VALUES = ("djcg_phase", "djcg_tier", "djcg_date", "djcg_before_gold", "djcg_before_prestige", "djcg_before_piety", "djcg_after_gold", "djcg_after_prestige", "djcg_after_piety", "djcg_same_faith", "djcg_peace_of_god", "djcg_expected_extra_piety")
+GUI_RELOAD_VALUES = ("djcg_reload_date", "djcg_reload_gold", "djcg_reload_prestige", "djcg_reload_piety")
+GUI_REFERENCES = ("djcg_primary", "djcg_secondary", "djcg_goal", "djcg_war")
+
+
+def gui_observer_files(tier: Tier) -> dict[str, bytes]:
+    """Companion only: never declare, settle, pay, save or load on the player's behalf."""
+    tier = reviewed_tier(tier)
+    if tier == "all":
+        raise ValueError("GUI observer needs a single completed fresh tier")
+    tier_index, row = next((index, row) for index, row in enumerate(TIERS) if row[0] == tier)
+    _, goal, county_a, county_b, holder_a, holder_b = row
+    cb = tier + "_de_jure_greatwar"
+    files: dict[str, bytes] = {}
+
+    def add(relative: str, text: str) -> None:
+        text = text.strip() + "\n"
+        if relative.endswith(".txt"):
+            parse_clausewitz(text)
+        files[relative] = text.encode("utf-8-sig")
+
+    add("common/scripted_triggers/djcg_observer_triggers.txt", f'''
+djcg_actor_trigger = {{
+    this = character:1128 is_alive = yes is_ai = no
+    var:djct_finished = 1 var:djct_pass_count = 24
+    NOT = {{ has_variable = djct_failed }} NOT = {{ has_variable = djcg_failed }}
+    current_date <= 1066.10.3
+}}
+djcg_real_gui_war_trigger = {{
+    var:djcg_war = {{
+        using_cb = {cb} is_attacker = root
+        is_defender = root.var:djcg_primary is_defender = root.var:djcg_secondary
+        has_variable = djc_goal_title var:djc_goal_title = title:{goal}
+    }}
+}}
+''')
+    add("common/scripted_effects/djcg_observer_effects.txt", f'''
+# Only fixture variables change after the before snapshot. No start/end_war,
+# resource payment/refill, date writes, save/load or production flag writes.
+djcg_stop_effect = {{
+    if = {{
+        limit = {{ NOT = {{ has_variable = djcg_failed }} }}
+        set_variable = {{ name = djcg_failed value = 1 }}
+        debug_log = "DJCG: OBSERVE FAIL stopped"
+        trigger_event = djcg.900
+    }}
+}}
+djcg_prepare_gui_effect = {{
+    if = {{
+        limit = {{
+            djcg_actor_trigger = yes NOT = {{ has_variable = djcg_phase }}
+            title:{county_a}.holder = var:{holder_a} title:{county_b}.holder = var:{holder_b}
+            var:{holder_a}.top_liege != root var:{holder_b}.top_liege != root
+            var:{holder_a}.top_liege != var:{holder_b}.top_liege
+            NOT = {{ any_character_war = {{ using_cb = {cb} is_attacker = root }} }}
+        }}
+        set_variable = {{ name = djcg_primary value = var:{holder_a}.top_liege }}
+        set_variable = {{ name = djcg_secondary value = var:{holder_b}.top_liege }}
+        # Explicit fixture preparation before any balance snapshot: only the
+        # truce created by the just-completed scripted tier is cancelled.
+        if = {{ limit = {{ has_truce = var:djcg_primary }} cancel_truce_one_way = var:djcg_primary }}
+        if = {{
+            limit = {{ NOT = {{ has_truce = var:djcg_primary }} can_declare_war = {{ defender = var:djcg_primary casus_belli = {cb} target_titles = {{ title:{goal} }} }} }}
+            set_variable = {{ name = djcg_phase value = 1 }}
+            set_variable = {{ name = djcg_tier value = {tier_index+1} }}
+            set_variable = {{ name = djcg_goal value = title:{goal} }}
+            set_variable = {{ name = djcg_date value = current_date }}
+            set_variable = {{ name = djcg_before_gold value = gold }}
+            set_variable = {{ name = djcg_before_prestige value = prestige }}
+            set_variable = {{ name = djcg_before_piety value = piety }}
+            set_variable = {{ name = djcg_same_faith value = 0 }}
+            set_variable = {{ name = djcg_peace_of_god value = 0 }}
+            set_variable = {{ name = djcg_expected_extra_piety value = 0 }}
+            if = {{ limit = {{ var:djcg_primary = {{ faith = root.faith }} }} set_variable = {{ name = djcg_same_faith value = 1 }} }}
+            if = {{ limit = {{ root.rite ?= {{ rite_has_parameter = tenet_peace_of_god_same_faith_war_piety_penalty }} }} set_variable = {{ name = djcg_peace_of_god value = 1 }} }}
+            if = {{ limit = {{ var:djcg_same_faith = 1 var:djcg_peace_of_god = 1 }} set_variable = {{ name = djcg_expected_extra_piety value = medium_piety_value }} }}
+            debug_log = "DJCG: OBSERVE prepared_native_eligible_before_resources_and_extra_condition"
+            trigger_event = djcg.100
+        }}
+        else = {{ djcg_stop_effect = yes }}
+    }}
+    else = {{ djcg_stop_effect = yes }}
+}}
+djcg_observe_declaration_effect = {{
+    if = {{
+        limit = {{ djcg_actor_trigger = yes var:djcg_phase = 1 current_date = var:djcg_date }}
+        set_variable = {{ name = djcg_count value = 0 }}
+        every_character_war = {{
+            limit = {{ using_cb = {cb} is_attacker = root }}
+            save_scope_as = djcg_actual_war
+            root = {{ change_variable = {{ name = djcg_count add = 1 }} }}
+        }}
+        if = {{
+            limit = {{ var:djcg_count = 1 exists = scope:djcg_actual_war }}
+            set_variable = {{ name = djcg_war value = scope:djcg_actual_war }}
+            if = {{
+                limit = {{ djcg_real_gui_war_trigger = yes }}
+                set_variable = {{ name = djcg_after_gold value = gold }}
+                set_variable = {{ name = djcg_after_prestige value = prestige }}
+                set_variable = {{ name = djcg_after_piety value = piety }}
+                set_variable = {{ name = djcg_phase value = 2 }}
+                debug_log = "DJCG: OBSERVE actual_war_target_participants_after_resources"
+                trigger_event = djcg.110
+            }}
+            else = {{ djcg_stop_effect = yes }}
+        }}
+        else = {{ djcg_stop_effect = yes }}
+    }}
+    else = {{ djcg_stop_effect = yes }}
+}}
+djcg_observe_reload_effect = {{
+    if = {{
+        limit = {{
+            djcg_actor_trigger = yes var:djcg_phase = 2 current_date = var:djcg_date
+            gold = var:djcg_after_gold prestige = var:djcg_after_prestige piety = var:djcg_after_piety
+            has_variable = djcg_war djcg_real_gui_war_trigger = yes
+        }}
+        set_variable = {{ name = djcg_reload_date value = current_date }}
+        set_variable = {{ name = djcg_reload_gold value = gold }}
+        set_variable = {{ name = djcg_reload_prestige value = prestige }}
+        set_variable = {{ name = djcg_reload_piety value = piety }}
+        set_variable = {{ name = djcg_phase value = 3 }}
+        debug_log = "DJCG: OBSERVE persisted_actor_date_resources_war_after_operator_load"
+        trigger_event = djcg.120
+    }}
+    else = {{ djcg_stop_effect = yes }}
+}}
+''')
+    decisions = []
+    for name, condition, effect in (
+        ("prepare", "NOT = { has_variable = djcg_phase }", "djcg_prepare_gui_effect"),
+        ("declaration", "var:djcg_phase = 1", "djcg_observe_declaration_effect"),
+        ("reload", "var:djcg_phase = 2", "djcg_observe_reload_effect"),
+    ):
+        decisions.append(f'''
+djcg_{name}_decision = {{
+    picture = {{ reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }}
+    decision_group_type = realm
+    ai_check_interval = 0
+    desc = djcg_{name}_decision_desc
+    selection_tooltip = djcg_observer_tooltip
+    confirm_text = djcg_observer_confirm
+    is_shown = {{ this = character:1128 is_ai = no var:djct_finished = 1 NOT = {{ has_variable = djcg_failed }} {condition} }}
+    is_valid = {{ always = yes }}
+    effect = {{ hidden_effect = {{ {effect} = yes }} }}
+    ai_potential = {{ always = no }}
+    ai_will_do = {{ base = 0 }}
+}}
+''')
+    add("common/decisions/djcg_observers.txt", "\n".join(decisions))
+    events = ['namespace = djcg']
+    for number, stage in ((100, "ready"), (110, "save"), (120, "reload"), (900, "failed")):
+        events.append(f'''djcg.{number} = {{
+    type = character_event
+    theme = realm
+    title = djcg_{stage}_title
+    desc = djcg_{stage}_desc
+    option = {{ name = djcg_keep_paused }}
+}}''')
+    add("events/djcg_observer_events.txt", "\n".join(events))
+    texts = {
+        'djcg_prepare_decision': 'DJC observer: prepare ordinary GUI declaration',
+        'djcg_prepare_decision_desc': 'After this tier really finishes, cancel only its directed fixture truce, read actual native eligibility and capture before balances. No war is declared or paid by this decision.',
+        'djcg_declaration_decision': 'DJC observer: read actual GUI declaration result',
+        'djcg_declaration_decision_desc': 'Use only after the actual ordinary Declare War GUI action, while the same date stays paused. Read the real war, production goal, participants and after balances. No war/payment is created.',
+        'djcg_reload_decision': 'DJC observer: read state after actual Load Game',
+        'djcg_reload_decision_desc': 'Use only after physically saving the phase2 war and actually loading that same file. This observer cannot prove that Load occurred; retain separate GUI action and both physical ZIP saves.',
+        'djcg_observer_tooltip': 'Fixture observations only; ordinary GUI actions and physical Save/Load remain independent evidence.',
+        'djcg_observer_confirm': 'Observe; keep the calendar paused',
+        'djcg_ready_title': 'DJC ready for ordinary GUI declaration',
+        'djcg_ready_desc': f'Same completed {tier} world. Keep paused. Close this known window, select the real {cb} / {goal} declaration against the primary defender, capture preview and confirm through the ordinary GUI. Then select the declaration observer. Do not advance a natural day.',
+        'djcg_save_title': 'DJC observed real war; now Save then Load',
+        'djcg_save_desc': 'Actual war and after balances are captured in phase2. Close while paused. Save a new physical file S1, retain its exact bytes/hash, and actually Load S1. Read back map/date/paused/player/war. Then select the reload observer and Save a separate physical S2. No script Save/Load or war settlement occurs.',
+        'djcg_reload_title': 'DJC post-load observation captured',
+        'djcg_reload_desc': 'Phase3 read actual persisted resources, date, goal and participants. Keep paused, close and Save a distinct S2. The offline consumer compares S1/S2 plus real GUI records. This window alone is not proof of reload, fees or whole-product acceptance.',
+        'djcg_failed_title': 'DJC observer stopped',
+        'djcg_failed_desc': 'Actor/phase/date/native eligibility/actual war/resources did not match. No successor, repair, war, payment or Save/Load is performed. Preserve failure and keep paused.',
+        'djcg_keep_paused': 'Close and keep paused',
+    }
+    for language in ("english", "simp_chinese"):
+        localized = dict(texts)
+        if language == "simp_chinese":
+            localized.update(djcg_prepare_decision="法理征服观察：准备普通界面宣战", djcg_declaration_decision="法理征服观察：读取真实界面宣战后态", djcg_reload_decision="法理征服观察：读取实际载入后态", djcg_ready_title="已准备普通界面宣战，保持暂停", djcg_save_title="已读取真实战争，请物理保存并载入", djcg_reload_title="已读取载入后态，请另存S2", djcg_failed_title="法理征服观察已停止", djcg_keep_paused="关闭并保持暂停")
+        add(f"localization/{language}/djcg_l_{language}.yml", 'l_' + language + ':\n' + '\n'.join(f' {key}:0 "{value}"' for key, value in localized.items()))
+    contract = {
+        "schema": "djc.gui-ordinary-save.v1", "tier": tier, "tier_value": tier_index+1,
+        "player_history_id": 1128, "casus_belli": cb, "goal": goal,
+        "base_value_variables": list(GUI_BASE_VALUES), "reload_value_variables": list(GUI_RELOAD_VALUES), "reference_variables": list(GUI_REFERENCES),
+        "ordinary_gui_required": True, "same_completed_matrix_world_required": True,
+        "same_paused_date_required": True, "max_extra_natural_days": 0,
+        "save_before_reload_phase": 2, "save_after_reload_phase": 3,
+        "native_qualification": "NOT_GRANTED", "live": "NOT_RUN",
+        "boundary": "Observer does not declare/settle/pay/Save/Load. Only before-snapshot preparation cancels the directed fixture truce. Physical ZIP saved values plus distinct real GUI declaration/load and preview evidence are mandatory. Observer phase3 is not proof of actual Load by itself.",
+    }
+    files["gui-observer-contract.json"] = (json.dumps(contract, ensure_ascii=False, indent=2) + '\n').encode()
+    return files
+
+
 def main() -> int:
     if isinstance(sys.stdout, io.TextIOWrapper):
         sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--tier", choices=("all", "duchy", "kingdom", "empire"), default="all")
+    parser.add_argument("--with-gui-observer", action="store_true", help="optional same-world ordinary GUI/physical SaveLoad observer; single tier only")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("fixture output already exists; use a fresh attempt")
-    files = generated_files(reviewed_tier(args.tier))
+    tier = reviewed_tier(args.tier)
+    if args.with_gui_observer and tier == "all":
+        parser.error("--with-gui-observer requires one fresh --tier duchy, kingdom or empire")
+    files = generated_files(tier)
+    if args.with_gui_observer:
+        # On engines that dispatch this startup hook on Load as well, an existing
+        # fixture seed must remain untouched. This is not proof that a Load ran.
+        hook = files["common/on_action/djct_on_actions.txt"].decode("utf-8-sig")
+        old = "every_player = {\n            if = {"
+        new = "every_player = {\n            if = { limit = { has_variable = djct_started } debug_log = \"DJCG: OBSERVE existing_matrix_seed_unchanged\" }\n            else_if = {"
+        if hook.count(old) != 1:
+            raise ValueError("reviewed matrix startup insertion point moved")
+        files["common/on_action/djct_on_actions.txt"] = hook.replace(old, new).encode("utf-8-sig")
+        files.update(gui_observer_files(tier))
     args.output.mkdir(parents=True)
     entries = []
     for relative, data in sorted(files.items()):

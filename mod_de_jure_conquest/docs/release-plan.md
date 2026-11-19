@@ -34,3 +34,11 @@
 ## 2026-10-03 正式发布追加记录
 
 维护版新Workshop ID为 [3812510217](https://steamcommunity.com/sharedfiles/filedetails/?id=3812510217)，版本1.0.0。中文实机、正式构建、完整Change Notes匿名回读、实机媒体、全新订阅缓存逐文件复核与Steam离线恢复均已通过，完整事实见[发布报告](release-1.0.0-2026-10-03/README.md)。此前阶段记录和失败attempt按原样保留。
+
+## 2026-11-20 Florin compatibility source preparation
+
+The1.0.1 update retains canonical3812510217 and the published1.0.0 tag. The
+[existing release contract and uncompleted obligations](release-update-contract-florin-121003.md)
+separate actual required parity from historical planned-but-uncovered scenarios.
+The optional same-world GUI/physical-save observer is software preparation only;
+new actual game/GUI/payment/Load/publication remain NOT_RUN.

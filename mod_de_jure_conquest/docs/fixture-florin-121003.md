@@ -80,3 +80,7 @@ boundaries, native peace legality, invalidation/deaths, concurrent wars, automat
 armies, physical Save/Load, Chinese actual GUI and coexistence remain independent
 DJC01--13 obligations. See test-plan.md and migration-florin-121003.md; no old
 1.20 qualification or basic-load zero-day case fills these gaps.
+
+Optional final-duchy same-world ordinary GUI/physical SaveLoad observer: see
+[gui-save-observer-florin-121003.md](gui-save-observer-florin-121003.md). It does not
+replace any original matrix predicate, actual GUI action or physical Load proof.

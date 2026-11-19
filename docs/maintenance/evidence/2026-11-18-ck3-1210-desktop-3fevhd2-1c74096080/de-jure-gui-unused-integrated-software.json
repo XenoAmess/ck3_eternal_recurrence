@@ -1,0 +1,301 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T22:31:50.484361+00:00",
+  "passed": true,
+  "target_pins": {
+    "mod_de_jure_conquest/docs/fixture-florin-121003.md": "2b62988f430e6bb67ebe08194725360e64d873a6f417994d8072537f0b27d664",
+    "mod_de_jure_conquest/docs/gui-save-observer-florin-121003.md": "f9de4051cc4c10abe8f55f48d34613026788385e10006bd2576214e130657a45",
+    "mod_de_jure_conquest/docs/release-plan.md": "8d840b5639faa08993222d3b38d435b11815a86a1dfe7ed45e8927452a9117d4",
+    "mod_de_jure_conquest/docs/release-update-contract-florin-121003.md": "3d0f68e617f81a9ce6d17d796fb9e3c3f59cc637178653a9afb44850993fbe00",
+    "mod_de_jure_conquest/tools/gen_acceptance_fixture.py": "dba1e15f56aea4c610f2c079fcab334f708c69c0d3d9c36b3816d3646b91e3fc",
+    "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py": "a303ed13247693803e373f60ac476d9dc17e231cd8711de477c165d4c91b7b66",
+    "mod_de_jure_conquest/tools/verify_fixture_log.py": "eaa2a480395e4325b526962940836400636ee579b4d35551f71bb6dd367af986",
+    "mod_de_jure_conquest/docs/fixture-unused-variables-florin-121003.md": "f8e858f2e506a6ee382999ed96d87431f8b3603ed92b894d3adc5497f894c004"
+  },
+  "packets": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a03",
+      "manifest": {
+        "schema": "djc.florin121003.gui-companion-candidate.v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_utc": "2026-11-19T22:13:00.415149+00:00",
+        "base_commit_from_Root": "7e852ff",
+        "base_parent_patch_sha256": "1ab47e7635ab2c5cd00e4647e835cb81c905d8df82abbcc4b72198f42195f8cd",
+        "base_scope": "Every actual Repo base is pinned below. Existing a02 source logic is unchanged; the integrated test file only normalized CRLF to LF, separately marked. Unrelated source is not frozen by this packet.",
+        "changes": [
+          {
+            "path": "mod_de_jure_conquest/docs/fixture-florin-121003.md",
+            "new": false,
+            "base_bytes": 5596,
+            "base_sha256": "09641b1761e7163a10afad96f1488066c362b49100b465ccc9ab5c354ac08c06",
+            "parent_line_ending_normalization_only": false,
+            "target_bytes": 5841,
+            "target_sha256": "2b62988f430e6bb67ebe08194725360e64d873a6f417994d8072537f0b27d664"
+          },
+          {
+            "path": "mod_de_jure_conquest/docs/gui-save-observer-florin-121003.md",
+            "new": true,
+            "base_bytes": null,
+            "base_sha256": null,
+            "parent_line_ending_normalization_only": false,
+            "target_bytes": 6858,
+            "target_sha256": "6860bfacceb6db2080310a2d322c8099541a843ad7172015bcc5e8fe43115cea"
+          },
+          {
+            "path": "mod_de_jure_conquest/docs/release-plan.md",
+            "new": false,
+            "base_bytes": 4157,
+            "base_sha256": "66b024158fe64b9d8c69b6496c0eaf58a75cada4017c75f00c29752a178b2dd3",
+            "parent_line_ending_normalization_only": false,
+            "target_bytes": 4610,
+            "target_sha256": "8d840b5639faa08993222d3b38d435b11815a86a1dfe7ed45e8927452a9117d4"
+          },
+          {
+            "path": "mod_de_jure_conquest/docs/release-update-contract-florin-121003.md",
+            "new": true,
+            "base_bytes": null,
+            "base_sha256": null,
+            "parent_line_ending_normalization_only": false,
+            "target_bytes": 4495,
+            "target_sha256": "3d0f68e617f81a9ce6d17d796fb9e3c3f59cc637178653a9afb44850993fbe00"
+          },
+          {
+            "path": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+            "new": false,
+            "base_bytes": 20503,
+            "base_sha256": "abe7328e16a518d8e3107b94f899c7cf0c09e4a37596e0fea8ca053defdce267",
+            "parent_line_ending_normalization_only": false,
+            "target_bytes": 34218,
+            "target_sha256": "90d790bf51d30a36834c423fc1a58158f0f87266ae9e93c38d0d6b0ade737f22"
+          },
+          {
+            "path": "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+            "new": false,
+            "base_bytes": 20616,
+            "base_sha256": "ffdaf69658f387a96be34560c35ad7b4ad6ccb0382c5645d6fe9d3c3ba0d5b74",
+            "parent_line_ending_normalization_only": true,
+            "target_bytes": 29752,
+            "target_sha256": "87f5ee1686a001112c798691d6215f2c7e6126b904f885157a4f1c7e3082acce"
+          },
+          {
+            "path": "mod_de_jure_conquest/tools/verify_fixture_log.py",
+            "new": false,
+            "base_bytes": 9556,
+            "base_sha256": "816244a603ea48ee167df3b2be888283c3f652bb7bb1489da8b50538b43cf857",
+            "parent_line_ending_normalization_only": false,
+            "target_bytes": 24671,
+            "target_sha256": "eaa2a480395e4325b526962940836400636ee579b4d35551f71bb6dd367af986"
+          }
+        ],
+        "source_dependencies": [
+          {
+            "path": "tools/inspect_ck3_save_player_topology.py",
+            "bytes": 18089,
+            "sha256": "620556d040ccebc143b2bd625f6199f31695df101aff374269e1d30f29ee641b"
+          },
+          {
+            "path": "tools/inspect_ck3_save_character_scope.py",
+            "bytes": 12146,
+            "sha256": "944bd2ca05230b81d39b019466725f0ee624e52d8e8d2fdfb0a2eb71de260729"
+          }
+        ],
+        "patch_bytes": 97423,
+        "patch_sha256": "ec5c7a4961f2a66f6b35fa0c8c3a488a5337d00f6b50d8e8ce0dbe689a5bb024",
+        "unchanged_runtime": [
+          {
+            "path": "common/casus_belli_types/duchy_de_jure_greatwar.txt",
+            "sha256": "2bf55d811901828136416689e75917219d00440d5e63ad8aab2d5db4c6d5aeb1",
+            "bytes": 5528
+          },
+          {
+            "path": "common/casus_belli_types/empire_de_jure_greatwar.txt",
+            "sha256": "dfd554edc5d42be3cbc76b1ced8555f3fa1e25f499189649e4f8e7c693ec0363",
+            "bytes": 5534
+          },
+          {
+            "path": "common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+            "sha256": "dfff8ebedc4f8bcf744b198324b1be5faa7ab9076d3956fe548e6ddf236ae56d",
+            "bytes": 5537
+          },
+          {
+            "path": "common/on_action/greatwar.txt",
+            "sha256": "c9e7aa7c3092e633f74413b861357ea9fd0bb7cd6004ef0d38bbe6c3424356cf",
+            "bytes": 839
+          },
+          {
+            "path": "common/scripted_effects/djc_war_effects.txt",
+            "sha256": "963e10b91a9f2b4df60396a32b06b6ccce46f3db051d5340d6e1e35b0897941f",
+            "bytes": 2751
+          },
+          {
+            "path": "descriptor.mod",
+            "sha256": "81c7f067924bd05ab6c282f76277af287cecd40a6071acb6b62f70931c0107e6",
+            "bytes": 172
+          },
+          {
+            "path": "localization/english/greatwar_l_english.yml",
+            "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a",
+            "bytes": 1584
+          },
+          {
+            "path": "localization/french/greatwar_l_french.yml",
+            "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34",
+            "bytes": 1656
+          },
+          {
+            "path": "localization/german/greatwar_l_german.yml",
+            "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986",
+            "bytes": 1758
+          },
+          {
+            "path": "localization/japanese/greatwar_l_japanese.yml",
+            "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7",
+            "bytes": 1459
+          },
+          {
+            "path": "localization/korean/greatwar_l_korean.yml",
+            "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89",
+            "bytes": 1543
+          },
+          {
+            "path": "localization/polish/greatwar_l_polish.yml",
+            "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2",
+            "bytes": 1563
+          },
+          {
+            "path": "localization/russian/greatwar_l_russian.yml",
+            "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6",
+            "bytes": 2389
+          },
+          {
+            "path": "localization/simp_chinese/greatwar_l_simp_chinese.yml",
+            "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2",
+            "bytes": 1430
+          },
+          {
+            "path": "localization/spanish/greatwar_l_spanish.yml",
+            "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55",
+            "bytes": 1608
+          },
+          {
+            "path": "thumbnail.png",
+            "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465",
+            "bytes": 111868
+          }
+        ],
+        "unchanged_runtime_count": 16,
+        "software": {
+          "tests": 29,
+          "tests_exit": 0,
+          "strict_whole_modules": 3,
+          "strict_exit": 0,
+          "five_actual_producer_CLI_exit": 0,
+          "defaults_a02_byte_identical": true,
+          "parse_event_refs_theme_locales_exit": 0,
+          "pure_patch_replay_exit": 0
+        },
+        "actual_Game_GUI_payment_Save_Load_cold_Load_and_full_product": "NOT_RUN",
+        "Native_qualification": "NOT_GRANTED",
+        "formal_release": "NOT_RUN"
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a04",
+      "manifest": {
+        "schema": "djc.florin121003.unused-fixture-state-candidate.v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_utc": "2026-11-19T22:24:40.172632+00:00",
+        "stacked_parent": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a03",
+        "parent_patch_sha256": "ec5c7a4961f2a66f6b35fa0c8c3a488a5337d00f6b50d8e8ce0dbe689a5bb024",
+        "base_scope": "Exact a03 candidate targets; apply after a03 integration. Active primary and Game are never changed. Root revalidates actual working-tree line endings and per-file bases.",
+        "changes": [
+          {
+            "path": "mod_de_jure_conquest/docs/fixture-unused-variables-florin-121003.md",
+            "new": true,
+            "base_bytes": null,
+            "base_sha256": null,
+            "target_bytes": 2041,
+            "target_sha256": "f8e858f2e506a6ee382999ed96d87431f8b3603ed92b894d3adc5497f894c004"
+          },
+          {
+            "path": "mod_de_jure_conquest/docs/gui-save-observer-florin-121003.md",
+            "new": false,
+            "base_bytes": 6858,
+            "base_sha256": "6860bfacceb6db2080310a2d322c8099541a843ad7172015bcc5e8fe43115cea",
+            "target_bytes": 7030,
+            "target_sha256": "f9de4051cc4c10abe8f55f48d34613026788385e10006bd2576214e130657a45"
+          },
+          {
+            "path": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+            "new": false,
+            "base_bytes": 34218,
+            "base_sha256": "90d790bf51d30a36834c423fc1a58158f0f87266ae9e93c38d0d6b0ade737f22",
+            "target_bytes": 34450,
+            "target_sha256": "dba1e15f56aea4c610f2c079fcab334f708c69c0d3d9c36b3816d3646b91e3fc"
+          },
+          {
+            "path": "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+            "new": false,
+            "base_bytes": 29752,
+            "base_sha256": "87f5ee1686a001112c798691d6215f2c7e6126b904f885157a4f1c7e3082acce",
+            "target_bytes": 32323,
+            "target_sha256": "a303ed13247693803e373f60ac476d9dc17e231cd8711de477c165d4c91b7b66"
+          }
+        ],
+        "patch_bytes": 10514,
+        "patch_sha256": "23187bc3a1d7c42f8ee02c7c49221e93b8880e5e64c3a93ce2eb3b11dfd18315",
+        "software": {
+          "tests": 30,
+          "tests_exit": 0,
+          "strict_whole_modules": 2,
+          "strict_exit": 0,
+          "two_actual_CLI_producers_exit": 0,
+          "four_full_generated_variants_parse_and_original_contract_equality": true,
+          "GUI_companion_and_physical_consumer_unchanged": true,
+          "original72_and_two_day_gates_tested": true,
+          "exact_patch_replay_exit": 0
+        },
+        "production_runtime16_changed": false,
+        "actual_fresh_engine_unused_diagnostics_business24_GUI_SaveLoad_and_full_product": "NOT_RUN",
+        "formal_release": "NOT_RUN"
+      }
+    }
+  ],
+  "actual_integrated_producers": [
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "--tier",
+        "kingdom",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-gui-unused-integration-a01\\kingdom"
+      ],
+      "exit": 0,
+      "stdout": "Generated 10 external fixture files at D:\\ck3-state\\upgrade-20261118\\de-jure-gui-unused-integration-a01\\kingdom; live NOT_RUN.\r\n"
+    },
+    {
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "--tier",
+        "duchy",
+        "--with-gui-observer",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-gui-unused-integration-a01\\duchy-gui"
+      ],
+      "exit": 0,
+      "stdout": "Generated 17 external fixture files at D:\\ck3-state\\upgrade-20261118\\de-jure-gui-unused-integration-a01\\duchy-gui; live NOT_RUN.\r\n"
+    }
+  ],
+  "production_runtime16_unchanged": true,
+  "scope": "a03 GUI/physical-save observer and a04 unused fixture-state cleanup only; previous a03 default4 byte equality retained as original scope, latera04 changes intentionally justified by actualR1 diagnostics. No newGame/GUI/payment/SaveLoad/sourceNative/fullproduct/Workshop pass. ActualR1 eligibility FAIL/RED10of24 unchanged.",
+  "future_reserved_bytes": 41943040,
+  "free_D": 21821562880
+}

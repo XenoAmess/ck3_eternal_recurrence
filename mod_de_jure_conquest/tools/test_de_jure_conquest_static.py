@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
+import re
 from pathlib import Path
 import runpy
 import shutil
@@ -10,6 +12,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import zipfile
 from typing import Iterator
 
 SOURCE = Path(__file__).resolve().parents[1]
@@ -313,6 +316,148 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         result = self.command("validate_static.py", "--no-installed-game", "--release-localization")
         self.assertEqual(result.returncode, 1)
         self.assertIn("release localization keys differ: french", result.stdout)
+
+    def gui_inputs(self) -> tuple[Path, Path, Path, Path]:
+        fixture = self.root / "gui-companion"
+        result = self.command("gen_acceptance_fixture.py", "--tier", "duchy", "--with-gui-observer", "--output", str(fixture))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        before, after = self.root / "SYNTHETIC-S1.ck3", self.root / "SYNTHETIC-S2.ck3"
+        self.synthetic_gui_save(before, 2)
+        self.synthetic_gui_save(after, 3)
+        artifacts = []
+        for kind in ("preview", "declare_action", "load_action", "reloaded_state"):
+            path = self.root / ("SYNTHETIC-NOT-GAME-" + kind + ".txt")
+            path.write_text("Synthetic unit artifact only: " + kind, encoding="utf-8")
+            artifacts.append({"kind": kind, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+        evidence = self.root / "SYNTHETIC-GUI-evidence.json"
+        evidence.write_text(json.dumps({"schema": "djc.gui-physical-save-evidence.v1", "machine_id": "desktop-3fevhd2-1c74096080", "game_version": "1.21.0.3", "game_build": 26785313, "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28", "tier": "duchy", "ordinary_gui_declaration": True, "same_completed_matrix_world": True, "paused_same_date": True, "load_method": "gui_load_same_process", "process_before": "101", "process_after": "101", "loaded_save_sha256": hashlib.sha256(before.read_bytes()).hexdigest(), "preview_prestige": "50", "preview_piety": "200", "artifacts": artifacts}), encoding="utf-8")
+        return before, after, evidence, fixture / "gui-observer-contract.json"
+
+    def synthetic_gui_save(self, path: Path, phase: int, *, changes: dict[str, tuple[str, int]] | None = None) -> None:
+        # Deliberately beyond JS Number's safe integer domain. These are private
+        # synthetic saved-value parser tests, never engine/resource qualification.
+        balance = 9007199254740993
+        atoms = {key: ("value", value) for key, value in {
+            "djcg_phase": phase * 100000, "djcg_tier": 100000, "djcg_date": 12345600000,
+            "djcg_before_gold": balance, "djcg_before_prestige": balance, "djcg_before_piety": balance,
+            "djcg_after_gold": balance, "djcg_after_prestige": balance - 5000000, "djcg_after_piety": balance - 30000000,
+            "djcg_same_faith": 100000, "djcg_peace_of_god": 100000, "djcg_expected_extra_piety": 10000000,
+        }.items()}
+        atoms.update(djcg_primary=("char", 300), djcg_secondary=("char", 400), djcg_goal=("lt", 500), djcg_war=("war", 600))
+        if phase == 3:
+            atoms.update(djcg_reload_date=("value", 12345600000), djcg_reload_gold=("value", balance), djcg_reload_prestige=("value", balance - 5000000), djcg_reload_piety=("value", balance - 30000000))
+        atoms.update(changes or {})
+        variables = "\n".join('\t\t\t\t\t{\n\t\t\t\t\t\tflag="' + key + '"\n\t\t\t\t\t\tdata={\n\t\t\t\t\t\t\ttype=' + kind + '\n\t\t\t\t\t\t\tidentity=' + str(value) + '\n\t\t\t\t\t\t}\n\t\t\t\t\t}' for key, (kind, value) in atoms.items())
+        text = 'SAV0100\nmeta_data={\n\tversion="1.21.0.3"\n}\n\t200={\n\t\tfirst_name="SYNTHETIC_NOT_GAME"\n\t\talive_data={\n\t\t\tvariables={\n\t\t\t\tdata={\n' + variables + '\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\nplayed_character={\n\tcharacter=200\n\tplayer=1\n}\ncurrently_played_characters={\n\t200\n}\n'
+        with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("gamestate", text.encode())
+
+    def gui_command(self, inputs: tuple[Path, Path, Path, Path], report: str) -> subprocess.CompletedProcess[str]:
+        before, after, evidence, contract = inputs
+        return self.command("verify_fixture_log.py", "--gui-save-before", str(before), "--gui-save-after", str(after), "--gui-evidence", str(evidence), "--gui-contract", str(contract), "--report", str(self.root / report))
+
+    def test_optional_gui_observer_keeps_default_matrix_and_cannot_create_actions(self) -> None:
+        plain = self.fixture("duchy")
+        inputs = self.gui_inputs()
+        companion = inputs[3].parent
+        for path in plain.rglob("*"):
+            if path.is_file() and path.relative_to(plain).as_posix() != "common/on_action/djct_on_actions.txt":
+                self.assertEqual(path.read_bytes(), (companion / path.relative_to(plain)).read_bytes())
+        for path in companion.rglob("*.txt"):
+            if "djcg" not in path.name:
+                continue
+            block = parse_clausewitz(path.read_text(encoding="utf-8-sig"))
+            forbidden = {"start_war", "end_war", "add_gold", "add_prestige", "add_piety", "save_game", "load_game", "set_player_character", "set_date", "change_title_holder", "remove_character_flag"}
+            self.assertFalse({entry.key for nested in walk(block) for entry in nested.entries} & forbidden)
+        hook = parse_clausewitz((companion / "common/on_action/djct_on_actions.txt").read_text(encoding="utf-8-sig"))
+        player = child(child(child(hook, "djct_initialize"), "effect"), "every_player")
+        replay_guard = child(player, "if")
+        self.assertEqual(scalar(child(replay_guard, "limit"), "has_variable"), "djct_started")
+        self.assertEqual({entry.key for entry in replay_guard.entries}, {"limit", "debug_log"})
+        result = self.command("gen_acceptance_fixture.py", "--with-gui-observer", "--output", str(self.root / "invalid-all-gui"))
+        self.assertEqual(result.returncode, 2)
+        self.assertFalse((self.root / "invalid-all-gui").exists())
+
+    def test_actual_physical_ZIP_GUI_consumer_keeps_exact_money_and_persistent_war(self) -> None:
+        inputs = self.gui_inputs()
+        result = self.gui_command(inputs, "gui-save-software.json")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        value = json.loads((self.root / "gui-save-software.json").read_text())
+        money = value["money_raw_decimal_strings"]
+        self.assertEqual(money["before_prestige"], "9007199254740993")
+        self.assertEqual(money["actual_total_prestige_debit"], "5000000")
+        self.assertEqual(money["actual_total_piety_debit"], "30000000")
+        self.assertEqual(money["piety_preview"], "20000000")
+        self.assertEqual(money["conditional_extra_piety"], "10000000")
+        self.assertEqual(value["persisted_references"]["djcg_war"]["raw_identity"], "600")
+        self.assertEqual(value["before_save"]["member"]["name"], "gamestate")
+        self.assertIn("not a Native", value["fixed_point_codec"])
+
+    def test_GUI_consumer_rejects_preview_forgery_wrong_Load_and_contract_types(self) -> None:
+        inputs = self.gui_inputs()
+        before, after, evidence, contract = inputs
+        original = json.loads(evidence.read_text())
+        corruptions: tuple[dict[str, object], ...] = ({"preview_piety": "300"}, {"preview_prestige": 50}, {"preview_piety": True}, {"game_build": True}, {"loaded_save_sha256": "0" * 64}, {"ordinary_gui_declaration": False}, {"load_method": "cold_process_load"}, {"process_after": "202"})
+        for index, changes in enumerate(corruptions):
+            evidence.write_text(json.dumps(dict(original, **changes)))
+            result = self.gui_command(inputs, f"bad-gui-{index}.json")
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertNotIn("Traceback", result.stderr)
+        evidence.write_text(json.dumps(original))
+        definition = json.loads(contract.read_text())
+        contract.write_text(json.dumps(dict(definition, tier_value=True)))
+        result = self.gui_command(inputs, "bad-gui-contract.json")
+        self.assertEqual(result.returncode, 1)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_GUI_consumer_rejects_wrong_physical_phase_money_references_and_ZIP(self) -> None:
+        inputs = self.gui_inputs()
+        for index, changes in enumerate(({"djcg_phase": ("value", 200000)}, {"djcg_reload_piety": ("value", 1)}, {"djcg_war": ("war", 601)}, {"djcg_date": ("value", 12345600001)}, {"djcg_primary": ("char", 200)}, {"djcg_phase": ("char", 300000)})):
+            self.synthetic_gui_save(inputs[1], 3, changes=changes)
+            result = self.gui_command(inputs, f"bad-save-{index}.json")
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertNotIn("Traceback", result.stderr)
+        inputs[1].write_bytes(b"not a physical CK3 ZIP")
+        result = self.gui_command(inputs, "bad-physical-zip.json")
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_single_tier_initializes_only_consumed_matrix_holder_and_clock_state(self) -> None:
+        expected_holders = {
+            "all": {"djct_capua_holder", "djct_napoli_holder", "djct_roma_holder", "djct_firenze_holder", "djct_owned_holder"},
+            "duchy": {"djct_capua_holder", "djct_napoli_holder", "djct_owned_holder"},
+            "kingdom": {"djct_capua_holder", "djct_napoli_holder", "djct_owned_holder"},
+            "empire": {"djct_capua_holder", "djct_roma_holder", "djct_firenze_holder", "djct_owned_holder"},
+        }
+        for tier, expected in expected_holders.items():
+            fixture = self.fixture(tier)
+            declarations: set[str] = set()
+            variable_reads: set[str] = set()
+            for path in fixture.rglob("*.txt"):
+                text = path.read_text(encoding="utf-8-sig")
+                # Native var references and has/remove_variable are actual loaded
+                # script consumers. Do not add dummy reads to silence the linter.
+                variable_reads.update(re.findall(r"var:(djct_[A-Za-z0-9_]+)", text))
+                for block in walk(parse_clausewitz(text)):
+                    for entry in block.entries:
+                        if entry.key == "set_variable" and isinstance(entry.value, Block):
+                            name = scalar(entry.value, "name")
+                            if name.startswith("djct_"):
+                                declarations.add(name)
+                        if entry.key in ("has_variable", "remove_variable") and isinstance(entry.value, str):
+                            variable_reads.add(entry.value)
+            self.assertEqual({name for name in declarations if name.endswith("_holder")}, expected)
+            self.assertNotIn("djct_reset_date", declarations)
+            self.assertNotIn("djct_ready_date", declarations)
+            self.assertTrue(declarations <= variable_reads, (tier, declarations - variable_reads))
+        _, _, _, contract = self.gui_inputs()
+        definition = json.loads(contract.read_text())
+        self.assertIn("djcg_date", definition["base_value_variables"])
+        self.assertIn("djcg_reload_date", definition["reload_value_variables"])
+        companion = contract.parent
+        gui_effects = (companion / "common/scripted_effects/djcg_observer_effects.txt").read_text(encoding="utf-8-sig")
+        self.assertIn("name = djcg_date value = current_date", gui_effects)
+        self.assertIn("name = djcg_reload_date value = current_date", gui_effects)
 
 
 if __name__ == "__main__":
