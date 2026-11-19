@@ -1,23 +1,21 @@
 package org.xar.ck3.markets.ui;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/** R18 Scope.Self parsing regression contracts. Direct Scope is the existing model value; no live-success claim. */
+/** Source wiring only. R20 numeric transport PASS is separate from this backend's game acceptance. */
 final class MarketOrderRowContextContractTest {
     private static final Path SOURCE = Path.of(System.getProperty("xfm.source", ".."));
     private static String quoted(String text) { return Character.toString(34) + text + Character.toString(34); }
     private static String source(String relative) throws IOException { return Files.readString(SOURCE.resolve(relative)); }
     private static String body(String text, String header) {
         int start = text.indexOf(header);
-        assertTrue(start >= 0, "expected concrete GUI block: " + header);
+        assertTrue(start >= 0, "expected GUI/script block: " + header);
         int opening = text.indexOf('{', start), depth = 1;
-        assertTrue(opening >= 0, "expected opening brace");
         boolean quoted = false, escaped = false, comment = false;
         for (int i = opening + 1; i < text.length(); i++) {
             char c = text.charAt(i);
@@ -30,7 +28,7 @@ final class MarketOrderRowContextContractTest {
             if (c == '{') depth++;
             else if (c == '}' && --depth == 0) return text.substring(opening + 1, i);
         }
-        throw new IllegalArgumentException("unterminated GUI block");
+        throw new IllegalArgumentException("unterminated block");
     }
     private static String compact(String text) {
         StringBuilder result = new StringBuilder(); boolean quoted = false, escaped = false;
@@ -43,72 +41,84 @@ final class MarketOrderRowContextContractTest {
         }
         return result.toString();
     }
-    private static String list(String window, String name) {
-        return body(window, "scrollbox = { name = " + quoted(name));
+    private static int occurrences(String text, String needle) {
+        return (text.length() - text.replace(needle, "").length()) / needle.length();
     }
-    private static String row(String list) {
-        String item = body(list, "item = {");
-        assertFalse(item.contains("xfm_market_order_row ="), "the concrete item must own its context");
-        return body(item, "vbox = {");
-    }
-    @Test void bothConcreteOrderItemsPreserveTheSharedTemplateWithNativeModelContext() throws IOException {
-        String window = source("gui/xfm_market_window.gui");
-        String original = body(source("gui/xfm_market_rows.gui"), "type xfm_market_order_row = vbox {");
-        for (String name : List.of("xfm_market_orders_scroll", "xfm_market_history_scroll")) {
-            String row = row(list(window, name));
-            assertFalse(row.contains("datacontext ="), "the model item already supplies its Scope value");
-            assertEquals(compact(original), compact(row), name);
-        }
-    }
-    @Test void bothListsKeepTheSameAccountDataAndSixteenRowPagination() throws IOException {
-        String window = source("gui/xfm_market_window.gui");
-        for (String suffix : List.of("orders", "history")) {
-            String selected = list(window, "xfm_market_" + suffix + "_scroll");
-            assertTrue(selected.contains("DataModelSubSpan( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_" + (suffix.equals("orders") ? "orders" : "order_history") + "' )"));
-            assertTrue(selected.contains("'(int32)16'"));
-            assertTrue(selected.contains("xfm_ui_" + suffix + "_offset"));
-        }
-    }
-    @Test void cancelCallbacksKeepPlayerRootAndTheExactModelItemNamedScope() throws IOException {
-        String window = source("gui/xfm_market_window.gui");
-        for (String name : List.of("xfm_market_orders_scroll", "xfm_market_history_scroll")) {
-            String row = row(list(window, name));
-            for (String button : List.of("xfm_market_cancel", "xfm_market_cancel_futures_order")) {
-                String selected = body(row, "button_standard = { name = " + quoted(button));
-                String gui = button.equals("xfm_market_cancel") ? "xfm_market_cancel_gui" : "xfm_market_cancel_futures_order_gui";
-                for (String operation : List.of("IsValid", "IsValidTooltip", "Execute"))
-                    assertTrue(selected.contains("GetScriptedGui( '" + gui + "' )." + operation + "( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope ).End )"));
-            }
-        }
-    }
-    @Test void everyAffectedModelRowRejectsUnsupportedSelfAndPassesTheDirectScopeValue() throws IOException {
-        for (String file : List.of("xfm_market_window", "xfm_market_rows", "xfm_market_debts",
-                "xfm_market_news", "xfm_market_otc", "xfm_market_futures_book")) {
+    @Test void onlyTheThirtySevenIncludedCallbacksUseNumericValuesWithoutBareOrSelfScopes() throws IOException {
+        int total = 0;
+        for (String file : List.of("xfm_market_window", "xfm_market_rows", "xfm_market_futures_book")) {
             String gui = source("gui/" + file + ".gui");
-            assertFalse(gui.contains("Scope.Self"), file);
-            assertFalse(gui.contains("datacontext = " + quoted("[Scope]")), "no new Scope self-binding is introduced");
-            int expected = switch (file) {
-                case "xfm_market_window" -> 16;
-                case "xfm_market_rows" -> 20;
-                case "xfm_market_futures_book" -> 1;
-                default -> 2;
-            };
-            String argument = ".AddScope( 'xfm_ui_item', Scope )";
-            int found = 0, offset = 0;
-            while ((offset = gui.indexOf(argument, offset)) >= 0) { found++; offset += argument.length(); }
-            assertEquals(expected, found, file);
+            assertFalse(gui.contains("Scope.Self"));
+            assertFalse(gui.contains(".AddScope( 'xfm_ui_item', Scope )"));
+            assertFalse(gui.contains("datacontext = " + quoted("[Scope]")));
+            int count = occurrences(gui, ".AddScope( 'xfm_ui_row_id', MakeScopeValue(");
+            assertEquals(file.equals("xfm_market_window") ? 16 : file.equals("xfm_market_rows") ? 20 : 1, count);
+            total += count;
+        }
+        assertEquals(37, total, "debt/news/OTC are a separate unfinished closure");
+    }
+    @Test void activeAndHistoryInlineRowsKeepIdenticalControlsButHaveDifferentSourceDomains() throws IOException {
+        String window = source("gui/xfm_market_window.gui");
+        String template = body(source("gui/xfm_market_rows.gui"), "type xfm_market_order_row = vbox {");
+        for (String suffix : List.of("orders", "history")) {
+            String list = body(window, "scrollbox = { name = " + quoted("xfm_market_" + suffix + "_scroll"));
+            String row = body(body(list, "item = {"), "vbox = {");
+            assertFalse(row.contains("datacontext"));
+            String table = ".AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)";
+            assertEquals(compact(template), compact(row.replace(table + "2' ) )", table + "1' ) )")));
+            assertEquals(8, occurrences(row, table + (suffix.equals("history") ? "2" : "1") + "' ) )"));
+            assertTrue(list.contains("GetList( 'xfm_ui_" + suffix + "_page' )"));
         }
     }
-    @Test void sourceTypeAndLegalAccountGuardsRemainWithTheOriginalCancellationHandlers() throws IOException {
-        String predicates = source("common/scripted_guis/xfm_market_predicates.txt");
-        for (String type : List.of("spot", "futures")) {
-            String guard = body(predicates, "xfm_market_is_" + type + "_order_gui = {");
-            assertTrue(guard.contains("saved_scopes = { xfm_ui_item }"));
-            assertTrue(guard.contains("story_type = xfm_" + type + "_order"));
+    @Test void portfolioCachesAreExplicitSixteenRowSnapshotsAndAllSixPageControlsRebuildThem() throws IOException {
+        String effect = source("common/scripted_effects/xfm_market_ui_portfolio_pages.txt");
+        for (String page : List.of("positions", "orders", "history")) {
+            assertTrue(effect.contains("clear_variable_list = xfm_ui_" + page + "_page"));
+            assertTrue(effect.contains("name = xfm_ui_" + page + "_page_offset value = var:xfm_ui_" + page + "_offset"));
+            assertTrue(effect.contains("name = xfm_ui_" + page + "_page target = scope:xfm_ui_page_item"));
         }
-        String cancel = body(source("common/scripted_guis/xfm_market_ticket.txt"), "xfm_market_cancel_gui = {");
-        assertTrue(cancel.contains("var:xfm_account = root.var:xfm_active_account")); assertTrue(cancel.contains("var:xfm_status = 1"));
-        assertTrue(cancel.contains("set_variable = { name = xfm_selected_order value = scope:xfm_ui_item }"));
+        assertFalse(effect.contains("every_living_character"));
+        assertFalse(effect.contains("every_in_global_list"));
+        assertTrue(effect.contains("var:xfm_active_account = {"));
+        String pages = source("common/scripted_guis/xfm_market_portfolio_pages.txt");
+        for (String page : List.of("positions", "orders", "history"))
+            for (String direction : List.of("next", "previous"))
+                assertTrue(body(pages, "xfm_market_" + page + "_" + direction + "_gui = {")
+                        .contains("xfm_market_ui_portfolio_pages_effect = yes"));
+        assertTrue(body(source("common/scripted_effects/xfm_market_ui_pages.txt"), "xfm_market_ui_refresh_effect = {")
+                .contains("xfm_market_ui_portfolio_pages_effect = yes"));
+    }
+    @Test void mixedRowsCarryKindAndOrderTableWhileSpotPositionsUseTheRealAccountCoinIdentity() throws IOException {
+        String rows = source("gui/xfm_market_rows.gui");
+        assertTrue(body(rows, "type xfm_market_position_row = vbox {")
+                .contains("Scope.Var( 'xfm_coin' ).Var( 'xfm_coin_id' ).GetValue"));
+        assertTrue(body(rows, "type xfm_market_position_row = vbox {")
+                .contains("Scope.Var( 'xfm_position_id' ).GetValue"));
+        assertTrue(rows.contains(".AddScope( 'xfm_ui_row_kind', MakeScopeValue( Scope.Var( 'xfm_kind' ).GetValue ) )"));
+        String identities = source("common/scripted_triggers/xfm_market_row_id_identity_1.txt");
+        assertTrue(identities.contains("story_type = xfm_spot_order"));
+        assertTrue(identities.contains("story_type = xfm_futures_order"));
+        assertTrue(identities.contains("var:xfm_coin.var:xfm_coin_id = scope:xfm_ui_row_id"));
+        assertTrue(identities.contains("var:xfm_holder = root"));
+    }
+    @Test void validityNeverWritesAndEffectRebindsARealStoryBeforeTheOriginalCancellation() throws IOException {
+        for (String file : List.of("scripted_triggers/xfm_market_row_id_identity_1.txt",
+                "scripted_triggers/xfm_market_row_id_actions_1.txt", "scripted_triggers/xfm_market_row_id_actions_2.txt",
+                "script_values/xfm_market_row_id_counts_1.txt")) {
+            String text = source("common/" + file);
+            for (String forbidden : List.of("set_variable", "change_variable", "remove_variable", "save_scope_as",
+                    "create_story", "end_story", "add_gold", "every_in_global_list", "every_living_character", "is_target_in_global_variable_list"))
+                assertFalse(text.contains(forbidden), file + ": " + forbidden);
+        }
+        String ticket = source("common/scripted_guis/xfm_market_ticket.txt");
+        String cancel = body(ticket, "xfm_market_cancel_gui = {");
+        assertTrue(cancel.contains("saved_scopes = { xfm_ui_row_id xfm_ui_row_kind xfm_ui_row_table }"));
+        assertTrue(cancel.contains("xfm_market_row_resolve_spot_order_effect = yes"));
+        assertTrue(cancel.contains("var:xfm_account = root.var:xfm_active_account"));
+        assertTrue(cancel.contains("var:xfm_status = 1"));
+        assertTrue(cancel.contains("name = xfm_selected_order value = scope:xfm_ui_item"));
         assertTrue(cancel.contains("xfm_spot_cancel_effect = yes"));
+        assertTrue(cancel.indexOf("xfm_market_row_resolve_spot_order_effect") < cancel.indexOf("xfm_spot_cancel_effect"));
+        assertEquals(2, occurrences(body(cancel, "effect = {"), "clear_saved_scope = xfm_ui_item"));
     }
 }

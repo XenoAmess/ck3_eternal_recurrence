@@ -36,34 +36,63 @@ xfm_market_previous_gui = {
     }
 }
 xfm_market_select_coin_gui = {
-    scope = character
-    saved_scopes = { xfm_ui_item }
-    is_valid = {
+ scope = character
+ saved_scopes = { xfm_ui_row_id }
+ is_valid = { xfm_market_select_coin_gui_row_valid_trigger = yes }
+ effect = {
+  clear_saved_scope = xfm_ui_item
+  if = {
+   limit = { xfm_market_select_coin_gui_row_valid_trigger = yes }
+   xfm_market_row_resolve_coin_effect = yes
+   if = {
+     limit = {
         is_ai = no exists = scope:xfm_ui_item
         is_target_in_global_variable_list = { name = xfm_coin_registry target = scope:xfm_ui_item }
-    }
-    effect = { xfm_market_ui_select_coin_effect = yes }
+     }
+     xfm_market_ui_select_coin_effect = yes
+   }
+  }
+  clear_saved_scope = xfm_ui_item
+ }
 }
 xfm_market_select_position_gui = {
-    scope = character
-    saved_scopes = { xfm_ui_item }
-    is_valid = { is_ai = no exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_finance_position var:xfm_account = root.var:xfm_active_account exists = var:xfm_coin } }
-    effect = {
+ scope = character
+ saved_scopes = { xfm_ui_row_id xfm_ui_row_kind }
+ is_valid = { xfm_market_select_position_gui_row_valid_trigger = yes }
+ effect = {
+  clear_saved_scope = xfm_ui_item
+  if = {
+   limit = { xfm_market_select_position_gui_row_valid_trigger = yes }
+   xfm_market_row_resolve_spot_position_effect = yes
+   if = {
+     limit = { var:xfm_active_account = { is_target_in_variable_list = { name = xfm_positions target = scope:xfm_ui_item } }  is_ai = no exists = scope:xfm_ui_item scope:xfm_ui_item = { story_type = xfm_finance_position var:xfm_account = root.var:xfm_active_account exists = var:xfm_coin }  }
+
         set_variable = { name = xfm_selected_coin value = scope:xfm_ui_item.var:xfm_coin }
         set_variable = { name = xfm_order_limit_cents value = scope:xfm_ui_item.var:xfm_coin.var:xfm_last_price_cents }
         remove_variable = xfm_futures_contract
         remove_variable = xfm_futures_selected_position
-    }
+
+   }
+  }
+  clear_saved_scope = xfm_ui_item
+ }
 }
 xfm_market_select_account_gui = {
-    scope = character
-    saved_scopes = { xfm_ui_item }
-    is_valid = {
+ scope = character
+ saved_scopes = { xfm_ui_row_id }
+ is_valid = { xfm_market_select_account_gui_row_valid_trigger = yes }
+ effect = {
+  clear_saved_scope = xfm_ui_item
+  if = {
+   limit = { xfm_market_select_account_gui_row_valid_trigger = yes }
+   xfm_market_row_resolve_account_effect = yes
+   if = {
+     limit = {
         is_ai = no
         is_target_in_variable_list = { name = xfm_accounts target = scope:xfm_ui_item }
         scope:xfm_ui_item = { story_type = xfm_finance_account var:xfm_holder = root }
-    }
-    effect = {
+     }
+
         set_variable = { name = xfm_active_account value = scope:xfm_ui_item }
         remove_variable = xfm_selected_order
         remove_variable = xfm_futures_selected_position
@@ -74,5 +103,9 @@ xfm_market_select_account_gui = {
         set_variable = { name = xfm_ui_debts_offset value = 0 }
         set_variable = { name = xfm_ui_claims_offset value = 0 }
         xfm_market_ui_first_page_effect = yes
-    }
+
+   }
+  }
+  clear_saved_scope = xfm_ui_item
+ }
 }

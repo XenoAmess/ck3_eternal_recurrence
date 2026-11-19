@@ -1,0 +1,31 @@
+﻿# Character root. Numeric inputs never stand in for story scopes.
+xfm_market_row_input_trigger = { exists = scope:xfm_ui_row_id scope:xfm_ui_row_id > 0 }
+xfm_market_row_owned_account_trigger = {
+ exists = var:xfm_active_account
+ var:xfm_active_account = { story_type = xfm_finance_account var:xfm_holder = root }
+}
+xfm_market_row_portfolio_trigger = {
+ xfm_market_row_owned_account_trigger = yes
+ exists = var:xfm_ui_portfolio_account var:xfm_ui_portfolio_account = var:xfm_active_account
+}
+xfm_market_row_coin_id_trigger = { story_type = xfm_finance_coin
+var:xfm_coin_id = scope:xfm_ui_row_id
+}
+xfm_market_row_account_id_trigger = { story_type = xfm_finance_account
+var:xfm_account_id = scope:xfm_ui_row_id
+}
+xfm_market_row_spot_position_id_trigger = { story_type = xfm_finance_position
+var:xfm_coin.var:xfm_coin_id = scope:xfm_ui_row_id
+}
+xfm_market_row_futures_position_id_trigger = { story_type = xfm_futures_position
+var:xfm_position_id = scope:xfm_ui_row_id
+}
+xfm_market_row_spot_order_id_trigger = { story_type = xfm_spot_order
+var:xfm_order_id = scope:xfm_ui_row_id
+}
+xfm_market_row_futures_order_id_trigger = { story_type = xfm_futures_order
+var:xfm_order_id = scope:xfm_ui_row_id
+}
+xfm_market_row_book_id_trigger = { story_type = xfm_futures_order
+var:xfm_order_id = scope:xfm_ui_row_id
+}

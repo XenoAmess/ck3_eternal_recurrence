@@ -55,7 +55,20 @@ final class FuturesBookUiScriptContractTest {
         "script_values/xfm_finance_values.txt",
         "script_values/xfm_futures_values.txt",
         "script_values/xfm_numeric_comparison_values.txt",
-        "script_values/xfm_config_values.txt");
+        "script_values/xfm_config_values.txt",
+        "scripted_guis/xfm_market_navigation.txt",
+        "scripted_guis/xfm_market_predicates.txt",
+        "scripted_guis/xfm_market_portfolio_pages.txt",
+        "scripted_effects/xfm_market_ui_book.txt",
+        "scripted_effects/xfm_futures_archive.txt",
+        "scripted_triggers/xfm_futures_ai_triggers.txt",
+        "scripted_triggers/xfm_market_row_id_identity_1.txt",
+        "scripted_triggers/xfm_market_row_id_actions_1.txt",
+        "scripted_triggers/xfm_market_row_id_actions_2.txt",
+        "script_values/xfm_market_row_id_counts_1.txt",
+        "scripted_effects/xfm_market_row_id_resolve_1.txt",
+        "scripted_effects/xfm_market_ui_portfolio_pages.txt",
+        "script_values/xfm_market_ui_portfolio_pages.txt");
     public static void main(String[] ignored) throws Exception {
         int passed = 0;
         for (var method : FuturesBookUiScriptContractTest.class.getDeclaredMethods()) {
@@ -109,7 +122,7 @@ final class FuturesBookUiScriptContractTest {
         refresh(m); assertEquals(List.of(valid), bids(m)); assertTrue(asks(m).isEmpty());
         assertEquals(1, m.actor.integer("xfm_ui_futures_bid_lots")); assertEquals(0, m.actor.integer("xfm_ui_futures_ask_lots"));
         assertEquals(0, valid.ref("xfm_account").integer("xfm_free_cents")); // Real frozen funds, not free cash, make this order eligible.
-        valid.put("xfm_status", 3); m.vm.scopes.put("xfm_ui_item", valid);
+        valid.put("xfm_status", 3); row(m.vm, valid.integer("xfm_order_id"), 2, 1);
         assertFalse(m.vm.validGui("xfm_market_futures_book_row_gui", m.actor));
         refresh(m); assertTrue(bids(m).isEmpty()); assertEquals(0, m.actor.integer("xfm_ui_futures_bid_lots"));
     }
@@ -151,7 +164,9 @@ final class FuturesBookUiScriptContractTest {
         position.put("xfm_status", 0); position.put("xfm_lots", 3); position.put("xfm_mark_cents", 96); position.put("xfm_long_stop_cents", 80); position.put("xfm_long_take_profit_cents", 115);
         Node longReserve = m.vm.node("old-long-reserve", "xfm_finance_reservation"), shortReserve = m.vm.node("old-short-reserve", "xfm_finance_reservation");
         position.put("xfm_long_reservation", longReserve); position.put("xfm_short_reservation", shortReserve);
-        m.actor.put("xfm_futures_limit_cents", 42); m.vm.scopes.put("xfm_ui_item", position);
+        position.put("xfm_position_id", 11); position.put("xfm_kind", 2); inherited.list("xfm_positions").add(position);
+        m.vm.run("xfm_market_ui_portfolio_pages_effect", m.actor);
+        m.actor.put("xfm_futures_limit_cents", 42); row(m.vm, 11, 2, 1);
         m.vm.runGui("xfm_market_select_futures_position_gui", m.actor); m.actor.put("xfm_ui_step", 7);
         m.vm.runGui("xfm_market_futures_limit_up_gui", m.actor); assertEquals(107, m.actor.integer("xfm_futures_limit_cents"));
         m.vm.runGui("xfm_market_futures_reduce_gui", m.actor); assertEquals(1, m.actor.integer("xfm_futures_result"));
@@ -363,6 +378,158 @@ final class FuturesBookUiScriptContractTest {
         assertEquals(stories, v.exchange.integer("xfm_order_stories_count")); assertEquals(cash, v.cashStock());
         assertEquals(64, coin.list("xfm_spot_orders").size());
     }
+    private static void row(Vm v, long id, long kind, long table) {
+        v.scopes.put("xfm_ui_row_id", new NumberDatum(BigDecimal.valueOf(id)));
+        v.scopes.put("xfm_ui_row_kind", new NumberDatum(BigDecimal.valueOf(kind)));
+        v.scopes.put("xfm_ui_row_table", new NumberDatum(BigDecimal.valueOf(table)));
+    }
+    @Test void numericSpotCancelRebindsTheRealPartialOrderAndReleasesOnlyItsSevenLots() throws IOException {
+        Vm v = vm(); Node coin = spotCoin(v, "numeric-coin"); coin.put("xfm_coin_id", 55);
+        Node actor = v.node("numeric-seller", ""); actor.ai = false;
+        Node account = v.account("numeric-wallet", actor, 0); account.put("xfm_account_id", 54);
+        actor.put("xfm_account", account); actor.put("xfm_active_account", account); actor.put("xfm_selected_coin", coin);
+        Node position = spotPosition(v, "numeric-holding", account, coin, 8000);
+        List<Node> bids = fillSpotBook(v, coin, 1, 87);
+        BigDecimal cash = v.cashStock(); long supply = spotSupply(v, coin);
+        Node sell = spotSubmit(v, account, coin, 2, 71, 20, false);
+        assertEquals(64, sell.integer("xfm_filled_lots")); assertEquals(7, sell.integer("xfm_remaining_lots"));
+        assertEquals(700, position.integer("xfm_reserved_units"));
+        v.run("xfm_market_ui_portfolio_pages_effect", actor);
+        row(v, sell.integer("xfm_order_id"), 0, 1);
+        Map<String, Datum> beforeValid = Map.copyOf(actor.vars);
+        assertTrue(v.validGui("xfm_market_cancel_gui", actor)); assertEquals(beforeValid, actor.vars);
+        v.runGui("xfm_market_cancel_gui", actor);
+        assertSame(sell, actor.ref("xfm_selected_order")); assertEquals(1, actor.integer("xfm_result"));
+        assertEquals(3, sell.integer("xfm_status")); assertEquals(7, sell.integer("xfm_cancelled_lots"));
+        assertEquals(0, sell.integer("xfm_remaining_lots")); assertEquals(64, sell.integer("xfm_filled_lots"));
+        assertEquals(0, position.integer("xfm_reserved_units")); assertEquals(1600, position.integer("xfm_quantity_units"));
+        assertTrue(account.list("xfm_orders").isEmpty()); assertEquals(List.of(sell), account.list("xfm_order_history"));
+        assertTrue(actor.list("xfm_ui_orders_page").isEmpty()); assertEquals(List.of(sell), actor.list("xfm_ui_history_page"));
+        assertFalse(v.scopes.containsKey("xfm_ui_item")); assertEquals(cash, v.cashStock()); assertEquals(supply, spotSupply(v, coin));
+        for (Node bid : bids) { assertEquals(2, bid.integer("xfm_status")); assertEquals(0, bid.integer("xfm_remaining_lots")); }
+        row(v, sell.integer("xfm_order_id"), 0, 1); assertFalse(v.validGui("xfm_market_cancel_gui", actor));
+        row(v, sell.integer("xfm_order_id"), 0, 2); assertTrue(v.validGui("xfm_market_is_spot_order_gui", actor));
+        assertFalse(v.validGui("xfm_market_cancel_gui", actor)); // History is readable, never a route to cancel a terminal order.
+    }
+    @Test void naturalSpotAndFuturesOrderIdCollisionHasSeparateKindsAndRealCancellationEffects() throws IOException {
+        Vm v = vm(); Node actor = ticket(v, "0"); actor.ai = false; Node account = primary(v, actor, 10000);
+        actor.put("xfm_active_account", account);
+        Node coin = spotCoin(v, "collision-coin"); coin.put("xfm_coin_id", 55);
+        Node selectedAsset = actor.ref("xfm_selected_coin"), selectedContract = actor.ref("xfm_futures_contract");
+        Node spot = spotSubmit(v, account, coin, 1, 1, 20, false);
+        assertSame(selectedAsset, actor.ref("xfm_selected_coin")); // Account-scope spot input does not select an asset on its holder.
+        assertSame(selectedAsset, selectedContract.ref("xfm_coin")); assertSame(selectedContract, actor.ref("xfm_futures_contract"));
+        assertTrue(v.program.containsKey("xfm_futures_discoverable_trigger")); // Load the actual contract guard, never port it to true.
+        assertTrue(v.test(v.definition("xfm_futures_discoverable_trigger"), new Frame(selectedContract, null, actor)));
+        v.runGui("xfm_market_futures_long_gui", actor);
+        assertEquals(1, actor.integer("xfm_futures_result"));
+        Node future = actor.ref("xfm_futures_contract").list("xfm_orders").getLast();
+        assertEquals(1, spot.integer("xfm_order_id")); assertEquals(1, future.integer("xfm_order_id"));
+        v.run("xfm_market_ui_portfolio_pages_effect", actor); row(v, 1, 0, 1);
+        assertTrue(v.validGui("xfm_market_cancel_gui", actor)); assertFalse(v.validGui("xfm_market_cancel_futures_order_gui", actor));
+        long futureReserve = future.ref("xfm_reservation").integer("xfm_remaining_cents"); BigDecimal cash = v.cashStock();
+        v.runGui("xfm_market_cancel_gui", actor);
+        assertSame(spot, actor.ref("xfm_selected_order")); assertEquals(3, spot.integer("xfm_status"));
+        assertEquals(0, future.integer("xfm_status")); assertEquals(futureReserve, future.ref("xfm_reservation").integer("xfm_remaining_cents"));
+        row(v, 1, 2, 1); assertFalse(v.validGui("xfm_market_cancel_gui", actor)); assertTrue(v.validGui("xfm_market_cancel_futures_order_gui", actor));
+        v.runGui("xfm_market_cancel_futures_order_gui", actor);
+        assertSame(future, actor.ref("xfm_futures_selected_order")); assertEquals(3, future.integer("xfm_status"));
+        assertEquals(0, future.ref("xfm_reservation").integer("xfm_remaining_cents")); assertEquals(cash, v.cashStock());
+        assertFalse(v.scopes.containsKey("xfm_ui_item"));
+    }
+    @Test void missingZeroForeignStaleDuplicateAndWrongPageIdsCannotWriteSelectionOrCancel() throws IOException {
+        Vm v = vm(); Node actor = v.node("guard-actor", ""); actor.ai = false;
+        Node account = primary(v, actor, 1000); actor.put("xfm_active_account", account);
+        Node coin = spotCoin(v, "guard-coin"); coin.put("xfm_coin_id", 55);
+        Node order = spotSubmit(v, account, coin, 1, 1, 20, false);
+        v.run("xfm_market_ui_portfolio_pages_effect", actor); BigDecimal cash = v.cashStock();
+        long id = order.integer("xfm_order_id"); row(v, id, 0, 1);
+        Map<String, Datum> actorBefore = Map.copyOf(actor.vars);
+        v.scopes.remove("xfm_ui_row_id"); assertFalse(v.validGui("xfm_market_cancel_gui", actor));
+        for (long bad : List.of(0L, -1L, id + 100L)) { row(v, bad, 0, 1); assertFalse(v.validGui("xfm_market_cancel_gui", actor)); }
+        row(v, id, 0, 2); assertFalse(v.validGui("xfm_market_cancel_gui", actor));
+        row(v, id, 0, 1); actor.put("xfm_ui_orders_offset", 16); assertFalse(v.validGui("xfm_market_cancel_gui", actor)); actor.put("xfm_ui_orders_offset", 0);
+        Node stranger = v.node("guard-stranger", ""); account.put("xfm_holder", stranger);
+        assertFalse(v.validGui("xfm_market_cancel_gui", actor)); account.put("xfm_holder", actor);
+        Node duplicate = v.node("corrupt-same-domain-id", "xfm_spot_order");
+        duplicate.put("xfm_order_id", id); duplicate.put("xfm_account", account); duplicate.put("xfm_status", 1);
+        actor.list("xfm_ui_orders_page").add(duplicate); assertFalse(v.validGui("xfm_market_cancel_gui", actor));
+        // Execute the real effect body directly as a stale-render race. It must check its own typed resolver gate.
+        v.execute(v.definition("xfm_market_cancel_gui").block("effect"), new Frame(actor, null, actor));
+        assertEquals(actorBefore, actor.vars); assertEquals(1, order.integer("xfm_status")); assertEquals(cash, v.cashStock());
+        assertFalse(v.scopes.containsKey("xfm_ui_item"));
+        actor.list("xfm_ui_orders_page").remove(duplicate); assertTrue(v.validGui("xfm_market_cancel_gui", actor));
+        Node alien = v.account("guard-foreign-wallet", stranger, 1000); order.put("xfm_account", alien);
+        v.execute(v.definition("xfm_market_cancel_gui").block("effect"), new Frame(actor, null, actor));
+        assertEquals(actorBefore, actor.vars); assertEquals(1, order.integer("xfm_status"));
+        order.put("xfm_account", account); account.list("xfm_orders").remove(order);
+        assertTrue(v.validGui("xfm_market_cancel_gui", actor)); // A render snapshot can precede the maintained-list removal.
+        v.execute(v.definition("xfm_market_cancel_gui").block("effect"), new Frame(actor, null, actor));
+        assertEquals(actorBefore, actor.vars); assertEquals(1, order.integer("xfm_status")); // Execution must recheck current source membership.
+    }
+    @Test void normalPortfolioPagingCachesOnlySixteenRealReferencesAndSpotRowsUseCoinIds() throws IOException {
+        Vm v = vm(); Node actor = v.node("page-actor", ""); actor.ai = false;
+        Node account = primary(v, actor, 0); actor.put("xfm_active_account", account);
+        List<Node> positions = new ArrayList<>();
+        for (int i = 1; i <= 17; i++) {
+            Node coin = spotCoin(v, "page-coin-" + i); coin.put("xfm_coin_id", i); coin.put("xfm_last_price_cents", 10 + i);
+            positions.add(spotPosition(v, "page-position-" + i, account, coin, 100));
+        }
+        v.run("xfm_market_ui_portfolio_pages_effect", actor);
+        assertEquals(positions.subList(0, 16), actor.list("xfm_ui_positions_page"));
+        row(v, 17, 0, 1); assertFalse(v.validGui("xfm_market_select_position_gui", actor)); assertEquals(16, v.maxUiPageEntries);
+        v.runGui("xfm_market_positions_next_gui", actor);
+        assertEquals(List.of(positions.get(16)), actor.list("xfm_ui_positions_page"));
+        row(v, 1, 0, 1); assertFalse(v.validGui("xfm_market_select_position_gui", actor));
+        row(v, 17, 0, 1); assertTrue(v.validGui("xfm_market_select_position_gui", actor));
+        v.runGui("xfm_market_select_position_gui", actor);
+        assertSame(positions.get(16).ref("xfm_coin"), actor.ref("xfm_selected_coin")); assertEquals(27, actor.integer("xfm_order_limit_cents"));
+        assertFalse(positions.get(16).vars.containsKey("xfm_position_id")); // No invented position ID on spot holdings.
+        assertFalse(v.scopes.containsKey("xfm_ui_item")); assertEquals(0, v.created("xfm_futures_order"));
+        v.runGui("xfm_market_positions_previous_gui", actor); row(v, 1, 0, 1);
+        assertTrue(v.validGui("xfm_market_select_position_gui", actor)); assertEquals(0, actor.integer("xfm_ui_positions_offset"));
+    }
+    @Test void fourLotShortPositionElevenCanBeSelectedThenSubmitTwoLotCloseAtThisGuiPrice() throws IOException {
+        Market m = market(); Node account = m.actor.ref("xfm_active_account"), other = m.vm.account("p11-other-account", m.vm.node("p11-other-holder", ""), 1000);
+        Node position = m.vm.node("legacy-position-eleven", "xfm_futures_position");
+        position.put("xfm_position_id", 11); position.put("xfm_kind", 2); position.put("xfm_contract", m.contract);
+        position.put("xfm_long_account", other); position.put("xfm_short_account", account);
+        position.put("xfm_status", 0); position.put("xfm_lots", 4); position.put("xfm_mark_cents", 96);
+        position.put("xfm_short_stop_cents", 120); position.put("xfm_short_take_profit_cents", 70);
+        Node longReserve = m.vm.node("p11-long-reserve", "xfm_finance_reservation"), shortReserve = m.vm.node("p11-short-reserve", "xfm_finance_reservation");
+        position.put("xfm_long_reservation", longReserve); position.put("xfm_short_reservation", shortReserve);
+        account.list("xfm_positions").add(position); m.contract.list("xfm_positions").add(position);
+        m.actor.put("xfm_futures_limit_cents", 42);
+        refresh(m); // Normal explicit series-book refresh initializes a new series ticket from the current asset mark.
+        assertEquals(100, m.actor.integer("xfm_futures_limit_cents")); assertSame(m.contract, m.actor.ref("xfm_ui_futures_book_contract"));
+        m.vm.run("xfm_market_ui_portfolio_pages_effect", m.actor);
+        row(m.vm, 11, 2, 1); assertFalse(m.vm.validGui("xfm_market_select_position_gui", m.actor));
+        m.vm.runGui("xfm_market_select_futures_position_gui", m.actor);
+        assertSame(position, m.actor.ref("xfm_futures_selected_position")); assertSame(m.contract, m.actor.ref("xfm_futures_contract"));
+        assertEquals(2, m.actor.integer("xfm_futures_holding_side")); assertEquals(96, m.actor.integer("xfm_futures_limit_cents"));
+        m.vm.runGui("xfm_market_futures_reduce_up_gui", m.actor); assertEquals(2, m.actor.integer("xfm_futures_reduce_lots"));
+        m.actor.put("xfm_ui_step", 11); m.vm.runGui("xfm_market_futures_limit_up_gui", m.actor);
+        m.vm.runGui("xfm_market_futures_reduce_gui", m.actor);
+        Node close = m.contract.list("xfm_orders").getLast();
+        assertEquals(1, m.actor.integer("xfm_futures_result")); assertSame(position, close.ref("xfm_close_position"));
+        assertSame(account, close.ref("xfm_account")); assertEquals(2, close.integer("xfm_remaining_lots")); assertEquals(107, close.integer("xfm_limit_cents"));
+        assertEquals(1, close.integer("xfm_side")); assertEquals(88, m.actor.integer("xfm_order_limit_cents"));
+        assertEquals(4, position.integer("xfm_lots")); assertEquals(0, m.vm.created("xfm_futures_position")); // No fabricated replacement or fill.
+        position.put("xfm_status", 1); assertFalse(m.vm.validGui("xfm_market_select_futures_position_gui", m.actor));
+    }
+    @Test void readOnlyBookUsesOtherPeoplesCurrentContractIdsAndRejectsStaleOrDuplicateIds() throws IOException {
+        Market m = market(); Node order = quote(m, "id-book-external", m.contract, 1, 99, 2, 18); refresh(m);
+        row(m.vm, 18, 2, 1); assertTrue(m.vm.validGui("xfm_market_futures_book_row_gui", m.actor));
+        assertNotSame(m.actor, order.ref("xfm_account").ref("xfm_holder"));
+        Node other = m.vm.contract("id-book-other-series", m.asset, 0, 60); m.actor.put("xfm_futures_contract", other);
+        assertFalse(m.vm.validGui("xfm_market_futures_book_row_gui", m.actor)); m.actor.put("xfm_futures_contract", m.contract);
+        Node duplicate = quote(m, "id-book-duplicate", m.contract, 2, 110, 1, 18); refresh(m);
+        assertFalse(m.vm.validGui("xfm_market_futures_book_row_gui", m.actor));
+        duplicate.put("xfm_order_id", 19); refresh(m); assertTrue(m.vm.validGui("xfm_market_futures_book_row_gui", m.actor));
+        order.put("xfm_status", 3); assertFalse(m.vm.validGui("xfm_market_futures_book_row_gui", m.actor));
+        assertFalse(m.vm.scopes.containsKey("xfm_ui_item")); assertEquals(0, m.vm.created("xfm_futures_order"));
+    }
+
     private static Node spotCoin(Vm v, String id) {
         Node c = v.node(id, "xfm_finance_coin"); c.put("xfm_listing_state", 1); c.put("xfm_trading_open", 1);
         c.put("xfm_controller", v.node(id + "-controller", "")); c.put("xfm_open_orders_count", 0); c.put("xfm_supply_units", 0); return c;
@@ -430,6 +597,7 @@ final class FuturesBookUiScriptContractTest {
         final Node exchange, custodian;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries;
         final List<Long> spotExecutionOrderIds = new ArrayList<>(); int maxSpotBookEntries, maxSpotMatchIterations;
+        int maxUiPageEntries;
         Vm(Map<String, Block> program) {
             this.program = program; custodian = node("technical-owner", ""); exchange = node("exchange", "xfm_finance_exchange"); exchange.owner = custodian;
             exchange.put("xfm_day", 1); exchange.put("xfm_ai_seeded", 1); exchange.put("xfm_next_account_id", 0); exchange.put("xfm_next_reservation_id", 0);
@@ -501,6 +669,12 @@ final class FuturesBookUiScriptContractTest {
                     if (yes) { n = value(without(child, "limit"), f, n); chain = true; } continue;
                 }
                 if (e.key().equals("else")) { if (!chain) n = value((Block)e.value(), f, n); chain = false; continue; }
+                if (e.key().equals("every_in_list")) {
+                    Block child = (Block)e.value();
+                    for (Node item : list(f.here(), atom(field(child, "variable"))))
+                        if (test(child.block("limit"), f.enter(item))) n = value(without(without(child, "variable"), "limit"), f.enter(item), n);
+                    continue;
+                }
                 if (e.key().equals("floor")) { n = n.setScale(0, RoundingMode.FLOOR); continue; }
                 if (e.key().equals("ceiling")) { n = n.setScale(0, RoundingMode.CEILING); continue; }
                 BigDecimal x = number(evaluate(e.value(), f));
@@ -528,6 +702,11 @@ final class FuturesBookUiScriptContractTest {
             if (k.equals("has_game_rule")) return false; // explicit default-rules port
             if (k.equals("xfm_config_futures_open_trigger")) return open;
             if (k.equals("xfm_config_spot_open_trigger")) return open;
+            if (k.equals("is_target_in_variable_list") || k.equals("is_target_in_global_variable_list")) {
+                Block b = (Block)e.value(); String name = atom(field(b, "name")); Datum target = evaluate(field(b, "target"), f);
+                return target instanceof Node && (k.equals("is_target_in_global_variable_list")
+                        ? globalLists.getOrDefault(name, List.of()) : list(f.here(), name)).contains(target);
+            }
             if (k.equals("any_in_list")) {
                 Block b = (Block)e.value(); for (Node n : list(f.here(), atom(field(b, "variable")))) if (test(without(b, "variable"), f.enter(n))) return true; return false;
             }
@@ -545,6 +724,10 @@ final class FuturesBookUiScriptContractTest {
         }
         List<Node> list(Node owner, String name) {
             List<Node> result = List.copyOf(owner.list(name));
+            if (Set.of("xfm_ui_positions_page", "xfm_ui_orders_page", "xfm_ui_history_page").contains(name)) {
+                maxUiPageEntries = Math.max(maxUiPageEntries, result.size());
+                if (result.size() > 16) throw new IllegalArgumentException("portfolio UI page exceeds sixteen real references");
+            }
             if (name.equals("xfm_futures_discovery_contracts")) { maxDiscoveryEntries = Math.max(maxDiscoveryEntries, result.size()); if (result.size() > 8) throw new IllegalArgumentException("discovery capacity exceeded"); }
             if (name.equals("xfm_futures_contracts")) historyVisits += result.size();
             return result;

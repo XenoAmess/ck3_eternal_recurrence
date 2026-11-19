@@ -9,8 +9,9 @@ xfm_market_futures_book_execution_gui = {
  scope = character is_valid = { xfm_market_futures_book_selected_trigger = yes var:xfm_ui_futures_book_contract = var:xfm_futures_contract var:xfm_ui_futures_execution_present = 1 }
 }
 xfm_market_futures_book_row_gui = {
- scope = character saved_scopes = { xfm_ui_item }
- is_valid = { xfm_market_futures_book_selected_trigger = yes var:xfm_ui_futures_book_contract = var:xfm_futures_contract exists = scope:xfm_ui_item scope:xfm_ui_item = { xfm_market_futures_book_order_trigger = yes } }
+ scope = character
+ saved_scopes = { xfm_ui_row_id }
+ is_valid = { xfm_market_futures_book_row_gui_row_valid_trigger = yes }
 }
 xfm_market_futures_limit_up_gui = {
  scope = character is_valid = { is_ai = no xfm_market_futures_book_selected_trigger = yes var:xfm_futures_limit_cents >= 1 var:xfm_futures_limit_cents < 1000000 }

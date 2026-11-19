@@ -1,0 +1,696 @@
+{
+  "schema": "xfm-portfolio-numeric-rows-full-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-19T05:10:02.202917+00:00",
+  "source": "candidate02 plus exact four-leaf prerequisite/whitespace correction03",
+  "source_pins": {
+    "mod_financial_markets/common/script_values/xfm_market_row_id_counts_1.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\script_values\\xfm_market_row_id_counts_1.txt",
+      "bytes": 1703,
+      "sha256": "35d5b908f5f3eed75879e3e1b4b9ac84674b7593c3e1f1a22e8ed07612f0aee5"
+    },
+    "mod_financial_markets/common/script_values/xfm_market_ui_portfolio_pages.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\script_values\\xfm_market_ui_portfolio_pages.txt",
+      "bytes": 263,
+      "sha256": "e5e5c0753657e4d653c67a39a83b1396516177970fd9c611a5fce966451fe050"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_market_row_id_resolve_1.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_market_row_id_resolve_1.txt",
+      "bytes": 2078,
+      "sha256": "43e714f97bc1a9b9686fe971d3834fa8becde09c899ba02498b3ceb3e801d376"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_market_ui_pages.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_market_ui_pages.txt",
+      "bytes": 5648,
+      "sha256": "839b46246e8944953c5c057169e5a3f91d76ef51629fb6b49a702dc809772bb9"
+    },
+    "mod_financial_markets/common/scripted_effects/xfm_market_ui_portfolio_pages.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_market_ui_portfolio_pages.txt",
+      "bytes": 2816,
+      "sha256": "11ad98cf86edbee8a602006792264cbc3fb5681932b6c3404de56fca8dc25bc0"
+    },
+    "mod_financial_markets/common/scripted_guis/xfm_market_futures_book.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_guis\\xfm_market_futures_book.txt",
+      "bytes": 1623,
+      "sha256": "8c8822096e4c09fc5a2000c14a2c98e86da23f301ba8783d099d38b74900ddad"
+    },
+    "mod_financial_markets/common/scripted_guis/xfm_market_futures_open.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_guis\\xfm_market_futures_open.txt",
+      "bytes": 3772,
+      "sha256": "c78153209fb5324076b3d019f6588998f5d6629d443c98552d8527fa86cfd503"
+    },
+    "mod_financial_markets/common/scripted_guis/xfm_market_futures_positions.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_guis\\xfm_market_futures_positions.txt",
+      "bytes": 5381,
+      "sha256": "dc26f52720b6880291da9ab0cc91016d6b759ac282a0517fc1070e5bd45e45e3"
+    },
+    "mod_financial_markets/common/scripted_guis/xfm_market_navigation.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_guis\\xfm_market_navigation.txt",
+      "bytes": 3996,
+      "sha256": "4de700c996494c429ad81f0ca2d6d77c159b7eff8bc925d7f8a4e56a4d7fcfe7"
+    },
+    "mod_financial_markets/common/scripted_guis/xfm_market_portfolio_pages.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_guis\\xfm_market_portfolio_pages.txt",
+      "bytes": 2264,
+      "sha256": "08bf882ab43cb8d796b2fa60ed4a92584304842d89d43c89b9975b31ab30eb45"
+    },
+    "mod_financial_markets/common/scripted_guis/xfm_market_predicates.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_guis\\xfm_market_predicates.txt",
+      "bytes": 921,
+      "sha256": "7f992278942007130335e5785cc40a80269bde643407904243310f8e059aa15c"
+    },
+    "mod_financial_markets/common/scripted_guis/xfm_market_ticket.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_guis\\xfm_market_ticket.txt",
+      "bytes": 3656,
+      "sha256": "3628a54bf6eb7966fcfd6f876be70b4a4ff19acc7dc95c5cda067a51e2e6715f"
+    },
+    "mod_financial_markets/common/scripted_triggers/xfm_market_row_id_actions_1.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_triggers\\xfm_market_row_id_actions_1.txt",
+      "bytes": 4142,
+      "sha256": "a8f907f0dec2f5a8e8dfdfd737a1c9daac18b20e75a8c1c74b76b7208a20f1f5"
+    },
+    "mod_financial_markets/common/scripted_triggers/xfm_market_row_id_actions_2.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_triggers\\xfm_market_row_id_actions_2.txt",
+      "bytes": 1982,
+      "sha256": "653c22980d692033be194e87be27b9f5591d138c51a12492fa74166ee2b9cf6a"
+    },
+    "mod_financial_markets/common/scripted_triggers/xfm_market_row_id_identity_1.txt": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_triggers\\xfm_market_row_id_identity_1.txt",
+      "bytes": 1302,
+      "sha256": "cd781afc54df80ee6b7732cea4b156ef2d70c8f9b874ed289eb54133910509eb"
+    },
+    "mod_financial_markets/docs/market-portfolio-row-id-runtime.md": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\docs\\market-portfolio-row-id-runtime.md",
+      "bytes": 3135,
+      "sha256": "dc1d045adf6ba4fcb31a933fa8f9d6207e004b5dc1991d83d9b2b245b80504df"
+    },
+    "mod_financial_markets/gui/xfm_market_futures_book.gui": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\gui\\xfm_market_futures_book.gui",
+      "bytes": 3398,
+      "sha256": "bcb49382fe16cadc51acd624ffc531882fcb14f7f19d8b5732c8ee9f35a86fcd"
+    },
+    "mod_financial_markets/gui/xfm_market_rows.gui": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\gui\\xfm_market_rows.gui",
+      "bytes": 8129,
+      "sha256": "7377533e243178ae900194588a1ed4ddc414e202507ad0785a118b8e8e955ad2"
+    },
+    "mod_financial_markets/gui/xfm_market_window.gui": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\gui\\xfm_market_window.gui",
+      "bytes": 27377,
+      "sha256": "fb1156026e9225893dead611131684cd86c7223825399c982d831ccbfbdbc3ba"
+    },
+    "mod_financial_markets/runtime-files.json": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\runtime-files.json",
+      "bytes": 10871,
+      "sha256": "974db95fa36392ef6d25d67031dbc4786c0ad477d95fe17fdddf76d62e896236"
+    },
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesBookUiScriptContractTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\futures\\FuturesBookUiScriptContractTest.java",
+      "bytes": 73546,
+      "sha256": "dfe186976e8be9d3e3c5fe0f60806562a332214cb7fbf52f48a9dfe445c9c4ff"
+    },
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/ui/MarketOrderRowContextContractTest.java": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\ui\\MarketOrderRowContextContractTest.java",
+      "bytes": 8192,
+      "sha256": "b40eab78ca807f150ff3fed286dcdf5d31ffcde6f8bd6539638124970ebee74f"
+    }
+  },
+  "actual_tests": 316,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "actual_distinct_methods": [
+    "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#emittedManifestUsesTheExistingClosedPublicPrebuiltContract",
+    "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#requestRejectsWrongJsonTypesDuplicateFieldsAndScriptInjection",
+    "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#actualJavaEmissionReachesSharedSavedInventoryAndHostCopyConsumer",
+    "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#observerCannotWriteMoneyPositionsOrCallAProductionEffect",
+    "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#savedObserverCanOnlyBeArmedThroughItsOrdinaryGui",
+    "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#outputInsideRepositoryAndInvalidMachineAreRejectedBeforeWriting",
+    "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#stalePackagedProducerIsRejectedBeforeCreatingFixture",
+    "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest#repeatedEmissionRefusesBeforeChangingExistingEvidence",
+    "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#generatedPredicatesAcceptConservedClaimsAndRejectEitherSideOffByOneCent",
+    "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#generatedComparisonMatchesOriginalConservationLawAcrossAuthoredBoundarySamples",
+    "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#actualEmitterIncludesNewPureValueFileAndBothReachExistingSavedAndHostCopyConsumers",
+    "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#namedSumsKeepDebtScopeOriginalOperandsAndBothComparisonDirections",
+    "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#everyProfileEmitsNoNumericEqualityToArithmeticBlockAndDeclaredProfilesGainValues",
+    "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#savedScopeLiteralsStayDistinctAndCannotHideForbiddenArithmeticEquality",
+    "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest#originalFieldPresenceSourcePartiesAndNonnegativeGuardsRemainRequired",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#emittedAssociationPredicateRejectsCrossAssetCrossContractAndUnrelatedClaimFixtures",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotPartialCancelRequiresActualNewPartialTerminalOrderAndRejectsWrongSchemaTargets",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#malformedSchemaTwoInputsRejectBeforeAnyEmissionOrScriptSubstitution",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#epochsSeparateSavedObservationStateAndInheritanceUsesOnlyActualPrimaryHeir",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotRejectsHistoricalWrongAccountAndWrongCoinOrdersAfterNewEpoch",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#actualEmittedArmValidityRejectsInheritedStoryAndCarriedArmedFlag",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#capacityRetainsWholeWindowAndMissingSamplesCannotGrantWindowMarker",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#eachFollowupEmissionReachesCurrentSharedSavedInventoryAndHostCopyConsumer",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#savedCoreCompletionAndForeignCaseStateNeitherResetCurrentBaselineNorSupplyReadiness",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotEpochThreeEmissionRetainsEpochTwoThroughExistingSavedInventoryConsumer",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#actualEmittedNumericScopePredicatesDisagreeForTheSameRealPositiveIdAndDoNotWrite",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#configuredConservativeBoundaryIsReachableAndStandardRemainsDistinct",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotNumericScopeProbeUsesTheRealSixteenRowHistoryPageAndOnlyReadOnlyValidity",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#spotEpochThreeArmKeepsOlderStateAndNeverResetsItsCurrentBaseline",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#allFollowupProfilesRoundTripThroughActualEmitterAndExistingManifestContract",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#everyGeneratedMutationIsObservationOnlyAndEveryArtifactHasBomAndBalancedSyntax",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#generatedStoryCatalogKeepsCoreAndEpochOneAndTwoTypesWithOnlyCurrentCaseActive",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#coldBaselineChecksZeroValuedFieldsAndFullWatchedPositionAndDebtWithoutWritingThem",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#derivativesCanBindRealModelIndexesWithoutInventingCoinOrOracleState",
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest#schemaOneRemainsClosedAndCoreMarkersAreUnchanged",
+    "org.xar.ck3.markets.build.BuildContractTest#rejectsMissingBomUndefinedEffectAndUnlistedRuntime",
+    "org.xar.ck3.markets.build.BuildContractTest#candidateCopiesOnlyRuntimeAndPinsActualBytes",
+    "org.xar.ck3.markets.build.BuildContractTest#rejectsBrokenStructureLocalizationAndUnsafeManifest",
+    "org.xar.ck3.markets.build.BuildContractTest#rejectsMissingTriggersWithoutTreatingCommentsOrQuotesAsCalls",
+    "org.xar.ck3.markets.build.BuildContractTest#actualProductHasConsistentSourceContract",
+    "org.xar.ck3.markets.build.BuildContractTest#rejectsOverlappingOutputAndMalformedRevisionBeforeCreatingOutput",
+    "org.xar.ck3.markets.build.BuildContractTest#rejectsObservedArithmeticEqualityAndNegativeGoldLoadErrors",
+    "org.xar.ck3.markets.build.BuildContractTest#requiresRealScriptedGuiAndRegisteredCustomWindow",
+    "org.xar.ck3.markets.core.FinancialMarketTest#snapshotsDoNotExposeMutableEngineState",
+    "org.xar.ck3.markets.core.FinancialMarketTest#sameBeneficiarySelfTradeRollsBackEvenEarlierExternalFillsInTheCommand",
+    "org.xar.ck3.markets.core.FinancialMarketTest#deterministicRandomCommandsPreserveCashCoinsAndFailureAtomicity",
+    "org.xar.ck3.markets.core.FinancialMarketTest#feeHistorySurvivesIncomingOrderBecomingResting",
+    "org.xar.ck3.markets.core.FinancialMarketTest#issuanceRequiresTheRealUnreservedFeeAndDoesNotLeaveAnEmptyCoin",
+    "org.xar.ck3.markets.core.FinancialMarketTest#nonCrossingOrdersByOneBeneficiaryRemainPermitted",
+    "org.xar.ck3.markets.core.FinancialMarketTest#priceImprovementReleasesOnlyExcessAndCancelReturnsUnspentReservation",
+    "org.xar.ck3.markets.core.FinancialMarketTest#onlyOwnerCanCancelAndTerminalCancellationCannotReturnCashAgain",
+    "org.xar.ck3.markets.core.FinancialMarketTest#issuanceAndCappedMintTransferActualFeesWithoutImportingCash",
+    "org.xar.ck3.markets.core.FinancialMarketTest#duplicateStableIdentifiersAndUnauthorizedMintFailAtomically",
+    "org.xar.ck3.markets.core.FinancialMarketTest#buyerCannotReservePrincipalWithoutItsFeeOrReuseAlreadyFrozenCash",
+    "org.xar.ck3.markets.core.FinancialMarketTest#invalidAndOverflowingOrdersLeaveAllStateAndSequencesUnchanged",
+    "org.xar.ck3.markets.core.FinancialMarketTest#equalPriceAsksUseOriginalOrderSequence",
+    "org.xar.ck3.markets.core.FinancialMarketTest#restingAsksHavePriceThenTimePriorityAndTradeAtMakerPrice",
+    "org.xar.ck3.markets.core.FinancialMarketTest#cancelUnfilledOrdersReturnsAllCashAndCoinsWithoutTradingFees",
+    "org.xar.ck3.markets.core.FinancialMarketTest#restingBidsUseHighestPriceThenTimePriority",
+    "org.xar.ck3.markets.core.FinancialMarketTest#nakedSellingAndReusingFrozenCoinsAreRejected",
+    "org.xar.ck3.markets.core.FinancialMarketTest#sellerPartialFeesAccumulatePerOriginalOrder",
+    "org.xar.ck3.markets.core.FinancialMarketTest#ordersOnDifferentCoinsStillShareOneRealWalletReservation",
+    "org.xar.ck3.markets.core.FinancialMarketTest#overflowingWalletImportCannotChangeTheWorldCashTotal",
+    "org.xar.ck3.markets.core.FinancialMarketTest#cancellingPartiallyFilledSellerReturnsOnlyItsUnfilledCoins",
+    "org.xar.ck3.markets.core.FinancialMarketTest#sameDayAllowsSeveralTradesWhileRepeatedDayAdvanceDoesNothing",
+    "org.xar.ck3.markets.core.FinancialMarketTest#coinMarketsAndTheirFrozenInventoriesDoNotCross",
+    "org.xar.ck3.markets.core.FinancialMarketTest#buyOrderFreezesPrincipalAndWorstCaseCumulativeFee",
+    "org.xar.ck3.markets.core.FinancialMarketTest#buyerPartialFeesAccumulatePerOriginalOrderInsteadOfPerFill",
+    "org.xar.ck3.markets.core.FinancialMarketTest#feesUseCumulativeCeilingAndDoNotOverflowForLargeGrossAmounts",
+    "org.xar.ck3.markets.core.LedgerBatchTest#failedCoinDeliveryRollsBackCashIssuanceAndFee",
+    "org.xar.ck3.markets.core.LedgerBatchTest#conflictingIdCannotChangeAnAppliedBatch",
+    "org.xar.ck3.markets.core.LedgerBatchTest#emptyEscrowAtomicMovesFeesAndReplayConserve",
+    "org.xar.ck3.markets.core.LedgerBatchTest#finiteIssuanceCoinDeliveryCashAndFeeCommitTogether",
+    "org.xar.ck3.markets.core.LedgerBatchTest#failedLatePaymentRollsBackEscrowAndEarlierTransfer",
+    "org.xar.ck3.markets.debt.CrisisPolicyTest#paidDebtAidHiddenAssetsAndIncompleteReviewCancelTerminalEligibility",
+    "org.xar.ck3.markets.debt.CrisisPolicyTest#humansChildrenDeadAndInheritedEstateHoldersAreProtected",
+    "org.xar.ck3.markets.debt.CrisisPolicyTest#adultAiMustHaveRealSevereDebtMatureCrisisAndRecordedHelp",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#emptyFundDoesNotCreateMoneyAndTwoPreparedClaimsCannotOverdrawFund",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#largeGapRemainsWholeDebtWhileSingleFundPaymentIsBounded",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#finiteFundCreatesRecourseAndOnlyUnpaidRemainderIsWinnerClaim",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#invalidFinancialInputsAndDuplicateSaveRecordsAreRejected",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#fundingClaimsRemainRealButCannotDrainDefaultFund",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#operationIdentityCannotBeReservedForTwoClaims",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#insufficientPayerMoneyAndUnconsentedWriteDownNeverChangeClaims",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#monetaryClaimAndOperationIdentitySurviveJsonRoundTrip",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#snapshotsMustReconcileActualPaymentHistoryRatherThanOnlyCurrentTotals",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#uncommittedCashPlansCannotBeSavedOrWrittenDown",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#realAidPaysWinnerBeforeFundAndUnusedDonationRemainsWithPayer",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#inheritanceKeepsStableDebtorAccountAndSnapshotKeepsRetryProtection",
+    "org.xar.ck3.markets.debt.DebtLedgerTest#exactRetryPaysNothingAndConflictingIdentityFails",
+    "org.xar.ck3.markets.debt.WorldNewsJournalTest#malformedJournalAndReverseDayAreRejected",
+    "org.xar.ck3.markets.debt.WorldNewsJournalTest#remoteFactsReachEveryHumanIndependentlyAtMostThreePerDay",
+    "org.xar.ck3.markets.debt.WorldNewsJournalTest#sameFactDoesNotDuplicateAndConflictCannotReplaceHistory",
+    "org.xar.ck3.markets.debt.WorldNewsJournalTest#deathsTakePriorityOverOrdinaryBacklogWithoutLosingOrRepeatingFacts",
+    "org.xar.ck3.markets.debt.WorldNewsJournalTest#journalAndIndependentQueueCursorsSurviveJsonRoundTrip",
+    "org.xar.ck3.markets.debt.WorldNewsJournalTest#saveLoadPreservesDailyCapAndPendingNotifications",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#aiFindsFundedDatedCounterpartyAndSameDayRetryCannotSpendAgain",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#onlyTheRealGapIsDepositedAndReservedMoneyIsExcluded",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#explicitExistingContractRegistersWithoutChangingIdentityAndFailedSelectionClearsStaleTicket",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#mixedLegacyAndNewModelUnitsDoNotRewriteOldPortfolioOrCash",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#inheritedActiveAndProjectFundsCannotFinanceAiRisk",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#sizingNeverBorrowsFrozenProjectReservedOrInheritedMoney",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#discoveryCyclesOnlyValidSameAssetContractsWithFixedEightEntryBound",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#goldFundsANewZeroPrivateWalletAndAnActualReservation",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#publishedSmallFaceFeedsActualAiReservationAndUnchangedMarginVariationValues",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#exactMultiLotBudgetBoundaryIncludesBothRoundingsAtOneThreeAndFiveTimes",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#exactFivePercentBoundaryIncludesRoundedFeeAndFiveGoldReserve",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#newModelFirstAndRepeatedDailyQuotesUseSmallFaceAndPendingRetainsLastMark",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#invalidPrimaryAssetsNeverCountAsPersonalLiquidity",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#orderOrReservationCreationFailureDoesNotDepositOrLeaveAnOpenOrder",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#legacyEmptyLiveSeriesMigrationPreservesIdentityWithoutDailyObligation",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#disabledDebtPendingAndRelatedCrossesRejectBeforeFunding",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#richAiQuantityIsCappedAtSixteenWithNoNewActionOrPopulationVisit",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#normalGuiAndAiShareTheSameSeriesAndGuiRejectsClosedOrForeignEntries",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#playersKeepTheirExplicitActiveWalletAndDoNotAutoDeposit",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#fixedExpirySharesAcrossDaysAndRollsWithoutRewritingOldIdentity",
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest#boundedSizingKeepsOneLotAndReturnsZeroBelowItsRealRoundedCost",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullSubmitterCapacityStillPermitsFillsButReturnsOnlyUnplaceableRemainder",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#absentOrUnqualifiedAssetNeverEnablesLeverageOrOpeningSides",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#normalUiReferencesRefreshHooksAndInventoryCloseWithoutAnyDailyHistoryHook",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#twoSameAssetSeriesHaveDifferentRealBooksAndExecutionSnapshots",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#normalPortfolioPagingCachesOnlySixteenRealReferencesAndSpotRowsUseCoinIds",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#partialMakerFreesNoSlotButFullyFilledTakerNeverNeedsAnotherRestingSlot",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#readOnlyBookUsesOtherPeoplesCurrentContractIdsAndRejectsStaleOrDuplicateIds",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#numericSpotCancelRebindsTheRealPartialOrderAndReleasesOnlyItsSevenLots",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullSpotBookAcceptsRealOppositeGtcAndRestsOnlyAfterSixtyFourFifoFills",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#leverageCycleUsesSelectedAssetCapsOneThreeTenAndFutureTwenty",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fourLotShortPositionElevenCanBeSelectedThenSubmitTwoLotCloseAtThisGuiPrice",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#missingZeroForeignStaleDuplicateAndWrongPageIdsCannotWriteSelectionOrCancel",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#onlyFundedRemainingPartialOrdersSurviveBlockedCancelledWrongSeriesAndSelf",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#normalSpotButtonsReadTheSameCapacityCrossingAndLegalActiveAccountWithoutMutating",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullAskBookPriceImprovementKeepsExactCumulativeFeeAndOnlyRemainingCashFrozen",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#staleOracleClosedMarketAndExpiredSeriesNeverSubstituteSpotOrMarkForExecution",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#exactPriceFifoTopFiveHasBoundedRowsAndFullEligibleDepth",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#crossingAtFullCapacityStillRequiresWholeCashFeeOrUnreservedCoinsBeforeZeroFills",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullMixedBookSkipsOwnBetterBidAndKeepsRealPriceThenFifoPriority",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#naturalSpotAndFuturesOrderIdCollisionHasSeparateKindsAndRealCancellationEffects",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#actualControllerRefreshExcludesNewlyOwnedProjectAndRestoresExternalOwner",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#fullBookWithoutIndependentCrossingCannotAlterFundsOrEvictAMaker",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#modelLeverageCyclesOnlyThroughItsActualMaximum",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#changedAssetCapImmediatelyDisablesBothSidesAndCycleRepairsOldTicket",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#inheritedHolderCanSelectThenReduceAtThisGuiLimitWithoutAnyOpeningOrSpotCopy",
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest#iocStillCancelsOnlyItsRemainderAndHardStoryLimitCannotBeBypassedByCrossing",
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#legacyTailObligationsAreMigratedBeforeAnyDailyAndHistoryIsNeverRescanned",
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#staleExpiredDefaultedPendingAndFreshPositionKeepTheirSeparateObligations",
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#sameDayRepeatAndAuthoredGraphReloadKeepIdentityAndDoNoSecondBusinessTick",
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#callbackAdmissionAndCurrentReAdmissionCannotEnlargeCapturedPass",
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#interruptedProcessingFlagSurvivesGraphReloadAndResumesRatherThanSwallowingHead",
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#partlySeededLegacyIndexRetriesWithoutResettingLinksOrLosingTail",
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#sourceCompositionHasOneMigrationScanNoPermanentDeletionAndAtMostTwentyDirectEffects",
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#finishedOrdersAndClosedClaimsLeaveRingButPermanentDebtAndIdentityRemain",
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest#successfulOrdinaryMatchHookEnrollsTypedContractWithoutSettling",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#actualOpposingCashCreatesPositionAndOnlyFeesLeaveWallets",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#pendingOraclePreservesPositionsAndCollateralAndDefersExpiry",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#fundingDefaultClosesAndReleasesOtherCollateralWithoutFundInsurance",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#stopGapUsesAvailableBidAndCannotInventStopPriceLiquidity",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#cappedPerpetualFundingTransfersActualMarginOnce",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#genuineReductionNovatesPartialExposureAtActualPrice",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#laterRelatedCrossingRollsBackEarlierExternalFill",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#gapDefaultRetainsWinnerClaimAndFundRecourseWithoutMinting",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#withdrawalsKeepInitialRatherThanMaintenanceMargin",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#oracleGapCancelsOldOpeningPriceBeforeItCanOverrunNewCounterpartyMargin",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#priceTimeAndPartialFillsReserveActualCash",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#insufficientCashDoesNotPublishEscrowOrOrder",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#qualificationControlsTwentyTimesAndModelIndexNeedsNoCoinSupply",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#cancellationRefundsOnlyUnspentRealReservation",
+    "org.xar.ck3.markets.futures.FuturesExchangeTest#dailyRealizedVariationThenExpiryDoesNotPayEntryProfitTwice",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#firstUnmatchedOrderRestsAndEnrolsOnlyAfterTheTransientEntryFinishes",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#originalThirtyTwoFillAndPositionCapsRemainBindingAfterFullBookAdmission",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#fullAccountSettlesFillsButCancelsAndReturnsOnlyItsUnplaceableRemainder",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#insufficientCashPositionLimitAndStaleOracleRefuseBeforeReservation",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#allocationFailureDoesNotInventAPositionOrChargeFeesAndReturnsTransientCollateral",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#noCrossRelatedCrossOrUnderfundedBookCannotFreezeMoneyAtCapacity",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#forcedExitAgainstASameSideFullBookNeverEntersA65thSlotOrErasesThePosition",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#aRealElevenLotPairSupportsAnActualPartialThreeLotNovation",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#fullOpeningBookFormsARealPairWithoutAnExtraRestingSlot",
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest#legacyIndexedOrdersWithoutTheNewMarkerArchiveExactlyOnce",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#quotasAndCapacityReadActualPresetValues",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#deadlinesDeathsPlayersAndChildrenDropWithoutLosingNormalMembership",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#nestedAdvertisingUsesIndependentAliasesAndFailedBusinessStaysQueued",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#actualMoneyFormulasAnd171BoundaryExcludeOtherPeoplesOrReservedCash",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#actualPendingTickClosesDay29FundingOnDay30BeforeRefundAndRestoresSelection",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#fullRingsShareBudgetPreserveOrdinaryAndDoNotDoubleDecide",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#existingSubscriptionLotAndCostFormulasRoundDownWithinCashAndFounderCaps",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#smallPriorityReturnsUnusedSlotsAndSmallRingsVisitOnce",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#fundedPlayersRemainManualButPriorClosingRetriesAndNativeCapacityStillApply",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#paidPromotionAdmissionOccursOnlyAfterSuccessfulRealFeeAndKeepsIssuerReachable",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#authoredSnapshotReloadRetainsPointersDeadlineAndSameDayGuard",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#paidPriorityAdmissionIsBoundedAndNeverMutatesOrdinaryLinks",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#completingInheritedOfferPreservesOnlyDifferentLiveStillOwnedPendingOffer",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#actualSubscriptionHelpersCapAndReserveRealAssetsAndStillUseOrdinaryPayment",
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest#sourceCompositionRetainsChanceNormalFundingAndNoSecondGlobalScan",
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest#actualFreezeOfCharterAAfterSelectingBMutatesOnlyAAndRestoresBTicketAndActiveWallet",
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest#temporaryConfirmationAliasesCannotRedirectCharterAndOtherPendingSurvivesCompleteOrAbort",
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest#displayAndOptionContractUsesEventSnapshotNotActorViewAndNoNewTimePolicy",
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest#archivedOrMissingCoinFrozenPayerAndChangedCounterpartyRejectBeforeBusiness",
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest#liveControllerBindingAndExpiredOfferingCannotBorrowAuthorityOrOldDisplayedNumbers",
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest#allNineOptionsConsumeFrozenTargetAndNeverCurrentlySelectedB",
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest#actualProjectTransferUsesFrozenPrimaryRecipientNotCurrentlyViewedWalletOrCoinB",
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest#newCharterInvalidatesOldWindowAndOldCloseCannotConsumeFreshTicketOrDoubleConfirm",
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest#restorationClearsInvalidPreviousSelectionsAndDoesNotInventMissingTicketOrWalletState",
+    "org.xar.ck3.markets.issuance.IssuanceTest#personalConcurrentAndPendingLimitsHaveNoRankGate",
+    "org.xar.ck3.markets.issuance.IssuanceTest#supplyCannotBurnHoldersOrUnlockTwice",
+    "org.xar.ck3.markets.issuance.IssuanceTest#standardInitialCashIsNotLostAndFeesAreNotDoubleCharged",
+    "org.xar.ck3.markets.issuance.IssuanceTest#maintenanceAppliesExistingCreditOnlyOnceBeforeEscrow",
+    "org.xar.ck3.markets.issuance.IssuanceTest#paidMicroSubscriptionsAllocateRealCoinsAndExactCents",
+    "org.xar.ck3.markets.issuance.IssuanceTest#failureRefundsEachOriginalBuyerExactlyOnce",
+    "org.xar.ck3.markets.issuance.IssuanceTest#badSubscriptionsCannotPartlyMutateEscrow",
+    "org.xar.ck3.markets.issuance.IssuanceTest#fixedSupplyAndCapAreReal",
+    "org.xar.ck3.markets.issuance.IssuanceTest#successionPreservesDebtDefaultsAndCooldown",
+    "org.xar.ck3.markets.issuance.OfferingWalletTest#openingModelOnExistingCustodyRequiresRestoreRatherThanResettingClaims",
+    "org.xar.ck3.markets.issuance.OfferingWalletTest#failedRefundRetainsClaimAndSuccessfulRetryPaysExactlyOnce",
+    "org.xar.ck3.markets.issuance.OfferingWalletTest#invalidOrUnfundedSubscriptionNeverDebitsAndRetryCanSucceed",
+    "org.xar.ck3.markets.issuance.OfferingWalletTest#coinDeliveryFailureRollsBackAllCashFeesAndClaims",
+    "org.xar.ck3.markets.issuance.OfferingWalletTest#actualWalletSubscriptionAndClosingConserveGoldAndCoins",
+    "org.xar.ck3.markets.issuance.OfferingWalletTest#selfOwnedFundingDoesNotCountAsIndependentDemand",
+    "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#proposalNonceVersionExpiryWholeLotsAndSuccessfulSevenDayCooldownRecheck",
+    "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#defaultD30DelistedProposalCanBeConsideredWithRealCertifiedHistoryWithoutFreshOracle",
+    "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#sourceUsesExistingAtomicDvpWithoutIssuerReserveFloorOrPriceWrites",
+    "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#eventRevalidatesAfterWeightAndMarksOnlyRealSuccessWhileHumanConsentPathStaysOriginal",
+    "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#actualFreeCashPlusGoldBudgetsKeepFiveGoldAndRespectTwoRiskCaps",
+    "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#staleHistoryRequiresEveryProducerBindingAndFiniteRealTimeWindow",
+    "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#invalidRightsRelatedBeneficiariesDestroyedAssetsAndMissingProposalFieldsAlwaysReject",
+    "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest#currentQualifiedIndexGetsFreshRiskDiscountAndWeightWithoutStaleFallback",
+    "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#missingOracleNeverInventsZeroOrWritesOffCollateral",
+    "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#otherVenueContractsAndOrdersContinue",
+    "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#thirtyDayExitKeepsSpotBothDirectionsWhileStoppingNewLeverage",
+    "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#emergencyReviewHasThreeThenSevenDayDeadlines",
+    "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#duplicateDayDoesNotAddSecondPriceSample",
+    "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#oneResidualRightForbidsArchiveAndCoinIdSurvivesRelisting",
+    "org.xar.ck3.markets.lifecycle.ListingLifecycleTest#archiveRequiresEveryCounterZero",
+    "org.xar.ck3.markets.listing.ListingFundingTest#noProceedsRequireFivePointSixRealGoldForMicroListing",
+    "org.xar.ck3.markets.listing.ListingFundingTest#standard200GoldPreservesFeeCapitalDistinctionAndInitialCash",
+    "org.xar.ck3.markets.listing.ListingFundingTest#admissionAndRoundingRejectFreeOrUnboundedMicroOffers",
+    "org.xar.ck3.markets.listing.ListingFundingTest#micro20GoldLeaves14GoldFree",
+    "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#activeWarningNoticeSuspensionAndRelistingKeepOriginalBarsAndOracleEveryDay",
+    "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#anyArchivedObligationOrMissingOldFieldKeepsOriginalOraclePath",
+    "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#retiredFixedPointElidesOnlyIdenticalWritesAfterThirtyRealOriginalCloses",
+    "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#noticeWindowD15ThroughD20AndTerminalCertificateAreUnchanged",
+    "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#archivedIdleExplicitlyRevokesRiskWithoutRefreshingHistoricalDatesOrErasingClaims",
+    "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#sourceMutationStaysInsideHotWritesAndNeverTouchesIdsDebtsOrFreshnessPolicy",
+    "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest#authoredColdGraphPriceChangeTradeAndYearGapRelistingCannotInventFreshness",
+    "org.xar.ck3.markets.oracle.ModelIndexOracleTest#membershipAndDuplicateObservationsAreValidatedBeforePublication",
+    "org.xar.ck3.markets.oracle.ModelIndexOracleTest#actualWarAndDisruptionMoveThreeModelsDifferently",
+    "org.xar.ck3.markets.oracle.ModelIndexOracleTest#explicitRouteCannotSubstituteAnotherAssetOrAStalePublication",
+    "org.xar.ck3.markets.oracle.ModelIndexOracleTest#explicitNewFaceMatchesBoundedModelAndLegacyConstructorKeepsOldUnits",
+    "org.xar.ck3.markets.oracle.ModelIndexOracleTest#pendingQuotesCannotAuthorizeTerminationAndSingleVenueCannotClaimTwenty",
+    "org.xar.ck3.markets.oracle.ModelIndexOracleTest#modelNeedsEightRealMembersAndCurrentObservations",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#staleReferencePreservesHistoricalPriceWithoutAuthorizingZeroSettlement",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#realIndependentMultiDayRepricingMovesTheReference",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#fullWindowBeforeThirtyDaysRemainsThreeTimes",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#economicBeneficiaryReuseIsRejectedAcrossDifferentTrades",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#matureThirtyDayCoinCanReachTenTimesButNeverTwenty",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#incompleteDayAndSingleLargestAndSmallestDaysCannotSetMark",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#tinyAndUnfundedSizeCannotCreateQualifiedDay",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#capacityAndClockDoNotSilentlyEvictOrReplay",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#fewerThanSevenCompletedDaysDoNotAuthorizeFutures",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#eightSampleBoundRejectsLateSamplesWithoutChangingPrice",
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest#boundedLotsWeightAndIntegerDivisionMatchNativeSpecification",
+    "org.xar.ck3.markets.otc.OtcGuiContractTest#normalButtonsUseTheSameProposalAndCancellationPaths",
+    "org.xar.ck3.markets.otc.OtcGuiContractTest#mergedRealRuntimeReferencesAndBilingualContentClose(Path)",
+    "org.xar.ck3.markets.otc.OtcGuiContractTest#originalInteractionEligibilityAndBusinessReceiversArePreserved",
+    "org.xar.ck3.markets.pool.PoolQuoteTest#roundTripAccountsForBothPoolAndTraderFeesWithoutCreatingCash",
+    "org.xar.ck3.markets.pool.PoolQuoteTest#wideInventoryAndCapitalVectorsKeepRealCashAndCoinDeltasBalanced",
+    "org.xar.ck3.markets.pool.PoolQuoteTest#unsellableDustAndExhaustedInventoryAreRefused",
+    "org.xar.ck3.markets.pool.PoolQuoteTest#referenceArithmeticAvoidsIntermediateOverflowAndRejectsUnrepresentableTotal",
+    "org.xar.ck3.markets.pool.PoolQuoteTest#initialTwoGoldPoolQuotesThreeCentPrincipalAndOneCentEachFee",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#simultaneousBudgetQuotesCannotOverpayAndOldConfirmationsCannotReplay",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#normalGuiCapturesTermsAndWalletRatherThanLaterMutableInputs",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#changedAccountCoinTermsControllerDayAndForgedUnitsInvalidateAQuote",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#lifetimeCashAndUnitsRemainWithinExactBoundedCounters",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#aiUsesExistingPaidDecisionOnceAndOnlyItsPrimaryInventory",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#publicationMovesOnlyIssuerFreeAndFreezesTheFiniteTerms",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#ordinaryAcceptedOtcCannotSelectTheDedicatedSystemCash",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#controlSuccessionPreservesEscrowIdentityTermsAndIndependentUse",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#insufficientFrozenWrongAuthorityAndInvalidTermsNeverCreateMoneyOrWindow",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#corruptEscrowReconciliationRefusesToTurnBookBudgetIntoCash",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#reservedCoinsAndOldOtcConsumingAvailableUnitsCauseAtomicRefusal",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#relatedPartiesAndProjectOrFrozenAccountsCannotManufactureUtility",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#monthlyUtilityWindowResetsWithoutLosingLifetimeOrReceiptEvidence",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#allocationFailuresCannotMakeUnreceiptedPayments",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#successfulDeliveryPreservesSupplyAndRecordsOnlyActualPaidUtility",
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest#soldOutDustIsExplicitAndExpiryReturnsOnlyRealUnusedCash",
+    "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#originalReadbackAndFinancialInvariants",
+    "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#namedRetiredObserverCommandUsesSourceBoundReportWhileOldVerbStillRejects",
+    "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#explicitRetiredObserverReadbackReportsEveryUntypedIdentityWithoutRelaxingFinancialRecords",
+    "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#retiredObserverInspectKeepsTypedColdFinancialComparisonAndExplicitEvidence",
+    "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest#streamingGrowthAndRefusalBoundaries",
+    "org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest#optionalUnitIdentityProjectsExactlyAndColdComparisonDetectsItsLoss",
+    "org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest#explicitUnitWrongTypeOrNonIntegralValueStaysIncompleteInsteadOfDefaulting",
+    "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#referenceOmissionsAndDuplicateFinancialVariablesStayRejected",
+    "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#actualR0013PositiveAndOmittedZeroEnvelopesProjectOnlyWithOptIn",
+    "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#legacyFiveFieldNamedRequestStaysStrictAndExplicitModeRoundTrips",
+    "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#jsonEncodingOptInRejectsWrongTuplesAndWrongTypesWithoutRelaxingBoundary",
+    "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#fullHeaderRejectsDuplicateBlockMissingAndMalformedMetadataBeforeZeroProjection",
+    "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#missingVariableDataTypeAndMalformedIdentityAreNeverOmittedZero",
+    "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest#sharedReaderBindsOptInToActualHeaderAndStrictModeKeepsOldBehavior",
+    "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#exactPreviousReceiptChainAndBudgetAfterSequenceRejectDuplicatesAndCycles",
+    "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#historicalPaymentActorsDoNotBecomeCurrentInheritedAccountHolders",
+    "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#twoPassReaderRecognizesPermanentWindowsReceiptsAndCountsOnlyPhysicalAccounts",
+    "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#samePausedColdPlainZipAndJsonRoundTripsPreserveEveryRedemptionTerm",
+    "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#receiptIdsReferencesTermsUnitsAndPaidPartyCannotBeSubstituted",
+    "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#missingMalformedUnknownAndWrongScopeFieldsStayIncompleteRatherThanZero",
+    "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest#historicalClosedWindowMayReuseEscrowWhileCurrentPhysicalBudgetMustReconcile",
+    "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#referencesAndPositivePermanentIdsNeverUseNumericTwosComplement",
+    "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#sharedTwoPassReaderUsesActualSentinelsAndChecksCompleteHeaderBeforeProjection",
+    "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#missingDuplicateMalformedAndUnknownValueBodiesCannotBecomeZero",
+    "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#unsignedRangeAndCanonicalSpellingRejectRatherThanWrapOrCoerce",
+    "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#signedBoundaryLatticeScalesExactlyAndRawExtremaRemainFractional",
+    "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#actualBothNegativeSentinelsDecodeOnlyInExplicitUnsignedMode",
+    "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest#explicitModeRoundTripsInNestedPortableRequestAndRequiresExactDeclaredTuple",
+    "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#activeAndHistoryInlineRowsKeepIdenticalControlsButHaveDifferentSourceDomains",
+    "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#validityNeverWritesAndEffectRebindsARealStoryBeforeTheOriginalCancellation",
+    "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#portfolioCachesAreExplicitSixteenRowSnapshotsAndAllSixPageControlsRebuildThem",
+    "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#onlyTheThirtySevenIncludedCallbacksUseNumericValuesWithoutBareOrSelfScopes",
+    "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest#mixedRowsCarryKindAndOrderTableWhileSpotPositionsUseTheRealAccountCoinIdentity"
+  ],
+  "actual_original_verify_seconds": 112.445990400156,
+  "immutable_JUnit": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.acceptance.AcceptanceFixtureTest.xml",
+      "bytes": 21084,
+      "sha256": "a2095e3f60e3d6097f5cc58ded06ab401b97b959703f2917b070bf99f0baf5d3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest.xml",
+      "bytes": 21076,
+      "sha256": "b4c10be5efafd43eecc04d628d4400086e59e675e98e5b6f3bda0ef940064b66"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.acceptance.FollowupFixtureTest.xml",
+      "bytes": 23230,
+      "sha256": "a1ccad078bb0578325080d142a3c1effd3a4aadbd96ed5684daa3e92d3bcba97"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+      "bytes": 20963,
+      "sha256": "027e89e3b9c72c95892b5daca36f82c90bce3a6d34ca8d9182be6585b7d81f99"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.core.FinancialMarketTest.xml",
+      "bytes": 23633,
+      "sha256": "2121b67513d2b2890985cb4fd9b0e7a75beaf2e7a3890902ac4cf6dc4ee409c6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.core.LedgerBatchTest.xml",
+      "bytes": 20486,
+      "sha256": "4b030c2d99ae4c8be37269522c0fdbf3853864605cad8d019da597d31f6a1be1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.debt.CrisisPolicyTest.xml",
+      "bytes": 20265,
+      "sha256": "6149f339149b392301ea00a50b76f6039559ca3691b1aab465070efb11c1c314"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.debt.DebtLedgerTest.xml",
+      "bytes": 21681,
+      "sha256": "79042d193db79b1615bb604eca2b5ff0e361fdb4a5a8f34586644ab0cd56b8cf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.debt.WorldNewsJournalTest.xml",
+      "bytes": 20698,
+      "sha256": "fc824e3f7328de4ba0d2f34cdbcb277bbe46608cc7dfbdb30c0b525a560417af"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.futures.FuturesAiScriptContractTest.xml",
+      "bytes": 23301,
+      "sha256": "1fecf047451d52e7edc08233fc3ae3a8f6701a53bd07c3dbf9b390d6f0e48f7f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest.xml",
+      "bytes": 24428,
+      "sha256": "6da4b68296ea99512b68557cfacd41ffa4c866706ee47925097fa4e7673e9574"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest.xml",
+      "bytes": 21476,
+      "sha256": "561ef14886d40fab166bb295a92ecb6c6637ed0c2c8f3b4a6eb79918ca31bcf5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.futures.FuturesExchangeTest.xml",
+      "bytes": 22060,
+      "sha256": "bfd3318bd1819927c66a06d23e30dc2fcf4b1dba28a7f659d3b09d446973c527"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest.xml",
+      "bytes": 21588,
+      "sha256": "9e513a0e3b061aef35d6583d4ca511a2af24b30886c9c9e7bf612b0d888d0012"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.issuance.AiAttentionScriptContractTest.xml",
+      "bytes": 22398,
+      "sha256": "bbefc68800235367be305d2cabf6ba6b13167f1e5c12d61b7dc82efef29879e5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.issuance.CharterTargetScriptTest.xml",
+      "bytes": 21427,
+      "sha256": "a236d2e74c3fab08e5db9257c39ec49e7651b35e7a16fa4f2f2091141ba2ef6a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.issuance.IssuanceTest.xml",
+      "bytes": 21009,
+      "sha256": "cc84d86f1be223f1611bd98b6562f2867b55f815f2261e286afd845b4621bb93"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.issuance.OfferingWalletTest.xml",
+      "bytes": 20725,
+      "sha256": "152bd59c706ae42f258c284b30187342617f8d11a5edc3075f103ec59b0f9045"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest.xml",
+      "bytes": 21196,
+      "sha256": "b73e13d0f4cc73d19c221470aef7631478bae59edde79970b0e9d3dc57a38b52"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.lifecycle.ListingLifecycleTest.xml",
+      "bytes": 20827,
+      "sha256": "4022cee88e7d3e348c10011e39b9ebaf98cd01e61903eb0a0915aff53a012ceb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.listing.ListingFundingTest.xml",
+      "bytes": 20387,
+      "sha256": "9143ea8fe34a527c088425545b42fb7479f8599982bcff28acf654e0139af4d4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.oracle.IdleMarketScriptContractTest.xml",
+      "bytes": 21047,
+      "sha256": "d9a8a2bcdfa0492333c8e3c7835ba379fff6755c46d0631cc078943dbfd21d78"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.oracle.ModelIndexOracleTest.xml",
+      "bytes": 20752,
+      "sha256": "79e53f705b34d04b1fe980c415eaf0eba885a860c3487003e718eddaf94ca138"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.oracle.WindowPriceOracleTest.xml",
+      "bytes": 21445,
+      "sha256": "2032300c088d901f7a53e36d2a63bfe9e9486118ca1269b5e0d15d025e8d7703"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.otc.OtcGuiContractTest.xml",
+      "bytes": 20261,
+      "sha256": "6c526ff66a9e2135cc8e913865c8c58207b6fbdf151eba01c2b5854954a8bd7a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.pool.PoolQuoteTest.xml",
+      "bytes": 20541,
+      "sha256": "ee0340390da53852094eb2e50073192ec143c51899f4d9923de7fdb0f2bdd60e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.redemption.RedemptionScriptContractTest.xml",
+      "bytes": 22506,
+      "sha256": "accd5df4e93899cd3ad96499352215772de05d2e5b433ce9fb633001264454a8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest.xml",
+      "bytes": 21905,
+      "sha256": "357669bf9a0860ec1471df977f09d219efe6e19f1450507298c2ec021c6f80a9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest.xml",
+      "bytes": 20173,
+      "sha256": "d268f9690df85d556d8ddf43b84dde1005b256ef0d802b8097b40cef03bd5032"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest.xml",
+      "bytes": 20983,
+      "sha256": "5ae7c85a4da2b7ff860f55297243b96fbc802650dcccad7f82f81afedf014609"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest.xml",
+      "bytes": 21022,
+      "sha256": "7f48ffea033f5fde564872c0b0cb863ea6f0a3f24be5b1c7cb1dcfbe6de69a2c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest.xml",
+      "bytes": 20972,
+      "sha256": "db7ded38bebe00de2d8d56567ff42ecdd3bafecb87c75e767c624125bbe63cab"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-portfolio-ids03-full01\\TEST-org.xar.ck3.markets.ui.MarketOrderRowContextContractTest.xml",
+      "bytes": 20734,
+      "sha256": "f7aa6f62cf7e2559df9f2a483da4210aa9d8b8b90d60482a20ea1f2df0e72bcf"
+    }
+  ],
+  "runtime_files": 203,
+  "callbacks_changed": 37,
+  "callbacks_remaining_known_broken": 6,
+  "pure_per_row_global_registry_scan_removed": true,
+  "explicit_refresh_account_list_scan_still_linear": true,
+  "owned_account_selector_not_paged": true,
+  "actual_numeric_transport_engine_evidence": "R0020 readonly3 positive true/negative false; not new production callbacks",
+  "new_production_cancel_or_position_management_engine_pass": false,
+  "whole_product_business_pass": false,
+  "financialCertified": false,
+  "test_ports": [
+    "existing Story allocation and engine defaults",
+    "existing futures no-fill matcher invokes actual finish_incoming",
+    "new pure script-value every_in_list semantics and membership predicates only; no replacement for production resolver or guards"
+  ],
+  "first_affected_run": {
+    "tests": 31,
+    "passed": 29,
+    "failed": 2,
+    "errors": 0,
+    "skipped": 0,
+    "original_status_retained": true
+  },
+  "correction": "Test consumer loads actual futures discoverable trigger and uses normal long GUI; normal book refresh precedes position selection. Expected96/107 prices, spot88, same-ID type separation and actual two-lot close-order assertions retained. Three SGUI leaves only13 trailing whitespace removals.",
+  "corrected_red_only_rerun": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "not_added_to_full_316": true
+  },
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\market-portfolio-row-ids-candidate02\\candidate-source-manifest.json",
+      "bytes": 20849,
+      "sha256": "5b23da14723c56f09f5938370fcd78b712b5e80b7485f1990f37d0223306f946"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\market-portfolio-row-ids-testfix03\\candidate-source-manifest.json",
+      "bytes": 5038,
+      "sha256": "776c639dbdb776f549eac4848b0fd7a2530c10a3811c7175e581b2a8cc3787da"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\market-portfolio-row-ids-independent-review02\\REVIEW.actual.json",
+      "bytes": 20639,
+      "sha256": "00d7630a4793c8bcf1bf600d7869e986c7cea51369bc8e3b82d13ab6ec29aff5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\portfolio-row-ids02-Root-adoption.actual.json",
+      "bytes": 3088,
+      "sha256": "90806c8e4b764140adf23feddf74a6b38f7e57fa34dbde6d69dca3f6b1c7c0b7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\portfolio-testfix03-Root-adoption.actual.json",
+      "bytes": 1370,
+      "sha256": "ce9b7b60aceccf15b8341dbe84b92a9b2226c4005dc37edc8fb90ca27e1f7643"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\r19-r20-junit-original-retention01\\RETENTION.actual.json",
+      "bytes": 2096,
+      "sha256": "460ac687e8c77ae767e0a68fb1f7a4e63c1b3700a9721a92a6b51ceab1ae403d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-portfolio-row-ids02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1169,
+      "sha256": "19574b71651ff5582aebeab2b3f6cc58342b86d968c2f114fcc4ca5dc2ce9640"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-portfolio-reds03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1284,
+      "sha256": "499977d69b8c93520329f3548d36c1498b4a1326a66f0c7487892dfe9f8fa5e1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-portfolio-row-ids02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1094,
+      "sha256": "1c3f819b89a17f4a71faf84db749054f63f96a56f24de0deb59b4e4dac764f8f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EMIT-observer-spot23\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1266,
+      "sha256": "6f49ef43eef1c5210ed8eb85d148b0372eb936dc54d06e0b9ea266faf9481f8c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\observer-spot23.fixture.json",
+      "bytes": 4231,
+      "sha256": "e712870704b4162e074d0e79db34cbede2ea181455604e30582664cab48bf024"
+    }
+  ]
+}

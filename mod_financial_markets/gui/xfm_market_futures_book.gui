@@ -1,7 +1,7 @@
 ﻿types FinancialMarketFuturesBook {
  type xfm_market_futures_book_row = text_multi {
   name = "xfm_market_futures_book_row" max_width = 390 autoresize = yes
-  visible = "[GetScriptedGui( 'xfm_market_futures_book_row_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_item', Scope ).End )]"
+  visible = "[GetScriptedGui( 'xfm_market_futures_book_row_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).End )]"
   text = "xfm_market_futures_book_row"
  }
  type xfm_market_futures_book_panel = vbox {

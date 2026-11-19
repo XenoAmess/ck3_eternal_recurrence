@@ -1,0 +1,118 @@
+﻿xfm_market_select_coin_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+is_ai = no
+xfm_market_row_coin_count_value = 1
+any_in_list = { variable = xfm_ui_coin_page
+xfm_market_row_coin_id_trigger = yes
+
+}
+}
+xfm_market_select_account_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+is_ai = no
+xfm_market_row_account_count_value = 1
+any_in_list = { variable = xfm_accounts
+xfm_market_row_account_id_trigger = yes
+var:xfm_holder = root
+}
+}
+xfm_market_select_position_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+xfm_market_row_portfolio_trigger = yes
+var:xfm_ui_positions_page_offset = var:xfm_ui_positions_offset
+exists = scope:xfm_ui_row_kind scope:xfm_ui_row_kind = 0
+is_ai = no
+xfm_market_row_spot_position_count_value = 1
+any_in_list = { variable = xfm_ui_positions_page
+xfm_market_row_spot_position_id_trigger = yes
+var:xfm_account = root.var:xfm_active_account exists = var:xfm_coin
+}
+}
+xfm_market_select_futures_position_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+xfm_market_row_portfolio_trigger = yes
+var:xfm_ui_positions_page_offset = var:xfm_ui_positions_offset
+exists = scope:xfm_ui_row_kind scope:xfm_ui_row_kind = 2
+is_ai = no
+xfm_market_row_futures_position_count_value = 1
+any_in_list = { variable = xfm_ui_positions_page
+xfm_market_row_futures_position_id_trigger = yes
+var:xfm_status = 0 OR = { var:xfm_long_account = root.var:xfm_active_account var:xfm_short_account = root.var:xfm_active_account }
+}
+}
+xfm_market_cancel_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+xfm_market_row_portfolio_trigger = yes
+ OR = {
+  AND = { scope:xfm_ui_row_table = 1 var:xfm_ui_orders_page_offset = var:xfm_ui_orders_offset }
+  AND = { scope:xfm_ui_row_table = 2 var:xfm_ui_history_page_offset = var:xfm_ui_history_offset }
+ }
+exists = scope:xfm_ui_row_kind scope:xfm_ui_row_kind = 0
+exists = scope:xfm_ui_row_table
+is_ai = no is_alive = yes is_adult = yes
+xfm_market_row_spot_order_count_value = 1
+OR = {
+AND = { scope:xfm_ui_row_table = 1
+any_in_list = { variable = xfm_ui_orders_page
+xfm_market_row_spot_order_id_trigger = yes
+var:xfm_account = root.var:xfm_active_account var:xfm_status = 1
+}
+}
+AND = { scope:xfm_ui_row_table = 2
+any_in_list = { variable = xfm_ui_history_page
+xfm_market_row_spot_order_id_trigger = yes
+var:xfm_account = root.var:xfm_active_account var:xfm_status = 1
+}
+}
+}
+}
+xfm_market_cancel_futures_order_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+xfm_market_row_portfolio_trigger = yes
+ OR = {
+  AND = { scope:xfm_ui_row_table = 1 var:xfm_ui_orders_page_offset = var:xfm_ui_orders_offset }
+  AND = { scope:xfm_ui_row_table = 2 var:xfm_ui_history_page_offset = var:xfm_ui_history_offset }
+ }
+exists = scope:xfm_ui_row_kind scope:xfm_ui_row_kind = 2
+exists = scope:xfm_ui_row_table
+is_ai = no is_alive = yes is_adult = yes
+xfm_market_row_futures_order_count_value = 1
+OR = {
+AND = { scope:xfm_ui_row_table = 1
+any_in_list = { variable = xfm_ui_orders_page
+xfm_market_row_futures_order_id_trigger = yes
+var:xfm_account = root.var:xfm_active_account OR = { var:xfm_status = 0 var:xfm_status = 1 }
+}
+}
+AND = { scope:xfm_ui_row_table = 2
+any_in_list = { variable = xfm_ui_history_page
+xfm_market_row_futures_order_id_trigger = yes
+var:xfm_account = root.var:xfm_active_account OR = { var:xfm_status = 0 var:xfm_status = 1 }
+}
+}
+}
+}
+xfm_market_is_spot_position_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+xfm_market_row_portfolio_trigger = yes
+var:xfm_ui_positions_page_offset = var:xfm_ui_positions_offset
+exists = scope:xfm_ui_row_kind scope:xfm_ui_row_kind = 0
+
+xfm_market_row_spot_position_count_value = 1
+any_in_list = { variable = xfm_ui_positions_page
+xfm_market_row_spot_position_id_trigger = yes
+
+}
+}
+xfm_market_is_futures_position_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+xfm_market_row_portfolio_trigger = yes
+var:xfm_ui_positions_page_offset = var:xfm_ui_positions_offset
+exists = scope:xfm_ui_row_kind scope:xfm_ui_row_kind = 2
+
+xfm_market_row_futures_position_count_value = 1
+any_in_list = { variable = xfm_ui_positions_page
+xfm_market_row_futures_position_id_trigger = yes
+
+}
+}

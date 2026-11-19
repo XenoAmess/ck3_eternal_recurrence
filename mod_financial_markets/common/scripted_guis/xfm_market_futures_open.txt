@@ -32,13 +32,13 @@ xfm_market_futures_long_gui = {
     scope = character
 
     is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_contract exists = var:xfm_selected_coin var:xfm_futures_leverage >= 1 var:xfm_futures_leverage <= var:xfm_selected_coin.var:xfm_max_leverage var:xfm_futures_limit_cents >= 1 var:xfm_futures_limit_cents <= 1000000 var:xfm_futures_lots >= 1 var:xfm_futures_lots <= 10000 }
-    effect = { set_variable = { name = xfm_futures_side value = 1 } xfm_futures_submit_effect = yes }
+    effect = { set_variable = { name = xfm_futures_side value = 1 } xfm_futures_submit_effect = yes xfm_market_ui_portfolio_pages_effect = yes }
 }
 xfm_market_futures_short_gui = {
     scope = character
 
     is_valid = { is_ai = no is_alive = yes is_adult = yes has_variable = xfm_futures_contract exists = var:xfm_selected_coin var:xfm_futures_leverage >= 1 var:xfm_futures_leverage <= var:xfm_selected_coin.var:xfm_max_leverage var:xfm_futures_limit_cents >= 1 var:xfm_futures_limit_cents <= 1000000 var:xfm_futures_lots >= 1 var:xfm_futures_lots <= 10000 }
-    effect = { set_variable = { name = xfm_futures_side value = 2 } xfm_futures_submit_effect = yes }
+    effect = { set_variable = { name = xfm_futures_side value = 2 } xfm_futures_submit_effect = yes xfm_market_ui_portfolio_pages_effect = yes }
 }
 
 xfm_market_contract_next_dated_gui = {

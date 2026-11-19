@@ -1,0 +1,3 @@
+﻿xfm_market_ui_positions_page_end_value = { value = var:xfm_ui_positions_offset add = 16 }
+xfm_market_ui_orders_page_end_value = { value = var:xfm_ui_orders_offset add = 16 }
+xfm_market_ui_history_page_end_value = { value = var:xfm_ui_history_offset add = 16 }

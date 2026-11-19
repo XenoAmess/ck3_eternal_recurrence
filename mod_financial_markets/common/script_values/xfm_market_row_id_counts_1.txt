@@ -1,0 +1,69 @@
+﻿xfm_market_row_coin_count_value = {
+ value = 0
+every_in_list = { variable = xfm_ui_coin_page
+limit = { xfm_market_row_coin_id_trigger = yes }
+add = 1
+}
+}
+xfm_market_row_account_count_value = {
+ value = 0
+every_in_list = { variable = xfm_accounts
+limit = { xfm_market_row_account_id_trigger = yes }
+add = 1
+}
+}
+xfm_market_row_spot_position_count_value = {
+ value = 0
+every_in_list = { variable = xfm_ui_positions_page
+limit = { xfm_market_row_spot_position_id_trigger = yes }
+add = 1
+}
+}
+xfm_market_row_futures_position_count_value = {
+ value = 0
+every_in_list = { variable = xfm_ui_positions_page
+limit = { xfm_market_row_futures_position_id_trigger = yes }
+add = 1
+}
+}
+xfm_market_row_spot_order_count_value = {
+ value = 0
+if = { limit = { scope:xfm_ui_row_table = 1 }
+every_in_list = { variable = xfm_ui_orders_page
+limit = { xfm_market_row_spot_order_id_trigger = yes }
+add = 1
+}
+}
+if = { limit = { scope:xfm_ui_row_table = 2 }
+every_in_list = { variable = xfm_ui_history_page
+limit = { xfm_market_row_spot_order_id_trigger = yes }
+add = 1
+}
+}
+}
+xfm_market_row_futures_order_count_value = {
+ value = 0
+if = { limit = { scope:xfm_ui_row_table = 1 }
+every_in_list = { variable = xfm_ui_orders_page
+limit = { xfm_market_row_futures_order_id_trigger = yes }
+add = 1
+}
+}
+if = { limit = { scope:xfm_ui_row_table = 2 }
+every_in_list = { variable = xfm_ui_history_page
+limit = { xfm_market_row_futures_order_id_trigger = yes }
+add = 1
+}
+}
+}
+xfm_market_row_book_count_value = {
+ value = 0
+every_in_list = { variable = xfm_ui_futures_bids
+limit = { xfm_market_row_book_id_trigger = yes }
+add = 1
+}
+every_in_list = { variable = xfm_ui_futures_asks
+limit = { xfm_market_row_book_id_trigger = yes }
+add = 1
+}
+}

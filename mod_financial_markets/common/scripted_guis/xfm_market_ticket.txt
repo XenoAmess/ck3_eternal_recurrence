@@ -34,7 +34,7 @@ xfm_market_buy_gui = {
         var:xfm_order_lots >= 1 var:xfm_order_lots <= 10000 var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000
         xfm_spot_ticket_capacity_trigger = { SIDE = 2 }
     }
-    effect = { set_variable = { name = xfm_order_side value = 1 } xfm_spot_submit_effect = yes xfm_market_ui_book_effect = yes }
+    effect = { set_variable = { name = xfm_order_side value = 1 } xfm_spot_submit_effect = yes xfm_market_ui_portfolio_pages_effect = yes xfm_market_ui_book_effect = yes }
 }
 xfm_market_sell_gui = {
     scope = character
@@ -44,18 +44,33 @@ xfm_market_sell_gui = {
         var:xfm_order_lots >= 1 var:xfm_order_lots <= 10000 var:xfm_order_limit_cents >= 1 var:xfm_order_limit_cents <= 1000000
         xfm_spot_ticket_capacity_trigger = { SIDE = 1 }
     }
-    effect = { set_variable = { name = xfm_order_side value = 2 } xfm_spot_submit_effect = yes xfm_market_ui_book_effect = yes }
+    effect = { set_variable = { name = xfm_order_side value = 2 } xfm_spot_submit_effect = yes xfm_market_ui_portfolio_pages_effect = yes xfm_market_ui_book_effect = yes }
 }
 xfm_market_cancel_gui = {
-    scope = character
-    saved_scopes = { xfm_ui_item }
-    is_valid = {
+ scope = character
+ saved_scopes = { xfm_ui_row_id xfm_ui_row_kind xfm_ui_row_table }
+ is_valid = { xfm_market_cancel_gui_row_valid_trigger = yes }
+ effect = {
+  clear_saved_scope = xfm_ui_item
+  if = {
+   limit = { xfm_market_cancel_gui_row_valid_trigger = yes }
+   xfm_market_row_resolve_spot_order_effect = yes
+   if = {
+     limit = { OR = {
+ AND = { scope:xfm_ui_row_table = 1 var:xfm_active_account = { is_target_in_variable_list = { name = xfm_orders target = scope:xfm_ui_item } } }
+ AND = { scope:xfm_ui_row_table = 2 var:xfm_active_account = { is_target_in_variable_list = { name = xfm_order_history target = scope:xfm_ui_item } } }
+}
         is_ai = no is_alive = yes is_adult = yes exists = scope:xfm_ui_item
         scope:xfm_ui_item = { story_type = xfm_spot_order var:xfm_account = root.var:xfm_active_account var:xfm_status = 1 }
-    }
-    effect = {
+     }
+
         set_variable = { name = xfm_selected_order value = scope:xfm_ui_item }
         xfm_spot_cancel_effect = yes
         xfm_market_ui_book_effect = yes
-    }
+
+    xfm_market_ui_portfolio_pages_effect = yes
+   }
+  }
+  clear_saved_scope = xfm_ui_item
+ }
 }

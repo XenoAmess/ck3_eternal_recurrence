@@ -1,0 +1,67 @@
+﻿xfm_market_is_spot_order_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+xfm_market_row_portfolio_trigger = yes
+ OR = {
+  AND = { scope:xfm_ui_row_table = 1 var:xfm_ui_orders_page_offset = var:xfm_ui_orders_offset }
+  AND = { scope:xfm_ui_row_table = 2 var:xfm_ui_history_page_offset = var:xfm_ui_history_offset }
+ }
+exists = scope:xfm_ui_row_kind scope:xfm_ui_row_kind = 0
+exists = scope:xfm_ui_row_table
+
+xfm_market_row_spot_order_count_value = 1
+OR = {
+AND = { scope:xfm_ui_row_table = 1
+any_in_list = { variable = xfm_ui_orders_page
+xfm_market_row_spot_order_id_trigger = yes
+
+}
+}
+AND = { scope:xfm_ui_row_table = 2
+any_in_list = { variable = xfm_ui_history_page
+xfm_market_row_spot_order_id_trigger = yes
+
+}
+}
+}
+}
+xfm_market_is_futures_order_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+xfm_market_row_portfolio_trigger = yes
+ OR = {
+  AND = { scope:xfm_ui_row_table = 1 var:xfm_ui_orders_page_offset = var:xfm_ui_orders_offset }
+  AND = { scope:xfm_ui_row_table = 2 var:xfm_ui_history_page_offset = var:xfm_ui_history_offset }
+ }
+exists = scope:xfm_ui_row_kind scope:xfm_ui_row_kind = 2
+exists = scope:xfm_ui_row_table
+
+xfm_market_row_futures_order_count_value = 1
+OR = {
+AND = { scope:xfm_ui_row_table = 1
+any_in_list = { variable = xfm_ui_orders_page
+xfm_market_row_futures_order_id_trigger = yes
+
+}
+}
+AND = { scope:xfm_ui_row_table = 2
+any_in_list = { variable = xfm_ui_history_page
+xfm_market_row_futures_order_id_trigger = yes
+
+}
+}
+}
+}
+xfm_market_futures_book_row_gui_row_valid_trigger = {
+xfm_market_row_input_trigger = yes
+xfm_market_futures_book_selected_trigger = yes var:xfm_ui_futures_book_contract = var:xfm_futures_contract
+xfm_market_row_book_count_value = 1
+OR = {
+any_in_list = { variable = xfm_ui_futures_bids
+xfm_market_row_book_id_trigger = yes
+xfm_market_futures_book_order_trigger = yes
+}
+any_in_list = { variable = xfm_ui_futures_asks
+xfm_market_row_book_id_trigger = yes
+xfm_market_futures_book_order_trigger = yes
+}
+}
+}
