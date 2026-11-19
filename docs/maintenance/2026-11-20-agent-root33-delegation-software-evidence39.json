@@ -1,0 +1,102 @@
+{
+  "schema": "ck3.root.root33-delegation-software-evidence39/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-11-19T21:57:54.354651+00:00",
+  "actual33": {
+    "coldrestore_saved_adopt": true,
+    "root_selection": false,
+    "new_action_count": 0,
+    "new_saved_days": 0,
+    "new_SAVE": false,
+    "normal_exit": "Natural0 Job0 cleanuptrue/post/lease",
+    "canonical": "31 unchanged"
+  },
+  "future34": {
+    "sole_selection_owner": "/root/decision_executor",
+    "Root_Java_write_selection": false,
+    "route": "139/v1 short34 9arg checkpoint",
+    "preMain_identity_required": true,
+    "outcome": "NOT_HELD at cut"
+  },
+  "software": {
+    "multi193": "six actual modes52.908s P; old189 F retained; not annualSAVE/live",
+    "operator38": "15synthetic2.719s P plus closed193 metadata compatible; not real semantic decision",
+    "council67": "two TU1.043s seven tests0.874s P; no AppLS/live/complete",
+    "council70Java": "SourceReady only, eight testmethods not run",
+    "native75": "fiveTU P, linkF13 unresolved/six formal providers missing; no DLL/live",
+    "Family78": "four names/13 verified refs; provider owner completeness unknown"
+  },
+  "semantic_context": {
+    "closed32_payload_bytes": 1952494,
+    "snapshot_bytes": 17232,
+    "snapshot_fields": 119,
+    "history_rows": 174,
+    "root_fact_rows": 51,
+    "war_rows": 779,
+    "root_fact_age_days": 45,
+    "war_query_age_days": 53,
+    "external_FileRef_descriptors_not_opened": true,
+    "ordered_projection": "proposed, not actual34 proof"
+  },
+  "counts": {
+    "closed_new_days29_31": 37,
+    "origin_days": 410,
+    "checkpoint_advanced_days": 0,
+    "parent_batch_annual_saved_days": 0,
+    "suite_complete": false
+  },
+  "verified_small_refs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE33-NEW93M-RESTORED-ROOT-SELECTION-EXPIRED-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 7078,
+      "sha256": "439294107a59f14bfd9839fc989fa8b54b1edd2b1ef81e3e2a83a771054b7feb"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/response-multi38/QUALIFIED-SYNTHETIC-V2-SHORT-WRITER38.json",
+      "bytes": 5677,
+      "sha256": "2b5effaf4105944aee25f11163bdd3c5ae66a644c7a42e2395977881b8f08a72"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/response-multi38/ACTUAL193-CLOSED-METADATA-COMPATIBILITY38.json",
+      "bytes": 5890,
+      "sha256": "9d99521896481f0c9399a9ea766e064fea2d574c705b15b7a4226f091f2325ef"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-public-save-source-main45/qualification/MULTI-ORIGINAL-REVIEW-ATOMIC02-SIX-MODE-SOFTWARE-READY193.json",
+      "bytes": 3781,
+      "sha256": "06fd4489bc5cb175682cf04ae3a0410603cd56e61d8094d6db64809b98e65e30"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-council67-data-qualification01/ACTUAL-QUALIFICATION01.json",
+      "bytes": 4083,
+      "sha256": "fb8135ab4896fdb08f3e4d6984547d31c984e9a5686eebfe3a889115e7366ea7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-council70-data01/SOURCE-READY-COUNCIL70-DATA01.json",
+      "bytes": 5480,
+      "sha256": "524ed10dd4cafbc4a40ad4a88975dafecfb4a4658d40cf4e2409c8a696d0c040"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/family-targeted-names78/index01/REPORT78.json",
+      "bytes": 5527,
+      "sha256": "18ab06f223873524edc804798f2381701de97faf0f8806fe8d47526ebd9f534a"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE33-INDEPENDENT-NEW93M-RESTORE-NO-ACTION-SOURCE31-PRESERVATION01.json",
+      "bytes": 6255,
+      "sha256": "9f5115def25907d181b52e40f42b9646dac724809aef445fe179e864934431f0"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\R45-LIVE-LEASE-SOURCE33-RELEASED01.json",
+      "bytes": 1716,
+      "sha256": "39813f7df8ea9cb83cab0788d3ddf83e0d6098f06feab7c576126d95f81b189a"
+    }
+  ],
+  "verified_input_bytes": 46504,
+  "registration": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC39-ROOT33-EXPIRED-FRESH34-DELEGATION128K-REGISTRATION382.json",
+    "bytes": 1017,
+    "sha256": "c7cfed70b3434e631f9d40e61058260f8c15209cb292c0c0db14d7b7f2b05f8f"
+  },
+  "operator_attempts": "Combined8492char shelltruncated PythonSyntaxError0exec; shorterJSONtransport bad backslash0writes; normalized path strings before bounded split, no runtime changes."
+}
