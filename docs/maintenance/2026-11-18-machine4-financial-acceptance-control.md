@@ -216,4 +216,14 @@ machine_id: `4-8e1c2f1861`。真实冷载R0026最新物理档后，E1=1444／E2=
 
 machine_id: `4-8e1c2f1861`。实际自然日期raw53144520→53144856、financial8→22，新增observed14日／saved14日；基线、D14、refresh-check三份物理SAVE原件保留，后继continuation必须使用最新`evolution28-day14-refresh-check01`归档（SHA `a6a10eff8d87248c76e0b12515fe4b7361b6b898f712bb8fe1ce982f66d81e35`）。原D14 facts有18项违例，同日正常刷新后仍14项日期违例；Root拒绝连贯日采样断言，不修历史记录、不重放。
 
-EVOLUTION07-run原2／1419.6043655秒反映采样断言失败；Host0、normal_close_qualified=true、Game19592／birth134395738011961874实际0、Job0／treegone／cleanup，keeper a106原ALLOCATE0及RELEASE0／CAS15539→15540另记为正常关场和资源释放。真实保存14日不等于35日或整案通过。币和账户仍3／695；基线已有AI币不能充新发行，本窗新AI上市／失败退款、expiry30结算、债务危机、气泡均未得到通过信用。post-finance hook／E5后续已采用且软件通过，实机首日仍待验；不授容量、完整产品或发布。[原件与采样诊断](evidence/2026-11-19-financial-markets-r0028-fourteen-saved-days-and-sampling-failure.json)。
+EVOLUTION07-run原2／1419.6043655秒反映采样断言失败；Host0、normal_close_qualified=true、Game19592／birth134395738011961874实际0、Job0／treegone／cleanup，keeper a106原ALLOCATE0及RELEASE0／CAS15539→15540另记为正常关场和资源释放。真实保存14日不等于35日或整案通过。币和账户仍3／695；基线已有AI币不能充新发行，本窗新AI上市／失败退款、expiry30结算、债务危机、气泡均未得到通过信用。post-finance hook／E5后续已采用且软件通过，实机日记录一致性仍待后继D14刷新前物理档验证；不授容量、完整产品或发布。[原件与采样诊断](evidence/2026-11-19-financial-markets-r0028-fourteen-saved-days-and-sampling-failure.json)。
+
+## R0029：正确Full仍被未答复收件箱准入拦截
+
+machine_id: `4-8e1c2f1861`。R0029的1377个Full均为actor31254/raw53144856、paused/map_ready=true；pending33554437/sender34232保持不变。原Host `saved_campaign_florin_admission_frame_v1` 1184–1185行因此返回None，所有frame/root/binding为空；campaign-root查询0次，没有进入hold。早期Root GUI helper仅在phase守卫处失败，计划前拒绝，不是一次ARM提交或UNKNOWN。初始plan与最终steps均为空，E5未ARM、0金融步骤、0新SAVE、0游戏日。Full版本递增不能计作推进。
+
+原公共run2/1806.6748107秒、Host原1；managed session以stop路径清理，Game1、Job0/treegone/cleanup_proven=true/contract_errors=[]。keeper a107原0；release原0/.942905秒，CAS15554→15555、done/resources[]。这是真实失败恢复与托管清理，不是normal-close成功。后继继续R0028最新诊断SAVE原pin及未消费E5，仍须正常新场准入；不自动回复收件箱、不重放旧动作、不过写旧采样失败。
+
+产品215和fixture12文件只读逐字节核等，409项Java软件及347个对应输入仍是原24f3e49来源，不改签为后继Host结果。Root随后采用Host及其测试两叶，saved-readiness全模块28项、PublicSavedIntegration5项实际通过，共33项不同软件测试；`-O`重复28项另记。三原wait0、0 skip，18项输入前后未变，不外推新实机准入、E5或完整产品通过。[原件与终态](evidence/2026-11-19-financial-markets-r0029-restore-inbox-and-cleanup.json)。
+
+E5后继不新增首日SAVE或phase。沿公共0/14/30/35日hold，在D14手动Refresh前先保存诊断档并核完整15条日记录（含day1）date/financialday与observer一致，然后正常Refresh及正式D14SAVE；此方法尚未实机完成。已编expectedDays1读器保留但不强制运行。

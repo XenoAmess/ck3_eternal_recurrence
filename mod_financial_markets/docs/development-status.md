@@ -2,7 +2,20 @@
 
 2026-11-19，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0028真实保存14日；日采样被拒，后续采样修复待验）
+## 当前状态（R0029恢复超时；E5未ARM，失败已清理释放）
+
+## R0029：恢复准入超时，E5未ARM，原失败已清理释放
+
+machine_id: `4-8e1c2f1861`。R0029继续R0028最新真实诊断SAVE（raw53144856、actor31254），1377个Full均有正确身份、暂停和地图就绪，首`native:2/rev3`至末`native:1378/rev1379`，但始终带未答复收件箱`33554437`、sender34232；原Host在pending非空守卫返回`frame=None`，root/binding也为空。原始readiness期限到达后RED超时，未进入业务hold。早期Root GUI helper亦在`phase==hold`前置守卫拒绝，未产生或派发ARM计划；初始plan和最终steps均为空。
+
+原EVOLUTION08-run wait2、1806.6748107秒，Host原wait1；托管stop清理为Game exit1、Job1→0、treegone/cleanup_proven=true、contract_errors=[]。keeper a107原wait0、thread_exited=true；RELEASE原wait0，16:22:58Z CAS15554→15555、done/resources[]。这是失败清理，不能写成normal Quit或业务通过。
+
+本场0金融步骤、0 ARM、0新SAVE、0观察或保存日；E5未消费，仍可在后继正常新场继续同一R0028最新SAVE，不重放、不代答收件箱、不抹旧E4采样违规。215产品文件及12个E5 fixture文件的候选、部署和相应清单精确一致；不据此冒称金融SAVE全实体已重新对账。23共享+386金融=409项软件原件仍绑定原`24f3e49`，347个相应输入精确未改，不改签为后继Host结果。
+
+Root闭场后已采用Host及其测试两叶，正式saved-readiness全模块28项与PublicSavedIntegration5项均通过，共33项不同测试；`-O`另重复28项，不能加算为61项不同测试。三个原wait均0、0 skip，18项软件输入在测试前后未变；这是软件修复信用，不是新的实机准入或E5成功。35日、低阶无地新发行、挤兑、危机剧情与完整产品仍未完成或发布。[R0029原件、闭场与限域复用证据](../../docs/maintenance/evidence/2026-11-19-financial-markets-r0029-restore-inbox-and-cleanup.json)。
+
+E5实机证明仍待执行：公共case维持0/14/30/35日hold；D14先做一次手动Refresh前的诊断物理SAVE，核15条日记录（含day1）的date/financialday与observer全部一致，再正常Refresh并保存正式D14。不会为day1临时加SAVE、新phase或并行读；已编expectedDays1读器只保留，不强制执行。
+
 
 日进阻断修复已完成实际软件验证：事件能力17项、Host日进14项、时钟回归11项，共42个不同方法全部通过；三组当前SDK兼容性执行98／11／6项全部通过，后两组中的活动方法有重复，不合并成不同方法总数。14个受控源码文件在测试窗口内精确未变。首次时钟回归因缺少项目导入路径而加载失败，原件保留；补正启动参数后11项通过。修复仅恢复1.21有限事件查询与既有同场有界日期ARM→独立状态→唯一恢复链，仍拒绝代次冲突和缺失绑定，事件早停不授整日信用。该轮软件结果本身不授实机信用；R0026新增日进观察见下文。[修复与真实软件原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-florin-event-fix.json)。
 
@@ -18,7 +31,7 @@ machine_id: `4-8e1c2f1861`。R0028从真实最新基线续行，日期raw5314452
 
 原D14独立facts有18项违例，同日正常刷新后的诊断仍有14项日期违例，continuity保持`INCOMPLETE_OR_INCONSISTENT`；Root采样断言false，公共EVOLUTION07-run原2／1419.6043655秒。Host实际0、normal_close_qualified=true；Game19592／birth134395738011961874实际退出0，Job0／treegone／cleanup，keeper a106原ALLOCATE返回0，RELEASE原0、CAS15539→15540。采样未通过与Host正常关场分别记账，不能把run2抹为全绿，也不抹去真实14日SAVE。
 
-只读经济摘要显示币3→3、账户695→695，两枚AI募资币在基线已存在，本窗新AI发行／上市／失败退款分支未观察；当前day22未到被观察合约expiry30，债务仍0，不授无地发币实扣、到期或气泡。账本现金变化未追全部角色gold入金，不称完整守恒证明。post-finance hook／新E5已采用并完成下述软件验证，实际引擎采样时序待下一场首日验收。35日、容量及完整产品仍未通过，未发布。[R0028短证据及诊断原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-r0028-fourteen-saved-days-and-sampling-failure.json)。
+只读经济摘要显示币3→3、账户695→695，两枚AI募资币在基线已存在，本窗新AI发行／上市／失败退款分支未观察；当前day22未到被观察合约expiry30，债务仍0，不授无地发币实扣、到期或气泡。账本现金变化未追全部角色gold入金，不称完整守恒证明。post-finance hook／新E5已采用并完成下述软件验证，实际引擎采样时序待后继D14手动刷新前物理档的完整15条日记录验证。35日、容量及完整产品仍未通过，未发布。[R0028短证据及诊断原件](../../docs/maintenance/evidence/2026-11-19-financial-markets-r0028-fourteen-saved-days-and-sampling-failure.json)。
 
 ## R0027：新SAVE基线通过，首日日进在ARM前拒绝
 
@@ -339,4 +352,4 @@ mvn -f mod_financial_markets/tools/pom.xml -Dtest=FinancialMarketTest test
 
 ## 结算后采样修复与 E5 软件验证
 
-交易所日结完成最后的 AI 交易后派发只读观察回调，测试观察器按玩家自身引用读取；移除独立每日采样定时器，并拒绝交易所日期尚未追上实际日期时 Arm 或刷新。保留 E1–E4 历史，为后继启用独立 E5。新增三项回归覆盖原先错位、连续十四次尾回调及技术托管者更替。首次完整测试386项有两处旧测试数据失败，原件保留；修正后金融386项全部通过，复用不变共享23项，共409个不同方法，0失败／错误／跳过，347个输入源码在最终测试窗口精确不变。正常引擎回调时序仍须在最新存档的首个自然日、手动刷新前保存验证，不将 JVM 同步模型当实机通过。[软件与原红证据](../../docs/maintenance/evidence/2026-11-19-financial-markets-e5-post-finance-hook.json)。
+交易所日结完成最后的 AI 交易后派发只读观察回调，测试观察器按玩家自身引用读取；移除独立每日采样定时器，并拒绝交易所日期尚未追上实际日期时 Arm 或刷新。保留 E1–E4 历史，为后继启用独立 E5。新增三项回归覆盖原先错位、连续十四次尾回调及技术托管者更替。首次完整测试386项有两处旧测试数据失败，原件保留；修正后金融386项全部通过，复用不变共享23项，共409个不同方法，0失败／错误／跳过，347个输入源码在最终测试窗口精确不变。正常引擎回调时序仍须在后继D14手动刷新前的诊断物理档核完整15条日记录（含day1），再正常Refresh及正式D14SAVE；不临时加首日SAVE或新phase，不将 JVM 同步模型当实机通过。[软件与原红证据](../../docs/maintenance/evidence/2026-11-19-financial-markets-e5-post-finance-hook.json)。

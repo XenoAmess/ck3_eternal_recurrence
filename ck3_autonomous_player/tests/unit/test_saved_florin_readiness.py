@@ -18,7 +18,7 @@ from unittest.mock import patch
 REPO=Path(os.environ.get('CK3_SAVED_CANDIDATE_REPO',Path(__file__).resolve().parents[3]))
 HERE=Path(__file__).resolve().parent
 FIXTURES=REPO/'java/ck3-control/native-transport/src/test/resources/newnative'
-sys.path[:0]=[str(REPO/'ck3_autonomous_player/src'),str(REPO/'ck3_autonomous_player/tests/unit')]
+sys.path[:0]=[str(REPO/'ck3_autonomous_player/src'),str(REPO/'ck3_autonomous_player/tests/unit'),str(REPO/'tools')]
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 
 def load(name,path):
@@ -404,5 +404,135 @@ class FlorinSavedReadinessTests(unittest.IsolatedAsyncioTestCase):
                     with self.assertRaisesRegex(TimeoutError,'original readiness deadline'):
                         await self.wait(client,state=state,deadline=1.0)
                 self.assertNotIn('native_observer_terminal_failure_v1',state['saved_campaign_restore'])
+
+    def reviewed_saved_inbox_args(self, *, product='financial-markets', case='market-evolution',
+                                  policy='observe_unanswered_inbox', startup_mode='saved_campaign'):
+        """Real public producer, frozen CLI parser and exact purpose loader; no permit mock."""
+        import test_product_acceptance_purpose as fixture_module
+        fixture = fixture_module.ProductPurposeTests()
+        self.enterContext(patch.object(fixture_module, 'HOST', Path(HOST.__file__).resolve()))
+        fixture.setUp(); self.addCleanup(fixture.doCleanups)
+        fixture.pipe=PIPE
+        fixture.contract.update(product=product,case_id=case,startup_mode=startup_mode,maximum_natural_days=35)
+        if policy is not None: fixture.contract['pending_interaction_policy']=policy
+        fixture.prepared.update(product=product,case=case)
+        fixture.context.update(product=product,case=case)
+        fixture.frozen.update(mod_key=product,cell=case)
+        fixture.frozen['argv'][fixture.frozen['argv'].index('--bridge-pipe')+1]=PIPE
+        fixture.refresh_contract()
+        fixture_module.write(fixture.frozen_path,fixture.frozen)
+        fixture.context['frozen_argv']=fixture_module.pin(fixture.frozen_path)
+        fixture.refresh_context(); fixture.produce()
+        return HOST.parser().parse_args(fixture.frozen['argv'][5:]), fixture
+
+    @staticmethod
+    def unanswered_inbox():
+        return {'instance_id':33554437,'sender_character_id':34232,
+                'auto_accept_notification':False,'source':'native'}
+
+    async def test_saved_reviewed_policy_retains_same_actual_inbox_in_two_fresh_frames(self):
+        for case in ('market-evolution','delisting-gui'):
+            with self.subTest(case=case):
+                client=Client(); client.args,fixture=self.reviewed_saved_inbox_args(case=case)
+                before=vars(client.args).copy(); frozen=fixture.frozen_path.read_bytes()
+                client.full['state']['pending_character_interaction']=self.unanswered_inbox()
+                state=report(); result=await self.wait(client,state=state)
+                self.assertEqual(client.frames,2)
+                self.assertEqual(vars(client.args),before)
+                self.assertFalse(client.args.saved_campaign_server)
+                self.assertEqual(fixture.frozen_path.read_bytes(),frozen)
+                self.assertEqual(result['pending_interaction_policy'],'observe_unanswered_inbox')
+                for frame in result['full_state_owner_frames'].values():
+                    self.assertEqual(frame['pending_character_interaction'],self.unanswered_inbox())
+                self.assertEqual(result['binding']['pending_character_interaction'],self.unanswered_inbox())
+                self.assertEqual(result['observed_unanswered_inbox'],self.unanswered_inbox())
+                self.assertFalse(result['binding']['product_acceptance_proven'])
+                self.assertTrue(all(tool in {'ck3_migration_pipe_diagnostics','ck3_take_fresh_full_snapshot_v1'} for tool,_ in client.calls))
+
+    async def test_default_and_missing_contract_policy_still_reject_pending(self):
+        client=Client(); value=await client.fresh(); value['pending_character_interaction']=self.unanswered_inbox()
+        binding={'bridge_pid':PID,'connection_generation':GEN}
+        self.assertIsNone(HOST.saved_campaign_admission_frame(value,EXPECTED,binding))
+        self.assertEqual(HOST.saved_campaign_pending_policy_v1(None),'stop_at_boundary')
+        for policy in (None,'stop_at_boundary'):
+            args,_=self.reviewed_saved_inbox_args(policy=policy)
+            self.assertEqual(HOST.saved_campaign_pending_policy_v1(args),'stop_at_boundary')
+
+    async def test_saved_inbox_policy_real_purpose_rejects_wrong_case_mode_or_identity_before_read(self):
+        for settings in ({'product':'other'},{'case':'other'},{'startup_mode':'ordinary_gui_campaign'},
+                         {'policy':True},{'policy':'unknown'}):
+            with self.subTest(settings=settings):
+                client=Client(); client.args,_=self.reviewed_saved_inbox_args(**settings)
+                with self.assertRaises(ValueError): await self.wait(client)
+                self.assertEqual(client.calls,[]); self.assertEqual(client.frames,0)
+        client=Client(); client.args,_=self.reviewed_saved_inbox_args()
+        client.args.bridge_pipe+='-different'
+        with self.assertRaises(ValueError): await self.wait(client)
+        self.assertEqual(client.calls,[])
+        client=Client(); client.args,_=self.reviewed_saved_inbox_args()
+        client.args.saved_campaign_save=None
+        with self.assertRaises(ValueError): await self.wait(client)
+        self.assertEqual(client.calls,[])
+
+    async def test_saved_inbox_source_is_hash_bound_and_not_replaced_by_request_strings(self):
+        client=Client(); client.args,fixture=self.reviewed_saved_inbox_args()
+        fixture.contract['pending_interaction_policy']='stop_at_boundary'
+        fixture_module=__import__('test_product_acceptance_purpose')
+        fixture_module.write(fixture.contract_path,fixture.contract)
+        with self.assertRaises(ValueError): await self.wait(client)
+        self.assertEqual(client.calls,[])
+
+    async def test_saved_inbox_fields_remain_exact_signed_native_identities(self):
+        client=Client(); value=await client.fresh(); binding={'bridge_pid':PID,'connection_generation':GEN}
+        for field,bad in (('instance_id',True),('instance_id',-1),('instance_id',2**31),
+                          ('sender_character_id',True),('sender_character_id',-1),('sender_character_id',2**31),
+                          ('auto_accept_notification',1),('source','software')):
+            with self.subTest(field=field,bad=bad):
+                pending=self.unanswered_inbox(); pending[field]=bad
+                value['pending_character_interaction']=pending
+                with self.assertRaises(ValueError):
+                    HOST.saved_campaign_admission_frame(value,EXPECTED,binding,pending_interaction_policy='observe_unanswered_inbox')
+        for instance,sender in ((0,0),(-2,-2),(-(2**31),2**31-1)):
+            pending=self.unanswered_inbox(); pending.update(instance_id=instance,sender_character_id=sender)
+            value['pending_character_interaction']=pending
+            frame=HOST.saved_campaign_admission_frame(value,EXPECTED,binding,pending_interaction_policy='observe_unanswered_inbox')
+            self.assertEqual(frame['pending_character_interaction'],pending)
+
+    async def test_saved_inbox_change_across_frames_rejects_without_rebinding_or_reply(self):
+        changes=[None,dict(self.unanswered_inbox(),instance_id=33554438),
+                 dict(self.unanswered_inbox(),sender_character_id=34233),
+                 dict(self.unanswered_inbox(),auto_accept_notification=True)]
+        for changed in changes:
+            with self.subTest(changed=changed):
+                client=Client(); client.args,_=self.reviewed_saved_inbox_args()
+                client.full['state']['pending_character_interaction']=self.unanswered_inbox()
+                def change(value):
+                    if client.frames==2:value['pending_character_interaction']=copy.deepcopy(changed)
+                client.change=change; state=report()
+                with self.assertRaisesRegex(RuntimeError,'inbox changed'):await self.wait(client,state=state)
+                self.assertEqual(client.frames,2)
+                self.assertNotIn('binding',state['saved_campaign_restore'])
+                self.assertEqual(state['saved_campaign_restore']['observed_unanswered_inbox'],self.unanswered_inbox())
+                self.assertNotIn('readiness',state)
+
+    async def test_saved_inbox_does_not_admit_active_event_or_widen_old_build(self):
+        client=Client(); value=await client.fresh(); value['pending_character_interaction']=self.unanswered_inbox()
+        value['active_event']={'instance_id':42}
+        binding={'bridge_pid':PID,'connection_generation':GEN}
+        self.assertIsNone(HOST.saved_campaign_admission_frame(value,EXPECTED,binding,pending_interaction_policy='observe_unanswered_inbox'))
+        value['diagnostics']['hello']['expected_ck3_version']='1.20.0.4'
+        with self.assertRaisesRegex(ValueError,'exact Florin'):
+            HOST.saved_campaign_admission_frame(value,EXPECTED,binding,pending_interaction_policy='observe_unanswered_inbox')
+
+    async def test_saved_inbox_same_cached_full_still_cannot_supply_two_fresh_frames(self):
+        client=Client(); client.args,_=self.reviewed_saved_inbox_args(); client.republish=False
+        client.full['state']['pending_character_interaction']=self.unanswered_inbox()
+        clock=[0.0]; original=client.fresh
+        async def fresh():
+            value=await original();clock[0]+=.25;return value
+        client.fresh=fresh
+        with patch.object(HOST.time,'monotonic',side_effect=lambda:clock[0]):
+            with self.assertRaisesRegex(TimeoutError,'original readiness deadline'):
+                await self.wait(client,deadline=1)
 
 if __name__=='__main__':unittest.main()

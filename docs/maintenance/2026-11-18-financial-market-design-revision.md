@@ -53,4 +53,12 @@ machine_id: `4-8e1c2f1861`。R0027真实冷载后产生新基线SAVE，保留E1=
 
 ## R0028后继实机边界（2026-11-19）
 
-machine_id: `4-8e1c2f1861`。R0028真实自然推进并保存14日（raw53144520→53144856／financial8→22），三份物理SAVE保留；最新refresh-check归档才是后继continuation。原D14／刷新诊断分别18／14项日期违例，Root采样断言false、公共run2保留；Host0与normal_close_qualified=true、Game0／Job0及释放同时成立，不能混作业务通过。既有AI币不是本窗新发行，expiry30未到；35日、无地付费发行新分支、气泡、债务危机、容量和全产品仍未通过。post-finance hook／E5后续已采用并软件验证409项覆盖（实际金融386、复用不变共享23），实机首日待验，未发布。R0027／R0026／R0022历史信用及case隔离不变。[R0028原件摘要](evidence/2026-11-19-financial-markets-r0028-fourteen-saved-days-and-sampling-failure.json)。
+machine_id: `4-8e1c2f1861`。R0028真实自然推进并保存14日（raw53144520→53144856／financial8→22），三份物理SAVE保留；最新refresh-check归档才是后继continuation。原D14／刷新诊断分别18／14项日期违例，Root采样断言false、公共run2保留；Host0与normal_close_qualified=true、Game0／Job0及释放同时成立，不能混作业务通过。既有AI币不是本窗新发行，expiry30未到；35日、无地付费发行新分支、气泡、债务危机、容量和全产品仍未通过。post-finance hook／E5后续已采用并软件验证409项覆盖（实际金融386、复用不变共享23），实机日记录一致性待后继D14刷新前物理档验证，未发布。R0027／R0026／R0022历史信用及case隔离不变。[R0028原件摘要](evidence/2026-11-19-financial-markets-r0028-fourteen-saved-days-and-sampling-failure.json)。
+
+## R0029恢复失败与后继验证边界（2026-11-19 UTC）
+
+machine_id: `4-8e1c2f1861`。R0029冷载取得正确actor31254/raw53144856和递增Full，但未答复收件箱33554437/sender34232使原Host恢复准入始终返回None，最终原期限超时。没有进入业务hold，E5未ARM、无金融步骤、无新SAVE或新增日。原run2、Host1、Game1由托管stop清理至Job0/treegone，keeper0及CAS15554→15555资源释放均有原件；不能改称normal Quit或产品通过。
+
+保留R0028真实14个已保存日及原采样失败；后继可继续同一最新R0028诊断SAVE与未消费E5，不重放或自动代答。215产品和12个fixture文件精确未变不等于新财务状态审计。23共享+386金融=409项软件及347个对应输入仍保原24f3e49来源。Host及测试两叶后继修复已实际通过全模块28项和公共集成5项，共33项不同测试；`-O`重复28项另记，三原wait0、0 skip，18项输入前后未变，尚不授新实机准入。35日、无地低阶新发行、挤兑及完整产品验收仍待实际完成。[R0029限域证据](evidence/2026-11-19-financial-markets-r0029-restore-inbox-and-cleanup.json)。
+
+E5时序证明计划沿既有0/14/30/35 hold，在D14先取得手动Refresh前的诊断物理SAVE，核15条日记录（含day1）与observer日期及financialday一致，再正常Refresh和正式D14SAVE；不临时加首日SAVE、新phase或并行读。此计划未在R0029执行，expectedDays1读器保留但不强制运行。

@@ -1039,14 +1039,17 @@ def saved_campaign_session(spec: object, config: object, args: argparse.Namespac
 
 
 def saved_campaign_admission_frame(snapshot: object, expected: dict[str, object],
-        frontend_binding: dict[str, object], *, allow_active_event: bool = False) -> dict[str, object] | None:
+        frontend_binding: dict[str, object], *, allow_active_event: bool = False,
+        pending_interaction_policy: Literal["stop_at_boundary", "observe_unanswered_inbox"] = "stop_at_boundary") -> dict[str, object] | None:
     if not isinstance(snapshot, dict) or snapshot.get("map_ready") is not True or snapshot.get("paused") is not True:
         return None
     diagnostics = snapshot.get("diagnostics")
     hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
     if isinstance(hello, dict) and hello.get("expected_ck3_version") == "1.21.0":
         return saved_campaign_florin_admission_frame_v1(snapshot, expected, frontend_binding,
-            allow_active_event=allow_active_event)
+            allow_active_event=allow_active_event, pending_interaction_policy=pending_interaction_policy)
+    if pending_interaction_policy != "stop_at_boundary":
+        raise ValueError("Saved inbox observation requires the exact Florin Full admission")
     event = snapshot.get("active_event")
     if (event is not None and not allow_active_event) or snapshot.get("episode_projection") != "native_campaign":
         return None
@@ -1160,9 +1163,49 @@ def saved_campaign_initial_snapshot_state(value: object, pipe: str) -> str:
         else "WAITING_FOR_INITIAL_NATIVE_SEMANTIC_FRAME")
 
 
+def saved_campaign_pending_policy_v1(args: argparse.Namespace | None) -> Literal["stop_at_boundary", "observe_unanswered_inbox"]:
+    """Use only this saved run's existing reviewed purpose and hash-bound case policy."""
+    if args is None or getattr(args, "product_acceptance_purpose", None) is None:
+        return "stop_at_boundary"
+    clock_args = copy.copy(args)
+    saved_source = getattr(clock_args, "saved_campaign_save", None)
+    if saved_source is not None:
+        if not isinstance(saved_source, Path):
+            raise ValueError("Parsed saved-campaign source Path required for saved inbox observation")
+        # Existing saved CLI identity view; never alter original args/frozen argv.
+        clock_args.saved_campaign_server = True
+    purpose_path = clock_args.product_acceptance_purpose
+    if not isinstance(purpose_path, Path) or purpose_path.is_symlink() or not purpose_path.is_file() or purpose_path.stat().st_size > 32768:
+        raise ValueError("Exact bounded product-acceptance purpose file required")
+    purpose_bytes = purpose_path.read_bytes()
+    clock = load_product_acceptance_clock_v1(clock_args)
+    if clock is None:
+        raise ValueError("Saved inbox observation lost its actual reviewed purpose")
+    from ck3_mod_acceptance_background_types import _purpose_original
+    purpose = json.loads(purpose_bytes)
+    _, context = _purpose_original(purpose["reviewed_context"])
+    _, prepared = _purpose_original(context["prepared_case"])
+    _, contract = _purpose_original(prepared["contract"])
+    if purpose_path.read_bytes() != purpose_bytes:
+        raise ValueError("Saved inbox purpose changed during admission")
+    policy = contract.get("pending_interaction_policy", "stop_at_boundary")
+    if type(policy) is not str or policy not in {"stop_at_boundary", "observe_unanswered_inbox"}:
+        raise ValueError("Exact saved campaign pending interaction policy required")
+    if policy == "stop_at_boundary":
+        return "stop_at_boundary"
+    if (not isinstance(saved_source, Path) or clock.purpose.product != "financial-markets"
+            or clock.purpose.case not in {"market-evolution", "delisting-gui"}
+            or contract.get("startup_mode") != "saved_campaign" or clock.purpose.allow_actor_change is not False):
+        raise ValueError("Saved inbox observation requires its reviewed financial saved-campaign case")
+    return "observe_unanswered_inbox"
+
+
 def saved_campaign_florin_admission_frame_v1(snapshot: object, expected: dict[str, object],
-        frontend_binding: dict[str, object], *, allow_active_event: bool) -> dict[str, object] | None:
+        frontend_binding: dict[str, object], *, allow_active_event: bool,
+        pending_interaction_policy: Literal["stop_at_boundary", "observe_unanswered_inbox"] = "stop_at_boundary") -> dict[str, object] | None:
     from xar_autoplayer.bridge.version_identity import florin_full_source
+    if type(pending_interaction_policy) is not str or pending_interaction_policy not in {"stop_at_boundary", "observe_unanswered_inbox"}:
+        raise ValueError("Exact saved campaign pending interaction policy required")
     if not isinstance(snapshot, dict):
         return None
     source = florin_full_source(snapshot, None)
@@ -1181,8 +1224,17 @@ def saved_campaign_florin_admission_frame_v1(snapshot: object, expected: dict[st
     if source.played_character_id != expected.get("actor_character_id") or source.date_raw != expected.get("date_raw"):
         return None
     event = snapshot.get("active_event")
-    if (event is not None and not allow_active_event) or snapshot.get("pending_character_interaction") is not None:
+    pending = snapshot.get("pending_character_interaction")
+    if (event is not None and not allow_active_event) or (pending is not None and pending_interaction_policy == "stop_at_boundary"):
         return None
+    if pending_interaction_policy == "observe_unanswered_inbox" and pending is not None:
+        from xar_autoplayer.bridge.pending_character_interaction_context_contract import normalize_pending_interaction_id
+        if (not isinstance(pending, dict) or set(pending) != {"instance_id", "sender_character_id", "auto_accept_notification", "source"}
+                or pending.get("source") != "native" or type(pending.get("auto_accept_notification")) is not bool
+                or type(pending.get("sender_character_id")) is not int
+                or not -(2**31) <= pending["sender_character_id"] < 2**31 or pending["sender_character_id"] == -1):
+            raise ValueError("Exact Florin saved inbox identity required")
+        normalize_pending_interaction_id(pending.get("instance_id"))
     if allow_active_event:
         raise ValueError("Florin saved startup event admission has no migrated independent event contract")
     heartbeat = diagnostics.get("last_heartbeat")
@@ -1207,13 +1259,17 @@ def saved_campaign_florin_admission_frame_v1(snapshot: object, expected: dict[st
         if type(pointer) is not int or not 0 < pointer < 2**64:
             return None
         roots[key] = str(pointer)
-    return {"actor_character_id": source.played_character_id, "date_raw": source.date_raw,
+    frame = {"actor_character_id": source.played_character_id, "date_raw": source.date_raw,
         "local_player_id": local, "snapshot_id": source.snapshot_id, "revision": source.public_revision,
         "native_revision": source.native_revision, "bridge_pid": source.game_pid,
         "connection_generation": source.connection_generation, "owner_tid": tid, "pump_epoch": epoch,
         "admission_source": "ck3_1210_full_state_v1", "scope_sha256": source.scope_sha256,
         "map_ready": snapshot["map_ready"], "paused": snapshot["paused"], "played_character_alive": played["alive"],
         "native_roots": roots}
+    if pending_interaction_policy == "observe_unanswered_inbox":
+        frame["pending_interaction_policy"] = pending_interaction_policy
+        frame["pending_character_interaction"] = copy.deepcopy(pending)
+    return frame
 
 
 def saved_campaign_cancelled_wait_receipt(error: BaseException) -> dict[str, object] | None:
@@ -1264,6 +1320,13 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
     startup_case = report.get("saved_campaign_startup_case_contract_input", {}).get("contract")
     write()
     deadline = time.monotonic() + timeout if readiness_deadline is None else readiness_deadline
+    startup_args = getattr(client, "args", None)
+    pending_policy = saved_campaign_pending_policy_v1(startup_args)
+    if pending_policy == "observe_unanswered_inbox" and startup_args.bridge_pipe != report["pipe"]:
+        raise ValueError("Saved inbox purpose differs from the actual restore pipe")
+    state["pending_interaction_policy"] = pending_policy
+    inbox_identity_bound = False
+    bound_inbox = None
     binding = None
     baseline = None
     baseline_frame = None
@@ -1488,10 +1551,19 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
             write()
             await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
             continue
-        frame = saved_campaign_admission_frame(snapshot, expected, binding, allow_active_event=startup_case is not None)
+        frame = saved_campaign_admission_frame(snapshot, expected, binding, allow_active_event=startup_case is not None,
+            pending_interaction_policy=pending_policy)
         root, admitted = None, None
         if frame is not None:
             florin_frame = frame.get("admission_source") == "ck3_1210_full_state_v1"
+            if florin_frame and pending_policy == "observe_unanswered_inbox":
+                current_inbox = frame["pending_character_interaction"]
+                if inbox_identity_bound and current_inbox != bound_inbox:
+                    raise RuntimeError("Saved campaign inbox changed across its original admission frames; no reply or replay")
+                if not inbox_identity_bound:
+                    bound_inbox = copy.deepcopy(current_inbox)
+                    inbox_identity_bound = True
+                    state["observed_unanswered_inbox"] = copy.deepcopy(current_inbox)
             observation_keys = {"pump_epoch", "snapshot_id", "revision", "native_revision"} if florin_frame else {"pump_epoch"}
             stable = {k: v for k, v in frame.items() if k not in observation_keys}
             fresh_full = (not florin_frame or baseline_frame is not None
@@ -1544,7 +1616,8 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
                         continue
                     attempt.update(status="RETURNED", finished_at=now())
                     after = await fresh_before_deadline()
-                    after_frame = saved_campaign_admission_frame(after, expected, binding, allow_active_event=startup_case is not None)
+                    after_frame = saved_campaign_admission_frame(after, expected, binding, allow_active_event=startup_case is not None,
+                        pending_interaction_policy=pending_policy)
                     if (after_frame is not None and isinstance(root, dict)
                             and root.get("queried_snapshot_id") == after.get("snapshot_id")
                             and root.get("queried_revision") == after.get("revision")):
