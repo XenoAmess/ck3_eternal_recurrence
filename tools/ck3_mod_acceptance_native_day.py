@@ -20,6 +20,124 @@ _CLOCK_CAPABILITIES = frozenset({
 })
 
 
+PendingInteractionPolicy = Literal["stop_at_boundary", "observe_unanswered_inbox"]
+
+
+class PendingInboxSummaryV1(TypedDict):
+    instance_id: int
+    sender_character_id: int
+    auto_accept_notification: bool
+    source: Literal["native"]
+
+
+class PendingInboxChangeV1(TypedDict):
+    snapshot_id: str
+    revision: int
+    native_revision: int
+    date_raw: int
+    change: Literal["appeared", "disappeared", "changed"]
+    before: PendingInboxSummaryV1 | None
+    after: PendingInboxSummaryV1 | None
+
+
+class PendingInboxObservationV1(TypedDict):
+    policy: Literal["observe_unanswered_inbox"]
+    starting_snapshot_id: str
+    ending_snapshot_id: str
+    before: PendingInboxSummaryV1 | None
+    after: PendingInboxSummaryV1 | None
+    changes: list[PendingInboxChangeV1]
+    resolved: Literal[False]
+    reply_attempted: Literal[False]
+    modal_status: Literal["not_observed"]
+
+
+def pending_interaction_policy_v1(value: object) -> PendingInteractionPolicy:
+    if type(value) is str and value == "stop_at_boundary":
+        return "stop_at_boundary"
+    if type(value) is str and value == "observe_unanswered_inbox":
+        return "observe_unanswered_inbox"
+    raise ValueError("Exact declared pending interaction policy required")
+
+
+def admit_pending_interaction_policy_v1(value: object, *, product: object,
+                                         case: object) -> PendingInteractionPolicy:
+    policy = pending_interaction_policy_v1(value)
+    need(policy == "stop_at_boundary" or (product == "financial-markets" and type(case) is str
+         and case in {"market-evolution", "delisting-gui"}), "Inbox observation is limited to the two declared financial observation cases")
+    return policy
+
+
+def _pending_inbox_summary_v1(value: object) -> PendingInboxSummaryV1 | None:
+    if value is None:
+        return None
+    row = obj(value, "original pending inbox summary")
+    need(set(row) == {"instance_id", "sender_character_id", "auto_accept_notification", "source"}
+         and row.get("source") == "native" and type(row.get("auto_accept_notification")) is bool,
+         "Exact original native pending inbox fields required")
+    instance = integer(row.get("instance_id"), "pending full instance ID")
+    sender = integer(row.get("sender_character_id"), "pending full sender ID")
+    need(all(-(2**31) <= identity < 2**31 and identity != -1 for identity in (instance, sender)),
+         "Pending inbox full IDs must preserve exact signed32 values excluding -1")
+    automatic = row["auto_accept_notification"]
+    if not isinstance(automatic, bool):
+        raise ValueError("Exact notification boolean required")
+    return {"instance_id": instance, "sender_character_id": sender,
+            "auto_accept_notification": automatic, "source": "native"}
+
+
+def pending_inbox_observation_v1(value: object, before: Object,
+                                  after: Object) -> PendingInboxObservationV1:
+    """Consume actual Host observations, never infer a modal or a resolved reply."""
+    row = obj(value, "actual pending inbox observation")
+    need(set(row) == {"policy", "starting_snapshot_id", "ending_snapshot_id", "before", "after",
+                      "changes", "resolved", "reply_attempted", "modal_status"}
+         and row.get("policy") == "observe_unanswered_inbox" and row.get("resolved") is False
+         and row.get("reply_attempted") is False and row.get("modal_status") == "not_observed",
+         "Exact unanswered inbox observation, never resolution credit, required")
+    start_id, end_id = before.get("snapshot_id"), after.get("snapshot_id")
+    need(isinstance(start_id, str) and bool(start_id) and isinstance(end_id, str) and bool(end_id)
+         and row.get("starting_snapshot_id") == start_id and row.get("ending_snapshot_id") == end_id,
+         "Inbox observation must bind the actual before/after Full snapshots")
+    initial = _pending_inbox_summary_v1(row["before"])
+    final = _pending_inbox_summary_v1(row["after"])
+    need(initial == _pending_inbox_summary_v1(before.get("pending_character_interaction"))
+         and final == _pending_inbox_summary_v1(after.get("pending_character_interaction")),
+         "Inbox observation differs from actual before/after pending fields")
+    rows = row["changes"]
+    need(isinstance(rows, list), "Actual inbox change list required")
+    if not isinstance(rows, list):
+        raise ValueError("Actual inbox change list required")
+    changes: list[PendingInboxChangeV1] = []
+    cursor = initial
+    for raw in rows:
+        change = obj(raw, "actual inbox change")
+        need(set(change) == {"snapshot_id", "revision", "native_revision", "date_raw", "change", "before", "after"},
+             "Exact original inbox change fields required")
+        first = _pending_inbox_summary_v1(change["before"])
+        second = _pending_inbox_summary_v1(change["after"])
+        need(first == cursor and first != second, "Actual inbox change chain is incomplete or duplicated")
+        kind: Literal["appeared", "disappeared", "changed"] = ("appeared" if first is None else "disappeared" if second is None else "changed")
+        snap = change["snapshot_id"]
+        revision = integer(change["revision"], "inbox change public revision")
+        native = integer(change["native_revision"], "inbox change native revision")
+        date = integer(change["date_raw"], "inbox change actual date")
+        need(isinstance(snap, str) and bool(snap) and change["change"] == kind and revision > 0 and native > 0
+             and integer(before.get("date_raw"), "before date") <= date <= integer(after.get("date_raw"), "after date"),
+             "Inbox change must retain an actual in-interval Full identity/date")
+        if not isinstance(snap, str):
+            raise ValueError("Actual inbox change snapshot ID required")
+        changes.append({"snapshot_id": snap, "revision": revision, "native_revision": native,
+                        "date_raw": date, "change": kind, "before": first, "after": second})
+        cursor = second
+    need(cursor == final, "Actual inbox change list does not reach its final observed state")
+    if not isinstance(start_id, str) or not isinstance(end_id, str):
+        raise ValueError("Actual before/after snapshot IDs required")
+    return {"policy": "observe_unanswered_inbox", "starting_snapshot_id": start_id,
+            "ending_snapshot_id": end_id, "before": initial, "after": final, "changes": changes,
+            "resolved": False, "reply_attempted": False, "modal_status": "not_observed"}
+
+
 class DayClient(Protocol):
     _seq: int
     output: Path
@@ -29,7 +147,8 @@ class DayClient(Protocol):
                  require_event_free: bool = True) -> object: ...
     def advance_day(self, days: int = 1, timeout: float = 300,
                     allow_event_boundary: bool = False,
-                    allow_actor_change: bool = False) -> Object: ...
+                    allow_actor_change: bool = False,
+                    pending_interaction_policy: PendingInteractionPolicy = "stop_at_boundary") -> Object: ...
     def execute_plan(self, steps: list[Object], name: str, timeout: float | None = None,
                      reserve: Literal[90] = 90) -> list[object]: ...
     def validate_frame(self, frame: object, allow_actor_change: bool = False,

@@ -20,6 +20,10 @@ from ck3_mod_acceptance_background_types import (
     FilePin, JsonObject, file_pin, json_object, object_field, text_field,
 )
 
+from ck3_mod_acceptance_native_day import (
+    PendingInteractionPolicy, admit_pending_interaction_policy_v1,
+)
+
 if TYPE_CHECKING:
     from ck3_mod_acceptance_client import CaseClient
 
@@ -313,6 +317,7 @@ def _prepare_fixture_case(context):
                                            compatibility_mods, compatibility_mods_json)
     context = resolve_post_start(context)
     config = context['case_contract']
+    _fixture_pending_interaction_policy(config)
     require(config['product'] == context['product'], 'Case crossed canonical product')
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
@@ -449,10 +454,17 @@ def root_phase(client, context, name, requirements, snapshot, source_contract):
 class FixtureDayClient(Protocol):
     def advance_day(self, days: int = 1, timeout: float = 300,
                     allow_event_boundary: bool = False,
-                    allow_actor_change: bool = False) -> dict[str, object]: ...
+                    allow_actor_change: bool = False,
+                    pending_interaction_policy: PendingInteractionPolicy = "stop_at_boundary") -> dict[str, object]: ...
     def execute_plan(self, steps: list[dict[str, object]], name: str,
                      timeout: float | None = None,
                      reserve: int = 90) -> list[dict[str, object]]: ...
+
+
+def _fixture_pending_interaction_policy(config: object) -> PendingInteractionPolicy:
+    selected = json_object(config)
+    return admit_pending_interaction_policy_v1(selected.get('pending_interaction_policy', 'stop_at_boundary'),
+        product=selected.get('product'), case=selected.get('case_id'))
 
 
 def _advance_fixture_day(client: FixtureDayClient, config: object,
@@ -461,6 +473,7 @@ def _advance_fixture_day(client: FixtureDayClient, config: object,
     if not isinstance(client, FixtureDayClient):
         raise ValueError('Fixture day requires the public natural-day client contract')
     policy = json_object(config)
+    pending_policy = _fixture_pending_interaction_policy(policy)
     actor_change = policy.get('allow_actor_change', False)
     transitions = policy.get('actor_transition_days', [])
     if type(actor_change) is not bool or not isinstance(actor_change, bool):
@@ -476,6 +489,9 @@ def _advance_fixture_day(client: FixtureDayClient, config: object,
     if (type(timeout) not in (int, float) or not isinstance(timeout, (int, float))
             or not math.isfinite(timeout) or timeout <= 0):
         raise ValueError('Fixture day timeout must be finite and positive')
+    if pending_policy == "observe_unanswered_inbox":
+        require(not actor_change and not transitions,
+                'Inbox observation does not enter a succession or legacy transition route')
     if sequence in transitions:
         # The public day method has no wait-for-successor argument. Preserve
         # this existing, explicitly selected legacy contract without replay.
@@ -486,15 +502,19 @@ def _advance_fixture_day(client: FixtureDayClient, config: object,
         if len(rows) != 1:
             raise ValueError('One actual fixture transition day row required')
         return json_object(rows[0])
+    if pending_policy == "observe_unanswered_inbox":
+        return json_object(client.advance_day(days=1, timeout=timeout,
+                           allow_event_boundary=True, allow_actor_change=actor_change,
+                           pending_interaction_policy=pending_policy))
     return json_object(client.advance_day(days=1, timeout=timeout,
                        allow_event_boundary=True, allow_actor_change=actor_change))
 
 
-def _fixture_boundary(frame: object) -> Literal['event', 'notification'] | None:
+def _fixture_boundary(frame: object, pending_policy: PendingInteractionPolicy = 'stop_at_boundary') -> Literal['event', 'notification'] | None:
     snapshot = json_object(frame)
     if snapshot.get('active_event') is not None:
         return 'event'
-    if snapshot.get('pending_character_interaction') is not None:
+    if snapshot.get('pending_character_interaction') is not None and pending_policy == 'stop_at_boundary':
         return 'notification'
     return None
 
@@ -518,6 +538,8 @@ def _require_fixture_boundary_resolved(before: object, after: object,
 def _run_fixture_case(context, client):
     compiled, binding = compiled_contract(context)
     config = compiled['config']
+    pending_policy = _fixture_pending_interaction_policy(config)
+    inbox_observations: list[JsonObject] = []
     frame = client.snapshot(require_event_free=False)
     frames = [{'day': 0, 'snapshot': frame}]
     initial_date = frame.get('date_raw')
@@ -571,7 +593,7 @@ def _run_fixture_case(context, client):
                     observed = marker_observation(client.log_bytes(), compiled)
             # An actual event is handled by Root from its current instance. Never
             # invent an option index or claim that dispatch proves a GUI outcome.
-            boundary = _fixture_boundary(frame)
+            boundary = _fixture_boundary(frame, pending_policy)
             if boundary is not None:
                 boundary_sequence += 1
                 name = 'actual-' + boundary + '-boundary-' + str(boundary_sequence).zfill(3)
@@ -591,6 +613,8 @@ def _run_fixture_case(context, client):
             sequence += 1
             row = _advance_fixture_day(client, config, sequence, context['case_spec']['budgets']['command_timeout'])
             value = row['result']
+            if pending_policy == 'observe_unanswered_inbox':
+                inbox_observations.append(json_object(value['pending_interaction_observation']))
             require(value.get('requested_days') == 1 and
                     (value.get('requested_interval_complete') is True or value.get('event_boundary') is not None),
                     'Neither actual day completion nor an actual event boundary was observed')
@@ -627,6 +651,9 @@ def _run_fixture_case(context, client):
         'result_boundary': 'LOAD_BOUNDARY_PASS' if static_load_only else 'SOURCE_CASE_OBSERVED_PENDING_PRODUCT_AGGREGATION',
         'pending_product_business': config.get('uncovered_product_business', []),
         'business_pass': False, 'product_release_pass': False}
+    if pending_policy == 'observe_unanswered_inbox':
+        facts['pending_interaction_policy'] = pending_policy
+        facts['pending_interaction_observations'] = inbox_observations
     client.checkpoint('generic-product-case-result', facts)
     return facts
 

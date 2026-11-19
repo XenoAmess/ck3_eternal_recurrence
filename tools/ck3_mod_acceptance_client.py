@@ -11,7 +11,7 @@ from typing import Literal, NamedTuple, Protocol, TypedDict, runtime_checkable
 from ck3_mod_acceptance_background_types import (
     CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, keyed_file_pin, json_object,
     JsonObject, file_pin, text_field, WireEvidenceSource, wire_evidence_codec, wire_evidence_source)
-from ck3_mod_acceptance_native_day import (STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day, native_day_request_count, fresh_native_day_before, project_pre_day_event_boundary)
+from ck3_mod_acceptance_native_day import (PendingInteractionPolicy, pending_interaction_policy_v1, admit_pending_interaction_policy_v1, pending_inbox_observation_v1, STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day, native_day_request_count, fresh_native_day_before, project_pre_day_event_boundary)
 import subprocess
 import time
 
@@ -985,13 +985,27 @@ class CaseClient:
         return self.validate_frame(row['result'], allow_actor_change, require_event_free)
 
     def advance_day(self, days: int = 1, timeout: float = 300,
-                    allow_event_boundary: bool = False, allow_actor_change: bool = False) -> dict[str, object]:
+                    allow_event_boundary: bool = False, allow_actor_change: bool = False,
+                    pending_interaction_policy: PendingInteractionPolicy = "stop_at_boundary") -> dict[str, object]:
         need(type(days) is int and days == 1, 'Use one original natural day per submitted step')
         need(type(timeout) in (int, float) and timeout > 0, 'Positive original day timeout required')
         need(type(allow_event_boundary) is bool and type(allow_actor_change) is bool,
              'Original day policy flags must be bool')
+        policy = pending_interaction_policy_v1(pending_interaction_policy)
+        if policy == "observe_unanswered_inbox":
+            need(allow_event_boundary and not allow_actor_change,
+                 'Inbox observation requires the explicit bounded event-aware date route')
+            selected = obj(self.selection.adapter_context(), 'actual selected adapter context')
+            contract = obj(selected.get('case_contract'), 'actual selected case contract')
+            need(admit_pending_interaction_policy_v1(policy, product=selected.get('product'), case=selected.get('case')) == policy
+                 and contract.get('product') == selected.get('product') and contract.get('case_id') == selected.get('case')
+                 and contract.get('pending_interaction_policy') == policy
+                 and obj(self.manifest.get('game'), 'actual selected game').get('version') == '1.21.0',
+                 'Inbox observation must be explicitly declared by the current selected Florin financial case')
         report = obj(self.guard(90), 'actual held report')
         native = native_day_request_count(report, allow_actor_change=allow_actor_change) == 2
+        need(policy == "stop_at_boundary" or not native,
+             'Inbox observation is not admitted by the unchanged native life-advance primitive')
         before: dict[str, object] | None = None
         if native:
             previous = obj(self.validate_frame(latest_frame(report)), 'actual prior paused frame')
@@ -1018,6 +1032,8 @@ class CaseClient:
             step['allow_event_boundary'] = True
             if allow_actor_change:
                 step['allow_actor_change'] = True
+        if policy == "observe_unanswered_inbox":
+            step['pending_interaction_policy'] = policy
         # Dispatch once. Stale/unknown/error from this point never falls back.
         rows = self.execute_plan([step], name, timeout, reserve=90)
         need(len(rows) == 1, 'One original actual day row required')
@@ -1032,6 +1048,10 @@ class CaseClient:
                 'raw_public_row_path': str(self.output / (name + '.actual-results.json')),
                 'projection_source': 'actual-life-advance-one-day', 'row': row})
         value = obj(row.get('result'), 'actual day consumer result')
+        if policy == "observe_unanswered_inbox":
+            observation = pending_inbox_observation_v1(value.get('pending_interaction_observation'),
+                obj(value.get('before'), 'actual before Full'), obj(value.get('after'), 'actual after Full'))
+            self.checkpoint(name + '.pending-inbox-observation', observation)
         if allow_event_boundary and value.get('event_boundary') is not None:
             self.validate_frame(value.get('before'))
             self.validate_frame(value.get('after'), allow_actor_change=allow_actor_change, require_event_free=False)

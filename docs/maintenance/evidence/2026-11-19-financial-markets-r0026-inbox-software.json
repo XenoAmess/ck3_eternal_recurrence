@@ -1,0 +1,1109 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "baseline": {
+    "root_accepted": true,
+    "actor": 31254,
+    "date_raw": 53144520,
+    "financial_day": 8,
+    "accounts": 695,
+    "coins": 3,
+    "futures_positions": 19,
+    "debts": 0,
+    "E1_passive": "1444",
+    "E2_armed_once": "1449",
+    "baseline_DAY": "1450",
+    "physical_archives": 1,
+    "exact_source_financial_equality": "confirmed by original independent audit and Root accepted review"
+  },
+  "observed_progress": {
+    "completed_advance_steps": [
+      {
+        "id": "case-natural-day-0003",
+        "date_raw": 53144544
+      },
+      {
+        "id": "case-natural-day-0005",
+        "date_raw": 53144568
+      },
+      {
+        "id": "case-natural-day-0007",
+        "date_raw": 53144592
+      },
+      {
+        "id": "case-natural-day-0009",
+        "date_raw": 53144616
+      },
+      {
+        "id": "case-natural-day-0011",
+        "date_raw": 53144640
+      },
+      {
+        "id": "case-natural-day-0013",
+        "date_raw": 53144664
+      },
+      {
+        "id": "case-natural-day-0015",
+        "date_raw": 53144688
+      }
+    ],
+    "eighth_step_failed": "case-natural-day-0017",
+    "latest_raw": 53144712,
+    "new_observed_days": 8,
+    "new_saved_days": 0,
+    "thirtyfive_day_window_complete": false
+  },
+  "boundary": {
+    "original_host_error": "RuntimeError: an active event interrupted the original Florin day; no control replay",
+    "exact_snapshot_json_pointer": "/steps/20/after_snapshot",
+    "active_event": null,
+    "pending_character_interaction": {
+      "instance_id": 33554448,
+      "sender_character_id": 34232,
+      "auto_accept_notification": false,
+      "source": "native"
+    },
+    "qualification": "Storage first eligible candidate, not proof of current displayed notification or nonmodal/ignorable status; this semantic limitation is supplied by Root current direction, not a new ABI qualification here"
+  },
+  "closure": {
+    "run_returncode": 2,
+    "host_actual_original_exit_code": 1,
+    "game_actual_exit_code": 0,
+    "job_active_processes_final": 0,
+    "keeper_actual_exit_code": 0,
+    "tree_gone": true,
+    "cleanup_ok": true,
+    "original_normal_close_qualified": false,
+    "business_pass": false
+  },
+  "release": {
+    "argv_expected_sequence": 15509,
+    "observed_final_sequence": 15510
+  },
+  "R0025": {
+    "host_started": false,
+    "game_started": false,
+    "native_session_started": false,
+    "receipt_age_seconds": 33.723177,
+    "financial_actions": 0,
+    "observer_arms": 0,
+    "new_game_days": 0,
+    "physical_saves": 0
+  },
+  "retained_preparation_failures": {
+    "original_javac_child": 0,
+    "outer_wrapper": 1,
+    "wrapper_provenance": "evolution25-e2-read-preparation02/README.md:11; localized stderr decode after child finished",
+    "review_helper_original_wait": 1,
+    "cause": "two legitimate prepared-case pins; actual ready selects a02",
+    "proposal03": "SOURCE_ONLY_NOT_EXECUTED_OPTIONAL_NONBLOCKING_PROPOSAL"
+  },
+  "not_granted": [
+    "35-day completion",
+    "new landless/low-tier AI paid issuance",
+    "toast delivery",
+    "expiry settlement",
+    "whole-product release"
+  ],
+  "schema": "ck3-financial-r0026-inbox-software-evidence-v1",
+  "recorded_at_utc": "2026-11-19T13:46:51.656611+00:00",
+  "scope": "Offline documentation/evidence candidate only. No Root/Git/Game/Native/OS operation, build/test rerun or SAVE payload read.",
+  "prior_r0026_summary": {
+    "path": "C:/workspace/ck3-market-task-20261118/r0026-progress-doc-candidate02/SOURCE_SUMMARY.actual.json",
+    "bytes": 11652,
+    "sha256": "a959b5db46688f5cd8db0b71f064be6ded55c2fff0ddb345d48208979d07ad1e"
+  },
+  "r0026_originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0026-closure-before-release.actual.json",
+      "bytes": 3345,
+      "sha256": "950280bd3f877acc7d312868ec1f79f2fa8b0e9b7147c0768545946b66ffac42"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0025-prehost-closure-before-release.actual.json",
+      "bytes": 2075,
+      "sha256": "3a9c288523e57076bcbaabeffad9aeb3e7869297484634bdc0b2de1c2c6c6b79"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0025-prehost-successor-a104-preparation01\\R0025-background-refusal-closure.actual.json",
+      "bytes": 5075,
+      "sha256": "7f3240380c3746fa011355ffd07729c39a5caffd822be74edabd20981f2fea17"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution26-baseline01-PIPELINE.actual.json",
+      "bytes": 11376,
+      "sha256": "5d8738a3364b0d6a62ad970e06f778e087cec1c36cb75b78fb9ef5e701724538"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution26-baseline01-E2-READS.actual.json",
+      "bytes": 2224,
+      "sha256": "7670c00bee7910366543994619ec9516385c306411e1595d56bdb35d8b6829dd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution26-baseline-inspection.actual.json",
+      "bytes": 8393,
+      "sha256": "8131f9a16d9e8c0e38818d776925b7039126c0859afa795005c1370935069c1a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution26-baseline-review-candidate03\\SOURCE_READY.json",
+      "bytes": 2954,
+      "sha256": "e5bd63bae9e5ead64d276cbbe08b3a5ca5119448333b71552118e92e9b19c151"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution26-baseline-review-candidate03\\README.md",
+      "bytes": 1682,
+      "sha256": "ce14f39991862be5f11ae1a0b6412a575b2bdb015ea0586b8ac2bef7aef01fd9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution25-e2-read-preparation02\\README.md",
+      "bytes": 5265,
+      "sha256": "a864f85da57a6fc69a8e28e9d9bad585ad049432d2248736eb7d6abf0a2953d4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution26-business-targets-readonly01.actual.json",
+      "bytes": 680206,
+      "sha256": "657abc93f28d2cc9785c6cc7537024b0b5523a7d35a87351ef4205663ed075ee"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0026\\evolution26-baseline01\\ARCHIVE.actual.json",
+      "bytes": 7593,
+      "sha256": "16fcf3563f8d4b723f4628eef63c35847a7c9156c38420ee14417b426f07bb18"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119r\\live\\4-8e1c2f1861--financial-markets--R0026\\native-report.json",
+      "bytes": 1347844,
+      "sha256": "b0d826114070aa7d04645d4f5d15cf7f18842289646f6645f23b43675f06f698"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119r\\live\\4-8e1c2f1861--financial-markets--R0026\\case-output\\bind-genuine-campaign-and-observation-baseline-accepted.json",
+      "bytes": 7836,
+      "sha256": "90a038ab81282101f8054f14fc17a8e16b33e8abf5e17a37508049a7b1f762b5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119r\\live\\4-8e1c2f1861--financial-markets--R0026\\case-output\\normal-close-result.json",
+      "bytes": 10250,
+      "sha256": "f4ad12fadd9cd9566ec3f09d8fcc8cb0a55a94d7040abc0da91c9b005ad97fc4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119r\\live\\4-8e1c2f1861--financial-markets--R0026\\host-original-process-exit.json",
+      "bytes": 241,
+      "sha256": "5db8dfeded6ea174b4db06a3baa6ad23a2a206071369992a6c55b257beb75fad"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119r\\live\\4-8e1c2f1861--financial-markets--R0026\\ready-context.json",
+      "bytes": 3016,
+      "sha256": "6e9739424ff73192d477b9d098f645102692da6a87e6a1e74fc035e3b68bf91e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119r\\live\\4-8e1c2f1861--financial-markets--R0026\\frozen-argv.json",
+      "bytes": 202033,
+      "sha256": "d8c18a1a4ea56e69a56d2e5772254a1fbe606cf8cb24394f098f5c6f4267e706"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPILE-evolution25-e2-readers01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2012,
+      "sha256": "d78d7fc43b9a92be08c38467165dec3f3836cc1175aa05cf3029957609a2c094"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPILE-evolution25-e2-readers01\\stderr.log",
+      "bytes": 194,
+      "sha256": "c97145ee401030cf5cf47f4daa86c93093a2a95bb763189714aa3227786fbb95"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\REVIEW-evolution26-baseline01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 3266,
+      "sha256": "fbe8aae38d6de56769814d7922fdfb21ca02aa8169c7b31f235f249230ad1a12"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\REVIEW-evolution26-baseline01\\stderr.log",
+      "bytes": 800,
+      "sha256": "b810148a08cecda011b416b93222f4a7eafbf10384f0770c44144e73980ac2c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-evolution26.argv.json",
+      "bytes": 495,
+      "sha256": "d5306524f061b76e48c07ea1b5f7433850c978f536aafae82a9892579a7dcd6b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-evolution26\\stdout.log",
+      "bytes": 1308,
+      "sha256": "603cf9377499022ba18ea738f078fc94c54babde8820d9921ec6ed00ee95a916"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-evolution26\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1309,
+      "sha256": "147337c06b2d31fed69feaf3fd565b2a6b94c9904aa41202bb383bbdbcded393"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EVOLUTION05-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1535,
+      "sha256": "96f9d4315be283e4ca46e77fce5127e42af3a5c9c7788d1e8ec85fce965a88eb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-pending-day-host03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 976,
+      "sha256": "7a43a5ad7f999ff15c5d0710f55c46514b9fb48150b6cd6c2ece6997ff0d5923"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-florin-pending-day-host03\\stderr.log",
+      "bytes": 14883,
+      "sha256": "d5fd0739d208e438650938ad4d0e80f3c53436209e1dc9f37f2d6da276d1ba16"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 393668,
+      "sha256": "4e3ba0b3aa43e0da84943d9dd79cac9e971045b98b3938e3b745827c8d633e6d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_campaign_event.py",
+      "bytes": 40682,
+      "sha256": "545246041d0607973035a0b25c055637b20a9b5d20fe7f12ab6ee5f353c4823b"
+    }
+  ],
+  "business_pass": false,
+  "new_saved_days": 0,
+  "runtime05_started": false,
+  "whole_product_release_pass": false,
+  "published": false,
+  "software": {
+    "original": {
+      "path": "C:/workspace/ck3-market-task-20261118/software-inbox-e3-actual02/SOFTWARE.actual.json",
+      "bytes": 168202,
+      "sha256": "b96f809eaea778b890639d67501f4fa94acaf63bed7ce3680c4a1781b628c44e"
+    },
+    "source_head_before_commit": "1a39f86ae2ce1971a059e34ef8475c3d67387a01",
+    "capture_timing": "One actual full financial verify after E3 fixture changes; unchanged shared23 original output reused. Source window includes both actual market case JSON inputs. Python policy/Host checks are separate and are not added to the Java distinct total.",
+    "total_distinct_methods": 406,
+    "xml_reports": 42,
+    "groups": [
+      {
+        "module": "shared",
+        "operation": "MVN-financial-shared-tombstone01",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-shared-tombstone01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 978,
+          "sha256": "1354c937f2a6e446c31e2d2bf88a44958910db48cd93301b5e4ceaf792192f2a"
+        },
+        "totals": {
+          "tests": 23,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "reexecuted_for_this_change": false
+      },
+      {
+        "module": "financial",
+        "operation": "MVN-financial-inbox-e3-verify01",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-inbox-e3-verify01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 986,
+          "sha256": "08049f487b7f41eddc862ffb683cb73c546587fb4787e382cd55a6f4aa0b52f5"
+        },
+        "totals": {
+          "tests": 383,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "reexecuted_for_this_change": true
+      }
+    ],
+    "runtime_files": 215,
+    "tests_run_by_this_documentation_task": 0,
+    "adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\e3-fixture-Root-adoption02.actual.json",
+      "bytes": 6493,
+      "sha256": "f029a04794e3f4b3277f46c6faee7c2faf534fafb428af012f9680e41167a8c4"
+    },
+    "prior_software": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-delisting-committed02\\SOFTWARE.actual.json",
+      "bytes": 167457,
+      "sha256": "962ff5e985fc1b9b238b87e068acb34e54042e213d3140332800e9e91fb366d6"
+    },
+    "live_pass": false
+  },
+  "public_validation_batches": [
+    {
+      "original": {
+        "path": "C:/workspace/ck3-market-task-20261118/inbox-public-validation01/VALIDATION.actual.json",
+        "bytes": 8526,
+        "sha256": "4cb9c4753048eea5ab984956607febd33f8b962430a25c385d84a39444167f43"
+      },
+      "started_at_utc": "2026-11-19T13:23:03.089908+00:00",
+      "finished_at_utc": "2026-11-19T13:23:16.406001+00:00",
+      "test_and_check_pass": false,
+      "operations": [
+        {
+          "index": 1,
+          "operation": "CHECK-inbox-public01-01",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-01.argv.json",
+            "bytes": 162,
+            "sha256": "ffee0c69e0bdcc2bd454228fe79e7f53bddc9edc4abb7dcd5ca3980dc3471ad6"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 952,
+            "sha256": "41ba4117094009ab8cc5df328760f4a3210c3283fa20514c2f016f31e0dece33"
+          },
+          "original_returncode": 1,
+          "wrapper_returncode": 1
+        },
+        {
+          "index": 2,
+          "operation": "CHECK-inbox-public01-02",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-02.argv.json",
+            "bytes": 171,
+            "sha256": "f16e24025b7116e59eca036190f266dcfdc697106d69cd74586863f001608981"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-02\\ORIGINAL-WAIT.actual.json",
+            "bytes": 962,
+            "sha256": "6defca03687c74caaf5b8d22336b6a3bfdd786deda44dfb2ce060cd30fa4d03f"
+          },
+          "original_returncode": 1,
+          "wrapper_returncode": 1
+        },
+        {
+          "index": 3,
+          "operation": "CHECK-inbox-public01-03",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-03.argv.json",
+            "bytes": 256,
+            "sha256": "5d51538328093a4c4759f6d92bc28cfa8886c4905c5799503f04d6ef5d067c87"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-03\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1053,
+            "sha256": "a06caccd9822b4719fa8032363311cbf73cf7d3e63bd9041e3bbc7c22748f644"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 4,
+          "operation": "CHECK-inbox-public01-04",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-04.argv.json",
+            "bytes": 172,
+            "sha256": "774ee5a1dc8e61a6b97d8c27fbb3f65f967a13a052d1108db3e3c224bb408cde"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-04\\ORIGINAL-WAIT.actual.json",
+            "bytes": 963,
+            "sha256": "2288fb3f55dfa4208dffd45ed88abfbd29de7a66003d908f8dd11a1473856345"
+          },
+          "original_returncode": 1,
+          "wrapper_returncode": 1
+        },
+        {
+          "index": 5,
+          "operation": "CHECK-inbox-public01-05",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-05.argv.json",
+            "bytes": 443,
+            "sha256": "cd3a27ee013a9267fe43b3d3f3f1a1f8752738075d53294c00af06c415bea327"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-05\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1241,
+            "sha256": "b3c96fb6bac7e3de8a09bdcc5394ca0390e01c814325647aa92be46a74c88d91"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 6,
+          "operation": "CHECK-inbox-public01-06",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-06.argv.json",
+            "bytes": 164,
+            "sha256": "14b107ec8be4b7d23bd817a0503d55edf88d5e36d85f2f55e3d8304bff3d9e46"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-06\\ORIGINAL-WAIT.actual.json",
+            "bytes": 952,
+            "sha256": "7b097c2fe44dbff07144fb5d7438e25082e29d0ae1728d14e20759656b161263"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 7,
+          "operation": "CHECK-inbox-public01-07",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-07.argv.json",
+            "bytes": 173,
+            "sha256": "f6c5e7ba5b6c18519f53029d79bdfd5d311c133a6ee1e79fee2c5c8d0ebc2746"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-07\\ORIGINAL-WAIT.actual.json",
+            "bytes": 963,
+            "sha256": "23119defa751cb5e3d97525a8bf6e6ba176b81ed7782e135bd312bd0356b4046"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 8,
+          "operation": "CHECK-inbox-public01-08",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-08.argv.json",
+            "bytes": 256,
+            "sha256": "4fd50c06072293ea47784c07e173d482b3d5a272d684d6df7a5fa8f987cc6f65"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-08\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1052,
+            "sha256": "d7d8ede30133ae117dee33edf57df16b23b2387ad974f7ccd51c4f8b5af1a41d"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        }
+      ],
+      "business_pass": false
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3-market-task-20261118/inbox-public-validation02/VALIDATION.actual.json",
+        "bytes": 7669,
+        "sha256": "9380bb71b61480b8b0e3f73932a1cc768f84a9e644fa8146fe8d3e88cc894630"
+      },
+      "started_at_utc": "2026-11-19T13:30:34.760079+00:00",
+      "finished_at_utc": "2026-11-19T13:30:59.853783+00:00",
+      "test_and_check_pass": false,
+      "operations": [
+        {
+          "index": 1,
+          "operation": "CHECK-inbox-public02-01",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-01.argv.json",
+            "bytes": 171,
+            "sha256": "9652acd89e968400e39d0f3e3e83276354a5764e9677f156e55cdbea785ab434"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 963,
+            "sha256": "6340055bc292d4e7e20960484dfd61d877da7d6098fc2adc030ffad1e2c47eff"
+          },
+          "original_returncode": 1,
+          "wrapper_returncode": 1
+        },
+        {
+          "index": 2,
+          "operation": "CHECK-inbox-public02-02",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-02.argv.json",
+            "bytes": 180,
+            "sha256": "0ca99842b40c978cc5a0faa07aee644d992a2d0f238a668dd1eed6e020d43c5b"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-02\\ORIGINAL-WAIT.actual.json",
+            "bytes": 975,
+            "sha256": "4281d6ad5edaecf94f5b7f5eff0b062d18aa9ddcd069cef78574a3a1ae1c8521"
+          },
+          "original_returncode": 1,
+          "wrapper_returncode": 1
+        },
+        {
+          "index": 3,
+          "operation": "CHECK-inbox-public02-03",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-03.argv.json",
+            "bytes": 256,
+            "sha256": "5d51538328093a4c4759f6d92bc28cfa8886c4905c5799503f04d6ef5d067c87"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-03\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1053,
+            "sha256": "ecc7dc50a90847618ae1602bf831e220cd7c8d05d909441f091233214032e509"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 4,
+          "operation": "CHECK-inbox-public02-04",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-04.argv.json",
+            "bytes": 181,
+            "sha256": "169df8cefeee8e52c3cbca17d36128d60823238c8d52de9b4cf02e536077a6ec"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-04\\ORIGINAL-WAIT.actual.json",
+            "bytes": 977,
+            "sha256": "922b17d919710ede760dadfc5ad187d67f4a4fbb055eb66948503f83d4841b37"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 5,
+          "operation": "CHECK-inbox-public02-05",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-05.argv.json",
+            "bytes": 199,
+            "sha256": "a92627f2599fa2cb18863db4774606871e75350c94a490269a2b7239480813c4"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-05\\ORIGINAL-WAIT.actual.json",
+            "bytes": 992,
+            "sha256": "055a5677a00885d21000a731bd170d537450fa26c6de3b699ea9e812b81f1a69"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 6,
+          "operation": "CHECK-inbox-public02-06",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-06.argv.json",
+            "bytes": 176,
+            "sha256": "fb4ab461502deb7f073bc0970405e87a6c5798cc3f0057cdab9950ccbfbbfde9"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-06\\ORIGINAL-WAIT.actual.json",
+            "bytes": 969,
+            "sha256": "ee753423aa5e185bfaa6d443134b611c642a8acd2c1f7a153a76720254bfb8de"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        }
+      ],
+      "business_pass": false
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3-market-task-20261118/inbox-public-validation03/VALIDATION.actual.json",
+        "bytes": 5698,
+        "sha256": "faeb111f2fe10b14f70bf64b1f58212d9cff9f9816367e64a3544626b72594d8"
+      },
+      "started_at_utc": "2026-11-19T13:38:45.606068+00:00",
+      "finished_at_utc": "2026-11-19T13:38:54.785340+00:00",
+      "test_and_check_pass": false,
+      "operations": [
+        {
+          "index": 1,
+          "operation": "CHECK-inbox-public03-01",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public03-01.argv.json",
+            "bytes": 171,
+            "sha256": "9652acd89e968400e39d0f3e3e83276354a5764e9677f156e55cdbea785ab434"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public03-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 962,
+            "sha256": "3d02e3902854b476e1d6c278011c148645ee5cd4ed4817666ab5b10973bb8599"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 2,
+          "operation": "CHECK-inbox-public03-02",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public03-02.argv.json",
+            "bytes": 180,
+            "sha256": "0ca99842b40c978cc5a0faa07aee644d992a2d0f238a668dd1eed6e020d43c5b"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public03-02\\ORIGINAL-WAIT.actual.json",
+            "bytes": 972,
+            "sha256": "a112037874f264cebc6d6ab91ce09d36d71ecc5cfc153a85e4a0dfa82063e663"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 3,
+          "operation": "CHECK-inbox-public03-03",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public03-03.argv.json",
+            "bytes": 256,
+            "sha256": "5d51538328093a4c4759f6d92bc28cfa8886c4905c5799503f04d6ef5d067c87"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public03-03\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1054,
+            "sha256": "00647b2733d0e4e6b463f62a896af10ac33aa5dd526b06c219e5f4c676d93aa3"
+          },
+          "original_returncode": 1,
+          "wrapper_returncode": 1
+        }
+      ],
+      "business_pass": false
+    },
+    {
+      "original": {
+        "path": "C:/workspace/ck3-market-task-20261118/inbox-public-validation04/VALIDATION.actual.json",
+        "bytes": 5697,
+        "sha256": "7b23c7035dba13e384e6ffea4325492e800264189b75b2a8ea2ceacd6ac063f8"
+      },
+      "started_at_utc": "2026-11-19T13:39:55.571500+00:00",
+      "finished_at_utc": "2026-11-19T13:40:04.628798+00:00",
+      "test_and_check_pass": true,
+      "operations": [
+        {
+          "index": 1,
+          "operation": "CHECK-inbox-public04-01",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-01.argv.json",
+            "bytes": 171,
+            "sha256": "9652acd89e968400e39d0f3e3e83276354a5764e9677f156e55cdbea785ab434"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 962,
+            "sha256": "58c4cdc92e3975576aabac86947a9363c3d20bb59ad20175a9b3568c8c4bc47c"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 2,
+          "operation": "CHECK-inbox-public04-02",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-02.argv.json",
+            "bytes": 180,
+            "sha256": "0ca99842b40c978cc5a0faa07aee644d992a2d0f238a668dd1eed6e020d43c5b"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-02\\ORIGINAL-WAIT.actual.json",
+            "bytes": 972,
+            "sha256": "b1e7e65e445a306d8fe246c9c9bb95349f999c6b6d8f384a0d0841438ae93d7c"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        },
+        {
+          "index": 3,
+          "operation": "CHECK-inbox-public04-03",
+          "argv": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-03.argv.json",
+            "bytes": 256,
+            "sha256": "5d51538328093a4c4759f6d92bc28cfa8886c4905c5799503f04d6ef5d067c87"
+          },
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-03\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1053,
+            "sha256": "8ba34c4767883780083d2bbde894d9e3f8d649a3bc9874868ecf936a4cead476"
+          },
+          "original_returncode": 0,
+          "wrapper_returncode": 0
+        }
+      ],
+      "business_pass": false
+    }
+  ],
+  "selected_original_operation_results": [
+    {
+      "started_at_utc": "2026-11-19T13:23:06.670351+00:00",
+      "finished_at_utc": "2026-11-19T13:23:09.034723+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "tools/ck3_mod_acceptance_native_day.py",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_interaction_boundary_v1.py",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/managed_pause_owner_v1.py",
+        "ck3_autonomous_player/tests/unit/test_managed_pause_owner_v1.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.3643742999993265,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-05\\stdout.log",
+        "bytes": 44,
+        "sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-05\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "operation": "CHECK-inbox-public01-05",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public01-05/ORIGINAL-WAIT.actual.json",
+        "bytes": 1241,
+        "sha256": "b3c96fb6bac7e3de8a09bdcc5394ca0390e01c814325647aa92be46a74c88d91"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:23:09.187151+00:00",
+      "finished_at_utc": "2026-11-19T13:23:15.279635+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_generic_product_saved_readback.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 6.092487500049174,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-06\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-06\\stderr.log",
+        "bytes": 125,
+        "sha256": "ca146e236923b11fa6630ce7c2a263f2b97e5ab922dbd574f713b95ca03466bf"
+      },
+      "operation": "CHECK-inbox-public01-06",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public01-06/ORIGINAL-WAIT.actual.json",
+        "bytes": 952,
+        "sha256": "7b097c2fe44dbff07144fb5d7438e25082e29d0ae1728d14e20759656b161263"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:23:09.727421+00:00",
+      "finished_at_utc": "2026-11-19T13:23:16.383621+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-O",
+        "-X",
+        "utf8",
+        "tools/test_generic_product_saved_readback.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 6.656219399999827,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-07\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-07\\stderr.log",
+        "bytes": 125,
+        "sha256": "7331862b03ddb692e1af85470eea94ce1ab0d3fe9f42d2385bd702589d218962"
+      },
+      "operation": "CHECK-inbox-public01-07",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public01-07/ORIGINAL-WAIT.actual.json",
+        "bytes": 963,
+        "sha256": "23119defa751cb5e3d97525a8bf6e6ba176b81ed7782e135bd312bd0356b4046"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:23:12.140568+00:00",
+      "finished_at_utc": "2026-11-19T13:23:13.725795+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--follow-imports=skip",
+        "--no-incremental",
+        "--cache-dir",
+        "nul",
+        "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.585224000038579,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-08\\stdout.log",
+        "bytes": 613,
+        "sha256": "503b870add47266a8c49ed1e3ef1df8d486003d34598716cc62ae32b7d9840c1"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public01-08\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "operation": "CHECK-inbox-public01-08",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public01-08/ORIGINAL-WAIT.actual.json",
+        "bytes": 1052,
+        "sha256": "d7d8ede30133ae117dee33edf57df16b23b2387ad974f7ccd51c4f8b5af1a41d"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:30:37.544024+00:00",
+      "finished_at_utc": "2026-11-19T13:30:52.657601+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-O",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_native_day.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 15.113569900160655,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-04\\stdout.log",
+        "bytes": 931,
+        "sha256": "087b7db81d771783d062a321d6039d449014c999fd71a7c58fd674db69373917"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-04\\stderr.log",
+        "bytes": 3595,
+        "sha256": "3cc98c856a2718d51429c6539cb9c3ad4a900e01a2bfa586ee1f77b8c20df750"
+      },
+      "operation": "CHECK-inbox-public02-04",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public02-04/ORIGINAL-WAIT.actual.json",
+        "bytes": 977,
+        "sha256": "922b17d919710ede760dadfc5ad187d67f4a4fbb055eb66948503f83d4841b37"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:30:42.160557+00:00",
+      "finished_at_utc": "2026-11-19T13:30:54.207208+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-O",
+        "-X",
+        "utf8",
+        "ck3_autonomous_player/tests/unit/test_florin_event_control.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 12.046657299855724,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-05\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-05\\stderr.log",
+        "bytes": 5547,
+        "sha256": "fd583b185726181229c9ef8757b69eb5c771e85b4d97b9e3fcfd6c8595d7c7b0"
+      },
+      "operation": "CHECK-inbox-public02-05",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public02-05/ORIGINAL-WAIT.actual.json",
+        "bytes": 992,
+        "sha256": "055a5677a00885d21000a731bd170d537450fa26c6de3b699ea9e812b81f1a69"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:30:45.373657+00:00",
+      "finished_at_utc": "2026-11-19T13:30:59.831255+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_campaign_event.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 14.457608599914238,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-06\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public02-06\\stderr.log",
+        "bytes": 14883,
+        "sha256": "7139d6fc7ef09d2bffc5e9270236ac7fe802e3cc1c38fdfb18ce03b114c7322e"
+      },
+      "operation": "CHECK-inbox-public02-06",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public02-06/ORIGINAL-WAIT.actual.json",
+        "bytes": 969,
+        "sha256": "ee753423aa5e185bfaa6d443134b611c642a8acd2c1f7a153a76720254bfb8de"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:38:45.770239+00:00",
+      "finished_at_utc": "2026-11-19T13:38:47.888061+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "--no-incremental",
+        "--cache-dir",
+        "nul",
+        "tools/test_generic_product_day_boundary.py"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 2.117834100034088,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public03-03\\stdout.log",
+        "bytes": 368,
+        "sha256": "fcac29a2cbf4e4f08e3fd676f545cf0f02842f77ad5dd764464d67aafd6291cd"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public03-03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "operation": "CHECK-inbox-public03-03",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public03-03/ORIGINAL-WAIT.actual.json",
+        "bytes": 1054,
+        "sha256": "00647b2733d0e4e6b463f62a896af10ac33aa5dd526b06c219e5f4c676d93aa3"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:39:55.740352+00:00",
+      "finished_at_utc": "2026-11-19T13:40:02.064834+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_generic_product_day_boundary.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 6.324504300020635,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-01\\stderr.log",
+        "bytes": 6136,
+        "sha256": "b3b83a03db2ec5f8517584cd039627b93829c2e5e6ce27089e86fc9b62609c51"
+      },
+      "operation": "CHECK-inbox-public04-01",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public04-01/ORIGINAL-WAIT.actual.json",
+        "bytes": 962,
+        "sha256": "58c4cdc92e3975576aabac86947a9363c3d20bb59ad20175a9b3568c8c4bc47c"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:39:55.735076+00:00",
+      "finished_at_utc": "2026-11-19T13:40:04.604232+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-O",
+        "-X",
+        "utf8",
+        "tools/test_generic_product_day_boundary.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 8.86916089989245,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-02\\stderr.log",
+        "bytes": 3841,
+        "sha256": "8a45fa2620addfe4de03990d6845e9fa767aa7ffc83e9dcbe4c94ac31a67a2c6"
+      },
+      "operation": "CHECK-inbox-public04-02",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public04-02/ORIGINAL-WAIT.actual.json",
+        "bytes": 972,
+        "sha256": "b1e7e65e445a306d8fe246c9c9bb95349f999c6b6d8f384a0d0841438ae93d7c"
+      }
+    },
+    {
+      "started_at_utc": "2026-11-19T13:39:55.751687+00:00",
+      "finished_at_utc": "2026-11-19T13:39:57.804797+00:00",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "--no-incremental",
+        "--cache-dir",
+        "nul",
+        "tools/test_generic_product_day_boundary.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.053111100103706,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-03\\stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-inbox-public04-03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "operation": "CHECK-inbox-public04-03",
+      "original_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/CHECK-inbox-public04-03/ORIGINAL-WAIT.actual.json",
+        "bytes": 1053,
+        "sha256": "8ba34c4767883780083d2bbde894d9e3f8d649a3bc9874868ecf936a4cead476"
+      }
+    }
+  ],
+  "validation03_to_04": {
+    "normal_and_optimized_tests_each": 20,
+    "batch03_normal_returncode": 0,
+    "batch03_optimized_returncode": 0,
+    "batch03_strict_returncode": 1,
+    "batch03_error": "test_generic_product_day_boundary.py:403 import-untyped for test_florin_event_control; original failure retained",
+    "changed_source_pins": {
+      "tools/test_generic_product_day_boundary.py": {
+        "before": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_generic_product_day_boundary.py",
+          "bytes": 35771,
+          "sha256": "eeb2613d505172950ff063c2ad660bbef86b4a79276502176699d22f26b44001"
+        },
+        "after": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_generic_product_day_boundary.py",
+          "bytes": 35838,
+          "sha256": "7734d79ab563e0053d536808efea21b41fface69a254f6fbe95fe2a1fb75747c"
+        }
+      }
+    },
+    "fix": "Replace cross-test import with same actual fixture path and original SHA constant. No fixture or assertion weakening.",
+    "batch04_returncodes": [
+      0,
+      0,
+      0
+    ],
+    "duplicate_optimized_executions_are_not_distinct_methods": true
+  },
+  "e3_reader_compile": {
+    "original_wait": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/COMPILE-evolution-e3-readers01/ORIGINAL-WAIT.actual.json",
+      "bytes": 2041,
+      "sha256": "f7c31c6b0e5b1844e3c089de1820b4f28b92dab4db111e6a4b154ee20774726d"
+    },
+    "original_returncode": 0,
+    "elapsed_seconds": 1.9985166999977082,
+    "started_at_utc": "2026-11-19T13:41:58.315783+00:00",
+    "finished_at_utc": "2026-11-19T13:42:00.314291+00:00",
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPILE-evolution-e3-readers01\\stderr.log",
+      "bytes": 200,
+      "sha256": "f5be2ed7c523c3bd12a9430a3b7f66167a215e3ac7175d60b9fddfccc5851fdd"
+    },
+    "outer_wrapper_returncode": 1,
+    "wrapper_failure": "Root reports localized stderr UTF-8 printing/decoding failure after javac child exit0; immutable child and wrapper outcomes retained separately",
+    "classes_recompiled_by_this_task": false,
+    "existing_classes_reused": true
+  },
+  "next_work": {
+    "policy": "Both market-evolution and delisting-gui explicitly opt into observe_unanswered_inbox; observe unanswered storage inbox only, no auto reply or nonmodal proof; active events still handled and each day needs independent Date terminal. No reply ABI prerequisite.",
+    "execution": "Prepare fresh scene and E3 from latest physical baseline. No old E2 re-arm or replay of original failed eighth step. runtime05 has not started at this evidence cutoff.",
+    "case_isolation": "delisting-gui only its normal notice/103. Other price, leverage, governance, promotion, redemption or OTC work needs separately authorized case and physical baseline.",
+    "remaining_business": [
+      "35-day evolution and delisting window",
+      "full leverage tiers",
+      "paid autonomous low-tier/landless AI issuance",
+      "debt/restructuring/crisis and player news bubbles",
+      "capacity/performance and full product acceptance"
+    ],
+    "release": "No release/publication credit."
+  }
+}

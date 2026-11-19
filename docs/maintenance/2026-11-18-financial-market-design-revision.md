@@ -38,3 +38,11 @@
 查阅 Binance、Coinbase、Kraken、Bybit 官方退市规则/案例和 NYDFS 最终指引，区别下架交易对、关闭资产交易支持、转出/迁移、现金清算和法律权利终结。普通游戏内摘牌采用 30 日公告，先退出新增杠杆风险，再处理合约与现货；行情失效时保留待定索偿，不伪造终价和已成交。外置任务 ID 为 ck3-market-lifecycle-20261118，本次仍仅文档，未运行游戏、实测容量或发布模组。
 
 容量检查使用该任务命名的 storage-task-start / storage-task-close JSON，新增文档预算 8 MiB，与前一修订合计按 16 MiB 保守增长覆盖。来源链接随配套设计保存，不将网页长文纳入 Git；检查原件为 lifecycle-document-review.json。
+
+## 后续实现与实机进展边界（2026-11-19，R0026）
+
+machine_id: `4-8e1c2f1861`。产品目标保持不变。R0026已在真实冷载中保留E1、正常Arm新E2一次，并归档/独立读取695账户、3币、19期货仓及债务0的精确基线；7个日进步骤成功，第8日日期已到但pending边界令Host中止，新增观察8日、保存0日。pending候选不是已显示窗口证据，原generic“active event”错误保留。不得据此授予35日、无地AI自主付费发行、气泡或完整产品通过；详细失败、实际清理与后继公共通道工作见[施工状态](../../mod_financial_markets/docs/development-status.md)和[共同验收记录](2026-11-18-machine4-financial-acceptance-control.md)。
+
+后继market-evolution／delisting-gui显式选择`observe_unanswered_inbox`，只观察未回复收件箱，不自动回复、不授非模态证明；活动事件与逐日独立Date终态仍保留，无需先迁reply ABI。本轮软件链已通过：Java406个不同方法（383金融＋23复用共享，42 XML）；公共Host28、producer `-O`17、native-day `-O`22及既有通过分记。公共验证03保留strict失败，04仅修同路径fixture常量导入后，普通／`-O`各20及strict全0；重复执行不累加不同方法数。E3读档器javac原0、外层UTF-8打印异常1分别保留，classes不重编。runtime05尚未启动，不授35日、无地AI新发、气泡、完整产品或发布；详见[本轮软件与失败原件](evidence/2026-11-19-financial-markets-r0026-inbox-software.json)。
+
+后续业务按注册case隔离：`delisting-gui`在Arm/基线后只允许一次正常公告及103确认，不承载额外杠杆、治理、宣传、兑付、价格操作或OTC。需要准备真实前提或补未验管理功能时，先在有相应授权的独立管理业务场操作并正常SAVE，再重选退市case；不重跑R0022已获得的窄交易信用，也不把其他case标记混作完整验收。

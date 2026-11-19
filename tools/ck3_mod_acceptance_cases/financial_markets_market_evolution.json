@@ -7,6 +7,7 @@
   "fixture_source": {"kind": "prebuilt_manifest"},
   "startup_mode": "saved_campaign",
   "maximum_natural_days": 35,
+  "pending_interaction_policy": "observe_unanswered_inbox",
   "failure_prefixes": ["XFMAT:"],
   "required_startup": [],
   "forbidden_startup": ["XFMAT: TEST FAIL"],

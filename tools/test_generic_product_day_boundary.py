@@ -7,6 +7,8 @@ replacement live frames or claims that R26 used the native-day route.
 from __future__ import annotations
 
 import copy
+import asyncio
+from types import SimpleNamespace
 import hashlib
 import inspect
 import json
@@ -17,6 +19,8 @@ import unittest
 from ck3_mod_acceptance_background_types import JsonObject, json_object
 from ck3_mod_acceptance_cases import generic_product_adapter as adapter
 from ck3_mod_acceptance_client import CaseClient
+from ck3_mod_acceptance_native_day import (PendingInteractionPolicy, admit_pending_interaction_policy_v1,
+    pending_interaction_policy_v1, pending_inbox_observation_v1)
 
 
 def object_row(value: object) -> dict[str, object]:
@@ -28,6 +32,12 @@ def object_row(value: object) -> dict[str, object]:
             raise ValueError('String key required')
         result[key] = item
     return result
+
+
+def object_rows(value: object) -> list[dict[str, object]]:
+    if not isinstance(value, list):
+        raise ValueError('Object list required')
+    return [object_row(item) for item in value]
 
 
 def evidence() -> JsonObject:
@@ -84,6 +94,7 @@ class PublicPort:
         self.boundary_successors: list[dict[str, object]] = []
         self.failure: Exception | None = None
         self.advertise_native = True
+        self.selection = SimpleNamespace(adapter_context=lambda: {})
         self.report: dict[str, object] = {'steps': [], 'readiness': self.before, 'capabilities': {
             'action_steps': ['life-advance-one-day'], 'bridge_capabilities': [
                 'game.command.research-arm-tactical-daily-sentinel-v1-N',
@@ -113,9 +124,10 @@ class PublicPort:
 
     def advance_day(self, days: int = 1, timeout: float = 300,
                     allow_event_boundary: bool = False,
-                    allow_actor_change: bool = False) -> dict[str, object]:
+                    allow_actor_change: bool = False,
+                    pending_interaction_policy: PendingInteractionPolicy = "stop_at_boundary") -> dict[str, object]:
         result: object = CaseClient.advance_day(self, days, timeout,
-                                                allow_event_boundary, allow_actor_change)
+                                                allow_event_boundary, allow_actor_change, pending_interaction_policy)
         return object_row(result)
 
     def execute_plan(self, steps: list[dict[str, object]], name: str,
@@ -182,11 +194,11 @@ class GenericDayBoundaryTests(unittest.TestCase):
 
     def run_fixture(self) -> JsonObject:
         profile = self.root / 'profile'
-        for relative in ('mod/product.mod', 'mod-content/product/descriptor.mod'):
+        for relative in ('mod/product.mod', 'mod-content/product/descriptor.mod', 'mod/fixture.mod'):
             path = profile / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text('name="authored product"', encoding='utf-8')
-        (profile / 'dlc_load.json').write_text(json.dumps({'enabled_mods': ['mod/product.mod']}), encoding='utf-8')
+        (profile / 'dlc_load.json').write_text(json.dumps({'enabled_mods': ['mod/product.mod', 'mod/fixture.mod']}), encoding='utf-8')
         compiled = {'product': self.context['product'], 'case': self.context['case'],
                     'config': self.config, 'required_markers': ['FIXTURE PASS'],
                     'product_marker_minimum': {}}
@@ -358,6 +370,242 @@ class GenericDayBoundaryTests(unittest.TestCase):
         self.assertEqual(len(self.port.world_calls()), 1)
         self.assertEqual(self.port.world_calls()[0]['tool'], 'ck3_execute_step')
         self.assertEqual(self.port.requests, [])
+
+
+class UnansweredInboxPolicyTests(unittest.TestCase):
+    """Actual Host/SDK software producer -> public day client -> generic case.
+
+    The Host helper uses existing C++ Full/ACK sources and real bounded clock
+    methods. Only OS/Game IO and public queue transport are software fixtures.
+    No actual scene or SAVE certification is inferred from these tests.
+    """
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory(prefix='inbox-observation-public-')
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+
+    def producer(self, before: dict[str, object] | None, after: dict[str, object] | None,
+                 *, case: str = 'market-evolution', event: dict[str, object] | None = None,
+                 date: int = 24024) -> tuple[dict[str, object], list[dict[str, object]]]:
+        from test_ck3_mod_acceptance_campaign_event import FlorinCampaignEventTests
+        FlorinCampaignEventTests.setUpClass()
+        source = FlorinCampaignEventTests()
+        self.addCleanup(source.doCleanups)
+        directory = self.root / ('host-' + str(len(list(self.root.glob('host-*')))))
+        directory.mkdir()
+        host = source.client(directory, starting_pending=before, pending=after,
+                             event=event, boundary_date=date, purpose=('financial-markets', case))
+        # A normalized semantic character is not a native Full payload: its
+        # nested build metadata has already been consumed. Preserve that actual
+        # metadata from the exact C++ packet, and update only the inert clock
+        # fixture's observed world fields before using the real SDK decoder.
+        from xar_autoplayer.bridge.native_driver import NativeProtocolState
+        fixtures = Path(__file__).resolve().parents[1] / 'java/ck3-control/native-transport/src/test/resources/newnative'
+        raw = (fixtures / 'full1210/full-snapshot-producer-102.json').read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),
+                         'a27f2dd30ad69b8927a133509a25be216bf7ce250fdf0a9b325bece78d355ae5')
+        template = object_row(json.loads(raw))
+        protocol = NativeProtocolState('software-inbox-public-projection')
+        capabilities = object_row(host.driver.capabilities())
+        hello = object_row(object_row(capabilities['diagnostics'])['hello'])
+        self.assertEqual(protocol.ingest(hello), 'hello')
+        original_fresh = host.fresh
+
+        async def public_fresh() -> dict[str, object]:
+            snapshot: object = await original_fresh()
+            internal = object_row(snapshot)
+            packet = copy.deepcopy(template)
+            state = object_row(packet['state'])
+            for field in ('date_raw', 'speed', 'paused', 'active_event',
+                          'pending_character_interaction', 'active_wars', 'player_armies',
+                          'episode_projection', 'episode_run_id'):
+                state[field] = copy.deepcopy(internal[field])
+            self.assertEqual(state['played_character'], object_row(template['state'])['played_character'])
+            packet.update(snapshot_id=internal['snapshot_id'],
+                          revision=internal['native_revision'], state=state)
+            self.assertEqual(protocol.ingest(packet), 'state_snapshot')
+            public = object_row(protocol.semantic_snapshot())
+            self.assertEqual(public['source'], 'injected-dll-named-pipe')
+            # Both sides of the inert transport now use the same SDK-issued
+            # public revision; the real primitive still checks that revision.
+            host.snapshot = copy.deepcopy(public)
+            host.driver.snapshot = copy.deepcopy(public)
+            return public
+
+        host.fresh = public_fresh
+        result: object = asyncio.run(host.advance_event_boundary(source.inbox_step()))
+        return object_row(result), [object_row(row) for row in host.driver.sent]
+
+    def port(self, result: dict[str, object], *, case: str = 'market-evolution', declared: bool = True) -> PublicPort:
+        directory = self.root / ('public-' + str(len(list(self.root.glob('public-*')))))
+        directory.mkdir()
+        port = PublicPort(directory)
+        port.before = copy.deepcopy(object_row(result['before']))
+        port.fresh = copy.deepcopy(port.before)
+        port.after = copy.deepcopy(object_row(result['after']))
+        hello = object_row(object_row(port.before['diagnostics'])['hello'])
+        port.manifest = {'game': {'version': hello['expected_ck3_version'], 'exe_sha256': hello['expected_ck3_sha256']}}
+        port.row = {'id': 'software-actual-host-producer', 'ok': True, 'error': None,
+                    'result': copy.deepcopy(result), 'after_snapshot': copy.deepcopy(port.after)}
+        port.advertise_native = False
+        port.report = {'steps': [], 'readiness': port.before,
+                       'capabilities': {'action_steps': [], 'bridge_capabilities': []}}
+        contract = {'product': 'financial-markets', 'case_id': case}
+        if declared:
+            contract['pending_interaction_policy'] = 'observe_unanswered_inbox'
+        port.selection = SimpleNamespace(adapter_context=lambda: {
+            'product': 'financial-markets', 'case': case, 'case_contract': contract})
+        return port
+
+    def generic(self, port: PublicPort, *, case: str = 'market-evolution') -> JsonObject:
+        profile = port.output / 'profile'
+        for relative in ('mod/product.mod', 'mod-content/product/descriptor.mod', 'mod/fixture.mod'):
+            path = profile / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('name="authored software product"', encoding='utf-8')
+        (profile / 'dlc_load.json').write_text(json.dumps({'enabled_mods': ['mod/product.mod', 'mod/fixture.mod']}), encoding='utf-8')
+        config = {'product': 'financial-markets', 'case_id': case, 'pending_interaction_policy': 'observe_unanswered_inbox',
+                  'acceptance_scope': 'authored observation', 'maximum_natural_days': 1,
+                  'gui_phases': [], 'failure_prefixes': [], 'source_contracts': []}
+        compiled = {'product': 'financial-markets', 'case': case, 'config': config,
+                    'required_markers': ['FIXTURE PASS'], 'product_marker_minimum': {}}
+        path = profile / 'mod-content/fixture/_case_contract.json'
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(compiled), encoding='utf-8')
+        context = {'product': 'financial-markets', 'case': case, 'run_id': 'authored-run',
+                   'state_dir': str(port.output), 'case_contract': config,
+                   'case_spec': {'budgets': {'command_timeout': 300}}}
+        return json_object(adapter.run_case(context, port))
+
+    @staticmethod
+    def inbox(identity: int = 33554448, sender: int = 34232) -> dict[str, object]:
+        return {'instance_id': identity, 'sender_character_id': sender,
+                'auto_accept_notification': False, 'source': 'native'}
+
+    def test_actual_host_producer_reaches_both_declared_cases_without_reply_or_root_notification_phase(self) -> None:
+        for case in ('market-evolution', 'delisting-gui'):
+            with self.subTest(case=case):
+                pending = self.inbox()
+                result, native_steps = self.producer(pending, pending, case=case)
+                port = self.port(result, case=case)
+                facts = self.generic(port, case=case)
+                self.assertEqual(len(port.world_calls()), 1)
+                self.assertEqual(port.world_calls()[0]['kind'], 'advance_day')
+                self.assertEqual(port.world_calls()[0]['pending_interaction_policy'], 'observe_unanswered_inbox')
+                self.assertIs(port.world_calls()[0]['allow_event_boundary'], True)
+                self.assertEqual(port.requests, [])
+                self.assertIs(facts['business_pass'], False)
+                observed = object_rows(facts['pending_interaction_observations'])
+                self.assertEqual(observed, [result['pending_interaction_observation']])
+                self.assertIs(object_row(observed[0])['resolved'], False)
+                self.assertEqual(object_row(observed[0])['modal_status'], 'not_observed')
+                sent = [str(row['step']) for row in native_steps]
+                self.assertEqual(sent.count('resume-map'), 1)
+                self.assertEqual(sum(step.startswith('research-arm-') for step in sent), 1)
+                self.assertFalse(any('reply' in step or 'select-event' in step for step in sent))
+
+    def test_actual_host_changes_are_retained_without_resolution_credit_and_signed_full_ids_survive(self) -> None:
+        pending = self.inbox(0, -(2**31))
+        other = self.inbox(-(2**31), 0)
+        scenarios: list[tuple[dict[str, object] | None, dict[str, object] | None, str]] = [
+            (None, pending, 'appeared'), (pending, None, 'disappeared'), (pending, other, 'changed')]
+        for before, after, kind in scenarios:
+            with self.subTest(kind=kind):
+                result, _ = self.producer(before, after)
+                port = self.port(result)
+                row = port.advance_day(allow_event_boundary=True, pending_interaction_policy='observe_unanswered_inbox')
+                observation = object_row(object_row(row['result'])['pending_interaction_observation'])
+                self.assertEqual(observation['before'], before)
+                self.assertEqual(observation['after'], after)
+                self.assertEqual([object_row(change)['change'] for change in object_rows(observation['changes'])], [kind])
+                self.assertIs(observation['resolved'], False)
+                self.assertIs(observation['reply_attempted'], False)
+                self.assertEqual(len(port.world_calls()), 1)
+
+    def test_actual_event_is_still_a_root_event_boundary_with_inbox_preserved(self) -> None:
+        pending = self.inbox()
+        result, _ = self.producer(pending, pending, event={'instance_id': 42}, date=24012)
+        port = self.port(result)
+        successor = copy.deepcopy(port.after)
+        successor['active_event'] = None
+        port.boundary_successors = [successor]
+        facts = self.generic(port)
+        self.assertEqual(len(port.requests), 1)
+        self.assertEqual(port.requests[0]['required_assertions'], [
+            'actual_current_event_resolved_with_typed_or_reviewed_original_evidence'])
+        self.assertEqual(port.after['pending_character_interaction'], pending)
+        self.assertIs(object_rows(facts['pending_interaction_observations'])[0]['resolved'], False)
+        self.assertEqual(len(port.world_calls()), 1)
+
+    def test_scope_and_policy_types_refuse_before_public_world_dispatch(self) -> None:
+        result, _ = self.producer(self.inbox(), self.inbox())
+        for value in (None, True, False, 0, 1.0, '', 'observe-unanswered-inbox', 'unknown'):
+            with self.subTest(policy=value):
+                port = self.port(result)
+                with self.assertRaises(ValueError):
+                    CaseClient.advance_day(port, allow_event_boundary=True, pending_interaction_policy=value)
+                self.assertEqual(port.sent, [])
+        for case, declared in (('spot', True), ('market-evolution', False)):
+            with self.subTest(case=case, declared=declared):
+                port = self.port(result, case=case, declared=declared)
+                with self.assertRaises(ValueError):
+                    port.advance_day(allow_event_boundary=True, pending_interaction_policy='observe_unanswered_inbox')
+                self.assertEqual(port.sent, [])
+        port = self.port(result)
+        with self.assertRaises(ValueError):
+            port.advance_day(allow_event_boundary=False, pending_interaction_policy='observe_unanswered_inbox')
+        self.assertEqual(port.sent, [])
+
+    def test_actual_producer_payload_mutations_never_become_a_false_observation(self) -> None:
+        result, _ = self.producer(None, self.inbox())
+        original = object_row(result['pending_interaction_observation'])
+        mutations = [('resolved', True), ('reply_attempted', True), ('modal_status', 'non_modal'),
+                     ('starting_snapshot_id', 'other'), ('changes', [])]
+        for field, wrong in mutations:
+            with self.subTest(field=field):
+                changed = copy.deepcopy(original); changed[field] = wrong
+                with self.assertRaises(ValueError):
+                    pending_inbox_observation_v1(changed, object_row(result['before']), object_row(result['after']))
+        for field in ('instance_id', 'sender_character_id'):
+            for bad in (True, 1.0, -1, -(2**31)-1, 2**31):
+                with self.subTest(field=field, bad=bad):
+                    changed = copy.deepcopy(original)
+                    changed_after = object_row(changed['after'])
+                    changed_after[field] = bad
+                    changed['after'] = changed_after
+                    with self.assertRaises(ValueError):
+                        pending_inbox_observation_v1(changed, object_row(result['before']), object_row(result['after']))
+
+    def test_unfinished_original_day_and_unknown_still_fail_without_retry_or_fallback(self) -> None:
+        result, _ = self.producer(self.inbox(), self.inbox())
+        port = self.port(result)
+        unfinished = object_row(port.row['result'])
+        unfinished['requested_interval_complete'] = False
+        port.row['result'] = unfinished
+        with self.assertRaises(ValueError):
+            port.advance_day(allow_event_boundary=True, pending_interaction_policy='observe_unanswered_inbox')
+        self.assertEqual(len(port.world_calls()), 1)
+        lost = self.port(result)
+        lost.failure = TimeoutError('authored original queue result unknown')
+        with self.assertRaises(TimeoutError):
+            lost.advance_day(allow_event_boundary=True, pending_interaction_policy='observe_unanswered_inbox')
+        self.assertEqual(len(lost.world_calls()), 1)
+        self.assertEqual(lost.requests, [])
+
+    def test_only_two_actual_case_files_declare_the_optin_and_other_scopes_keep_default(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        declared = {}
+        for path in (root / 'tools/ck3_mod_acceptance_cases').glob('financial_markets_*.json'):
+            config = json.loads(path.read_text(encoding='utf-8-sig'))
+            value = adapter._fixture_pending_interaction_policy(config)
+            if 'pending_interaction_policy' in config:
+                declared[config['case_id']] = value
+        self.assertEqual(declared, {'market-evolution': 'observe_unanswered_inbox', 'delisting-gui': 'observe_unanswered_inbox'})
+        self.assertEqual(pending_interaction_policy_v1('stop_at_boundary'), 'stop_at_boundary')
+        self.assertEqual(admit_pending_interaction_policy_v1('stop_at_boundary', product='anything', case=None), 'stop_at_boundary')
+        for product, case in (('other', 'market-evolution'), ('financial-markets', 'spot'), ('financial-markets', None)):
+            with self.assertRaises(ValueError):
+                admit_pending_interaction_policy_v1('observe_unanswered_inbox', product=product, case=case)
 
 
 if __name__ == '__main__':

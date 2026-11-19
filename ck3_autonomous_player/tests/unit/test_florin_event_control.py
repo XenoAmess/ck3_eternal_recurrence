@@ -37,13 +37,16 @@ def cpp(name: str) -> dict[str, object]:
 
 def frame() -> dict[str, object]:
     raw = (FIXTURES / 'full1210/full-snapshot-producer-102.json').read_bytes()
-    assert hashlib.sha256(raw).hexdigest() == 'a27f2dd30ad69b8927a133509a25be216bf7ce250fdf0a9b325bece78d355ae5'
+    if hashlib.sha256(raw).hexdigest() != 'a27f2dd30ad69b8927a133509a25be216bf7ce250fdf0a9b325bece78d355ae5':
+        raise AssertionError('Exact actual C++ Full fixture hash required')
     state = NativeProtocolState('software-florin-event-test')
     state.ingest({'type': 'hello', 'protocol_version': 1, 'pid': 42, 'connection_generation': 3,
                   'expected_ck3_version': CK3_1210.game_version, 'expected_ck3_sha256': CK3_1210.executable_sha256,
                   'game_adapter_id': 'ck3-1.21.0-msvc-x64', 'ck3_build_match': True,
                   'capabilities': ['game.state.snapshot', 'game.query.current-event-options.v1', 'game.command.select-event-option-N']})
-    assert state.ingest(json.loads(raw)) == 'state_snapshot'
+    kind = state.ingest(json.loads(raw))
+    if kind != 'state_snapshot':
+        raise AssertionError('Actual C++ Full must be ingested by the shared SDK')
     return {**state.semantic_snapshot(), 'episode_run_id': 'software-episode'}
 
 

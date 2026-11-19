@@ -40,6 +40,46 @@ final class MarketEvolutionScriptContractTest {
         assertFalse(request(null, null).markers().stream().anyMatch(m -> m.contains("issuance_readback") || m.contains("claim_accounting")));
     }
 
+    @Test void epochThreeStartsAtTheCurrentDurableDayAndCannotRearmOrMutateOlderEpochs() {
+        Request input = new Request(2, Profile.MARKET_EVOLUTION, 3,
+                new ActorBinding(ActorMode.CURRENT_PLAYER, null), new Targets("2", "1", null, null, null, null), null, null);
+        Vm v = new Vm(input);
+        Node e1 = v.node("retained-e1", "xfma_market_evolution_e1_observer", false)
+                .put("xfma_start_day", 2).put("xfma_daily_samples", 4);
+        Node e2 = v.node("retained-e2", "xfma_market_evolution_e2_observer", false)
+                .put("xfma_start_day", 6).put("xfma_daily_samples", 0);
+        v.player.put("xfma_market_evolution_e1_armed", 1).ref("xfma_market_evolution_e1_story", e1)
+                .put("xfma_market_evolution_e2_armed", 1).ref("xfma_market_evolution_e2_story", e2);
+        Map<String, Value> e1Before = Map.copyOf(e1.vars), e2Before = Map.copyOf(e2.vars);
+        String product = v.productState();
+        v.arm(); Node e3 = v.observer();
+        assertEquals("xfma_market_evolution_e3_observer", e3.kind);
+        assertEquals(6, e3.n("xfma_start_day"));
+        assertEquals(0, e3.n("xfma_daily_samples"));
+        assertEquals(1, e3.n("xfma_evolution_day_records"));
+        assertSame(e1, v.player.node("xfma_market_evolution_e1_story"));
+        assertSame(e2, v.player.node("xfma_market_evolution_e2_story"));
+        assertEquals(product, v.productState());
+        v.day(7); product = v.productState(); v.observe();
+        int allocations = v.nodes.size(), logs = v.logs.size();
+        long firstDate = e3.nodes("xfma_evolution_days").getFirst().n("xfma_first_native_date");
+        v.arm();
+        assertSame(e3, v.observer());
+        assertEquals(allocations, v.nodes.size()); assertEquals(logs, v.logs.size());
+        assertEquals(6, e3.n("xfma_start_day"));
+        assertEquals(1, e3.n("xfma_daily_samples"));
+        assertEquals(2, e3.n("xfma_evolution_day_records"));
+        assertEquals(firstDate, e3.nodes("xfma_evolution_days").getFirst().n("xfma_first_native_date"));
+        v.player.vars.remove("xfma_market_evolution_e3_armed");
+        v.arm();
+        assertSame(e3, v.observer(), "a retained current story also prevents a second Arm without its flag");
+        assertEquals(allocations, v.nodes.size()); assertEquals(logs, v.logs.size());
+        assertEquals(1, v.player.n("xfma_market_evolution_e1_armed"));
+        assertEquals(1, v.player.n("xfma_market_evolution_e2_armed"));
+        assertEquals(e1Before, e1.vars); assertEquals(e2Before, e2.vars);
+        assertEquals(product, v.productState(), "observation must not invoke or mutate the financial product");
+    }
+
     @Test void baselineAndRepeatedSameDayReadsDoNotInventCoinsFeesOrDailySamples() {
         Vm v = new Vm(request(null, null)); v.arm(); Node o = v.observer();
         String product = v.productState();

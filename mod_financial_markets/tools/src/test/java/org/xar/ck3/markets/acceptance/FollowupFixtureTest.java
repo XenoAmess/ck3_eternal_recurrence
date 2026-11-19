@@ -410,6 +410,25 @@ final class FollowupFixtureTest {
         assertFalse(result.path("business_acceptance_proven").booleanValue());
     }
 
+    @Test void evolutionEpochThreeEmissionRetainsOnlyTheFiniteKnownEvolutionHistory() throws IOException {
+        Request input = request(Profile.MARKET_EVOLUTION, 3);
+        var emission = FixtureEmitter.emit(repository(), temporary.resolve("saved-evolution-e3"), "synthetic-fixture-machine", input);
+        Path fixture = Path.of(emission.fixture());
+        assertEquals(input, FixtureEmitter.readInput(fixture.resolve("_xfma_request.json")));
+        var manifest = FixtureEmitter.JSON.readTree(Files.readAllBytes(Path.of(emission.manifest().path())));
+        assertEquals(6, manifest.path("producer_source_pins").size());
+        assertFalse(manifest.path("receipt").path("fixture_contains_business_effects").booleanValue());
+        assertFalse(emission.gameStarted());
+        assertEquals("NOT_RUN", emission.businessAcceptance());
+        Block cycles = parse(Files.readString(fixture.resolve("common/story_cycles/" + input.prefix() + ".txt")));
+        assertCompatibilityCatalog(cycles, input);
+        for (int epoch : List.of(1, 2))
+            assertEquals(parse("visible = no"), cycles.block("xfma_market_evolution_e" + epoch + "_observer"));
+        assertNotNull(cycles.block("xfma_market_evolution_e3_observer").block("effect_group"));
+        assertFalse(cycles.entries().stream().anyMatch(e -> e.key().equals("xfma_market_evolution_e4_observer")),
+                "the active request range does not imply an unbounded historical catalog");
+    }
+
     @Test void spotNumericScopeProbeUsesTheRealSixteenRowHistoryPageAndOnlyReadOnlyValidity() {
         for (Profile profile : Profile.values()) {
             Request input = request(profile, 3);
@@ -660,7 +679,7 @@ final class FollowupFixtureTest {
                 "xfma_spot_e2_observer", "xfma_derivatives_e2_observer", "xfma_lifecycle_e2_observer",
                 "xfma_inheritance_e2_observer", "xfma_cold_reload_e2_observer",
                 "xfma_news_crisis_e2_observer", "xfma_ai_capacity_e2_observer",
-                "xfma_market_evolution_e1_observer", "xfma_market_evolution_e2_observer", "xfma_spot_e3_observer",
+                "xfma_market_evolution_e1_observer", "xfma_market_evolution_e2_observer", "xfma_market_evolution_e3_observer", "xfma_spot_e3_observer",
                 "xfma_delisting_gui_e1_observer", "xfma_delisting_gui_e2_observer"));
         expected.addAll(FollowupObservationScripts.marketEvolutionRecordTypes());
         String active = input.prefix() + "_observer";

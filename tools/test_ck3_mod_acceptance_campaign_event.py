@@ -216,16 +216,22 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
         cls.definitions = [n for n in client.body if isinstance(n, ast.AsyncFunctionDef)
             and n.name in {'advance', 'advance_event_boundary', 'advance_campaign_event_boundary'}]
 
-    def client(self, directory, *, event=None, terminal='triggered', wrong_generation=False, drop_arm=False, missing=None):
+    def client(self, directory, *, event=None, pending=None, starting_pending=None, boundary_date=None, drift_pending=False,
+               purpose=None, pre_resume_event=False, speed_readback_event=False,
+               terminal='triggered', wrong_generation=False, drop_arm=False, missing=None):
         from test_florin_timeline_control_v1 import ClockDriver, RESOURCES, STATUS
         from test_florin_event_control import frame as actual_cpp_full, FIXTURES
         from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+        has_boundary = event is not None or pending is not None
+        ending_date = boundary_date if boundary_date is not None else 24012 if has_boundary else 24024
+        early_boundary = has_boundary and ending_date < 24024
         class Transport(ClockDriver):
             def __init__(self):
                 super().__init__(directory)
                 self.command_timeout_seconds = 5
-                self.snapshot.update(speed=1, active_event=None, pending_character_interaction=None, episode_projection='native_campaign')
-                self.resumed = False; self.canceled = False
+                self.snapshot.update(speed=2 if speed_readback_event else 1, active_event=None,
+                    pending_character_interaction=copy.deepcopy(starting_pending), episode_projection='native_campaign')
+                self.resumed = False; self.canceled = False; self.reads_after_resume = 0
                 self.snapshot['diagnostics'].update(bridge_pid=42, connection_generation=3)
                 self.snapshot['diagnostics']['hello'].update(pid=42, connection_generation=3)
                 self.snapshot['diagnostics']['hello']['capabilities'] = [
@@ -248,15 +254,15 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
                 status = row['result']['tactical_daily_sentinel']; status['speed'] = 1
                 if wrong_generation and not self.resumed: status['generation'] = 2
                 if self.resumed:
-                    ending = 24012 if event is not None else 24024
+                    ending = ending_date
                     if self.canceled: status['state'] = 'idle'
-                    elif event is None or terminal == 'triggered':
+                    elif not has_boundary or terminal == 'triggered':
                         status.update(state='triggered', last_observed_date_raw=ending, trigger_date_raw=ending,
-                            completed_daily_ticks=0 if event is not None else 1, overshoot_days=0, pause_observed=True,
-                            intermediate_pause_count=1 if event is not None else 0,
-                            trigger_flags=(1 << 13) if event is not None else 1,
-                            trigger_reasons=['native_pause'] if event is not None else ['date_deadline'],
-                            signed_date_delta_from_target_raw=ending-24024, pause_wrapper_called=event is None)
+                            completed_daily_ticks=0 if early_boundary else 1, overshoot_days=0, pause_observed=True,
+                            intermediate_pause_count=1 if early_boundary else 0,
+                            trigger_flags=(1 << 13) if early_boundary else 1,
+                            trigger_reasons=['native_pause'] if early_boundary else ['date_deadline'],
+                            signed_date_delta_from_target_raw=ending-24024, pause_wrapper_called=not early_boundary)
                 return status
 
             def wait_for_command_result(self, request_id, timeout):
@@ -291,9 +297,19 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
                 self.managed_done = threading.Event(); self.driver = driver
 
             async def fresh(self):
+                if not driver.resumed:
+                    if speed_readback_event and any(row['step'] == 'set-speed-1' for row in driver.sent):
+                        driver.snapshot.update(speed=1,active_event={'instance_id':42})
+                    if pre_resume_event and any(row['step'].startswith('research-arm-') for row in driver.sent):
+                        driver.snapshot['active_event'] = {'instance_id':42}
                 if driver.resumed:
-                    driver.snapshot.update(date_raw=24012 if event is not None else 24024,
-                        revision=73, native_revision=12, snapshot_id='native:12', active_event=copy.deepcopy(event), paused=True)
+                    driver.reads_after_resume += 1
+                    observed_pending = copy.deepcopy(pending)
+                    if drift_pending and driver.reads_after_resume > 1 and observed_pending is not None:
+                        observed_pending['sender_character_id'] += 1
+                    driver.snapshot.update(date_raw=ending_date,
+                        revision=73, native_revision=12, snapshot_id='native:12', active_event=copy.deepcopy(event),
+                        pending_character_interaction=observed_pending, paused=True)
                 self.snapshot = driver.take_snapshot()
                 return self.snapshot
 
@@ -312,6 +328,41 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
 
         value = Client()
         namespace = {'asyncio':asyncio, 'time':__import__('time')}
+        if purpose is not None:
+            # Real reviewed-context/prepared/frozen producer and exact Host
+            # loader, with temporary authored identity only; no mocked permit.
+            from test_product_acceptance_purpose import ProductPurposeTests, pin, write
+            import argparse
+            import importlib.util
+            fixture = ProductPurposeTests()
+            fixture.setUp()
+            self.addCleanup(fixture.doCleanups)
+            product, case = purpose
+            fixture.contract.update(product=product,case_id=case)
+            fixture.prepared.update(product=product,case=case)
+            fixture.frozen.update(mod_key=product,cell=case)
+            fixture.context.update(product=product,case=case)
+            fixture.refresh_contract()
+            write(fixture.frozen_path,fixture.frozen)
+            fixture.context['frozen_argv'] = pin(fixture.frozen_path)
+            fixture.refresh_context()
+            fixture.produce()
+            spec = importlib.util.spec_from_file_location('actual_inbox_policy_host',HOST)
+            if spec is None or spec.loader is None: raise ValueError('Actual Host loader unavailable')
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            namespace['load_product_acceptance_clock_v1'] = module.load_product_acceptance_clock_v1
+            value.args = argparse.Namespace(command_timeout=5,poll_interval=0,
+                product_acceptance_purpose=fixture.purpose_path,output=fixture.root/'native-report.json',
+                state_dir=fixture.state,bridge_pipe=fixture.pipe,agent_source_root=ROOT,
+                saved_campaign_server=True,frontend_fixture_start_policy=None)
+        else:
+            # This real loader returns None from the actual unbound args path.
+            loader_tree = ast.parse(HOST.read_text(encoding='utf-8-sig'))
+            loader = next(n for n in loader_tree.body if isinstance(n,ast.FunctionDef)
+                          and n.name == 'load_product_acceptance_clock_v1')
+            exec(compile(ast.fix_missing_locations(ast.Module(body=[loader],type_ignores=[])),str(HOST),'exec'),
+                 {'argparse':__import__('argparse'),'ProductAcceptanceClockV1':object,'Path':Path},namespace)
         exec(compile(ast.fix_missing_locations(ast.Module(body=self.definitions, type_ignores=[])), str(HOST), 'exec'), namespace)
         for name in ('advance','advance_event_boundary','advance_campaign_event_boundary'):
             setattr(value, name, lambda *args,_name=name,**kwargs: namespace[_name](value,*args,**kwargs))
@@ -381,6 +432,200 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
                 await value.advance_event_boundary(self.step())
             self.assertEqual([row['step'] for row in value.driver.sent],
                 ['research-arm-tactical-daily-sentinel-v1-24000-to-24024-speed-1-mode-terminal-a-0','research-query-tactical-daily-sentinel-v1'])
+
+
+    @staticmethod
+    def pending():
+        return {'instance_id':33554448, 'sender_character_id':34232,
+                'auto_accept_notification':False, 'source':'native'}
+
+    async def test_pending_at_target_returns_actual_boundary_after_real_sdk_terminal_without_replay(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp), pending=self.pending(), boundary_date=24024)
+            result = await value.advance_event_boundary(self.step())
+            self.assertTrue(result['requested_interval_complete'])
+            self.assertEqual(result['elapsed_hours'],24)
+            self.assertEqual(result['event_boundary']['pending_character_interaction'],self.pending())
+            self.assertEqual(result['after']['pending_character_interaction'],self.pending())
+            self.assertIsNone(result['after']['active_event'])
+            self.assertEqual(result['selected_event_options'],0)
+            steps = [row['step'] for row in value.driver.sent]
+            self.assertEqual(sum(step.startswith('research-arm-') for step in steps),1)
+            self.assertEqual(steps.count('resume-map'),1)
+            self.assertEqual(steps[-1],'research-query-tactical-daily-sentinel-v1')
+            self.assertFalse(any('select-event' in step or 'reply' in step for step in steps))
+            self.assertEqual(result['florin_date_sentinel']['stop']['trigger_reasons'],['date_deadline'])
+
+    async def test_early_pending_cancels_same_generation_and_never_claims_one_day(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp), pending=self.pending(), terminal='armed')
+            result = await value.advance_event_boundary(self.step())
+            self.assertFalse(result['requested_interval_complete'])
+            self.assertEqual(result['elapsed_hours'],12)
+            self.assertEqual(result['after']['pending_character_interaction'],self.pending())
+            steps = [row['step'] for row in value.driver.sent]
+            self.assertEqual(steps.count('resume-map'),1)
+            self.assertEqual(steps[-2:],['research-cancel-tactical-daily-sentinel-v1-generation-1',
+                                       'research-query-tactical-daily-sentinel-v1'])
+            self.assertEqual(result['florin_date_sentinel']['stop']['state'],'idle')
+
+    async def test_early_pending_native_pause_terminal_is_preserved_without_cancel_or_day_credit(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp), pending=self.pending())
+            result = await value.advance_event_boundary(self.step())
+            self.assertFalse(result['requested_interval_complete'])
+            self.assertEqual(result['elapsed_hours'],12)
+            self.assertIsNone(result['florin_date_sentinel']['cancel'])
+            self.assertFalse(any(row['step'].startswith('research-cancel-') for row in value.driver.sent))
+
+    async def test_pending_sender_drift_at_independent_terminal_read_refuses_without_replay(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp), pending=self.pending(), boundary_date=24024, drift_pending=True)
+            with self.assertRaisesRegex(RuntimeError,'notification boundary changed'):
+                await value.advance_event_boundary(self.step())
+            steps = [row['step'] for row in value.driver.sent]
+            self.assertEqual(steps.count('resume-map'),1)
+            self.assertEqual(sum(step.startswith('research-arm-') for step in steps),1)
+
+    async def test_pending_exact_typed_identity_refuses_bool_source_and_wrong_fields(self):
+        import tempfile
+        for changed in ({'instance_id':True},{'sender_character_id':True},
+                        {'auto_accept_notification':1},{'source':'copied'}):
+            with self.subTest(changed=changed), tempfile.TemporaryDirectory() as temp:
+                pending = {**self.pending(),**changed}
+                value = self.client(Path(temp),pending=pending,boundary_date=24024)
+                with self.assertRaises(ValueError):
+                    await value.advance_event_boundary(self.step())
+                self.assertEqual([row['step'] for row in value.driver.sent].count('resume-map'),1)
+
+    async def test_default_florin_day_still_refuses_pending_without_optin_or_reply(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value = self.client(Path(temp),pending=self.pending(),boundary_date=24024)
+            with self.assertRaisesRegex(RuntimeError,'pending interaction interrupted'):
+                await value.advance({'days':1,'timeout':5})
+            steps = [row['step'] for row in value.driver.sent]
+            self.assertEqual(steps.count('resume-map'),1)
+            self.assertFalse(any('select-event' in step or 'reply' in step for step in steps))
+
+
+
+    @staticmethod
+    def inbox_step(**kwargs):
+        return {'days':1,'timeout':5,'allow_event_boundary':True,
+                'pending_interaction_policy':'observe_unanswered_inbox',**kwargs}
+
+    async def test_reviewed_market_cases_can_observe_existing_unanswered_inbox_and_real_completed_day(self):
+        import tempfile
+        for case in ('market-evolution','delisting-gui'):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as temp:
+                pending=self.pending()
+                value=self.client(Path(temp),starting_pending=pending,pending=pending,boundary_date=24024,
+                                  purpose=('financial-markets',case))
+                result=await value.advance_event_boundary(self.inbox_step())
+                self.assertTrue(result['requested_interval_complete'])
+                self.assertEqual(result['elapsed_hours'],24)
+                self.assertIsNone(result['event_boundary'])
+                evidence=result['pending_interaction_observation']
+                self.assertEqual(evidence['before'],pending);self.assertEqual(evidence['after'],pending)
+                self.assertEqual(evidence['changes'],[]);self.assertFalse(evidence['resolved'])
+                self.assertFalse(evidence['reply_attempted']);self.assertEqual(evidence['modal_status'],'not_observed')
+                steps=[row['step'] for row in value.driver.sent]
+                self.assertEqual(steps.count('resume-map'),1)
+                self.assertEqual(sum(step.startswith('research-arm-') for step in steps),1)
+                self.assertFalse(any('reply' in step or 'select-event' in step for step in steps))
+
+    async def test_observed_inbox_appearance_disappearance_and_sender_change_are_not_resolution(self):
+        import tempfile
+        pending=self.pending(); changed={**pending,'sender_character_id':34233}
+        for before,after,kind in ((None,pending,'appeared'),(pending,None,'disappeared'),(pending,changed,'changed')):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as temp:
+                value=self.client(Path(temp),starting_pending=before,pending=after,boundary_date=24024,
+                                  purpose=('financial-markets','market-evolution'))
+                result=await value.advance_event_boundary(self.inbox_step())
+                evidence=result['pending_interaction_observation']
+                self.assertEqual(evidence['before'],before);self.assertEqual(evidence['after'],after)
+                self.assertEqual([row['change'] for row in evidence['changes']],[kind])
+                self.assertFalse(evidence['resolved']);self.assertTrue(result['requested_interval_complete'])
+
+    async def test_inbox_policy_needs_exact_literal_optin_and_real_reviewed_case(self):
+        import tempfile
+        trials=[(True,True,None),('unknown',True,None),('observe_unanswered_inbox',False,None),
+                ('observe_unanswered_inbox',True,None),('observe_unanswered_inbox',True,('other','market-evolution')),
+                ('observe_unanswered_inbox',True,('financial-markets','other'))]
+        for policy,event_mode,purpose in trials:
+            with self.subTest(policy=policy,event_mode=event_mode,purpose=purpose), tempfile.TemporaryDirectory() as temp:
+                value=self.client(Path(temp),purpose=purpose)
+                with self.assertRaises(ValueError):
+                    await value.advance({'days':1,'timeout':5,'allow_event_boundary':event_mode,'pending_interaction_policy':policy})
+                self.assertEqual(value.driver.sent,[])
+
+    async def test_default_policy_still_rejects_starting_inbox_before_any_clock_control(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value=self.client(Path(temp),starting_pending=self.pending())
+            with self.assertRaises(ValueError): await value.advance_event_boundary(self.step())
+            self.assertEqual(value.driver.sent,[])
+
+    async def test_actual_event_with_observed_inbox_still_returns_the_original_early_event_boundary(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value=self.client(Path(temp),starting_pending=self.pending(),pending=self.pending(),event={'instance_id':42},
+                              purpose=('financial-markets','market-evolution'))
+            result=await value.advance_event_boundary(self.inbox_step())
+            self.assertFalse(result['requested_interval_complete']);self.assertEqual(result['elapsed_hours'],12)
+            self.assertEqual(result['event_boundary']['active_event'],{'instance_id':42})
+            self.assertFalse(result['pending_interaction_observation']['resolved'])
+            self.assertEqual([row['step'] for row in value.driver.sent].count('resume-map'),1)
+
+    async def test_event_appearing_in_speed_readback_or_after_arm_never_gets_a_resume(self):
+        import tempfile
+        for stage in ('speed','armed'):
+            with self.subTest(stage=stage), tempfile.TemporaryDirectory() as temp:
+                value=self.client(Path(temp),starting_pending=self.pending(),pending=self.pending(),
+                    speed_readback_event=stage=='speed',pre_resume_event=stage=='armed',
+                    purpose=('financial-markets','market-evolution'))
+                with self.assertRaisesRegex(ValueError,'before the sole resume'):
+                    await value.advance_event_boundary(self.inbox_step())
+                steps=[row['step'] for row in value.driver.sent]
+                self.assertNotIn('resume-map',steps)
+                self.assertEqual(sum(step.startswith('research-arm-') for step in steps),1 if stage=='armed' else 0)
+
+    async def test_observed_inbox_preserves_signed_native_identity_bits_and_rejects_bad_sentinels(self):
+        import tempfile
+        for identifier,sender in ((0,0),(-(2**31),-(2**31))):
+            with self.subTest(identifier=identifier,sender=sender), tempfile.TemporaryDirectory() as temp:
+                pending={**self.pending(),'instance_id':identifier,'sender_character_id':sender}
+                value=self.client(Path(temp),starting_pending=pending,pending=pending,boundary_date=24024,
+                                  purpose=('financial-markets','market-evolution'))
+                result=await value.advance_event_boundary(self.inbox_step())
+                self.assertEqual(result['pending_interaction_observation']['after'],pending)
+        for fields in ({'instance_id':-1},{'instance_id':True},{'instance_id':2**31},
+                       {'sender_character_id':-1},{'sender_character_id':True},{'sender_character_id':2**31},
+                       {'auto_accept_notification':1},{'source':'copied'}):
+            with self.subTest(fields=fields), tempfile.TemporaryDirectory() as temp:
+                value=self.client(Path(temp),starting_pending={**self.pending(),**fields},
+                                  purpose=('financial-markets','market-evolution'))
+                with self.assertRaises(ValueError): await value.advance_event_boundary(self.inbox_step())
+                self.assertEqual(value.driver.sent,[])
+
+
+
+    async def test_observed_inbox_that_cannot_advance_still_exhausts_original_deadline_without_replay(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value=self.client(Path(temp),starting_pending=self.pending(),pending=self.pending(),boundary_date=24012,
+                              purpose=('financial-markets','market-evolution'))
+            with self.assertRaises(TimeoutError):
+                await value.advance_event_boundary(self.inbox_step(timeout=0.5))
+            steps=[row['step'] for row in value.driver.sent]
+            self.assertEqual(steps.count('resume-map'),1)
+            self.assertEqual(sum(step.startswith('research-arm-') for step in steps),1)
+            self.assertFalse(any('reply' in step or 'select-event' in step for step in steps))
 
 
 if __name__ == "__main__":

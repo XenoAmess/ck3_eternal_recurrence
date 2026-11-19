@@ -2628,6 +2628,8 @@ class PlanClient:
         if (isinstance(cached, dict) and cached.get("schema") == "ck3_1210_full_state_v1"
                 or isinstance(cached_hello, dict) and cached_hello.get("expected_ck3_version") == "1.21.0"):
             from xar_autoplayer.bridge.version_identity import florin_full_source, FlorinFullSource
+            from xar_autoplayer.bridge.campaign_interaction_boundary_v1 import PendingNotificationV1
+            from xar_autoplayer.bridge.pending_character_interaction_context_contract import normalize_pending_interaction_id
             from xar_autoplayer.bridge.native_driver import (
                 _normalize_tactical_daily_sentinel_status, _validate_tactical_daily_sentinel_arm,
                 _validate_tactical_daily_sentinel_stop)
@@ -2639,6 +2641,15 @@ class PlanClient:
             if event_mode and row.get("allow_actor_change", False) is not False:
                 raise ValueError("Florin bounded event day preserves its original actual player")
             deadline = time.monotonic() + budget
+            inbox_policy = row.get("pending_interaction_policy", "stop_at_boundary")
+            if type(inbox_policy) is not str or inbox_policy not in {"stop_at_boundary", "observe_unanswered_inbox"}:
+                raise ValueError("Florin day requires an exact pending interaction policy")
+            observe_inbox = inbox_policy == "observe_unanswered_inbox"
+            if observe_inbox:
+                purpose_clock = load_product_acceptance_clock_v1(self.args)
+                if (not event_mode or purpose_clock is None or purpose_clock.purpose.product != "financial-markets"
+                        or purpose_clock.purpose.case not in {"market-evolution", "delisting-gui"}):
+                    raise ValueError("Unanswered inbox observation requires its reviewed financial market case and event boundary policy")
 
             def remaining_florin() -> float:
                 done = getattr(self, "managed_done", None)
@@ -2684,9 +2695,53 @@ class PlanClient:
             local_player = before.get("local_player_id")
             if type(local_player) is not int or not -(2**31) <= local_player < 2**31 or local_player == -1:
                 raise ValueError("Florin day lacks its actual signed local player ID")
+            def read_notification(frame: dict[str, object]) -> PendingNotificationV1 | None:
+                value = frame.get("pending_character_interaction")
+                if value is None:
+                    return None
+                if (not isinstance(value, dict) or set(value) != {"instance_id", "sender_character_id", "auto_accept_notification", "source"}
+                        or value.get("source") != "native" or type(value.get("auto_accept_notification")) is not bool
+                        or type(value.get("sender_character_id")) is not int
+                        or not -(2**31) <= value["sender_character_id"] < 2**31 or value["sender_character_id"] == -1):
+                    raise ValueError("Exact Florin native inbox identity required")
+                return PendingNotificationV1(normalize_pending_interaction_id(value.get("instance_id")),
+                    value["sender_character_id"], value["auto_accept_notification"])
+
+            def notification_row(value: PendingNotificationV1 | None) -> dict[str, object] | None:
+                return None if value is None else {"instance_id": value.instance_id,
+                    "sender_character_id": value.sender_character_id,
+                    "auto_accept_notification": value.auto_accept_notification, "source": "native"}
+
+            inbox_before = read_notification(before)
+            last_inbox = inbox_before
+            inbox_changes: list[dict[str, object]] = []
+
+            def observe_notification(frame: dict[str, object]) -> PendingNotificationV1 | None:
+                nonlocal last_inbox
+                current = read_notification(frame)
+                if current != last_inbox:
+                    inbox_changes.append({"snapshot_id": frame["snapshot_id"], "revision": frame["revision"],
+                        "native_revision": frame["native_revision"], "date_raw": frame["date_raw"],
+                        "change": "appeared" if last_inbox is None else "disappeared" if current is None else "changed",
+                        "before": notification_row(last_inbox), "after": notification_row(current)})
+                last_inbox = current
+                return current
+
+            def inbox_evidence(frame: dict[str, object]) -> dict[str, object]:
+                return {"policy": inbox_policy, "starting_snapshot_id": before["snapshot_id"],
+                    "ending_snapshot_id": frame["snapshot_id"], "before": notification_row(inbox_before),
+                    "after": notification_row(last_inbox), "changes": list(inbox_changes),
+                    "resolved": False, "reply_attempted": False, "modal_status": "not_observed"}
+
+            def require_pre_resume_boundary_clear(frame: dict[str, object]) -> None:
+                if frame.get("active_event") is not None or (not observe_inbox and frame.get("pending_character_interaction") is not None):
+                    raise ValueError("Florin actual event or pending boundary appeared before the sole resume; original controls preserved")
+                if observe_inbox:
+                    observe_notification(frame)
+
             start, target = source.date_raw, source.date_raw + 24
             if (target >= 2**31 or before.get("active_wars") != [] or before.get("player_armies") != []
-                    or before.get("active_event") is not None or before.get("pending_character_interaction") is not None):
+                    or before.get("active_event") is not None or (inbox_before is not None and not observe_inbox)):
                 raise ValueError("Florin date-only day requires a complete event-free world without armies or wars")
 
             def same_paused_world(frame: dict[str, object]) -> FlorinFullSource:
@@ -2722,6 +2777,7 @@ class PlanClient:
                         break
                     await asyncio.sleep(min(self.args.poll_interval, remaining_florin()))
             armed_source = same_paused_world(before_resume)
+            require_pre_resume_boundary_clear(before_resume)
             arm_step = f"research-arm-tactical-daily-sentinel-v1-{start}-to-{target}-speed-1-mode-terminal-a-0"
             arm_result = await bounded_florin(lambda: self.invoke("ck3_execute_step",
                 {"step": arm_step, "expected_revision": armed_source.public_revision}, fresh_revision=False))
@@ -2734,6 +2790,7 @@ class PlanClient:
             # generation and consumes its same-run permit before sending resume.
             ready = await bounded_florin(self.fresh)
             ready_source = same_paused_world(ready)
+            require_pre_resume_boundary_clear(ready)
             if ready_source.date_raw != start or ready.get("speed") != 1:
                 raise ValueError("Florin original ARM world changed before its sole resume")
             resumed = await bounded_florin(lambda: self.invoke("ck3_execute_step",
@@ -2743,12 +2800,14 @@ class PlanClient:
             running: dict[str, object] | None = None
             boundary: dict[str, object] | None = None
             event_id: int | None = None
+            notification: PendingNotificationV1 | None = None
             while True:
                 after = await bounded_florin(self.fresh)
                 date = advance_frame_date_v1(after)
                 event = after.get("active_event")
-                if after.get("pending_character_interaction") is not None or (event is not None and not event_mode):
-                    raise RuntimeError("an active event interrupted the original Florin day; no control replay")
+                pending = after.get("pending_character_interaction")
+                if not event_mode and (pending is not None or event is not None):
+                    raise RuntimeError("an active event or pending interaction interrupted the original Florin day; no control replay")
                 if event_mode:
                     diagnostics = after.get("diagnostics")
                     hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
@@ -2774,11 +2833,21 @@ class PlanClient:
                             event_id, boundary = event["instance_id"], after
                     elif event_id is not None:
                         raise ValueError("Florin event day lost its actual event instance")
+                    current_notification = observe_notification(after) if observe_inbox else read_notification(after)
+                    if current_notification is not None and not observe_inbox:
+                        if notification is not None and current_notification != notification:
+                            raise ValueError("Florin event day changed its actual pending interaction")
+                        if notification is None:
+                            notification = current_notification
+                            if boundary is None:
+                                boundary = after
+                    elif notification is not None:
+                        raise ValueError("Florin event day lost its actual pending interaction")
                 if date < start or date > target or type(after.get("paused")) is not bool:
                     raise RuntimeError("Florin original date boundary regressed or overshot")
                 if after.get("paused") is False:
                     running = after
-                elif date == target or (event_mode and event_id is not None):
+                elif date == target or (event_mode and boundary is not None):
                     ending = same_paused_world(after)
                     if (after.get("speed") != 1 or ending.native_revision <= ready_source.native_revision
                             or ending.public_revision < ready_source.public_revision):
@@ -2826,10 +2895,13 @@ class PlanClient:
                 final = await bounded_florin(self.fresh)
                 final_source = same_paused_world(final)
                 final_event = final.get("active_event")
-                if (not isinstance(final_event, dict) or type(final_event.get("instance_id")) is not int
-                        or final_event["instance_id"] != event_id or final_source.date_raw != ending.date_raw
+                final_notification = observe_notification(final) if observe_inbox else read_notification(final)
+                if ((event_id is None and final_event is not None)
+                        or (event_id is not None and (not isinstance(final_event, dict)
+                            or type(final_event.get("instance_id")) is not int or final_event["instance_id"] != event_id))
+                        or (not observe_inbox and final_notification != notification) or final_source.date_raw != ending.date_raw
                         or final_source.native_revision < ending.native_revision):
-                    raise RuntimeError("Florin event boundary changed during Date terminal confirmation")
+                    raise RuntimeError("Florin event or notification boundary changed during Date terminal confirmation")
                 after = final
                 observed = advance_frame_date_v1(boundary)
                 complete = observed == target and stop_status.get("state") == "triggered"
@@ -2839,6 +2911,7 @@ class PlanClient:
                     "requested_interval_complete": complete, "event_resolution": "typed_query_required", "selected_event_options": 0,
                     "preflight": {"native_primitives": sorted(primitives), "typed_event_query_supported": True,
                         "typed_event_query_variant": "florin-current-event-options-v1"},
+                    **({"pending_interaction_observation": inbox_evidence(after)} if observe_inbox else {}),
                     "florin_date_sentinel": {"arm": arm_status, "stop": stop_status, "cancel": cancellation,
                         "actions": actions, "physical_save_confirmed": False}}
             _validate_tactical_daily_sentinel_stop(stop_status, arm_status=arm_status,
@@ -2846,6 +2919,7 @@ class PlanClient:
                 elapsed_days=1, speed=1, mode="terminal_or_sentinel", watch_army_ids=())
             return {"before": before, "running_successor": running, "after": after,
                 "requested_days": 1, "elapsed_hours": 24, "requested_interval_complete": True, "event_boundary": None,
+                **({"pending_interaction_observation": inbox_evidence(after)} if observe_inbox else {}),
                 "florin_date_sentinel": {"arm": arm_status, "stop": stop_status, "actions": actions,
                     "physical_save_confirmed": False},
                 **({"event_resolution": "none", "selected_event_options": 0,
