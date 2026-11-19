@@ -1,0 +1,56 @@
+{
+  "schema": "ck3-financial-daily-dispatch-diagnostics-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-19T18:02:42.052692+00:00",
+  "scope": "Bounded callback diagnostics only; original timer, date guard and ordered business hooks retained. R0030 missing dispatch remains unresolved.",
+  "adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\daily-attempt-Root-adoption01.actual.json",
+    "bytes": 2528,
+    "sha256": "8ddf62ae6eabb9cf91217c7b84d825126ee33f5aab19b3cecc35ce2104008b5a"
+  },
+  "software_capture": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\software-daily-attempt01\\SOFTWARE.actual.json",
+    "bytes": 169908,
+    "sha256": "11abbbb162149e5aaa513c534e518b11f9a6692db5e5426d1cd34e9165efd1a5"
+  },
+  "actual_financial_verify": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-daily-attempt-verify01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 994,
+    "sha256": "110883a3ebe0b542d0086a3550e002e7807682e0de920775625a9a881d8dec4f"
+  },
+  "actual_returncode": 0,
+  "actual_elapsed_seconds": 155.36823639995418,
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/c",
+    "mvn",
+    "-T1",
+    "--batch-mode",
+    "--no-transfer-progress",
+    "-f",
+    "mod_financial_markets/tools/pom.xml",
+    "verify"
+  ],
+  "financial_tests": 392,
+  "unchanged_shared_tests_reused": 23,
+  "combined_distinct_tests": 415,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "source_inputs": 347,
+  "new_diagnostic_test_methods": 6,
+  "affected_class_tests": 22,
+  "main_source_compilation": "No main classes recompiled; Maven reported all up to date.",
+  "test_source_compilation": "Maven recompiled41 test source files after one test leaf changed.",
+  "package": "Existing Java module verify/Quarkus augmentation completed; no Native or Host build.",
+  "capture_timing_note": "The metadata capture reuses its historical E5 helper shape. This execution specifically verifies the new diagnostic leaf and its six source-executing tests; old shared23 original results retain their original execution.",
+  "limits": [
+    "Tests execute the actual diagnostic helper AST and original guard in the existing test VM, excluding business effects.",
+    "No engine scheduling, continuous-day, delisting, AI-capacity or whole-product acceptance credit.",
+    "No historical dates, missing callbacks or financial settlements replayed."
+  ],
+  "documentation": "mod_financial_markets/docs/daily-dispatch-diagnostics.md",
+  "Game_started_by_this_verification": false,
+  "whole_product_release_pass": false
+}

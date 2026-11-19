@@ -2,7 +2,20 @@
 
 2026-11-19，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0029恢复超时；E5未ARM，失败已清理释放）
+## 当前状态（R0030保存35自然日；漏1金融日，采样未通过）
+
+## R0030：保存35个自然日，漏1个金融日；既存退款与到期终态读回
+
+machine_id: `4-8e1c2f1861`。R0030真实恢复最新R0028诊断SAVE，正常ARM独立E5并完成基线读链；从raw53144856到53145696（1066.10.7→1066.11.11），真实新增观察及保存日期差为35自然日。D14手动Refresh前的自动诊断已钉死缺raw53145072／ordinal389378；D35交易所financial22→56只增长34日，E5只有34个daily sample、35条记录（应35／36），30项原始日期违规及continuity=false保留。不能因保存了35自然日或JVM模型通过而称连续35日日结、E5或完整case通过。
+
+本窗币3、账户695、债务0，永久nextCoin仍3；没有新AI发行、上市或低阶／无地新发行证明。基线已存在的AI币2/native1363与3/native1397在D30已state7、供给0，各一笔订阅refunded1／held0，D35保持。独立冻结1368、1402各1600分归零，主钱包641/1362与666/1396总额不变；每户另外79分来自独立旧现货买单到期，不能把1679全称认购退款。未配售库存每币12500+2500归零，历史故事及永久ID保留。初见gold/rank与registration100仍是原字段，不授发行前余额、登记实扣或无地信用。
+
+合约3/native205仍status0／expiry30／last_daily30。三仓1/213、6/1125、15/1349已在D14成为status2／settlement_kind4／last_settled30，六边抵押归零；其完整原始记录token SHA在D14、D30、D35分别保持相同，原settlement_complete及零shortfall等字段也保留。这是限定终态与抵押读回，不是全支付因果或exactly-once验收。D30→D35全部695账户投影相同，账本现金29960分／手续费912分保持；不据此声称已溯全世界金币。
+
+D35首次完整读链及内层read因4 MiB预算原wait1保留；随后只将有限记录拆为三批，预算不增，RECOVER原0／34.7626548秒，成功事实显式绑定split02原件，不覆盖失败、不把遗漏当0。此进度切点仅消费财务与读取原件，最终Host／Game／keeper／release由Root原件另记，不提前称closed或正常退出。原409项软件仍保原24f3e49来源，未为本摘要重跑。生产漏日P0、发行与规模、债务危机、气泡和完整产品仍待继续验收，未发布。[R0030共同证据与业务限定](../../docs/maintenance/evidence/2026-11-20-financial-markets-r0030-sampling-and-independent-business.json)。
+
+
+后继已加入有界 `xfm_daily_*` 回调诊断，原计时器、日期守卫及业务顺序保持。实际金融模块 `verify` 原退出0／155.368秒，392项通过（新增6项诊断测试）；未变共享23项沿用原结果，合计415项不同测试、零失败或跳过。没有重建Native或Host，也尚未实测新诊断。字段与使用边界见[每日调度诊断](daily-dispatch-diagnostics.md)及[软件原件](../../docs/maintenance/evidence/2026-11-20-financial-markets-daily-dispatch-diagnostics-software.json)。R0030正常Host0／Game0／Job0／keeper0、release15577资源空已由独立闭场原件确认，仍保留采样失败。
 
 ## R0029：恢复准入超时，E5未ARM，原失败已清理释放
 

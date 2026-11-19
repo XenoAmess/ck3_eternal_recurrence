@@ -227,3 +227,13 @@ machine_id: `4-8e1c2f1861`。R0029的1377个Full均为actor31254/raw53144856、p
 产品215和fixture12文件只读逐字节核等，409项Java软件及347个对应输入仍是原24f3e49来源，不改签为后继Host结果。Root随后采用Host及其测试两叶，saved-readiness全模块28项、PublicSavedIntegration5项实际通过，共33项不同软件测试；`-O`重复28项另记。三原wait0、0 skip，18项输入前后未变，不外推新实机准入、E5或完整产品通过。[原件与终态](evidence/2026-11-19-financial-markets-r0029-restore-inbox-and-cleanup.json)。
 
 E5后继不新增首日SAVE或phase。沿公共0/14/30/35日hold，在D14手动Refresh前先保存诊断档并核完整15条日记录（含day1）date/financialday与observer一致，然后正常Refresh及正式D14SAVE；此方法尚未实机完成。已编expectedDays1读器保留但不强制运行。
+
+## R0030：35日已保存，漏金融日与独立业务事实分记（2026-11-20记录）
+
+machine_id: `4-8e1c2f1861`。原闭场UTC为2026-11-19。R0030实际自然日期raw53144856→53145696、保存35日；financial22→56只有34次推进，缺第九自然日raw53145072／ordinal389378。E5 post-finance观察已与实际金融日对齐，但它没有补回缺失的金融dispatch；漏日根因仍未确定。D14手动Refresh前的自动诊断原件及随后正常Refresh均保留，不能称历史修复。D35为34个daily sample、35条含基线记录（应35／36），30项VIOLATION、continuity=false及Root拒绝连续采样的原断言完整保留。
+
+D35原完整READCHAIN返回1（22.0486399秒），内层read返回1（10.38585秒），原4MiB输出上限未放宽；后继显式17／17／10三批覆盖42个目标，RECOVER原0／34.7626548秒。失败未被覆盖，沿用既有编译读器和原成功first read，不新增Game／SAVE／Arm。exchange52两个端点均owner31254、下次队列日期前进，只证明端点；seed差值26不代表回调次数，不能用它排除中间交接或认定漏日根因。
+
+采样拒绝不抹去独立业务事实。两枚基线既存AI募资币2／3在D30出现失败退款见证、state7与供给0；每枚唯一1600分认购冻结归零、同一主钱包free／reserved返还相符。另79分各来自旧现货单到期，不能把1679全称认购退款。D35仅保持既有结果，无新退款；这不是新AI付费发行或已上市币正常退市。合约3三笔原仓位转终态2、六边抵押归零，D14／D30／D35原记录保持；合约仍status0，不能据此授完整到期付款／索偿或exactly-once。所有695个金融账户D30→D35完整投影相同，未追全部原版gold出入金，不称全世界守恒；发行前gold、登记实扣、低阶无地新发行与toast送达仍缺证。
+
+EVOLUTION09-run原2／2758.2543623秒对应被拒采样，Host0／normal_close_qualified=true、Game0／Job0／treegone／cleanup、keeper0及release15577／resources[]均已实际闭环；业务失败与正常关场分开记账。五份物理SAVE原件保留，后继仅用最新`evolution30-day35-01/ARCHIVE.actual.json`（SHA `4f69e6e7beb5c96e8b986ade252e339bdd5f52dfbc0977090ee6e1f1d9fc810d`），不重放、不改历史时间或补金融态。继续正常退市case；35日连贯采样、全产品及发布均未通过。[短证据索引与原件pins](evidence/2026-11-20-financial-markets-r0030-sampling-and-independent-business.json)。

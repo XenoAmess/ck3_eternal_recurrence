@@ -367,6 +367,131 @@ final class MarketEvolutionScriptContractTest {
         assertEquals(0, v.observer().n("xfma_refund_available"));
         assertEquals(product, v.productState());
     }
+    @Test void dailyAttemptDiagnosticsInitializeLazilyAndCaptureActualGuardInputsOnNewDates() throws IOException {
+        Vm v = new Vm(request(null, null)); v.loadDailyAttemptDiagnostics();
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_attempt_count"), "loading definitions does not initialize a cold save");
+        v.exchange.put("xfm_last_date", v.nativeDate - 24);
+        String financial = v.nonDiagnosticProductState();
+        v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(financial, v.nonDiagnosticProductState());
+        assertEquals(1, v.exchange.n("xfm_daily_attempt_count"));
+        assertEquals(1, v.exchange.n("xfm_daily_attempts_on_date"));
+        assertEquals(0, v.exchange.n("xfm_daily_rejected_count"));
+        assertEquals(1, v.exchange.n("xfm_daily_attempt_entered_dispatch"));
+        assertEquals(v.nativeDate, v.exchange.n("xfm_daily_attempt_script_date"));
+        assertEquals(v.nativeDate - 24, v.exchange.n("xfm_daily_attempt_prev_date"));
+        assertEquals(1, v.exchange.n("xfm_daily_attempt_prev_date_present"));
+        assertEquals(0, v.exchange.n("xfm_daily_attempt_count_saturated"));
+        assertEquals(0, v.exchange.n("xfm_daily_rejected_count_saturated"));
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_last_rejected_date"));
+        assertEquals(6, v.exchange.n("xfm_day"), "these diagnostic helpers do not execute the business clock");
+        // Explicit fixture input for the next invocation; no business outcome is fabricated by this VM.
+        v.exchange.put("xfm_last_date", v.nativeDate); v.nativeDate += 24;
+        financial = v.nonDiagnosticProductState(); v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(financial, v.nonDiagnosticProductState());
+        assertEquals(2, v.exchange.n("xfm_daily_attempt_count"));
+        assertEquals(1, v.exchange.n("xfm_daily_attempts_on_date"));
+        assertEquals(1, v.exchange.n("xfm_daily_attempt_entered_dispatch"));
+        assertEquals(v.nativeDate - 24, v.exchange.n("xfm_daily_attempt_prev_date"));
+        assertEquals(0, v.exchange.n("xfm_daily_rejected_count"));
+    }
+
+    @Test void dailyAttemptDiagnosticsCountSameDateRejectionsAndRetainTheLastRejectedInputs() throws IOException {
+        Vm v = new Vm(request(null, null)); v.loadDailyAttemptDiagnostics();
+        long previous = v.nativeDate; String financial = v.nonDiagnosticProductState();
+        v.dailyAttemptDiagnostics(v.exchange); v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(financial, v.nonDiagnosticProductState());
+        assertEquals(2, v.exchange.n("xfm_daily_attempt_count"));
+        assertEquals(2, v.exchange.n("xfm_daily_attempts_on_date"));
+        assertEquals(2, v.exchange.n("xfm_daily_rejected_count"));
+        assertEquals(0, v.exchange.n("xfm_daily_attempt_entered_dispatch"));
+        assertEquals(previous, v.exchange.n("xfm_daily_last_rejected_date"));
+        assertEquals(previous, v.exchange.n("xfm_daily_last_rejected_prev_date"));
+        v.nativeDate += 24; financial = v.nonDiagnosticProductState(); v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(financial, v.nonDiagnosticProductState());
+        assertEquals(3, v.exchange.n("xfm_daily_attempt_count"));
+        assertEquals(1, v.exchange.n("xfm_daily_attempts_on_date"));
+        assertEquals(1, v.exchange.n("xfm_daily_attempt_entered_dispatch"));
+        assertEquals(2, v.exchange.n("xfm_daily_rejected_count"));
+        assertEquals(previous, v.exchange.n("xfm_daily_last_rejected_date"));
+        assertEquals(previous, v.exchange.n("xfm_daily_last_rejected_prev_date"));
+    }
+
+    @Test void dailyAttemptDiagnosticsPreserveMissingPreviousDateInsteadOfInventingZero() throws IOException {
+        Vm v = new Vm(request(null, null)); v.loadDailyAttemptDiagnostics();
+        v.dailyAttemptDiagnostics(v.exchange);
+        assertTrue(v.exchange.vars.containsKey("xfm_daily_last_rejected_prev_date"));
+        v.exchange.vars.remove("xfm_last_date"); v.nativeDate += 24;
+        String financial = v.nonDiagnosticProductState(); v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(financial, v.nonDiagnosticProductState());
+        assertEquals(2, v.exchange.n("xfm_daily_rejected_count"));
+        assertEquals(0, v.exchange.n("xfm_daily_attempt_entered_dispatch"));
+        assertEquals(0, v.exchange.n("xfm_daily_attempt_prev_date_present"));
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_attempt_prev_date"));
+        assertEquals(0, v.exchange.n("xfm_daily_last_rejected_prev_date_present"));
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_last_rejected_prev_date"));
+        assertFalse(v.exchange.vars.containsKey("xfm_last_date"));
+    }
+
+    @Test void dailyAttemptDiagnosticsSaturateOnlyAfterTheExactCounterBoundsAndResetTheDateCounter() throws IOException {
+        Vm v = new Vm(request(null, null)); v.loadDailyAttemptDiagnostics(); v.dailyAttemptDiagnostics(v.exchange);
+        v.exchange.put("xfm_daily_attempt_count", 999999999).put("xfm_daily_rejected_count", 999999999)
+                .put("xfm_daily_attempts_on_date", 1023);
+        String financial = v.nonDiagnosticProductState(); v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(1000000000, v.exchange.n("xfm_daily_attempt_count"));
+        assertEquals(1000000000, v.exchange.n("xfm_daily_rejected_count"));
+        assertEquals(1024, v.exchange.n("xfm_daily_attempts_on_date"));
+        for (String flag : List.of("xfm_daily_attempt_count_saturated", "xfm_daily_rejected_count_saturated", "xfm_daily_attempts_on_date_saturated"))
+            assertEquals(0, v.exchange.n(flag), "the exact bound is still an exact count");
+        v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(1000000000, v.exchange.n("xfm_daily_attempt_count"));
+        assertEquals(1000000000, v.exchange.n("xfm_daily_rejected_count"));
+        assertEquals(1024, v.exchange.n("xfm_daily_attempts_on_date"));
+        for (String flag : List.of("xfm_daily_attempt_count_saturated", "xfm_daily_rejected_count_saturated", "xfm_daily_attempts_on_date_saturated"))
+            assertEquals(1, v.exchange.n(flag), "a further call changes the count to a lower bound");
+        assertEquals(financial, v.nonDiagnosticProductState());
+        v.nativeDate += 24; v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(1, v.exchange.n("xfm_daily_attempts_on_date"));
+        assertEquals(0, v.exchange.n("xfm_daily_attempts_on_date_saturated"));
+        assertEquals(1, v.exchange.n("xfm_daily_attempt_entered_dispatch"));
+        assertEquals(1, v.exchange.n("xfm_daily_attempt_count_saturated"));
+        assertEquals(1, v.exchange.n("xfm_daily_rejected_count_saturated"));
+        assertEquals(1000000000, v.exchange.n("xfm_daily_rejected_count"));
+    }
+
+    @Test void dailyAttemptDiagnosticsWriteNothingForCharactersForeignStoriesOrAnAbsentGlobalExchange() throws IOException {
+        Vm v = new Vm(request(null, null)); v.loadDailyAttemptDiagnostics();
+        Node foreign = v.node("foreign-exchange", "xfm_finance_exchange", true)
+                .put("xfm_last_date", v.nativeDate - 24).put("xfm_day", 6);
+        v.player.put("xfm_last_date", v.nativeDate - 24);
+        String original = v.productState();
+        v.dailyAttemptDiagnostics(v.player); v.dailyAttemptDiagnostics(foreign);
+        assertEquals(original, v.productState());
+        v.exchangeAvailable = false; v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(original, v.productState());
+        assertTrue(v.nodes.stream().noneMatch(n -> n.vars.keySet().stream().anyMatch(key -> key.startsWith("xfm_daily_"))));
+    }
+
+    @Test void dailyAttemptInstrumentationKeepsTheRealTimerGuardBusinessOrderAndObserverTail() throws IOException {
+        Path source = Path.of(System.getProperty("xfm.source"));
+        Block schedule = parse(Files.readString(source.resolve("common/scripted_effects/xfm_finance_schedule.txt")));
+        Block daily = schedule.block("xfm_finance_daily_effect");
+        assertEquals(List.of("xfm_finance_daily_attempt_begin_effect", "if", "xfm_finance_daily_attempt_finish_effect"),
+                daily.entries().stream().map(Entry::key).toList());
+        Block body = daily.block("if");
+        assertEquals(parse("guard = { exists = global_var:xfm_exchange this = global_var:xfm_exchange has_variable = xfm_last_date var:xfm_last_date < current_date }").block("guard"), body.block("limit"));
+        List<Entry> business = body.entries().stream().filter(e -> !e.key().equals("limit") && !Vm.diagnosticVariableWrite(e)).toList();
+        assertEquals(List.of("set_variable", "change_variable", "set_variable", "if", "xfm_spot_daily_effect", "xfm_oracle_daily_effect",
+                "xfm_finance_capitalize_default_fund_effect", "xfm_futures_daily_effect", "xfm_coin_daily_effect", "xfm_listing_daily_effect",
+                "xfm_debt_daily_effect", "xfm_news_daily_effect", "xfm_finance_run_ai_budget_effect", "if"), business.stream().map(Entry::key).toList());
+        assertEquals(parse("x = { set_variable = { name = xfm_last_date value = current_date } change_variable = { name = xfm_day add = 1 } set_variable = { name = xfm_new_listings_today value = 0 } }").block("x").entries(), business.subList(0, 3));
+        assertEquals(parse("x = { if = { limit = { NOT = { var:xfm_a0_migration_scanned = 1 } } xfm_finance_migrate_a0_effect = yes } }").block("x").entries().getFirst(), business.get(3));
+        assertEquals(parse("x = { if = { limit = { exists = story_owner } story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } } } }").block("x").entries().getFirst(), business.getLast());
+        Block timer = parse(Files.readString(source.resolve("common/story_cycles/xfm_finance_runtime.txt"))).block("xfm_finance_exchange").block("effect_group");
+        assertEquals("1", Vm.atom(timer.blockOrAtom("days")));
+        assertEquals(parse("x = { xfm_finance_daily_effect = yes }").block("x"), timer.block("triggered_effect").block("effect"));
+    }
+
     private static com.fasterxml.jackson.databind.JsonNode readCase(Path root, String key) throws IOException {
         return FixtureEmitter.JSON.readTree(Files.readAllBytes(root.resolve("tools/ck3_mod_acceptance_cases/financial_markets_" + key + ".json")));
     }
@@ -392,6 +517,7 @@ final class MarketEvolutionScriptContractTest {
         final Map<String, Node> aliases = new HashMap<>(); final Map<String, List<Node>> globals = new HashMap<>();
         final List<Node> nodes = new ArrayList<>(), players = new ArrayList<>(); final List<String> logs = new ArrayList<>();
         final Node exchange, player, privateAccount; long nativeDate = 53144448; boolean failRecordCreation;
+        boolean exchangeAvailable = true, diagnosticWrites; Block diagnosticCallbackSubset;
         Vm(Request input) {
             this.input = input;
             FollowupObservationScripts.render(input).forEach((name, bytes) -> {
@@ -459,11 +585,49 @@ final class MarketEvolutionScriptContractTest {
                 } else throw new AssertionError("unsupported observation on_action " + entry.key());
             }
         }
-        String productState() {
+        /** Execute only actual diagnostic helpers + the actual guard/entry marker, never business hooks. */
+        void loadDailyAttemptDiagnostics() throws IOException {
+            Block schedule = parse(Files.readString(Path.of(System.getProperty("xfm.source"))
+                    .resolve("common/scripted_effects/xfm_finance_schedule.txt")));
+            List<Entry> helpers = schedule.entries().stream().filter(e -> e.key().startsWith("xfm_finance_daily_attempt_")).toList();
+            assertEquals(List.of("xfm_finance_daily_attempt_begin_effect", "xfm_finance_daily_attempt_total_effect",
+                    "xfm_finance_daily_attempt_date_effect", "xfm_finance_daily_attempt_finish_effect"), helpers.stream().map(Entry::key).toList());
+            for (Entry helper : helpers) assertNull(program.put(helper.key(), (Block)helper.value()), helper.key());
+            Block actual = schedule.block("xfm_finance_daily_effect");
+            assertEquals(3, actual.entries().size());
+            Entry dispatch = actual.entries().get(1); assertEquals("if", dispatch.key());
+            Block originalBody = (Block)dispatch.value();
+            List<Entry> retained = originalBody.entries().stream()
+                    .filter(e -> e.key().equals("limit") || diagnosticVariableWrite(e)).toList();
+            assertEquals(2, retained.size(), "the isolated production subset retains only the real guard and entry marker");
+            assertEquals("xfm_daily_attempt_entered_dispatch", atom(((Block)retained.getLast().value()).blockOrAtom("name")));
+            diagnosticCallbackSubset = new Block(List.of(actual.entries().getFirst(),
+                    new Entry(dispatch.key(), dispatch.operator(), new Block(retained)), actual.entries().getLast()));
+        }
+        static boolean diagnosticVariableWrite(Entry entry) {
+            if (!List.of("set_variable", "change_variable").contains(entry.key()) || !(entry.value() instanceof Block child)) return false;
+            return atom(child.blockOrAtom("name")).startsWith("xfm_daily_");
+        }
+        void dailyAttemptDiagnostics(Node here) {
+            assertFalse(diagnosticWrites); assertNotNull(diagnosticCallbackSubset);
+            diagnosticWrites = true;
+            try { execute(diagnosticCallbackSubset, here, null); }
+            finally { diagnosticWrites = false; }
+        }
+        void assertVariableWrite(String name, Node here) {
+            if (diagnosticWrites) {
+                assertSame(exchange, here, "diagnostics cannot mutate another scope");
+                assertTrue(name.startsWith("xfm_daily_"), "diagnostics cannot write financial/observer variable " + name);
+            } else assertTrue(name.startsWith("xfma_"), "product mutation " + name);
+        }
+
+        String productState() { return productState(false); }
+        String nonDiagnosticProductState() { return productState(true); }
+        private String productState(boolean omitDiagnostics) {
             StringBuilder s = new StringBuilder();
             for (Node n : nodes) if (n.product) {
                 s.append(n.key).append(':').append(n.gold).append(':').append(n.ai).append(':').append(n.alive).append(':').append(n.adult).append(':').append(n.landed).append(':').append(n.tier);
-                n.vars.forEach((k,v) -> { if (!k.startsWith("xfma_")) s.append('|').append(k).append('=').append(v instanceof NumberValue x ? x.value() : ((Reference)v).node().key); });
+                n.vars.forEach((k,v) -> { if (!k.startsWith("xfma_") && (!omitDiagnostics || !k.startsWith("xfm_daily_"))) s.append('|').append(k).append('=').append(v instanceof NumberValue x ? x.value() : ((Reference)v).node().key); });
                 n.lists.forEach((k,v) -> { if (!k.startsWith("xfma_")) s.append('|').append(k).append('=').append(v.stream().map(x -> x.key).toList()); });
                 s.append('\n');
             }
@@ -488,7 +652,7 @@ final class MarketEvolutionScriptContractTest {
                 if (key.equals("clear_saved_scope")) { aliases.remove(atom(e.value())); continue; }
                 if (key.equals("set_variable") || key.equals("change_variable")) {
                     Block child = (Block)e.value(); String name = atom(child.blockOrAtom("name"));
-                    assertTrue(name.startsWith("xfma_"), "product mutation " + name);
+                    assertVariableWrite(name, here);
                     if (key.equals("set_variable")) here.vars.put(name, requiredValue(child.blockOrAtom("value"), here, prev));
                     else {
                         Entry operation = child.entries().stream().filter(x -> !x.key().equals("name")).findFirst().orElseThrow();
@@ -497,7 +661,7 @@ final class MarketEvolutionScriptContractTest {
                     }
                     continue;
                 }
-                if (key.equals("remove_variable")) { String name = atom(e.value()); assertTrue(name.startsWith("xfma_")); here.vars.remove(name); continue; }
+                if (key.equals("remove_variable")) { String name = atom(e.value()); assertVariableWrite(name, here); here.vars.remove(name); continue; }
                 if (key.equals("clear_variable_list")) { String name = atom(e.value()); assertTrue(name.startsWith("xfma_")); here.nodes(name).clear(); continue; }
                 if (key.equals("add_to_variable_list")) {
                     Block child = (Block)e.value(); String name = atom(child.blockOrAtom("name")); assertTrue(name.startsWith("xfma_"));
@@ -602,7 +766,7 @@ final class MarketEvolutionScriptContractTest {
             Value current = new Reference(here);
             for (int i = 0; i < parts.length; i++) {
                 String part = parts[i];
-                if (i == 0 && part.equals("global_var:xfm_exchange")) { current = new Reference(exchange); continue; }
+                if (i == 0 && part.equals("global_var:xfm_exchange")) { current = exchangeAvailable ? new Reference(exchange) : null; continue; }
                 if (i == 0 && part.startsWith("scope:")) { Node n = aliases.get(part.substring(6)); current = n == null ? null : new Reference(n); continue; }
                 if (i == 0 && part.equals("prev")) { current = prev == null ? null : new Reference(prev); continue; }
                 if (i == 0 && part.equals("this")) continue;

@@ -118,6 +118,7 @@ xfm_finance_pop_ai_effect = {
 }
 
 xfm_finance_daily_effect = {
+    xfm_finance_daily_attempt_begin_effect = yes
     if = {
         limit = {
             exists = global_var:xfm_exchange
@@ -127,6 +128,7 @@ xfm_finance_daily_effect = {
         }
         # This is a dispatch clock, not proof that every financial hook completed.
         # No same-date retry and no retrospective replay of missed dates are performed.
+        set_variable = { name = xfm_daily_attempt_entered_dispatch value = 1 }
         set_variable = { name = xfm_last_date value = current_date }
         change_variable = { name = xfm_day add = 1 }
         set_variable = { name = xfm_new_listings_today value = 0 }
@@ -151,6 +153,7 @@ xfm_finance_daily_effect = {
             story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } }
         }
     }
+    xfm_finance_daily_attempt_finish_effect = yes
 }
 
 xfm_finance_ensure_effect = {
@@ -165,5 +168,80 @@ xfm_finance_ensure_effect = {
             global_var:xfm_exchange = { NOT = { has_variable = xfm_ai_seeded } }
         }
         global_var:xfm_exchange = { xfm_finance_seed_ai_effect = yes }
+    }
+}
+
+# Independent callback diagnostics. These fields never settle or replay a financial day.
+# This block is appended to xfm_finance_schedule.txt; no new timer or caller is installed.
+xfm_finance_daily_attempt_begin_effect = {
+    if = {
+        limit = { exists = global_var:xfm_exchange this = global_var:xfm_exchange }
+        if = {
+            limit = { NOT = { has_variable = xfm_daily_attempt_count } }
+            set_variable = { name = xfm_daily_attempt_count value = 0 }
+            set_variable = { name = xfm_daily_attempt_count_saturated value = 0 }
+            set_variable = { name = xfm_daily_rejected_count value = 0 }
+            set_variable = { name = xfm_daily_rejected_count_saturated value = 0 }
+        }
+        xfm_finance_daily_attempt_total_effect = yes
+        xfm_finance_daily_attempt_date_effect = yes
+        set_variable = { name = xfm_daily_attempt_script_date value = current_date }
+        set_variable = { name = xfm_daily_attempt_entered_dispatch value = 0 }
+        set_variable = { name = xfm_daily_attempt_prev_date_present value = 0 }
+        if = {
+            limit = { has_variable = xfm_last_date }
+            set_variable = { name = xfm_daily_attempt_prev_date value = var:xfm_last_date }
+            set_variable = { name = xfm_daily_attempt_prev_date_present value = 1 }
+        }
+        else = { remove_variable = xfm_daily_attempt_prev_date }
+    }
+}
+
+xfm_finance_daily_attempt_total_effect = {
+    if = {
+        limit = { var:xfm_daily_attempt_count < 1000000000 }
+        change_variable = { name = xfm_daily_attempt_count add = 1 }
+    }
+    else = { set_variable = { name = xfm_daily_attempt_count_saturated value = 1 } }
+}
+
+xfm_finance_daily_attempt_date_effect = {
+    if = {
+        limit = {
+            has_variable = xfm_daily_attempt_script_date
+            var:xfm_daily_attempt_script_date = current_date
+        }
+        if = {
+            limit = { var:xfm_daily_attempts_on_date < 1024 }
+            change_variable = { name = xfm_daily_attempts_on_date add = 1 }
+        }
+        else = { set_variable = { name = xfm_daily_attempts_on_date_saturated value = 1 } }
+    }
+    else = {
+        set_variable = { name = xfm_daily_attempts_on_date value = 1 }
+        set_variable = { name = xfm_daily_attempts_on_date_saturated value = 0 }
+    }
+}
+
+xfm_finance_daily_attempt_finish_effect = {
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange
+            this = global_var:xfm_exchange
+            has_variable = xfm_daily_attempt_entered_dispatch
+            var:xfm_daily_attempt_entered_dispatch = 0
+        }
+        if = {
+            limit = { var:xfm_daily_rejected_count < 1000000000 }
+            change_variable = { name = xfm_daily_rejected_count add = 1 }
+        }
+        else = { set_variable = { name = xfm_daily_rejected_count_saturated value = 1 } }
+        set_variable = { name = xfm_daily_last_rejected_date value = var:xfm_daily_attempt_script_date }
+        set_variable = { name = xfm_daily_last_rejected_prev_date_present value = var:xfm_daily_attempt_prev_date_present }
+        if = {
+            limit = { var:xfm_daily_attempt_prev_date_present = 1 }
+            set_variable = { name = xfm_daily_last_rejected_prev_date value = var:xfm_daily_attempt_prev_date }
+        }
+        else = { remove_variable = xfm_daily_last_rejected_prev_date }
     }
 }
