@@ -1,0 +1,74 @@
+{
+  "schema": "ck3.migration.normal-main34-construction-canonical-ENV19-runtime-ready/v1",
+  "normal_MAIN": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\maven-package83.END.json",
+    "bytes": 917,
+    "sha256": "21f0ef43cd3506baed115ecfaa6e324ee42784b0cf23060787803d752e19df13"
+  },
+  "genuine157CP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\MAIN34-FROZEN-RUNTIME-ARCHIVES84.json",
+    "bytes": 92820,
+    "sha256": "46afa9de77a8aa90bfcdf12de5514f98a95a16131de62ca8f476359d71cb5b21"
+  },
+  "classpath": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\DIRECT-RUNTIME-MAIN34-CLASSPATH85.txt",
+    "bytes": 27065,
+    "sha256": "3d2d3e497eda18c1501fe3d6be455c9d5e680e1f483f9f46ec9d12714658c871"
+  },
+  "entry_prefixes": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\NORMAL-MAIN34-ENTRY-PREFIXES85.json",
+    "bytes": 1552,
+    "sha256": "c27679f7840900959aa4224f85178ffd9708342461e26199d6f4b5a35a86cc87"
+  },
+  "sameplan_checker": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\ACTUAL-CALLER34-INPUTS85.json",
+    "bytes": 734,
+    "sha256": "e0a3cfac4288feda1b2f1cfd28e73a90109dd8404f6ba9988999c25764865f14"
+  },
+  "production_candidate": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\finance\\ConstructionDomainLifecycle.java",
+    "bytes": 49920,
+    "sha256": "78e3c579be5b5c434005ffbff6f3cf5e8d11e8f62d2d5e6caae0a2cf2f62ec48"
+  },
+  "baseline_actual_target_expected_F": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\construction-canonical82\\baseline-target.END.json",
+    "bytes": 366,
+    "sha256": "3a284382e0c78036bdf2e40a430235fc55a323f250b2d8a9f1c2f2fac67e81fb"
+  },
+  "fixed_actual_four": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\construction-canonical82\\fixed-four.END.json",
+    "bytes": 361,
+    "sha256": "14b5cd07ca9b1650fbf7ace78e84b3d6b7984a276d257340cdf890666864040e"
+  },
+  "fixed_JUnit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\construction-canonical82\\fixed-reports\\TEST-junit-jupiter.xml",
+    "bytes": 36626,
+    "sha256": "69fa2dac3c96a16b7dd5b11c03b8e9e02a40e699119ba55013b3a5c1aca16218"
+  },
+  "genuine_actual_writer_preview_commit_readback": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\genuine84.END.json",
+    "bytes": 388,
+    "sha256": "9e47cb6e439514805bb74bb6c3b5c8866717b52cd3906aec7c5b5db42dd521e7"
+  },
+  "genuine_JUnit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\genuine-reports84\\TEST-junit-jupiter.xml",
+    "bytes": 34715,
+    "sha256": "597d2d47289cef5b1c05c3ef48ef0f217b4f582dbb960dccc872169c352fe70d"
+  },
+  "ENV19_actual_reader_origins": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\ACTUAL-ENV19-NEWMAIN34-ORIGINS84.json",
+    "bytes": 143920,
+    "sha256": "f1227eee6077ca9be5bb19f8204c79a23bffce71f0138b3111863aefb835b0b9"
+  },
+  "ENV19_reader_job": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\env84.END.json",
+    "bytes": 390,
+    "sha256": "4fb09871519ea443345e6bfb05f1cc50c8f92fb1b1bf7befa9ac0ed168ac2fb4"
+  },
+  "sole_WAIT20_script_NOT_STARTED": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-construction-canonical-main34\\qualification\\first-codex-response20.py",
+    "bytes": 3030,
+    "sha256": "8d18ad1f1104c4f751b4dcc8e06f430541aa504f6f11f237b875fe04641bf7ae"
+  },
+  "scope": "One-line expected body encoding now uses same canonicalBody lane as actual publication, strict byte/evidence/head/custody and incoming canonical bytes remain unchanged. Baseline real temporary writer reproduces original mismatch; fixed four include actual readback and audit type/missingfield/array-order/noncanonical-input refusal plus original19 524B cold DATA. Genuine whole-JAR repeats only actual publication; ENV19 reader and413 class origins passed. Normal MAIN old44 JARs strong protected. No TEST/wholeSERVICE/Root/WAIT/newday/SAVE/live credit. All original failures/files and Native54 retained; current34 cut now frozen."
+}

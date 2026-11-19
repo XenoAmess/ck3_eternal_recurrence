@@ -272,7 +272,7 @@ public final class ConstructionDomainLifecycle {
                     case FRESH, RESTORE, NEXT_EPISODE -> throw new IOException("original-proof transition cannot enter a live mutation branch");
                 };
             }
-            require(Arrays.equals(body, encode(expected)), "construction body differs from its actual owning lifecycle reducer");
+            require(Arrays.equals(body, canonicalBody(expected)), "construction body differs from its actual owning lifecycle reducer");
             ConstructionFullMaterialSource.requireRetained(session, actual.archive, expected);
             return ActionCodec.sha256(encode(obj("input_sha256", new Text(ActionCodec.sha256(request.producerInput())), "body_sha256", new Text(ActionCodec.sha256(body)))));
         }
