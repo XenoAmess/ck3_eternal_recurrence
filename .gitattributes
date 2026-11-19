@@ -1531,3 +1531,8 @@ docs/maintenance/2026-11-20-agent-restored-thirty-days-source31-final.json -text
 docs/maintenance/2026-11-20-agent-same-root-checkpoint31.json -text
 docs/maintenance/2026-11-20-agent-restored-thirty-days31-evidence36.json -text
 docs/evidence/rite-host-terminal-AST-fixture-ready.json -text
+java/ck3-control/native-transport/src/test/resources/newnative/council67/council67-actual.zip -text
+docs/evidence/java-council67-data-qualification.json -text
+docs/maintenance/2026-11-20-agent-new93m-cold-restore32-final.json -text
+docs/maintenance/2026-11-20-agent-cold-restore32-independent-post.json -text
+docs/maintenance/2026-11-20-agent-cold-restore32-evidence37.json -text

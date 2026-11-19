@@ -1,0 +1,167 @@
+{
+  "schema": "ck3.runtime.postSource32-independent-source31-preservation/v1",
+  "at": "2026-11-19T20:25:31.148452+00:00",
+  "canonical_source31_originals": [
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\profile-next30\\save games\\xar_checkpoint.ck3",
+        "bytes": 93494589,
+        "sha256": "629f591ed9189949fd2551817719e182493ab6c330182d1b278a1a2ff5c73119"
+      },
+      "identity": {
+        "file_id": "281474995092873",
+        "mtime_ns": "1795116763543063200",
+        "bytes": 93494589
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\state\\driver\\checkpoint.json",
+        "bytes": 4360347,
+        "sha256": "bdf917002f1cc5b4725317b359b6048df12aa9944e37f0bf9e42bfd9f7d7fbee"
+      },
+      "identity": {
+        "file_id": "562949971827798",
+        "mtime_ns": "1795116770268719700",
+        "bytes": 4360347
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\state\\checkpoints\\evidence\\save-3bbc2334-6014-4749-987a-e14467580d89-pair.json",
+        "bytes": 1661,
+        "sha256": "8a252acdfcab8b610f85e57942d44f9ef489cd18eee9d78b3cef90f252ba6324"
+      },
+      "identity": {
+        "file_id": "562949971827801",
+        "mtime_ns": "1795116770977918000",
+        "bytes": 1661
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00000048.json",
+        "bytes": 51510,
+        "sha256": "65c3c3d111c9bd95d026cc9e5dd2b4d954563a8d34ada8a14d44299b6285e50f"
+      },
+      "identity": {
+        "file_id": "1125899925249127",
+        "mtime_ns": "1795116805474842400",
+        "bytes": 51510
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root31\\continuity\\continuity.json",
+        "bytes": 44665,
+        "sha256": "3671e70afc530fcf6b940b25fc42d606ac7a8a8d2040e81cbe841419b98faefc"
+      },
+      "identity": {
+        "file_id": "562949971827821",
+        "mtime_ns": "1795116805622229500",
+        "bytes": 44665
+      }
+    }
+  ],
+  "target_profile32_loaded_SAVE": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\profile-next32\\save games\\xar_checkpoint.ck3",
+    "bytes": 93494589,
+    "sha256": "629f591ed9189949fd2551817719e182493ab6c330182d1b278a1a2ff5c73119"
+  },
+  "target_independent_physical_identity": {
+    "file_id": "281474995118079",
+    "mtime_ns": "1795118274141232700",
+    "bytes": 93494589
+  },
+  "one_actual_SDKFull": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm32-01\\summary.json",
+    "bytes": 11585,
+    "sha256": "0dbee2965e0e83fae95b1eb5915e1464d5192390a5165f98461e81220b396d8c"
+  },
+  "actual_loaded_adopt_chain": [
+    {
+      "confirmation_sequence": 48,
+      "new_saved_day_credit": 0,
+      "observed_at_utc": "2026-11-19T20:16:35.955658900Z",
+      "saved_cycles": 53,
+      "saved_date_raw": 53177880,
+      "schema": "xar.java-loaded-saved-resume-result/v1",
+      "source_head_sequence": 48,
+      "status": "SOURCE_QUALIFIED"
+    },
+    {
+      "attached_pid": 247148,
+      "attached_session": "session-migration1210-hotfix26757580-firstroot32",
+      "observed_at_utc": "2026-11-19T20:16:37.521891400Z",
+      "schema": "xar.java-loaded-saved-resume-result/v1",
+      "status": "ACTUAL_ATTACHMENT"
+    },
+    {
+      "custody_evidence": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-save61-32\\loaded-saved-57f70000-5d29-414a-b6e7-a620a52f2b16\\loaded-saved-physical.json",
+      "observed_at_utc": "2026-11-19T20:16:39.971330900Z",
+      "schema": "xar.java-loaded-saved-resume-result/v1",
+      "status": "LOADED_CUSTODY_QUALIFIED"
+    },
+    {
+      "actual_head_digest": "2e41ff9312af9699fccc4c20a5d6ca2a1d5e5f66d6f806d11821f5de630bf839",
+      "actual_head_sequence": 20,
+      "game": {
+        "creation_filetime": "134395924796600538",
+        "pid": 247148
+      },
+      "next_sequence": "0",
+      "observed_at_utc": "2026-11-19T20:17:55.347378400Z",
+      "schema": "xar.java-loaded-saved-resume-result/v1",
+      "status": "SAVED_ENTRY_ADOPTED"
+    },
+    {
+      "game": {
+        "creation_filetime": "134395924796600538",
+        "pid": 247148
+      },
+      "next_sequence": "0",
+      "observed_at_utc": "2026-11-19T20:17:55.348422Z",
+      "ordinary_batch_started": false,
+      "schema": "xar.java-loaded-saved-resume-result/v1",
+      "status": "ORDINARY_WORKER_LOOP_START"
+    },
+    {
+      "business_exit_code": 0,
+      "game_stop_requested": false,
+      "loop_terminal": "OPERATOR_STOP",
+      "next_sequence": "1",
+      "observed_at_utc": "2026-11-19T20:21:31.394859700Z",
+      "schema": "xar.java-loaded-saved-resume-result/v1",
+      "status": "SAVED_DAEMON_BUSINESS_END"
+    },
+    {
+      "endpoint_release": "RELEASED",
+      "game_stop_requested": false,
+      "observed_at_utc": "2026-11-19T20:21:31.396931400Z",
+      "schema": "xar.java-loaded-saved-resume-result/v1",
+      "status": "SAVED_DAEMON_ENDPOINT_RELEASE"
+    }
+  ],
+  "actual_batch": {
+    "attempted": 0,
+    "applied": 0,
+    "eligible": 0,
+    "dirty": false
+  },
+  "freshCore_AppExit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit32-01\\summary.json",
+    "bytes": 14331,
+    "sha256": "6a9e54c6bf5bef5faa7098cc5afb4992915a6d32bf2b06aa40e1e1c72561a561"
+  },
+  "actual_date_raw": 53177880,
+  "new_action_days": 0,
+  "new_SAVE": false,
+  "source31_pair_remains_only_current": true,
+  "SDK_normal_exit_confirmed_field": false,
+  "actual_Natural0_Job0_separate": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-save61-32-r2\\terminal.json",
+    "bytes": 1073,
+    "sha256": "fad1dae51837cbd7a251330fb7857deb12d6cbdcad33dfb3dddbf5aa98ddef37"
+  },
+  "no_ACK_physical_shortcut": true
+}

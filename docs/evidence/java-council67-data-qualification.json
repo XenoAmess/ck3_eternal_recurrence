@@ -1,0 +1,121 @@
+{
+  "schema": "xar.council67.actual-cold-data-qualification/v1",
+  "status": "PASS_TWO_TU_AND_SEVEN_NOGAME_DATA_TESTS",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "compiler_path": "C:/jdk-21/bin/javac.exe",
+  "runtime_path": "C:/jdk-21/bin/java.exe",
+  "sourceReady": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-council67-data01/SOURCE-READY-COUNCIL67-DATA01.json",
+    "bytes": 4491,
+    "sha256": "af40adf64e4b372e480d7b8e1e219723b3a25ef6c904890f5043635e26bfcc5b"
+  },
+  "permit": {
+    "name": "M1-COUNCIL67-COLD-DATA-TWO-TU-SEVEN-SELECTORS2M-PERMIT365.json",
+    "bytes": 1154,
+    "sha256": "0309ae5958316915e2742dfa7e0757269bd18b49f9eb2b00e87f5728c99b4d91"
+  },
+  "exact_inputs_args": {
+    "name": "EXACT-INPUTS-AND-ARGS01.json",
+    "bytes": 6000,
+    "sha256": "becbecc719b14af85cdd210b62ec93c2a5e9f68abe2d12521f889c7b1a69b912"
+  },
+  "typing": {
+    "exit_code": 0,
+    "TU_count": 2,
+    "elapsed_seconds": 1.0427951000165194,
+    "class_count": 9,
+    "class_bytes": 75583,
+    "END": {
+      "name": "javac.END.json",
+      "bytes": 2792,
+      "sha256": "623fb360d6aa9023919b4748eea4c0e0a3ace08ed1a17b2da1183f35b8dbb679"
+    }
+  },
+  "tests": {
+    "exit_code": 0,
+    "elapsed_seconds": 0.8740296000614762,
+    "tests": 7,
+    "passed": 7,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "END": {
+      "name": "junit.END.json",
+      "bytes": 1967,
+      "sha256": "3077ffd17c4f432c3a28117b9579d6fb30d087058619de10ec45e166eb4a4c19"
+    },
+    "XML": {
+      "path": "reports/TEST-junit-jupiter.xml",
+      "bytes": 13216,
+      "sha256": "075f9209553bc81d9d397254f070f2649403edae21c92efc90d729785a6a0426",
+      "summary": {
+        "name": "JUnit Jupiter",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "time": "0.255",
+        "hostname": "XENOAMESS-FULL-TOWER",
+        "timestamp": "2026-11-20T04:46:05"
+      },
+      "cases": [
+        {
+          "name": "exactKeysOriginsNullsAndNonCompleteClaimsCannotDrift()",
+          "failure": []
+        },
+        {
+          "name": "allTwentySevenActualDataDocumentsRemainThreePartialAndTwentyFourUnavailable()",
+          "failure": []
+        },
+        {
+          "name": "dataFrameMustMatchASeparatelyParsedActualFullAndUnavailableNeverBecomesFrameReady()",
+          "failure": []
+        },
+        {
+          "name": "everyBooleanAndIntegerBoundaryRejectsNullStringBooleanAndFloatingPointCoercion()",
+          "failure": []
+        },
+        {
+          "name": "actualCommandLayerKeepsEightSuccessfulPacketsSeparateFromNineteenRejectedOriginals()",
+          "failure": []
+        },
+        {
+          "name": "signedAndZeroIdsAreDataWhileMinusOneAndDuplicateRowsAreRejected()",
+          "failure": []
+        },
+        {
+          "name": "unavailableNullSemanticsAndMalformedOriginalPacketsFailClosed()",
+          "failure": []
+        }
+      ]
+    }
+  },
+  "existing_JAR_or_resource_copies": 0,
+  "preexisting_class_shadow": false,
+  "execution_scope": [
+    "v1 exact22 field parser only",
+    "27 real NoGame Data originals",
+    "27 real command LE32 originals (8 success versus19 rejected)",
+    "3 independent original Full LE32 expected-frame inputs",
+    "strict negative DATA mutations"
+  ],
+  "not_granted": [
+    "App/LS integration",
+    "Native live producer/receiver qualification",
+    "actual MainTLS/current-owner/custody authority",
+    "complete Council/finalgates/actions/progress",
+    "70v2 schema support"
+  ],
+  "shared_frozen_source_modifications": 0,
+  "source_repairs": 0,
+  "extra_compilers": 0,
+  "Game_or_Native_queries": 0,
+  "Root_or_Git_mutations": 0,
+  "children": "both owned subprocesses actually END; no new compiler follows Source33 prewarm",
+  "machine_identity_source": {
+    "name": "SOURCE32-NEW93M-RESTORED-ROOT-SELECTION-EXPIRED-NATURAL0-JOB0-FINAL01.json",
+    "bytes": 7519,
+    "sha256": "a0ab1cedfab6ae409f5eec111f5135bc0141d4a6192fe8efc63232917ee8f3a4",
+    "binding": "Runtime365 current-machine statement; no hostname inference or new OS query"
+  }
+}
