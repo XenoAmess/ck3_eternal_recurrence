@@ -78,7 +78,7 @@ class ParentBundle(unittest.TestCase):
     def test_refusal_protocol_is_exact_final_pair(self) -> None:
         import ck3_mod_acceptance_background_refusal as refusal
         import ck3_mod_acceptance_launcher_protocol_v1 as protocol
-        current = protocol.CURRENT_BACKGROUND_PROTOCOL_V1
+        current = protocol.QUALIFIED_CEF_GATE_SOURCE_PROTOCOL_V1
         legacy = protocol.LEGACY_BACKGROUND_PROTOCOL_V1
         launcher = pin(ROOT/'ck3_mod_acceptance_launcher.py')
         gate = pin(ROOT/'ck3_mod_acceptance_steam_gate.py')
@@ -95,7 +95,8 @@ class ParentBundle(unittest.TestCase):
         self.assertEqual(refusal.GATE_PROTOCOL_SHA256,legacy.gate_sha256)
         legacy_pin = dict(path='historical-launcher.py',bytes=legacy.launcher_bytes,
                           sha256=legacy.launcher_sha256)
-        self.assertEqual(protocol.build_launcher_protocol_v1(legacy_pin,gate)['version'],
+        legacy_gate = dict(path=gate['path'], bytes=legacy.gate_bytes, sha256=legacy.gate_sha256)
+        self.assertEqual(protocol.build_launcher_protocol_v1(legacy_pin,legacy_gate)['version'],
                          'background-offline-v1')
 
     def test_each_executed_parent_tool_is_bound_before_any_action(self) -> None:

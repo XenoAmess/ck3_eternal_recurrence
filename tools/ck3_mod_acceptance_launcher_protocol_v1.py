@@ -53,11 +53,18 @@ RETAINED_IDENTITY_SOURCE_PROTOCOL_V1 = LauncherSourcePairV1(
     "background-keyed-pins-v2", 17726,
     "e721654fba9c3a4d7ccba94a7fc2df757ec92925507ae7d1cde20c20a5222514",
     6023, "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274")
+# Reviewed retained-identity launcher with the qualified CEF/native background
+# gate. The 30-second observation boundary and refusal-before-host wire remain v2.
+QUALIFIED_CEF_GATE_SOURCE_PROTOCOL_V1 = LauncherSourcePairV1(
+    "background-keyed-pins-v2", 17726,
+    "e721654fba9c3a4d7ccba94a7fc2df757ec92925507ae7d1cde20c20a5222514",
+    6664, "3c3bf4db049e197e76f710ec63ca76f7b285d2c6cf6d72787054f0f912c89201")
 LAUNCHER_PROTOCOL_REGISTRY_V1 = (
     LEGACY_BACKGROUND_PROTOCOL_V1, CURRENT_BACKGROUND_PROTOCOL_V1,
     FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1,
     SIBLING_QUEUE_SOURCE_PROTOCOL_V1,
     RETAINED_IDENTITY_SOURCE_PROTOCOL_V1,
+    QUALIFIED_CEF_GATE_SOURCE_PROTOCOL_V1,
 )
 
 

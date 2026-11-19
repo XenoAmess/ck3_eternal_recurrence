@@ -1,0 +1,601 @@
+{
+  "schema": "financial-markets-machine4-public-followup23-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T03:13:38.996741+00:00",
+  "source_before_commit": "bd33d827048807a67885f957134db0b2a75db602",
+  "original_operations": {
+    "BUILD-runtime-spot18": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-runtime-spot18\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2547,
+        "sha256": "4d845edc82c14d4bd5a3c547d84087c74ebb43145653e06f404cd92cfb80dec0"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T02:50:41.087384+00:00",
+        "finished_at_utc": "2026-11-19T02:50:42.027450+00:00",
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+          "--base-runtime",
+          "C:\\workspace\\ck3-market-live-20261119i\\runtime-spot17\\runtime.local.json",
+          "--source-delta",
+          "C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\complete-spot17-to-d29ddeadd-actual01\\source-delta.json",
+          "--source-commit",
+          "d29ddeadd83e5f46f9c6ec1edc3598c6063213d2",
+          "--scene-root",
+          "C:\\workspace\\ck3-market-live-20261119j",
+          "--storage-admission",
+          "C:\\workspace\\ck3-market-task-20261118\\financial-core-scene-admission-12.json",
+          "--products",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+          "--product",
+          "financial-markets",
+          "--case",
+          "spot",
+          "--case-inputs",
+          "C:\\workspace\\ck3-market-task-20261118\\spot18.case-inputs.json",
+          "--output",
+          "C:\\workspace\\ck3-market-live-20261119j\\runtime-spot18",
+          "--qualified-native",
+          "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification21\\Q.actual.json",
+          "--task-prefix",
+          "ck3-financial-market-core-",
+          "--qualification",
+          "other_source_delta=C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\spot18-current-qualifications-d29-actual01\\other_source_delta.actual.json",
+          "--qualification",
+          "case_hooks=C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\spot18-current-qualifications-d29-actual01\\case_hooks.actual.json",
+          "--qualification",
+          "public_control=C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\spot18-current-qualifications-d29-actual01\\public_control.actual.json"
+        ],
+        "pid": 18368,
+        "birth_filetime": "134395302410888130",
+        "actual_original_popen_wait": true,
+        "returncode": 1,
+        "elapsed_seconds": 0.9400689001195133,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-runtime-spot18\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-runtime-spot18\\stderr.log",
+          "bytes": 1749,
+          "sha256": "6936d2e0e878983f0338734d509093ef17c4f0e518a2573101336dd8cd52b8ea"
+        }
+      }
+    },
+    "BUILD-runtime-spot18-02": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-runtime-spot18-02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2556,
+        "sha256": "64d3a385c6d481a37fa07c95d8d886a3a2487b27b8526bcdac07346c5339bb80"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T03:00:59.093659+00:00",
+        "finished_at_utc": "2026-11-19T03:01:16.077326+00:00",
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+          "--base-runtime",
+          "C:\\workspace\\ck3-market-live-20261119i\\runtime-spot17\\runtime.local.json",
+          "--source-delta",
+          "C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\complete-spot17-to-bd33d827-actual01\\source-delta.json",
+          "--source-commit",
+          "bd33d827048807a67885f957134db0b2a75db602",
+          "--scene-root",
+          "C:\\workspace\\ck3-market-live-20261119j",
+          "--storage-admission",
+          "C:\\workspace\\ck3-market-task-20261118\\financial-core-scene-admission-12.json",
+          "--products",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+          "--product",
+          "financial-markets",
+          "--case",
+          "spot",
+          "--case-inputs",
+          "C:\\workspace\\ck3-market-task-20261118\\spot18.case-inputs02.json",
+          "--output",
+          "C:\\workspace\\ck3-market-live-20261119j\\runtime-spot18",
+          "--qualified-native",
+          "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification21\\Q.actual.json",
+          "--task-prefix",
+          "ck3-financial-market-core-",
+          "--qualification",
+          "other_source_delta=C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\spot18-current-qualifications-bd33-actual01\\other_source_delta.actual.json",
+          "--qualification",
+          "case_hooks=C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\spot18-current-qualifications-bd33-actual01\\case_hooks.actual.json",
+          "--qualification",
+          "public_control=C:\\workspace\\ck3-market-task-20261118\\runtime-prep\\spot18-current-qualifications-bd33-actual01\\public_control.actual.json"
+        ],
+        "pid": 15876,
+        "birth_filetime": "134395308590951475",
+        "actual_original_popen_wait": true,
+        "returncode": 0,
+        "elapsed_seconds": 16.983677300158888,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-runtime-spot18-02\\stdout.log",
+          "bytes": 545,
+          "sha256": "9cbf01164b75c9ce9afccdccea19316fbe0e9f32703bacb32cd5aa7fddce1b1d"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-runtime-spot18-02\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "SPOT18-preflight": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT18-preflight\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1518,
+        "sha256": "77da9b1b2127a396b39544caef5e41ea9f807507e5027c59e9c4f47607313fa1"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T03:02:23.206175+00:00",
+        "finished_at_utc": "2026-11-19T03:02:24.509429+00:00",
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+          "preflight",
+          "--runtime",
+          "C:\\workspace\\ck3-market-live-20261119j\\runtime-spot18\\runtime.local.json",
+          "--products",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+          "--product",
+          "financial-markets",
+          "--case",
+          "spot",
+          "--run-context",
+          "C:\\workspace\\ck3-market-live-20261119j\\live\\4-8e1c2f1861--financial-markets--R0017\\Root-reviewed-context.json",
+          "--prepared-case",
+          "C:\\workspace\\ck3-market-live-20261119j\\prepared-spot18\\prepared-case.json"
+        ],
+        "pid": 20760,
+        "birth_filetime": "134395309432076094",
+        "actual_original_popen_wait": true,
+        "returncode": 0,
+        "elapsed_seconds": 1.3032736000604928,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT18-preflight\\stdout.log",
+          "bytes": 68930,
+          "sha256": "1ebaca3b4d5b6bddce82b2fd63014131a3e8752763545054ec983b529d734aae"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT18-preflight\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "SPOT18-run": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT18-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1501,
+        "sha256": "e6fd83ffef79b697b97f89d5c63f9554b11a2e94868eb2fcbbf0f0c1e02d3430"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T03:02:36.453831+00:00",
+        "finished_at_utc": "2026-11-19T03:02:43.287198+00:00",
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+          "run",
+          "--runtime",
+          "C:\\workspace\\ck3-market-live-20261119j\\runtime-spot18\\runtime.local.json",
+          "--products",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+          "--product",
+          "financial-markets",
+          "--case",
+          "spot",
+          "--run-context",
+          "C:\\workspace\\ck3-market-live-20261119j\\live\\4-8e1c2f1861--financial-markets--R0017\\Root-reviewed-context.json",
+          "--prepared-case",
+          "C:\\workspace\\ck3-market-live-20261119j\\prepared-spot18\\prepared-case.json"
+        ],
+        "pid": 18328,
+        "birth_filetime": "134395309564551660",
+        "actual_original_popen_wait": true,
+        "returncode": 2,
+        "elapsed_seconds": 6.833366299979389,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT18-run\\stdout.log",
+          "bytes": 69487,
+          "sha256": "dc65cf93b80fee45f80ad2cd8cec49091dbb99880e2db6e8dc229326549c7830"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SPOT18-run\\stderr.log",
+          "bytes": 156,
+          "sha256": "b2f1710235df76de7e1532114c8fe039de1ee44b77ebff3af4c4e055cca7bd49"
+        }
+      }
+    },
+    "ALLOCATE-spot18": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-spot18\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1809,
+        "sha256": "fada636974af6ee6ddb89ae8e41dc5a410c3c560ca089ce8bf0dece113378f59"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T03:01:53.072319+00:00",
+        "finished_at_utc": "2026-11-19T03:03:45.452145+00:00",
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+          "--runtime",
+          "C:\\workspace\\ck3-market-live-20261119j\\runtime-spot18\\runtime.local.json",
+          "--products",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+          "--product",
+          "financial-markets",
+          "--case",
+          "spot",
+          "--prepared-case",
+          "C:\\workspace\\ck3-market-live-20261119j\\prepared-spot18\\prepared-case.json",
+          "--attempt",
+          "a95",
+          "--keeper-output",
+          "C:\\workspace\\ck3-market-live-20261119j\\keepers\\a95",
+          "--previous-live",
+          "C:\\workspace\\ck3-market-live-20261119i\\live\\4-8e1c2f1861--financial-markets--R0016",
+          "--previous-keeper",
+          "C:\\workspace\\ck3-market-live-20261119i\\keepers\\a94",
+          "--previous-release",
+          "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot17\\stdout.log",
+          "allocate"
+        ],
+        "pid": 10408,
+        "birth_filetime": "134395309130736896",
+        "actual_original_popen_wait": true,
+        "returncode": 0,
+        "elapsed_seconds": 112.37984819989651,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-spot18\\stdout.log",
+          "bytes": 4225,
+          "sha256": "a13d607f2956f4c2f15c4837b7f2027ad78e4759c4bc73909c22beeb3ec87b62"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-spot18\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "RELEASE-spot18-prehost": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot18-prehost\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1392,
+        "sha256": "246c528bf3da67d4fa7da9ea8a12ca28c18758a610a2bf0beac2e50c9380cf1d"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T03:03:56.558016+00:00",
+        "finished_at_utc": "2026-11-19T03:03:57.514783+00:00",
+        "argv": [
+          "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:/workspace/ck3_eternal_recurrence/tools/codex_task_bus.py",
+          "--expected-cli-sha256",
+          "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F",
+          "release-screen-cas",
+          "--task",
+          "ck3-financial-market-core-a95",
+          "--expected-sequence",
+          "15389",
+          "--summary",
+          "R0017 original supervisor prehost offlineTTL refusal2 preserved; actual host/Game/native false; keeper original0 threadexited; no business credit; release for fresh finite attempt"
+        ],
+        "pid": 20656,
+        "birth_filetime": "134395310365592680",
+        "actual_original_popen_wait": true,
+        "returncode": 0,
+        "elapsed_seconds": 0.9567827000282705,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot18-prehost\\stdout.log",
+          "bytes": 1467,
+          "sha256": "b5b957b5e47815e25196e631dfdf1a708ae386eddf89e6d6fd76ad8684925eb7"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot18-prehost\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "CLOSE-spot18-prehost-public01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CLOSE-spot18-prehost-public01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1807,
+        "sha256": "f727a11e95ebb30a45c95824b762fd00ea9c37dc792a789431f334cd88313f57"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T03:07:23.688711+00:00",
+        "finished_at_utc": "2026-11-19T03:07:24.326608+00:00",
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_background_refusal.py",
+          "--previous-live",
+          "C:\\workspace\\ck3-market-live-20261119j\\live\\4-8e1c2f1861--financial-markets--R0017",
+          "--keeper-root",
+          "C:\\workspace\\ck3-market-live-20261119j\\keepers\\a95",
+          "--public-run-wait",
+          "C:\\workspace\\ck3-market-task-20261118\\R0017-prehost-successor-a96-preparation01\\run.original-wait-projection.json",
+          "--public-allocate-wait",
+          "C:\\workspace\\ck3-market-task-20261118\\R0017-prehost-successor-a96-preparation01\\allocate.original-wait-projection.json",
+          "--release",
+          "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-spot18-prehost\\stdout.log",
+          "--task-bus-root",
+          "C:/workspace/.codex-task-bus",
+          "--output",
+          "C:\\workspace\\ck3-market-task-20261118\\R0017-background-refusal-closure01.json"
+        ],
+        "pid": 15836,
+        "birth_filetime": "134395312436899666",
+        "actual_original_popen_wait": true,
+        "returncode": 1,
+        "elapsed_seconds": 0.6379124000668526,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CLOSE-spot18-prehost-public01\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CLOSE-spot18-prehost-public01\\stderr.log",
+          "bytes": 1252,
+          "sha256": "7acb455360cd2f0b308981c576d9f23ff12ff26dd0ec3bd1595620f37e52d38c"
+        }
+      }
+    },
+    "TEST-ci-resource-closure02": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-ci-resource-closure02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 979,
+        "sha256": "c0fdf73ec3c0524bfc04209690f276ceba07da5d48cec2e26eca477e34b2a4bd"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T03:08:48.848820+00:00",
+        "finished_at_utc": "2026-11-19T03:09:15.138992+00:00",
+        "argv": [
+          "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:/workspace/ck3-market-task-20261118/run_ci_failed_resource_step01.py"
+        ],
+        "pid": 24200,
+        "birth_filetime": "134395313288506063",
+        "actual_original_popen_wait": true,
+        "returncode": 1,
+        "elapsed_seconds": 26.29017880000174,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-ci-resource-closure02\\stdout.log",
+          "bytes": 2255,
+          "sha256": "e4f7cf73cf690b0b99f81f8a96132050e476ddd5ff41386ca399818b225c1a26"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-ci-resource-closure02\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "TEST-ci-resource-closure-remaining03": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-ci-resource-closure-remaining03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 998,
+        "sha256": "69245c04bb01d2ff10f9057720cfd6d5151c8a3eaebabe69294552ecbf581078"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T03:10:33.282802+00:00",
+        "finished_at_utc": "2026-11-19T03:10:43.436677+00:00",
+        "argv": [
+          "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:/workspace/ck3-market-task-20261118/run_ci_resource_remaining03.py"
+        ],
+        "pid": 23408,
+        "birth_filetime": "134395314332840611",
+        "actual_original_popen_wait": true,
+        "returncode": 0,
+        "elapsed_seconds": 10.153891099849716,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-ci-resource-closure-remaining03\\stdout.log",
+          "bytes": 5116,
+          "sha256": "dcc4ff8bbcd82c40d8a3e12c4bb50805b2b8385caccfe34168e617bd495bcfb7"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-ci-resource-closure-remaining03\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "READ-R0016-sellback-ticket-raw03-01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-R0016-sellback-ticket-raw03-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2351,
+        "sha256": "d624851b779c74988b4d317a74544dfce6c86e302afce5db1f17380af35b893b"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T02:51:22.373863+00:00",
+        "finished_at_utc": "2026-11-19T02:51:30.274234+00:00",
+        "argv": [
+          "java",
+          "--class-path",
+          "C:\\workspace\\ck3-market-task-20261118\\ticket-raw03-r16-author01\\classes;C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app06\\app\\financial-markets-tools-0.1.0-SNAPSHOT.jar;C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app06\\lib\\main\\org.xar.ck3.ck3-save-core-0.1.0.jar;C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app06\\lib\\main\\com.fasterxml.jackson.core.jackson-databind-2.21.5.jar;C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app06\\lib\\main\\com.fasterxml.jackson.core.jackson-core-2.21.5.jar;C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app06\\lib\\main\\com.fasterxml.jackson.core.jackson-annotations-2.21.jar",
+          "DiagnoseFinancialTicketRawContext03",
+          "--archive-actual",
+          "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0016\\spot17-sellback-save-01\\ARCHIVE.actual.json",
+          "--archive-sha256",
+          "4acc6563c0d835d38c1044c1fd983e0ac7cd9ecbc35537c799d80906fc6f5c9d",
+          "--repository",
+          "C:\\workspace\\ck3_eternal_recurrence",
+          "--output",
+          "C:\\workspace\\ck3-market-task-20261118\\ticket-raw03-r16-author01\\readback.json",
+          "--expected-source-scene",
+          "C:\\workspace\\ck3-market-live-20261119i",
+          "--actor-id",
+          "31254",
+          "--minimum-date",
+          "53144424",
+          "--maximum-date",
+          "53144496"
+        ],
+        "pid": 12284,
+        "birth_filetime": "134395302823757719",
+        "actual_original_popen_wait": true,
+        "returncode": 0,
+        "elapsed_seconds": 7.900389400077984,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-R0016-sellback-ticket-raw03-01\\stdout.log",
+          "bytes": 206,
+          "sha256": "82b1a7f38159a9234accf5dfaf15613414138a6c8578cf0248003035826ce94f"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-R0016-sellback-ticket-raw03-01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "TEST-current-launcher-protocol01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-current-launcher-protocol01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1004,
+        "sha256": "893d56ee2c9b3f57b2330b5f6f669e0785bb44d905f7d85b7171251aea9b6dfb"
+      },
+      "receipt": {
+        "machine_id": "4-8e1c2f1861",
+        "started_at_utc": "2026-11-19T03:12:42.930448+00:00",
+        "finished_at_utc": "2026-11-19T03:12:43.551830+00:00",
+        "argv": [
+          "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "C:/workspace/ck3-market-task-20261118/test_current_launcher_protocol_consumer01.py"
+        ],
+        "pid": 24416,
+        "birth_filetime": "134395315629316358",
+        "actual_original_popen_wait": true,
+        "returncode": 0,
+        "elapsed_seconds": 0.6213853999506682,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-current-launcher-protocol01\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-current-launcher-protocol01\\stderr.log",
+          "bytes": 1808,
+          "sha256": "7e5f02fc338e5f494fe11b15b628c303c1d4ff69cdd4a845981c3b3188c0086b"
+        }
+      }
+    }
+  },
+  "R0017_prehost_refusal": {
+    "original": {
+      "path": "C:\\workspace\\ck3-market-live-20261119j\\live\\4-8e1c2f1861--financial-markets--R0017\\supervisor-background-refused.json",
+      "bytes": 1511,
+      "sha256": "476663d23b5e22a99cb7d255bb697acda360c5046c693b37c40e2dbc8d337101"
+    },
+    "receipt": {
+      "schema": "ck3-mod-acceptance-background-supervisor-prehost-refusal-v1",
+      "machine_id": "4-8e1c2f1861",
+      "at_utc": "2026-11-19T03:02:43.168945+00:00",
+      "run_id": "4-8e1c2f1861--financial-markets--R0017",
+      "supervisor_pid": 17640,
+      "runtime_identity": {
+        "pid": 17640,
+        "birth_filetime": "134395309603365952"
+      },
+      "runtime_parent_identity": {
+        "pid": 10296,
+        "birth_filetime": "134395309602567103"
+      },
+      "stage": "BACKGROUND_ADMISSION_BEFORE_RETAIN_HOST",
+      "reason_code": "BACKGROUND_OFFLINE_ADMISSION_REJECTED",
+      "error_type": "BackgroundGateRefusal",
+      "error_repr": "BackgroundGateRefusal('Fresh same-machine background offline observation required')",
+      "launch_intent": {
+        "path": "C:\\workspace\\ck3-market-live-20261119j\\live\\4-8e1c2f1861--financial-markets--R0017\\launch-intent.json",
+        "bytes": 2013,
+        "sha256": "086912545e04f6bd84c42516e81eec9c2e5d685110ed5915bd008c0faa83c3ac"
+      },
+      "frozen_argv": {
+        "path": "C:\\workspace\\ck3-market-live-20261119j\\live\\4-8e1c2f1861--financial-markets--R0017\\frozen-argv.json",
+        "bytes": 180669,
+        "sha256": "12ac42f557485a6c45abdd8208d94ecb1b51f8ba24f8b61d64e3257ec0f95a9c"
+      },
+      "steam_offline_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\steam-offline-spot18-ready01.json",
+        "bytes": 2436,
+        "sha256": "e27567c969d7dfd6164567cfa379685cd3653bd02a30546f652daec03edca82f"
+      },
+      "host_started": false,
+      "game_started": false,
+      "native_session_started": false,
+      "business_pass": false
+    }
+  },
+  "native_Q21_original": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification21\\Q.actual.json",
+    "bytes": 14543,
+    "sha256": "d7fb25808e0adac2f1369aaba089f89b91c7ebbfae43131a91d33fb421013496"
+  },
+  "native_Q21_supplement_original": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification21\\supplemental-affected01\\SUPPLEMENT.actual.json",
+    "bytes": 15526,
+    "sha256": "e8ef0d0ca3c38df5c33a0d6b5da74c713784aa0d564e91c1556fa88122fc85fe"
+  },
+  "native_Q21_qualification": "Actual successful two-job same-cache production build and19 formal fixtures, followed by10 existing fixture invocations; no Game credit and no rebuild for public consumer fixes.",
+  "affected_CI_step_validation": {
+    "distinct_methods_passed": 65,
+    "failures_in_final_methods": 0,
+    "errors_in_final_methods": 0,
+    "skips": 0,
+    "groups": [
+      34,
+      6,
+      13,
+      12
+    ],
+    "prior_local_red_preserved": "First wrapper omitted the CI step MYPYPATH;34 passed and one of six modern checks failed. Only that six-method group was rerun with the exact CI tools MYPYPATH, followed by the previously unrun13 and12. The34 successful methods were not repeated."
+  },
+  "financial_CI": "8e805 run44443874499 passed316 distinct methods (304 financial+12 shared), validator196 files. Official Runner44443874490 failed at its stale SDK exact-pin test; its Native step13 passed. Official Runner is not labelled green.",
+  "business_acceptance": false,
+  "new_market_actions": 0,
+  "new_game_days": 0,
+  "all_original_failures_preserved": true
+}

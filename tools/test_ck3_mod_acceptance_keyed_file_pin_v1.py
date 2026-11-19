@@ -8,7 +8,7 @@ from __future__ import annotations
 import ast
 from collections.abc import Callable
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from enum import IntEnum
 import hashlib
 import json
@@ -28,7 +28,7 @@ from ck3_mod_acceptance_launcher_protocol_v1 import (
     CURRENT_CLOSURE_SCHEMA_V1, LEGACY_CLOSURE_SCHEMA_V1,
     CURRENT_BACKGROUND_PROTOCOL_V1, FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1,
     SIBLING_QUEUE_SOURCE_PROTOCOL_V1,
-    RETAINED_IDENTITY_SOURCE_PROTOCOL_V1,
+    RETAINED_IDENTITY_SOURCE_PROTOCOL_V1, QUALIFIED_CEF_GATE_SOURCE_PROTOCOL_V1,
     LAUNCHER_PROTOCOL_REGISTRY_V1,
     LAUNCHER_PROTOCOL_SHA256, build_launcher_protocol_v1,
     verify_closure_protocol_v1,
@@ -315,7 +315,9 @@ class LauncherProtocolTests(unittest.TestCase):
 
     def test_historical_wire_is_preserved_and_cannot_claim_new_source(self) -> None:
         current, gate, legacy = self.pins()
-        row = self.bundle(LEGACY_CLOSURE_SCHEMA_V1, legacy, gate)
+        historical_gate = FilePin(path=gate["path"], bytes=6023,
+            sha256="a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274")
+        row = self.bundle(LEGACY_CLOSURE_SCHEMA_V1, legacy, historical_gate)
         self.assertEqual(verify_closure_protocol_v1(row)["version"],
                          "background-offline-v1")
         self.assertEqual(verify_closure_protocol_v1(
@@ -392,7 +394,68 @@ class LauncherProtocolTests(unittest.TestCase):
                 versions.append(descriptor["version"])
         self.assertEqual(versions, ["background-offline-v1",
                                     "background-keyed-pins-v2", "background-keyed-pins-v2",
-                                    "background-keyed-pins-v2", "background-keyed-pins-v2"])
+                                    "background-keyed-pins-v2", "background-keyed-pins-v2",
+                                    "background-keyed-pins-v2"])
+
+    def test_current_qualified_gate_keeps_exact_pairs_and_rejects_crossing(self) -> None:
+        current, gate, _ = self.pins()
+        pair = QUALIFIED_CEF_GATE_SOURCE_PROTOCOL_V1
+        self.assertEqual((current['bytes'], current['sha256'], gate['bytes'], gate['sha256']),
+            (pair.launcher_bytes, pair.launcher_sha256, pair.gate_bytes, pair.gate_sha256))
+        row = self.bundle(CURRENT_CLOSURE_SCHEMA_V1, current, gate)
+        real_protocol_seams(row)
+        self.assertEqual(verify_closure_protocol_v1(json.loads(json.dumps(row)))['version'],
+                         'background-keyed-pins-v2')
+        for historical in LAUNCHER_PROTOCOL_REGISTRY_V1:
+            if historical.launcher_sha256 == current['sha256']:
+                continue  # The retained launcher plus old gate is an explicit historical pair.
+            crossed = FilePin(path=current['path'], bytes=historical.launcher_bytes,
+                              sha256=historical.launcher_sha256)
+            with self.subTest(launcher=historical.launcher_sha256), self.assertRaisesRegex(
+                    ValueError, 'Unknown or crossed'):
+                build_launcher_protocol_v1(crossed, gate)
+
+    def test_real_32_second_gate_refusal_records_zero_host_dispatch(self) -> None:
+        from types import SimpleNamespace
+        import ck3_mod_acceptance_steam_gate as gate_consumer
+        from ck3_mod_acceptance_test_background_fixture import make_background_fixture
+        with tempfile.TemporaryDirectory(prefix='stale-current-gate-') as temporary:
+            root = Path(temporary).resolve()
+            now = datetime.now(timezone.utc)
+            fixture = make_background_fixture(root, now=now - timedelta(seconds=32))
+            fixture.write_receipt()
+            frozen_path = root / 'frozen-argv.json'
+            frozen_path.write_bytes(b'{}\n')
+            intent = {'schema': 'ck3-mod-acceptance-background-launch-intent-v1',
+                'ticket': 'owned-ticket', 'steam_offline_receipt': source_pin(fixture.receipt_path),
+                'frozen_argv': source_pin(frozen_path)}
+            (root / 'launch-intent.json').write_text(json.dumps(intent), encoding='utf-8')
+            frozen = {'identity_allocation': {'machine_id': fixture.result.machine_id},
+                      'run_id': 'owned-stale-gate-before-host'}
+            args = SimpleNamespace(run_root=root, keeper_root=root / 'unused-keeper',
+                steam_offline_receipt=fixture.receipt_path, launch_ticket='owned-ticket')
+
+            def actual_stale_admission(unused: object) -> object:
+                return gate_consumer.validate_receipt(fixture.receipt_path,
+                    machine_id=fixture.result.machine_id, reader=fixture.reader, now=now)
+
+            with patch.object(launcher, 'admission', side_effect=actual_stale_admission), \
+                 patch.object(launcher, 'frozen_run', return_value=(frozen, {})), \
+                 patch.object(launcher, 'process_identity', return_value={
+                     'pid': 12345, 'birth_filetime': '134000000000000001'}), \
+                 patch.object(launcher, 'retain_host', side_effect=AssertionError('No host dispatch')) as retained, \
+                 patch.object(launcher.subprocess, 'Popen', side_effect=AssertionError('No process spawn')) as spawned:
+                with self.assertRaisesRegex(gate_consumer.BackgroundGateRefusal,
+                                            'Fresh same-machine background offline observation'):
+                    launcher.supervise(args)
+            retained.assert_not_called()
+            spawned.assert_not_called()
+            refusal_record = json.loads((root / 'supervisor-background-refused.json').read_bytes())
+            self.assertEqual(refusal_record['stage'], 'BACKGROUND_ADMISSION_BEFORE_RETAIN_HOST')
+            self.assertEqual(refusal_record['reason_code'], 'BACKGROUND_OFFLINE_ADMISSION_REJECTED')
+            self.assertEqual(refusal_record['error_type'], 'BackgroundGateRefusal')
+            for name in ('host_started', 'game_started', 'native_session_started', 'business_pass'):
+                self.assertIs(refusal_record[name], False)
 
     def test_reviewed_bootstrap_does_not_whitelist_crossed_or_future_source(self) -> None:
         current, gate, _ = self.pins()

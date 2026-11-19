@@ -752,16 +752,17 @@ class PreservedObserverClosureTests(unittest.TestCase):
                 self.replace_source_index(candidate)
                 with self.assertRaises(ValueError): self.check()
 
-    def test_recorded_r0012_legacy_sdk_sources_still_reach_full_consumer(self) -> None:
-        # Source excerpt only: actual R0012's immutable a11 index is 1057186B,
-        # SHA c87f6fea5f65a5135acac5476672c69c9b39fc1b90d812fe9057a13148670fa0.
-        # This test uses relocated temporary files with their own pins. The
-        # recorded R0012 original is never read, changed, or presented as new.
-        recorded = {
-            'normal_exit_wire_source': (14287, '63f06a97d555fbf6b6ff12012d9d6f297f77de4be54349aed1af93c5b67d564d'),
+    def test_current_sdk_sources_in_legacy_index_reach_full_consumer(self) -> None:
+        # setUp relocates the current SDK sources and pins their exact bytes.
+        # Only the source-index format is legacy; this is not an R0012 replay.
+        # R0012's immutable a11 index (1057186B, SHA
+        # c87f6fea5f65a5135acac5476672c69c9b39fc1b90d812fe9057a13148670fa0)
+        # remains historical and is never read, changed, or presented as new.
+        expected_current = {
+            'normal_exit_wire_source': (14938, '5ecd6c7b0e8285d87311098478d72ddc871027d36b4cda32386e964625a7a7d2'),
             'normal_exit_observer_source': (6415, '630ab09bd15ac6558b878332de0956579e8231f1178484731b185794a1b03996'),
             'normal_exit_process_source': (10155, 'ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70')}
-        for key, (size, digest) in recorded.items():
+        for key, (size, digest) in expected_current.items():
             self.assertEqual((self.sdk_pins[key]['bytes'], self.sdk_pins[key]['sha256']), (size, digest))
         self.assertEqual(self.index['schema'], 'ck3-shared-source-frozen-successor-v1')
         self.assertIs(object_field(self.check(), 'failure_cleanup')['actual_retained_os0'], True)
