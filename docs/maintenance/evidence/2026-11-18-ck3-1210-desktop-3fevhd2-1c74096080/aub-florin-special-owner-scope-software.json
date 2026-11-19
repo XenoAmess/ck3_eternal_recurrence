@@ -1,0 +1,64 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T10:10:49.471165+00:00",
+  "results": [
+    {
+      "name": "unit",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_fixture_engine_prepare.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.3464121999859344
+    },
+    {
+      "name": "actual-producer",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/prepare_aub_1_20_fixture.py",
+        "--scenario",
+        "florin-special",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\aub-special-software-a02\\fixture"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.5342966000025626
+    },
+    {
+      "name": "changed-event-syntax",
+      "command": [
+        "java",
+        "-Xmx192m",
+        "-jar",
+        "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "parse",
+        "--file",
+        "D:\\ck3-state\\upgrade-20261118\\aub-special-software-a02\\fixture\\events\\aubsp_events.txt"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.4062584000057541
+    }
+  ],
+  "passed": true,
+  "changed_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_special\\events\\aubsp_events.txt",
+    "bytes": 5178,
+    "sha256": "0dc2dd13d9565c405552d6347c1dd82565d0f76a240d51810f311300b2dd8e49"
+  },
+  "scope": "Special native-owner/holder/build_owner/county scopes now match production caller, and explicit barony grant follows county resolution only if still needed. All original business predicates/cost/count unchanged. Existing producer strict typing and unchanged on_action parse retained at original source pins; no repeated unaffected checks. New actual live NOT_RUN.",
+  "runtime_status": "NOT_RUN",
+  "business_pass": false,
+  "peak_budget_bytes": 8388608,
+  "remaining_write_reservation_bytes": 0
+}

@@ -18,8 +18,13 @@ aubsp.1 = {
             add_piety = 100000
             create_title_and_vassal_change = { type = granted save_scope_as = aubsp_title_change }
             title:c_jingzhao = { change_title_holder = { holder = scope:aubsp_recipient change = scope:aubsp_title_change } }
-            title:b_zhouzhi = { change_title_holder = { holder = scope:aubsp_recipient change = scope:aubsp_title_change } }
             resolve_title_and_vassal_change = scope:aubsp_title_change
+            if = {
+                limit = { title:b_zhouzhi = { NOT = { holder = scope:aubsp_recipient } } }
+                create_title_and_vassal_change = { type = granted save_scope_as = aubsp_barony_change }
+                title:b_zhouzhi = { change_title_holder = { holder = scope:aubsp_recipient change = scope:aubsp_barony_change } }
+                resolve_title_and_vassal_change = scope:aubsp_barony_change
+            }
             if = {
                 limit = { this != top_liege }
                 create_title_and_vassal_change = { type = independency save_scope_as = aubsp_independence add_claim_on_loss = no }
@@ -41,6 +46,10 @@ aubsp.2 = {
     immediate = {
         save_scope_as = aub_payer
         save_scope_as = character
+        province:10148 = {
+            province_owner = { save_scope_as = holder save_scope_as = build_owner }
+            county = { save_scope_as = county }
+        }
         set_variable = { name = aub_upgrades_this_scan value = 0 }
         set_variable = { name = aubsp_expected_gold value = { value = gold subtract = 800 } }
         set_variable = { name = aubsp_prestige_before value = prestige }
