@@ -1,0 +1,32 @@
+{
+  "schema": "financial-market-public-profile-consumer-repair-v1",
+  "machine_id": "4-8e1c2f1861",
+  "prior_source_commit": "d29ddeadd83e5f46f9c6ec1edc3598c6063213d2",
+  "actual_failure": {
+    "operation": "BUILD-runtime-spot18",
+    "returncode": 1,
+    "elapsed_seconds": 0.9400689001195133,
+    "stderr_sha256": "6936d2e0e878983f0338734d509093ef17c4f0e518a2573101336dd8cd52b8ea",
+    "reason": "Profile expansion prior profile differs",
+    "game_started": false
+  },
+  "repair": "The existing reviewed financial v3 expansion may follow the exact200-flag financial profile when its only additional flag is the explicitly contract-declared missing-to-OFF XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1. All prior values, committed registry pins, actual expansion pins, exact expected delta, production source and fixture checks remain required. Enabling it, adding other flags, removing or changing existing flags is rejected.",
+  "actual_tests": {
+    "operation": "TEST-native-declared-off-profile01",
+    "original_wait": "C:/workspace/ck3-market-live-20261118/operations/TEST-native-declared-off-profile01/ORIGINAL-WAIT.actual.json",
+    "started_at_utc": "2026-11-19T02:55:41.371720+00:00",
+    "finished_at_utc": "2026-11-19T02:55:45.373270+00:00",
+    "returncode": 0,
+    "elapsed_seconds": 4.0015547999646515,
+    "methods_passed": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "stderr_sha256": "5b89239d8d36bcf9fe7dea77ba959c67fccc3309d91ffb57cf5b74c7152d4d84",
+    "scope": "Four new methods, including negative subtests for enabled/other-new/removed/changed flags, plus three existing real consumer checks for accepted expansion and rejected registry/scope substitutions. Owned Git data, no Native compiler or Game."
+  },
+  "qualified_native_unchanged": "C:/workspace/ck3-market-task-20261118/native-common-qualification21/Q.actual.json",
+  "native_rebuilt_for_this_repair": false,
+  "actual_live_business_qualified": false,
+  "original_failures_preserved": true
+}

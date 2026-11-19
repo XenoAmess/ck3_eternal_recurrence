@@ -900,6 +900,86 @@ class ProfileExpansionConsumer(unittest.TestCase):
         self.assertNotEqual(result['compile_commit'], self.commit)
 
 
+class DeclaredOffProfileExtension(unittest.TestCase):
+    """Real committed v3 contract and full prior-profile consumer, no compiler or Game."""
+    HOTFIX = 'XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1'
+
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix='declared-off-profile-')
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve()
+        self.registry = builder.read(HERE / builder.PROFILE_EXPANSION_RELATIVE.removeprefix('tools/'))
+        self.contract = self.registry['additional_contracts']['ck3-1210-financial-markets-native-profile-v3']
+        self.contract_path = self.root / builder.PROFILE_EXPANSION_RELATIVE
+        self.contract_path.parent.mkdir(parents=True)
+        self.git('init', '-q')
+        self.git('config', 'user.name', 'Owned profile fixture')
+        self.git('config', 'user.email', 'fixture@example.invalid')
+        self.before = {'flags': dict(self.contract['before_flags'])}
+        flags = dict(self.before['flags'])
+        for name, change in self.contract['flag_changes'].items():
+            flags[name] = change['after']
+        self.profile = {'flags': flags}
+        self.prior = {'flags': {name: value for name, value in flags.items() if name != self.HOTFIX}}
+        self.assertEqual(len(self.prior['flags']), 200)
+        self.refs = {name: self.put(name, self.profile if name == 'profile' else {})
+                     for name in ('profile', 'snapshot', 'configured_scope', 'production_freeze')}
+        self.value = {'source_commit': '', 'fixture_results': []}
+        self.expansion = {'schema': 'ck3-native-profile-expansion-v1', 'machine_id': MACHINE,
+            'actual_live_business_qualified': False, 'contract_id': self.contract['contract_id'],
+            'previous_profile': self.put('reviewed-before', self.before), **self.refs, 'fixture_results': []}
+        self.commit_contract()
+
+    def put(self, name: str, value: object) -> dict:
+        path = self.root / (name + '.json')
+        path.write_bytes(builder.encoded(value))
+        return builder.pin(path)
+
+    def git(self, *arguments: str) -> str:
+        return subprocess.run(['git', *arguments], cwd=self.root, capture_output=True,
+                              text=True, check=True).stdout.strip()
+
+    def commit_contract(self) -> None:
+        self.contract_path.write_bytes(builder.encoded(self.registry))
+        self.git('add', builder.PROFILE_EXPANSION_RELATIVE)
+        self.git('commit', '-qm', 'owned exact committed v3 contract')
+        self.value['source_commit'] = self.git('rev-parse', 'HEAD')
+        self.expansion.update(source_commit=self.value['source_commit'], contract=builder.pin(self.contract_path))
+        self.value['profile_expansion'] = self.put('expansion', self.expansion)
+
+    def consume(self, prior: dict | None = None, profile: dict | None = None) -> object:
+        return builder.profile_expansion_contract(self.value, self.refs, self.root,
+            self.value['source_commit'], MACHINE, self.prior if prior is None else prior,
+            self.profile if profile is None else profile)
+
+    def test_exact_200_flags_plus_explicit_disabled_hotfix_accepts(self) -> None:
+        self.assertEqual(self.consume()['ref'], self.value['profile_expansion'])
+
+    def test_enabled_other_new_removed_or_changed_flags_reject(self) -> None:
+        enabled = json.loads(json.dumps(self.profile))
+        enabled['flags'][self.HOTFIX] = 'ON'
+        other = json.loads(json.dumps(self.profile))
+        other['flags']['XAR_UNREVIEWED_OFF'] = 'OFF'
+        removed = json.loads(json.dumps(self.profile))
+        removed['flags'].pop(next(iter(self.prior['flags'])))
+        changed = json.loads(json.dumps(self.profile))
+        name = next(iter(self.prior['flags']))
+        changed['flags'][name] = 'ON' if changed['flags'][name] == 'OFF' else 'OFF'
+        for value in (enabled, other, removed, changed):
+            with self.subTest(flags=value), self.assertRaisesRegex(ValueError, 'prior profile differs'):
+                self.consume(profile=value)
+
+    def test_contract_must_explicitly_declare_missing_to_off(self) -> None:
+        self.contract['flag_changes'].pop(self.HOTFIX)
+        self.commit_contract()
+        with self.assertRaisesRegex(ValueError, 'prior profile differs'):
+            self.consume()
+
+    def test_legacy_exact_prior_and_unchanged_profiles_remain_valid(self) -> None:
+        self.assertIsNotNone(self.consume(prior=self.before))
+        self.assertIsNotNone(self.consume(prior=self.profile))
+
+
 class CapabilityRegistrationConsumer(unittest.TestCase):
     """List the actual common MCP factory; invoke no game or business method."""
     FIRST_FOUR = {

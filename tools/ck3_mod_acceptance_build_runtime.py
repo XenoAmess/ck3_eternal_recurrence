@@ -874,8 +874,18 @@ def profile_expansion_contract(value, refs, root, commit, machine, old_profile, 
     contract = select_profile_expansion_contract(json.loads(committed.decode("utf-8-sig")), actual.get("contract_id"))
     checked(actual["previous_profile"])
     reviewed_before = read(actual["previous_profile"]["path"])
+    prior_flags, actual_flags = old_profile.get("flags"), profile.get("flags")
+    disabled_hotfix = "XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1"
+    declared_disabled_extension = (
+        contract.get("contract_id") == "ck3-1210-financial-markets-native-profile-v3"
+        and isinstance(prior_flags, dict) and isinstance(actual_flags, dict)
+        and len(prior_flags) == 200
+        and set(actual_flags) - set(prior_flags) == {disabled_hotfix}
+        and all(actual_flags.get(name) == setting for name, setting in prior_flags.items())
+        and actual_flags.get(disabled_hotfix) == "OFF"
+        and contract.get("flag_changes", {}).get(disabled_hotfix) == {"before": None, "after": "OFF"})
     require(reviewed_before.get("flags") == contract.get("before_flags")
-            and (reviewed_before == old_profile or old_profile.get("flags") == profile.get("flags")),
+            and (reviewed_before == old_profile or prior_flags == actual_flags or declared_disabled_extension),
             "Profile expansion prior profile differs")
     for name in ("profile", "snapshot", "configured_scope", "production_freeze"):
         require(actual.get(name) == refs[name], "Profile expansion actual pin differs: " + name)
