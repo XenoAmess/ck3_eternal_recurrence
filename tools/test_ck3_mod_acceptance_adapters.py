@@ -812,4 +812,196 @@ class FailedRuntimeClosureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'mutually exclusive'):
             allocation.allocate_and_keep(selected,args)
 
+import threading
+from collections.abc import Callable
+
+
+class CaseClientAppendLogTests(unittest.TestCase):
+    """Real owned files and synchronized writer threads; no Game/lease/runner."""
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.path = self.root / 'profile/logs/debug.log'
+        self.path.parent.mkdir(parents=True)
+        self.client = object.__new__(CaseClient)
+        self.client.state = self.root
+        self.client._log_cache = {}
+
+    def overlap(self, change: Callable[[Path], None], *, maximum: int = 64*1024*1024) -> bytes:
+        """Perform the real writer operation between the two actual file reads."""
+        ready, finished = threading.Event(), threading.Event()
+        errors: list[BaseException] = []
+        original_open = Path.open
+        path = self.path
+
+        def writer() -> None:
+            try:
+                if not ready.wait(2):
+                    raise TimeoutError('Owned test reader never reached its first read')
+                change(path)
+            except BaseException as error:
+                errors.append(error)
+            finally:
+                finished.set()
+
+        class FileRead:
+            def __init__(self, stream: object) -> None:
+                self.stream = stream
+                self.first = True
+
+            def __enter__(self) -> object:
+                return self
+
+            def __exit__(self, *ignored: object) -> None:
+                self.stream.close()
+
+            def fileno(self) -> int:
+                return self.stream.fileno()
+
+            def seek(self, offset: int) -> int:
+                return self.stream.seek(offset)
+
+            def read(self, count: int) -> bytes:
+                value = self.stream.read(count)
+                if self.first:
+                    self.first = False
+                    ready.set()
+                    if not finished.wait(2):
+                        raise TimeoutError('Owned append/rewrite operation did not finish')
+                return value
+
+        def opened(candidate: Path, mode: str = 'r', *args: object, **kwargs: object) -> object:
+            stream = original_open(candidate, mode, *args, **kwargs)
+            return FileRead(stream) if candidate == path and mode == 'rb' else stream
+
+        thread = threading.Thread(target=writer)
+        thread.start()
+        try:
+            with patch.object(Path, 'open', opened):
+                return self.client.log_bytes(maximum=maximum)
+        finally:
+            ready.set()
+            thread.join(2)
+            self.assertFalse(thread.is_alive(), 'Owned writer must end')
+            if errors:
+                raise errors[0]
+
+    @staticmethod
+    def observation(raw: bytes) -> dict:
+        from ck3_mod_acceptance_cases.generic_product_adapter import marker_observation
+        return marker_observation(raw, {'required_markers': ['XFMAT: TEST PASS seen'],
+            'product_marker_minimum': {}, 'config': {'failure_prefixes': ['XFMAT:']}})
+
+    def test_real_concurrent_append_keeps_fixed_complete_prefix_then_reads_new_line(self) -> None:
+        self.path.write_bytes(b'original line\nXFMAT: TEST PA')
+        def append(path: Path) -> None:
+            with path.open('ab') as stream:
+                stream.write(b'SS seen\n')
+        first = self.overlap(append)
+        self.assertEqual(first, b'original line\n')
+        self.assertFalse(self.observation(first)['qualified'])
+        second = self.client.log_bytes()
+        self.assertEqual(second, b'original line\nXFMAT: TEST PASS seen\n')
+        self.assertTrue(self.observation(second)['qualified'])
+
+    def test_appended_duplicate_and_failure_remain_visible_to_real_marker_consumer(self) -> None:
+        original = b'XFMAT: TEST PASS seen\n'
+        self.path.write_bytes(original)
+        def append(path: Path) -> None:
+            with path.open('ab') as stream:
+                stream.write(b'XFMAT: TEST PASS seen\nXFMAT: TEST FAIL concurrent\n')
+        self.assertEqual(self.overlap(append), original)
+        observed = self.observation(self.client.log_bytes())
+        self.assertEqual(observed['duplicates'], {'XFMAT: TEST PASS seen': 2})
+        self.assertEqual(observed['failure_lines'], ['XFMAT: TEST FAIL concurrent'])
+        self.assertFalse(observed['qualified'])
+
+    def test_existing_failure_is_not_hidden_by_normal_concurrent_append(self) -> None:
+        original = b'XFMAT: TEST PASS seen\nXFMAT: TEST FAIL original\n'
+        self.path.write_bytes(original)
+        def append(path: Path) -> None:
+            with path.open('ab') as stream:
+                stream.write(b'ordinary append\n')
+        observed = self.observation(self.overlap(append))
+        self.assertEqual(observed['failure_lines'], ['XFMAT: TEST FAIL original'])
+        self.assertFalse(observed['qualified'])
+
+    def test_real_same_length_rewrite_between_reads_rejects(self) -> None:
+        self.path.write_bytes(b'original\n')
+        def rewrite(path: Path) -> None:
+            with path.open('r+b') as stream:
+                stream.write(b'altered!\n')
+        with self.assertRaisesRegex(ValueError, 'prefix rewritten during read'):
+            self.overlap(rewrite)
+        self.assertEqual(self.client._log_cache, {})
+
+    def test_real_truncate_between_reads_rejects(self) -> None:
+        self.path.write_bytes(b'original complete line\n')
+        def truncate(path: Path) -> None:
+            with path.open('r+b') as stream:
+                stream.truncate(2)
+        with self.assertRaisesRegex(ValueError, 'truncated'):
+            self.overlap(truncate)
+
+    def test_real_path_replacement_after_handle_close_rejects(self) -> None:
+        self.path.write_bytes(b'original\n')
+        replacement = self.path.with_name('replacement.log')
+        replacement.write_bytes(b'original\n')
+        original_lstat = Path.lstat
+        calls = 0
+        def metadata(path: Path, *args: object, **kwargs: object) -> object:
+            nonlocal calls
+            if path == self.path:
+                calls += 1
+                if calls == 2:
+                    # Handle is closed, so this is portable to Windows sharing.
+                    replacement.replace(self.path)
+            return original_lstat(path, *args, **kwargs)
+        with patch.object(Path, 'lstat', metadata):
+            with self.assertRaisesRegex(ValueError, 'replaced during read'):
+                self.client.log_bytes()
+
+    def test_cache_rejects_rewrite_with_restored_size_and_mtime_and_truncation(self) -> None:
+        self.path.write_bytes(b'original\nunfinished')
+        self.assertEqual(self.client.log_bytes(), b'original\n')
+        before = self.path.stat()
+        self.path.write_bytes(b'altered!\nunfinished')
+        os.utime(self.path, ns=(before.st_atime_ns, before.st_mtime_ns))
+        with self.assertRaisesRegex(ValueError, 'prefix rewritten between reads'):
+            self.client.log_bytes()
+        self.path.write_bytes(b'x\n')
+        with self.assertRaisesRegex(ValueError, 'truncated between reads'):
+            self.client.log_bytes()
+
+    def test_cache_rejects_replacement_with_identical_content(self) -> None:
+        self.path.write_bytes(b'original\n')
+        self.client.log_bytes()
+        replacement = self.path.with_name('replacement.log')
+        replacement.write_bytes(b'original\n')
+        replacement.replace(self.path)
+        with self.assertRaisesRegex(ValueError, 'replaced between reads'):
+            self.client.log_bytes()
+
+    def test_source_and_growth_cap_remain_strict_for_both_original_logs(self) -> None:
+        self.path.write_bytes(b'old\n')
+        def append(path: Path) -> None:
+            with path.open('ab') as stream:
+                stream.write(b'over cap\n')
+        with self.assertRaisesRegex(ValueError, 'bound exceeded'):
+            self.overlap(append, maximum=8)
+        for maximum in (True, -1, 64*1024*1024 + 1):
+            with self.subTest(maximum=maximum), self.assertRaisesRegex(ValueError, 'exact bounded integer'):
+                self.client.log_bytes(maximum=maximum)
+        with self.assertRaisesRegex(ValueError, 'Only original CK3 logs'):
+            self.client.log_bytes('../debug.log')
+        error = self.path.with_name('error.log')
+        error.write_bytes(b'error complete\r\npartial')
+        self.assertEqual(self.client.log_bytes('error.log'), b'error complete\r\n')
+        error.unlink()
+        error.mkdir()
+        with self.assertRaisesRegex(ValueError, 'regular non-symlink file'):
+            self.client.log_bytes('error.log')
+
+
 if __name__=='__main__':unittest.main()

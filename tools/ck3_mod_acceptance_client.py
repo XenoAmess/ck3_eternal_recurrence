@@ -4,15 +4,21 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import os
+import stat as stat_module
 from pathlib import Path
 from collections.abc import Callable, Mapping, Sequence
-from typing import Literal, Protocol, TypedDict, runtime_checkable
+from typing import Literal, NamedTuple, Protocol, TypedDict, runtime_checkable
 from ck3_mod_acceptance_background_types import (
     CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, keyed_file_pin, json_object,
     JsonObject, file_pin, text_field, WireEvidenceSource, wire_evidence_codec, wire_evidence_source)
 from ck3_mod_acceptance_native_day import (STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day, native_day_request_count, fresh_native_day_before, project_pre_day_event_boundary)
 import subprocess
 import time
+
+
+class _CaseLogPrefixV1(NamedTuple):
+    identity: tuple[int, int]
+    raw: bytes
 
 
 class TypedNormalQuitEvidenceV1(TypedDict):
@@ -605,7 +611,7 @@ class CaseClient:
         self._started = time.time()
         self._binding = None
         self._seq = 0
-        self._log_cache = {}
+        self._log_cache: dict[str, _CaseLogPrefixV1] = {}
         self.manifest = selection.manifest
         from ck3_mod_acceptance import path_at
         self.frozen = read_json(path_at(selection.context['frozen_argv']['path'], selection.context_path.parent))
@@ -1042,16 +1048,52 @@ class CaseClient:
         return row
 
 
-    def log_bytes(self, name='debug.log', maximum=64*1024*1024):
+    def log_bytes(self, name: str = 'debug.log', maximum: int = 64*1024*1024) -> bytes:
+        """Read a bounded, twice-verified original prefix while CK3 may append."""
         require(name in ('debug.log','error.log'), 'Only original CK3 logs are read')
+        require(type(maximum) is int and 0 <= maximum <= 64*1024*1024,
+                'Original diagnostic log bound must be an exact bounded integer')
         path = self.state / 'profile/logs' / name
-        stat = path.stat(); key = (stat.st_size,stat.st_mtime_ns)
-        require(stat.st_size <= maximum, 'Original diagnostic log bound exceeded')
-        if self._log_cache.get(name, (None,None))[0] != key:
-            raw = path.read_bytes(); after=path.stat()
-            require(key == (after.st_size,after.st_mtime_ns), 'Actual debug log changed during read')
-            self._log_cache[name] = (key,raw)
-        return self._log_cache[name][1]
+        before_path = path.lstat()
+        require(stat_module.S_ISREG(before_path.st_mode), 'Original diagnostic log must be a regular non-symlink file')
+
+        def identity(value: os.stat_result) -> tuple[int, int]:
+            require(stat_module.S_ISREG(value.st_mode) and value.st_ino != 0,
+                    'Original diagnostic log file identity unavailable')
+            return value.st_dev, value.st_ino
+
+        # Unbuffered reads force the second prefix read to reach the file; a
+        # buffered seek may otherwise replay its old buffer after a rewrite.
+        with path.open('rb', buffering=0) as stream:
+            before = os.fstat(stream.fileno())
+            file_id = identity(before)
+            require(identity(before_path) == file_id, 'Original diagnostic log replaced before read')
+            count = before.st_size
+            require(0 <= before_path.st_size <= count <= maximum, 'Original diagnostic log bound exceeded or truncated')
+            raw = stream.read(count)
+            middle = os.fstat(stream.fileno())
+            require(len(raw) == count, 'Original diagnostic log truncated during read')
+            stream.seek(0)
+            repeated = stream.read(count)
+            after = os.fstat(stream.fileno())
+        after_path = path.lstat()
+        require(all(identity(value) == file_id for value in (middle, after, after_path)),
+                'Original diagnostic log replaced during read')
+        sizes = (count, middle.st_size, after.st_size, after_path.st_size)
+        require(all(0 <= size <= maximum for size in sizes), 'Original diagnostic log bound exceeded')
+        require(all(first <= second for first, second in zip(sizes, sizes[1:])),
+                'Original diagnostic log truncated during read')
+        require(len(repeated) == count and repeated == raw, 'Original diagnostic log prefix rewritten during read')
+        cached = self._log_cache.get(name)
+        if cached is not None:
+            require(cached.identity == file_id, 'Original diagnostic log replaced between reads')
+            require(count >= len(cached.raw), 'Original diagnostic log truncated between reads')
+            require(raw.startswith(cached.raw), 'Original diagnostic log prefix rewritten between reads')
+        # Keep the entire observed prefix, including its unfinished tail, so a
+        # later append must preserve every previously observed byte. Do not key
+        # by after-size/mtime or silently return an old cache on a failed read.
+        self._log_cache[name] = _CaseLogPrefixV1(file_id, raw)
+        return raw[:raw.rfind(b'\n') + 1]
 
     def checkpoint(self, name, value):
         write_once(self.output / (name + '.json'), value)
