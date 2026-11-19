@@ -8,17 +8,18 @@ from pathlib import Path
 import re
 
 LEGACY=Path(__file__).with_name('inspect_save_readback.py')
-def sha(p):
+def sha(p: Path) -> str:
  h=hashlib.sha256()
  with p.open('rb') as f:
   for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
  return h.hexdigest()
 
-def inspect(args):
+def inspect(args: argparse.Namespace) -> None:
  args.output_dir.mkdir(exist_ok=False)
  spec=importlib.util.spec_from_file_location('retained_sxad_v6',LEGACY)
+ if spec is None or spec.loader is None:raise ValueError('retained v6 decoder is unavailable')
  module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
- data=module.inspect(args.run,args.save_dir,args.sdk,args.player_id,args.output_dir)
+ data=module.inspect(args.run,args.save_dir,args.sdk,args.player_id,args.output_dir,native_save=args.native_save)
  for c in data['characters']:
   raw_path=args.output_dir/f'character-{c["character_id"]}.txt'
   text=raw_path.read_text(encoding='utf-8')
@@ -43,9 +44,12 @@ def inspect(args):
  with output.open('x',encoding='utf-8',newline='\n') as f:json.dump(data,f,ensure_ascii=False,indent=2);f.write('\n')
  print(json.dumps({'output':str(output),'sha256':sha(output),'counts':[data['pass_count'],data['fail_count'],data['missing_count']],'characters':len(data['characters'])}))
 
-def main():
+def main() -> None:
  p=argparse.ArgumentParser(description=__doc__)
- for name in ['run','save-dir','sdk','output-dir']:p.add_argument('--'+name,required=True,type=Path)
+ for name in ['run','sdk','output-dir']:p.add_argument('--'+name,required=True,type=Path)
+ source=p.add_mutually_exclusive_group(required=True)
+ source.add_argument('--save-dir',type=Path)
+ source.add_argument('--native-save',type=Path)
  p.add_argument('--player-id',required=True,type=int)
  inspect(p.parse_args())
 if __name__=='__main__':main()

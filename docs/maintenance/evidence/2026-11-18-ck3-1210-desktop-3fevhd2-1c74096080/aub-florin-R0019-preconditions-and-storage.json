@@ -1,0 +1,191 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T12:33:49.787438+00:00",
+  "scope": "Original R19 composite preparation failure/error0/one day/zeroSAVE retained. New finite boolean observer only; full original AST identical after removing only its definition and call. Targeted actual producer unit/CLI and2generic Java parses0; revised runtime NOT_RUN. Closed storage exact deletions all0failure. Selected old duplicate stdout/plans losslessly archived, old direct paths unavailable/bytes recoverable/TTLs unchanged; no old plan replay. Ordinary setup pixels retired, business/failure/calendar/exit/public/anchor/protected assets kept.",
+  "records": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-precondition-software-a01\\summary.json",
+        "bytes": 3161,
+        "sha256": "eafeafb7d746c62a8164a8749480e2c479c689bb47e8389f805180d17dccbc26"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T12:23:57.578596+00:00",
+        "source_pins": [
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\events\\aubd_events.txt",
+            "bytes": 13470,
+            "sha256": "5e9bca40cca760321ebb9942c897c7ed5f011b9f6315971a71b8642b38d50ce2"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\scripted_effects\\aubd_preparation_effects.txt",
+            "bytes": 4627,
+            "sha256": "4c3c26d8c43ca8ddbf7a133212f54de011f4cd582a605d646d12bd5766227e27"
+          }
+        ],
+        "results": [
+          {
+            "name": "actual-duchy-producer-test",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-B",
+              "-m",
+              "unittest",
+              "test_fixture_engine_prepare.AubFlorinProbePreparationTests.test_actual_duchy_producer_keeps_timed_partial_scope",
+              "-v"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 0.6211530000146013
+          },
+          {
+            "name": "actual-duchy-cli",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-B",
+              "tools/prepare_aub_1_20_fixture.py",
+              "--scenario",
+              "florin-duchy",
+              "--output",
+              "D:\\ck3-state\\upgrade-20261118\\aub-duchy-precondition-software-a01\\fixture"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 1.5406934000202455
+          },
+          {
+            "name": "parse-0",
+            "command": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-precondition-software-a01\\tmp",
+              "-jar",
+              "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\events\\aubd_events.txt"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 0.3899606000049971
+          },
+          {
+            "name": "parse-1",
+            "command": [
+              "java",
+              "-Xmx192m",
+              "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-precondition-software-a01\\tmp",
+              "-jar",
+              "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+              "parse",
+              "--file",
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\scripted_effects\\aubd_preparation_effects.txt"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 0.30199930001981556
+          }
+        ],
+        "passed": true,
+        "AST_equivalence_after_removing_only_new_observer_definition_and_call": true,
+        "open_kaishek_commit": "d2a2627e3023310d96f1a2d1e63478f6a6ee7a57",
+        "profile": "Generic syntax/roundTrip only, not engine API/runtime validation",
+        "runtime_status": "NOT_RUN",
+        "business_pass": false,
+        "product_release_pass": false,
+        "remaining_write_reservation_bytes": 0
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-duchy-R0019\\summary.json",
+        "bytes": 330,
+        "sha256": "8e889db9fd1db6563b7440bba28014d99db153d2cfd546ff314394d49e4fa3c1"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T12:22:06.949771+00:00",
+        "deleted_files": 4188,
+        "deleted_logical_bytes": 184069384,
+        "failed": [],
+        "free_before": {
+          "C:/": 50186985472,
+          "D:/": 21589569536
+        },
+        "free_after": {
+          "C:/": 50187911168,
+          "D:/": 21783298048
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-lease-archive-a13\\summary.json",
+        "bytes": 326,
+        "sha256": "078a127599396db3855b1495ecf7725b6c42b9cce60421f3f7238a7409165618"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T12:32:57.865710+00:00",
+        "deleted_files": 15,
+        "deleted_logical_bytes": 8395747,
+        "failed": [],
+        "free_before": {
+          "C:/": 50184777728,
+          "D:/": 21781184512
+        },
+        "free_after": {
+          "C:/": 50184777728,
+          "D:/": 21789597696
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-superseded-aub-setup-images-a09\\summary.json",
+        "bytes": 327,
+        "sha256": "9b4b105a324da40c8f59f692f356672e38096d6e14b1e62d85d9ba109829522a"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T12:33:00.452897+00:00",
+        "deleted_files": 21,
+        "deleted_logical_bytes": 24393025,
+        "failed": [],
+        "free_before": {
+          "C:/": 50184773632,
+          "D:/": 21789409280
+        },
+        "free_after": {
+          "C:/": 50184773632,
+          "D:/": 21804441600
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-cleanup-plan-archive-a09\\summary.json",
+        "bytes": 326,
+        "sha256": "5b41aff97cb4dd3d8d289dd1182537ecd48d9c9620cb22be0e83d6f32d0466a1"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T12:33:02.128522+00:00",
+        "deleted_files": 11,
+        "deleted_logical_bytes": 4939174,
+        "failed": [],
+        "free_before": {
+          "C:/": 50184773632,
+          "D:/": 21804113920
+        },
+        "free_after": {
+          "C:/": 50184773632,
+          "D:/": 21809065984
+        }
+      }
+    }
+  ],
+  "product_release_pass": false,
+  "workshop_published": false
+}

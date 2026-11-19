@@ -29,6 +29,48 @@ aubd_locate_built_military_district_effect = {
 }
 
 # Character scope. Callers log PREP FAIL, PREP PARTIAL or TEST FAIL first.
+# Finite read-only observations for the actual day1 composite guard.
+# Each reported boolean is the existing condition, not a replacement gate.
+aubd_observe_preconstruction_gate_effect = {
+    if = { limit = { var:aubd_phase = 1 } debug_log = "AUBD: PRECOND phase1_yes" }
+    else = { debug_log = "AUBD: PRECOND phase1_no" }
+    if = { limit = { aubd_actual_duchy_owner_trigger = yes } debug_log = "AUBD: PRECOND actual_owner_yes" }
+    else = { debug_log = "AUBD: PRECOND actual_owner_no" }
+    if = { limit = { has_character_modifier = aubd_fast_district_preparation } debug_log = "AUBD: PRECOND preparation_modifier_yes" }
+    else = { debug_log = "AUBD: PRECOND preparation_modifier_no" }
+    if = { limit = { has_character_flag = enable_auto_build } debug_log = "AUBD: PRECOND auto_enabled_unexpected" }
+    else = { debug_log = "AUBD: PRECOND auto_disabled_yes" }
+    if = { limit = { gold >= 50 } debug_log = "AUBD: PRECOND gold_at_least50_yes" }
+    else = { debug_log = "AUBD: PRECOND gold_at_least50_no" }
+    province:2619 = {
+        if = { limit = { aubd_preparation_inputs_trigger = yes } debug_log = "AUBD: PRECOND province_inputs_yes" }
+        else = { debug_log = "AUBD: PRECOND province_inputs_no" }
+        if = { limit = { can_have_duchy_capital_building_trigger = yes } debug_log = "AUBD: PRECOND duchy_capital_yes" }
+        else = { debug_log = "AUBD: PRECOND duchy_capital_no" }
+        culture = {
+            if = { limit = { has_innovation = innovation_burhs } debug_log = "AUBD: PRECOND burhs_yes" }
+            else = { debug_log = "AUBD: PRECOND burhs_no" }
+            if = { limit = { has_innovation = innovation_castle_baileys } debug_log = "AUBD: PRECOND castle_baileys_yes" }
+            else = { debug_log = "AUBD: PRECOND castle_baileys_no" }
+        }
+        if = { limit = { has_ongoing_holding_construction = yes } debug_log = "AUBD: PRECOND province_construction_active" }
+        else = { debug_log = "AUBD: PRECOND province_construction_absent" }
+        if = { limit = { has_building_or_higher = military_duchy_building_01 } debug_log = "AUBD: PRECOND primary01_already_present" }
+        else = { debug_log = "AUBD: PRECOND primary01_absent" }
+        if = { limit = { free_building_slots > 0 } debug_log = "AUBD: PRECOND ordinary_free_slot_positive" }
+        else = { debug_log = "AUBD: PRECOND ordinary_free_slot_not_positive" }
+        if = { limit = { can_start_building_construction_for_owner = military_duchy_building_01 } debug_log = "AUBD: PRECOND native_province_primary01_yes" }
+        else = { debug_log = "AUBD: PRECOND native_province_primary01_no" }
+        holding_district = {
+            if = { limit = { has_building_or_higher = castle_02 } debug_log = "AUBD: PRECOND holdingII_yes" }
+            else = { debug_log = "AUBD: PRECOND holdingII_no" }
+            if = { limit = { can_start_building_construction_for_owner = military_duchy_building_01 } debug_log = "AUBD: PRECOND native_holding_primary01_yes" }
+            else = { debug_log = "AUBD: PRECOND native_holding_primary01_no" }
+        }
+    }
+}
+
+# Character scope. Callers log PREP FAIL, PREP PARTIAL or TEST FAIL first.
 # No successor is scheduled from this path; its known visible option is empty.
 aubd_stop_at_known_failure_effect = {
     set_variable = { name = aubd_phase value = 90 }

@@ -1,5 +1,9 @@
 # 自动升级建筑：Florin 迁移进行中
 
+2026-11-19T12:33Z，machine_id `desktop-3fevhd2-1c74096080`：公国R0019已修复API装载错误，error.log零字节；真实初始Robert/Trani/c_apulia/d_apulia/holdingII条件通过，但第1日施工复合准备条件拒绝，尚无施工或产品链调用。日志未逐项区分条件，不能断言只有Native01为false。已知900窗口实际暂停09-16，1自然日/零SAVE；12:17:20Z正常未勾选保存退出，原Popen0、无超时关窗、keeper/CAS闭合，公共verify保留BLOCKED。[R19原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0019-preparation-failed.json)。后继只增加phase/owner/modifier/策略/科技/施工/原生门等有限布尔观察；移除新增观察定义与调用后，原完整AST与本场精确一致，全部准备和升级条件保留。目标准备器测试、实际CLI及两份改动脚本通用解析均0，实机待验。[观察与闭场存储](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-R0019-preconditions-and-storage.json)。
+
+R19闭场精确回收4188份shader/184069384逻辑字节；15份闭场stdout/8395747字节及11份已完成删除计划/4939174字节经逐成员SHA验证后无损归档，旧展开路径不可读、原字节可恢复、期限不刷新。21个普通准备图别名/15016158唯一载荷字节按用途退役，实际世界/失败/日历/退出/公共/anchor与永久资产保留，全部零失败。12:33:02Z D空闲21809065984字节；Steam离线。已完成的删除计划不得再次执行。
+
 2026-11-19T11:53Z，machine_id `desktop-3fevhd2-1c74096080`：公国R0018在世界开始前出现2个未知`discover_innovation`效果及3个未知`has_ongoing_construction`区级触发器；语法解析不能替代引擎API验证。未进入世界、0标记/日期/SAVE，不计业务通过。书签界面正常标题栏关闭，11:40:43Z原Popen0、无超时关窗请求、keeper/CAS闭合；公共verify保留BLOCKED。[原始失败](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0018-red-script-api.json)。已改用本机原版`add_innovation`，移除无效区级谓词，保留省份施工状态、实际建成区身份、费用及完整原生目标门；修正版仍待实机。
 
 继承候选已正式接入现有`florin-succession`入口：原玩家真实死亡、官方Continue、实际抽样继承人、反向预置策略、原种子及第1/16日两次自动升级均须真实验收；第2日独立0004精确扣120/count1。手动回调资格移至已知暂停重备窗口，补phase2守卫，不再因稍后到达的正确回调直接误记PARTIAL；最终付款人/来源/次数/第1、2、16日条件不放松。无回调仍PARTIAL，不宣称内部队列基数。通道改为本组已授权sharedGUI，不套用另一组禁止前台规则。20项既有准备器测试、6项继承结构检查、回调位置AST检查、完整准备器strict mypy（imports silent）、两项实际CLI及6次改动脚本通用Java解析均0；实机继承仍NOT_RUN。[修复、继承和存储](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-R0018-fix-succession-and-storage.json)。

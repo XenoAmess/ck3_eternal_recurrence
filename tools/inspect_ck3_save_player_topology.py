@@ -9,18 +9,130 @@ evidence only; exact-build live MCP remains authoritative.
 from __future__ import annotations
 
 import argparse
+import codecs
+from contextlib import contextmanager
 import hashlib
+import io
 import json
 from pathlib import Path
 import re
 import subprocess
 import tempfile
-from typing import Iterator, Sequence
+from typing import Iterator, Literal, NotRequired, Sequence, TextIO, TypedDict
+import zipfile
 
 
 SCHEMA_VERSION = 1
 KIND = "ck3_save_player_topology_offline_v1"
 TITLE_RANK = {"b": 1, "c": 2, "d": 3, "k": 4, "e": 5, "h": 6}
+
+
+class SaveMemberIdentity(TypedDict):
+    name: Literal["gamestate"]
+    bytes: int
+    compressed_bytes: int
+    crc32: str
+
+
+class SaveInputIdentity(TypedDict):
+    format: Literal["plaintext", "native_zip_plaintext"]
+    path: str
+    bytes: int
+    sha256: str
+    content_bytes: int
+    content_sha256: str
+    member: NotRequired[SaveMemberIdentity]
+
+
+class _CelestialCandidate(TypedDict):
+    contract_id: int
+    player_manager_character_id: int
+    immediate_liege_character_id: int
+    player_primary_title_tier: int
+    player_primary_title_key: str
+    player_government: str
+    liege_primary_title_tier: int
+    liege_primary_title_key: str
+    liege_government: str
+    direct_landed_vassal_count: int
+    direct_landed_vassal_character_ids: list[int]
+
+
+def _gamestate_member(archive: zipfile.ZipFile) -> zipfile.ZipInfo:
+    members = archive.infolist()
+    if len(members) != 1 or members[0].filename != "gamestate" or members[0].is_dir():
+        raise ValueError("native save requires exactly one gamestate member")
+    member = members[0]
+    if member.flag_bits & 1:
+        raise ValueError("encrypted native gamestate is unsupported")
+    return member
+
+
+def _check_native_prefix(prefix: bytes) -> None:
+    prefix = prefix.removeprefix(codecs.BOM_UTF8).lstrip()
+    if re.match(br"(?:SAV[0-9]{4}\s+)?meta_data\s*=\s*\{", prefix) is None:
+        raise ValueError("native gamestate must be plaintext CK3 metadata")
+
+
+@contextmanager
+def _save_text(path: Path, *, native_zip: bool = False) -> Iterator[TextIO]:
+    """Read a declared source; native mode never extracts or invokes Rakaly."""
+    if not native_zip:
+        with path.open("r", encoding="utf-8", errors="replace") as stream:
+            yield stream
+        return
+    with zipfile.ZipFile(path) as archive:
+        member = _gamestate_member(archive)
+        with archive.open(member) as raw:
+            with io.TextIOWrapper(raw, encoding="utf-8-sig", errors="strict") as stream:
+                _check_native_prefix(stream.read(256).encode("utf-8"))
+                stream.seek(0)
+                yield stream
+
+
+def _save_input_identity(path: Path, *, native_zip: bool = False) -> SaveInputIdentity:
+    """Hash exact container/content bytes; native validation consumes CRC/UTF-8."""
+    container_sha256 = _sha256(path).lower()
+    digest = hashlib.sha256()
+    size = 0
+    member_identity: SaveMemberIdentity | None = None
+    if native_zip:
+        decoder = codecs.getincrementaldecoder("utf-8")(errors="strict")
+        with zipfile.ZipFile(path) as archive:
+            member = _gamestate_member(archive)
+            member_identity = {"name": "gamestate", "bytes": member.file_size,
+                               "compressed_bytes": member.compress_size, "crc32": f"{member.CRC:08x}"}
+            with archive.open(member) as stream:
+                prefix = stream.read(256)
+                _check_native_prefix(prefix)
+                digest.update(prefix)
+                if "\x00" in decoder.decode(prefix):
+                    raise ValueError("native gamestate contains binary NUL data")
+                size += len(prefix)
+                for chunk in iter(lambda: stream.read(65536), b""):
+                    digest.update(chunk)
+                    if "\x00" in decoder.decode(chunk):
+                        raise ValueError("native gamestate contains binary NUL data")
+                    size += len(chunk)
+                decoder.decode(b"", final=True)
+            if size != member.file_size:
+                raise ValueError("native gamestate length differs from its ZIP member")
+    else:
+        with path.open("rb") as stream:
+            for chunk in iter(lambda: stream.read(65536), b""):
+                digest.update(chunk)
+                size += len(chunk)
+    if _sha256(path).lower() != container_sha256:
+        raise ValueError("save source changed while validating its content")
+    result: SaveInputIdentity = {
+        "format": "native_zip_plaintext" if native_zip else "plaintext",
+        "path": str(path.resolve()), "bytes": path.stat().st_size,
+        "sha256": container_sha256, "content_bytes": size,
+        "content_sha256": digest.hexdigest(),
+    }
+    if member_identity is not None:
+        result["member"] = member_identity
+    return result
 
 
 def _sha256(path: Path) -> str:
@@ -31,13 +143,13 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest().upper()
 
 
-def _numeric_records(path: Path) -> Iterator[tuple[int, int, str]]:
+def _numeric_records(path: Path, *, native_zip: bool = False) -> Iterator[tuple[int, int, str]]:
     """Yield numeric records at the stable character/title/contract depths."""
 
     current_id: int | None = None
     level: int | None = None
     lines: list[str] = []
-    with path.open("r", encoding="utf-8", errors="replace") as stream:
+    with _save_text(path, native_zip=native_zip) as stream:
         for line in stream:
             if current_id is None:
                 match = re.fullmatch(r"(\t{1,2})(\d+)=\{\s*\n?", line)
@@ -47,20 +159,21 @@ def _numeric_records(path: Path) -> Iterator[tuple[int, int, str]]:
                     lines = [line]
                 continue
             lines.append(line)
-            if line == "\t" * int(level) + "}\n":
-                yield int(level), current_id, "".join(lines)
+            assert level is not None
+            if line == "\t" * level + "}\n":
+                yield level, current_id, "".join(lines)
                 current_id = None
                 level = None
                 lines = []
 
 
-def _player_records(path: Path) -> tuple[list[dict[str, int]], list[int]]:
+def _player_records(path: Path, *, native_zip: bool = False) -> tuple[list[dict[str, int]], list[int]]:
     played: list[dict[str, int]] = []
     current: list[int] = []
     block: list[str] | None = None
     kind: str | None = None
     depth = 0
-    with path.open("r", encoding="utf-8", errors="replace") as stream:
+    with _save_text(path, native_zip=native_zip) as stream:
         for line in stream:
             if block is None:
                 stripped = line.strip()
@@ -93,13 +206,14 @@ def _player_records(path: Path) -> tuple[list[dict[str, int]], list[int]]:
     return played, current
 
 
-def inspect_melted(path: Path, *, requested_player: int | None = None) -> dict[str, object]:
+def inspect_melted(path: Path, *, requested_player: int | None = None,
+                   native_zip: bool = False) -> dict[str, object]:
     meta_version: str | None = None
     meta_tier: int | None = None
     meta_players: int | None = None
     meta_portrait: int | None = None
     in_portrait = False
-    with path.open("r", encoding="utf-8", errors="replace") as stream:
+    with _save_text(path, native_zip=native_zip) as stream:
         for line in stream:
             stripped = line.strip()
             if stripped == "meta_main_portrait={":
@@ -125,19 +239,19 @@ def inspect_melted(path: Path, *, requested_player: int | None = None) -> dict[s
     contracts: list[tuple[int, int, int, str]] = []
     titles: list[tuple[int, str, int]] = []
     characters: dict[int, dict[str, object]] = {}
-    for level, record_id, text in _numeric_records(path):
+    for level, record_id, text in _numeric_records(path, native_zip=native_zip):
         if level == 2:
-            vassal = re.search(r"(?m)^\t\t\tvassal=(\d+)$", text)
-            liege = re.search(r"(?m)^\t\t\tliege=(\d+)$", text)
+            vassal_match = re.search(r"(?m)^\t\t\tvassal=(\d+)$", text)
+            liege_match = re.search(r"(?m)^\t\t\tliege=(\d+)$", text)
             group = re.search(r'(?m)^\t\t\tcontract_group="([^"]+)"$', text)
-            if vassal is not None and liege is not None and group is not None:
+            if vassal_match is not None and liege_match is not None and group is not None:
                 contracts.append(
-                    (record_id, int(vassal.group(1)), int(liege.group(1)), group.group(1))
+                    (record_id, int(vassal_match.group(1)), int(liege_match.group(1)), group.group(1))
                 )
-            key = re.search(r'(?m)^\t\t\tkey="([bcdkeh]_[^"]+)"$', text)
-            holder = re.search(r"(?m)^\t\t\tholder=(\d+)$", text)
-            if key is not None and holder is not None:
-                titles.append((record_id, key.group(1), int(holder.group(1))))
+            key_match = re.search(r'(?m)^\t\t\tkey="([bcdkeh]_[^"]+)"$', text)
+            holder_match = re.search(r"(?m)^\t\t\tholder=(\d+)$", text)
+            if key_match is not None and holder_match is not None:
+                titles.append((record_id, key_match.group(1), int(holder_match.group(1))))
         elif (
             "\n\t\tfirst_name=" in text
             and "\n\t\talive_data={" in text
@@ -157,7 +271,7 @@ def inspect_melted(path: Path, *, requested_player: int | None = None) -> dict[s
         if vassal in characters:
             landed_children.setdefault(liege, []).append(vassal)
 
-    candidates: list[dict[str, object]] = []
+    candidates: list[_CelestialCandidate] = []
     for contract_id, vassal, liege, _ in celestial:
         vassal_character = characters.get(vassal)
         liege_character = characters.get(liege)
@@ -179,10 +293,10 @@ def inspect_melted(path: Path, *, requested_player: int | None = None) -> dict[s
                 "immediate_liege_character_id": liege,
                 "player_primary_title_tier": vassal_title[0],
                 "player_primary_title_key": vassal_title[1],
-                "player_government": vassal_character["government"],
+                "player_government": "celestial_government",
                 "liege_primary_title_tier": liege_title[0],
                 "liege_primary_title_key": liege_title[1],
-                "liege_government": liege_character["government"],
+                "liege_government": "celestial_government",
                 "direct_landed_vassal_count": len(landed_children.get(vassal, [])),
                 "direct_landed_vassal_character_ids": sorted(
                     landed_children.get(vassal, [])
@@ -191,13 +305,13 @@ def inspect_melted(path: Path, *, requested_player: int | None = None) -> dict[s
         )
     candidates.sort(
         key=lambda row: (
-            -int(row["direct_landed_vassal_count"]),
-            -int(row["player_primary_title_tier"]),
-            int(row["player_manager_character_id"]),
+            -row["direct_landed_vassal_count"],
+            -row["player_primary_title_tier"],
+            row["player_manager_character_id"],
         )
     )
 
-    played, current = _player_records(path)
+    played, current = _player_records(path, native_zip=native_zip)
     player = requested_player if requested_player is not None else meta_portrait
     player_candidates = [
         row for row in candidates if row["player_manager_character_id"] == player
@@ -233,6 +347,8 @@ def _parser() -> argparse.ArgumentParser:
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--save", type=Path)
     source.add_argument("--melted", type=Path)
+    source.add_argument("--native-save", type=Path,
+                        help="Read the native ZIP plaintext gamestate without extraction")
     parser.add_argument("--rakaly", type=Path)
     parser.add_argument("--player-character-id", type=int)
     parser.add_argument("--output", type=Path)
@@ -244,7 +360,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     temporary: tempfile.TemporaryDirectory[str] | None = None
     try:
-        if args.melted is not None:
+        native_zip = args.native_save is not None
+        native_identity: SaveInputIdentity | None = None
+        if native_zip:
+            if args.rakaly is not None or args.keep_melted is not None:
+                raise ValueError("--native-save cannot use --rakaly or --keep-melted")
+            melted = args.native_save.resolve()
+            native_identity = _save_input_identity(melted, native_zip=True)
+            source_record = dict(native_identity)
+            rakaly_record = None
+        elif args.melted is not None:
             melted = args.melted.resolve()
             if not melted.is_file():
                 raise ValueError("melted input does not exist")
@@ -279,11 +404,16 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "sha256": _sha256(rakaly),
             }
         report = inspect_melted(
-            melted, requested_player=args.player_character_id
+            melted, requested_player=args.player_character_id, native_zip=native_zip
         )
         report["source"] = source_record
         report["rakaly"] = rakaly_record
-        report["melted_sha256"] = _sha256(melted)
+        if native_identity is not None:
+            if _sha256(melted).lower() != native_identity["sha256"]:
+                raise ValueError("native save changed while being inspected")
+            report["melted_sha256"] = native_identity["content_sha256"].upper()
+        else:
+            report["melted_sha256"] = _sha256(melted)
         if args.keep_melted is not None:
             target = args.keep_melted.resolve()
             target.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,241 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T12:33:49.810069+00:00",
+  "scope": "Four existing source files integrated; outside named Python->Java phase1 boundary.6actual integrated regressions, unchanged20-case health verifier and4whole-file mypy with imports-silent/ignoremissing all0. Real CHT1.21 protected SAVE read-only topology route0,18.696s; FileID/mtime/bytes/SHA unchanged, full-world text not written. No actual Superman health/GUI/cold reload/Native ABI or full-product credit. Sample data peak estimate4S+4MiB=53544888B, excludes live profile/logs/other evidence; future actual admission must recalculate.",
+  "records": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-native-save-reader-candidate\\ops\\closing.json",
+        "bytes": 2607,
+        "sha256": "9caffbff70b3e6cf70064fae10e05b79b6c01f3f1030afc885fb6dd9166c5343"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "closed_at_utc": "2026-11-19T12:20:23.479065+00:00",
+        "final_regression": {
+          "argv": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "-m",
+            "unittest",
+            "test_inspect_ck3_save_player_topology",
+            "-v"
+          ],
+          "cwd": "D:\\ck3-state\\upgrade-20261118\\superman-native-save-reader-candidate\\tools",
+          "returncode": 0,
+          "elapsed_seconds": 3.52633120000246
+        },
+        "final_mypy": {
+          "argv": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "-m",
+            "mypy",
+            "--cache-dir",
+            "nul",
+            "--follow-imports=silent",
+            "--ignore-missing-imports",
+            "tools/inspect_ck3_save_player_topology.py",
+            "mod_superman_qiang/tools/inspect_save_readback.py",
+            "mod_superman_qiang/tools/inspect_health_save_readback.py",
+            "tools/test_inspect_ck3_save_player_topology.py"
+          ],
+          "cwd": "D:\\ck3-state\\upgrade-20261118\\superman-native-save-reader-candidate",
+          "returncode": 0,
+          "elapsed_seconds": 2.8613079999922775
+        },
+        "peak": {
+          "sampled_peak_owned_logical_bytes": 934861,
+          "budget_bytes": 2097152,
+          "sampling_completed": true,
+          "interval_seconds": 0.05
+        },
+        "budget_bytes": 2097152,
+        "retained_bytes_before_closing": 137607,
+        "temporary_bytes": 0,
+        "source_inputs_unchanged": true,
+        "protected_actual_saves_read": false,
+        "actual_game_operations": false,
+        "candidate_deployed": false,
+        "reservation_ready_for_root_release": true,
+        "limitations": [
+          "Synthetic same-input parity and existing health verifier only; not actual CK3 health/runtime/save qualification.",
+          "The first full-module mypy run exit1 was retained; explicit types and source narrowing were repaired, final four-file mypy exit0.",
+          "An intermediate capacity sampler stopped on a transient deleted test file; final sampler handles that expected cleanup race and completed.",
+          "No full-world plaintext or JSON is created in native mode; the existing parser still buffers the largest numeric record and selected character reports."
+        ],
+        "finalized_at_utc": "2026-11-19T12:24:12.345789+00:00",
+        "retained_bytes_before_final_receipt": 149231,
+        "patch": {
+          "path": "candidate.patch",
+          "bytes": 37199,
+          "sha256": "39fdf0f360ef543c4b30fe0aa2009d90cd4842d156d084b73b82fb9a13587b90"
+        },
+        "readme": {
+          "path": "README.md",
+          "bytes": 9418,
+          "sha256": "16b2c7431ece62d4dffe69ccd71ae18f07f5d2cebfb7dd4ed8ae48fe6e2a078f"
+        }
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-native-save-reader-integration-a01\\summary.json",
+        "bytes": 4022,
+        "sha256": "0ce8b8f226ec09d7106bc23b33cc9d834bc83efbc91b47e857ca93b2b9e9a894"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T12:30:12.934430+00:00",
+        "results": [
+          {
+            "name": "six-regressions",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-X",
+              "utf8",
+              "-m",
+              "unittest",
+              "discover",
+              "-s",
+              "tools",
+              "-p",
+              "test_inspect_ck3_save_player_topology.py",
+              "-v"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 4.313195099995937
+          },
+          {
+            "name": "four-full-file-mypy",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-X",
+              "utf8",
+              "-m",
+              "mypy",
+              "--cache-dir",
+              "nul",
+              "--follow-imports=silent",
+              "--ignore-missing-imports",
+              "tools/inspect_ck3_save_player_topology.py",
+              "mod_superman_qiang/tools/inspect_save_readback.py",
+              "mod_superman_qiang/tools/inspect_health_save_readback.py",
+              "tools/test_inspect_ck3_save_player_topology.py"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 2.7548837999929674
+          },
+          {
+            "name": "actual-CHT-native-topology-readonly",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-B",
+              "-X",
+              "utf8",
+              "tools/inspect_ck3_save_player_topology.py",
+              "--native-save",
+              "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-0ecfd19e6d854014b3100f0b527be9d6\\profile\\last_save.ck3",
+              "--output",
+              "D:\\ck3-state\\upgrade-20261118\\superman-native-save-reader-integration-a01\\actual-CHT-topology.json"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 18.695922799990512
+          }
+        ],
+        "passed": true,
+        "protected_CHT_input_before_and_after_identical": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-0ecfd19e6d854014b3100f0b527be9d6\\profile\\last_save.ck3",
+          "bytes": 12337646,
+          "file_id": "844424930703311",
+          "mtime_ns": "1794990045032219900",
+          "sha256": "dbc2eb29cd588176e5ed1067b0c0127237ef0277ba85d095cdc293b0dd7238a0"
+        },
+        "source_pins": [
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\inspect_ck3_save_player_topology.py",
+            "bytes": 18089,
+            "sha256": "620556d040ccebc143b2bd625f6199f31695df101aff374269e1d30f29ee641b"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\inspect_save_readback.py",
+            "bytes": 10592,
+            "sha256": "ae8f26941f7214be22545f46044eac7a927e2780b3e3f5e243c245425f069670"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\inspect_health_save_readback.py",
+            "bytes": 2926,
+            "sha256": "0eadc2ce953c26d7f723c8067f1d8dbd2dae5fdff780ac923820df9fb7610190"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_inspect_ck3_save_player_topology.py",
+            "bytes": 15277,
+            "sha256": "0a0428e140c1651a6cee4d0b068ce59e7a707a49874b5d7eaa109e787eb2ad9d"
+          }
+        ],
+        "health_verifier_sha256": "09b15c1cefe8795fa3d9509ba1c4a2a84d6dd41c45f6ac789a9f6eb401505fe4",
+        "scope": "Six real integrated regressions include actual same-input plaintext/native ZIP health CLI and unchanged20-case verifier, malformed-member/UTF8/CRC/append rejection and SDK closure. Four whole-file mypy with imports-silent/ignoremissing, not whole-product strict. Actual protected CHT1.21 named SAVE read only through native topology route with container FileID/mtime/bytes/SHA unchanged. This validates real current SAVE format only, no Superman live health/GUI/cold-reload/Native ABI credit. No full-world text written.",
+        "runtime_health_status": "NOT_RUN",
+        "product_release_pass": false,
+        "retained_output_bytes_before_summary": 3893,
+        "temporary_bytes": 0,
+        "remaining_write_reservation_bytes": 0
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-native-save-reader-integration-a01\\actual-CHT-topology.json",
+        "bytes": 1335,
+        "sha256": "d3ab4bf3ad00ddffba4b71d1483cb95ad518e21e76ecabe2fa5b3b4d208df986"
+      },
+      "result": {
+        "schema_version": 1,
+        "kind": "ck3_save_player_topology_offline_v1",
+        "result": "GREEN",
+        "authority": "offline-prelaunch-only-live-exact-build-mcp-remains-authoritative",
+        "game_version": "1.21.0",
+        "meta_player_character_id": 36423,
+        "requested_player_character_id": 36423,
+        "meta_player_tier": 3,
+        "meta_number_of_players": 1,
+        "played_character_records": [
+          {
+            "character_id": 36423,
+            "player_id": 1
+          }
+        ],
+        "currently_played_character_ids": [
+          36423
+        ],
+        "offline_single_player_ready": true,
+        "player_manager_candidates": [],
+        "celestial_manager_candidate_count": 0,
+        "celestial_manager_candidates": [],
+        "source": {
+          "format": "native_zip_plaintext",
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-0ecfd19e6d854014b3100f0b527be9d6\\profile\\last_save.ck3",
+          "bytes": 12337646,
+          "sha256": "dbc2eb29cd588176e5ed1067b0c0127237ef0277ba85d095cdc293b0dd7238a0",
+          "content_bytes": 166437826,
+          "content_sha256": "6161c7c4395026a06183d90ee4fc4fac286973ae407e926373c8d5d43e6c8480",
+          "member": {
+            "name": "gamestate",
+            "bytes": 166437826,
+            "compressed_bytes": 12304906,
+            "crc32": "d7fd9204"
+          }
+        },
+        "rakaly": null,
+        "melted_sha256": "6161C7C4395026A06183D90EE4FC4FAC286973AE407E926373C8D5D43E6C8480"
+      }
+    }
+  ],
+  "product_release_pass": false,
+  "workshop_published": false
+}

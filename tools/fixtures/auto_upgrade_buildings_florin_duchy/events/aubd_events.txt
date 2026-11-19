@@ -68,6 +68,7 @@ aubd.10 = {
     hidden = yes
     immediate = {
         aubd_bind_preparation_scopes_effect = yes
+        aubd_observe_preconstruction_gate_effect = yes
         if = {
             limit = {
                 var:aubd_phase = 1

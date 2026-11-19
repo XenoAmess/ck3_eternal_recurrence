@@ -1,0 +1,180 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T12:21:38.876576+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0019",
+  "case": "duchy-primary-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "PREPARATION_FAILED_COMPOSITE_DAY1_GATE_ERROR0",
+  "source_head": "88a6aa48e144a20b65f45eedc18da53703663db8",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r19-gui-prepare\\prepared-case.json",
+    "bytes": 1588988,
+    "sha256": "00bbd99190861003882c82e2cb0d99138e1972bc25b871c602f5bf9c1a0633ea"
+  },
+  "facts": {
+    "actual_robert1128_owned_unleased_trani2619_county_apulia_and_duchy_apulia_with_holdingII": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\debug.log",
+          "bytes": 1183833,
+          "sha256": "f81768fd92791dc46628835df1ee74a6c2cffceec654fc42ebdca2ae303109ff"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd02-initial-world.png",
+          "bytes": 1175851,
+          "sha256": "f0fc79a2372050fe6718c96877c33422a83f7044a310bca4b8fb386c78ac0c65"
+        }
+      ],
+      "scope": "Actual initial Robert1128/top-liege/unleased Trani2619/c_apulia/d_apulia/holdingII predicate passed before preparation; no separate day1 conjunct attribution."
+    },
+    "actual_province_burhs_castle_baileys_and_native_primary01_construction_eligibility": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\debug.log",
+          "bytes": 1183833,
+          "sha256": "f81768fd92791dc46628835df1ee74a6c2cffceec654fc42ebdca2ae303109ff"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    },
+    "real_timed_primary01_start_and_completion_within14_daily_polls_after_one_setup_day": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\debug.log",
+          "bytes": 1183833,
+          "sha256": "f81768fd92791dc46628835df1ee74a6c2cffceec654fc42ebdca2ae303109ff"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    },
+    "actual_built_primary01_district_and_native_primary02_eligibility_after_modifier_removal": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\debug.log",
+          "bytes": 1183833,
+          "sha256": "f81768fd92791dc46628835df1ee74a6c2cffceec654fc42ebdca2ae303109ff"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    },
+    "one_production_military_duchy_chain_primary01_to02_exact_personal_gold100_count1_other_resources_unchanged": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\debug.log",
+          "bytes": 1183833,
+          "sha256": "f81768fd92791dc46628835df1ee74a6c2cffceec654fc42ebdca2ae303109ff"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    },
+    "known_start_started_ready_completion_or_failure_windows_actual_calendar_and_normal_exit": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\debug.log",
+          "bytes": 1183833,
+          "sha256": "f81768fd92791dc46628835df1ee74a6c2cffceec654fc42ebdca2ae303109ff"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "scope": "Preparation failed at the day1 composite gate, before construction or product-chain call."
+    }
+  },
+  "marker_counts": {
+    "AUBD: TEST BEGIN duchy_primary_1210": 1,
+    "AUBD: READY actual_duchy_owner_and_holdingII": 1,
+    "AUBD: READY native_primary01_construction_inputs": 0,
+    "AUBD: OBSERVE real_primary01_construction_started": 0,
+    "AUBD: OBSERVE real_primary01_construction_completed": 0,
+    "AUBD: READY actual_district_primary01_native02_eligible": 0,
+    "AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1": 0,
+    "AUBD: TEST DONE duchy_primary_1210": 0
+  },
+  "failure_lines": [
+    "[20:09:33][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 105 (aubd.10:immediate): AUBD: PREP FAIL native_primary01_construction_inputs"
+  ],
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-5d14041d8ee54588b2676cde8a04463d\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "error_bytes": 0,
+  "world_started": true,
+  "actual_date": "1066-09-16",
+  "observed_natural_days": 1,
+  "maximum_natural_days": 15,
+  "calendar_pass": true,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd02-quit-dialog-view.png",
+      "bytes": 698783,
+      "sha256": "d2fd81ea25b855e6a17910f4f745682470106ca90975d30e63cac65a107517e9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd02-normal-quit.png.json",
+      "bytes": 1443,
+      "sha256": "52d64e35a8bb66476c68f06356534344fe69eb5dc820fc29d29ff8526e844094"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0019\\game-exit.json",
+      "bytes": 253,
+      "sha256": "d1c9bcc52b62cc1dfef61dd7266fb6d510e7a963113418db3f135e0987ee8227"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0019\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "eee244b4ff2f08cf9747b9665ce517c058e1876dce25b9107911081ae1623605"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0019\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "c151775e052905d072b404e609c6454c0dae7b5a6240e8510dfab38521e59dd1"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r19-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "8534ee9819a07e7e714dfd77f19a24d223d9c9c402ed6b71936ad1e41d238d1d"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "diagnosis_scope": "Fixed APIs loaded with error0. Actual initial owner/holding passed, known start option prepared gold/innovations/modifier; at day1 composite gate refused before native target marker, construction start or production call. Individual phase/owner/modifier/policy/innovation/construction/native conjuncts were not logged, so no claim that only native primary01 was false. Known failure900 actually paused09-16, retained until reviewed normal unchecked Exit to Desktop. Next fixture will add finite per-conjunct observations, not weaken gates or credit preparation as upgrade. First guarded click at310539 did not dismiss the known start window or emit owner marker; fresh reviewed actual button150539 then dispatched once. No unknown event selected.",
+  "retention_review_at_utc": "2026-12-19T12:17:20.701185+00:00"
+}
