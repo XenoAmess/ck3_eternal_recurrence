@@ -459,6 +459,68 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         self.assertIn("name = djcg_date value = current_date", gui_effects)
         self.assertIn("name = djcg_reload_date value = current_date", gui_effects)
 
+    def test_eligibility_diagnostics_are_read_only_and_keep_all_original_tier_predicates(self) -> None:
+        plain = self.fixture("kingdom")
+        diagnosed = self.root / "diagnosed-kingdom"
+        result = self.command("gen_acceptance_fixture.py", "--tier", "kingdom", "--diagnose-eligibility", "--output", str(diagnosed))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        matrices: list[dict[str, Block]] = []
+        for fixture in (plain, diagnosed):
+            limits: dict[str, Block] = {}
+            for event in self.event_definitions(fixture).values():
+                for block in walk(event):
+                    for entry in block.entries:
+                        if entry.key == "debug_log" and isinstance(entry.value, str) and entry.value.startswith('"DJCT: TEST PASS '):
+                            limits[entry.value] = child(block, "limit")
+            matrices.append(limits)
+        self.assertEqual(matrices[0], matrices[1])
+        self.assertEqual(len(matrices[1]), 24)
+        before = json.loads((plain / "fixture-contract.json").read_text())
+        after = json.loads((diagnosed / "fixture-contract.json").read_text())
+        self.assertEqual(after.pop("eligibility_failure_probe"), "READONLY-STATE-AND-ON-FAILURE")
+        self.assertEqual(before, after)
+        helper = diagnosed / "common/scripted_effects/djct_eligibility_probes.txt"
+        text = helper.read_text(encoding="utf-8-sig")
+        forbidden = {"set_variable", "change_variable", "remove_variable", "add_character_flag", "remove_character_flag", "start_war", "end_war", "change_government", "change_title_holder", "cancel_truce_one_way", "add_stress", "add_gold", "add_piety", "add_prestige", "trigger_event", "save_game", "load_game", "set_date"}
+        self.assertFalse({entry.key for block in walk(parse_clausewitz(text)) for entry in block.entries} & forbidden)
+        self.assertNotIn("DJCT: TEST PASS", text)
+        self.assertNotRegex(text, r"save_(?:temporary_)?scope_as\s*=\s*adventurer")
+        for role in ("primary_original", "primary_top", "secondary_original", "secondary_top"):
+            self.assertIn(role + "_government_landless_adventurer_government", text)
+            self.assertIn(role + "_government_merchant_government", text)
+        for predicate in ("root_raised_armies", "root_in_range_primary", "root_owns_goal", "ambient_adventurer_exists", "ordinary_UI_allows_target", "selected_native_post_temporary_alias", "control_duchy_native_pre_alias"):
+            self.assertIn(predicate, text)
+
+    def test_probe_only_follows_real_native_failure_and_never_rearms_or_advances(self) -> None:
+        target = self.root / "diagnostic-failure-order"
+        result = self.command("gen_acceptance_fixture.py", "--tier", "kingdom", "--diagnose-eligibility", "--output", str(target))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        events = self.event_definitions(target)
+        for stage, outcome in ((43, "attacker"), (53, "white_peace"), (63, "defender")):
+            marker = '"DJCT: TEST PASS kingdom_' + outcome + '_native_eligibility"'
+            guards = [block for block in walk(events[f"djct.{stage}"]) if any(entry.key == "debug_log" and entry.value == marker for entry in block.entries)]
+            self.assertEqual(len(guards), 1)
+            parents = [block for block in walk(events[f"djct.{stage}"]) if any(entry.key == "if" and entry.value == guards[0] for entry in block.entries)]
+            self.assertEqual(len(parents), 1)
+            failure = child(parents[0], "else")
+            keys = [entry.key for entry in failure.entries]
+            self.assertEqual(keys, [f"djct_probe_kingdom_{outcome}_failure_effect", "debug_log", "djct_stop_effect"])
+            self.assertFalse(any(entry.key == "trigger_event" for block in walk(failure) for entry in block.entries))
+
+    def test_probe_consumer_preserves_failed_native_gate_without_awarding_diagnostic_credit(self) -> None:
+        fixture = self.fixture("kingdom")
+        log = self.synthetic_log(fixture)
+        log.write_text(log.read_text() + 'DJCT: PROBE kingdom_white_peace_root_raised_armies TRUE\nDJCT: PROBE kingdom_white_peace_control_duchy_native_pre_alias FALSE\nDJCT: TEST FAIL kingdom_white_peace_native_eligibility\nDJCT: TEST STOP failed_no_successor\n')
+        report = self.root / "probe-is-not-credit.json"
+        result = self.command("verify_fixture_log.py", "--log", str(log), "--contract", str(fixture / "fixture-contract.json"), "--report", str(report))
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        value = json.loads(report.read_text())
+        self.assertEqual(value["result"], "RED")
+        self.assertEqual(value["observed_pass_count"], 24)
+        self.assertEqual(value["diagnostic_readbacks"]["kingdom_white_peace_root_raised_armies"], [True])
+        self.assertEqual(value["diagnostic_readbacks"]["kingdom_white_peace_control_duchy_native_pre_alias"], [False])
+        self.assertTrue(any("failure markers" in error for error in value["errors"]))
+
 
 if __name__ == "__main__":
     unittest.main()

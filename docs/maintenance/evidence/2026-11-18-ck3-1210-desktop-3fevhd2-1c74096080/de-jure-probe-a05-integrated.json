@@ -1,0 +1,39 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T23:08:40.922276+00:00",
+  "passed": true,
+  "candidate_manifest_sha256": "f2898b95789fc41f8d79adc24dcd44cb8be835469b6c55482868ef0926e031d0",
+  "target_pins": {
+    "mod_de_jure_conquest/docs/kingdom-native-eligibility-R1-florin-121003.md": "5e49bf63b72f52e8b4d416ba8cc5937b76e81447632a23744d86cf8b8353b002",
+    "mod_de_jure_conquest/tools/gen_acceptance_fixture.py": "94e1b269bce6c0f1e37aa510572598c2619f6f80a707b133544ba9e6bdfbd312",
+    "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py": "8cc2ddbc3b0c5dc0a4fc7332119816241aed8e38657f1c286dd2c2ef4a88d5bb",
+    "mod_de_jure_conquest/tools/verify_fixture_log.py": "fbd0c7faa7d1b805bdb6cc1d93da2d30a849339e5296fb52d299cc0c9d7af74a"
+  },
+  "unchanged_runtime_count": 16,
+  "real_integrated_producer": {
+    "args": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+      "--tier",
+      "kingdom",
+      "--diagnose-eligibility",
+      "--output",
+      "D:\\ck3-state\\upgrade-20261118\\de-jure-probe-integration-a05\\fixture-kingdom-probe"
+    ],
+    "exit": 0
+  },
+  "candidate_software": {
+    "tests": 33,
+    "tests_exit": 0,
+    "strict_complete_modules": 3,
+    "strict_exit": 0,
+    "actual_CLI_and_original_R1_source_check": true
+  },
+  "original_R1": "RED10/24; original checker1 preserved",
+  "unique_cause": "NOT_PROVED",
+  "Game_and_product_and_publication": "NOT_RUN",
+  "future_reserved_bytes": 41943040
+}

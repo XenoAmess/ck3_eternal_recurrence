@@ -38,6 +38,8 @@ class SingleReport(TypedDict):
     expected_pass_count: int
     observed_pass_count: int
     observed_marker_counts: dict[str, int]
+    diagnostic_readbacks: dict[str, list[bool]]
+    diagnostic_boundary: str
     errors: list[str]
     log: str
     log_sha256: str
@@ -137,11 +139,16 @@ def verify(log: Path, contract: Path) -> SingleReport:
         errors.append("fixture DONE count differs from one")
     if "DJCT: TEST STOP" in value:
         errors.append("fixture stopped at a known failure window")
+    diagnostics: dict[str, list[bool]] = {}
+    for label, truth in re.findall(r"DJCT: PROBE ([A-Za-z0-9_]+) (TRUE|FALSE)\b", value):
+        diagnostics.setdefault(label, []).append(truth == "TRUE")
     return {
         "result": "RED" if errors else "GREEN", "layer": definition.layer,
         "player_history_id": 1128, "tier": definition.tier,
         "expected_pass_count": len(definition.markers), "observed_pass_count": sum(passes.values()),
         "observed_marker_counts": dict(sorted(passes.items())), "errors": errors,
+        "diagnostic_readbacks": diagnostics,
+        "diagnostic_boundary": "Read-only probe booleans only, not original PASS credit or a proved unique cause. Actual scope IDs/date remain in the bound raw log.",
         "log": str(log.resolve()), "log_sha256": hashlib.sha256(data).hexdigest(),
         "contract": str(contract.resolve()), "contract_sha256": hashlib.sha256(raw_contract).hexdigest(),
         "claims_excluded": list(definition.claims_excluded), "boundary": BOUNDARY,

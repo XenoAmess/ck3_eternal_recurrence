@@ -9,7 +9,7 @@ import io
 import json
 from pathlib import Path
 import sys
-from typing import Literal, TypedDict
+from typing import Literal, NotRequired, TypedDict
 
 from product import ROOT, SUPPORTED_VERSION
 sys.path.insert(0, str(ROOT / "tools"))
@@ -46,6 +46,7 @@ class FixtureContract(TypedDict):
     watchdog_event: str
     pause_boundary: str
     live: Literal["NOT_RUN"]
+    eligibility_failure_probe: NotRequired[Literal["READONLY-STATE-AND-ON-FAILURE"]]
 
 
 def reviewed_tier(value: object) -> Tier:
@@ -71,7 +72,8 @@ def fail(marker: str) -> str:
     return f'debug_log = "DJCT: TEST FAIL {marker}"\n        djct_stop_effect = yes'
 
 
-def check(condition: str, marker: str) -> str:
+def check(condition: str, marker: str, failure_diagnostic: str = "") -> str:
+    failed = (failure_diagnostic.rstrip() + " " if failure_diagnostic else "") + fail(marker)
     return f'''if = {{
         limit = {{ NOT = {{ has_variable = djct_failed }} }}
         if = {{
@@ -79,12 +81,14 @@ def check(condition: str, marker: str) -> str:
             debug_log = "DJCT: TEST PASS {marker}"
             change_variable = {{ name = djct_pass_count add = 1 }}
         }}
-        else = {{ {fail(marker)} }}
+        else = {{ {failed} }}
     }}'''
 
 
-def generated_files(tier: Tier = "all") -> dict[str, bytes]:
+def generated_files(tier: Tier = "all", *, diagnose_eligibility: bool = False) -> dict[str, bytes]:
     tier = reviewed_tier(tier)
+    if type(diagnose_eligibility) is not bool:
+        raise ValueError("diagnose_eligibility must be a bool")
     selected = [row for row in TIERS if tier == "all" or row[0] == tier]
     first_stage = 10 + next(index for index, row in enumerate(TIERS) if row == selected[0]) * 30
     max_days = 48 if tier == "all" else 18
@@ -182,6 +186,8 @@ djct.1 = {{
             stage = 10 + global_index * 30 + outcome_index * 10
             cb = f"{name}_de_jure_greatwar"
             label = f"{name}_{outcome}"
+            state_probe = f"djct_probe_{label}_state_effect = yes\n            " if diagnose_eligibility else ""
+            failure_probe = f"djct_probe_{label}_failure_effect = yes " if diagnose_eligibility else ""
             napoli = ''
             napoli_ready = ''
             if county_b == "c_napoli":
@@ -250,9 +256,9 @@ djct.{stage+3} = {{
             }}
             debug_log = "DJCT: PREP READBACK {label}_owners_realms_stress_zero_wait_expired_resources_no_truce TRUE"
             debug_log = "DJCT: DIAGNOSTIC {label}_player_to_primary_truce_after FALSE"
-            {check(f'var:djct_case_primary = {{ NOT = {{ can_declare_war = {{ defender = root casus_belli = {cb} target_titles = {{ title:{goal} }} }} }} }}', label+'_ai_unavailable')}
+            {state_probe}{check(f'var:djct_case_primary = {{ NOT = {{ can_declare_war = {{ defender = root casus_belli = {cb} target_titles = {{ title:{goal} }} }} }} }}', label+'_ai_unavailable')}
             {check('var:djct_case_primary.top_liege != var:djct_case_secondary.top_liege', label+'_distinct_realms')}
-            {check(f'can_declare_war = {{ defender = var:djct_case_primary.top_liege casus_belli = {cb} target_titles = {{ title:{goal} }} }}', label+'_native_eligibility')}
+            {check(f'can_declare_war = {{ defender = var:djct_case_primary.top_liege casus_belli = {cb} target_titles = {{ title:{goal} }} }}', label+'_native_eligibility', f'djct_probe_{label}_failure_effect = yes' if diagnose_eligibility else '')}
             if = {{
                 limit = {{ NOT = {{ has_variable = djct_failed }} }}
                 start_war = {{ cb = {cb} target = var:djct_case_primary.top_liege target_title = title:{goal} }}
@@ -271,7 +277,7 @@ djct.{stage+3} = {{
                 else = {{ {fail(label+'_war_created')} }}
             }}
         }}
-        else = {{ {fail(label+'_prepared_readback')} }}
+        else = {{ {state_probe}{failure_probe}{fail(label+'_prepared_readback')} }}
     }}
 }}
 
@@ -373,8 +379,111 @@ djct.901 = {{
         "pause_boundary": "Known visible character_event/theme=realm requests ordinary single-player event pause at completion/failure. Actual paused date/window readback is mandatory; no new Native API is assumed. Default all exceeds Robert event day35: prefer three fresh tier runs with day18 bounds.",
         "live": "NOT_RUN",
     }
+    if diagnose_eligibility:
+        add("common/scripted_effects/djct_eligibility_probes.txt", eligibility_probe_effects(tier))
+        contract["eligibility_failure_probe"] = "READONLY-STATE-AND-ON-FAILURE"
     files["fixture-contract.json"] = (json.dumps(contract, ensure_ascii=False, indent=2) + "\n").encode()
     return files
+
+
+# Exact current stock government IDs, source-pinned in the a05 diagnostic review.
+# A complete truth vector names the actual matching government without a guessed
+# Native getter. A custom/unmatched government remains explicitly unresolved.
+PROBE_GOVERNMENTS = ("feudal_government", "republic_government", "clan_government", "tribal_government", "wanua_government", "mercenary_government", "holy_order_government", "monastic_holy_order_government", "administrative_government", "landless_adventurer_government", "nomad_government", "herder_government", "celestial_government", "mandala_government", "steppe_admin_government", "meritocratic_government", "merchant_government", "japan_administrative_government", "japan_feudal_government", "theocracy_government", "ecclesiastical_government")
+
+
+def probe_boolean(condition: str, label: str) -> str:
+    return f'if = {{ limit = {{ {condition} }} debug_log = "DJCT: PROBE {label} TRUE" }} else = {{ debug_log = "DJCT: PROBE {label} FALSE" }}'
+
+
+def eligibility_probe_effects(tier: Tier) -> str:
+    """Finite readbacks only; no repair, delays, war actions or persistent writes."""
+    tier = reviewed_tier(tier)
+    effects = ["# Optional read-only eligibility diagnosis; no TEST PASS credit."]
+    roles = (("root", "root"), ("primary_original", "root.var:djct_case_primary"), ("primary_top", "root.var:djct_case_primary.top_liege"), ("secondary_original", "root.var:djct_case_secondary"), ("secondary_top", "root.var:djct_case_secondary.top_liege"))
+    for name, goal, *_ in TIERS:
+        if tier != "all" and tier != name:
+            continue
+        for outcome in OUTCOMES:
+            label = name + "_" + outcome
+            state = [f'debug_log = "DJCT: PROBE {label}_state_begin"', 'debug_log_date = yes']
+            for role, scope in roles:
+                state.append(probe_boolean('exists = ' + scope, label + '_' + role + '_exists'))
+                observations = [(f'has_government = {government}', label + '_' + role + '_government_' + government) for government in PROBE_GOVERNMENTS]
+                observations += [(predicate, label + '_' + role + '_' + key) for key, predicate in (
+                    ('is_landed', 'is_landed = yes'), ('independent', 'is_independent_ruler = yes'),
+                    ('is_playable', 'is_playable_character = yes'),
+                    ('primary_title_landless', 'exists = primary_title primary_title ?= { is_landless_type_title = yes }'),
+                    ('adventurer_flag', 'government_has_flag = government_is_landless_adventurer'),
+                    ('merchant_flag', 'government_has_flag = government_is_merchant'))]
+                body = '\n'.join(probe_boolean(predicate, key) for predicate, key in observations)
+                state.append(f'if = {{ limit = {{ exists = {scope} }} {scope} = {{ {body} }} }} else = {{ debug_log = "DJCT: PROBE {label}_{role}_MISSING" }}')
+            conditions = (
+                ('root_raised_armies', 'has_raised_armies = yes'), ('root_in_debt', 'is_in_debt = yes'),
+                ('root_government_allows_raised_troops', 'government_has_flag = can_start_war_with_raised_troops'),
+                ('root_in_activity', 'is_in_activity = yes'), ('root_imprisoned', 'is_imprisoned = yes'),
+                ('root_incapable', 'is_incapable = yes'), ('root_sworn_peace', 'has_character_flag = sworn_peace'),
+                ('root_owns_goal', f'has_title = title:{goal}'),
+                ('goal_expected_tier', f'title:{goal} = {{ tier = tier_{name} }}'),
+                ('goal_landless_type', f'title:{goal} = {{ is_landless_type_title = yes }}'),
+                ('root_in_range_primary', 'in_diplomatic_range = root.var:djct_case_primary.top_liege'),
+                ('root_can_attack_hierarchy_primary', 'can_attack_in_hierarchy = root.var:djct_case_primary.top_liege'),
+                ('root_allied_in_war_primary', 'is_allied_in_war = root.var:djct_case_primary.top_liege'),
+                ('root_at_war_primary', 'is_at_war_with = root.var:djct_case_primary.top_liege'),
+                ('root_truce_primary_top', 'has_truce = root.var:djct_case_primary.top_liege'),
+                ('primary_top_truce_root', 'root.var:djct_case_primary.top_liege = { has_truce = root }'),
+                ('root_rival_original_primary', 'has_relation_rival = root.var:djct_case_primary'),
+                ('root_rival_original_secondary', 'has_relation_rival = root.var:djct_case_secondary'),
+                ('primary_equals_its_top', 'var:djct_case_primary = var:djct_case_primary.top_liege'),
+                ('secondary_equals_its_top', 'var:djct_case_secondary = var:djct_case_secondary.top_liege'),
+                ('goal_has_primary_realm_county', f'title:{goal} = {{ any_de_jure_county = {{ exists = holder holder ?= {{ top_liege = root.var:djct_case_primary.top_liege }} }} }}'),
+                ('goal_has_secondary_realm_county', f'title:{goal} = {{ any_de_jure_county = {{ exists = holder holder ?= {{ top_liege = root.var:djct_case_secondary.top_liege }} }} }}'),
+                ('goal_holder_exists', f'exists = title:{goal}.holder'),
+            )
+            condition_body = '\n'.join(probe_boolean(predicate, label + '_' + key) for key, predicate in conditions)
+            state.append(f'if = {{ limit = {{ exists = root.var:djct_case_primary.top_liege exists = root.var:djct_case_secondary.top_liege }} {condition_body} }} else = {{ debug_log = "DJCT: PROBE {label}_missing_top_blocks_pair_predicates" }}')
+            state += [f'debug_log = "DJCT: PROBE {label}_state_end"']
+            body = '\n'.join(state)
+            effects.append(f'djct_probe_{label}_state_effect = {{ if = {{ limit = {{ has_variable = djct_case_primary has_variable = djct_case_secondary }} {body} }} else = {{ debug_log = "DJCT: PROBE {label}_state_missing_holder_variables" }} }}')
+
+            details = [f'debug_log = "DJCT: PROBE {label}_original_gate_failed_detail_begin"', 'debug_log_date = yes']
+            # Saved event targets are logged only at an actual first failure,
+            # not for every successful predicate or every building/army.
+            for role, scope in (*roles, ('goal', 'title:' + goal)):
+                details.append(f'if = {{ limit = {{ exists = {scope} }} debug_log = "DJCT: PROBE {label}_scope_{role}" {scope} = {{ debug_log_scopes = yes }} }}')
+            for role, scope in (('root_capital', 'root.capital_province'), ('primary_capital', 'root.var:djct_case_primary.top_liege.capital_province')):
+                details.append(f'if = {{ limit = {{ exists = {scope} }} debug_log = "DJCT: PROBE {label}_scope_{role}" {scope} = {{ debug_log_scopes = yes }} }}')
+            # scope:adventurer belongs to the stock letter/event context. It may
+            # already be unavailable; never assign it from a guessed old holder.
+            details.append(probe_boolean('exists = scope:adventurer', label + '_ambient_adventurer_exists'))
+            links = [probe_boolean(f'scope:adventurer = {scope}', label + '_ambient_adventurer_matches_' + role) for role, scope in roles[1:]]
+            details.append('if = { limit = { exists = scope:adventurer } scope:adventurer = { debug_log_scopes = yes } ' + '\n'.join(links) + ' }')
+            gated_details: list[str] = []
+            for control_tier, control_goal, *_ in TIERS:
+                predicate = f'can_declare_war = {{ defender = root.var:djct_case_primary.top_liege casus_belli = {control_tier}_de_jure_greatwar target_titles = {{ title:{control_goal} }} }}'
+                gated_details.append(probe_boolean(predicate, label + '_control_' + control_tier + '_native_pre_alias'))
+                gated_details.append(probe_boolean(f'has_title = title:{control_goal}', label + '_root_owns_' + control_goal))
+            # Official group/UI triggers require their real actor/defender scopes.
+            # Bind temporary evaluation aliases only after the original gate failed.
+            gated_details += ['save_temporary_scope_as = attacker', 'root.var:djct_case_primary.top_liege = { save_temporary_scope_as = defender save_temporary_scope_as = recipient }', f'title:{goal} = {{ save_temporary_scope_as = target }}']
+            for key, predicate in (
+                ('group_merchant_constraint', 'gdp_merchant_cb_group_constraints_trigger = yes'),
+                ('group_herder_tributary_constraint', 'herders_and_tributary_constraints = yes'),
+                ('group_dynasty_war_ban', 'tgp_dynastic_cycle_offensive_wars_ban_trigger = yes'),
+                ('group_minister_war_ban', 'tgp_war_ban_all_ministers_trigger = yes'),
+                ('group_non_theocratic', 'NOT = { government_has_flag = government_is_theocracy }'),
+                ('group_pacifism_display', 'pam_personal_pacifism_offensive_war_ban_trigger = yes'),
+                ('ordinary_UI_allows_target', 'allows_declaring_war_against_target_trigger = { TARGET = root.var:djct_case_primary.top_liege }'),
+            ):
+                gated_details.append(probe_boolean(predicate, label + '_' + key))
+            predicate = f'can_declare_war = {{ defender = root.var:djct_case_primary.top_liege casus_belli = {name}_de_jure_greatwar target_titles = {{ title:{goal} }} }}'
+            gated_details.append(probe_boolean(predicate, label + '_selected_native_post_temporary_alias'))
+            gated_body = '\n'.join(gated_details)
+            details.append(f'if = {{ limit = {{ exists = root.var:djct_case_primary.top_liege }} {gated_body} }} else = {{ debug_log = "DJCT: PROBE {label}_missing_primary_top_no_native_control" }}')
+            details.append(f'debug_log = "DJCT: PROBE {label}_failed_detail_end_not_a_repair"')
+            body = '\n'.join(details)
+            effects.append(f'djct_probe_{label}_failure_effect = {{ if = {{ limit = {{ has_variable = djct_case_primary has_variable = djct_case_secondary }} {body} }} else = {{ debug_log = "DJCT: PROBE {label}_failure_missing_holder_variables" }} }}')
+    return '\n'.join(effects)
 
 
 GUI_BASE_VALUES = ("djcg_phase", "djcg_tier", "djcg_date", "djcg_before_gold", "djcg_before_prestige", "djcg_before_piety", "djcg_after_gold", "djcg_after_prestige", "djcg_after_piety", "djcg_same_faith", "djcg_peace_of_god", "djcg_expected_extra_piety")
@@ -582,13 +691,14 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--tier", choices=("all", "duchy", "kingdom", "empire"), default="all")
     parser.add_argument("--with-gui-observer", action="store_true", help="optional same-world ordinary GUI/physical SaveLoad observer; single tier only")
+    parser.add_argument("--diagnose-eligibility", action="store_true", help="bounded read-only state and failed-gate diagnostics; never grants original PASS")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("fixture output already exists; use a fresh attempt")
     tier = reviewed_tier(args.tier)
     if args.with_gui_observer and tier == "all":
         parser.error("--with-gui-observer requires one fresh --tier duchy, kingdom or empire")
-    files = generated_files(tier)
+    files = generated_files(tier, diagnose_eligibility=args.diagnose_eligibility)
     if args.with_gui_observer:
         # On engines that dispatch this startup hook on Load as well, an existing
         # fixture seed must remain untouched. This is not proof that a Load ran.
