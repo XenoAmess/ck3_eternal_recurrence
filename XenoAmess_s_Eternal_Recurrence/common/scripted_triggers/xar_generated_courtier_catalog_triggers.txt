@@ -274,6 +274,7 @@ xar_cc_candidate_trait_metadata_valid_trigger = {
 		scope:xar_cc_candidate_trait = trait:infertile
 		scope:xar_cc_candidate_trait = trait:pilgrim
 		scope:xar_cc_candidate_trait = trait:hajjaj
+		scope:xar_cc_candidate_trait = trait:devoted
 		scope:xar_cc_candidate_trait = trait:sayyid
 		scope:xar_cc_candidate_trait = trait:faith_warrior
 		scope:xar_cc_candidate_trait = trait:berserker
@@ -293,6 +294,7 @@ xar_cc_candidate_trait_metadata_valid_trigger = {
 		scope:xar_cc_candidate_trait = trait:viking
 		scope:xar_cc_candidate_trait = trait:adventurer
 		scope:xar_cc_candidate_trait = trait:adventurer_follower
+		scope:xar_cc_candidate_trait = trait:merchant_associate
 		scope:xar_cc_candidate_trait = trait:heresiarch
 		scope:xar_cc_candidate_trait = trait:herald
 		scope:xar_cc_candidate_trait = trait:peasant_leader
@@ -334,6 +336,14 @@ xar_cc_candidate_trait_metadata_valid_trigger = {
 		scope:xar_cc_candidate_trait = trait:burdened
 		AND = {
 			scope:xar_cc_candidate_trait = trait:lifestyle_scholar
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:lifestyle_merchant
+			var:xar_cc_age >= 16
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:dealbreaker
 			var:xar_cc_age >= 16
 		}
 	}
@@ -908,6 +918,12 @@ xar_cc_candidate_replaces_selected_trait_trigger = {
 			}
 		}
 		AND = {
+			scope:xar_cc_candidate_trait = trait:merchant_associate
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_merchant }
+			}
+		}
+		AND = {
 			scope:xar_cc_candidate_trait = trait:loyal
 			OR = {
 				xar_cc_trait_is_selected_trigger = { TRAIT = trait:disloyal }
@@ -929,6 +945,12 @@ xar_cc_candidate_replaces_selected_trait_trigger = {
 			scope:xar_cc_candidate_trait = trait:cautious_leader
 			OR = {
 				xar_cc_trait_is_selected_trigger = { TRAIT = trait:reckless }
+			}
+		}
+		AND = {
+			scope:xar_cc_candidate_trait = trait:lifestyle_merchant
+			OR = {
+				xar_cc_trait_is_selected_trigger = { TRAIT = trait:merchant_associate }
 			}
 		}
 	}
@@ -1306,6 +1328,10 @@ xar_cc_selected_traits_compatible_trigger = {
 	NAND = {
 		xar_cc_trait_is_selected_trigger = { TRAIT = trait:adventurer }
 		xar_cc_trait_is_selected_trigger = { TRAIT = trait:adventurer_follower }
+	}
+	NAND = {
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:merchant_associate }
+		xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_merchant }
 	}
 	NAND = {
 		xar_cc_trait_is_selected_trigger = { TRAIT = trait:loyal }

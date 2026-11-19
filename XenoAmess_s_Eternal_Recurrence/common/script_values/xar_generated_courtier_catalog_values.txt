@@ -684,6 +684,10 @@ xar_cc_selected_trait_cost = {
 		add = 30
 	}
 	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:devoted } }
+		add = 0
+	}
+	if = {
 		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:sayyid } }
 		add = 25
 	}
@@ -757,6 +761,10 @@ xar_cc_selected_trait_cost = {
 	}
 	if = {
 		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:adventurer_follower } }
+		add = 10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:merchant_associate } }
 		add = 10
 	}
 	if = {
@@ -906,5 +914,13 @@ xar_cc_selected_trait_cost = {
 	if = {
 		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_scholar } }
 		add = 15
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:lifestyle_merchant } }
+		add = 10
+	}
+	if = {
+		limit = { xar_cc_trait_is_selected_trigger = { TRAIT = trait:dealbreaker } }
+		add = 10
 	}
 }

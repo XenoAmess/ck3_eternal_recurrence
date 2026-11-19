@@ -58,13 +58,14 @@
 ## 目录与定价
 
 - CK3 1.20.0.2：教育 25、将领 17、身体 38、性格 36、其他 110；唯一 trait 并集 226 项，冲突元数据仍为 95 组。
+- CK3 1.21.0.3 源候选：教育 25、将领 17、身体 38、性格 36、其他 114；并集 230、可见 229、冲突 96。新增 5 个定义，其中 3 个可见、2 个隐藏；既有 `devoted` 转为可见，合计新增 4 个目录项。原主模组价格公式与 Faith/Rite 规则不变。
 - 原 `scholar` 已由原版改名为 `erudite`，仍为 50 点；新 `lifestyle_scholar` 是独立的 15 点追踪特质，最低 16 岁。`herald` 为 100 点；隐藏的 `cleric` 和调试掠夺特质不进入目录。
 - 年龄可在 0–120 间精确调整；六项基础能力可在 0–100 间用 `-10/-1/+1/+10` 调整。
 - 价格为 50 金塑造费，加年龄调整、生成的原生 trait 价格和六项原生非线性绝对能力价格，再减去默认六项能力均为 6 的 88 金基线；最终四舍五入且不低于 0。
 - 默认男性、30 岁、六项能力 6、`education_martial_3`、低身、玩家文化/信仰，价格 120 金。
 - 验收自定义向量为女性、20 岁、外交/勇武 16、其余能力 6，并选择 `education_intrigue_1`、`logistician`、`military_engineer`、`beauty_bad_1`、`lustful`、`diplomat`、动态文化/信仰及同家族，价格 348 金。
 
-价格只由 `common/script_values/xar_courtier_creator_values.txt` 中的 `xar_courtier_creator_cost` 计算；显示、确认校验和实际扣款引用同一个 script value。trait 目录与价格来自 `tools/courtier_traits_1_20_0_2.json`，由 `tools/gen_courtier_creator.py` 生成。历史 `courtier_traits_1_19_0_6.json` 保留，但主生成器拒绝把它作为新版输入。
+价格只由 `common/script_values/xar_courtier_creator_values.txt` 中的 `xar_courtier_creator_cost` 计算；显示、确认校验和实际扣款引用同一个 script value。trait 源迁移候选的目录与价格来自 `tools/courtier_traits_1_21_0_3.json`，由主模组自己的 `tools/gen_courtier_creator.py` 生成。历史 `courtier_traits_1_19_0_6.json` 保留，但主生成器拒绝把它作为新版输入。
 
 ## 验收边界
 
@@ -72,3 +73,8 @@
 
 仍需独立证明：无地玩家交付、跨进程存档读取配置，以及简体中文最长字符串在支持 UI 缩放下无截断。关窗重开不等同于保存并重启进程。
 2026-10-03 用户修订语言范围：真实游戏验收只用简体中文；英文及其他语言只检查 key、UTF-8/BOM/header、占位符、保护 token、转义及可解析性。原九语言 UI 计划中的非中文部分退役，不再要求非中文语义、术语、母语或人工界面签核；历史证据不改写。
+
+
+本轮源提取必须显式选择已审版本，例如 `python tools/extract_courtier_traits.py --source <安装/game/common/traits/00_traits.txt> --output <外置/courtier_traits_1_21_0_3.json> --game-version 1.21.0.3`。版本与原版源 SHA 都匹配后才写出；新版不能覆盖历史默认快照。旧 1.20.0.2/1.20.0.3 快照及其验收保持历史。
+
+1.21.0.3 这一单元只覆盖特质提取、目录/冲突生成、主九语言这一 help 计数和真实共享夹具消费者同步。上文旧实机覆盖不转授新版；新版完整主模组构建、Native/Full/Actor/保存资格、实际 GUI 选择/交付/扣款及主玩法仍为 NOT_RUN。`florin_trait_catalog` 元数据标记也不能代替实际 GUI 和业务断言。

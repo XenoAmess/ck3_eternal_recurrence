@@ -1200,6 +1200,13 @@ xar_cc_rebuild_trait_catalogs_effect = {
 			target = scope:xar_cc_catalog_entry
 		}
 	}
+	trait:devoted = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
 	trait:sayyid = { save_scope_as = xar_cc_catalog_entry }
 	root = {
 		add_to_variable_list = {
@@ -1327,6 +1334,13 @@ xar_cc_rebuild_trait_catalogs_effect = {
 		}
 	}
 	trait:adventurer_follower = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:merchant_associate = { save_scope_as = xar_cc_catalog_entry }
 	root = {
 		add_to_variable_list = {
 			name = xar_cc_catalog_other
@@ -1586,6 +1600,20 @@ xar_cc_rebuild_trait_catalogs_effect = {
 		}
 	}
 	trait:lifestyle_scholar = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:lifestyle_merchant = { save_scope_as = xar_cc_catalog_entry }
+	root = {
+		add_to_variable_list = {
+			name = xar_cc_catalog_other
+			target = scope:xar_cc_catalog_entry
+		}
+	}
+	trait:dealbreaker = { save_scope_as = xar_cc_catalog_entry }
 	root = {
 		add_to_variable_list = {
 			name = xar_cc_catalog_other
@@ -2010,6 +2038,10 @@ xar_cc_remove_selected_trait_conflicts_effect = {
 		xar_cc_remove_selected_trait_effect = { TRAIT = trait:adventurer }
 	}
 	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:merchant_associate }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:lifestyle_merchant }
+	}
+	if = {
 		limit = { scope:xar_cc_candidate_trait = trait:loyal }
 		xar_cc_remove_selected_trait_effect = { TRAIT = trait:disloyal }
 	}
@@ -2024,5 +2056,9 @@ xar_cc_remove_selected_trait_conflicts_effect = {
 	if = {
 		limit = { scope:xar_cc_candidate_trait = trait:cautious_leader }
 		xar_cc_remove_selected_trait_effect = { TRAIT = trait:reckless }
+	}
+	if = {
+		limit = { scope:xar_cc_candidate_trait = trait:lifestyle_merchant }
+		xar_cc_remove_selected_trait_effect = { TRAIT = trait:merchant_associate }
 	}
 }

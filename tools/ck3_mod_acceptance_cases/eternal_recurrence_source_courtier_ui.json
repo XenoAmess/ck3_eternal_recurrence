@@ -29,7 +29,9 @@
         "default_one_delivery_one_charge",
         "custom_configuration_retained_and_reopened",
         "custom_one_delivery_one_charge",
-        "new_trait_catalog_and_legacy_rite_actual_UI"
+        "new_trait_catalog_and_legacy_rite_actual_UI",
+        "florin_four_added_catalog_traits_actual_UI_and_exact_delivery_charge",
+        "florin_age16_and_merchant_opposite_replacement_actual_UI"
       ],
       "at_day": 1
     }
@@ -39,7 +41,8 @@
     "tools/run_acceptance.py"
   ],
   "uncovered_product_business": [
-    "distinct original main-writer/main-reader/no-heir death/restart and progression/scoring cells remain product aggregation obligations"
+    "distinct original main-writer/main-reader/no-heir death/restart and progression/scoring cells remain product aggregation obligations",
+    "Fresh Florin four-trait/age16/opposite UI and actual delivery/charge remain NOT_RUN; metadata markers are not UI or main progression/score/death/restart credit"
   ],
   "schema": "ck3-mod-acceptance-product-case-v1",
   "product": "eternal-recurrence",

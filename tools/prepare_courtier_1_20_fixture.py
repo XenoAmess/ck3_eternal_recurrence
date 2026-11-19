@@ -49,20 +49,18 @@ def assertion(condition: str, marker: str) -> str:
 
 
 def extra_ui_effects(prefix: str) -> str:
-    # The standalone owns its Florin catalog; the original product still uses
-    # its independent 1.20 snapshot until its own migration is accepted.
-    other_count = 114 if prefix == "ervc" else 110
-    florin_catalog = ""
-    if prefix == "ervc":
-        conditions = " ".join(
-            f"is_target_in_variable_list = {{ name = ervc_cc_catalog_other target = trait:{key} }}"
-            for key in ("devoted", "merchant_associate", "lifestyle_merchant", "dealbreaker")
-        )
-        conditions += " " + " ".join(
-            f"NOT = {{ is_target_in_variable_list = {{ name = ervc_cc_catalog_other target = trait:{key} }} }}"
-            for key in ("adopted_no_inheritance", "education_republican_knowledge_5")
-        )
-        florin_catalog = assertion(conditions, "florin_trait_catalog")
+    if prefix not in {"xar", "ervc"}:
+        raise ValueError("courtier fixture prefix must identify the actual product")
+    other_count = 114
+    conditions = " ".join(
+        f"is_target_in_variable_list = {{ name = {prefix}_cc_catalog_other target = trait:{key} }}"
+        for key in ("devoted", "merchant_associate", "lifestyle_merchant", "dealbreaker")
+    )
+    conditions += " " + " ".join(
+        f"NOT = {{ is_target_in_variable_list = {{ name = {prefix}_cc_catalog_other target = trait:{key} }} }}"
+        for key in ("adopted_no_inheritance", "education_republican_knowledge_5")
+    )
+    florin_catalog = assertion(conditions, "florin_trait_catalog")
     return f'''cca120_metadata_and_migration_effect = {{
     {prefix}_cc_initialize_effect = yes
     {prefix}_cc_rebuild_trait_catalogs_effect = yes
@@ -133,7 +131,7 @@ def make_decision(key: str, effect: str, guard: str, picture: str) -> str:
 '''
 
 
-def prepare(args: argparse.Namespace) -> dict:
+def prepare(args: argparse.Namespace) -> dict[str, object]:
     _, output = checked_output(ROOT, args.output)
     engine = engine_identity(ROOT)
     if args.scenario != "main-reader" and (args.tutorial_from or args.expected_record is not None):
@@ -285,7 +283,7 @@ cca120.1 = {{ hidden = yes immediate = {{ if = {{ limit = {{ is_ai = no NOT = {{
                "preparer_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                "entry": "on_game_start_after_lobby -> day 1 cca120.1; UI remains operator work",
                "coverage": "fixture setup and existing UI-state observers; actual GUI clicks/death/restart are required",
-               "required_markers": ([f"CCA120: BEGIN {args.scenario}", "CCA120: PASS new_trait_catalog", "CCA120: PASS legacy_same_faith_rite", "CCA120: PASS legacy_other_faith_main_rite"] + (["CCA120: PASS florin_trait_catalog"] if p == "ervc" else []) + (DUAL_MARKERS if dual else STANDALONE_MARKERS) if ui else [f"CCA120: BEGIN {args.scenario}", "CCA120: READY real_pact_and_death_ui", "CCA120: READY actual_death_after_score_growth", "CCA120: UI requested actual_engine_death", "CCA120: OBSERVED actual_player_death", "XAR: computing score on death", "XAR: new record, writing bit", "XAR: score event fired"] + (["CCA120: PASS no_heir_precondition"] if args.scenario == "main-no-heir" else []) if args.scenario in {"main-writer", "main-no-heir"} else ["CCA120: BEGIN main-reader", "CCA120: PASS actual_process_restart_import"]),
+               "required_markers": ([f"CCA120: BEGIN {args.scenario}", "CCA120: PASS new_trait_catalog", "CCA120: PASS legacy_same_faith_rite", "CCA120: PASS legacy_other_faith_main_rite"] + ["CCA120: PASS florin_trait_catalog"] + (DUAL_MARKERS if dual else STANDALONE_MARKERS) if ui else [f"CCA120: BEGIN {args.scenario}", "CCA120: READY real_pact_and_death_ui", "CCA120: READY actual_death_after_score_growth", "CCA120: UI requested actual_engine_death", "CCA120: OBSERVED actual_player_death", "XAR: computing score on death", "XAR: new record, writing bit", "XAR: score event fired"] + (["CCA120: PASS no_heir_precondition"] if args.scenario == "main-no-heir" else []) if args.scenario in {"main-writer", "main-no-heir"} else ["CCA120: BEGIN main-reader", "CCA120: PASS actual_process_restart_import"]),
                "optional_branch_markers": ["CCA120: READY nondefault_rite_retained_design", "CCA120: PASS nondefault_rite_one_delivery_one_charge"] if ui else [],
                "branch_uncovered_marker": "CCA120: SKIP no_existing_nondefault_rite" if ui else None,
                "read_only_production_input_sha256": {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in SOURCE.rglob("*") if p.is_file()},

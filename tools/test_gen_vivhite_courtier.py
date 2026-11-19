@@ -102,14 +102,14 @@ class VivhiteNativeContractTests(unittest.TestCase):
             self.assertIn("trait:" + key, values)
             self.assertIn("trait:" + key, triggers)
 
-    def test_florin_fixture_uses_standalone_metadata_without_retargeting_original(self):
+    def test_florin_fixture_keeps_both_current_catalogs_and_their_product_prefixes(self):
         import prepare_courtier_1_20_fixture as fixture
         standalone = fixture.extra_ui_effects("ervc")
         original = fixture.extra_ui_effects("xar")
         self.assertIn("name = ervc_cc_catalog_other value = 114", standalone)
         self.assertIn("CCA120: PASS florin_trait_catalog", standalone)
-        self.assertIn("name = xar_cc_catalog_other value = 110", original)
-        self.assertNotIn("florin_trait_catalog", original)
+        self.assertIn("name = xar_cc_catalog_other value = 114", original)
+        self.assertIn("CCA120: PASS florin_trait_catalog", original)
         for key in ("devoted", "merchant_associate", "lifestyle_merchant", "dealbreaker"):
             self.assertIn("trait:" + key, standalone)
         for marker in ("new_trait_catalog", "legacy_same_faith_rite", "legacy_other_faith_main_rite"):

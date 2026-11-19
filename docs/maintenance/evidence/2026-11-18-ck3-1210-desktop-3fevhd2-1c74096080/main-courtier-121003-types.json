@@ -1,0 +1,70 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T19:11:13.337957+00:00",
+  "checks": [
+    {
+      "name": "strict-main-extractor-tests",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-u",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "D:\\ck3-state\\upgrade-20261118\\main-courtier-traits-121003-candidate-a01\\files\\tools\\gen_courtier_creator.py",
+        "D:\\ck3-state\\upgrade-20261118\\main-courtier-traits-121003-candidate-a01\\files\\tools\\extract_courtier_traits.py",
+        "D:\\ck3-state\\upgrade-20261118\\main-courtier-traits-121003-candidate-a01\\files\\tools\\test_gen_courtier_creator.py"
+      ],
+      "exit_code": 0,
+      "strict": true,
+      "whole_modules": [
+        "gen_courtier_creator.py",
+        "extract_courtier_traits.py",
+        "test_gen_courtier_creator.py"
+      ],
+      "elapsed_seconds": 2.7406146000139415,
+      "log_bytes": 44,
+      "log_sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+    },
+    {
+      "name": "complete-fixture-vivhite-tests",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-u",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "D:\\ck3-state\\upgrade-20261118\\main-courtier-traits-121003-candidate-a01\\files\\tools\\prepare_courtier_1_20_fixture.py",
+        "D:\\ck3-state\\upgrade-20261118\\main-courtier-traits-121003-candidate-a01\\files\\tools\\test_gen_vivhite_courtier.py"
+      ],
+      "exit_code": 0,
+      "strict": false,
+      "whole_modules": [
+        "prepare_courtier_1_20_fixture.py",
+        "test_gen_vivhite_courtier.py"
+      ],
+      "elapsed_seconds": 7.440287000004901,
+      "log_bytes": 44,
+      "log_sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+    }
+  ],
+  "imports_do_not_inherit_qualification": true,
+  "env": {
+    "TEMP": "D:\\ck3-state\\upgrade-20261118\\main-courtier-traits-121003-candidate-a01\\tmp",
+    "TMP": "D:\\ck3-state\\upgrade-20261118\\main-courtier-traits-121003-candidate-a01\\tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "MYPYPATH": "D:\\ck3-state\\upgrade-20261118\\main-courtier-traits-121003-candidate-a01\\files\\tools;D:\\workspace\\ck3_eternal_recurrence\\tools"
+  }
+}

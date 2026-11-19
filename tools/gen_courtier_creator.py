@@ -10,15 +10,17 @@ import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from gen_vivhite_courtier import TraitMetadata, is_trait_metadata, is_source_metadata
+
 
 ROOT = Path(__file__).resolve().parent.parent
 MOD = ROOT / "XenoAmess_s_Eternal_Recurrence"
-SNAPSHOT = Path(__file__).resolve().with_name("courtier_traits_1_20_0_3.json")
-EXPECTED_SOURCE_VERSION = "1.20.0.3"
+SNAPSHOT = Path(__file__).resolve().with_name("courtier_traits_1_21_0_3.json")
+EXPECTED_SOURCE_VERSION = "1.21.0.3"
 EXPECTED_SOURCE_FILE = "Crusader Kings III/game/common/traits/00_traits.txt"
-EXPECTED_SOURCE_SHA256 = "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"
-EXPECTED_TRAIT_COUNT = 306
-EXPECTED_CONFLICT_PAIR_COUNT = 95
+EXPECTED_SOURCE_SHA256 = "793718c2388f8d7b6c009468a2f5f8f5d1d8443acec4a015614ffac4f05b98cd"
+EXPECTED_TRAIT_COUNT = 311
+EXPECTED_CONFLICT_PAIR_COUNT = 96
 HEADER = (
     "# GENERATED FILE - do not edit. Regenerate with "
     "tools/gen_courtier_creator.py"
@@ -29,10 +31,10 @@ EXPECTED_COUNTS = {
     "commander": 17,
     "physical": 38,
     "personality": 36,
-    "other": 110,
+    "other": 114,
 }
-EXPECTED_UNION_COUNT = 226
-EXPECTED_VISIBLE_COUNT = 225
+EXPECTED_UNION_COUNT = 230
+EXPECTED_VISIBLE_COUNT = 229
 OUTPUTS = {
     MOD
     / "common/scripted_effects/xar_generated_courtier_catalog_effects.txt": "effects",
@@ -71,29 +73,41 @@ def is_optional_int(value: object) -> bool:
     return value is None or (isinstance(value, int) and not isinstance(value, bool))
 
 
-def load_snapshot(path: Path = SNAPSHOT) -> tuple[dict[str, object], list[dict[str, object]]]:
+def load_snapshot(path: Path = SNAPSHOT) -> tuple[dict[str, str], list[TraitMetadata]]:
     payload = json.loads(path.read_text(encoding="utf-8-sig"))
-    require(payload.get("schema_version") == 1, "unsupported courtier trait schema")
+    require(isinstance(payload, dict), "snapshot must be an object")
+    require(type(payload.get("schema_version")) is int and payload["schema_version"] == 1,
+            "unsupported courtier trait schema")
     source = payload.get("source")
     require(isinstance(source, dict), "snapshot source metadata is missing")
-    require(source.get("game_version") == EXPECTED_SOURCE_VERSION, "unexpected source game version")
-    require(source.get("file") == EXPECTED_SOURCE_FILE, "unexpected source trait file")
-    require(source.get("sha256") == EXPECTED_SOURCE_SHA256, "unexpected source trait SHA256")
     require(
-        isinstance(source.get("sha256"), str)
-        and re.fullmatch(r"[0-9a-f]{64}", source["sha256"]) is not None,
-        "invalid source SHA256",
+        source.get("game_version") == EXPECTED_SOURCE_VERSION,
+        "unexpected source game version",
     )
+    require(source.get("file") == EXPECTED_SOURCE_FILE, "unexpected source trait file")
+    require(
+        source.get("sha256") == EXPECTED_SOURCE_SHA256,
+        "unexpected source trait SHA256",
+    )
+    if not is_source_metadata(source):
+        raise ValueError("invalid snapshot source field type")
 
     traits = payload.get("traits")
     require(isinstance(traits, list), "snapshot traits must be a list")
-    require(payload.get("trait_count") == len(traits), "snapshot trait_count drift")
-    require(len(traits) == EXPECTED_TRAIT_COUNT, "unexpected source trait count")
+    require(type(payload.get("trait_count")) is int and payload["trait_count"] == len(traits),
+            "snapshot trait_count drift")
+    require(
+        len(traits) == EXPECTED_TRAIT_COUNT,
+        f"snapshot has {len(traits)} traits, expected {EXPECTED_TRAIT_COUNT}",
+    )
     seen: set[str] = set()
+    validated_traits: list[TraitMetadata] = []
     for index, trait in enumerate(traits):
         require(isinstance(trait, dict), f"trait at index {index} is not an object")
         missing = REQUIRED_TRAIT_FIELDS - trait.keys()
         require(not missing, f"trait at index {index} is missing {sorted(missing)}")
+        if not is_trait_metadata(trait):
+            raise ValueError(f"invalid typed trait metadata at index {index}")
         key = trait["key"]
         require(
             isinstance(key, str) and re.fullmatch(r"[A-Za-z0-9_]+", key) is not None,
@@ -127,12 +141,15 @@ def load_snapshot(path: Path = SNAPSHOT) -> tuple[dict[str, object], list[dict[s
         )
         require(is_optional_int(trait["level"]), f"invalid level for {key}")
         require(isinstance(trait["has_track"], bool), f"invalid has_track for {key}")
-    return source, traits
+        if not is_trait_metadata(trait):
+            raise ValueError(f"invalid typed trait metadata for {key}")
+        validated_traits.append(trait)
+    return source, validated_traits
 
 
 def build_catalogs(
-    traits: list[dict[str, object]],
-) -> tuple[dict[str, list[dict[str, object]]], list[dict[str, object]]]:
+    traits: list[TraitMetadata],
+) -> tuple[dict[str, list[TraitMetadata]], list[TraitMetadata]]:
     catalogs = {
         "education": [trait for trait in traits if trait["category"] == "education"],
         "commander": [
@@ -197,7 +214,7 @@ def build_catalogs(
 
 
 def build_conflicts(
-    traits: list[dict[str, object]], union: list[dict[str, object]]
+    traits: list[TraitMetadata], union: list[TraitMetadata]
 ) -> dict[str, list[str]]:
     trait_by_key = {trait["key"]: trait for trait in traits}
     source_order = {trait["key"]: index for index, trait in enumerate(traits)}
@@ -210,7 +227,7 @@ def build_conflicts(
         if trait["group_equivalence"] is not None:
             equivalence_groups[trait["group_equivalence"]].append(trait["key"])
 
-    conflict_sets = {trait["key"]: set() for trait in union}
+    conflict_sets: dict[str, set[str]] = {trait["key"]: set() for trait in union}
     for trait in union:
         key = trait["key"]
         related: set[str] = set()
@@ -243,7 +260,7 @@ def build_conflicts(
 
 
 def catalog_membership(
-    catalogs: dict[str, list[dict[str, object]]]
+    catalogs: dict[str, list[TraitMetadata]]
 ) -> dict[str, str]:
     return {
         trait["key"]: name
@@ -253,8 +270,8 @@ def catalog_membership(
 
 
 def generated_effects(
-    catalogs: dict[str, list[dict[str, object]]],
-    union: list[dict[str, object]],
+    catalogs: dict[str, list[TraitMetadata]],
+    union: list[TraitMetadata],
     conflicts: dict[str, list[str]],
 ) -> str:
     membership = catalog_membership(catalogs)
@@ -297,7 +314,7 @@ def generated_effects(
     return "\n".join(lines)
 
 
-def metadata_checks(trait: dict[str, object]) -> list[str]:
+def metadata_checks(trait: TraitMetadata) -> list[str]:
     checks = [f"scope:xar_cc_candidate_trait = trait:{trait['key']}"]
     if trait["minimum_age"] is not None:
         checks.append(f"var:xar_cc_age >= {trait['minimum_age']}")
@@ -311,7 +328,7 @@ def metadata_checks(trait: dict[str, object]) -> list[str]:
 
 
 def conflict_pairs(
-    union: list[dict[str, object]], conflicts: dict[str, list[str]]
+    union: list[TraitMetadata], conflicts: dict[str, list[str]]
 ) -> list[tuple[str, str]]:
     order = {trait["key"]: index for index, trait in enumerate(union)}
     pairs = [
@@ -328,7 +345,7 @@ def conflict_pairs(
 
 
 def generated_triggers(
-    union: list[dict[str, object]], conflicts: dict[str, list[str]]
+    union: list[TraitMetadata], conflicts: dict[str, list[str]]
 ) -> str:
     lines = [HEADER, "# Candidate metadata and selected-trait compatibility.", ""]
     lines.extend(["xar_cc_candidate_trait_metadata_valid_trigger = {", "\tOR = {"])
@@ -374,7 +391,7 @@ def generated_triggers(
     return "\n".join(lines)
 
 
-def generated_values(union: list[dict[str, object]]) -> str:
+def generated_values(union: list[TraitMetadata]) -> str:
     lines = [HEADER, "# Native ruler designer point total for selected traits.", ""]
     lines.extend(["xar_cc_selected_trait_cost = {", "\tvalue = 0"])
     for trait in union:
