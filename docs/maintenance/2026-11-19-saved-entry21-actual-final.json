@@ -1,0 +1,169 @@
+{
+  "schema": "ck3.actual-Source21-Saved-adopted-first-batch-governance-unavailable-natural-close/v1",
+  "at": "2026-11-19T04:39:10.762002+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\HOTFIX54-SOURCE21-ORIGINAL-FIXED45M.json",
+    "bytes": 4632,
+    "sha256": "d19b1f80bfc340ebd44b72af6ca8cde096de366c176427af36ad14e9e3aa36d5"
+  },
+  "JavaReady": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\NORMAL-MAIN35-PRIVATE-SAVED-INSTALLATION-ENV20-RUNTIME-READY91.json",
+    "bytes": 4595,
+    "sha256": "2613726b48b2ac1ade33ef184468b5a28174f5140ec5fee5cdc3b181a1f53d7f"
+  },
+  "policy_proof": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\ACTUAL-INITIAL-SAVED-POLICY21-CREATED-PROOF01.json",
+    "bytes": 4653,
+    "sha256": "b5510934486f53b84904e42217de5cf241f534e934799579492db2df82ba9198"
+  },
+  "checker": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix21-work\\ACTUAL-PLAIN-CODEX-CALLER-INPUTS21.json",
+    "bytes": 145880,
+    "sha256": "9343578ac757e231ccb6f131bb200a35d77630fed3e52e5947ee67ecdc2a0cfd"
+  },
+  "Full": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm21-01\\summary.json",
+    "bytes": 11558,
+    "sha256": "91f6f6154bd3a90582528ab44c96f73097e8c77491fbe014f59b5893fe46ad26"
+  },
+  "actual_Saved_entry_adopted": {
+    "actual_head_digest": "c4c815214bed041ff714cd24d482b2526ff53dab3659c9391afa4368366b8c20",
+    "actual_head_sequence": 20,
+    "game": {
+      "creation_filetime": "134395361349449908",
+      "pid": 218100
+    },
+    "next_sequence": "0",
+    "observed_at_utc": "2026-11-19T04:35:59.030898Z",
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "SAVED_ENTRY_ADOPTED"
+  },
+  "ordinary_worker_loop_start": {
+    "game": {
+      "creation_filetime": "134395361349449908",
+      "pid": 218100
+    },
+    "next_sequence": "0",
+    "observed_at_utc": "2026-11-19T04:35:59.030898Z",
+    "ordinary_batch_started": false,
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "ORDINARY_WORKER_LOOP_START"
+  },
+  "actual_first_batch": {
+    "batch_id": "migration1210-first-root21-0",
+    "terminal": "PLANNER_STOPPED",
+    "detail": "INCOMPLETE_PRODUCTION_CHAIN: the exact Java governance query producer is not installed",
+    "began_at_utc": "2026-11-19T04:35:59.038155800Z",
+    "ended_at_utc": "2026-11-19T04:36:04.006667500Z",
+    "attempted_turns": 0,
+    "applied_turns": 0,
+    "committed_saved_days": 0,
+    "next_sequence": "1"
+  },
+  "model_enter_count": 0,
+  "business_END": {
+    "business_exit_code": 4,
+    "game_stop_requested": false,
+    "loop_detail": "PLANNER_STOPPED: INCOMPLETE_PRODUCTION_CHAIN: the exact Java governance query producer is not installed",
+    "loop_terminal": "TERMINAL_FAILURE",
+    "next_sequence": "1",
+    "observed_at_utc": "2026-11-19T04:36:04.107337100Z",
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "SAVED_DAEMON_BUSINESS_END"
+  },
+  "endpoint_release": {
+    "endpoint_release": "RELEASED",
+    "game_stop_requested": false,
+    "observed_at_utc": "2026-11-19T04:36:04.107337100Z",
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "SAVED_DAEMON_ENDPOINT_RELEASE"
+  },
+  "Main_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix21-work\\MAIN25021-END.json",
+    "bytes": 132,
+    "sha256": "f49482ec8d6d80dfe35c25ed27e9fc701f97bf08e0cdcc45dfeed995acaccfff"
+  },
+  "Main_stdout": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix21-work\\MAIN25021.stdout",
+    "bytes": 10498,
+    "sha256": "11da0e87fc09e6c13b9e6cefc2fb4771b21c21b717cc307e697873db84339710"
+  },
+  "Main_stderr": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix21-work\\MAIN25021.stderr",
+    "bytes": 1730,
+    "sha256": "cdede456648127665b17375ffbdc7b34e9ae86443e10b810080f25751d20bf07"
+  },
+  "GSV_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix21-work\\GSV-SOURCE21-END.json",
+    "bytes": 131,
+    "sha256": "a66c1c33ef3d5c1f7c3174631052828c3f482aa2cff6182d64c8f7fb63f2d270"
+  },
+  "GSV_stdout": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix21-work\\GSV-SOURCE21.stdout",
+    "bytes": 1628,
+    "sha256": "169c10f798d7ee37a01d543a49128768d3b8d75deb73281c136cc65c4a565b0b"
+  },
+  "normal_exit_sdk": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit21-01\\summary.json",
+    "bytes": 14294,
+    "sha256": "3bc6ba95487556b6346bc2464cd9bf70d1b4a2b6208163b5d8cd3916a5b3ccfb"
+  },
+  "actual_normal_exit_READ_count": 1,
+  "actual_application_exit_calls": 1,
+  "exit_native_ok": true,
+  "SDK_not_terminal_proof": true,
+  "actual_terminal": {
+    "actual_terminal": {
+      "accounting": {
+        "active_processes": 0,
+        "limit_flags": 8704,
+        "memory_limit_bytes": 34359738368,
+        "peak_job_memory_bytes": 12679954432
+      },
+      "elapsed_seconds_decimal": "519.5333952",
+      "exit_code": 0,
+      "identity": {
+        "creation_filetime_decimal": "134395361349449908",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 218100
+      },
+      "stop_reason": null
+    },
+    "cleanup_proven": true,
+    "evidence": {
+      "bytes": 1040,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-hotfix54-21\\event-000007.json",
+      "sha256": "23bad3d3153614334aae0d867c5e5d9e07d44ecc0af200be0247d9002759b6f1"
+    },
+    "game": {
+      "creation_filetime": "134395361349449908",
+      "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 218100
+    },
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-19T04:37:34.568782100Z",
+    "schema": "xar.java-game-supervisor-result/v1",
+    "session_id": "session-migration1210-hotfix26757580-firstroot21",
+    "status": "GAME_EXITED",
+    "stop_request_id": "",
+    "terminal_kind": "NATURAL_EXIT"
+  },
+  "post_originals": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE21-POSTEXIT-ORIGINALS-PDX-AND-SILENT01.json",
+    "bytes": 3186,
+    "sha256": "96f44c0534d98c68493ed6eaef37734f175449d6daf5edd527a0073518d6ae0d"
+  },
+  "WAIT": 0,
+  "REQUEST_READY": 0,
+  "queue_absent": true,
+  "ownstop_absent": true,
+  "new_day_credit": 0,
+  "SAVE_actions": 0,
+  "ordinary_world_actions": 0,
+  "partial_business_root_retained": true,
+  "old_source_deadlines_Pair_WAL_UNKNOWN_and_all_outputs_preserved": true,
+  "Native54_unchanged": true,
+  "R35_runtime_lease": "RELEASED",
+  "newSource22": "NOT_SIGNED",
+  "no_complete_Root_WAIT_goal_claim": true
+}

@@ -1,0 +1,96 @@
+{
+  "schema": "ck3.root.saved-entry21-evidence25/v1",
+  "cut_utc": "2026-11-19T04:47:03.507063Z",
+  "target_build": {
+    "version": "1.21.0",
+    "steam_build": 26757580,
+    "exe_sha256": "bb3fef106240e95ecdb6f1532982e89e9432c92a99d33db623521572f06e6f79"
+  },
+  "actual_final": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc25-saved-adoption21/source21-final.json",
+    "bytes": 7281,
+    "sha256": "69a9dacd1e2a95f71b75a0ca21f7c6fd562d5f2094984a9178923a0a39807610"
+  },
+  "java_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\NORMAL-MAIN35-PRIVATE-SAVED-INSTALLATION-ENV20-RUNTIME-READY91.json",
+    "bytes": 4595,
+    "sha256": "2613726b48b2ac1ade33ef184468b5a28174f5140ec5fee5cdc3b181a1f53d7f"
+  },
+  "actual_scope": {
+    "Saved_private_installation": true,
+    "public_activation_publication": true,
+    "Saved_entry_adopted": {
+      "actual_head_digest": "c4c815214bed041ff714cd24d482b2526ff53dab3659c9391afa4368366b8c20",
+      "actual_head_sequence": 20,
+      "game": {
+        "creation_filetime": "134395361349449908",
+        "pid": 218100
+      },
+      "next_sequence": "0",
+      "observed_at_utc": "2026-11-19T04:35:59.030898Z",
+      "schema": "xar.java-loaded-saved-resume-result/v1",
+      "status": "SAVED_ENTRY_ADOPTED"
+    },
+    "ordinary_loop_started": true,
+    "first_batch": {
+      "batch_id": "migration1210-first-root21-0",
+      "terminal": "PLANNER_STOPPED",
+      "detail": "INCOMPLETE_PRODUCTION_CHAIN: the exact Java governance query producer is not installed",
+      "began_at_utc": "2026-11-19T04:35:59.038155800Z",
+      "ended_at_utc": "2026-11-19T04:36:04.006667500Z",
+      "attempted_turns": 0,
+      "applied_turns": 0,
+      "committed_saved_days": 0,
+      "next_sequence": "1"
+    },
+    "model_enter": 0,
+    "REQUEST_READY": 0,
+    "WAIT": 0,
+    "new_days": 0,
+    "SAVE_actions": 0,
+    "full_pending_transport_recovery": "NOT_QUALIFIED",
+    "complete_ordinary_pipeline": "NOT_QUALIFIED"
+  },
+  "terminal": {
+    "observed_at_utc": "2026-11-19T04:37:34.568782100Z",
+    "kind": "NATURAL_EXIT",
+    "game_exit": 0,
+    "GSV_exit": 0,
+    "job_active": 0,
+    "cleanup_proven": true,
+    "post_originals": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE21-POSTEXIT-ORIGINALS-PDX-AND-SILENT01.json",
+      "bytes": 3186,
+      "sha256": "96f44c0534d98c68493ed6eaef37734f175449d6daf5edd527a0073518d6ae0d"
+    }
+  },
+  "next_environment21": {
+    "proof": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/ACTUAL-CURRENT-PROFILE-ENV21-CREATED-PROOF01.json",
+      "bytes": 4546,
+      "sha256": "c7d476152093231f5a7cb5439d49d6092239421150dbdd600b013d3caf3315f1"
+    },
+    "scope": "Actual sibling producer/capacity/Binding/Guard P; no profile or SAVE rewrite; future newJava reader pending",
+    "first_helper_NoSuchFile_failure": "Retained; independent B fixes exact ledger116 path only"
+  },
+  "next_native56": {
+    "registration": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M2-GOVERNANCE56-SOURCE4M-FINITE-REGISTRATION166.json",
+      "bytes": 1084,
+      "sha256": "3528960498041b922deaf31f087d750063b7bc34c9f90759eb1abcf84ace09fa"
+    },
+    "qualification": "SOURCE4MiB only; no compile/DLL/realGame",
+    "required_minimum": "Explicit new read-only lifestyle scope: exact actual actor/date/revision/government key+complete flags and genuine currentFocus/progress; no legacy wholeROOT claim or global nativeQualified toggle"
+  },
+  "last_publication": {
+    "commit": "d4df08504443590b23e8ad38858c41c145f9092d",
+    "receipt": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/publication92/PUBLICATION14-93.json",
+      "bytes": 782,
+      "sha256": "5a31b14c34b0e0115aed0dbfd47c52a2330070ca0e27be4aa04c2eaf79e68dd3"
+    },
+    "scope": "R35 four production leaves/APItest/Ready91+Doc24; preserves remote changes and formal53/index"
+  },
+  "originals": "Original savedPair/head2003/WAL/UNKNOWN and all old action identities/deadlines preserved; partial scene21 root retained; game remained minimized/non-topmost/foreground unchanged; no repeat expired requests",
+  "next_source22": "NOT_SIGNED at cut; do not replay scene21"
+}
